@@ -46,9 +46,20 @@ class QueryDependencyLinksStoreFactory {
 	 */
 	public function newQueryDependencyLinksStore( $store ) {
 
+		$logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
+		$dependencyLinksTableUpdater = new DependencyLinksTableUpdater( $store );
+
+		$dependencyLinksTableUpdater->setLogger(
+			$logger
+		);
+
 		$queryDependencyLinksStore = new QueryDependencyLinksStore(
 			$this->newQueryResultDependencyListResolver(),
-			new DependencyLinksTableUpdater( $store )
+			$dependencyLinksTableUpdater
+		);
+
+		$queryDependencyLinksStore->setLogger(
+			$logger
 		);
 
 		$queryDependencyLinksStore->setEnabled(
@@ -73,6 +84,10 @@ class QueryDependencyLinksStoreFactory {
 		$entityIdListRelevanceDetectionFilter = new EntityIdListRelevanceDetectionFilter(
 			$store,
 			$compositePropertyTableDiffIterator
+		);
+
+		$entityIdListRelevanceDetectionFilter->setLogger(
+			ApplicationFactory::getInstance()->getMediaWikiLogger()
 		);
 
 		$entityIdListRelevanceDetectionFilter->setPropertyExemptionlist(

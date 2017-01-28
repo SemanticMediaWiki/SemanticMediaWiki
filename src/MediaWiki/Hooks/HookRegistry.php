@@ -273,16 +273,15 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
 		 */
-		$this->handlers['ArticleDelete'] = function ( &$wikiPage, &$user, &$reason, &$error ) {
+		$this->handlers['ArticleDelete'] = function ( &$wikiPage, &$user, &$reason, &$error ) use( $applicationFactory ) {
 
-			$articleDelete = new ArticleDelete(
-				$wikiPage,
-				$user,
-				$reason,
-				$error
+			$articleDelete = new ArticleDelete();
+
+			$articleDelete->setLogger(
+				$applicationFactory->getMediaWikiLogger()
 			);
 
-			return $articleDelete->process();
+			return $articleDelete->process( $wikiPage );
 		};
 
 		/**
@@ -290,13 +289,15 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
 		 */
-		$this->handlers['LinksUpdateConstructed'] = function ( $linksUpdate ) {
+		$this->handlers['LinksUpdateConstructed'] = function ( $linksUpdate ) use( $applicationFactory ) {
 
-			$linksUpdateConstructed = new LinksUpdateConstructed(
-				$linksUpdate
+			$linksUpdateConstructed = new LinksUpdateConstructed();
+
+			$linksUpdateConstructed->setLogger(
+				$applicationFactory->getMediaWikiLogger()
 			);
 
-			return $linksUpdateConstructed->process();
+			return $linksUpdateConstructed->process( $linksUpdate );
 		};
 
 		/**

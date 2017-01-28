@@ -6,6 +6,8 @@ use LinksUpdate;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
 use Title;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate()
@@ -17,12 +19,12 @@ use Title;
  *
  * @author mwjames
  */
-class LinksUpdateConstructed {
+class LinksUpdateConstructed implements LoggerAwareInterface {
 
 	/**
-	 * @var LinksUpdate
+	 * @var LoggerInterface
 	 */
-	protected $linksUpdate = null;
+	private $logger;
 
 	/**
 	 * @var ApplicationFactory
@@ -35,12 +37,14 @@ class LinksUpdateConstructed {
 	private $enabledDeferredUpdate = true;
 
 	/**
-	 * @since  1.9
+	 * @see LoggerAwareInterface::setLogger
 	 *
-	 * @param LinksUpdate $linksUpdate
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
 	 */
-	public function __construct( LinksUpdate $linksUpdate ) {
-		$this->linksUpdate = $linksUpdate;
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -53,19 +57,21 @@ class LinksUpdateConstructed {
 	/**
 	 * @since 1.9
 	 *
+	 * @param LinksUpdate $linksUpdate
+	 *
 	 * @return true
 	 */
-	public function process() {
+	public function process( LinksUpdate $linksUpdate ) {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
-		$title = $this->linksUpdate->getTitle();
+		$title = $linksUpdate->getTitle();
 
 		/**
 		 * @var ParserData $parserData
 		 */
 		$parserData = $this->applicationFactory->newParserData(
 			$title,
-			$this->linksUpdate->getParserOutput() );
+			$linksUpdate->getParserOutput() );
 
 		if ( $this->isSemanticEnabledNamespace( $title ) && $parserData->getSemanticData()->isEmpty() ) {
 			$this->updateEmptySemanticData( $parserData, $title );
@@ -97,7 +103,7 @@ class LinksUpdateConstructed {
 	 */
 	private function updateEmptySemanticData( &$parserData, $title ) {
 
-		wfDebug( __METHOD__ . ' Empty SemanticData : ' . $title->getPrefixedDBkey() . "\n" );
+		$this->log( __METHOD__ . ' Empty SemanticData : ' . $title->getPrefixedDBkey() . "\n" );
 
 		$semanticData = $this->reparseToFetchSemanticData( $title );
 
@@ -124,6 +130,15 @@ class LinksUpdateConstructed {
 
 	private function isSemanticEnabledNamespace( Title $title ) {
 		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }

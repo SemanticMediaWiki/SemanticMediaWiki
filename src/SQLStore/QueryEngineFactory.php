@@ -92,12 +92,19 @@ class QueryEngineFactory {
 	 * @return QueryEngine
 	 */
 	public function newQueryEngine() {
-		return new QueryEngine(
+
+		$queryEngine = new QueryEngine(
 			$this->store,
 			$this->newQuerySegmentListBuilder(),
 			$this->newQuerySegmentListProcessor(),
 			new EngineOptions()
 		);
+
+		$queryEngine->setLogger(
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+
+		return $queryEngine;
 	}
 
 	private function newTemporaryTableBuilder() {

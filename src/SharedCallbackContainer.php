@@ -385,6 +385,10 @@ class SharedCallbackContainer implements CallbackContainer {
 				$callbackLoader->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertyHierarchyLookup::POOLCACHE_ID )
 			);
 
+			$propertyHierarchyLookup->setLogger(
+				$callbackLoader->singleton( 'MediaWikiLogger' )
+			);
+
 			$propertyHierarchyLookup->setSubcategoryDepth(
 				$callbackLoader->load( 'Settings' )->get( 'smwgQSubcategoryDepth' )
 			);

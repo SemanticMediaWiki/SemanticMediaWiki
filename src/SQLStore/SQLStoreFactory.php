@@ -421,6 +421,15 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.5
 	 *
+	 * @return LoggerInterface
+	 */
+	public function getLogger() {
+		return ApplicationFactory::getInstance()->getMediaWikiLogger();
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @return PropertyStatisticsTable
 	 */
 	public function newPropertyStatisticsTable() {
@@ -431,7 +440,7 @@ class SQLStoreFactory {
 		);
 
 		$propertyStatisticsTable->setLogger(
-			ApplicationFactory::getInstance()->getMediaWikiLogger()
+			$this->getLogger()
 		);
 
 		$propertyStatisticsTable->isCommandLineMode(

@@ -28,6 +28,11 @@ class SMWSQLStore3Readers {
 	private $store;
 
 	/**
+	 * @var SQLStoreFactory
+	 */
+	private $factory;
+
+	/**
 	 *  >0 while getSemanticData runs, used to prevent nested calls from clearing the cache
 	 * while another call runs and is about to fill it with data
 	 *
@@ -35,8 +40,9 @@ class SMWSQLStore3Readers {
 	 */
 	private static $in_getSemanticData = 0;
 
-	public function __construct( SMWSQLStore3 $parentStore ) {
+	public function __construct( SMWSQLStore3 $parentStore, $factory ) {
 		$this->store = $parentStore;
+		$this->factory = $factory;
 	}
 
 	/**
@@ -416,7 +422,7 @@ class SMWSQLStore3Readers {
 				$valuekeys[2]{0} != ':' ) {
 
 				if ( isset( $result[$valueHash] ) ) {
-					wfDebugLog( 'smw', __METHOD__ . " Duplicate entry for {$propertykey} with " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) . "\n" );
+					$this->factory->getLogger()->info( __METHOD__ . " Duplicate entry for {$propertykey} with " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) . "\n" );
 				}
 
 				$result[$valueHash] = $isSubject ? array( $propertykey, $valuekeys ) : $valuekeys;

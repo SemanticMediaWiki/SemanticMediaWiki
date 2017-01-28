@@ -4,6 +4,8 @@ namespace SMW;
 
 use Onoi\Cache\Cache;
 use SMW\Store;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * @license GNU GPL v2+
@@ -11,7 +13,7 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class PropertyHierarchyLookup {
+class PropertyHierarchyLookup implements LoggerAwareInterface {
 
 	const POOLCACHE_ID = 'property.hierarchy.lookup';
 
@@ -24,6 +26,11 @@ class PropertyHierarchyLookup {
 	 * @var Cache|null
 	 */
 	private $cache = null;
+
+	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
@@ -48,6 +55,17 @@ class PropertyHierarchyLookup {
 	public function __construct( Store $store, Cache $cache ) {
 		$this->store = $store;
 		$this->cache = $cache;
+	}
+
+	/**
+	 * @see LoggerAwareInterface::setLogger
+	 *
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -84,7 +102,7 @@ class PropertyHierarchyLookup {
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 
-		$result = $this->findMatchesWith(
+		$result = $this->doFind(
 			'_SUBP',
 			$property->getKey(),
 			$property->getDiWikiPage(),
@@ -110,7 +128,7 @@ class PropertyHierarchyLookup {
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 
-		$result = $this->findMatchesWith(
+		$result = $this->doFind(
 			'_SUBC',
 			$category->getDBKey(),
 			$category,
@@ -128,7 +146,7 @@ class PropertyHierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubpropertListFor( DIProperty $property ) {
-		return $this->findMatchesWith( '_SUBP', $property->getKey(), $property->getDiWikiPage(), new RequestOptions() );
+		return $this->doFind( '_SUBP', $property->getKey(), $property->getDiWikiPage(), new RequestOptions() );
 	}
 
 	/**
@@ -139,10 +157,10 @@ class PropertyHierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubcategoryListFor( DIWikiPage $category ) {
-		return $this->findMatchesWith( '_SUBC', $category->getDBKey(), $category, new RequestOptions() );
+		return $this->doFind( '_SUBC', $category->getDBKey(), $category, new RequestOptions() );
 	}
 
-	private function findMatchesWith( $id, $key, DIWikiPage $subject, $requestOptions ) {
+	private function doFind( $id, $key, DIWikiPage $subject, $requestOptions ) {
 
 		$key = $id . '#' . $key . '#' . $requestOptions->getHash();
 
@@ -161,9 +179,18 @@ class PropertyHierarchyLookup {
 			$result
 		);
 
-		wfDebugLog( 'smw', __METHOD__ . " {$id} and " . $subject->getDBKey() . "\n" );
+		$this->log( __METHOD__ . " {$id} and " . $subject->getDBKey() );
 
 		return $result;
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }

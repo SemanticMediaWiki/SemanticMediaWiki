@@ -11,6 +11,9 @@ use SMW\Store;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMWQueryResult as QueryResult;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use SMW\Utils\Timer;
 
 /**
  * @license GNU GPL v2+
@@ -18,7 +21,7 @@ use SMWQueryResult as QueryResult;
  *
  * @author mwjames
  */
-class QueryDependencyLinksStore {
+class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 	/**
 	 * @var Store
@@ -39,6 +42,11 @@ class QueryDependencyLinksStore {
 	 * @var Database
 	 */
 	private $connection;
+
+	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
 
 	/**
 	 * @var boolean
@@ -71,6 +79,17 @@ class QueryDependencyLinksStore {
 		$this->dependencyLinksTableUpdater = $dependencyLinksTableUpdater;
 		$this->store = $this->dependencyLinksTableUpdater->getStore();
 		$this->connection = $this->store->getConnection( 'mw.db' );
+	}
+
+	/**
+	 * @see LoggerAwareInterface::setLogger
+	 *
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -127,7 +146,8 @@ class QueryDependencyLinksStore {
 			return null;
 		}
 
-		$start = microtime( true );
+		Timer::start( __METHOD__ );
+
 		$tableName = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
 			new DIProperty( '_ASK' )
 		);
@@ -150,7 +170,7 @@ class QueryDependencyLinksStore {
 			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
-		wfDebugLog( 'smw', __METHOD__ . ' finished on ' . $subject->getHash() . ' with procTime (sec): ' . round( ( microtime( true ) - $start ), 7 ) );
+		$this->log( __METHOD__ . ' finished on ' . $subject->getHash() . ' with procTime (sec): ' . Timer::getElapsedTime( __METHOD__, 7 ) );
 
 		return true;
 	}
@@ -290,7 +310,7 @@ class QueryDependencyLinksStore {
 			return null;
 		}
 
-		$start = microtime( true );
+		Timer::start( __METHOD__ );
 
 		$subject = $queryResult->getQuery()->getContextPage();
 		$hash = $queryResult->getQuery()->getQueryId();
@@ -301,7 +321,7 @@ class QueryDependencyLinksStore {
 		);
 
 		if ( $this->canSuppressUpdateOnSkewFactorFor( $sid, $subject ) ) {
-			return wfDebugLog( 'smw', __METHOD__ . " suppressed (skewed time) for SID " . $sid . "\n" );
+			return $this->log( __METHOD__ . " suppressed (skewed time) for SID " . $sid );
 		}
 
 		$dependencyLinksTableUpdater = $this->dependencyLinksTableUpdater;
@@ -318,7 +338,7 @@ class QueryDependencyLinksStore {
 			$dependencyListByLateRetrieval = $queryResultDependencyListResolver->getDependencyListByLateRetrievalFrom( $queryResult );
 
 			if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
-				return wfDebugLog( 'smw', 'No dependency list available ' . $hash );
+				return $this->log( 'No dependency list available ' . $hash );
 			}
 
 			// SID < 0 means the storage update/process has not been finalized
@@ -346,7 +366,7 @@ class QueryDependencyLinksStore {
 		$deferredCallableUpdate->enabledDeferredUpdate( true );
 		$deferredCallableUpdate->pushUpdate();
 
-		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): ' . round( ( microtime( true ) - $start ), 7 ) );
+		$this->log( __METHOD__ . ' procTime (sec): ' . Timer::getElapsedTime( __METHOD__, 7 ) );
 
 		return true;
 	}
@@ -382,6 +402,15 @@ class QueryDependencyLinksStore {
 		// Check whether the query has already been registered and only then
 		// check for a possible divergent time
 		return $row !== false && $suppressUpdateCache[$hash] > wfTimestamp( TS_MW );
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }

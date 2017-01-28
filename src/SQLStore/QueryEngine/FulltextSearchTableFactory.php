@@ -145,6 +145,10 @@ class FulltextSearchTableFactory {
 			ApplicationFactory::getInstance()->singleton( 'TempChangeOpStore' )
 		);
 
+		$textByChangeUpdater->setLogger(
+			ApplicationFactory::getInstance()->getMediaWikiLogger()
+		);
+
 		$textByChangeUpdater->asDeferredUpdate(
 			$settings->get( 'smwgFulltextDeferredUpdate' )
 		);

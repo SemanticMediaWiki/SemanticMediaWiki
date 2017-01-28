@@ -42,23 +42,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$reason = '';
-		$error = '';
-
-		$instance = new ArticleDelete(
-			$wikiPage,
-			$user,
-			$reason,
-			$error
-		);
+		$instance = new ArticleDelete();
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\ArticleDelete',
@@ -105,24 +89,12 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $subject->getTitle() ) );
 
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$reason = '';
-		$error = '';
-
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new ArticleDelete(
-			$wikiPage,
-			$user,
-			$reason,
-			$error
-		);
+		$instance = new ArticleDelete();
 
 		$this->assertTrue(
-			$instance->process()
+			$instance->process( $wikiPage )
 		);
 	}
 

@@ -192,7 +192,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function getReader() {
 		if( $this->reader == false ) {
-			$this->reader = new SMWSQLStore3Readers( $this );//Initialize if not done already
+			$this->reader = new SMWSQLStore3Readers( $this, $this->factory );//Initialize if not done already
 		}
 
 		return $this->reader;
