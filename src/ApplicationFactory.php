@@ -282,14 +282,17 @@ class ApplicationFactory {
 
 		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
 
-		$inTextAnnotationParser = new InTextAnnotationParser(
-			$parserData,
-			$mwCollaboratorFactory->newMagicWordsFinder(),
-			$mwCollaboratorFactory->newRedirectTargetFinder()
+		$linksProcessor = $this->callbackLoader->create( 'LinksProcessor' );
+
+		$linksProcessor->isStrictMode(
+			$this->getSettings()->get( 'smwgEnabledInTextAnnotationParserStrictMode' )
 		);
 
-		$inTextAnnotationParser->isStrictMode(
-			$this->getSettings()->get( 'smwgEnabledInTextAnnotationParserStrictMode' )
+		$inTextAnnotationParser = new InTextAnnotationParser(
+			$parserData,
+			$linksProcessor,
+			$mwCollaboratorFactory->newMagicWordsFinder(),
+			$mwCollaboratorFactory->newRedirectTargetFinder()
 		);
 
 		// 2.5+ Changed modus operandi
