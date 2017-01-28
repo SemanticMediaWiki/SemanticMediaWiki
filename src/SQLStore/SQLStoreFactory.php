@@ -11,7 +11,6 @@ use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
-use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMWRequestOptions as RequestOptions;
 use SMWSQLStore3;
 use SMW\SQLStore\TableBuilder\TableBuilder;
@@ -96,17 +95,9 @@ class SQLStoreFactory {
 	 */
 	public function newMasterConceptCache() {
 
-		$conceptQueryResolver = new ConceptQueryResolver(
-			$this->queryEngineFactory->newQueryEngine()
-		);
-
-		$conceptQueryResolver->setConceptFeatures(
-			$GLOBALS['smwgQConceptFeatures']
-		);
-
 		$conceptCache = new ConceptCache(
 			$this->store,
-			$conceptQueryResolver
+			$this->queryEngineFactory->newConceptQuerySegmentBuilder()
 		);
 
 		$conceptCache->setUpperLimit(

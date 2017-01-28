@@ -127,29 +127,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @return QuerySegmentListBuilder
-	 */
-	public function getQuerySegmentListBuilder() {
-
-		$this->querySegmentListBuilder->isFilterDuplicates(
-			$this->engineOptions->get( 'smwgQFilterDuplicates' )
-		);
-
-		return $this->querySegmentListBuilder;
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @return QuerySegmentListProcessor
-	 */
-	public function getQuerySegmentListProcessor() {
-		return $this->querySegmentListProcessor;
-	}
-
-	/**
 	 * The new SQL store's implementation of query answering. This function
 	 * works in two stages: First, the nested conditions of the given query
 	 * object are preprocessed to compute an abstract representation of the

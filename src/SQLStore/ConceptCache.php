@@ -6,7 +6,7 @@ use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
+use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMWSQLStore3;
 use SMWWikiPageValue;
 use Title;
@@ -25,9 +25,9 @@ class ConceptCache {
 	private $store;
 
 	/**
-	 * @var ConceptQueryResolver
+	 * @var ConceptQuerySegmentBuilder
 	 */
-	private $conceptQueryResolver;
+	private $conceptQuerySegmentBuilder;
 
 	/**
 	 * @var integer
@@ -38,11 +38,11 @@ class ConceptCache {
 	 * @since 2.2
 	 *
 	 * @param SMWSQLStore3 $store
-	 * @param ConceptQueryResolver $conceptQueryResolver
+	 * @param ConceptQuerySegmentBuilder $conceptQueryResolver
 	 */
-	public function __construct( SMWSQLStore3 $store, ConceptQueryResolver $conceptQueryResolver ) {
+	public function __construct( SMWSQLStore3 $store, ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder ) {
 		$this->store = $store;
-		$this->conceptQueryResolver = $conceptQueryResolver;
+		$this->conceptQuerySegmentBuilder = $conceptQuerySegmentBuilder;
 	}
 
 	/**
@@ -64,11 +64,11 @@ class ConceptCache {
 	public function refreshConceptCache( Title $concept ) {
 
 		$errors = array_merge(
-			$this->conceptQueryResolver->getErrors(),
+			$this->conceptQuerySegmentBuilder->getErrors(),
 			$this->refresh( $concept )
 		);
 
-		$this->conceptQueryResolver->cleanUp();
+		$this->conceptQuerySegmentBuilder->cleanUp();
 
 		return ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $errors );
 	}
@@ -108,7 +108,7 @@ class ConceptCache {
 		}
 
 		// Pre-process query:
-		$querySegment = $this->conceptQueryResolver->prepareQuerySegmentFor(
+		$querySegment = $this->conceptQuerySegmentBuilder->getQuerySegmentFrom(
 			$conceptQueryText
 		);
 

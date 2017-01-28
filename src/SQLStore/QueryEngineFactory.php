@@ -11,6 +11,7 @@ use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
+use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -46,10 +47,17 @@ class QueryEngineFactory {
 	 * @return QuerySegmentListBuilder
 	 */
 	public function newQuerySegmentListBuilder() {
-		return new QuerySegmentListBuilder(
+
+		$querySegmentListBuilder = new QuerySegmentListBuilder(
 			$this->store,
 			new DescriptionInterpreterFactory()
 		);
+
+		$querySegmentListBuilder->isFilterDuplicates(
+			$this->applicationFactory->getSettings()->get( 'smwgQFilterDuplicates' )
+		);
+
+		return $querySegmentListBuilder;
 	}
 
 	/**
@@ -105,6 +113,25 @@ class QueryEngineFactory {
 		);
 
 		return $queryEngine;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return ConceptQuerySegmentBuilder
+	 */
+	public function newConceptQuerySegmentBuilder() {
+
+		$conceptQuerySegmentBuilder = new ConceptQuerySegmentBuilder(
+			$this->newQuerySegmentListBuilder(),
+			$this->newQuerySegmentListProcessor()
+		);
+
+		$conceptQuerySegmentBuilder->setConceptFeatures(
+			$this->applicationFactory->getSettings()->get( 'smwgQConceptFeatures' )
+		);
+
+		return $conceptQuerySegmentBuilder;
 	}
 
 	private function newTemporaryTableBuilder() {

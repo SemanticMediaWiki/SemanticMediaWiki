@@ -17,9 +17,14 @@ use Title;
 class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $conceptQuerySegmentBuilder;
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->conceptQuerySegmentBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -28,29 +33,21 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$conceptQueryResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConceptQueryResolver' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\ConceptCache',
-			new ConceptCache( $this->store, $conceptQueryResolver )
+			new ConceptCache( $this->store, $this->conceptQuerySegmentBuilder )
 		);
 	}
 
 	public function testRefreshConceptCache() {
 
-		$conceptQueryResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConceptQueryResolver' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$conceptQueryResolver->expects( $this->once() )
+		$this->conceptQuerySegmentBuilder->expects( $this->once() )
 			->method( 'getErrors' )
 			->will( $this->returnValue( array() ) );
 
 		$instance = new ConceptCache(
 			new \SMWSQLStore3(),
-			$conceptQueryResolver
+			$this->conceptQuerySegmentBuilder
 		);
 
 		$instance->refreshConceptCache(
@@ -82,13 +79,9 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 		$store = new \SMWSQLStore3();
 		$store->setConnectionManager( $connectionManager );
 
-		$conceptQueryResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConceptQueryResolver' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new ConceptCache(
 			$store,
-			$conceptQueryResolver
+			$this->conceptQuerySegmentBuilder
 		);
 
 		$instance->deleteConceptCache(
