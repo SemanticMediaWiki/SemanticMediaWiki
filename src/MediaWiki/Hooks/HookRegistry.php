@@ -205,14 +205,17 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
 		 */
-		$this->handlers['InternalParseBeforeLinks'] = function ( &$parser, &$text ) {
+		$this->handlers['InternalParseBeforeLinks'] = function ( &$parser, &$text ) use ( $applicationFactory ) {
 
 			$internalParseBeforeLinks = new InternalParseBeforeLinks(
-				$parser,
-				$text
+				$parser
 			);
 
-			return $internalParseBeforeLinks->process();
+			$internalParseBeforeLinks->setEnabledSpecialPage(
+				$applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' )
+			);
+
+			return $internalParseBeforeLinks->process( $text );
 		};
 
 		/**

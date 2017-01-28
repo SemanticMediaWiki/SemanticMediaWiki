@@ -256,6 +256,15 @@ class ParserData {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return boolean
+	 */
+	public function isAnnotatedWithSemanticData() {
+		return (bool)$this->parserOutput->getProperty( 'smw-semanticdata-status' );
+	}
+
+	/**
 	 * @see SemanticData::addDataValue
 	 *
 	 * @since 1.9

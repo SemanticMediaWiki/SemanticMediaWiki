@@ -294,8 +294,8 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			$parserOutput
 		);
 
-		$this->assertEmpty(
-			$parserOutput->getProperty( 'smw-semanticdata-status' )
+		$this->assertFalse(
+			$instance->isAnnotatedWithSemanticData()
 		);
 
 		$instance->addDataValue(
@@ -308,7 +308,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance->setSemanticDataStateToParserOutputProperty();
 
 		$this->assertTrue(
-			$parserOutput->getProperty( 'smw-semanticdata-status' )
+			$instance->isAnnotatedWithSemanticData()
 		);
 	}
 
