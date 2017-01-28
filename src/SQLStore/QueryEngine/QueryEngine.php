@@ -429,8 +429,12 @@ class QueryEngine implements QueryEngineInterface {
 		);
 
 		$row = $connection->fetchObject( $res );
+		$count = 0;
 
-		$count = $row->count;
+		if ( $row !== false ) {
+			$count = $row->count;
+		}
+
 		$connection->freeResult( $res );
 
 		$queryResult->setCountValue( $count );
