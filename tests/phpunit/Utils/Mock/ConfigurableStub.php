@@ -32,7 +32,8 @@ class ConfigurableStub extends \PHPUnit_Framework_TestCase {
 				continue;
 			}
 
-			$o->method( $method )->will( $this->returnValue( $returnValue ) );
+			// PHPUnit 3.8 requires $o->expects( $this->any() )
+			$o->expects( $this->any() )->method( $method )->will( $this->returnValue( $returnValue ) );
 		}
 
 		return $o;
@@ -58,7 +59,8 @@ class ConfigurableStub extends \PHPUnit_Framework_TestCase {
 				continue;
 			}
 
-			$o->method( $method )->will( $this->returnValue( $returnValue ) );
+			// PHPUnit 3.8 requires $o->expects( $this->any() )
+			$o->expects( $this->any() )->method( $method )->will( $this->returnValue( $returnValue ) );
 		}
 
 		return $o;
