@@ -102,10 +102,26 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$propertyName = $dv->getFormattedLabel();
 		$message = '';
 
+		if ( wfMessage( 'smw-property-introductory-message' )->exists() ) {
+			$message = Html::rawElement(
+				'div',
+				array(
+					'class' => 'plainlinks smw-callout smw-callout-info'
+				),
+				wfMessage( 'smw-property-introductory-message', $propertyName )->parse()
+			);
+		}
+
 		if ( $this->mProperty->isUserDefined() ) {
 
 			if ( $this->store->getPropertyTableInfoFetcher()->isFixedTableProperty( $this->mProperty ) ) {
-				$message = Html::rawElement( 'div', array( 'class' => 'plainlinks' ), wfMessage( 'smw-property-userdefined-fixedtable', $propertyName )->parse() );
+				$message .= Html::rawElement(
+					'div',
+					array(
+						'class' => 'plainlinks smw-callout smw-callout-info'
+					),
+					wfMessage( 'smw-property-userdefined-fixedtable', $propertyName )->parse()
+				);
 			}
 
 			return $message;

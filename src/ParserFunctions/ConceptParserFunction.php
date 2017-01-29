@@ -106,11 +106,24 @@ class ConceptParserFunction {
 			return $this->messageFormatter->getHtml();
 		}
 
-		return $this->buildConceptInfoBox( $title, $conceptQueryString, $conceptDocu );
+		return $this->createHtml( $title, $conceptQueryString, $conceptDocu );
 	}
 
-	private function buildConceptInfoBox( Title $title, $queryString, $documentation ) {
-		return Html::rawElement( 'div', array( 'class' => 'smwfact' ),
+	private function createHtml( Title $title, $queryString, $documentation ) {
+
+		$message = '';
+
+		if ( wfMessage( 'smw-concept-introductory-message' )->exists() ) {
+			$message = Html::rawElement(
+				'div',
+				array(
+					'class' => 'plainlinks smw-callout smw-callout-info'
+				),
+				wfMessage( 'smw-concept-introductory-message', $title->getText() )->text()
+			);
+		}
+
+		return $message . Html::rawElement( 'div', array( 'class' => 'smwfact' ),
 			Html::rawElement( 'span', array( 'class' => 'smwfactboxhead' ),
 				wfMessage( 'smw_concept_description', $title->getText() )->text() ) .
 			Html::rawElement( 'span', array( 'class' => 'smwrdflink' ), $this->getRdfLink( $title )->getWikiText() ) .
