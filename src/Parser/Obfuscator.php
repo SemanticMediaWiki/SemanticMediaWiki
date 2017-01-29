@@ -172,13 +172,16 @@ class Obfuscator {
 			$closeNum = substr_count( $match, ']]' );
 			$markerNum = substr_count( $match, '::' );
 
+			// Legacy notation
+			$markerNum += substr_count( $match, ':=' );
+
 			if ( $markerNum == 0 ) {
 				// Simple link [[ ... ]], no annotation therefore match and
-				// obfuscate [[, |, ]] for a matching text elements
+				// obfuscate [[, |, ]] for a matching text element
 				$text = str_replace( $match, self::encodeLinks( $match ), $text );
 			} elseif ( $openNum > $closeNum && $markerNum == 1 ) {
 				// [[Text::Some [[abc]]
-				// Forget about about the first position
+				// Omit the first position
 				$replace = str_replace( $match, self::encodeLinks( $match ), $match );
 				$replace = substr_replace( $replace, '[[', 0, 16 );
 				$text = str_replace( $match, $replace, $text );
@@ -193,7 +196,8 @@ class Obfuscator {
 				$text = str_replace( $match, $replace, $text );
 			} elseif ( $openNum > $closeNum && $markerNum == 2 ) {
 				// [[Text::Some [[Foo::Some]]
-				// Remove the first [[ and added after results are returned
+				// Resolve recursively therefore remove the first [[ and re-add
+				// it after results have returned from processing
 				$text = str_replace( $match, '[[' . self::doObfuscate( substr( $match, 2 ), $parser ), $text );
 			}
 		}
