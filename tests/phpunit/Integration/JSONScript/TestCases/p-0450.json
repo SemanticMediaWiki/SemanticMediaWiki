@@ -22,7 +22,7 @@
 	"tests": [
 		{
 			"type": "parser",
-			"about": "#0",
+			"about": "#0 Testing property values",
 			"subject": "Example/P0450/1",
 			"assert-store": {
 				"semantic-data": {
@@ -34,16 +34,16 @@
 						"Has_date"
 					],
 					"propertyValues": [
-						"-339-01-01T00:00:00Z",
-						"-372-05-02T02:05:20Z",
-						"1772-07-02T08:00:10Z"
+						"-339-01-01T00:00:00",
+						"-372-05-02T02:05:20",
+						"1772-07-02T08:00:10"
 					]
 				}
 			}
 		},
 		{
 			"type": "parser",
-			"about": "#1",
+			"about": "#1 Testing English output",
 			"subject": "Example/P0450/Q/1/1",
 			"assert-output": {
 				"to-contain": [
@@ -55,7 +55,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1",
+			"about": "#2 Testing ISO output",
 			"subject": "Example/P0450/Q/1/2",
 			"assert-output": {
 				"to-contain": [
