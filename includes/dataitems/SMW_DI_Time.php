@@ -339,9 +339,33 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		if ( strpos( $iso, 'BC' ) !== false && substr( $iso, 0, 1 ) !== '-' ) {
 			$iso = '-' . $iso;
 		}
-	
+
+		$date = new DateTime( $iso );
+
+		// Handle offset
+		if ( preg_match( "/([+|-]\d\d\:\d\d)/", $iso, $match ) ) {
+			
+			if ( substr( $match[0], 0, 1 ) === "+" ) {
+				
+				$interval = str_replace( "+", "", $match[0] );
+				$interval = str_replace( ":", "H", $interval );
+				$interval = "PT".$interval."M";
+				
+				$date->sub( new DateInterval( $interval ) );
+				
+			} else {
+				$interval = str_replace( "-", "", $match[0] );
+				$interval = str_replace( ":", "H", $interval );
+				$interval = "PT".$interval."M";
+				
+				$date->add( new DateInterval( $interval ) );
+
+			}
+			
+		}
+			
 		// Let's force calendar model to Gregorian, that is ""
-		return self::newFromDateTime( new DateTime( $iso ), self::CM_GREGORIAN );
+		return self::newFromDateTime( $date, self::CM_GREGORIAN );
 	}
 
 	/**
