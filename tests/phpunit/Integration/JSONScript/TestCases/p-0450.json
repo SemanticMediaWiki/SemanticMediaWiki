@@ -1,0 +1,78 @@
+{
+	"description": "Test in-text annotation `_dat` on ISO negative dates (#2218, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0450/1",
+			"contents": "[[Has date::0339-01-01T00:00:00Z BC]][[Has date::-0372-05-02T02:05:20Z]][[Has date::1772-07-02T08:00:10Z]]"
+		},
+		{
+			"page": "Example/P0450/Q/1/1",
+			"contents": "{{#show: Example/P0450/1 |?Has date }}"
+		},
+		{
+			"page": "Example/P0450/Q/1/2",
+			"contents": "{{#show: Example/P0450/1 |?Has date#ISO }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0450/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"-339-01-01T00:00:00Z",
+						"-372-05-02T02:05:20Z",
+						"1772-07-02T08:00:10Z"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0450/Q/1/1",
+			"assert-output": {
+				"to-contain": [
+					"6 January 339 BC 00:00:00 <sup>JL</sup>",
+					"7 May 372 BC 02:05:20 <sup>JL</sup>",
+					"2 July 1772 08:00:10"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0450/Q/1/2",
+			"assert-output": {
+				"to-contain": [
+					"-339-01-01T00:00:00",
+					"-372-05-02T02:05:20",
+					"1772-07-02T08:00:10"
+				]
+			}
+		}	
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

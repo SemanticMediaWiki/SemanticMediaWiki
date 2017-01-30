@@ -282,10 +282,8 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 *
 	 * @return SMWDITime|false
 	 */
-	public static function newFromDateTime( DateTime $dateTime ) {
-
-		$calendarModel = self::CM_JULIAN;
-
+	public static function newFromDateTime( DateTime $dateTime, $calendarModel = self::CM_JULIAN  ) {
+		
 		$year = $dateTime->format( 'Y' );
 		$month = $dateTime->format( 'm' );
 		$day = $dateTime->format( 'd' );
@@ -326,6 +324,24 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 			$seconds;
 
 		return new DateTime( $time );
+	}
+	
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $iso
+	 *
+	 * @return SMWDITime|false
+	 */
+	public static function newFromISO( $iso ) {
+	
+		// 0341-01-01T00:00:00Z BC / -0341-01-01T00:00:00Z BC
+		if ( strpos( $iso, 'BC' ) !== false && substr( $iso, 0, 1 ) !== '-' ) {
+			$iso = '-' . $iso;
+		}
+	
+		// Let's force calendar model to Gregorian, that is ""
+		return self::newFromDateTime( new DateTime( $iso ), self::CM_GREGORIAN );
 	}
 
 	/**
