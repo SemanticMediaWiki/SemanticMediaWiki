@@ -4,7 +4,7 @@ namespace SMW;
 
 use Hooks;
 use SMW\Parser\Obfuscator;
-use SMW\Parser\linksProcessor;
+use SMW\Parser\LinksProcessor;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Utils\Timer;
