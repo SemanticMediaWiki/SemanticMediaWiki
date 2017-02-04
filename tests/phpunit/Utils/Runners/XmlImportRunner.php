@@ -37,6 +37,13 @@ class XmlImportRunner {
 	}
 
 	/**
+	 * @param string $file
+	 */
+	public function setFile( $file ) {
+		$this->file = $file;
+	}
+
+	/**
 	 * @param boolean $verbose
 	 *
 	 * @return XmlImportRunner

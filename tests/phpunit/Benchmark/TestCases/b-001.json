@@ -1,0 +1,53 @@
+{
+	"description": "Standard import and rebuild benchmarks",
+	"tests": [
+		{
+			"type": "import",
+			"name": "import-001.xml",
+			"importFrom": "/../Fixtures/import-001.xml"
+		},
+		{
+			"type": "contentCopy",
+			"name": "import-001.xml",
+			"importFrom": "/../Fixtures/import-001.xml",
+			"copyFrom": "Lorem ipsum",
+			"canOverrideCopyCount": true,
+			"copyCount": 1000
+		},
+		{
+			"type": "editCopy",
+			"name": "import-002.xml",
+			"importFrom": "/../Fixtures/import-002.xml",
+			"edit": [
+				"Lorem ipsum",
+				"Lorem donec",
+				"Lorem enim",
+				"Lorem sit",
+				"Lorem tempor"
+			],
+			"canOverrideEditCount": true,
+			"editRepetitionCount": 50
+		},
+		{
+			"type": "job",
+			"job": "SMW\\RefreshJob",
+			"repetitionCount": 1
+		},
+		{
+			"type": "job",
+			"job": "SMW\\UpdateJob",
+			"repetitionCount": 1
+		},
+		{
+			"type": "maintenance",
+			"script": "rebuildData",
+			"options": {
+				"f": true
+			},
+			"repetitionCount": 1
+		}
+	],
+	"meta": {
+		"version": "1"
+	}
+}
