@@ -91,9 +91,21 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getIntroductoryText() {
 
+		$propertySpecificationReqExaminer = new PropertySpecificationReqExaminer(
+			$this->store
+		);
+
+		$propertySpecificationReqExaminer->setEditProtectionRight(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEditProtectionRight' )
+		);
+
 		$propertyPageMessageHtmlBuilder = new PropertyPageMessageHtmlBuilder(
 			$this->store,
-			new PropertySpecificationReqExaminer( $this->store )
+			$propertySpecificationReqExaminer
+		);
+
+		$propertyPageMessageHtmlBuilder->hasEditProtection(
+			ApplicationFactory::getInstance()->singleton( 'EditProtectionValidator' )->hasEditProtection( $this->mTitle )
 		);
 
 		return $propertyPageMessageHtmlBuilder->createMessageBody( $this->mProperty );

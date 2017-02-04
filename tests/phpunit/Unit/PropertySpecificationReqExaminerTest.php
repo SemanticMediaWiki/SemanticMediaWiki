@@ -17,9 +17,12 @@ use SMW\DataItemFactory;
 class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $dataItemFactory;
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->dataItemFactory = new DataItemFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -47,6 +50,28 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
+			$instance->checkOn( $property )
+		);
+	}
+
+	public function testCheckOnEditProtectionRight() {
+
+		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
+
+		$instance = new PropertySpecificationReqExaminer(
+			$this->store
+		);
+
+		$instance->setEditProtectionRight(
+			false
+		);
+
+		$this->assertEquals(
+			array(
+				'warning',
+				'smw-pageedit-protection-disabled',
+				'Is edit protected'
+			),
 			$instance->checkOn( $property )
 		);
 	}
@@ -86,6 +111,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 			$property,
 			$semanticData,
 			array(
+				'error',
 				'smw-property-req-violation-missing-fields',
 				'Foo',
 				'Reference'
@@ -99,6 +125,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 			$property,
 			$semanticData,
 			array(
+				'error',
 				'smw-property-req-violation-missing-fields',
 				'Foo',
 				'Record'
@@ -112,6 +139,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 			$property,
 			$semanticData,
 			array(
+				'error',
 				'smw-property-req-violation-missing-formatter-uri',
 				'Foo'
 			)

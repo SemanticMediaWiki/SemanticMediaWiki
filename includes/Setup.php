@@ -237,6 +237,7 @@ final class Setup {
 		// Rights
 		$this->globalVars['wgAvailableRights'][] = 'smw-admin';
 		$this->globalVars['wgAvailableRights'][] = 'smw-patternedit';
+		$this->globalVars['wgAvailableRights'][] = 'smw-pageedit';
 
 		// User group rights
 		if ( !isset( $this->globalVars['wgGroupPermissions']['sysop']['smw-admin'] ) ) {
@@ -245,6 +246,10 @@ final class Setup {
 
 		if ( !isset( $this->globalVars['wgGroupPermissions']['smwcurator']['smw-patternedit'] ) ) {
 			$this->globalVars['wgGroupPermissions']['smwcurator']['smw-patternedit'] = true;
+		}
+
+		if ( !isset( $this->globalVars['wgGroupPermissions']['smwcurator']['smw-pageedit'] ) ) {
+			$this->globalVars['wgGroupPermissions']['smwcurator']['smw-pageedit'] = true;
 		}
 
 		if ( !isset( $this->globalVars['wgGroupPermissions']['smwadministrator']['smw-admin'] ) ) {

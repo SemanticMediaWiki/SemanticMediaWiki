@@ -161,6 +161,7 @@ class Settings extends Options {
 			'smwgQueryResultCacheLifetime' => $GLOBALS['smwgQueryResultCacheLifetime'],
 			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
 			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
+			'smwgEditProtectionRight' => $GLOBALS['smwgEditProtectionRight'],
 		);
 
 		\Hooks::run( 'SMW::Config::BeforeCompletion', array( &$configuration ) );

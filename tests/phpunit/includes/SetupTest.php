@@ -149,6 +149,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
+			$config['wgGroupPermissions']['smwcurator']['smw-pageedit']
+		);
+
+		$this->assertTrue(
 			$config['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
 	}

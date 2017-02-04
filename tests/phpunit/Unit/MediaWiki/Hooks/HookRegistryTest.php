@@ -155,7 +155,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForTitleIsMovable( $instance );
 		$this->doTestExecutionForEditPageForm( $instance );
 		$this->doTestExecutionForParserFirstCallInit( $instance );
-		$this->doTestExecutionForUserCan( $instance );
+		$this->doTestExecutionForTitleQuickPermissions( $instance );
 
 		// Usage of registered hooks in/by smw-core
 		//$this->doTestExecutionForSMWStoreDropTables( $instance );
@@ -823,20 +823,20 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function doTestExecutionForUserCan( $instance ) {
+	public function doTestExecutionForTitleQuickPermissions( $instance ) {
 
-		$handler = 'userCan';
+		$handler = 'TitleQuickPermissions';
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->title;
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$action = '';
-		$result = '';
+		$errors = array();
+		$rigor = '';
+		$short = '';
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -844,7 +844,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$title, &$user, $action, &$result )
+			array( $title, $user, $action, &$errors, $rigor, $short )
 		);
 	}
 

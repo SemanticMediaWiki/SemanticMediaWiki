@@ -1371,4 +1371,27 @@ return array(
 	'smwgQueryResultCacheRefreshOnPurge' => true,
 	##
 
+	###
+	# Protect page edits
+	#
+	# To prevent accidental changes of content especially to those of property
+	# definitions, this setting allows with the help of the `Is edit protected`
+	# property to prevent editing on pages that have annotate the property with
+	# `true`.
+	#
+	# Once the property is set, only users with the listed user right are able
+	# to edit and/or revoke the restriction on the selected page.
+	#
+	# `smw-pageedit` has been deployed as extra right to be distinct from existing
+	# edit protections
+	#
+	# To enable this functionality either assign `smw-pageedit` or any other
+	# right to the variable to activate an edit protection.
+	#
+	# @since 2.5
+	# @default false
+	##
+	'smwgEditProtectionRight' => false,
+	##
+
 );

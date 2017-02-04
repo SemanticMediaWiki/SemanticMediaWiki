@@ -456,6 +456,7 @@ class PropertyRegistry {
 			'_MDAT'  => array( '_dat', false, false ), // "modification date"
 			'_CDAT'  => array( '_dat', false, false ), // "creation date"
 			'_NEWP'  => array( '_boo', false, false ), // "is a new page"
+			'_EDIP'  => array( '_boo', true, true ), // "is edit protected"
 			'_LEDT'  => array( '_wpg', false, false ), // "last editor is"
 			'_ERRC'  => array( '__sob', false, false ), // "has error"
 			'_ERRT'  => array( '__errt', false, false ), // "has error text"
