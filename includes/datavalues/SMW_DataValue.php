@@ -191,7 +191,7 @@ abstract class SMWDataValue {
 			$this->addErrorMsg( array( 'smw-datavalue-stripmarker-parse-error', $value ) );
 		}
 
-		if ( $this->isValid() && !$this->getOptionBy( self::OPT_QUERY_CONTEXT ) ) {
+		if ( $this->isValid() && !$this->getOption( self::OPT_QUERY_CONTEXT ) ) {
 			$this->checkAllowedValues();
 		}
 	}
@@ -307,7 +307,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return mixed|false
 	 */
-	public function getOptionBy( $key ) {
+	public function getOption( $key ) {
 
 		if ( $this->options !== null && $this->options->has( $key ) ) {
 			return $this->options->get( $key );
@@ -324,7 +324,7 @@ abstract class SMWDataValue {
 	 * @return boolean
 	 */
 	public function isEnabledFeature( $feature ) {
-		return ( $this->getOptionBy( 'smwgDVFeatures' ) & $feature ) != 0;
+		return ( $this->getOption( 'smwgDVFeatures' ) & $feature ) != 0;
 	}
 
 	/**

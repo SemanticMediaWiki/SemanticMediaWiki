@@ -161,7 +161,7 @@ class SMWPropertyValue extends SMWDataValue {
 			$value
 		);
 
-		$contentLanguage = $this->getOptionBy( self::OPT_CONTENT_LANGUAGE );
+		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
 
 		try {
 			$this->m_dataitem = DIProperty::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
@@ -188,7 +188,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 		// If no external caption has been invoked then fetch a preferred label
 		if ( $this->m_caption === false || $this->m_caption === '' ) {
-			$this->preferredLabel = $this->m_dataitem->getPreferredLabel( $this->getOptionBy( self::OPT_USER_LANGUAGE ) );
+			$this->preferredLabel = $this->m_dataitem->getPreferredLabel( $this->getOption( self::OPT_USER_LANGUAGE ) );
 		}
 
 		// Use the preferred label as first choice for a caption, if available

@@ -61,7 +61,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		if ( $type === self::WIKI_SHORT ) {
 			$text = $this->doHighlightText(
 				$wikiPageValue->getShortWikiText( $linker ),
-				$this->dataValue->getOptionBy( PropertyValue::OPT_HIGHLIGHT_LINKER ) ? $linker : null
+				$this->dataValue->getOption( PropertyValue::OPT_HIGHLIGHT_LINKER ) ? $linker : null
 			);
 		}
 
@@ -93,7 +93,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		$displayTitle = '';
 
 		$preferredLabel = $property->getPreferredLabel(
-			$this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE )
+			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);
 
 		$label = $preferredLabel;
@@ -115,7 +115,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		}
 
 		// Internal format only used by PropertyValue
-		$format = $this->getOptionBy( PropertyValue::FORMAT_LABEL );
+		$format = $this->getOption( PropertyValue::FORMAT_LABEL );
 		$this->dataValue->setCaption( $label );
 
 		if ( $format === self::VALUE ) {
@@ -147,7 +147,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 	private function getWikiValue() {
 
 		$property = $this->dataValue->getDataItem();
-		$languageCode = $this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE );
+		$languageCode = $this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE );
 
 		if ( ( $preferredLabel = $property->getPreferredLabel( $languageCode ) ) !== '' ) {
 			return $preferredLabel;
@@ -198,7 +198,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		$highlighter = Highlighter::factory(
 			Highlighter::TYPE_PROPERTY,
-			$this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE )
+			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);
 
 		$highlighter->setContent( array (
@@ -212,7 +212,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 	private function canHighlight( &$propertyDescription, $linker ) {
 
-		if ( $this->dataValue->getOptionBy( PropertyValue::OPT_NO_HIGHLIGHT ) === true ) {
+		if ( $this->dataValue->getOption( PropertyValue::OPT_NO_HIGHLIGHT ) === true ) {
 			return false;
 		}
 
@@ -220,7 +220,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		$propertyDescription = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getPropertyDescriptionBy(
 			$dataItem,
-			$this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE ),
+			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE ),
 			$linker
 		);
 
@@ -230,14 +230,14 @@ class PropertyValueFormatter extends DataValueFormatter {
 	private function hintPreferredLabelUse() {
 
 		if ( !$this->dataValue->isEnabledFeature( SMW_DV_PROV_LHNT ) ||
-			$this->dataValue->getOptionBy( PropertyValue::OPT_NO_PREF_LHNT ) ) {
+			$this->dataValue->getOption( PropertyValue::OPT_NO_PREF_LHNT ) ) {
 			return '';
 		}
 
 		$property = $this->dataValue->getDataItem();
 
 		$preferredLabel = $property->getPreferredLabel(
-			$this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE )
+			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);
 
 		// When comparing with a caption set from the "outside", normalize
@@ -272,7 +272,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		return ApplicationFactory::getInstance()->getPropertyLabelFinder()->findPropertyLabelByLanguageCode(
 			$property->getKey(),
-			$this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE )
+			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);
 	}
 

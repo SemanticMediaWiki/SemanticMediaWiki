@@ -52,7 +52,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			1001,
-			$instance->getOptionBy( 'Foo' )
+			$instance->getOption( 'Foo' )
 		);
 	}
 

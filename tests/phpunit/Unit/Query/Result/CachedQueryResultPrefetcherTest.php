@@ -171,7 +171,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
 
 		$query->expects( $this->atLeastOnce() )
-			->method( 'getOptionBy' )
+			->method( 'getOption' )
 			->with( $this->equalTo( $query::NO_CACHE ) )
 			->will( $this->returnValue( true ) );
 

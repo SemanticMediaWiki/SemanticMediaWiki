@@ -62,7 +62,7 @@ class ProfileAnnotatorFactory {
 
 		$profileAnnotator = $this->newDurationProfileAnnotator(
 			$profileAnnotator,
-			$query->getOptionBy( Query::PROC_QUERY_TIME )
+			$query->getOption( Query::PROC_QUERY_TIME )
 		);
 
 		$profileAnnotator = $this->newSourceProfileAnnotator(

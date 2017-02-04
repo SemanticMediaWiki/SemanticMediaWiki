@@ -227,7 +227,7 @@ class AskParserFunction {
 
 		$query->setOption(
 			Query::PROC_QUERY_TIME,
-			$this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ? $query->getOptionBy( Query::PROC_QUERY_TIME ) : 0
+			$this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ? $query->getOption( Query::PROC_QUERY_TIME ) : 0
 		);
 
 		$profileAnnotatorFactory = $this->applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();

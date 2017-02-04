@@ -303,7 +303,7 @@ class HtmlContentsBuilder {
 
 				// For a redirect, disable the DisplayTitle to show the original (aka source) page
 				if ( $diProperty->getKey() == '_REDI' ) {
-					$dv->setOption( 'smwgDVFeatures', ( $dv->getOptionBy( 'smwgDVFeatures' ) & ~SMW_DV_WPV_DTITLE ) );
+					$dv->setOption( 'smwgDVFeatures', ( $dv->getOption( 'smwgDVFeatures' ) & ~SMW_DV_WPV_DTITLE ) );
 				}
 
 				$body .= "<span class=\"{$ccsPrefix}value\">" .
