@@ -128,6 +128,19 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	}
 
 	/**
+	 * @see SemanticData::hasProperty
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function hasProperty( DIProperty $property ) {
+		$this->unstubProperties();
+		return parent::hasProperty( $property );
+	}
+
+	/**
 	 * Get the array of all stored values for some property.
 	 *
 	 * @since 1.8
