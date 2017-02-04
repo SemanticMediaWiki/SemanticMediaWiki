@@ -1,4 +1,5 @@
-Tests are commonly divided into a manual (without using any tool or automated script) and automated test approach.
+Tests are commonly divided into a manual (without using any tool or automated
+script) and an automated scripted test approach.
 
 # Manual testing
 
@@ -12,13 +13,13 @@ If you want to run some manual tests (either as scripted or exploratory test pro
 For the automated approach, Semantic MediaWiki relies on [PHPUnit][phpunit] as scripted testing methodology. Scripted tests are used to verify that an expected behaviour occurs for codified requirements on the given conditions.
 
 - Unit test refers to a script that verifies results for a unit, module, or class against an expected outcome in an isolated environment
-- Integration test (functional test) normally combines multiple components into a single process and verifies the results in a production like environment (DB access, sample data etc.)
+- Integration test (or functional test) normally combines multiple components into a single process and verifies the results in a semi-production like environment (including DB access, sample data etc.)
 - System test (and its individual modules) is treated as "black-box" to observe behaviour as a whole rather than its units
 
 ## Running tests
 
-1. Verify that PHUnit is installed and in case it is not use `composer require phpunit/phpunit:~4.8 --update-with-dependencies` to add the package
-2. Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing then download a matchable content from the [release source](https://github.com/wikimedia/mediawiki/releases).
+1. Verify that PHUnit is installed and in case it is not, use `composer require phpunit/phpunit:~4.8 --update-with-dependencies` to add the package
+2. Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing then you may follow the [release source](https://github.com/wikimedia/mediawiki/releases) to download the missing files.
 3. Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
 
 <pre>
@@ -62,105 +63,48 @@ instead.
 
 Integration tests are vital to confirm the behaviour of a component from an
 integrative perspective that occurs through an interplay with its surroundings.
-`SMW\Tests\Integration\` contains most of the tests that target the validation of
+
+Those tests don't replace unit tests, they complement them to verify that
+an expected outcome does actually occur in combination with MediaWiki and
+other services.
+
+Integration tests can help reduce the recurrence of regressions or bugs, given
+that a developers follows a simple process:
+
+- Make a conjecture or hypothesis about the cause of the bug or regression
+- Find a minimal test case (using wiki text at this point should make it much
+easier to replicate a deviated behaviour)
+- Write a `JSON` test and have it __fail__
+- Apply a fix
+- Run the test again and then run all other integration tests to ensure nothing
+else was altered by accidentally introducing another regression not directly
+related to the one that has been fixed
+
+`SMW\Tests\Integration\` hosts most of the tests that target the validation of
 reciprocity with MediaWiki and/or other services such as:
 
-- `SPARQLStore` ( `fuseki`, `virtuoso`, `blazegraph`, or `sesame` )
-- Extensions such as `SM`, `SESP`, `SBL` etc.
+- Triple-stores (necessary for the `SPARQLStore`)
+- Extensions (`SESP`, `SBL` etc.)
 
 Some details about the integration test environment can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/travis/README.md).
 
-### Write integration tests using `json` script
+### JSONScript integration tests
 
-The best practise approach in Semantic MediaWiki is to write integration tests as
-pseudo `JSON` script in combination with a specialized `TestCaseRunner` that handles
-the necessary object setup and tear down process for each test execution.
+One best practice approach in Semantic MediaWiki is to write integration tests as
+pseudo `JSONScript` to allow non-developers to review and understand the setup and
+requirements of its test scenarios.
 
-The script like test definition was introduced to lower the barrier of understanding
-of what is being tested by using a wikitext notation (which internally is transformed
-into PHPUnit with the help of the `JsonTestCaseScriptRunner` to run and execute the
-actually test) and to design test cases quicker.
+The `JSON` format was introduced as abstraction layer to lower the barrier of
+understanding of what is being tested by using the wikitext markup to help design
+test cases quicker without the need to learn how `PHPUnit` or internal `MediaWiki`
+objects work.
 
-A test file (which can contain different test cases) will be automatically loaded by a
-`TestCaseRunner` from the specified location.
-
-The JSON script follows the previous mentioned arrange, act, assert approach, with
-the `setup` section to contain object definitions that are planned to be used during a
-test. The section expects that a entityt name and content (generally the page content
-in wikitext, annotations etc.) are specified.
-
-<pre>
-"setup": [
-	{
-		"name": "Has text",
-		"namespace":"SMW_NS_PROPERTY",
-		"contents": "[[Has type::Text]]"
-	},
-	{
-		"name": "Property:Has number",
-		"contents": "[[Has type::Number]]"
-	},
-	{
-		"name": "Example/S0009/1",
-		"namespace":"NS_MAIN",
-		"contents": "[[Has text::Some text to search]]"
-	}
-],
-</pre>
-
-The test result assertion provides simplified string comparison methods (mostly for
-output related assertion but expressive enough for users to understand the test
-objective and its expected results). For example, verifying that a result printer
-does output a certain string, one has to the define an expected output in terms of:
-
-<pre>
-"tests": [
-	{
-		"type": "format",
-		"about": "#0 this case is expected to output ...",
-		"subject": "Example/Test/1",
-		"assert-output": {
-			"to-contain": [
-				"123"
-			],
-			"not-contain": [
-				"abc"
-			]
-		}
-	}
-}
-</pre>
-
-Each test case should describe "about" what the test is expected to test which
-may help during a failure to identify potential conflicts or hints on how to
-resolve an issue. Different types of test case definitions provide specialized assertion
-methods:
-
-* `query`, `concept`, and `format`
-* `parser`
-* `rdf`
-* `special`
-
-It can happen that an output is mixed with language dependent content (site vs.
-page content vs. user language) and therefore it is recommended to fix those
-settings for a test by adding something like:
-
-<pre>
-"settings": {
-	"wgContLang": "en",
-	"wgLang": "en",
-	"smwgNamespacesWithSemanticLinks": {
-		"NS_MAIN": true,
-		"SMW_NS_PROPERTY": true
-	}
-}
-</pre>
-
-A complete list of available `json` test files can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/README.md).
+A detailed description of the `JSONScript` together with a list of available test
+files can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/README.md).
 
 ## Benchmark tests
 
-For details, please have a look at the [benchmark guide](phpunit/Benchmark/README.md) document.
+For details, please have a look at the [benchmark guide](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Benchmark/README.md) document.
 
 # JavaScript (QUnit)
 

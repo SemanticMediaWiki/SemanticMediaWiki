@@ -1,5 +1,23 @@
+# JSONScript
+
+One best practice approach in Semantic MediaWiki is to write integration tests as
+pseudo `JSONScript` to allow non-developers to review and understand the setup and
+requirements of its test scenarios.
+
+The `JSON` format was introduced as abstraction layer to lower the barrier of
+understanding of what is being tested by using the wikitext markup to help design
+test cases quicker without the need to learn how `PHPUnit` or internal `MediaWiki`
+objects work.
+
+* [List of available test cases](#testcases)
+* [Designing an integration test](#designing-an-integration-test)
+* [Technical notes](#technical-notes)
+
+<!-- Begin of generated contents by readmeContentsBuilder.php -->
+
 ## TestCases
-Contains 178 files with a total of 810 tests:
+
+Contains 185 files with a total of 825 tests:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0001.json) Test `format=debug` output
@@ -86,9 +104,12 @@ Contains 178 files with a total of 810 tests:
 * [p-0441.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0441.json) Test in-text `_txt` 00 string/loose comparison (#2061)
 * [p-0442.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0442.json) Test in-text `#REDIRECT` to verify target subobject isn't removed (#, `wgContLang=en`, `wgLang=en`)
 * [p-0443.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0443.json) Test conditions and strict constraint validations for uniqueness `_PVUC` (#1463, `wgContLang=en`, `wgLang=en`, `smwgDVFeatures`)
-* [p-0444.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0444.json) Test in-text annotation LinksInValue `SMW_ITAP_LV_OBFU` (#..., `wgContLang=en`, `smwgLinksInValues=SMW_ITAP_LV_OBFU`)
+* [p-0444.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0444.json) Test in-text annotation LinksInValue `SMW_ITAP_LV_OBFU` (#2153, `wgContLang=en`, `smwgLinksInValues=SMW_ITAP_LV_OBFU`)
 * [p-0445.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0445.json) Test in-text annotation for `_ref_rec` type with errors (#..., `wgContLang=en`)
 * [p-0446.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0446.json) Test in-text annotation `_uri`/`_ema`/`_tel` with spaces/underscore (`wgContLang=en`)
+* [p-0447.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0447.json) Test in-text annotation with IRI export (#2188, `smwgExportResourcesAsIri=true`, `wgContLang=ru`, `wgLang=en`)
+* [p-0448.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0448.json) Test in-text legacy `:=` annotation style (#2153, `wgContLang=en`, `smwgLinksInValues=false`)
+* [p-0449.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0449.json) Test in-text legacy `:=` and `::` annotation style with enabled LinksInValue (#2153, `wgContLang=en`, `smwgLinksInValues=SMW_ITAP_LV_OBFU`)
 * [p-0501.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0501.json) Test `#concept` on predefined property (`wgContLang=en`, `wgLang=es`)
 * [p-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0701.json) Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)
 * [p-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0702.json) Test #ask with `format=table` on inverse property/printrquest (#1270, en)
@@ -172,6 +193,10 @@ Contains 178 files with a total of 810 tests:
 * [r-0011.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/r-0011.json) Test RDF output generation `skos` import/`skos:altLabel` as Monolingual text (`wgContLang=en`, `wgLang=en`)
 * [r-0012.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/r-0012.json) Test RDF output generation on SubSemanticData traversal (#2177, `wgContLang=en`, `wgLang=en`)
 * [r-0013.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/r-0013.json) Test RDF output generation `_uri`/`_ema`/`_tel` with spaces/underscore (`wgContLang=en`, `wgLang=en`)
+* [r-0014.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/r-0014.json) Test RDF output generation on non-latin URI/IRI export (#2188, `smwgExportResourcesAsIri=false`, `wgContLang=ru`, `wgLang=en`)
+* [r-0015.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/r-0015.json) Test RDF output generation on non-latin URI/IRI export (#2188, `smwgExportResourcesAsIri=true`, `wgContLang=ru`, `wgLang=en`)
+* [r-0016.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/r-0016.json) Test RDF output generation with special characters (#2188, `smwgExportResourcesAsIri=false`, `wgContLang=en`, `wgLang=en`)
+* [r-0017.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/r-0017.json) Test RDF output generation with special characters (#2188, `smwgExportResourcesAsIri=true`, `wgContLang=en`, `wgLang=en`)
 
 ### S
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0001.json) Test output of `Special:Properties` (`wgContLang=en`, skip-on sqlite)
@@ -189,4 +214,184 @@ Contains 178 files with a total of 810 tests:
 * [s-0013.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0013.json) Test `Special:Browse` output preferred label (`wgContLang=en`, `wgLang=es`)
 * [s-0014.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0014.json) Test `Special:Browse` with special characters `%'"&` (`wgContLang=en`, `wgLang=es` )
 
--- Last updated on 2017-01-21 by `readmeContentsBuilder.php`
+-- Last updated on 2017-01-30 by `readmeContentsBuilder.php`
+
+<!-- End of generated contents by readmeContentsBuilder.php -->
+
+## Designing an integration test
+
+The `JSONScript` follows the arrange, act, assert approach, with the `setup` section
+containing object definitions that are planned to be used during a test. The section
+expects that an entity page and its contents (generally the page content in wikitext,
+annotations etc.) to follow a predefined structure.
+
+It is also possible to [import](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/TestCases/p-0211.json) larger text passages or [upload files](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/TestCases/p-0705.json)
+for a test scenario.
+
+<pre>
+"setup": [
+	{
+		"page": "Has text",
+		"namespace":"SMW_NS_PROPERTY",
+		"contents": "[[Has type::Text]]"
+	},
+	{
+		"page": "Property:Has number",
+		"contents": "[[Has type::Number]]"
+	},
+	{
+		"page": "Example/Test/1",
+		"namespace":"NS_MAIN",
+		"contents": "[[Has text::Some text to search]]"
+	},
+	{
+		"page": "Example/Test/Q.1",
+		"namespace":"NS_MAIN",
+		"contents": "{{#ask: [[Has text::~Some text*]] |?Has text }}"
+	}
+],
+</pre>
+
+### Test assertions
+
+The test result assertion provides simplified string comparison methods (mostly for
+output related assertion but expressive enough for users to understand the test
+objective and its expected results). For example, verifying that a the parser
+does output a certain string, one has to the define an expected output.
+
+<pre>
+"tests": [
+	{
+		"type": "parser",
+		"about": "#0 test output of the [[ ... ]] annotation",
+		"subject": "Example/Test/1",
+		"assert-output": {
+			"to-contain": [
+				"Some text to search"
+			],
+			"not-contain": [
+				"abc"
+			]
+		}
+	},
+	{
+		"type": "parser",
+		"about": "#1 test output of #ask query",
+		"subject": "Example/Test/Q.1",
+		"assert-output": {
+			"to-contain": [
+				"Some text to search"
+			],
+			"not-contain": [
+				"abc"
+			]
+		}
+	}
+}
+</pre>
+
+* The `subject` refers to the page that was defined in the `setup` section.
+* The `about` describes what the test is expected to test which
+may help during a failure to identify potential conflicts or hints on how to
+resolve an issue.
+* The `type` provides specialized assertion methods with some of them requiring
+an extra setup to yield a comparable output but in most cases the `parser` type
+should suffice to create test assertions for scenarios under test. Available types
+are:
+  * `query`, `concept`, and `format`
+  * `parser`
+  * `rdf`
+  * `special`
+
+### Preparing the test environment
+
+It can happen that an output is mixed with language dependent content (site vs.
+page content vs. user language) and therefore it is recommended to fix those
+settings for a test by adding something like:
+
+<pre>
+"settings": {
+	"wgContLang": "en",
+	"wgLang": "en",
+	"smwgNamespacesWithSemanticLinks": {
+		"NS_MAIN": true,
+		"SMW_NS_PROPERTY": true
+	}
+}
+</pre>
+
+By default not all settings parameter are enabled in `JsonTestCaseScriptRunner::prepareTest`
+and may need to be extended in case a specific test case requires additional
+customization.
+
+Each `json` file requires a `meta` section with the `version` to correspond to the
+`JsonTestCaseScriptRunner::getRequiredJsonTestCaseMinVersion` while `is-incomplete`
+removes the file from the test plan if enabled.
+
+The section also contains a `debug` flag and if enabled may output internal object
+state information that can be helpful during debugging.
+
+<pre>
+"meta": {
+	"version": "2",
+	"is-incomplete": false,
+	"debug": false
+}
+</pre>
+
+### File naming
+
+The naming of a test file is arbitrary but it has been a good standard to indicate
+the type of tests run. `s-0001.json` would indicate that the test is mostly concerned
+with special pages while `p-0001.json` will handle with parser output assertions.
+
+### Debugging and running a test
+
+Generally, tests are run together with the `composer phpunit` execution but
+it may not always be feasible especially when trying to debug or design a new test
+case.
+
+There are two methods that can help restrict the execution during the design or
+debug phase:
+
+* Modify the `JsonTestCaseScriptRunner::getAllowedTestCaseFiles`  to take an argument
+such as a file name ( e.g. `s-0014.json`) to restrict the execution of a test which
+is mostly done when running from an IDE editor
+* The command line allows to invoke a filter argument to specify a case such as
+`composer phpunit tests/phpunit/Integration/JSONScript/JsonTestCaseScriptRunnerTest -- --filter 's-0014.json'`
+
+<pre>
+$  composer phpunit tests/phpunit/Integration/JSONScript/JsonTestCaseScriptRunnerTest -- --filter 's-0014.json'
+Using PHP 5.6.8
+
+Semantic MediaWiki: 2.5.0-alpha (SMWSQLStore3, mysql)
+MediaWiki:          1.28.0-alpha (MediaWiki vendor autoloader)
+Site language:      en
+
+Execution time:     2017-01-01 12:00
+Debug logs:         Enabled
+Xdebug:             Disabled (or not installed)
+
+phpunit 4.8.24 by Sebastian Bergmann and contributors.
+
+Runtime:        PHP 5.6.8
+Configuration:  ...\extensions\SemanticMediaWiki\phpunit.xml.dist
+
+.
+
+Time: 13.02 seconds, Memory: 34.00Mb
+
+OK (1 test, 16 assertions)
+</pre>
+
+A general introduction to the test environment can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/edit/master/tests/README.md).
+
+## Technical notes
+
+* The `JSON` is internally transformed into a corresponding `PHPUnit` dataset with
+the help of the `JsonTestCaseContentHandler` and `JsonTestCaseScriptRunner`.
+*  A test file (e.g "myTest.json") will be loaded from the specified location in
+`JsonTestCaseScriptRunner::getTestCaseLocation` and is automatically run during
+the `PHPUnit` test execution.
+* The `readmeContentsBuilder.php` can be used to update the list of available test
+cases including its descriptions.
