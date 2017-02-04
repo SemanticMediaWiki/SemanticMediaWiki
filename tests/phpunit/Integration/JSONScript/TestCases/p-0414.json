@@ -131,7 +131,7 @@
 						"_MDAT"
 					],
 					"propertyValues": [
-						"--100000-01-01"
+						"-99999-01-01"
 					]
 				}
 			},
@@ -147,7 +147,7 @@
 			"subject": "Example/P0414/2a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">--100000-01-01</td>",
+					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">-99999-01-01</td>",
 					"<td data-sort-value=\"-100001\" class=\"JD smwtype_dat\">-34802824.5</td>"
 				]
 			}
@@ -238,7 +238,7 @@
 						"_MDAT"
 					],
 					"propertyValues": [
-						"--100000-01-01"
+						"-99999-01-01"
 					]
 				}
 			},
@@ -254,7 +254,7 @@
 			"subject": "Example/P0414/5a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">--100000-01-01</td>",
+					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">-99999-01-01</td>",
 					"<td data-sort-value=\"-100001\" class=\"JD smwtype_dat\">-34802824.5</td>"
 				]
 			}
