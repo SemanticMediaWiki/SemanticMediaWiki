@@ -59,11 +59,13 @@ abstract class SMWOrderedListPage extends Article {
 	 * output.
 	 */
 	public function view() {
-		global $wgRequest, $wgUser, $wgOut;
+		global $wgRequest, $wgUser;
+
+		$outputPage = $this->getContext()->getOutput();
 
 		if ( !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
-			$wgOut->setPageTitle( $this->getTitle()->getPrefixedText() );
-			$wgOut->addHTML( wfMessage( 'smw-semantics-not-enabled' )->text() );
+			$outputPage->setPageTitle( $this->getTitle()->getPrefixedText() );
+			$outputPage->addHTML( wfMessage( 'smw-semantics-not-enabled' )->text() );
 			return;
 		}
 
@@ -76,11 +78,11 @@ abstract class SMWOrderedListPage extends Article {
 		if ( !isset( $diff ) || !$diffOnly ) {
 
 			// MW 1.25+
-			if ( method_exists( $wgOut, 'setIndicators' ) ) {
-				$wgOut->setIndicators( array( $this->getTopIndicator() ) );
+			if ( method_exists( $outputPage, 'setIndicators' ) ) {
+				$outputPage->setIndicators( array( $this->getTopIndicator() ) );
 			}
 
-			$wgOut->addHTML( $this->getIntroductoryText() );
+			$outputPage->addHTML( $this->getIntroductoryText() );
 		}
 
 		parent::view();
