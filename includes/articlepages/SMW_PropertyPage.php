@@ -9,6 +9,8 @@ use SMW\PropertyRegistry;
 use SMWDataValue as DataValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
+use SMW\Content\PropertyPageMessageHtmlBuilder;
+use SMW\PropertySpecificationReqExaminer;
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on
@@ -83,64 +85,18 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Returns an introductory text for a predefined property
-	 *
-	 * @note In order to enable a more detailed description for a specific
-	 * predefined property a concatenated message key can be used (e.g
-	 * 'smw-pa-property-predefined' + <internal property key> => '_asksi' )
-	 *
 	 * @since 1.9
 	 *
 	 * @return string
 	 */
 	protected function getIntroductoryText() {
 
-		$dv = DataValueFactory::getInstance()->newDataValueByItem(
-			$this->mProperty
+		$propertyPageMessageHtmlBuilder = new PropertyPageMessageHtmlBuilder(
+			$this->store,
+			new PropertySpecificationReqExaminer( $this->store )
 		);
 
-		$propertyName = $dv->getFormattedLabel();
-		$message = '';
-
-		if ( wfMessage( 'smw-property-introductory-message' )->exists() ) {
-			$message = Html::rawElement(
-				'div',
-				array(
-					'class' => 'plainlinks smw-callout smw-callout-info'
-				),
-				wfMessage( 'smw-property-introductory-message', $propertyName )->parse()
-			);
-		}
-
-		if ( $this->mProperty->isUserDefined() ) {
-
-			if ( $this->store->getPropertyTableInfoFetcher()->isFixedTableProperty( $this->mProperty ) ) {
-				$message .= Html::rawElement(
-					'div',
-					array(
-						'class' => 'plainlinks smw-callout smw-callout-info'
-					),
-					wfMessage( 'smw-property-userdefined-fixedtable', $propertyName )->parse()
-				);
-			}
-
-			return $message;
-		}
-
-		$key = $this->mProperty->getKey();
-
-		if ( ( $messageKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) !== '' ) {
-			$messageKeyLong = $messageKey . '-long';
-		} else {
-			$messageKey = 'smw-pa-property-predefined' . strtolower( $key );
-			$messageKeyLong = 'smw-pa-property-predefined-long' . strtolower( $key );
-		}
-
-		$message .= wfMessage( $messageKey )->exists() ? wfMessage( $messageKey, $propertyName )->parse() : wfMessage( 'smw-pa-property-predefined-default', $propertyName )->parse();
-		$message .= wfMessage( $messageKeyLong )->exists() ? ' ' . wfMessage( $messageKeyLong )->parse() : '';
-		$message .= ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse();
-
-		return Html::rawElement( 'div', array( 'class' => 'smw-property-predefined-intro plainlinks' ), $message );
+		return $propertyPageMessageHtmlBuilder->createMessageBody( $this->mProperty );
 	}
 
 	protected function getTopIndicator() {

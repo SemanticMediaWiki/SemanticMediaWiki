@@ -1,0 +1,150 @@
+<?php
+
+namespace SMW\Content;
+
+use SMW\Store;
+use SMW\DIProperty;
+use SMW\DataValueFactory;
+use SMW\PropertyRegistry;
+use SMW\PropertySpecificationReqExaminer;
+use Html;
+
+/**
+ * @license GNU GPL v2+
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class PropertyPageMessageHtmlBuilder {
+
+	/**
+	 * @var Store
+	 */
+	private $store;
+
+	/**
+	 * @var PropertySpecificationReqExaminer
+	 */
+	private $propertySpecificationReqExaminer;
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Store $store
+	 * @param PropertySpecificationReqExaminer $propertySpecificationReqExaminer
+	 */
+	public function __construct( Store $store, PropertySpecificationReqExaminer $propertySpecificationReqExaminer ) {
+		$this->store = $store;
+		$this->propertySpecificationReqExaminer = $propertySpecificationReqExaminer;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function createMessageBody( DIProperty $property ) {
+
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$property
+		);
+
+		$propertyName = $dataValue->getFormattedLabel();
+
+		$message = $this->createReqViolationMessage(
+			$this->propertySpecificationReqExaminer->checkOn( $property )
+		);
+
+		if ( wfMessage( 'smw-property-introductory-message' )->exists() ) {
+			$message .= $this->createIntroductoryMessage( $propertyName );
+		}
+
+		if ( $property->isUserDefined() && $this->store->getPropertyTableInfoFetcher()->isFixedTableProperty( $property ) ) {
+			return $message . $this->createFixedTableMessage( $propertyName );
+		}
+
+		$message .= $this->createPredefinedPropertyMessage( $property, $propertyName );
+
+		return $message;
+	}
+
+	private function createReqViolationMessage( $violationMessage ) {
+
+		if ( !is_array( $violationMessage ) ) {
+			return '';
+		}
+
+		return Html::rawElement(
+			'div',
+			array(
+				'class' => 'plainlinks smw-callout smw-callout-error'
+			),
+			call_user_func_array( 'wfMessage', $violationMessage )->parse()
+		);
+	}
+
+	private function createIntroductoryMessage( $propertyName ) {
+		return Html::rawElement(
+			'div',
+			array(
+				'class' => 'plainlinks smw-callout smw-callout-info'
+			),
+			wfMessage( 'smw-property-introductory-message', $propertyName )->parse()
+		);
+	}
+
+	private function createFixedTableMessage( $propertyName ) {
+		return Html::rawElement(
+			'div',
+			array(
+				'class' => 'plainlinks smw-callout smw-callout-info'
+			),
+			wfMessage( 'smw-property-userdefined-fixedtable', $propertyName )->parse()
+		);
+	}
+
+	/**
+	 * Returns an introductory text for a predefined property
+	 *
+	 * @note In order to enable a more detailed description for a specific
+	 * predefined property a concatenated message key can be used (e.g
+	 * 'smw-pa-property-predefined' + <internal property key> => '_asksi' )
+	 */
+	private function createPredefinedPropertyMessage( $property, $propertyName ) {
+
+		$key = $property->getKey();
+		$message = '';
+
+		if ( $property->isUserDefined() ) {
+			return $message;
+		}
+
+		if ( ( $messageKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) !== '' ) {
+			$messageKeyLong = $messageKey . '-long';
+		} else {
+			$messageKey = 'smw-pa-property-predefined' . strtolower( $key );
+			$messageKeyLong = 'smw-pa-property-predefined-long' . strtolower( $key );
+		}
+
+		if ( wfMessage( $messageKey )->exists() ) {
+			$message .= wfMessage( $messageKey, $propertyName )->parse();
+		} else {
+			$message .= wfMessage( 'smw-pa-property-predefined-default', $propertyName )->parse();
+		}
+
+		if ( wfMessage( $messageKeyLong )->exists() ) {
+			$message .= ' ' . wfMessage( $messageKeyLong )->parse();
+		}
+
+		$message .= ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse();
+
+		return Html::rawElement(
+			'div',
+			array(
+				'class' => 'smw-property-predefined-intro plainlinks'
+			),
+			$message
+		);
+	}
+
+}
