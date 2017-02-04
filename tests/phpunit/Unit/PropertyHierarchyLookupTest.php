@@ -54,7 +54,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( '_SUBP#Foo#1#0##1##1#' ),
+				$this->equalTo( '_SUBP#Foo#5230d9b41a617ba30fa77223b431507c' ),
 				$this->equalTo( array() ) );
 
 		$instance = new PropertyHierarchyLookup( $store, $cache );
@@ -92,7 +92,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( '_SUBP#Foo#-1#0##1##1#' ),
+				$this->equalTo( '_SUBP#Foo#b3ed5707ed115aa0ef22f567c08c35df' ),
 				$this->anything() );
 
 		$instance = new PropertyHierarchyLookup( $store, $cache );
@@ -134,7 +134,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( '_SUBC#Foo#-1#0##1##1#' ),
+				$this->equalTo( '_SUBC#Foo#b3ed5707ed115aa0ef22f567c08c35df' ),
 				$this->anything() );
 
 		$instance = new PropertyHierarchyLookup( $store, $cache );

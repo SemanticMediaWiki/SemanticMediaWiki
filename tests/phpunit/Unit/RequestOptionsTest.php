@@ -41,7 +41,27 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->assertEquals(
-			'-1#0##1##1#|Foo#0#',
+			'[-1,0,false,true,null,true,"Foo#0#",[]]',
+			$instance->getHash()
+		);
+	}
+
+	public function testEddExtraCondition() {
+
+		$instance = new RequestOptions();
+		$instance->addExtraCondition( 'Foo' );
+		$instance->addExtraCondition( array( 'Bar' => 'Foobar' ) );
+
+		$this->assertEquals(
+			array(
+				'Foo',
+				array( 'Bar' => 'Foobar' )
+			),
+			$instance->getExtraConditions()
+		);
+
+		$this->assertEquals(
+			'[-1,0,false,true,null,true,"",["Foo",{"Bar":"Foobar"}]]',
 			$instance->getHash()
 		);
 	}
