@@ -294,6 +294,11 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 			$calendarModel = self::CM_GREGORIAN;
 		}
 
+		if ( $year < 1 ) {
+			// For BC, fix for internal structure. Substract 1 year
+			$dateTime->modify('-1 year');
+		}
+
 		return self::doUnserialize( $calendarModel . '/' . $dateTime->format( 'Y/m/d/H/i/s.u' ) );
 	}
 
