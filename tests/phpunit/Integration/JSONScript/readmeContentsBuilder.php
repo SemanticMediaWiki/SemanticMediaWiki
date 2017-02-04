@@ -14,6 +14,12 @@ namespace SMW\Tests\Integration\JSONScript;
 class ReadmeContentsBuilder {
 
 	/**
+	 * @var string
+	 */
+	CONST REPLACE_START_MARKER = '<!-- Begin of generated contents by readmeContentsBuilder.php -->';
+	CONST REPLACE_END_MARKER = '<!-- End of generated contents by readmeContentsBuilder.php -->';
+
+	/**
 	 * @var array
 	 */
 	private $urlLocationMap = array(
@@ -25,13 +31,23 @@ class ReadmeContentsBuilder {
 	 */
 	public function run() {
 
-		$output = '';
+		$file = __DIR__ . '/README.md';
 		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 
-		$output .= $this->doGenerateContentFor( 'TestCases', __DIR__ . '/TestCases' );
-		$output .= "\n-- Last updated on " .  $dateTimeUtc->format( 'Y-m-d' )  . " by `readmeContentsBuilder.php`". "\n";
+		$replacement = self::REPLACE_START_MARKER . "\n\n";
+		$replacement .= $this->doGenerateContentFor( 'TestCases', __DIR__ . '/TestCases' );
 
-		file_put_contents(  __DIR__ . '/README.md', $output );
+		$replacement .= "\n-- Last updated on " .  $dateTimeUtc->format( 'Y-m-d' )  . " by `readmeContentsBuilder.php`". "\n";
+		$replacement .= "\n" . self::REPLACE_END_MARKER;
+
+		$contents = file_get_contents( $file );
+		$start = strpos( $contents, self::REPLACE_START_MARKER );
+		$length = strrpos( $contents, self::REPLACE_END_MARKER ) - $start + strlen( self::REPLACE_END_MARKER );
+
+		file_put_contents(
+			$file,
+			substr_replace( $contents, $replacement, $start, $length )
+		);
 	}
 
 	private function doGenerateContentFor( $title, $path ) {
@@ -70,7 +86,7 @@ class ReadmeContentsBuilder {
 			$previousFirstKey = $key{0};
 		}
 
-		return "## $title\n" . "Contains $counter files with a total of $tests tests:\n" . $output ;
+		return "## $title\n\n" . "Contains $counter files with a total of $tests tests:\n" . $output ;
 	}
 
 	private function findFilesFor( $path, $extension ) {

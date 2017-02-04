@@ -245,7 +245,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			throw new RuntimeException( "Missing a QueryEngine instance." );
 		}
 
-		if ( !$this->canUse( $query ) || $query->getLimit() < 1 || $query->getOptionBy( Query::NO_CACHE ) === true ) {
+		if ( !$this->canUse( $query ) || $query->getLimit() < 1 || $query->getOption( Query::NO_CACHE ) === true ) {
 			$this->bufferedStatsdCollector->incr( $this->getNoCacheId( $query ) );
 			return $this->queryEngine->getQueryResult( $query );
 		}
@@ -320,7 +320,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$results = array();
 		$incrStats = 'hits.Undefined';
 
-		if ( ( $nonEmbeddedContext = $query->getOptionBy( Query::PROC_CONTEXT ) ) === false ) {
+		if ( ( $nonEmbeddedContext = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
 			$nonEmbeddedContext = 'Undefined';
 		}
 
@@ -486,7 +486,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$id = 'noCache.byLimit';
 		}
 
-		if ( $query->getOptionBy( Query::NO_CACHE ) === true ) {
+		if ( $query->getOption( Query::NO_CACHE ) === true ) {
 			$id = 'noCache.byOption';
 		}
 

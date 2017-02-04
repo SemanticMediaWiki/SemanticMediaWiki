@@ -375,6 +375,24 @@ class SharedCallbackContainer implements CallbackContainer {
 		} );
 
 		/**
+		 * @var EditProtectionValidator
+		 */
+		$callbackLoader->registerCallback( 'EditProtectionValidator', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'EditProtectionValidator', '\SMW\EditProtectionValidator' );
+
+			$editProtectionValidator = new EditProtectionValidator(
+				$callbackLoader->singleton( 'CachedPropertyValuesPrefetcher' ),
+				$callbackLoader->singleton( 'InMemoryPoolCache' )->getPoolCacheById( EditProtectionValidator::POOLCACHE_ID )
+			);
+
+			$editProtectionValidator->setEditProtectionRight(
+				$callbackLoader->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
+			);
+
+			return $editProtectionValidator;
+		} );
+
+		/**
 		 * @var PropertyHierarchyLookup
 		 */
 		$callbackLoader->registerCallback( 'PropertyHierarchyLookup', function() use ( $callbackLoader ) {

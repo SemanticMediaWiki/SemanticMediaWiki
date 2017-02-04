@@ -87,7 +87,8 @@
 		"_PVUC": "Has uniqueness constraint",
 		"_PEID": "External identifier",
 		"_PEFU": "External formatter URI",
-		"_PPLB": "Has preferred property label"
+		"_PPLB": "Has preferred property label",
+		"_EDIP": "Is edit protected"
 	},
 	"propertyAliases": {
 		"Display unit": "_UNIT",
@@ -132,7 +133,9 @@
 		"External formatter URI": "_PEFU",
 		"External formatter uri": "_PEFU",
 		"External formatter URL": "_PEFU",
-		"Preferred property label": "_PPLB"
+		"Preferred property label": "_PPLB",
+		"Is edit protected": "_EDIP",
+		"IsEditProtected": "_EDIP"
 	},
 	"namespaces":{
 		"SMW_NS_PROPERTY": "Property",

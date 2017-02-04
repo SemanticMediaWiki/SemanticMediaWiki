@@ -1,0 +1,71 @@
+{
+	"description": "Test `Special:Ask` output for `_txt` with formatted text (#..., `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0015/1",
+			"contents": "[[Has text::Test '''with text formatting''']] {{#set: Has text=Link to [[Example/S0015/1]]}} [[Category:S0015]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0015/2",
+			"contents": "[[Code::Test '''with text formatting''']] {{#set: Code=Link to [[Example/S0015/1]]}} [[Category:S0015]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (`_txt` formatting, link)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0015-5D-5D-20-5B-5BHas text%3A%3A%2B-5D-5D/-3FHas text/mainlabel=-/offset=0/format=broadtable/link=all/headers=show",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"Test <b>with text formatting</b>",
+					"Link to <a",
+					"Example/S0015/1\" title=\"Example/S0015/1\">Example/S0015/1</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (`_cod` formatting, link)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory%3AS0015-5D-5D-20-5B-5BCode%3A%3A%2B-5D-5D/-3FCode/mainlabel=-/offset=0/format=broadtable/link=all/headers=show",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smwpre\">Link&#160;to&#160;&#91;&#91;Example/S0015/1]]</div>",
+					"<div class=\"smwpre\">Test&#160;&#x27;&#x27;&#x27;with&#160;text&#160;formatting&#x27;&#x27;&#x27;</div>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespace": "http://example.org/id/",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

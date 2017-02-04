@@ -459,7 +459,7 @@ class SMWNumberValue extends SMWDataValue {
 	protected function getPreferredDisplayPrecision() {
 
 		// Don't restrict the value with a display precision
-		if ( $this->getProperty() === null || $this->getOptionBy( self::NO_DISP_PRECISION_LIMIT ) ) {
+		if ( $this->getProperty() === null || $this->getOption( self::NO_DISP_PRECISION_LIMIT ) ) {
 			return false;
 		}
 
@@ -498,22 +498,22 @@ class SMWNumberValue extends SMWDataValue {
 
 		$this->intlNumberFormatter->setOption(
 			'user.language',
-			$this->getOptionBy( 'user.language' )
+			$this->getOption( 'user.language' )
 		);
 
 		$this->intlNumberFormatter->setOption(
 			'content.language',
-			$this->getOptionBy( 'content.language' )
+			$this->getOption( 'content.language' )
 		);
 
 		$this->intlNumberFormatter->setOption(
 			'separator.thousands',
-			$this->getOptionBy( 'separator.thousands' )
+			$this->getOption( 'separator.thousands' )
 		);
 
 		$this->intlNumberFormatter->setOption(
 			'separator.decimal',
-			$this->getOptionBy( 'separator.decimal' )
+			$this->getOption( 'separator.decimal' )
 		);
 
 		return $this->intlNumberFormatter;

@@ -121,7 +121,13 @@ class HookRegistry {
 			$GLOBALS['wgDBtype'] === 'sqlite'
 		);
 
-		$permissionPthValidator = new PermissionPthValidator();
+		$permissionPthValidator = new PermissionPthValidator(
+			$applicationFactory->singleton( 'EditProtectionValidator' )
+		);
+
+		$permissionPthValidator->setEditProtectionRight(
+			$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+		);
 
 		/**
 		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
@@ -483,10 +489,14 @@ class HookRegistry {
 		};
 
 		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/userCan
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleQuickPermissions
+		 *
+		 * "...Quick permissions are checked first in the Title::checkQuickPermissions
+		 * function. Quick permissions are the most basic of permissions needed
+		 * to perform an action ..."
 		 */
-		$this->handlers['userCan'] = function ( &$title, &$user, $action, &$result ) use ( $permissionPthValidator ) {
-			return $permissionPthValidator->checkUserCanPermissionFor( $title, $user, $action, $result );
+		$this->handlers['TitleQuickPermissions'] = function ( $title, $user, $action, &$errors, $rigor, $short ) use ( $permissionPthValidator ) {
+			return $permissionPthValidator->checkQuickPermissionOn( $title, $user, $action, $errors );
 		};
 
 		$this->registerHooksForInternalUse( $applicationFactory, $deferredRequestDispatchManager );

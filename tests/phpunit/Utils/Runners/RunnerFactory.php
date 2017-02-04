@@ -67,11 +67,11 @@ class RunnerFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $source
+	 * @param string|null $source
 	 *
 	 * @return XmlImportRunner
 	 */
-	public function newXmlImportRunner( $source ) {
+	public function newXmlImportRunner( $source = null ) {
 		return new XmlImportRunner( $source );
 	}
 

@@ -127,8 +127,19 @@ class SMWQuery implements QueryContext {
 	 *
 	 * @param integer
 	 */
-	public function setQuerymode( $queryMode ) {
+	public function setQueryMode( $queryMode ) {
+		// FIXME 3.0; $this->querymode is a public property
+		// delcare it private and rename it to $this->queryMode
 		$this->querymode = $queryMode;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer
+	 */
+	public function getQueryMode() {
+		return $this->querymode;
 	}
 
 	/**
@@ -249,7 +260,7 @@ class SMWQuery implements QueryContext {
 	 *
 	 * @return mixed
 	 */
-	public function getOptionBy( $key ) {
+	public function getOption( $key ) {
 		return isset( $this->options[$key] ) ? $this->options[$key] : false;
 	}
 

@@ -59,11 +59,16 @@ class RequestOptions {
 	/**
 	 * An array of string conditions that are applied if the result has a
 	 * string label that can be subject to those patterns.
+	 *
+	 * @var StringCondition[]
 	 */
 	private $stringConditions = array();
 
 	/**
-	 * An array extra conditions
+	 * Contains extra conditions which a consumer is being allowed to interpret
+	 * freely to modify a search condition.
+	 *
+	 * @var array
 	 */
 	private $extraConditions = array();
 
@@ -156,14 +161,16 @@ class RequestOptions {
 			$stringConditions .= $stringCondition->getHash();
 		}
 
-		return $this->limit . '#' .
-			$this->offset . '#' .
-			$this->sort . '#' .
-			$this->ascending . '#' .
-			$this->boundary . '#' .
-			$this->include_boundary . '#' .
-			( $stringConditions !== '' ? '|' . $stringConditions : '' );
-			( $this->extraConditions !== array() ? implode( '#', $this->extraConditions ): '' );
+		return json_encode( array(
+			$this->limit,
+			$this->offset,
+			$this->sort,
+			$this->ascending,
+			$this->boundary,
+			$this->include_boundary,
+			$stringConditions,
+			$this->extraConditions
+		) );
 	}
 
 }

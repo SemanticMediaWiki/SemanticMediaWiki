@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use Exception;
 use PHPUnit_Framework_AssertionFailedError;

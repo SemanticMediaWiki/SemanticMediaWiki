@@ -41,7 +41,7 @@ class AllowsPatternValue extends StringValue {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
 
-		if ( ( $this->getOptionBy( 'smwgDVFeatures' ) & SMW_DV_PVAP ) == 0 && $value !== '' ) {
+		if ( ( $this->getOption( 'smwgDVFeatures' ) & SMW_DV_PVAP ) == 0 && $value !== '' ) {
 			$this->addErrorMsg( array( 'smw-datavalue-feature-not-supported', 'Allows pattern (SMW_DV_PVAP)' ) );
 		}
 

@@ -175,14 +175,14 @@ class BooleanValue extends DataValue {
 
 		return $this->getFirstBooleanCaptionFrom(
 			$this->m_dataitem->getBoolean() ? 'smw_true_words' : 'smw_false_words',
-			$this->getOptionBy( 'content.language' )
+			$this->getOption( 'content.language' )
 		);
 	}
 
 	private function doParseBoolValue( $value ) {
 
 		// Use either the global or page related content language
-		$contentLanguage = $this->getOptionBy( 'content.language' );
+		$contentLanguage = $this->getOption( 'content.language' );
 
 		$lcv = mb_strtolower( $value );
 		$boolvalue = false;
@@ -209,7 +209,7 @@ class BooleanValue extends DataValue {
 	private function setLocalizedCaptions( &$formatstring ) {
 
 		if ( !( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) ) {
-			$languageCode = $this->getOptionBy( 'user.language' );
+			$languageCode = $this->getOption( 'user.language' );
 		}
 
 		$this->trueCaption = $this->getFirstBooleanCaptionFrom(
