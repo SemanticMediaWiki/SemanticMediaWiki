@@ -127,7 +127,7 @@ class QueryCreator implements QueryContext {
 
 		$query->setQueryString( $queryString );
 		$query->setContextPage( $contextPage );
-		$query->setQuerymode( $queryMode );
+		$query->setQueryMode( $queryMode );
 
 		$query->setExtraPrintouts(
 			$this->getConfiguration( 'extraPrintouts', array() )
