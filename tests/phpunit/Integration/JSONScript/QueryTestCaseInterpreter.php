@@ -250,7 +250,7 @@ class QueryTestCaseInterpreter {
 			return -1;
 		}
 
-		return (int)$this->contents['assert-queryresult']['error'];
+		return $this->contents['assert-queryresult']['error'];
 	}
 
 	/**

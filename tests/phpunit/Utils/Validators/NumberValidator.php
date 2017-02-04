@@ -37,7 +37,7 @@ class NumberValidator extends \PHPUnit_Framework_Assert {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $expected );
 
 		$expected = (int)$expected;
-		$expected = (int)$actual;
+		$actual = (int)$actual;
 
 		if ( $comparator === SMW_CMP_EQ ) {
 			return self::assertEquals( $expected, $actual, $message );
