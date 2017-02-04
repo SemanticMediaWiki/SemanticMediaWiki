@@ -148,7 +148,7 @@ class SMWURIValue extends SMWDataValue {
 					$hierpart = '+' . substr( $hierpart, 2 );
 				}
 
-				if ( !$this->getOptionBy( self::OPT_QUERY_CONTEXT ) && ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
+				if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
 					( preg_match( '<[-+./][-./]>', $hierpart ) ) ||
 					( !self::isValidTelURI( 'tel:' . $hierpart ) ) ) ) { /// TODO: introduce error-message for "bad" phone number
 					$this->addErrorMsg( array( 'smw_baduri', $this->m_wikitext ) );
@@ -162,7 +162,7 @@ class SMWURIValue extends SMWDataValue {
 					$this->m_wikitext = $value;
 				}
 
-				if ( !$this->getOptionBy( self::OPT_QUERY_CONTEXT ) && !Sanitizer::validateEmail( $value ) ) {
+				if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Sanitizer::validateEmail( $value ) ) {
 					/// TODO: introduce error-message for "bad" email
 					$this->addErrorMsg( array( 'smw_baduri', $value ) );
 					return;
@@ -277,7 +277,7 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getWikiValue() {
 
-		if ( $this->getOptionBy( self::VALUE_RAW ) ) {
+		if ( $this->getOption( self::VALUE_RAW ) ) {
 			return rawurldecode( $this->m_wikitext );
 		}
 

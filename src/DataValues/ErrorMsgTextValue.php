@@ -101,7 +101,7 @@ class ErrorMsgTextValue extends DataValue {
 		$string = $this->getDataItem()->getString();
 		$type = $linker !== null ? Message::PARSE : Message::TEXT;
 
-		if ( ( $message = Message::decode( $string, $type, $this->getOptionBy( self::OPT_USER_LANGUAGE ) ) ) !== false ) {
+		if ( ( $message = Message::decode( $string, $type, $this->getOption( self::OPT_USER_LANGUAGE ) ) ) !== false ) {
 			return $message;
 		}
 

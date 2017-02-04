@@ -249,7 +249,7 @@ class SMWQuery implements QueryContext {
 	 *
 	 * @return mixed
 	 */
-	public function getOptionBy( $key ) {
+	public function getOption( $key ) {
 		return isset( $this->options[$key] ) ? $this->options[$key] : false;
 	}
 

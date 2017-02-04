@@ -380,7 +380,7 @@ class SMWTimeValue extends SMWDataValue {
 	private function parseMonthString( $string, &$monthname ) {
 
 		// takes precedence over English month names!
-		$monthnum = Localizer::getInstance()->getExtraneousLanguage( $this->getOptionBy( self::OPT_CONTENT_LANGUAGE ) )->findMonthNumberByLabel( $string );
+		$monthnum = Localizer::getInstance()->getExtraneousLanguage( $this->getOption( self::OPT_CONTENT_LANGUAGE ) )->findMonthNumberByLabel( $string );
 
 		if ( $monthnum !== false ) {
 			$monthnum -= 1;
@@ -463,7 +463,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 
 		// Now use the bitvector to find the preferred interpretation of the date components:
-		$dateformats = Localizer::getInstance()->getExtraneousLanguage( $this->getOptionBy( self::OPT_CONTENT_LANGUAGE ) )->getDateFormats();
+		$dateformats = Localizer::getInstance()->getExtraneousLanguage( $this->getOption( self::OPT_CONTENT_LANGUAGE ) )->getDateFormats();
 		$date = array( 'y' => false, 'm' => false, 'd' => false );
 		foreach ( $dateformats[count( $propercomponents ) - 1] as $formatvector ) {
 			if ( !( ~$datevector & $formatvector ) ) { // check if $formatvector => $datevector ("the input supports the format")

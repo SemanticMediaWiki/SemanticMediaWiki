@@ -45,7 +45,7 @@ class LanguageCodeValue extends StringValue {
 
 		// Checks whether the language tag is valid in MediaWiki for when
 		// it is not executed in a query context
-		if ( !$this->getOptionBy( self::OPT_QUERY_CONTEXT ) && !Localizer::isSupportedLanguage( $languageCode ) ) {
+		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isSupportedLanguage( $languageCode ) ) {
 			$this->addErrorMsg( array(
 				'smw-datavalue-languagecode-invalid',
 				$languageCode
