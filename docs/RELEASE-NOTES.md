@@ -66,6 +66,12 @@ THIS IS NOT A RELEASE YET
 * #2176
 * #2182
 * #2183
+* #2204
+* #2207
+* #2211
+* #2221
+* #2227
+* #2232
 
 ## Bug fixes
 
@@ -101,8 +107,9 @@ THIS IS NOT A RELEASE YET
 * #2093
 * #2107
 * #2127
-* #2202
 * #2188
+* #2202
+* #2228
 
 ## Internal changes
 
@@ -114,6 +121,8 @@ THIS IS NOT A RELEASE YET
 * #1776 Added `QueryEngine` and `StoreAware` interface
 * #1940 Added `Installer` and `TableSchemaManager` to replace `SMWSQLStore3SetupHandlers`
 * #2201
+* #2214
+* #2217
 
 ## Contributors
 
