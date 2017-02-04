@@ -1,0 +1,186 @@
+{
+	"description": "Query related benchmarks",
+	"tests": [
+		{
+			"type": "query",
+			"note": "Select all possible entities for the MAIN namespace",
+			"query": {
+				"condition": "[[:+]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts": []
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Select entities for a specific category",
+			"query": {
+				"condition": "[[Category: Lorem ipsum]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts": []
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Category and namespace search conjunction",
+			"query": {
+				"condition": "[[Category: Lorem ipsum]] AND [[Property:+]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts": []
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Simple property wildcard value search including subobjects",
+			"query": {
+				"condition": "[[Has Url::+]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts":  [
+					"Has Url"
+				]
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Simple property wildcard value search including subobjects",
+			"query": {
+				"condition": "[[Has quantity::+]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts":  [
+					"Has quantity"
+				]
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Simple property wildcard value search that does not include subobjects",
+			"query": {
+				"condition": "[[Has Url::+]][[Category: Lorem ipsum]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts":  [
+					"Has Url"
+				]
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Distinct value search that only includes subobjects",
+			"query": {
+				"condition": "[[Has number::1111]][[Has quantity::25 sqmi]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts":  [
+					"Has number",
+					"Has quantity"
+				]
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Distinct value disjuntived search that only includes subobjects",
+			"query": {
+				"condition": "[[Has number::1111]] OR [[Has quantity::25 sqmi]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts":  [
+					"Has number",
+					"Has quantity"
+				]
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Distinct value search that does not include subobjects",
+			"query": {
+				"condition": "[[Has date::1 Jan 2014]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts":  [
+					"Has date"
+				]
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Wildcard value search that does not include subobjects",
+			"query": {
+				"condition": "[[Has text::~Lorem ipsum dolor*]][[Category: Lorem ipsum]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts":  [
+					"Has text"
+				]
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Distinct value search on subobject entities",
+			"query": {
+				"condition": "[[Has subobject.Has temperature::100 °F]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts":  [
+					"Has date",
+					"Has quantity",
+					"Has date",
+					"Has Url",
+					"Has annotation uri",
+					"Has wattage",
+					"Has temperature",
+					"Has text"
+				]
+			},
+			"repetitionCount": 5
+		},
+		{
+			"type": "query",
+			"note": "Complex disjuntived query",
+			"query": {
+				"condition": "<q>[[Has page.Has number::1001]][[Has page.Has telephone number::+1-201-555-0123]]</q> OR [[Has subobject.Has temperature::100 °F]][[Category:!Lorem enim]]",
+				"parameters": {
+					"limit": 500
+				},
+				"printouts":  [
+					"Has date",
+					"Has quantity",
+					"Has date",
+					"Has Url",
+					"Has annotation uri",
+					"Has wattage",
+					"Has temperature",
+					"Has text"
+				]
+			},
+			"repetitionCount": 5
+		}
+	],
+	"meta": {
+		"version": "1"
+	}
+}

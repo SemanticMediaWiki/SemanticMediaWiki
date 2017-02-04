@@ -54,6 +54,11 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	/**
 	 * @var string
 	 */
+	protected $searchByFileExtension = 'json';
+
+	/**
+	 * @var string
+	 */
 	protected $connectorId = '';
 
 	protected function setUp() {
@@ -166,7 +171,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 			$this->getTestCaseLocation()
 		);
 
-		$bulkFileProvider->searchByFileExtension( 'json' );
+		$bulkFileProvider->searchByFileExtension( $this->searchByFileExtension );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
 			$provider[basename( $file )] = array( $file );

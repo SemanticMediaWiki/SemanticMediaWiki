@@ -1,38 +1,56 @@
-## Benchmark tests
+Benchmark tests are to use `PHPUnit` as integration platform and do not always
+represent the best tool for a performance comparison (as it depends on environmental
+factors such as hardware and software constraints which might not be under the
+control of the tester) but it can help to identify performance regressions among
+newly introduced features that run with the same environmental specification.
 
-Benchmark tests are to use PHPUnit as integration platform and do not always represent the best tool for a performance comparison (as it depends on environmental factors such as hardware and software constraints which might not be under the control of the tester) but it can help to identify performance regressions among newly introduced features that run with the same environmental specification.
+Benchmarks are not performed in isolation and therefore run in concert with the
+`MediaWiki` infrastructure to determine the overall performance impact during
+execution.
 
-- `ImportPageCopyBenchmarkTest` to perform import and page copy benchmarks
-- `JobQueueBenchmarkTest` to gather data for listed jobs
-- `MaintenanceBenchmarkTest` to gather data for listed maintenance scripts
-- `StandardQueryEngineBenchmarkTest` to perform tests for different query conditions that are ought to be executable on each store
-- `ExtraQueryEngineBenchmarkTest` to perform tests for query conditions that might not be executable on each store
-- `PageEditBenchmarkTest` to perform edits for different (#set, #subobject, template) annotation methods
+When using `git`, it is relatively easy to run tests and see if a change
+introduces a significant regression or improvement in terms of performance over
+the existing `master` branch by comparing test results of the `master` against
+a `feature` branch.
 
-Benchmarks are not performed in isolation and therefore run in concert with the `MediaWiki` infrastucture to determine the overall performance impact during execution.
+## Designing benchmark tests
 
-### Use PHPUnit
+The defintion of what benchmarks are executed is specified by a `JSONScript`
+found in the `TestCases` directory. Supported types are:
 
-When running PHPUnit, use `--group semantic-mediawiki-benchmark` to indicate whether an annotated benchmark test is expected to perform an output and is run according to the listed order described by `phpunit.xml.dist`.
+- `import` to import data from an external source
+- `contentCopy` copy content from an internal source
+- `editCopy` edit content from an internal source
+- `job` running selected jobs
+- `maintenance` running selected maintenance scripts
+- `query` executing `#ask` queries
 
-The following [video][video] demonstrates on how to install PHPUnit and to run the benchmark tests from a shell environment.
+## Running benchmark tests
 
-### Benchmark git changes
+Running `composer benchmark` from the Semantic MediaWiki base directory should
+output something similar to what can be seen below.
 
-When using `git`, it is relatively easy to run tests and see if a change introduces a significant regression or improvement in terms of performance over the existing `master` branch by comparing test results of the `master` against a `feature` branch.
+```
+- mediawiki: "1.28.0-alpha"
+- semantic-mediawiki: "2.5.0-alpha"
+- environment: {"store":"SMWSQLStore3","db":"mysql"}
+- benchmarks
+- 35a205a6fa1db2cda4c484d3007953b3
+ - type: "import"
+ - source: "import-001.xml"
+ - memory: 5564360
+ - time: {"sum":5.9888241}
+- 054543b5702e6fcbccafd00bf6dd27ac
+ - type: "contentCopy"
+ - source: "import-001.xml"
+  - import
+   - memory: 351392
+   - time: {"sum":0.900929}
+  - copy
+   - copyFrom: "Lorem ipsum"
+   - copyCount: 10
+   - memory: 75056
+   - time: {"sum":7.9295225,"mean":0.7929523,"sd":0.1008703,"norm":0.0792952}
+ - time: 8.8402690887451
 
-### Benchmark conditions
-
-`phpunit.xml.dist` can be used to adjust basic conditions of the benchmark environment. Available parameters are:
-
-- `benchmarkQueryRepetitionExecutionThreshold` a value that specifies how many repetitions should be made per query (is to increase the mean value computation accuracy)
-- `benchmarkQueryLimit` a value to specify the query limit
-- `benchmarkQueryOffset` a value to specify the query offset
-- `benchmarkPageCopyThreshold` a value to specify how many pages should be copied and made available during a test
-- `benchmarkShowMemoryUsage` setting to display memory usage during a benchmark test
-- `benchmarkReuseDatasets` whether to reuse imported datasets (by `ImportPageCopyBenchmarkTest`) or not
-
-## See also
-- Running Semantic MediaWiki related [Benchmark HHVM 3.3 vs. Zend PHP 5.6](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/513) tests
-
-[video]: https://vimeo.com/108833255
+```
