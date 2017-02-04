@@ -34,6 +34,11 @@ class PropertySpecificationReqExaminer {
 	private $dataItemFactory;
 
 	/**
+	 * @var boolean
+	 */
+	private $editProtectionRight = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Store $store
@@ -50,6 +55,15 @@ class PropertySpecificationReqExaminer {
 	 */
 	public function setSemanticData( SemanticData $semanticData ) {
 		$this->semanticData = $semanticData;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string|boolean $editProtectionRight
+	 */
+	public function setEditProtectionRight( $editProtectionRight ) {
+		$this->editProtectionRight = $editProtectionRight;
 	}
 
 	/**
@@ -87,6 +101,10 @@ class PropertySpecificationReqExaminer {
 	 */
 	private function checkOnTypeForPredefinedProperty( $property ) {
 
+		if ( $property->getKey() === '_EDIP' ) {
+			return $this->checkOnEditProtectionRight( $property );
+		}
+
 		if ( !$this->semanticData->hasProperty( $this->dataItemFactory->newDIProperty( '_TYPE' ) ) ) {
 			return;
 		}
@@ -106,9 +124,27 @@ class PropertySpecificationReqExaminer {
 		$prop = $this->dataItemFactory->newDIProperty( $type );
 
 		return array(
+			'error',
 			'smw-property-req-violation-predefined-type',
 			$property->getCanonicalLabel(),
 			$prop->getCanonicalLabel()
+		);
+	}
+
+	/**
+	 * Examines whether the setting `smwgEditProtectionRight` contains an appropriate
+	 * value or is disabled in order for the `Is edit protected` property to function.
+	 */
+	private function checkOnEditProtectionRight( $property ) {
+
+		if ( $this->editProtectionRight !== false ) {
+			return;
+		}
+
+		return array(
+			'warning',
+			'smw-pageedit-protection-disabled',
+			$property->getCanonicalLabel()
 		);
 	}
 
@@ -125,6 +161,7 @@ class PropertySpecificationReqExaminer {
 		$prop = $this->dataItemFactory->newDIProperty( $property->findPropertyTypeID() );
 
 		return array(
+			'error',
 			'smw-property-req-violation-missing-fields',
 			$property->getLabel(),
 			$prop->getCanonicalLabel()
@@ -142,6 +179,7 @@ class PropertySpecificationReqExaminer {
 		}
 
 		return array(
+			'error',
 			'smw-property-req-violation-missing-formatter-uri',
 			$property->getLabel()
 		);

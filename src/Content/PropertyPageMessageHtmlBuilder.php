@@ -28,6 +28,11 @@ class PropertyPageMessageHtmlBuilder {
 	private $propertySpecificationReqExaminer;
 
 	/**
+	 * @var boolean
+	 */
+	private $hasEditProtection = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Store $store
@@ -36,6 +41,15 @@ class PropertyPageMessageHtmlBuilder {
 	public function __construct( Store $store, PropertySpecificationReqExaminer $propertySpecificationReqExaminer ) {
 		$this->store = $store;
 		$this->propertySpecificationReqExaminer = $propertySpecificationReqExaminer;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param boolean $hasEditLock
+	 */
+	public function hasEditProtection( $hasEditProtection ) {
+		$this->hasEditProtection = $hasEditProtection;
 	}
 
 	/**
@@ -54,6 +68,10 @@ class PropertyPageMessageHtmlBuilder {
 		$message = $this->createReqViolationMessage(
 			$this->propertySpecificationReqExaminer->checkOn( $property )
 		);
+
+		if ( $this->hasEditProtection ) {
+			$message .= $this->createEditProtectionMessage( $propertyName );
+		}
 
 		if ( wfMessage( 'smw-property-introductory-message' )->exists() ) {
 			$message .= $this->createIntroductoryMessage( $propertyName );
@@ -74,12 +92,27 @@ class PropertyPageMessageHtmlBuilder {
 			return '';
 		}
 
+		$type = array_shift( $violationMessage );
+
 		return Html::rawElement(
 			'div',
 			array(
-				'class' => 'plainlinks smw-callout smw-callout-error'
+				'id' => 'smw-property-content-violation-message',
+				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-'. $type : '' )
 			),
 			call_user_func_array( 'wfMessage', $violationMessage )->parse()
+		);
+	}
+
+	private function createEditProtectionMessage( $propertyName ) {
+
+		return Html::rawElement(
+			'div',
+			array(
+				'id' => 'smw-property-content-editprotection-message',
+				'class' => 'plainlinks smw-callout smw-callout-warning'
+			),
+			wfMessage( 'smw-pageedit-protection', $GLOBALS['smwgEditProtectionRight'] )->parse()
 		);
 	}
 
@@ -87,6 +120,7 @@ class PropertyPageMessageHtmlBuilder {
 		return Html::rawElement(
 			'div',
 			array(
+				'id' => 'smw-property-content-intro-message',
 				'class' => 'plainlinks smw-callout smw-callout-info'
 			),
 			wfMessage( 'smw-property-introductory-message', $propertyName )->parse()
@@ -97,6 +131,7 @@ class PropertyPageMessageHtmlBuilder {
 		return Html::rawElement(
 			'div',
 			array(
+				'id' => 'smw-property-content-fixedtable-message',
 				'class' => 'plainlinks smw-callout smw-callout-info'
 			),
 			wfMessage( 'smw-property-userdefined-fixedtable', $propertyName )->parse()
@@ -141,6 +176,7 @@ class PropertyPageMessageHtmlBuilder {
 		return Html::rawElement(
 			'div',
 			array(
+				'id' => 'smw-property-content-predefined-message',
 				'class' => 'smw-property-predefined-intro plainlinks'
 			),
 			$message
