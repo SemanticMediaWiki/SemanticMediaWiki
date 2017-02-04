@@ -162,7 +162,7 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 
 	private function doFind( $id, $key, DIWikiPage $subject, $requestOptions ) {
 
-		$key = $id . '#' . $key . '#' . $requestOptions->getHash();
+		$key = $id . '#' . $key . '#' . md5( $requestOptions->getHash() );
 
 		if ( $this->cache->contains( $key ) ) {
 			return $this->cache->fetch( $key );
