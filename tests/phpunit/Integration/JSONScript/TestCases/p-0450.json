@@ -7,14 +7,23 @@
 			"contents": "[[Has type::Date]]"
 		},
 		{
+                        "skip-on": {
+                                "virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+                        },
 			"page": "Example/P0450/1",
 			"contents": "[[Has date::0339-01-01T00:00:00Z BC]][[Has date::-0372-05-02T02:05:20Z]][[Has date::1772-07-02T08:00:10Z]][[Has date::0000-01-03T06:25:15Z]]"
 		},
 		{
+                        "skip-on": {
+                                "virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+                        },
 			"page": "Example/P0450/Q/1/1",
 			"contents": "{{#show: Example/P0450/1 |?Has date }}"
 		},
 		{
+                        "skip-on": {
+                                "virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+                        },
 			"page": "Example/P0450/Q/1/2",
 			"contents": "{{#show: Example/P0450/1 |?Has date#ISO }}"
 		}
