@@ -497,7 +497,7 @@
 	"smw-property-req-violation-missing-formatter-uri": "Property \"$1\" is missing declaration details for the annotated type by failing to define the <code>External formatter URI</code> property.",
 	"smw-property-req-violation-predefined-type": "Property \"$1\" as predefined property contains a \"$2\" type declaration that is incompatible with the default type of this property.",
 	"smw-pageedit-protection": "This page is [[Property:Is edit protected|protected]] to prevent accidental data modification and therefore can only be edited by users with the appropriate \"$1\" [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups right].",
-	"smw-pageedit-protection-disabled": "The edit protection has been disbled therefore \"$1\" cannot be used to protect entity pages from unauthorized editing.",
+	"smw-pageedit-protection-disabled": "The edit protection has been disabled therefore \"$1\" cannot be used to protect entity pages from unauthorized editing.",
 	"smw-patternedit-protection": "This page is protected and can only be edited by users with the appropriate <code>smw-patternedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions permission].",
 	"smw-pa-property-predefined_edip": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to indicate whether editing is protected or not.",
 	"smw-pa-property-predefined-long_edip": "While any user is qualified to add this property to a subject, only a user with a dedicated permission can edit or revoke the protection to an entity after it has been added."
