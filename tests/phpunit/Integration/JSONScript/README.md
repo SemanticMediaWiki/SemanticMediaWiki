@@ -339,6 +339,40 @@ state information that can be helpful during debugging.
 }
 </pre>
 
+### Skipping a test or mark as incomplete
+
+Sometimes certain data can cause inconsistencies with an environment hence it is
+possible to skip those cases by adding:
+
+<pre>
+{
+	"skip-on": {
+		"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+	},
+	"page": "Example/P0413/11",
+	"contents": "[[Has date::Jan 1 300 BC]]"
+},
+</pre>
+
+It is also possible that an entire test scenario is unable to be completed in a particular
+environment therefore it can be marked and skipped with:
+
+<pre>
+"meta": {
+	"skip-on": {
+		"virtuoso": "Some info as to why it is skipped.",
+		"sqlite": "...",
+		"postgres": "..."
+	},
+	"version": "2",
+	"is-incomplete": false,
+	"debug": false
+}
+</pre>
+
+If a test is incomplete for some reason, use the `is-incomplete` field to indicate
+the status which henceforth avoids a test execution.
+
 ### File naming
 
 The naming of a test file is arbitrary but it has been a good standard to indicate
