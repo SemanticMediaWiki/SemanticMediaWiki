@@ -139,6 +139,7 @@ class Settings extends Options {
 			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
 			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
 			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
+			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 		);
 
 		$settings = $settings + array(

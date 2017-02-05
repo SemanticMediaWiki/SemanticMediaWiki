@@ -95,6 +95,27 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 
 	}
 
+	public function testAdd() {
+
+		$instance = $this->newInstance( array() );
+
+		$instance->set( 'foo', 123 );
+		$instance->add( 'foo', 456 );
+
+		$this->assertEquals(
+			456,
+			$instance->get( 'foo' )
+		);
+
+		$instance->set( 'bar', array( 123 ) );
+		$instance->add( 'bar', array( 456 ) );
+
+		$this->assertEquals(
+			array( 123, 456 ),
+			$instance->get( 'bar' )
+		);
+	}
+
 	/**
 	 * @dataProvider globalsSettingsProvider
 	 *

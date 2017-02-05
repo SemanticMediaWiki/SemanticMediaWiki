@@ -16,7 +16,7 @@ use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
-	private $temporaryIdTableCreator;
+	private $temporaryTableBuilder;
 
 	protected function setUp() {
 
@@ -24,7 +24,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->temporaryIdTableCreator = $this->getMockBuilder( '\SMW\SQLStore\TemporaryIdTableCreator' )
+		$this->temporaryTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TemporaryTableBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -33,7 +33,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder',
-			new HierarchyTempTableBuilder( $this->connection, $this->temporaryIdTableCreator )
+			new HierarchyTempTableBuilder( $this->connection, $this->temporaryTableBuilder )
 		);
 	}
 
@@ -47,7 +47,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new HierarchyTempTableBuilder(
 			$this->connection,
-			$this->temporaryIdTableCreator
+			$this->temporaryTableBuilder
 		);
 
 		$instance->setPropertyHierarchyTableDefinition( 'bar', 3 );
@@ -62,7 +62,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new HierarchyTempTableBuilder(
 			$this->connection,
-			$this->temporaryIdTableCreator
+			$this->temporaryTableBuilder
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
@@ -82,7 +82,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new HierarchyTempTableBuilder(
 			$this->connection,
-			$this->temporaryIdTableCreator
+			$this->temporaryTableBuilder
 		);
 
 		$instance->setClassHierarchyTableDefinition( 'bar', 3 );
