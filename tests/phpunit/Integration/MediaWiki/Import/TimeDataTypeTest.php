@@ -141,9 +141,9 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => array(
-				'--301-12-28', // 1 January 300 BC
-				'--2147483647-01-01', // 2147483647 BC
-				'--14000000000-01-01',
+				'-0300-12-28', // 1 January 300 BC
+				'-2147483646-01-01', // 2147483647 BC
+				'-13999999999-01-01',
 				'2000-02-24',
 				'1492-02-11'
 			)
