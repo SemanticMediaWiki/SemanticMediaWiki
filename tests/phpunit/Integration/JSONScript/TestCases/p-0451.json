@@ -1,5 +1,5 @@
 {
-	"description": "Test BC dates storage and formatting in ISO8601 (#2233, `wgContLang=en`, `wgLang=en`)",
+	"description": "Test BC dates storage and formatting in ISO8601 (#2233, skip virtuoso, `wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -7,23 +7,23 @@
 			"contents": "[[Has type::Date]]"
 		},
 		{
-                        "skip-on": {
-                                "virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
-                        },
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
 			"page": "Example/P0451/1",
 			"contents": "[[Has date::7 Jan 1, 06:25:10]][[Has date::7 Jan 1 BC, 06:25:11]][[Has date::7 Jan 2 BC, 06:25:12]][[Has date::7 Jan 11 BC, 06:25:13]][[Has date::7 Jan 111 BC, 06:25:14]][[Has date::7 Jan 1111 BC, 06:25:15]]"
 		},
 		{
-                        "skip-on": {
-                                "virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
-                        },
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
 			"page": "Example/P0451/Q/1/1",
 			"contents": "{{#show: Example/P0451/1 |?Has date }}"
 		},
 		{
-                        "skip-on": {
-                                "virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
-                        },
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
 			"page": "Example/P0451/Q/1/2",
 			"contents": "{{#show: Example/P0451/1 |?Has date#ISO }}"
 		}
@@ -32,6 +32,9 @@
 		{
 			"type": "parser",
 			"about": "#0 Testing property values",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
 			"subject": "Example/P0451/1",
 			"assert-store": {
 				"semantic-data": {
@@ -56,6 +59,9 @@
 		{
 			"type": "parser",
 			"about": "#1 Testing English output",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
 			"subject": "Example/P0451/Q/1/1",
 			"assert-output": {
 				"to-contain": [
@@ -71,6 +77,9 @@
 		{
 			"type": "parser",
 			"about": "#2 Testing ISO output",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
 			"subject": "Example/P0451/Q/1/2",
 			"assert-output": {
 				"to-contain": [
@@ -86,6 +95,9 @@
 		{
 			"type": "rdf",
 			"about": "#3 Test RDF output",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
 			"exportcontroller": {
 				"print-pages": [
 					"Example/P0451/1"
