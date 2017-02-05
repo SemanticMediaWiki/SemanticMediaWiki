@@ -126,6 +126,9 @@
 		"wgLang": "en"
 	},
 	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 fails for BC"
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false
