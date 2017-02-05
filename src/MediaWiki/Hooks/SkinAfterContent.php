@@ -41,37 +41,35 @@ class SkinAfterContent {
 	 */
 	public function performUpdate( &$data ) {
 
-		if ( !$this->canPerformUpdate() ) {
-			return true;
+		if ( $this->canAddFactbox() ) {
+			$this->addFactboxTo( $data );
 		}
 
-		return $this->doPerformUpdate( $data );
+		return true;
 	}
 
-	private function canPerformUpdate() {
+	private function canAddFactbox() {
 
-		if ( !$this->skin instanceof Skin ) {
+		if ( !$this->skin instanceof Skin || !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
 			return false;
 		}
 
 		$request = $this->skin->getContext()->getRequest();
 
-		if ( $request->getVal( 'action' ) === 'delete' || $request->getVal( 'action' ) === 'purge' || !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+		if ( in_array( $request->getVal( 'action' ), array( 'delete', 'purge', 'protect', 'unprotect' ) ) ) {
 			return false;
 		}
 
 		return true;
 	}
 
-	private function doPerformUpdate( &$data ) {
+	private function addFactboxTo( &$data ) {
 
 		$cachedFactbox = ApplicationFactory::getInstance()->singleton( 'FactboxFactory' )->newCachedFactbox();
 
 		$data .= $cachedFactbox->retrieveContent(
 			$this->skin->getOutput()
 		);
-
-		return true;
 	}
 
 }
