@@ -347,7 +347,8 @@
 	"smw_conceptarticlecount": "Unterhalb {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt.",
 	"smw-qp-empty-data": "Die angeforderten Daten konnten aufgrund unzureichender Auswahlkriterien nicht angezeigt werden.",
 	"right-smw-admin": "Semantic MediaWiki administrieren",
-	"right-smw-patternedit": "Zulässige Textmuster anhand regulärer Ausdrücke erstellen und bearbeiten (Semantic MediaWiki)",
+	"right-smw-patternedit": "Zulässige Textmuster anhand regulärer Ausdrücke erstellen und bearbeiten",
+	"right-smw-pageedit": "Seiten bearbeiten, die mit „<code>Ist bearbeitungsgeschützt</code>“ annotiert wurden",
 	"action-smw-patternedit": "reguläre Ausdrücke zu erstellen und/oder zu bearbeiten, die von Semantic MediaWiki verwendet werden",
 	"group-smwadministrator": "SMW-Administratoren",
 	"group-smwadministrator-member": "{{GENDER:$1|SMW-Administrator|SMW-Administratorin}}",
@@ -498,5 +499,13 @@
 	"smw-clipboard-copy-link": "Link in die Zwischenablage kopieren",
 	"smw-property-userdefined-fixedtable": "„$1“ wurde als [https://www.semantic-mediawiki.org/wiki/Fixed_properties fest definiertes Attribut] erstellt und konfiguriert. Jede Änderung des zugewiesenen [https://www.semantic-mediawiki.org/wiki/Type_declaration Datentyps] erfordert zwingend entweder die Ausführung des Wartungsskripts \"setupStore.php\" oder die Durchführung der Spezialaufgabe [[Special:SemanticMediaWiki|„Daten neu erstellen“]].",
 	"smw-data-lookup": "Rufe Daten ab ...",
-	"smw-no-data-available": "Es sind keine Daten verfügbar."
+	"smw-no-data-available": "Es sind keine Daten verfügbar.",
+	"smw-property-req-violation-missing-fields": "Die Annotation des Attribut „$1“ ist aufgrund des zugewiesenen Datentyps „$2“ unvollständig. Das Spezialattribut <code>Hat Komponenten</code> wurde nicht angegeben.",
+	"smw-property-req-violation-missing-formatter-uri": "Die Annotation des Attributs „$1“ ist aufgrund des zugewiesenen Datentyps unvollständig. Das Spezialattribut <code>Formatierungsanweisung zur externen URI</code> wurde nicht angegeben.",
+	"smw-property-req-violation-predefined-type": "„$1“ ist ein softwareseitig fest definiertes Attribut. Ihm wurde der Datentyp „$2“ zugewiesen, der nicht mit dem Standardtyp dieses Attributs vereinbar ist.",
+	"smw-pageedit-protection": "Diese Seite ist [[Property:Is edit protected|bearbeitungsgeschützt]], um unbeabsichtigte Veränderungen an Inhalten und Daten zu verhindern. Sie kann deshalb nur von Benutzern mit der hierfür notwendigen [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups Berechtigung] „$1“ bearbeitet werden.",
+	"smw-pageedit-protection-disabled": "Der Bearbeitungsschutz wurde deaktiviert. Daher kann das Spezialattribut „$1“ nicht verwendet werden, um diese Seite vor unautorisierten Bearbeitungen zu schützen.",
+	"smw-patternedit-protection": "Diese Seite ist bearbeitungsgeschützt, um unbeabsichtigte Veränderungen an Inhalten zu verhindern. Sie kann deshalb nur von Benutzern mit der hierfür notwendigen Berechtigung „smw-patternedit“ bearbeitet werden.",
+	"smw-pa-property-predefined_edip": "„$1“ ist ein softwareseitig fest definiertes Attribut, das den Status des Bearbeitungsschutzes einer Seite speichert. Es wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
+	"smw-pa-property-predefined-long_edip": "Jeder Benutzer darf dieses Attribut zu einer Seite hinzufügen und so den Bearbeitungsschutz festlegen. Indes dürfen hernach nur Benutzer mit einer entsprechenden Berechtigung die auf diese Weise geschützte Seite bearbeiten und den Bearbeitungsschutz ggf. aufheben."
 }

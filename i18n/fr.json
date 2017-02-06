@@ -365,6 +365,7 @@
 	"smw-qp-empty-data": "Les données demandées n’ont pas pu être affichées à cause de critères de sélection insuffisants.",
 	"right-smw-admin": "Tâches d’administration des accès (MédiaWiki Sémantique)",
 	"right-smw-patternedit": "Modifier l’accès pour gérer les expressions rationnelles et les motifs autorisés (Médiawiki Sémantique)",
+	"right-smw-pageedit": "Changer l'accès pour les pages  annotées <code>Protégé contre la modification</code> (Semantic MediaWiki)",
 	"action-smw-patternedit": "modifier les expressions rationnelles utilisées par Médiawiki Sémantique",
 	"group-smwadministrator": "Administrateurs (MédiaWiki Sémantique)",
 	"group-smwadministrator-member": "{{GENDER:$1|administrateur|administratrice}} (MédiaWiki Sémantique)",
@@ -515,5 +516,8 @@
 	"smw-clipboard-copy-link": "Copier le lien dans le presse-papiers",
 	"smw-property-userdefined-fixedtable": "« $1 » a été configuré comme [https://www.semantic-mediawiki.org/wiki/Fixed_properties propriété fixe] et toute modification de la [https://www.semantic-mediawiki.org/wiki/Type_declaration déclacration de son type] a besoin soit d'exécuter <code>setupStore.php</code> soit de terminer la tâche spéciale [[Special:SemanticMediaWiki|\"Installation et de mise à niveau de la base de données\"]].",
 	"smw-data-lookup": "Récupération des données…",
-	"smw-no-data-available": "Aucune donnée disponible."
+	"smw-no-data-available": "Aucune donnée disponible.",
+	"smw-property-req-violation-missing-fields": "Il manque les détails de déclaration pour la propriété « $1 » relatifs au type annoté « $2 » ce qui ne permet pas de définir la propriété <code>Comporte des champs</code>.",
+	"smw-property-req-violation-missing-formatter-uri": "Il manque les détails de déclaration pour la propriété « $1 » relatifs au type annoté, ce qui ne permet pas de définir la propriété <code>URI du formateur externe</code>.",
+	"smw-pageedit-protection-disabled": "La protection contre la modification a été désactivée, c'est pourquoi « $1 » ne peut pas être utilisé pour protéger les pages de l'entité contre la modification non autorisée."
 }

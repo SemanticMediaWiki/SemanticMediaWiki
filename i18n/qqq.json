@@ -347,6 +347,7 @@
 	"smw-qp-empty-data": "An error message shown for insufficient data.",
 	"right-smw-admin": "{{doc-right|smw-admin}}",
 	"right-smw-patternedit": "{{doc-right|smw-patternedit}}",
+	"right-smw-pageedit": "{{doc-right}}",
 	"action-smw-patternedit": "{{doc-action|smw-patternedit}}",
 	"group-smwadministrator": "{{doc-group|smwadministrator|group}}",
 	"group-smwadministrator-member": "{{doc-group|smwadministrator|member}}",
@@ -499,5 +500,13 @@
 	"smw-clipboard-copy-link": "A label that is displayed on the info tooltip.",
 	"smw-property-userdefined-fixedtable": "This is an informatory message.",
 	"smw-data-lookup": "This is an informatory message.",
-	"smw-no-data-available": "This is an informatory message."
+	"smw-no-data-available": "This is an informatory message.",
+	"smw-property-req-violation-missing-fields": "This is an error message.\n\nParameters:\n* $1 - Holds the name of the property\n* $2 - Holds the name of the datatype",
+	"smw-property-req-violation-missing-formatter-uri": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the property",
+	"smw-property-req-violation-predefined-type": "This is an error message.\n\nParameters:\n* $1 - Holds the name of the property\n* $2 - Holds the name of the datatype",
+	"smw-pageedit-protection": "This is an informatory message shown on every page which is edit protected via an annotation.\n\nParameter:\n* $1 - Holds the name of the user right",
+	"smw-pageedit-protection-disabled": "This is an informatory message.\n\nParameter:\n* $1 - Holds the name of the special property",
+	"smw-patternedit-protection": "This is an informatory message shown on every page which is edit protected via a software setting.",
+	"smw-pa-property-predefined_edip": "This informatory message shown in a tooltip describes the [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] holding [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Is_edit_protected Is edit protected].\n\nParameter:\n* $1 - name of predefined property",
+	"smw-pa-property-predefined-long_edip": "This informatory message describes the value added to a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property]."
 }

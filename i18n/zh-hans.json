@@ -259,7 +259,7 @@
 	"smw-admin-statistics-job-docu": "工作统计显示有关已安排但尚未执行的语义MediaWiki工作的信息。工作数量可能有点不准确，或包含失败尝试，请查阅[https://www.mediawiki.org/wiki/Manual:Job_queue 手册]以获取进一步信息。",
 	"smw-admin-statistics-querycache-title": "查询缓存统计",
 	"smw-admin-statistics-querycache-disabled": "[https://www.semantic-mediawiki.org/wiki/QueryCache 查询缓存]未在此wiki启用，并因此没有可用统计信息。",
-	"smw-admin-statistics-querycache-explain": "缓存统计是包含临时累计的数据及其衍生数据，其中：\n* “misses”表示因无法从缓存中获取数据而导致的直接存储库（如数据库、元组存储等）访问的次数。\n* “deletes”表示总的缓存清除操作（刷新页面或某一请求的依赖项操作）数量。\n* “hits”包含了从嵌入式查询（包含于维基页面内部的查询请求）和非嵌入式查询（如果启用，则表示使用诸如Special:Ask页面和API进行的查询请求）源中获取道德缓存数量。\n* “medianRetrievalResponseTime”是响应时间（秒）的中位数。此响应时间表示在结果收集的过程中，缓存的和未缓存的结果在请求时所花费的时间。  \n* “noCache”表示未尝试从缓存中获取结果的请求数量（limit=0，或启用了“no-cache”选项等）。",
+	"smw-admin-statistics-querycache-explain": "缓存统计是包含临时累计的数据及其衍生数据，其中：\n* “misses”表示因无法从缓存中获取数据而导致的直接存储库（如数据库、元组存储等）访问的次数。\n* “deletes”表示总的缓存清除操作（刷新页面或某一请求的依赖项操作）数量。\n* “hits”包含了从嵌入式查询（包含于维基页面内部的查询请求）和非嵌入式查询（如果启用，则表示使用诸如Special:Ask页面和API进行的查询请求）源中获取到的缓存数量。\n* “medianRetrievalResponseTime”是响应时间（秒）的中位数。此响应时间表示在结果收集的过程中，缓存的和未缓存的结果在请求时所花费的时间。  \n* “noCache”表示未尝试从缓存中获取结果的请求数量（limit=0，或启用了“no-cache”选项等）。",
 	"smw-admin-permission-missing": "由于缺少权限，对此页面的访问已被阻止，请查阅[https://www.semantic-mediawiki.org/wiki/Help:Permissions 权限]帮助页面以获取有关所需设置的详情。",
 	"smw-admin-setupsuccess": "存储引擎已成功建立。",
 	"smw_smwadmin_return": "返回$1。",
@@ -344,7 +344,8 @@
 	"smw-qp-empty-data": "选择标准不充分，请求数据无法显示。",
 	"right-smw-admin": "连接管理员工作组（Semantic MediaWiki）",
 	"right-smw-patternedit": "维护允许的正则表达式和模式的编辑访问权（Semantic MediaWiki）",
-	"action-smw-patternedit": "编辑由Semantic MediaWiki使用的正则表达式",
+	"right-smw-pageedit": "用于带<code>Is edit protected</code>注释页面的编辑访问权（语义MediaWiki）",
+	"action-smw-patternedit": "编辑由语义MediaWiki使用的正则表达式",
 	"group-smwadministrator": "管理员（Semantic MediaWiki）",
 	"group-smwadministrator-member": "{{GENDER:$1|管理员（Semantic MediaWiki）}}",
 	"grouppage-smwadministrator": "{{ns:project}}:管理员（Semantic MediaWiki）",
@@ -494,5 +495,13 @@
 	"smw-clipboard-copy-link": "复制链接到剪贴板",
 	"smw-property-userdefined-fixedtable": "“$1”被配置为[https://www.semantic-mediawiki.org/wiki/Fixed_properties 固定属性]，并且对其[https://www.semantic-mediawiki.org/wiki/Type_declaration 类型声明]的修改需要运行<code>setupStore.php</code>或完成特殊的[[Special:SemanticMediaWiki|“数据库安装与升级”]]任务。",
 	"smw-data-lookup": "正在取得数据...",
-	"smw-no-data-available": "没有可用数据。"
+	"smw-no-data-available": "没有可用数据。",
+	"smw-property-req-violation-missing-fields": "由于定义<code>Has fields</code>属性失败，属性“$1”丢失用于已注释“$2”类型的声明详情。",
+	"smw-property-req-violation-missing-formatter-uri": "由于定义<code>External formatter URI</code>属性失败，属性“$1”丢失用于已注释类型的声明详情。",
+	"smw-property-req-violation-predefined-type": "作为预定义属性，属性“$1”包含“$2”类型声明，它与此属性默认类型不兼容。",
+	"smw-pageedit-protection": "此页面受到[[Property:Is edit protected|保护]]，以阻止意外数据修改，并因此只有拥有适当“$1”[https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups 权限]的用户可以编辑。",
+	"smw-pageedit-protection-disabled": "编辑保护被禁用，因此“$1”不能用于保护实体页面不受未经授权的编辑。",
+	"smw-patternedit-protection": "此页面受到保护，并因此只有拥有适当<code>smw-patternedit</code>[https://www.semantic-mediawiki.org/wiki/Help:Permissions 权限]的用户可以编辑。",
+	"smw-pa-property-predefined_edip": "“$1”是一个由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，识别编辑是否受到保护的预定义属性。",
+	"smw-pa-property-predefined-long_edip": "尽管任何用户都可以添加此属性至一个主题，但只有拥有专用权限的一位用户可以在其添加至实体页面后，对其编辑或解除保护。"
 }
