@@ -95,6 +95,7 @@
 	"smw-paramdesc-named_args": "Nombre los argumentos que se pasan a la plantilla",
 	"smw-paramdesc-export": "Opción de exportación",
 	"smw-paramdesc-prettyprint": "Una salida con formato agradable que muestra sangrías y saltos de línea adicionales",
+	"smw-paramdesc-json-unescape": "Salida, que contendrá barras sin escapar y caracteres Unicode multibyte.",
 	"smw-paramdesc-source": "Fuente de consulta alternativa",
 	"smw-paramdesc-jsonsyntax": "Sintaxis JSON a utilizar",
 	"smw-printername-feed": "Fuente web (feed) RSS o Atom",

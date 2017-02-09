@@ -519,5 +519,10 @@
 	"smw-no-data-available": "Aucune donnée disponible.",
 	"smw-property-req-violation-missing-fields": "Il manque les détails de déclaration pour la propriété « $1 » relatifs au type annoté « $2 » ce qui ne permet pas de définir la propriété <code>Comporte des champs</code>.",
 	"smw-property-req-violation-missing-formatter-uri": "Il manque les détails de déclaration pour la propriété « $1 » relatifs au type annoté, ce qui ne permet pas de définir la propriété <code>URI du formateur externe</code>.",
-	"smw-pageedit-protection-disabled": "La protection contre la modification a été désactivée, c'est pourquoi « $1 » ne peut pas être utilisé pour protéger les pages de l'entité contre la modification non autorisée."
+	"smw-property-req-violation-predefined-type": "La propriété « $1 », en tant que propriété prédéfinie, contient une déclaration de type « $2 » qui n’est pas compatible avec le type par défaut de cette propriété.",
+	"smw-pageedit-protection": "Cette page est [[Property:Is edit protected|protégée]] pour éviter la modification de données accidentelle, et ne peut donc être modifiée que par des utilisateurs avec le [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups droit] « $1 » approprié.",
+	"smw-pageedit-protection-disabled": "La protection contre la modification a été désactivée, c'est pourquoi « $1 » ne peut pas être utilisé pour protéger les pages de l'entité contre la modification non autorisée.",
+	"smw-patternedit-protection": "Cette page est protégée et ne peut être modifiée que par des utilisateurs avec le [https://www.semantic-mediawiki.org/wiki/Help:Permissions droit] <code>smw-patternedit</code> approprié.",
+	"smw-pa-property-predefined_edip": "« $1 » est une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique] pour indiquer si la modification est protégée ou non.",
+	"smw-pa-property-predefined-long_edip": "Bien que n’importe quel utilisateur soit habilité à ajouter cette propriété à un sujet, seul un utilisateur avec un droit spécifique peut modifier ou supprimer la protection d’une entité, une fois celle-ci ajoutée."
 }

@@ -254,6 +254,7 @@
 	"smw_concept_header": "Pagine del concetto \"$1\"",
 	"smw_conceptarticlecount": "Mostro {{PLURAL:$1|una pagina|$1 pagine}}.",
 	"right-smw-patternedit": "Modifica accesso per mantenere le espressioni regolari e i modelli consentiti (Semantic MediaWiki)",
+	"right-smw-pageedit": "Modifica l'accesso per <code>Is edit protected</code> nelle pagine di annotazione (Semantic MediaWiki)",
 	"action-smw-patternedit": "modificare le espressioni regolari utilizzate da Semantic MediaWiki",
 	"group-smwadministrator": "Amministratori (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|amministratore|amministratrice|amministratore/trice}} (Semantic MediaWiki)",
@@ -330,5 +331,8 @@
 	"smw-pa-property-predefined_pefu": "\"$1\" è una proprietà predefinita fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] per specificare una risorsa esterna con un segnaposto.",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" non può essere utilizzato come etichetta preferita perché la lingua \"$2\" è già stata assegnata all'etichetta \"$3\".",
-	"smw-no-data-available": "Nessun dato disponibile."
+	"smw-no-data-available": "Nessun dato disponibile.",
+	"smw-property-req-violation-missing-fields": "Alla proprietà \"$1\" manca la dichiarazione di dettagli per le annotazioni di tipo \"$2\" non riuscendo a definire la proprietà <code>Has fields</code>.",
+	"smw-pageedit-protection-disabled": "La modifica di protezione è stata disattivata, pertanto \"$1\" non può essere utilizzato per proteggere il contenuto della pagina dalle modifiche non autorizzate.",
+	"smw-pa-property-predefined-long_edip": "Mentre qualsiasi utente è qualificato per aggiungere questa proprietà ad un soggetto, soltanto utenti con uno specifico permesso possono modificare o rimuovere la protezione ad un'entità, una volta che questa è stata aggiunta."
 }
