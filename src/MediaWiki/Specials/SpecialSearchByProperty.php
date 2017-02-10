@@ -35,6 +35,7 @@ class SpecialSearchByProperty extends SpecialPage {
 	 */
 	public function execute( $query ) {
 
+		$this->setHeaders();
 		$output = $this->getOutput();
 
 		$output->setPageTitle( $this->msg( 'searchbyproperty' )->text() );
