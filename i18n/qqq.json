@@ -349,6 +349,7 @@
 	"right-smw-patternedit": "{{doc-right|smw-patternedit}}",
 	"right-smw-pageedit": "{{doc-right}}",
 	"action-smw-patternedit": "{{doc-action|smw-patternedit}}",
+	"action-smw-pageedit": "{{doc-action|smw-pageedit}}",
 	"group-smwadministrator": "{{doc-group|smwadministrator|group}}",
 	"group-smwadministrator-member": "{{doc-group|smwadministrator|member}}",
 	"grouppage-smwadministrator": "{{doc-group|smwadministrator|page}}",

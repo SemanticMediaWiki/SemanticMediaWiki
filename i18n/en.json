@@ -340,6 +340,7 @@
 	"right-smw-patternedit": "Edit access to maintain allowed regular expressions and patterns (Semantic MediaWiki)",
 	"right-smw-pageedit": "Edit access for <code>Is edit protected</code> annotated pages (Semantic MediaWiki)",
 	"action-smw-patternedit": "edit regular expressions used by Semantic MediaWiki",
+	"action-smw-pageedit": "edit pages annotated with <code>Is edit protected</code> (Semantic MediaWiki)",
 	"group-smwadministrator": "Administrators (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|administrator (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Administrators (Semantic MediaWiki)",
