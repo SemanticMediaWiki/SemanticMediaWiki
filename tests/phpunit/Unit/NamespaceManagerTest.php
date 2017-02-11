@@ -45,6 +45,8 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgNamespacesWithSubpages' => array(),
 			'wgExtraNamespaces'  => array(),
 			'wgNamespaceAliases' => array(),
+			'wgContentNamespaces' => array(),
+			'wgNamespacesToBeSearchedDefault' => array(),
 			'wgLanguageCode'     => 'en'
 		);
 	}
@@ -126,7 +128,8 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 	public function testInitCustomNamespace() {
 
 		$test = array(
-			'wgLanguageCode' => 'en'
+			'wgLanguageCode' => 'en',
+			'wgContentNamespaces' => array()
 		);
 
 		NamespaceManager::initCustomNamespace( $test );

@@ -213,6 +213,24 @@ class NamespaceManager {
 			$smwNamespacesSettings,
 			$this->globalVars['smwgNamespacesWithSemanticLinks']
 		);
+
+		/**
+		 * Allow custom namespaces to be acknowledged as containing useful content
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:$wgContentNamespaces
+		 */
+		$this->globalVars['wgContentNamespaces'] = $this->globalVars['wgContentNamespaces'] + array(
+			SMW_NS_PROPERTY,
+			SMW_NS_CONCEPT
+		);
+
+		/**
+		 * To indicate which namespaces are enabled for searching by default
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:$wgNamespacesToBeSearchedDefault
+		 */
+		$this->globalVars['wgNamespacesToBeSearchedDefault'][SMW_NS_PROPERTY] = true;
+		$this->globalVars['wgNamespacesToBeSearchedDefault'][SMW_NS_CONCEPT] = true;
 	}
 
 	protected function isDefinedConstant( $constant ) {
