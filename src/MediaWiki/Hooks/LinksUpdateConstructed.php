@@ -82,6 +82,8 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 			$this->enabledDeferredUpdate = false;
 		}
 
+		$parserData->setOrigin( 'LinksUpdateConstructed' );
+
 		$parserData->updateStore(
 			$this->enabledDeferredUpdate
 		);

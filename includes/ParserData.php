@@ -46,6 +46,13 @@ class ParserData {
 	private $enabledUpdateJobs = true;
 
 	/**
+	 * Identifies the origin of a request.
+	 *
+	 * @var string
+	 */
+	private $origin = '';
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param Title $title
@@ -56,6 +63,15 @@ class ParserData {
 		$this->parserOutput = $parserOutput;
 
 		$this->initSemanticData();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $origin
+	 */
+	public function setOrigin( $origin ) {
+		$this->origin = $origin;
 	}
 
 	/**
@@ -298,7 +314,10 @@ class ParserData {
 			$storeUpdater->doUpdate();
 		} );
 
-		$deferredCallableUpdate->setOrigin( __METHOD__ . ' :: ' . $this->semanticData->getSubject()->getHash() );
+
+		$deferredCallableUpdate->setOrigin(
+			__METHOD__ . ( $this->origin !== '' ? ' from ' . $this->origin : '' ) . ': ' . $this->semanticData->getSubject()->getHash()
+		);
 
 		$deferredCallableUpdate->enabledDeferredUpdate(
 			$enabledDeferredUpdate
