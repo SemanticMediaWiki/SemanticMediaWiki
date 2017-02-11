@@ -13,7 +13,6 @@ use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
 use Onoi\Tesa\SanitizerFactory;
-use SMW\SQLStore\TransitionalTableDiffStore;
 
 /**
  * @license GNU GPL v2+
@@ -49,7 +48,7 @@ class FulltextSearchTableFactory {
 				break;
 		}
 
-		return new ValueMatchConditionBuilder( $this->newTextSanitizer() );
+		return new ValueMatchConditionBuilder( $this->newTextSanitizer(), $this->newSearchTable( $store ) );
 	}
 
 	/**
@@ -136,17 +135,18 @@ class FulltextSearchTableFactory {
 	 */
 	public function newTextByChangeUpdater( SQLStore $store ) {
 
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		$textByChangeUpdater = new TextByChangeUpdater(
 			$store->getConnection( 'mw.db' ),
 			$this->newSearchTableUpdater( $store ),
 			$this->newTextSanitizer(),
-			ApplicationFactory::getInstance()->singleton( 'TempChangeOpStore' )
+			$applicationFactory->singleton( 'TempChangeOpStore' )
 		);
 
 		$textByChangeUpdater->setLogger(
-			ApplicationFactory::getInstance()->getMediaWikiLogger()
+			$applicationFactory->getMediaWikiLogger()
 		);
 
 		$textByChangeUpdater->asDeferredUpdate(
