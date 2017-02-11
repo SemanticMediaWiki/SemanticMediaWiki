@@ -78,13 +78,13 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ParserData( $title, $parserOutput );
 
 		$this->assertTrue(
-			$instance->isEnabledWithUpdateJobs()
+			$instance->isEnabledWithUpdateJob()
 		);
 
 		$instance->disableBackgroundUpdateJobs();
 
 		$this->assertFalse(
-			$instance->isEnabledWithUpdateJobs()
+			$instance->isEnabledWithUpdateJob()
 		);
 	}
 

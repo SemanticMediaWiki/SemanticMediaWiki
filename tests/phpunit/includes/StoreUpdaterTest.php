@@ -121,7 +121,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$semanticData
 		);
 
-		$instance->enabledWithUpdateJobs(
+		$instance->isEnabledWithUpdateJob(
 			$updateJobStatus
 		);
 
@@ -177,7 +177,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$semanticData
 		);
 
-		$instance->enabledWithUpdateJobs(
+		$instance->isEnabledWithUpdateJob(
 			$updateJobStatus
 		);
 
@@ -251,6 +251,10 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
+		$source = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$subject = new DIWikiPage(
 			'Foo',
 			NS_MAIN
@@ -266,12 +270,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
-			->method( 'changeTitle' )
-			->with(
-				$this->equalTo( $subject->getTitle() ),
-				$this->equalTo( $target->getTitle() ),
-				$this->anything(),
-				$this->anything() );
+			->method( 'changeTitle' );
 
 		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
 		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
@@ -288,7 +287,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$semanticData
 		);
 
-		$instance->enabledWithUpdateJobs( true );
+		$instance->isEnabledWithUpdateJob( true );
 		$instance->doUpdate();
 	}
 
