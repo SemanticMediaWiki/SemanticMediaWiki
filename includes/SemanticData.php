@@ -9,7 +9,6 @@ use SMWDataValue;
 use SMWDIContainer;
 use SMWPropertyValue;
 use SMW\Exception\SemanticDataImportException;
-use SMW\Exception\SubSemanticDataException;
 use SMW\DataModel\SubSemanticData;
 
 /**
@@ -31,6 +30,12 @@ use SMW\DataModel\SubSemanticData;
  * @author Jeroen De Dauw
  */
 class SemanticData {
+
+	/**
+	 * Returns the last modified timestamp the data were stored to the Store or
+	 * have been fetched from cache.
+	 */
+	const OPT_LAST_MODIFIED = 'opt.last.modified';
 
 	/**
 	 * Cache for the localized version of the namespace prefix "Property:".
@@ -138,9 +143,9 @@ class SemanticData {
 	private $hash = null;
 
 	/**
-	 * @var integer|null
+	 * @var Options
 	 */
-	private $lastModified = null;
+	private $options = null;
 
 	/**
 	 * This is kept public to keep track of the depth during a recursive processing
@@ -177,7 +182,7 @@ class SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'lastModified' );
+		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options' );
 	}
 
 	/**
@@ -226,6 +231,37 @@ class SemanticData {
 		}
 
 		return array();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key ) {
+
+		if ( !$this->options instanceof Options ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->has( $key ) ? $this->options->get( $key ) : null;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setOption( $key, $value ) {
+
+		if ( !$this->options instanceof Options ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->set( $key, $value );
 	}
 
 	/**
@@ -351,6 +387,10 @@ class SemanticData {
 		if( $dataItem instanceof SMWDIContainer ) {
 			$this->addSubSemanticData( $dataItem->getSemanticData() );
 			$dataItem = $dataItem->getSemanticData()->getSubject();
+		}
+
+		if( $property->getKey() === DIProperty::TYPE_MODIFICATION_DATE ) {
+			$this->setOption( self::OPT_LAST_MODIFIED, $dataItem->getMwTimestamp() );
 		}
 
 		if ( $property->isInverse() ) { // inverse properties cannot be used for annotation
@@ -519,6 +559,7 @@ class SemanticData {
 		$this->stubObject = false;
 		$this->clearSubSemanticData();
 		$this->hash = null;
+		$this->options = null;
 	}
 
 	/**
@@ -654,40 +695,6 @@ class SemanticData {
 	public function removeSubSemanticData( SemanticData $semanticData ) {
 		$this->hash = null;
 		$this->subSemanticData->removeSubSemanticData( $semanticData );
-	}
-
-	/**
-	 * Returns the last modified timestamp the data were stored to the Store or
-	 * have been fetched from cache.
-	 *
-	 * @since  2.3
-	 *
-	 * @return integer|null
-	 */
-	public function getLastModified() {
-
-		if ( $this->lastModified !== null ) {
-			return $this->lastModified;
-		}
-
-		$lastModified = $this->getPropertyValues( new DIProperty( '_MDAT' ) );
-
-		if ( $lastModified === array() ) {
-			return null;
-		}
-
-		$lastModified = end( $lastModified );
-
-		return $this->lastModified = $lastModified->getMwTimestamp();
-	}
-
-	/**
-	 * @since  2.3
-	 *
-	 * @param string|null $lastModified
-	 */
-	public function setLastModified( $lastModified ) {
-		$this->lastModified = $lastModified;
 	}
 
 }

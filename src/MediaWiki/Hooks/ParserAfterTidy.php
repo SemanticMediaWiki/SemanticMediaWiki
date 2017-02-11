@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use SMW\ApplicationFactory;
+use SMW\SemanticData;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -148,7 +149,11 @@ class ParserAfterTidy {
 			// Set a timestamp explicitly to create a new hash for the property
 			// table change row differ and force a data comparison (this doesn't
 			// change the _MDAT annotation)
-			$parserData->getSemanticData()->setLastModified( wfTimestamp( TS_UNIX ) );
+			$parserData->getSemanticData()->setOption(
+				SemanticData::OPT_LAST_MODIFIED,
+				wfTimestamp( TS_UNIX )
+			);
+
 			$parserData->updateStore( true );
 
 			$parserData->addLimitReport(

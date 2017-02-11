@@ -1,5 +1,7 @@
 <?php
 
+use SMW\Options;
+
 /**
  * This group contains all parts of SMW that relate to the processing of dataitems
  * of various types.
@@ -56,6 +58,11 @@ abstract class SMWDataItem {
 	const TYPE_PROPERTY  = 11;
 	///  Data item ID for SMWDIError
 	const TYPE_ERROR     = 12;
+
+	/**
+	 * @var Options
+	 */
+	private $options = null;
 
 	/**
 	 * Convenience method that returns a constant that defines the concrete
@@ -193,6 +200,37 @@ abstract class SMWDataItem {
 			case self::TYPE_NOTYPE: default:
 				throw new InvalidArgumentException( "The value \"$diType\" is not a valid dataitem ID." );
 		}
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setOption( $key, $value ) {
+
+		if ( !$this->options instanceof Options ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->set( $key, $value );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key ) {
+
+		if ( !$this->options instanceof Options ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->has( $key ) ? $this->options->get( $key ) : null;
 	}
 
 }
