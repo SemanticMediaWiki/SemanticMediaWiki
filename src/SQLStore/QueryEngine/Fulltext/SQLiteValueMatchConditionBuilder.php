@@ -3,7 +3,6 @@
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use SMW\Query\Language\ValueDescription;
-use SMW\DIProperty;
 
 /**
  * @license GNU GPL v2+
@@ -14,73 +13,7 @@ use SMW\DIProperty;
 class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 
 	/**
-	 * @var SearchTable
-	 */
-	private $searchTable;
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param TextSanitizer $textSanitizer
-	 * @param SearchTable $searchTable
-	 */
-	public function __construct( TextSanitizer $textSanitizer, SearchTable $searchTable ) {
-		parent::__construct( $textSanitizer );
-		$this->searchTable = $searchTable;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return boolean
-	 */
-	public function isEnabled() {
-		return $this->searchTable->isEnabled();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return string
-	 */
-	public function getTableName() {
-		return $this->searchTable->getTableName();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $value
-	 *
-	 * @return boolean
-	 */
-	public function hasMinTokenLength( $value ) {
-		return $this->searchTable->hasMinTokenLength( $value );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $property
-	 *
-	 * @return boolean
-	 */
-	public function isExemptedProperty( DIProperty $property ) {
-		return $this->searchTable->isExemptedProperty( $property );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $temporaryTable
-	 *
-	 * @return string
-	 */
-	public function getSortIndexField( $temporaryTable = '' ) {
-		return ( $temporaryTable !== '' ? $temporaryTable . '.' : '' ) . $this->searchTable->getSortField();
-	}
-
-	/**
+	 * @see ValueMatchConditionBuilder::canApplyFulltextSearchMatchCondition
 	 * @since 2.5
 	 *
 	 * @param ValueDescription $description
@@ -115,6 +48,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	}
 
 	/**
+	 * @see ValueMatchConditionBuilder::getWhereCondition
 	 * @since 2.5
 	 *
 	 * @param ValueDescription $description

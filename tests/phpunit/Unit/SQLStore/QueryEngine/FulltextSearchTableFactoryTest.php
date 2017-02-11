@@ -30,7 +30,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store->expects( $this->once() )
+		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 

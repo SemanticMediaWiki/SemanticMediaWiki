@@ -17,6 +17,7 @@ use SMW\DataItemFactory;
 class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $textSanitizer;
+	private $searchTable;
 	private $dataItemFactory;
 
 	protected function setUp() {
@@ -26,20 +27,29 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder',
-			new ValueMatchConditionBuilder( $this->textSanitizer )
+			new ValueMatchConditionBuilder( $this->textSanitizer, $this->searchTable )
 		);
 	}
 
 	public function testIsEnabled() {
 
+		$this->searchTable->expects( $this->once() )
+			->method( 'isEnabled' )
+			->will( $this->returnValue( false ) );
+
 		$instance = new ValueMatchConditionBuilder(
-			$this->textSanitizer
+			$this->textSanitizer,
+			$this->searchTable
 		);
 
 		$this->assertFalse(
@@ -49,20 +59,30 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetTableName() {
 
+		$this->searchTable->expects( $this->once() )
+			->method( 'getTableName' )
+			->will( $this->returnValue( 'Foo' ) );
+
 		$instance = new ValueMatchConditionBuilder(
-			$this->textSanitizer
+			$this->textSanitizer,
+			$this->searchTable
 		);
 
 		$this->assertEquals(
-			'',
+			'Foo',
 			$instance->getTableName()
 		);
 	}
 
 	public function testHasMinTokenLength() {
 
+		$this->searchTable->expects( $this->once() )
+			->method( 'hasMinTokenLength' )
+			->will( $this->returnValue( false ) );
+
 		$instance = new ValueMatchConditionBuilder(
-			$this->textSanitizer
+			$this->textSanitizer,
+			$this->searchTable
 		);
 
 		$this->assertFalse(
@@ -72,12 +92,17 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSortIndexField() {
 
+		$this->searchTable->expects( $this->once() )
+			->method( 'getSortField' )
+			->will( $this->returnValue( 'bar' ) );
+
 		$instance = new ValueMatchConditionBuilder(
-			$this->textSanitizer
+			$this->textSanitizer,
+			$this->searchTable
 		);
 
 		$this->assertEquals(
-			'',
+			'Foo.bar',
 			$instance->getSortIndexField( 'Foo' )
 		);
 	}
@@ -85,7 +110,8 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanApplyFulltextSearchMatchCondition() {
 
 		$instance = new ValueMatchConditionBuilder(
-			$this->textSanitizer
+			$this->textSanitizer,
+			$this->searchTable
 		);
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -100,7 +126,8 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetWhereConditionWithPropertyOnTempTable() {
 
 		$instance = new ValueMatchConditionBuilder(
-			$this->textSanitizer
+			$this->textSanitizer,
+			$this->searchTable
 		);
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
