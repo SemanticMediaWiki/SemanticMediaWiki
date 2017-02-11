@@ -243,6 +243,37 @@ class HookRegistry {
 		};
 
 		/**
+		 * Hook: Occurs after the protect article request has been processed
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleProtectComplete
+		 */
+		$this->handlers['ArticleProtectComplete'] = function ( &$wikiPage, &$user, $protections, $reason ) use ( $applicationFactory ) {
+
+			$editInfoProvider = new \SMW\MediaWiki\EditInfoProvider(
+				$wikiPage,
+				$wikiPage->getRevision(),
+				$user
+			);
+
+			$articleProtectComplete = new ArticleProtectComplete(
+				$wikiPage->getTitle(),
+				$editInfoProvider
+			);
+
+			$articleProtectComplete->setEditProtectionRight(
+				$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+			);
+
+			$articleProtectComplete->setLogger(
+				$applicationFactory->getMediaWikiLogger()
+			);
+
+			$articleProtectComplete->process( $protections, $reason );
+
+			return true;
+		};
+
+		/**
 		 * Hook: TitleMoveComplete occurs whenever a request to move an article
 		 * is completed
 		 *

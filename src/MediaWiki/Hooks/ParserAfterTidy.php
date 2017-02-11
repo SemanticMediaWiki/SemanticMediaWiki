@@ -60,6 +60,7 @@ class ParserAfterTidy {
 		// @see ParserData::setSemanticDataStateToParserOutputProperty
 		if ( $this->parser->getOutput()->getProperty( 'smw-semanticdata-status' ) ||
 			$this->parser->getOutput()->getProperty( 'displaytitle' ) ||
+			$this->parser->getTitle()->isProtected( 'edit' ) ||
 			$this->parser->getOutput()->getCategoryLinks() ||
 			$this->parser->getDefaultSort() ) {
 			return true;
@@ -102,6 +103,16 @@ class ParserAfterTidy {
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
 			$propertyAnnotator
+		);
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newEditProtectedPropertyAnnotator(
+			$propertyAnnotator,
+			$this->parser->getTitle()
+		);
+
+		// Special case! belongs to the EditProtectedPropertyAnnotator instance
+		$propertyAnnotator->addTopIndicatorTo(
+			$this->parser->getOutput()
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(

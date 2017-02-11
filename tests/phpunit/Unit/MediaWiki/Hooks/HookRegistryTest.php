@@ -138,6 +138,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForInternalParseBeforeLinks( $instance );
 		$this->doTestExecutionForNewRevisionFromEditComplete( $instance );
 		$this->doTestExecutionForTitleMoveComplete( $instance );
+		$this->doTestExecutionForArticleProtectComplete( $instance );
 		$this->doTestExecutionForArticlePurge( $instance );
 		$this->doTestExecutionForArticleDelete( $instance );
 		$this->doTestExecutionForLinksUpdateConstructed( $instance );
@@ -411,6 +412,59 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
+	}
+
+	public function doTestExecutionForArticleProtectComplete( $instance ) {
+
+		$handler = 'ArticleProtectComplete';
+
+		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$content = $this->getMockBuilder( '\Content' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$content->expects( $this->any() )
+			->method( 'getContentHandler' )
+			->will( $this->returnValue( $contentHandler ) );
+
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision->expects( $this->any() )
+			->method( 'getContent' )
+			->will( $this->returnValue( $content ) );
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $revision ) );
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->title ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$protections = array();
+		$reason = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$wikiPage, &$user, $protections, $reason )
+		);
 	}
 
 	public function doTestExecutionForArticlePurge( $instance ) {

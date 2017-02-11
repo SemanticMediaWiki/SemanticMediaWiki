@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Protection;
 
-use SMW\EditProtectionValidator;
+use SMW\Protection\EditProtectionValidator;
 use SMW\DataItemFactory;
 
 /**
- * @covers \SMW\EditProtectionValidator
+ * @covers \SMW\Protection\EditProtectionValidator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -37,7 +37,7 @@ class EditProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\EditProtectionValidator',
+			EditProtectionValidator::class,
 			new EditProtectionValidator( $this->cachedPropertyValuesPrefetcher, $this->cache )
 		);
 	}

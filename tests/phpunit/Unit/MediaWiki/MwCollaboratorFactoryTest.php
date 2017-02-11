@@ -184,11 +184,19 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructPageInfoProvider() {
 
+		$settings = $this->getMockBuilder( '\SMW\Settings' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
+		$instance = new MwCollaboratorFactory( $applicationFactory );
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageInfoProvider',
