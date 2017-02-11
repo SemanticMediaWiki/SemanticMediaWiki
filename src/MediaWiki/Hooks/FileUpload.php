@@ -91,6 +91,8 @@ class FileUpload {
 		// 2.4+
 		Hooks::run( 'SMW::FileUpload::BeforeUpdate', array( $filePage, $parserData->getSemanticData() ) );
 
+		$parserData->setOrigin( 'FileUpload' );
+
 		$parserData->pushSemanticDataToParserOutput();
 		$parserData->updateStore( true );
 

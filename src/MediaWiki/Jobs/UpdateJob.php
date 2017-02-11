@@ -67,7 +67,7 @@ class UpdateJob extends JobBase {
 		if ( $this->getTitle()->isSpecialPage() ) {
 			return true;
 		}
-		
+
 		LinkCache::singleton()->clear();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -171,6 +171,8 @@ class UpdateJob extends JobBase {
 			'isFromJob',
 			true
 		);
+
+		$parserData->setOrigin( 'UpdateJob' );
 
 		$parserData->disableBackgroundUpdateJobs();
 		$parserData->updateStore();
