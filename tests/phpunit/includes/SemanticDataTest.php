@@ -404,22 +404,11 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
-		$instance->setLastModified( 1001 );
+		$instance->setOption( SemanticData::OPT_LAST_MODIFIED, 1001 );
 
 		$this->assertEquals(
 			1001,
-			$instance->getLastModified()
-		);
-	}
-
-	public function testGetLastModifiedForEmptyModificationDate() {
-
-		$instance = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
-		);
-
-		$this->assertNull(
-			$instance->getLastModified()
+			$instance->getOption( SemanticData::OPT_LAST_MODIFIED )
 		);
 	}
 
@@ -436,7 +425,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			1272508903,
-			$instance->getLastModified()
+			$instance->getOption( SemanticData::OPT_LAST_MODIFIED )
 		);
 	}
 

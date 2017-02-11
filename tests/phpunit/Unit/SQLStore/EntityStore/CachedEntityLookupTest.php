@@ -107,7 +107,10 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$semanticData->expects( $this->once() )
-			->method( 'setLastModified' );
+			->method( 'setOption' )
+			->with(
+				$this->equalTo( $semanticData::OPT_LAST_MODIFIED ),
+				$this->anything() );
 
 		$this->entityLookup->expects( $this->once() )
 			->method( 'getSemanticData' )

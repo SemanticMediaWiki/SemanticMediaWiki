@@ -140,7 +140,10 @@ class CachedEntityLookup implements EntityLookup {
 			$filter
 		);
 
-		$semanticData->setLastModified( wfTimestamp( TS_UNIX ) );
+		$semanticData->setOption(
+			SemanticData::OPT_LAST_MODIFIED,
+			wfTimestamp( TS_UNIX )
+		);
 
 		$container->set( $sdid, $semanticData );
 

@@ -115,7 +115,7 @@ class PropertyTableRowDiffer {
 				$newHashes[$tableName] = $this->createNewHashForTable(
 					$tableName,
 					$newData,
-					$semanticData->getLastModified()
+					$semanticData->getOption( SemanticData::OPT_LAST_MODIFIED )
 				);
 
 				if ( array_key_exists( $tableName, $oldHashes ) && $newHashes[$tableName] == $oldHashes[$tableName] ) {
