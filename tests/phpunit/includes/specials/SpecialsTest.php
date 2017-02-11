@@ -123,7 +123,9 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 			'Properties',
 			'UnusedProperties',
 			'WantedProperties',
-			'Concepts'
+			'Concepts',
+			'ProcessingErrorList',
+			'PropertyLabelSimilarity'
 
 			// Can't be tested because of
 

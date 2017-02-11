@@ -232,7 +232,9 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'Properties',
 			'UnusedProperties',
 			'WantedProperties',
-			'DeferredRequestDispatcher'
+			'DeferredRequestDispatcher',
+			'ProcessingErrorList',
+			'PropertyLabelSimilarity'
 		);
 
 		return $this->buildDataProvider( 'wgSpecialPages', $specials, '' );

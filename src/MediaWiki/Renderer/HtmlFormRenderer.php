@@ -380,7 +380,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null ) {
+	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null, $attributes = array() ) {
 
 		if ( $id === null ) {
 			$id = $inputName;
@@ -396,10 +396,11 @@ class HtmlFormRenderer {
 			array(
 				'id' => $id,
 				'class' => $this->defaultPrefix . '-checkbox',
-				'value' => $inputValue ) + ( $isChecked ? array( 'checked' => 'checked' ) : array() )
+				'value' => $inputValue
+			) + ( $isChecked ? array( 'checked' => 'checked' ) : array() )
 		);
 
-		$this->content[] = $html;
+		$this->content[] = Html::rawElement( 'span', $attributes, $html );
 		return $this;
 	}
 
@@ -409,21 +410,26 @@ class HtmlFormRenderer {
 	 * @note Encapsulate as closure to ensure that the build contains all query
 	 * parameters that are necessary to build the paging links
 	 *
-	 * @param integer $limit,
-	 * @param integer $offset,
-	 * @param integer $count,
+	 * @param integer $limit
+	 * @param integer $offset
+	 * @param integer $count
+	 * @param integer|null $messageCount
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addPaging( $limit, $offset, $count ) {
+	public function addPaging( $limit, $offset, $count, $messageCount = null ) {
 
 		$title = $this->title;
 
-		$this->content[] = function( $instance ) use ( $title, $limit, $offset, $count ) {
+		$this->content[] = function( $instance ) use ( $title, $limit, $offset, $count, $messageCount ) {
+
+			if ( $messageCount === null ) {
+				$messageCount = ( $count > $limit ? $count - 1 : $count );
+			}
 
 			$resultCount = $instance->getMessageBuilder()
 				->getMessage( 'showingresults' )
-				->numParams( ( $count > $limit ? $count - 1 : $count ), $offset + 1 )
+				->numParams( $messageCount, $offset + 1 )
 				->parse();
 
 			$paging = $instance->getMessageBuilder()->prevNextToText(

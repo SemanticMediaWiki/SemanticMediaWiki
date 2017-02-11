@@ -162,6 +162,7 @@ class Settings extends Options {
 			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
 			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
 			'smwgEditProtectionRight' => $GLOBALS['smwgEditProtectionRight'],
+			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty']
 		);
 
 		\Hooks::run( 'SMW::Config::BeforeCompletion', array( &$configuration ) );
