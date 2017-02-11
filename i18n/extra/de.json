@@ -69,7 +69,8 @@
         "_PVUC": "Erlaubt Wert einmal",
         "_PEID": "Kennung zur externen URI",
         "_PEFU": "Formatierungsanweisung zur externen URI",
-        "_ASKSC": "Abfragequelle"
+        "_ASKSC": "Abfragequelle",
+        "_EDIP": "Ist bearbeitungsgeschützt"
     },
     "propertyAliases": {
         "Hat Datentyp": "_TYPE",
@@ -90,7 +91,8 @@
         "Hat Attributbeschreibung": "_PDESC",
         "Hat Anzeigetitel": "_DTITLE",
         "Hat einmal erlaubten Wert": "_PVUC",
-        "Externe Kennung": "_PEID"
+        "Externe Kennung": "_PEID",
+        "Bearbeitungsgeschützt": "_EDIP"
     },
     "dateFormatsByPrecision": {
         "SMW_PREC_Y": "Y",
