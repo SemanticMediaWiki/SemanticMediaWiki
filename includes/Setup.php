@@ -255,6 +255,11 @@ final class Setup {
 		if ( !isset( $this->globalVars['wgGroupPermissions']['smwadministrator']['smw-admin'] ) ) {
 			$this->globalVars['wgGroupPermissions']['smwadministrator']['smw-admin'] = true;
 		}
+
+		// Add an additional protection level restricting edit/move/etc
+		if ( ( $editProtectionRight = $this->applicationFactory->getSettings()->get( 'smwgEditProtectionRight' ) ) !== false ) {
+			$this->globalVars['wgRestrictionLevels'][] = $editProtectionRight;
+		}
 	}
 
 	/**

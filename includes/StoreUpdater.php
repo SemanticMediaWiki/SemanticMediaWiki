@@ -131,6 +131,13 @@ class StoreUpdater {
 
 		$this->addFinalAnnotations( $title, $wikiPage, $revision, $user );
 
+		// In case of a restricted update, only the protection update is required
+		// hence the process bails-out early to avoid unnecessary DB connections
+		// or updates
+		if ( $this->doUpdateEditProtection( $wikiPage, $user ) === true ) {
+			return true;
+		}
+
 		$this->inspectPropertySpecification();
 		$this->doRealUpdate();
 	}
@@ -161,6 +168,18 @@ class StoreUpdater {
 		);
 
 		$propertyAnnotator->addAnnotation();
+	}
+
+	private function doUpdateEditProtection( $wikiPage, $user ) {
+
+		$editProtectionUpdater = $this->applicationFactory->create( 'EditProtectionUpdater',
+			$wikiPage,
+			$user
+		);
+
+		$editProtectionUpdater->doUpdateFrom( $this->semanticData );
+
+		return $editProtectionUpdater->isRestrictedUpdate();
 	}
 
 	/**

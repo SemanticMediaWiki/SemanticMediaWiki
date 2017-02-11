@@ -23,6 +23,8 @@ use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Utils\BufferedStatsdCollector;
 use SMW\Parser\LinksProcessor;
+use SMW\Protection\EditProtectionValidator;
+use SMW\Protection\EditProtectionUpdater;
 
 /**
  * @license GNU GPL v2+
@@ -378,7 +380,7 @@ class SharedCallbackContainer implements CallbackContainer {
 		 * @var EditProtectionValidator
 		 */
 		$callbackLoader->registerCallback( 'EditProtectionValidator', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'EditProtectionValidator', '\SMW\EditProtectionValidator' );
+			$callbackLoader->registerExpectedReturnType( 'EditProtectionValidator', '\SMW\Protection\EditProtectionValidator' );
 
 			$editProtectionValidator = new EditProtectionValidator(
 				$callbackLoader->singleton( 'CachedPropertyValuesPrefetcher' ),
@@ -390,6 +392,28 @@ class SharedCallbackContainer implements CallbackContainer {
 			);
 
 			return $editProtectionValidator;
+		} );
+
+		/**
+		 * @var EditProtectionUpdater
+		 */
+		$callbackLoader->registerCallback( 'EditProtectionUpdater', function( \WikiPage $wikiPage, \User $user = null ) use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'EditProtectionUpdater', '\SMW\Protection\EditProtectionUpdater' );
+
+			$editProtectionUpdater = new EditProtectionUpdater(
+				$wikiPage,
+				$user
+			);
+
+			$editProtectionUpdater->setEditProtectionRight(
+				$callbackLoader->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
+			);
+
+			$editProtectionUpdater->setLogger(
+				$callbackLoader->singleton( 'MediaWikiLogger' )
+			);
+
+			return $editProtectionUpdater;
 		} );
 
 		/**

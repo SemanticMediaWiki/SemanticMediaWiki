@@ -10,7 +10,9 @@ use SMW\PropertyAnnotators\NullPropertyAnnotator;
 use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
 use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
 use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
+use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
 use SMW\Store;
+use Title;
 
 /**
  * @license GNU GPL v2+
@@ -66,6 +68,28 @@ class PropertyAnnotatorFactory {
 		);
 
 		return $predefinedPropertyAnnotator;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param SemanticData $semanticData
+	 * @param Title $title
+	 *
+	 * @return EditProtectedPropertyAnnotator
+	 */
+	public function newEditProtectedPropertyAnnotator( PropertyAnnotator $propertyAnnotator, Title $title ) {
+
+		$editProtectedPropertyAnnotator = new EditProtectedPropertyAnnotator(
+			$propertyAnnotator,
+			$title
+		);
+
+		$editProtectedPropertyAnnotator->setEditProtectionRight(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEditProtectionRight' )
+		);
+
+		return $editProtectedPropertyAnnotator;
 	}
 
 	/**

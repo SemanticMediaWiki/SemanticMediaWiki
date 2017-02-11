@@ -1,8 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\Protection;
 
 use Onoi\Cache\Cache;
+use SMW\CachedPropertyValuesPrefetcher;
+use SMW\DIWikiPage;
+use SMW\RequestOptions;
+use SMW\DIProperty;
 use Title;
 
 /**
@@ -22,7 +26,7 @@ class EditProtectionValidator {
 	/**
 	 * Reference used in InMemoryPoolCache
 	 */
-	const POOLCACHE_ID = 'edit.protection.manager';
+	const POOLCACHE_ID = 'edit.protection.validator';
 
 	/**
 	 * @var CachedPropertyValuesPrefetcher
@@ -35,7 +39,7 @@ class EditProtectionValidator {
 	private $intermediaryMemoryCache;
 
 	/**
-	 * @var boolean
+	 * @var boolean|string
 	 */
 	private $editProtectionRight = false;
 

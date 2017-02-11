@@ -37,4 +37,19 @@ class SpyLogger extends AbstractLogger {
 		return $this->logs;
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getMessagesAsString() {
+		$message = '';
+
+		foreach ( $this->logs as $log ) {
+			$message .= ' ' . $log[1];
+		}
+
+		return $message;
+	}
+
 }
