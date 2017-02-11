@@ -77,7 +77,7 @@ class SpecialAdmin extends SpecialPage {
 			$idActionHandler,
 			$supportWidget
 		) = $this->getHandlers(
-			$applicationFactory->getStore(),
+			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' ),
 			$applicationFactory->getSettings(),
 			$applicationFactory->newMwCollaboratorFactory()
 		);

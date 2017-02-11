@@ -22,6 +22,7 @@ $specialPageAliases['en'] = array(
 	'SMWAdmin' => array( 'SemanticMediaWiki', 'SMWAdmin' ),
 	'SearchByProperty' => array( 'SearchByProperty' ),
 	'ProcessingErrorList' => array( 'ProcessingErrorList' ),
+	'PropertyLabelSimilarity' => array( 'PropertyLabelSimilarity' ),
 	'SemanticStatistics' => array( 'SemanticStatistics' ),
 	'Types' => array( 'Types' ),
 	'URIResolver' => array( 'URIResolver' ),

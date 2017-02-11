@@ -1394,4 +1394,21 @@ return array(
 	'smwgEditProtectionRight' => false,
 	##
 
+	##
+	# Similarity lookup exemption property
+	#
+	# The listed property is used to exclude a property from the similarity
+	# lookup in case the comparing property contains an annotation value with the
+	# exemption property.
+	#
+	# For example, the property `Governance level` may define
+	# [[owl:differentFrom::Governance level of]] which would result in a suppressed
+	# similarity lookup for both `Governance level` and `Governance level of`
+	# property when compared to each other.
+	#
+	# @since 2.5
+	##
+	'smwgSimilarityLookupExemptionProperty' => 'owl:differentFrom',
+	##
+
 );

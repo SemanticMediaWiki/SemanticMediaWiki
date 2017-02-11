@@ -287,6 +287,10 @@ final class Setup {
 				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList',
 				'group' => 'smw_group'
 			),
+			'PropertyLabelSimilarity' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity',
+				'group' => 'smw_group'
+			),
 			'SMWAdmin' => array(
 				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin',
 				'group' => 'smw_group'
