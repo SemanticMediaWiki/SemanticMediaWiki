@@ -2,7 +2,6 @@
 
 namespace SMW\Tests;
 
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\PropertySpecificationChangeNotifier;
@@ -18,36 +17,29 @@ use SMW\PropertySpecificationChangeNotifier;
  */
 class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCase {
 
-	/** @var DIWikiPage[] */
-	protected $storeValues;
-
-	private $applicationFactory;
+	protected $mockedStoreValues;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$settings = array(
-			'smwgDeclarationProperties' => array( '_PVAL' ),
-			'smwgCacheType'  => 'hash',
-			'smwgEnableUpdateJobs' => false
+		$this->testEnvironment = new TestEnvironment(
+			array(
+				'smwgDeclarationProperties' => array( '_PVAL' ),
+				'smwgCacheType'  => 'hash',
+				'smwgEnableUpdateJobs' => false
+			)
 		);
-
-		foreach ( $settings as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -57,22 +49,18 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\PropertySpecificationChangeNotifier',
-			new PropertySpecificationChangeNotifier( $store, $semanticData )
+			new PropertySpecificationChangeNotifier( $store )
 		);
 	}
 
 	/**
 	 * @dataProvider dataItemDataProvider
 	 */
-	public function testDetectChanges( $storeValues, $dataValues, $propertiesToCompare, $expected ) {
+	public function testDetectChanges( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
 
-		$this->storeValues = $storeValues;
+		$this->mockedStoreValues = $mockedStoreValues;
 
 		$subject = new DIWikiPage( __METHOD__, SMW_NS_PROPERTY );
 
@@ -94,7 +82,7 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 			->method( 'newByType' )
 			->will( $this->returnValue( $updateDispatcherJob ) );
 
-		$this->applicationFactory->registerObject( 'JobFactory', $jobFactory );
+		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
@@ -103,7 +91,7 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnCallback( array( $this, 'mockStorePropertyValuesCallback' ) ) );
+			->will( $this->returnCallback( array( $this, 'doComparePropertyValuesOnCallback' ) ) );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -118,16 +106,18 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 			->will( $this->returnValue( $dataValues ) );
 
 		$instance = new PropertySpecificationChangeNotifier(
-			$store,
-			$semanticData
+			$store
 		);
 
-		$instance->compareWith( $propertiesToCompare );
+		$instance->setPropertyList( $propertiesToCompare );
+		$instance->detectChangesOn( $semanticData );
 
 		$this->assertEquals(
 			$expected['diff'],
 			$instance->hasDiff()
 		);
+
+		$instance->notify();
 	}
 
 	public function dataItemDataProvider() {
@@ -145,7 +135,7 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 		);
 
 		return array(
-			//  $storeValues, $dataValues, $settings,               $expected
+			//  $mockedStoreValues, $dataValues, $settings,               $expected
 			array( $subjects, array(),   array( '_PVAL', '_LIST' ), array( 'diff' => true,  'job' => true ) ),
 			array( array(),   $subjects, array( '_PVAL', '_LIST' ), array( 'diff' => true,  'job' => true ) ),
 			array( $subject,  $subjects, array( '_PVAL', '_LIST' ), array( 'diff' => true,  'job' => true ) ),
@@ -167,8 +157,8 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 	 * @return SMWDataItem[]
 	 */
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.UnusedFunctionParameter
-	public function mockStorePropertyValuesCallback( $subject, DIProperty $property, $requestoptions = null ) { // @codingStandardsIgnoreEnd
-		return $property->getKey() === '_LIST' ? array() : $this->storeValues;
+	public function doComparePropertyValuesOnCallback( $subject, DIProperty $property, $requestoptions = null ) { // @codingStandardsIgnoreEnd
+		return $property->getKey() === '_LIST' ? array() : $this->mockedStoreValues;
 	}
 
 }

@@ -41,9 +41,9 @@ class ParserData {
 	private $errors = array();
 
 	/**
-	 * @var $enabledUpdateJobs
+	 * @var $isEnabledWithUpdateJob
 	 */
-	private $enabledUpdateJobs = true;
+	private $isEnabledWithUpdateJob = true;
 
 	/**
 	 * Identifies the origin of a request.
@@ -108,8 +108,7 @@ class ParserData {
 	 * @since 1.9
 	 */
 	public function disableBackgroundUpdateJobs() {
-		$this->enabledUpdateJobs = false;
-		return $this;
+		$this->isEnabledWithUpdateJob = false;
 	}
 
 	/**
@@ -135,8 +134,8 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function isEnabledWithUpdateJobs() {
-		return $this->enabledUpdateJobs;
+	public function isEnabledWithUpdateJob() {
+		return $this->isEnabledWithUpdateJob;
 	}
 
 	/**
@@ -304,8 +303,8 @@ class ParserData {
 
 		$storeUpdater = $applicationFactory->newStoreUpdater( $this->semanticData );
 
-		$storeUpdater->enabledWithUpdateJobs(
-			$this->enabledUpdateJobs
+		$storeUpdater->isEnabledWithUpdateJob(
+			$this->isEnabledWithUpdateJob
 		);
 
 		DeferredCallableUpdate::releasePendingUpdates();
