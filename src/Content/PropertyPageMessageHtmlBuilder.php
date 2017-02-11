@@ -112,7 +112,7 @@ class PropertyPageMessageHtmlBuilder {
 				'id' => 'smw-property-content-editprotection-message',
 				'class' => 'plainlinks smw-callout smw-callout-warning'
 			),
-			wfMessage( 'smw-pageedit-protection', $GLOBALS['smwgEditProtectionRight'] )->parse()
+			wfMessage( 'smw-edit-protection', $GLOBALS['smwgEditProtectionRight'] )->parse()
 		);
 	}
 
