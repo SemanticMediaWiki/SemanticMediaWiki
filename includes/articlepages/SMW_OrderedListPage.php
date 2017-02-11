@@ -79,7 +79,7 @@ abstract class SMWOrderedListPage extends Article {
 
 			// MW 1.25+
 			if ( method_exists( $outputPage, 'setIndicators' ) ) {
-				$outputPage->setIndicators( array( $this->getTopIndicator() ) );
+				$outputPage->setIndicators( $this->getTopIndicators() );
 			}
 
 			$outputPage->addHTML( $this->getIntroductoryText() );

@@ -143,7 +143,7 @@ class PropertySpecificationReqExaminer {
 
 		return array(
 			'warning',
-			'smw-pageedit-protection-disabled',
+			'smw-edit-protection-disabled',
 			$property->getCanonicalLabel()
 		);
 	}

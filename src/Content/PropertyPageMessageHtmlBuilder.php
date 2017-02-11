@@ -117,13 +117,20 @@ class PropertyPageMessageHtmlBuilder {
 	}
 
 	private function createIntroductoryMessage( $propertyName ) {
+
+		$message = wfMessage( 'smw-property-introductory-message', $propertyName )->parse();
+
+		if ( $message === '' ) {
+			return '';
+		}
+
 		return Html::rawElement(
 			'div',
 			array(
 				'id' => 'smw-property-content-intro-message',
 				'class' => 'plainlinks smw-callout smw-callout-info'
 			),
-			wfMessage( 'smw-property-introductory-message', $propertyName )->parse()
+			$message
 		);
 	}
 

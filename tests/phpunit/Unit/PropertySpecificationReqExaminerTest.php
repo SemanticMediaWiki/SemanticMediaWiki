@@ -69,7 +69,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			array(
 				'warning',
-				'smw-pageedit-protection-disabled',
+				'smw-edit-protection-disabled',
 				'Is edit protected'
 			),
 			$instance->checkOn( $property )

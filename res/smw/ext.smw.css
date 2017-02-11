@@ -212,6 +212,13 @@ span.smwwarning {
 	font-size: 90%;
 }
 
+.smw-edit-protection {
+	/* @embed */ background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAADOCAYAAAC5MQkHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3JJREFUeNrs3dFuEkEYgNHOQBbWC8Nzqo+jL8QTNV64sAmMbdM1xEBrIt2ZnTknUSu2lp39+g9FgbDf7x+47nA4/BiGYXs8HrtxHLvz+bya/uzp8v7yffu+H6a3Y4ynruvGzWYzPl1+2G63X63mdWtL8Ef6+4KncF5+3MGXK5cFS952gKmwzx8EKLpSrlsQoOjEKMDmwnvrOIIAhSdEATYXXtUhRvE5ZhNQeM1Owyg+09AEFF6z0zCKzzQUoPiaXau1xbQlm4Dia3YNo4UToQDF1+yaRgslQgGKr9k1jhZGhAIUX7NrvrYQ7woVH196yHw/oUfFfUx0t/4uk76wAFOl0S0pxqxTMIrvZfFDQ5+3qHMRG46vlABKuR6ppQBb2G5ruE5VBpgyn+RQ+BdGzuuXag8wd3wmdGHnqIW7YcLCr3fVd93EWr+yKrpdleMYUo0Bis+xZAswOWGLO6ZUS4DiE2EzW3AL96VVdYyt3hFNIwHOuf229C8Jcx5rWnKA4nPM2QJMTkQ1x56WGCBkC9D0MwWrn4Diq2AtbMFUF2DyFV/tFExLCBCqDtD0q2ht7h2gx73WL5UcIFQdoO23sjUyAakmQLf/3A6segLafitcK1swAkSAthTbsAAxAWGRAboLpj2ppABBgAjQd8DWzgTEBAQBIkAQIAIEASJAECACBAEiQAQIAkSAIEAECAJEgCBABAgCRIBwf+vXX0t+ag1P+1HvuQnRCSZnwLZg3AZEgCBABAgCRIAgQAQIAkSAIEAECAJEgCBABAgCRIAgQAQIAkSAIEAECAJEgHAzwGAZyCRMz441ReiJipglPEsAAAAAAAAAAABwV2G/309v+7+AzNre809RfGSSpgDFR7YIPSiJrASIABEgCBABggARIAgQAYIAESAIEAGCABEgCBABggARIAgQAYIAESAIEAHCuwF64Thy0R4AAAAAAAAAAMB9XL5Y4cRLd/GhzV3+Zi06ZnbZWvBihWSN0WNCyEqACBABggARIAgQAYIAESAIEAGCABEgCBABggARIPx3gJ4omlyCCUgRW7ApyOzTz21AivomxBRk1ul3bQKKkNnie7Z+4x08YJ0PC+/WBDQNmS2+WxPw6gcej8fvj4+Pn4dh+HQ6nVbjOHbWlUnXdeNqtTr1ff9rt9v93Gw23/7l434LMAB5UpLsaS0+0gAAAABJRU5ErkJggg==');
+	background-size: 16px 20px;
+	background-repeat: no-repeat;
+	height: 20px;
+	width: 16px;
+}
 
 /* Search, browse, RDF icons/ FIXME: this was only used for Factbox docu, should be removed from code */
 span.smwsearchicon {
@@ -724,6 +731,61 @@ a.smw-ask-action-btn-lblue:hover {
 	padding-right:0;
 }
 
+.smw-property-page-indicator {
+	display: inline-block;
+	font-weight: normal;
+	line-height: 1.25;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	border-radius: 0.25rem;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	padding: 0.25rem 0.5rem;
+	font-size: 0.875rem;
+	border-radius: 0.2rem;
+	color: #292b2c;
+	/* background-color: #e6e6e6; */
+	border-color: #ddd;
+}
+
+.smw-protection-indicator {
+	display: inline-block;
+	/* font-weight: normal; */
+	/* line-height: 1.25; */
+	/* text-align: center; */
+	/* white-space: nowrap; */
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	border-radius: 0.25rem;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	padding: 0.15rem 0.25rem;
+	font-size: 0.875rem;
+	border-radius: 0.2rem;
+	color: #292b2c;
+	border-color: transparent;
+}
+
+.smw-protection-indicator.with-border {
+	border-color: #ddd;
+}
+
 .smw-page-indicator, .smw-page-indicator.usage-count, .smw-page-indicator.property-type {
 	width: 45px;
 	height: 21px;
@@ -743,13 +805,13 @@ a.smw-ask-action-btn-lblue:hover {
 	margin-right: 10px;
 }
 
-.smw-page-indicator.usage-count.moderate {
+.smw-property-page-indicator.usage-count.moderate {
 	background-color: #F2D29B;
 	border: 1px solid #F2D29B;
 	color: #AA4C2C;
 }
 
-.smw-page-indicator.usage-count.high {
+.smw-property-page-indicator.usage-count.high {
 	background-color: #FF887F;
 	border: 1px solid #FFB79E;
 	color: #800000;

@@ -153,7 +153,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( array( 'smw-pageedit-protection', $editProtectionRight ) ),
+			array( array( 'smw-edit-protection', $editProtectionRight ) ),
 			$result
 		);
 	}
@@ -227,28 +227,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			'move',
 			array( array( 'smw-patternedit-protection', 'smw-patternedit' ) )
 		);
-/*
-		$provider[] = array(
-			Title::newFromText( PageProtectionManager::EDIT_PROTECTION_LIST, NS_MEDIAWIKI ),
-			'smw-pageedit',
-			'edit',
-			array( 'smw-pageedit-protection' )
-		);
 
-		$provider[] = array(
-			Title::newFromText( PageProtectionManager::EDIT_PROTECTION_LIST, NS_MEDIAWIKI ),
-			'smw-pageedit',
-			'delete',
-			array( 'smw-pageedit-protection' )
-		);
-
-		$provider[] = array(
-			Title::newFromText( PageProtectionManager::EDIT_PROTECTION_LIST, NS_MEDIAWIKI ),
-			'smw-pageedit',
-			'move',
-			array( 'smw-pageedit-protection' )
-		);
-*/
 		return $provider;
 	}
 
