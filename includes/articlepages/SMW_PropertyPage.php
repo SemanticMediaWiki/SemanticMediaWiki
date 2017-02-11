@@ -111,7 +111,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		return $propertyPageMessageHtmlBuilder->createMessageBody( $this->mProperty );
 	}
 
-	protected function getTopIndicator() {
+	protected function getTopIndicators() {
 
 		$propertyName = htmlspecialchars( $this->mTitle->getText() );
 		$usageCountHtml = '';
@@ -128,18 +128,24 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$usageCount = $usage[1];
 			$usageCountHtml = Html::rawElement(
 				'div', array(
-					'title' => $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() ),
-					'class' => 'smw-page-indicator usage-count' . ( $usageCount < 25000 ? ( $usageCount > 5000 ? ' moderate' : '' ) : ' high' ) ),
+					'title' => wfMessage( 'smw-property-indicator-last-count-update', $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() ) )->text(),
+					'class' => 'smw-property-page-indicator usage-count' . ( $usageCount < 25000 ? ( $usageCount > 5000 ? ' moderate' : '' ) : ' high' ) ),
 				$usageCount
 			);
 		}
 
-		return Html::rawElement( 'div', array(), Html::rawElement(
-				'div', array(
-				'class' => 'smw-page-indicator property-type',
-				'title' => wfMessage( 'smw-page-indicator-type-info', $this->mProperty->isUserDefined() )->parse()
+		$type = Html::rawElement(
+				'div',
+				array(
+					'class' => 'smw-property-page-indicator property-type',
+					'title' => wfMessage( 'smw-property-indicator-type-info', $this->mProperty->isUserDefined() )->parse()
 			), ( $this->mProperty->isUserDefined() ? 'U' : 'S' )
-		) . $usageCountHtml );
+		);
+
+		return array(
+			'smw-prop-count' => $usageCountHtml,
+			'smw-prop-type' => $type
+		);
 	}
 
 	/**

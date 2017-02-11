@@ -106,7 +106,7 @@ class PermissionPthValidator {
 			return true;
 		}
 
-		$errors[] = array( 'smw-pageedit-protection', $this->editProtectionRight );
+		$errors[] = array( 'smw-edit-protection', $this->editProtectionRight );
 
 		return false;
 	}
