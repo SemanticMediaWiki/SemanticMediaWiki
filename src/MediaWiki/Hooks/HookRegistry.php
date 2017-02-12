@@ -489,11 +489,10 @@ class HookRegistry {
 		$this->handlers['TitleIsMovable'] = function ( $title, &$isMovable ) {
 
 			$titleIsMovable = new TitleIsMovable(
-				$title,
-				$isMovable
+				$title
 			);
 
-			return $titleIsMovable->process();
+			return $titleIsMovable->process( $isMovable );
 		};
 
 		/**
