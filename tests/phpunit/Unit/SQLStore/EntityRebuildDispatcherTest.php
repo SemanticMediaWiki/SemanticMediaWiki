@@ -26,11 +26,11 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'hasIDFor' ) )
+			->setMethods( array( 'exists' ) )
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'hasIDFor' )
+			->method( 'exists' )
 			->will( $this->returnValue( 0 ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )

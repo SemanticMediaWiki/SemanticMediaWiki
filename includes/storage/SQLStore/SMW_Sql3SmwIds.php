@@ -499,7 +499,7 @@ class SMWSql3SmwIds {
 	 *
 	 * @param boolean
 	 */
-	public function hasIDFor( DIWikiPage $subject ) {
+	public function exists( DIWikiPage $subject ) {
 		return $this->getIDFor( $subject ) > 0;
 	}
 
