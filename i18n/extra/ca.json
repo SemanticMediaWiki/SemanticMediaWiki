@@ -18,9 +18,9 @@
         "_tel": "Número de telèfon",
         "_rec": "Registre",
         "_qty": "Quantitat",
-        "_mlt_rec": "Monolingual text",
-        "_eid": "External identifier",
-        "_ref_rec": "Reference"
+        "_mlt_rec": "Text monolingüe",
+        "_eid": "Identificador extern",
+        "_ref_rec": "Referència"
     },
     "dataTypeAliases": {
         "URI": "_uri",
@@ -58,18 +58,18 @@
         "_ASKDU": "Durada de consulta",
         "_MEDIA": "Tipus Media",
         "_MIME": "Tipus MIME",
-        "_ERRC": "Has processing error",
-        "_ERRT": "Has processing error text",
-        "_PREC": "Display precision of",
-        "_LCODE": "Language code",
+        "_ERRC": "Té error de processament",
+        "_ERRT": "Té text d'error de processament",
+        "_PREC": "Precisió a mostrar de",
+        "_LCODE": "Codi d'idioma",
         "_TEXT": "Text",
-        "_PDESC": "Has property description",
-        "_PVAP": "Allows pattern",
-        "_DTITLE": "Display title of",
-        "_PVUC": "Has uniqueness constraint",
-        "_PEID": "External identifier",
-        "_PEFU": "External formatter uri",
-        "_ASKSC": "Query source"
+        "_PDESC": "Té descripció de propietat",
+        "_PVAP": "Permet patró",
+        "_DTITLE": "Títol a mostrar de",
+        "_PVUC": "Té restricció única",
+        "_PEID": "Identificador extern",
+        "_PEFU": "URI del formatador extern",
+        "_ASKSC": "Font de consulta"
     },
     "propertyAliases": {
         "Unitat de mesura": "_UNIT"
@@ -156,32 +156,32 @@
     ],
     "days": [
         [
-            "Monday",
-            "Mon"
+            "dilluns",
+            "dl"
         ],
         [
-            "Tuesday",
-            "Tue"
+            "dimarts",
+            "dm"
         ],
         [
-            "Wednesday",
-            "Wed"
+            "dimecres",
+            "dc"
         ],
         [
-            "Thursday",
-            "Thu"
+            "dijous",
+            "dj"
         ],
         [
-            "Friday",
-            "Fri"
+            "divendres",
+            "dv"
         ],
         [
-            "Saturday",
-            "Sat"
+            "dissabte",
+            "ds"
         ],
         [
-            "Sunday",
-            "Sun"
+            "diumenge",
+            "dg"
         ]
     ]
 }
