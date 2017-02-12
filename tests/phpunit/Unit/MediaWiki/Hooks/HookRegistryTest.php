@@ -551,7 +551,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$handler = 'LinksUpdateConstructed';
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'hasIDFor' ) )
+			->setMethods( array( 'exists' ) )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
