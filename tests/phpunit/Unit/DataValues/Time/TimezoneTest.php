@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Libs\Time;
+namespace SMW\Tests\DataValues\Time;
 
 use SMW\DataItemFactory;
-use SMW\Libs\Time\Timezone;
+use SMW\DataValues\Time\Timezone;
 
 /**
- * @covers \SMW\Libs\Time\Timezone
+ * @covers \SMW\DataValues\Time\Timezone
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

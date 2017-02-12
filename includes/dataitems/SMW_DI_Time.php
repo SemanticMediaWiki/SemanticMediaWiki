@@ -1,8 +1,8 @@
 <?php
 
 use SMW\Exception\DataItemException;
-use SMW\Libs\Time\JulianDay;
-use SMW\Libs\Time\CalendarModel;
+use SMW\DataValues\Time\JulianDay;
+use SMW\DataValues\Time\CalendarModel;
 
 /**
  * This class implements time data items.

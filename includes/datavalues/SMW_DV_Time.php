@@ -1,7 +1,7 @@
 <?php
 
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\Libs\Time\Timezone;
+use SMW\DataValues\Time\Timezone;
 use SMW\Localizer;
 
 /**
