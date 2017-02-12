@@ -9,6 +9,7 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\DescriptionProcessor;
+use SMW\Query\QueryToken;
 
 /**
  * Objects of this class are in charge of parsing a query string in order
@@ -35,6 +36,11 @@ class SMWQueryParser {
 	 */
 	private $descriptionProcessor;
 
+	/**
+	 * @var QueryToken
+	 */
+	private $queryToken;
+
 	public function __construct( $queryFeatures = false ) {
 		global $wgContLang, $smwgQFeatures;
 
@@ -46,6 +52,16 @@ class SMWQueryParser {
 		$this->defaultNamespace = null;
 		$this->queryFeatures = $queryFeatures === false ? $smwgQFeatures : $queryFeatures;
 		$this->descriptionProcessor = new DescriptionProcessor( $this->queryFeatures );
+		$this->queryToken = new QueryToken();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return QueryToken
+	 */
+	public function getQueryToken() {
+		return $this->queryToken;
 	}
 
 	/**
@@ -399,10 +415,15 @@ class SMWQueryParser {
 							$value .= $chunk;
 						}
 					} ///NOTE: at this point, we normally already read one more chunk behind the value
+					$outerDesription = $this->descriptionProcessor->constructDescriptionForPropertyObjectValue(
+						$property->getDataItem(),
+						$value
+					);
 
+					$this->queryToken->addFromDesciption( $outerDesription );
 					$innerdesc = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom(
 						$innerdesc,
-						$this->descriptionProcessor->constructDescriptionForPropertyObjectValue( $property->getDataItem(), $value )
+						$outerDesription
 					);
 
 			}
@@ -459,9 +480,15 @@ class SMWQueryParser {
 					$result = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $result, new NamespaceDescription( $idx ) );
 				}
 			} else {
+				$outerDesription = $this->descriptionProcessor->constructDescriptionForWikiPageValueChunk(
+					$chunk
+				);
+
+				$this->queryToken->addFromDesciption( $outerDesription );
+
 				$result = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom(
 					$result,
-					$this->descriptionProcessor->constructDescriptionForWikiPageValueChunk( $chunk )
+					$outerDesription
 				);
 			}
 

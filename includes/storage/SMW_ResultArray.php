@@ -7,6 +7,7 @@ use SMW\Query\Result\EntityListAccumulator;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMW\Query\Result\ResultFieldMatchFinder;
+use SMW\Query\QueryToken;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -49,6 +50,11 @@ class SMWResultArray {
 	 * @var ResultFieldMatchFinder
 	 */
 	private $resultFieldMatchFinder;
+
+	/**
+	 * @var QueryToken
+	 */
+	private $queryToken;
 
 	/**
 	 * Constructor.
@@ -98,6 +104,15 @@ class SMWResultArray {
 	 */
 	public function setEntityListAccumulator( EntityListAccumulator $entityListAccumulator ) {
 		$this->entityListAccumulator = $entityListAccumulator;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param QueryToken|null $queryToken
+	 */
+	public function setQueryToken( QueryToken $queryToken = null ) {
+		$this->queryToken = $queryToken;
 	}
 
 	/**
@@ -197,15 +212,6 @@ class SMWResultArray {
 			$diProperty = null;
 		}
 
-		// refs #1314
-		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
-			strpos( $this->mPrintRequest->getTypeID(), '_txt' ) !== false &&
-			$dataItem instanceof DIBlob ) {
-			$dataItem = new DIBlob(
-				InTextAnnotationParser::removeAnnotation( $dataItem->getString() )
-			);
-		}
-
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$diProperty
@@ -257,7 +263,14 @@ class SMWResultArray {
 			return;
 		}
 
-		$this->mContent = $this->resultFieldMatchFinder->getResultsBy( $this->mResult );
+		$this->resultFieldMatchFinder->setQueryToken(
+			$this->queryToken
+		);
+
+		$this->mContent = $this->resultFieldMatchFinder->findAndMatch(
+			$this->mResult
+		);
+
 		return reset( $this->mContent );
 	}
 

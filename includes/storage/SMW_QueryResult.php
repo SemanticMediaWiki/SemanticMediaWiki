@@ -152,6 +152,7 @@ class SMWQueryResult {
 		foreach ( $this->mPrintRequests as $p ) {
 			$resultArray = new SMWResultArray( $page, $p, $this->mStore );
 			$resultArray->setEntityListAccumulator( $this->entityListAccumulator );
+			$resultArray->setQueryToken( $this->mQuery->getQueryToken() );
 			$row[] = $resultArray;
 		}
 

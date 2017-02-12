@@ -125,6 +125,7 @@ class QueryCreator implements QueryContext {
 			$context
 		);
 
+		$query->setQueryToken( $queryParser->getQueryToken() );
 		$query->setQueryString( $queryString );
 		$query->setContextPage( $contextPage );
 		$query->setQueryMode( $queryMode );

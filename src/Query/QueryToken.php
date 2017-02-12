@@ -1,0 +1,165 @@
+<?php
+
+namespace SMW\Query;
+
+use SMW\Query\Language\Description;
+use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\SomeProperty;
+use SMWDIBlob as DIBlob;
+use SMW\DIWikiPage;
+use SMW\Utils\Tokenizer;
+
+/**
+ * For a wildcard search, build tokens from the query string, and allow to highlight
+ * them in the result set.
+ *
+ * @license GNU GPL v2+
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class QueryToken {
+
+	// TokensHighlighter
+	// QueryTokensHighlighter
+
+	/**
+	 * Highlighter marker type
+	 */
+	const HL_WIKI = 'HL_WIKI';
+	const HL_BOLD = 'HL_BOLD';
+	const HL_SPAN = 'HL_SPAN';
+	const HL_UNDERLINE = 'HL_UNDERLINE';
+
+	/**
+	 * @var array
+	 */
+	private $tokens = array();
+
+	/**
+	 * @var array
+	 */
+	private $minHighlightTokenLength = 4;
+
+	/**
+	 * @var array
+	 */
+	private $highlightType = 4;
+
+	/**
+	 * @var true
+	 */
+	private $canHighlight = false;
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param array $tokens
+	 */
+	public function __construct( array $tokens =  array() ) {
+		$this->tokens = $tokens;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return array
+	 */
+	public function getTokens() {
+		return $this->tokens;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Description $description
+	 */
+	public function addFromDesciption( Description $description ) {
+
+		if ( $description instanceof Conjunction ) {
+			foreach ( $description->getDescriptions() as $desc ) {
+				return $this->addFromDesciption( $desc );
+			}
+		}
+
+		if ( $description instanceof SomeProperty ) {
+			return $this->addFromDesciption( $description->getDescription() );
+		}
+
+		if ( !$description instanceof ValueDescription ) {
+			return;
+		}
+
+		// [[SomeProperty::~*Foo*]]
+		if ( $description->getComparator() === SMW_CMP_LIKE && $description->getDataItem() instanceof DIBlob ) {
+			return $this->addTokensFromText( $description->getDataItem()->getString() );
+		}
+
+		// [[~~* ... *]]
+		if ( $description->getDataItem() instanceof DIWikiPage &&  strpos( $description->getDataItem()->getDBKey(), '~' ) !== false ) {
+			return $this->addTokensFromText( $description->getDataItem()->getDBKey() );
+		}
+	}
+
+	/**
+	 * @note Intrinsic setting (|?Foo#-hl) of what accounts for the activation
+	 * of the highlighting.
+	 *
+	 * @since 2.5
+	 *
+	 * @param string $text
+	 */
+	public function canHighlight( $canHighlight ) {
+		$this->canHighlight = strpos( strtolower( $canHighlight ), '-hl' ) !== false;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $text
+	 * @param type $text
+	 *
+	 * @return string
+	 */
+	public function highlight( $text, $type = self::HL_BOLD ) {
+
+		if ( $this->tokens === array() || $this->canHighlight === false ) {
+			return $text;
+		}
+
+		return $this->doHighlight( $text, $type, array_keys( $this->tokens ) );
+	}
+
+	private function doHighlight( $text, $type, $tokens ) {
+
+		if ( $type === self::HL_BOLD ) {
+			$replacement = "<b>$0</b>";
+		} elseif ( $type === self::HL_UNDERLINE ) {
+			$replacement = "<u>$0</u>";
+		} elseif ( $type === self::HL_SPAN ) {
+			$replacement = "<span class='smw-query-token'>$0</span>";
+		} else {
+			$replacement = "'''$0'''" ;
+		}
+
+		// Match all tokens except those within [ ... ] to avoid breaking links
+		// and annotations
+		$pattern = '/(' . implode( '|', $tokens ) . ')+(?![^\[]*\])/iu';
+
+		return preg_replace( $pattern, $replacement, $text );
+	}
+
+	private function addTokensFromText( $text ) {
+
+		// Remove query related chars
+		$text = str_replace(
+			array( '*', '"', '~', '_' ),
+			array( '',  '',  '',  ' ' ),
+			$text
+		);
+
+		return $this->tokens += array_flip( Tokenizer::tokenize( $text ) );
+	}
+
+}
