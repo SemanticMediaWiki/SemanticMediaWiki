@@ -50,7 +50,7 @@ class AllowsPatternValue extends StringValue {
 		);
 
 		if ( !$content ) {
-			$this->addErrorMsg( array( 'smw-datavalue-allows-pattern-reference-unknown', $value ), Message::PARSE );
+			$this->addErrorMsg( array( 'smw-datavalue-allows-pattern-reference-unknown', $value ), Message::ESCAPED );
 		}
 
 		parent::parseUserValue( $value );

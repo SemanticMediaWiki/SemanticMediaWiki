@@ -29,7 +29,7 @@
 			"subject": "Example/P0425/1",
 			"assert-output": {
 				"to-contain": [
-					"<div class=\"smwttcontent\">&quot;.928K&quot; is not declared as a valid unit of measurement for this property.</div>"
+					"<div class=\"smwttcontent\">\".928K\" is not declared as a valid unit of measurement for this property.</div>"
 				]
 			}
 		},
