@@ -1,0 +1,134 @@
+{
+	"description": "Test `#ask` to highlight (`#-hl`) search token in result set (#..., `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has mono text",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has record with text",
+			"contents": "[[Has type::Record]] [[Has fields::Text;Number]]"
+		},
+		{
+			"page": "Example/P0910/1",
+			"contents": "[[Category:P0910]] [[Has text::Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis ...]]"
+		},
+		{
+			"page": "Example/P0910/Q.1",
+			"contents": "{{#ask: [[Has text::~*dolor sit amet consectetuer*]] |?Has text#-hl |link=none }} "
+		},
+		{
+			"page": "Example/P0910/2",
+			"contents": "[[Category:P0910]] [[Has mono text::Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis ...@la]]"
+		},
+		{
+			"page": "Example/P0910/Q.2.1",
+			"contents": "{{#ask: [[Has mono text::~*dolor sit amet consectetuer*]] |?Has mono text#-hl |link=none }} "
+		},
+		{
+			"page": "Example/P0910/Q.2.2",
+			"contents": "{{#ask: [[Has mono text::~*dolor sit amet consectetuer*]] |?Has mono text#-hl|+lang=la |link=none }} "
+		},
+		{
+			"page": "Example/P0910/Q.2.3",
+			"contents": "{{#ask: [[Has mono text::~*dolor sit amet consectetuer*]] |?Has mono text#-hl|+index=1 |link=none }} "
+		},
+		{
+			"page": "Example/P0910/3",
+			"contents": "[[Category:P0910]] [[Has record with text::Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis ...;123]]"
+		},
+		{
+			"page": "Example/P0910/Q.3.1",
+			"contents": "{{#ask: [[Has record with text::~*dolor sit amet consectetuer*]] |?Has record with text#-hl |link=none }} "
+		},
+		{
+			"page": "Example/P0910/Q.3.2",
+			"contents": "{{#ask: [[Has record with text::~*dolor sit amet consectetuer*]] |?Has record with text#-hl|+index=1 |link=none }} "
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (...)",
+			"subject": "Example/P0910/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"smwtype_txt\">Lorem ipsum <b>dolor</b> <b>sit</b> <b>amet</b> <b>consectetuer</b> justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis ..."
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (simple record/mono text doens't display a highlight)",
+			"subject": "Example/P0910/Q.2.1",
+			"assert-output": {
+				"to-contain": [
+					"smwtype_mlt_rec\">Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis ... (la)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (on selected language |+lang, tokens are displayed)",
+			"subject": "Example/P0910/Q.2.2",
+			"assert-output": {
+				"to-contain": [
+					"smwtype_txt\">Lorem ipsum <b>dolor</b> <b>sit</b> <b>amet</b> <b>consectetuer</b> justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis ..."
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (on selected index |+index, tokens are displayed)",
+			"subject": "Example/P0910/Q.2.3",
+			"assert-output": {
+				"to-contain": [
+					"smwtype_txt\">Lorem ipsum <b>dolor</b> <b>sit</b> <b>amet</b> <b>consectetuer</b> justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis ..."
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (simple record/mono text doens't display a highlight)",
+			"subject": "Example/P0910/Q.3.1",
+			"assert-output": {
+				"to-contain": [
+					"smwtype_rec\">Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis ... (123)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (on selected index |+index, tokens are displayed)",
+			"subject": "Example/P0910/Q.3.2",
+			"assert-output": {
+				"to-contain": [
+					"smwtype_txt\">Lorem ipsum <b>dolor</b> <b>sit</b> <b>amet</b> <b>consectetuer</b> justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis ..."
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

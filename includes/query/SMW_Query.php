@@ -6,6 +6,7 @@ use SMW\Query\PrintRequest;
 use SMW\Query\Language\Description;
 use SMW\Query\QueryContext;
 use SMW\Query\QueryStringifier;
+use SMW\Query\QueryToken;
 use SMW\Message;
 
 /**
@@ -87,6 +88,11 @@ class SMWQuery implements QueryContext {
 	 * @var string|null
 	 */
 	private $querySource = null;
+
+	/**
+	 * @var QueryToken|null
+	 */
+	private $queryToken;
 
 	/**
 	 * @var array
@@ -176,6 +182,24 @@ class SMWQuery implements QueryContext {
 	 */
 	public function getQuerySource() {
 		return $this->querySource;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param QueryToken|null $queryToken
+	 */
+	public function setQueryToken( QueryToken $queryToken = null ) {
+		$this->queryToken = $queryToken;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return QueryToken|null
+	 */
+	public function getQueryToken() {
+		return $this->queryToken;
 	}
 
 	/**

@@ -10,10 +10,13 @@ use SMW\DIWikiPage;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDIBoolean as DIBoolean;
+use SMWDIBlob as DIBlob;
 use SMW\DataValues\MonolingualTextValue;
+use SMW\Query\QueryToken;
+use SMW\InTextAnnotationParser;
 
 /**
- * Returns the result content (DI objects) for a single PrintRequest represented
+ * Returns the result content (DI objects) for a single PrintRequest, representing
  * as cell of the intersection between a subject row and a print column.
  *
  * @license GNU GPL v2+
@@ -34,6 +37,11 @@ class ResultFieldMatchFinder {
 	 * @var PrintRequest
 	 */
 	private $printRequest;
+
+	/**
+	 * @var QueryToken
+	 */
+	private $queryToken;
 
 	/**
 	 * @var boolean|array
@@ -59,11 +67,29 @@ class ResultFieldMatchFinder {
 	/**
 	 * @since 2.5
 	 *
+	 * @param QueryToken|null $queryToken
+	 */
+	public function setQueryToken( QueryToken $queryToken = null ) {
+
+		if ( $queryToken === null ) {
+			return;
+		}
+
+		$this->queryToken = $queryToken;
+
+		$this->queryToken->canHighlight(
+			$this->printRequest->getOutputFormat()
+		);
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @param DataItem $dataItem
 	 *
 	 * @param DataItem[]|[]
 	 */
-	public function getResultsBy( DataItem $dataItem ) {
+	public function findAndMatch( DataItem $dataItem ) {
 
 		$content = array();
 
@@ -195,14 +221,14 @@ class ResultFieldMatchFinder {
 				// Return the text representation without a language reference
 				// (tag) since the value has been filtered hence only matches
 				// that language
-				$newcontent[] = $textValue->getDataItem();
+				$newcontent[] = $this->applyContentManipulation( $textValue->getDataItem() );
 
 				// Set the index so ResultArray::getNextDataValue can
 				// find the correct PropertyDataItem (_TEXT;_LCODE) position
 				// to match the DI
 				$this->printRequest->setParameter( 'index', 1 );
 			} elseif ( $lang === false && $index !== false && ( $dataItemByRecord = $multiValue->getDataItemByIndex( $index ) ) !== null ) {
-				$newcontent[] = $dataItemByRecord;
+				$newcontent[] = $this->applyContentManipulation( $dataItemByRecord );
 			}
 		}
 
@@ -272,7 +298,36 @@ class ResultFieldMatchFinder {
 			unset( $pv );
 		}
 
+		array_walk( $propertyValues, function( &$dataItem ) {
+			$dataItem = $this->applyContentManipulation( $dataItem );
+		} );
+
 		return $propertyValues;
+	}
+
+	private function applyContentManipulation( $dataItem ) {
+
+		if ( !$dataItem instanceof DIBlob ) {
+			return $dataItem;
+		}
+
+		// Avoid `_cod`, `_eid` or similar types that use the DIBlob as storage
+		// object
+		if ( $this->printRequest->getTypeID() !== '_txt' && strpos( $this->printRequest->getTypeID(), '_rec' ) === false ) {
+			return $dataItem;
+		}
+
+		// #1314
+		$string = InTextAnnotationParser::removeAnnotation(
+			$dataItem->getString()
+		);
+
+		// #...
+		if ( $this->queryToken !== null ) {
+			$string = $this->queryToken->highlight( $string );
+		}
+
+		return new DIBlob( $string );
 	}
 
 }

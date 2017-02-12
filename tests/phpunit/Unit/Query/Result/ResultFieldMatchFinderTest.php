@@ -68,7 +68,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetResultsBy_THIS() {
+	public function testFindAndMatch_THIS() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 
@@ -92,11 +92,11 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( $dataItem ),
-			$instance->getResultsBy( $dataItem )
+			$instance->findAndMatch( $dataItem )
 		);
 	}
 
-	public function testGetResultsBy_CATS() {
+	public function testFindAndMatch_CATS() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
@@ -128,11 +128,11 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( $expected ),
-			$instance->getResultsBy( $dataItem )
+			$instance->findAndMatch( $dataItem )
 		);
 	}
 
-	public function testGetResultsBy_CCAT() {
+	public function testFindAndMatch_CCAT() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
@@ -168,11 +168,11 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( $this->dataItemFactory->newDIBoolean( true ) ),
-			$instance->getResultsBy( $dataItem )
+			$instance->findAndMatch( $dataItem )
 		);
 	}
 
-	public function testGetResultsBy_PROP() {
+	public function testFindAndMatch_PROP() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
@@ -212,7 +212,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( $expected ),
-			$instance->getResultsBy( $dataItem )
+			$instance->findAndMatch( $dataItem )
 		);
 	}
 
