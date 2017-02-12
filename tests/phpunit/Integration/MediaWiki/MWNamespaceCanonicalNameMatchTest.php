@@ -38,9 +38,10 @@ class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 		$default = array(
 			'smwgNamespacesWithSemanticLinks' => array(),
 			'wgNamespacesWithSubpages' => array(),
-			'wgExtraNamespaces'  => array(),
-			'wgNamespaceAliases' => array(),
-			'wgLanguageCode'     => 'en'
+			'wgExtraNamespaces'   => array(),
+			'wgNamespaceAliases'  => array(),
+			'wgContentNamespaces' => array(),
+			'wgLanguageCode'      => 'en'
 		);
 
 		$instance = $this->getMock( '\SMW\NamespaceManager',
