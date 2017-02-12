@@ -104,6 +104,11 @@ class Obfuscator {
 	 * @return text
 	 */
 	public static function removeAnnotation( $text ) {
+
+		if ( strpos( $text, '::' ) === false ) {
+			return $text;
+		}
+
 		return preg_replace_callback(
 			InTextAnnotationParser::getRegexpPattern( false ),
 			'self::doRemoveAnnotation',
