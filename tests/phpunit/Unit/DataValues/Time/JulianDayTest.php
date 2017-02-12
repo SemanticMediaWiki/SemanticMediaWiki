@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Libs\Time;
+namespace SMW\Tests\DataValues\Time;
 
-use SMW\Libs\Time\JulianDay;
+use SMW\DataValues\Time\JulianDay;
 
 /**
- * @covers \SMW\Libs\Time\JulianDay
+ * @covers \SMW\DataValues\Time\JulianDay
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

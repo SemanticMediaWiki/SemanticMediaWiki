@@ -5,7 +5,7 @@ namespace SMW;
 use Language;
 use SMWDITime as DITime;
 use DateTimeZone;
-use SMW\Libs\Time\Timezone;
+use SMW\DataValues\Time\Timezone;
 
 /**
  * @license GNU GPL v2+

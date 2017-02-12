@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Libs\Time;
+namespace SMW\DataValues\Time;
 
 /**
  * It is assumed that the changeover from the Julian calendar to the Gregorian

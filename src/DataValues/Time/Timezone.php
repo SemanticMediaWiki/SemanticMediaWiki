@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Libs\Time;
+namespace SMW\DataValues\Time;
 
 use DateTimeZone;
 use DateInterval;
