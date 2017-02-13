@@ -17,7 +17,8 @@
 			"Vengir",
 			"Alan ffm",
 			"WTM",
-			"Devwebtel"
+			"Devwebtel",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
@@ -258,7 +259,7 @@
 	"smw_adminlinks_datastructure": "Struktura danych",
 	"smw_adminlinks_displayingdata": "Pokaż dane",
 	"smw_adminlinks_inlinequerieshelp": "Pomoc dotycząca wewnętrznych zapytań",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Użytkownik|System}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Użytkownik|System}}",
 	"smw-createproperty-isproperty": "To jest właściwość typu $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Dopuszczalna wartość dla tej własności to|Dopuszczalne wartości dla tej własności to:}}",
 	"smw-paramdesc-category-delim": "Ogranicznik",

@@ -23,7 +23,8 @@
 			"AlvaroMolina",
 			"Indiralena",
 			"Lemondoge",
-			"Dgstranz"
+			"Dgstranz",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -294,7 +295,7 @@
 	"smw_adminlinks_displayingdata": "Mostrando datos",
 	"smw_adminlinks_inlinequerieshelp": "Ayuda de consultas en línea",
 	"smw-page-indicator-usage-count": "[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Número de usos] estimado: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Usuario|Sistema}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Usuario|Sistema}}",
 	"smw-createproperty-isproperty": "Es una propiedad de tipo $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|El valor permitido para esta propiedad es|Los valores permitidos para esta propiedad son}}:",
 	"smw-paramdesc-category-delim": "El delimitador",

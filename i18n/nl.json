@@ -16,7 +16,8 @@
 			"Rangekill",
 			"Ecthelion3",
 			"Hex",
-			"Mainframe98"
+			"Mainframe98",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Uw wiki toegankelijker maken - voor machines ''en'' mensen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
@@ -297,7 +298,7 @@
 	"smw_adminlinks_displayingdata": "Gegevens weergeven",
 	"smw_adminlinks_inlinequerieshelp": "Hulp bij inline zoekopdrachten",
 	"smw-page-indicator-usage-count": "Geschatte [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count aantal keren gebruikt]: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Gebruiker|Systeem}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Gebruiker|Systeem}}",
 	"smw-createproperty-isproperty": "Het is een eigenschap van het type $1.",
 	"smw-createproperty-allowedvals": "De toegelaten {{PLURAL:$1|waarde voor deze eigenschap is|waarden voor deze eigenschap zijn}}:",
 	"smw-paramdesc-category-delim": "Het scheidingsteken",

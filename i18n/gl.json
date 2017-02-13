@@ -4,7 +4,8 @@
 			"Toliño",
 			"Elisardojm",
 			"Banjo",
-			"Macofe"
+			"Macofe",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
@@ -129,6 +130,7 @@
 	"smw_attributearticlecount": "Mostrando $1 {{PLURAL:$1|páxina|páxinas}} que {{PLURAL:$1|usa|usan}} esta propiedade.",
 	"smw-propertylist-subproperty-header": "Subpropiedades",
 	"smw-propertylist-redirect-header": "Sinónimos",
+	"smw-propertylist-count": "{{PLURAL:$1|Móstrase $1 propiedade relacionada|Móstranse $1 propiedades relacionadas}}.",
 	"exportrdf": "Exportar páxinas a RDF",
 	"smw_exportrdf_docu": "Esta páxina permítelle obter datos dunha páxina en formato RDF.\nPara exportar páxinas, insira os títulos na caixa de embaixo (un título por liña).",
 	"smw_exportrdf_recursive": "Exportar igualmente todas as páxinas relacionadas.\nDéase conta de que o resultado pode ser longo!",
@@ -278,7 +280,7 @@
 	"smw_adminlinks_displayingdata": "Mostrando os datos",
 	"smw_adminlinks_inlinequerieshelp": "Axuda coas pescudas",
 	"smw-page-indicator-usage-count": "[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Número de usos] estimado: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Usuario|Sistema}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Usuario|Sistema}}",
 	"smw-createproperty-isproperty": "Esta é unha propiedade de clase $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|O valor permitido|Os valores permitidos}} para esta propiedade {{PLURAL:$1|é|son}}:",
 	"smw-paramdesc-category-delim": "O delimitador",

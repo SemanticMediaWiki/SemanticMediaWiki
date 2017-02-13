@@ -21,7 +21,8 @@
 			"Rhcastilhos",
 			"Opraco",
 			"Macofe",
-			"Eduardo Addad de Oliveira"
+			"Eduardo Addad de Oliveira",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -300,7 +301,7 @@
 	"smw_adminlinks_displayingdata": "Exibição de dados",
 	"smw_adminlinks_inlinequerieshelp": "Ajuda para consultas inline",
 	"smw-page-indicator-usage-count": "[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Número de utilizações] estimado: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Usuário|Sistema}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Usuário|Sistema}}",
 	"smw-createproperty-isproperty": "É uma propriedade do tipo $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|O valor permitido para esta propriedade é|Os valores permitidos para esta propriedade são}}:",
 	"smw-paramdesc-category-delim": "O delimitador",

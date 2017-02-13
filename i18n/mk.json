@@ -3,7 +3,8 @@
 		"authors": [
 			"Bjankuloski06",
 			"Rancher",
-			"아라"
+			"아라",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Го прави вашето вики подостапно - за машини ''и'' луѓе ([https://www.semantic-mediawiki.org/wiki/Help:User_manual?uselang=mk документација])",
@@ -259,7 +260,7 @@
 	"smw_adminlinks_datastructure": "Структура на податоците",
 	"smw_adminlinks_displayingdata": "Приказ на податоци",
 	"smw_adminlinks_inlinequerieshelp": "Помош со вметнати барања",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Корисник|Систем}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Корисник|Систем}}",
 	"smw-createproperty-isproperty": "Ова е својство од видот $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Дозволената вредност за ова својство е|Дозволените вредности за ова својство се}}:",
 	"smw-paramdesc-category-delim": "Разделувачот",

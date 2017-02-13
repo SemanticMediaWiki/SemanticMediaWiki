@@ -11,7 +11,8 @@
 			"아라",
 			"MojoMann",
 			"Guycn2",
-			"Or"
+			"Or",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://www.semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])",
@@ -268,7 +269,7 @@
 	"smw_adminlinks_displayingdata": "הצגת נתונים",
 	"smw_adminlinks_inlinequerieshelp": "עזרה על שאילתות משובצות",
 	"smw-page-indicator-usage-count": "הערכת [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count מניין שימוש]: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|משתמש|מערכת}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|משתמש|מערכת}}",
 	"smw-createproperty-isproperty": "זהו מאפיין מסוג $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|הערך האפשרי למאפיין זה הוא|הערכים האפשריים למאפיין זה הם}}:",
 	"smw-paramdesc-category-delim": "מפריד",

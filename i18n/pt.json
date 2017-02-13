@@ -18,7 +18,8 @@
 			"Fúlvio",
 			"Fitoschido",
 			"Ngl2016",
-			"Jaideraf"
+			"Jaideraf",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -301,7 +302,7 @@
 	"smw_adminlinks_displayingdata": "Apresentação de dados",
 	"smw_adminlinks_inlinequerieshelp": "Ajuda para consultas dinâmicas (''inline queries'')",
 	"smw-page-indicator-usage-count": "[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Número de utilizações] estimado: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Utilizador|Sistema}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Utilizador|Sistema}}",
 	"smw-createproperty-isproperty": "É uma propriedade do tipo $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|O valor permitido para esta propriedade é|Os valores permitidos para esta propriedade são}}:",
 	"smw-paramdesc-category-delim": "O delimitador",

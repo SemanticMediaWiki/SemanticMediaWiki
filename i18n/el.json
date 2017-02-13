@@ -11,7 +11,8 @@
 			"ZaDiak",
 			"FocalPoint",
 			"Kghbln",
-			"Ανώνυμος Βικιπαιδιστής"
+			"Ανώνυμος Βικιπαιδιστής",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([https://www.semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
@@ -288,7 +289,7 @@
 	"smw_adminlinks_displayingdata": "Παρουσίαση δεδομένων",
 	"smw_adminlinks_inlinequerieshelp": "Βοήθεια σχετικά με τα ερωτήματα εντός κειμένου",
 	"smw-page-indicator-usage-count": "Εκτιμώμενο [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count πλήθος χρήσεων]: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Χρήστης|Σύστημα}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Χρήστης|Σύστημα}}",
 	"smw-createproperty-isproperty": "Αυτή είναι ιδιότητα τύπου $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Η επιτρεπτή τιμή|Οι επιτρεπτές τιμές}} για αυτήν την ιδιότητα είναι:",
 	"smw-paramdesc-category-delim": "Το διαχωριστικό",

@@ -25,7 +25,8 @@
 			"Irus",
 			"Kareyac",
 			"Zpizza",
-			"Alex Great"
+			"Alex Great",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -295,7 +296,7 @@
 	"smw_adminlinks_displayingdata": "Отображение данных",
 	"smw_adminlinks_inlinequerieshelp": "Справка по встроенным запросам",
 	"smw-page-indicator-usage-count": "Примерное [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count \nколичество использований]: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Участник|Система}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Участник|Система}}",
 	"smw-createproperty-isproperty": "Это свойство типа $1.",
 	"smw-createproperty-allowedvals": "Для данного свойства {{PLURAL:$1|1=допускается следующее значение|допускаются следующие значения}}:",
 	"smw-paramdesc-category-delim": "Разделитель",
@@ -347,7 +348,7 @@
 	"smw-admin-idlookup-docu": "Отображает сведения об идентификаторе внутреннего объекта, который представляет отдельные сущности (вики-страницу, подобъект и т.д.) в Семантической МедиаВики.",
 	"smw-admin-iddispose-title": "Поиск ID удаление",
 	"smw-admin-iddispose-docu": "Операция утилизации неограниченной и удалит внутренний идентификатор объекта от движка хранения при подтверждении. Пожалуйста, выполнить эту задачу с '''осторожностью''' и только после того, как [https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal documentation] были проведены консультации.",
-	"smw-admin-iddispose-done": "Идентификатор «$1» был удален из хранилища",
+	"smw-admin-iddispose-done": "Идентификатор «$1» был удалён из хранилища.",
 	"smw-admin-iddispose-references": "{{PLURAL:$2|Таблица|Таблицы}}, с по крайней мере одной активной ссылкой на ID «$1».",
 	"smw-admin-objectid": "ID объекта:",
 	"smw-livepreview-loading": "Загрузка…",

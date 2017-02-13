@@ -18,7 +18,8 @@
 			"Otokoume",
 			"Macofe",
 			"Ridmevo",
-			"Ochaochaocha3"
+			"Ochaochaocha3",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -259,7 +260,7 @@
 	"smw_adminlinks_datastructure": "データ構造",
 	"smw_adminlinks_displayingdata": "データの表示",
 	"smw_adminlinks_inlinequerieshelp": "インラインクエリのヘルプ",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|利用者|システム}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|利用者|システム}}",
 	"smw-createproperty-isproperty": "これは型 $1 のプロパティです。",
 	"smw-createproperty-allowedvals": "このプロパティが取れる{{PLURAL:$1|値}}:",
 	"smw-paramdesc-category-delim": "区切り文字",

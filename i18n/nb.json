@@ -11,7 +11,8 @@
 			"Emilbk",
 			"SuperPotato",
 			"Macofe",
-			"Jon Harald Søby"
+			"Jon Harald Søby",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -276,7 +277,7 @@
 	"smw_adminlinks_datastructure": "Datastruktur",
 	"smw_adminlinks_displayingdata": "Datavisning",
 	"smw_adminlinks_inlinequerieshelp": "Hjelp for innebygde spørringer",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Bruker|System}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Bruker|System}}",
 	"smw-createproperty-isproperty": "Det er en egenskap av type $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Den tillatte verdien|De tillatte verdiene}} for denne egenskapen er:",
 	"smw-paramdesc-category-delim": "Skilletegnet",

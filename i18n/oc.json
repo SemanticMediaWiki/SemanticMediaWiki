@@ -4,7 +4,8 @@
 			"Cedric31",
 			"아라",
 			"Kghbln",
-			"Nicolas Eynaud"
+			"Nicolas Eynaud",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Rendre lo wiki mai accessible - per las maquinas ''e'' los umans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentacion en linha])",
@@ -42,7 +43,7 @@
 	"smw_wrong_namespace": "Solas las paginas de l'espaci de noms « $1 » son autorizadas aicí.",
 	"smw_manytypes": "Maites tipes de donadas son estats assignats a l'atribut.",
 	"smw_emptystring": "Las cadenas voidas son pas acceptadas.",
-	"smw_notinenum": "\\\"$1\\\" fa pas partida de las valors possiblas ($2) per aqueste atribut.",
+	"smw_notinenum": "« $1 » es pas dins la lista ($2) de las [[Property:Allows value|valors autorizadas]] per la proprietat « $3 ».",
 	"smw_noboolean": "\\\"$1\\\" es pas reconegut coma una valor boleana (verai/fals).",
 	"smw_true_words": "verai,v,òc,true",
 	"smw_false_words": "fals,f,non,false",
@@ -147,7 +148,7 @@
 	"smw_pp_docu": "Recercar totas las valors d'una proprietat dins una pagina donada. Picatz la pagina e una proprietat.",
 	"smw_pp_from": "De la pagina",
 	"smw_pp_type": "Proprietat",
-	"smw_pp_submit": "Trobar de resultats",
+	"smw_pp_submit": "Afichar los resultats",
 	"smw_result_prev": "Precedent",
 	"smw_result_next": "Seguent",
 	"smw_result_results": "Resultats",
@@ -180,7 +181,7 @@
 	"smw_adminlinks_datastructure": "Estructura de las donadas",
 	"smw_adminlinks_displayingdata": "Afichatge de las donadas",
 	"smw_adminlinks_inlinequerieshelp": "Ajuda sus las requèstas",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Utilizaire|Sistèma}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Utilizaire|Sistèma}}",
 	"smw-createproperty-isproperty": "Aquò es una proprietat del tipe $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|La valor autorizada per aquesta proprietat es|Las valors autorizadas per aquesta proprietat son}} :",
 	"smw-paramdesc-category-delim": "Lo delimitador",
@@ -201,7 +202,7 @@
 	"group-smwadministrator-member": "{{GENDER:$1|administrator|administratritz}} (Semantic MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administrators (Semantic MediaWiki)",
 	"group-smwcurator": "Conservadors (Mediawiki Semantica)",
-	"smw-pa-property-predefined-default": "$1 es una proprietat predefinida.",
+	"smw-pa-property-predefined-default": "\"$1\" es una proprietat predefinida.",
 	"smw-sp-properties-header-label": "Lista de las proprietats",
 	"smw-sp-admin-settings-button": "Generar la lista dels paramètres",
 	"smw-admin-objectid": "Id de l’objècte :",
@@ -211,8 +212,8 @@
 	"smw-sp-types-list": "Lista dels tipes de donadas",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segonda|segondas}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segonda|segondas}}",
-	"smw-datavalue-external-formatter-invalid-uri": "$1 es una URL invalida.",
-	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-datavalue-external-formatter-invalid-uri": "« $1 » es una URL invalida.",
+	"smw-datavalue-reference-outputformat": "$1 : $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-parse": "$1"
 }

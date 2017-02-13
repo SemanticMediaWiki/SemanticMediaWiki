@@ -237,7 +237,7 @@
 	"smw_adminlinks_displayingdata": "Visualizzazione dati",
 	"smw_adminlinks_inlinequerieshelp": "Aiuto sulle query inline",
 	"smw-page-indicator-usage-count": "[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Numero di utilizzi] stimati: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Utente|Sistema}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Utente|Sistema}}",
 	"smw-createproperty-isproperty": "È una proprietà di tipo $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Il valore permesso per questa proprità è|I valori permessi per questa proprietà sono}}:",
 	"smw-ui-tooltip-title-property": "Proprietà",
@@ -333,6 +333,6 @@
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" non può essere utilizzato come etichetta preferita perché la lingua \"$2\" è già stata assegnata all'etichetta \"$3\".",
 	"smw-no-data-available": "Nessun dato disponibile.",
 	"smw-property-req-violation-missing-fields": "Alla proprietà \"$1\" manca la dichiarazione di dettagli per le annotazioni di tipo \"$2\" non riuscendo a definire la proprietà <code>Has fields</code>.",
-	"smw-pageedit-protection-disabled": "La modifica di protezione è stata disattivata, pertanto \"$1\" non può essere utilizzato per proteggere il contenuto della pagina dalle modifiche non autorizzate.",
+	"smw-edit-protection-disabled": "La modifica di protezione è stata disattivata, pertanto \"$1\" non può essere utilizzato per proteggere il contenuto della pagina dalle modifiche non autorizzate.",
 	"smw-pa-property-predefined-long_edip": "Mentre qualsiasi utente è qualificato per aggiungere questa proprietà ad un soggetto, soltanto utenti con uno specifico permesso possono modificare o rimuovere la protezione ad un'entità, una volta che questa è stata aggiunta."
 }

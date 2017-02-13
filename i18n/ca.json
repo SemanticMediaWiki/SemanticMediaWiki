@@ -13,7 +13,8 @@
 			"Fitoschido",
 			"Macofe",
 			"Kghbln",
-			"Jaumeortola"
+			"Jaumeortola",
+			"Nemo bis"
 		]
 	},
 	"smw-desc": "Fent el vostre wiki més accessible — per a les màquines «i també» per als humans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
@@ -285,7 +286,7 @@
 	"smw_adminlinks_displayingdata": "Visualització de les dades",
 	"smw_adminlinks_inlinequerieshelp": "Ajuda de les consultes en línia",
 	"smw-page-indicator-usage-count": "[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Recompte d'ús] estimat: {{PLURAL:$2|'''$2'''}}",
-	"smw-page-indicator-type-info": "{{PLURAL:$1|Usuari|Sistema}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Usuari|Sistema}}",
 	"smw-createproperty-isproperty": "És una propietat del tipus $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|El valor permès per a aquestapropietat és|Els valors permesos per a aquestes propietats són}}:",
 	"smw-paramdesc-category-delim": "El delimitador",
