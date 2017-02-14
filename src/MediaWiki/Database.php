@@ -57,6 +57,17 @@ class Database {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $type
+	 *
+	 * @return boolean
+	 */
+	public function isType( $type ) {
+		return $this->readConnection()->getType() === $type;
+	}
+
+	/**
 	 * @see DatabaseBase::getType
 	 *
 	 * @since 1.9.1
@@ -343,28 +354,42 @@ class Database {
 	}
 
 	/**
-	 * @note According to notes in SqlBagOStuff.php#L161
-	 * "... and PostgreSQL needs to know if we are in transaction or not"
+	 * @see DatabaseBase::getFlag
 	 *
 	 * @since 2.4
 	 */
-	public function disableTransactions() {
-		if ( $this->writeConnection()->getType() == 'mysql' && $this->writeConnection()->getFlag( DBO_TRX ) ) {
-			$this->writeConnection()->clearFlag( DBO_TRX );
-			$this->disabledTransactions = true;
-		}
+	function getFlag( $flag ) {
+		$this->writeConnection()->getFlag( $flag );
 	}
 
 	/**
-	 * Can only be used in cases where Database::disableTransactions was
-	 * successful
+	 * @see DatabaseBase::setFlag
 	 *
 	 * @since 2.4
 	 */
-	public function enableTransactions() {
-		if ( $this->disabledTransactions ) {
-			$this->writeConnection()->setFlag( DBO_TRX );
-			$this->disabledTransactions = false;
+	function setFlag( $flag ) {
+		$this->writeConnection()->setFlag( $flag );
+	}
+
+	/**
+	 * @since 2.4
+	 */
+	public function queryWithAutoCommit( $sql, $fname = __METHOD__, $ignoreException = false ) {
+
+		$writeConnection = $this->writeConnection();
+
+		$autoTrx = $writeConnection->getFlag( DBO_TRX );
+		$writeConnection->clearFlag( DBO_TRX );
+
+		// https://github.com/wikimedia/mediawiki/blob/f7dad57c64db3eb1296894c2d3ae97b9f7f27c4c/includes/installer/DatabaseInstaller.php#L157
+		if ( $autoTrx && $writeConnection->trxLevel() ) {
+			$writeConnection->commit( __METHOD__ );
+		}
+
+		$this->query( $sql, $fname, $ignoreException );
+
+		if ( $autoTrx ) {
+			$writeConnection->setFlag( DBO_TRX );
 		}
 	}
 

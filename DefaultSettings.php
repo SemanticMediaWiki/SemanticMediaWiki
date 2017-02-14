@@ -990,3 +990,22 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # @since 2.4
 ##
 $GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM;
+
+##
+# Using MySQL's "Global Transaction Identifier" will create issues when executing
+# queries that rely on temporary tables, according to the documentation "... the
+# operations listed here cannot be used ... CREATE TEMPORARY TABLE statements
+# inside transactions".
+#
+# MySQL Global transaction identifier is a unique transaction ID assigned to every
+# transaction that happens in MySQL database.
+#
+# Issue is encountered when @@GLOBAL.ENFORCE_GTID_CONSISTENCY = 1
+#
+# @see https://dev.mysql.com/doc/refman/5.6/en/replication-options-gtids.html
+# @see https://support.software.dell.com/kb/184275
+#
+# @since 2.5
+# @default false
+##
+$GLOBALS['smwgQTemporaryTablesAutoCommitMode'] = false;
