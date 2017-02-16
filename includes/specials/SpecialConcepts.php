@@ -116,6 +116,7 @@ class SpecialConcepts extends SpecialPage {
 	 * @param array $param
 	 */
 	public function execute( $param ) {
+		$this->setHeaders();
 
 		$this->getOutput()->setPageTitle( $this->msg( 'concepts' )->text() );
 
