@@ -21,6 +21,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 	}
 
 	public function execute( $page ) {
+		$this->setHeaders();
 		global $wgOut, $wgRequest;
 
 		$wgOut->setPageTitle( wfMessage( 'exportrdf' )->text() );
