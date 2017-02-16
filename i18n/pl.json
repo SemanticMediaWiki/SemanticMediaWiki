@@ -256,6 +256,8 @@
 	"smw-admin-supplementary-settings-title": "Ustawienia konfiguracji",
 	"smw-admin-supplementary-settings-intro": "<b>$1</b> zawiera listę dostępnych ustawień stosowanych w semantycznej MediaWiki",
 	"smw-admin-supplementary-operational-statistics-title": "Statystyki operacyjne",
+	"smw-property-label-similarity-threshold": "Próg:",
+	"smw-property-label-similarity-noresult": "Nie znaleziono wyników dla wybranych opcji.",
 	"smw_adminlinks_datastructure": "Struktura danych",
 	"smw_adminlinks_displayingdata": "Pokaż dane",
 	"smw_adminlinks_inlinequerieshelp": "Pomoc dotycząca wewnętrznych zapytań",
