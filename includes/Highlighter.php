@@ -186,7 +186,7 @@ class Highlighter {
 					'div',
 					array(
 						'class' => 'smwttcontent'
-					), $this->options['content']
+					), htmlspecialchars_decode( $this->options['content'] )
 				)
 			);
 	}
