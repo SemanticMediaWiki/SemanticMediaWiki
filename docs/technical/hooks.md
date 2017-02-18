@@ -41,7 +41,7 @@ Implementing a hook should be made in consideration of the expected performance 
 
 ## 2.5
 
-### `SMW::Job::AfterUpdateDispatcherJobComplete`
+### SMW::Job::AfterUpdateDispatcherJobComplete
 
 Hook allows to add extra jobs after `UpdateDispatcherJob` has been processed.
 
@@ -55,7 +55,7 @@ Hook allows to add extra jobs after `UpdateDispatcherJob` has been processed.
 } );
 </pre>
 
-### `SMW::SQLStore::Installer::AfterCreateTablesComplete`
+### SMW::SQLStore::Installer::AfterCreateTablesComplete
 
 Hook allows to add extra tables after the creation process as been finalized.
 
@@ -66,13 +66,13 @@ Hook allows to add extra tables after the creation process as been finalized.
 	$messageReporter->reportMessage( '...' );
 
 	// See documentation in the available TableBuilder interface
-	// $tableBuilder->...
+	$tableBuilder->create( ... );
 
 	return true;
 } );
 </pre>
 
-### `SMW::SQLStore::Installer::AfterDropTablesComplete`
+### SMW::SQLStore::Installer::AfterDropTablesComplete
 
 Hook allows to remove extra tables after the drop process as been finalized.
 
@@ -83,7 +83,7 @@ Hook allows to remove extra tables after the drop process as been finalized.
 	$messageReporter->reportMessage( '...' );
 
 	// See documentation in the available TableBuilder interface
-	// $tableBuilder->...
+	$tableBuilder->drop( ... );
 
 	return true;
 } );
