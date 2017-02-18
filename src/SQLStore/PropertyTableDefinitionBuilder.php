@@ -18,6 +18,11 @@ use SMWDataItem as DataItem;
 class PropertyTableDefinitionBuilder {
 
 	/**
+	 * Fixed property table prefix
+	 */
+	const PROPERTY_TABLE_PREFIX = 'smw_fpt';
+
+	/**
 	 * @var PropertyTypeFinder
 	 */
 	private $propertyTypeFinder;
@@ -31,11 +36,6 @@ class PropertyTableDefinitionBuilder {
 	 * @var array
 	 */
 	protected $fixedPropertyTableIds = array();
-
-	/**
-	 * @var string
-	 */
-	private $fixedPropertyTablePrefix = 'smw_fpt';
 
 	/**
 	 * @since 1.9
@@ -59,11 +59,11 @@ class PropertyTableDefinitionBuilder {
 
 		$this->addTableDefinitionForFixedProperties(
 			$specialProperties,
-			$this->fixedPropertyTablePrefix
+			self::PROPERTY_TABLE_PREFIX
 		);
 
 		$customFixedProperties = array();
-		$fixedPropertyTablePrefix = $this->fixedPropertyTablePrefix;
+		$fixedPropertyTablePrefix = self::PROPERTY_TABLE_PREFIX;
 
 		// Allow to alter the prefix by an extension
 		Hooks::run( 'SMW::SQLStore::AddCustomFixedPropertyTables', array( &$customFixedProperties, &$fixedPropertyTablePrefix ) );
@@ -92,7 +92,7 @@ class PropertyTableDefinitionBuilder {
 	 * @return string
 	 */
 	public function getTablePrefix() {
-		return $this->fixedPropertyTablePrefix;
+		return self::PROPERTY_TABLE_PREFIX;
 	}
 
 	/**
@@ -140,7 +140,7 @@ class PropertyTableDefinitionBuilder {
 	 * @return string
 	 */
 	public function createTableNameFrom( $tableName ) {
-		return $this->fixedPropertyTablePrefix . strtolower( $tableName );
+		return self::PROPERTY_TABLE_PREFIX . strtolower( $tableName );
 	}
 
 	/**
@@ -152,7 +152,7 @@ class PropertyTableDefinitionBuilder {
 	 * @return string
 	 */
 	public function createHashedTableNameFrom( $tableName ) {
-		return $this->fixedPropertyTablePrefix . '_' . substr( base_convert( md5( $tableName ), 16, 32 ), 0, 12 );
+		return self::PROPERTY_TABLE_PREFIX . '_' . substr( base_convert( md5( $tableName ), 16, 32 ), 0, 12 );
 	}
 
 	/**
