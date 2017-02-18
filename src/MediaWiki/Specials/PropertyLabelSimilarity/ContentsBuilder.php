@@ -79,7 +79,7 @@ class ContentsBuilder {
 		if ( $result !== array() ) {
 			 $html .= '<pre>' . json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</pre>';
 		} else {
-			 $html .= Message::get( 'smw-property-label-similarity-noresult' );
+			 $html .= $this->getMessageAsString( 'smw-property-label-similarity-noresult' );
 		}
 
 		return $html;
@@ -89,7 +89,10 @@ class ContentsBuilder {
 
 		$exemptionProperty = $this->propertyLabelSimilarityLookup->getExemptionProperty();
 
-		$html = Message::get( array( 'smw-property-label-similarity-docu', $exemptionProperty ), Message::PARSE );
+		$html = $this->getMessageAsString(
+			array( 'smw-property-label-similarity-docu', $exemptionProperty ),
+			Message::PARSE
+		);
 
 		$html .= $this->htmlFormRenderer
 			->setName( 'smw-property-label-similarity-title' )
@@ -103,7 +106,7 @@ class ContentsBuilder {
 			->addHiddenField( 'limit', $limit )
 			->addHiddenField( 'offset', $offset )
 			->addInputField(
-				 Message::get( 'smw-property-label-similarity-threshold' ),
+				$this->getMessageAsString( 'smw-property-label-similarity-threshold' ),
 				'threshold',
 				$threshold,
 				'',
@@ -111,7 +114,7 @@ class ContentsBuilder {
 			)
 			->addNonBreakingSpace()
 			->addCheckbox(
-				 Message::get( 'smw-property-label-similarity-type', Message::ESCAPED ),
+				$this->getMessageAsString( 'smw-property-label-similarity-type' ),
 				'type',
 				'yes',
 				$type === 'yes',
@@ -121,10 +124,14 @@ class ContentsBuilder {
 				)
 			)
 			->addQueryParameter( 'type', $type )
-			->addSubmitButton( Message::get( 'allpagessubmit' ) )
+			->addSubmitButton( $this->getMessageAsString( 'allpagessubmit' ) )
 			->getForm();
 
 		return Html::rawElement( 'div', array( 'class' => 'plainlinks'), $html ) . Html::element( 'p', array(), '' );
+	}
+
+	private function getMessageAsString( $parameters, $type = Message::TEXT ) {
+		return Message::get( $parameters, $type, Message::USER_LANGUAGE );
 	}
 
 }
