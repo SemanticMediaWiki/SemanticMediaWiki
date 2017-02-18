@@ -32,17 +32,18 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 		$output = $this->getOutput();
 		$webRequest = $this->getRequest();
 
-		$store = ApplicationFactory::getInstance()->getStore( '\SMW\SQLStore\SQLStore' );
+		$applicationFactory = ApplicationFactory::getInstance();
+		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
 
 		$propertyLabelSimilarityLookup = new PropertyLabelSimilarityLookup(
 			$store
 		);
 
 		$propertyLabelSimilarityLookup->setExemptionProperty(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgSimilarityLookupExemptionProperty' )
+			$applicationFactory->getSettings()->get( 'smwgSimilarityLookupExemptionProperty' )
 		);
 
-		$htmlFormRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlFormRenderer(
+		$htmlFormRenderer = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormRenderer(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);
@@ -58,7 +59,7 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 		$offset = (int)$webRequest->getText( 'offset', 0 );
 		$limit = (int)$webRequest->getText( 'limit', 50 );
 
-		$requestOptions = ApplicationFactory::getInstance()->getQueryFactory()->newRequestOptions();
+		$requestOptions = $applicationFactory->getQueryFactory()->newRequestOptions();
 		$requestOptions->setLimit( $limit );
 		$requestOptions->setOffset( $offset );
 
@@ -75,7 +76,6 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 
 		return true;
 	}
-
 
 	/**
 	 * @see SpecialPage::getGroupName
