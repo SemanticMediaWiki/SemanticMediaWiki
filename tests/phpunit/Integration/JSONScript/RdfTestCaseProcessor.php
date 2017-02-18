@@ -28,6 +28,11 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $stringValidator;
 
 	/**
+	 * @var RunnerFactory
+	 */
+	private $runnerFactory;
+
+	/**
 	 * @var boolean
 	 */
 	private $debug = false;
@@ -36,9 +41,10 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param Store
 	 * @param StringValidator
 	 */
-	public function __construct( $store, $stringValidator ) {
+	public function __construct( $store, $stringValidator, $runnerFactory ) {
 		$this->store = $store;
 		$this->stringValidator = $stringValidator;
+		$this->runnerFactory = $runnerFactory;
 	}
 
 	/**
@@ -56,10 +62,30 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$this->store->clear();
 		}
 
-		$this->assertRdfOutputForCase( $case );
+		if ( isset( $case['dumpRDF'] ) ) {
+			$this->assertDumpRdfOutputForCase( $case );
+		}
+
+		if ( isset( $case['exportcontroller'] ) ) {
+			$this->assertExportControllerOutputForCase( $case );
+		}
 	}
 
-	private function assertRdfOutputForCase( $case ) {
+	private function assertDumpRdfOutputForCase( $case ) {
+
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\DumpRdf' );
+		$maintenanceRunner->setQuiet();
+
+		$maintenanceRunner->setOptions( $case['dumpRDF']['parameters'] );
+		$maintenanceRunner->run();
+
+		$this->assertOutputForCase(
+			$case,
+			$maintenanceRunner->getOutput()
+		);
+	}
+
+	private function assertExportControllerOutputForCase( $case ) {
 
 		if ( isset( $case['exportcontroller']['syntax'] ) && $case['exportcontroller']['syntax'] === 'turtle' ) {
 			$serializer = new TurtleSerializer();
@@ -85,6 +111,11 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		}
 
 		$output = ob_get_clean();
+
+		$this->assertOutputForCase( $case, $output );
+	}
+
+	private function assertOutputForCase( $case, $output ) {
 
 		if ( $this->debug ) {
 			print_r( $output );

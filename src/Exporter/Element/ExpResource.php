@@ -49,7 +49,11 @@ class ExpResource extends ExpElement {
 
 		parent::__construct( $dataItem );
 
-		$this->uri = $uri;
+		// https://www.w3.org/2011/rdf-wg/wiki/IRIs/RDFConceptsProposal
+		// "... characters “<”, “>”, “{”, “}”, “|”, “\”, “^”, “`”, ‘“’ (double quote),
+		// and “ ” (space) were allowed ... are not allowed in IRIs, Data
+		// containing these characters in %-encoded form is fine ..."
+		$this->uri = str_replace( array( '"' ), array( '%22' ), $uri );
 	}
 
 	/**
