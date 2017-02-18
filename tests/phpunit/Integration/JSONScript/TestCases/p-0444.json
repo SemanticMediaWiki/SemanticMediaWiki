@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation LinksInValue `SMW_ITAP_LV_OBFU` (#2153, `wgContLang=en`, `smwgLinksInValues=SMW_ITAP_LV_OBFU`)",
+	"description": "Test in-text annotation LinksInValue `SMW_LINV_OBFU` (#2153, `wgContLang=en`, `smwgLinksInValues=SMW_LINV_OBFU`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -29,7 +29,7 @@
 		},
 		{
 			"page": "Example/P0444/2",
-			"contents": "[[Has text::[[Lorem ipsum]]]]"
+			"contents": "[[Has text::[[Lorem ipsum]][[Lorem ipsum|Bar]]]]"
 		},
 		{
 			"page": "Example/P0444/3",
@@ -37,7 +37,7 @@
 		},
 		{
 			"page": "Example/P0444/4",
-			"contents": "[[Has text::[[Has number::42]]]] [[Category:P0444]]"
+			"contents": "[[Has text::[[Has number::42|1001]]]] [[Category:P0444]]"
 		},
 		{
 			"page": "Example/P0444/Q.1",
@@ -79,13 +79,14 @@
 						"Has text"
 					],
 					"propertyValues": [
-						"[[Lorem ipsum]]"
+						"[[Lorem ipsum]][[Lorem ipsum|Bar]]"
 					]
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					">Lorem ipsum</a>"
+					">Lorem ipsum</a>",
+					">Bar</a>"
 				]
 			}
 		},
@@ -115,7 +116,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#3 link-in annotation",
+			"about": "#3 link-in annotation (piped hence annotated 42, displayed 1001)",
 			"subject": "Example/P0444/4",
 			"assert-store": {
 				"semantic-data": {
@@ -135,13 +136,13 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"42"
+					"1001"
 				]
 			}
 		},
 		{
 			"type": "parser",
-			"about": "#4 embbeded format to verify that [[SMW::OFF]]/[[SMW:ON]] remain after transclusion",
+			"about": "#4 embbeded format to verify that [[SMW::OFF]]/[[SMW:ON]] remains intact after transclusion",
 			"subject": "Example/P0444/Q.1",
 			"assert-store": {
 				"semantic-data": {

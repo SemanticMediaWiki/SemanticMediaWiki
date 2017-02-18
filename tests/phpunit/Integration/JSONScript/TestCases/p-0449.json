@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text legacy `:=` and `::` annotation style with enabled LinksInValue (#2153, `wgContLang=en`, `smwgLinksInValues=SMW_ITAP_LV_OBFU`)",
+	"description": "Test in-text legacy `:=` and `::` annotation style with enabled LinksInValue (#2153, `wgContLang=en`, `smwgLinksInValues=SMW_LINV_OBFU`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

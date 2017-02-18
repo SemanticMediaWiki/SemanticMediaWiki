@@ -262,7 +262,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	public static function getRegexpPattern( $linksInValues = false ) {
+	public function getRegexpPattern( $linksInValues = false ) {
 		return LinksProcessor::getRegexpPattern( $linksInValues );
 	}
 
