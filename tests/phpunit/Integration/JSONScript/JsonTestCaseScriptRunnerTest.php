@@ -42,6 +42,11 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	private $specialPageTestCaseProcessor;
 
 	/**
+	 * @var RunnerFactory
+	 */
+	private $runnerFactory;
+
+	/**
 	 * @var EventDispatcher
 	 */
 	private $eventDispatcher;
@@ -53,6 +58,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->runnerFactory = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
 
 		$validatorFactory = $this->testEnvironment->getUtilityFactory()->newValidatorFactory();
 		$stringValidator = $validatorFactory->newStringValidator();
@@ -66,7 +73,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 		$this->rdfTestCaseProcessor = new RdfTestCaseProcessor(
 			$this->getStore(),
-			$stringValidator
+			$stringValidator,
+			$this->runnerFactory
 		);
 
 		$this->parserTestCaseProcessor = new ParserTestCaseProcessor(
@@ -200,10 +208,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 	private function doRunBeforeTest( $jsonTestCaseFileHandler ) {
 
-		$runnerFactory = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
-
 		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'maintenance-run' ) as $runner => $options ) {
-			$maintenanceRunner = $runnerFactory->newMaintenanceRunner( $runner );
+			$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( $runner );
 
 			$maintenanceRunner->setOptions(
 				(array)$options
@@ -213,7 +219,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		}
 
 		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'job-run' ) as $jobType ) {
-			$jobQueueRunner = $runnerFactory->newJobQueueRunner( $jobType );
+			$jobQueueRunner = $this->runnerFactory->newJobQueueRunner( $jobType );
 			$jobQueueRunner->run();
 		}
 	}
