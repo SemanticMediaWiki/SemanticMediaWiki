@@ -72,7 +72,8 @@ class EditPageForm extends HookHandler {
 
 		$message = Message::get(
 			$msgKey,
-			Message::PARSE
+			Message::PARSE,
+			Message::USER_LANGUAGE
 		);
 
 		$html =	Html::rawElement(
