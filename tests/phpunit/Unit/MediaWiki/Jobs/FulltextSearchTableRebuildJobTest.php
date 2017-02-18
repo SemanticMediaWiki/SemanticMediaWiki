@@ -74,6 +74,10 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
 			array( 'table' => 'Foo' )
 		);
 
+		$provider[] = array(
+			array( 'mode' => 'full' )
+		);
+
 		return $provider;
 	}
 

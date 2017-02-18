@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\IdActionHandler;
+use SMW\MediaWiki\Specials\Admin\DisposeJobTaskHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\IdActionHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\DisposeJobTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,10 +14,9 @@ use SMW\MediaWiki\Specials\Admin\IdActionHandler;
  *
  * @author mwjames
  */
-class IdActionHandlerTest extends \PHPUnit_Framework_TestCase {
+class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
-	private $store;
 	private $connection;
 	private $htmlFormRenderer;
 	private $outputFormatter;
@@ -33,6 +32,7 @@ class IdActionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'getConnection' ) )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
@@ -46,6 +46,8 @@ class IdActionHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
@@ -56,12 +58,12 @@ class IdActionHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\IdActionHandler',
-			new IdActionHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
+			'\SMW\MediaWiki\Specials\Admin\DisposeJobTaskHandler',
+			new DisposeJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
 
-	public function testPerformAction() {
+	public function testGetHtml() {
 
 		$methods = array(
 			'setName',
@@ -69,10 +71,7 @@ class IdActionHandlerTest extends \PHPUnit_Framework_TestCase {
 			'addHiddenField',
 			'addHeader',
 			'addParagraph',
-			'addInputField',
-			'addSubmitButton',
-			'addNonBreakingSpace',
-			'addCheckbox'
+			'addSubmitButton'
 		);
 
 		foreach ( $methods as $method ) {
@@ -84,96 +83,46 @@ class IdActionHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$instance = new IdActionHandler(
+		$instance = new DisposeJobTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance->performActionWith( $webRequest );
+		$instance->getHtml();
 	}
 
-	public function testPerformActionWithId() {
-
-		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$manualEntryLogger->expects( $this->once() )
-			->method( 'log' );
-
-		$this->testEnvironment->registerObject( 'ManualEntryLogger', $manualEntryLogger );
+	public function testHandleRequest() {
 
 		$entityIdDisposerJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\EntityIdDisposerJob' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$entityIdDisposerJob->expects( $this->once() )
+			->method( 'insert' );
+
 		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobFactory->expects( $this->atLeastOnce() )
-			->method( 'newEntityIdDisposerJob' )
+		$jobFactory->expects( $this->once() )
+			->method( 'newByType' )
 			->will( $this->returnValue( $entityIdDisposerJob ) );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
-
-		$methods = array(
-			'setName',
-			'setMethod',
-			'addHiddenField',
-			'addHeader',
-			'addParagraph',
-			'addInputField',
-			'addSubmitButton',
-			'addNonBreakingSpace',
-			'addCheckbox'
-		);
-
-		foreach ( $methods as $method ) {
-			$this->htmlFormRenderer->expects( $this->any() )
-				->method( $method )
-				->will( $this->returnSelf() );
-		}
-
-		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
-			->method( 'getForm' );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$webRequest->expects( $this->at( 0 ) )
-			->method( 'getText' )
-			->with( $this->equalTo( 'id' ) )
-			->will( $this->returnValue( 42 ) );
-
-		$webRequest->expects( $this->at( 1 ) )
-			->method( 'getText' )
-			->with( $this->equalTo( 'dispose' ) )
-			->will( $this->returnValue( 'yes' ) );
-
-		$webRequest->expects( $this->at( 2 ) )
-			->method( 'getText' )
-			->with( $this->equalTo( 'action' ) )
-			->will( $this->returnValue( 'idlookup' ) );
-
-		$instance = new IdActionHandler(
+		$instance = new DisposeJobTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
 		$instance->setEnabledFeatures( SMW_ADM_DISPOSAL );
-		$instance->performActionWith( $webRequest, $user );
+		$instance->handleRequest( $webRequest );
 	}
 
 }

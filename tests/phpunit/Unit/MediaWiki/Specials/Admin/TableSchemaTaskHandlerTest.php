@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\TableSchemaActionHandler;
+use SMW\MediaWiki\Specials\Admin\TableSchemaTaskHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\TableSchemaActionHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\TableSchemaTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\MediaWiki\Specials\Admin\TableSchemaActionHandler;
  *
  * @author mwjames
  */
-class TableSchemaActionHandlerTest extends \PHPUnit_Framework_TestCase {
+class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -49,12 +49,12 @@ class TableSchemaActionHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\TableSchemaActionHandler',
-			new TableSchemaActionHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
+			'\SMW\MediaWiki\Specials\Admin\TableSchemaTaskHandler',
+			new TableSchemaTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
 
-	public function testGetForm() {
+	public function testGetHtml() {
 
 		$methods = array(
 			'setName',
@@ -74,16 +74,16 @@ class TableSchemaActionHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$instance = new TableSchemaActionHandler(
+		$instance = new TableSchemaTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
-		$instance->getForm();
+		$instance->getHtml();
 	}
 
-	public function testDoUpdate() {
+	public function testHandleRequest() {
 
 		$this->store->expects( $this->once() )
 			->method( 'setup' );
@@ -92,14 +92,14 @@ class TableSchemaActionHandlerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new TableSchemaActionHandler(
+		$instance = new TableSchemaTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
 		$instance->setEnabledFeatures( SMW_ADM_SETUP );
-		$instance->doUpdate( $webRequest );
+		$instance->handleRequest( $webRequest );
 	}
 
 }

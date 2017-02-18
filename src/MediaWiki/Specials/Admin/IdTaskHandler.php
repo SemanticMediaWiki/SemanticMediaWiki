@@ -4,13 +4,11 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\MediaWiki\ManualEntryLogger;
-use SMW\MediaWiki\Database;
-use SMW\Message;
 use SMW\Store;
+use SMW\Message;
+use SMW\NamespaceManager;
 use Html;
 use WebRequest;
-use User;
 
 /**
  * @license GNU GPL v2+
@@ -18,7 +16,7 @@ use User;
  *
  * @author mwjames
  */
-class IdActionHandler {
+class IdTaskHandler extends TaskHandler {
 
 	/**
 	 * @var Store
@@ -36,9 +34,9 @@ class IdActionHandler {
 	private $outputFormatter;
 
 	/**
-	 * @var integer
+	 * @var User|null
 	 */
-	private $enabledFeatures = 0;
+	private $user;
 
 	/**
 	 * @since 2.5
@@ -56,38 +54,53 @@ class IdActionHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $feature
-	 *
-	 * @return boolean
+	 * {@inheritDoc}
 	 */
-	public function isEnabledFeature( $feature ) {
-		return ( $this->enabledFeatures & $feature ) != 0;
+	public function isTaskFor( $task ) {
+		return $task === 'idlookup';
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $enabledFeatures
+	 * {@inheritDoc}
 	 */
-	public function setEnabledFeatures( $enabledFeatures ) {
-		$this->enabledFeatures = $enabledFeatures;
+	public function setUser( $user = null ) {
+		$this->user = $user;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param WebRequest $webRequest
-	 * @param User|null $user
+	 * {@inheritDoc}
 	 */
-	public function performActionWith( WebRequest $webRequest, User $user = null ) {
+	public function getHtml() {
+		return Html::rawElement(
+			'li',
+			array(),
+			$this->getMessageAsString(
+				array(
+					'smw-admin-supplementary-idlookup-intro',
+					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ), array( 'action' => 'idlookup' ) )
+				)
+			)
+		);
+	}
 
-		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-admin-supplementary-idlookup-title' ) );
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function handleRequest( WebRequest $webRequest ) {
+
+		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ) );
 		$this->outputFormatter->addParentLink();
 
 		$id = (int)$webRequest->getText( 'id' );
 
 		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
-			$this->doDispose( $id, $user );
+			$this->doDispose( $id );
 		}
 
 		$this->outputFormatter->addHtml( $this->getForm( $webRequest, $id ) );
@@ -97,7 +110,7 @@ class IdActionHandler {
 	 * @param integer $id
 	 * @param User|null $use
 	 */
-	private function doDispose( $id, $user = null ) {
+	private function doDispose( $id ) {
 
 		$entityIdDisposerJob = ApplicationFactory::getInstance()->newJobFactory()->newEntityIdDisposerJob(
 			\Title::newFromText( __METHOD__ )
@@ -107,7 +120,7 @@ class IdActionHandler {
 
 		$manualEntryLogger = ApplicationFactory::getInstance()->create( 'ManualEntryLogger' );
 		$manualEntryLogger->registerLoggableEventType( 'admin' );
-		$manualEntryLogger->log( 'admin', $user, 'Special:SMWAdmin', 'Forced removal of ID '. $id );
+		$manualEntryLogger->log( 'admin', $this->user, 'Special:SMWAdmin', 'Forced removal of ID '. $id );
 	}
 
 	private function getForm( $webRequest, $id ) {
@@ -123,21 +136,21 @@ class IdActionHandler {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'idlookup' )
 			->addHiddenField( 'id', $id )
-			->addParagraph( $this->getMessage( 'smw-admin-idlookup-docu' ) )
+			->addParagraph( $this->getMessageAsString( 'smw-admin-idlookup-docu' ) )
 			->addInputField(
-				$this->getMessage( 'smw-admin-objectid' ),
+				$this->getMessageAsString( 'smw-admin-objectid' ),
 				'id',
 				$id
 			)
 			->addNonBreakingSpace()
-			->addSubmitButton( $this->getMessage( 'allpagessubmit' ) )
+			->addSubmitButton( $this->getMessageAsString( 'allpagessubmit' ) )
 			->addParagraph( $message )
 			->getForm();
 
 		$html .= Html::element( 'p', array(), '' );
 
 		if ( $id > 0 && $webRequest->getText( 'dispose' ) == 'yes' ) {
-			$message = $this->getMessage( array ('smw-admin-iddispose-done', $id ) );
+			$message = $this->getMessageAsString( array ('smw-admin-iddispose-done', $id ) );
 			$id = null;
 		}
 
@@ -150,10 +163,10 @@ class IdActionHandler {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'idlookup' )
 			->addHiddenField( 'id', $id )
-			->addHeader( 'h2', $this->getMessage( 'smw-admin-iddispose-title' ) )
-			->addParagraph( $this->getMessage( 'smw-admin-iddispose-docu', Message::PARSE ) )
+			->addHeader( 'h2', $this->getMessageAsString( 'smw-admin-iddispose-title' ) )
+			->addParagraph( $this->getMessageAsString( 'smw-admin-iddispose-docu', Message::PARSE ) )
 			->addInputField(
-				$this->getMessage( 'smw-admin-objectid' ),
+				$this->getMessageAsString( 'smw-admin-objectid' ),
 				'id',
 				$id,
 				null,
@@ -162,9 +175,9 @@ class IdActionHandler {
 				true
 			)
 			->addNonBreakingSpace()
-			->addSubmitButton( $this->getMessage( 'allpagessubmit' ) )
+			->addSubmitButton( $this->getMessageAsString( 'allpagessubmit' ) )
 			->addCheckbox(
-				$this->getMessage( 'smw_smwadmin_datarefreshstopconfirm', Message::ESCAPED ),
+				$this->getMessageAsString( 'smw_smwadmin_datarefreshstopconfirm', Message::ESCAPED ),
 				'dispose',
 				'yes'
 			)
@@ -202,15 +215,11 @@ class IdActionHandler {
 		$output = '<pre>' . $this->outputFormatter->encodeAsJson( array( $id, $row ) ) . '</pre>';
 
 		if ( $references ) {
-			$output .= Html::element( 'p', array(), $this->getMessage( array( 'smw-admin-iddispose-references', $id, count( $references ) ) ) );
+			$output .= Html::element( 'p', array(), $this->getMessageAsString( array( 'smw-admin-iddispose-references', $id, count( $references ) ) ) );
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
 		}
 
 		return $output;
-	}
-
-	private function getMessage( $key, $type = Message::TEXT ) {
-		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 
 }

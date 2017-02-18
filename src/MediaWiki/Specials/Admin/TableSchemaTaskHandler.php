@@ -17,7 +17,7 @@ use WebRequest;
  *
  * @author mwjames
  */
-class TableSchemaActionHandler {
+class TableSchemaTaskHandler extends TaskHandler {
 
 	/**
 	 * @var Store
@@ -28,11 +28,6 @@ class TableSchemaActionHandler {
 	 * @var HtmlFormRenderer
 	 */
 	private $htmlFormRenderer;
-
-	/**
-	 * @var integer
-	 */
-	private $enabledFeatures = 0;
 
 	/**
 	 * @var OutputFormatter
@@ -55,49 +50,38 @@ class TableSchemaActionHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $feature
-	 *
-	 * @return boolean
+	 * {@inheritDoc}
 	 */
-	public function isEnabledFeature( $feature ) {
-		return ( $this->enabledFeatures & $feature ) != 0;
+	public function isTaskFor( $task ) {
+		return $task === 'updatetables';
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $enabledFeatures
+	 * {@inheritDoc}
 	 */
-	public function setEnabledFeatures( $enabledFeatures ) {
-		$this->enabledFeatures = $enabledFeatures;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return string
-	 */
-	public function getForm() {
+	public function getHtml() {
 
 		$this->htmlFormRenderer
 			->setName( 'buildtables' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'updatetables' )
-			->addHeader( 'h2', $this->getMessage( 'smw-admin-db' ) )
-			->addParagraph( $this->getMessage( 'smw-admin-dbdocu' ) );
+			->addHeader( 'h2', $this->getMessageAsString( 'smw-admin-db' ) )
+			->addParagraph( $this->getMessageAsString( 'smw-admin-dbdocu' ) );
 
 		if ( $this->isEnabledFeature( SMW_ADM_SETUP ) ) {
 			$this->htmlFormRenderer
 				->addHiddenField( 'udsure', 'yes' )
 				->addSubmitButton(
-					$this->getMessage( 'smw-admin-dbbutton' ),
+					$this->getMessageAsString( 'smw-admin-dbbutton' ),
 					array(
 						'class' => ''
 					)
 				);
 		} else {
 			$this->htmlFormRenderer
-				->addParagraph( $this->getMessage( 'smw-admin-feature-disabled' ) );
+				->addParagraph( $this->getMessageAsString( 'smw-admin-feature-disabled' ) );
 		}
 
 		return Html::rawElement( 'div', array(), $this->htmlFormRenderer->getForm() );
@@ -106,11 +90,9 @@ class TableSchemaActionHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param WebRequest $webRequest
-	 *
-	 * @return callable
+	 * {@inheritDoc}
 	 */
-	public function doUpdate( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ) {
 
 		if ( !$this->isEnabledFeature( SMW_ADM_SETUP ) ) {
 			return;
@@ -119,12 +101,15 @@ class TableSchemaActionHandler {
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
-		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-admin-db' ) );
+		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-db' ) );
 		$this->outputFormatter->addParentLink();
 
-		$this->store->getOptions()->set( Installer::OPT_MESSAGEREPORTER, $messageReporter );
+		$this->store->getOptions()->set(
+			Installer::OPT_MESSAGEREPORTER,
+			$messageReporter
+		);
 
-		$this->outputFormatter->addHTML( Html::rawElement( 'p', array(), $this->getMessage( 'smw-admin-permissionswarn' ) ) );
+		$this->outputFormatter->addHTML( Html::rawElement( 'p', array(), $this->getMessageAsString( 'smw-admin-permissionswarn' ) ) );
 
 		$this->outputFormatter->addHTML( '<pre>' );
 
@@ -134,7 +119,7 @@ class TableSchemaActionHandler {
 		$this->outputFormatter->addHTML( '</pre>' );
 
 		if ( $result === true && $webRequest->getText( 'udsure' ) == 'yes' ) {
-			$this->outputFormatter->addWikiText( '<p><b>' . $this->getMessage( 'smw-admin-setupsuccess' ) . "</b></p>" );
+			$this->outputFormatter->addWikiText( '<p><b>' . $this->getMessageAsString( 'smw-admin-setupsuccess' ) . "</b></p>" );
 		}
 	}
 
@@ -145,10 +130,6 @@ class TableSchemaActionHandler {
 	 */
 	public function reportMessage( $message ) {
 		$this->outputFormatter->addHTML( $message );
-	}
-
-	private function getMessage( $key, $type = Message::TEXT ) {
-		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 
 }

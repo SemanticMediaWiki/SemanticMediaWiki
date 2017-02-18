@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\DataRepairActionHandler;
+use SMW\MediaWiki\Specials\Admin\DataRefreshJobTaskHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\DataRepairActionHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\DataRefreshJobTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\MediaWiki\Specials\Admin\DataRepairActionHandler;
  *
  * @author mwjames
  */
-class DataRepairActionHandlerTest extends \PHPUnit_Framework_TestCase {
+class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $connection;
@@ -30,6 +30,15 @@ class DataRepairActionHandlerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getConnection' ) )
+			->getMockForAbstractClass();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+
 		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -37,6 +46,8 @@ class DataRepairActionHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
@@ -47,12 +58,12 @@ class DataRepairActionHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\DataRepairActionHandler',
-			new DataRepairActionHandler( $this->connection, $this->htmlFormRenderer, $this->outputFormatter )
+			'\SMW\MediaWiki\Specials\Admin\DataRefreshJobTaskHandler',
+			new DataRefreshJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
 
-	public function testGetForm() {
+	public function testGetHtml() {
 
 		$methods = array(
 			'setName',
@@ -72,13 +83,13 @@ class DataRepairActionHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$instance = new DataRepairActionHandler(
-			$this->connection,
+		$instance = new DataRefreshJobTaskHandler(
+			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
-		$instance->getForm();
+		$instance->getHtml();
 	}
 
 	public function testDoRefreshOn_Yes() {
@@ -111,14 +122,14 @@ class DataRepairActionHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getText' )
 			->will( $this->returnValue( 'yes' ) );
 
-		$instance = new DataRepairActionHandler(
-			$this->connection,
+		$instance = new DataRefreshJobTaskHandler(
+			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
 		$instance->setEnabledFeatures( SMW_ADM_REFRESH );
-		$instance->doRefresh( $webRequest );
+		$instance->handleRequest( $webRequest );
 	}
 
 	public function testDoRefreshOn_Stop() {
@@ -140,47 +151,14 @@ class DataRepairActionHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'delete' );
 
-		$instance = new DataRepairActionHandler(
-			$this->connection,
+		$instance = new DataRefreshJobTaskHandler(
+			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
 		$instance->setEnabledFeatures( SMW_ADM_REFRESH );
-		$instance->doRefresh( $webRequest );
-	}
-
-	public function testDoDispose() {
-
-		$entityIdDisposerJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\EntityIdDisposerJob' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$entityIdDisposerJob->expects( $this->once() )
-			->method( 'insert' );
-
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$jobFactory->expects( $this->once() )
-			->method( 'newByType' )
-			->will( $this->returnValue( $entityIdDisposerJob ) );
-
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
-
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new DataRepairActionHandler(
-			$this->connection,
-			$this->htmlFormRenderer,
-			$this->outputFormatter
-		);
-
-		$instance->setEnabledFeatures( SMW_ADM_DISPOSAL );
-		$instance->doDispose( $webRequest );
+		$instance->handleRequest( $webRequest );
 	}
 
 }
