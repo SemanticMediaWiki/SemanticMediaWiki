@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\SupportWidget;
+use SMW\MediaWiki\Specials\Admin\SupportListTaskHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\SupportWidget
+ * @covers \SMW\MediaWiki\Specials\Admin\SupportListTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\MediaWiki\Specials\Admin\SupportWidget;
  *
  * @author mwjames
  */
-class SupportWidgetTest extends \PHPUnit_Framework_TestCase {
+class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
@@ -37,12 +37,12 @@ class SupportWidgetTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\SupportWidget',
-			new SupportWidget( $this->htmlFormRenderer )
+			'\SMW\MediaWiki\Specials\Admin\SupportListTaskHandler',
+			new SupportListTaskHandler( $this->htmlFormRenderer )
 		);
 	}
 
-	public function testGetForm() {
+	public function testGetHtml() {
 
 		$methods = array(
 			'setName',
@@ -63,11 +63,11 @@ class SupportWidgetTest extends \PHPUnit_Framework_TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$instance = new SupportWidget(
+		$instance = new SupportListTaskHandler(
 			$this->htmlFormRenderer
 		);
 
-		$instance->getForm();
+		$instance->getHtml();
 	}
 
 

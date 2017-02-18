@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler;
+use SMW\MediaWiki\Specials\Admin\OperationalStatisticsListTaskHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\OperationalStatisticsListTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler;
  *
  * @author mwjames
  */
-class SupplementaryLinksActionHandlerTest extends \PHPUnit_Framework_TestCase {
+class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -44,24 +44,24 @@ class SupplementaryLinksActionHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler',
-			new SupplementaryLinksActionHandler( $this->outputFormatter )
+			'\SMW\MediaWiki\Specials\Admin\OperationalStatisticsListTaskHandler',
+			new OperationalStatisticsListTaskHandler( $this->outputFormatter )
 		);
 	}
 
-	public function testOutputConfigurationList() {
+	public function testGetHtml() {
 
-		$this->outputFormatter->expects( $this->atLeastOnce() )
-			->method( 'addHtml' );
-
-		$instance = new SupplementaryLinksActionHandler(
+		$instance = new OperationalStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
 
-		$instance->doOutputConfigurationList();
+		$this->assertInternalType(
+			'string',
+			$instance->getHtml()
+		);
 	}
 
-	public function testOutputStatistics() {
+	public function testHandleRequest() {
 
 		$semanticStatistics = array(
 			'PROPUSES' => 0,
@@ -83,11 +83,15 @@ class SupplementaryLinksActionHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 
-		$instance = new SupplementaryLinksActionHandler(
+		$instance = new OperationalStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
 
-		$instance->doOutputStatistics();
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance->handleRequest( $webRequest );
 	}
 
 }

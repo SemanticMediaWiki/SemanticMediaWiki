@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\Message;
 use SMW\NamespaceManager;
 use Html;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+
@@ -13,7 +14,7 @@ use Html;
  *
  * @author mwjames
  */
-class SupplementaryLinksActionHandler {
+class OperationalStatisticsListTaskHandler extends TaskHandler {
 
 	/**
 	 * @var OutputFormatter
@@ -31,31 +32,39 @@ class SupplementaryLinksActionHandler {
 
 	/**
 	 * @since 2.5
+	 *
+	 * {@inheritDoc}
 	 */
-	public function doOutputConfigurationList() {
+	public function isTaskFor( $task ) {
+		return $task === 'stats';
+	}
 
-		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-admin-supplementary-settings-title' ) );
-		$this->outputFormatter->addParentLink();
-
-		$this->outputFormatter->addHtml(
-			Html::rawElement( 'p', array(), $this->getMessage( 'smw-admin-settings-docu', Message::PARSE ) )
-		);
-
-		$this->outputFormatter->addHtml(
-			'<pre>' . $this->outputFormatter->encodeAsJson( ApplicationFactory::getInstance()->getSettings()->getOptions() ) . '</pre>'
-		);
-
-		$this->outputFormatter->addHtml(
-			'<pre>' . $this->outputFormatter->encodeAsJson( array( 'canonicalNames' => NamespaceManager::getCanonicalNames() ) ) . '</pre>'
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getHtml() {
+		return Html::rawElement(
+			'li',
+			array(),
+			$this->getMessageAsString(
+				array(
+					'smw-admin-supplementary-operational-statistics-intro',
+					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' ), array( 'action' => 'stats' ) )
+				)
+			)
 		);
 	}
 
 	/**
 	 * @since 2.5
+	 *
+	 * {@inheritDoc}
 	 */
-	public function doOutputStatistics() {
+	public function handleRequest( WebRequest $webRequest ) {
 
-		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-admin-supplementary-operational-statistics-title' ) );
+		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' ) );
 		$this->outputFormatter->addParentLink();
 
 		$this->outputSemanticStatistics();
@@ -63,20 +72,16 @@ class SupplementaryLinksActionHandler {
 		$this->outputQueryCacheStatistics();
 	}
 
-	private function getMessage( $key, $type = Message::TEXT ) {
-		return Message::get( $key, $type, Message::USER_LANGUAGE );
-	}
-
 	private function outputSemanticStatistics() {
 
 		$semanticStatistics = ApplicationFactory::getInstance()->getStore()->getStatistics();
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), $this->getMessage( array( 'smw-admin-operational-statistics' ), Message::PARSE ) )
+			Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-operational-statistics' ), Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->getMessage( 'semanticstatistics' ) )
+			Html::element( 'h2', array(), $this->getMessageAsString( 'semanticstatistics' ) )
 		);
 
 		$this->outputFormatter->addHTML( '<pre>' . $this->outputFormatter->encodeAsJson(
@@ -98,11 +103,11 @@ class SupplementaryLinksActionHandler {
 	private function outputJobStatistics() {
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->getMessage( 'smw-admin-statistics-job-title' ) )
+			Html::element( 'h2', array(), $this->getMessageAsString( 'smw-admin-statistics-job-title' ) )
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), $this->getMessage( 'smw-admin-statistics-job-docu', Message::PARSE ) )
+			Html::rawElement( 'p', array(), $this->getMessageAsString( 'smw-admin-statistics-job-docu', Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHTML(
@@ -116,7 +121,7 @@ class SupplementaryLinksActionHandler {
 					) ),
 				),
 				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-error' ), '' ) .
-				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-content' ), $this->getMessage( 'smw-data-lookup' ) )
+				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-content' ), $this->getMessageAsString( 'smw-data-lookup' ) )
 			)
 		);
 	}
@@ -124,19 +129,19 @@ class SupplementaryLinksActionHandler {
 	private function outputQueryCacheStatistics() {
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(),  $this->getMessage( 'smw-admin-statistics-querycache-title' ) )
+			Html::element( 'h2', array(),  $this->getMessageAsString( 'smw-admin-statistics-querycache-title' ) )
 		);
 
 		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
 
 		if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
 			return $this->outputFormatter->addHTML(
-				Html::rawElement( 'p', array(), $this->getMessage( array( 'smw-admin-statistics-querycache-disabled' ), Message::PARSE ) )
+				Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-statistics-querycache-disabled' ), Message::PARSE ) )
 			);
 		}
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), $this->getMessage( array( 'smw-admin-statistics-querycache-explain' ), Message::PARSE ) )
+			Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-statistics-querycache-explain' ), Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHTML(

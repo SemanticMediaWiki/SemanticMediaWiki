@@ -5,13 +5,7 @@ namespace SMW\MediaWiki\Specials;
 use SMW\ApplicationFactory;
 use SMW\Store;
 use SpecialPage;
-use SMW\MediaWiki\Specials\Admin\Configuration;
-use SMW\MediaWiki\Specials\Admin\TableSchemaActionHandler;
-use SMW\MediaWiki\Specials\Admin\IdActionHandler;
-use SMW\MediaWiki\Specials\Admin\SupportWidget;
-use SMW\MediaWiki\Specials\Admin\DataRepairActionHandler;
-use SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler;
-use SMW\MediaWiki\Specials\Admin\SupplementaryLinksWidget;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 use SMW\Message;
@@ -54,62 +48,137 @@ class SpecialAdmin extends SpecialPage {
 			throw new ExtendedPermissionsError( 'smw-admin', array( 'smw-admin-permission-missing' ) );
 		}
 
+		$this->setHeaders();
 		$output = $this->getOutput();
-		$output->setPageTitle( Message::get( 'smwadmin', Message::TEXT, Message::USER_LANGUAGE ) );
-
-		$output->addModuleStyles( array(
-			'mediawiki.ui',
-			'mediawiki.ui.button',
-			'mediawiki.ui.input'
-		) );
+		$output->setPageTitle( $this->getMessageAsString( 'smwadmin' ) );
 
 		$output->addModules( array(
 			'ext.smw.admin'
 		) );
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		list(
-			$dataRepairActionHandler,
-			$supplementaryLinksWidget,
-			$supplementaryLinksActionHandler,
-			$tableSchemaActionHandler,
-			$idActionHandler,
-			$supportWidget
-		) = $this->getHandlers(
-			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' ),
-			$applicationFactory->getSettings(),
-			$applicationFactory->newMwCollaboratorFactory()
-		);
-
 		$action = $query !== null ? $query : $this->getRequest()->getText( 'action' );
 
-		// Actions
-		switch ( $action ) {
-			case 'settings':
-				return $supplementaryLinksActionHandler->doOutputConfigurationList();
-			case 'stats':
-				return $supplementaryLinksActionHandler->doOutputStatistics();
-			case 'updatetables':
-				return $tableSchemaActionHandler->doUpdate( $this->getRequest() );
-			case 'idlookup':
-				return $idActionHandler->performActionWith( $this->getRequest(), $this->getUser() );
-			case 'refreshstore':
-				return $dataRepairActionHandler->doRefresh( $this->getRequest() );
-			case 'dispose':
-				return $dataRepairActionHandler->doDispose();
-			case 'pstatsrebuild':
-				return $dataRepairActionHandler->doPropertyStatsRebuild();
-			case 'fulltrebuild':
-				return $dataRepairActionHandler->doFulltextSearchTableRebuild();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
+
+		$htmlFormRenderer = $mwCollaboratorFactory->newHtmlFormRenderer(
+			$this->getContext()->getTitle(),
+			$this->getLanguage()
+		);
+
+		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		$outputFormatter = new OutputFormatter( $this->getOutput() );
+
+		$adminFeatures = $applicationFactory->getSettings()->get( 'smwgAdminFeatures' );
+
+		// Disable the feature in case the function is not supported
+		if ( $applicationFactory->getSettings()->get( 'smwgEnabledFulltextSearch' ) === false ) {
+			$adminFeatures = $adminFeatures & ~SMW_ADM_FULLT;
 		}
 
+		// Ensure BC for a deprecated setting
+		if ( $applicationFactory->getSettings()->get( 'smwgAdminRefreshStore' ) === false ) {
+			$adminFeatures = $adminFeatures & ~SMW_ADM_REFRESH;
+		}
+
+		$taskHandlerFactory = new TaskHandlerFactory(
+			$store,
+			$htmlFormRenderer,
+			$outputFormatter
+		);
+
+		// DataRefreshJobTaskHandler
+		$dataRefreshJobTaskHandler = $taskHandlerFactory->newDataRefreshJobTaskHandler();
+
+		$dataRefreshJobTaskHandler->setEnabledFeatures(
+			$adminFeatures
+		);
+
+		// DisposeJobTaskHandler
+		$disposeJobTaskHandler = $taskHandlerFactory->newDisposeJobTaskHandler();
+
+		$disposeJobTaskHandler->setEnabledFeatures(
+			$adminFeatures
+		);
+
+		// PropertyStatsRebuildJobTaskHandler
+		$propertyStatsRebuildJobTaskHandler = $taskHandlerFactory->newPropertyStatsRebuildJobTaskHandler();
+
+		$propertyStatsRebuildJobTaskHandler->setEnabledFeatures(
+			$adminFeatures
+		);
+
+		// FulltextSearchTableRebuildJobTaskHandler
+		$fulltextSearchTableRebuildJobTaskHandler = $taskHandlerFactory->newFulltextSearchTableRebuildJobTaskHandler();
+
+		$fulltextSearchTableRebuildJobTaskHandler->setEnabledFeatures(
+			$adminFeatures
+		);
+
+		// ConfigurationListTaskHandler
+		$configurationListTaskHandler = $taskHandlerFactory->newConfigurationListTaskHandler();
+
+		// OperationalStatisticsListTaskHandler
+		$operationalStatisticsListTaskHandler = $taskHandlerFactory->newOperationalStatisticsListTaskHandler();
+
+		// TableSchemaTaskHandler
+		$tableSchemaTaskHandler = $taskHandlerFactory->newTableSchemaTaskHandler();
+
+		$tableSchemaTaskHandler->setEnabledFeatures(
+			$adminFeatures
+		);
+
+		// IdTaskHandler
+		$idTaskHandler = $taskHandlerFactory->newIdTaskHandler();
+
+		$idTaskHandler->setEnabledFeatures(
+			$adminFeatures
+		);
+
+		$idTaskHandler->setUser(
+			$this->getUser()
+		);
+
+		// SupportListTaskHandler
+		$supportListTaskHandler = $taskHandlerFactory->newSupportListTaskHandler();
+
+		$actionTaskList = array(
+			$dataRefreshJobTaskHandler,
+			$disposeJobTaskHandler,
+			$propertyStatsRebuildJobTaskHandler,
+			$fulltextSearchTableRebuildJobTaskHandler,
+			$tableSchemaTaskHandler,
+			$configurationListTaskHandler,
+			$operationalStatisticsListTaskHandler,
+			$idTaskHandler
+		);
+
+		foreach ( $actionTaskList as $actionTask ) {
+			if ( $actionTask->isTaskFor( $action ) ) {
+				return $actionTask->handleRequest( $this->getRequest() );
+			}
+		}
+
+		$supplementaryTaskList = array(
+			$configurationListTaskHandler,
+			$operationalStatisticsListTaskHandler,
+			$idTaskHandler
+		);
+
+		$dataRepairTaskList = array(
+			$dataRefreshJobTaskHandler,
+			$disposeJobTaskHandler,
+			$propertyStatsRebuildJobTaskHandler,
+			$fulltextSearchTableRebuildJobTaskHandler
+		);
+
 		// General intro
-		$html = Message::get( 'smw-admin-docu', Message::TEXT, Message::USER_LANGUAGE );
-		$html .= $tableSchemaActionHandler->getForm();
-		$html .= $dataRepairActionHandler->getForm();
-		$html .= $supplementaryLinksWidget->getForm();
-		$html .= $supportWidget->getForm();
+		$html = $this->getHtml(
+			$tableSchemaTaskHandler,
+			$dataRepairTaskList,
+			$supplementaryTaskList,
+			$supportListTaskHandler
+		);
 
 		$output->addHTML( $html );
 	}
@@ -121,76 +190,40 @@ class SpecialAdmin extends SpecialPage {
 		return 'smw_group';
 	}
 
-	private function getHandlers( $store, $settings, $mwCollaboratorFactory ) {
+	private function getHtml( $tableSchemaTaskHandler, $dataRepairTaskList, $supplementaryTaskList, $supportListTaskHandler ) {
 
-		$htmlFormRenderer = $mwCollaboratorFactory->newHtmlFormRenderer(
-			$this->getContext()->getTitle(),
-			$this->getLanguage()
-		);
+		$html = $this->getMessageAsString( 'smw-admin-docu' );
+		$html .= $tableSchemaTaskHandler->getHtml();
 
-		$connection = $store->getConnection( 'mw.db' );
-		$outputFormatter = new OutputFormatter( $this->getOutput() );
+		$html .= Html::rawElement( 'h2', array(), $this->getMessageAsString( array( 'smw-smwadmin-refresh-title' ) ) );
+		$html .= Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-job-scheduler-note' ) ) );
 
-		$adminFeatures = $settings->get( 'smwgAdminFeatures' );
-
-		// Disable the feature in case the function is not supported
-		if ( $settings->get( 'smwgEnabledFulltextSearch' ) === false ) {
-			$adminFeatures = $adminFeatures & ~SMW_ADM_FULLT;
+		foreach ( $dataRepairTaskList as $dataRepairTask ) {
+			$html .= $dataRepairTask->getHtml();
 		}
 
-		// Ensure BC for a deprecated setting
-		if ( $settings->get( 'smwgAdminRefreshStore' ) === false ) {
-			$adminFeatures = $adminFeatures & ~SMW_ADM_REFRESH;
+		$html .= Html::rawElement( 'h2', array(), $this->getMessageAsString( array( 'smw-admin-supplementary-section-title' ) ) );
+		$html .= Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-supplementary-section-intro' ) ) );
+
+		$list = '';
+
+		foreach ( $supplementaryTaskList as $supplementaryTask ) {
+			$list .= $supplementaryTask->getHtml();
 		}
 
-		$dataRepairActionHandler = new DataRepairActionHandler(
-			$connection,
-			$htmlFormRenderer,
-			$outputFormatter
+		$html .= Html::rawElement( 'div', array( 'class' => 'smw-admin-supplementary-linksection' ),
+			Html::rawElement( 'ul', array(),
+				$list
+			)
 		);
 
-		$dataRepairActionHandler->setEnabledFeatures(
-			$adminFeatures
-		);
+		$html .= $supportListTaskHandler->getHtml();
 
-		$supplementaryLinksWidget = new SupplementaryLinksWidget(
-			$outputFormatter
-		);
+		return $html;
+	}
 
-		$supplementaryLinksActionHandler = new SupplementaryLinksActionHandler(
-			$outputFormatter
-		);
-
-		$tableSchemaActionHandler = new TableSchemaActionHandler(
-			$store,
-			$htmlFormRenderer,
-			$outputFormatter
-		);
-
-		$tableSchemaActionHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		$idActionHandler = new IdActionHandler(
-			$store,
-			$htmlFormRenderer,
-			$outputFormatter
-		);
-
-		$idActionHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		$supportWidget = new SupportWidget( $htmlFormRenderer );
-
-		return array(
-			$dataRepairActionHandler,
-			$supplementaryLinksWidget,
-			$supplementaryLinksActionHandler,
-			$tableSchemaActionHandler,
-			$idActionHandler,
-			$supportWidget
-		);
+	private function getMessageAsString( $key, $type = Message::TEXT ) {
+		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 
 }

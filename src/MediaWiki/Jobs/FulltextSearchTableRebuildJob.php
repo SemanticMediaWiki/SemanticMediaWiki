@@ -40,6 +40,8 @@ class FulltextSearchTableRebuildJob extends JobBase {
 
 		if ( $this->hasParameter( 'table' ) ) {
 			$searchTableRebuilder->rebuildByTable( $this->getParameter( 'table' ) );
+		} elseif ( $this->hasParameter( 'mode' ) && $this->getParameter( 'mode' ) === 'full' ) {
+			$searchTableRebuilder->rebuild();
 		} else {
 			$this->createJobsFromTableList( $searchTableRebuilder->getQualifiedTableList() );
 		}
