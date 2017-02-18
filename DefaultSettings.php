@@ -885,12 +885,16 @@ return array(
 	# - smwgQueryDurationEnabled to record query duration (the time
 	# between the query result selection and output its)
 	#
+	# - smwgQueryParametersEnabled to record query parameters that are necessary
+	# for allowing to generate a query result using a background job
+	#
 	# False will disabled the query profiler (not recommended)
 	#
 	# @since 1.9
 	##
 	'smwgQueryProfiler' => array(
 		'smwgQueryDurationEnabled' => false,
+		'smwgQueryParametersEnabled' => false
 	),
 	##
 
@@ -1230,7 +1234,7 @@ return array(
 	# @since 2.5
 	##
 	'smwgFulltextSearchPropertyExemptionList' => array(
-		'_ASKFO', '_ASKST', '_IMPO', '_LCODE', '_UNIT', '_CONV',
+		'_ASKFO', '_ASKST', '_ASKPA','_IMPO', '_LCODE', '_UNIT', '_CONV',
 		'_TYPE', '_ERRT', '_INST', '_ASK', '_INST', '_SOBJ'
 	),
 	##

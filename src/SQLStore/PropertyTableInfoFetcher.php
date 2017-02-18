@@ -58,7 +58,7 @@ class PropertyTableInfoFetcher {
 		// property declarations
 		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV', '_PREC', '_PPLB',
 		// query statistics (very frequently used)
-		'_ASK', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST', '_ASKDU',
+		'_ASK', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST', '_ASKDU', '_ASKPA',
 		// subproperties, classes, and instances
 		'_SUBP', '_SUBC', '_INST',
 		// redirects

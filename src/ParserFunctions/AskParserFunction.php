@@ -220,14 +220,21 @@ class AskParserFunction {
 
 	private function addQueryProfile( $query, $format ) {
 
+		$settings = $this->applicationFactory->getSettings();
+
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
-		if ( $this->applicationFactory->getSettings()->get( 'smwgQueryProfiler' ) === false ) {
+		if ( $settings->get( 'smwgQueryProfiler' ) === false ) {
 			return;
 		}
 
 		$query->setOption(
 			Query::PROC_QUERY_TIME,
-			$this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ? $query->getOption( Query::PROC_QUERY_TIME ) : 0
+			$settings->get( 'smwgQueryDurationEnabled' ) ? $query->getOption( Query::PROC_QUERY_TIME ) : 0
+		);
+
+		$query->setOption(
+			Query::OPT_PARAMETERS,
+			$settings->has( 'smwgQueryParametersEnabled' ) ? $settings->get( 'smwgQueryParametersEnabled' ) : false
 		);
 
 		$profileAnnotatorFactory = $this->applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();

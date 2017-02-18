@@ -567,12 +567,13 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'?Modification date'
 			),
 			array(
-				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]' )
+				'propertyCount'  => 5,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO', '_ASKPA' ),
+				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]', '{"limit":50,"offset":0,"sort":[""],"order":["asc"],"mode":1}' )
 			),
 			array(
-				'smwgQueryDurationEnabled' => false
+				'smwgQueryDurationEnabled' => false,
+				'smwgQueryParametersEnabled' => true
 			)
 		);
 
