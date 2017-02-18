@@ -32,6 +32,7 @@ class SpecialSemanticStatistics extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $param ) {
+		$this->setHeaders();
 
 		$semanticStatistics = $this->getStore()->getStatistics();
 		$context = $this->getContext();

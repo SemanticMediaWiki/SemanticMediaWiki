@@ -22,6 +22,7 @@ class SMWSpecialTypes extends SpecialPage {
 	}
 
 	public function execute( $param ) {
+		$this->setHeaders();
 		global $wgOut;
 
 		$params = SMWInfolink::decodeParameters( $param, false );
