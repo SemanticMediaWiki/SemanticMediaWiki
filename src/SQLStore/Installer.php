@@ -114,7 +114,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 		$this->tableIntegrityExaminer->checkOnPostCreation( $this->tableBuilder );
 
-		Hooks::run( 'SMW::SQLStore::AfterCreateTablesComplete', array( $this->tableBuilder ) );
+		Hooks::run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', array( $this->tableBuilder, $messageReporter ) );
 
 		$messageReporter->reportMessage(
 			"\nDatabase initialized completed.\n"  . ( $this->isFromExtensionSchemaUpdate ? "\n" : '' )
@@ -145,7 +145,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 		$this->tableIntegrityExaminer->checkOnPostDestruction( $this->tableBuilder );
 
-		Hooks::run( 'SMW::SQLStore::AfterDropTablesComplete', array( $this->tableBuilder ) );
+		Hooks::run( 'SMW::SQLStore::Installer::AfterDropTablesComplete', array( $this->tableBuilder, $messageReporter ) );
 
 		$messageReporter->reportMessage( "\nStandard and auxiliary tables with all corresponding data\n" );
 		$messageReporter->reportMessage( "have been removed successfully.\n" );
