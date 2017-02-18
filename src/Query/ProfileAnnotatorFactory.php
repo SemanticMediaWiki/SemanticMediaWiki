@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator;
 use SMW\Query\ProfileAnnotators\FormatProfileAnnotator;
+use SMW\Query\ProfileAnnotators\ParametersProfileAnnotator;
 use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
 use SMWContainerSemanticData as ContainerSemanticData;
@@ -60,6 +61,11 @@ class ProfileAnnotatorFactory {
 			$format
 		);
 
+		$profileAnnotator = $this->newParametersProfileAnnotator(
+			$profileAnnotator,
+			$query
+		);
+
 		$profileAnnotator = $this->newDurationProfileAnnotator(
 			$profileAnnotator,
 			$query->getOption( Query::PROC_QUERY_TIME )
@@ -75,6 +81,15 @@ class ProfileAnnotatorFactory {
 
 	private function newFormatProfileAnnotator( $profileAnnotator, $format ) {
 		return new FormatProfileAnnotator( $profileAnnotator, $format );
+	}
+
+	private function newParametersProfileAnnotator( $profileAnnotator, $query ) {
+
+		if ( $query->getOption( Query::OPT_PARAMETERS ) === false ) {
+			return $profileAnnotator;
+		}
+
+		return new ParametersProfileAnnotator( $profileAnnotator, $query );
 	}
 
 	private function newDurationProfileAnnotator( $profileAnnotator, $duration ) {

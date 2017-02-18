@@ -55,6 +55,11 @@ class SMWQuery implements QueryContext {
 	const PROC_CONTEXT = 'proc.context';
 
 	/**
+	 * The processing parameters
+	 */
+	const OPT_PARAMETERS = 'proc.parameters';
+
+	/**
 	 * Suppress a possible cache request
 	 */
 	const NO_CACHE = 'no.cache';

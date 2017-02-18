@@ -210,7 +210,7 @@ class SMWSql3SmwIds {
 		'_ASKFO' =>  35,
 		'_ASKSI' =>  36,
 		'_ASKDE' =>  37,
-//		'_ASKDU' =>  38,
+		'_ASKPA' =>  38,
 		'_ASKSC' =>  39,
 		'_LCODE' =>  40,
 		'_TEXT'  =>  41,
