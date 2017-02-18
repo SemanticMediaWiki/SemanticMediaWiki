@@ -8,8 +8,7 @@
  *
  * require __DIR__ . '/../../SemanticMediaWiki/tests/autoloader.php'
  */
-
-if ( PHP_SAPI !== 'cli' ) {
+if ( PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' ) {
 	die( 'Not an entry point' );
 }
 

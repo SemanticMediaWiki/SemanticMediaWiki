@@ -420,7 +420,7 @@ class CompoundConditionBuilder {
 			$canUse = $this->engineOptions->get( 'smwgQSubcategoryDepth' ) > 0;
 		}
 
-		return $this->engineOptions->get( 'smwgSparqlQFeatures' ) === ( $this->engineOptions->get( 'smwgSparqlQFeatures' ) | $queryFeatureFlag ) && $canUse;
+		return $this->engineOptions->get( 'smwgSparqlQFeatures' ) === ( (int)$this->engineOptions->get( 'smwgSparqlQFeatures' ) | (int)$queryFeatureFlag ) && $canUse;
 	}
 
 	/**

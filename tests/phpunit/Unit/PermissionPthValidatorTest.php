@@ -42,7 +42,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result = '';
+		$result = array();
 
 		$instance = new PermissionPthValidator(
 			$this->editProtectionValidator
@@ -79,7 +79,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $permission ) )
 			->will( $this->returnValue( false ) );
 
-		$result = '';
+		$result = array();
 
 		$instance = new PermissionPthValidator(
 			$this->editProtectionValidator
@@ -132,7 +132,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $editProtectionRight ) )
 			->will( $this->returnValue( false ) );
 
-		$result = '';
+		$result = array();
 
 		$instance = new PermissionPthValidator(
 			$this->editProtectionValidator
