@@ -119,17 +119,17 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 	protected function getTopIndicators() {
 
-		$dv = DataValueFactory::getInstance()->newDataValueByItem(
+		$propertyValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$this->mProperty
 		);
 
 		// Label that corresponds to the display and sort characteristics
-		$propertyName = $dv->getFormattedLabel( DataValueFormatter::VALUE );
+		$searchLabel = $this->mProperty->isUserDefined() ? $propertyValue->getSearchLabel() : $this->mProperty->getCanonicalLabel();
 		$usageCountHtml = '';
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( 1 );
-		$requestOptions->addStringCondition( $propertyName, StringCondition::COND_EQ );
+		$requestOptions->addStringCondition( $searchLabel, StringCondition::COND_EQ );
 
 		$cachedLookupList = $this->store->getPropertiesSpecial( $requestOptions );
 		$usageList = $cachedLookupList->fetchList();
