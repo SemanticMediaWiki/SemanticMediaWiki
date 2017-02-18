@@ -407,7 +407,7 @@ class ListResultPrinter extends ResultPrinter {
 			$fieldName = '';
 
 			// {{{?Foo}}}
-			if ( $this->mNamedArgs || $this->params['template arguments'] === 'legacy' ) {
+			if ( $this->mNamedArgs || $this->params['template arguments'] === 'legacy'  ) {
 				$fieldName = '?' . $field->getPrintRequest()->getLabel();
 			}
 
@@ -418,7 +418,7 @@ class ListResultPrinter extends ResultPrinter {
 
 			// {{{1}}}
 			if ( $fieldName === '' || $fieldName === '?' || $this->params['template arguments'] === 'numbered' ) {
-				$fieldName = $fieldName . $i + 1;
+				$fieldName = intval( $i + 1 );
 			}
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) ) ) !== false ) {

@@ -44,7 +44,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $setup, $expected ) {
 
-		$toolbox  = '';
+		$toolbox = array();
 
 		ApplicationFactory::getInstance()->registerObject(
 			'Settings',

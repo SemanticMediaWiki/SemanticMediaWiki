@@ -324,7 +324,7 @@ abstract class SMWDataValue {
 	 * @return boolean
 	 */
 	public function isEnabledFeature( $feature ) {
-		return ( $this->getOption( 'smwgDVFeatures' ) & $feature ) != 0;
+		return ( (int)$this->getOption( 'smwgDVFeatures' ) & $feature ) != 0;
 	}
 
 	/**

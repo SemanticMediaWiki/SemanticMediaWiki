@@ -200,7 +200,7 @@ class JsonTestCaseFileHandler {
 			$smwgDVFeatures = '';
 
 			foreach ( $settings[$key] as $value ) {
-				$smwgDVFeatures = constant( $value ) | $smwgDVFeatures;
+				$smwgDVFeatures = constant( $value ) | (int)$smwgDVFeatures;
 			}
 
 			return $smwgDVFeatures;
@@ -210,7 +210,7 @@ class JsonTestCaseFileHandler {
 			$smwgFulltextSearchIndexableDataTypes = '';
 
 			foreach ( $settings[$key] as $value ) {
-				$smwgFulltextSearchIndexableDataTypes = constant( $value ) | $smwgFulltextSearchIndexableDataTypes;
+				$smwgFulltextSearchIndexableDataTypes = constant( $value ) | (int)$smwgFulltextSearchIndexableDataTypes;
 			}
 
 			return $smwgFulltextSearchIndexableDataTypes;

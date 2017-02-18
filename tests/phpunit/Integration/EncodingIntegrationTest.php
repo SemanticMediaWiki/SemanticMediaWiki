@@ -28,7 +28,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testBaseTemplateToolboxURLEncoding( $setup, $expected ) {
 
-		$toolbox  = '';
+		$toolbox  = array();
 
 		foreach ( $setup['settings'] as $key => $value) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
