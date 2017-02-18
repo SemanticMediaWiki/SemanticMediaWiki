@@ -95,8 +95,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$this->store
 		);
 
-		$propertySpecificationReqExaminer->setEditProtectionRight(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEditProtectionRight' )
+		$propertySpecificationReqExaminer->setEditProtectionRights(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEditProtectionRights' )
 		);
 
 		$propertyPageMessageHtmlBuilder = new PropertyPageMessageHtmlBuilder(

@@ -41,7 +41,7 @@ class EditProtectionValidator {
 	/**
 	 * @var boolean|string
 	 */
-	private $editProtectionRight = false;
+	private $editProtectionRights = false;
 
 	/**
 	 * @since 2.5
@@ -57,10 +57,10 @@ class EditProtectionValidator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param array|boolean $editProtectionRights
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
-		$this->editProtectionRight = $editProtectionRight;
+	public function setEditProtectionRights( $editProtectionRights ) {
+		$this->editProtectionRights = implode( '|', (array)$editProtectionRights );
 	}
 
 	/**
@@ -119,10 +119,10 @@ class EditProtectionValidator {
 			return $this->intermediaryMemoryCache->fetch( $key );
 		}
 
-		// Set editProtectionRight to influence the key to detect changes
+		// Set editProtectionRights to influence the key to detect changes
 		// before the cache is evicted
 		$requestOptions = new RequestOptions();
-		$requestOptions->addExtraCondition( $this->editProtectionRight );
+		$requestOptions->addExtraCondition( $this->editProtectionRights );
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
 			$subject,

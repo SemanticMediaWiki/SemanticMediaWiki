@@ -40,7 +40,7 @@ class ArticleProtectComplete extends HookHandler {
 	/**
 	 * @var boolean|string
 	 */
-	private $editProtectionRight = false;
+	private $editProtectionRights = false;
 
 	/**
 	 * @since  2.5
@@ -57,10 +57,10 @@ class ArticleProtectComplete extends HookHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param array|boolean $editProtectionRights
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
-		$this->editProtectionRight = $editProtectionRight;
+	public function setEditProtectionRights( $editProtectionRights ) {
+		$this->editProtectionRights = is_bool( $editProtectionRights ) ? $editProtectionRights : array_flip( (array)$editProtectionRights );
 	}
 
 	/**
@@ -70,6 +70,10 @@ class ArticleProtectComplete extends HookHandler {
 	 * @param string $reason
 	 */
 	public function process( $protections, $reason ) {
+
+		if ( $this->editProtectionRights === false ) {
+			return $this->log( __METHOD__ . ' EditProtectionRights not enabled' );
+		}
 
 		if ( Message::get( 'smw-edit-protection-auto-update' ) === $reason ) {
 			return $this->log( __METHOD__ . ' No changes required, invoked by own process!' );
@@ -112,7 +116,7 @@ class ArticleProtectComplete extends HookHandler {
 
 		// No _EDIP annotation but a selected protection matches the
 		// `EditProtectionRight` setting
-		if ( !$dataItem && isset( $protections['edit'] ) && $protections['edit'] === $this->editProtectionRight ) {
+		if ( !$dataItem && isset( $protections['edit'] ) && isset( $this->editProtectionRights[$protections['edit']] ) ) {
 			$this->log( 'ArticleProtectComplete addProperty `Is edit protected`' );
 
 			$isRestrictedUpdate = false;
@@ -126,7 +130,7 @@ class ArticleProtectComplete extends HookHandler {
 		// means that is has been set by the system and is not a "human" added
 		// annotation) but since the selected protection doesn't match the
 		// `EditProtectionRight` setting, remove the annotation
-		if ( $dataItem && $isAnnotationBySystem && isset( $protections['edit'] ) && $protections['edit'] !== $this->editProtectionRight ) {
+		if ( $dataItem && $isAnnotationBySystem && isset( $protections['edit'] ) && !isset( $this->editProtectionRights[$protections['edit']] ) ) {
 			$this->log( 'ArticleProtectComplete removeProperty `Is edit protected`' );
 
 			$isRestrictedUpdate = false;

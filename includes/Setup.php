@@ -257,8 +257,8 @@ final class Setup {
 		}
 
 		// Add an additional protection level restricting edit/move/etc
-		if ( ( $editProtectionRight = $this->applicationFactory->getSettings()->get( 'smwgEditProtectionRight' ) ) !== false ) {
-			$this->globalVars['wgRestrictionLevels'][] = $editProtectionRight;
+		if ( ( $editProtectionRights = $this->applicationFactory->getSettings()->get( 'smwgEditProtectionRights' ) ) !== false ) {
+			$this->globalVars['wgRestrictionLevels'] = array_merge( $this->globalVars['wgRestrictionLevels'], (array)$editProtectionRights );
 		}
 	}
 

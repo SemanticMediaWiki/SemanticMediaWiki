@@ -36,7 +36,7 @@ class PropertySpecificationReqExaminer {
 	/**
 	 * @var boolean
 	 */
-	private $editProtectionRight = false;
+	private $editProtectionRights = false;
 
 	/**
 	 * @since 2.5
@@ -60,10 +60,10 @@ class PropertySpecificationReqExaminer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param string|boolean $editProtectionRights
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
-		$this->editProtectionRight = $editProtectionRight;
+	public function setEditProtectionRights( $editProtectionRights ) {
+		$this->editProtectionRights = $editProtectionRights;
 	}
 
 	/**
@@ -132,12 +132,12 @@ class PropertySpecificationReqExaminer {
 	}
 
 	/**
-	 * Examines whether the setting `smwgEditProtectionRight` contains an appropriate
+	 * Examines whether the setting `smwgEditProtectionRights` contains an appropriate
 	 * value or is disabled in order for the `Is edit protected` property to function.
 	 */
 	private function checkOnEditProtectionRight( $property ) {
 
-		if ( $this->editProtectionRight !== false ) {
+		if ( $this->editProtectionRights !== false ) {
 			return;
 		}
 

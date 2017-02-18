@@ -161,7 +161,8 @@ class Settings extends Options {
 			'smwgQueryResultCacheLifetime' => $GLOBALS['smwgQueryResultCacheLifetime'],
 			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
 			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
-			'smwgEditProtectionRight' => $GLOBALS['smwgEditProtectionRight'],
+			'smwgEditProtectionRights' => $GLOBALS['smwgEditProtectionRights'],
+			'smwgEditProtectionEnforcedRight' => $GLOBALS['smwgEditProtectionEnforcedRight'],
 			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty']
 		);
 

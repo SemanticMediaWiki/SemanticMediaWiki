@@ -57,7 +57,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider titleProvider
 	 */
-	public function testAddAnnotationForDisplayTitle( $title, $editProtectionRight, array $expected ) {
+	public function testAddAnnotationForDisplayTitle( $title, $editProtectionRights, array $expected ) {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			$title
@@ -68,7 +68,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			$title
 		);
 
-		$instance->setEditProtectionRight( $editProtectionRight );
+		$instance->setEditProtectionRights( $editProtectionRights );
 		$instance->addAnnotation();
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
@@ -113,7 +113,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			$title
 		);
 
-		$instance->setEditProtectionRight( 'Foo' );
+		$instance->setEditProtectionRights( 'Foo' );
 		$instance->addTopIndicatorTo( $parserOutput );
 	}
 

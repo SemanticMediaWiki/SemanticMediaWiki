@@ -85,8 +85,8 @@ class PropertyAnnotatorFactory {
 			$title
 		);
 
-		$editProtectedPropertyAnnotator->setEditProtectionRight(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEditProtectionRight' )
+		$editProtectedPropertyAnnotator->setEditProtectionRights(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEditProtectionRights' )
 		);
 
 		return $editProtectedPropertyAnnotator;

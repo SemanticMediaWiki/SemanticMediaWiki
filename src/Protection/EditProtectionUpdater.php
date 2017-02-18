@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use WikiPage;
 use User;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -38,7 +39,12 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	/**
 	 * @var boolean|string
 	 */
-	private $editProtectionRight = false;
+	private $editProtectionRights = false;
+
+	/**
+	 * @var boolean|string
+	 */
+	private $editProtectionEnforcedRight = false;
 
 	/**
 	 * LoggerInterface
@@ -74,10 +80,19 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param string|boolean $editProtectionRights
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
-		$this->editProtectionRight = $editProtectionRight;
+	public function setEditProtectionRights( $editProtectionRights ) {
+		$this->editProtectionRights = is_bool( $editProtectionRights ) ? $editProtectionRights : (array)$editProtectionRights;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string|boolean $editProtectionEnforcedRight
+	 */
+	public function setEditProtectionEnforcedRight( $editProtectionEnforcedRight ) {
+		$this->editProtectionEnforcedRight = $editProtectionEnforcedRight;
 	}
 
 	/**
@@ -97,7 +112,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	public function doUpdateFrom( SemanticData $semanticData ) {
 
 		// Do nothing
-		if ( $this->editProtectionRight === false ) {
+		if ( $this->editProtectionRights === false ) {
 			return;
 		}
 
@@ -109,15 +124,15 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			return;
 		}
 
-		$restrictions = array_flip( $title->getRestrictions( 'edit' ) );
+		$hasEditRestrictions = $this->hasEditRestrictions( $title );
 
 		// No `Is edit protected` was found and the restriction doesn't contain
-		// a matchable `editProtectionRight`
-		if ( $isEditProtected === null && !isset( $restrictions[$this->editProtectionRight] ) ) {
+		// a matchable `editProtectionRights`
+		if ( $isEditProtected === null && !$hasEditRestrictions ) {
 			return $this->log( __METHOD__ . ' no update required' );
 		}
 
-		if ( $isEditProtected && !isset( $restrictions[$this->editProtectionRight] ) && !$isAnnotationBySystem ) {
+		if ( $isEditProtected && !$hasEditRestrictions && !$isAnnotationBySystem ) {
 			return $this->doUpdateRestrictions( $isEditProtected );
 		}
 
@@ -126,6 +141,19 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 		}
 
 		$this->doUpdateRestrictions( $isEditProtected );
+	}
+
+	private function hasEditRestrictions( $title ) {
+
+		$restrictions = array_flip( $title->getRestrictions( 'edit' ) );
+
+		foreach ( $this->editProtectionRights as $editProtectionRight ) {
+			if ( isset( $restrictions[$editProtectionRight]) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private function fetchEditProtectedInfo( $semanticData ) {
@@ -165,12 +193,18 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 		$protections = array();
 		$expiry = array();
 
+		$editProtectionRight = array_shift( $this->editProtectionRights );
+
+		if ( in_array( $this->editProtectionEnforcedRight, $this->editProtectionRights ) ) {
+			$editProtectionRight = $this->editProtectionEnforcedRight;
+		}
+
 		if ( $isEditProtected ) {
-			$this->log( __METHOD__ . ' add protection on edit, move' );
+			$this->log( __METHOD__ . " add `$editProtectionRight` protection on edit, move" );
 
 			$protections = array(
-				'edit' => $this->editProtectionRight,
-				'move' => $this->editProtectionRight
+				'edit' => $editProtectionRight,
+				'move' => $editProtectionRight
 			);
 
 			$expiry = array(

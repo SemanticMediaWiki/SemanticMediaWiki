@@ -97,7 +97,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testToReturnFalseOnNamespaceWithEditPermissionCheck() {
 
-		$editProtectionRight = 'Foo';
+		$editProtectionRights = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -129,7 +129,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->once() )
 			->method( 'isAllowed' )
-			->with( $this->equalTo( $editProtectionRight ) )
+			->with( $this->equalTo( $editProtectionRights ) )
 			->will( $this->returnValue( false ) );
 
 		$result = '';
@@ -138,8 +138,8 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			$this->editProtectionValidator
 		);
 
-		$instance->setEditProtectionRight(
-			$editProtectionRight
+		$instance->setEditProtectionRights(
+			$editProtectionRights
 		);
 
 		$this->assertFalse(
@@ -147,14 +147,14 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( array( 'smw-edit-protection', $editProtectionRight ) ),
+			array( array( 'smw-edit-protection', $editProtectionRights ) ),
 			$result
 		);
 	}
 
 	public function testFalseEditProtectionRightToNeverCheckPermissionOnNonMwNamespace() {
 
-		$editProtectionRight = false;
+		$editProtectionRights = false;
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -186,8 +186,8 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			$this->editProtectionValidator
 		);
 
-		$instance->setEditProtectionRight(
-			$editProtectionRight
+		$instance->setEditProtectionRights(
+			$editProtectionRights
 		);
 
 		$this->assertTrue(

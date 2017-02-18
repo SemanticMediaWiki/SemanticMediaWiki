@@ -76,6 +76,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setLogger( $this->spyLogger );
+		$instance->setEditProtectionRights( 'Foo' );
 
 		$protections = array();
 		$reason = \SMW\Message::get( 'smw-edit-protection-auto-update' );
@@ -120,7 +121,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setLogger( $this->spyLogger );
-		$instance->setEditProtectionRight( 'Foo' );
+		$instance->setEditProtectionRights( 'Foo' );
 
 		$protections = array( 'edit' => 'Foo' );
 		$reason = '';
@@ -181,7 +182,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setLogger( $this->spyLogger );
-		$instance->setEditProtectionRight( 'Foo2' );
+		$instance->setEditProtectionRights( 'Foo2' );
 
 		$protections = array( 'edit' => 'Foo' );
 		$reason = '';

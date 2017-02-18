@@ -30,7 +30,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @var boolean
 	 */
-	private $editProtectionRight = false;
+	private $editProtectionRights = false;
 
 	/**
 	 * @since 1.9
@@ -46,10 +46,10 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param array|boolean $editProtectionRights
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
-		$this->editProtectionRight = $editProtectionRight;
+	public function setEditProtectionRights( $editProtectionRights ) {
+		$this->editProtectionRights = is_bool( $editProtectionRights ) ? $editProtectionRights : (array)$editProtectionRights;
 	}
 
 	/**
@@ -59,7 +59,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	public function addTopIndicatorTo( ParserOutput $parserOutput ) {
 
-		if ( $this->editProtectionRight === false ) {
+		if ( $this->editProtectionRights === false ) {
 			return false;
 		}
 
@@ -93,7 +93,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	protected function addPropertyValues() {
 
-		if ( $this->editProtectionRight === false ) {
+		if ( $this->editProtectionRights === false ) {
 			return false;
 		}
 
@@ -128,8 +128,14 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$restrictions = array_flip( $this->title->getRestrictions( 'edit' ) );
 
 		// There could by any edit protections but the `Is edit protected` is
-		// bound to the `smwgEditProtectionRight` setting
-		return isset( $restrictions[$this->editProtectionRight] );
+		// bound to the `smwgEditProtectionRights` setting
+		foreach ( $this->editProtectionRights as $editProtectionRight ) {
+			if ( isset( $restrictions[$editProtectionRight] ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private function isEnabledProtection( $property ) {

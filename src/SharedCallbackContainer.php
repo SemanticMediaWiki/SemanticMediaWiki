@@ -387,8 +387,8 @@ class SharedCallbackContainer implements CallbackContainer {
 				$callbackLoader->singleton( 'InMemoryPoolCache' )->getPoolCacheById( EditProtectionValidator::POOLCACHE_ID )
 			);
 
-			$editProtectionValidator->setEditProtectionRight(
-				$callbackLoader->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
+			$editProtectionValidator->setEditProtectionRights(
+				$callbackLoader->singleton( 'Settings' )->get( 'smwgEditProtectionRights' )
 			);
 
 			return $editProtectionValidator;
@@ -405,8 +405,12 @@ class SharedCallbackContainer implements CallbackContainer {
 				$user
 			);
 
-			$editProtectionUpdater->setEditProtectionRight(
-				$callbackLoader->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
+			$editProtectionUpdater->setEditProtectionRights(
+				$callbackLoader->singleton( 'Settings' )->get( 'smwgEditProtectionRights' )
+			);
+
+			$editProtectionUpdater->setEditProtectionEnforcedRight(
+				$callbackLoader->singleton( 'Settings' )->get( 'smwgEditProtectionEnforcedRight' )
 			);
 
 			$editProtectionUpdater->setLogger(
