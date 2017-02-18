@@ -10,6 +10,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Store;
 use Html;
+use SMW\Message;
 use SMWDataValue as DataValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\RequestOptions;
@@ -21,7 +22,7 @@ use SMW\RequestOptions;
  * @author Denny Vrandecic
  * @author mwjames
  */
-class HtmlContentsBuilder {
+class ContentsBuilder {
 
 	/**
 	 * @var Store
@@ -115,7 +116,7 @@ class HtmlContentsBuilder {
 	 *
 	 * @param string $json
 	 */
-	public function setOptionsFromJsonFormat( $json ) {
+	public function importOptionsFromJson( $json ) {
 		$this->options = json_decode( $json, true );
 	}
 
@@ -167,25 +168,16 @@ class HtmlContentsBuilder {
 		$this->articletext = $this->subject->getWikiValue();
 
 		$html .= $this->displayHead();
-		$html .= $this->displayData( $semanticData, $leftside );
-		$html .= $this->displayCenter();
-		$html .= $this->displayData( $semanticData, $leftside, true );
+		$html .= $this->displayData( $semanticData, $leftside, false, true );
+		$html .= $this->displayCenter( $this->subject->getLongWikiText() );
+		$html .= $this->displayData( $semanticData, $leftside, true, true );
 		$html .= $this->displayBottom( false );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$html .= $this->queryForm( $this->articletext );
+			$html .= FormHelper::getQueryForm( $this->articletext );
 		}
 
 		return $html;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return string
-	 */
-	public static function getPageSearchQuickForm( $articletext = '' ) {
-		return "\n" . self::queryForm( $articletext );
 	}
 
 	/**
@@ -200,35 +192,36 @@ class HtmlContentsBuilder {
 		$leftside = !( $wgContLang->isRTL() ); // For right to left languages, all is mirrored
 		$modules = array();
 
-		if ( $this->subject->isValid() ) {
-
-			$semanticData = new SemanticData( $this->subject->getDataItem() );
-			$html .= $this->displayHead();
-
-			if ( $this->showoutgoing ) {
-				$semanticData = $this->store->getSemanticData( $this->subject->getDataItem() );
-				$html .= $this->displayData( $semanticData, $leftside );
-				$html .= $this->displayCenter();
-			}
-
-			if ( $this->showincoming ) {
-				list( $indata, $more ) = $this->getInData();
-
-				if ( !$this->getOption( 'showInverse' ) ) {
-					$leftside = !$leftside;
-				}
-
-				$html .= $this->displayData( $indata, $leftside, true );
-				$html .= $this->displayBottom( $more );
-			}
-
-			$this->articletext = $this->subject->getWikiValue();
-
-			\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', array( $this->store, $semanticData, &$html, &$this->extraModules ) );
+		if ( !$this->subject->isValid() ) {
+			return $html;
 		}
 
+		$semanticData = new SemanticData( $this->subject->getDataItem() );
+		$html .= $this->displayHead();
+
+		if ( $this->showoutgoing ) {
+			$semanticData = $this->store->getSemanticData( $this->subject->getDataItem() );
+			$html .= $this->displayData( $semanticData, $leftside );
+			$html .= $this->displayCenter( $this->subject->getLongWikiText() );
+		}
+
+		if ( $this->showincoming ) {
+			list( $indata, $more ) = $this->getInData();
+
+			if ( !$this->getOption( 'showInverse' ) ) {
+				$leftside = !$leftside;
+			}
+
+			$html .= $this->displayData( $indata, $leftside, true );
+			$html .= $this->displayBottom( $more );
+		}
+
+		$this->articletext = $this->subject->getWikiValue();
+
+		\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', array( $this->store, $semanticData, &$html, &$this->extraModules ) );
+
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$html .= $this->queryForm( $this->articletext );
+			$html .= FormHelper::getQueryForm( $this->articletext );
 		}
 
 		$html .= Html::element(
@@ -251,31 +244,35 @@ class HtmlContentsBuilder {
 	 *
 	 * @return string A string containing the HTML with the factbox
 	 */
-	private function displayData( SemanticData $data, $left = true, $incoming = false ) {
+	private function displayData( SemanticData $data, $left = true, $incoming = false, $isLoading = false ) {
 		// Some of the CSS classes are different for the left or the right side.
 		// In this case, there is an "i" after the "smwb-". This is set here.
 		$ccsPrefix = $left ? 'smwb-' : 'smwb-i';
 
 		$html = "<table class=\"{$ccsPrefix}factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$noresult = true;
 
 		$diProperties = $data->getProperties();
-		$noresult = true;
-		foreach ( $diProperties as $key => $diProperty ) {
-			$dvProperty = DataValueFactory::getInstance()->newDataValueByItem( $diProperty, null );
+		$showInverse = $this->getOption( 'showInverse' );
 
-			if ( $dvProperty->isVisible() ) {
-				$dvProperty->setCaption( $this->getPropertyLabel( $dvProperty, $incoming ) );
-				$proptext = $dvProperty->getShortHTMLText( smwfGetLinker() ) . "\n";
-			} elseif ( $diProperty->getKey() == '_INST' ) {
-				$proptext = smwfGetLinker()->specialLink( 'Categories' );
-			} elseif ( $diProperty->getKey() == '_REDI' ) {
-				$proptext = smwfGetLinker()->specialLink( 'Listredirects', 'isredirect' );
-			} else {
-				continue; // skip this line
+		foreach ( $diProperties as $key => $diProperty ) {
+
+			$dvProperty = DataValueFactory::getInstance()->newDataValueByItem(
+				$diProperty,
+				null
+			);
+
+			$propertyLabel = ValueFormatter::getPropertyLabel(
+				$dvProperty,
+				$incoming,
+				$showInverse
+			);
+
+			if ( $propertyLabel === null ) {
+				continue;
 			}
 
-			$head  = '<th>' . $proptext . "</th>\n";
-
+			$head  = '<th>' . $propertyLabel . "</th>\n";
 			$body  = "<td>\n";
 
 			$values = $data->getPropertyValues( $diProperty );
@@ -299,11 +296,6 @@ class HtmlContentsBuilder {
 					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, null );
 				} else {
 					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, $diProperty );
-				}
-
-				// For a redirect, disable the DisplayTitle to show the original (aka source) page
-				if ( $diProperty->getKey() == '_REDI' ) {
-					$dv->setOption( 'smwgDVFeatures', ( $dv->getOption( 'smwgDVFeatures' ) & ~SMW_DV_WPV_DTITLE ) );
 				}
 
 				$body .= "<span class=\"{$ccsPrefix}value\">" .
@@ -335,10 +327,14 @@ class HtmlContentsBuilder {
 		} // end foreach properties
 
 		if ( $noresult ) {
+			$noMsgKey = $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing';
+
 			$html .= "<tr class=\"smwb-propvalue\"><th> &#160; </th><td><em>" .
-				wfMessage( $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing' )->escaped() . "</em></td></tr>\n";
+				wfMessage( $isLoading ? 'smw-browse-from-backend' : $noMsgKey )->escaped() . "</em></td></tr>\n";
 		}
+
 		$html .= "</table>\n";
+
 		return $html;
 	}
 
@@ -352,37 +348,12 @@ class HtmlContentsBuilder {
 	 * @return string  HTML with the link to the article, browse, and search pages
 	 */
 	private function displayValue( \SMWPropertyValue $property, DataValue $dataValue, $incoming ) {
-		$linker = smwfGetLinker();
-
-		// Allow the DV formatter to access a specific language code
-		$dataValue->setOption(
-			DataValue::OPT_CONTENT_LANGUAGE,
-			Localizer::getInstance()->getPreferredContentLanguage( $this->subject->getDataItem() )->getCode()
-		);
-
-		$dataValue->setOption(
-			DataValue::OPT_USER_LANGUAGE,
-			Localizer::getInstance()->getUserLanguage()->getCode()
-		);
 
 		$dataValue->setContextPage(
 			$this->subject->getDataItem()
 		);
 
-		// Use LOCL formatting where appropriate (date)
-		$dataValue->setOutputFormat( 'LOCL' );
-
-		$html = $dataValue->getLongHTMLText( $linker );
-
-		if ( $dataValue->getTypeID() === '_wpg' || $dataValue->getTypeID() === '__sob' ) {
-			$html .= "&#160;" . \SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $linker );
-		} elseif ( $incoming && $property->isVisible() ) {
-			$html .= "&#160;" . \SMWInfolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $property->getDataItem()->getLabel(), 'smwsearch' )->getHTML( $linker );
-		} elseif ( $dataValue->getProperty() instanceof DIProperty && $dataValue->getProperty()->getKey() !== '_INST' ) {
-			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $linker );
-		}
-
-		return $html;
+		return ValueFormatter::getFormattedValue( $dataValue, $property, $incoming );
 	}
 
 	/**
@@ -415,13 +386,31 @@ class HtmlContentsBuilder {
 	 *
 	 * @return string  HTMl with the center bar
 	 */
-	private function displayCenter() {
+	private function displayCenter( $article ) {
+
+		if ( $this->showincoming ) {
+			$parameters = array(
+				'offset'  => 0,
+				'dir'     => 'out',
+				'article' => $article
+			);
+
+			$linkMsg = 'smw_browse_hide_incoming';
+		} else {
+			$parameters = array(
+				'offset'  => $this->offset,
+				'dir'     => 'both',
+				'article' => $article
+			);
+
+			$linkMsg = 'smw_browse_show_incoming';
+		}
+
+		$html = FormHelper::createLink( $linkMsg, $parameters );
+
 		return "<a name=\"smw_browse_incoming\"></a>\n" .
 		       "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
-		       "<tr class=\"smwb-center\"><td colspan=\"2\">\n" .
-		       ( $this->showincoming ?
-			     $this->linkHere( wfMessage( 'smw_browse_hide_incoming' )->text(), true, false, 0 ):
-		         $this->linkHere( wfMessage( 'smw_browse_show_incoming' )->text(), true, true, $this->offset ) ) .
+		       "<tr class=\"smwb-center\"><td colspan=\"2\">\n" . $html .
 		       "&#160;\n" . "</td></tr>\n" . "</table>\n";
 	}
 
@@ -432,50 +421,49 @@ class HtmlContentsBuilder {
 	 * @return string  HTMl with the bottom bar
 	 */
 	private function displayBottom( $more ) {
-		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
+
+		$article = $this->subject->getLongWikiText();
+
+		$open  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
 		         "<tr class=\"smwb-center\"><td colspan=\"2\">\n";
 
-		if ( !$this->getOption( 'showAll' ) ) {
-			if ( ( $this->offset > 0 ) || $more ) {
-				$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
-				$html .= ( $this->offset == 0 ) ? wfMessage( 'smw_result_prev' )->escaped():
-					     $this->linkHere( wfMessage( 'smw_result_prev' )->text(), $this->showoutgoing, true, $offset );
-				$offset = $this->offset + $this->incomingPropertiesCount - 1;
-				// @todo FIXME: i18n patchwork.
-				$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->escaped() . " " . ( $this->offset + 1 ) .
-						 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
-				$html .= $more ? $this->linkHere( wfMessage( 'smw_result_next' )->text(), $this->showoutgoing, true, $offset ) : wfMessage( 'smw_result_next' )->escaped();
-			}
+		$close = "&#160;\n" . "</td></tr>\n" . "</table>\n";
+		$html = '';
+
+		if ( $this->getOption( 'showAll' ) ) {
+			return $open . $close;
 		}
 
-		$html .= "&#160;\n" . "</td></tr>\n" . "</table>\n";
-		return $html;
-	}
+		if ( ( $this->offset > 0 ) || $more ) {
+			$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
 
-	/**
-	 * Creates the HTML for a link to this page, with some parameters set.
-	 *
-	 * @param[in] $text string  The anchor text for the link
-	 * @param[in] $out bool  Should the linked to page include outgoing properties?
-	 * @param[in] $in bool  Should the linked to page include incoming properties?
-	 * @param[in] $offset int  What is the offset for the incoming properties?
-	 *
-	 * @return string  HTML with the link to this page
-	 */
-	private function linkHere( $text, $out, $in, $offset ) {
-		$frag = ( $text == wfMessage( 'smw_browse_show_incoming' )->text() ) ? '#smw_browse_incoming' : '';
+			$parameters = array(
+				'offset'  => $offset,
+				'dir'     => $this->showoutgoing ? 'both' : 'in',
+				'article' => $article
+			);
 
-		return Html::element(
-			'a',
-			array(
-				'href' => \SpecialPage::getSafeTitleFor( 'Browse' )->getLocalURL( array(
-					'offset' => $offset,
-					'dir' => $out ? ( $in ? 'both' : 'out' ) : 'in',
-					'article' => $this->subject->getLongWikiText()
-				) ) . $frag
-			),
-			$text
-		);
+			$linkMsg = 'smw_result_prev';
+
+			$html .= ( $this->offset == 0 ) ? wfMessage( $linkMsg )->escaped() : FormHelper::createLink( $linkMsg, $parameters );
+
+			$offset = $this->offset + $this->incomingPropertiesCount - 1;
+
+			$parameters = array(
+				'offset'  => $offset,
+				'dir'     => $this->showoutgoing ? 'both' : 'in',
+				'article' => $article
+			);
+
+			$linkMsg = 'smw_result_next';
+
+			// @todo FIXME: i18n patchwork.
+			$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->escaped() . " " . ( $this->offset + 1 ) .
+					 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
+			$html .= $more ? FormHelper::createLink( $linkMsg, $parameters ) : wfMessage( $linkMsg )->escaped();
+		}
+
+		return $open . $html . $close;
 	}
 
 	/**
@@ -520,64 +508,6 @@ class HtmlContentsBuilder {
 		\Hooks::run( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', array( $this->store, $indata, $valRequestOptions ) );
 
 		return array( $indata, $more );
-	}
-
-	/**
-	 * Figures out the label of the property to be used. For outgoing ones it is just
-	 * the text, for incoming ones we try to figure out the inverse one if needed,
-	 * either by looking for an explicitly stated one or by creating a default one.
-	 *
-	 * @param[in] $property SMWPropertyValue  The property of interest
-	 * @param[in] $incoming bool  If it is an incoming property
-	 *
-	 * @return string  The label of the property
-	 */
-	private function getPropertyLabel( \SMWPropertyValue $property, $incoming = false ) {
-
-		if ( $incoming && $this->getOption( 'showInverse' ) ) {
-			$oppositeprop = \SMWPropertyValue::makeUserProperty( wfMessage( 'smw_inverse_label_property' )->text() );
-			$labelarray = $this->store->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
-			$rv = ( count( $labelarray ) > 0 ) ? $labelarray[0]->getLongWikiText():
-				wfMessage( 'smw_inverse_label_default', $property->getWikiValue() )->text();
-		} else {
-			$rv = $property->getWikiValue();
-		}
-
-		return $this->unbreak( $rv );
-	}
-
-	/**
-	 * Creates the query form in order to quickly switch to a specific article.
-	 *
-	 * @return string A string containing the HTML for the form
-	 */
-	private static function queryForm( $articletext ) {
-
-		$title = \SpecialPage::getTitleFor( 'Browse' );
-
-		$html = '<div style="margin-top:15px;"></div>' ."\n";
-		$dir = $title->getPageLanguage()->isRTL() ? 'rtl' : 'ltr';
-
-		$html .= '  <form name="smwbrowse" action="' . htmlspecialchars( $title->getLocalURL() ) . '" method="get">' . "\n" .
-			'    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
-			wfMessage( 'smw_browse_article' )->escaped() . "<br />\n" .
-		    ' <div class="browse-input-resp"> <div class="input-field"><input type="text"  dir="' . $dir . '" name="article" size="40" id="smwb-page-search" class="input mw-ui-input" value="' . htmlspecialchars( $articletext ) . '" /></div>' .
-		    ' <div class="button-field"><input type="submit" class="input-button mw-ui-button" value="' . wfMessage( 'smw_browse_go' )->escaped() . "\"/></div></div>\n" .
-		    "  </form>\n";
-
-		return $html;
-	}
-
-	/**
-	 * Replace the last two space characters with unbreakable spaces for beautification.
-	 *
-	 * @param[in] $text string  Text to be transformed. Does not need to have spaces
-	 * @return string  Transformed text
-	 */
-	private function unbreak( $text ) {
-		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
-		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, - 1, $count );
-		return $count > 2 ? preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
 
 }

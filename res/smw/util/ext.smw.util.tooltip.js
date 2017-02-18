@@ -259,8 +259,8 @@
 		var self = this;
 
 		// Listen to the Special:Browse event
-		$ ( document ).on( 'SMW::Browse::ApiParseComplete', function( event, opts ) {
-			 self.initFromContext( opts.context );
+		mw.hook( 'smw.browse.apiparsecomplete' ).add( function( context ) {
+			 self.initFromContext( context );
 		} );
 
 		// SemanticForms/PageForms instance trigger

@@ -47,7 +47,7 @@
 			subject = self.context.data( 'subject' ),
 			options = JSON.stringify( self.context.data( 'options' ) );
 
-		// Expect format generated from DIWikiPage::getHash
+		// Expect a serialization format (see DIWikiPage::getHash)
 		if ( subject.indexOf( "#" ) == -1 ) {
 			return self.reportError( mw.msg( 'smw-browse-api-subject-serialization-invalid' ) );
 		}
@@ -67,6 +67,10 @@
 		} ).fail ( function( xhr, status, error ) {
 
 			var text = 'Unknown API error';
+
+			if ( status.hasOwnProperty( 'xhr' ) ) {
+				text = status.xhr.responseText.replace(/\<br \/\>/g," ");
+			}
 
 			if ( status.hasOwnProperty( 'error' ) ) {
 				text = status.error.code + ': ' + status.error.info;
@@ -108,6 +112,8 @@
 
 		// Re-apply JS-component instances on new content
 		// Trigger an event
+		mw.hook( 'smw.browse.apiparsecomplete' ).fire( self.context );
+
 		$( document ).trigger( 'SMW::Browse::ApiParseComplete' , {
 			'context': self.context
 		} );
