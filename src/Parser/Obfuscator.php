@@ -24,17 +24,17 @@ class Obfuscator {
 
 		// Use &#x005B; instead of &#91; to distinguish it from the MW's Sanitizer
 		// who uses the same decode sequence and avoid issues when removing links
-		// obfuscation
+		// after obfuscation
 
-		// Filter simple [ ... ] from [[ ... ]] links
-		// Ensure to find the correct start and end in case of
-		// [[Foo::[[Bar]]]] or [[Foo::[http://example.org/foo]]]
+		// Filter simple [ ... ] from [[ ... ]] links and ensure to find the correct
+		// start and end in case of [[Foo::[[Bar]]]] or [[Foo::[http://example.org/foo]]]
 		$text = str_replace(
 			array( '[', ']', '&#x005B;&#x005B;', '&#93;&#93;&#93;&#93;', '&#93;&#93;&#93;', '&#93;&#93;' ),
 			array( '&#x005B;', '&#93;', '[[', ']]]]', '&#93;]]', ']]' ),
 			$text
 		);
 
+		// Deep nesting is NOT supported as in [[Foo::[[abc]] [[Bar::123[[abc]] ]] ]]
 		return self::doObfuscate( $text, $parser );
 	}
 
@@ -88,7 +88,7 @@ class Obfuscator {
 	 */
 	public static function obfuscateAnnotation( $text ) {
 		return preg_replace_callback(
-			InTextAnnotationParser::getRegexpPattern( false ),
+			LinksProcessor::getRegexpPattern( false ),
 			function( array $matches ) {
 				return str_replace( '[', '&#91;', $matches[0] );
 			},
@@ -105,12 +105,12 @@ class Obfuscator {
 	 */
 	public static function removeAnnotation( $text ) {
 
-		if ( strpos( $text, '::' ) === false ) {
+		if ( strpos( $text, '::' ) === false && strpos( $text, ':=' ) === false ) {
 			return $text;
 		}
 
 		return preg_replace_callback(
-			InTextAnnotationParser::getRegexpPattern( false ),
+			LinksProcessor::getRegexpPattern( false ),
 			'self::doRemoveAnnotation',
 			self::decodeSquareBracket( $text )
 		);
@@ -145,7 +145,7 @@ class Obfuscator {
 			$caption = array_key_exists( 1, $parts ) ? $parts[1] : false;
 		}
 
-		// #...
+		// #1855
 		if ( $value === '@@@' ) {
 			$value = '';
 		}
@@ -155,64 +155,77 @@ class Obfuscator {
 
 	private static function doObfuscate( $text, $parser ) {
 
-		// Find all [[ ... ]]
-		preg_match_all('/\[{2}(.*?)\]{2}/is', $text, $matches );
-		$off = false;
+		/**
+		 * @see http://blog.angeloff.name/post/2012/08/05/php-recursive-patterns/
+		 *
+		 * \[{2}         # find the first opening '[['.
+		 *   (?:         # start a new group, this is so '|' below does not apply/affect the opening '['.
+		 *     [^\[\]]+  # skip ahead happily if no '[' or ']'.
+		 *     |         #   ...otherwise...
+		 *     (?R)      # we may be at the start of a new group, repeat whole pattern.
+		 *     )
+		 *   *           # nesting can be many levels deep.
+		 * \]{2}         # finally, expect a balanced closing ']]'
+		 */
+		preg_match_all("/\[{2}(?:[^\[\]]+|(?R))*\]{2}/is", $text, $matches );
+		$isOffAnnotation = false;
 
+		// At this point we distinguish between a normal [[Foo::bar]] annotation
+		// and a compound construct such as [[Foo::[[Foobar::Bar]] ]] and
+		// [[Foo::[http://example.org/foo foo] [[Foo::123|Bar]] ]].
+		//
+		// Only the compound is being processed and matched as we require to
+		// identify the boundaries of the enclosing annotation
 		foreach ( $matches[0] as $match ) {
 
-			// Ignore transformed links ([[:Foo|Foo]])
+			// Normal link
 			if ( strpos( $match, '[[:' ) !== false ) {
 				continue;
 			}
 
 			// Remember whether the text contains OFF/ON marker (added by
-			// recursive parser, template, embedded result printer) and restore
-			// the marker after the text has been processed
-			if ( $off === false ) {
-				$off = $match === InTextAnnotationParser::OFF;
+			// recursive parser, template, embedded result printer)
+			if ( $isOffAnnotation === false ) {
+				$isOffAnnotation = $match === InTextAnnotationParser::OFF;
 			}
 
-			$openNum = substr_count( $match, '[[' );
-			$closeNum = substr_count( $match, ']]' );
-			$markerNum = substr_count( $match, '::' );
+			$annotationOpenNum = substr_count( $match, '[[' );
 
-			// Legacy notation
-			$markerNum += substr_count( $match, ':=' );
-
-			if ( $markerNum == 0 ) {
-				// Simple link [[ ... ]], no annotation therefore match and
-				// obfuscate [[, |, ]] for a matching text element
-				$text = str_replace( $match, self::encodeLinks( $match ), $text );
-			} elseif ( $openNum > $closeNum && $markerNum == 1 ) {
-				// [[Text::Some [[abc]]
-				// Omit the first position
-				$replace = str_replace( $match, self::encodeLinks( $match ), $match );
-				$replace = substr_replace( $replace, '[[', 0, 16 );
+			// Only engage if the match contains more than one [[ :: ]] pair
+			if ( $annotationOpenNum > 1 ) {
+				$replace = self::doMatchAndReplace( $match, $parser, $isOffAnnotation );
 				$text = str_replace( $match, $replace, $text );
-			} elseif ( $openNum === $closeNum && $markerNum == 1 ) {
-				// [[Foo::Bar]] annotation therefore run a pattern match and
-				// obfuscate the returning [[, |, ]] result
-				$replace = self::encodeLinks( preg_replace_callback(
-					$parser->getRegexpPattern( false ),
-					array( $parser, 'preprocess' ),
-					$match
-				) );
-				$text = str_replace( $match, $replace, $text );
-			} elseif ( $openNum > $closeNum && $markerNum == 2 ) {
-				// [[Text::Some [[Foo::Some]]
-				// Resolve recursively therefore remove the first [[ and re-add
-				// it after results have returned from processing
-				$text = str_replace( $match, '[[' . self::doObfuscate( substr( $match, 2 ), $parser ), $text );
 			}
-		}
-
-		// Restore OFF/ON
-		if ( $off === true ) {
-			$text = InTextAnnotationParser::OFF . $text . InTextAnnotationParser::ON;
 		}
 
 		return $text;
+	}
+
+	private static function doMatchAndReplace( $match, $parser, $isOffAnnotation = false ) {
+
+		// Remove the Leading and last square bracket to avoid distortion
+		// during the annotation parsing
+		$match = substr( substr( $match, 2 ), 0, -2 );
+
+		// Restore OFF/ON for the recursive processing
+		if ( $isOffAnnotation === true ) {
+			$match = InTextAnnotationParser::OFF . $match . InTextAnnotationParser::ON;
+		}
+
+		// Only match annotations of style [[...::...]] during a recursive
+		// obfuscation process, any other processing is being done by the
+		// InTextAnnotation parser hereafter
+		//
+		// [[Foo::Bar]] annotation therefore run a pattern match and
+		// obfuscate the returning [[, |, ]] result
+		$replace = self::encodeLinks( preg_replace_callback(
+			LinksProcessor::getRegexpPattern( false ),
+			array( $parser, 'preprocess' ),
+			$match
+		) );
+
+		// Restore the square brackets
+		return '[[' . $replace . ']]';
 	}
 
 }
