@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
-use SMW\MediaWiki\Specials\Browse\HtmlContentsBuilder;
+use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Browse\HtmlContentsBuilder
+ * @covers \SMW\MediaWiki\Specials\Browse\ContentsBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\SemanticData;
  *
  * @author mwjames
  */
-class HtmlContentsBuilderTest extends \PHPUnit_Framework_TestCase {
+class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -40,20 +40,20 @@ class HtmlContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$instance = new HtmlContentsBuilder(
+		$instance = new ContentsBuilder(
 			$this->store,
 			DIWikiPage::newFromText( 'Foo' )
 		);
 
 		$this->assertInstanceOf(
-			HtmlContentsBuilder::class,
+			ContentsBuilder::class,
 			$instance
 		);
 	}
 
 	public function testGetEmptyHtml() {
 
-		$instance = new HtmlContentsBuilder(
+		$instance = new ContentsBuilder(
 			$this->store,
 			DIWikiPage::newFromText( 'Foo' )
 		);
@@ -61,14 +61,6 @@ class HtmlContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'string',
 			$instance->getEmptyHtml()
-		);
-	}
-
-	public function testGetPageSearchQuickForm() {
-
-		$this->assertInternalType(
-			'string',
-			HtmlContentsBuilder::getPageSearchQuickForm()
 		);
 	}
 
@@ -80,7 +72,7 @@ class HtmlContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( new SemanticData( $subject ) ) );
 
-		$instance = new HtmlContentsBuilder(
+		$instance = new ContentsBuilder(
 			$this->store,
 			$subject
 		);
@@ -103,7 +95,7 @@ class HtmlContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getInProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new HtmlContentsBuilder(
+		$instance = new ContentsBuilder(
 			$this->store,
 			$subject
 		);
@@ -116,7 +108,7 @@ class HtmlContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			'printable' => ''
 		);
 
-		$instance->setOptionsFromJsonFormat(
+		$instance->importOptionsFromJson(
 			json_encode( $options )
 		);
 
@@ -130,7 +122,7 @@ class HtmlContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$instance = new HtmlContentsBuilder(
+		$instance = new ContentsBuilder(
 			$this->store,
 			$subject
 		);
@@ -139,7 +131,7 @@ class HtmlContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			'Foo' => 42
 		);
 
-		$instance->setOptionsFromJsonFormat(
+		$instance->importOptionsFromJson(
 			json_encode( $options )
 		);
 

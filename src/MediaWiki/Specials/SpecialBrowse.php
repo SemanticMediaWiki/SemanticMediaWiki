@@ -8,7 +8,8 @@ use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\SemanticData;
 use SMW\UrlEncoder;
-use SMW\MediaWiki\Specials\Browse\HtmlContentsBuilder;
+use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
+use SMW\MediaWiki\Specials\Browse\FormHelper;
 use SMW\Message;
 use SpecialPage;
 use Html;
@@ -100,13 +101,13 @@ class SpecialBrowse extends SpecialPage {
 	private function getHtml( $webRequest, $isEmptyRequest ) {
 
 		if ( $isEmptyRequest && !$this->including() ) {
-			return HtmlContentsBuilder::getPageSearchQuickForm();
+			return Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE ) . FormHelper::getQueryForm();
 		}
 
 		if ( !$this->subjectDV->isValid() ) {
 
 			foreach ( $this->subjectDV->getErrors() as $error ) {
-				$error = Message::decode( $error );
+				$error = Message::decode( $error, Message::TEXT );
 			}
 
 			$html = Html::rawElement(
@@ -114,32 +115,32 @@ class SpecialBrowse extends SpecialPage {
 				array(
 					'class' => 'smw-callout smw-callout-error'
 				),
-				Message::get( array( 'smw-browse-invalid-subject', $error ), Message::ESCAPED )
+				Message::get( array( 'smw-browse-invalid-subject', $error ), Message::TEXT )
 			);
 
 			if ( !$this->including() ) {
-				$html . HtmlContentsBuilder::getPageSearchQuickForm();
+				$html .= FormHelper::getQueryForm( $webRequest->getVal( 'article' ) );
 			}
 
 			return $html;
 		}
 
-		$htmlContentsBuilder = $this->newHtmlContentsBuilder(
+		$contentsBuilder = $this->newContentsBuilder(
 			$webRequest,
 			$this->applicationFactory->getSettings()
 		);
 
-		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$htmlContentsBuilder->getOption( 'byApi' ) ) {
-			return $htmlContentsBuilder->getHtml();
+		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$contentsBuilder->getOption( 'byApi' ) ) {
+			return $contentsBuilder->getHtml();
 		}
 
 		$options = array(
-			'dir'         => $htmlContentsBuilder->getOption( 'dir' ),
-			'offset'      => $htmlContentsBuilder->getOption( 'offset' ),
-			'printable'   => $htmlContentsBuilder->getOption( 'printable' ),
-			'showInverse' => $htmlContentsBuilder->getOption( 'showInverse' ),
-			'showAll'     => $htmlContentsBuilder->getOption( 'showAll' ),
-			'including'   => $htmlContentsBuilder->getOption( 'including' )
+			'dir'         => $contentsBuilder->getOption( 'dir' ),
+			'offset'      => $contentsBuilder->getOption( 'offset' ),
+			'printable'   => $contentsBuilder->getOption( 'printable' ),
+			'showInverse' => $contentsBuilder->getOption( 'showInverse' ),
+			'showAll'     => $contentsBuilder->getOption( 'showAll' ),
+			'including'   => $contentsBuilder->getOption( 'including' )
 		);
 
 		// Ajax/API is doing the data fetch
@@ -176,56 +177,56 @@ class SpecialBrowse extends SpecialPage {
 					array(
 						'class' => 'smw-overlay-spinner large inline'
 					)
-				) . $htmlContentsBuilder->getEmptyHtml()
+				) . $contentsBuilder->getEmptyHtml()
 			)
 		);
 
 		return $html;
 	}
 
-	private function newHtmlContentsBuilder( $webRequest, $settings ) {
+	private function newContentsBuilder( $webRequest, $settings ) {
 
-		$htmlContentsBuilder = new HtmlContentsBuilder(
+		$contentsBuilder = new ContentsBuilder(
 			$this->applicationFactory->getStore(),
 			$this->subjectDV->getDataItem()
 		);
 
-		$htmlContentsBuilder->setOption(
+		$contentsBuilder->setOption(
 			'dir',
 			$webRequest->getVal( 'dir' )
 		);
 
-		$htmlContentsBuilder->setOption(
+		$contentsBuilder->setOption(
 			'printable',
 			$webRequest->getVal( 'printable' )
 		);
 
-		$htmlContentsBuilder->setOption(
+		$contentsBuilder->setOption(
 			'offset',
 			$webRequest->getVal( 'offset' )
 		);
 
-		$htmlContentsBuilder->setOption(
+		$contentsBuilder->setOption(
 			'including',
 			$this->including()
 		);
 
-		$htmlContentsBuilder->setOption(
+		$contentsBuilder->setOption(
 			'showInverse',
 			$settings->get( 'smwgBrowseShowInverse' )
 		);
 
-		$htmlContentsBuilder->setOption(
+		$contentsBuilder->setOption(
 			'showAll',
 			$settings->get( 'smwgBrowseShowAll' )
 		);
 
-		$htmlContentsBuilder->setOption(
+		$contentsBuilder->setOption(
 			'byApi',
 			$settings->get( 'smwgBrowseByApi' )
 		);
 
-		return $htmlContentsBuilder;
+		return $contentsBuilder;
 	}
 
 	private function addExternalHelpLinks() {
