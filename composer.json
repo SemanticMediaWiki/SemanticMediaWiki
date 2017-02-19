@@ -49,7 +49,7 @@
 		"onoi/event-dispatcher": "~1.0",
 		"onoi/blob-store": "~1.2",
 		"onoi/http-request": "~1.1",
-		"onoi/callback-container": "~1.0",
+		"onoi/callback-container": "~2.0",
 		"onoi/tesa": "~0.1",
 		"onoi/shared-resources": "~0.3"
 	},

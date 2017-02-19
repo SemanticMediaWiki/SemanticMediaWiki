@@ -2,11 +2,9 @@
 
 namespace SMW;
 
-use LBFactory;
-use MediaWiki\MediaWikiServices;
 use Onoi\BlobStore\BlobStore;
 use Onoi\CallbackContainer\CallbackContainer;
-use Onoi\CallbackContainer\CallbackLoader;
+use Onoi\CallbackContainer\ContainerBuilder;
 use SMW\Factbox\FactboxFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MediaWikiNsContentReader;
@@ -17,8 +15,6 @@ use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\JobQueueLookup;
 use SMW\Query\QuerySourceFactory;
-use MediaWiki\Logger\LoggerFactory;
-use Psr\Log\NullLogger;
 use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Utils\BufferedStatsdCollector;
@@ -39,25 +35,23 @@ class SharedCallbackContainer implements CallbackContainer {
 	 *
 	 * @since 2.3
 	 */
-	public function register( CallbackLoader $callbackLoader ) {
-		$this->registerCallbackHandlers( $callbackLoader );
-		$this->registerCallbackHandlersByMediaWikiServcies( $callbackLoader );
-		$this->registerCallbackHandlersByFactory( $callbackLoader );
-		$this->registerCallbackHandlersByConstructedInstance( $callbackLoader );
+	public function register( ContainerBuilder $containerBuilder ) {
+		$this->registerCallbackHandlers( $containerBuilder );
+		$this->registerCallbackHandlersByFactory( $containerBuilder );
+		$this->registerCallbackHandlersByConstructedInstance( $containerBuilder );
 	}
 
-	private function registerCallbackHandlers( $callbackLoader ) {
+	private function registerCallbackHandlers( $containerBuilder ) {
 
-		$callbackLoader->registerExpectedReturnType( 'Settings', '\SMW\Settings' );
-
-		$callbackLoader->registerCallback( 'Settings', function() use ( $callbackLoader )  {
+		$containerBuilder->registerCallback( 'Settings', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'Settings', '\SMW\Settings' );
 			return Settings::newFromGlobals();
 		} );
 
-		$callbackLoader->registerCallback( 'Store', function( $storeClass = null ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'Store', '\SMW\Store' );
+		$containerBuilder->registerCallback( 'Store', function( $containerBuilder, $storeClass = null ) {
+			$containerBuilder->registerExpectedReturnType( 'Store', '\SMW\Store' );
 
-			$settings = $callbackLoader->singleton( 'Settings' );
+			$settings = $containerBuilder->singleton( 'Settings' );
 			$storeClass = $storeClass !== null ? $storeClass : $settings->get( 'smwgDefaultStore' );
 
 			$store = StoreFactory::getStore( $storeClass );
@@ -71,205 +65,160 @@ class SharedCallbackContainer implements CallbackContainer {
 			return $store;
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'Cache', '\Onoi\Cache\Cache' );
-
-		$callbackLoader->registerCallback( 'Cache', function( $cacheType = null ) use ( $callbackLoader ) {
-			return $callbackLoader->load( 'CacheFactory' )->newMediaWikiCompositeCache( $cacheType );
+		$containerBuilder->registerCallback( 'Cache', function( $containerBuilder, $cacheType = null ) {
+			$containerBuilder->registerExpectedReturnType( 'Cache', '\Onoi\Cache\Cache' );
+			return $containerBuilder->create( 'CacheFactory' )->newMediaWikiCompositeCache( $cacheType );
 		} );
 
-		$callbackLoader->registerCallback( 'NamespaceExaminer', function() use ( $callbackLoader ) {
-			return NamespaceExaminer::newFromArray( $callbackLoader->singleton( 'Settings' )->get( 'smwgNamespacesWithSemanticLinks' ) );
+		$containerBuilder->registerCallback( 'NamespaceExaminer', function() use ( $containerBuilder ) {
+			return NamespaceExaminer::newFromArray( $containerBuilder->singleton( 'Settings' )->get( 'smwgNamespacesWithSemanticLinks' ) );
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'ParserData', '\SMW\ParserData' );
-
-		$callbackLoader->registerCallback( 'ParserData', function( \Title $title, \ParserOutput $parserOutput ) {
+		$containerBuilder->registerCallback( 'ParserData', function( $containerBuilder, \Title $title, \ParserOutput $parserOutput ) {
+			$containerBuilder->registerExpectedReturnType( 'ParserData', '\SMW\ParserData' );
 			return new ParserData( $title, $parserOutput );
 		} );
 
-		$callbackLoader->registerCallback( 'LinksProcessor', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'LinksProcessor', '\SMW\Parser\LinksProcessor' );
+		$containerBuilder->registerCallback( 'LinksProcessor', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'LinksProcessor', '\SMW\Parser\LinksProcessor' );
 			return new LinksProcessor();
 		} );
 
-		$callbackLoader->registerCallback( 'MessageFormatter', function( \Language $language ) {
+		$containerBuilder->registerCallback( 'MessageFormatter', function( $containerBuilder, \Language $language ) {
+			$containerBuilder->registerExpectedReturnType( 'MessageFormatter', '\SMW\MessageFormatter' );
 			return new MessageFormatter( $language );
 		} );
 
-		$callbackLoader->registerCallback( 'MediaWikiNsContentReader', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'MediaWikiNsContentReader', '\SMW\MediaWiki\MediaWikiNsContentReader' );
+		$containerBuilder->registerCallback( 'MediaWikiNsContentReader', function() use ( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'MediaWikiNsContentReader', '\SMW\MediaWiki\MediaWikiNsContentReader' );
 			return new MediaWikiNsContentReader();
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'PageCreator', '\SMW\MediaWiki\PageCreator' );
-
-		$callbackLoader->registerCallback( 'PageCreator', function() {
+		$containerBuilder->registerCallback( 'PageCreator', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'PageCreator', '\SMW\MediaWiki\PageCreator' );
 			return new PageCreator();
 		} );
 
-		$callbackLoader->registerCallback( 'PageUpdater', function( Database $connection = null ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
+		$containerBuilder->registerCallback( 'PageUpdater', function( $containerBuilder, Database $connection = null ) {
+			$containerBuilder->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
 			return new PageUpdater( $connection );
 		} );
 
-		$callbackLoader->registerCallback( 'JobQueueLookup', function( Database $connection ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'JobQueueLookup', '\SMW\MediaWiki\JobQueueLookup' );
+		$containerBuilder->registerCallback( 'JobQueueLookup', function( $containerBuilder, Database $connection ) {
+			$containerBuilder->registerExpectedReturnType( 'JobQueueLookup', '\SMW\MediaWiki\JobQueueLookup' );
 			return new JobQueueLookup( $connection );
 		} );
 
-		$callbackLoader->registerCallback( 'ManualEntryLogger', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'ManualEntryLogger', '\SMW\MediaWiki\ManualEntryLogger' );
+		$containerBuilder->registerCallback( 'ManualEntryLogger', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'ManualEntryLogger', '\SMW\MediaWiki\ManualEntryLogger' );
 			return new ManualEntryLogger();
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'TitleCreator', '\SMW\MediaWiki\TitleCreator' );
-
-		$callbackLoader->registerCallback( 'TitleCreator', function() {
+		$containerBuilder->registerCallback( 'TitleCreator', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'TitleCreator', '\SMW\MediaWiki\TitleCreator' );
 			return new TitleCreator();
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'ContentParser', '\SMW\ContentParser' );
-
-		$callbackLoader->registerCallback( 'ContentParser', function( \Title $title ) {
+		$containerBuilder->registerCallback( 'ContentParser', function( $containerBuilder, \Title $title ) {
+			$containerBuilder->registerExpectedReturnType( 'ContentParser', '\SMW\ContentParser' );
 			return new ContentParser( $title );
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\DeferredCallableUpdate' );
-
-		$callbackLoader->registerCallback( 'DeferredCallableUpdate', function( \Closure $callback, Database $connection = null ) {
+		$containerBuilder->registerCallback( 'DeferredCallableUpdate', function( $containerBuilder, \Closure $callback, Database $connection = null ) {
+			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\DeferredCallableUpdate' );
 			return new DeferredCallableUpdate( $callback, $connection );
 		} );
 
 		/**
 		 * @var InMemoryPoolCache
 		 */
-		$callbackLoader->registerCallback( 'InMemoryPoolCache', function() use( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'InMemoryPoolCache', '\SMW\InMemoryPoolCache' );
+		$containerBuilder->registerCallback( 'InMemoryPoolCache', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'InMemoryPoolCache', '\SMW\InMemoryPoolCache' );
 			return InMemoryPoolCache::getInstance();
 		} );
 
 		/**
 		 * @var PropertyAnnotatorFactory
 		 */
-		$callbackLoader->registerCallback( 'PropertyAnnotatorFactory', function() use( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'PropertyAnnotatorFactory', '\SMW\PropertyAnnotatorFactory' );
+		$containerBuilder->registerCallback( 'PropertyAnnotatorFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'PropertyAnnotatorFactory', '\SMW\PropertyAnnotatorFactory' );
 			return new PropertyAnnotatorFactory();
 		} );
 	}
 
-	private function registerCallbackHandlersByMediaWikiServcies( $callbackLoader ) {
-
-		$callbackLoader->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
-
-		$callbackLoader->registerCallback( 'WikiPage', function( \Title $title ) {
-			return \WikiPage::factory( $title );
-		} );
-
-		$callbackLoader->registerExpectedReturnType( 'DBLoadBalancer', '\LoadBalancer' );
-
-		$callbackLoader->registerCallback( 'DBLoadBalancer', function() {
-			if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getDBLoadBalancer' ) ) { // > MW 1.27
-				return MediaWikiServices::getInstance()->getDBLoadBalancer();
-			}
-
-			return LBFactory::singleton()->getMainLB();
-		} );
-
-		$callbackLoader->registerCallback( 'DefaultSearchEngineTypeForDB', function( \IDatabase $db ) use ( $callbackLoader ) {
-			if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( 'SearchEngineFactory', 'getSearchEngineClass' ) ) { // MW > 1.27
-				return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $db );
-			}
-
-			return $db->getSearchEngine();
-		} );
-
-		$callbackLoader->registerCallback( 'MediaWikiLogger', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'MediaWikiLogger', '\Psr\Log\LoggerInterface' );
-			if ( class_exists( '\MediaWiki\Logger\LoggerFactory' ) ) {
-				return LoggerFactory::getInstance( 'smw' );
-			}
-
-			return new NullLogger();
-		} );
-	}
-
-	private function registerCallbackHandlersByFactory( $callbackLoader ) {
+	private function registerCallbackHandlersByFactory( $containerBuilder ) {
 
 		/**
 		 * @var CacheFactory
 		 */
-		$callbackLoader->registerExpectedReturnType( 'CacheFactory', '\SMW\CacheFactory' );
-
-		$callbackLoader->registerCallback( 'CacheFactory', function( $mainCacheType = null ) {
+		$containerBuilder->registerCallback( 'CacheFactory', function( $containerBuilder, $mainCacheType = null ) {
+			$containerBuilder->registerExpectedReturnType( 'CacheFactory', '\SMW\CacheFactory' );
 			return new CacheFactory( $mainCacheType );
 		} );
 
 		/**
 		 * @var IteratorFactory
 		 */
-		$callbackLoader->registerExpectedReturnType( 'IteratorFactory', '\SMW\IteratorFactory' );
-
-		$callbackLoader->registerCallback( 'IteratorFactory', function() {
+		$containerBuilder->registerCallback( 'IteratorFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'IteratorFactory', '\SMW\IteratorFactory' );
 			return new IteratorFactory();
 		} );
 
 		/**
 		 * @var JobFactory
 		 */
-		$callbackLoader->registerExpectedReturnType( 'JobFactory', '\SMW\MediaWiki\Jobs\JobFactory' );
-
-		$callbackLoader->registerCallback( 'JobFactory', function() {
+		$containerBuilder->registerCallback( 'JobFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'JobFactory', '\SMW\MediaWiki\Jobs\JobFactory' );
 			return new JobFactory();
 		} );
 
 		/**
 		 * @var FactboxFactory
 		 */
-		$callbackLoader->registerExpectedReturnType( 'FactboxFactory', '\SMW\Factbox\FactboxFactory' );
-
-		$callbackLoader->registerCallback( 'FactboxFactory', function() {
+		$containerBuilder->registerCallback( 'FactboxFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'FactboxFactory', '\SMW\Factbox\FactboxFactory' );
 			return new FactboxFactory();
 		} );
 
 		/**
 		 * @var QuerySourceFactory
 		 */
-		$callbackLoader->registerCallback( 'QuerySourceFactory', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'QuerySourceFactory', '\SMW\Query\QuerySourceFactory' );
+		$containerBuilder->registerCallback( 'QuerySourceFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'QuerySourceFactory', '\SMW\Query\QuerySourceFactory' );
 
 			return new QuerySourceFactory(
-				$callbackLoader->load( 'Store' ),
-				$callbackLoader->load( 'Settings' )->get( 'smwgQuerySources' ),
-				$callbackLoader->load( 'Settings' )->get( 'smwgSparqlQueryEndpoint' )
+				$containerBuilder->create( 'Store' ),
+				$containerBuilder->create( 'Settings' )->get( 'smwgQuerySources' ),
+				$containerBuilder->create( 'Settings' )->get( 'smwgSparqlQueryEndpoint' )
 			);
 		} );
 
 		/**
 		 * @var QueryFactory
 		 */
-		$callbackLoader->registerCallback( 'QueryFactory', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'QueryFactory', '\SMW\QueryFactory' );
+		$containerBuilder->registerCallback( 'QueryFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'QueryFactory', '\SMW\QueryFactory' );
 			return new QueryFactory();
 		} );
 
 		/**
 		 * @var DataItemFactory
 		 */
-		$callbackLoader->registerCallback( 'DataItemFactory', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'DataItemFactory', '\SMW\DataItemFactory' );
+		$containerBuilder->registerCallback( 'DataItemFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'DataItemFactory', '\SMW\DataItemFactory' );
 			return new DataItemFactory();
 		} );
 	}
 
-	private function registerCallbackHandlersByConstructedInstance( $callbackLoader ) {
+	private function registerCallbackHandlersByConstructedInstance( $containerBuilder ) {
 
 		/**
 		 * @var BlobStore
 		 */
-		$callbackLoader->registerCallback( 'BlobStore', function( $namespace, $cacheType = null, $ttl = 0 ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'BlobStore', '\Onoi\BlobStore\BlobStore' );
+		$containerBuilder->registerCallback( 'BlobStore', function( $containerBuilder, $namespace, $cacheType = null, $ttl = 0 ) {
+			$containerBuilder->registerExpectedReturnType( 'BlobStore', '\Onoi\BlobStore\BlobStore' );
 
-			$cacheFactory = $callbackLoader->load( 'CacheFactory' );
+			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
 
 			$blobStore = new BlobStore(
 				$namespace,
@@ -294,22 +243,22 @@ class SharedCallbackContainer implements CallbackContainer {
 		/**
 		 * @var CachedQueryResultPrefetcher
 		 */
-		$callbackLoader->registerCallback( 'CachedQueryResultPrefetcher', function( $cacheType = null ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'CachedQueryResultPrefetcher', '\SMW\Query\Result\CachedQueryResultPrefetcher' );
+		$containerBuilder->registerCallback( 'CachedQueryResultPrefetcher', function( $containerBuilder, $cacheType = null ) {
+			$containerBuilder->registerExpectedReturnType( 'CachedQueryResultPrefetcher', '\SMW\Query\Result\CachedQueryResultPrefetcher' );
 
-			$settings = $callbackLoader->load( 'Settings' );
+			$settings = $containerBuilder->singleton( 'Settings' );
 			$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;
 
 			$cachedQueryResultPrefetcher = new CachedQueryResultPrefetcher(
-				$callbackLoader->load( 'Store' ),
-				$callbackLoader->singleton( 'QueryFactory' ),
-				$callbackLoader->create(
+				$containerBuilder->create( 'Store' ),
+				$containerBuilder->singleton( 'QueryFactory' ),
+				$containerBuilder->create(
 					'BlobStore',
 					CachedQueryResultPrefetcher::CACHE_NAMESPACE,
 					$cacheType,
 					$settings->get( 'smwgQueryResultCacheLifetime' )
 				),
-				$callbackLoader->singleton(
+				$containerBuilder->singleton(
 					'BufferedStatsdCollector',
 					CachedQueryResultPrefetcher::STATSD_ID
 				)
@@ -320,7 +269,7 @@ class SharedCallbackContainer implements CallbackContainer {
 			);
 
 			$cachedQueryResultPrefetcher->setLogger(
-				$callbackLoader->singleton( 'MediaWikiLogger' )
+				$containerBuilder->singleton( 'MediaWikiLogger' )
 			);
 
 			$cachedQueryResultPrefetcher->setNonEmbeddedCacheLifetime(
@@ -333,12 +282,12 @@ class SharedCallbackContainer implements CallbackContainer {
 		/**
 		 * @var CachedPropertyValuesPrefetcher
 		 */
-		$callbackLoader->registerCallback( 'CachedPropertyValuesPrefetcher', function( $cacheType = null, $ttl = 604800 ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', '\SMW\CachedPropertyValuesPrefetcher' );
+		$containerBuilder->registerCallback( 'CachedPropertyValuesPrefetcher', function( $containerBuilder, $cacheType = null, $ttl = 604800 ) {
+			$containerBuilder->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', CachedPropertyValuesPrefetcher::class );
 
 			$cachedPropertyValuesPrefetcher = new CachedPropertyValuesPrefetcher(
-				$callbackLoader->load( 'Store' ),
-				$callbackLoader->load( 'BlobStore', CachedPropertyValuesPrefetcher::CACHE_NAMESPACE, $cacheType, $ttl )
+				$containerBuilder->create( 'Store' ),
+				$containerBuilder->create( 'BlobStore', CachedPropertyValuesPrefetcher::CACHE_NAMESPACE, $cacheType, $ttl )
 			);
 
 			return $cachedPropertyValuesPrefetcher;
@@ -347,30 +296,30 @@ class SharedCallbackContainer implements CallbackContainer {
 		/**
 		 * @var BufferedStatsdCollector
 		 */
-		$callbackLoader->registerCallback( 'BufferedStatsdCollector', function( $id ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'BufferedStatsdCollector', '\SMW\Utils\BufferedStatsdCollector' );
+		$containerBuilder->registerCallback( 'BufferedStatsdCollector', function( $containerBuilder, $id ) {
+			$containerBuilder->registerExpectedReturnType( 'BufferedStatsdCollector', '\SMW\Utils\BufferedStatsdCollector' );
 
 			// Explicitly use the DB to access a SqlBagOstuff instance
 			$cacheType = CACHE_DB;
 			$ttl = 0;
 
-			$transientStatsdCollector = new BufferedStatsdCollector(
-				$callbackLoader->create( 'BlobStore', BufferedStatsdCollector::CACHE_NAMESPACE, $cacheType, $ttl ),
+			$bufferedStatsdCollector = new BufferedStatsdCollector(
+				$containerBuilder->create( 'BlobStore', BufferedStatsdCollector::CACHE_NAMESPACE, $cacheType, $ttl ),
 				$id
 			);
 
-			return $transientStatsdCollector;
+			return $bufferedStatsdCollector;
 		} );
 
 		/**
 		 * @var PropertySpecificationLookup
 		 */
-		$callbackLoader->registerCallback( 'PropertySpecificationLookup', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
+		$containerBuilder->registerCallback( 'PropertySpecificationLookup', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
 
 			$propertySpecificationLookup = new PropertySpecificationLookup(
-				$callbackLoader->singleton( 'CachedPropertyValuesPrefetcher' ),
-				$callbackLoader->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertySpecificationLookup::POOLCACHE_ID )
+				$containerBuilder->singleton( 'CachedPropertyValuesPrefetcher' ),
+				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertySpecificationLookup::POOLCACHE_ID )
 			);
 
 			return $propertySpecificationLookup;
@@ -379,16 +328,16 @@ class SharedCallbackContainer implements CallbackContainer {
 		/**
 		 * @var EditProtectionValidator
 		 */
-		$callbackLoader->registerCallback( 'EditProtectionValidator', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'EditProtectionValidator', '\SMW\Protection\EditProtectionValidator' );
+		$containerBuilder->registerCallback( 'EditProtectionValidator', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'EditProtectionValidator', '\SMW\Protection\EditProtectionValidator' );
 
 			$editProtectionValidator = new EditProtectionValidator(
-				$callbackLoader->singleton( 'CachedPropertyValuesPrefetcher' ),
-				$callbackLoader->singleton( 'InMemoryPoolCache' )->getPoolCacheById( EditProtectionValidator::POOLCACHE_ID )
+				$containerBuilder->singleton( 'CachedPropertyValuesPrefetcher' ),
+				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( EditProtectionValidator::POOLCACHE_ID )
 			);
 
 			$editProtectionValidator->setEditProtectionRight(
-				$callbackLoader->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
 			);
 
 			return $editProtectionValidator;
@@ -397,8 +346,8 @@ class SharedCallbackContainer implements CallbackContainer {
 		/**
 		 * @var EditProtectionUpdater
 		 */
-		$callbackLoader->registerCallback( 'EditProtectionUpdater', function( \WikiPage $wikiPage, \User $user = null ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'EditProtectionUpdater', '\SMW\Protection\EditProtectionUpdater' );
+		$containerBuilder->registerCallback( 'EditProtectionUpdater', function( $containerBuilder, \WikiPage $wikiPage, \User $user = null ) {
+			$containerBuilder->registerExpectedReturnType( 'EditProtectionUpdater', '\SMW\Protection\EditProtectionUpdater' );
 
 			$editProtectionUpdater = new EditProtectionUpdater(
 				$wikiPage,
@@ -406,11 +355,11 @@ class SharedCallbackContainer implements CallbackContainer {
 			);
 
 			$editProtectionUpdater->setEditProtectionRight(
-				$callbackLoader->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
 			);
 
 			$editProtectionUpdater->setLogger(
-				$callbackLoader->singleton( 'MediaWikiLogger' )
+				$containerBuilder->singleton( 'MediaWikiLogger' )
 			);
 
 			return $editProtectionUpdater;
@@ -419,24 +368,24 @@ class SharedCallbackContainer implements CallbackContainer {
 		/**
 		 * @var PropertyHierarchyLookup
 		 */
-		$callbackLoader->registerCallback( 'PropertyHierarchyLookup', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'PropertyHierarchyLookup', '\SMW\PropertyHierarchyLookup' );
+		$containerBuilder->registerCallback( 'PropertyHierarchyLookup', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'PropertyHierarchyLookup', '\SMW\PropertyHierarchyLookup' );
 
 			$propertyHierarchyLookup = new PropertyHierarchyLookup(
-				$callbackLoader->load( 'Store' ),
-				$callbackLoader->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertyHierarchyLookup::POOLCACHE_ID )
+				$containerBuilder->create( 'Store' ),
+				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertyHierarchyLookup::POOLCACHE_ID )
 			);
 
 			$propertyHierarchyLookup->setLogger(
-				$callbackLoader->singleton( 'MediaWikiLogger' )
+				$containerBuilder->singleton( 'MediaWikiLogger' )
 			);
 
 			$propertyHierarchyLookup->setSubcategoryDepth(
-				$callbackLoader->load( 'Settings' )->get( 'smwgQSubcategoryDepth' )
+				$containerBuilder->create( 'Settings' )->get( 'smwgQSubcategoryDepth' )
 			);
 
 			$propertyHierarchyLookup->setSubpropertyDepth(
-				$callbackLoader->load( 'Settings' )->get( 'smwgQSubpropertyDepth' )
+				$containerBuilder->create( 'Settings' )->get( 'smwgQSubpropertyDepth' )
 			);
 
 			return $propertyHierarchyLookup;
@@ -445,13 +394,13 @@ class SharedCallbackContainer implements CallbackContainer {
 		/**
 		 * @var PropertyLabelFinder
 		 */
-		$callbackLoader->registerCallback( 'PropertyLabelFinder', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'PropertyLabelFinder', '\SMW\PropertyLabelFinder' );
+		$containerBuilder->registerCallback( 'PropertyLabelFinder', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'PropertyLabelFinder', '\SMW\PropertyLabelFinder' );
 
 			$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
 
 			$propertyLabelFinder = new PropertyLabelFinder(
-				$callbackLoader->load( 'Store' ),
+				$containerBuilder->create( 'Store' ),
 				$extraneousLanguage->getPropertyLabels(),
 				$extraneousLanguage->getCanonicalPropertyLabels()
 			);
@@ -462,10 +411,10 @@ class SharedCallbackContainer implements CallbackContainer {
 		/**
 		 * @var TempChangeOpStore
 		 */
-		$callbackLoader->registerCallback( 'TempChangeOpStore', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'TempChangeOpStore', '\SMW\SQLStore\ChangeOp\TempChangeOpStore' );
+		$containerBuilder->registerCallback( 'TempChangeOpStore', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'TempChangeOpStore', '\SMW\SQLStore\ChangeOp\TempChangeOpStore' );
 
-			$cacheFactory = $callbackLoader->load( 'CacheFactory' );
+			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
 			$cacheType = null;
 
 			$tempChangeOpStore = new TempChangeOpStore(
@@ -474,7 +423,7 @@ class SharedCallbackContainer implements CallbackContainer {
 			);
 
 			$tempChangeOpStore->setLogger(
-				$callbackLoader->singleton( 'MediaWikiLogger' )
+				$containerBuilder->singleton( 'MediaWikiLogger' )
 			);
 
 			return $tempChangeOpStore;

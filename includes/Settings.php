@@ -42,6 +42,7 @@ class Settings extends Options {
 			'smwgScriptPath' => isset( $GLOBALS['smwgScriptPath'] ) ? $GLOBALS['smwgScriptPath'] : '',
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
+			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
 			'smwgSemanticsEnabled' => $GLOBALS['smwgSemanticsEnabled'],
 			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],
