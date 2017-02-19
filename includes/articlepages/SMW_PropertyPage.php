@@ -113,7 +113,12 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 	protected function getTopIndicators() {
 
-		$propertyName = htmlspecialchars( $this->mTitle->getText() );
+		$dv = DataValueFactory::getInstance()->newDataValueByItem(
+			$this->mProperty
+		);
+
+		// Label that corresponds to the display and sort characteristics
+		$propertyName = $dv->getFormattedLabel( DataValueFormatter::VALUE );
 		$usageCountHtml = '';
 
 		$requestOptions = new RequestOptions();
