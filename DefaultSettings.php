@@ -26,6 +26,7 @@ return array(
 	##
 	'smwgIP' => dirname( __FILE__ ) . '/',
 	'smwgExtraneousLanguageFileDir' => __DIR__ . '/i18n/extra',
+	'smwgServicesFileDir' => __DIR__ . '/src/Services',
 	##
 
 	###

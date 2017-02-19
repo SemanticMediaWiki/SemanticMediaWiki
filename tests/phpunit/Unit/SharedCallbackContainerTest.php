@@ -30,15 +30,15 @@ class SharedCallbackContainerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRegister() {
 
-		$callbackLoader = $this->getMockBuilder( '\Onoi\CallbackContainer\CallbackLoader' )
+		$containerBuilder = $this->getMockBuilder( '\Onoi\CallbackContainer\ContainerBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callbackLoader->expects( $this->atLeastOnce() )
+		$containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'registerCallback' );
 
 		$instance = new SharedCallbackContainer();
-		$instance->register( $callbackLoader );
+		$instance->register( $containerBuilder );
 	}
 
 }
