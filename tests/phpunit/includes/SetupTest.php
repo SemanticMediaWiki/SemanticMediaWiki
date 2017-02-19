@@ -51,6 +51,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'smwgNamespacesWithSemanticLinks' => array(),
 			'smwgEnableUpdateJobs' => false,
 			'wgNamespacesWithSubpages' => array(),
+			'wgRestrictionLevels' => array(),
 			'wgExtensionAssetsPath'    => false,
 			'wgResourceModules' => array(),
 			'wgScriptPath'      => '/Foo',

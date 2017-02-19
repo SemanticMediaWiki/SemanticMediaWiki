@@ -125,8 +125,8 @@ class HookRegistry {
 			$applicationFactory->singleton( 'EditProtectionValidator' )
 		);
 
-		$permissionPthValidator->setEditProtectionRight(
-			$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+		$permissionPthValidator->setEditProtectionRights(
+			$applicationFactory->getSettings()->get( 'smwgEditProtectionRights' )
 		);
 
 		/**
@@ -260,8 +260,8 @@ class HookRegistry {
 				$editInfoProvider
 			);
 
-			$articleProtectComplete->setEditProtectionRight(
-				$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+			$articleProtectComplete->setEditProtectionRights(
+				$applicationFactory->getSettings()->get( 'smwgEditProtectionRights' )
 			);
 
 			$articleProtectComplete->setLogger(

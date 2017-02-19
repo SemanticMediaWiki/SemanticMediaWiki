@@ -1392,10 +1392,31 @@ return array(
 	# To enable this functionality either assign `smw-pageedit` or any other
 	# right to the variable to activate an edit protection.
 	#
+	# NOTICE: The program will NOT validate or check whether listed rights
+	# exists or not, it is the responsibility of the administrator to make sure
+	# that changes to rights and its members are done carefully and with the
+	# necessary precautions to avoid disruptions.
+	#
+	# @since 2.5
+	# @default false|array
+	##
+	'smwgEditProtectionRights' => false,
+	##
+
+	###
+	# Enforced protection right
+	#
+	# If the `Is edit protected` property is used to enforce a protection from
+	# within the content of a page (instead of using the protection menu) then
+	# the enabled protection (== TRUE value) will force a specific right that is
+	# maintained by this setting.
+	#
+	# The selected right should be listed in the `smwgEditProtectionRights`.
+	#
 	# @since 2.5
 	# @default false
 	##
-	'smwgEditProtectionRight' => false,
+	'smwgEditProtectionEnforcedRight' => false,
 	##
 
 	##

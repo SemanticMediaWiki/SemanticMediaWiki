@@ -71,7 +71,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->user
 		);
 
-		$instance->setEditProtectionRight( 'Foo' );
+		$instance->setEditProtectionRights( 'Foo' );
 		$instance->doUpdateFrom( $semanticData );
 
 		$this->assertFalse(
@@ -79,7 +79,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testDoUpdateFromWithNoRestrictionsAnActiveEditProtection() {
+	public function testDoUpdateFromWithNoRestrictionsOnAnActiveEditProtection() {
 
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
@@ -103,7 +103,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->user
 		);
 
-		$instance->setEditProtectionRight( 'Foo' );
+		$instance->setEditProtectionRights( 'Foo' );
 
 		$instance->setLogger(
 			$this->spyLogger
@@ -116,7 +116,50 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertContains(
-			'add protection on edit, move',
+			'add `Foo` protection on edit, move',
+			$this->spyLogger->getMessagesAsString()
+		);
+	}
+
+	public function testDoUpdateFromWithNoRestrictionsOnAnActiveEditProtectionWhileEnforcingSelectedRight() {
+
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
+
+		$this->wikiPage->expects( $this->once() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $subject->getTitle() ) );
+
+		$this->wikiPage->expects( $this->once() )
+			->method( 'doUpdateRestrictions' );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
+
+		$instance = new EditProtectionUpdater(
+			$this->wikiPage,
+			$this->user
+		);
+
+		$instance->setEditProtectionRights( array( 'Foo', 'Bar' ) );
+		$instance->setEditProtectionEnforcedRight( 'Bar' );
+
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->doUpdateFrom( $semanticData );
+
+		$this->assertFalse(
+			$instance->isRestrictedUpdate()
+		);
+
+		$this->assertContains(
+			'add `Bar` protection on edit, move',
 			$this->spyLogger->getMessagesAsString()
 		);
 	}
@@ -156,7 +199,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->user
 		);
 
-		$instance->setEditProtectionRight( 'Foo' );
+		$instance->setEditProtectionRights( 'Foo' );
 
 		$instance->setLogger(
 			$this->spyLogger
@@ -212,7 +255,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->user
 		);
 
-		$instance->setEditProtectionRight( 'Foo' );
+		$instance->setEditProtectionRights( 'Foo' );
 
 		$instance->setLogger(
 			$this->spyLogger
