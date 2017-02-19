@@ -107,7 +107,7 @@ class SpecialBrowse extends SpecialPage {
 		if ( !$this->subjectDV->isValid() ) {
 
 			foreach ( $this->subjectDV->getErrors() as $error ) {
-				$error = Message::decode( $error, Message::TEXT );
+				$error = Message::decode( $error, Message::TEXT, Message::USER_LANGUAGE );
 			}
 
 			$html = Html::rawElement(
@@ -115,7 +115,7 @@ class SpecialBrowse extends SpecialPage {
 				array(
 					'class' => 'smw-callout smw-callout-error'
 				),
-				Message::get( array( 'smw-browse-invalid-subject', $error ), Message::TEXT )
+				Message::get( array( 'smw-browse-invalid-subject', $error ), Message::TEXT, Message::USER_LANGUAGE )
 			);
 
 			if ( !$this->including() ) {
