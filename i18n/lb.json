@@ -140,6 +140,7 @@
 	"smw_browse_hide_incoming": "Eegeschafte verstoppen déi hei hi linken",
 	"smw_browse_no_outgoing": "Dës Säit huet keng Eegeschaften.",
 	"smw_browse_no_incoming": "Et linke keng Eegeschaften op dës Säit.",
+	"smw-browse-from-backend": "Informatioune ginn elo vum Backend ofgeruff.",
 	"smw_inverse_label_default": "$1 vu(n)",
 	"pageproperty": "An den Eegeschafte vun der Säit sichen",
 	"smw_pp_from": "Vun der Säit",
@@ -226,5 +227,5 @@
 	"smw-clipboard-copy-link": "Link an den Tëschespäicher kopéieren",
 	"smw-data-lookup": "Donnéeën ofruffen...",
 	"smw-no-data-available": "Keng Donnéeën disponibel.",
-	"smw-edit-protection-enabled": "Spär änneren (Semantic Mediawiki)"
+	"smw-edit-protection-enabled": "Gespaart fir z'änneren (Semantic Mediawiki)"
 }

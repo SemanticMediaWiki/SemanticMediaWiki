@@ -291,6 +291,7 @@
 	"smw-admin-supplementary-section-title": "Funciones suplementarias",
 	"smw-admin-supplementary-settings-title": "Opciones de configuración",
 	"smw-admin-supplementary-operational-statistics-title": "Estadísticas de funcionamiento",
+	"smw-property-label-similarity-threshold": "Umbral:",
 	"smw_adminlinks_datastructure": "Estructura de datos",
 	"smw_adminlinks_displayingdata": "Mostrando datos",
 	"smw_adminlinks_inlinequerieshelp": "Ayuda de consultas en línea",
@@ -430,5 +431,6 @@
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Copiar enlace en el portapapeles",
 	"smw-data-lookup": "Obteniendo datos...",
-	"smw-no-data-available": "No hay datos disponibles."
+	"smw-no-data-available": "No hay datos disponibles.",
+	"protect-level-smw-pageedit": "Permitir únicamente usuarios con el permiso de edición de páginas (Semantic MediaWiki)"
 }

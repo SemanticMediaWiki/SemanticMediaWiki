@@ -225,7 +225,7 @@
 	"smw_browse_no_incoming": "Nun hai propiedaes qu'enllacen a esta páxina.",
 	"smw-browse-invalid-subject": "La validación del asuntu devolvió l'error «$1».",
 	"smw-browse-api-subject-serialization-invalid": "L'asuntu tien un formatu de serialización inválidu.",
-	"smw-browse-js-disabled": "Albídrase que JavaScript ta desactiváu o nun ta disponible, y recomendamos usar un navegador que tenga encontu. Otres opciones pueden comentase na páxina de configuración [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi $smwgBrowseByApi].",
+	"smw-browse-js-disabled": "Albídrase que JavaScript ta desactiváu o nun ta disponible, y recomendamos usar un navegador que tenga encontu. Otres opciones discútense na páxina de configuración [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi $smwgBrowseByApi].",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Etiqueta de propiedá inversa",
 	"pageproperty": "Gueta de propiedá de paxina",

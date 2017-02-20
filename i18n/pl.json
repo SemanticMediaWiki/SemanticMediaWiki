@@ -83,6 +83,7 @@
 	"smw-paramdesc-searchlabel": "Treść linku do kolejnych wyników",
 	"smw-paramdesc-named_args": "Nazwa argumentu przekazana do szablonu",
 	"smw-paramdesc-export": "Opcje eksportu",
+	"smw-paramdesc-jsonsyntax": "Składnia JSON, która będzie używana",
 	"smw_iq_disabled": "Niestety, w tym wiki wyłączono możliwość tworzenia zapytań w artykułach.",
 	"smw_iq_moreresults": "&hellip; dalsze wyniki",
 	"smw_parseerror": "Podana wartość jest niezrozumiała.",
@@ -115,7 +116,7 @@
 	"smw_noqueryfeature": "Niektóre elementy zapytania nie są obsługiwane na tej wiki, pominięto część zapytania ($1).",
 	"smw_noconjunctions": "Koniunkcje w zapytaniach nie są obsługiwane na tej wiki, pominięto część zapytania ($1).",
 	"smw_nodisjunctions": "Alternatywy w zapytaniach nie są obsługiwane na tej wiki, pominięto część zapytania ($1).",
-	"smw_querytoolarge": "Następujące warunki zapytania nie mogły zostać uwzględnione ze względu na ograniczenia wiki w wielkości lub głębokości zapytania: $1.",
+	"smw_querytoolarge": "{{PLURAL:$2|Następujący warunek zapytania nie mógł zostać uwzględniony|Następujące warunki zapytania nie mogły zostać uwzględnione}} ze względu na ograniczenia wiki w wielkości lub głębokości zapytania: <code>$1</code>.",
 	"smw_notemplategiven": "Należy podać parametr „template”, aby to zapytanie zadziałało.",
 	"smw_type_header": "Atrybuty typu “$1”",
 	"smw_typearticlecount": "Pokazano $1 {{PLURAL:$1|atrybut używający|atrybuty używające|atrybutów używających}} tego typu.",
@@ -330,5 +331,6 @@
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Kopiuj link do schowka",
+	"smw-data-lookup": "Pobieranie danych...",
 	"smw-no-data-available": "Brak dostępnych danych."
 }
