@@ -56,6 +56,8 @@
         "_ASKSI": "Abfragegröße",
         "_ASKDE": "Abfragetiefe",
         "_ASKDU": "Abfragedauer",
+        "_ASKPA": "Abfrageparameter",
+        "_ASKSC": "Abfragequelle",
         "_MEDIA": "Medientyp",
         "_MIME": "MIME-Typ",
         "_ERRC": "Verarbeitungsfehler",
@@ -69,7 +71,6 @@
         "_PVUC": "Erlaubt Wert einmal",
         "_PEID": "Kennung zur externen URI",
         "_PEFU": "Formatierungsanweisung zur externen URI",
-        "_ASKSC": "Abfragequelle",
         "_EDIP": "Ist bearbeitungsgeschützt"
     },
     "propertyAliases": {
