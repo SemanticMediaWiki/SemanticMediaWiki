@@ -245,7 +245,7 @@
 	"smw_browse_no_incoming": "Ninguna propiedad vincula aquí.",
 	"smw-browse-invalid-subject": "La validación del tema devolvió el error \"$1\".",
 	"smw-browse-api-subject-serialization-invalid": "El tema tiene un formato de serialización no válido.",
-	"smw-browse-js-disabled": "Es probable que JavaScript esté desactivado o no esté disponible y recomendamos utilizar un navegador que sea compatible. Se pueden discutir otras opciones en la página de configuración [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi $smwgBrowseByApi].",
+	"smw-browse-js-disabled": "Es probable que JavaScript esté desactivado o no esté disponible y recomendamos utilizar un navegador que sea compatible. En la página de configuración [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi $smwgBrowseByApi] se discuten otras opciones.",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Etiqueta de propiedad inversa",
 	"pageproperty": "Búsqueda de propiedades de página",

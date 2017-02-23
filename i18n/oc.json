@@ -122,6 +122,7 @@
 	"smw_ask_format_as": "Formatar en :",
 	"smw_ask_defaultformat": "defaut",
 	"smw_ask_otheroptions": "Autras opcions",
+	"smw-ask-otheroptions-collapsed-info": "Utilizatz l'icòna \"plus\" per afichar totas las opcions disponiblas",
 	"smw_ask_show_embed": "Far veire lo còdi incrustat",
 	"smw_ask_hide_embed": "Amagar lo còdi incrustat",
 	"smw_ask_embed_instr": "Per incrustar aquesta requèsta dins una pagina wiki, utilizatz lo còdi çaijós.",

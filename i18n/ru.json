@@ -26,7 +26,8 @@
 			"Kareyac",
 			"Zpizza",
 			"Alex Great",
-			"Nemo bis"
+			"Nemo bis",
+			"Redredsonia"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -292,6 +293,7 @@
 	"smw-admin-supplementary-section-intro": "Некоторые из перечисленных функций в этом разделе могут быть ограничены и, следовательно, недоступны в этой Вики.",
 	"smw-admin-supplementary-settings-title": "Параметры конфигурации",
 	"smw-admin-supplementary-operational-statistics-title": "Оперативная статистика",
+	"smw-property-label-similarity-threshold": "Порог:",
 	"smw_adminlinks_datastructure": "Структура данных",
 	"smw_adminlinks_displayingdata": "Отображение данных",
 	"smw_adminlinks_inlinequerieshelp": "Справка по встроенным запросам",
