@@ -14,13 +14,13 @@ on how to install the latest version of Semantic MediaWiki (SMW), see the [insta
 	<tr>
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestones/SMW%203.0">SMW 3.0.x</a></th>
 		<td>Planned release</td>
-		<td>Q1 or Q2 2017</td>
+		<td>Q3 or Q4 2017</td>
 		<td></td>
 	</tr>
 	<tr>
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestones/SMW%202.5">SMW 2.5.x</a></th>
 		<td>Development version</td>
-		<td>Q4 2016</td>
+		<td>Q1 2017</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
@@ -317,7 +317,7 @@ work with different versions, especially more recent ones, though this is not gu
 
 ## Notes
 
-- <sup>[p.1]</sup> http://php.net/supported-versions.php
+- <sup>[p.1]</sup> https://php.net/supported-versions.php
 - <sup>[m.1]</sup> https://www.mediawiki.org/wiki/Version_lifecycle
 - <sup>[t.1]</sup> On an irregular test plan with [Virtuoso 7.2](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/97294290)
 - <sup>[t.2]</sup> On an irregular test plan with [4store 1.1.4](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/61200454)
