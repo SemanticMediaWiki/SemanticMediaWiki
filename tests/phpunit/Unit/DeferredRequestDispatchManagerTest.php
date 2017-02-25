@@ -18,23 +18,37 @@ use SMW\Tests\TestEnvironment;
 class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $spyLogger;
+	private $httpRequest;
+	private $jobFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$testEnvironment = new TestEnvironment();
 		$this->spyLogger = $testEnvironment->getUtilityFactory()->newSpyLogger();
+
+		$this->httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$job = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobBase' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->jobFactory->expects( $this->any() )
+			->method( 'newByType' )
+			->will( $this->returnValue( $job ) );
 	}
 
 	public function testCanConstruct() {
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\DeferredRequestDispatchManager',
-			new DeferredRequestDispatchManager( $httpRequest )
+			new DeferredRequestDispatchManager( $this->httpRequest, $this->jobFactory )
 		);
 	}
 
@@ -43,14 +57,14 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDispatchOnNullTitle( $method ) {
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->never() )
+		$this->httpRequest->expects( $this->never() )
 			->method( 'ping' );
 
-		$instance = new DeferredRequestDispatchManager( $httpRequest );
+		$instance = new DeferredRequestDispatchManager(
+			$this->httpRequest,
+			$this->jobFactory
+		);
+
 		$instance->reset();
 
 		$instance->isEnabledHttpDeferredRequest( true );
@@ -64,15 +78,15 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDispatchJobFor( $type, $deferredJobRequestState, $parameters = array() ) {
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->any() )
+		$this->httpRequest->expects( $this->any() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new DeferredRequestDispatchManager( $httpRequest );
+		$instance = new DeferredRequestDispatchManager(
+			$this->httpRequest,
+			$this->jobFactory
+		);
+
 		$instance->reset();
 
 		$instance->isEnabledHttpDeferredRequest( $deferredJobRequestState );
@@ -86,15 +100,15 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDispatchParserCachePurgeJob() {
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->once() )
+		$this->httpRequest->expects( $this->once() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new DeferredRequestDispatchManager( $httpRequest );
+		$instance = new DeferredRequestDispatchManager(
+			$this->httpRequest,
+			$this->jobFactory
+		);
+
 		$instance->reset();
 
 		$instance->isEnabledHttpDeferredRequest( true );
@@ -110,18 +124,76 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDispatchFulltextSearchTableUpdateJob() {
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->once() )
+		$this->httpRequest->expects( $this->once() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new DeferredRequestDispatchManager( $httpRequest );
+		$instance = new DeferredRequestDispatchManager(
+			$this->httpRequest,
+			$this->jobFactory
+		);
+
 		$instance->reset();
 
 		$instance->isEnabledHttpDeferredRequest( true );
+		$instance->isEnabledJobQueue( false );
+
+		$parameters = array();
+		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
+
+		$this->assertTrue(
+			$instance->dispatchFulltextSearchTableUpdateJobWith( $title, $parameters )
+		);
+	}
+
+	public function testEnabledHttpDeferredRequestOn_HTTP_DEFERRED_SYNC_JOB() {
+
+		$this->httpRequest->expects( $this->never() )
+			->method( 'ping' );
+
+		$job = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobBase' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$job->expects( $this->once() )
+			->method( 'run' );
+
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory->expects( $this->any() )
+			->method( 'newByType' )
+			->will( $this->returnValue( $job ) );
+
+		$instance = new DeferredRequestDispatchManager(
+			$this->httpRequest,
+			$jobFactory
+		);
+
+		$instance->reset();
+		$instance->isEnabledHttpDeferredRequest( SMW_HTTP_DEFERRED_SYNC_JOB );
+
+		$parameters = array();
+		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
+
+		$this->assertTrue(
+			$instance->dispatchFulltextSearchTableUpdateJobWith( $title, $parameters )
+		);
+	}
+
+	public function testEnabledHttpDeferredRequestOn_SMW_HTTP_DEFERRED_ASYNC() {
+
+		$this->httpRequest->expects( $this->once() )
+			->method( 'ping' );
+
+		$instance = new DeferredRequestDispatchManager(
+			$this->httpRequest,
+			$this->jobFactory
+		);
+
+		$instance->reset();
+		$instance->isEnabledHttpDeferredRequest( SMW_HTTP_DEFERRED_ASYNC );
 		$instance->isEnabledJobQueue( false );
 
 		$parameters = array();
@@ -137,15 +209,15 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPreliminaryCheckForType( $type, $parameters = array() ) {
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->any() )
+		$this->httpRequest->expects( $this->any() )
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new DeferredRequestDispatchManager( $httpRequest );
+		$instance = new DeferredRequestDispatchManager(
+			$this->httpRequest,
+			$this->jobFactory
+		);
+
 		$instance->reset();
 
 		$instance->isEnabledJobQueue( false );

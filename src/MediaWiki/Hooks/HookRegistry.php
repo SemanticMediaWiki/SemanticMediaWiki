@@ -103,7 +103,8 @@ class HookRegistry {
 		$httpRequestFactory = new HttpRequestFactory();
 
 		$deferredRequestDispatchManager = new DeferredRequestDispatchManager(
-			$httpRequestFactory->newSocketRequest()
+			$httpRequestFactory->newSocketRequest(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$deferredRequestDispatchManager->setLogger(
