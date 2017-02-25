@@ -26,7 +26,7 @@ If you are new to SMW development, have a look at the [Programmer's guide to SMW
 - [store.subobject](code-snippets/store.subobject.md)
 - [query.someproperty.of.type.number](code-snippets/query.someproperty.of.type.number.md)
 - [query.description](code-snippets/query.description.md)
-- [register.datatype](code-snippets/register.datatype.md)
+- [register.datatype](code-snippets/extension.register.datatype.md)
 - [semanticdata.access](code-snippets/semanticdata.access.md)
 
 ## See also

@@ -44,6 +44,11 @@ use SMWDIContainer as DIContainer;
 class ReferenceValue extends AbstractMultiValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_ref_rec';
+
+	/**
 	 * @var DIProperty[]|null
 	 */
 	private $properties = null;
@@ -52,7 +57,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
-		parent::__construct( '_ref_rec' );
+		parent::__construct( self::TYPE_ID );
 	}
 
 	/**

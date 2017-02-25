@@ -8,6 +8,7 @@ use SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMWDataItem as DataItem;
 use SMW\ExtraneousLanguage\ExtraneousLanguage;
+use SMW\DataValues\TypeList;
 
 /**
  * DataTypes registry class
@@ -128,7 +129,7 @@ class DataTypeRegistry {
 			$extraneousLanguage
 		);
 
-		self::$instance->initDatatypes();
+		self::$instance->initDatatypes( TypeList::getList() );
 
 		self::$instance->setOption(
 			'smwgDVFeatures',
@@ -432,111 +433,17 @@ class DataTypeRegistry {
 	 * associations. This method is called before most methods of this
 	 * factory.
 	 */
-	protected function initDatatypes() {
-		// Setup built-in datatypes.
-		// NOTE: all ids must start with underscores, where two underscores indicate
-		// truly internal (non user-acceptable types). All others should also get a
-		// translation in the language files, or they won't be available for users.
-		$this->typeClasses = array(
-			'_txt'  => 'SMWStringValue', // Text type
-			'_cod'  => 'SMWStringValue', // Code type
-			'_str'  => 'SMWStringValue', // DEPRECATED Will vanish after SMW 1.9; use '_txt'
-			'_ema'  => 'SMWURIValue', // Email type
-			'_uri'  => 'SMWURIValue', // URL/URI type
-			'_anu'  => 'SMWURIValue', // Annotation URI type
-			'_tel'  => 'SMW\DataValues\TelephoneUriValue', // Phone number (URI) type
-			'_wpg'  => 'SMWWikiPageValue', // Page type
-			'_wpp'  => 'SMWWikiPageValue', // Property page type TODO: make available to user space
-			'_wpc'  => 'SMWWikiPageValue', // Category page type TODO: make available to user space
-			'_wpf'  => 'SMWWikiPageValue', // Form page type for Semantic Forms
-			'_num'  => 'SMWNumberValue', // Number type
-			'_tem'  => 'SMW\DataValues\TemperatureValue', // Temperature type
-			'_dat'  => 'SMWTimeValue', // Time type
-			'_boo'  => 'SMW\DataValues\BooleanValue', // Boolean type
-			'_rec'  => 'SMWRecordValue', // Value list type (replacing former nary properties)
-			'_mlt_rec'  => 'SMW\DataValues\MonolingualTextValue',
-			'_ref_rec'  => 'SMW\DataValues\ReferenceValue',
-			'_qty'  => 'SMWQuantityValue', // Type for numbers with units of measurement
-			// Special types are not avaialble directly for users (and have no local language name):
-			'__typ' => 'SMWTypesValue', // Special type page type
-			'__pls' => 'SMWPropertyListValue', // Special type list for decalring _rec properties
-			'__con' => 'SMWConceptValue', // Special concept page type
-			'__sps' => 'SMWStringValue', // Special string type
-			'__spu' => 'SMWURIValue', // Special uri type
-			'__sob' => 'SMWWikiPageValue', // Special subobject type
-			'__sup' => 'SMWWikiPageValue', // Special subproperty type
-			'__suc' => 'SMWWikiPageValue', // Special subcategory type
-			'__spf' => 'SMWWikiPageValue', // Special Form page type for Semantic Forms
-			'__sin' => 'SMWWikiPageValue', // Special instance of type
-			'__red' => 'SMWWikiPageValue', // Special redirect type
-			'__err' => 'SMWErrorValue', // Special error type
-			'__errt' => 'SMW\DataValues\ErrorMsgTextValue', // Special error type
-			'__imp' => 'SMW\DataValues\ImportValue', // Special import vocabulary type
-			'__pro' => 'SMWPropertyValue', // Property type (possibly predefined, no always based on a page)
-			'__key' => 'SMWStringValue', // Sort key of a page
-			'__lcode' => 'SMW\DataValues\LanguageCodeValue',
-			'__pval' => 'SMW\DataValues\AllowsListValue',
-			'__pvap' => 'SMW\DataValues\AllowsPatternValue',
-			'__pvuc' => 'SMW\DataValues\UniquenessConstraintValue',
-			'_eid' => 'SMW\DataValues\ExternalIdentifierValue',
-			'__pefu' => 'SMW\DataValues\ExternalFormatterUriValue',
-			'__pchn' => 'SMW\DataValues\PropertyChainValue',
-		);
+	protected function initDatatypes( array $typeList ) {
 
-		$this->typeDataItemIds = array(
-			'_txt'  => DataItem::TYPE_BLOB, // Text type
-			'_cod'  => DataItem::TYPE_BLOB, // Code type
-			'_str'  => DataItem::TYPE_BLOB, // DEPRECATED Will vanish after SMW 1.9; use '_txt'
-			'_ema'  => DataItem::TYPE_URI, // Email type
-			'_uri'  => DataItem::TYPE_URI, // URL/URI type
-			'_anu'  => DataItem::TYPE_URI, // Annotation URI type
-			'_tel'  => DataItem::TYPE_URI, // Phone number (URI) type
-			'_wpg'  => DataItem::TYPE_WIKIPAGE, // Page type
-			'_wpp'  => DataItem::TYPE_WIKIPAGE, // Property page type TODO: make available to user space
-			'_wpc'  => DataItem::TYPE_WIKIPAGE, // Category page type TODO: make available to user space
-			'_wpf'  => DataItem::TYPE_WIKIPAGE, // Form page type for Semantic Forms
-			'_num'  => DataItem::TYPE_NUMBER, // Number type
-			'_tem'  => DataItem::TYPE_NUMBER, // Temperature type
-			'_dat'  => DataItem::TYPE_TIME, // Time type
-			'_boo'  => DataItem::TYPE_BOOLEAN, // Boolean type
-			'_rec'  => DataItem::TYPE_WIKIPAGE, // Value list type (replacing former nary properties)
-			'_mlt_rec' => DataItem::TYPE_WIKIPAGE, // Monolingual text container
-			'_ref_rec' => DataItem::TYPE_WIKIPAGE, // Reference container
-			'_geo'  => DataItem::TYPE_GEO, // Geographical coordinates
-			'_gpo'  => DataItem::TYPE_BLOB, // Geographical polygon
-			'_qty'  => DataItem::TYPE_NUMBER, // Type for numbers with units of measurement
-			'_eid' => DataItem::TYPE_BLOB, // External ID
-			// Special types are not available directly for users (and have no local language name):
-			'__typ' => DataItem::TYPE_URI, // Special type page type
-			'__pls' => DataItem::TYPE_BLOB, // Special type list for decalring _rec properties
-			'__con' => DataItem::TYPE_CONCEPT, // Special concept page type
-			'__sps' => DataItem::TYPE_BLOB, // Special string type
-			'__pval' => DataItem::TYPE_BLOB, // Special string type
-			'__spu' => DataItem::TYPE_URI, // Special uri type
-			'__sob' => DataItem::TYPE_WIKIPAGE, // Special subobject type
-			'__sup' => DataItem::TYPE_WIKIPAGE, // Special subproperty type
-			'__suc' => DataItem::TYPE_WIKIPAGE, // Special subcategory type
-			'__spf' => DataItem::TYPE_WIKIPAGE, // Special Form page type for Semantic Forms
-			'__sin' => DataItem::TYPE_WIKIPAGE, // Special instance of type
-			'__red' => DataItem::TYPE_WIKIPAGE, // Special redirect type
-			'__err' => DataItem::TYPE_ERROR, // Special error type
-			'__errt' => DataItem::TYPE_BLOB, // error text
-			'__imp' => DataItem::TYPE_BLOB, // Special import vocabulary type
-			'__pro' => DataItem::TYPE_PROPERTY, // Property type (possibly predefined, no always based on a page)
-			'__key' => DataItem::TYPE_BLOB, // Sort key of a page
-			'__lcode' => DataItem::TYPE_BLOB, // Language code
-			'__pvap' => DataItem::TYPE_BLOB, // Allows pattern
-			'__pvuc' => DataItem::TYPE_BOOLEAN, // Uniqueness constraint
-			'__pefu' => DataItem::TYPE_URI, // External formatter uri
-			'__pchn' => DataItem::TYPE_BLOB, // Property chain
-		);
+		foreach ( $typeList as $id => $definition ) {
 
-		$this->subDataTypes = array(
-			'__sob' => true,
-			'_rec'  => true,
-			'_mlt_rec' => true,
-			'_ref_rec' => true
-		);
+			if ( isset( $definition[0] ) ) {
+				$this->typeClasses[$id] = $definition[0];
+			}
+
+			$this->typeDataItemIds[$id] = $definition[1];
+			$this->subDataTypes[$id] = $definition[2];
+		}
 
 		// Deprecated since 1.9
 		\Hooks::run( 'smwInitDatatypes' );

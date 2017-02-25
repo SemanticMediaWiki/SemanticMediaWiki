@@ -17,6 +17,11 @@ use SMW\DIProperty;
 class ExternalIdentifierValue extends StringValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_eid';
+
+	/**
 	 * @var string|null
 	 */
 	private $externalFormattedUri = null;
@@ -25,7 +30,7 @@ class ExternalIdentifierValue extends StringValue {
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
-		parent::__construct( '_eid' );
+		parent::__construct( self::TYPE_ID );
 	}
 
 	/**

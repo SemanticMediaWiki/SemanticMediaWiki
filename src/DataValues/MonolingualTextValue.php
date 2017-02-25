@@ -38,6 +38,11 @@ use SMWDIBlob as DIBlob;
 class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_mlt_rec';
+
+	/**
 	 * @var DIProperty[]|null
 	 */
 	private static $properties = null;
@@ -51,7 +56,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
-		parent::__construct( '_mlt_rec' );
+		parent::__construct( self::TYPE_ID );
 	}
 
 	/**

@@ -1,5 +1,7 @@
 ## Register new datatype
 
+This example shows how to register a new dataType/dataValue in Semantic MediaWiki.
+
 ```php
 \Hooks::register( 'SMW::DataType::initTypes', function ( $dataTypeRegistry ) {
 

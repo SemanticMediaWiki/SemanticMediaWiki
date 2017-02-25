@@ -19,6 +19,11 @@ use SMWDIBlob as DIBlob;
 class ImportValue extends DataValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '__imp';
+
+	/**
 	 * @var ImportValueParser|null
 	 */
 	private $importValueParser = null;
