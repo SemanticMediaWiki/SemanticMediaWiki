@@ -10,6 +10,8 @@ use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
+use SMW\DataValues\ImportValue;
+use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\Settings;
 
 /**
@@ -84,6 +86,12 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator',
 			array(),
 			CompoundConstraintValueValidator::class
+		);
+
+		$provider[] = array(
+			DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID,
+			array(),
+			ImportValueParser::class
 		);
 
 		return $provider;

@@ -88,7 +88,7 @@
 				"to-contain": [
 					"<owl:DatatypeProperty rdf:about=\"http://www.w3.org/2004/02/skos/core#altLabel\">",
 					"<rdfs:label>Has alternative label</rdfs:label>",
-					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">skos altLabel http://www.w3.org/2004/02/skos/core#</swivt:specialImportedFrom>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">skos:altLabel|http://www.w3.org/2004/02/skos/core#</swivt:specialImportedFrom>",
 					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_mlt_rec\"/>"
 				]
 			}

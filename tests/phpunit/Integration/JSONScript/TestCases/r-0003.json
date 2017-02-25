@@ -90,7 +90,7 @@
 					"<foaf:name rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Jane Doe</foaf:name>",
 					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/knows\">",
 					"<rdfs:label>Foaf:knows</rdfs:label>",
-					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf knows http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf:knows|http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
 					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_wpg\"/>",
 					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/homepage\" />",
 					"<owl:DatatypeProperty rdf:about=\"http://xmlns.com/foaf/0.1/name\" />",
@@ -115,7 +115,7 @@
 				"to-contain": [
 					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/knows\">",
 					"<rdfs:label>Foaf:knows</rdfs:label>",
-					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf knows http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf:knows|http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
 					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_wpg\"/>",
 					"<owl:ObjectProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#type\" />"
 				]
@@ -137,7 +137,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/homepage\">",
-					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf homepage http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf:homepage|http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
 					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_uri\"/>",
 					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#specialImportedFrom\" />"
 				]
@@ -159,7 +159,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/mbox\">",
-					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf mbox http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf:mbox|http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
 					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_ema\"/>",
 					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#specialImportedFrom\" />"
 				]
@@ -182,7 +182,7 @@
 				"to-contain": [
 					"<owl:Class rdf:about=\"http://xmlns.com/foaf/0.1/Organization\">",
 					"<rdfs:label>Organization</rdfs:label>",
-					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf Organization http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf:Organization|http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
 					"<rdfs:subClassOf rdf:resource=\"http://example.org/id/Category-3ASocial_entity\"/>",
 					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#specialImportedFrom\" />",
 					"<owl:Class rdf:about=\"http://example.org/id/Category-3ASocial_entity\" />"
