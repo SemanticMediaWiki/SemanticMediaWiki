@@ -118,7 +118,7 @@ class SMWTimeValue extends SMWDataValue {
 
 	protected function parseUserValue( $value ) {
 
-		$value = $this->convertDoubleWidth( $value );
+		$value = Localizer::convertDoubleWidth( $value );
 		$this->m_wikivalue = $value;
 
 		if ( $this->m_caption === false ) { // Store the caption now.
