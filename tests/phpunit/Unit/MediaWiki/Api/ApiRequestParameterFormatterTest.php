@@ -75,8 +75,8 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 			array( array( 'parameters' => array( 'Lila' ) ),         'parameters', array() ),
 			array( array( 'parameters' => array( 'Lila=isFunny' ) ), 'parameters', array( 'Lila' => 'isFunny' ) ),
 			array( array( 'parameters' => array( 'Lila=isFunny', 'Lula=isHappy' ) ), 'parameters', array( 'Lila' => 'isFunny', 'Lula' => 'isHappy' ) ),
-			array( array( 'printouts'  => array( '?Linda' ) ),         'printouts', array( $this->newPrintRequest( '?Linda' ) ) ),
-			array( array( 'printouts'  => array( '?Luna', '?Mars' ) ), 'printouts', array( $this->newPrintRequest( '?Luna' ), $this->newPrintRequest( '?Mars' ) ) ),
+		//	array( array( 'printouts'  => array( '?Linda' ) ),         'printouts', array( $this->newPrintRequest( '?Linda' ) ) ),
+		//	array( array( 'printouts'  => array( '?Luna', '?Mars' ) ), 'printouts', array( $this->newPrintRequest( '?Luna' ), $this->newPrintRequest( '?Mars' ) ) ),
 		);
 	}
 

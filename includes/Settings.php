@@ -101,6 +101,7 @@ class Settings extends Options {
 			'smwgQConceptFeatures' => $GLOBALS['smwgQConceptFeatures'],
 			'smwgQConceptCacheLifetime' => $GLOBALS['smwgQConceptCacheLifetime'],
 			'smwgQuerySources' => $GLOBALS['smwgQuerySources'],
+			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 			'smwgResultFormats' => $GLOBALS['smwgResultFormats'],
 			'smwgResultAliases' => $GLOBALS['smwgResultAliases'],
 			'smwgPDefaultType' => $GLOBALS['smwgPDefaultType'],
@@ -157,13 +158,13 @@ class Settings extends Options {
 			'smwgFulltextSearchMinTokenSize' => $GLOBALS['smwgFulltextSearchMinTokenSize'],
 			'smwgFulltextLanguageDetection' => $GLOBALS['smwgFulltextLanguageDetection'],
 			'smwgFulltextSearchIndexableDataTypes' => $GLOBALS['smwgFulltextSearchIndexableDataTypes'],
-			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 			'smwgQueryResultCacheType' => $GLOBALS['smwgQueryResultCacheType'],
 			'smwgQueryResultCacheLifetime' => $GLOBALS['smwgQueryResultCacheLifetime'],
 			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
 			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
 			'smwgEditProtectionRight' => $GLOBALS['smwgEditProtectionRight'],
-			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty']
+			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty'],
+			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
 		);
 
 		\Hooks::run( 'SMW::Config::BeforeCompletion', array( &$configuration ) );

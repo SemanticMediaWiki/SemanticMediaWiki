@@ -7,6 +7,7 @@ use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIError;
 use SMWErrorValue as ErrorValue;
+use SMWPropertyValue as PropertyValue;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or
@@ -37,12 +38,18 @@ class DataValueFactory {
 	private $dataTypeRegistry = null;
 
 	/**
+	 * @var DataValueServiceFactory
+	 */
+	private $dataValueServiceFactory;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param DataTypeRegistry|null $dataTypeRegistry
 	 */
 	protected function __construct( DataTypeRegistry $dataTypeRegistry = null ) {
 		$this->dataTypeRegistry = $dataTypeRegistry;
+		$this->dataValueServiceFactory = ApplicationFactory::getInstance()->create( 'DataValueServiceFactory' );
 	}
 
 	/**
@@ -95,11 +102,17 @@ class DataValueFactory {
 			);
 		}
 
-		$class  = $dataTypeRegistry->getDataTypeClassById( $typeId );
-		$dataValue = new $class( $typeId );
+		$dataValue = $this->dataValueServiceFactory->newDataValueByType(
+			$typeId,
+			$dataTypeRegistry->getDataTypeClassById( $typeId )
+		);
 
 		$dataValue->setExtraneousFunctions(
 			$dataTypeRegistry->getExtraneousFunctions()
+		);
+
+		$dataValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
 		);
 
 		$dataValue->setOptions(
@@ -271,7 +284,7 @@ class DataValueFactory {
 	 * @return DataValue
 	 */
 	public function newPropertyValueByLabel( $propertyLabel, $caption = false, DIWikiPage $contextPage = null ) {
-		return $this->newDataValueByType( '__pro', $propertyLabel, $caption, null, $contextPage );
+		return $this->newDataValueByType( PropertyValue::TYPE_ID, $propertyLabel, $caption, null, $contextPage );
 	}
 
 	/**

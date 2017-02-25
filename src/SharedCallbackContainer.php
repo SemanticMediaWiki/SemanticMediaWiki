@@ -21,6 +21,7 @@ use SMW\Utils\BufferedStatsdCollector;
 use SMW\Parser\LinksProcessor;
 use SMW\Protection\EditProtectionValidator;
 use SMW\Protection\EditProtectionUpdater;
+use SMW\Services\DataValueServiceFactory;
 
 /**
  * @license GNU GPL v2+
@@ -207,6 +208,23 @@ class SharedCallbackContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'DataItemFactory', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'DataItemFactory', '\SMW\DataItemFactory' );
 			return new DataItemFactory();
+		} );
+
+		/**
+		 * @var DataValueServiceFactory
+		 */
+		$containerBuilder->registerCallback( 'DataValueServiceFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'DataValueServiceFactory', '\SMW\Services\DataValueServiceFactory' );
+
+			$containerBuilder->registerFromFile(
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgServicesFileDir' ) . '/' . DataValueServiceFactory::SERVICE_FILE
+			);
+
+			$dataValueServiceFactory = new DataValueServiceFactory(
+				$containerBuilder
+			);
+
+			return $dataValueServiceFactory;
 		} );
 	}
 

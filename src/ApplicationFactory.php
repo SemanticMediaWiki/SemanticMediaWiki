@@ -37,10 +37,19 @@ class ApplicationFactory {
 	private $containerBuilder;
 
 	/**
-	 * @since 2.0
+	 * @var string
 	 */
-	public function __construct( ContainerBuilder $containerBuilder = null ) {
+	private $servicesFileDir = '';
+
+	/**
+	 * @since 2.0
+	 *
+	 * @param ContainerBuilder|null $containerBuilder
+	 * @param string $servicesFileDir
+	 */
+	public function __construct( ContainerBuilder $containerBuilder = null, $servicesFileDir = '' ) {
 		$this->containerBuilder = $containerBuilder;
+		$this->servicesFileDir = $servicesFileDir;
 	}
 
 	/**
@@ -63,12 +72,14 @@ class ApplicationFactory {
 			return self::$instance;
 		}
 
+		$servicesFileDir = $GLOBALS['smwgServicesFileDir'];
+
 		$containerBuilder = self::newContainerBuilder(
 			new CallbackContainerFactory(),
-			$GLOBALS['smwgServicesFileDir']
+			$servicesFileDir
 		);
 
-		return self::$instance = new self( $containerBuilder );
+		return self::$instance = new self( $containerBuilder, $servicesFileDir );
 	}
 
 	/**

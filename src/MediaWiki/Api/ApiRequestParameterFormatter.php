@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use SMW\Options;
 use SMW\Query\PrintRequest;
-use SMWPropertyValue;
+use SMW\DataValueFactory;
 
 /**
  * This class handles Api related request parameter formatting
@@ -146,7 +146,7 @@ final class ApiRequestParameterFormatter {
 		return new PrintRequest(
 			PrintRequest::PRINT_PROP,
 			$printout,
-			SMWPropertyValue::makeUserProperty( $printout )
+			DataValueFactory::getInstance()->newPropertyValueByLabel( $printout )
 		);
 	}
 

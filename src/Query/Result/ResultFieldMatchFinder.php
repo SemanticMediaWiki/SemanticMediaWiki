@@ -216,6 +216,8 @@ class ResultFieldMatchFinder {
 				$propertyValue->getDataItem()
 			);
 
+			$multiValue->setOption( $multiValue::OPT_QUERY_CONTEXT, true );
+
 			if ( $multiValue instanceof MonolingualTextValue && $lang !== false && ( $textValue = $multiValue->getTextValueByLanguage( $lang ) ) !== null ) {
 
 				// Return the text representation without a language reference

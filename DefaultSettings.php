@@ -1416,4 +1416,17 @@ return array(
 	'smwgSimilarityLookupExemptionProperty' => 'owl:differentFrom',
 	##
 
+	##
+	# Property label invalid characters
+	#
+	# Listed characters are categorized as invalid for a property label and will
+	# result in an error.
+	#
+	# @see #1568, #1638
+	#
+	# @since 2.5
+	##
+	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '%' ),
+	##
+
 );
