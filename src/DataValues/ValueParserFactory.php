@@ -4,7 +4,6 @@ namespace SMW\DataValues;
 
 use SMW\ApplicationFactory;
 use SMW\DataValues\ValueParsers\AllowsPatternContentParser;
-use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 
 /**
@@ -39,20 +38,6 @@ class ValueParserFactory {
 	 */
 	public static function clear() {
 		self::$instance = null;
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @return ImportValueParser
-	 */
-	public function newImportValueParser() {
-
-		$controlledVocabularyImportContentFetcher = new ControlledVocabularyImportContentFetcher(
-			ApplicationFactory::getInstance()->getMediaWikiNsContentReader()
-		);
-
-		return new ImportValueParser( $controlledVocabularyImportContentFetcher );
 	}
 
 	/**

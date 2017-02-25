@@ -2,6 +2,8 @@
 
 namespace SMW\Services;
 
+use SMW\DataValues\ImportValue;
+use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
@@ -115,6 +117,21 @@ return array(
 		);
 
 		return $compoundConstraintValueValidator;
+	},
+
+	/**
+	 * ImportValueParser
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID,
+			ImportValueParser::class
+		);
+
+		return new ImportValueParser( $containerBuilder->singleton( 'MediaWikiNsContentReader' ) );
 	},
 
 );

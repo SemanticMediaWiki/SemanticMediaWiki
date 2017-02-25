@@ -3,10 +3,10 @@
 namespace SMW\Tests\DataValues\ValueParsers;
 
 use SMW\DataValues\ValueParsers\ImportValueParser;
+use SMW\DataValues\ImportValue;
 
 /**
  * @covers \SMW\DataValues\ValueParsers\ImportValueParser
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,25 +16,27 @@ use SMW\DataValues\ValueParsers\ImportValueParser;
  */
 class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $mediaWikiNsContentReader;
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
+	protected function setUp() {
+		parent::setUp();
+
+		$this->mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
 			->disableOriginalConstructor()
 			->getMock();
+	}
+
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueParsers\ImportValueParser',
-			new ImportValueParser( $controlledVocabularyImportContentFetcher )
+			new ImportValueParser( $this->mediaWikiNsContentReader )
 		);
 	}
 
 	public function testTryParseForInvalidValueFormat() {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new ImportValueParser( $controlledVocabularyImportContentFetcher );
+		$instance = new ImportValueParser( $this->mediaWikiNsContentReader );
 		$instance->parse( 'incorrectFormat' );
 
 		$this->assertNotEmpty(
@@ -44,16 +46,15 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryParseForValidValueFormatErroredByNonExistingImportEntry() {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->mediaWikiNsContentReader->expects( $this->once() )
+			->method( 'read' )
+			->with( $this->equalTo( ImportValue::IMPORT_PREFIX . 'Foo' ) )
+			->will( $this->returnValue( false ) );
 
-		$controlledVocabularyImportContentFetcher->expects( $this->once() )
-			->method( 'contains' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( false ) ); // mock non-existing entry
+		$instance = new ImportValueParser(
+			$this->mediaWikiNsContentReader
+		);
 
-		$instance = new ImportValueParser( $controlledVocabularyImportContentFetcher );
 		$instance->parse( 'Foo:bar' );
 
 		$this->assertNotEmpty(
@@ -66,19 +67,14 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTryParseForValidValueFormatErroredByUriMismatch( $content ) {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$controlledVocabularyImportContentFetcher->expects( $this->once() )
-			->method( 'contains' )
-			->will( $this->returnValue( true ) );
-
-		$controlledVocabularyImportContentFetcher->expects( $this->once() )
-			->method( 'fetchFor' )
+		$this->mediaWikiNsContentReader->expects( $this->once() )
+			->method( 'read' )
 			->will( $this->returnValue( $content ) );
 
-		$instance = new ImportValueParser( $controlledVocabularyImportContentFetcher );
+		$instance = new ImportValueParser(
+			$this->mediaWikiNsContentReader
+		);
+
 		$instance->parse( 'Foo:bar' );
 
 		$this->assertNotEmpty(
@@ -91,19 +87,14 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTryParseForValidValueFormatErroredByTypeMismatch( $content, $typelist ) {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$controlledVocabularyImportContentFetcher->expects( $this->once() )
-			->method( 'contains' )
-			->will( $this->returnValue( true ) );
-
-		$controlledVocabularyImportContentFetcher->expects( $this->once() )
-			->method( 'fetchFor' )
+		$this->mediaWikiNsContentReader->expects( $this->once() )
+			->method( 'read' )
 			->will( $this->returnValue( $content ) );
 
-		$instance = new ImportValueParser( $controlledVocabularyImportContentFetcher );
+		$instance = new ImportValueParser(
+			$this->mediaWikiNsContentReader
+		);
+
 		$instance->parse( 'Foo:bar' );
 
 		$this->assertNotEmpty(
@@ -116,19 +107,14 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParseForValidValueToMatchType( $content, $parseValue, $expected ) {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$controlledVocabularyImportContentFetcher->expects( $this->once() )
-			->method( 'contains' )
-			->will( $this->returnValue( true ) );
-
-		$controlledVocabularyImportContentFetcher->expects( $this->once() )
-			->method( 'fetchFor' )
+		$this->mediaWikiNsContentReader->expects( $this->once() )
+			->method( 'read' )
 			->will( $this->returnValue( $content ) );
 
-		$instance = new ImportValueParser( $controlledVocabularyImportContentFetcher );
+		$instance = new ImportValueParser(
+			$this->mediaWikiNsContentReader
+		);
+
 		$result = $instance->parse( $parseValue );
 
 		$this->assertEmpty(

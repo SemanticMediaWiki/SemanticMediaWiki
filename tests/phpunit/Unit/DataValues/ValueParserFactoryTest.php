@@ -30,16 +30,6 @@ class ValueParserFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructImportValueParser() {
-
-		$instance = new ValueParserFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueParsers\ImportValueParser',
-			$instance->newImportValueParser()
-		);
-	}
-
 	public function testCanConstructMonolingualTextValueParser() {
 
 		$instance = new ValueParserFactory();
