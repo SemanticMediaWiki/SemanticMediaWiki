@@ -109,7 +109,7 @@ class TypeList {
 			'__key' => array( 'SMWStringValue', DataItem::TYPE_BLOB, false ),
 			LanguageCodeValue::TYPE_ID => array( LanguageCodeValue::class, DataItem::TYPE_BLOB, false ),
 			'__pval' => array( AllowsListValue::class, DataItem::TYPE_BLOB, false ),
-			'__pvap' => array( AllowsPatternValue::class, DataItem::TYPE_BLOB, false ),
+			AllowsPatternValue::TYPE_ID => array( AllowsPatternValue::class, DataItem::TYPE_BLOB, false ),
 			'__pvuc' => array( UniquenessConstraintValue::class, DataItem::TYPE_BOOLEAN, false ),
 			'__pefu' => array( ExternalFormatterUriValue::class, DataItem::TYPE_URI, false )
 		);

@@ -18,16 +18,15 @@ use SMW\Message;
 class AllowsPatternValue extends StringValue {
 
 	/**
-	 * @var AllowsPatternContentParser
+	 * DV identifier
 	 */
-	private $allowsPatternContentParser;
+	const TYPE_ID = '__pvap';
 
 	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
-		parent::__construct( '__pvap' );
-		$this->allowsPatternContentParser = ValueParserFactory::getInstance()->newAllowsPatternContentParser();
+		parent::__construct( self::TYPE_ID );
 	}
 
 	/**
@@ -45,7 +44,9 @@ class AllowsPatternValue extends StringValue {
 			$this->addErrorMsg( array( 'smw-datavalue-feature-not-supported', 'Allows pattern (SMW_DV_PVAP)' ) );
 		}
 
-		$content = $this->allowsPatternContentParser->parse(
+		$allowsPatternValueParser = $this->dataValueServiceFactory->getValueParser( $this );
+
+		$content = $allowsPatternValueParser->parse(
 			$value
 		);
 

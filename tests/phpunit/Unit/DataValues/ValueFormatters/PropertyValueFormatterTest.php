@@ -42,6 +42,10 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
+		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -49,6 +53,10 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
 			->will( $this->returnValue( new PropertyValueParser() ) );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $constraintValueValidator ) );
 	}
 
 	public function testCanConstruct() {

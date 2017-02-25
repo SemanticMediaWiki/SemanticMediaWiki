@@ -12,7 +12,7 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
  *
  * @author mwjames
  */
-class AllowsPatternContentParser implements ValueParser {
+class AllowsPatternValueParser implements ValueParser {
 
 	/**
 	 * @var MediaWikiNsContentReader
@@ -50,6 +50,8 @@ class AllowsPatternContentParser implements ValueParser {
 	 * @return string|false
 	 */
 	public function parse( $userValue ) {
+
+		$this->errors = array();
 
 		$contentList = $this->doParseContent(
 			$this->mediaWikiNsContentReader->read( 'smw allows pattern' )

@@ -4,7 +4,14 @@ namespace SMW\Services;
 
 use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
+use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
+use SMW\DataValues\AllowsPatternValue;
 use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
+use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
+use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
+use SMW\DataValues\ValueValidators\ListConstraintValueValidator;
+use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
 
 /**
  * @codeCoverageIgnore
@@ -54,6 +61,60 @@ return array(
 		);
 
 		return new PropertyValueFormatter();
+	},
+
+	/**
+	 * AllowsPatternValueParser
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID,
+			AllowsPatternValueParser::class
+		);
+
+		return new AllowsPatternValueParser( $containerBuilder->singleton( 'MediaWikiNsContentReader' ) );
+	},
+
+	/**
+	 * CompoundConstraintValueValidator
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator' => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator',
+			CompoundConstraintValueValidator::class
+		);
+
+		$compoundConstraintValueValidator = new CompoundConstraintValueValidator();
+
+		// Any registered ConstraintValueValidator becomes weaker(diminished) in the context
+		// of a preceding validator
+		$compoundConstraintValueValidator->registerConstraintValueValidator(
+			new UniquenessConstraintValueValidator()
+		);
+
+		$patternConstraintValueValidator = new PatternConstraintValueValidator(
+			$containerBuilder->create( DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID )
+		);
+
+		$compoundConstraintValueValidator->registerConstraintValueValidator(
+			$patternConstraintValueValidator
+		);
+
+		$compoundConstraintValueValidator->registerConstraintValueValidator(
+			new ListConstraintValueValidator()
+		);
+
+		$compoundConstraintValueValidator->registerConstraintValueValidator(
+			new PropertySpecificationConstraintValueValidator()
+		);
+
+		return $compoundConstraintValueValidator;
 	},
 
 );

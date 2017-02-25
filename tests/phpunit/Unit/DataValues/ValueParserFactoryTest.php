@@ -50,14 +50,4 @@ class ValueParserFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructAllowsPatternContentParser() {
-
-		$instance = new ValueParserFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueParsers\AllowsPatternContentParser',
-			$instance->newAllowsPatternContentParser()
-		);
-	}
-
 }

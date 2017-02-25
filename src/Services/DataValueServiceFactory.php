@@ -108,6 +108,15 @@ class DataValueServiceFactory {
 	/**
 	 * @since 2.5
 	 *
+	 * @return ConstraintValueValidator
+	 */
+	public function getConstraintValueValidator() {
+		return $this->containerBuilder->singleton( self::TYPE_VALIDATOR . 'CompoundConstraintValueValidator' );
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @return PropertySpecificationLookup
 	 */
 	public function getPropertySpecificationLookup() {

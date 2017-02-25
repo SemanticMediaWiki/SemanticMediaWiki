@@ -47,4 +47,12 @@ class CompoundConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testMissingConstraintValueValidatorRegThrowsException() {
+
+		$instance = new CompoundConstraintValueValidator();
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->validate( 'Foo' );
+	}
+
 }
