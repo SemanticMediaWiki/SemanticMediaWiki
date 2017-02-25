@@ -73,8 +73,16 @@ class PropertyPageMessageHtmlBuilder {
 			$message .= $this->createEditProtectionMessage( $propertyName );
 		}
 
+		if ( $property->isUserDefined() && wfMessage( 'smw-property-introductory-message-user' )->exists() ) {
+			$message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-user', $propertyName );
+		}
+
+		if ( !$property->isUserDefined() && wfMessage( 'smw-property-introductory-message-system' )->exists() ) {
+			$message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-system', $propertyName );
+		}
+
 		if ( wfMessage( 'smw-property-introductory-message' )->exists() ) {
-			$message .= $this->createIntroductoryMessage( $propertyName );
+			$message .= $this->createIntroductoryMessage( 'smw-property-introductory-message', $propertyName );
 		}
 
 		if ( $property->isUserDefined() && $this->store->getPropertyTableInfoFetcher()->isFixedTableProperty( $property ) ) {
@@ -116,9 +124,9 @@ class PropertyPageMessageHtmlBuilder {
 		);
 	}
 
-	private function createIntroductoryMessage( $propertyName ) {
+	private function createIntroductoryMessage( $msgKey, $propertyName ) {
 
-		$message = wfMessage( 'smw-property-introductory-message', $propertyName )->parse();
+		$message = wfMessage( $msgKey, $propertyName )->parse();
 
 		if ( $message === '' ) {
 			return '';
@@ -127,7 +135,7 @@ class PropertyPageMessageHtmlBuilder {
 		return Html::rawElement(
 			'div',
 			array(
-				'id' => 'smw-property-content-intro-message',
+				'id' => 'smw-property-content-introductory-message',
 				'class' => 'plainlinks smw-callout smw-callout-info'
 			),
 			$message
