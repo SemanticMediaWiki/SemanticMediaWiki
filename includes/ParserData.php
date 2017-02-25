@@ -21,6 +21,11 @@ use Title;
 class ParserData {
 
 	/**
+	 * Identifies the extension data
+	 */
+	const DATA_ID = 'smwdata';
+
+	/**
 	 * @var Title
 	 */
 	private $title;
@@ -251,7 +256,7 @@ class ParserData {
 		$this->setSemanticDataStateToParserOutputProperty();
 
 		if ( $this->hasExtensionData() ) {
-			return $this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
+			return $this->parserOutput->setExtensionData( self::DATA_ID, $this->semanticData );
 		}
 
 		$this->parserOutput->mSMWData = $this->semanticData;
@@ -368,7 +373,7 @@ class ParserData {
 	private function fetchDataFromParserOutput( ParserOutput $parserOutput ) {
 
 		if ( $this->hasExtensionData() ) {
-			$semanticData = $parserOutput->getExtensionData( 'smwdata' );
+			$semanticData = $parserOutput->getExtensionData( self::DATA_ID );
 		} else {
 			$semanticData = isset( $parserOutput->mSMWData ) ? $parserOutput->mSMWData : null;
 		}

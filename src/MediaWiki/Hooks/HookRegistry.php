@@ -249,7 +249,7 @@ class HookRegistry {
 		 */
 		$this->handlers['ArticleProtectComplete'] = function ( &$wikiPage, &$user, $protections, $reason ) use ( $applicationFactory ) {
 
-			$editInfoProvider = new \SMW\MediaWiki\EditInfoProvider(
+			$editInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newEditInfoProvider(
 				$wikiPage,
 				$wikiPage->getRevision(),
 				$user

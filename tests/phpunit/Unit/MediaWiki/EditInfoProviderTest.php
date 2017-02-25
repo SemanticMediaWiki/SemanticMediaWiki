@@ -41,10 +41,6 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFetchContentInfo( $parameters, $expected ) {
 
-		if ( !method_exists( '\WikiPage', 'prepareTextForEdit' ) ) {
-			$this->markTestSkipped( 'WikiPage::prepareTextForEdit is no longer accessible (MW 1.29+)' );
-		}
-
 		$instance = new EditInfoProvider(
 			$parameters['wikiPage'],
 			$parameters['revision']
@@ -53,6 +49,35 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$expected,
 			$instance->fetchEditInfo()->getOutput()
+		);
+	}
+
+	public function testFetchSemanticData() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$editInfo = (object)array();
+		$editInfo->output = new ParserOutput();
+		$editInfo->output->setExtensionData( \SMW\ParserData::DATA_ID, $semanticData );
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'prepareContentForEdit' )
+			->will( $this->returnValue( $editInfo ) );
+
+		$instance = new EditInfoProvider(
+			$wikiPage,
+			$this->newRevisionStub()
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SemanticData',
+			$instance->fetchSemanticData()
 		);
 	}
 
@@ -86,6 +111,9 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function wikiPageDataProvider() {
 
+		// 'WikiPage::prepareTextForEdit is no longer accessible (MW 1.29+)'
+		$prepareTextForEditExists = method_exists( '\WikiPage', 'prepareTextForEdit' );
+
 		#0 No parserOutput object
 		$editInfo = (object)array();
 		$editInfo->output = null;
@@ -98,9 +126,11 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( $editInfo ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		if ( $prepareTextForEditExists ) {
+			$wikiPage->expects( $this->any() )
+				->method( 'prepareTextForEdit' )
+				->will( $this->returnValue( $editInfo ) );
+		}
 
 		$provider[] = array(
 			array(
@@ -120,9 +150,11 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( false ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( false ) );
+		if ( $prepareTextForEditExists ) {
+			$wikiPage->expects( $this->any() )
+				->method( 'prepareTextForEdit' )
+				->will( $this->returnValue( false ) );
+		}
 
 		$provider[] = array(
 			array(
@@ -145,9 +177,11 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( $editInfo ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		if ( $prepareTextForEditExists ) {
+			$wikiPage->expects( $this->any() )
+				->method( 'prepareTextForEdit' )
+				->will( $this->returnValue( $editInfo ) );
+		}
 
 		$provider[] = array(
 			array(
@@ -169,9 +203,11 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( $editInfo ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		if ( $prepareTextForEditExists ) {
+			$wikiPage->expects( $this->any() )
+				->method( 'prepareTextForEdit' )
+				->will( $this->returnValue( $editInfo ) );
+		}
 
 		$provider[] = array(
 			array(

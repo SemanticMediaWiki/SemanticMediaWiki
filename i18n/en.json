@@ -507,6 +507,7 @@
 	"smw-property-req-violation-missing-fields": "Property \"$1\" is missing declaration details for the annotated \"$2\" type by failing to define the <code>Has fields</code> property.",
 	"smw-property-req-violation-missing-formatter-uri": "Property \"$1\" is missing declaration details for the annotated type by failing to define the <code>External formatter URI</code> property.",
 	"smw-property-req-violation-predefined-type": "Property \"$1\" as predefined property contains a \"$2\" type declaration that is incompatible with the default type of this property.",
+	"smw-property-req-violation-import-type": "A type declaration was detected that is incompatible with the predefined type of the imported \"$1\" vocabulary. In general, it is not necessary to declare a type because information are retrieved from the import definition.",
 	"protect-level-smw-pageedit":"Allow only users with page edit permission (Semantic MediaWiki)",
 	"smw-edit-protection": "This page is [[Property:Is edit protected|protected]] to prevent accidental data modification and therefore can only be edited by users with the appropriate \"$1\" [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups right].",
 	"smw-edit-protection-disabled": "The edit protection has been disabled therefore \"$1\" cannot be used to protect entity pages from unauthorized editing.",

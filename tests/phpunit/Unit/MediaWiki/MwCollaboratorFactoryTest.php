@@ -16,25 +16,29 @@ use SMW\MediaWiki\MwCollaboratorFactory;
  */
 class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $applicationFactory;
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
+	public function setUp() {
+		parent::setUp();
+
+		$this->applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
 			->disableOriginalConstructor()
 			->getMock();
+	}
+
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MwCollaboratorFactory',
-			new MwCollaboratorFactory( $applicationFactory )
+			new MwCollaboratorFactory( $this->applicationFactory )
 		);
 	}
 
 	public function testCanConstructJobQueueLookup() {
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new MwCollaboratorFactory( $applicationFactory );
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -48,11 +52,9 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructMessageBuilder() {
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new MwCollaboratorFactory( $applicationFactory );
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MessageBuilder',
@@ -71,11 +73,9 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructMagicWordsFinder() {
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new MwCollaboratorFactory( $applicationFactory );
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MagicWordsFinder',
@@ -85,11 +85,9 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructRedirectTargetFinder() {
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new MwCollaboratorFactory( $applicationFactory );
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\RedirectTargetFinder',
@@ -103,15 +101,13 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$applicationFactory->expects( $this->atLeastOnce() )
+		$this->applicationFactory->expects( $this->atLeastOnce() )
 			->method( 'newPageCreator' )
 			->will( $this->returnValue( $pageCreator ) );
 
-		$instance = new MwCollaboratorFactory( $applicationFactory );
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\DeepRedirectTargetResolver',
@@ -184,19 +180,13 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructPageInfoProvider() {
 
-		$settings = $this->getMockBuilder( '\SMW\Settings' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new MwCollaboratorFactory( $applicationFactory );
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageInfoProvider',
@@ -204,13 +194,31 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructWikitextTemplateRenderer() {
+	public function testCanConstructEditInfoProvider() {
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new MwCollaboratorFactory( $applicationFactory );
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\EditInfoProvider',
+			$instance->newEditInfoProvider( $wikiPage, $revision )
+		);
+	}
+
+	public function testCanConstructWikitextTemplateRenderer() {
+
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Renderer\WikitextTemplateRenderer',
@@ -220,15 +228,13 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructHtmlTemplateRenderer() {
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$parser = $this->getMockBuilder( '\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new MwCollaboratorFactory( $applicationFactory );
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Renderer\HtmlTemplateRenderer',
@@ -238,11 +244,9 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructMediaWikiNsContentReader() {
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new MwCollaboratorFactory( $applicationFactory );
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MediaWikiNsContentReader',
