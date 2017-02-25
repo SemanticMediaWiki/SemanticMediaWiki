@@ -77,8 +77,8 @@ class PropertyPageMessageHtmlBuilder {
 			$message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-user', $propertyName );
 		}
 
-		if ( !$property->isUserDefined() && wfMessage( 'smw-property-introductory-message-system' )->exists() ) {
-			$message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-system', $propertyName );
+		if ( !$property->isUserDefined() && wfMessage( 'smw-property-introductory-message-special' )->exists() ) {
+			$message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-special', $propertyName );
 		}
 
 		if ( wfMessage( 'smw-property-introductory-message' )->exists() ) {
