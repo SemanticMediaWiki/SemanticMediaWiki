@@ -78,7 +78,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 			'div',
 			array(
 				'class' => 'smw-edit-protection',
-				'title' => Message::get( 'smw-edit-protection-enabled' )
+				'title' => Message::get( 'smw-edit-protection-enabled', Message::TEXT, Message::USER_LANGUAGE )
 			), ''
 		);
 
