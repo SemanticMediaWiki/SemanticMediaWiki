@@ -64,15 +64,4 @@ class ValueParserFactory {
 		return new MonolingualTextValueParser();
 	}
 
-	/**
-	 * @since 2.4
-	 *
-	 * @return newAllowsPatternContentParser
-	 */
-	public function newAllowsPatternContentParser() {
-		return new AllowsPatternContentParser(
-			ApplicationFactory::getInstance()->getMediaWikiNsContentReader()
-		);
-	}
-
 }

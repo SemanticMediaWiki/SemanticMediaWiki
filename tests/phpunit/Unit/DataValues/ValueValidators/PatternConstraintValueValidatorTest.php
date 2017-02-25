@@ -4,7 +4,7 @@ namespace SMW\Tests\DataValues\ValueValidators;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
-use SMW\Options;
+use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -22,6 +22,7 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 	private $mediaWikiNsContentReader;
+	private $allowsPatternValueParser;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
@@ -32,6 +33,10 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
+
+		$this->allowsPatternValueParser = new AllowsPatternValueParser(
+			$this->mediaWikiNsContentReader
+		);
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -48,7 +53,7 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueValidators\PatternConstraintValueValidator',
-			new PatternConstraintValueValidator()
+			new PatternConstraintValueValidator( $this->allowsPatternValueParser )
 		);
 	}
 
@@ -84,11 +89,11 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( $testString ) ) );
 
-		$instance = new PatternConstraintValueValidator();
+		$instance = new PatternConstraintValueValidator(
+			$this->allowsPatternValueParser
+		);
 
-		$dataValue->setOptions( new Options(
-			array( 'smwgDVFeatures' => SMW_DV_PVAP )
-		) );
+		$dataValue->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
 
 		$instance->validate( $dataValue );
 

@@ -10,7 +10,6 @@
 use SMW\ApplicationFactory;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\ValueFormatterRegistry;
-use SMW\DataValues\ValueValidatorRegistry;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\Localizer;
 use SMW\Message;
@@ -826,7 +825,12 @@ abstract class SMWDataValue {
 	 * Creates an error if the value is illegal.
 	 */
 	protected function checkAllowedValues() {
-		ValueValidatorRegistry::getInstance()->getConstraintValueValidator()->validate( $this );
+
+		if ( $this->dataValueServiceFactory === null ) {
+			return;
+		}
+
+		$this->dataValueServiceFactory->getConstraintValueValidator()->validate( $this );
 	}
 
 	/**

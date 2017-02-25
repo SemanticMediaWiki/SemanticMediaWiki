@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use SMW\DataValues\ValueValidatorRegistry;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIError;
@@ -73,7 +72,6 @@ class DataValueFactory {
 	 */
 	public function clear() {
 		$this->dataTypeRegistry->clear();
-		ValueValidatorRegistry::getInstance()->clear();
 		self::$instance = null;
 	}
 

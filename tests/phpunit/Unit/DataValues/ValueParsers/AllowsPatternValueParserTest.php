@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\DataValues\ValueParsers;
 
-use SMW\DataValues\ValueParsers\AllowsPatternContentParser;
+use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 
 /**
- * @covers \SMW\DataValues\ValueParsers\AllowsPatternContentParser
+ * @covers \SMW\DataValues\ValueParsers\AllowsPatternValueParser
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\DataValues\ValueParsers\AllowsPatternContentParser;
  *
  * @author mwjames
  */
-class AllowsPatternContentParserTest extends \PHPUnit_Framework_TestCase {
+class AllowsPatternValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	private $mediaWikiNsContentReader;
 
@@ -26,8 +26,8 @@ class AllowsPatternContentParserTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueParsers\AllowsPatternContentParser',
-			new AllowsPatternContentParser( $this->mediaWikiNsContentReader )
+			'\SMW\DataValues\ValueParsers\AllowsPatternValueParser',
+			new AllowsPatternValueParser( $this->mediaWikiNsContentReader )
 		);
 	}
 
@@ -37,7 +37,7 @@ class AllowsPatternContentParserTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( " \nFoo|^(Bar|Foo bar)$\n Bar|^(ABC|DEF)$\n" ) );
 
-		$instance = new AllowsPatternContentParser(
+		$instance = new AllowsPatternValueParser(
 			$this->mediaWikiNsContentReader
 		);
 
