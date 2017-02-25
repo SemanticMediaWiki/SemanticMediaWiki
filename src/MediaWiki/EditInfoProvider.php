@@ -5,6 +5,7 @@ namespace SMW\MediaWiki;
 use Revision;
 use User;
 use WikiPage;
+use SMW\ParserData;
 
 /**
  * @license GNU GPL v2+
@@ -54,6 +55,22 @@ class EditInfoProvider {
 	 */
 	public function getOutput() {
 		return $this->parserOutput;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return SemanticData|null
+	 */
+	public function fetchSemanticData() {
+
+		$parserOutput = $this->fetchEditInfo()->getOutput();
+
+		if ( $parserOutput === null ) {
+			return null;
+		}
+
+		return $parserOutput->getExtensionData( ParserData::DATA_ID );
 	}
 
 	/**

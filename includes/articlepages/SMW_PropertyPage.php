@@ -91,12 +91,18 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getIntroductoryText() {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$propertySpecificationReqExaminer = new PropertySpecificationReqExaminer(
 			$this->store
 		);
 
+		$propertySpecificationReqExaminer->setSemanticData(
+			$this->getSemanticData()
+		);
+
 		$propertySpecificationReqExaminer->setEditProtectionRight(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEditProtectionRight' )
+			$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
 		);
 
 		$propertyPageMessageHtmlBuilder = new PropertyPageMessageHtmlBuilder(
@@ -105,7 +111,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		);
 
 		$propertyPageMessageHtmlBuilder->hasEditProtection(
-			ApplicationFactory::getInstance()->singleton( 'EditProtectionValidator' )->hasEditProtection( $this->mTitle )
+			$applicationFactory->singleton( 'EditProtectionValidator' )->hasEditProtection( $this->mTitle )
 		);
 
 		return $propertyPageMessageHtmlBuilder->createMessageBody( $this->mProperty );
@@ -366,6 +372,22 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$query->setSortKeys( array( '' => 'asc' ) );
 
 		return $this->store->getQueryResult( $query )->getResults();
+	}
+
+	private function getSemanticData() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		if ( $this->getPage()->getRevision() === null ) {
+			return null;
+		}
+
+		$editInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newEditInfoProvider(
+			$this->getPage(),
+			$this->getPage()->getRevision()
+		);
+
+		return $editInfoProvider->fetchSemanticData();
 	}
 
 }
