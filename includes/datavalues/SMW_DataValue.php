@@ -70,6 +70,11 @@ abstract class SMWDataValue {
 	const OPT_QUERY_COMP_CONTEXT = 'query.comparator.context';
 
 	/**
+	 * Option to disable an infolinks highlight/tooltip
+	 */
+	const OPT_DISABLE_INFOLINKS = 'disable.infolinks';
+
+	/**
 	 * Associated data item. This is the reference to the immutable object
 	 * that represents the current data content. All other data stored here
 	 * is only about presentation and parsing, but is not relevant to the
@@ -179,7 +184,6 @@ abstract class SMWDataValue {
 		$this->m_dataitem = null;
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
-		$this->getInfoLinksProvider()->init();
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
 
 		$this->parseUserValue( $value ); // may set caption if not set yet, depending on datavalue
@@ -215,7 +219,6 @@ abstract class SMWDataValue {
 	 * @return boolean
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {
-		$this->getInfoLinksProvider()->init();
 		$this->m_dataitem = null;
 		$this->mErrors = array();
 		$this->mHasErrors = $this->m_caption = false;
@@ -370,15 +373,6 @@ abstract class SMWDataValue {
 	 */
 	public function getPreferredCaption() {
 		return $this->m_caption;
-	}
-
-	/**
-	 * Adds a single SMWInfolink object to the m_infolinks array.
-	 *
-	 * @param SMWInfolink $link
-	 */
-	public function addInfolink( SMWInfolink $link ) {
-		$this->getInfoLinksProvider()->addInfolink( $link );
 	}
 
 	/**
@@ -667,7 +661,16 @@ abstract class SMWDataValue {
 	 * @return string
 	 */
 	public function getInfolinkText( $outputformat, $linker = null ) {
-		return $this->getInfoLinksProvider()->getInfolinkText( $outputformat, $linker );
+
+		if ( $this->infoLinksProvider === null ) {
+			$this->infoLinksProvider = $this->dataValueServiceFactory->newInfoLinksProvider( $this );
+		}
+
+		if ( $this->getOption( self::OPT_DISABLE_INFOLINKS ) === true ) {
+			$this->infoLinksProvider->disableServiceLinks();
+		}
+
+		return $this->infoLinksProvider->getInfolinkText( $outputformat, $linker );
 	}
 
 	/**
@@ -689,13 +692,6 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * @since 2.1
-	 */
-	public function disableServiceLinks() {
-		$this->getInfoLinksProvider()->disableServiceLinks();
-	}
-
-	/**
 	 * Return an array of SMWLink objects that provide additional resources
 	 * for the given value. Captions can contain some HTML markup which is
 	 * admissible for wiki text, but no more. Result might have no entries
@@ -703,11 +699,15 @@ abstract class SMWDataValue {
 	 */
 	public function getInfolinks() {
 
-		$this->getInfoLinksProvider()->setServiceLinkParameters(
+		if ( $this->infoLinksProvider === null ) {
+			$this->infoLinksProvider = $this->dataValueServiceFactory->newInfoLinksProvider( $this );
+		}
+
+		$this->infoLinksProvider->setServiceLinkParameters(
 			$this->getServiceLinkParams()
 		);
 
-		return $this->getInfoLinksProvider()->createInfoLinks();
+		return $this->infoLinksProvider->createInfoLinks();
 	}
 
 	/**
@@ -834,27 +834,12 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * @since 2.4
+	 * @since 2.5
 	 *
-	 * @param string $value
-	 *
-	 * @return string
+	 * @return Options
 	 */
-	protected function convertDoubleWidth( $value ) {
-		return Localizer::convertDoubleWidth( $value );
-	}
-
 	protected function getOptions() {
 		return $this->options;
-	}
-
-	private function getInfoLinksProvider() {
-
-		if ( $this->infoLinksProvider === null ) {
-			$this->infoLinksProvider = new InfoLinksProvider( $this );
-		}
-
-		return $this->infoLinksProvider;
 	}
 
 }

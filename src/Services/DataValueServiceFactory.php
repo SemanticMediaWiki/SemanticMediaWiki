@@ -4,6 +4,7 @@ namespace SMW\Services;
 
 use Onoi\CallbackContainer\ContainerBuilder;
 use Onoi\CallbackContainer\Exception\ServiceNotFoundException;
+use SMW\DataValues\InfoLinksProvider;
 use SMWDataValue as DataValue;
 
 /**
@@ -54,6 +55,17 @@ class DataValueServiceFactory {
 	 */
 	public function __construct( ContainerBuilder $containerBuilder ) {
 		$this->containerBuilder = $containerBuilder;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DataValue $dataValue
+	 *
+	 * @return InfoLinksProvider
+	 */
+	public function newInfoLinksProvider( DataValue $dataValue ) {
+		return new InfoLinksProvider( $dataValue );
 	}
 
 	/**

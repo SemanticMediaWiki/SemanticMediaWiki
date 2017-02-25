@@ -23,13 +23,28 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
+	private $dataValueServiceFactory;
 	private $cachedPropertyValuesPrefetcher;
 	private $dataValueFactory;
 
 	protected function setUp() {
+		parent::setUp();
+
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
+
+		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $constraintValueValidator ) );
 
 		$this->cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
 			->disableOriginalConstructor()
@@ -40,6 +55,7 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
 		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -62,6 +78,10 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$numberValue = new NumberValue();
 
+		$numberValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$numberValue->setOption( 'user.language', 'en' );
 		$numberValue->setOption( 'content.language', 'en' );
 
@@ -72,6 +92,10 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		$numberValue->setUserValue( '1000.42' );
 
 		$instance = new InfoLinksProvider( $numberValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'newInfoLinksProvider' )
+			->will( $this->returnValue( $instance ) );
 
 		$this->assertContains(
 			'/:Foo/1000.42|+]]</span>',
@@ -92,6 +116,10 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$stringValue = new StringValue( '_txt' );
 
+		$stringValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$stringValue->setOption( 'user.language', 'en' );
 		$stringValue->setOption( 'content.language', 'en' );
 
@@ -102,6 +130,10 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		$stringValue->setUserValue( 'Text with :: content' );
 
 		$instance = new InfoLinksProvider( $stringValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'newInfoLinksProvider' )
+			->will( $this->returnValue( $instance ) );
 
 		$this->assertContains(
 			'/:Foo/Text-20with-20-2D3A-2D3A-20content|+]]</span>',
@@ -117,6 +149,10 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetInfolinkTextOnTimeValueWithoutLocalizedOutput() {
 
 		$timeValue = $this->dataValueFactory->newDataValueByType( '_dat' );
+
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$timeValue->setOption( $timeValue::OPT_USER_LANGUAGE, 'fr' );
 		$timeValue->setOption( $timeValue::OPT_CONTENT_LANGUAGE, 'en' );
@@ -136,6 +172,10 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new InfoLinksProvider( $timeValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'newInfoLinksProvider' )
+			->will( $this->returnValue( $instance ) );
 
 		$this->assertContains(
 			'/:Foo/12-20December-201970|+]]</span>',
@@ -170,6 +210,10 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$stringValue = new StringValue( '_txt' );
 
+		$stringValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$stringValue->setOption( StringValue::OPT_USER_LANGUAGE, 'en' );
 		$stringValue->setOption( StringValue::OPT_CONTENT_LANGUAGE, 'en' );
 
@@ -180,6 +224,10 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		$stringValue->setUserValue( 'Bar' );
 
 		$instance = new InfoLinksProvider( $stringValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'newInfoLinksProvider' )
+			->will( $this->returnValue( $instance ) );
 
 		$this->assertContains(
 			'<div class="smwttcontent">&#x005B;SERVICELINK-B SERVICELINK-A]</div>',
