@@ -158,7 +158,7 @@ class OrderConditionsComplementor {
 			// no specific property is given (see test cases in #1534)
 			$querySegment->sortfields[$label] = "$querySegment->alias.smw_sortkey,$querySegment->alias.smw_title,$querySegment->alias.smw_subobject";
 		} elseif ( PropertyChainValue::isChained( $label ) ) { // Try to extend query.
-			$propertyChainValue = new PropertyChainValue();
+			$propertyChainValue = DataValueFactory::getInstance()->newDataValueByType( PropertyChainValue::TYPE_ID );
 			$propertyChainValue->setUserValue( $label );
 
 			if ( !$propertyChainValue->isValid() ) {

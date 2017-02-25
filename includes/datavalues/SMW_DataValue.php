@@ -152,6 +152,11 @@ abstract class SMWDataValue {
 	private $infoLinksProvider = null;
 
 	/**
+	 * @var DataValueServiceFactory
+	 */
+	protected $dataValueServiceFactory;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $typeid
@@ -216,6 +221,15 @@ abstract class SMWDataValue {
 		$this->mErrors = array();
 		$this->mHasErrors = $this->m_caption = false;
 		return $this->loadDataItem( $dataItem );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DataValueServiceFactory $dataValueServiceFactory
+	 */
+	public function setDataValueServiceFactory( $dataValueServiceFactory ) {
+		$this->dataValueServiceFactory = $dataValueServiceFactory;
 	}
 
 	/**
