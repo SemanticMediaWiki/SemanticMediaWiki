@@ -56,6 +56,8 @@
         "_ASKSI": "Mida de consulta",
         "_ASKDE": "Profunditat de consulta",
         "_ASKDU": "Durada de consulta",
+        "_ASKSC": "Font de consulta",
+        "_ASKPA": "Paràmetres de consulta",
         "_MEDIA": "Tipus Media",
         "_MIME": "Tipus MIME",
         "_ERRC": "Té error de processament",
