@@ -6,7 +6,7 @@ THIS IS NOT A RELEASE YET
 
 ### Full-text support
 
-The #1481 (`MySQL`/`MariaDB`) and #1801 (`SQLite`) add [full-text](https://www.semantic-mediawiki.org/wiki/Help:Full-text_search) support using the native capabilities of the SQL backend.
+The #1481 (`MySQL`/`MariaDB`) and #1801 (`SQLite`) PR added [full-text](https://www.semantic-mediawiki.org/wiki/Help:Full-text_search) support using the native capabilities of the SQL backend.
 
 ### Provenance data recording
 
@@ -82,14 +82,15 @@ An experimental support was added (#1251) to allow caching of query results and 
 * [#2204](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2204) Extended `Special:UnusedProperties` and `Special:WantedProperties` to provide a input form
 * [#2207](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2207) Added `smwgExportResourcesAsIri` to allow exporting resources as IRIs
 * [#2209](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2209) Extended parsing of interface messages to support additional `smwgEnabledSpecialPage`
-* [#2221](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2221) Added possibility to show a general message on each property page (`smw-property-introductory-message`) or for a specific type of property (`smw-property-introductory-message-user`, `smw-property-introductory-message-system`)
+* [#2221](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2221) Added possibility to show a general message on each property page (`smw-property-introductory-message`) or for a specific type of property (`smw-property-introductory-message-user`, `smw-property-introductory-message-special`)
 * [#2227](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2227) Added warning, error, and info messages for incomplete requirements on a property specification
 * [#2232](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2232) Added support for "Is edit protected" together with `$wgRestrictionLevels` (#2249)
 * [#2243](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2243) Added property and concept namespace to the `$wgContentNamespaces`/`$wgNamespacesToBeSearchedDefault` setting
 * [#2244](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2244) Added `Special:PropertyLabelSimilarity` to help reporting of similarities in property labels
 * [#2253](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2253) Added `#-hl` output formatting option to highlight search tokens in a result set
 * [#2270](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2270) Added query parameters recording in the [query profiler](https://www.semantic-mediawiki.org/wiki/Help:Query_profiler)
-* [#2281](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2281) Added check on the property page where a divergent type specification was detected for an imported declaration
+* [#2281](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2281) Added check to detect a divergent type specification for an imported declaration
+* [#2282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2282) Added `$smwgPropertyInvalidCharacterList` for a stricter naming validation of property labels
 
 ## Bug fixes
 
@@ -147,6 +148,7 @@ An experimental support was added (#1251) to allow caching of query results and 
 * #2214
 * #2217
 * [#2275](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2275) Changed the `onoi/callback-container:~2.0` dependency
+* [#2282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2282) Added `DataValueServiceFactory` and `DataValueServices.php` to allow injection of services into a `DataValue` instance
 
 ## Settings changes
 
@@ -170,8 +172,9 @@ An experimental support was added (#1251) to allow caching of query results and 
 * Added [$smwgRedirectPropertyListLimit](https://www.semantic-mediawiki.org/wiki/Help:$smwgRedirectPropertyListLimit)
 * Added [$smwgSubPropertyListLimit](https://www.semantic-mediawiki.org/wiki/Help:$smwgSubPropertyListLimit)
 * Added [$smwgBrowseByApi](https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi)
-* Added [$smwgServicesFileDir](https://www.semantic-mediawiki.org/wiki/Help:$smwgServicesFileDir)
+* Added [$smwgServicesFileDir](https://www.semantic-mediawiki.org/wiki/Help:$smwgServicesFileDir) (internal use)
 * Added [$smwgAdminFeatures](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) and deprecated the [$smwgAdminRefreshStore](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminRefreshStore) setting
+* Added [$smwgPropertyInvalidCharacterList](https://www.semantic-mediawiki.org/wiki/Help:$smwgPropertyInvalidCharacterList)
 * Changed [$smwgLinksInValues](https://www.semantic-mediawiki.org/wiki/Help:$smwgLinksInValues) behaviour
 * Changed [$smwgFixedProperties](https://www.semantic-mediawiki.org/wiki/Help:$smwgFixedProperties) behaviour
 
