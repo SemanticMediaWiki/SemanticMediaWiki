@@ -20,10 +20,15 @@ use SMWStringValue as StringValue;
 class LanguageCodeValue extends StringValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '__lcode';
+
+	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
-		parent::__construct( '__lcode' );
+		parent::__construct( self::TYPE_ID );
 	}
 
 	/**

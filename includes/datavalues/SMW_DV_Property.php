@@ -34,6 +34,11 @@ use SMW\Message;
 class SMWPropertyValue extends SMWDataValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '__pro';
+
+	/**
 	 * Avoid the display of a tooltip
 	 */
 	const OPT_NO_HIGHLIGHT = 'no.highlight';
