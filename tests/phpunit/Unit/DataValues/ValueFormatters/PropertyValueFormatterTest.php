@@ -474,7 +474,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			$property,
 			null,
-			' (Foo)'
+			'&nbsp;<span style="font-size:small;">(Foo)</span>'
 		);
 
 		return $provider;

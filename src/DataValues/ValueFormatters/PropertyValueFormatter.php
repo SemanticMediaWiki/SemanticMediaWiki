@@ -51,6 +51,10 @@ class PropertyValueFormatter extends DataValueFormatter {
 			return $this->getFormattedLabel( $linker );
 		}
 
+		if ( $type === PropertyValue::SEARCH_LABEL ) {
+			return $this->getSearchLabel();
+		}
+
 		$wikiPageValue = $this->prepareWikiPageValue( $linker );
 		$text = '';
 
@@ -109,9 +113,9 @@ class PropertyValueFormatter extends DataValueFormatter {
 		$canonicalLabel = $property->getCanonicalLabel();
 
 		// Display title goes before a translated label (but not preferred)
-		if ( $displayTitle !== '' && !$property->isUserDefined() ) {
+		if ( $preferredLabel === '' && $displayTitle !== '' ) {
 			$label = $displayTitle;
-			$canonicalLabel = $displayTitle;
+		//	$canonicalLabel = $displayTitle;
 		}
 
 		// Internal format only used by PropertyValue
@@ -138,7 +142,9 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		// Output both according to the formatting rule set forth by
 		if ( $canonicalLabel !== $label ) {
-			$output = Message::get( array( 'smw-property-preferred-title-format', $output, $canonicalLabel ) );
+			$canonicalLabel = \Html::rawElement(
+				'span', array( 'style' => 'font-size:small;' ), '(' . $canonicalLabel . ')' );
+			$output = $output . '&nbsp;'.  $canonicalLabel;
 		}
 
 		return $output;
@@ -159,6 +165,22 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		if ( ( $translatedPropertyLabel = $this->findTranslatedPropertyLabel( $property ) ) !== '' ) {
 			return $translatedPropertyLabel;
+		}
+
+		return $this->dataValue->getDataItem()->getLabel();
+	}
+
+	/**
+	 * The display title modifies the search/sort characteristics (#1534),
+	 * (foo:Bar vs. Foo:Bar vs. FOO:bar) therefore select a possible DisplayTitle
+	 * before any other label preference.
+	 */
+	private function getSearchLabel() {
+
+		$wikiPageValue = $this->dataValue->getWikiPageValue();
+
+		if ( $wikiPageValue !== null && ( $displayTitle = $wikiPageValue->getDisplayTitle() ) !== '' ) {
+			return $displayTitle;
 		}
 
 		return $this->dataValue->getDataItem()->getLabel();

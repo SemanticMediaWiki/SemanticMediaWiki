@@ -59,6 +59,11 @@ class SMWPropertyValue extends SMWDataValue {
 	const FORMAT_LABEL = 'format.label';
 
 	/**
+	 * Label to be used for matching a DB search
+	 */
+	const SEARCH_LABEL = 'search.label';
+
+	/**
 	 * Cache for wiki page value object associated to this property, or
 	 * null if no such page exists. Use getWikiPageValue() to get the data.
 	 * @var SMWWikiPageValue
@@ -395,6 +400,19 @@ class SMWPropertyValue extends SMWDataValue {
 		);
 
 		return $dataValueFormatter->format( self::FORMAT_LABEL, $linker );
+	}
+
+	/**
+	 * Outputs a label that corresponds to the display and sort characteristics (
+	 * e.g. display title etc.) and can be used to initiate a match and search
+	 * process.
+	 *
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getSearchLabel() {
+		return $this->getDataValueFormatter()->format( self::SEARCH_LABEL );
 	}
 
 	/**
