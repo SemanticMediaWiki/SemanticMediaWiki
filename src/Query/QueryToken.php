@@ -97,7 +97,7 @@ class QueryToken {
 		}
 
 		// [[~~* ... *]]
-		if ( $description->getDataItem() instanceof DIWikiPage &&  strpos( $description->getDataItem()->getDBKey(), '~' ) !== false ) {
+		if ( $description->getDataItem() instanceof DIWikiPage && strpos( $description->getDataItem()->getDBKey(), '~' ) !== false ) {
 			return $this->addTokensFromText( $description->getDataItem()->getDBKey() );
 		}
 	}
@@ -140,7 +140,7 @@ class QueryToken {
 		} elseif ( $type === self::HL_SPAN ) {
 			$replacement = "<span class='smw-query-token'>$0</span>";
 		} else {
-			$replacement = "'''$0'''" ;
+			$replacement = "'''$0'''";
 		}
 
 		// Match all tokens except those within [ ... ] to avoid breaking links

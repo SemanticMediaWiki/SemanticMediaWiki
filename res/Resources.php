@@ -134,7 +134,7 @@ return array(
 	// Tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + array(
 		'styles' => array(
-			// Style dependencies don't work 
+			// Style dependencies don't work
 			// therefore make sure to load it
 			// together
 			'jquery/jquery.qtip.css',

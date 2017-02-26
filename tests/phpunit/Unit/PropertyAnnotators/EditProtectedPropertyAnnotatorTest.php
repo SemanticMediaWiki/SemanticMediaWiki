@@ -85,7 +85,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		// FIXME 3.0; Only MW 1.25+ (ParserOutput::setIndicator)
 		if ( !method_exists( $parserOutput, 'setIndicator' ) ) {
-			return $this->markTestSkipped( 'Only MW 1.25+ (ParserOutput::setIndicator)' );;
+			return $this->markTestSkipped( 'Only MW 1.25+ (ParserOutput::setIndicator)' );
 		}
 
 		$parserOutput->expects( $this->once() )

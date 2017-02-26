@@ -196,7 +196,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		if ( $resultCount > 0 ) {
 			$titleText = htmlspecialchars( $this->mTitle->getText() );
-			$result .= "<div id=\"{$header}\">" . Html::rawElement( 'h2' , array(), wfMessage( $header . '-header', $titleText )->text() ) . "\n<p>";
+			$result .= "<div id=\"{$header}\">" . Html::rawElement( 'h2', array(), wfMessage( $header . '-header', $titleText )->text() ) . "\n<p>";
 
 			if ( !$this->mProperty->isUserDefined() ) {
 				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';

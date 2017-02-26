@@ -67,7 +67,7 @@ class InternalParseBeforeLinks {
 			return true;
 		}
 
-		return $this->performUpdate( $text ) ;
+		return $this->performUpdate( $text );
 	}
 
 	private function canPerformUpdate( $text, $title ) {

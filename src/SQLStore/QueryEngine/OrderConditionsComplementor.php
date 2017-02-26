@@ -89,7 +89,7 @@ class OrderConditionsComplementor {
 	 * @param boolean $isSupported
 	 */
 	public function isSupported( $isSupported ) {
-		$this->isSupported = $isSupported;;
+		$this->isSupported = $isSupported;
 	}
 
 	/**
@@ -207,7 +207,7 @@ class OrderConditionsComplementor {
 			$this->descriptionFactory->newConjunction( $extraDescriptions )
 		);
 
- 		// This is always an QuerySegment::Q_CONJUNCTION ...
+		// This is always an QuerySegment::Q_CONJUNCTION ...
 		$newQuerySegment = $this->querySegmentListBuilder->findQuerySegment(
 			$this->querySegmentListBuilder->getLastQuerySegmentId()
 		);
