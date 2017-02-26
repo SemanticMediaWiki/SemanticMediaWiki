@@ -184,7 +184,8 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->once() )
 			->method( 'onTransactionIdle' )
 			->will( $this->returnCallback( function( $callback ) {
-				return call_user_func( $callback ); }
+				return call_user_func( $callback );
+			}
 			) );
 
 		$connection->expects( $this->atLeastOnce() )

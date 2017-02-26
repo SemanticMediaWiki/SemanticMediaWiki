@@ -142,7 +142,7 @@ class ValueFormatter {
 			return preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) );
 		}
 
-		return  $text;
+		return $text;
 	}
 
 }

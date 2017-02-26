@@ -87,7 +87,7 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		$text = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );;
+		$text = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );
 
 		return array(
 			'o_blob' => strlen( $text ) <= self::MAX_HASH_LENGTH ? null : ( $GLOBALS['wgDBtype'] === 'postgres' ? pg_escape_bytea( $text ) : $text ),

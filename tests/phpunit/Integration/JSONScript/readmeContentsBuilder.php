@@ -86,7 +86,7 @@ class ReadmeContentsBuilder {
 			$previousFirstKey = $key{0};
 		}
 
-		return "## $title\n\n" . "Contains $counter files with a total of $tests tests:\n" . $output ;
+		return "## $title\n\n" . "Contains $counter files with a total of $tests tests:\n" . $output;
 	}
 
 	private function findFilesFor( $path, $extension ) {
