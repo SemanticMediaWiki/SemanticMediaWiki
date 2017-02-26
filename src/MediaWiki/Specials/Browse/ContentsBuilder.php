@@ -252,6 +252,7 @@ class ContentsBuilder {
 		$html = "<table class=\"{$ccsPrefix}factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$noresult = true;
 
+		$contextPage = $data->getSubject();
 		$diProperties = $data->getProperties();
 		$showInverse = $this->getOption( 'showInverse' );
 
@@ -260,6 +261,10 @@ class ContentsBuilder {
 			$dvProperty = DataValueFactory::getInstance()->newDataValueByItem(
 				$diProperty,
 				null
+			);
+
+			$dvProperty->setContextPage(
+				$contextPage
 			);
 
 			$propertyLabel = ValueFormatter::getPropertyLabel(

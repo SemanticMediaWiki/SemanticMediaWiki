@@ -65,4 +65,18 @@ class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructQueryReferenceBacklinks() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new QueryDependencyLinksStoreFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\QueryDependency\QueryReferenceBacklinks',
+			$instance->newQueryReferenceBacklinks( $store )
+		);
+	}
+
 }

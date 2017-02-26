@@ -260,7 +260,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFindPartialEmbeddedQueryTargetLinksHashListFor() {
+	public function testFindEmbeddedQueryTargetLinksHashListFrom() {
 
 		$row = new \stdClass;
 		$row->s_id = 1001;
@@ -324,7 +324,78 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->setLimit( 1 );
 		$requestOptions->setOffset( 200 );
 
-		$instance->findEmbeddedQueryTargetLinksHashListFor( array( 42 ), $requestOptions );
+		$instance->findEmbeddedQueryTargetLinksHashListFrom( array( 42 ), $requestOptions );
+	}
+
+	public function testFindEmbeddedQueryTargetLinksHashListBySubject() {
+
+		$row = new \stdClass;
+		$row->s_id = 1001;
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getDataItemPoolHashListFor' ) )
+			->getMock();
+
+		$idTable->expects( $this->once() )
+			->method( 'getDataItemPoolHashListFor' );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'select' )
+			->with(
+				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
+				$this->anything(),
+				$this->equalTo( array( 'o_id' => array( 42 ) ) ) )
+			->will( $this->returnValue( array( $row ) ) );
+
+		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionManager->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getObjectIds' ) )
+			->getMockForAbstractClass();
+
+		$store->setConnectionManager( $connectionManager );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dependencyLinksTableUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$dependencyLinksTableUpdater->expects( $this->once() )
+			->method( 'getId' )
+			->will( $this->returnValue( 42 ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$queryResultDependencyListResolver,
+			$dependencyLinksTableUpdater
+		);
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setLimit( 1 );
+		$requestOptions->setOffset( 200 );
+
+		$instance->findEmbeddedQueryTargetLinksHashListBySubject( DIWikiPage::newFromText( 'Foo' ), $requestOptions );
 	}
 
 	public function testTryDoUpdateDependenciesByWhileBeingDisabled() {

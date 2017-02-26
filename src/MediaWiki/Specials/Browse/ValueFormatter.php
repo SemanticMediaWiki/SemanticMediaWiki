@@ -103,12 +103,19 @@ class ValueFormatter {
 
 	private static function findPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
 
+		$property = $propertyValue->getDataItem();
+		$contextPage = $propertyValue->getContextPage();
+
+		// Change caption for the incoming, Has query instance
+		if ( $incoming && $property->getKey() === '_ASK' && strpos( $contextPage->getSubobjectName(), '_QUERY' ) === false ) {
+			return self::addNonBreakingSpace( wfMessage( 'smw-query-reference-link-label' )->text() );
+		}
+
 		if ( !$incoming || !$showInverse ) {
 			return self::addNonBreakingSpace( $propertyValue->getWikiValue() );
 		}
 
 		$inverseProperty = PropertyValue::makeUserProperty( wfMessage( 'smw_inverse_label_property' )->text() );
-		$property = $propertyValue->getDataItem();
 
 		$dataItems = ApplicationFactory::getInstance()->getStore()->getPropertyValues(
 			$property->getDiWikiPage(),

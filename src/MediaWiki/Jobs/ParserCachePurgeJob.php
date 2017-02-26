@@ -121,7 +121,7 @@ class ParserCachePurgeJob extends JobBase {
 		$requestOptions->setLimit( $this->limit + 1 );
 		$requestOptions->setOffset( $this->offset );
 
-		$hashList = $queryDependencyLinksStore->findEmbeddedQueryTargetLinksHashListFor(
+		$hashList = $queryDependencyLinksStore->findEmbeddedQueryTargetLinksHashListFrom(
 			$idList,
 			$requestOptions
 		);
