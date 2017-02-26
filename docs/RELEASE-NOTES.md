@@ -22,7 +22,7 @@ Semantic MediaWiki now supports the declaration of [preferred property labels](h
 
 ### Query result cache
 
-An experimental support was added (#1251) to allow caching of query results and hereby minimize a possible impact of query processing during and after a page view. This change also includes a reevaluation (#2099, #2176) of the query hash (used as identifier) to ensure that cache fragmentation is reduced and duplicate queries can share the same cache across different pages.
+An experimental feature (#1251) to support caching of query results and hereby minimize a possible impact of query processing during and after a page view. This change also includes a reevaluation (#2099, #2176) of the query hash (used as identifier) to ensure that cache fragmentation is reduced and duplicate queries can share the same cache across different pages.
 
 * #2135
 
@@ -37,6 +37,7 @@ An experimental support was added (#1251) to allow caching of query results and 
 * [#1418](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1418) Added recognition for image formatting options in query results
 * [#1481](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1481) Added full-text `MySQL`/`MariaDB` search support to the `SQLStore` (see #1481 for limitations and features supported)
 * [#1652](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1652) Added support for approximate search queries that contain a namespace `[[Help:~Abc*]]`
+* [#1691](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1691) Added language fallback for special properties
 * [#1708](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1708) Added the [External identifier](https://www.semantic-mediawiki.org/wiki/Help:Type_External_identifier) type
 * [#1718](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1718) Added feature flag `SMW_DV_NUMV_USPACE` to allow preserving spaces in unit labels
 * [#1747](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1747) Extended `InTextAnnotationParser` to check for a possible pipe syntax in combination with `::`
@@ -91,14 +92,16 @@ An experimental support was added (#1251) to allow caching of query results and 
 * [#2270](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2270) Added query parameters recording in the [query profiler](https://www.semantic-mediawiki.org/wiki/Help:Query_profiler)
 * [#2281](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2281) Added check to detect a divergent type specification for an imported declaration
 * [#2282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2282) Added `$smwgPropertyInvalidCharacterList` for a stricter naming validation of property labels
+* #2285
+* [#2290](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2290) Added [query reference](https://www.semantic-mediawiki.org/wiki/Query_reference) links section to `Special:Browse`
 
 ## Bug fixes
 
-* #1258
-* #1328 Fixed a "Undefined index: language" error in `#smwdoc` parser function
-* #1709
-* #1713 Fixed a "Segmentation fault" when `QueryResultDependencyListResolver` tries to resolve a category/property hierarchy with a circular reference
-* #1715 Fixed decoding of a single quotation mark in `DisplayTitlePropertyAnnotator`
+* [#1258](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1258) Fixed "named args" parameter use in further results link
+* [#1328](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1328) Fixed a "Undefined index: language" error in `#smwdoc` parser function
+* [#1709](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1709) Fixed a potential "Lock wait timeout exceeded; try restarting transaction" in connection with `--procs`
+* [#1713](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1713) Fixed a "Segmentation fault" for when `QueryResultDependencyListResolver` tries to resolve a category/property hierarchy with a circular reference
+* [#1715](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1715) Fixed decoding of a single quotation mark in `DisplayTitlePropertyAnnotator`
 * #1724 Fixed a possible `InvalidArgumentException` in connection with `SMW_DV_PVUC` by updating the `CachedPropertyValuesPrefetcher` version number
 * #1727 Fixed an issue when property names contain `<` or `>` symbols
 * #1728 Fixed fatal error in `Special:SearchByProperty` on when the property name contains invalid characters
@@ -142,12 +145,13 @@ An experimental support was added (#1251) to allow caching of query results and 
 * #1780 Added `ResourceBuilder` and `DispatchingResourceBuilder`
 * #1791 Added `PropertyRegistry::registerPropertyDescriptionByMsgKey`
 * #1776 Added `QueryEngine` and `StoreAware` interface
+* [#1848](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1848) Added `ExtraneousLanguage` to handle Semantic MediaWiki specific `i18n` content in a `JSON` format, removed the `PHP` language files
 * #1940 Added `Installer` and `TableSchemaManager` to replace `SMWSQLStore3SetupHandlers`
 * [#2118](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2118) Added the `onoi/shared-resources~0.3` dependency
-* #2201
-* #2214
-* #2217
-* [#2275](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2275) Changed the `onoi/callback-container:~2.0` dependency
+* [#2201](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2201) Changed normalization of spaces to `_` instead of `%20` in `DIUri`
+* [#2214](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2214) Added `LinksProcessor` and `SemanticLinksParser`
+* [#2217](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2217) Added `QuerySegmentListBuildManager`
+* [#2275](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2275) Added the `onoi/callback-container:~2.0` dependency
 * [#2282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2282) Added `DataValueServiceFactory` and `DataValueServices.php` to allow injection of services into a `DataValue` instance
 
 ## Settings changes
