@@ -169,7 +169,6 @@ class PropertyListByApiRequest {
 		);
 
 		$propertyListLookup = $this->store->getPropertiesSpecial( $requestOptions );
-		$isFromCache = $propertyListLookup->isFromCache();
 
 		// Restore original limit
 		$requestOptions->limit--;
@@ -190,7 +189,7 @@ class PropertyListByApiRequest {
 		$this->meta = array(
 			'limit' => $requestOptions->limit,
 			'count' => count( $this->propertyList ),
-			'isCached' => $isFromCache
+			'isCached' => $propertyListLookup->isFromCache()
 		);
 
 		return true;
