@@ -373,7 +373,7 @@ class Factbox {
 
 				$dataValue = $this->dataValueFactory->newDataValueByItem( $dataItem, $propertyDi );
 				$dataValue->setOutputFormat( 'LOCL' );
-				$dataValue->disableServiceLinks();
+				$dataValue->setOption( $dataValue::OPT_DISABLE_INFOLINKS, true );
 
 				if ( $dataValue->isValid() ) {
 					$valuesHtml[] = Sanitizer::removeHTMLtags(
