@@ -203,7 +203,7 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetDataItemPoolHashListFor() {
+	public function testGetDataItemsFromList() {
 
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
@@ -228,7 +228,7 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			new IteratorFactory()
 		);
 
-		foreach ( $instance->getDataItemPoolHashListFor( array( 42 ) ) as $value ) {
+		foreach ( $instance->getDataItemsFromList( array( 42 ) ) as $value ) {
 			$this->assertEquals(
 				'Foo#0##',
 				$value

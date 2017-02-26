@@ -516,5 +516,6 @@
 	"smw-edit-protection-enabled":"Edit protected (Semantic MediaWiki)",
 	"smw-patternedit-protection": "This page is protected and can only be edited by users with the appropriate <code>smw-patternedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions permission].",
 	"smw-pa-property-predefined_edip": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to indicate whether editing is protected or not.",
-	"smw-pa-property-predefined-long_edip": "While any user is qualified to add this property to a subject, only a user with a dedicated permission can edit or revoke the protection to an entity after it has been added."
+	"smw-pa-property-predefined-long_edip": "While any user is qualified to add this property to a subject, only a user with a dedicated permission can edit or revoke the protection to an entity after it has been added.",
+	"smw-query-reference-link-label" : "Query reference"
 }

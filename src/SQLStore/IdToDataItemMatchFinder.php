@@ -7,6 +7,7 @@ use SMW\HashBuilder;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Database;
 use SMW\IteratorFactory;
+use SMW\RequestOptions;
 
 /**
  * @license GNU GPL v2+
@@ -75,10 +76,21 @@ class IdToDataItemMatchFinder {
 	 * @since 2.3
 	 *
 	 * @param array $idList
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public function getDataItemPoolHashListFor( array $idList ) {
+	public function getDataItemsFromList( array $idList, RequestOptions $requestOptions = null ) {
+
+		$conditions = array(
+			'smw_id' => $idList,
+		);
+
+		if ( $requestOptions !== null ) {
+			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
+				$conditions[] = $extraCondition;
+			}
+		}
 
 		$rows = $this->connection->select(
 			\SMWSQLStore3::ID_TABLE,
@@ -88,7 +100,7 @@ class IdToDataItemMatchFinder {
 				'smw_iw',
 				'smw_subobject'
 			),
-			array( 'smw_id' => $idList ),
+			$conditions,
 			__METHOD__
 		);
 

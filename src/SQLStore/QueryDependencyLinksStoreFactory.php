@@ -7,6 +7,7 @@ use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
 use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
+use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
 use SMW\Store;
 
 /**
@@ -44,7 +45,7 @@ class QueryDependencyLinksStoreFactory {
 	 *
 	 * @return QueryDependencyLinksStore
 	 */
-	public function newQueryDependencyLinksStore( $store ) {
+	public function newQueryDependencyLinksStore( Store $store ) {
 
 		$logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 		$dependencyLinksTableUpdater = new DependencyLinksTableUpdater( $store );
@@ -81,6 +82,8 @@ class QueryDependencyLinksStoreFactory {
 	 */
 	public function newEntityIdListRelevanceDetectionFilter( Store $store, CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		$entityIdListRelevanceDetectionFilter = new EntityIdListRelevanceDetectionFilter(
 			$store,
 			$compositePropertyTableDiffIterator
@@ -91,14 +94,25 @@ class QueryDependencyLinksStoreFactory {
 		);
 
 		$entityIdListRelevanceDetectionFilter->setPropertyExemptionlist(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDependencyPropertyExemptionlist' )
+			$settings->get( 'smwgQueryDependencyPropertyExemptionlist' )
 		);
 
 		$entityIdListRelevanceDetectionFilter->setAffiliatePropertyDetectionlist(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDependencyAffiliatePropertyDetectionlist' )
+			$settings->get( 'smwgQueryDependencyAffiliatePropertyDetectionlist' )
 		);
 
 		return $entityIdListRelevanceDetectionFilter;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Store $store
+	 *
+	 * @return QueryReferenceBacklinks
+	 */
+	public function newQueryReferenceBacklinks( Store $store ) {
+		return new QueryReferenceBacklinks( $this->newQueryDependencyLinksStore( $store ) );
 	}
 
 }

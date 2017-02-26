@@ -108,4 +108,34 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testDoQueryLinksReferences() {
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getIDFor' ) )
+			->getMock();
+
+		$idTable->expects( $this->atLeastOnce() )
+			->method( 'getIDFor' )
+			->will( $this->onConsecutiveCalls( 42 ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getObjectIds' ) )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', array() );
+		$pageRequestOptions->initialize();
+
+		$instance = new QueryResultLookup( $store );
+
+		$this->assertInternaltype(
+			'array',
+			$instance->doQueryLinksReferences( $pageRequestOptions, 1 )
+		);
+	}
+
 }

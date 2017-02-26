@@ -140,6 +140,7 @@ class PageBuilder {
 	private function getResultHtml() {
 
 		$resultList = '';
+		$resultMessage = '';
 
 		if ( $this->pageRequestOptions->propertyString === '' || !$this->pageRequestOptions->propertyString ) {
 			return array( $this->messageBuilder->getMessage( 'smw_sbv_docu' )->text(), '', 0 );
@@ -152,6 +153,14 @@ class PageBuilder {
 
 		if ( $this->pageRequestOptions->valueString !== '' && !$this->pageRequestOptions->value->isValid() ) {
 			return array( ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->value->getErrors() ), '', 0 );
+		}
+
+		// Find out where the subject is used in connection with a query
+		if ( $this->isAskQueryLinksRelatedRequest() ) {
+			$exactResults = $this->queryResultLookup->doQueryLinksReferences( $this->pageRequestOptions );
+			$exactCount = count( $exactResults );
+			$resultList = $this->makeResultList( $exactResults, $this->pageRequestOptions->limit, true );
+			return array( str_replace( '_', ' ', $resultMessage ), $resultList, $exactCount );
 		}
 
 		$exactResults = $this->queryResultLookup->doQuery( $this->pageRequestOptions );
@@ -321,7 +330,11 @@ class PageBuilder {
 	}
 
 	private function canShowSearchByPropertyLink ( DataValue $dataValue ) {
-		$dataTypeClass = DataTypeRegistry::getInstance()->getDataTypeClassById( $dataValue->getTypeID() );
+
+		$dataTypeClass = DataTypeRegistry::getInstance()->getDataTypeClassById(
+			$dataValue->getTypeID()
+		);
+
 		return $this->pageRequestOptions->value instanceof $dataTypeClass && $this->pageRequestOptions->valueString === '';
 	}
 
@@ -366,6 +379,13 @@ class PageBuilder {
 		}
 
 		return array( $resultMessage, $resultList, $resultCount );
+	}
+
+	private function isAskQueryLinksRelatedRequest() {
+		return $this->pageRequestOptions->property !== '' &&
+			$this->pageRequestOptions->property->getDataItem()->getKey() === '_ASK' &&
+			$this->pageRequestOptions->value->isValid() &&
+			strpos( $this->pageRequestOptions->value->getWikiValue(), '_QUERY' ) === false;
 	}
 
 }
