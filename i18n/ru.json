@@ -376,7 +376,6 @@
 	"smw-pa-property-predefined_errp": "«$1» — это предварительно определенное свойство для отслеживания ошибок ввода аннотаций нерегулярных значений, что были, вероятно, вызваны ограничениями типа или [[Property:Allows value|разрешенных значений]], обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] — \nпредварительно определенное свойство, которое может определять список разрешенных значений, чтобы ограничивать назначение значений для свойства, и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-datavalue-property-restricted-use": "Свойство «$1» было отмечено для ограниченного использования.",
-	"smw-datavalue-property-invalid-name": "Значение «$1» содержит недопустимые символы, например, «$2».",
 	"smw-datavalue-restricted-use": "Значение данных «$1» было отмечено для ограниченного использования.",
 	"smw-datavalue-invalid-number": "«$1» не может быть интерпретировано как число.",
 	"smw-query-condition-circular": "Возможное циклическое условие было обнаружено в «$1».",
@@ -439,5 +438,6 @@
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Скопировать ссылку в буфер обмена",
 	"smw-data-lookup": "Извлечение данных…",
-	"smw-no-data-available": "Нет доступных данных."
+	"smw-no-data-available": "Нет доступных данных.",
+	"smw-query-reference-link-label": "Ссылка на запрос"
 }

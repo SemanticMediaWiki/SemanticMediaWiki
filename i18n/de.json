@@ -416,7 +416,8 @@
 	"smw-pa-property-predefined_errp": "„$1“ ist ein softwareseitig fest definiertes Attribut, das fehlerhafte Attributwerte speichert. Fehlerhafte Attributwerte entsprechen entweder nicht dem [https://semantic-mediawiki.org/wiki/Help:Datentyp Datentyp] des Attributs oder sind nicht als [[Property:Allows value|zulässiger Wert]] für das Attribut definiert worden. Das Attribut wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
 	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert „$1“] ist ein softwareseitig fest definiertes Attribut, mit dem für ein Attribut zulässige Attributwerte definiert werden können und das von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
 	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ wurde zur eingeschränkten Nutzung markiert.",
-	"smw-datavalue-property-invalid-name": "Der Datenwert „$1“ enthält ungültige Zeichen (z.&nbsp;B. „$2“), die in einem Attributnamen nicht vorkommen dürfen.",
+	"smw-datavalue-property-invalid-character": "„$1“ enthält das Zeichen „$2“ als Teil einer Attributbezeichnung und wurde als ungültig klassifiziert.",
+	"smw-datavalue-property-invalid-chain": "Die Verwendung von „$1“ als Attributkette ist während des Annotationsprozesses nicht erlaubt.",
 	"smw-datavalue-restricted-use": "Der Datenwert „$1“ wurde zur eingeschränkten Nutzung markiert.",
 	"smw-datavalue-invalid-number": "„$1“ ist keine gültige Zahl.",
 	"smw-query-condition-circular": "In Vorlage „$1“ wurde ein möglicher Zirkelbezug festgestellt.",
@@ -515,6 +516,7 @@
 	"smw-property-req-violation-missing-fields": "Die Annotation des Attribut „$1“ ist aufgrund des zugewiesenen Datentyps „$2“ unvollständig. Das Spezialattribut <code>Hat Komponenten</code> wurde nicht angegeben.",
 	"smw-property-req-violation-missing-formatter-uri": "Die Annotation des Attributs „$1“ ist aufgrund des zugewiesenen Datentyps unvollständig. Das Spezialattribut „Formatierungsanweisung zur externen URI“ mit einem entsprechenden Wert fehlt.",
 	"smw-property-req-violation-predefined-type": "„$1“ ist ein softwareseitig fest definiertes Attribut. Ihm wurde der Datentyp „$2“ zugewiesen, der nicht mit dem Standardtyp dieses Attributs vereinbar ist.",
+	"smw-property-req-violation-import-type": "Es wurde eine Typdeklaration entdeckt, die mit dem vordefinierten Typ des importierten Vokabulars „$1“ inkompatibel ist. Es ist im Allgemeinen nicht erforderlich, einen Typ festzulegen, da Informationen aus der Importdefinition abgerufen werden.",
 	"protect-level-smw-pageedit": "Nur Benutzern mit der Berechtigung zum Bearbeiten von Seiten erlauben (Semantic MediaWiki)",
 	"smw-edit-protection": "Diese Seite ist [[Property:Is edit protected|bearbeitungsgeschützt]], um unbeabsichtigte Veränderungen an Inhalten und Daten zu verhindern. Sie kann deshalb nur von Benutzern mit der hierfür notwendigen [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups Berechtigung] „$1“ bearbeitet werden.",
 	"smw-edit-protection-disabled": "Der Bearbeitungsschutz mit Hilfe einer Annotation wurde deaktiviert. Daher kann das Spezialattribut „$1“ nicht verwendet werden, um diese Seite vor unerwünschten Bearbeitungen zu schützen.",
@@ -522,5 +524,6 @@
 	"smw-edit-protection-enabled": "Diese Seite wurde mit Semantic MediaWiki vor Bearbeitungen geschützt.",
 	"smw-patternedit-protection": "Diese Seite ist bearbeitungsgeschützt, um unbeabsichtigte Veränderungen an Inhalten zu verhindern. Sie kann deshalb nur von Benutzern mit der hierfür notwendigen Berechtigung „smw-patternedit“ bearbeitet werden.",
 	"smw-pa-property-predefined_edip": "„$1“ ist ein softwareseitig fest definiertes Attribut, das den Status des Bearbeitungsschutzes einer Seite speichert. Es wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
-	"smw-pa-property-predefined-long_edip": "Jeder Benutzer darf dieses Attribut zu einer Seite hinzufügen und so den Bearbeitungsschutz festlegen. Indes dürfen hernach nur Benutzer mit einer entsprechenden Berechtigung die auf diese Weise geschützte Seite bearbeiten und den Bearbeitungsschutz ggf. aufheben."
+	"smw-pa-property-predefined-long_edip": "Jeder Benutzer darf dieses Attribut zu einer Seite hinzufügen und so den Bearbeitungsschutz festlegen. Indes dürfen hernach nur Benutzer mit einer entsprechenden Berechtigung die auf diese Weise geschützte Seite bearbeiten und den Bearbeitungsschutz ggf. aufheben.",
+	"smw-query-reference-link-label": "Abfragereferenz"
 }

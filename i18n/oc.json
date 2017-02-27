@@ -181,6 +181,7 @@
 	"smw-admin-smwhomepage": "La documentacion completa de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Los bugs pòdon èsser someses sus <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-admin-questions": "Avètz d’autras questions o de suggestions, rejonhètz la discussion sul <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">forum dels utilizaires de Semantic MediaWiki</a>.",
+	"smw-admin-supplementary-settings-title": "Paramètres de configuracion",
 	"smw_adminlinks_datastructure": "Estructura de las donadas",
 	"smw_adminlinks_displayingdata": "Afichatge de las donadas",
 	"smw_adminlinks_inlinequerieshelp": "Ajuda sus las requèstas",

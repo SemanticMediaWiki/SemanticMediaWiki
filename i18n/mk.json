@@ -330,7 +330,6 @@
 	"smw-pa-property-predefined_errp": "„$1“ е предодредено својство за следење на грешките во внесувањето кај прибелешките со неправилни вредности, веројатно предизвикани од ограничувањата на [[Property:Allows value|допуштени вредности]] и е преземено од [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантички Медијавики].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value „$1“] е предодредено својство што може да определи список на допуштени вредности за ограничување на вредносните доделувања за дадено својство и е преземено од [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантички Медијавики].",
 	"smw-datavalue-property-restricted-use": "Својството „$1“ е означено за ограничена употреба.",
-	"smw-datavalue-property-invalid-name": "Вредноста „$1“ содржи неважечки знаци (на пр. $2) за називот на својството.",
 	"smw-datavalue-restricted-use": "Податочната вредност „$1“ е означена за ограничена употреба.",
 	"smw-datavalue-invalid-number": "Не можам да го протолкувам „$1“ како број.",
 	"smw-query-condition-circular": "Во „$1“ е утврден можен кружен услов.",

@@ -364,7 +364,6 @@
 	"smw-pa-property-predefined_errp": "\"$1\" é unha propiedade predefinida para rastrexar erros de entrada na busca de anotacións de valores irregulares seguramente causados por restriccións de tipo ou de [[Property:Allows value|valores]]. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] é unha propiedade predefinida que pode definir unha lista de valores posibles para restrinxir a asignación de valores dunha propiedade. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-datavalue-property-restricted-use": "A propiedade \"$1\" foi marcada para uso restrinxido.",
-	"smw-datavalue-property-invalid-name": "O valor de \"$1\" contén caracteres non válidos (p.ex. $2) para un nome de propiedade.",
 	"smw-datavalue-restricted-use": "O valor de datos \"$1\" foi marcado para uso restrinxido.",
 	"smw-datavalue-invalid-number": "Non se pode interpretar \"$1\" coma un número.",
 	"smw-query-condition-circular": "Detectouse unha posible condición circular en \"$1\".",

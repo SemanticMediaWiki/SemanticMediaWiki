@@ -325,7 +325,6 @@
 	"smw-datavalue-import-missing-type": "[[MediaWiki:Smw import $2|$2 가져오기]]에서 \"$1\"에 대한 유형 정의를 찾을 수 없습니다.",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 가져오기]]",
 	"smw-datavalue-property-restricted-use": "\"$1\" 속성은 이용이 제한되어 있습니다.",
-	"smw-datavalue-property-invalid-name": "\"$1\" 값에 이름속성에 맞지 않는 부적절한 문자(예를 들면, $2)가 포함되어있습니다.",
 	"smw-datavalue-restricted-use": "데이터 값 $1은(는) 이용이 제한되어 있습니다.",
 	"smw-datavalue-invalid-number": "\"$1\"는 숫자로 해석되지 않습니다.",
 	"smw-query-condition-circular": "\"$1\" 안에서 잠재적인 순환 조건이 발견되었습니다.",
