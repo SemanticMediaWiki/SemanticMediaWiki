@@ -16,6 +16,10 @@ Qualifying facts using a simple [provenance model](https://www.semantic-mediawik
 
 [Property chain](https://www.semantic-mediawiki.org/wiki/Property_chains_and_paths) for conditions (e.g `[[Located in.Capital of::Foo]]`) was provided for some time, and #1824 extends the support for the syntax on print requests to retrieve values of a chain member that represent a page node. Values of type `MonolingualText` can now use a language filter (#2037) to restrict the display of a value in a print request.
 
+### Edit protection
+
+[Edit protection](https://www.semantic-mediawiki.org/wiki/Edit_protection) to help avoid changes to properties or other data sensitive pages from alterations that may cause data invalidations (e.g. change of a property type, inconsistent specifications etc.) or process disruptions. Integrates with MediaWiki's page protection functionality.
+
 ### Preferred property label support
 
 Semantic MediaWiki now supports the declaration of [preferred property labels](https://www.semantic-mediawiki.org/wiki/Preferred_property_label) (#1865) with the objective to show labels in a user context on special pages, query results, and factboxes instead of the canonical property label.
@@ -28,8 +32,10 @@ An experimental feature (#1251) to support caching of query results and hereby m
 
 ## Compatibility changes
 
-* Requires to run `update.php` to add an extra table column for the URI table (#1872) and a new table for the preferred label property (#1865).
-* 1.29+ adjustments which includes #2149, #2198
+* Minimum requirement for PHP changed to version 5.5 and later
+* Minimum requirement for MediaWiki changed to version 1.23 and later (1.27 and later recommended)
+* Forward comatibility with MediaWiki 1.29+ adjustments which include #2149, #2198
+* Requires to run `update.php` or `setupStore.php` to add an extra table column for the URI table (#1872) and a new table for the preferred label property (#1865).
 
 ## New features and enhancements
 
@@ -159,18 +165,19 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * Added [$smwgSimilarityLookupExemptionProperty](https://www.semantic-mediawiki.org/wiki/Help:$smwgSimilarityLookupExemptionProperty)
 * Added [$smwgPropertyInvalidCharacterList](https://www.semantic-mediawiki.org/wiki/Help:$smwgPropertyInvalidCharacterList)
 * Added [$smwgEditProtectionRight](https://www.semantic-mediawiki.org/wiki/Help:$smwgEditProtectionRight)
-* Added [$smwgQueryResultCacheRefreshOnPurge](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultCacheRefreshOnPurge)
-* Added [$smwgQueryResultNonEmbeddedCacheLifetime](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultNonEmbeddedCacheLifetime)
 * Added [$smwgQueryResultCacheLifetime](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultCacheLifetime)
+* Added [$smwgQueryResultCacheRefreshOnPurge](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultCacheRefreshOnPurge)
 * Added [$smwgQueryResultCacheType](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultCacheType)
+* Added [$smwgQueryResultNonEmbeddedCacheLifetime](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultNonEmbeddedCacheLifetime)
 * Added [$smwgQTemporaryTablesAutoCommitMode](https://www.semantic-mediawiki.org/wiki/Help:$smwgQTemporaryTablesAutoCommitMode)
 * Added [$smwgQFilterDuplicates](https://www.semantic-mediawiki.org/wiki/Help:$smwgQFilterDuplicates)
-* Added [$smwgFulltextSearchMinTokenSize](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchMinTokenSize)
-* Added [$smwgFulltextSearchIndexableDataTypes](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchIndexableDataTypes)
-* Added [$smwgFulltextSearchPropertyExemptionList](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchPropertyExemptionList)
 * Added [$smwgFulltextSearchTableOptions](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchTableOptions)
-* Added [$smwgFulltextDeferredUpdate](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextDeferredUpdate)
 * Added [$smwgEnabledFulltextSearch](https://www.semantic-mediawiki.org/wiki/Help:$smwgEnabledFulltextSearch)
+* Added [$smwgFulltextDeferredUpdate](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextDeferredUpdate)
+* Added [$smwgFulltextLanguageDetection](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextLanguageDetection)
+* Added [$smwgFulltextSearchIndexableDataTypes](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchIndexableDataTypes)
+* Added [$smwgFulltextSearchMinTokenSize](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchMinTokenSize)
+* Added [$smwgFulltextSearchPropertyExemptionList](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchPropertyExemptionList)
 * Added [$smwgExportResourcesAsIri](https://www.semantic-mediawiki.org/wiki/Help:$smwgExportResourcesAsIri)
 * Added [$smwgDataTypePropertyExemptionList](https://www.semantic-mediawiki.org/wiki/Help:$smwgDataTypePropertyExemptionList)
 * Added [$smwgRedirectPropertyListLimit](https://www.semantic-mediawiki.org/wiki/Help:$smwgRedirectPropertyListLimit)
