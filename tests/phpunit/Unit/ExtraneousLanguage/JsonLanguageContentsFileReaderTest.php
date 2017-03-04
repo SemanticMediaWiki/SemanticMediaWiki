@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\ExtraneousLanguage;
 
-use SMW\ExtraneousLanguage\LanguageJsonFileContentsReader;
+use SMW\ExtraneousLanguage\JsonLanguageContentsFileReader;
 
 /**
- * @covers \SMW\ExtraneousLanguage\LanguageJsonFileContentsReader
+ * @covers \SMW\ExtraneousLanguage\JsonLanguageContentsFileReader
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,13 +13,13 @@ use SMW\ExtraneousLanguage\LanguageJsonFileContentsReader;
  *
  * @author mwjames
  */
-class LanguageJsonFileContentsReaderTest extends \PHPUnit_Framework_TestCase {
+class JsonLanguageContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\ExtraneousLanguage\LanguageJsonFileContentsReader',
-			new LanguageJsonFileContentsReader()
+			'\SMW\ExtraneousLanguage\JsonLanguageContentsFileReader',
+			new JsonLanguageContentsFileReader()
 		);
 	}
 
@@ -28,7 +28,7 @@ class LanguageJsonFileContentsReaderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testReadByLanguageCode( $languageCode ) {
 
-		$instance = new LanguageJsonFileContentsReader();
+		$instance = new JsonLanguageContentsFileReader();
 
 		$this->assertInternalType(
 			'array',
@@ -53,7 +53,7 @@ class LanguageJsonFileContentsReaderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new LanguageJsonFileContentsReader( $cache );
+		$instance = new JsonLanguageContentsFileReader( $cache );
 		$instance->clear();
 
 		$this->assertInternalType(
@@ -64,7 +64,7 @@ class LanguageJsonFileContentsReaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testReadByLanguageCodeToUseInMemoryCache() {
 
-		$instance = $this->getMock( LanguageJsonFileContentsReader::class,
+		$instance = $this->getMock( JsonLanguageContentsFileReader::class,
 			array(
 				'doReadJsonContentsFromFileBy',
 				'getModificationTimeByLanguageCode'
@@ -87,7 +87,7 @@ class LanguageJsonFileContentsReaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testReadByLanguageCodeIsForcedToRereadFromFile() {
 
-		$instance = $this->getMock( LanguageJsonFileContentsReader::class,
+		$instance = $this->getMock( JsonLanguageContentsFileReader::class,
 			array(
 				'doReadJsonContentsFromFileBy',
 				'getModificationTimeByLanguageCode'
@@ -108,7 +108,7 @@ class LanguageJsonFileContentsReaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryToReadInaccessibleFileByLanguageThrowsException() {
 
-		$instance = new LanguageJsonFileContentsReader();
+		$instance = new JsonLanguageContentsFileReader();
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->readByLanguageCode( 'foo', true );
@@ -123,7 +123,7 @@ class LanguageJsonFileContentsReaderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function WriteToFile( $topic, $extension ) {
 
-		$instance = new LanguageJsonFileContentsReader();
+		$instance = new JsonLanguageContentsFileReader();
 		$list ='ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
 
 		foreach ( explode( ',', $list ) as $lang ) {
@@ -144,7 +144,7 @@ class LanguageJsonFileContentsReaderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetModificationTimeByLanguageCode( $languageCode ) {
 
-		$instance = new LanguageJsonFileContentsReader();
+		$instance = new JsonLanguageContentsFileReader();
 
 		$this->assertInternalType(
 			'integer',
