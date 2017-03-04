@@ -47,7 +47,10 @@ final class Setup {
 	 */
 	public function run() {
 		$this->addSomeDefaultConfigurations();
-		$this->registerSettings();
+
+		if ( CompatibilityMode::extensionNotEnabled() ) {
+			CompatibilityMode::disableSemantics();
+		}
 
 		$this->registerConnectionProviders();
 		$this->registerMessageCallbackHandler();
@@ -81,17 +84,6 @@ final class Setup {
 
 		if ( is_file( $this->directory . "/res/Resources.php" ) ) {
 			$this->globalVars['wgResourceModules'] = array_merge( $this->globalVars['wgResourceModules'], include ( $this->directory . "/res/Resources.php" ) );
-		}
-	}
-
-	private function registerSettings() {
-		$this->applicationFactory->registerObject(
-			'Settings',
-			Settings::newFromGlobals( $this->globalVars )
-		);
-
-		if ( CompatibilityMode::extensionNotEnabled() ) {
-			CompatibilityMode::disableSemantics();
 		}
 	}
 
