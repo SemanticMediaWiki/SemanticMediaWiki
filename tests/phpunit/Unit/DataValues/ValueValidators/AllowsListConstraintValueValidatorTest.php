@@ -3,11 +3,11 @@
 namespace SMW\Tests\DataValues\ValueValidators;
 
 use SMW\DataItemFactory;
-use SMW\DataValues\ValueValidators\ListConstraintValueValidator;
+use SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\DataValues\ValueValidators\ListConstraintValueValidator
+ * @covers \SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,15 +15,20 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
+class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
+	private $allowsListValueParser;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
+
+		$this->allowsListValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsListValueParser' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -39,8 +44,8 @@ class ListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueValidators\ListConstraintValueValidator',
-			new ListConstraintValueValidator()
+			'\SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator',
+			new AllowsListConstraintValueValidator( $this->allowsListValueParser )
 		);
 	}
 
@@ -51,6 +56,10 @@ class ListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValuesBy' )
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Foo' ) ) ) );
+
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getAllowedListValueBy' )
+			->will( $this->returnValue( array() ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -69,7 +78,9 @@ class ListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
 
-		$instance = new ListConstraintValueValidator();
+		$instance = new AllowsListConstraintValueValidator(
+			$this->allowsListValueParser
+		);
 
 		$instance->validate( $dataValue );
 
@@ -86,6 +97,10 @@ class ListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getAllowedValuesBy' )
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'NOTALLOWED' ) ) ) );
 
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getAllowedListValueBy' )
+			->will( $this->returnValue( array() ) );
+
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'getProperty', 'getDataItem', 'getTypeID' ) )
@@ -103,7 +118,9 @@ class ListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
 
-		$instance = new ListConstraintValueValidator();
+		$instance = new AllowsListConstraintValueValidator(
+			$this->allowsListValueParser
+		);
 
 		$instance->validate( $dataValue );
 

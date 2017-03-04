@@ -109,7 +109,8 @@ class TypeList {
 			// Sort key of a page
 			'__key' => array( 'SMWStringValue', DataItem::TYPE_BLOB, false ),
 			LanguageCodeValue::TYPE_ID => array( LanguageCodeValue::class, DataItem::TYPE_BLOB, false ),
-			'__pval' => array( AllowsListValue::class, DataItem::TYPE_BLOB, false ),
+			AllowsValue::TYPE_ID => array( AllowsValue::class, DataItem::TYPE_BLOB, false ),
+			AllowsListValue::TYPE_ID => array( AllowsListValue::class, DataItem::TYPE_BLOB, false ),
 			AllowsPatternValue::TYPE_ID => array( AllowsPatternValue::class, DataItem::TYPE_BLOB, false ),
 			'__pvuc' => array( UniquenessConstraintValue::class, DataItem::TYPE_BOOLEAN, false ),
 			'__pefu' => array( ExternalFormatterUriValue::class, DataItem::TYPE_URI, false )

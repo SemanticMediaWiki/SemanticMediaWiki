@@ -484,6 +484,7 @@ class PropertyRegistry {
 			'_TEXT'  => array( '_txt', true, true ), // "Text"
 			'_PDESC' => array( '_mlt_rec', true, true ), // "Property description"
 			'_PVAP'  => array( '__pvap', true, true ), // "Allows pattern"
+			'_PVALI'  => array( '__pvali', true, true ), // "Allows value list"
 			'_DTITLE' => array( '_txt', false, true ), // "Display title of"
 			'_PVUC'  => array( '__pvuc', true, true ), // Uniqueness constraint
 			'_PEID'  => array( '_eid', true, true ), // External identifier

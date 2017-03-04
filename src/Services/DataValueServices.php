@@ -9,13 +9,15 @@ use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
+use SMW\DataValues\ValueParsers\AllowsListValueParser;
+use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMWPropertyValue as PropertyValue;
 use SMWStringValue as StringValue;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
-use SMW\DataValues\ValueValidators\ListConstraintValueValidator;
+use SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
 
 /**
@@ -84,6 +86,21 @@ return array(
 	},
 
 	/**
+	 * AllowsListValueParser
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID,
+			AllowsListValueParser::class
+		);
+
+		return new AllowsListValueParser( $containerBuilder->singleton( 'MediaWikiNsContentReader' ) );
+	},
+
+	/**
 	 * CompoundConstraintValueValidator
 	 *
 	 * @return callable
@@ -111,8 +128,12 @@ return array(
 			$patternConstraintValueValidator
 		);
 
+		$allowsListConstraintValueValidator = new AllowsListConstraintValueValidator(
+			$containerBuilder->create( DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID )
+		);
+
 		$compoundConstraintValueValidator->registerConstraintValueValidator(
-			new ListConstraintValueValidator()
+			$allowsListConstraintValueValidator
 		);
 
 		$compoundConstraintValueValidator->registerConstraintValueValidator(

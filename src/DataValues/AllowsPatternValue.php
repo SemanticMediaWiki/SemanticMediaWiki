@@ -68,7 +68,7 @@ class AllowsPatternValue extends StringValue {
 			return '';
 		}
 
-		return '[['. Localizer::getInstance()->getNamespaceTextById( NS_MEDIAWIKI ) . ':smw allows pattern' . '|' . $this->getDataItem()->getString() .' ]]';
+		return '[['. Localizer::getInstance()->getNamespaceTextById( NS_MEDIAWIKI ) . ':smw allows pattern' . '|' . $this->getDataItem()->getString() .']]';
 	}
 
 }
