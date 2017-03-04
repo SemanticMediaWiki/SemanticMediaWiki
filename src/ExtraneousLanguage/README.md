@@ -85,12 +85,12 @@ The location of the files is determined by the `smwgExtraneousLanguageFileDir` s
 
 ## Technical notes
 
-* `ExtraneousLanguage` provide the language functions provided by the files
+* `ExtraneousLanguage` interface for the language functions
   * `LanguageContents` to provide the raw content from a corresponding language file
     * `JsonLanguageContentsFileReader` providing access to the contents of a `JSON` file
     * `LanguageFallbackFinder` is responsible for resolving a fallback language
 
-### Settings
+### Related settings
 
 * [`smwgHistoricTypeNamespace`](https://www.semantic-mediawiki.org/wiki/Help:$smwgHistoricTypeNamespace)
 * [`smwgExtraneousLanguageFileDir`](https://www.semantic-mediawiki.org/wiki/Help:$smwgExtraneousLanguageFileDir)
