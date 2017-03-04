@@ -234,6 +234,34 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetAllowedListValueBy() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Has list' );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PVALI' ) ),
+				$this->anything() )
+			->will(
+				$this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Foo' ) ) ) );
+
+		$this->intermediaryMemoryCache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->intermediaryMemoryCache
+		);
+
+		$this->assertEquals(
+			array( 'Foo' ),
+			$instance->getAllowedListValueBy( $property )
+		);
+	}
+
 	public function testGetAllowedValues() {
 
 		$expected =  array(

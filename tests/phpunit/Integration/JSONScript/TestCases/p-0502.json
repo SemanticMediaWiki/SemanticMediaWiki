@@ -1,0 +1,104 @@
+{
+	"description": "Test in-text annotation allows value list (`wgContLang=en`)",
+	"setup": [
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw allows list Publication categories",
+			"contents": {
+				"import-from": "/../Fixtures/p-0502.txt"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has list",
+			"contents": "[[Has type::Text]] [[Allows value list::Publication categories]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has combined list",
+			"contents": "[[Has type::Text]] [[Allows value list::Publication categories]] [[Allows value::abc]]"
+		},
+		{
+			"page": "Example/P0502/1",
+			"contents": "[[Has list::abc]]"
+		},
+		{
+			"page": "Example/P0502/2",
+			"contents": "[[Has list::Document]] [[Has list::Manuscript]]"
+		},
+		{
+			"page": "Example/P0502/3",
+			"contents": "[[Has combined list::abc]] [[Has combined list::Manuscript]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 invalid assignment",
+			"subject": "Example/P0502/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 valid assignment",
+			"subject": "Example/P0502/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has list"
+					],
+					"propertyValues": [
+						"Document",
+						"Manuscript"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 valid assignment",
+			"subject": "Example/P0502/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has combined list"
+					],
+					"propertyValues": [
+						"abc",
+						"Manuscript"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

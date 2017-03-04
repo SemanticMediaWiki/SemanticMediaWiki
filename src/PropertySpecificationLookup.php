@@ -253,6 +253,25 @@ class PropertySpecificationLookup {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return array
+	 */
+	public function getAllowedListValueBy( DIProperty $property ) {
+
+		$allowsListValue = array();
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVALI' ) );
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+			$allowsListValue = $dataItems;
+		}
+
+		return $allowsListValue;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param DIProperty $property
