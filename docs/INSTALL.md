@@ -55,7 +55,7 @@ Remember to add a comma to the end of the preceding line in this section.
 
 ##### Step 4
 
-Run the following command your shell:
+Run the following command in your shell:
 
     php composer.phar update --no-dev
 
@@ -81,7 +81,7 @@ Note that "example.org" should be replaced by your wiki's domain.
 
 If you are installing SMW on a freshly installed wiki continue to the next step. If the wiki already has content
 pages run the Semantic MediaWiki [data rebuild script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_"rebuildData.php"). The location of this script
-is `extensions/SemanticMediaWiki/maintenance/rebuildData.php`. it can be run as follows in your shell:
+is `extensions/SemanticMediaWiki/maintenance/rebuildData.php`. It can be run as follows in your shell:
 
    php extensions/SemanticMediaWiki/maintenance/rebuildData.php -v
 
@@ -117,7 +117,7 @@ Note that "example.org" should be replaced by your wiki's domain.
 
 #### Step 3
 
-Log in as a user with administrator permission to your wiki and go to the page "Special:SemanticMediaWiki": 
+Log in as a user with administrator permission to your wiki and go to the page "Special:SemanticMediaWiki":
 
 Click on the "Initialise or upgrade tables" button in the "Database installation and upgrade" section to setup the
 database.
