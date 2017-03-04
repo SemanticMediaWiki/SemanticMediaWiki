@@ -239,6 +239,8 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 </table>
 
+Note that MS SQL Server and Oracle are not supported as database backends.
+
 ### Triple store support
 
 <table>
