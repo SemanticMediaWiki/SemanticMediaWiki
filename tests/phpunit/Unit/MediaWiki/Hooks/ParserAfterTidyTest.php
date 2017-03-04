@@ -5,7 +5,8 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\Tests\Utils\Mock\MockTitle;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
+use SMW\DataItemFactory;
 use Title;
 
 /**
@@ -22,20 +23,11 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataValidator;
 	private $applicationFactory;
 	private $parserFactory;
+	private $spyLogger;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
-
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-		$this->parserFactory =  UtilityFactory::getInstance()->newParserFactory();
-
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$settings = array(
 			'smwgDeclarationProperties' => array(),
@@ -43,14 +35,24 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnableUpdateJobs' => false
 		);
 
-		foreach ( $settings as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
+		$this->testEnvironment = new TestEnvironment( $settings );
+		$this->dataItemFactory = new DataItemFactory();
+
+		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -60,11 +62,9 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$text  = '';
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\ParserAfterTidy',
-			new ParserAfterTidy( $parser, $text )
+			new ParserAfterTidy( $parser )
 		);
 	}
 
@@ -94,7 +94,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $parameters ) {
 
-		$this->applicationFactory->registerObject( 'Store', $parameters['store'] );
+		$this->testEnvironment->registerObject( 'Store', $parameters['store'] );
 
 		$cache = $this->newMockCache(
 			$parameters['title']->getArticleID(),
@@ -102,7 +102,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			$parameters['cache-fetch']
 		);
 
-		$this->applicationFactory->registerObject( 'Cache', $cache );
+		$this->testEnvironment->registerObject( 'Cache', $cache );
 
 		$parser = $this->parserFactory->newFromTitle( $parameters['title'] );
 
@@ -118,10 +118,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$text   = '';
 
-		$instance = new ParserAfterTidy( $parser, $text );
+		$instance = new ParserAfterTidy( $parser );
 
 		$this->assertTrue(
-			$instance->process()
+			$instance->process( $text )
 		);
 	}
 
@@ -135,9 +135,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			'smwgShowHiddenCategories'  => true
 		);
 
-		foreach ( $settings as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
+		$this->testEnvironment->withConfiguration( $settings );
 
 		$text   = '';
 		$title  = Title::newFromText( __METHOD__ );
@@ -148,8 +146,11 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$parser->getOutput()->addCategory( 'Bar', 'Bar' );
 		$parser->getOutput()->setProperty( 'smw-semanticdata-status', true );
 
-		$instance = new ParserAfterTidy( $parser, $text );
-		$this->assertTrue( $instance->process() );
+		$instance = new ParserAfterTidy( $parser );
+
+		$this->assertTrue(
+			$instance->process( $text  )
+		);
 
 		$expected = array(
 			'propertyCount'  => 2,

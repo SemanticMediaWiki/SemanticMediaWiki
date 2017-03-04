@@ -138,11 +138,14 @@ class HookRegistry {
 		$this->handlers['ParserAfterTidy'] = function ( &$parser, &$text ) {
 
 			$parserAfterTidy = new ParserAfterTidy(
-				$parser,
-				$text
+				$parser
 			);
 
-			return $parserAfterTidy->process();
+			$parserAfterTidy->isCommandLineMode(
+				$GLOBALS['wgCommandLineMode']
+			);
+
+			return $parserAfterTidy->process( $text );
 		};
 
 		/**
