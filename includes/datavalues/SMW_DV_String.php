@@ -18,6 +18,21 @@ use SMWDIBlob as DIBlob;
 class SMWStringValue extends DataValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_txt';
+
+	/**
+	 * DV identifier
+	 */
+	const TYPE_LEGACY_ID = '_str';
+
+	/**
+	 * DV identifier
+	 */
+	const TYPE_COD_ID = '_cod';
+
+	/**
 	 * @see DataValue::parseUserValue
 	 *
 	 * @param string $value
@@ -56,7 +71,7 @@ class SMWStringValue extends DataValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
 	/**
@@ -65,7 +80,7 @@ class SMWStringValue extends DataValue {
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
 	/**
@@ -74,7 +89,7 @@ class SMWStringValue extends DataValue {
 	 * @return string
 	 */
 	public function getLongWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
@@ -84,7 +99,7 @@ class SMWStringValue extends DataValue {
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
 	/**
@@ -93,7 +108,7 @@ class SMWStringValue extends DataValue {
 	 * @return string
 	 */
 	public function getWikiValue() {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::VALUE );
 	}
 
 	public function getWikiValueByLengthOf( $length ) {

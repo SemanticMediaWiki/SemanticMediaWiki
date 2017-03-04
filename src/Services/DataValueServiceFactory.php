@@ -6,6 +6,12 @@ use Onoi\CallbackContainer\ContainerBuilder;
 use Onoi\CallbackContainer\Exception\ServiceNotFoundException;
 use SMW\DataValues\InfoLinksProvider;
 use SMWDataValue as DataValue;
+use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
+use SMW\DataValues\ValueFormatters\NoValueFormatter;
+use SMW\DataValues\ValueFormatters\NumberValueFormatter;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
+use SMW\DataValues\ValueFormatters\TimeValueFormatter;
+use SMWStringValue as StringValue;
 
 /**
  * @private
@@ -49,6 +55,11 @@ class DataValueServiceFactory {
 	 * @var ContainerBuilder
 	 */
 	private $containerBuilder;
+
+	/**
+	 * @var DispatchingDataValueFormatter
+	 */
+	private $dispatchingDataValueFormatter = null;
 
 	/**
 	 * @since 2.5
@@ -106,9 +117,13 @@ class DataValueServiceFactory {
 	 */
 	public function getValueFormatter( DataValue $dataValue ) {
 
-		$dataValueFormatter = $this->containerBuilder->singleton(
-			self::TYPE_FORMATTER . $dataValue->getTypeID()
-		);
+		$id = self::TYPE_FORMATTER . $dataValue->getTypeID();
+
+		if ( $this->containerBuilder->isRegistered( $id ) ) {
+			$dataValueFormatter = $this->containerBuilder->singleton( $id );
+		} else {
+			$dataValueFormatter = $this->getDispatchableValueFormatter( $dataValue );
+		}
 
 		$dataValueFormatter->setDataValue(
 			$dataValue
@@ -133,6 +148,32 @@ class DataValueServiceFactory {
 	 */
 	public function getPropertySpecificationLookup() {
 		return $this->containerBuilder->singleton( 'PropertySpecificationLookup' );
+	}
+
+	private function getDispatchableValueFormatter( $dataValue ) {
+
+		if ( $this->dispatchingDataValueFormatter === null ) {
+			$this->dispatchingDataValueFormatter = $this->newDispatchingDataValueFormatter();
+		}
+
+		return $this->dispatchingDataValueFormatter->getDataValueFormatterFor( $dataValue );
+	}
+
+	private function newDispatchingDataValueFormatter() {
+
+		$dispatchingDataValueFormatter = new DispatchingDataValueFormatter();
+
+		// To be checked only after DispatchingDataValueFormatter::addDataValueFormatter did
+		// not match any previous registered DataValueFormatters
+		$dispatchingDataValueFormatter->addDefaultDataValueFormatter(
+			$this->containerBuilder->singleton( self::TYPE_FORMATTER . StringValue::TYPE_ID )
+		);
+
+		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NumberValueFormatter() );
+		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new TimeValueFormatter() );
+		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NoValueFormatter() );
+
+		return $dispatchingDataValueFormatter;
 	}
 
 }

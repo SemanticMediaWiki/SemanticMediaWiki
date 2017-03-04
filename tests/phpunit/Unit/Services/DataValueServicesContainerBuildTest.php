@@ -13,6 +13,9 @@ use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\DataValues\ImportValue;
 use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\Settings;
+use SMWStringValue as StringValue;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
+use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 
 /**
  * @group semantic-mediawiki
@@ -89,9 +92,15 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID,
+			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID,
 			array(),
-			ImportValueParser::class
+			StringValueFormatter::class
+		);
+
+		$provider[] = array(
+			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID,
+			array(),
+			CodeStringValueFormatter::class
 		);
 
 		return $provider;

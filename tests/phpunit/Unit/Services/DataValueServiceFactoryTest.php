@@ -76,7 +76,7 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance->getValueParser( $dataValue );
 	}
 
-	public function testGetValueFormatter() {
+	public function testGetValueFormatterOnRegistered() {
 
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
@@ -85,6 +85,36 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$this->containerBuilder->expects( $this->once() )
+			->method( 'isRegistered' )
+			->will( $this->returnValue( true ) );
+
+		$this->containerBuilder->expects( $this->once() )
+			->method( 'singleton' )
+			->with( $this->stringContains( DataValueServiceFactory::TYPE_FORMATTER ) )
+			->will( $this->returnValue( $dataValueFormatter ) );
+
+		$instance = new DataValueServiceFactory(
+			$this->containerBuilder
+		);
+
+		$instance->getValueFormatter( $dataValue );
+	}
+
+	public function testGetValueFormatterOnNonRegistered() {
+
+		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->containerBuilder->expects( $this->once() )
+			->method( 'isRegistered' )
+			->will( $this->returnValue( false ) );
 
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'singleton' )

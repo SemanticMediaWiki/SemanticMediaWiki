@@ -9,6 +9,7 @@ use SMW\Message;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
 use SMWStringValue as StringValue;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
 
 /**
  * @covers \SMW\DataValues\InfoLinksProvider
@@ -116,6 +117,13 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$stringValue = new StringValue( '_txt' );
 
+		$stringValueFormatter = new StringValueFormatter();
+		$stringValueFormatter->setDataValue( $stringValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $stringValueFormatter ) );
+
 		$stringValue->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
 		);
@@ -209,6 +217,13 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$stringValue = new StringValue( '_txt' );
+
+		$stringValueFormatter = new StringValueFormatter();
+		$stringValueFormatter->setDataValue( $stringValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $stringValueFormatter ) );
 
 		$stringValue->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
