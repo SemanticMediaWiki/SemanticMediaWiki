@@ -509,4 +509,32 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider typeToCanonicalLabelProvider
+	 */
+	public function testFindCanonicalPropertyLabelById( $id, $expected ) {
+
+		$instance = PropertyRegistry::getInstance();
+
+		$this->assertSame(
+			$expected,
+			$instance->findCanonicalPropertyLabelById( $id )
+		);
+	}
+
+	public function typeToCanonicalLabelProvider() {
+
+		$provider[] = array(
+			'_txt',
+			'Text'
+		);
+
+		$provider[] = array(
+			'_TEXT',
+			'Text'
+		);
+
+		return $provider;
+	}
+
 }

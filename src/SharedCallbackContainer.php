@@ -420,7 +420,8 @@ class SharedCallbackContainer implements CallbackContainer {
 			$propertyLabelFinder = new PropertyLabelFinder(
 				$containerBuilder->create( 'Store' ),
 				$extraneousLanguage->getPropertyLabels(),
-				$extraneousLanguage->getCanonicalPropertyLabels()
+				$extraneousLanguage->getCanonicalPropertyLabels(),
+				$extraneousLanguage->getCanonicalDatatypeLabels()
 			);
 
 			return $propertyLabelFinder;
