@@ -47,7 +47,7 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * [#1708](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1708) Added the [External identifier](https://www.semantic-mediawiki.org/wiki/Help:Type_External_identifier) type
 * [#1718](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1718) Added feature flag `SMW_DV_NUMV_USPACE` to allow preserving spaces in unit labels
 * [#1747](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1747) Extended `InTextAnnotationParser` to check for a possible pipe syntax in combination with `::`
-* [#1757] Added the [`$smwgQTemporaryTablesAutoCommitMode`](https://www.semantic-mediawiki.org/wiki/Help:$smwgQTemporaryTablesAutoCommitMode) setting to mitigate possible issues with temporary tables in `MySQL` for when `enforce_gtid_consistency=true` is set
+* [#1757](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1757) Added the [`$smwgQTemporaryTablesAutoCommitMode`](https://www.semantic-mediawiki.org/wiki/Help:$smwgQTemporaryTablesAutoCommitMode) setting to mitigate possible issues with temporary tables in `MySQL` for when `enforce_gtid_consistency=true` is set
 * [#1756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1756) Extended the display characteristics of `Special:Browse` to load content via the API back-end (legacy display can be retained by maintaining [`$smwgBrowseByApi`](https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi) with `false`)
 * [#1759](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1759) Improved `Special:Ask` error output
 * [#1760](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1760) Improved handling of `MonolingualTextValue` in `Special:SearchByProperty`
@@ -56,52 +56,52 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * [#1779](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1779) Added [`Special:ProcessingErrorList`](https://www.semantic-mediawiki.org/wiki/Help:Special:ProcessingErrorList)
 * [#1793](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1793) Extended date type (`TimeValue`) with an `#LOCL@lang` output format to recognize a specific language tag
 * [#1801](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1801) Added `SQLStore` full-text search support for `SQLite`
-* [#1802](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1802) Extended parsing in `#set_recurring_event` to avoid displaying a `00:00:00` time
+* [#1802](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1802) Extended parsing in `#set_recurring_event` to avoid a `00:00:00` time display
 * [#1809](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1809) Added support for using a property name as index identifier in a print request for the `Record` type
 * [#1808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1808) Added support for recording [provenance data](https://www.semantic-mediawiki.org/wiki/Referenced_statement)
-* [#1824](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1824) Added support for the property chain syntax (e.g. `?SomeProperty.Foo) in a print request
-* [#1838](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1838) Added time zone support in `TimeValue` together with a `#LOCL#TZ` output format
+* [#1824](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1824) Added support for the [property chain](https://www.semantic-mediawiki.org/wiki/Property_chain) syntax (e.g. `?SomeProperty.Foo`) in a print request
+* [#1838](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1838) Added time zone support in `TimeValue` together with the new `#LOCL#TZ` output format
 * [#1854](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1854) Added unescaped output option for `format=json`
-* [#1855](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1855) Added `@@@` as special annotation syntax to generate a property link (e.g `[[Foo::@@@]]` or `[[Foo::@@@en]]`)
-* [#1865](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1865) Added support for preferred property labels using `MonolingualTextValue` to contain a language tag
-* [#1872](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1872) Added support for retrieving and store URI's longer than 255 chars
-* [#1875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1875) Added support for displaying a `title` on tooltips for non JS environments
-* [#1891](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1891) Added support for JSON typed annotation in `#set` and `#subobject` using the `@json` marker
-* [#1927](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1927) Added `$smwgSubPropertyListLimit` to restrict selection of subproperties on the property page
-* [#2007](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2007) Extended `intro` and `outro` parameter to display parsed links in `Special:Ask`
-* [#2024](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2024) Extended `format=template` with option `template arguments` to select a type of used parameters
+* [#1855](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1855) Added `@@@` as special annotation syntax to generate a link to a property (e.g `[[Foo::@@@]]` or `[[Foo::@@@en]]`)
+* [#1865](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1865) Added support for [preferred property labels](https://www.semantic-mediawiki.org/wiki/Preferred_property_label)
+* [#1872](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1872) Added support for retrieving and storing URIs longer than 255 characters
+* [#1875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1875) Added support for displaying a `title` attribute on tooltips for non JS environments
+* [#1891](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1891) Added support for `JSON` typed annotation in `#set` and `#subobject` using the `@json` marker
+* [#1927](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1927) Added [`$smwgSubPropertyListLimit`](https://www.semantic-mediawiki.org/wiki/Help:$smwgSubPropertyListLimit) to restrict selection of subproperties on the property page
+* [#2007](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2007) Extended the `intro` and `outro` parameter to correctly display parsed links in `Special:Ask`
+* [#2024](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2024) Added option `template arguments` in `format=template` to define the type of used parameters
 * [#2027](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2027) Extended `format=table` to display an image (instead of a link) in `Special:Ask`
-* [#2036](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2036) Added output formatting option for text values to reduce the length of a text output (e.g. `|?Has text#20`)
-* [#2037](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2037) Added support for the `|+lang=` printout filter to be applied to the `Monolingual text` type in order to filter a specific language result set
+* [#2036](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2036) Added print request option for text values to reduce the length of a text output (e.g. `|?Has text#20`)
+* [#2037](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2037) Added `|+lang=` as print request filter to specify a language for a `Monolingual text` result instance
 * [#2068](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2068) Extended the `#info` tooltip to work on multiple form sections
-* [#2108](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2108) Extended the`smw.dataItem.time` JS component to support historic dates
+* [#2108](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2108) Extended the `smw.dataItem.time` JS component to support historic dates
 * [#2109](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2109) Extended `Special:Browse` to distinguish between machine and human generate links
-* [#2113](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2113) Extended `Has uniqueness constraint` to use a stricter validation on competing annotations
-* [#2118](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2118) Added a convenience button to `Special:Ask` allowing a query to be copied to the clipboard
-* [#2135](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2135) Changed and fixed the behaviour of the `$smwgFixedProperties` setting to only define the property label of an expected [fixed property](https://www.semantic-mediawiki.org/wiki/Help:Fixed_properties) to ensure consistent typing of property
-* [#2137](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2137) Extended the display of statistics in `Special:Statistics` with the total properties count
-* [#2139](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2139) Added the display of Semantic MediaWiki related job statistics under the subsection of the `Special:SemanticMediaWiki` page
-* [#2142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2142) Added `$smwgAdminFeatures` to support `PropertyStatisticsRebuildJob` and `FulltextSearchTableRebuildJob` from the `Special:SemanticMediaWiki` (formally known as `Special:SMWAdmin`) page, `smwgAdminRefreshStore` was deprecated
-* [#2153](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2153) Changed behaviour of the `$smwgLinksInValues` setting to allow using the `Obfuscator` (`SMW_LINV_OBFU`) instead of `PCRE` to match links in values (e.g. `[[Has text::[[Lorem ipsum]] dolor sit amet, [[Has page::consectetur adipiscing elit]]]]`)
-* [#2157](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2157) Extended property page to show [redirects (synonyms)](https://www.semantic-mediawiki.org/wiki/Redirects)
-* [#2173](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2173) Added support for pretty JSON output in the `CodeStringValueFormatter`
-* [#2176](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2176) Added experimental feature (`smwgQFilterDuplicates`) to filter duplicate query segments
-* [#2204](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2204) Extended `Special:UnusedProperties` and `Special:WantedProperties` to provide a input form
-* [#2207](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2207) Added `smwgExportResourcesAsIri` to allow exporting resources as IRIs
-* [#2209](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2209) Extended parsing of interface messages to support additional `smwgEnabledSpecialPage`
+* [#2113](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2113) Extended the [uniqueness constraint](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_uniqueness_constraint) to apply a stricter validation on competing annotations
+* [#2118](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2118) Added a button to `Special:Ask` to copy the query to the clipboard
+* [#2135](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2135) Changed and fixed the behaviour of the [`$smwgFixedProperties`](https://www.semantic-mediawiki.org/wiki/Help:$smwgFixedProperties) setting for [fixed properties](https://www.semantic-mediawiki.org/wiki/Help:Fixed_properties) to ensure consistent typing
+* [#2137](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2137) Extended the display of statistics in `Special:Statistics`
+* [#2139](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2139) Added the display of Semantic MediaWiki related job statistics under the subsection of the [`Special:SemanticMediaWiki`](https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki) page
+* [#2142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2142) Added `$smwgAdminFeatures` to support `PropertyStatisticsRebuildJob` and `FulltextSearchTableRebuildJob` from the `Special:SemanticMediaWiki` (formally known as `Special:SMWAdmin`) page, the `smwgAdminRefreshStore` setting was deprecated
+* [#2153](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2153) Changed the behaviour of the [`$smwgLinksInValues`](https://www.semantic-mediawiki.org/wiki/Help:$smwgLinksInValues) setting to allow using the `Obfuscator` (`SMW_LINV_OBFU`) approach instead of `PCRE` to match links in values (e.g. `[[Has text::[[Lorem ipsum]] dolor sit amet, [[Has page::consectetur adipiscing elit]]]]`)
+* [#2157](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2157) Extended the property page to show [redirects (synonyms)](https://www.semantic-mediawiki.org/wiki/Redirects) directly
+* [#2173](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2173) Added support for prettified `JSON` output in the `CodeStringValueFormatter`
+* [#2176](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2176) Added an experimental feature [`smwgQFilterDuplicates`](https://www.semantic-mediawiki.org/wiki/Help:$smwgQFilterDuplicates) to filter duplicate query segments
+* [#2204](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2204) Extended `Special:UnusedProperties` and `Special:WantedProperties` to provide an input form
+* [#2207](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2207) Added [`smwgExportResourcesAsIri`](https://www.semantic-mediawiki.org/wiki/Help:$smwgExportResourcesAsIri) to allow exporting resources as IRIs
+* [#2209](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2209) Extended parsing of interface messages to support additional `smwgEnabledSpecialPage` pages
 * [#2221](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2221) Added possibility to show a general message on each property page (`smw-property-introductory-message`) or for a specific type of property (`smw-property-introductory-message-user`, `smw-property-introductory-message-special`)
-* [#2227](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2227) Added warning, error, and info messages for incomplete requirements on a property specification
-* [#2232](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2232) Added support for "Is edit protected" together with `$wgRestrictionLevels` (#2249)
-* [#2243](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2243) Added property and concept namespace to the `$wgContentNamespaces`/`$wgNamespacesToBeSearchedDefault` setting
-* [#2244](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2244) Added `Special:PropertyLabelSimilarity` to help reporting of similarities in property labels
-* [#2253](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2253) Added `#-hl` output formatting option to highlight search tokens in a result set
+* [#2227](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2227) Added warning, error, and info messages for incomplete requirements on a property page
+* [#2232](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2232) Added support for [Is edit protected](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Is_edit_protected) property together with `$wgRestrictionLevels` (#2249)
+* [#2243](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2243) Added property and concept namespace to the `$wgContentNamespaces` and `$wgNamespacesToBeSearchedDefault` setting
+* [#2244](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2244) Added [`Special:PropertyLabelSimilarity`](https://www.semantic-mediawiki.org/wiki/Help:Special:PropertyLabelSimilarity) to help reporting syntactic similarities between property labels
+* [#2253](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2253) Added `#-hl` output formatting option to highlight search tokens within a result set
 * [#2270](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2270) Added query parameters recording in the [query profiler](https://www.semantic-mediawiki.org/wiki/Help:Query_profiler)
-* [#2281](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2281) Added check to detect a divergent type specification for an imported declaration
-* [#2282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2282) Added `$smwgPropertyInvalidCharacterList` for a stricter naming validation of property labels
-* [#2285](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2285) Added `SMW_HTTP_DEFERRED_SYNC_JOB` option to execute secondary updates synchronously
-* [#2289](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2289) Added a [contents importer](https://www.semantic-mediawiki.org/wiki/Help:Contents_importer) to support the setup process with additional data 
+* [#2281](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2281) Added check to detect a divergent type specification for an imported vocabulary
+* [#2282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2282) Added [`$smwgPropertyInvalidCharacterList`](https://www.semantic-mediawiki.org/wiki/Help:$smwgPropertyInvalidCharacterList) to define character validation rules for property labels
+* [#2285](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2285) Added [`SMW_HTTP_DEFERRED_SYNC_JOB`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEnabledHttpDeferredJobRequest) option to execute secondary updates synchronously
+* [#2289](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2289) Added a [contents importer](https://www.semantic-mediawiki.org/wiki/Help:Contents_importer) to support importing of additional data during the setup process
 * [#2290](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2290) Added [query reference](https://www.semantic-mediawiki.org/wiki/Query_reference) links section to `Special:Browse`
-* [#2295](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2295) Added [`Allows value list`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list) to maintain a list of allowed values using a `MediaWiki:Smw allows list ...` reference page
+* [#2295](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2295) Added [`Allows value list`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list) to maintain a list of allowed values using a `NS_MEDIAWIKI` reference page
 
 
 ## Bug fixes
