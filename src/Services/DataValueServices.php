@@ -3,11 +3,13 @@
 namespace SMW\Services;
 
 use SMW\DataValues\ImportValue;
+use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
+use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\DataValues\AllowsListValue;
@@ -191,6 +193,21 @@ return array(
 		);
 
 		return new CodeStringValueFormatter();
+	},
+
+	/**
+	 * ReferenceValueFormatter
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID,
+			ReferenceValueFormatter::class
+		);
+
+		return new ReferenceValueFormatter();
 	},
 
 );
