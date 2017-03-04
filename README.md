@@ -8,7 +8,7 @@
 [![Dependency Status](https://www.versioneye.com/php/mediawiki:semantic-media-wiki/badge.png)](https://www.versioneye.com/php/mediawiki:semantic-media-wiki)
 
 Semantic MediaWiki (a.k.a. SMW) is a free, open-source extension to [MediaWiki]
-(https://semantic-mediawiki.org/wiki/MediaWiki) – the wiki software that
+(https://www.semantic-mediawiki.org/wiki/MediaWiki) – the wiki software that
 powers Wikipedia – that lets you store and query data within the wiki's pages.
 
 Semantic MediaWiki is also a full-fledged framework, in conjunction with
@@ -22,8 +22,8 @@ browse the [SMW wiki](https://www.semantic-mediawiki.org) for a more comprehensi
 
 ## Requirements
 
-- PHP 5.3 or later (5.5 or later recommended)
-- MediaWiki 1.19 or later (1.25 or later recommended)
+- PHP 5.5 or later (5.6 or later recommended)
+- MediaWiki 1.23 or later (1.27 or later recommended)
 - MySQL 5+, SQLite 3+ or PostgreSQL 9.x
 
 A list of supported PHP versions, MediaWiki versions and databases per SMW release can be found
@@ -67,7 +67,7 @@ The overview on [how to contribute](https://github.com/SemanticMediaWiki/Semanti
 provides information on the different ways available to do so.
 
 If you have remarks, questions, or suggestions, please send them to semediawiki-users@lists.sourceforge.net.
-You can subscribe to this list [here](http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user).
+You can subscribe to this list [here](https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/).
 
 If you want to contribute work to the project please subscribe to the developers mailing list and
 have a look at the contribution guideline.
