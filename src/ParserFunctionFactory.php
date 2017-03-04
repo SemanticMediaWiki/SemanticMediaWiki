@@ -31,9 +31,9 @@ class ParserFunctionFactory {
 	/**
 	 * @since 1.9
 	 *
-	 * @param Parser $parser
+	 * @param Parser|null $parser
 	 */
-	public function __construct( Parser $parser ) {
+	public function __construct( Parser $parser = null ) {
 		$this->parser = $parser;
 	}
 
@@ -81,6 +81,10 @@ class ParserFunctionFactory {
 			$parser->getOutput()
 		);
 
+		if ( isset( $parser->getOptions()->smwAskNoDependencyTracking ) ) {
+			$parserData->setOption( $parserData::NO_QUERY_DEP_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
+		}
+
 		$messageFormatter = new MessageFormatter(
 			$parser->getTargetLanguage()
 		);
@@ -110,6 +114,10 @@ class ParserFunctionFactory {
 			$parser->getTitle(),
 			$parser->getOutput()
 		);
+
+		if ( isset( $parser->getOptions()->smwAskNoDependencyTracking ) ) {
+			$parserData->setOption( $parserData::NO_QUERY_DEP_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
+		}
 
 		$messageFormatter = new MessageFormatter(
 			$parser->getTargetLanguage()

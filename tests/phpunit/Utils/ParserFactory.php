@@ -5,6 +5,7 @@ namespace SMW\Tests\Utils;
 use Parser;
 use ParserOptions;
 use SMW\Tests\Utils\Mock\MockSuperUser;
+use SMW\DIWikiPage;
 use Title;
 use User;
 
@@ -17,6 +18,19 @@ use User;
  * @since 2.0
  */
 class ParserFactory {
+
+	public static function create( $title, User $user = null ) {
+
+		if ( is_string( $title ) ) {
+			$title = Title::newFromText( $title );
+		}
+
+		if ( $title instanceof DIWikiPage ) {
+			$title = $title->getTitle();
+		}
+
+		return self::newFromTitle( $title, $user );
+	}
 
 	public static function newFromTitle( Title $title, User $user = null ) {
 

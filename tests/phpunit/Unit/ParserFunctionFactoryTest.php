@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use SMW\DIWikiPage;
 use SMW\ParserFunctionFactory;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\ParserFunctionFactory
@@ -22,7 +22,20 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->parserFactory = UtilityFactory::getInstance()->newParserFactory();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'ParserData', $this->parserData );
+
+		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -47,9 +60,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParserFunctionInstance( $instance, $method ) {
 
-		$parser = $this->parserFactory->newFromTitle(
-			DIWikiPage::newFromText( __METHOD__ )->getTitle()
-		);
+		$parser = $this->parserFactory->create( __METHOD__ );
 
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
 
@@ -64,9 +75,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParserFunctionDefinition( $method, $expected ) {
 
-		$parser = $this->parserFactory->newFromTitle(
-			DIWikiPage::newFromText( __METHOD__ )->getTitle()
-		);
+		$parser = $this->parserFactory->create( __METHOD__ );
 
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
 
@@ -88,6 +97,25 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'integer',
 			$definition[2]
+		);
+	}
+
+	public function testAskParserFunctionWithParserOption() {
+
+		$this->parserData->expects( $this->once() )
+			->method( 'setOption' )
+			->with(
+				$this->equalTo( \SMW\ParserData::NO_QUERY_DEP_TRACE ),
+				$this->anything() );
+
+		$parser = $this->parserFactory->create( __METHOD__ );
+		$parser->getOptions()->smwAskNoDependencyTracking = true;
+
+		$parserFunctionFactory = new ParserFunctionFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\ParserFunctions\AskParserFunction',
+			$parserFunctionFactory->newAskParserFunction( $parser )
 		);
 	}
 

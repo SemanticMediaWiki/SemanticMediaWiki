@@ -10,6 +10,7 @@ use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use SMW\Store;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
+use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -395,7 +396,14 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	}
 
 	private function canUpdateDependencies( $queryResult ) {
-		return $this->isEnabled() && $queryResult instanceof QueryResult && $queryResult->getQuery() !== null && $queryResult->getQuery()->getContextPage() !== null && $queryResult->getQuery()->getLimit() > 0;
+
+		if ( !$this->isEnabled() || !$queryResult instanceof QueryResult ) {
+			return false;
+		}
+
+		$query = $queryResult->getQuery();
+
+		return $query !== null && $query->getContextPage() !== null && $query->getLimit() > 0 && $query->getOption( Query::NO_DEP_TRACE ) !== true;
 	}
 
 	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
