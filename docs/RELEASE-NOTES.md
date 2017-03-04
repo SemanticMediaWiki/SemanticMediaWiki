@@ -98,8 +98,11 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * [#2270](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2270) Added query parameters recording in the [query profiler](https://www.semantic-mediawiki.org/wiki/Help:Query_profiler)
 * [#2281](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2281) Added check to detect a divergent type specification for an imported declaration
 * [#2282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2282) Added `$smwgPropertyInvalidCharacterList` for a stricter naming validation of property labels
-* #2285
+* [#2285](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2285) Added `SMW_HTTP_DEFERRED_SYNC_JOB` option to execute secondary updates synchronously
+* [#2289](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2289) Added a [contents importer](https://www.semantic-mediawiki.org/wiki/Help:Contents_importer) to support the setup process with additional data 
 * [#2290](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2290) Added [query reference](https://www.semantic-mediawiki.org/wiki/Query_reference) links section to `Special:Browse`
+* [#2295](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2295) Added [`Allows value list`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list) to maintain a list of allowed values using a `MediaWiki:Smw allows list ...` reference page
+
 
 ## Bug fixes
 
@@ -142,6 +145,7 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * #2188
 * #2202
 * [#2228](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2228) Fixed text output for the table format in `Special:Ask`
+* [#2294](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2294) Avoid a possible `Parser::lock` during an `UpdateJob`
 
 ## Internal changes
 
@@ -184,10 +188,13 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * Added [$smwgSubPropertyListLimit](https://www.semantic-mediawiki.org/wiki/Help:$smwgSubPropertyListLimit)
 * Added [$smwgBrowseByApi](https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi)
 * Added [$smwgServicesFileDir](https://www.semantic-mediawiki.org/wiki/Help:$smwgServicesFileDir) (internal use)
+* Added [$smwgImportFileDir](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDir)
+* Added [$smwgImportReqVersion](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportReqVersion)
 * Added [$smwgAdminFeatures](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) and deprecated the [$smwgAdminRefreshStore](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminRefreshStore) setting
 * Added [$smwgPropertyInvalidCharacterList](https://www.semantic-mediawiki.org/wiki/Help:$smwgPropertyInvalidCharacterList)
 * Changed [$smwgLinksInValues](https://www.semantic-mediawiki.org/wiki/Help:$smwgLinksInValues) behaviour
 * Changed [$smwgFixedProperties](https://www.semantic-mediawiki.org/wiki/Help:$smwgFixedProperties) behaviour
+* Changed [$smwgSparqlQueryEndpoint](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlQueryEndpoint) behaviour (#2159)
 
 ## Contributors
 
