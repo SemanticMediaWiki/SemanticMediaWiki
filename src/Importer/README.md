@@ -10,7 +10,7 @@ well as being easy to understand and extendable by end-users.
 
 * `description` short description about the purpose of the import (used in the auto summary)
 * `page` the name of a page without a namespace prefix
-* `namespace` literal constant of the namespace (e.g. NS_MAIN, SMW_NS_PROPERTY ... ) the content is to be imported
+* `namespace` literal constant of the namespace (e.g. `NS_MAIN`, `SMW_NS_PROPERTY` ... ) the content is to be imported
 * `contents` contains either the raw text or as option specifies a
   * `importFrom` link to a file from where the raw text content is being fetched
 * `options`
@@ -22,7 +22,7 @@ the version to be allowed to be imported.
 
 ### Example
 
-```
+<pre>
 {
 	"description": "Semantic MediaWiki default vocabulary import",
 	"import": [
@@ -49,20 +49,21 @@ the version to be allowed to be imported.
 		"version": "1"
 	}
 }
-```
+</pre>
 
 ## Import process
 
 During the setup process, the `Installer` will run the `ContentsImporter` and inform
 about the process similar to:
 
-```
+<pre>
 Import of vocabulary.json ...
    ... replacing MediaWiki:Smw import foaf contents ...
    ... skipping Property:Foaf:knows, already exists ...
 
 Import processing completed.
-```
+</pre>
+
 Unless indicated otherwise, content (a.k.a. pages) that pre-exists are going to be skipped by default.
 
 ## Technical notes
