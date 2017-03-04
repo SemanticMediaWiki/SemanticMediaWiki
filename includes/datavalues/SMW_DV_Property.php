@@ -412,7 +412,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getSearchLabel() {
-		return $this->getDataValueFormatter()->format( self::SEARCH_LABEL );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( self::SEARCH_LABEL );
 	}
 
 	/**

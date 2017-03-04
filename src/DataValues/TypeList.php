@@ -4,6 +4,7 @@ namespace SMW\DataValues;
 
 use SMWDataItem as DataItem;
 use SMWPropertyValue as PropertyValue;
+use SMWStringValue as StringValue;
 
 /**
  * @private
@@ -37,11 +38,11 @@ class TypeList {
 			// Property type (possibly predefined, not always based on a page)
 			PropertyValue::TYPE_ID => array( PropertyValue::class, DataItem::TYPE_PROPERTY, false ),
 			 // Text type
-			'_txt'  => array( 'SMWStringValue', DataItem::TYPE_BLOB, false ),
+			StringValue::TYPE_ID  => array( StringValue::class, DataItem::TYPE_BLOB, false ),
 			 // Code type
-			'_cod'  => array( 'SMWStringValue', DataItem::TYPE_BLOB, false ),
-			 // DEPRECATED Will vanish after SMW 1.9; use '_txt'
-			'_str'  => array( 'SMWStringValue', DataItem::TYPE_BLOB, false ),
+			StringValue::TYPE_COD_ID  => array( StringValue::class, DataItem::TYPE_BLOB, false ),
+			 // Legacy string ID `_str`
+			StringValue::TYPE_LEGACY_ID => array( StringValue::class, DataItem::TYPE_BLOB, false ),
 			 // Email type
 			'_ema'  => array( 'SMWURIValue', DataItem::TYPE_URI, false ),
 			 // URL/URI type

@@ -6,9 +6,12 @@ use SMW\DataValues\ImportValue;
 use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
+use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\DataValues\AllowsPatternValue;
 use SMWPropertyValue as PropertyValue;
+use SMWStringValue as StringValue;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
@@ -132,6 +135,41 @@ return array(
 		);
 
 		return new ImportValueParser( $containerBuilder->singleton( 'MediaWikiNsContentReader' ) );
+	},
+
+	/**
+	 * StringValueFormatter
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID,
+			StringValueFormatter::class
+		);
+
+		$containerBuilder->registerAlias(
+			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID,
+			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_LEGACY_ID
+		);
+
+		return new StringValueFormatter();
+	},
+
+	/**
+	 * CodeStringValueFormatter
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID,
+			CodeStringValueFormatter::class
+		);
+
+		return new CodeStringValueFormatter();
 	},
 
 );
