@@ -80,8 +80,7 @@ the Composer approach if you have command line access.
 
 Download an SMW tarball and extract it into your extensions directory.
 
-* [Download tarball of the latest SMW release](https://sourceforge.net/projects/semediawiki/files/latest/download)
-* [List of SMW tarballs](https://sourceforge.net/projects/semediawiki/files/semediawiki/)
+* [Download as tarball](https://github.com/SemanticMediaWiki/SemanticMediaWiki/releases) from the latest SMW release with dependencies
 
 ##### Step 2
 
