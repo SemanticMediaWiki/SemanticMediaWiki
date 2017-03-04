@@ -175,6 +175,10 @@ class AskParserFunction {
 			$contextPage
 		);
 
+		if ( $this->parserData->getOption( ParserData::NO_QUERY_DEP_TRACE ) ) {
+			$query->setOption( $query::NO_DEP_TRACE, true );
+		}
+
 		$queryHash = $query->getHash();
 
 		$this->circularReferenceGuard->mark( $queryHash );

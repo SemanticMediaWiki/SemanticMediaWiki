@@ -411,4 +411,28 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSetGetOption() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( -1 ) );
+
+		$parserOutput = new ParserOutput();
+
+		$instance = new ParserData(
+			$title,
+			$parserOutput
+		);
+
+		$instance->setOption( $instance::NO_QUERY_DEP_TRACE, true );
+
+		$this->assertTrue(
+			$instance->getOption( $instance::NO_QUERY_DEP_TRACE )
+		);
+	}
+
 }
