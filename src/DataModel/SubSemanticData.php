@@ -5,6 +5,7 @@ namespace SMW\DataModel;
 use SMW\Exception\SubSemanticDataException;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 
 /**
  * @private
@@ -164,7 +165,7 @@ class SubSemanticData {
 	 *
 	 * @param string $subobjectName
 	 *
-	 * @return ContainerSemanticData|[]
+	 * @return ContainerSemanticData|null
 	 */
 	public function findSubSemanticData( $subobjectName ) {
 
@@ -172,7 +173,7 @@ class SubSemanticData {
 			return $this->subSemanticData[$subobjectName];
 		}
 
-		return array();
+		return null;
 	}
 
 	/**
@@ -233,6 +234,25 @@ class SubSemanticData {
 			if ( $this->subSemanticData[$subobjectName]->isEmpty() ) {
 				unset( $this->subSemanticData[$subobjectName] );
 			}
+		}
+	}
+
+	/**
+	 * Remove property and all values associated with this property.
+	 *
+	 * @since 2.5
+	 *
+	 * @param $property DIProperty
+	 */
+	public function removeProperty( DIProperty $property ) {
+
+		 // Inverse properties cannot be used for an annotation
+		if ( $property->isInverse() ) {
+			return;
+		}
+
+		foreach ( $this->subSemanticData as $containerSemanticData ) {
+			$containerSemanticData->removeProperty( $property );
 		}
 	}
 

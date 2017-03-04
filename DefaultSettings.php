@@ -165,6 +165,18 @@ return array(
 	'smwgSparqlRepositoryConnectorForcedHttpVersion' => false,
 	##
 
+	##
+	# Property replication exemption list
+	#
+	# Listed properties will be exempted from the replication process for a
+	# registered SPARQL repository.
+	#
+	# @since 2.5
+	# @default array
+	##
+	'smwgSparqlReplicationPropertyExemptionList' => array(),
+	##
+
 	###
 	# Setting this option to true before including this file to enable the old
 	# Type: namespace that SMW used up to version 1.5.*. This should only be

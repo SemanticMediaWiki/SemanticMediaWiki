@@ -81,4 +81,14 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructReplicationDataTruncator() {
+
+		$instance = new SPARQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\ReplicationDataTruncator',
+			$instance->newReplicationDataTruncator()
+		);
+	}
+
 }
