@@ -36,6 +36,29 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		parent::tearDown();
 	}
 
+	public function testGetFormattedSubject() {
+
+		$dataItem = \SMW\DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getDataItem' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->once() )
+			->method( 'getLongHTMLText' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $dataItem ) );
+
+		$this->assertInternalType(
+			'string',
+			ValueFormatter::getFormattedSubject( $dataValue )
+		);
+	}
+
 	public function testGetFormattedValue() {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
