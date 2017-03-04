@@ -1,4 +1,4 @@
-`ExtraneousLanguage` is to provide "extraneous" language functions independent
+`ExtraneousLanguage` provides "extraneous" language functions independent
 of MediaWiki to support language options required by Semantic MediaWiki and its
 registration system.
 
@@ -39,7 +39,7 @@ The location of the files is determined by the `smwgExtraneousLanguageFileDir` s
 
 ### Example
 
-```
+<pre>
 {
 	"fallbackLanguage": false,
 	"dataTypeLabels":{
@@ -81,7 +81,7 @@ The location of the files is determined by the `smwgExtraneousLanguageFileDir` s
 		]
 	]
 }
-```
+</pre>
 
 ## Technical notes
 
@@ -90,5 +90,7 @@ The location of the files is determined by the `smwgExtraneousLanguageFileDir` s
     * `JsonLanguageContentsFileReader` providing access to the contents of a `JSON` file
     * `LanguageFallbackFinder` is responsible for resolving a fallback language
 
-* `smwgHistoricTypeNamespace`
-* `smwgExtraneousLanguageFileDir`
+### Settings
+
+* [`smwgHistoricTypeNamespace`](https://www.semantic-mediawiki.org/wiki/Help:$smwgHistoricTypeNamespace)
+* [`smwgExtraneousLanguageFileDir`](https://www.semantic-mediawiki.org/wiki/Help:$smwgExtraneousLanguageFileDir)
