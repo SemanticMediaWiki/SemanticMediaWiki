@@ -30,6 +30,24 @@ return array(
 	##
 
 	###
+	# Content import
+	#
+	# Controls the content import directory and version that is expected to be
+	# imported during the setup process.
+	#
+	# For all legitimate files in `smwgImportFileDir`, the import is initiated
+	# if the `smwgImportReqVersion` compares with the declared version in the file.
+	#
+	# In case `smwgImportReqVersion` is maintained with `false` then the import
+	# is going to be disabled.
+	#
+	# @since 2.5
+	##
+	'smwgImportFileDir' => __DIR__ . '/src/Importer/data',
+	'smwgImportReqVersion' => 1,
+	##
+
+	###
 	# Semantic MediaWiki's operational state
 	#
 	# It is expected that enableSemantics() is used to enable SMW otherwise it is

@@ -514,6 +514,7 @@ class ApplicationFactory {
 
 		$containerBuilder->registerCallbackContainer( new SharedCallbackContainer() );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'MediaWikiServices.php' );
+		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'ImporterServices.php' );
 
 		//	$containerBuilder = $callbackContainerFactory->newLoggableContainerBuilder(
 		//		$containerBuilder,
