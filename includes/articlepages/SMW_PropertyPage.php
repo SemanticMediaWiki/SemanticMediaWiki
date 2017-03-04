@@ -91,6 +91,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getIntroductoryText() {
 
+		if ( !$this->store->getRedirectTarget( $this->mProperty )->equals( $this->mProperty ) ) {
+			return '';
+		}
+
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$propertySpecificationReqExaminer = new PropertySpecificationReqExaminer(
