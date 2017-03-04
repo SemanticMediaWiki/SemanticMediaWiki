@@ -43,6 +43,8 @@ class Settings extends Options {
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
+			'smwgImportFileDir' => $GLOBALS['smwgImportFileDir'],
+			'smwgImportReqVersion' => $GLOBALS['smwgImportReqVersion'],
 			'smwgSemanticsEnabled' => $GLOBALS['smwgSemanticsEnabled'],
 			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],

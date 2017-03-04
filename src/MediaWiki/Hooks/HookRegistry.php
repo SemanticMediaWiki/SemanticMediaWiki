@@ -653,6 +653,18 @@ class HookRegistry {
 			// standard link
 			return $doesRequireFurtherLink;
 		};
+
+		/**
+		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
+		 */
+		$this->handlers['SMW::SQLStore::Installer::AfterCreateTablesComplete'] = function ( $tableBuilder, $messageReporter ) use ( $applicationFactory ) {
+
+			$fileImporter = $applicationFactory->create( 'JsonContentsImporter' );
+			$fileImporter->setMessageReporter( $messageReporter );
+			$fileImporter->doImport();
+
+			return true;
+		};
 	}
 
 	private function registerParserFunctionHooks( ApplicationFactory $applicationFactory ) {

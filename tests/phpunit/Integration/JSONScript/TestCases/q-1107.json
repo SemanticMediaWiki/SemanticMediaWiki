@@ -4,12 +4,12 @@
 		{
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "Has text",
-			"contents": "[[Has type::Text]] [[Has property description::Text property@en]]"
+			"contents": "[[Has type::Text]] [[Has property description::Text property@en]] [[Category:Q1107]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "Has number",
-			"contents": "[[Has type::Number]] [[Has property description::Number property@en]]"
+			"contents": "[[Has type::Number]] [[Has property description::Number property@en]] [[Category:Q1107]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -25,7 +25,7 @@
 		{
 			"type": "query",
 			"about": "#0",
-			"condition": "[[Has property description.Language code::en]]",
+			"condition": "[[Category:Q1107]] [[Has property description.Language code::en]]",
 			"printouts": [],
 			"parameters": {
 				"limit": "10"

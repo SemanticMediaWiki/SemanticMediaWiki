@@ -1,0 +1,16 @@
+{
+	"description": "Test import",
+	"import": [
+		{
+			"contents": {
+				"importFrom": "foaf.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		}
+	],
+	"meta": {
+		"version": "1"
+	}
+}
