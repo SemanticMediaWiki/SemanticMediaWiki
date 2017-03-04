@@ -13,9 +13,9 @@ use RuntimeException;
 class LanguageContents {
 
 	/**
-	 * @var LanguageJsonFileContentsReader
+	 * @var JsonLanguageContentsFileReader
 	 */
-	private $languageJsonFileContentsReader;
+	private $jsonLanguageContentsFileReader;
 
 	/**
 	 * @var LanguageFallbackFinder
@@ -30,11 +30,11 @@ class LanguageContents {
 	/**
 	 * @since 2.5
 	 *
-	 * @param LanguageJsonFileContentsReader $languageJsonFileContentsReader
+	 * @param JsonLanguageContentsFileReader $jsonLanguageContentsFileReader
 	 * @param LanguageFallbackFinder $languageFallbackFinder
 	 */
-	public function __construct( LanguageJsonFileContentsReader $languageJsonFileContentsReader, LanguageFallbackFinder $languageFallbackFinder ) {
-		$this->languageJsonFileContentsReader = $languageJsonFileContentsReader;
+	public function __construct( JsonLanguageContentsFileReader $jsonLanguageContentsFileReader, LanguageFallbackFinder $languageFallbackFinder ) {
+		$this->jsonLanguageContentsFileReader = $jsonLanguageContentsFileReader;
 		$this->languageFallbackFinder = $languageFallbackFinder;
 	}
 
@@ -67,12 +67,12 @@ class LanguageContents {
 	 */
 	public function prepareWithLanguage( $languageCode ) {
 
-		if ( !$this->has( $languageCode ) && !$this->languageJsonFileContentsReader->canReadByLanguageCode( $languageCode ) ) {
+		if ( !$this->has( $languageCode ) && !$this->jsonLanguageContentsFileReader->canReadByLanguageCode( $languageCode ) ) {
 			$languageCode = $this->languageFallbackFinder->getFallbackLanguageBy( $languageCode );
 		}
 
 		if ( !$this->has( $languageCode ) ) {
-			$this->contents[$languageCode] = $this->languageJsonFileContentsReader->readByLanguageCode( $languageCode );
+			$this->contents[$languageCode] = $this->jsonLanguageContentsFileReader->readByLanguageCode( $languageCode );
 		}
 	}
 
@@ -112,7 +112,7 @@ class LanguageContents {
 		if ( !isset( $this->contents[$languageCode] ) || $this->contents[$languageCode] === array() ) {
 			// In case a language has no matching file
 			try {
-				$this->contents[$languageCode] = $this->languageJsonFileContentsReader->readByLanguageCode( $languageCode );
+				$this->contents[$languageCode] = $this->jsonLanguageContentsFileReader->readByLanguageCode( $languageCode );
 			} catch ( RuntimeException $e ) {
 				$this->contents[$languageCode] = array();
 				$languageCode = $canonicalFallbackLanguageCode;
@@ -135,7 +135,7 @@ class LanguageContents {
 		// Last resort before throwing the towel, make sure we really have
 		// something when the default FallbackLanguageCode is used
 		if ( !isset( $this->contents[$languageCode][$index] ) ) {
-			$this->contents[$languageCode] = $this->languageJsonFileContentsReader->readByLanguageCode( $languageCode, true );
+			$this->contents[$languageCode] = $this->jsonLanguageContentsFileReader->readByLanguageCode( $languageCode, true );
 		}
 
 		if ( isset( $this->contents[$languageCode][$index] ) ) {

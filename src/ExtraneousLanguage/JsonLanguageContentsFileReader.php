@@ -13,7 +13,7 @@ use SMW\Utils\ErrorCodeFormatter;
  *
  * @author mwjames
  */
-class LanguageJsonFileContentsReader {
+class JsonLanguageContentsFileReader {
 
 	/**
 	 * @var array

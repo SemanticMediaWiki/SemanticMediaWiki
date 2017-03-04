@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\ExtraneousLanguage;
 
 use SMW\ExtraneousLanguage\LanguageFallbackFinder;
-use SMW\ExtraneousLanguage\LanguageJsonFileContentsReader;
+use SMW\ExtraneousLanguage\JsonLanguageContentsFileReader;
 use SMW\ExtraneousLanguage\LanguageContents;
 use SMW\ExtraneousLanguage\ExtraneousLanguage;
 use SMW\Tests\TestEnvironment;
@@ -22,26 +22,28 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		parent::setUp();
+
 		$this->testEnvironment = new TestEnvironment();
-		LanguageJsonFileContentsReader::clear();
+		JsonLanguageContentsFileReader::clear();
 	}
 
 	protected function tearDown() {
 		$this->testEnvironment->tearDown();
-		LanguageJsonFileContentsReader::clear();
+		JsonLanguageContentsFileReader::clear();
+
 		parent::tearDown();
 	}
 
 	public function testDeclarationsLoadedPartiallyFromFallback() {
 
-		$languageJsonFileContentsReader = new LanguageJsonFileContentsReader(
+		$jsonLanguageContentsFileReader = new JsonLanguageContentsFileReader(
 			null,
 			$this->testEnvironment->getFixturesLocation( 'ExtraneousLanguage' )
 		);
 
 		$languageContents = new LanguageContents(
-			$languageJsonFileContentsReader,
-			new LanguageFallbackFinder( $languageJsonFileContentsReader )
+			$jsonLanguageContentsFileReader,
+			new LanguageFallbackFinder( $jsonLanguageContentsFileReader )
 		);
 
 		$extraneousLanguage = new ExtraneousLanguage(
