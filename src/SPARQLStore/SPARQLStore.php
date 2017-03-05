@@ -182,36 +182,30 @@ class SPARQLStore extends Store {
 		$replicationDataTruncator = $this->factory->newReplicationDataTruncator();
 		$semanticData = $replicationDataTruncator->doTruncate( $semanticData );
 
-		$repositoryRedirectLookup = $this->factory->newRepositoryRedirectLookup();
-		$this->doSparqlFlatDataUpdate( $semanticData, $repositoryRedirectLookup );
+		$turtleTriplesBuilder = $this->factory->newTurtleTriplesBuilder();
+
+		$this->doSparqlFlatDataUpdate( $semanticData, $turtleTriplesBuilder );
 
 		foreach( $semanticData->getSubSemanticData() as $subSemanticData ) {
 			$subSemanticData = $replicationDataTruncator->doTruncate( $subSemanticData );
-			$this->doSparqlFlatDataUpdate( $subSemanticData, $repositoryRedirectLookup );
+			$this->doSparqlFlatDataUpdate( $subSemanticData, $turtleTriplesBuilder );
 		}
 
 		//wfDebugLog( 'smw', ' InMemoryPoolCache: ' . json_encode( \SMW\InMemoryPoolCache::getInstance()->getStats() ) );
 
 		// Reset internal cache
-		TurtleTriplesBuilder::reset();
+		$turtleTriplesBuilder->reset();
 	}
 
 	/**
-	 * Update the Sparql back-end, without taking any subobject data into account.
-	 *
 	 * @param SemanticData $semanticData
-	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
+	 * @param TurtleTriplesBuilder $turtleTriplesBuilder
 	 */
-	private function doSparqlFlatDataUpdate( SemanticData $semanticData, RepositoryRedirectLookup $repositoryRedirectLookup ) {
+	private function doSparqlFlatDataUpdate( SemanticData $semanticData, TurtleTriplesBuilder $turtleTriplesBuilder ) {
 
-		$turtleTriplesBuilder = new TurtleTriplesBuilder(
-			$semanticData,
-			$repositoryRedirectLookup
-		);
+		$turtleTriplesBuilder->doBuildTriplesFrom( $semanticData );
 
-		$turtleTriplesBuilder->setTriplesChunkSize( 80 );
-
-		if ( !$turtleTriplesBuilder->hasTriplesForUpdate() ) {
+		if ( !$turtleTriplesBuilder->hasTriples() ) {
 			return;
 		}
 
