@@ -51,6 +51,11 @@ class DataValueServiceFactory {
 	const TYPE_VALIDATOR = 'dv.validator.';
 
 	/**
+	 * Extraneous service
+	 */
+	const TYPE_EXT_FUNCTION = 'dv.ext.func.';
+
+	/**
 	 * @var ContainerBuilder
 	 */
 	private $containerBuilder;
@@ -76,6 +81,30 @@ class DataValueServiceFactory {
 	 */
 	public function newInfoLinksProvider( DataValue $dataValue ) {
 		return new InfoLinksProvider( $dataValue );
+	}
+
+	/**
+	 * Imported functions registered with DataTypeRegistry::registerExtraneousFunction
+	 *
+	 * @since 2.5
+	 *
+	 * @param array $extraneousFunctions
+	 */
+	public function importExtraneousFunctions( array $extraneousFunctions ) {
+		foreach ( $extraneousFunctions as $serviceName => $calllback ) {
+			$this->containerBuilder->registerCallback( self::TYPE_EXT_FUNCTION . $serviceName, $calllback );
+		}
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $serviceName
+	 *
+	 * @return mixed
+	 */
+	public function newExtraneousFunctionByName( $serviceName, array $parameters = array() ) {
+		return $this->containerBuilder->create( self::TYPE_EXT_FUNCTION . $serviceName, $parameters );
 	}
 
 	/**
