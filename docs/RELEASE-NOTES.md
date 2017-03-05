@@ -102,12 +102,13 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * [#2289](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2289) Added a [contents importer](https://www.semantic-mediawiki.org/wiki/Help:Contents_importer) to support importing of additional data during the setup process
 * [#2290](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2290) Added [query reference](https://www.semantic-mediawiki.org/wiki/Query_reference) links section to `Special:Browse`
 * [#2295](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2295) Added [`Allows value list`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list) to maintain a list of allowed values using a `NS_MEDIAWIKI` reference page
-
+* [#2301](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2301) Added [`$smwgSparqlReplicationPropertyExemptionList`](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlReplicationPropertyExemptionList) to suppress replication for selected properties to a `SPARQL` endpoint
 
 ## Bug fixes
 
 * [#1258](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1258) Fixed "named args" parameter use in further results link
 * [#1328](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1328) Fixed a "Undefined index: language" error in `#smwdoc` parser function
+* [#1419](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1419) Fixed Feed result printer ouput for empty results
 * [#1709](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1709) Fixed a potential "Lock wait timeout exceeded; try restarting transaction" in connection with `--procs`
 * [#1713](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1713) Fixed a "Segmentation fault" for when `QueryResultDependencyListResolver` tries to resolve a category/property hierarchy with a circular reference
 * [#1715](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1715) Fixed decoding of a single quotation mark in `DisplayTitlePropertyAnnotator`
@@ -192,6 +193,7 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * Added [$smwgImportReqVersion](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportReqVersion)
 * Added [$smwgAdminFeatures](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) and deprecated the [$smwgAdminRefreshStore](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminRefreshStore) setting
 * Added [$smwgPropertyInvalidCharacterList](https://www.semantic-mediawiki.org/wiki/Help:$smwgPropertyInvalidCharacterList)
+* Added [$smwgSparqlReplicationPropertyExemptionList](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlReplicationPropertyExemptionList)
 * Changed [$smwgLinksInValues](https://www.semantic-mediawiki.org/wiki/Help:$smwgLinksInValues) behaviour
 * Changed [$smwgFixedProperties](https://www.semantic-mediawiki.org/wiki/Help:$smwgFixedProperties) behaviour
 * Changed [$smwgSparqlQueryEndpoint](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlQueryEndpoint) behaviour (#2159)
