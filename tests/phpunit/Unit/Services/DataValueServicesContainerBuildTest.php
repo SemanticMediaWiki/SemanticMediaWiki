@@ -23,6 +23,8 @@ use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
+use SMWNumberValue as NumberValue;
+use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 
 /**
  * @group semantic-mediawiki
@@ -138,6 +140,12 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			DataValueServiceFactory::TYPE_FORMATTER . MonolingualTextValue::TYPE_ID,
 			array(),
 			MonolingualTextValueFormatter::class
+		);
+
+		$provider[] = array(
+			DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID,
+			array(),
+			NumberValueFormatter::class
 		);
 
 		return $provider;

@@ -24,6 +24,9 @@ use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
 use SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
+use SMWNumberValue as NumberValue;
+use SMWQuantityValue as QuantityValue;
+use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 
 /**
  * @codeCoverageIgnore
@@ -241,6 +244,25 @@ return array(
 		);
 
 		return new MonolingualTextValueFormatter();
+	},
+
+	/**
+	 * NumberValueFormatter
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_FORMATTER . QuantityValue::TYPE_ID => function( $containerBuilder ) {
+		return $containerBuilder->create( DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID );
+	},
+
+	DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID,
+			NumberValueFormatter::class
+		);
+
+		return new NumberValueFormatter();
 	},
 
 );
