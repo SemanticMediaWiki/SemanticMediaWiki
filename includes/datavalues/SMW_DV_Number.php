@@ -43,6 +43,11 @@ use SMW\ApplicationFactory;
 class SMWNumberValue extends SMWDataValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_num';
+
+	/**
 	 * Internal state to ensure no precision limitation is applied to an output
 	 */
 	const NO_DISP_PRECISION_LIMIT = 'num.no.displayprecision.limit';
@@ -257,7 +262,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
 	/**
@@ -266,7 +271,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
 	/**
@@ -275,7 +280,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
@@ -284,7 +289,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
 	public function getNumber() {
@@ -292,7 +297,7 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::VALUE );
 	}
 
 	/**

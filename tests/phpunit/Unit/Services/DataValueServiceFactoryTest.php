@@ -76,7 +76,7 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance->getValueParser( $dataValue );
 	}
 
-	public function testGetValueFormatterOnRegistered() {
+	public function testGetValueFormatterOnRegisteredFormatters() {
 
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
@@ -102,7 +102,7 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance->getValueFormatter( $dataValue );
 	}
 
-	public function testGetValueFormatterOnNonRegistered() {
+	public function testGetValueFormatterOnNonRegisteredFormatters() {
 
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
@@ -116,7 +116,7 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isRegistered' )
 			->will( $this->returnValue( false ) );
 
-		$this->containerBuilder->expects( $this->once() )
+		$this->containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( DataValueServiceFactory::TYPE_FORMATTER ) )
 			->will( $this->returnValue( $dataValueFormatter ) );

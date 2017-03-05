@@ -19,10 +19,15 @@ use SMW\ApplicationFactory;
 class TemperatureValue extends NumberValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_tem';
+
+	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
-		parent::__construct( '_tem' );
+		parent::__construct( self::TYPE_ID );
 	}
 
 	/**

@@ -9,7 +9,6 @@ use SMW\Message;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
 use SMWStringValue as StringValue;
-use SMW\DataValues\ValueFormatters\StringValueFormatter;
 
 /**
  * @covers \SMW\DataValues\InfoLinksProvider
@@ -77,11 +76,7 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( array() ) );
 
-		$numberValue = new NumberValue();
-
-		$numberValue->setDataValueServiceFactory(
-			$this->dataValueServiceFactory
-		);
+		$numberValue = $this->dataValueFactory->newDataValueByType( NumberValue::TYPE_ID );
 
 		$numberValue->setOption( 'user.language', 'en' );
 		$numberValue->setOption( 'content.language', 'en' );
@@ -115,18 +110,7 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( array() ) );
 
-		$stringValue = new StringValue( '_txt' );
-
-		$stringValueFormatter = new StringValueFormatter();
-		$stringValueFormatter->setDataValue( $stringValue );
-
-		$this->dataValueServiceFactory->expects( $this->any() )
-			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $stringValueFormatter ) );
-
-		$stringValue->setDataValueServiceFactory(
-			$this->dataValueServiceFactory
-		);
+		$stringValue = $this->dataValueFactory->newDataValueByType( StringValue::TYPE_ID );
 
 		$stringValue->setOption( 'user.language', 'en' );
 		$stringValue->setOption( 'content.language', 'en' );
@@ -216,18 +200,7 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 			'SERVICELINK-A|SERVICELINK-B'
 		);
 
-		$stringValue = new StringValue( '_txt' );
-
-		$stringValueFormatter = new StringValueFormatter();
-		$stringValueFormatter->setDataValue( $stringValue );
-
-		$this->dataValueServiceFactory->expects( $this->any() )
-			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $stringValueFormatter ) );
-
-		$stringValue->setDataValueServiceFactory(
-			$this->dataValueServiceFactory
-		);
+		$stringValue = $this->dataValueFactory->newDataValueByType( StringValue::TYPE_ID );
 
 		$stringValue->setOption( StringValue::OPT_USER_LANGUAGE, 'en' );
 		$stringValue->setOption( StringValue::OPT_CONTENT_LANGUAGE, 'en' );

@@ -5,6 +5,8 @@ namespace SMW\DataValues;
 use SMWDataItem as DataItem;
 use SMWPropertyValue as PropertyValue;
 use SMWStringValue as StringValue;
+use SMWQuantityValue as QuantityValue;
+use SMWNumberValue as NumberValue;
 
 /**
  * @private
@@ -60,9 +62,9 @@ class TypeList {
 			 // Form page type for Semantic Forms
 			'_wpf'  => array( 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ),
 			 // Number type
-			'_num'  => array( 'SMWNumberValue', DataItem::TYPE_NUMBER, false ),
+			NumberValue::TYPE_ID => array( NumberValue::class, DataItem::TYPE_NUMBER, false ),
 			 // Temperature type
-			'_tem'  => array( TemperatureValue::class, DataItem::TYPE_NUMBER, false ),
+			TemperatureValue::TYPE_ID  => array( TemperatureValue::class, DataItem::TYPE_NUMBER, false ),
 			 // Time type
 			'_dat'  => array( 'SMWTimeValue', DataItem::TYPE_TIME, false ),
 			 // Boolean type
@@ -78,7 +80,7 @@ class TypeList {
 			// External identifier
 			ExternalIdentifierValue::TYPE_ID => array( ExternalIdentifierValue::class, DataItem::TYPE_BLOB, false ),
 			 // Type for numbers with units of measurement
-			'_qty'  => array( 'SMWQuantityValue', DataItem::TYPE_NUMBER, false ),
+			QuantityValue::TYPE_ID => array( QuantityValue::class, DataItem::TYPE_NUMBER, false ),
 			// Special types are not avaialble directly for users (and have no local language name):
 			// Special type page type
 			'__typ' => array( 'SMWTypesValue', DataItem::TYPE_URI, false ),

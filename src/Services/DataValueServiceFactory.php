@@ -12,6 +12,7 @@ use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMWStringValue as StringValue;
+use SMWNumberValue as NumberValue;
 
 /**
  * @private
@@ -169,7 +170,10 @@ class DataValueServiceFactory {
 			$this->containerBuilder->singleton( self::TYPE_FORMATTER . StringValue::TYPE_ID )
 		);
 
-		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NumberValueFormatter() );
+		$dispatchingDataValueFormatter->addDefaultDataValueFormatter(
+			$this->containerBuilder->singleton( self::TYPE_FORMATTER . NumberValue::TYPE_ID )
+		);
+
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new TimeValueFormatter() );
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NoValueFormatter() );
 
