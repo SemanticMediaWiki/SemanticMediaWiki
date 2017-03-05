@@ -4,6 +4,8 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Options;
+use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
+use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 
 /**
  * @covers \SMW\DataValues\MonolingualTextValue
@@ -16,6 +18,28 @@ use SMW\Options;
  */
 class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 
+	private $dataValueServiceFactory;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $constraintValueValidator ) );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueParser' )
+			->will( $this->returnValue( new MonolingualTextValueParser() ) );
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
@@ -27,6 +51,10 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testErrorForMissingLanguageCode() {
 
 		$instance = new MonolingualTextValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$instance->setOptions(
 			new Options( array( 'smwgDVFeatures' => SMW_DV_MLTV_LCODE ) )
@@ -42,6 +70,10 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testNoErrorForMissingLanguageCodeWhenFeatureIsDisabled() {
 
 		$instance = new MonolingualTextValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$instance->setOptions(
 			new Options( array( 'smwgDVFeatures' => false ) )
@@ -61,6 +93,11 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$instance = new MonolingualTextValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance->setUserValue( 'Foo@foobar' );
 
 		$this->assertNotEmpty(
@@ -71,6 +108,11 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testValidParsableUserValue() {
 
 		$instance = new MonolingualTextValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance->setUserValue( 'Foo@en' );
 
 		$this->assertEmpty(
@@ -98,6 +140,11 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testTryToGetTextValueByLanguageForUnrecognizedLanguagCode() {
 
 		$instance = new MonolingualTextValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance->setUserValue( 'Foo@en' );
 
 		$this->assertNull(
@@ -108,6 +155,18 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testGetWikiValueForValidMonolingualTextValue() {
 
 		$instance = new MonolingualTextValue();
+
+		$monolingualTextValueFormatter = new MonolingualTextValueFormatter();
+		$monolingualTextValueFormatter->setDataValue( $instance );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance->setUserValue( 'Foo@en' );
 
 		$this->assertEquals(
@@ -123,6 +182,18 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$instance = new MonolingualTextValue();
+
+		$monolingualTextValueFormatter = new MonolingualTextValueFormatter();
+		$monolingualTextValueFormatter->setDataValue( $instance );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance->setUserValue( 'Foo@foobar' );
 
 		$this->assertContains(
@@ -150,6 +221,11 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testToArray() {
 
 		$instance = new MonolingualTextValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance->setUserValue( 'Foo@en' );
 
 		$this->assertEquals(
@@ -164,6 +240,11 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testToString() {
 
 		$instance = new MonolingualTextValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance->setUserValue( 'Foo@en' );
 
 		$this->assertSame(

@@ -48,11 +48,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 	private static $properties = null;
 
 	/**
-	 * @var MonolingualTextValueParser
-	 */
-	private $monolingualTextValueParser = null;
-
-	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
@@ -166,7 +161,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @return array
 	 */
 	public function getValuesFromString( $userValue ) {
-		return $this->getValueParser()->parse( $userValue );
+		return $this->dataValueServiceFactory->getValueParser( $this )->parse( $userValue );
 	}
 
 	/**
@@ -195,35 +190,35 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @see DataValue::getShortWikiText
 	 */
 	public function getShortWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
 	/**
 	 * @see DataValue::getShortHTMLText
 	 */
 	public function getShortHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
 	/**
 	 * @see DataValue::getLongWikiText
 	 */
 	public function getLongWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
 	 * @see DataValue::getLongHTMLText
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
 	/**
 	 * @see DataValue::getWikiValue
 	 */
 	public function getWikiValue() {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::VALUE );
 	}
 
 	/**
@@ -366,15 +361,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 		$languageCodeValue->setUserValue( $languageCode );
 
 		return $languageCodeValue;
-	}
-
-	private function getValueParser() {
-
-		if ( $this->monolingualTextValueParser === null ) {
-			$this->monolingualTextValueParser = ValueParserFactory::getInstance()->newMonolingualTextValueParser();
-		}
-
-		return $this->monolingualTextValueParser;
 	}
 
 }

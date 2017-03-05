@@ -20,6 +20,9 @@ use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
 use SMW\DataValues\ReferenceValue;
+use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
+use SMW\DataValues\MonolingualTextValue;
+use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 
 /**
  * @group semantic-mediawiki
@@ -117,6 +120,24 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID,
 			array(),
 			ReferenceValueFormatter::class
+		);
+
+		$provider[] = array(
+			DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID,
+			array(),
+			ReferenceValueFormatter::class
+		);
+
+		$provider[] = array(
+			DataValueServiceFactory::TYPE_PARSER . MonolingualTextValue::TYPE_ID,
+			array(),
+			MonolingualTextValueParser::class
+		);
+
+		$provider[] = array(
+			DataValueServiceFactory::TYPE_FORMATTER . MonolingualTextValue::TYPE_ID,
+			array(),
+			MonolingualTextValueFormatter::class
 		);
 
 		return $provider;
