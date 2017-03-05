@@ -27,6 +27,8 @@ use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator
 use SMWNumberValue as NumberValue;
 use SMWQuantityValue as QuantityValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
+use SMWTimeValue as TimeValue;
+use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 
 /**
  * @codeCoverageIgnore
@@ -263,6 +265,21 @@ return array(
 		);
 
 		return new NumberValueFormatter();
+	},
+
+	/**
+	 * TimeValueFormatter
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID,
+			TimeValueFormatter::class
+		);
+
+		return new TimeValueFormatter();
 	},
 
 );

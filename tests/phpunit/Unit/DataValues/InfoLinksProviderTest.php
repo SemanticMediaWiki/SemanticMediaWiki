@@ -9,6 +9,7 @@ use SMW\Message;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
 use SMWStringValue as StringValue;
+use SMWTimeValue as TimeValue;
 
 /**
  * @covers \SMW\DataValues\InfoLinksProvider
@@ -141,10 +142,6 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetInfolinkTextOnTimeValueWithoutLocalizedOutput() {
 
 		$timeValue = $this->dataValueFactory->newDataValueByType( '_dat' );
-
-		$timeValue->setDataValueServiceFactory(
-			$this->dataValueServiceFactory
-		);
 
 		$timeValue->setOption( $timeValue::OPT_USER_LANGUAGE, 'fr' );
 		$timeValue->setOption( $timeValue::OPT_CONTENT_LANGUAGE, 'en' );

@@ -7,6 +7,7 @@ use SMWPropertyValue as PropertyValue;
 use SMWStringValue as StringValue;
 use SMWQuantityValue as QuantityValue;
 use SMWNumberValue as NumberValue;
+use SMWTimeValue as TimeValue;
 
 /**
  * @private
@@ -66,7 +67,7 @@ class TypeList {
 			 // Temperature type
 			TemperatureValue::TYPE_ID  => array( TemperatureValue::class, DataItem::TYPE_NUMBER, false ),
 			 // Time type
-			'_dat'  => array( 'SMWTimeValue', DataItem::TYPE_TIME, false ),
+			TimeValue::TYPE_ID => array( TimeValue::class, DataItem::TYPE_TIME, false ),
 			 // Boolean type
 			'_boo'  => array( BooleanValue::class, DataItem::TYPE_BOOLEAN, false ),
 			 // Value list type (replacing former nary properties)

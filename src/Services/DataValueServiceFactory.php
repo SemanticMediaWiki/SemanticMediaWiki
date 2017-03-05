@@ -8,11 +8,9 @@ use SMW\DataValues\InfoLinksProvider;
 use SMWDataValue as DataValue;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
-use SMW\DataValues\ValueFormatters\NumberValueFormatter;
-use SMW\DataValues\ValueFormatters\StringValueFormatter;
-use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMWStringValue as StringValue;
 use SMWNumberValue as NumberValue;
+use SMWTimeValue as TimeValue;
 
 /**
  * @private
@@ -174,7 +172,10 @@ class DataValueServiceFactory {
 			$this->containerBuilder->singleton( self::TYPE_FORMATTER . NumberValue::TYPE_ID )
 		);
 
-		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new TimeValueFormatter() );
+		$dispatchingDataValueFormatter->addDefaultDataValueFormatter(
+			$this->containerBuilder->singleton( self::TYPE_FORMATTER . TimeValue::TYPE_ID )
+		);
+
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NoValueFormatter() );
 
 		return $dispatchingDataValueFormatter;
