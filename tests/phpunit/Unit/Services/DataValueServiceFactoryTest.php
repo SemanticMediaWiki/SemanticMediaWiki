@@ -128,4 +128,32 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance->getValueFormatter( $dataValue );
 	}
 
+	public function testImportExtraneousFunctions() {
+
+		$this->containerBuilder->expects( $this->atLeastOnce() )
+			->method( 'registerCallback' )
+			->with( $this->stringContains( DataValueServiceFactory::TYPE_EXT_FUNCTION . 'Foo' ) );
+
+		$instance = new DataValueServiceFactory(
+			$this->containerBuilder
+		);
+
+		$instance->importExtraneousFunctions( array(
+			'Foo' => function() { return 'Foo'; }
+		) );
+	}
+
+	public function testNewExtraneousFunctionByName() {
+
+		$this->containerBuilder->expects( $this->atLeastOnce() )
+			->method( 'create' )
+			->with( $this->stringContains( DataValueServiceFactory::TYPE_EXT_FUNCTION . 'Foo' ) );
+
+		$instance = new DataValueServiceFactory(
+			$this->containerBuilder
+		);
+
+		$instance->newExtraneousFunctionByName( 'Foo' );
+	}
+
 }

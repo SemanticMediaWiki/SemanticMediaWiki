@@ -138,13 +138,6 @@ abstract class SMWDataValue {
 	private $mHasErrors = false;
 
 	/**
-	 * Extraneous services and object container
-	 *
-	 * @var array
-	 */
-	private $extraneousFunctions = array();
-
-	/**
 	 * @var Options
 	 */
 	private $options;
@@ -759,17 +752,6 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * @note Normally set by the DataValueFactory, or during tests
-	 *
-	 * @since 2.3
-	 *
-	 * @param array
-	 */
-	public function setExtraneousFunctions( array $extraneousFunctions ) {
-		$this->extraneousFunctions = $extraneousFunctions;
-	}
-
-	/**
 	 * @since 2.3
 	 *
 	 * @param string $name
@@ -779,12 +761,7 @@ abstract class SMWDataValue {
 	 * @throws RuntimeException
 	 */
 	public function getExtraneousFunctionFor( $name, array $parameters = array() ) {
-
-		if ( isset( $this->extraneousFunctions[$name] ) && is_callable( $this->extraneousFunctions[$name] ) ) {
-			return call_user_func_array( $this->extraneousFunctions[$name], $parameters );
-		}
-
-		throw new RuntimeException( "$name is not registered as extraneous function." );
+		return $this->dataValueServiceFactory->newExtraneousFunctionByName( $name, $parameters );
 	}
 
 	/**

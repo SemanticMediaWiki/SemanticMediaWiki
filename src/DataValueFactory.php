@@ -7,6 +7,7 @@ use SMWDataValue as DataValue;
 use SMWDIError;
 use SMWErrorValue as ErrorValue;
 use SMWPropertyValue as PropertyValue;
+use SMW\Services\DataValueServiceFactory;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or
@@ -44,11 +45,12 @@ class DataValueFactory {
 	/**
 	 * @since 1.9
 	 *
-	 * @param DataTypeRegistry|null $dataTypeRegistry
+	 * @param DataTypeRegistry $dataTypeRegistry
+	 * @param DataValueServiceFactory $dataValueServiceFactory
 	 */
-	protected function __construct( DataTypeRegistry $dataTypeRegistry = null ) {
+	protected function __construct( DataTypeRegistry $dataTypeRegistry, DataValueServiceFactory $dataValueServiceFactory ) {
 		$this->dataTypeRegistry = $dataTypeRegistry;
-		$this->dataValueServiceFactory = ApplicationFactory::getInstance()->create( 'DataValueServiceFactory' );
+		$this->dataValueServiceFactory = $dataValueServiceFactory;
 	}
 
 	/**
@@ -58,11 +60,21 @@ class DataValueFactory {
 	 */
 	public static function getInstance() {
 
-		if ( self::$instance === null ) {
-			self::$instance = new self(
-				DataTypeRegistry::getInstance()
-			);
+		if ( self::$instance !== null ) {
+			return self::$instance;
 		}
+
+		$dataValueServiceFactory = ApplicationFactory::getInstance()->create( 'DataValueServiceFactory' );
+		$dataTypeRegistry = DataTypeRegistry::getInstance();
+
+		$dataValueServiceFactory->importExtraneousFunctions(
+			$dataTypeRegistry->getExtraneousFunctions()
+		);
+
+		self::$instance = new self(
+			$dataTypeRegistry,
+			$dataValueServiceFactory
+		);
 
 		return self::$instance;
 	}
@@ -103,10 +115,6 @@ class DataValueFactory {
 		$dataValue = $this->dataValueServiceFactory->newDataValueByType(
 			$typeId,
 			$dataTypeRegistry->getDataTypeClassById( $typeId )
-		);
-
-		$dataValue->setExtraneousFunctions(
-			$dataTypeRegistry->getExtraneousFunctions()
 		);
 
 		$dataValue->setDataValueServiceFactory(
