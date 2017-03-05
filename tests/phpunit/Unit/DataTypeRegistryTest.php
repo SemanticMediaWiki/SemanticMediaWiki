@@ -50,6 +50,17 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsEqualItemType() {
+
+		$this->assertTrue(
+			$this->dataTypeRegistry->isEqualByType( '_wpg', '__sob' )
+		);
+
+		$this->assertFalse(
+			$this->dataTypeRegistry->isEqualByType( '_wpg', '_txt' )
+		);
+	}
+
 	public function testRegisterDatatype() {
 
 		$this->assertNull(

@@ -174,6 +174,13 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @deprecated since 2.5, use DataTypeRegistry::getDataItemByTypeId
+	 */
+	public function getDataItemId( $typeId ) {
+		return $this->getDataItemByTypeId( $typeId );
+	}
+
+	/**
 	 * Get the preferred data item ID for a given type. The ID defines the
 	 * appropriate data item class for processing data of this type. See
 	 * DataItem for possible values.
@@ -185,7 +192,8 @@ class DataTypeRegistry {
 	 * @param $typeId string id string for the given type
 	 * @return integer data item ID
 	 */
-	public function getDataItemId( $typeId ) {
+	public function getDataItemByTypeId( $typeId ) {
+
 		if ( isset( $this->typeDataItemIds[$typeId] ) ) {
 			return $this->typeDataItemIds[$typeId];
 		}
@@ -206,11 +214,24 @@ class DataTypeRegistry {
 	/**
 	 * @since 2.4
 	 *
-	 * @param string
+	 * @param string $typeId
+	 *
 	 * @return boolean
 	 */
 	public function isSubDataType( $typeId ) {
 		return isset( $this->subDataTypes[$typeId] ) && $this->subDataTypes[$typeId];
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $srcType
+	 * @param string $tagType
+	 *
+	 * @return boolean
+	 */
+	public function isEqualByType( $srcType, $tagType ) {
+		return $this->getDataItemByTypeId( $srcType ) === $this->getDataItemByTypeId( $tagType );
 	}
 
 	/**

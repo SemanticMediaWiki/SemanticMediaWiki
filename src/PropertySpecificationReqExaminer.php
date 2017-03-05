@@ -123,7 +123,7 @@ class PropertySpecificationReqExaminer {
 			list( $url, $type ) = explode( "#", end( $typeValues )->getSerialization() );
 		}
 
-		if ( $type === $property->findPropertyTypeID() ) {
+		if ( DataTypeRegistry::getInstance()->isEqualByType( $type, $property->findPropertyTypeID() ) ) {
 			return;
 		}
 
