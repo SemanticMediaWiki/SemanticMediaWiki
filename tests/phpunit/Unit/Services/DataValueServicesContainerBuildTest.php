@@ -25,6 +25,8 @@ use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 use SMWNumberValue as NumberValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
+use SMWTimeValue as TimeValue;
+use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 
 /**
  * @group semantic-mediawiki
@@ -146,6 +148,12 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID,
 			array(),
 			NumberValueFormatter::class
+		);
+
+		$provider[] = array(
+			DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID,
+			array(),
+			TimeValueFormatter::class
 		);
 
 		return $provider;

@@ -9,7 +9,6 @@
  */
 use SMW\ApplicationFactory;
 use SMW\DataValues\InfoLinksProvider;
-use SMW\DataValues\ValueFormatterRegistry;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\Localizer;
 use SMW\Message;
@@ -506,18 +505,6 @@ abstract class SMWDataValue {
 		}
 
 		return $description;
-	}
-
-	/**
-	 * Returns a DataValueFormatter that was matched and dispatched for the current
-	 * DV instance.
-	 *
-	 * @since 2.4
-	 *
-	 * @return DataValueFormatter
-	 */
-	public function getDataValueFormatter() {
-		return ValueFormatterRegistry::getInstance()->getDataValueFormatterFor( $this );
 	}
 
 	/**
