@@ -18,6 +18,8 @@ use SMW\Settings;
 use SMWStringValue as StringValue;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
+use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
+use SMW\DataValues\ReferenceValue;
 
 /**
  * @group semantic-mediawiki
@@ -109,6 +111,12 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID,
 			array(),
 			CodeStringValueFormatter::class
+		);
+
+		$provider[] = array(
+			DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID,
+			array(),
+			ReferenceValueFormatter::class
 		);
 
 		return $provider;

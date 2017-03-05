@@ -106,7 +106,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getShortWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
 	/**
@@ -116,7 +116,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getShortHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
 	/**
@@ -126,7 +126,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getLongWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
@@ -136,7 +136,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
 	/**
@@ -146,7 +146,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getWikiValue() {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::VALUE );
 	}
 
 	/**
