@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Services;
 
-use SMW\SharedCallbackContainer;
+use SMW\Services\SharedServicesContainer;
 
 /**
- * @covers \SMW\SharedCallbackContainer
+ * @covers \SMW\Services\SharedServicesContainer
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,18 +13,18 @@ use SMW\SharedCallbackContainer;
  *
  * @author mwjames
  */
-class SharedCallbackContainerTest extends \PHPUnit_Framework_TestCase {
+class SharedServicesContainerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SharedCallbackContainer',
-			new SharedCallbackContainer()
+			SharedServicesContainer::class,
+			new SharedServicesContainer()
 		);
 
 		$this->assertInstanceOf(
 			'\Onoi\CallbackContainer\CallbackContainer',
-			new SharedCallbackContainer()
+			new SharedServicesContainer()
 		);
 	}
 
@@ -37,7 +37,7 @@ class SharedCallbackContainerTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'registerCallback' );
 
-		$instance = new SharedCallbackContainer();
+		$instance = new SharedServicesContainer();
 		$instance->register( $containerBuilder );
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Services;
 
 use Onoi\BlobStore\BlobStore;
 use Onoi\CallbackContainer\CallbackContainer;
@@ -22,6 +22,24 @@ use SMW\Parser\LinksProcessor;
 use SMW\Protection\EditProtectionValidator;
 use SMW\Protection\EditProtectionUpdater;
 use SMW\Services\DataValueServiceFactory;
+use SMW\Settings;
+use SMW\StoreFactory;
+use SMW\MessageFormatter;
+use SMW\NamespaceExaminer;
+use SMW\ParserData;
+use SMW\ContentParser;
+use SMW\DeferredCallableUpdate;
+use SMW\InMemoryPoolCache;
+use SMW\PropertyAnnotatorFactory;
+use SMW\CacheFactory;
+use SMW\IteratorFactory;
+use SMW\QueryFactory;
+use SMW\DataItemFactory;
+use SMW\PropertySpecificationLookup;
+use SMW\PropertyHierarchyLookup;
+use SMW\PropertyLabelFinder;
+use SMW\CachedPropertyValuesPrefetcher;
+use SMW\Localizer;
 
 /**
  * @license GNU GPL v2+
@@ -29,7 +47,7 @@ use SMW\Services\DataValueServiceFactory;
  *
  * @author mwjames
  */
-class SharedCallbackContainer implements CallbackContainer {
+class SharedServicesContainer implements CallbackContainer {
 
 	/**
 	 * @see CallbackContainer::register

@@ -15,6 +15,7 @@ use SMW\MediaWiki\TitleCreator;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMWQueryParser as QueryParser;
 use Title;
+use SMW\Services\SharedServicesContainer;
 
 /**
  * Application instances access for internal and external use
@@ -512,7 +513,7 @@ class ApplicationFactory {
 
 		$containerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
 
-		$containerBuilder->registerCallbackContainer( new SharedCallbackContainer() );
+		$containerBuilder->registerCallbackContainer( new SharedServicesContainer() );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'MediaWikiServices.php' );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'ImporterServices.php' );
 
