@@ -93,6 +93,22 @@ class SPARQLStoreFactory {
 	/**
 	 * @since 2.5
 	 *
+	 * @return TurtleTriplesBuilder
+	 */
+	public function newTurtleTriplesBuilder() {
+
+		$turtleTriplesBuilder = new TurtleTriplesBuilder(
+			$this->newRepositoryRedirectLookup()
+		);
+
+		$turtleTriplesBuilder->setTriplesChunkSize( 80 );
+
+		return $turtleTriplesBuilder;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @return ReplicationDataTruncator
 	 */
 	public function newReplicationDataTruncator() {

@@ -9,6 +9,7 @@ use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 use SMW\SemanticData;
+use Onoi\Cache\Cache;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
@@ -43,14 +44,14 @@ class TurtleTriplesBuilder {
 	private $triples = null;
 
 	/**
-	 * @var null|array
+	 * @var array
 	 */
-	private $prefixes = null;
+	private $prefixes = array();
 
 	/**
-	 * @var null|boolean
+	 * @var boolean
 	 */
-	private $hasTriplesForUpdate = null;
+	private $hasTriplesForUpdate = false;
 
 	/**
 	 * @var integer
@@ -58,20 +59,19 @@ class TurtleTriplesBuilder {
 	private $triplesChunkSize = 80;
 
 	/**
-	 * @var array
+	 * @var Cache
 	 */
-	private $dataItemExportCache;
+	private $dataItemExportInMemoryCache;
 
 	/**
 	 * @since 2.0
 	 *
-	 * @param SemanticData $semanticData
 	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
+	 * @param Cache|null $cache
 	 */
-	public function __construct( SemanticData $semanticData, RepositoryRedirectLookup $repositoryRedirectLookup ) {
-		$this->semanticData = $semanticData;
+	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, Cache $cache = null ) {
 		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
-		$this->dataItemExportCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
+		$this->dataItemExportInMemoryCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -86,24 +86,33 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.0
 	 *
-	 * @return TurtleTriplesBuilder
+	 * @param SemanticData $semanticData
 	 */
-	public function doBuild() {
-		return $this->serializeToTurtleRepresentation();
+	public function doBuildTriplesFrom( SemanticData $semanticData ) {
+
+		$this->hasTriplesForUpdate = false;
+		$this->triples  = '';
+		$this->prefixes = array();
+
+		$this->doSerialize( $semanticData );
 	}
 
 	/**
 	 * @since 2.0
 	 *
+	 * @return boolean
+	 */
+	public function hasTriples() {
+		return $this->hasTriplesForUpdate;
+	}
+
+	/**
+	 * @since 2.3
+	 *
 	 * @return string
 	 */
 	public function getTriples() {
-
-		if ( $this->triples === null ) {
-			$this->doBuild();
-		}
-
-		return $this->triples;
+		return $this->triples === null ? '' : $this->triples;
 	}
 
 	/**
@@ -120,7 +129,7 @@ class TurtleTriplesBuilder {
 		$chunkedTriples = array();
 
 		if ( $this->triples === null ) {
-			$this->doBuild();
+			return $chunkedTriples;
 		}
 
 		if ( strpos( $this->triples, " ." ) === false ) {
@@ -144,44 +153,19 @@ class TurtleTriplesBuilder {
 	 * @return array
 	 */
 	public function getPrefixes() {
-
-		if ( $this->prefixes === null ) {
-			$this->doBuild();
-		}
-
 		return $this->prefixes;
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return boolean
-	 */
-	public function hasTriplesForUpdate() {
-
-		if ( $this->hasTriplesForUpdate === null ) {
-			$this->doBuild();
-		}
-
-		return $this->hasTriplesForUpdate;
-	}
-
-	/**
-	 * @since 2.0
-	 *
-	 * @return boolean
 	 */
 	public static function reset() {
 		TurtleSerializer::reset();
 	}
 
-	private function serializeToTurtleRepresentation() {
+	private function doSerialize( SemanticData $semanticData ) {
 
-		$this->hasTriplesForUpdate = false;
-		$this->triples  = '';
-		$this->prefixes = array();
-
-		$expDataArray = $this->prepareUpdateExpData( $this->semanticData );
+		$expDataArray = $this->prepareUpdateExpData( $semanticData );
 
 		if ( count( $expDataArray ) > 0 ) {
 
@@ -199,8 +183,6 @@ class TurtleTriplesBuilder {
 			$this->triples = $turtleSerializer->flushContent();
 			$this->prefixes = $turtleSerializer->flushSparqlPrefixes();
 		}
-
-		return $this;
 	}
 
 	/**
@@ -291,11 +273,11 @@ class TurtleTriplesBuilder {
 			$diWikiPage = $elementTarget->getDataItem();
 			$hash = $diWikiPage->getHash();
 
-			if ( !$this->dataItemExportCache->contains( $hash ) ) {
-				$this->dataItemExportCache->save( $hash, Exporter::getInstance()->makeExportDataForSubject( $diWikiPage, true ) );
+			if ( !$this->dataItemExportInMemoryCache->contains( $hash ) ) {
+				$this->dataItemExportInMemoryCache->save( $hash, Exporter::getInstance()->makeExportDataForSubject( $diWikiPage, true ) );
 			}
 
-			$auxiliaryExpData[$hash] = $this->dataItemExportCache->fetch( $hash );
+			$auxiliaryExpData[$hash] = $this->dataItemExportInMemoryCache->fetch( $hash );
 		}
 
 		return $elementTarget;
