@@ -17,8 +17,7 @@ well as being easy to understand and extendable by end-users.
   * `canReplace` to indicate whether content is being allowed to be replaced during
   an import or not
 
-The `smwgImportReqVersion` stipulates the required version with files only matching
-the version to be allowed to be imported.
+The [`$smwgImportReqVersion`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportReqVersion) stipulates the required version and only an import file that matches that version is permitted to be imported.
 
 ### Example
 
@@ -64,19 +63,19 @@ Import of vocabulary.json ...
 Import processing completed.
 </pre>
 
-Unless indicated otherwise, content (a.k.a. pages) that pre-exists are going to be skipped by default.
+If not otherwise specified, content (a.k.a. pages) that pre-exists are going to be skipped by default.
 
 ## Technical notes
 
 Services are listed in `ImporterServices.php` with the `SMW::SQLStore::Installer::AfterCreateTablesComplete` hook
 to provide the execution event during the setup.
 
-* `ContentsImporter` is responsible for importing content provided by the `ImportContentsIterator`
+* `ContentsImporter` is responsible for importing contents provided by a `ImportContentsIterator`
   * `ImportContentsIterator` provides access to individual `ImportContents` instances
   * `PageCreator`
 * `JsonImportContentsIterator` implements the `ImportContentsIterator` interface
-  * `JsonImportContentsFileDirReader` provides contents of all recursively fetched files from the `smwgImportFileDir`
-  setting that meet the requirements and interprets the mentioned `JSON` definition to return instances of `ImportContents`
+  * `JsonImportContentsFileDirReader` provides contents of all recursively fetched files from the [`$smwgImportFileDir`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDir)
+  setting that meet the requirements and interprets the described `JSON` definition to return a set of `ImportContents` instances
 
 It is possible to implement a different format definition (CSV, XML etc.) by
 providing a different `ImportContentsIterator` to the `ContentsImporter`.
