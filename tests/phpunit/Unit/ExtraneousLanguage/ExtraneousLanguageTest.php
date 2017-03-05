@@ -18,15 +18,26 @@ use SMW\ExtraneousLanguage\LanguageFallbackFinder;
  */
 class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $languageContents;
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
+	public function setUp() {
+		parent::setUp();
+
+		$this->languageContents = $this->getMockBuilder( LanguageContents::class )
 			->disableOriginalConstructor()
 			->getMock();
+	}
+
+	public function tearDown() {
+		ExtraneousLanguage::clear();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			ExtraneousLanguage::class,
-			new ExtraneousLanguage( $languageContents )
+			new ExtraneousLanguage( $this->languageContents )
 		);
 
 		$this->assertInstanceOf(
@@ -43,11 +54,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			"SMW_NS_PROPERTY" => "Property"
 		);
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$languageContents->expects( $this->atLeastOnce() )
+		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
@@ -55,7 +62,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $contents ) );
 
 		$instance = new ExtraneousLanguage(
-			$languageContents
+			$this->languageContents
 		);
 
 		$this->assertEquals(
@@ -70,11 +77,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			"Property" => "SMW_NS_PROPERTY"
 		);
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$languageContents->expects( $this->atLeastOnce() )
+		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
@@ -82,7 +85,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $contents ) );
 
 		$instance = new ExtraneousLanguage(
-			$languageContents
+			$this->languageContents
 		);
 
 		$this->assertEquals(
@@ -97,11 +100,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			"SMW_PREC_YMDT" => "d m Y"
 		);
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$languageContents->expects( $this->atLeastOnce() )
+		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
@@ -109,7 +108,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $contents ) );
 
 		$instance = new ExtraneousLanguage(
-			$languageContents
+			$this->languageContents
 		);
 
 		$this->assertEquals(
@@ -124,11 +123,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			"Foo" => "d m Y"
 		);
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$languageContents->expects( $this->atLeastOnce() )
+		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
@@ -136,7 +131,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $contents ) );
 
 		$instance = new ExtraneousLanguage(
-			$languageContents
+			$this->languageContents
 		);
 
 		$this->assertEquals(
@@ -151,11 +146,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			"Foo" => "Bar"
 		);
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$languageContents->expects( $this->atLeastOnce() )
+		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
@@ -163,7 +154,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $contents ) );
 
 		$instance = new ExtraneousLanguage(
-			$languageContents
+			$this->languageContents
 		);
 
 		$this->assertEquals(
@@ -172,32 +163,41 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFindDatatypeByLabel() {
+
+		$contents = array(
+			"Bar" => "_foo"
+		);
+
+		$this->languageContents->expects( $this->atLeastOnce() )
+			->method( 'getContentsByLanguageWithIndex' )
+			->will( $this->returnValue( $contents ) );
+
+		$instance = new ExtraneousLanguage(
+			$this->languageContents
+		);
+
+		$this->assertEquals(
+			'_foo',
+			$instance->findDatatypeByLabel( 'Bar' )
+		);
+	}
+
 	public function testGetPropertyIdByLabel() {
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$languageContents->expects( $this->at( 0 ) )
+		$this->languageContents->expects( $this->at( 0 ) )
 			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'propertyLabels' ) )
 			->will( $this->returnValue( array( "_FOO" => "Foo" ) ) );
 
-		$languageContents->expects( $this->at( 2 ) )
+		$this->languageContents->expects( $this->at( 2 ) )
 			->method( 'getContentsByLanguageWithIndex' )
 			->will( $this->returnValue( array() ) );
 
-//		$languageContents->expects( $this->at( 5 ) )
-//			->method( 'getContentsByLanguageWithIndex' )
-//			->with(
-//				$this->anything(),
-//				$this->equalTo( 'propertyAliases' ) )
-//			->will( $this->returnValue( array( "Foo" => "_FOO" ) ) );
-
 		$instance = new ExtraneousLanguage(
-			$languageContents
+			$this->languageContents
 		);
 
 		$this->assertEquals(
@@ -213,11 +213,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			array( 'SMW_MY', 'SMW_YM' )
 		);
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$languageContents->expects( $this->atLeastOnce() )
+		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
@@ -225,7 +221,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $contents ) );
 
 		$instance = new ExtraneousLanguage(
-			$languageContents
+			$this->languageContents
 		);
 
 		$this->assertEquals(
@@ -242,11 +238,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			array( 'March', 'Mar' )
 		);
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$languageContents->expects( $this->atLeastOnce() )
+		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
@@ -254,7 +246,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $contents ) );
 
 		$instance = new ExtraneousLanguage(
-			$languageContents
+			$this->languageContents
 		);
 
 		$this->assertEquals(
@@ -271,11 +263,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			array( 'March', 'Mar' )
 		);
 
-		$languageContents = $this->getMockBuilder( LanguageContents::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$languageContents->expects( $this->atLeastOnce() )
+		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
@@ -283,7 +271,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $contents ) );
 
 		$instance = new ExtraneousLanguage(
-			$languageContents
+			$this->languageContents
 		);
 
 		$this->assertEquals(

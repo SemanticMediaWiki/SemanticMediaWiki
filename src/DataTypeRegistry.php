@@ -27,6 +27,11 @@ class DataTypeRegistry {
 	protected static $instance = null;
 
 	/**
+	 * @var ExtraneousLanguage
+	 */
+	private $extraneousLanguage;
+
+	/**
 	 * Array of type labels indexed by type ids. Used for datatype resolution.
 	 *
 	 * @var string[]
@@ -78,7 +83,7 @@ class DataTypeRegistry {
 	 *
 	 * @var string[]
 	 */
-	private $defaultDataItemTypeIds = array(
+	private $defaultDataItemTypeMap = array(
 		DataItem::TYPE_BLOB => '_txt', // Text type
 		DataItem::TYPE_URI => '_uri', // URL/URI type
 		DataItem::TYPE_WIKIPAGE => '_wpg', // Page type
@@ -150,28 +155,15 @@ class DataTypeRegistry {
 	 * @param ExtraneousLanguage $extraneousLanguage
 	 */
 	public function __construct( ExtraneousLanguage $extraneousLanguage ) {
-		$typeLabels = $extraneousLanguage->getDatatypeLabels();
-		$typeAliases = $extraneousLanguage->getDatatypeAliases();
-		$canonicalLabels = $extraneousLanguage->getCanonicalDatatypeLabels();
-
-		foreach ( $typeLabels as $typeId => $typeLabel ) {
-			$this->registerTypeLabel( $typeId, $typeLabel );
-		}
-
-		foreach ( $typeAliases as $typeAlias => $typeId ) {
-			$this->registerDataTypeAlias( $typeId, $typeAlias );
-		}
-
-		foreach ( $canonicalLabels as $label => $id ) {
-			$this->canonicalLabels[$id] = $label;
-		}
+		$this->extraneousLanguage = $extraneousLanguage;
+		$this->registerLabels();
 	}
 
 	/**
-	 * @deprecated since 2.5, use DataTypeRegistry::getDataItemByTypeId
+	 * @deprecated since 2.5, use DataTypeRegistry::getDataItemByType
 	 */
 	public function getDataItemId( $typeId ) {
-		return $this->getDataItemByTypeId( $typeId );
+		return $this->getDataItemByType( $typeId );
 	}
 
 	/**
@@ -186,7 +178,7 @@ class DataTypeRegistry {
 	 * @param $typeId string id string for the given type
 	 * @return integer data item ID
 	 */
-	public function getDataItemByTypeId( $typeId ) {
+	public function getDataItemByType( $typeId ) {
 
 		if ( isset( $this->typeDataItemIds[$typeId] ) ) {
 			return $this->typeDataItemIds[$typeId];
@@ -199,9 +191,10 @@ class DataTypeRegistry {
 	 * @since  2.0
 	 *
 	 * @param string
+	 *
 	 * @return boolean
 	 */
-	public function isKnownTypeId( $typeId ) {
+	public function isKnownByType( $typeId ) {
 		return isset( $this->typeDataItemIds[$typeId] );
 	}
 
@@ -225,7 +218,7 @@ class DataTypeRegistry {
 	 * @return boolean
 	 */
 	public function isEqualByType( $srcType, $tagType ) {
-		return $this->getDataItemByTypeId( $srcType ) === $this->getDataItemByTypeId( $tagType );
+		return $this->getDataItemByType( $srcType ) === $this->getDataItemByType( $tagType );
 	}
 
 	/**
@@ -254,7 +247,7 @@ class DataTypeRegistry {
 	}
 
 	private function addTextToIdLookupMap( $dataTypeId, $text ) {
-		$this->typeByLabelOrAliasLookup[strtolower($text)] = $dataTypeId;
+		$this->typeByLabelOrAliasLookup[mb_strtolower($text)] = $dataTypeId;
 	}
 
 	/**
@@ -284,7 +277,7 @@ class DataTypeRegistry {
 	 */
 	public function findTypeId( $label ) {
 
-		$label = strtolower( $label );
+		$label = mb_strtolower( $label );
 
 		if ( isset( $this->typeByLabelOrAliasLookup[$label] ) ) {
 			return $this->typeByLabelOrAliasLookup[$label];
@@ -301,27 +294,17 @@ class DataTypeRegistry {
 	 *
 	 * @return string
 	 */
-	public function findTypeIdByLanguage( $label, $languageCode = false ) {
-
-		$label = mb_strtolower( $label );
+	public function findTypeByLanguage( $label, $languageCode = false ) {
 
 		if ( !$languageCode ) {
 			return $this->findTypeId( $label );
 		}
 
-		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage( $languageCode );
+		$extraneousLanguage = $this->extraneousLanguage->fetchByLanguageCode(
+			$languageCode
+		);
 
-		$datatypeLabels = $extraneousLanguage->getDatatypeLabels();
-		$datatypeLabels = array_flip( $datatypeLabels );
-		$datatypeLabels += $extraneousLanguage->getDatatypeAliases();
-
-		foreach ( $datatypeLabels as $key => $id ) {
-			if ( mb_strtolower( $key ) === $label ) {
-				return $id;
-			}
-		}
-
-		return '';
+		return $extraneousLanguage->findDatatypeByLabel( $label );
 	}
 
 	/**
@@ -395,18 +378,25 @@ class DataTypeRegistry {
 	}
 
 	/**
-	 * Returns a default DataItemId
+	 * @deprecated since 2.5, use DataTypeRegistry::getDefaultDataItemByType
+	 */
+	public function getDefaultDataItemTypeId( $diType ) {
+		return $this->getDefaultDataItemByType( $typeId );
+	}
+
+	/**
+	 * Returns a default DataItem for a matchable type ID
 	 *
-	 * @since 1.9
+	 * @since 2.5
 	 *
 	 * @param string $diType
 	 *
 	 * @return string|null
 	 */
-	public function getDefaultDataItemTypeId( $diType ) {
+	public function getDefaultDataItemByType( $typeId ) {
 
-		if ( isset( $this->defaultDataItemTypeIds[$diType] ) ) {
-			return $this->defaultDataItemTypeIds[$diType];
+		if ( isset( $this->defaultDataItemTypeMap[$typeId] ) ) {
+			return $this->defaultDataItemTypeMap[$typeId];
 		}
 
 		return null;
@@ -511,6 +501,21 @@ class DataTypeRegistry {
 	 */
 	public function setOption( $key, $value ) {
 		$this->getOptions()->set( $key, $value );
+	}
+
+	private function registerLabels() {
+
+		foreach ( $this->extraneousLanguage->getDatatypeLabels() as $typeId => $typeLabel ) {
+			$this->registerTypeLabel( $typeId, $typeLabel );
+		}
+
+		foreach ( $this->extraneousLanguage->getDatatypeAliases() as $typeAlias => $typeId ) {
+			$this->registerDataTypeAlias( $typeId, $typeAlias );
+		}
+
+		foreach ( $this->extraneousLanguage->getCanonicalDatatypeLabels() as $label => $id ) {
+			$this->canonicalLabels[$id] = $label;
+		}
 	}
 
 }

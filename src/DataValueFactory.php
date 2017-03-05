@@ -164,7 +164,7 @@ class DataValueFactory {
 		if ( $property !== null ) {
 			$typeId = $property->findPropertyTypeID();
 		} else {
-			$typeId = $this->dataTypeRegistry->getDefaultDataItemTypeId( $dataItem->getDiType() );
+			$typeId = $this->dataTypeRegistry->getDefaultDataItemByType( $dataItem->getDiType() );
 		}
 
 		$dataValue = $this->newDataValueByType( $typeId, false, $caption, $property );

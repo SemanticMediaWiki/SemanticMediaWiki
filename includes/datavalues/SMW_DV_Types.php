@@ -59,7 +59,7 @@ class SMWTypesValue extends SMWDataValue {
 			$this->m_typeId = $value;
 		} else {
 			$this->m_givenLabel = smwfNormalTitleText( $value );
-			$this->m_typeId = DataTypeRegistry::getInstance()->findTypeIdByLanguage( $this->m_givenLabel, $contentLanguage );
+			$this->m_typeId = DataTypeRegistry::getInstance()->findTypeByLanguage( $this->m_givenLabel, $contentLanguage );
 		}
 
 		if ( $this->m_typeId === '' ) {
