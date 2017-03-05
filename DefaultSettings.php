@@ -24,7 +24,7 @@ return array(
 	# If needed, you can also change this path in LocalSettings.php after including
 	# this file.
 	##
-	'smwgIP' => dirname( __FILE__ ) . '/',
+	'smwgIP' => __DIR__ . '/',
 	'smwgExtraneousLanguageFileDir' => __DIR__ . '/i18n/extra',
 	'smwgServicesFileDir' => __DIR__ . '/src/Services',
 	##
