@@ -381,7 +381,7 @@ class DataTypeRegistry {
 	 * @deprecated since 2.5, use DataTypeRegistry::getDefaultDataItemByType
 	 */
 	public function getDefaultDataItemTypeId( $diType ) {
-		return $this->getDefaultDataItemByType( $typeId );
+		return $this->getDefaultDataItemByType( $diType );
 	}
 
 	/**
