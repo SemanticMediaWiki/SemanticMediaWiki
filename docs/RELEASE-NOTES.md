@@ -53,6 +53,7 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * [#1760](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1760) Improved handling of `MonolingualTextValue` in `Special:SearchByProperty`
 * [#1761](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1761) Added language context support in a property page to recognize localized property type `[[Has type ...]]` annotations
 * [#1768](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1768) Extended error display to be shown in a user language context
+* [#1778](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1778) Export the canonical form of a special page (e.g. `Special:ExportRDF`, `Special:URIResolver`)
 * [#1779](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1779) Added [`Special:ProcessingErrorList`](https://www.semantic-mediawiki.org/wiki/Help:Special:ProcessingErrorList)
 * [#1793](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1793) Extended date type (`TimeValue`) with an `#LOCL@lang` output format to recognize a specific language tag
 * [#1801](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1801) Added `SQLStore` full-text search support for `SQLite`
