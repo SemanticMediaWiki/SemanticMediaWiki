@@ -108,6 +108,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
 		$this->testEnvironment->addConfiguration( 'smwgExportResourcesAsIri', false );
+		$this->testEnvironment->addConfiguration( 'smwgSparqlReplicationPropertyExemptionList', array() );
 	}
 
 	/**

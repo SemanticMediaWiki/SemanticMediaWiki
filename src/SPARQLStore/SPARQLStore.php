@@ -179,11 +179,15 @@ class SPARQLStore extends Store {
 	 */
 	public function doSparqlDataUpdate( SemanticData $semanticData ) {
 
+		$replicationDataTruncator = $this->factory->newReplicationDataTruncator();
+		$semanticData = $replicationDataTruncator->doTruncate( $semanticData );
+
 		$repositoryRedirectLookup = $this->factory->newRepositoryRedirectLookup();
 		$this->doSparqlFlatDataUpdate( $semanticData, $repositoryRedirectLookup );
 
 		foreach( $semanticData->getSubSemanticData() as $subSemanticData ) {
-			 $this->doSparqlFlatDataUpdate( $subSemanticData, $repositoryRedirectLookup );
+			$subSemanticData = $replicationDataTruncator->doTruncate( $subSemanticData );
+			$this->doSparqlFlatDataUpdate( $subSemanticData, $repositoryRedirectLookup );
 		}
 
 		//wfDebugLog( 'smw', ' InMemoryPoolCache: ' . json_encode( \SMW\InMemoryPoolCache::getInstance()->getStats() ) );
