@@ -227,6 +227,30 @@ class ExtraneousLanguage {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $label
+	 *
+	 * @return string
+	 */
+	public function findDatatypeByLabel( $label ) {
+
+		$label = mb_strtolower( $label );
+
+		$datatypeLabels = $this->getDatatypeLabels();
+		$datatypeLabels = array_flip( $datatypeLabels );
+		$datatypeLabels += $this->getDatatypeAliases();
+
+		foreach ( $datatypeLabels as $key => $id ) {
+			if ( mb_strtolower( $key ) === $label ) {
+				return $id;
+			}
+		}
+
+		return '';
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return array
