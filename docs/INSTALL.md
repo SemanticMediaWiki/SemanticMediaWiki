@@ -83,7 +83,7 @@ If you are installing SMW on a freshly installed wiki continue to the next step.
 pages run the Semantic MediaWiki [data rebuild script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_"rebuildData.php"). The location of this script
 is `extensions/SemanticMediaWiki/maintenance/rebuildData.php`. It can be run as follows in your shell:
 
-   php extensions/SemanticMediaWiki/maintenance/rebuildData.php -v
+    php extensions/SemanticMediaWiki/maintenance/rebuildData.php -v
 
 ##### Verify installation success
 
