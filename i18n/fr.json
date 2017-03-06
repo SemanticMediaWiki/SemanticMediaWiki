@@ -392,6 +392,8 @@
 	"smw-pa-property-predefined_asksi": "« $1 » est une propriété prédéfinie qui recueille le nombre de conditions utilisées dans une requête et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined_askde": "« $1 » est une propriété prédéfinie qui informe sur la profondeur d’une requête et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined-long_askde": "C’est une valeur numérique calculée d’après une sous-requête incluse, des chaînes de propriétés, et les éléments de description disponibles avec l’exécution d’une requête basée sur le paramètre <code>[https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth]</code>.",
+	"smw-pa-property-predefined_askpa": "« $1 » est une propriété prédéfinie décrivant les paramètres qui influencent un résultat de recherche et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique].",
+	"smw-pa-property-predefined-long_askpa": "C’est une partie de la collection  des propriétés qui spécifient un [https://www.semantic-mediawiki.org/wiki/Help:Query_profiler profil de recherche].",
 	"smw-sp-properties-docu": "Cette page liste [https://www.semantic-mediawiki.org/wiki/Property les propriétés] et leur compteur d’utilisation disponible pour ce wiki. Pour avoir des statistiques de comptage à jour, il est recommandé que le script de maintenance [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics des statistiques de propriété] soit lancé régulièrement. Pour un affichage différencié, voyez les pages spéciales [[Special:UnusedProperties|propriétés non utilisées]] ou [[Special:WantedProperties|propriétés souhaitées]].",
 	"smw-sp-properties-cache-info": "Les données listées ont été récupérées depuis [https://www.semantic-mediawiki.org/wiki/Caching le cache], et ont été mises à jour le $1.",
 	"smw-sp-properties-header-label": "Liste des propriétés",
@@ -433,6 +435,8 @@
 	"smw-pa-property-predefined_errp": "« $1 » est une propriété prédéfinie pour tracer les erreurs d’entrée pour les valeurs d’annotation incorrectes qui sont sans doute provoquées par une restriction de type ou de [[Property:Allows value|valeur autorisée]] et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value « $1 »] est une propriété prédéfinie qui peut définir une liste de valeurs permises pour limiter des tâches de valeur pour une propriété et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-datavalue-property-restricted-use": "La propriété « $1 » a été marquée à usage restreint.",
+	"smw-datavalue-property-invalid-character": "« $1 » contient le caractère « $2 » dans un libellé de propriété, et celui-ci a été classé comme non valide.",
+	"smw-datavalue-property-invalid-chain": "L’utilisation de « $1 » comme chaîne de propriété n’est pas autorisée lors du processus d’annotation.",
 	"smw-datavalue-restricted-use": "La valeur de donnée « $1 » est marquée à usage restreint.",
 	"smw-datavalue-invalid-number": "\"$1\" ne peut pas être interprété comme un nombre.",
 	"smw-query-condition-circular": "Une condition circulaire possible a été détectée dans \"$1\".",
@@ -531,6 +535,7 @@
 	"smw-property-req-violation-missing-fields": "Il manque les détails de déclaration pour la propriété « $1 » relatifs au type annoté « $2 » ce qui ne permet pas de définir la propriété <code>Comporte des champs</code>.",
 	"smw-property-req-violation-missing-formatter-uri": "Il manque les détails de déclaration pour la propriété « $1 » relatifs au type annoté, ce qui ne permet pas de définir la propriété <code>URI du formateur externe</code>.",
 	"smw-property-req-violation-predefined-type": "La propriété « $1 », en tant que propriété prédéfinie, contient une déclaration de type « $2 » qui n’est pas compatible avec le type par défaut de cette propriété.",
+	"smw-property-req-violation-import-type": "Une déclaration de type a été détectée, qui est incompatible avec le type prédéfini du vocabulaire importé « $1 ». En général, il n’est pas nécessaire de déclarer un type, parce que l’information est récupérée lors de la définition de l’import.",
 	"protect-level-smw-pageedit": "N'autoriser que les utilisateurs qui ont le droit de modifier des pages (Semantic MediaWiki)",
 	"smw-edit-protection": "Cette page est [[Property:Is edit protected|protégée]] pour éviter la modification de données accidentelle, et ne peut donc être modifiée que par des utilisateurs avec le [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups droit] « $1 » approprié.",
 	"smw-edit-protection-disabled": "La protection contre la modification a été désactivée, c'est pourquoi « $1 » ne peut pas être utilisé pour protéger les pages de l'entité contre la modification non autorisée.",
@@ -538,5 +543,6 @@
 	"smw-edit-protection-enabled": "Modifier la protection (Semantic MediaWiki)",
 	"smw-patternedit-protection": "Cette page est protégée et ne peut être modifiée que par des utilisateurs avec le [https://www.semantic-mediawiki.org/wiki/Help:Permissions droit] <code>smw-patternedit</code> approprié.",
 	"smw-pa-property-predefined_edip": "« $1 » est une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique] pour indiquer si la modification est protégée ou non.",
-	"smw-pa-property-predefined-long_edip": "Bien que n’importe quel utilisateur soit habilité à ajouter cette propriété à un sujet, seul un utilisateur avec un droit spécifique peut modifier ou supprimer la protection d’une entité, une fois celle-ci ajoutée."
+	"smw-pa-property-predefined-long_edip": "Bien que n’importe quel utilisateur soit habilité à ajouter cette propriété à un sujet, seul un utilisateur avec un droit spécifique peut modifier ou supprimer la protection d’une entité, une fois celle-ci ajoutée.",
+	"smw-query-reference-link-label": "Référence de requête"
 }

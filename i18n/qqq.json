@@ -373,6 +373,8 @@
 	"smw-pa-property-predefined_asksi": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding the [https://semantic-mediawiki.org/wiki/Help:Special_property_Query_size size] of a query.\n\nParameter:\n* $1 - name of predefined property",
 	"smw-pa-property-predefined_askde": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding the [https://semantic-mediawiki.org/wiki/Help:Special_property_Query_depth depth] of a query.\n\nParameter:\n* $1 - name of predefined property",
 	"smw-pa-property-predefined-long_askde": "This informatory message describes the value added to a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_askpa": "This informatory message describes a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 - name of predefined property",
+	"smw-pa-property-predefined-long_askpa": "This is an informatory message.",
 	"smw-sp-properties-docu": "Extended introductory text for the [[Special:Properties]] page.",
 	"smw-sp-properties-cache-info": "Information about the current cache status on a special page\n\nParameters:\n* $1 - Accommodates a user formatted date",
 	"smw-sp-properties-header-label": "A header label",
@@ -414,6 +416,8 @@
 	"smw-pa-property-predefined_errp": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding [https://semantic-mediawiki.org/wiki/Help:Special_property_Has_improper_value_for improper values].\n\nParameter:\n* $1 - name of predefined property",
 	"smw-pa-property-predefined_pval": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding [https://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed values]. Only allowed values may be saved without generating an error.\n\nParameter:\n* $1 - name of predefined property",
 	"smw-datavalue-property-restricted-use": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the property name causing the error/warning.",
+	"smw-datavalue-property-invalid-character": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the invalid characters withing the name of the property",
+	"smw-datavalue-property-invalid-chain": "This is an error message.\n\nParameter:\n* $1 - holds the name of the property chain",
 	"smw-datavalue-restricted-use": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the datavalue causing the error/warning.",
 	"smw-datavalue-invalid-number": "This is an error message shown to the user in case the stored value is not a number.",
 	"smw-query-condition-circular": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the name of the template causing the error/warning.",
@@ -514,6 +518,7 @@
 	"smw-property-req-violation-missing-fields": "This is an error message.\n\nParameters:\n* $1 - Holds the name of the property\n* $2 - Holds the name of the datatype",
 	"smw-property-req-violation-missing-formatter-uri": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the property",
 	"smw-property-req-violation-predefined-type": "This is an error message.\n\nParameters:\n* $1 - Holds the name of the property\n* $2 - Holds the name of the datatype",
+	"smw-property-req-violation-import-type": "This is an error message.\n\nParameter:\n* $1 - holds the name of the imported vacabulary",
 	"protect-level-smw-pageedit": "This is one of the options that may be selected when performing a page protection (<code>action=protect</code>) via the graphical interface of the wiki.",
 	"smw-edit-protection": "This is an informatory message shown on every page which is edit protected via an annotation.\n\nParameter:\n* $1 - Holds the name of the user right",
 	"smw-edit-protection-disabled": "This is an informatory message.\n\nParameter:\n* $1 - Holds the name of the special property",
@@ -521,5 +526,6 @@
 	"smw-edit-protection-enabled": "This is an informatory message shown with a tooltip telling that the page is edit protected via the mechanism provided by Semantic MediaWiki.",
 	"smw-patternedit-protection": "This is an informatory message shown on every page which is edit protected via a software setting.",
 	"smw-pa-property-predefined_edip": "This informatory message shown in a tooltip describes the [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] holding [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Is_edit_protected Is edit protected].\n\nParameter:\n* $1 - name of predefined property",
-	"smw-pa-property-predefined-long_edip": "This informatory message describes the value added to a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property]."
+	"smw-pa-property-predefined-long_edip": "This informatory message describes the value added to a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-query-reference-link-label": "This is the label of a link."
 }

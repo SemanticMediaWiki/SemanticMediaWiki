@@ -226,6 +226,7 @@
 	"smw_result_results": "Wyniki",
 	"smw_result_noresults": "Niestety, brak wyników.",
 	"smwadmin": "Funkcje administracyjne",
+	"smw-admin-statistics-job-title": "Statystyki zadań",
 	"smw-admin-setupsuccess": "Silnik przestrzeni dyskowej został pomyślnie ustawiony.",
 	"smw_smwadmin_return": "Powrót do $1",
 	"smw_smwadmin_updatestarted": "Uruchomiono nowy proces aktualizacji danych semantycznych.\nWszystkie zapisane dane zostaną uporządkowane oraz naprawione w razie potrzeby.\nMożesz śledzić stan procesu aktualizacji na tej stronie specjalnej.",

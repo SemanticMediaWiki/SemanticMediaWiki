@@ -294,6 +294,7 @@
 	"smw-admin-supplementary-section-title": "Aanvullende functies",
 	"smw-admin-supplementary-settings-title": "Configuratie-instellingen",
 	"smw-admin-supplementary-operational-statistics-title": "Operationele statistieken",
+	"smw-property-label-similarity-threshold": "Drempelwaarde:",
 	"smw_adminlinks_datastructure": "Gegevensstructuur",
 	"smw_adminlinks_displayingdata": "Gegevens weergeven",
 	"smw_adminlinks_inlinequerieshelp": "Hulp bij inline zoekopdrachten",
