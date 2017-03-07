@@ -14,7 +14,7 @@ Qualifying facts using a simple [provenance model](https://www.semantic-mediawik
 
 ### Property chain and language filter support in print request
 
-[Property chain](https://www.semantic-mediawiki.org/wiki/Property_chains_and_paths) for conditions (e.g `[[Located in.Capital of::Foo]]`) was provided for some time, and now got extended (#1824) to supporting the syntax on print requests to retrieve values of a chain member that represent a page node. Values of type `MonolingualText` can now use a language filter (#2037) to restrict the display of a value in a print request.
+[Property chain](https://www.semantic-mediawiki.org/wiki/Property_chains_and_paths) for conditions (e.g `[[Located in.Capital of::Foo]]`) was provided for some time, and now got extended (#1824) to supporting the syntax on print requests to retrieve values of a chain member that represent a page node. Values of datatype "MonolingualText" can now use a language filter (#2037) to restrict the display of a value in a print request.
 
 ### Edit protection
 
@@ -28,13 +28,17 @@ Semantic MediaWiki now supports the declaration of [preferred property labels](h
 
 An experimental feature to support caching of query results (#1251) and hereby minimize a possible impact of query processing during and after a page view. This change also includes a reevaluation (#2099, #2176) of the query hash (used as identifier) to ensure that cache fragmentation is reduced and duplicate queries can share the same cache across different pages.
 
+### Links in values
+
+Support for [links in values](https://www.semantic-mediawiki.org/wiki/Help:$smwgLinksInValues) for datatype "Text" was extended by use-cases and improved in performance as well as avoiding the former error-prone "PCRE-approach".
+
 ### Fixed properties
 
 Support for [fixed properties](https://www.semantic-mediawiki.org/wiki/Help:Fixed_properties) was overhauled, fixed (#2135) and is no longer experimental.
 
 ### Special page "SemanticMediaWiki"
 
-Special page "SemanticMediaWiki"(https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki) formerly known as special page "SMWAdmin" was modernized and extended (#2044, etc.) including a new [configuration setting](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) allowing for fine-granded control of its accessibilty (#2142).
+Special page ["SemanticMediaWiki"](https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki) formerly known as special page "SMWAdmin" was modernized and extended (#2044, etc.) including a new [configuration setting](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) allowing for fine-granded control of its accessibilty (#2142).
 
 ## Compatibility changes
 
