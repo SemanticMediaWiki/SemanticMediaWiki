@@ -4,17 +4,17 @@ THIS IS NOT A RELEASE YET
 
 ## Highlights
 
-### Full-text support
+### Full-text search support
 
-The #1481 (`MySQL`/`MariaDB`) and #1801 (`SQLite`) PR added [full-text](https://www.semantic-mediawiki.org/wiki/Help:Full-text_search) support using the native capabilities of the SQL backend.
+Support for [full-text search](https://www.semantic-mediawiki.org/wiki/Help:Full-text_search) was added using the native capabilities of the SQL backends "MySQL"/"MariaDB" (#1481) and "SQLite" (#1801) for datatypes "Text", "URL" and "Page".
 
 ### Provenance data recording
 
-Qualifying facts using a simple [provenance model](https://www.semantic-mediawiki.org/wiki/Reference_and_provenance_data) is now supported #1808 using existing mechanisms in defining a property specification together with a new [Reference type](https://www.semantic-mediawiki.org/wiki/Help:Type_Reference) ([video](https://youtu.be/t045qkf4YAo)).
+Qualifying facts using a simple [provenance model](https://www.semantic-mediawiki.org/wiki/Reference_and_provenance_data) is now supported (#1808) using existing mechanisms in defining a property specification together with a new [Reference datatype](https://www.semantic-mediawiki.org/wiki/Help:Type_Reference) ([video](https://youtu.be/t045qkf4YAo)).
 
 ### Property chain and language filter support in print request
 
-[Property chain](https://www.semantic-mediawiki.org/wiki/Property_chains_and_paths) for conditions (e.g `[[Located in.Capital of::Foo]]`) was provided for some time, and #1824 extends the support for the syntax on print requests to retrieve values of a chain member that represent a page node. Values of type `MonolingualText` can now use a language filter (#2037) to restrict the display of a value in a print request.
+[Property chain](https://www.semantic-mediawiki.org/wiki/Property_chains_and_paths) for conditions (e.g `[[Located in.Capital of::Foo]]`) was provided for some time, and now got extended (#1824) to supporting the syntax on print requests to retrieve values of a chain member that represent a page node. Values of datatype "MonolingualText" can now use a language filter (#2037) to restrict the display of a value in a print request.
 
 ### Edit protection
 
@@ -26,9 +26,19 @@ Semantic MediaWiki now supports the declaration of [preferred property labels](h
 
 ### Query result cache
 
-An experimental feature (#1251) to support caching of query results and hereby minimize a possible impact of query processing during and after a page view. This change also includes a reevaluation (#2099, #2176) of the query hash (used as identifier) to ensure that cache fragmentation is reduced and duplicate queries can share the same cache across different pages.
+An experimental feature to support caching of query results (#1251) and hereby minimize a possible impact of query processing during and after a page view. This change also includes a reevaluation (#2099, #2176) of the query hash (used as identifier) to ensure that cache fragmentation is reduced and duplicate queries can share the same cache across different pages.
 
-* #2135
+### Links in values
+
+Support for [links in values](https://www.semantic-mediawiki.org/wiki/Help:$smwgLinksInValues) for datatype "Text" was extended by use-cases and improved in performance as well as avoiding the former error-prone "PCRE-approach".
+
+### Fixed properties
+
+Support for [fixed properties](https://www.semantic-mediawiki.org/wiki/Help:Fixed_properties) was overhauled, fixed (#2135) and is no longer experimental.
+
+### Special page "SemanticMediaWiki"
+
+Special page ["SemanticMediaWiki"](https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki) formerly known as special page "SMWAdmin" was modernized and extended (#2044, etc.) including a new [configuration setting](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) allowing for fine-granded control of its accessibilty (#2142).
 
 ## Compatibility changes
 
@@ -104,6 +114,8 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * [#2290](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2290) Added [query reference](https://www.semantic-mediawiki.org/wiki/Query_reference) links section to `Special:Browse`
 * [#2295](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2295) Added [`Allows value list`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list) to maintain a list of allowed values using a `NS_MEDIAWIKI` reference page
 * [#2301](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2301) Added [`$smwgSparqlReplicationPropertyExemptionList`](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlReplicationPropertyExemptionList) to suppress replication for selected properties to a `SPARQL` endpoint
+* Many new translations for numerous languages by the communtity of [translatewiki.net](https://translatewiki.net/w/i.php?title=Special%3AMessageGroupStats&x=D&group=mwgithub-semanticmediawiki&suppressempty=1)
+* New translation for special properties, datatypes, magic words, date formats and aliases for Catalan and German by Semantic MediaWiki community members
 
 ## Bug fixes
 
@@ -117,35 +129,35 @@ An experimental feature (#1251) to support caching of query results and hereby m
 * #1727 Fixed an issue when property names contain `<` or `>` symbols
 * #1728 Fixed fatal error in `Special:SearchByProperty` on when the property name contains invalid characters
 * #1731 Fixed possible error in the `SkinAfterContent` hook when a null object is used
-* #1744
+* #1744 Fixed special page "Searchbyproperty" not working correctly with "-" sign
 * #1775 Fixed time offset recognition
 * #1817 Disabled `DataValue` constraint validation when used in a query context
 * #1823 Fixed annotation of `Display title of` when `SMW_DV_WPV_DTITLE` is disabled
 * #1880 Fixed handling of the `bytea` type in `postgres` for a blob field
 * #1886 Fixed disappearance of the `Property` namespace in connection with extensions that use `wfLoadExtension`
-* #1922
-* #1926
-* #1935
-* #1957
+* #1922 Fixed `InfoLinksProvider` to avoid `LOCL` info links
+* #1926 Fixed `PrintRequest` to recognize the spant tag in labels
+* #1935 Fixed "Error: 42P10 ERROR: ... ORDER BY expressions must appear in select list" for PostgreSQL
+* #1957 Fixed `SMWSQLStore3Writers::getSubobjects` using the wrong DBKey in case of predefined properties
 * [#1963](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1963) Fixed by relying on #2153
-* #1977
+* #1977 Fixed Unexpected general modules for Resource Loader
 * #1978 Fixed `Tablebuilder` to avoid index creation on an unaltered schema definition
 * #1985 Fixed a potential fatal error in `MaintenanceLogger` for when `$wgMaxNameChars` doesn't match an expected name length
 * [#2000](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2000) Fixed label and caption sanitization
-* #2022
+* #2022 Fixed the usage of the sep parameter for format "template"
 * #2061 Fixed strict comparison `===` for strings in `PropertyTableRowDiffer`
 * #2070 Filter invalid entity display from `Special:Concepts`
 * #2071 Prevent extensions to register already known canonical property labels and hereby avoid a possible ID mismatch
-* #2076
-* #2078
-* #2089
-* #2093
-* #2107
-* #2127
+* #2076 Fixed issue for Gregorian and Julian calendars having a year 0
+* #2078 Fixed issue with "SELECT list; this is incompatible with DISTINCT" for MySQL 5.7+
+* #2089 Fixed issue with "UPDATE - SET; Data too long for column" for MySQL 5.7+
+* #2093 Avoid removal of existing data by #REDIRECT in target
+* #2107 Fixed `NamespaceManager::init` to set SMW_NS* default settings
+* #2127 Fixed a call to a the member function `getHash()` on nulll
 * [#2182](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2182) Fixed display of special properties in `Special:UnusedProperties`
 * [#2183](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2183) Fixed display of properties with no explicit datatype in `Special:UnusedProperties`
-* #2188
-* #2202
+* #2188 Fixed error in special page "RDFExport" with non-latin instance names
+* #2202 Added guard against error "Invalid or virtual namespace -1 given"
 * [#2228](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2228) Fixed text output for the table format in `Special:Ask`
 * [#2294](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2294) Avoid a possible `Parser::lock` during an `UpdateJob`
 
