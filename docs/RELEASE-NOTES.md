@@ -114,6 +114,8 @@ Special page ["SemanticMediaWiki"](https://www.semantic-mediawiki.org/wiki/Help:
 * [#2290](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2290) Added [query reference](https://www.semantic-mediawiki.org/wiki/Query_reference) links section to `Special:Browse`
 * [#2295](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2295) Added [`Allows value list`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list) to maintain a list of allowed values using a `NS_MEDIAWIKI` reference page
 * [#2301](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2301) Added [`$smwgSparqlReplicationPropertyExemptionList`](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlReplicationPropertyExemptionList) to suppress replication for selected properties to a `SPARQL` endpoint
+* Many new translations for numerous languages by the communtity of [translatewiki.net](https://translatewiki.net/w/i.php?title=Special%3AMessageGroupStats&x=D&group=mwgithub-semanticmediawiki&suppressempty=1)
+* New translation for special properties, datatypes, magic words, date formats and aliases for Catalan and German by Semantic MediaWiki community members
 
 ## Bug fixes
 
