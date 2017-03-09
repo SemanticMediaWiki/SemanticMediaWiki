@@ -27,7 +27,8 @@
 			"Zpizza",
 			"Alex Great",
 			"Nemo bis",
-			"Redredsonia"
+			"Redredsonia",
+			"Nitch"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -341,6 +342,8 @@
 	"smw-pa-property-predefined_ask": "«$1» — это предопределённое свойство, которое представляет мета-данные (в форме [https://www.semantic-mediawiki.org/wiki/Subobject подобъекта]) об индивидуальных запросах и предоставляется [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_asksi": "«$1» — это предопределённое свойство, которое собирает количество условий, используемых в запросе и предоставляется [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askde": "«$1» — предварительно определенное свойство, которое информирует о глубине запроса и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_askpa": "$1 - это предопределенное свойство, описывающее параметры влияющие на результат запроса. Предоставляется от [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined-long_askpa": "Это часть набора свойств, который определяет [https://www.semantic-mediawiki.org/wiki/Help:Query_profiler query profile].",
 	"smw-sp-properties-docu": "На этой странице перечислены доступные [https://www.semantic-mediawiki.org/wiki/Property свойства] и количество их использований в этой вики. Для получения актуальной статистики рекомендуется, чтоб сервисный скрипт [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics статистики свойст] запускался на регулярной основе. Для дифференцированного представления см. служебные страницы со списком [[Special:UnusedProperties|неиспользованных]] или [[Special:WantedProperties|требуемых свойств]].",
 	"smw-sp-properties-cache-info": "Перечисленные данные были получены из [https://www.semantic-mediawiki.org/wiki/Caching кэша] и были последний раз обновлены $1.",
 	"smw-sp-properties-header-label": "Список свойств",
