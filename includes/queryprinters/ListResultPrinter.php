@@ -335,9 +335,12 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getRowListContent( array $row ) {
+
 		$firstField = true; // is this the first entry in this row?
 		$extraFields = false; // has anything but the first field been printed?
+
 		$result = '';
+		$excluded = array( 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' );
 
 		foreach ( $row as $field ) {
 			$firstValue = true; // is this the first value in this field?
@@ -368,17 +371,9 @@ class ListResultPrinter extends ResultPrinter {
 					}
 				}
 
-				// Display the text with tags for all non-list type outputs and
-				// where the property is of type _qty (to ensure the highlighter
-				// is displayed) but for others remove tags so that lists are
-				// not distorted by unresolved in-text tags
-				// FIXME This is a hack that limits extendibility of SMW datatypes
-				// by giving _qty a special status that no other type can have.
-				if ( $dataValue->getTypeID() === '_qty' || $this->isPlainlist() ) {
-					$result .=  $text;
-				} else {
-					$result .= Sanitizer::stripAllTags( $text );
-				}
+				// Remove seleted tags to avoid lists are distorted by unresolved
+				// in-text tags
+				$result .= $this->isPlainlist() ? $text : Sanitizer::removeHTMLtags( $text, null, array(), array(), $excluded );
 			}
 
 			$firstField = false;
