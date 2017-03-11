@@ -3,6 +3,8 @@
 namespace SMW\Tests;
 
 use SMW\CacheFactory;
+use Onoi\Cache\NullCache;
+use Onoi\Cache\Cache;
 
 /**
  * @covers \SMW\CacheFactory
@@ -107,6 +109,31 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'Onoi\Cache\Cache',
 			$instance->newMediaWikiCompositeCache( $instance->getMainCacheType() )
+		);
+	}
+
+	public function testCanConstructMediaWikiCache() {
+
+		$instance = new CacheFactory();
+
+		$this->assertInstanceOf(
+			Cache::class,
+			$instance->newMediaWikiCache( 'hash' )
+		);
+	}
+
+	public function testCanConstructCacheByType() {
+
+		$instance = new CacheFactory();
+
+		$this->assertInstanceOf(
+			NullCache::class,
+			$instance->newCacheByType( CACHE_NONE )
+		);
+
+		$this->assertInstanceOf(
+			Cache::class,
+			$instance->newCacheByType( 'hash' )
 		);
 	}
 

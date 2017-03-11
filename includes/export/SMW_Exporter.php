@@ -72,7 +72,7 @@ class SMWExporter {
 			$applicationFactory = ApplicationFactory::getInstance();
 
 			$poolCache = $applicationFactory->getInMemoryPoolCache();
-			$poolCache->resetPoolCacheFor( self::POOLCACHE_ID );
+			$poolCache->resetPoolCacheById( self::POOLCACHE_ID );
 
 			// FIXME with 3.x
 			// There is no better way of getting around the static use without BC

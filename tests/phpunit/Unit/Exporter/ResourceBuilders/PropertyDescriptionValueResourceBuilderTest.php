@@ -30,7 +30,7 @@ class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_Tes
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
 		$this->testEnvironment = new TestEnvironment();
-		$this->testEnvironment->resetPoolCacheFor( \SMWExporter::POOLCACHE_ID );
+		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
 	protected function tearDown() {

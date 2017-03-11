@@ -53,7 +53,7 @@ class IdToDataItemMatchFinder {
 	 * @param string $hash
 	 */
 	public function saveToCache( $id, $hash ) {
-		$this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID  )->save( $id, $hash );
+		$this->inMemoryPoolCache->getPoolCacheById( self::POOLCACHE_ID  )->save( $id, $hash );
 	}
 
 	/**
@@ -62,14 +62,14 @@ class IdToDataItemMatchFinder {
 	 * @param string $id
 	 */
 	public function deleteFromCache( $id ) {
-		$this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID )->delete( $id );
+		$this->inMemoryPoolCache->getPoolCacheById( self::POOLCACHE_ID )->delete( $id );
 	}
 
 	/**
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->inMemoryPoolCache->resetPoolCacheFor( self::POOLCACHE_ID );
+		$this->inMemoryPoolCache->resetPoolCacheById( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -127,7 +127,7 @@ class IdToDataItemMatchFinder {
 	 */
 	public function getDataItemById( $id ) {
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( self::POOLCACHE_ID );
 
 		if ( !$poolCache->contains( $id ) && !$this->canMatchById( $id ) ) {
 			return null;

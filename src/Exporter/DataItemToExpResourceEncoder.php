@@ -70,7 +70,7 @@ class DataItemToExpResourceEncoder {
 	 * @since 2.3
 	 */
 	public function reset() {
-		$this->inMemoryPoolCache->resetPoolCacheFor( 'exporter.dataitem.resource.encoder' );
+		$this->inMemoryPoolCache->resetPoolCacheById( 'exporter.dataitem.resource.encoder' );
 	}
 
 	/**
@@ -91,7 +91,7 @@ class DataItemToExpResourceEncoder {
 
 		$hash = $subject->getHash();
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( 'exporter.dataitem.resource.encoder' );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.dataitem.resource.encoder' );
 
 		foreach ( array( $hash, $hash . self::AUX_MARKER . $this->seekImportVocabulary ) as $key ) {
 			$poolCache->delete( $key );
@@ -160,7 +160,7 @@ class DataItemToExpResourceEncoder {
 
 		$hash = $diWikiPage->getHash() . $modifier . $this->seekImportVocabulary;
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( 'exporter.dataitem.resource.encoder' );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.dataitem.resource.encoder' );
 
 		if ( $poolCache->contains( $hash ) ) {
 			return $poolCache->fetch( $hash );
