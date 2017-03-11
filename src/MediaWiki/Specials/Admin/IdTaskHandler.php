@@ -97,7 +97,7 @@ class IdTaskHandler extends TaskHandler {
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ) );
 		$this->outputFormatter->addParentLink();
 
-		$id = (int)$webRequest->getText( 'id' );
+		$id = $webRequest->getText( 'id' );
 
 		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
 			$this->doDispose( $id );
@@ -125,7 +125,7 @@ class IdTaskHandler extends TaskHandler {
 
 	private function getForm( $webRequest, $id ) {
 
-		$message = $this->getIdInfoAsJson( $webRequest, $id );
+		$message = $this->createInfoMessageById( $webRequest, $id );
 
 		if ( $id < 1 ) {
 			$id = null;
@@ -186,36 +186,70 @@ class IdTaskHandler extends TaskHandler {
 		return $html . Html::element( 'p', array(), '' );
 	}
 
-	private function getIdInfoAsJson( $webRequest, $id ) {
+	private function createInfoMessageById( $webRequest, &$id ) {
 
-		if ( $id < 1 || $webRequest->getText( 'action' ) !== 'idlookup' ) {
+		if ( $webRequest->getText( 'action' ) !== 'idlookup' || $id === '' ) {
 			return '';
 		}
 
-		$references = false;
-		$row = $this->store->getConnection( 'mw.db' )->selectRow(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		if ( intval( $id ) ) {
+			$condition = 'smw_id=' . intval( $id );
+		} else {
+			$condition = 'smw_sortkey=' . $connection->addQuotes( $id );
+		}
+
+		$rows = $connection->select(
 				\SMWSql3SmwIds::TABLE_NAME,
 				array(
+					'smw_id',
 					'smw_title',
 					'smw_namespace',
 					'smw_iw',
 					'smw_subobject',
 					'smw_sortkey'
 				),
-				'smw_id=' . $id,
+				$condition,
 				__METHOD__
 		);
 
-		if ( $row !== false ) {
-			$references = $this->store->getPropertyTableIdReferenceFinder()->searchAllTablesToFindAtLeastOneReferenceById(
-				$id
-			);
+		return $this->createMessageFromRows( $id, $rows );
+	}
+
+	private function createMessageFromRows( &$id, $rows ) {
+
+		$references = array();
+		$formattedRows = array();
+		$output = '';
+
+		if ( $rows !== array() ) {
+			foreach ( $rows as $row ) {
+				$id = $row->smw_id;
+
+				$references[$id] = $this->store->getPropertyTableIdReferenceFinder()->searchAllTablesToFindAtLeastOneReferenceById(
+					$id
+				);
+
+				$formattedRows[$id] = (array)$row;
+			}
 		}
 
-		$output = '<pre>' . $this->outputFormatter->encodeAsJson( array( $id, $row ) ) . '</pre>';
+		// ID is not unique
+		if ( count( $formattedRows ) > 1 ) {
+			$id = '';
+		}
 
-		if ( $references ) {
-			$output .= Html::element( 'p', array(), $this->getMessageAsString( array( 'smw-admin-iddispose-references', $id, count( $references ) ) ) );
+		if ( $formattedRows !== array() ) {
+			$output = '<pre>' . $this->outputFormatter->encodeAsJson( $formattedRows ) . '</pre>';
+		}
+
+		if ( $references !== array() ) {
+			$output .= Html::element(
+				'p',
+				array(),
+				$this->getMessageAsString( array( 'smw-admin-iddispose-references', $id, count( $references ) ) )
+			);
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
 		}
 
