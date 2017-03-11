@@ -159,6 +159,7 @@ class PropertySpecificationLookup {
 
 		$query = new Query( $description );
 		$query->setLimit( 1 );
+		$query->setOption( Query::PROC_CONTEXT, 'PropertySpecificationLookup' );
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->queryPropertyValuesFor(
 			$query

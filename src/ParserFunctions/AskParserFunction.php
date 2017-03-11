@@ -175,6 +175,8 @@ class AskParserFunction {
 			$contextPage
 		);
 
+		$query->setOption( Query::PROC_CONTEXT, 'AskParserFunction' );
+
 		if ( $this->parserData->getOption( ParserData::NO_QUERY_DEP_TRACE ) ) {
 			$query->setOption( $query::NO_DEP_TRACE, true );
 		}
