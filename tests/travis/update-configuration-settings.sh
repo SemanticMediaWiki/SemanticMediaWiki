@@ -76,4 +76,4 @@ echo '$wgDebugDumpSql = false;' >> LocalSettings.php
 echo '$wgShowDBErrorBacktrace = true;' >> LocalSettings.php
 echo "putenv( 'MW_INSTALL_PATH=$(pwd)' );" >> LocalSettings.php
 
-php maintenance/update.php --quick
+php maintenance/update.php --skip-external-dependencies --quick
