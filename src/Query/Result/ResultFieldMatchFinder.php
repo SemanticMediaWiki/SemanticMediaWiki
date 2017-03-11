@@ -319,6 +319,12 @@ class ResultFieldMatchFinder {
 			return $dataItem;
 		}
 
+		// Outputs marked with -ia (import annotation) are allowed to retain a
+		// possible [[ :: ]] annotation
+		if ( strpos( $this->printRequest->getOutputFormat(), '-ia' ) !== false ) {
+			return $dataItem;
+		}
+
 		// #1314
 		$string = InTextAnnotationParser::removeAnnotation(
 			$dataItem->getString()
