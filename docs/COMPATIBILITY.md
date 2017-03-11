@@ -151,7 +151,7 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 </table>
 
-* PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (as for the time of this writing). Please consult the official MediaWiki release documentation. 
+* PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (at the time of this writing). Please consult the official MediaWiki release documentation. 
 * For the 1.28 MediaWiki release branch, 1.28.1 is recommended due to [T154428](https://phabricator.wikimedia.org/T154428).
 
 **Releases before Composer support:**
@@ -191,6 +191,12 @@ Note that HHVM is only required if you do not use PHP.
 		<th>MySQL</th>
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
+	</tr>
+	<tr>
+		<th>SMW 2.5.x</th>
+		<td>Full support (5.x)</td>
+		<td>Full support (3.x)</td>
+		<td>Full support (9.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
@@ -254,6 +260,14 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 		<th><a href="https://github.com/garlik/4store">4store</a></th>
 		<th><a href="http://rdf4j.org/">Sesame</a></th>
 		<th><a href="https://wiki.blazegraph.com/">Blazegraph</a></th>
+	</tr>
+	<tr>
+		<th>SMW 2.5.x</th>
+		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
+		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.8.x)</td>
+		<td>Full support<br />(1.5.2) + 2.1.0<sup>[t.3]</sup></td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
