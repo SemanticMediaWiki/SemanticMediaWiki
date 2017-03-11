@@ -553,6 +553,17 @@ return array(
 	'smwgResultAliases' => array( 'feed' => array( 'rss' ) ),
 	##
 
+	##
+	# Result printer features
+	#
+	# - SMW_RF_NONE
+	# - SMW_RF_TEMPLATE_OUTSEP, #2022 (use the sep parameter as outer separator)
+	#
+	# @since 2.3
+	##
+	'smwgResultFormatsFeatures' => SMW_RF_TEMPLATE_OUTSEP,
+	##
+
 	### Predefined sources for queries
 	# Array of available sources for answering queries. Can be redefined in
 	# the settings to register new sources (usually an extension will do so

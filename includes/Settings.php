@@ -111,6 +111,7 @@ class Settings extends Options {
 			'smwgQuerySources' => $GLOBALS['smwgQuerySources'],
 			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 			'smwgResultFormats' => $GLOBALS['smwgResultFormats'],
+			'smwgResultFormatsFeatures' => $GLOBALS['smwgResultFormatsFeatures'],
 			'smwgResultAliases' => $GLOBALS['smwgResultAliases'],
 			'smwgPDefaultType' => $GLOBALS['smwgPDefaultType'],
 			'smwgAllowRecursiveExport' => $GLOBALS['smwgAllowRecursiveExport'],

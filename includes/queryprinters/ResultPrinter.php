@@ -181,6 +181,17 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param integer $feature
+	 *
+	 * @return boolean
+	 */
+	public function isEnabledFeature( $feature ) {
+		return ( (int)$GLOBALS['smwgResultFormatsFeatures'] & $feature ) != 0;
+	}
+
+	/**
 	 * @see SMWIResultPrinter::getResult
 	 *
 	 * @note: since 1.8 this method is final, since it's the entry point.
