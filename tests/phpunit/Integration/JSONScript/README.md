@@ -17,7 +17,7 @@ objects work.
 
 ## TestCases
 
-Contains 190 files with a total of 838 tests:
+Contains 193 files with a total of 850 tests:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0001.json) Test `format=debug` output
@@ -25,6 +25,7 @@ Contains 190 files with a total of 838 tests:
 * [f-0102.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0102.json) Test `format=template` output + unicode characters (#988, skip postgres)
 * [f-0103.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0103.json) Test `format=template` with self reference (#988, guard against template self-reference in ask/show query)
 * [f-0104.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0104.json) Test `format=list, ul, ol, template` (#2022,`wgContLang=en`, `wgLang=en`)
+* [f-0105.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0105.json) Test `format=list, ul, ol` on `_qty` property (`wgContLang=en`, `SMW_DV_NUMV_USPACE`)
 * [f-0201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0201.json) Test `format=table` on boolean table output formatting (#896, #1464)
 * [f-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0202.json) Test `format=table` with sep cell formatting, #495 (`wgContLang=en`,`wgLang=en`)
 * [f-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0203.json) Test `format=table` to sort by category (#1286)
@@ -128,6 +129,8 @@ Contains 190 files with a total of 838 tests:
 * [p-0909.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0909.json) Test the description optimization (`wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`, `smwgQFilterDuplicates=true`, `smwgQueryProfiler`)
 * [p-0910.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0910.json) Test `#ask` to highlight (`#-hl`) search token in result set (#..., `wgContLang=en`, `wgLang=en`)
 * [p-0911.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0911.json) Test the `_ASK` profile (#2270, `smwgQueryProfiler`, `smwgQueryResultCacheType`)
+* [p-0912.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0912.json) Test `#ask` with (`#-ia`) formatter using `#set` (#..., `wgContLang=en`, `wgLang=en`)
+* [p-0913.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0913.json) Test `#ask` with (`#-ia`) formatter using `smwgLinksInValues` (#..., `wgContLang=en`, `wgLang=en`, `smwgLinksInValues=SMW_LINV_OBFU`)
 
 ### Q
 * [q-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0101.json) Test `_txt` query for simple assignments, NS_HELP, and special chars
@@ -219,7 +222,7 @@ Contains 190 files with a total of 838 tests:
 * [s-0014.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0014.json) Test `Special:Browse` with special characters `%'"&` (`wgContLang=en`, `wgLang=es` )
 * [s-0015.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0015.json) Test `Special:Ask` output for `_txt` with formatted text (#..., `wgContLang=en`, `wgLang=en`)
 
--- Last updated on 2017-03-05 by `readmeContentsBuilder.php`
+-- Last updated on 2017-03-11 by `readmeContentsBuilder.php`
 
 <!-- End of generated contents by readmeContentsBuilder.php -->
 
