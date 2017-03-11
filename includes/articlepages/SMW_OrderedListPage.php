@@ -78,8 +78,8 @@ abstract class SMWOrderedListPage extends Article {
 		if ( !isset( $diff ) || !$diffOnly ) {
 
 			// MW 1.25+
-			if ( method_exists( $outputPage, 'setIndicators' ) ) {
-				$outputPage->setIndicators( $this->getTopIndicators() );
+			if ( method_exists( $outputPage, 'setIndicators' ) && ( $indicators = $this->getTopIndicators() ) !== '' ) {
+				$outputPage->setIndicators( $indicators );
 			}
 
 			$outputPage->addHTML( $this->getIntroductoryText() );
@@ -116,7 +116,7 @@ abstract class SMWOrderedListPage extends Article {
 	 *
 	 * @return string
 	 */
-	protected function getTopIndicator() {
+	protected function getTopIndicators() {
 		return '';
 	}
 
