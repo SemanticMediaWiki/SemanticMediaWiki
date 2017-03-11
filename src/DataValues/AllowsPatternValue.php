@@ -23,6 +23,11 @@ class AllowsPatternValue extends StringValue {
 	const TYPE_ID = '__pvap';
 
 	/**
+	 * Fixed Mediawiki page
+	 */
+	const REFERENCE_PAGE_ID = 'Smw_allows_pattern';
+
+	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
@@ -68,7 +73,42 @@ class AllowsPatternValue extends StringValue {
 			return '';
 		}
 
-		return '[['. Localizer::getInstance()->getNamespaceTextById( NS_MEDIAWIKI ) . ':smw allows pattern' . '|' . $this->getDataItem()->getString() .']]';
+		$id = $this->getDataItem()->getString();
+
+		return '[['. Localizer::getInstance()->getNamespaceTextById( NS_MEDIAWIKI ) . ':' . self::REFERENCE_PAGE_ID . '|' . $id .']]';
+	}
+
+	/**
+	 * @see DataValue::getLongHtmlText
+	 *
+	 * @param string $value
+	 */
+	public function getLongHtmlText( $linker = null ) {
+		return $this->getShortHtmlText( $linker );
+	}
+
+	/**
+	 * @see DataValue::getShortHtmlText
+	 *
+	 * @param string $value
+	 */
+	public function getShortHtmlText( $linker = null ) {
+
+		if ( !$this->isValid() ) {
+			return '';
+		}
+
+		$id = $this->getDataItem()->getString();
+		$title = \Title::newFromText( self::REFERENCE_PAGE_ID, NS_MEDIAWIKI );
+
+		return \Html::rawElement(
+			'a',
+			array(
+				'href'   => $title->getLocalUrl(),
+				'target' => '_blank'
+			),
+			$id
+		);
 	}
 
 }

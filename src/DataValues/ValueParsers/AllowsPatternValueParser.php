@@ -3,6 +3,7 @@
 namespace SMW\DataValues\ValueParsers;
 
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\DataValues\AllowsPatternValue;
 
 /**
  * @private
@@ -54,7 +55,7 @@ class AllowsPatternValueParser implements ValueParser {
 		$this->errors = array();
 
 		$contentList = $this->doParseContent(
-			$this->mediaWikiNsContentReader->read( 'smw allows pattern' )
+			$this->mediaWikiNsContentReader->read( AllowsPatternValue::REFERENCE_PAGE_ID )
 		);
 
 		if ( !isset( $contentList[$userValue] ) ) {
