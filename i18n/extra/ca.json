@@ -67,11 +67,13 @@
         "_TEXT": "Text",
         "_PDESC": "Té descripció de propietat",
         "_PVAP": "Permet patró",
+	"_PVALI": "Permet llista de valors",
         "_DTITLE": "Títol a mostrar de",
         "_PVUC": "Té restricció única",
         "_PEID": "Identificador extern",
         "_PEFU": "URI del formatador extern",
-        "_ASKSC": "Font de consulta"
+	"_PPLB": "Té etiqueta de propietat preferida",
+	"_EDIP": "Té protecció de modificació"
     },
     "propertyAliases": {
         "Unitat de mesura": "_UNIT"
