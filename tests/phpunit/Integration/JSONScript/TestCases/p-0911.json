@@ -1,0 +1,64 @@
+{
+	"description": "Test the `_ASK` profile (#2270, `smwgQueryProfiler`, `smwgQueryResultCacheType`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0911/1",
+			"contents": "[[Has page::Example/P0911/1]]"
+		},
+		{
+			"page": "Example/P0911/Q.1",
+			"contents": "{{#ask: [[Has page::Example/P0911/1]] |limit=50 |offset=0 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0911/Q.1#_QUERY646f64bc5a757dee7a3910f07115d771",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 7,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_ASKDU",
+						"_ASKPA",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"{\"limit\":50,\"offset\":0,\"sort\":[\"\"],\"order\":[\"asc\"],\"mode\":1}"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgQueryResultCacheType": "hash",
+		"smwgQueryProfiler" : {
+			"smwgQueryDurationEnabled": true,
+			"smwgQueryParametersEnabled": true
+		},
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

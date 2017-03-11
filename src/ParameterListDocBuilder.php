@@ -84,7 +84,7 @@ class ParameterListDocBuilder {
 	private function getDescriptionRow( ParamDefinition $parameter, $hasAliases ) {
 		if ( $hasAliases ) {
 			$aliases = $parameter->getAliases();
-			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : '-';
+			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : ' -';
 		}
 
 		$description = $this->msg( $parameter->getMessage() );

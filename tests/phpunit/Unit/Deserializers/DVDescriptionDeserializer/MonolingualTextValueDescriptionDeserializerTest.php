@@ -5,6 +5,7 @@ namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer;
 use SMW\Options;
+use SMW\DataValueFactory;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer
@@ -56,7 +57,9 @@ class MonolingualTextValueDescriptionDeserializerTest extends \PHPUnit_Framework
 	 */
 	public function testDeserialize( $value, $decription, $queryString, $dvFeatures ) {
 
-		$monolingualTextValue = new MonolingualTextValue();
+		$monolingualTextValue = DataValueFactory::getInStance()->newDataValueByType(
+			MonolingualTextValue::TYPE_ID
+		);
 
 		$monolingualTextValue->setOptions(
 			new Options( array( 'smwgDVFeatures' => $dvFeatures ) )

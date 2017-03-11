@@ -1,0 +1,125 @@
+{
+	"description": "Test `format=list, ul, ol` on `_qty` property (`wgContLang=en`, `SMW_DV_NUMV_USPACE`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has area",
+			"contents": "[[Has type::Quantity]], [[Corresponds to::1 km², km ²]] [[Corresponds to::0.38610 sq mi, sqmi]] [[Corresponds to::1000 m², m ²]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/F0105/1",
+			"contents": "[[Has area::10 km ²]] [[Category:F0105]]"
+		},
+		{
+			"page": "Example/F0105/2",
+			"contents": "[[Has text::Test <li>Item</li>]] [[Category:F0105]]"
+		},
+		{
+			"page": "Example/F0105/Q.1.1",
+			"contents": "{{#ask: [[Category:F0105]] [[Has area::+]] |?Has area |format=list |headers=plain }}"
+		},
+		{
+			"page": "Example/F0105/Q.1.2",
+			"contents": "{{#ask: [[Category:F0105]] [[Has area::+]] |?Has area |format=ul |headers=plain }}"
+		},
+		{
+			"page": "Example/F0105/Q.1.3",
+			"contents": "{{#ask: [[Category:F0105]] [[Has area::+]] |?Has area |format=ol |headers=plain }}"
+		},
+		{
+			"page": "Example/F0105/Q.2.1",
+			"contents": "{{#ask: [[Category:F0105]] [[Has text::+]] |?Has text |format=list |headers=plain }}"
+		},
+		{
+			"page": "Example/F0105/Q.2.2",
+			"contents": "{{#ask: [[Category:F0105]] [[Has text::+]] |?Has text |format=ul |headers=plain }}"
+		},
+		{
+			"page": "Example/F0105/Q.2.3",
+			"contents": "{{#ask: [[Category:F0105]] [[Has text::+]] |?Has text |format=ol |headers=plain }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 (format=list)",
+			"subject": "Example/F0105/Q.1.1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"3.861&amp;#160;sq mi 10,000&amp;#160;m²\"><span class=\"smwtext\">10&#160;km²</span><div class=\"smwttcontent\">3.861&#160;sq mi <br />10,000&#160;m² <br /></div>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 (format=ul)",
+			"subject": "Example/F0105/Q.1.2",
+			"assert-output": {
+				"to-contain": [
+					"title=\"3.861&amp;#160;sq mi 10,000&amp;#160;m²\"><span class=\"smwtext\">10&#160;km²</span><div class=\"smwttcontent\">3.861&#160;sq mi <br />10,000&#160;m² <br /></div>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 (format=ol)",
+			"subject": "Example/F0105/Q.1.3",
+			"assert-output": {
+				"to-contain": [
+					"title=\"3.861&amp;#160;sq mi 10,000&amp;#160;m²\"><span class=\"smwtext\">10&#160;km²</span><div class=\"smwttcontent\">3.861&#160;sq mi <br />10,000&#160;m² <br /></div>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#3 (format=list) with <li> element",
+			"subject": "Example/F0105/Q.2.1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/F0105/2\">Example/F0105/2</a> (Has text Test <li>Item</li>)"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#4 (format=ul) with sanitized <li> element",
+			"subject": "Example/F0105/Q.2.2",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/F0105/2\">Example/F0105/2</a> (Has text Test &lt;li&gt;Item&lt;/li&gt;)</li>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5 (format=ol) with sanitized <li> element",
+			"subject": "Example/F0105/Q.2.3",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/F0105/2\">Example/F0105/2</a> (Has text Test &lt;li&gt;Item&lt;/li&gt;)</li>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgDVFeatures": [
+			"SMW_DV_NUMV_USPACE"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

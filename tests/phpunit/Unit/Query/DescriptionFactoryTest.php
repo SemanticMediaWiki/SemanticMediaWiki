@@ -5,6 +5,7 @@ namespace SMW\Tests\Query\Parser;
 use SMW\DataItemFactory;
 use SMW\Query\DescriptionFactory;
 use SMW\Tests\TestEnvironment;
+use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 
 /**
  * @covers SMW\Query\DescriptionFactory
@@ -260,6 +261,29 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIContainer( $containerSemanticData ) ) );
 
+		$monolingualTextValueFormatter = new MonolingualTextValueFormatter();
+		$monolingualTextValueFormatter->setDataValue( $dataValue );
+
+		$monolingualTextValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\MonolingualTextValueParser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory->expects( $this->atLeastOnce() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+
+		$dataValueServiceFactory->expects( $this->atLeastOnce() )
+			->method( 'getValueParser' )
+			->will( $this->returnValue( $monolingualTextValueParser ) );
+
+		$dataValue->setDataValueServiceFactory(
+			$dataValueServiceFactory
+		);
+
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
@@ -294,6 +318,29 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIContainer( $containerSemanticData ) ) );
+
+		$monolingualTextValueFormatter = new MonolingualTextValueFormatter();
+		$monolingualTextValueFormatter->setDataValue( $dataValue );
+
+		$monolingualTextValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\MonolingualTextValueParser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory->expects( $this->atLeastOnce() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $monolingualTextValueFormatter ) );
+
+		$dataValueServiceFactory->expects( $this->atLeastOnce() )
+			->method( 'getValueParser' )
+			->will( $this->returnValue( $monolingualTextValueParser ) );
+
+		$dataValue->setDataValueServiceFactory(
+			$dataValueServiceFactory
+		);
 
 		$instance = new DescriptionFactory();
 

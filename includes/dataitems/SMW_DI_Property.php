@@ -313,7 +313,7 @@ class DIProperty extends SMWDataItem {
 	 */
 	public function setPropertyTypeId( $propertyTypeId ) {
 
-		if ( !DataTypeRegistry::getInstance()->isKnownTypeId( $propertyTypeId ) ) {
+		if ( !DataTypeRegistry::getInstance()->isKnownByType( $propertyTypeId ) ) {
 			throw new PropertyDataTypeLookupExeption( "{$propertyTypeId} is an unknown type id" );
 		}
 

@@ -19,7 +19,8 @@ class NullJob extends JobBase {
 	 * @param Title|null $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title = null, $params = array() ) {}
+	public function __construct( Title $title = null, $params = array() ) {
+	}
 
 	/**
 	 * @see Job::run
@@ -35,6 +36,7 @@ class NullJob extends JobBase {
 	 *
 	 * @since  2.5
 	 */
-	public function insert() {}
+	public function insert() {
+	}
 
 }

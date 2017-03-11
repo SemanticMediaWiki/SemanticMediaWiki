@@ -4,6 +4,7 @@ namespace SMW;
 
 use Onoi\HttpRequest\HttpRequest;
 use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
+use SMW\MediaWiki\Jobs\JobFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Title;
@@ -32,6 +33,11 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	 * @var HttpRequest
 	 */
 	private $httpRequest;
+
+	/**
+	 * @var JobFactory
+	 */
+	private $jobFactory;
 
 	/**
 	 * Is kept static in order for the cli process to only make the check once
@@ -70,9 +76,11 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	 * @since 2.3
 	 *
 	 * @param HttpRequest $httpRequest
+	 * @param JobFactory $jobFactory
 	 */
-	public function __construct( HttpRequest $httpRequest ) {
+	public function __construct( HttpRequest $httpRequest, JobFactory $jobFactory ) {
 		$this->httpRequest = $httpRequest;
+		$this->jobFactory = $jobFactory;
 	}
 
 	/**
@@ -103,7 +111,7 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	 * @param boolean $isEnabledHttpDeferredRequest
 	 */
 	public function isEnabledHttpDeferredRequest( $isEnabledHttpDeferredRequest ) {
-		$this->isEnabledHttpDeferredRequest = (bool)$isEnabledHttpDeferredRequest;
+		$this->isEnabledHttpDeferredRequest = $isEnabledHttpDeferredRequest;
 	}
 
 	/**
@@ -225,14 +233,14 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	}
 
 	private function canUseDeferredRequest() {
-		return !$this->isCommandLineMode && !$this->isPreferredWithJobQueue && $this->isEnabledHttpDeferredRequest && $this->canConnectToUrl();
+		return !$this->isCommandLineMode && !$this->isPreferredWithJobQueue && $this->isEnabledHttpDeferredRequest === SMW_HTTP_DEFERRED_ASYNC && $this->canConnectToUrl();
 	}
 
 	private function createDispatchableCallbackJob( $type, $isEnabledJobQueue ) {
 
 		$callback = function ( $title, $parameters ) use ( $type, $isEnabledJobQueue ) {
 
-			$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+			$job = $this->jobFactory->newByType(
 				$type,
 				$title,
 				$parameters
@@ -245,7 +253,7 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 			// defying the idea of a deferred process therefore only directly
 			// have the job run when initiate from the commandLine as transactions
 			// are expected without delay and are separated
-			$this->isCommandLineMode ? $job->run() : $job->insert();
+			$this->isCommandLineMode || $this->isEnabledHttpDeferredRequest === SMW_HTTP_DEFERRED_SYNC_JOB ? $job->run() : $job->insert();
 		};
 
 		return $callback;

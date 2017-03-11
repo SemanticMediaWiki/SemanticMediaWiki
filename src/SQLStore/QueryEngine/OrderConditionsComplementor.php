@@ -89,7 +89,7 @@ class OrderConditionsComplementor {
 	 * @param boolean $isSupported
 	 */
 	public function isSupported( $isSupported ) {
-		$this->isSupported = $isSupported;;
+		$this->isSupported = $isSupported;
 	}
 
 	/**
@@ -158,7 +158,7 @@ class OrderConditionsComplementor {
 			// no specific property is given (see test cases in #1534)
 			$querySegment->sortfields[$label] = "$querySegment->alias.smw_sortkey,$querySegment->alias.smw_title,$querySegment->alias.smw_subobject";
 		} elseif ( PropertyChainValue::isChained( $label ) ) { // Try to extend query.
-			$propertyChainValue = new PropertyChainValue();
+			$propertyChainValue = DataValueFactory::getInstance()->newDataValueByType( PropertyChainValue::TYPE_ID );
 			$propertyChainValue->setUserValue( $label );
 
 			if ( !$propertyChainValue->isValid() ) {
@@ -207,7 +207,7 @@ class OrderConditionsComplementor {
 			$this->descriptionFactory->newConjunction( $extraDescriptions )
 		);
 
- 		// This is always an QuerySegment::Q_CONJUNCTION ...
+		// This is always an QuerySegment::Q_CONJUNCTION ...
 		$newQuerySegment = $this->querySegmentListBuilder->findQuerySegment(
 			$this->querySegmentListBuilder->getLastQuerySegmentId()
 		);

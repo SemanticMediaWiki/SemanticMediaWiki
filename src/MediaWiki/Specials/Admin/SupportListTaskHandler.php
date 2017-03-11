@@ -83,6 +83,7 @@ class SupportListTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {}
+	public function handleRequest( WebRequest $webRequest ) {
+	}
 
 }

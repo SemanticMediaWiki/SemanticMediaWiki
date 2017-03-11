@@ -2,7 +2,8 @@
 
 namespace SMW\DataValues\ValueParsers;
 
-use SMW\DataValues\ControlledVocabularyImportContentFetcher;
+use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\DataValues\ImportValue;
 
 /**
  * @private
@@ -15,9 +16,9 @@ use SMW\DataValues\ControlledVocabularyImportContentFetcher;
 class ImportValueParser implements ValueParser {
 
 	/**
-	 * @var ControlledVocabularyImportContentFetcher
+	 * @var MediaWikiNsContentReader
 	 */
-	private $controlledVocabularyImportContentFetcher;
+	private $mediaWikiNsContentReader;
 
 	/**
 	 * @var array
@@ -27,10 +28,10 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @since 2.2
 	 *
-	 * @param ControlledVocabularyImportContentFetcher $controlledVocabularyImportContentFetcher
+	 * @param MediaWikiNsContentReader $mediaWikiNsContentReader
 	 */
-	public function __construct( ControlledVocabularyImportContentFetcher $controlledVocabularyImportContentFetcher ) {
-		$this->controlledVocabularyImportContentFetcher = $controlledVocabularyImportContentFetcher;
+	public function __construct( MediaWikiNsContentReader $mediaWikiNsContentReader ) {
+		$this->mediaWikiNsContentReader = $mediaWikiNsContentReader;
 	}
 
 	/**
@@ -49,7 +50,7 @@ class ImportValueParser implements ValueParser {
 	 */
 	public function parse( $value ) {
 
-		list( $namespace, $section ) = $this->tryToSplitByNamespaceSection(
+		list( $namespace, $section, $controlledVocabulary ) = $this->splitByNamespaceSection(
 			$value
 		);
 
@@ -58,7 +59,7 @@ class ImportValueParser implements ValueParser {
 		}
 
 		list( $uri, $name, $typelist ) = $this->doParse(
-			$this->controlledVocabularyImportContentFetcher->fetchFor( $namespace )
+			$controlledVocabulary
 		);
 
 		$type = $this->checkForValidType(
@@ -84,7 +85,7 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @return array|null
 	 */
-	private function tryToSplitByNamespaceSection( $value ) {
+	private function splitByNamespaceSection( $value ) {
 
 		if ( strpos( $value, ':' ) === false ) {
 
@@ -98,8 +99,15 @@ class ImportValueParser implements ValueParser {
 
 		list( $namespace, $section ) = explode( ':', $value, 2 );
 
+		/*
+		 * A controlled vocabulary is a list of terms, with terms being unambiguous,
+		 * and non-redundant. Vocabulary definitions adhere only a limited set of
+		 * rules/constraints (e.g. Type/Label)
+		 */
+		$controlledVocabulary = $this->mediaWikiNsContentReader->read( ImportValue::IMPORT_PREFIX . $namespace );
+
 		// Check that elements exists for the namespace
-		if ( !$this->controlledVocabularyImportContentFetcher->contains( $namespace ) ) {
+		if ( $controlledVocabulary === '' ) {
 
 			$this->errors[] = array(
 				'smw-datavalue-import-unknown-namespace',
@@ -109,7 +117,7 @@ class ImportValueParser implements ValueParser {
 			return null;
 		}
 
-		return array( $namespace, $section );
+		return array( $namespace, $section, $controlledVocabulary );
 	}
 
 	/**
@@ -144,15 +152,15 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @return array|null
 	 */
-	private function doParse( $contents ) {
+	private function doParse( $controlledVocabulary ) {
 
 		$list = array();
 
-		if ( $contents === '' ) {
+		if ( $controlledVocabulary === '' ) {
 			return null;
 		}
 
-		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
+		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
 
 		// Get definition from first line
 		$fristLine = array_shift( $importDefintions );

@@ -2,11 +2,12 @@
 
 namespace SMW;
 
-use SMW\DataValues\ValueValidatorRegistry;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIError;
 use SMWErrorValue as ErrorValue;
+use SMWPropertyValue as PropertyValue;
+use SMW\Services\DataValueServiceFactory;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or
@@ -37,12 +38,19 @@ class DataValueFactory {
 	private $dataTypeRegistry = null;
 
 	/**
+	 * @var DataValueServiceFactory
+	 */
+	private $dataValueServiceFactory;
+
+	/**
 	 * @since 1.9
 	 *
-	 * @param DataTypeRegistry|null $dataTypeRegistry
+	 * @param DataTypeRegistry $dataTypeRegistry
+	 * @param DataValueServiceFactory $dataValueServiceFactory
 	 */
-	protected function __construct( DataTypeRegistry $dataTypeRegistry = null ) {
+	protected function __construct( DataTypeRegistry $dataTypeRegistry, DataValueServiceFactory $dataValueServiceFactory ) {
 		$this->dataTypeRegistry = $dataTypeRegistry;
+		$this->dataValueServiceFactory = $dataValueServiceFactory;
 	}
 
 	/**
@@ -52,11 +60,21 @@ class DataValueFactory {
 	 */
 	public static function getInstance() {
 
-		if ( self::$instance === null ) {
-			self::$instance = new self(
-				DataTypeRegistry::getInstance()
-			);
+		if ( self::$instance !== null ) {
+			return self::$instance;
 		}
+
+		$dataValueServiceFactory = ApplicationFactory::getInstance()->create( 'DataValueServiceFactory' );
+		$dataTypeRegistry = DataTypeRegistry::getInstance();
+
+		$dataValueServiceFactory->importExtraneousFunctions(
+			$dataTypeRegistry->getExtraneousFunctions()
+		);
+
+		self::$instance = new self(
+			$dataTypeRegistry,
+			$dataValueServiceFactory
+		);
 
 		return self::$instance;
 	}
@@ -66,7 +84,6 @@ class DataValueFactory {
 	 */
 	public function clear() {
 		$this->dataTypeRegistry->clear();
-		ValueValidatorRegistry::getInstance()->clear();
 		self::$instance = null;
 	}
 
@@ -95,11 +112,13 @@ class DataValueFactory {
 			);
 		}
 
-		$class  = $dataTypeRegistry->getDataTypeClassById( $typeId );
-		$dataValue = new $class( $typeId );
+		$dataValue = $this->dataValueServiceFactory->newDataValueByType(
+			$typeId,
+			$dataTypeRegistry->getDataTypeClassById( $typeId )
+		);
 
-		$dataValue->setExtraneousFunctions(
-			$dataTypeRegistry->getExtraneousFunctions()
+		$dataValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
 		);
 
 		$dataValue->setOptions(
@@ -145,7 +164,7 @@ class DataValueFactory {
 		if ( $property !== null ) {
 			$typeId = $property->findPropertyTypeID();
 		} else {
-			$typeId = $this->dataTypeRegistry->getDefaultDataItemTypeId( $dataItem->getDiType() );
+			$typeId = $this->dataTypeRegistry->getDefaultDataItemByType( $dataItem->getDiType() );
 		}
 
 		$dataValue = $this->newDataValueByType( $typeId, false, $caption, $property );
@@ -271,7 +290,7 @@ class DataValueFactory {
 	 * @return DataValue
 	 */
 	public function newPropertyValueByLabel( $propertyLabel, $caption = false, DIWikiPage $contextPage = null ) {
-		return $this->newDataValueByType( '__pro', $propertyLabel, $caption, null, $contextPage );
+		return $this->newDataValueByType( PropertyValue::TYPE_ID, $propertyLabel, $caption, null, $contextPage );
 	}
 
 	/**

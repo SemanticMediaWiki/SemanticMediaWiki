@@ -159,6 +159,7 @@ class PropertySpecificationLookup {
 
 		$query = new Query( $description );
 		$query->setLimit( 1 );
+		$query->setOption( Query::PROC_CONTEXT, 'PropertySpecificationLookup' );
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->queryPropertyValuesFor(
 			$query
@@ -250,6 +251,25 @@ class PropertySpecificationLookup {
 		}
 
 		return $allowsValues;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return array
+	 */
+	public function getAllowedListValueBy( DIProperty $property ) {
+
+		$allowsListValue = array();
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVALI' ) );
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+			$allowsListValue = $dataItems;
+		}
+
+		return $allowsListValue;
 	}
 
 	/**

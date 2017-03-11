@@ -9,8 +9,6 @@
  */
 use SMW\ApplicationFactory;
 use SMW\DataValues\InfoLinksProvider;
-use SMW\DataValues\ValueFormatterRegistry;
-use SMW\DataValues\ValueValidatorRegistry;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\Localizer;
 use SMW\Message;
@@ -69,6 +67,11 @@ abstract class SMWDataValue {
 	 * contains a comparator.
 	 */
 	const OPT_QUERY_COMP_CONTEXT = 'query.comparator.context';
+
+	/**
+	 * Option to disable an infolinks highlight/tooltip
+	 */
+	const OPT_DISABLE_INFOLINKS = 'disable.infolinks';
 
 	/**
 	 * Associated data item. This is the reference to the immutable object
@@ -135,13 +138,6 @@ abstract class SMWDataValue {
 	private $mHasErrors = false;
 
 	/**
-	 * Extraneous services and object container
-	 *
-	 * @var array
-	 */
-	private $extraneousFunctions = array();
-
-	/**
 	 * @var Options
 	 */
 	private $options;
@@ -150,6 +146,11 @@ abstract class SMWDataValue {
 	 * @var InfoLinksProvider
 	 */
 	private $infoLinksProvider = null;
+
+	/**
+	 * @var DataValueServiceFactory
+	 */
+	protected $dataValueServiceFactory;
 
 	/**
 	 * Constructor.
@@ -175,7 +176,6 @@ abstract class SMWDataValue {
 		$this->m_dataitem = null;
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
-		$this->getInfoLinksProvider()->init();
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
 
 		$this->parseUserValue( $value ); // may set caption if not set yet, depending on datavalue
@@ -211,11 +211,19 @@ abstract class SMWDataValue {
 	 * @return boolean
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {
-		$this->getInfoLinksProvider()->init();
 		$this->m_dataitem = null;
 		$this->mErrors = array();
 		$this->mHasErrors = $this->m_caption = false;
 		return $this->loadDataItem( $dataItem );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DataValueServiceFactory $dataValueServiceFactory
+	 */
+	public function setDataValueServiceFactory( $dataValueServiceFactory ) {
+		$this->dataValueServiceFactory = $dataValueServiceFactory;
 	}
 
 	/**
@@ -360,15 +368,6 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Adds a single SMWInfolink object to the m_infolinks array.
-	 *
-	 * @param SMWInfolink $link
-	 */
-	public function addInfolink( SMWInfolink $link ) {
-		$this->getInfoLinksProvider()->addInfolink( $link );
-	}
-
-	/**
 	 * Define a particular output format. Output formats are user-supplied strings
 	 * that the datavalue may (or may not) use to customise its return value. For
 	 * example, quantities with units of measurement may interpret the string as
@@ -499,18 +498,6 @@ abstract class SMWDataValue {
 		}
 
 		return $description;
-	}
-
-	/**
-	 * Returns a DataValueFormatter that was matched and dispatched for the current
-	 * DV instance.
-	 *
-	 * @since 2.4
-	 *
-	 * @return DataValueFormatter
-	 */
-	public function getDataValueFormatter() {
-		return ValueFormatterRegistry::getInstance()->getDataValueFormatterFor( $this );
 	}
 
 	/**
@@ -654,7 +641,16 @@ abstract class SMWDataValue {
 	 * @return string
 	 */
 	public function getInfolinkText( $outputformat, $linker = null ) {
-		return $this->getInfoLinksProvider()->getInfolinkText( $outputformat, $linker );
+
+		if ( $this->infoLinksProvider === null ) {
+			$this->infoLinksProvider = $this->dataValueServiceFactory->newInfoLinksProvider( $this );
+		}
+
+		if ( $this->getOption( self::OPT_DISABLE_INFOLINKS ) === true ) {
+			$this->infoLinksProvider->disableServiceLinks();
+		}
+
+		return $this->infoLinksProvider->getInfolinkText( $outputformat, $linker );
 	}
 
 	/**
@@ -676,13 +672,6 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * @since 2.1
-	 */
-	public function disableServiceLinks() {
-		$this->getInfoLinksProvider()->disableServiceLinks();
-	}
-
-	/**
 	 * Return an array of SMWLink objects that provide additional resources
 	 * for the given value. Captions can contain some HTML markup which is
 	 * admissible for wiki text, but no more. Result might have no entries
@@ -690,11 +679,15 @@ abstract class SMWDataValue {
 	 */
 	public function getInfolinks() {
 
-		$this->getInfoLinksProvider()->setServiceLinkParameters(
+		if ( $this->infoLinksProvider === null ) {
+			$this->infoLinksProvider = $this->dataValueServiceFactory->newInfoLinksProvider( $this );
+		}
+
+		$this->infoLinksProvider->setServiceLinkParameters(
 			$this->getServiceLinkParams()
 		);
 
-		return $this->getInfoLinksProvider()->createInfoLinks();
+		return $this->infoLinksProvider->createInfoLinks();
 	}
 
 	/**
@@ -759,17 +752,6 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * @note Normally set by the DataValueFactory, or during tests
-	 *
-	 * @since 2.3
-	 *
-	 * @param array
-	 */
-	public function setExtraneousFunctions( array $extraneousFunctions ) {
-		$this->extraneousFunctions = $extraneousFunctions;
-	}
-
-	/**
 	 * @since 2.3
 	 *
 	 * @param string $name
@@ -779,12 +761,7 @@ abstract class SMWDataValue {
 	 * @throws RuntimeException
 	 */
 	public function getExtraneousFunctionFor( $name, array $parameters = array() ) {
-
-		if ( isset( $this->extraneousFunctions[$name] ) && is_callable( $this->extraneousFunctions[$name] ) ) {
-			return call_user_func_array( $this->extraneousFunctions[$name], $parameters );
-		}
-
-		throw new RuntimeException( "$name is not registered as extraneous function." );
+		return $this->dataValueServiceFactory->newExtraneousFunctionByName( $name, $parameters );
 	}
 
 	/**
@@ -812,31 +789,21 @@ abstract class SMWDataValue {
 	 * Creates an error if the value is illegal.
 	 */
 	protected function checkAllowedValues() {
-		ValueValidatorRegistry::getInstance()->getConstraintValueValidator()->validate( $this );
+
+		if ( $this->dataValueServiceFactory === null ) {
+			return;
+		}
+
+		$this->dataValueServiceFactory->getConstraintValueValidator()->validate( $this );
 	}
 
 	/**
-	 * @since 2.4
+	 * @since 2.5
 	 *
-	 * @param string $value
-	 *
-	 * @return string
+	 * @return Options
 	 */
-	protected function convertDoubleWidth( $value ) {
-		return Localizer::convertDoubleWidth( $value );
-	}
-
 	protected function getOptions() {
 		return $this->options;
-	}
-
-	private function getInfoLinksProvider() {
-
-		if ( $this->infoLinksProvider === null ) {
-			$this->infoLinksProvider = new InfoLinksProvider( $this );
-		}
-
-		return $this->infoLinksProvider;
 	}
 
 }

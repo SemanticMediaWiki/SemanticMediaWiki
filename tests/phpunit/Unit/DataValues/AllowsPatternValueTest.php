@@ -4,7 +4,7 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\AllowsPatternValue;
-use SMW\Options;
+use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -21,6 +21,7 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
+	private $dataValueServiceFactory;
 
 	protected function setUp() {
 
@@ -38,7 +39,27 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
-	//	$this->testEnvironment->resetPoolCacheFor( 'pvap.no.pattern.cache' );
+	//	$this->testEnvironment->resetPoolCacheById( 'pvap.no.pattern.cache' );
+
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueParser' )
+			->will( $this->returnValue( new AllowsPatternValueParser( $this->mediaWikiNsContentReader ) ) );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $constraintValueValidator ) );
 	}
 
 	protected function tearDown() {
@@ -57,9 +78,11 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new AllowsPatternValue();
 
-		$instance->setOptions( new Options(
-			array( 'smwgDVFeatures' => SMW_DV_PVAP )
-		) );
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
 
 		$instance->setUserValue( '' );
 
@@ -76,9 +99,11 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new AllowsPatternValue();
 
-		$instance->setOptions( new Options(
-			array( 'smwgDVFeatures' => SMW_DV_PVAP )
-		) );
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
 
 		$instance->setUserValue( 'NotMatchable' );
 
@@ -95,9 +120,11 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new AllowsPatternValue();
 
-		$instance->setOptions( new Options(
-			array( 'smwgDVFeatures' => SMW_DV_PVAP )
-		) );
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
 
 		$instance->setUserValue( 'Foo' );
 
@@ -109,6 +136,10 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	public function testErrorOnNotEnabledFeatureWhenUserValueIsNotEmpty() {
 
 		$instance = new AllowsPatternValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$instance->setUserValue( 'abc/e' );
 

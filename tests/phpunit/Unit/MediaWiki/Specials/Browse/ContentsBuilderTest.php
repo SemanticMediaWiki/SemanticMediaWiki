@@ -24,7 +24,10 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
+		// Disable a possible active hook execution
+		$this->testEnvironment = new TestEnvironment( array(
+			'smwgEnabledQueryDependencyLinksStore' => false
+		) );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

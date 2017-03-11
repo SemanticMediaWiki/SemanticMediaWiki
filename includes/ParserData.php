@@ -21,6 +21,16 @@ use Title;
 class ParserData {
 
 	/**
+	 * Identifies the extension data
+	 */
+	const DATA_ID = 'smwdata';
+
+	/**
+	 * Indicates that no #ask dependency tracking should occur
+	 */
+	const NO_QUERY_DEP_TRACE = 'no.query.dep.trace';
+
+	/**
 	 * @var Title
 	 */
 	private $title;
@@ -53,6 +63,11 @@ class ParserData {
 	private $origin = '';
 
 	/**
+	 * @var Options
+	 */
+	private $options = null;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param Title $title
@@ -63,6 +78,37 @@ class ParserData {
 		$this->parserOutput = $parserOutput;
 
 		$this->initSemanticData();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key ) {
+
+		if ( !$this->options instanceof Options ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->has( $key ) ? $this->options->get( $key ) : null;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setOption( $key, $value ) {
+
+		if ( !$this->options instanceof Options ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->set( $key, $value );
 	}
 
 	/**
@@ -251,7 +297,7 @@ class ParserData {
 		$this->setSemanticDataStateToParserOutputProperty();
 
 		if ( $this->hasExtensionData() ) {
-			return $this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
+			return $this->parserOutput->setExtensionData( self::DATA_ID, $this->semanticData );
 		}
 
 		$this->parserOutput->mSMWData = $this->semanticData;
@@ -368,7 +414,7 @@ class ParserData {
 	private function fetchDataFromParserOutput( ParserOutput $parserOutput ) {
 
 		if ( $this->hasExtensionData() ) {
-			$semanticData = $parserOutput->getExtensionData( 'smwdata' );
+			$semanticData = $parserOutput->getExtensionData( self::DATA_ID );
 		} else {
 			$semanticData = isset( $parserOutput->mSMWData ) ? $parserOutput->mSMWData : null;
 		}

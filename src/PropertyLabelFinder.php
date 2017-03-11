@@ -30,16 +30,22 @@ class PropertyLabelFinder {
 	private $canonicalPropertyLabels = array();
 
 	/**
+	 * @var string[]
+	 */
+	private $canonicalDatatypeLabels = array();
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
 	 * @param array $languageDependentPropertyLabels
 	 * @param array $canonicalPropertyLabels
 	 */
-	public function __construct( Store $store, array $languageDependentPropertyLabels = array(), array $canonicalPropertyLabels = array() ) {
+	public function __construct( Store $store, array $languageDependentPropertyLabels = array(), array $canonicalPropertyLabels = array(), array $canonicalDatatypeLabels = array() ) {
 		$this->store = $store;
 		$this->languageDependentPropertyLabels = $languageDependentPropertyLabels;
 		$this->canonicalPropertyLabels = $canonicalPropertyLabels;
+		$this->canonicalDatatypeLabels = $canonicalDatatypeLabels;
 	}
 
 	/**
@@ -59,6 +65,13 @@ class PropertyLabelFinder {
 	 * @return string|boolean
 	 */
 	public function findCanonicalPropertyLabelById( $id ) {
+
+		// Due to mapped lists avoid possible mismatch on dataTypes
+		// (e.g. Text -> _TEXT vs. Text -> _txt)
+		if ( ( $label = array_search( $id, $this->canonicalDatatypeLabels ) ) ) {
+			return $label;
+		}
+
 		return array_search( $id, $this->canonicalPropertyLabels );
 	}
 

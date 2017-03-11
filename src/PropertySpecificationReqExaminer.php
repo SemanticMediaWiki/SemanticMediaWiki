@@ -6,6 +6,8 @@ use SMW\SemanticData;
 use SMW\Store;
 use SMW\DIProperty;
 use SMW\DataItemFactory;
+use SMWDataItem as DataItem;
+use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
 
 /**
  * Examines codified requirements for listed types of property specifications which
@@ -51,9 +53,9 @@ class PropertySpecificationReqExaminer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SemanticData $semanticData
+	 * @param SemanticData|null $semanticData
 	 */
-	public function setSemanticData( SemanticData $semanticData ) {
+	public function setSemanticData( SemanticData $semanticData = null ) {
 		$this->semanticData = $semanticData;
 	}
 
@@ -93,6 +95,10 @@ class PropertySpecificationReqExaminer {
 		if ( $type === '_eid' ) {
 			return $this->checkOnExternalFormatterUri( $property );
 		}
+
+		if ( $this->semanticData->getOption( MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) ) {
+			return $this->checkOnImportedVocabType( $property );
+		}
 	}
 
 	/**
@@ -117,7 +123,7 @@ class PropertySpecificationReqExaminer {
 			list( $url, $type ) = explode( "#", end( $typeValues )->getSerialization() );
 		}
 
-		if ( $type === $property->findPropertyTypeID() ) {
+		if ( DataTypeRegistry::getInstance()->isEqualByType( $type, $property->findPropertyTypeID() ) ) {
 			return;
 		}
 
@@ -181,6 +187,31 @@ class PropertySpecificationReqExaminer {
 		return array(
 			'error',
 			'smw-property-req-violation-missing-formatter-uri',
+			$property->getLabel()
+		);
+	}
+
+	/**
+	 * A violation occurs when the `Imported from` property detects an incompatible
+	 * `Has type` declaration.
+	 */
+	private function checkOnImportedVocabType( $property ) {
+
+		$typeValues = $this->semanticData->getPropertyValues(
+			$this->dataItemFactory->newDIProperty( '_TYPE' )
+		);
+
+		$dataItem = $this->semanticData->getOption(
+			MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE
+		);
+
+		if ( $dataItem instanceof DataItem && end( $typeValues )->equals( $dataItem ) ) {
+			return;
+		}
+
+		return array(
+			'warning',
+			'smw-property-req-violation-import-type',
 			$property->getLabel()
 		);
 	}

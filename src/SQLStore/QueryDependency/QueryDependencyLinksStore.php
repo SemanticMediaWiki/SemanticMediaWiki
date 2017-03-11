@@ -10,6 +10,7 @@ use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use SMW\Store;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
+use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -228,6 +229,21 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param DIWikiPage $subject
+	 * @param RequestOptions $requestOptions
+	 *
+	 * @return array
+	 */
+	public function findEmbeddedQueryTargetLinksHashListBySubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
+		return $this->findEmbeddedQueryTargetLinksHashListFrom(
+			array( $this->dependencyLinksTableUpdater->getId( $subject ) ),
+			$requestOptions
+		);
+	}
+
+	/**
 	 * Finds a partial list (given limit and offset) of registered subjects that
 	 * that represent a dependency on something like a subject in a query list,
 	 * a property, or a printrequest.
@@ -250,7 +266,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryTargetLinksHashListFor( array $idlist, RequestOptions $requestOptions ) {
+	public function findEmbeddedQueryTargetLinksHashListFrom( array $idlist, RequestOptions $requestOptions ) {
 
 		if ( $idlist === array() || !$this->isEnabled() ) {
 			return array();
@@ -269,7 +285,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		);
 
 		foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
-			$conditions += $extraCondition;
+			$conditions[] = $extraCondition;
 		}
 
 		$rows = $this->connection->select(
@@ -290,8 +306,16 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			return array();
 		}
 
+		$requestOptions = new RequestOptions();
+
+		$requestOptions->addExtraCondition(
+			'smw_iw !=' . $this->connection->addQuotes( SMW_SQL3_SMWREDIIW ) . ' AND '.
+			'smw_iw !=' . $this->connection->addQuotes( SMW_SQL3_SMWDELETEIW )
+		);
+
 		return $this->store->getObjectIds()->getDataItemPoolHashListFor(
-			$targetLinksIdList
+			$targetLinksIdList,
+			$requestOptions
 		);
 	}
 
@@ -372,7 +396,14 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	}
 
 	private function canUpdateDependencies( $queryResult ) {
-		return $this->isEnabled() && $queryResult instanceof QueryResult && $queryResult->getQuery() !== null && $queryResult->getQuery()->getContextPage() !== null && $queryResult->getQuery()->getLimit() > 0;
+
+		if ( !$this->isEnabled() || !$queryResult instanceof QueryResult ) {
+			return false;
+		}
+
+		$query = $queryResult->getQuery();
+
+		return $query !== null && $query->getContextPage() !== null && $query->getLimit() > 0 && $query->getOption( Query::NO_DEP_TRACE ) !== true;
 	}
 
 	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {

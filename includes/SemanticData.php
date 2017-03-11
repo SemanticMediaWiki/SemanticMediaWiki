@@ -549,6 +549,40 @@ class SemanticData {
 	}
 
 	/**
+	 * Removes a property and all the values associated with this property.
+	 *
+	 * @since 2.5
+	 *
+	 * @param $property DIProperty
+	 */
+	public function removeProperty( DIProperty $property ) {
+
+		$this->hash = null;
+		$key = $property->getKey();
+
+		 // Inverse properties cannot be used for an annotation
+		if ( $property->isInverse() || !isset( $this->mProperties[$key] ) ) {
+			return;
+		}
+
+		// Find and remove associated assignments (e.g. _ASK as subobject
+		// contains _ASKSI ...)
+		foreach ( $this->mPropVals[$key] as $dataItem ) {
+
+			if ( !$dataItem instanceof DIWikiPage || $dataItem->getSubobjectName() === '' ) {
+				continue;
+			}
+
+			if ( ( $subSemanticData = $this->findSubSemanticData( $dataItem->getSubobjectName() ) ) !== null ) {
+				$this->removeSubSemanticData( $subSemanticData );
+			}
+		}
+
+		unset( $this->mPropVals[$key] );
+		unset( $this->mProperties[$key] );
+	}
+
+	/**
 	 * Delete all data other than the subject.
 	 */
 	public function clear() {
@@ -668,7 +702,7 @@ class SemanticData {
 	 *
 	 * @param string $subobjectName
 	 *
-	 * @return SMWContainerSemanticData|[]
+	 * @return SMWContainerSemanticData|null
 	 */
 	public function findSubSemanticData( $subobjectName ) {
 		return $this->subSemanticData->findSubSemanticData( $subobjectName );

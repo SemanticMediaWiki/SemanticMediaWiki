@@ -364,6 +364,8 @@
 	"smw-pa-property-predefined_asksi": "\"$1\" is a predefined property that collects the number of conditions used in a query and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askde": "\"$1\" is a predefined property that informs about the depth of a query and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined-long_askde": "It is a numerical value computed on the basis of subquery nesting, property chains, and available description elements with the execution of a query being restricted by the <code>[https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth]</code> setting.",
+	"smw-pa-property-predefined_askpa": "\"$1\" is a predefined property describing parameters that influence a query result and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined-long_askpa": "It is part of a collection of properties that specify a [https://www.semantic-mediawiki.org/wiki/Help:Query_profiler query profile].",
 	"smw-sp-properties-docu": "This page lists [https://www.semantic-mediawiki.org/wiki/Property properties] and their usage counts available for this wiki. For up-to-date count statistics it is recommended that the [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics property statistics] maintenance script is run on a regular basis. For a differentiated view, see the [[Special:UnusedProperties|unused]] or [[Special:WantedProperties|wanted properties]] special pages.",
 	"smw-sp-properties-cache-info": "The listed data have been retrieved from [https://www.semantic-mediawiki.org/wiki/Caching cache], and were last updated $1.",
 	"smw-sp-properties-header-label": "List of properties",
@@ -404,8 +406,10 @@
 	"smw-pa-property-predefined-long_sobj": "The container allows to accumulate property-value assignments similar to that of a normal wiki page but within a different entity space while being linked to the embedding subject.",
 	"smw-pa-property-predefined_errp": "\"$1\" is a predefined property to track input errors for irregular value annotations that was likely caused by type or [[Property:Allows value|allowed value]] restrictions and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value \"$1\"] is a predefined property that can define a list of permissible values to restrict value assignments for a property and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_pvali": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list \"$1\"] is a predefined property that can specify a reference to a list that holds permissible values to restrict value assignments for a property and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-datavalue-property-restricted-use": "Property \"$1\" has been marked for restricted use.",
-	"smw-datavalue-property-invalid-name": "The value \"$1\" contains invalid characters (e.g. $2) for a property name.",
+	"smw-datavalue-property-invalid-character": "\"$1\" contains the \"$2\" character as part of a property label and has been classified as invalid.",
+	"smw-datavalue-property-invalid-chain": "Using \"$1\" as property chain is not permitted during the annotation process.",
 	"smw-datavalue-restricted-use": "Datavalue \"$1\" has been marked for restricted use.",
 	"smw-datavalue-invalid-number": "\"$1\" can not be interpreted as a number.",
 	"smw-query-condition-circular": "A possible circular condition has been detected in \"$1\".",
@@ -507,6 +511,7 @@
 	"smw-property-req-violation-missing-fields": "Property \"$1\" is missing declaration details for the annotated \"$2\" type by failing to define the <code>Has fields</code> property.",
 	"smw-property-req-violation-missing-formatter-uri": "Property \"$1\" is missing declaration details for the annotated type by failing to define the <code>External formatter URI</code> property.",
 	"smw-property-req-violation-predefined-type": "Property \"$1\" as predefined property contains a \"$2\" type declaration that is incompatible with the default type of this property.",
+	"smw-property-req-violation-import-type": "A type declaration was detected that is incompatible with the predefined type of the imported \"$1\" vocabulary. In general, it is not necessary to declare a type because information are retrieved from the import definition.",
 	"protect-level-smw-pageedit":"Allow only users with page edit permission (Semantic MediaWiki)",
 	"smw-edit-protection": "This page is [[Property:Is edit protected|protected]] to prevent accidental data modification and therefore can only be edited by users with the appropriate \"$1\" [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups right].",
 	"smw-edit-protection-disabled": "The edit protection has been disabled therefore \"$1\" cannot be used to protect entity pages from unauthorized editing.",
@@ -514,5 +519,6 @@
 	"smw-edit-protection-enabled":"Edit protected (Semantic MediaWiki)",
 	"smw-patternedit-protection": "This page is protected and can only be edited by users with the appropriate <code>smw-patternedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions permission].",
 	"smw-pa-property-predefined_edip": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to indicate whether editing is protected or not.",
-	"smw-pa-property-predefined-long_edip": "While any user is qualified to add this property to a subject, only a user with a dedicated permission can edit or revoke the protection to an entity after it has been added."
+	"smw-pa-property-predefined-long_edip": "While any user is qualified to add this property to a subject, only a user with a dedicated permission can edit or revoke the protection to an entity after it has been added.",
+	"smw-query-reference-link-label" : "Query reference"
 }

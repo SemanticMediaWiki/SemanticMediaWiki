@@ -27,7 +27,7 @@ class AuxiliaryPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestC
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->testEnvironment->resetPoolCacheFor( \SMWExporter::POOLCACHE_ID );
+		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
 	protected function tearDown() {

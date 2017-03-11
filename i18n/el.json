@@ -371,7 +371,6 @@
 	"smw-pa-property-predefined_errp": "Η «$1» είναι μια εκ των προτέρων ορισμένη ιδιότητα για την παρακολούθηση σφαλμάτων εισόδου για παράτυπη σημειογραφία τιμών που πιθανώς προκλήθηκε από περιορισμούς τύπου ή [[Property:Allows value|επιτρεπόμενης τιμής]] και παρέχεται από το [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Σημασιολογικό MediaWiki].",
 	"smw-pa-property-predefined_pval": "Η [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] είναι μια εκ των προτέρων ορισμένη ιδιότητα που ορίζει μια λίστα από επιτρεπτές τιμές για τον περιορισμό των τιμών που μπορεί να ανατίθενται σε μια ιδιότητα και παρέχεται από το [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Σημασιολογικό MediaWiki].",
 	"smw-datavalue-property-restricted-use": "Η ιδιότητα «$1» έχει σημανθεί για χρήση με περιορισμούς.",
-	"smw-datavalue-property-invalid-name": "Η τιμή «$1» περιέχει χαρακτήρες μη έγκυρους για όνομα ιδιότητας (π.χ. $2).",
 	"smw-datavalue-restricted-use": "Η τιμή δεδομένων «$1» έχει σημανθεί για χρήση με περιορισμούς.",
 	"smw-datavalue-invalid-number": "Το «$1» δεν μπορεί να ερμηνευτεί ως αριθμός.",
 	"smw-query-condition-circular": "Ανιχνεύθηκε πιθανό πρόβλημα κυκλικότητας στο «$1»",

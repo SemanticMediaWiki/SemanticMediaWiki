@@ -44,6 +44,11 @@ use SMWDIContainer as DIContainer;
 class ReferenceValue extends AbstractMultiValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_ref_rec';
+
+	/**
 	 * @var DIProperty[]|null
 	 */
 	private $properties = null;
@@ -52,7 +57,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
-		parent::__construct( '_ref_rec' );
+		parent::__construct( self::TYPE_ID );
 	}
 
 	/**
@@ -101,7 +106,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getShortWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
 	/**
@@ -111,7 +116,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getShortHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
 	/**
@@ -121,7 +126,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getLongWikiText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
@@ -131,7 +136,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
 	/**
@@ -141,7 +146,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getWikiValue() {
-		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
+		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::VALUE );
 	}
 
 	/**

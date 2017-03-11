@@ -2,6 +2,8 @@
 
 namespace SMW\DataValues\ValueValidators;
 
+use RuntimeException;
+
 /**
  * @private
  *
@@ -50,7 +52,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 		$this->hasConstraintViolation = false;
 
 		if ( $this->constraintValueValidators === array() ) {
-			$this->newConstraintValueValidators();
+			throw new RuntimeException( "Missing a registered ConstraintValueValidator" );
 		}
 
 		// Any constraint violation by a ConstraintValueValidator registered will
@@ -63,17 +65,6 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 				break;
 			}
 		}
-	}
-
-	/**
-	 * @note Any registered ConstraintValueValidator becomes weaker in the context
-	 * of the preceding validator
-	 */
-	private function newConstraintValueValidators() {
-		$this->registerConstraintValueValidator( new UniquenessConstraintValueValidator() );
-		$this->registerConstraintValueValidator( new PatternConstraintValueValidator() );
-		$this->registerConstraintValueValidator( new ListConstraintValueValidator() );
-		$this->registerConstraintValueValidator( new PropertySpecificationConstraintValueValidator() );
 	}
 
 }

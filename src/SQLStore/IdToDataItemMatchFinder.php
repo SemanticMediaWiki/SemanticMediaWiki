@@ -7,6 +7,7 @@ use SMW\HashBuilder;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Database;
 use SMW\IteratorFactory;
+use SMW\RequestOptions;
 
 /**
  * @license GNU GPL v2+
@@ -52,7 +53,7 @@ class IdToDataItemMatchFinder {
 	 * @param string $hash
 	 */
 	public function saveToCache( $id, $hash ) {
-		$this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID  )->save( $id, $hash );
+		$this->inMemoryPoolCache->getPoolCacheById( self::POOLCACHE_ID  )->save( $id, $hash );
 	}
 
 	/**
@@ -61,24 +62,35 @@ class IdToDataItemMatchFinder {
 	 * @param string $id
 	 */
 	public function deleteFromCache( $id ) {
-		$this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID )->delete( $id );
+		$this->inMemoryPoolCache->getPoolCacheById( self::POOLCACHE_ID )->delete( $id );
 	}
 
 	/**
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->inMemoryPoolCache->resetPoolCacheFor( self::POOLCACHE_ID );
+		$this->inMemoryPoolCache->resetPoolCacheById( self::POOLCACHE_ID );
 	}
 
 	/**
 	 * @since 2.3
 	 *
 	 * @param array $idList
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public function getDataItemPoolHashListFor( array $idList ) {
+	public function getDataItemsFromList( array $idList, RequestOptions $requestOptions = null ) {
+
+		$conditions = array(
+			'smw_id' => $idList,
+		);
+
+		if ( $requestOptions !== null ) {
+			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
+				$conditions[] = $extraCondition;
+			}
+		}
 
 		$rows = $this->connection->select(
 			\SMWSQLStore3::ID_TABLE,
@@ -88,7 +100,7 @@ class IdToDataItemMatchFinder {
 				'smw_iw',
 				'smw_subobject'
 			),
-			array( 'smw_id' => $idList ),
+			$conditions,
 			__METHOD__
 		);
 
@@ -115,7 +127,7 @@ class IdToDataItemMatchFinder {
 	 */
 	public function getDataItemById( $id ) {
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( self::POOLCACHE_ID );
 
 		if ( !$poolCache->contains( $id ) && !$this->canMatchById( $id ) ) {
 			return null;

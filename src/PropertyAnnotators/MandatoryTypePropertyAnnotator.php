@@ -16,6 +16,11 @@ use SMW\Store;
  */
 class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 
+	/**
+	 * Indicates a forced removal
+	 */
+	const IMPO_REMOVED_TYPE = 'mandatorytype.propertyannotator.impo.removed.type';
+
 	protected function addPropertyValues() {
 
 		$subject = $this->getSemanticData()->getSubject();
@@ -82,6 +87,8 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	private function replaceAnyTypeByImportType( DIProperty $property, $dataValue ) {
 
 		foreach ( $this->getSemanticData()->getPropertyValues( $property ) as $dataItem ) {
+			$this->getSemanticData()->setOption( self::IMPO_REMOVED_TYPE, $dataItem );
+
 			$this->getSemanticData()->removePropertyObjectValue(
 				$property,
 				$dataItem

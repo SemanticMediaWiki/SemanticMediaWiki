@@ -218,7 +218,8 @@ class BufferedStatsdCollector {
 		// that invokes the recordStats method
 
 		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate(
-			function() { $this->saveStats(); }
+			function() { $this->saveStats();
+			}
 		);
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ );

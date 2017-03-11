@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\PropertySpecificationReqExaminer;
 use SMW\DataItemFactory;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\PropertySpecificationReqExaminer
@@ -71,6 +72,40 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 				'warning',
 				'smw-edit-protection-disabled',
 				'Is edit protected'
+			),
+			$instance->checkOn( $property )
+		);
+	}
+
+	public function testCheckOnImportedVocabTypeMismatch() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$semanticData = new SemanticData(
+			$property->getDIWikiPage()
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$this->dataItemFactory->newDIProperty( '_TYPE' ),
+			$this->dataItemFactory->newDIProperty( 'Bar' )
+		);
+
+		$semanticData->setOption(
+			\SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE,
+			$this->dataItemFactory->newDIProperty( '_TYPE' )
+		);
+
+		$instance = new PropertySpecificationReqExaminer(
+			$this->store
+		);
+
+		$instance->setSemanticData( $semanticData );
+
+		$this->assertEquals(
+			array(
+				'warning',
+				'smw-property-req-violation-import-type',
+				'Foo'
 			),
 			$instance->checkOn( $property )
 		);

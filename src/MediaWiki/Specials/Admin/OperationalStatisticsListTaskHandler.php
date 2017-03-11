@@ -129,7 +129,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	private function outputQueryCacheStatistics() {
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(),  $this->getMessageAsString( 'smw-admin-statistics-querycache-title' ) )
+			Html::element( 'h2', array(), $this->getMessageAsString( 'smw-admin-statistics-querycache-title' ) )
 		);
 
 		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );

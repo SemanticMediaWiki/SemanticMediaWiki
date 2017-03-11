@@ -3,7 +3,6 @@
 namespace SMW;
 
 use SMWDITime;
-use SMWTimeValue;
 
 /**
  * TODO This class needs some real refactoring!
@@ -374,8 +373,7 @@ class RecurringEvents {
 	 */
 	private function getJulianDayTimeValue( $jd ) {
 		$timeDataItem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT );
-		$timeValue = new SMWTimeValue( '_dat' );
-		$timeValue->setDataItem( $timeDataItem );
-		return $timeValue;
+		return DataValueFactory::getInstance()->newDataValueByItem( $timeDataItem );
 	}
+
 }

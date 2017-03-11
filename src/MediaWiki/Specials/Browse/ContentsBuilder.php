@@ -252,6 +252,7 @@ class ContentsBuilder {
 		$html = "<table class=\"{$ccsPrefix}factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$noresult = true;
 
+		$contextPage = $data->getSubject();
 		$diProperties = $data->getProperties();
 		$showInverse = $this->getOption( 'showInverse' );
 
@@ -260,6 +261,10 @@ class ContentsBuilder {
 			$dvProperty = DataValueFactory::getInstance()->newDataValueByItem(
 				$diProperty,
 				null
+			);
+
+			$dvProperty->setContextPage(
+				$contextPage
 			);
 
 			$propertyLabel = ValueFormatter::getPropertyLabel(
@@ -363,19 +368,11 @@ class ContentsBuilder {
 	 */
 	private function displayHead() {
 
-		if ( $this->subject->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
-			$caption = '';
-
-			$dv = DataValueFactory::getInstance()->newDataValueByItem(
-				DIProperty::newFromUserLabel( $this->subject->getDataItem()->getDBKey() )
-			);
-
-			$this->subject->setCaption( $dv->getFormattedLabel( DataValueFormatter::WIKI_LONG ) );
-		}
+		$label = ValueFormatter::getFormattedSubject( $this->subject );
 
 		$html = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
 			"<tr class=\"smwb-title\"><td colspan=\"2\">\n" .
-			$this->subject->getLongHTMLText( smwfGetLinker() ) . "\n" .
+			$label . "\n" .
 			"</td></tr>\n</table>\n";
 
 		return $html;

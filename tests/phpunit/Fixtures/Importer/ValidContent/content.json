@@ -1,0 +1,26 @@
+{
+	"description": "Test import",
+	"import": [
+		{
+			"page": "Smw import foaf",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": {
+				"importFrom": "foaf.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Foaf:knows",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": "* [[Imported from::foaf:knows]]",
+			"options": {
+				"canReplace": false
+			}
+		}
+	],
+	"meta": {
+		"version": "1"
+	}
+}

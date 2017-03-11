@@ -91,12 +91,22 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getIntroductoryText() {
 
+		if ( !$this->store->getRedirectTarget( $this->mProperty )->equals( $this->mProperty ) ) {
+			return '';
+		}
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$propertySpecificationReqExaminer = new PropertySpecificationReqExaminer(
 			$this->store
 		);
 
+		$propertySpecificationReqExaminer->setSemanticData(
+			$this->getSemanticData()
+		);
+
 		$propertySpecificationReqExaminer->setEditProtectionRight(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEditProtectionRight' )
+			$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
 		);
 
 		$propertyPageMessageHtmlBuilder = new PropertyPageMessageHtmlBuilder(
@@ -105,7 +115,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		);
 
 		$propertyPageMessageHtmlBuilder->hasEditProtection(
-			ApplicationFactory::getInstance()->singleton( 'EditProtectionValidator' )->hasEditProtection( $this->mTitle )
+			$applicationFactory->singleton( 'EditProtectionValidator' )->hasEditProtection( $this->mTitle )
 		);
 
 		return $propertyPageMessageHtmlBuilder->createMessageBody( $this->mProperty );
@@ -113,17 +123,17 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 	protected function getTopIndicators() {
 
-		$dv = DataValueFactory::getInstance()->newDataValueByItem(
+		$propertyValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$this->mProperty
 		);
 
 		// Label that corresponds to the display and sort characteristics
-		$propertyName = $dv->getFormattedLabel( DataValueFormatter::VALUE );
+		$searchLabel = $this->mProperty->isUserDefined() ? $propertyValue->getSearchLabel() : $this->mProperty->getCanonicalLabel();
 		$usageCountHtml = '';
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( 1 );
-		$requestOptions->addStringCondition( $propertyName, StringCondition::COND_EQ );
+		$requestOptions->addStringCondition( $searchLabel, StringCondition::COND_EQ );
 
 		$cachedLookupList = $this->store->getPropertiesSpecial( $requestOptions );
 		$usageList = $cachedLookupList->fetchList();
@@ -190,7 +200,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		if ( $resultCount > 0 ) {
 			$titleText = htmlspecialchars( $this->mTitle->getText() );
-			$result .= "<div id=\"{$header}\">" . Html::rawElement( 'h2' , array(), wfMessage( $header . '-header', $titleText )->text() ) . "\n<p>";
+			$result .= "<div id=\"{$header}\">" . Html::rawElement( 'h2', array(), wfMessage( $header . '-header', $titleText )->text() ) . "\n<p>";
 
 			if ( !$this->mProperty->isUserDefined() ) {
 				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
@@ -366,6 +376,22 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$query->setSortKeys( array( '' => 'asc' ) );
 
 		return $this->store->getQueryResult( $query )->getResults();
+	}
+
+	private function getSemanticData() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		if ( $this->getPage()->getRevision() === null ) {
+			return null;
+		}
+
+		$editInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newEditInfoProvider(
+			$this->getPage(),
+			$this->getPage()->getRevision()
+		);
+
+		return $editInfoProvider->fetchSemanticData();
 	}
 
 }

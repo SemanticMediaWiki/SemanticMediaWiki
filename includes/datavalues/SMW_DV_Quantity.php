@@ -19,6 +19,11 @@ use SMW\ApplicationFactory;
 class SMWQuantityValue extends SMWNumberValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_qty';
+
+	/**
 	 * Array with format (canonical unit ID string) => (conversion factor)
 	 * @var float[]|bool
 	 */

@@ -56,7 +56,7 @@ class SMWTurtleSerializer extends SMWSerializer {
 	 * @since 2.3
 	 */
 	public static function reset() {
-		InMemoryPoolCache::getInstance()->resetPoolCacheFor( 'turtle.serializer' );
+		InMemoryPoolCache::getInstance()->resetPoolCacheById( 'turtle.serializer' );
 	}
 
 	/**
@@ -152,7 +152,7 @@ class SMWTurtleSerializer extends SMWSerializer {
 		if ( $data->getSubject()->getDataItem() !== null && $data->getSubject()->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
 
 			$hash = $data->getHash();
-			$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( 'turtle.serializer' );
+			$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'turtle.serializer' );
 
 			if ( $poolCache->contains( $hash ) && $poolCache->fetch( $hash ) ) {
 				return;

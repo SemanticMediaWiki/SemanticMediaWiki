@@ -5,6 +5,7 @@ namespace SMW\Test;
 use ParamProcessor\ParamDefinition;
 use SMW\ParameterListDocBuilder;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\Utils\Validators\StringValidator;
 
 /**
  * @covers SMW\ParameterListDocBuilder
@@ -20,6 +21,9 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private $builder;
 
+	/**
+	 * @var StringValidator
+	 */
 	private $stringValidator;
 
 	protected function setUp() {
@@ -92,10 +96,12 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGivenParameterWithAliases_aliasesAreListed() {
-		$param = new ParamDefinition( 'number', 'length' );
-		$param->addAliases( 'abc', 'def' );
+		$paramWithAliases = new ParamDefinition( 'number', 'param-with-alias' );
+		$paramWithAliases->addAliases( 'first-alias', 'second-alias' );
 
-		$wikiText = $this->builder->getParameterTable( array( $param ) );
+		$paramWithoutAliases = new ParamDefinition( 'string', 'no-aliases' );
+
+		$wikiText = $this->builder->getParameterTable( [ $paramWithAliases, $paramWithoutAliases ] );
 
 		$expected = array(
 			'{| class="wikitable sortable"',
@@ -104,9 +110,15 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 			'!validator-describe-header-default',
 			'!validator-describe-header-description',
 			'|-',
-			'|length',
-			'|abc, def',
+			'|param-with-alias',
+			'|first-alias, second-alias',
 			'|validator-type-number',
+			"|''validator-describe-required''",
+			'|',
+			'|-',
+			'|no-aliases',
+			'| -',
+			'|validator-type-string',
 			"|''validator-describe-required''",
 			'|',
 			'|}'

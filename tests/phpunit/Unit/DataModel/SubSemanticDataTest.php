@@ -97,4 +97,40 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRemoveProperty() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$instance = new SubSemanticData(
+			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN )
+		);
+
+		$containerSemanticData = new ContainerSemanticData(
+			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN, '', 'Foo' )
+		);
+
+		$containerSemanticData->addPropertyObjectValue(
+			$property,
+			$this->dataItemFactory->newDIBlob( 'Bar' )
+		);
+
+		$instance->addSubSemanticData(
+			$containerSemanticData
+		);
+
+		$subSemanticData = $instance->findSubSemanticData( 'Foo' );
+
+		$this->assertTrue(
+			$subSemanticData->hasProperty( $property )
+		);
+
+		$instance->removeProperty(
+			$property
+		);
+
+		$this->assertFalse(
+			$subSemanticData->hasProperty( $property )
+		);
+	}
+
 }

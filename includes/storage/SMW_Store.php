@@ -143,7 +143,7 @@ abstract class Store implements QueryEngine {
 		}
 
 		$hash = $wikipage->getHash();
-		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( 'store.redirectTarget.lookup' );
+		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'store.redirectTarget.lookup' );
 
 		// Ensure that the same type context is used
 		if ( ( $di = $poolCache->fetch( $hash ) ) !== false && $di->getDIType() === $dataItem->getDIType() ) {
@@ -462,7 +462,7 @@ abstract class Store implements QueryEngine {
 	 */
 	public function clear() {
 		$this->connectionManager->releaseConnections();
-		InMemoryPoolCache::getInstance()->resetPoolCacheFor( 'store.redirectTarget.lookup' );
+		InMemoryPoolCache::getInstance()->resetPoolCacheById( 'store.redirectTarget.lookup' );
 	}
 
 	/**

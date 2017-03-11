@@ -114,11 +114,11 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 		$this->tableIntegrityExaminer->checkOnPostCreation( $this->tableBuilder );
 
+		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
+
 		Hooks::run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', array( $this->tableBuilder, $messageReporter ) );
 
-		$messageReporter->reportMessage(
-			"\nDatabase initialized completed.\n"  . ( $this->isFromExtensionSchemaUpdate ? "\n" : '' )
-		);
+		$messageReporter->reportMessage( $this->isFromExtensionSchemaUpdate ? "\n" : '' );
 
 		return true;
 	}

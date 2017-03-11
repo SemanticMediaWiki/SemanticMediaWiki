@@ -1,0 +1,106 @@
+{
+	"description": "Test `#ask` with (`#-ia`) formatter using `smwgLinksInValues` (#..., `wgContLang=en`, `wgLang=en`, `smwgLinksInValues=SMW_LINV_OBFU`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::text]]"
+		},
+		{
+			"page": "Example/P0913/1",
+			"contents": "[[Category:P0913]] [[Has text::Some text with annotation [[Foo::Example/P0913/1]]]]"
+		},
+		{
+			"page": "Example/P0913/Q.1",
+			"contents": "{{#ask: [[Category:P0913]] [[Has text::+]] |?Has text |link=none }}"
+		},
+		{
+			"page": "Example/P0913/Q.2",
+			"contents": "{{#ask: [[Category:P0913]] [[Has text::+]] |?Has text#-ia |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0913/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_MDAT",
+						"_INST",
+						"_SKEY",
+						"Has text",
+						"Foo"
+					],
+					"propertyValues": [
+						"Some text with annotation Example/P0913/1"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (without `-ia`)",
+			"subject": "Example/P0913/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (with `-ia`)",
+			"subject": "Example/P0913/Q.2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></table>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgLinksInValues": "SMW_LINV_OBFU",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

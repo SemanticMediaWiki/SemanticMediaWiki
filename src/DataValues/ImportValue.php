@@ -5,6 +5,7 @@ namespace SMW\DataValues;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
+use SMW\Message;
 
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used
@@ -19,39 +20,83 @@ use SMWDIBlob as DIBlob;
 class ImportValue extends DataValue {
 
 	/**
-	 * @var ImportValueParser|null
+	 * DV identifier
 	 */
-	private $importValueParser = null;
+	const TYPE_ID = '__imp';
 
 	/**
+	 * Fixed Mediawiki import prefix
+	 */
+	const IMPORT_PREFIX = 'Smw_import_';
+
+	/**
+	 * Type string assigned by the import declaration
+	 *
 	 * @var string
 	 */
 	private $termType = '';
 
-	protected $m_qname = ''; // string provided by user which is used to look up data on Mediawiki:*-Page
-	protected $m_uri = ''; // URI of namespace (without local name)
-	protected $m_namespace = ''; // namespace id (e.g. "foaf")
-	protected $m_section = ''; // local name (e.g. "knows")
-	protected $m_name = ''; // wiki name of the vocab (e.g. "Friend of a Friend")l might contain wiki markup
+	/**
+	 * String provided by user which is used to look up data on Mediawiki:*-Page
+	 *
+	 * @var string
+	 */
+	private $qname = '';
+
+	/**
+	 * URI of namespace (without local name)
+	 *
+	 * @var string
+	 */
+	private $uri = '';
+
+	/**
+	 * Namespace id (e.g. "foaf")
+	 *
+	 * @var string
+	 */
+	private $namespace = '';
+
+	/**
+	 * Local name (e.g. "knows")
+	 *
+	 * @var string
+	 */
+	private $term = '';
+
+	/**
+	 * Wiki name of the vocab (e.g. "Friend of a Friend"), might contain wiki markup
+	 *
+	 * @var string
+	 */
+	private $declarativeName = '';
 
 	/**
 	 * @param string $typeid
 	 */
-	public function __construct( $typeid  ) {
+	public function __construct( $typeid = self::TYPE_ID ) {
 		parent::__construct( $typeid );
-		$this->importValueParser = ValueParserFactory::getInstance()->newImportValueParser();
 	}
 
+	/**
+	 * @see DataValue::parseUserValue
+	 *
+	 * @param string $value
+	 */
 	protected function parseUserValue( $value ) {
-		$this->m_qname = $value;
+		$this->qname = $value;
 
-		list( $this->m_namespace, $this->m_section, $this->m_uri, $this->m_name, $this->termType ) = $this->importValueParser->parse(
+		$importValueParser = $this->dataValueServiceFactory->getValueParser(
+			$this
+		);
+
+		list( $this->namespace, $this->term, $this->uri, $this->declarativeName, $this->termType ) = $importValueParser->parse(
 			$value
 		);
 
-		if ( $this->importValueParser->getErrors() !== array() ) {
+		if ( $importValueParser->getErrors() !== array() ) {
 
-			foreach ( $this->importValueParser->getErrors() as $message ) {
+			foreach ( $importValueParser->getErrors() as $message ) {
 				$this->addErrorMsg( $message );
 			}
 
@@ -61,21 +106,23 @@ class ImportValue extends DataValue {
 
 		// Encoded string for DB storage
 		$this->m_dataitem = new DIBlob(
-			$this->m_namespace . ' ' .
-			$this->m_section . ' ' .
-			$this->m_uri . ' ' .
+			$this->namespace . ' ' .
+			$this->term . ' ' .
+			$this->uri . ' ' .
 			$this->termType
 		);
 
 		// check whether caption is set, otherwise assign link statement to caption
 		if ( $this->m_caption === false ) {
-			$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] " . $this->modifyToIncludeParentheses( $this->m_name );
+			$this->m_caption = $this->createCaption( $this->namespace, $this->qname, $this->uri, $this->declarativeName );
 		}
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem DataItem
+	 * @see SMWDataValue::loadDataItem
+	 *
+	 * @param DataItem $dataitem
+	 *
 	 * @return boolean
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
@@ -90,55 +137,73 @@ class ImportValue extends DataValue {
 		if ( count( $parts ) != 4 ) {
 			$this->addErrorMsg( array( 'smw-datavalue-import-invalid-format', $dataItem->getString() ) );
 		} else {
-			$this->m_namespace = $parts[0];
-			$this->m_section = $parts[1];
-			$this->m_uri = $parts[2];
+			$this->namespace = $parts[0];
+			$this->term = $parts[1];
+			$this->uri = $parts[2];
 			$this->termType = $parts[3];
-			$this->m_qname = $this->m_namespace . ':' . $this->m_section;
-			$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] " . " | " . wfMessage( 'smw-datavalue-import-link', $this->m_namespace )->escaped();
+			$this->qname = $this->namespace . ':' . $this->term;
+			$this->declarativeName = '';
+			$this->m_caption = $this->createCaption( $this->namespace, $this->qname, $this->uri, $this->declarativeName );
 		}
 
 		return true;
 	}
 
+	/**
+	 * @see DataValue::getShortWikiText
+	 */
 	public function getShortWikiText( $linked = null ) {
 		return $this->m_caption;
 	}
 
+	/**
+	 * @see DataValue::getShortHTMLText
+	 */
 	public function getShortHTMLText( $linker = null ) {
-		return htmlspecialchars( $this->m_qname );
+		return htmlspecialchars( $this->qname );
 	}
 
+	/**
+	 * @see DataValue::getLongWikiText
+	 */
 	public function getLongWikiText( $linked = null ) {
+
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
 
-		return "[" . $this->m_uri . " " . $this->m_qname . "] " . " | " . wfMessage( 'smw-datavalue-import-link', $this->m_namespace )->escaped();
+		return "[[MediaWiki:" . self::IMPORT_PREFIX . $this->namespace . "|" . $this->qname . "]]";
 	}
 
+	/**
+	 * @see DataValue::getLongHTMLText
+	 */
 	public function getLongHTMLText( $linker = null ) {
+
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
-		} else {
-			return htmlspecialchars( $this->m_qname );
 		}
+
+		return htmlspecialchars( $this->qname );
 	}
 
+	/**
+	 * @see DataValue::getWikiValue
+	 */
 	public function getWikiValue() {
-		return $this->m_qname;
+		return $this->qname;
 	}
 
 	public function getNS() {
-		return $this->m_uri;
+		return $this->uri;
 	}
 
 	public function getNSID() {
-		return $this->m_namespace;
+		return $this->namespace;
 	}
 
 	public function getLocalName() {
-		return $this->m_section;
+		return $this->term;
 	}
 
 	/**
@@ -156,11 +221,11 @@ class ImportValue extends DataValue {
 	 * @return string
 	 */
 	public function getImportReference() {
-		return $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri;
+		return $this->namespace . ':' . $this->term . '|' . $this->uri;
 	}
 
-	private function modifyToIncludeParentheses( $name ) {
-		return $name !== '' ? wfMessage( 'parentheses', $name )->parse() : '';
+	private function createCaption( $namespace, $qname, $uri, $declarativeName ) {
+		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " .  Message::get( array( 'parentheses', "[$uri $namespace] | " . $declarativeName ), Message::PARSE );
 	}
 
 }

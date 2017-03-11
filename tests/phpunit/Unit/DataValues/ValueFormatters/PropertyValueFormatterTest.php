@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
 
@@ -21,6 +22,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $propertyLabelFinder;
 	private $propertySpecificationLookup;
+	private $dataValueServiceFactory;
 
 	protected function setUp() {
 		parent::setUp();
@@ -40,6 +42,21 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
+		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueParser' )
+			->will( $this->returnValue( new PropertyValueParser() ) );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $constraintValueValidator ) );
 	}
 
 	public function testCanConstruct() {
@@ -69,6 +86,10 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
 
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance = new PropertyValueFormatter( $propertyValue );
 
 		$this->assertEquals(
@@ -83,6 +104,10 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 		$propertyValue->setCaption( 'ABC[<>]' );
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
+
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$instance = new PropertyValueFormatter( $propertyValue );
 
@@ -104,6 +129,10 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 		$propertyValue->setCaption( 'ABC[<>]' );
+
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$instance = new PropertyValueFormatter( $propertyValue );
 
@@ -129,6 +158,10 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setOption( PropertyValue::OPT_CONTENT_LANGUAGE, 'en' );
 		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
+
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$instance = new PropertyValueFormatter( $propertyValue );
 		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
@@ -167,6 +200,10 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
 		$propertyValue = new PropertyValue();
+
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$propertyValue->setOption( 'smwgDVFeatures', SMW_DV_PROV_LHNT );
 		$propertyValue->setOption( PropertyValue::OPT_CONTENT_LANGUAGE, 'en' );
@@ -220,6 +257,10 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
 
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$propertyValue->setUserValue( $property );
 		$propertyValue->setCaption( $caption );
 
@@ -246,6 +287,10 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
 
 		$propertyValue->setDataItem( $property );
+
+		$propertyValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$instance = new PropertyValueFormatter( $propertyValue );
 		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
@@ -429,7 +474,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			$property,
 			null,
-			' (Foo)'
+			'&nbsp;<span style="font-size:small;">(Foo)</span>'
 		);
 
 		return $provider;

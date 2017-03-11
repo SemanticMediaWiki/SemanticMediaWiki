@@ -50,6 +50,17 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsEqualItemType() {
+
+		$this->assertTrue(
+			$this->dataTypeRegistry->isEqualByType( '_wpg', '__sob' )
+		);
+
+		$this->assertFalse(
+			$this->dataTypeRegistry->isEqualByType( '_wpg', '_txt' )
+		);
+	}
+
 	public function testRegisterDatatype() {
 
 		$this->assertNull(
@@ -98,7 +109,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->dataTypeRegistry->registerDataTypeAlias( '_foo', 'FooBar' );
 
 		$this->assertTrue(
-			$this->dataTypeRegistry->isKnownTypeId( '_foo' )
+			$this->dataTypeRegistry->isKnownByType( '_foo' )
 		);
 
 		$this->assertEquals(
@@ -111,13 +122,13 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	public function testGetDefaultDataItemTypeIdForValidDataItemType() {
 		$this->assertInternalType(
 			'string',
-			$this->dataTypeRegistry->getDefaultDataItemTypeId( 1 )
+			$this->dataTypeRegistry->getDefaultDataItemByType( 1 )
 		);
 	}
 
 	public function testGetDefaultDataItemTypeIdForInvalidDataItemType() {
 		$this->assertNull(
-			$this->dataTypeRegistry->getDefaultDataItemTypeId( 9999 )
+			$this->dataTypeRegistry->getDefaultDataItemByType( 9999 )
 		);
 	}
 
@@ -242,32 +253,14 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindTypeIdByLanguage() {
 
-		$extraneousLanguage = $this->getMockBuilder( '\SMW\ExtraneousLanguage\ExtraneousLanguage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$extraneousLanguage->expects( $this->once() )
-			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( array() ) );
-
-		$extraneousLanguage->expects( $this->once() )
-			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( array() ) );
-
-		$extraneousLanguage->expects( $this->once() )
-			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( array() ) );
-
-		$instance = new DataTypeRegistry( $extraneousLanguage );
-
 		$this->assertSame(
 			'_num',
-			$instance->findTypeIdByLanguage( 'Número', 'es' )
+			$this->dataTypeRegistry->findTypeByLanguage( 'Número', 'es' )
 		);
 
 		$this->assertSame(
 			'_num',
-			$instance->findTypeIdByLanguage( '数值型', 'zh-Hans' )
+			$this->dataTypeRegistry->findTypeByLanguage( '数值型', 'zh-Hans' )
 		);
 	}
 

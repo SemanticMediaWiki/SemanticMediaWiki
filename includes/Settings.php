@@ -21,6 +21,11 @@ class Settings extends Options {
 	private static $instance = null;
 
 	/**
+	 * @var array
+	 */
+	private $iterate = array();
+
+	/**
 	 * Assemble individual SMW related settings into one accessible array for
 	 * easy instantiation since we don't have unique way of accessing only
 	 * SMW related settings ( e.g. $smwgSettings['...']) we need this method
@@ -43,6 +48,8 @@ class Settings extends Options {
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
+			'smwgImportFileDir' => $GLOBALS['smwgImportFileDir'],
+			'smwgImportReqVersion' => $GLOBALS['smwgImportReqVersion'],
 			'smwgSemanticsEnabled' => $GLOBALS['smwgSemanticsEnabled'],
 			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],
@@ -53,6 +60,7 @@ class Settings extends Options {
 			'smwgSparqlDataEndpoint' => $GLOBALS['smwgSparqlDataEndpoint'],
 			'smwgSparqlDefaultGraph' => $GLOBALS['smwgSparqlDefaultGraph'],
 			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
+			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
 			'smwgHistoricTypeNamespace' => $GLOBALS['smwgHistoricTypeNamespace'],
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
@@ -101,6 +109,7 @@ class Settings extends Options {
 			'smwgQConceptFeatures' => $GLOBALS['smwgQConceptFeatures'],
 			'smwgQConceptCacheLifetime' => $GLOBALS['smwgQConceptCacheLifetime'],
 			'smwgQuerySources' => $GLOBALS['smwgQuerySources'],
+			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 			'smwgResultFormats' => $GLOBALS['smwgResultFormats'],
 			'smwgResultAliases' => $GLOBALS['smwgResultAliases'],
 			'smwgPDefaultType' => $GLOBALS['smwgPDefaultType'],
@@ -157,13 +166,13 @@ class Settings extends Options {
 			'smwgFulltextSearchMinTokenSize' => $GLOBALS['smwgFulltextSearchMinTokenSize'],
 			'smwgFulltextLanguageDetection' => $GLOBALS['smwgFulltextLanguageDetection'],
 			'smwgFulltextSearchIndexableDataTypes' => $GLOBALS['smwgFulltextSearchIndexableDataTypes'],
-			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 			'smwgQueryResultCacheType' => $GLOBALS['smwgQueryResultCacheType'],
 			'smwgQueryResultCacheLifetime' => $GLOBALS['smwgQueryResultCacheLifetime'],
 			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
 			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
 			'smwgEditProtectionRight' => $GLOBALS['smwgEditProtectionRight'],
-			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty']
+			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty'],
+			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
 		);
 
 		\Hooks::run( 'SMW::Config::BeforeCompletion', array( &$configuration ) );
@@ -238,19 +247,13 @@ class Settings extends Options {
 	 */
 	public function get( $key ) {
 
-		if ( !$this->has( $key ) ) {
-
-			// If the key wasn't found it could be because of a nested array
-			// therefore iterate and verify otherwise throw an exception
-			$value = $this->doIterate( $key );
-			if ( $value !== null ) {
-				return $value;
-			}
-
-			throw new SettingNotFoundException( "'{$key}' is not a valid settings key" );
+		if ( $this->has( $key ) ) {
+			return parent::get( $key );
 		}
 
-		return parent::get( $key );
+		// If the key wasn't matched it could be because of a nested array
+		// hence iterate and verify otherwise throw an exception
+		return $this->doIterate( $key, $this->getOptions() );
 	}
 
 	/**
@@ -263,19 +266,24 @@ class Settings extends Options {
 	/**
 	 * Iterates over a nested array to find an element
 	 */
-	private function doIterate( $key ) {
+	private function doIterate( $key, $options ) {
+
+		if ( isset( $this->iterate[$key] ) ) {
+			return $this->iterate[$key];
+		}
 
 		$iterator = new \RecursiveIteratorIterator(
-			new \RecursiveArrayIterator( $this->getOptions() ),
+			new \RecursiveArrayIterator( $options ),
 			\RecursiveIteratorIterator::CHILD_FIRST
 		);
 
 		foreach( $iterator as $it => $value ) {
 			if ( $key === $it ) {
-				return $value;
+				return $this->iterate[$key] = $value;
 			}
 		}
 
-		return null;
+		throw new SettingNotFoundException( "'{$key}' is not a valid settings key" );
 	}
+
 }

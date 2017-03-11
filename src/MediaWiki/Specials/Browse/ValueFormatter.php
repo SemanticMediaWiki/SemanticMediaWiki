@@ -7,6 +7,8 @@ use SMW\ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
 use SMWPropertyValue as PropertyValue;
+use SMW\DataValueFactory;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMWInfolink as Infolink;
 use SMW\DIProperty;
 use SMW\Localizer;
@@ -26,7 +28,41 @@ use SMW\Localizer;
 class ValueFormatter {
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param DataValue $value
+	 *
+	 * @return string
+	 */
+	public static function getFormattedSubject( DataValue $dataValue ) {
+
+		$extra = '';
+
+		if ( $dataValue->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
+
+			$dv = DataValueFactory::getInstance()->newDataValueByItem(
+				DIProperty::newFromUserLabel( $dataValue->getDataItem()->getDBKey() )
+			);
+
+			$label = $dv->getFormattedLabel( DataValueFormatter::WIKI_LONG );
+
+			// Those with a formatted displayTitle
+			// foaf:homepage&nbsp;<span style="font-size:small;">(Foaf:homepage)</span>
+			if ( strpos( $label, '&nbsp;<span' ) !== false ) {
+				list( $label, $extra ) = explode( '&nbsp;', $label );
+				$extra = '&nbsp;' . $extra;
+			}
+
+			$dataValue->setCaption( $label );
+		}
+
+		return $dataValue->getLongHTMLText( smwfGetLinker() ) . $extra;
+	}
+
+	/**
 	 * Displays a value, including all relevant links (browse and search by property)
+	 *
+	 * @since 2.5
 	 *
 	 * @param DataValue $value
 	 * @param PropertyValue $property
@@ -76,6 +112,8 @@ class ValueFormatter {
 	 * the text, for incoming ones we try to figure out the inverse one if needed,
 	 * either by looking for an explicitly stated one or by creating a default one.
 	 *
+	 * @since 2.5
+	 *
 	 * @param PropertyValue $property
 	 * @param boolean $incoming
 	 * @param boolean $showInverse
@@ -103,12 +141,19 @@ class ValueFormatter {
 
 	private static function findPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
 
+		$property = $propertyValue->getDataItem();
+		$contextPage = $propertyValue->getContextPage();
+
+		// Change caption for the incoming, Has query instance
+		if ( $incoming && $property->getKey() === '_ASK' && strpos( $contextPage->getSubobjectName(), '_QUERY' ) === false ) {
+			return self::addNonBreakingSpace( wfMessage( 'smw-query-reference-link-label' )->text() );
+		}
+
 		if ( !$incoming || !$showInverse ) {
 			return self::addNonBreakingSpace( $propertyValue->getWikiValue() );
 		}
 
 		$inverseProperty = PropertyValue::makeUserProperty( wfMessage( 'smw_inverse_label_property' )->text() );
-		$property = $propertyValue->getDataItem();
 
 		$dataItems = ApplicationFactory::getInstance()->getStore()->getPropertyValues(
 			$property->getDiWikiPage(),
@@ -142,7 +187,7 @@ class ValueFormatter {
 			return preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) );
 		}
 
-		return  $text;
+		return $text;
 	}
 
 }

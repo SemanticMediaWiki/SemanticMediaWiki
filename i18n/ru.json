@@ -26,7 +26,9 @@
 			"Kareyac",
 			"Zpizza",
 			"Alex Great",
-			"Nemo bis"
+			"Nemo bis",
+			"Redredsonia",
+			"Nitch"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -292,6 +294,7 @@
 	"smw-admin-supplementary-section-intro": "Некоторые из перечисленных функций в этом разделе могут быть ограничены и, следовательно, недоступны в этой Вики.",
 	"smw-admin-supplementary-settings-title": "Параметры конфигурации",
 	"smw-admin-supplementary-operational-statistics-title": "Оперативная статистика",
+	"smw-property-label-similarity-threshold": "Порог:",
 	"smw_adminlinks_datastructure": "Структура данных",
 	"smw_adminlinks_displayingdata": "Отображение данных",
 	"smw_adminlinks_inlinequerieshelp": "Справка по встроенным запросам",
@@ -339,6 +342,8 @@
 	"smw-pa-property-predefined_ask": "«$1» — это предопределённое свойство, которое представляет мета-данные (в форме [https://www.semantic-mediawiki.org/wiki/Subobject подобъекта]) об индивидуальных запросах и предоставляется [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_asksi": "«$1» — это предопределённое свойство, которое собирает количество условий, используемых в запросе и предоставляется [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askde": "«$1» — предварительно определенное свойство, которое информирует о глубине запроса и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_askpa": "$1 - это предопределенное свойство, описывающее параметры влияющие на результат запроса. Предоставляется от [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined-long_askpa": "Это часть набора свойств, который определяет [https://www.semantic-mediawiki.org/wiki/Help:Query_profiler query profile].",
 	"smw-sp-properties-docu": "На этой странице перечислены доступные [https://www.semantic-mediawiki.org/wiki/Property свойства] и количество их использований в этой вики. Для получения актуальной статистики рекомендуется, чтоб сервисный скрипт [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics статистики свойст] запускался на регулярной основе. Для дифференцированного представления см. служебные страницы со списком [[Special:UnusedProperties|неиспользованных]] или [[Special:WantedProperties|требуемых свойств]].",
 	"smw-sp-properties-cache-info": "Перечисленные данные были получены из [https://www.semantic-mediawiki.org/wiki/Caching кэша] и были последний раз обновлены $1.",
 	"smw-sp-properties-header-label": "Список свойств",
@@ -374,7 +379,6 @@
 	"smw-pa-property-predefined_errp": "«$1» — это предварительно определенное свойство для отслеживания ошибок ввода аннотаций нерегулярных значений, что были, вероятно, вызваны ограничениями типа или [[Property:Allows value|разрешенных значений]], обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] — \nпредварительно определенное свойство, которое может определять список разрешенных значений, чтобы ограничивать назначение значений для свойства, и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-datavalue-property-restricted-use": "Свойство «$1» было отмечено для ограниченного использования.",
-	"smw-datavalue-property-invalid-name": "Значение «$1» содержит недопустимые символы, например, «$2».",
 	"smw-datavalue-restricted-use": "Значение данных «$1» было отмечено для ограниченного использования.",
 	"smw-datavalue-invalid-number": "«$1» не может быть интерпретировано как число.",
 	"smw-query-condition-circular": "Возможное циклическое условие было обнаружено в «$1».",
@@ -437,5 +441,6 @@
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Скопировать ссылку в буфер обмена",
 	"smw-data-lookup": "Извлечение данных…",
-	"smw-no-data-available": "Нет доступных данных."
+	"smw-no-data-available": "Нет доступных данных.",
+	"smw-query-reference-link-label": "Ссылка на запрос"
 }

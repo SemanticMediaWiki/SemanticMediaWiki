@@ -10,7 +10,6 @@ use SMW\Parser\LinksProcessor;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\ParserData;
-use SMW\Settings;
 use SMW\Tests\TestEnvironment;
 use Title;
 
@@ -129,9 +128,8 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			isset( $settings['smwgLinksInValues'] ) ? $settings['smwgLinksInValues'] : true
 		);
 
-		$this->testEnvironment->registerObject(
-			'Settings',
-			Settings::newFromArray( $settings )
+		$this->testEnvironment->withConfiguration(
+			$settings
 		);
 
 		$instance->parse( $text );
@@ -164,10 +162,8 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			'smwgInlineErrors'  => true,
 		);
 
-
-		$this->testEnvironment->registerObject(
-			'Settings',
-			Settings::newFromArray( $settings )
+		$this->testEnvironment->withConfiguration(
+			$settings
 		);
 
 		$parserData = new ParserData(
@@ -210,9 +206,8 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			'smwgInlineErrors'  => true,
 		);
 
-		$this->testEnvironment->registerObject(
-			'Settings',
-			Settings::newFromArray( $settings )
+		$this->testEnvironment->withConfiguration(
+			$settings
 		);
 
 		$parserData = new ParserData(

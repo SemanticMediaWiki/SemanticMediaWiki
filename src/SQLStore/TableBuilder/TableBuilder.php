@@ -207,7 +207,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 		foreach( $haystack as $key => $value ) {
 			$current_key = $key;
 
-			if ( $needle === $value OR ( is_array( $value ) && $this->recursive_array_search( $needle, $value ) !== false ) ) {
+			if ( $needle === $value or ( is_array( $value ) && $this->recursive_array_search( $needle, $value ) !== false ) ) {
 				return $current_key;
 			}
 		}

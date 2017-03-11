@@ -6,6 +6,7 @@ use SMW\QueryFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\DataValueFactory;
+use SMWPropertyValue as PropertyValue;
 
 /**
  * @private
@@ -201,7 +202,10 @@ class QueryCreator implements QueryContext {
 				$sortKey = '';
 			} else {
 
-				$propertyValue = DataValueFactory::getInstance()->newPropertyValueByLabel(
+				$propertyValue = DataValueFactory::getInstance()->newDataValueByType( PropertyValue::TYPE_ID );
+				$propertyValue->setOption( PropertyValue::OPT_QUERY_CONTEXT, true );
+
+				$propertyValue->setUserValue(
 					$this->getNormalizedSortLabel( trim( $sort ) )
 				);
 

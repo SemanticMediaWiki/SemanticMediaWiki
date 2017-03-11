@@ -28,7 +28,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase {
 		$wikipage = new DIWikiPage( 'Foo', NS_MAIN );
 		$expected = new DIWikiPage( 'Bar', NS_MAIN );
 
-		$inMemoryPoolCache->getPoolCacheFor( 'store.redirectTarget.lookup' )->save(
+		$inMemoryPoolCache->getPoolCacheById( 'store.redirectTarget.lookup' )->save(
 			$wikipage->getHash(),
 			$expected
 		);
@@ -38,7 +38,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase {
 			$instance->getRedirectTarget( $wikipage )
 		);
 
-		$inMemoryPoolCache->resetPoolCacheFor( 'store.redirectTarget.lookup' );
+		$inMemoryPoolCache->resetPoolCacheById( 'store.redirectTarget.lookup' );
 	}
 
 }

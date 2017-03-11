@@ -1,0 +1,70 @@
+{
+	"description": "Semantic MediaWiki default vocabulary import",
+	"import": [
+		{
+			"page": "Smw import skos",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": {
+				"importFrom": "skos.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Smw import foaf",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": {
+				"importFrom": "foaf.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Smw import owl",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": {
+				"importFrom": "owl.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Foaf:knows",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": "* [[Imported from::foaf:knows]] \n* [[Has property description::A person known by this person (indicating some level of reciprocated interaction between the parties).@en]] \n\n[[Category:Imported vocabulary]] {{DISPLAYTITLE:foaf:knows}}",
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Foaf:name",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": "* [[Imported from::foaf:name]] \n* [[Has property description::A name for some thing or agent.@en]] \n\n[[Category:Imported vocabulary]]{{DISPLAYTITLE:foaf:name}}",
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Foaf:homepage",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": "* [[Imported from::foaf:homepage]] \n* [[Has property description::URL of the homepage of something, which is a general web resource.@en]] \n\n[[Category:Imported vocabulary]] {{DISPLAYTITLE:foaf:homepage}}",
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Owl:differentFrom",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": "* [[Imported from::owl:differentFrom]] \n* [[Has property description::The property that determines that two given individuals are different.@en]] \n\n[[Category:Imported vocabulary]] {{DISPLAYTITLE:owl:differentFrom}}",
+			"options": {
+				"canReplace": false
+			}
+		}
+	],
+	"meta": {
+		"version": "1"
+	}
+}

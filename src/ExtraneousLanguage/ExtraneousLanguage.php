@@ -9,12 +9,6 @@ use RuntimeException;
  * to handle certain language options in a way required by Semantic MediaWiki and
  * its registration system.
  *
- * This class makes relies on:
- *
- * - `LanguageContents` to provide the raw content from a corresponding file
- * - `LanguageJsonFileContentsReader` providing access to the content of a JSON file
- * - `LanguageFallbackFinder` is responsible for resolving a fallback language
- *
  * @license GNU GPL v2+
  * @since 2.4
  *
@@ -79,13 +73,13 @@ class ExtraneousLanguage {
 
 		// $cache = ApplicationFactory::getInstance()->getCache()
 
-		$languageJsonFileContentsReader = new LanguageJsonFileContentsReader();
+		$jsonLanguageContentsFileReader = new JsonLanguageContentsFileReader();
 		//$languageFileContentsReader->setCachePrefix( $cacheFactory->getCachePrefix() )
 
 		self::$instance = new self(
 			new LanguageContents(
-				$languageJsonFileContentsReader,
-				new LanguageFallbackFinder( $languageJsonFileContentsReader )
+				$jsonLanguageContentsFileReader,
+				new LanguageFallbackFinder( $jsonLanguageContentsFileReader )
 			)
 		);
 
@@ -230,6 +224,30 @@ class ExtraneousLanguage {
 		);
 
 		return $datatypeLabels;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $label
+	 *
+	 * @return string
+	 */
+	public function findDatatypeByLabel( $label ) {
+
+		$label = mb_strtolower( $label );
+
+		$datatypeLabels = $this->getDatatypeLabels();
+		$datatypeLabels = array_flip( $datatypeLabels );
+		$datatypeLabels += $this->getDatatypeAliases();
+
+		foreach ( $datatypeLabels as $key => $id ) {
+			if ( mb_strtolower( $key ) === $label ) {
+				return $id;
+			}
+		}
+
+		return '';
 	}
 
 	/**

@@ -465,6 +465,27 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $instance->isEmpty() );
 	}
 
+	public function testRemoveProperty() {
+
+		$property = new DIProperty( 'Foo' );
+		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
+
+		$instance->addPropertyObjectValue(
+			$property,
+			new DIWikiPage( 'Bar', NS_MAIN, '', 'Foobar' )
+		);
+
+		$this->assertTrue(
+			$instance->hasProperty( $property )
+		);
+
+		$instance->removeProperty( $property );
+
+		$this->assertFalse(
+			$instance->hasProperty( $property )
+		);
+	}
+
 	public function testClear() {
 
 		$title = Title::newFromText( __METHOD__ );

@@ -4,6 +4,7 @@ namespace SMW\Query\PrintRequest;
 
 use SMW\Query\PrintRequest;
 use SMWPropertyValue as PropertyValue;
+use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\Localizer;
 use Title;
@@ -49,7 +50,7 @@ class Deserializer {
 			$label = $showMode ? '' : Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ); // default
 		} elseif ( PropertyChainValue::isChained( $printRequestLabel ) ) {
 
-			$data = new PropertyChainValue();
+			$data = DataValueFactory::getInstance()->newDataValueByType( PropertyChainValue::TYPE_ID );
 			$data->setUserValue( $printRequestLabel );
 
 			$printmode = PrintRequest::PRINT_CHAIN;

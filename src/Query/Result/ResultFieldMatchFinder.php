@@ -216,6 +216,8 @@ class ResultFieldMatchFinder {
 				$propertyValue->getDataItem()
 			);
 
+			$multiValue->setOption( $multiValue::OPT_QUERY_CONTEXT, true );
+
 			if ( $multiValue instanceof MonolingualTextValue && $lang !== false && ( $textValue = $multiValue->getTextValueByLanguage( $lang ) ) !== null ) {
 
 				// Return the text representation without a language reference
@@ -314,6 +316,12 @@ class ResultFieldMatchFinder {
 		// Avoid `_cod`, `_eid` or similar types that use the DIBlob as storage
 		// object
 		if ( $this->printRequest->getTypeID() !== '_txt' && strpos( $this->printRequest->getTypeID(), '_rec' ) === false ) {
+			return $dataItem;
+		}
+
+		// Outputs marked with -ia (import annotation) are allowed to retain a
+		// possible [[ :: ]] annotation
+		if ( strpos( $this->printRequest->getOutputFormat(), '-ia' ) !== false ) {
 			return $dataItem;
 		}
 

@@ -27,18 +27,12 @@ class SPARQLStoreFactory {
 	private $store;
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
-
-	/**
 	 * @since 2.2
 	 *
 	 * @param SPARQLStore $store
 	 */
 	public function __construct( SPARQLStore $store ) {
 		$this->store = $store;
-		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -74,7 +68,7 @@ class SPARQLStoreFactory {
 		);
 
 		$compoundConditionBuilder->setPropertyHierarchyLookup(
-			$this->applicationFactory->newPropertyHierarchyLookup()
+			ApplicationFactory::getInstance()->newPropertyHierarchyLookup()
 		);
 
 		$queryEngine = new QueryEngine(
@@ -97,6 +91,38 @@ class SPARQLStoreFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return TurtleTriplesBuilder
+	 */
+	public function newTurtleTriplesBuilder() {
+
+		$turtleTriplesBuilder = new TurtleTriplesBuilder(
+			$this->newRepositoryRedirectLookup()
+		);
+
+		$turtleTriplesBuilder->setTriplesChunkSize( 80 );
+
+		return $turtleTriplesBuilder;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return ReplicationDataTruncator
+	 */
+	public function newReplicationDataTruncator() {
+
+		$replicationDataTruncator = new ReplicationDataTruncator();
+
+		$replicationDataTruncator->setPropertyExemptionList(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgSparqlReplicationPropertyExemptionList' )
+		);
+
+		return $replicationDataTruncator;
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return ConnectionManager
@@ -107,7 +133,7 @@ class SPARQLStoreFactory {
 
 		$repositoryConnectionProvider = new RepositoryConnectionProvider();
 		$repositoryConnectionProvider->setHttpVersionTo(
-			$this->applicationFactory->getSettings()->get( 'smwgSparqlRepositoryConnectorForcedHttpVersion' )
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgSparqlRepositoryConnectorForcedHttpVersion' )
 		);
 
 		$connectionManager->registerConnectionProvider(

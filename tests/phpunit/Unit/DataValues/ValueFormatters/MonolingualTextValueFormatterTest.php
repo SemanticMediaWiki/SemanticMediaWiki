@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
+use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter
@@ -15,6 +16,28 @@ use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
  * @author mwjames
  */
 class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	private $dataValueServiceFactory;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $constraintValueValidator ) );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueParser' )
+			->will( $this->returnValue( new MonolingualTextValueParser() ) );
+	}
 
 	public function testCanConstruct() {
 
@@ -40,6 +63,11 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testToUseCaptionOutput() {
 
 		$monolingualTextValue = new MonolingualTextValue();
+
+		$monolingualTextValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$monolingualTextValue->setCaption( 'ABC' );
 
 		$instance = new MonolingualTextValueFormatter( $monolingualTextValue );
@@ -61,6 +89,11 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testFormat( $stringValue, $type, $linker, $expected ) {
 
 		$monolingualTextValue = new MonolingualTextValue();
+
+		$monolingualTextValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$monolingualTextValue->setUserValue( $stringValue );
 
 		$instance = new MonolingualTextValueFormatter( $monolingualTextValue );

@@ -18,6 +18,11 @@ use SMWDataItem as DataItem;
 class PropertyChainValue extends StringValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '__pchn';
+
+	/**
 	 * @var PropertyValue[]
 	 */
 	private $propertyValues = array();
@@ -31,7 +36,7 @@ class PropertyChainValue extends StringValue {
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
-		parent::__construct( '__pchn' );
+		parent::__construct( self::TYPE_ID );
 	}
 
 	/**

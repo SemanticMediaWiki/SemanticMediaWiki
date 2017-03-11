@@ -5,6 +5,7 @@ namespace SMW\Tests\DataValues;
 use SMW\DataItemFactory;
 use SMW\DataValues\TemperatureValue;
 use SMW\Tests\TestEnvironment;
+use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 
 /**
  * @covers \SMW\DataValues\TemperatureValue
@@ -20,8 +21,11 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
+	private $dataValueServiceFactory;
 
 	protected function setUp() {
+		parent::setUp();
+
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -30,6 +34,18 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
+
+		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $constraintValueValidator ) );
 	}
 
 	protected function tearDown() {
@@ -47,6 +63,18 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	public function testSetUserValueToReturnKelvinForAnyNonPreferredDisplayUnit() {
 
 		$instance = new TemperatureValue();
+
+		$numberValueFormatter = new NumberValueFormatter();
+		$numberValueFormatter->setDataValue( $instance );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $numberValueFormatter ) );
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance->setUserValue( '100 °C' );
 
 		$this->assertContains(
@@ -70,6 +98,18 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	public function testSetUserValueOnUnknownUnit() {
 
 		$instance = new TemperatureValue();
+
+		$numberValueFormatter = new NumberValueFormatter();
+		$numberValueFormatter->setDataValue( $instance );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $numberValueFormatter ) );
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$instance->setUserValue( '100 Unknown' );
 
 		$this->assertContains(
@@ -85,6 +125,17 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array( 'Celsius' ) ) );
 
 		$instance = new TemperatureValue();
+
+		$numberValueFormatter = new NumberValueFormatter();
+		$numberValueFormatter->setDataValue( $instance );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $numberValueFormatter ) );
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$instance->setProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' )
@@ -115,6 +166,17 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 0 ) );
 
 		$instance = new TemperatureValue();
+
+		$numberValueFormatter = new NumberValueFormatter();
+		$numberValueFormatter->setDataValue( $instance );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueFormatter' )
+			->will( $this->returnValue( $numberValueFormatter ) );
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$instance->setProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' )

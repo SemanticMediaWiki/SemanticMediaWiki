@@ -3,6 +3,7 @@
 namespace SMW\Query;
 
 use SMW\DIProperty;
+use SMW\DataValueFactory;
 use SMWPropertyValue as PropertyValue;
 use Title;
 
@@ -23,7 +24,7 @@ class PrintRequestFactory {
 	 */
 	public function newPrintRequestByProperty( DIProperty $property ) {
 
-		$propertyValue = new PropertyValue( '__pro' );
+		$propertyValue = DataValueFactory::getInstance()->newDataValueByType( PropertyValue::TYPE_ID );
 		$propertyValue->setDataItem( $property );
 
 		$instance = new PrintRequest(

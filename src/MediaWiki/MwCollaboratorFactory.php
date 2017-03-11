@@ -155,6 +155,19 @@ class MwCollaboratorFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param WikiPage $wkiPage
+	 * @param Revision $revision
+	 * @param User|null $user
+	 *
+	 * @return EditInfoProvider
+	 */
+	public function newEditInfoProvider( WikiPage $wkiPage, Revision $revision, User $user = null ) {
+		return new EditInfoProvider( $wkiPage, $revision, $user );
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return WikitextTemplateRenderer

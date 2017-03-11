@@ -15,6 +15,7 @@ use SMW\MediaWiki\TitleCreator;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMWQueryParser as QueryParser;
 use Title;
+use SMW\Services\SharedServicesContainer;
 
 /**
  * Application instances access for internal and external use
@@ -37,10 +38,19 @@ class ApplicationFactory {
 	private $containerBuilder;
 
 	/**
-	 * @since 2.0
+	 * @var string
 	 */
-	public function __construct( ContainerBuilder $containerBuilder = null ) {
+	private $servicesFileDir = '';
+
+	/**
+	 * @since 2.0
+	 *
+	 * @param ContainerBuilder|null $containerBuilder
+	 * @param string $servicesFileDir
+	 */
+	public function __construct( ContainerBuilder $containerBuilder = null, $servicesFileDir = '' ) {
 		$this->containerBuilder = $containerBuilder;
+		$this->servicesFileDir = $servicesFileDir;
 	}
 
 	/**
@@ -63,12 +73,14 @@ class ApplicationFactory {
 			return self::$instance;
 		}
 
+		$servicesFileDir = $GLOBALS['smwgServicesFileDir'];
+
 		$containerBuilder = self::newContainerBuilder(
 			new CallbackContainerFactory(),
-			$GLOBALS['smwgServicesFileDir']
+			$servicesFileDir
 		);
 
-		return self::$instance = new self( $containerBuilder );
+		return self::$instance = new self( $containerBuilder, $servicesFileDir );
 	}
 
 	/**
@@ -501,8 +513,9 @@ class ApplicationFactory {
 
 		$containerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
 
-		$containerBuilder->registerCallbackContainer( new SharedCallbackContainer() );
+		$containerBuilder->registerCallbackContainer( new SharedServicesContainer() );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'MediaWikiServices.php' );
+		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'ImporterServices.php' );
 
 		//	$containerBuilder = $callbackContainerFactory->newLoggableContainerBuilder(
 		//		$containerBuilder,

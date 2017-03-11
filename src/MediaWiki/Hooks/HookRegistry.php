@@ -103,7 +103,8 @@ class HookRegistry {
 		$httpRequestFactory = new HttpRequestFactory();
 
 		$deferredRequestDispatchManager = new DeferredRequestDispatchManager(
-			$httpRequestFactory->newSocketRequest()
+			$httpRequestFactory->newSocketRequest(),
+			$applicationFactory->newJobFactory()
 		);
 
 		$deferredRequestDispatchManager->setLogger(
@@ -137,11 +138,14 @@ class HookRegistry {
 		$this->handlers['ParserAfterTidy'] = function ( &$parser, &$text ) {
 
 			$parserAfterTidy = new ParserAfterTidy(
-				$parser,
-				$text
+				$parser
 			);
 
-			return $parserAfterTidy->process();
+			$parserAfterTidy->isCommandLineMode(
+				$GLOBALS['wgCommandLineMode']
+			);
+
+			return $parserAfterTidy->process( $text );
 		};
 
 		/**
@@ -249,7 +253,7 @@ class HookRegistry {
 		 */
 		$this->handlers['ArticleProtectComplete'] = function ( &$wikiPage, &$user, $protections, $reason ) use ( $applicationFactory ) {
 
-			$editInfoProvider = new \SMW\MediaWiki\EditInfoProvider(
+			$editInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newEditInfoProvider(
 				$wikiPage,
 				$wikiPage->getRevision(),
 				$user
@@ -612,6 +616,55 @@ class HookRegistry {
 			$queryDependencyLinksStore->doUpdateDependenciesFrom( $result );
 
 			$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->recordStats();
+
+			return true;
+		};
+
+		/**
+		 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::AfterIncomingPropertiesLookupComplete
+		 */
+		$this->handlers['SMW::Browse::AfterIncomingPropertiesLookupComplete'] = function ( $store, $semanticData, $requestOptions ) use ( $queryDependencyLinksStoreFactory ) {
+
+			$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
+				$store
+			);
+
+			$queryReferenceBacklinks->addReferenceLinksTo(
+				$semanticData,
+				$requestOptions
+			);
+
+			return true;
+		};
+
+		/**
+		 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
+		 */
+		$this->handlers['SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate'] = function ( $property, $subject, &$html ) use ( $queryDependencyLinksStoreFactory, $applicationFactory ) {
+
+			$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
+				$applicationFactory->getStore()
+			);
+
+			$doesRequireFurtherLink = $queryReferenceBacklinks->doesRequireFurtherLink(
+				$property,
+				$subject,
+				$html
+			);
+
+			// Return false in order to stop the link creation process to replace the
+			// standard link
+			return $doesRequireFurtherLink;
+		};
+
+		/**
+		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
+		 */
+		$this->handlers['SMW::SQLStore::Installer::AfterCreateTablesComplete'] = function ( $tableBuilder, $messageReporter ) use ( $applicationFactory ) {
+
+			$fileImporter = $applicationFactory->create( 'JsonContentsImporter' );
+			$fileImporter->setMessageReporter( $messageReporter );
+			$fileImporter->doImport();
 
 			return true;
 		};

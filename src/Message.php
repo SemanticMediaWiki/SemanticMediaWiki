@@ -81,7 +81,7 @@ class Message {
 	public static function getCache() {
 
 		if ( self::$messageCache === null ) {
-			self::$messageCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( self::POOLCACHE_ID, 1000 );
+			self::$messageCache = InMemoryPoolCache::getInstance()->getPoolCacheById( self::POOLCACHE_ID, 1000 );
 		}
 
 		return self::$messageCache;

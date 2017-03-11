@@ -30,7 +30,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->testEnvironment->addConfiguration( 'smwgQueryDurationEnabled', false );
+		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', array(
+			'smwgQueryDurationEnabled' => false,
+			'smwgQueryParametersEnabled' => false
+		) );
+
 		$this->testEnvironment->addConfiguration( 'smwgQMaxLimit', 1000 );
 	}
 
@@ -436,7 +440,10 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]' )
 			),
 			array(
-				'smwgQueryDurationEnabled' => false
+				'smwgQueryProfiler' => array(
+					'smwgQueryDurationEnabled' => false,
+					'smwgQueryParametersEnabled' => false
+				)
 			)
 		);
 
@@ -459,7 +466,10 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'list', 4, 1, "[[Modification date::+]] [[$categoryNS:Foo bar]] [[Has title::!Foo bar]]" )
 			),
 			array(
-				'smwgQueryDurationEnabled' => false
+				'smwgQueryProfiler' => array(
+					'smwgQueryDurationEnabled' => false,
+					'smwgQueryParametersEnabled' => false
+				)
 			)
 		);
 
@@ -482,7 +492,10 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'list', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
 			),
 			array(
-				'smwgQueryDurationEnabled' => false
+				'smwgQueryProfiler' => array(
+					'smwgQueryDurationEnabled' => false,
+					'smwgQueryParametersEnabled' => false
+				)
 			)
 		);
 
@@ -505,7 +518,10 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'feed', 1, 1, "[[:$fileNS:Fooo]]" )
 			),
 			array(
-				'smwgQueryDurationEnabled' => false
+				'smwgQueryProfiler' => array(
+					'smwgQueryDurationEnabled' => false,
+					'smwgQueryParametersEnabled' => false
+				)
 			)
 		);
 
@@ -528,7 +544,10 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'table', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
 			),
 			array(
-				'smwgQueryDurationEnabled' => false
+				'smwgQueryProfiler' => array(
+					'smwgQueryDurationEnabled' => false,
+					'smwgQueryParametersEnabled' => false
+				)
 			)
 		);
 
@@ -545,7 +564,10 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO', '_ASKDU' ),
 			),
 			array(
-				'smwgQueryDurationEnabled' => true
+				'smwgQueryProfiler' => array(
+					'smwgQueryDurationEnabled' => true,
+					'smwgQueryParametersEnabled' => false
+				)
 			)
 		);
 
@@ -572,8 +594,10 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]', '{"limit":50,"offset":0,"sort":[""],"order":["asc"],"mode":1}' )
 			),
 			array(
-				'smwgQueryDurationEnabled' => false,
-				'smwgQueryParametersEnabled' => true
+				'smwgQueryProfiler' => array(
+					'smwgQueryDurationEnabled' => false,
+					'smwgQueryParametersEnabled' => true
+				)
 			)
 		);
 

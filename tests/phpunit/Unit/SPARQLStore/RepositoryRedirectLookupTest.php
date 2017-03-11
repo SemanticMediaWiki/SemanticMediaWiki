@@ -200,7 +200,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 
-		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( RepositoryRedirectLookup::POOLCACHE_ID );
+		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( RepositoryRedirectLookup::POOLCACHE_ID );
 
 		$poolCache->save(
 			$expNsResource->getUri(),
