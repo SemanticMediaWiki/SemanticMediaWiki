@@ -27,7 +27,7 @@ class PropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->testEnvironment->resetPoolCacheFor( \SMWExporter::POOLCACHE_ID );
+		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
 	protected function tearDown() {

@@ -41,7 +41,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 			$this->exporter = Exporter::getInstance();
 		}
 
-		$this->inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheFor(
+		$this->inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById(
 			Exporter::POOLCACHE_ID
 		);
 	}

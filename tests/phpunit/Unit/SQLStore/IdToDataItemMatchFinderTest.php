@@ -30,7 +30,7 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() {
-		$this->testEnvironment->resetPoolCacheFor( IdToDataItemMatchFinder::POOLCACHE_ID );
+		$this->testEnvironment->resetPoolCacheById( IdToDataItemMatchFinder::POOLCACHE_ID );
 	}
 
 	public function testCanConstruct() {
@@ -92,7 +92,7 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		InMemoryPoolCache::getInstance()->getPoolCacheFor( IdToDataItemMatchFinder::POOLCACHE_ID )->save( 42, 'Foo#0##' );
+		InMemoryPoolCache::getInstance()->getPoolCacheById( IdToDataItemMatchFinder::POOLCACHE_ID )->save( 42, 'Foo#0##' );
 
 		$instance = new IdToDataItemMatchFinder(
 			$connection,

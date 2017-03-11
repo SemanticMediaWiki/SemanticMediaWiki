@@ -234,7 +234,7 @@ class SMWSql3SmwIds {
 			$this->store->getConnection( 'mw.db' )
 		);
 
-		$this->intermediaryIdCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheFor( self::POOLCACHE_ID );
+		$this->intermediaryIdCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
 	}
 
 	/**

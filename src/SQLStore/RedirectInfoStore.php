@@ -53,7 +53,7 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.redirect.infostore' );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'sql.store.redirect.infostore' );
 
 		if ( $poolCache->contains( $hash ) ) {
 			return $poolCache->fetch( $hash );
@@ -82,7 +82,7 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.redirect.infostore' )->save( $hash, $id );
+		$this->inMemoryPoolCache->getPoolCacheById( 'sql.store.redirect.infostore' )->save( $hash, $id );
 	}
 
 	/**
@@ -100,7 +100,7 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.redirect.infostore' )->delete( $hash );
+		$this->inMemoryPoolCache->getPoolCacheById( 'sql.store.redirect.infostore' )->delete( $hash );
 	}
 
 	private function select( $title, $namespace ) {

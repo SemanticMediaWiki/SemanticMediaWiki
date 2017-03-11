@@ -42,7 +42,7 @@ class RepositoryRedirectLookup {
 	 * @since 2.1
 	 */
 	public static function reset() {
-		InMemoryPoolCache::getInstance()->resetPoolCacheFor( self::POOLCACHE_ID );
+		InMemoryPoolCache::getInstance()->resetPoolCacheById( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -91,7 +91,7 @@ class RepositoryRedirectLookup {
 
 	private function doLookupResourceUriTargetFor( ExpNsResource $expNsResource ) {
 
-		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( self::POOLCACHE_ID );
+		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( self::POOLCACHE_ID );
 
 		if ( !$poolCache->contains( $expNsResource->getUri() ) ) {
 			$poolCache->save(
