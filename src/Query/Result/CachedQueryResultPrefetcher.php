@@ -53,7 +53,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * PHP 5.6 can do self::CACHE_NAMESPACE . ':' . self::VERSION
 	 */
-	const STATSD_ID = 'smw:query:store:1:c:';
+	const STATSD_ID = 'smw:query:store:1:d:';
 
 	/**
 	 * ID for the tempCache
@@ -155,11 +155,11 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			return $stats;
 		}
 
-		// hits.embedded + hits.nonEmbedded + hits.tempCache
-		$hits = array_sum( $stats['hits'] );
-		$stats['ratio'] = array();
+		$misses = $this->sum( 0, $stats['misses'] );
+		$hits = $this->sum( 0, $stats['hits'] );
 
-		$stats['ratio']['hit'] = $hits > 0 ? round( $hits / ( $hits + $stats['misses'] ), 4 ) : 0;
+		$stats['ratio'] = array();
+		$stats['ratio']['hit'] = $hits > 0 ? round( $hits / ( $hits + $misses ), 4 ) : 0;
 		$stats['ratio']['miss'] = $hits > 0 ? round( 1 - $stats['ratio']['hit'], 4 ) : 1;
 
 		// Move to last
@@ -320,8 +320,8 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$results = array();
 		$incrStats = 'hits.Undefined';
 
-		if ( ( $nonEmbeddedContext = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
-			$nonEmbeddedContext = 'Undefined';
+		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
+			$context = 'Undefined';
 		}
 
 		// Check if the tempCache is available for result that have not yet been
@@ -342,10 +342,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$countValue = $queryResult->getCountValue();
 		} else {
 
-			// - hits.nonEmbedded.SpecialAsk
-			// - hits.nonEmbedded.API
-			// - hits.nonEmbedded.Undefined
-			$incrStats = $query->getContextPage() !== null ? 'hits.embedded' : 'hits.nonEmbedded.' . $nonEmbeddedContext;
+			$incrStats = ( $query->getContextPage() !== null ? 'hits.embedded.' : 'hits.nonEmbedded.' ) . $context;
 
 			foreach ( $container->get( 'results' ) as $hash ) {
 				$results[] = DIWikiPage::doUnserialize( $hash );
@@ -381,7 +378,13 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 	private function addQueryResultToCache( $queryResult, $queryId, $container, $query ) {
 
-		$this->bufferedStatsdCollector->incr( 'misses' );
+		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
+			$context = 'Undefined';
+		}
+
+		$this->bufferedStatsdCollector->incr(
+			( $query->getContextPage() !== null ? 'misses.embedded.' : 'misses.nonEmbedded.' ) . $context
+		);
 
 		$this->bufferedStatsdCollector->calcMedian(
 			'medianRetrievalResponseTime.uncached',
@@ -490,6 +493,10 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$id = 'noCache.byOption';
 		}
 
+		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) !== false ) {
+			$id .= '.' . $context;
+		}
+
 		return $id;
 	}
 
@@ -497,16 +504,21 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 		$this->bufferedStatsdCollector->shouldRecord( $this->isEnabled() );
 
-		$this->bufferedStatsdCollector->init( 'misses', 0 );
+		$this->bufferedStatsdCollector->init( 'misses', array() );
 		$this->bufferedStatsdCollector->init( 'hits', array() );
 		$this->bufferedStatsdCollector->init( 'deletes', array() );
-		$this->bufferedStatsdCollector->init( 'medianRetrievalResponseTime', array() );
 		$this->bufferedStatsdCollector->init( 'noCache', array() );
+		$this->bufferedStatsdCollector->init( 'medianRetrievalResponseTime', array() );
 		$this->bufferedStatsdCollector->set( 'meta.version', self::VERSION );
 		$this->bufferedStatsdCollector->set( 'meta.cacheLifetime.embedded', $GLOBALS['smwgQueryResultCacheLifetime'] );
 		$this->bufferedStatsdCollector->set( 'meta.cacheLifetime.nonEmbedded', $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'] );
 		$this->bufferedStatsdCollector->init( 'meta.collectionDate.start', $date );
 		$this->bufferedStatsdCollector->set( 'meta.collectionDate.update', $date );
+	}
+
+	// http://stackoverflow.com/questions/3777995/php-array-recursive-sum
+	private static function sum( $value, $container ) {
+		return $value + ( is_array( $container ) ? array_reduce( $container, 'self::sum' ) : $container );
 	}
 
 }

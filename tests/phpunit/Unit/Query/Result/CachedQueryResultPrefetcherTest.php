@@ -170,7 +170,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContextPage' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
 
-		$query->expects( $this->atLeastOnce() )
+		$query->expects( $this->at( 2 ) )
 			->method( 'getOption' )
 			->with( $this->equalTo( $query::NO_CACHE ) )
 			->will( $this->returnValue( true ) );
@@ -236,8 +236,8 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$stats = array(
 			'misses' => 1,
-			'hits' => array( 2 ),
-			'meta' => 'foo'
+			'hits'   => array( 'Foo' => 2, array( 'Bar' => 2 ) ),
+			'meta'   => 'foo'
 		);
 
 		$this->bufferedStatsdCollector->expects( $this->once() )
@@ -251,9 +251,19 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			$this->bufferedStatsdCollector
 		);
 
+		$stats = $instance->getStats();
+
 		$this->assertInternalType(
 			'array',
-			$instance->getStats()
+			$stats
+		);
+
+		$this->assertEquals(
+			array(
+				'hit'  => 0.8,
+				'miss' => 0.2
+			),
+			$stats['ratio']
 		);
 	}
 
