@@ -5,6 +5,7 @@ namespace SMW;
 use Title;
 use User;
 use SMW\Protection\EditProtectionValidator;
+use SMW\DataValues\AllowsPatternValue;
 
 /**
  * @license GNU GPL v2+
@@ -90,7 +91,7 @@ class PermissionPthValidator {
 	private function checkMwNamespaceEditPermission( Title &$title, User $user, $action, &$errors ) {
 
 		// @see https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_pattern
-		if ( $title->getDBKey() !== 'Smw_allows_pattern' || $user->isAllowed( 'smw-patternedit' ) ) {
+		if ( $title->getDBKey() !== AllowsPatternValue::REFERENCE_PAGE_ID || $user->isAllowed( 'smw-patternedit' ) ) {
 			return true;
 		}
 

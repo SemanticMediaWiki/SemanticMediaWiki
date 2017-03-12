@@ -20,8 +20,8 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
-	private $propertySpecificationLookup;
 	private $dataValueServiceFactory;
+	private $constraintValueValidator;
 
 	protected function setUp() {
 
@@ -34,18 +34,13 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
-	//	$this->testEnvironment->resetPoolCacheById( 'pvap.no.pattern.cache' );
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$this->constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,7 +54,7 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->will( $this->returnValue( $this->constraintValueValidator ) );
 	}
 
 	protected function tearDown() {
@@ -145,6 +140,80 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertNotEmpty(
 			$instance->getErrors()
+		);
+	}
+
+	public function testGetShortWikiText() {
+
+		$allowsPatternValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsPatternValueParser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$allowsPatternValueParser->expects( $this->any() )
+			->method( 'parse' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueParser' )
+			->will( $this->returnValue( $allowsPatternValueParser ) );
+
+		$dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $this->constraintValueValidator ) );
+
+		$instance = new AllowsPatternValue();
+		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
+
+		$instance->setDataValueServiceFactory(
+			$dataValueServiceFactory
+		);
+
+		$instance->setUserValue( 'abc/e' );
+
+		$this->assertContains(
+			'Smw_allows_pattern',
+			$instance->getShortWikiText()
+		);
+	}
+
+	public function testGetShortHtmlText() {
+
+		$allowsPatternValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsPatternValueParser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$allowsPatternValueParser->expects( $this->any() )
+			->method( 'parse' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueParser' )
+			->will( $this->returnValue( $allowsPatternValueParser ) );
+
+		$dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $this->constraintValueValidator ) );
+
+		$instance = new AllowsPatternValue();
+		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
+
+		$instance->setDataValueServiceFactory(
+			$dataValueServiceFactory
+		);
+
+		$instance->setUserValue( 'abc/e' );
+
+		$this->assertContains(
+			'Smw_allows_pattern',
+			$instance->getShortHtmlText()
 		);
 	}
 
