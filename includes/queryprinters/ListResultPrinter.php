@@ -242,6 +242,12 @@ class ListResultPrinter extends ResultPrinter {
 			$this->listsep = '';
 			$this->finallistsep = '';
 		}
+
+		// #2329
+		if ( $this->params['format'] === 'template' && !$this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
+			$this->listsep = '';
+			$this->finallistsep = '';
+		}
 	}
 
 	/**
@@ -396,6 +402,9 @@ class ListResultPrinter extends ResultPrinter {
 	 */
 	protected function addTemplateContentFields( $row ) {
 
+		// In case the sep is used as outer sep, switch to the valuesep
+		$sep = $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) && $this->mFormat === 'template' ? $this->params['valuesep'] : $this->params['sep'];
+
 		foreach ( $row as $i => $field ) {
 
 			$value = '';
@@ -417,7 +426,7 @@ class ListResultPrinter extends ResultPrinter {
 			}
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) ) ) !== false ) {
-				$value .= $value === '' ? $text : $this->params['sep'] . ' ' . $text;
+				$value .= $value === '' ? $text : $sep . ' ' . $text;
 			}
 
 			$this->templateRenderer->addField( $fieldName, $value );
@@ -474,6 +483,13 @@ class ListResultPrinter extends ResultPrinter {
 			'message' => 'smw-paramdesc-sep',
 			'default' => '',
 		);
+
+		if ( $this->mFormat === 'template' && $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
+			$params['valuesep'] = array(
+				'message' => 'smw-paramdesc-sep',
+				'default' => '',
+			);
+		}
 
 		$params['template'] = array(
 			'message' => 'smw-paramdesc-template',

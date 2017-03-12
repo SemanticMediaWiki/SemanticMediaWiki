@@ -194,3 +194,10 @@ define( 'SMW_ADM_FULLT', 32 ); // Fulltext update
 define( 'SMW_LINV_PCRE', 2 ); // Using the PCRE approach
 define( 'SMW_LINV_OBFU', 4 ); // Using the Obfuscator approach
 /**@}*/
+
+/**@{
+  * Constants for ResultPrinter
+  */
+define( 'SMW_RF_NONE', 0 );
+define( 'SMW_RF_TEMPLATE_OUTSEP', 2 ); // #2022 Enable 2.5 behaviour for template handling
+/**@}*/
