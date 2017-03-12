@@ -6,7 +6,7 @@ THIS IS NOT A RELEASE YET
 
 ### Full-text search support
 
-Support for [full-text search](https://www.semantic-mediawiki.org/wiki/Help:Full-text_search) was added using the native capabilities of the SQL backends "MySQL"/"MariaDB" (#1481) and "SQLite" (#1801) for datatypes "Text", "URL" and "Page".
+Support for [full-text search](https://www.semantic-mediawiki.org/wiki/Help:Full-text_search) was added using the native capabilities of the SQL backends "MySQL"/"MariaDB" (#1481) and "SQLite" (#1801) for the "Text", "URL" and "Page" datatypes.
 
 ### Provenance data recording
 
@@ -26,7 +26,7 @@ Semantic MediaWiki now supports the declaration of [preferred property labels](h
 
 ### Query result cache
 
-An experimental feature to support caching of query results (#1251) and hereby minimize a possible impact of query processing during and after a page view. This change also includes a reevaluation (#2099, #2176) of the query hash (used as identifier) to ensure that cache fragmentation is reduced and duplicate queries can share the same cache across different pages.
+[Caching of query results](https://www.semantic-mediawiki.org/wiki/Query_result_cache) (#1251) was added as experimental feature to minimize a possible impact of query processing during and after a page view. This change also includes a reevaluation (#2099, #2176) of the query hash (used as identifier) to ensure that cache fragmentation is reduced and duplicate queries can share the same cache across different pages.
 
 ### Links in values
 
@@ -38,7 +38,7 @@ Support for [fixed properties](https://www.semantic-mediawiki.org/wiki/Help:Fixe
 
 ### Special page "SemanticMediaWiki"
 
-Special page ["SemanticMediaWiki"](https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki) formerly known as special page "SMWAdmin" was modernized and extended (#2044, etc.) including a new [configuration setting](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) allowing for fine-granded control of its accessibilty (#2142).
+Special page ["SemanticMediaWiki"](https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki) formerly known as special page "SMWAdmin" was modernized and extended (#2044, etc.) including a new [configuration setting](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) allowing for a more fine-granded control over feature accessibilty (#2142).
 
 ## Compatibility changes
 
@@ -114,6 +114,8 @@ Special page ["SemanticMediaWiki"](https://www.semantic-mediawiki.org/wiki/Help:
 * [#2290](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2290) Added [query reference](https://www.semantic-mediawiki.org/wiki/Query_reference) links section to `Special:Browse`
 * [#2295](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2295) Added [`Allows value list`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list) to maintain a list of allowed values using a `NS_MEDIAWIKI` reference page
 * [#2301](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2301) Added [`$smwgSparqlReplicationPropertyExemptionList`](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlReplicationPropertyExemptionList) to suppress replication for selected properties to a `SPARQL` endpoint
+* [#2325](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2325) Added `#-ia` as print request output option for the text datatype
+* [#2331](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2331) Added [`$smwgResultFormatsFeatures`](https://www.semantic-mediawiki.org/wiki/Help:$smwgResultFormatsFeatures) to control available features for specific `ResultFormatter` and includes (`SMW_RF_TEMPLATE_OUTSEP` to support the #2022 changes)
 * Many new translations for numerous languages by the communtity of [translatewiki.net](https://translatewiki.net/w/i.php?title=Special%3AMessageGroupStats&x=D&group=mwgithub-semanticmediawiki&suppressempty=1)
 * New translation for special properties, datatypes, magic words, date formats and aliases for Catalan and German by Semantic MediaWiki community members
 
@@ -144,7 +146,7 @@ Special page ["SemanticMediaWiki"](https://www.semantic-mediawiki.org/wiki/Help:
 * #1978 Fixed `Tablebuilder` to avoid index creation on an unaltered schema definition
 * #1985 Fixed a potential fatal error in `MaintenanceLogger` for when `$wgMaxNameChars` doesn't match an expected name length
 * [#2000](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2000) Fixed label and caption sanitization
-* #2022 Fixed the usage of the sep parameter for format "template"
+* [#2022](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2022) Fixed the usage of the sep parameter for format "template"
 * #2061 Fixed strict comparison `===` for strings in `PropertyTableRowDiffer`
 * #2070 Filter invalid entity display from `Special:Concepts`
 * #2071 Prevent extensions to register already known canonical property labels and hereby avoid a possible ID mismatch
@@ -178,38 +180,9 @@ Special page ["SemanticMediaWiki"](https://www.semantic-mediawiki.org/wiki/Help:
 * [#2275](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2275) Added the `onoi/callback-container:~2.0` dependency
 * [#2282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2282) Added `DataValueServiceFactory` and `DataValueServices.php` to allow injection of services into a `DataValue` instance
 
-## Settings changes
+## Settings and configurations
 
-* Added [$smwgSimilarityLookupExemptionProperty](https://www.semantic-mediawiki.org/wiki/Help:$smwgSimilarityLookupExemptionProperty)
-* Added [$smwgPropertyInvalidCharacterList](https://www.semantic-mediawiki.org/wiki/Help:$smwgPropertyInvalidCharacterList)
-* Added [$smwgEditProtectionRight](https://www.semantic-mediawiki.org/wiki/Help:$smwgEditProtectionRight)
-* Added [$smwgQueryResultCacheLifetime](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultCacheLifetime)
-* Added [$smwgQueryResultCacheRefreshOnPurge](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultCacheRefreshOnPurge)
-* Added [$smwgQueryResultCacheType](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultCacheType)
-* Added [$smwgQueryResultNonEmbeddedCacheLifetime](https://www.semantic-mediawiki.org/wiki/Help:$smwgQueryResultNonEmbeddedCacheLifetime)
-* Added [$smwgQTemporaryTablesAutoCommitMode](https://www.semantic-mediawiki.org/wiki/Help:$smwgQTemporaryTablesAutoCommitMode)
-* Added [$smwgQFilterDuplicates](https://www.semantic-mediawiki.org/wiki/Help:$smwgQFilterDuplicates)
-* Added [$smwgFulltextSearchTableOptions](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchTableOptions)
-* Added [$smwgEnabledFulltextSearch](https://www.semantic-mediawiki.org/wiki/Help:$smwgEnabledFulltextSearch)
-* Added [$smwgFulltextDeferredUpdate](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextDeferredUpdate)
-* Added [$smwgFulltextLanguageDetection](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextLanguageDetection)
-* Added [$smwgFulltextSearchIndexableDataTypes](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchIndexableDataTypes)
-* Added [$smwgFulltextSearchMinTokenSize](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchMinTokenSize)
-* Added [$smwgFulltextSearchPropertyExemptionList](https://www.semantic-mediawiki.org/wiki/Help:$smwgFulltextSearchPropertyExemptionList)
-* Added [$smwgExportResourcesAsIri](https://www.semantic-mediawiki.org/wiki/Help:$smwgExportResourcesAsIri)
-* Added [$smwgDataTypePropertyExemptionList](https://www.semantic-mediawiki.org/wiki/Help:$smwgDataTypePropertyExemptionList)
-* Added [$smwgRedirectPropertyListLimit](https://www.semantic-mediawiki.org/wiki/Help:$smwgRedirectPropertyListLimit)
-* Added [$smwgSubPropertyListLimit](https://www.semantic-mediawiki.org/wiki/Help:$smwgSubPropertyListLimit)
-* Added [$smwgBrowseByApi](https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi)
-* Added [$smwgServicesFileDir](https://www.semantic-mediawiki.org/wiki/Help:$smwgServicesFileDir) (internal use)
-* Added [$smwgImportFileDir](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDir)
-* Added [$smwgImportReqVersion](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportReqVersion)
-* Added [$smwgAdminFeatures](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) and deprecated the [$smwgAdminRefreshStore](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminRefreshStore) setting
-* Added [$smwgPropertyInvalidCharacterList](https://www.semantic-mediawiki.org/wiki/Help:$smwgPropertyInvalidCharacterList)
-* Added [$smwgSparqlReplicationPropertyExemptionList](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlReplicationPropertyExemptionList)
-* Changed [$smwgLinksInValues](https://www.semantic-mediawiki.org/wiki/Help:$smwgLinksInValues) behaviour
-* Changed [$smwgFixedProperties](https://www.semantic-mediawiki.org/wiki/Help:$smwgFixedProperties) behaviour
-* Changed [$smwgSparqlQueryEndpoint](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlQueryEndpoint) behaviour (#2159)
+[Settings and configurations](https://www.semantic-mediawiki.org/w/index.php?title=Special:Ask&x=-5B-5BHas-20configuration%3A%3A%2B-5D-5D-20-5B-5BHas-20minimum-20version%3A%3A2.5.0-5D-5D%2F-3FHas-20configuration-20parameter-20name%3DConfiguration-20parameter%2F-3FHas-20description%3DDescription&format=broadtable&limit=50&link=all&headers=show&mainlabel=-&searchlabel=...%20further%20results&class=sortable%20wikitable%20smwtable&offset=) added with 2.5.0.
 
 ## Contributors
 
