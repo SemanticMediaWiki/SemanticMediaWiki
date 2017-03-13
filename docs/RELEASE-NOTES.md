@@ -10,15 +10,15 @@ Support for [full-text search](https://www.semantic-mediawiki.org/wiki/Help:Full
 
 ### Provenance data recording
 
-Qualifying facts using a simple [provenance model](https://www.semantic-mediawiki.org/wiki/Reference_and_provenance_data) is now supported (#1808) using existing mechanisms in defining a property specification together with a new [Reference datatype](https://www.semantic-mediawiki.org/wiki/Help:Type_Reference) ([video](https://youtu.be/t045qkf4YAo)).
+Qualifying facts using a simple [provenance model](https://www.semantic-mediawiki.org/wiki/Reference_and_provenance_data) is now supported (#1808) using existing mechanisms in defining a property specification together with a new ["Reference" datatype](https://www.semantic-mediawiki.org/wiki/Help:Type_Reference) ([video](https://youtu.be/t045qkf4YAo)).
 
 ### Property chain and language filter support in print request
 
-[Property chain](https://www.semantic-mediawiki.org/wiki/Property_chains_and_paths) for conditions (e.g `[[Located in.Capital of::Foo]]`) was provided for some time, and now got extended (#1824) to supporting the syntax on print requests to retrieve values of a chain member that represent a page node. Values of datatype "MonolingualText" can now use a language filter (#2037) to restrict the display of a value in a print request.
+[Property chain](https://www.semantic-mediawiki.org/wiki/Property_chains_and_paths) for conditions (e.g `[[Located in.Capital of::Foo]]`) was provided for some time, and now got extended (#1824) to supporting the syntax on print requests to retrieve values of a chain member that represent a page node. Values of datatype "Monolingual Text" can now use a language filter (#2037) to restrict the display of a value in a print request.
 
 ### Edit protection
 
-[Edit protection](https://www.semantic-mediawiki.org/wiki/Edit_protection) to help avoid changes to properties or other data sensitive pages from alterations that may cause data invalidations (e.g. change of a property type, inconsistent specifications etc.) or process disruptions. Integrates with MediaWiki's page protection functionality.
+[Edit protection](https://www.semantic-mediawiki.org/wiki/Edit_protection) to help avoid changes to properties or other data sensitive pages from alterations that may cause data invalidations (e.g. change of a property type, inconsistent specifications etc.) or process disruptions. This feature integrates with MediaWiki's page protection functionality.
 
 ### Preferred property label support
 
@@ -45,7 +45,10 @@ Special page ["SemanticMediaWiki"](https://www.semantic-mediawiki.org/wiki/Help:
 * Minimum requirement for PHP changed to version 5.5 and later
 * Minimum requirement for MediaWiki changed to version 1.23 and later (1.27 and later recommended)
 * Forward comatibility with MediaWiki 1.29+ adjustments which include #2149, #2198
-* Requires to run `update.php` or `setupStore.php` to add an extra table column for the URI table (#1872) and a new table for the preferred label property (#1865).
+
+## Upgrading
+
+This release requires to run `update.php` or `setupStore.php` to add an extra table column for the URI table (#1872) and a new table for the preferred label property (#1865).
 
 ## New features and enhancements
 
