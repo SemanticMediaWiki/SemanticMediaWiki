@@ -276,6 +276,7 @@
 	"smw-admin-supplementary-section-intro": "Algunhas das funcións listadas nesta sección poden estar restrinxidas e, polo tanto, son inaccesibles neste wiki.",
 	"smw-admin-supplementary-settings-title": "Opcións de configuración",
 	"smw-admin-supplementary-operational-statistics-title": "Estatísticas de funcionamento",
+	"smw-property-label-similarity-threshold": "Límiteː",
 	"smw_adminlinks_datastructure": "Estrutura dos datos",
 	"smw_adminlinks_displayingdata": "Mostrando os datos",
 	"smw_adminlinks_inlinequerieshelp": "Axuda coas pescudas",
@@ -450,5 +451,7 @@
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" non pode usarse como etiqueta preferida por a lingua \"$2\" xa está asignada á etiqueta \"$3\".",
 	"smw-parse": "$1",
-	"smw-clipboard-copy-link": "Copiar ligazón no portapapeis"
+	"smw-clipboard-copy-link": "Copiar ligazón no portapapeis",
+	"smw-data-lookup": "Obtendo datos...",
+	"smw-no-data-available": "Non hai datos dispoñibles."
 }
