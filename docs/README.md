@@ -1,14 +1,19 @@
-# SMW documentation
+# Semantic MediaWiki documentation
 
-The documentation for SMW can primarily be found on the [SMW wiki](https://www.semantic-mediawiki.org).
+The documentation for Semantic MediaWiki (SMW) can primarily be found on the [SMW wiki](https://www.semantic-mediawiki.org).
 Some core documentation is included together with the source code, and can mostly be found in the
 docs/ directory. This documentation includes basic installation instructions, release notes and
-technical documentation. The later can be found in [docs/technical](technical/README/md).
+technical documentation. The latter can be found in [docs/technical](technical/README/md).
 
 ## Site admin documentation
 
 * [Installation instructions](INSTALL.md)
 * [Latest release notes](RELEASE-NOTES.md)
+* [SMW 2.5.0 release notes](releasenotes/RELEASE-NOTES-2.5.0.md)
+* [SMW 2.4.6 release notes](releasenotes/RELEASE-NOTES-2.4.6.md)
+* [SMW 2.4.5 release notes](releasenotes/RELEASE-NOTES-2.4.5.md)
+* [SMW 2.4.4 release notes](releasenotes/RELEASE-NOTES-2.4.4.md)
+* [SMW 2.4.3 release notes](releasenotes/RELEASE-NOTES-2.4.3.md)
 * [SMW 2.4.2 release notes](releasenotes/RELEASE-NOTES-2.4.2.md)
 * [SMW 2.4.1 release notes](releasenotes/RELEASE-NOTES-2.4.1.md)
 * [SMW 2.4.0 release notes](releasenotes/RELEASE-NOTES-2.4.0.md)

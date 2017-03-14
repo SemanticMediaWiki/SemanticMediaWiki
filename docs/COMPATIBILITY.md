@@ -12,20 +12,20 @@ on how to install the latest version of Semantic MediaWiki (SMW), see the [insta
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestones/SMW%203.0">SMW 3.0.x</a></th>
-		<td>Planned release</td>
-		<td>Q4 2017 or Q1 2018</td>
-		<td></td>
-	</tr>
-	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestones/SMW%202.5">SMW 2.5.x</a></th>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/6">SMW 3.0.x</a></th>
 		<td>Development version</td>
-		<td>Q1 2017</td>
+		<td>Q4 2017 or Q1 2018</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.4.x</a></th>
-		<td>Stable release</td>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">2.5.x</a></th>
+		<td>Stable version</td>
+		<td>2017-03-14</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.5.x">master</a></td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.4.0">SMW 2.4.x</a></th>
+		<td>Obsolete release</td>
 		<td>2016-07-09</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.4.x">2.4.x</a></td>
 	</tr>
