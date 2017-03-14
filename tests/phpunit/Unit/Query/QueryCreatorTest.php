@@ -52,40 +52,40 @@ class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function queryStringProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::Bar]]',
-			array(
+			[
 				'limit'  => 42,
 				'offset' => 12
-			),
+			],
 			'[[Foo::Bar]]|limit=42|offset=12|mainlabel='
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::Bar]]',
-			array(
+			[
 				'querySource' => 'foobar',
 				'mainLabel'   => 'Some'
-			),
+			],
 			'[[Foo::Bar]]|limit=50|offset=0|mainlabel=Some|source=foobar'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::Bar]]',
-			array(
-				'sort'  => array( '', 'SomeA', 'SomeB' ),
-				'order' => array( 'desc', 'random', 'asc' )
-			),
+			[
+				'sort'  => [ '', 'SomeA', 'SomeB' ],
+				'order' => [ 'desc', 'random', 'asc' ]
+			],
 			'[[Foo::Bar]]|limit=50|offset=0|mainlabel=|sort=SomeA,SomeB|order=random,asc'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::Bar]]',
-			array(
-				'sort'  => array( ',' )
-			),
+			[
+				'sort'  => [ ',' ]
+			],
 			'[[Foo::Bar]]|limit=50|offset=0|mainlabel=|sort=,|order=asc'
-		);
+		];
 
 		return $provider;
 	}

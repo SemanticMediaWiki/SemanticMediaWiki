@@ -150,17 +150,17 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$namespace = NS_MAIN;
 		$text      = '#REDIRECT [[:Lala]]';
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 1,
 			'property'       => new DIProperty( '_REDI' ),
-			'propertyValues' => array( 'Lala' )
-		);
+			'propertyValues' => [ 'Lala' ]
+		];
 
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( $namespace => true ),
+		$settings = [
+			'smwgNamespacesWithSemanticLinks' => [ $namespace => true ],
 			'smwgLinksInValues' => false,
 			'smwgInlineErrors'  => true,
-		);
+		];
 
 		$this->testEnvironment->withConfiguration(
 			$settings
@@ -194,17 +194,17 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$text      = '';
 		$redirectTarget = Title::newFromText( 'Foo' );
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 1,
 			'property'       => new DIProperty( '_REDI' ),
-			'propertyValues' => array( 'Foo' )
-		);
+			'propertyValues' => [ 'Foo' ]
+		];
 
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( $namespace => true ),
+		$settings = [
+			'smwgNamespacesWithSemanticLinks' => [ $namespace => true ],
 			'smwgLinksInValues' => false,
 			'smwgInlineErrors'  => true,
-		);
+		];
 
 		$this->testEnvironment->withConfiguration(
 			$settings
@@ -252,16 +252,16 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$method = $reflector->getMethod( 'process' );
 		$method->setAccessible( true );
 
-		$result = $method->invoke( $instance, array() );
+		$result = $method->invoke( $instance, [] );
 		$this->assertEmpty( $result );
 
-		$result = $method->invoke( $instance, array( 'Test::foo', 'SMW' , 'lula' ) );
+		$result = $method->invoke( $instance, [ 'Test::foo', 'SMW' , 'lula' ] );
 		$this->assertEmpty( $result );
 
-		$result = $method->invoke( $instance, array( 'Test::bar', 'SMW' , 'on' ) );
+		$result = $method->invoke( $instance, [ 'Test::bar', 'SMW' , 'on' ] );
 		$this->assertEmpty( $result );
 
-		$result = $method->invoke( $instance, array( 'Test::lula', 'SMW' , 'off' ) );
+		$result = $method->invoke( $instance, [ 'Test::lula', 'SMW' , 'off' ] );
 		$this->assertEmpty( $result );
 	}
 
@@ -283,13 +283,13 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function stripTextWithAnnotationProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
+		$provider[] = [
 			'Suspendisse [[Bar::tincidunt semper|abc]] facilisi',
 			'Suspendisse abc facilisi',
 			'Suspendisse &#91;&#91;Bar::tincidunt semper|abc]] facilisi'
-		);
+		];
 
 		return $provider;
 	}
@@ -297,300 +297,300 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	public function textDataProvider() {
 
 		$testEnvironment = new TestEnvironment();
-		$provider = array();
+		$provider = [];
 
 		// #0 NS_MAIN; [[FooBar...]] with a different caption
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors' => true,
-			),
+			],
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[FooBar::dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
 			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
-			array(
+			[
 				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 					' [[:Dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
 					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
 				'propertyCount'  => 3,
-				'propertyLabels' => array( 'Foo', 'Bar', 'FooBar' ),
-				'propertyValues' => array( 'Dictumst', 'Tincidunt semper', '9001' )
-			)
-		);
+				'propertyLabels' => [ 'Foo', 'Bar', 'FooBar' ],
+				'propertyValues' => [ 'Dictumst', 'Tincidunt semper', '9001' ]
+			]
+		];
 
 		// #1 NS_MAIN; [[FooBar...]] with a different caption and smwgLinksInValues = true
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => SMW_LINV_PCRE,
 				'smwgInlineErrors'  => true,
-			),
+			],
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[FooBar::dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::[[tincidunt semper]]]] facilisi dolor Aenean. Ut' .
 			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::[http:://www/foo/9001] ]] et Donec.',
-			array(
+			[
 				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 					' [[:Dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
 					' Aliquam {{volutpat}} arcu ultrices eu Ut quis'.
 					' [[:Http:://www/foo/9001|http:://www/foo/9001]] et Donec.',
 				'propertyCount'  => 3,
-				'propertyLabels' => array( 'Foo', 'Bar', 'FooBar' ),
-				'propertyValues' => array( 'Dictumst', 'Tincidunt semper', 'Http:://www/foo/9001' )
-			)
-		);
+				'propertyLabels' => [ 'Foo', 'Bar', 'FooBar' ],
+				'propertyValues' => [ 'Dictumst', 'Tincidunt semper', 'Http:://www/foo/9001' ]
+			]
+		];
 
 		// #2 NS_MAIN, [[-FooBar...]] produces an error with inlineErrors = true
 		// (only check for an indication of an error in 'resultText' )
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors' => true,
-			),
+			],
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[-FooBar::dictumst|重い]] cursus. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
 			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
-			array(
+			[
 				'resultText'     => 'class="smw-highlighter" data-type="4" data-state="inline"',
 				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 3,
-				'propertyKeys' => array( 'Foo', 'Bar', '_ERRC' ),
-				'propertyValues' => array( 'Tincidunt semper', '9001' )
-			)
-		);
+				'propertyKeys' => [ 'Foo', 'Bar', '_ERRC' ],
+				'propertyValues' => [ 'Tincidunt semper', '9001' ]
+			]
+		];
 
 		// #3 NS_MAIN, [[-FooBar...]] produces an error but inlineErrors = false
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => false,
-			),
+			],
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[-FooBar::dictumst|軽い]] cursus. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
 			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
-			array(
+			[
 				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 					' 軽い cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
 					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
 				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 3,
-				'propertyKeys  ' => array( 'Foo', 'Bar', '_ERRC' ),
-				'propertyValues' => array( 'Tincidunt semper', '9001' )
-			)
-		);
+				'propertyKeys  ' => [ 'Foo', 'Bar', '_ERRC' ],
+				'propertyValues' => [ 'Tincidunt semper', '9001' ]
+			]
+		];
 
 		// #4 NS_HELP disabled
-		$provider[] = array(
+		$provider[] = [
 			NS_HELP,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_HELP => false ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_HELP => false ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
-			),
+			],
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[FooBar::dictumst|おもろい]] cursus. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
 			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
-			array(
+			[
 				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 					' [[:Dictumst|おもろい]] cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
 					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
 				'propertyCount'  => 0,
-				'propertyLabels' => array(),
-				'propertyValues' => array()
-			)
-		);
+				'propertyLabels' => [],
+				'propertyValues' => []
+			]
+		];
 
 		// #5 NS_HELP enabled but no properties or links at all
-		$provider[] = array(
+		$provider[] = [
 			NS_HELP,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_HELP => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_HELP => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
-			),
+			],
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' Suspendisse tincidunt semper facilisi dolor Aenean.',
-			array(
+			[
 				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 					' Suspendisse tincidunt semper facilisi dolor Aenean.',
 				'propertyCount'  => 0,
-				'propertyLabels' => array(),
-				'propertyValues' => array()
-			)
-		);
+				'propertyLabels' => [],
+				'propertyValues' => []
+			]
+		];
 
 		// #6 Bug 54967
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
-			),
+			],
 			'[[Foo::?bar]], [[Foo::Baz?]], [[Quxey::B?am]]',
-			array(
+			[
 				'resultText'     => '[[:?bar|?bar]], [[:Baz?|Baz?]], [[:B?am|B?am]]',
 				'propertyCount'  => 2,
-				'propertyLabels' => array( 'Foo', 'Quxey' ),
-				'propertyValues' => array( '?bar', 'Baz?', 'B?am' )
-			)
-		);
+				'propertyLabels' => [ 'Foo', 'Quxey' ],
+				'propertyValues' => [ '?bar', 'Baz?', 'B?am' ]
+			]
+		];
 
 		#7 673
 
 		// Special:Types/Number
 		$specialTypeName = \SpecialPage::getTitleFor( 'Types', 'Number' )->getPrefixedText();
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_NS_PROPERTY,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( SMW_NS_PROPERTY => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ SMW_NS_PROPERTY => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
-			),
+			],
 			'[[has type::number]], [[has Type::page]] ',
-			array(
+			[
 				'resultText'     => "[[$specialTypeName|number]], [[:Page|page]]",
 				'propertyCount'  => 2,
-				'propertyLabels' => array( 'Has type', 'Has Type' ),
-				'propertyValues' => array( 'Number', 'Page' )
-			)
-		);
+				'propertyLabels' => [ 'Has type', 'Has Type' ],
+				'propertyValues' => [ 'Number', 'Page' ]
+			]
+		];
 
 		#8 1048, Double-double
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
-			),
+			],
 			'[[Foo::Bar::Foobar]], [[IPv6::fc00:123:8000::/64]] [[ABC::10.1002/::AID-MRM16::]]',
-			array(
+			[
 				'resultText'     => '[[:Bar::Foobar|Bar::Foobar]], [[:Fc00:123:8000::/64|fc00:123:8000::/64]] [[:10.1002/::AID-MRM16::|10.1002/::AID-MRM16::]]',
 				'propertyCount'  => 3,
-				'propertyLabels' => array( 'Foo', 'IPv6', 'ABC' ),
-				'propertyValues' => array( 'Bar::Foobar', 'Fc00:123:8000::/64', '10.1002/::AID-MRM16::' )
-			)
-		);
+				'propertyLabels' => [ 'Foo', 'IPv6', 'ABC' ],
+				'propertyValues' => [ 'Bar::Foobar', 'Fc00:123:8000::/64', '10.1002/::AID-MRM16::' ]
+			]
+		];
 
 		#9 T32603
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
-			),
+			],
 			'[[Foo:::Foobar]] [[Bar:::ABC|DEF]] [[Foo:::0049 30 12345678/::Foo]] ',
-			array(
+			[
 				'resultText'     => '[[:Foobar|Foobar]] [[:ABC|DEF]] [[:0049 30 12345678/::Foo|0049 30 12345678/::Foo]]',
 				'propertyCount'  => 2,
-				'propertyLabels' => array( 'Foo', 'Bar' ),
-				'propertyValues' => array( 'Foobar', '0049 30 12345678/::Foo', 'ABC' )
-			)
-		);
+				'propertyLabels' => [ 'Foo', 'Bar' ],
+				'propertyValues' => [ 'Foobar', '0049 30 12345678/::Foo', 'ABC' ]
+			]
+		];
 
 		#10 #1252 (disabled strict mode)
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
 				'smwgEnabledInTextAnnotationParserStrictMode' => false
-			),
+			],
 			'[[Foo::Foobar::テスト]] [[Bar:::ABC|DEF]] [[Foo:::0049 30 12345678/::Foo]] ',
-			array(
+			[
 				'resultText'     => '[[:テスト|テスト]] [[:ABC|DEF]] [[:Foo|Foo]]',
 				'propertyCount'  => 4,
-				'propertyLabels' => array( 'Foo', 'Bar:', 'Foobar', ':0049 30 12345678/' ),
-				'propertyValues' => array( 'Foobar', 'Foo', 'ABC', 'テスト' )
-			)
-		);
+				'propertyLabels' => [ 'Foo', 'Bar:', 'Foobar', ':0049 30 12345678/' ],
+				'propertyValues' => [ 'Foobar', 'Foo', 'ABC', 'テスト' ]
+			]
+		];
 
 		#11 #1747 (left pipe)
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
 				'smwgEnabledInTextAnnotationParserStrictMode' => false
-			),
+			],
 			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
-			array(
+			[
 				'resultText'     => '[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
 				'propertyCount'  => 0,
-			)
-		);
+			]
+		];
 
 		#12 #1747 (left pipe + including one annotation)
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
 				'smwgEnabledInTextAnnotationParserStrictMode' => true
-			),
+			],
 			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[Foo::Foobar::テスト]] [[File:Example.png|Bar::Foobar|link=Foo]]',
-			array(
+			[
 				'resultText'     => '[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[:Foobar::テスト|Foobar::テスト]] [[File:Example.png|Bar::Foobar|link=Foo]]',
 				'propertyCount'  => 1,
-				'propertyLabels' => array( 'Foo' ),
-				'propertyValues' => array( 'Foobar::テスト' )
-			)
-		);
+				'propertyLabels' => [ 'Foo' ],
+				'propertyValues' => [ 'Foobar::テスト' ]
+			]
+		];
 
 		#13 @@@ syntax
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
 				'smwgEnabledInTextAnnotationParserStrictMode' => true
-			),
+			],
 			'[[Foo::@@@]] [[Bar::@@@en|Foobar]]',
-			array(
+			[
 				'resultText'     => $testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, '[[:Property:Foo|Foo]] [[:Property:Bar|Foobar]]' ),
 				'propertyCount'  => 0
-			)
-		);
+			]
+		];
 
 		#14 [ ... ] in-text link
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues' => SMW_LINV_OBFU,
 				'smwgInlineErrors'  => true,
 				'smwgEnabledInTextAnnotationParserStrictMode' => true
-			),
+			],
 			'[[Text::Bar [http://example.org/Foo Foo]]] [[Code::Foo[1] Foobar]]',
-			array(
+			[
 				'resultText'     => 'Bar [http://example.org/Foo Foo] <div class="smwpre">Foo&#91;1]&#160;Foobar</div>',
 				'propertyCount'  => 2,
-				'propertyLabels' => array( 'Text', 'Code' ),
-				'propertyValues' => array( 'Bar [http://example.org/Foo Foo]', 'Foo[1] Foobar' )
-			)
-		);
+				'propertyLabels' => [ 'Text', 'Code' ],
+				'propertyValues' => [ 'Bar [http://example.org/Foo Foo]', 'Foo[1] Foobar' ]
+			]
+		];
 
 		return $provider;
 	}
@@ -600,35 +600,35 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function magicWordDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0 __NOFACTBOX__
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
 			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __NOFACTBOX__',
-			array( 'SMW_NOFACTBOX' )
-		);
+			[ 'SMW_NOFACTBOX' ]
+		];
 
 		// #1 __SHOWFACTBOX__
-		$provider[] = array(
+		$provider[] = [
 			NS_HELP,
 			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __SHOWFACTBOX__',
-			array( 'SMW_SHOWFACTBOX' )
-		);
+			[ 'SMW_SHOWFACTBOX' ]
+		];
 
 		// #2 __NOFACTBOX__, __SHOWFACTBOX__
-		$provider[] = array(
+		$provider[] = [
 			NS_HELP,
 			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __NOFACTBOX__ __SHOWFACTBOX__',
-			array( 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' )
-		);
+			[ 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' ]
+		];
 
 		// #3 __SHOWFACTBOX__, __NOFACTBOX__
-		$provider[] = array(
+		$provider[] = [
 			NS_HELP,
 			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __SHOWFACTBOX__ __NOFACTBOX__',
-			array( 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' )
-		);
+			[ 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' ]
+		];
 		return $provider;
 	}
 

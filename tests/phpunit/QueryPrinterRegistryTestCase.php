@@ -31,11 +31,11 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 * @return array
 	 */
 	public function constructorProvider() {
-		$argumentLists = array();
+		$argumentLists = [];
 
 		foreach ( $this->getFormats() as $format ) {
-			$argumentLists[] = array( $format, true );
-			$argumentLists[] = array( $format, false );
+			$argumentLists[] = [ $format, true ];
+			$argumentLists[] = [ $format, false ];
 		}
 
 		return $argumentLists;
@@ -61,7 +61,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 * @return array
 	 */
 	public function instanceProvider() {
-		$phpFails = array( $this, 'newInstance' );
+		$phpFails = [ $this, 'newInstance' ];
 
 		return array_map(
 			function( array $args ) use ( $phpFails ) {

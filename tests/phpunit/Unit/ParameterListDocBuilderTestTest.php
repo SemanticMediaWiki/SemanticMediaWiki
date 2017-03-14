@@ -37,7 +37,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGivenNoParameters_noTableIsReturned() {
-		$wikiText = $this->builder->getParameterTable( array() );
+		$wikiText = $this->builder->getParameterTable( [] );
 
 		$this->assertSame(
 			'',
@@ -46,11 +46,11 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGivenMinimalParameter_defaultIsRequired() {
-		$wikiText = $this->builder->getParameterTable( array(
+		$wikiText = $this->builder->getParameterTable( [
 			new ParamDefinition( 'number', 'length' )
-		) );
+		] );
 
-		$expected = array(
+		$expected = [
 			'{| class="wikitable sortable"',
 			'!validator-describe-header-parameter',
 			'!validator-describe-header-type',
@@ -62,7 +62,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 			"|''validator-describe-required''",
 			'|',
 			'|}'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -71,11 +71,11 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGivenParameterWithDefault_defaultIsListed() {
-		$wikiText = $this->builder->getParameterTable( array(
+		$wikiText = $this->builder->getParameterTable( [
 			new ParamDefinition( 'number', 'length', 42 )
-		) );
+		] );
 
-		$expected = array(
+		$expected = [
 			'{| class="wikitable sortable"',
 			'!validator-describe-header-parameter',
 			'!validator-describe-header-type',
@@ -87,7 +87,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 			"|42",
 			'|',
 			'|}'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -103,7 +103,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiText = $this->builder->getParameterTable( [ $paramWithAliases, $paramWithoutAliases ] );
 
-		$expected = array(
+		$expected = [
 			'{| class="wikitable sortable"',
 			'!validator-describe-header-parameter',
 			'!validator-describe-header-type',
@@ -122,7 +122,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 			"|''validator-describe-required''",
 			'|',
 			'|}'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -131,11 +131,11 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGivenBooleanParameter_defaultIsListedAsString() {
-		$wikiText = $this->builder->getParameterTable( array(
+		$wikiText = $this->builder->getParameterTable( [
 			new ParamDefinition( 'boolean', 'awesome', true )
-		) );
+		] );
 
-		$expected = array(
+		$expected = [
 			'{| class="wikitable sortable"',
 			'!validator-describe-header-parameter',
 			'!validator-describe-header-type',
@@ -147,7 +147,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 			"|yes",
 			'|',
 			'|}'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,

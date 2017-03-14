@@ -66,7 +66,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$compositePropertyTableDiffIterator->expects( $this->once() )
 			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$compositePropertyTableDiffIterator->expects( $this->never() )
 			->method( 'getSubject' );
@@ -120,7 +120,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$compositePropertyTableDiffIterator->expects( $this->once() )
 			->method( 'getCombinedIdListOfChangedEntities' )
-			->will( $this->returnValue( array( '42' ) ) );
+			->will( $this->returnValue( [ '42' ] ) );
 
 		$compositePropertyTableDiffIterator->expects( $this->once() )
 			->method( 'getSubject' )
@@ -134,7 +134,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'dispatchFulltextSearchTableUpdateJobWith' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'slot:id' => 42 ) ) );
+				$this->equalTo( [ 'slot:id' => 42 ] ) );
 
 		$instance = new TextByChangeUpdater(
 			$this->connection,
@@ -163,7 +163,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$compositePropertyTableDiffIterator->expects( $this->once() )
 			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$compositePropertyTableDiffIterator->expects( $this->never() )
 			->method( 'getSubject' );

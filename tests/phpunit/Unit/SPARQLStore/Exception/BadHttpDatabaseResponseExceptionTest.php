@@ -34,14 +34,14 @@ class BadHttpDatabaseResponseExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function errorCodeProvider() {
 
-		$provider = array(
-			array( BadHttpDatabaseResponseException::ERROR_MALFORMED ),
-			array( BadHttpDatabaseResponseException::ERROR_REFUSED ),
-			array( BadHttpDatabaseResponseException::ERROR_GRAPH_NOEXISTS ),
-			array( BadHttpDatabaseResponseException::ERROR_GRAPH_EXISTS ),
-			array( BadHttpDatabaseResponseException::ERROR_OTHER ),
-			array( BadHttpDatabaseResponseException::ERROR_NOSERVICE )
-		);
+		$provider = [
+			[ BadHttpDatabaseResponseException::ERROR_MALFORMED ],
+			[ BadHttpDatabaseResponseException::ERROR_REFUSED ],
+			[ BadHttpDatabaseResponseException::ERROR_GRAPH_NOEXISTS ],
+			[ BadHttpDatabaseResponseException::ERROR_GRAPH_EXISTS ],
+			[ BadHttpDatabaseResponseException::ERROR_OTHER ],
+			[ BadHttpDatabaseResponseException::ERROR_NOSERVICE ]
+		];
 
 		return $provider;
 	}

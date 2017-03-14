@@ -34,21 +34,21 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->extraneousLanguage->expects( $this->any() )
 			->method( 'getNamespaces' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->extraneousLanguage->expects( $this->any() )
 			->method( 'getNamespaceAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
-		$this->default = array(
-			'smwgNamespacesWithSemanticLinks' => array(),
-			'wgNamespacesWithSubpages' => array(),
-			'wgExtraNamespaces'  => array(),
-			'wgNamespaceAliases' => array(),
-			'wgContentNamespaces' => array(),
-			'wgNamespacesToBeSearchedDefault' => array(),
+		$this->default = [
+			'smwgNamespacesWithSemanticLinks' => [],
+			'wgNamespacesWithSubpages' => [],
+			'wgExtraNamespaces'  => [],
+			'wgNamespaceAliases' => [],
+			'wgContentNamespaces' => [],
+			'wgNamespacesToBeSearchedDefault' => [],
 			'wgLanguageCode'     => 'en'
-		);
+		];
 	}
 
 	protected function tearDown() {
@@ -65,10 +65,10 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExecutionWithIncompleteConfiguration() {
 
-		$test = $this->default + array(
+		$test = $this->default + [
 			'wgExtraNamespaces'  => '',
 			'wgNamespaceAliases' => ''
-		);
+		];
 
 		$instance = new NamespaceManager( $test, $this->extraneousLanguage );
 		$instance->init();
@@ -127,10 +127,10 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInitCustomNamespace() {
 
-		$test = array(
+		$test = [
 			'wgLanguageCode' => 'en',
-			'wgContentNamespaces' => array()
-		);
+			'wgContentNamespaces' => []
+		];
 
 		NamespaceManager::initCustomNamespace( $test );
 
@@ -148,10 +148,10 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			false
 		);
 
-		$test = $this->default + array(
+		$test = $this->default + [
 			'wgExtraNamespaces'  => '',
 			'wgNamespaceAliases' => ''
-		);
+		];
 
 		$instance = new NamespaceManager( $test, $this->extraneousLanguage );
 		$instance->init();
@@ -176,14 +176,14 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			true
 		);
 
-		$test = $this->default + array(
+		$test = $this->default + [
 			'wgExtraNamespaces'  => '',
 			'wgNamespaceAliases' => '',
-		);
+		];
 
-		$test['smwgNamespacesWithSemanticLinks'] = array(
+		$test['smwgNamespacesWithSemanticLinks'] = [
 			SMW_NS_PROPERTY => false
-		);
+		];
 
 		$instance = new NamespaceManager( $test, $this->extraneousLanguage );
 		$instance->init();

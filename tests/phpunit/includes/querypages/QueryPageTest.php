@@ -43,10 +43,10 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	private function newInstance( $search = '' ) {
 
 		$queryPage = $this->getMockBuilder( $this->getClass() )
-			->setMethods( array( 'getResults', 'formatResult' ) )
+			->setMethods( [ 'getResults', 'formatResult' ] )
 			->getMock();
 
-		$context = $this->newContext( array( 'property' => $search ) );
+		$context = $this->newContext( [ 'property' => $search ] );
 		$context->setTitle( $this->newTitle() );
 
 		$queryPage->setContext( $context );
@@ -95,22 +95,22 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 		$reflector = $this->newReflector();
 		$selectOptions = $reflector->getProperty( 'selectOptions' );
 		$selectOptions->setAccessible( true );
-		$selectOptions->setValue( $instance, array(
+		$selectOptions->setValue( $instance, [
 			'offset' => 1,
 			'limit'  => 2,
 			'end'    => 5,
 			'count'  => 4
-		) );
+		] );
 
 		$result = $instance->getSearchForm( $search );
 
-		$matcher = array(
+		$matcher = [
 			'tag' => 'form',
-			'descendant' => array(
+			'descendant' => [
 				'tag' => 'input',
-				'attributes' => array( 'name' => 'property', 'value' => $search )
-			)
-		);
+				'attributes' => [ 'name' => 'property', 'value' => $search ]
+			]
+		];
 
 		$this->assertInternalType( 'string', $result );
 
@@ -127,12 +127,12 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	public function linkParametersDataProvider() {
 		$random = $this->newRandomString();
 
-		return array(
-			array( ''      , array() ),
-			array( null    , array() ),
-			array( $random , array( 'property' => $random ) ),
-			array( "[{$random}]" , array( 'property' => "[{$random}]" ) ),
-			array( "[&{$random}...]" , array( 'property' => "[&{$random}...]" ) )
-		);
+		return [
+			[ ''      , [] ],
+			[ null    , [] ],
+			[ $random , [ 'property' => $random ] ],
+			[ "[{$random}]" , [ 'property' => "[{$random}]" ] ],
+			[ "[&{$random}...]" , [ 'property' => "[&{$random}...]" ] ]
+		];
 	}
 }

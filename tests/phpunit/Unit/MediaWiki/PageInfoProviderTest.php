@@ -31,11 +31,11 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testWikiPage_TYPE_MODIFICATION_DATE() {
 
 		$instance = $this->constructPageInfoProviderInstance(
-			array(
-				'wikiPage' => array( 'getTimestamp' => 1272508903 ),
-				'revision' => array(),
-				'user'     => array(),
-			)
+			[
+				'wikiPage' => [ 'getTimestamp' => 1272508903 ],
+				'revision' => [],
+				'user'     => [],
+			]
 		);
 
 		$this->assertEquals( 1272508903, $instance->getModificationDate() );
@@ -58,11 +58,11 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $revision ) );
 
 		$instance = $this->constructPageInfoProviderInstance(
-			array(
-				'wikiPage' => array( 'getTitle' => $title ),
-				'revision' => array(),
-				'user'     => array(),
-			)
+			[
+				'wikiPage' => [ 'getTitle' => $title ],
+				'revision' => [],
+				'user'     => [],
+			]
 		);
 
 		$this->assertEquals( 1272508903, $instance->getCreationDate() );
@@ -74,11 +74,11 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testWikiPage_TYPE_NEW_PAGE_ForRevision( $parentId, $expected ) {
 
 		$instance = $this->constructPageInfoProviderInstance(
-			array(
-				'wikiPage' => array(),
-				'revision' => array( 'getParentId' => $parentId ),
-				'user'     => array(),
-			)
+			[
+				'wikiPage' => [],
+				'revision' => [ 'getParentId' => $parentId ],
+				'user'     => [],
+			]
 		);
 
 		$this->assertEquals( $expected, $instance->isNewPage() );
@@ -98,11 +98,11 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $parentId ) );
 
 		$instance = $this->constructPageInfoProviderInstance(
-			array(
-				'wikiPage' => array( 'getRevision' => $revision ),
-				'revision' => array( ),
-				'user'     => array(),
-			)
+			[
+				'wikiPage' => [ 'getRevision' => $revision ],
+				'revision' => [ ],
+				'user'     => [],
+			]
 		);
 
 		$this->assertEquals( $expected, $instance->isNewPage() );
@@ -110,10 +110,10 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function parentIdProvider() {
 
-		$provider = array(
-			array( 90001, false ),
-			array( null , true )
-		);
+		$provider = [
+			[ 90001, false ],
+			[ null , true ]
+		];
 
 		return $provider;
 	}
@@ -127,11 +127,11 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( NS_USER ) );
 
 		$instance = $this->constructPageInfoProviderInstance(
-			array(
-				'wikiPage' => array(),
-				'revision' => array(),
-				'user'     => array( 'getUserPage' => $userPage ),
-			)
+			[
+				'wikiPage' => [],
+				'revision' => [],
+				'user'     => [ 'getUserPage' => $userPage ],
+			]
 		);
 
 		$this->assertEquals( $userPage, $instance->getLastEditor() );
@@ -171,8 +171,8 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		return new PageInfoProvider(
 			$wikiPage,
-			( $parameters['revision'] !== array() ? $revision : null ),
-			( $parameters['user'] !== array() ? $user : null )
+			( $parameters['revision'] !== [] ? $revision : null ),
+			( $parameters['user'] !== [] ? $user : null )
 		);
 	}
 
@@ -262,11 +262,11 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function uploadStatusWikiFilePageDataProvider() {
 
-		$provider = array(
-			array( null, false ),
-			array( false, true ),
-			array( true , false )
-		);
+		$provider = [
+			[ null, false ],
+			[ false, true ],
+			[ true , false ]
+		];
 
 		return $provider;
 	}
@@ -289,8 +289,8 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getMediaType' )
 			->will( $this->returnValue( null ) );
 
-		$provider[] = array( $fileWithMedia, 'FooMedia' );
-		$provider[] = array( $fileNullMedia, null );
+		$provider[] = [ $fileWithMedia, 'FooMedia' ];
+		$provider[] = [ $fileNullMedia, null ];
 
 		return $provider;
 	}
@@ -313,8 +313,8 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getMediaType' )
 			->will( $this->returnValue( null ) );
 
-		$provider[] = array( $fileWithMime, 'FooMime' );
-		$provider[] = array( $fileNullMime, null );
+		$provider[] = [ $fileWithMime, 'FooMime' ];
+		$provider[] = [ $fileNullMime, null ];
 
 		return $provider;
 	}

@@ -29,7 +29,7 @@ use SMWQueryParser as QueryParser;
  */
 class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
+	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 	private $queryResultValidator;
 	private $queryParser;
@@ -145,10 +145,10 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
-		$expectedSubjects = array(
+		$expectedSubjects = [
 			$semanticDataOfDreamland->getSubject(),
 			$semanticDataOfDangerland->getSubject()
-		);
+		];
 
 		$this->assertEquals(
 			2,
@@ -199,10 +199,10 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		/**
 		 * Query with [[HasSomeProperty::Foo||Bar]]
 		 */
-		$disjunction = new Disjunction( array(
+		$disjunction = new Disjunction( [
 			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
 			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
-		) );
+		] );
 
 		$description = new SomeProperty(
 			$property,

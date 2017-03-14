@@ -57,7 +57,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setOptions(
-			new Options( array( 'smwgDVFeatures' => SMW_DV_MLTV_LCODE ) )
+			new Options( [ 'smwgDVFeatures' => SMW_DV_MLTV_LCODE ] )
 		);
 
 		$instance->setUserValue( 'Foo' );
@@ -76,7 +76,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setOptions(
-			new Options( array( 'smwgDVFeatures' => false ) )
+			new Options( [ 'smwgDVFeatures' => false ] )
 		);
 
 		$instance->setUserValue( 'Foo' );
@@ -229,10 +229,10 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo@en' );
 
 		$this->assertEquals(
-			array(
+			[
 				'_TEXT'  => 'Foo',
 				'_LCODE' => 'en'
-			),
+			],
 			$instance->toArray()
 		);
 	}

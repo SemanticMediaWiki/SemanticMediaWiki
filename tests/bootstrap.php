@@ -12,7 +12,7 @@ $autoloader = require __DIR__ . '/autoloader.php';
 $autoloader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
 $autoloader->addPsr4( 'SMW\\Tests\\', __DIR__ . '/phpunit' );
 
-$autoloader->addClassMap( array(
+$autoloader->addClassMap( [
 	'SMW\Tests\DataItemTest'                     => __DIR__ . '/phpunit/includes/dataitems/DataItemTest.php',
 	'SMW\Tests\Reporter\MessageReporterTestCase' => __DIR__ . '/phpunit/includes/Reporter/MessageReporterTestCase.php',
 	'SMW\Maintenance\RebuildConceptCache'        => __DIR__ . '/../maintenance/rebuildConceptCache.php',
@@ -21,4 +21,4 @@ $autoloader->addClassMap( array(
 	'SMW\Maintenance\RebuildFulltextSearchTable' => __DIR__ . '/../maintenance/rebuildFulltextSearchTable.php',
 	'SMW\Maintenance\DumpRdf'                    => __DIR__ . '/../maintenance/dumpRDF.php',
 	'SMW\Maintenance\SetupStore'                 => __DIR__ . '/../maintenance/setupStore.php'
-) );
+] );

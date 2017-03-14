@@ -42,11 +42,11 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	public function testGetOptions() {
 
 		$instance = new Options(
-			array( 'Foo' => 42 )
+			[ 'Foo' => 42 ]
 		);
 
 		$this->assertEquals(
-			array( 'Foo' => 42 ),
+			[ 'Foo' => 42 ],
 			$instance->getOptions()
 		);
 	}

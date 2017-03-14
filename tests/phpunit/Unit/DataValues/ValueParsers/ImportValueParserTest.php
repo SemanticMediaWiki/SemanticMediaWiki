@@ -131,14 +131,14 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function invalidUriContent() {
 
-		$provider[] = array(
+		$provider[] = [
 			''
-		);
+		];
 
 		// Missing head
-		$provider[] = array(
+		$provider[] = [
 			"Foo\n name|Type:Text\n"
-		);
+		];
 
 		return $provider;
 	}
@@ -146,22 +146,22 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	public function invalidTypeContent() {
 
 		// Url missing
-		$provider[] = array(
+		$provider[] = [
 			'|[http://www.foaf-project.org/ Friend Of A Friend]\n name',
-			array()
-		);
+			[]
+		];
 
 		// Type missing
-		$provider[] = array(
+		$provider[] = [
 			'http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name',
-			array()
-		);
+			[]
+		];
 
 		// Cannot match section name
-		$provider[] = array(
+		$provider[] = [
 			"http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n",
-			array( 'name' => 'Type:Text' )
-		);
+			[ 'name' => 'Type:Text' ]
+		];
 
 		return $provider;
 	}
@@ -169,43 +169,43 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	public function validMatchTypeContent() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			"http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n",
 			'Foaf:name',
-			array(
+			[
 				'Foaf',
 				'name',
 				'http://xmlns.com/foaf/0.1/',
 				'[http://www.foaf-project.org/ Friend Of A Friend]',
 				'Type:Text'
-			)
-		);
+			]
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			" http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n   name|Type:Text\n",
 			'Foaf:name',
-			array(
+			[
 				'Foaf',
 				'name',
 				'http://xmlns.com/foaf/0.1/',
 				'[http://www.foaf-project.org/ Friend Of A Friend]',
 				'Type:Text'
-			)
-		);
+			]
+		];
 
 		#2 mbox_sha1sum
-		$provider[] = array(
+		$provider[] = [
 			" http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n   mbox_sha1sum|Type:Text\n",
 			'Foaf:mbox_sha1sum',
-			array(
+			[
 				'Foaf',
 				'mbox_sha1sum',
 				'http://xmlns.com/foaf/0.1/',
 				'[http://www.foaf-project.org/ Friend Of A Friend]',
 				'Type:Text'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

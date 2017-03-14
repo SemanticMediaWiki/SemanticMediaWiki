@@ -44,7 +44,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $setup, $expected ) {
 
-		$toolbox = array();
+		$toolbox = [];
 
 		ApplicationFactory::getInstance()->registerObject(
 			'Settings',
@@ -68,10 +68,10 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 	public function skinTemplateDataProvider() {
 
 		#0 Standard title
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$settings = [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 			'smwgToolboxBrowseLink'           => true
-		);
+		];
 
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
@@ -83,10 +83,10 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = true;
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 4 ),
-		);
+		$provider[] = [
+			[ 'skinTemplate' => $skinTemplate, 'settings' => $settings ],
+			[ 'count'        => 4 ],
+		];
 
 		#1 isarticle = false
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
@@ -99,10 +99,10 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = false;
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 0 ),
-		);
+		$provider[] = [
+			[ 'skinTemplate' => $skinTemplate, 'settings' => $settings ],
+			[ 'count'        => 0 ],
+		];
 
 		#2 smwgToolboxBrowseLink = false
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
@@ -115,15 +115,15 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = true;
 
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$settings = [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 			'smwgToolboxBrowseLink'           => false
-		);
+		];
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 0 ),
-		);
+		$provider[] = [
+			[ 'skinTemplate' => $skinTemplate, 'settings' => $settings ],
+			[ 'count'        => 0 ],
+		];
 
 		#3 smwgNamespacesWithSemanticLinks = false
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
@@ -136,21 +136,21 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = true;
 
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => false ),
+		$settings = [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => false ],
 			'smwgToolboxBrowseLink'           => true
-		);
+		];
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 0 ),
-		);
+		$provider[] = [
+			[ 'skinTemplate' => $skinTemplate, 'settings' => $settings ],
+			[ 'count'        => 0 ],
+		];
 
 		#4 Special page
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$settings = [
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 			'smwgToolboxBrowseLink'           => true
-		);
+		];
 
 		$title = MockTitle::buildMock( __METHOD__ );
 
@@ -176,10 +176,10 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = true;
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 0 ),
-		);
+		$provider[] = [
+			[ 'skinTemplate' => $skinTemplate, 'settings' => $settings ],
+			[ 'count'        => 0 ],
+		];
 
 		return $provider;
 	}

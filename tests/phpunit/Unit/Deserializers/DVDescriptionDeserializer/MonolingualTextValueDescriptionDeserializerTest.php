@@ -49,7 +49,7 @@ class MonolingualTextValueDescriptionDeserializerTest extends \PHPUnit_Framework
 		$instance->setDataValue( $recordValue );
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->deserialize( array() );
+		$instance->deserialize( [] );
 	}
 
 	/**
@@ -62,7 +62,7 @@ class MonolingualTextValueDescriptionDeserializerTest extends \PHPUnit_Framework
 		);
 
 		$monolingualTextValue->setOptions(
-			new Options( array( 'smwgDVFeatures' => $dvFeatures ) )
+			new Options( [ 'smwgDVFeatures' => $dvFeatures ] )
 		);
 
 		$instance = new MonolingualTextValueDescriptionDeserializer();
@@ -82,76 +82,76 @@ class MonolingualTextValueDescriptionDeserializerTest extends \PHPUnit_Framework
 	public function valueProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'Jan;1970',
 			'\SMW\Query\Language\Conjunction',
 			'[[Text::Jan;1970]] [[Language code::+]]',
 			SMW_DV_MLTV_LCODE
-		);
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			'Jan;1970',
 			'\SMW\Query\Language\SomeProperty',
 			'[[Text::Jan;1970]]',
 			SMW_DV_NONE
-		);
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'Jan@en',
 			'\SMW\Query\Language\Conjunction',
 			'[[Text::Jan]] [[Language code::en]]',
 			SMW_DV_MLTV_LCODE
-		);
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			'@en',
 			'\SMW\Query\Language\Conjunction',
 			'[[Text::+]] [[Language code::en]]',
 			SMW_DV_MLTV_LCODE
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			'@EN',
 			'\SMW\Query\Language\Conjunction',
 			'[[Text::+]] [[Language code::en]]',
 			SMW_DV_MLTV_LCODE
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			'@~zh*',
 			'\SMW\Query\Language\Conjunction',
 			'[[Text::+]] [[Language code::~zh*]]',
 			SMW_DV_MLTV_LCODE
-		);
+		];
 
 		#6
-		$provider[] = array(
+		$provider[] = [
 			'?',
 			'\SMW\Query\Language\Conjunction',
 			'[[Text::+]] [[Language code::+]]',
 			SMW_DV_MLTV_LCODE
-		);
+		];
 
 		#7
-		$provider[] = array(
+		$provider[] = [
 			'?',
 			'\SMW\Query\Language\SomeProperty',
 			'[[Text::+]]',
 			SMW_DV_NONE
-		);
+		];
 
 		#8
-		$provider[] = array(
+		$provider[] = [
 			'',
 			'\SMW\Query\Language\ThingDescription',
 			'',
 			SMW_DV_MLTV_LCODE
-		);
+		];
 
 		return $provider;
 	}

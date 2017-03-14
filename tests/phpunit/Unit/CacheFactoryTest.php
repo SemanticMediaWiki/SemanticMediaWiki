@@ -56,10 +56,10 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CacheFactory( 'hash' );
 
-		$cacheOptions = $instance->newCacheOptions( array(
+		$cacheOptions = $instance->newCacheOptions( [
 			'useCache' => true,
 			'ttl' => 0
-		) );
+		] );
 
 		$this->assertTrue(
 			$cacheOptions->useCache
@@ -72,9 +72,9 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setExpectedException( 'RuntimeException' );
 
-		$cacheOptions = $instance->newCacheOptions( array(
+		$cacheOptions = $instance->newCacheOptions( [
 			'useCache' => true
-		) );
+		] );
 	}
 
 	public function testCanConstructFixedInMemoryCache() {

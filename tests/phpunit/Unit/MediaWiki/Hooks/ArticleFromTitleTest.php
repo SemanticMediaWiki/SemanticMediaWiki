@@ -59,10 +59,10 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 
 	public function titleProvider() {
 
-		$provider = array(
-			array( SMW_NS_PROPERTY, 'SMWPropertyPage' ),
-			array( SMW_NS_CONCEPT, 'SMW\ConceptPage' ),
-		);
+		$provider = [
+			[ SMW_NS_PROPERTY, 'SMWPropertyPage' ],
+			[ SMW_NS_CONCEPT, 'SMW\ConceptPage' ],
+		];
 
 		return $provider;
 	}

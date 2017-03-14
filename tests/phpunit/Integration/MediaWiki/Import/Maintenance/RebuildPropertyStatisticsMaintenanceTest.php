@@ -21,7 +21,7 @@ class RebuildPropertyStatisticsMaintenanceTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 
@@ -51,7 +51,7 @@ class RebuildPropertyStatisticsMaintenanceTest extends MwDBaseUnitTestCase {
 
 	public function testRebuildPropertyStatistics() {
 
-		$this->importedTitles = array(
+		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',
 			'Elit Aliquam urna interdum',
@@ -66,7 +66,7 @@ class RebuildPropertyStatisticsMaintenanceTest extends MwDBaseUnitTestCase {
 			'Property:Has quantity',
 			'Property:Has temperature',
 			'Property:Has text'
-		);
+		];
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 

@@ -74,7 +74,7 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getTypeID' ) )
+			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
@@ -105,46 +105,46 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function allowedPatternProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			" \nFoo|^(Bar|Foo bar)$/e\n",
 			'Foo bar',
 			false
-		);
+		];
 
 		#1 valid
-		$provider[] = array(
+		$provider[] = [
 			" \nFoo|(ev\d{7}\d{4})|((tt|nm|ch|co|ev)\d{7})\n",
 			'tt0042876',
 			false
-		);
+		];
 
 		#2 uses '/\'
-		$provider[] = array(
+		$provider[] = [
 			" \nFoo|(ev\d{7}/\d{4})|((tt|nm|ch|co|ev)\d{7})\n",
 			'tt0042876',
 			false
-		);
+		];
 
 		#3 "Compilation failed: missing )", suppress error
-		$provider[] = array(
+		$provider[] = [
 			" \nFoo|(ev\d{7}\d{4})|((tt|nm|ch|co|ev)\d{7}\n",
 			'Foo',
 			true
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			" \nFoo|\d{8}\n",
 			'00564222',
 			false
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			" \nFoo|/\d{8}\n",
 			'00564222',
 			false
-		);
+		];
 
 		return $provider;
 	}

@@ -271,10 +271,10 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$disjunction = new Disjunction( array(
+		$disjunction = new Disjunction( [
 			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
 			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
-		) );
+		] );
 
 		$description = new SomeProperty(
 			$property,
@@ -292,7 +292,7 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 		$property = DIProperty::newFromUserLabel( 'Born in' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$conjunction = new Conjunction( array(
+		$conjunction = new Conjunction( [
 			new ClassDescription( new DIWikiPage( 'City', NS_CATEGORY ) ),
 			new SomeProperty(
 				DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ),
@@ -300,7 +300,7 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 					new DIWikiPage( 'Outback', NS_MAIN ),
 					DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ) )
 				)
-			)
+			]
 		);
 
 		$description = new SomeProperty(
@@ -324,12 +324,12 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
 		);
 
-		$description = new Conjunction( array(
+		$description = new Conjunction( [
 			$description,
 			new NamespaceDescription( NS_MAIN )
-		) );
+		] );
 
-		$this->queryParser->setDefaultNamespaces( array( NS_MAIN ) );
+		$this->queryParser->setDefaultNamespaces( [ NS_MAIN ] );
 
 		$this->assertEquals(
 			$description,

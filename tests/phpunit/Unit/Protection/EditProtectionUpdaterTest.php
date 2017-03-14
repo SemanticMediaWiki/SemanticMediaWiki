@@ -64,7 +64,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new EditProtectionUpdater(
 			$this->wikiPage,
@@ -96,7 +96,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
 
 		$instance = new EditProtectionUpdater(
 			$this->wikiPage,
@@ -134,7 +134,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getRestrictions' )
-			->will( $this->returnValue( array( 'Foo' ) ) );
+			->will( $this->returnValue( [ 'Foo' ] ) );
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'getTitle' )
@@ -149,7 +149,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( false ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( false ) ] ) );
 
 		$instance = new EditProtectionUpdater(
 			$this->wikiPage,
@@ -189,7 +189,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getRestrictions' )
-			->will( $this->returnValue( array( 'Foo' ) ) );
+			->will( $this->returnValue( [ 'Foo' ] ) );
 
 		$this->wikiPage->expects( $this->once() )
 			->method( 'getTitle' )
@@ -205,7 +205,7 @@ class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
 
 		$instance = new EditProtectionUpdater(
 			$this->wikiPage,

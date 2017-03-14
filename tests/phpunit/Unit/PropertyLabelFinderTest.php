@@ -38,8 +38,8 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$languageIndependentPropertyLabels = array();
-		$canonicalPropertyLabels = array();
+		$languageIndependentPropertyLabels = [];
+		$canonicalPropertyLabels = [];
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyLabelFinder',
@@ -49,8 +49,8 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPreLoadedPropertyLabel() {
 
-		$languageIndependentPropertyLabels = array( '_Foo' => 'Bar' );
-		$canonicalPropertyLabels = array();
+		$languageIndependentPropertyLabels = [ '_Foo' => 'Bar' ];
+		$canonicalPropertyLabels = [];
 
 		$instance = new PropertyLabelFinder(
 			$this->store,
@@ -71,8 +71,8 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRegisterPropertyLabel() {
 
-		$languageIndependentPropertyLabels = array();
-		$canonicalPropertyLabels = array();
+		$languageIndependentPropertyLabels = [];
+		$canonicalPropertyLabels = [];
 
 		$instance = new PropertyLabelFinder(
 			$this->store,
@@ -86,7 +86,7 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( '_Foo' => 'Bar' ),
+			[ '_Foo' => 'Bar' ],
 			$instance->getKownPredefinedPropertyLabels()
 		);
 
@@ -108,11 +108,11 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPreventKnownPropertyLabelToBeRegisteredAsCanonicalWithDifferentId() {
 
-		$languageIndependentPropertyLabels = array();
+		$languageIndependentPropertyLabels = [];
 
-		$canonicalPropertyLabels = array(
+		$canonicalPropertyLabels = [
 			'Foo' => '_foo'
-		);
+		];
 
 		$instance = new PropertyLabelFinder(
 			$this->store,
@@ -134,8 +134,8 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSearchPropertyIdForNonRegisteredLabel() {
 
-		$languageIndependentPropertyLabels = array();
-		$canonicalPropertyLabels = array();
+		$languageIndependentPropertyLabels = [];
+		$canonicalPropertyLabels = [];
 
 		$instance = new PropertyLabelFinder(
 			$this->store,
@@ -155,8 +155,8 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindPropertyLabelByLanguageCode() {
 
-		$languageIndependentPropertyLabels = array();
-		$canonicalPropertyLabels = array();
+		$languageIndependentPropertyLabels = [];
+		$canonicalPropertyLabels = [];
 
 		$instance = new PropertyLabelFinder(
 			$this->store,
@@ -182,7 +182,7 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(),
+			[],
 			$instance->findPropertyListFromLabelByLanguageCode( '~*unknownProp*', 'ja' )
 		);
 	}

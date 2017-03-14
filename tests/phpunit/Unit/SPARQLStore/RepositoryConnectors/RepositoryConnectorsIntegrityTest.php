@@ -20,7 +20,7 @@ use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
  */
 class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 
-	private $databaseConnectors = array(
+	private $databaseConnectors = [
 		'\SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector',
 		'\SMW\SPARQLStore\RepositoryConnectors\FusekiHttpRepositoryConnector',
 		'\SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector',
@@ -30,7 +30,7 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 		'SMWSparqlDatabase4Store',
 		'SMWSparqlDatabaseVirtuoso',
 		'SMWSparqlDatabase'
-	);
+	];
 
 	/**
 	 * @dataProvider httpDatabaseConnectorInstanceNameForAskProvider
@@ -63,7 +63,7 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 		$repositoryResult = $instance->ask(
 			'?x foaf:name "Foo"',
-			array( 'foaf' => 'http://xmlns.com/foaf/0.1/>' )
+			[ 'foaf' => 'http://xmlns.com/foaf/0.1/>' ]
 		);
 
 		$this->assertInstanceOf(
@@ -140,7 +140,7 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	public function httpDatabaseConnectorInstanceNameForAskProvider() {
 
-		$provider = array();
+		$provider = [];
 		$encodedDefaultGraph = urlencode( 'http://foo/myDefaultGraph' );
 
 		foreach ( $this->databaseConnectors as $databaseConnector ) {
@@ -158,7 +158,7 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 					break;
 			};
 
-			$provider[] = array( $databaseConnector, $expectedPostField );
+			$provider[] = [ $databaseConnector, $expectedPostField ];
 		}
 
 		return $provider;
@@ -166,7 +166,7 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	public function httpDatabaseConnectorInstanceNameForDeleteProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		foreach ( $this->databaseConnectors as $databaseConnector ) {
 
@@ -180,7 +180,7 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 					break;
 			};
 
-			$provider[] = array( $databaseConnector, $expectedPostField );
+			$provider[] = [ $databaseConnector, $expectedPostField ];
 		}
 
 		return $provider;
@@ -188,10 +188,10 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	public function httpDatabaseConnectorInstanceNameForInsertProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		foreach ( $this->databaseConnectors as $databaseConnector ) {
-			$provider[] = array( $databaseConnector );
+			$provider[] = [ $databaseConnector ];
 		}
 
 		return $provider;

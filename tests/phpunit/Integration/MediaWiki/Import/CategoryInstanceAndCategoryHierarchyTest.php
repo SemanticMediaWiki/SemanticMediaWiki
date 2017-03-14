@@ -24,7 +24,7 @@ class CategoryInstanceAndCategoryHierarchyTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 	private $semanticDataValidator;
@@ -56,7 +56,7 @@ class CategoryInstanceAndCategoryHierarchyTest extends MwDBaseUnitTestCase {
 
 	public function testCategoryHierarchies() {
 
-		$this->importedTitles = array(
+		$this->importedTitles = [
 			'Category:Regression test',
 			'Category:Regression test category',
 			'Category:Regression test sub category',
@@ -64,30 +64,30 @@ class CategoryInstanceAndCategoryHierarchyTest extends MwDBaseUnitTestCase {
 			'CategoryInstanceAndCategoryHierarchyRegressionTest/WithSubpage',
 			'CategoryInstanceAndCategoryHierarchyRegressionTest/WithSubpage/WithSubSubpage',
 			'CategoryInstanceAndCategoryHierarchyRegressionTest'
-		);
+		];
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$title = Title::newFromText( 'CategoryInstanceAndCategoryHierarchyRegressionTest' );
 
-		$expectedCategoryAsWikiValue = array(
+		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( '_INST' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'Regression test',
 				'Regression test category',
 				'Regression test sub category',
 				'Regression test sub sub category',
 				'Category regression test'
-			)
-		);
+			]
+		];
 
 		$semanticDataFinder = new ByPageSemanticDataFinder;
 		$semanticDataFinder->setTitle( $title )->setStore( $this->getStore() );
 
-		$semanticDataBatches = array(
+		$semanticDataBatches = [
 			$semanticDataFinder->fetchFromOutput(),
 			$semanticDataFinder->fetchFromStore()
-		);
+		];
 
 		foreach ( $semanticDataBatches as $semanticData ) {
 

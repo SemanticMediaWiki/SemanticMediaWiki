@@ -72,72 +72,72 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 
 	public function timezoneProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'UTC',
 			true,
 			false,
 			0
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Z',
 			true,
 			true,
 			1
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Unknown',
 			false,
 			false,
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Asia/Tokyo',
 			true,
 			false,
 			'Asia/Tokyo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'America/Los Angeles',
 			true,
 			false,
 			'America/Los_Angeles'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'America/Los_Angeles',
 			true,
 			false,
 			'America/Los_Angeles'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function offsetProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'UTC',
 			0
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Z',
 			0
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Unknown',
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Asia/Tokyo',
 			32400
-		);
+		];
 
 		// Maybe return PST or PDT during Daylight Savings Time
 		/*

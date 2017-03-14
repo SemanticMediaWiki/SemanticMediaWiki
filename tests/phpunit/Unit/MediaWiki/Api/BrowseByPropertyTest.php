@@ -43,7 +43,7 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$instance = new BrowseByProperty(
-			$this->apiFactory->newApiMain( array() ),
+			$this->apiFactory->newApiMain( [] ),
 			'browsebyproperty'
 		);
 
@@ -55,20 +55,20 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExecute() {
 
-		$list[] = array(
+		$list[] = [
 			new DIProperty( 'Foo' ),
 			42
-		);
+		];
 
-		$list[] = array(
+		$list[] = [
 			new DIProperty( 'Foaf:Foo' ),
 			1001
-		);
+		];
 
-		$list[] = array(
+		$list[] = [
 			new DIProperty( 'Unknown:Foo' ),
 			1001
-		);
+		];
 
 		$cachedListLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\CachedListLookup' )
 			->disableOriginalConstructor()
@@ -84,10 +84,10 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$this->applicationFactory->registerObject( 'Store', $this->store );
 
-		$result = $this->apiFactory->doApiRequest( array(
+		$result = $this->apiFactory->doApiRequest( [
 			'action'  => 'browsebyproperty',
 			'property' => 'Foo'
-		) );
+		] );
 
 		$this->assertArrayHasKey(
 			'query',

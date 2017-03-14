@@ -61,7 +61,7 @@ class IncomingSemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 	private function doAssertPropertiesAndValues( $incomingSemanticData, $incomingProperties, $subject, $message ) {
 
-		$incomingPropertyValues = array();
+		$incomingPropertyValues = [];
 
 		foreach ( $incomingProperties as $property ) {
 

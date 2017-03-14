@@ -50,13 +50,13 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$class = new DIWikiPage( 'Foo', NS_CATEGORY );
 		$instance = new ClassDescription( $class );
 
-		$this->assertEquals( array( $class ), $instance->getCategories() );
+		$this->assertEquals( [ $class ], $instance->getCategories() );
 
 		$this->assertEquals( "[[{$ns}:Foo]]", $instance->getQueryString() );
 		$this->assertEquals( " <q>[[{$ns}:Foo]]</q> ", $instance->getQueryString( true ) );
 
 		$this->assertEquals( false, $instance->isSingleton() );
-		$this->assertEquals( array(), $instance->getPrintRequests() );
+		$this->assertEquals( [], $instance->getPrintRequests() );
 
 		$this->assertEquals( 1, $instance->getSize() );
 		$this->assertEquals( 0, $instance->getDepth() );
@@ -126,7 +126,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$maxsize  = 1;
 		$maxDepth = 1;
-		$log      = array();
+		$log      = [];
 
 		$this->assertEquals(
 			$instance,
@@ -135,7 +135,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$maxsize  = 0;
 		$maxDepth = 1;
-		$log      = array();
+		$log      = [];
 
 		$this->assertEquals(
 			new ThingDescription(),

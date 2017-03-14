@@ -89,7 +89,7 @@ class DummyFileCreator {
 
 	private function getFile( $path ) {
 
-		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $path );
+		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $path );
 
 		if ( is_readable( $path ) ) {
 			return $path;

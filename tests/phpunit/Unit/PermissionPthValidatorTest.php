@@ -42,7 +42,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result = array();
+		$result = [];
 
 		$instance = new PermissionPthValidator(
 			$this->editProtectionValidator
@@ -79,7 +79,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $permission ) )
 			->will( $this->returnValue( false ) );
 
-		$result = array();
+		$result = [];
 
 		$instance = new PermissionPthValidator(
 			$this->editProtectionValidator
@@ -132,7 +132,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $editProtectionRight ) )
 			->will( $this->returnValue( false ) );
 
-		$result = array();
+		$result = [];
 
 		$instance = new PermissionPthValidator(
 			$this->editProtectionValidator
@@ -147,7 +147,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( array( 'smw-edit-protection', $editProtectionRight ) ),
+			[ [ 'smw-edit-protection', $editProtectionRight ] ],
 			$result
 		);
 	}
@@ -197,26 +197,26 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function titleProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'edit',
-			array( array( 'smw-patternedit-protection', 'smw-patternedit' ) )
-		);
+			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'delete',
-			array( array( 'smw-patternedit-protection', 'smw-patternedit' ) )
-		);
+			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'move',
-			array( array( 'smw-patternedit-protection', 'smw-patternedit' ) )
-		);
+			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
+		];
 
 		return $provider;
 	}

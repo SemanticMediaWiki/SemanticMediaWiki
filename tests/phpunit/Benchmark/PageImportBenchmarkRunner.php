@@ -28,7 +28,7 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 	/**
 	 * @var array
 	 */
-	private $benchmarkReport = array();
+	private $benchmarkReport = [];
 
 	/**
 	 * @var string
@@ -71,7 +71,7 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 	 */
 	public function run( array $case ) {
 
-		$this->benchmarkReport = array();
+		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
 		if ( !isset( $case['importFrom'] ) ) {
@@ -107,14 +107,14 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 			$this->xmlImportRunner->reportFailedImport();
 		}
 
-		$this->benchmarkReport = array(
+		$this->benchmarkReport = [
 			'type'   => $case['type'],
 			'source' => $case['name'],
 			'memory' => memory_get_peak_usage( false ) - $memoryBefore,
-			'time'   => array(
+			'time'   => [
 				'sum' => $this->xmlImportRunner->getElapsedImportTimeInSeconds()
-			)
-		);
+			]
+		];
 	}
 
 }

@@ -40,7 +40,7 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 	/**
 	 * @var array
 	 */
-	private $benchmarkReport = array();
+	private $benchmarkReport = [];
 
 	/**
 	 * @since 2.5
@@ -71,7 +71,7 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 	 */
 	public function run( array $case ) {
 
-		$this->benchmarkReport = array();
+		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
 		if ( !isset( $case['query'] ) && !is_array( $case['query']  ) ) {
@@ -83,7 +83,7 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 		}
 
 		$start = microtime( true );
-		$queryReports = array();
+		$queryReports = [];
 
 		$queryReports['count'] = $this->doQuery(
 			$case, $this->createQuery( $case, Query::MODE_COUNT )
@@ -93,12 +93,12 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 			$case, $this->createQuery( $case, Query::MODE_INSTANCES )
 		);
 
-		$this->benchmarkReport = array(
+		$this->benchmarkReport = [
 			'type'  => $case['type'],
 			'note'  => $case['query']['condition'] . ( isset( $case['note'] ) ? ' (' . $case['note'] . ')' : '' ),
 			'query' => $queryReports,
 			'time'  => microtime( true ) - $start
-		);
+		];
 	}
 
 	private function doQuery( array $case, $query ) {
@@ -119,21 +119,21 @@ class QueryBenchmarkRunner implements BenchmarkReporter {
 		$count = $query->querymode === Query::MODE_COUNT ? $queryResult->getCountValue() : $queryResult->getCount();
 		$columnCount = $queryResult->getColumnCount();
 
-		return array(
+		return [
 			'rowCount' => $count,
 			'columnCount' => $columnCount,
 			'repetitionCount' => $case['repetitionCount'],
 			"memory" => memory_get_peak_usage( false ) - $memoryBefore,
-			"time" => array(
+			"time" => [
 				'sum'  => $this->benchmarker->getSum(),
 				'mean' => $this->benchmarker->getMean(),
 				'sd'   => $this->benchmarker->getStandardDeviation(),
 				'norm' => $this->benchmarker->getNormalizedValueBy( $case['repetitionCount'] )
-			)
-		);
+			]
+		];
 	}
 
-	private function createQuery( array $case, $mode, array $printouts = array() ) {
+	private function createQuery( array $case, $mode, array $printouts = [] ) {
 
 		$description = $this->queryParser->getQueryDescription(
 			$case['query']['condition']

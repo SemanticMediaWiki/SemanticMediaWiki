@@ -37,11 +37,11 @@ class DIPropertyTest extends DataItemTest {
 	 * @return array
 	 */
 	public function constructorProvider() {
-		return array(
-			array( 0 ),
-			array( 243.35353 ),
-			array( 'ohi there' ),
-		);
+		return [
+			[ 0 ],
+			[ 243.35353 ],
+			[ 'ohi there' ],
+		];
 	}
 
 	public function testSetPropertyTypeIdOnUserDefinedProperty() {
@@ -163,20 +163,20 @@ class DIPropertyTest extends DataItemTest {
 
 	public function labelProvider() {
 
-		$provider['testCreatePropertyFromLabelWithAnnotatedLangCodeToTakePrecedence'] = array(
+		$provider['testCreatePropertyFromLabelWithAnnotatedLangCodeToTakePrecedence'] = [
 			'A le type@fr', '', 'es',
 			'_TYPE'
-		);
+		];
 
-		$provider['testCreatePropertyFromLabelWithExplicitLanguageCode'] = array(
+		$provider['testCreatePropertyFromLabelWithExplicitLanguageCode'] = [
 			'Fecha de modificación', '', 'es' ,
 			'_MDAT'
-		);
+		];
 
-		$provider['MIMEType'] = array(
+		$provider['MIMEType'] = [
 			'MIME_type', '', 'en',
 			'_MIME'
-		);
+		];
 
 		return $provider;
 	}

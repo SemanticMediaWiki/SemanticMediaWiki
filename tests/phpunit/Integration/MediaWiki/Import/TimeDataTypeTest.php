@@ -24,7 +24,7 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 	private $semanticDataValidator;
@@ -67,26 +67,26 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 
 	public function testImportOfDifferentDateWithAssortmentOfOutputConversion() {
 
-		$this->importedTitles = array(
+		$this->importedTitles = [
 			'TimeDataTypeRegressionTest',
 			'Property:Has query date',
 			'Property:Has calendar date',
 			'Property:Has date'
-		);
+		];
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$title = Title::newFromText( 'TimeDataTypeRegressionTest' );
 
-		$expectedCategoryAsWikiValue = array(
+		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( '_INST' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'Regression test'
-			)
-		);
+			]
+		];
 
-		$expectedPropertiesFromImport = array(
-			'properties' => array(
+		$expectedPropertiesFromImport = [
+			'properties' => [
 				DIProperty::newFromUserLabel( 'Has date' ),
 				DIProperty::newFromUserLabel( 'Has calendar date' ),
 				DIProperty::newFromUserLabel( 'Has query date' ),
@@ -95,105 +95,105 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 				new DIProperty( '_SKEY' ),
 				new DIProperty( '_SOBJ' ),
 				new DIProperty( '_INST' )
-			)
-		);
+			]
+		];
 
-		$expectedDateValuesAsISO = array(
+		$expectedDateValuesAsISO = [
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'2010-01-04T19:00:00',
 				'2011-06-08',
 				'1980-01-01',
 				'2000-02-11T10:00:00',
 				'2000-02-03'
-			)
-		);
+			]
+		];
 
-		$expectedDateValuesAsMediaWiki = array(
+		$expectedDateValuesAsMediaWiki = [
 			'valueFormatter' => $this->setMediaWikiDateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'19:00, 4 January 2010',
 				'8 June 2011',
 				'1 January 1980',
 				'10:00, 11 February 2000',
 				'3 February 2000'
-			)
-		);
+			]
+		];
 
-		$expectedDateValuesAsWikiValue = array(
+		$expectedDateValuesAsWikiValue = [
 			'valueFormatter' => $this->setWikiValueDateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'4 January 2010 19:00:00',
 				'8 June 2011',
 				'1 January 1980',
 				'11 February 2000 10:00:00',
 				'3 February 2000'
-			)
-		);
+			]
+		];
 
 		// Note Windows vs Linux date conversion on PHP
 		// where 14000000000 BC is 2147483647 BC on Windows
 
-		$expectedCalendarSpecificDateValuesAsISO = array(
+		$expectedCalendarSpecificDateValuesAsISO = [
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'--301-12-28', // 1 January 300 BC
 				'--2147483647-01-01', // 2147483647 BC
 				'--14000000000-01-01',
 				'2000-02-24',
 				'1492-02-11'
-			)
-		);
+			]
+		];
 
-		$expectedCalendarSpecificDateValuesAsWikiValue = array(
+		$expectedCalendarSpecificDateValuesAsWikiValue = [
 			'valueFormatter' => $this->setWikiValueDateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'1 January 300 BC JL', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
 				'14000000000 BC',
 				'11 February 2000 JL',
 				'2 February 1492 JL'
-			)
-		);
+			]
+		];
 
-		$expectedCalendarSpecificDateValuesAsWikiValueWithGRCalendarModel = array(
+		$expectedCalendarSpecificDateValuesAsWikiValueWithGRCalendarModel = [
 			'valueFormatter' => $this->setWikiValueDateWithGRCalendarModelValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'28 December 301 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
 				'14000000000 BC',
 				'24 February 2000',
 				'11 February 1492'
-			)
-		);
+			]
+		];
 
-		$expectedCalendarSpecificDateValuesAsWikiValueWithJLCalendarModel = array(
+		$expectedCalendarSpecificDateValuesAsWikiValueWithJLCalendarModel = [
 			'valueFormatter' => $this->setWikiValueDateWithJLCalendarModelValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'1 January 300 BC JL', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
 				'14000000000 BC',
 				'11 February 2000 JL',
 				'2 February 1492 JL'
-			)
-		);
+			]
+		];
 
 		$this->semanticDataFinder = new ByPageSemanticDataFinder;
 		$this->semanticDataFinder->setTitle( $title )->setStore( $this->getStore() );
 
-		$semanticDataBatches = array(
+		$semanticDataBatches = [
 			$this->semanticDataFinder->fetchFromOutput(),
 			$this->semanticDataFinder->fetchFromStore()
-		);
+		];
 
-		$expectedDateValuesBatches = array(
+		$expectedDateValuesBatches = [
 			$expectedDateValuesAsISO,
 			$expectedDateValuesAsMediaWiki,
 			$expectedDateValuesAsWikiValue,
@@ -201,7 +201,7 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 			$expectedCalendarSpecificDateValuesAsWikiValue,
 			$expectedCalendarSpecificDateValuesAsWikiValueWithGRCalendarModel,
 			$expectedCalendarSpecificDateValuesAsWikiValueWithJLCalendarModel
-		);
+		];
 
 		foreach ( $semanticDataBatches as $semanticData ) {
 			$this->semanticDataValidator->assertThatCategoriesAreSet( $expectedCategoryAsWikiValue, $semanticData );

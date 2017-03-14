@@ -36,7 +36,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -63,7 +63,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -77,7 +77,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SELECT a.attname as' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
@@ -95,7 +95,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query', 'indexInfo' ) )
+			->setMethods( [ 'tableExists', 'query', 'indexInfo' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -113,7 +113,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SELECT  i.relname AS indexname' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 5 ) )
 			->method( 'query' )
@@ -132,7 +132,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -157,7 +157,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'query' ) )
+			->setMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )

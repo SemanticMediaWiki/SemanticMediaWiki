@@ -38,10 +38,10 @@ class SMWDIGeoCoordTest extends DataItemTest {
 	 * @return array
 	 */
 	public function constructorProvider() {
-		return array(
-			array( array( 'lat' => 83.34, 'lon' => 38.44, 'alt' => 54 ) ),
-			array( array( 'lat' => 42.43, 'lon' => 33.32 ) ),
-		);
+		return [
+			[ [ 'lat' => 83.34, 'lon' => 38.44, 'alt' => 54 ] ],
+			[ [ 'lat' => 42.43, 'lon' => 33.32 ] ],
+		];
 	}
 
 }

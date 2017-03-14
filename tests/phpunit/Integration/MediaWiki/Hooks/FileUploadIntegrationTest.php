@@ -42,17 +42,17 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->testEnvironment->withConfiguration( array(
-			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_FILE => true ),
+		$this->testEnvironment->withConfiguration( [
+			'smwgPageSpecialProperties' => [ '_MEDIA', '_MIME' ],
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true, NS_FILE => true ],
 			'smwgCacheType' => 'hash',
-		) );
+		] );
 
-		$this->testEnvironment->withConfiguration( array(
+		$this->testEnvironment->withConfiguration( [
 			'wgEnableUploads' => true,
-			'wgFileExtensions' => array( 'txt' ),
+			'wgFileExtensions' => [ 'txt' ],
 			'wgVerifyMimeType' => true
-		) );
+		] );
 
 		$this->mwHooksHandler->register(
 			'FileUpload',
@@ -91,11 +91,11 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 4,
-			'propertyKeys'   => array( 'HasFile', '_MEDIA', '_MIME', '_SKEY' ),
-			'propertyValues' => array( "$fileNS:Foo.txt", 'TEXT', 'text/plain', 'Foo.txt' )
-		);
+			'propertyKeys'   => [ 'HasFile', '_MEDIA', '_MIME', '_SKEY' ],
+			'propertyValues' => [ "$fileNS:Foo.txt", 'TEXT', 'text/plain', 'Foo.txt' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -120,11 +120,11 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 			->doEdit( '[[Ichi::Maru|Kyū]]' );
 
 		// File page content is kept from the initial upload
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 4,
-			'propertyKeys'   => array( '_MEDIA', '_MIME', '_SKEY', 'Ichi' ),
-			'propertyValues' => array( 'TEXT', 'text/plain', 'Foo.txt', 'Maru' )
-		);
+			'propertyKeys'   => [ '_MEDIA', '_MIME', '_SKEY', 'Ichi' ],
+			'propertyValues' => [ 'TEXT', 'text/plain', 'Foo.txt', 'Maru' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,

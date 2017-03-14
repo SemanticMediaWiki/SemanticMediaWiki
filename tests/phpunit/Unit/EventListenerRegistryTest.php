@@ -44,7 +44,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$eventListenerCollection = $this->getMockBuilder( '\Onoi\EventDispatcher\EventListenerCollection' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'registerCallback' ) )
+			->setMethods( [ 'registerCallback' ] )
 			->getMockForAbstractClass();
 
 		$eventListenerCollection->expects( $this->any() )
@@ -87,11 +87,11 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

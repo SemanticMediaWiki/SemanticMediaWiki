@@ -264,8 +264,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'smw_iw' => 'Bar' ) ),
-				$this->equalTo( array( 'smw_id' => 42 ) ) );
+				$this->equalTo( [ 'smw_iw' => 'Bar' ] ),
+				$this->equalTo( [ 'smw_id' => 42 ] ) );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -288,15 +288,15 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 	public function pageIdandSortProvider() {
 
-		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', false, false );
-		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', true, false );
-		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', true, true );
-		$provider[] = array( 'Foo', NS_MAIN, 'quy' , '', 'FOO', false, false );
-		$provider[] = array( 'Foo', NS_MAIN, 'quy' , 'xwoo', 'FOO', false, false );
+		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', false, false ];
+		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, false ];
+		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, true ];
+		$provider[] = [ 'Foo', NS_MAIN, 'quy' , '', 'FOO', false, false ];
+		$provider[] = [ 'Foo', NS_MAIN, 'quy' , 'xwoo', 'FOO', false, false ];
 
-		$provider[] = array( 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', false, false );
-		$provider[] = array( 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, false );
-		$provider[] = array( 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, true );
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', false, false ];
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, false ];
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, true ];
 
 		return $this->createAssociativeArrayFromProviderDefinition( $provider );
 	}
@@ -304,7 +304,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 	private function createAssociativeArrayFromProviderDefinition( $definitions ) {
 
 		foreach ( $definitions as $map ) {
-			$provider[] = array( array(
+			$provider[] = [ [
 				'title'         => $map[0],
 				'namespace'     => $map[1],
 				'iw'            => $map[2],
@@ -312,7 +312,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 				'sortkey'       => $map[4],
 				'canonical'     => $map[5],
 				'fetchHashes'   => $map[6]
-			) );
+			] ];
 		}
 
 		return $provider;

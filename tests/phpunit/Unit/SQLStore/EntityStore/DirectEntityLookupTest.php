@@ -46,7 +46,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -76,7 +76,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -108,7 +108,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -140,7 +140,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -168,7 +168,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -196,7 +196,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )

@@ -29,11 +29,11 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addColumn( 'b', 'integer' );
 
-		$expected = array(
-			'fields' => array(
+		$expected = [
+			'fields' => [
 				 'b' => 'integer'
-			)
-		);
+			]
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -47,11 +47,11 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addIndex( 'bar' );
 
-		$expected = array(
-			'indicies' => array(
+		$expected = [
+			'indicies' => [
 				'bar'
-			)
-		);
+			]
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -68,13 +68,13 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Table( 'Foo' );
 
-		$instance->addIndexWithKey( 'bar', array( 'foobar' ) );
+		$instance->addIndexWithKey( 'bar', [ 'foobar' ] );
 
-		$expected = array(
-			'indicies' => array(
-				'bar' => array( 'foobar' )
-			)
-		);
+		$expected = [
+			'indicies' => [
+				'bar' => [ 'foobar' ]
+			]
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -86,11 +86,11 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Table( 'Foo' );
 
-		$instance->addOption( 'bar', array( 'foobar' ) );
+		$instance->addOption( 'bar', [ 'foobar' ] );
 
-		$expected = array(
-			'bar' => array( 'foobar' )
-		);
+		$expected = [
+			'bar' => [ 'foobar' ]
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -103,7 +103,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Table( 'Foo' );
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->addOption( 'fields', array( 'foobar' ) );
+		$instance->addOption( 'fields', [ 'foobar' ] );
 	}
 
 }

@@ -17,9 +17,9 @@ class CommonDataItemTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSerializationToFilterSameStringRepresentation() {
 
-		$items = array();
+		$items = [];
 
-		foreach ( array( 'Foo', 'Bar', 'Foo' ) as  $value ) {
+		foreach ( [ 'Foo', 'Bar', 'Foo' ] as  $value ) {
 
 			$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 				->disableOriginalConstructor()

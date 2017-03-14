@@ -60,50 +60,50 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function typeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\RefreshJob',
 			'\SMW\MediaWiki\Jobs\RefreshJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\UpdateJob',
 			'\SMW\MediaWiki\Jobs\UpdateJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\UpdateDispatcherJob',
 			'\SMW\MediaWiki\Jobs\UpdateDispatcherJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\ParserCachePurgeJob',
 			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\FulltextSearchTableUpdateJob',
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\EntityIdDisposerJob',
 			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\TempChangeOpPurgeJob',
 			'\SMW\MediaWiki\Jobs\TempChangeOpPurgeJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\PropertyStatisticsRebuildJob',
 			'\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\FulltextSearchTableRebuildJob',
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob'
-		);
+		];
 
 		return $provider;
 	}

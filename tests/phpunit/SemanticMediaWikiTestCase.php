@@ -140,7 +140,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return RequestContext
 	 */
-	protected function newContext( $request = array() ) {
+	protected function newContext( $request = [] ) {
 
 		$context = new RequestContext();
 
@@ -190,7 +190,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return Settings
 	 */
-	protected function newSettings( array $settings = array() ) {
+	protected function newSettings( array $settings = [] ) {
 		return Settings::newFromArray( $settings );
 	}
 
@@ -251,7 +251,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	protected function arrayWrap( array $elements ) {
 		return array_map(
 			function ( $element ) {
-				return array( $element );
+				return [ $element ];
 			},
 			$elements
 		);

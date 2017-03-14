@@ -79,7 +79,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	public function testSpecialAliasesContLang( SpecialPage $specialPage ) {
 
 		// Test for languages
-		$langCodes = array( 'en', 'fr', 'de', 'es', 'zh', 'ja' );
+		$langCodes = [ 'en', 'fr', 'de', 'es', 'zh', 'ja' ];
 
 		// Test aliases for a specific language
 		foreach ( $langCodes as $langCode ) {
@@ -108,10 +108,10 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	 * @return array
 	 */
 	public function specialPageProvider() {
-		$request = new FauxRequest( array(), true );
-		$argLists = array();
+		$request = new FauxRequest( [], true );
+		$argLists = [];
 
-		$specialPages = array(
+		$specialPages = [
 			'Ask',
 			'Browse',
 			'PageProperty',
@@ -132,7 +132,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 			// FIXME Test fails with Undefined index: HTTP_ACCEPT
 			// 'URIResolver'
 
-		);
+		];
 
 		foreach ( $specialPages as $special ) {
 
@@ -147,11 +147,11 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 				$context->setRequest( $request );
 
 				$specialPage->setContext( clone $context );
-				$argLists[] = array( clone $specialPage );
+				$argLists[] = [ clone $specialPage ];
 
 				$context->setUser( $this->getUser() );
 				$specialPage->setContext( $context );
-				$argLists[] = array( $specialPage );
+				$argLists[] = [ $specialPage ];
 			}
 		}
 

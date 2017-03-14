@@ -68,11 +68,11 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(
+			[
 				'warning',
 				'smw-edit-protection-disabled',
 				'Is edit protected'
-			),
+			],
 			$instance->checkOn( $property )
 		);
 	}
@@ -102,11 +102,11 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setSemanticData( $semanticData );
 
 		$this->assertEquals(
-			array(
+			[
 				'warning',
 				'smw-property-req-violation-import-type',
 				'Foo'
-			),
+			],
 			$instance->checkOn( $property )
 		);
 	}
@@ -119,17 +119,17 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( 'Foo' ),
 			$semanticData,
 			''
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( '_MDAT' ),
 			$semanticData,
 			''
-		);
+		];
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -142,43 +142,43 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_ref_rec' );
 
-		$provider[] = array(
+		$provider[] = [
 			$property,
 			$semanticData,
-			array(
+			[
 				'error',
 				'smw-property-req-violation-missing-fields',
 				'Foo',
 				'Reference'
-			)
-		);
+			]
+		];
 
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_rec' );
 
-		$provider[] = array(
+		$provider[] = [
 			$property,
 			$semanticData,
-			array(
+			[
 				'error',
 				'smw-property-req-violation-missing-fields',
 				'Foo',
 				'Record'
-			)
-		);
+			]
+		];
 
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_eid' );
 
-		$provider[] = array(
+		$provider[] = [
 			$property,
 			$semanticData,
-			array(
+			[
 				'error',
 				'smw-property-req-violation-missing-formatter-uri',
 				'Foo'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

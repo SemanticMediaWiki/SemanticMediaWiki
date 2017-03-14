@@ -131,12 +131,12 @@ class BufferedStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->container->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( array( 'Foo' => 1, 'Bar' => 1 ) ) );
+			->will( $this->returnValue( [ 'Foo' => 1, 'Bar' => 1 ] ) );
 
-		$expected = array(
+		$expected = [
 			'Foo' => 1,
 			'Bar' => 1
-		);
+		];
 
 		$instance = new BufferedStatsdCollector(
 			$this->blobStore,
@@ -153,12 +153,12 @@ class BufferedStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->container->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( array( 'Foo.foobar' => 1, 'Bar' => 1 ) ) );
+			->will( $this->returnValue( [ 'Foo.foobar' => 1, 'Bar' => 1 ] ) );
 
-		$expected = array(
-			'Foo' => array( 'foobar' => 1 ),
+		$expected = [
+			'Foo' => [ 'foobar' => 1 ],
 			'Bar' => 1
-		);
+		];
 
 		$instance = new BufferedStatsdCollector(
 			$this->blobStore,
@@ -175,12 +175,12 @@ class BufferedStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->container->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( array( 'Foo.foobar' => 5, 'Bar' => 1, 'Foo.foobar.baz' => 1 ) ) );
+			->will( $this->returnValue( [ 'Foo.foobar' => 5, 'Bar' => 1, 'Foo.foobar.baz' => 1 ] ) );
 
-		$expected = array(
-			'Foo' => array( 'foobar' => array( 5, 'baz' => 1 ) ),
+		$expected = [
+			'Foo' => [ 'foobar' => [ 5, 'baz' => 1 ] ],
 			'Bar' => 1
-		);
+		];
 
 		$instance = new BufferedStatsdCollector(
 			$this->blobStore,

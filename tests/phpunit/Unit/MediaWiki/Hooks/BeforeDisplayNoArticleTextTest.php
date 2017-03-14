@@ -59,11 +59,11 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit_Framework_TestCase {
 
 	public function titleProvider() {
 
-		$provider = array(
-			array( SMW_NS_PROPERTY, 'Modification date', false ),
-			array( SMW_NS_PROPERTY, 'Foo', true ),
-			array( NS_MAIN, 'Modification date', true ),
-		);
+		$provider = [
+			[ SMW_NS_PROPERTY, 'Modification date', false ],
+			[ SMW_NS_PROPERTY, 'Foo', true ],
+			[ NS_MAIN, 'Modification date', true ],
+		];
 
 		return $provider;
 	}

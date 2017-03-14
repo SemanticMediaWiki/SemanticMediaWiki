@@ -33,7 +33,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		$html = '<!DOCTYPE html><html><body>' . $html . '</body></html>';
 
 		// Known tags DOMDocument has issues with
-		$html = str_replace( array( '<nowiki>', '</nowiki>' ), '', $html );
+		$html = str_replace( [ '<nowiki>', '</nowiki>' ], '', $html );
 
 		$document = new DOMDocument();
 		$result = $document->loadHTML( $html );
@@ -49,10 +49,10 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function provideTestData() {
-		return array(
-			array( array( 'eq' => 'yes', 'q' => '' ) ),
-			array( array( 'eq' => 'no', 'q' => '[[]]' ) ),
-		);
+		return [
+			[ [ 'eq' => 'yes', 'q' => '' ] ],
+			[ [ 'eq' => 'no', 'q' => '[[]]' ] ],
+		];
 	}
 
 	/**
@@ -61,7 +61,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	protected function setupGlobals( $params ) {
 		global $wgOut, $wgRequest;
 
-		$this->oldRequestValues = array();
+		$this->oldRequestValues = [];
 
 		foreach ( $params as $key => $value ) {
 

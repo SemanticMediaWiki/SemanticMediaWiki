@@ -42,40 +42,40 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function stringValueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			CodeStringValueFormatter::VALUE,
 			null,
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			CodeStringValueFormatter::WIKI_SHORT,
 			null,
 			'<div class="smwpre">foo</div>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			CodeStringValueFormatter::HTML_SHORT,
 			null,
 			'<div class="smwpre">foo</div>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			CodeStringValueFormatter::WIKI_LONG,
 			null,
 			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">foo</div></div>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			CodeStringValueFormatter::HTML_LONG,
 			null,
 			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">foo</div></div>'
-		);
+		];
 
 		// > 255
 		$text = 'Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede ' .
@@ -88,50 +88,50 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		'scelerisque&#160;nec&#160;habitasse&#160;a&#160;lacus&#160;mattis.&#160;Accumsan&#160;tincidunt&#160;Sed&#160;adipiscing&#160;' .
 		'nec&#160;facilisis&#160;tortor&#160;Nunc&#160;Sed&#160;ipsum&#160;tellus</div></div>';
 
-		$provider[] = array(
+		$provider[] = [
 			$text,
 			CodeStringValueFormatter::HTML_LONG,
 			null,
 			$expected
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$text,
 			CodeStringValueFormatter::WIKI_LONG,
 			null,
 			$expected
-		);
+		];
 
 		// XMLContentEncode
-		$provider[] = array(
+		$provider[] = [
 			'<foo>',
 			CodeStringValueFormatter::HTML_LONG,
 			null,
 			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">&lt;foo&gt;</div></div>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'<foo>',
 			CodeStringValueFormatter::HTML_SHORT,
 			null,
 			'<div class="smwpre">&lt;foo&gt;</div>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'*Foo',
 			CodeStringValueFormatter::WIKI_LONG,
 			null,
 			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">*Foo</div></div>'
-		);
+		];
 
 		// JSON
 		$jsonString = '{"limit": 50,"offset": 0,"sort": [],"order": [],"mode": 1}';
-		$provider[] = array(
+		$provider[] = [
 			$jsonString,
 			CodeStringValueFormatter::WIKI_LONG,
 			null,
 			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">' . CodeStringValueFormatter::formatAsPrettyJson( $jsonString ) . '</div></div>'
-		);
+		];
 
 		return $provider;
 	}

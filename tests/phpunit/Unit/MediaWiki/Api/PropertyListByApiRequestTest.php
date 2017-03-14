@@ -40,51 +40,51 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSerializedListForProperty() {
 
-		$list[] = array(
+		$list[] = [
 			new DIProperty( 'Foo' ),
 			42
-		);
+		];
 
-		$list[] = array(
+		$list[] = [
 			new DIProperty( 'Foaf:Foo' ),
 			1001
-		);
+		];
 
-		$list[] = array(
+		$list[] = [
 			new \SMWDIError( 'error' ),
 			-1
-		);
+		];
 
-		$list[] = array();
+		$list[] = [];
 
 		$isCached = true;
 
-		$expectedSerializedPropertyList = array(
-			'Foo' => array(
+		$expectedSerializedPropertyList = [
+			'Foo' => [
 				'label' => 'Foo',
 				'key' => 'Foo',
 				'isUserDefined' => true,
 				'usageCount' => 42,
 				'description' => ''
-			),
-			'Foaf:Foo' => array(
+			],
+			'Foaf:Foo' => [
 				'label' => 'Foaf:Foo',
 				'key' => 'Foaf:Foo',
 				'isUserDefined' => true,
 				'usageCount' => 1001,
 				'description' => ''
-			)
-		);
+			]
+		];
 
-		$expectedNamespaces = array(
+		$expectedNamespaces = [
 			'Foaf'
-		);
+		];
 
-		$expectedMeta = array(
+		$expectedMeta = [
 			'limit' => 3,
 			'count' => 2,
 			'isCached' => $isCached
-		);
+		];
 
 		$cachedListLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\CachedListLookup' )
 			->disableOriginalConstructor()

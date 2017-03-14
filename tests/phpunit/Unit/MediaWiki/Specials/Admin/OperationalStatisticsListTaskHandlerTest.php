@@ -63,7 +63,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 
 	public function testHandleRequest() {
 
-		$semanticStatistics = array(
+		$semanticStatistics = [
 			'PROPUSES' => 0,
 			'ERRORUSES' => 0,
 			'USEDPROPS' => 0,
@@ -74,7 +74,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 			'SUBOBJECTS' => 0,
 			'QUERY' => 0,
 			'CONCEPTS' => 0
-		);
+		];
 
 		$this->store->expects( $this->once() )
 			->method( 'getStatistics' )

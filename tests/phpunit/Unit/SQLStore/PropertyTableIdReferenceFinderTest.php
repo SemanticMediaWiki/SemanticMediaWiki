@@ -43,7 +43,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$tableDefinition->expects( $this->atLeastOnce() )
 			->method( 'getFields' )
-			->will( $this->returnValue( array( 'o_id' => 42 ) ) );
+			->will( $this->returnValue( [ 'o_id' => 42 ] ) );
 
 		$PropertyTableIdReferenceFinder = $connection = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
 			->disableOriginalConstructor()
@@ -63,7 +63,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $tableDefinition ) ) );
+			->will( $this->returnValue( [ $tableDefinition ] ) );
 
 		$instance = new PropertyTableIdReferenceFinder(
 			$this->store
@@ -104,7 +104,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $tableDefinition ) ) );
+			->will( $this->returnValue( [ $tableDefinition ] ) );
 
 		$instance = new PropertyTableIdReferenceFinder(
 			$this->store
@@ -129,7 +129,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new PropertyTableIdReferenceFinder(
 			$this->store
@@ -157,7 +157,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new PropertyTableIdReferenceFinder(
 			$this->store

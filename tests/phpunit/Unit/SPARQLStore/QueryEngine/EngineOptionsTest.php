@@ -62,35 +62,35 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 
 	public function initialSettingsProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'smwgIgnoreQueryErrors',
 			'boolean'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smwgQSortingSupport',
 			'boolean'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smwgQRandSortingSupport',
 			'boolean'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smwgQSubpropertyDepth',
 			'integer'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smwgQSubcategoryDepth',
 			'integer'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smwgSparqlQFeatures',
 			'integer'
-		);
+		];
 
 		return $provider;
 	}

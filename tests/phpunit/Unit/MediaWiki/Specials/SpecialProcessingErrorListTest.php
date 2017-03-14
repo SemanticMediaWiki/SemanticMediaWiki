@@ -59,14 +59,14 @@ class SpecialProcessingErrorListTest extends \PHPUnit_Framework_TestCase {
 			Title::newFromText( 'SpecialProcessingErrorList' )
 		);
 
-		$expected = array(
+		$expected = [
 			'%5B%5BHas+processing+error+text%3A%3A%2B%5D%5D',
 			'&po=%3FHas+improper+value+for%7C%3FHas+processing+error+text',
 			'&p=class%3Dsortable-20wikitable-20smwtable-2Dstriped',
 			'&eq=no&limit=5',
 			'&bTitle=processingerrorlist',
 			'&bMsg=smw-processingerrorlist-intro'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,

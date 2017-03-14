@@ -72,9 +72,9 @@ class ConceptToExpDataMapperTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(
+			[
 				'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' => $element
-			),
+			],
 			$result->getProperties()
 		);
 	}
@@ -113,10 +113,10 @@ class ConceptToExpDataMapperTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(
+			[
 				'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' => $elementType,
 				'http://www.w3.org/2002/07/owl#unionOf'           => $elementUnionOf
-			),
+			],
 			$result->getProperties()
 		);
 	}

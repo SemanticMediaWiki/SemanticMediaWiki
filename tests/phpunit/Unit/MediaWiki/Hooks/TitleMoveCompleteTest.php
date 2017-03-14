@@ -28,11 +28,11 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->user = new MockSuperUser();
 
-		$settings = array(
+		$settings = [
 			'smwgCacheType'             => 'hash',
 			'smwgAutoRefreshOnPageMove' => true,
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_HELP => false )
-		);
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true, NS_HELP => false ]
+		];
 
 		$this->testEnvironment->withConfiguration(
 			$settings

@@ -81,12 +81,12 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
 		$instance = $this->getMock( '\SMW\Factbox\Factbox',
-			array( 'fetchContent', 'getMagicWords' ),
-			array(
+			[ 'fetchContent', 'getMagicWords' ],
+			[
 				$store,
 				$parserData,
 				$messageBuilder
-			)
+			]
 		);
 
 		$instance->expects( $this->any() )
@@ -138,11 +138,11 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $subject ) ) );
+			->will( $this->returnValue( [ $subject ] ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array( DIProperty::newFromUserLabel( 'SomeFancyProperty' ) ) ) );
+			->will( $this->returnValue( [ DIProperty::newFromUserLabel( 'SomeFancyProperty' ) ] ) );
 
 		$parserOutput = $this->setupParserOutput( $semanticData );
 
@@ -298,12 +298,12 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
 		$factbox = $this->getMock( '\SMW\Factbox\Factbox',
-			array( 'createTable' ),
-			array(
+			[ 'createTable' ],
+			[
 				$store,
 				$parserData,
 				$messageBuilder
-			)
+			]
 		);
 
 		$factbox->expects( $this->any() )
@@ -334,62 +334,62 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	public function contentDataProvider() {
 
 		$text = __METHOD__;
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => true,
 				'hasVisibleProperties'        => true,
 				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
-			),
+			],
 			$text // expected return
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => true,
 				'hasVisibleProperties'        => true,
 				'isEmpty'                     => true,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
-			),
+			],
 			$text // expected return
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => false,
 				'hasVisibleProperties'        => true,
 				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_SPECIAL,
 				'invokedContent'              => $text,
-			),
+			],
 			'' // expected return
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => false,
 				'hasVisibleProperties'        => false,
 				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
-			),
+			],
 			'' // expected return
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => true,
 				'hasVisibleProperties'        => false,
 				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
-			),
+			],
 			'' // expected return
-		);
+		];
 
 		return $provider;
 	}
@@ -432,9 +432,9 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Factbox( $store, $parserData, $messageBuilder );
 
 		$this->stringValidator->assertThatStringContains(
-			array(
+			[
 				'div class="smwrdflink"'
-			),
+			],
 			$instance->doBuild()->getContent()
 		);
 	}
@@ -510,39 +510,39 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 	public function tableContentDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'isShown'       => true,
 				'isUserDefined' => true,
-			),
-			array( 'class="smwprops"' )
-		);
+			],
+			[ 'class="smwprops"' ]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'isShown'       => false,
 				'isUserDefined' => true,
-			),
+			],
 			''
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'isShown'       => true,
 				'isUserDefined' => false,
-			),
-			array( 'class="smwspecs"' )
-		);
+			],
+			[ 'class="smwspecs"' ]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'isShown'       => false,
 				'isUserDefined' => false,
-			),
+			],
 			''
-		);
+		];
 
 		return $provider;
 	}
@@ -554,7 +554,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( __METHOD__ );
 
-		$provider = array();
+		$provider = [];
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -562,7 +562,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )
@@ -575,7 +575,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$parserData->setSemanticData( $semanticData );
 
-		$provider[] = array( $parserData );
+		$provider[] = [ $parserData ];
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -583,7 +583,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( new DIProperty( '_SKEY') ) ) );
+			->will( $this->returnValue( [ new DIProperty( '_SKEY') ] ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )
@@ -596,7 +596,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$parserData->setSemanticData( $semanticData );
 
-		$provider[] = array( $parserData );
+		$provider[] = [ $parserData ];
 
 		return $provider;
 	}

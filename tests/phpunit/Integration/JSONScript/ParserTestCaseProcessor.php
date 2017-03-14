@@ -94,7 +94,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			print_r( $semanticData );
 		}
 
-		if ( isset( $case['errors'] ) && $case['errors'] !== array() ) {
+		if ( isset( $case['errors'] ) && $case['errors'] !== [] ) {
 			$this->assertNotEmpty(
 				$semanticData->getErrors()
 			);

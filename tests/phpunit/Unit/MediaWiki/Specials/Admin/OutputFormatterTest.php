@@ -58,7 +58,7 @@ class OutputFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->encodeAsJson( array() )
+			$instance->encodeAsJson( [] )
 		);
 	}
 

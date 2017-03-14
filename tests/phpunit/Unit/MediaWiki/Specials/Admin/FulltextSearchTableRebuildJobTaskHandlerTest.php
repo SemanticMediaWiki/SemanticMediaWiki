@@ -32,7 +32,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
@@ -65,14 +65,14 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 
 	public function testGetHtml() {
 
-		$methods = array(
+		$methods = [
 			'setName',
 			'setMethod',
 			'addHiddenField',
 			'addHeader',
 			'addParagraph',
 			'addSubmitButton'
-		);
+		];
 
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )

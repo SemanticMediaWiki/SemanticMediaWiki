@@ -50,7 +50,7 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 		$instance = new UniquenessConstraintValue();
 
 		$instance->setOptions(
-			new Options( array( 'smwgDVFeatures' => '' ) )
+			new Options( [ 'smwgDVFeatures' => '' ] )
 		);
 
 		$instance->setUserValue( 'Foo' );
@@ -65,7 +65,7 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 		$instance = new UniquenessConstraintValue();
 
 		$instance->setOptions(
-			new Options( array( 'smwgDVFeatures' => SMW_DV_PVUC ) )
+			new Options( [ 'smwgDVFeatures' => SMW_DV_PVUC ] )
 		);
 
 		$instance->setUserValue( 'Foo' );

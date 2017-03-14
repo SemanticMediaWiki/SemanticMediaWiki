@@ -33,7 +33,7 @@ class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->settings = Settings::newFromArray( array() );
+		$this->settings = Settings::newFromArray( [] );
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
@@ -57,7 +57,7 @@ class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $error, null )
+			[ $error, null ]
 		);
 
 		$this->assertInternalType(
@@ -81,7 +81,7 @@ class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, 42 )
+			[ $property, 42 ]
 		);
 
 		$this->assertContains(
@@ -101,7 +101,7 @@ class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, 42 )
+			[ $property, 42 ]
 		);
 
 		$this->assertEmpty(

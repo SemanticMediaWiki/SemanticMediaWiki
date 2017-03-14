@@ -41,10 +41,10 @@ class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$processingResult->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( array(
+			->will( $this->returnValue( [
 				'language'   => $processedParam,
 				'format'     => $processedParam,
-				'parameters' => $processedParam ) ) );
+				'parameters' => $processedParam ] ) );
 
 		$this->assertInternalType(
 			'string',

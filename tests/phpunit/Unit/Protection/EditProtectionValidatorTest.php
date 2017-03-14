@@ -56,7 +56,7 @@ class EditProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $subject->asBase() ),
 				$this->equalTo( $property ) )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
 
 		$instance = new EditProtectionValidator(
 			$this->cachedPropertyValuesPrefetcher,
@@ -82,7 +82,7 @@ class EditProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $subject->asBase() ),
 				$this->equalTo( $property ) )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
 
 		$instance = new EditProtectionValidator(
 			$this->cachedPropertyValuesPrefetcher,

@@ -134,19 +134,19 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
 
-		$description = new ClassDescription( array() );
+		$description = new ClassDescription( [] );
 		$orderByProperty = null;
 
 		$expected = $stringBuilder
 			->addString( '<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -164,12 +164,12 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( "{ ?result rdf:type $categoryName . }" )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$conditionType,
 			$expected,
-		);
+		];
 
 		# 2
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -186,10 +186,10 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			\SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryBar )
 		);
 
-		$description = new ClassDescription( array(
+		$description = new ClassDescription( [
 			$categoryFoo,
 			$categoryBar
-		) );
+		] );
 
 		$orderByProperty = null;
 
@@ -199,20 +199,20 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( "{ ?result rdf:type $categoryBarName . }" )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description = new ClassDescription( array(
+		$description = new ClassDescription( [
 			$categoryFoo,
 			$categoryBar
-		) );
+		] );
 
 		$orderByProperty = new DIProperty( 'Foo' );
 
@@ -223,12 +223,12 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( "{ ?result rdf:type $categoryBarName . }" )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$conditionType,
 			$expected
-		);
+		];
 
 		return $provider;
 	}

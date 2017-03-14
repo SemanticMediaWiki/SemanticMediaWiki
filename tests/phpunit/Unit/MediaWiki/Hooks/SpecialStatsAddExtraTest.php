@@ -29,7 +29,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$extraStats = array();
+		$extraStats = [];
 		$version = '';
 
 		$this->assertInstanceOf(
@@ -85,7 +85,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 		ApplicationFactory::getInstance()->registerObject( 'Store', StoreFactory::getStore() );
 		ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticsEnabled', true );
 
-		$extraStats = array();
+		$extraStats = [];
 		$version = '1.21';
 
 		$instance = new SpecialStatsAddExtra( $extraStats, $version, $userLanguage );
@@ -118,57 +118,57 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
 	public function statisticsDataProvider() {
 
-		$input = array(
+		$input = [
 			'PROPUSES' => 1001
-		);
+		];
 
 		#0 Legacy
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'version'    => '1.20',
-				'extraStats' => array(),
+				'extraStats' => [],
 				'statistics' => $input
-			),
-			array(
+			],
+			[
 				'statistics' => 1001
-			)
-		);
+			]
+		];
 
 		#1 Legacy - unknown
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'version'    => '1.20',
-				'extraStats' => array(),
-				'statistics' => array( 'Yeey' => 2002 )
-			),
-			array(
+				'extraStats' => [],
+				'statistics' => [ 'Yeey' => 2002 ]
+			],
+			[
 				'statistics' => null
-			)
-		);
+			]
+		];
 
 		#2 MW 1.21+
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'version'    => '1.21',
-				'extraStats' => array(),
+				'extraStats' => [],
 				'statistics' => $input
-			),
-			array(
+			],
+			[
 				'statistics' => 1001
-			)
-		);
+			]
+		];
 
 		#3 MW 1.21+ - unknown
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'version'    => '1.21',
-				'extraStats' => array(),
-				'statistics' => array( 'Quuxy' => 2002 )
-			),
-			array(
+				'extraStats' => [],
+				'statistics' => [ 'Quuxy' => 2002 ]
+			],
+			[
 				'statistics' => null
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

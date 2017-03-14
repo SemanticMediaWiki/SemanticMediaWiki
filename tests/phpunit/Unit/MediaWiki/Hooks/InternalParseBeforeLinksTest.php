@@ -81,9 +81,9 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$title = $this->testEnvironment->createConfiguredStub(
 			'\Title',
-			array(
+			[
 				'isSpecialPage' => false
-			)
+			]
 		);
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
@@ -121,11 +121,11 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$title = $this->testEnvironment->createConfiguredStub(
 			'\Title',
-			array(
+			[
 				'getDBKey'      => __METHOD__,
 				'getNamespace'  => NS_MAIN,
 				'isSpecialPage' => true
-			)
+			]
 		);
 
 		$title->expects( $this->atLeastOnce() )
@@ -166,7 +166,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setEnabledSpecialPage(
-			array( 'Bar' )
+			[ 'Bar' ]
 		);
 
 		$instance->process( $text );
@@ -206,7 +206,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setEnabledSpecialPage(
-			isset( $parameters['settings']['smwgEnabledSpecialPage'] ) ? $parameters['settings']['smwgEnabledSpecialPage'] : array()
+			isset( $parameters['settings']['smwgEnabledSpecialPage'] ) ? $parameters['settings']['smwgEnabledSpecialPage'] : []
 		);
 
 		$this->assertTrue(
@@ -237,7 +237,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	public function titleProvider() {
 
 		#2
-		$provider[] = array( Title::newFromText( __METHOD__ ) );
+		$provider[] = [ Title::newFromText( __METHOD__ ) ];
 
 		$title = MockTitle::buildMockForMainNamespace();
 
@@ -246,7 +246,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		#1
-		$provider[] = array( $title );
+		$provider[] = [ $title ];
 
 		$title = MockTitle::buildMockForMainNamespace();
 
@@ -259,7 +259,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		#2
-		$provider[] = array( $title );
+		$provider[] = [ $title ];
 
 		$title = MockTitle::buildMockForMainNamespace();
 
@@ -272,109 +272,109 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		#3
-		$provider[] = array( $title );
+		$provider[] = [ $title ];
 
 		return $provider;
 	}
 
 	public function textDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0 NS_MAIN; [[FooBar...]] with a different caption
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
-				'settings' => array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'settings' => [
+					'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 					'smwgEnabledInTextAnnotationParserStrictMode' => true,
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
-				),
+				],
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
 					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
 					' [[foo::9001]] et Donec.',
-				),
-				array(
+				],
+				[
 					'resultText' => 'Lorem ipsum dolor sit &$% [[:Dictumst|寒い]]' .
 						' [[:Tincidunt semper|tincidunt semper]] facilisi {{volutpat}} Ut quis' .
 						' [[:9001|9001]] et Donec.',
 					'propertyCount'  => 3,
-					'propertyLabels' => array( 'Foo', 'Bar', 'FooBar' ),
-					'propertyValues' => array( 'Dictumst', 'Tincidunt semper', '9001' )
-				)
-		);
+					'propertyLabels' => [ 'Foo', 'Bar', 'FooBar' ],
+					'propertyValues' => [ 'Dictumst', 'Tincidunt semper', '9001' ]
+				]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
-				'settings' => array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'settings' => [
+					'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 					'smwgEnabledInTextAnnotationParserStrictMode' => true,
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
-				),
+				],
 				'text'  => '#REDIRECT [[Foo]]',
-				),
-				array(
+				],
+				[
 					'resultText' => '#REDIRECT [[Foo]]',
 					'propertyCount'  => 1,
-					'propertyKeys'   => array( '_REDI' ),
-					'propertyValues' => array( 'Foo' )
-				)
-		);
+					'propertyKeys'   => [ '_REDI' ],
+					'propertyValues' => [ 'Foo' ]
+				]
+		];
 
 		// #1 NS_SPECIAL, processed but no annotations
 		$title = Title::newFromText( 'Ask', NS_SPECIAL );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
-				'settings' => array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'settings' => [
+					'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 					'smwgEnabledInTextAnnotationParserStrictMode' => true,
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
-					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
-				),
+					'smwgEnabledSpecialPage' => [ 'Ask', 'Foo' ]
+				],
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
 					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
 					' [[foo::9001]] et Donec.',
-				),
-				array(
+				],
+				[
 					'resultText' => 'Lorem ipsum dolor sit &$% [[:Dictumst|寒い]]' .
 						' [[:Tincidunt semper|tincidunt semper]] facilisi {{volutpat}} Ut quis' .
 						' [[:9001|9001]] et Donec.',
 					'propertyCount' => 0
-				)
-		);
+				]
+		];
 
 		// #2 NS_SPECIAL, not processed
 		$title = Title::newFromText( 'Foo', NS_SPECIAL );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
-				'settings' => array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'settings' => [
+					'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 					'smwgEnabledInTextAnnotationParserStrictMode' => true,
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
-					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
-				),
+					'smwgEnabledSpecialPage' => [ 'Ask', 'Foo' ]
+				],
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
 					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
 					' [[foo::9001]] et Donec.',
-				),
-				array(
+				],
+				[
 					'resultText' => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
 						' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
 						' [[foo::9001]] et Donec.',
 					'propertyCount' => 0
-				)
-		);
+				]
+		];
 
 		return $provider;
 	}

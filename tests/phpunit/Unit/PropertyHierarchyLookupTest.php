@@ -41,7 +41,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -55,7 +55,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'save' )
 			->with(
 				$this->equalTo( '_SUBP#Foo#5230d9b41a617ba30fa77223b431507c' ),
-				$this->equalTo( array() ) );
+				$this->equalTo( [] ) );
 
 		$instance = new PropertyHierarchyLookup( $store, $cache );
 
@@ -79,7 +79,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( new DIProperty( '_SUBP' ) ),
 				$this->equalTo( $property->getDiWikiPage() ),
 				$this->anything() )
-			->will( $this->returnValue( array( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ) ) );
+			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ] ) );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -97,9 +97,9 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertyHierarchyLookup( $store, $cache );
 
-		$expected = array(
+		$expected = [
 			DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
-		);
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -121,7 +121,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( new DIProperty( '_SUBC' ) ),
 				$this->equalTo( $category ),
 				$this->anything() )
-			->will( $this->returnValue( array( DIWikiPage::newFromText( 'Bar', NS_CATEGORY ) ) ) );
+			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Bar', NS_CATEGORY ) ] ) );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -139,9 +139,9 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertyHierarchyLookup( $store, $cache );
 
-		$expected = array(
+		$expected = [
 			DIWikiPage::newFromText( 'Bar', NS_CATEGORY )
-		);
+		];
 
 		$this->assertEquals(
 			$expected,

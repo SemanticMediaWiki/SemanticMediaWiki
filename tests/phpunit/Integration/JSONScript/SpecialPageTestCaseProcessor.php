@@ -63,7 +63,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$queryParameters = isset( $case['special-page']['query-parameters'] ) ? $case['special-page']['query-parameters'] : array();
+		$queryParameters = isset( $case['special-page']['query-parameters'] ) ? $case['special-page']['query-parameters'] : [];
 
 		$text = $this->getTextForRequestBy(
 			SpecialPageFactory::getPage( $case['special-page']['page'] ),

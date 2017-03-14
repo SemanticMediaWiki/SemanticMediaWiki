@@ -111,10 +111,10 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addAnnotation();
 
-		$expected = array(
-			'properties' => array( new DIProperty( '_TYPE' ), new DIProperty( '_IMPO' ) ),
-			'propertyValues' => array( 'Text', 'foo:bar' )
-		);
+		$expected = [
+			'properties' => [ new DIProperty( '_TYPE' ), new DIProperty( '_IMPO' ) ],
+			'propertyValues' => [ 'Text', 'foo:bar' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -147,10 +147,10 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		// Check before
-		$expected = array(
-			'properties' => array( new DIProperty( '_TYPE' ), new DIProperty( '_IMPO' ) ),
-			'propertyValues' => array( 'Text', 'foo:bar' )
-		);
+		$expected = [
+			'properties' => [ new DIProperty( '_TYPE' ), new DIProperty( '_IMPO' ) ],
+			'propertyValues' => [ 'Text', 'foo:bar' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -160,10 +160,10 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$instance->addAnnotation();
 
 		// Check after
-		$expected = array(
-			'properties' => array( new DIProperty( '_TYPE' ), new DIProperty( '_IMPO' ) ),
-			'propertyValues' => array( 'Page', 'foo:bar' )
-		);
+		$expected = [
+			'properties' => [ new DIProperty( '_TYPE' ), new DIProperty( '_IMPO' ) ],
+			'propertyValues' => [ 'Page', 'foo:bar' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -190,10 +190,10 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addAnnotation();
 
-		$expected = array(
-			'properties' => array( new DIProperty( '_IMPO' ) ),
-			'propertyValues' => array( 'foo:bar' )
-		);
+		$expected = [
+			'properties' => [ new DIProperty( '_IMPO' ) ],
+			'propertyValues' => [ 'foo:bar' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -220,10 +220,10 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addAnnotation();
 
-		$expected = array(
-			'properties' => array( new DIProperty( '_IMPO' ) ),
-			'propertyValues' => array( 'foo:bar' )
-		);
+		$expected = [
+			'properties' => [ new DIProperty( '_IMPO' ) ],
+			'propertyValues' => [ 'foo:bar' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,

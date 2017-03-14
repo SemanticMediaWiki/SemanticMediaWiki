@@ -51,11 +51,11 @@ class ResourcesAccessibilityTest extends \PHPUnit_Framework_TestCase {
 		$context = ResourceLoaderContext::newDummyContext();
 		$modules = $this->includeResourceDefinitionsFromFile();
 
-		return array( array(
+		return [ [
 			$modules,
 			$resourceLoader,
 			$context
-		) );
+		] ];
 	}
 
 	private function includeResourceDefinitionsFromFile() {

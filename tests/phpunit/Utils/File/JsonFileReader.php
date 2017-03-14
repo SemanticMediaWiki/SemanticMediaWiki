@@ -37,7 +37,7 @@ class JsonFileReader {
 	 * @param string $file
 	 */
 	public function setFile( $file ) {
-		$this->file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $file );
+		$this->file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $file );
 		$this->contents = null;
 	}
 
@@ -97,13 +97,13 @@ class JsonFileReader {
 
 	private function printDescriptiveJsonError( $errorCode ) {
 
-		$errorMessages = array(
+		$errorMessages = [
 			JSON_ERROR_STATE_MISMATCH => 'Underflow or the modes mismatch, malformed JSON',
 			JSON_ERROR_CTRL_CHAR => 'Unexpected control character found, possibly incorrectly encoded',
 			JSON_ERROR_SYNTAX => 'Syntax error, malformed JSON',
 			JSON_ERROR_UTF8   => 'Malformed UTF-8 characters, possibly incorrectly encoded',
 			JSON_ERROR_DEPTH  => 'The maximum stack depth has been exceeded'
-		);
+		];
 
 		return sprintf(
 			"Expected a JSON compatible format but failed with '%s'",

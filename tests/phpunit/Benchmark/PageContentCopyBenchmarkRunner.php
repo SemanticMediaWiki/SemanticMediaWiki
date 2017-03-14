@@ -40,7 +40,7 @@ class PageContentCopyBenchmarkRunner {
 	/**
 	 * @var array
 	 */
-	private $benchmarkReport = array();
+	private $benchmarkReport = [];
 
 	/**
 	 * @var integer|count
@@ -87,7 +87,7 @@ class PageContentCopyBenchmarkRunner {
 	 */
 	public function run( array $case ) {
 
-		$this->benchmarkReport = array();
+		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 		$start = microtime( true );
 
@@ -114,26 +114,26 @@ class PageContentCopyBenchmarkRunner {
 
 		$copyMemory = $this->doCopy( $copyFrom, $case );
 
-		$this->benchmarkReport = array(
+		$this->benchmarkReport = [
 			'type'   => $case['type'],
 			'source' => $case['name'],
-			'import' => array(
+			'import' => [
 				'memory' => $importBenchmarkReport['memory'],
 				'time'   => $importBenchmarkReport['time']
-			),
-			'copy' => array(
+			],
+			'copy' => [
 				'copyFrom'  => $case['copyFrom'],
 				'copyCount' => $this->copyCount,
 				'memory'    => $copyMemory,
-				'time'      => array(
+				'time'      => [
 					'sum'  => $this->benchmarker->getSum(),
 					'mean' => $this->benchmarker->getMean(),
 					'sd'   => $this->benchmarker->getStandardDeviation(),
 					'norm' => $this->benchmarker->getNormalizedValueBy( $this->copyCount )
-				)
-			),
+				]
+			],
 			'time' => microtime( true ) - $start
-		);
+		];
 	}
 
 	private function doCopy( $copyFrom, array $case ) {

@@ -88,11 +88,11 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$referenceValue = new ReferenceValue();
 
-		$referenceValue->setFieldProperties( array(
+		$referenceValue->setFieldProperties( [
 			$this->dataItemFactory->newDIProperty( 'Foo' ),
 			$this->dataItemFactory->newDIProperty( 'Date' ),
 			$this->dataItemFactory->newDIProperty( 'URL' )
-		) );
+		] );
 
 		$referenceValue->setOption( ReferenceValue::OPT_CONTENT_LANGUAGE, 'en' );
 		$referenceValue->setOption( ReferenceValue::OPT_USER_LANGUAGE, 'en' );
@@ -117,103 +117,103 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function stringValueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'abc;12;3',
 			ReferenceValueFormatter::VALUE,
 			null,
 			'Abc'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'abc;12;3',
 			ReferenceValueFormatter::VALUE,
 			false,
 			'Abc;12;3'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'abc',
 			ReferenceValueFormatter::WIKI_SHORT,
 			null,
 			'Abc'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'abc',
 			ReferenceValueFormatter::WIKI_SHORT,
 			false,
-			array(
+			[
 				'Abc',
 				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
 				'data-title="Reference"',
 				'title="Date: ?, URL: ?"'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'abc',
 			ReferenceValueFormatter::HTML_SHORT,
 			null,
 			'Abc'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'abc',
 			ReferenceValueFormatter::HTML_SHORT,
 			false,
-			array(
+			[
 				'Abc',
 				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
 				'data-title="Reference"',
 				'title="Date: ?, URL: ?"'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'abc',
 			ReferenceValueFormatter::WIKI_LONG,
 			null,
 			'Abc'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'abc',
 			ReferenceValueFormatter::WIKI_LONG,
 			false,
-			array(
+			[
 				'Abc',
 				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
 				'data-title="Reference"',
 				'title="Date: ?, URL: ?"'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'abc',
 			ReferenceValueFormatter::HTML_LONG,
 			null,
 			'Abc'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'abc',
 			ReferenceValueFormatter::HTML_LONG,
 			false,
-			array(
+			[
 				'Abc',
 				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
 				'data-title="Reference"',
 				'title="Date: ?, URL: ?"'
-			)
-		);
+			]
+		];
 
 		// Notice: Undefined variable: dataValue in
-		$provider[] = array(
+		$provider[] = [
 			'?;12;3',
 			ReferenceValueFormatter::VALUE,
 			null,
 			''
-		);
+		];
 
 		return $provider;
 	}

@@ -55,9 +55,9 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$requestOptions->expects( $this->atLeastOnce() )
 			->method( 'getExtraConditions' )
-			->will( $this->returnValue( array( 'type' => 'Foo', 'threshold' => 50 ) ) );
+			->will( $this->returnValue( [ 'type' => 'Foo', 'threshold' => 50 ] ) );
 
-		$methods = array(
+		$methods = [
 			'setName',
 			'setMethod',
 			'addHiddenField',
@@ -70,7 +70,7 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			'addCheckbox',
 			'addQueryParameter',
 			'addPaging'
-		);
+		];
 
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )

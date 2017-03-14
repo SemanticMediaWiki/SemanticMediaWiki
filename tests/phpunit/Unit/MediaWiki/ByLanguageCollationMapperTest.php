@@ -71,60 +71,60 @@ class ByLanguageCollationMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function letterForUppercaseProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'',
 			''
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'F'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			'F'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'テスト',
 			'テ'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\0テスト',
 			'\\'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function letterForIdentityProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'',
 			''
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'F'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			'f'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'テスト',
 			'テ'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\0テスト',
 			'\\'
-		);
+		];
 
 		return $provider;
 	}

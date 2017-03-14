@@ -72,7 +72,7 @@ class JsonTestCaseFileHandler {
 	 */
 	public function requiredToSkipFor( array $case, $identifier ) {
 
-		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : array();
+		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : [];
 		$identifier = strtolower( $identifier );
 
 		$mwVersion = $GLOBALS['wgVersion'];
@@ -108,7 +108,7 @@ class JsonTestCaseFileHandler {
 		$connectorId = strtolower( $connectorId );
 		$meta = $this->getFileContentsFor( 'meta' );
 
-		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : array();
+		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		if ( in_array( $connectorId, array_keys( $skipOn ) ) ) {
 			$this->reasonToSkip = $skipOn[$connectorId];
@@ -141,7 +141,7 @@ class JsonTestCaseFileHandler {
 	public function requiredToSkipForMwVersion( $mwVersion ) {
 
 		$meta = $this->getFileContentsFor( 'meta' );
-		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : array();
+		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		foreach ( $skipOn as $id => $reason ) {
 
@@ -187,7 +187,7 @@ class JsonTestCaseFileHandler {
 
 		// Needs special attention due to NS constant usage
 		if ( $key === 'smwgNamespacesWithSemanticLinks' && isset( $settings[$key] ) ) {
-			$smwgNamespacesWithSemanticLinks = array();
+			$smwgNamespacesWithSemanticLinks = [];
 
 			foreach ( $settings[$key] as $ns => $value ) {
 				$smwgNamespacesWithSemanticLinks[constant( $ns )] = (bool)$value;
@@ -286,7 +286,7 @@ class JsonTestCaseFileHandler {
 		try{
 			$contents = $this->getFileContentsFor( $key );
 		} catch( \Exception $e ) {
-			$contents = array();
+			$contents = [];
 		}
 
 		return $contents;
@@ -312,7 +312,7 @@ class JsonTestCaseFileHandler {
 	 */
 	public function findTaskBeforeTestExecutionByType( $type ) {
 		$contents = $this->getContentsFor( 'beforeTest' );
-		return isset( $contents[$type] ) ? $contents[$type] : array();
+		return isset( $contents[$type] ) ? $contents[$type] : [];
 	}
 
 	/**

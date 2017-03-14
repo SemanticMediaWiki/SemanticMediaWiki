@@ -34,63 +34,63 @@ class SerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$category = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
 
-		$provider['print-cats'] = array(
+		$provider['print-cats'] = [
 			new PrintRequest( PrintRequest::PRINT_CATS, 'Foo' ),
 			false,
 			"?{$category}=Foo"
-		);
+		];
 
-		$provider['print-ccat'] = array(
+		$provider['print-ccat'] = [
 			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', DIWikiPage::newFromText( 'Bar' )->getTitle() ),
 			false,
 			'?Bar=Foo'
-		);
+		];
 
-		$provider['print-this'] = array(
+		$provider['print-this'] = [
 			new PrintRequest( PrintRequest::PRINT_THIS, 'Foo' ),
 			false,
 			'?=Foo#'
-		);
+		];
 
 		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Bar' );
 
-		$provider['print-prop'] = array(
+		$provider['print-prop'] = [
 			new PrintRequest( PrintRequest::PRINT_PROP, 'Foo', $data ),
 			false,
 			'?Bar#=Foo'
-		);
+		];
 
 		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Bar' );
 
-		$provider['print-prop-output'] = array(
+		$provider['print-prop-output'] = [
 			new PrintRequest( PrintRequest::PRINT_PROP, 'Foo', $data, 'foobar' ),
 			false,
 			'?Bar#foobar=Foo'
-		);
+		];
 
 		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Bar' );
 
-		$provider['print-prop-output-parameters-no-show'] = array(
-			new PrintRequest( PrintRequest::PRINT_PROP, 'Foo', $data, 'foobar', array( 'index' => 2 ) ),
+		$provider['print-prop-output-parameters-no-show'] = [
+			new PrintRequest( PrintRequest::PRINT_PROP, 'Foo', $data, 'foobar', [ 'index' => 2 ] ),
 			false,
 			'?Bar#foobar=Foo'
-		);
+		];
 
 		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Bar' );
 
-		$provider['print-prop-output-parameters-show'] = array(
-			new PrintRequest( PrintRequest::PRINT_PROP, 'Foo', $data, 'foobar', array( 'index' => 2 ) ),
+		$provider['print-prop-output-parameters-show'] = [
+			new PrintRequest( PrintRequest::PRINT_PROP, 'Foo', $data, 'foobar', [ 'index' => 2 ] ),
 			true,
 			'?Bar#foobar=Foo|+index=2'
-		);
+		];
 
 		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Modification date' );
 
-		$provider['predefined-property'] = array(
+		$provider['predefined-property'] = [
 			new PrintRequest( PrintRequest::PRINT_PROP, '', $data ),
 			false,
 			'?Modification date#'
-		);
+		];
 
 		return $provider;
 	}

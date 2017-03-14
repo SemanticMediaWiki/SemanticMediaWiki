@@ -52,7 +52,7 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ) )
+			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
@@ -89,7 +89,7 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'setUserValue' ) )
+			->setMethods( [ 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
@@ -108,7 +108,7 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid' ) )
+			->setMethods( [ 'isValid' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
@@ -134,14 +134,14 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setDataValue( $dataValue );
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->deserialize( array() );
+		$instance->deserialize( [] );
 	}
 
 	public function testWikiPageValueOnNonMainNamespace() {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ) )
+			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -173,10 +173,10 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 	public function valueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'\SMW\Query\Language\ValueDescription'
-		);
+		];
 
 		return $provider;
 	}
@@ -184,13 +184,13 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 	public function likeNotLikeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'~Foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'!~Foo'
-		);
+		];
 
 		return $provider;
 	}

@@ -71,7 +71,7 @@ class RandomQueryResultOrderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$query->querymode = Query::MODE_INSTANCES;
 		$query->sort = true;
-		$query->sortkeys = array( 'Population' => 'RANDOM' );
+		$query->sortkeys = [ 'Population' => 'RANDOM' ];
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 

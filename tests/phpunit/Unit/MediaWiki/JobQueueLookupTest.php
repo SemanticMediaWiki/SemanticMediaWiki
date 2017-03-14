@@ -37,7 +37,7 @@ class JobQueueLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'estimateRowCount' )
 			->with( $this->stringContains( 'job' ),
 				$this->anything(),
-				$this->equalTo( array( 'job_cmd' => 'Foo' ) ),
+				$this->equalTo( [ 'job_cmd' => 'Foo' ] ),
 				$this->anything() )
 			->will( $this->returnValue( 1 ) );
 

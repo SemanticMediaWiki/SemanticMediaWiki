@@ -54,18 +54,18 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 
 		// Loaded from foo-partial.json
 		$this->assertEquals(
-			array(
+			[
 				'dataTypeLabels-partial' => 'bar'
-			),
+			],
 			$extraneousLanguage->getDatatypeLabels()
 		);
 
 		// foo-partial.json doesn't contain a `dataTypeAliases` declaration and is
 		// only available in its fallback (foo-fallback.json)
 		$this->assertEquals(
-			array(
+			[
 				'dataTypeAliases-fallback' => 'bar'
-			),
+			],
 			$extraneousLanguage->getDatatypeAliases()
 		);
 	}
