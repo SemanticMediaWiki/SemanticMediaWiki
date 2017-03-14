@@ -82,9 +82,9 @@ class IdToDataItemMatchFinder {
 	 */
 	public function getDataItemsFromList( array $idList, RequestOptions $requestOptions = null ) {
 
-		$conditions = array(
+		$conditions = [
 			'smw_id' => $idList,
-		);
+		];
 
 		if ( $requestOptions !== null ) {
 			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
@@ -94,12 +94,12 @@ class IdToDataItemMatchFinder {
 
 		$rows = $this->connection->select(
 			\SMWSQLStore3::ID_TABLE,
-			array(
+			[
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject'
-			),
+			],
 			$conditions,
 			__METHOD__
 		);
@@ -146,13 +146,13 @@ class IdToDataItemMatchFinder {
 
 		$row = $this->connection->selectRow(
 			\SMWSQLStore3::ID_TABLE,
-			array(
+			[
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject'
-			),
-			array( 'smw_id' => $id ),
+			],
+			[ 'smw_id' => $id ],
 			__METHOD__
 		);
 

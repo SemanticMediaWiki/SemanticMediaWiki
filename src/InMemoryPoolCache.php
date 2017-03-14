@@ -43,7 +43,7 @@ class InMemoryPoolCache {
 	/**
 	 * @var array
 	 */
-	private $poolCacheList = array();
+	private $poolCacheList = [];
 
 	/**
 	 * @since 2.3
@@ -132,10 +132,10 @@ class InMemoryPoolCache {
 	private function computeStats() {
 
 		ksort( $this->poolCacheList );
-		$stats = array();
+		$stats = [];
 
 		foreach ( $this->poolCacheList as $key => $value ) {
-			$stats[$key] = array();
+			$stats[$key] = [];
 
 			$hits = 0;
 			$misses = 0;

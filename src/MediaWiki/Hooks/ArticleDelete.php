@@ -95,7 +95,7 @@ class ArticleDelete implements LoggerAwareInterface {
 		return true;
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

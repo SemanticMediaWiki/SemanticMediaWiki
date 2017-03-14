@@ -18,7 +18,7 @@ use Psr\Log\NullLogger;
  *
  * @author mwjames
  */
-return array(
+return [
 
 	/**
 	 * WikiPage
@@ -77,4 +77,4 @@ return array(
 		return new NullLogger();
 	},
 
-);
+];

@@ -34,7 +34,7 @@ class Search extends SearchEngine {
 
 	private $database = null;
 
-	private $queryCache = array();
+	private $queryCache = [];
 
 	/**
 	 * @param null|SearchEngine $fallbackSearch
@@ -117,7 +117,7 @@ class Search extends SearchEngine {
 
 		if ( !array_key_exists( $term, $this->queryCache ) ) {
 
-			$params = \SMWQueryProcessor::getProcessedParams( array() );
+			$params = \SMWQueryProcessor::getProcessedParams( [] );
 			$query = \SMWQueryProcessor::createQuery( $term, $params );
 
 			$description = $query->getDescription();
@@ -168,7 +168,7 @@ class Search extends SearchEngine {
 				}, $this->namespaces )
 			);
 
-			$description = new Conjunction( array( $query->getDescription(), $namespacesDisjunction ) );
+			$description = new Conjunction( [ $query->getDescription(), $namespacesDisjunction ] );
 
 			$query->setDescription( $description );
 			$query->setOffset( $this->offset );

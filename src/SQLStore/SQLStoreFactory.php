@@ -222,10 +222,10 @@ class SQLStoreFactory {
 
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
 
-		$cacheOptions = $cacheFactory->newCacheOptions( array(
+		$cacheOptions = $cacheFactory->newCacheOptions( [
 			'useCache' => $useCache,
 			'ttl'      => $cacheExpiry
-		) );
+		] );
 
 		$cachedListLookup = new CachedListLookup(
 			$listLookup,

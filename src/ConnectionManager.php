@@ -18,7 +18,7 @@ class ConnectionManager {
 	 *
 	 * @var array
 	 */
-	private static $connectionProviderTypeIdMap = array();
+	private static $connectionProviderTypeIdMap = [];
 
 	/**
 	 * @since 2.1

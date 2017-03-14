@@ -74,7 +74,7 @@ abstract class DataItemHandler {
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array();
+		return [];
 	}
 
 	/**

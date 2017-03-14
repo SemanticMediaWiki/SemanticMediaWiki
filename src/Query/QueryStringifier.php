@@ -31,35 +31,35 @@ class QueryStringifier {
 	 * @return string
 	 */
 	public static function get( Query $query ) {
-		$serialized = array();
+		$serialized = [];
 
 		$serialized['conditions'] = $query->getQueryString();
 
-		$serialized['parameters'] = array(
+		$serialized['parameters'] = [
 			'limit=' . $query->getLimit(),
 			'offset=' . $query->getOffset(),
 			'mainlabel=' . $query->getMainlabel()
-		);
+		];
 
 		if ( $query->getQuerySource() !== null && $query->getQuerySource() !== '' ) {
-			$serialized['parameters'] = array_merge( $serialized['parameters'], array( 'source=' . $query->getQuerySource() ) );
+			$serialized['parameters'] = array_merge( $serialized['parameters'], [ 'source=' . $query->getQuerySource() ] );
 		}
 
 		list( $serialized['sort'], $serialized['order'] ) = self::doSerializeSortKeys( $query );
 		$serialized['printouts'] = self::doSerializePrintouts( $query );
 
 		$encoded = $serialized['conditions'] . '|' .
-			( $serialized['printouts'] !== array() ? implode( '|', $serialized['printouts'] ) . '|' : '' ) .
+			( $serialized['printouts'] !== [] ? implode( '|', $serialized['printouts'] ) . '|' : '' ) .
 			implode( '|', $serialized['parameters'] ) .
-			( $serialized['sort'] !==  array() ? '|sort=' . implode( ',', $serialized['sort'] ) : '' ) .
-			( $serialized['order'] !== array() ? '|order=' . implode( ',', $serialized['order'] ) : '' );
+			( $serialized['sort'] !==  [] ? '|sort=' . implode( ',', $serialized['sort'] ) : '' ) .
+			( $serialized['order'] !== [] ? '|order=' . implode( ',', $serialized['order'] ) : '' );
 
 		return $encoded;
 	}
 
 	private static function doSerializePrintouts( $query ) {
 
-		$printouts = array();
+		$printouts = [];
 
 		if ( $query->getExtraPrintouts() === null ) {
 			return $printouts;
@@ -79,11 +79,11 @@ class QueryStringifier {
 
 	private static function doSerializeSortKeys( $query ) {
 
-		$sort = array();
-		$order = array();
+		$sort = [];
+		$order = [];
 
 		if ( $query->getSortKeys() === null ) {
-			return array( $sort, $order );
+			return [ $sort, $order ];
 		}
 
 		foreach ( $query->getSortKeys() as $key => $value ) {
@@ -96,7 +96,7 @@ class QueryStringifier {
 			$order[] = strtolower( $value );
 		}
 
-		return array( $sort, $order );
+		return [ $sort, $order ];
 	}
 
 }

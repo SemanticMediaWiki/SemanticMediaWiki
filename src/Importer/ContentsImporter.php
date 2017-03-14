@@ -101,7 +101,7 @@ class ContentsImporter implements MessageReporterAware {
 
 		$indent = '   ...';
 
-		if ( $importContents->getErrors() !== array() ) {
+		if ( $importContents->getErrors() !== [] ) {
 			return $this->messageReporter->reportMessage( "$indent ... " . implode( ',', $importContents->getErrors() ) ." ...\n" );
 		}
 

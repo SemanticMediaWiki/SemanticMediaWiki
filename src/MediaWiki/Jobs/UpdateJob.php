@@ -43,7 +43,7 @@ class UpdateJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	function __construct( Title $title, $params = array() ) {
+	function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'SMW\UpdateJob', $title, $params );
 		$this->removeDuplicates = true;
 
@@ -188,7 +188,7 @@ class UpdateJob extends JobBase {
 
 		$dataItems = $this->applicationFactory->getStore()->getPropertyValues( $wikiPage, new DIProperty( '_MDAT' ) );
 
-		if ( $dataItems !== array() ) {
+		if ( $dataItems !== [] ) {
 			return end( $dataItems )->getMwTimestamp( TS_MW );
 		}
 

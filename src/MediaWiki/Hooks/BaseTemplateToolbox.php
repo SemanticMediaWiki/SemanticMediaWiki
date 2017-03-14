@@ -67,18 +67,18 @@ class BaseTemplateToolbox {
 
 	protected function performUpdate() {
 
-		$this->toolbox['smw-browse'] = array(
+		$this->toolbox['smw-browse'] = [
 			'text' => wfMessage( 'smw_browselink' )->text(),
 			'href' => SpecialPage::getTitleFor( 'Browse', ':' . $this->encodePrefixedDBkey() )->getLocalUrl(),
 			'id'   => 't-smwbrowselink',
 			'rel'  => 'smw-browse'
-		);
+		];
 
 		return true;
 	}
 
 	private function encodePrefixedDBkey() {
-		return Infolink::encodeParameters( array( $this->skinTemplate->getSkin()->getTitle()->getPrefixedDBkey() ), true );
+		return Infolink::encodeParameters( [ $this->skinTemplate->getSkin()->getTitle()->getPrefixedDBkey() ], true );
 	}
 
 	private function isEnabledNamespace( Title $title ) {

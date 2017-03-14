@@ -98,15 +98,15 @@ class QueryReferenceBacklinks {
 		}
 
 		$localURL = \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL(
-			array(
+			[
 				 'property' => $property->getLabel(),
 				 'value'    => $subject->getTitle()->getPrefixedText()
-			)
+			]
 		);
 
 		$html .= \Html::element(
 			'a',
-			array( 'href' => $localURL ),
+			[ 'href' => $localURL ],
 			Message::get( 'smw_browse_more' )
 		);
 

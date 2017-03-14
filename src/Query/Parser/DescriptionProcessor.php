@@ -44,7 +44,7 @@ class DescriptionProcessor {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @since 2.4
@@ -70,7 +70,7 @@ class DescriptionProcessor {
 	 * @since 2.4
 	 */
 	public function clear() {
-		$this->errors = array();
+		$this->errors = [];
 	}
 
 	/**
@@ -236,7 +236,7 @@ class DescriptionProcessor {
 	private function newConjunctionFor( $currentDescription, $newDescription ) {
 
 		if ( $this->queryFeatures & SMW_CONJUNCTION_QUERY ) {
-			return $this->descriptionFactory->newConjunction( array( $currentDescription, $newDescription ) );
+			return $this->descriptionFactory->newConjunction( [ $currentDescription, $newDescription ] );
 		}
 
 		$this->addErrorWithMsgKey( 'smw_noconjunctions', $newDescription->getQueryString() );
@@ -247,7 +247,7 @@ class DescriptionProcessor {
 	private function newDisjunctionFor( $currentDescription, $newDescription ) {
 
 		if ( $this->queryFeatures & SMW_DISJUNCTION_QUERY ) {
-			return $this->descriptionFactory->newDisjunction( array( $currentDescription, $newDescription ) );
+			return $this->descriptionFactory->newDisjunction( [ $currentDescription, $newDescription ] );
 		}
 
 		$this->addErrorWithMsgKey( 'smw_nodisjunctions', $newDescription->getQueryString() );

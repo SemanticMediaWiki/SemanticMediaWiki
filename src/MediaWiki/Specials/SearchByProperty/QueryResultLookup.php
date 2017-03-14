@@ -62,15 +62,15 @@ class QueryResultLookup {
 			$requestOptions
 		);
 
-		$results = array();
+		$results = [];
 
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		foreach ( $queryBacklinks as $result ) {
-			$results[] = array(
+			$results[] = [
 				$dataValueFactory->newDataValueByItem( DIWikiPage::doUnserialize( $result ), null ),
 				$pageRequestOptions->value
-			);
+			];
 		}
 
 		return $results;
@@ -97,15 +97,15 @@ class QueryResultLookup {
 			$res = $this->doQueryForExactValue( $pageRequestOptions, $requestOptions );
 		}
 
-		$results = array();
+		$results = [];
 
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		foreach ( $res as $result ) {
-			$results[] = array(
+			$results[] = [
 				$dataValueFactory->newDataValueByItem( $result, null ),
 				$pageRequestOptions->value
-			);
+			];
 		}
 
 		return $results;
@@ -154,27 +154,27 @@ class QueryResultLookup {
 		$query->setLimit( $pageRequestOptions->limit );
 		$query->setOffset( $pageRequestOptions->offset );
 		$query->sort = true;
-		$query->sortkeys = array(
+		$query->sortkeys = [
 			$pageRequestOptions->property->getDataItem()->getKey() => $sortOrder
-		);
+		];
 
 		// Note: printrequests change the caption of properties they
 		// get (they expect properties to be given to them).
 		// Since we want to continue using the property for our
 		// purposes, we give a clone to the print request.
-		$printouts = array(
+		$printouts = [
 			new PrintRequest( PrintRequest::PRINT_THIS, '' ),
 			new PrintRequest( PrintRequest::PRINT_PROP, '', clone $pageRequestOptions->property )
-		);
+		];
 
 		$query->setExtraPrintouts( $printouts );
 
 		$queryResults = $this->store->getQueryResult( $query );
 
-		$result = array();
+		$result = [];
 
 		while ( $resultArrays = $queryResults->getNext() ) {
-			$r = array();
+			$r = [];
 
 			foreach ( $resultArrays as $resultArray ) {
 				$r[] = $resultArray->getNextDataValue();

@@ -91,7 +91,7 @@ class TempChangeOpStore implements LoggerAwareInterface {
 
 		$orderedDiffByTable = $compositePropertyTableDiffIterator->getOrderedDiffByTable();
 
-		if ( $orderedDiffByTable === array() ) {
+		if ( $orderedDiffByTable === [] ) {
 			return null;
 		}
 
@@ -127,11 +127,11 @@ class TempChangeOpStore implements LoggerAwareInterface {
 		$start = microtime( true );
 
 		$diffByTable = $this->cache->fetch( $slot );
-		$tableChangeOps = array();
+		$tableChangeOps = [];
 
 		if ( $diffByTable === false || $diffByTable === null ) {
 			$this->log( __METHOD__ . ' unknown slot :: '. $slot );
-			return array();
+			return [];
 		}
 
 		foreach ( $diffByTable as $tblName => $diff ) {
@@ -148,7 +148,7 @@ class TempChangeOpStore implements LoggerAwareInterface {
 		return $tableChangeOps;
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

@@ -48,7 +48,7 @@ class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
 			return new ThingDescription();
 		}
 
-		$subdescriptions = array();
+		$subdescriptions = [];
 		$values = $this->dataValue->getValuesFromString( $value );
 
 		$valueIndex = 0; // index in value array
@@ -75,7 +75,7 @@ class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
 			++$propertyIndex;
 		}
 
-		if ( $subdescriptions === array() ) {
+		if ( $subdescriptions === [] ) {
 			$this->addError( wfMessage( 'smw_novalues' )->text() );
 		}
 

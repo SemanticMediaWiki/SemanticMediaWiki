@@ -108,10 +108,10 @@ class RedirectInfoStore {
 		$row = $this->connection->selectRow(
 			self::TABLENAME,
 			'o_id',
-			array(
+			[
 				's_title' => $title,
 				's_namespace' => $namespace
-			),
+			],
 			__METHOD__
 		);
 
@@ -122,10 +122,10 @@ class RedirectInfoStore {
 
 		$this->connection->insert(
 			self::TABLENAME,
-			array(
+			[
 				's_title' => $title,
 				's_namespace' => $namespace,
-				'o_id' => $id ),
+				'o_id' => $id ],
 			__METHOD__
 		);
 	}
@@ -134,9 +134,9 @@ class RedirectInfoStore {
 
 		$this->connection->delete(
 			self::TABLENAME,
-			array(
+			[
 				's_title' => $title,
-				's_namespace' => $namespace ),
+				's_namespace' => $namespace ],
 			__METHOD__
 		);
 	}

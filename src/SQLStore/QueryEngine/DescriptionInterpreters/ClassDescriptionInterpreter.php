@@ -56,7 +56,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		$cqid = QuerySegment::$qnum;
 		$cquery = new QuerySegment();
 		$cquery->type = QuerySegment::Q_CLASS_HIERARCHY;
-		$cquery->joinfield = array();
+		$cquery->joinfield = [];
 
 		foreach ( $description->getCategories() as $category ) {
 

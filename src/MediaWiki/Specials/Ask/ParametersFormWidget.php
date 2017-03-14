@@ -47,7 +47,7 @@ class ParametersFormWidget {
 
 		$definitions = QueryProcessor::getFormatParameters( $format );
 
-		$optionsHtml = array();
+		$optionsHtml = [];
 
 		/**
 		 * @var ParamProcessor\ParamDefinition $definition
@@ -76,11 +76,11 @@ class ParametersFormWidget {
 			$optionsHtml[] =
 				'<td>' .
 				Html::rawElement( 'span',
-					array(
+					[
 						'class'     => $this->isTooltipDisplay == true ? 'smw-ask-info' : '',
 						'word-wrap' => 'break-word',
 						'data-info' => $dataInfo
-					),
+					],
 					htmlspecialchars( $name ) . ': ' ) .
 				'</td>' .
 				$this->showFormatOption( $definition, $currentValue );
@@ -93,17 +93,17 @@ class ParametersFormWidget {
 
 		// Top info text for a collapsed option box
 		if ( $this->isTooltipDisplay == true ){
-			$resultHtml .= Html::element('div', array(
+			$resultHtml .= Html::element('div', [
 				'style' => 'margin-bottom:10px;'
-				), wfMessage( 'smw-ask-otheroptions-info')->text()
+				], wfMessage( 'smw-ask-otheroptions-info')->text()
 			);
 		}
 
 		// Table
-		$resultHtml .= Html::openElement( 'table', array(
+		$resultHtml .= Html::openElement( 'table', [
 			'class' => 'smw-ask-otheroptions',
 			'width' => '100%'
-			)
+			]
 		);
 		$resultHtml .= Html::openElement( 'tbody' );
 
@@ -115,9 +115,9 @@ class ParametersFormWidget {
 
 			// Create table row
 			if ( $i % 3 == 0 ){
-			$resultHtml .= Html::rawElement( 'tr', array(
+			$resultHtml .= Html::rawElement( 'tr', [
 				'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#eee' )
-				), $rowHtml
+				], $rowHtml
 			);
 			$rowHtml = '';
 			$n++;
@@ -125,9 +125,9 @@ class ParametersFormWidget {
 		}
 
 		// Ensure left over elements are collected as well
-		$resultHtml .= Html::rawElement( 'tr', array(
+		$resultHtml .= Html::rawElement( 'tr', [
 			'style' => 'background: ' . ( $n % 2 == 0 ? '#eee' : 'white' )
-			), $rowHtml
+			], $rowHtml
 		);
 
 		$resultHtml .= Html::closeElement( 'tbody' );
@@ -162,15 +162,15 @@ class ParametersFormWidget {
 		if ( !$this->isTooltipDisplay ) {
 			$tooltipInfo = $definition->getMessage() !== null ? wfMessage( $definition->getMessage() )->parse() : '';
 
-			$description =  Html::rawElement( 'span', array(
+			$description =  Html::rawElement( 'span', [
 				'class' => 'smw-ask-parameter-description'
-				), '<br />' . $tooltipInfo
+				], '<br />' . $tooltipInfo
 			);
 		}
 
-		return Html::rawElement( 'td', array(
+		return Html::rawElement( 'td', [
 			'overflow' => 'hidden'
-			), $input->getHtml() . $description
+			], $input->getHtml() . $description
 		);
 	}
 

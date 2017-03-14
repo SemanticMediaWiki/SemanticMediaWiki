@@ -71,7 +71,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		if ( $this->querySegmentListBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
 
 			$this->querySegmentListBuilder->addError(
-				array( 'smw-query-condition-circular', $description->getQueryString() )
+				[ 'smw-query-condition-circular', $description->getQueryString() ]
 			);
 
 			return $query;
@@ -120,7 +120,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 				}
 			} else {
 				$this->querySegmentListBuilder->addError(
-					array( 'smw_concept_cache_miss', $concept->getDBkey() )
+					[ 'smw_concept_cache_miss', $concept->getDBkey() ]
 				);
 			}
 		} // else: no cache, no description (this may happen); treat like empty concept
@@ -140,8 +140,8 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	private function getConceptForId( $db, $id ) {
 		return $db->selectRow(
 			'smw_fpt_conc',
-			array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ),
-			array( 's_id' => $id ),
+			[ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ],
+			[ 's_id' => $id ],
 			__METHOD__
 		);
 	}
@@ -154,7 +154,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		$queryParser = new QueryParser();
 
 		return $queryParser->getQueryDescription(
-			str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $conceptQuery )
+			str_replace( [ '&lt;', '&gt;', '&amp;' ], [ '<', '>', '&' ], $conceptQuery )
 		);
 	}
 
@@ -163,7 +163,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->querySegmentListBuilder->addError(
-					array( 'smw-query-condition-circular', $description->getQueryString() )
+					[ 'smw-query-condition-circular', $description->getQueryString() ]
 				);
 				return;
 			}

@@ -72,7 +72,7 @@ function smwfNormalTitleText( $text ) {
  * @param string $text
  */
 function smwfXMLContentEncode( $text ) {
-	return str_replace( array( '&', '<', '>' ), array( '&amp;', '&lt;', '&gt;' ), Sanitizer::decodeCharReferences( $text ) );
+	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ) );
 }
 
 /**
@@ -107,7 +107,7 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 
 	$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
-	if (  $messages !== array() ) {
+	if (  $messages !== [] ) {
 
 		if ( $escape ) {
 			$messages = array_map( 'htmlspecialchars', $messages );
@@ -125,17 +125,17 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 		}
 
 		$errorList = str_replace(
-			array( '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>', '[',  ),
-			array( '&', '<', '>', ' ', '', '', '&#x005B;' ),
+			[ '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>', '[',  ],
+			[ '&', '<', '>', ' ', '', '', '&#x005B;' ],
 			$errorList
 		);
 
 		// Type will be converted internally
 		$highlighter = SMW\Highlighter::factory( $type );
-		$highlighter->setContent( array (
+		$highlighter->setContent(  [
 			'caption'   => null,
 			'content'   => $errorList
-		) );
+		] );
 
 		return $highlighter->getHtml();
 	} else {

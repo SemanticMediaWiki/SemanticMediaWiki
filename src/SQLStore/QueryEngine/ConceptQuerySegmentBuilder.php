@@ -60,7 +60,7 @@ class ConceptQuerySegmentBuilder {
 		QuerySegment::$qnum = 0;
 
 		$querySegmentListBuilder = $this->querySegmentListBuilder;
-		$querySegmentListBuilder->setSortKeys( array() );
+		$querySegmentListBuilder->setSortKeys( [] );
 
 		$qp = new QueryParser( $this->conceptFeatures );
 

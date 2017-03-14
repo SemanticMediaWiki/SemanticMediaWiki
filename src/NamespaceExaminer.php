@@ -20,7 +20,7 @@ class NamespaceExaminer {
 	private static $instance = null;
 
 	/** @var array */
-	private $registeredNamespaces = array();
+	private $registeredNamespaces = [];
 
 	/**
 	 * @since 1.9

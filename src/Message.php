@@ -45,7 +45,7 @@ class Message {
 	/**
 	 * @var array
 	 */
-	private static $messageHandler = array();
+	private static $messageHandler = [];
 
 	/**
 	 * @since 2.4
@@ -197,7 +197,7 @@ class Message {
 
 		$message = call_user_func_array(
 			$handler,
-			array( $parameters, $language )
+			[ $parameters, $language ]
 		);
 
 		self::getCache()->save( $hash, $message );

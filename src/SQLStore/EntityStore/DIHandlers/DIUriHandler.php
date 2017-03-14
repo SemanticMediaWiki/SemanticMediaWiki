@@ -27,10 +27,10 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array(
+		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_serialized' => FieldType::FIELD_TITLE
-		);
+		];
 	}
 
 	/**
@@ -39,10 +39,10 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array(
+		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_serialized' => FieldType::FIELD_TITLE
-		);
+		];
 	}
 
 	/**
@@ -51,7 +51,7 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return array( 'o_serialized' => rawurldecode( $dataItem->getSerialization() ) );
+		return [ 'o_serialized' => rawurldecode( $dataItem->getSerialization() ) ];
 	}
 
 	/**
@@ -69,10 +69,10 @@ class DIUriHandler extends DataItemHandler {
 			$text = pg_escape_bytea( $text );
 		}
 
-		return array(
+		return [
 			'o_blob' => $text,
 			'o_serialized' => $serialization,
-		);
+		];
 	}
 
 	/**

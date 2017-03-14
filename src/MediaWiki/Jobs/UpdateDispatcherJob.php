@@ -31,7 +31,7 @@ class UpdateDispatcherJob extends JobBase {
 	 * @param array $params job parameters
 	 * @param integer $id job id
 	 */
-	public function __construct( Title $title, $params = array(), $id = 0 ) {
+	public function __construct( Title $title, $params = [], $id = 0 ) {
 		parent::__construct( 'SMW\UpdateDispatcherJob', $title, $params, $id );
 		$this->removeDuplicates = true;
 
@@ -70,11 +70,11 @@ class UpdateDispatcherJob extends JobBase {
 		}
 
 		// Push generated job list into a secondary dispatch run
-		if ( $this->jobs !== array() ) {
+		if ( $this->jobs !== [] ) {
 			$this->createSecondaryDispatchRunWithChunkedJobList();
 		}
 
-		Hooks::run( 'SMW::Job::AfterUpdateDispatcherJobComplete', array( $this ) );
+		Hooks::run( 'SMW::Job::AfterUpdateDispatcherJobComplete', [ $this ] );
 
 		return true;
 	}
@@ -86,7 +86,7 @@ class UpdateDispatcherJob extends JobBase {
 
 			$job = new self(
 				Title::newFromText( 'UpdateDispatcherChunkedJobList::' . $hash ),
-				array( 'job-list' => $jobList )
+				[ 'job-list' => $jobList ]
 			);
 
 			$job->insert();
@@ -107,7 +107,7 @@ class UpdateDispatcherJob extends JobBase {
 	}
 
 	private function dispatchUpdateForProperty( DIProperty $property ) {
-		$this->addUpdateJobsForProperties( array( $property ) );
+		$this->addUpdateJobsForProperties( [ $property ] );
 		$this->addUpdateJobsForSubjectsThatContainTypeError();
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
@@ -152,7 +152,7 @@ class UpdateDispatcherJob extends JobBase {
 		);
 	}
 
-	private function addUniqueSubjectsToUpdateJobList( array $subjects = array() ) {
+	private function addUniqueSubjectsToUpdateJobList( array $subjects = [] ) {
 
 		foreach ( $subjects as $subject ) {
 

@@ -109,7 +109,7 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 			$requestOptions
 		);
 
-		return $result !== array();
+		return $result !== [];
 	}
 
 	/**
@@ -135,7 +135,7 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 			$requestOptions
 		);
 
-		return $result !== array();
+		return $result !== [];
 	}
 
 	/**
@@ -184,7 +184,7 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 		return $result;
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

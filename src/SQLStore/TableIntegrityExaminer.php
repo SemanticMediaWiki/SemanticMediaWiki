@@ -37,7 +37,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	/**
 	 * @var array
 	 */
-	private $predefinedProperties = array();
+	private $predefinedProperties = [];
 
 	/**
 	 * @since 2.5
@@ -141,24 +141,24 @@ class TableIntegrityExaminer implements MessageReporterAware {
 
 			$connection->replace(
 				SQLStore::ID_TABLE,
-				array( 'smw_id' ),
-				array(
+				[ 'smw_id' ],
+				[
 					'smw_id' => $id,
 					'smw_title' => $property->getKey(),
 					'smw_namespace' => SMW_NS_PROPERTY,
 					'smw_iw' => $this->store->getObjectIds()->getPropertyInterwiki( $property ),
 					'smw_subobject' => '',
 					'smw_sortkey' => $property->getCanonicalLabel()
-				),
+				],
 				__METHOD__
 			);
 
 			$row = $connection->selectRow(
 				SQLStore::PROPERTY_STATISTICS_TABLE,
-				array(
+				[
 					'p_id'
-				),
-				array( 'p_id' => $id ),
+				],
+				[ 'p_id' => $id ],
 				__METHOD__
 			);
 
@@ -169,10 +169,10 @@ class TableIntegrityExaminer implements MessageReporterAware {
 
 			$connection->insert(
 				SQLStore::PROPERTY_STATISTICS_TABLE,
-				array(
+				[
 					'p_id' => $id,
 					'usage_count' => 0
-				),
+				],
 				__METHOD__
 			);
 		}
@@ -203,14 +203,14 @@ class TableIntegrityExaminer implements MessageReporterAware {
 
 		$connection->insert(
 			SQLStore::ID_TABLE,
-			array(
+			[
 				'smw_id' => $expectedIdUpperbound,
 				'smw_title' => '',
 				'smw_namespace' => 0,
 				'smw_iw' => SMW_SQL3_SMWBORDERIW,
 				'smw_subobject' => '',
 				'smw_sortkey' => ''
-			),
+			],
 			__METHOD__
 		);
 

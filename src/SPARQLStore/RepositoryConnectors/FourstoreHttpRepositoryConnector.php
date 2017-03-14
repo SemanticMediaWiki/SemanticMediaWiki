@@ -40,7 +40,7 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Accept: application/sparql-results+xml,application/xml;q=0.8' ));
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, ['Accept: application/sparql-results+xml,application/xml;q=0.8' ]);
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
@@ -81,8 +81,8 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
-		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", array(), $extraNamespaces );
+	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ) {
+		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", [], $extraNamespaces );
 		$success = ( $affectedObjects->getErrorCode() == RepositoryResult::ERROR_NOERROR );
 
 		foreach ( $affectedObjects as $expElements ) {
@@ -155,7 +155,7 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 		$parameterString = "update=" . urlencode( $sparql );
 
 		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded' ) );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded' ] );
 
 		$this->httpRequest->execute();
 

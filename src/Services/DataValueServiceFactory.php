@@ -103,7 +103,7 @@ class DataValueServiceFactory {
 	 *
 	 * @return mixed
 	 */
-	public function newExtraneousFunctionByName( $serviceName, array $parameters = array() ) {
+	public function newExtraneousFunctionByName( $serviceName, array $parameters = [] ) {
 		return $this->containerBuilder->create( self::TYPE_EXT_FUNCTION . $serviceName, $parameters );
 	}
 

@@ -20,7 +20,7 @@ class FulltextSearchTableRebuildJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
+	public function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'SMW\FulltextSearchTableRebuildJob', $title, $params );
 	}
 
@@ -51,14 +51,14 @@ class FulltextSearchTableRebuildJob extends JobBase {
 
 	private function createJobsFromTableList( $tableList ) {
 
-		if ( $tableList === array() ) {
+		if ( $tableList === [] ) {
 			return;
 		}
 
 		foreach ( $tableList as $tableName ) {
-			$fulltextSearchTableRebuildJob = new self( $this->getTitle(), array(
+			$fulltextSearchTableRebuildJob = new self( $this->getTitle(), [
 				'table' => $tableName
-			) );
+			] );
 
 			$fulltextSearchTableRebuildJob->insert();
 		}

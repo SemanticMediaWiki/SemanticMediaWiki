@@ -32,7 +32,7 @@ class ClassDescription extends Description {
 	 */
 	public function __construct( $content ) {
 		if ( $content instanceof DIWikiPage ) {
-			$this->m_diWikiPages = array( $content );
+			$this->m_diWikiPages = [ $content ];
 		} elseif ( is_array( $content ) ) {
 			$this->m_diWikiPages = $content;
 		} else {
@@ -55,7 +55,7 @@ class ClassDescription extends Description {
 	 */
 	public function getFingerprint() {
 
-		$hash = array();
+		$hash = [];
 
 		foreach ( $this->m_diWikiPages as $subject ) {
 			$hash[$subject->getHash()] = true;

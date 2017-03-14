@@ -95,7 +95,7 @@ class PermissionPthValidator {
 			return true;
 		}
 
-		$errors[] = array( 'smw-patternedit-protection', 'smw-patternedit' );
+		$errors[] = [ 'smw-patternedit-protection', 'smw-patternedit' ];
 
 		return false;
 	}
@@ -107,7 +107,7 @@ class PermissionPthValidator {
 			return true;
 		}
 
-		$errors[] = array( 'smw-edit-protection', $this->editProtectionRight );
+		$errors[] = [ 'smw-edit-protection', $this->editProtectionRight ];
 
 		return false;
 	}

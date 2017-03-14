@@ -134,7 +134,7 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

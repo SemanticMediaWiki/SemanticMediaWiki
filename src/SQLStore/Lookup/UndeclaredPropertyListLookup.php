@@ -63,7 +63,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		$propertyTable = $this->getPropertyTableForType( $this->defaultPropertyType );
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
-			return array();
+			return [];
 		}
 
 		return $this->buildPropertyList( $this->selectPropertiesFromTable( $propertyTable ) );
@@ -104,29 +104,29 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		$options['ORDER BY'] = 'count DESC';
 		$options['GROUP BY'] = 'smw_title';
 
-		$conditions = array(
+		$conditions = [
 			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
 			'page_id IS NULL',
 			'smw_iw' => '',
 			'smw_subobject' => ''
-		);
+		];
 
 		$db = $this->store->getConnection( 'mw.db' );
 
 		$res = $db->select(
-			array( $idTable, 'page', $propertyTable->getName() ),
-			array( 'smw_title', 'COUNT(*) as count' ),
+			[ $idTable, 'page', $propertyTable->getName() ],
+			[ 'smw_title', 'COUNT(*) as count' ],
 			$conditions,
 			__METHOD__,
 			$options,
-			array(
-				$idTable => array(
+			[
+				$idTable => [
 					'INNER JOIN', 'p_id=smw_id'
-				),
-				'page' => array(
-					'LEFT JOIN', array( 'page_namespace=' . $db->addQuotes( SMW_NS_PROPERTY ), 'page_title=smw_title'  )
-				)
-			)
+				],
+				'page' => [
+					'LEFT JOIN', [ 'page_namespace=' . $db->addQuotes( SMW_NS_PROPERTY ), 'page_title=smw_title'  ]
+				]
+			]
 		);
 
 		return $res;
@@ -134,10 +134,10 @@ class UndeclaredPropertyListLookup implements ListLookup {
 
 	private function buildPropertyList( $res ) {
 
-		$result = array();
+		$result = [];
 
 		foreach ( $res as $row ) {
-			$result[] = array( $this->addPropertyFor( $row->smw_title ), $row->count );
+			$result[] = [ $this->addPropertyFor( $row->smw_title ), $row->count ];
 		}
 
 		return $result;
@@ -148,7 +148,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		try {
 			$property = new DIProperty( $title );
 		} catch ( PropertyLabelNotResolvedException $e ) {
-			$property = new DIError( new \Message( 'smw_noproperty', array( $title ) ) );
+			$property = new DIError( new \Message( 'smw_noproperty', [ $title ] ) );
 		}
 
 		return $property;

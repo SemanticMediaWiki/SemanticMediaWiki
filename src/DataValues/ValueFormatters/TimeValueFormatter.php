@@ -376,7 +376,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	private function hintCalendarModel( $dataItem ) {
 
 		if ( $this->dataValue->isEnabledFeature( SMW_DV_TIMEV_CM ) && $dataItem->getCalendarModel() !== DITime::CM_GREGORIAN ) {
-			return ' ' . \Html::rawElement( 'sup', array(), $dataItem->getCalendarModelLiteral() );
+			return ' ' . \Html::rawElement( 'sup', [], $dataItem->getCalendarModelLiteral() );
 		}
 
 		return '';

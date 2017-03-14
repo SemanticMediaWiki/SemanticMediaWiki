@@ -104,10 +104,10 @@ class PropertyPageMessageHtmlBuilder {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => 'smw-property-content-violation-message',
 				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-'. $type : '' )
-			),
+			],
 			call_user_func_array( 'wfMessage', $violationMessage )->parse()
 		);
 	}
@@ -116,10 +116,10 @@ class PropertyPageMessageHtmlBuilder {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => 'smw-property-content-editprotection-message',
 				'class' => 'plainlinks smw-callout smw-callout-warning'
-			),
+			],
 			wfMessage( 'smw-edit-protection', $GLOBALS['smwgEditProtectionRight'] )->parse()
 		);
 	}
@@ -134,10 +134,10 @@ class PropertyPageMessageHtmlBuilder {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => 'smw-property-content-introductory-message',
 				'class' => 'plainlinks smw-callout smw-callout-info'
-			),
+			],
 			$message
 		);
 	}
@@ -145,10 +145,10 @@ class PropertyPageMessageHtmlBuilder {
 	private function createFixedTableMessage( $propertyName ) {
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => 'smw-property-content-fixedtable-message',
 				'class' => 'plainlinks smw-callout smw-callout-info'
-			),
+			],
 			wfMessage( 'smw-property-userdefined-fixedtable', $propertyName )->parse()
 		);
 	}
@@ -190,10 +190,10 @@ class PropertyPageMessageHtmlBuilder {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => 'smw-property-content-predefined-message',
 				'class' => 'smw-property-predefined-intro plainlinks'
-			),
+			],
 			$message
 		);
 	}

@@ -51,7 +51,7 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	/**
 	 * @var array
 	 */
-	private static $pendingUpdates = array();
+	private static $pendingUpdates = [];
 
 	/**
 	 * @var string|null
@@ -71,7 +71,7 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	/**
 	 * @var array
 	 */
-	private static $queueList = array();
+	private static $queueList = [];
 
 	/**
 	 * @since 2.4
@@ -196,7 +196,7 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 			DeferredUpdates::addUpdate( $update );
 		}
 
-		self::$pendingUpdates = array();
+		self::$pendingUpdates = [];
 	}
 
 	/**
@@ -245,7 +245,7 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 		$this->doUpdate();
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

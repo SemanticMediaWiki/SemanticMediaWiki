@@ -83,7 +83,7 @@ class FieldType {
 	 * @param string|array $type
 	 * @param array $fieldTypes
 	 */
-	public static function mapType( $type, $fieldTypes = array() ) {
+	public static function mapType( $type, $fieldTypes = [] ) {
 
 		$fieldType = $type;
 		$auxilary = '';

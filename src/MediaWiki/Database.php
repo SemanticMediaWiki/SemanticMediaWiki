@@ -44,7 +44,7 @@ class Database {
 	/**
 	 * @var array
 	 */
-	private $transactionQueue = array();
+	private $transactionQueue = [];
 
 	/**
 	 * @var string
@@ -185,7 +185,7 @@ class Database {
 	 * @return ResultWrapper
 	 * @throws UnexpectedValueException
 	 */
-	public function select( $tableName, $fields, $conditions = '', $fname, array $options = array(), $joinConditions = array() ) {
+	public function select( $tableName, $fields, $conditions = '', $fname, array $options = [], $joinConditions = [] ) {
 
 		$tablePrefix = null;
 
@@ -310,7 +310,7 @@ class Database {
 	 *
 	 * @since 1.9.1
 	 */
-	public function selectRow( $table, $vars, $conds, $fname = __METHOD__, $options = array(), $joinConditions = array() ) {
+	public function selectRow( $table, $vars, $conds, $fname = __METHOD__, $options = [], $joinConditions = [] ) {
 		return $this->readConnection()->selectRow(
 			$table,
 			$vars,
@@ -413,7 +413,7 @@ class Database {
 	 *
 	 * @since 1.9.1
 	 */
-	public function insert( $table, $rows, $fname = __METHOD__, $options = array() ) {
+	public function insert( $table, $rows, $fname = __METHOD__, $options = [] ) {
 		return $this->writeConnection()->insert( $table, $rows, $fname, $options );
 	}
 
@@ -422,7 +422,7 @@ class Database {
 	 *
 	 * @since 1.9.1
 	 */
-	function update( $table, $values, $conds, $fname = __METHOD__, $options = array() ) {
+	function update( $table, $values, $conds, $fname = __METHOD__, $options = [] ) {
 		return $this->writeConnection()->update( $table, $values, $conds, $fname, $options );
 	}
 
@@ -472,7 +472,7 @@ class Database {
 	 *
 	 * @since 1.9.2
 	 */
-	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = array() ) {
+	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = [] ) {
 		return $this->readConnection()->selectField( $table, $fieldName, $conditions, $fname, $options );
 	}
 
@@ -481,7 +481,7 @@ class Database {
 	 *
 	 * @since 2.1
 	 */
-	public function estimateRowCount( $table, $vars = '*', $conditions = '', $fname = __METHOD__, $options = array() ) {
+	public function estimateRowCount( $table, $vars = '*', $conditions = '', $fname = __METHOD__, $options = [] ) {
 		return $this->readConnection()->estimateRowCount(
 			$table,
 			$vars,

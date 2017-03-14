@@ -58,7 +58,7 @@ class DataRebuilder {
 	/**
 	 * @var array
 	 */
-	private $exceptionLog = array();
+	private $exceptionLog = [];
 
 	/**
 	 * @var integer
@@ -73,7 +73,7 @@ class DataRebuilder {
 	/**
 	 * @var int[]
 	 */
-	private $filters = array();
+	private $filters = [];
 	private $verbose = false;
 	private $startIdFile = false;
 
@@ -169,7 +169,7 @@ class DataRebuilder {
 	}
 
 	private function hasFilters() {
-		return $this->filters !== array();
+		return $this->filters !== [];
 	}
 
 	/**
@@ -261,7 +261,7 @@ class DataRebuilder {
 			$progress = '';
 
 			$this->rebuildCount++;
-			$this->exceptionLog = array();
+			$this->exceptionLog = [];
 
 			$this->doExecuteFor( $entityRebuildDispatcher, $id );
 
@@ -280,7 +280,7 @@ class DataRebuilder {
 
 				if ( $this->options->has( 'ignore-exceptions' ) && isset( $this->exceptionLog[$id] ) ) {
 					$this->exceptionFileLogger->doWriteExceptionLog(
-						array( $id . ' ' . $text => $this->exceptionLog[$id] )
+						[ $id . ' ' . $text => $this->exceptionLog[$id] ]
 					);
 				}
 			}
@@ -310,10 +310,10 @@ class DataRebuilder {
 			try {
 				$entityRebuildDispatcher->startRebuildWith( $id );
 			} catch ( \Exception $e ) {
-				$this->exceptionLog[$id] = array(
+				$this->exceptionLog[$id] = [
 					'msg'   => $e->getMessage(),
 					'trace' => $e->getTraceAsString()
-				);
+				];
 			}
 		}
 
@@ -425,7 +425,7 @@ class DataRebuilder {
 	 * @param array $options
 	 */
 	private function setFiltersFromOptions( Options $options ) {
-		$this->filters = array();
+		$this->filters = [];
 
 		if ( $options->has( 'categories' ) ) {
 			$this->filters[] = NS_CATEGORY;

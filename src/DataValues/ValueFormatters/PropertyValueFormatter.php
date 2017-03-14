@@ -143,7 +143,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		// Output both according to the formatting rule set forth by
 		if ( $canonicalLabel !== $label ) {
 			$canonicalLabel = \Html::rawElement(
-				'span', array( 'style' => 'font-size:small;' ), '(' . $canonicalLabel . ')' );
+				'span', [ 'style' => 'font-size:small;' ], '(' . $canonicalLabel . ')' );
 			$output = $output . '&nbsp;'.  $canonicalLabel;
 		}
 
@@ -223,11 +223,11 @@ class PropertyValueFormatter extends DataValueFormatter {
 			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);
 
-		$highlighter->setContent( array (
+		$highlighter->setContent(  [
 			'userDefined' => $this->dataValue->getDataItem()->isUserDefined(),
 			'caption' => $text,
 			'content' => $content !== '' ? $content : Message::get( 'smw_isspecprop' )
-		) );
+		] );
 
 		return $highlighter->getHtml();
 	}
@@ -265,7 +265,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		// When comparing with a caption set from the "outside", normalize
 		// the string to avoid a false negative in case of a non-breaking space
 		$caption = str_replace(
-			array( "&#160;", "&nbsp;", html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' ) ),
+			[ "&#160;", "&nbsp;", html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' ) ],
 			" ",
 			$this->dataValue->getCaption()
 		);
@@ -278,7 +278,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		$preferredLabelMarker = '';
 
 		if ( $preferredLabel !== $label ) {
-			$preferredLabelMarker = '&nbsp;' . \Html::rawElement( 'span', array( 'title' => $property->getCanonicalLabel() ), '<sup>ᵖ</sup>' );
+			$preferredLabelMarker = '&nbsp;' . \Html::rawElement( 'span', [ 'title' => $property->getCanonicalLabel() ], '<sup>ᵖ</sup>' );
 		}
 
 		return $preferredLabelMarker;

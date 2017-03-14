@@ -55,7 +55,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function delete( $deletePattern, $where, $extraNamespaces = array() ) {
+	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
@@ -78,7 +78,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = array() ) {
+	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
@@ -99,7 +99,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function insertData( $triples, $extraNamespaces = array() ) {
+	public function insertData( $triples, $extraNamespaces = [] ) {
 
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
@@ -126,7 +126,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function deleteData( $triples, $extraNamespaces = array() ) {
+	public function deleteData( $triples, $extraNamespaces = [] ) {
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 

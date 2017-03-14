@@ -25,7 +25,7 @@ class QuerySourceFactory {
 	/**
 	 * @var array
 	 */
-	private $querySources = array();
+	private $querySources = [];
 
 	/**
 	 * @var string|false
@@ -39,7 +39,7 @@ class QuerySourceFactory {
 	 * @param array $querySources
 	 * @param boolean|string $queryEndpoint
 	 */
-	public function __construct( Store $store, $querySources = array(), $queryEndpoint = false ) {
+	public function __construct( Store $store, $querySources = [], $queryEndpoint = false ) {
 		$this->store = $store;
 		$this->querySources = $querySources;
 		$this->queryEndpoint = $queryEndpoint;

@@ -90,7 +90,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 			);
 
 			// Should not happen but just in case
-			if ( !$dataItems === array() ) {
+			if ( !$dataItems === [] ) {
 				$this->dataValue->addErrorMsg( 'smw-datavalue-monolingual-dataitem-missing' );
 				continue;
 			}
@@ -113,7 +113,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 			);
 
 			if ( $property->getKey() === '_LCODE' && $type !== self::VALUE ) {
-				$languagecode = ' ' . Message::get( array( 'smw-datavalue-monolingual-lcode-parenthesis', $result ) );
+				$languagecode = ' ' . Message::get( [ 'smw-datavalue-monolingual-lcode-parenthesis', $result ] );
 			} elseif ( $property->getKey() === '_LCODE' && $type === self::VALUE ) {
 				$languagecode = '@' . $result;
 			} else {

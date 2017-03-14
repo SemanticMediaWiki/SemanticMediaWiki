@@ -44,7 +44,7 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @var array
 	 */
-	private $exceptionLog = array();
+	private $exceptionLog = [];
 
 	/**
 	 * @var integer
@@ -115,7 +115,7 @@ class DistinctEntityDataRebuilder {
 			".\n"
 		);
 
-		$pages = array();
+		$pages = [];
 		$this->setNamespaceFiltersFromOptions();
 
 		if ( $this->options->has( 'page' ) ) {
@@ -154,9 +154,9 @@ class DistinctEntityDataRebuilder {
 
 	private function doExecuteUpdateJobFor( $page ) {
 
-		$updatejob = new UpdateJob( $page, array(
+		$updatejob = new UpdateJob( $page, [
 			'pm' => $this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
-		) );
+		] );
 
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
 			return $updatejob->run();
@@ -165,15 +165,15 @@ class DistinctEntityDataRebuilder {
 		try {
 			$updatejob->run();
 		} catch ( \Exception $e ) {
-			$this->exceptionLog[$page->getPrefixedDBkey()] = array(
+			$this->exceptionLog[$page->getPrefixedDBkey()] = [
 				'msg'   => $e->getMessage(),
 				'trace' => $e->getTraceAsString()
-			);
+			];
 		}
 	}
 
 	private function setNamespaceFiltersFromOptions() {
-		$this->filters = array();
+		$this->filters = [];
 
 		if ( $this->options->has( 'categories' ) ) {
 			$this->filters[] = NS_CATEGORY;
@@ -185,13 +185,13 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function hasFilters() {
-		return $this->filters !== array();
+		return $this->filters !== [];
 	}
 
 	private function getPagesFromQuery() {
 
 		if ( !$this->options->has( 'query' ) ) {
-			return array();
+			return [];
 		}
 
 		$queryString = $this->options->get( 'query' );
@@ -199,7 +199,7 @@ class DistinctEntityDataRebuilder {
 		// get number of pages and fix query limit
 		$query = SMWQueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( array( 'format' => 'count' ) )
+			SMWQueryProcessor::getProcessedParams( [ 'format' => 'count' ] )
 		);
 
 		$result = $this->store->getQueryResult( $query );
@@ -207,7 +207,7 @@ class DistinctEntityDataRebuilder {
 		// get pages and add them to the pages explicitly listed in the 'page' parameter
 		$query = SMWQueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( array() )
+			SMWQueryProcessor::getProcessedParams( [] )
 		);
 
 		$query->setUnboundLimit( $result instanceof \SMWQueryResult ? $result->getCountValue() : $result );
@@ -217,7 +217,7 @@ class DistinctEntityDataRebuilder {
 
 	private function getPagesFromFilters() {
 
-		$pages = array();
+		$pages = [];
 
 		if ( !$this->hasFilters() ) {
 			return $pages;
@@ -235,7 +235,7 @@ class DistinctEntityDataRebuilder {
 	private function getRedirectPages() {
 
 		if ( !$this->options->has( 'redirects' ) ) {
-			return array();
+			return [];
 		}
 
 		$titleLookup = new TitleLookup(
@@ -247,7 +247,7 @@ class DistinctEntityDataRebuilder {
 
 	private function normalizeBulkOfPages( &$pages ) {
 
-		$titleCache = array();
+		$titleCache = [];
 
 		foreach ( $pages as $key => &$page ) {
 

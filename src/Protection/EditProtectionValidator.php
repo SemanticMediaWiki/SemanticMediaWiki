@@ -130,7 +130,7 @@ class EditProtectionValidator {
 			$requestOptions
 		);
 
-		if ( $dataItems !== null && $dataItems !== array() ) {
+		if ( $dataItems !== null && $dataItems !== [] ) {
 			$hasProtection = end( $dataItems )->getBoolean();
 		}
 

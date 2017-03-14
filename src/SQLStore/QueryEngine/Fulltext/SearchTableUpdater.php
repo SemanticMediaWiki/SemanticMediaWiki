@@ -104,11 +104,11 @@ class SearchTableUpdater {
 	public function read( $sid, $pid ) {
 		$row = $this->connection->selectRow(
 			$this->searchTable->getTableName(),
-			array( 'o_text' ),
-			array(
+			[ 'o_text' ],
+			[
 				's_id' => (int)$sid,
 				'p_id' => (int)$pid
-			),
+			],
 			__METHOD__
 		);
 
@@ -134,14 +134,14 @@ class SearchTableUpdater {
 
 		$this->connection->update(
 			$this->searchTable->getTableName(),
-			array(
+			[
 				'o_text' => $indexableText,
 				'o_sort' => mb_substr( $text, 0, 32 )
-			),
-			array(
+			],
+			[
 				's_id' => (int)$sid,
 				'p_id' => (int)$pid
-			),
+			],
 			__METHOD__
 		);
 	}
@@ -155,11 +155,11 @@ class SearchTableUpdater {
 	public function insert( $sid, $pid ) {
 		$this->connection->insert(
 			$this->searchTable->getTableName(),
-			array(
+			[
 				's_id' => (int)$sid,
 				'p_id' => (int)$pid,
 				'o_text' => ''
-			),
+			],
 			__METHOD__
 		);
 	}
@@ -173,10 +173,10 @@ class SearchTableUpdater {
 	public function delete( $sid, $pid ) {
 		$this->connection->delete(
 			$this->searchTable->getTableName(),
-			array(
+			[
 				's_id' => (int)$sid,
 				'p_id' => (int)$pid
-			),
+			],
 			__METHOD__
 		);
 	}

@@ -47,12 +47,12 @@ class ConfigurationListTaskHandler extends TaskHandler {
 	public function getHtml() {
 		return Html::rawElement(
 			'li',
-			array(),
+			[],
 			$this->getMessageAsString(
-				array(
+				[
 					'smw-admin-supplementary-settings-intro',
-					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-settings-title' ), array( 'action' => 'settings' ) )
-				)
+					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-settings-title' ), [ 'action' => 'settings' ] )
+				]
 			)
 		);
 	}
@@ -68,7 +68,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 		$this->outputFormatter->addParentLink();
 
 		$this->outputFormatter->addHtml(
-			Html::rawElement( 'p', array(), $this->getMessageAsString( 'smw-admin-settings-docu', Message::PARSE ) )
+			Html::rawElement( 'p', [], $this->getMessageAsString( 'smw-admin-settings-docu', Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHtml(
@@ -76,7 +76,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 		);
 
 		$this->outputFormatter->addHtml(
-			'<pre>' . $this->outputFormatter->encodeAsJson( array( 'canonicalNames' => NamespaceManager::getCanonicalNames() ) ) . '</pre>'
+			'<pre>' . $this->outputFormatter->encodeAsJson( [ 'canonicalNames' => NamespaceManager::getCanonicalNames() ] ) . '</pre>'
 		);
 	}
 

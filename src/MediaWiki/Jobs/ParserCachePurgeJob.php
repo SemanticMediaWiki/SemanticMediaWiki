@@ -50,7 +50,7 @@ class ParserCachePurgeJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
+	public function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'SMW\ParserCachePurgeJob', $title, $params );
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
@@ -84,7 +84,7 @@ class ParserCachePurgeJob extends JobBase {
 		$this->pageUpdater->waitOnTransactionIdle();
 		$this->pageUpdater->doPurgeParserCache();
 
-		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', array( $this ) );
+		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', [ $this ] );
 
 		return true;
 	}
@@ -105,7 +105,7 @@ class ParserCachePurgeJob extends JobBase {
 			$idList = explode( '|', $idList );
 		}
 
-		if ( $idList === array() ) {
+		if ( $idList === [] ) {
 			return true;
 		}
 
@@ -126,7 +126,7 @@ class ParserCachePurgeJob extends JobBase {
 			$requestOptions
 		);
 
-		if ( $hashList === array() ) {
+		if ( $hashList === [] ) {
 			return true;
 		}
 
@@ -136,11 +136,11 @@ class ParserCachePurgeJob extends JobBase {
 		// the remaining updates by creating successive jobs
 		if ( $countedHashListEntries > $this->limit ) {
 
-			$job = new self( $this->getTitle(), array(
+			$job = new self( $this->getTitle(), [
 				'idlist' => $idList,
 				'limit'  => $this->limit,
 				'offset' => $this->offset + self::CHUNK_SIZE
-			) );
+			] );
 
 			$job->run();
 		}
@@ -161,8 +161,8 @@ class ParserCachePurgeJob extends JobBase {
 
 	private function doBuildUniqueTargetLinksHashList( $targetLinksHashList ) {
 
-		$uniqueTargetLinksHashList = array();
-		$uniqueQueryList = array();
+		$uniqueTargetLinksHashList = [];
+		$uniqueQueryList = [];
 
 		foreach ( $targetLinksHashList as $targetLinkHash ) {
 
@@ -180,7 +180,7 @@ class ParserCachePurgeJob extends JobBase {
 			$uniqueTargetLinksHashList[HashBuilder::createHashIdFromSegments( $title, $namespace, $iw )] = true;
 		}
 
-		return array( array_keys( $uniqueTargetLinksHashList ), array_keys( $uniqueQueryList ) );
+		return [ array_keys( $uniqueTargetLinksHashList ), array_keys( $uniqueQueryList ) ];
 	}
 
 	private function addPagesToUpdater( array $hashList ) {

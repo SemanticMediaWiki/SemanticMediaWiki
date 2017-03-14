@@ -132,7 +132,7 @@ class SPARQLStore extends Store {
 		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
 		$oldExpResource = Exporter::getInstance()->getDataItemExpElement( $oldWikiPage );
 		$newExpResource = Exporter::getInstance()->getDataItemExpElement( $newWikiPage );
-		$namespaces = array( $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() );
+		$namespaces = [ $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() ];
 		$namespaces[$newExpResource->getNamespaceId()] = $newExpResource->getNamespace();
 		$oldUri = TurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
 		$newUri = TurtleSerializer::getTurtleNameForExpElement( $newExpResource );
@@ -242,13 +242,13 @@ class SPARQLStore extends Store {
 	 */
 	public function doSparqlDataDelete( DataItem $dataItem ) {
 
-		$extraNamespaces = array();
+		$extraNamespaces = [];
 
 		$expResource = Exporter::getInstance()->getDataItemExpElement( $dataItem );
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
 		if ( $expResource instanceof ExpNsResource ) {
-			$extraNamespaces = array( $expResource->getNamespaceId() => $expResource->getNamespace() );
+			$extraNamespaces = [ $expResource->getNamespaceId() => $expResource->getNamespace() ];
 		}
 
 		$masterPageProperty = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'masterPage' );
@@ -279,11 +279,11 @@ class SPARQLStore extends Store {
 		$result = null;
 		$start = microtime( true );
 
-		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', array( $this, $query, &$result, $this->factory->newMasterQueryEngine() ) ) ) {
+		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', [ $this, $query, &$result, $this->factory->newMasterQueryEngine() ] ) ) {
 			$result = $this->fetchQueryResult( $query );
 		}
 
-		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', array( $this, &$result ) );
+		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
 
 		$query->setOption( Query::PROC_QUERY_TIME, microtime( true ) - $start );
 

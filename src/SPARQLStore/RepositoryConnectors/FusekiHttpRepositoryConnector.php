@@ -27,10 +27,10 @@ class FusekiHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
 
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array(
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [
 			'Accept: application/sparql-results+xml,application/xml;q=0.8',
 			'Content-Type: application/x-www-form-urlencoded;charset=UTF-8'
-		) );
+		] );
 
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 

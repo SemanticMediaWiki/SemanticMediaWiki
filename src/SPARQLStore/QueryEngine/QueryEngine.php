@@ -54,7 +54,7 @@ class QueryEngine implements QueryEngineInterface {
 	/**
 	 * @var array
 	 */
-	private $sortKeys = array();
+	private $sortKeys = [];
 
 	/**
 	 * @since  2.0
@@ -157,18 +157,18 @@ class QueryEngine implements QueryEngineInterface {
 			$matchElement = $compoundCondition->matchElement;
 
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
-				$results = array( array ( $matchElement ) );
+				$results = [  [ $matchElement ] ];
 			} else {
 				$condition = $this->compoundConditionBuilder->convertConditionToString( $compoundCondition );
 				$namespaces = $compoundCondition->namespaces;
 				$askQueryResult = $this->connection->ask( $condition, $namespaces );
-				$results = $askQueryResult->isBooleanTrue() ? array( array ( $matchElement ) ) : array();
+				$results = $askQueryResult->isBooleanTrue() ? [  [ $matchElement ] ] : [];
 			}
 
-			$repositoryResult = new RepositoryResult( array( self::RESULT_VARIABLE => 0 ), $results );
+			$repositoryResult = new RepositoryResult( [ self::RESULT_VARIABLE => 0 ], $results );
 
 		} elseif ( $compoundCondition instanceof FalseCondition ) {
-			$repositoryResult = new RepositoryResult( array( self::RESULT_VARIABLE => 0 ), array() );
+			$repositoryResult = new RepositoryResult( [ self::RESULT_VARIABLE => 0 ], [] );
 		} else {
 			$condition = $this->compoundConditionBuilder->convertConditionToString( $compoundCondition );
 			$namespaces = $compoundCondition->namespaces;
@@ -190,7 +190,7 @@ class QueryEngine implements QueryEngineInterface {
 
 	private function getDebugQueryResult( Query $query, Condition $compoundCondition ) {
 
-		$entries = array();
+		$entries = [];
 
 		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
@@ -237,10 +237,10 @@ class QueryEngine implements QueryEngineInterface {
 	 */
 	protected function getOptions( Query $query, Condition $compoundCondition ) {
 
-		$options = array(
+		$options = [
 			'LIMIT' => $query->getLimit() + 1,
 			'OFFSET' => $query->getOffset()
-		);
+		];
 
 		// Build ORDER BY options using discovered sorting fields.
 		if ( !$this->engineOptions->get( 'smwgQSortingSupport' ) || !is_array( $this->sortKeys ) ) {

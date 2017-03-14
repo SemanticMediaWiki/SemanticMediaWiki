@@ -141,7 +141,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			$property
 		);
 
-		if ( $dataItems !== array() ) {
+		if ( $dataItems !== [] ) {
 			$isEditProtected = false;
 
 			// In case of two competing values, true always wins
@@ -157,30 +157,30 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			$isAnnotationBySystem = $dataItem->getOption( EditProtectedPropertyAnnotator::SYSTEM_ANNOTATION );
 		}
 
-		return array( $isEditProtected, $isAnnotationBySystem );
+		return [ $isEditProtected, $isAnnotationBySystem ];
 	}
 
 	private function doUpdateRestrictions( $isEditProtected ) {
 
-		$protections = array();
-		$expiry = array();
+		$protections = [];
+		$expiry = [];
 
 		if ( $isEditProtected ) {
 			$this->log( __METHOD__ . ' add protection on edit, move' );
 
-			$protections = array(
+			$protections = [
 				'edit' => $this->editProtectionRight,
 				'move' => $this->editProtectionRight
-			);
+			];
 
-			$expiry = array(
+			$expiry = [
 				'edit' => 'infinity',
 				'move' => 'infinity'
-			);
+			];
 		} else {
 			$this->log( __METHOD__ . ' remove protection on edit, move' );
-			$protections = array();
-			$expiry = array();
+			$protections = [];
+			$expiry = [];
 		}
 
 		$reason = Message::get( 'smw-edit-protection-auto-update' );
@@ -195,7 +195,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 		);
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

@@ -248,10 +248,10 @@ class InTextAnnotationParser {
 	 * @return array
 	 */
 	protected function getModules() {
-		return array(
+		return [
 			'ext.smw.style',
 			'ext.smw.tooltips'
-		);
+		];
 	}
 
 	/**
@@ -365,16 +365,16 @@ class InTextAnnotationParser {
 
 	protected function doStripMagicWordsFromText( &$text ) {
 
-		$words = array();
+		$words = [];
 
 		$this->magicWordsFinder->setOutput( $this->parserData->getOutput() );
 
-		$magicWords = array(
+		$magicWords = [
 			'SMW_NOFACTBOX',
 			'SMW_SHOWFACTBOX'
-		);
+		];
 
-		Hooks::run( 'SMW::Parser::BeforeMagicWordsFinder', array( &$magicWords ) );
+		Hooks::run( 'SMW::Parser::BeforeMagicWordsFinder', [ &$magicWords ] );
 
 		foreach ( $magicWords as $magicWord ) {
 			$words[] = $this->magicWordsFinder->findMagicWordInText( $magicWord, $text );

@@ -133,43 +133,43 @@ class BrowseBySubject extends ApiBase {
 	 * @return array
 	 */
 	public function getAllowedParams() {
-		return array(
-			'subject' => array(
+		return [
+			'subject' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_REQUIRED => true,
-			),
-			'ns' => array(
+			],
+			'ns' => [
 				ApiBase::PARAM_TYPE => 'integer',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_DFLT => '',
 				ApiBase::PARAM_REQUIRED => false,
-			),
-			'iw' => array(
+			],
+			'iw' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_DFLT => '',
 				ApiBase::PARAM_REQUIRED => false,
-			),
-			'subobject' => array(
+			],
+			'subobject' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_DFLT => '',
 				ApiBase::PARAM_REQUIRED => false,
-			),
-			'type' => array(
+			],
+			'type' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_DFLT => '',
 				ApiBase::PARAM_REQUIRED => false,
-			),
-			'options' => array(
+			],
+			'options' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_DFLT => '',
 				ApiBase::PARAM_REQUIRED => false,
-			)
-		);
+			]
+		];
 	}
 
 	/**
@@ -179,10 +179,10 @@ class BrowseBySubject extends ApiBase {
 	 * @return array
 	 */
 	public function getParamDescription() {
-		return array(
+		return [
 			'subject' => 'The subject to be queried',
 			'subobject' => 'A particular subobject id for the related subject'
-		);
+		];
 	}
 
 	/**
@@ -192,9 +192,9 @@ class BrowseBySubject extends ApiBase {
 	 * @return array
 	 */
 	public function getDescription() {
-		return array(
+		return [
 			'API module to query a subject.'
-		);
+		];
 	}
 
 	/**
@@ -204,9 +204,9 @@ class BrowseBySubject extends ApiBase {
 	 * @return array
 	 */
 	protected function getExamples() {
-		return array(
+		return [
 			'api.php?action=browsebysubject&subject=Main_Page',
-		);
+		];
 	}
 
 	/**

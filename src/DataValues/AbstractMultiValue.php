@@ -65,10 +65,10 @@ abstract class AbstractMultiValue extends DataValue {
 	public function getDataItems() {
 
 		if ( !$this->isValid() ) {
-			return array();
+			return [];
 		}
 
-		$dataItems = array();
+		$dataItems = [];
 		$index = 0;
 
 		foreach ( $this->getPropertyDataItems() as $diProperty ) {
@@ -149,20 +149,20 @@ abstract class AbstractMultiValue extends DataValue {
 	protected function getFieldProperties( DIProperty $property = null ) {
 
 		if ( $property === null || $property->getDiWikiPage() === null ) {
-			return array();
+			return [];
 		}
 
 		$dataItem = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFieldListBy( $property );
 
 		if ( !$dataItem ) {
-			return array();
+			return [];
 		}
 
 		$propertyListValue = new PropertyListValue( '__pls' );
 		$propertyListValue->setDataItem( $dataItem );
 
 		if ( !$propertyListValue->isValid() ) {
-			return array();
+			return [];
 		}
 
 		return $propertyListValue->getPropertyDataItems();

@@ -45,16 +45,16 @@ class SpecialAdmin extends SpecialPage {
 
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
 			// $this->mRestriction is private MW 1.23-
-			throw new ExtendedPermissionsError( 'smw-admin', array( 'smw-admin-permission-missing' ) );
+			throw new ExtendedPermissionsError( 'smw-admin', [ 'smw-admin-permission-missing' ] );
 		}
 
 		$this->setHeaders();
 		$output = $this->getOutput();
 		$output->setPageTitle( $this->getMessageAsString( 'smwadmin' ) );
 
-		$output->addModules( array(
+		$output->addModules( [
 			'ext.smw.admin'
-		) );
+		] );
 
 		$action = $query !== null ? $query : $this->getRequest()->getText( 'action' );
 
@@ -142,7 +142,7 @@ class SpecialAdmin extends SpecialPage {
 		// SupportListTaskHandler
 		$supportListTaskHandler = $taskHandlerFactory->newSupportListTaskHandler();
 
-		$actionTaskList = array(
+		$actionTaskList = [
 			$dataRefreshJobTaskHandler,
 			$disposeJobTaskHandler,
 			$propertyStatsRebuildJobTaskHandler,
@@ -151,7 +151,7 @@ class SpecialAdmin extends SpecialPage {
 			$configurationListTaskHandler,
 			$operationalStatisticsListTaskHandler,
 			$idTaskHandler
-		);
+		];
 
 		foreach ( $actionTaskList as $actionTask ) {
 			if ( $actionTask->isTaskFor( $action ) ) {
@@ -159,18 +159,18 @@ class SpecialAdmin extends SpecialPage {
 			}
 		}
 
-		$supplementaryTaskList = array(
+		$supplementaryTaskList = [
 			$configurationListTaskHandler,
 			$operationalStatisticsListTaskHandler,
 			$idTaskHandler
-		);
+		];
 
-		$dataRepairTaskList = array(
+		$dataRepairTaskList = [
 			$dataRefreshJobTaskHandler,
 			$disposeJobTaskHandler,
 			$propertyStatsRebuildJobTaskHandler,
 			$fulltextSearchTableRebuildJobTaskHandler
-		);
+		];
 
 		// General intro
 		$html = $this->getHtml(
@@ -195,15 +195,15 @@ class SpecialAdmin extends SpecialPage {
 		$html = $this->getMessageAsString( 'smw-admin-docu' );
 		$html .= $tableSchemaTaskHandler->getHtml();
 
-		$html .= Html::rawElement( 'h2', array(), $this->getMessageAsString( array( 'smw-smwadmin-refresh-title' ) ) );
-		$html .= Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-job-scheduler-note' ) ) );
+		$html .= Html::rawElement( 'h2', [], $this->getMessageAsString( [ 'smw-smwadmin-refresh-title' ] ) );
+		$html .= Html::rawElement( 'p', [], $this->getMessageAsString( [ 'smw-admin-job-scheduler-note' ] ) );
 
 		foreach ( $dataRepairTaskList as $dataRepairTask ) {
 			$html .= $dataRepairTask->getHtml();
 		}
 
-		$html .= Html::rawElement( 'h2', array(), $this->getMessageAsString( array( 'smw-admin-supplementary-section-title' ) ) );
-		$html .= Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-supplementary-section-intro' ) ) );
+		$html .= Html::rawElement( 'h2', [], $this->getMessageAsString( [ 'smw-admin-supplementary-section-title' ] ) );
+		$html .= Html::rawElement( 'p', [], $this->getMessageAsString( [ 'smw-admin-supplementary-section-intro' ] ) );
 
 		$list = '';
 
@@ -211,8 +211,8 @@ class SpecialAdmin extends SpecialPage {
 			$list .= $supplementaryTask->getHtml();
 		}
 
-		$html .= Html::rawElement( 'div', array( 'class' => 'smw-admin-supplementary-linksection' ),
-			Html::rawElement( 'ul', array(),
+		$html .= Html::rawElement( 'div', [ 'class' => 'smw-admin-supplementary-linksection' ],
+			Html::rawElement( 'ul', [],
 				$list
 			)
 		);

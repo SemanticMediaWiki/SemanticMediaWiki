@@ -26,7 +26,7 @@ class QueryCreator implements QueryContext {
 	/**
 	 * @var array
 	 */
-	private $configuration = array();
+	private $configuration = [];
 
 	/**
 	 * @see smwgQDefaultNamespaces
@@ -132,7 +132,7 @@ class QueryCreator implements QueryContext {
 		$query->setQueryMode( $queryMode );
 
 		$query->setExtraPrintouts(
-			$this->getConfiguration( 'extraPrintouts', array() )
+			$this->getConfiguration( 'extraPrintouts', [] )
 		);
 
 		$query->setMainLabel(
@@ -159,8 +159,8 @@ class QueryCreator implements QueryContext {
 		);
 
 		$sortKeys = $this->getSortKeys(
-			$this->getConfiguration( 'sort', array() ),
-			$this->getConfiguration( 'order', array() ),
+			$this->getConfiguration( 'sort', [] ),
+			$this->getConfiguration( 'order', [] ),
 			$this->getConfiguration( 'defaultSort', 'ASC' )
 		);
 
@@ -188,8 +188,8 @@ class QueryCreator implements QueryContext {
 	 */
 	public function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ) {
 
-		$sortKeys = array();
-		$sortErros = array();
+		$sortKeys = [];
+		$sortErros = [];
 
 		$orders = $this->getNormalizedOrderParameters( $orderParameters );
 
@@ -228,11 +228,11 @@ class QueryCreator implements QueryContext {
 			$sortKeys[''] = array_shift( $orders );
 		}
 
-		return array( 'keys' => $sortKeys, 'errors' => $sortErros );
+		return [ 'keys' => $sortKeys, 'errors' => $sortErros ];
 	}
 
 	private function getNormalizedOrderParameters( $orderParameters ) {
-		$orders = array();
+		$orders = [];
 
 		foreach ( $orderParameters as $key => $order ) {
 			$order = strtolower( trim( $order ) );

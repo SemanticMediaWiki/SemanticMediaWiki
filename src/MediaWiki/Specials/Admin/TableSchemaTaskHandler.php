@@ -75,16 +75,16 @@ class TableSchemaTaskHandler extends TaskHandler {
 				->addHiddenField( 'udsure', 'yes' )
 				->addSubmitButton(
 					$this->getMessageAsString( 'smw-admin-dbbutton' ),
-					array(
+					[
 						'class' => ''
-					)
+					]
 				);
 		} else {
 			$this->htmlFormRenderer
 				->addParagraph( $this->getMessageAsString( 'smw-admin-feature-disabled' ) );
 		}
 
-		return Html::rawElement( 'div', array(), $this->htmlFormRenderer->getForm() );
+		return Html::rawElement( 'div', [], $this->htmlFormRenderer->getForm() );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 		}
 
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
+		$messageReporter->registerReporterCallback( [ $this, 'reportMessage' ] );
 
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-db' ) );
 		$this->outputFormatter->addParentLink();
@@ -109,7 +109,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 			$messageReporter
 		);
 
-		$this->outputFormatter->addHTML( Html::rawElement( 'p', array(), $this->getMessageAsString( 'smw-admin-permissionswarn' ) ) );
+		$this->outputFormatter->addHTML( Html::rawElement( 'p', [], $this->getMessageAsString( 'smw-admin-permissionswarn' ) ) );
 
 		$this->outputFormatter->addHTML( '<pre>' );
 

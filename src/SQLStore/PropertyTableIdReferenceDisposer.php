@@ -89,8 +89,8 @@ class PropertyTableIdReferenceDisposer {
 
 		$res = $this->connection->select(
 			SQLStore::ID_TABLE,
-			array( 'smw_id' ),
-			array( 'smw_iw' => SMW_SQL3_SMWDELETEIW ),
+			[ 'smw_id' ],
+			[ 'smw_iw' => SMW_SQL3_SMWDELETEIW ],
 			__METHOD__
 		);
 
@@ -141,7 +141,7 @@ class PropertyTableIdReferenceDisposer {
 			if ( $proptable->usesIdSubject() ) {
 				$this->connection->delete(
 					$proptable->getName(),
-					array( 's_id' => $id ),
+					[ 's_id' => $id ],
 					__METHOD__
 				);
 			}
@@ -149,7 +149,7 @@ class PropertyTableIdReferenceDisposer {
 			if ( !$proptable->isFixedPropertyTable() ) {
 				$this->connection->delete(
 					$proptable->getName(),
-					array( 'p_id' => $id ),
+					[ 'p_id' => $id ],
 					__METHOD__
 				);
 			}
@@ -160,7 +160,7 @@ class PropertyTableIdReferenceDisposer {
 			if ( isset( $fields['o_id'] ) ) {
 				$this->connection->delete(
 					$proptable->getName(),
-					array( 'o_id' => $id ),
+					[ 'o_id' => $id ],
 					__METHOD__
 				);
 			}
@@ -174,25 +174,25 @@ class PropertyTableIdReferenceDisposer {
 
 		$this->connection->delete(
 			SQLStore::ID_TABLE,
-			array( 'smw_id' => $id ),
+			[ 'smw_id' => $id ],
 			__METHOD__
 		);
 
 		$this->connection->delete(
 			SQLStore::PROPERTY_STATISTICS_TABLE,
-			array( 'p_id' => $id ),
+			[ 'p_id' => $id ],
 			__METHOD__
 		);
 
 		$this->connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 's_id' => $id ),
+			[ 's_id' => $id ],
 			__METHOD__
 		);
 
 		$this->connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 'o_id' => $id ),
+			[ 'o_id' => $id ],
 			__METHOD__
 		);
 
@@ -201,7 +201,7 @@ class PropertyTableIdReferenceDisposer {
 		try {
 			$this->connection->delete(
 				SQLStore::FT_SEARCH_TABLE,
-				array( 's_id' => $id ),
+				[ 's_id' => $id ],
 				__METHOD__
 			);
 		} catch ( \DBError $e ) {

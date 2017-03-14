@@ -255,7 +255,7 @@ class AskParserFunction {
 
 	private function addProcessingError( $errors ) {
 
-		if ( $errors === array() ) {
+		if ( $errors === [] ) {
 			return;
 		}
 

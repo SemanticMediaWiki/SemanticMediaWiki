@@ -22,7 +22,7 @@ class PageUpdater implements LoggerAwareInterface {
 	/**
 	 * @var Title[]
 	 */
-	private $titles = array();
+	private $titles = [];
 
 	/**
 	 * LoggerInterface
@@ -107,7 +107,7 @@ class PageUpdater implements LoggerAwareInterface {
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->titles = array();
+		$this->titles = [];
 	}
 
 	/**
@@ -185,7 +185,7 @@ class PageUpdater implements LoggerAwareInterface {
 		}
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

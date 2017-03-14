@@ -15,12 +15,12 @@ class FieldChangeOp {
 	/**
 	 * @var array
 	 */
-	private $changeOp = array();
+	private $changeOp = [];
 
 	/**
 	 * @since 2.4
 	 */
-	public function __construct( array $changeOp = array() ) {
+	public function __construct( array $changeOp = [] ) {
 		$this->changeOp = $changeOp;
 	}
 

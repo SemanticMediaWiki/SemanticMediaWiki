@@ -19,7 +19,7 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 	/**
 	 * @var array
 	 */
-	private static $updateList = array();
+	private static $updateList = [];
 
 	/**
 	 * @var Store
@@ -70,7 +70,7 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 	 * @since 2.4
 	 */
 	public function clear() {
-		self::$updateList = array();
+		self::$updateList = [];
 	}
 
 	/**
@@ -81,7 +81,7 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 	 */
 	public function addToUpdateList( $sid, array $dependencyList = null ) {
 
-		if ( $sid == 0 || $dependencyList === null || $dependencyList === array() ) {
+		if ( $sid == 0 || $dependencyList === null || $dependencyList === [] ) {
 			return null;
 		}
 
@@ -98,12 +98,12 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 	public function doUpdate() {
 		foreach ( self::$updateList as $sid => $dependencyList ) {
 
-			if ( $dependencyList === array() ) {
+			if ( $dependencyList === [] ) {
 				continue;
 			}
 
 			$this->updateDependencyList( $sid, $dependencyList );
-			self::$updateList[$sid] = array();
+			self::$updateList[$sid] = [];
 		}
 	}
 
@@ -120,9 +120,9 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 
 		$this->connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array(
+			[
 				's_id' => $deleteIdList
-			),
+			],
 			__METHOD__
 		);
 
@@ -144,9 +144,9 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 		// that entries are self-corrected for dependencies matched
 		$this->connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array(
+			[
 				's_id' => $sid
-			),
+			],
 			__METHOD__
 		);
 
@@ -154,7 +154,7 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 			return $this->connection->endAtomicTransaction( __METHOD__ );
 		}
 
-		$inserts = array();
+		$inserts = [];
 
 		foreach ( $dependencyList as $dependency ) {
 
@@ -173,13 +173,13 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 				continue;
 			}
 
-			$inserts[$sid . $oid] = array(
+			$inserts[$sid . $oid] = [
 				's_id' => $sid,
 				'o_id' => $oid
-			);
+			];
 		}
 
-		if ( $inserts === array() ) {
+		if ( $inserts === [] ) {
 			return $this->connection->endAtomicTransaction( __METHOD__ );
 		}
 
@@ -243,7 +243,7 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 		return $id;
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

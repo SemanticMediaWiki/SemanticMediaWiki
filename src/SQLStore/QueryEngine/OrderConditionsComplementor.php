@@ -39,7 +39,7 @@ class OrderConditionsComplementor {
 	 *
 	 * @var string[]
 	 */
-	private $sortKeys = array();
+	private $sortKeys = [];
 
 	/**
 	 * @var boolean
@@ -113,7 +113,7 @@ class OrderConditionsComplementor {
 			$querySegment
 		);
 
-		if ( $extraDescriptions !== array() ) {
+		if ( $extraDescriptions !== [] ) {
 			$this->addConjunctionFromExtraDescriptions( $querySegment, $extraDescriptions );
 		}
 
@@ -122,7 +122,7 @@ class OrderConditionsComplementor {
 
 	private function collectExtraDescriptionsFromSortKeys( $querySegment ) {
 
-		$extraDescriptions = array();
+		$extraDescriptions = [];
 
 		foreach ( $this->sortKeys as $label => $order ) {
 

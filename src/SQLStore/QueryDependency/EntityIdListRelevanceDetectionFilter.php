@@ -40,12 +40,12 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 	/**
 	 * @var array
 	 */
-	private $propertyExemptionlist = array();
+	private $propertyExemptionlist = [];
 
 	/**
 	 * @var array
 	 */
-	private $affiliatePropertyDetectionlist = array();
+	private $affiliatePropertyDetectionlist = [];
 
 	/**
 	 * @var LoggerInterface
@@ -109,7 +109,7 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 			$this->compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities()
 		);
 
-		$affiliateEntityList = array();
+		$affiliateEntityList = [];
 		$tableChangeOps = $this->compositePropertyTableDiffIterator->getTableChangeOps();
 
 		foreach ( $tableChangeOps as $tableChangeOp ) {
@@ -187,7 +187,7 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 		}
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

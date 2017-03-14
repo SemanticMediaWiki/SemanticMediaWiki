@@ -83,9 +83,9 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 				->addLineBreak()
 				->addSubmitButton(
 					$this->getMessageAsString( 'smw_smwadmin_datarefreshstop' ),
-					array(
+					[
 						'class' => ''
-					)
+					]
 				)
 				->addCheckbox(
 					$this->getMessageAsString( 'smw_smwadmin_datarefreshstopconfirm' ),
@@ -99,13 +99,13 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 				->addHiddenField( 'rfsure', 'yes' )
 				->addSubmitButton(
 					$this->getMessageAsString( 'smw_smwadmin_datarefreshbutton' ),
-					array(
+					[
 						'class' => ''
-					)
+					]
 				);
 		}
 
-		return Html::rawElement( 'div', array(), $this->htmlFormRenderer->getForm() );
+		return Html::rawElement( 'div', [], $this->htmlFormRenderer->getForm() );
 	}
 
 	/**
@@ -130,7 +130,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 				$newjob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
 					'SMW\RefreshJob',
 					\SpecialPage::getTitleFor( 'SMWAdmin' ),
-					array( 'spos' => 1, 'prog' => 0, 'rc' => 2 )
+					[ 'spos' => 1, 'prog' => 0, 'rc' => 2 ]
 				);
 
 				$newjob->insert();
@@ -141,7 +141,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 			// delete (all) existing iteration jobs
 			$connection->delete(
 				'job',
-				array( 'job_cmd' => 'SMW\RefreshJob' ),
+				[ 'job_cmd' => 'SMW\RefreshJob' ],
 				__METHOD__
 			);
 		}
@@ -152,8 +152,8 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	private function getProgressBar( $prog ) {
 		return Html::rawElement(
 			'div',
-			array( 'style' => 'float: left; background: #DDDDDD; border: 1px solid grey; width: 300px;' ),
-			Html::rawElement( 'div', array( 'style' => 'background: #AAF; width: ' . round( $prog * 300 ) . 'px; height: 20px; ' ), '' )
+			[ 'style' => 'float: left; background: #DDDDDD; border: 1px solid grey; width: 300px;' ],
+			Html::rawElement( 'div', [ 'style' => 'background: #AAF; width: ' . round( $prog * 300 ) . 'px; height: 20px; ' ], '' )
 		) . '&#160;' . round( $prog * 100, 4 ) . '%';
 	}
 

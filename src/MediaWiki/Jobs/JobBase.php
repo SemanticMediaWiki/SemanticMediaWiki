@@ -25,7 +25,7 @@ abstract class JobBase extends Job {
 	/**
 	 * @var Job
 	 */
-	protected $jobs = array();
+	protected $jobs = [];
 
 	/**
 	 * @var Store
@@ -144,7 +144,7 @@ abstract class JobBase extends Job {
 	 */
 	public function insert() {
 		if ( $this->isEnabledJobQueue ) {
-			return self::batchInsert( array( $this ) );
+			return self::batchInsert( [ $this ] );
 		}
 	}
 
@@ -159,7 +159,7 @@ abstract class JobBase extends Job {
 			return JobQueueGroup::singleton()->getQueueSizes();
 		}
 
-		return array();
+		return [];
 	}
 
 }

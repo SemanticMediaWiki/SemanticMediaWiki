@@ -34,7 +34,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_id' => FieldType::FIELD_ID );
+		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
 	/**
@@ -43,7 +43,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_id' => FieldType::FIELD_ID );
+		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
 	/**
@@ -52,7 +52,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array( 'o_id' );
+		return [ 'o_id' ];
 	}
 
 	/**
@@ -69,7 +69,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			$dataItem->getSubobjectName()
 		);
 
-		return array( 'o_id' => $oid );
+		return [ 'o_id' => $oid ];
 	}
 
 	/**
@@ -86,7 +86,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			$dataItem->getSubobjectName()
 		);
 
-		return array( 'o_id' => $oid );
+		return [ 'o_id' => $oid ];
 	}
 
 	/**

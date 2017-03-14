@@ -160,7 +160,7 @@ class ValueFormatter {
 			$inverseProperty->getDataItem()
 		);
 
-		if ( $dataItems !== array() ) {
+		if ( $dataItems !== [] ) {
 			$text = str_replace( '_', ' ', end( $dataItems )->getDBKey() );
 		} else {
 			$text = wfMessage( 'smw_inverse_label_default', $propertyValue->getWikiValue() )->text();

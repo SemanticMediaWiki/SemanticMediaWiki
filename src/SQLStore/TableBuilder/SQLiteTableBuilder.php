@@ -20,7 +20,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 */
 	public function getStandardFieldType( $fieldType ) {
 
-		$fieldTypes = array(
+		$fieldTypes = [
 			 // like page_id in MW page table
 			'id'         => 'INTEGER',
 			'id primary' => 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
@@ -40,7 +40,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			'char nocase'      => 'VARCHAR(255) NOT NULL COLLATE NOCASE',
 			'usage count'      =>'INT(8)',
 			'integer unsigned' => 'INTEGER'
-		);
+		];
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
@@ -77,7 +77,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			$mode = $ftsOptions;
 		}
 
-		$fieldSql = array();
+		$fieldSql = [];
 		$fields = $tableOptions['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
@@ -130,7 +130,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$sql = 'PRAGMA table_info(' . $tableName . ')';
 
 		$res = $this->connection->query( $sql, __METHOD__ );
-		$currentFields = array();
+		$currentFields = [];
 
 		foreach ( $res as $row ) {
 			$row->Field = $row->name;
@@ -242,12 +242,12 @@ class SQLiteTableBuilder extends TableBuilder {
 	private function getIndexInfo( $tableName ) {
 
 		$tableName = $this->connection->tableName( $tableName );
-		$indices = array();
+		$indices = [];
 
 		$res = $this->connection->query( 'PRAGMA index_list(' . $tableName . ')', __METHOD__ );
 
 		if ( !$res ) {
-			return array();
+			return [];
 		}
 
 		foreach ( $res as $row ) {

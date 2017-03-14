@@ -86,7 +86,7 @@ class DeclareParserFunction {
 	private function matchValueArgument( PropertyValue $propertyValue, $propertystring, $valuestring ) {
 
 		if ( $propertyValue->getPropertyTypeID() === '_wpg' ) {
-			$matches = array();
+			$matches = [];
 			preg_match_all( '/\[\[([^\[\]]*)\]\]/u', $valuestring, $matches );
 			$objects = $matches[1];
 

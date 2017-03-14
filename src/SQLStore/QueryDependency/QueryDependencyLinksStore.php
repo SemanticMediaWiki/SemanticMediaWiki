@@ -162,7 +162,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 				continue;
 			}
 
-			$deleteIdList = array();
+			$deleteIdList = [];
 
 			foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $fieldChangeOp ) {
 				$deleteIdList[] = $fieldChangeOp->get( 'o_id' );
@@ -189,18 +189,18 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	public function buildParserCachePurgeJobParametersFrom( EntityIdListRelevanceDetectionFilter $entityIdListRelevanceDetectionFilter ) {
 
 		if ( !$this->isEnabled() ) {
-			return array();
+			return [];
 		}
 
 		$filteredIdList = $entityIdListRelevanceDetectionFilter->getFilteredIdList();
 
-		if ( $filteredIdList === array() ) {
-			return array();
+		if ( $filteredIdList === [] ) {
+			return [];
 		}
 
-		return array(
+		return [
 			'idlist' => $filteredIdList
-		);
+		];
 	}
 
 	/**
@@ -213,7 +213,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 */
 	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
 
-		$embeddedQueryIdList = array();
+		$embeddedQueryIdList = [];
 
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
@@ -238,7 +238,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 */
 	public function findEmbeddedQueryTargetLinksHashListBySubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
 		return $this->findEmbeddedQueryTargetLinksHashListFrom(
-			array( $this->dependencyLinksTableUpdater->getId( $subject ) ),
+			[ $this->dependencyLinksTableUpdater->getId( $subject ) ],
 			$requestOptions
 		);
 	}
@@ -268,21 +268,21 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 */
 	public function findEmbeddedQueryTargetLinksHashListFrom( array $idlist, RequestOptions $requestOptions ) {
 
-		if ( $idlist === array() || !$this->isEnabled() ) {
-			return array();
+		if ( $idlist === [] || !$this->isEnabled() ) {
+			return [];
 		}
 
-		$options = array(
+		$options = [
 			'LIMIT'     => $requestOptions->getLimit(),
 			'OFFSET'    => $requestOptions->getOffset(),
 			'GROUP BY'  => 's_id',
 			'ORDER BY'  => 's_id',
 			'DISTINCT'  => true
-		);
+		];
 
-		$conditions = array(
+		$conditions = [
 			'o_id' => $idlist
-		);
+		];
 
 		foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
 			$conditions[] = $extraCondition;
@@ -290,20 +290,20 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 		$rows = $this->connection->select(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 's_id' ),
+			[ 's_id' ],
 			$conditions,
 			__METHOD__,
 			$options
 		);
 
-		$targetLinksIdList = array();
+		$targetLinksIdList = [];
 
 		foreach ( $rows as $row ) {
 			$targetLinksIdList[] = $row->s_id;
 		}
 
-		if ( $targetLinksIdList === array() ) {
-			return array();
+		if ( $targetLinksIdList === [] ) {
+			return [];
 		}
 
 		$requestOptions = new RequestOptions();
@@ -361,7 +361,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			// (which would carry a performance penalty)
 			$dependencyListByLateRetrieval = $queryResultDependencyListResolver->getDependencyListByLateRetrievalFrom( $queryResult );
 
-			if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
+			if ( $dependencyList === [] && $dependencyListByLateRetrieval === [] ) {
 				return $this->log( 'No dependency list available ' . $hash );
 			}
 
@@ -408,7 +408,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
 
-		static $suppressUpdateCache = array();
+		static $suppressUpdateCache = [];
 		$hash = $subject->getHash();
 
 		if ( $sid < 1 ) {
@@ -417,10 +417,10 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 		$row = $this->connection->selectRow(
 			SQLStore::QUERY_LINKS_TABLE,
-			array(
+			[
 				's_id'
-			),
-			array( 's_id' => $sid ),
+			],
+			[ 's_id' => $sid ],
 			__METHOD__
 		);
 
@@ -435,7 +435,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		return $row !== false && $suppressUpdateCache[$hash] > wfTimestamp( TS_MW );
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

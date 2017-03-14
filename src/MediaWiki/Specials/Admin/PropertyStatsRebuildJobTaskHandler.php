@@ -74,22 +74,22 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 				->addHiddenField( 'action', 'pstatsrebuild' )
 				->addSubmitButton(
 					$this->getMessageAsString( 'smw-admin-propertystatistics-button' ),
-					array(
+					[
 						'class' => ''
-					)
+					]
 				 );
 		} elseif ( $this->isEnabledFeature( SMW_ADM_PSTATS ) ) {
 			$this->htmlFormRenderer
 				->addParagraph(
-					Html::element( 'span', array( 'class' => 'smw-admin-circle-orange' ), '' ) .
-					Html::element( 'span', array( 'style' => 'font-style:italic; margin-left:25px;' ), $this->getMessageAsString( 'smw-admin-propertystatistics-active' ) )
+					Html::element( 'span', [ 'class' => 'smw-admin-circle-orange' ], '' ) .
+					Html::element( 'span', [ 'style' => 'font-style:italic; margin-left:25px;' ], $this->getMessageAsString( 'smw-admin-propertystatistics-active' ) )
 				);
 		} else {
 			$this->htmlFormRenderer
 				->addParagraph( $this->getMessageAsString( 'smw-admin-feature-disabled' ) );
 		}
 
-		return Html::rawElement( 'div', array(), $this->htmlFormRenderer->getForm() );
+		return Html::rawElement( 'div', [], $this->htmlFormRenderer->getForm() );
 	}
 
 	/**

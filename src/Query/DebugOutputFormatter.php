@@ -30,7 +30,7 @@ class DebugOutputFormatter {
 	public static function getStringFrom( $storeName, array $entries, Query $query = null ) {
 
 		if ( $query instanceof Query ) {
-			$preEntries = array();
+			$preEntries = [];
 			$preEntries['ASK Query'] = '<div class="smwpre">' . str_replace( '[', '&#91;', $query->getDescription()->getQueryString() ) . '</div>';
 			$entries = array_merge( $preEntries, $entries );
 			$entries['Query Metrics'] = 'Query-Size:' . $query->getDescription()->getSize() . '<br />' .
@@ -116,7 +116,7 @@ class DebugOutputFormatter {
 
 			foreach ( $res as $row ) {
 				foreach ( $row as $key => $value ) {
-					$output .= str_replace( array( ' ', '->' ), array( '&nbsp;', '└── ' ), $value ) .'<br>';
+					$output .= str_replace( [ ' ', '->' ], [ '&nbsp;', '└── ' ], $value ) .'<br>';
 				}
 			}
 
@@ -141,16 +141,16 @@ class DebugOutputFormatter {
 	public static function doFormatSPARQLStatement( $sparql ) {
 
 		$sparql =  str_replace(
-			array(
+			[
 				'[',
 				':',
 				' '
-			),
-			array(
+			],
+			[
 				'&#91;',
 				'&#x003A;',
 				'&#x0020;'
-			),
+			],
 			$sparql
 		);
 
@@ -168,7 +168,7 @@ class DebugOutputFormatter {
 	public static function doFormatSQLStatement( $sql, $alias ) {
 
 		$sql = str_replace(
-			array(
+			[
 				"SELECT DISTINCT",
 				"FROM",
 				"INNER JOIN",
@@ -184,8 +184,8 @@ class DebugOutputFormatter {
 				"AND (",
 				"))",
 				"(("
-			),
-			array(
+			],
+			[
 				"SELECT DISTINCT<br>&nbsp;",
 				"<br>FROM<br>&nbsp;",
 				"<br>INNER JOIN<br>&nbsp;",
@@ -201,7 +201,7 @@ class DebugOutputFormatter {
 				"<br>&nbsp;&nbsp;&nbsp;AND (",
 				")<br>&nbsp;&nbsp;)",
 				"(<br>&nbsp;&nbsp;&nbsp;("
-			),
+			],
 			$sql
 		);
 

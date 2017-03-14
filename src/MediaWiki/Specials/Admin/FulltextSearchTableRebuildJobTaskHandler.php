@@ -74,22 +74,22 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 				->addHiddenField( 'action', 'fulltrebuild' )
 				->addSubmitButton(
 					$this->getMessageAsString( 'smw-admin-fulltext-button' ),
-					array(
+					[
 						'class' => ''
-					)
+					]
 				);
 		} elseif ( $this->isEnabledFeature( SMW_ADM_FULLT ) ) {
 			$this->htmlFormRenderer
 				->addParagraph(
-					Html::element( 'span', array( 'class' => 'smw-admin-circle-orange' ), '' ) .
-					Html::element( 'span', array( 'style' => 'font-style:italic; margin-left:25px;' ), $this->getMessageAsString( 'smw-admin-fulltext-active' ) )
+					Html::element( 'span', [ 'class' => 'smw-admin-circle-orange' ], '' ) .
+					Html::element( 'span', [ 'style' => 'font-style:italic; margin-left:25px;' ], $this->getMessageAsString( 'smw-admin-fulltext-active' ) )
 				);
 		} else {
 			$this->htmlFormRenderer
 				->addParagraph( $this->getMessageAsString( 'smw-admin-feature-disabled' ) );
 		}
 
-		return Html::rawElement( 'div', array(), $this->htmlFormRenderer->getForm() );
+		return Html::rawElement( 'div', [], $this->htmlFormRenderer->getForm() );
 	}
 
 	/**
@@ -103,9 +103,9 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 			$fulltextSearchTableRebuildJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
 				'SMW\FulltextSearchTableRebuildJob',
 				\SpecialPage::getTitleFor( 'SMWAdmin' ),
-				array(
+				[
 					'mode' => 'full'
-				)
+				]
 			);
 
 			$fulltextSearchTableRebuildJob->insert();

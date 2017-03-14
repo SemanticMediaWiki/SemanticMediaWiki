@@ -95,7 +95,7 @@ class ApiQueryResultFormatter {
 	 */
 	public function doFormat() {
 
-		if ( $this->queryResult->getErrors() !== array() ) {
+		if ( $this->queryResult->getErrors() !== [] ) {
 			$this->result = $this->formatErrors( $this->queryResult->getErrors() );
 		} else {
 			$this->result = $this->formatResults( $this->queryResult->toArray() );
@@ -118,25 +118,25 @@ class ApiQueryResultFormatter {
 	protected function formatResults( array $queryResult ) {
 
 		$this->type = 'query';
-		$results    = array();
+		$results    = [];
 
 		if ( !$this->isRawMode ) {
 			return $queryResult;
 		}
 
 		foreach ( $queryResult['results'] as $subjectName => $subject ) {
-			$serialized = array();
+			$serialized = [];
 
 			foreach ( $subject as $key => $value ) {
 
 				if ( $key === 'printouts' ) {
-					$printouts = array();
+					$printouts = [];
 
 					foreach ( $subject['printouts'] as $property => $values ) {
 
 						if ( (array)$values === $values ) {
 							$this->setIndexedTagName( $values, 'value' );
-							$printouts[] = array_merge( array( 'label' => $property ), $values );
+							$printouts[] = array_merge( [ 'label' => $property ], $values );
 						}
 
 					}
@@ -152,7 +152,7 @@ class ApiQueryResultFormatter {
 			$results[] = $serialized;
 		}
 
-		if ( $results !== array() ) {
+		if ( $results !== [] ) {
 			$queryResult['results'] = $results;
 			$this->setIndexedTagName( $queryResult['results'], 'subject' );
 		}

@@ -54,7 +54,7 @@ class BufferedStatsdCollector {
 	/**
 	 * @var array
 	 */
-	private $stats = array();
+	private $stats = [];
 
 	/**
 	 * Identifies an update fingerprint to compare invoked deferred updates
@@ -68,7 +68,7 @@ class BufferedStatsdCollector {
 	/**
 	 * @var array
 	 */
-	private $operations = array();
+	private $operations = [];
 
 	/**
 	 * @since 2.5
@@ -164,7 +164,7 @@ class BufferedStatsdCollector {
 	 */
 	public function saveStats() {
 
-		if ( $this->stats === array() ) {
+		if ( $this->stats === [] ) {
 			return;
 		}
 
@@ -198,7 +198,7 @@ class BufferedStatsdCollector {
 			$container
 		);
 
-		$this->stats = array();
+		$this->stats = [];
 	}
 
 	/**
@@ -209,7 +209,7 @@ class BufferedStatsdCollector {
 	public function recordStats( $asPending = false ) {
 
 		if ( $this->shouldRecord === false ) {
-			return $this->stats = array();
+			return $this->stats = [];
 		}
 
 		// #2046

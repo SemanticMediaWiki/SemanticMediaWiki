@@ -42,7 +42,7 @@ use SMW\DataValues\ValueFormatters\TimeValueFormatter;
  *
  * @author mwjames
  */
-return array(
+return [
 
 	/**
 	 * PropertyValueParser
@@ -282,4 +282,4 @@ return array(
 		return new TimeValueFormatter();
 	},
 
-);
+];

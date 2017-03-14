@@ -26,7 +26,7 @@ class HookRegistry {
 	/**
 	 * @var array
 	 */
-	private $handlers = array();
+	private $handlers = [];
 
 	/**
 	 * @var array
@@ -39,7 +39,7 @@ class HookRegistry {
 	 * @param array &$globalVars
 	 * @param string $directory
 	 */
-	public function __construct( &$globalVars = array(), $directory = '' ) {
+	public function __construct( &$globalVars = [], $directory = '' ) {
 		$this->globalVars =& $globalVars;
 
 		$this->addCallbackHandlers( $directory, $globalVars );
