@@ -51,7 +51,7 @@ class SMWTypesValue extends SMWDataValue {
 			$value = $valueParts[1];
 			$typeNamespace = Localizer::getInstance()->getLanguage( $contentLanguage )->getNsText( SMW_NS_TYPE );
 			if ( $namespace != $typeNamespace ) {
-				$this->addErrorMsg( array( 'smw_wrong_namespace', $typeNamespace ) );
+				$this->addErrorMsg( [ 'smw_wrong_namespace', $typeNamespace ] );
 			}
 		}
 
@@ -63,7 +63,7 @@ class SMWTypesValue extends SMWDataValue {
 		}
 
 		if ( $this->m_typeId === '' ) {
-			$this->addErrorMsg( array( 'smw_unknowntype', $this->m_givenLabel ) );
+			$this->addErrorMsg( [ 'smw_unknowntype', $this->m_givenLabel ] );
 			$this->m_realLabel = $this->m_givenLabel;
 		} else {
 			$this->m_realLabel = DataTypeRegistry::getInstance()->findTypeLabel( $this->m_typeId );
@@ -74,7 +74,7 @@ class SMWTypesValue extends SMWDataValue {
 			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
 		} catch ( SMWDataItemException $e ) {
 			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
-			$this->addErrorMsg( array( 'smw-datavalue-type-invalid-typeuri', $this->m_typeId ) );
+			$this->addErrorMsg( [ 'smw-datavalue-type-invalid-typeuri', $this->m_typeId ] );
 		}
 	}
 

@@ -170,23 +170,23 @@ class Highlighter {
 
 		return Html::rawElement(
 			'span',
-			array(
+			[
 				'class'        => 'smw-highlighter',
 				'data-type'    => $this->options['type'],
 				'data-content' => isset( $this->options['data-content'] ) ? $this->options['data-content'] : null,
 				'data-state'   => $this->options['state'],
 				'data-title'   => Message::get( $this->options['title'], Message::TEXT, $language ),
 				'title'        => strip_tags( htmlspecialchars_decode( str_replace( "[", "&#91;", $this->options['content'] ) ) )
-			), Html::rawElement(
+			], Html::rawElement(
 					'span',
-					array(
+					[
 						'class' => $captionclass
-					), $this->options['caption']
+					], $this->options['caption']
 				) . Html::rawElement(
 					'div',
-					array(
+					[
 						'class' => 'smwttcontent'
-					), htmlspecialchars_decode( $this->options['content'] )
+					], htmlspecialchars_decode( $this->options['content'] )
 				)
 			);
 	}
@@ -204,7 +204,7 @@ class Highlighter {
 	 * @return array
 	 */
 	private function getTypeConfiguration( $type ) {
-		$settings = array();
+		$settings = [];
 		$settings['type'] = $type;
 		$settings['caption'] = '';
 		$settings['content'] = '';

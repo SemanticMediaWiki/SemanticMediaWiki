@@ -49,7 +49,7 @@ class TableResultPrinter extends ResultPrinter {
 		$this->htmlTableRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlTableRenderer();
 		$this->htmlTableRenderer->setHtmlContext( $this->isHTML );
 
-		$columnClasses = array();
+		$columnClasses = [];
 
 		// Default cell value separator
 		if ( !isset( $this->params['sep'] ) || $this->params['sep'] === '' ) {
@@ -58,8 +58,8 @@ class TableResultPrinter extends ResultPrinter {
 
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
-				$attributes = array();
-				$columnClass = str_replace( array( ' ', '_' ), '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
+				$attributes = [];
+				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
 				$attributes['class'] = $columnClass;
 				// Also add this to the array of classes, for
 				// use in displaying each row.
@@ -77,7 +77,7 @@ class TableResultPrinter extends ResultPrinter {
 			$this->getRowForSubject( $subject, $outputMode, $columnClasses );
 
 			$this->htmlTableRenderer->addRow(
-				array( 'data-row-number' => $rowNumber )
+				[ 'data-row-number' => $rowNumber ]
 			);
 		}
 
@@ -87,12 +87,12 @@ class TableResultPrinter extends ResultPrinter {
 
 			$this->htmlTableRenderer->addCell(
 					$link->getText( $outputMode, $this->mLinker ),
-					array( 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() )
+					[ 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() ]
 			);
-			$this->htmlTableRenderer->addRow( array( 'class' => 'smwfooter' ) );
+			$this->htmlTableRenderer->addRow( [ 'class' => 'smwfooter' ] );
 		}
 
-		$tableAttrs = array( 'class' => $this->params['class'] );
+		$tableAttrs = [ 'class' => $this->params['class'] ];
 
 		if ( $this->mFormat == 'broadtable' ) {
 			$tableAttrs['width'] = '100%';
@@ -140,13 +140,13 @@ class TableResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getCellForPropVals( SMWResultArray $resultArray, $outputMode, $columnClass ) {
-		$dataValues = array();
+		$dataValues = [];
 
 		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
 			$dataValues[] = $dv;
 		}
 
-		$attributes = array();
+		$attributes = [];
 		$content = null;
 
 		if ( count( $dataValues ) > 0 ) {
@@ -159,7 +159,7 @@ class TableResultPrinter extends ResultPrinter {
 
 			$alignment = trim( $resultArray->getPrintRequest()->getParameter( 'align' ) );
 
-			if ( in_array( $alignment, array( 'right', 'left', 'center' ) ) ) {
+			if ( in_array( $alignment, [ 'right', 'left', 'center' ] ) ) {
 				$attributes['style'] = "text-align:$alignment;";
 			}
 			$attributes['class'] = $columnClass . ( $dataValueType !== '' ? ' smwtype' . $dataValueType : '' );
@@ -186,7 +186,7 @@ class TableResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ) {
-		$values = array();
+		$values = [];
 
 		foreach ( $dataValues as $dv ) {
 
@@ -198,7 +198,7 @@ class TableResultPrinter extends ResultPrinter {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
-					array( 'smw-parse', $dv->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ),
+					[ 'smw-parse', $dv->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
 					Message::PARSE
 				);
 			} else {
@@ -225,22 +225,22 @@ class TableResultPrinter extends ResultPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$params['class'] = array(
+		$params['class'] = [
 			'name' => 'class',
 			'message' => 'smw-paramdesc-table-class',
 			'default' => 'sortable wikitable smwtable',
-		);
+		];
 
-		$params['transpose'] = array(
+		$params['transpose'] = [
 			'type' => 'boolean',
 			'default' => false,
 			'message' => 'smw-paramdesc-table-transpose',
-		);
+		];
 
-		$params['sep'] = array(
+		$params['sep'] = [
 			'message' => 'smw-paramdesc-sep',
 			'default' => '',
-		);
+		];
 
 		return $params;
 	}

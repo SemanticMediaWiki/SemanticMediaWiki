@@ -72,14 +72,14 @@ class SMWPageProperty extends SpecialPage {
 				if ( $offset > 0 ) {
 					$navigation .= Html::element(
 						'a',
-						array(
-							'href' => $this->getTitle()->getLocalURL( array(
+						[
+							'href' => $this->getTitle()->getLocalURL( [
 								'offset' => max( 0, $offset - $limit ),
 								'limit' => $limit,
 								'type' => $propname,
 								'from' => $pagename
-							) )
-						),
+							] )
+						],
 						wfMessage( 'smw_result_prev' )->text()
 					);
 				} else {
@@ -96,14 +96,14 @@ class SMWPageProperty extends SpecialPage {
 				if ( count( $results ) == ( $limit + 1 ) ) {
 					$navigation .= Html::element(
 						'a',
-						array(
-							'href' => $this->getTitle()->getLocalURL( array(
+						[
+							'href' => $this->getTitle()->getLocalURL( [
 								'offset' => ( $offset + $limit ),
 								'limit' => $limit,
 								'type' => $propname,
 								'from' => $pagename
-							) )
-						),
+							] )
+						],
 						wfMessage( 'smw_result_next' )->text()
 					);
 				} else {

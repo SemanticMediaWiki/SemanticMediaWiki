@@ -48,7 +48,7 @@ class ParserData {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var $isEnabledWithUpdateJob
@@ -312,7 +312,7 @@ class ParserData {
 
 		$this->parserOutput->setProperty(
 			'smw-semanticdata-status',
-			$this->semanticData->getProperties() !== array()
+			$this->semanticData->getProperties() !== []
 		);
 	}
 

@@ -73,7 +73,7 @@ class SMWPropertyValue extends SMWDataValue {
 	/**
 	 * @var array
 	 */
-	protected $linkAttributes = array();
+	protected $linkAttributes = [];
 
 	/**
 	 * @var string
@@ -191,7 +191,7 @@ class SMWPropertyValue extends SMWDataValue {
 		try {
 			$this->m_dataitem = DIProperty::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
 		} catch ( SMWDataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
-			$this->addErrorMsg( array( 'smw_noproperty', $value ) );
+			$this->addErrorMsg( [ 'smw_noproperty', $value ] );
 			$this->m_dataitem = new DIProperty( 'ERROR', false ); // just to have something
 		}
 
@@ -242,7 +242,7 @@ class SMWPropertyValue extends SMWDataValue {
 		$this->mPropTypeValue = null;
 		unset( $this->m_wikipage );
 		$this->m_caption = false;
-		$this->linkAttributes = array();
+		$this->linkAttributes = [];
 
 		if ( $this->preferredLabel !== '' ) {
 			$this->m_caption = $this->preferredLabel;

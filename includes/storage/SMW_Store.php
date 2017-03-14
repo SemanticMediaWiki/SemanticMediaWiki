@@ -213,14 +213,14 @@ abstract class Store implements QueryEngine {
 		/**
 		 * @since 1.6
 		 */
-		\Hooks::run( 'SMWStore::updateDataBefore', array( $this, $semanticData ) );
+		\Hooks::run( 'SMWStore::updateDataBefore', [ $this, $semanticData ] );
 
 		$this->doDataUpdate( $semanticData );
 
 		/**
 		 * @since 1.6
 		 */
-		\Hooks::run( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
+		\Hooks::run( 'SMWStore::updateDataAfter', [ $this, $semanticData ] );
 
 		$pageUpdater = $applicationFactory->newPageUpdater();
 
@@ -440,7 +440,7 @@ abstract class Store implements QueryEngine {
 	 * @return array
 	 */
 	public function getParserTestTables() {
-		return array();
+		return [];
 	}
 
 	/**

@@ -91,7 +91,7 @@ class JsonResultPrinter extends FileExportPrinter {
 			$result = json_encode(
 				array_merge(
 					$res->serializeToArray(),
-					array ( 'rows' => $res->getCount() )
+					 [ 'rows' => $res->getCount() ]
 				),
 				$flags
 			);
@@ -124,17 +124,17 @@ class JsonResultPrinter extends FileExportPrinter {
 
 		$params['limit']->setDefault( 100 );
 
-		$params['prettyprint'] = array(
+		$params['prettyprint'] = [
 			'type' => 'boolean',
 			'default' => '',
 			'message' => 'smw-paramdesc-prettyprint',
-		);
+		];
 
-		$params['unescape'] = array(
+		$params['unescape'] = [
 			'type' => 'boolean',
 			'default' => '',
 			'message' => 'smw-paramdesc-json-unescape',
-		);
+		];
 
 		return $params;
 	}

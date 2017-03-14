@@ -46,7 +46,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
-		$contentsByIndex = array();
+		$contentsByIndex = [];
 
 		// Print all result rows:
 		$rowindex = 0;
@@ -75,7 +75,7 @@ class CategoryResultPrinter extends ResultPrinter {
 			$columnIndex = $this->getFirstLetterForCategory( $res, $content[0] );
 
 			if ( !isset( $contentsByIndex[$columnIndex] ) ) {
-				$contentsByIndex[$columnIndex] = array();
+				$contentsByIndex[$columnIndex] = [];
 				$lastColumnIndex = $columnIndex;
 			}
 
@@ -108,7 +108,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 				foreach ( $row as $field ) {
 					$first_value = true;
-					$fieldValues = array();
+					$fieldValues = [];
 
 					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
 
@@ -146,11 +146,11 @@ class CategoryResultPrinter extends ResultPrinter {
 			$rowindex++;
 		}
 
-		if ( $contentsByIndex === array() ) {
+		if ( $contentsByIndex === [] ) {
 
-			$res->addErrors( array(
+			$res->addErrors( [
 				$this->msg( 'smw-qp-empty-data' )->inContentLanguage()->text()
-			) );
+			] );
 
 			return '';
 		}
@@ -173,43 +173,43 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	public function getParameters() {
-		return array_merge( parent::getParameters(), array(
-			array(
+		return array_merge( parent::getParameters(), [
+			[
 				'name' => 'columns',
 				'type' => 'integer',
 				'message' => 'smw-paramdesc-columns',
 				'default' => 3,
-			),
-			array(
+			],
+			[
 				'name' => 'delim',
 				'message' => 'smw-paramdesc-category-delim',
 				'default' => '',
-			),
-			array(
+			],
+			[
 				'name' => 'template',
 				'message' => 'smw-paramdesc-category-template',
 				'default' => '',
-			),
-			array(
+			],
+			[
 				'name' => 'userparam',
 				'message' => 'smw-paramdesc-category-userparam',
 				'default' => '',
-			),
+			],
 
-			array(
+			[
 				'name' => 'named args',
 				'type' => 'boolean',
 				'message' => 'smw-paramdesc-named_args',
 				'default' => false,
-			),
+			],
 
-			array(
+			[
 				'name' => 'import-annotation',
 				'type' => 'boolean',
 				'message' => 'smw-paramdesc-import-annotation',
 				'default' => false,
-			)
-		) );
+			]
+		] );
 	}
 
 	private function getFirstLetterForCategory( SMWQueryResult $res, SMWDataItem $dataItem ) {
@@ -242,7 +242,7 @@ class CategoryResultPrinter extends ResultPrinter {
 				$fieldName = $fieldName . $i;
 			}
 
-			$fieldValues = array();
+			$fieldValues = [];
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
 				$fieldValues[] = $text;

@@ -128,7 +128,7 @@ class SMWSql3SmwIds {
 	 * @since 1.8
 	 * @var array
 	 */
-	protected $prop_ids = array();
+	protected $prop_ids = [];
 
 	/**
 	 * @var IdToDataItemMatchFinder
@@ -146,7 +146,7 @@ class SMWSql3SmwIds {
 	 * @since 1.8
 	 * @var array
 	 */
-	protected $prop_sortkeys = array();
+	protected $prop_sortkeys = [];
 
 	/**
 	 * Cache for non-property IDs.
@@ -154,7 +154,7 @@ class SMWSql3SmwIds {
 	 * @since 1.8
 	 * @var array
 	 */
-	protected $regular_ids = array();
+	protected $regular_ids = [];
 
 	/**
 	 * Cache for non-property sortkeys.
@@ -162,7 +162,7 @@ class SMWSql3SmwIds {
 	 * @since 1.8
 	 * @var array
 	 */
-	protected $regular_sortkeys = array();
+	protected $regular_sortkeys = [];
 
 	/**
 	 * Use pre-defined ids for Very Important Properties, avoiding frequent
@@ -174,7 +174,7 @@ class SMWSql3SmwIds {
 	 * @since 1.8
 	 * @var array
 	 */
-	public static $special_ids = array(
+	public static $special_ids = [
 		'_TYPE' => 1,
 		'_URI'  => 2,
 		'_INST' => 4,
@@ -215,7 +215,7 @@ class SMWSql3SmwIds {
 		'_ASKSC' =>  39,
 		'_LCODE' =>  40,
 		'_TEXT'  =>  41,
-	);
+	];
 
 	/**
 	 * Constructor.
@@ -374,15 +374,15 @@ class SMWSql3SmwIds {
 			if ( $id != 0 ) {
 
 				if ( $fetchHashes ) {
-					$select = array( 'smw_sortkey', 'smw_proptable_hash' );
+					$select = [ 'smw_sortkey', 'smw_proptable_hash' ];
 				} else {
-					$select = array( 'smw_sortkey' );
+					$select = [ 'smw_sortkey' ];
 				}
 
 				$row = $db->selectRow(
 					self::TABLE_NAME,
 					$select,
-					array( 'smw_id' => $id ),
+					[ 'smw_id' => $id ],
 					__METHOD__
 				);
 
@@ -401,20 +401,20 @@ class SMWSql3SmwIds {
 		} else {
 
 			if ( $fetchHashes ) {
-				$select = array( 'smw_id', 'smw_sortkey', 'smw_proptable_hash' );
+				$select = [ 'smw_id', 'smw_sortkey', 'smw_proptable_hash' ];
 			} else {
-				$select = array( 'smw_id', 'smw_sortkey' );
+				$select = [ 'smw_id', 'smw_sortkey' ];
 			}
 
 			$row = $db->selectRow(
 				self::TABLE_NAME,
 				$select,
-				array(
+				[
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName
-				),
+				],
 				__METHOD__
 			);
 
@@ -468,17 +468,17 @@ class SMWSql3SmwIds {
 	 */
 	public function getListOfIdMatchesFor( $title, $namespace, $iw, $subobjectName = '' ) {
 
-		$matches = array();
+		$matches = [];
 
 		$rows = $this->store->getConnection( 'mw.db' )->select(
 			self::TABLE_NAME,
-			$select = array( 'smw_id' ),
-			array(
+			$select = [ 'smw_id' ],
+			[
 				'smw_title' => $title,
 				'smw_namespace' => $namespace,
 				'smw_iw' => $iw,
 				'smw_subobject' => $subobjectName
-			),
+			],
 			__METHOD__
 		);
 
@@ -545,13 +545,13 @@ class SMWSql3SmwIds {
 
 		$row = $this->store->getConnection( 'mw.db' )->selectRow(
 			self::TABLE_NAME,
-			array( 'smw_id' ),
-			array(
+			[ 'smw_id' ],
+			[
 				'smw_title' => $subject->getDBKey(),
 				'smw_namespace' => $subject->getNamespace(),
 				'smw_iw' => $subject->getInterWiki(),
 				'smw_subobject' => $subject->getSubobjectName()
-			),
+			],
 			__METHOD__
 		);
 
@@ -657,14 +657,14 @@ class SMWSql3SmwIds {
 
 			$db->insert(
 				self::TABLE_NAME,
-				array(
+				[
 					'smw_id' => $sequenceValue,
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName,
 					'smw_sortkey' => $sortkey
-				),
+				],
 				__METHOD__
 			);
 
@@ -694,8 +694,8 @@ class SMWSql3SmwIds {
 
 			$db->update(
 				self::TABLE_NAME,
-				array( 'smw_sortkey' => $sortkey ),
-				array( 'smw_id' => $id ),
+				[ 'smw_sortkey' => $sortkey ],
+				[ 'smw_id' => $id ],
 				__METHOD__
 			);
 
@@ -739,8 +739,8 @@ class SMWSql3SmwIds {
 
 		$this->store->getConnection()->update(
 			self::TABLE_NAME,
-			array( 'smw_iw' => $interWiki !== null ? $interWiki : $subject->getInterWiki() ),
-			array( 'smw_id' => $sid ),
+			[ 'smw_iw' => $interWiki !== null ? $interWiki : $subject->getInterWiki() ],
+			[ 'smw_id' => $sid ],
 			__METHOD__
 		);
 
@@ -868,7 +868,7 @@ class SMWSql3SmwIds {
 		$row = $db->selectRow(
 			self::TABLE_NAME,
 			'*',
-			array( 'smw_id' => $curid ),
+			[ 'smw_id' => $curid ],
 			__METHOD__
 		);
 
@@ -883,14 +883,14 @@ class SMWSql3SmwIds {
 
 			$db->insert(
 				self::TABLE_NAME,
-				array(
+				[
 					'smw_id' => $sequenceValue,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
 					'smw_sortkey' => $row->smw_sortkey
-				),
+				],
 				__METHOD__
 			);
 
@@ -898,22 +898,22 @@ class SMWSql3SmwIds {
 		} else { // change to given id
 			$db->insert(
 				self::TABLE_NAME,
-				array( 'smw_id' => $targetid,
+				[ 'smw_id' => $targetid,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
 					'smw_sortkey' => $row->smw_sortkey
-				),
+				],
 				__METHOD__
 			);
 		}
 
 		$db->delete(
 			self::TABLE_NAME,
-			array(
+			[
 				'smw_id' => $curid
-			),
+			],
 			__METHOD__
 		);
 
@@ -1101,12 +1101,12 @@ class SMWSql3SmwIds {
 		// Currently we have no way to change title and namespace across all entries.
 		// Best we can do is clear the cache to avoid wrong hits:
 		if ( $oldnamespace == SMW_NS_PROPERTY || $newnamespace == SMW_NS_PROPERTY ) {
-			$this->prop_ids = array();
-			$this->prop_sortkeys = array();
+			$this->prop_ids = [];
+			$this->prop_sortkeys = [];
 		}
 		if ( $oldnamespace != SMW_NS_PROPERTY || $newnamespace != SMW_NS_PROPERTY ) {
-			$this->regular_ids = array();
-			$this->regular_sortkeys = array();
+			$this->regular_ids = [];
+			$this->regular_sortkeys = [];
 		}
 	}
 
@@ -1116,10 +1116,10 @@ class SMWSql3SmwIds {
 	 * @since 1.8
 	 */
 	public function clearCaches() {
-		$this->prop_ids = array();
-		$this->prop_sortkeys = array();
-		$this->regular_ids = array();
-		$this->regular_sortkeys = array();
+		$this->prop_ids = [];
+		$this->prop_sortkeys = [];
+		$this->regular_ids = [];
+		$this->regular_sortkeys = [];
 		$this->idToDataItemMatchFinder->clear();
 	}
 
@@ -1177,7 +1177,7 @@ class SMWSql3SmwIds {
 
 			$row = $db->selectRow(
 				self::TABLE_NAME,
-				array( 'smw_proptable_hash' ),
+				[ 'smw_proptable_hash' ],
 				'smw_id=' . $subjectId,
 				__METHOD__
 			);
@@ -1191,7 +1191,7 @@ class SMWSql3SmwIds {
 			$hash = pg_unescape_bytea( $hash );
 		}
 
-		return is_null( $hash ) ? array() : unserialize( $hash );
+		return is_null( $hash ) ? [] : unserialize( $hash );
 	}
 
 	/**
@@ -1207,8 +1207,8 @@ class SMWSql3SmwIds {
 
 		$db->update(
 			self::TABLE_NAME,
-			array( 'smw_proptable_hash' => $propertyTableHash ),
-			array( 'smw_id' => $sid ),
+			[ 'smw_proptable_hash' => $propertyTableHash ],
+			[ 'smw_id' => $sid ],
 			__METHOD__
 		);
 

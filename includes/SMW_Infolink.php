@@ -62,7 +62,7 @@ class SMWInfolink {
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
 	 * @param array $params Array of parameters, format $name => $value, if any.
 	 */
-	public function __construct( $internal, $caption, $target, $style = false, array $params = array() ) {
+	public function __construct( $internal, $caption, $target, $style = false, array $params = [] ) {
 		$this->mInternal = $internal;
 		$this->mCaption = $caption;
 		$this->mTarget = $target;
@@ -81,7 +81,7 @@ class SMWInfolink {
 	 *
 	 * @return SMWInfolink
 	 */
-	public static function newInternalLink( $caption, $target, $style = false, array $params = array() ) {
+	public static function newInternalLink( $caption, $target, $style = false, array $params = [] ) {
 		return new SMWInfolink( true, $caption, $target, $style, $params );
 	}
 
@@ -95,7 +95,7 @@ class SMWInfolink {
 	 *
 	 * @return SMWInfolink
 	 */
-	public static function newExternalLink( $caption, $url, $style = false, array $params = array() ) {
+	public static function newExternalLink( $caption, $url, $style = false, array $params = [] ) {
 		return new SMWInfolink( false, $caption, $url, $style, $params );
 	}
 
@@ -116,7 +116,7 @@ class SMWInfolink {
 			$caption,
 			$wgContLang->getNsText( NS_SPECIAL ) . ':SearchByProperty',
 			$style,
-			array( ':' . $propertyName, $propertyValue ) // `:` is marking that the link was auto-generated
+			[ ':' . $propertyName, $propertyValue ] // `:` is marking that the link was auto-generated
 		);
 	}
 
@@ -156,7 +156,7 @@ class SMWInfolink {
 			$caption,
 			$wgContLang->getNsText( NS_SPECIAL ) . ':Browse',
 			$style,
-			array( ':' . $titleText )
+			[ ':' . $titleText ]
 		);
 	}
 
@@ -250,7 +250,7 @@ class SMWInfolink {
 						$link = $this->getLinker( $linker )->link(
 							$title,
 							$this->mCaption,
-							array(),
+							[],
 							$query
 						);
 					}
@@ -379,8 +379,8 @@ class SMWInfolink {
 				//      make URLs less readable
 				//
 				$value = str_replace(
-					array( '-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&', '%', '?', '$', "\\", ";", "_" ),
-					array( '-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", "-5F" ),
+					[ '-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&', '%', '?', '$', "\\", ";", "_" ],
+					[ '-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", "-5F" ],
 					$value
 				);
 
@@ -391,7 +391,7 @@ class SMWInfolink {
 				$result .= $value;
 			}
 		} else { // Note: this requires to have HTTP compatible parameter names (ASCII)
-			$q = array(); // collect unlabelled query parameters here
+			$q = []; // collect unlabelled query parameters here
 
 			foreach ( $params as $name => $value ) {
 				if ( is_string( $name ) && ( $name !== '' ) ) {
@@ -443,7 +443,7 @@ class SMWInfolink {
 	static public function decodeParameters( $titleParam = '', $allParams = false ) {
 		global $wgRequest;
 
-		$result = array();
+		$result = [];
 
 		if ( $allParams ) {
 			$result = $wgRequest->getValues();

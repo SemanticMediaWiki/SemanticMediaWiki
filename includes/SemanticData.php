@@ -60,14 +60,14 @@ class SemanticData {
 	 *
 	 * @var SMWDataItem[]
 	 */
-	protected $mPropVals = array();
+	protected $mPropVals = [];
 
 	/**
 	 * Array mapping property keys (string) to DIProperty objects.
 	 *
 	 * @var DIProperty[]
 	 */
-	protected $mProperties = array();
+	protected $mProperties = [];
 
 	/**
 	 * States whether the container holds any normal properties.
@@ -131,7 +131,7 @@ class SemanticData {
 	/**
 	 * @var array
 	 */
-	protected $errors = array();
+	protected $errors = [];
 
 	/**
 	 * Cache the hash to ensure a minimal impact in case of repeated usage. Any
@@ -182,7 +182,7 @@ class SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options' );
+		return [ 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options' ];
 	}
 
 	/**
@@ -223,14 +223,14 @@ class SemanticData {
 	 */
 	public function getPropertyValues( DIProperty $property ) {
 		if ( $property->isInverse() ) { // we never have any data for inverses
-			return array();
+			return [];
 		}
 
 		if ( array_key_exists( $property->getKey(), $this->mPropVals ) ) {
 			return $this->mPropVals[$property->getKey()];
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -398,7 +398,7 @@ class SemanticData {
 		}
 
 		if ( !array_key_exists( $property->getKey(), $this->mPropVals ) ) {
-			$this->mPropVals[$property->getKey()] = array();
+			$this->mPropVals[$property->getKey()] = [];
 			$this->mProperties[$property->getKey()] = $property;
 		}
 
@@ -542,7 +542,7 @@ class SemanticData {
 			$this->mPropVals[$property->getKey()] = array_values( $this->mPropVals[$property->getKey()] );
 		}
 
-		if ( $this->mPropVals[$property->getKey()] === array() ) {
+		if ( $this->mPropVals[$property->getKey()] === [] ) {
 			unset( $this->mProperties[$property->getKey()] );
 			unset( $this->mPropVals[$property->getKey()] );
 		}
@@ -586,8 +586,8 @@ class SemanticData {
 	 * Delete all data other than the subject.
 	 */
 	public function clear() {
-		$this->mPropVals = array();
-		$this->mProperties = array();
+		$this->mPropVals = [];
+		$this->mProperties = [];
 		$this->mHasVisibleProps = false;
 		$this->mHasVisibleSpecs = false;
 		$this->stubObject = false;
@@ -606,7 +606,7 @@ class SemanticData {
 	 * @return boolean
 	 */
 	public function isEmpty() {
-		return $this->getProperties() === array() && $this->getSubSemanticData() === array();
+		return $this->getProperties() === [] && $this->getSubSemanticData() === [];
 	}
 
 	/**
@@ -633,7 +633,7 @@ class SemanticData {
 		if ( count( $this->mProperties ) == 0 &&
 		     ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
 			$this->mProperties = $semanticData->getProperties();
-			$this->mPropVals = array();
+			$this->mPropVals = [];
 
 			foreach ( $this->mProperties as $property ) {
 				$this->mPropVals[$property->getKey()] = $semanticData->getPropertyValues( $property );

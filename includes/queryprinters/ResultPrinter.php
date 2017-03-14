@@ -122,7 +122,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	 *
 	 * @var array
 	 */
-	protected $mErrors = array();
+	protected $mErrors = [];
 
 	/**
 	 * If set, treat result as plain HTML. Can be used by printer classes if wiki mark-up is not enough.
@@ -207,7 +207,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 		$this->outputMode = $outputMode;
 		$this->results = $results;
 
-		$params = array();
+		$params = [];
 
 		/**
 		 * @var \IParam $param
@@ -299,7 +299,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 		// Apply intro parameter
 		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
 			if ( $outputmode == SMW_OUTPUT_HTML ) {
-				$result = Message::get( array( 'smw-parse', $this->mIntro ), Message::PARSE ) . $result;
+				$result = Message::get( [ 'smw-parse', $this->mIntro ], Message::PARSE ) . $result;
 			} else {
 				$result = $this->mIntro . $result;
 			}
@@ -308,7 +308,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 		// Apply outro parameter
 		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
 			if ( $outputmode == SMW_OUTPUT_HTML ) {
-				$result = $result . Message::get( array( 'smw-parse', $this->mOutro ), Message::PARSE );
+				$result = $result . Message::get( [ 'smw-parse', $this->mOutro ], Message::PARSE );
 			} else {
 				$result = $result . $this->mOutro;
 			}
@@ -332,7 +332,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 		}
 
 		if ( ( $this->isHTML ) && ( $outputmode == SMW_OUTPUT_WIKI ) ) {
-			$result = array( $result, 'isHTML' => true );
+			$result = [ $result, 'isHTML' => true ];
 		} elseif ( ( !$this->isHTML ) && ( $outputmode == SMW_OUTPUT_HTML ) ) {
 			self::$mRecursionDepth++;
 
@@ -593,7 +593,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	 * @return array
 	 */
 	protected function textDisplayParameters() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -607,7 +607,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	 * @return array
 	 */
 	protected function exportFormatParameters() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -622,7 +622,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	 * @return array
 	 */
 	public function getParameters() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -649,8 +649,8 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	 *
 	 * @return array
 	 */
-	public final function getNamedParameters( array $definitions = array() ) {
-		$params = array();
+	public final function getNamedParameters( array $definitions = [] ) {
+		$params = [];
 
 		foreach ( $this->getParamDefinitions( $definitions ) as $param ) {
 			$params[is_array( $param ) ? $param['name'] : $param->getName()] = $param;

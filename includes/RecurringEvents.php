@@ -30,17 +30,17 @@ class RecurringEvents {
 	/**
 	 * Defines the dates
 	 */
-	private $dates = array();
+	private $dates = [];
 
 	/**
 	 * Defines remaining / unused parameters
 	 */
-	private $parameters = array();
+	private $parameters = [];
 
 	/**
 	 * Defines errors
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var integer
@@ -159,11 +159,11 @@ class RecurringEvents {
 	 */
 	private function parse( array $parameters ) {
 		// Initialize variables.
-		$all_date_strings = array();
+		$all_date_strings = [];
 		$start_date = $end_date = $unit = $period = $week_num = null;
-		$included_dates = array();
-		$excluded_dates = array();
-		$excluded_dates_jd = array();
+		$included_dates = [];
+		$excluded_dates = [];
+		$excluded_dates_jd = [];
 
 		// Parse parameters and assign values
 		foreach ( $parameters as $name => $values ) {

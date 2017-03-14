@@ -79,7 +79,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		$list .= $this->getPropertyValueList();
 
-		$result = ( $list !== '' ? Html::element( 'div', array( 'id' => 'smwfootbr' ) ) . $list : '' );
+		$result = ( $list !== '' ? Html::element( 'div', [ 'id' => 'smwfootbr' ] ) . $list : '' );
 
 		return $result;
 	}
@@ -138,29 +138,29 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$cachedLookupList = $this->store->getPropertiesSpecial( $requestOptions );
 		$usageList = $cachedLookupList->fetchList();
 
-		if ( $usageList && $usageList !== array() ) {
+		if ( $usageList && $usageList !== [] ) {
 			$usage = end( $usageList );
 			$usageCount = $usage[1];
 			$usageCountHtml = Html::rawElement(
-				'div', array(
+				'div', [
 					'title' => wfMessage( 'smw-property-indicator-last-count-update', $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() ) )->text(),
-					'class' => 'smw-property-page-indicator usage-count' . ( $usageCount < 25000 ? ( $usageCount > 5000 ? ' moderate' : '' ) : ' high' ) ),
+					'class' => 'smw-property-page-indicator usage-count' . ( $usageCount < 25000 ? ( $usageCount > 5000 ? ' moderate' : '' ) : ' high' ) ],
 				$usageCount
 			);
 		}
 
 		$type = Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'smw-property-page-indicator property-type',
 					'title' => wfMessage( 'smw-property-indicator-type-info', $this->mProperty->isUserDefined() )->parse()
-			), ( $this->mProperty->isUserDefined() ? 'U' : 'S' )
+			], ( $this->mProperty->isUserDefined() ? 'U' : 'S' )
 		);
 
-		return array(
+		return [
 			'smw-prop-count' => $usageCountHtml,
 			'smw-prop-type' => $type
-		);
+		];
 	}
 
 	/**
@@ -191,7 +191,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		if ( $more ) {
 			$message = Html::rawElement(
 				'span',
-				array( 'class' => 'plainlinks' ),
+				[ 'class' => 'plainlinks' ],
 				wfMessage( 'smw-propertylist-count-with-restricted-note', $resultCount, $listLimit )->parse()
 			);
 		} else {
@@ -200,7 +200,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		if ( $resultCount > 0 ) {
 			$titleText = htmlspecialchars( $this->mTitle->getText() );
-			$result .= "<div id=\"{$header}\">" . Html::rawElement( 'h2', array(), wfMessage( $header . '-header', $titleText )->text() ) . "\n<p>";
+			$result .= "<div id=\"{$header}\">" . Html::rawElement( 'h2', [], wfMessage( $header . '-header', $titleText )->text() ) . "\n<p>";
 
 			if ( !$this->mProperty->isUserDefined() ) {
 				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
@@ -234,7 +234,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			return '';
 		}
 
-		$diWikiPages = array();
+		$diWikiPages = [];
 		$options = SMWPageLister::getRequestOptions( $this->limit, $this->from, $this->until );
 
 		$options->limit = $wgRequest->getVal( 'limit', $smwgPropertyPagingLimit );
@@ -373,7 +373,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$query = $queryFactory->newQuery( $description );
 		$query->setLimit( $options->limit );
 		$query->setOffset( $options->offset );
-		$query->setSortKeys( array( '' => 'asc' ) );
+		$query->setSortKeys( [ '' => 'asc' ] );
 
 		return $this->store->getQueryResult( $query )->getResults();
 	}

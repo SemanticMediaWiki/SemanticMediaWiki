@@ -126,7 +126,7 @@ class SMWStringValue extends DataValue {
 			return parent::getInfolinks();
 		}
 
-		return array();
+		return [];
 	}
 
 	protected function getServiceLinkParams() {
@@ -138,7 +138,7 @@ class SMWStringValue extends DataValue {
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded string
-		return array( rawurlencode( $this->m_dataitem->getString() ) );
+		return [ rawurlencode( $this->m_dataitem->getString() ) ];
 	}
 
 }

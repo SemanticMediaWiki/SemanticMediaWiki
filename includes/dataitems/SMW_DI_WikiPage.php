@@ -230,11 +230,11 @@ class DIWikiPage extends SMWDataItem {
 	 * @return string
 	 */
 	public function getSerialization() {
-		$segments = array(
+		$segments = [
 			$this->m_dbkey,
 			$this->m_namespace,
 			$this->m_interwiki
-		);
+		];
 
 		if ( $this->m_subobjectname !== '' ) {
 			$segments[] = $this->m_subobjectname;

@@ -35,7 +35,7 @@ class ContentParser {
 	protected $revision = null;
 
 	/** @var array */
-	protected $errors = array();
+	protected $errors = [];
 
 	/**
 	 * @var boolean
@@ -205,7 +205,7 @@ class ContentParser {
 	}
 
 	protected function msgForNullRevision( $fname = __METHOD__ ) {
-		$this->errors = array( $fname . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" );
+		$this->errors = [ $fname . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" ];
 		return $this;
 	}
 

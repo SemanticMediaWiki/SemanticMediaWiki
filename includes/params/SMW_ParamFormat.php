@@ -27,7 +27,7 @@ class SMWParamFormat extends StringParam {
 	 *
 	 * @var PrintRequest[]
 	 */
-	protected $printRequests = array();
+	protected $printRequests = [];
 
 	/**
 	 * Takes a format name, which can be an alias and returns a format name
@@ -103,7 +103,7 @@ class SMWParamFormat extends StringParam {
 			 *
 			 * @since 1.5.2
 			 */
-			\Hooks::run( 'SMWResultFormat', array( &$format, $this->printRequests, array() ) );
+			\Hooks::run( 'SMWResultFormat', [ &$format, $this->printRequests, [] ] );
 
 			// If no default was set by an extension, use a table or list, depending on the column count.
 			if ( $format === false ) {

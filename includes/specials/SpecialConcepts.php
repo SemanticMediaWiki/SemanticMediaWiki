@@ -87,20 +87,20 @@ class SpecialConcepts extends SpecialPage {
 
 		return Html::rawElement(
 			'span',
-			array( 'class' => 'smw-sp-concept-docu' ),
+			[ 'class' => 'smw-sp-concept-docu' ],
 			$this->msg( 'smw-sp-concept-docu' )->parse()
 			) .
 			Html::rawElement(
 				'div',
-				array( 'id' => 'mw-pages'),
+				[ 'id' => 'mw-pages'],
 				Html::element(
 					'h2',
-					array(),
+					[],
 					$this->msg( 'smw-sp-concept-header' )->text()
 				) .
 				Html::element(
 					'span',
-					array( 'class' => $key ),
+					[ 'class' => $key ],
 					$this->msg( $key, $resultNumber )->parse()
 				) .	' ' .
 				$pageLister->getNavigationLinks( $title ) .

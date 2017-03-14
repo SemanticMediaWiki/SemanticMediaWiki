@@ -140,9 +140,9 @@ class ListResultPrinter extends ResultPrinter {
 	 */
 	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
 		if ( $this->mFormat == 'template' && !$this->mTemplate ) {
-			$queryResult->addErrors( array(
+			$queryResult->addErrors( [
 				$this->getContext()->msg( 'smw_notemplategiven' )->inContentLanguage()->text()
-			) );
+			] );
 			return '';
 		}
 
@@ -321,7 +321,7 @@ class ListResultPrinter extends ResultPrinter {
 
 		if ( $this->rowSortkey !== '' ) {
 			return "\t" . Html::openElement( 'li',
-				array( 'data-sortkey' => mb_substr( $this->rowSortkey, 0, 1 ) )
+				[ 'data-sortkey' => mb_substr( $this->rowSortkey, 0, 1 ) ]
 			);
 		}
 
@@ -346,7 +346,7 @@ class ListResultPrinter extends ResultPrinter {
 		$extraFields = false; // has anything but the first field been printed?
 
 		$result = '';
-		$excluded = array( 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' );
+		$excluded = [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ];
 
 		foreach ( $row as $field ) {
 			$firstValue = true; // is this the first value in this field?
@@ -379,7 +379,7 @@ class ListResultPrinter extends ResultPrinter {
 
 				// Remove seleted tags to avoid lists are distorted by unresolved
 				// in-text tags
-				$result .= $this->isPlainlist() ? $text : Sanitizer::removeHTMLtags( $text, null, array(), array(), $excluded );
+				$result .= $this->isPlainlist() ? $text : Sanitizer::removeHTMLtags( $text, null, [], [], $excluded );
 			}
 
 			$firstField = false;
@@ -479,64 +479,64 @@ class ListResultPrinter extends ResultPrinter {
 	public function getParameters() {
 		$params = parent::getParameters();
 
-		$params['sep'] = array(
+		$params['sep'] = [
 			'message' => 'smw-paramdesc-sep',
 			'default' => '',
-		);
+		];
 
 		if ( $this->mFormat === 'template' && $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
-			$params['valuesep'] = array(
+			$params['valuesep'] = [
 				'message' => 'smw-paramdesc-sep',
 				'default' => '',
-			);
+			];
 		}
 
-		$params['template'] = array(
+		$params['template'] = [
 			'message' => 'smw-paramdesc-template',
 			'default' => '',
-		);
+		];
 
-		$params['template arguments'] = array(
+		$params['template arguments'] = [
 			'message' => 'smw-paramdesc-template-arguments',
 			'default' => '',
-			'values' => array( 'numbered', 'named', 'legacy' ),
-		);
+			'values' => [ 'numbered', 'named', 'legacy' ],
+		];
 
-		$params['named args'] = array(
+		$params['named args'] = [
 			'type' => 'boolean',
 			'message' => 'smw-paramdesc-named_args',
 			'default' => false,
-		);
+		];
 
 		if ( !$this->isPlainlist() ) {
-			$params['columns'] = array(
+			$params['columns'] = [
 				'type' => 'integer',
 				'message' => 'smw-paramdesc-columns',
 				'default' => 1,
-				'range' => array( 1, 10 ),
-			);
+				'range' => [ 1, 10 ],
+			];
 		}
 
-		$params['userparam'] = array(
+		$params['userparam'] = [
 			'message' => 'smw-paramdesc-userparam',
 			'default' => '',
-		);
+		];
 
-		$params['introtemplate'] = array(
+		$params['introtemplate'] = [
 			'message' => 'smw-paramdesc-introtemplate',
 			'default' => '',
-		);
+		];
 
-		$params['outrotemplate'] = array(
+		$params['outrotemplate'] = [
 			'message' => 'smw-paramdesc-outrotemplate',
 			'default' => '',
-		);
+		];
 
-		$params['import-annotation'] = array(
+		$params['import-annotation'] = [
 			'message' => 'smw-paramdesc-import-annotation',
 			'type' => 'boolean',
 			'default' => false
-		);
+		];
 
 		return $params;
 	}

@@ -103,7 +103,7 @@ class SMWQueryParser {
 
 		$this->descriptionProcessor->clear();
 		$this->currentString = $queryString;
-		$this->separatorStack = array();
+		$this->separatorStack = [];
 		$setNS = false;
 		$result = $this->getSubqueryDescription( $setNS );
 
@@ -162,7 +162,7 @@ class SMWQueryParser {
 	 */
 	private function getSubqueryDescription( &$setNS ) {
 		$conjunction = null;      // used for the current inner conjunction
-		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
+		$disjuncts = [];     // (disjunctive) array of subquery conjunctions
 		$hasNamespaces = false;   // does the current $conjnuction have its own namespace restrictions?
 		$mustSetNS = $setNS;      // must NS restrictions be set? (may become true even if $setNS is false)
 
@@ -192,7 +192,7 @@ class SMWQueryParser {
 						if ( $hasNamespaces && !$mustSetNS ) {
 							// add NS restrictions to all earlier conjunctions (all of which did not have them yet)
 							$mustSetNS = true; // enforce NS restrictions from now on
-							$newdisjuncts = array();
+							$newdisjuncts = [];
 
 							foreach ( $disjuncts as $conj ) {
 								$newdisjuncts[] = $this->descriptionProcessor->constructConjunctiveCompoundDescriptionFrom( $conj, $this->defaultNamespace );
@@ -273,7 +273,7 @@ class SMWQueryParser {
 		$chunk = $this->readChunk( '', true, false ); // NOTE: untrimmed, initial " " escapes prop. chains
 
 		if ( in_array( smwfNormalTitleText( $chunk ),
-			array( $this->categoryPrefix, $this->conceptPrefix, $this->categoryPrefixCannonical, $this->conceptPrefixCannonical ) ) ) {
+			[ $this->categoryPrefix, $this->conceptPrefix, $this->categoryPrefixCannonical, $this->conceptPrefixCannonical ] ) ) {
 			return $this->getClassDescription( $setNS, (
 				smwfNormalTitleText( $chunk ) == $this->categoryPrefix || smwfNormalTitleText( $chunk ) == $this->categoryPrefixCannonical
 			) );
@@ -337,8 +337,8 @@ class SMWQueryParser {
 		$this->readChunk(); // consume separator ":=" or "::"
 
 		// first process property chain syntax (e.g. "property1.property2::value"), escaped by initial " ":
-		$propertynames = ( $propertyName{0} == ' ' ) ? array( $propertyName ) : explode( '.', $propertyName );
-		$properties = array();
+		$propertynames = ( $propertyName{0} == ' ' ) ? [ $propertyName ] : explode( '.', $propertyName );
+		$properties = [];
 		$typeid = '_wpg';
 		$inverse = false;
 

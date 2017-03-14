@@ -195,7 +195,7 @@ final class Setup {
 	 */
 	private function registerJobClasses() {
 
-		$jobClasses = array(
+		$jobClasses = [
 			'SMW\UpdateJob' => 'SMW\MediaWiki\Jobs\UpdateJob',
 			'SMW\RefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob',
 			'SMW\UpdateDispatcherJob' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
@@ -209,7 +209,7 @@ final class Setup {
 			// Legacy definition to be removed with 1.10
 			'SMWUpdateJob'  => 'SMW\MediaWiki\Jobs\UpdateJob',
 			'SMWRefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob'
-		);
+		];
 
 		foreach ( $jobClasses as $job => $class ) {
 			$this->globalVars['wgJobClasses'][$job] = $class;
@@ -263,71 +263,71 @@ final class Setup {
 			return;
 		}
 
-		$specials = array(
-			'Ask' => array(
+		$specials = [
+			'Ask' => [
 				'page' => 'SMWAskPage',
 				'group' => 'smw_group'
-			),
-			'Browse' => array(
+			],
+			'Browse' => [
 				'page' =>  'SMW\MediaWiki\Specials\SpecialBrowse',
 				'group' => 'smw_group'
-			),
-			'PageProperty' => array(
+			],
+			'PageProperty' => [
 				'page' =>  'SMWPageProperty',
 				'group' => 'smw_group'
-			),
-			'SearchByProperty' => array(
+			],
+			'SearchByProperty' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty',
 				'group' => 'smw_group'
-			),
-			'ProcessingErrorList' => array(
+			],
+			'ProcessingErrorList' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList',
 				'group' => 'smw_group'
-			),
-			'PropertyLabelSimilarity' => array(
+			],
+			'PropertyLabelSimilarity' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity',
 				'group' => 'smw_group'
-			),
-			'SMWAdmin' => array(
+			],
+			'SMWAdmin' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin',
 				'group' => 'smw_group'
-			),
-			'SemanticStatistics' => array(
+			],
+			'SemanticStatistics' => [
 				'page' => 'SMW\SpecialSemanticStatistics',
 				'group' => 'wiki'
-			),
-			'Concepts' => array(
+			],
+			'Concepts' => [
 				'page' => 'SMW\SpecialConcepts',
 				'group' => 'pages'
-			),
-			'ExportRDF' => array(
+			],
+			'ExportRDF' => [
 				'page' => 'SMWSpecialOWLExport',
 				'group' => 'smw_group'
-			),
-			'Types' => array(
+			],
+			'Types' => [
 				'page' => 'SMWSpecialTypes',
 				'group' => 'pages'
-			),
-			'URIResolver' => array(
+			],
+			'URIResolver' => [
 				'page' => 'SMWURIResolver'
-			),
-			'Properties' => array(
+			],
+			'Properties' => [
 				'page' => 'SMW\SpecialProperties',
 				'group' => 'pages'
-			),
-			'UnusedProperties' => array(
+			],
+			'UnusedProperties' => [
 				'page' => 'SMW\SpecialUnusedProperties',
 				'group' => 'maintenance'
-			),
-			'WantedProperties' => array(
+			],
+			'WantedProperties' => [
 				'page' => 'SMW\SpecialWantedProperties',
 				'group' => 'maintenance'
-			),
-			'DeferredRequestDispatcher' => array(
+			],
+			'DeferredRequestDispatcher' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher',
 				'group' => 'maintenance'
-			),
-		);
+			],
+		];
 
 		// Register data
 		foreach ( $specials as $special => $page ) {
@@ -340,9 +340,9 @@ final class Setup {
 	}
 
 	private function registerParamDefinitions() {
-		$this->globalVars['wgParamDefinitions']['smwformat'] = array(
+		$this->globalVars['wgParamDefinitions']['smwformat'] = [
 			'definition'=> 'SMWParamFormat',
-		);
+		];
 	}
 
 	/**
@@ -360,13 +360,13 @@ final class Setup {
 
 		$pathParts = ( explode( '/extensions/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__), 2 ) );
 
-		$this->globalVars['wgFooterIcons']['poweredby']['semanticmediawiki'] = array(
+		$this->globalVars['wgFooterIcons']['poweredby']['semanticmediawiki'] = [
 			'src' => $this->globalVars['wgScriptPath'] . '/extensions/'
 				. end( $pathParts )
 				. '/../res/images/smw_button.png',
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
 			'alt' => 'Powered by Semantic MediaWiki',
-		);
+		];
 	}
 
 	/**

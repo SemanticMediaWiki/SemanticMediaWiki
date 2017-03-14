@@ -53,7 +53,7 @@ class SMWPageLister {
 	 * @param $query array that associates parameter names to parameter values
 	 * @return string
 	 */
-	public function getNavigationLinks( Title $title, $query = array() ) {
+	public function getNavigationLinks( Title $title, $query = [] ) {
 		global $wgLang;
 
 		$limitText = $wgLang->formatNum( $this->mLimit );
@@ -83,12 +83,12 @@ class SMWPageLister {
 
 		$prevLink = wfMessage( 'prevn', $limitText )->escaped();
 		if ( $first !== '' ) {
-			$prevLink = $this->makeSelfLink( $title, $prevLink, $query + array( 'until' => $first ) );
+			$prevLink = $this->makeSelfLink( $title, $prevLink, $query + [ 'until' => $first ] );
 		}
 
 		$nextLink = wfMessage( 'nextn', $limitText )->escaped();
 		if ( $last !== '' ) {
-			$nextLink = $this->makeSelfLink( $title, $nextLink, $query + array( 'from' => $last ) );
+			$nextLink = $this->makeSelfLink( $title, $nextLink, $query + [ 'from' => $last ] );
 		}
 
 		return "($prevLink) ($nextLink)";
@@ -100,7 +100,7 @@ class SMWPageLister {
 	 * @return string
 	 */
 	protected function makeSelfLink( Title $title, $linkText, array $parameters ) {
-		return smwfGetLinker()->link( $title, $linkText, array(), $parameters );
+		return smwfGetLinker()->link( $title, $linkText, [], $parameters );
 	}
 
 	/**
@@ -148,12 +148,12 @@ class SMWPageLister {
 		if ( $from !== '' ) {
 			$diWikiPage = new SMWDIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$fromDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
-			$queryDescription = new SMWConjunction( array( $description, $fromDescription ) );
+			$queryDescription = new SMWConjunction( [ $description, $fromDescription ] );
 			$order = 'ASC';
 		} elseif ( $until !== '' ) {
 			$diWikiPage = new SMWDIWikiPage( $until, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$untilDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_LESS ); // do not include boundary in this case
-			$queryDescription = new SMWConjunction( array( $description, $untilDescription ) );
+			$queryDescription = new SMWConjunction( [ $description, $untilDescription ] );
 			$order = 'DESC';
 		} else {
 			$queryDescription = $description;

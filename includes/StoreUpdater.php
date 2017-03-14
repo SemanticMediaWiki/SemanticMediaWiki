@@ -243,7 +243,7 @@ class StoreUpdater {
 			new DIProperty( '_REDI' )
 		);
 
-		if ( $redirects !== array() && !$semanticData->getSubject()->equals( end( $redirects ) ) ) {
+		if ( $redirects !== [] && !$semanticData->getSubject()->equals( end( $redirects ) ) ) {
 			return $this->doUpdateUnknownRedirectTarget( $semanticData, end( $redirects ) );
 		}
 
