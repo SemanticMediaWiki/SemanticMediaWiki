@@ -3,43 +3,27 @@
 use SMW\Exception\DataItemException;
 
 /**
- * Implementation of dataitems that are geographic coordinates.
- *
- * @since 1.6
- *
- * @ingroup SemanticMaps
- *
- * @licence GNU GPL v3
+ * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SMWDIGeoCoord extends SMWDataItem {
 
 	/**
-	 * The locations latitude.
-	 *
-	 * @since 1.6
 	 * @var float
 	 */
-	protected $latitude;
+	private $latitude;
 
 	/**
-	 * The locations longitude.
-	 *
-	 * @since 1.6
 	 * @var float
 	 */
-	protected $longitude;
+	private $longitude;
 
 	/**
-	 * The locations altitude.
-	 *
-	 * @since 1.7
 	 * @var float|null
 	 */
-	protected $altitude = null;
+	private $altitude = null;
 
 	/**
-	 * Constructor.
 	 * Takes a latitude and longitude, and optionally an altitude. These can be provided in 2 forms:
 	 * * An associative array with lat, lon and alt keys
 	 * * Lat, lon and alt arguments
@@ -89,8 +73,6 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * Returns the coordinate set as an array with lat and long (and alt) keys
 	 * pointing to float values.
 	 *
-	 * @since 1.6
-	 *
 	 * @return array
 	 */
 	public function getCoordinateSet() {
@@ -125,11 +107,9 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @note PHP can convert any string to some number, so we do not do
 	 * validation here (because this would require less efficient parsing).
 	 *
-	 * @since 1.6
-	 *
 	 * @param string $serialization
 	 *
-	 * @return SMWDIGeoCoord
+	 * @return self
 	 */
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( ',', $serialization );
@@ -149,10 +129,6 @@ class SMWDIGeoCoord extends SMWDataItem {
 	}
 
 	/**
-	 * Returns the latitude.
-	 *
-	 * @since 1.6
-	 *
 	 * @return float
 	 */
 	public function getLatitude() {
@@ -160,10 +136,6 @@ class SMWDIGeoCoord extends SMWDataItem {
 	}
 
 	/**
-	 * Returns the longitude.
-	 *
-	 * @since 1.6
-	 *
 	 * @return float
 	 */
 	public function getLongitude() {
@@ -172,8 +144,6 @@ class SMWDIGeoCoord extends SMWDataItem {
 
 	/**
 	 * Returns the altitude if set, null otherwise.
-	 *
-	 * @since 1.7
 	 *
 	 * @return float|null
 	 */
