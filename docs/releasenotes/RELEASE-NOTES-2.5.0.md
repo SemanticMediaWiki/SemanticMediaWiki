@@ -1,6 +1,6 @@
 # Semantic MediaWiki 2.5
 
-Released on March 14, 2015.
+Released on March 14, 2017.
 
 ## Highlights
 
