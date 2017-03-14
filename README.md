@@ -26,8 +26,8 @@ browse the [SMW wiki](https://www.semantic-mediawiki.org) for a more comprehensi
 - MediaWiki 1.23 or later (1.27 or later recommended)
 - MySQL 5+, SQLite 3+ or PostgreSQL 9.x
 
-A list of supported PHP versions, MediaWiki versions and databases per SMW release can be found
-in the [compatibility matrix](docs/COMPATIBILITY.md).
+A list of supported PHP versions, MediaWiki versions and database system per Semantic MediaWiki
+release can be found in the [compatibility matrix](docs/COMPATIBILITY.md).
 
 ## Installation
 
@@ -38,7 +38,7 @@ the available [upgrade guide][smw-installation].
 ```json
 {
 	"require": {
-		"mediawiki/semantic-media-wiki": "~2.5@dev"
+		"mediawiki/semantic-media-wiki": "~2.5"
 	}
 }
 ```
@@ -48,8 +48,8 @@ the available [upgrade guide][smw-installation].
 Most of the documentation can be found on the [SMW wiki](https://www.semantic-mediawiki.org).
 A small core of documentation also comes bundled with the software itself. This documentation
 is minimalistic and less explanatory then what can be found on the SMW wiki. It is however
-always kept up to date, and applies to the version of the code it comes bundled with.
-The most important files are linked below.
+always kept up to date, and applies to the version of the code it comes bundled with. The
+most important files are linked below.
 
 * [User documentation overview](docs/README.md)
 * [Developer documentation overview](docs/technical/README.md)
