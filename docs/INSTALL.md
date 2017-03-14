@@ -137,7 +137,7 @@ the Semantic MediaWiki section is listed.
 
 ### Installation of development versions and release candidates
 
-If you would like to install a development version or release candidate the replace the lines as stated in step 3 of the
+If you would like to install a development version or release candidate then replace the lines as stated in step 3 of the
 "Installation with Composer" section with the following line
 
 * master: `"mediawiki/semantic-media-wiki": "@dev"`
