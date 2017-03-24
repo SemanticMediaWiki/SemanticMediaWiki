@@ -246,7 +246,7 @@
 	"smw_smwadmin_datarefreshbutton": "Rozpocznij aktualizację danych",
 	"smw_smwadmin_datarefreshstop": "Zatrzymaj aktualizację danych",
 	"smw_smwadmin_datarefreshstopconfirm": "Tak, jestem {{GENDER:$1|pewny|pewna}}.",
-	"smw-admin-feature-disabled": "Ta funkcja została wyłączona w tej wiki. Aby uzyskać więcej szczegółów, przeczytaj <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminSetupStore\">powiązaną</a> stronę pomocy.",
+	"smw-admin-feature-disabled": "Ta funkcja została wyłączona w tej wiki. Aby uzyskać więcej szczegółów, przeczytaj <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures\">powiązaną</a> stronę pomocy.",
 	"smw-admin-support": "Jak otrzymać wsparcie",
 	"smw-admin-supportdocu": "Różnorodne źródła informacji mogą okazać się przydatne jeśli wystąpią problemy:",
 	"smw-admin-installfile": "Jeśli napotkasz trudności z instalacją, zacznij od sprawdzenia wskazówek w <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">pliku INSTALL</a>.",

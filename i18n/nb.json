@@ -261,7 +261,7 @@
 	"smw_smwadmin_datarefreshbutton": "Start oppdatering av data",
 	"smw_smwadmin_datarefreshstop": "Stopp denne oppdateringen",
 	"smw_smwadmin_datarefreshstopconfirm": "Ja, jeg er {{GENDER:$1|sikker}}.",
-	"smw-admin-feature-disabled": "Denne funksjonen har blitt slått av på denne wikien. Se den <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminSetupStore\">tilknyttede</a> hjelpesiden for detaljer.",
+	"smw-admin-feature-disabled": "Denne funksjonen har blitt slått av på denne wikien. Se den <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures\">tilknyttede</a> hjelpesiden for detaljer.",
 	"smw-admin-support": "Få støtte",
 	"smw-admin-supportdocu": "Følgende ressurser kan kanskje hjelpe deg om du skulle ha problemer:",
 	"smw-admin-installfile": "Hvis du får problemer med installeringen, sjekk retningslinjene i <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">INSTALL-filen</a>.",
