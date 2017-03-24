@@ -253,7 +253,7 @@
 	"smw_smwadmin_datarefreshbutton": "데이터 업데이트 시작",
 	"smw_smwadmin_datarefreshstop": "이 업데이트 중지",
 	"smw_smwadmin_datarefreshstopconfirm": "예, {{GENDER:$1|확실합니다}}.",
-	"smw-admin-feature-disabled": "이 기능은 이 위키에서 비활성화되어 있습니다. 자세한 사항은 <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminSetupStore\">관련</a> 도움말 페이지를 참조하십시오.",
+	"smw-admin-feature-disabled": "이 기능은 이 위키에서 비활성화되어 있습니다. 자세한 사항은 <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures\">관련</a> 도움말 페이지를 참조하십시오.",
 	"smw-admin-support": "지원 얻기",
 	"smw-admin-supportdocu": "문제가 있을 때 다양한 자료가 도움이 될 수도 있습니다:",
 	"smw-admin-installfile": "설치하는 데 문제가 발생하였다면, <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL 파일</a>에서 지침을 확인하고 시작하세요.",

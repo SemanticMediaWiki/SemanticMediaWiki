@@ -294,7 +294,7 @@
 	"smw-admin-outdateddisposal-intro": "Einige Aktivitäten, wie bspw. das Ändern des Datentyps eines Attributs, das Löschen von Seiten oder das Korrigieren fehlerhafter Datenwerte, führen zu [https://www.semantic-mediawiki.org/wiki/Outdated_entities veralteten Datenobjekten]. Es ist empfehlenswert, diese periodisch in der Datenbank zu bereinigen. Es kann etwas dauern, bis der Auftrag zur Bereinigung ausgeführt und abgeschlossen ist. Dies ist davon abhängig, in welchem zeitlichen Intervall Aufträge ausgeführt werden.",
 	"smw-admin-outdateddisposal-active": "Ein Auftrag zur Bereinigung veralteter Objekte wurde erzeugt und eingeplant.",
 	"smw-admin-outdateddisposal-button": "Auftrag zur Bereinigung erzeugen",
-	"smw-admin-feature-disabled": "Diese Funktion wurde auf diesem Wiki deaktiviert. Hierzu können Informationen auf der <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminSetupStore\">entsprechenden Hilfeseite</a> eingesehen werden.",
+	"smw-admin-feature-disabled": "Diese Funktion wurde auf diesem Wiki deaktiviert. Hierzu können Informationen auf der <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures\">entsprechenden Hilfeseite</a> eingesehen werden.",
 	"smw-admin-propertystatistics-title": "Statistiken zu Attributen neu erstellen",
 	"smw-admin-propertystatistics-intro": "Erstellt die gesamten Statistiken zu Attributen neu und aktualisiert sowie korrigiert die [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Anzahl zugeordneter Attributwerte] auf den Seiten der Attribute.",
 	"smw-admin-propertystatistics-active": "Ein Auftrag zur Neuerstellung der Statistik wurde erzeugt und eingeplant.",
