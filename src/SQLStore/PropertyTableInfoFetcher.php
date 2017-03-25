@@ -42,19 +42,19 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @var array
 	 */
-	private $customizableSpecialProperties = array(
+	private $customizableSpecialProperties = [
 		'_MDAT', '_CDAT', '_NEWP', '_LEDT', '_MIME', '_MEDIA',
-	);
+	];
 
 	/**
 	 * @var array
 	 */
-	private $customSpecialPropertyList = array();
+	private $customSpecialPropertyList = [];
 
 	/**
 	 * @var array
 	 */
-	private $fixedSpecialProperties = array(
+	private $fixedSpecialProperties = [
 		// property declarations
 		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV', '_PREC', '_PPLB',
 		// query statistics (very frequently used)
@@ -73,19 +73,19 @@ class PropertyTableInfoFetcher {
 		'_LCODE', '_TEXT',
 		// Display title of
 		'_DTITLE'
-	);
+	];
 
 	/**
 	 * @var array
 	 */
-	private $customFixedPropertyList = array();
+	private $customFixedPropertyList = [];
 
 	/**
 	 * Default tables to use for storing data of certain types.
 	 *
 	 * @var array
 	 */
-	private $defaultDiTypeTableIdMap = array(
+	private $defaultDiTypeTableIdMap = [
 		DataItem::TYPE_NUMBER     => 'smw_di_number',
 		DataItem::TYPE_BLOB       => 'smw_di_blob',
 		DataItem::TYPE_BOOLEAN    => 'smw_di_bool',
@@ -94,7 +94,7 @@ class PropertyTableInfoFetcher {
 		DataItem::TYPE_GEO        => 'smw_di_coords', // currently created only if Semantic Maps are installed
 		DataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
 		//DataItem::TYPE_CONCEPT    => '', // _CONC is the only property of this type
-	);
+	];
 
 	/**
 	 * @since 2.5

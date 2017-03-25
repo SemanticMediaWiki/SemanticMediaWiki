@@ -30,7 +30,7 @@ class DataItemHandlerDispatcher {
 	/**
 	 * @var array
 	*/
-	private $handlers = array();
+	private $handlers = [];
 
 	/**
 	 * @since 2.5

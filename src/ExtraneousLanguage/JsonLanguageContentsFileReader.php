@@ -18,7 +18,7 @@ class JsonLanguageContentsFileReader {
 	/**
 	 * @var array
 	 */
-	private static $contents = array();
+	private static $contents = [];
 
 	/**
 	 * @var string
@@ -68,7 +68,7 @@ class JsonLanguageContentsFileReader {
 	 * @since 2.5
 	 */
 	public static function clear() {
-		self::$contents = array();
+		self::$contents = [];
 	}
 
 	/**
@@ -180,7 +180,7 @@ class JsonLanguageContentsFileReader {
 
 	private function getFileForLanguageCode( $languageCode ) {
 
-		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
+		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
 
 		if ( is_readable( $file ) ) {
 			return $file;

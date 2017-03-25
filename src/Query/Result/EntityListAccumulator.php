@@ -35,7 +35,7 @@ class EntityListAccumulator {
 	/**
 	 * @var array
 	 */
-	private $entityList = array();
+	private $entityList = [];
 
 	/**
 	 * @since 2.4
@@ -68,7 +68,7 @@ class EntityListAccumulator {
 	public function getEntityList( $queryID = null ) {
 
 		if ( $queryID !== null ) {
-			return isset( $this->entityList[$queryID] ) ? $this->entityList[$queryID] : array();
+			return isset( $this->entityList[$queryID] ) ? $this->entityList[$queryID] : [];
 		}
 
 		return $this->entityList;
@@ -82,7 +82,7 @@ class EntityListAccumulator {
 	public function pruneEntityList( $queryID = null ) {
 
 		if ( $queryID === null ) {
-			return $this->entityList = array();
+			return $this->entityList = [];
 		}
 
 		unset( $this->entityList[$queryID] );
@@ -99,7 +99,7 @@ class EntityListAccumulator {
 		$queryID = $this->getQueryId();
 
 		if ( !isset( $this->entityList[$queryID] ) ) {
-			$this->entityList[$queryID] = array();
+			$this->entityList[$queryID] = [];
 		}
 
 		if ( $dataItem instanceof DIWikiPage ) {

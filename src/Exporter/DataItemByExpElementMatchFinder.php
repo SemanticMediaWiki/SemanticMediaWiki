@@ -114,7 +114,7 @@ class DataItemByExpElementMatchFinder {
 			return $namespaceId;
 		}
 
-		foreach ( array( SMW_NS_PROPERTY, NS_CATEGORY, NS_USER, NS_HELP ) as $nsId ) {
+		foreach ( [ SMW_NS_PROPERTY, NS_CATEGORY, NS_USER, NS_HELP ] as $nsId ) {
 			if ( $namespaceName == Localizer::getInstance()->getNamespaceTextById( $nsId ) ) {
 				$namespaceId = $nsId;
 				break;
@@ -136,7 +136,7 @@ class DataItemByExpElementMatchFinder {
 		$respositoryResult = $this->store->getConnection( 'sparql' )->select(
 			'?v1 ?v2',
 			"<$uri> rdfs:label ?v1 . <$uri> swivt:wikiNamespace ?v2",
-			array( 'LIMIT' => 1 )
+			[ 'LIMIT' => 1 ]
 		);
 
 		$expElements = $respositoryResult->current();

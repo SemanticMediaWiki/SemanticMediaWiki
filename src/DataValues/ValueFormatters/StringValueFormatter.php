@@ -91,10 +91,10 @@ class StringValueFormatter extends DataValueFormatter {
 			$ellipsis = ' <span class="smwwarning">…</span> ';
 		} else {
 			$highlighter = Highlighter::factory( Highlighter::TYPE_TEXT );
-			$highlighter->setContent( array (
+			$highlighter->setContent(  [
 				'caption' => ' … ',
 				'content' => $text
-			) );
+			] );
 
 			$ellipsis = $highlighter->getHtml();
 		}

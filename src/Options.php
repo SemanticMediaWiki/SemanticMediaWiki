@@ -15,12 +15,12 @@ class Options {
 	/**
 	 * @var array
 	 */
-	private $options = array();
+	private $options = [];
 
 	/**
 	 * @since 2.3
 	 */
-	public function __construct( array $options = array() ) {
+	public function __construct( array $options = [] ) {
 		$this->options = $options;
 	}
 

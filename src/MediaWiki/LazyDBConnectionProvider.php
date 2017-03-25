@@ -41,7 +41,7 @@ class LazyDBConnectionProvider implements DBConnectionProvider {
 	 * @param string|array $groups
 	 * @param string|boolean $wiki
 	 */
-	public function __construct( $connectionId, $groups = array(), $wiki = false ) {
+	public function __construct( $connectionId, $groups = [], $wiki = false ) {
 		$this->connectionId = $connectionId;
 		$this->groups = $groups;
 		$this->wiki = $wiki;

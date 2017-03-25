@@ -38,7 +38,7 @@ class SpecialStatsAddExtra {
 	/**
 	 * @var string[]
 	 */
-	protected $legacyMessageMapper = array(
+	protected $legacyMessageMapper = [
 		'PROPUSES'   => 'smw-statistics-property-instance',
 		'ERRORUSES'   => 'smw-statistics-error-count-legacy',
 		'TOTALPROPS'  => 'smw-statistics-property-total-legacy',
@@ -48,12 +48,12 @@ class SpecialStatsAddExtra {
 		'SUBOBJECTS' => 'smw-statistics-subobject-count-legacy',
 		'QUERY'      => 'smw-statistics-query-inline-legacy',
 		'CONCEPTS'   => 'smw-statistics-concept-count-legacy'
-	);
+	];
 
 	/**
 	 * @var string[]
 	 */
-	protected $messageMapper = array(
+	protected $messageMapper = [
 		'PROPUSES'    => 'smw-statistics-property-instance',
 		'ERRORUSES'   => 'smw-statistics-error-count',
 		'TOTALPROPS'  => 'smw-statistics-property-total',
@@ -64,7 +64,7 @@ class SpecialStatsAddExtra {
 		'SUBOBJECTS'  => 'smw-statistics-subobject-count',
 		'QUERY'       => 'smw-statistics-query-inline',
 		'CONCEPTS'    => 'smw-statistics-concept-count',
-	);
+	];
 
 	/**
 	 * @since  1.9
@@ -102,7 +102,7 @@ class SpecialStatsAddExtra {
 
 		$statistics = ApplicationFactory::getInstance()->getStore()->getStatistics();
 
-		$this->extraStats['smw-statistics'] = array();
+		$this->extraStats['smw-statistics'] = [];
 
 		foreach ( $this->messageMapper as $key => $message ) {
 

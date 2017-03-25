@@ -17,7 +17,7 @@ class MonolingualTextValueParser implements ValueParser {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @since 2.4
@@ -46,7 +46,7 @@ class MonolingualTextValueParser implements ValueParser {
 			$text = substr_replace( $userValue, '', ( mb_strlen( $languageCode ) + 1 ) * -1 );
 		}
 
-		return array( $text, Localizer::asBCP47FormattedLanguageCode( $languageCode ) );
+		return [ $text, Localizer::asBCP47FormattedLanguageCode( $languageCode ) ];
 	}
 
 }

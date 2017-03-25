@@ -90,7 +90,7 @@ class StatsFormatter {
 	public static function getStatsFromFlatKey( array $stats, $separator = '.' ) {
 
 		$data = $stats;
-		$stats = array();
+		$stats = [];
 
 		foreach ( $data as $key => $value ) {
 			if ( strpos( $key, $separator ) !== false ) {
@@ -109,15 +109,15 @@ class StatsFormatter {
 		$pos = strpos( $path, $separator );
 
 		if ( $pos === false ) {
-			return array( $path => $value );
+			return [ $path => $value ];
 		}
 
 		$key = substr( $path, 0, $pos );
 		$path = substr( $path, $pos + 1 );
 
-		$result = array(
+		$result = [
 			$key => self::stringToArray( $separator, $path, $value )
-		);
+		];
 
 		return $result;
 	}

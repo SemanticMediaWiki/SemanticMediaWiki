@@ -24,7 +24,7 @@ class TempChangeOpPurgeJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
+	public function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'SMW\TempChangeOpPurgeJob', $title, $params );
 		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 	}
@@ -48,7 +48,7 @@ class TempChangeOpPurgeJob extends JobBase {
 		$this->log( __METHOD__ . ' :: '. $slot );
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

@@ -92,13 +92,13 @@ class PropertyUsageListLookup implements ListLookup {
 	private function doQueryPropertyTable() {
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = array( 'ORDER BY' => 'smw_sortkey' );
+		$options = [ 'ORDER BY' => 'smw_sortkey' ];
 
-		$conditions = array(
+		$conditions = [
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
 			'smw_subobject' => ''
-		);
+		];
 
 		if ( $this->requestOptions->limit > 0 ) {
 			$options['LIMIT'] = $this->requestOptions->limit;
@@ -112,12 +112,12 @@ class PropertyUsageListLookup implements ListLookup {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		$res = $db->select(
-			array( $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ),
-			array( 'smw_id', 'smw_title', 'usage_count' ),
+			[ $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
+			[ 'smw_id', 'smw_title', 'usage_count' ],
 			$conditions,
 			__METHOD__,
 			$options,
-			array( $db->tableName( SQLStore::ID_TABLE ) => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
+			[ $db->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
 		);
 
 		return $res;
@@ -125,18 +125,18 @@ class PropertyUsageListLookup implements ListLookup {
 
 	private function getPropertyList( $res ) {
 
-		$result = array();
+		$result = [];
 
 		foreach ( $res as $row ) {
 
 			try {
 				$property = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
 			} catch ( PropertyLabelNotResolvedException $e ) {
-				$property = new DIError( new \Message( 'smw_noproperty', array( $row->smw_title ) ) );
+				$property = new DIError( new \Message( 'smw_noproperty', [ $row->smw_title ] ) );
 			}
 
 			$property->id = isset( $row->smw_id ) ? $row->smw_id : -1;
-			$result[] = array( $property, (int)$row->usage_count );
+			$result[] = [ $property, (int)$row->usage_count ];
 		}
 
 		return $result;

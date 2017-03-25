@@ -40,13 +40,13 @@ class ResourceLoaderGetConfigVars {
 	 */
 	public function process() {
 
-		$this->vars['smw-config'] = array(
+		$this->vars['smw-config'] = [
 			'version' => SMW_VERSION,
-			'settings' => array(
+			'settings' => [
 				'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
 				'smwgQMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
-			)
-		);
+			]
+		];
 
 		// Available semantic namespaces
 		foreach ( array_keys( $GLOBALS['smwgNamespacesWithSemanticLinks'] ) as $ns ) {

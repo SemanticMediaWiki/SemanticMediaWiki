@@ -116,7 +116,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
 
-		Hooks::run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', array( $this->tableBuilder, $messageReporter ) );
+		Hooks::run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', [ $this->tableBuilder, $messageReporter ] );
 
 		$messageReporter->reportMessage( $this->isFromExtensionSchemaUpdate ? "\n" : '' );
 
@@ -145,7 +145,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 		$this->tableIntegrityExaminer->checkOnPostDestruction( $this->tableBuilder );
 
-		Hooks::run( 'SMW::SQLStore::Installer::AfterDropTablesComplete', array( $this->tableBuilder, $messageReporter ) );
+		Hooks::run( 'SMW::SQLStore::Installer::AfterDropTablesComplete', [ $this->tableBuilder, $messageReporter ] );
 
 		$messageReporter->reportMessage( "\nStandard and auxiliary tables with all corresponding data\n" );
 		$messageReporter->reportMessage( "have been removed successfully.\n" );
@@ -172,7 +172,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 			$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 		} else {
 			$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-			$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
+			$messageReporter->registerReporterCallback( [ $this, 'reportMessage' ] );
 		}
 
 		return $this->messageReporter !== null ? $this->messageReporter : $messageReporter;

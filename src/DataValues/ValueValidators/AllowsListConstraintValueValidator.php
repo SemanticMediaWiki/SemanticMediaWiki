@@ -66,7 +66,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$allowedValues = $propertySpecificationLookup->getAllowedValuesBy( $property );
 		$allowedListValues = $propertySpecificationLookup->getAllowedListValueBy( $property );
 
-		if ( $allowedValues === array() && $allowedListValues === array() ) {
+		if ( $allowedValues === [] && $allowedListValues === [] ) {
 			return $this->hasConstraintViolation;
 		}
 
@@ -95,12 +95,12 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		if ( $isAllowed === false ) {
 
 			$dataValue->addErrorMsg(
-				array(
+				[
 					'smw_notinenum',
 					$dataValue->getWikiValue(),
 					$errorList,
 					$property->getLabel()
-				),
+				],
 				Message::PARSE
 			);
 

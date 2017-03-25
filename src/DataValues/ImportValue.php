@@ -94,7 +94,7 @@ class ImportValue extends DataValue {
 			$value
 		);
 
-		if ( $importValueParser->getErrors() !== array() ) {
+		if ( $importValueParser->getErrors() !== [] ) {
 
 			foreach ( $importValueParser->getErrors() as $message ) {
 				$this->addErrorMsg( $message );
@@ -135,7 +135,7 @@ class ImportValue extends DataValue {
 		$parts = explode( ' ', $dataItem->getString(), 4 );
 
 		if ( count( $parts ) != 4 ) {
-			$this->addErrorMsg( array( 'smw-datavalue-import-invalid-format', $dataItem->getString() ) );
+			$this->addErrorMsg( [ 'smw-datavalue-import-invalid-format', $dataItem->getString() ] );
 		} else {
 			$this->namespace = $parts[0];
 			$this->term = $parts[1];
@@ -225,7 +225,7 @@ class ImportValue extends DataValue {
 	}
 
 	private function createCaption( $namespace, $qname, $uri, $declarativeName ) {
-		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " .  Message::get( array( 'parentheses', "[$uri $namespace] | " . $declarativeName ), Message::PARSE );
+		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " .  Message::get( [ 'parentheses', "[$uri $namespace] | " . $declarativeName ], Message::PARSE );
 	}
 
 }

@@ -41,20 +41,20 @@ class LanguageCodeValue extends StringValue {
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $userValue );
 
 		if ( $languageCode === '' ) {
-			$this->addErrorMsg( array(
+			$this->addErrorMsg( [
 				'smw-datavalue-languagecode-missing',
 				$this->m_property !== null ? $this->m_property->getLabel() : 'UNKNOWN'
-			) );
+			] );
 			return;
 		}
 
 		// Checks whether the language tag is valid in MediaWiki for when
 		// it is not executed in a query context
 		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isSupportedLanguage( $languageCode ) ) {
-			$this->addErrorMsg( array(
+			$this->addErrorMsg( [
 				'smw-datavalue-languagecode-invalid',
 				$languageCode
-			) );
+			] );
 			return;
 		}
 

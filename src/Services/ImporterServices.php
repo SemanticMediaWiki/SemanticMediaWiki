@@ -18,7 +18,7 @@ use SMW\Importer\JsonImportContentsFileDirReader;
  *
  * @author mwjames
  */
-return array(
+return [
 
 	/**
 	 * ContentsImporter
@@ -65,4 +65,4 @@ return array(
 		return $containerBuilder->create( 'ContentsImporter', $containerBuilder->create( 'JsonImportContentsIterator' ) );
 	},
 
-);
+];

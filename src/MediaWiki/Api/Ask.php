@@ -48,12 +48,12 @@ class Ask extends Query {
 	 * @return array
 	 */
 	public function getAllowedParams() {
-		return array(
-			'query' => array(
+		return [
+			'query' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_REQUIRED => true,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -63,9 +63,9 @@ class Ask extends Query {
 	 * @return array
 	 */
 	public function getParamDescription() {
-		return array(
+		return [
 			'query' => 'The query string in ask-language'
-		);
+		];
 	}
 
 	/**
@@ -75,9 +75,9 @@ class Ask extends Query {
 	 * @return array
 	 */
 	public function getDescription() {
-		return array(
+		return [
 			'API module to query SMW by providing a query in the ask language.'
-		);
+		];
 	}
 
 	/**
@@ -87,10 +87,10 @@ class Ask extends Query {
 	 * @return array
 	 */
 	protected function getExamples() {
-		return array(
+		return [
 			'api.php?action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc',
 			'api.php?action=ask&query=[[Modification%20date::%2B]]|limit%3D5|offset%3D1'
-		);
+		];
 	}
 
 	/**

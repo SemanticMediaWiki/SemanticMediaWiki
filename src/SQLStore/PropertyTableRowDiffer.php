@@ -66,10 +66,10 @@ class PropertyTableRowDiffer {
 	 */
 	public function computeTableRowDiffFor( $sid, SemanticData $semanticData ) {
 
-		$tablesDeleteRows = array();
-		$tablesInsertRows = array();
+		$tablesDeleteRows = [];
+		$tablesInsertRows = [];
 
-		$newHashes = array();
+		$newHashes = [];
 
 		$this->getCompositePropertyTableDiff()->setSubject(
 			$semanticData->getSubject()
@@ -134,7 +134,7 @@ class PropertyTableRowDiffer {
 				}
 			} elseif ( array_key_exists( $tableName, $oldHashes ) ) {
 				// Table contains data but should not contain any after update
-				$tablesInsertRows[$tableName] = array();
+				$tablesInsertRows[$tableName] = [];
 				$tablesDeleteRows[$tableName] = $this->fetchCurrentContentsForPropertyTable(
 					$sid,
 					$propertyTable
@@ -151,7 +151,7 @@ class PropertyTableRowDiffer {
 			$tablesDeleteRows
 		);
 
-		return array( $tablesInsertRows, $tablesDeleteRows, $newHashes );
+		return [ $tablesInsertRows, $tablesDeleteRows, $newHashes ];
 	}
 
 	/**
@@ -211,13 +211,13 @@ class PropertyTableRowDiffer {
 			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
 		}
 
-		$contents = array();
+		$contents = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$result = $connection->select(
 			$connection->tablename( $propertyTable->getName() ),
 			'*',
-			array( 's_id' => $sid ),
+			[ 's_id' => $sid ],
 			__METHOD__
 		);
 
@@ -289,7 +289,7 @@ class PropertyTableRowDiffer {
 
 		// Arrays have to be renumbered because database functions expect an
 		// element with index 0 to be present in the array
-		return array( array_values( $newValues ), array_values( $oldValues ) );
+		return [ array_values( $newValues ), array_values( $oldValues ) ];
 	}
 
 	/**
@@ -315,7 +315,7 @@ class PropertyTableRowDiffer {
 	 * @return array
 	 */
 	private function mapToInsertValueFormat( $sid, SemanticData $semanticData ) {
-		$updates = array();
+		$updates = [];
 
 		$subject = $semanticData->getSubject();
 		$propertyTables = $this->store->getPropertyTables();
@@ -341,7 +341,7 @@ class PropertyTableRowDiffer {
 				continue;
 			}
 
-			$insertValues = array( 's_id' => $sid );
+			$insertValues = [ 's_id' => $sid ];
 
 			if ( !$propertyTable->isFixedPropertyTable() ) {
 				$insertValues['p_id'] = $this->store->getObjectIds()->makeSMWPropertyID( $property );
@@ -354,7 +354,7 @@ class PropertyTableRowDiffer {
 				}
 
 				if ( !array_key_exists( $propertyTable->getName(), $updates ) ) {
-					$updates[$propertyTable->getName()] = array();
+					$updates[$propertyTable->getName()] = [];
 				}
 
 				$dataItemValues = $this->store->getDataItemHandlerForDIType( $dataItem->getDIType() )->getInsertValues( $dataItem );
@@ -401,21 +401,21 @@ class PropertyTableRowDiffer {
 		if ( array_key_exists( 'smw_fpt_conc', $insertData ) && !empty( $insertData['smw_fpt_conc'] ) ) {
 			$insertValues = end( $insertData['smw_fpt_conc'] );
 		} else {
-			$insertValues = array(
+			$insertValues = [
 				's_id'          => $sid,
 				'concept_txt'   => '',
 				'concept_docu'  => '',
 				'concept_features' => 0,
 				'concept_size'  => -1,
 				'concept_depth' => -1
-			);
+			];
 		}
 
 		// Add existing cache status data to this row:
 		$row = $connection->selectRow(
 			'smw_fpt_conc',
-			array( 'cache_date', 'cache_count' ),
-			array( 's_id' => $sid ),
+			[ 'cache_date', 'cache_count' ],
+			[ 's_id' => $sid ],
 			__METHOD__
 		);
 
@@ -427,7 +427,7 @@ class PropertyTableRowDiffer {
 			$insertValues['cache_count'] = $row->cache_count;
 		}
 
-		$insertData['smw_fpt_conc'] = array( $insertValues );
+		$insertData['smw_fpt_conc'] = [ $insertValues ];
 	}
 
 }

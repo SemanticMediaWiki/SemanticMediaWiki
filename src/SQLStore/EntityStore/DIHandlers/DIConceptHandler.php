@@ -30,7 +30,7 @@ class DIConceptHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array(
+		return [
 			'concept_txt'  => FieldType::TYPE_BLOB,
 			'concept_docu' => FieldType::TYPE_BLOB,
 			'concept_features' => FieldType::FIELD_NAMESPACE,
@@ -38,7 +38,7 @@ class DIConceptHandler extends DataItemHandler {
 			'concept_depth' => FieldType::FIELD_NAMESPACE,
 			'cache_date'    => FieldType::TYPE_INT_UNSIGNED,
 			'cache_count'   => FieldType::TYPE_INT_UNSIGNED
-		);
+		];
 	}
 
 	/**
@@ -47,13 +47,13 @@ class DIConceptHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array(
+		return [
 			'concept_txt'  => FieldType::TYPE_BLOB,
 			'concept_docu' => FieldType::TYPE_BLOB,
 			'concept_features' => FieldType::FIELD_NAMESPACE,
 			'concept_size'  => FieldType::FIELD_NAMESPACE,
 			'concept_depth' => FieldType::FIELD_NAMESPACE,
-		);
+		];
 	}
 
 	/**
@@ -62,13 +62,13 @@ class DIConceptHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return array(
+		return [
 			'concept_txt' => $dataItem->getConceptQuery(),
 			'concept_docu' => $dataItem->getDocumentation(),
 			'concept_features' => $dataItem->getQueryFeatures(),
 			'concept_size' => $dataItem->getSize(),
 			'concept_depth' => $dataItem->getDepth()
-		);
+		];
 	}
 
 	/**
@@ -77,13 +77,13 @@ class DIConceptHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		return array(
+		return [
 			'concept_txt' => $dataItem->getConceptQuery(),
 			'concept_docu' => $dataItem->getDocumentation(),
 			'concept_features' => $dataItem->getQueryFeatures(),
 			'concept_size' => $dataItem->getSize(),
 			'concept_depth' => $dataItem->getDepth()
-		);
+		];
 	}
 
 	/**

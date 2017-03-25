@@ -84,10 +84,10 @@ class TableChangeOp {
 	public function getFieldChangeOps( $opType ) {
 
 		if ( !$this->hasChangeOp( $opType ) ) {
-			return array();
+			return [];
 		}
 
-		$fieldOps = array();
+		$fieldOps = [];
 
 		foreach ( $this->changeOps[$opType] as $op ) {
 			$fieldOps[] = new FieldChangeOp( $op );

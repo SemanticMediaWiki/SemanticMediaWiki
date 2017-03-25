@@ -94,7 +94,7 @@ class ErrorMsgTextValue extends DataValue {
 
 	private function constructErrorText( $linker = null ) {
 
-		if ( !$this->isValid() || $this->getDataItem() === array() ) {
+		if ( !$this->isValid() || $this->getDataItem() === [] ) {
 			return '';
 		}
 

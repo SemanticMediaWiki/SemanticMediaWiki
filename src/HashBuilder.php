@@ -23,7 +23,7 @@ class HashBuilder {
 	 */
 	public static function createFromSemanticData( SemanticData $semanticData ) {
 
-		$hash = array();
+		$hash = [];
 		$hash[] = $semanticData->getSubject()->getSerialization();
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -54,7 +54,7 @@ class HashBuilder {
 	public static function createFromContent( $hashableContent, $prefix = '' ) {
 
 		if ( is_string( $hashableContent ) ) {
-			$hashableContent = array( $hashableContent );
+			$hashableContent = [ $hashableContent ];
 		}
 
 		return $prefix . md5( json_encode( $hashableContent ) );

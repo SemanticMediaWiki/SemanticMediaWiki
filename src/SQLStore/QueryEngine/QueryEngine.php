@@ -55,7 +55,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @var QuerySegment[]
 	 */
-	private $querySegmentList = array();
+	private $querySegmentList = [];
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during
@@ -71,7 +71,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @var string[]
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var QuerySegmentListBuildManager
@@ -160,20 +160,20 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != Query::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
-			return $this->queryFactory->newQueryResult( $this->store, $query, array(), false );
+			return $this->queryFactory->newQueryResult( $this->store, $query, [], false );
 			// NOTE: we check this here to prevent unnecessary work, but we check
 			// it after query processing below again in case more errors occurred.
 		} elseif ( $query->querymode == Query::MODE_NONE || $query->getLimit() < 1 ) {
 			// don't query, but return something to printer
-			return $this->queryFactory->newQueryResult( $this->store, $query, array(), true );
+			return $this->queryFactory->newQueryResult( $this->store, $query, [], true );
 		}
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 
 		$this->queryMode = $query->querymode;
-		$this->querySegmentList = array();
+		$this->querySegmentList = [];
 
-		$this->errors = array();
+		$this->errors = [];
 		QuerySegment::$qnum = 0;
 		$this->sortKeys = $query->sortkeys;
 
@@ -190,7 +190,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 				$query->querymode != Query::MODE_DEBUG &&
 				count( $this->errors ) > 0 ) {
 			$query->addErrors( $this->errors );
-			return $this->queryFactory->newQueryResult( $this->store, $query, array(), false );
+			return $this->queryFactory->newQueryResult( $this->store, $query, [], false );
 		}
 
 		// *** Now execute the computed query ***//
@@ -244,7 +244,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	private function getDebugQueryResult( Query $query, $rootid ) {
 
 		$qobj = $this->querySegmentList[$rootid];
-		$entries = array();
+		$entries = [];
 
 		$sqlOptions = $this->getSQLOptions( $query, $rootid );
 
@@ -322,7 +322,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$queryResult = $this->queryFactory->newQueryResult(
 			$this->store,
 			$query,
-			array(),
+			[],
 			false
 		);
 
@@ -336,7 +336,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 
-		$sql_options = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
+		$sql_options = [ 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() ];
 
 		$res = $connection->select(
 			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from,
@@ -388,7 +388,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			return $this->queryFactory->newQueryResult(
 				$this->store,
 				$query,
-				array(),
+				[],
 				false
 			);
 		}
@@ -414,10 +414,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$sql_options
 		);
 
-		$results = array();
-		$dataItemCache = array();
+		$results = [];
+		$dataItemCache = [];
 
-		$logToTable = array();
+		$logToTable = [];
 		$hasFurtherResults = false;
 
 		 // Number of fetched results ( != number of valid results in
@@ -435,13 +435,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 				// Catch exception for non-existing predefined properties that
 				// still registered within non-updated pages (@see bug 48711)
 				try {
-					$dataItem = $diHandler->dataItemFromDBKeys( array(
+					$dataItem = $diHandler->dataItemFromDBKeys( [
 						$row->t,
 						intval( $row->ns ),
 						$row->iw,
 						'',
 						$row->so
-					) );
+					] );
 				} catch ( PredefinedPropertyLabelMismatchException $e ) {
 					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
 					$this->log( __METHOD__ . ' ' . $e->getMessage() );
@@ -468,7 +468,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$count++;
 		}
 
-		if ( $logToTable !== array() ) {
+		if ( $logToTable !== [] ) {
 			$this->log( __METHOD__ . ' ' . implode( ',', $logToTable ) );
 		}
 
@@ -497,10 +497,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$qobj = $this->querySegmentList[$qid];
 
 		// Filter elements that should never appear in a result set
-		$extraWhereCondition = array(
+		$extraWhereCondition = [
 			'del'  => "$qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
 			'redi' => "$qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWREDIIW )
-		);
+		];
 
 		if ( strpos( $qobj->where, SMW_SQL3_SMWIW_OUTDATED ) === false ) {
 			$qobj->where .= $qobj->where === '' ? $extraWhereCondition['del'] : " AND " . $extraWhereCondition['del'];
@@ -523,10 +523,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 */
 	private function getSQLOptions( Query $query, $rootId ) {
 
-		$result = array(
+		$result = [
 			'LIMIT' => $query->getLimit() + 5,
 			'OFFSET' => $query->getOffset()
-		);
+		];
 
 		if ( !$this->engineOptions->get( 'smwgQSortingSupport' ) ) {
 			return $result;
@@ -551,7 +551,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $result;
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

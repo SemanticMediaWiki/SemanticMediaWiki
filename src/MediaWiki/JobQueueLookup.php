@@ -42,7 +42,7 @@ class JobQueueLookup {
 		$count = $this->connection->estimateRowCount(
 			$this->tablename,
 			'*',
-			array( 'job_cmd' => $jobName )
+			[ 'job_cmd' => $jobName ]
 		);
 
 		return (int)$count;
@@ -60,7 +60,7 @@ class JobQueueLookup {
 		$row = $this->connection->selectRow(
 			$this->tablename,
 			'*',
-			array( 'job_cmd' => $jobName ),
+			[ 'job_cmd' => $jobName ],
 			__METHOD__
 		);
 

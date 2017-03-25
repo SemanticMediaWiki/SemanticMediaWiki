@@ -136,7 +136,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		$subConditionElements->filter = '';
 		$subConditionElements->singletonMatchElement = null;
 
-		$namespaces = $weakConditions = $orderVariables = array();
+		$namespaces = $weakConditions = $orderVariables = [];
 		$singletonMatchElementName = '';
 		$hasSafeSubconditions = false;
 

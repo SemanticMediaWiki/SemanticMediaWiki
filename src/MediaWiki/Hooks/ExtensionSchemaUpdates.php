@@ -43,10 +43,10 @@ class ExtensionSchemaUpdates {
 		// Needs a static caller otherwise the DatabaseUpdater returns with:
 		// "Warning: call_user_func_array() expects parameter 1 to be a
 		// valid callback ..."
-		$this->updater->addExtensionUpdate( array( 'SMWStore::setupStore', array(
+		$this->updater->addExtensionUpdate( [ 'SMWStore::setupStore', [
 			$verbose,
 			$isFromExtensionSchemaUpdate
-		) ) );
+		] ] );
 
 		return true;
 	}

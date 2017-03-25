@@ -43,7 +43,7 @@ class RequestOptionsProcessor {
 	 * @return array
 	 */
 	public function getSQLOptionsFrom( RequestOptions $requestOptions = null, $valueCol = '' ) {
-		$sqlConds = array();
+		$sqlConds = [];
 
 		if ( $requestOptions === null ) {
 			return $sqlConds;
@@ -140,12 +140,12 @@ class RequestOptionsProcessor {
 	 */
 	public function applyRequestOptionsTo( array $data, RequestOptions $requestOptions = null ) {
 
-		if ( $data === array() || $requestOptions === null ) {
+		if ( $data === [] || $requestOptions === null ) {
 			return $data;
 		}
 
-		$result = array();
-		$sortres = array();
+		$result = [];
+		$sortres = [];
 
 		$sampleDataItem = reset( $data );
 		$isNumeric = is_numeric( $sampleDataItem->getSortKey() );
@@ -228,7 +228,7 @@ class RequestOptionsProcessor {
 			$value = $item->getSortKey();
 		}
 
-		return array( $label, $value );
+		return [ $label, $value ];
 	}
 
 	private function applySortRestriction( $requestOptions, &$result, $sortres, $isNumeric ) {
@@ -245,7 +245,7 @@ class RequestOptionsProcessor {
 			arsort( $sortres, $flag );
 		}
 
-		$newres = array();
+		$newres = [];
 
 		foreach ( $sortres as $key => $value ) {
 			$newres[] = $result[$key];

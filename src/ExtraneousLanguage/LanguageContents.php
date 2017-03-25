@@ -25,7 +25,7 @@ class LanguageContents {
 	/**
 	 * @var array
 	 */
-	private $contents = array();
+	private $contents = [];
 
 	/**
 	 * @since 2.5
@@ -85,7 +85,7 @@ class LanguageContents {
 	 * @return boolean
 	 */
 	public function hasLanguageWithIndex( $languageCode, $index ) {
-		return isset( $this->contents[$languageCode][$index] ) && $this->contents[$languageCode][$index] !== array();
+		return isset( $this->contents[$languageCode][$index] ) && $this->contents[$languageCode][$index] !== [];
 	}
 
 	/**
@@ -109,17 +109,17 @@ class LanguageContents {
 
 		$canonicalFallbackLanguageCode = $this->languageFallbackFinder->getCanonicalFallbackLanguageCode();
 
-		if ( !isset( $this->contents[$languageCode] ) || $this->contents[$languageCode] === array() ) {
+		if ( !isset( $this->contents[$languageCode] ) || $this->contents[$languageCode] === [] ) {
 			// In case a language has no matching file
 			try {
 				$this->contents[$languageCode] = $this->jsonLanguageContentsFileReader->readByLanguageCode( $languageCode );
 			} catch ( RuntimeException $e ) {
-				$this->contents[$languageCode] = array();
+				$this->contents[$languageCode] = [];
 				$languageCode = $canonicalFallbackLanguageCode;
 			}
 		}
 
-		if ( isset( $this->contents[$languageCode][$index] ) && $this->contents[$languageCode][$index] !== array() ) {
+		if ( isset( $this->contents[$languageCode][$index] ) && $this->contents[$languageCode][$index] !== [] ) {
 			return $this->contents[$languageCode][$index];
 		}
 

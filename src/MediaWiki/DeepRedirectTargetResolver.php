@@ -24,7 +24,7 @@ class DeepRedirectTargetResolver {
 	 *
 	 * @var array
 	 */
-	private $recursiveResolverTracker = array();
+	private $recursiveResolverTracker = [];
 
 	/**
 	 * @since 2.1

@@ -62,7 +62,7 @@ class RequestOptions {
 	 *
 	 * @var StringCondition[]
 	 */
-	private $stringConditions = array();
+	private $stringConditions = [];
 
 	/**
 	 * Contains extra conditions which a consumer is being allowed to interpret
@@ -70,7 +70,7 @@ class RequestOptions {
 	 *
 	 * @var array
 	 */
-	private $extraConditions = array();
+	private $extraConditions = [];
 
 	/**
 	 * @since 1.0
@@ -161,7 +161,7 @@ class RequestOptions {
 			$stringConditions .= $stringCondition->getHash();
 		}
 
-		return json_encode( array(
+		return json_encode( [
 			$this->limit,
 			$this->offset,
 			$this->sort,
@@ -170,7 +170,7 @@ class RequestOptions {
 			$this->include_boundary,
 			$stringConditions,
 			$this->extraConditions
-		) );
+		] );
 	}
 
 }

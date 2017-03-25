@@ -16,7 +16,7 @@ class JsonImportContentsFileDirReader {
 	/**
 	 * @var array
 	 */
-	private static $contents = array();
+	private static $contents = [];
 
 	/**
 	 * @var string
@@ -53,7 +53,7 @@ class JsonImportContentsFileDirReader {
 	 */
 	public function getContents() {
 
-		$contents = array();
+		$contents = [];
 
 		foreach ( $this->getFiles() as $file => $path ) {
 			$importContents = $this->getImportContents( $this->doFetchContentsFrom( $path ) );
@@ -70,7 +70,7 @@ class JsonImportContentsFileDirReader {
 
 	private function getImportContents( $fileContents ) {
 
-		$contents = array();
+		$contents = [];
 
 		if ( !isset( $fileContents['import'] ) ) {
 			return;
@@ -114,7 +114,7 @@ class JsonImportContentsFileDirReader {
 		$file = $contents['importFrom'];
 
 		$file = str_replace(
-			array( '\\', '/' ),
+			[ '\\', '/' ],
 			DIRECTORY_SEPARATOR,
 			$this->importFileDir . ( $file{0} === '/' ? '' : '/' ) . $file
 		);
@@ -157,7 +157,7 @@ class JsonImportContentsFileDirReader {
 
 	private function getImportFileDir() {
 
-		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $this->importFileDir );
+		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->importFileDir );
 
 		if ( is_readable( $path ) ) {
 			return $path;
@@ -168,7 +168,7 @@ class JsonImportContentsFileDirReader {
 
 	private function getFilesFromLocation( $path, $extension ) {
 
-		$files = array();
+		$files = [];
 
 		$directoryIterator = new \RecursiveDirectoryIterator( $path );
 

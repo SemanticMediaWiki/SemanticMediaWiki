@@ -31,7 +31,7 @@ class TableSchemaManager {
 	/**
 	 * @var Table[]
 	 */
-	private $tables = array();
+	private $tables = [];
 
 	/**
 	 * @since 2.5
@@ -49,7 +49,7 @@ class TableSchemaManager {
 	 */
 	public function getHash() {
 
-		$hash = array();
+		$hash = [];
 
 		foreach ( $this->getTables() as $table ) {
 			$hash[$table->getName()] = $table->getHash();
@@ -68,7 +68,7 @@ class TableSchemaManager {
 	 */
 	public function getTables() {
 
-		if ( $this->tables !== array() ) {
+		if ( $this->tables !== [] ) {
 			return $this->tables;
 		}
 
@@ -101,11 +101,11 @@ class TableSchemaManager {
 		$table = new Table( SQLStore::ID_TABLE );
 
 		$table->addColumn( 'smw_id', FieldType::FIELD_ID_PRIMARY );
-		$table->addColumn( 'smw_namespace', array( FieldType::FIELD_NAMESPACE, 'NOT NULL' ) );
-		$table->addColumn( 'smw_title', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
-		$table->addColumn( 'smw_iw', array( FieldType::FIELD_INTERWIKI, 'NOT NULL' ) );
-		$table->addColumn( 'smw_subobject', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
-		$table->addColumn( 'smw_sortkey', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
+		$table->addColumn( 'smw_namespace', [ FieldType::FIELD_NAMESPACE, 'NOT NULL' ] );
+		$table->addColumn( 'smw_title', [ FieldType::FIELD_TITLE, 'NOT NULL' ] );
+		$table->addColumn( 'smw_iw', [ FieldType::FIELD_INTERWIKI, 'NOT NULL' ] );
+		$table->addColumn( 'smw_subobject', [ FieldType::FIELD_TITLE, 'NOT NULL' ] );
+		$table->addColumn( 'smw_sortkey', [ FieldType::FIELD_TITLE, 'NOT NULL' ] );
 		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
 
 		$table->addIndex( 'smw_id' );
@@ -122,8 +122,8 @@ class TableSchemaManager {
 		// CONCEPT_CACHE_TABLE (member elements (s)->concepts (o) )
 		$table = new Table( SQLStore::CONCEPT_CACHE_TABLE );
 
-		$table->addColumn( 's_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
-		$table->addColumn( 'o_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
+		$table->addColumn( 's_id', [ FieldType::FIELD_ID, 'NOT NULL' ] );
+		$table->addColumn( 'o_id', [ FieldType::FIELD_ID, 'NOT NULL' ] );
 
 		$table->addIndex( 'o_id' );
 
@@ -135,8 +135,8 @@ class TableSchemaManager {
 		// QUERY_LINKS_TABLE
 		$table = new Table( SQLStore::QUERY_LINKS_TABLE );
 
-		$table->addColumn( 's_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
-		$table->addColumn( 'o_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
+		$table->addColumn( 's_id', [ FieldType::FIELD_ID, 'NOT NULL' ] );
+		$table->addColumn( 'o_id', [ FieldType::FIELD_ID, 'NOT NULL' ] );
 
 		$table->addIndex( 's_id' );
 		$table->addIndex( 'o_id' );
@@ -152,15 +152,15 @@ class TableSchemaManager {
 		// VARCHAR is stored inline with the table
 		$table = new Table( SQLStore::FT_SEARCH_TABLE );
 
-		$table->addColumn( 's_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
-		$table->addColumn( 'p_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
+		$table->addColumn( 's_id', [ FieldType::FIELD_ID, 'NOT NULL' ] );
+		$table->addColumn( 'p_id', [ FieldType::FIELD_ID, 'NOT NULL' ] );
 		$table->addColumn( 'o_text', FieldType::TYPE_TEXT );
 		$table->addColumn( 'o_sort', FieldType::FIELD_TITLE );
 
 		$table->addIndex( 's_id' );
 		$table->addIndex( 'p_id' );
 		$table->addIndex( 'o_sort' );
-		$table->addIndex( array( 'o_text', 'FULLTEXT' ) );
+		$table->addIndex( [ 'o_text', 'FULLTEXT' ] );
 
 		$table->addOption(
 			'fulltextSearchTableOptions',
@@ -178,7 +178,7 @@ class TableSchemaManager {
 		$table->addColumn( 'p_id', FieldType::FIELD_ID );
 		$table->addColumn( 'usage_count', FieldType::FIELD_USAGE_COUNT );
 
-		$table->addIndex( array( 'p_id', 'UNIQUE INDEX' ) );
+		$table->addIndex( [ 'p_id', 'UNIQUE INDEX' ] );
 		$table->addIndex( 'usage_count' );
 
 		return $table;
@@ -193,18 +193,18 @@ class TableSchemaManager {
 		// po: ask, getPropertySubjects()
 		//
 		// The "p" component is omitted for tables with fixed property.
-		$indexes = array();
+		$indexes = [];
 		if ( $propertyTable->usesIdSubject() ) {
-			$fieldarray = array(
-				's_id' => array( FieldType::FIELD_ID, 'NOT NULL' )
-			);
+			$fieldarray = [
+				's_id' => [ FieldType::FIELD_ID, 'NOT NULL' ]
+			];
 
 			$indexes['sp'] = 's_id';
 		} else {
-			$fieldarray = array(
-				's_title' => array( FieldType::FIELD_TITLE, 'NOT NULL' ),
-				's_namespace' => array( FieldType::FIELD_NAMESPACE, 'NOT NULL' )
-			);
+			$fieldarray = [
+				's_title' => [ FieldType::FIELD_TITLE, 'NOT NULL' ],
+				's_namespace' => [ FieldType::FIELD_NAMESPACE, 'NOT NULL' ]
+			];
 
 			$indexes['sp'] = 's_title,s_namespace';
 		}
@@ -212,7 +212,7 @@ class TableSchemaManager {
 		$indexes['po'] = $diHandler->getIndexField();
 
 		if ( !$propertyTable->isFixedPropertyTable() ) {
-			$fieldarray['p_id'] = array( FieldType::FIELD_ID, 'NOT NULL' );
+			$fieldarray['p_id'] = [ FieldType::FIELD_ID, 'NOT NULL' ];
 			$indexes['po'] = 'p_id,' . $indexes['po'];
 			$indexes['sp'] = $indexes['sp'] . ',p_id';
 		}

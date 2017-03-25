@@ -80,16 +80,16 @@ class SpecialBrowse extends SpecialPage {
 		$out = $this->getOutput();
 		$out->setHTMLTitle( $this->subjectDV->getTitle() );
 
-		$out->addModuleStyles( array(
+		$out->addModuleStyles( [
 			'mediawiki.ui',
 			'mediawiki.ui.button',
 			'mediawiki.ui.input'
-		) );
+		] );
 
-		$out->addModules( array(
+		$out->addModules( [
 			'ext.smw.browse',
 			'ext.smw.tooltip'
-		) );
+		] );
 
 		$out->addHTML(
 			$this->getHtml( $webRequest, $isEmptyRequest )
@@ -112,10 +112,10 @@ class SpecialBrowse extends SpecialPage {
 
 			$html = Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'smw-callout smw-callout-error'
-				),
-				Message::get( array( 'smw-browse-invalid-subject', $error ), Message::TEXT, Message::USER_LANGUAGE )
+				],
+				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE )
 			);
 
 			if ( !$this->including() ) {
@@ -134,49 +134,49 @@ class SpecialBrowse extends SpecialPage {
 			return $contentsBuilder->getHtml();
 		}
 
-		$options = array(
+		$options = [
 			'dir'         => $contentsBuilder->getOption( 'dir' ),
 			'offset'      => $contentsBuilder->getOption( 'offset' ),
 			'printable'   => $contentsBuilder->getOption( 'printable' ),
 			'showInverse' => $contentsBuilder->getOption( 'showInverse' ),
 			'showAll'     => $contentsBuilder->getOption( 'showAll' ),
 			'including'   => $contentsBuilder->getOption( 'including' )
-		);
+		];
 
 		// Ajax/API is doing the data fetch
 		$html = Html::rawElement(
 			'div',
-			array(
+			[
 				'class' => 'smwb-container',
 				'data-subject' => $this->subjectDV->getDataItem()->getHash(),
 				'data-options' => json_encode( $options )
-			),
+			],
 			Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'smwb-status'
-				),
+				],
 				Html::rawElement(
 					'noscript',
-					array(),
+					[],
 					Html::rawElement(
 						'div',
-						array(
+						[
 							'class' => 'smw-callout smw-callout-error',
-						),
+						],
 						Message::get( 'smw-browse-js-disabled', Message::PARSE )
 					)
 				)
 			) . Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'smwb-content is-disabled'
-				),
+				],
 				Html::rawElement(
 					'span',
-					array(
+					[
 						'class' => 'smw-overlay-spinner large inline'
-					)
+					]
 				) . $contentsBuilder->getEmptyHtml()
 			)
 		);
@@ -243,21 +243,21 @@ class SpecialBrowse extends SpecialPage {
 		if ( $this->subjectDV->isValid() ) {
 			$link = SpecialPage::getTitleFor( 'ExportRDF', $this->subjectDV->getTitle()->getPrefixedText() );
 
-			$this->getOutput()->setIndicators( array(
+			$this->getOutput()->setIndicators( [
 				'browse' => Html::rawElement(
 					'div',
-					array(
+					[
 						'class' => 'smw-page-indicator-rdflink'
-					),
+					],
 					Html::rawElement(
 						'a',
-						array(
+						[
 							'href' => $link->getLocalUrl( 'syntax=rdf' )
-						),
+						],
 						'RDF'
 					)
 				)
-			) );
+			] );
 		}
 
 		$this->addHelpLink( wfMessage( 'smw-specials-browse-helplink' )->escaped(), true );

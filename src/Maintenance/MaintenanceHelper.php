@@ -15,15 +15,15 @@ class MaintenanceHelper {
 	/**
 	 * @var array
 	 */
-	private $globals = array();
+	private $globals = [];
 
 	/**
 	 * @var array
 	 */
-	private $runtime = array(
+	private $runtime = [
 		'start'  => 0,
 		'memory' => 0
-	);
+	];
 
 	/**
 	 * @since 2.2
@@ -42,12 +42,12 @@ class MaintenanceHelper {
 
 		$memory = memory_get_peak_usage( false );
 
-		return array(
+		return [
 			'time' => microtime( true ) - $this->runtime['start'],
 			'memory-before' => $this->runtime['memory'],
 			'memory-after'  => $memory,
 			'memory-used'   => $memory - $this->runtime['memory']
-		);
+		];
 	}
 
 	/**

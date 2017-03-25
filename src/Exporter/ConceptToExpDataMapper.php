@@ -242,7 +242,7 @@ class ConceptToExpDataMapper {
 				new ExpResource( '' )
 			);
 
-			$elements = array();
+			$elements = [];
 
 			foreach ( $description->getCategories() as $cat ) {
 				$elements[] = new ExpData(
@@ -279,7 +279,7 @@ class ConceptToExpDataMapper {
 			)
 		);
 
-		$elements = array();
+		$elements = [];
 
 		foreach ( $description->getDescriptions() as $subdesc ) {
 			$element = $this->getExpDataFromDescription( $subdesc, $exact );

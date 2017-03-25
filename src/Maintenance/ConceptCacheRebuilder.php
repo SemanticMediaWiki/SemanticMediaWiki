@@ -40,7 +40,7 @@ class ConceptCacheRebuilder {
 
 	private $concept = null;
 	private $action  = null;
-	private $options = array();
+	private $options = [];
 	private $startId = 0;
 	private $endId   = 0;
 	private $lines   = 0;
@@ -74,7 +74,7 @@ class ConceptCacheRebuilder {
 	 */
 	public function setParameters( array $parameters ) {
 
-		$options = array( 'hard', 'update', 'old', 'quiet', 'status', 'verbose' );
+		$options = [ 'hard', 'update', 'old', 'quiet', 'status', 'verbose' ];
 
 		foreach ( $options as $option ) {
 			if ( isset( $parameters[$option] ) ) {
@@ -94,7 +94,7 @@ class ConceptCacheRebuilder {
 			$this->endId = intval( $parameters['e'] );
 		}
 
-		$actions = array( 'status', 'create', 'delete' );
+		$actions = [ 'status', 'create', 'delete' ];
 
 		foreach ( $actions as $action ) {
 			if ( isset( $parameters[$action] ) && $this->action === null ) {
@@ -148,7 +148,7 @@ class ConceptCacheRebuilder {
 			$this->workOnConcept( $concept );
 		}
 
-		if ( $concepts === array() ) {
+		if ( $concepts === [] ) {
 			$this->reportMessage( "No concept available.\n" );
 		} else {
 			$this->reportMessage( "\nDone.\n" );
@@ -228,7 +228,7 @@ class ConceptCacheRebuilder {
 	private function getConcepts() {
 
 		if ( $this->concept !== null ) {
-			return array( $this->createConcept() );
+			return [ $this->createConcept() ];
 		}
 
 		return $this->createMultipleConcepts();

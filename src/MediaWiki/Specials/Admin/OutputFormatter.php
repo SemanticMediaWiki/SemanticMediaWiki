@@ -83,7 +83,7 @@ class OutputFormatter {
 	 * @param string $caption
 	 * @param array $query
 	 */
-	public function getSpecialPageLinkWith( $caption = '', $query = array() ) {
+	public function getSpecialPageLinkWith( $caption = '', $query = [] ) {
 		return '<a href="' . htmlspecialchars( \SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL( $query ) ) . '">' . $caption . '</a>';
 	}
 
@@ -133,15 +133,15 @@ class OutputFormatter {
 	private function createParentLink() {
 		return Html::rawElement(
 			'div',
-			array( 'class' => 'smw-breadcrumb-link' ),
+			[ 'class' => 'smw-breadcrumb-link' ],
 			Html::rawElement(
 				'span',
-				array( 'class' => 'smw-breadcrumb-arrow-right' ),
+				[ 'class' => 'smw-breadcrumb-arrow-right' ],
 				''
 			) .
 			Html::rawElement(
 				'a',
-				array( 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL() ),
+				[ 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL() ],
 				Message::get( 'smwadmin', Message::TEXT, Message::USER_LANGUAGE )
 		) );
 	}

@@ -21,7 +21,7 @@ class FulltextSearchTableUpdateJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
+	public function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'SMW\FulltextSearchTableUpdateJob', $title, $params );
 	}
 
@@ -42,7 +42,7 @@ class FulltextSearchTableUpdateJob extends JobBase {
 			$this->params
 		);
 
-		Hooks::run( 'SMW::Job::AfterFulltextSearchTableUpdateComplete', array( $this ) );
+		Hooks::run( 'SMW::Job::AfterFulltextSearchTableUpdateComplete', [ $this ] );
 
 		return true;
 	}

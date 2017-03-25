@@ -30,7 +30,7 @@ class PropertySpecificationChangeNotifier {
 	/**
 	 * @var array
 	 */
-	private $propertyList = array();
+	private $propertyList = [];
 
 	/**
 	 * @var boolean
@@ -153,7 +153,7 @@ class PropertySpecificationChangeNotifier {
 		// The hashes of all values of both arrays are taken, then sorted
 		// and finally concatenated, thus creating one long hash out of each
 		// of the data value arrays. These are compared.
-		$values = array();
+		$values = [];
 		foreach ( $oldDataValue as $v ) {
 			$values[] = $v->getHash();
 		}
@@ -161,7 +161,7 @@ class PropertySpecificationChangeNotifier {
 		sort( $values );
 		$oldDataValueHash = implode( '___', $values );
 
-		$values = array();
+		$values = [];
 		foreach ( $newDataValue as $v ) {
 			$values[] = $v->getHash();
 		}

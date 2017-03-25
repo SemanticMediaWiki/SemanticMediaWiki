@@ -24,7 +24,7 @@ class HtmlColumnListRenderer {
 	/**
 	 * @var array
 	 */
-	private $contentsByIndex = array();
+	private $contentsByIndex = [];
 
 	/**
 	 * @var integer
@@ -121,7 +121,7 @@ class HtmlColumnListRenderer {
 	 */
 	public function setListType( $listType ) {
 
-		if ( in_array( $listType, array( 'ul', 'ol' ) ) ) {
+		if ( in_array( $listType, [ 'ul', 'ol' ] ) ) {
 			$this->listType = $listType;
 		}
 
@@ -137,7 +137,7 @@ class HtmlColumnListRenderer {
 	 */
 	public function addContentsByNoIndex( array $contentsByNoIndex ) {
 
-		$contentsByEmptyIndex[''] = array();
+		$contentsByEmptyIndex[''] = [];
 
 		foreach ( $contentsByNoIndex as $value ) {
 			$contentsByEmptyIndex[''][] = $value;
@@ -183,7 +183,7 @@ class HtmlColumnListRenderer {
 
 		foreach ( $this->contentsByIndex as $key => $resultItems ) {
 
-			if ( $resultItems === array() ) {
+			if ( $resultItems === [] ) {
 					continue;
 			}
 
@@ -201,10 +201,10 @@ class HtmlColumnListRenderer {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'class' => $this->columnListClass,
 				'dir'   => $this->isRTL ? 'rtl' : 'ltr'
-			),
+			],
 			$result . "\n" . '<br style="clear: both;"/>'
 		);
 	}
@@ -224,7 +224,7 @@ class HtmlColumnListRenderer {
 
 				if ( $key == $previousKey ) {
 					// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
-					$result .= ( $key !== '' ? Html::element( 'div', array( 'class' => 'smw-column-header' ), "$key $listContinuesAbbrev" ) : '' ) . "<{$this->listType} start={$numRowsInColumn}>";
+					$result .= ( $key !== '' ? Html::element( 'div', [ 'class' => 'smw-column-header' ], "$key $listContinuesAbbrev" ) : '' ) . "<{$this->listType} start={$numRowsInColumn}>";
 					// @codingStandardsIgnoreEnd
 				}
 			}
@@ -233,11 +233,11 @@ class HtmlColumnListRenderer {
 			// the last list and start a new one
 			if ( $key != $previousKey ) {
 				$result .= $this->numRows % $this->rowsPerColumn > 0 ? "</{$this->listType}>" : '';
-				$result .= ( $key !== '' ? Html::element( 'div', array( 'class' => 'smw-column-header' ), $key ) : '' ) . "<{$this->listType}>";
+				$result .= ( $key !== '' ? Html::element( 'div', [ 'class' => 'smw-column-header' ], $key ) : '' ) . "<{$this->listType}>";
 			}
 
 			$previousKey = $key;
-			$result .= Html::rawElement( 'li', array(), $resultItem );
+			$result .= Html::rawElement( 'li', [], $resultItem );
 			$usedColumnCloser = false;
 
 			if ( ( $this->numRows + 1 ) % $this->rowsPerColumn == 0 && ( $this->numRows + 1 ) < $this->numberOfResults ) {

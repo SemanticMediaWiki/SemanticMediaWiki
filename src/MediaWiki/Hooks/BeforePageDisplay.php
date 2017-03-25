@@ -53,13 +53,13 @@ class BeforePageDisplay {
 		$title = $this->outputPage->getTitle();
 
 		// MW 1.26 / T107399 / Async RL causes style delay
-		$this->outputPage->addModuleStyles( array(
+		$this->outputPage->addModuleStyles( [
 			'ext.smw.style',
-			'ext.smw.tooltip.styles' )
+			'ext.smw.tooltip.styles' ]
 		);
 
 		// Add style resources to avoid unstyled content
-		$this->outputPage->addModules( array( 'ext.smw.style' ) );
+		$this->outputPage->addModules( [ 'ext.smw.style' ] );
 
 		// Add export link to the head
 		if ( $title instanceof Title && !$title->isSpecialPage() ) {

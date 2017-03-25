@@ -102,7 +102,7 @@ class PageRequestOptions {
 		}
 
 		$this->property = PropertyValue::makeUserProperty(
-			str_replace( array( '_' ), array( ' ' ), $property )
+			str_replace( [ '_' ], [ ' ' ], $property )
 		);
 
 		if ( !$this->property->isValid() ) {
@@ -134,12 +134,12 @@ class PageRequestOptions {
 	private function unescape( $value, $escaped ) {
 
 		if ( $this->value instanceof NumberValue ) {
-			$value = $escaped ? str_replace( array( '-20', '-2D' ), array( ' ', '-' ), $value ) : $value;
+			$value = $escaped ? str_replace( [ '-20', '-2D' ], [ ' ', '-' ], $value ) : $value;
 			// Do not try to decode things like 1.2e-13
 			// Signals that we don't want any precision limitation
 			$this->value->setOption( NumberValue::NO_DISP_PRECISION_LIMIT, true );
 		} elseif ( $this->value instanceof TelephoneUriValue ) {
-			$value = $escaped ? str_replace( array( '-20', '-2D' ), array( ' ', '-' ), $value ) : $value;
+			$value = $escaped ? str_replace( [ '-20', '-2D' ], [ ' ', '-' ], $value ) : $value;
 			// No encoding to avoid turning +1-201-555-0123
 			// into +1 1U523 or further obfuscate %2B1-2D201-2D555-2D0123 ...
 		} else {

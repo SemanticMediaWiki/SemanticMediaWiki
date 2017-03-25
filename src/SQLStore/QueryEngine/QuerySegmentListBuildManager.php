@@ -19,12 +19,12 @@ class QuerySegmentListBuildManager {
 	/**
 	 * @var QuerySegment[]
 	 */
-	private $querySegmentList = array();
+	private $querySegmentList = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var string[]
@@ -131,7 +131,7 @@ class QuerySegmentListBuildManager {
 			// manually make final root query (to retrieve namespace,title):
 			$rootid = $rootSegmentNumber;
 			$qobj = $this->querySegmentList[$rootSegmentNumber];
-			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
+			$qobj->components = [ $qid => "$qobj->alias.smw_id" ];
 			$qobj->sortfields = $this->querySegmentList[$qid]->sortfields;
 			$this->querySegmentListBuilder->addQuerySegment( $qobj );
 		} else { // not such a common case, but worth avoiding the additional inner join:

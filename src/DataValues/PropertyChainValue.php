@@ -25,7 +25,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @var PropertyValue[]
 	 */
-	private $propertyValues = array();
+	private $propertyValues = [];
 
 	/**
 	 * @var PropertyValue
@@ -215,7 +215,7 @@ class PropertyChainValue extends StringValue {
 	}
 
 	private function doHintPropertyChainMembers() {
-		return '&nbsp;' . \Html::rawElement( 'span', array( 'title' => $this->m_dataitem ), '⠉' );
+		return '&nbsp;' . \Html::rawElement( 'span', [ 'title' => $this->m_dataitem ], '⠉' );
 	}
 
 }

@@ -32,7 +32,7 @@ class ParameterListDocBuilder {
 	 * @return string
 	 */
 	public function getParameterTable( array $paramDefinitions ) {
-		$tableRows = array();
+		$tableRows = [];
 		$hasAliases = $this->containsAliases( $paramDefinitions );
 
 		foreach ( $paramDefinitions as $parameter ) {
@@ -45,13 +45,13 @@ class ParameterListDocBuilder {
 			return '';
 		}
 
-		$tableRows = array_merge( array(
+		$tableRows = array_merge( [
 			'!' . $this->msg( 'validator-describe-header-parameter' ) ."\n" .
 			( $hasAliases ? '!' . $this->msg( 'validator-describe-header-aliases' ) ."\n" : '' ) .
 			'!' . $this->msg( 'validator-describe-header-type' ) ."\n" .
 			'!' . $this->msg( 'validator-describe-header-default' ) ."\n" .
 			'!' . $this->msg( 'validator-describe-header-description' )
-		), $tableRows );
+		], $tableRows );
 
 		return '{| class="wikitable sortable"' . "\n" .
 			implode( "\n|-\n", $tableRows ) .

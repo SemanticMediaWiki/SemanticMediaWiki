@@ -67,22 +67,22 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 
 		$upperLimitDataItem = $this->getUpperLimit( $dataItem );
 
-		if ( $this->getErrors() !== array() ) {
+		if ( $this->getErrors() !== [] ) {
 			return $this->descriptionFactory->newThingDescription();
 		}
 
 		if( $comparator === SMW_CMP_LIKE ) {
-			$description = $this->descriptionFactory->newConjunction( array(
+			$description = $this->descriptionFactory->newConjunction( [
 				$this->descriptionFactory->newValueDescription( $dataItem, $property, SMW_CMP_GEQ ),
 				$this->descriptionFactory->newValueDescription( $upperLimitDataItem, $property, SMW_CMP_LESS )
-			) );
+			] );
 		}
 
 		if( $comparator === SMW_CMP_NLKE ) {
-			$description = $this->descriptionFactory->newDisjunction( array(
+			$description = $this->descriptionFactory->newDisjunction( [
 				$this->descriptionFactory->newValueDescription( $dataItem, $property, SMW_CMP_LESS ),
 				$this->descriptionFactory->newValueDescription( $upperLimitDataItem, $property, SMW_CMP_GEQ )
-			) );
+			] );
 		}
 
 		return $description;

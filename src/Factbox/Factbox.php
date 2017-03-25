@@ -168,10 +168,10 @@ class Factbox {
 		// Prior MW 1.21 mSMWMagicWords is used (see SMW\ParserTextProcessor)
 		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
 			$smwMagicWords = $parserOutput->getExtensionData( 'smwmagicwords' );
-			$mws = $smwMagicWords === null ? array() : $smwMagicWords;
+			$mws = $smwMagicWords === null ? [] : $smwMagicWords;
 		} else {
 			// @codeCoverageIgnoreStart
-			$mws = isset( $parserOutput->mSMWMagicWords ) ? $parserOutput->mSMWMagicWords : array();
+			$mws = isset( $parserOutput->mSMWMagicWords ) ? $parserOutput->mSMWMagicWords : [];
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -196,9 +196,9 @@ class Factbox {
 	 * @return array
 	 */
 	protected function getModules() {
-		return array(
+		return [
 			'ext.smw.style'
-		);
+		];
 	}
 
 	/**
@@ -279,18 +279,18 @@ class Factbox {
 		$text = '';
 
 		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
-		\Hooks::run( 'smwShowFactbox', array( &$text, $semanticData ) );
+		\Hooks::run( 'smwShowFactbox', [ &$text, $semanticData ] );
 
 		// Hook since 1.9
-		if ( \Hooks::run( 'SMW::Factbox::BeforeContentGeneration', array( &$text, $semanticData ) ) ) {
+		if ( \Hooks::run( 'SMW::Factbox::BeforeContentGeneration', [ &$text, $semanticData ] ) ) {
 
 			$this->getTableHeader( $semanticData->getSubject() );
 			$this->getTableContent( $semanticData );
 
 			$text .= Html::rawElement( 'div',
-				array( 'class' => 'smwfact' ),
+				[ 'class' => 'smwfact' ],
 				$this->htmlTableRenderer->getHeaderItems() .
-				$this->htmlTableRenderer->getHtml( array( 'class' => 'smwfacttable', 'cellspacing' => "0", 'cellpadding' => "2" ) )
+				$this->htmlTableRenderer->getHtml( [ 'class' => 'smwfacttable', 'cellspacing' => "0", 'cellpadding' => "2" ] )
 			);
 		}
 
@@ -316,7 +316,7 @@ class Factbox {
 
 		$this->htmlTableRenderer->addHeaderItem( 'div',
 			$this->messageBuilder->getMessage( 'smw_factbox_head', $browselink->getWikiText() )->text(),
-			array( 'class' => 'smwfactboxhead' )
+			[ 'class' => 'smwfactboxhead' ]
 		);
 
 		$rdflink = SMWInfolink::newInternalLink(
@@ -327,7 +327,7 @@ class Factbox {
 
 		$this->htmlTableRenderer->addHeaderItem( 'div',
 			$rdflink->getWikiText(),
-			array( 'class' => 'smwrdflink' )
+			[ 'class' => 'smwrdflink' ]
 		);
 	}
 
@@ -342,8 +342,8 @@ class Factbox {
 
 		// Do exclude some tags from processing otherwise the display
 		// can become distorted due to unresolved/open tags (see Bug 23185)
-		$excluded = array( 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol', 'b', 'sub' );
-		$attributes = array();
+		$excluded = [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol', 'b', 'sub' ];
+		$attributes = [];
 
 		foreach ( $semanticData->getProperties() as $propertyDi ) {
 			$propertyDv = $this->dataValueFactory->newDataValueByItem( $propertyDi, null );
@@ -355,12 +355,12 @@ class Factbox {
 				// User defined property (@note the preg_replace is a slight
 				// hack to ensure that the left column does not get too narrow)
 				$propertyDv->setCaption( preg_replace( '/[ ]/u', '&#160;', $propertyDv->getWikiValue(), 2 ) );
-				$attributes['property'] = array( 'class' => 'smwpropname' );
-				$attributes['values'] = array( 'class' => 'smwprops' );
+				$attributes['property'] = [ 'class' => 'smwpropname' ];
+				$attributes['values'] = [ 'class' => 'smwprops' ];
 			} elseif ( $propertyDv->isVisible() ) {
 				// Predefined property
-				$attributes['property'] = array( 'class' => 'smwspecname' );
-				$attributes['values'] = array( 'class' => 'smwspecs' );
+				$attributes['property'] = [ 'class' => 'smwspecname' ];
+				$attributes['values'] = [ 'class' => 'smwspecs' ];
 			} else {
 				// predefined, internal property
 				// @codeCoverageIgnoreStart
@@ -368,7 +368,7 @@ class Factbox {
 				// @codeCoverageIgnoreEnd
 			}
 
-			$valuesHtml = array();
+			$valuesHtml = [];
 			foreach ( $semanticData->getPropertyValues( $propertyDi ) as $dataItem ) {
 
 				$dataValue = $this->dataValueFactory->newDataValueByItem( $dataItem, $propertyDi );
@@ -377,7 +377,7 @@ class Factbox {
 
 				if ( $dataValue->isValid() ) {
 					$valuesHtml[] = Sanitizer::removeHTMLtags(
-						$dataValue->getLongWikiText( true ), null, array(), array(), $excluded
+						$dataValue->getLongWikiText( true ), null, [], [], $excluded
 						 ) . $this->getInfolink( $dataValue );
 				}
 			}

@@ -18,7 +18,7 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	/**
 	 * @var array
 	 */
-	private $diff = array();
+	private $diff = [];
 
 	/**
 	 * @var DIWikiPage
@@ -33,14 +33,14 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	/**
 	 * @var array
 	 */
-	private $fixedPropertyRecords = array();
+	private $fixedPropertyRecords = [];
 
 	/**
 	 * @since 2.3
 	 *
 	 * @param array $diff
 	 */
-	public function __construct( array $diff = array() ) {
+	public function __construct( array $diff = [] ) {
 		$this->diff = $diff;
 	}
 
@@ -88,10 +88,10 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 */
 	public function addTableRowsToCompositeDiff( array $insertRecord, array $deleteRecord ) {
 
-		$diff = array(
+		$diff = [
 			'insert' => $insertRecord,
 			'delete' => $deleteRecord
-		);
+		];
 
 		$this->diff[] = $diff;
 
@@ -128,7 +128,7 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 */
 	public function getTableChangeOps( $table = null ) {
 
-		$tableChangeOps = array();
+		$tableChangeOps = [];
 
 		foreach ( $this->getOrderedDiffByTable( $table ) as $tableName => $diff ) {
 			$tableChangeOps[] = new TableChangeOp( $tableName, $diff );
@@ -147,13 +147,13 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 */
 	public function getOrderedDiffByTable( $table = null ) {
 
-		$ordered = array();
+		$ordered = [];
 
 		foreach ( $this as $diff ) {
 			foreach ( $diff as $key => $value ) {
 				foreach ( $value as $tableName => $val ) {
 
-					if ( $val === array() || ( $table !== null && $table !== $tableName ) ) {
+					if ( $val === [] || ( $table !== null && $table !== $tableName ) ) {
 						continue;
 					}
 
@@ -162,11 +162,11 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 					}
 
 					if ( !isset( $ordered[$tableName] ) ) {
-						$ordered[$tableName] = array();
+						$ordered[$tableName] = [];
 					}
 
 					if ( !isset( $ordered[$tableName][$key] ) ) {
-						$ordered[$tableName][$key] = array();
+						$ordered[$tableName][$key] = [];
 					}
 
 					foreach ( $val as $v ) {
@@ -186,7 +186,7 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 */
 	public function getCombinedIdListOfChangedEntities() {
 
-		$list = array();
+		$list = [];
 
 		foreach ( $this->getOrderedDiffByTable() as $diff ) {
 

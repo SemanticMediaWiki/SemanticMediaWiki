@@ -158,7 +158,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$misses = $this->sum( 0, $stats['misses'] );
 		$hits = $this->sum( 0, $stats['hits'] );
 
-		$stats['ratio'] = array();
+		$stats['ratio'] = [];
 		$stats['ratio']['hit'] = $hits > 0 ? round( $hits / ( $hits + $misses ), 4 ) : 0;
 		$stats['ratio']['miss'] = $hits > 0 ? round( 1 - $stats['ratio']['hit'], 4 ) : 1;
 
@@ -289,7 +289,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	public function resetCacheBy( $item, $context = '' ) {
 
 		if ( !is_array( $item ) ) {
-			$item = array( $item );
+			$item = [ $item ];
 		}
 
 		$recordStats = false;
@@ -317,7 +317,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 	private function newQueryResultFromCache( $queryId, $query, $container ) {
 
-		$results = array();
+		$results = [];
 		$incrStats = 'hits.Undefined';
 
 		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
@@ -406,7 +406,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 	private function doCacheQueryResult( $queryResult, $queryId, $container, $query ) {
 
-		$results = array();
+		$results = [];
 
 		// Keep the simple string representation to avoid unnecessary data cruft
 		// during using PHP serialize( ... )
@@ -468,7 +468,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		return md5( $subject . self::VERSION . $this->hashModifier );
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;
@@ -504,11 +504,11 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 		$this->bufferedStatsdCollector->shouldRecord( $this->isEnabled() );
 
-		$this->bufferedStatsdCollector->init( 'misses', array() );
-		$this->bufferedStatsdCollector->init( 'hits', array() );
-		$this->bufferedStatsdCollector->init( 'deletes', array() );
-		$this->bufferedStatsdCollector->init( 'noCache', array() );
-		$this->bufferedStatsdCollector->init( 'medianRetrievalResponseTime', array() );
+		$this->bufferedStatsdCollector->init( 'misses', [] );
+		$this->bufferedStatsdCollector->init( 'hits', [] );
+		$this->bufferedStatsdCollector->init( 'deletes', [] );
+		$this->bufferedStatsdCollector->init( 'noCache', [] );
+		$this->bufferedStatsdCollector->init( 'medianRetrievalResponseTime', [] );
 		$this->bufferedStatsdCollector->set( 'meta.version', self::VERSION );
 		$this->bufferedStatsdCollector->set( 'meta.cacheLifetime.embedded', $GLOBALS['smwgQueryResultCacheLifetime'] );
 		$this->bufferedStatsdCollector->set( 'meta.cacheLifetime.nonEmbedded', $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'] );

@@ -66,7 +66,7 @@ class DescriptionFactory {
 	 *
 	 * @return Disjunction
 	 */
-	public function newDisjunction( $descriptions = array() ) {
+	public function newDisjunction( $descriptions = [] ) {
 		return new Disjunction( $descriptions );
 	}
 
@@ -77,7 +77,7 @@ class DescriptionFactory {
 	 *
 	 * @return Conjunction
 	 */
-	public function newConjunction( $descriptions = array() ) {
+	public function newConjunction( $descriptions = [] ) {
 		return new Conjunction( $descriptions );
 	}
 

@@ -45,7 +45,7 @@ class SearchTableRebuilder {
 	/**
 	 * @var array
 	 */
-	private $skippedTables = array();
+	private $skippedTables = [];
 
 	/**
 	 * @since 2.5
@@ -124,7 +124,7 @@ class SearchTableRebuilder {
 	 */
 	public function getQualifiedTableList() {
 
-		$tableList = array();
+		$tableList = [];
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return $tableList;
@@ -224,11 +224,11 @@ class SearchTableRebuilder {
 		$searchTable = $this->getSearchTable();
 
 		if ( $proptable->getDiType() === DataItem::TYPE_URI ) {
-			$fetchFields = array( 's_id', 'p_id', 'o_blob', 'o_serialized' );
+			$fetchFields = [ 's_id', 'p_id', 'o_blob', 'o_serialized' ];
 		} elseif ( $proptable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
-			$fetchFields = array( 's_id', 'p_id', 'o_id' );
+			$fetchFields = [ 's_id', 'p_id', 'o_id' ];
 		} else {
-			$fetchFields = array( 's_id', 'p_id', 'o_blob', 'o_hash' );
+			$fetchFields = [ 's_id', 'p_id', 'o_blob', 'o_hash' ];
 		}
 
 		$table = $proptable->getName();
@@ -257,7 +257,7 @@ class SearchTableRebuilder {
 		$rows = $this->connection->select(
 			$table,
 			$fetchFields,
-			array(),
+			[],
 			__METHOD__
 		);
 

@@ -23,7 +23,7 @@ class ErrorFormWidget {
 	 * @return string
 	 */
 	public function createNoResultFormElement() {
-		return Html::element( 'div', array( 'class' => 'smw-callout smw-callout-info' ), wfMessage( 'smw_result_noresults' )->escaped() );
+		return Html::element( 'div', [ 'class' => 'smw-callout smw-callout-info' ], wfMessage( 'smw_result_noresults' )->escaped() );
 	}
 
 	/**
@@ -35,11 +35,11 @@ class ErrorFormWidget {
 	 */
 	public function getFormattedQueryErrorElement( Query $query = null ) {
 
-		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === array() ) {
+		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === [] ) {
 			return '';
 		}
 
-		$errors = array();
+		$errors = [];
 
 		foreach ( ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $query->getErrors() ) as $value ) {
 
@@ -60,7 +60,7 @@ class ErrorFormWidget {
 			$error =  implode( ' ', $errors );
 		}
 
-		return Html::rawElement( 'div', array( 'class' => 'smw-callout smw-callout-error' ), $error );
+		return Html::rawElement( 'div', [ 'class' => 'smw-callout smw-callout-error' ], $error );
 	}
 
 }

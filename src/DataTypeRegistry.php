@@ -36,19 +36,19 @@ class DataTypeRegistry {
 	 *
 	 * @var string[]
 	 */
-	private $typeLabels = array();
+	private $typeLabels = [];
 
 	/**
 	 * Array of ids indexed by type aliases. Used for datatype resolution.
 	 *
 	 * @var string[]
 	 */
-	private $typeAliases = array();
+	private $typeAliases = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $canonicalLabels = array();
+	private $canonicalLabels = [];
 
 	/**
 	 * Array of class names for creating new SMWDataValue, indexed by type
@@ -68,7 +68,7 @@ class DataTypeRegistry {
 	/**
 	 * @var string[]
 	 */
-	private $subDataTypes = array();
+	private $subDataTypes = [];
 
 	/**
 	 * Lookup map that allows finding a datatype id given a label or alias.
@@ -76,14 +76,14 @@ class DataTypeRegistry {
 	 *
 	 * @var string[]
 	 */
-	private $typeByLabelOrAliasLookup = array();
+	private $typeByLabelOrAliasLookup = [];
 
 	/**
 	 * Array of default types to use for making datavalues for dataitems.
 	 *
 	 * @var string[]
 	 */
-	private $defaultDataItemTypeMap = array(
+	private $defaultDataItemTypeMap = [
 		DataItem::TYPE_BLOB => '_txt', // Text type
 		DataItem::TYPE_URI => '_uri', // URL/URI type
 		DataItem::TYPE_WIKIPAGE => '_wpg', // Page type
@@ -98,13 +98,13 @@ class DataTypeRegistry {
 		// If either of the following two occurs, we want to see a PHP error:
 		//DataItem::TYPE_NOTYPE => '',
 		//DataItem::TYPE_ERROR => '',
-	);
+	];
 
 
 	/**
 	 * @var Closure[]
 	 */
-	private $extraneousFunctions = array();
+	private $extraneousFunctions = [];
 
 	/**
 	 * @var Options
@@ -454,7 +454,7 @@ class DataTypeRegistry {
 		\Hooks::run( 'smwInitDatatypes' );
 
 		// Since 1.9
-		\Hooks::run( 'SMW::DataType::initTypes', array( $this ) );
+		\Hooks::run( 'SMW::DataType::initTypes', [ $this ] );
 	}
 
 	/**

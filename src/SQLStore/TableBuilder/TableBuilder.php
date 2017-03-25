@@ -29,7 +29,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	/**
 	 * @var array
 	 */
-	protected $configurations = array();
+	protected $configurations = [];
 
 	/**
 	 * @since 2.5

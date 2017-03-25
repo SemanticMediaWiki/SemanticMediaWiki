@@ -67,12 +67,12 @@ class ContentsBuilder {
 	/**
 	 * @var array
 	 */
-	private $extraModules = array();
+	private $extraModules = [];
 
 	/**
 	 * @var array
 	 */
-	private $options = array();
+	private $options = [];
 
 	/**
 	 * @since 2.5
@@ -190,7 +190,7 @@ class ContentsBuilder {
 		global $wgContLang;
 		$html = "\n";
 		$leftside = !( $wgContLang->isRTL() ); // For right to left languages, all is mirrored
-		$modules = array();
+		$modules = [];
 
 		if ( !$this->subject->isValid() ) {
 			return $html;
@@ -218,7 +218,7 @@ class ContentsBuilder {
 
 		$this->articletext = $this->subject->getWikiValue();
 
-		\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', array( $this->store, $semanticData, &$html, &$this->extraModules ) );
+		\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', [ $this->store, $semanticData, &$html, &$this->extraModules ] );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
 			$html .= FormHelper::getQueryForm( $this->articletext );
@@ -226,10 +226,10 @@ class ContentsBuilder {
 
 		$html .= Html::element(
 			'div',
-			array(
+			[
 				'class' => 'smwb-modules',
 				'data-modules' => json_encode( $this->extraModules )
-			)
+			]
 		);
 
 		return $html;
@@ -309,15 +309,15 @@ class ContentsBuilder {
 
 			// Added in 2.3
 			// link to the remaining incoming pages
-			if ( $moreIncoming && \Hooks::run( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', array( $diProperty, $this->subject->getDataItem(), &$body ) ) ) {
+			if ( $moreIncoming && \Hooks::run( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', [ $diProperty, $this->subject->getDataItem(), &$body ] ) ) {
 				$body .= \Html::element(
 					'a',
-					array(
-						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
+					[
+						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( [
 							 'property' => $dvProperty->getWikiValue(),
 							 'value' => $this->subject->getWikiValue()
-						) )
-					),
+						] )
+					],
 					wfMessage( 'smw_browse_more' )->text()
 				);
 
@@ -386,19 +386,19 @@ class ContentsBuilder {
 	private function displayCenter( $article ) {
 
 		if ( $this->showincoming ) {
-			$parameters = array(
+			$parameters = [
 				'offset'  => 0,
 				'dir'     => 'out',
 				'article' => $article
-			);
+			];
 
 			$linkMsg = 'smw_browse_hide_incoming';
 		} else {
-			$parameters = array(
+			$parameters = [
 				'offset'  => $this->offset,
 				'dir'     => 'both',
 				'article' => $article
-			);
+			];
 
 			$linkMsg = 'smw_browse_show_incoming';
 		}
@@ -434,11 +434,11 @@ class ContentsBuilder {
 		if ( ( $this->offset > 0 ) || $more ) {
 			$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
 
-			$parameters = array(
+			$parameters = [
 				'offset'  => $offset,
 				'dir'     => $this->showoutgoing ? 'both' : 'in',
 				'article' => $article
-			);
+			];
 
 			$linkMsg = 'smw_result_prev';
 
@@ -446,11 +446,11 @@ class ContentsBuilder {
 
 			$offset = $this->offset + $this->incomingPropertiesCount - 1;
 
-			$parameters = array(
+			$parameters = [
 				'offset'  => $offset,
 				'dir'     => $this->showoutgoing ? 'both' : 'in',
 				'article' => $article
-			);
+			];
 
 			$linkMsg = 'smw_result_next';
 
@@ -502,9 +502,9 @@ class ContentsBuilder {
 		// Added in 2.3
 		// Whether to show a more link or not can be set via
 		// SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
-		\Hooks::run( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', array( $this->store, $indata, $valRequestOptions ) );
+		\Hooks::run( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', [ $this->store, $indata, $valRequestOptions ] );
 
-		return array( $indata, $more );
+		return [ $indata, $more ];
 	}
 
 }

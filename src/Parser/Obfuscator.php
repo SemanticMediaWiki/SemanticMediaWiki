@@ -29,8 +29,8 @@ class Obfuscator {
 		// Filter simple [ ... ] from [[ ... ]] links and ensure to find the correct
 		// start and end in case of [[Foo::[[Bar]]]] or [[Foo::[http://example.org/foo]]]
 		$text = str_replace(
-			array( '[', ']', '&#x005B;&#x005B;', '&#93;&#93;&#93;&#93;', '&#93;&#93;&#93;', '&#93;&#93;' ),
-			array( '&#x005B;', '&#93;', '[[', ']]]]', '&#93;]]', ']]' ),
+			[ '[', ']', '&#x005B;&#x005B;', '&#93;&#93;&#93;&#93;', '&#93;&#93;&#93;', '&#93;&#93;' ],
+			[ '&#x005B;', '&#93;', '[[', ']]]]', '&#93;]]', ']]' ],
 			$text
 		);
 
@@ -47,8 +47,8 @@ class Obfuscator {
 	 */
 	public static function removeLinkObfuscation( $text ) {
 		return str_replace(
-			array( '&#x005B;', '&#93;', '&#124;' ),
-			array( '[', ']', '|' ),
+			[ '&#x005B;', '&#93;', '&#124;' ],
+			[ '[', ']', '|' ],
 			$text
 		);
 	}
@@ -62,8 +62,8 @@ class Obfuscator {
 	 */
 	public static function encodeLinks( $text ) {
 		return str_replace(
-			array( '[', ']', '|' ),
-			array( '&#x005B;', '&#93;', '&#124;' ),
+			[ '[', ']', '|' ],
+			[ '&#x005B;', '&#93;', '&#124;' ],
 			$text
 		);
 	}
@@ -76,7 +76,7 @@ class Obfuscator {
 	 * @return text
 	 */
 	public static function decodeSquareBracket( $text ) {
-		return str_replace( array( '%5B', '%5D' ), array( '[', ']' ), $text );
+		return str_replace( [ '%5B', '%5D' ], [ '[', ']' ], $text );
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Obfuscator {
 		// obfuscate the returning [[, |, ]] result
 		$replace = self::encodeLinks( preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
-			array( $parser, 'preprocess' ),
+			[ $parser, 'preprocess' ],
 			$match
 		) );
 

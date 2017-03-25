@@ -103,10 +103,10 @@ class NumberValueFormatter extends DataValueFormatter {
 		}
 
 		$highlighter = Highlighter::factory( Highlighter::TYPE_QUANTITY, $this->dataValue->getOption( 'user.language' ) );
-		$highlighter->setContent( array (
+		$highlighter->setContent(  [
 			'caption' => $this->dataValue->getCaption(),
 			'content' => $tooltip
-		) );
+		] );
 
 		return $highlighter->getHtml();
 	}

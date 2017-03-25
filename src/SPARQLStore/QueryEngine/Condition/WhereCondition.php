@@ -29,7 +29,7 @@ class WhereCondition extends Condition {
 	 */
 	public $isSafe;
 
-	public function __construct( $condition, $isSafe, $namespaces = array() ) {
+	public function __construct( $condition, $isSafe, $namespaces = [] ) {
 		$this->condition  = $condition;
 		$this->isSafe     = $isSafe;
 		$this->namespaces = $namespaces;

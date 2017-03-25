@@ -18,7 +18,7 @@ class DispatchingDescriptionDeserializer {
 	/**
 	 * @var DescriptionDeserializer[]
 	 */
-	private $descriptionDeserializers = array();
+	private $descriptionDeserializers = [];
 
 	/**
 	 * @var DescriptionDeserializer

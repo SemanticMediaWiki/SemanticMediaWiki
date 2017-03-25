@@ -45,10 +45,10 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array(
+		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_hash' => FieldType::FIELD_TITLE
-		);
+		];
 	}
 
 	/**
@@ -57,10 +57,10 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array(
+		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_hash' => FieldType::FIELD_TITLE
-		);
+		];
 	}
 
 	/**
@@ -69,7 +69,7 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array( 's_id,o_hash' );
+		return [ 's_id,o_hash' ];
 	}
 
 	/**
@@ -78,7 +78,7 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return array( 'o_hash' => self::makeHash( $dataItem->getString() ) );
+		return [ 'o_hash' => self::makeHash( $dataItem->getString() ) ];
 	}
 
 	/**
@@ -89,10 +89,10 @@ class DIBlobHandler extends DataItemHandler {
 	public function getInsertValues( DataItem $dataItem ) {
 		$text = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );
 
-		return array(
+		return [
 			'o_blob' => strlen( $text ) <= self::MAX_HASH_LENGTH ? null : ( $GLOBALS['wgDBtype'] === 'postgres' ? pg_escape_bytea( $text ) : $text ),
 			'o_hash' => self::makeHash( $text ),
-		);
+		];
 	}
 
 	/**

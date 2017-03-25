@@ -25,7 +25,7 @@ class SemanticDataDeserializer implements Deserializer {
 	/**
 	 * @var array
 	 */
-	private $dataItemTypeIdCache = array();
+	private $dataItemTypeIdCache = [];
 
 	/**
 	 * @see Deserializers::deserialize
@@ -118,9 +118,9 @@ class SemanticDataDeserializer implements Deserializer {
 			$dataItem = $property->getDiWikiPage();
 			$property = new DIProperty( DIProperty::TYPE_ERROR );
 
-			$semanticData->addError( array(
+			$semanticData->addError( [
 				new ErrorValue( $type, 'type mismatch', $property->getLabel() )
-			) );
+			] );
 
 		}
 

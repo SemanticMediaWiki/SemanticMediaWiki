@@ -51,7 +51,7 @@ class AllowsListValue extends StringValue {
 		);
 
 		if ( !$content ) {
-			$this->addErrorMsg( array( 'smw-datavalue-allows-value-list-unknown', $value ), Message::ESCAPED );
+			$this->addErrorMsg( [ 'smw-datavalue-allows-value-list-unknown', $value ], Message::ESCAPED );
 		}
 
 		parent::parseUserValue( $value );
@@ -98,10 +98,10 @@ class AllowsListValue extends StringValue {
 
 		return \Html::rawElement(
 			'a',
-			array(
+			[
 				'href'   => $title->getLocalUrl(),
 				'target' => '_blank'
-			),
+			],
 			$id
 		);
 	}

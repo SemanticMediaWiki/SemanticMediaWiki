@@ -77,12 +77,12 @@ class IdTaskHandler extends TaskHandler {
 	public function getHtml() {
 		return Html::rawElement(
 			'li',
-			array(),
+			[],
 			$this->getMessageAsString(
-				array(
+				[
 					'smw-admin-supplementary-idlookup-intro',
-					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ), array( 'action' => 'idlookup' ) )
-				)
+					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ), [ 'action' => 'idlookup' ] )
+				]
 			)
 		);
 	}
@@ -147,10 +147,10 @@ class IdTaskHandler extends TaskHandler {
 			->addParagraph( $message )
 			->getForm();
 
-		$html .= Html::element( 'p', array(), '' );
+		$html .= Html::element( 'p', [], '' );
 
 		if ( $id > 0 && $webRequest->getText( 'dispose' ) == 'yes' ) {
-			$message = $this->getMessageAsString( array ('smw-admin-iddispose-done', $id ) );
+			$message = $this->getMessageAsString(  ['smw-admin-iddispose-done', $id ] );
 			$id = null;
 		}
 
@@ -183,7 +183,7 @@ class IdTaskHandler extends TaskHandler {
 			)
 			->getForm();
 
-		return $html . Html::element( 'p', array(), '' );
+		return $html . Html::element( 'p', [], '' );
 	}
 
 	private function createInfoMessageById( $webRequest, &$id ) {
@@ -202,14 +202,14 @@ class IdTaskHandler extends TaskHandler {
 
 		$rows = $connection->select(
 				\SMWSql3SmwIds::TABLE_NAME,
-				array(
+				[
 					'smw_id',
 					'smw_title',
 					'smw_namespace',
 					'smw_iw',
 					'smw_subobject',
 					'smw_sortkey'
-				),
+				],
 				$condition,
 				__METHOD__
 		);
@@ -219,11 +219,11 @@ class IdTaskHandler extends TaskHandler {
 
 	private function createMessageFromRows( &$id, $rows ) {
 
-		$references = array();
-		$formattedRows = array();
+		$references = [];
+		$formattedRows = [];
 		$output = '';
 
-		if ( $rows !== array() ) {
+		if ( $rows !== [] ) {
 			foreach ( $rows as $row ) {
 				$id = $row->smw_id;
 
@@ -240,15 +240,15 @@ class IdTaskHandler extends TaskHandler {
 			$id = '';
 		}
 
-		if ( $formattedRows !== array() ) {
+		if ( $formattedRows !== [] ) {
 			$output = '<pre>' . $this->outputFormatter->encodeAsJson( $formattedRows ) . '</pre>';
 		}
 
-		if ( $references !== array() ) {
+		if ( $references !== [] ) {
 			$output .= Html::element(
 				'p',
-				array(),
-				$this->getMessageAsString( array( 'smw-admin-iddispose-references', $id, count( $references ) ) )
+				[],
+				$this->getMessageAsString( [ 'smw-admin-iddispose-references', $id, count( $references ) ] )
 			);
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
 		}

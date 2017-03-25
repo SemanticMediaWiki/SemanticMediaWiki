@@ -55,7 +55,7 @@ class HookHandler implements LoggerAwareInterface {
 		$this->logger = $logger;
 	}
 
-	protected function log( $message, $context = array() ) {
+	protected function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

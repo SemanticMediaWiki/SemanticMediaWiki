@@ -32,7 +32,7 @@ abstract class Query extends ApiBase {
 	 *
 	 * @return SMWQuery
 	 */
-	protected function getQuery( $queryString, array $printouts, array $parameters = array() ) {
+	protected function getQuery( $queryString, array $printouts, array $parameters = [] ) {
 
 		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 

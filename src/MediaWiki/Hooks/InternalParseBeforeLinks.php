@@ -34,7 +34,7 @@ class InternalParseBeforeLinks {
 	/**
 	 * @var array
 	 */
-	private $enabledSpecialPage = array();
+	private $enabledSpecialPage = [];
 
 	/**
 	 * @since 1.9

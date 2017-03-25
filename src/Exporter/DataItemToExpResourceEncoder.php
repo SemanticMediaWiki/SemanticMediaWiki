@@ -93,7 +93,7 @@ class DataItemToExpResourceEncoder {
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.dataitem.resource.encoder' );
 
-		foreach ( array( $hash, $hash . self::AUX_MARKER . $this->seekImportVocabulary ) as $key ) {
+		foreach ( [ $hash, $hash . self::AUX_MARKER . $this->seekImportVocabulary ] as $key ) {
 			$poolCache->delete( $key );
 		}
 	}
@@ -217,11 +217,11 @@ class DataItemToExpResourceEncoder {
 			new DIProperty( '_IMPO' )
 		);
 
-		return array(
+		return [
 			$importValue->getLocalName(),
 			$importValue->getNS(),
 			$importValue->getNSID()
-		);
+		];
 	}
 
 	private function defineElementsForDiWikiPage( DIWikiPage $diWikiPage, $modifier ) {
@@ -241,7 +241,7 @@ class DataItemToExpResourceEncoder {
 		}
 
 		if ( ( $localName === '' ) ||
-		     ( in_array( $localName{0}, array( '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) ) {
+		     ( in_array( $localName{0}, [ '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ] ) ) ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'wiki' );
 			$namespaceId = 'wiki';
 			$localName = Escaper::encodePage( $diWikiPage );
@@ -253,11 +253,11 @@ class DataItemToExpResourceEncoder {
 			$localName .=  '-23' . Escaper::encodeUri( $modifier );
 		}
 
-		return array(
+		return [
 			$localName,
 			$namespace,
 			$namespaceId
-		);
+		];
 	}
 
 	private function seekImportDataItem( DIWikiPage $diWikiPage, $modifier ) {
@@ -272,7 +272,7 @@ class DataItemToExpResourceEncoder {
 			);
 		}
 
-		if ( $importDataItems !== null && $importDataItems !== array() ) {
+		if ( $importDataItems !== null && $importDataItems !== [] ) {
 			$importDataItems = current( $importDataItems );
 		}
 

@@ -23,12 +23,12 @@ class AllowsListValueParser implements ValueParser {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var array
 	 */
-	private static $contents = array();
+	private static $contents = [];
 
 	/**
 	 * @since 2.5
@@ -61,7 +61,7 @@ class AllowsListValueParser implements ValueParser {
 			return self::$contents[$userValue];
 		}
 
-		$this->errors = array();
+		$this->errors = [];
 
 		self::$contents[$userValue] = $this->doParseContent(
 			$this->mediaWikiNsContentReader->read( AllowsListValue::LIST_PREFIX . $userValue )
@@ -72,7 +72,7 @@ class AllowsListValueParser implements ValueParser {
 
 	private function doParseContent( $contents ) {
 
-		$list = array();
+		$list = [];
 
 		if ( $contents === '' ) {
 			return null;

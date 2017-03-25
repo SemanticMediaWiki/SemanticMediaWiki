@@ -82,14 +82,14 @@ class NamespaceManager {
 	 */
 	public static function getCanonicalNames() {
 
-		$canonicalNames = array(
+		$canonicalNames = [
 			SMW_NS_PROPERTY      => 'Property',
 			SMW_NS_PROPERTY_TALK => 'Property_talk',
 			SMW_NS_TYPE          => 'Type',
 			SMW_NS_TYPE_TALK     => 'Type_talk',
 			SMW_NS_CONCEPT       => 'Concept',
 			SMW_NS_CONCEPT_TALK  => 'Concept_talk'
-		);
+		];
 
 		if ( !array_key_exists( 'smwgHistoricTypeNamespace', $GLOBALS ) || !$GLOBALS['smwgHistoricTypeNamespace'] ) {
 			unset( $canonicalNames[SMW_NS_TYPE] );
@@ -108,7 +108,7 @@ class NamespaceManager {
 	 */
 	public static function buildNamespaceIndex( $offset ) {
 
-		$namespaceIndex = array(
+		$namespaceIndex = [
 			'SMW_NS_PROPERTY'      => $offset + 2,
 			'SMW_NS_PROPERTY_TALK' => $offset + 3,
 			'SMW_NS_TYPE'          => $offset + 4,
@@ -117,7 +117,7 @@ class NamespaceManager {
 			'SF_NS_FORM_TALK'      => $offset + 7,
 			'SMW_NS_CONCEPT'       => $offset + 8,
 			'SMW_NS_CONCEPT_TALK'  => $offset + 9,
-		);
+		];
 
 		return $namespaceIndex;
 	}
@@ -141,17 +141,17 @@ class NamespaceManager {
 			$globalVars['smwgNamespaceIndex'] = 100;
 		}
 
-		$defaultSettings = array(
+		$defaultSettings = [
 			'wgNamespaceAliases',
 			'wgExtraNamespaces',
 			'wgNamespacesWithSubpages',
 			'smwgNamespacesWithSemanticLinks',
 			'smwgNamespaceIndex',
 			'wgCanonicalNamespaceNames'
-		);
+		];
 
 		foreach ( $defaultSettings as $key ) {
-			$globalVars[$key] = !isset( $globalVars[$key] ) ? array() : $globalVars[$key];
+			$globalVars[$key] = !isset( $globalVars[$key] ) ? [] : $globalVars[$key];
 		}
 
 		foreach ( $instance->buildNamespaceIndex( $globalVars['smwgNamespaceIndex'] ) as $ns => $index ) {
@@ -176,11 +176,11 @@ class NamespaceManager {
 	protected function addNamespaceSettings() {
 
 		// Support subpages only for talk pages by default
-		$this->globalVars['wgNamespacesWithSubpages'] = $this->globalVars['wgNamespacesWithSubpages'] + array(
+		$this->globalVars['wgNamespacesWithSubpages'] = $this->globalVars['wgNamespacesWithSubpages'] + [
 			SMW_NS_PROPERTY_TALK => true,
 			SMW_NS_TYPE_TALK => true,
 			SMW_NS_CONCEPT_TALK => true,
-		);
+		];
 
 		// not modified for Semantic MediaWiki
 		/* $this->globalVars['wgNamespacesToBeSearchedDefault'] = array(
@@ -192,14 +192,14 @@ class NamespaceManager {
 		 * Default settings for the SMW specific NS which can only
 		 * be defined after SMW_NS_PROPERTY is declared
 		 */
-		$smwNamespacesSettings = array(
+		$smwNamespacesSettings = [
 			SMW_NS_PROPERTY  => true,
 			SMW_NS_PROPERTY_TALK  => false,
 			SMW_NS_TYPE => true,
 			SMW_NS_TYPE_TALK => false,
 			SMW_NS_CONCEPT => true,
 			SMW_NS_CONCEPT_TALK => false,
-		);
+		];
 
 		if ( !array_key_exists( 'smwgHistoricTypeNamespace', $GLOBALS ) || !$GLOBALS['smwgHistoricTypeNamespace'] ) {
 			unset( $smwNamespacesSettings[SMW_NS_TYPE] );
@@ -219,10 +219,10 @@ class NamespaceManager {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:$wgContentNamespaces
 		 */
-		$this->globalVars['wgContentNamespaces'] = $this->globalVars['wgContentNamespaces'] + array(
+		$this->globalVars['wgContentNamespaces'] = $this->globalVars['wgContentNamespaces'] + [
 			SMW_NS_PROPERTY,
 			SMW_NS_CONCEPT
-		);
+		];
 
 		/**
 		 * To indicate which namespaces are enabled for searching by default

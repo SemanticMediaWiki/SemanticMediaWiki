@@ -39,17 +39,17 @@ class ExtraneousLanguage {
 	/**
 	 * @var array
 	 */
-	private $propertyIdByLabelMap = array();
+	private $propertyIdByLabelMap = [];
 
 	/**
 	 * @var array
 	 */
-	private $dateFormatsMap = array();
+	private $dateFormatsMap = [];
 
 	/**
 	 * @var array
 	 */
-	private $monthMap = array();
+	private $monthMap = [];
 
 	/**
 	 * @since 2.4
@@ -420,7 +420,7 @@ class ExtraneousLanguage {
 
 		$languageCode = $this->languageCode;
 
-		if ( !isset( $this->propertyIdByLabelMap[$languageCode] ) || $this->propertyIdByLabelMap[$languageCode] === array() ) {
+		if ( !isset( $this->propertyIdByLabelMap[$languageCode] ) || $this->propertyIdByLabelMap[$languageCode] === [] ) {
 			foreach ( $this->getPropertyLabels() as $id => $label ) {
 				$this->propertyIdByLabelMap[$languageCode][$label] = $id;
 			}
@@ -455,7 +455,7 @@ class ExtraneousLanguage {
 
 		$languageCode = $this->languageCode;
 
-		if ( !isset( $this->dateFormatsMap[$languageCode] ) || $this->dateFormatsMap[$languageCode] === array() ) {
+		if ( !isset( $this->dateFormatsMap[$languageCode] ) || $this->dateFormatsMap[$languageCode] === [] ) {
 			$this->dateFormatsMap[$languageCode] = $this->getDateFormatsByLanguageCode( $languageCode );
 		}
 
@@ -506,7 +506,7 @@ class ExtraneousLanguage {
 
 		$languageCode = $this->languageCode;
 
-		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === array() ) {
+		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === [] ) {
 			$this->months[$languageCode] = $this->languageContents->getContentsByLanguageWithIndex( $languageCode, 'months' );
 		}
 
@@ -540,7 +540,7 @@ class ExtraneousLanguage {
 		$languageCode = $this->languageCode;
 		$number = (int)( $number - 1 ); // array starts with 0
 
-		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === array() ) {
+		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === [] ) {
 			$this->months[$languageCode] = $this->languageContents->getContentsByLanguageWithIndex( $languageCode, 'months' );
 		}
 
@@ -553,10 +553,10 @@ class ExtraneousLanguage {
 
 	private function getDateFormatsByLanguageCode( $languageCode ) {
 
-		$dateformats = array();
+		$dateformats = [];
 
 		foreach ( $this->languageContents->getContentsByLanguageWithIndex( $languageCode, 'dateFormats' ) as $row ) {
-			$internalNumberFormat = array();
+			$internalNumberFormat = [];
 
 			foreach ( $row as $value ) {
 				$internalNumberFormat[] = constant( $value );

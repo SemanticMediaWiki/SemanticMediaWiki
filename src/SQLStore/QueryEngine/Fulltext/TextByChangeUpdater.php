@@ -134,9 +134,9 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 		$deferredRequestDispatchManager->dispatchFulltextSearchTableUpdateJobWith(
 			$compositePropertyTableDiffIterator->getSubject()->getTitle(),
-			array(
+			[
 				'slot:id' => $slot
-			)
+			]
 		);
 	}
 
@@ -190,8 +190,8 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 	private function doUpdateFromTableChangeOp( TableChangeOp $tableChangeOp ) {
 
-		$deletes = array();
-		$inserts = array();
+		$deletes = [];
+		$inserts = [];
 
 		foreach ( $tableChangeOp->getFieldChangeOps( 'insert' ) as $insertFieldChangeOp ) {
 
@@ -252,7 +252,7 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 		}
 
 		if ( !isset( $aggregate[$key] ) ) {
-			$aggregate[$key] = $type === TableChangeOp::OP_DELETE ? array() : '';
+			$aggregate[$key] = $type === TableChangeOp::OP_DELETE ? [] : '';
 		}
 
 		// Concatenate the inserts but keep the deletes separate to allow
@@ -336,7 +336,7 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 		return $canPostUpdate;
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

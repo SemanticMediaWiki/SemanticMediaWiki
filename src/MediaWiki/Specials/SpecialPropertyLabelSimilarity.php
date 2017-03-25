@@ -64,10 +64,10 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 		$requestOptions->setOffset( $offset );
 
 		$requestOptions->addExtraCondition(
-			array(
+			[
 				'type' => $type,
 				'threshold' => $threshold
-			)
+			]
 		);
 
 		$output->addHtml(

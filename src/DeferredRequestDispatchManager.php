@@ -154,9 +154,9 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	 * @param Title|null $title
 	 * @param array $parameters
 	 */
-	public function dispatchParserCachePurgeJobWith( Title $title = null , $parameters = array() ) {
+	public function dispatchParserCachePurgeJobWith( Title $title = null , $parameters = [] ) {
 
-		if ( $title === null || $parameters === array() || !isset( $parameters['idlist'] ) ) {
+		if ( $title === null || $parameters === [] || !isset( $parameters['idlist'] ) ) {
 			return;
 		}
 
@@ -169,7 +169,7 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	 * @param Title|null $title
 	 * @param array $parameters
 	 */
-	public function dispatchFulltextSearchTableUpdateJobWith( Title $title = null, $parameters = array() ) {
+	public function dispatchFulltextSearchTableUpdateJobWith( Title $title = null, $parameters = [] ) {
 
 		if ( $title === null ) {
 			return;
@@ -184,9 +184,9 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	 * @param Title|null $title
 	 * @param array $parameters
 	 */
-	public function dispatchTempChangeOpPurgeJobWith( Title $title = null, $parameters = array() ) {
+	public function dispatchTempChangeOpPurgeJobWith( Title $title = null, $parameters = [] ) {
 
-		if ( $title === null || $parameters === array() ) {
+		if ( $title === null || $parameters === [] ) {
 			return;
 		}
 
@@ -204,7 +204,7 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	 * @param Title|null $title
 	 * @param array $parameters
 	 */
-	public function dispatchJobRequestWith( $type, Title $title = null, $parameters = array() ) {
+	public function dispatchJobRequestWith( $type, Title $title = null, $parameters = [] ) {
 
 		if ( $title === null || !$this->isAllowedJobType( $type ) ) {
 			return null;
@@ -226,7 +226,7 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 
 		call_user_func_array(
 			$dispatchableCallbackJob,
-			array( $title, $parameters )
+			[ $title, $parameters ]
 		);
 
 		return true;
@@ -261,12 +261,12 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 
 	private function isAllowedJobType( $type ) {
 
-		$allowedJobs = array(
+		$allowedJobs = [
 			'SMW\ParserCachePurgeJob',
 			'SMW\UpdateJob',
 			'SMW\FulltextSearchTableUpdateJob',
 			'SMW\TempChangeOpPurgeJob'
-		);
+		];
 
 		return in_array( $type, $allowedJobs );
 	}
@@ -288,10 +288,10 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 		$parameters['timestamp'] = time();
 		$parameters['requestToken'] = SpecialDeferredRequestDispatcher::getRequestToken( $parameters['timestamp'] );
 
-		$parameters['async-job'] = array(
+		$parameters['async-job'] = [
 			'type'  => $type,
 			'title' => $title->getPrefixedDBkey()
-		);
+		];
 
 		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_METHOD, 'POST' );
 		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_CONTENT_TYPE, "application/x-www-form-urlencoded" );
@@ -309,7 +309,7 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 			$requestResponse->set( 'title', $parameters['async-job']['title'] );
 
 			$this->log( "SMW\DeferredRequestDispatchManager: Connection to SpecialDeferredRequestDispatcher failed, schedule a {$type}" );
-			call_user_func_array( $dispatchableCallbackJob, array( $title, $parameters ) );
+			call_user_func_array( $dispatchableCallbackJob, [ $title, $parameters ] );
 		} );
 
 		$this->httpRequest->execute();
@@ -317,7 +317,7 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 		return true;
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

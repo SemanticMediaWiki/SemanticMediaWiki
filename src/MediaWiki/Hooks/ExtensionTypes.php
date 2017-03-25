@@ -17,7 +17,7 @@ class ExtensionTypes {
 	/**
 	 * @var array
 	 */
-	private $extensionTypes = array();
+	private $extensionTypes = [];
 
 	/**
 	 * @since  2.0
@@ -36,11 +36,11 @@ class ExtensionTypes {
 	public function process() {
 
 		if ( !is_array( $this->extensionTypes ) ) {
-			$this->extensionTypes = array();
+			$this->extensionTypes = [];
 		}
 
 		$this->extensionTypes = array_merge(
-			array( 'semantic' => wfMessage( 'version-semantic' )->text() ),
+			[ 'semantic' => wfMessage( 'version-semantic' )->text() ],
 			$this->extensionTypes
 		);
 

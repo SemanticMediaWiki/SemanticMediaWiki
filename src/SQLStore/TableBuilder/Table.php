@@ -22,7 +22,7 @@ class Table {
 	/**
 	 * @var array
 	 */
-	private $configuration = array();
+	private $configuration = [];
 
 	/**
 	 * @since 2.5

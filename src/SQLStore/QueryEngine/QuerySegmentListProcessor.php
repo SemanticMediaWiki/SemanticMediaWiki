@@ -38,7 +38,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @var array
 	 */
-	private $executedQueries = array();
+	private $executedQueries = [];
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when
@@ -51,7 +51,7 @@ class QuerySegmentListProcessor {
 	/**
 	 * @var array
 	 */
-	private $querySegmentList = array();
+	private $querySegmentList = [];
 
 	/**
 	 * @param Database $connection
@@ -102,7 +102,7 @@ class QuerySegmentListProcessor {
 	public function doResolveQueryDependenciesById( $id ) {
 
 		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
-		$this->executedQueries = array();
+		$this->executedQueries = [];
 
 		// Should never happen
 		if ( !isset( $this->querySegmentList[$id] ) ) {
@@ -151,7 +151,7 @@ class QuerySegmentListProcessor {
 					$query->from .= $subQuery->from;
 				}
 
-				$query->components = array();
+				$query->components = [];
 			break;
 			case QuerySegment::Q_CONJUNCTION:
 				reset( $query->components );
@@ -186,7 +186,7 @@ class QuerySegmentListProcessor {
 					$this->temporaryTableBuilder->create( $db->tableName( $query->alias ) );
 				}
 
-				$this->executedQueries[$query->alias] = array();
+				$this->executedQueries[$query->alias] = [];
 
 				foreach ( $query->components as $qid => $joinField ) {
 					$subQuery = $this->querySegmentList[$qid];
@@ -227,11 +227,11 @@ class QuerySegmentListProcessor {
 
 				$query->type = QuerySegment::Q_TABLE;
 				$query->where = '';
-				$query->components = array();
+				$query->components = [];
 
 				$query->joinTable = $query->alias;
 				$query->joinfield = "$query->alias.id";
-				$query->sortfields = array(); // Make sure we got no sortfields.
+				$query->sortfields = []; // Make sure we got no sortfields.
 				// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
 			break;
 			case QuerySegment::Q_PROP_HIERARCHY:
@@ -280,7 +280,7 @@ class QuerySegmentListProcessor {
 		}
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
-		$res = $db->select( $smwtable, 's_id', $valuecond, __METHOD__, array( 'LIMIT' => 1 ) );
+		$res = $db->select( $smwtable, 's_id', $valuecond, __METHOD__, [ 'LIMIT' => 1 ] );
 
 		if ( !$db->fetchObject( $res ) ) { // no subobjects, we are done!
 			$db->freeResult( $res );
@@ -290,7 +290,7 @@ class QuerySegmentListProcessor {
 
 		$db->freeResult( $res );
 		$tablename = $db->tableName( $query->alias );
-		$this->executedQueries[$query->alias] = array( "Recursively computed hierarchy for element(s) $values." );
+		$this->executedQueries[$query->alias] = [ "Recursively computed hierarchy for element(s) $values." ];
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 

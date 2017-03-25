@@ -35,17 +35,17 @@ class PropertyRegistry {
 	 *
 	 * @var array
 	 */
-	private $propertyTypes = array();
+	private $propertyTypes = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $datatypeLabels = array();
+	private $datatypeLabels = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $propertyDescriptionMsgKeys = array();
+	private $propertyDescriptionMsgKeys = [];
 
 	/**
 	 * @var PropertyAliasFinder
@@ -55,7 +55,7 @@ class PropertyRegistry {
 	/**
 	 * @var string[]
 	 */
-	private $dataTypePropertyExemptionList = array();
+	private $dataTypePropertyExemptionList = [];
 
 	/**
 	 * @since 2.1
@@ -96,7 +96,7 @@ class PropertyRegistry {
 	 * @param PropertyAliasFinder $propertyAliasFinder
 	 * @param array $dataTypePropertyExemptionList
 	 */
-	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, PropertyAliasFinder $propertyAliasFinder, array $dataTypePropertyExemptionList = array() ) {
+	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, PropertyAliasFinder $propertyAliasFinder, array $dataTypePropertyExemptionList = [] ) {
 
 		$this->datatypeLabels = $datatypeRegistry->getKnownTypeLabels();
 		$this->propertyLabelFinder = $propertyLabelFinder;
@@ -165,7 +165,7 @@ class PropertyRegistry {
 	 */
 	public function registerProperty( $id, $typeId, $label = false, $isVisible = false, $isAnnotable = true ) {
 
-		$this->propertyTypes[$id] = array( $typeId, $isVisible, $isAnnotable );
+		$this->propertyTypes[$id] = [ $typeId, $isVisible, $isAnnotable ];
 
 		if ( $label !== false ) {
 			$this->registerPropertyLabel( $id, $label );
@@ -440,66 +440,66 @@ class PropertyRegistry {
 
 		// array( Id, isVisibleToUser, isAnnotableByUser )
 
-		$this->propertyTypes = array(
-			'_TYPE'  => array( '__typ', true, true ), // "has type"
-			'_URI'   => array( '__spu', true, true ), // "equivalent URI"
-			'_INST'  => array( '__sin', false, true ), // instance of a category
-			'_UNIT'  => array( '__sps', true, true ), // "displays unit"
-			'_IMPO'  => array( '__imp', true, true ), // "imported from"
-			'_CONV'  => array( '__sps', true, true ), // "corresponds to"
-			'_SERV'  => array( '__sps', true, true ), // "provides service"
-			'_PVAL'  => array( '__pval', true, true ), // "allows value"
-			'_REDI'  => array( '__red', true, true ), // redirects to some page
-			'_SUBP'  => array( '__sup', true, true ), // "subproperty of"
-			'_SUBC'  => array( '__suc', !$useCategoryHierarchy, true ), // "subcategory of"
-			'_CONC'  => array( '__con', false, true ), // associated concept
-			'_MDAT'  => array( '_dat', false, false ), // "modification date"
-			'_CDAT'  => array( '_dat', false, false ), // "creation date"
-			'_NEWP'  => array( '_boo', false, false ), // "is a new page"
-			'_EDIP'  => array( '_boo', true, true ), // "is edit protected"
-			'_LEDT'  => array( '_wpg', false, false ), // "last editor is"
-			'_ERRC'  => array( '__sob', false, false ), // "has error"
-			'_ERRT'  => array( '__errt', false, false ), // "has error text"
-			'_ERRP'  => array( '_wpp', false, false ), // "has improper value for"
-			'_LIST'  => array( '__pls', true, true ), // "has fields"
-			'_SKEY'  => array( '__key', false, true ), // sort key of a page
+		$this->propertyTypes = [
+			'_TYPE'  => [ '__typ', true, true ], // "has type"
+			'_URI'   => [ '__spu', true, true ], // "equivalent URI"
+			'_INST'  => [ '__sin', false, true ], // instance of a category
+			'_UNIT'  => [ '__sps', true, true ], // "displays unit"
+			'_IMPO'  => [ '__imp', true, true ], // "imported from"
+			'_CONV'  => [ '__sps', true, true ], // "corresponds to"
+			'_SERV'  => [ '__sps', true, true ], // "provides service"
+			'_PVAL'  => [ '__pval', true, true ], // "allows value"
+			'_REDI'  => [ '__red', true, true ], // redirects to some page
+			'_SUBP'  => [ '__sup', true, true ], // "subproperty of"
+			'_SUBC'  => [ '__suc', !$useCategoryHierarchy, true ], // "subcategory of"
+			'_CONC'  => [ '__con', false, true ], // associated concept
+			'_MDAT'  => [ '_dat', false, false ], // "modification date"
+			'_CDAT'  => [ '_dat', false, false ], // "creation date"
+			'_NEWP'  => [ '_boo', false, false ], // "is a new page"
+			'_EDIP'  => [ '_boo', true, true ], // "is edit protected"
+			'_LEDT'  => [ '_wpg', false, false ], // "last editor is"
+			'_ERRC'  => [ '__sob', false, false ], // "has error"
+			'_ERRT'  => [ '__errt', false, false ], // "has error text"
+			'_ERRP'  => [ '_wpp', false, false ], // "has improper value for"
+			'_LIST'  => [ '__pls', true, true ], // "has fields"
+			'_SKEY'  => [ '__key', false, true ], // sort key of a page
 
 			// FIXME SF related properties to be removed with 3.0
-			'_SF_DF' => array( '__spf', true, true ), // Semantic Form's default form property
-			'_SF_AF' => array( '__spf', true, true ),  // Semantic Form's alternate form property
+			'_SF_DF' => [ '__spf', true, true ], // Semantic Form's default form property
+			'_SF_AF' => [ '__spf', true, true ],  // Semantic Form's alternate form property
 
-			'_SOBJ'  => array( '__sob', true, false ), // "has subobject"
-			'_ASK'   => array( '__sob', false, false ), // "has query"
-			'_ASKST' => array( '_cod', true, false ), // "Query string"
-			'_ASKFO' => array( '_txt', true, false ), // "Query format"
-			'_ASKSI' => array( '_num', true, false ), // "Query size"
-			'_ASKDE' => array( '_num', true, false ), // "Query depth"
-			'_ASKDU' => array( '_num', true, false ), // "Query duration"
-			'_ASKSC' => array( '_txt', true, false ), // "Query source"
-			'_ASKPA' => array( '_cod', true, false ), // "Query parameters"
-			'_MEDIA' => array( '_txt', true, false ), // "has media type"
-			'_MIME'  => array( '_txt', true, false ), // "has mime type"
-			'_PREC'  => array( '_num', true, true ), // "Display precision of"
-			'_LCODE' => array( '__lcode', true, true ), // "Language code"
-			'_TEXT'  => array( '_txt', true, true ), // "Text"
-			'_PDESC' => array( '_mlt_rec', true, true ), // "Property description"
-			'_PVAP'  => array( '__pvap', true, true ), // "Allows pattern"
-			'_PVALI'  => array( '__pvali', true, true ), // "Allows value list"
-			'_DTITLE' => array( '_txt', false, true ), // "Display title of"
-			'_PVUC'  => array( '__pvuc', true, true ), // Uniqueness constraint
-			'_PEID'  => array( '_eid', true, true ), // External identifier
-			'_PEFU'  => array( '__pefu', true, true ), // External formatter uri
-			'_PPLB'  => array( '_mlt_rec', true, true ), // Preferred property label
-		);
+			'_SOBJ'  => [ '__sob', true, false ], // "has subobject"
+			'_ASK'   => [ '__sob', false, false ], // "has query"
+			'_ASKST' => [ '_cod', true, false ], // "Query string"
+			'_ASKFO' => [ '_txt', true, false ], // "Query format"
+			'_ASKSI' => [ '_num', true, false ], // "Query size"
+			'_ASKDE' => [ '_num', true, false ], // "Query depth"
+			'_ASKDU' => [ '_num', true, false ], // "Query duration"
+			'_ASKSC' => [ '_txt', true, false ], // "Query source"
+			'_ASKPA' => [ '_cod', true, false ], // "Query parameters"
+			'_MEDIA' => [ '_txt', true, false ], // "has media type"
+			'_MIME'  => [ '_txt', true, false ], // "has mime type"
+			'_PREC'  => [ '_num', true, true ], // "Display precision of"
+			'_LCODE' => [ '__lcode', true, true ], // "Language code"
+			'_TEXT'  => [ '_txt', true, true ], // "Text"
+			'_PDESC' => [ '_mlt_rec', true, true ], // "Property description"
+			'_PVAP'  => [ '__pvap', true, true ], // "Allows pattern"
+			'_PVALI'  => [ '__pvali', true, true ], // "Allows value list"
+			'_DTITLE' => [ '_txt', false, true ], // "Display title of"
+			'_PVUC'  => [ '__pvuc', true, true ], // Uniqueness constraint
+			'_PEID'  => [ '_eid', true, true ], // External identifier
+			'_PEFU'  => [ '__pefu', true, true ], // External formatter uri
+			'_PPLB'  => [ '_mlt_rec', true, true ], // Preferred property label
+		];
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
-			$this->propertyTypes[$id] = array( $id, true, true );
+			$this->propertyTypes[$id] = [ $id, true, true ];
 		}
 
 		// @deprecated since 2.1
 		\Hooks::run( 'smwInitProperties' );
 
-		\Hooks::run( 'SMW::Property::initProperties', array( $this ) );
+		\Hooks::run( 'SMW::Property::initProperties', [ $this ] );
 	}
 
 	private function registerPropertyLabel( $id, $label, $asCanonical = true ) {

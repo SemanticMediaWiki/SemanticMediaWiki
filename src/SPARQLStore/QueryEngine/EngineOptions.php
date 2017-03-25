@@ -16,14 +16,14 @@ class EngineOptions extends Options {
 	 * @since 2.2
 	 */
 	public function __construct() {
-		parent::__construct( array(
+		parent::__construct( [
 			'smwgIgnoreQueryErrors'   => $GLOBALS['smwgIgnoreQueryErrors'],
 			'smwgQSortingSupport'     => $GLOBALS['smwgQSortingSupport'],
 			'smwgQRandSortingSupport' => $GLOBALS['smwgQRandSortingSupport'],
 			'smwgQSubpropertyDepth'   => $GLOBALS['smwgQSubpropertyDepth'],
 			'smwgQSubcategoryDepth'   => $GLOBALS['smwgQSubcategoryDepth'],
 			'smwgSparqlQFeatures'     => $GLOBALS['smwgSparqlQFeatures']
-		) );
+		] );
 	}
 
 }

@@ -120,8 +120,8 @@ class RepositoryRedirectLookup {
 		$respositoryResult = $this->repositoryConnection->select(
 			'*',
 			"$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $rediUri ?r }",
-			array( 'LIMIT' => 1 ),
-			array( $expNsResource->getNamespaceId() => $expNsResource->getNamespace() )
+			[ 'LIMIT' => 1 ],
+			[ $expNsResource->getNamespaceId() => $expNsResource->getNamespace() ]
 		);
 
 		return $respositoryResult->current();

@@ -52,7 +52,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * @var array
 	 */
-	private static $inMemoryAnnotationTracer = array();
+	private static $inMemoryAnnotationTracer = [];
 
 	/**
 	 * @since 2.4
@@ -130,12 +130,12 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		// about the origin
 		if ( $wikiPage instanceof DIWikiPage && !$dataValue->getContextPage()->equals( $wikiPage ) ) {
 			$dataValue->addErrorMsg(
-				array(
+				[
 					'smw-datavalue-uniqueness-constraint-error',
 					$property->getLabel(),
 					$dataValue->getWikiValue(),
 					$wikiPage->getTitle()->getPrefixedText()
-				)
+				]
 			);
 
 			$this->hasConstraintViolation = true;
@@ -144,12 +144,12 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		// Already assigned!
 		if ( !$this->hasConstraintViolation && ( $isKnownBy = $this->isKnownBy( $hash, $dataValue ) ) !== false ) {
 			$dataValue->addErrorMsg(
-				array(
+				[
 					'smw-datavalue-uniqueness-constraint-isknown',
 					$property->getLabel(),
 					$dataValue->getWikiValue(),
 					$isKnownBy->getTitle()->getPrefixedText()
-				)
+				]
 			);
 
 			$this->hasConstraintViolation = true;
@@ -169,10 +169,10 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		// Exclude the current page from the result match to check whether another
 		// page matches the condition and if so then the value can no longer be
 		// assigned and is not unique
-		$description = $descriptionFactory->newConjunction( array(
+		$description = $descriptionFactory->newConjunction( [
 			$descriptionFactory->newFromDataValue( $dataValue ),
 			$descriptionFactory->newValueDescription( $contextPage, null, SMW_CMP_NEQ ) // NEQ
-		) );
+		] );
 
 		$query = $this->queryFactory->newQuery( $description );
 		$query->setLimit( 1 );
@@ -183,7 +183,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 			$query
 		);
 
-		if ( !is_array( $dataItems ) || $dataItems === array() ) {
+		if ( !is_array( $dataItems ) || $dataItems === [] ) {
 			// No other assignments were found therefore it is assumed that at
 			// the time of the query request, the "contextPage" holds a unique
 			// value for the property

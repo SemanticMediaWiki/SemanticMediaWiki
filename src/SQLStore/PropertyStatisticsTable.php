@@ -125,12 +125,12 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 
 		return $this->connection->update(
 			$this->table,
-			array(
+			[
 				'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $value ) ),
-			),
-			array(
+			],
+			[
 				'p_id' => $propertyId
-			),
+			],
 			__METHOD__
 		);
 	}
@@ -148,7 +148,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 
 		$success = true;
 
-		if ( $additions === array() ) {
+		if ( $additions === [] ) {
 			return $success;
 		}
 
@@ -195,12 +195,12 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 
 		return $this->connection->update(
 			$this->table,
-			array(
+			[
 				'usage_count' => $value,
-			),
-			array(
+			],
+			[
 				'p_id' => $propertyId
-			),
+			],
 			__METHOD__
 		);
 	}
@@ -228,10 +228,10 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 
 		return $this->connection->insert(
 			$this->table,
-			array(
+			[
 				'usage_count' => $value,
 				'p_id' => $propertyId,
-			),
+			],
 			__METHOD__
 		);
 	}
@@ -251,12 +251,12 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 
 		$row = $this->connection->selectRow(
 			$this->table,
-			array(
+			[
 				'usage_count'
-			),
-			array(
+			],
+			[
 				'p_id' => $propertyId,
-			),
+			],
 			__METHOD__
 		);
 
@@ -273,23 +273,23 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	 * @return array
 	 */
 	public function getUsageCounts( array $propertyIds ) {
-		if ( $propertyIds === array() ) {
-			return array();
+		if ( $propertyIds === [] ) {
+			return [];
 		}
 
 		$propertyStatistics = $this->connection->select(
 			$this->connection->tablename( $this->table ),
-			array(
+			[
 				'usage_count',
 				'p_id',
-			),
-			array(
+			],
+			[
 				'p_id' => $propertyIds,
-			),
+			],
 			__METHOD__
 		);
 
-		$usageCounts = array();
+		$usageCounts = [];
 
 		foreach ( $propertyStatistics as $propertyStatistic ) {
 			assert( ctype_digit( $propertyStatistic->p_id ) );
@@ -316,7 +316,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 		);
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

@@ -22,7 +22,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 */
 	public function getStandardFieldType( $fieldType ) {
 
-		$fieldTypes = array(
+		$fieldTypes = [
 			 // like page_id in MW page table
 			'id'         => 'SERIAL',
 			 // like page_id in MW page table
@@ -44,7 +44,7 @@ class PostgresTableBuilder extends TableBuilder {
 			'char nocase'      => 'citext NOT NULL',
 			'usage count'      => 'bigint',
 			'integer unsigned' => 'INTEGER'
-		);
+		];
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
@@ -60,7 +60,7 @@ class PostgresTableBuilder extends TableBuilder {
 
 		$tableName = $this->connection->tableName( $tableName );
 
-		$fieldSql = array();
+		$fieldSql = [];
 		$fields = $tableOptions['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
@@ -146,7 +146,7 @@ EOT;
 			. " ORDER BY a.attnum";
 
 		$res = $this->connection->query( $sql, __METHOD__ );
-		$currentFields = array();
+		$currentFields = [];
 
 		foreach ( $res as $row ) {
 			$type = strtoupper( $row->Type );
@@ -288,7 +288,7 @@ EOT;
 
 	private function getIndexInfo( $tableName ) {
 
-		$indices = array();
+		$indices = [];
 
 		$sql = "SELECT  i.relname AS indexname,"
 			. " pg_get_indexdef(i.oid) AS indexdef, "
@@ -305,7 +305,7 @@ EOT;
 		$res = $this->connection->query( $sql, __METHOD__ );
 
 		if ( !$res ) {
-			return array();
+			return [];
 		}
 
 		foreach ( $res as $row ) {
@@ -354,7 +354,7 @@ EOT;
 		// To avoid things like:
 		// "Error: 23505 ERROR:  duplicate key value violates unique constraint "smw_object_ids_pkey""
 		$sequenceIndex = SQLStore::ID_TABLE . '_smw_id_seq';
-		$max = $this->connection->selectField( SQLStore::ID_TABLE, 'max(smw_id)', array(), __METHOD__ );
+		$max = $this->connection->selectField( SQLStore::ID_TABLE, 'max(smw_id)', [], __METHOD__ );
 		$max += 1;
 
 		$this->reportMessage( "   ... updating {$sequenceIndex} sequence to {$max} accordingly.\n" );

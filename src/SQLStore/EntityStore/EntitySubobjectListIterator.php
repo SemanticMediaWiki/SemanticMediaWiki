@@ -38,7 +38,7 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	/**
 	 * @var string|null
 	 */
-	private $skipOn = array();
+	private $skipOn = [];
 
 	/**
 	 * @since 2.5
@@ -58,7 +58,7 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	 *
 	 * @return Iterator
 	 */
-	public function newListIteratorFor( DIWikiPage $subject, $skipOn = array() ) {
+	public function newListIteratorFor( DIWikiPage $subject, $skipOn = [] ) {
 		$this->skipOn = $skipOn;
 		$this->subject = $subject;
 
@@ -143,11 +143,11 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 
 		$res = $connection->select(
 			$connection->tablename( SQLStore::ID_TABLE ),
-			array(
+			[
 				'smw_id',
 				'smw_subobject',
 				'smw_sortkey'
-			),
+			],
 			$condition,
 			__METHOD__
 		);

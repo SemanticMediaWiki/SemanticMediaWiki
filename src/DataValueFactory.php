@@ -106,7 +106,7 @@ class DataValueFactory {
 		if ( !$dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
 			return new ErrorValue(
 				$typeId,
-				array( 'smw_unknowntype', $typeId ),
+				[ 'smw_unknowntype', $typeId ],
 				$valueString,
 				$caption
 			);
@@ -221,7 +221,7 @@ class DataValueFactory {
 		if ( !$propertyDV->canUse() ) {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				array( 'smw-datavalue-property-restricted-use', $propertyName ),
+				[ 'smw-datavalue-property-restricted-use', $propertyName ],
 				$valueString,
 				$caption
 			);
@@ -249,7 +249,7 @@ class DataValueFactory {
 
 		} elseif ( $propertyDI instanceof DIProperty && $propertyDI->isInverse() ) {
 			$dataValue = new ErrorValue( $propertyDV->getPropertyTypeID(),
-				array( 'smw_noinvannot' ),
+				[ 'smw_noinvannot' ],
 				$valueString,
 				$caption
 			);
@@ -258,7 +258,7 @@ class DataValueFactory {
 		} else {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				array( 'smw-property-name-invalid', $propertyName ),
+				[ 'smw-property-name-invalid', $propertyName ],
 				$valueString,
 				$caption
 			);
@@ -269,7 +269,7 @@ class DataValueFactory {
 		if ( $dataValue->isValid() && !$dataValue->canUse() ) {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				array( 'smw-datavalue-restricted-use', implode( ',', $dataValue->getErrors() ) ),
+				[ 'smw-datavalue-restricted-use', implode( ',', $dataValue->getErrors() ) ],
 				$valueString,
 				$caption
 			);

@@ -18,14 +18,14 @@ class Conjunction extends Description {
 	/**
 	 * @var Description[]
 	 */
-	protected $descriptions = array();
+	protected $descriptions = [];
 
 	/**
 	 * @since 1.6
 	 *
 	 * @param array $descriptions
 	 */
-	public function __construct( array $descriptions = array() ) {
+	public function __construct( array $descriptions = [] ) {
 		foreach ( $descriptions as $description ) {
 			$this->addDescription( $description );
 		}
@@ -43,7 +43,7 @@ class Conjunction extends Description {
 			return $this->fingerprint;
 		}
 
-		$fingerprint = array();
+		$fingerprint = [];
 
 		// Filter equal signatures
 		foreach ( $this->descriptions as $description ) {
@@ -77,7 +77,7 @@ class Conjunction extends Description {
 			// move print descriptions downwards
 			///TODO: This may not be a good solution, since it does modify $description and since it does not react to future changes
 			$this->m_printreqs = array_merge( $this->m_printreqs, $description->getPrintRequests() );
-			$description->setPrintRequests( array() );
+			$description->setPrintRequests( [] );
 		}
 
 		$fingerprint = $this->getFingerprint();
@@ -147,7 +147,7 @@ class Conjunction extends Description {
 			return new ThingDescription();
 		}
 
-		$prunelog = array();
+		$prunelog = [];
 		$newdepth = $maxdepth;
 		$result = new Conjunction();
 

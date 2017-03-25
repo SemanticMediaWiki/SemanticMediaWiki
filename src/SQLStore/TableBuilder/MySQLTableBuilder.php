@@ -20,7 +20,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 */
 	public function getStandardFieldType( $fieldType ) {
 
-		$fieldTypes = array(
+		$fieldTypes = [
 			 // like page_id in MW page table
 			'id'         => 'INT(8) UNSIGNED',
 			 // like page_id in MW page table
@@ -41,7 +41,7 @@ class MySQLTableBuilder extends TableBuilder {
 			'char nocase'      => 'VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci',
 			'usage count'      => 'INT(8) UNSIGNED',
 			'integer unsigned' => 'INT(8) UNSIGNED'
-		);
+		];
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
@@ -58,7 +58,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
 
-		$fieldSql = array();
+		$fieldSql = [];
 		$fields = $tableOptions['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
@@ -135,7 +135,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$sql = 'DESCRIBE ' . $tableName;
 
 		$res = $this->connection->query( $sql, __METHOD__ );
-		$currentFields = array();
+		$currentFields = [];
 
 		foreach ( $res as $row ) {
 			$type = strtoupper( $row->Type );
@@ -266,7 +266,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 */
 	private function getIndexInfo( $tableName ) {
 
-		$indices = array();
+		$indices = [];
 
 		$res = $this->connection->query( 'SHOW INDEX FROM ' . $tableName, __METHOD__ );
 

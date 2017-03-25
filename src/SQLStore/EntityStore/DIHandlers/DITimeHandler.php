@@ -25,10 +25,10 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array(
+		return [
 			'o_serialized' => FieldType::FIELD_TITLE,
 			'o_sortkey' => FieldType::TYPE_DOUBLE
-		);
+		];
 	}
 
 	/**
@@ -37,9 +37,9 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array(
+		return [
 			'o_serialized' => FieldType::FIELD_TITLE
-		);
+		];
 	}
 
 	/**
@@ -48,7 +48,7 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return array( 'o_sortkey' => $dataItem->getSortKey() );
+		return [ 'o_sortkey' => $dataItem->getSortKey() ];
 	}
 
 	/**
@@ -57,10 +57,10 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		return array(
+		return [
 			'o_serialized' => $dataItem->getSerialization(),
 			'o_sortkey' => $dataItem->getSortKey()
-		);
+		];
 	}
 
 	/**

@@ -47,30 +47,30 @@ class GetPreferences {
 
 		// Intro text
 		$this->preferences['smw-prefs-intro'] =
-			array(
+			[
 				'type' => 'info',
 				'label' => '&#160;',
-				'default' => Xml::tags( 'tr', array(),
-					Xml::tags( 'td', array( 'colspan' => 2 ),
+				'default' => Xml::tags( 'tr', [],
+					Xml::tags( 'td', [ 'colspan' => 2 ],
 						wfMessage(  'smw-prefs-intro-text' )->parseAsBlock() ) ),
 				'section' => 'smw',
 				'raw' => 1,
 				'rawrow' => 1,
-			);
+			];
 
 		// Option to enable tooltip info
-		$this->preferences['smw-prefs-ask-options-tooltip-display'] = array(
+		$this->preferences['smw-prefs-ask-options-tooltip-display'] = [
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-ask-options-tooltip-display',
 			'section' => 'smw/ask-options',
-		);
+		];
 
 		// Preference to set option box be collapsed by default
-		$this->preferences['smw-prefs-ask-options-collapsed-default'] = array(
+		$this->preferences['smw-prefs-ask-options-collapsed-default'] = [
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-ask-options-collapsed-default',
 			'section' => 'smw/ask-options',
-		);
+		];
 
 		return true;
 	}

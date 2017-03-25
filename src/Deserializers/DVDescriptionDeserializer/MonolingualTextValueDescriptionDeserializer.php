@@ -49,7 +49,7 @@ class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserialize
 			return new ThingDescription();
 		}
 
-		$subdescriptions = array();
+		$subdescriptions = [];
 		list( $text, $languageCode ) = $this->dataValue->getValuesFromString( $value );
 
 		foreach ( $this->dataValue->getPropertyDataItems() as $property ) {
