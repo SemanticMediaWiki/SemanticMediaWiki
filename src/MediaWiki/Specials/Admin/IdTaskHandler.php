@@ -116,7 +116,7 @@ class IdTaskHandler extends TaskHandler {
 			\Title::newFromText( __METHOD__ )
 		);
 
-		$entityIdDisposerJob->dispose( $id );
+		$entityIdDisposerJob->dispose( intval( $id ) );
 
 		$manualEntryLogger = ApplicationFactory::getInstance()->create( 'ManualEntryLogger' );
 		$manualEntryLogger->registerLoggableEventType( 'admin' );
