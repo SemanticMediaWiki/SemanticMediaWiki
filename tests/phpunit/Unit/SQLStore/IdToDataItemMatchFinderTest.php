@@ -62,7 +62,7 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'smw_id' => 42 ) ) )
+				$this->equalTo( [ 'smw_id' => 42 ] ) )
 			->will( $this->returnValue( $row ) );
 
 		$instance = new IdToDataItemMatchFinder(
@@ -220,15 +220,15 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'smw_id' => array( 42 ) ) ) )
-			->will( $this->returnValue( array( $row ) ) );
+				$this->equalTo( [ 'smw_id' => [ 42 ] ] ) )
+			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new IdToDataItemMatchFinder(
 			$connection,
 			new IteratorFactory()
 		);
 
-		foreach ( $instance->getDataItemsFromList( array( 42 ) ) as $value ) {
+		foreach ( $instance->getDataItemsFromList( [ 42 ] ) as $value ) {
 			$this->assertEquals(
 				'Foo#0##',
 				$value

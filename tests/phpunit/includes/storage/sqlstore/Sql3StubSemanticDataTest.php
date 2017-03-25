@@ -66,18 +66,18 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	public function testNotToResolveSubobjectsForRedirect() {
 
 		$instance = $this->getMockBuilder( '\SMWSql3StubSemanticData' )
-			->setConstructorArgs( array(
+			->setConstructorArgs( [
 				DIWikiPage::newFromText( __METHOD__ ),
-				$this->store ) )
-			->setMethods( array(
+				$this->store ] )
+			->setMethods( [
 				'getProperties',
 				'isRedirect',
-				'getPropertyValues' ) )
+				'getPropertyValues' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array( new DIProperty( '_SOBJ' ) ) ) );
+			->will( $this->returnValue( [ new DIProperty( '_SOBJ' ) ] ) );
 
 		$instance->expects( $this->once() )
 			->method( 'isRedirect' )
@@ -152,13 +152,13 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function propertyObjectProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0
-		$provider[] = array(
+		$provider[] = [
 			new DIProperty( '_MDAT' ),
 			DITime::newFromTimestamp( 1272508903 )
-		);
+		];
 
 		return $provider;
 	}

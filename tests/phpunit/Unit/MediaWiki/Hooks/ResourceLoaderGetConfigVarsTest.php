@@ -17,7 +17,7 @@ class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$vars = array();
+		$vars = [];
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars',
@@ -27,7 +27,7 @@ class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcess() {
 
-		$vars = array();
+		$vars = [];
 
 		$instance = new ResourceLoaderGetConfigVars( $vars );
 		$instance->process();

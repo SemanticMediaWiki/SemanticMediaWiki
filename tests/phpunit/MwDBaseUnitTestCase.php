@@ -157,7 +157,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	protected function skipTestForDatabase( $excludedDatabase, $message = '' ) {
 
 		if ( is_string( $excludedDatabase ) ) {
-			$excludedDatabase = array( $excludedDatabase );
+			$excludedDatabase = [ $excludedDatabase ];
 		}
 
 		if ( $message === '' ) {

@@ -38,17 +38,17 @@ class ParametersFormWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function parametersProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(),
+			[],
 			'<table class="smw-ask-otheroptions" width="100%"><tbody><tr style="background: #eee"></tr></tbody></table>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'table',
-			array(),
+			[],
 			'<table class="smw-ask-otheroptions"'
-		);
+		];
 
 		return $provider;
 	}

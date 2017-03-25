@@ -28,7 +28,7 @@ class MaintenanceBenchmarkRunner implements BenchmarkReporter {
 	/**
 	 * @var array
 	 */
-	private $benchmarkReport = array();
+	private $benchmarkReport = [];
 
 	/**
 	 * @since 2.5
@@ -57,7 +57,7 @@ class MaintenanceBenchmarkRunner implements BenchmarkReporter {
 	 */
 	public function run( array $case ) {
 
-		$this->benchmarkReport = array();
+		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
 		if ( !isset( $case['script'] ) ) {
@@ -97,18 +97,18 @@ class MaintenanceBenchmarkRunner implements BenchmarkReporter {
 			);
 		}
 
-		$this->benchmarkReport = array(
+		$this->benchmarkReport = [
 			'type'   => $case['type'],
 			'case'   => $case['script'],
 			'repetitionCount' => $case['repetitionCount'],
 			'memory' => memory_get_peak_usage( false ) - $memoryBefore,
-			'time'      => array(
+			'time'      => [
 				'sum'  => $this->benchmarker->getSum(),
 				'mean' => $this->benchmarker->getMean(),
 				'sd'   => $this->benchmarker->getStandardDeviation(),
 				'norm' => $this->benchmarker->getNormalizedValueBy( $case['repetitionCount'] )
-			)
-		);
+			]
+		];
 	}
 
 }

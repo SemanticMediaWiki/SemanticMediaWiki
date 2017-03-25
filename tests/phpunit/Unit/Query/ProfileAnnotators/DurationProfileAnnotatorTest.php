@@ -66,17 +66,17 @@ class DurationProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function durationDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array( 0, array(
+		$provider[] = [ 0, [
 			'propertyCount' => 0
-		) );
+		] ];
 
-		$provider[] = array( 0.9001, array(
+		$provider[] = [ 0.9001, [
 			'propertyCount'  => 1,
-			'propertyKeys'   => array( '_ASKDU' ),
-			'propertyValues' => array( 0.9001 )
-		) );
+			'propertyKeys'   => [ '_ASKDU' ],
+			'propertyValues' => [ 0.9001 ]
+		] ];
 
 		return $provider;
 	}

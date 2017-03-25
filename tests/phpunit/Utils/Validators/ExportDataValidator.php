@@ -25,7 +25,7 @@ class ExportDataValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertNotEmpty( $expProperties );
 
-		$expectedProperties = is_array( $expectedProperties ) ? $expectedProperties : array( $expectedProperties );
+		$expectedProperties = is_array( $expectedProperties ) ? $expectedProperties : [ $expectedProperties ];
 		$expectedToCount  = count( $expectedProperties );
 		$actualComparedToCount = 0;
 
@@ -61,7 +61,7 @@ class ExportDataValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertNotEmpty( $expElements );
 
-		$expectedResources = is_array( $expectedResources ) ? $expectedResources : array( $expectedResources );
+		$expectedResources = is_array( $expectedResources ) ? $expectedResources : [ $expectedResources ];
 		$expectedToCount  = count( $expectedResources );
 		$actualComparedToCount = 0;
 

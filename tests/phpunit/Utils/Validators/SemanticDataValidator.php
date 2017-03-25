@@ -352,17 +352,17 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		);
 	}
 
-	private function assertContainsPropertyValues( &$expected, $dataValue, $defaultFormatter, $formatterParameters = array() ) {
+	private function assertContainsPropertyValues( &$expected, $dataValue, $defaultFormatter, $formatterParameters = [] ) {
 
 		if ( !isset( $expected['propertyValues'] ) ) {
 			throw new RuntimeException( "Expected a 'propertyValues' array index" );
 		}
 
-		$formatter = array( $dataValue, $defaultFormatter );
+		$formatter = [ $dataValue, $defaultFormatter ];
 
 		if ( isset( $expected['valueFormatter'] ) && is_callable( $expected['valueFormatter'] ) ) {
 			$formatter = $expected['valueFormatter'];
-			$formatterParameters = array( $dataValue );
+			$formatterParameters = [ $dataValue ];
 		}
 
 		$value = call_user_func_array( $formatter, $formatterParameters );

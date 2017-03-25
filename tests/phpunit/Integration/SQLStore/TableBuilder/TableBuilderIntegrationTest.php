@@ -52,14 +52,14 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$table = new Table( $this->tableName );
 		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
-		$table->addColumn( 't_text', array( FieldType::TYPE_BLOB, 'NOT NULL' ) );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
 
 		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking table rdbms_test',
 			'Table not found, now creating',
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -77,17 +77,17 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$table = new Table( $this->tableName );
 		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
-		$table->addColumn( 't_text', array( FieldType::TYPE_BLOB, 'NOT NULL' ) );
-		$table->addColumn( 't_num', array( FieldType::TYPE_INT, 'NOT NULL' ) );
-		$table->addColumn( 't_int', array( FieldType::TYPE_INT ) );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_INT, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
 		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking table rdbms_test',
 			'Table already exists, checking structure',
 			'creating field t_num',
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -105,17 +105,17 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$table = new Table( $this->tableName );
 		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
-		$table->addColumn( 't_text', array( FieldType::TYPE_BLOB, 'NOT NULL' ) );
-		$table->addColumn( 't_num', array( FieldType::TYPE_DOUBLE, 'NOT NULL' ) );
-		$table->addColumn( 't_int', array( FieldType::TYPE_INT ) );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
 		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking table rdbms_test',
 			'Table already exists, checking structure',
 			'changing type of field t_num',
-		);
+		];
 
 		// Not supported
 		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
@@ -138,9 +138,9 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$table = new Table( $this->tableName );
 		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
-		$table->addColumn( 't_text', array( FieldType::TYPE_BLOB, 'NOT NULL' ) );
-		$table->addColumn( 't_num', array( FieldType::TYPE_DOUBLE, 'NOT NULL' ) );
-		$table->addColumn( 't_int', array( FieldType::TYPE_INT ) );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
 		$table->addIndex( 'id' );
 		$table->addIndex( 't_int' );
@@ -148,11 +148,11 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking index structures for table rdbms_test',
 			'index id is fine',
 			'creating new index t_num'
-		);
+		];
 
 		// ID message, Primary doesn't implicitly exists before
 		if ( $this->tableBuilder instanceof PostgresTableBuilder || $this->tableBuilder instanceof SQLiteTableBuilder ) {
@@ -175,21 +175,21 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$table = new Table( $this->tableName );
 		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
-		$table->addColumn( 't_text', array( FieldType::TYPE_BLOB, 'NOT NULL' ) );
-		$table->addColumn( 't_num', array( FieldType::TYPE_DOUBLE, 'NOT NULL' ) );
-		$table->addColumn( 't_int', array( FieldType::TYPE_INT ) );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
 		$table->addIndex( 'id' );
 		$table->addIndex( 't_num,t_int' );
 
 		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking index structures for table rdbms_test',
 			'index id is fine',
 			'removing index t_num',
 			'creating new index t_num,t_int',
-		);
+		];
 
 		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
 			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
@@ -212,19 +212,19 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$table = new Table( $this->tableName );
 		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
-		$table->addColumn( 't_text', array( FieldType::TYPE_BLOB, 'NOT NULL' ) );
-		$table->addColumn( 't_num', array( FieldType::TYPE_DOUBLE, 'NOT NULL' ) );
-		$table->addColumn( 't_int', array( FieldType::TYPE_INT ) );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
-		$table->addIndex( array( 'id', 'UNIQUE INDEX' ) );
+		$table->addIndex( [ 'id', 'UNIQUE INDEX' ] );
 
 		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking index structures for table rdbms_test',
 			'index id is fine',
 			'removing index t_num,t_int'
-		);
+		];
 
 		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
 			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
@@ -247,18 +247,18 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$table = new Table( $this->tableName );
 		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
-		$table->addColumn( 't_text', array( FieldType::TYPE_BLOB, 'NOT NULL' ) );
-		$table->addColumn( 't_num', array( FieldType::TYPE_DOUBLE, 'NOT NULL' ) );
-		$table->addColumn( 't_int', array( FieldType::TYPE_INT ) );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
-		$table->addIndex( array( 'id', 'UNIQUE INDEX' ) );
+		$table->addIndex( [ 'id', 'UNIQUE INDEX' ] );
 
 		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking index structures for table rdbms_test',
 			'index id is fine'
-		);
+		];
 
 		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
 			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
@@ -283,9 +283,9 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->tableBuilder->drop( $table );
 
-		$expected = array(
+		$expected = [
 			'dropped table rdbms_test'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -305,9 +305,9 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->tableBuilder->drop( $table );
 
-		$expected = array(
+		$expected = [
 			'foo_test not found, skipping removal'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,

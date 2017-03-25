@@ -75,11 +75,11 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 		$queryDependencyLinksStore->expects( $this->any() )
 			->method( 'findEmbeddedQueryIdListBySubject' )
 			->with( $this->equalTo( $subject ) )
-			->will( $this->returnValue( array( 'Foo#0##' => 42 ) ) );
+			->will( $this->returnValue( [ 'Foo#0##' => 42 ] ) );
 
 		$queryDependencyLinksStore->expects( $this->once() )
 			->method( 'findEmbeddedQueryTargetLinksHashListBySubject' )
-			->will( $this->returnValue( array( 'Foo#0##' ) ) );
+			->will( $this->returnValue( [ 'Foo#0##' ] ) );
 
 		$instance = new QueryReferenceBacklinks(
 			$queryDependencyLinksStore
@@ -106,7 +106,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 
 		$queryDependencyLinksStore->expects( $this->any() )
 			->method( 'findEmbeddedQueryTargetLinksHashListBySubject' )
-			->will( $this->returnValue( array( 'Foo#0##' ) ) );
+			->will( $this->returnValue( [ 'Foo#0##' ] ) );
 
 		$instance = new QueryReferenceBacklinks(
 			$queryDependencyLinksStore
@@ -115,7 +115,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions = new RequestOptions();
 
 		$this->assertEquals(
-			 array( 'Foo#0##' ),
+			 [ 'Foo#0##' ],
 			$instance->findReferenceLinks( $subject, $requestOptions )
 		);
 	}

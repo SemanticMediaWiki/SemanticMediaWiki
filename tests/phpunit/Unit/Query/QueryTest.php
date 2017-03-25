@@ -136,7 +136,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
-		$instance->setExtraPrintouts( array( $printRequest ) );
+		$instance->setExtraPrintouts( [ $printRequest ] );
 
 		$serialized = $instance->toArray();
 
@@ -145,23 +145,23 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 			$serialized
 		);
 
-		$expected = array(
+		$expected = [
 			'conditions',
 			'parameters',
 			'printouts'
-		);
+		];
 
 		foreach ( $expected as $key ) {
 			$this->assertArrayHasKey( $key, $serialized );
 		}
 
-		$expectedParameters = array(
+		$expectedParameters = [
 			'limit',
 			'offset',
 			'mainlabel',
 			'sortkeys',
 			'querymode'
-		);
+		];
 
 		foreach ( $expectedParameters as $key ) {
 			$this->assertArrayHasKey( $key, $serialized['parameters'] );
@@ -172,7 +172,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getFingerprint' ) )
+			->setMethods( [ 'getFingerprint' ] )
 			->getMockForAbstractClass();
 
 		$instance = new Query( $description, Query::INLINE_QUERY );

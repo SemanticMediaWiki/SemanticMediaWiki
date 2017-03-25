@@ -17,7 +17,7 @@ class ExtensionTypesTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$extensionTypes = array();
+		$extensionTypes = [];
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\ExtensionTypes',
@@ -27,7 +27,7 @@ class ExtensionTypesTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcess() {
 
-		$extensionTypes = array();
+		$extensionTypes = [];
 
 		$instance = new ExtensionTypes( $extensionTypes );
 		$instance->process();

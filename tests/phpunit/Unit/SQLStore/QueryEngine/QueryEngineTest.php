@@ -60,11 +60,11 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->querySegmentListBuildManager->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->querySegmentListProcessor->expects( $this->any() )
 			->method( 'getListOfResolvedQueries' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
@@ -96,7 +96,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->querySegmentListBuildManager->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 

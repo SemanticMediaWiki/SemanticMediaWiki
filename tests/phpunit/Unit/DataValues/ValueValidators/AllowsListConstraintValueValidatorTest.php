@@ -55,15 +55,15 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValuesBy' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Foo' ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( 'Foo' ) ] ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValueBy' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getTypeID' ) )
+			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
@@ -95,15 +95,15 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValuesBy' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'NOTALLOWED' ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( 'NOTALLOWED' ) ] ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValueBy' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getTypeID' ) )
+			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )

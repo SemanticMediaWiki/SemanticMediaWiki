@@ -31,65 +31,65 @@ class FormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function printRequestProvider() {
 
-		$provider['print-cats-wiki'] = array(
+		$provider['print-cats-wiki'] = [
 			new PrintRequest( PrintRequest::PRINT_CATS, 'Foo' ),
 			null,
 			Formatter::FORMAT_WIKI,
 			'Foo'
-		);
+		];
 
-		$provider['print-cats-html'] = array(
+		$provider['print-cats-html'] = [
 			new PrintRequest( PrintRequest::PRINT_CATS, 'Foo' ),
 			null,
 			Formatter::FORMAT_HTML,
 			'Foo'
-		);
+		];
 
-		$provider['print-ccat-html'] = array(
+		$provider['print-ccat-html'] = [
 			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', DIWikiPage::newFromText( 'Bar' )->getTitle() ),
 			null,
 			Formatter::FORMAT_HTML,
 			'Foo'
-		);
+		];
 
-		$provider['print-ccat-wiki'] = array(
+		$provider['print-ccat-wiki'] = [
 			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', DIWikiPage::newFromText( 'Bar' )->getTitle() ),
 			null,
 			Formatter::FORMAT_WIKI,
 			'Foo'
-		);
+		];
 
-		$provider['print-this-wiki'] = array(
+		$provider['print-this-wiki'] = [
 			new PrintRequest( PrintRequest::PRINT_THIS, 'Foo' ),
 			null,
 			Formatter::FORMAT_WIKI,
 			'Foo'
-		);
+		];
 
-		$provider['print-this-html'] = array(
+		$provider['print-this-html'] = [
 			new PrintRequest( PrintRequest::PRINT_THIS, 'Foo' ),
 			null,
 			Formatter::FORMAT_HTML,
 			'Foo'
-		);
+		];
 
 		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Bar' );
 
-		$provider['print-prop-wiki-no-linker'] = array(
+		$provider['print-prop-wiki-no-linker'] = [
 			new PrintRequest( PrintRequest::PRINT_PROP, 'Foo', $data ),
 			null,
 			Formatter::FORMAT_WIKI,
 			'Foo'
-		);
+		];
 
 		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Bar' );
 
-		$provider['print-prop-html-no-linker'] = array(
+		$provider['print-prop-html-no-linker'] = [
 			new PrintRequest( PrintRequest::PRINT_PROP, 'Foo', $data ),
 			null,
 			Formatter::FORMAT_HTML,
 			'Foo'
-		);
+		];
 
 		return $provider;
 	}

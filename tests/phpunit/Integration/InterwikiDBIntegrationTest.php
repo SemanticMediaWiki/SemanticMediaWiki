@@ -23,7 +23,7 @@ use Title;
 class InterwikiDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $stringValidator;
-	private $subjects = array();
+	private $subjects = [];
 
 	private $pageCreator;
 	private $stringBuilder;
@@ -49,14 +49,14 @@ class InterwikiDBIntegrationTest extends MwDBaseUnitTestCase {
 				return true;
 			}
 
-			$interwiki = array(
+			$interwiki = [
 				'iw_prefix' => 'iw-test',
 				'iw_url' => 'http://www.example.org/$1',
 				'iw_api' => false,
 				'iw_wikiid' => 'foo',
 				'iw_local' => true,
 				'iw_trans' => false,
-			);
+			];
 
 			return false;
 		};
@@ -88,13 +88,13 @@ class InterwikiDBIntegrationTest extends MwDBaseUnitTestCase {
 			->doEdit( $this->stringBuilder->getString() );
 
 		$output = $this->fetchSerializedRdfOutputFor(
-			array( __METHOD__ )
+			[ __METHOD__ ]
 		);
 
-		$expectedOutputContent = array(
+		$expectedOutputContent = [
 			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;Interwiki_link"/>',
 			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;iw-2Dtest-3AInterwiki_link"/>'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expectedOutputContent,

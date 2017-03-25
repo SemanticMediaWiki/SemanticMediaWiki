@@ -104,53 +104,53 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$description = new Disjunction();
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			new ThingDescription(),
 			new ThingDescription()
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 2
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			new NamespaceDescription( NS_MAIN ),
 			new NamespaceDescription( NS_HELP )
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '{' )->addNewLine()
@@ -160,35 +160,35 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '}' )
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			new NamespaceDescription( NS_MAIN )
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '{ ?result swivt:wikiNamespace "0"^^xsd:integer . }' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 4
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition';
@@ -197,36 +197,36 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LIKE
 		);
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			$description
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( 'FILTER( regex( ?v1, "^SomePropertyPageValue$", "s") )' )->addNewLine()
 			->addString( '?result swivt:wikiPageSortKey ?v1 .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 5
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			new NamespaceDescription( NS_MAIN ),
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), new DIProperty( 'Foo' ), SMW_CMP_LESS )
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:page ?url .' )->addNewLine()
@@ -236,13 +236,13 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( ' FILTER( ?result < "SomePropertyBlobValue" || ?result = ?v1 )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 6
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -258,13 +258,13 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$description
 		);
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			new NamespaceDescription( NS_MAIN ),
 			$description
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '{' )->addNewLine()
@@ -275,13 +275,13 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '}' )
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 7
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -297,14 +297,14 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$description
 		);
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			new NamespaceDescription( NS_MAIN ),
 			$description,
 			new ValueDescription( new DINumber( 42 ), null, SMW_CMP_EQ )
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:page ?url .' )->addNewLine()
@@ -316,59 +316,59 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( ' FILTER( ?result = "42"^^xsd:double || ?result = ?v2 )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 8
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			new ValueDescription( new DINumber( 12 ), null, SMW_CMP_EQ )
-		) );
+		] );
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			$description,
 			new ValueDescription( new DINumber( 42 ), null, SMW_CMP_LIKE )
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:page ?url .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 9
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			new ValueDescription( new DINumber( 12 ), null, SMW_CMP_EQ ),
 			new ValueDescription( new DIBlob( 'Bar' ), null, SMW_CMP_LIKE )
-		) );
+		] );
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			$description,
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
 				new ValueDescription( new DINumber( 42 ), null, SMW_CMP_LIKE )
 			)
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:page ?url .' )->addNewLine()
@@ -378,30 +378,30 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( ' FILTER( ?result = "12"^^xsd:double || regex( ?result, "^Bar$", "s") || ?result = ?v2 )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 10
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description = new Disjunction( array(
-			new Conjunction( array(
+		$description = new Disjunction( [
+			new Conjunction( [
 				new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ ),
 				new SomeProperty(
 					new DIProperty( 'Bar' ),
 					new ThingDescription()
 				)
-			) ),
+			] ),
 			new ValueDescription( new DIBlob( 'Yui' ), null, SMW_CMP_LIKE )
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array( 'Bar' => 'ASC' );
+		$sortkeys = [ 'Bar' => 'ASC' ];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:page ?url .' )->addNewLine()
@@ -413,69 +413,69 @@ class DisjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( ' FILTER( regex( ?result, "^Yui$", "s") || ?result = ?v2 )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 11
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ ),
 			new ValueDescription( new DIBlob( 'Yui' ), null, SMW_CMP_LIKE )
-		) );
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:page ?url .' )->addNewLine()
 			->addString( 'FILTER( ?result = wiki:Foo || regex( ?result, "^Yui$", "s") )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 12
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
 
-		$description = new Conjunction( array(
+		$description = new Conjunction( [
 			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) )
-		) );
+		] );
 
-		$description = new Conjunction( array(
+		$description = new Conjunction( [
 			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
 			$description
-		) );
+		] );
 
-		$description = new Disjunction( array(
+		$description = new Disjunction( [
 			$description,
-			new ClassDescription( array() )
-		) );
+			new ClassDescription( [] )
+		] );
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		return $provider;
 	}

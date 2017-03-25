@@ -43,7 +43,7 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conceptQuerySegmentBuilder->expects( $this->once() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new ConceptCache(
 			new \SMWSQLStore3(),

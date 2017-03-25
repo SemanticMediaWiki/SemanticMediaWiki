@@ -108,7 +108,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
 		$this->testEnvironment->addConfiguration( 'smwgExportResourcesAsIri', false );
-		$this->testEnvironment->addConfiguration( 'smwgSparqlReplicationPropertyExemptionList', array() );
+		$this->testEnvironment->addConfiguration( 'smwgSparqlReplicationPropertyExemptionList', [] );
 	}
 
 	/**
@@ -129,7 +129,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	 * @see JsonTestCaseScriptRunner::getAllowedTestCaseFiles
 	 */
 	protected function getAllowedTestCaseFiles() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -156,7 +156,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 	private function prepareTest( $jsonTestCaseFileHandler ) {
 
-		$permittedSettings = array(
+		$permittedSettings = [
 			'smwgNamespacesWithSemanticLinks',
 			'smwgPageSpecialProperties',
 			'smwgNamespace',
@@ -192,7 +192,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'wgEnableUploads',
 			'wgFileExtensions',
 			'wgDefaultUserOptions'
-		);
+		];
 
 		foreach ( $permittedSettings as $key ) {
 			$this->changeGlobalSettingTo(

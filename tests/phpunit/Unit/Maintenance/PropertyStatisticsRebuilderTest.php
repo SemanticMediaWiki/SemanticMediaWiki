@@ -39,12 +39,12 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$propertySelectRow = new \stdClass;
 		$propertySelectRow->count = 1111;
 
-		$selectResult = array(
+		$selectResult = [
 			'smw_title'   => 'Foo',
 			'smw_id'      => 9999
-		);
+		];
 
-		$selectResultWrapper = new FakeResultWrapper( array( (object)$selectResult ) );
+		$selectResultWrapper = new FakeResultWrapper( [ (object)$selectResult ] );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -58,7 +58,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->with( $this->stringContains( $arbitraryPropertyTableName ),
 				$this->anything(),
-				$this->equalTo( array( 'p_id' => 9999 ) ),
+				$this->equalTo( [ 'p_id' => 9999 ] ),
 				$this->anything() )
 			->will( $this->returnValue( $propertySelectRow ) );
 
@@ -72,8 +72,8 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array(
-				$this->getNonFixedPropertyTable( $arbitraryPropertyTableName ) )
+			->will( $this->returnValue( [
+				$this->getNonFixedPropertyTable( $arbitraryPropertyTableName ) ]
 			) );
 
 		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
@@ -94,9 +94,9 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 	protected function getNonFixedPropertyTable( $propertyTableName ) {
 
 		$propertyTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array(
+			->setMethods( [
 				'isFixedPropertyTable',
-				'getName' ) )
+				'getName' ] )
 			->getMock();
 
 		$propertyTable->expects( $this->atLeastOnce() )

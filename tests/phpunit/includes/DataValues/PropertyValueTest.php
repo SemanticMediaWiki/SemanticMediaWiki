@@ -32,7 +32,7 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyValue( '__pro' );
 
 		$instance->setOptions(
-			new Options( array( 'smwgDVFeatures' => $options ) )
+			new Options( [ 'smwgDVFeatures' => $options ] )
 		);
 
 		$this->assertEquals(
@@ -43,25 +43,25 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function optionsProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_DV_PROV_REDI,
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_DV_NONE | SMW_DV_PROV_REDI,
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_DV_NONE,
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			false,
 			false
-		);
+		];
 
 		return $provider;
 	}

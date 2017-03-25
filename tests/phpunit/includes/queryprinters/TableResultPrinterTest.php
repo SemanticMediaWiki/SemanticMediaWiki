@@ -52,7 +52,7 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 	 *
 	 * @return TableResultPrinter
 	 */
-	private function newInstance( $parameters = array() ) {
+	private function newInstance( $parameters = [] ) {
 
 		$format = isset( $parameters['format'] ) ? $parameters['format'] : 'table';
 
@@ -81,7 +81,7 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 
 		$property = $reflector->getProperty( 'fullParams' );
 		$property->setAccessible( true );
-		$property->setValue( $instance, array() );
+		$property->setValue( $instance, [] );
 
 		$method = $reflector->getMethod( 'linkFurtherResults' );
 		$method->setAccessible( true );
@@ -112,77 +112,77 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 		$mockBuilder = new MockObjectBuilder();
 		$mockBuilder->registerRepository( new CoreMockObjectRepository() );
 
-		$provider = array();
+		$provider = [];
 
-		$labels = array(
+		$labels = [
 			'pr-1' => 'PrintRequest-PageValue',
 			'pr-2' => 'PrintRequest-NumberValue',
 			'ra-1' => 'ResultArray-PageValue',
 			'ra-2' =>  9001
-		);
+		];
 
-		$printRequests = array();
+		$printRequests = [];
 
-		$printRequests['pr-1'] = $mockBuilder->newObject( 'PrintRequest', array(
+		$printRequests['pr-1'] = $mockBuilder->newObject( 'PrintRequest', [
 			'getText' => $labels['pr-1']
-		) );
+		] );
 
-		$printRequests['pr-2'] = $mockBuilder->newObject( 'PrintRequest', array(
+		$printRequests['pr-2'] = $mockBuilder->newObject( 'PrintRequest', [
 			'getText' => $labels['pr-2']
-		) );
+		] );
 
-		$datItems = array();
+		$datItems = [];
 
 		$datItems['ra-1'] = DIWikiPage::newFromTitle( Title::newFromText( $labels['ra-1'], NS_MAIN ) );
-		$datItems['ra-2'] = $mockBuilder->newObject( 'DataItem', array( 'getSortKey' => $labels['ra-2'] ) );
+		$datItems['ra-2'] = $mockBuilder->newObject( 'DataItem', [ 'getSortKey' => $labels['ra-2'] ] );
 
-		$dataValues = array();
+		$dataValues = [];
 
-		$dataValues['ra-1'] = $mockBuilder->newObject( 'DataValue', array(
+		$dataValues['ra-1'] = $mockBuilder->newObject( 'DataValue', [
 			'DataValueType'    => 'SMWWikiPageValue',
 			'getTypeID'        => '_wpg',
 			'getShortText'     => $labels['ra-1'],
 			'getDataItem'      => $datItems['ra-1']
-		) );
+		] );
 
-		$dataValues['ra-2'] = $mockBuilder->newObject( 'DataValue', array(
+		$dataValues['ra-2'] = $mockBuilder->newObject( 'DataValue', [
 			'DataValueType'    => 'SMWNumberValue',
 			'getTypeID'        => '_num',
 			'getShortText'     => $labels['ra-2'],
 			'getDataItem'      => $datItems['ra-2']
-		) );
+		] );
 
-		$resultArray = array();
+		$resultArray = [];
 
-		$resultArray['ra-1'] = $mockBuilder->newObject( 'ResultArray', array(
+		$resultArray['ra-1'] = $mockBuilder->newObject( 'ResultArray', [
 			'getText'          => $labels['ra-1'],
 			'getPrintRequest'  => $printRequests['pr-1'],
 			'getNextDataValue' => $dataValues['ra-1'],
-		) );
+		] );
 
-		$resultArray['ra-2'] = $mockBuilder->newObject( 'ResultArray', array(
+		$resultArray['ra-2'] = $mockBuilder->newObject( 'ResultArray', [
 			'getText'          => $labels['ra-2'],
 			'getPrintRequest'  => $printRequests['pr-2'],
 			'getNextDataValue' => $dataValues['ra-2'],
-		) );
+		] );
 
-		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
-			'getPrintRequests'  => array( $printRequests['pr-1'], $printRequests['pr-2'] ),
-			'getNext'           => array( $resultArray['ra-1'], $resultArray['ra-2'] ),
+		$queryResult = $mockBuilder->newObject( 'QueryResult', [
+			'getPrintRequests'  => [ $printRequests['pr-1'], $printRequests['pr-2'] ],
+			'getNext'           => [ $resultArray['ra-1'], $resultArray['ra-2'] ],
 			'getQueryLink'      => new \SMWInfolink( true, 'Lala', 'Lula' ),
 			'hasFurtherResults' => true
-		) );
+		] );
 
 		// #0 standard table
-		$parameters = array(
+		$parameters = [
 			'headers'   => SMW_HEADERS_PLAIN,
 			'class'     => 'tableClass',
 			'format'    => 'table',
 			'offset'    => 0,
 			'transpose' => false
-		);
+		];
 
-		$matcher = array(
+		$matcher = [
 			'<table class="tableClass">',
 			'<th class="PrintRequest-PageValue">PrintRequest-PageValue</th>',
 			'<th class="PrintRequest-NumberValue">PrintRequest-NumberValue</th>',
@@ -193,98 +193,98 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'<tr class="smwfooter row-even">',
 			'<td class="sortbottom">',
 			'<span class="smw-table-furtherresults">'
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'parameters'  => $parameters,
 				'queryResult' => $queryResult,
 				'outputMode'  => SMW_OUTPUT_FILE
-			),
-			array(
+			],
+			[
 				'matcher'     => $matcher
-			)
-		);
+			]
+		];
 
 		// #1 broadtable table
-		$parameters = array(
+		$parameters = [
 			'headers'   => SMW_HEADERS_PLAIN,
 			'class'     => 'tableClass',
 			'format'    => 'broadtable',
 			'offset'    => 0,
 			'transpose' => false
-		);
+		];
 
-		$matcher = array(
+		$matcher = [
 			'<table class="tableClass" width="100%">',
 			'<th class="PrintRequest-PageValue">PrintRequest-PageValue</th>',
 			'<th class="PrintRequest-NumberValue">PrintRequest-NumberValue</th>',
 			'<tr class="smwfooter row-odd">',
 			'<td class="sortbottom">',
 			'<span class="smw-broadtable-furtherresults">'
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'parameters'  => $parameters,
 				'queryResult' => $queryResult,
 				'outputMode'  => SMW_OUTPUT_FILE
-			),
-			array(
+			],
+			[
 				'matcher'     => $matcher
-			)
-		);
+			]
+		];
 
 		// #2 "headers=hide"
-		$parameters = array(
+		$parameters = [
 			'headers'   => SMW_HEADERS_HIDE,
 			'class'     => 'tableClass',
 			'format'    => 'table',
 			'offset'    => 0,
 			'transpose' => false
-		);
+		];
 
-		$matcher = array(
+		$matcher = [
 			'<table class="tableClass">',
 			'<tr class="smwfooter row-odd">',
 			'<td class="sortbottom">',
 			'<span class="smw-table-furtherresults">'
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'parameters'  => $parameters,
 				'queryResult' => $queryResult,
 				'outputMode'  => SMW_OUTPUT_FILE
-			),
-			array(
+			],
+			[
 				'matcher'     => $matcher
-			)
-		);
+			]
+		];
 
 		// #3 "transpose=true"
-		$parameters = array(
+		$parameters = [
 			'headers'   => SMW_HEADERS_PLAIN,
 			'class'     => 'tableClass',
 			'format'    => 'table',
 			'offset'    => 0,
 			'transpose' => true
-		);
+		];
 
 		//TODO add proper matching data, which I can't seem to get to work.
 		//MWJames would you mind doing the honors?
-		$matcher = array();
+		$matcher = [];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'parameters'  => $parameters,
 				'queryResult' => $queryResult,
 				'outputMode'  => SMW_OUTPUT_FILE
-			),
-			array(
+			],
+			[
 				'matcher'     => $matcher
-			)
-		);
+			]
+		];
 
 		return $provider;
 

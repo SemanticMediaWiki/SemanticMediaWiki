@@ -29,12 +29,12 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$settings = array(
+		$settings = [
 			'smwgFactboxUseCache' => true,
 			'smwgCacheType'       => 'hash',
 			'smwgLinksInValues'   => false,
 			'smwgInlineErrors'    => true
-		);
+		];
 
 		$this->testEnvironment = new TestEnvironment( $settings );
 
@@ -139,20 +139,20 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 9999 ) );
 
 		#0 Id = cache
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $validIdTitle,
 				'smwgAutoRefreshOnPurge'         => true,
 				'smwgFactboxCacheRefreshOnPurge' => true,
 				'smwgQueryResultCacheRefreshOnPurge' => false
-			),
-			array(
+			],
+			[
 				'factboxPreProcess'      => false,
 				'autorefreshPreProcess'  => false,
 				'autorefreshPostProcess' => true,
 				'factboxPostProcess'     => false,
-			)
-		);
+			]
+		];
 
 		#1 Disabled setting
 		$validIdTitle =  MockTitle::buildMock( 'Disabled' );
@@ -161,20 +161,20 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 9099 ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $validIdTitle,
 				'smwgAutoRefreshOnPurge'         => false,
 				'smwgFactboxCacheRefreshOnPurge' => false,
 				'smwgQueryResultCacheRefreshOnPurge' => false
-			),
-			array(
+			],
+			[
 				'factboxPreProcess'      => false,
 				'autorefreshPreProcess'  => false,
 				'autorefreshPostProcess' => false,
 				'factboxPostProcess'     => false,
-			)
-		);
+			]
+		];
 
 		// #2 No Id
 		$nullIdTitle =  MockTitle::buildMock( 'NullId' );
@@ -183,36 +183,36 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 0 ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $nullIdTitle,
 				'smwgAutoRefreshOnPurge'         => true,
 				'smwgFactboxCacheRefreshOnPurge' => true,
 				'smwgQueryResultCacheRefreshOnPurge' => false
-			),
-			array(
+			],
+			[
 				'factboxPreProcess'      => false,
 				'autorefreshPreProcess'  => false,
 				'autorefreshPostProcess' => false,
 				'factboxPostProcess'     => false,
-			)
-		);
+			]
+		];
 
 		#3 No Id
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $nullIdTitle,
 				'smwgAutoRefreshOnPurge'         => true,
 				'smwgFactboxCacheRefreshOnPurge' => false,
 				'smwgQueryResultCacheRefreshOnPurge' => false
-			),
-			array(
+			],
+			[
 				'factboxPreProcess'      => false,
 				'autorefreshPreProcess'  => false,
 				'autorefreshPostProcess' => false,
 				'factboxPostProcess'     => false,
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

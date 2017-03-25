@@ -85,11 +85,11 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIProperty( 'Foobar' ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] ) );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -115,20 +115,20 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			$printRequestFactory->newPrintRequestByProperty( $property )
 		);
 
-		$expected = array(
-			'BarList1' => array(
+		$expected = [
+			'BarList1' => [
 				'label'  => 'BarList1',
 				'typeid' => '_wpg',
-				'item'   => array(),
+				'item'   => [],
 				'key'    => 'BarList1'
-			),
-			'BarList2' => array(
+			],
+			'BarList2' => [
 				'label'  => 'BarList2',
 				'typeid' => '_wpg',
-				'item'   => array(),
+				'item'   => [],
 				'key'    => 'BarList2'
-			)
-		);
+			]
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -148,10 +148,10 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			$printRequestFactory->newPrintRequestByProperty( $property )
 		);
 
-		$expected = array(
+		$expected = [
 			'timestamp' => '-18208281600',
 			'raw' => '2/1393/1/1'
-		);
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -161,15 +161,15 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
 
-		$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
+		$dataItem = $this->newMockBuilder()->newObject( 'DataItem', [
 			'getDIType' => DataItem::TYPE_WIKIPAGE,
 			'getTitle'  => null
-		) );
+		] );
 
-		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
-			'getPrintRequests'  => array(),
-			'getResults'        => array( $dataItem ),
-		) );
+		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', [
+			'getPrintRequests'  => [],
+			'getResults'        => [ $dataItem ],
+		] );
 
 		$instance = new QueryResultSerializer();
 		$results = $instance->serialize( $queryResult );
@@ -184,24 +184,24 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function numberDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$setup = array(
-			array( 'printRequest' => 'Foo-1', 'typeId' => '_num', 'number' => 10, 'dataValue' => 'Quuey' ),
-			array( 'printRequest' => 'Foo-2', 'typeId' => '_num', 'number' => 20, 'dataValue' => 'Vey' ),
-		);
+		$setup = [
+			[ 'printRequest' => 'Foo-1', 'typeId' => '_num', 'number' => 10, 'dataValue' => 'Quuey' ],
+			[ 'printRequest' => 'Foo-2', 'typeId' => '_num', 'number' => 20, 'dataValue' => 'Vey' ],
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'queryResult' => $this->buildMockQueryResult( $setup )
-				),
-			array(
-				'printrequests' => array(
-					array( 'label' => 'Foo-1', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '', 'redi' => '' ),
-					array( 'label' => 'Foo-2', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '', 'redi' => '' )
-				),
-			)
-		);
+				],
+			[
+				'printrequests' => [
+					[ 'label' => 'Foo-1', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '', 'redi' => '' ],
+					[ 'label' => 'Foo-2', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '', 'redi' => '' ]
+				],
+			]
+		];
 
 		return $provider;
 	}
@@ -211,52 +211,52 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private function buildMockQueryResult( $setup ) {
 
-		$printRequests = array();
-		$resultArray   = array();
-		$getResults    = array();
+		$printRequests = [];
+		$resultArray   = [];
+		$getResults    = [];
 
 		foreach ( $setup as $value ) {
 
-			$printRequest = $this->newMockBuilder()->newObject( 'PrintRequest', array(
+			$printRequest = $this->newMockBuilder()->newObject( 'PrintRequest', [
 				'getText'   => $value['printRequest'],
 				'getLabel'  => $value['printRequest'],
 				'getTypeID' => $value['typeId'],
 				'getOutputFormat' => false
-			) );
+			] );
 
 			$printRequests[] = $printRequest;
 			$getResults[] = \SMW\DIWikiPage::newFromTitle( new \Title( NS_MAIN, $value['printRequest'] ) );
 
-			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
+			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', [
 				'getDIType' => DataItem::TYPE_NUMBER,
 				'getNumber' => $value['number']
-			) );
+			] );
 
-			$dataValue = $this->newMockBuilder()->newObject( 'DataValue', array(
+			$dataValue = $this->newMockBuilder()->newObject( 'DataValue', [
 				'DataValueType'    => 'SMWNumberValue',
 				'getTypeID'        => '_num',
 				'getShortWikiText' => $value['dataValue'],
 				'getDataItem'      => $dataItem
-			) );
+			] );
 
-			$resultArray[] = $this->newMockBuilder()->newObject( 'ResultArray', array(
+			$resultArray[] = $this->newMockBuilder()->newObject( 'ResultArray', [
 				'getText'          => $value['printRequest'],
 				'getPrintRequest'  => $printRequest,
 				'getNextDataValue' => $dataValue,
 				'getNextDataItem'  => $dataItem,
 				'getContent'       => $dataItem
-			) );
+			] );
 
 		}
 
-		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
+		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', [
 			'getPrintRequests'  => $printRequests,
 			'getNext'           => $resultArray,
 			'getResults'        => $getResults,
 			'getStore'          => $this->newMockBuilder()->newObject( 'Store' ),
 			'getLink'           => new \SMWInfolink( true, 'Lala', 'Lula' ),
 			'hasFurtherResults' => true
-		) );
+		] );
 
 		return $queryResult;
 	}

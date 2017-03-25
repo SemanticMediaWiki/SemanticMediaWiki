@@ -36,10 +36,10 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
-		$propertyTables = array();
+		$propertyTables = [];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( array( 'getPropertyTables' ) )
+			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -65,10 +65,10 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
-		$propertyTables = array();
+		$propertyTables = [];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( array( 'getPropertyTables' ) )
+			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -111,10 +111,10 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
-		$propertyTables = array( $propertyTable );
+		$propertyTables = [ $propertyTable ];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( array( 'getPropertyTables' ) )
+			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

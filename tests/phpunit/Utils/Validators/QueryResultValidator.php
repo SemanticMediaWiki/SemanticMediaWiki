@@ -49,9 +49,9 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 */
 	public function assertThatDataValueIsSet( $expected, QueryResult $queryResult, $message = '' ) {
 
-		$expected = is_array( $expected ) ? $expected : array( $expected );
+		$expected = is_array( $expected ) ? $expected : [ $expected ];
 
-		if ( $expected === array() ) {
+		if ( $expected === [] ) {
 			return;
 		}
 
@@ -70,7 +70,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 			foreach ( $resultArray as $result ) {
 				while ( ( $dataValue = $result->getNextDataValue() ) !== false ) {
 					foreach ( $expected as $key => $exp ) {
-						if ( call_user_func_array( $this->dataValueValidationMethod, array( $exp, $dataValue ) ) ) {
+						if ( call_user_func_array( $this->dataValueValidationMethod, [ $exp, $dataValue ] ) ) {
 							unset( $expected[$key] );
 						}
 					}
@@ -93,9 +93,9 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 */
 	public function assertThatDataItemIsSet( $expected, QueryResult $queryResult, $message = '' ) {
 
-		$expected = is_array( $expected ) ? $expected : array( $expected );
+		$expected = is_array( $expected ) ? $expected : [ $expected ];
 
-		if ( $expected === array() ) {
+		if ( $expected === [] ) {
 			return;
 		}
 
@@ -133,7 +133,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 */
 	public function assertThatQueryResultHasSubjects( $expectedSubjects, QueryResult $queryResult, $message = '' ) {
 
-		$expectedSubjects = is_array( $expectedSubjects ) ? $expectedSubjects : array( $expectedSubjects );
+		$expectedSubjects = is_array( $expectedSubjects ) ? $expectedSubjects : [ $expectedSubjects ];
 		$expectedToCount  = count( $expectedSubjects );
 		$actualComparedToCount = 0;
 

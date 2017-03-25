@@ -66,7 +66,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			$instance,
-			call_user_func_array( array( $parserFunctionFactory, $method ), array( $parser ) )
+			call_user_func_array( [ $parserFunctionFactory, $method ], [ $parser ] )
 		);
 	}
 
@@ -80,8 +80,8 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
 
 		$definition = call_user_func_array(
-			array( $parserFunctionFactory, $method ),
-			array( '' )
+			[ $parserFunctionFactory, $method ],
+			[ '' ]
 		);
 
 		$this->assertEquals(
@@ -121,90 +121,90 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function parserFunctionProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'\SMW\ParserFunctions\RecurringEventsParserFunction',
 			'getRecurringEventsParser'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\SMW\ParserFunctions\SubobjectParserFunction',
 			'getSubobjectParser'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\SMW\ParserFunctions\RecurringEventsParserFunction',
 			'newRecurringEventsParserFunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\SMW\ParserFunctions\SubobjectParserFunction',
 			'newSubobjectParserFunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\SMW\ParserFunctions\AskParserFunction',
 			'newAskParserFunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\SMW\ParserFunctions\ShowParserFunction',
 			'newShowParserFunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\SMW\ParserFunctions\SetParserFunction',
 			'newSetParserFunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\SMW\ParserFunctions\ConceptParserFunction',
 			'newConceptParserFunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\SMW\ParserFunctions\DeclareParserFunction',
 			'newDeclareParserFunction'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function parserFunctionDefinitionProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'newAskParserFunctionDefinition',
 			'ask'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'newShowParserFunctionDefinition',
 			'show'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'newSubobjectParserFunctionDefinition',
 			'subobject'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'newRecurringEventsParserFunctionDefinition',
 			'set_recurring_event'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'newSetParserFunctionDefinition',
 			'set'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'newConceptParserFunctionDefinition',
 			'concept'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'newDeclareParserFunctionDefinition',
 			'declare'
-		);
+		];
 
 		return $provider;
 	}

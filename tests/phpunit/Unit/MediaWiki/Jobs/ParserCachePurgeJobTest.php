@@ -67,13 +67,13 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function parametersProvider() {
 
-		$provider[] = array(
-			'idlist' => array( 1, 2 )
-		);
+		$provider[] = [
+			'idlist' => [ 1, 2 ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'idlist' => '1|2'
-		);
+		];
 
 		return $provider;
 	}

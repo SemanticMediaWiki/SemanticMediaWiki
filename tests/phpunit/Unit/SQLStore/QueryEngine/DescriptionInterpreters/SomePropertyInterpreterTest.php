@@ -82,7 +82,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	public function testinterpretDescriptionForNonIdSubject() {
 
 		$proptable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'usesIdSubject' ) )
+			->setMethods( [ 'usesIdSubject' ] )
 			->getMock();
 
 		$proptable->expects( $this->any() )
@@ -99,7 +99,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( 'Foo' => $proptable ) ) );
+			->will( $this->returnValue( [ 'Foo' => $proptable ] ) );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' ),
@@ -140,7 +140,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( '_txt' ) );
 
 		$proptable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'usesIdSubject' ) )
+			->setMethods( [ 'usesIdSubject' ] )
 			->getMock();
 
 		$proptable->expects( $this->any() )
@@ -157,7 +157,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( 'Foo' => $proptable ) ) );
+			->will( $this->returnValue( [ 'Foo' => $proptable ] ) );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$property,
@@ -197,14 +197,14 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getTableFields' )
-			->will( $this->returnValue( array( 'one', 'two' ) ) );
+			->will( $this->returnValue( [ 'one', 'two' ] ) );
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( array( $indexField => 'fixedFooWhereCond' ) ) );
+			->will( $this->returnValue( [ $indexField => 'fixedFooWhereCond' ] ) );
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getSMWPropertyID', 'getSMWPageID' ) )
+			->setMethods( [ 'getSMWPropertyID', 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
@@ -253,7 +253,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( 'Foo' => $proptable ) ) );
+			->will( $this->returnValue( [ 'Foo' => $proptable ] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -294,7 +294,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		#0 Blob + wildcard
 		$isFixedPropertyTable = false;
 		$indexField = '';
-		$sortKeys = array();
+		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
@@ -306,21 +306,21 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
-		$expected->components = array( 1 => "t0.p_id" );
-		$expected->sortfields = array();
+		$expected->components = [ 1 => "t0.p_id" ];
+		$expected->sortfields = [];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$isFixedPropertyTable,
 			$indexField,
 			$sortKeys,
 			$expected
-		);
+		];
 
 		#1 WikiPage + SMW_CMP_EQ
 		$isFixedPropertyTable = false;
 		$indexField = 'wikipageIndex';
-		$sortKeys = array();
+		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
@@ -332,23 +332,23 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
-		$expected->components = array( 1 => "t0.p_id", 2 => "t0.wikipageIndex" );
+		$expected->components = [ 1 => "t0.p_id", 2 => "t0.wikipageIndex" ];
 		$expected->queryNumber = 0;
 		$expected->where = '';
-		$expected->sortfields = array();
+		$expected->sortfields = [];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$isFixedPropertyTable,
 			$indexField,
 			$sortKeys,
 			$expected
-		);
+		];
 
 		#2 WikiPage + SMW_CMP_EQ + sort
 		$isFixedPropertyTable = false;
 		$indexField = 'wikipageIndex';
-		$sortKeys = array( 'Foo' => 'DESC' );
+		$sortKeys = [ 'Foo' => 'DESC' ];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
@@ -360,24 +360,24 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
-		$expected->components = array( 1 => "t0.p_id", 2 => "t0.wikipageIndex" );
+		$expected->components = [ 1 => "t0.p_id", 2 => "t0.wikipageIndex" ];
 		$expected->queryNumber = 0;
 		$expected->where = '';
-		$expected->sortfields = array( 'Foo' => 'idst0.smw_sortkey' );
+		$expected->sortfields = [ 'Foo' => 'idst0.smw_sortkey' ];
 		$expected->from = ' INNER JOIN  AS idst0 ON idst0.smw_id=t0.wikipageIndex';
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$isFixedPropertyTable,
 			$indexField,
 			$sortKeys,
 			$expected
-		);
+		];
 
 		#3 Blob + SMW_CMP_EQ
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
-		$sortKeys = array();
+		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
@@ -389,23 +389,23 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
-		$expected->components = array( 1 => "t0.p_id" );
+		$expected->components = [ 1 => "t0.p_id" ];
 		$expected->queryNumber = 0;
 		$expected->where = '(t0.blobIndex=fixedFooWhereCond)';
-		$expected->sortfields = array();
+		$expected->sortfields = [];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$isFixedPropertyTable,
 			$indexField,
 			$sortKeys,
 			$expected
-		);
+		];
 
 		#4 Blob + SMW_CMP_EQ + sort
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
-		$sortKeys = array( 'Foo' => 'ASC' );
+		$sortKeys = [ 'Foo' => 'ASC' ];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
@@ -417,30 +417,30 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
-		$expected->components = array( 1 => "t0.p_id" );
+		$expected->components = [ 1 => "t0.p_id" ];
 		$expected->queryNumber = 0;
 		$expected->where = '(t0.blobIndex=fixedFooWhereCond)';
-		$expected->sortfields = array( 'Foo' => 't0.blobIndex' );
+		$expected->sortfields = [ 'Foo' => 't0.blobIndex' ];
 		$expected->from = '';
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$isFixedPropertyTable,
 			$indexField,
 			$sortKeys,
 			$expected
-		);
+		];
 
 		#5 Check SemanticMaps compatibility mode (invokes `getSQLCondition`)
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
-		$sortKeys = array();
+		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getSQLCondition', 'getDataItem' ) )
+			->setMethods( [ 'getSQLCondition', 'getDataItem' ] )
 			->getMock();
 
 		$valueDescription->expects( $this->any() )
@@ -463,51 +463,51 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
-		$expected->components = array( 1 => "t0.p_id" );
+		$expected->components = [ 1 => "t0.p_id" ];
 		$expected->queryNumber = 0;
 		$expected->where = '(foo AND bar)';
-		$expected->sortfields = array();
+		$expected->sortfields = [];
 		$expected->from = '';
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$isFixedPropertyTable,
 			$indexField,
 			$sortKeys,
 			$expected
-		);
+		];
 
 		#6, see 556
 		$isFixedPropertyTable = false;
 		$indexField = '';
-		$sortKeys = array();
+		$sortKeys = [];
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
 		$description = $descriptionFactory->newSomeProperty(
 			$property,
-			$descriptionFactory->newDisjunction( array(
+			$descriptionFactory->newDisjunction( [
 				$descriptionFactory->newValueDescription( $dataItemFactory->newDIBlob( 'Bar' ) ),
 				$descriptionFactory->newValueDescription( $dataItemFactory->newDIBlob( 'Baz' ) )
-			) )
+			] )
 		);
 
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
-		$expected->components = array( 1 => "t0.p_id" );
+		$expected->components = [ 1 => "t0.p_id" ];
 		$expected->queryNumber = 0;
 		$expected->where = '((t0.=fixedFooWhereCond) OR (t0.=fixedFooWhereCond))';
-		$expected->sortfields = array();
+		$expected->sortfields = [];
 		$expected->from = '';
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$isFixedPropertyTable,
 			$indexField,
 			$sortKeys,
 			$expected
-		);
+		];
 
 		return $provider;
 	}

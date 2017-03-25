@@ -132,11 +132,11 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getErrors()
 		);
 
-		$expected = array(
+		$expected = [
 			$expectedDisjunction,
 			$expectedHelpNs,
 			$expectedMainNs
-		);
+		];
 
 		$this->querySegmentValidator->assertThatContainerContains(
 			$expected,
@@ -147,7 +147,7 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testClassDescription() {
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getSMWPageID' ) )
+			->setMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
@@ -186,7 +186,7 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expectedHierarchy = new \stdClass;
 		$expectedHierarchy->type = 5;
-		$expectedHierarchy->joinfield = array( 0 => 42 );
+		$expectedHierarchy->joinfield = [ 0 => 42 ];
 		$expectedHierarchy->alias = "t1";
 		$expectedHierarchy->queryNumber = 1;
 
@@ -199,10 +199,10 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getErrors()
 		);
 
-		$expected = array(
+		$expected = [
 			$expectedClass,
 			$expectedHierarchy
-		);
+		];
 
 		$this->querySegmentValidator->assertThatContainerContains(
 			$expected,
@@ -258,7 +258,7 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertSame(
-			array(),
+			[],
 			$instance->getQuerySegmentList()
 		);
 	}
@@ -276,10 +276,10 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 		$secondQuerySegment = new QuerySegment();
 		$instance->addQuerySegment( $secondQuerySegment );
 
-		$expected = array(
+		$expected = [
 			0 => $firstQuerySegment,
 			1 => $secondQuerySegment
-		);
+		];
 
 		$this->assertSame(
 			$expected,

@@ -100,7 +100,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	public function wikiPageDataProvider() {
 
 		#0 No parserOutput object
-		$editInfo = (object)array();
+		$editInfo = (object)[];
 		$editInfo->output = null;
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -115,18 +115,18 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'prepareTextForEdit' )
 			->will( $this->returnValue( $editInfo ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub(),
-				'settings' => array()
-			),
-			array()
-		);
+				'settings' => []
+			],
+			[]
+		];
 
 		#1 With annotation
-		$editInfo = (object)array();
+		$editInfo = (object)[];
 		$editInfo->output = new ParserOutput();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -149,22 +149,22 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTimestamp' )
 			->will( $this->returnValue( 1272508903 ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub(),
-				'settings' => array(
-					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE ),
+				'settings' => [
+					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MODIFICATION_DATE ],
 					'smwgDVFeatures' => ''
-				)
-			),
-			array(
+				]
+			],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_MDAT',
-				'propertyValues' => array( '2010-04-29T02:41:43' ),
-			)
-		);
+				'propertyValues' => [ '2010-04-29T02:41:43' ],
+			]
+		];
 
 		return $provider;
 	}
@@ -181,10 +181,10 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$revision->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValueMap( array(
-				array( \Revision::RAW, null, 'Foo' ),
-				array( \Revision::FOR_PUBLIC, null, $this->newContentStub() ),
-			) ) );
+			->will( $this->returnValueMap( [
+				[ \Revision::RAW, null, 'Foo' ],
+				[ \Revision::FOR_PUBLIC, null, $this->newContentStub() ],
+			] ) );
 
 		return $revision;
 	}

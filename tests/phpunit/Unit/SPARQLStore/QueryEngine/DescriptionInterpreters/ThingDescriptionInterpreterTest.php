@@ -98,12 +98,12 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result swivt:page ?url .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
@@ -115,12 +115,12 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$conditionType,
 			$expected
-		);
+		];
 
 		return $provider;
 	}

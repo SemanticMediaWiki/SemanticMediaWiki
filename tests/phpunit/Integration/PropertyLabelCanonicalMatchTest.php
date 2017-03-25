@@ -86,7 +86,7 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
 			);
 		}
 
-		return array( $label, $property );
+		return [ $label, $property ];
 	}
 
 	private function newFromUserLabel( $label, $languageCode = false ) {
@@ -104,60 +104,60 @@ class PropertyLabelCanonicalMatchTest extends \PHPUnit_Framework_TestCase {
 			);
 		}
 
-		return array( $label, $property );
+		return [ $label, $property ];
 	}
 
 	public function canonicalLabelProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Number',
 			'_num',
 			'Number',
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Float',
 			'_num',
 			'Float'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Telephone number',
 			'_tel',
 			'Telephone number'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Phone number',
 			'_tel',
 			'Phone number'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function canonicalLabelWithLanguageProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Number',
 			'en',
 			'_num',
 			'Number'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Number',
 			'fr',
 			'_num',
 			'Number'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Booléen',
 			'fr',
 			'_boo',
 			'Booléen'
-		);
+		];
 
 		return $provider;
 	}

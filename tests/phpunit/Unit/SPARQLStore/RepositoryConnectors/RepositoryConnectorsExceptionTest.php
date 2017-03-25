@@ -21,7 +21,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	private $defaultGraph;
 
-	private $databaseConnectors = array(
+	private $databaseConnectors = [
 		'\SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector',
 		'\SMW\SPARQLStore\RepositoryConnectors\FusekiHttpRepositoryConnector',
 		'\SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector',
@@ -31,7 +31,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 		'SMWSparqlDatabase4Store',
 		'SMWSparqlDatabaseVirtuoso',
 		'SMWSparqlDatabase'
-	);
+	];
 
 	protected function setUp() {
 		parent::setUp();
@@ -132,10 +132,10 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function httpDatabaseConnectorInstanceNameProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		foreach ( $this->databaseConnectors as $databaseConnector ) {
-			$provider[] = array( $databaseConnector );
+			$provider[] = [ $databaseConnector ];
 		}
 
 		return $provider;

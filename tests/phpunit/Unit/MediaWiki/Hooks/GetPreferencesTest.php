@@ -21,7 +21,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$preferences = array();
+		$preferences = [];
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\GetPreferences',
@@ -35,7 +35,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$preferences = array();
+		$preferences = [];
 
 		$instance = new GetPreferences( $user, $preferences );
 		$instance->process();

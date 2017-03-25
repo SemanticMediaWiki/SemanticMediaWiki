@@ -44,7 +44,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 	 *
 	 * @return CsvResultPrinter
 	 */
-	private function newInstance( $parameters = array() ) {
+	private function newInstance( $parameters = [] ) {
 		return $this->setParameters( new CsvResultPrinter( 'csv' ), $parameters );
 	}
 
@@ -65,7 +65,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 	public function testGetFileName() {
 
 		$filename = 'FooQueey';
-		$instance = $this->newInstance( array( 'filename' => $filename ) );
+		$instance = $this->newInstance( [ 'filename' => $filename ] );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -89,7 +89,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 
 		$property = $reflector->getProperty( 'fullParams' );
 		$property->setAccessible( true );
-		$property->setValue( $instance, array() );
+		$property->setValue( $instance, [] );
 
 		$method = $reflector->getMethod( 'linkFurtherResults' );
 		$method->setAccessible( true );
@@ -119,33 +119,33 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 	 */
 	public function resultDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$setup = array(
-			array( 'printRequest' => 'Foo', 'dataValue' => 'Quuey' ),
-			array( 'printRequest' => 'Bar', 'dataValue' => 'Quuey' ),
-			array( 'printRequest' => 'Bam', 'dataValue' => 'Xuuey' )
-		);
+		$setup = [
+			[ 'printRequest' => 'Foo', 'dataValue' => 'Quuey' ],
+			[ 'printRequest' => 'Bar', 'dataValue' => 'Quuey' ],
+			[ 'printRequest' => 'Bam', 'dataValue' => 'Xuuey' ]
+		];
 
 		// #0
-		$parameters = array(
+		$parameters = [
 			'headers'   => SMW_HEADERS_PLAIN,
 			'format'    => 'csv',
 			'sep'       => ',',
 			'showsep'   => false,
 			'offset'    => 0
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'parameters'  => $parameters,
 				'queryResult' => $this->buildMockQueryResult( $setup ),
 				'outputMode'  => SMW_OUTPUT_FILE
-			),
-			array(
-				'result'     => implode( ',', array(  'Foo', 'Bar', 'Bam' ) ) . "\n" .  implode( ',', array(  'Quuey', 'Quuey', 'Xuuey' ) ) . "\n"
-			)
-		);
+			],
+			[
+				'result'     => implode( ',', [  'Foo', 'Bar', 'Bam' ] ) . "\n" .  implode( ',', [  'Quuey', 'Quuey', 'Xuuey' ] ) . "\n"
+			]
+		];
 
 		return $provider;
 
@@ -156,8 +156,8 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 	 */
 	private function buildMockQueryResult( $setup ) {
 
-		$printRequests = array();
-		$resultArrays   = array();
+		$printRequests = [];
+		$resultArrays   = [];
 
 		foreach ( $setup as $value ) {
 
@@ -205,7 +205,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 
 			$resultArray = $this->getMockBuilder( '\SMWResultArray' )
 				->disableOriginalConstructor()
-				->setMethods( array( 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ) )
+				->setMethods( [ 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ] )
 				->getMock();
 
 			$resultArray->expects( $this->any() )

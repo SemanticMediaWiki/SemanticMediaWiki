@@ -136,7 +136,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -149,7 +149,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
+			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
 
 		$defaultPropertyType = '_foo';
 
@@ -166,13 +166,13 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$result
 		);
 
-		$expected = array(
+		$expected = [
 			new DIProperty( 'Foo' ),
 			42
-		);
+		];
 
 		$this->assertEquals(
-			array( $expected ),
+			[ $expected ],
 			$result
 		);
 	}
@@ -193,7 +193,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -206,7 +206,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
+			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
 
 		$defaultPropertyType = '_foo';
 
@@ -253,7 +253,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
+			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
 
 		$defaultPropertyType = '_foo';
 

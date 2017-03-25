@@ -17,7 +17,7 @@ class RebuildFulltextSearchTableTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 
@@ -47,9 +47,9 @@ class RebuildFulltextSearchTableTest extends MwDBaseUnitTestCase {
 
 	public function testCanRun() {
 
-		$this->importedTitles = array(
+		$this->importedTitles = [
 			'De Finibus Bonorum et Malorum'
-		);
+		];
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 

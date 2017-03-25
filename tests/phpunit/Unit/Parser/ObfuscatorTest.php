@@ -61,94 +61,94 @@ class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function stripTextWithAnnotationProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
+		$provider[] = [
 			'Suspendisse [[Bar::tincidunt semper|abc]] facilisi',
 			'Suspendisse abc facilisi',
 			'Suspendisse &#91;&#91;Bar::tincidunt semper|abc]] facilisi'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Suspendisse [[Bar::tincidunt semper]] facilisi',
 			'Suspendisse tincidunt semper facilisi',
 			'Suspendisse &#91;&#91;Bar::tincidunt semper]] facilisi'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Suspendisse [[:Tincidunt semper|tincidunt semper]]',
 			'Suspendisse [[:Tincidunt semper|tincidunt semper]]',
 			'Suspendisse [[:Tincidunt semper|tincidunt semper]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::Foobar::テスト]] [[Bar:::ABC|DEF]] [[Foo:::0049 30 12345678/::Foo]]',
 			'Foobar::テスト DEF :0049 30 12345678/::Foo',
 			'&#91;&#91;Foo::Foobar::テスト]] &#91;&#91;Bar:::ABC|DEF]] &#91;&#91;Foo:::0049 30 12345678/::Foo]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'%5B%5BFoo%20Bar::foobaz%5D%5D',
 			'foobaz',
 			'&#91;&#91;Foo%20Bar::foobaz]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Suspendisse tincidunt semper facilisi',
 			'Suspendisse tincidunt semper facilisi',
 			'Suspendisse tincidunt semper facilisi'
-		);
+		];
 
 		// #1747
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
 			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
 			'&#91;&#91;Foo|Bar::Foobar]] &#91;&#91;File:Example.png|alt=Bar::Foobar|Caption]] &#91;&#91;File:Example.png|Bar::Foobar|link=Foo]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::@@@]] [[Bar::@@@|123]]',
 			' 123',
 			'&#91;&#91;Foo::@@@]] &#91;&#91;Bar::@@@|123]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Suspendisse [[SMW::off]][[Bar::tincidunt semper|abc]] facilisi[[SMW::on]] [[Bar:::ABC|DEF]]',
 			'Suspendisse abc facilisi DEF',
 			'Suspendisse &#91;&#91;SMW::off]]&#91;&#91;Bar::tincidunt semper|abc]] facilisi&#91;&#91;SMW::on]] &#91;&#91;Bar:::ABC|DEF]]'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function obfuscateProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo]]',
 			'[[Foo]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo|Bar]]',
 			'[[Foo|Bar]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::[[Bar]]]]',
 			'[[Foo::&#x005B;&#x005B;Bar&#93;&#93;]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::[[Foo|Bar]]]]',
 			'[[Foo::&#x005B;&#x005B;Foo&#124;Bar&#93;&#93;]]'
-		);
+		];
 
 		return $provider;
 	}

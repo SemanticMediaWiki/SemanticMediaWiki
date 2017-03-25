@@ -107,102 +107,102 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function stringValueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::VALUE,
 			null,
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::WIKI_SHORT,
 			null,
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::HTML_SHORT,
 			null,
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::WIKI_LONG,
 			null,
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::HTML_LONG,
 			null,
 			'foo'
-		);
+		];
 
 		// > 255
 		$text = 'Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede ' .
 		'lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan ' .
 		'tincidunt Sed adipiscing nec facilisis tortor Nunc Sed ipsum tellus';
 
-		$provider[] = array(
+		$provider[] = [
 			$text,
 			StringValueFormatter::HTML_LONG,
 			null,
 			'Lorem ipsum dolor sit amet consectetuer ju <span class="smwwarning">…</span> nec facilisis tortor Nunc Sed ipsum tellus'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$text,
 			StringValueFormatter::WIKI_LONG,
 			null,
 			'Lorem ipsum dolor sit amet consectetuer ju <span class="smwwarning">…</span> nec facilisis tortor Nunc Sed ipsum tellus'
-		);
+		];
 
 		// XMLContentEncode
-		$provider[] = array(
+		$provider[] = [
 			'<foo>',
 			StringValueFormatter::HTML_LONG,
 			null,
 			'&lt;foo&gt;'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'<foo>',
 			StringValueFormatter::HTML_SHORT,
 			null,
 			'&lt;foo&gt;'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'*Foo',
 			StringValueFormatter::WIKI_LONG,
 			null,
 			"\n" . '*Foo' . "\n"
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'#Foo',
 			StringValueFormatter::WIKI_LONG,
 			null,
 			"\n" . '#Foo' . "\n"
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			':Foo',
 			StringValueFormatter::WIKI_LONG,
 			null,
 			"\n" . ':Foo' . "\n"
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'* Foo',
 			StringValueFormatter::HTML_LONG,
 			null,
 			"\n" . '* Foo' . "\n"
-		);
+		];
 
 		return $provider;
 	}

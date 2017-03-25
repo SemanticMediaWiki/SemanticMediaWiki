@@ -61,7 +61,7 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setCustomSpecialPropertyList(
-			array( '_MDAT', '_MEDIA', '_MIME' )
+			[ '_MDAT', '_MEDIA', '_MIME' ]
 		);
 
 		$this->assertEquals(
@@ -80,7 +80,7 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setCustomSpecialPropertyList(
-			array( '_MDAT', '_MEDIA', '_MIME' )
+			[ '_MDAT', '_MEDIA', '_MIME' ]
 		);
 
 		$this->assertEquals(
@@ -99,7 +99,7 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setCustomSpecialPropertyList(
-			array( '_MDAT', '_MEDIA', '_MIME' )
+			[ '_MDAT', '_MEDIA', '_MIME' ]
 		);
 
 		$this->assertEquals(
@@ -110,97 +110,97 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function propertyProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// Pre-defined property
-		$provider = array(
-			array( '_MDAT',  'smw_fpt_mdat' ),
-			array( '_CDAT',  'smw_di_time' ),
-			array( '_NEWP',  'smw_di_bool' ),
-			array( '_LEDT',  'smw_di_wikipage' ),
-			array( '_MIME',  'smw_fpt_mime' ),
-			array( '_MEDIA', 'smw_fpt_media' ),
-			array( '_TYPE',  'smw_fpt_type' ),
-			array( '_UNIT',  'smw_fpt_unit' ),
-			array( '_CONV',  'smw_fpt_conv' ),
-			array( '_PVAL',  'smw_fpt_pval' ),
-			array( '_LIST',  'smw_fpt_list' ),
-			array( '_SERV',  'smw_fpt_serv' ),
-			array( '_ASK',   'smw_fpt_ask' ),
-			array( '_ASKDE', 'smw_fpt_askde' ),
-			array( '_ASKSI', 'smw_fpt_asksi' ),
-			array( '_ASKFO', 'smw_fpt_askfo' ),
-			array( '_ASKST', 'smw_fpt_askst' ),
-			array( '_ASKDU', 'smw_fpt_askdu' ),
-			array( '_SUBP',  'smw_fpt_subp' ),
-			array( '_SUBC',  'smw_fpt_subc' ),
-			array( '_INST',  'smw_fpt_inst' ),
-			array( '_REDI',  'smw_fpt_redi' ),
-			array( '_SOBJ',  'smw_fpt_sobj' ),
-			array( '_IMPO',  'smw_fpt_impo' ),
-			array( '_URI',   'smw_fpt_uri' ),
-			array( '_CONC',  'smw_fpt_conc' ),
-		);
+		$provider = [
+			[ '_MDAT',  'smw_fpt_mdat' ],
+			[ '_CDAT',  'smw_di_time' ],
+			[ '_NEWP',  'smw_di_bool' ],
+			[ '_LEDT',  'smw_di_wikipage' ],
+			[ '_MIME',  'smw_fpt_mime' ],
+			[ '_MEDIA', 'smw_fpt_media' ],
+			[ '_TYPE',  'smw_fpt_type' ],
+			[ '_UNIT',  'smw_fpt_unit' ],
+			[ '_CONV',  'smw_fpt_conv' ],
+			[ '_PVAL',  'smw_fpt_pval' ],
+			[ '_LIST',  'smw_fpt_list' ],
+			[ '_SERV',  'smw_fpt_serv' ],
+			[ '_ASK',   'smw_fpt_ask' ],
+			[ '_ASKDE', 'smw_fpt_askde' ],
+			[ '_ASKSI', 'smw_fpt_asksi' ],
+			[ '_ASKFO', 'smw_fpt_askfo' ],
+			[ '_ASKST', 'smw_fpt_askst' ],
+			[ '_ASKDU', 'smw_fpt_askdu' ],
+			[ '_SUBP',  'smw_fpt_subp' ],
+			[ '_SUBC',  'smw_fpt_subc' ],
+			[ '_INST',  'smw_fpt_inst' ],
+			[ '_REDI',  'smw_fpt_redi' ],
+			[ '_SOBJ',  'smw_fpt_sobj' ],
+			[ '_IMPO',  'smw_fpt_impo' ],
+			[ '_URI',   'smw_fpt_uri' ],
+			[ '_CONC',  'smw_fpt_conc' ],
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Modification date',
 			'smw_fpt_mdat'
-		);
+		];
 
 		// User-defined property
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'smw_di_wikipage'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function defaultDiTypeProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// Known
-		$provider = array(
-			array( DataItem::TYPE_NUMBER, 'smw_di_number' ),
-			array( DataItem::TYPE_BLOB,'smw_di_blob' ),
-			array( DataItem::TYPE_BOOLEAN, 'smw_di_bool' ),
-			array( DataItem::TYPE_URI, 'smw_di_uri' ),
-			array( DataItem::TYPE_TIME, 'smw_di_time'),
-			array( DataItem::TYPE_GEO, 'smw_di_coords' ),
-			array( DataItem::TYPE_WIKIPAGE, 'smw_di_wikipage' ),
-			array( DataItem::TYPE_CONCEPT, '' ),
-		);
+		$provider = [
+			[ DataItem::TYPE_NUMBER, 'smw_di_number' ],
+			[ DataItem::TYPE_BLOB,'smw_di_blob' ],
+			[ DataItem::TYPE_BOOLEAN, 'smw_di_bool' ],
+			[ DataItem::TYPE_URI, 'smw_di_uri' ],
+			[ DataItem::TYPE_TIME, 'smw_di_time'],
+			[ DataItem::TYPE_GEO, 'smw_di_coords' ],
+			[ DataItem::TYPE_WIKIPAGE, 'smw_di_wikipage' ],
+			[ DataItem::TYPE_CONCEPT, '' ],
+		];
 
 		// Unknown
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			''
-		);
+		];
 
 		return $provider;
 	}
 
 	public function dataTypeProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// Known
-		$provider = array(
-			array( '_num', 'smw_di_number' ),
-			array( '_txt','smw_di_blob' ),
-			array( '_boo', 'smw_di_bool' ),
-			array( '_uri', 'smw_di_uri' ),
-			array( '_dat', 'smw_di_time'),
-			array( '_geo', 'smw_di_coords' ),
-			array( '_wpg', 'smw_di_wikipage' ),
-		);
+		$provider = [
+			[ '_num', 'smw_di_number' ],
+			[ '_txt','smw_di_blob' ],
+			[ '_boo', 'smw_di_bool' ],
+			[ '_uri', 'smw_di_uri' ],
+			[ '_dat', 'smw_di_time'],
+			[ '_geo', 'smw_di_coords' ],
+			[ '_wpg', 'smw_di_wikipage' ],
+		];
 
 		// Unknown
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			''
-		);
+		];
 
 		return $provider;
 	}

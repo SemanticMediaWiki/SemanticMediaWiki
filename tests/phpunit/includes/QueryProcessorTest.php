@@ -25,9 +25,9 @@ use SMWQueryProcessor;
 class SMWQueryProcessorTest extends MwDBaseUnitTestCase {
 
 	public function createQueryDataProvider() {
-		return array(
-			array( '[[Modification date::+]]|?Modification date|sort=Modification date|order=desc' ),
-		);
+		return [
+			[ '[[Modification date::+]]|?Modification date|sort=Modification date|order=desc' ],
+		];
 	}
 
 	/**
@@ -71,56 +71,56 @@ class SMWQueryProcessorTest extends MwDBaseUnitTestCase {
 
 	public function rawParamsProvider() {
 
-		$provider[] = array(
-			array( 'Foo', 'bar' ),
+		$provider[] = [
+			[ 'Foo', 'bar' ],
 			'Foobar'
-		);
+		];
 
-		$provider[] = array(
-			array( 'Foo=', 'Bar' ),
+		$provider[] = [
+			[ 'Foo=', 'Bar' ],
 			'Bar'
-		);
+		];
 
-		$provider[] = array(
-			array( '[[Foo::Foo=Bar]]', '+Foo' ),
+		$provider[] = [
+			[ '[[Foo::Foo=Bar]]', '+Foo' ],
 			'[[Foo::Foo=Bar]]'
-		);
+		];
 
-		$provider[] = array(
-			array( '[[Modification date::+]]', '?Modification date=Date', 'limit=1' ),
+		$provider[] = [
+			[ '[[Modification date::+]]', '?Modification date=Date', 'limit=1' ],
 			'[[Modification date::+]]'
-		);
+		];
 
-		$provider[] = array(
-			array( '?Foo', 'limit=1', '[[Modification date::+]] OR [[Foo::Foo=Bar]]' ),
+		$provider[] = [
+			[ '?Foo', 'limit=1', '[[Modification date::+]] OR [[Foo::Foo=Bar]]' ],
 			'[[Modification date::+]] OR [[Foo::Foo=Bar]]'
-		);
+		];
 
-		$provider[] = array(
-			array( '[[Modification date::+]] OR <q>[[Foo::Bar]]</q>', '?Modification date=Date', '?Foo=F', 'limit=1' ),
+		$provider[] = [
+			[ '[[Modification date::+]] OR <q>[[Foo::Bar]]</q>', '?Modification date=Date', '?Foo=F', 'limit=1' ],
 			'[[Modification date::+]] OR <q>[[Foo::Bar]]</q>'
-		);
+		];
 
-		$provider[] = array(
-			array( '[[Has url::http://example.org/api.php?action=Foo]]', '?Has url=url', 'limit=1' ),
+		$provider[] = [
+			[ '[[Has url::http://example.org/api.php?action=Foo]]', '?Has url=url', 'limit=1' ],
 			'[[Has url::http://example.org/api.php?action=Foo]]'
-		);
+		];
 
 		// Produced by smw.org, Template:Invert-property
-		$provider[] = array(
-			array( '[[Located in::Foo]]', 'link=none', 'sep=| ]][[Location of::' ),
+		$provider[] = [
+			[ '[[Located in::Foo]]', 'link=none', 'sep=| ]][[Location of::' ],
 			'[[Located in::Foo]]'
-		);
+		];
 
-		$provider[] = array(
-			array( '[[Located in::Foo]]', 'link=none', 'sep=| ]][[Location of::', '[[Has url::http://example.org/api.php?action=Foo]]' ),
+		$provider[] = [
+			[ '[[Located in::Foo]]', 'link=none', 'sep=| ]][[Location of::', '[[Has url::http://example.org/api.php?action=Foo]]' ],
 			'[[Located in::Foo]][[Has url::http://example.org/api.php?action=Foo]]'
-		);
+		];
 
-		$provider[] = array(
-			array( '[[This has a = in it]]', 'link=none', 'sep=| ]][[Location of::', '[[Has url::http://example.org/api.php?action=Foo]]' ),
+		$provider[] = [
+			[ '[[This has a = in it]]', 'link=none', 'sep=| ]][[Location of::', '[[Has url::http://example.org/api.php?action=Foo]]' ],
 			'[[This has a = in it]][[Has url::http://example.org/api.php?action=Foo]]'
-		);
+		];
 
 		return $provider;
 	}

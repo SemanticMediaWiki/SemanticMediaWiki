@@ -90,7 +90,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance
-			->setSortKeys( array( 'Foo' => 'DESC' ) )
+			->setSortKeys( [ 'Foo' => 'DESC' ] )
 			->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
@@ -124,7 +124,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance
-			->setSortKeys( array( 'Bar' => 'DESC' ) )
+			->setSortKeys( [ 'Bar' => 'DESC' ] )
 			->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
@@ -159,7 +159,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance
-			->setSortKeys( array( '' => 'DESC' ) )
+			->setSortKeys( [ '' => 'DESC' ] )
 			->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
@@ -190,7 +190,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
-		$instance->setSortKeys( array( 'Foo', 'ASC' ) );
+		$instance->setSortKeys( [ 'Foo', 'ASC' ] );
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->getConditionFrom( $description );
@@ -381,12 +381,12 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryForPropertyConjunction() {
 
-		$conjunction = new Conjunction( array(
+		$conjunction = new Conjunction( [
 			new SomeProperty(
 				new DIProperty( 'Foo' ), new ValueDescription( new DIBlob( 'SomePropertyValue' ) ) ),
 			new SomeProperty(
 				new DIProperty( 'Bar' ), new ThingDescription() ),
-		) );
+		] );
 
 		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
@@ -412,14 +412,14 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryForPropertyConjunctionWithGreaterLessEqualFilter() {
 
-		$conjunction = new Conjunction( array(
+		$conjunction = new Conjunction( [
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
 				new ValueDescription( new DINumber( 1 ), null, SMW_CMP_GEQ ) ),
 			new SomeProperty(
 				new DIProperty( 'Bar' ),
 				new ValueDescription( new DINumber( 9 ), null, SMW_CMP_LEQ ) ),
-		) );
+		] );
 
 		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
@@ -447,10 +447,10 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryForPropertyDisjunction() {
 
-		$conjunction = new Disjunction( array(
+		$conjunction = new Disjunction( [
 			new SomeProperty( new DIProperty( 'Foo' ), new ThingDescription() ),
 			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() )
-		) );
+		] );
 
 		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
@@ -480,14 +480,14 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryForPropertyDisjunctionWithLikeNotLikeFilter() {
 
-		$conjunction = new Disjunction( array(
+		$conjunction = new Disjunction( [
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
 				new ValueDescription( new DIBlob( "AA*" ), null, SMW_CMP_LIKE ) ),
 			new SomeProperty(
 				new DIProperty( 'Bar' ),
 				new ValueDescription( new DIBlob( "BB?" ), null, SMW_CMP_NLKE )  )
-		) );
+		] );
 
 		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
@@ -586,10 +586,10 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$disjunction = new Disjunction( array(
+		$disjunction = new Disjunction( [
 			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
 			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
-		) );
+		] );
 
 		$description = new SomeProperty(
 			$property,
@@ -632,7 +632,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
-		$conjunction = new Conjunction( array(
+		$conjunction = new Conjunction( [
 			new ClassDescription( $category ),
 			new SomeProperty(
 				DIProperty::newFromUserLabel( 'Located in' ),
@@ -640,7 +640,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 					new DIWikiPage( 'Outback', NS_MAIN ),
 					DIProperty::newFromUserLabel( 'Located in' ) )
 				)
-			)
+			]
 		);
 
 		$description = new SomeProperty(
@@ -781,8 +781,8 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
-			->setConstructorArgs( array( 'Bar', NS_MAIN ) )
-			->setMethods( array( 'getTitle' ) )
+			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
+			->setMethods( [ 'getTitle' ] )
 			->getMock();
 
 		$diWikiPage->expects( $this->atLeastOnce() )
@@ -798,8 +798,8 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
-			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
-			->setMethods( array( 'canUseQFeature' ) )
+			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
+			->setMethods( [ 'canUseQFeature' ] )
 			->getMock();
 
 		$instance->expects( $this->at( 0 ) )
@@ -838,8 +838,8 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
-			->setConstructorArgs( array( 'Bar', NS_MAIN ) )
-			->setMethods( array( 'getTitle' ) )
+			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
+			->setMethods( [ 'getTitle' ] )
 			->getMock();
 
 		$diWikiPage->expects( $this->atLeastOnce() )
@@ -849,8 +849,8 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description = new ValueDescription( $diWikiPage, null );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
-			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
-			->setMethods( array( 'canUseQFeature' ) )
+			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
+			->setMethods( [ 'canUseQFeature' ] )
 			->getMock();
 
 		$instance->expects( $this->at( 0 ) )

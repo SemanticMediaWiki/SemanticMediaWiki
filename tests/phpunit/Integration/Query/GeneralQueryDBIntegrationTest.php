@@ -29,7 +29,7 @@ use SMWQuery as Query;
  */
 class GeneralQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
+	private $subjectsToBeCleared = [];
 	private $subject;
 
 	private $dataValueFactory;
@@ -86,9 +86,9 @@ class GeneralQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->searchForResultsThatCompareEqualToOnlySingularPropertyOf( $property )->getResults()
 		);
 
-		$this->subjectsToBeCleared = array(
+		$this->subjectsToBeCleared = [
 			$semanticData->getSubject()
-		);
+		];
 	}
 
 	public function testUserDefinedPropertyUsedForInvalidValueAssignment() {
@@ -108,9 +108,9 @@ class GeneralQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->searchForResultsThatCompareEqualToOnlySingularPropertyOf( $property )->getCount()
 		);
 
-		$this->subjectsToBeCleared = array(
+		$this->subjectsToBeCleared = [
 			$semanticData->getSubject()
-		);
+		];
 	}
 
 	private function searchForResultsThatCompareEqualToOnlySingularPropertyOf( DIProperty $property ) {

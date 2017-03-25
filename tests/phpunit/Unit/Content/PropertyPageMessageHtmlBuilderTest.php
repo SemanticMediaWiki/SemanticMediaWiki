@@ -28,7 +28,7 @@ class PropertyPageMessageHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getPropertyTableInfoFetcher' ) )
+			->setMethods( [ 'getPropertyTableInfoFetcher' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
@@ -68,13 +68,13 @@ class PropertyPageMessageHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemFactory = new DataItemFactory();
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( 'Foo' )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( '_MDAT' )
-		);
+		];
 
 		return $provider;
 	}

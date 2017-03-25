@@ -76,13 +76,13 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 		$instance->addFromDesciption( $description );
 
 		$this->assertEquals(
-			array(
+			[
 				'abc' => 0,
 				'Foo' => 1,
 				123 => 2,
 				'bar' => 1,
 				456 => 2
-			),
+			],
 			$instance->getTokens()
 		);
 	}
@@ -119,14 +119,14 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $dataItemFactory->newDIBlob( 'abc Foo 123' ) ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
-			array(
+			[
 				'abc' => 0,
 				'Foo' => 1,
 				123 => 2
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
@@ -147,26 +147,26 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $dataItemFactory->newDIBlob( 'abc Foo 123 foobar' ) ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			'Lorem abc foobar',
 			QueryToken::HL_BOLD,
 			"Lorem <b>abc</b> <b>foo</b>bar"
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			'Lorem abc foobar',
 			QueryToken::HL_WIKI,
 			"Lorem '''abc''' '''foo'''bar"
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			'Lorem abc foobar',
 			QueryToken::HL_UNDERLINE,
 			"Lorem <u>abc</u> <u>foo</u>bar"
-		);
+		];
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
@@ -180,19 +180,19 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $dataItemFactory->newDIBlob( 'integer porttitor portt' ) ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			'Integer porttitor mi id ante consequat consequat <b>porttitor</b>',
 			QueryToken::HL_BOLD,
 			"<b>Integer</b> <b>porttitor</b> mi id ante consequat consequat <b><b>porttitor</b></b>"
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			'Integer porttitor mi id ante consequat consequat <b>porttitor</b>',
 			QueryToken::HL_SPAN,
 			"<span class='smw-query-token'>Integer</span> <span class='smw-query-token'>porttitor</span> mi id ante consequat consequat <b><span class='smw-query-token'>porttitor</span></b>"
-		);
+		];
 
 		return $provider;
 	}

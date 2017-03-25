@@ -58,7 +58,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$editInfo = (object)array();
+		$editInfo = (object)[];
 		$editInfo->output = new ParserOutput();
 		$editInfo->output->setExtensionData( \SMW\ParserData::DATA_ID, $semanticData );
 
@@ -91,12 +91,12 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$instance = $this->getMock( '\SMW\MediaWiki\EditInfoProvider',
-			array( 'hasContentForEditMethod' ),
-			array(
+			[ 'hasContentForEditMethod' ],
+			[
 				$parameters['wikiPage'],
 				$parameters['revision'],
 				null
-			)
+			]
 		);
 
 		$instance->expects( $this->any() )
@@ -115,7 +115,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$prepareTextForEditExists = method_exists( '\WikiPage', 'prepareTextForEdit' );
 
 		#0 No parserOutput object
-		$editInfo = (object)array();
+		$editInfo = (object)[];
 		$editInfo->output = null;
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -132,14 +132,14 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 				->will( $this->returnValue( $editInfo ) );
 		}
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub()
-			),
+			],
 			null
-		);
+		];
 
 		#1
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -156,17 +156,17 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 				->will( $this->returnValue( false ) );
 		}
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => false,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub()
-			),
+			],
 			null
-		);
+		];
 
 		#2
-		$editInfo = (object)array();
+		$editInfo = (object)[];
 		$editInfo->output = new ParserOutput();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -183,17 +183,17 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 				->will( $this->returnValue( $editInfo ) );
 		}
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub()
-			),
+			],
 			$editInfo->output
-		);
+		];
 
 		#3
-		$editInfo = (object)array();
+		$editInfo = (object)[];
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -209,14 +209,14 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 				->will( $this->returnValue( $editInfo ) );
 		}
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub()
-			),
+			],
 			null
-		);
+		];
 
 		return $provider;
 	}
@@ -233,10 +233,10 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$revision->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValueMap( array(
-				array( \Revision::RAW, null, 'Foo' ),
-				array( \Revision::FOR_PUBLIC, null, $this->newContentStub() ),
-			) ) );
+			->will( $this->returnValueMap( [
+				[ \Revision::RAW, null, 'Foo' ],
+				[ \Revision::FOR_PUBLIC, null, $this->newContentStub() ],
+			] ) );
 
 		return $revision;
 	}

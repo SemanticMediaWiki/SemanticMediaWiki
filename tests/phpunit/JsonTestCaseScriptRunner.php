@@ -44,7 +44,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	/**
 	 * @var array
 	 */
-	private $itemsMarkedForDeletion = array();
+	private $itemsMarkedForDeletion = [];
 
 	/**
 	 * @var boolean
@@ -114,7 +114,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 * @return array
 	 */
 	protected function getAllowedTestCaseFiles() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -132,7 +132,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 		// Filter specific files on-the-fly
 		$allowedTestCaseFiles = $this->getAllowedTestCaseFiles();
 
-		if ( $allowedTestCaseFiles === array() ) {
+		if ( $allowedTestCaseFiles === [] ) {
 			return true;
 		}
 
@@ -165,7 +165,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 */
 	public function jsonFileProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider(
 			$this->getTestCaseLocation()
@@ -174,7 +174,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 		$bulkFileProvider->searchByFileExtension( $this->searchByFileExtension );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
-			$provider[basename( $file )] = array( $file );
+			$provider[basename( $file )] = [ $file ];
 		}
 
 		return $provider;

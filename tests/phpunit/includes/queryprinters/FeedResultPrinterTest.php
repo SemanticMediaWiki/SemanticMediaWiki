@@ -39,7 +39,7 @@ class FeedResultPrinterTest extends QueryPrinterTestCase {
 	 *
 	 * @return FeedResultPrinter
 	 */
-	private function newInstance( $parameters = array() ) {
+	private function newInstance( $parameters = [] ) {
 		return $this->setParameters( new FeedResultPrinter( 'feed' ), $parameters );
 	}
 
@@ -80,24 +80,24 @@ class FeedResultPrinterTest extends QueryPrinterTestCase {
 	 */
 	public function textDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0
 		// http://www.utexas.edu/learn/html/spchar.html
-		$provider[] = array(
-			array(
-				'items'       => array(),
+		$provider[] = [
+			[
+				'items'       => [],
 				'pageContent' => 'Semantic MediaWiki Conference, have been announced: it will be held at' .
 					'[http://www.aohostels.com/en/tagungen/tagungen-berlin/ A&O Berlin Hauptbahnhof]' .
 					'&¢©«»—¡¿,åÃãÆç'
-			),
-			array(
+			],
+			[
 				'text'        => 'Semantic MediaWiki Conference, have been announced: it will be held at' .
 					'[http://www.aohostels.com/en/tagungen/tagungen-berlin/ A&O Berlin Hauptbahnhof]' .
 					'&¢©«»—¡¿,åÃãÆç'
-			),
-			array( 'info'     => 'text enconding including html special characters' )
-		);
+			],
+			[ 'info'     => 'text enconding including html special characters' ]
+		];
 
 		return $provider;
 

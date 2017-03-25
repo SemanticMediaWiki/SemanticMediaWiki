@@ -21,7 +21,7 @@ class LazyDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		return '\SMW\MediaWiki\LazyDBConnectionProvider';
 	}
 
-	private function newInstance( $connectionId = DB_SLAVE, $groups = array(), $wiki = false ) {
+	private function newInstance( $connectionId = DB_SLAVE, $groups = [], $wiki = false ) {
 		return new LazyDBConnectionProvider( $connectionId, $groups, $wiki );
 	}
 

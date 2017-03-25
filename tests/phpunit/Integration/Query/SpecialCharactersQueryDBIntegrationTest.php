@@ -33,7 +33,7 @@ use SMWQuery as Query;
  */
 class SpecialCharactersQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
+	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 
 	private $dataValueFactory;
@@ -103,9 +103,9 @@ class SpecialCharactersQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$query->querymode = Query::MODE_INSTANCES;
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			array(
+			[
 				$semanticData->getSubject(),
-				$subobject->getSubject() ),
+				$subobject->getSubject() ],
 			$this->getStore()->getQueryResult( $query )
 		);
 
@@ -114,49 +114,49 @@ class SpecialCharactersQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->getStore()->getQueryResult( $query )
 		);
 
-		$this->subjectsToBeCleared = array(
+		$this->subjectsToBeCleared = [
 			$semanticData->getSubject(),
 			$subobject->getSubject(),
 			$property->getDIWikiPage()
-		);
+		];
 	}
 
 	public function specialCharactersNameProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'特殊文字',
 			'Nuñez',
 			DIProperty::newFromUserLabel( '特殊文字' )->setPropertyTypeId( '_txt' ),
 			new DIBlob( 'Nuñez' )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'特殊字符',
 			'^[0-9]*$',
 			DIProperty::newFromUserLabel( '特殊字符' )->setPropertyTypeId( '_txt' ),
 			new DIBlob( '^[0-9]*$' )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Caractères spéciaux',
 			'Caractères_spéciaux',
 			DIProperty::newFromUserLabel( 'Caractères spéciaux' )->setPropertyTypeId( '_wpg' ),
 			new DIWikiPage( 'âêîôûëïçé', NS_MAIN )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'áéíóúñÑü¡¿',
 			'áéíóúñÑü¡¿',
 			DIProperty::newFromUserLabel( 'áéíóúñÑü¡¿' )->setPropertyTypeId( '_num' ),
 			new DINumber( 8888 )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'{({[[&,,;-]]})}',
 			DIProperty::newFromUserLabel( '{({[[&,,;-]]})}' )->setPropertyTypeId( '_wpg' ),
 			new DIWikiPage( '{({[[&,,;-]]})}', NS_MAIN )
-		);
+		];
 
 		return $provider;
 	}

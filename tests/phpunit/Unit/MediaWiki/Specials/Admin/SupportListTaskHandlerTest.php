@@ -44,7 +44,7 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetHtml() {
 
-		$methods = array(
+		$methods = [
 			'setName',
 			'setMethod',
 			'addHiddenField',
@@ -52,7 +52,7 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			'addParagraph',
 			'addSubmitButton',
 			'setActionUrl'
-		);
+		];
 
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )

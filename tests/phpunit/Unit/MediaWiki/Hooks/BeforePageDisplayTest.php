@@ -93,14 +93,14 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPageLanguage' )
 			->will( $this->returnValue( $language ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $title
-			),
-			array(
+			],
+			[
 				'result' => true
-			)
-		);
+			]
+		];
 
 		#1 as SpecialPage
 		$title = MockTitle::buildMock();
@@ -113,14 +113,14 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPageLanguage' )
 			->will( $this->returnValue( $language ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $title
-			),
-			array(
+			],
+			[
 				'result' => false
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

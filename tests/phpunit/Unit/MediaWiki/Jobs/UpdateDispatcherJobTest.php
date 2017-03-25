@@ -31,10 +31,10 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$settings = Settings::newFromArray( array(
+		$settings = Settings::newFromArray( [
 			'smwgCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false
-		) );
+		] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -68,7 +68,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new UpdateDispatcherJob( $title, array() );
+		$instance = new UpdateDispatcherJob( $title, [] );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertNull( $instance->pushToJobQueue() );
@@ -80,22 +80,22 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array(
+			->setMethods( [
 				'getProperties',
-				'getInProperties' ) )
+				'getInProperties' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$instance = new UpdateDispatcherJob( $title, array() );
+		$instance = new UpdateDispatcherJob( $title, [] );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
@@ -107,32 +107,32 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array(
+			->setMethods( [
 				'getProperties',
 				'getInProperties',
 				'getAllPropertySubjects',
-				'getPropertySubjects' ) )
+				'getPropertySubjects' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$instance = new UpdateDispatcherJob( $title, array() );
+		$instance = new UpdateDispatcherJob( $title, [] );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
@@ -148,16 +148,16 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array(
+			->setMethods( [
 				'getAllPropertySubjects',
 				'getProperties',
 				'getInProperties',
-				'getPropertySubjects' ) )
+				'getPropertySubjects' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnCallback( array( $this, 'mockStoreAllPropertySubjectsCallback' ) ) );
+			->will( $this->returnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
@@ -169,11 +169,11 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$instance = new UpdateDispatcherJob( $setup['title'], array() );
+		$instance = new UpdateDispatcherJob( $setup['title'], [] );
 		$instance->isEnabledJobQueue( false );
 		$instance->run();
 
@@ -192,25 +192,25 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			new SemanticData( DIWikiPage::newFromTitle( $setup['title'] )
 		) );
 
-		$additionalJobQueueParameters = array(
+		$additionalJobQueueParameters = [
 			'semanticData' => $semanticData
-		);
+		];
 
 		$this->expectedProperty = $setup['property'];
 		$this->expectedSubjects = $setup['subjects'];
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array(
+			->setMethods( [
 				'getAllPropertySubjects',
 				'getProperties',
 				'getInProperties',
-				'getPropertySubjects' ) )
+				'getPropertySubjects' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnCallback( array( $this, 'mockStoreAllPropertySubjectsCallback' ) ) );
+			->will( $this->returnCallback( [ $this, 'mockStoreAllPropertySubjectsCallback' ] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
@@ -222,7 +222,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -238,48 +238,48 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function subjectDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		$duplicate = $this->makeSubjectFromText( 'Foo' );
 
-		$subjects = array(
+		$subjects = [
 			$duplicate,
 			$this->makeSubjectFromText( 'Bar' ),
 			$this->makeSubjectFromText( 'Baz' ),
 			$duplicate,
 			$this->makeSubjectFromText( 'Yon' )
-		);
+		];
 
 		$count = count( $subjects ) - 1; // eliminate duplicate count
 		$title =  Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'      => $title,
 				'subjects'   => $subjects,
 				'property'   => $property,
-				'properties' => array()
-			),
-			array(
+				'properties' => []
+			],
+			[
 				'count' => $count
-			)
-		);
+			]
+		];
 
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'      => $title,
-				'subjects'   => array( DIWikiPage::newFromTitle( $title ) ),
+				'subjects'   => [ DIWikiPage::newFromTitle( $title ) ],
 				'property'   => $property,
-				'properties' => array( $property )
-			),
-			array(
+				'properties' => [ $property ]
+			],
+			[
 				'count' => 1
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
@@ -293,7 +293,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	 * @return DIWikiPage[]
 	 */
 	public function mockStoreAllPropertySubjectsCallback( DIProperty $property ) {
-		return $this->expectedProperty == $property ? $this->expectedSubjects : array();
+		return $this->expectedProperty == $property ? $this->expectedSubjects : [];
 	}
 
 	protected function makeSubjectFromText( $text ) {

@@ -138,9 +138,9 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 			$this->containerBuilder
 		);
 
-		$instance->importExtraneousFunctions( array(
+		$instance->importExtraneousFunctions( [
 			'Foo' => function() { return 'Foo'; }
-		) );
+		] );
 	}
 
 	public function testNewExtraneousFunctionByName() {

@@ -29,11 +29,11 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$settings = array(
-			'smwgDeclarationProperties' => array(),
+		$settings = [
+			'smwgDeclarationProperties' => [],
 			'smwgCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false
-		);
+		];
 
 		$this->testEnvironment = new TestEnvironment( $settings );
 		$this->dataItemFactory = new DataItemFactory();
@@ -127,13 +127,13 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSemanticDataParserOuputUpdateIntegration() {
 
-		$settings = array(
+		$settings = [
 			'smwgCacheType'             => 'hash',
 			'smwgEnableUpdateJobs'      => false,
 			'smwgUseCategoryHierarchy'  => false,
 			'smwgCategoriesAsInstances' => true,
 			'smwgShowHiddenCategories'  => true
-		);
+		];
 
 		$this->testEnvironment->withConfiguration( $settings );
 
@@ -152,11 +152,11 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			$instance->process( $text  )
 		);
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 2,
-			'propertyKeys'   => array( '_INST', '_SKEY' ),
-			'propertyValues' => array( 'Foo', 'Bar', $title->getText() ),
-		);
+			'propertyKeys'   => [ '_INST', '_SKEY' ],
+			'propertyValues' => [ 'Foo', 'Bar', $title->getText() ],
+		];
 
 		$parserData = $this->applicationFactory->newParserData(
 			$title,
@@ -193,15 +193,15 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 5001 ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'store'    => $store,
 				'title'    => $title,
 				'cache-contains' => true,
 				'cache-fetch'    => true,
 				'data-status' => true
-			)
-		);
+			]
+		];
 
 		#1 No cache entry, no store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
@@ -221,15 +221,15 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'inNamespace' )
 			->will( $this->returnValue( false ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'store'    => $store,
 				'title'    => $title,
 				'cache-contains' => false,
 				'cache-fetch'    => false,
 				'data-status' => true
-			)
-		);
+			]
+		];
 
 		#2 SpecialPage, no store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
@@ -245,15 +245,15 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'store'    => $store,
 				'title'    => $title,
 				'cache-contains' => false,
 				'cache-fetch'    => false,
 				'data-status' => true
-			)
-		);
+			]
+		];
 
 		#3 NS_FILE, no store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
@@ -273,15 +273,15 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_FILE ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'store'    => $store,
 				'title'    => $title,
 				'cache-contains' => true,
 				'cache-fetch'    => true,
 				'data-status' => true
-			)
-		);
+			]
+		];
 
 		#4, 1131, No store update when fetch return FALSE
 		$store = $this->getMockBuilder( 'SMW\Store' )
@@ -305,15 +305,15 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 5001 ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'store'    => $store,
 				'title'    => $title,
 				'cache-contains' => true,
 				'cache-fetch'    => false,
 				'data-status' => true
-			)
-		);
+			]
+		];
 
 		#5, 1410 displaytitle
 		$store = $this->getMockBuilder( 'SMW\Store' )
@@ -337,16 +337,16 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 5001 ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'store'    => $store,
 				'title'    => $title,
 				'cache-contains' => true,
 				'cache-fetch'    => true,
 				'data-status' => false,
 				'displaytitle' => 'Foo'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

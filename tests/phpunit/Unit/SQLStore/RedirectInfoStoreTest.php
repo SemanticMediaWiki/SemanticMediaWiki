@@ -46,9 +46,9 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array(
+				$this->equalTo( [
 					's_title' => 'Foo',
-					's_namespace' => 0 ) ) )
+					's_namespace' => 0 ] ) )
 			->will( $this->returnValue( $row ) );
 
 		$instance = new RedirectInfoStore(
@@ -88,9 +88,9 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array(
+				$this->equalTo( [
 					's_title' => 'Foo',
-					's_namespace' => 0 ) ) )
+					's_namespace' => 0 ] ) )
 			->will( $this->returnValue( false ) );
 
 		$instance = new RedirectInfoStore( $connection );
@@ -111,10 +111,10 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'insert' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array(
+				$this->equalTo( [
 					's_title' => 'Foo',
 					's_namespace' => 0,
-					'o_id' => 42 ) ) );
+					'o_id' => 42 ] ) );
 
 		$instance = new RedirectInfoStore(
 			$connection
@@ -138,9 +138,9 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array(
+				$this->equalTo( [
 					's_title' => 'Foo',
-					's_namespace' => 9001 ) ) );
+					's_namespace' => 9001 ] ) );
 
 		$instance = new RedirectInfoStore( $connection );
 		$instance->deleteRedirectEntry( 'Foo', 9001 );

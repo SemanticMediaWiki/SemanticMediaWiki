@@ -54,11 +54,11 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->compositePropertyTableDiffIterator->expects( $this->once() )
 			->method( 'getOrderedDiffByTable' )
-			->will( $this->returnValue( array( 'Foo' => 'Bar' ) ) );
+			->will( $this->returnValue( [ 'Foo' => 'Bar' ] ) );
 
 		$instance = new TempChangeOpStore(
 			$this->cache
@@ -77,7 +77,7 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->compositePropertyTableDiffIterator->expects( $this->once() )
 			->method( 'getOrderedDiffByTable' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new TempChangeOpStore(
 			$this->cache
@@ -102,10 +102,10 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNewTableChangeOpsFrom() {
 
-		$res = array(
-			'Foo' => array( 'Bar' ),
-			'Foobar' => array( 'baz' )
-		);
+		$res = [
+			'Foo' => [ 'Bar' ],
+			'Foobar' => [ 'baz' ]
+		];
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )

@@ -55,7 +55,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 
 	public function testPredefinedModificationDatePropertyAndChangedDefaultsortForNewPage() {
 
-		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
+		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
@@ -67,11 +67,11 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 			DITime::newFromTimestamp( $this->pageCreator->getPage()->getTimestamp() )
 		);
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 2,
-			'propertyKeys'   => array( '_MDAT', '_SKEY' ),
-			'propertyValues' => array( $dvPageModificationTime->getISO8601Date(), 'SortForFoo' ),
-		);
+			'propertyKeys'   => [ '_MDAT', '_SKEY' ],
+			'propertyValues' => [ $dvPageModificationTime->getISO8601Date(), 'SortForFoo' ],
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -81,7 +81,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 
 	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
 
-		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', array() );
+		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [] );
 
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
@@ -90,11 +90,11 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 			->createPage( $title )
 			->doEdit( '{{DEFAULTSORT:SortForFoo}} [[Category:SingleCategory]]' );
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 2,
-			'propertyKeys'   => array( '_SKEY', '_INST' ),
-			'propertyValues' => array( 'SortForFoo', 'SingleCategory' ),
-		);
+			'propertyKeys'   => [ '_SKEY', '_INST' ],
+			'propertyValues' => [ 'SortForFoo', 'SingleCategory' ],
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,

@@ -52,116 +52,116 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 	public function textProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			false,
 			'Foo',
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
 			''
-		);
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			'-Foo',
 			false,
 			'-Foo',
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
 			''
-		);
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'-Foo=Bar',
 			false,
 			'Bar',
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
 			''
-		);
+		];
 
 		#3
 		 // Category
 		$categoryName = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
-		$provider[] = array(
+		$provider[] = [
 			'Category',
 			false,
 			$categoryName,
 			PrintRequest::PRINT_CATS,
 			null,
 			''
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			'Bar#foobar',
 			false,
 			'Bar',
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
 			'foobar'
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			'Foo#',
 			false,
 			'Foo',
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
 			'-'
-		);
+		];
 
 		#6, 1464
-		$provider[] = array(
+		$provider[] = [
 			'Has boolean#<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>=Label on (&#10003;,&#10005;)',
 			false,
 			'Label on (&#10003;,&#10005;)',
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
 			'<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>'
-		);
+		];
 
 		#7
-		$provider[] = array(
+		$provider[] = [
 			'Foo.Bar',
 			false,
 			'Bar',
 			PrintRequest::PRINT_CHAIN,
 			PropertyChainValue::class,
 			''
-		);
+		];
 
 		#8
-		$provider[] = array(
+		$provider[] = [
 			'Foo.Bar#foobar',
 			false,
 			'Bar',
 			PrintRequest::PRINT_CHAIN,
 			PropertyChainValue::class,
 			'foobar'
-		);
+		];
 
 		#9 ...
-		$provider[] = array(
+		$provider[] = [
 			'Foo = <span style="color: green; font-size: 120%;">Label</span>',
 			false,
 			'<span style="color: green; font-size: 120%;">Label</span>',
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
 			''
-		);
+		];
 
 		#10 ...
-		$provider[] = array(
+		$provider[] = [
 			'Foo#Bar = <span style="color: green; font-size: 120%;">Label</span>',
 			false,
 			'<span style="color: green; font-size: 120%;">Label</span>',
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
 			'Bar'
-		);
+		];
 
 		return $provider;
 	}

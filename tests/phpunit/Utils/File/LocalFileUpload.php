@@ -167,7 +167,7 @@ class LocalFileUpload extends UploadBase {
 
 	private function createReadablePath( $path ) {
 
-		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $path );
+		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $path );
 
 		if ( is_readable( $path ) ) {
 			return $path;

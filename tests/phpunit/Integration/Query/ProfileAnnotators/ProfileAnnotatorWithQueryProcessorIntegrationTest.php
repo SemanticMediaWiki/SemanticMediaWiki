@@ -68,26 +68,26 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 
 		$categoryNS = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
 
-		$provider = array();
+		$provider = [];
 
 		// #0
 		// {{#ask: [[Modification date::+]]
 		// |?Modification date
 		// |format=list
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'',
 				'[[Modification date::+]]',
 				'?Modification date',
 				'format=list'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]' )
-			)
-		);
+				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ],
+				'propertyValues' => [ 'list', 1, 1, '[[Modification date::+]]' ]
+			]
+		];
 
 		// #1
 		// {{#ask: [[Modification date::+]][[Category:Foo]]
@@ -95,20 +95,20 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 		// |?Has title
 		// |format=list
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'',
 				'[[Modification date::+]][[Category:Foo]]',
 				'?Modification date',
 				'?Has title',
 				'format=list'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'list', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
-			)
-		);
+				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ],
+				'propertyValues' => [ 'list', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" ]
+			]
+		];
 
 		// #2 Unknown format, default table
 		// {{#ask: [[Modification date::+]][[Category:Foo]]
@@ -116,20 +116,20 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 		// |?Has title
 		// |format=bar
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'',
 				'[[Modification date::+]][[Category:Foo]]',
 				'?Modification date',
 				'?Has title',
 				'format=bar'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'table', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
-			)
-		);
+				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ],
+				'propertyValues' => [ 'table', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" ]
+			]
+		];
 
 		return $provider;
 	}

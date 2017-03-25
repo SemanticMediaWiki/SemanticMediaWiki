@@ -80,7 +80,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'en' ) );
 
 		$instanceSpy = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'hasLanguage' ) )
+			->setMethods( [ 'hasLanguage' ] )
 			->getMock();
 
 		$instanceSpy->expects( $this->once() )
@@ -111,28 +111,28 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'Foo', 'SimpleText' );
 
 		$this->assertEquals(
-			array(
+			[
 				'inserts' => 1,
 				'deletes' => 0,
 				'max'     => 1000,
 				'count'   => 1,
 				'hits'    => 0,
 				'misses'  => 1
-			),
+			],
 			$instance->getCache()->getStats()
 		);
 
 		$instance->get( 'Foo', 'SimpleText', 'ooo' );
 
 		$this->assertEquals(
-			array(
+			[
 				'inserts' => 2,
 				'deletes' => 0,
 				'max'     => 1000,
 				'count'   => 2,
 				'hits'    => 0,
 				'misses'  => 2
-			),
+			],
 			$instance->getCache()->getStats()
 		);
 
@@ -140,14 +140,14 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'Foo', 'SimpleText' );
 
 		$this->assertEquals(
-			array(
+			[
 				'inserts' => 2,
 				'deletes' => 0,
 				'max'     => 1000,
 				'count'   => 2,
 				'hits'    => 1,
 				'misses'  => 2
-			),
+			],
 			$instance->getCache()->getStats()
 		);
 
@@ -163,7 +163,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'[2,"Foo"]',
-			Message::encode( array( 'Foo' ) )
+			Message::encode( [ 'Foo' ] )
 		);
 
 		$this->assertEquals(

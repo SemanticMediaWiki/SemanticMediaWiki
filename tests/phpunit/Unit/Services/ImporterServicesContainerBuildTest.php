@@ -41,16 +41,16 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 
 		$containerBuilder->registerObject( 'PageCreator', $this->pageCreator );
 
-		$containerBuilder->registerObject( 'Settings', new Settings( array(
+		$containerBuilder->registerObject( 'Settings', new Settings( [
 			'smwgImportReqVersion' => 1,
 			'smwgImportFileDir' => 'foo'
-		) ) );
+		] ) );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'ImporterServices.php' );
 
 		$this->assertInstanceOf(
 			$expected,
-			call_user_func_array( array( $containerBuilder, 'create' ), $parameters )
+			call_user_func_array( [ $containerBuilder, 'create' ], $parameters )
 		);
 	}
 
@@ -60,23 +60,23 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			'ContentsImporter',
-			array( $importContentsIterator ),
+			[ $importContentsIterator ],
 			'\SMW\Importer\ContentsImporter'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'JsonImportContentsIterator',
-			array(),
+			[],
 			'\SMW\Importer\JsonImportContentsIterator'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'JsonContentsImporter',
-			array(),
+			[],
 			'\SMW\Importer\ContentsImporter'
-		);
+		];
 
 		return $provider;
 	}

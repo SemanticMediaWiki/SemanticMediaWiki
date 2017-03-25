@@ -51,9 +51,9 @@ class TempChangeOpPurgeJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRun() {
 
-		$parameters = array(
+		$parameters = [
 			'slot:id' => 42
-		);
+		];
 
 		$this->tempChangeOpStore->expects( $this->once() )
 			->method( 'delete' );

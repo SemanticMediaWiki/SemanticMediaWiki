@@ -50,7 +50,7 @@ class BenchmarkJsonScriptRunnerTest extends JsonTestCaseScriptRunner {
 	/**
 	 * @var array
 	 */
-	private $benchmarkReports = array();
+	private $benchmarkReports = [];
 
 	/**
 	 * @see JsonTestCaseScriptRunner::$deletePagesOnTearDown
@@ -128,7 +128,7 @@ class BenchmarkJsonScriptRunnerTest extends JsonTestCaseScriptRunner {
 	 * @see JsonTestCaseScriptRunner::getAllowedTestCaseFiles
 	 */
 	protected function getAllowedTestCaseFiles() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -153,12 +153,12 @@ class BenchmarkJsonScriptRunnerTest extends JsonTestCaseScriptRunner {
 			$this->benchmarkReports
 		);
 
-		$report = array(
+		$report = [
 			'mediawiki' => $GLOBALS['wgVersion'],
 			'semantic-mediawiki' => \SemanticMediaWiki::getVersion(),
 			'environment' => \SemanticMediaWiki::getEnvironment(),
 			'benchmarks' => $this->benchmarkReports
-		);
+		];
 
 		$outputCliFormatter = new OutputCliFormatter( OutputCliFormatter::FORMAT_TREE );
 

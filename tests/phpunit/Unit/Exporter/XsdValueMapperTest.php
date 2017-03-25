@@ -51,53 +51,53 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 	public function supportedDataItemProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDINumber( 42 ),
 			'42',
 			'double'
-		);
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDIBlob( 'Test' ),
 			'Test',
 			'string'
-		);
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDIBoolean( true ),
 			'true',
 			'boolean'
-		);
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDITime( 1, '1970' ),
 			'1970',
 			'gYear'
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDITime( 1, '1970', '12' ),
 			'1970-12',
 			'gYearMonth'
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDITime( 1, '1970', '12', '31' ),
 			'1970-12-31Z',
 			'date'
-		);
+		];
 
 		#6
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDITime( 1, '1970', '12', '31', '12' ),
 			'1970-12-31T12:00:00Z',
 			'dateTime'
-		);
+		];
 
 		return $provider;
 	}
@@ -106,7 +106,7 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
-			->setMethods( array( '__toString' ) )
+			->setMethods( [ '__toString' ] )
 			->getMockForAbstractClass();
 
 		$dataItem->expects( $this->any() )
@@ -114,44 +114,44 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'Foo' ) );
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			$dataItem
-		);
+		];
 
 		#1
-		$provider[] = array(
-			new \SMWDIGeoCoord( array( 'lat' => 52, 'lon' => 1 ) )
-		);
+		$provider[] = [
+			new \SMWDIGeoCoord( [ 'lat' => 52, 'lon' => 1 ] )
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDIConcept( 'Foo', '', '', '', '' )
-		);
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDIUri( 'http', '//example.org', '', '' )
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDIContainer( new \SMWContainerSemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ) )
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN )
-		);
+		];
 
 		#6
-		$provider[] = array(
+		$provider[] = [
 			new DIProperty( 'Foo' )
-		);
+		];
 
 		#7 Not a gregorian calendar model
-		$provider[] = array(
+		$provider[] = [
 			new \SMWDITime( 2, '1970' )
-		);
+		];
 
 		return $provider;
 	}

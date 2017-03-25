@@ -25,19 +25,19 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment( array(
-			'smwgPageSpecialProperties'       => array(),
+		$this->testEnvironment = new TestEnvironment( [
+			'smwgPageSpecialProperties'       => [],
 			'smwgEnableUpdateJobs'            => false,
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true )
-		) );
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ]
+		] );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -88,7 +88,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'updateData' ) )
+			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -138,7 +138,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
@@ -147,7 +147,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'clearData', 'getObjectIds' ) )
+			->setMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -293,10 +293,10 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 	public function updateJobStatusProvider() {
 
-		$provider = array(
-			array( true ),
-			array( false )
-		);
+		$provider = [
+			[ true ],
+			[ false ]
+		];
 
 		return $provider;
 	}

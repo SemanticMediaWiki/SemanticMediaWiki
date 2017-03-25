@@ -31,12 +31,12 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->memoryCache = $this->applicationFactory->newCacheFactory()->newFixedInMemoryCache();
 
-		$settings = array(
+		$settings = [
 			'smwgFactboxUseCache' => true,
 			'smwgCacheType'       => 'hash',
 			'smwgLinksInValues'   => false,
 			'smwgInlineErrors'    => true
-		);
+		];
 
 		foreach ( $settings as $key => $value ) {
 			$this->applicationFactory->getSettings()->set( $key, $value );
@@ -198,11 +198,11 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( DIWikiPage::newFromTitle( $title ) ) ) );
+			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array( new DIProperty(  __METHOD__ . 'property' ) ) ) );
+			->will( $this->returnValue( [ new DIProperty(  __METHOD__ . 'property' ) ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -243,18 +243,18 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' )
 			->will( $this->returnValue( new \RequestContext() ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( $semanticData )
-			),
-			array(
+			],
+			[
 				'text'            => $subject->getDBKey()
-			)
-		);
+			]
+		];
 
 		#1 Factbox build, being visible, using WebRequest oldid
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-oldid' );
@@ -288,24 +288,24 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $title ) );
 
 		$context = new \RequestContext( );
-		$context->setRequest( new \FauxRequest( array( 'oldid' => 9001 ), true ) );
+		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
 			->will( $this->returnValue( $context ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( $semanticData )
-			),
-			array(
+			],
+			[
 				'text'            => $subject->getDBKey()
-			)
-		);
+			]
+		];
 
 		#2 Factbox is expected not to be visible
 		$title = MockTitle::buildMock( __METHOD__ . 'title-ns-disabled' );
@@ -338,18 +338,18 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' )
 			->will( $this->returnValue( new \RequestContext() ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => false ),
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => false ],
 				'smwgShowFactbox' => SMW_FACTBOX_HIDDEN,
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( $semanticData )
-			),
-			array(
+			],
+			[
 				'text'            => null
-			)
-		);
+			]
+		];
 
 		#3 No semantic data
 		$title = MockTitle::buildMock( __METHOD__ . 'title-empty-semanticdata' );
@@ -398,18 +398,18 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( null ),
-			),
-			array(
+			],
+			[
 				'text'            => null
-			)
-		);
+			]
+		];
 
 		// #4 SpecialPage
 		$title = MockTitle::buildMock( __METHOD__ . 'title-specialpage' );
@@ -442,18 +442,18 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( null ),
-			),
-			array(
+			],
+			[
 				'text'            => ''
-			)
-		);
+			]
+		];
 
 		// #5 does not exist
 		$title = MockTitle::buildMock( __METHOD__ . 'title-not-exists' );
@@ -486,18 +486,18 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $outputPage,
 				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( null ),
-			),
-			array(
+			],
+			[
 				'text'            => ''
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

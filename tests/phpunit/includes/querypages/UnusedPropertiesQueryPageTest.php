@@ -50,13 +50,13 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $container ) );
 
 		$cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
-			->setConstructorArgs( array( $this->store, $blobStore ) )
+			->setConstructorArgs( [ $this->store, $blobStore ] )
 			->setMethods( null )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'CachedPropertyValuesPrefetcher', $cachedPropertyValuesPrefetcher );
 
-		$this->settings = Settings::newFromArray( array() );
+		$this->settings = Settings::newFromArray( [] );
 
 		$this->dataItemFactory = new DataItemFactory();
 	}

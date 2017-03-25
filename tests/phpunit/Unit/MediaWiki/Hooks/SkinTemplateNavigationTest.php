@@ -21,7 +21,7 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$links = array();
+		$links = [];
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\SkinTemplateNavigation',
@@ -63,7 +63,7 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$links = array();
+		$links = [];
 
 		$instance = new SkinTemplateNavigation( $skinTemplate, $links );
 		$instance->process();

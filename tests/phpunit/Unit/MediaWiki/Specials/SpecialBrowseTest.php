@@ -23,11 +23,11 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment( array(
+		$this->testEnvironment = new TestEnvironment( [
 			'smwgBrowseShowInverse' => false,
 			'smwgBrowseShowAll'     => true,
 			'smwgBrowseByApi'       => true
-		) );
+		] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -64,34 +64,34 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	public function queryParameterProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array( 'smw-callout smw-callout-error' )
-		);
+			[ 'smw-callout smw-callout-error' ]
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			':Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
-			array( 'smw-callout smw-callout-error' )
-		);
+			[ 'smw-callout smw-callout-error' ]
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'Foo/Bar',
-			array(
+			[
 				'data-subject="Foo/Bar#0#"',
 				'data-options="{&quot;dir&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true,&quot;including&quot;:null}"'
-			)
-		);
+			]
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			':Main-20Page-23_QUERY140d50d705e9566904fc4a877c755964',
-			array(
+			[
 				'data-subject="Main_Page#0##_QUERY140d50d705e9566904fc4a877c755964"',
 				'data-options="{&quot;dir&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true,&quot;including&quot;:null}"'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

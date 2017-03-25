@@ -78,15 +78,15 @@ class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function textProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[2,"Foo"]',
 			'Foo'
-		);
+		];
 
 		return $provider;
 	}

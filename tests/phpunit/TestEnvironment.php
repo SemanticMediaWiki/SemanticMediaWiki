@@ -32,14 +32,14 @@ class TestEnvironment {
 	/**
 	 * @var array
 	 */
-	private $configuration = array();
+	private $configuration = [];
 
 	/**
 	 * @since 2.4
 	 *
 	 * @param array $configuration
 	 */
-	public function __construct( array $configuration = array() ) {
+	public function __construct( array $configuration = [] ) {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
@@ -71,7 +71,7 @@ class TestEnvironment {
 	 * @return self
 	 */
 	public function addConfiguration( $key, $value ) {
-		return $this->withConfiguration( array( $key => $value ) );
+		return $this->withConfiguration( [ $key => $value ] );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class TestEnvironment {
 	 *
 	 * @return self
 	 */
-	public function withConfiguration( array $configuration = array() ) {
+	public function withConfiguration( array $configuration = [] ) {
 
 		foreach ( $configuration as $key => $value ) {
 
@@ -255,7 +255,7 @@ class TestEnvironment {
 	public function getFixturesLocation( $target = '', $file = '' ) {
 
 		$fixturesLocation = __DIR__ . '/Fixtures' . ( $target !== '' ? "/{$target}" :  '' ) . ( $file !== '' ? '/' . $file : '' );
-		$fixturesLocation = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $fixturesLocation );
+		$fixturesLocation = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $fixturesLocation );
 
 		if ( !file_exists( $fixturesLocation ) && !is_dir( $fixturesLocation ) ) {
 			throw new RuntimeException( "{$fixturesLocation} does not exist." );

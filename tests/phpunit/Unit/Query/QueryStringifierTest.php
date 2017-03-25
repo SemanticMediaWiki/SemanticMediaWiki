@@ -50,11 +50,11 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOffset' )
 			->will( $this->returnValue( 0 ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$query,
 			'[[Foo::bar]]|limit=42|offset=0|mainlabel=',
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D'
-		);
+		];
 
 		#1
 		$query = $this->getMockBuilder( '\SMWQuery' )
@@ -77,11 +77,11 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOffset' )
 			->will( $this->returnValue( 0 ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$query,
 			'[[Foo::bar]]|limit=42|offset=0|mainlabel=|source=Baz',
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csource%3DBaz'
-		);
+		];
 
 		#2
 		$query = $this->getMockBuilder( '\SMWQuery' )
@@ -102,13 +102,13 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array( 'Foobar' => 'DESC' ) ) );
+			->will( $this->returnValue( [ 'Foobar' => 'DESC' ] ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$query,
 			'[[Foo::bar]]|limit=42|offset=0|mainlabel=|sort=Foobar|order=desc',
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%7Corder%3Ddesc'
-		);
+		];
 
 		#3
 		$query = $this->getMockBuilder( '\SMWQuery' )
@@ -129,13 +129,13 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array( 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ) ) );
+			->will( $this->returnValue( [ 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ] ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$query,
 			'[[Foo::bar]]|limit=42|offset=0|mainlabel=|sort=Foobar,Foobaz|order=desc,asc',
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%2CFoobaz%7Corder%3Ddesc%2Casc'
-		);
+		];
 
 		#4
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
@@ -164,13 +164,13 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->will( $this->returnValue( [ $printRequest ] ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$query,
 			'[[Foo::bar]]|?ABC|limit=42|offset=0|mainlabel=',
 			'%5B%5BFoo%3A%3Abar%5D%5D%7C%3FABC%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D'
-		);
+		];
 
 		#5 (#show returns with an extra =)
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
@@ -199,13 +199,13 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->will( $this->returnValue( [ $printRequest ] ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$query,
 			'[[Foo::bar]]|?ABC|limit=42|offset=0|mainlabel=',
 			'%5B%5BFoo%3A%3Abar%5D%5D%7C%3FABC%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D'
-		);
+		];
 
 		return $provider;
 	}

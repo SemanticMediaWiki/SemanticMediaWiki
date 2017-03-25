@@ -59,7 +59,7 @@ class EntityListAccumulatorTest extends \PHPUnit_Framework_TestCase {
 		$instance->addToEntityList( $dataItem );
 
 		$this->assertEquals(
-			array( 'Foo#0#' => $dataItem ),
+			[ 'Foo#0#' => $dataItem ],
 			$instance->getEntityList( 'FOO:123' )
 		);
 
@@ -88,9 +88,9 @@ class EntityListAccumulatorTest extends \PHPUnit_Framework_TestCase {
 		$instance->addToEntityList( $dataItem );
 
 		$this->assertEquals(
-			array(
-				'FOO:BAR' => array( 'Bar#0#' => $dataItem )
-			),
+			[
+				'FOO:BAR' => [ 'Bar#0#' => $dataItem ]
+			],
 			$instance->getEntityList()
 		);
 	}

@@ -22,7 +22,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getDataItemById' ) )
+			->setMethods( [ 'getDataItemById' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -74,7 +74,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $tableDefinition ) ) );
+			->will( $this->returnValue( [ $tableDefinition ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableIdReferenceFinder' )
@@ -115,7 +115,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $tableDefinition ) ) );
+			->will( $this->returnValue( [ $tableDefinition ] ) );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -132,7 +132,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -166,7 +166,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -197,7 +197,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store

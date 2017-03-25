@@ -28,15 +28,15 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function textProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
-			array( 'foo' )
-		);
+			[ 'foo' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo bar',
-			array( 'foo', 'bar' )
-		);
+			[ 'foo', 'bar' ]
+		];
 
 		return $provider;
 	}

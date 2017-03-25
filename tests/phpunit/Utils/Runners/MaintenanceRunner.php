@@ -22,7 +22,7 @@ use SMW\ApplicationFactory;
 class MaintenanceRunner {
 
 	protected $maintenanceClass = null;
-	protected $options = array();
+	protected $options = [];
 	protected $output = null;
 	protected $quiet = false;
 
@@ -32,7 +32,7 @@ class MaintenanceRunner {
 	 * @param string $maintenanceClass
 	 * @param array $options
 	 */
-	public function __construct( $maintenanceClass, $options = array() ) {
+	public function __construct( $maintenanceClass, $options = [] ) {
 		$this->maintenanceClass = $maintenanceClass;
 		$this->options = $options;
 	}
@@ -82,7 +82,7 @@ class MaintenanceRunner {
 
 		$maintenance->loadParamsAndArgs(
 			$this->maintenanceClass,
-			array_merge( $this->options, array( 'quiet' => $this->quiet ) )
+			array_merge( $this->options, [ 'quiet' => $this->quiet ] )
 		);
 
 		ob_start();

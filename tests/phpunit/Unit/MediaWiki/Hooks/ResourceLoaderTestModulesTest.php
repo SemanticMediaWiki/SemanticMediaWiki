@@ -21,7 +21,7 @@ class ResourceLoaderTestModulesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$testModules = array();
+		$testModules = [];
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\ResourceLoaderTestModules',
@@ -35,7 +35,7 @@ class ResourceLoaderTestModulesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$testModules = array();
+		$testModules = [];
 
 		$instance = new ResourceLoaderTestModules( $resourceLoader, $testModules, '', '' );
 		$instance->process();

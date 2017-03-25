@@ -77,7 +77,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $parameters['spos'] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
-			->setMethods( array( 'refreshData' ) )
+			->setMethods( [ 'refreshData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $expectedToRun )
@@ -103,59 +103,59 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function parameterDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0 Empty
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'spos' => null
-			),
-			array(
+			],
+			[
 				'progress' => 0,
 				'spos' => null
-			)
-		);
+			]
+		];
 
 		// #1 Initial
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'spos' => 1,
 				'prog' => 0,
 				'rc'   => 1
-			),
-			array(
+			],
+			[
 				'progress' => 0,
 				'spos' => 1
-			)
-		);
+			]
+		];
 
 		// #2
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'spos' => 1,
 				'run'  => 1,
 				'prog' => 10,
 				'rc'   => 1
-			),
-			array(
+			],
+			[
 				'progress' => 10,
 				'spos' => 1
-			)
-		);
+			]
+		];
 
 		// #3 Initiates another run from the beginning
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'spos' => 0,
 				'run'  => 1,
 				'prog' => 10,
 				'rc'   => 2
-			),
-			array(
+			],
+			[
 				'progress' => 5,
 				'spos' => 0
-			)
-		);
+			]
+		];
 
 		return $provider;
 

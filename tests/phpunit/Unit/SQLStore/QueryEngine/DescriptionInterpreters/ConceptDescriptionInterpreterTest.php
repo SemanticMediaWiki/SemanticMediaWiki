@@ -63,7 +63,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getSMWPageID' ) )
+			->setMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
@@ -109,7 +109,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	public function testInterpretDescription( $description, $concept, $expected ) {
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getSMWPageID' ) )
+			->setMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
@@ -172,11 +172,11 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->type = 1;
 		$expected->joinfield = '';
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$concept,
 			$expected
-		);
+		];
 
 		#1 Cached concept
 		$concept = new \stdClass;
@@ -195,11 +195,11 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->where = 't0.o_id=42';
 		$expected->queryNumber = 0;
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$concept,
 			$expected
-		);
+		];
 
 		#2 Non cached concept
 		$concept = new \stdClass;
@@ -216,14 +216,14 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->joinfield = 't1.s_id';
-		$expected->components = array( 2 => 't1.o_id' );
+		$expected->components = [ 2 => 't1.o_id' ];
 		$expected->queryNumber = 1;
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$concept,
 			$expected
-		);
+		];
 
 		return $provider;
 	}
