@@ -78,6 +78,22 @@ class Highlighter {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public static function decode( $text ) {
+		// #2347, '[' is handled by the MediaWiki parser/sanitizer itself
+		return str_replace(
+			array( '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>' ),
+			array( '&', '<', '>', ' ', '', '' ),
+			$text
+		);
+	}
+
+	/**
 	 * Returns html output
 	 *
 	 * @since 1.9
