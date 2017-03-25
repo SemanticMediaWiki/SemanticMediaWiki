@@ -43,6 +43,14 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testDecode() {
+
+		$this->assertEquals(
+			'&<> ',
+			Highlighter::decode( '&amp;&lt;&gt;&#160;<nowiki></nowiki>' )
+		);
+	}
+
 	/**
 	 * @dataProvider getTypeDataProvider
 	 */
