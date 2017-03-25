@@ -150,6 +150,7 @@ define( 'SMW_UJ_PM_CLASTMDATE', 4 ); // compare last modified
   */
 define( 'SMW_HTTP_DEFERRED_ASYNC', true );
 define( 'SMW_HTTP_DEFERRED_SYNC_JOB', 4 );
+define( 'SMW_HTTP_DEFERRED_LAZY_JOB', 8 );
 /**@}*/
 
 /**@{
