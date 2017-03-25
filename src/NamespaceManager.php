@@ -69,7 +69,20 @@ class NamespaceManager {
 	 * @since 2.5
 	 */
 	public static function initCanonicalNamespaces( array &$namespaces ) {
-		$namespaces += self::initCustomNamespace( $GLOBALS )->getCanonicalNames();
+
+		$canonicalNames = self::initCustomNamespace( $GLOBALS )->getCanonicalNames();
+		$namespacesByName = array_flip( $namespaces );
+
+		// https://phabricator.wikimedia.org/T160665
+		// Find any namespace that uses the same canonical name and remove it
+		foreach ( $canonicalNames as $id => $name ) {
+			if ( isset( $namespacesByName[$name] ) ) {
+				unset( $namespaces[$namespacesByName[$name]] );
+			}
+		}
+
+		$namespaces += $canonicalNames;
+
 		return true;
 	}
 
