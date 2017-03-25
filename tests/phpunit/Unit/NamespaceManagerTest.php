@@ -201,4 +201,26 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testInitCanonicalNamespacesWithForcedNsReset() {
+
+		$namespaces = array(
+			10001 => 'Property',
+			10002 => 'Property_talk'
+		);
+
+		$this->assertTrue(
+			NamespaceManager::initCanonicalNamespaces( $namespaces )
+		);
+
+		$this->assertEquals(
+			'Property',
+			$namespaces[SMW_NS_PROPERTY]
+		);
+
+		$this->assertEquals(
+			'Property_talk',
+			$namespaces[SMW_NS_PROPERTY_TALK]
+		);
+	}
+
 }
