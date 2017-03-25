@@ -123,16 +123,25 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 			return true;
 		}
 
-		return $this->connection->update(
-			$this->table,
-			array(
-				'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $value ) ),
-			),
-			array(
-				'p_id' => $propertyId
-			),
-			__METHOD__
-		);
+		try {
+			$this->connection->update(
+				$this->table,
+				array(
+					'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $value ) ),
+				),
+				array(
+					'p_id' => $propertyId
+				),
+				__METHOD__
+			);
+		} catch ( \DBQueryError $e ) {
+			// #2345 Do nothing as it most likely an "Error: 1264 Out of range
+			// value for column" in strict mode
+			// As an unsigned int, we expected it to be 0
+			$this->setUsageCount( $propertyId, 0 );
+		}
+
+		return true;
 	}
 
 	/**
