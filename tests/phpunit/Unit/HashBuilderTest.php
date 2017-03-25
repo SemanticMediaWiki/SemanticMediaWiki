@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\SemanticData;
+use SMW\DataModel\ContainerSemanticData;
 use Title;
 
 /**
@@ -100,6 +101,36 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'string',
 			HashBuilder::createFromSemanticData( $semanticData )
+		);
+	}
+
+	public function testCreateFromSemanticDataWithSubSemanticDataAndPHPSerialization() {
+
+		$semanticData = new SemanticData(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
+
+		$containerSemanticData = new ContainerSemanticData(
+			new DIWikiPage( __METHOD__, NS_MAIN, '', 'Foo' )
+		);
+
+		$containerSemanticData->addSubSemanticData(
+			new ContainerSemanticData( new DIWikiPage( __METHOD__, NS_MAIN, '', 'Foo2' ) )
+		);
+
+		$semanticData->addSubSemanticData(
+			$containerSemanticData
+		);
+
+		$semanticData->addSubSemanticData(
+			new ContainerSemanticData( new DIWikiPage( __METHOD__, NS_MAIN, '', 'Bar' ) )
+		);
+
+		$sem = serialize( $semanticData );
+
+		$this->assertInternalType(
+			'string',
+			HashBuilder::createFromSemanticData( unserialize( $sem ) )
 		);
 	}
 
