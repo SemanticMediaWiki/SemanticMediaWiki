@@ -673,10 +673,7 @@ class SemanticData {
 		}
 
 		foreach ( $semanticData->getProperties() as $property ) {
-			$values = $semanticData->getPropertyValues( $property );
-			foreach ( $values as $dataItem ) {
-				$this->removePropertyObjectValue( $property, $dataItem );
-			}
+			$this->removeProperty( $property );
 		}
 
 		foreach( $semanticData->getSubSemanticData() as $semData ) {
