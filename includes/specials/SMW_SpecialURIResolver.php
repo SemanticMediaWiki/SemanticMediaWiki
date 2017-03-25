@@ -26,6 +26,12 @@ class SMWURIResolver extends SpecialPage {
 	function execute( $query ) {
 		global $wgOut;
 
+		// #2344, It is believed that when no HTTP_ACCEPT is available then a
+		// request came from a "defect" mobile device without a correct accept
+		// header
+		if ( !isset( $_SERVER['HTTP_ACCEPT'] ) ) {
+			$_SERVER['HTTP_ACCEPT'] = '';
+		}
 
 		if ( is_null( $query ) || trim( $query ) === '' ) {
 			if ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
