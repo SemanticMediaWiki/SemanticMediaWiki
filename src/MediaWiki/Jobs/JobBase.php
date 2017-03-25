@@ -149,6 +149,24 @@ abstract class JobBase extends Job {
 	}
 
 	/**
+	 * @see JobQueueGroup::lazyPush
+	 *
+	 * @note Registered jobs are pushed using JobQueueGroup::pushLazyJobs at the
+	 * end of MediaWiki::restInPeace
+	 *
+	 * @since 3.0
+	 */
+	public function lazyPush() {
+
+		// MW 1.26+
+		if ( $this->isEnabledJobQueue && method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
+			return JobQueueGroup::singleton()->lazyPush( $this );
+		}
+
+		$this->insert();
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @return array

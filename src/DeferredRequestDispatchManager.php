@@ -253,7 +253,14 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 			// defying the idea of a deferred process therefore only directly
 			// have the job run when initiate from the commandLine as transactions
 			// are expected without delay and are separated
-			$this->isCommandLineMode || $this->isEnabledHttpDeferredRequest === SMW_HTTP_DEFERRED_SYNC_JOB ? $job->run() : $job->insert();
+			if ( $this->isCommandLineMode || $this->isEnabledHttpDeferredRequest === SMW_HTTP_DEFERRED_SYNC_JOB ) {
+				$job->run();
+			} elseif ( $this->isEnabledHttpDeferredRequest === SMW_HTTP_DEFERRED_LAZY_JOB ) {
+				// Buffers the job and is added at the end of MediaWiki::restInPeace
+				$job->lazyPush();
+			} else {
+				$job->insert();
+			}
 		};
 
 		return $callback;
