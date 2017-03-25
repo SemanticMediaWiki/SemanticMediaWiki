@@ -152,21 +152,21 @@ abstract class SMWOrderedListPage extends Article {
 				$title,
 				$wgRequest->getVal( 'limit', $default ),
 				$wgRequest->getVal( 'offset', '0' ),
-				array(
+				[
 					'value'  => $wgRequest->getVal( 'value', '' ),
 					'from'   => $wgRequest->getVal( 'from', '' ),
 					'until'  => $wgRequest->getVal( 'until', '' )
-				),
+				],
 				$resultCount < $wgRequest->getVal( 'limit', $default )
 			);
 
-			$navigation = Html::rawElement('div', array(), $navigation );
+			$navigation = Html::rawElement('div', [], $navigation );
 		}
 
 		return Html::rawElement(
 			'p',
-			array(),
-			Html::element( 'span', array(), wfMessage( $msgKey, $resultCount )->parse() ) . '<br>' .
+			[],
+			Html::element( 'span', [], wfMessage( $msgKey, $resultCount )->parse() ) . '<br>' .
 			$navigation
 		);
 	}

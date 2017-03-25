@@ -76,7 +76,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @return array
 	 */
 	public function getCoordinateSet() {
-		$coords = array( 'lat' => $this->latitude, 'lon' => $this->longitude );
+		$coords = [ 'lat' => $this->latitude, 'lon' => $this->longitude ];
 
 		if ( !is_null( $this->altitude ) ) {
 			$coords['alt'] = $this->altitude;
@@ -119,7 +119,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 			throw new DataItemException( 'Unserialization of coordinates failed' );
 		}
 
-		$coords = array( 'lat' => (float)$parts[0], 'lon' => (float)$parts[1] );
+		$coords = [ 'lat' => (float)$parts[0], 'lon' => (float)$parts[1] ];
 
 		if ( $count === 3 ) {
 			$coords['alt'] = (float)$parts[2];

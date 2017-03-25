@@ -88,12 +88,12 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 		return Html::rawElement(
 			'p',
-			array( 'class' => 'smw-wantedproperties-docu' ),
+			[ 'class' => 'smw-wantedproperties-docu' ],
 			$this->msg( 'smw-wantedproperties-docu' )->parse()
 		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ), $this->getCacheInfo(), false ) .
 		Html::element(
 			'h2',
-			array(),
+			[],
 			$this->msg( 'smw-sp-properties-header-label' )->text()
 		);
 	}
@@ -122,7 +122,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 		$proplink = $this->getLinker()->link(
 			$title,
 			htmlspecialchars( $result[0]->getLabel() ),
-			array( 'action' => 'view' )
+			[ 'action' => 'view' ]
 		);
 
 		return $this->msg( 'smw-wantedproperty-template' )

@@ -75,7 +75,7 @@ class SMWURIValue extends SMWDataValue {
 
 		$scheme = $hierpart = $query = $fragment = '';
 		if ( $value === '' ) { // do not accept empty strings
-			$this->addErrorMsg( array( 'smw_emptystring' ) );
+			$this->addErrorMsg( [ 'smw_emptystring' ] );
 			return;
 		}
 
@@ -102,7 +102,7 @@ class SMWURIValue extends SMWDataValue {
 				foreach ( $uri_blacklist as $uri ) {
 					$uri = trim( $uri );
 					if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!
-						$this->addErrorMsg( array( 'smw_baduri', $value ) );
+						$this->addErrorMsg( [ 'smw_baduri', $value ] );
 						return;
 					}
 				}
@@ -122,9 +122,9 @@ class SMWURIValue extends SMWDataValue {
 				}
 				// We do not validate the URI characters (the data item will do this) but we do some escaping:
 				// encode most characters, but leave special symbols as given by user:
-				$hierpart = str_replace( array( '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ), array( ':', '/', '#', '@', '?', '=', '&', '%' ), rawurlencode( $hierpart ) );
-				$query = str_replace( array( '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ), array( ':', '/', '#', '@', '?', '=', '&', '%' ), rawurlencode( $query ) );
-				$fragment = str_replace( array( '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ), array( ':', '/', '#', '@', '?', '=', '&', '%' ), rawurlencode( $fragment ) );
+				$hierpart = str_replace( [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ], [ ':', '/', '#', '@', '?', '=', '&', '%' ], rawurlencode( $hierpart ) );
+				$query = str_replace( [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ], [ ':', '/', '#', '@', '?', '=', '&', '%' ], rawurlencode( $query ) );
+				$fragment = str_replace( [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ], [ ':', '/', '#', '@', '?', '=', '&', '%' ], rawurlencode( $fragment ) );
 				/// NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
 				/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
 				///       this prevents tel: from working directly, but we have a datatype for this anyway.
@@ -151,7 +151,7 @@ class SMWURIValue extends SMWDataValue {
 				if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
 					( preg_match( '<[-+./][-./]>', $hierpart ) ) ||
 					( !self::isValidTelURI( 'tel:' . $hierpart ) ) ) ) { /// TODO: introduce error-message for "bad" phone number
-					$this->addErrorMsg( array( 'smw_baduri', $this->m_wikitext ) );
+					$this->addErrorMsg( [ 'smw_baduri', $this->m_wikitext ] );
 					return;
 				}
 				break;
@@ -164,17 +164,17 @@ class SMWURIValue extends SMWDataValue {
 
 				if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Sanitizer::validateEmail( $value ) ) {
 					/// TODO: introduce error-message for "bad" email
-					$this->addErrorMsg( array( 'smw_baduri', $value ) );
+					$this->addErrorMsg( [ 'smw_baduri', $value ] );
 					return;
 				}
-				$hierpart = str_replace( array( '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ), array( ':', '/', '#', '@', '?', '=', '&', '%' ), rawurlencode( $value ) );
+				$hierpart = str_replace( [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ], [ ':', '/', '#', '@', '?', '=', '&', '%' ], rawurlencode( $value ) );
 		}
 
 		// Now create the URI data item:
 		try {
 			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, $this->m_typeid );
 		} catch ( SMWDataItemException $e ) {
-			$this->addErrorMsg( array( 'smw_baduri', $this->m_wikitext ) );
+			$this->addErrorMsg( [ 'smw_baduri', $this->m_wikitext ] );
 		}
 	}
 
@@ -292,7 +292,7 @@ class SMWURIValue extends SMWDataValue {
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded version of URI/URL value (includes mailto: for emails)
-		return array( rawurlencode( $this->getUriDataitem()->getURI() ) );
+		return [ rawurlencode( $this->getUriDataitem()->getURI() ) ];
 	}
 
 	/**
@@ -355,7 +355,7 @@ class SMWURIValue extends SMWDataValue {
 		// Allow the display without `_` so that URIs can be split
 		// during the outout by the browser without breaking the URL itself
 		// as it contains the `_` for spaces
-		return array( $this->getURL(), $context );
+		return [ $this->getURL(), $context ];
 	}
 
 }

@@ -113,7 +113,7 @@ class SMWSQLStore3Readers {
 
 		// Avoid adding a sortkey for an already extended stub
 		if ( !$this->store->m_semdata[$sid]->hasProperty( new DIProperty( '_SKEY' ) ) ) {
-			$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( '', $sortKey ) );
+			$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', [ '', $sortKey ] );
 		}
 
 		self::$in_getSemanticData--;
@@ -137,7 +137,7 @@ class SMWSQLStore3Readers {
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $subjectId, $this->store->m_semdata ) ) { // new cache entry
 			$this->store->m_semdata[$subjectId] = new SMWSql3StubSemanticData( $subject, $this->store, false );
-			$this->store->m_sdstate[$subjectId] = array();
+			$this->store->m_sdstate[$subjectId] = [];
 		}
 
 		// Issue #622
@@ -146,7 +146,7 @@ class SMWSQLStore3Readers {
 		// the selected DB id
 		if ( $this->store->m_semdata[$subjectId]->getSubject()->getHash() !== $subject->getHash() ) {
 			$this->store->m_semdata[$subjectId] = new SMWSql3StubSemanticData( $subject, $this->store, false );
-			$this->store->m_sdstate[$subjectId] = array();
+			$this->store->m_sdstate[$subjectId] = [];
 		}
 
 		if ( ( count( $this->store->m_semdata ) > 20 ) && ( self::$in_getSemanticData == 1 ) ) {
@@ -154,8 +154,8 @@ class SMWSQLStore3Readers {
 			// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),
 			// The value of 20 was chosen by profiling runtimes for large inline queries and heavily annotated pages.
 			// However, things might have changed in the meantime ...
-			$this->store->m_semdata = array( $subjectId => $this->store->m_semdata[$subjectId] );
-			$this->store->m_sdstate = array( $subjectId => $this->store->m_sdstate[$subjectId] );
+			$this->store->m_semdata = [ $subjectId => $this->store->m_semdata[$subjectId] ];
+			$this->store->m_sdstate = [ $subjectId => $this->store->m_sdstate[$subjectId] ];
 		}
 	}
 
@@ -214,19 +214,19 @@ class SMWSQLStore3Readers {
 				$subject->getNamespace(), $subject->getInterwiki(),
 				$subject->getSubobjectName(), true );
 			if ( $sid == 0 ) {
-				$result = array();
+				$result = [];
 			} elseif ( $property->getKey() == '_SKEY' ) {
 				$this->store->smwIds->getSMWPageIDandSort( $subject->getDBkey(),
 				$subject->getNamespace(), $subject->getInterwiki(),
 				$subject->getSubobjectName(), $sortKey, true );
 				$sortKeyDi = new SMWDIBlob( $sortKey );
-				$result = $this->store->applyRequestOptions( array( $sortKeyDi ), $requestOptions );
+				$result = $this->store->applyRequestOptions( [ $sortKeyDi ], $requestOptions );
 			} else {
 				$propTableId = $this->store->findPropertyTableID( $property );
 				$proptables =  $this->store->getPropertyTables();
 
 				if ( !isset( $proptables[$propTableId] ) ) {
-					return array();
+					return [];
 				}
 
 				$sd = $this->getSemanticDataFromTable( $sid, $subject, $proptables[$propTableId] );
@@ -237,12 +237,12 @@ class SMWSQLStore3Readers {
 			$tableid =  $this->store->findPropertyTableID( $property );
 
 			if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
-				return array();
+				return [];
 			}
 
 			$proptables =  $this->store->getPropertyTables();
 			$data = $this->fetchSemanticData( $pid, $property, $proptables[$tableid], false, $requestOptions );
-			$result = array();
+			$result = [];
 			$propertyTypeId = $property->findPropertyTypeID();
 			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
 
@@ -306,10 +306,10 @@ class SMWSQLStore3Readers {
 		// subjects at least if !$proptable->idsubject
 		if ( ( $id == 0 ) ||
 			( is_null( $object ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) ) {
-				return array();
+				return [];
 		}
 
-		$result = array();
+		$result = [];
 		$db = $this->store->getConnection();
 
 		$diHandler = $this->store->getDataItemHandlerForDIType( $propTable->getDiType() );
@@ -382,7 +382,7 @@ class SMWSQLStore3Readers {
 		// ***  Now execute the query and read the results  ***//
 		$res = $db->select( $from, $select, $where, __METHOD__,
 				( $usedistinct ?
-					$this->store->getSQLOptions( $requestOptions, $valueField ) + array( 'DISTINCT' ) :
+					$this->store->getSQLOptions( $requestOptions, $valueField ) + [ 'DISTINCT' ] :
 					$this->store->getSQLOptions( $requestOptions, $valueField )
 				) );
 
@@ -397,7 +397,7 @@ class SMWSQLStore3Readers {
 
 			// Use enclosing array only for results with many values:
 			if ( $valuecount > 1 ) {
-				$valuekeys = array();
+				$valuekeys = [];
 				for ( $i = 0; $i < $valuecount; $i += 1 ) { // read the value fields from the current row
 					$fieldname = "v$i";
 					$valuekeys[] = $row->$fieldname;
@@ -425,7 +425,7 @@ class SMWSQLStore3Readers {
 					$this->factory->getLogger()->info( __METHOD__ . " Duplicate entry for {$propertykey} with " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) . "\n" );
 				}
 
-				$result[$valueHash] = $isSubject ? array( $propertykey, $valuekeys ) : $valuekeys;
+				$result[$valueHash] = $isSubject ? [ $propertykey, $valuekeys ] : $valuekeys;
 			}
 		}
 
@@ -458,7 +458,7 @@ class SMWSQLStore3Readers {
 		// #1222, Filter those where types don't match (e.g property = _txt
 		// and value = _wpg)
 		if ( $value !== null && DataTypeRegistry::getInstance()->getDataItemId( $property->findPropertyTypeID() ) !== $value->getDIType() ) {
-			return array();
+			return [];
 		}
 
 		// First build $select, $from, and $where for the DB query
@@ -467,7 +467,7 @@ class SMWSQLStore3Readers {
 		$tableid =  $this->store->findPropertyTableID( $property );
 
 		if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
-			return array();
+			return [];
 		}
 
 		$proptables =  $this->store->getPropertyTables();
@@ -489,7 +489,7 @@ class SMWSQLStore3Readers {
 		$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
 
 		// ***  Now execute the query and read the results  ***//
-		$result = array();
+		$result = [];
 
 		if ( !$proptable->isFixedPropertyTable() ) {
 			if ( $where !== '' && strpos( SMW_SQL3_SMWIW_OUTDATED, $where ) === false ) {
@@ -611,11 +611,11 @@ class SMWSQLStore3Readers {
 		);
 
 		if ( $sid == 0 ) { // no id, no page, no properties
-			return array();
+			return [];
 		}
 
 		$db = $this->store->getConnection();
-		$result = array();
+		$result = [];
 
 		// potentially need to get more results, since options apply to union
 		if ( $requestOptions !== null ) {
@@ -642,7 +642,7 @@ class SMWSQLStore3Readers {
 					'*',
 					$where,
 					__METHOD__,
-					array( 'LIMIT' => 1 )
+					[ 'LIMIT' => 1 ]
 				);
 
 				if ( $db->numRows( $res ) > 0 ) {
@@ -689,7 +689,7 @@ class SMWSQLStore3Readers {
 	public function getInProperties( SMWDataItem $value, SMWRequestOptions $requestOptions = null ) {
 
 		$db = $this->store->getConnection();
-		$result = array();
+		$result = [];
 
 		// Potentially need to get more results, since options apply to union.
 		if ( $requestOptions !== null ) {
@@ -729,7 +729,7 @@ class SMWSQLStore3Readers {
 			} else {
 				$from = $db->tableName( $proptable->getName() ) . " AS t1";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
-				$res = $db->select( $from, '*', $where, __METHOD__, array( 'LIMIT' => 1 ) );
+				$res = $db->select( $from, '*', $where, __METHOD__, [ 'LIMIT' => 1 ] );
 
 				if ( $db->numRows( $res ) > 0 ) {
 					$result[] = new SMW\DIProperty( $proptable->getFixedProperty() );

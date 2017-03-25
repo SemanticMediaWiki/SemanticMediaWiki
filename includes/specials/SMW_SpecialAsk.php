@@ -26,8 +26,8 @@ use SMW\ApplicationFactory;
 class SMWAskPage extends SpecialPage {
 
 	private $m_querystring = '';
-	private $m_params = array();
-	private $m_printouts = array();
+	private $m_params = [];
+	private $m_printouts = [];
 	private $m_editquery = false;
 	private $queryLinker = null;
 
@@ -49,7 +49,7 @@ class SMWAskPage extends SpecialPage {
 	/**
 	 * @var Param[]
 	 */
-	private $params = array();
+	private $params = [];
 
 	public function __construct() {
 		parent::__construct( 'Ask' );
@@ -258,9 +258,9 @@ class SMWAskPage extends SpecialPage {
 		// build parameter strings for URLs, based on current settings
 		$urlArgs['q'] = $this->m_querystring;
 
-		$tmp_parray = array();
+		$tmp_parray = [];
 		foreach ( $this->m_params as $key => $value ) {
-			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
+			if ( !in_array( $key, [ 'sort', 'order', 'limit', 'offset', 'title' ] ) ) {
 				$tmp_parray[$key] = $value;
 			}
 		}
@@ -461,7 +461,7 @@ class SMWAskPage extends SpecialPage {
 		$hideForm = false;
 
 		$result .= Html::openElement( 'form',
-			array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
+			[ 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ] );
 
 		if ( $this->m_editquery ) {
 			$result .= Html::hidden( 'title', $title->getPrefixedDBKey() );
@@ -487,10 +487,10 @@ class SMWAskPage extends SpecialPage {
 			$result .= '<fieldset class="smw-ask-options-fields"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
 
 			// Info text for when the fieldset is collapsed
-			$result .= Html::element( 'div', array(
+			$result .= Html::element( 'div', [
 				'class' => 'collapsed-info',
 				'style' => 'display:none;'
-				), wfMessage( 'smw-ask-otheroptions-collapsed-info')->text()
+				], wfMessage( 'smw-ask-otheroptions-collapsed-info')->text()
 			);
 
 			// Individual options
@@ -576,17 +576,17 @@ class SMWAskPage extends SpecialPage {
 		$result .= '<br /><span class="smw-ask-query-format" style="vertical-align:middle;">' . wfMessage( 'smw_ask_format_as' )->escaped() . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
 			Html::openElement(
 				'select',
-				array(
+				[
 					'class' => 'smw-ask-query-format-selector',
 					'id' => 'formatSelector',
 					'name' => 'p[format]',
 					'data-url' => $url,
-				)
+				]
 			) . "\n" .
 			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected="selected"' : '' ) . '>' .
 			htmlspecialchars( $printer->getName() ) . ' (' . wfMessage( 'smw_ask_defaultformat' )->escaped() . ')</option>' . "\n";
 
-		$formats = array();
+		$formats = [];
 
 		foreach ( array_keys( $GLOBALS['smwgResultFormats'] ) as $format ) {
 			// Special formats "count" and "debug" currently not supported.
@@ -618,7 +618,7 @@ class SMWAskPage extends SpecialPage {
 		$result = '';
 
 		if ( ! array_key_exists( 'sort', $params ) || ! array_key_exists( 'order', $params ) ) {
-			$orders = array(); // do not even show one sort input here
+			$orders = []; // do not even show one sort input here
 		} else {
 			$sorts = explode( ',', $params['sort'] );
 			$orders = explode( ',', $params['order'] );
@@ -681,13 +681,13 @@ class SMWAskPage extends SpecialPage {
 		if ( $offset > 0 ) {
 			$navigation .= '(' . Html::element(
 				'a',
-				array(
-					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
+				[
+					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( [
 						'offset' => max( 0, $offset - $limit ),
 						'limit' => $limit
-					) + $urlArgs ),
+					] + $urlArgs ),
 					'rel' => 'nofollow'
-				),
+				],
 				wfMessage( 'smw_result_prev' )->text() . ' ' . $limit
 			) . ' | ';
 		} else {
@@ -697,13 +697,13 @@ class SMWAskPage extends SpecialPage {
 		if ( $res->hasFurtherResults() ) {
 			$navigation .= Html::element(
 				'a',
-				array(
-					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
+				[
+					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( [
 						'offset' => ( $offset + $limit ),
 						'limit' => $limit
-					)  + $urlArgs ),
+					]  + $urlArgs ),
 					'rel' => 'nofollow'
-				),
+				],
 				wfMessage( 'smw_result_next' )->text() . ' ' . $limit
 			) . ')';
 		} else {
@@ -712,7 +712,7 @@ class SMWAskPage extends SpecialPage {
 
 		$first = true;
 
-		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
+		foreach ( [ 20, 50, 100, 250, 500 ] as $l ) {
 			if ( $l > $smwgQMaxInlineLimit ) {
 				break;
 			}
@@ -727,13 +727,13 @@ class SMWAskPage extends SpecialPage {
 			if ( $limit != $l ) {
 				$navigation .= Html::element(
 					'a',
-					array(
-						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
+					[
+						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( [
 							'offset' => $offset,
 							'limit' => $l
-						) + $urlArgs ),
+						] + $urlArgs ),
 						'rel' => 'nofollow'
-					),
+					],
 					$l
 				);
 			} else {

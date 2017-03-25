@@ -64,7 +64,7 @@ class SMWNumberValue extends SMWDataValue {
 	 *
 	 * @var array
 	 */
-	protected $prefixalUnitPreference = array();
+	protected $prefixalUnitPreference = [];
 
 	/**
 	 * Canonical identifier for the unit that the user gave as input. Used
@@ -136,7 +136,7 @@ class SMWNumberValue extends SMWDataValue {
 
 		$parts = preg_split(
 			$regex,
-			trim( str_replace( array( '&nbsp;', '&#160;', '&thinsp;', ' ' ), $space, $value ) ),
+			trim( str_replace( [ '&nbsp;', '&#160;', '&thinsp;', ' ' ], $space, $value ) ),
 			2,
 			PREG_SPLIT_DELIM_CAPTURE
 		);
@@ -172,7 +172,7 @@ class SMWNumberValue extends SMWDataValue {
 		}
 
 		if ( $value !== '' && $value{0} === ':' ) {
-			$this->addErrorMsg( array( 'smw-datavalue-invalid-number', $value ) );
+			$this->addErrorMsg( [ 'smw-datavalue-invalid-number', $value ] );
 			return;
 		}
 
@@ -182,15 +182,15 @@ class SMWNumberValue extends SMWDataValue {
 		$error = $this->parseNumberValue( $value, $number, $unit );
 
 		if ( $error == 1 ) { // no number found
-			$this->addErrorMsg( array( 'smw_nofloat', $value ) );
+			$this->addErrorMsg( [ 'smw_nofloat', $value ] );
 		} elseif ( $error == 2 ) { // number is too large for this platform
-			$this->addErrorMsg( array( 'smw_infinite', $value ) );
+			$this->addErrorMsg( [ 'smw_infinite', $value ] );
 		} elseif ( $this->getTypeID() === '_num' && $unit !== '' ) {
-			$this->addErrorMsg( array( 'smw-datavalue-number-textnotallowed', $unit, $number ) );
+			$this->addErrorMsg( [ 'smw-datavalue-number-textnotallowed', $unit, $number ] );
 		} elseif ( $number === null ) {
-			$this->addErrorMsg( array( 'smw-datavalue-number-nullnotallowed', $value ) ); // #1628
+			$this->addErrorMsg( [ 'smw-datavalue-number-nullnotallowed', $value ] ); // #1628
 		} elseif ( $this->convertToMainUnit( $number, $unit ) === false ) { // so far so good: now convert unit and check if it is allowed
-			$this->addErrorMsg( array( 'smw_unitnotallowed', $unit ) );
+			$this->addErrorMsg( [ 'smw_unitnotallowed', $unit ] );
 		} // note that convertToMainUnit() also sets m_dataitem if valid
 	}
 
@@ -371,9 +371,9 @@ class SMWNumberValue extends SMWDataValue {
 	 */
 	protected function getServiceLinkParams() {
 		if ( $this->isValid() ) {
-			return array( strval( $this->m_dataitem->getNumber() ), strval( round( $this->m_dataitem->getNumber() ) ) );
+			return [ strval( $this->m_dataitem->getNumber() ), strval( round( $this->m_dataitem->getNumber() ) ) ];
 		} else {
-			return array();
+			return [];
 		}
 	}
 
@@ -383,9 +383,9 @@ class SMWNumberValue extends SMWDataValue {
 	 * distinguished.
 	 */
 	public function normalizeUnit( $unit ) {
-		$unit = str_replace( array( '[[', ']]' ), '', trim( $unit ) ); // allow simple links to be used inside annotations
-		$unit = str_replace( array( '²', '<sup>2</sup>' ), '&sup2;', $unit );
-		$unit = str_replace( array( '³', '<sup>3</sup>' ), '&sup3;', $unit );
+		$unit = str_replace( [ '[[', ']]' ], '', trim( $unit ) ); // allow simple links to be used inside annotations
+		$unit = str_replace( [ '²', '<sup>2</sup>' ], '&sup2;', $unit );
+		$unit = str_replace( [ '³', '<sup>3</sup>' ], '&sup3;', $unit );
 		return smwfXMLContentEncode( $unit );
 	}
 
@@ -421,7 +421,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * Overwritten by subclasses that support units.
 	 */
 	protected function makeConversionValues() {
-		$this->m_unitvalues = array( '' => $this->m_dataitem->getNumber() );
+		$this->m_unitvalues = [ '' => $this->m_dataitem->getNumber() ];
 	}
 
 	/**
@@ -458,7 +458,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * Overwritten by subclasses that support units.
 	 */
 	public function getUnitList() {
-		return array( '' );
+		return [ '' ];
 	}
 
 	protected function getPreferredDisplayPrecision() {
@@ -534,7 +534,7 @@ class SMWNumberValue extends SMWDataValue {
 		}
 
 		// Remove any remaining
-		$formatstring = str_replace( array( '#LOCL', 'LOCL' ), '', $formatstring );
+		$formatstring = str_replace( [ '#LOCL', 'LOCL' ], '', $formatstring );
 	}
 
 }

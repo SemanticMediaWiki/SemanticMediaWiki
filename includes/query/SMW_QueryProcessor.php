@@ -43,7 +43,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return Param[]
 	 */
-	public static function getProcessedParams( array $params, array $printRequests = array(), $unknownInvalid = true ) {
+	public static function getProcessedParams( array $params, array $printRequests = [], $unknownInvalid = true ) {
 		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid );
 		$validator->processParameters();
 		return $validator->getParameters();
@@ -62,7 +62,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return Processor
 	 */
-	public static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true ) {
+	public static function getValidatorForParams( array $params, array $printRequests = [], $unknownInvalid = true ) {
 		$paramDefinitions = self::getParameters();
 
 		$paramDefinitions['format']->setPrintRequests( $printRequests );
@@ -96,7 +96,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return SMWQuery
 	 */
-	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = array(), $contextPage = null ) {
+	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = [], $contextPage = null ) {
 
 		if ( $format === '' || is_null( $format ) ) {
 			$format = $params['format']->getValue();
@@ -139,7 +139,7 @@ class SMWQueryProcessor implements QueryContext {
 
 		$queryCreator = ApplicationFactory::getInstance()->getQueryFactory()->newQueryCreator();
 
-		$queryCreator->setConfiguration(  array(
+		$queryCreator->setConfiguration(  [
 			'extraPrintouts' => $extraPrintouts,
 			'queryMode'   => $queryMode,
 			'context'     => $context,
@@ -151,7 +151,7 @@ class SMWQueryProcessor implements QueryContext {
 			'sort'        => $params['sort']->getValue(),
 			'order'       => $params['order']->getValue(),
 			'defaultSort' => $defaultSort
-		) );
+		] );
 
 		return $queryCreator->create( $queryString );
 	}
@@ -232,8 +232,8 @@ class SMWQueryProcessor implements QueryContext {
 	 */
 	static public function getComponentsFromFunctionParams( array $rawParams, $showMode ) {
 		$queryString = '';
-		$parameters = array();
-		$printouts = array();
+		$parameters = [];
+		$printouts = [];
 
 		$lastprintout = null;
 		$printRequestFactory = new PrintRequestFactory();
@@ -250,7 +250,7 @@ class SMWQueryProcessor implements QueryContext {
 			$rawParam = preg_replace_callback(
 				'/\[\[([^\[\]]*)\]\]/xu',
 				function( array $matches ) {
-					return str_replace( array( '=' ), array( '-3D' ), $matches[0] );
+					return str_replace( [ '=' ], [ '-3D' ], $matches[0] );
 				},
 				$rawParam
 			);
@@ -292,13 +292,13 @@ class SMWQueryProcessor implements QueryContext {
 			}
 		}
 
-		$queryString = str_replace( array( '&lt;', '&gt;', '-3D' ), array( '<', '>', '=' ), $queryString );
+		$queryString = str_replace( [ '&lt;', '&gt;', '-3D' ], [ '<', '>', '=' ], $queryString );
 
 		if ( $showMode ) {
 			$queryString = "[[:$queryString]]";
 		}
 
-		return array( $queryString, $parameters, $printouts);
+		return [ $queryString, $parameters, $printouts];
 	}
 
 	/**
@@ -328,7 +328,7 @@ class SMWQueryProcessor implements QueryContext {
 		$params = self::getProcessedParams( $params, $printouts );
 
 		$query  = self::createQuery( $queryString, $params, $context, '', $printouts, $contextPage );
-		return array( $query, $params );
+		return [ $query, $params ];
 	}
 
 	/**
@@ -479,7 +479,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return IParamDefinition[]
 	 */
 	public static function getParameters() {
-		$params = array();
+		$params = [];
 
 		$allowedFormats = $GLOBALS['smwgResultFormats'];
 
@@ -489,69 +489,69 @@ class SMWQueryProcessor implements QueryContext {
 
 		$allowedFormats[] = 'auto';
 
-		$params['format'] = array(
+		$params['format'] = [
 			'type' => 'smwformat',
 			'default' => 'auto',
-		);
+		];
 
 		// TODO $params['format']->setToLower( true );
 		// TODO $allowedFormats
 
 		$params['source'] = self::getSourceParam();
 
-		$params['limit'] = array(
+		$params['limit'] = [
 			'type' => 'integer',
 			'default' => $GLOBALS['smwgQDefaultLimit'],
 			'negatives' => false,
-		);
+		];
 
-		$params['offset'] = array(
+		$params['offset'] = [
 			'type' => 'integer',
 			'default' => 0,
 			'negatives' => false,
 			'upperbound' => $GLOBALS['smwgQUpperbound'],
-		);
+		];
 
-		$params['link'] = array(
+		$params['link'] = [
 			'default' => 'all',
-			'values' => array( 'all', 'subject', 'none' ),
-		);
+			'values' => [ 'all', 'subject', 'none' ],
+		];
 
-		$params['sort'] = array(
+		$params['sort'] = [
 			'islist' => true,
-			'default' => array( '' ), // The empty string represents the page itself, which should be sorted by default.
-		);
+			'default' => [ '' ], // The empty string represents the page itself, which should be sorted by default.
+		];
 
-		$params['order'] = array(
+		$params['order'] = [
 			'islist' => true,
-			'default' => array(),
-			'values' => array( 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ),
-		);
+			'default' => [],
+			'values' => [ 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ],
+		];
 
-		$params['headers'] = array(
+		$params['headers'] = [
 			'default' => 'show',
-			'values' => array( 'show', 'hide', 'plain' ),
-		);
+			'values' => [ 'show', 'hide', 'plain' ],
+		];
 
-		$params['mainlabel'] = array(
+		$params['mainlabel'] = [
 			'default' => false,
-		);
+		];
 
-		$params['intro'] = array(
+		$params['intro'] = [
 			'default' => '',
-		);
+		];
 
-		$params['outro'] = array(
+		$params['outro'] = [
 			'default' => '',
-		);
+		];
 
-		$params['searchlabel'] = array(
+		$params['searchlabel'] = [
 			'default' => Message::get( 'smw_iq_moreresults', Message::TEXT, Message::USER_LANGUAGE )
-		);
+		];
 
-		$params['default'] = array(
+		$params['default'] = [
 			'default' => '',
-		);
+		];
 
 		// Give grep a chance to find the usages:
 		// smw-paramdesc-format, smw-paramdesc-source, smw-paramdesc-limit, smw-paramdesc-offset,
@@ -568,12 +568,12 @@ class SMWQueryProcessor implements QueryContext {
 	}
 
 	private static function getSourceParam() {
-		$sourceValues = is_array( $GLOBALS['smwgQuerySources'] ) ? array_keys( $GLOBALS['smwgQuerySources'] ) : array();
+		$sourceValues = is_array( $GLOBALS['smwgQuerySources'] ) ? array_keys( $GLOBALS['smwgQuerySources'] ) : [];
 
-		return array(
+		return [
 			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',
 			'values' => $sourceValues,
-		);
+		];
 	}
 
 	/**
@@ -593,7 +593,7 @@ class SMWQueryProcessor implements QueryContext {
 				self::getResultPrinter( $format )->getParamDefinitions( self::getParameters() )
 			);
 		} else {
-			return array();
+			return [];
 		}
 	}
 

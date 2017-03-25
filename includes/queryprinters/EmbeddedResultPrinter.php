@@ -116,19 +116,19 @@ class EmbeddedResultPrinter extends ResultPrinter {
 	public function getParameters() {
 		$params = parent::getParameters();
 
-		$params[] = array(
+		$params[] = [
 			'name' => 'embedformat',
 			'message' => 'smw-paramdesc-embedformat',
 			'default' => 'h1',
-			'values' => array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul' ),
-		);
+			'values' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul' ],
+		];
 
-		$params[] = array(
+		$params[] = [
 			'name' => 'embedonly',
 			'type' => 'boolean',
 			'message' => 'smw-paramdesc-embedonly',
 			'default' => false,
-		);
+		];
 
 		return $params;
 	}

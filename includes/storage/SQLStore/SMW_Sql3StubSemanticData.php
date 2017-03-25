@@ -37,7 +37,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 *
 	 * @var array
 	 */
-	protected $mStubPropVals = array();
+	protected $mStubPropVals = [];
 
 	/**
 	 * SMWDIWikiPage object that is the subject of this container.
@@ -79,7 +79,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mStubPropVals' );
+		return [ 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mStubPropVals' ];
 	}
 
 	/**
@@ -151,7 +151,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 */
 	public function getPropertyValues( DIProperty $property ) {
 		if ( $property->isInverse() ) { // we never have any data for inverses
-			return array();
+			return [];
 		}
 
 		if ( array_key_exists( $property->getKey(), $this->mStubPropVals ) ) {
@@ -309,7 +309,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * @since 1.8
 	 */
 	public function clear() {
-		$this->mStubPropVals = array();
+		$this->mStubPropVals = [];
 		parent::clear();
 	}
 

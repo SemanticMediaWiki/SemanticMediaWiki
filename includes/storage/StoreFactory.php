@@ -22,7 +22,7 @@ class StoreFactory {
 	/**
 	 * @var array
 	 */
-	private static $instance = array();
+	private static $instance = [];
 
 	/**
 	 * @var null
@@ -59,7 +59,7 @@ class StoreFactory {
 	 * @since 1.9
 	 */
 	public static function clear() {
-		self::$instance = array();
+		self::$instance = [];
 		self::$defaultStore = null;
 	}
 

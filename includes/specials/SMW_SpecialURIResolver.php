@@ -35,7 +35,7 @@ class SMWURIResolver extends SpecialPage {
 
 		if ( is_null( $query ) || trim( $query ) === '' ) {
 			if ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
-				$wgOut->redirect( SpecialPage::getTitleFor( 'ExportRDF' )->getFullURL( array( 'stats' => '1' ) ), '303' );
+				$wgOut->redirect( SpecialPage::getTitleFor( 'ExportRDF' )->getFullURL( [ 'stats' => '1' ] ), '303' );
 			} else {
 				$this->setHeaders();
 				$wgOut->addHTML(
@@ -55,7 +55,7 @@ class SMWURIResolver extends SpecialPage {
 				$wgOut->showErrorPage( 'badtitle', 'badtitletext' );
 			} else {
 				$wgOut->redirect( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' )
-					? SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getFullURL( array( 'xmlmime' => 'rdf' ) )
+					? SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getFullURL( [ 'xmlmime' => 'rdf' ] )
 					: $title->getFullURL(), '303' );
 			}
 		}

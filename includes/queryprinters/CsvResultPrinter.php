@@ -71,7 +71,7 @@ class CsvResultPrinter extends FileExportPrinter {
 			}
 
 			if ( $this->mShowHeaders ) {
-				$header_items = array();
+				$header_items = [];
 
 				foreach ( $res->getPrintRequests() as $pr ) {
 					$header_items[] = $pr->getLabel();
@@ -81,10 +81,10 @@ class CsvResultPrinter extends FileExportPrinter {
 			}
 
 			while ( $row = $res->getNext() ) {
-				$row_items = array();
+				$row_items = [];
 
 				foreach ( $row as /* SMWResultArray */ $field ) {
-					$growing = array();
+					$growing = [];
 
 					while ( ( $object = $field->getNextDataValue() ) !== false ) {
 						$growing[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
@@ -122,23 +122,23 @@ class CsvResultPrinter extends FileExportPrinter {
 
 		$definitions['limit']->setDefault( 100 );
 
-		$params[] = array(
+		$params[] = [
 			'name' => 'sep',
 			'message' => 'smw-paramdesc-csv-sep',
 			'default' => ',',
-		);
+		];
 
-		$params['showsep'] = array(
+		$params['showsep'] = [
 			'type' => 'boolean',
 			'default' => false,
 			'message' => 'smw-paramdesc-showsep',
-		);
+		];
 
-		$params[] = array(
+		$params[] = [
 			'name' => 'filename',
 			'message' => 'smw-paramdesc-filename',
 			'default' => 'result.csv',
-		);
+		];
 
 		return $params;
 	}

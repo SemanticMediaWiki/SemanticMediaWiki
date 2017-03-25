@@ -34,7 +34,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 			$page = is_null( $page ) ? $wgRequest->getCheck( 'text' ) : $page;
 
 			if ( $page !== '' ) {
-				$pages = array( $page );
+				$pages = [ $page ];
 			}
 		}
 

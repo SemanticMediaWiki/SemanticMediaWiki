@@ -111,9 +111,9 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_wikivalue; // a suitable wiki input value
 
 	// The following are constant (array-valued constants are not supported, hence the declaration as private static variable):
-	protected static $m_months = array( 'January', 'February', 'March', 'April' , 'May' , 'June' , 'July' , 'August' , 'September' , 'October' , 'November' , 'December' );
-	protected static $m_monthsshort = array( 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' );
-	protected static $m_formats = array( SMW_Y => array( 'y' ), SMW_YM => array( 'y', 'm' ), SMW_MY => array( 'm', 'y' ), SMW_YDM => array( 'y', 'd', 'm' ), SMW_YMD => array( 'y', 'm', 'd' ), SMW_DMY => array( 'd', 'm', 'y' ), SMW_MDY => array( 'm', 'd', 'y' ) );
+	protected static $m_months = [ 'January', 'February', 'March', 'April' , 'May' , 'June' , 'July' , 'August' , 'September' , 'October' , 'November' , 'December' ];
+	protected static $m_monthsshort = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
+	protected static $m_formats = [ SMW_Y => [ 'y' ], SMW_YM => [ 'y', 'm' ], SMW_MY => [ 'm', 'y' ], SMW_YDM => [ 'y', 'd', 'm' ], SMW_YMD => [ 'y', 'm', 'd' ], SMW_DMY => [ 'd', 'm', 'y' ], SMW_MDY => [ 'm', 'd', 'y' ] ];
 
 	/// Moment of switchover to Gregorian calendar.
 	const J1582 = 2299160.5;
@@ -132,13 +132,13 @@ class SMWTimeValue extends SMWDataValue {
 		}
 		$this->m_dataitem = null;
 
-		$datecomponents = array();
+		$datecomponents = [];
 		$calendarmodel = $era = $hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
 		if ( $this->isInterpretableAsYearOnly( $value ) ) {
 			try {
 				$this->m_dataitem = new SMWDITime( $this->getCalendarModel( null, $value, null, null ), $value );
 			} catch ( SMWDataItemException $e ) {
-				$this->addErrorMsg( array( 'smw-datavalue-time-invalid', $value, $e->getMessage() ) );
+				$this->addErrorMsg( [ 'smw-datavalue-time-invalid', $value, $e->getMessage() ] );
 			}
 		} elseif ( $this->isInterpretableAsTimestamp( $value ) ) {
 			$this->m_dataitem = SMWDITime::newFromTimestamp( $value );
@@ -156,10 +156,10 @@ class SMWTimeValue extends SMWDataValue {
 						}
 						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT, $timezone );
 					} catch ( SMWDataItemException $e ) {
-						$this->addErrorMsg( array( 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ) );
+						$this->addErrorMsg( [ 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ] );
 					}
 				} else {
-					$this->addErrorMsg( array( 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, "NO_EXCEPTION" ) );
+					$this->addErrorMsg( [ 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, "NO_EXCEPTION" ] );
 				}
 			} else {
 				$this->setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone );
@@ -205,11 +205,11 @@ class SMWTimeValue extends SMWDataValue {
 		// * this does not allow localized time notations such as "10.34 pm"
 		// * this creates problems with keywords that contain "." such as "p.m."
 		// * yet "." is an essential date separation character in languages such as German
-		$parsevalue = str_replace( array( '/', '.', '&nbsp;', ',', '年', '月', '日', '時', '分' ), array( '-', ' ', ' ', ' ', ' ', ' ', ' ', ':', ' ' ), $string );
+		$parsevalue = str_replace( [ '/', '.', '&nbsp;', ',', '年', '月', '日', '時', '分' ], [ '-', ' ', ' ', ' ', ' ', ' ', ' ', ':', ' ' ], $string );
 
 		$matches = preg_split( "/([T]?[0-2]?[0-9]:[\:0-9]+[+\-]?[0-2]?[0-9\:]+|[\p{L}]+|[0-9]+|[ ])/u", $parsevalue, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
-		$datecomponents = array();
-		$unclearparts = array();
+		$datecomponents = [];
+		$unclearparts = [];
 		$matchisnumber = false; // used for looking back; numbers are days/months/years by default but may be re-interpreted if certain further symbols are found
 		$matchisdate = false; // used for ensuring that date parts are in one block
 
@@ -228,11 +228,11 @@ class SMWTimeValue extends SMWDataValue {
 				$datecomponents[] = $match;
 				$matchisnumber = true;
 				$matchisdate = true;
-			} elseif ( $era === false && in_array( $match, array( 'AD', 'CE' ) ) ) {
+			} elseif ( $era === false && in_array( $match, [ 'AD', 'CE' ] ) ) {
 				$era = '+';
-			} elseif ( $era === false && in_array( $match, array( 'BC', 'BCE' ) ) ) {
+			} elseif ( $era === false && in_array( $match, [ 'BC', 'BCE' ] ) ) {
 				$era = '-';
-			} elseif ( $calendarmodel === false && in_array( $match, array( 'Gr', 'GR' , 'He', 'Jl', 'JL', 'MJD', 'JD', 'OS' ) ) ) {
+			} elseif ( $calendarmodel === false && in_array( $match, [ 'Gr', 'GR' , 'He', 'Jl', 'JL', 'MJD', 'JD', 'OS' ] ) ) {
 				$calendarmodel = $match;
 			} elseif ( $ampm === false && ( strtolower( $match ) === 'am' || strtolower( $match ) === 'pm' ) ) {
 				$ampm = strtolower( $match );
@@ -253,7 +253,7 @@ class SMWTimeValue extends SMWDataValue {
 				   $this->parseMonthString( $match, $monthname ) ) {
 				$datecomponents[] = $monthname;
 				$matchisdate = true;
-			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && in_array( $match, array( 'st', 'nd', 'rd', 'th' ) ) ) {
+			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && in_array( $match, [ 'st', 'nd', 'rd', 'th' ] ) ) {
 				$datecomponents[] = 'd' . strval( array_pop( $datecomponents ) ); // must be a day; add standard marker
 				$matchisdate = true;
 			} elseif ( count( $match ) == 1 ) {
@@ -272,17 +272,17 @@ class SMWTimeValue extends SMWDataValue {
 
 		// Abort if we found unclear or over-specific information:
 		if ( count( $unclearparts ) != 0 ) {
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-values', $this->m_wikivalue, implode( ', ', $unclearparts ) ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-values', $this->m_wikivalue, implode( ', ', $unclearparts ) ] );
 			return false;
 		}
 
 		if ( ( $timezoneoffset !== false && $timeoffset !== false ) ) {
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-offset-zone-usage', $this->m_wikivalue ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-offset-zone-usage', $this->m_wikivalue ] );
 			return false;
 		}
 
 		if ( ( $timezoneoffset !== false && $timeoffset !== false ) ) {
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-offset-zone-usage', $this->m_wikivalue ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-offset-zone-usage', $this->m_wikivalue ] );
 			return false;
 		}
 
@@ -290,7 +290,7 @@ class SMWTimeValue extends SMWDataValue {
 		// Check if the a.m. and p.m. information is meaningful
 
 		if ( $ampm !== false && ( $hours > 12 || $hours == 0 ) ) { // Note: the == 0 check subsumes $hours===false
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-ampm', $this->m_wikivalue, $hours ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-ampm', $this->m_wikivalue, $hours ] );
 			return false;
 		} elseif ( $ampm == 'am' && $hours == 12 ) {
 			$hours = 0;
@@ -432,7 +432,7 @@ class SMWTimeValue extends SMWDataValue {
 		//   011 component could be a day or a year but no month etc.
 		// For three components, we thus get a 10 digit bit vector.
 		$datevector = 1;
-		$propercomponents = array();
+		$propercomponents = [];
 		$justfounddash = true; // avoid two dashes in a row, or dashes at the end
 		$error = false;
 		$numvalue = 0;
@@ -464,13 +464,13 @@ class SMWTimeValue extends SMWDataValue {
 				$msgKey .= '-common';
 			}
 
-			$this->addErrorMsg( array( $msgKey, $this->m_wikivalue ) );
+			$this->addErrorMsg( [ $msgKey, $this->m_wikivalue ] );
 			return false;
 		}
 
 		// Now use the bitvector to find the preferred interpretation of the date components:
 		$dateformats = Localizer::getInstance()->getExtraneousLanguage( $this->getOption( self::OPT_CONTENT_LANGUAGE ) )->getDateFormats();
-		$date = array( 'y' => false, 'm' => false, 'd' => false );
+		$date = [ 'y' => false, 'm' => false, 'd' => false ];
 		foreach ( $dateformats[count( $propercomponents ) - 1] as $formatvector ) {
 			if ( !( ~$datevector & $formatvector ) ) { // check if $formatvector => $datevector ("the input supports the format")
 				$i = 0;
@@ -482,7 +482,7 @@ class SMWTimeValue extends SMWDataValue {
 			}
 		}
 		if ( $date['y'] === false ) { // no band matches the entered date
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-date-components-sequence', $this->m_wikivalue ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-date-components-sequence', $this->m_wikivalue ] );
 			return false;
 		}
 		return true;
@@ -528,7 +528,7 @@ class SMWTimeValue extends SMWDataValue {
 		try {
 			$this->m_dataitem = new SMWDITime( $calmod, $date['y'], $date['m'], $date['d'], $hours, $minutes, $seconds . '.' . $microseconds, $timezone );
 		} catch ( SMWDataItemException $e ) {
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid', $this->m_wikivalue, $e->getMessage() ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid', $this->m_wikivalue, $e->getMessage() ] );
 			return false;
 		}
 
@@ -537,7 +537,7 @@ class SMWTimeValue extends SMWDataValue {
 		// conversion would not be reliable if JD numbers get too huge:
 		if ( ( $date['y'] <= self::PREHISTORY ) &&
 		     ( ( $this->m_dataitem->getPrecision() > SMWDITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-prehistoric', $this->m_wikivalue ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-prehistoric', $this->m_wikivalue ] );
 			return false;
 		}
 		if ( $timeoffset != 0 ) {
@@ -545,7 +545,7 @@ class SMWTimeValue extends SMWDataValue {
 			try {
 				$this->m_dataitem = SMWDITime::newFromJD( $newjd, $calmod, $this->m_dataitem->getPrecision(), $timezone );
 			} catch ( SMWDataItemException $e ) {
-				$this->addErrorMsg( array( 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ) );
+				$this->addErrorMsg( [ 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ] );
 				return false;
 			}
 		}

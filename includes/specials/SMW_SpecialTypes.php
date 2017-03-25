@@ -47,7 +47,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$typeLabels = DataTypeRegistry::getInstance()->getKnownTypeLabels();
 
-		$contentsByIndex = array();
+		$contentsByIndex = [];
 		asort( $typeLabels, SORT_STRING );
 
 		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
@@ -66,11 +66,11 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$html = \Html::rawElement(
 			'p',
-			array( 'class' => 'smw-sp-types-intro' ),
+			[ 'class' => 'smw-sp-types-intro' ],
 			wfMessage( 'smw_types_docu' )->parse()
 		).  \Html::element(
 			'h2',
-			array(),
+			[],
 			wfMessage( 'smw-sp-types-list' )->escaped()
 		);
 
@@ -114,7 +114,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$result = \Html::rawElement(
 			'div',
-			array( 'class' => 'smw-sp-types-intro'. $typeKey ),
+			[ 'class' => 'smw-sp-types-intro'. $typeKey ],
 			wfMessage( $messageKey, str_replace( '_', ' ', $escapedTypeLabel ) )->parse() . ' ' .
 			wfMessage( 'smw-sp-types-help', str_replace( ' ', '_', $canonicalLabel ) )->parse()
 		);
@@ -158,7 +158,7 @@ class SMWSpecialTypes extends SpecialPage {
 			if ( $dataValue instanceof \SMWErrorValue ) {
 				$html = \Html::rawElement(
 					'p',
-					array(),
+					[],
 					wfMessage( 'smw-sp-types-geo-not-available', $escapedTypeLabel )->parse()
 				);
 			}
@@ -167,7 +167,7 @@ class SMWSpecialTypes extends SpecialPage {
 		if ( $typeValue->getDataItem()->getFragment() === '_mlt_rec' ) {
 			$html = \Html::rawElement(
 				'p',
-				array(),
+				[],
 				wfMessage( 'smw-sp-types-mlt-lcode', $escapedTypeLabel, ( $dataValue->isEnabledFeature( SMW_DV_MLTV_LCODE ) ? 1 : 2 ) )->parse()
 			);
 		}
@@ -178,15 +178,15 @@ class SMWSpecialTypes extends SpecialPage {
 	private function getTypesLink() {
 		return \Html::rawElement(
 			'div',
-			array( 'class' => 'smw-breadcrumb-link' ),
+			[ 'class' => 'smw-breadcrumb-link' ],
 			\Html::rawElement(
 				'span',
-				array( 'class' => 'smw-breadcrumb-arrow-right' ),
+				[ 'class' => 'smw-breadcrumb-arrow-right' ],
 				''
 			) .
 			\Html::rawElement(
 				'a',
-				array( 'href' => \SpecialPage::getTitleFor( 'Types')->getFullURL() ),
+				[ 'href' => \SpecialPage::getTitleFor( 'Types')->getFullURL() ],
 				$this->msg( 'types' )->escaped()
 		) );
 	}

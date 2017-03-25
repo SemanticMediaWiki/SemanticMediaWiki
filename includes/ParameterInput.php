@@ -96,13 +96,13 @@ class ParameterInput {
 	 * @return string
 	 */
 	public function getHtml() {
-		$valueList = array();
+		$valueList = [];
 
 		if ( is_array( $this->param->getAllowedValues() ) ) {
 			$valueList = $this->param->getAllowedValues();
 		}
 
-		if ( $valueList === array() ) {
+		if ( $valueList === [] ) {
 			switch ( $this->param->getType() ) {
 				case 'char':
 				case 'float':
@@ -141,7 +141,7 @@ class ParameterInput {
 		}
 
 		// #1473
-		if ( $value === array() ) {
+		if ( $value === [] ) {
 		   $value = '';
 		}
 
@@ -160,10 +160,10 @@ class ParameterInput {
 			$this->inputName,
 			$this->getValueToUse(),
 			'text',
-			array(
+			[
 				'size' => 6,
 				'style' => "width: 95%;",
-			)
+			]
 		);
 	}
 
@@ -179,10 +179,10 @@ class ParameterInput {
 			$this->inputName,
 			$this->getValueToUse(),
 			'text',
-			array(
+			[
 				'size'  => 20,
 				'style' => "width: 95%;",
-			)
+			]
 		);
 	}
 
@@ -210,12 +210,12 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getSelectInput( array $valueList ) {
-		$options = array();
+		$options = [];
 		$options[] = '<option value=""></option>';
 
 		$currentValues = (array)$this->getValueToUse();
 		if ( is_null( $currentValues ) ) {
-			$currentValues = array();
+			$currentValues = [];
 		}
 
 		foreach ( $valueList as $value ) {
@@ -227,9 +227,9 @@ class ParameterInput {
 
 		return Html::rawElement(
 			'select',
-			array(
+			[
 				'name' => $this->inputName
-			),
+			],
 			implode( "\n", $options )
 		);
 	}
@@ -244,24 +244,24 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getCheckboxListInput( array $valueList ) {
-		$boxes = array();
+		$boxes = [];
 
 		$currentValues = (array)$this->getValueToUse();
 		if ( is_null( $currentValues ) ) {
-			$currentValues = array();
+			$currentValues = [];
 		}
 
 		foreach ( $valueList as $value ) {
 			$boxes[] = Html::rawElement(
 				'span',
-				array(
+				[
 					'style' => 'white-space: nowrap; padding-right: 5px;'
-				),
+				],
 				Xml::check(
 					$this->inputName . '[' . htmlspecialchars( $value ). ']',
 					in_array( $value, $currentValues )
 				) .
-				Html::element( 'tt', array(), $value )
+				Html::element( 'tt', [], $value )
 			);
 		}
 

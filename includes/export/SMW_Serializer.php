@@ -95,10 +95,10 @@ abstract class SMWSerializer {
 	public function clear() {
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
-		$this->decl_todo = array();
-		$this->decl_done = array();
-		$this->global_namespaces = array();
-		$this->extra_namespaces = array();
+		$this->decl_todo = [];
+		$this->decl_done = [];
+		$this->global_namespaces = [];
+		$this->extra_namespaces = [];
 	}
 
 	/**
@@ -139,7 +139,7 @@ abstract class SMWSerializer {
 	 */
 	public function serializeDeclarations() {
 		foreach ( $this->decl_todo as $name => $flag ) {
-			$types = array();
+			$types = [];
 			if ( $flag & SMW_SERIALIZER_DECL_CLASS ) {
 				$types[] = 'owl:Class';
 			}
@@ -155,7 +155,7 @@ abstract class SMWSerializer {
 			$curdone = array_key_exists( $name, $this->decl_done ) ? $this->decl_done[$name] : 0;
 			$this->decl_done[$name] = $curdone | $flag;
 		}
-		$this->decl_todo = array(); // reset all
+		$this->decl_todo = []; // reset all
 	}
 
 	/**
@@ -200,7 +200,7 @@ abstract class SMWSerializer {
 		foreach ( $this->extra_namespaces as $nsshort => $nsuri ) {
 			$this->serializeNamespace( $nsshort, $nsuri );
 		}
-		$this->extra_namespaces = array();
+		$this->extra_namespaces = [];
 	}
 
 	/**

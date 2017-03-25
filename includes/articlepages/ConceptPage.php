@@ -66,8 +66,8 @@ class ConceptPage extends \SMWOrderedListPage {
 
 			$errors = $queryResult->getErrors();
 		} else {
-			$diWikiPages = array();
-			$errors = array();
+			$diWikiPages = [];
+			$errors = [];
 		}
 
 		$pageLister = new SMWPageLister( $diWikiPages, null, $this->limit, $this->from, $this->until );
@@ -75,11 +75,11 @@ class ConceptPage extends \SMWOrderedListPage {
 
 		$titleText = htmlspecialchars( $this->mTitle->getText() );
 
-		return Html::element( 'br', array( 'id' => 'smwfootbr' ) ) .
-			Html::element( 'a', array( 'name' => 'SMWResults' ), null ) .
-			Html::rawElement( 'div', array( 'id' => 'mw-pages'),
+		return Html::element( 'br', [ 'id' => 'smwfootbr' ] ) .
+			Html::element( 'a', [ 'name' => 'SMWResults' ], null ) .
+			Html::rawElement( 'div', [ 'id' => 'mw-pages'],
 				$this->getCacheInformation() .
-				Html::rawElement( 'h2', array(), $this->getContext()->msg( 'smw_concept_header', $titleText )->text() ) .
+				Html::rawElement( 'h2', [], $this->getContext()->msg( 'smw_concept_header', $titleText )->text() ) .
 				$this->getNavigationLinks( 'smw_conceptarticlecount', $diWikiPages, $smwgConceptPagingLimit ) .
 				smwfEncodeMessages( $errors ) . ' ' .
 				$this->getFormattedColumns( $diWikiPages )
@@ -101,18 +101,18 @@ class ConceptPage extends \SMWOrderedListPage {
 
 		return Html::rawElement(
 			'h2',
-			array(),
+			[],
 			$this->getContext()->msg( 'smw-concept-cache-header' )->text()
 		) . Html::rawElement(
 			'span',
-			array( 'class' => 'plainlinks' ),
+			[ 'class' => 'plainlinks' ],
 			$cacheInformation
 		);
 	}
 
 	private function getFormattedColumns( array $diWikiPages ) {
 
-		if ( $diWikiPages === array() ) {
+		if ( $diWikiPages === [] ) {
 			return '';
 		}
 

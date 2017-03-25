@@ -151,7 +151,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @since 1.8
 	 * @var array
 	 */
-	public $m_semdata = array();
+	public $m_semdata = [];
 
 	/**
 	 * Like SMWSQLStore3::m_semdata, but containing flags indicating
@@ -160,7 +160,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @since 1.8
 	 * @var array
 	 */
-	public $m_sdstate = array();
+	public $m_sdstate = [];
 
 	/**
 	 * @since 1.8
@@ -314,12 +314,12 @@ class SMWSQLStore3 extends SMWStore {
 		$result = null;
 		$start = microtime( true );
 
-		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', array( $this, $query, &$result, $this->factory->newSlaveQueryEngine() ) ) ) {
+		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', [ $this, $query, &$result, $this->factory->newSlaveQueryEngine() ] ) ) {
 			$result = $this->fetchQueryResult( $query );
 		}
 
-		\Hooks::run( 'SMW::SQLStore::AfterQueryResultLookupComplete', array( $this, &$result ) );
-		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', array( $this, &$result ) );
+		\Hooks::run( 'SMW::SQLStore::AfterQueryResultLookupComplete', [ $this, &$result ] );
+		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
 
 		$query->setOption( SMWQuery::PROC_QUERY_TIME, microtime( true ) - $start );
 
@@ -548,21 +548,21 @@ class SMWSQLStore3 extends SMWStore {
 		// Change all id entries in property tables:
 		foreach ( $this->getPropertyTables() as $proptable ) {
 			if ( $sdata && $proptable->usesIdSubject() ) {
-				$db->update( $proptable->getName(), array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
+				$db->update( $proptable->getName(), [ 's_id' => $newid ], [ 's_id' => $oldid ], __METHOD__ );
 			}
 
 			if ( $podata ) {
 				if ( ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_PROPERTY ) ) && ( !$proptable->isFixedPropertyTable() ) ) {
 					if ( ( $newnamespace == -1 ) || ( $newnamespace == SMW_NS_PROPERTY ) ) {
-						$db->update( $proptable->getName(), array( 'p_id' => $newid ), array( 'p_id' => $oldid ), __METHOD__ );
+						$db->update( $proptable->getName(), [ 'p_id' => $newid ], [ 'p_id' => $oldid ], __METHOD__ );
 					} else {
-						$db->delete( $proptable->getName(), array( 'p_id' => $oldid ), __METHOD__ );
+						$db->delete( $proptable->getName(), [ 'p_id' => $oldid ], __METHOD__ );
 					}
 				}
 
 				foreach ( $proptable->getFields( $this ) as $fieldName => $fieldType ) {
 					if ( $fieldType === FieldType::FIELD_ID ) {
-						$db->update( $proptable->getName(), array( $fieldName => $newid ), array( $fieldName => $oldid ), __METHOD__ );
+						$db->update( $proptable->getName(), [ $fieldName => $newid ], [ $fieldName => $oldid ], __METHOD__ );
 					}
 				}
 			}
@@ -571,16 +571,16 @@ class SMWSQLStore3 extends SMWStore {
 		// Change id entries in concept-related tables:
 		if ( $sdata && ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_CONCEPT ) ) ) {
 			if ( ( $newnamespace == -1 ) || ( $newnamespace == SMW_NS_CONCEPT ) ) {
-				$db->update( 'smw_fpt_conc', array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
-				$db->update( self::CONCEPT_CACHE_TABLE, array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
+				$db->update( 'smw_fpt_conc', [ 's_id' => $newid ], [ 's_id' => $oldid ], __METHOD__ );
+				$db->update( self::CONCEPT_CACHE_TABLE, [ 's_id' => $newid ], [ 's_id' => $oldid ], __METHOD__ );
 			} else {
-				$db->delete( 'smw_fpt_conc', array( 's_id' => $oldid ), __METHOD__ );
-				$db->delete( self::CONCEPT_CACHE_TABLE, array( 's_id' => $oldid ), __METHOD__ );
+				$db->delete( 'smw_fpt_conc', [ 's_id' => $oldid ], __METHOD__ );
+				$db->delete( self::CONCEPT_CACHE_TABLE, [ 's_id' => $oldid ], __METHOD__ );
 			}
 		}
 
 		if ( $podata ) {
-			$db->update( self::CONCEPT_CACHE_TABLE, array( 'o_id' => $newid ), array( 'o_id' => $oldid ), __METHOD__ );
+			$db->update( self::CONCEPT_CACHE_TABLE, [ 'o_id' => $newid ], [ 'o_id' => $oldid ], __METHOD__ );
 		}
 	}
 
@@ -622,8 +622,8 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function clear() {
 		parent::clear();
-		$this->m_semdata = array();
-		$this->m_sdstate = array();
+		$this->m_semdata = [];
+		$this->m_sdstate = [];
 		$this->propertyTableInfoFetcher = null;
 		$this->getObjectIds()->clearCaches();
 	}

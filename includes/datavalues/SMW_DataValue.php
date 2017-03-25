@@ -128,7 +128,7 @@ abstract class SMWDataValue {
 	 * (PHP's count() is too slow when called often) by using $mHasErrors.
 	 * @var array
 	 */
-	private $mErrors = array();
+	private $mErrors = [];
 
 	/**
 	 * Boolean indicating if there where any errors.
@@ -174,7 +174,7 @@ abstract class SMWDataValue {
 	public function setUserValue( $value, $caption = false ) {
 
 		$this->m_dataitem = null;
-		$this->mErrors = array(); // clear errors
+		$this->mErrors = []; // clear errors
 		$this->mHasErrors = false;
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
 
@@ -188,7 +188,7 @@ abstract class SMWDataValue {
 		// just fails, even if parseUserValue() above might not have noticed this issue.
 		// Note: \x07 was used in MediaWiki 1.11.0, \x7f is used now (backwards compatiblity, b/c)
 		if ( ( strpos( $value, "\x7f" ) !== false ) || ( strpos( $value, "\x07" ) !== false ) ) {
-			$this->addErrorMsg( array( 'smw-datavalue-stripmarker-parse-error', $value ) );
+			$this->addErrorMsg( [ 'smw-datavalue-stripmarker-parse-error', $value ] );
 		}
 
 		if ( $this->isValid() && !$this->getOption( self::OPT_QUERY_CONTEXT ) ) {
@@ -212,7 +212,7 @@ abstract class SMWDataValue {
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {
 		$this->m_dataitem = null;
-		$this->mErrors = array();
+		$this->mErrors = [];
 		$this->mHasErrors = $this->m_caption = false;
 		return $this->loadDataItem( $dataItem );
 	}
@@ -437,7 +437,7 @@ abstract class SMWDataValue {
 	 * @since 2.4
 	 */
 	public function clearErrors() {
-		$this->mErrors = array();
+		$this->mErrors = [];
 		$this->mHasErrors = false;
 	}
 
@@ -760,7 +760,7 @@ abstract class SMWDataValue {
 	 * @return mixed
 	 * @throws RuntimeException
 	 */
-	public function getExtraneousFunctionFor( $name, array $parameters = array() ) {
+	public function getExtraneousFunctionFor( $name, array $parameters = [] ) {
 		return $this->dataValueServiceFactory->newExtraneousFunctionByName( $name, $parameters );
 	}
 
