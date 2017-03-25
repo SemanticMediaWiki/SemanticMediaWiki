@@ -81,6 +81,27 @@ class Highlighter {
 	 * @since 3.0
 	 *
 	 * @param string $text
+	 * @param string|null $type
+	 *
+	 * @return booelan
+	 */
+	public static function hasHighlighterClass( $text, $type = null ) {
+
+		if ( strpos( $text, 'smw-highlighter' ) === false ) {
+			return false;
+		}
+
+		if ( $type !== null ) {
+			return strpos( $text, 'data-type="' . self::getTypeId( $type ) . '"' ) !== false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $text
 	 *
 	 * @return string
 	 */

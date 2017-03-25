@@ -108,34 +108,38 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 
 	$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
-	if (  $messages !== array() ) {
-
-		if ( $escape ) {
-			$messages = array_map( 'htmlspecialchars', $messages );
-		}
-
-		if ( count( $messages ) == 1 )  {
-			$errorList = $messages[0];
-		}
-		else {
-			foreach ( $messages as &$message ) {
-				$message = '<li>' . $message . '</li>';
-			}
-
-			$errorList = '<ul>' . implode( $seperator, $messages ) . '</ul>';
-		}
-
-		// Type will be converted internally
-		$highlighter = Highlighter::factory( $type );
-		$highlighter->setContent( array (
-			'caption'   => null,
-			'content'   => Highlighter::decode( $errorList )
-		) );
-
-		return $highlighter->getHtml();
-	} else {
+	if ( $messages === array() ) {
 		return '';
 	}
+
+	if ( $escape ) {
+		$messages = array_map( 'htmlspecialchars', $messages );
+	}
+
+	if ( count( $messages ) == 1 )  {
+		$content = $messages[0];
+	} else {
+		foreach ( $messages as &$message ) {
+			$message = '<li>' . $message . '</li>';
+		}
+
+		$content = '<ul>' . implode( $seperator, $messages ) . '</ul>';
+	}
+
+	// Stop when a previous processing produced an error and it is expected to be
+	// added to a new tooltip (e.g {{#info {{#show ...}} }} ) instance
+	if ( Highlighter::hasHighlighterClass( $content, 'warning' ) ) {
+		return $content;
+	}
+
+	$highlighter = Highlighter::factory( $type );
+
+	$highlighter->setContent( array(
+		'caption'   => null,
+		'content'   => Highlighter::decode( $content )
+	) );
+
+	return $highlighter->getHtml();
 }
 
 /**

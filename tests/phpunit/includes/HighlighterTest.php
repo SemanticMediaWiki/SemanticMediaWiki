@@ -80,6 +80,21 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasHighlighterClass() {
+
+		$instance = Highlighter::factory(
+			Highlighter::TYPE_WARNING
+		);
+
+		$instance->setContent( array(
+			'title' => 'Foo'
+		) );
+
+		$this->assertTrue(
+			Highlighter::hasHighlighterClass( $instance->getHtml(), 'warning' )
+		);
+	}
+
 	public function getTypeDataProvider() {
 		return array(
 			array( '' , Highlighter::TYPE_NOTYPE ),
