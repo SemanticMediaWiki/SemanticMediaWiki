@@ -122,4 +122,13 @@ class TaskHandlerFactory {
 		return new FulltextSearchTableRebuildJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @return DeprecationNoticeTaskHandler
+	 */
+	public function newDeprecationNoticeTaskHandler() {
+		return new DeprecationNoticeTaskHandler( $this->outputFormatter, $GLOBALS );
+	}
+
 }
