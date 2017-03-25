@@ -18,10 +18,10 @@ on how to install the latest version of Semantic MediaWiki (SMW), see the [insta
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">2.5.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">SMW 2.5.x</a></th>
 		<td>Stable version</td>
 		<td>2017-03-14</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.5.x">master</a></td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.5.x">2.5.x</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.4.0">SMW 2.4.x</a></th>
