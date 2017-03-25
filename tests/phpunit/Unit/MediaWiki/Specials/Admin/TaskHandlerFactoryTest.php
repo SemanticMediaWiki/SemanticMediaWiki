@@ -112,6 +112,11 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\MediaWiki\Specials\Admin\FulltextSearchTableRebuildJobTaskHandler'
 		);
 
+		$provider[] = array(
+			'newDeprecationNoticeTaskHandler',
+			'\SMW\MediaWiki\Specials\Admin\DeprecationNoticeTaskHandler'
+		);
+
 		return $provider;
 	}
 
