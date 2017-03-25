@@ -37,6 +37,14 @@ return array(
 		'targets' => array( 'mobile', 'desktop' )
 	),
 
+	'ext.smw.special.style' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/special/ext.smw.special.css'
+		),
+		'position' => 'top',
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
 	// Load the module explicitly, otherwise mobile will complain with
 	// "Uncaught Error: Unknown dependency: jquery.async"
 	'ext.jquery.async' => $moduleTemplate + array(
