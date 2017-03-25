@@ -125,13 +125,8 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 			'WantedProperties',
 			'Concepts',
 			'ProcessingErrorList',
-			'PropertyLabelSimilarity'
-
-			// Can't be tested because of
-
-			// FIXME Test fails with Undefined index: HTTP_ACCEPT
-			// 'URIResolver'
-
+			'PropertyLabelSimilarity',
+			'URIResolver'
 		);
 
 		foreach ( $specialPages as $special ) {

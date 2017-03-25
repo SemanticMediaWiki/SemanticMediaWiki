@@ -309,7 +309,7 @@ final class Setup {
 				'group' => 'pages'
 			),
 			'URIResolver' => array(
-				'page' => 'SMWURIResolver'
+				'page' => 'SMW\MediaWiki\Specials\SpecialURIResolver'
 			),
 			'Properties' => array(
 				'page' => 'SMW\SpecialProperties',
