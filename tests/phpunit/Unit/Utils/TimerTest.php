@@ -38,4 +38,12 @@ class TimerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetElapsedTimeAsLoggableMessage() {
+
+		$this->assertInternalType(
+			'string',
+			Timer::getElapsedTimeAsLoggableMessage( 'Foo' )
+		);
+	}
+
 }
