@@ -184,8 +184,12 @@ class PropertyLabelFinder {
 		) );
 
 		$propertyList = array();
+
+		$query = $queryFactory->newQuery( $description );
+		$query->setOption( $query::PROC_CONTEXT, 'PropertyLabelFinder' );
+
 		$queryResult = $this->store->getQueryResult(
-			$queryFactory->newQuery( $description )
+			$query
 		);
 
 		if ( !$queryResult instanceof \SMWQueryResult ) {
