@@ -7,8 +7,7 @@
 [![Packagist download count](https://poser.pugx.org/mediawiki/semantic-media-wiki/d/total.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
 [![Dependency Status](https://www.versioneye.com/php/mediawiki:semantic-media-wiki/badge.png)](https://www.versioneye.com/php/mediawiki:semantic-media-wiki)
 
-Semantic MediaWiki (a.k.a. SMW) is a free, open-source extension to [MediaWiki]
-(https://www.semantic-mediawiki.org/wiki/MediaWiki) – the wiki software that
+Semantic MediaWiki (a.k.a. SMW) is a free, open-source extension to [MediaWiki](https://www.semantic-mediawiki.org/wiki/MediaWiki) – the wiki software that
 powers Wikipedia – that lets you store and query data within the wiki's pages.
 
 Semantic MediaWiki is also a full-fledged framework, in conjunction with
@@ -17,8 +16,8 @@ knowledge management system. All data created within SMW can easily be
 published via the [Semantic Web](https://www.semantic-mediawiki.org/wiki/Semantic_Web),
 allowing other systems to use this data seamlessly.
 
-For a better understanding of how SMW works, have a look at [Semantic MediaWiki deployed in 5 min](https://vimeo.com/82255034), using a [Sesame](https://vimeo.com/126392433) or [Fuseki ](https://vimeo.com/118614078) triplestore, or
-browse the [SMW wiki](https://www.semantic-mediawiki.org) for a more comprehensive introduction.
+For a better understanding of how Semantic MediaWiki works, have a look at [deployed in 5 min](https://vimeo.com/82255034) and the [Sesame](https://vimeo.com/126392433), [Fuseki ](https://vimeo.com/118614078) triplestore video, or
+browse the [wiki](https://www.semantic-mediawiki.org) for a more comprehensive introduction.
 
 ## Requirements
 
@@ -54,7 +53,6 @@ most important files are linked below.
 * [User documentation overview](docs/README.md)
 * [Developer documentation overview](docs/technical/README.md)
 
-
 ## Contribution and support
 
 [![Twitter](https://www.semantic-mediawiki.org/w/images/c/c9/Twitter_icon.jpg)](https://twitter.com/#!/semanticmw)
@@ -77,11 +75,10 @@ have a look at the contribution guideline.
 * Ask a question on [the mailing list](https://www.semantic-mediawiki.org/wiki/Mailing_list)
 * Ask a question on the #semantic-mediawiki IRC channel on Freenode.
 
+## Tests
 
-### Tests
-
-This extension provides unit and integration tests that are normally run by a [continues integration platform][travis]
-but can also be executed manually. A more comprehensive introduction can be found in the [test section](/tests/README.md#running-tests).
+This extension provides unit and integration tests and are normally run by a [continues integration platform][travis]
+but can also be executed manually using `composer phpunit` from the extension base directory. A more comprehensive introduction can be found in the [test section](/tests/README.md#running-tests).
 
 ## License
 
