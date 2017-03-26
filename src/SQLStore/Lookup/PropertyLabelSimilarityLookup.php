@@ -107,6 +107,21 @@ class PropertyLabelSimilarityLookup {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return integer
+	 */
+	public function getPropertyMaxCount() {
+		$statistics = $this->store->getStatistics();
+
+		if ( isset( $statistics['TOTALPROPS'] ) ) {
+			return $statistics['TOTALPROPS'];
+		}
+
+		return 0;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param RequestOptions|null $requestOptions
