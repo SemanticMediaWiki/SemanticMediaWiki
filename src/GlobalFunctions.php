@@ -153,6 +153,25 @@ function &smwfGetStore() {
 }
 
 /**
+ * @since 3.0
+ *
+ * @param string $namespace
+ * @param string $key
+ *
+ * @return string
+ */
+function smwfCacheKey( $namespace, $key ) {
+
+	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'];
+
+	if ( $namespace{0} !== ':' ) {
+		$namespace = ':' . $namespace;
+	}
+
+	return $cachePrefix . $namespace . ':' . md5( $key );
+}
+
+/**
  * @codeCoverageIgnore
  *
  * Get the SMWSparqlDatabase object to use for connecting to a SPARQL store,

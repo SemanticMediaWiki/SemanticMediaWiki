@@ -89,6 +89,14 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( is_string( $results ) );
 	}
 
+	public function testSmwfCacheKeyOnPrefixedNamespace() {
+
+		$this->assertEquals(
+			smwfCacheKey( 'foo', 'bar' ),
+			smwfCacheKey( ':foo', 'bar' )
+		);
+	}
+
 	/**
 	 * Provides available global functions
 	 *

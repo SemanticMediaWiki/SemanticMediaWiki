@@ -187,6 +187,11 @@ class ParserAfterTidy extends HookHandler {
 				wfTimestamp( TS_UNIX )
 			);
 
+			$parserData->setOption(
+				$parserData::OPT_FORCED_UPDATE,
+				true
+			);
+
 			$parserData->updateStore( true );
 
 			$parserData->addLimitReport(

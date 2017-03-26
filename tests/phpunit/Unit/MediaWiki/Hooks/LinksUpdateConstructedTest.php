@@ -144,7 +144,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$linksUpdate->expects( $this->once() )
+		$linksUpdate->expects( $this->atLeastOnce() )
 			->method( 'getParserOutput' )
 			->will( $this->returnValue( $parserOutput ) );
 
