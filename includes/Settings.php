@@ -126,7 +126,6 @@ class Settings extends Options {
 			'smwgDeclarationProperties' => $GLOBALS['smwgDeclarationProperties'],
 			'smwgDataTypePropertyExemptionList' => $GLOBALS['smwgDataTypePropertyExemptionList'],
 			'smwgTranslate' => $GLOBALS['smwgTranslate'],
-			'smwgAdminRefreshStore' => $GLOBALS['smwgAdminRefreshStore'],
 			'smwgAutocompleteInSpecialAsk' => $GLOBALS['smwgAutocompleteInSpecialAsk'],
 			'smwgAutoRefreshSubject' => $GLOBALS['smwgAutoRefreshSubject'],
 			'smwgAdminFeatures' => $GLOBALS['smwgAdminFeatures'],
@@ -175,6 +174,8 @@ class Settings extends Options {
 			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty'],
 			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
 		);
+
+		self::initLegacyMapping( $configuration );
 
 		\Hooks::run( 'SMW::Config::BeforeCompletion', array( &$configuration ) );
 
@@ -285,6 +286,17 @@ class Settings extends Options {
 		}
 
 		throw new SettingNotFoundException( "'{$key}' is not a valid settings key" );
+	}
+
+	private static function initLegacyMapping( &$configuration ) {
+
+		// When adding a deprecated mapping, extend the DeprecationNoticeTaskHandler
+		// with the corresponding entry
+
+		// Deprecated in 2.5, to be removed with 3.1
+		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) && $GLOBALS['smwgAdminRefreshStore'] === false ) {
+			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
+		}
 	}
 
 }

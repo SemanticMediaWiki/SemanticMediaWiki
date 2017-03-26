@@ -59,7 +59,7 @@ class CompatibilityMode {
 			'smwgAutoRefreshOnPurge' => false,
 			'smwgAutoRefreshOnPageMove' => false,
 			'smwgFactboxCacheRefreshOnPurge' => false,
-			'smwgAdminRefreshStore' => false,
+			'smwgAdminFeatures' => false,
 			'smwgPageSpecialProperties' => array(),
 			'smwgEnableUpdateJobs' => false,
 			'smwgEnabledEditPageHelp' => false,
