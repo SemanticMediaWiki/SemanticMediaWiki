@@ -88,8 +88,14 @@ class JsonTestCaseFileHandler {
 			}
 
 			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+			$compare = '=';
 
-			if ( version_compare( $mwVersion, $versionToSkip, '=' ) ) {
+			if ( strpos( $versionToSkip, '.x' ) ) {
+				$versionToSkip = str_replace( '.x', '.9999', $versionToSkip );
+				$compare = '<';
+			}
+
+			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
 				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
 				return true;
 			}
