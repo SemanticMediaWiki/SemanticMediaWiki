@@ -100,7 +100,7 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 			$compositePropertyTableDiffIterator
 		);
 
-		$instance->setPropertyExemptionlist(
+		$instance->setPropertyExemptionList(
 			array( '_MDAT' )
 		);
 
@@ -157,7 +157,7 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 			$compositePropertyTableDiffIterator
 		);
 
-		$instance->setAffiliatePropertyDetectionlist(
+		$instance->setAffiliatePropertyDetectionList(
 			array( '_MDAT' )
 		);
 
@@ -226,7 +226,7 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 			$compositePropertyTableDiffIterator
 		);
 
-		$instance->setPropertyExemptionlist(
+		$instance->setPropertyExemptionList(
 			array( 'Has date' )
 		);
 
