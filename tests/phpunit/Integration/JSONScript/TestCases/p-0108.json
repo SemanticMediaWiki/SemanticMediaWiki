@@ -54,7 +54,8 @@
 			"subject": "Test/P0108/2",
 			"assert-output": {
 				"to-contain": [
-					"title=\"&amp;#91;&amp;#91;SMW::off]]Test/P0108/1 P0108&amp;#91;&amp;#91;SMW::on]]\">"
+					"title=\"SMW::offTest/P0108/1 P0108SMW::on\">",
+					"<div class=\"smwttcontent\">Test/P0108/1 P0108</div>"
 				]
 			}
 		},
