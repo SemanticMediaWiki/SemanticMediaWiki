@@ -1017,7 +1017,7 @@ return array(
 	#
 	# @since 2.3 (experimental)
 	##
-	'smwgQueryDependencyPropertyExemptionlist' => array( '_MDAT', '_SOBJ', '_ASKDU' ),
+	'smwgQueryDependencyPropertyExemptionList' => array( '_MDAT', '_SOBJ', '_ASKDU' ),
 	##
 
 	###
@@ -1030,7 +1030,7 @@ return array(
 	#
 	# @since 2.4 (experimental)
 	##
-	'smwgQueryDependencyAffiliatePropertyDetectionlist' => array(),
+	'smwgQueryDependencyAffiliatePropertyDetectionList' => array(),
 	##
 
 	###

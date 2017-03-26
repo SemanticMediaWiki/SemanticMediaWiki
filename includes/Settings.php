@@ -155,8 +155,8 @@ class Settings extends Options {
 			'smwgEnabledDeferredUpdate' => $GLOBALS['smwgEnabledDeferredUpdate'],
 			'smwgEnabledHttpDeferredJobRequest' => $GLOBALS['smwgEnabledHttpDeferredJobRequest'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
-			'smwgQueryDependencyPropertyExemptionlist' => $GLOBALS['smwgQueryDependencyPropertyExemptionlist'],
-			'smwgQueryDependencyAffiliatePropertyDetectionlist' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'],
+			'smwgQueryDependencyPropertyExemptionList' => $GLOBALS['smwgQueryDependencyPropertyExemptionList'],
+			'smwgQueryDependencyAffiliatePropertyDetectionList' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionList'],
 			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
 			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
 			'smwgEnabledFulltextSearch' => $GLOBALS['smwgEnabledFulltextSearch'],
@@ -296,6 +296,14 @@ class Settings extends Options {
 		// Deprecated in 2.5, to be removed with 3.1
 		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) && $GLOBALS['smwgAdminRefreshStore'] === false ) {
 			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
+		}
+
+		if ( isset( $GLOBALS['smwgQueryDependencyPropertyExemptionlist'] ) ) {
+			$configuration['smwgQueryDependencyPropertyExemptionList'] = $GLOBALS['smwgQueryDependencyPropertyExemptionlist'];
+		}
+
+		if ( isset( $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'] ) ) {
+			$configuration['smwgQueryDependencyAffiliatePropertyDetectionList'] = $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'];
 		}
 	}
 
