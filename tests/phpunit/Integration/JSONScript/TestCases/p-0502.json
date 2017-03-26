@@ -1,11 +1,18 @@
 {
-	"description": "Test in-text annotation allows value list (`wgContLang=en`)",
+	"description": "Test in-text annotation allows value list (#2295, `wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "NS_MEDIAWIKI",
 			"page": "Smw allows list Publication categories",
 			"contents": {
 				"import-from": "/../Fixtures/p-0502.txt"
+			}
+		},
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw allows list error",
+			"contents": {
+				"import-from": "/../Fixtures/p-0502-error.txt"
 			}
 		},
 		{
@@ -19,6 +26,11 @@
 			"contents": "[[Has type::Text]] [[Allows value list::Publication categories]] [[Allows value::abc]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has combined error list",
+			"contents": "[[Has type::Text]] [[Allows value list::error]] [[Allows value::Foo]]"
+		},
+		{
 			"page": "Example/P0502/1",
 			"contents": "[[Has list::abc]]"
 		},
@@ -29,6 +41,10 @@
 		{
 			"page": "Example/P0502/3",
 			"contents": "[[Has combined list::abc]] [[Has combined list::Manuscript]]"
+		},
+		{
+			"page": "Example/P0502/4",
+			"contents": "[[Has combined error list::Foobar]]"
 		}
 	],
 	"tests": [
@@ -88,10 +104,21 @@
 					]
 				}
 			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 error output",
+			"subject": "Example/P0502/4",
+			"assert-output": {
+				"to-contain": [
+					"\"Foobar\" is not in the list (Foo, Bar)"
+				]
+			}
 		}
 	],
 	"settings": {
 		"wgContLang": "en",
+		"wgLang": "en",
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]
