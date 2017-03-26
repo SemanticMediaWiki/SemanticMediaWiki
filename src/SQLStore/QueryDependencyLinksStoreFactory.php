@@ -32,7 +32,7 @@ class QueryDependencyLinksStoreFactory {
 		);
 
 		$queryResultDependencyListResolver->setPropertyDependencyExemptionlist(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDependencyPropertyExemptionlist' )
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDependencyPropertyExemptionList' )
 		);
 
 		return $queryResultDependencyListResolver;
@@ -93,12 +93,12 @@ class QueryDependencyLinksStoreFactory {
 			ApplicationFactory::getInstance()->getMediaWikiLogger()
 		);
 
-		$entityIdListRelevanceDetectionFilter->setPropertyExemptionlist(
-			$settings->get( 'smwgQueryDependencyPropertyExemptionlist' )
+		$entityIdListRelevanceDetectionFilter->setPropertyExemptionList(
+			$settings->get( 'smwgQueryDependencyPropertyExemptionList' )
 		);
 
-		$entityIdListRelevanceDetectionFilter->setAffiliatePropertyDetectionlist(
-			$settings->get( 'smwgQueryDependencyAffiliatePropertyDetectionlist' )
+		$entityIdListRelevanceDetectionFilter->setAffiliatePropertyDetectionList(
+			$settings->get( 'smwgQueryDependencyAffiliatePropertyDetectionList' )
 		);
 
 		return $entityIdListRelevanceDetectionFilter;

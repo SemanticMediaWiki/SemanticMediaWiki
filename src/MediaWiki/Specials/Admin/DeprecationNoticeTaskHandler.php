@@ -46,7 +46,9 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 
 		$deprecatedConfigList = array(
 		//	'smwgCacheType' => 'smwgMainCacheType',
-			'smwgAdminRefreshStore' => 'smwgAdminFeatures'
+			'smwgAdminRefreshStore' => 'smwgAdminFeatures',
+			'smwgQueryDependencyPropertyExemptionlist' => 'smwgQueryDependencyPropertyExemptionList',
+			'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList'
 		);
 
 		$removedConfigList = array(

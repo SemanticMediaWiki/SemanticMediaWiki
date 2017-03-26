@@ -40,12 +40,12 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 	/**
 	 * @var array
 	 */
-	private $propertyExemptionlist = array();
+	private $propertyExemptionList = array();
 
 	/**
 	 * @var array
 	 */
-	private $affiliatePropertyDetectionlist = array();
+	private $affiliatePropertyDetectionList = array();
 
 	/**
 	 * @var LoggerInterface
@@ -77,22 +77,22 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 	/**
 	 * @since 2.4
 	 *
-	 * @param array $propertyExemptionlist
+	 * @param array $propertyExemptionList
 	 */
-	public function setPropertyExemptionlist( array $propertyExemptionlist ) {
-		$this->propertyExemptionlist = array_flip(
-			str_replace( ' ', '_', $propertyExemptionlist )
+	public function setPropertyExemptionList( array $propertyExemptionList ) {
+		$this->propertyExemptionList = array_flip(
+			str_replace( ' ', '_', $propertyExemptionList )
 		);
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param array $affiliatePropertyDetectionlist
+	 * @param array $affiliatePropertyDetectionList
 	 */
-	public function setAffiliatePropertyDetectionlist( array $affiliatePropertyDetectionlist ) {
-		$this->affiliatePropertyDetectionlist = array_flip(
-			str_replace( ' ', '_', $affiliatePropertyDetectionlist )
+	public function setAffiliatePropertyDetectionList( array $affiliatePropertyDetectionList ) {
+		$this->affiliatePropertyDetectionList = array_flip(
+			str_replace( ' ', '_', $affiliatePropertyDetectionList )
 		);
 	}
 
@@ -165,12 +165,12 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 		}
 
 		// Exclusion before inclusion
-		if ( isset( $this->propertyExemptionlist[$key]) ) {
+		if ( isset( $this->propertyExemptionList[$key]) ) {
 			$this->unsetEntityList( $fieldChangeOp, $combinedChangedEntityList );
 			return;
 		}
 
-		if ( isset( $this->affiliatePropertyDetectionlist[$key] ) && $fieldChangeOp->has( 's_id' ) ) {
+		if ( isset( $this->affiliatePropertyDetectionList[$key] ) && $fieldChangeOp->has( 's_id' ) ) {
 			$affiliateEntityList[$fieldChangeOp->get( 's_id' )] = true;
 		}
 	}
