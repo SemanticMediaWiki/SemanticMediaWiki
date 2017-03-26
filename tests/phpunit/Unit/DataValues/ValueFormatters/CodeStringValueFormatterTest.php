@@ -3,7 +3,7 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
-use SMWStringValue as StringValue;
+use SMW\DataValueFactory;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\CodeStringValueFormatter
@@ -27,12 +27,12 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider stringValueProvider
 	 */
-	public function testFormat( $stringUserValue, $type, $linker, $expected ) {
+	public function testFormat( $userValue, $type, $linker, $expected ) {
 
-		$stringValue = new StringValue( '_cod' );
-		$stringValue->setUserValue( $stringUserValue );
+		$codeStringValue = DataValueFactory::getInstance()->newDataValueByType( '_cod' );
+		$codeStringValue->setUserValue( $userValue );
 
-		$instance = new CodeStringValueFormatter( $stringValue );
+		$instance = new CodeStringValueFormatter( $codeStringValue );
 
 		$this->assertEquals(
 			$expected,
