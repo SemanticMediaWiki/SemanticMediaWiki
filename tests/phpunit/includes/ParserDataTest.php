@@ -285,6 +285,46 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSkipUpdateOnMatchedMarker() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->any() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 42 ) );
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache->expects( $this->once() )
+			->method( 'fetch' )
+			->with( $this->stringContains( ':smw:update:55fd50809b6221a77f8f3dbd49e0d5bc' ) )
+			->will( $this->returnValue( 42 ) );
+
+		$cache->expects( $this->once() )
+			->method( 'save' )
+			->with( $this->stringContains( ':smw:update:55fd50809b6221a77f8f3dbd49e0d5bc' ) );
+
+		$instance = new ParserData(
+			$title,
+			new ParserOutput(),
+			$cache
+		);
+
+		$instance->markUpdate( 42 );
+
+		$this->assertNull(
+			$instance->updateStore()
+		);
+	}
+
 	public function testSemanticDataStateToParserOutput() {
 
 		$parserOutput = new ParserOutput();

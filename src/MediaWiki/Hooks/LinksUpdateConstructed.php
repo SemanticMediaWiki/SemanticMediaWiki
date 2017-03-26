@@ -71,7 +71,8 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 		 */
 		$parserData = $this->applicationFactory->newParserData(
 			$title,
-			$linksUpdate->getParserOutput() );
+			$linksUpdate->getParserOutput()
+		);
 
 		if ( $this->isSemanticEnabledNamespace( $title ) && $parserData->getSemanticData()->isEmpty() ) {
 			$this->updateEmptySemanticData( $parserData, $title );
@@ -82,10 +83,23 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 			$this->enabledDeferredUpdate = false;
 		}
 
+		// Scan the ParserOutput for a possible externally set option
+		if ( $linksUpdate->getParserOutput()->getExtensionData( $parserData::OPT_FORCED_UPDATE ) === true ) {
+			$parserData->setOption( $parserData::OPT_FORCED_UPDATE, true );
+		}
+
 		$parserData->setOrigin( 'LinksUpdateConstructed' );
 
 		$parserData->updateStore(
 			$this->enabledDeferredUpdate
+		);
+
+		// Track the update on per revision because MW 1.29 made the LinksUpdate a
+		// EnqueueableDataUpdate which creates updates as JobSpecification
+		// (refreshLinksPrioritized) and posses a possibility of running an
+		// update more than once for the same RevID
+		$parserData->markUpdate(
+			$title->getLatestRevID( Title::GAID_FOR_UPDATE )
 		);
 
 		return true;
