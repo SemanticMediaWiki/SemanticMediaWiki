@@ -80,11 +80,6 @@ class SpecialAdmin extends SpecialPage {
 			$adminFeatures = $adminFeatures & ~SMW_ADM_FULLT;
 		}
 
-		// Ensure BC for a deprecated setting
-		if ( $applicationFactory->getSettings()->get( 'smwgAdminRefreshStore' ) === false ) {
-			$adminFeatures = $adminFeatures & ~SMW_ADM_REFRESH;
-		}
-
 		$taskHandlerFactory = new TaskHandlerFactory(
 			$store,
 			$htmlFormRenderer,

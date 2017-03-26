@@ -673,15 +673,6 @@ return array(
 	##
 
 	###
-	# If the following is set to true, it is possible to initiate the repairing
-	# or updating of all wiki data using the interface on Special:SMWAdmin.
-	#
-	# @deprecated since 2.5, use $smwgAdminFeatures
-	##
-	'smwgAdminRefreshStore' => true,
-	##
-
-	###
 	# List of Special:SemanticMediaWiki (or Special:SMWAdmin) features
 	#
 	# - SMW_ADM_REFRESH: to initiate the repairing or updating of all wiki data
