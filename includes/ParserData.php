@@ -5,6 +5,7 @@ namespace SMW;
 use ParserOutput;
 use SMWDataValue as DataValue;
 use Title;
+use Onoi\Cache\Cache;
 
 /**
  * Handling semantic data exchange with a ParserOutput object
@@ -26,6 +27,17 @@ class ParserData {
 	const DATA_ID = 'smwdata';
 
 	/**
+	 * Identifies the cache namespace for update markers
+	 */
+	const CACHE_NAMESPACE = 'smw:update';
+
+	/**
+	 * Option that allows to force an update even in cases where an update
+	 * marker exists
+	 */
+	const OPT_FORCED_UPDATE = 'smw:opt.forced.update';
+
+	/**
 	 * Indicates that no #ask dependency tracking should occur
 	 */
 	const NO_QUERY_DEP_TRACE = 'no.query.dep.trace';
@@ -39,6 +51,11 @@ class ParserData {
 	 * @var ParserOutput
 	 */
 	private $parserOutput;
+
+	/**
+	 * @var Cache
+	 */
+	private $cache;
 
 	/**
 	 * @var SemanticData
@@ -72,10 +89,16 @@ class ParserData {
 	 *
 	 * @param Title $title
 	 * @param ParserOutput $parserOutput
+	 * @param Cache|null $cache
 	 */
-	public function __construct( Title $title, ParserOutput $parserOutput ) {
+	public function __construct( Title $title, ParserOutput $parserOutput, Cache $cache = null ) {
 		$this->title = $title;
 		$this->parserOutput = $parserOutput;
+		$this->cache = $cache;
+
+		if ( $this->cache === null ) {
+			$this->cache = ApplicationFactory::getInstance()->getCache();
+		}
 
 		$this->initSemanticData();
 	}
@@ -337,6 +360,20 @@ class ParserData {
 	}
 
 	/**
+	 * Persistent marker to identify an update with a revision ID and allow
+	 * to filter successive updates with that very same ID.
+	 *
+	 * @see LinksUpdateConstructed::process
+	 *
+	 * @since 3.0
+	 *
+	 * @param integer $rev
+	 */
+	public function markUpdate( $rev ) {
+		$this->cache->save( smwfCacheKey( self::CACHE_NAMESPACE, $this->semanticData->getSubject()->getHash() ), $rev, 3600 );
+	}
+
+	/**
 	 * @private This method is not for public use
 	 *
 	 * @since 1.9
@@ -346,6 +383,11 @@ class ParserData {
 	public function updateStore( $enabledDeferredUpdate = false ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$latestRevID = $this->title->getLatestRevID( Title::GAID_FOR_UPDATE );
+
+		if ( $this->skipUpdateOn( $latestRevID ) ) {
+			return $applicationFactory->getMediaWikiLogger()->info( __METHOD__ . " (Found rev:$latestRevID, skip update)" );
+		}
 
 		$storeUpdater = $applicationFactory->newStoreUpdater( $this->semanticData );
 
@@ -358,7 +400,6 @@ class ParserData {
 		$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $storeUpdater ) {
 			$storeUpdater->doUpdate();
 		} );
-
 
 		$deferredCallableUpdate->setOrigin(
 			__METHOD__ . ( $this->origin !== '' ? ' from ' . $this->origin : '' ) . ': ' . $this->semanticData->getSubject()->getHash()
@@ -420,6 +461,11 @@ class ParserData {
 		}
 
 		return $semanticData;
+	}
+
+	private function skipUpdateOn( $rev ) {
+		return $this->getOption( self::OPT_FORCED_UPDATE ) !== true &&
+			$this->cache->fetch( smwfCacheKey( self::CACHE_NAMESPACE, $this->semanticData->getSubject()->getHash() ) ) === $rev;
 	}
 
 }
