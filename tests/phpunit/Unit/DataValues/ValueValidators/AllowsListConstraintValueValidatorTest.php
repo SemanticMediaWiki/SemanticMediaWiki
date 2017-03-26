@@ -129,4 +129,60 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testIsNotAllowedValueWithShortenedLongList() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'InvalidAllowedValue' );
+
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getAllowedValuesBy' )
+			->will( $this->returnValue(
+				array(
+					$this->dataItemFactory->newDIBlob( 'VAL1' ),
+					$this->dataItemFactory->newDIBlob( 'VAL2' ),
+					$this->dataItemFactory->newDIBlob( 'VAL2' ),
+					$this->dataItemFactory->newDIBlob( 'VAL3' ),
+					$this->dataItemFactory->newDIBlob( 'VAL4' ),
+					$this->dataItemFactory->newDIBlob( 'VAL5' ),
+					$this->dataItemFactory->newDIBlob( 'VAL6' ),
+					$this->dataItemFactory->newDIBlob( 'VAL7' ),
+					$this->dataItemFactory->newDIBlob( 'VAL8' ),
+					$this->dataItemFactory->newDIBlob( 'VAL9' ),
+					$this->dataItemFactory->newDIBlob( 'VAL0' ),
+					$this->dataItemFactory->newDIBlob( 'VAL11' ) ) ) );
+
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getAllowedListValueBy' )
+			->will( $this->returnValue( array( ) ) );
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getProperty', 'getDataItem', 'getTypeID' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->any() )
+			->method( 'getTypeID' )
+			->will( $this->returnValue( '_txt' ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $property ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
+
+		$instance = new AllowsListConstraintValueValidator(
+			$this->allowsListValueParser
+		);
+
+		$instance->validate( $dataValue );
+
+		$this->assertEquals(
+			array(
+				'2da6400856e4455038d21793670ff9f7' => '[8,"smw_notinenum",null,"VAL1, VAL2, VAL3, VAL4, VAL5, VAL6, VAL7, VAL8, VAL9, VAL0, ...","InvalidAllowedValue"]'
+			),
+			$dataValue->getErrors()
+		);
+	}
+
 }

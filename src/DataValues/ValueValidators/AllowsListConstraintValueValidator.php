@@ -70,12 +70,12 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			return $this->hasConstraintViolation;
 		}
 
-		$errorList = '';
+		$allowedValueList = array();
 
 		$isAllowed = $this->checkOnConstraintViolation(
 			$dataValue,
 			$allowedValues,
-			$errorList
+			$allowedValueList
 		);
 
 		if ( !$isAllowed ) {
@@ -89,26 +89,34 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$isAllowed = $this->checkOnConstraintViolation(
 			$dataValue,
 			$allowedValues,
-			$errorList
+			$allowedValueList
 		);
 
-		if ( $isAllowed === false ) {
-
-			$dataValue->addErrorMsg(
-				array(
-					'smw_notinenum',
-					$dataValue->getWikiValue(),
-					$errorList,
-					$property->getLabel()
-				),
-				Message::PARSE
-			);
-
-			$this->hasConstraintViolation = true;
+		if ( $isAllowed === true ) {
+			return;
 		}
+
+		$count = count( $allowedValueList );
+
+		// Only the first 10 values otherwise the list may become too long
+		$allowedValueList = implode( ', ', array_slice(
+			array_keys( $allowedValueList ), 0 , 10 )
+		);
+
+		$dataValue->addErrorMsg(
+			array(
+				'smw_notinenum',
+				$dataValue->getWikiValue(),
+				$allowedValueList . ( $count > 10 ? ', ...' : '' ),
+				$property->getLabel()
+			),
+			Message::PARSE
+		);
+
+		$this->hasConstraintViolation = true;
 	}
 
-	private function checkOnConstraintViolation( $dataValue, $allowedValues, &$errorList = '' ) {
+	private function checkOnConstraintViolation( $dataValue, $allowedValues, &$allowedValueList ) {
 
 		if ( !is_array( $allowedValues ) ) {
 			return true;
@@ -138,7 +146,8 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 				$isAllowed = true;
 				break;
 			} else {
-				$errorList .= ( $errorList !== '' ? ', ' : '' ) . $allowedValue->getString();
+				// Filter dups
+				$allowedValueList[$allowedValue->getString()] = true;
 			}
 		}
 

@@ -50,8 +50,10 @@ class AllowsListValue extends StringValue {
 			$value
 		);
 
-		if ( !$content ) {
-			$this->addErrorMsg( array( 'smw-datavalue-allows-value-list-unknown', $value ), Message::ESCAPED );
+		if ( $allowsListValueParser->getErrors() !== array() ) {
+			foreach ( $allowsListValueParser->getErrors() as $error ) {
+				$this->addErrorMsg( $error );
+			}
 		}
 
 		parent::parseUserValue( $value );
