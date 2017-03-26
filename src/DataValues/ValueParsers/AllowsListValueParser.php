@@ -64,24 +64,22 @@ class AllowsListValueParser implements ValueParser {
 		$this->errors = array();
 
 		self::$contents[$userValue] = $this->doParseContent(
+			$userValue,
 			$this->mediaWikiNsContentReader->read( AllowsListValue::LIST_PREFIX . $userValue )
 		);
 
 		return self::$contents[$userValue];
 	}
 
-	private function doParseContent( $contents ) {
+	private function doParseContent( $userValue, $contents ) {
 
 		$list = array();
 
 		if ( $contents === '' ) {
-			return null;
+			return $this->errors[] = array( 'smw-datavalue-allows-value-list-unknown', $userValue );
 		}
 
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
-
-		// Get definition from first line
-		array_shift( $parts );
 
 		foreach ( $parts as $part ) {
 
@@ -101,6 +99,10 @@ class AllowsListValueParser implements ValueParser {
 			} else {
 				$list[$part] = $part;
 			}
+		}
+
+		if ( $list === array() ) {
+			 $this->errors[] = array( 'smw-datavalue-allows-value-list-missing-marker', $userValue );
 		}
 
 		return $list;
