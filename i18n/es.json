@@ -24,7 +24,8 @@
 			"Indiralena",
 			"Lemondoge",
 			"Dgstranz",
-			"Nemo bis"
+			"Nemo bis",
+			"Julián L"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -273,6 +274,9 @@
 	"smw-admin-dbbutton": "Inicializar o actualizar tablas",
 	"smw-admin-announce": "Anuncia tu wiki",
 	"smw-admin-announce-text": "Si tu wiki es público, lo puedes registrar en <a href=\"https://wikiapiary.com\">WikiApiary</a>, el wiki de seguimiento de wikis.",
+	"smw-admin-deprecation-notice-docu": "La siguiente sección contiene ajustes que se han quedado obsoletos o eliminados, pero que fueron detectados para estar activos en esta wiki. Se espera que en el futuro cualquier versión elimine el soporte para estas configuraciones.",
+	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> fue reemplazado por <code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
+	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> fue eliminado",
 	"smw-smwadmin-refresh-title": "Reparación y actualización de datos",
 	"smw_smwadmin_datarefresh": "Reconstrucción de los datos",
 	"smw_smwadmin_datarefreshdocu": "Es posible restaurar toda la información de MediaWiki Semántica basándose en los contenidos actuales de la wiki.\nEsto puede ser útil para reparar la información destruida o para volver a cargar la información si el formato interno ha cambiado a causa de alguna actualización de software.\nLa actualización se ejecuta página a página y no se completará de inmediato.\nLo siguiente muestra es hay una actualización en progreso y le permite iniciar o detener actualizaciones (a menos que esta característica haya sido inhabilitada por el administrador del sitio).",
