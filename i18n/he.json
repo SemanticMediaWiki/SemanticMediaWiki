@@ -243,6 +243,7 @@
 	"smw_result_results": "תוצאות",
 	"smw_result_noresults": "אין תוצאות.",
 	"smwadmin": "תכונות ניהוליות עבור המדיה־ויקי הסמנטית",
+	"smw-admin-statistics-job-title": "סטטיסטיקות של משימה",
 	"smw-admin-setupsuccess": "מנוע האחסון הוגדר בהצלחה.",
 	"smw_smwadmin_return": "חזרה אל $1",
 	"smw_smwadmin_updatestarted": "תהליך עדכון חדש לרענון הנתונים הסמנטיים הורץ.\nכל הנתונים המאוחסנים ייבנו מחדש או יתוקנו היכן שיש צורך.\nתוכלו לעקוב אחר תהליך העדכון בדף מיוחד זה.\n\nחזרה אל $1.",

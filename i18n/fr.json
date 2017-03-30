@@ -300,7 +300,7 @@
 	"smw-admin-announce": "Annoncer votre wiki",
 	"smw-admin-announce-text": "Si votre wiki est public, vous pouvez l’inscrire sur <a href=\"https://wikiapiary.com\">WikiApiary</a>, le wiki qui suit wiki.",
 	"smw-admin-deprecation-notice-title": "Avis d’obsolescence",
-	"smw-admin-deprecation-notice-docu": "La section suivante contient des paramètres qui sont devenus obsolètes ou ont été supprimés, mais ont été détectés comme actifs sur ce wiki. Il est prévu qu’une prochaine version ne supporte plus ces configurations.",
+	"smw-admin-deprecation-notice-docu": "La section suivante contient des paramètres qui sont devenus obsolètes ou ont été supprimés, mais qui ont été détectés comme actifs sur ce wiki. Il est prévu qu’une prochaine version ne supporte plus ces configurations.",
 	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> a été remplacé par <code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> a été supprimé",
 	"smw-smwadmin-refresh-title": "Réparation de données et mise à jour",

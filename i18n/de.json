@@ -318,7 +318,7 @@
 	"smw-admin-supplementary-settings-title": "Konfigurationseinstellungen",
 	"smw-admin-supplementary-settings-intro": "$1 – Zeigt eine Liste der verfügbaren von Semantic MediaWiki verwendeten Konfigurationseinstellungen",
 	"smw-admin-supplementary-operational-statistics-title": "Statistiken zu Nutzung und Betrieb",
-	"smw-admin-supplementary-operational-statistics-intro": "$1 – Zeigt zu Semantic MediaWiki verfügbare Statistiken (Semantische Daten, Abfragecache)",
+	"smw-admin-supplementary-operational-statistics-intro": "$1 – Zeigt zu Semantic MediaWiki verfügbare Statistiken (semantische Daten, Aufträge, Abfragecache)",
 	"smw-admin-supplementary-idlookup-title": "Objektkennungen suchen und löschen",
 	"smw-admin-supplementary-idlookup-intro": "$1 – Bietet Funktionen zur Ermittlung und Löschung einzelner Objektkennungen",
 	"smw-property-label-similarity-title": "Bericht zur Ähnlichkeit von Attributbezeichungen",

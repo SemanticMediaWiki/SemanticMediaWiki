@@ -176,7 +176,7 @@
 	"smw_smwadmin_datarefreshstop": "Arrestar aquesta mesa a jorn",
 	"smw_smwadmin_datarefreshstopconfirm": "Òc, ne soi {{GENDER:$1|segur|segura}}.",
 	"smw-admin-support": "Obténer d’ajuda",
-	"smw-admin-supportdocu": "De ressorsas divèrsas vos poiriàn ajudar en cas de problèmas :",
+	"smw-admin-supportdocu": "Divèrsas ressorsas vos poirián ajudar en cas de problèmas :",
 	"smw-admin-installfile": "S'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">fichièr INSTALL</a>.",
 	"smw-admin-smwhomepage": "La documentacion completa de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Los bugs pòdon èsser someses sus <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
