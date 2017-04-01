@@ -76,6 +76,21 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasMarker() {
+
+		$this->assertTrue(
+			InTextAnnotationParser::hasMarker( '[[SMW::off]]' )
+		);
+
+		$this->assertTrue(
+			InTextAnnotationParser::hasMarker( '[[SMW::on]]' )
+		);
+
+		$this->assertFalse(
+			InTextAnnotationParser::hasMarker( 'Foo' )
+		);
+	}
+
 	/**
 	 * @dataProvider magicWordDataProvider
 	 */

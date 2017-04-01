@@ -8,6 +8,7 @@ use SMW\Message;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
+use SMW\InTextAnnotationParser;
 
 /**
  * @license GNU GPL v2+
@@ -121,7 +122,7 @@ class InfoLinksProvider {
 
 		// InTextAnnotationParser will detect :: therefore avoid link
 		// breakage by encoding the string
-		if ( strpos( $value, '::' ) !== false && !$this->hasInternalAnnotationMarker( $value ) ) {
+		if ( strpos( $value, '::' ) !== false && !InTextAnnotationParser::hasMarker( $value ) ) {
 			$value = str_replace( ':', '-3A', $value );
 		}
 
@@ -178,7 +179,7 @@ class InfoLinksProvider {
 		}
 
 		// #1453 SMW::on/off will break any potential link therefore just don't even try
-		return !$this->hasInternalAnnotationMarker( $result ) ? $result : '';
+		return !InTextAnnotationParser::hasMarker( $result ) ? $result : '';
 	}
 
 	/**
@@ -235,10 +236,6 @@ class InfoLinksProvider {
 		}
 
 		$this->hasServiceLinks = true;
-	}
-
-	private function hasInternalAnnotationMarker( $value ) {
-		return strpos( $value, 'SMW::off' ) !== false || strpos( $value, 'SMW::on' ) !== false;
 	}
 
 }
