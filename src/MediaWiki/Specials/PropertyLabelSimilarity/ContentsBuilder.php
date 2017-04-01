@@ -65,12 +65,9 @@ class ContentsBuilder {
 			$requestOptions
 		);
 
-		$count = $this->propertyLabelSimilarityLookup->getLookupCount();
-
 		$html = $this->getForm(
 			$requestOptions->getLimit(),
 			$requestOptions->getOffset(),
-			$count,
 			count( $result ),
 			$threshold,
 			$type
@@ -85,9 +82,16 @@ class ContentsBuilder {
 		return $html;
 	}
 
-	private function getForm( $limit, $offset, $count, $resultCount, $threshold, $type ) {
+	private function getForm( $limit, $offset, $resultCount, $threshold, $type ) {
 
 		$exemptionProperty = $this->propertyLabelSimilarityLookup->getExemptionProperty();
+		$lookupCount = $this->propertyLabelSimilarityLookup->getLookupCount();
+
+		// Allow for an extra range since the property pool may be larger than
+		// the reductive comparison matches, +1 is to request additional paging
+		if ( $limit + $offset < $this->propertyLabelSimilarityLookup->getPropertyMaxCount() ) {
+			$lookupCount = $limit + $offset + 1;
+		}
 
 		$html = $this->getMessageAsString(
 			array( 'smw-property-label-similarity-docu', $exemptionProperty ),
@@ -101,7 +105,7 @@ class ContentsBuilder {
 			->addPaging(
 				$limit,
 				$offset,
-				$count,
+				$lookupCount,
 				$resultCount )
 			->addHiddenField( 'limit', $limit )
 			->addHiddenField( 'offset', $offset )
