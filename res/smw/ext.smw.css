@@ -32,6 +32,10 @@ span.smwbuiltin, span.smwttactiveinline span.smwbuiltin {
 	font-style: italic;
 }
 
+div#footer #footer-icons li a {
+    margin-left: 0.5em;
+}
+
 /* make divs look like <pre> */
 div.smwpre {
 	font-family: monospace;
