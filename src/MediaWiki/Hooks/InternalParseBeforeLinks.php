@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use SMW\ApplicationFactory;
+use SMW\InTextAnnotationParser;
 
 /**
  * Hook: InternalParseBeforeLinks is used to process the expanded wiki
@@ -76,12 +77,15 @@ class InternalParseBeforeLinks {
 			return true;
 		}
 
+		// #2209, #2370 Allow content to be parsed that contain [[SMW::off]]/[[SMW::on]]
+		// even in case of MediaWiki messages
+		if ( InTextAnnotationParser::hasMarker( $text ) ) {
+			return true;
+		}
+
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
-		//
-		// #2209 If the text was a `InterfaceMessage` send from a SpecialPage such as
-		// Special:Booksources we allow to proceed
-		if ( $text === '' || ( $this->parser->getOptions()->getInterfaceMessage() && !$title->isSpecialPage() ) ) {
+		if ( $text === '' || $this->parser->getOptions()->getInterfaceMessage() ) {
 			return false;
 		}
 

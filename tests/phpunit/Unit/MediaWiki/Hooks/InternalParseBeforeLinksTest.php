@@ -153,6 +153,47 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOptions' )
 			->will( $this->returnValue( $parserOptions ) );
 
+		$instance = new InternalParseBeforeLinks(
+			$parser
+		);
+
+		$instance->setEnabledSpecialPage(
+			array( 'Bar' )
+		);
+
+		$instance->process( $text );
+	}
+
+	public function testProcessOfInterfaceMessageOnSpecialPageWithOnOffMarker() {
+
+		$text = '[[SMW::off]]Foo[[SMW::on]]';
+
+		$title = $this->testEnvironment->createConfiguredStub(
+			'\Title',
+			array(
+				'getDBKey'      => __METHOD__,
+				'getNamespace'  => NS_MAIN,
+				'isSpecialPage' => true
+			)
+		);
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'isSpecial' )
+			->with( $this->equalTo( 'Bar' ) )
+			->will( $this->returnValue( true ) );
+
+		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser = $this->getMockBuilder( 'Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $parserOutput ) );
@@ -163,10 +204,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InternalParseBeforeLinks(
 			$parser
-		);
-
-		$instance->setEnabledSpecialPage(
-			array( 'Bar' )
 		);
 
 		$instance->process( $text );

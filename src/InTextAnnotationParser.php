@@ -177,6 +177,17 @@ class InTextAnnotationParser {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $text
+	 *
+	 * @return boolean
+	 */
+	public static function hasMarker( $text ) {
+		return strpos( $text, self::OFF ) !== false || strpos( $text, self::ON ) !== false;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $text
