@@ -57,7 +57,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"title=\"SMW::offTest/P0108/1 P0108SMW::on\">",
+					"title=\"Test/P0108/1 P0108\">",
 					"<div class=\"smwttcontent\">Test/P0108/1 P0108</div>"
 				]
 			}

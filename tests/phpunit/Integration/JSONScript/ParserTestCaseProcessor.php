@@ -4,6 +4,7 @@ namespace SMW\Tests\Integration\JSONScript;
 
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\MediaWiki\MediaWikiNsContentReader;
 
 /**
  * @group semantic-mediawiki
@@ -69,6 +70,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSemanticDataForCase( $case );
 		$this->assertParserOutputForCase( $case );
+		$this->assertParserMsgForCase( $case );
 	}
 
 	private function assertSemanticDataForCase( $case ) {
@@ -142,6 +144,35 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$this->stringValidator->assertThatStringNotContains(
 				$case['assert-output']['not-contain'],
 				$parserOutput->getText(),
+				$case['about']
+			);
+		}
+	}
+
+	private function assertParserMsgForCase( $case ) {
+
+		if ( !isset( $case['assert-msgoutput'] ) ) {
+			return;
+		}
+
+		$mediaWikiNsContentReader = new MediaWikiNsContentReader();
+		$mediaWikiNsContentReader->skipMessageCache();
+
+		$text = $mediaWikiNsContentReader->read( $case['subject'] );
+		$text = wfMessage( 'smw-parse', $text )->parse();
+
+		if ( isset( $case['assert-msgoutput']['to-contain'] ) ) {
+			$this->stringValidator->assertThatStringContains(
+				$case['assert-msgoutput']['to-contain'],
+				$text,
+				$case['about']
+			);
+		}
+
+		if ( isset( $case['assert-msgoutput']['not-contain'] ) ) {
+			$this->stringValidator->assertThatStringNotContains(
+				$case['assert-msgoutput']['not-contain'],
+				$text,
 				$case['about']
 			);
 		}
