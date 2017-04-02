@@ -61,7 +61,7 @@ class ErrorMsgTextValue extends DataValue {
 	 * @see DataValue::getShortWikiText
 	 */
 	public function getShortWikiText( $linker = null ) {
-		return $this->constructErrorText( $linker );
+		return $this->constructErrorText( null );
 	}
 
 	/**
