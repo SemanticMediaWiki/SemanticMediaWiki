@@ -103,6 +103,67 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testGetListOfChangedEntitiesByType() {
+
+		$diff = array(
+			0 => array(
+				'insert' => array(
+					'smw_di_number' => array(
+						0 => array(
+							's_id' => 3668,
+							'p_id' => 61,
+							'o_serialized' => '123',
+							'o_sortkey' => '123',
+						),
+						1 => array(
+							's_id' => 3668,
+							'p_id' => 62,
+							'o_serialized' => '1234',
+							'o_sortkey' => '1234',
+						),
+					),
+					'smw_fpt_mdat' => array(
+						0 => array(
+							's_id' => 3668,
+							'o_serialized' => '1/2015/8/16/9/28/39',
+							'o_sortkey' => '2457250.8948958',
+						),
+					),
+				),
+				'delete' => array(
+					'smw_di_number' => array(),
+					'smw_fpt_mdat'  => array(
+						0 => array(
+							's_id' => 3667,
+							'o_serialized' => '1/2015/8/16/9/28/39',
+							'o_sortkey' => '2457250.8948958',
+						)
+					),
+				)
+			)
+		);
+
+		$instance = new CompositePropertyTableDiffIterator(
+			$diff
+		);
+
+		$this->assertEquals(
+			array(
+				3667 => true
+			),
+			$instance->getListOfChangedEntityIdsByType( $instance::TYPE_DELETE )
+		);
+
+		$this->assertEquals(
+			array(
+				61 => true,
+				3668 => true,
+				62 => true
+			),
+			$instance->getListOfChangedEntityIdsByType( $instance::TYPE_INSERT )
+		);
+	}
+
 	public function testTryToGetTableChangeOpForSingleTable() {
 
 		$diff = array();

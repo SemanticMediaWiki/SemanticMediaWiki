@@ -68,6 +68,10 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTableChangeOps' )
 			->will( $this->returnValue( array() ) );
 
+		$compositePropertyTableDiffIterator->expects( $this->once() )
+			->method( 'getDataChangeOps' )
+			->will( $this->returnValue( array() ) );
+
 		$compositePropertyTableDiffIterator->expects( $this->never() )
 			->method( 'getSubject' );
 
@@ -163,6 +167,10 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$compositePropertyTableDiffIterator->expects( $this->once() )
 			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( array() ) );
+
+		$compositePropertyTableDiffIterator->expects( $this->once() )
+			->method( 'getDataChangeOps' )
 			->will( $this->returnValue( array() ) );
 
 		$compositePropertyTableDiffIterator->expects( $this->never() )

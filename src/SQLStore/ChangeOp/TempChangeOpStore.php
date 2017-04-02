@@ -99,7 +99,7 @@ class TempChangeOpStore implements LoggerAwareInterface {
 
 		$this->cache->save(
 			$slot,
-			$orderedDiffByTable
+			serialize( $compositePropertyTableDiffIterator )
 		);
 
 		return $slot;
@@ -115,37 +115,23 @@ class TempChangeOpStore implements LoggerAwareInterface {
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.0
 	 *
 	 * @param string $slot
-	 * @param string|null $tableName
 	 *
-	 * @return TableChange[]
+	 * @return CompositePropertyTableDiffIterator|null
 	 */
-	public function newTableChangeOpsFrom( $slot, $tableName = null ) {
+	public function newCompositePropertyTableDiffIterator( $slot ) {
 
-		$start = microtime( true );
+		$compositePropertyTableDiffIterator = unserialize(
+			$this->cache->fetch( $slot )
+		);
 
-		$diffByTable = $this->cache->fetch( $slot );
-		$tableChangeOps = array();
-
-		if ( $diffByTable === false || $diffByTable === null ) {
-			$this->log( __METHOD__ . ' unknown slot :: '. $slot );
-			return array();
+		if ( $compositePropertyTableDiffIterator === false || $compositePropertyTableDiffIterator === null ) {
+			return null;
 		}
 
-		foreach ( $diffByTable as $tblName => $diff ) {
-
-			if ( $tableName !== null && $tableName !== $tblName ) {
-				continue;
-			}
-
-			$tableChangeOps[] = new TableChangeOp( $tblName, $diff );
-		}
-
-		$this->log( __METHOD__ . ' procTime (sec): '. round( ( microtime( true ) - $start ), 5 ) );
-
-		return $tableChangeOps;
+		return $compositePropertyTableDiffIterator;
 	}
 
 	private function log( $message, $context = array() ) {
