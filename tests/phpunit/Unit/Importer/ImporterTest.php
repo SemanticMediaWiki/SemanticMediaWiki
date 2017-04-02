@@ -2,15 +2,15 @@
 
 namespace SMW\TestsImporter;
 
-use SMW\Importer\ContentsImporter;
-use SMW\Importer\ImportContentsIterator;
-use SMW\Importer\JsonImportContentsIterator;
+use SMW\Importer\Importer;
+use SMW\Importer\ContentIterator;
+use SMW\Importer\JsoncontentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Importer\ImportContents;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Importer\ContentsImporter
+ * @covers \SMW\Importer\Importer
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,12 +18,12 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ContentsImporterTest extends \PHPUnit_Framework_TestCase {
+class ImporterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
-	private $importContentsIterator;
+	private $contentIterator;
 	private $jsonImportContentsFileDirReader;
-	private $pageCreator;
+	private $contentCreator;
 	private $messageReporter;
 
 	protected function setUp() {
@@ -33,11 +33,11 @@ class ContentsImporterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->importContentsIterator = $this->getMockBuilder( ImportContentsIterator::class )
+		$this->contentIterator = $this->getMockBuilder( ContentIterator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$this->contentCreator = $this->getMockBuilder( '\SMW\Importer\ContentCreator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,8 +51,8 @@ class ContentsImporterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Importer\ContentsImporter',
-			new ContentsImporter( $this->importContentsIterator, $this->pageCreator )
+			'\SMW\Importer\Importer',
+			new Importer( $this->contentIterator, $this->contentCreator )
 		);
 	}
 
@@ -68,16 +68,19 @@ class ContentsImporterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
-			->method( 'getContents' )
+			->method( 'getContentList' )
 			->will( $this->returnValue( array( 'Foo' => array( $importContents ) ) ) );
 
-		$this->pageCreator->expects( $this->atLeastOnce() )
-			->method( 'createPage' )
-			->will( $this->returnValue( $page ) );
+		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array() ) );
 
-		$instance = new ContentsImporter(
-			new JsonImportContentsIterator( $this->jsonImportContentsFileDirReader ),
-			$this->pageCreator
+		$this->contentCreator->expects( $this->atLeastOnce() )
+			->method( 'doCreateFrom' );
+
+		$instance = new Importer(
+			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
+			$this->contentCreator
 		);
 
 		$instance->setMessageReporter( $this->messageReporter );
@@ -94,15 +97,19 @@ class ContentsImporterTest extends \PHPUnit_Framework_TestCase {
 		$importContents->setVersion( 1 );
 
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
-			->method( 'getContents' )
+			->method( 'getContentList' )
 			->will( $this->returnValue( array( 'Foo' => array( $importContents ) ) ) );
 
-		$this->pageCreator->expects( $this->never() )
-			->method( 'createPage' );
+		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array( 'Error' ) ) );
 
-		$instance = new ContentsImporter(
-			new JsonImportContentsIterator( $this->jsonImportContentsFileDirReader ),
-			$this->pageCreator
+		$this->contentCreator->expects( $this->never() )
+			->method( 'doCreateFrom' );
+
+		$instance = new Importer(
+			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
+			$this->contentCreator
 		);
 
 		$instance->setMessageReporter( $this->messageReporter );

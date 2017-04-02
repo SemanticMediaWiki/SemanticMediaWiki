@@ -22,9 +22,21 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->databaseConnectionProvider = $this->getMockBuilder( '\SMW\MediaWiki\DatabaseConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->databaseConnectionProvider->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
 
 		$this->callbackContainerFactory = new CallbackContainerFactory();
 		$this->servicesFileDir = $GLOBALS['smwgServicesFileDir'];
@@ -40,6 +52,7 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
 
 		$containerBuilder->registerObject( 'PageCreator', $this->pageCreator );
+		$containerBuilder->registerObject( 'DatabaseConnectionProvider', $this->databaseConnectionProvider );
 
 		$containerBuilder->registerObject( 'Settings', new Settings( array(
 			'smwgImportReqVersion' => 1,
@@ -56,26 +69,38 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 
 	public function servicesProvider() {
 
-		$importContentsIterator = $this->getMockBuilder( '\SMW\Importer\ImportContentsIterator' )
+		$contentIterator = $this->getMockBuilder( '\SMW\Importer\ContentIterator' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$provider[] = array(
-			'ContentsImporter',
-			array( $importContentsIterator ),
-			'\SMW\Importer\ContentsImporter'
+			'Importer',
+			array( $contentIterator ),
+			'\SMW\Importer\Importer'
 		);
 
 		$provider[] = array(
-			'JsonImportContentsIterator',
-			array(),
-			'\SMW\Importer\JsonImportContentsIterator'
+			'JsonContentIterator',
+			array( 'SomeDirectory' ),
+			'\SMW\Importer\JsonContentIterator'
 		);
 
 		$provider[] = array(
-			'JsonContentsImporter',
+			'ImportServicesFactory',
 			array(),
-			'\SMW\Importer\ContentsImporter'
+			'\SMW\Services\ImportServicesFactory'
+		);
+
+		$provider[] = array(
+			'XmlContentCreator',
+			array(),
+			'\SMW\Importer\ContentCreators\XmlContentCreator'
+		);
+
+		$provider[] = array(
+			'TextContentCreator',
+			array(),
+			'\SMW\Importer\ContentCreators\TextContentCreator'
 		);
 
 		return $provider;

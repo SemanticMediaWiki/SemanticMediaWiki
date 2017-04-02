@@ -1,0 +1,14 @@
+{
+	"description": "Test import",
+	"import": [
+		{
+			"description": "Xml import",
+			"contents": {
+				"importFrom": "test.xml"
+			}
+		}
+	],
+	"meta": {
+		"version": "1"
+	}
+}

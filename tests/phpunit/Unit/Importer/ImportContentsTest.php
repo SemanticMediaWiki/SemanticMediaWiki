@@ -83,6 +83,18 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testContentType() {
+
+		$instance = new ImportContents();
+
+		$instance->setContentType( 'Foo' );
+
+		$this->assertSame(
+			'Foo',
+			$instance->getContentType()
+		);
+	}
+
 	public function testError() {
 
 		$instance = new ImportContents();
