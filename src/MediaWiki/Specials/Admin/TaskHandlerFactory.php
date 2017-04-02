@@ -128,7 +128,7 @@ class TaskHandlerFactory {
 	 * @return DeprecationNoticeTaskHandler
 	 */
 	public function newDeprecationNoticeTaskHandler() {
-		return new DeprecationNoticeTaskHandler( $this->outputFormatter, $GLOBALS );
+		return new DeprecationNoticeTaskHandler( $this->outputFormatter, $GLOBALS['smwgDeprecationNotices'] );
 	}
 
 }

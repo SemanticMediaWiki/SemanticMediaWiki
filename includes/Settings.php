@@ -290,10 +290,6 @@ class Settings extends Options {
 
 	private static function initLegacyMapping( &$configuration ) {
 
-		// When adding a deprecated mapping, extend the DeprecationNoticeTaskHandler
-		// with the corresponding entry
-
-		// Deprecated in 2.5, to be removed with 3.1
 		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) && $GLOBALS['smwgAdminRefreshStore'] === false ) {
 			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
 		}
@@ -305,6 +301,22 @@ class Settings extends Options {
 		if ( isset( $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'] ) ) {
 			$configuration['smwgQueryDependencyAffiliatePropertyDetectionList'] = $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'];
 		}
+
+		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
+		// output notices
+		$GLOBALS['smwgDeprecationNotices'] = array(
+			'notice' => array(
+				'smwgAdminRefreshStore' => 'deprecated in 2.5, to be removed in 3.1'
+			),
+			'replacement' => array(
+				'smwgAdminRefreshStore' => 'smwgAdminFeatures',
+				'smwgQueryDependencyPropertyExemptionlist' => 'smwgQueryDependencyPropertyExemptionList',
+				'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList'
+			),
+			'removal' => array(
+				'smwgOnDeleteAction' => 'removed in 2.4'
+			)
+		);
 	}
 
 }

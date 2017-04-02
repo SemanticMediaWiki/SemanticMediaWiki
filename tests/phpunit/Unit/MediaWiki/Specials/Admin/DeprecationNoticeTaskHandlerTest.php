@@ -54,4 +54,33 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetHtmlWithFakeDetection() {
+
+		$GLOBALS['deprecationNoticeFoo'] = 'Foo';
+		$GLOBALS['deprecationNoticeFoobar'] = 'Foo';
+		$GLOBALS['deprecationNoticeFooFoo'] = 'Foo';
+
+		$deprecationNotice = array(
+			'notice' => array(
+				'deprecationNoticeFoo' => '...'
+			),
+			'replacement' => array(
+				'deprecationNoticeFoobar' => '...'
+			),
+			'removal' => array(
+				'deprecationNoticeFooFoo' => '...'
+			)
+		);
+
+		$instance = new DeprecationNoticeTaskHandler(
+			$this->outputFormatter,
+			$deprecationNotice
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getHtml()
+		);
+	}
+
 }
