@@ -101,7 +101,7 @@
 
 		var self = this;
 
-		self.context.find( '.smwb-content' ).replaceWith( content );
+		self.context.find( '.smwb-emptysheet' ).replaceWith( content );
 
 		if ( !instance.isMobileFrontend ) {
 			mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.page.autocomplete' ] ).done( function () {
