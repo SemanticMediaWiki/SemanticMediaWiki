@@ -40,6 +40,7 @@ use SMW\PropertyHierarchyLookup;
 use SMW\PropertyLabelFinder;
 use SMW\CachedPropertyValuesPrefetcher;
 use SMW\Localizer;
+use SMW\MediaWiki\DatabaseConnectionProvider;
 
 /**
  * @license GNU GPL v2+
@@ -162,6 +163,14 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'PropertyAnnotatorFactory', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'PropertyAnnotatorFactory', '\SMW\PropertyAnnotatorFactory' );
 			return new PropertyAnnotatorFactory();
+		} );
+
+		/**
+		 * @var DatabaseConnectionProvider
+		 */
+		$containerBuilder->registerCallback( 'DatabaseConnectionProvider', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'DatabaseConnectionProvider', '\SMW\MediaWiki\DatabaseConnectionProvider' );
+			return new DatabaseConnectionProvider();
 		} );
 	}
 

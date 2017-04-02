@@ -70,12 +70,34 @@ If not otherwise specified, content (a.k.a. pages) that pre-exists are going to 
 Services are listed in `ImporterServices.php` with the `SMW::SQLStore::Installer::AfterCreateTablesComplete` hook
 to provide the execution event during the setup.
 
-* `ContentsImporter` is responsible for importing contents provided by a `ImportContentsIterator`
-  * `ImportContentsIterator` provides access to individual `ImportContents` instances
-  * `PageCreator`
-* `JsonImportContentsIterator` implements the `ImportContentsIterator` interface
-  * `JsonImportContentsFileDirReader` provides contents of all recursively fetched files from the [`$smwgImportFileDir`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDir)
+<pre>
+Importer
+	|- ContentIterator
+	|- ContentCreator
+
+ContentIterator
+	|- JsonContentIterator
+		|- JsonImportContentsFileDirReader
+
+ContentCreator
+	| - DispatchingContentCreator
+		|- XmlContentCreator
+			|- ImportServicesFactory
+		|- TextContentCreator
+			|- PageCreator
+			|- Database
+</pre>
+
+* `Importer` is responsible for importing contents provided by a `ContentIterator`
+* `ContentIterator` an interface to provide access to individual `ImportContents` instances
+* `ContentCreator` an interface to specify different creation methods (e.g. text, XML etc.)
+* `JsonContentIterator` implements the `ContentIterator` interface
+* `JsonImportContentsFileDirReader` provides contents of all recursively fetched files from the [`$smwgImportFileDir`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDir)
   setting that meet the requirements and interprets the described `JSON` definition to return a set of `ImportContents` instances
+* `ImportServicesFactory` access to MediaWiki specific import instances
+* `DispatchingContentCreator` dispatches to the actual content creation instance based on `ImportContents::getContentType`
+* `XmlContentCreator` support the creation of MediaWiki XML specific content
+* `TextContentCreator` support of simple wikitext content
 
 It is possible to implement a different format definition (CSV, XML etc.) by
-providing a different `ImportContentsIterator` to the `ContentsImporter`.
+providing a different `ContentIterator` to the `Importer`.

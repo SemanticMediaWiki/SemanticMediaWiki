@@ -19,6 +19,11 @@ class JsonImportContentsFileDirReader {
 	private static $contents = array();
 
 	/**
+	 * @var array
+	 */
+	private $errors = array();
+
+	/**
 	 * @var string
 	 */
 	private $importFileDir = '';
@@ -41,6 +46,15 @@ class JsonImportContentsFileDirReader {
 	 *
 	 * @return array
 	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return array
+	 */
 	public function getFiles() {
 		return $this->getFilesFromLocation( $this->getImportFileDir(), 'json' );
 	}
@@ -51,11 +65,18 @@ class JsonImportContentsFileDirReader {
 	 * @return ImportContents[]
 	 * @throws RuntimeException
 	 */
-	public function getContents() {
+	public function getContentList() {
 
 		$contents = array();
 
-		foreach ( $this->getFiles() as $file => $path ) {
+		try{
+			$files = $this->getFiles();
+		} catch( RuntimeException $e ) {
+			$this->errors[] = $this->importFileDir . ' is not accessible.';
+			$files = array();
+		}
+
+		foreach ( $files as $file => $path ) {
 			$importContents = $this->getImportContents( $this->doFetchContentsFrom( $path ) );
 
 			if ( $importContents === null ) {
@@ -79,11 +100,14 @@ class JsonImportContentsFileDirReader {
 		foreach ( $fileContents['import'] as $value ) {
 			$importContents = new ImportContents();
 
-			if ( !isset( $value['page'] ) || !isset( $value['namespace'] ) ) {
-				$importContents->addError( 'Missing page or namespace section' );
-			} else {
+			if ( isset( $value['page'] ) ) {
 				$importContents->setName( $value['page'] );
-				$importContents->setNamespace( constant( $value['namespace'] ) );
+			}
+
+			if ( isset( $value['namespace'] ) ) {
+				$importContents->setNamespace(
+					defined( $value['namespace'] ) ? constant( $value['namespace'] ) : 0
+				);
 			}
 
 			if ( !isset( $value['contents'] ) || $value['contents'] === '' ) {
@@ -92,8 +116,13 @@ class JsonImportContentsFileDirReader {
 				$this->fetchContents( $value['contents'], $importContents );
 			}
 
+			if ( !isset( $value['description'] ) ) {
+				$importContents->setDescription( $fileContents['description'] );
+			} else {
+				$importContents->setDescription( $value['description'] );
+			}
+
 			$importContents->setVersion( $fileContents['meta']['version'] );
-			$importContents->setDescription( $fileContents['description'] );
 
 			if ( isset( $value['options'] ) ) {
 				$importContents->setOptions( $value['options'] );
@@ -106,6 +135,8 @@ class JsonImportContentsFileDirReader {
 	}
 
 	private function fetchContents( $contents, $importContents ) {
+
+		$importContents->setContentType( ImportContents::CONTENT_TEXT );
 
 		if ( !is_array( $contents ) || !isset( $contents['importFrom'] ) ) {
 			return $importContents->setContents( $contents );
@@ -120,25 +151,16 @@ class JsonImportContentsFileDirReader {
 		);
 
 		if ( !is_readable( $file ) ) {
-			return $importContents->addError( "reading of " . $contents['importFrom'] . " contents failed (not accessible)" );
+			return $importContents->addError( $contents['importFrom'] . " wasn't accessible" );
 		}
 
-		$contents = file_get_contents( $file );
+		$extension = pathinfo( $file, PATHINFO_EXTENSION );
 
-		// http://php.net/manual/en/function.file-get-contents.php
-		$contents = mb_convert_encoding(
-			$contents,
-			'UTF-8',
-			mb_detect_encoding(
-				$contents,
-				'UTF-8, ISO-8859-1, ISO-8859-2',
-				true
-			)
-		);
+		if ( $extension === 'xml' ) {
+			$importContents->setContentType( ImportContents::CONTENT_XML );
+		}
 
-		$importContents->setContents(
-			$contents
-		);
+		$importContents->setContentsFile( $file );
 	}
 
 	private function doFetchContentsFrom( $file ) {

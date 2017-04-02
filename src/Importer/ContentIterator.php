@@ -10,7 +10,7 @@ use IteratorAggregate;
  *
  * @author mwjames
  */
-interface ImportContentsIterator extends IteratorAggregate {
+interface ContentIterator extends IteratorAggregate {
 
 	/**
 	 * @since 2.5
@@ -18,5 +18,12 @@ interface ImportContentsIterator extends IteratorAggregate {
 	 * @return string
 	 */
 	public function getDescription();
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return array
+	 */
+	public function getErrors();
 
 }

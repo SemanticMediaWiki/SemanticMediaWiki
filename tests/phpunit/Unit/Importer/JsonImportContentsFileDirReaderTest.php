@@ -32,13 +32,13 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetContents() {
+	public function testGetContentList() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			$this->testEnvironment->getFixturesLocation( 'Importer/ValidContent' )
+			$this->testEnvironment->getFixturesLocation( 'Importer/ValidTextContent' )
 		);
 
-		$contents = $instance->getContents();
+		$contents = $instance->getContentList();
 
 		$this->assertArrayHasKey(
 			'content.json',
@@ -47,31 +47,32 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $contents as $content ) {
 			foreach ( $content as $importContents ) {
-				$this->assertNotEmpty(
-					$importContents->getContents()
+				$this->assertInstanceOf(
+					'\SMW\Importer\ImportContents',
+					$importContents
 				);
 			}
 		}
 	}
 
-	public function testGetContentsOnFalseImportFormat() {
+	public function testGetContentListOnFalseImportFormat() {
 
 		$instance = new JsonImportContentsFileDirReader(
 			$this->testEnvironment->getFixturesLocation( 'Importer/NoImportFormat' )
 		);
 
 		$this->assertEmpty(
-			$instance->getContents()
+			$instance->getContentList()
 		);
 	}
 
-	public function testGetContentsOnMissingSections() {
+	public function testGetContentListOnMissingSections() {
 
 		$instance = new JsonImportContentsFileDirReader(
 			$this->testEnvironment->getFixturesLocation( 'Importer/MissingSections' )
 		);
 
-		$contents = $instance->getContents();
+		$contents = $instance->getContentList();
 
 		$this->assertArrayHasKey(
 			'error.json',
@@ -79,24 +80,25 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetContentsFromInvalidPathThrowsException() {
+	public function testGetContentListWithInvalidPath() {
 
 		$instance = new JsonImportContentsFileDirReader(
 			__DIR__ . '/InvalidPath'
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
-		$instance->getContents();
+		$this->assertEmpty(
+			$instance->getContentList()
+		);
 	}
 
-	public function testGetContentsOnInvalidJsonThrowsException() {
+	public function testGetContentListOnInvalidJsonThrowsException() {
 
 		$instance = new JsonImportContentsFileDirReader(
 			$this->testEnvironment->getFixturesLocation( 'Importer/InvalidJsonContent' )
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->getContents();
+		$instance->getContentList();
 	}
 
 }

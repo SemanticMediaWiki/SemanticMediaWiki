@@ -10,6 +10,7 @@ use SMW\Tests\Utils\Fixtures\FixturesFactory;
 use SMW\Tests\Utils\Page\PageEditor;
 use SMW\Tests\Utils\Runners\RunnerFactory;
 use SMW\Tests\Utils\Validators\ValidatorFactory;
+use Onoi\MessageReporter\SpyMessageReporter;
 
 /**
  * @license GNU GPL v2+
@@ -233,6 +234,15 @@ class UtilityFactory {
 	 */
 	public function newSpyLogger() {
 		return new SpyLogger();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return SpyMessageReporter
+	 */
+	public function newSpyMessageReporter() {
+		return new SpyMessageReporter();
 	}
 
 }
