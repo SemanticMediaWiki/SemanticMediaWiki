@@ -9,6 +9,7 @@ use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\RequestOptions;
 use SMWQuery as Query;
 use Title;
+use SMW\Utils\Timer;
 
 /**
  * @license GNU GPL v2+
@@ -62,8 +63,11 @@ class ParserCachePurgeJob extends JobBase {
 	 */
 	public function run() {
 
+		Timer::start( __METHOD__ );
+
 		$this->pageUpdater = $this->applicationFactory->newPageUpdater();
 		$this->store = $this->applicationFactory->getStore();
+		$logger = $this->applicationFactory->getMediaWikiLogger();
 
 		if ( $this->hasParameter( 'limit' ) ) {
 			$this->limit = $this->getParameter( 'limit' );
@@ -76,7 +80,7 @@ class ParserCachePurgeJob extends JobBase {
 		if ( $this->hasParameter( 'idlist' ) ) {
 			$this->findEmbeddedQueryTargetLinksBatches(
 				$this->getParameter( 'idlist' ),
-				$this->applicationFactory->getMediaWikiLogger()
+				$logger
 			);
 		}
 
@@ -85,6 +89,8 @@ class ParserCachePurgeJob extends JobBase {
 		$this->pageUpdater->doPurgeParserCache();
 
 		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', array( $this ) );
+
+		$logger->info( __METHOD__ . ' (procTime in sec: ' . Timer::getElapsedTime( __METHOD__, 7 ) . ')' );
 
 		return true;
 	}
@@ -120,22 +126,16 @@ class ParserCachePurgeJob extends JobBase {
 		// +1 to look ahead
 		$requestOptions->setLimit( $this->limit + 1 );
 		$requestOptions->setOffset( $this->offset );
+		$requestOptions->targetLinksCount = 0;
 
 		$hashList = $queryDependencyLinksStore->findEmbeddedQueryTargetLinksHashListFrom(
 			$idList,
 			$requestOptions
 		);
 
-		if ( $hashList === array() ) {
-			return true;
-		}
-
-		$countedHashListEntries = count( $hashList );
-
 		// If more results are available then use an iterative increase to fetch
 		// the remaining updates by creating successive jobs
-		if ( $countedHashListEntries > $this->limit ) {
-
+		if ( $requestOptions->targetLinksCount > $this->limit ) {
 			$job = new self( $this->getTitle(), array(
 				'idlist' => $idList,
 				'limit'  => $this->limit,
@@ -145,10 +145,19 @@ class ParserCachePurgeJob extends JobBase {
 			$job->run();
 		}
 
-		$logger->info( __METHOD__  . " counted: {$countedHashListEntries} | offset: {$this->offset}  for " . $this->getTitle()->getPrefixedDBKey() );
+		if ( $hashList === array() ) {
+			return true;
+		}
 
 		list( $hashList, $queryList ) = $this->doBuildUniqueTargetLinksHashList(
 			$hashList
+		);
+
+		$logger->info(
+			__METHOD__  .
+			" counted: " . count( $hashList ) .
+			" targetLinksCount: " . $requestOptions->targetLinksCount .
+			" (offset: {$this->offset}  for " . $this->getTitle()->getPrefixedDBKey() . ")"
 		);
 
 		$this->applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
