@@ -319,109 +319,6 @@ span.smwsearchicon {
 	/* @embed */ background: url(../images/rdf_flyer.12.png) center right no-repeat;
 }
 
-/* @TODO Browse and Factbox should be split into seperated CSS file, CSS style file for Semantic MediaWiki Special Browse. */
-table.smwb-factbox {
-	border-left: 8px solid #DDDDDD;
-	width: 100%
-}
-
-.smwb-factbox .smwb-propvalue th, .smwb-ifactbox .smwb-ipropvalue th, .smwb-ifactbox .smwb-propvalue th {
-	width: 25%
-}
-
-/* Only apply when less then 350*/
-@media (max-width: 400px) {
-	.smwb-factbox .smwb-propvalue th, .smwb-ifactbox .smwb-ipropvalue th, .smwb-ifactbox .smwb-propvalue th {
-		width: 50%
-	}
-}
-
-tr.smwb-title {
-	font-size: 200%;
-	background-color: #DDDDDD;
-	line-height: 1.5;
-}
-
-tr.smwb-title td {
-	padding-left: 5px;
-	border-bottom: 2px solid white;
-}
-
-tr.smwb-propvalue {
-	background-color: #EEEEEE;
-}
-
-tr.smwb-propvalue th {
-	text-align: right;
-	vertical-align: top;
-	font-weight: bold;
-	font-size: 120%;
-	background-color: #DDDDDD;
-	padding: 0.2em 0.6em;
-	border-bottom: 2px solid white;
-	border-top: 2px solid white;
-}
-
-tr.smwb-propvalue td {
-	padding-left:0.4em;
-	background-color: #EEEEEE;
-	border: 0px solid white;
-	border-bottom: 2px solid white;
-	border-top: 2px solid white;
-}
-
-tr.smwb-center {
-	background-color: #DDDDDD;
-}
-
-span.smwb-value {
-}
-
-/**
- * Inverse factbox
- * @ignore
- */
-table.smwb-ifactbox {
-	border-right: 8px solid #DDDDDD;
-	width: 100%
-}
-
-tr.smwb-ititle {
-	font-size: 200%;
-	background-color: #DDDDDD;
-	line-height: 1.5;
-}
-
-tr.smwb-ititle td {
-	padding-left: 5px;
-	border-bottom: 2px solid white;
-}
-
-tr.smwb-ipropvalue {
-	background-color: #EEEEEE;
-	text-align: right;
-}
-
-tr.smwb-ipropvalue th {
-	text-align: left;
-	font-weight: bold;
-	font-size: 120%;
-	background-color: #DDDDDD;
-	padding: 0.2em 0.6em;
-	border-bottom: 3px solid white;
-	border-top: 3px solid white;
-}
-
-tr.smwb-ipropvalue td {
-	background-color: #EEEEEE;
-	border-bottom: 3px solid white;
-	border-top: 3px solid white;
-	padding-right: 1em;
-}
-
-span.smwb-ivalue {
-}
-
 /* @since 1.9; Spinner */
 .smw-spinner .text {
 	padding-left: 2.1em;
@@ -821,22 +718,8 @@ a.smw-ask-action-btn-lblue:hover {
 	margin-top: 5px;
 }
 
-.browse-input-resp { display: flex; }
-.browse-input-resp .input-field { flex: 1; margin: 0 0 0 0; }
-.browse-input-resp .button-field { flex: 0; margin: 0 0 0 1rem; }
-
-.skin-chameleon .browse-input-resp .mw-ui-button {
-	padding: .3em 1em;
-}
-
 .skin-chameleon .smwfact td {
 	padding: 5px;
-}
-
-.browse-input-resp .mw-ui-input:focus {
-	box-shadow: inset 0 0 0 1px #ddd;
-	border-color: #ddd;
-	outline: 0;
 }
 
 .smw-page-indicator-rdflink {

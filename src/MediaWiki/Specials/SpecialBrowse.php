@@ -83,7 +83,8 @@ class SpecialBrowse extends SpecialPage {
 		$out->addModuleStyles( array(
 			'mediawiki.ui',
 			'mediawiki.ui.button',
-			'mediawiki.ui.input'
+			'mediawiki.ui.input',
+			'ext.smw.browse.styles'
 		) );
 
 		$out->addModules( array(
@@ -130,10 +131,6 @@ class SpecialBrowse extends SpecialPage {
 			$this->applicationFactory->getSettings()
 		);
 
-		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$contentsBuilder->getOption( 'byApi' ) ) {
-			return $contentsBuilder->getHtml();
-		}
-
 		$options = array(
 			'dir'         => $contentsBuilder->getOption( 'dir' ),
 			'offset'      => $contentsBuilder->getOption( 'offset' ),
@@ -142,6 +139,18 @@ class SpecialBrowse extends SpecialPage {
 			'showAll'     => $contentsBuilder->getOption( 'showAll' ),
 			'including'   => $contentsBuilder->getOption( 'including' )
 		);
+
+		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$contentsBuilder->getOption( 'byApi' ) ) {
+			return Html::rawElement(
+				'div',
+				array(
+					'class' => 'smwb-container',
+					'data-subject' => $this->subjectDV->getDataItem()->getHash(),
+					'data-options' => json_encode( $options )
+				),
+				$contentsBuilder->getHtml()
+			);
+		}
 
 		// Ajax/API is doing the data fetch
 		$html = Html::rawElement(
@@ -170,7 +179,7 @@ class SpecialBrowse extends SpecialPage {
 			) . Html::rawElement(
 				'div',
 				array(
-					'class' => 'smwb-content is-disabled'
+					'class' => 'smwb-emptysheet is-disabled'
 				),
 				Html::rawElement(
 					'span',
