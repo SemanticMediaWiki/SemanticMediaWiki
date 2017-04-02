@@ -6,14 +6,6 @@ namespace SMW\Tests;
  * @covers SMWDIGeoCoord
  * @covers SMWDataItem
  *
- * @file
- * @since 1.8
- *
- *
- * @group SMW
- * @group SMWExtension
- * @group SMWDataItems
- *
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
@@ -27,7 +19,7 @@ class SMWDIGeoCoordTest extends DataItemTest {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMWDIGeoCoord';
+		return \SMWDIGeoCoord::class;
 	}
 
 	/**
