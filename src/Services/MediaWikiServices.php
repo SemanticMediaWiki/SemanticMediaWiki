@@ -4,6 +4,9 @@ namespace SMW\Services;
 
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use ImportStringSource;
+use ImportStreamSource;
+use WikiImporter;
 use LBFactory;
 use Psr\Log\NullLogger;
 
@@ -21,13 +24,58 @@ use Psr\Log\NullLogger;
 return array(
 
 	/**
+	 * ImportStringSource
+	 *
+	 * @return callable
+	 */
+	'ImportStringSource' => function( $containerBuilder, $source ) {
+		$containerBuilder->registerExpectedReturnType( 'ImportStringSource', '\ImportStringSource' );
+		return new ImportStringSource( $source );
+	},
+
+	/**
+	 * ImportStreamSource
+	 *
+	 * @return callable
+	 */
+	'ImportStreamSource' => function( $containerBuilder, $source ) {
+		$containerBuilder->registerExpectedReturnType( 'ImportStreamSource', '\ImportStreamSource' );
+		return new ImportStreamSource( $source );
+	},
+
+	/**
+	 * WikiImporter
+	 *
+	 * @return callable
+	 */
+	'WikiImporter' => function( $containerBuilder, \ImportSource $importSource ) {
+		$containerBuilder->registerExpectedReturnType( 'WikiImporter', '\WikiImporter' );
+		return new WikiImporter( $importSource, $containerBuilder->create( 'MainConfig' ) );
+	},
+
+	/**
 	 * WikiPage
 	 *
 	 * @return callable
 	 */
-	'WikiPage' => function( $containerBuilder, \Title $title  ) {
+	'WikiPage' => function( $containerBuilder, \Title $title ) {
 		$containerBuilder->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
 		return \WikiPage::factory( $title );
+	},
+
+	/**
+	 * Config
+	 *
+	 * @return callable
+	 */
+	'MainConfig' => function( $containerBuilder ) {
+
+		// > MW 1.27
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getMainConfig' ) ) {
+			return MediaWikiServices::getInstance()->getMainConfig();
+		}
+
+		return \ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
 	},
 
 	/**
@@ -38,7 +86,7 @@ return array(
 	'DBLoadBalancer' => function( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'DBLoadBalancer', '\LoadBalancer' );
 
-		 // > MW 1.27
+		// > MW 1.27
 		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getDBLoadBalancer' ) ) {
 			return MediaWikiServices::getInstance()->getDBLoadBalancer();
 		}

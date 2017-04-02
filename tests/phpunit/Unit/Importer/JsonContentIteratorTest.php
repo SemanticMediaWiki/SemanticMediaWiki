@@ -2,12 +2,12 @@
 
 namespace SMW\TestsImporter;
 
-use SMW\Importer\JsonImportContentsIterator;
+use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Importer\JsonImportContentsIterator
+ * @covers \SMW\Importer\JsonContentIterator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class JsonImportContentsIteratorTest extends \PHPUnit_Framework_TestCase {
+class JsonContentIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $jsonImportContentsFileDirReader;
@@ -33,23 +33,23 @@ class JsonImportContentsIteratorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Importer\JsonImportContentsIterator',
-			new JsonImportContentsIterator( $this->jsonImportContentsFileDirReader )
+			'\SMW\Importer\JsonContentIterator',
+			new JsonContentIterator( $this->jsonImportContentsFileDirReader )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Importer\ImportContentsIterator',
-			new JsonImportContentsIterator( $this->jsonImportContentsFileDirReader )
+			'\SMW\Importer\ContentIterator',
+			new JsonContentIterator( $this->jsonImportContentsFileDirReader )
 		);
 	}
 
 	public function testGetIterator() {
 
 		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
-			->method( 'getContents' )
+			->method( 'getContentList' )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new JsonImportContentsIterator(
+		$instance = new JsonContentIterator(
 			$this->jsonImportContentsFileDirReader
 		);
 
@@ -61,7 +61,7 @@ class JsonImportContentsIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDescription() {
 
-		$instance = new JsonImportContentsIterator(
+		$instance = new JsonContentIterator(
 			$this->jsonImportContentsFileDirReader
 		);
 

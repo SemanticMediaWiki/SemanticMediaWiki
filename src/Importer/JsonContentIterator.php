@@ -10,7 +10,7 @@ use ArrayIterator;
  *
  * @author mwjames
  */
-class JsonImportContentsIterator implements ImportContentsIterator {
+class JsonContentIterator implements ContentIterator {
 
 	/**
 	 * @var JsonImportContentsFileDirReader
@@ -50,6 +50,15 @@ class JsonImportContentsIterator implements ImportContentsIterator {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return array
+	 */
+	public function getErrors() {
+		return $this->jsonImportContentsFileDirReader->getErrors();
+	}
+
+	/**
 	 * @see IteratorAggregate::getIterator
 	 *
 	 * @since 2.5
@@ -57,7 +66,7 @@ class JsonImportContentsIterator implements ImportContentsIterator {
 	 * @return Iterator
 	 */
 	public function getIterator() {
-		return new ArrayIterator( $this->jsonImportContentsFileDirReader->getContents() );
+		return new ArrayIterator( $this->jsonImportContentsFileDirReader->getContentList() );
 	}
 
 }
