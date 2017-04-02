@@ -209,12 +209,11 @@ abstract class SMWDataItem {
 	 * @param string $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
 
-		return $this->options->set( $key, $value );
+		$this->options->set( $key, $value );
 	}
 
 	/**
