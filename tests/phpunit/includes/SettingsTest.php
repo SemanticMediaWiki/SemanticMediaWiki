@@ -185,6 +185,8 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 			array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
 		);
 
+		unset( $settings['smwgDeprecationNotices'] );
+
 		return array( array( $settings ) );
 	}
 
