@@ -88,6 +88,37 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewCompositePropertyTableDiffIterator() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( serialize( $this->compositePropertyTableDiffIterator ) ) );
+
+		$instance = new TempChangeOpStore(
+			$this->cache
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\CompositePropertyTableDiffIterator',
+			$instance->newCompositePropertyTableDiffIterator( 'foo' )
+		);
+	}
+
+	public function testNewCompositePropertyTableDiffIteratorOnInvalidSlot() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new TempChangeOpStore(
+			$this->cache
+		);
+
+		$this->assertNull(
+			$instance->newCompositePropertyTableDiffIterator( 'foo' )
+		);
+	}
+
 	public function testDelete() {
 
 		$this->cache->expects( $this->once() )
@@ -98,42 +129,6 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->delete( 'foo' );
-	}
-
-	public function testNewTableChangeOpsFrom() {
-
-		$res = array(
-			'Foo' => array( 'Bar' ),
-			'Foobar' => array( 'baz' )
-		);
-
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' )
-			->with( $this->equalTo( 'Foo:bar' ) )
-			->will( $this->returnValue( $res ) );
-
-		$instance = new TempChangeOpStore(
-			$this->cache
-		);
-
-		$this->assertContainsOnlyInstancesOf(
-			'\SMW\SQLStore\ChangeOp\TableChangeOp',
-			$instance->newTableChangeOpsFrom( 'Foo:bar' )
-		);
-	}
-
-	public function testNewTableChangeOpsFromUnknownSlot() {
-
-		$this->cache->expects( $this->once() )
-			->method( 'fetch' );
-
-		$instance = new TempChangeOpStore(
-			$this->cache
-		);
-
-		$this->assertEmpty(
-			$instance->newTableChangeOpsFrom( 'Foo:bar' )
-		);
 	}
 
 }

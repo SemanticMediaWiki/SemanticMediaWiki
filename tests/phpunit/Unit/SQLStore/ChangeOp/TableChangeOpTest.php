@@ -105,10 +105,49 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 			'_MDAT',
 			$instance->getFixedPropertyValueBy( 'key' )
 		);
+	}
 
-		$this->assertInternalType(
-			'array',
-			$instance->getFieldChangeOps( 'insert' )
+	public function testGetFieldChangeOpsNoType() {
+
+		$diff = array(
+		'property' =>
+			array(
+				'key' => '_MDAT',
+				'p_id' => 29,
+			),
+		'insert' =>
+			array(
+			0 =>
+				array(
+					's_id' => 462,
+					'o_serialized' => '1/2016/6/10/2/3/31/0',
+					'o_sortkey' => '2457549.5857755',
+				),
+			),
+		'delete' =>
+			array(
+				0 =>
+				array(
+				's_id' => 462,
+				'o_serialized' => '1/2016/6/10/2/1/0/0',
+				'o_sortkey' => '2457549.5840278',
+				),
+			),
+		);
+
+		$instance = new TableChangeOp(
+			'foo',
+			$diff
+		);
+
+		$this->assertCount(
+			1,
+			$instance->getFieldChangeOps( TableChangeOp::OP_INSERT )
+		);
+
+		$this->assertCount(
+			3,
+			$instance->getFieldChangeOps()
 		);
 	}
 

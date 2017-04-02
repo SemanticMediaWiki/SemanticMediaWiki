@@ -77,19 +77,24 @@ class TableChangeOp {
 	/**
 	 * @since 2.4
 	 *
-	 * @param string $opType
+	 * @param string|null $opType
 	 *
 	 * @return FieldChangeOp[]|[]
 	 */
-	public function getFieldChangeOps( $opType ) {
+	public function getFieldChangeOps( $opType = null ) {
 
-		if ( !$this->hasChangeOp( $opType ) ) {
+		if ( $opType !== null && !$this->hasChangeOp( $opType ) ) {
 			return array();
 		}
 
 		$fieldOps = array();
+		$changeOps = $this->changeOps;
 
-		foreach ( $this->changeOps[$opType] as $op ) {
+		if ( $opType !== null ) {
+			$changeOps = $this->changeOps[$opType];
+		}
+
+		foreach ( $changeOps as $op ) {
 			$fieldOps[] = new FieldChangeOp( $op );
 		}
 

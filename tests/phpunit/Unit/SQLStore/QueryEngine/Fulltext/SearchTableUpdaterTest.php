@@ -192,4 +192,24 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance->flushTable();
 	}
 
+	public function testExists() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( array(
+					's_id' => 12,
+					'p_id' => 42 ) ) );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$instance->exists( 12, 42 );
+	}
+
 }
