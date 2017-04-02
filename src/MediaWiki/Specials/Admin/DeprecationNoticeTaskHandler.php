@@ -22,17 +22,17 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	/**
 	 * @var array
 	 */
-	private $configList = array();
+	private $deprecationNoticeList = array();
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param OutputFormatter $outputFormatter
-	 * @param array $configList
+	 * @param array $deprecationNoticeList
 	 */
-	public function __construct( OutputFormatter $outputFormatter, array $configList = array() ) {
+	public function __construct( OutputFormatter $outputFormatter, array $deprecationNoticeList = array() ) {
 		$this->outputFormatter = $outputFormatter;
-		$this->configList = $configList;
+		$this->deprecationNoticeList = $deprecationNoticeList;
 	}
 
 	/**
@@ -42,30 +42,27 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 */
 	public function getHtml() {
 
-		$noticeList = array();
+		$noticeConfigList = array();
+		$replacementConfigList = array();
+		$removedConfigList = array();
 
-		$deprecatedConfigList = array(
-		//	'smwgCacheType' => 'smwgMainCacheType',
-			'smwgAdminRefreshStore' => 'smwgAdminFeatures',
-			'smwgQueryDependencyPropertyExemptionlist' => 'smwgQueryDependencyPropertyExemptionList',
-			'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList'
-		);
-
-		$removedConfigList = array(
-		//	'smwgTranslate'
-		);
-
-		foreach ( $deprecatedConfigList as $deprecated => $new ) {
-			if ( isset( $this->configList[$deprecated] ) ) {
-				$noticeList[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-replacement', '$' . $deprecated, '$' . $new ) );
-			}
+		if ( isset( $this->deprecationNoticeList['notice'] ) ) {
+			$noticeConfigList = $this->deprecationNoticeList['notice'];
 		}
 
-		foreach ( $removedConfigList as $removed ) {
-			if ( isset( $this->configList[$removed] ) ) {
-				$noticeList[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-removal', '$' . $removed ) );
-			}
+		if ( isset( $this->deprecationNoticeList['replacement'] ) ) {
+			$replacementConfigList = $this->deprecationNoticeList['replacement'];
 		}
+
+		if ( isset( $this->deprecationNoticeList['removal'] ) ) {
+			$removedConfigList = $this->deprecationNoticeList['removal'];
+		}
+
+		$noticeList = $this->detectOn(
+			$noticeConfigList,
+			$replacementConfigList,
+			$removedConfigList
+		);
 
 		if ( $noticeList === array() ) {
 			return '';
@@ -75,7 +72,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			Html::rawElement( 'div', array( 'class' => 'smw-admin-deprecation-notice-section' ),
 				Html::rawElement( 'p', array( 'class' => 'smw-admin-deprecation-notice-docu-section plainlinks' ), $this->getMessageAsString( 'smw-admin-deprecation-notice-docu' ) ) .
 				Html::rawElement( 'div', array( 'class' => 'plainlinks' ),
-					Html::rawElement( 'ul', array(), implode( '', $noticeList ) )
+					Html::rawElement( 'p', array(), implode( '', $noticeList ) )
 			)
 		);
 	}
@@ -93,6 +90,57 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {}
+
+	private function detectOn( $noticeConfigList, $replacementConfigList, $removedConfigList ) {
+
+		$noticeList = array();
+		$list = array();
+
+		foreach ( $noticeConfigList as $setting => $msg ) {
+			if ( isset( $GLOBALS[$setting] ) ) {
+				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-msg', '$' . $setting, $msg ) );
+			}
+		}
+
+		$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-notice' );
+
+		foreach ( $replacementConfigList as $old => $new ) {
+			if ( isset( $GLOBALS[$old] ) ) {
+				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-replacement', '$' . $old, '$' . $new ) );
+			}
+		}
+
+		$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-replacement' );
+
+		foreach ( $removedConfigList as $setting => $msg ) {
+			if ( isset( $GLOBALS[$setting] ) ) {
+				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-msg', '$' . $setting, $msg ) );
+			}
+		}
+
+		$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-removal' );
+
+		return $noticeList;
+	}
+
+	private function createList( &$noticeList, &$list, $title ) {
+
+		if ( $list === array() ) {
+			return;
+		}
+
+		$noticeList[] = Html::rawElement(
+			'h3',
+			array(),
+			$this->getMessageAsString( $title )
+		) .	Html::rawElement(
+			'ul',
+			array(),
+			implode( '', $list )
+		);
+
+		$list = array();
+	}
 
 	private function createListItem( $message ) {
 		return Html::rawElement( 'li', array(), $this->getMessageAsString( $message, Message::PARSE ) );
