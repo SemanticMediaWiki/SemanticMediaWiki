@@ -7,6 +7,8 @@ use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\MediaWiki\Database;
 use SMW\DeferredRequestDispatchManager;
 use SMW\DIWikiPage;
+use SMWDIBlob as DIBlob;
+use SMWDIUri as DIUri;
 use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -119,6 +121,8 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 			return;
 		}
 
+		Timer::start( __METHOD__ );
+
 		// Update within the same transaction as started by SMW::SQLStore::AfterDataUpdateComplete
 		if ( !$this->asDeferredUpdate || $this->isCommandLineMode ) {
 			return $this->pushUpdatesFromPropertyTableDiff( $compositePropertyTableDiffIterator );
@@ -138,6 +142,8 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 				'slot:id' => $slot
 			)
 		);
+
+		$this->log( __METHOD__ . ' (procTime in sec: '. Timer::getElapsedTime( __METHOD__, 5 ) . ')' );
 	}
 
 	/**
@@ -155,17 +161,21 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 		Timer::start( __METHOD__ );
 
-		$tableChangeOps = $this->tempChangeOpStore->newTableChangeOpsFrom(
+		$compositePropertyTableDiffIterator = $this->tempChangeOpStore->newCompositePropertyTableDiffIterator(
 			$parameters['slot:id']
 		);
 
-		foreach ( $tableChangeOps as $tableChangeOp ) {
-			$this->doUpdateFromTableChangeOp( $tableChangeOp );
+		if ( $compositePropertyTableDiffIterator === null ) {
+			return $this->log( __METHOD__ . ' Failed compositePropertyTableDiff from slot: ' . $parameters['slot:id'] );
 		}
 
-		$this->tempChangeOpStore->delete( $parameters['slot:id'] );
+		$this->pushUpdatesFromPropertyTableDiff( $compositePropertyTableDiffIterator );
 
-		$this->log( __METHOD__ . ' procTime (sec): '. Timer::getElapsedTime( __METHOD__, 5 ) );
+		$this->tempChangeOpStore->delete(
+			$parameters['slot:id']
+		);
+
+		$this->log( __METHOD__ . ' (procTime in sec: '. Timer::getElapsedTime( __METHOD__, 5 ) . ')' );
 	}
 
 	/**
@@ -181,140 +191,120 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 		Timer::start( __METHOD__ );
 
-		foreach ( $compositePropertyTableDiffIterator->getTableChangeOps() as $tableChangeOp ) {
-			$this->doUpdateFromTableChangeOp( $tableChangeOp );
+		$dataChangeOps = $compositePropertyTableDiffIterator->getDataChangeOps();
+		$diffChangeOps = $compositePropertyTableDiffIterator->getTableChangeOps();
+
+		$insertIds = $compositePropertyTableDiffIterator->getListOfChangedEntityIdsByType(
+			$compositePropertyTableDiffIterator::TYPE_INSERT
+		);
+
+		$updates = array();
+
+		// Ensure that any delete operation is being accounted for to avoid that
+		// removed value annotation remain
+		if ( $diffChangeOps !== array() ) {
+			$this->doDeleteFromTableChangeOps( $diffChangeOps );
 		}
 
-		$this->log( __METHOD__ . ' procTime (sec): '. Timer::getElapsedTime( __METHOD__, 5 ) );
-	}
-
-	private function doUpdateFromTableChangeOp( TableChangeOp $tableChangeOp ) {
-
-		$deletes = array();
-		$inserts = array();
-
-		foreach ( $tableChangeOp->getFieldChangeOps( 'insert' ) as $insertFieldChangeOp ) {
-
-			// Copy fields temporarily
-			if ( $tableChangeOp->isFixedPropertyOp() ) {
-				$insertFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueBy( 'p_id' ) );
-			}
-
-			$this->doAggregateFromFieldChangeOp( TableChangeOp::OP_INSERT, $insertFieldChangeOp, $inserts );
-		}
-
-		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $deleteFieldChangeOp ) {
-
-			// Copy fields temporarily
-			if ( $tableChangeOp->isFixedPropertyOp() ) {
-				$deleteFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueBy( 'p_id' ) );
-			}
-
-			$this->doAggregateFromFieldChangeOp( TableChangeOp::OP_DELETE, $deleteFieldChangeOp, $deletes );
-		}
-
-		$this->doUpdateOnAggregatedValues( $inserts, $deletes );
-	}
-
-	private function doAggregateFromFieldChangeOp( $type, $fieldChangeOp, &$aggregate ) {
-
-		$searchTable = $this->searchTableUpdater->getSearchTable();
-
-		// Exempted property -> out
-		if ( !$fieldChangeOp->has( 'p_id' ) || $searchTable->isExemptedPropertyById( $fieldChangeOp->get( 'p_id' ) ) ) {
+		if ( $insertIds === array() ) {
 			return;
 		}
 
-		if ( !$fieldChangeOp->has( 'o_blob' ) && !$fieldChangeOp->has( 'o_hash' ) && !$fieldChangeOp->has( 'o_serialized' ) && !$fieldChangeOp->has( 'o_id' ) ) {
-			return;
+		// Build a composite of replacements where a change occured, this my
+		// contain some false positives
+		foreach ( $dataChangeOps as $dataChangeOp ) {
+			$this->doCreateCompositeUpdate( $dataChangeOp, $updates, $insertIds );
 		}
 
-		// Re-map (url type)
-		if ( $fieldChangeOp->has( 'o_serialized' ) ) {
-			$fieldChangeOp->set( 'o_blob', $fieldChangeOp->get( 'o_serialized' ) );
-		}
-
-		// Re-map (wpg type)
-		if ( $fieldChangeOp->has( 'o_id' ) ) {
-			$dataItem = $searchTable->getDataItemById( $fieldChangeOp->get( 'o_id' ) );
-			$fieldChangeOp->set( 'o_blob', $dataItem !== null ? $dataItem->getSortKey() : 'NO_TEXT' );
-		}
-
-		// Build a temporary stable key for the diff match
-		$key = $fieldChangeOp->get( 's_id' ) . ':' . $fieldChangeOp->get( 'p_id' );
-
-		// If the blob value is empty then the DIHandler has put any text < 72
-		// into the hash field
-		$text = $fieldChangeOp->get( 'o_blob' );
-
-		if ( $text === null || $text === '' ) {
-			$text = $fieldChangeOp->get( 'o_hash' );
-		}
-
-		if ( !isset( $aggregate[$key] ) ) {
-			$aggregate[$key] = $type === TableChangeOp::OP_DELETE ? array() : '';
-		}
-
-		// Concatenate the inserts but keep the deletes separate to allow
-		// for them to be removed individually
-		if ( $type === TableChangeOp::OP_INSERT ) {
-			$aggregate[$key] = trim( $aggregate[$key] . ' ' . trim( $text ) );
-		} elseif ( $type === TableChangeOp::OP_DELETE ) {
-			$aggregate[$key][] = $this->textSanitizer->sanitize( $text );
-		}
-	}
-
-	private function doUpdateOnAggregatedValues( $inserts, $deletes ) {
-		// Remove any "deletes" first
-		$this->doUpdateOnDeletes( $deletes );
-		$this->doUpdateOnInserts( $inserts );
-	}
-
-	private function doUpdateOnDeletes( $deletes ) {
-
-		foreach ( $deletes as $key => $values ) {
+		foreach ( $updates as $key => $value ) {
 			list( $sid, $pid ) = explode( ':', $key, 2 );
 
-			$text = $this->searchTableUpdater->read(
-				$sid,
-				$pid
-			);
-
-			if ( $text === false ) {
-				continue;
-			}
-
-			foreach ( $values as $k => $value ) {
-				$text = str_replace( $value, '', $text );
-			}
-
-			//$this->log( "Delete update on $sid with $pid" );
-
-			$this->searchTableUpdater->update( $sid, $pid, $text );
-		}
-	}
-
-	private function doUpdateOnInserts( $inserts ) {
-
-		foreach ( $inserts as $key => $value ) {
-			list( $sid, $pid ) = explode( ':', $key, 2 );
-
-			if ( $value === '' ) {
-				continue;
-			}
-
-			$text = $this->searchTableUpdater->read(
-				$sid,
-				$pid
-			);
-
-			if ( $text === false ) {
+			if ( $this->searchTableUpdater->exists( $sid, $pid ) === false ) {
 				$this->searchTableUpdater->insert( $sid, $pid );
 			}
 
-			//$this->log( "Insert update on $sid with $pid " );
+			$this->searchTableUpdater->update(
+				$sid,
+				$pid,
+				$value
+			);
+		}
 
-			$this->searchTableUpdater->update( $sid, $pid, $text . ' ' . $value );
+		$this->log( __METHOD__ . ' (procTime in sec: '. Timer::getElapsedTime( __METHOD__, 5 ) . ')' );
+	}
+
+	private function doCreateCompositeUpdate( TableChangeOp $dataChangeOp, &$updates, $ids ) {
+
+		$searchTable = $this->searchTableUpdater->getSearchTable();
+
+		foreach ( $dataChangeOp->getFieldChangeOps() as $fieldChangeOp ) {
+
+			// Exempted property -> out
+			if ( !$fieldChangeOp->has( 'p_id' ) || $searchTable->isExemptedPropertyById( $fieldChangeOp->get( 'p_id' ) ) ) {
+				continue;
+			}
+
+			$sid = $fieldChangeOp->get( 's_id' );
+			$pid = $fieldChangeOp->get( 'p_id' );
+
+			// Check whether changes occured for a matchable pair of subject/property
+			// IDs
+			if ( !isset( $ids[$sid] ) && !isset( $ids[$pid] ) ) {
+				continue;
+			}
+
+			if ( !$fieldChangeOp->has( 'o_blob' ) && !$fieldChangeOp->has( 'o_hash' ) && !$fieldChangeOp->has( 'o_serialized' ) && !$fieldChangeOp->has( 'o_id' ) ) {
+				continue;
+			}
+
+			// Re-map (url type)
+			if ( $fieldChangeOp->has( 'o_serialized' ) ) {
+				$fieldChangeOp->set( 'o_blob', $fieldChangeOp->get( 'o_serialized' ) );
+			}
+
+			// Re-map (wpg type)
+			if ( $fieldChangeOp->has( 'o_id' ) ) {
+				$dataItem = $searchTable->getDataItemById( $fieldChangeOp->get( 'o_id' ) );
+				$fieldChangeOp->set( 'o_blob', $dataItem !== null ? $dataItem->getSortKey() : 'NO_TEXT' );
+			}
+
+			// If the blob value is empty then the DIHandler has put any text < 72
+			// into the hash field
+			$text = $fieldChangeOp->get( 'o_blob' );
+			$key = $sid . ':' . $pid;
+
+			if ( $text === null || $text === '' ) {
+				$text = $fieldChangeOp->get( 'o_hash' );
+			}
+
+			$updates[$key] = !isset( $updates[$key] ) ? $text : $updates[$key] . ' ' . $text;
+		}
+	}
+
+	private function doDeleteFromTableChangeOps( array $tableChangeOps ) {
+		foreach ( $tableChangeOps as $tableChangeOp ) {
+			$this->doDeleteFromTableChangeOp( $tableChangeOp );
+		}
+	}
+
+	private function doDeleteFromTableChangeOp( TableChangeOp $tableChangeOp ) {
+
+		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $fieldChangeOp ) {
+
+			// Replace s_id for subobjects etc. with the o_id
+			if ( $tableChangeOp->isFixedPropertyOp() ) {
+				$fieldChangeOp->set( 's_id', $fieldChangeOp->has( 'o_id' ) ? $fieldChangeOp->get( 'o_id' ) : $fieldChangeOp->get( 's_id' ) );
+				$fieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueBy( 'p_id' ) );
+			}
+
+			if ( !$fieldChangeOp->has( 'p_id' ) ) {
+				continue;
+			}
+
+			$this->searchTableUpdater->delete(
+				$fieldChangeOp->get( 's_id' ),
+				$fieldChangeOp->get( 'p_id' )
+			);
 		}
 	}
 

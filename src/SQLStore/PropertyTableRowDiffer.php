@@ -146,7 +146,12 @@ class PropertyTableRowDiffer {
 			}
 		}
 
-		$this->getCompositePropertyTableDiff()->addTableRowsToCompositeDiff(
+		$this->getCompositePropertyTableDiff()->addDataRecord(
+			$semanticData->getSubject()->getHash(),
+			$newData
+		);
+
+		$this->getCompositePropertyTableDiff()->addTableDiffChangeOp(
 			$tablesInsertRows,
 			$tablesDeleteRows
 		);

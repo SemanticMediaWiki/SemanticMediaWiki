@@ -16,9 +16,25 @@ use SMW\SQLStore\ChangeOp\TableChangeOp;
 class CompositePropertyTableDiffIterator implements IteratorAggregate {
 
 	/**
+	 * Type of change operations
+	 */
+	const TYPE_INSERT = 'insert';
+	const TYPE_DELETE = 'delete';
+
+	/**
 	 * @var array
 	 */
 	private $diff = array();
+
+	/**
+	 * @var array
+	 */
+	private $data = array();
+
+	/**
+	 * @var array
+	 */
+	private $orderedDiff = array();
 
 	/**
 	 * @var DIWikiPage
@@ -77,20 +93,47 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 * @return string
 	 */
 	public function getHash() {
-		return md5( $this->hash . ( $this->subject !== null ? $this->subject->getHash() : '' ) );
+		return md5( $this->hash . ( $this->subject !== null ? $this->subject->asBase()->getHash() : '' ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $data
+	 */
+	public function addDataRecord( $hash, array $data ) {
+		$this->data[$hash] = $data;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return TableChangeOp[]
+	 */
+	public function getDataChangeOps() {
+
+		$dataChangeOps = array();
+
+		foreach ( $this->data as $hash => $data ) {
+			foreach ( $data as $tableName => $d ) {
+				$dataChangeOps[] = new TableChangeOp( $tableName, $d );
+			}
+		}
+
+		return $dataChangeOps;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @param array $insertRecord
-	 * @param array $deleteRecord
+	 * @param array $insertChangeOp
+	 * @param array $deleteChangeOp
 	 */
-	public function addTableRowsToCompositeDiff( array $insertRecord, array $deleteRecord ) {
+	public function addTableDiffChangeOp( array $insertChangeOp, array $deleteChangeOp ) {
 
 		$diff = array(
-			'insert' => $insertRecord,
-			'delete' => $deleteRecord
+			'insert' => $insertChangeOp,
+			'delete' => $deleteChangeOp
 		);
 
 		$this->diff[] = $diff;
@@ -147,6 +190,10 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 */
 	public function getOrderedDiffByTable( $table = null ) {
 
+		if ( $table === null && $this->orderedDiff !== array() ) {
+			return $this->orderedDiff;
+		}
+
 		$ordered = array();
 
 		foreach ( $this as $diff ) {
@@ -176,7 +223,40 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 			}
 		}
 
+		if ( $table === null ) {
+			$this->orderedDiff = $ordered;
+		}
+
 		return $ordered;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string|null $type
+	 *
+	 * @return array
+	 */
+	public function getListOfChangedEntityIdsByType( $type = null ) {
+
+		$changedEntities = array();
+
+		foreach ( $this->getOrderedDiffByTable() as $diff ) {
+
+			if ( ( $type === 'insert' || $type === null ) && isset( $diff['insert'] )  ) {
+				$this->addToIdList( $changedEntities, $diff['insert'] );
+			}
+
+			if ( ( $type === 'delete' || $type === null ) && isset( $diff['delete'] )  ) {
+				$this->addToIdList( $changedEntities, $diff['delete'] );
+			}
+
+			if ( $type === null && isset( $diff['property'] )  ) {
+				$changedEntities[$diff['property']['p_id']] = true;
+			}
+		}
+
+		return $changedEntities;
 	}
 
 	/**
@@ -185,40 +265,22 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 * @return array
 	 */
 	public function getCombinedIdListOfChangedEntities() {
-
-		$list = array();
-
-		foreach ( $this->getOrderedDiffByTable() as $diff ) {
-
-			if ( isset( $diff['insert'] )  ) {
-				$this->addToIdList( $list, $diff['insert'] );
-			}
-
-			if ( isset( $diff['delete'] )  ) {
-				$this->addToIdList( $list, $diff['delete'] );
-			}
-
-			if ( isset( $diff['property'] )  ) {
-				$list[$diff['property']['p_id']] = null;
-			}
-		}
-
-		return array_keys( $list );
+		return array_keys( $this->getListOfChangedEntityIdsByType() );
 	}
 
 	private function addToIdList( &$list, $value ) {
 		foreach ( $value as $element ) {
 
 			if ( isset( $element['p_id'] ) ) {
-				$list[$element['p_id']] = null;
+				$list[$element['p_id']] = true;
 			}
 
 			if ( isset( $element['s_id'] ) ) {
-				$list[$element['s_id']] = null;
+				$list[$element['s_id']] = true;
 			}
 
 			if ( isset( $element['o_id'] ) ) {
-				$list[$element['o_id']] = null;
+				$list[$element['o_id']] = true;
 			}
 		}
 	}
