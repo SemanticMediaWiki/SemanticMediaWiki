@@ -34,17 +34,17 @@ class SMWDIGeoCoordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWhenOnlyProvidingLatitudeArgument_constructorThrowsException() {
-		$this->expectException( DataItemException::class );
+		$this->setExpectedException( DataItemException::class );
 		new \SMWDIGeoCoord( 13 );
 	}
 
 	public function testWhenProvidingNonNumericalArgument_constructorThrowsException() {
-		$this->expectException( DataItemException::class );
+		$this->setExpectedException( DataItemException::class );
 		new \SMWDIGeoCoord( 13, null );
 	}
 
 	public function testWhenProvidingArrayWithNonNumericalArgument_constructorThrowsException() {
-		$this->expectException( DataItemException::class );
+		$this->setExpectedException( DataItemException::class );
 		new \SMWDIGeoCoord( [ 'lat' => null, 'lon' => 42.42 ] );
 	}
 
