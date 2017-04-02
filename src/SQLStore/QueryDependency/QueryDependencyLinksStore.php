@@ -306,16 +306,19 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			return array();
 		}
 
-		$requestOptions = new RequestOptions();
+		// Return the expected count of targets
+		$requestOptions->targetLinksCount = count( $targetLinksIdList );
 
-		$requestOptions->addExtraCondition(
+		$poolRequestOptions = new RequestOptions();
+
+		$poolRequestOptions->addExtraCondition(
 			'smw_iw !=' . $this->connection->addQuotes( SMW_SQL3_SMWREDIIW ) . ' AND '.
 			'smw_iw !=' . $this->connection->addQuotes( SMW_SQL3_SMWDELETEIW )
 		);
 
 		return $this->store->getObjectIds()->getDataItemPoolHashListFor(
 			$targetLinksIdList,
-			$requestOptions
+			$poolRequestOptions
 		);
 	}
 
