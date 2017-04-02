@@ -202,6 +202,18 @@ return array(
 	),
 
 	// Facts and browse
+	'ext.smw.browse.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/ext.smw.table.css',
+			'smw/special/ext.smw.special.browse.css',
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	'ext.smw.browse' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.browse.js',
 		'dependencies' => array(

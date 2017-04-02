@@ -162,22 +162,26 @@ class ContentsBuilder {
 		global $wgContLang;
 
 		$leftside = !( $wgContLang->isRTL() );
-		$html = "\n";
+		$html = '';
+		$form = '';
 
 		$semanticData = new SemanticData( $this->subject->getDataItem() );
 		$this->articletext = $this->subject->getWikiValue();
 
 		$html .= $this->displayHead();
 		$html .= $this->displayData( $semanticData, $leftside, false, true );
-		$html .= $this->displayCenter( $this->subject->getLongWikiText() );
-		$html .= $this->displayData( $semanticData, $leftside, true, true );
 		$html .= $this->displayBottom( false );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$html .= FormHelper::getQueryForm( $this->articletext );
+			$form = FormHelper::getQueryForm( $this->articletext );
 		}
 
-		return $html;
+		return Html::rawElement(
+			'div',
+			array(
+				'class' => 'smwb-content'
+			), $html
+		) . $form;
 	}
 
 	/**
@@ -188,7 +192,7 @@ class ContentsBuilder {
 	 */
 	private function doGenerateHtml() {
 		global $wgContLang;
-		$html = "\n";
+		$html = "<div class=\"smwb-datasheet\">";
 		$leftside = !( $wgContLang->isRTL() ); // For right to left languages, all is mirrored
 		$modules = array();
 
@@ -217,11 +221,12 @@ class ContentsBuilder {
 		}
 
 		$this->articletext = $this->subject->getWikiValue();
+		$html .= "</div>";
 
 		\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', array( $this->store, $semanticData, &$html, &$this->extraModules ) );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$html .= FormHelper::getQueryForm( $this->articletext );
+			$html .= FormHelper::getQueryForm( $this->articletext ) ;
 		}
 
 		$html .= Html::element(
@@ -249,7 +254,7 @@ class ContentsBuilder {
 		// In this case, there is an "i" after the "smwb-". This is set here.
 		$ccsPrefix = $left ? 'smwb-' : 'smwb-i';
 
-		$html = "<table class=\"{$ccsPrefix}factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$html = "<div class=\"smw-table {$ccsPrefix}factbox smwb-bottom\">";
 		$noresult = true;
 
 		$contextPage = $data->getSubject();
@@ -277,8 +282,8 @@ class ContentsBuilder {
 				continue;
 			}
 
-			$head  = '<th>' . $propertyLabel . "</th>\n";
-			$body  = "<td>\n";
+			$head  = "<div class=\"smw-table-cell smwb-cell smwb-prophead\">" . $propertyLabel . "</div>\n";
+			$body  = "<div class=\"smw-table-cell smwb-cell smwb-propval\">\n";
 
 			$values = $data->getPropertyValues( $diProperty );
 
@@ -323,22 +328,22 @@ class ContentsBuilder {
 
 			}
 
-			$body .= "</td>\n";
+			$body .= "</div>\n";
 
 			// display row
-			$html .= "<tr class=\"{$ccsPrefix}propvalue\">\n" .
-					( $left ? ( $head . $body ):( $body . $head ) ) . "</tr>\n";
+			$html .= "<div class=\"smw-table-row {$ccsPrefix}propvalue\">\n" .
+					( $left ? ( $head . $body ):( $body . $head ) ) . "</div>\n";
 			$noresult = false;
 		} // end foreach properties
 
 		if ( $noresult ) {
 			$noMsgKey = $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing';
-
-			$html .= "<tr class=\"smwb-propvalue\"><th> &#160; </th><td><em>" .
-				wfMessage( $isLoading ? 'smw-browse-from-backend' : $noMsgKey )->escaped() . "</em></td></tr>\n";
+			$rColumn = "<div class=\"smw-table-cell smwb-cell smwb-prophead\"></div>";
+			$lColumn = "<div class=\"smw-table-cell smwb-cell smwb-propval\">" . wfMessage( $isLoading ? 'smw-browse-from-backend' : $noMsgKey )->escaped() . "</div>";
+			$html .= "<div class=\"smw-table-row {$ccsPrefix}propvalue\">" . ( $left ? ( $rColumn . $lColumn ):( $lColumn . $rColumn ) ) . "</div>";
 		}
 
-		$html .= "</table>\n";
+		$html .= "</div>\n";
 
 		return $html;
 	}
@@ -370,10 +375,10 @@ class ContentsBuilder {
 
 		$label = ValueFormatter::getFormattedSubject( $this->subject );
 
-		$html = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
-			"<tr class=\"smwb-title\"><td colspan=\"2\">\n" .
+		$html = "<div class=\"smw-table smwb-factbox\">" .
+			"<div class=\"smw-table-header smwb-title\"><div class=\"smw-table-row\">" .
 			$label . "\n" .
-			"</td></tr>\n</table>\n";
+			"</div></div></div>";
 
 		return $html;
 	}
@@ -406,9 +411,9 @@ class ContentsBuilder {
 		$html = FormHelper::createLink( $linkMsg, $parameters );
 
 		return "<a name=\"smw_browse_incoming\"></a>\n" .
-		       "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
-		       "<tr class=\"smwb-center\"><td colspan=\"2\">\n" . $html .
-		       "&#160;\n" . "</td></tr>\n" . "</table>\n";
+		       "<div class=\"smw-table smwb-factbox\">" .
+		       "<div class=\"smw-table-row smwb-center\"><div >" . $html .
+		       "&#160;\n" . "</div></div>\n" . "</div>\n";
 	}
 
 	/**
@@ -421,10 +426,10 @@ class ContentsBuilder {
 
 		$article = $this->subject->getLongWikiText();
 
-		$open  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
-		         "<tr class=\"smwb-center\"><td colspan=\"2\">\n";
+		$open  = "<div class=\"smw-table smwb-factbox\">" .
+		         "<div class=\"smw-table-row smwb-center\"><div >";
 
-		$close = "&#160;\n" . "</td></tr>\n" . "</table>\n";
+		$close = "&#160;\n" . "</div></div>\n" . "</div>\n";
 		$html = '';
 
 		if ( $this->getOption( 'showAll' ) ) {
