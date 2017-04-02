@@ -189,7 +189,6 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 	public function testReparseFirstRevision( $firstRunRevision ) {
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->title );
-		$contentParser->forceToUseParser();
 		$contentParser->setRevision( $firstRunRevision );
 		$contentParser->parse();
 
