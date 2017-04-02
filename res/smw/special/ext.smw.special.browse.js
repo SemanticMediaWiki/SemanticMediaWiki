@@ -23,6 +23,7 @@
 
 		this.VERSION = "2.5.0";
 		this.api = mwApi;
+		this.isMobileFrontend = false;
 
 		return this;
 	};
@@ -54,7 +55,7 @@
 
 		subject = subject.split( "#" );
 
-		self.api.get( {
+		self.api.post( {
 			action: "browsebysubject",
 			subject: subject[0],
 			ns: subject[1],
@@ -102,9 +103,11 @@
 
 		self.context.find( '.smwb-content' ).replaceWith( content );
 
-		mw.loader.using( 'ext.smw.browse' ).done( function () {
-			self.context.find( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
-		} );
+		if ( !instance.isMobileFrontend ) {
+			mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.page.autocomplete' ] ).done( function () {
+				self.context.find( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
+			} );
+		};
 
 		mw.loader.load(
 			self.context.find( '.smwb-modules' ).data( 'modules' )
@@ -130,7 +133,17 @@
 			instance.doApiRequest();
 		} );
 
-		$( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
+		// Detect whether this uses the MF skin
+		instance.isMobileFrontend = $( "body" ).hasClass( "skin-minerva" );
+
+		// Avoid "Uncaught Error: Unknown dependency: jquery.ui.autocomplete" in
+		// mobile context as the module is not defined with target mobile
+		if ( !instance.isMobileFrontend ) {
+			mw.loader.using( [ 'ext.smw.browse.page.autocomplete' ] ).done( function () {
+				$( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
+			} );
+		};
+
 	} );
 
 }( jQuery, mediaWiki ) );

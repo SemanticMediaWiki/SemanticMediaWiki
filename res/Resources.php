@@ -206,12 +206,22 @@ return array(
 		'scripts' => 'smw/special/ext.smw.special.browse.js',
 		'dependencies' => array(
 			'mediawiki.api',
-			'ext.smw.style',
-			'ext.smw.autocomplete'
+			'ext.smw.style'
 		),
 		'position' => 'top',
 		'messages' => array(
 			'smw-browse-api-subject-serialization-invalid'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'ext.smw.browse.page.autocomplete' => $moduleTemplate + array(
+		'dependencies' => array(
+			'ext.smw.browse',
+			'ext.smw.autocomplete'
 		),
 		'targets' => array(
 			'mobile',
