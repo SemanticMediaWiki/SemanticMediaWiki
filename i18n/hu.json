@@ -181,7 +181,7 @@
 	"smw_result_results": "Eredmények",
 	"smw_result_noresults": "Nincs találat.",
 	"smwadmin": "A Szemantikus MediaWiki adminisztrációs funkciói",
-	"smw-admin-setupsuccess": "A tárolómotor sikeresen be lett állítva.",
+	"smw-admin-setupsuccess": "A tárolómotor be lett állítva.",
 	"smw_smwadmin_return": "Vissza ide: $1",
 	"smw_smwadmin_updatestarted": "Egy új frissítő folyamat indult a szemantikus adatok frissítése céljából.\nMinden tárolt adat újra elő lesz állítva, és javítva lesz, ahol szükséges.\nA frissítési folyamat előrehaladását ezen a speciális lapon követheted figyelemmel.\n\nVisszatérés a(z) $1 lapra.",
 	"smw_smwadmin_updatenotstarted": "Már fut egy frissítő folyamat.\nNem kell újat készíteni.\n\nVisszatérés a(z) $1 lapra.",
@@ -231,5 +231,6 @@
 	"group-smwadministrator": "Adminisztrátorok (Szemantikus MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Adminisztrátorok (Szemantikus MediaWiki)",
 	"smw-sp-properties-header-label": "Tulajdonságok listája",
-	"smw-livepreview-loading": "Betöltés…"
+	"smw-livepreview-loading": "Betöltés…",
+	"smw-datavalue-allows-value-list-missing-marker": "A(z) „$1” lista tartalmában nincsenek elemek * listajelzővel."
 }
