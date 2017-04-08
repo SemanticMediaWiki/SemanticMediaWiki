@@ -16,7 +16,6 @@ use SMW\Importer\ImportContents;
  */
 class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
-	private $importServicesFactory;
 	private $wikiImporter;
 	private $messageReporter;
 
@@ -30,18 +29,6 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		$this->wikiImporter = $this->getMockBuilder( '\WikiImporter' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->importServicesFactory = $this->getMockBuilder( '\SMW\Services\ImportServicesFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->importServicesFactory->expects( $this->any() )
-			->method( 'newImportStreamSource' )
-			->will( $this->returnValue( $importStreamSource ) );
-
-		$this->importServicesFactory->expects( $this->any() )
-			->method( 'newWikiImporter' )
-			->will( $this->returnValue( $this->wikiImporter ) );
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
 			->disableOriginalConstructor()
