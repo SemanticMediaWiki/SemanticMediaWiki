@@ -426,7 +426,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->with( $this->equalTo( array() ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( null )
+			->setMethods( array( 'getPropertyTables' ) )
 			->getMock();
 
 		$store->expects( $this->any() )

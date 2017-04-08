@@ -261,6 +261,10 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
+			if ( $method === 'DataValueType' ) {
+				continue;
+			}
+
 			$dataValue->expects( $this->any() )
 				->method( $method )
 				->will( $this->builder->setCallback( $method ) );
@@ -419,7 +423,10 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
-		$idTable = $this->getMock( 'stdClass', array( 'getIdTable') );
+		$idTable = $this->getMockBuilder( 'stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getIdTable' ) )
+			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'getIdTable' )
@@ -578,10 +585,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 		$resultArray = $this->getMockBuilder( 'SMWResultArray' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$resultArray->expects( $this->any() )
-			->method( 'getText' )
-			->will( $this->returnValue( $this->builder->setValue( 'getText' ) ) );
 
 		$resultArray->expects( $this->any() )
 			->method( 'getPrintRequest' )

@@ -90,14 +90,14 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( 'WikiPage::prepareTextForEdit is no longer accessible (MW 1.29+)' );
 		}
 
-		$instance = $this->getMock( '\SMW\MediaWiki\EditInfoProvider',
-			array( 'hasContentForEditMethod' ),
-			array(
+		$instance = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
+			->setConstructorArgs( array(
 				$parameters['wikiPage'],
 				$parameters['revision'],
 				null
-			)
-		);
+			) )
+			->setMethods( array( 'hasContentForEditMethod' ) )
+			->getMock();
 
 		$instance->expects( $this->any() )
 			->method( 'hasContentForEditMethod' )
@@ -114,12 +114,16 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		// 'WikiPage::prepareTextForEdit is no longer accessible (MW 1.29+)'
 		$prepareTextForEditExists = method_exists( '\WikiPage', 'prepareTextForEdit' );
 
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		#0 No parserOutput object
 		$editInfo = (object)array();
 		$editInfo->output = null;
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( array( $title ) )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
@@ -143,7 +147,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		#1
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( array( $title ) )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
@@ -170,7 +174,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$editInfo->output = new ParserOutput();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( array( $title ) )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
@@ -196,7 +200,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$editInfo = (object)array();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( array( $title ) )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
@@ -225,6 +229,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'getRawText', 'getContent' ) )
 			->getMock();
 
 		$revision->expects( $this->any() )

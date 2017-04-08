@@ -28,6 +28,7 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'getPropertySubjects' ) )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
@@ -108,7 +109,9 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( "Skipping test because of missing method" );
 		}
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getPropertySubjects' ) )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )

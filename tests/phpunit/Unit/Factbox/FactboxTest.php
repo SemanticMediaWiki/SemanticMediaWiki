@@ -80,14 +80,14 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
-		$instance = $this->getMock( '\SMW\Factbox\Factbox',
-			array( 'fetchContent', 'getMagicWords' ),
-			array(
+		$instance = $this->getMockBuilder( '\SMW\Factbox\Factbox' )
+			->setConstructorArgs( array(
 				$store,
 				$parserData,
 				$messageBuilder
-			)
-		);
+			) )
+			->setMethods( array( 'fetchContent', 'getMagicWords' ) )
+			->getMock();
 
 		$instance->expects( $this->any() )
 			->method( 'getMagicWords' )
@@ -297,14 +297,14 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
-		$factbox = $this->getMock( '\SMW\Factbox\Factbox',
-			array( 'createTable' ),
-			array(
+		$factbox = $this->getMockBuilder( '\SMW\Factbox\Factbox' )
+			->setConstructorArgs( array(
 				$store,
 				$parserData,
 				$messageBuilder
-			)
-		);
+			) )
+			->setMethods( array( 'createTable' ) )
+			->getMock();
 
 		$factbox->expects( $this->any() )
 			->method( 'createTable' )

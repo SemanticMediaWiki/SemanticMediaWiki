@@ -99,12 +99,16 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	public function wikiPageDataProvider() {
 
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		#0 No parserOutput object
 		$editInfo = (object)array();
 		$editInfo->output = null;
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( array( $title ) )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
@@ -130,7 +134,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 		$editInfo->output = new ParserOutput();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( array( $title ) )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
@@ -173,6 +177,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'getRawText', 'getContent' ) )
 			->getMock();
 
 		$revision->expects( $this->any() )
