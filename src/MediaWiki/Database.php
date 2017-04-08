@@ -122,6 +122,19 @@ class Database {
 	}
 
 	/**
+	 * @see DatabaseBase::timestamp
+	 *
+	 * @since 3.0
+	 *
+	 * @param integer $ts
+	 *
+	 * @return string
+	 */
+	public function timestamp( $ts = 0 ) {
+		return $this->readConnection()->timestamp( $ts );
+	}
+
+	/**
 	 * @see DatabaseBase::addQuotes
 	 *
 	 * @since 1.9.0.2
