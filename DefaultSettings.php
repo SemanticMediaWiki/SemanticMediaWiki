@@ -214,8 +214,8 @@ return array(
 		NS_USER_TALK => false,
 		NS_PROJECT => true,
 		NS_PROJECT_TALK => false,
-		NS_IMAGE => true,
-		NS_IMAGE_TALK => false,
+		NS_FILE => true,
+		NS_FILE_TALK => false,
 		NS_MEDIAWIKI => false,
 		NS_MEDIAWIKI_TALK => false,
 		NS_TEMPLATE => false,
@@ -411,7 +411,7 @@ return array(
 	'smwgQRandSortingSupport' => true, // (De)activate random sorting of results.
 	'smwgQDefaultNamespaces' => null, // Which namespaces should be searched by default?
 										// (value NULL switches off default restrictions on searching -- this is faster)
-										// Example with namespaces: 	'smwgQDefaultNamespaces' => array(NS_MAIN, NS_IMAGE),
+										// Example with namespaces: 	'smwgQDefaultNamespaces' => array(NS_MAIN, NS_FILE),
 
 	###
 	# List of comparator characters supported by queries, separated by '|', for use in a regex.
