@@ -273,7 +273,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 	public function titleProvider() {
 
-		#2
+		#0
 		$provider[] = array( Title::newFromText( __METHOD__ ) );
 
 		$title = MockTitle::buildMockForMainNamespace();
@@ -291,9 +291,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
-		$title->expects( $this->atLeastOnce() )
-			->method( 'isSpecial' )
-			->will( $this->returnValue( true ) );
 
 		#2
 		$provider[] = array( $title );
@@ -303,10 +300,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'isSpecial' )
-			->will( $this->returnValue( false ) );
 
 		#3
 		$provider[] = array( $title );

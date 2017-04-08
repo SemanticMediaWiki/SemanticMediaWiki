@@ -44,12 +44,12 @@ class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 			'wgLanguageCode'      => 'en'
 		);
 
-		$instance = $this->getMock( '\SMW\NamespaceManager',
-			array( 'isDefinedConstant' ),
-			array(
+		$instance = $this->getMockBuilder( '\SMW\NamespaceManager' )
+			->setConstructorArgs( array(
 				&$default
-			)
-		);
+			) )
+			->setMethods( array( 'isDefinedConstant' ) )
+			->getMock();
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'isDefinedConstant' )

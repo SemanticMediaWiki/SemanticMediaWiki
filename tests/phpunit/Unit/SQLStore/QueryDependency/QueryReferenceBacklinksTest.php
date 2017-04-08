@@ -69,10 +69,6 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$queryDependencyLinksStore->expects( $this->any() )
-			->method( 'getIdBySubject' )
-			->with( $this->equalTo( $subject ) );
-
-		$queryDependencyLinksStore->expects( $this->any() )
 			->method( 'findEmbeddedQueryIdListBySubject' )
 			->with( $this->equalTo( $subject ) )
 			->will( $this->returnValue( array( 'Foo#0##' => 42 ) ) );
@@ -99,10 +95,6 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$queryDependencyLinksStore->expects( $this->any() )
-			->method( 'getIdBySubject' )
-			->with( $this->equalTo( $subject ) );
 
 		$queryDependencyLinksStore->expects( $this->any() )
 			->method( 'findEmbeddedQueryTargetLinksHashListBySubject' )

@@ -121,7 +121,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$outputPage->expects( $this->atLeastOnce() )
+		$outputPage->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
@@ -131,7 +131,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$skin->expects( $this->atLeastOnce() )
+		$skin->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( null ) );
 
@@ -173,7 +173,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$skin->expects( $this->atLeastOnce() )
+		$skin->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
@@ -213,7 +213,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$skin->expects( $this->atLeastOnce() )
+		$skin->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
@@ -257,7 +257,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$skin->expects( $this->atLeastOnce() )
+		$skin->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
@@ -294,11 +294,11 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$skin->expects( $this->atLeastOnce() )
+		$skin->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$skin->expects( $this->atLeastOnce() )
+		$skin->expects( $this->any() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $outputPage ) );
 
@@ -331,11 +331,11 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$skin->expects( $this->atLeastOnce() )
+		$skin->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$skin->expects( $this->atLeastOnce() )
+		$skin->expects( $this->any() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $outputPage ) );
 

@@ -33,6 +33,7 @@ class IdTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'getConnection' ) )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
@@ -112,6 +113,10 @@ class IdTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPerformActionWithId() {
+
+		$this->connection->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( array() ) );
 
 		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
 			->disableOriginalConstructor()

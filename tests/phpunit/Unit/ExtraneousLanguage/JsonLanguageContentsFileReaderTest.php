@@ -64,12 +64,9 @@ class JsonLanguageContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testReadByLanguageCodeToUseInMemoryCache() {
 
-		$instance = $this->getMock( JsonLanguageContentsFileReader::class,
-			array(
-				'doReadJsonContentsFromFileBy',
-				'getModificationTimeByLanguageCode'
-			)
-		);
+		$instance = $this->getMockBuilder( JsonLanguageContentsFileReader::class )
+			->setMethods( array( 'doReadJsonContentsFromFileBy', 'getModificationTimeByLanguageCode' ) )
+			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'doReadJsonContentsFromFileBy' )
@@ -87,12 +84,9 @@ class JsonLanguageContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testReadByLanguageCodeIsForcedToRereadFromFile() {
 
-		$instance = $this->getMock( JsonLanguageContentsFileReader::class,
-			array(
-				'doReadJsonContentsFromFileBy',
-				'getModificationTimeByLanguageCode'
-			)
-		);
+		$instance = $this->getMockBuilder( JsonLanguageContentsFileReader::class )
+			->setMethods( array( 'doReadJsonContentsFromFileBy', 'getModificationTimeByLanguageCode' ) )
+			->getMock();
 
 		$instance->expects( $this->exactly( 2 ) )
 			->method( 'doReadJsonContentsFromFileBy' )

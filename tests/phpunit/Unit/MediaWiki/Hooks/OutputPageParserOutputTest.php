@@ -228,10 +228,6 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
-
 		$provider[] = array(
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => false ),
@@ -262,10 +258,6 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
-
 		$provider[] = array(
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
@@ -295,10 +287,6 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
 
 		$provider[] = array(
 			array(

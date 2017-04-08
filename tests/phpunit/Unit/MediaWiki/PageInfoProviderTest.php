@@ -201,6 +201,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'isFilePage', 'getFile' ) )
 			->getMock();
 
 		$wikiFilePage->expects( $this->any() )
@@ -223,6 +224,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'isFilePage', 'getFile' ) )
 			->getMock();
 
 		$wikiFilePage->expects( $this->any() )

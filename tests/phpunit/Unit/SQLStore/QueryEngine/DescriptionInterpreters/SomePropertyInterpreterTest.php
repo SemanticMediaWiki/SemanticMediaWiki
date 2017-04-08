@@ -444,10 +444,6 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$valueDescription->expects( $this->any() )
-			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
-
-		$valueDescription->expects( $this->any() )
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $dataItemFactory->newDIBlob( '13,56' ) ) );
 
