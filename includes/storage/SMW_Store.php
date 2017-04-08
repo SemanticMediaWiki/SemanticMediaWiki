@@ -232,9 +232,12 @@ abstract class Store implements QueryEngine {
 
 		$pageUpdater->addPage( $subject->getTitle() );
 		$pageUpdater->waitOnTransactionIdle();
+		$pageUpdater->markAsPending();
+		$pageUpdater->setOrigin( __METHOD__ );
 
 		$pageUpdater->doPurgeParserCache();
 		$pageUpdater->doPurgeHtmlCache();
+		$pageUpdater->pushUpdate();
 
 		$applicationFactory->getMediaWikiLogger()->info(
 			__METHOD__ . ' (procTime in sec: '. Timer::getElapsedTime( __METHOD__, 5 ) . ')'

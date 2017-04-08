@@ -16,6 +16,18 @@ class Timer {
 	private static $start = array();
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param integer $outputType
+	 * @param integer $ts
+	 *
+	 * @return string|bool
+	 */
+	public static function getTimestamp( $outputType = TS_UNIX, $ts = 0 ) {
+		return wfTimestamp( $outputType, $ts );
+	}
+
+	/**
 	 * @since 2.5
 	 */
 	public static function start( $name ) {

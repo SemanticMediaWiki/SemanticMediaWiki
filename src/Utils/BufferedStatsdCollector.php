@@ -223,6 +223,7 @@ class BufferedStatsdCollector {
 		);
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ );
+		$deferredCallableUpdate->waitOnTransactionIdle();
 
 		$deferredCallableUpdate->setFingerprint(
 			__METHOD__ . $this->fingerprint
