@@ -186,7 +186,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->propertyLabelFinder->expects( $this->any() )
-			->method( 'findPropertyListByLabelAndLanguageCode' )
+			->method( 'findPropertyListFromLabelByLanguageCode' )
 			->will( $this->returnValue( array() ) );
 
 		$this->propertyLabelFinder->expects( $this->any() )
@@ -237,7 +237,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->propertyLabelFinder->expects( $this->any() )
-			->method( 'findPropertyListByLabelAndLanguageCode' )
+			->method( 'findPropertyListFromLabelByLanguageCode' )
 			->will( $this->returnValue( array() ) );
 
 		$this->propertyLabelFinder->expects( $this->any() )

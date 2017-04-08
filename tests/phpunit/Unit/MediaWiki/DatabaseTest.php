@@ -336,10 +336,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$database->expects( $this->any() )
-			->method( 'isOpen' )
-			->will( $this->returnValue( true ) );
-
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -417,11 +417,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$queryResultDependencyListResolver->expects( $this->never() )
-			->method( 'getDependencyListByLateRetrieval' )
+			->method( 'getDependencyListByLateRetrievalFrom' )
 			->will( $this->returnValue( array() ) );
 
 		$queryResultDependencyListResolver->expects( $this->never() )
-			->method( 'getDependencyList' )
+			->method( 'getDependencyListFrom' )
 			->will( $this->returnValue( array() ) );
 
 		$instance = new QueryDependencyLinksStore(
