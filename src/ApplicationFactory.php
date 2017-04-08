@@ -268,6 +268,15 @@ class ApplicationFactory {
 			$GLOBALS['wgCommandLineMode']
 		);
 
+		// https://phabricator.wikimedia.org/T154427
+		// It is unclear what changed in MW 1.29 but it has been observed that
+		// executing a HTMLCacheUpdate from within an transaction can lead to a
+		// "ErrorException ... 1 buffered job ... HTMLCacheUpdateJob never
+		// inserted" hence disable the update functionality
+		$pageUpdater->isHtmlCacheUpdate(
+			false
+		);
+
 		return $pageUpdater;
 	}
 

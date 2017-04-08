@@ -206,8 +206,6 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 */
 	public function doUpdate() {
 
-		$this->log( $this->origin . ' doUpdate' . ( $this->fingerprint ? ' (' . $this->fingerprint . ')' : '' ) );
-
 		if ( $this->onTransactionIdle ) {
 			return $this->connection->onTransactionIdle( function() {
 				$this->log( $this->origin . ' doUpdate (onTransactionIdle)' );
@@ -215,6 +213,8 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 				$this->doUpdate();
 			} );
 		}
+
+		$this->log( $this->origin . ' doUpdate' . ( $this->fingerprint ? ' (' . $this->fingerprint . ')' : '' ) );
 
 		call_user_func( $this->callback );
 		unset( self::$queueList[$this->fingerprint] );
