@@ -54,7 +54,9 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testValidXmlContent() {
 
-		$this->skipTestForMediaWikiVersionLowerThan( '1.25', "ImportSource interface is unknown (MW 1.25-)" );
+		if ( !interface_exists( '\ImportSource' ) ) {
+			$this->markTestSkipped( "ImportSource interface is unknown (MW 1.25-)" );
+		}
 
 		$importFileDir = $this->testEnvironment->getFixturesLocation( 'Importer/ValidXmlContent' );
 
