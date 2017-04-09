@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\TestsImporter\ContentCreators;
+namespace SMW\Tests\Importer\ContentCreators;
 
 use SMW\Importer\ContentCreators\XmlContentCreator;
 use SMW\Importer\ImportContents;
@@ -23,7 +23,7 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		if ( !class_exists( '\ImportSource' ) ) {
+		if ( !interface_exists( '\ImportSource' ) ) {
 			$this->markTestSkipped( "ImportSource interface is unknown (MW 1.25-)" );
 		}
 
