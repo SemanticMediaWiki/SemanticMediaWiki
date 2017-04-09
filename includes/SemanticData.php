@@ -227,7 +227,7 @@ class SemanticData {
 		}
 
 		if ( array_key_exists( $property->getKey(), $this->mPropVals ) ) {
-			return $this->mPropVals[$property->getKey()];
+			return array_values( $this->mPropVals[$property->getKey()] );
 		}
 
 		return array();

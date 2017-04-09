@@ -486,6 +486,22 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetPropertyValuesToReturnAnUnmappedArray() {
+
+		$property = new DIProperty( 'Foo' );
+		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
+
+		$instance->addPropertyObjectValue(
+			$property,
+			new DIWikiPage( 'Bar', NS_MAIN )
+		);
+
+		$this->assertArrayHasKey(
+			0,
+			$instance->getPropertyValues( $property )
+		);
+	}
+
 	public function testClear() {
 
 		$title = Title::newFromText( __METHOD__ );
