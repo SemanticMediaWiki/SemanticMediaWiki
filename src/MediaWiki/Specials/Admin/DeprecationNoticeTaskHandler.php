@@ -98,7 +98,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 
 		foreach ( $noticeConfigList as $setting => $msg ) {
 			if ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-msg', '$' . $setting, $msg ) );
+				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-notice', '$' . $setting, $msg ) );
 			}
 		}
 
@@ -114,7 +114,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 
 		foreach ( $removedConfigList as $setting => $msg ) {
 			if ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-msg', '$' . $setting, $msg ) );
+				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-removal', '$' . $setting, $msg ) );
 			}
 		}
 
