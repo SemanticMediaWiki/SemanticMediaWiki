@@ -242,7 +242,7 @@
 	"smw-admin-statistics-querycache-title": "Estadístiques de la caché de consultes",
 	"smw-admin-statistics-querycache-disabled": "La [https://www.semantic-mediawiki.org/wiki/QueryCache Caché de consultes] nun s'activó nesta wiki y, darréu, nun hai estadístiques disponibles.",
 	"smw-admin-permission-missing": "Bloquióse l'accesu a esta páxina por falta de permisos; consulta la páxina d'ayuda sobro [https://www.semantic-mediawiki.org/wiki/Help:Permissions permisos] pa llograr detalles de la configuración necesaria.",
-	"smw-admin-setupsuccess": "El motor d'almacenamientu configuróse correutamente.",
+	"smw-admin-setupsuccess": "Configuróse'l motor d'almacenamientu.",
 	"smw_smwadmin_return": "Tornar a $1.",
 	"smw_smwadmin_updatestarted": "Anicióse un nuevu procesu d'actualización pa refrescar los datos semánticos.\nTolos datos almacenaos se reconstruirán o repararán onde faiga falta.\nPues siguir el procesu d'actualización nesta páxina especial.",
 	"smw_smwadmin_updatenotstarted": "Yá ta executando un procesu d'actualización.\nNun se creará otru.",
