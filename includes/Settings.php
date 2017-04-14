@@ -306,7 +306,9 @@ class Settings extends Options {
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
 			'notice' => array(
-				'smwgAdminRefreshStore' => '3.1.0'
+				'smwgAdminRefreshStore' => '3.1.0',
+				'smwgQueryDependencyPropertyExemptionlist' => '3.1.0',
+				'smwgQueryDependencyAffiliatePropertyDetectionlist' => '3.1.0'
 			),
 			'replacement' => array(
 				'smwgAdminRefreshStore' => 'smwgAdminFeatures',
