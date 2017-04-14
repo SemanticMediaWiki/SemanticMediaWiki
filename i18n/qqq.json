@@ -283,7 +283,7 @@
 	"smw-admin-deprecation-notice-title": "This is a section header on Special:SemanticMediaWiki.",
 	"smw-admin-deprecation-notice-docu": "This is an informatory message explaining the purpose of some information provided.",
 	"smw-admin-deprecation-notice-config-replacement": "This is an informatory message.\n\nParameters:\n* $1 - holds the name of the depreciated configuration parameter\n* $2 - holds the name of the replacing configuration parameter",
-	"smw-admin-deprecation-notice-config-msg": "{{Notranslate}}\n\nThis is an informatory message.\n\nParameter:\n* $1 - holds the name of the depreciated configuration parameter\n* $2 - holds the status, either {{msg-mw|smw-admin-deprecation-notice-title-notice}}, {{msg-mw|smw-admin-deprecation-notice-title-replacement}} or {{msg-mw|smw-admin-deprecation-notice-title-removal}}",
+	"smw-admin-deprecation-notice-config-msg": "This is an informatory message.\n\nParameter:\n* $1 - holds the name of the depreciated configuration parameter\n* $2 - holds a version number",
 	"smw-admin-deprecation-notice-title-notice": "This is a status. Added to {{Msg-mw|Smw-admin-deprecation-notice-config-msg}} as $2. To be treated as a noun.\n{{Identical|Notice}}",
 	"smw-admin-deprecation-notice-title-replacement": "This is a status. Added to {{Msg-mw|Smw-admin-deprecation-notice-config-msg}} as $2. To be treated as a noun.\n{{Identical|Replacement}}",
 	"smw-admin-deprecation-notice-title-removal": "This is a status. Added to {{Msg-mw|Smw-admin-deprecation-notice-config-msg}} as $2. To be treated as a noun.\n{{Identical|Removal}}",
