@@ -172,6 +172,12 @@ class OrderConditionsComplementor {
 				$this->descriptionFactory->newThingDescription()
 			);
 
+			// #2176, Set a different membership in case duplicate detection is
+			// enabled, the fingerprint will be distinguishable from a condition
+			// with another ThingDescription for the same property that would
+			// otherwise create a "Error: 1066 Not unique table/alias: 't3'"
+			$description->setMembership( $label );
+
 			foreach ( $propertyChainValue->getPropertyChainValues() as $val ) {
 				$description = $this->descriptionFactory->newSomeProperty(
 					$val->getDataItem(),
