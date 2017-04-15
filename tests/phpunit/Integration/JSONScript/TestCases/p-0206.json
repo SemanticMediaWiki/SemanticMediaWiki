@@ -65,7 +65,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					">Example/0206/2</strong> + Example/0206/2 + Example/0206/2"
+					">Example/0206/2.* + Example/0206/2 + Example/0206/2"
 				]
 			}
 		},
