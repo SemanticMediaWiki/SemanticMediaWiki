@@ -2,9 +2,23 @@ There are different ways to make a contribution to [Semantic MediaWiki][smw] (SM
 
 ### Report bugs
 
+A bug is the occurrence of an unintended or unanticipated behaviour that causes a vulnerability or fatal error.
+
 * You may help us by reporting bugs and feature requests via the [issue tracker][smw-issues]. See the help page on [reporting bugs (environment, reproducing)][smw-bugs1] as well as on [identifying bugs (stack-trace)][smw-bugs2] for information on how to do this best. Please remember to always provide information about your environment as well as a stack-trace.
 * You may help us to do [pre-release testing][smw-testing] by joining the [team of testers][smw-testers] on GitHub.
 
+### Feature requests
+
+A feature request is a new or altered behaviour of an existing functionality with a request containing a detailed description of the expected behaviour to avoid misunderstandings in the process of an implementation. The following notes are provided to aid the inquiry and help prioritize a request for a developer.
+
+* Why is the feature requested or relevant?
+* What does the feature solve? (i.e. the feature addresses a generalizable behaviour, it is made to solve a specific use case)
+* Examples are provided and demonstrate the expected behaviour by:
+  * Being simple, clear, and targeted towards the feature and not rely on any other external (other parser functions or extensions) functionality (it should be anticipated that those examples are to be transformed into [integration tests](https://www.semantic-mediawiki.org/wiki/Help:Integration_tests))
+  * In case of a modified behaviour, examples demonstrate the old and the expected new behaviour and explain the difference
+  * In case of a new behaviour, examples are written in a step-by-step approach to outline the expected new behaviour
+  * Where feasible, examples outline a [use case](https://en.wikipedia.org/wiki/Use_case) with the help of the [sandbox](https://sandbox.semantic-mediawiki.org)
+ 
 ### Improve documentation
 
 * You may help us by providing software translations via [translatewiki.net][twn]. See their [progress-statistics][twn-smw] to find out if there is still work to do for your language.
