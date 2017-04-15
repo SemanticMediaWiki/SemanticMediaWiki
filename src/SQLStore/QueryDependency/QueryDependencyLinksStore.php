@@ -406,7 +406,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 		$query = $queryResult->getQuery();
 
-		return $query !== null && $query->getContextPage() !== null && $query->getLimit() > 0 && $query->getOption( Query::NO_DEP_TRACE ) !== true;
+		return $query !== null && $query->getContextPage() !== null && $query->getLimit() > 0 && $query->getOption( Query::NO_DEPENDENCY_TRACE ) !== true;
 	}
 
 	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
