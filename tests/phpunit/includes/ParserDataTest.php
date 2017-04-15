@@ -468,10 +468,10 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			$parserOutput
 		);
 
-		$instance->setOption( $instance::NO_QUERY_DEP_TRACE, true );
+		$instance->setOption( $instance::NO_QUERY_DEPENDENCY_TRACE, true );
 
 		$this->assertTrue(
-			$instance->getOption( $instance::NO_QUERY_DEP_TRACE )
+			$instance->getOption( $instance::NO_QUERY_DEPENDENCY_TRACE )
 		);
 	}
 

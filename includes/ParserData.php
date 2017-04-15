@@ -40,7 +40,7 @@ class ParserData {
 	/**
 	 * Indicates that no #ask dependency tracking should occur
 	 */
-	const NO_QUERY_DEP_TRACE = 'no.query.dep.trace';
+	const NO_QUERY_DEPENDENCY_TRACE = 'no.query.dependency.trace';
 
 	/**
 	 * @var Title

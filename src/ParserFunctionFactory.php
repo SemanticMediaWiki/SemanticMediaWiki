@@ -82,7 +82,7 @@ class ParserFunctionFactory {
 		);
 
 		if ( isset( $parser->getOptions()->smwAskNoDependencyTracking ) ) {
-			$parserData->setOption( $parserData::NO_QUERY_DEP_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
+			$parserData->setOption( $parserData::NO_QUERY_DEPENDENCY_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
 		}
 
 		$messageFormatter = new MessageFormatter(
@@ -116,7 +116,7 @@ class ParserFunctionFactory {
 		);
 
 		if ( isset( $parser->getOptions()->smwAskNoDependencyTracking ) ) {
-			$parserData->setOption( $parserData::NO_QUERY_DEP_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
+			$parserData->setOption( $parserData::NO_QUERY_DEPENDENCY_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
 		}
 
 		$messageFormatter = new MessageFormatter(
