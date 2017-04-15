@@ -531,5 +531,21 @@
 	"smw-patternedit-protection": "This page is protected and can only be edited by users with the appropriate <code>smw-patternedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions permission].",
 	"smw-pa-property-predefined_edip": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to indicate whether editing is protected or not.",
 	"smw-pa-property-predefined-long_edip": "While any user is qualified to add this property to a subject, only a user with a dedicated permission can edit or revoke the protection to an entity after it has been added.",
-	"smw-query-reference-link-label" : "Query reference"
+	"smw-query-reference-link-label" : "Query reference",
+	"smw-format-datatable-emptytable": "No data available in table",
+	"smw-format-datatable-info": "Showing _START_ to _END_ of _TOTAL_ entries",
+	"smw-format-datatable-infoempty": "Showing 0 to 0 of 0 entries",
+	"smw-format-datatable-infofiltered": "(filtered from _MAX_ total entries)",
+	"smw-format-datatable-infothousands": ",",
+	"smw-format-datatable-lengthmenu": "Show _MENU_ entries",
+	"smw-format-datatable-loadingrecords": "Loading...",
+	"smw-format-datatable-processing": "Processing...",
+	"smw-format-datatable-search": "Search:",
+	"smw-format-datatable-zerorecords": "No matching records found",
+	"smw-format-datatable-first": "First",
+	"smw-format-datatable-last": "Last",
+	"smw-format-datatable-next": "Next",
+	"smw-format-datatable-previous": "Previous",
+	"smw-format-datatable-sortascending": ": activate to sort column ascending",
+	"smw-format-datatable-sortdescending": ": activate to sort column descending"
 }

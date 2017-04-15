@@ -7,6 +7,8 @@ use SMW\Query\PrintRequest;
 use SMWDataValue;
 use SMWQueryResult;
 use SMWResultArray;
+use SMWOutputs as ResourceManager;
+use Html;
 
 /**
  * Print query results in tables
@@ -45,6 +47,7 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
+		$this->isDataTable = strpos( $this->params['class'], 'datatable' ) !== false;
 
 		$this->htmlTableRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlTableRenderer();
 		$this->htmlTableRenderer->setHtmlContext( $this->isHTML );
@@ -98,9 +101,22 @@ class TableResultPrinter extends ResultPrinter {
 			$tableAttrs['width'] = '100%';
 		}
 
-		$this->htmlTableRenderer->transpose( $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose'] );
+		if ( $this->isDataTable ) {
+			ResourceManager::requireStyle( 'onoi.dataTables.styles' );
+			ResourceManager::requireResource( 'ext.smw.tableprinter' );
+			$tableAttrs['width'] = '100%';
+			// Table is made invisible until the resources are actually loaded
+			// and until then show a `smw-loading-image-dots`
+			$tableAttrs['style'] = 'display:none;';
+		}
 
-		return $this->htmlTableRenderer->getHtml( $tableAttrs );
+		$this->htmlTableRenderer->transpose(
+			$this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose']
+		);
+
+		$html = $this->htmlTableRenderer->getHtml( $tableAttrs );
+
+		return $this->isDataTable ? Html::rawElement( 'div', array( 'class' => 'smw-datatable smw-loading-image-dots' ), $html ) : $html;
 	}
 
 	/**
@@ -155,6 +171,10 @@ class TableResultPrinter extends ResultPrinter {
 
 			if ( is_numeric( $sortKey ) ) {
 				$attributes['data-sort-value'] = $sortKey;
+			}
+
+			if ( $this->isDataTable && $sortKey !== '' ) {
+				$attributes['data-order'] = $sortKey;
 			}
 
 			$alignment = trim( $resultArray->getPrintRequest()->getParameter( 'align' ) );
