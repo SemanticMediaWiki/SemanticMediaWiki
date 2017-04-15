@@ -1,10 +1,15 @@
 {
-	"description": "Test in-text annotation for '_eid' type (`wgContLang=en`, `wgLang=en`)",
+	"description": "Test in-text annotation for `_eid` type (`wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "NDL ID",
 			"contents": "[[Has type::External identifier]] [[External formatter uri::https://id.ndl.go.jp/auth/ndlna/$1]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Some ID",
+			"contents": "[[Has type::External identifier]] [[External formatter uri::https://example.org/$1]]"
 		},
 		{
 			"page": "Example/P0430/1",
@@ -17,6 +22,10 @@
 		{
 			"page": "Example/P0430/Q1.2",
 			"contents": "{{#ask: [[NDL ID::00564222]] |?NDL ID }}"
+		},
+		{
+			"page": "Example/P0430/2",
+			"contents": "[[Some ID::W%D6LLEKLA01]]"
 		}
 	],
 	"tests": [
@@ -64,6 +73,19 @@
 			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"00564222\" class=\"NDL-ID smwtype_eid\"><span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://id.ndl.go.jp/auth/ndlna/00564222\">00564222</a></span></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (decode,encode)",
+			"subject": "Example/P0430/2",
+			"assert-output": {
+				"to-contain": [
+					"<a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/W%D6LLEKLA01\">W%D6LLEKLA01</a>"
+				],
+				"not-contain": [
+					"<a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/W%25D6LLEKLA01\">W%D6LLEKLA01</a>"
 				]
 			}
 		}
