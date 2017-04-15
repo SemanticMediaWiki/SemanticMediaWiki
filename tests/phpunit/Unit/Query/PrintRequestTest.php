@@ -90,6 +90,26 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRemoveParameter() {
+
+		$instance = PrintRequest::newFromText( 'Foo' );
+		$instance->setParameter( 'foo', 123 );
+
+		$this->assertEquals(
+			array(
+				'foo' => 123
+			),
+			$instance->getParameters()
+		);
+
+		$instance->removeParameter( 'foo' );
+
+		$this->assertEquals(
+			array(),
+			$instance->getParameters()
+		);
+	}
+
 	public function textProvider() {
 
 		#0

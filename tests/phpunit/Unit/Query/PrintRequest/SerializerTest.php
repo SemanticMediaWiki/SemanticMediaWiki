@@ -92,6 +92,14 @@ class SerializerTest extends \PHPUnit_Framework_TestCase {
 			'?Modification date#'
 		);
 
+		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Bar' );
+
+		$provider['print-prop-output-lang-index'] = array(
+			new PrintRequest( PrintRequest::PRINT_PROP, 'Foo', $data, '', array( 'lang' => 'en', 'index' => '1' ) ),
+			true,
+			'?Bar=Foo|+lang=en'
+		);
+
 		return $provider;
 	}
 
