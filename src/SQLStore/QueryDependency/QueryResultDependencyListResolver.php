@@ -84,17 +84,10 @@ class QueryResultDependencyListResolver {
 			return array();
 		}
 
-		$id = $queryResult->getQuery()->getQueryId();
-		$entityListAccumulator = $queryResult->getEntityListAccumulator();
+		$inMemoryEntityProcessList = $queryResult->getInMemoryEntityProcessList();
 
-		$dependencyList = $entityListAccumulator->getEntityList(
-			$id
-		);
-
-		// Avoid a possible memory-leak by clearing the retrieved list
-		$entityListAccumulator->pruneEntityList(
-			$id
-		);
+		$dependencyList = $inMemoryEntityProcessList->getEntityList();
+		$inMemoryEntityProcessList->prune();
 
 		return $dependencyList;
 	}

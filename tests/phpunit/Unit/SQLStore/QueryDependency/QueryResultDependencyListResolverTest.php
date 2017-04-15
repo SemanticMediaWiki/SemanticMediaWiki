@@ -222,11 +222,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( DIWikiPage::newFromText( 'Foo' ) );
 
-		$entityListAccumulator = $this->getMockBuilder( '\SMW\Query\Result\EntityListAccumulator' )
+		$inMemoryEntityProcessList = $this->getMockBuilder( '\SMW\Query\Result\InMemoryEntityProcessList' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$entityListAccumulator->expects( $this->once() )
+		$inMemoryEntityProcessList->expects( $this->once() )
 			->method( 'getEntityList' )
 			->will( $this->returnValue( array( $subject ) ) );
 
@@ -235,8 +235,8 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$queryResult->expects( $this->once() )
-			->method( 'getEntityListAccumulator' )
-			->will( $this->returnValue( $entityListAccumulator ) );
+			->method( 'getInMemoryEntityProcessList' )
+			->will( $this->returnValue( $inMemoryEntityProcessList ) );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
