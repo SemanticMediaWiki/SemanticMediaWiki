@@ -41,7 +41,7 @@ class QueryReferenceBacklinks {
 	 */
 	public function addReferenceLinksTo( SemanticData $semanticData, RequestOptions $requestOptions = null ) {
 
-		if ( $semanticData->getSubject()->getSubobjectName() !== '' || !$this->queryDependencyLinksStore->isEnabled() ) {
+		if ( !$this->queryDependencyLinksStore->isEnabled() ) {
 			return false;
 		}
 
