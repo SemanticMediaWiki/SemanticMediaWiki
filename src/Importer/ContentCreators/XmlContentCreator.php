@@ -3,7 +3,7 @@
 namespace SMW\Importer\ContentCreators;
 
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ImportServicesFactory;
+use SMW\Services\ImporterServiceFactory;
 use SMW\Importer\ImportContents;
 use SMW\Importer\ContentCreator;
 
@@ -18,7 +18,7 @@ class XmlContentCreator implements ContentCreator {
 	/**
 	 * @var ImportContentsIterator
 	 */
-	private $importServicesFactory;
+	private $importerServiceFactory;
 
 	/**
 	 * @var MessageReporter
@@ -28,10 +28,10 @@ class XmlContentCreator implements ContentCreator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param ImportServicesFactory $importServicesFactory
+	 * @param ImporterServiceFactory $importerServiceFactory
 	 */
-	public function __construct( ImportServicesFactory $importServicesFactory ) {
-		$this->importServicesFactory = $importServicesFactory;
+	public function __construct( ImporterServiceFactory $importerServiceFactory ) {
+		$this->importerServiceFactory = $importerServiceFactory;
 	}
 
 	/**
@@ -67,11 +67,11 @@ class XmlContentCreator implements ContentCreator {
 			return $this->messageReporter->reportMessage( "\n   " . $importContents->getDescription() . " was skipped.\n" );
 		}
 
-		$importSource = $this->importServicesFactory->newImportStreamSource(
+		$importSource = $this->importerServiceFactory->newImportStreamSource(
 			@fopen( $importContents->getContentsFile(), 'rt' )
 		);
 
-		$importer = $this->importServicesFactory->newWikiImporter(
+		$importer = $this->importerServiceFactory->newWikiImporter(
 			$importSource
 		);
 

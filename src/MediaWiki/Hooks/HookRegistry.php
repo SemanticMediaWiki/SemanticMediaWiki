@@ -662,10 +662,10 @@ class HookRegistry {
 		 */
 		$this->handlers['SMW::SQLStore::Installer::AfterCreateTablesComplete'] = function ( $tableBuilder, $messageReporter ) use ( $applicationFactory ) {
 
-			$importServicesFactory = $applicationFactory->create( 'ImportServicesFactory' );
+			$importerServiceFactory = $applicationFactory->create( 'ImporterServiceFactory' );
 
-			$importer = $importServicesFactory->newImporter(
-				$importServicesFactory->newJsonContentIterator( $applicationFactory->getSettings()->get( 'smwgImportFileDir' ) )
+			$importer = $importerServiceFactory->newImporter(
+				$importerServiceFactory->newJsonContentIterator( $applicationFactory->getSettings()->get( 'smwgImportFileDir' ) )
 			);
 
 			$importer->setMessageReporter( $messageReporter );

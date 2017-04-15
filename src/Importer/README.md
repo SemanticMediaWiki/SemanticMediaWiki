@@ -82,7 +82,7 @@ ContentIterator
 ContentCreator
 	| - DispatchingContentCreator
 		|- XmlContentCreator
-			|- ImportServicesFactory
+			|- ImporterServiceFactory
 		|- TextContentCreator
 			|- PageCreator
 			|- Database
@@ -94,7 +94,7 @@ ContentCreator
 * `JsonContentIterator` implements the `ContentIterator` interface
 * `JsonImportContentsFileDirReader` provides contents of all recursively fetched files from the [`$smwgImportFileDir`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDir)
   setting that meet the requirements and interprets the described `JSON` definition to return a set of `ImportContents` instances
-* `ImportServicesFactory` access to MediaWiki specific import instances
+* `ImporterServiceFactory` access to MediaWiki specific import instances
 * `DispatchingContentCreator` dispatches to the actual content creation instance based on `ImportContents::getContentType`
 * `XmlContentCreator` support the creation of MediaWiki XML specific content
 * `TextContentCreator` support of simple wikitext content

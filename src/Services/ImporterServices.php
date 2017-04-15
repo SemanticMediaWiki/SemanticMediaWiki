@@ -24,13 +24,13 @@ use SMW\Importer\ContentCreators\TextContentCreator;
 return array(
 
 	/**
-	 * ImportServicesFactory
+	 * ImporterServiceFactory
 	 *
 	 * @return callable
 	 */
-	'ImportServicesFactory' => function( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'ImportServicesFactory', '\SMW\Services\ImportServicesFactory' );
-		return new ImportServicesFactory( $containerBuilder );
+	'ImporterServiceFactory' => function( $containerBuilder ) {
+		$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', '\SMW\Services\ImporterServiceFactory' );
+		return new ImporterServiceFactory( $containerBuilder );
 	},
 
 	/**
@@ -40,7 +40,7 @@ return array(
 	 */
 	'XmlContentCreator' => function( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', '\SMW\Importer\ContentCreators\XmlContentCreator' );
-		return new XmlContentCreator( $containerBuilder->create( 'ImportServicesFactory' ) );
+		return new XmlContentCreator( $containerBuilder->create( 'ImporterServiceFactory' ) );
 	},
 
 	/**
