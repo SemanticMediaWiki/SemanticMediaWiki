@@ -44,7 +44,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddQueryReferenceBacklinksTo() {
 
-		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', 'foobar' );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
