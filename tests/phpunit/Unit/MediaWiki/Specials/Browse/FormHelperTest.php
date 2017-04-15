@@ -29,7 +29,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			FormHelper::createLink( 'Foo', $parameters )
+			FormHelper::createLinkFromMessage( 'Foo', $parameters )
 		);
 	}
 
