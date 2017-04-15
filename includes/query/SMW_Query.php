@@ -67,7 +67,7 @@ class SMWQuery implements QueryContext {
 	/**
 	 * Indicates no dependency trace
 	 */
-	const NO_DEP_TRACE = 'no.dep.trace';
+	const NO_DEPENDENCY_TRACE = 'no.dependency.trace';
 
 	public $sort = false;
 	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
