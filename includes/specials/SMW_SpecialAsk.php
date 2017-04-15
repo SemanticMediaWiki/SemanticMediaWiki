@@ -179,9 +179,13 @@ class SMWAskPage extends SpecialPage {
 				$extra = explode( '|', $value );
 
 				unset( $rawparams[$key] );
+				$rawparam = array();
 				foreach ( $extra as $k => $val) {
-					$rawparams[] = $k == 0 && $key{0} == '?' ? $key . '=' . $val : $val;
+					$rawparam[] = $k == 0 && $key{0} == '?' ? $key . '=' . $val : $val;
 				}
+
+				// Insert at the original position
+				array_splice( $rawparams, $key, 0, $rawparam );
 			}
 		}
 

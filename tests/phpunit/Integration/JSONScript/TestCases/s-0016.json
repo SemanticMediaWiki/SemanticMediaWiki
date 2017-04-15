@@ -1,0 +1,54 @@
+{
+	"description": "Test `Special:Ask` to produce correct printout position for `+|...` parameters (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has monolingual text",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0016/1",
+			"contents": "[[Has monolingual text::Test@en]] [[Category:S0016]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (column order for printouts with additional `+|...` parameter)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0016-5D-5D/-3FHas-20monolingual-20text-7C%2Blang%3Den/-3FModification-20date/mainlabel%3D/offset%3D0/format%3Dtable/link%3Dnone",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\"><thead><th>&nbsp;</th><th class=\"Has-monolingual-text\">",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td>"
+				],
+				"not-contain": [
+					"<table class=\"sortable wikitable smwtable\"><thead><th>&nbsp;</th><th class=\"Modification-date\">",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td data-sort-value=\"2457858.0750926\" class=\"Modification-date smwtype_dat\">"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespace": "http://example.org/id/",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
