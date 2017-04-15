@@ -247,6 +247,17 @@ class PrintRequest {
 	}
 
 	/**
+	 * Removes a request parameter
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 */
+	public function removeParameter( $key ) {
+		unset( $this->m_params[$key] );
+	}
+
+	/**
 	 * @since  2.1
 	 *
 	 * @note $this->m_data = clone $data; // we assume that the caller denotes
