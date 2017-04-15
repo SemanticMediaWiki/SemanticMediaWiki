@@ -14,7 +14,7 @@
 		{
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "AnotherProperty",
-			"contents": " [[Category:P0440]] [[Has property description::Something else ...@en]]"
+			"contents": " [[Category:P0440]] [[Has property description::Something else ...@en]] [[Has property description::他の何かあるもの。。。@ja]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -60,6 +60,10 @@
 		{
 			"page": "Example/P0440/Q.8",
 			"contents": "{{#ask: [[Category:P0440]] [[Has property description::+]] |?Has property description|+lang=en }}"
+		},
+		{
+			"page": "Example/P0440/Q.9",
+			"contents": "{{#ask: [[Category:P0440]] [[Has property description::+]] |?Has property description|+lang=en |?Has property description|+lang=ja  |limit=1 }}"
 		}
 	],
 	"tests": [
@@ -154,6 +158,19 @@
 				],
 				"not-contain": [
 					"<td class=\"Has-property-description smwtype_txt\">Something ...<br />何かあるもの。。。</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 (no `|+index=...` in further result links)",
+			"subject": "Example/P0440/Q.9",
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory:P0440-5D-5D-20-5B-5BHas-20property-20description::+-5D-5D/-3FHas-20property-20description-7C+lang=en/-3FHas-20property-20description-7C+lang=ja/mainlabel=/limit=1/offset=1/format=table"
+				],
+				"not-contain": [
+					"-5B-5BCategory:P0440-5D-5D-20-5B-5BHas-20property-20description::+-5D-5D/-3FHas-20property-20description-7C+lang=en-7C+index=1/-3FHas-20property-20description-7C+lang=ja-7C+index=1/mainlabel=/limit=1/offset=1/format=table"
 				]
 			}
 		}

@@ -27,6 +27,13 @@ class Serializer {
 		$parameters = '';
 
 		if ( $showparams ) {
+
+			// #2037 index is required as helper parameter during the result
+			// display but is not part of the original request
+			if ( $printRequest->getParameter( 'lang' ) ) {
+				$printRequest->removeParameter( 'index' );
+			};
+
 			foreach ( $printRequest->getParameters() as $key => $value ) {
 				$parameters .= "|+" . $key . "=" . $value;
 			}
