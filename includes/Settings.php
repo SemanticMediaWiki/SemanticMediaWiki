@@ -306,7 +306,9 @@ class Settings extends Options {
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
 			'notice' => array(
-				'smwgAdminRefreshStore' => 'deprecated in 2.5, to be removed in 3.1'
+				'smwgAdminRefreshStore' => '3.1.0',
+				'smwgQueryDependencyPropertyExemptionlist' => '3.1.0',
+				'smwgQueryDependencyAffiliatePropertyDetectionlist' => '3.1.0'
 			),
 			'replacement' => array(
 				'smwgAdminRefreshStore' => 'smwgAdminFeatures',
@@ -314,7 +316,7 @@ class Settings extends Options {
 				'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList'
 			),
 			'removal' => array(
-				'smwgOnDeleteAction' => 'removed in 2.4'
+				'smwgOnDeleteAction' => '2.4.0'
 			)
 		);
 	}
