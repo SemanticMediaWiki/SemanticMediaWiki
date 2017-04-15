@@ -107,7 +107,7 @@ class FormHelper {
 	 *
 	 * @return string
 	 */
-	public static function createLink( $linkMsg, array $parameters ) {
+	public static function createLinkFromMessage( $linkMsg, array $parameters ) {
 
 		$title = SpecialPage::getSafeTitleFor( 'Browse' );
 		$fragment = $linkMsg === 'smw_browse_show_incoming' ? '#smw_browse_incoming' : '';
