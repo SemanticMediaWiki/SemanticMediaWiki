@@ -3,7 +3,7 @@
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
-use SMW\Query\Result\EntityListAccumulator;
+use SMW\Query\Result\InMemoryEntityProcessList;
 use SMW\SerializerFactory;
 
 /**
@@ -71,9 +71,9 @@ class SMWQueryResult {
 	private $isFromCache = false;
 
 	/**
-	 * @var EntityListAccumulator
+	 * @var InMemoryEntityProcessList
 	 */
-	private $entityListAccumulator;
+	private $inMemoryEntityProcessList;
 
 	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
@@ -94,16 +94,16 @@ class SMWQueryResult {
 		$this->mFurtherResults = $furtherRes;
 		$this->mQuery = $query;
 		$this->mStore = $store;
-		$this->entityListAccumulator = new EntityListAccumulator( $query );
+		$this->inMemoryEntityProcessList = new InMemoryEntityProcessList();
 	}
 
 	/**
 	 * @since  2.4
 	 *
-	 * @return EntityListAccumulator
+	 * @return InMemoryEntityProcessList
 	 */
-	public function getEntityListAccumulator() {
-		return $this->entityListAccumulator;
+	public function getInMemoryEntityProcessList() {
+		return $this->inMemoryEntityProcessList;
 	}
 
 	/**
@@ -151,7 +151,7 @@ class SMWQueryResult {
 
 		foreach ( $this->mPrintRequests as $p ) {
 			$resultArray = new SMWResultArray( $page, $p, $this->mStore );
-			$resultArray->setEntityListAccumulator( $this->entityListAccumulator );
+			$resultArray->setInMemoryEntityProcessList( $this->inMemoryEntityProcessList );
 			$resultArray->setQueryToken( $this->mQuery->getQueryToken() );
 			$row[] = $resultArray;
 		}
