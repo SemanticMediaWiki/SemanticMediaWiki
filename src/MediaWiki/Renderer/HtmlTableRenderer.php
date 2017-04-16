@@ -190,6 +190,10 @@ class HtmlTableRenderer {
 
 		$table = $this->transpose ? $this->buildTransposedTable() : $this->buildStandardTable();
 
+		if ( $this->transpose ) {
+			$attributes['data-transpose'] = true;
+		}
+
 		if ( $table !== '' ) {
 			return Html::rawElement( 'table', $attributes, $table );
 		}
@@ -258,7 +262,7 @@ class HtmlTableRenderer {
 			$headerItem =  $this->createHeader( $header['content'], $header['attributes'] );
 
 			foreach( $this->rawRows as $rIndex => $row ) {
-				$cells[] = isset( $row['cells'][$hIndex] ) ? $row['cells'][$hIndex] : $this->createCell( '' );
+				$cells[] = $this->getTransposedCell( $hIndex, $row );
 			}
 
 			// Collect new rows
@@ -266,6 +270,21 @@ class HtmlTableRenderer {
 		}
 
 		return $this->doConcatenatedHeader() . $this->doConcatenatedRows();
+	}
+
+	private function getTransposedCell( $index, $row ) {
+
+		if ( isset( $row['cells'][$index] ) ) {
+			return $row['cells'][$index];
+		}
+
+		$attributes = array();
+
+		if ( isset( $row['attributes']['class'] ) && $row['attributes']['class'] === 'smwfooter' ) {
+			$attributes = array( 'class' => 'footer-cell' );
+		}
+
+		return $this->createCell( '', $attributes );
 	}
 
 }

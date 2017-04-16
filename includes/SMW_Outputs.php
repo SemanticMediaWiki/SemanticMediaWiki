@@ -41,8 +41,19 @@ class SMWOutputs {
 	 */
 	protected static $scripts = array();
 
-	/// Protected member for temporarily storing resource modules.
+	/**
+	 * Protected member for temporarily storing resource modules.
+	 *
+	 * @var array
+	 */
 	protected static $resourceModules = array();
+
+	/**
+	 * Protected member for temporarily storing resource modules.
+	 *
+	 * @var array
+	 */
+	protected static $resourceStyles = array();
 
 	/**
 	 * Adds a resource module to the parser output.
@@ -53,6 +64,15 @@ class SMWOutputs {
 	 */
 	public static function requireResource( $moduleName ) {
 		self::$resourceModules[$moduleName] = $moduleName;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $stylesName
+	 */
+	public static function requireStyle( $stylesName ) {
+		self::$resourceStyles[$stylesName] = $stylesName;
 	}
 
 	/**
@@ -91,7 +111,7 @@ class SMWOutputs {
 					self::requireResource( 'ext.smw.tooltips' );
 				break;
 				case SMW_HEADER_STYLE:
-					self::requireResource( 'ext.smw.style' );
+					self::requireStyle( 'ext.smw.style' );
 				break;
 			}
 		} else {
@@ -159,15 +179,19 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function commitToParserOutput( ParserOutput $parserOutput ) {
+
 		foreach ( self::$scripts as $key => $script ) {
 			$parserOutput->addHeadItem( $script . "\n", $key );
 		}
+
 		foreach ( self::$headItems as $key => $item ) {
 			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
 		}
 
+		$parserOutput->addModuleStyles( array_values( self::$resourceStyles ) );
 		$parserOutput->addModules( array_values( self::$resourceModules ) );
 
+		self::$resourceStyles = array();
 		self::$resourceModules = array();
 		self::$headItems = array();
 	}
@@ -190,8 +214,10 @@ class SMWOutputs {
 			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
 		}
 
+		$output->addModuleStyles( array_values( self::$resourceStyles ) );
 		$output->addModules( array_values( self::$resourceModules ) );
 
+		self::$resourceStyles = array();
 		self::$resourceModules = array();
 		self::$headItems = array();
 	}

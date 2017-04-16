@@ -266,5 +266,39 @@ return array(
 		),
 		'position' => 'bottom',
 		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	// TableResultPrinter resource
+	'ext.smw.tableprinter' => $moduleTemplate + array(
+		'scripts' => array(
+			'smw/printer/ext.smw.tableprinter.js'
+		),
+		'styles'   => array(
+			'smw/printer/ext.smw.tableprinter.css'
+		),
+		'dependencies' => array(
+			'onoi.dataTables'
+		),
+		'position' => 'top',
+		'messages' => array(
+			"smw-format-datatable-emptytable",
+			"smw-format-datatable-info",
+			"smw-format-datatable-infoempty",
+			"smw-format-datatable-infofiltered",
+			"smw-format-datatable-infothousands",
+			"smw-format-datatable-lengthmenu",
+			"smw-format-datatable-loadingrecords",
+			"smw-format-datatable-processing",
+			"smw-format-datatable-search",
+			"smw-format-datatable-zerorecords",
+			"smw-format-datatable-first",
+			"smw-format-datatable-last",
+			"smw-format-datatable-next",
+			"smw-format-datatable-previous",
+			"smw-format-datatable-sortascending",
+			"smw-format-datatable-sortdescending"
+		),
+		'targets' => array( 'mobile', 'desktop' )
 	)
+
 );

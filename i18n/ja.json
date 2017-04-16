@@ -338,5 +338,21 @@
 	"smw-datavalue-external-formatter-invalid-uri": "「$1」は無効な URL です。",
 	"smw-datavalue-propertylist-invalid-property-key": "プロパティリスト「$1」は無効なプロパティキー「$2」を含んでいました。",
 	"smw-datavalue-reference-outputformat": "$1: $2",
-	"smw-parse": "$1"
+	"smw-parse": "$1",
+	"smw-format-datatable-emptytable": "テーブルにデータがありません",
+	"smw-format-datatable-info": "_TOTAL_ 件中 _START_ から _END_ まで表示",
+	"smw-format-datatable-infoempty": "0 件中 0 から 0 まで表示",
+	"smw-format-datatable-infofiltered": "（全 _MAX_ 件より抽出）",
+	"smw-format-datatable-infothousands": ",",
+	"smw-format-datatable-lengthmenu": "_MENU_ 件表示",
+	"smw-format-datatable-loadingrecords": "読み込み中...",
+	"smw-format-datatable-processing": "処理中...",
+	"smw-format-datatable-search": "検索:",
+	"smw-format-datatable-zerorecords": "一致するレコードがありません",
+	"smw-format-datatable-first": "先頭",
+	"smw-format-datatable-last": "最終",
+	"smw-format-datatable-next": "次",
+	"smw-format-datatable-previous": "前",
+	"smw-format-datatable-sortascending": ": 列を昇順に並べ替えるにはアクティブにする",
+	"smw-format-datatable-sortdescending": ": 列を降順に並べ替えるにはアクティブにする"
 }

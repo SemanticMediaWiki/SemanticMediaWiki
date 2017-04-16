@@ -142,7 +142,7 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 			->addRow();
 
 		$this->stringValidator->assertThatStringContains(
-			'<table><tr class="row-odd"><th>Foo</th><td class="foo">lala</td><td rel="tuuu">lula</td></tr><tr class="row-even"><th>Bar</th><td></td><td>lila</td></tr></table>',
+			'<table data-transpose="1"><tr class="row-odd"><th>Foo</th><td class="foo">lala</td><td rel="tuuu">lula</td></tr><tr class="row-even"><th>Bar</th><td></td><td>lila</td></tr></table>',
 			$instance->getHtml()
 		);
 
@@ -157,7 +157,7 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 			->addRow();
 
 		$this->stringValidator->assertThatStringContains( // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-			'<table><thead></thead><tbody><tr class="row-odd"><th>Foo</th><td class="foo">lala</td><td>lula</td></tr><tr class="row-even"><th>Bar</th><td></td><td>lila</td></tr></tbody></table>', // @codingStandardsIgnoreEnd
+			'<table data-transpose="1"><thead></thead><tbody><tr class="row-odd"><th>Foo</th><td class="foo">lala</td><td>lula</td></tr><tr class="row-even"><th>Bar</th><td></td><td>lila</td></tr></tbody></table>', // @codingStandardsIgnoreEnd
 			$instance->getHtml()
 		);
 	}

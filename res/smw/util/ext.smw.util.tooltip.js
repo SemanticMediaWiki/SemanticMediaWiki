@@ -263,6 +263,11 @@
 			 self.initFromContext( context );
 		} );
 
+		// Listen to the Special:Browse event
+		mw.hook( 'smw.tooltip' ).add( function( context ) {
+			self.initFromContext( context );
+		} );
+
 		// SemanticForms/PageForms instance trigger
 		mw.hook( 'sf.addTemplateInstance' ).add( function( context ) {
 			self.initFromContext( context );
