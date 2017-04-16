@@ -16,7 +16,7 @@ use ImportSource;
  *
  * @author mwjames
  */
-class ImportServicesFactory {
+class ImporterServiceFactory {
 
 	/**
 	 * @var ContainerBuilder

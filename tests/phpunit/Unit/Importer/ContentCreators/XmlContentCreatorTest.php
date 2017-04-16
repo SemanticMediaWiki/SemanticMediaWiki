@@ -16,7 +16,7 @@ use SMW\Importer\ImportContents;
  */
 class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
-	private $importServicesFactory;
+	private $importerServiceFactory;
 	private $wikiImporter;
 	private $messageReporter;
 
@@ -35,15 +35,15 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->importServicesFactory = $this->getMockBuilder( '\SMW\Services\ImportServicesFactory' )
+		$this->importerServiceFactory = $this->getMockBuilder( '\SMW\Services\ImporterServiceFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->importServicesFactory->expects( $this->any() )
+		$this->importerServiceFactory->expects( $this->any() )
 			->method( 'newImportStreamSource' )
 			->will( $this->returnValue( $importStreamSource ) );
 
-		$this->importServicesFactory->expects( $this->any() )
+		$this->importerServiceFactory->expects( $this->any() )
 			->method( 'newWikiImporter' )
 			->will( $this->returnValue( $this->wikiImporter ) );
 
@@ -56,14 +56,14 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Importer\ContentCreators\XmlContentCreator',
-			new XmlContentCreator( $this->importServicesFactory )
+			new XmlContentCreator( $this->importerServiceFactory )
 		);
 	}
 
 	public function testCanCreateContentsFor() {
 
 		$instance = new XmlContentCreator(
-			$this->importServicesFactory
+			$this->importerServiceFactory
 		);
 
 		$importContents = new ImportContents();
@@ -80,7 +80,7 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'doImport' );
 
 		$instance = new XmlContentCreator(
-			$this->importServicesFactory
+			$this->importerServiceFactory
 		);
 
 		$instance->setMessageReporter(
