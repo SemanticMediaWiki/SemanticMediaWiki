@@ -119,18 +119,20 @@ class SMWAskPage extends SpecialPage {
 	 * @param string $p
 	 */
 	protected function extractQueryParameters( $p ) {
-		global $wgRequest, $smwgQMaxInlineLimit;
+		global $smwgQMaxInlineLimit;
+
+		$request = $this->getRequest();
 
 		// First make all inputs into a simple parameter list that can again be parsed into components later.
-		if ( $wgRequest->getCheck( 'q' ) ) { // called by own Special, ignore full param string in that case
-			$query_val = $wgRequest->getVal( 'p' );
+		if ( $request->getCheck( 'q' ) ) { // called by own Special, ignore full param string in that case
+			$query_val = $request->getVal( 'p' );
 
 			if ( !empty( $query_val ) ) {
 				// p is used for any additional parameters in certain links.
 				$rawparams = SMWInfolink::decodeParameters( $query_val, false );
 			}
 			else {
-				$query_values = $wgRequest->getArray( 'p' );
+				$query_values = $request->getArray( 'p' );
 
 				if ( is_array( $query_values ) ) {
 					foreach ( $query_values as $key => $val ) {
@@ -149,13 +151,13 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		// Check for q= query string, used whenever this special page calls itself (via submit or plain link):
-		$this->m_querystring = $wgRequest->getText( 'q' );
+		$this->m_querystring = $request->getText( 'q' );
 		if ( $this->m_querystring !== '' ) {
 			$rawparams[] = $this->m_querystring;
 		}
 
 		// Check for param strings in po (printouts), appears in some links and in submits:
-		$paramstring = $wgRequest->getText( 'po' );
+		$paramstring = $request->getText( 'po' );
 
 		if ( $paramstring !== '' ) { // parameters from HTML input fields
 			$ps = explode( "\n", $paramstring ); // params separated by newlines here (compatible with text-input for printouts)
@@ -171,28 +173,9 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 
-		// ?Has property=Foo|+index=1
-		foreach ( $rawparams as $key => $value ) {
-			if (
-				( $key !== '' && $key{0} == '?' && strpos( $value, '|' ) !== false ) ||
-				( is_string( $value ) && $value !== '' && $value{0} == '?' && strpos( $value, '|' ) !== false ) ) {
-				$extra = explode( '|', $value );
-
-				unset( $rawparams[$key] );
-				$rawparam = array();
-				foreach ( $extra as $k => $val) {
-					$rawparam[] = $k == 0 && $key{0} == '?' ? $key . '=' . $val : $val;
-				}
-
-				// Insert at the original position
-				array_splice( $rawparams, $key, 0, $rawparam );
-			}
-		}
-
-		unset( $rawparams['title'] );
-
-		// Now parse parameters and rebuilt the param strings for URLs.
-		list( $this->m_querystring, $this->m_params, $this->m_printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawparams, false );
+		list( $this->m_querystring, $this->m_params, $this->m_printouts ) = $this->getComponentsFromParameters(
+			$rawparams
+		);
 
 		// Try to complete undefined parameter values from dedicated URL params.
 		if ( !array_key_exists( 'format', $this->m_params ) ) {
@@ -200,7 +183,7 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		if ( !array_key_exists( 'order', $this->m_params ) ) {
-			$order_values = $wgRequest->getArray( 'order' );
+			$order_values = $request->getArray( 'order' );
 
 			if ( is_array( $order_values ) ) {
 				$this->m_params['order'] = '';
@@ -217,7 +200,7 @@ class SMWAskPage extends SpecialPage {
 		$this->m_num_sort_values = 0;
 
 		if  ( !array_key_exists( 'sort', $this->m_params ) ) {
-			$sort_values = $wgRequest->getArray( 'sort' );
+			$sort_values = $request->getArray( 'sort' );
 			if ( is_array( $sort_values ) ) {
 				$this->m_params['sort'] = implode( ',', $sort_values );
 				$this->m_num_sort_values = count( $sort_values );
@@ -225,14 +208,14 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		if ( !array_key_exists( 'offset', $this->m_params ) ) {
-			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
+			$this->m_params['offset'] = $request->getVal( 'offset' );
 			if ( $this->m_params['offset'] === '' )  {
 				$this->m_params['offset'] = 0;
 			}
 		}
 
 		if ( !array_key_exists( 'limit', $this->m_params ) ) {
-			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );
+			$this->m_params['limit'] = $request->getVal( 'limit' );
 
 			if ( $this->m_params['limit'] === '' ) {
 				 $this->m_params['limit'] = ( $this->m_params['format'] == 'rss' ) ? 10 : 20; // Standard limit for RSS.
@@ -241,7 +224,7 @@ class SMWAskPage extends SpecialPage {
 
 		$this->m_params['limit'] = min( $this->m_params['limit'], $smwgQMaxInlineLimit );
 
-		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring === '' );
+		$this->m_editquery = ( $request->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring === '' );
 	}
 
 	private function getStoreFromParams( array $params ) {
@@ -821,6 +804,31 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		$this->addHelpLink( wfMessage( $key )->escaped(), true );
+	}
+
+	private function getComponentsFromParameters( $reqParameters ) {
+
+		$parameters = array();
+		unset( $reqParameters['title'] );
+
+		// Split ?Has property=Foo|+index=1 into a [ '?Has property=Foo', '+index=1' ]
+		foreach ( $reqParameters as $key => $value ) {
+			if (
+				( $key !== '' && $key{0} == '?' && strpos( $value, '|' ) !== false ) ||
+				( is_string( $value ) && $value !== '' && $value{0} == '?' && strpos( $value, '|' ) !== false ) ) {
+
+				foreach ( explode( '|', $value ) as $k => $val ) {
+					$parameters[] = $k == 0 && $key{0} == '?' ? $key . '=' . $val : $val;
+				}
+			} elseif ( is_string( $key ) ) {
+				$parameters[$key] = $value;
+			} else {
+				$parameters[] = $value;
+			}
+		}
+
+		// Now parse parameters and rebuilt the param strings for URLs.
+		return SMWQueryProcessor::getComponentsFromFunctionParams( $parameters, false );
 	}
 
 }
