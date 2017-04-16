@@ -139,7 +139,7 @@
   box-shadow: none;
 }
 
-.smw-datatable .dataTables_wrapper .dataTables_filter input[type="search" i] {
+.smw-datatable .dataTables_wrapper .dataTables_filter input {
 /*	display: inline-block; */
     font-weight: normal;
     line-height: 1.25;
@@ -195,8 +195,8 @@
 
 .smw-datatable .dataTables_wrapper select:focus,
 .smw-datatable .dataTables_wrapper select:active,
-.smw-datatable .dataTables_wrapper .dataTables_filter input[type="search" i]:focus,
-.smw-datatable .dataTables_wrapper .dataTables_filter input[type="search" i]:active {
+.smw-datatable .dataTables_wrapper .dataTables_filter input:focus,
+.smw-datatable .dataTables_wrapper .dataTables_filter input:active {
 	border:1px solid #00a8e6;
 }
 
