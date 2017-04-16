@@ -232,6 +232,8 @@ class SMWSQLStore3Writers {
 
 		if ( $sortkeyDataItem instanceof SMWDIBlob ) {
 			$sortkey = $sortkeyDataItem->getString();
+		} else if ( $subject instanceof SMWDIWikiPage ){
+		       	$sortkey = $subject->getFormattedSortKey();
 		} else { // default sortkey
 			$sortkey = $subject->getSortKey();
 		}
