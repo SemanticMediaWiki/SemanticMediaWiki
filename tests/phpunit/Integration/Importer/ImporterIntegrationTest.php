@@ -17,7 +17,7 @@ use SMW\ApplicationFactory;
 class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $spyMessageReporter;
-	private $importServicesFactory;
+	private $importerServiceFactory;
 	private $stringValidator;
 
 	protected function setUp() {
@@ -25,7 +25,7 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
-		$this->importServicesFactory = ApplicationFactory::getInstance()->create( 'ImportServicesFactory' );
+		$this->importerServiceFactory = ApplicationFactory::getInstance()->create( 'ImporterServiceFactory' );
 		$this->spyMessageReporter = $utilityFactory->newSpyMessageReporter();
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 	}
@@ -34,8 +34,8 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 
 		$importFileDir = $this->testEnvironment->getFixturesLocation( 'Importer/ValidTextContent' );
 
-		$importer = $this->importServicesFactory->newImporter(
-			$this->importServicesFactory->newJsonContentIterator( $importFileDir )
+		$importer = $this->importerServiceFactory->newImporter(
+			$this->importerServiceFactory->newJsonContentIterator( $importFileDir )
 		);
 
 		$importer->setMessageReporter( $this->spyMessageReporter );
@@ -60,8 +60,8 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 
 		$importFileDir = $this->testEnvironment->getFixturesLocation( 'Importer/ValidXmlContent' );
 
-		$importer = $this->importServicesFactory->newImporter(
-			$this->importServicesFactory->newJsonContentIterator( $importFileDir )
+		$importer = $this->importerServiceFactory->newImporter(
+			$this->importerServiceFactory->newJsonContentIterator( $importFileDir )
 		);
 
 		$importer->setMessageReporter( $this->spyMessageReporter );

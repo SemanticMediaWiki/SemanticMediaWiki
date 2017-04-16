@@ -86,9 +86,9 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'ImportServicesFactory',
+			'ImporterServiceFactory',
 			array(),
-			'\SMW\Services\ImportServicesFactory'
+			'\SMW\Services\ImporterServiceFactory'
 		);
 
 		$provider[] = array(

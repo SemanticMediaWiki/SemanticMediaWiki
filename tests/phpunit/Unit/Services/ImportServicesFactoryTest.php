@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Services;
 
-use SMW\Services\ImportServicesFactory;
+use SMW\Services\ImporterServiceFactory;
 use Onoi\CallbackContainer\CallbackContainerFactory;
 use SMW\Settings;
 
 /**
- * @covers \SMW\Services\ImportServicesFactory
+ * @covers \SMW\Services\ImporterServiceFactory
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\Settings;
  *
  * @author mwjames
  */
-class ImportServicesFactoryTest extends \PHPUnit_Framework_TestCase {
+class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $containerBuilder;
 
@@ -69,14 +69,14 @@ class ImportServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ImportServicesFactory::class,
-			new ImportServicesFactory( $this->containerBuilder )
+			ImporterServiceFactory::class,
+			new ImporterServiceFactory( $this->containerBuilder )
 		);
 	}
 
 	public function testCanConstructImportStringSource() {
 
-		$instance = new ImportServicesFactory(
+		$instance = new ImporterServiceFactory(
 			$this->containerBuilder
 		);
 
@@ -92,7 +92,7 @@ class ImportServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ImportServicesFactory(
+		$instance = new ImporterServiceFactory(
 			$this->containerBuilder
 		);
 
@@ -108,7 +108,7 @@ class ImportServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ImportServicesFactory(
+		$instance = new ImporterServiceFactory(
 			$this->containerBuilder
 		);
 
@@ -120,7 +120,7 @@ class ImportServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructJsonContentIterator() {
 
-		$instance = new ImportServicesFactory(
+		$instance = new ImporterServiceFactory(
 			$this->containerBuilder
 		);
 
