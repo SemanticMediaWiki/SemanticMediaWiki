@@ -166,7 +166,7 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertContains(
-			"smw-datavalue-wikipage-invalid-title",
+			"smw-datavalue-wikipage-property-invalid-title",
 			implode( ' ', $instance->getErrors() )
 		);
 	}
