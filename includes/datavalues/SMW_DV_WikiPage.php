@@ -147,7 +147,9 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		/// TODO: Escape the text so users can see punctuation problems (bug 11666).
-		if ( is_null( $this->m_title ) ) {
+		if ( $this->m_title === null && $this->getProperty() !== null ) {
+			$this->addErrorMsg( array( 'smw-datavalue-wikipage-property-invalid-title', $this->getProperty()->getLabel(), $value ) );
+		} elseif ( $this->m_title === null ) {
 			$this->addErrorMsg( array( 'smw-datavalue-wikipage-invalid-title', $value ) );
 		} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
