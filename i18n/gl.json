@@ -263,7 +263,6 @@
 	"smw-admin-deprecation-notice-title": "Avisos de obsolescencia",
 	"smw-admin-deprecation-notice-docu": "A seguinte sección contén axustes que quedaron obsoletos ou están eliminados, pero que foron detectados activos neste wiki. Espérase que nunha versión futura se elimine o soporte para estas configuracións.",
 	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> foi substituído por <code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
-	"smw-admin-deprecation-notice-config-msg": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> $2",
 	"smw-admin-deprecation-notice-title-notice": "Aviso",
 	"smw-admin-deprecation-notice-title-replacement": "Substitución",
 	"smw-admin-deprecation-notice-title-removal": "Eliminación",

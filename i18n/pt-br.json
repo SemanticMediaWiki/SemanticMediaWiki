@@ -274,6 +274,7 @@
 	"smw-admin-dbbutton": "Inicializar ou atualizar tabelas",
 	"smw-admin-announce": "Anuncie seu wiki",
 	"smw-admin-announce-text": "Se seu wiki é público, você pode registrá-lo no <a href=\"https://wikiapiary.com\">WikiApiary</a>, o wiki que acompanha outros wikis.",
+	"smw-admin-deprecation-notice-title-notice": "Nota",
 	"smw-smwadmin-refresh-title": "Reparação e atualização dos dados",
 	"smw_smwadmin_datarefresh": "Reparação dos dados",
 	"smw_smwadmin_datarefreshdocu": "É possível restaurar todos os dados do Semantic MediaWiki baseado no conteúdo atual do wiki.\nIsto pode ser útil para reparar dados corrompidos ou para atualizar os dados se o formato interno tiver sido alterado devido a alguma atualização do software.\nA atualização é executada página a página e não ficará completa de imediato.\nAbaixo é mostrado se uma atualização está em processo e permite-lhe iniciar ou parar atualizações (a menos que esta funcionalidade tenha sido desativada por um administrador do site).",
@@ -455,5 +456,14 @@
 	"protect-level-smw-pageedit": "Permitir somente usuários com a permissão de edição de página (Semantic MediaWiki)",
 	"smw-edit-protection-auto-update": "O Semantic MediaWiki atualizou a situação de proteção de acordo com a propriedade \"Is edit protected\".",
 	"smw-edit-protection-enabled": "Protegida de edição (Semantic MediaWiki)",
-	"smw-query-reference-link-label": "Consultar referência"
+	"smw-query-reference-link-label": "Consultar referência",
+	"smw-format-datatable-loadingrecords": "Carregando...",
+	"smw-format-datatable-processing": "Processando…",
+	"smw-format-datatable-search": "Pesquisar:",
+	"smw-format-datatable-first": "Primeiro",
+	"smw-format-datatable-last": "Último",
+	"smw-format-datatable-next": "Próximo",
+	"smw-format-datatable-previous": "Anterior",
+	"smw-format-datatable-sortascending": ": ativar alfabetação ascendente da tabela",
+	"smw-format-datatable-sortdescending": ": ativar alfabetação descendente da tabela"
 }
