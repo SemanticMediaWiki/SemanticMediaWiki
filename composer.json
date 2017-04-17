@@ -54,7 +54,7 @@
 		"onoi/shared-resources": "~0.3"
 	},
 	"require-dev": {
-		"squizlabs/php_codesniffer": "~2.1",
+		"squizlabs/php_codesniffer": "~2.5",
 		"phpmd/phpmd": "~2.1"
 	},
 	"replace": {
