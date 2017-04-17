@@ -80,3 +80,6 @@ notifications:
 cache:
   directories:
     - $HOME/.composer/cache
+
+sudo: false
+
