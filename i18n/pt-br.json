@@ -22,7 +22,8 @@
 			"Opraco",
 			"Macofe",
 			"Eduardo Addad de Oliveira",
-			"Nemo bis"
+			"Nemo bis",
+			"Felipe L. Ewald"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -445,6 +446,8 @@
 	"smw-datavalue-propertylist-invalid-property-key": "A lista de propriedades \"$1\" continha uma chave de propriedade inválida \"$2\".",
 	"smw-datavalue-type-invalid-typeuri": "Não foi possível transformar \"$1\" numa representação válida de URI.",
 	"smw-datavalue-wikipage-missing-fragment-context": "O valor de entrada \"$1\" da página wiki não pode ser usado sem uma página de contexto.",
+	"smw-datavalue-wikipage-invalid-title": "O valor de entrada \"$1\" da página contém caracteres inválidos ou está incompleto e, portanto, pode causar resultados inesperados durante uma consulta ou processo de anotação.",
+	"smw-datavalue-wikipage-property-invalid-title": "Propriedade \"$1\" (como tipo de página) com valor de entrada \"$2\" contém caracteres inválidos ou está incompleto e, portanto, pode causar resultados inesperados durante uma consulta ou processo de anotação.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "O analisador JSON terminou com um erro \"$1\".",
 	"smw-property-preferred-title-format": "$1 ($2)",
@@ -457,9 +460,14 @@
 	"smw-edit-protection-auto-update": "O Semantic MediaWiki atualizou a situação de proteção de acordo com a propriedade \"Is edit protected\".",
 	"smw-edit-protection-enabled": "Protegida de edição (Semantic MediaWiki)",
 	"smw-query-reference-link-label": "Consultar referência",
+	"smw-format-datatable-emptytable": "Nenhum dado disponível na tabela",
+	"smw-format-datatable-info": "Exibindo _START_ até _END_ de _TOTAL_ linhas",
+	"smw-format-datatable-infoempty": "Exibindo 0 até 0 de 0 linhas",
+	"smw-format-datatable-infofiltered": "(filtrado a partir de _MAX_ linhas totais)",
 	"smw-format-datatable-loadingrecords": "Carregando...",
 	"smw-format-datatable-processing": "Processando…",
 	"smw-format-datatable-search": "Pesquisar:",
+	"smw-format-datatable-zerorecords": "Nenhuma correspondência encontrada",
 	"smw-format-datatable-first": "Primeiro",
 	"smw-format-datatable-last": "Último",
 	"smw-format-datatable-next": "Próximo",

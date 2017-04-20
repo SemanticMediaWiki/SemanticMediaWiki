@@ -439,5 +439,12 @@
 	"smw-clipboard-copy-link": "Copiar enlace en el portapapeles",
 	"smw-data-lookup": "Obteniendo datos...",
 	"smw-no-data-available": "No hay datos disponibles.",
-	"protect-level-smw-pageedit": "Permitir únicamente usuarios con el permiso de edición de páginas (Semantic MediaWiki)"
+	"protect-level-smw-pageedit": "Permitir únicamente usuarios con el permiso de edición de páginas (Semantic MediaWiki)",
+	"smw-format-datatable-loadingrecords": "Cargando…",
+	"smw-format-datatable-processing": "Procesando…",
+	"smw-format-datatable-search": "Buscar:",
+	"smw-format-datatable-first": "Primer",
+	"smw-format-datatable-last": "Último",
+	"smw-format-datatable-next": "Siguiente",
+	"smw-format-datatable-previous": "Anterior"
 }
