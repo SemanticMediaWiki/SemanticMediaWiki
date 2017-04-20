@@ -249,7 +249,11 @@ EOT;
 
 	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
 
-		$tableName = $this->connection->tableName( $tableName, 'raw' );
+		if ( version_compare( $GLOBALS['wgVersion'], '1.28c', '>' ) ) {
+			$tableName = $this->connection->tableName( $tableName );
+		} else {
+			$tableName = $this->connection->tableName( $tableName, 'raw' );
+		}
 		$currentIndicies = $this->getIndexInfo( $tableName );
 
 		foreach ( $currentIndicies as $indexName => $indexColumn ) {
@@ -273,8 +277,12 @@ EOT;
 		if ( $indexType === 'FULLTEXT' ) {
 			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
 		}
-
-		$tableName = $this->connection->tableName( $tableName, 'raw' );
+		
+		if ( version_compare( $GLOBALS['wgVersion'], '1.28c', '>' ) ) {
+			$tableName = $this->connection->remappedTableName( $tableName );
+		} else {
+			$tableName = $this->connection->tableName( $tableName, 'raw' );
+		}
 		$indexName = "{$tableName}_index{$indexName}";
 
 		$this->reportMessage( "   ... creating new index $columns ..." );
