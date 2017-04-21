@@ -36,6 +36,9 @@
 		"wiki": "https://www.semantic-mediawiki.org/wiki/",
 		"source": "https://github.com/SemanticMediaWiki/SemanticMediaWiki"
 	},
+	"platform": {
+		"php": "5.3"
+	},
 	"require": {
 		"php": ">=5.5.0",
 		"ext-mbstring": "*",
