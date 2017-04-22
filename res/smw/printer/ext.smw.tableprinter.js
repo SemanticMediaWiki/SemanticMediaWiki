@@ -44,6 +44,14 @@
 			var column = context.data( 'column-sort' );
 			var order = [];
 
+			// SMW allows descending and ascending but those are unknown to DataTables
+			var orderMap = {
+				'descending' : 'desc',
+				'ascending': 'asc',
+				'asc': 'asc',
+				'desc': 'desc'
+			};
+
 			// In case of a transposed table, don't try to match a column or its order
 			if ( column === undefined || !column.hasOwnProperty( 'sort' ) || column.sort.length === 0 || context.attr( 'data-transpose' ) ) {
 				return;
@@ -57,7 +65,7 @@
 				};
 				order.push( [
 					$.inArray( val, column.list ), // Find matchable index from the list
-					column.order[i] === undefined ? 'desc' : column.order[i]
+					column.order[i] === undefined ? 'desc' : orderMap[column.order[i]]
 				] );
 			} );
 
