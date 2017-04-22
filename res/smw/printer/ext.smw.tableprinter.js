@@ -45,7 +45,7 @@
 			var order = [];
 
 			// In case of a transposed table, don't try to match a column or its order
-			if ( !column.hasOwnProperty( 'sort' ) || column.sort.length === 0 || context.attr( 'data-transpose' ) ) {
+			if ( column === undefined || !column.hasOwnProperty( 'sort' ) || column.sort.length === 0 || context.attr( 'data-transpose' ) ) {
 				return;
 			};
 
