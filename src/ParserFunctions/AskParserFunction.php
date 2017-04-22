@@ -11,6 +11,7 @@ use SMW\DIProperty;
 use Parser;
 use SMWQueryProcessor as QueryProcessor;
 use SMWQuery as Query;
+use SMW\Query\DeferredQuery;
 
 /**
  * Provides the {{#ask}} parser function
@@ -25,6 +26,16 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class AskParserFunction {
+
+	/**
+	 * Fixed identifier for a deferred query request
+	 */
+	const DEFERRED_REQUEST = '@deferred';
+
+	/**
+	 * Fixed identifier
+	 */
+	const NO_TRACE = '@notrace';
 
 	/**
 	 * @var ParserData
@@ -45,6 +56,16 @@ class AskParserFunction {
 	 * @var boolean
 	 */
 	private $showMode = false;
+
+	/**
+	 * @var integer
+	 */
+	private $context = QueryProcessor::INLINE_QUERY;
+
+	/**
+	 * @var boolean
+	 */
+	private $noTrace = false;
 
 	/**
 	 * @var ApplicationFactory
@@ -121,6 +142,10 @@ class AskParserFunction {
 			$functionParams
 		);
 
+		if ( $this->context === QueryProcessor::DEFERRED_QUERY ) {
+			DeferredQuery::registerResourceModules( $this->parserData->getOutput() );
+		}
+
 		$this->parserData->pushSemanticDataToParserOutput();
 
 		// 1.23+ add options so changes are recognized in case of:
@@ -144,6 +169,18 @@ class AskParserFunction {
 		// Filter invalid parameters
 		foreach ( $functionParams as $key => $value ) {
 
+			if ( $value === self::DEFERRED_REQUEST ) {
+				$this->context = QueryProcessor::DEFERRED_QUERY;
+				unset( $functionParams[$key] );
+				continue;
+			}
+
+			if ( $value === self::NO_TRACE ) {
+				$this->noTrace = true;
+				unset( $functionParams[$key] );
+				continue;
+			}
+
 			// First and marked printrequests
 			if (  $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
 				continue;
@@ -163,21 +200,21 @@ class AskParserFunction {
 
 		$contextPage = $this->parserData->getSubject();
 
+		if ( $this->noTrace ) {
+			$contextPage = null;
+		}
+
 		list( $query, $this->params ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$functionParams,
 			SMW_OUTPUT_WIKI,
-			QueryProcessor::INLINE_QUERY,
+			$this->context,
 			$this->showMode,
-			$contextPage
-		);
-
-		$query->setContextPage(
 			$contextPage
 		);
 
 		$query->setOption( Query::PROC_CONTEXT, 'AskParserFunction' );
 
-		if ( $this->parserData->getOption( ParserData::NO_QUERY_DEPENDENCY_TRACE ) ) {
+		if ( $this->noTrace || $this->parserData->getOption( ParserData::NO_QUERY_DEPENDENCY_TRACE ) ) {
 			$query->setOption( $query::NO_DEPENDENCY_TRACE, true );
 		}
 
@@ -196,7 +233,7 @@ class AskParserFunction {
 			$query,
 			$this->params,
 			SMW_OUTPUT_WIKI,
-			QueryProcessor::INLINE_QUERY
+			$this->context
 		);
 
 		$format = $this->params['format']->getValue();
@@ -229,7 +266,7 @@ class AskParserFunction {
 		$settings = $this->applicationFactory->getSettings();
 
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
-		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false ) {
+		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false || $this->noTrace ) {
 			return;
 		}
 
@@ -240,6 +277,10 @@ class AskParserFunction {
 		if ( isset( $queryProfiler['smwgQueryParametersEnabled'] ) ) {
 			$query->setOption( Query::OPT_PARAMETERS, $queryProfiler['smwgQueryParametersEnabled'] );
 		}
+
+		$query->setContextPage(
+			$this->parserData->getSubject()
+		);
 
 		$profileAnnotatorFactory = $this->applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();
 

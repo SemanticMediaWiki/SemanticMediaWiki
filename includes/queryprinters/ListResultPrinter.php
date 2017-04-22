@@ -131,6 +131,15 @@ class ListResultPrinter extends ResultPrinter {
 	}
 
 	/**
+	 * @see ResultPrinter::isDeferrable
+	 *
+	 * {@inheritDoc}
+	 */
+	public function isDeferrable() {
+		return true;
+	}
+
+	/**
 	 * @see SMW\ResultPrinter::getResultText
 	 *
 	 * @param SMWQueryResult $queryResult

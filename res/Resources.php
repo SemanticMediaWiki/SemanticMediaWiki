@@ -299,6 +299,31 @@ return array(
 			"smw-format-datatable-sortdescending"
 		),
 		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	// Deferred
+	'ext.smw.deferred.styles'  => $moduleTemplate + array(
+		'position' => 'top',
+		'styles'   => array( 'smw/deferred/ext.smw.deferred.css' ),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'ext.smw.deferred'  => $moduleTemplate + array(
+		'position' => 'top',
+		'styles'   => array( 'smw/deferred/ext.smw.deferred.css' ),
+		'scripts'  => array( 'smw/deferred/ext.smw.deferred.js' ),
+		'dependencies'  => array(
+			'mediawiki.api',
+			'mediawiki.api.parse',
+			'onoi.rangeslider'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
 	)
 
 );

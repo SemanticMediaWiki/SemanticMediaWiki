@@ -10,6 +10,7 @@ use SMW\ApplicationFactory;
 use SMW\Message;
 use SMW\Query\QueryContext;
 use SMW\Query\ResultFormatNotFoundException;
+use SMW\Query\DeferredQuery;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -43,8 +44,8 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return Param[]
 	 */
-	public static function getProcessedParams( array $params, array $printRequests = array(), $unknownInvalid = true ) {
-		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid );
+	public static function getProcessedParams( array $params, array $printRequests = array(), $unknownInvalid = true, $context = null ) {
+		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid, $context );
 		$validator->processParameters();
 		return $validator->getParameters();
 	}
@@ -62,8 +63,8 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return Processor
 	 */
-	public static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true ) {
-		$paramDefinitions = self::getParameters();
+	public static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true, $context = null ) {
+		$paramDefinitions = self::getParameters( $context );
 
 		$paramDefinitions['format']->setPrintRequests( $printRequests );
 
@@ -325,9 +326,18 @@ class SMWQueryProcessor implements QueryContext {
 			self::addThisPrintout( $printouts, $params );
 		}
 
-		$params = self::getProcessedParams( $params, $printouts );
+		$params = self::getProcessedParams( $params, $printouts, true, $context );
 
 		$query  = self::createQuery( $queryString, $params, $context, '', $printouts, $contextPage );
+
+		// For convenience keep parameters and options to available for immediate
+		// processing
+		if ( $context === self::DEFERRED_QUERY ) {
+			$query->setOption( DeferredQuery::QUERY_PARAMETERS, implode( '|', $rawParams ) );
+			$query->setOption( DeferredQuery::SHOW_MODE, $showMode );
+			$query->setOption( DeferredQuery::CONTROL_ELEMENT, isset( $params['@control'] ) ? $params['@control']->getValue() : '' );
+		}
+
 		return array( $query, $params );
 	}
 
@@ -403,13 +413,18 @@ class SMWQueryProcessor implements QueryContext {
 	 */
 	public static function getResultFromQuery( SMWQuery $query, array $params, $outputMode, $context ) {
 
+		$printer = self::getResultPrinter( $params['format']->getValue(), $context );
+
+		if ( $printer->isDeferrable() && $context === self::DEFERRED_QUERY && $query->getLimit() > 0 ) {
+			return DeferredQuery::getHtml( $query );
+		}
+
 		$res = self::getStoreFromParams( $params )->getQueryResult( $query );
 		$start = microtime( true );
 
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) ||
 			( $query->querymode == SMWQuery::MODE_NONE ) ) {
 
-			$printer = self::getResultPrinter( $params['format']->getValue(), $context );
 			$result = $printer->getResult( $res, $params, $outputMode );
 
 			$query->setOption( SMWQuery::PROC_PRINT_TIME, microtime( true ) - $start );
@@ -478,7 +493,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return IParamDefinition[]
 	 */
-	public static function getParameters() {
+	public static function getParameters( $context = null ) {
 		$params = array();
 
 		$allowedFormats = $GLOBALS['smwgResultFormats'];
@@ -552,6 +567,13 @@ class SMWQueryProcessor implements QueryContext {
 		$params['default'] = array(
 			'default' => '',
 		);
+
+		if ( $context === self::DEFERRED_QUERY ) {
+			$params['@control'] = array(
+				'default' => '',
+				'values' => array( 'slider' ),
+			);
+		}
 
 		// Give grep a chance to find the usages:
 		// smw-paramdesc-format, smw-paramdesc-source, smw-paramdesc-limit, smw-paramdesc-offset,

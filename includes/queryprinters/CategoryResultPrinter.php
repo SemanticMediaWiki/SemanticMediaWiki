@@ -45,6 +45,15 @@ class CategoryResultPrinter extends ResultPrinter {
 		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
 	}
 
+	/**
+	 * @see ResultPrinter::isDeferrable
+	 *
+	 * {@inheritDoc}
+	 */
+	public function isDeferrable() {
+		return true;
+	}
+
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		$contentsByIndex = array();
 
