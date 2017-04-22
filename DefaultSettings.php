@@ -1268,7 +1268,7 @@ return array(
 	##
 	'smwgFulltextSearchPropertyExemptionList' => array(
 		'_ASKFO', '_ASKST', '_ASKPA','_IMPO', '_LCODE', '_UNIT', '_CONV',
-		'_TYPE', '_ERRT', '_INST', '_ASK', '_INST', '_SOBJ', '_PVAL', '_PVALI',
+		'_TYPE', '_ERRT', '_INST', '_ASK', '_SOBJ', '_PVAL', '_PVALI',
 		'_REDI'
 	),
 	##
