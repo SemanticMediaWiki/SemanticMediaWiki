@@ -631,7 +631,7 @@ a.smw-ask-action-btn-lblue:hover {
 .smw-property-page-indicator {
 	display: inline-block;
 	font-weight: normal;
-	line-height: 1.25;
+	/* line-height: 1.25; */
 	text-align: center;
 	white-space: nowrap;
 	vertical-align: middle;
@@ -641,13 +641,13 @@ a.smw-ask-action-btn-lblue:hover {
 	user-select: none;
 	border: 1px solid transparent;
 	padding: 0.5rem 1rem;
-	font-size: 1rem;
+	/*font-size: 1rem; */
 	border-radius: 0.25rem;
 	-webkit-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
 	padding: 0.25rem 0.5rem;
-	font-size: 0.875rem;
+	/*font-size: 0.875rem;*/
 	border-radius: 0.2rem;
 	color: #292b2c;
 	/* background-color: #e6e6e6; */
@@ -667,13 +667,13 @@ a.smw-ask-action-btn-lblue:hover {
 	user-select: none;
 	border: 1px solid transparent;
 	padding: 0.5rem 1rem;
-	font-size: 1rem;
+	/* font-size: 1rem; */
 	border-radius: 0.25rem;
 	-webkit-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
 	padding: 0.15rem 0.25rem;
-	font-size: 0.875rem;
+	/* font-size: 0.875rem; */
 	border-radius: 0.2rem;
 	color: #292b2c;
 	border-color: transparent;
@@ -720,6 +720,10 @@ a.smw-ask-action-btn-lblue:hover {
 
 .skin-chameleon .smwfact td {
 	padding: 5px;
+}
+
+.skin-chameleon .smw-property-page-indicator {
+	padding: 0.35rem 0.75rem;
 }
 
 .smw-page-indicator-rdflink {
@@ -821,7 +825,7 @@ a.smw-ask-action-btn-lblue:hover {
 }
 
 .skin-vector .smw-overlay-spinner {
-	left: 43%;
+	left: 45%;
 	top: 30%;
 }
 
