@@ -23,7 +23,8 @@
 			"Macofe",
 			"Urielejh",
 			"Matteocng",
-			"Samuele2002"
+			"Samuele2002",
+			"Statix64"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -206,7 +207,7 @@
 	"smw_result_noresults": "Spiacenti, nessun risultato.",
 	"smwadmin": "Funzioni amministrative",
 	"smw-admin-permission-missing": "L'accesso a questa pagina è stato bloccato a causa di autorizzazioni mancanti, consulta la pagina di aiuto sulle [https://www.semantic-mediawiki.org/wiki/Help:Permissions autorizzazioni] per i dettagli sulle impostazioni necessarie.",
-	"smw-admin-setupsuccess": "Il motore di storage è stato installato correttamente.",
+	"smw-admin-setupsuccess": "Il motore di storage è stato installato.",
 	"smw_smwadmin_return": "Torna a $1",
 	"smw_smwadmin_updatestarted": "È iniziato un nuovo processo di aggiornamento per ricaricare i dati semantici.\nTutti i dati registrati saranno ricostruiti o riparati se necessario.\nPuoi seguire i progressi dell'aggiornamento in questa pagina speciale.",
 	"smw_smwadmin_updatenotstarted": "Un processo di aggiornamento è già in corso.\nNon ne verrà avviato un altro.",
@@ -218,6 +219,7 @@
 	"smw-admin-permissionswarn": "Se l'operazione avrà esito negativo con errori SQL, l'utente del database usato dal tuo wiki (controlla il tuo file \"LocalSettings.php\") probabilmente non ha permessi sufficienti.\nPuoi assegnare a questo utente permessi aggiuntivi per creare e cancellare tabelle, oppure inserire temporaneamente nel file \"LocalSettings.php\" i dati di accesso root al database, oppure usare lo script di manutenzione <code>setupStore.php</code>, che può utilizzare le credenziali di un utente amministratore.",
 	"smw-admin-dbbutton": "Inizializza o aggiorna tabelle",
 	"smw-admin-announce": "Annuncia il tuo wiki",
+	"smw-admin-deprecation-notice-title-notice": "Avviso",
 	"smw_smwadmin_datarefresh": "Ricostruzione dati",
 	"smw_smwadmin_datarefreshdocu": "Si possono ripristinare tutti i dati Semantic MediaWiki basati sui contenuti attuali del wiki.\nQuesto può essere utile per riparare dati corrotti o per aggiornare i dati se il loro formato interno si è modificato per qualche aggiornamento di software.\nL'aggiornamento è eseguito pagina per pagina e non sarà completato immediatamente.\nQui di seguito si vede se un aggiornamento è in corso e potrai avviare od arrestare gli aggiornamenti (a meno che questa funzionalità non sia stata disattivata dall'amministratore del sito).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Un aggiornamento è già in corso.</strong>\nNon è anormale che l'aggiornamento proceda solo lentamente, poiché verifica i dati solo a piccoli pacchetti ogni volta che un utente accede al wiki.\nPer terminare il processo pià rapidamente, puoi invocare lo script di manutenzione MediaWiki <code>runJobs.php</code> (usa l'opzione <code>--maxjobs 1000</code> per restringere il numero di verifiche svolte in ciascuna tornata).\nProgresso stimato dell'aggiornamento in corso:",
@@ -334,5 +336,12 @@
 	"smw-no-data-available": "Nessun dato disponibile.",
 	"smw-property-req-violation-missing-fields": "Alla proprietà \"$1\" manca la dichiarazione di dettagli per le annotazioni di tipo \"$2\" non riuscendo a definire la proprietà <code>Has fields</code>.",
 	"smw-edit-protection-disabled": "La modifica di protezione è stata disattivata, pertanto \"$1\" non può essere utilizzato per proteggere il contenuto della pagina dalle modifiche non autorizzate.",
-	"smw-pa-property-predefined-long_edip": "Mentre qualsiasi utente è qualificato per aggiungere questa proprietà ad un soggetto, soltanto utenti con uno specifico permesso possono modificare o rimuovere la protezione ad un'entità, una volta che questa è stata aggiunta."
+	"smw-pa-property-predefined-long_edip": "Mentre qualsiasi utente è qualificato per aggiungere questa proprietà ad un soggetto, soltanto utenti con uno specifico permesso possono modificare o rimuovere la protezione ad un'entità, una volta che questa è stata aggiunta.",
+	"smw-format-datatable-emptytable": "Nessun dato disponibile nella tabella",
+	"smw-format-datatable-loadingrecords": "Caricamento in corso...",
+	"smw-format-datatable-processing": "Elaborazione...",
+	"smw-format-datatable-first": "Primo",
+	"smw-format-datatable-last": "Ultimo",
+	"smw-format-datatable-next": "Successivo",
+	"smw-format-datatable-previous": "Precedente"
 }

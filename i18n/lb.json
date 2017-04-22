@@ -161,6 +161,8 @@
 	"smw-admin-dbbutton": "Tabellen initialiséieren oder aktualiséieren",
 	"smw-admin-announce": "Är Wiki ukënnegen",
 	"smw-admin-announce-text": "Wann Är Wiki ëffentlech ass kënnt Dir se op der Wiki-Tracking-Wiki <a href=\"https://wikiapiary.com\">WikiApiary</a> registréieren.",
+	"smw-admin-deprecation-notice-title-notice": "Notiz",
+	"smw-admin-deprecation-notice-title-replacement": "Ersetzen",
 	"smw_smwadmin_datarefresh": "Donnéeë goufe restauréiert",
 	"smw_smwadmin_datarefreshprogress": "<strong>Eng Aktualisatioun ass schonn am Gaang.</strong>\nEt ass normal datt d'Aktualisatioun nëmme lues virugeet well Donnéeë nëmmen a klenge Päck aktualiséiert ginn an zwar ëmmer da wann ee Benotzer op dës Wiki zougräift.\nFir dës aktualisatioun méi séier fäerdeg ze maache, kann de MediaWiki Script <code>runJobs.php</code> (benotzt d'Optioun <code>--maxjobs 1000</code> fir d'Zuel vun den Aktualisatiounen déi beienee gemaach ginn ze limitéieren).\nGeschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	"smw_smwadmin_datarefreshbutton": "Ufänken Daten z'aktualiséieren",
@@ -227,5 +229,16 @@
 	"smw-clipboard-copy-link": "Link an den Tëschespäicher kopéieren",
 	"smw-data-lookup": "Donnéeën ofruffen...",
 	"smw-no-data-available": "Keng Donnéeën disponibel.",
-	"smw-edit-protection-enabled": "Gespaart fir z'änneren (Semantic Mediawiki)"
+	"smw-edit-protection-enabled": "Gespaart fir z'änneren (Semantic Mediawiki)",
+	"smw-format-datatable-emptytable": "An der Tabell si keng Donnéeën disponibel",
+	"smw-format-datatable-infothousands": ",",
+	"smw-format-datatable-lengthmenu": "Weis_MENU_Elementer",
+	"smw-format-datatable-loadingrecords": "Lueden...",
+	"smw-format-datatable-processing": "Verschaffen...",
+	"smw-format-datatable-search": "Sichen:",
+	"smw-format-datatable-zerorecords": "Et gouf keen esou en Enregistrement fonnt",
+	"smw-format-datatable-first": "Éischt",
+	"smw-format-datatable-last": "Lescht",
+	"smw-format-datatable-next": "Nächst",
+	"smw-format-datatable-previous": "Vireg"
 }

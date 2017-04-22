@@ -201,6 +201,7 @@
 	"smw-admin-permissionswarn": "Kapag nabigo ang pagsasagawa na mayroong mga kamalian ng SQL, maaaring walang sapat na mga kapahintulutan ang tagagamit ng kalipunan ng dato na hinirang ng wiki mo (siyasatin ang iyong LocalSettings.php).\nMaaaring pagkalooban ang tagagamit na ito ng karagdagang mga kapahintulutan upang makalikha at makapagbura ng mga talahanayan, pansamantalang ipasok ang panglagda ng iyong ugat ng kalipunan ng dato sa LocalSettings.php, o gamitin ang panitik ng pagpapanatili na <code>setupStore.php</code> na makakagamit ng mga kredensiyal ng isang tagapangasiwa.",
 	"smw-admin-dbbutton": "Umpisahan o itaas ang uri (klase) ng mga tabla",
 	"smw-admin-announce": "Ipahayag ang wiki mo",
+	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> ay napatanggal sa $2",
 	"smw_smwadmin_datarefresh": "Pagkukumpuni at pagtataas ng uri (grado/klase) ng dato",
 	"smw_smwadmin_datarefreshdocu": "Maaaring maibalik muli ang lahat ng dato ng Semantikong MediaWiki batay sa pangkasalukuyang mga nilalaman ng wiki.\nMagiging gamitin ito sa pagaayos/pagkukumpuni ng nasirang dato o upang masariwa ang dato kung nabago ang panloob na kaanyuan/pormat dahil sa ilang mga pagtataas ng uri ng sopwer.\nIsinasakatuparan ang pagsasapanahon ng pahina sa pahina at hindi agad-agarang mabubuo.\nIpinapakita ng sumusunod kung sumusulong na ang isang pagsasapanahon at magpapahintulot sa iyo upang simulan o pahintuin ang mga pagsasapanahon (maliban na lamang kung hindi pinagana/pinaandar ng tagapangasiwa ng sityo/sayt ang katangiang-kasangkapang ito).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Sumusulong na ang isang pagsasapanahon.</b>\nPangkaraniwan lamang na mabagal ang pagsulong ng pagsasapanahon dahil sinasariwa lamang nito ang maliliit na tipak ng dato sa bawat panahong pumupunta sa wiki ang isang tagagamit.\nUpang mas mabilisang matapos ang pagsasapanahong ito, maaari mong tawagin ang panitik na pangpagpapanatiling <code>runJobs.php</code> (gamitin ang pagpipiliang <code>--maxjobs 1000</code> ng MediaWiki upang mabigyan ng hangganan ang bilang ng mga pagsasapanahong ginagawa sa bawat isang bungkos).\nTinatayang progreso ng pangkasalukuyang pagsasapanahon:",
@@ -231,5 +232,11 @@
 	"smw_concept_header": "Mga pahina ng diwang \"$1\"",
 	"smw_conceptarticlecount": "Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng kasali sa ganyang diwa.",
 	"smw-livepreview-loading": "Ikinakarga...",
-	"smw-property-preferred-title-format": "Isang dolyar (dalawang dolyar)"
+	"smw-property-preferred-title-format": "Isang dolyar (dalawang dolyar)",
+	"smw-format-datatable-emptytable": "Walang 'data'ng maipakita sa hapagkainan",
+	"smw-format-datatable-infoempty": "Ipinapakita na 0 hanggang 0 na 0 -ng resulta",
+	"smw-format-datatable-infothousands": ",",
+	"smw-format-datatable-loadingrecords": "Ikinakasa...",
+	"smw-format-datatable-search": "Maghanap:",
+	"smw-format-datatable-last": "Dulo"
 }

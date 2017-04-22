@@ -230,7 +230,7 @@
 	"smw_result_results": "結果",
 	"smw_result_noresults": "沒有結果。",
 	"smwadmin": "管理函式",
-	"smw-admin-setupsuccess": "儲存引擎成功設定。",
+	"smw-admin-setupsuccess": "儲存引擎已設定。",
 	"smw_smwadmin_return": "返回到 $1。",
 	"smw_smwadmin_updatestarted": "更新語意資料過程開始。\n所有已儲存資料將被按需重建或修復。\n你可以透過本特殊頁面追蹤更新程序。\n\n返回到 $1。",
 	"smw_smwadmin_updatenotstarted": "已有更新程序正在執行，請勿建立另一個。",

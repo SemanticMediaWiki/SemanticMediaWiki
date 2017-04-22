@@ -12,7 +12,8 @@
 			"FocalPoint",
 			"Kghbln",
 			"Ανώνυμος Βικιπαιδιστής",
-			"Nemo bis"
+			"Nemo bis",
+			"Thodoris"
 		]
 	},
 	"smw-desc": "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([https://www.semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
@@ -258,6 +259,8 @@
 	"smw-admin-dbbutton": "Αρχικοποίηση ή αναβάθμιση πινάκων",
 	"smw-admin-announce": "Αναγγελία του wiki σας",
 	"smw-admin-announce-text": "Αν το wiki σας είναι δημόσιο, μπορείτε να το καταχωρίσετε στο <a href=\"https://wikiapiary.com\">WikiApiary</a>, το wiki που παρακολουθεί άλλα wiki.",
+	"smw-admin-deprecation-notice-config-notice": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> is deprecated and will be removed in $2",
+	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> was removed in $2",
 	"smw-smwadmin-refresh-title": "Επισκευή και ενημέρωση δεδομένων",
 	"smw_smwadmin_datarefresh": "Αναδόμηση δεδομένων",
 	"smw_smwadmin_datarefreshdocu": "Είναι δυνατό να επαναφέρετε όλα τα δεδομένα του Σημασιολογικού MediaWiki βασιζόμενοι στα τρέχοντα περιεχόμενα του wiki.\nΑυτό μπορεί να είναι χρήσιμο στην περίπτωση της επιδιόρθωσης κατεστραμμένων δεδομένων ή για την ανανέωση των δεδομένων εάν έχει αλλάξει η εσωτερική τους μορφή λόγω κάποιας αναβάθμισης λογισμικού.\nΗ ενημέρωση εκτελείται σελίδα σελίδα και δεν θα ολοκληρωθεί άμεσα.\nΤο ακόλουθο δείχνει εάν μια ενημέρωση βρίσκεται σε εξέλιξη και σας επιτρέπει να ξεκινήσετε ή να διακόψετε ενημερώσεις (εκτός εάν αυτή η δυνατότητα έχει απενεργοποιηθεί από το διαχειριστή του ιστοχώρου).",
@@ -420,11 +423,28 @@
 	"smw-datavalue-parse-error": "Η τιμή «$1» που δόθηκε δεν ήταν κατανοητή.",
 	"smw-datavalue-propertylist-invalid-property-key": "Η λίστα ιδιοτήτων «$1» περιείχε μη έγκυρο κλειδί ιδιότητας «$2».",
 	"smw-datavalue-type-invalid-typeuri": "Ο τύπος «$1» δεν θα μπορούσε να μετατραπεί σε έγκυρη αναπαράσταση URI.",
+	"smw-datavalue-wikipage-invalid-title": "The page type input value \"$1\" contains invalid characters or is incomplete and therefore can cause unexpected results during a query or annotation process.",
+	"smw-datavalue-wikipage-property-invalid-title": "Property \"$1\" (as page type) with input value \"$2\" contains invalid characters or is incomplete and therefore can cause unexpected results during a query or annotation process.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "Ο συντακτικός αναλυτής JSON επέστρεψε το σφάλμα «$1».",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Αντιγραφή συνδέσμου στο πρόχειρο",
 	"smw-data-lookup": "Γίνεται λήψη των δεδομένων...",
-	"smw-no-data-available": "Δεν υπάρχουν διαθέσιμα δεδομένα."
+	"smw-no-data-available": "Δεν υπάρχουν διαθέσιμα δεδομένα.",
+	"smw-format-datatable-emptytable": "Δεν υπάρχουν δεδομένα στον διαθέσιμο πίνακα",
+	"smw-format-datatable-info": "Showing _START_ to _END_ of _TOTAL_ entries",
+	"smw-format-datatable-infoempty": "Showing 0 to 0 of 0 entries",
+	"smw-format-datatable-infofiltered": "(filtered from _MAX_ total entries)",
+	"smw-format-datatable-lengthmenu": "Show _MENU_ entries",
+	"smw-format-datatable-loadingrecords": "Φόρτωση",
+	"smw-format-datatable-processing": "Γίνεται επεξεργασία...",
+	"smw-format-datatable-search": "Ψάξε",
+	"smw-format-datatable-zerorecords": "Δεν βρέθηκαν εγγραφές που να ταιριάζουν",
+	"smw-format-datatable-first": "Πρώτο",
+	"smw-format-datatable-last": "Τελευταίο",
+	"smw-format-datatable-next": "Επόμενο",
+	"smw-format-datatable-previous": "Προηγούμενο",
+	"smw-format-datatable-sortascending": ":Ενεργοποιήστε για να ταξινομήσετε αύξουσα στήλη",
+	"smw-format-datatable-sortdescending": ": Ενεργοποιήστε για να ταξινομήσετε φθίνουσα στήλη"
 }

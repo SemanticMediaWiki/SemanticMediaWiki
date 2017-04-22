@@ -24,7 +24,8 @@
 			"Indiralena",
 			"Lemondoge",
 			"Dgstranz",
-			"Nemo bis"
+			"Nemo bis",
+			"Julián L"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -260,7 +261,7 @@
 	"smwadmin": "Funciones administrativas",
 	"smw-admin-statistics-querycache-title": "Estadísticas de antememoria de consultas",
 	"smw-admin-permission-missing": "Debido a la falta de los permisos necesarios, se ha bloqueado el acceso a esta página. Consulta la página de ayuda sobre los [https://www.semantic-mediawiki.org/wiki/Help:Permissions permisos] para obtener más información sobre las configuraciones necesarias.",
-	"smw-admin-setupsuccess": "El motor de almacenamiento se ha configurado con éxito.",
+	"smw-admin-setupsuccess": "El motor de almacenamiento se ha configurado.",
 	"smw_smwadmin_return": "Regresar a $1",
 	"smw_smwadmin_updatestarted": "Se ha iniciado un proceso de actualización nuevo para actualizar los datos semánticos.\nTodos los datos almacenados se reconstruirán o repararán donde haga falta.\nPuedes hacer un seguimiento del progreso de la actualización en esta página especial.",
 	"smw_smwadmin_updatenotstarted": "Ya hay un proceso de actualización ejecutándose.\nNo se creará otro.",
@@ -273,6 +274,12 @@
 	"smw-admin-dbbutton": "Inicializar o actualizar tablas",
 	"smw-admin-announce": "Anuncia tu wiki",
 	"smw-admin-announce-text": "Si tu wiki es público, lo puedes registrar en <a href=\"https://wikiapiary.com\">WikiApiary</a>, el wiki de seguimiento de wikis.",
+	"smw-admin-deprecation-notice-docu": "La siguiente sección contiene ajustes que se han quedado obsoletos o eliminados, pero que fueron detectados para estar activos en esta wiki. Se espera que en el futuro cualquier versión elimine el soporte para estas configuraciones.",
+	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> fue reemplazado por <code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
+	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> fue eliminado",
+	"smw-admin-deprecation-notice-title-notice": "Aviso",
+	"smw-admin-deprecation-notice-title-replacement": "Reemplazo",
+	"smw-admin-deprecation-notice-title-removal": "Remoción",
 	"smw-smwadmin-refresh-title": "Reparación y actualización de datos",
 	"smw_smwadmin_datarefresh": "Reconstrucción de los datos",
 	"smw_smwadmin_datarefreshdocu": "Es posible restaurar toda la información de MediaWiki Semántica basándose en los contenidos actuales de la wiki.\nEsto puede ser útil para reparar la información destruida o para volver a cargar la información si el formato interno ha cambiado a causa de alguna actualización de software.\nLa actualización se ejecuta página a página y no se completará de inmediato.\nLo siguiente muestra es hay una actualización en progreso y le permite iniciar o detener actualizaciones (a menos que esta característica haya sido inhabilitada por el administrador del sitio).",
@@ -432,5 +439,12 @@
 	"smw-clipboard-copy-link": "Copiar enlace en el portapapeles",
 	"smw-data-lookup": "Obteniendo datos...",
 	"smw-no-data-available": "No hay datos disponibles.",
-	"protect-level-smw-pageedit": "Permitir únicamente usuarios con el permiso de edición de páginas (Semantic MediaWiki)"
+	"protect-level-smw-pageedit": "Permitir únicamente usuarios con el permiso de edición de páginas (Semantic MediaWiki)",
+	"smw-format-datatable-loadingrecords": "Cargando…",
+	"smw-format-datatable-processing": "Procesando…",
+	"smw-format-datatable-search": "Buscar:",
+	"smw-format-datatable-first": "Primer",
+	"smw-format-datatable-last": "Último",
+	"smw-format-datatable-next": "Siguiente",
+	"smw-format-datatable-previous": "Anterior"
 }

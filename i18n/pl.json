@@ -227,7 +227,7 @@
 	"smw_result_noresults": "Niestety, brak wyników.",
 	"smwadmin": "Funkcje administracyjne",
 	"smw-admin-statistics-job-title": "Statystyki zadań",
-	"smw-admin-setupsuccess": "Silnik przestrzeni dyskowej został pomyślnie ustawiony.",
+	"smw-admin-setupsuccess": "Silnik przestrzeni dyskowej został ustawiony.",
 	"smw_smwadmin_return": "Powrót do $1",
 	"smw_smwadmin_updatestarted": "Uruchomiono nowy proces aktualizacji danych semantycznych.\nWszystkie zapisane dane zostaną uporządkowane oraz naprawione w razie potrzeby.\nMożesz śledzić stan procesu aktualizacji na tej stronie specjalnej.",
 	"smw_smwadmin_updatenotstarted": "Jest już uruchomiony proces aktualizacji.\nKolejny nie zostanie utworzony.",
@@ -239,6 +239,8 @@
 	"smw-admin-permissionswarn": "Jeśli operacja nie powiedzie się i wystąpią błędy SQL, najprawdopodobniej użytkownik bazy danych wykorzystywany przez Twoją wiki (sprawdź plik LocalSettings.php) nie ma wystarczających uprawnień.\nNadaj użytkownikowi dodatkowe uprawnienia do tworzenia i usuwania tabel, tymczasowo użyj konta root w pliku LocalSettings.php lub użyj skryptu konserwacyjnego <code>setupStore.php</code>, który ma uprawnienia administratora.",
 	"smw-admin-dbbutton": "Inicjuj lub aktualizuj tabele",
 	"smw-admin-announce": "Opublikuj swoją wiki",
+	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> został zastąpiony przez <code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
+	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> został usunięty",
 	"smw-smwadmin-refresh-title": "Naprawa i aktualizacja danych",
 	"smw_smwadmin_datarefresh": "Odbudowa danych",
 	"smw_smwadmin_datarefreshdocu": "Istnieje możliwość przywrócenia wszystkich danych Semantic MediaWiki w oparciu o aktualną zawartość wiki.\nMoże to być przydatne do naprawy uszkodzonych danych lub odświeżenia danych, jeśli wewnętrzny format zmienił się z powodu jakichś aktualizacji oprogramowania.\nAktualizacja jest wykonywana strona po stronie i nie zostanie ukończona natychmiast.\nPoniżej przedstawiono, czy aktualizacja jest w toku. Można również uruchomić lub zatrzymać aktualizację (chyba, że ta funkcja została wyłączona przez administratora).",
@@ -246,7 +248,7 @@
 	"smw_smwadmin_datarefreshbutton": "Rozpocznij aktualizację danych",
 	"smw_smwadmin_datarefreshstop": "Zatrzymaj aktualizację danych",
 	"smw_smwadmin_datarefreshstopconfirm": "Tak, jestem {{GENDER:$1|pewny|pewna}}.",
-	"smw-admin-feature-disabled": "Ta funkcja została wyłączona w tej wiki. Aby uzyskać więcej szczegółów, przeczytaj <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminSetupStore\">powiązaną</a> stronę pomocy.",
+	"smw-admin-feature-disabled": "Ta funkcja została wyłączona w tej wiki. Aby uzyskać więcej szczegółów, przeczytaj <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures\">powiązaną</a> stronę pomocy.",
 	"smw-admin-support": "Jak otrzymać wsparcie",
 	"smw-admin-supportdocu": "Różnorodne źródła informacji mogą okazać się przydatne jeśli wystąpią problemy:",
 	"smw-admin-installfile": "Jeśli napotkasz trudności z instalacją, zacznij od sprawdzenia wskazówek w <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">pliku INSTALL</a>.",
@@ -332,5 +334,8 @@
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Kopiuj link do schowka",
 	"smw-data-lookup": "Pobieranie danych...",
-	"smw-no-data-available": "Brak dostępnych danych."
+	"smw-no-data-available": "Brak dostępnych danych.",
+	"smw-format-datatable-loadingrecords": "Ładowanie...",
+	"smw-format-datatable-processing": "Przetwarzanie...",
+	"smw-format-datatable-zerorecords": "Nie znaleziono pasujących pozycji"
 }

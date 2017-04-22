@@ -13,7 +13,8 @@
 			"Nemo bis",
 			"Nike",
 			"Ochaochaocha3",
-			"Hamilton Abreu"
+			"Hamilton Abreu",
+			"Robby"
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
@@ -87,6 +88,7 @@
 	"smw-paramdesc-order": "This is the description of the \"order\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].",
 	"smw-paramdesc-searchlabel": "This is the description of the \"searchlabel\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries]. \"… further results\" must be identical to message {{msg-mw|Smw iq moreresults}}.",
 	"smw-paramdesc-named_args": "This is the description of the \"named args\" parameter of the \"template\", \"list\", \"ol\" and \"ul\" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
+	"smw-paramdesc-template-arguments": "This is the description of the \"template arguments\" parameter of the \"template\", \"list\", \"ol\" and \"ul\" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
 	"smw-paramdesc-import-annotation": "This is the description of the \"import-annotation\" parameter of the \"template\" and \"list\" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
 	"smw-paramdesc-export": "This is the description of the \"export\" parameter of the \"json\" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
 	"smw-paramdesc-prettyprint": "This is the description of the \"[[wikipedia:prettyprint|prettyprint]]\" parameter of the \"JSON\" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
@@ -476,6 +478,7 @@
 	"smw-datavalue-allows-pattern-mismatch": "This is an error message.\n\nParameters:\n* $1 holds the property value\n* $2 holds the pattern",
 	"smw-datavalue-allows-pattern-reference-unknown": "This is an error message.\n\nParameters:\n* $1 - holds the pattern string",
 	"smw-datavalue-allows-value-list-unknown": "This is an error message.\n\nParameters:\n* $1 - holds the reference string",
+	"smw-datavalue-allows-value-list-missing-marker": "This is an error message.\n\nParameter:\n* $1 - holds the name of the list",
 	"smw-datavalue-feature-not-supported": "This is an error message.\n\nParameters:\n* $1 - holds the name of the feature",
 	"smw-pa-property-predefined_pvap": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
 	"smw-pa-property-predefined_dtitle": "This informatory message describes the [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
@@ -513,6 +516,7 @@
 	"smw-datavalue-type-invalid-typeuri": "This is an error message.\n\nParameter:\n* $1 holds the invalid type.",
 	"smw-datavalue-wikipage-missing-fragment-context": "This is an error message.\n\nParameter:\n* $1 holds the invalid value.",
 	"smw-datavalue-wikipage-invalid-title": "This is an error message.\n\nParameter:\n* $1 holds the invalid value.",
+	"smw-datavalue-wikipage-property-invalid-title": "This is an error message.\n\nParameters:\n* $1 - holds the name of the property\n* $2 - holds the invalid datavalue",
 	"smw-datavalue-wikipage-empty": "This is an error message.\n\nParameter:\n* $1 holds the invalid value.",
 	"smw-sp-types_ref_rec": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes datatype].\n\nParameter:\n* $1 holds the name of the datatype.",
 	"smw-datavalue-reference-outputformat": "{{optional}}",
@@ -537,5 +541,21 @@
 	"smw-patternedit-protection": "This is an informatory message shown on every page which is edit protected via a software setting.",
 	"smw-pa-property-predefined_edip": "This informatory message shown in a tooltip describes the [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] holding [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Is_edit_protected Is edit protected].\n\nParameter:\n* $1 - name of predefined property",
 	"smw-pa-property-predefined-long_edip": "This informatory message describes the value added to a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
-	"smw-query-reference-link-label": "This is the label of a link."
+	"smw-query-reference-link-label": "This is the label of a link.",
+	"smw-format-datatable-emptytable": "This is an informatory message shown by the \"datatable\" format.",
+	"smw-format-datatable-info": "This is an informatory message shown by the \"datatable\" format, e.g. \"Showing 1 to 12 of 27 entries.\"\n\n{{doc-important|Do not translate the placeholders <code>_START_</code>, <code>_END_</code> and <code>_TOTAL_</code>.}}",
+	"smw-format-datatable-infoempty": "This is an informatory message shown by the \"datatable\" format.",
+	"smw-format-datatable-infofiltered": "This is an informatory message shown by the \"datatable\" format. The placeholder holds the total number of results.\n\n{{doc-important|Do not translate the placeholder <code>_MAX_</code>.}}",
+	"smw-format-datatable-infothousands": "This message holds the thousands separator used by the \"datatables\" format.\n\n{{Optional}}",
+	"smw-format-datatable-lengthmenu": "This is an informatory message shown by the \"datatable\" format. The placeholder holds a drop-down field allowing to select the number of results to be shown, e.g. 10, 25, 50, etc.\n\n{{doc-important|Do not translate the placeholder <code>_MENU_</code>.}}",
+	"smw-format-datatable-loadingrecords": "This is a progress message shown by the \"datatable\" format.\n\n{{Identical|Loading}}",
+	"smw-format-datatable-processing": "This is a progress message shown by the \"datatable\" format.\n{{Identical|Processing}}",
+	"smw-format-datatable-search": "This is a field label shown by the \"datatable\" format. Translate as a noun.\n{{Identical|Search}}",
+	"smw-format-datatable-zerorecords": "This is an informatory message shown by the \"datatable\" format.",
+	"smw-format-datatable-first": "This is a message used as a selector. Show the ... resultset.\n\n{{Identical|First}}",
+	"smw-format-datatable-last": "This is a message used as a selector. Show the ... resultset.\n\n{{Identical|Last}}",
+	"smw-format-datatable-next": "This is a message used as a selector. Show the ... resultset.\n\n{{Identical|Next}}",
+	"smw-format-datatable-previous": "This is a message used as a selector. Show the ... resultset.\n\n{{Identical|Previous}}",
+	"smw-format-datatable-sortascending": "This is a selection message shown by the \"datatable\" format.",
+	"smw-format-datatable-sortdescending": "This is a selection message shown by the \"datatable\" format."
 }
