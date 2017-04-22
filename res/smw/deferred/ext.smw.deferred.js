@@ -92,7 +92,7 @@
 
 			// Remove any <p> element to avoid line breakages
 			if ( self.cmd === 'show' ) {
-				text = text.replace( /(?:^<p[^>]*>)|(?:<\/p>$)/g, "");
+				text = text.replace( /(?:^<p[^>]*>)|(?:<\/p>$)/img, '' );
 			}
 
 			self.replaceOutput( text, '', data.parse.modules );
