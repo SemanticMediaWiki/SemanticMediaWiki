@@ -25,9 +25,14 @@ interface QueryContext {
 	const INLINE_QUERY = 1001;
 
 	/**
+	 * Deferred query definition
+	 */
+	const DEFERRED_QUERY = 1002;
+
+	/**
 	 * Query for concept definition
 	 */
-	const CONCEPT_DESC = 1002;
+	const CONCEPT_DESC = 1003;
 
 	/**
 	 * normal instance retrieval

@@ -44,6 +44,15 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		return wfMessage( 'smw_printername_embedded' )->text();
 	}
 
+	/**
+	 * @see ResultPrinter::isDeferrable
+	 *
+	 * {@inheritDoc}
+	 */
+	public function isDeferrable() {
+		return true;
+	}
+
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		global $wgParser;
 		// No page should embed itself, find out who we are:

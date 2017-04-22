@@ -671,6 +671,15 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function isDeferrable() {
+		return false;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @return string

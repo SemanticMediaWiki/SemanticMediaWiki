@@ -268,6 +268,11 @@
 			self.initFromContext( context );
 		} );
 
+		// Listen to the smw.deferred.query event
+		mw.hook( 'smw.deferred.query' ).add( function( context ) {
+			self.initFromContext( context );
+		} );
+
 		// SemanticForms/PageForms instance trigger
 		mw.hook( 'sf.addTemplateInstance' ).add( function( context ) {
 			self.initFromContext( context );

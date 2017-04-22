@@ -121,7 +121,7 @@ class SMWQuery implements QueryContext {
 
 		// stating whether this query runs in an inline context; used to
 		// determine proper default parameters (e.g. the default limit)
-		if ( $context === self::INLINE_QUERY ) {
+		if ( $context === self::INLINE_QUERY || $context === self::DEFERRED_QUERY ) {
 			$inline = true;
 		}
 

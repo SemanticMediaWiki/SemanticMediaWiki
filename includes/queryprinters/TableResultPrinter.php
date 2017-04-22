@@ -38,6 +38,15 @@ class TableResultPrinter extends ResultPrinter {
 	}
 
 	/**
+	 * @see ResultPrinter::isDeferrable
+	 *
+	 * {@inheritDoc}
+	 */
+	public function isDeferrable() {
+		return true;
+	}
+
+	/**
 	 * Returns a table
 	 *
 	 * @param SMWQueryResult $res
@@ -116,7 +125,7 @@ class TableResultPrinter extends ResultPrinter {
 
 		$html = $this->htmlTableRenderer->getHtml( $tableAttrs );
 
-		return $this->isDataTable ? Html::rawElement( 'div', array( 'class' => 'smw-datatable smw-loading-image-dots' ), $html ) : $html;
+		return $this->isDataTable ? Html::rawElement( 'span', array( 'class' => 'smw-datatable smw-loading-image-dots' ), $html ) : $html;
 	}
 
 	/**
