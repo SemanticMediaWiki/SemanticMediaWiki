@@ -56,12 +56,13 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
-		$this->isDataTable = strpos( $this->params['class'], 'datatable' ) !== false;
+		$this->isDataTable = strpos( $this->params['class'], 'datatable' ) !== false && $this->mShowHeaders !== SMW_HEADERS_HIDE;
 
 		$this->htmlTableRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlTableRenderer();
 		$this->htmlTableRenderer->setHtmlContext( $this->isHTML );
 
 		$columnClasses = array();
+		$headerList = array();
 
 		// Default cell value separator
 		if ( !isset( $this->params['sep'] ) || $this->params['sep'] === '' ) {
@@ -77,7 +78,7 @@ class TableResultPrinter extends ResultPrinter {
 				// use in displaying each row.
 				$columnClasses[] = $columnClass;
 				$text = $pr->getText( $outputMode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
-
+				$headerList[] = $pr->getCanonicalLabel();
 				$this->htmlTableRenderer->addHeader( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
 		}
@@ -117,6 +118,11 @@ class TableResultPrinter extends ResultPrinter {
 			// Table is made invisible until the resources are actually loaded
 			// and until then show a `smw-loading-image-dots`
 			$tableAttrs['style'] = 'display:none;';
+			$tableAttrs['data-column-sort'] = json_encode( array(
+				'list'  => $headerList,
+				'sort'  => $this->params['sort'],
+				'order' => $this->params['order']
+			) );
 		}
 
 		$this->htmlTableRenderer->transpose(

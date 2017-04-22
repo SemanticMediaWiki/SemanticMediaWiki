@@ -41,6 +41,11 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue );
 
 		$this->assertEquals(
+			'Foo',
+			$instance->getCanonicalLabel()
+		);
+
+		$this->assertEquals(
 			null,
 			$instance->getLabel()
 		);
@@ -60,6 +65,11 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'Bar',
 			$instance->getWikiText()
+		);
+
+		$this->assertEquals(
+			'Foo',
+			$instance->getCanonicalLabel()
 		);
 	}
 
