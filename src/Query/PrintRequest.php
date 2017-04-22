@@ -120,6 +120,26 @@ class PrintRequest {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getCanonicalLabel() {
+
+		if ( $this->m_mode === self::PRINT_PROP ) {
+			return $this->m_data->getDataItem()->getCanonicalLabel();
+		} elseif ( $this->m_mode === self::PRINT_CHAIN ) {
+			return $this->m_data->getDataItem()->getString();
+		} elseif ( $this->m_mode === self::PRINT_CATS ) {
+			return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		} elseif ( $this->m_mode === self::PRINT_CCAT ) {
+			return $this->m_data->getPrefixedText();
+		}
+
+		return $this->m_label;
+	}
+
+	/**
 	 * Obtain an HTML-formatted representation of the label.
 	 * The $linker is a Linker object used for generating hyperlinks.
 	 * If it is NULL, no links will be created.

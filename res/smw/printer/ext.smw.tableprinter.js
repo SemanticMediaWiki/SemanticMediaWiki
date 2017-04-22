@@ -1,11 +1,11 @@
-/**
+/*!
  * @license GNU GPL v2+
  * @since 3.0
  *
  * @author mwjames
  */
 
-/*global jQuery, mediaWiki, mw */
+/* global jQuery, mediaWiki, mw */
 ( function ( $, mw ) {
 
 	'use strict';
@@ -13,7 +13,64 @@
 	var dataTable = {
 
 		/**
+		 * Adds the initial sort/order from the #ask request that is available as
+		 * `data-column-sort` attribute with something like:
+		 *
+		 * {
+		 *  "list":["","Foo","Bar"]
+		 *  "sort":["Foo"],
+		 *  "order":["asc"]
+		 * }
+		 *
+		 * on
+		 *
+		 * {{#ask: ...
+		 *  |?Foo
+		 *  |?Bar
+		 *  |sort=Foo
+		 *  |order=asc
+		 *  ...
+		 * }}
+		 *
 		 * @since 3.0
+		 *
+		 * @private
+		 * @static
+		 *
+		 * @param {Object} context
+		 */
+		initColumnSort: function ( context ) {
+
+			var column = context.data( 'column-sort' );
+			var order = [];
+
+			// In case of a transposed table, don't try to match a column or its order
+			if ( !column.hasOwnProperty( 'sort' ) || column.sort.length === 0 || context.attr( 'data-transpose' ) ) {
+				return;
+			};
+
+			// https://datatables.net/reference/api/order()
+			// [1, 'asc'], [2, 'desc']
+			$.map( column.sort, function( val, i ) {
+				if ( val === '' ) {
+					return;
+				};
+				order.push( [
+					$.inArray( val, column.list ), // Find matchable index from the list
+					column.order[i] === undefined ? 'desc' : column.order[i]
+				] );
+			} );
+
+			if ( order.length > 0 ) {
+				context.data( 'order', order );
+			};
+		},
+
+		/**
+		 * @since 3.0
+		 *
+		 * @private
+		 * @static
 		 *
 		 * @param {Object} context
 		 */
@@ -29,10 +86,19 @@
 				// In case of a transposed, turn any td into a th
 				context.find( 'thead td' ).wrapInner( '<th />' ).contents().unwrap();
 			}
+
+			// Ensure that any link in the header stops the propagation of the
+			// click sorting event
+			context.find( 'thead tr a' ).on( 'click.sorting', function ( event ) {
+				event.stopPropagation();
+			} );
 		},
 
 		/**
 		 * @since 3.0
+		 *
+		 * @private
+		 * @static
 		 *
 		 * @param {Object} context
 		 */
@@ -81,6 +147,8 @@
 			context.addClass( 'display' );
 
 			mw.loader.using( 'onoi.dataTables' ).done( function () {
+
+				self.initColumnSort( context );
 
 				// MediaWiki table output is missing some standard formatting hence
 				// add a footer and header
@@ -132,6 +200,9 @@
 
 		/**
 		 * @since 3.0
+		 *
+		 * @private
+		 * @static
 		 *
 		 * @param {Object} context
 		 */
