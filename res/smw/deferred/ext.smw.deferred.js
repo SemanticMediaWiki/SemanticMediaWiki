@@ -85,10 +85,12 @@
 			};
 
 			// Remove any comments retrieved from the API parse
+			var text = data.parse.text['*'].replace(/<!--[\S\s]*?-->/gm, '' );
+
 			// Remove any remaining placeholder loading classes
-			var text = data.parse.text['*']
-				.replace(/<!--[\S\s]*?-->/gm, '' )
-				.replace( 'smw-loading-image-dots', '' );
+			if ( self.control !== '' ) {
+				text = text.replace( 'smw-loading-image-dots', '' );
+			}
 
 			// Remove any <p> element to avoid line breakages
 			if ( self.cmd === 'show' ) {
