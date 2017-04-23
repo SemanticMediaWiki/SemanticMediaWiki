@@ -34,16 +34,21 @@
 		this.offset = container.data( 'offset' );
 
 		this.rangeLimit = this.limit;
+		this.rangeOffset = this.offset;
 		this.init = true;
 
 		this.max = container.data( 'max' );
-		this.step = 1;
+		this.step = 5;
 		this.postfix = '';
 
-		// Ensure to have a limit parameter for queries that use
+		// Ensure to have a limit, offset parameter for queries that use
 		// the default setting
 		if ( this.query.indexOf( "|limit=" ) == -1 ) {
 			this.query = this.query + '|limit=' + this.limit;
+		}
+
+		if ( this.query.indexOf( "|offset=" ) == -1 ) {
+			this.query = this.query + '|offset=' + this.offset;
 		}
 	};
 
@@ -57,10 +62,13 @@
 		var self = this,
 			noTrace = '';
 
-		// Replace limit with that of the range
+		// Replace limit, offset with altered values
 		var query = self.query.replace(
 			'limit=' + self.limit,
 			'limit=' + self.rangeLimit
+		).replace(
+			'offset=' + self.offset,
+			'offset=' + self.rangeOffset
 		);
 
 		// In case the query was altered from its original request, signal
@@ -185,17 +193,23 @@
 
 		if ( self.init === true && self.control === 'slider' ) {
 			self.container.find( '#deferred-control' ).ionRangeSlider( {
-				min: self.limit + self.offset,
+				type: "double",
+				min: 0,
 				max: self.max,
 				step: self.step,
-				from: self.limit,
+				from: self.offset,
+				to: self.limit + self.offset,
 				force_edges: true,
 				postfix: self.postfix,
+				min_interval: 1,
+				grid: true,
+				grid_num: 10,
 				onChange: function ( data ) {
 					self.container.find( '#deferred-output' ).addClass( 'is-disabled' ).append( loading );
 				},
 				onFinish: function ( data ) {
-					self.rangeLimit = data.from - self.offset;
+					self.rangeOffset = data.from - self.offset;
+					self.rangeLimit = data.to - data.from;
 					self.doApiRequest();
 				}
 			} );
