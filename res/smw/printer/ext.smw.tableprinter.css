@@ -7,6 +7,7 @@
 
 .smw-datatable table.dataTable {
 	margin-bottom: 10px;
+	width: 100% !important;
 }
 
 .smw-datatable table.dataTable.no-footer {
