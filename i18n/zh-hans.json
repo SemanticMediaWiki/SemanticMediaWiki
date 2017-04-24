@@ -91,6 +91,7 @@
 	"smw-paramdesc-order": "查询排序的顺序",
 	"smw-paramdesc-searchlabel": "继续搜索的文本",
 	"smw-paramdesc-named_args": "请指定传递给该模板的变量",
+	"smw-paramdesc-template-arguments": "设置命名参数如何传递到模板",
 	"smw-paramdesc-import-annotation": "额外的带注释数据在解析主题期间都会被复制",
 	"smw-paramdesc-export": "导出选项",
 	"smw-paramdesc-prettyprint": "显示额外缩进和换行的漂亮打印式（pretty-print）输出形式",
