@@ -83,7 +83,20 @@ class TimeValueFormatter extends DataValueFormatter {
 		$precision = $dataItem->getPrecision();
 
 		$result = $dataItem->getYear() > 0 ? '' : '-';
-		$result .= str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
+
+		$year = $dataItem->getYear();
+
+		// Fix for BC era according to: https://www.w3.org/TR/xmlschema11-2/#dateTime
+		if ( $result === "-" ) {
+			$year = abs( $year ) - 1;
+
+			// No need of making 0 negative
+			if ( $year == 0 ) {
+				$result = "";
+			}
+		}
+
+		$result .= str_pad( $year, 4, "0", STR_PAD_LEFT );
 
 		$monthnum = $precision >= DITime::PREC_YM ? $dataItem->getMonth() : ( $mindefault ? 1 : 12 );
 		$result .= '-' . str_pad( $monthnum, 2, "0", STR_PAD_LEFT );

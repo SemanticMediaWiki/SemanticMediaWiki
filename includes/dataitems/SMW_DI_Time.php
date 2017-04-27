@@ -282,10 +282,8 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 *
 	 * @return SMWDITime|false
 	 */
-	public static function newFromDateTime( DateTime $dateTime ) {
-
-		$calendarModel = self::CM_JULIAN;
-
+	public static function newFromDateTime( DateTime $dateTime, $calendarModel = self::CM_JULIAN  ) {
+		
 		$year = $dateTime->format( 'Y' );
 		$month = $dateTime->format( 'm' );
 		$day = $dateTime->format( 'd' );
@@ -294,6 +292,11 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 			( ( $year == 1582 ) && ( $month > 10 ) ) ||
 			( ( $year == 1582 ) && ( $month == 10 ) && ( $day > 4 ) ) ) {
 			$calendarModel = self::CM_GREGORIAN;
+		}
+
+		if ( $year < 1 ) {
+			// For BC, fix for internal structure. Substract 1 year
+			$dateTime->modify('-1 year');
 		}
 
 		return self::doUnserialize( $calendarModel . '/' . $dateTime->format( 'Y/m/d/H/i/s.u' ) );
@@ -326,6 +329,48 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 			$seconds;
 
 		return new DateTime( $time );
+	}
+	
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $iso
+	 *
+	 * @return SMWDITime|false
+	 */
+	public static function newFromISO( $iso ) {
+	
+		// 0341-01-01T00:00:00Z BC / -0341-01-01T00:00:00Z BC
+		if ( strpos( $iso, 'BC' ) !== false && substr( $iso, 0, 1 ) !== '-' ) {
+			$iso = '-' . $iso;
+		}
+
+		$date = new DateTime( $iso );
+
+		// Handle offset
+		if ( preg_match( "/([+|-]\d\d\:\d\d)/", $iso, $match ) ) {
+			
+			if ( substr( $match[0], 0, 1 ) === "+" ) {
+				
+				$interval = str_replace( "+", "", $match[0] );
+				$interval = str_replace( ":", "H", $interval );
+				$interval = "PT".$interval."M";
+				
+				$date->sub( new DateInterval( $interval ) );
+				
+			} else {
+				$interval = str_replace( "-", "", $match[0] );
+				$interval = str_replace( ":", "H", $interval );
+				$interval = "PT".$interval."M";
+				
+				$date->add( new DateInterval( $interval ) );
+
+			}
+			
+		}
+			
+		// Let's force calendar model to Gregorian, that is ""
+		return self::newFromDateTime( $date, self::CM_GREGORIAN );
 	}
 
 	/**

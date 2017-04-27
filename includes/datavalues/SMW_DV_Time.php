@@ -134,7 +134,14 @@ class SMWTimeValue extends SMWDataValue {
 
 		$datecomponents = array();
 		$calendarmodel = $era = $hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
-		if ( $this->isInterpretableAsYearOnly( $value ) ) {
+		
+		if ( $this->isISO( $value ) ) {
+			try {
+				$this->m_dataitem = SMWDITime::newFromISO( $value );
+			} catch ( SMWDataItemException $e ) {
+				$this->addErrorMsg( array( 'smw-datavalue-time-invalid', $value, $e->getMessage() ) );
+			}
+		} elseif ( $this->isInterpretableAsYearOnly( $value ) ) {
 			try {
 				$this->m_dataitem = new SMWDITime( $this->getCalendarModel( null, $value, null, null ), $value );
 			} catch ( SMWDataItemException $e ) {
@@ -815,6 +822,11 @@ class SMWTimeValue extends SMWDataValue {
 
 	private function isInterpretableAsYearOnly( $value ) {
 		return strpos( $value, ' ' ) === false && is_numeric( strval( $value ) ) && ( strval( $value ) < 0 || strlen( $value ) < 6 );
+	}
+	
+	private function isISO( $value ) {
+		// 0341-01-01T00:00:00Z BC / -0341-01-01T00:00:00Z BC
+		return ( substr( $value, 0, 1 ) === '-' && substr( $value, 11, 1 ) === 'T' ) || ( ( strlen( $value ) > 4 && substr( $value, 10, 1 ) === 'T' ) );
 	}
 
 	private function isInterpretableAsTimestamp( $value ) {

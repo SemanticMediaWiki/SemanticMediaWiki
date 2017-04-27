@@ -1,0 +1,99 @@
+{
+	"description": "Test in-text annotation `_dat` on ISO negative dates (#2218, skip virtuoso, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
+			"page": "Example/P0450/1",
+			"contents": "[[Has date::0339-01-01T00:00:00Z BC]][[Has date::-0372-05-02T02:05:20Z]][[Has date::1772-07-02T08:00:10Z]][[Has date::0000-01-03T06:25:15Z]]"
+		},
+		{
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
+			"page": "Example/P0450/Q/1/1",
+			"contents": "{{#show: Example/P0450/1 |?Has date }}"
+		},
+		{
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
+			"page": "Example/P0450/Q/1/2",
+			"contents": "{{#show: Example/P0450/1 |?Has date#ISO }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 Testing property values",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
+			"subject": "Example/P0450/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"-0339-01-01T00:00:00",
+						"-0372-05-02T02:05:20",
+						"1772-07-02T08:00:10",
+						"0000-01-03T06:25:15"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 Testing English output",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
+			"subject": "Example/P0450/Q/1/1",
+			"assert-output": {
+				"to-contain": [
+					"6 January 340 BC 00:00:00 <sup>JL</sup>",
+					"7 May 373 BC 02:05:20 <sup>JL</sup>",
+					"2 July 1772 08:00:10",
+					"5 January 1 BC 06:25:15 <sup>JL</sup>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 Testing ISO output",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
+			"subject": "Example/P0450/Q/1/2",
+			"assert-output": {
+				"to-contain": [
+					"-0339-01-01T00:00:00",
+					"-0372-05-02T02:05:20",
+					"1772-07-02T08:00:10",
+					"0000-01-03T06:25:15"
+				]
+			}
+		}	
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

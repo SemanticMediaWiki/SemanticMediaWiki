@@ -565,7 +565,7 @@
 						"_MDAT"
 					],
 					"propertyValues": [
-						"--301-12-28"
+						"-0300-12-28"
 					]
 				}
 			},
@@ -586,8 +586,8 @@
 				"to-contain": [
 					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">1 January 300 BC <sup>JL</sup></td>",
 					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">28 December 301 BC</td>",
-					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">--301-12-28</td>",
-					"<td data-sort-value=\"1611848.5\" class=\"ISO-Date smwtype_dat\">--301-12-28</td>",
+					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">-0300-12-28</td>",
+					"<td data-sort-value=\"1611848.5\" class=\"ISO-Date smwtype_dat\">-0300-12-28</td>",
 					"<td data-sort-value=\"1611848.5\" class=\"MW-Date smwtype_dat\">28 December 0000</td>",
 					"<td data-sort-value=\"1611848.5\" class=\"JD smwtype_dat\">1611848.5</td>"
 				]
@@ -764,7 +764,7 @@
 						"_MDAT"
 					],
 					"propertyValues": [
-						"--11000-01-01"
+						"-10999-01-01"
 					]
 				}
 			},
@@ -784,8 +784,8 @@
 			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"-11001\" class=\"Has-date smwtype_dat\">11000 BC</td>",
-					"<td data-sort-value=\"-11001\" class=\"Has-date smwtype_dat\">--11000-01-01</td>",
-					"<td data-sort-value=\"-11001\" class=\"ISO-Date smwtype_dat\">--11000-01-01</td>",
+					"<td data-sort-value=\"-11001\" class=\"Has-date smwtype_dat\">-10999-01-01</td>",
+					"<td data-sort-value=\"-11001\" class=\"ISO-Date smwtype_dat\">-10999-01-01</td>",
 					"<td data-sort-value=\"-11001\" class=\"MW-Date smwtype_dat\">0000</td>"
 				]
 			}

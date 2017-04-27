@@ -91,7 +91,17 @@ class XsdValueMapper {
 		if ( $dataItem->getYear() > 0 ) {
 			$xsdvalue = str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
 		} else {
-			$xsdvalue = '-' . str_pad( 1 - $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
+
+			// Fix for BC era according to: https://www.w3.org/TR/xmlschema11-2/#dateTime
+			$year = abs( $dataItem->getYear() ) - 1;
+
+			// No need of making 0 negative
+			$sign = "-";
+			if ( $year == 0 ) {
+				$sign = "";
+			}
+
+			$xsdvalue = $sign . str_pad( $year, 4, "0", STR_PAD_LEFT );
 		}
 
 		$xsdtype = 'http://www.w3.org/2001/XMLSchema#gYear';
