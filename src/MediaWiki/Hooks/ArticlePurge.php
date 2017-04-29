@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use WikiPage;
 
 /**
@@ -56,6 +57,12 @@ class ArticlePurge {
 		}
 
 		if ( $settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
+
+			$dispatchContext->set( 'ask', $applicationFactory->getStore()->getPropertyValues(
+				DIWikiPage::newFromTitle( $wikiPage->getTitle() ),
+				new DIProperty( '_ASK') )
+			);
+
 			EventHandler::getInstance()->getEventDispatcher()->dispatch(
 				'cached.prefetcher.reset',
 				$dispatchContext
