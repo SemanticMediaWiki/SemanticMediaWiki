@@ -3,8 +3,8 @@ language: php
 matrix:
   fast_finish: true
   include:
-    - env: DB=mysql; MW=REL1_27; TYPE=coverage; PHPUNIT=4.8.*
-      php: 7.0
+    - env: DB=mysql; MW=master; TYPE=coverage; PHPUNIT=4.8.*
+      php: 7.1
     - env: DB=mysql; MW=REL1_26; FUSEKI=2.4.0
       php: 5.5
     - env: DB=mysql; MW=REL1_25; VIRTUOSO=6.1
@@ -28,7 +28,7 @@ matrix:
   allow_failures:
     # Takes at least ~35 min to complete therefore allow it run without delaying
     # the status update
-    - env: DB=mysql; MW=REL1_27; TYPE=coverage; PHPUNIT=4.8.*
+    - env: DB=mysql; MW=master; TYPE=coverage; PHPUNIT=4.8.*
     # Can fail when pushed/used with newly Composer dependencies
     - env: DB=mysql; MW=REL1_25; TYPE=relbuild
     # Can fail when pushed/used with newly Composer dependencies
@@ -65,7 +65,9 @@ before_script:
   - bash ./tests/travis/update-configuration-settings.sh
 
 script:
-  - bash ./tests/travis/run-tests.sh
+  # travis_wait then writes a short line to the build log every minute for 40 minutes
+  - if [ "$TYPE" == "coverage" ]; then travis_wait 40 bash ./tests/travis/run-tests.sh; fi
+  - if [ "$TYPE" != "coverage" ]; then bash ./tests/travis/run-tests.sh; fi
 
 after_success:
   - bash ./tests/travis/upload-coverage-report.sh
