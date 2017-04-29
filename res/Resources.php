@@ -320,6 +320,9 @@ return array(
 			'mediawiki.api.parse',
 			'onoi.rangeslider'
 		),
+		'messages' => array(
+			'smw_result_noresults'
+		),
 		'targets' => array(
 			'mobile',
 			'desktop'

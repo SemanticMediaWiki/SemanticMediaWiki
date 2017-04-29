@@ -50,6 +50,10 @@
 		if ( this.query.indexOf( "|offset=" ) == -1 ) {
 			this.query = this.query + '|offset=' + this.offset;
 		}
+
+		if ( this.query.indexOf( "|default=" ) == -1 ) {
+			this.query = this.query + '|default=' + mw.msg( 'smw_result_noresults' );
+		}
 	};
 
 	/**
@@ -89,6 +93,7 @@
 		} ).done( function( data ) {
 
 			if ( self.init === true ) {
+				self.initControls();
 				self.replaceOutput( '' );
 			};
 
@@ -107,11 +112,13 @@
 
 			self.replaceOutput( text, '', data.parse.modules );
 
-		} ).fail ( function( code, details ) {
-			var error =  code + ': ' + details.textStatus;
+		} ).fail ( function( code, failure ) {
+			var error =  code + ': ' + failure.textStatus;
 
-			if ( details.error.hasOwnProperty( 'info' ) ) {
-				error = details.error.info;
+			if ( failure.hasOwnProperty( 'exception' ) && failure.hasOwnProperty( 'xhr' ) ) {
+				error = failure.xhr.responseText;
+			} else if ( failure.hasOwnProperty( 'error' ) && failure.error.hasOwnProperty( 'info' ) ) {
+				error = failure.error.info;
 			}
 
 			self.container.find( '#deferred-control' ).replaceWith( "<div id='deferred-control'></div>" );
@@ -157,8 +164,6 @@
 
 		var self = this;
 
-		self.initControls();
-
 		// Trigger an event to re-apply JS instances initialization on new
 		// content
 		if ( modules !== undefined ) {
@@ -203,7 +208,7 @@
 				postfix: self.postfix,
 				min_interval: 1,
 				grid: true,
-				grid_num: 10,
+				grid_num: 2,
 				onChange: function ( data ) {
 					self.container.find( '#deferred-output' ).addClass( 'is-disabled' ).append( loading );
 				},
