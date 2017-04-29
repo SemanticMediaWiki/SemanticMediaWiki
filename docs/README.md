@@ -9,6 +9,7 @@ technical documentation. The latter can be found in [docs/technical](technical/R
 
 * [Installation instructions](INSTALL.md)
 * [Latest release notes](RELEASE-NOTES.md)
+* [SMW 2.5.1 release notes](releasenotes/RELEASE-NOTES-2.5.1.md)
 * [SMW 2.5.0 release notes](releasenotes/RELEASE-NOTES-2.5.0.md)
 * [SMW 2.4.6 release notes](releasenotes/RELEASE-NOTES-2.4.6.md)
 * [SMW 2.4.5 release notes](releasenotes/RELEASE-NOTES-2.4.5.md)
