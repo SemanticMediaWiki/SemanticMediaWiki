@@ -133,6 +133,10 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 	public function testPurgeCacheByQueryList() {
 
 		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'canUse' )
+			->will( $this->returnValue( true ) );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
 
@@ -212,12 +216,54 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'canUse' )
+			->will( $this->returnValue( true ) );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
 			->with( $this->equalTo( '063682d55f277990d70fa8213e5eccd8' ) );
+
+		$this->bufferedStatsdCollector->expects( $this->once() )
+			->method( 'recordStats' );
+
+		$instance = new CachedQueryResultPrefetcher(
+			$this->store,
+			$this->queryFactory,
+			$this->blobStore,
+			$this->bufferedStatsdCollector
+		);
+
+		$instance->resetCacheBy( $subject );
+	}
+
+	public function testPurgeCacheBySubjectWith_QUERY() {
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subject->expects( $this->atLeastOnce() )
+			->method( 'getSubobjectName' )
+			->will( $this->returnValue( '_QUERYfoo' ) );
+
+		$subject->expects( $this->never() )
+			->method( 'asBase' );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'canUse' )
+			->will( $this->returnValue( true ) );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'delete' )
+			->with( $this->equalTo( 'dc63f8b4cab1bb1214979932b637cdec' ) );
 
 		$this->bufferedStatsdCollector->expects( $this->once() )
 			->method( 'recordStats' );

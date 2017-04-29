@@ -121,6 +121,13 @@ class EventListenerRegistry implements EventListenerCollection {
 					$context
 				);
 
+				if ( $dispatchContext->has( 'ask' ) ) {
+					$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
+						$dispatchContext->get( 'ask' ),
+						$context
+					);
+				}
+
 				$dispatchContext->set( 'propagationstop', true );
 			}
 		);
