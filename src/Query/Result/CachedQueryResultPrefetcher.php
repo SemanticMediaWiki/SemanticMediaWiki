@@ -283,20 +283,24 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage|array $list
+	 * @param DIWikiPage|array $items
 	 * @param string $context
 	 */
-	public function resetCacheBy( $item, $context = '' ) {
+	public function resetCacheBy( $items, $context = '' ) {
 
-		if ( !is_array( $item ) ) {
-			$item = array( $item );
+		if ( !$this->blobStore->canUse() ) {
+			return;
+		}
+
+		if ( !is_array( $items ) ) {
+			$items = array( $items );
 		}
 
 		$recordStats = false;
 		$context = $context === '' ? 'Undefined' : $context;
 
-		foreach ( $item as $id ) {
-			$id = $this->getHashFrom( $id );
+		foreach ( $items as $item ) {
+			$id = $this->getHashFrom( $item );
 			$this->tempCache->delete( $id );
 
 			if ( $this->blobStore->exists( $id ) ) {
@@ -462,7 +466,12 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	private function getHashFrom( $subject ) {
 
 		if ( $subject instanceof DIWikiPage ) {
-			$subject = $subject->asBase()->getHash();
+			// In case the we detect a _QUERY subobject, use it directly
+			if ( ( $subobjectName = $subject->getSubobjectName() ) !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
+				$subject = $subobjectName;
+			} else {
+				$subject = $subject->asBase()->getHash();
+			}
 		}
 
 		return md5( $subject . self::VERSION . $this->hashModifier );
