@@ -56,6 +56,7 @@ class ConceptPage extends \SMWOrderedListPage {
 			$query->setLimit( $wgRequest->getVal( 'limit', $smwgConceptPagingLimit ) );
 			$query->setOffset( $wgRequest->getVal( 'offset', '0' ) );
 			$query->setContextPage( $this->getDataItem() );
+			$query->setOption( $query::NO_DEPENDENCY_TRACE, true );
 
 			$queryResult = ApplicationFactory::getInstance()->getStore()->getQueryResult( $query );
 
