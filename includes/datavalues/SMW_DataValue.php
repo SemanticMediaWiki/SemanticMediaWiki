@@ -14,6 +14,7 @@ use SMW\Localizer;
 use SMW\Message;
 use SMW\Options;
 use SMW\Query\QueryComparator;
+use SMW\Utils\CharArmor;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -177,6 +178,10 @@ abstract class SMWDataValue {
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
+
+		$value = CharArmor::removeControlChars(
+			CharArmor::removeSpecialChars( $value )
+		);
 
 		$this->parseUserValue( $value ); // may set caption if not set yet, depending on datavalue
 
