@@ -68,6 +68,22 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsReadOnly() {
+
+		$parser = $this->getMockBuilder( 'Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser->expects( $this->never() )
+			->method( 'getTitle' );
+
+		$instance = new ParserAfterTidy( $parser );
+		$instance->isReadOnly( true );
+
+		$text = '';
+		$instance->process( $text );
+	}
+
 	private function newMockCache( $id, $containsStatus, $fetchStatus ) {
 
 		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey( $id );

@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use Parser;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
+use SMW\MediaWiki\MediaWiki;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -30,6 +31,11 @@ class ParserAfterTidy extends HookHandler {
 	private $isCommandLineMode = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $isReadOnly = false;
+
+	/**
 	 * @since  1.9
 	 *
 	 * @param Parser $parser
@@ -50,6 +56,15 @@ class ParserAfterTidy extends HookHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isReadOnly
+	 */
+	public function isReadOnly( $isReadOnly ) {
+		$this->isReadOnly = (bool)$isReadOnly;
+	}
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param string $text
@@ -66,6 +81,12 @@ class ParserAfterTidy extends HookHandler {
 	}
 
 	private function canPerformUpdate() {
+
+		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
+		// when for example Title::isProtected is accessed
+		if ( $this->isReadOnly ) {
+			return false;
+		}
 
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`

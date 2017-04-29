@@ -137,12 +137,24 @@ class HookRegistry {
 		 */
 		$this->handlers['ParserAfterTidy'] = function ( &$parser, &$text ) {
 
+			// MediaWiki\Services\ServiceDisabledException from line 340 of
+			// ...\ServiceContainer.php: Service disabled: DBLoadBalancer
+			try {
+				$isReadOnly = wfReadOnly();
+			} catch( \MediaWiki\Services\ServiceDisabledException $e ) {
+				$isReadOnly = true;
+			}
+
 			$parserAfterTidy = new ParserAfterTidy(
 				$parser
 			);
 
 			$parserAfterTidy->isCommandLineMode(
 				$GLOBALS['wgCommandLineMode']
+			);
+
+			$parserAfterTidy->isReadOnly(
+				$isReadOnly
 			);
 
 			return $parserAfterTidy->process( $text );
