@@ -262,7 +262,7 @@
 	"smw-admin-statistics-querycache-title": "Querycachestatistieken",
 	"smw-admin-statistics-querycache-disabled": "De [https://www.semantic-mediawiki.org/wiki/QueryCache QueryCache] is niet ingeschakeld op deze wiki en derhalve zijn geen statistieken beschikbaar.",
 	"smw-admin-permission-missing": "De toegang tot deze pagina is geblokkeerd wegens het ontbreken van de juiste rechten. Raadpleeg de [https://www.semantic-mediawiki.org/wiki/Help:Permissions rechten] help-pagina voor meer informatie over de vereiste instellingen.",
-	"smw-admin-setupsuccess": "De opslagmodule is succesvol ingesteld.",
+	"smw-admin-setupsuccess": "De opslagmodule is ingesteld.",
 	"smw_smwadmin_return": "Terug naar $1",
 	"smw_smwadmin_updatestarted": "Er is een proces gestart voor het bijwerken van de semantische gegevens.\nAlle opgeslagen gegevens worden opnieuw opgebouwd of gerepareerd als dat nodig is.\nU kunt de voortgang volgen via deze speciale pagina.",
 	"smw_smwadmin_updatenotstarted": "Er loopt al een bijwerkproces.\nEr wordt geen nieuw proces gestart.",
