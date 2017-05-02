@@ -335,6 +335,7 @@
 	"smw-clipboard-copy-link": "Kopiuj link do schowka",
 	"smw-data-lookup": "Pobieranie danych...",
 	"smw-no-data-available": "Brak dostępnych danych.",
+	"smw-format-datatable-infothousands": "&nbsp;",
 	"smw-format-datatable-loadingrecords": "Ładowanie...",
 	"smw-format-datatable-processing": "Przetwarzanie...",
 	"smw-format-datatable-zerorecords": "Nie znaleziono pasujących pozycji"
