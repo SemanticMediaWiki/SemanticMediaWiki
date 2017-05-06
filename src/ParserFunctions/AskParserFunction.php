@@ -138,6 +138,15 @@ class AskParserFunction {
 			$functionParams
 		);
 
+		if ( !$this->noTrace ) {
+			$this->noTrace = $this->parserData->getOption( ParserData::NO_QUERY_DEPENDENCY_TRACE );
+		}
+
+		// No trace on queries invoked by special pages
+		if ( $this->parserData->getTitle()->getNamespace() === NS_SPECIAL ) {
+			$this->noTrace = true;
+		}
+
 		$result = $this->doFetchResultsFromFunctionParameters(
 			$functionParams
 		);
@@ -200,7 +209,7 @@ class AskParserFunction {
 
 		$contextPage = $this->parserData->getSubject();
 
-		if ( $this->noTrace ) {
+		if ( $this->noTrace === true ) {
 			$contextPage = null;
 		}
 
@@ -213,10 +222,7 @@ class AskParserFunction {
 		);
 
 		$query->setOption( Query::PROC_CONTEXT, 'AskParserFunction' );
-
-		if ( $this->noTrace || $this->parserData->getOption( ParserData::NO_QUERY_DEPENDENCY_TRACE ) ) {
-			$query->setOption( $query::NO_DEPENDENCY_TRACE, true );
-		}
+		$query->setOption( Query::NO_DEPENDENCY_TRACE, $this->noTrace );
 
 		$queryHash = $query->getHash();
 
@@ -266,7 +272,7 @@ class AskParserFunction {
 		$settings = $this->applicationFactory->getSettings();
 
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
-		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false || $this->noTrace ) {
+		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false || $this->noTrace === true ) {
 			return;
 		}
 
