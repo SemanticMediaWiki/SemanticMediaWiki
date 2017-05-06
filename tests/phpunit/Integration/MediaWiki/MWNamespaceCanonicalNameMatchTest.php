@@ -41,6 +41,7 @@ class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 			'wgExtraNamespaces'   => array(),
 			'wgNamespaceAliases'  => array(),
 			'wgContentNamespaces' => array(),
+			'wgNamespacesToBeSearchedDefault' => array(),
 			'wgLanguageCode'      => 'en'
 		);
 
