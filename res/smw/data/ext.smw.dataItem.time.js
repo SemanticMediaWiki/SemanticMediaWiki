@@ -86,7 +86,8 @@
 				this.date.setSeconds( date[6] );
 			};
 		};
-
+		
+		console.log( this, this.getDate().toISOString(), this.getMwTimestamp() );
 		return this;
 	};
 
