@@ -5,7 +5,7 @@ matrix:
   include:
     - env: DB=mysql; MW=REL1_27; TYPE=coverage; PHPUNIT=4.8.*
       php: 7.0
-    - env: DB=mysql; MW=REL1_26; FUSEKI=2.4.0
+    - env: DB=mysql; MW=REL1_28; FUSEKI=2.4.0
       php: 5.5
     - env: DB=mysql; MW=REL1_25; VIRTUOSO=6.1
       php: 5.6
