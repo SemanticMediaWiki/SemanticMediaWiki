@@ -107,6 +107,8 @@
 		}
 	],
 	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
 		"wgCapitalLinks": false,
 		"smwgPageSpecialProperties": [
 			"_MDAT"
