@@ -286,6 +286,43 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetIDOnPredefinedProperty() {
+
+		$row = new \stdClass;
+		$row->smw_id = 42;
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( $row ) );
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->idToDataItemMatchFinder
+		);
+
+		$this->assertEquals(
+			29,
+			$instance->getIDFor( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY ) )
+		);
+
+		$this->assertEquals(
+			42,
+			$instance->getIDFor( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY, '', 'Foo' ) )
+		);
+	}
+
 	public function pageIdandSortProvider() {
 
 		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', false, false );
