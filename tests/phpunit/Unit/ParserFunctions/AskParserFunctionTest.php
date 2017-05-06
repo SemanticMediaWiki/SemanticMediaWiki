@@ -416,6 +416,46 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNoQueryProfileOnSpecialPages() {
+
+		$params = array(
+			'[[Modification date::+]]',
+			'format=table'
+		);
+
+		$expected = array(
+			'propertyCount'  => 0
+		);
+
+		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', true );
+
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			Title::newFromText( __METHOD__, NS_SPECIAL ),
+			new ParserOutput()
+		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$messageFormatter,
+			$circularReferenceGuard
+		);
+
+		$instance->parse( $params );
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserData->getSemanticData()
+		);
+	}
+
 	public function queryDataProvider() {
 
 		$categoryNS = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
