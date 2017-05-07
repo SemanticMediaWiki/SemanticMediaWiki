@@ -56,6 +56,15 @@
 						]
 					}
 				}
+			},
+			"assert-output": {
+				"onPageView": true,
+				"to-contain": [
+					"class=\"mw-redirect\" title=\"Property:Some redirect\">Property:Some redirect</a>"
+				],
+				"not-contain": [
+					"class=\"mw-redirect\" title=\"Property:Some redirect\">SomeTest</a>"
+				]
 			}
 		},
 		{
@@ -85,6 +94,15 @@
 						]
 					}
 				}
+			},
+			"assert-output": {
+				"onPageView": true,
+				"to-contain": [
+					"class=\"mw-redirect\" title=\"Property:Some redirect2\">Property:Some redirect2</a>"
+				],
+				"not-contain": [
+					"class=\"mw-redirect\" title=\"Property:Some redirect2\">SomeTest2</a>"
+				]
 			}
 		}
 	],
