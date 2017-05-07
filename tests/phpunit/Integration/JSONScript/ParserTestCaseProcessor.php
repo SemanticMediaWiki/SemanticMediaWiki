@@ -132,10 +132,25 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $subject->getTitle() )->output;
 
+		if ( isset( $case['assert-output']['withOutputPageContext'] ) && $case['assert-output']['withOutputPageContext'] ) {
+			$context = new \RequestContext();
+			$context->setTitle( $subject->getTitle() );
+			// Ensures the OutputPageBeforeHTML hook is run
+			$context->getOutput()->addParserOutput( $parserOutput );
+			$output = $context->getOutput()->getHtml();
+		} elseif ( isset( $case['assert-output']['onPageView'] ) && $case['assert-output']['onPageView'] ) {
+			$context = new \RequestContext();
+			$context->setTitle( $subject->getTitle() );
+			\Article::newFromTitle( $subject->getTitle(), $context )->view();
+			$output = $context->getOutput()->getHtml();
+		} else {
+			$output = $parserOutput->getText();
+		}
+
 		if ( isset( $case['assert-output']['to-contain'] ) ) {
 			$this->stringValidator->assertThatStringContains(
 				$case['assert-output']['to-contain'],
-				$parserOutput->getText(),
+				$output,
 				$case['about']
 			);
 		}
@@ -143,7 +158,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		if ( isset( $case['assert-output']['not-contain'] ) ) {
 			$this->stringValidator->assertThatStringNotContains(
 				$case['assert-output']['not-contain'],
-				$parserOutput->getText(),
+				$output,
 				$case['about']
 			);
 		}
