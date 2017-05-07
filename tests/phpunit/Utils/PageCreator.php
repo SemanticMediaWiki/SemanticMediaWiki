@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils;
 
 use Revision;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 use UnexpectedValueException;
 
@@ -110,12 +111,16 @@ class PageCreator {
 	 */
 	public function doMoveTo( Title $target, $isRedirect = true ) {
 
-		$this->getPage()->getTitle()->moveTo(
-			$target,
-			false,
-			"integration test",
-			$isRedirect
-		);
+		$reason = "integration test";
+		$source = $this->getPage()->getTitle();
+
+		if ( class_exists( '\MovePage' ) ) {
+			$mp = new \MovePage( $source, $target );
+			$status = $mp->move( new MockSuperUser(), $reason, $isRedirect );
+		} else {
+			// deprecated since 1.25, use the MovePage class instead
+			$status = $source->moveTo( $target, false, $reason, $isRedirect );
+		}
 
 		TestEnvironment::executePendingDeferredUpdates();
 

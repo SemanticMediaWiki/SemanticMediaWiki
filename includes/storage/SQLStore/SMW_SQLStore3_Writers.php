@@ -958,11 +958,14 @@ class SMWSQLStore3Writers {
 	private function addToDeferredUpdate( $oldTitle, $newTitle, $redirectId ) {
 
 		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+		$parameters = array(
+			'forcedUpdate' => true
+		);
 
 		if ( $redirectId != 0 ) {
 			$title = $oldTitle;
-			$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory ) {
-				$jobFactory->newUpdateJob( $title )->run();
+			$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory, $parameters ) {
+				$jobFactory->newUpdateJob( $title, $parameters )->run();
 			} );
 
 			$deferredCallableUpdate->setOrigin( __METHOD__ . ' for ' . $title->getPrefixedDBKey() );
@@ -970,8 +973,8 @@ class SMWSQLStore3Writers {
 		}
 
 		$title = $newTitle;
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory ) {
-			$jobFactory->newUpdateJob( $title )->run();
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory, $parameters ) {
+			$jobFactory->newUpdateJob( $title, $parameters )->run();
 		} );
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ . ' for ' . $title->getPrefixedDBKey() );

@@ -122,6 +122,12 @@ class HookRegistry {
 			$GLOBALS['wgDBtype'] === 'sqlite'
 		);
 
+		// When in commandLine mode avoid deferred execution and run a process
+		// within the same transaction
+		$deferredRequestDispatchManager->isCommandLineMode(
+			$GLOBALS['wgCommandLineMode']
+		);
+
 		$permissionPthValidator = new PermissionPthValidator(
 			$applicationFactory->singleton( 'EditProtectionValidator' )
 		);
@@ -544,12 +550,6 @@ class HookRegistry {
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
 		 */
 		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $queryDependencyLinksStoreFactory, $queryDependencyLinksStore, $deferredRequestDispatchManager, $tempChangeOpStore ) {
-
-			// When in commandLine mode avoid deferred execution and run a process
-			// within the same transaction
-			$deferredRequestDispatchManager->isCommandLineMode(
-				$store->getOptions()->has( 'isCommandLineMode' ) ? $store->getOptions()->get( 'isCommandLineMode' ) : $GLOBALS['wgCommandLineMode']
-			);
 
 			$queryDependencyLinksStore->setStore( $store );
 			$subject = $semanticData->getSubject();
