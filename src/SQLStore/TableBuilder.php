@@ -25,6 +25,16 @@ interface TableBuilder extends MessageReporterAware {
 	const TABLE_PREFIX = 'smw_';
 
 	/**
+	 * Processing field activity status
+	 */
+	const PROC_FIELD_NEW = 'new';
+
+	/**
+	 * Processing field activity status
+	 */
+	const PROC_FIELD_UPD = 'update';
+
+	/**
 	 * On before the creation of tables and indicies
 	 */
 	const PRE_CREATION = 'pre.creation';
@@ -87,6 +97,15 @@ interface TableBuilder extends MessageReporterAware {
 	 * @return string|false SQL type declaration
 	 */
 	public function getStandardFieldType( $fieldType );
+
+	/**
+	 * Returns a list of process activities
+	 *
+	 * @since 3.0
+	 *
+	 * @param array
+	 */
+	public function getProcessLog();
 
 	/**
 	 * Allows to check and validate the build on specific events

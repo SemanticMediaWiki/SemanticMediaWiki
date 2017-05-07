@@ -173,6 +173,7 @@ class Settings extends Options {
 			'smwgEditProtectionRight' => $GLOBALS['smwgEditProtectionRight'],
 			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty'],
 			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
+			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],
 		);
 
 		self::initLegacyMapping( $configuration );

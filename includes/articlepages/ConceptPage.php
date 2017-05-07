@@ -3,7 +3,7 @@
 namespace SMW;
 
 use Html;
-use SMW\MediaWiki\ByLanguageCollationMapper;
+use SMW\Utils\Collator;
 use SMW\Query\Language\ConceptDescription;
 use SMWDataItem as DataItem;
 use SMWPageLister;
@@ -142,10 +142,9 @@ class ConceptPage extends \SMWOrderedListPage {
 
 		if ( $dataItem->getDIType() == DataItem::TYPE_WIKIPAGE ) {
 			$sortKey = ApplicationFactory::getInstance()->getStore()->getWikiPageSortKey( $dataItem );
-
 		}
 
-		return ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory( $sortKey );
+		return Collator::singleton()->getFirstLetter( $sortKey );
 	}
 
 }

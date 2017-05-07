@@ -127,6 +127,17 @@ abstract class DataItemHandler {
 	abstract public function getLabelField();
 
 	/**
+	 * Returns the expected sort field.
+	 *
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getSortField() {
+		return '';
+	}
+
+	/**
 	 * Create a dataitem from an array of DB keys or a single DB key
 	 * string. May throw an DataItemException if the given DB keys
 	 * cannot be converted back into a dataitem. Each implementation

@@ -106,13 +106,22 @@ class TableSchemaManager {
 		$table->addColumn( 'smw_iw', array( FieldType::FIELD_INTERWIKI, 'NOT NULL' ) );
 		$table->addColumn( 'smw_subobject', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
 		$table->addColumn( 'smw_sortkey', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
+		$table->addColumn( 'smw_sort', array( FieldType::FIELD_TITLE ) );
 		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
 
 		$table->addIndex( 'smw_id' );
 		$table->addIndex( 'smw_id,smw_sortkey' );
-		$table->addIndex( 'smw_iw' ); // iw match lookup
-		$table->addIndex( 'smw_title,smw_namespace,smw_iw,smw_subobject' ); // id lookup
-		$table->addIndex( 'smw_sortkey' ); // select by sortkey (range queries)
+		// IW match lookup
+		$table->addIndex( 'smw_iw' );
+		// ID lookup
+		$table->addIndex( 'smw_title,smw_namespace,smw_iw,smw_subobject' );
+		// Select by sortkey (range queries)
+		$table->addIndex( 'smw_sortkey' );
+
+		// Sort related indices
+		$table->addIndex( 'smw_sort' );
+		$table->addIndex( 'smw_id,smw_sort' );
+		$table->addIndex( 'smw_sort,smw_id' );
 
 		return $table;
 	}
@@ -223,7 +232,19 @@ class TableSchemaManager {
 			unset( $indexes['po'] );
 		}
 
-		$indexes = array_merge( $indexes, $diHandler->getTableIndexes() );
+		foreach ( $diHandler->getTableIndexes() as $value ) {
+
+			if ( strpos( $value, 'p_id' ) !== false && $propertyTable->isFixedPropertyTable() ) {
+				continue;
+			}
+
+			if ( strpos( $value, 'o_id' ) !== false && !$propertyTable->usesIdSubject() ) {
+				continue;
+			}
+
+			$indexes = array_merge( $indexes, array( $value ) );
+		}
+
 		$indexes = array_unique( $indexes );
 
 		foreach ( $diHandler->getTableFields() as $fieldname => $fieldType ) {
@@ -235,6 +256,7 @@ class TableSchemaManager {
 		foreach ( $fieldarray as $fieldName => $fieldType ) {
 			$table->addColumn( $fieldName, $fieldType );
 		}
+
 
 		foreach ( $indexes as $key => $index ) {
 			$table->addIndexWithKey( $key, $index );

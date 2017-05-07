@@ -153,6 +153,10 @@ class SQLiteTableBuilder extends TableBuilder {
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
 
+		if ( !isset( $this->processLog[$tableName] ) ) {
+			$this->processLog[$tableName] = array();
+		}
+
 		$fieldType = $this->getStandardFieldType( $fieldType );
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
@@ -169,6 +173,8 @@ class SQLiteTableBuilder extends TableBuilder {
 		if ( strpos( $tableName, 'ft_search' ) !== false ) {
 			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
 		}
+
+		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		// @see https://www.sqlite.org/lang_altertable.html states that
 		// "If a NOT NULL constraint is specified, then the column must have a default value other than NULL."

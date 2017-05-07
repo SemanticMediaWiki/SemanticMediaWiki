@@ -459,7 +459,12 @@ class CompoundConditionBuilder {
 		}
 
 		$condition->orderByVariable = $mainVariable . 'sk';
-		$skeyExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );
+
+		if ( ( (int)$this->engineOptions->get( 'smwgSparqlQFeatures' ) & SMW_SPARQL_QF_COLLATION ) != 0 ) {
+			$skeyExpElement = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'sort' );
+		} else {
+			$skeyExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );
+		}
 
 		$weakConditions = array(
 			$condition->orderByVariable =>"?$mainVariable " . $skeyExpElement->getQName() . " ?{$condition->orderByVariable} .\n"

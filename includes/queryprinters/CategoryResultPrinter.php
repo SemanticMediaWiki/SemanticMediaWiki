@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\ByLanguageCollationMapper;
+use SMW\Utils\Collator;
 use SMWDataItem;
 use SMWQueryResult;
 
@@ -227,10 +227,9 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
 			$sortKey = $res->getStore()->getWikiPageSortKey( $dataItem );
-
 		}
 
-		return ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory( $sortKey );
+		return Collator::singleton()->getFirstLetter( $sortKey );
 	}
 
 	private function addRowFieldsToTemplate( $res, $row, &$first_col, $templateRenderer ) {

@@ -8,6 +8,8 @@ use SMW\RequestOptions;
 use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\RedirectInfoStore;
+use SMW\SQLStore\TableFieldUpdater;
+use SMW\Utils\Collator;
 
 /**
  * @ingroup SMWStore
@@ -141,6 +143,11 @@ class SMWSql3SmwIds {
 	private $redirectInfoStore;
 
 	/**
+	 * @var TableFieldUpdater
+	 */
+	private $tableFieldUpdater;
+
+	/**
 	 * Cache for property sortkeys.
 	 *
 	 * @since 1.8
@@ -234,6 +241,7 @@ class SMWSql3SmwIds {
 			$this->store->getConnection( 'mw.db' )
 		);
 
+		$this->tableFieldUpdater = new TableFieldUpdater( $store );
 		$this->intermediaryIdCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
 	}
 
@@ -374,9 +382,9 @@ class SMWSql3SmwIds {
 			if ( $id != 0 ) {
 
 				if ( $fetchHashes ) {
-					$select = array( 'smw_sortkey', 'smw_proptable_hash' );
+					$select = array( 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' );
 				} else {
-					$select = array( 'smw_sortkey' );
+					$select = array( 'smw_sortkey', 'smw_sort' );
 				}
 
 				$row = $db->selectRow(
@@ -401,9 +409,9 @@ class SMWSql3SmwIds {
 		} else {
 
 			if ( $fetchHashes ) {
-				$select = array( 'smw_id', 'smw_sortkey', 'smw_proptable_hash' );
+				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' );
 			} else {
-				$select = array( 'smw_id', 'smw_sortkey' );
+				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort' );
 			}
 
 			$row = $db->selectRow(
@@ -663,7 +671,7 @@ class SMWSql3SmwIds {
 			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
 
 			// #2089 (MySQL 5.7 complained with "Data too long for column")
-			$sortkey = substr( $sortkey, 0, 254 );
+			$sortkey = mb_substr( $sortkey, 0, 254 );
 
 			$db->insert(
 				self::TABLE_NAME,
@@ -673,7 +681,8 @@ class SMWSql3SmwIds {
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName,
-					'smw_sortkey' => $sortkey
+					'smw_sortkey' => $sortkey,
+					'smw_sort' => Collator::singleton()->getSortKey( $sortkey )
 				),
 				__METHOD__
 			);
@@ -699,17 +708,10 @@ class SMWSql3SmwIds {
 
 		} elseif ( $sortkey !== '' && $sortkey != $oldsort ) {
 
-			// #2089 (MySQL 5.7 complained with "Data too long for column")
-			$sortkey = substr( $sortkey, 0, 254 );
-
-			$db->update(
-				self::TABLE_NAME,
-				array( 'smw_sortkey' => $sortkey ),
-				array( 'smw_id' => $id ),
-				__METHOD__
-			);
-
+			$this->tableFieldUpdater->updateCollationField( $id, $sortkey );
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
+		} elseif ( $sortkey !== '' && !$this->tableFieldUpdater->isEqualByCollation( $oldsort, $sortkey ) ) {
+			$this->tableFieldUpdater->updateCollationField( $id, $sortkey );
 		}
 
 		$db->endAtomicTransaction( __METHOD__ );
@@ -899,7 +901,8 @@ class SMWSql3SmwIds {
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey
+					'smw_sortkey' => $row->smw_sortkey,
+					'smw_sort' => $row->smw_sort
 				),
 				__METHOD__
 			);
@@ -913,7 +916,8 @@ class SMWSql3SmwIds {
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey
+					'smw_sortkey' => $row->smw_sortkey,
+					'smw_sort' => $row->smw_sort
 				),
 				__METHOD__
 			);

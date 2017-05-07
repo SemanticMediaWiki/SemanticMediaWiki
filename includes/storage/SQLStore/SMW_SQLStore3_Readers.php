@@ -168,7 +168,7 @@ class SMWSQLStore3Readers {
 	 *
 	 * @return SMWSemanticData
 	 */
-	private function getSemanticDataFromTable( $sid, DIWikiPage $subject, TableDefinition $proptable ) {
+	private function getSemanticDataFromTable( $sid, DIWikiPage $subject, TableDefinition $proptable, SMWRequestOptions $requestOptions = null ) {
 		// Do not clear the cache when called recursively.
 		self::$in_getSemanticData++;
 
@@ -180,7 +180,7 @@ class SMWSQLStore3Readers {
 		}
 
 		// *** Read the data ***//
-		$data = $this->fetchSemanticData( $sid, $subject, $proptable );
+		$data = $this->fetchSemanticData( $sid, $subject, $proptable, true, $requestOptions );
 		foreach ( $data as $d ) {
 			$this->store->m_semdata[$sid]->addPropertyStubValue( reset( $d ), end( $d ) );
 		}
@@ -476,10 +476,10 @@ class SMWSQLStore3Readers {
 
 		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
 			$from = $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
-			$select = 'smw_title, smw_namespace, smw_iw, smw_sortkey, smw_subobject';
+			$select = 'smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort';
 		} else { // no join needed, title+namespace as given in proptable
 			$from = $db->tableName( $proptable->getName() ) . " AS t1";
-			$select = 's_title AS smw_title, s_namespace AS smw_namespace, \'\' AS smw_iw, s_title AS smw_sortkey, \'\' AS smw_subobject';
+			$select = 's_title AS smw_title, s_namespace AS smw_namespace, \'\' AS smw_iw, \'\' AS smw_subobject, s_title AS smw_sortkey, s_title AS smw_sort';
 		}
 
 		if ( !$proptable->isFixedPropertyTable() ) {
@@ -499,16 +499,28 @@ class SMWSQLStore3Readers {
 			}
 		}
 
-		$res = $db->select( $from, 'DISTINCT ' . $select,
-		                    $where . $this->store->getSQLConditions( $requestOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
-		                    __METHOD__, $this->store->getSQLOptions( $requestOptions, 'smw_sortkey' ) );
+		$res = $db->select(
+			$from,
+			'DISTINCT ' . $select,
+			$where . $this->store->getSQLConditions( $requestOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
+			__METHOD__,
+			$this->store->getSQLOptions( $requestOptions, 'smw_sort' )
+		);
 
 		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
 
 		foreach ( $res as $row ) {
 			try {
 				if ( $row->smw_iw === '' || $row->smw_iw{0} != ':' ) { // filter special objects
-					$result[] = $diHandler->dataItemFromDBKeys( array_values( (array)$row ) );
+					$dbkeys = array(
+						$row->smw_title,
+						$row->smw_namespace,
+						$row->smw_iw,
+						$row->smw_sort,
+						$row->smw_subobject
+
+					);
+					$result[] = $diHandler->dataItemFromDBKeys( $dbkeys );
 				}
 			} catch ( DataItemHandlerException $e ) {
 				// silently drop data, should be extremely rare and will usually fix itself at next edit
@@ -714,10 +726,10 @@ class SMWSQLStore3Readers {
 
 				$where .= " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
 
-				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey,smw_iw',
+				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey,smw_sort,smw_iw',
 						// select sortkey since it might be used in ordering (needed by Postgres)
 						$where . $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
-						__METHOD__, $this->store->getSQLOptions( $subOptions, 'smw_sortkey' ) );
+						__METHOD__, $this->store->getSQLOptions( $subOptions, 'smw_sort' ) );
 
 				foreach ( $res as $row ) {
 					try {

@@ -174,7 +174,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'ORDER BY' => 'smw_sortkey', 'LIMIT' => 1001, 'OFFSET' => 0 ) ),
+				$this->equalTo( array( 'ORDER BY' => 'smw_sort', 'LIMIT' => 1001, 'OFFSET' => 0 ) ),
 				$this->anything() )
 			->will( $this->returnValue( array( $row ) ) );
 

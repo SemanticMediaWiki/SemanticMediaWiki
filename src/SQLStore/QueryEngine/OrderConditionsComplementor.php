@@ -149,14 +149,14 @@ class OrderConditionsComplementor {
 
 		// Find missing property to sort by.
 		if ( $label === '' ) { // Sort by first result column (page titles).
-			$querySegment->sortfields[$label] = "$querySegment->alias.smw_sortkey";
+			$querySegment->sortfields[$label] = "$querySegment->alias.smw_sort";
 		} elseif ( $label === '#' ) { // Sort by first result column (page titles).
 			// PHP7 showed a rather erratic behaviour where in cases
 			// the sortkey contains the same string for comparison, the
 			// result returned from the DB was mixed in order therefore
 			// using # as indicator to search for additional fields if
 			// no specific property is given (see test cases in #1534)
-			$querySegment->sortfields[$label] = "$querySegment->alias.smw_sortkey,$querySegment->alias.smw_title,$querySegment->alias.smw_subobject";
+			$querySegment->sortfields[$label] = "$querySegment->alias.smw_sort,$querySegment->alias.smw_title,$querySegment->alias.smw_subobject";
 		} elseif ( PropertyChainValue::isChained( $label ) ) { // Try to extend query.
 			$propertyChainValue = DataValueFactory::getInstance()->newDataValueByType( PropertyChainValue::TYPE_ID );
 			$propertyChainValue->setUserValue( $label );

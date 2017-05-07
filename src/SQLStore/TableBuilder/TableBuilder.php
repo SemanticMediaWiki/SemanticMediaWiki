@@ -32,6 +32,11 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	protected $configurations = array();
 
 	/**
+	 * @var array
+	 */
+	protected $processLog = array();
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param DatabaseBase $connection
@@ -176,6 +181,15 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 */
 	public function checkOn( $event ) {
 		return false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getProcessLog() {
+		return $this->processLog;
 	}
 
 	/**
