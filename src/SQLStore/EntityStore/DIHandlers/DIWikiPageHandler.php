@@ -113,23 +113,24 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		if ( is_array( $dbkeys ) && count( $dbkeys ) == 5 ) {
-			$namespace = intval( $dbkeys[1] );
 
-			if ( $namespace == SMW_NS_PROPERTY && $dbkeys[0] != '' &&
-				$dbkeys[0]{0} == '_' && $dbkeys[2] == '' ) {
-				// Correctly interpret internal property keys
-				$property = new DIProperty( $dbkeys[0] );
-				$wikipage = $property->getCanonicalDiWikiPage( $dbkeys[4] );
-				if ( !is_null( $wikipage ) ) {
-					return $wikipage;
-				}
-			} else {
-				return $this->newDiWikiPage( $dbkeys );
+		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 5 ) {
+			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
+		}
+
+		$namespace = intval( $dbkeys[1] );
+
+		if ( $namespace == SMW_NS_PROPERTY && $dbkeys[0] != '' &&
+			$dbkeys[0]{0} == '_' && $dbkeys[2] == '' ) {
+			// Correctly interpret internal property keys
+			$property = new DIProperty( $dbkeys[0] );
+			$wikipage = $property->getCanonicalDiWikiPage( $dbkeys[4] );
+			if ( !is_null( $wikipage ) ) {
+				return $wikipage;
 			}
 		}
 
-		throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
+		return $this->newDiWikiPage( $dbkeys );
 	}
 
 	private function newDiWikiPage( $dbkeys ) {

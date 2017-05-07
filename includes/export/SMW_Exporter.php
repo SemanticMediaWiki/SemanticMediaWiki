@@ -289,8 +289,9 @@ class SMWExporter {
 				if ( $addStubData ) {
 					// Add a default sort key; for pages that exist in the wiki,
 					// this is set during parsing
-					$defaultSortkey = new ExpLiteral( $diWikiPage->getSortKey() );
-					$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $defaultSortkey );
+					$property = new DIProperty( '_SKEY' );
+					$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
+					$resourceBuilder->addResourceValue( $result, $property, $diWikiPage );
 				}
 
 				if ( $diWikiPage->getPageLanguage() ) {

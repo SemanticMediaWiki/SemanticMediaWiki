@@ -1,0 +1,20 @@
+https://phabricator.wikimedia.org/T8948
+{{#subobject:
+ |Has page=Antonov An-2
+ |@category=Numeric sorting example
+}}{{#subobject:
+ |Has page=Antonov An-218
+ |@category=Numeric sorting example
+}}{{#subobject:
+ |Has page=Antonov An-22
+ |@category=Numeric sorting example
+}}{{#subobject:
+ |Has page=Antonov An-225
+ |@category=Numeric sorting example
+}}{{#subobject:
+ |Has page=Antonov An-24
+ |@category=Numeric sorting example
+}}{{#subobject:
+ |Has page=Antonov An-3
+ |@category=Numeric sorting example
+}}

@@ -9,6 +9,7 @@ use SMW\PropertySpecificationLookup;
 use SMW\Tests\JsonTestCaseScriptRunner;
 use SMW\Tests\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\SPARQLStore\TurtleTriplesBuilder;
 
 /**
  * @group semantic-mediawiki
@@ -102,6 +103,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->testEnvironment->resetMediaWikiService( 'TitleParser' );
 
 		$this->testEnvironment->resetPoolCacheById( PropertySpecificationLookup::POOLCACHE_ID );
+		$this->testEnvironment->resetPoolCacheById( TurtleTriplesBuilder::POOLCACHE_ID );
 
 		// Make sure LocalSettings don't interfere with the default settings
 		$GLOBALS['smwgDVFeatures'] = $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE;
@@ -180,6 +182,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgLinksInValues',
 			'smwgQFilterDuplicates',
 			'smwgQueryProfiler',
+			'smwgEntityCollation',
+			'smwgSparqlQFeatures',
 
 			// MW related
 			'wgLanguageCode',
@@ -302,8 +306,13 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			$this->queryTestCaseProcessor->processConceptCase( new QueryTestCaseInterpreter( $conceptCase ) );
 		}
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'format' ) as $formatCase ) {
-			$this->queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $formatCase ) );
+		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'format' ) as $case ) {
+
+			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
+				continue;
+			}
+
+			$this->queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $case ) );
 		}
 	}
 

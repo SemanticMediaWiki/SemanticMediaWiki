@@ -10,6 +10,7 @@ use SMWDataItem as DataItem;
 use SMW\DIProperty;
 use SMWSql3SmwIds;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Utils\Collator;
 
 /**
  * @private
@@ -79,8 +80,13 @@ class TableIntegrityExaminer implements MessageReporterAware {
 
 		$connection = $this->store->getConnection( DB_MASTER );
 
-		$this->doCheckPredefinedPropertyIndices(
+		$this->checkOnPredefinedPropertyIndicesPostCreation(
 			$connection
+		);
+
+		$this->checkOnActivitiesPostCreation(
+			$connection,
+			$tableBuilder->getProcessLog()
 		);
 
 		// Call out for RDBMS specific implementations
@@ -117,7 +123,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	 * is needed. At the same time, the entries in the DB make sure that DB-based
 	 * functions work as with all other properties.
 	 */
-	private function doCheckPredefinedPropertyIndices( $connection ) {
+	private function checkOnPredefinedPropertyIndicesPostCreation( $connection ) {
 
 		$this->messageReporter->reportMessage( "Checking predefined properties ...\n" );
 		$this->doCheckPredefinedPropertyBorder( $connection );
@@ -139,6 +145,8 @@ class TableIntegrityExaminer implements MessageReporterAware {
 				continue;
 			}
 
+			$label = $property->getCanonicalLabel();
+
 			$connection->replace(
 				SQLStore::ID_TABLE,
 				array( 'smw_id' ),
@@ -148,7 +156,8 @@ class TableIntegrityExaminer implements MessageReporterAware {
 					'smw_namespace' => SMW_NS_PROPERTY,
 					'smw_iw' => $this->store->getObjectIds()->getPropertyInterwiki( $property ),
 					'smw_subobject' => '',
-					'smw_sortkey' => $property->getCanonicalLabel()
+					'smw_sortkey' => $label,
+					'smw_sort' => Collator::singleton()->getSortKey( $label )
 				),
 				__METHOD__
 			);
@@ -191,6 +200,10 @@ class TableIntegrityExaminer implements MessageReporterAware {
 			'smw_iw=' . $connection->addQuotes( SMW_SQL3_SMWBORDERIW )
 		);
 
+		if ( $currentIdUpperbound === null ) {
+			return $this->messageReporter->reportMessage( "   ... done.\n" );
+		}
+
 		if ( $currentIdUpperbound !== false && $currentIdUpperbound->smw_id == $expectedIdUpperbound ) {
 			return $this->messageReporter->reportMessage( "   ... space for internal properties already allocated.\n" );
 		}
@@ -226,6 +239,25 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		}
 
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
+	}
+
+	private function checkOnActivitiesPostCreation( $connection, $processLog ) {
+
+		$tableName = $connection->tableName( SQLStore::ID_TABLE );
+		$this->messageReporter->reportMessage( "Checking post creation activities ...\n" );
+
+		// #2429, copy smw_sortkey content to the new smw_sort field once
+		if ( isset( $processLog[$tableName]['smw_sort'] ) && $processLog[$tableName]['smw_sort'] === TableBuilder::PROC_FIELD_NEW ) {
+			$emptyField = 'smw_sort';
+			$copyField = 'smw_sortkey';
+
+			$this->messageReporter->reportMessage( "   Table " . SQLStore::ID_TABLE . " ...\n" );
+			$this->messageReporter->reportMessage( "   ... copying $copyField to $emptyField ... " );
+			$connection->query( "UPDATE $tableName SET $emptyField = $copyField", __METHOD__ );
+			$this->messageReporter->reportMessage( "done.\n" );
+		}
+
+		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
 }

@@ -164,6 +164,10 @@ class MySQLTableBuilder extends TableBuilder {
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
 
+		if ( !isset( $this->processLog[$tableName] ) ) {
+			$this->processLog[$tableName] = array();
+		}
+
 		$fieldType = $this->getStandardFieldType( $fieldType );
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
@@ -176,6 +180,9 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doCreateField( $tableName, $fieldName, $position, $fieldType ) {
+
+		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
+
 		$this->reportMessage( "   ... creating field $fieldName ... " );
 		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $position", __METHOD__ );
 		$this->reportMessage( "done.\n" );

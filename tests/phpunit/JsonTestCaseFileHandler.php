@@ -95,6 +95,11 @@ class JsonTestCaseFileHandler {
 				$compare = '<';
 			}
 
+			if ( strpos( $versionToSkip, '<' ) ) {
+				$versionToSkip = str_replace( '<', '', $versionToSkip );
+				$compare = '<';
+			}
+
 			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
 				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
 				return true;
@@ -156,8 +161,19 @@ class JsonTestCaseFileHandler {
 			}
 
 			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+			$compare = '=';
 
-			if ( version_compare( $mwVersion, $versionToSkip, '=' ) ) {
+			if ( strpos( $versionToSkip, '.x' ) ) {
+				$versionToSkip = str_replace( '.x', '.9999', $versionToSkip );
+				$compare = '<';
+			}
+
+			if ( strpos( $versionToSkip, '<' ) ) {
+				$versionToSkip = str_replace( '<', '', $versionToSkip );
+				$compare = '<';
+			}
+
+			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
 				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
 				break;
 			}
@@ -202,24 +218,22 @@ class JsonTestCaseFileHandler {
 			return $smwgNamespacesWithSemanticLinks;
 		}
 
-		if ( $key === 'smwgDVFeatures' && isset( $settings[$key] ) ) {
-			$smwgDVFeatures = '';
+		$constantFeaturesList = array(
+			'smwgSparqlQFeatures',
+			'smwgDVFeatures',
+			'smwgFulltextSearchIndexableDataTypes'
+		);
 
-			foreach ( $settings[$key] as $value ) {
-				$smwgDVFeatures = constant( $value ) | (int)$smwgDVFeatures;
+		foreach ( $constantFeaturesList as $constantFeatures ) {
+			if ( $key === $constantFeatures && isset( $settings[$key] ) ) {
+				$features = '';
+
+				foreach ( $settings[$key] as $value ) {
+					$features = constant( $value ) | (int)$features;
+				}
+
+				return $features;
 			}
-
-			return $smwgDVFeatures;
-		}
-
-		if ( $key === 'smwgFulltextSearchIndexableDataTypes' && isset( $settings[$key] ) ) {
-			$smwgFulltextSearchIndexableDataTypes = '';
-
-			foreach ( $settings[$key] as $value ) {
-				$smwgFulltextSearchIndexableDataTypes = constant( $value ) | (int)$smwgFulltextSearchIndexableDataTypes;
-			}
-
-			return $smwgFulltextSearchIndexableDataTypes;
 		}
 
 		if ( $key === 'wgDefaultUserOptions' && isset( $settings[$key] ) ) {

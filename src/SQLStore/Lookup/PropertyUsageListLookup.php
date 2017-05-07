@@ -92,7 +92,7 @@ class PropertyUsageListLookup implements ListLookup {
 	private function doQueryPropertyTable() {
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = array( 'ORDER BY' => 'smw_sortkey' );
+		$options = array( 'ORDER BY' => 'smw_sort' );
 
 		$conditions = array(
 			'smw_namespace' => SMW_NS_PROPERTY,

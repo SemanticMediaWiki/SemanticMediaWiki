@@ -11,6 +11,7 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\Content\PropertyPageMessageHtmlBuilder;
 use SMW\PropertySpecificationReqExaminer;
+use SMW\Utils\Collator;
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on
@@ -311,8 +312,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$diWikiPage = $diWikiPages[$index];
 			$dvWikiPage = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null );
 
-			$sortkey = $this->store->getWikiPageSortKey( $diWikiPage );
-			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
+			$sortKey = $this->store->getWikiPageSortKey( $diWikiPage );
+			$start_char = Collator::singleton()->getFirstLetter( $sortKey );
 
 			// Header for index letters
 			if ( $start_char != $prev_start_char ) {

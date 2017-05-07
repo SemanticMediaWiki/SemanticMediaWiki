@@ -174,10 +174,12 @@ EOT;
 
 		$fieldType = strtoupper( $fieldType );
 
+		if ( !isset( $this->processLog[$tableName] ) ) {
+			$this->processLog[$tableName] = array();
+		}
+
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->reportMessage( "   ... creating field $fieldName ... " );
-			$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType", __METHOD__ );
-			$this->reportMessage( "done.\n" );
+			$this->doCreateField( $tableName, $fieldName, $position, $fieldType );
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->reportMessage( "   ... changing type of field $fieldName from '$currentFields[$fieldName]' to '$fieldType' ... " );
 
@@ -209,6 +211,15 @@ EOT;
 		} else {
 			$this->reportMessage( "   ... field $fieldName is fine.\n" );
 		}
+	}
+
+	private function doCreateField( $tableName, $fieldName, $position, $fieldType ) {
+
+		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
+
+		$this->reportMessage( "   ... creating field $fieldName ... " );
+		$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType", __METHOD__ );
+		$this->reportMessage( "done.\n" );
 	}
 
 	private function doDropField( $tableName, $fieldName ) {

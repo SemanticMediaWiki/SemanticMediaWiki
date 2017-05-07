@@ -141,6 +141,17 @@ return array(
 	# - SMW_SPARQL_QF_SUBP to resolve subproperties
 	# - SMW_SPARQL_QF_SUBC to resolve subcategories
 	#
+	# - SMW_SPARQL_QF_COLLATION allows to add support for the sorting collation as
+	#   maintained in $smwgEntityCollation. It is not enabled by default as the
+	#   `uca-*` collation generates a UTF-8 string that contains unrecognized
+	#   UTF codepoints that may not be understood by the back-end hence the
+	#   Collator prevents and armors those unrecognized characters by replacing
+	#   them with a ? to avoid a cURL communication failure but of course this
+	#   means that not all elements of the sort string can be transfered to the
+	#   back-end and can therefore cause a sorting distortion for close matches
+	#   as in case of for example "Ennis, Ennis Hill, Ennis Jones, Ennis-Hill,
+	#   Ennis-London"
+	#
 	# Please check with your repository provider whether SPARQL 1.1 is fully
 	# supported or not, and if not SMW_SPARQL_QF_NONE should be set.
 	#
@@ -1460,6 +1471,28 @@ return array(
 	# @since 2.5
 	##
 	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '%' ),
+	##
+
+	##
+	# Entity specific collation
+	#
+	# This should correspond to the $wgCategoryCollation setting (also in regards
+	# to selected argument values), yet it is kept separate to have a better
+	# control over changes in regards to the collation, sorting, and display of
+	# values.
+	#
+	# This setting is "global" and applies to any entity that is maintained for
+	# a wiki. In being global means that it cannot be selective (use one collation
+	# for one query and use another collation for a different query) because the
+	# field (smw_sort) contains a computed representation of the sort value.
+	#
+	# ANY change to this setting requires to run the `updateEntityCollation.php`
+	# maintenance script.
+	#
+	# @since 3.0
+	# @default identity (as legacy setting)
+	##
+	'smwgEntityCollation' => 'identity',
 	##
 
 );

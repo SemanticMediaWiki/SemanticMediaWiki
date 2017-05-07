@@ -108,7 +108,7 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 				);
 			}
 
-			$subobject->setSortKey( $row->smw_sortkey );
+			$subobject->setSortKey( $row->smw_sort );
 			$subobject->setId( $row->smw_id );
 
 			return $subobject;
@@ -146,7 +146,7 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 			array(
 				'smw_id',
 				'smw_subobject',
-				'smw_sortkey'
+				'smw_sort'
 			),
 			$condition,
 			__METHOD__

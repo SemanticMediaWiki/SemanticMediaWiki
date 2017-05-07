@@ -127,6 +127,7 @@ define( 'SMW_SPARQL_QF_NONE', 0 ); // does not support any features
 define( 'SMW_SPARQL_QF_REDI', 2 ); // support for inverse property paths to find redirects
 define( 'SMW_SPARQL_QF_SUBP', 4 ); // support for rdfs:subPropertyOf*
 define( 'SMW_SPARQL_QF_SUBC', 8 ); // support for rdfs:subClassOf*
+define( 'SMW_SPARQL_QF_COLLATION', 16 ); // support for use of $smwgEntityCollation
 /**@}*/
 
 /**@{

@@ -148,6 +148,55 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCheckOnActivitiesPostCreationForID_TABLE() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'query' )
+			->with( $this->equalTo( 'UPDATE smw_object_ids SET smw_sort = smw_sortkey' ) );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'tableName' )
+			->will( $this->returnValue( 'smw_object_ids' ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getConnection' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$tableBuilder->expects( $this->any() )
+			->method( 'getProcessLog' )
+			->will( $this->returnValue( array( 'smw_object_ids' => array( 'smw_sort' => 'new' ) ) ) );
+
+		$tableBuilder->expects( $this->once() )
+			->method( 'checkOn' );
+
+		$instance = new TableIntegrityExaminer(
+			$store
+		);
+
+		$instance->setPredefinedProperties( array() );
+
+		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->checkOnPostCreation( $tableBuilder );
+
+		$this->assertContains(
+			'copying smw_sortkey to smw_sort',
+			$this->spyMessageReporter->getMessagesAsString()
+		);
+	}
+
 	public function testCheckOnPostDestruction() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )

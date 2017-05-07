@@ -1,0 +1,52 @@
+{
+	"description": "Test RDF output on `swivt:sort` with enabled collation (#2065, `smwgEntityCollation=uppercase`, `smwgSparqlQFeatures=SMW_SPARQL_QF_COLLATION`, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"page": "Example/R0019/1",
+			"contents": "[[Has url::https://example.org/Foo]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0",
+			"dumpRDF": {
+				"parameters": {
+					"page": "Example/R0019/1"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Example/R0019/1</swivt:wikiPageSortKey>",
+					"<swivt:sort rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">EXAMPLE/R0019/1</swivt:sort>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgEntityCollation": "uppercase",
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_REDI",
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC",
+			"SMW_SPARQL_QF_COLLATION"
+		],
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

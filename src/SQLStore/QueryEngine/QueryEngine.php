@@ -542,7 +542,15 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			}
 
 			if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $qobj->sortfields ) ) { // Field was successfully added.
-				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $qobj->sortfields[$propkey] . " $order ";
+
+				$list = $qobj->sortfields[$propkey];
+
+				// Contains a compound list of sortfields without order?
+				if ( strpos( $list, ',' ) !== false && strpos( $list, $order ) === false ) {
+					$list = str_replace( ',', " $order,", $list );
+				}
+
+				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $list . " $order ";
 			} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->get( 'smwgQRandSortingSupport' ) ) {
 				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . ' RAND() ';
 			}

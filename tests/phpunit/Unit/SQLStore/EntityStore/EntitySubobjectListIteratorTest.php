@@ -76,6 +76,7 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 		$row = new \stdClass;
 		$row->smw_id = 42;
 		$row->smw_sortkey = 'sort';
+		$row->smw_sort = 'SORT';
 		$row->smw_subobject = '10000000001';
 
 		$expected = array(

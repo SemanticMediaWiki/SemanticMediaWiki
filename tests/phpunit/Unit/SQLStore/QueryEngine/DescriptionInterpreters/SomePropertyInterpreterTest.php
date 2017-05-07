@@ -363,7 +363,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->components = array( 1 => "t0.p_id", 2 => "t0.wikipageIndex" );
 		$expected->queryNumber = 0;
 		$expected->where = '';
-		$expected->sortfields = array( 'Foo' => 'idst0.smw_sortkey' );
+		$expected->sortfields = array( 'Foo' => 'idst0.smw_sort' );
 		$expected->from = ' INNER JOIN  AS idst0 ON idst0.smw_id=t0.wikipageIndex';
 
 		$provider[] = array(

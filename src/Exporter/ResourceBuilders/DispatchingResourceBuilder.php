@@ -102,6 +102,14 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 
 		$this->addResourceBuilder( new UniquenessConstraintPropertyValueResourceBuilder() );
 
+		$sortPropertyValueResourceBuilder = new SortPropertyValueResourceBuilder();
+
+		$sortPropertyValueResourceBuilder->enabledCollationField(
+			( (int)$GLOBALS['smwgSparqlQFeatures'] & SMW_SPARQL_QF_COLLATION ) != 0
+		);
+
+		$this->addResourceBuilder( $sortPropertyValueResourceBuilder );
+
 		$this->addResourceBuilder( new PropertyDescriptionValueResourceBuilder() );
 		$this->addResourceBuilder( new PreferredPropertyLabelResourceBuilder() );
 
