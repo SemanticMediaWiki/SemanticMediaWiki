@@ -209,9 +209,9 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$result .= $message . "</p>";
 
 			if ( $resultCount < 6 ) {
-				$result .= SMWPageLister::getShortList( 0, $resultCount, $propertyList, null );
+				$result .= SMWPageLister::getShortList( 0, $resultCount, $propertyList, $property );
 			} else {
-				$result .= SMWPageLister::getColumnList( 0, $resultCount, $propertyList, null );
+				$result .= SMWPageLister::getColumnList( 0, $resultCount, $propertyList, $property );
 			}
 
 			$result .= "\n</div>";

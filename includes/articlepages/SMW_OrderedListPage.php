@@ -175,15 +175,16 @@ abstract class SMWOrderedListPage extends Article {
 	 * Main method for adding all additional HTML to the output stream.
 	 */
 	protected function showList() {
-		global $wgOut, $wgRequest;
+		global $wgRequest;
 
+		$outputPage = $this->getContext()->getOutput();
 
 		$this->from = $wgRequest->getVal( 'from', '' );
 		$this->until = $wgRequest->getVal( 'until', '' );
 
 		if ( $this->initParameters() ) {
-			$wgOut->addHTML( $this->getHtml() );
-			SMWOutputs::commitToOutputPage( $wgOut );
+			$outputPage->addHTML( $this->getHtml() );
+			SMWOutputs::commitToOutputPage( $outputPage );
 		}
 
 	}

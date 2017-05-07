@@ -279,6 +279,12 @@ class SMWPageLister {
 	public static function getShortList( $start, $end, array $diWikiPages, $diProperty ) {
 
 		$startDv = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$start], $diProperty );
+
+		// For a redirect, disable the DisplayTitle to show the original (aka source) page
+		if ( $diProperty !== null && $diProperty->getKey() == '_REDI' ) {
+			$startDv->setOption( 'smwgDVFeatures', ( $startDv->getOption( 'smwgDVFeatures' ) & ~SMW_DV_WPV_DTITLE ) );
+		}
+
 		$startChar = self::getFirstChar( $diWikiPages[$start] );
 
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
@@ -287,6 +293,12 @@ class SMWPageLister {
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
 			$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
+
+			// For a redirect, disable the DisplayTitle to show the original (aka source) page
+			if ( $diProperty !== null && $diProperty->getKey() == '_REDI' ) {
+				$dataValue->setOption( 'smwgDVFeatures', ( $dataValue->getOption( 'smwgDVFeatures' ) & ~SMW_DV_WPV_DTITLE ) );
+			}
+
 			$startChar = self::getFirstChar( $diWikiPages[$index] );
 
 			if ( $startChar != $prevStartChar ) {
