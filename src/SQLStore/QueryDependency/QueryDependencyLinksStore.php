@@ -275,10 +275,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		$options = array(
 			'LIMIT'     => $requestOptions->getLimit(),
 			'OFFSET'    => $requestOptions->getOffset(),
-			'GROUP BY'  => 's_id',
-			'ORDER BY'  => 's_id',
-			'DISTINCT'  => true
-		);
+		) + array( 'DISTINCT' );
 
 		$conditions = array(
 			'o_id' => $idlist
