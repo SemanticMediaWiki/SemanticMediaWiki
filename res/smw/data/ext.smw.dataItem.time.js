@@ -52,39 +52,47 @@
 			}
 		}
 
-		// SMW seralization format with:
+		// SMW serialization format with:
 		if ( this.raw !== null ) {
 			var date = this.raw.split( '/' );
 
 			// [0] contains the calendar model
 			this.calendarModel = date[0];
-
-			this.date = new Date( date[1] );
 			this.precision = FLAG_YEAR;
 
-			// Note: January is 0, February is 1, and so on
 			if ( typeof date[2] !== 'undefined' ) {
-				this.date.setMonth( ( date[2] - 1 ) );
+				// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+				// Note: January is 0, February is 1, and so on
+				date[2] = date[2] - 1;
 				this.precision = this.precision | FLAG_MONTH;
-			};
+			} else {
+				date[2] = 0;
+			}
 
 			if ( typeof date[3] !== 'undefined' ) {
-				this.date.setDate( date[3] );
 				this.precision = this.precision | FLAG_DAY;
-			};
+			} else {
+				date[3] = 0;
+			}
 
 			if ( typeof date[4] !== 'undefined' ) {
-				this.date.setHours( date[4] );
 				this.precision = this.precision | FLAG_TIME;
-			};
+			} else {
+				date[4] = 0;
+			}
 
-			if ( typeof date[5] !== 'undefined' ) {
-				this.date.setMinutes( date[5] );
-			};
+			if ( typeof date[5] === 'undefined' ) {
+				date[5] = 0;
+			}
 
-			if ( typeof date[6] !== 'undefined' ) {
-				this.date.setSeconds( date[6] );
-			};
+			if ( typeof date[6] === 'undefined' ) {
+				date[6] = 0;
+			}
+
+			// Date is called as a constructor with more than one argument, the
+			// specifed arguments represent local time. If UTC is desired, use
+			// new Date(Date.UTC(...))
+			this.date = new Date( Date.UTC( date[1], date[2], date[3], date[4], date[5], date[6] ) );
 		};
 
 		return this;
