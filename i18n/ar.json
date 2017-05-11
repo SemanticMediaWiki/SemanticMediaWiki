@@ -13,7 +13,8 @@
 			"Kghbln",
 			"Alaa",
 			"Moud hosny",
-			"ديفيد"
+			"ديفيد",
+			"Mido"
 		]
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
@@ -245,7 +246,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>يوجد تحديث جارٍ بالفعل.</strong>\nمن الطبيعي أن تتقدم عمليات التحديث ببطء بما أنها تجري على البيانات بكميات صغيرة كل مرة يستخدم فيها شخص ما الويكي.\nلإتمام التحديث سريعا يمكنك تشغيل سكربت صيانة ميدياويكي <code>runJobs.php</code> (استخدم الخيار <code>--maxjobs 1000</code> لتحديد عدد التحديثات المجراة في كل دفعة).\nالتقدم التقديري للتحديث الحالي:",
 	"smw_smwadmin_datarefreshbutton": "أبدا تحديث البيانات",
 	"smw_smwadmin_datarefreshstop": "أوقف هذا التحديث",
-	"smw_smwadmin_datarefreshstopconfirm": "نعم، أنا متأكد",
+	"smw_smwadmin_datarefreshstopconfirm": "نعم، أنا {{GENDER:$1|متأكد|متأكدة}}.",
 	"smw-admin-support": "الحصول على دعم",
 	"smw-admin-supportdocu": "توجد مصادر متعددة للمساعدة في حال حدوث مشاكل:",
 	"smw-admin-installfile": "لو واجهتك مشاكل مع تنصيبتك فابدأ بمراجعة الإرشادات في <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">ملف INSTALL</a>.",
