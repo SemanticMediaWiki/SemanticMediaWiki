@@ -532,7 +532,7 @@
 	"smw-datavalue-type-invalid-typeuri": "Le type « $1 » ne peut pas être transformé en une représentation URI valide.",
 	"smw-datavalue-wikipage-missing-fragment-context": "La valeur d’entrée wikipage « $1 » ne peut pas être utilisée sans une page de contexte.",
 	"smw-datavalue-wikipage-invalid-title": "La valeur d’entrée du type de page « $1 » contient des caractères non valides ou est incomplète et peut donc provoquer des résultats inattendus lors d’une requête ou d’un processus d’annotation.",
-	"smw-datavalue-wikipage-property-invalid-title": "La propriété « $1 » (comme le type de page) sans valeur d’entrée « $2 » contient des caractères non valides ou est incomplète, et donc peut provoquer des résultats inattendus lors d’une requête ou d’un processus d’annotation.",
+	"smw-datavalue-wikipage-property-invalid-title": "La propriété « $1 » (comme le type de page) avec la valeur d’entrée « $2 » contient des caractères non valides ou est incomplète, et donc peut provoquer des résultats inattendus lors d’une requête ou d’un processus d’annotation.",
 	"smw-datavalue-wikipage-empty": "La valeur d’entrée wikipage est vide (par ex. <code>[[SomeProperty::]], [[]]</code>) et ne peut donc pas être utilisée comme nom ou partie d’une condition de requête.",
 	"smw-sp-types_ref_rec": "«$1» est un type de [https://www.semantic-mediawiki.org/wiki/Container conteneur] qui permet d'enregistrer des informations supplémentaires (par exemple, la provenance des données) lors d'une affectation de valeur.",
 	"smw-datavalue-reference-outputformat": "$1 : $2",
@@ -573,5 +573,5 @@
 	"smw-format-datatable-next": "Suivant",
 	"smw-format-datatable-previous": "Précédent",
 	"smw-format-datatable-sortascending": ": activer pour trier la colonne dans l'ordre croissant",
-	"smw-format-datatable-sortdescending": ": activer pour trier la colonne en sens décroissant"
+	"smw-format-datatable-sortdescending": ": activer pour trier la colonne en ordre décroissant"
 }
