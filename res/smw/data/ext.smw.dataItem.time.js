@@ -189,12 +189,12 @@
 		 */
 		getTimeString: function() {
 			var d = this.date;
-			if ( d.getHours() + d.getMinutes() + d.getSeconds() === 0 ){
+			if ( d.getUTCHours() + d.getUTCMinutes() + d.getUTCSeconds() === 0 ){
 				return '00:00:00';
 			}
-			return ( d.getHours() < 10 ? '0' + d.getHours() : d.getHours() ) +
-				':' + ( d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes() ) +
-				':' + ( d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds() );
+			return ( d.getUTCHours() < 10 ? '0' + d.getUTCHours() : d.getUTCHours() ) +
+				':' + ( d.getUTCMinutes() < 10 ? '0' + d.getUTCMinutes() : d.getUTCMinutes() ) +
+				':' + ( d.getUTCSeconds() < 10 ? '0' + d.getUTCSeconds() : d.getUTCSeconds() );
 		},
 
 		/**
@@ -225,14 +225,14 @@
 				var calendarModel = this.calendarModel !== undefined && this.calendarModel == CM_JULIAN ? ' <sup>JL</sup>' : '';
 
 				return '' +
-					( ( this.precision & FLAG_DAY ) ? ( this.date.getDate() ) + ' ' + ( monthNames[(this.date.getMonth())] ) + ' ' : '' ) +
-					( ( this.precision & FLAG_YEAR ) ? ( this.date.getFullYear() ) + ' ' : '' ) +
+					( ( this.precision & FLAG_DAY ) ? ( this.date.getUTCDate() ) + ' ' + ( monthNames[(this.date.getUTCMonth())] ) + ' ' : '' ) +
+					( ( this.precision & FLAG_YEAR ) ? ( this.date.getUTCFullYear() ) + ' ' : '' ) +
 					( ( this.precision & FLAG_TIME ) && this.getTimeString() !== '00:00:00' ? ( this.getTimeString() ) : '' ) + calendarModel;
 			};
 
-			return this.date.getDate() + ' ' +
-				monthNames[this.date.getMonth()] + ' ' +
-				this.date.getFullYear() +
+			return this.date.getUTCDate() + ' ' +
+				monthNames[this.date.getUTCMonth()] + ' ' +
+				this.date.getUTCFullYear() +
 				( this.getTimeString() !== '00:00:00' ? ' ' + this.getTimeString() : '' );
 		}
 	};
