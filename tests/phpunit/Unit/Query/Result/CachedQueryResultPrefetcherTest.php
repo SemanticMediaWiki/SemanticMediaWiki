@@ -240,6 +240,36 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		$instance->resetCacheBy( $subject );
 	}
 
+	public function testPurgeCacheBySubjectWithDependantHashIdExtension() {
+
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'canUse' )
+			->will( $this->returnValue( true ) );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'delete' )
+			->with( $this->equalTo( '855d675e0900f43bab62c191295af40d' ) );
+
+		$this->bufferedStatsdCollector->expects( $this->once() )
+			->method( 'recordStats' );
+
+		$instance = new CachedQueryResultPrefetcher(
+			$this->store,
+			$this->queryFactory,
+			$this->blobStore,
+			$this->bufferedStatsdCollector
+		);
+
+		$instance->setDependantHashIdExtension( 'foo' );
+		$instance->resetCacheBy( $subject );
+	}
+
 	public function testPurgeCacheBySubjectWith_QUERY() {
 
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
