@@ -33,6 +33,11 @@ class SMWSQLStore3Readers {
 	private $factory;
 
 	/**
+	 * @var SqlEntityLookupResultFetcher
+	 */
+	private $sqlEntityLookupResultFetcher;
+
+	/**
 	 *  >0 while getSemanticData runs, used to prevent nested calls from clearing the cache
 	 * while another call runs and is about to fill it with data
 	 *
@@ -43,6 +48,7 @@ class SMWSQLStore3Readers {
 	public function __construct( SMWSQLStore3 $parentStore, $factory ) {
 		$this->store = $parentStore;
 		$this->factory = $factory;
+		$this->sqlEntityLookupResultFetcher = $this->factory->newSqlEntityLookupResultFetcher();
 	}
 
 	/**
@@ -720,7 +726,24 @@ class SMWSQLStore3Readers {
 			}
 
 			$where = $from = '';
-			if ( !$proptable->isFixedPropertyTable() ) { // join ID table to get property titles
+
+			if ( $this->sqlEntityLookupResultFetcher->isEnabledFeature( SMW_EL_INPROP ) ) {
+
+				$res = $this->sqlEntityLookupResultFetcher->fetchIncomingProperties(
+					$proptable,
+					$value,
+					$requestOptions
+				);
+
+				foreach ( $res as $row ) {
+					try {
+						$result[] = new SMW\DIProperty( $row->smw_title );
+					} catch (SMWDataItemException $e) {
+						// has been observed to happen (empty property title); cause unclear; ignore this data
+					}
+				}
+
+			} elseif ( !$proptable->isFixedPropertyTable() ) { // join ID table to get property titles
 				$from = $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.p_id=smw_id";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
 
@@ -747,7 +770,6 @@ class SMWSQLStore3Readers {
 					$result[] = new SMW\DIProperty( $proptable->getFixedProperty() );
 				}
 			}
-			$db->freeResult( $res );
 		}
 
 		$result = $this->store->applyRequestOptions( $result, $requestOptions ); // apply options to overall result

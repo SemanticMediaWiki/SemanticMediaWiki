@@ -12,6 +12,7 @@ use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMWRequestOptions as RequestOptions;
+use SMW\Options;
 use SMWSQLStore3;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use Onoi\MessageReporter\MessageReporterFactory;
@@ -19,6 +20,7 @@ use SMWSql3SmwIds as IdTableManager;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
 use SMW\SQLStore\EntityStore\CachedEntityLookup;
 use SMW\SQLStore\EntityStore\DirectEntityLookup;
+use SMW\SQLStore\EntityStore\SqlEntityLookupResultFetcher;
 
 /**
  * @license GNU GPL v2+
@@ -416,6 +418,24 @@ class SQLStoreFactory {
 	 */
 	public function getLogger() {
 		return ApplicationFactory::getInstance()->getMediaWikiLogger();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return SqlEntityLookupResultFetcher
+	 */
+	public function newSqlEntityLookupResultFetcher() {
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$options = new Options(
+			array(
+				'smwgEntityLookupFeatures' => $settings->get( 'smwgEntityLookupFeatures' )
+			)
+		);
+
+		return new SqlEntityLookupResultFetcher( $this->store, $options );
 	}
 
 	/**

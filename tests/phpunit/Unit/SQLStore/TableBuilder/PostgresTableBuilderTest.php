@@ -117,7 +117,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->at( 5 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'CREATE INDEX foo_index0 ON foo (bar)' ) );
+			->with( $this->stringContains( 'CREATE INDEX foo_idx_bar ON foo (bar)' ) );
 
 		$instance = PostgresTableBuilder::factory( $connection );
 

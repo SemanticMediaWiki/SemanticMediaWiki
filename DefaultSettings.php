@@ -1495,4 +1495,18 @@ return array(
 	'smwgEntityCollation' => 'identity',
 	##
 
+	##
+	# Entity lookup specific features
+	#
+	# - SMW_EL_NONE applies no query or schema changes
+	#
+	# - SMW_EL_INPROP enables a new query form for selecting incoming properties
+	#   (#1234)
+	#
+	# @since 3.0
+	# @default false
+	##
+	'smwgEntityLookupFeatures' => SMW_EL_INPROP,
+	##
+
 );

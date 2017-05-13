@@ -34,7 +34,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testTransformToSQLOptions() {
+	public function testTransformToSQLOptionsWithoutOrderBy() {
 
 		$instance = new RequestOptionsProcessor( $this->store );
 
@@ -45,6 +45,26 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = array(
 			'LIMIT'    => 1,
+			'OFFSET'   => 2
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->getSQLOptionsFrom( $requestOptions, 'Foo' )
+		);
+	}
+
+	public function testTransformToSQLOptionsWithOrderBy() {
+
+		$instance = new RequestOptionsProcessor( $this->store );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = 2;
+		$requestOptions->offset = 2;
+		$requestOptions->sort = true;
+
+		$expected = array(
+			'LIMIT'    => 2,
 			'OFFSET'   => 2,
 			'ORDER BY' => 'Foo'
 		);

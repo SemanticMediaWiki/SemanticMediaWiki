@@ -61,6 +61,12 @@ class RequestOptionsProcessor {
 			$sqlConds['ORDER BY'] = $requestOptions->ascending ? $valueCol : $valueCol . ' DESC';
 		}
 
+		// Avoid a possible filesort (likely caused by ORDER BY) when limit is
+		// less than 2
+		if ( $requestOptions->limit < 2 ) {
+			unset( $sqlConds['ORDER BY'] );
+		}
+
 		return $sqlConds;
 	}
 
