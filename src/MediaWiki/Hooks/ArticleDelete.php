@@ -4,7 +4,11 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
 use SMW\EventHandler;
+use Wikipage;
+use Title;
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 
@@ -16,23 +20,7 @@ use Psr\Log\LoggerAwareInterface;
  *
  * @author mwjames
  */
-class ArticleDelete implements LoggerAwareInterface {
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
-	}
+class ArticleDelete extends HookHandler {
 
 	/**
 	 * @since 2.0
@@ -41,52 +29,10 @@ class ArticleDelete implements LoggerAwareInterface {
 	 *
 	 * @return true
 	 */
-	public function process( $wikiPage ) {
+	public function process( Wikipage $wikiPage ) {
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$eventHandler = EventHandler::getInstance();
-
-		$title = $wikiPage->getTitle();
-		$store = $applicationFactory->getStore();
-
-		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
-		$jobFactory = $applicationFactory->newJobFactory();
-
-		$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $store, $title, $semanticDataSerializer, $jobFactory, $eventHandler ) {
-
-			$subject = DIWikiPage::newFromTitle( $title );
-			$this->log( 'DeferredCallableUpdate on delete for ' . $subject->getHash() );
-
-			$parameters['semanticData'] = $semanticDataSerializer->serialize(
-				$store->getSemanticData( $subject )
-			);
-
-			$jobFactory->newUpdateDispatcherJob( $title, $parameters )->insert();
-
-			// Do we want this?
-			/*
-			$properties = $store->getInProperties( $subject );
-			$jobList = array();
-
-			foreach ( $properties as $property ) {
-				$propertySubjects = $store->getPropertySubjects( $property, $subject );
-				foreach ( $propertySubjects as $sub ) {
-					$jobList[$sub->getHash()] = true;
-				}
-			}
-
-			$jobFactory->newUpdateDispatcherJob( $title, array( 'job-list' => $jobList ) )->insert();
-			*/
-			$store->deleteSubject( $title );
-
-			$dispatchContext = $eventHandler->newDispatchContext();
-			$dispatchContext->set( 'title', $title );
-			$dispatchContext->set( 'context', 'ArticleDelete' );
-
-			$eventHandler->getEventDispatcher()->dispatch(
-				'cached.prefetcher.reset',
-				$dispatchContext
-			);
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $wikiPage ) {
+			$this->doDelete( $wikiPage->getTitle() );
 		} );
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ );
@@ -95,13 +41,60 @@ class ArticleDelete implements LoggerAwareInterface {
 		return true;
 	}
 
-	private function log( $message, $context = array() ) {
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title $title
+	 */
+	public function doDelete( Title $title ) {
 
-		if ( $this->logger === null ) {
-			return;
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$store = $applicationFactory->getStore();
+		$subject = DIWikiPage::newFromTitle( $title );
+
+		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+		$jobFactory = $applicationFactory->newJobFactory();
+
+		// Instead of Store::getSemanticData, construct the SemanticData by
+		// attaching only the incoming properties indicating which entities
+		// carry an actual reference to this subject
+		$semanticData = new SemanticData(
+			$subject
+		);
+
+		$properties = $store->getInProperties( $subject );
+
+		foreach ( $properties as $property ) {
+			// Avoid doing $propertySubjects = $store->getPropertySubjects( $property, $subject );
+			// as it may produce a too large pool of entities and ultimately
+			// block the delete transaction
+			// Use the subject as dataItem with the UpdateDispatcherJob because
+			// Store::getAllPropertySubjects is only scanning the property
+			$semanticData->addPropertyObjectValue( $property, $subject );
 		}
 
-		$this->logger->info( $message, $context );
+		$parameters['semanticData'] = $semanticDataSerializer->serialize(
+			$semanticData
+		);
+
+		// Restricted to the available SemanticData
+		$parameters[UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL] = true;
+
+		$jobFactory->newUpdateDispatcherJob( $title, $parameters )->insert();
+
+		$store->deleteSubject( $title );
+
+		$eventHandler = EventHandler::getInstance();
+		$dispatchContext = $eventHandler->newDispatchContext();
+
+		$dispatchContext->set( 'title', $title );
+		$dispatchContext->set( 'context', 'ArticleDelete' );
+
+		$eventHandler->getEventDispatcher()->dispatch(
+			'cached.prefetcher.reset',
+			$dispatchContext
+		);
 	}
 
 }

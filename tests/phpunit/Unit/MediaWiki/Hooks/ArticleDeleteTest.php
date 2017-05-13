@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\Tests\TestEnvironment;
+use SMW\DIProperty;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleDelete
@@ -50,25 +51,9 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testProcess() {
+	public function testActOn() {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
-
-		$semanticData = $this->getMockBuilder( '\SMWSemanticData' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( array() ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -78,8 +63,8 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'deleteSubject' );
 
 		$store->expects( $this->atLeastOnce() )
-			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->method( 'getInProperties' )
+			->will( $this->returnValue( array( new DIProperty( 'Foo' ) ) ) );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()

@@ -7,8 +7,8 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\SemanticData;
-use SMW\Settings;
 use Title;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateDispatcherJob
@@ -23,15 +23,15 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 	protected $expectedProperty;
 	protected $expectedSubjects;
-
-	private $applicationFactory;
+	private $semanticDataSerializer;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
 
-		$settings = Settings::newFromArray( array(
+		$this->testEnvironment = new TestEnvironment( array(
 			'smwgCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false
 		) );
@@ -40,13 +40,11 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
-		$this->applicationFactory->registerObject( 'Settings', $settings );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -137,7 +135,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getInProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $title, array() );
 		$instance->isEnabledJobQueue( false );
@@ -174,12 +172,46 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $title, array() );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
+	}
+
+	public function testJobRunOnRestrictedPool() {
+
+		$title = Title::newFromText( __METHOD__ );
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$semanticData = new SemanticData( $subject );
+		$semanticData->addPropertyObjectValue( new DIProperty( '42' ), $subject );
+
+		$parameters = array(
+			'semanticData' => $this->semanticDataSerializer->serialize( $semanticData ),
+			UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL => true
+		);
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array(
+				'getAllPropertySubjects',
+				) )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'getAllPropertySubjects' )
+			->will( $this->returnValue( array() ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new UpdateDispatcherJob( $title, $parameters );
+		$instance->isEnabledJobQueue( false );
+
+		$this->assertTrue(
+			$instance->run()
+		);
 	}
 
 	/**
@@ -215,7 +247,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $setup['title'], array() );
 		$instance->isEnabledJobQueue( false );
@@ -232,12 +264,12 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRunJobOnMockWithParameters( $setup, $expected ) {
 
-		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataSerializer()->serialize(
-			new SemanticData( DIWikiPage::newFromTitle( $setup['title'] )
-		) );
+		$semanticData = new SemanticData(
+			DIWikiPage::newFromTitle( $setup['title'] )
+		);
 
-		$additionalJobQueueParameters = array(
-			'semanticData' => $semanticData
+		$parameters = array(
+			'semanticData' => $this->semanticDataSerializer->serialize( $semanticData )
 		);
 
 		$this->expectedProperty = $setup['property'];
@@ -268,9 +300,9 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new UpdateDispatcherJob( $setup['title'], $additionalJobQueueParameters );
+		$instance = new UpdateDispatcherJob( $setup['title'], $parameters );
 		$instance->isEnabledJobQueue( false );
 		$instance->run();
 
