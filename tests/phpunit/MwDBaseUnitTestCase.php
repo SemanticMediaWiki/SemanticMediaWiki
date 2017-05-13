@@ -80,6 +80,12 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
 		);
 
+		// Avoid surprise on revisions etc.
+		// @see MediaWikiTestCase::doLightweightServiceReset
+		$this->testEnvironment->resetMediaWikiService( 'MainObjectStash' );
+		$this->testEnvironment->resetMediaWikiService( 'LocalServerObjectCache' );
+		$this->testEnvironment->resetMediaWikiService( 'MainWANObjectCache' );
+
 		$this->testEnvironment->clearPendingDeferredUpdates();
 	}
 

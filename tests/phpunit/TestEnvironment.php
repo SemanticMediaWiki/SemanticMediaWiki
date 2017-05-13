@@ -115,6 +115,10 @@ class TestEnvironment {
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
 
+		if ( $name === 'MainWANObjectCache' ) {
+			\MediaWiki\MediaWikiServices::getInstance()->getMainWANObjectCache()->clearProcessCache();
+		}
+
 		return $this;
 	}
 
