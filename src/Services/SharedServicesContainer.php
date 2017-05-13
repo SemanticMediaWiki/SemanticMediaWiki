@@ -309,8 +309,12 @@ class SharedServicesContainer implements CallbackContainer {
 				)
 			);
 
-			$cachedQueryResultPrefetcher->setHashModifier(
-				$settings->get( 'smwgFulltextSearchIndexableDataTypes' )
+			$cachedQueryResultPrefetcher->setDependantHashIdExtension(
+				// If the mix of dataTypes changes then modify the hash
+				$settings->get( 'smwgFulltextSearchIndexableDataTypes' ) .
+				// If the collation is altered then modify the hash as it
+				// is likely that the sort order of results change
+				$settings->get( 'smwgEntityCollation' )
 			);
 
 			$cachedQueryResultPrefetcher->setLogger(

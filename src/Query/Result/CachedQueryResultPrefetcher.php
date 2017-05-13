@@ -120,7 +120,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @var string/integer
 	 */
-	private $hashModifier = '';
+	private $dependantHashIdExtension = '';
 
 	/**
 	 * @since 2.5
@@ -173,10 +173,10 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|integer $hashModifier
+	 * @param string|integer $dependantHashIdExtension
 	 */
-	public function setHashModifier( $hashModifier ) {
-		$this->hashModifier = $hashModifier;
+	public function setDependantHashIdExtension( $dependantHashIdExtension ) {
+		$this->dependantHashIdExtension = $dependantHashIdExtension;
 	}
 
 	/**
@@ -474,7 +474,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			}
 		}
 
-		return md5( $subject . self::VERSION . $this->hashModifier );
+		return md5( $subject . self::VERSION . $this->dependantHashIdExtension );
 	}
 
 	private function log( $message, $context = array() ) {
