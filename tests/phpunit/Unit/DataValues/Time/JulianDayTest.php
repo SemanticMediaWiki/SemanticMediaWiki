@@ -28,6 +28,26 @@ class JulianDayTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetJD_Issue2454() {
+
+		$offset = -4 / 24;
+
+		$this->assertSame(
+			2457869.3333333,
+			JulianDay::getJD( 1, 2017, 4, 25, 20, 0, 0 )
+		);
+
+		$this->assertNotSame(
+			2457869.5,
+			JulianDay::getJD( 1, 2017, 4, 25, 20, 0, 0 ) - $offset // returns 2457869.4999999665
+		);
+
+		$this->assertSame(
+			2457869.5,
+			JulianDay::format( JulianDay::getJD( 1, 2017, 4, 25, 20, 0, 0 ) - $offset )
+		);
+	}
+
 	public function valueProvider() {
 
 		$provider[] = array(

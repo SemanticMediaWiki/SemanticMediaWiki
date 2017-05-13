@@ -517,6 +517,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 
 		$hour = $minute = $second = false;
 		$year = $month = $day = false;
+		$jdValue = JulianDay::format( $jdValue );
 
 		if ( $precision === null ) {
 			$precision = strpos( strval( $jdValue ), '.5' ) !== false ? self::PREC_YMD : self::PREC_YMDT;
