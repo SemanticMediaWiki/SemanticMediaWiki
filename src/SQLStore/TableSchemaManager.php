@@ -113,15 +113,23 @@ class TableSchemaManager {
 		$table->addIndex( 'smw_id,smw_sortkey' );
 		// IW match lookup
 		$table->addIndex( 'smw_iw' );
+		$table->addIndex( 'smw_iw,smw_id' );
+
 		// ID lookup
 		$table->addIndex( 'smw_title,smw_namespace,smw_iw,smw_subobject' );
+
+		// InProperty lookup
+		// $table->addIndex( 'smw_iw,smw_id,smw_title,smw_sortkey,smw_sort' );
+
 		// Select by sortkey (range queries)
 		$table->addIndex( 'smw_sortkey' );
 
 		// Sort related indices
-		$table->addIndex( 'smw_sort' );
+		// $table->addIndex( 'smw_sort' );
 		$table->addIndex( 'smw_id,smw_sort' );
-		$table->addIndex( 'smw_sort,smw_id' );
+		//$table->addIndex( 'smw_sort,smw_id' );
+
+		$table->addIndex( 'smw_sort,smw_id,smw_iw' );
 
 		return $table;
 	}
@@ -239,6 +247,10 @@ class TableSchemaManager {
 			}
 
 			if ( strpos( $value, 'o_id' ) !== false && !$propertyTable->usesIdSubject() ) {
+				continue;
+			}
+
+			if ( strpos( $value, 's_id' ) !== false && !$propertyTable->usesIdSubject() ) {
 				continue;
 			}
 

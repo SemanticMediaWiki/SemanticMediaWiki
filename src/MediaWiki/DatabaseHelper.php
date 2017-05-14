@@ -16,6 +16,32 @@ namespace SMW\MediaWiki;
 class DatabaseHelper {
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public static function toString( array $options ) {
+
+		$string = '';
+
+		if ( isset( $options['GROUP BY'] ) ) {
+			$string .= ' GROUP BY ' . ( is_array( $options['GROUP BY'] ) ? implode( ',', $options['GROUP BY'] ) : $options['GROUP BY'] );
+		}
+
+		$string .= self::makeOrderBy( $options );
+
+		if ( isset( $options['LIMIT'] ) ) {
+			$string .= ' LIMIT ' . $options['LIMIT'];
+		}
+
+		if ( isset( $options['OFFSET'] ) ) {
+			$string .= ' OFFSET ' . $options['OFFSET'];
+		}
+
+		return $string;
+	}
+
+	/**
 	 * @see Database::makeSelectOptions
 	 */
 	public static function makeSelectOptions( Database $connection, $options ) {

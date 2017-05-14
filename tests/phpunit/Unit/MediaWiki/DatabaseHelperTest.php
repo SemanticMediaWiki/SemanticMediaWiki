@@ -37,6 +37,21 @@ class DatabaseHelperTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider optionsProvider
+	 */
+	public function testToString( $options ) {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInternalType(
+			'string',
+			DatabaseHelper::toString( $options )
+		);
+	}
+
 	public function optionsProvider() {
 
 		$provider[] = array(

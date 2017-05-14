@@ -243,6 +243,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstrucSqlEntityLookupResultFetcher() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\SqlEntityLookupResultFetcher',
+			$instance->newSqlEntityLookupResultFetcher()
+		);
+	}
+
 	public function testCanConstrucPropertyStatisticsTable() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )

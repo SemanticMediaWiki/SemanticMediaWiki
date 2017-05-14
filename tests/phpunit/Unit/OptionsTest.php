@@ -59,4 +59,14 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'Foo' );
 	}
 
+	public function testSafeGetOnUnregisteredKey() {
+
+		$instance = new Options();
+
+		$this->assertEquals(
+			'Default',
+			$instance->safeGet( 'Foo', 'Default' )
+		);
+	}
+
 }

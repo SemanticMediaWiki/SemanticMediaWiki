@@ -63,6 +63,18 @@ class Options {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function safeGet( $key, $default = false ) {
+		return $this->has( $key ) ? $this->options[$key] : $default;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return array
