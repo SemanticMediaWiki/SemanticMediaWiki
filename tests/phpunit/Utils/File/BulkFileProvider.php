@@ -78,6 +78,8 @@ class BulkFileProvider {
 			}
 		}
 
+		asort( $files );
+
 		return $files;
 	}
 

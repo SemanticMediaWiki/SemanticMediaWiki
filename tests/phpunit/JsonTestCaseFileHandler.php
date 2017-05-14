@@ -83,6 +83,11 @@ class JsonTestCaseFileHandler {
 				return true;
 			}
 
+			if ( strpos( $id, 'hhvm-' ) !== false && defined( 'HHVM_VERSION' ) ) {
+				$this->reasonToSkip = "HHVM " . HHVM_VERSION . " version is not supported ({$reason})";
+				return true;
+			}
+
 			if ( strpos( $id, 'mw-' ) === false ) {
 				continue;
 			}
