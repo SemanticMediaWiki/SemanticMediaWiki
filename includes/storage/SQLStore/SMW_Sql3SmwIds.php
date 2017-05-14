@@ -570,17 +570,17 @@ class SMWSql3SmwIds {
 
 		if ( $row !== false ) {
 			$id = $row->smw_id;
-		}
 
-		// Legacy
-		$this->setCache(
-			$subject->getDBKey(),
-			$subject->getNamespace(),
-			$subject->getInterWiki(),
-			$subject->getSubobjectName(),
-			$id,
-			$subject->getSortKey()
-		);
+			// Legacy
+			$this->setCache(
+				$subject->getDBKey(),
+				$subject->getNamespace(),
+				$subject->getInterWiki(),
+				$subject->getSubobjectName(),
+				$id,
+				$subject->getSortKey()
+			);
+		}
 
 		return $id;
 	}
