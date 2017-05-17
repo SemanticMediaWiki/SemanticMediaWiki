@@ -4,7 +4,7 @@ Released on April 22, 2017.
 
 ## New feature
 
-* [#2357](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2357) as `ec3810d` Added [depreciation notices](https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki/Deprecation_notices) system (#2357, #2384, #2401) to `Special:SemanticMediaWiki` in support for the upcoming 3.0 release
+* [#2357](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2357) as `ec3810d` Added [deprecation notices](https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki/Deprecation_notices) system (#2357, #2384, #2401) to `Special:SemanticMediaWiki` in support for the upcoming 3.0 release
 
 ## Enhancements
 
@@ -40,7 +40,7 @@ Released on April 22, 2017.
 * [#2413](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2413) as `d017a15` Fixed ID creation of temporary queries in `UniquenessConstraintValueValidator` when a uniqueness constraint isn't cached
 * [#2415](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2415) as `88e8884` Fixed URI value encoding for the [`External identifier`](https://www.semantic-mediawiki.org/wiki/Help:Type_External_identifier) type
 
-## Deprecation notices
+## Deprecations
 
 * [#2362](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2362) as `4c004e4` Deprecated [`$smwgAdminRefreshStore`](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminRefreshStore) in favor of
 [`$smwgAdminFeatures`](https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures) to be removed with SMW 3.1.0
