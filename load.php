@@ -60,7 +60,7 @@ class SemanticMediaWiki {
 	 */
 	public static function initExtension() {
 
-		define( 'SMW_VERSION', '2.5.1' );
+		define( 'SMW_VERSION', '2.5.2' );
 
 		// Registration of the extension credits, see Special:Version.
 		$GLOBALS['wgExtensionCredits']['semantic'][] = array(
