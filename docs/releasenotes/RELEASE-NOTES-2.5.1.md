@@ -4,7 +4,7 @@ Released on April 22, 2017.
 
 ## New feature
 
-* [#2357](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2357) as `ec3810d` Added [depreciation notices](https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki/Deprecation_notices) system (#2357, #2384, #2401) to `Special:SemanticMediaWiki` in support for the upcoming 3.0 release
+* [#2357](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2357) as `ec3810d` Added [deprecation notices](https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki/Deprecation_notices) system (#2357, #2384, #2401) to `Special:SemanticMediaWiki` in support for the upcoming 3.0 release
 
 ## Enhancements
 
