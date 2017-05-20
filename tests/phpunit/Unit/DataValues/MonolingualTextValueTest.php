@@ -89,7 +89,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testErrorForInvalidLanguageCode() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
-			$this->markTestSkipped( 'Skipping because `Language::isSupportedLanguage` is not supported on 1.19' );
+			$this->markTestSkipped( 'Skipping because `Language::isKnownLanguageTag` is not supported on 1.19' );
 		}
 
 		$instance = new MonolingualTextValue();
@@ -178,7 +178,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testGetWikiValueForInvalidMonolingualTextValue() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
-			$this->markTestSkipped( 'Skipping because `Language::isSupportedLanguage` is not supported on 1.19' );
+			$this->markTestSkipped( 'Skipping because `Language::isKnownLanguageTag` is not supported on 1.19' );
 		}
 
 		$instance = new MonolingualTextValue();
