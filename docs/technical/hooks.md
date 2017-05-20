@@ -11,42 +11,198 @@ Implementing a hook should be made in consideration of the expected performance 
 - `SMW::DataType::initTypes` to add additional DataType support.<sup>Use of `smwInitDatatypes` was deprecated with 1.9</sup>
 - `SMW::SQLStore::updatePropertyTableDefinitions` to add additional table definitions during initialization.
 
-### 2.1
+## 2.1
 
-- `SMW::Store::BeforeQueryResultLookupComplete` to return a `QueryResult` object before the standard selection process is
-  started and allows to suppress the standard selection process completely by returning `false`.
-- `SMW::Store::AfterQueryResultLookupComplete`  to manipulate a `QueryResult` after the selection process.
-- `SMW::Property::initProperties` to add additional predefined properties.<sup>Use of `smwInitProperties` was deprecated with 2.1</sup>
-- `SMW::SQLStore::BeforeDeleteSubjectComplete` called before deletion of a subject is completed.
-- `SMW::SQLStore::AfterDeleteSubjectComplete` called after deletion of a subject is completed.
-- `SMW::SQLStore::BeforeChangeTitleComplete` called before change to a subject is completed.
+### SMW::Store::BeforeQueryResultLookupComplete
 
-### 2.2
+* Version: 2.1
+* Description: Hook to return a `QueryResult` object before the standard selection process is started and allows to suppress the standard selection process completely by returning `false`.
+* Reference class: `SMW_SQLStore3.php`
 
-- `SMW::Parser::BeforeMagicWordsFinder` allows to extend the magic words list that the `InTextAnnotationParser` should
-  search for the wikitext.
+<pre>
+\Hooks::register( 'SMW::Store::AfterQueryResultLookupComplete', function( $store, $query, &$queryResult, $queryEngine ) {
 
-### 2.3
+	// Allow default processing
+	return true;
 
-- `SMW::SQLStore::BeforeDataRebuildJobInsert` to add update jobs while running the rebuild process.<sup>Use of `smwRefreshDataJobs` was deprecated with 2.3</sup>
-- `SMW::SQLStore::AddCustomFixedPropertyTables` to add fixed property table definitions
-- `SMW::Browse::AfterIncomingPropertiesLookupComplete` to extend the incoming properties display for `Special:Browse`
-- `SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate` to replace the standard `SearchByProperty` with a custom link to an extended list of results (return `false` to replace the link)
-- `SMW::SQLStore::AfterDataUpdateComplete` to add processing after the update has been completed and provides `CompositePropertyTableDiffIterator` to identify entities
-   that have been added/removed during the update. <sup>Use of `SMWSQLStore3::updateDataAfter` was deprecated with 2.3</sup>
+	// Stop further processing
+	return false;
+} );
+</pre>
 
-### 2.4
+### SMW::Store::AfterQueryResultLookupComplete
 
-- `SMW::FileUpload::BeforeUpdate` to add extra annotations before the store update is triggered
+* Version: 2.1
+* Description: Hook to manipulate a `QueryResult` after the selection process.
+* Reference class: `SMW_SQLStore3.php`
+
+<pre>
+\Hooks::register( 'SMW::Store::AfterQueryResultLookupComplete', function( $store, &$queryResult ) {
+
+	return true;
+} );
+</pre>
+
+### SMW::Property::initProperties
+
+* Version: 2.1
+* Description: Hook to add additional predefined properties (`smwInitProperties` was deprecated with 2.1)
+* Reference class: `SMW\PropertyRegistry`
+
+<pre>
+\Hooks::register( 'SMW::Property::initProperties', function( $propertyRegistry ) {
+
+	return true;
+} );
+</pre>
+
+### SMW::SQLStore::BeforeDeleteSubjectComplete
+
+* Version: 2.1
+* Description: Hook is called before the deletion of a subject is completed
+* Reference class: `SMW_SQLStore3_Writers.php`
+
+<pre>
+\Hooks::register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function( $store, $title ) {
+
+	return true;
+} );
+</pre>
+
+### SMW::SQLStore::AfterDeleteSubjectComplete
+
+* Version: 2.1
+* Description: Hook is called after the deletion of a subject is completed
+* Reference class: `SMW_SQLStore3_Writers.php`
+
+<pre>
+\Hooks::register( 'SMW::SQLStore::AfterDeleteSubjectComplete', function( $store, $title ) {
+
+	return true;
+} );
+</pre>
+
+### SMW::SQLStore::BeforeChangeTitleComplete
+
+* Version: 2.1
+* Description: Hook is called before change to a subject is completed
+* Reference class: `SMW_SQLStore3_Writers.php`
+
+<pre>
+\Hooks::register( 'SMW::SQLStore::BeforeChangeTitleComplete', function( $store, $oldTitle, $newTitle, $pageId, $redirectId ) {
+
+	return true;
+} );
+</pre>
+
+## 2.2
+
+### SMW::Parser::BeforeMagicWordsFinder
+
+* Version: 2.2
+* Description: Hook allowing to extend the magic words list that the `InTextAnnotationParser` should search for the wikitext.
+* Reference class: `\SMW\InTextAnnotationParser`
+
+<pre>
+\Hooks::register( 'SMW::Parser::BeforeMagicWordsFinder', function( array &$magicWords ) {
+
+	return true;
+} );
+</pre>
+
+## 2.3
+
+### SMW::SQLStore::BeforeDataRebuildJobInserts
+
+* Version: 2.3
+* Description: Hook to add update jobs while running the rebuild process.<sup>Use of `smwRefreshDataJobs` was deprecated with 2.3</sup>
+* Reference class: `\SMW\SQLStore\EntityRebuildDispatcher`
+
+<pre>
+\Hooks::register( 'SMW::SQLStore::BeforeDataRebuildJobInsert', function( $store, array &$jobs ) {
+
+	return true;
+} );
+</pre>
+
+### SMW::SQLStore::AddCustomFixedPropertyTables
+
+* Version: 2.3
+* Description: Hook to add fixed property table definitions
+* Reference class: `\SMW\MediaWiki\Specials\Browse\ContentsBuilder`
+
+<pre>
+\Hooks::register( 'SMW::SQLStore::AddCustomFixedPropertyTables', function( array &$customFixedProperties, &$propertyTablePrefix ) {
+	$customFixedProperties['Foo'] = '_Bar';
+
+	return true;
+} );
+</pre>
+
+### SMW::Browse::AfterIncomingPropertiesLookupComplete
+
+* Version: 2.3
+* Description: Hook to extend the incoming properties display for `Special:Browse`
+* Reference class: `\SMW\MediaWiki\Specials\Browse\ContentsBuilder`
+
+<pre>
+\Hooks::register( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', function( $store, $semanticData, $requestOptions ) {
+
+	return true;
+} );
+</pre>
+
+### SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
+
+* Version: 2.3
+* Description: Hook to replace the standard `SearchByProperty` with a custom link to an extended list of results (return `false` to replace the link)
+* Reference class: `\SMW\MediaWiki\Specials\Browse\ContentsBuilder`
+
+<pre>
+\Hooks::register( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', function( $property, $subject, &$propertyValue ) {
+
+	return true;
+} );
+</pre>
+
+### SMW::SQLStore::AfterDataUpdateComplete
+
+* Version: 2.3
+* Description: Hook to add processing after the update has been completed and provides `CompositePropertyTableDiffIterator` to identify entities that have been added/removed during the update. (`SMWSQLStore3::updateDataAfter` was deprecated with 2.3)
+* Reference class: `\SMW\MediaWiki\Hooks\FileUpload`
+
+<pre>
+\Hooks::register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $propertyTableEntityDiffIterator ) {
+
+	return true;
+} );
+</pre>
+
+## 2.4
+
+### SMW::FileUpload::BeforeUpdate
+
+* Version: 2.4
+* Description: Hook to add extra annotations before the `Store` update is triggered
+* Reference class: `\SMW\MediaWiki\Hooks\FileUpload`
+
+<pre>
+\Hooks::register( 'SMW::FileUpload::BeforeUpdate', function( $filePage, $semanticData  ) {
+
+	return true;
+} );
+</pre>
 
 ## 2.5
 
 ### SMW::Job::AfterUpdateDispatcherJobComplete
 
-Hook allows to add extra jobs after `UpdateDispatcherJob` has been processed.
+* Version: 2.5
+* Description: Hook allows to add extra jobs after `UpdateDispatcherJob` has been processed.
+* Reference class: `\SMW\MediaWiki\Jobs\UpdateDispatcherJob`
 
 <pre>
-\Hooks::register( 'SMW::Job::AfterUpdateDispatcherJobComplete', function( $job  ) {
+\Hooks::register( 'SMW::Job::AfterUpdateDispatcherJobComplete', function( $job ) {
 
 	// Find related dependencies
 	$title = $job->getTitle();
@@ -57,7 +213,9 @@ Hook allows to add extra jobs after `UpdateDispatcherJob` has been processed.
 
 ### SMW::SQLStore::Installer::AfterCreateTablesComplete
 
-Hook allows to add extra tables after the creation process as been finalized.
+* Version: 2.5
+* Description: Hook allows to add extra tables after the creation process as been finalized.
+* Reference class: `\SMW\SQLStore\Installer`
 
 <pre>
 \Hooks::register( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', function( $tableBuilder, $messageReporter ) {
@@ -74,7 +232,9 @@ Hook allows to add extra tables after the creation process as been finalized.
 
 ### SMW::SQLStore::Installer::AfterDropTablesComplete
 
-Hook allows to remove extra tables after the drop process as been finalized.
+* Version: 2.5
+* Description: Hook allows to remove extra tables after the drop process as been finalized.
+* Reference class: `\SMW\SQLStore\Installer`
 
 <pre>
 \Hooks::register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', function( $tableBuilder, $messageReporter ) {
@@ -88,7 +248,6 @@ Hook allows to remove extra tables after the drop process as been finalized.
 	return true;
 } );
 </pre>
-
 
 ## Other available hooks
 
