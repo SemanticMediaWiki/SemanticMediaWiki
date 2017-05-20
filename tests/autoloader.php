@@ -21,7 +21,7 @@ if ( !class_exists( 'SemanticMediaWiki' ) || ( $version = SemanticMediaWiki::get
 }
 
 // Disable MediaWiki logs unless the debug mode is used
-if ( array_search( '--debug', $GLOBALS['argv'] ) === false ) {
+if ( array_search( '--debug', $GLOBALS['argv'] ) === false && array_search( '--debug-tests', $GLOBALS['argv'] ) === false ) {
 	$GLOBALS['wgDebugLogGroups'] = array();
 	$GLOBALS['wgDebugLogFile'] = '';
 }
