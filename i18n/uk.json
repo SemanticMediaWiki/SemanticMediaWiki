@@ -14,7 +14,8 @@
 			"Piramidion",
 			"KHMELNYTSKYIA",
 			"Nemo bis",
-			"Ahonc"
+			"Ahonc",
+			"Bunyk"
 		]
 	},
 	"smw-desc": "Робить вашу вікі доступнішою — для машин ''та'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
@@ -83,6 +84,7 @@
 	"smw-paramdesc-order": "Порядок сортування запиту",
 	"smw-paramdesc-searchlabel": "Текст для продовження пошуку",
 	"smw-paramdesc-named_args": "Імена аргументів, переданих в шаблон",
+	"smw-paramdesc-template-arguments": "Задає як іменовані аргументи передаються в шаблон",
 	"smw-paramdesc-import-annotation": "Додаткові анотовані дані, що мають бути скопійовані під час парсингу суб'єкта",
 	"smw-paramdesc-export": "Параметри експорту",
 	"smw-paramdesc-prettyprint": "Вивід докладного друку, який відображає додаткові відступи та символи",
@@ -500,7 +502,7 @@
 	"smw-datavalue-propertylist-invalid-property-key": "Список властивостей «$1» містив недійсний ключ властивості «$2».",
 	"smw-datavalue-type-invalid-typeuri": "Тип «$1» не вдалося трансформувати у дійсну репрезентацію URI.",
 	"smw-datavalue-wikipage-missing-fragment-context": "Вхідне значення «$1» вікісторінки не можна використовувати без контекстної сторінки.",
-	"smw-datavalue-wikipage-invalid-title": "Вхідне значення «$1» вікісторінки містить недійсні символи або є неповним, а тому воно може призвести до несподіваних результатів під час запиту чи процесу анотації.",
+	"smw-datavalue-wikipage-invalid-title": "Вхідне значення «$1» типу сторінки містить недійсні символи або є неповним, а тому воно може призвести до несподіваних результатів під час запиту чи процесу анотації.",
 	"smw-datavalue-wikipage-empty": "Вхідне значення вікісторінки порожнє (напр., <code>[[SomeProperty::]], [[]]</code>), а тому його не можна використати як назву чи як частину умови запиту.",
 	"smw-sp-types_ref_rec": "«$1» є [https://www.semantic-mediawiki.org/wiki/Container контейнерним] типом, що дозволяє записувати додаткову інформацію (напр., дані про першоджерело) про встановлення значення.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
@@ -525,5 +527,6 @@
 	"smw-patternedit-protection": "Ця сторінка захищена, її можуть редагувати лише користувачі з відповідними <code>smw-patternedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions правами].",
 	"smw-pa-property-predefined_edip": "«$1» — це попередньо визначена властивість, що забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki] для зазначення того, чи встановлено захист від редагувань, чи ні.",
 	"smw-pa-property-predefined-long_edip": "Тоді як будь-який користувач може додати цю властивість до якоїсь теми, лише користувач з особливими правами може редагувати чи відкликати захист сутності після того, як властивість було додано.",
-	"smw-query-reference-link-label": "Посилання на запит"
+	"smw-query-reference-link-label": "Посилання на запит",
+	"smw-format-datatable-infothousands": ","
 }
