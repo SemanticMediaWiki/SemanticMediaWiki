@@ -23,7 +23,8 @@
 			"Macofe",
 			"Eduardo Addad de Oliveira",
 			"Nemo bis",
-			"Felipe L. Ewald"
+			"Felipe L. Ewald",
+			"Trigonometria87"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -93,6 +94,7 @@
 	"smw-paramdesc-order": "Ordem da classificação da consulta",
 	"smw-paramdesc-searchlabel": "Texto para continuar a busca",
 	"smw-paramdesc-named_args": "Nomeie os argumentos passados para a predefinição",
+	"smw-paramdesc-template-arguments": "Configura como os argumentos nomeados são passados à predefinição",
 	"smw-paramdesc-import-annotation": "Dados marcados adicionais serão copiados durante o parsing do sujeito.",
 	"smw-paramdesc-export": "Opção de exportação",
 	"smw-paramdesc-prettyprint": "Uma saída de pretty-print que exibe indentações e novas linhas adicionais",
@@ -262,7 +264,8 @@
 	"smw-admin-statistics-job-title": "Estatísticas da fila de execução",
 	"smw-admin-statistics-querycache-title": "Estatísticas do cache de consultas",
 	"smw-admin-statistics-querycache-disabled": "O [https://www.semantic-mediawiki.org/wiki/QueryCache QueryCache] Não foi habilitado neste wiki e por este meio não há estatísticas disponíveis.",
-	"smw-admin-setupsuccess": "O mecanismo de armazenamento foi configurado com sucesso.",
+	"smw-admin-permission-missing": "O acesso a esta página foi bloqueado devido à falta de permissões. Consulte a página de ajuda sobre [https://www.semantic-mediawiki.org/wiki/Help:Permissions permissões] para detalhes sobre as definições necessárias, por favor.",
+	"smw-admin-setupsuccess": "O motor de armazenamento foi configurado.",
 	"smw_smwadmin_return": "Voltar para $1",
 	"smw_smwadmin_updatestarted": "Um novo processo de atualização para atualizar os dados semânticos foi iniciado.\nTodos os dados armazenados serão reconstruídos ou reparados quando necessário.\nVocê pode acompanhar o progresso de atualização nesta página especial.",
 	"smw_smwadmin_updatenotstarted": "Já existe um processo de atualização em execução.\nNão foi criado outro.",
@@ -348,6 +351,7 @@
 	"right-smw-admin": "Acessar as tarefas de administração (Semantic MediaWiki)",
 	"right-smw-patternedit": "Acesso de edição para manter as expressões regulares e os padrões permitidos (MediaWiki Semântico)",
 	"action-smw-patternedit": "editar expressões regulares usadas pelo MediaWiki Semântico",
+	"action-smw-pageedit": "editar páginas anotadas com <code>É protegida de edição</code> (Semantic MediaWiki)",
 	"group-smwadministrator": "Administradores (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|administrador|administradora|administrador(a)}} (Semantic MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administradores (Semantic MediaWiki)",
