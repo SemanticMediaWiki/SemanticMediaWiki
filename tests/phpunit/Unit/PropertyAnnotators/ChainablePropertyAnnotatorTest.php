@@ -49,16 +49,20 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			$parameters['categories']
 		);
 
-		$categoryPropertyAnnotator->setShowHiddenCategoriesState(
+		$categoryPropertyAnnotator->showHiddenCategories(
 			$parameters['settings']['smwgShowHiddenCategories']
 		);
 
-		$categoryPropertyAnnotator->setCategoryInstanceUsageState(
+		$categoryPropertyAnnotator->useCategoryInstance(
 			$parameters['settings']['smwgCategoriesAsInstances']
 		);
 
-		$categoryPropertyAnnotator->setCategoryHierarchyUsageState(
+		$categoryPropertyAnnotator->useCategoryHierarchy(
 			$parameters['settings']['smwgUseCategoryHierarchy']
+		);
+
+		$categoryPropertyAnnotator->useCategoryRedirect(
+			false
 		);
 
 		$sortKeyPropertyAnnotator = new SortKeyPropertyAnnotator(

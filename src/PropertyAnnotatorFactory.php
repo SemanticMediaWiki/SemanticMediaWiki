@@ -141,21 +141,27 @@ class PropertyAnnotatorFactory {
 	 */
 	public function newCategoryPropertyAnnotator( PropertyAnnotator $propertyAnnotator, array $categories ) {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
 			$propertyAnnotator,
 			$categories
 		);
 
-		$categoryPropertyAnnotator->setShowHiddenCategoriesState(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowHiddenCategories' )
+		$categoryPropertyAnnotator->showHiddenCategories(
+			$settings->get( 'smwgShowHiddenCategories' )
 		);
 
-		$categoryPropertyAnnotator->setCategoryInstanceUsageState(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgCategoriesAsInstances' )
+		$categoryPropertyAnnotator->useCategoryInstance(
+			$settings->get( 'smwgCategoriesAsInstances' )
 		);
 
-		$categoryPropertyAnnotator->setCategoryHierarchyUsageState(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgUseCategoryHierarchy' )
+		$categoryPropertyAnnotator->useCategoryHierarchy(
+			$settings->get( 'smwgUseCategoryHierarchy' )
+		);
+
+		$categoryPropertyAnnotator->useCategoryRedirect(
+			$settings->get( 'smwgUseCategoryRedirect' )
 		);
 
 		return $categoryPropertyAnnotator;
