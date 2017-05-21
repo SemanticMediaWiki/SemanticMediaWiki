@@ -95,7 +95,7 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryToken();
 
 		$instance->addFromDesciption( $description );
-		$instance->canHighlight( '-hL' );
+		$instance->setOutputFormat( '-hL' );
 
 		$this->assertEquals(
 			$expected,
