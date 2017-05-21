@@ -75,6 +75,7 @@ script:
 after_script:
   - if [ ls /tmp/stacktrace* 1> /dev/null 2>&1 ] ; then cat /tmp/stacktrace*.log ; fi
   - if [ -f php.log ] ; then cat php.log ; fi
+  - if [ -f /tmp/mediawiki-debug.log ] ; then cat /tmp/mediawiki-debug.log ; fi
 
 after_success:
   - bash ./tests/travis/upload-coverage-report.sh

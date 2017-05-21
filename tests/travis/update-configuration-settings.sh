@@ -74,6 +74,12 @@ echo '$wgDevelopmentWarnings = true;' >> LocalSettings.php
 echo '$wgShowSQLErrors = true;' >> LocalSettings.php
 echo '$wgDebugDumpSql = false;' >> LocalSettings.php
 echo '$wgShowDBErrorBacktrace = true;' >> LocalSettings.php
+
+if [ "$TYPE" == "debug" ]
+then
+	echo '$wgDebugLogFile = "/tmp/mediawiki-debug.log";' >> LocalSettings.php
+fi
+
 echo "putenv( 'MW_INSTALL_PATH=$(pwd)' );" >> LocalSettings.php
 
 php maintenance/update.php --skip-external-dependencies --quick

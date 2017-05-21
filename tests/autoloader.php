@@ -20,6 +20,12 @@ if ( !class_exists( 'SemanticMediaWiki' ) || ( $version = SemanticMediaWiki::get
 	die( "\nSemantic MediaWiki is not available, please check your LocalSettings or Composer settings.\n" );
 }
 
+// Disable MediaWiki logs unless the debug mode is used
+if ( array_search( '--debug', $GLOBALS['argv'] ) === false && array_search( '--debug-tests', $GLOBALS['argv'] ) === false ) {
+	$GLOBALS['wgDebugLogGroups'] = array();
+	$GLOBALS['wgDebugLogFile'] = '';
+}
+
 // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
 print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", $version . ' ('. implode( ', ', SemanticMediaWiki::getEnvironment() ) . ')' );
 // @codingStandardsIgnoreEnd
