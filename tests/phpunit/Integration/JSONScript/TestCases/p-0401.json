@@ -8,6 +8,16 @@
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "wikidata id",
+			"contents": "[[has type::string]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "founded",
+			"contents": "[[has type::date]] [[wikidata id::P571]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
 			"page": "set-non-capital-property",
 			"contents": "{{#set:|has type=boolean}} [[Category:Foo]]"
 		},
@@ -101,6 +111,27 @@
 					"propertyValues": [
 						"Boolean",
 						"Foo"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 check has type despite wgCapitalLinks setting, user-defined property is kept lower case",
+			"subject": "founded",
+			"namespace": "SMW_NS_PROPERTY",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_TYPE",
+						"wikidata id"
+					],
+					"propertyValues": [
+						"P571"
 					]
 				}
 			}
