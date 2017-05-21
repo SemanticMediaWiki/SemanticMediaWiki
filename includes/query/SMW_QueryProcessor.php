@@ -46,7 +46,17 @@ class SMWQueryProcessor implements QueryContext {
 	public static function getProcessedParams( array $params, array $printRequests = array(), $unknownInvalid = true ) {
 		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid );
 		$validator->processParameters();
-		return $validator->getParameters();
+		$parameters =  $validator->getParameters();
+
+		// Negates some weird behaviour of ParamDefinition::setDefault used in
+		// an individual printer.
+		// Applying $smwgQMaxLimit, $smwgQMaxInlineLimit will happen at a later
+		// stage.
+		if ( isset( $params['limit'] ) && isset( $parameters['limit'] ) ) {
+			$parameters['limit']->setValue( (int)$params['limit'] );
+		}
+
+		return $parameters;
 	}
 
 	/**
