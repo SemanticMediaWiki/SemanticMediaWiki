@@ -14,7 +14,7 @@ then
 	composer phpunit -- --group semantic-mediawiki-benchmark
 elif [ "$TYPE" == "debug" ]
 then
-	composer phpunit -- --debug
+	composer phpunit -- --debug-tests
 else
 	composer phpunit
 fi
