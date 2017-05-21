@@ -70,6 +70,7 @@ class Settings extends Options {
 			'smwgInlineErrors' => $GLOBALS['smwgInlineErrors'],
 			'smwgUseCategoryHierarchy' => $GLOBALS['smwgUseCategoryHierarchy'],
 			'smwgCategoriesAsInstances' => $GLOBALS['smwgCategoriesAsInstances'],
+			'smwgUseCategoryRedirect' => $GLOBALS['smwgUseCategoryRedirect'],
 			'smwgLinksInValues' => $GLOBALS['smwgLinksInValues'],
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],

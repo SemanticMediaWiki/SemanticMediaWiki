@@ -548,5 +548,6 @@
 	"smw-format-datatable-next": "Next",
 	"smw-format-datatable-previous": "Previous",
 	"smw-format-datatable-sortascending": ": activate to sort column ascending",
-	"smw-format-datatable-sortdescending": ": activate to sort column descending"
+	"smw-format-datatable-sortdescending": ": activate to sort column descending",
+	"smw-category-invalid-redirect-target": "Category \"$1\" contains an invalid redirect target to a non-category namespace."
 }

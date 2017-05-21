@@ -294,6 +294,15 @@ return array(
 	##
 
 	###
+	# Resolves redirects and errors in connection with categories
+	#
+	# @since 3.0
+	# @default true
+	##
+	'smwgUseCategoryRedirect' => true,
+	##
+
+	###
 	# InText annotation to support "links in value"
 	#
 	# SMW_LINV_OBFU (2.5+)
