@@ -59,7 +59,7 @@ class UpdateDispatcherJob extends JobBase {
 	public function run() {
 
 		if ( $this->hasParameter( 'job-list' ) ) {
-			return $this->createUpdateJobsFromSecondaryDispatchRunJobList(
+			return $this->createUpdateJobsFromJobList(
 				$this->getParameter( 'job-list' )
 			);
 		}
@@ -68,6 +68,8 @@ class UpdateDispatcherJob extends JobBase {
 			$this->dispatchUpdateForProperty(
 				DIProperty::newFromUserLabel( $this->getTitle()->getText() )
 			);
+
+			$this->jobs[] = DIWikiPage::newFromTitle( $this->getTitle() )->getHash();
 		} else {
 			$this->dispatchUpdateForSubject(
 				DIWikiPage::newFromTitle( $this->getTitle() )
@@ -182,17 +184,31 @@ class UpdateDispatcherJob extends JobBase {
 		}
 	}
 
-	private function createUpdateJobsFromSecondaryDispatchRunJobList( array $listOfSubjects ) {
+	private function createUpdateJobsFromJobList( array $subjects ) {
 
-		$subjects = array_keys( $listOfSubjects );
+		$parameters = array(
+			UpdateJob::FORCED_UPDATE => true
+		);
 
-		// We are confident that as this point we only have valid, non-duplicate
-		// subjects in the list and therefore can be deserialized without any
-		// extra validation
-		foreach ( $subjects as $subject ) {
-			$this->jobs[] = new UpdateJob(
-				DIWikiPage::doUnserialize( $subject )->getTitle()
-			);
+		// We expect non-duplicate subjects in the list and therefore deserialize
+		// without any extra validation
+		foreach ( $subjects as $key => $subject ) {
+
+			if ( is_string( $key ) ) {
+				$subject = $key;
+			}
+
+			try {
+				$title = DIWikiPage::doUnserialize( $subject )->getTitle();
+			} catch( \SMW\Exception\DataItemDeserializationException $e ) {
+				continue;
+			}
+
+			if ( $title === null ) {
+				continue;
+			}
+
+			$this->jobs[] = new UpdateJob( $title, $parameters );
 		}
 
 		$this->pushToJobQueue();

@@ -33,6 +33,11 @@ use Title;
 class UpdateJob extends JobBase {
 
 	/**
+	 * Enforces an update independent of the update marker status
+	 */
+	const FORCED_UPDATE = 'forcedUpdate';
+
+	/**
 	 * @var ApplicationFactory
 	 */
 	private $applicationFactory = null;
@@ -164,7 +169,7 @@ class UpdateJob extends JobBase {
 
 		$parserData->setOption(
 			$parserData::OPT_FORCED_UPDATE,
-			$this->getParameter( 'forcedUpdate' )
+			$this->getParameter( self::FORCED_UPDATE )
 		);
 
 		$parserData->disableBackgroundUpdateJobs();

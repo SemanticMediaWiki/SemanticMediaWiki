@@ -72,6 +72,50 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$this->assertNull( $instance->pushToJobQueue() );
 	}
 
+	public function testChunkedJobWithListOnValidMembers() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new UpdateDispatcherJob( $title, array(
+			'job-list' => array(
+				'Foo#0#' => true,
+				'Bar#102#'
+			)
+		) );
+
+		$instance->isEnabledJobQueue( false );
+		$instance->run();
+
+		$this->assertEquals(
+			2,
+			$instance->getJobCount()
+		);
+	}
+
+	public function testChunkedJobWithListOnInvalidMembers() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new UpdateDispatcherJob( $title, array(
+			'job-list' => array(
+				'|nulltitle#0#' => true,
+				'deserlizeerror#0' => true
+			)
+		) );
+
+		$instance->isEnabledJobQueue( false );
+		$instance->run();
+
+		$this->assertEquals(
+			0,
+			$instance->getJobCount()
+		);
+	}
+
 	public function testJobRunOnMainNamespace() {
 
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
@@ -272,20 +316,23 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = array();
 
-		$duplicate = $this->makeSubjectFromText( 'Foo' );
+		$duplicate = DIWikiPage::newFromText( 'Foo' );
 
 		$subjects = array(
 			$duplicate,
-			$this->makeSubjectFromText( 'Bar' ),
-			$this->makeSubjectFromText( 'Baz' ),
+			DIWikiPage::newFromText( 'Bar' ),
+			DIWikiPage::newFromText( 'Baz' ),
 			$duplicate,
-			$this->makeSubjectFromText( 'Yon' )
+			DIWikiPage::newFromText( 'Yon' ),
+			DIWikiPage::newFromText( 'Yon' ),
+			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
 		$count = count( $subjects ) - 1; // eliminate duplicate count
 		$title =  Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
+		#0
 		$provider[] = array(
 			array(
 				'title'      => $title,
@@ -301,6 +348,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
+		#1
 		$provider[] = array(
 			array(
 				'title'      => $title,
@@ -326,10 +374,6 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function mockStoreAllPropertySubjectsCallback( DIProperty $property ) {
 		return $this->expectedProperty == $property ? $this->expectedSubjects : array();
-	}
-
-	protected function makeSubjectFromText( $text ) {
-		return DIWikiPage::newFromTitle( Title::newFromText( $text ) );
 	}
 
 }
