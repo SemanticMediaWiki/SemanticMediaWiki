@@ -200,16 +200,16 @@ class Localizer {
 	 *
 	 * @return boolean
 	 */
-	public static function isSupportedLanguage( $languageCode ) {
+	public static function isKnownLanguageTag( $languageCode ) {
 
 		$languageCode = mb_strtolower( $languageCode );
 
-		// FIXME 1.19 doesn't know Language::isSupportedLanguage
-		if ( !method_exists( '\Language', 'isSupportedLanguage' ) ) {
+		// FIXME 1.19 doesn't know Language::isKnownLanguageTag
+		if ( !method_exists( '\Language', 'isKnownLanguageTag' ) ) {
 			return Language::isValidBuiltInCode( $languageCode );
 		}
 
-		return Language::isSupportedLanguage( $languageCode );
+		return Language::isKnownLanguageTag( $languageCode );
 	}
 
 	/**
@@ -288,7 +288,7 @@ class Localizer {
 			$value = str_replace( '_', ' ', substr_replace( $value, '', ( mb_strlen( $langCode ) + 1 ) * -1 ) );
 		}
 
-		// Do we want to check here whether isSupportedLanguage or not?
+		// Do we want to check here whether isKnownLanguageTag or not?
 		if ( $langCode !== '' && ctype_alpha( str_replace( array( '-' ), '', $langCode ) ) ) {
 			return $langCode;
 		}
