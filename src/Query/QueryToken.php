@@ -48,9 +48,9 @@ class QueryToken {
 	private $highlightType = 4;
 
 	/**
-	 * @var true
+	 * @var string
 	 */
-	private $canHighlight = false;
+	private $outputFormat;
 
 	/**
 	 * @since 2.5
@@ -103,15 +103,14 @@ class QueryToken {
 	}
 
 	/**
-	 * @note Intrinsic setting (|?Foo#-hl) of what accounts for the activation
-	 * of the highlighting.
+	 * Sets format information (|?Foo#-hl) from a result printer
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $text
+	 * @param string $outputFormat
 	 */
-	public function canHighlight( $canHighlight ) {
-		$this->canHighlight = strpos( strtolower( $canHighlight ), '-hl' ) !== false;
+	public function setOutputFormat( $outputFormat ) {
+		$this->outputFormat = $outputFormat;
 	}
 
 	/**
@@ -124,7 +123,7 @@ class QueryToken {
 	 */
 	public function highlight( $text, $type = self::HL_BOLD ) {
 
-		if ( $this->tokens === array() || $this->canHighlight === false ) {
+		if ( $this->tokens === array() || strpos( strtolower( $this->outputFormat ), '-hl' ) === false ) {
 			return $text;
 		}
 
