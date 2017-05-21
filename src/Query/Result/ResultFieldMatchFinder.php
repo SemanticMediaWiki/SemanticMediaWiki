@@ -77,7 +77,7 @@ class ResultFieldMatchFinder {
 
 		$this->queryToken = $queryToken;
 
-		$this->queryToken->canHighlight(
+		$this->queryToken->setOutputFormat(
 			$this->printRequest->getOutputFormat()
 		);
 	}
