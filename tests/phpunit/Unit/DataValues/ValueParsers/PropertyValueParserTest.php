@@ -33,7 +33,7 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 			$invalidCharacterList
 		);
 
-		list( $propertyName, $inverse ) = $instance->parse( $value );
+		list( $propertyName, $capitalizedName, $inverse ) = $instance->parse( $value );
 
 		$this->assertSame(
 			$expectedPropertyName,
@@ -46,16 +46,22 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testEnforceUpperCase() {
+	public function testEnforceFirstCharUpperCase() {
 
 		$instance = new PropertyValueParser();
-		$instance->requireUpperCase( true );
+		$instance->isCapitalLinks( false );
+		$instance->reqCapitalizedFirstChar( true );
 
-		list( $propertyName, $inverse ) = $instance->parse( 'foo' );
+		list( $propertyName, $capitalizedName, $inverse ) = $instance->parse( 'foo' );
+
+		$this->assertSame(
+			'foo',
+			$propertyName
+		);
 
 		$this->assertSame(
 			'Foo',
-			$propertyName
+			$capitalizedName
 		);
 	}
 
@@ -63,6 +69,34 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			'Foo',
+			array(),
+			'Foo',
+			false
+		);
+
+		$provider[] = array(
+			'[ Foo',
+			array(),
+			'Foo',
+			false
+		);
+
+		$provider[] = array(
+			'[Foo',
+			array(),
+			'Foo',
+			false
+		);
+
+		$provider[] = array(
+			'Foo ]',
+			array(),
+			'Foo',
+			false
+		);
+
+		$provider[] = array(
+			'Foo]',
 			array(),
 			'Foo',
 			false
