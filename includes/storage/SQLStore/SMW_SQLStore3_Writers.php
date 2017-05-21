@@ -959,7 +959,7 @@ class SMWSQLStore3Writers {
 
 		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 		$parameters = array(
-			'forcedUpdate' => true
+			UpdateJob::FORCED_UPDATE => true
 		);
 
 		if ( $redirectId != 0 ) {
