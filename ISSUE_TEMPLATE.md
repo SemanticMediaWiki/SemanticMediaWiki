@@ -12,4 +12,4 @@ Produces a [stack trace](https://www.semantic-mediawiki.org/wiki/Help:Identifyin
 ```
 ```
 
-Steps to reproduce the observation (recommendation is to use the [sandbox](http://sandbox.semantic-mediawiki.org)):
+Steps to reproduce the observation (recommendation is to use the [sandbox](https://sandbox.semantic-mediawiki.org)):
