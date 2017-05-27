@@ -177,6 +177,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgEnabledFulltextSearch',
 			'smwgFulltextDeferredUpdate',
 			'smwgFulltextSearchIndexableDataTypes',
+			'smwgFixedProperties',
 			'smwgPropertyZeroCountDisplay',
 			'smwgQueryResultCacheType',
 			'smwgLinksInValues',
@@ -206,28 +207,58 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			);
 		}
 
+		$pageList = $jsonTestCaseFileHandler->getPageCreationSetupList();
+
+		// Special handling for fixed properties to fetch the correct type
+		// before being used as annotation
+		if ( $jsonTestCaseFileHandler->getSettingsFor( 'smwgFixedProperties' ) !== array() ) {
+			foreach ( $pageList as $page ) {
+				if ( isset( $page['namespace'] ) && $page['namespace'] === 'SMW_NS_PROPERTY' ) {
+					$this->doRunFixedPropertyTableCreation( $page );
+				}
+			}
+		}
+
 		$this->createPagesFrom(
-			$jsonTestCaseFileHandler->getPageCreationSetupList(),
+			$pageList,
 			NS_MAIN
 		);
+	}
+
+	private function doRunFixedPropertyTableCreation( $page ) {
+		// Create property to ...
+		$this->createPagesFrom( array( $page ) );
+
+		// Create table
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'setupStore' );
+		$maintenanceRunner->setQuiet();
+		$maintenanceRunner->run();
 	}
 
 	private function doRunBeforeTest( $jsonTestCaseFileHandler ) {
 
 		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'maintenance-run' ) as $runner => $options ) {
+
 			$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( $runner );
+			$maintenanceRunner->setQuiet();
 
 			$maintenanceRunner->setOptions(
 				(array)$options
 			);
 
-			$maintenanceRunner->setQuiet()->run();
+			$maintenanceRunner->run();
+
+			if ( isset( $options['quiet'] ) && $options['quiet'] === false ) {
+				print_r( $maintenanceRunner->getOutput() );
+			}
 		}
 
 		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'job-run' ) as $jobType ) {
 			$jobQueueRunner = $this->runnerFactory->newJobQueueRunner( $jobType );
 			$jobQueueRunner->run();
 		}
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
 	private function doRunParserTests( $jsonTestCaseFileHandler ) {

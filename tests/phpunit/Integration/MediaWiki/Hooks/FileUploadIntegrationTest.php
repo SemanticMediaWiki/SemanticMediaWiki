@@ -68,6 +68,8 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 			'LinksUpdateConstructed',
 			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateConstructed' )
 		);
+
+		$this->getStore()->setup( false );
 	}
 
 	protected function tearDown() {
