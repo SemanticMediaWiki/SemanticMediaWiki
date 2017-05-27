@@ -85,6 +85,9 @@ class ParserFunctionFactory {
 			$parserData->setOption( $parserData::NO_QUERY_DEPENDENCY_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
 		}
 
+		// Avoid possible actions during for example stashedit etc.
+		$parserData->setOption( 'request.action', $GLOBALS['wgRequest']->getVal( 'action' ) );
+
 		$messageFormatter = new MessageFormatter(
 			$parser->getTargetLanguage()
 		);
@@ -118,6 +121,9 @@ class ParserFunctionFactory {
 		if ( isset( $parser->getOptions()->smwAskNoDependencyTracking ) ) {
 			$parserData->setOption( $parserData::NO_QUERY_DEPENDENCY_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
 		}
+
+		// Avoid possible actions during for example stashedit etc.
+		$parserData->setOption( 'request.action', $GLOBALS['wgRequest']->getVal( 'action' ) );
 
 		$messageFormatter = new MessageFormatter(
 			$parser->getTargetLanguage()

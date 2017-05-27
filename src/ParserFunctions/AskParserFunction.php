@@ -223,6 +223,7 @@ class AskParserFunction {
 
 		$query->setOption( Query::PROC_CONTEXT, 'AskParserFunction' );
 		$query->setOption( Query::NO_DEPENDENCY_TRACE, $this->noTrace );
+		$query->setOption( 'request.action', $this->parserData->getOption( 'request.action' ) );
 
 		$queryHash = $query->getHash();
 
