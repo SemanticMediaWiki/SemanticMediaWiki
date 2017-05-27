@@ -399,13 +399,22 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$this->doCacheQueryResult( $queryResult, $queryId, $container, $query );
 		};
 
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate(
+		$transactionalDeferredCallableUpdate = ApplicationFactory::getInstance()->newTransactionalDeferredCallableUpdate(
 			$callback
 		);
 
-		$deferredCallableUpdate->setOrigin( __METHOD__ );
-		$deferredCallableUpdate->setFingerprint( __METHOD__ . $queryId );
-		$deferredCallableUpdate->pushUpdate();
+		$transactionalDeferredCallableUpdate->setOrigin( __METHOD__ );
+		$transactionalDeferredCallableUpdate->setFingerprint( __METHOD__ . $queryId );
+		$transactionalDeferredCallableUpdate->waitOnTransactionIdle();
+
+		// Make sure that in any event the collector is executed after
+		// the process has finished
+		$transactionalDeferredCallableUpdate->addPostCommitableCallback(
+			BufferedStatsdCollector::class,
+			[ $this, 'recordStats' ]
+		);
+
+		$transactionalDeferredCallableUpdate->pushUpdate();
 	}
 
 	private function doCacheQueryResult( $queryResult, $queryId, $container, $query ) {

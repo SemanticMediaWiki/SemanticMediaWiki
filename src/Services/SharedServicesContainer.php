@@ -28,7 +28,8 @@ use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
 use SMW\ParserData;
 use SMW\ContentParser;
-use SMW\DeferredCallableUpdate;
+use SMW\Updater\DeferredCallableUpdate;
+use SMW\Updater\TransactionalDeferredCallableUpdate;
 use SMW\InMemoryPoolCache;
 use SMW\PropertyAnnotatorFactory;
 use SMW\CacheFactory;
@@ -119,9 +120,9 @@ class SharedServicesContainer implements CallbackContainer {
 			return new PageCreator();
 		} );
 
-		$containerBuilder->registerCallback( 'PageUpdater', function( $containerBuilder, Database $connection = null ) {
+		$containerBuilder->registerCallback( 'PageUpdater', function( $containerBuilder, $connection, TransactionalDeferredCallableUpdate $transactionalDeferredCallableUpdate = null ) {
 			$containerBuilder->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
-			return new PageUpdater( $connection );
+			return new PageUpdater( $connection, $transactionalDeferredCallableUpdate );
 		} );
 
 		$containerBuilder->registerCallback( 'JobQueueLookup', function( $containerBuilder, Database $connection ) {
@@ -144,9 +145,14 @@ class SharedServicesContainer implements CallbackContainer {
 			return new ContentParser( $title );
 		} );
 
-		$containerBuilder->registerCallback( 'DeferredCallableUpdate', function( $containerBuilder, \Closure $callback, Database $connection = null ) {
-			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\DeferredCallableUpdate' );
-			return new DeferredCallableUpdate( $callback, $connection );
+		$containerBuilder->registerCallback( 'DeferredCallableUpdate', function( $containerBuilder, \Closure $callback = null ) {
+			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\Updater\DeferredCallableUpdate' );
+			return new DeferredCallableUpdate( $callback );
+		} );
+
+		$containerBuilder->registerCallback( 'TransactionalDeferredCallableUpdate', function( $containerBuilder, \Closure $callback = null, Database $connection = null ) {
+			$containerBuilder->registerExpectedReturnType( 'TransactionalDeferredCallableUpdate', '\SMW\Updater\TransactionalDeferredCallableUpdate' );
+			return new TransactionalDeferredCallableUpdate( $callback, $connection );
 		} );
 
 		/**

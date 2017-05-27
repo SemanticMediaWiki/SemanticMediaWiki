@@ -7,7 +7,9 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use SMW\Utils\Timer;
 use DeferrableUpdate;
-use DeferredUpdates;
+use DeferredpendingUpdates;
+use SMW\Updater\TransactionalDeferredCallableUpdate;
+use SMW\MediaWiki\Database;
 
 /**
  * @license GNU GPL v2+
@@ -16,6 +18,11 @@ use DeferredUpdates;
  * @author mwjames
  */
 class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
+
+	/**
+	 * @var TransactionalDeferredCallableUpdate
+	 */
+	private $transactionalDeferredCallableUpdate;
 
 	/**
 	 * @var Database
@@ -36,11 +43,6 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	 * @var string
 	 */
 	private $origin = '';
-
-	/**
-	 * @var boolean
-	 */
-	private $isCommandLineMode = false;
 
 	/**
 	 * @var boolean
@@ -71,9 +73,11 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	 * @since 2.5
 	 *
 	 * @param Database|null $connection
+	 * @param TransactionalDeferredCallableUpdate|null $transactionalDeferredCallableUpdate
 	 */
-	public function __construct( Database $connection = null ) {
+	public function __construct( Database $connection = null, TransactionalDeferredCallableUpdate $transactionalDeferredCallableUpdate = null ) {
 		$this->connection = $connection;
+		$this->transactionalDeferredCallableUpdate = $transactionalDeferredCallableUpdate;
 	}
 
 	/**
@@ -94,18 +98,6 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	 */
 	public function setOrigin( $origin ) {
 		$this->origin = $origin;
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-	 * Indicates whether MW is running in command-line mode or not.
-	 *
-	 * @since 2.5
-	 *
-	 * @param boolean $isCommandLineMode
-	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
-		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
@@ -149,13 +141,7 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	 * @since 2.5
 	 */
 	public function waitOnTransactionIdle() {
-
-		if ( $this->connection === null ) {
-			$this->log( __METHOD__ . ' is missing an active connection therefore `onTransactionIdle` cannot be used.' );
-			return $this->onTransactionIdle = false;
-		}
-
-		$this->onTransactionIdle = !$this->isCommandLineMode;
+		$this->onTransactionIdle = true;
 	}
 
 	/**
@@ -164,14 +150,14 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	 *
 	 * @since 3.0
 	 */
-	public function asPoolPurge() {
-
-		if ( $this->connection === null ) {
-			return;
+	public function doPurgeParserCacheAsPool() {
+		if ( $this->connection !== null ) {
+			$this->connection->onTransactionIdle( function() {
+				 $this->doPoolPurge();
+			} );
+		} else {
+			$this->doPoolPurge();
 		}
-
-		$this->onTransactionIdle = true;
-		$this->asPoolPurge = true;
 	}
 
 	/**
@@ -191,35 +177,42 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	}
 
 	/**
-	 * Push updates to be either deferred or direct pending the setting invoked
-	 * by PageUPdater::markAsPending.
+	 * Push pendingUpdates to be either deferred or direct executable, pending
+	 * the setting invoked by PageUPdater::markAsPending.
 	 *
 	 * @since 3.0
 	 */
 	public function pushUpdate() {
 
-		if ( !$this->isPending || $this->isCommandLineMode === true ) {
-			return $this->doUpdate();
+		if ( $this->transactionalDeferredCallableUpdate === null ) {
+			return $this->log( __METHOD__ . ' it is not possible to push updates as TransactionalDeferredCallableUpdate)' );
 		}
 
-		$this->log( __METHOD__ . " $this->origin (as DeferrableUpdate)" );
+		$this->transactionalDeferredCallableUpdate->setCallback( function(){
+			$this->doUpdate();
+		} );
 
 		if ( $this->onTransactionIdle ) {
-			$this->connection->onTransactionIdle( function () {
-				DeferredUpdates::addUpdate( $this );
-			} );
-		} else{
-			DeferredUpdates::addUpdate( $this );
+			$this->transactionalDeferredCallableUpdate->waitOnTransactionIdle();
 		}
+		if ( $this->isPending ) {
+			$this->transactionalDeferredCallableUpdate->markAsPending();
+		}
+
+		$this->transactionalDeferredCallableUpdate->setOrigin( array(
+			__METHOD__,
+			$this->origin
+		) );
+
+		$this->transactionalDeferredCallableUpdate->pushUpdate();
 	}
 
 	/**
-	 * @see DeferrableUpdate::doUpdate
-	 *
 	 * @since 3.0
 	 */
 	public function doUpdate() {
 		$this->isPending = false;
+		$this->onTransactionIdle = false;
 
 		foreach ( array_keys( $this->pendingUpdates ) as $update ) {
 			call_user_func( [ $this, $update ] );
@@ -235,21 +228,8 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 
 		$method = __METHOD__;
 
-		if ( $this->isPending ) {
+		if ( $this->isPending || $this->onTransactionIdle ) {
 			return $this->pendingUpdates['doPurgeParserCache'] = true;
-		}
-
-		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function () use( $method ) {
-				$this->log( $method . ' (onTransactionIdle)' );
-				$this->onTransactionIdle = false;
-				$this->doPurgeParserCache();
-				$this->onTransactionIdle = true;
-			} );
-		}
-
-		if ( $this->asPoolPurge ) {
-			return $this->doPoolPurge();
 		}
 
 		foreach ( $this->titles as $title ) {
@@ -266,20 +246,11 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 			return;
 		}
 
-		if ( $this->isPending ) {
+		if ( $this->isPending || $this->onTransactionIdle ) {
 			return $this->pendingUpdates['doPurgeHtmlCache'] = true;
 		}
 
 		$method = __METHOD__;
-
-		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function () use ( $method ) {
-				$this->log( $method . ' (onTransactionIdle)' );
-				$this->onTransactionIdle = false;
-				$this->doPurgeHtmlCache();
-				$this->onTransactionIdle = true;
-			} );
-		}
 
 		// Calls HTMLCacheUpdate, HTMLCacheUpdateJob including HTMLFileCache,
 		// CdnCacheUpdate
@@ -295,17 +266,8 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 
 		$method = __METHOD__;
 
-		if ( $this->isPending ) {
+		if ( $this->isPending || $this->onTransactionIdle ) {
 			return $this->pendingUpdates['doPurgeWebCache'] = true;
-		}
-
-		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function () use ( $method ) {
-				$this->log( $method . ' (onTransactionIdle)' );
-				$this->onTransactionIdle = false;
-				$this->doPurgeWebCache();
-				$this->onTransactionIdle = true;
-			} );
 		}
 
 		foreach ( $this->titles as $title ) {

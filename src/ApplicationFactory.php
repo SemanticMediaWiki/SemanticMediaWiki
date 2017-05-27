@@ -257,15 +257,12 @@ class ApplicationFactory {
 
 		$pageUpdater = $this->containerBuilder->create(
 			'PageUpdater',
-			$this->getStore()->getConnection( 'mw.db' )
+			$this->getStore()->getConnection( 'mw.db' ),
+			$this->newTransactionalDeferredCallableUpdate()
 		);
 
 		$pageUpdater->setLogger(
 			$this->getMediaWikiLogger()
-		);
-
-		$pageUpdater->isCommandLineMode(
-			$GLOBALS['wgCommandLineMode']
 		);
 
 		// https://phabricator.wikimedia.org/T154427
@@ -456,17 +453,14 @@ class ApplicationFactory {
 	 *
 	 * @return DeferredCallableUpdate
 	 */
-	public function newDeferredCallableUpdate( Closure $callback ) {
-
-		$store = $this->getStore();
+	public function newDeferredCallableUpdate( Closure $callback = null ) {
 
 		$deferredCallableUpdate = $this->containerBuilder->create(
 			'DeferredCallableUpdate',
-			$callback,
-			$store->getConnection( 'mw.db' )
+			$callback
 		);
 
-		$deferredCallableUpdate->enabledDeferredUpdate(
+		$deferredCallableUpdate->isDeferrableUpdate(
 			$this->getSettings()->get( 'smwgEnabledDeferredUpdate' )
 		);
 
@@ -475,10 +469,40 @@ class ApplicationFactory {
 		);
 
 		$deferredCallableUpdate->isCommandLineMode(
-			$store->getOptions()->has( 'isCommandLineMode' ) ? $store->getOptions()->get( 'isCommandLineMode' ) : $GLOBALS['wgCommandLineMode']
+			$GLOBALS['wgCommandLineMode']
 		);
 
 		return $deferredCallableUpdate;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Closure $callback
+	 *
+	 * @return TransactionalDeferredCallableUpdate
+	 */
+	public function newTransactionalDeferredCallableUpdate( Closure $callback = null ) {
+
+		$transactionalDeferredCallableUpdate = $this->containerBuilder->create(
+			'TransactionalDeferredCallableUpdate',
+			$callback,
+			$this->getStore()->getConnection( 'mw.db' )
+		);
+
+		$transactionalDeferredCallableUpdate->isDeferrableUpdate(
+			$this->getSettings()->get( 'smwgEnabledDeferredUpdate' )
+		);
+
+		$transactionalDeferredCallableUpdate->setLogger(
+			$this->getMediaWikiLogger()
+		);
+
+		$transactionalDeferredCallableUpdate->isCommandLineMode(
+			$GLOBALS['wgCommandLineMode']
+		);
+
+		return $transactionalDeferredCallableUpdate;
 	}
 
 	/**

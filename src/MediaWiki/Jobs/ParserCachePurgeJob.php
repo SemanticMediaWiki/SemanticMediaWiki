@@ -85,8 +85,8 @@ class ParserCachePurgeJob extends JobBase {
 		}
 
 		$this->pageUpdater->addPage( $this->getTitle() );
-		$this->pageUpdater->asPoolPurge();
-		$this->pageUpdater->doPurgeParserCache();
+		$this->pageUpdater->setOrigin( __METHOD__ );
+		$this->pageUpdater->doPurgeParserCacheAsPool();
 
 		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', array( $this ) );
 

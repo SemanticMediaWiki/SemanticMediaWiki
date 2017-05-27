@@ -224,11 +224,11 @@ abstract class Store implements QueryEngine {
 		 */
 		\Hooks::run( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
 
-		$pageUpdater = $applicationFactory->newPageUpdater();
-
-		if ( !$this->getOptions()->get( 'smwgAutoRefreshSubject' ) || !$pageUpdater->canUpdate() ) {
+		if ( !$this->getOptions()->get( 'smwgAutoRefreshSubject' ) || $semanticData->getOption( Enum::OPT_SUSPEND_PURGE ) ) {
 			return;
 		}
+
+		$pageUpdater = $applicationFactory->newPageUpdater();
 
 		$pageUpdater->addPage( $subject->getTitle() );
 		$pageUpdater->waitOnTransactionIdle();
