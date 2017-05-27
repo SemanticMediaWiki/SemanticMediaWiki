@@ -228,20 +228,22 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getPropertyValueList() {
-		global $smwgPropertyPagingLimit, $wgRequest;
+		global $smwgPropertyPagingLimit;
 
 		 // limit==0: configuration setting to disable this completely
 		if ( $this->limit < 1 ) {
 			return '';
 		}
 
+		$request = $this->getContext()->getRequest();
+
 		$diWikiPages = array();
 		$options = SMWPageLister::getRequestOptions( $this->limit, $this->from, $this->until );
 
-		$options->limit = $wgRequest->getVal( 'limit', $smwgPropertyPagingLimit );
-		$options->offset = $wgRequest->getVal( 'offset', '0' );
+		$options->limit = intval( $request->getVal( 'limit', $smwgPropertyPagingLimit ) );
+		$options->offset = intval( $request->getVal( 'offset', '0' ) );
 
-		if ( ( $value = $wgRequest->getVal( 'value', '' ) ) !== '' ) {
+		if ( ( $value = $request->getVal( 'value', '' ) ) !== '' ) {
 			$diWikiPages = $this->doQuerySubjectListWithValue( $value, $options );
 		} else {
 			$diWikiPages = $this->store->getAllPropertySubjects( $this->mProperty, $options );

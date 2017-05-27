@@ -49,12 +49,12 @@ class RequestOptionsProcessor {
 			return $sqlConds;
 		}
 
-		if ( $requestOptions->limit > 0 ) {
-			$sqlConds['LIMIT'] = $requestOptions->limit;
+		if ( $requestOptions->getLimit() > 0 ) {
+			$sqlConds['LIMIT'] = $requestOptions->getLimit();
 		}
 
-		if ( $requestOptions->offset > 0 ) {
-			$sqlConds['OFFSET'] = $requestOptions->offset;
+		if ( $requestOptions->getOffset() > 0 ) {
+			$sqlConds['OFFSET'] = $requestOptions->getOffset();
 		}
 
 		if ( ( $valueCol !== '' ) && ( $requestOptions->sort ) ) {
