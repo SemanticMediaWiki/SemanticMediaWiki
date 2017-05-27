@@ -403,6 +403,11 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 		$query = $queryResult->getQuery();
 
+		// #2484 Avoid any update activities during a stashedit API access
+		if ( $query->getOption( 'request.action' ) === 'stashedit' ) {
+			return false;
+		}
+
 		return $query !== null && $query->getContextPage() !== null && $query->getLimit() > 0 && $query->getOption( Query::NO_DEPENDENCY_TRACE ) !== true;
 	}
 

@@ -102,7 +102,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAskParserFunctionWithParserOption() {
 
-		$this->parserData->expects( $this->once() )
+		$this->parserData->expects( $this->at( 0 ) )
 			->method( 'setOption' )
 			->with(
 				$this->equalTo( \SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE ),
