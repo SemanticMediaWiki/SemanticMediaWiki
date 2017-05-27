@@ -55,7 +55,7 @@ class MaintenanceRunner {
 	 * @return MaintenanceRunner
 	 */
 	public function setQuiet() {
-		$this->quiet = true;
+		$this->options['quiet'] = true;
 		return $this;
 	}
 
@@ -80,9 +80,14 @@ class MaintenanceRunner {
 			throw new DomainException( "Expected a Maintenance instance" );
 		}
 
+		// isset/ null
+		if ( isset( $this->options['quiet'] ) && $this->options['quiet'] === false ) {
+			unset( $this->options['quiet'] );
+		}
+
 		$maintenance->loadParamsAndArgs(
 			$this->maintenanceClass,
-			array_merge( $this->options, array( 'quiet' => $this->quiet ) )
+			$this->options
 		);
 
 		ob_start();

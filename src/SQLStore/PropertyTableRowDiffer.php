@@ -109,6 +109,10 @@ class PropertyTableRowDiffer {
 				}
 			}
 
+			if ( $fixedProperty ) {
+				$this->getCompositePropertyTableDiff()->addFixedPropertyRecord( $tableName, $fixedProperty );
+			}
+
 			if ( array_key_exists( $tableName, $newData ) ) {
 				// Note: the order within arrays should remain the same while page is not updated.
 				// Hence we do not sort before serializing. It is hoped that this assumption is valid.
@@ -139,10 +143,6 @@ class PropertyTableRowDiffer {
 					$sid,
 					$propertyTable
 				);
-
-				if ( $fixedProperty ) {
-					$this->getCompositePropertyTableDiff()->addFixedPropertyRecord( $tableName, $fixedProperty );
-				}
 			}
 		}
 

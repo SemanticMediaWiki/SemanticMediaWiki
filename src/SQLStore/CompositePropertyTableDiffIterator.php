@@ -116,6 +116,11 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 
 		foreach ( $this->data as $hash => $data ) {
 			foreach ( $data as $tableName => $d ) {
+
+				if ( isset( $this->fixedPropertyRecords[$tableName] ) ) {
+					$d['property'] = $this->fixedPropertyRecords[$tableName];
+				}
+
 				$dataChangeOps[] = new TableChangeOp( $tableName, $d );
 			}
 		}

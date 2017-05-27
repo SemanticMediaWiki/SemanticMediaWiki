@@ -324,7 +324,7 @@ class SQLStoreFactory {
 	 */
 	public function newPropertyTableInfoFetcher() {
 
-		$settings = $this->applicationFactory->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyTableInfoFetcher = new PropertyTableInfoFetcher(
 			new PropertyTypeFinder( $this->store->getConnection( 'mw.db' ) )

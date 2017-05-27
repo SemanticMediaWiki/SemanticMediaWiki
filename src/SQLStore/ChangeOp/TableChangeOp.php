@@ -94,6 +94,8 @@ class TableChangeOp {
 			$changeOps = $this->changeOps[$opType];
 		}
 
+		unset( $changeOps['property'] );
+
 		foreach ( $changeOps as $op ) {
 			$fieldOps[] = new FieldChangeOp( $op );
 		}

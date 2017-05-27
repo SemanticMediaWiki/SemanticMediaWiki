@@ -155,6 +155,7 @@ class DistinctEntityDataRebuilder {
 	private function doExecuteUpdateJobFor( $page ) {
 
 		$updatejob = new UpdateJob( $page, array(
+			UpdateJob::FORCED_UPDATE => true,
 			'pm' => $this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
 		) );
 

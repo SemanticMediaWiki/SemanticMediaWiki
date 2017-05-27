@@ -239,6 +239,10 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 		foreach ( $dataChangeOp->getFieldChangeOps() as $fieldChangeOp ) {
 
+			if ( $dataChangeOp->isFixedPropertyOp() ) {
+				$fieldChangeOp->set( 'p_id', $dataChangeOp->getFixedPropertyValueBy( 'p_id' ) );
+			}
+
 			// Exempted property -> out
 			if ( !$fieldChangeOp->has( 'p_id' ) || $searchTable->isExemptedPropertyById( $fieldChangeOp->get( 'p_id' ) ) ) {
 				continue;

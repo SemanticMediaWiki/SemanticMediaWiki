@@ -146,7 +146,7 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			3,
+			2,
 			$instance->getFieldChangeOps()
 		);
 	}

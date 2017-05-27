@@ -4,6 +4,8 @@ namespace SMW\Maintenance;
 
 use SMW\Store;
 use SMW\StoreFactory;
+use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\SQLStore\Installer;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -74,6 +76,7 @@ class SetupStore extends \Maintenance {
 	 * @since 2.0
 	 */
 	public function execute() {
+
 		// TODO It would be good if this script would work with SMW not being enable (yet).
 		// Then one could setup the store without first enabling SMW (which will break the wiki until the store is setup).
 		if ( !defined( 'SMW_VERSION' ) || !$GLOBALS['smwgSemanticsEnabled'] ) {
@@ -84,11 +87,28 @@ class SetupStore extends \Maintenance {
 		$this->loadGlobalFunctions();
 
 		$store = $this->getStore();
+		$store->clear();
+
+		if ( $this->getOption( 'quiet' ) ) {
+			$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
+		} else {
+			$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+			$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
+		}
+
+		$store->getOptions()->set(
+			Installer::OPT_MESSAGEREPORTER,
+			$messageReporter
+		);
+
+		if ( method_exists( $store, 'getPropertyTableInfoFetcher' ) ) {
+			$store->getPropertyTableInfoFetcher()->clearCache();
+		}
 
 		if ( $this->hasOption( 'delete' ) ) {
 			$this->dropStore( $store );
 		} else {
-			Store::setupStore( !$this->isQuiet() );
+			$store->setup();
 		}
 	}
 
@@ -114,7 +134,7 @@ class SetupStore extends \Maintenance {
 			$this->error( "\nError: There is no backend class \"$storeClass\". Aborting.", 1 );
 		}
 
-		return StoreFactory::getStore();
+		return StoreFactory::getStore( $storeClass );
 	}
 
 	protected function dropStore( Store $store ) {
@@ -161,6 +181,15 @@ class SetupStore extends \Maintenance {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $message
+	 */
+	public function reportMessage( $message ) {
+		$this->output( $message );
 	}
 
 }

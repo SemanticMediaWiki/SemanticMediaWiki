@@ -48,6 +48,9 @@ class RunnerFactory {
 			case 'rebuildConceptCache';
 				$maintenanceClass = 'SMW\Maintenance\RebuildConceptCache';
 				break;
+			case 'setupStore';
+				$maintenanceClass = 'SMW\Maintenance\SetupStore';
+				break;
 		}
 
 		return new MaintenanceRunner( $maintenanceClass );
