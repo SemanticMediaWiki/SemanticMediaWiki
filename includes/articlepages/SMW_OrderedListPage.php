@@ -59,9 +59,10 @@ abstract class SMWOrderedListPage extends Article {
 	 * output.
 	 */
 	public function view() {
-		global $wgRequest, $wgUser;
+		global $wgUser;
 
 		$outputPage = $this->getContext()->getOutput();
+		$request = $this->getContext()->getRequest();
 
 		if ( !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
 			$outputPage->setPageTitle( $this->getTitle()->getPrefixedText() );
@@ -88,8 +89,8 @@ abstract class SMWOrderedListPage extends Article {
 		parent::view();
 
 		// Copied from CategoryPage
-		$diff = $wgRequest->getVal( 'diff' );
-		$diffOnly = $wgRequest->getBool( 'diffonly', $wgUser->getOption( 'diffonly' ) );
+		$diff = $request->getVal( 'diff' );
+		$diffOnly = $request->getBool( 'diffonly', $wgUser->getOption( 'diffonly' ) );
 		if ( !isset( $diff ) || !$diffOnly ) {
 			$this->showList();
 		}
@@ -133,8 +134,8 @@ abstract class SMWOrderedListPage extends Article {
 	 * @since 2.4
 	 */
 	protected function getNavigationLinks( $msgKey, array $diWikiPages, $default = 50 ) {
-		global $wgRequest;
 
+		$request = $this->getContext()->getRequest();
 		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
 
 		$messageBuilder = $mwCollaboratorFactory->newMessageBuilder(
@@ -150,14 +151,14 @@ abstract class SMWOrderedListPage extends Article {
 		if ( $resultCount > 0 ) {
 			$navigation = $messageBuilder->prevNextToText(
 				$title,
-				$wgRequest->getVal( 'limit', $default ),
-				$wgRequest->getVal( 'offset', '0' ),
+				intval( $request->getVal( 'limit', $default ) ),
+				intval( $request->getVal( 'offset', '0' ) ),
 				array(
-					'value'  => $wgRequest->getVal( 'value', '' ),
-					'from'   => $wgRequest->getVal( 'from', '' ),
-					'until'  => $wgRequest->getVal( 'until', '' )
+					'value'  => $request->getVal( 'value', '' ),
+					'from'   => $request->getVal( 'from', '' ),
+					'until'  => $request->getVal( 'until', '' )
 				),
-				$resultCount < $wgRequest->getVal( 'limit', $default )
+				$resultCount < $request->getVal( 'limit', $default )
 			);
 
 			$navigation = Html::rawElement('div', array(), $navigation );
@@ -175,12 +176,12 @@ abstract class SMWOrderedListPage extends Article {
 	 * Main method for adding all additional HTML to the output stream.
 	 */
 	protected function showList() {
-		global $wgRequest;
 
 		$outputPage = $this->getContext()->getOutput();
+		$request = $this->getContext()->getRequest();
 
-		$this->from = $wgRequest->getVal( 'from', '' );
-		$this->until = $wgRequest->getVal( 'until', '' );
+		$this->from = $request->getVal( 'from', '' );
+		$this->until = $request->getVal( 'until', '' );
 
 		if ( $this->initParameters() ) {
 			$outputPage->addHTML( $this->getHtml() );
