@@ -132,15 +132,18 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $subject->getTitle() )->output;
 
-		if ( isset( $case['assert-output']['withOutputPageContext'] ) && $case['assert-output']['withOutputPageContext'] ) {
+		if ( isset( $case['assert-output']['onOutputPage'] ) && $case['assert-output']['onOutputPage'] ) {
 			$context = new \RequestContext();
 			$context->setTitle( $subject->getTitle() );
 			// Ensures the OutputPageBeforeHTML hook is run
 			$context->getOutput()->addParserOutput( $parserOutput );
 			$output = $context->getOutput()->getHtml();
-		} elseif ( isset( $case['assert-output']['onPageView'] ) && $case['assert-output']['onPageView'] ) {
-			$context = new \RequestContext();
-			$context->setTitle( $subject->getTitle() );
+		} elseif ( isset( $case['assert-output']['onPageView'] ) ) {
+			$parameters = isset( $case['assert-output']['onPageView']['parameters'] ) ? $case['assert-output']['onPageView']['parameters'] : array();
+			$context = \RequestContext::newExtraneousContext(
+				$subject->getTitle(),
+				$parameters
+			);
 			\Article::newFromTitle( $subject->getTitle(), $context )->view();
 			$output = $context->getOutput()->getHtml();
 		} else {

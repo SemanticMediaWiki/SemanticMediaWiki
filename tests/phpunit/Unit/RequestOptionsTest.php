@@ -66,26 +66,61 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testLimit() {
+	/**
+	 * @dataProvider numberProvider
+	 */
+	public function testLimit( $limit, $expected ) {
 
 		$instance = new RequestOptions();
-		$instance->setLimit( 42 );
+		$instance->setLimit( $limit );
 
 		$this->assertEquals(
-			42,
+			$expected,
+			$instance->getLimit()
+		);
+
+		$instance->limit = $limit;
+
+		$this->assertEquals(
+			$expected,
 			$instance->getLimit()
 		);
 	}
 
-	public function testOffset() {
+	/**
+	 * @dataProvider numberProvider
+	 */
+	public function testOffset( $offset, $expected ) {
 
 		$instance = new RequestOptions();
-		$instance->setOffset( 42 );
+		$instance->setOffset( $offset );
 
 		$this->assertEquals(
-			42,
+			$expected,
 			$instance->getOffset()
 		);
+
+		$instance->offset = $offset;
+
+		$this->assertEquals(
+			$expected,
+			$instance->getOffset()
+		);
+	}
+
+	public function numberProvider() {
+
+		$provider[] = array(
+			42,
+			42
+		);
+
+		$provider[] = array(
+			'42foo',
+			42
+		);
+
+		return $provider;
 	}
 
 }
