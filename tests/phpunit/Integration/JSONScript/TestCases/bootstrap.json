@@ -1,0 +1,53 @@
+{
+	"description": "Example bootstrap test case (see https://youtu.be/7fDKjPFaTaY)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has example",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/Boostrap",
+			"contents": "[[Has example::Example123]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (page type annotation)",
+			"subject": "Example/Boostrap",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has example"
+					],
+					"propertyValues": [
+						"Example123"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example123"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
