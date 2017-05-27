@@ -1,0 +1,58 @@
+{
+	"description": "Test in-text `_txt` datatype in combination with an \"Allows value\" output (#2342, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"page": "Has text",
+			"namespace":"SMW_NS_PROPERTY",
+			"contents": "[[Has type::Text]], [[Allows value::Doe]]"
+		},
+		{
+			"page": "Example/P0452/1",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has text::Doe]]"
+		},
+		{
+			"page": "Example/P0452/2",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has text::Do]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 test output of the valid [[Has text::Doe]] annotation",
+			"subject": "Example/P0452/1",
+			"assert-output": {
+				"to-contain": [
+					"Doe"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 test output of the invalid [[Has text::Do]] annotation",
+			"subject": "Example/P0452/2",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter smwttinline\" data-type=\"4\" data-state=\"inline\" data-title=\"Error\" data-hasqtip=\"0\" aria-describedby=\"qtip-0\">"
+				],
+				"not-contain": [
+					"Do"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
