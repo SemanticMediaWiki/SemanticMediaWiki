@@ -34,7 +34,7 @@
 			"subject": "Example/P0452/2",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter smwttinline\" data-type=\"4\" data-state=\"inline\" data-title=\"Error\" title=\"&quot;Do&quot; is not in the list (Doe, Doe) of allowed values for the &quot;Has text&quot; property.\">"
+					"Do<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Error\" title=\"&quot;Do&quot; is not in the list (Doe) of allowed values for the &quot;Has text&quot; property.\">"
 				]
 			}
 		}
