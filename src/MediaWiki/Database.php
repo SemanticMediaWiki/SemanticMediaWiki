@@ -7,6 +7,7 @@ use Exception;
 use ResultWrapper;
 use RuntimeException;
 use SMW\DBConnectionProvider;
+use SMW\ApplicationFactory;
 use UnexpectedValueException;
 
 /**
@@ -42,19 +43,14 @@ class Database {
 	private $writeConnection;
 
 	/**
-	 * @var array
+	 * @var ILBFactory
 	 */
-	private $transactionQueue = array();
+	private $loadBalancerFactory;
 
 	/**
 	 * @var string
 	 */
 	private $dbPrefix = '';
-
-	/**
-	 * @var string
-	 */
-	private $disabledTransactions = false;
 
 	/**
 	 * @var boolean
@@ -66,10 +62,16 @@ class Database {
 	 *
 	 * @param DBConnectionProvider $readConnectionProvider
 	 * @param DBConnectionProvider|null $writeConnectionProvider
+	 * @param ILBFactory|null $loadBalancerFactory
 	 */
-	public function __construct( DBConnectionProvider $readConnectionProvider, DBConnectionProvider $writeConnectionProvider = null ) {
+	public function __construct( DBConnectionProvider $readConnectionProvider, DBConnectionProvider $writeConnectionProvider = null, $loadBalancerFactory = null ) {
 		$this->readConnectionProvider = $readConnectionProvider;
 		$this->writeConnectionProvider = $writeConnectionProvider;
+		$this->loadBalancerFactory = $loadBalancerFactory;
+
+		if ( $this->loadBalancerFactory === null ) {
+			$this->loadBalancerFactory = ApplicationFactory::getInstance()->create( 'DBLoadBalancerFactory' );
+		}
 	}
 
 	/**
@@ -505,48 +507,42 @@ class Database {
 	}
 
 	/**
-	 * @since 2.1
+	 * @note Only supported with 1.28+
+	 * @since 3.0
 	 *
-	 * @param string $fname
+	 * @param string $fname Caller name (e.g. __METHOD__)
+	 *
+	 * @return mixed A value to pass to commitAndWaitForReplication
 	 */
-	public function beginTransaction( $fname = __METHOD__  ) {
+	public function getEmptyTransactionTicket( $fname = __METHOD__ ) {
 
-		// If a transaction is being added for an uncommitted
-		// queue entry then a transaction for the same instance
-		// and name is being omitted
-		if ( isset( $this->transactionQueue[$fname] ) ) {
-			return;
+		if ( method_exists( $this->loadBalancerFactory, 'getEmptyTransactionTicket' ) ) {
+			return $this->loadBalancerFactory->getEmptyTransactionTicket( $fname );
 		}
 
-		$this->transactionQueue[$fname] = true;
-
-		try {
-			$this->writeConnection()->begin( $fname );
-		} catch ( \Exception $exception ) {
-			unset( $this->transactionQueue[$fname] );
-			wfDebug( __METHOD__ . ' exception caused by ' . $exception->getMessage() );
-		}
+		return null;
 	}
 
 	/**
-	 * @since 2.1
+	 * Convenience method for safely running commitMasterChanges/waitForReplication
+	 * where it will allow to commit and wait for whena TransactionTicket is
+	 * available.
 	 *
-	 * @param string $fname
+	 * @note Only supported with 1.28+
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $fname Caller name (e.g. __METHOD__)
+	 * @param mixed $ticket Result of Database::getEmptyTransactionTicket
+	 * @param array $opts Options to waitForReplication
 	 */
-	public function commitTransaction( $fname = __METHOD__  ) {
+	public function commitAndWaitForReplication( $fname, $ticket, array $opts = [] ) {
 
-		if ( !isset( $this->transactionQueue[$fname] ) ) {
+		if ( !is_int( $ticket ) || !method_exists( $this->loadBalancerFactory, 'commitAndWaitForReplication' ) ) {
 			return;
 		}
 
-		try {
-			$this->writeConnection()->commit( $fname );
-		} catch ( \Exception $exception ) {
-			$this->writeConnection()->rollback( $fname );
-			wfDebug( __METHOD__ . ' rollback because of ' . $exception->getMessage() );
-		}
-
-		unset( $this->transactionQueue[$fname] );
+		return $this->loadBalancerFactory->commitAndWaitForReplication( $fname, $ticket, $opts );
 	}
 
 	/**

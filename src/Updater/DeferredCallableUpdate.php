@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Updater;
 
 use Closure;
 use DeferrableUpdate;
@@ -19,14 +19,19 @@ use SMW\MediaWiki\Database;
 class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 
 	/**
+	 * Updates that should run before flushing output buffer
+	 */
+	const STAGE_PRESEND = 'pre';
+
+	/**
+	 * Updates that should run after flushing output buffer
+	 */
+	const STAGE_POSTSEND = 'post';
+
+	/**
 	 * @var Closure|callable
 	 */
 	private $callback;
-
-	/**
-	 * @var Database|null
-	 */
-	private $connection;
 
 	/**
 	 * @var LoggerInterface
@@ -36,7 +41,7 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	/**
 	 * @var boolean
 	 */
-	private $enabledDeferredUpdate = true;
+	private $isDeferrableUpdate = true;
 
 	/**
 	 * @var boolean
@@ -61,12 +66,7 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	/**
 	 * @var boolean
 	 */
-	private $onTransactionIdle = false;
-
-	/**
-	 * @var boolean
-	 */
-	private $isCommandLineMode = false;
+	protected $isCommandLineMode = false;
 
 	/**
 	 * @var array
@@ -74,21 +74,24 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	private static $queueList = array();
 
 	/**
+	 * @var string
+	 */
+	private $stage;
+
+	/**
 	 * @since 2.4
 	 *
-	 * @param Closure $callback
+	 * @param Closure $callback|null
 	 * @param Database|null $connection
-	 *
-	 * @throws RuntimeException
 	 */
-	public function __construct( Closure $callback, Database $connection = null ) {
+	public function __construct( Closure $callback = null ) {
 
-		if ( !is_callable( $callback ) ) {
-			throw new RuntimeException( 'Expected a valid callback/closure!' );
+		if ( $callback === null ) {
+			$callback = [ $this, 'emptyCallback' ];
 		}
 
 		$this->callback = $callback;
-		$this->connection = $connection;
+		$this->stage = self::STAGE_POSTSEND;
 	}
 
 	/**
@@ -104,6 +107,31 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	}
 
 	/**
+	 * @since 3.0
+	 */
+	public function asPresend() {
+		$this->stage = self::STAGE_PRESEND;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getStage() {
+		return $this->stage;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Closure $callback
+	 */
+	public function setCallback( Closure $callback ) {
+		$this->callback = $callback;
+	}
+
+	/**
 	 * @see LoggerAwareInterface::setLogger
 	 *
 	 * @since 2.5
@@ -115,14 +143,22 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	}
 
 	/**
+	 * @deprecated since 3.0, use DeferredCallableUpdate::isDeferrableUpdate
+	 * @since 2.4
+	 */
+	public function enabledDeferredUpdate( $enabledDeferredUpdate = true ) {
+		$this->isDeferrableUpdate( $enabledDeferredUpdate );
+	}
+
+	/**
 	 * @note Unit/Integration tests in MW 1.26- showed ambiguous behaviour when
 	 * run in deferred mode because not all MW operations were supporting late
 	 * execution.
 	 *
-	 * @since 2.4
+	 * @since 3.0
 	 */
-	public function enabledDeferredUpdate( $enabledDeferredUpdate = true ) {
-		$this->enabledDeferredUpdate = (bool)$enabledDeferredUpdate;
+	public function isDeferrableUpdate( $isDeferrableUpdate ) {
+		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;
 	}
 
 	/**
@@ -140,23 +176,6 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	}
 
 	/**
-	 * @note MW 1.29+ showed transaction collisions (Exception thrown with
-	 * an uncommited database transaction), use 'onTransactionIdle' to isolate
-	 * the update execution.
-	 *
-	 * @since 2.5
-	 */
-	public function waitOnTransactionIdle() {
-
-		if ( $this->connection === null ) {
-			$this->log( __METHOD__ . ' is missing an active connection therefore `onTransactionIdle` cannot be used.' );
-			return $this->onTransactionIdle = false;
-		}
-
-		$this->onTransactionIdle = true;
-	}
-
-	/**
 	 * @note Set a fingerprint allowing it to track and detect duplicate update
 	 * requests while being unprocessed.
 	 *
@@ -166,6 +185,15 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 */
 	public function setFingerprint( $fingerprint = null ) {
 		$this->fingerprint = md5( $fingerprint );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string|null $queue
+	 */
+	public function getFingerprint() {
+		return $this->fingerprint;
 	}
 
 	/**
@@ -185,7 +213,7 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @return string
 	 */
 	public function getOrigin() {
-		return $this->origin;
+		return is_array( $this->origin ) ? json_encode( $this->origin ) : $this->origin;
 	}
 
 	/**
@@ -205,19 +233,12 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @since 2.4
 	 */
 	public function doUpdate() {
-
-		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function() {
-				$this->log( $this->origin . ' doUpdate (onTransactionIdle)' );
-				$this->onTransactionIdle = false;
-				$this->doUpdate();
-			} );
-		}
-
-		$this->log( $this->origin . ' doUpdate' . ( $this->fingerprint ? ' (' . $this->fingerprint . ')' : '' ) );
-
 		call_user_func( $this->callback );
 		unset( self::$queueList[$this->fingerprint] );
+
+		$this->log(
+			$this->getOrigin() . ' finished doUpdate' . ( $this->fingerprint ? ' (fingerprint: ' . $this->fingerprint . ')' : '' )
+		);
 	}
 
 	/**
@@ -226,32 +247,62 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	public function pushUpdate() {
 
 		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
-			$this->log( $this->origin . ' (fingerprint: ' . $this->fingerprint .' is already listed therefore skip)' );
+			$this->log( $this->getOrigin() . ' (fingerprint: ' . $this->fingerprint .' is already listed therefore skip)' );
 			return;
 		}
 
 		self::$queueList[$this->fingerprint] = true;
 
-		if ( $this->isPending && $this->enabledDeferredUpdate ) {
-			$this->log( $this->origin . ' (as pending DeferredCallableUpdate)' );
+		if ( $this->isPending && $this->isDeferrableUpdate ) {
+			$this->log( $this->getOrigin() . ' (as pending DeferredCallableUpdate)' );
 			return self::$pendingUpdates[] = $this;
 		}
 
-		if ( !$this->isCommandLineMode && $this->enabledDeferredUpdate ) {
-			$this->log( $this->origin . ' (as DeferredCallableUpdate' . ( $this->fingerprint ? ' ' . $this->fingerprint : '' ) . ')' );
-			return DeferredUpdates::addUpdate( $this );
+		if ( !$this->isCommandLineMode && $this->isDeferrableUpdate ) {
+			return $this->addUpdate( $this );
 		}
 
 		$this->doUpdate();
 	}
 
-	private function log( $message, $context = array() ) {
+	protected function addUpdate( $update ) {
+
+		$this->log( __METHOD__, $this->getLoggableContext() );
+		$stage = null;
+
+		if ( $update->getStage() === self::STAGE_POSTSEND && defined( 'DeferredUpdates::POSTSEND' ) ) {
+			$stage = DeferredUpdates::POSTSEND;
+		}
+
+		if ( $update->getStage() === self::STAGE_PRESEND && defined( 'DeferredUpdates::PRESEND' ) ) {
+			$stage = DeferredUpdates::PRESEND;
+		}
+
+		DeferredUpdates::addUpdate( $update, $stage );
+	}
+
+	protected function getLoggableContext() {
+		return array(
+			'origin' => $this->origin,
+			'fingerprint' => $this->fingerprint,
+			'stage' => $this->stage
+		);
+	}
+
+	protected function log( $fname, $context = '' ) {
 
 		if ( $this->logger === null ) {
 			return;
 		}
 
-		$this->logger->info( $message, $context );
+		$this->logger->info(
+			$fname .
+			( is_array( $context ) ? ' ' . json_encode( $context, JSON_PRETTY_PRINT ) : $context )
+		);
+	}
+
+	private function emptyCallback() {
+		$this->log( __METHOD__, ' is an empty callback!' );
 	}
 
 }

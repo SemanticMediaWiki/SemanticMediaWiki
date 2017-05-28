@@ -79,6 +79,23 @@ return array(
 	},
 
 	/**
+	 * LBFactory
+	 *
+	 * @return callable
+	 */
+	'DBLoadBalancerFactory' => function( $containerBuilder ) {
+
+		 $containerBuilder->registerExpectedReturnType( 'DBLoadBalancerFactory', '\LBFactory' );
+
+		// > MW 1.28
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getDBLoadBalancerFactory' ) ) {
+			return MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		}
+
+		return LBFactory::singleton();
+	},
+
+	/**
 	 * DBLoadBalancer
 	 *
 	 * @return callable

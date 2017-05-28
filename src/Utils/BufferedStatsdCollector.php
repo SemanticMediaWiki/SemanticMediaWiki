@@ -217,20 +217,20 @@ class BufferedStatsdCollector {
 		// environment therefore rely on the deferred update and any caller
 		// that invokes the recordStats method
 
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate(
+		$transactionalDeferredCallableUpdate = ApplicationFactory::getInstance()->newTransactionalDeferredCallableUpdate(
 			function() { $this->saveStats();
 			}
 		);
 
-		$deferredCallableUpdate->setOrigin( __METHOD__ );
-		$deferredCallableUpdate->waitOnTransactionIdle();
+		$transactionalDeferredCallableUpdate->setOrigin( __METHOD__ );
+		$transactionalDeferredCallableUpdate->waitOnTransactionIdle();
 
-		$deferredCallableUpdate->setFingerprint(
+		$transactionalDeferredCallableUpdate->setFingerprint(
 			__METHOD__ . $this->fingerprint
 		);
 
-		$deferredCallableUpdate->markAsPending( $asPending );
-		$deferredCallableUpdate->pushUpdate();
+		$transactionalDeferredCallableUpdate->markAsPending( $asPending );
+		$transactionalDeferredCallableUpdate->pushUpdate();
 	}
 
 }

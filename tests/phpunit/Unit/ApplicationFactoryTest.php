@@ -252,8 +252,16 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		};
 
 		$this->assertInstanceOf(
-			'\SMW\DeferredCallableUpdate',
+			'\SMW\Updater\DeferredCallableUpdate',
 			$this->applicationFactory->newDeferredCallableUpdate( $callback )
+		);
+	}
+
+	public function testCanConstructTransactionalDeferredCallableUpdate() {
+
+		$this->assertInstanceOf(
+			'\SMW\Updater\TransactionalDeferredCallableUpdate',
+			$this->applicationFactory->newTransactionalDeferredCallableUpdate( null )
 		);
 	}
 
