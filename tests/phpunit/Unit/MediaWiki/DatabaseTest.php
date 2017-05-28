@@ -302,11 +302,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$instance->query( 'Foo', __METHOD__ );
 	}
 
-	public function testBeginTransaction() {
-
-		$database = $this->getMockBuilder( '\DatabaseBase' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+	public function testGetEmptyTransactionTicket() {
 
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
 			->disableOriginalConstructor()
@@ -316,25 +312,23 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$writeConnectionProvider->expects( $this->once() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getEmptyTransactionTicket' ) )
+			->getMock();
+
+		$loadBalancerFactory->expects( $this->once() )
+			->method( 'getEmptyTransactionTicket' );
 
 		$instance = new Database(
 			$readConnectionProvider,
-			$writeConnectionProvider
+			$writeConnectionProvider,
+			$loadBalancerFactory
 		);
 
-		// Can't reach the `DatabaseBase::begin` with a mock because
-		// it is declared as final
-		$instance->beginTransaction( __METHOD__ );
+		$instance->getEmptyTransactionTicket( __METHOD__ );
 	}
 
-	public function testCommitTransaction() {
-
-		$database = $this->getMockBuilder( '\DatabaseBase' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+	public function testCommitAndWaitForReplication() {
 
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
 			->disableOriginalConstructor()
@@ -344,19 +338,20 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$writeConnectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'commitAndWaitForReplication' ) )
+			->getMock();
+
+		$loadBalancerFactory->expects( $this->once() )
+			->method( 'commitAndWaitForReplication' );
 
 		$instance = new Database(
 			$readConnectionProvider,
-			$writeConnectionProvider
+			$writeConnectionProvider,
+			$loadBalancerFactory
 		);
 
-		// Can't reach the `DatabaseBase::begin`/`DatabaseBase::commit`
-		// with a mock because it is declared as final
-		$instance->beginTransaction( __METHOD__ );
-		$instance->commitTransaction( __METHOD__ );
+		$instance->commitAndWaitForReplication( __METHOD__, 123 );
 	}
 
 	public function testDoQueryWithAutoCommit() {

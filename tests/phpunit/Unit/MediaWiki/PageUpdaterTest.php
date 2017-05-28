@@ -110,12 +110,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPurgeOnTransactionIdle( $purgeMethod, $titleMethod ) {
 
-		$this->connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
-			->will( $this->returnCallback( function( $callback ) {
-				return call_user_func( $callback ); }
-			) );
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -127,12 +121,14 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->once() )
 			->method( $titleMethod );
 
-		$instance = new PageUpdater( $this->connection );
+		$instance = new PageUpdater();
 		$instance->addPage( $title );
 
 		$instance->waitOnTransactionIdle();
 
 		call_user_func( [ $instance, $purgeMethod ] );
+
+		$instance->doUpdate();
 	}
 
 	/**
@@ -157,6 +153,8 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance->waitOnTransactionIdle();
 
 		call_user_func( [ $instance, $purgeMethod ] );
+
+		$instance->doUpdate();
 	}
 
 	/**
@@ -180,11 +178,12 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PageUpdater( $this->connection );
 		$instance->addPage( $title );
-		$instance->isCommandLineMode( true );
 
 		$instance->waitOnTransactionIdle();
 
 		call_user_func( [ $instance, $purgeMethod ] );
+
+		$instance->doUpdate();
 	}
 
 	public function testAddNullPage() {
@@ -206,11 +205,18 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPushPendingWaitableUpdate( $purgeMethod, $titleMethod ) {
 
-		$this->connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
-			->will( $this->returnCallback( function( $callback ) {
-				return call_user_func( $callback ); }
-			) );
+		$transactionalDeferredCallableUpdate = $this->getMockBuilder( '\SMW\Updater\TransactionalDeferredCallableUpdate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$transactionalDeferredCallableUpdate->expects( $this->once() )
+			->method( 'pushUpdate' );
+
+		$transactionalDeferredCallableUpdate->expects( $this->once() )
+			->method( 'waitOnTransactionIdle' );
+
+		$transactionalDeferredCallableUpdate->expects( $this->once() )
+			->method( 'markAsPending' );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -220,17 +226,15 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDBKey' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$title->expects( $this->once() )
-			->method( $titleMethod );
+		$instance = new PageUpdater(
+			$this->connection,
+			$transactionalDeferredCallableUpdate
+		);
 
-		$instance = new PageUpdater( $this->connection );
 		$instance->addPage( $title );
 
 		$instance->markAsPending();
 		$instance->waitOnTransactionIdle();
-
-		// To avoid the DeferredUpdates queue
-		$instance->isCommandLineMode( true );
 
 		call_user_func( [ $instance, $purgeMethod ] );
 
@@ -269,10 +273,8 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PageUpdater( $this->connection );
 		$instance->addPage( $title );
 
-		$instance->asPoolPurge();
 		$instance->waitOnTransactionIdle();
-
-		$instance->doPurgeParserCache();
+		$instance->doPurgeParserCacheAsPool();
 	}
 
 	public function purgeMethodProvider() {

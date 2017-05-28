@@ -247,18 +247,14 @@ class SQLStoreFactory {
 	 */
 	public function newDeferredCallableCachedListLookupUpdate() {
 
-		// PHP 5.3
-		$factory = $this;
-
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $factory ) {
-			$factory->newPropertyUsageCachedListLookup()->deleteCache();
-			$factory->newUnusedPropertyCachedListLookup()->deleteCache();
-			$factory->newUndeclaredPropertyCachedListLookup()->deleteCache();
-			$factory->newUsageStatisticsCachedListLookup()->deleteCache();
-
+		$transactionalDeferredCallableUpdate = ApplicationFactory::getInstance()->newTransactionalDeferredCallableUpdate( function() {
+			$this->newPropertyUsageCachedListLookup()->deleteCache();
+			$this->newUnusedPropertyCachedListLookup()->deleteCache();
+			$this->newUndeclaredPropertyCachedListLookup()->deleteCache();
+			$this->newUsageStatisticsCachedListLookup()->deleteCache();
 		} );
 
-		return $deferredCallableUpdate;
+		return $transactionalDeferredCallableUpdate;
 	}
 
 	/**

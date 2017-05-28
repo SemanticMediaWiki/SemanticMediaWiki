@@ -78,3 +78,6 @@ class_alias( 'SMW\ParserFunctions\SubobjectParserFunction', 'SMW\SubobjectParser
 class_alias( 'SMW\ParserFunctions\RecurringEventsParserFunction', 'SMW\RecurringEventsParserFunction' );
 class_alias( 'SMW\SQLStore\PropertyTableDefinition', 'SMW\SQLStore\TableDefinition' );
 class_alias( 'SMW\DataModel\ContainerSemanticData', 'SMWContainerSemanticData' );
+
+// 3.0
+class_alias( 'SMW\Updater\DeferredCallableUpdate', 'SMW\DeferredCallableUpdate' );
