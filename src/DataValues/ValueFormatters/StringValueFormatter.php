@@ -49,7 +49,7 @@ class StringValueFormatter extends DataValueFormatter {
 		}
 
 		if ( !$this->dataValue->isValid() ) {
-			return '';
+			return $this->dataValue->getDataItem()->getUserValue();
 		}
 
 		return $this->doFormatFinalOutputFor( $type, $linker );
