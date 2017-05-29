@@ -551,5 +551,6 @@
 	"smw-format-datatable-next": "下一个",
 	"smw-format-datatable-previous": "上一个",
 	"smw-format-datatable-sortascending": ":激活按升序进行列排序",
-	"smw-format-datatable-sortdescending": ":激活按降序进行列排序"
+	"smw-format-datatable-sortdescending": ":激活按降序进行列排序",
+	"smw-category-invalid-redirect-target": "分类“$1”包含无效的链至非分类名字空间的重定向目标。"
 }

@@ -556,5 +556,6 @@
 	"smw-format-datatable-next": "Nächste",
 	"smw-format-datatable-previous": "Vorherige",
 	"smw-format-datatable-sortascending": ": aktivieren, um die Spalte aufsteigend zu sortieren",
-	"smw-format-datatable-sortdescending": ": aktivieren, um die Spalte absteigend zu sortieren"
+	"smw-format-datatable-sortdescending": ": aktivieren, um die Spalte absteigend zu sortieren",
+	"smw-category-invalid-redirect-target": "Die Kategorie „$1“ enthält ein Weiterleitungsziel, das sich nicht im Namensraum Kategorie befindet und daher ungültig ist."
 }

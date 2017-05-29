@@ -528,5 +528,11 @@
 	"smw-pa-property-predefined_edip": "«$1» — це попередньо визначена властивість, що забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki] для зазначення того, чи встановлено захист від редагувань, чи ні.",
 	"smw-pa-property-predefined-long_edip": "Тоді як будь-який користувач може додати цю властивість до якоїсь теми, лише користувач з особливими правами може редагувати чи відкликати захист сутності після того, як властивість було додано.",
 	"smw-query-reference-link-label": "Посилання на запит",
-	"smw-format-datatable-infothousands": ","
+	"smw-format-datatable-infothousands": ",",
+	"smw-format-datatable-loadingrecords": "Завантаження…",
+	"smw-format-datatable-processing": "Обробка…",
+	"smw-format-datatable-search": "Пошук:",
+	"smw-format-datatable-last": "Останній",
+	"smw-format-datatable-next": "Наступний",
+	"smw-format-datatable-previous": "Попередній"
 }
