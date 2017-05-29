@@ -473,5 +473,6 @@
 	"smw-format-datatable-first": "Primer",
 	"smw-format-datatable-last": "Último",
 	"smw-format-datatable-next": "Siguiente",
-	"smw-format-datatable-previous": "Anterior"
+	"smw-format-datatable-previous": "Anterior",
+	"smw-category-invalid-redirect-target": "La categoría «$1» contiene un objetivo de redirección no válido a un espacio de nombres que no es de categoría."
 }

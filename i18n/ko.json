@@ -373,5 +373,6 @@
 	"smw-format-datatable-first": "처음",
 	"smw-format-datatable-last": "마지막",
 	"smw-format-datatable-next": "다음",
-	"smw-format-datatable-previous": "이전"
+	"smw-format-datatable-previous": "이전",
+	"smw-category-invalid-redirect-target": "\"$1\" 분류는 분류가 아닌 이름공간에 대한 잘못된 넘겨주기 대상을 포함하고 있습니다."
 }

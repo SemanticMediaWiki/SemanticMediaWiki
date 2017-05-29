@@ -557,5 +557,6 @@
 	"smw-format-datatable-next": "This is a message used as a selector. Show the ... resultset.\n\n{{Identical|Next}}",
 	"smw-format-datatable-previous": "This is a message used as a selector. Show the ... resultset.\n\n{{Identical|Previous}}",
 	"smw-format-datatable-sortascending": "This is a selection message shown by the \"datatable\" format.",
-	"smw-format-datatable-sortdescending": "This is a selection message shown by the \"datatable\" format."
+	"smw-format-datatable-sortdescending": "This is a selection message shown by the \"datatable\" format.",
+	"smw-category-invalid-redirect-target": "This is an error message.\n\nParamters:\n* $1 - holds the name of the category"
 }
