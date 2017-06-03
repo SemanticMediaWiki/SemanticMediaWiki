@@ -154,21 +154,14 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance->deregisterHandlerFor( 'SimpleText' );
 	}
 
-	public function testEncode() {
+	/**
+	 * @dataProvider encodeProvider
+	 */
+	public function testEncode( $string, $expected ) {
 
 		$this->assertEquals(
-			'[2,"Foo"]',
-			Message::encode( 'Foo' )
-		);
-
-		$this->assertEquals(
-			'[2,"Foo"]',
-			Message::encode( array( 'Foo' ) )
-		);
-
-		$this->assertEquals(
-			'[2,"Foo"]',
-			Message::encode( '[2,"Foo"]' )
+			$expected,
+			Message::encode( $string )
 		);
 	}
 
@@ -183,6 +176,31 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 			'Foo',
 			Message::decode( '[2,"Foo"]' )
 		);
+	}
+
+	public function encodeProvider() {
+
+		$provider[] = array(
+			'Foo',
+			'[2,"Foo"]'
+		);
+
+		$provider[] = array(
+			array( 'Foo' ),
+			'[2,"Foo"]'
+		);
+
+		$provider[] = array(
+			'[2,"Foo"]',
+			'[2,"Foo"]'
+		);
+
+		$provider[] = array(
+			array( 'Foo', '<strong>Expression error: Unrecognized word "yyyy".</strong>' ),
+			'[2,"Foo","Expression error: Unrecognized word \"yyyy\"."]'
+		);
+
+		return $provider;
 	}
 
 }
