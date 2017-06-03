@@ -58,12 +58,11 @@ class PropertyTableDefinitionBuilder {
 		$this->addTableDefinitionForDiTypes( $diTypes );
 
 		$this->addTableDefinitionForFixedProperties(
-			$specialProperties,
-			self::PROPERTY_TABLE_PREFIX
+			$specialProperties
 		);
 
 		$customFixedProperties = array();
-		$fixedPropertyTablePrefix = self::PROPERTY_TABLE_PREFIX;
+		$fixedPropertyTablePrefix = array();
 
 		// Allow to alter the prefix by an extension
 		Hooks::run( 'SMW::SQLStore::AddCustomFixedPropertyTables', array( &$customFixedProperties, &$fixedPropertyTablePrefix ) );
@@ -177,16 +176,18 @@ class PropertyTableDefinitionBuilder {
 		}
 	}
 
-	private function addTableDefinitionForFixedProperties( array $properties, $fixedPropertyTablePrefix ) {
-		foreach( $properties as $propertyKey => $propetyTableSuffix ) {
+	private function addTableDefinitionForFixedProperties( array $properties, array $fixedPropertyTablePrefix = array() ) {
+		foreach( $properties as $propertyKey => $propertyTableSuffix ) {
+
+			$tablePrefix = isset( $fixedPropertyTablePrefix[$propertyKey] ) ? $fixedPropertyTablePrefix[$propertyKey] : self::PROPERTY_TABLE_PREFIX;
 
 			// Either as plain index array containing the property key or as associated
 			// array with property key => tableSuffix
-			$propertyKey = is_int( $propertyKey ) ? $propetyTableSuffix : $propertyKey;
+			$propertyKey = is_int( $propertyKey ) ? $propertyTableSuffix : $propertyKey;
 
 			$this->addPropertyTable(
 				DataTypeRegistry::getInstance()->getDataItemId( DIProperty::getPredefinedPropertyTypeId( $propertyKey ) ),
-				$fixedPropertyTablePrefix . strtolower( $propetyTableSuffix ),
+				$tablePrefix . strtolower( $propertyTableSuffix ),
 				$propertyKey
 			);
 		}
