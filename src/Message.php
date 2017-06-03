@@ -111,7 +111,16 @@ class Message {
 			$type = self::TEXT;
 		}
 
-		return json_encode( array_merge( (array)$type, (array)$message ) );
+		$message = (array)$message;
+		$encode = array();
+		$encode[] = $type;
+
+		// Normalize arguments like "<strong>Expression error: Unrecognized word "yyyy".</strong>"
+		foreach ( $message as $value ) {
+			$encode[] = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+		}
+
+		return json_encode( $encode );
 	}
 
 	/**
