@@ -403,8 +403,14 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->setMethods( null )
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::AddCustomFixedPropertyTables', function( &$customFixedProperties ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::AddCustomFixedPropertyTables', function( &$customFixedProperties, &$fixedPropertyTablePrefix ) {
+
+			// Standard table prefix
 			$customFixedProperties['Foo'] = '_Bar';
+
+			// Custom table prefix
+			$customFixedProperties['Foobar'] = '_Foooo';
+			$fixedPropertyTablePrefix['Foobar'] = 'smw_ext';
 
 			return true;
 		} );
@@ -412,6 +418,11 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		$this->assertEquals(
 			'smw_fpt_bar',
 			$store->findPropertyTableID( new \SMW\DIProperty( 'Foo' ) )
+		);
+
+		$this->assertEquals(
+			'smw_ext_foooo',
+			$store->findPropertyTableID( new \SMW\DIProperty( 'Foobar' ) )
 		);
 	}
 
