@@ -69,6 +69,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->verifyFactboxCacheDeleteEvent( $instance );
 		$this->verifyCachedPropertyValuesPrefetcherResetEvent( $instance );
 		$this->verifyCachedPrefetcherResetEvent( $instance );
+		$this->verifyCachedUpdateMarkerDeleteEvent( $instance );
 	}
 
 	public function verifyExporterResetEvent( EventListenerCollection $instance ) {
@@ -174,6 +175,29 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertListenerExecuteFor(
 			'cached.prefetcher.reset',
+			$instance,
+			$dispatchContext
+		);
+	}
+
+	public function verifyCachedUpdateMarkerDeleteEvent( EventListenerCollection $instance ) {
+
+		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subject->expects( $this->atLeastOnce() )
+			->method( 'getHash' );
+
+		$dispatchContext->set(
+			'subject',
+			$subject
+		);
+
+		$this->assertListenerExecuteFor(
+			'cached.update.marker.delete',
 			$instance,
 			$dispatchContext
 		);
