@@ -383,7 +383,8 @@ class DataRebuilder {
 
 	private function doDisposeMarkedOutdatedEntities() {
 
-		$entityIdDisposerJob = ApplicationFactory::getInstance()->newJobFactory()->newEntityIdDisposerJob(
+		$applicationFactory = ApplicationFactory::getInstance();
+		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
 			Title::newFromText( __METHOD__ )
 		);
 
@@ -398,9 +399,20 @@ class DataRebuilder {
 		$this->reportMessage( "Removing table entries (marked for deletion).\n" );
 
 		foreach ( $outdatedEntitiesResultIterator as $row ) {
-			$counter++;
-			$this->doPrintDotProgressIndicator( false, $counter, round( $counter / $matchesCount * 100 ) . ' %' );
 			$entityIdDisposerJob->dispose( $row );
+		}
+
+		$chunkedIterator = $applicationFactory->getIteratorFactory()->newChunkedIterator(
+			$outdatedEntitiesResultIterator,
+			200
+		);
+
+		foreach ( $chunkedIterator as $chunk ) {
+			foreach ( $chunk as $row ) {
+				$counter++;
+				$this->doPrintDotProgressIndicator( false, $counter, round( $counter / $matchesCount * 100 ) . ' %' );
+				$entityIdDisposerJob->dispose( $row );
+			}
 		}
 
 		$this->reportMessage( "\n\n{$matchesCount} IDs removed.\n\n" );

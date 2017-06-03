@@ -44,4 +44,18 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructChunkedIterator() {
+
+		$instance = new IteratorFactory();
+
+		$iterator = $this->getMockBuilder( '\Iterator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\ChunkedIterator',
+			$instance->newChunkedIterator( $iterator )
+		);
+	}
+
 }
