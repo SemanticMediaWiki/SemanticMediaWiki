@@ -224,7 +224,7 @@ class PropertyTableIdReferenceDisposer {
 		$eventHandler = EventHandler::getInstance();
 
 		$dispatchContext = $eventHandler->newDispatchContext();
-		$dispatchContext->set( 'subject', $subject );
+		$dispatchContext->set( 'subject', $subject->asBase() );
 		$dispatchContext->set( 'context', 'PropertyTableIdReferenceDisposal' );
 
 		$eventHandler->getEventDispatcher()->dispatch(
