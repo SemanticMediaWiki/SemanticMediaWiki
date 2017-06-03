@@ -161,6 +161,24 @@ class EventListenerRegistry implements EventListenerCollection {
 				$dispatchContext->set( 'propagationstop', true );
 			}
 		);
+
+		/**
+		 * Emitted during ArticleDelete
+		 */
+		$this->eventListenerCollection->registerCallback(
+			'cached.update.marker.delete', function( $dispatchContext ) {
+
+				$hash = '';
+
+				if ( $dispatchContext->has( 'subject' ) ) {
+					$hash = $dispatchContext->get( 'subject' )->getHash();
+				}
+
+				ApplicationFactory::getInstance()->getCache()->delete(
+					smwfCacheKey( ParserData::CACHE_NAMESPACE, $hash )
+				);
+			}
+		);
 	}
 
 }

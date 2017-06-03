@@ -164,6 +164,10 @@ function smwfCacheKey( $namespace, $key ) {
 		$namespace = ':' . $namespace;
 	}
 
+	if ( is_array( $key ) ) {
+		$key = json_encode( $key );
+	}
+
 	return $cachePrefix . $namespace . ':' . md5( $key );
 }
 
