@@ -315,18 +315,24 @@ does output a certain string, one has to the define an expected output.
 }
 </pre>
 
-* The `subject` refers to the page that was defined in the `setup` section.
-* The `about` describes what the test is expected to test which
-may help during a failure to identify potential conflicts or hints on how to
-resolve an issue.
 * The `type` provides specialized assertion methods with some of them requiring
 an extra setup to yield a comparable output but in most cases the `parser` type
-should suffice to create test assertions for scenarios under test. Available types
+should suffice to create test assertions for common test scenarios. Available types
 are:
   * `query`, `concept`, and `format`
   * `parser`
   * `rdf`
   * `special`
+* The `about` describes what the test is expected to test which may help during
+  a failure to identify potential conflicts or hints on how to resolve an issue.
+* The `subject` refers to the page that was defined in the `setup` section.
+
+For example, as of version 2 the `parser` type (`ParserTestCaseProcessor`) knows
+two assertions methods:
+
+- `assert-store` is to validate data against `Store::getSemanticData`
+- `assert-output` is to validate string comparison against the `ParserOutput`
+  generated text
 
 ### Preparing the test environment
 
@@ -346,15 +352,17 @@ settings for a test by adding something like:
 </pre>
 
 By default not all settings parameter are enabled in `JsonTestCaseScriptRunner::prepareTest`
-and may need to be extended in case a specific test case requires additional
+and may require an extension in case a specific test case depends on additional
 customization.
 
-Each `json` file requires a `meta` section with the `version` to correspond to the
-`JsonTestCaseScriptRunner::getRequiredJsonTestCaseMinVersion` while `is-incomplete`
-removes the file from the test plan if enabled.
+Each `json` file expects a `meta` section with:
 
-The section also contains a `debug` flag and if enabled may output internal object
-state information that can be helpful during debugging.
+- `version` to correspond to the
+   `JsonTestCaseScriptRunner::getRequiredJsonTestCaseMinVersion` and controls the
+  JSON script definition that the runner is expected to support.
+- `is-incomplete` removes the file from the test plan if set `true`
+- `debug` as flag for support of intermediary debugging that may output internal
+  object state information.
 
 <pre>
 "meta": {
@@ -379,7 +387,19 @@ possible to skip those cases by adding:
 },
 </pre>
 
-It is also possible that an entire test scenario is unable to be completed in a particular
+<pre>
+{
+	"skip-on": {
+		"hhvm-*": "HHVM (or SQLite) shows opposite B1000, B9",
+		"mw-1.28<": "`numeric` collation only available with 1.28+"
+	}
+}
+</pre>
+
+Constraints that include `hhvm-*` will indicate to exclude all HHVM versions while
+`mw-1.28<` defines that any MW version lower than 1.28 is to be ignored.
+
+It is also possible that an entire test scenario cannot be completed in a particular
 environment therefore it can be marked and skipped with:
 
 <pre>
@@ -400,9 +420,10 @@ the status which henceforth avoids a test execution.
 
 ### File naming
 
-The naming of a test file is arbitrary but it has been a good standard to indicate
-the type of tests run. `s-0001.json` would indicate that the test is mostly concerned
-with special pages while `p-0001.json` will handle with parser output assertions.
+The naming of a test file is arbitrary but it has been a best practice to indicate
+the type of test expected to be executed. For example, `s-0001.json` would indicate that the
+test is mostly concerned with special pages while `p-0001.json` is to handle
+parser output related assertions.
 
 ### Debugging and running a test
 
@@ -443,7 +464,9 @@ Time: 13.02 seconds, Memory: 34.00Mb
 OK (1 test, 16 assertions)
 </pre>
 
-A general introduction to the test environment can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/edit/master/tests/README.md).
+The following [video](https://youtu.be/7fDKjPFaTaY) contains a very brief introduction on how
+to run and debug a JSONScript test case. For a general introduction to the test environment,
+have a look at the following [readme](https://github.com/SemanticMediaWiki/SemanticMediaWiki/edit/master/tests/README.md).
 
 ## Technical notes
 
