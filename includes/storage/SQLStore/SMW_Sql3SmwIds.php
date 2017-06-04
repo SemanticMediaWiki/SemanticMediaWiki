@@ -395,7 +395,8 @@ class SMWSql3SmwIds {
 				);
 
 				if ( $row !== false ) {
-					$sortkey = $row->smw_sortkey;
+					// Make sure that smw_sort is being re-computed in case it is null
+					$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
 					if ( $fetchHashes ) {
 						$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash );
 					}
@@ -430,7 +431,8 @@ class SMWSql3SmwIds {
 
 			if ( $row !== false ) {
 				$id = $row->smw_id;
-				$sortkey = $row->smw_sortkey;
+				// Make sure that smw_sort is being re-computed in case it is null
+				$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
 				if ( $fetchHashes ) {
 					$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash);
 				}
