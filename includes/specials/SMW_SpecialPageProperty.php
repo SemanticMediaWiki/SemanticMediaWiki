@@ -1,28 +1,28 @@
 <?php
 /**
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- *
- * Special page to show object relation pairs.
- *
- * @author Denny Vrandecic
- */
+* @ingroup SMWSpecialPage
+* @ingroup SpecialPage
+*
+* Special page to show object relation pairs.
+*
+* @author Denny Vrandecic
+*/
 
 /**
- * This special page for Semantic MediaWiki implements a
- * view on a object-relation pair, i.e. a page that shows
- * all the fillers of a property for a certain page.
- * This is typically used for overflow results from other
- * dynamic output pages.
- *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- */
+* This special page for Semantic MediaWiki implements a
+* view on a object-relation pair, i.e. a page that shows
+* all the fillers of a property for a certain page.
+* This is typically used for overflow results from other
+* dynamic output pages.
+*
+* @ingroup SMWSpecialPage
+* @ingroup SpecialPage
+*/
 class SMWPageProperty extends SpecialPage {
 
 	/**
-	 * Constructor
-	 */
+	* Constructor
+	*/
 	public function __construct() {
 		parent::__construct( 'PageProperty', '', false );
 	}
@@ -149,7 +149,7 @@ class SMWPageProperty extends SpecialPage {
 		// Display query form
 		$html .= '<p>&#160;</p>';
 		$html .= '<form name="pageproperty" action="' . htmlspecialchars( $spectitle->getLocalURL() ) . '" method="get">' . "\n" .
-		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
+					'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 		$html .= wfMessage( 'smw_pp_from' )->text() . ' <input type="text" name="from" value="' . htmlspecialchars( $pagename ) . '" />' . "&#160;&#160;&#160;\n";
 		$html .= wfMessage( 'smw_pp_type' )->text() . ' <input type="text" name="type" value="' . htmlspecialchars( $propname ) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMessage( 'smw_pp_submit' )->text() . "\"/>\n</form>\n";

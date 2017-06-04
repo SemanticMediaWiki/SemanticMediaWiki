@@ -8,41 +8,41 @@ use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
- * Class to provide all basic read methods for SMWSQLStore3.
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- * @author Nischay Nahata
- *
- * @since 1.8
- * @ingroup SMWStore
- */
+* Class to provide all basic read methods for SMWSQLStore3.
+*
+* @author Markus Krötzsch
+* @author Jeroen De Dauw
+* @author Nischay Nahata
+*
+* @since 1.8
+* @ingroup SMWStore
+*/
 class SMWSQLStore3Readers {
 
 	/**
-	 * The store used by this store reader
-	 *
-	 * @since 1.8
-	 * @var SMWSQLStore3
-	 */
+	* The store used by this store reader
+	*
+	* @since 1.8
+	* @var SMWSQLStore3
+	*/
 	private $store;
 
 	/**
-	 * @var SQLStoreFactory
-	 */
+	* @var SQLStoreFactory
+	*/
 	private $factory;
 
 	/**
-	 * @var SqlEntityLookupResultFetcher
-	 */
+	* @var SqlEntityLookupResultFetcher
+	*/
 	private $sqlEntityLookupResultFetcher;
 
 	/**
-	 *  >0 while getSemanticData runs, used to prevent nested calls from clearing the cache
-	 * while another call runs and is about to fill it with data
-	 *
-	 * @var int
-	 */
+	*  >0 while getSemanticData runs, used to prevent nested calls from clearing the cache
+	* while another call runs and is about to fill it with data
+	*
+	* @var int
+	*/
 	private static $in_getSemanticData = 0;
 
 	public function __construct( SMWSQLStore3 $parentStore, $factory ) {
@@ -52,12 +52,12 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * @see SMWStore::getSemanticData()
-	 * @since 1.8
-	 *
-	 * @param DIWikiPage $subject
-	 * @param string[]|bool $filter
-	 */
+	* @see SMWStore::getSemanticData()
+	* @since 1.8
+	*
+	* @param DIWikiPage $subject
+	* @param string[]|bool $filter
+	*/
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
 
 		// *** Find out if this subject exists ***//
@@ -128,16 +128,16 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * Helper method to make sure there is a cache entry for the data about
-	 * the given subject with the given ID.
-	 *
-	 * @todo The management of this cache should be revisited.
-	 *
-	 * @since 1.8
-	 *
-	 * @param int $subjectId
-	 * @param DIWikiPage $subject
-	 */
+	* Helper method to make sure there is a cache entry for the data about
+	* the given subject with the given ID.
+	*
+	* @todo The management of this cache should be revisited.
+	*
+	* @since 1.8
+	*
+	* @param int $subjectId
+	* @param DIWikiPage $subject
+	*/
 	private function initSemanticDataCache( $subjectId, DIWikiPage $subject ) {
 
 		// *** Prepare the cache ***//
@@ -166,14 +166,14 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * Fetch the data storder about one subject in one particular table.
-	 *
-	 * @param integer $sid
-	 * @param DIWikiPage $subject
-	 * @param TableDefinition $proptable
-	 *
-	 * @return SMWSemanticData
-	 */
+	* Fetch the data storder about one subject in one particular table.
+	*
+	* @param integer $sid
+	* @param DIWikiPage $subject
+	* @param TableDefinition $proptable
+	*
+	* @return SMWSemanticData
+	*/
 	private function getSemanticDataFromTable( $sid, DIWikiPage $subject, TableDefinition $proptable, SMWRequestOptions $requestOptions = null ) {
 		// Do not clear the cache when called recursively.
 		self::$in_getSemanticData++;
@@ -197,19 +197,19 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * @see SMWStore::getPropertyValues
-	 *
-	 * @todo Retrieving all sortkeys (values for _SKEY with $subject null)
-	 * is not supported. An empty array will be given.
-	 *
-	 * @since 1.8
-	 *
-	 * @param $subject mixed DIWikiPage or null
-	 * @param $property SMWDIProperty
-	 * @param $requestOptions SMWRequestOptions
-	 *
-	 * @return SMWDataItem[]
-	 */
+	* @see SMWStore::getPropertyValues
+	*
+	* @todo Retrieving all sortkeys (values for _SKEY with $subject null)
+	* is not supported. An empty array will be given.
+	*
+	* @since 1.8
+	*
+	* @param $subject mixed DIWikiPage or null
+	* @param $property SMWDIProperty
+	* @param $requestOptions SMWRequestOptions
+	*
+	* @return SMWDataItem[]
+	*/
 	public function getPropertyValues( $subject, SMWDIProperty $property, $requestOptions = null ) {
 
 		if ( $property->isInverse() ) { // inverses are working differently
@@ -268,44 +268,44 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * Helper function for reading all data for from a given property table
-	 * (specified by an SMWSQLStore3Table object), based on certain
-	 * restrictions. The function can filter data based on the subject (1)
-	 * or on the property it belongs to (2) -- but one of those must be
-	 * done. The Boolean $issubject is true for (1) and false for (2).
-	 *
-	 * In case (1), the first two parameters are taken to refer to a
-	 * subject; in case (2) they are taken to refer to a property. In any
-	 * case, the retrieval is limited to the specified $proptable. The
-	 * parameters are an internal $id (of a subject or property), and an
-	 * $object (being an DIWikiPage or SMWDIProperty). Moreover, when
-	 * filtering by property, it is assumed that the given $proptable
-	 * belongs to the property: if it is a table with fixed property, it
-	 * will not be checked that this is the same property as the one that
-	 * was given in $object.
-	 *
-	 * In case (1), the result in general is an array of pairs (arrays of
-	 * size 2) consisting of a property key (string), and DB keys (array if
-	 * many, string if one) from which a datvalue object for this value can
-	 * be built. It is possible that some of the DB keys are based on
-	 * internal objects; these will be represented by similar result arrays
-	 * of (recursive calls of) fetchSemanticData().
-	 *
-	 * In case (2), the result is simply an array of DB keys (array)
-	 * without the property keys. Container objects will be encoded with
-	 * nested arrays like in case (1).
-	 *
-	 * @todo Maybe share DB handler; asking for it seems to take quite some
-	 * time and we do not want to change it in one call.
-	 *
-	 * @param integer $id
-	 * @param SMWDataItem $object
-	 * @param TableDefinition $propTable
-	 * @param boolean $isSubject
-	 * @param SMWRequestOptions $requestOptions
-	 *
-	 * @return array
-	 */
+	* Helper function for reading all data for from a given property table
+	* (specified by an SMWSQLStore3Table object), based on certain
+	* restrictions. The function can filter data based on the subject (1)
+	* or on the property it belongs to (2) -- but one of those must be
+	* done. The Boolean $issubject is true for (1) and false for (2).
+	*
+	* In case (1), the first two parameters are taken to refer to a
+	* subject; in case (2) they are taken to refer to a property. In any
+	* case, the retrieval is limited to the specified $proptable. The
+	* parameters are an internal $id (of a subject or property), and an
+	* $object (being an DIWikiPage or SMWDIProperty). Moreover, when
+	* filtering by property, it is assumed that the given $proptable
+	* belongs to the property: if it is a table with fixed property, it
+	* will not be checked that this is the same property as the one that
+	* was given in $object.
+	*
+	* In case (1), the result in general is an array of pairs (arrays of
+	* size 2) consisting of a property key (string), and DB keys (array if
+	* many, string if one) from which a datvalue object for this value can
+	* be built. It is possible that some of the DB keys are based on
+	* internal objects; these will be represented by similar result arrays
+	* of (recursive calls of) fetchSemanticData().
+	*
+	* In case (2), the result is simply an array of DB keys (array)
+	* without the property keys. Container objects will be encoded with
+	* nested arrays like in case (1).
+	*
+	* @todo Maybe share DB handler; asking for it seems to take quite some
+	* time and we do not want to change it in one call.
+	*
+	* @param integer $id
+	* @param SMWDataItem $object
+	* @param TableDefinition $propTable
+	* @param boolean $isSubject
+	* @param SMWRequestOptions $requestOptions
+	*
+	* @return array
+	*/
 	private function fetchSemanticData( $id, SMWDataItem $object = null, TableDefinition $propTable, $isSubject = true, SMWRequestOptions $requestOptions = null ) {
 		// stop if there is not enough data:
 		// properties always need to be given as object,
@@ -328,8 +328,8 @@ class SMWSQLStore3Readers {
 
 		if ( $isSubject ) { // restrict subject, select property
 			$where .= ( $propTable->usesIdSubject() ) ? 's_id=' . $db->addQuotes( $id ) :
-					  's_title=' . $db->addQuotes( $object->getDBkey() ) .
-					  ' AND s_namespace=' . $db->addQuotes( $object->getNamespace() );
+					's_title=' . $db->addQuotes( $object->getDBkey() ) .
+					' AND s_namespace=' . $db->addQuotes( $object->getNamespace() );
 			if ( !$propTable->isFixedPropertyTable() ) { // select property name
 				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . ' AS p ON p_id=p.smw_id';
 				$select .= 'p.smw_title as prop';
@@ -441,17 +441,17 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * @see SMWStore::getPropertySubjects
-	 *
-	 * @todo This method cannot retrieve subjects for sortkeys, i.e., for
-	 * property _SKEY. Only empty arrays will be returned there.
-	 *
-	 * @param SMWDIProperty $property
-	 * @param SMWDataItem|null $value
-	 * @param SMWRequestOptions|null $requestOptions
-	 *
-	 * @return array of DIWikiPage
-	 */
+	* @see SMWStore::getPropertySubjects
+	*
+	* @todo This method cannot retrieve subjects for sortkeys, i.e., for
+	* property _SKEY. Only empty arrays will be returned there.
+	*
+	* @param SMWDIProperty $property
+	* @param SMWDataItem|null $value
+	* @param SMWRequestOptions|null $requestOptions
+	*
+	* @return array of DIWikiPage
+	*/
 	public function getPropertySubjects( SMWDIProperty $property, SMWDataItem $value = null, SMWRequestOptions $requestOptions = null ) {
 		/// TODO: should we share code with #ask query computation here? Just use queries?
 
@@ -540,25 +540,25 @@ class SMWSQLStore3Readers {
 
 
 	/**
-	 * Helper function to compute from and where strings for a DB query so that
-	 * only rows of the given value object match. The parameter $tableindex
-	 * counts that tables used in the query to avoid duplicate table names. The
-	 * parameter $proptable provides the SMWSQLStore3Table object that is
-	 * queried.
-	 *
-	 * @todo Maybe do something about redirects. The old code was
-	 * $oid = $this->store->smwIds->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki(),false);
-	 *
-	 * @note This method cannot handle DIContainer objects with sortkey
-	 * properties correctly. This should never occur, but it would be good
-	 * to fail in a more controlled way if it ever does.
-	 *
-	 * @param string $from
-	 * @param string $where
-	 * @param TableDefinition $propTable
-	 * @param SMWDataItem $value
-	 * @param integer $tableIndex
-	 */
+	* Helper function to compute from and where strings for a DB query so that
+	* only rows of the given value object match. The parameter $tableindex
+	* counts that tables used in the query to avoid duplicate table names. The
+	* parameter $proptable provides the SMWSQLStore3Table object that is
+	* queried.
+	*
+	* @todo Maybe do something about redirects. The old code was
+	* $oid = $this->store->smwIds->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki(),false);
+	*
+	* @note This method cannot handle DIContainer objects with sortkey
+	* properties correctly. This should never occur, but it would be good
+	* to fail in a more controlled way if it ever does.
+	*
+	* @param string $from
+	* @param string $where
+	* @param TableDefinition $propTable
+	* @param SMWDataItem $value
+	* @param integer $tableIndex
+	*/
 	private function prepareValueQuery( &$from, &$where, TableDefinition $propTable, $value, $tableIndex = 1 ) {
 		$db = $this->store->getConnection();
 
@@ -579,8 +579,8 @@ class SMWSQLStore3Readers {
 						$from .= " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableIndex ON t$tableIndex.s_id=$joinfield";
 					} else { // exotic case with table that uses subject title+namespace in container object (should never happen in SMW core)
 						$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " AS ids$tableIndex ON ids$tableIndex.smw_id=$joinfield" .
-						         " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableIndex ON " .
-						         "t$tableIndex.s_title=ids$tableIndex.smw_title AND t$tableIndex.s_namespace=ids$tableIndex.smw_namespace";
+									" INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableIndex ON " .
+									"t$tableIndex.s_title=ids$tableIndex.smw_title AND t$tableIndex.s_namespace=ids$tableIndex.smw_namespace";
 					}
 
 					if ( !$subproptable->isFixedPropertyTable() ) { // the ID we get should be !=0, so no point in filtering the converse
@@ -599,13 +599,13 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * @see SMWStore::getAllPropertySubjects
-	 *
-	 * @param SMWDIProperty $property
-	 * @param SMWRequestOptions $requestOptions
-	 *
-	 * @return array of DIWikiPage
-	 */
+	* @see SMWStore::getAllPropertySubjects
+	*
+	* @param SMWDIProperty $property
+	* @param SMWRequestOptions $requestOptions
+	*
+	* @return array of DIWikiPage
+	*/
 	public function getAllPropertySubjects( SMWDIProperty $property, SMWRequestOptions $requestOptions = null ) {
 		$result = $this->getPropertySubjects( $property, null, $requestOptions );
 
@@ -613,13 +613,13 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * @see Store::getProperties
-	 *
-	 * @param DIWikiPage $subject
-	 * @param SMWRequestOptions|null $requestOptions
-	 *
-	 * @return SMWDataItem[]
-	 */
+	* @see Store::getProperties
+	*
+	* @param DIWikiPage $subject
+	* @param SMWRequestOptions|null $requestOptions
+	*
+	* @return SMWDataItem[]
+	*/
 	public function getProperties( DIWikiPage $subject, SMWRequestOptions $requestOptions = null ) {
 		$sid = $this->store->smwIds->getSMWPageID(
 			$subject->getDBkey(),
@@ -693,17 +693,17 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * Implementation of SMWStore::getInProperties(). This function is meant to
-	 * be used for finding properties that link to wiki pages.
-	 *
-	 * @since 1.8
-	 * @see SMWStore::getInProperties
-	 *
-	 * @param SMWDataItem $value
-	 * @param SMWRequestOptions|null $requestOptions
-	 *
-	 * @return array of SMWWikiPageValue
-	 */
+	* Implementation of SMWStore::getInProperties(). This function is meant to
+	* be used for finding properties that link to wiki pages.
+	*
+	* @since 1.8
+	* @see SMWStore::getInProperties
+	*
+	* @param SMWDataItem $value
+	* @param SMWRequestOptions|null $requestOptions
+	*
+	* @return array of SMWWikiPageValue
+	*/
 	public function getInProperties( SMWDataItem $value, SMWRequestOptions $requestOptions = null ) {
 
 		$db = $this->store->getConnection();

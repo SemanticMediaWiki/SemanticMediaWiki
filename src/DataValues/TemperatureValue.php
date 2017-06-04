@@ -7,32 +7,32 @@ use SMWNumberValue as NumberValue;
 use SMW\ApplicationFactory;
 
 /**
- * This datavalue implements unit support for measuring temperatures. This is
- * mostly an example implementation of how to realise custom unit types easily.
- *
- * @license GNU GPL v2+
- * @since 2.4
- *
- * @author Markus Krötzsch
- * @author mwjames
- */
+* This datavalue implements unit support for measuring temperatures. This is
+* mostly an example implementation of how to realise custom unit types easily.
+*
+* @license GNU GPL v2+
+* @since 2.4
+*
+* @author Markus Krötzsch
+* @author mwjames
+*/
 class TemperatureValue extends NumberValue {
 
 	/**
-	 * DV identifier
-	 */
+	* DV identifier
+	*/
 	const TYPE_ID = '_tem';
 
 	/**
-	 * @param string $typeid
-	 */
+	* @param string $typeid
+	*/
 	public function __construct( $typeid = '' ) {
 		parent::__construct( self::TYPE_ID );
 	}
 
 	/**
-	 * NumberValue::convertToMainUnit
-	 */
+	* NumberValue::convertToMainUnit
+	*/
 	protected function convertToMainUnit( $number, $unit ) {
 
 		$this->m_unitin = $this->getUnitID( $unit );
@@ -47,8 +47,8 @@ class TemperatureValue extends NumberValue {
 	}
 
 	/**
-	 * NumberValue::makeConversionValues
-	 */
+	* NumberValue::makeConversionValues
+	*/
 	protected function makeConversionValues() {
 
 		if ( $this->m_unitvalues !== false ) {
@@ -79,12 +79,12 @@ class TemperatureValue extends NumberValue {
 	}
 
 	/**
-	 * NumberValue::makeUserValue
-	 */
+	* NumberValue::makeUserValue
+	*/
 	protected function makeUserValue() {
 
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
-		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
+			( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$printUnit = $this->normalizeUnit( $this->m_outformat );
 			$this->m_unitin = $this->getUnitID( $printUnit );
 		} else {
@@ -117,8 +117,8 @@ class TemperatureValue extends NumberValue {
 	}
 
 	/**
-	 * Helper method to find the main representation of a certain unit.
-	 */
+	* Helper method to find the main representation of a certain unit.
+	*/
 	protected function getUnitID( $unit ) {
 		/// TODO possibly localise some of those strings
 		switch ( $unit ) {
@@ -147,15 +147,15 @@ class TemperatureValue extends NumberValue {
 	}
 
 	/**
-	 * NumberValue::getUnitList
-	 */
+	* NumberValue::getUnitList
+	*/
 	public function getUnitList() {
 		return array( 'K', '°C', '°F', '°R' );
 	}
 
 	/**
-	 * NumberValue::getUnit
-	 */
+	* NumberValue::getUnit
+	*/
 	public function getUnit() {
 		return 'K';
 	}

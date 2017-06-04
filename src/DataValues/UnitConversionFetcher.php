@@ -9,60 +9,60 @@ use SMWDIBlob as DIBlob;
 use SMWNumberValue as NumberValue;
 
 /**
- * Returns conversion data from a cache instance to enable a responsive query
- * feedback and eliminate possible repeated DB requests.
- *
- * The cache is evicted as soon as the property that contains "Corresponds to"
- * is altered.
- *
- * @license GNU GPL v2+
- * @since 2.4
- *
- * @author mwjames
- */
+* Returns conversion data from a cache instance to enable a responsive query
+* feedback and eliminate possible repeated DB requests.
+*
+* The cache is evicted as soon as the property that contains "Corresponds to"
+* is altered.
+*
+* @license GNU GPL v2+
+* @since 2.4
+*
+* @author mwjames
+*/
 class UnitConversionFetcher {
 
 	/**
-	 * @var NumberValue
-	 */
+	* @var NumberValue
+	*/
 	private $numberValue;
 
 	/**
-	 * @var CachedPropertyValuesPrefetcher
-	 */
+	* @var CachedPropertyValuesPrefetcher
+	*/
 	private $cachedPropertyValuesPrefetcher;
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $errors = array();
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $unitIds = array();
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $unitFactors = array();
 
 	/**
-	 * @var false|string
-	 */
+	* @var false|string
+	*/
 	private $mainUnit = false;
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	protected $prefixalUnitPreference = array();
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param NumberValue $numberValue
-	 * @param CachedPropertyValuesPrefetcher|null $cachedPropertyValuesPrefetcher
-	 */
+	* @since 2.4
+	*
+	* @param NumberValue $numberValue
+	* @param CachedPropertyValuesPrefetcher|null $cachedPropertyValuesPrefetcher
+	*/
 	public function __construct( NumberValue $numberValue, CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher = null ) {
 		$this->numberValue = $numberValue;
 		$this->cachedPropertyValuesPrefetcher = $cachedPropertyValuesPrefetcher;
@@ -73,55 +73,55 @@ class UnitConversionFetcher {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return array
-	 */
+	* @since 2.4
+	*
+	* @return array
+	*/
 	public function getErrors() {
 		return $this->errors;
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return array
-	 */
+	* @since 2.4
+	*
+	* @return array
+	*/
 	public function getUnitIds() {
 		return $this->unitIds;
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return array
-	 */
+	* @since 2.4
+	*
+	* @return array
+	*/
 	public function getUnitFactors() {
 		return $this->unitFactors;
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return string
-	 */
+	* @since 2.4
+	*
+	* @return string
+	*/
 	public function getMainUnit() {
 		return $this->mainUnit;
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return array
-	 */
+	* @since 2.4
+	*
+	* @return array
+	*/
 	public function getPrefixalUnitPreference() {
 		return $this->prefixalUnitPreference;
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param DIProperty $property
-	 */
+	* @since 2.4
+	*
+	* @param DIProperty $property
+	*/
 	public function fetchConversionData( DIProperty $property ) {
 
 		$this->unitIds = array();
@@ -148,8 +148,8 @@ class UnitConversionFetcher {
 
 			// ignore corrupted data and bogus inputs
 			if ( !( $di instanceof DIBlob ) ||
-			     ( $this->numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
-			     ( $number == 0 ) ) {
+				( $this->numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
+				( $number == 0 ) ) {
 				continue;
 			}
 
@@ -175,10 +175,10 @@ class UnitConversionFetcher {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param DIProperty|null $property
-	 */
+	* @since 2.4
+	*
+	* @param DIProperty|null $property
+	*/
 	public function fetchCachedConversionData( DIProperty $property = null ) {
 
 		if ( $property === null || ( $propertyDiWikiPage = $property->getDiWikiPage() ) === null ) {

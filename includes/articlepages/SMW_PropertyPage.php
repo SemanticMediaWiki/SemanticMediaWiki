@@ -14,20 +14,20 @@ use SMW\PropertySpecificationReqExaminer;
 use SMW\Utils\Collator;
 
 /**
- * Implementation of MediaWiki's Article that shows additional information on
- * property pages. Very similar to CategoryPage, but with different printout
- * that also displays values for each subject with the given property.
- *
- * @ingroup SMW
- *
- * @author Markus Krötzsch
- */
+* Implementation of MediaWiki's Article that shows additional information on
+* property pages. Very similar to CategoryPage, but with different printout
+* that also displays values for each subject with the given property.
+*
+* @ingroup SMW
+*
+* @author Markus Krötzsch
+*/
 class SMWPropertyPage extends SMWOrderedListPage {
 
 	/**
-	 * @see SMWOrderedListPage::initParameters()
-	 * @note We use a smaller limit here; property pages might become large.
-	 */
+	* @see SMWOrderedListPage::initParameters()
+	* @note We use a smaller limit here; property pages might become large.
+	*/
 	protected function initParameters() {
 		global $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
@@ -38,10 +38,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Returns the HTML which is added to $wgOut after the article text.
-	 *
-	 * @return string
-	 */
+	* Returns the HTML which is added to $wgOut after the article text.
+	*
+	* @return string
+	*/
 	protected function getHtml() {
 
 		if ( !$this->store->getRedirectTarget( $this->mProperty )->equals( $this->mProperty ) ) {
@@ -86,10 +86,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * @since 1.9
-	 *
-	 * @return string
-	 */
+	* @since 1.9
+	*
+	* @return string
+	*/
 	protected function getIntroductoryText() {
 
 		if ( !$this->store->getRedirectTarget( $this->mProperty )->equals( $this->mProperty ) ) {
@@ -165,11 +165,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Get the HTML for displaying subproperties of this property. This list
-	 * is usually short and we implement no additional navigation.
-	 *
-	 * @return string
-	 */
+	* Get the HTML for displaying subproperties of this property. This list
+	* is usually short and we implement no additional navigation.
+	*
+	* @return string
+	*/
 	protected function getPropertyList( $property, $requestOptions, $listLimit, $header ) {
 
 		$propertyList =  $this->store->getPropertySubjects(
@@ -222,15 +222,15 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Get the HTML for displaying values of this property, based on the
-	 * current from/until and limit settings.
-	 *
-	 * @return string
-	 */
+	* Get the HTML for displaying values of this property, based on the
+	* current from/until and limit settings.
+	*
+	* @return string
+	*/
 	protected function getPropertyValueList() {
 		global $smwgPropertyPagingLimit;
 
-		 // limit==0: configuration setting to disable this completely
+		// limit==0: configuration setting to disable this completely
 		if ( $this->limit < 1 ) {
 			return '';
 		}
@@ -275,22 +275,22 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$resultNumber = min( $this->limit, count( $diWikiPages ) );
 
 			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
-			           '<h2>' . wfMessage( 'smw_attribute_header', $titleText )->text() . "</h2>\n<p>";
+						'<h2>' . wfMessage( 'smw_attribute_header', $titleText )->text() . "</h2>\n<p>";
 
 			$result .= $this->getNavigationLinks( 'smw_attributearticlecount', $diWikiPages, $smwgPropertyPagingLimit ) .
-			           $this->subjectObjectList( $diWikiPages ) . "\n</div>";
+						$this->subjectObjectList( $diWikiPages ) . "\n</div>";
 		}
 
 		return $result;
 	}
 
 	/**
-	 * Format $diWikiPages chunked by letter in a table that shows subject
-	 * articles in one column and object articles/values in the other one.
-	 *
-	 * @param $diWikiPages array
-	 * @return string
-	 */
+	* Format $diWikiPages chunked by letter in a table that shows subject
+	* articles in one column and object articles/values in the other one.
+	*
+	* @param $diWikiPages array
+	* @return string
+	*/
 	protected function subjectObjectList( array $diWikiPages ) {
 		global $wgContLang, $smwgMaxPropertyValues;
 
@@ -326,7 +326,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			// Property name
 			$searchlink = SMWInfolink::newBrowsingLink( '+', $dvWikiPage->getWikiValue() );
 			$r .= '<tr class="value-row" ><td class="smwpropname">' . $dvWikiPage->getShortHTMLText( smwfGetLinker() ) .
-			      '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</td><td class="smwprops">';
+					'&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</td><td class="smwprops">';
 
 			// Property values
 			$ropts = new RequestOptions();

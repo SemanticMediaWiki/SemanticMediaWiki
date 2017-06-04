@@ -6,75 +6,75 @@ use Closure;
 use SMW\MediaWiki\Database;
 
 /**
- * Extends DeferredCallableUpdate to allow handling of transaction related tasks
- * or isolations to ensure an undisturbed update process before and after
- * MediaWiki::preOutputCommit.
- *
- * @license GNU GPL v2+
- * @since 3.0
- *
- * @author mwjames
- */
+* Extends DeferredCallableUpdate to allow handling of transaction related tasks
+* or isolations to ensure an undisturbed update process before and after
+* MediaWiki::preOutputCommit.
+*
+* @license GNU GPL v2+
+* @since 3.0
+*
+* @author mwjames
+*/
 class TransactionalDeferredCallableUpdate extends DeferredCallableUpdate {
 
 	/**
-	 * @var Database|null
-	 */
+	* @var Database|null
+	*/
 	private $connection;
 
 	/**
-	 * @var boolean
-	 */
+	* @var boolean
+	*/
 	private $onTransactionIdle = false;
 
 	/**
-	 * @var int|null
-	 */
+	* @var int|null
+	*/
 	private $transactionTicket = null;
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $preCommitableCallbacks = array();
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $postCommitableCallbacks = array();
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param Closure $callback|null
-	 * @param Database|null $connection
-	 */
+	* @since 3.0
+	*
+	* @param Closure $callback|null
+	* @param Database|null $connection
+	*/
 	public function __construct( Closure $callback = null, Database $connection ) {
 		parent::__construct( $callback );
 		$this->connection = $connection;
 	}
 
 	/**
-	 * @note MW 1.29+ showed transaction collisions (Exception thrown with
-	 * an uncommited database transaction), use 'onTransactionIdle' to isolate
-	 * the update execution.
-	 *
-	 * @since 2.5
-	 */
+	* @note MW 1.29+ showed transaction collisions (Exception thrown with
+	* an uncommited database transaction), use 'onTransactionIdle' to isolate
+	* the update execution.
+	*
+	* @since 2.5
+	*/
 	public function waitOnTransactionIdle() {
 		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
- 	/**
-	 * It tries to fetch a transactionTicket to assert whether transaction writes
-	 * are active or not and if available will process Database::commitAndWaitForReplication
-	 * during DeferredCallableUpdate::doUpdate to safely post commits to the
-	 * master.
-	 *
-	 * @note If the commandLine is active then continue an update without a ticket
-	 * to avoid any update lag or possible transaction lock.
-	 *
-	 * @since 3.0
-	 */
+	/**
+	* It tries to fetch a transactionTicket to assert whether transaction writes
+	* are active or not and if available will process Database::commitAndWaitForReplication
+	* during DeferredCallableUpdate::doUpdate to safely post commits to the
+	* master.
+	*
+	* @note If the commandLine is active then continue an update without a ticket
+	* to avoid any update lag or possible transaction lock.
+	*
+	* @since 3.0
+	*/
 	public function commitWithTransactionTicket() {
 		if ( $this->isCommandLineMode === false ) {
 			$this->transactionTicket = $this->connection->getEmptyTransactionTicket( $this->getOrigin() );
@@ -82,14 +82,14 @@ class TransactionalDeferredCallableUpdate extends DeferredCallableUpdate {
 	}
 
 	/**
-	 * Attaches a callback pre-execution of the source callback and is scheduled
-	 * to be executed before the source callback.
-	 *
-	 * @since 3.0
-	 *
-	 * @param string $fname
-	 * @param Closure $callback
-	 */
+	* Attaches a callback pre-execution of the source callback and is scheduled
+	* to be executed before the source callback.
+	*
+	* @since 3.0
+	*
+	* @param string $fname
+	* @param Closure $callback
+	*/
 	public function addPreCommitableCallback( $fname, $callback ) {
 		if ( is_callable( $callback ) ) {
 			$this->preCommitableCallbacks[$fname] = $callback;
@@ -97,14 +97,14 @@ class TransactionalDeferredCallableUpdate extends DeferredCallableUpdate {
 	}
 
 	/**
-	 * Attaches a callback post execution of the source callback and is scheduled
-	 * to be executed after the source callback.
-	 *
-	 * @since 3.0
-	 *
-	 * @param string $fname
-	 * @param Closure $callback
-	 */
+	* Attaches a callback post execution of the source callback and is scheduled
+	* to be executed after the source callback.
+	*
+	* @since 3.0
+	*
+	* @param string $fname
+	* @param Closure $callback
+	*/
 	public function addPostCommitableCallback( $fname, $callback ) {
 		if ( is_callable( $callback ) ) {
 			$this->postCommitableCallbacks[$fname] = $callback;
@@ -112,10 +112,10 @@ class TransactionalDeferredCallableUpdate extends DeferredCallableUpdate {
 	}
 
 	/**
-	 * @see DeferrableUpdate::doUpdate
-	 *
-	 * @since 3.0
-	 */
+	* @see DeferrableUpdate::doUpdate
+	*
+	* @since 3.0
+	*/
 	public function doUpdate() {
 
 		if ( $this->onTransactionIdle ) {

@@ -2,21 +2,21 @@
 use SMW\Query\PrintRequest;
 
 /**
- * Helper class to generate HTML lists of wiki pages, with support for paged
- * navigation using the from/until and limit settings as in MediaWiki's
- * CategoryPage.
- *
- * The class attempts to allow as much code as possible to be shared among
- * different places where similar lists are used.
- *
- * Some code adapted from CategoryPage.php
- *
- * @ingroup SMW
- *
- * @author Nikolas Iwan
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- */
+* Helper class to generate HTML lists of wiki pages, with support for paged
+* navigation using the from/until and limit settings as in MediaWiki's
+* CategoryPage.
+*
+* The class attempts to allow as much code as possible to be shared among
+* different places where similar lists are used.
+*
+* Some code adapted from CategoryPage.php
+*
+* @ingroup SMW
+*
+* @author Nikolas Iwan
+* @author Markus Krötzsch
+* @author Jeroen De Dauw
+*/
 class SMWPageLister {
 
 	protected $mDiWikiPages;
@@ -26,14 +26,14 @@ class SMWPageLister {
 	protected $mUntil;
 
 	/**
-	 * Constructor
-	 *
-	 * @param $diWikiPages array of SMWDIWikiPage
-	 * @param $diProperty mixed SMWDIProperty that the wikipages are values of, or null
-	 * @param $limit integer maximal amount of items to display
-	 * @param $from string if the results were selected starting from this string
-	 * @param $until string if the results were selected reaching until this string
-	 */
+	* Constructor
+	*
+	* @param $diWikiPages array of SMWDIWikiPage
+	* @param $diProperty mixed SMWDIProperty that the wikipages are values of, or null
+	* @param $limit integer maximal amount of items to display
+	* @param $from string if the results were selected starting from this string
+	* @param $until string if the results were selected reaching until this string
+	*/
 	public function __construct( array $diWikiPages, $diProperty, $limit, $from = '', $until = '' ) {
 		$this->mDiWikiPages = $diWikiPages;
 		$this->mDiProperty = $diProperty;
@@ -43,16 +43,16 @@ class SMWPageLister {
 	}
 
 	/**
-	 * Generates the prev/next link part to the HTML code of the top and
-	 * bottom section of the page. Whether and how these links appear
-	 * depends on specified boundaries, limit, and results. The title is
-	 * required to create a link to the right page. The query array gives
-	 * optional further parameters to append to all navigation links.
-	 *
-	 * @param $title Title
-	 * @param $query array that associates parameter names to parameter values
-	 * @return string
-	 */
+	* Generates the prev/next link part to the HTML code of the top and
+	* bottom section of the page. Whether and how these links appear
+	* depends on specified boundaries, limit, and results. The title is
+	* required to create a link to the right page. The query array gives
+	* optional further parameters to append to all navigation links.
+	*
+	* @param $title Title
+	* @param $query array that associates parameter names to parameter values
+	* @return string
+	*/
 	public function getNavigationLinks( Title $title, $query = array() ) {
 		global $wgLang;
 
@@ -95,25 +95,25 @@ class SMWPageLister {
 	}
 
 	/**
-	 * Format an HTML link with the given text and parameters.
-	 *
-	 * @return string
-	 */
+	* Format an HTML link with the given text and parameters.
+	*
+	* @return string
+	*/
 	protected function makeSelfLink( Title $title, $linkText, array $parameters ) {
 		return smwfGetLinker()->link( $title, $linkText, array(), $parameters );
 	}
 
 	/**
-	 * Make SMWRequestOptions suitable for obtaining a list of results for
-	 * the given limit, and from or until string. One more result than the
-	 * limit will be created, and the results may have to be reversed in
-	 * order if ascending is set to false in the resulting object.
-	 *
-	 * @param $limit integer
-	 * @param $from string can be empty if no from condition is desired
-	 * @param $until string can be empty if no until condition is desired
-	 * @return SMWRequestOptions
-	 */
+	* Make SMWRequestOptions suitable for obtaining a list of results for
+	* the given limit, and from or until string. One more result than the
+	* limit will be created, and the results may have to be reversed in
+	* order if ascending is set to false in the resulting object.
+	*
+	* @param $limit integer
+	* @param $from string can be empty if no from condition is desired
+	* @param $until string can be empty if no until condition is desired
+	* @return SMWRequestOptions
+	*/
 	public static function getRequestOptions( $limit, $from, $until ) {
 		$options = new SMWRequestOptions();
 		$options->limit = $limit + 1;
@@ -133,17 +133,17 @@ class SMWPageLister {
 	}
 
 	/**
-	 * Make SMWQuery suitable for obtaining a list of results based on the
-	 * given description, limit, and from or until string. One more result
-	 * than the limit will be created, and the results may have to be
-	 * reversed in order if $until is nonempty.
-	 *
-	 * @param $description SMWDescription main query description
-	 * @param $limit integer
-	 * @param $from string can be empty if no from condition is desired
-	 * @param $until string can be empty if no until condition is desired
-	 * @return SMWQuery
-	 */
+	* Make SMWQuery suitable for obtaining a list of results based on the
+	* given description, limit, and from or until string. One more result
+	* than the limit will be created, and the results may have to be
+	* reversed in order if $until is nonempty.
+	*
+	* @param $description SMWDescription main query description
+	* @param $limit integer
+	* @param $from string can be empty if no from condition is desired
+	* @param $until string can be empty if no until condition is desired
+	* @return SMWQuery
+	*/
 	public static function getQuery( SMWDescription $description, $limit, $from, $until ) {
 		if ( $from !== '' ) {
 			$diWikiPage = new SMWDIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
@@ -170,12 +170,12 @@ class SMWPageLister {
 	}
 
 	/**
-	 * Format a list of data items chunked by letter, either as a
-	 * bullet list or a columnar format, depending on the length.
-	 *
-	 * @param $cutoff integer, use columns for more results than that
-	 * @return string
-	 */
+	* Format a list of data items chunked by letter, either as a
+	* bullet list or a columnar format, depending on the length.
+	*
+	* @param $cutoff integer, use columns for more results than that
+	* @return string
+	*/
 	public function formatList( $cutoff = 6 ) {
 		$end = count( $this->mDiWikiPages );
 		$start = 0;
@@ -197,16 +197,16 @@ class SMWPageLister {
 	}
 
 	/**
-	 * Format a list of SMWDIWikiPage objects chunked by letter in a three-column
-	 * list, ordered vertically.
-	 *
-	 * @param $start integer
-	 * @param $end integer
-	 * @param $diWikiPages array of SMWDIWikiPage
-	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
-	 *
-	 * @return string
-	 */
+	* Format a list of SMWDIWikiPage objects chunked by letter in a three-column
+	* list, ordered vertically.
+	*
+	* @param $start integer
+	* @param $end integer
+	* @param $diWikiPages array of SMWDIWikiPage
+	* @param $diProperty SMWDIProperty that the wikipages are values of, or null
+	*
+	* @return string
+	*/
 	public static function getColumnList( $start, $end, array $diWikiPages, $diProperty ) {
 		global $wgContLang;
 
@@ -233,7 +233,7 @@ class SMWPageLister {
 				$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 
 				if ( ( $index == $startChunk ) ||
-					 ( $startChar != $prevStartChar ) ) {
+					( $startChar != $prevStartChar ) ) {
 					if ( $atColumnTop ) {
 						$atColumnTop = false;
 					} else {
@@ -267,15 +267,15 @@ class SMWPageLister {
 	}
 
 	/**
-	 * Format a list of diWikiPages chunked by letter in a bullet list.
-	 *
-	 * @param $start integer
-	 * @param $end integer
-	 * @param $diWikiPages array of SMWDataItem
-	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
-	 *
-	 * @return string
-	 */
+	* Format a list of diWikiPages chunked by letter in a bullet list.
+	*
+	* @param $start integer
+	* @param $end integer
+	* @param $diWikiPages array of SMWDataItem
+	* @param $diProperty SMWDIProperty that the wikipages are values of, or null
+	*
+	* @return string
+	*/
 	public static function getShortList( $start, $end, array $diWikiPages, $diProperty ) {
 
 		$startDv = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$start], $diProperty );
@@ -288,7 +288,7 @@ class SMWPageLister {
 		$startChar = self::getFirstChar( $diWikiPages[$start] );
 
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
-		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '</li>';
+			'<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '</li>';
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {

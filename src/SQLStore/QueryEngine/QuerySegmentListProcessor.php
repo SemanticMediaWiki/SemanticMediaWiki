@@ -8,56 +8,56 @@ use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
- * @since 2.2
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- * @author mwjames
- */
+* @license GNU GPL v2+
+* @since 2.2
+*
+* @author Markus Krötzsch
+* @author Jeroen De Dauw
+* @author mwjames
+*/
 class QuerySegmentListProcessor {
 
 	/**
-	 * @var Database
-	 */
+	* @var Database
+	*/
 	private $connection;
 
 	/**
-	 * @var TemporaryTableBuilder
-	 */
+	* @var TemporaryTableBuilder
+	*/
 	private $temporaryTableBuilder;
 
 	/**
-	 * @var HierarchyTempTableBuilder
-	 */
+	* @var HierarchyTempTableBuilder
+	*/
 	private $hierarchyTempTableBuilder;
 
 	/**
-	 * Array of arrays of executed queries, indexed by the temporary table names
-	 * results were fed into.
-	 *
-	 * @var array
-	 */
+	* Array of arrays of executed queries, indexed by the temporary table names
+	* results were fed into.
+	*
+	* @var array
+	*/
 	private $executedQueries = array();
 
 	/**
-	 * Query mode copied from given query. Some submethods act differently when
-	 * in Query::MODE_DEBUG.
-	 *
-	 * @var int
-	 */
+	* Query mode copied from given query. Some submethods act differently when
+	* in Query::MODE_DEBUG.
+	*
+	* @var int
+	*/
 	private $queryMode;
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $querySegmentList = array();
 
 	/**
-	 * @param Database $connection
-	 * @param TemporaryTableBuilder $temporaryTableBuilder
-	 * @param HierarchyTempTableBuilder $hierarchyTempTableBuilder
-	 */
+	* @param Database $connection
+	* @param TemporaryTableBuilder $temporaryTableBuilder
+	* @param HierarchyTempTableBuilder $hierarchyTempTableBuilder
+	*/
 	public function __construct( Database $connection, TemporaryTableBuilder $temporaryTableBuilder, HierarchyTempTableBuilder $hierarchyTempTableBuilder ) {
 		$this->connection = $connection;
 		$this->temporaryTableBuilder = $temporaryTableBuilder;
@@ -65,40 +65,40 @@ class QuerySegmentListProcessor {
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @return array
-	 */
+	* @since 2.2
+	*
+	* @return array
+	*/
 	public function getListOfResolvedQueries() {
 		return $this->executedQueries;
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @param &$querySegmentList
-	 */
+	* @since 2.2
+	*
+	* @param &$querySegmentList
+	*/
 	public function setQuerySegmentList( &$querySegmentList ) {
 		$this->querySegmentList =& $querySegmentList;
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @param integer
-	 */
+	* @since 2.2
+	*
+	* @param integer
+	*/
 	public function setQueryMode( $queryMode ) {
 		$this->queryMode = $queryMode;
 	}
 
 	/**
-	 * Process stored queries and change store accordingly. The query obj is modified
-	 * so that it contains non-recursive description of a select to execute for getting
-	 * the actual result.
-	 *
-	 * @param integer $id
-	 * @throws RuntimeException
-	 */
+	* Process stored queries and change store accordingly. The query obj is modified
+	* so that it contains non-recursive description of a select to execute for getting
+	* the actual result.
+	*
+	* @param integer $id
+	* @throws RuntimeException
+	*/
 	public function doResolveQueryDependenciesById( $id ) {
 
 		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
@@ -195,9 +195,9 @@ class QuerySegmentListProcessor {
 
 					if ( $subQuery->joinTable !== '' ) {
 						$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
-						       $db->tableName( $query->alias ) .
-							   " SELECT DISTINCT $subQuery->joinfield FROM " . $db->tableName( $subQuery->joinTable ) .
-							   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where":'' );
+								$db->tableName( $query->alias ) .
+								" SELECT DISTINCT $subQuery->joinfield FROM " . $db->tableName( $subQuery->joinTable ) .
+								" AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where":'' );
 					} elseif ( $subQuery->joinfield !== '' ) {
 						// NOTE: this works only for single "unconditional" values without further
 						// WHERE or FROM. The execution must take care of not creating any others.
@@ -244,11 +244,11 @@ class QuerySegmentListProcessor {
 	}
 
 	/**
-	 * Find subproperties or subcategories. This may require iterative computation,
-	 * and temporary tables are used in many cases.
-	 *
-	 * @param QuerySegment $query
-	 */
+	* Find subproperties or subcategories. This may require iterative computation,
+	* and temporary tables are used in many cases.
+	*
+	* @param QuerySegment $query
+	*/
 	private function resolveHierarchyForSegment( QuerySegment &$query ) {
 
 		switch ( $query->type ) {
@@ -302,10 +302,10 @@ class QuerySegmentListProcessor {
 	}
 
 	/**
-	 * After querying, make sure no temporary database tables are left.
-	 * @todo I might be better to keep the tables and possibly reuse them later
-	 * on. Being temporary, the tables will vanish with the session anyway.
-	 */
+	* After querying, make sure no temporary database tables are left.
+	* @todo I might be better to keep the tables and possibly reuse them later
+	* on. Being temporary, the tables will vanish with the session anyway.
+	*/
 	public function cleanUp() {
 		foreach ( $this->executedQueries as $table => $log ) {
 			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );

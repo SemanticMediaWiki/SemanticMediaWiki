@@ -256,7 +256,8 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionIdle' )
 			->will( $this->returnCallback( function( $callback ) {
-				return call_user_func( $callback ); }
+				return call_user_func( $callback );
+			}
 			) );
 
 		$title = $this->getMockBuilder( '\Title' )

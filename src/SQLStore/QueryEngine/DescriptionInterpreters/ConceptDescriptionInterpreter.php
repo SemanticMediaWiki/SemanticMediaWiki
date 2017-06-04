@@ -13,45 +13,45 @@ use SMWQueryParser as QueryParser;
 use SMWSQLStore3;
 
 /**
- * @license GNU GPL v2+
- * @since 2.2
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- * @author mwjames
- */
+* @license GNU GPL v2+
+* @since 2.2
+*
+* @author Markus Krötzsch
+* @author Jeroen De Dauw
+* @author mwjames
+*/
 class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var QuerySegmentListBuilder
-	 */
+	* @var QuerySegmentListBuilder
+	*/
 	private $querySegmentListBuilder;
 
 	/**
-	 * @since 2.2
-	 *
-	 * @param QuerySegmentListBuilder $querySegmentListBuilder
-	 */
+	* @since 2.2
+	*
+	* @param QuerySegmentListBuilder $querySegmentListBuilder
+	*/
 	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
 		$this->querySegmentListBuilder = $querySegmentListBuilder;
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @return boolean
-	 */
+	* @since 2.2
+	*
+	* @return boolean
+	*/
 	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ConceptDescription;
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @param Description $description
-	 *
-	 * @return QuerySegment
-	 */
+	* @since 2.2
+	*
+	* @param Description $description
+	*
+	* @return QuerySegment
+	*/
 	public function interpretDescription( Description $description ) {
 
 		$query = new QuerySegment();
@@ -92,12 +92,12 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
 
 		$may_be_computed = ( $smwgQConceptCaching == CONCEPT_CACHE_NONE ) ||
-		    ( ( $smwgQConceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $smwgQFeatures ) ) == 0 ) &&
-		      ( $smwgQMaxSize >= $row->concept_size ) && ( $smwgQMaxDepth >= $row->concept_depth ) );
+			( ( $smwgQConceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $smwgQFeatures ) ) == 0 ) &&
+				( $smwgQMaxSize >= $row->concept_size ) && ( $smwgQMaxDepth >= $row->concept_depth ) );
 
 		if ( $row->cache_date &&
-		     ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
-		       !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
+			( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
+				!$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
 
 			$query->joinTable = SMWSQLStore3::CONCEPT_CACHE_TABLE;
 			$query->joinfield = "$query->alias.s_id";
@@ -131,12 +131,12 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	/**
-	 * We bypass the storage interface here (which is legal as we control it,
-	 * and safe if we are careful with changes ...)
-	 *
-	 * This should be faster, but we must implement the unescaping that concepts
-	 * do on getWikiValue
-	 */
+	* We bypass the storage interface here (which is legal as we control it,
+	* and safe if we are careful with changes ...)
+	*
+	* This should be faster, but we must implement the unescaping that concepts
+	* do on getWikiValue
+	*/
 	private function getConceptForId( $db, $id ) {
 		return $db->selectRow(
 			'smw_fpt_conc',
@@ -147,9 +147,9 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	/**
-	 * No defaultnamespaces here; If any, these are already in the concept.
-	 * Unescaping is the same as in SMW_DV_Conept's getWikiValue().
-	 */
+	* No defaultnamespaces here; If any, these are already in the concept.
+	* Unescaping is the same as in SMW_DV_Conept's getWikiValue().
+	*/
 	private function getConceptQueryDescriptionFrom( $conceptQuery ) {
 		$queryParser = new QueryParser();
 

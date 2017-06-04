@@ -7,17 +7,17 @@ use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-import
- * @group mediawiki-database
- * @group medium
- *
- * @license GNU GPL v2+
- * @since 1.9.2
- *
- * @author mwjames
- */
+* @group SMW
+* @group SMWExtension
+* @group semantic-mediawiki-import
+* @group mediawiki-database
+* @group medium
+*
+* @license GNU GPL v2+
+* @since 1.9.2
+*
+* @author mwjames
+*/
 class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
@@ -76,7 +76,7 @@ class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 		// $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
-	 	$this->importedTitles[] = $conceptPage;
+		$this->importedTitles[] = $conceptPage;
 
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildConceptCache' );
 		$maintenanceRunner->setQuiet();

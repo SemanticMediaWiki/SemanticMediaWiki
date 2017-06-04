@@ -5,46 +5,46 @@ use SMW\Message;
 use SMW\ApplicationFactory;
 
 /**
- * @ingroup SMWDataValues
- */
+* @ingroup SMWDataValues
+*/
 
 /**
- * This datavalue implements unit support custom units, for which users have
- * provided linear conversion factors within the wiki. Those user settings
- * are retrieved from a property page associated with this object.
- *
- * @author Markus Krötzsch
- * @ingroup SMWDataValues
- */
+* This datavalue implements unit support custom units, for which users have
+* provided linear conversion factors within the wiki. Those user settings
+* are retrieved from a property page associated with this object.
+*
+* @author Markus Krötzsch
+* @ingroup SMWDataValues
+*/
 class SMWQuantityValue extends SMWNumberValue {
 
 	/**
-	 * DV identifier
-	 */
+	* DV identifier
+	*/
 	const TYPE_ID = '_qty';
 
 	/**
-	 * Array with format (canonical unit ID string) => (conversion factor)
-	 * @var float[]|bool
-	 */
+	* Array with format (canonical unit ID string) => (conversion factor)
+	* @var float[]|bool
+	*/
 	protected $m_unitfactors = false;
 
 	/**
-	 * Array with format (normalised unit string) => (canonical unit ID string)
-	 * @var string[]|bool
-	 */
+	* Array with format (normalised unit string) => (canonical unit ID string)
+	* @var string[]|bool
+	*/
 	protected $m_unitids = false;
 
 	/**
-	 * Ordered array of (normalized) units that should be displayed in tooltips, etc.
-	 * @var string[]|bool
-	 */
+	* Ordered array of (normalized) units that should be displayed in tooltips, etc.
+	* @var string[]|bool
+	*/
 	protected $m_displayunits = false;
 
 	/**
-	 * Main unit in canonical form (recognised by the conversion factor 1)
-	 * @var string|bool
-	 */
+	* Main unit in canonical form (recognised by the conversion factor 1)
+	* @var string|bool
+	*/
 	protected $m_mainunit = false;
 
 	protected function convertToMainUnit( $number, $unit ) {
@@ -92,13 +92,13 @@ class SMWQuantityValue extends SMWNumberValue {
 
 	protected function makeUserValue() {
 
-		 // The normalised string of a known unit to use for printouts
+		// The normalised string of a known unit to use for printouts
 		$printunit = false;
 		$unitfactor = 1;
 
 		// Check if a known unit is given as outputformat:
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
-		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
+			( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$wantedunit = $this->normalizeUnit( $this->m_outformat );
 			if ( array_key_exists( $wantedunit, $this->m_unitids ) ) {
 				$printunit = $wantedunit;
@@ -136,7 +136,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? $this->getLocalizedFormattedNumber( $value ) : $this->getNormalizedFormattedNumber( $value ) );
 		}
 
-		 // -n is the format for displaying the number only
+		// -n is the format for displaying the number only
 		if ( ( $printunit !== '' ) && ( $this->m_outformat != '-n' ) ) {
 
 			$sep = '';
@@ -164,8 +164,8 @@ class SMWQuantityValue extends SMWNumberValue {
 /// getting them from the database. A cheap way of making built-in types.
 
 	/**
-	 * This method initializes $m_unitfactors, $m_unitids, and $m_mainunit.
-	 */
+	* This method initializes $m_unitfactors, $m_unitids, and $m_mainunit.
+	*/
 	protected function initConversionData() {
 		if ( $this->m_unitids !== false ) {
 			return; // do the below only once
@@ -191,8 +191,8 @@ class SMWQuantityValue extends SMWNumberValue {
 	}
 
 	/**
-	 * This method initializes $m_displayunits.
-	 */
+	* This method initializes $m_displayunits.
+	*/
 	protected function initDisplayData() {
 		if ( $this->m_displayunits !== false ) {
 			return; // do the below only once

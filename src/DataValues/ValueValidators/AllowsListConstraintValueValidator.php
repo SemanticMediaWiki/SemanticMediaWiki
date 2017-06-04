@@ -100,7 +100,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
 		// Only the first 10 values otherwise the list may become too long
 		$allowedValueList = implode( ', ', array_slice(
-			array_keys( $allowedValueList ), 0 , 10 )
+			array_keys( $allowedValueList ), 0, 10 )
 		);
 
 		$dataValue->addErrorMsg(

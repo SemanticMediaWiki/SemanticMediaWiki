@@ -5,104 +5,104 @@ use SMW\DataValues\Time\Timezone;
 use SMW\Localizer;
 
 /**
- * @ingroup SMWDataValues
- */
+* @ingroup SMWDataValues
+*/
 
 /**
- * This datavalue captures values of dates and times, in many formats,
- * throughout history and pre-history. The implementation can handle dates
- * across history with full precision for storing, and substantial precision
- * for sorting and querying. The range of supported past dates should encompass
- * the Beginning of Time according to most of today's theories. The range of
- * supported future dates is limited more strictly, but it does also allow
- * year numbers in the order of 10^9.
- *
- * The implementation notices and stores whether parts of a date/time have been
- * omitted (as in "2008" or "May 2007"). For all exporting and sorting
- * purposes, incomplete dates are completed with defaults (usually using the
- * earliest possible time, i.e. interpreting "2008" as "Jan 1 2008 00:00:00").
- * The information on what was unspecified is kept internally for improving
- * behavior e.g. for outputs (defaults are not printed when querying for a
- * value). This largely uses the precision handling of SMWDITime.
- *
- *
- * Date formats
- *
- * Dates can be given in many formats, using numbers, month names, and
- * abbreviated month names. The preferred interpretation of ambiguous dates
- * ("1 2 2008" or even "1 2 3 BC") is controlled by the language file, as is
- * the local naming of months. English month names are always supported.
- *
- * Dates can be given in Gregorian or Julian calendar, set by the token "Jl"
- * or "Gr" in the input. If neither is set, a default is chosen: inputs after
- * October 15, 1582 (the time when the Gregorian calendar was first inaugurated
- * in some parts of the world) are considered Gr, earlier inputs are considered
- * Jl. In addition to Jl and Gr, we support "OS" (Old Style English dates that
- * refer to the use of Julian calendar with a displaced change of year on March
- * 24), JD (direct numerical input in Julian Day notation), and MJD (direct
- * numerical input in Modified Julian Day notation as used in aviation and
- * space flight).
- *
- * The class does not support the input of negative year numbers but uses the
- * markers "BC"/"BCE" and "AD"/"CE" instead. There is no year 0 in Gregorian or
- * Julian calendars, but the class graciously considers this input to mean year
- * 1 BC(E).
- *
- * For prehisoric dates before 9999 BC(E) only year numbers are allowed
- * (nothing else makes much sense). At this time, the years of Julian and
- * Gregorian calendar still overlap significantly, so the transition to a
- * purely solar annotation of prehistoric years is smooth. Technically, the
- * class will consider prehistoric dates as Gregorian but very ancient times
- * may be interpreted as desired (probably with reference to a physical notion
- * of time that is not dependent on revolutions of earth around the sun).
- *
- *
- * Time formats
- *
- * Times can be in formats like "23:12:45" and "12:30" possibly with additional
- * modifiers "am" or "pm". Timezones are supported: the class knows many
- * international timezone monikers (e.g. CET or GMT) and also allows time
- * offsets directly after a time (e.g. "10:30-3:30" or "14:45:23+2"). Such
- * offsets always refer to UTC. Timezones are only used on input and are not
- * stored as part of the value.
- *
- * Time offsets take leap years into account, e.g. the date
- * "Feb 28 2004 23:00+2:00" is equivalent to "29 February 2004 01:00:00", while
- * "Feb 28 1900 23:00+2:00" is equivalent to "1 March 1900 01:00:00".
- *
- * Military time format is supported. This consists of 4 or 6 numeric digits
- * followed by a one-letter timezone code (e.g. 1240Z is equivalent to 12:40
- * UTC).
- *
- *
- * I18N
- *
- * Currently, neither keywords like "BCE", "Jl", or "pm", nor timezone monikers
- * are internationalized. Timezone monikers may not require this, other than
- * possibly for Cyrillic (added when needed). Month names are fully
- * internationalized, but English names and abbreviations will also work in all
- * languages. The class also supports ordinal day-of-month annotations like
- * "st" and "rd", again only for English.
- *
- * I18N includes the preferred order of dates, e.g. to interpret "5 6 2010".
- *
- * @todo Theparsing process can encounter many kinds of well-defined problems
- * but uses only one error message. More detailed reporting should be done.
- * @todo Try to reuse more of MediaWiki's records, e.g. to obtain month names
- * or to format dates. The problem is that MW is based on SIO timestamps that
- * don't extend to very ancient or future dates, and that MW uses PHP functions
- * that are bound to UNIX time.
- *
- * @author Markus Krötzsch
- * @author Fabian Howahl
- * @author Terry A. Hurlbut
- * @ingroup SMWDataValues
- */
+* This datavalue captures values of dates and times, in many formats,
+* throughout history and pre-history. The implementation can handle dates
+* across history with full precision for storing, and substantial precision
+* for sorting and querying. The range of supported past dates should encompass
+* the Beginning of Time according to most of today's theories. The range of
+* supported future dates is limited more strictly, but it does also allow
+* year numbers in the order of 10^9.
+*
+* The implementation notices and stores whether parts of a date/time have been
+* omitted (as in "2008" or "May 2007"). For all exporting and sorting
+* purposes, incomplete dates are completed with defaults (usually using the
+* earliest possible time, i.e. interpreting "2008" as "Jan 1 2008 00:00:00").
+* The information on what was unspecified is kept internally for improving
+* behavior e.g. for outputs (defaults are not printed when querying for a
+* value). This largely uses the precision handling of SMWDITime.
+*
+*
+* Date formats
+*
+* Dates can be given in many formats, using numbers, month names, and
+* abbreviated month names. The preferred interpretation of ambiguous dates
+* ("1 2 2008" or even "1 2 3 BC") is controlled by the language file, as is
+* the local naming of months. English month names are always supported.
+*
+* Dates can be given in Gregorian or Julian calendar, set by the token "Jl"
+* or "Gr" in the input. If neither is set, a default is chosen: inputs after
+* October 15, 1582 (the time when the Gregorian calendar was first inaugurated
+* in some parts of the world) are considered Gr, earlier inputs are considered
+* Jl. In addition to Jl and Gr, we support "OS" (Old Style English dates that
+* refer to the use of Julian calendar with a displaced change of year on March
+* 24), JD (direct numerical input in Julian Day notation), and MJD (direct
+* numerical input in Modified Julian Day notation as used in aviation and
+* space flight).
+*
+* The class does not support the input of negative year numbers but uses the
+* markers "BC"/"BCE" and "AD"/"CE" instead. There is no year 0 in Gregorian or
+* Julian calendars, but the class graciously considers this input to mean year
+* 1 BC(E).
+*
+* For prehisoric dates before 9999 BC(E) only year numbers are allowed
+* (nothing else makes much sense). At this time, the years of Julian and
+* Gregorian calendar still overlap significantly, so the transition to a
+* purely solar annotation of prehistoric years is smooth. Technically, the
+* class will consider prehistoric dates as Gregorian but very ancient times
+* may be interpreted as desired (probably with reference to a physical notion
+* of time that is not dependent on revolutions of earth around the sun).
+*
+*
+* Time formats
+*
+* Times can be in formats like "23:12:45" and "12:30" possibly with additional
+* modifiers "am" or "pm". Timezones are supported: the class knows many
+* international timezone monikers (e.g. CET or GMT) and also allows time
+* offsets directly after a time (e.g. "10:30-3:30" or "14:45:23+2"). Such
+* offsets always refer to UTC. Timezones are only used on input and are not
+* stored as part of the value.
+*
+* Time offsets take leap years into account, e.g. the date
+* "Feb 28 2004 23:00+2:00" is equivalent to "29 February 2004 01:00:00", while
+* "Feb 28 1900 23:00+2:00" is equivalent to "1 March 1900 01:00:00".
+*
+* Military time format is supported. This consists of 4 or 6 numeric digits
+* followed by a one-letter timezone code (e.g. 1240Z is equivalent to 12:40
+* UTC).
+*
+*
+* I18N
+*
+* Currently, neither keywords like "BCE", "Jl", or "pm", nor timezone monikers
+* are internationalized. Timezone monikers may not require this, other than
+* possibly for Cyrillic (added when needed). Month names are fully
+* internationalized, but English names and abbreviations will also work in all
+* languages. The class also supports ordinal day-of-month annotations like
+* "st" and "rd", again only for English.
+*
+* I18N includes the preferred order of dates, e.g. to interpret "5 6 2010".
+*
+* @todo Theparsing process can encounter many kinds of well-defined problems
+* but uses only one error message. More detailed reporting should be done.
+* @todo Try to reuse more of MediaWiki's records, e.g. to obtain month names
+* or to format dates. The problem is that MW is based on SIO timestamps that
+* don't extend to very ancient or future dates, and that MW uses PHP functions
+* that are bound to UNIX time.
+*
+* @author Markus Krötzsch
+* @author Fabian Howahl
+* @author Terry A. Hurlbut
+* @ingroup SMWDataValues
+*/
 class SMWTimeValue extends SMWDataValue {
 
 	/**
-	 * DV identifier
-	 */
+	* DV identifier
+	*/
 	const TYPE_ID = '_dat';
 
 	protected $m_dataitem_greg = null;
@@ -172,21 +172,21 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Parse the given string to check if it a date/time value.
-	 * The function sets the provided call-by-ref values to the respective
-	 * values. If errors are encountered, they are added to the objects
-	 * error list and false is returned. Otherwise, true is returned.
-	 * @param $string string input time representation, e.g. "12 May 2007 13:45:23-3:30"
-	 * @param $datecomponents array of strings that might belong to the specification of a date
-	 * @param $calendarmodesl string if model was set in input, otherwise false
-	 * @param $era string '+' or '-' if provided, otherwise false
-	 * @param $hours integer set to a value between 0 and 24
-	 * @param $minutes integer set to a value between 0 and 59
-	 * @param $seconds integer set to a value between 0 and 59, or false if not given
-	 * @param $timeoffset double set to a value for time offset (e.g. 3.5), or false if not given
-	 * @return boolean stating if the parsing succeeded
-	 * @todo This method in principle allows date parsing to be internationalized further. Should be done.
-	 */
+	* Parse the given string to check if it a date/time value.
+	* The function sets the provided call-by-ref values to the respective
+	* values. If errors are encountered, they are added to the objects
+	* error list and false is returned. Otherwise, true is returned.
+	* @param $string string input time representation, e.g. "12 May 2007 13:45:23-3:30"
+	* @param $datecomponents array of strings that might belong to the specification of a date
+	* @param $calendarmodesl string if model was set in input, otherwise false
+	* @param $era string '+' or '-' if provided, otherwise false
+	* @param $hours integer set to a value between 0 and 24
+	* @param $minutes integer set to a value between 0 and 59
+	* @param $seconds integer set to a value between 0 and 59, or false if not given
+	* @param $timeoffset double set to a value for time offset (e.g. 3.5), or false if not given
+	* @return boolean stating if the parsing succeeded
+	* @todo This method in principle allows date parsing to be internationalized further. Should be done.
+	*/
 	protected function parseDateString( $string, &$datecomponents, &$calendarmodel, &$era, &$hours, &$minutes, &$seconds, &$microseconds, &$timeoffset, &$timezone ) {
 
 		$calendarmodel = $timezoneoffset = $era = $ampm = false;
@@ -224,7 +224,7 @@ class SMWTimeValue extends SMWDataValue {
 				$datecomponents[] = $match; // we check later if this makes sense
 				$matchisdate = true;
 			} elseif ( is_numeric( $match ) &&
-			           ( $prevmatchwasdate || count( $datecomponents ) == 0 ) ) {
+						( $prevmatchwasdate || count( $datecomponents ) == 0 ) ) {
 				$datecomponents[] = $match;
 				$matchisnumber = true;
 				$matchisdate = true;
@@ -250,7 +250,7 @@ class SMWTimeValue extends SMWDataValue {
 					$timezoneoffset = Timezone::getOffsetByAbbreviation( $match ) / 3600;
 					$timezone = Timezone::getIdByAbbreviation( $match );
 			} elseif ( ( $prevmatchwasdate || count( $datecomponents ) == 0 ) &&
-				   $this->parseMonthString( $match, $monthname ) ) {
+					$this->parseMonthString( $match, $monthname ) ) {
 				$datecomponents[] = $monthname;
 				$matchisdate = true;
 			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && in_array( $match, array( 'st', 'nd', 'rd', 'th' ) ) ) {
@@ -302,19 +302,19 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Parse the given string to check if it encodes an international time.
-	 * If successful, the function sets the provided call-by-ref values to
-	 * the respective numbers and returns true. Otherwise, it returns
-	 * false and does not set any values.
-	 * @note This method is only temporarily public for enabling SMWCompatibilityHelpers. Do not use it directly in your code.
-	 *
-	 * @param $string string input time representation, e.g. "13:45:23-3:30"
-	 * @param $hours integer between 0 and 24
-	 * @param $minutes integer between 0 and 59
-	 * @param $seconds integer between 0 and 59, or false if not given
-	 * @param $timeoffset double for time offset (e.g. 3.5), or false if not given
-	 * @return boolean stating if the parsing succeeded
-	 */
+	* Parse the given string to check if it encodes an international time.
+	* If successful, the function sets the provided call-by-ref values to
+	* the respective numbers and returns true. Otherwise, it returns
+	* false and does not set any values.
+	* @note This method is only temporarily public for enabling SMWCompatibilityHelpers. Do not use it directly in your code.
+	*
+	* @param $string string input time representation, e.g. "13:45:23-3:30"
+	* @param $hours integer between 0 and 24
+	* @param $minutes integer between 0 and 59
+	* @param $seconds integer between 0 and 59, or false if not given
+	* @param $timeoffset double for time offset (e.g. 3.5), or false if not given
+	* @return boolean stating if the parsing succeeded
+	*/
 	public static function parseTimeString( $string, &$hours, &$minutes, &$seconds, &$timeoffset ) {
 		if ( !preg_match( "/^[T]?([0-2]?[0-9]):([0-5][0-9])(:[0-5][0-9])?(([+\-][0-2]?[0-9])(:(30|00))?)?$/u", $string, $match ) ) {
 			return false;
@@ -346,16 +346,16 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Parse the given string to check if it encodes a "military time".
-	 * If successful, the function sets the provided call-by-ref values to
-	 * the respective numbers and returns true. Otherwise, it returns
-	 * false and does not set any values.
-	 * @param $string string input time representation, e.g. "134523"
-	 * @param $hours integer between 0 and 24
-	 * @param $minutes integer between 0 and 59
-	 * @param $seconds integer between 0 and 59, or false if not given
-	 * @return boolean stating if the parsing succeeded
-	 */
+	* Parse the given string to check if it encodes a "military time".
+	* If successful, the function sets the provided call-by-ref values to
+	* the respective numbers and returns true. Otherwise, it returns
+	* false and does not set any values.
+	* @param $string string input time representation, e.g. "134523"
+	* @param $hours integer between 0 and 24
+	* @param $minutes integer between 0 and 59
+	* @param $seconds integer between 0 and 59, or false if not given
+	* @return boolean stating if the parsing succeeded
+	*/
 	protected static function parseMilTimeString( $string, &$hours, &$minutes, &$seconds ) {
 		if ( !preg_match( "/^([0-2][0-9])([0-5][0-9])([0-5][0-9])?$/u", $string, $match ) ) {
 			return false;
@@ -375,14 +375,14 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Parse the given string to check if it refers to the string name ot
-	 * abbreviation of a month name. If yes, it is replaced by a normalized
-	 * month name (placed in the call-by-ref parameter) and true is
-	 * returned. Otherwise, false is returned and $monthname is not changed.
-	 * @param $string string month name or abbreviation to parse
-	 * @param $monthname string with standard 3-letter English month abbreviation
-	 * @return boolean stating whether a month was found
-	 */
+	* Parse the given string to check if it refers to the string name ot
+	* abbreviation of a month name. If yes, it is replaced by a normalized
+	* month name (placed in the call-by-ref parameter) and true is
+	* returned. Otherwise, false is returned and $monthname is not changed.
+	* @param $string string month name or abbreviation to parse
+	* @param $monthname string with standard 3-letter English month abbreviation
+	* @return boolean stating whether a month was found
+	*/
 	private function parseMonthString( $string, &$monthname ) {
 
 		// takes precedence over English month names!
@@ -406,18 +406,18 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Validate and interpret the date components as retrieved when parsing
-	 * a user input. The method takes care of guessing how a list of values
-	 * such as "10 12 13" is to be interpreted using the current language
-	 * settings. The result is stored in the call-by-ref parameter
-	 * $date that uses keys 'y', 'm', 'd' and contains the respective
-	 * numbers as values, or false if not specified. If errors occur, error
-	 * messages are added to the objects list of errors, and false is
-	 * returned. Otherwise, true is returned.
-	 * @param $datecomponents array of strings that might belong to the specification of a date
-	 * @param $date array set to result
-	 * @return boolean stating if successful
-	 */
+	* Validate and interpret the date components as retrieved when parsing
+	* a user input. The method takes care of guessing how a list of values
+	* such as "10 12 13" is to be interpreted using the current language
+	* settings. The result is stored in the call-by-ref parameter
+	* $date that uses keys 'y', 'm', 'd' and contains the respective
+	* numbers as values, or false if not specified. If errors occur, error
+	* messages are added to the objects list of errors, and false is
+	* returned. Otherwise, true is returned.
+	* @param $datecomponents array of strings that might belong to the specification of a date
+	* @param $date array set to result
+	* @return boolean stating if successful
+	*/
 	protected function interpretDateComponents( $datecomponents, &$date ) {
 
 		// The following code segment creates a bit vector to encode
@@ -489,19 +489,19 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Initialise data from the provided intermediate results after
-	 * parsing, assuming that a conventional date notation is used.
-	 * If errors occur, error messages are added to the objects list of
-	 * errors, and false is returned. Otherwise, true is returned.
-	 * @param $datecomponents array of strings that might belong to the specification of a date
-	 * @param $calendarmodesl string if model was set in input, otherwise false
-	 * @param $era string '+' or '-' if provided, otherwise false
-	 * @param $hours integer value between 0 and 24
-	 * @param $minutes integer value between 0 and 59
-	 * @param $seconds integer value between 0 and 59, or false if not given
-	 * @param $timeoffset double value for time offset (e.g. 3.5), or false if not given
-	 * @return boolean stating if successful
-	 */
+	* Initialise data from the provided intermediate results after
+	* parsing, assuming that a conventional date notation is used.
+	* If errors occur, error messages are added to the objects list of
+	* errors, and false is returned. Otherwise, true is returned.
+	* @param $datecomponents array of strings that might belong to the specification of a date
+	* @param $calendarmodesl string if model was set in input, otherwise false
+	* @param $era string '+' or '-' if provided, otherwise false
+	* @param $hours integer value between 0 and 24
+	* @param $minutes integer value between 0 and 59
+	* @param $seconds integer value between 0 and 59, or false if not given
+	* @param $timeoffset double value for time offset (e.g. 3.5), or false if not given
+	* @return boolean stating if successful
+	*/
 	protected function setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone ) {
 		$date = false;
 		if ( !$this->interpretDateComponents( $datecomponents, $date ) ) {
@@ -520,7 +520,7 @@ class SMWTimeValue extends SMWDataValue {
 
 		// Old Style is a special case of Julian calendar model where the change of the year was 25 March:
 		if ( ( $calendarmodel == 'OS' ) &&
-		     ( ( $date['m'] < 3 ) || ( ( $date['m'] == 3 ) && ( $date['d'] < 25 ) ) ) ) {
+			( ( $date['m'] < 3 ) || ( ( $date['m'] == 3 ) && ( $date['d'] < 25 ) ) ) ) {
 			$date['y']++;
 		}
 
@@ -536,7 +536,7 @@ class SMWTimeValue extends SMWDataValue {
 		// not make sense for prehistoric dates, and our calendar
 		// conversion would not be reliable if JD numbers get too huge:
 		if ( ( $date['y'] <= self::PREHISTORY ) &&
-		     ( ( $this->m_dataitem->getPrecision() > SMWDITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
+			( ( $this->m_dataitem->getPrecision() > SMWDITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
 			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-prehistoric', $this->m_wikivalue ) );
 			return false;
 		}
@@ -553,16 +553,16 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Check which roles a string component might play in a date, and
-	 * set the call-by-ref parameter to the proper numerical
-	 * representation. The component string has already been normalized to
-	 * be either a plain number, a month name, or a plain number with "d"
-	 * pre-pended. The result is a bit vector to indicate the possible
-	 * interpretations.
-	 * @param $component string
-	 * @param $numvalue integer representing the components value
-	 * @return integer that encodes a three-digit bit vector
-	 */
+	* Check which roles a string component might play in a date, and
+	* set the call-by-ref parameter to the proper numerical
+	* representation. The component string has already been normalized to
+	* be either a plain number, a month name, or a plain number with "d"
+	* pre-pended. The result is a bit vector to indicate the possible
+	* interpretations.
+	* @param $component string
+	* @param $numvalue integer representing the components value
+	* @return integer that encodes a three-digit bit vector
+	*/
 	protected static function checkDateComponent( $component, &$numvalue ) {
 		if ( $component === '' ) { // should not happen
 			$numvalue = 0;
@@ -595,14 +595,14 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Determine the calender model under which an input should be
-	 * interpreted based on the given input data.
-	 * @param $presetmodel mixed string related to a user input calendar model (OS, Jl, Gr) or false
-	 * @param $year integer of the given year (adjusted for BC(E), i.e. possibly negative)
-	 * @param $month mixed integer of the month or false
-	 * @param $day mixed integer of the day or false
-	 * @return integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 */
+	* Determine the calender model under which an input should be
+	* interpreted based on the given input data.
+	* @param $presetmodel mixed string related to a user input calendar model (OS, Jl, Gr) or false
+	* @param $year integer of the given year (adjusted for BC(E), i.e. possibly negative)
+	* @param $month mixed integer of the month or false
+	* @param $day mixed integer of the day or false
+	* @return integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	*/
 	protected function getCalendarModel( $presetmodel, $year, $month, $day ) {
 		if ( $presetmodel == 'OS' ) { // Old Style is a notational convention of Julian dates only
 			$presetmodel = 'Jl';
@@ -613,8 +613,8 @@ class SMWTimeValue extends SMWDataValue {
 			return SMWDITime::CM_JULIAN;
 		}
 		if ( ( $year > 1582 ) ||
-		     ( ( $year == 1582 ) && ( $month > 10 ) ) ||
-		     ( ( $year == 1582 ) && ( $month == 10 ) && ( $day > 4 ) ) ) {
+			( ( $year == 1582 ) && ( $month > 10 ) ) ||
+			( ( $year == 1582 ) && ( $month == 10 ) && ( $day > 4 ) ) ) {
 			return SMWDITime::CM_GREGORIAN;
 		} elseif ( $year > self::PREHISTORY ) {
 			return SMWDITime::CM_JULIAN;
@@ -627,10 +627,10 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem
-	 *
-	 * {@inheritDoc}
-	 */
+	* @see SMWDataValue::loadDataItem
+	*
+	* {@inheritDoc}
+	*/
 	protected function loadDataItem( SMWDataItem $dataItem ) {
 
 		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_TIME ) {
@@ -645,68 +645,68 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getShortWikiText
-	 *
-	 * {@inheritDoc}
-	 */
+	* @see SMWDataValue::getShortWikiText
+	*
+	* {@inheritDoc}
+	*/
 	public function getShortWikiText( $linker = null ) {
 		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
 	/**
-	 * @see SMWDataValue::getShortHTMLText
-	 *
-	 * {@inheritDoc}
-	 */
+	* @see SMWDataValue::getShortHTMLText
+	*
+	* {@inheritDoc}
+	*/
 	public function getShortHTMLText( $linker = null ) {
 		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
 	/**
-	 * @see SMWDataValue::getLongWikiText
-	 *
-	 * {@inheritDoc}
-	 */
+	* @see SMWDataValue::getLongWikiText
+	*
+	* {@inheritDoc}
+	*/
 	public function getLongWikiText( $linker = null ) {
 		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
-	 * @see SMWDataValue::getLongHTMLText
-	 *
-	 * {@inheritDoc}
-	 */
+	* @see SMWDataValue::getLongHTMLText
+	*
+	* {@inheritDoc}
+	*/
 	public function getLongHTMLText( $linker = null ) {
 		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
 	/**
-	 * @todo The preferred caption may not be suitable as a wiki value (i.e. not parsable).
-	 * @see SMWDataValue::getLongHTMLText
-	 *
-	 * {@inheritDoc}
-	 */
+	* @todo The preferred caption may not be suitable as a wiki value (i.e. not parsable).
+	* @see SMWDataValue::getLongHTMLText
+	*
+	* {@inheritDoc}
+	*/
 	public function getWikiValue() {
 		return $this->m_wikivalue ? $this->m_wikivalue : strip_tags( $this->getLongWikiText() );
 	}
 
 	/**
-	 * @see SMWDataValue::isNumeric
-	 *
-	 * {@inheritDoc}
-	 */
+	* @see SMWDataValue::isNumeric
+	*
+	* {@inheritDoc}
+	*/
 	public function isNumeric() {
 		return true;
 	}
 
 	/**
-	 * Return the year number in the given calendar model, or false if
-	 * this number is not available (typically when attempting to get
-	 * prehistoric Julian calendar dates). As everywhere in this class,
-	 * there is no year 0.
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return mixed typically a number but possibly false
-	 */
+	* Return the year number in the given calendar model, or false if
+	* this number is not available (typically when attempting to get
+	* prehistoric Julian calendar dates). As everywhere in this class,
+	* there is no year 0.
+	* @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	* @return mixed typically a number but possibly false
+	*/
 	public function getYear( $calendarmodel = SMWDITime::CM_GREGORIAN ) {
 		$di = $this->getDataItemForCalendarModel( $calendarmodel );
 		if ( !is_null( $di ) ) {
@@ -717,13 +717,13 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return the month number in the given calendar model, or false if
-	 * this number is not available (typically when attempting to get
-	 * prehistoric Julian calendar dates).
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @param $default value to return if month is not set at our level of precision
-	 * @return mixed typically a number but possibly anything given as $default
-	 */
+	* Return the month number in the given calendar model, or false if
+	* this number is not available (typically when attempting to get
+	* prehistoric Julian calendar dates).
+	* @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	* @param $default value to return if month is not set at our level of precision
+	* @return mixed typically a number but possibly anything given as $default
+	*/
 	public function getMonth( $calendarmodel = SMWDITime::CM_GREGORIAN, $default = 1 ) {
 		$di = $this->getDataItemForCalendarModel( $calendarmodel );
 		if ( !is_null( $di ) ) {
@@ -734,13 +734,13 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return the day number in the given calendar model, or false if this
-	 * number is not available (typically when attempting to get
-	 * prehistoric Julian calendar dates).
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @param $default value to return if day is not set at our level of precision
-	 * @return mixed typically a number but possibly anything given as $default
-	 */
+	* Return the day number in the given calendar model, or false if this
+	* number is not available (typically when attempting to get
+	* prehistoric Julian calendar dates).
+	* @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	* @param $default value to return if day is not set at our level of precision
+	* @return mixed typically a number but possibly anything given as $default
+	*/
 	public function getDay( $calendarmodel = SMWDITime::CM_GREGORIAN, $default = 1 ) {
 		$di = $this->getDataItemForCalendarModel( $calendarmodel );
 		if ( !is_null( $di ) ) {
@@ -751,52 +751,52 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see TimeValueFormatter::getTimeStringFromDataItem
-	 *
-	 * @return
-	 */
+	* @see TimeValueFormatter::getTimeStringFromDataItem
+	*
+	* @return
+	*/
 	public function getTimeString( $default = '00:00:00' ) {
 		return $this->dataValueServiceFactory->getValueFormatter( $this )->getTimeString( $default );
 	}
 
 	/**
-	 * @deprecated This method is now called getISO8601Date(). It will vanish before SMW 1.7.
-	 */
+	* @deprecated This method is now called getISO8601Date(). It will vanish before SMW 1.7.
+	*/
 	public function getXMLSchemaDate( $mindefault = true ) {
 		return $this->getISO8601Date( $mindefault );
 	}
 
 	/**
-	 * @see TimeValueFormatter::getISO8601DateFromDataItem
-	 *
-	 * @param $mindefault boolean determining whether values below the
-	 * precision of our input should be completed with minimal or maximal
-	 * conceivable values
-	 *
-	 * @return string
-	 */
+	* @see TimeValueFormatter::getISO8601DateFromDataItem
+	*
+	* @param $mindefault boolean determining whether values below the
+	* precision of our input should be completed with minimal or maximal
+	* conceivable values
+	*
+	* @return string
+	*/
 	public function getISO8601Date( $mindefault = true ) {
 		return $this->dataValueServiceFactory->getValueFormatter( $this )->getISO8601Date( $mindefault );
 	}
 
 	/**
-	 * @see TimeValueFormatter::getMediaWikiDateFromDataItem
-	 *
-	 * @return string
-	 */
+	* @see TimeValueFormatter::getMediaWikiDateFromDataItem
+	*
+	* @return string
+	*/
 	public function getMediaWikiDate() {
 		return $this->dataValueServiceFactory->getValueFormatter( $this )->getMediaWikiDate();
 	}
 
 	/**
-	 * Get the current data in the specified calendar model. Conversion is
-	 * not done for prehistoric dates (where it might lead to precision
-	 * errors and produce results that are not meaningful). In this case,
-	 * null might be returned if no data in the specified format is
-	 * available.
-	 * @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return SMWDITime
-	 */
+	* Get the current data in the specified calendar model. Conversion is
+	* not done for prehistoric dates (where it might lead to precision
+	* errors and produce results that are not meaningful). In this case,
+	* null might be returned if no data in the specified format is
+	* available.
+	* @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	* @return SMWDITime
+	*/
 	public function getDataItemForCalendarModel( $calendarmodel ) {
 		if ( $this->m_dataitem->getYear() <= self::PREHISTORY ) {
 			return ( $this->m_dataitem->getCalendarModel() == $calendarmodel ) ? $this->m_dataitem : null;
