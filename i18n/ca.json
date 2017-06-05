@@ -266,6 +266,9 @@
 	"smw-admin-announce": "Feu conèixer el vostre wiki",
 	"smw-admin-announce-text": "Si el vostre wiki és públic, el podeu registrar a <a href=\"https://wikiapiary.com\">WikiApiary</a>, el catàleg wiki de wikis.",
 	"smw-admin-deprecation-notice-title": "Avisos d'obsolescència",
+	"smw-admin-deprecation-notice-title-notice": "Avís",
+	"smw-admin-deprecation-notice-title-replacement": "Reemplaçament",
+	"smw-admin-deprecation-notice-title-removal": "Supressió",
 	"smw-smwadmin-refresh-title": "Reparació de les dades i actualització",
 	"smw_smwadmin_datarefresh": "Reconstrucció de les dades",
 	"smw_smwadmin_datarefreshdocu": "És possible restaurar totes les dades del Semantic MediaWiki a partir dels continguts actuals del wiki.\nAixò pot ser útil per a reparar dades inconsistents o refrescar les dades si el format intern ha canviat per alguna actualització de programari.\nL'actualització s'executa pàgina per pàgina i no es completarà immediatament.\nA continuació és mostra si l'actualització és en curs i us permet iniciar o aturar les actualitzacions (a menys que aquesta característica estigui inhabilitada per l'administrador del lloc).",
@@ -444,5 +447,17 @@
 	"smw-edit-protection-enabled": "Modifica protegit (Semantic MediaWiki)",
 	"smw-patternedit-protection": "Aquesta pàgina està protegida i només pot ser modificada per usuaris amb els  [https://www.semantic-mediawiki.org/wiki/Help:Permissions permisos] <code>smw-patternedit</code> adequats.",
 	"smw-pa-property-predefined_edip": "«$1» és una propietat predeterminada proporcionada per [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] per a indicar si la modificació està protegida o no.",
-	"smw-query-reference-link-label": "Referència de consulta"
+	"smw-query-reference-link-label": "Referència de consulta",
+	"smw-format-datatable-emptytable": "No hi ha cap disponible a la taula",
+	"smw-format-datatable-loadingrecords": "S'està carregant...",
+	"smw-format-datatable-processing": "S'està processant...",
+	"smw-format-datatable-search": "Cerca:",
+	"smw-format-datatable-zerorecords": "No s'ha trobat cap registre que concideixi",
+	"smw-format-datatable-first": "Primer",
+	"smw-format-datatable-last": "Últim",
+	"smw-format-datatable-next": "Següent",
+	"smw-format-datatable-previous": "Anterior",
+	"smw-format-datatable-sortascending": ": activa per ordenar la columna de forma ascendent",
+	"smw-format-datatable-sortdescending": ": activa per ordenar la columna de forma descendent",
+	"smw-category-invalid-redirect-target": "La categoria «$1» conté un objectiu de redirecció no vàlid a un pàgina que no és un espai de noms de categoria."
 }
