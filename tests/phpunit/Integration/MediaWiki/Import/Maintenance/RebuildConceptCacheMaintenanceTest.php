@@ -7,17 +7,17 @@ use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
-* @group SMW
-* @group SMWExtension
-* @group semantic-mediawiki-import
-* @group mediawiki-database
-* @group medium
-*
-* @license GNU GPL v2+
-* @since 1.9.2
-*
-* @author mwjames
-*/
+ * @group SMW
+ * @group SMWExtension
+ * @group semantic-mediawiki-import
+ * @group mediawiki-database
+ * @group medium
+ *
+ * @license GNU GPL v2+
+ * @since 1.9.2
+ *
+ * @author mwjames
+ */
 class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
