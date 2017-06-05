@@ -9,14 +9,14 @@ use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
 
 /**
-* @covers \SMW\Serializers\ExpDataSerializer
-* @group semantic-mediawiki
-*
-* @license GNU GPL v2+
-* @since 2.2
-*
-* @author mwjames
-*/
+ * @covers \SMW\Serializers\ExpDataSerializer
+ * @group semantic-mediawiki
+ *
+ * @license GNU GPL v2+
+ * @since 2.2
+ *
+ * @author mwjames
+ */
 class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructor() {
