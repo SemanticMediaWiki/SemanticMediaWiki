@@ -13,44 +13,44 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 
 /**
- * @license GNU GPL v2+
- * @since 2.4
- *
- * @author mwjames
- * @author Markus Krötzsch
- */
+* @license GNU GPL v2+
+* @since 2.4
+*
+* @author mwjames
+* @author Markus Krötzsch
+*/
 class DescriptionProcessor {
 
 	/**
-	 * @var DataValueFactory
-	 */
+	* @var DataValueFactory
+	*/
 	private $dataValueFactory;
 
 	/**
-	 * @var DescriptionFactory
-	 */
+	* @var DescriptionFactory
+	*/
 	private $descriptionFactory;
 
 	/**
-	 * @var integer
-	 */
+	* @var integer
+	*/
 	private $queryFeatures;
 
 	/**
-	 * @var DIWikiPage|null
-	 */
+	* @var DIWikiPage|null
+	*/
 	private $contextPage;
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $errors = array();
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param integer $queryFeatures
-	 */
+	* @since 2.4
+	*
+	* @param integer $queryFeatures
+	*/
 	public function __construct( $queryFeatures = false ) {
 		$this->queryFeatures = $queryFeatures === false ? $GLOBALS['smwgQFeatures'] : $queryFeatures;
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -58,56 +58,56 @@ class DescriptionProcessor {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param DIWikiPage|null $contextPage
-	 */
+	* @since 2.4
+	*
+	* @param DIWikiPage|null $contextPage
+	*/
 	public function setContextPage( DIWikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
 	/**
-	 * @since 2.4
-	 */
+	* @since 2.4
+	*/
 	public function clear() {
 		$this->errors = array();
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return array
-	 */
+	* @since 2.4
+	*
+	* @return array
+	*/
 	public function getErrors() {
 		return $this->errors;
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param array|string $error
-	 */
+	* @since 2.4
+	*
+	* @param array|string $error
+	*/
 	public function addError( $error ) {
 		$this->errors = array_merge( $this->errors, (array)$error );
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param string $msgKey
-	 */
+	* @since 2.4
+	*
+	* @param string $msgKey
+	*/
 	public function addErrorWithMsgKey( $msgKey /*...*/ ) {
 		$this->errors[] = Message::encode( func_get_args() );
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param DIProperty $property
-	 * @param string $chunk
-	 *
-	 * @return Description|null
-	 */
+	* @since 2.4
+	*
+	* @param DIProperty $property
+	* @param string $chunk
+	*
+	* @return Description|null
+	*/
 	public function constructDescriptionForPropertyObjectValue( DIProperty $property, $chunk ) {
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property );
@@ -124,12 +124,12 @@ class DescriptionProcessor {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param string $chunk
-	 *
-	 * @return Description|null
-	 */
+	* @since 2.4
+	*
+	* @param string $chunk
+	*
+	* @return Description|null
+	*/
 	public function constructDescriptionForWikiPageValueChunk( $chunk ) {
 
 		// Only create a simple WpgValue to initiate the query description target
@@ -151,41 +151,41 @@ class DescriptionProcessor {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param Description|null $currentDescription
-	 * @param Description|null $newDescription
-	 *
-	 * @return Description|null
-	 */
+	* @since 2.4
+	*
+	* @param Description|null $currentDescription
+	* @param Description|null $newDescription
+	*
+	* @return Description|null
+	*/
 	public function constructDisjunctiveCompoundDescriptionFrom( Description $currentDescription = null, Description $newDescription = null ) {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_DISJUNCTION_QUERY );
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param Description|null $currentDescription
-	 * @param Description|null $newDescription
-	 *
-	 * @return Description|null
-	 */
+	* @since 2.4
+	*
+	* @param Description|null $currentDescription
+	* @param Description|null $newDescription
+	*
+	* @return Description|null
+	*/
 	public function constructConjunctiveCompoundDescriptionFrom( Description $currentDescription = null, Description $newDescription = null ) {
 		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_CONJUNCTION_QUERY );
 	}
 
 	/**
-	 * Extend a given description by a new one, either by adding the new description
-	 * (if the old one is a container description) or by creating a new container.
-	 * The parameter $conjunction determines whether the combination of both descriptions
-	 * should be a disjunction or conjunction.
-	 *
-	 * In the special case that the current description is NULL, the new one will just
-	 * replace the current one.
-	 *
-	 * The return value is the expected combined description. The object $currentDescription will
-	 * also be changed (if it was non-NULL).
-	 */
+	* Extend a given description by a new one, either by adding the new description
+	* (if the old one is a container description) or by creating a new container.
+	* The parameter $conjunction determines whether the combination of both descriptions
+	* should be a disjunction or conjunction.
+	*
+	* In the special case that the current description is NULL, the new one will just
+	* replace the current one.
+	*
+	* The return value is the expected combined description. The object $currentDescription will
+	* also be changed (if it was non-NULL).
+	*/
 	private function newCompoundDescription( Description $currentDescription = null, Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
 
 		$notallowedmessage = 'smw_noqueryfeature';
@@ -223,7 +223,7 @@ class DescriptionProcessor {
 	private function newCompoundDescriptionFor( $compoundType, $currentDescription, $newDescription ) {
 
 		if ( ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Conjunction ) ) ||
-		     ( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
+			( ( $compoundType & SMW_DISJUNCTION_QUERY ) != 0 && ( $currentDescription instanceof Disjunction ) ) ) { // use existing container
 			$currentDescription->addDescription( $newDescription );
 			return $currentDescription;
 		} elseif ( ( $compoundType & SMW_CONJUNCTION_QUERY ) != 0 ) { // make new conjunction

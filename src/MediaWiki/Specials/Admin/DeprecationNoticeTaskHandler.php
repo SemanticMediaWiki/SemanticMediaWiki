@@ -82,14 +82,16 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {}
+	public function isTaskFor( $task ) {
+	}
 
 	/**
 	 * @since 3.0
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {}
+	public function handleRequest( WebRequest $webRequest ) {
+	}
 
 	private function detectOn( $noticeConfigList, $replacementConfigList, $removedConfigList ) {
 

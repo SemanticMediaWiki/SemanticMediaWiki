@@ -9,20 +9,20 @@ use SMW\MediaWiki\Specials\Ask\ParametersFormWidget;
 use SMW\ApplicationFactory;
 
 /**
- * This special page for MediaWiki implements a customisable form for
- * executing queries outside of articles.
- *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- *
- * @author Markus Krötzsch
- * @author Yaron Koren
- * @author Sanyam Goyal
- * @author Jeroen De Dauw
- * @author mwjames
- *
- * TODO: Split up the megamoths into sane methods.
- */
+* This special page for MediaWiki implements a customisable form for
+* executing queries outside of articles.
+*
+* @ingroup SMWSpecialPage
+* @ingroup SpecialPage
+*
+* @author Markus Krötzsch
+* @author Yaron Koren
+* @author Sanyam Goyal
+* @author Jeroen De Dauw
+* @author mwjames
+*
+* TODO: Split up the megamoths into sane methods.
+*/
 class SMWAskPage extends SpecialPage {
 
 	private $m_querystring = '';
@@ -32,23 +32,23 @@ class SMWAskPage extends SpecialPage {
 	private $queryLinker = null;
 
 	/**
-	 * @var InputFormWidget
-	 */
+	* @var InputFormWidget
+	*/
 	private $inputFormWidget;
 
 	/**
-	 * @var ErrorFormWidget
-	 */
+	* @var ErrorFormWidget
+	*/
 	private $errorFormWidget;
 
 	/**
-	 * @var ParametersFormWidget
-	 */
+	* @var ParametersFormWidget
+	*/
 	private $parametersFormWidget;
 
 	/**
-	 * @var Param[]
-	 */
+	* @var Param[]
+	*/
 	private $params = array();
 
 	public function __construct() {
@@ -60,19 +60,19 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * SpecialPage::doesWrites
-	 *
-	 * @return boolean
-	 */
+	* SpecialPage::doesWrites
+	*
+	* @return boolean
+	*/
 	public function doesWrites() {
 		return true;
 	}
 
 	/**
-	 * Main entrypoint for the special page.
-	 *
-	 * @param string $p
-	 */
+	* Main entrypoint for the special page.
+	*
+	* @param string $p
+	*/
 	public function execute( $p ) {
 		global $smwgQEnabled;
 
@@ -110,14 +110,14 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * This code rather hacky since there are many ways to call that special page, the most involved of
-	 * which is the way that this page calls itself when data is submitted via the form (since the shape
-	 * of the parameters then is governed by the UI structure, as opposed to being governed by reason).
-	 *
-	 * TODO: most of this can probably be killed now we are using Validator
-	 *
-	 * @param string $p
-	 */
+	* This code rather hacky since there are many ways to call that special page, the most involved of
+	* which is the way that this page calls itself when data is submitted via the form (since the shape
+	* of the parameters then is governed by the UI structure, as opposed to being governed by reason).
+	*
+	* TODO: most of this can probably be killed now we are using Validator
+	*
+	* @param string $p
+	*/
 	protected function extractQueryParameters( $p ) {
 		global $smwgQMaxInlineLimit;
 
@@ -218,7 +218,7 @@ class SMWAskPage extends SpecialPage {
 			$this->m_params['limit'] = $request->getVal( 'limit' );
 
 			if ( $this->m_params['limit'] === '' ) {
-				 $this->m_params['limit'] = ( $this->m_params['format'] == 'rss' ) ? 10 : 20; // Standard limit for RSS.
+				$this->m_params['limit'] = ( $this->m_params['format'] == 'rss' ) ? 10 : 20; // Standard limit for RSS.
 			}
 		}
 
@@ -232,8 +232,8 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * TODO: document
-	 */
+	* TODO: document
+	*/
 	protected function makeHTMLResult() {
 		global $wgOut;
 
@@ -259,8 +259,8 @@ class SMWAskPage extends SpecialPage {
 		$queryobj = null;
 
 		/**
-		 * @var PrintRequest $printout
-		 */
+		* @var PrintRequest $printout
+		*/
 		foreach ( $this->m_printouts as $printout ) {
 			$printoutstring .= $printout->getSerialisation( true ) . "\n";
 		}
@@ -299,8 +299,8 @@ class SMWAskPage extends SpecialPage {
 			);
 
 			/**
-			 * @var SMWQueryResult $res
-			 */
+			* @var SMWQueryResult $res
+			*/
 
 			$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
 			$this->queryLinker = QueryLinker::get( $queryobj, $this->m_params );
@@ -321,7 +321,7 @@ class SMWAskPage extends SpecialPage {
 			}
 
 			if ( ( $desckey ) && ( $queryobj->getDescription() instanceof SMWConceptDescription ) &&
-			     ( !isset( $this->m_params[$desckey] ) || !isset( $this->m_params[$titlekey] ) ) ) {
+				( !isset( $this->m_params[$desckey] ) || !isset( $this->m_params[$titlekey] ) ) ) {
 				$concept = $queryobj->getDescription()->getConcept();
 
 				if ( !isset( $this->m_params[$titlekey] ) ) {
@@ -396,8 +396,8 @@ class SMWAskPage extends SpecialPage {
 			$wgOut->disable();
 
 			/**
-			 * @var SMWIExportPrinter $printer
-			 */
+			* @var SMWIExportPrinter $printer
+			*/
 			$printer->outputAsFile( $res, $params );
 		} else {
 			if ( $this->m_querystring ) {
@@ -424,13 +424,13 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * Generates the Search Box UI
-	 *
-	 * @param string $printoutstring
-	 * @param string $urltail
-	 *
-	 * @return string
-	 */
+	* Generates the Search Box UI
+	*
+	* @param string $printoutstring
+	* @param string $urltail
+	*
+	* @return string
+	*/
 	protected function getInputForm( $printoutstring, $urltail, $navigation = '', $duration, $isFromCache = false ) {
 		global $wgScript;
 
@@ -542,12 +542,12 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * Build the format drop down
-	 *
-	 * @param array
-	 *
-	 * @return string
-	 */
+	* Build the format drop down
+	*
+	* @param array
+	*
+	* @return string
+	*/
 	protected static function getFormatSelection ( $params ) {
 		$result = '';
 
@@ -595,12 +595,12 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * Build the sorting/order input
-	 *
-	 * @param array
-	 *
-	 * @return string
-	 */
+	* Build the sorting/order input
+	*
+	* @param array
+	*
+	* @return string
+	*/
 	protected static function getSortingOption ( $params ) {
 		$result = '';
 
@@ -614,7 +614,7 @@ class SMWAskPage extends SpecialPage {
 
 		foreach ( $orders as $i => $order ) {
 			$result .=  "<div id=\"sort_div_$i\">" . wfMessage( 'smw_ask_sortby' )->escaped() . ' <input type="text" name="sort[' . $i . ']" value="' .
-				    htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
+					htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
 
 			if ( $order == 'ASC' ) {
 				$result .= 'selected="selected" ';
@@ -641,13 +641,13 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * Build the navigation for some given query result, reuse url-tail parameters.
-	 *
-	 * @param SMWQueryResult $res
-	 * @param array $urlArgs
-	 *
-	 * @return string
-	 */
+	* Build the navigation for some given query result, reuse url-tail parameters.
+	*
+	* @param SMWQueryResult $res
+	* @param array $urlArgs
+	*
+	* @return string
+	*/
 	protected function getNavigationBar( SMWQueryResult $res, array $urlArgs ) {
 		global $smwgQMaxInlineLimit, $wgLang;
 
@@ -795,8 +795,8 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * FIXME MW 1.25
-	 */
+	* FIXME MW 1.25
+	*/
 	private function addExternalHelpLinkFor( $key ) {
 
 		if ( !method_exists( $this, 'addHelpLink' ) ) {

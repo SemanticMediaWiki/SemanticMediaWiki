@@ -139,7 +139,8 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->importExtraneousFunctions( array(
-			'Foo' => function() { return 'Foo'; }
+			'Foo' => function() { return 'Foo';
+			}
 		) );
 	}
 

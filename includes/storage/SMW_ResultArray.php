@@ -10,59 +10,59 @@ use SMW\Query\Result\ResultFieldMatchFinder;
 use SMW\Query\QueryToken;
 
 /**
- * Container for the contents of a single result field of a query result,
- * i.e. basically an array of SMWDataItems with some additional parameters.
- * The content of the array is fetched on demand only.
- *
- * @ingroup SMWQuery
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
+* Container for the contents of a single result field of a query result,
+* i.e. basically an array of SMWDataItems with some additional parameters.
+* The content of the array is fetched on demand only.
+*
+* @ingroup SMWQuery
+*
+* @author Markus Krötzsch
+* @author Jeroen De Dauw < jeroendedauw@gmail.com >
+*/
 class SMWResultArray {
 
 	/**
-	 * @var PrintRequest
-	 */
+	* @var PrintRequest
+	*/
 	private $mPrintRequest;
 
 	/**
-	 * @var SMWDIWikiPage
-	 */
+	* @var SMWDIWikiPage
+	*/
 	private $mResult;
 
 	/**
-	 * @var SMWStore
-	 */
+	* @var SMWStore
+	*/
 	private $mStore;
 
 	/**
-	 * @var SMWDataItem[]|false
-	 */
+	* @var SMWDataItem[]|false
+	*/
 	private $mContent;
 
 	/**
-	 * @var InMemoryEntityProcessList
-	 */
+	* @var InMemoryEntityProcessList
+	*/
 	private $inMemoryEntityProcessList;
 
 	/**
-	 * @var ResultFieldMatchFinder
-	 */
+	* @var ResultFieldMatchFinder
+	*/
 	private $resultFieldMatchFinder;
 
 	/**
-	 * @var QueryToken
-	 */
+	* @var QueryToken
+	*/
 	private $queryToken;
 
 	/**
-	 * Constructor.
-	 *
-	 * @param SMWDIWikiPage $resultPage
-	 * @param PrintRequest $printRequest
-	 * @param SMWStore $store
-	 */
+	* Constructor.
+	*
+	* @param SMWDIWikiPage $resultPage
+	* @param PrintRequest $printRequest
+	* @param SMWStore $store
+	*/
 	public function __construct( SMWDIWikiPage $resultPage, PrintRequest $printRequest, SMWStore $store ) {
 		$this->mResult = $resultPage;
 		$this->mPrintRequest = $printRequest;
@@ -74,83 +74,83 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Get the SMWStore object that this result is based on.
-	 *
-	 * @return SMWStore
-	 */
+	* Get the SMWStore object that this result is based on.
+	*
+	* @return SMWStore
+	*/
 	public function getStore() {
 		return $this->mStore;
 	}
 
 	/**
-	 * Returns the SMWDIWikiPage object to which this SMWResultArray refers.
-	 * If you only care for those objects, consider using SMWQueryResult::getResults()
-	 * directly.
-	 *
-	 * @return SMWDIWikiPage
-	 */
+	* Returns the SMWDIWikiPage object to which this SMWResultArray refers.
+	* If you only care for those objects, consider using SMWQueryResult::getResults()
+	* directly.
+	*
+	* @return SMWDIWikiPage
+	*/
 	public function getResultSubject() {
 		return $this->mResult;
 	}
 
 	/**
-	 * Temporary track what entities are used while being instantiated, so an external
-	 * service can have access to the list without requiring to resolve the objects
-	 * independently.
-	 *
-	 * @since  2.4
-	 *
-	 * @return InMemoryEntityProcessList
-	 */
+	* Temporary track what entities are used while being instantiated, so an external
+	* service can have access to the list without requiring to resolve the objects
+	* independently.
+	*
+	* @since  2.4
+	*
+	* @return InMemoryEntityProcessList
+	*/
 	public function setInMemoryEntityProcessList( InMemoryEntityProcessList $inMemoryEntityProcessList ) {
 		$this->inMemoryEntityProcessList = $inMemoryEntityProcessList;
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param QueryToken|null $queryToken
-	 */
+	* @since 2.5
+	*
+	* @param QueryToken|null $queryToken
+	*/
 	public function setQueryToken( QueryToken $queryToken = null ) {
 		$this->queryToken = $queryToken;
 	}
 
 	/**
-	 * Returns an array of SMWDataItem objects that contain the results of
-	 * the given print request for the given result object.
-	 *
-	 * @return SMWDataItem[]|false
-	 */
+	* Returns an array of SMWDataItem objects that contain the results of
+	* the given print request for the given result object.
+	*
+	* @return SMWDataItem[]|false
+	*/
 	public function getContent() {
 		$this->loadContent();
 		return $this->mContent;
 	}
 
 	/**
-	 * Return a PrintRequest object describing what is contained in this
-	 * result set.
-	 *
-	 * @return PrintRequest
-	 */
+	* Return a PrintRequest object describing what is contained in this
+	* result set.
+	*
+	* @return PrintRequest
+	*/
 	public function getPrintRequest() {
 		return $this->mPrintRequest;
 	}
 
 	/**
-	 * Compatibility alias for getNextDatItem().
-	 * @deprecated since 1.6. Call getNextDataValue() or getNextDataItem() directly as needed. Method will vanish before SMW 1.7.
-	 */
+	* Compatibility alias for getNextDatItem().
+	* @deprecated since 1.6. Call getNextDataValue() or getNextDataItem() directly as needed. Method will vanish before SMW 1.7.
+	*/
 	public function getNextObject() {
 		return $this->getNextDataValue();
 	}
 
 	/**
-	 * Return the next SMWDataItem object or false if no further object exists.
-	 *
-	 * @since 1.6
-	 *
-	 * @return SMWDataItem|false
-	 */
+	* Return the next SMWDataItem object or false if no further object exists.
+	*
+	* @since 1.6
+	*
+	* @return SMWDataItem|false
+	*/
 	public function getNextDataItem() {
 		$this->loadContent();
 		$result = current( $this->mContent );
@@ -164,27 +164,27 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Set the internal pointer of the array of SMWDataItem objects to its first
-	 * element. Return the first SMWDataItem object or false if the array is
-	 * empty.
-	 *
-	 * @since 1.7.1
-	 *
-	 * @return SMWDataItem|false
-	 */
+	* Set the internal pointer of the array of SMWDataItem objects to its first
+	* element. Return the first SMWDataItem object or false if the array is
+	* empty.
+	*
+	* @since 1.7.1
+	*
+	* @return SMWDataItem|false
+	*/
 	public function reset() {
 		$this->loadContent();
 		return reset( $this->mContent );
 	}
 
 	/**
-	 * Return an SMWDataValue object for the next SMWDataItem object or
-	 * false if no further object exists.
-	 *
-	 * @since 1.6
-	 *
-	 * @return SMWDataValue|false
-	 */
+	* Return an SMWDataValue object for the next SMWDataItem object or
+	* false if no further object exists.
+	*
+	* @since 1.6
+	*
+	* @return SMWDataValue|false
+	*/
 	public function getNextDataValue() {
 		$dataItem = $this->getNextDataItem();
 
@@ -193,8 +193,8 @@ class SMWResultArray {
 		}
 
 		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
-		    strpos( $this->mPrintRequest->getTypeID(), '_rec' ) !== false &&
-		    $this->mPrintRequest->getParameter( 'index' ) !== false ) {
+			strpos( $this->mPrintRequest->getTypeID(), '_rec' ) !== false &&
+			$this->mPrintRequest->getParameter( 'index' ) !== false ) {
 
 			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
@@ -234,17 +234,17 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Return the main text representation of the next SMWDataItem object
-	 * in the specified format, or false if no further object exists.
-	 *
-	 * The parameter $linker controls linking of title values and should
-	 * be some Linker object (or NULL for no linking).
-	 *
-	 * @param integer $outputMode
-	 * @param mixed $linker
-	 *
-	 * @return string|false
-	 */
+	* Return the main text representation of the next SMWDataItem object
+	* in the specified format, or false if no further object exists.
+	*
+	* The parameter $linker controls linking of title values and should
+	* be some Linker object (or NULL for no linking).
+	*
+	* @param integer $outputMode
+	* @param mixed $linker
+	*
+	* @return string|false
+	*/
 	public function getNextText( $outputMode, $linker = null ) {
 		$dataValue = $this->getNextDataValue();
 		if ( $dataValue !== false ) { // Print data values.
@@ -255,9 +255,9 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Load results of the given print request and result subject. This is only
-	 * done when needed.
-	 */
+	* Load results of the given print request and result subject. This is only
+	* done when needed.
+	*/
 	protected function loadContent() {
 
 		if ( $this->mContent !== false ) {
@@ -276,15 +276,15 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Make a request option object based on the given parameters, and
-	 * return NULL if no such object is required. The parameter defines
-	 * if the limit should be taken into account, which is not always desired
-	 * (especially if results are to be cached for future use).
-	 *
-	 * @param boolean $useLimit
-	 *
-	 * @return SMWRequestOptions|null
-	 */
+	* Make a request option object based on the given parameters, and
+	* return NULL if no such object is required. The parameter defines
+	* if the limit should be taken into account, which is not always desired
+	* (especially if results are to be cached for future use).
+	*
+	* @param boolean $useLimit
+	*
+	* @return SMWRequestOptions|null
+	*/
 	protected function getRequestOptions( $useLimit = true ) {
 		return $this->resultFieldMatchFinder->getRequestOptions( $useLimit );
 	}

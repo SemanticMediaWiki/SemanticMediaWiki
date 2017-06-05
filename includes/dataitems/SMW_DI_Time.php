@@ -5,28 +5,28 @@ use SMW\DataValues\Time\JulianDay;
 use SMW\DataValues\Time\CalendarModel;
 
 /**
- * This class implements time data items.
- * Such data items represent a unique point in time, given in either Julian or
- * Gregorian notation (possibly proleptic), and a precision setting that states
- * which of the components year, month, day, time were specified expicitly.
- * Even when not specified, the data item always assumes default values for the
- * missing parts, so the item really captures one point in time, no intervals.
- * Times are always assumed to be in UTC.
- *
- * "Y0K issue": Neither the Gregorian nor the Julian calendar assume a year 0,
- * i.e. the year 1 BC(E) was followed by 1 AD/CE. See
- * http://en.wikipedia.org/wiki/Year_zero
- * This implementation adheres to this convention and disallows year 0. The
- * stored year numbers use positive numbers for CE and negative numbers for
- * BCE. This is not just relevant for the question of how many years have
- * (exactly) passed since a given date, but also for the location of leap
- * years.
- *
- * @since 1.6
- *
- * @author Markus Krötzsch
- * @ingroup SMWDataItems
- */
+* This class implements time data items.
+* Such data items represent a unique point in time, given in either Julian or
+* Gregorian notation (possibly proleptic), and a precision setting that states
+* which of the components year, month, day, time were specified expicitly.
+* Even when not specified, the data item always assumes default values for the
+* missing parts, so the item really captures one point in time, no intervals.
+* Times are always assumed to be in UTC.
+*
+* "Y0K issue": Neither the Gregorian nor the Julian calendar assume a year 0,
+* i.e. the year 1 BC(E) was followed by 1 AD/CE. See
+* http://en.wikipedia.org/wiki/Year_zero
+* This implementation adheres to this convention and disallows year 0. The
+* stored year numbers use positive numbers for CE and negative numbers for
+* BCE. This is not just relevant for the question of how many years have
+* (exactly) passed since a given date, but also for the location of leap
+* years.
+*
+* @since 1.6
+*
+* @author Markus Krötzsch
+* @ingroup SMWDataItems
+*/
 class SMWDITime extends SMWDataItem implements CalendarModel {
 
 	const PREC_Y    = SMW_PREC_Y;
@@ -35,93 +35,93 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	const PREC_YMDT = SMW_PREC_YMDT;
 
 	/**
-	 * The year before which we do not accept anything but year numbers and
-	 * largely discourage calendar models.
-	 */
+	* The year before which we do not accept anything but year numbers and
+	* largely discourage calendar models.
+	*/
 	const PREHISTORY = -10000;
 
 	/**
-	 * Maximal number of days in a given month.
-	 * @var array
-	 */
+	* Maximal number of days in a given month.
+	* @var array
+	*/
 	protected static $m_daysofmonths = array( 1 => 31, 2 => 29, 3 => 31, 4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 );
 
 	/**
-	 * Precision SMWDITime::PREC_Y, SMWDITime::PREC_YM,
-	 * SMWDITime::PREC_YMD, or SMWDITime::PREC_YMDT.
-	 * @var integer
-	 */
+	* Precision SMWDITime::PREC_Y, SMWDITime::PREC_YM,
+	* SMWDITime::PREC_YMD, or SMWDITime::PREC_YMDT.
+	* @var integer
+	*/
 	protected $m_precision;
 	/**
-	 * Calendar model: SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN.
-	 * @var integer
-	 */
+	* Calendar model: SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN.
+	* @var integer
+	*/
 	protected $m_model;
 	/**
-	 * Number of year, possibly negative.
-	 * @var integer
-	 */
+	* Number of year, possibly negative.
+	* @var integer
+	*/
 	protected $m_year;
 	/**
-	 * Number of month.
-	 * @var integer
-	 */
+	* Number of month.
+	* @var integer
+	*/
 	protected $m_month;
 	/**
-	 * Number of day.
-	 * @var integer
-	 */
+	* Number of day.
+	* @var integer
+	*/
 	protected $m_day;
 	/**
-	 * Hours of the day.
-	 * @var integer
-	 */
+	* Hours of the day.
+	* @var integer
+	*/
 	protected $m_hours;
 	/**
-	 * Minutes of the hour.
-	 * @var integer
-	 */
+	* Minutes of the hour.
+	* @var integer
+	*/
 	protected $m_minutes;
 	/**
-	 * Seconds of the minute.
-	 * @var integer
-	 */
+	* Seconds of the minute.
+	* @var integer
+	*/
 	protected $m_seconds;
 
 	/**
-	 * @var integer
-	 */
+	* @var integer
+	*/
 	protected $timezone;
 
 	/**
-	 * @var integer|null
-	 */
+	* @var integer|null
+	*/
 	protected $era = null;
 
 	/**
-	 * @var integer
-	 */
+	* @var integer
+	*/
 	protected $julianDay = null;
 
 	/**
-	 * Create a time data item. All time components other than the year can
-	 * be false to indicate that they are not specified. This will affect
-	 * the internal precision setting. The missing values are initialised
-	 * to minimal values (0 or 1) for internal calculations.
-	 *
-	 * @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @param $year integer number of the year (possibly negative)
-	 * @param $month mixed integer number or false
-	 * @param $day mixed integer number or false
-	 * @param $hour mixed integer number or false
-	 * @param $minute mixed integer number or false
-	 * @param $second mixed integer number or false
-	 * @param integer|false $timezone
-	 *
-	 * @todo Implement more validation here.
-	 */
+	* Create a time data item. All time components other than the year can
+	* be false to indicate that they are not specified. This will affect
+	* the internal precision setting. The missing values are initialised
+	* to minimal values (0 or 1) for internal calculations.
+	*
+	* @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	* @param $year integer number of the year (possibly negative)
+	* @param $month mixed integer number or false
+	* @param $day mixed integer number or false
+	* @param $hour mixed integer number or false
+	* @param $minute mixed integer number or false
+	* @param $second mixed integer number or false
+	* @param integer|false $timezone
+	*
+	* @todo Implement more validation here.
+	*/
 	public function __construct( $calendarmodel, $year, $month = false, $day = false,
-	                             $hour = false, $minute = false, $second = false, $timezone = false ) {
+										$hour = false, $minute = false, $second = false, $timezone = false ) {
 
 		if ( ( $calendarmodel != self::CM_GREGORIAN ) && ( $calendarmodel != self::CM_JULIAN ) ) {
 			throw new DataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
@@ -155,116 +155,116 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return integer
-	 */
+	* @since 1.6
+	*
+	* @return integer
+	*/
 	public function getDIType() {
 		return SMWDataItem::TYPE_TIME;
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return integer
-	 */
+	* @since 1.6
+	*
+	* @return integer
+	*/
 	public function getCalendarModel() {
 		return $this->m_model;
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @return integer
-	 */
+	* @since 2.5
+	*
+	* @return integer
+	*/
 	public function getTimezone() {
 		return $this->timezone;
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return integer
-	 */
+	* @since 1.6
+	*
+	* @return integer
+	*/
 	public function getPrecision() {
 		return $this->m_precision;
 	}
 
 	/**
-	 * Indicates whether a user explicitly used an era marker even for a positive
-	 * year.
-	 *
-	 * - [-1] indicates BC(E)
-	 * - [0]/null indicates no era marker
-	 * - [1] indicates AD/CE was used
-	 *
-	 * @since 2.4
-	 *
-	 * @return integer
-	 */
+	* Indicates whether a user explicitly used an era marker even for a positive
+	* year.
+	*
+	* - [-1] indicates BC(E)
+	* - [0]/null indicates no era marker
+	* - [1] indicates AD/CE was used
+	*
+	* @since 2.4
+	*
+	* @return integer
+	*/
 	public function getEra() {
 		return $this->era;
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return integer
-	 */
+	* @since 1.6
+	*
+	* @return integer
+	*/
 	public function getYear() {
 		return $this->m_year;
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return integer
-	 */
+	* @since 1.6
+	*
+	* @return integer
+	*/
 	public function getMonth() {
 		return $this->m_month;
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return integer
-	 */
+	* @since 1.6
+	*
+	* @return integer
+	*/
 	public function getDay() {
 		return $this->m_day;
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return integer
-	 */
+	* @since 1.6
+	*
+	* @return integer
+	*/
 	public function getHour() {
 		return $this->m_hours;
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return integer
-	 */
+	* @since 1.6
+	*
+	* @return integer
+	*/
 	public function getMinute() {
 		return $this->m_minutes;
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return integer
-	 */
+	* @since 1.6
+	*
+	* @return integer
+	*/
 	public function getSecond() {
 		return $this->m_seconds;
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return string
-	 */
+	* @since 2.4
+	*
+	* @return string
+	*/
 	public function getCalendarModelLiteral() {
 
 		$literal = array(
@@ -276,12 +276,12 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param DateTime $dateTime
-	 *
-	 * @return SMWDITime|false
-	 */
+	* @since 2.4
+	*
+	* @param DateTime $dateTime
+	*
+	* @return SMWDITime|false
+	*/
 	public static function newFromDateTime( DateTime $dateTime ) {
 
 		$calendarModel = self::CM_JULIAN;
@@ -300,10 +300,10 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return DateTime
-	 */
+	* @since 2.4
+	*
+	* @return DateTime
+	*/
 	public function asDateTime() {
 
 		$year = str_pad( $this->m_year, 4, '0', STR_PAD_LEFT );
@@ -329,14 +329,14 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * Creates and returns a new instance of SMWDITime from a MW timestamp.
-	 *
-	 * @since 1.8
-	 *
-	 * @param string $timestamp must be in format
-	 *
-	 * @return SMWDITime|false
-	 */
+	* Creates and returns a new instance of SMWDITime from a MW timestamp.
+	*
+	* @since 1.8
+	*
+	* @param string $timestamp must be in format
+	*
+	* @return SMWDITime|false
+	*/
 	public static function newFromTimestamp( $timestamp ) {
 		$timestamp = wfTimestamp( TS_MW, (string)$timestamp );
 
@@ -356,14 +356,14 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * Returns a MW timestamp representation of the value.
-	 *
-	 * @since 1.6.2
-	 *
-	 * @param $outputtype
-	 *
-	 * @return mixed
-	 */
+	* Returns a MW timestamp representation of the value.
+	*
+	* @since 1.6.2
+	*
+	* @param $outputtype
+	*
+	* @return mixed
+	*/
 	public function getMwTimestamp( $outputtype = TS_UNIX ) {
 		return wfTimestamp(
 			$outputtype,
@@ -379,15 +379,15 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * Get the data in the specified calendar model. This might require
-	 * conversion.
-	 * @note Conversion can be unreliable for very large absolute year
-	 * numbers when the internal calculations hit floating point accuracy.
-	 * Callers might want to avoid this (calendar models make little sense
-	 * in such cases anyway).
-	 * @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return SMWDITime
-	 */
+	* Get the data in the specified calendar model. This might require
+	* conversion.
+	* @note Conversion can be unreliable for very large absolute year
+	* numbers when the internal calculations hit floating point accuracy.
+	* Callers might want to avoid this (calendar models make little sense
+	* in such cases anyway).
+	* @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	* @return SMWDITime
+	*/
 	public function getForCalendarModel( $calendarmodel ) {
 		if ( $calendarmodel == $this->m_model ) {
 			return $this;
@@ -397,14 +397,14 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * Return a number that helps comparing time data items. For
-	 * dates in the Julian Day era (roughly from 4713 BCE onwards), we use
-	 * the Julian Day number. For earlier dates, the (negative) year number
-	 * with a fraction for the date is used (times are ignored). This
-	 * avoids calculation errors that would occur for very ancient dates
-	 * if the JD number was used there.
-	 * @return double sortkey
-	 */
+	* Return a number that helps comparing time data items. For
+	* dates in the Julian Day era (roughly from 4713 BCE onwards), we use
+	* the Julian Day number. For earlier dates, the (negative) year number
+	* with a fraction for the date is used (times are ignored). This
+	* avoids calculation errors that would occur for very ancient dates
+	* if the JD number was used there.
+	* @return double sortkey
+	*/
 	public function getSortKey() {
 		$jd = ( $this->m_year >= -4713 ) ? $jd = $this->getJD() : -1;
 		if ( $jd > 0 ) {
@@ -415,10 +415,10 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return double
-	 */
+	* @since 1.6
+	*
+	* @return double
+	*/
 	public function getJD() {
 
 		if ( $this->julianDay !== null ) {
@@ -439,10 +439,10 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * @since 1.6
-	 *
-	 * @return string
-	 */
+	* @since 1.6
+	*
+	* @return string
+	*/
 	public function getSerialization() {
 		$result = strval( $this->m_model ) . '/' . ( $this->era > 0 ? '+' : '' ) . strval( $this->m_year );
 
@@ -462,10 +462,10 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * Create a data item from the provided serialization string.
-	 *
-	 * @return SMWDITime
-	 */
+	* Create a data item from the provided serialization string.
+	*
+	* @return SMWDITime
+	*/
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( '/', $serialization, 8 );
 		$values = array();
@@ -504,15 +504,15 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * Create a new time dataItem from a specified Julian Day number,
-	 * calendar model, presicion.
-	 *
-	 * @param double $jdValue
-	 * @param integer|null $calendarmodel
-	 * @param integer|null $precision
-	 *
-	 * @return DITime object
-	 */
+	* Create a new time dataItem from a specified Julian Day number,
+	* calendar model, presicion.
+	*
+	* @param double $jdValue
+	* @param integer|null $calendarmodel
+	* @param integer|null $precision
+	*
+	* @return DITime object
+	*/
 	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ) {
 
 		$hour = $minute = $second = false;
@@ -540,31 +540,31 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * Find out whether the given year number is a leap year.
-	 * This calculation assumes that neither calendar has a year 0.
-	 * @param $year integer year number
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return boolean
-	 */
+	* Find out whether the given year number is a leap year.
+	* This calculation assumes that neither calendar has a year 0.
+	* @param $year integer year number
+	* @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	* @return boolean
+	*/
 	static public function isLeapYear( $year, $calendarmodel ) {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
 		if ( $calendarmodel == self::CM_JULIAN ) {
 			return ( $astroyear % 4 ) == 0;
 		} else {
 			return ( ( $astroyear % 400 ) == 0 ) ||
-			       ( ( ( $astroyear % 4 ) == 0 ) && ( ( $astroyear % 100 ) != 0 ) );
+					( ( ( $astroyear % 4 ) == 0 ) && ( ( $astroyear % 100 ) != 0 ) );
 		}
 	}
 
 	/**
-	 * Find out how many days the given month had in the given year
-	 * based on the specified calendar model.
-	 * This calculation assumes that neither calendar has a year 0.
-	 * @param $month integer month number
-	 * @param $year integer year number
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return boolean
-	 */
+	* Find out how many days the given month had in the given year
+	* based on the specified calendar model.
+	* This calculation assumes that neither calendar has a year 0.
+	* @param $month integer month number
+	* @param $year integer year number
+	* @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	* @return boolean
+	*/
 	static public function getDayNumberForMonth( $month, $year, $calendarmodel ) {
 		if ( $month !== 2 ) {
 			return self::$m_daysofmonths[$month];

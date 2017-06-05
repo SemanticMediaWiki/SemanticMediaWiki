@@ -91,9 +91,9 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 		}
 
 		$pattern = preg_quote( $pattern, '/' );
-		$pattern = str_replace( '\.\*' , '.*?', $pattern );
+		$pattern = str_replace( '\.\*', '.*?', $pattern );
 
-		return (bool)preg_match( '/' . $pattern . '/' , $source );
+		return (bool)preg_match( '/' . $pattern . '/', $source );
 	}
 
 	private function toString( $expected ) {

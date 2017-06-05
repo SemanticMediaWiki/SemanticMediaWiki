@@ -17,48 +17,48 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
- * @since 2.1
- *
- * @author Markus Krötzsch
- * @author mwjames
- */
+* @license GNU GPL v2+
+* @since 2.1
+*
+* @author Markus Krötzsch
+* @author mwjames
+*/
 class ConjunctionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var CompoundConditionBuilder
-	 */
+	* @var CompoundConditionBuilder
+	*/
 	private $compoundConditionBuilder;
 
 	/**
-	 * @var Exporter
-	 */
+	* @var Exporter
+	*/
 	private $exporter;
 
 	/**
-	 * @since 2.1
-	 *
-	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
-	 */
+	* @since 2.1
+	*
+	* @param CompoundConditionBuilder|null $compoundConditionBuilder
+	*/
 	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
 		$this->compoundConditionBuilder = $compoundConditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * {@inheritDoc}
-	 */
+	* @since 2.2
+	*
+	* {@inheritDoc}
+	*/
 	public function canInterpretDescription( Description $description ) {
 		return $description instanceof Conjunction;
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * {@inheritDoc}
-	 */
+	* @since 2.2
+	*
+	* {@inheritDoc}
+	*/
 	public function interpretDescription( Description $description ) {
 
 		$joinVariable = $this->compoundConditionBuilder->getJoinVariable();
@@ -171,7 +171,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 				}
 
 				if ( ( $subConditionElements->singletonMatchElement !== null ) &&
-				     ( $singletonMatchElementName !== $matchElementName ) ) {
+					( $singletonMatchElementName !== $matchElementName ) ) {
 					return new FalseCondition();
 				}
 

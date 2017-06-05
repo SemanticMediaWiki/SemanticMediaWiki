@@ -560,7 +560,7 @@ class SemanticData {
 		$this->hash = null;
 		$key = $property->getKey();
 
-		 // Inverse properties cannot be used for an annotation
+		// Inverse properties cannot be used for an annotation
 		if ( $property->isInverse() || !isset( $this->mProperties[$key] ) ) {
 			return;
 		}
@@ -631,7 +631,7 @@ class SemanticData {
 		// Shortcut when copying into empty objects that don't ask for
 		// more duplicate elimination:
 		if ( count( $this->mProperties ) == 0 &&
-		     ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
+			( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
 			$this->mProperties = $semanticData->getProperties();
 			$this->mPropVals = array();
 
@@ -722,7 +722,7 @@ class SemanticData {
 	 * @since 1.8
 	 *
 	 * @param SemanticData $semanticData
-	*/
+	 */
 	public function removeSubSemanticData( SemanticData $semanticData ) {
 		$this->hash = null;
 		$this->subSemanticData->removeSubSemanticData( $semanticData );

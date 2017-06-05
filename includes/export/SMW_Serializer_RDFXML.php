@@ -1,35 +1,35 @@
 <?php
 
 /**
- * File holding the SMWRDFXMLSerializer class that provides basic functions for
- * serialising OWL data in RDF/XML syntax.
- *
- * @ingroup SMW
- *
- * @author Markus Krötzsch
- */
+* File holding the SMWRDFXMLSerializer class that provides basic functions for
+* serialising OWL data in RDF/XML syntax.
+*
+* @ingroup SMW
+*
+* @author Markus Krötzsch
+*/
 
 /**
- * Class for serializing exported data (encoded as SMWExpData object) in
- * RDF/XML.
- *
- * @ingroup SMW
- */
+* Class for serializing exported data (encoded as SMWExpData object) in
+* RDF/XML.
+*
+* @ingroup SMW
+*/
 class SMWRDFXMLSerializer extends SMWSerializer {
 	/**
-	 * True if the $pre_ns_buffer contains the beginning of a namespace
-	 * declaration block to which further declarations for the current
-	 * context can be appended.
-	 */
+	* True if the $pre_ns_buffer contains the beginning of a namespace
+	* declaration block to which further declarations for the current
+	* context can be appended.
+	*/
 	protected $namespace_block_started;
 	/**
-	 * True if the namespaces that are added at the current serialization stage
-	 * become global, i.e. remain available for all later contexts. This is the
-	 * case in RDF/XML only as long as the header has not been streamed to the
-	 * client (reflected herein by calling flushContent()). Later, namespaces
-	 * can only be added locally to individual elements, thus requiring them to
-	 * be re-added multiple times if used in many elements.
-	 */
+	* True if the namespaces that are added at the current serialization stage
+	* become global, i.e. remain available for all later contexts. This is the
+	* case in RDF/XML only as long as the header has not been streamed to the
+	* client (reflected herein by calling flushContent()). Later, namespaces
+	* can only be added locally to individual elements, thus requiring them to
+	* be re-added multiple times if used in many elements.
+	*/
 	protected $namespaces_are_global;
 
 	public function clear() {
@@ -104,12 +104,12 @@ class SMWRDFXMLSerializer extends SMWSerializer {
 	}
 
 	/**
-	 * Serialize the given SMWExpData object, possibly recursively with
-	 * increased indentation.
-	 *
-	 * @param $expData SMWExpData containing the data to be serialised.
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
-	 */
+	* Serialize the given SMWExpData object, possibly recursively with
+	* increased indentation.
+	*
+	* @param $expData SMWExpData containing the data to be serialised.
+	* @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
+	*/
 	protected function serializeNestedExpData( SMWExpData $expData, $indent ) {
 		$this->recordDeclarationTypes( $expData );
 
@@ -122,8 +122,8 @@ class SMWRDFXMLSerializer extends SMWSerializer {
 		}
 
 		if ( ( $expData->getSubject() instanceof SMWExpResource ) &&
-		      !$expData->getSubject()->isBlankNode() ) {
-			 $this->post_ns_buffer .= ' rdf:about="' . $expData->getSubject()->getUri() . '"';
+				!$expData->getSubject()->isBlankNode() ) {
+			$this->post_ns_buffer .= ' rdf:about="' . $expData->getSubject()->getUri() . '"';
 		} // else: blank node, no "rdf:about"
 
 		if ( count( $expData->getProperties() ) == 0 ) { // nothing else to export
@@ -170,14 +170,14 @@ class SMWRDFXMLSerializer extends SMWSerializer {
 	}
 
 	/**
-	 * Add to the output a serialization of a property assignment where an
-	 * SMWExpLiteral is the object. It is assumed that a suitable subject
-	 * block has already been openend.
-	 *
-	 * @param $expResourceProperty SMWExpNsResource the property to use
-	 * @param $expLiteral SMWExpLiteral the data value to use
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
-	 */
+	* Add to the output a serialization of a property assignment where an
+	* SMWExpLiteral is the object. It is assumed that a suitable subject
+	* block has already been openend.
+	*
+	* @param $expResourceProperty SMWExpNsResource the property to use
+	* @param $expLiteral SMWExpLiteral the data value to use
+	* @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
+	*/
 	protected function serializeExpLiteral( SMWExpNsResource $expResourceProperty, SMWExpLiteral $expLiteral, $indent ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
@@ -197,15 +197,15 @@ class SMWRDFXMLSerializer extends SMWSerializer {
 	}
 
 	/**
-	 * Add to the output a serialization of a property assignment where an
-	 * SMWExpResource is the object. It is assumed that a suitable subject
-	 * block has already been openend.
-	 *
-	 * @param $expResourceProperty SMWExpNsResource the property to use
-	 * @param $expResource SMWExpResource the data value to use
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
-	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
-	 */
+	* Add to the output a serialization of a property assignment where an
+	* SMWExpResource is the object. It is assumed that a suitable subject
+	* block has already been openend.
+	*
+	* @param $expResourceProperty SMWExpNsResource the property to use
+	* @param $expResource SMWExpResource the data value to use
+	* @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
+	* @param $isClassTypeProp boolean whether the resource must be declared as a class
+	*/
 	protected function serializeExpResource( SMWExpNsResource $expResourceProperty, SMWExpResource $expResource, $indent, $isClassTypeProp ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 		if ( !$expResource->isBlankNode() ) {
@@ -224,17 +224,17 @@ class SMWRDFXMLSerializer extends SMWSerializer {
 	}
 
 	/**
-	 * Add a serialization of the given SMWExpResource to the output,
-	 * assuming that an opening property tag is alerady there.
-	 *
-	 * @param $expResourceProperty SMWExpNsResource the property to use
-	 * @param $expResource array of (SMWExpResource or SMWExpData)
-	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
-	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
-	 *
-	 * @bug The $isClassTypeProp parameter is not properly taken into account.
-	 * @bug Individual resources are not serialised properly.
-	 */
+	* Add a serialization of the given SMWExpResource to the output,
+	* assuming that an opening property tag is alerady there.
+	*
+	* @param $expResourceProperty SMWExpNsResource the property to use
+	* @param $expResource array of (SMWExpResource or SMWExpData)
+	* @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
+	* @param $isClassTypeProp boolean whether the resource must be declared as a class
+	*
+	* @bug The $isClassTypeProp parameter is not properly taken into account.
+	* @bug Individual resources are not serialised properly.
+	*/
 	protected function serializeExpCollection( SMWExpNsResource $expResourceProperty, array $collection, $indent, $isClassTypeProp ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName() . " rdf:parseType=\"Collection\">\n";
 		foreach ( $collection as $expElement ) {
@@ -253,23 +253,23 @@ class SMWRDFXMLSerializer extends SMWSerializer {
 	}
 
 	/**
-	 * Escape a string in the special form that is required for values in
-	 * DTD entity declarations in XML. Namely, this require the percent sign
-	 * to be replaced.
-	 *
-	 * @param $string string to be escaped
-	 * @return string
-	 */
+	* Escape a string in the special form that is required for values in
+	* DTD entity declarations in XML. Namely, this require the percent sign
+	* to be replaced.
+	*
+	* @param $string string to be escaped
+	* @return string
+	*/
 	protected function makeValueEntityString( $string ) {
 		return "'" . str_replace( '%', '&#37;', $string ) . "'";
 	}
 
 	/**
-	 * Escape a string as required for using it in XML attribute values.
-	 *
-	 * @param $string string to be escaped
-	 * @return string
-	 */
+	* Escape a string as required for using it in XML attribute values.
+	*
+	* @param $string string to be escaped
+	* @return string
+	*/
 	protected function makeAttributeValueString( $string ) {
 		return str_replace( array( '&', '>', '<' ), array( '&amp;', '&gt;', '&lt;' ), $string );
 	}

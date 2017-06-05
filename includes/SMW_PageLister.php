@@ -233,7 +233,7 @@ class SMWPageLister {
 				$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 
 				if ( ( $index == $startChunk ) ||
-					 ( $startChar != $prevStartChar ) ) {
+					( $startChar != $prevStartChar ) ) {
 					if ( $atColumnTop ) {
 						$atColumnTop = false;
 					} else {
@@ -288,7 +288,7 @@ class SMWPageLister {
 		$startChar = self::getFirstChar( $diWikiPages[$start] );
 
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
-		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '</li>';
+			'<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '</li>';
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {

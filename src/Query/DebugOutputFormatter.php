@@ -6,27 +6,27 @@ use SMWQuery as Query;
 use SMW\ProcessingErrorMsgHandler;
 
 /**
- * @license GNU GPL v2+
- * @since 2.0
- *
- * @author mwjames
- * @author Markus Krötzsch
- */
+* @license GNU GPL v2+
+* @since 2.0
+*
+* @author mwjames
+* @author Markus Krötzsch
+*/
 class DebugOutputFormatter {
 
 	/**
-	 * Generate textual debug output that shows an arbitrary list of informative
-	 * fields. Used for formatting query debug output.
-	 *
-	 * @note All strings given must be usable and safe in wiki and HTML
-	 * contexts.
-	 *
-	 * @param $storeName string name of the storage backend for which this is generated
-	 * @param $entries array of name => value of informative entries to display
-	 * @param $query SMWQuery or null, if given add basic data about this query as well
-	 *
-	 * @return string
-	 */
+	* Generate textual debug output that shows an arbitrary list of informative
+	* fields. Used for formatting query debug output.
+	*
+	* @note All strings given must be usable and safe in wiki and HTML
+	* contexts.
+	*
+	* @param $storeName string name of the storage backend for which this is generated
+	* @param $entries array of name => value of informative entries to display
+	* @param $query SMWQuery or null, if given add basic data about this query as well
+	*
+	* @return string
+	*/
 	public static function getStringFrom( $storeName, array $entries, Query $query = null ) {
 
 		if ( $query instanceof Query ) {
@@ -53,7 +53,7 @@ class DebugOutputFormatter {
 		}
 
 		$result = '<div style="border: 5px dotted #ffcc00; background: #FFF0BD; padding: 20px; ">' .
-		          "<div class='smw-column-header'><big>$storeName debug output</big></div>";
+					"<div class='smw-column-header'><big>$storeName debug output</big></div>";
 
 		foreach ( $entries as $header => $information ) {
 			$result .= "<div class='smw-column-header'>$header</div>";
@@ -69,13 +69,13 @@ class DebugOutputFormatter {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param string $type
-	 * @param array $rows
-	 *
-	 * @return string
-	 */
+	* @since 2.5
+	*
+	* @param string $type
+	* @param array $rows
+	*
+	* @return string
+	*/
 	public static function doFormatSQLExplainOutput( $type, $res ) {
 
 		$output = '';
@@ -132,12 +132,12 @@ class DebugOutputFormatter {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param string $sparql
-	 *
-	 * @return string
-	 */
+	* @since 2.5
+	*
+	* @param string $sparql
+	*
+	* @return string
+	*/
 	public static function doFormatSPARQLStatement( $sparql ) {
 
 		$sparql =  str_replace(
@@ -158,13 +158,13 @@ class DebugOutputFormatter {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param string $sql
-	 * @param string $alias
-	 *
-	 * @return string
-	 */
+	* @since 2.5
+	*
+	* @param string $sql
+	* @param string $alias
+	*
+	* @return string
+	*/
 	public static function doFormatSQLStatement( $sql, $alias ) {
 
 		$sql = str_replace(

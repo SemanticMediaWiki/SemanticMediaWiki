@@ -8,62 +8,62 @@ use SMWExpLiteral as ExpLiteral;
 use SMWExpResource as ExpResource;
 
 /**
- * Class for parsing SPARQL results in XML format
- *
- * @license GNU GPL v2+
- * @since 1.6
- *
- * @author Markus Krötzsch
- */
+* Class for parsing SPARQL results in XML format
+*
+* @license GNU GPL v2+
+* @since 1.6
+*
+* @author Markus Krötzsch
+*/
 class XmlResponseParser implements HttpResponseParser {
 
 	/**
-	 * @var resource
-	 */
+	* @var resource
+	*/
 	private $parser;
 
 	/**
-	 * Associative array mapping SPARQL variable names to column indices.
-	 * @var array of integer
-	 */
+	* Associative array mapping SPARQL variable names to column indices.
+	* @var array of integer
+	*/
 	private $header;
 
 	/**
-	 * List of result rows. Individual entries can be null if a cell in the
-	 * SPARQL result table is empty (this is different from finding a blank
-	 * node).
-	 * @var array of array of (SMWExpElement or null)
-	 */
+	* List of result rows. Individual entries can be null if a cell in the
+	* SPARQL result table is empty (this is different from finding a blank
+	* node).
+	* @var array of array of (SMWExpElement or null)
+	*/
 	private $data;
 
 	/**
-	 * List of comment strings found in the XML file (without surrounding
-	 * markup, i.e. the actual string only).
-	 * @var array of string
-	 */
+	* List of comment strings found in the XML file (without surrounding
+	* markup, i.e. the actual string only).
+	* @var array of string
+	*/
 	private $comments;
 
 	/**
-	 * Stack of open XML tags during parsing.
-	 * @var array of string
-	 */
+	* Stack of open XML tags during parsing.
+	* @var array of string
+	*/
 	private $xmlOpenTags;
 
 	/**
-	 * Integer index of the column that the current result binding fills.
-	 * @var integer
-	 */
+	* Integer index of the column that the current result binding fills.
+	* @var integer
+	*/
 	private $xmlBindIndex;
 
 	/**
-	 * Datatype URI for the current literal, or empty if none.
-	 * @var string
-	 */
+	* Datatype URI for the current literal, or empty if none.
+	* @var string
+	*/
 	private $currentDataType;
 
 	/**
-	 * @since 2.0
-	 */
+	* @since 2.0
+	*/
 	public function __construct() {
 		$this->parser = xml_parser_create();
 
@@ -78,21 +78,21 @@ class XmlResponseParser implements HttpResponseParser {
 	}
 
 	/**
-	 * @since 2.0
-	 */
+	* @since 2.0
+	*/
 	public function __destruct() {
 		xml_parser_free( $this->parser );
 	}
 
 	/**
-	 * Parse the given XML result and return an RepositoryResult for
-	 * the contained data.
-	 *
-	 * @param string $response
-	 *
-	 * @return RepositoryResult
-	 * @throws XmlParserException
-	 */
+	* Parse the given XML result and return an RepositoryResult for
+	* the contained data.
+	*
+	* @param string $response
+	*
+	* @return RepositoryResult
+	* @throws XmlParserException
+	*/
 	public function parse( $response ) {
 
 		$this->xmlOpenTags = array();
@@ -150,8 +150,8 @@ class XmlResponseParser implements HttpResponseParser {
 	}
 
 	/**
-	 * @see xml_set_element_handler
-	 */
+	* @see xml_set_element_handler
+	*/
 	private function handleOpenElement( $parser, $elementTag, $attributes ) {
 
 		$this->currentDataType = '';
@@ -162,8 +162,8 @@ class XmlResponseParser implements HttpResponseParser {
 		switch ( $elementTag ) {
 			case 'binding' && ( $prevTag == 'result' ):
 					if ( ( array_key_exists( 'name', $attributes ) ) &&
-					     ( array_key_exists( $attributes['name'], $this->header ) ) ) {
-						 $this->xmlBindIndex = $this->header[$attributes['name']];
+						( array_key_exists( $attributes['name'], $this->header ) ) ) {
+						$this->xmlBindIndex = $this->header[$attributes['name']];
 					}
 				break;
 			case 'result' && ( $prevTag == 'results' ):
@@ -184,15 +184,15 @@ class XmlResponseParser implements HttpResponseParser {
 	}
 
 	/**
-	 * @see xml_set_element_handler
-	 */
+	* @see xml_set_element_handler
+	*/
 	private function handleCloseElement( $parser, $elementTag ) {
 		array_pop( $this->xmlOpenTags );
 	}
 
 	/**
-	 * @see xml_set_character_data_handler
-	 */
+	* @see xml_set_character_data_handler
+	*/
 	private function handleCharacterData( $parser, $characterData ) {
 
 		$prevTag = end( $this->xmlOpenTags );

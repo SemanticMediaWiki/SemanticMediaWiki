@@ -234,9 +234,9 @@ class SMWInfolink {
 					$link = $this->getLinker( $linker )->link( $title, $this->mCaption );
 				}
 			} else { // Title creation failed, maybe illegal symbols or too long; make a direct URL link
-			         // (only possible if offending target parts belong to some parameter
-			         //  that can be separated from title text,
-			         //  e.g. as in Special:Bla/il<leg>al -> Special:Bla&p=il&lt;leg&gt;al)
+				 // (only possible if offending target parts belong to some parameter
+				 //  that can be separated from title text,
+				 //  e.g. as in Special:Bla/il<leg>al -> Special:Bla&p=il&lt;leg&gt;al)
 				$title = Title::newFromText( $this->mTarget );
 
 				if ( !is_null( $title ) ) {

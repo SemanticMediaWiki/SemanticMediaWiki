@@ -20,24 +20,24 @@ use SMWExpData as ExpData;
 use SMWExporter as Exporter;
 
 /**
- * @license GNU GPL v2+
- * @since 2.4
- *
- * @author Markus Krötzsch
- * @author mwjames
- */
+* @license GNU GPL v2+
+* @since 2.4
+*
+* @author Markus Krötzsch
+* @author mwjames
+*/
 class ConceptToExpDataMapper {
 
 	/**
-	 * @var Exporter
-	 */
+	* @var Exporter
+	*/
 	private $exporter;
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param Exporter|null $exporter
-	 */
+	* @since 2.4
+	*
+	* @param Exporter|null $exporter
+	*/
 	public function __construct( Exporter $exporter = null ) {
 		$this->exporter = $exporter;
 
@@ -47,23 +47,23 @@ class ConceptToExpDataMapper {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return boolean
-	 */
+	* @since 2.4
+	*
+	* @param DataItem $dataItem
+	*
+	* @return boolean
+	*/
 	public function isMapperFor( DataItem $dataItem ) {
 		return $dataItem instanceof DIConcept;
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param DIConcept $concept
-	 *
-	 * @return ExpData|null
-	 */
+	* @since 2.4
+	*
+	* @param DIConcept $concept
+	*
+	* @return ExpData|null
+	*/
 	public function getElementFor( DIConcept $concept ) {
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -111,14 +111,14 @@ class ConceptToExpDataMapper {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param Description $description
-	 *
-	 * @param string &$exact
-	 *
-	 * @return Element|false
-	 */
+	* @since 2.4
+	*
+	* @param Description $description
+	*
+	* @param string &$exact
+	*
+	* @return Element|false
+	*/
 	public function getExpDataFromDescription( Description $description, &$exact ) {
 
 		if ( ( $description instanceof Conjunction ) || ( $description instanceof Disjunction ) ) {
@@ -193,7 +193,7 @@ class ConceptToExpDataMapper {
 		);
 
 		if ( ( $description->getDescription() instanceof ValueDescription ) &&
-		     ( $description->getDescription()->getComparator() === SMW_CMP_EQ ) ) {
+			( $description->getDescription()->getComparator() === SMW_CMP_EQ ) ) {
 			$result->addPropertyObjectValue(
 				$this->exporter->getSpecialNsResource( 'owl', 'hasValue' ),
 				$subdata

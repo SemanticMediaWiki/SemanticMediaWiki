@@ -21,91 +21,91 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 
 /**
- * Class that implements query answering for SQLStore.
- *
- * @license GNU GPL v2+
- * @since 2.2
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- * @author mwjames
- */
+* Class that implements query answering for SQLStore.
+*
+* @license GNU GPL v2+
+* @since 2.2
+*
+* @author Markus Krötzsch
+* @author Jeroen De Dauw
+* @author mwjames
+*/
 class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 	/**
-	 * @var SQLStore
-	 */
+	* @var SQLStore
+	*/
 	private $store;
 
 	/**
-	 * @var LoggerInterface
-	 */
+	* @var LoggerInterface
+	*/
 	private $logger;
 
 	/**
-	 * Query mode copied from given query. Some submethods act differently when
-	 * in Query::MODE_DEBUG.
-	 *
-	 * @var int
-	 */
+	* Query mode copied from given query. Some submethods act differently when
+	* in Query::MODE_DEBUG.
+	*
+	* @var int
+	*/
 	private $queryMode;
 
 	/**
-	 * Array of generated QuerySegment query descriptions (index => object)
-	 *
-	 * @var QuerySegment[]
-	 */
+	* Array of generated QuerySegment query descriptions (index => object)
+	*
+	* @var QuerySegment[]
+	*/
 	private $querySegmentList = array();
 
 	/**
-	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during
-	 * query processing (where these property names are searched while compiling
-	 * the query conditions).
-	 *
-	 * @var string[]
-	 */
+	* Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during
+	* query processing (where these property names are searched while compiling
+	* the query conditions).
+	*
+	* @var string[]
+	*/
 	private $sortKeys;
 
 	/**
-	 * Local collection of error strings, passed on to callers if possible.
-	 *
-	 * @var string[]
-	 */
+	* Local collection of error strings, passed on to callers if possible.
+	*
+	* @var string[]
+	*/
 	private $errors = array();
 
 	/**
-	 * @var QuerySegmentListBuildManager
-	 */
+	* @var QuerySegmentListBuildManager
+	*/
 	private $querySegmentListBuildManager;
 
 	/**
-	 * @var QuerySegmentListProcessor
-	 */
+	* @var QuerySegmentListProcessor
+	*/
 	private $querySegmentListProcessor;
 
 	/**
-	 * @var EngineOptions
-	 */
+	* @var EngineOptions
+	*/
 	private $engineOptions;
 
 	/**
-	 * @var OrderConditionsComplementor
-	 */
+	* @var OrderConditionsComplementor
+	*/
 	private $orderConditionsComplementor;
 
 	/**
-	 * @var QueryFactory
-	 */
+	* @var QueryFactory
+	*/
 	private $queryFactory;
 
 	/**
-	 * @since 2.2
-	 *
-	 * @param SQLStore $store
-	 * @param QuerySegmentListBuildManager $querySegmentListBuildManager
-	 * @param QuerySegmentListProcessor $querySegmentListProcessor
-	 * @param EngineOptions $engineOptions
-	 */
+	* @since 2.2
+	*
+	* @param SQLStore $store
+	* @param QuerySegmentListBuildManager $querySegmentListBuildManager
+	* @param QuerySegmentListProcessor $querySegmentListProcessor
+	* @param EngineOptions $engineOptions
+	*/
 	public function __construct( SQLStore $store, QuerySegmentListBuildManager $querySegmentListBuildManager, QuerySegmentListProcessor $querySegmentListProcessor, EngineOptions $engineOptions ) {
 		$this->store = $store;
 		$this->querySegmentListBuildManager = $querySegmentListBuildManager;
@@ -115,51 +115,51 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
+	* @see LoggerAwareInterface::setLogger
+	*
+	* @since 2.5
+	*
+	* @param LoggerInterface $logger
+	*/
 	public function setLogger( LoggerInterface $logger ) {
 		$this->logger = $logger;
 	}
 
 	/**
-	 * The new SQL store's implementation of query answering. This function
-	 * works in two stages: First, the nested conditions of the given query
-	 * object are preprocessed to compute an abstract representation of the
-	 * SQL query that is to be executed. Since query conditions correspond to
-	 * joins with property tables in most cases, this abstract representation
-	 * is essentially graph-like description of how property tables are joined.
-	 * Moreover, this graph is tree-shaped, since all query conditions are
-	 * tree-shaped. Each part of this abstract query structure is represented
-	 * by an QuerySegment object in the array querySegmentList.
-	 *
-	 * As a second stage of processing, the thus prepared SQL query is actually
-	 * executed. Typically, this means that the joins are collapsed into one
-	 * SQL query to retrieve results. In some cases, such as in dbug mode, the
-	 * execution might be restricted and not actually perform the whole query.
-	 *
-	 * The two-stage process helps to separate tasks, and it also allows for
-	 * better optimisations: it is left to the execution engine how exactly the
-	 * query result is to be obtained. For example, one could pre-compute
-	 * partial suib-results in temporary tables (or even cache them somewhere),
-	 * instead of passing one large join query to the DB (of course, it might
-	 * be large only if the configuration of SMW allows it). For some DBMS, a
-	 * step-wise execution of the query might lead to better performance, since
-	 * it exploits the tree-structure of the joins, which is important for fast
-	 * processing -- not all DBMS might be able in seeing this by themselves.
-	 *
-	 * @param Query $query
-	 *
-	 * @return mixed depends on $query->querymode
-	 */
+	* The new SQL store's implementation of query answering. This function
+	* works in two stages: First, the nested conditions of the given query
+	* object are preprocessed to compute an abstract representation of the
+	* SQL query that is to be executed. Since query conditions correspond to
+	* joins with property tables in most cases, this abstract representation
+	* is essentially graph-like description of how property tables are joined.
+	* Moreover, this graph is tree-shaped, since all query conditions are
+	* tree-shaped. Each part of this abstract query structure is represented
+	* by an QuerySegment object in the array querySegmentList.
+	*
+	* As a second stage of processing, the thus prepared SQL query is actually
+	* executed. Typically, this means that the joins are collapsed into one
+	* SQL query to retrieve results. In some cases, such as in dbug mode, the
+	* execution might be restricted and not actually perform the whole query.
+	*
+	* The two-stage process helps to separate tasks, and it also allows for
+	* better optimisations: it is left to the execution engine how exactly the
+	* query result is to be obtained. For example, one could pre-compute
+	* partial suib-results in temporary tables (or even cache them somewhere),
+	* instead of passing one large join query to the DB (of course, it might
+	* be large only if the configuration of SMW allows it). For some DBMS, a
+	* step-wise execution of the query might lead to better performance, since
+	* it exploits the tree-structure of the joins, which is important for fast
+	* processing -- not all DBMS might be able in seeing this by themselves.
+	*
+	* @param Query $query
+	*
+	* @return mixed depends on $query->querymode
+	*/
 	public function getQueryResult( Query $query ) {
 
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
-		     $query->querymode != Query::MODE_DEBUG &&
-		     count( $query->getErrors() ) > 0 ) {
+			$query->querymode != Query::MODE_DEBUG &&
+			count( $query->getErrors() ) > 0 ) {
 			return $this->queryFactory->newQueryResult( $this->store, $query, array(), false );
 			// NOTE: we check this here to prevent unnecessary work, but we check
 			// it after query processing below again in case more errors occurred.
@@ -233,14 +233,14 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Using a preprocessed internal query description referenced by $rootid, compute
-	 * the proper debug output for the given query.
-	 *
-	 * @param Query $query
-	 * @param integer $rootid
-	 *
-	 * @return string
-	 */
+	* Using a preprocessed internal query description referenced by $rootid, compute
+	* the proper debug output for the given query.
+	*
+	* @param Query $query
+	* @param integer $rootid
+	*
+	* @return string
+	*/
 	private function getDebugQueryResult( Query $query, $rootid ) {
 
 		$qobj = $this->querySegmentList[$rootid];
@@ -309,14 +309,14 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Using a preprocessed internal query description referenced by $rootid, compute
-	 * the proper counting output for the given query.
-	 *
-	 * @param Query $query
-	 * @param integer $rootid
-	 *
-	 * @return integer
-	 */
+	* Using a preprocessed internal query description referenced by $rootid, compute
+	* the proper counting output for the given query.
+	*
+	* @param Query $query
+	* @param integer $rootid
+	*
+	* @return integer
+	*/
 	private function getCountQueryResult( Query $query, $rootid ) {
 
 		$queryResult = $this->queryFactory->newQueryResult(
@@ -361,23 +361,23 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Using a preprocessed internal query description referenced by $rootid,
-	 * compute the proper result instance output for the given query.
-	 * @todo The SQL standard requires us to select all fields by which we sort, leading
-	 * to wrong results regarding the given limit: the user expects limit to be applied to
-	 * the number of distinct pages, but we can use DISTINCT only to whole rows. Thus, if
-	 * rows contain sortfields, then pages with multiple values for that field are distinct
-	 * and appear multiple times in the result. Filtering duplicates in post processing
-	 * would still allow such duplicates to push aside wanted values, leading to less than
-	 * "limit" results although there would have been "limit" really distinct results. For
-	 * this reason, we select sortfields only for POSTGRES. MySQL is able to perform what
-	 * we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
-	 *
-	 * @param Query $query
-	 * @param integer $rootid
-	 *
-	 * @return QueryResult
-	 */
+	* Using a preprocessed internal query description referenced by $rootid,
+	* compute the proper result instance output for the given query.
+	* @todo The SQL standard requires us to select all fields by which we sort, leading
+	* to wrong results regarding the given limit: the user expects limit to be applied to
+	* the number of distinct pages, but we can use DISTINCT only to whole rows. Thus, if
+	* rows contain sortfields, then pages with multiple values for that field are distinct
+	* and appear multiple times in the result. Filtering duplicates in post processing
+	* would still allow such duplicates to push aside wanted values, leading to less than
+	* "limit" results although there would have been "limit" really distinct results. For
+	* this reason, we select sortfields only for POSTGRES. MySQL is able to perform what
+	* we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
+	*
+	* @param Query $query
+	* @param integer $rootid
+	*
+	* @return QueryResult
+	*/
 	private function getInstanceQueryResult( Query $query, $rootid ) {
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
@@ -420,8 +420,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$logToTable = array();
 		$hasFurtherResults = false;
 
-		 // Number of fetched results ( != number of valid results in
-		 // array $results)
+		// Number of fetched results ( != number of valid results in
+		// array $results)
 		$count = 0;
 		$missedCount = 0;
 
@@ -514,13 +514,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Get a SQL option array for the given query and preprocessed query object at given id.
-	 *
-	 * @param Query $query
-	 * @param integer $rootId
-	 *
-	 * @return array
-	 */
+	* Get a SQL option array for the given query and preprocessed query object at given id.
+	*
+	* @param Query $query
+	* @param integer $rootId
+	*
+	* @return array
+	*/
 	private function getSQLOptions( Query $query, $rootId ) {
 
 		$result = array(

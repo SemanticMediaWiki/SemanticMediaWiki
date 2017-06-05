@@ -300,7 +300,7 @@ EOT;
 	private function getCumulatedIndexName( $tableName, $columns ) {
 		// Identifiers -- table names, column names, constraint names,
 		// etc. -- are limited to a maximum length of 63 bytes
-		return str_replace( '__' , '_', "{$tableName}_idx_" . str_replace( array( '_', 'smw', ',' ), array( '', '_', '_' ), $columns ) );
+		return str_replace( '__', '_', "{$tableName}_idx_" . str_replace( array( '_', 'smw', ',' ), array( '', '_', '_' ), $columns ) );
 	}
 
 	private function getIndexInfo( $tableName ) {

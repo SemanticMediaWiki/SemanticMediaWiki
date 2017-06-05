@@ -17,92 +17,92 @@ use SMW\RequestOptions;
 use SMW\Utils\HtmlTable;
 
 /**
- * @license GNU GPL v2+
- * @since   2.5
- *
- * @author Denny Vrandecic
- * @author mwjames
- */
+* @license GNU GPL v2+
+* @since   2.5
+*
+* @author Denny Vrandecic
+* @author mwjames
+*/
 class ContentsBuilder {
 
 	/**
-	 * @var Store
-	 */
+	* @var Store
+	*/
 	private $store;
 
 	/**
-	 * @var DIWikiPage
-	 */
+	* @var DIWikiPage
+	*/
 	private $subject;
 
 	/**
-	 * @var boolean
-	 */
+	* @var boolean
+	*/
 	private $showoutgoing = true;
 
 	/**
-	 * To display incoming values?
-	 *
-	 * @var boolean
-	 */
+	* To display incoming values?
+	*
+	* @var boolean
+	*/
 	private $showincoming = false;
 
 	/**
-	 * At which incoming property are we currently?
-	 * @var integer
-	 */
+	* At which incoming property are we currently?
+	* @var integer
+	*/
 	private $offset = 0;
 
 	/**
-	 * How many incoming values should be asked for
-	 * @var integer
-	 */
+	* How many incoming values should be asked for
+	* @var integer
+	*/
 	private $incomingValuesCount = 8;
 
 	/**
-	 * How many incoming properties should be asked for
-	 * @var integer
-	 */
+	* How many incoming properties should be asked for
+	* @var integer
+	*/
 	private $incomingPropertiesCount = 21;
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $extraModules = array();
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $options = array();
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param DIWikiPage $subject
-	 */
+	* @since 2.5
+	*
+	* @param Store $store
+	* @param DIWikiPage $subject
+	*/
 	public function __construct( Store $store, DIWikiPage $subject ) {
 		$this->store = $store;
 		$this->subject = DataValueFactory::getInstance()->newDataValueByItem( $subject );
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 */
+	* @since 2.5
+	*
+	* @param string $key
+	* @param mixed $value
+	*/
 	public function setOption( $key, $value ) {
 		$this->options[$key] = $value;
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param string $key
-	 *
-	 * @return mixed
-	 */
+	* @since 2.5
+	*
+	* @param string $key
+	*
+	* @return mixed
+	*/
 	public function getOption( $key ) {
 
 		if ( isset( $this->options[$key] ) ) {
@@ -113,19 +113,19 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param string $json
-	 */
+	* @since 2.5
+	*
+	* @param string $json
+	*/
 	public function importOptionsFromJson( $json ) {
 		$this->options = json_decode( $json, true );
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @return string
-	 */
+	* @since 2.5
+	*
+	* @return string
+	*/
 	public function getHtml() {
 
 		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
@@ -155,10 +155,10 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @return string
-	 */
+	* @since 2.5
+	*
+	* @return string
+	*/
 	public function getEmptyHtml() {
 		global $wgContLang;
 
@@ -186,11 +186,11 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * Create and output HTML including the complete factbox, based on the extracted
-	 * parameters in the execute comment.
-	 *
-	 * @return string  A HTML string with the factbox
-	 */
+	* Create and output HTML including the complete factbox, based on the extracted
+	* parameters in the execute comment.
+	*
+	* @return string  A HTML string with the factbox
+	*/
 	private function doGenerateHtml() {
 		global $wgContLang;
 		$html = "<div class=\"smwb-datasheet\">";
@@ -227,7 +227,7 @@ class ContentsBuilder {
 		\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', array( $this->store, $semanticData, &$html, &$this->extraModules ) );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$html .= FormHelper::getQueryForm( $this->articletext ) ;
+			$html .= FormHelper::getQueryForm( $this->articletext );
 		}
 
 		$html .= Html::element(
@@ -242,14 +242,14 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * Creates the HTML table displaying the data of one subject.
-	 *
-	 * @param[in] $data SMWSemanticData  The data to be displayed
-	 * @param[in] $left bool  Should properties be displayed on the left side?
-	 * @param[in] $incoming bool  Is this an incoming? Or an outgoing?
-	 *
-	 * @return string A string containing the HTML with the factbox
-	 */
+	* Creates the HTML table displaying the data of one subject.
+	*
+	* @param[in] $data SMWSemanticData  The data to be displayed
+	* @param[in] $left bool  Should properties be displayed on the left side?
+	* @param[in] $incoming bool  Is this an incoming? Or an outgoing?
+	*
+	* @return string A string containing the HTML with the factbox
+	*/
 	private function displayData( SemanticData $data, $left = true, $incoming = false, $isLoading = false ) {
 		// Some of the CSS classes are different for the left or the right side.
 		// In this case, there is an "i" after the "smwb-". This is set here.
@@ -310,7 +310,7 @@ class ContentsBuilder {
 				}
 
 				$propertyValue .= "<span class=\"{$dirPrefix}value\">" .
-				         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>\n";
+							$this->displayValue( $dvProperty, $dv, $incoming ) . "</span>\n";
 			}
 
 			// Added in 2.3
@@ -320,8 +320,8 @@ class ContentsBuilder {
 					'a',
 					array(
 						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
-							 'property' => $dvProperty->getWikiValue(),
-							 'value' => $this->subject->getWikiValue()
+							'property' => $dvProperty->getWikiValue(),
+							'value' => $this->subject->getWikiValue()
 						) )
 					),
 					wfMessage( 'smw_browse_more' )->text()
@@ -365,14 +365,14 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * Displays a value, including all relevant links (browse and search by property)
-	 *
-	 * @param[in] $property SMWPropertyValue  The property this value is linked to the subject with
-	 * @param[in] $value DataValue  The actual value
-	 * @param[in] $incoming bool  If this is an incoming or outgoing link
-	 *
-	 * @return string  HTML with the link to the article, browse, and search pages
-	 */
+	* Displays a value, including all relevant links (browse and search by property)
+	*
+	* @param[in] $property SMWPropertyValue  The property this value is linked to the subject with
+	* @param[in] $value DataValue  The actual value
+	* @param[in] $incoming bool  If this is an incoming or outgoing link
+	*
+	* @return string  HTML with the link to the article, browse, and search pages
+	*/
 	private function displayValue( \SMWPropertyValue $property, DataValue $dataValue, $incoming ) {
 
 		$dataValue->setContextPage(
@@ -383,10 +383,10 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * Displays the subject that is currently being browsed to.
-	 *
-	 * @return string A string containing the HTML with the subject line
-	 */
+	* Displays the subject that is currently being browsed to.
+	*
+	* @return string A string containing the HTML with the subject line
+	*/
 	private function displayHead() {
 
 		$label = ValueFormatter::getFormattedSubject( $this->subject );
@@ -405,10 +405,10 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * Creates the HTML for the center bar including the links with further navigation options.
-	 *
-	 * @return string  HTMl with the center bar
-	 */
+	* Creates the HTML for the center bar including the links with further navigation options.
+	*
+	* @return string  HTMl with the center bar
+	*/
 	private function displayCenter( $article ) {
 
 		if ( $this->showincoming ) {
@@ -445,17 +445,17 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * Creates the HTML for the bottom bar including the links with further navigation options.
-	 *
-	 * @param[in] $more bool  Are there more inproperties to be displayed?
-	 * @return string  HTMl with the bottom bar
-	 */
+	* Creates the HTML for the bottom bar including the links with further navigation options.
+	*
+	* @param[in] $more bool  Are there more inproperties to be displayed?
+	* @return string  HTMl with the bottom bar
+	*/
 	private function displayBottom( $more ) {
 
 		$article = $this->subject->getLongWikiText();
 
 		$open  = "<div class=\"smw-table smwb-factbox\">" .
-		         "<div class=\"smw-table-row smwb-center\"><div >";
+					"<div class=\"smw-table-row smwb-center\"><div >";
 
 		$open = HtmlTable::open(
 			array(
@@ -500,7 +500,7 @@ class ContentsBuilder {
 			$linkMsg = 'smw_result_next';
 
 			$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->escaped() . " " . ( $this->offset + 1 ) .
-					 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
+					" – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
 			$html .= $more ? FormHelper::createLinkFromMessage( $linkMsg, $parameters ) : wfMessage( $linkMsg )->escaped();
 
 			$html = HtmlTable::row(
@@ -515,11 +515,11 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * Creates a Semantic Data object with the incoming properties instead of the
-	 * usual outproperties.
-	 *
-	 * @return array(SMWSemanticData, bool)  The semantic data including all inproperties, and if there are more inproperties left
-	 */
+	* Creates a Semantic Data object with the incoming properties instead of the
+	* usual outproperties.
+	*
+	* @return array(SMWSemanticData, bool)  The semantic data including all inproperties, and if there are more inproperties left
+	*/
 	private function getInData() {
 		$indata = new SemanticData( $this->subject->getDataItem() );
 

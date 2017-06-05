@@ -5,17 +5,17 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 
 /**
- * This special page for MediaWiki provides information about types. Type information is
- * stored in the smw_attributes database table, gathered both from the annotations in
- * articles, and from metadata already some global variables managed by SMWTypeHandlerFactory,
- * and in Type: Wiki pages. This only reports on the Type: Wiki pages.
- *
- *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- *
- * @author Markus Krötzsch
- */
+* This special page for MediaWiki provides information about types. Type information is
+* stored in the smw_attributes database table, gathered both from the annotations in
+* articles, and from metadata already some global variables managed by SMWTypeHandlerFactory,
+* and in Type: Wiki pages. This only reports on the Type: Wiki pages.
+*
+*
+* @ingroup SMWSpecialPage
+* @ingroup SpecialPage
+*
+* @author Markus Krötzsch
+*/
 class SMWSpecialTypes extends SpecialPage {
 	public function __construct() {
 		parent::__construct( 'Types' );
@@ -132,9 +132,9 @@ class SMWSpecialTypes extends SpecialPage {
 			$typeName = $typeValue->getLongWikiText();
 
 			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
-			        '<h2>' . wfMessage( 'smw_type_header', $typeName )->text() . "</h2>\n<p>" .
+					'<h2>' . wfMessage( 'smw_type_header', $typeName )->text() . "</h2>\n<p>" .
 					wfMessage( 'smw_typearticlecount' )->numParams( $resultNumber )->text() . "</p>\n" .
-			        $navigation . $pageLister->formatList() . $navigation . "\n</div>";
+					$navigation . $pageLister->formatList() . $navigation . "\n</div>";
 		}
 
 		return $result;

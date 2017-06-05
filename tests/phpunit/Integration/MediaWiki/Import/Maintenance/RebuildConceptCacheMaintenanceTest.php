@@ -76,7 +76,7 @@ class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 		// $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
-	 	$this->importedTitles[] = $conceptPage;
+		$this->importedTitles[] = $conceptPage;
 
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildConceptCache' );
 		$maintenanceRunner->setQuiet();

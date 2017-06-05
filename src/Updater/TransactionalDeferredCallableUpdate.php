@@ -64,7 +64,7 @@ class TransactionalDeferredCallableUpdate extends DeferredCallableUpdate {
 		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
- 	/**
+	/**
 	 * It tries to fetch a transactionTicket to assert whether transaction writes
 	 * are active or not and if available will process Database::commitAndWaitForReplication
 	 * during DeferredCallableUpdate::doUpdate to safely post commits to the

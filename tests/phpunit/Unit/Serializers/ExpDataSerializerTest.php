@@ -85,20 +85,20 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 				),
 				'data' => array(
 					'LaLi' => array(
-						 'property' => array(
-						 	'type' => 1,
-						 	'uri' => 'Li|La|Lu',
-						 	'dataitem' => null
-						 ),
-						 'children' => array(
-						 	array(
-						 		'type' => 2,
-						 		'lexical' => 'Foo',
-						 		'datatype' => 'Bar',
-						 		'lang' => '',
-						 		'dataitem' => null
-						 	)
-						 )
+						'property' => array(
+							'type' => 1,
+							'uri' => 'Li|La|Lu',
+							'dataitem' => null
+						),
+						'children' => array(
+							array(
+								'type' => 2,
+								'lexical' => 'Foo',
+								'datatype' => 'Bar',
+								'lang' => '',
+								'dataitem' => null
+							)
+						)
 					)
 				),
 				'serializer' => 'SMW\Serializers\ExpDataSerializer',
@@ -129,34 +129,34 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 				),
 				'data' => array(
 					'LaLi' => array(
-						 'property' => array(
-						 	'type' => 1,
-						 	'uri' => 'Li|La|Lu',
-						 	'dataitem' => array( // DIBlob
-						 		'type' => 2,
-						 		'item' => 'SomeText'
-						 	)
-						 ),
-						 'children' => array(
-						 	array( // ExpLiteral
-						 		'type' => 2,
-						 		'lexical' => 'Foo',
-						 		'datatype' => 'Bar',
-						 		'lang' => '',
-						 		'dataitem' => null
-						 	),
-						 	array( // ExpData
+						'property' => array(
+							'type' => 1,
+							'uri' => 'Li|La|Lu',
+							'dataitem' => array( // DIBlob
+								'type' => 2,
+								'item' => 'SomeText'
+							)
+						),
+						'children' => array(
+							array( // ExpLiteral
+								'type' => 2,
+								'lexical' => 'Foo',
+								'datatype' => 'Bar',
+								'lang' => '',
+								'dataitem' => null
+							),
+							array( // ExpData
 								'subject' => array(
 								'type' => 1,
 								'uri' => 'Foo|Bar|Mo',
-							 	'dataitem' => array(
-							 		'type' => 2,
-							 		'item' => 'SomeOtherText'
-							 		)
+								'dataitem' => array(
+									'type' => 2,
+									'item' => 'SomeOtherText'
+									)
 								),
 								'data' => array()
-						 	)
-						 )
+							)
+						)
 					)
 				),
 				'serializer' => 'SMW\Serializers\ExpDataSerializer',

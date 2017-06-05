@@ -9,30 +9,30 @@ use SMWSparqlResultParser as SparqlResultParser;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * Specific modifications of the SPARQL database implementation for 4Store.
- *
- * @license GNU GPL v2+
- * @since 1.6
- *
- * @author Markus Krötzsch
- */
+* Specific modifications of the SPARQL database implementation for 4Store.
+*
+* @license GNU GPL v2+
+* @since 1.6
+*
+* @author Markus Krötzsch
+*/
 class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 
 	/**
-	 * Execute a SPARQL query and return an RepositoryResult object
-	 * that contains the results. Compared to GenericHttpDatabaseConnector::doQuery(),
-	 * this also supports the parameter "restricted=1" which 4Store provides
-	 * to enforce strict resource bounds on query answering. The method also
-	 * checks if these bounds have been met, and records this in the query
-	 * result.
-	 *
-	 * @note The restricted option in 4Store mainly enforces the given soft
-	 * limit more strictly. To disable/configure it, simply change the soft
-	 * limit settings of your 4Store server.
-	 *
-	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
-	 * @return RepositoryResult
-	 */
+	* Execute a SPARQL query and return an RepositoryResult object
+	* that contains the results. Compared to GenericHttpDatabaseConnector::doQuery(),
+	* this also supports the parameter "restricted=1" which 4Store provides
+	* to enforce strict resource bounds on query answering. The method also
+	* checks if these bounds have been met, and records this in the query
+	* result.
+	*
+	* @note The restricted option in 4Store mainly enforces the given soft
+	* limit more strictly. To disable/configure it, simply change the soft
+	* limit settings of your 4Store server.
+	*
+	* @param $sparql string with the complete SPARQL query (SELECT or ASK)
+	* @return RepositoryResult
+	*/
 	public function doQuery( $sparql ) {
 
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
@@ -63,7 +63,7 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 
 		foreach ( $result->getComments() as $comment ) {
 			if ( strpos( $comment, 'warning: hit complexity limit' ) === 0 ||
-			     strpos( $comment, 'some results have been dropped' ) === 0 ) {
+				strpos( $comment, 'some results have been dropped' ) === 0 ) {
 				$result->setErrorCode( RepositoryResult::ERROR_INCOMPLETE );
 			} //else debug_zval_dump($comment);
 		}
@@ -72,15 +72,15 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	}
 
 	/**
-	 * Complex SPARQL Update delete operations are not supported in 4Store
-	 * as of v1.1.3, hence this implementation uses a less efficient method
-	 * for accomplishing this.
-	 *
-	 * @param $propertyName string Turtle name of marking property
-	 * @param $objectName string Turtle name of marking object/value
-	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
-	 * @return boolean stating whether the operations succeeded
-	 */
+	* Complex SPARQL Update delete operations are not supported in 4Store
+	* as of v1.1.3, hence this implementation uses a less efficient method
+	* for accomplishing this.
+	*
+	* @param $propertyName string Turtle name of marking property
+	* @param $objectName string Turtle name of marking object/value
+	* @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	* @return boolean stating whether the operations succeeded
+	*/
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
 		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", array(), $extraNamespaces );
 		$success = ( $affectedObjects->getErrorCode() == RepositoryResult::ERROR_NOERROR );
@@ -96,20 +96,20 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	}
 
 	/**
-	 * Execute a HTTP-based SPARQL POST request according to
-	 * http://www.w3.org/2009/sparql/docs/http-rdf-update/.
-	 * The method throws exceptions based on
-	 * GenericHttpDatabaseConnector::mapHttpRequestError(). If errors occur and this
-	 * method does not throw anything, then an empty result with an error
-	 * code is returned.
-	 *
-	 * This method is specific to 4Store since it uses POST parameters that
-	 * are not given in the specification.
-	 *
-	 * @param $payload string Turtle serialization of data to send
-	 *
-	 * @return boolean
-	 */
+	* Execute a HTTP-based SPARQL POST request according to
+	* http://www.w3.org/2009/sparql/docs/http-rdf-update/.
+	* The method throws exceptions based on
+	* GenericHttpDatabaseConnector::mapHttpRequestError(). If errors occur and this
+	* method does not throw anything, then an empty result with an error
+	* code is returned.
+	*
+	* This method is specific to 4Store since it uses POST parameters that
+	* are not given in the specification.
+	*
+	* @param $payload string Turtle serialization of data to send
+	*
+	* @return boolean
+	*/
 	public function doHttpPost( $payload ) {
 
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
@@ -137,12 +137,12 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	}
 
 	/**
-	 * @see GenericHttpDatabaseConnector::doUpdate
-	 *
-	 * @note 4store 1.1.4 breaks on update if charset is set in the Content-Type header
-	 *
-	 * @since 2.0
-	 */
+	* @see GenericHttpDatabaseConnector::doUpdate
+	*
+	* @note 4store 1.1.4 breaks on update if charset is set in the Content-Type header
+	*
+	* @since 2.0
+	*/
 	public function doUpdate( $sparql ) {
 
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {

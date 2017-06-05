@@ -15,55 +15,55 @@ use SMWQueryResult as QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 
 /**
- * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
- * of these queries to obtain suitable QueryResult objects.
- *
- * @license GNU GPL v2+
- * @since 2.0
- *
- * @author Markus Krötzsch
- * @author mwjames
- */
+* Class mapping SMWQuery objects to SPARQL, and for controlling the execution
+* of these queries to obtain suitable QueryResult objects.
+*
+* @license GNU GPL v2+
+* @since 2.0
+*
+* @author Markus Krötzsch
+* @author mwjames
+*/
 class QueryEngine implements QueryEngineInterface {
 
 	/**
-	 * The name of the SPARQL variable that represents the query result.
-	 */
+	* The name of the SPARQL variable that represents the query result.
+	*/
 	const RESULT_VARIABLE = 'result';
 
 	/**
-	 * @var RepositoryConnection
-	 */
+	* @var RepositoryConnection
+	*/
 	private $connection;
 
 	/**
-	 * @var CompoundConditionBuilder
-	 */
+	* @var CompoundConditionBuilder
+	*/
 	private $compoundConditionBuilder;
 
 	/**
-	 * @var QueryResultFactory
-	 */
+	* @var QueryResultFactory
+	*/
 	private $queryResultFactory;
 
 	/**
-	 * @var EngineOptions
-	 */
+	* @var EngineOptions
+	*/
 	private $engineOptions;
 
 	/**
-	 * @var array
-	 */
+	* @var array
+	*/
 	private $sortKeys = array();
 
 	/**
-	 * @since  2.0
-	 *
-	 * @param RepositoryConnection $connection
-	 * @param CompoundConditionBuilder $compoundConditionBuilder
-	 * @param QueryResultFactory $queryResultFactory
-	 * @param EngineOptions|null $EngineOptions
-	 */
+	* @since  2.0
+	*
+	* @param RepositoryConnection $connection
+	* @param CompoundConditionBuilder $compoundConditionBuilder
+	* @param QueryResultFactory $queryResultFactory
+	* @param EngineOptions|null $EngineOptions
+	*/
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
 	public function __construct( RepositoryConnection $connection, CompoundConditionBuilder $compoundConditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
 	// @codingStandardsIgnoreEnd
@@ -80,16 +80,16 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	/**
-	 * @since  2.0
-	 * @param  Query $query
-	 *
-	 * @return QueryResult|string
-	 */
+	* @since  2.0
+	* @param  Query $query
+	*
+	* @return QueryResult|string
+	*/
 	public function getQueryResult( Query $query ) {
 
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
-		     $query->querymode != Query::MODE_DEBUG &&
-		     count( $query->getErrors() ) > 0 ) {
+			$query->querymode != Query::MODE_DEBUG &&
+			count( $query->getErrors() ) > 0 ) {
 			return $this->queryResultFactory->newEmptyQueryResult( $query, false );
 		}
 
@@ -228,13 +228,13 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	/**
-	 * Get a SPARQL option array for the given query.
-	 *
-	 * @param Query $query
-	 * @param Condition $compoundCondition (storing order by variable names)
-	 *
-	 * @return array
-	 */
+	* Get a SPARQL option array for the given query.
+	*
+	* @param Query $query
+	* @param Condition $compoundCondition (storing order by variable names)
+	*
+	* @return array
+	*/
 	protected function getOptions( Query $query, Condition $compoundCondition ) {
 
 		$options = array(

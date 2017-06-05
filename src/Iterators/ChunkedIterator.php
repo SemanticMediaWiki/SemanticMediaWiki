@@ -60,7 +60,7 @@ class ChunkedIterator extends IteratorIterator {
    public function rewind() {
 		parent::rewind();
 		$this->next();
-	}
+			}
 
 	/**
 	 * @since 3.0

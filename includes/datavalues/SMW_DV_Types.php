@@ -4,17 +4,17 @@ use SMW\DataTypeRegistry;
 use SMW\Message;
 
 /**
- * This datavalue implements special processing suitable for defining types of
- * properties. Types behave largely like values of type SMWWikiPageValue
- * with three main differences. First, they actively check if a value is an
- * alias for another type, modifying the internal representation accordingly.
- * Second, they have a modified display for emphasizing if some type is defined
- * in SMW (built-in). Third, they use type ids for storing data (DB keys)
- * instead of using page titles.
- *
- * @author Markus Krötzsch
- * @ingroup SMWDataValues
- */
+* This datavalue implements special processing suitable for defining types of
+* properties. Types behave largely like values of type SMWWikiPageValue
+* with three main differences. First, they actively check if a value is an
+* alias for another type, modifying the internal representation accordingly.
+* Second, they have a modified display for emphasizing if some type is defined
+* in SMW (built-in). Third, they use type ids for storing data (DB keys)
+* instead of using page titles.
+*
+* @author Markus Krötzsch
+* @ingroup SMWDataValues
+*/
 class SMWTypesValue extends SMWDataValue {
 	protected $m_isAlias; // record whether this is an alias to another type, used to avoid duplicates when listing page types
 	protected $m_realLabel;
@@ -79,14 +79,14 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
-	 * @return boolean
-	 */
+	* @see SMWDataValue::loadDataItem()
+	* @param $dataitem SMWDataItem
+	* @return boolean
+	*/
 	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( ( $dataItem instanceof SMWDIUri ) && ( $dataItem->getScheme() == 'http' ) &&
-		     ( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
-		     ( $dataItem->getQuery() === '' ) ) {
+			( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
+			( $dataItem->getQuery() === '' ) ) {
 			$this->m_isAlias = false;
 			$this->m_typeId = $dataItem->getFragment();
 			$this->m_realLabel = DataTypeRegistry::getInstance()->findTypeLabel( $this->m_typeId );
@@ -139,12 +139,12 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	/**
-	 * Gets the title text for the types special page.
-	 *
-	 * @since 1.6
-	 *
-	 * @return string
-	 */
+	* Gets the title text for the types special page.
+	*
+	* @since 1.6
+	*
+	* @return string
+	*/
 	protected function getSpecialPageTitleText() {
 		return SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
 	}
@@ -158,30 +158,30 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	/**
-	 * This class uses type ids as DB keys.
-	 *
-	 * @return string
-	 */
+	* This class uses type ids as DB keys.
+	*
+	* @return string
+	*/
 	public function getDBkey() {
 		return ( $this->isValid() ) ? DataTypeRegistry::getInstance()->findTypeID( $this->m_realLabel ) : '';
 	}
 
 	/**
-	 * Is this a built-in datatype shipped with SMW (or an extension of SMW)?
-	 * (Alternatively it would be a user-defined derived datatype.)
-	 *
-	 * @deprecated As of SMW 1.6, there are no more user-defined datatypes, making this method useless. Will vanish in SMW 1.6.
-	 */
+	* Is this a built-in datatype shipped with SMW (or an extension of SMW)?
+	* (Alternatively it would be a user-defined derived datatype.)
+	*
+	* @deprecated As of SMW 1.6, there are no more user-defined datatypes, making this method useless. Will vanish in SMW 1.6.
+	*/
 	public function isBuiltIn() {
 		return true;
 	}
 
 	/**
-	 * Is this an alias for another datatype in SMW? This information is used to
-	 * explain entries in Special:Types that are found since they have pages.
-	 *
-	 * @return boolean
-	 */
+	* Is this an alias for another datatype in SMW? This information is used to
+	* explain entries in Special:Types that are found since they have pages.
+	*
+	* @return boolean
+	*/
 	public function isAlias() {
 		return $this->m_isAlias;
 	}

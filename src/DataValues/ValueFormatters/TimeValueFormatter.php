@@ -10,30 +10,30 @@ use SMWDITime as DITime;
 use SMWTimeValue as TimeValue;
 
 /**
- * @license GNU GPL v2+
- * @since 2.4
- *
- * @author mwjames
- * @author Markus Krötzsch
- * @author Fabian Howahl
- * @author Terry A. Hurlbut
- */
+* @license GNU GPL v2+
+* @since 2.4
+*
+* @author mwjames
+* @author Markus Krötzsch
+* @author Fabian Howahl
+* @author Terry A. Hurlbut
+*/
 class TimeValueFormatter extends DataValueFormatter {
 
 	/**
-	 * @since 2.4
-	 *
-	 * {@inheritDoc}
-	 */
+	* @since 2.4
+	*
+	* {@inheritDoc}
+	*/
 	public function isFormatterFor( DataValue $dataValue ) {
 		return $dataValue instanceof TimeValue;
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * {@inheritDoc}
-	 */
+	* @since 2.4
+	*
+	* {@inheritDoc}
+	*/
 	public function format( $type, $linker = null ) {
 
 		if ( !$this->dataValue instanceof TimeValue ) {
@@ -57,26 +57,26 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	/**
-	 * @private
-	 *
-	 * Compute a string representation that largely follows the ISO8601 standard
-	 * of representing dates. Large year numbers may have more than 4 digits,
-	 * which is not strictly conforming to the standard. The date includes year,
-	 * month, and day regardless of the input precision, but will only include
-	 * time when specified.
-	 *
-	 * Conforming to the 2000 version of ISO8601, year 1 BC(E) is represented
-	 * as "0000", year 2 BC(E) as "-0001" and so on.
-	 *
-	 * @since 2.4
-	 *
-	 * @param DITime $dataItem
-	 * @param boolean $mindefault determining whether values below the
-	 * precision of our input should be completed with minimal or maximal
-	 * conceivable values
-	 *
-	 * @return string
-	 */
+	* @private
+	*
+	* Compute a string representation that largely follows the ISO8601 standard
+	* of representing dates. Large year numbers may have more than 4 digits,
+	* which is not strictly conforming to the standard. The date includes year,
+	* month, and day regardless of the input precision, but will only include
+	* time when specified.
+	*
+	* Conforming to the 2000 version of ISO8601, year 1 BC(E) is represented
+	* as "0000", year 2 BC(E) as "-0001" and so on.
+	*
+	* @since 2.4
+	*
+	* @param DITime $dataItem
+	* @param boolean $mindefault determining whether values below the
+	* precision of our input should be completed with minimal or maximal
+	* conceivable values
+	*
+	* @return string
+	*/
 	public function getISO8601Date( $mindefault = true ) {
 
 		$dataItem = $this->dataValue->getDataItemForCalendarModel( DITime::CM_GREGORIAN );
@@ -104,17 +104,17 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	/**
-	 * @private
-	 *
-	 * Use MediaWiki's date and time formatting. It can't handle all inputs
-	 * properly, but has superior i18n support.
-	 *
-	 * @since 2.4
-	 *
-	 * @param DITime $dataItem
-	 *
-	 * @return string
-	 */
+	* @private
+	*
+	* Use MediaWiki's date and time formatting. It can't handle all inputs
+	* properly, but has superior i18n support.
+	*
+	* @since 2.4
+	*
+	* @param DITime $dataItem
+	*
+	* @return string
+	*/
 	public function getMediaWikiDate() {
 
 		$dataItem = $this->dataValue->getDataItemForCalendarModel( DITime::CM_GREGORIAN );
@@ -156,21 +156,21 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	/**
-	 * @private
-	 *
-	 * @todo Internationalize the CE and BCE strings.
-	 *
-	 * Compute a suitable string to display the given date item.
-	 *
-	 * @note MediaWiki's date functions are not applicable for the range of
-	 * historic dates we support.
-	 *
-	 * @since 2.4
-	 *
-	 * @param DITime $dataitem
-	 *
-	 * @return string
-	 */
+	* @private
+	*
+	* @todo Internationalize the CE and BCE strings.
+	*
+	* Compute a suitable string to display the given date item.
+	*
+	* @note MediaWiki's date functions are not applicable for the range of
+	* historic dates we support.
+	*
+	* @since 2.4
+	*
+	* @param DITime $dataitem
+	*
+	* @return string
+	*/
 	public function getCaptionFromDataItem( DITime $dataItem ) {
 
 		// If the language code is empty then the content language code is used
@@ -209,21 +209,21 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	/**
-	 * @private
-	 *
-	 * Return the time as a string. The time string has the format HH:MM:SS,
-	 * without any timezone information (see class documentation for details
-	 * on current timezone handling).
-	 * The parameter $default optionally specifies the value returned
-	 * if the date is valid but has no explicitly specified time. It can
-	 * also be set to false to detect this situation.
-	 *
-	 * @since  2.4
-	 *
-	 * @param string $default
-	 *
-	 * @return string
-	 */
+	* @private
+	*
+	* Return the time as a string. The time string has the format HH:MM:SS,
+	* without any timezone information (see class documentation for details
+	* on current timezone handling).
+	* The parameter $default optionally specifies the value returned
+	* if the date is valid but has no explicitly specified time. It can
+	* also be set to false to detect this situation.
+	*
+	* @since  2.4
+	*
+	* @param string $default
+	*
+	* @return string
+	*/
 	public function getTimeString( $default = '00:00:00' ) {
 
 		$dataItem = $this->dataValue->getDataItemForCalendarModel( DITime::CM_GREGORIAN );
@@ -233,17 +233,17 @@ class TimeValueFormatter extends DataValueFormatter {
 		}
 
 		return sprintf( "%02d", $dataItem->getHour() ) . ':' .
-		       sprintf( "%02d", $dataItem->getMinute() ) . ':' .
-		       sprintf( "%02d", $dataItem->getSecond() );
+				sprintf( "%02d", $dataItem->getMinute() ) . ':' .
+				sprintf( "%02d", $dataItem->getSecond() );
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param  DITime|null $dataItem
-	 *
-	 * @return string
-	 */
+	* @since 2.4
+	*
+	* @param  DITime|null $dataItem
+	*
+	* @return string
+	*/
 	public function getCaptionFromFreeFormat( DITime $dataItem = null ) {
 
 		$language = Localizer::getInstance()->getLanguage(
@@ -272,14 +272,14 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	/**
-	 * @private
-	 *
-	 * @since 2.4
-	 *
-	 * @param  DITime|null $dataItem
-	 *
-	 * @return string
-	 */
+	* @private
+	*
+	* @since 2.4
+	*
+	* @param  DITime|null $dataItem
+	*
+	* @return string
+	*/
 	public function getLocalizedFormat( DITime $dataItem = null ) {
 
 		if ( $dataItem === null ) {
@@ -322,14 +322,14 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	/**
-	 * Compute a suitable string to display this date, taking into account the
-	 * output format and the preferrable calendar models for the data.
-	 *
-	 * @note MediaWiki's date functions are not applicable for the range
-	 * of historic dates we support.
-	 *
-	 * @return string
-	 */
+	* Compute a suitable string to display this date, taking into account the
+	* output format and the preferrable calendar models for the data.
+	*
+	* @note MediaWiki's date functions are not applicable for the range
+	* of historic dates we support.
+	*
+	* @return string
+	*/
 	protected function getPreferredCaption() {
 
 		$dataItem = $this->dataValue->getDataItem();
