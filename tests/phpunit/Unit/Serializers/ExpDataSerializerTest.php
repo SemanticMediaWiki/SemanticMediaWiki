@@ -36,8 +36,8 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	* @dataProvider expDataProvider
-	*/
+	 * @dataProvider expDataProvider
+	 */
 	public function testSerialize( $data, $expected ) {
 
 		$instance = new ExpDataSerializer();
