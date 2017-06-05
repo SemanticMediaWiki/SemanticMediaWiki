@@ -243,7 +243,7 @@
 	"smw_browse_hide_incoming": "隐藏链接到此页的属性",
 	"smw_browse_no_outgoing": "这个页面没有设置属性。",
 	"smw_browse_no_incoming": "没有属性连接到此页。",
-	"smw-browse-from-backend": "信息当前从后端取得。",
+	"smw-browse-from-backend": "信息当前正在从后端取得。",
 	"smw-browse-intro": "此页面提供有关主题或实体实例的详情，请输入主题名称以检查。",
 	"smw-browse-invalid-subject": "主题验证返回“$1”错误。",
 	"smw-browse-api-subject-serialization-invalid": "主题有无效的序列化格式。",
