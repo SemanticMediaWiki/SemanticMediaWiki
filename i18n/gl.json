@@ -287,6 +287,8 @@
 	"smw-admin-outdateddisposal-button": "Programar unha eliminación",
 	"smw-admin-feature-disabled": "Esta funcionalidade está desactivada neste wiki, por favor consulte a páxina de axuda de <a href=\"https://www.semantic-mediawiki.org/wiki/Help:$smwgAdminFeatures\">configuración</a> ou contacte cun administrador  de sistemas.",
 	"smw-admin-propertystatistics-title": "Reconstrución das estatísticas das propiedade",
+	"smw-admin-propertystatistics-intro": "Reconstrúe tódalas estatísticas de uso das propiedades e actualiza e corrixe os [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count  contadores de uso] das propiedades.",
+	"smw-admin-propertystatistics-active": "Púxose na cola de traballo unha tarefa de reconstrución de estatísticas.",
 	"smw-admin-propertystatistics-button": "Programa unha reconstrución das estatísticas",
 	"smw-admin-fulltext-title": "Reconstrución da busca de texto completo",
 	"smw-admin-fulltext-active": "Enviouse á cola un traballo de reconstrución da busca de texto completo.",
@@ -346,7 +348,9 @@
 	"smw-qp-empty-data": "Os datos solicitados poderían non amosarse debido a algúns criterios de selección insuficientes.",
 	"right-smw-admin": "Acceder ás tarefas administrativas (Semantic MediaWiki)",
 	"right-smw-patternedit": "Acceso de edición para manter expresións regulares e patróns permitidos (MediaWiki Semántica)",
+	"right-smw-pageedit": "Acceso de edición para páxinas con anotación <code>Protexida contra a edición</code> (MediaWiki Semántica)",
 	"action-smw-patternedit": "editar expresións regulares utilizadas por MediaWiki Semántica",
+	"action-smw-pageedit": "editar páxinas anotadas con <code>Protexida contra a edición</code> (MediaWiki Semántica)",
 	"group-smwadministrator": "Administradores (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|administrador|administradora}} (Semantic MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administradores (Semantic MediaWiki)",
@@ -360,6 +364,7 @@
 	"smw-pa-property-predefined_asksi": "\"$1\" é unha propiedade predefinida que  recolle o número de condicións utilizadas nunha pescuda. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined_askde": "\"$1\" é unha propiedade predefinida que informa sobre a profundidade (valor numérico calculado na base dun aniñamento de consultas e  a resolución de cadeas de propiedade) dunha consulta, fornecida por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined-long_askde": "É un valor numérico calculado en base a aniñamento de subconsultas, cadeas de propiedades, e os elementos de descrición dispoñibles coa execución dunha consulta baseada no parámetro <code>[https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth]</code>.",
+	"smw-pa-property-predefined_askpa": "«$1» é unha propiedade predefinida, proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica], que describe parámetros que inflúen no resultado dunha consulta.",
 	"smw-pa-property-predefined-long_askpa": "É parte dunha colección de propiedades que especifican un [https://www.semantic-mediawiki.org/wiki/Help:Query_profiler perfil de consulta].",
 	"smw-sp-properties-docu": "Esta páxina lista as [https://www.semantic-mediawiki.org/wiki/Property propiedades] e o seu número de usos dispoñible para este wiki. Para ver as estatísticas actualizadas recoméndase que o script de mantemento das [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics estatísticas das propiedades] se execute de forma regular. Para ver unha vista diferenciada, consulte as páxinas especiais das [[Special:UnusedProperties|propiedades sen uso]] ou as [[Special:WantedProperties|propiedades requiridas]].",
 	"smw-sp-properties-cache-info": "Os datos da lista obtivéronse da [https://www.semantic-mediawiki.org/wiki/Caching caché], e actualizáronse o $1.",
@@ -521,5 +526,6 @@
 	"smw-format-datatable-next": "Seguinte",
 	"smw-format-datatable-previous": "Anterior",
 	"smw-format-datatable-sortascending": ": activar para ordenar a columna ascendentemente",
-	"smw-format-datatable-sortdescending": ": activar para ordenar a columna descendentemente"
+	"smw-format-datatable-sortdescending": ": activar para ordenar a columna descendentemente",
+	"smw-category-invalid-redirect-target": "A categoría «$1» contén un obxectivo de redirección non válido a un espazo de nomes que non é de categoría."
 }

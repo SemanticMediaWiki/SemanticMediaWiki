@@ -271,7 +271,7 @@
 	"smw-admin-permission-missing": "This is an informatory message.",
 	"smw-admin-setupsuccess": "This is the confirmation message at the bottom of the script's report concerning setup or update of the SMW database tables (process triggered from [[Special:SMWAdmin]]).",
 	"smw_smwadmin_return": "This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]].\n\nParameters:\n* $1 - the link back to Special:SMWAdmin\n{{Identical|Return to $1}}",
-	"smw_smwadmin_updatestarted": "This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started.\n\nParameters:\n* $1 - the link back to Special:SMWAdmin\n{{Identical|Return to $1}}",
+	"smw_smwadmin_updatestarted": "This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started.\n\nParameters:\n* $1 - the link back to Special:SMWAdmin",
 	"smw_smwadmin_updatenotstarted": "This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started.\n\nParameters:\n* $1 - the link back to Special:SMWAdmin",
 	"smw_smwadmin_updatestopped": "This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped.\n\nParameters:\n* $1 - the link back to Special:SMWAdmin",
 	"smw_smwadmin_updatenotstopped": "This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process.\n\nParameters:\n* $1 - the link back to Special:SMWAdmin",

@@ -247,7 +247,7 @@
 	"smw_browse_hide_incoming": "verstecke Attribute die hierhin verlinken",
 	"smw_browse_no_outgoing": "Diese Seite enthält keine Attribute.",
 	"smw_browse_no_incoming": "Keine Attribute verlinken auf diese Seite.",
-	"smw-browse-from-backend": "Die Information wird momentan aus der Datenbank abgerufen.",
+	"smw-browse-from-backend": "Die Informationen werden momentan aus der Datenbank abgerufen.",
 	"smw-browse-intro": "Mit dieser Spezialseite können die auf Seiten oder mit Subobjekten gespeicherten Daten und Informationen eingesehen werden. Bitte gib den Namen einer Seite ein, die eingesehen werden soll.",
 	"smw-browse-invalid-subject": "Die Validierung der Seite ergab den Fehler „$1“.",
 	"smw-browse-api-subject-serialization-invalid": "Die Seite hat ein ungültiges Serialisierungsformat.",
