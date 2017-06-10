@@ -186,6 +186,15 @@ return array(
 		'dependencies' => 'jquery.ui.autocomplete',
 		'targets' => array( 'mobile', 'desktop' )
 	),
+	
+	// Purge resources
+	'ext.smw.purge' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.purge.js',
+		'messages' => array(
+			'smw-purge-failed'
+		)
+	),
+	
 	// Special:Ask
 	'ext.smw.ask' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.ask.js',
