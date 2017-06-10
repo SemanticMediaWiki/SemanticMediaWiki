@@ -176,6 +176,7 @@
 	"smw-wantedproperties-docu": "This is the introductory message at the top of [[Special:WantedProperties]].",
 	"smw-wantedproperty-template": "This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned data type and how often it is used in the wiki. $1 holds the name of the wanted property. $2 holds the number of values annotated with the wanted property.",
 	"smw_purge": "{{doc-actionlink}}\nThis is the label of a tab of an action item for the content area.\n{{Identical|Refresh}}",
+	"smw-purge-failed": "This is an error/warning message.",
 	"types": "{{doc-special|Types}}\n{{Identical|Type}}",
 	"smw_types_docu": "This is the introductory message at the top of [[Special:Types]].",
 	"smw-special-types-no-such-type": "Error message shown on [[Special:Types]] when specifying an invalid data type.",
