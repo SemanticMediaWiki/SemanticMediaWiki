@@ -40,8 +40,10 @@ class PostgresTableBuilder extends TableBuilder {
 			'boolean'    => 'BOOLEAN',
 			'double'     => 'DOUBLE PRECISION',
 			'integer'    => 'bigint',
+			'char long'  => 'TEXT',
 			// Requires citext extension
-			'char nocase'      => 'citext NOT NULL',
+			'char nocase' => 'citext NOT NULL',
+			'char long nocase' => 'citext NOT NULL',
 			'usage count'      => 'bigint',
 			'integer unsigned' => 'INTEGER'
 		);

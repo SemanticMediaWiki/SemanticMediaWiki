@@ -152,6 +152,8 @@ return array(
 	#   as in case of for example "Ennis, Ennis Hill, Ennis Jones, Ennis-Hill,
 	#   Ennis-London"
 	#
+	# - SMW_SPARQL_QF_NOCASE to support case insensitive pattern matches
+	#
 	# Please check with your repository provider whether SPARQL 1.1 is fully
 	# supported or not, and if not SMW_SPARQL_QF_NONE should be set.
 	#
@@ -1541,6 +1543,38 @@ return array(
 	# @default false
 	##
 	'smwgEntityLookupFeatures' => SMW_EL_INPROP,
+	##
+
+	##
+	# SQLStore specific field type features
+	#
+	# SMW_FIELDT_NONE
+	#
+	# SMW_FIELDT_CHAR_NOCASE - Modifies selected search fields to use a case
+	# insensitive collation and may require additional extension (e.g. Postgres
+	# requires `citext`) on non MySQL related systems therefore it is disabled
+	# by default.
+	#
+	# Furthermore, no extensive analysis has been performed on how the switch
+	# from VARBINARY to a collated VARCHAR field type affects the search
+	# performance.
+	#
+	# If enabled, the setting will replace selected `FieldType::FIELD_TITLE`
+	# types with `FieldType::TYPE_CHAR_NOCASE`.
+	#
+	# `FieldType::TYPE_CHAR_NOCASE` has been defined as:
+	#
+	# - MySQL: VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci
+	# - Postgres: citext NOT NULL
+	# - SQLite: VARCHAR(255) NOT NULL COLLATE NOCASE but according to [0] this may
+	#   not work and need a special solution as hinted in [0]
+	#
+	# [0] https://techblog.dorogin.com/case-insensitive-like-in-sqlite-504f594dcdc3
+	#
+	# @since 3.0
+	# @default false
+	##
+	'smwgFieldTypeFeatures' => false,
 	##
 
 );

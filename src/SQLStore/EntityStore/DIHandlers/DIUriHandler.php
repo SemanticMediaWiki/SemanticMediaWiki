@@ -19,8 +19,6 @@ use SMW\SQLStore\TableBuilder\FieldType;
  */
 class DIUriHandler extends DataItemHandler {
 
-	const MAX_LENGTH = 255;
-
 	/**
 	 * @since 1.8
 	 *
@@ -29,7 +27,7 @@ class DIUriHandler extends DataItemHandler {
 	public function getTableFields() {
 		return array(
 			'o_blob' => FieldType::TYPE_BLOB,
-			'o_serialized' => FieldType::FIELD_TITLE
+			'o_serialized' => $this->getCharFieldType()
 		);
 	}
 
@@ -41,7 +39,7 @@ class DIUriHandler extends DataItemHandler {
 	public function getFetchFields() {
 		return array(
 			'o_blob' => FieldType::TYPE_BLOB,
-			'o_serialized' => FieldType::FIELD_TITLE
+			'o_serialized' => $this->getCharFieldType()
 		);
 	}
 
@@ -62,10 +60,10 @@ class DIUriHandler extends DataItemHandler {
 	public function getInsertValues( DataItem $dataItem ) {
 
 		$serialization = rawurldecode( $dataItem->getSerialization() );
-		$text = mb_strlen( $serialization ) <= self::MAX_LENGTH ? null : $serialization;
+		$text = mb_strlen( $serialization ) <= $this->getMaxLength() ? null : $serialization;
 
 		// bytea type handling
-		if ( $text !== null && $GLOBALS['wgDBtype'] === 'postgres' ) {
+		if ( $text !== null && $this->isDbType( 'postgres' ) ) {
 			$text = pg_escape_bytea( $text );
 		}
 
@@ -104,11 +102,29 @@ class DIUriHandler extends DataItemHandler {
 			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}
 
-		if ( $GLOBALS['wgDBtype'] === 'postgres' ) {
+		if ( $this->isDbType( 'postgres' ) ) {
 			$dbkeys[0] = pg_unescape_bytea( $dbkeys[0] );
 		}
 
 		return DIUri::doUnserialize( $dbkeys[0] == '' ? $dbkeys[1] : $dbkeys[0] );
+	}
+
+	private function getMaxLength() {
+
+		$length = 255;
+
+		return $length;
+	}
+
+	private function getCharFieldType() {
+
+		$fieldType = FieldType::FIELD_TITLE;
+
+		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
+			$fieldType = FieldType::TYPE_CHAR_NOCASE;
+		}
+
+		return $fieldType;
 	}
 
 }

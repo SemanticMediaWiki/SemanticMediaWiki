@@ -21,12 +21,56 @@ abstract class DataItemHandler {
 	protected $store;
 
 	/**
+	 * @var integer
+	*/
+	private $fieldTypeFeatures = false;
+
+	/**
+	 * @var null|string
+	*/
+	private $dbType;
+
+	/**
 	 * @since 1.8
 	 *
 	 * @param SQLStore $store
 	 */
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $fieldTypeFeatures
+	 */
+	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
+		$this->fieldTypeFeatures = $fieldTypeFeatures;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $feature
+	 *
+	 * @return boolean
+	 */
+	public function isEnabledFeature( $feature ) {
+		return ( (int)$this->fieldTypeFeatures & $feature ) != 0;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean
+	 */
+	public function isDbType( $dbType ) {
+
+		if ( $this->dbType === null ) {
+			$this->dbType = $this->store->getConnection( 'mw.db' )->getType();
+		}
+
+		return $this->dbType === $dbType;
 	}
 
 	/**

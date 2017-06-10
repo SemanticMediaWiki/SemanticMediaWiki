@@ -34,6 +34,11 @@ class TableSchemaManager {
 	private $tables = array();
 
 	/**
+	 * @var integer
+	 */
+	private $fieldTypeFeatures = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param SQLStore $store
@@ -59,6 +64,44 @@ class TableSchemaManager {
 		sort( $hash );
 
 		return md5( json_encode( $hash ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $fieldTypeFeatures
+	 */
+	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
+		$this->fieldTypeFeatures = $fieldTypeFeatures;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $feature
+	 *
+	 * @return boolean
+	 */
+	public function isEnabledFeature( $feature ) {
+		return ( (int)$this->fieldTypeFeatures & $feature ) != 0;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $tableName
+	 *
+	 * @return Table|null
+	 */
+	public function findTable( $tableName ) {
+
+		foreach ( $this->getTables() as $table ) {
+			if ( $table->getName() === $tableName ) {
+				return $table;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -105,7 +148,12 @@ class TableSchemaManager {
 		$table->addColumn( 'smw_title', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
 		$table->addColumn( 'smw_iw', array( FieldType::FIELD_INTERWIKI, 'NOT NULL' ) );
 		$table->addColumn( 'smw_subobject', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
-		$table->addColumn( 'smw_sortkey', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
+
+		$table->addColumn( 'smw_sortkey', array(
+			$this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ? FieldType::TYPE_CHAR_NOCASE : FieldType::FIELD_TITLE,
+			'NOT NULL'
+		) );
+
 		$table->addColumn( 'smw_sort', array( FieldType::FIELD_TITLE ) );
 		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
 
@@ -268,7 +316,6 @@ class TableSchemaManager {
 		foreach ( $fieldarray as $fieldName => $fieldType ) {
 			$table->addColumn( $fieldName, $fieldType );
 		}
-
 
 		foreach ( $indexes as $key => $index ) {
 			$table->addIndexWithKey( $key, $index );

@@ -8,6 +8,7 @@ use SMW\Query\Language\ValueDescription;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
+use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
@@ -111,7 +112,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testValueConditionForRediret() {
+	public function testValueConditionOnRediret() {
 
 		$resultVariable = 'result';
 
@@ -149,6 +150,38 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
 			->addString( 'FILTER( ?result = ?r1 )' )->addNewLine()
 			->getString();
+
+		$this->assertEquals(
+			$expected,
+			$compoundConditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
+	public function testValueConditionOnNoCase() {
+
+		$engineOptions = new EngineOptions();
+		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_NOCASE );
+
+		$description = new ValueDescription(
+			new DIBlob( 'SomePropertyValue' ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_NLKE
+		);
+
+		$expected = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER( !regex( ?result, "^SomePropertyValue$", "i") )' )->addNewLine()
+			->getString();
+
+		$resultVariable = 'result';
+
+		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
+		$compoundConditionBuilder->setResultVariable( $resultVariable );
+		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
+
+		$condition = $instance->interpretDescription( $description );
 
 		$this->assertEquals(
 			$expected,

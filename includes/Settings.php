@@ -178,6 +178,7 @@ class Settings extends Options {
 			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
 			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],
 			'smwgEntityLookupFeatures' => $GLOBALS['smwgEntityLookupFeatures'],
+			'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'],
 		);
 
 		self::initLegacyMapping( $configuration );

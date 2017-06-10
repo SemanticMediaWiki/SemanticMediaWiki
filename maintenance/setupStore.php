@@ -87,7 +87,7 @@ class SetupStore extends \Maintenance {
 		$this->loadGlobalFunctions();
 
 		$store = $this->getStore();
-		$store->clear();
+		StoreFactory::clear();
 
 		if ( $this->getOption( 'quiet' ) ) {
 			$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
@@ -100,10 +100,6 @@ class SetupStore extends \Maintenance {
 			Installer::OPT_MESSAGEREPORTER,
 			$messageReporter
 		);
-
-		if ( method_exists( $store, 'getPropertyTableInfoFetcher' ) ) {
-			$store->getPropertyTableInfoFetcher()->clearCache();
-		}
 
 		if ( $this->hasOption( 'delete' ) ) {
 			$this->dropStore( $store );

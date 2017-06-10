@@ -107,6 +107,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 		// Make sure LocalSettings don't interfere with the default settings
 		$GLOBALS['smwgDVFeatures'] = $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE;
+		$GLOBALS['smwgFieldTypeFeatures'] = SMW_FIELDT_NONE;
+
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
 		$this->testEnvironment->addConfiguration( 'smwgExportResourcesAsIri', false );
@@ -188,6 +190,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgUseCategoryRedirect',
 			'smwgQExpensiveThreshold',
 			'smwgQExpensiveExecutionLimit',
+			'smwgFieldTypeFeatures',
 
 			// MW related
 			'wgLanguageCode',
@@ -211,12 +214,12 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 		$pageList = $jsonTestCaseFileHandler->getPageCreationSetupList();
 
-		// Special handling for fixed properties to fetch the correct type
-		// before being used as annotation
-		if ( $jsonTestCaseFileHandler->getSettingsFor( 'smwgFixedProperties' ) !== array() ) {
+		// On some occasions ( e.g. fixed properties) to setup the correct
+		// table schema, run the creation once before the content is created
+		if ( $jsonTestCaseFileHandler->hasSetting( 'smwgFixedProperties' ) || $jsonTestCaseFileHandler->hasSetting( 'smwgFieldTypeFeatures' ) ) {
 			foreach ( $pageList as $page ) {
 				if ( isset( $page['namespace'] ) && $page['namespace'] === 'SMW_NS_PROPERTY' ) {
-					$this->doRunFixedPropertyTableCreation( $page );
+					$this->doRunTableSetupBeforeContentCreation( $page );
 				}
 			}
 		}
@@ -227,11 +230,11 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		);
 	}
 
-	private function doRunFixedPropertyTableCreation( $page ) {
+	private function doRunTableSetupBeforeContentCreation( $page ) {
+
 		// Create property to ...
 		$this->createPagesFrom( array( $page ) );
 
-		// Create table
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'setupStore' );
 		$maintenanceRunner->setQuiet();
 		$maintenanceRunner->run();
