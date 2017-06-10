@@ -109,6 +109,8 @@ class Settings extends Options {
 			'smwgQConceptMaxDepth' => $GLOBALS['smwgQConceptMaxDepth'],
 			'smwgQConceptFeatures' => $GLOBALS['smwgQConceptFeatures'],
 			'smwgQConceptCacheLifetime' => $GLOBALS['smwgQConceptCacheLifetime'],
+			'smwgQExpensiveThreshold' => $GLOBALS['smwgQExpensiveThreshold'],
+			'smwgQExpensiveExecutionLimit' => $GLOBALS['smwgQExpensiveExecutionLimit'],
 			'smwgQuerySources' => $GLOBALS['smwgQuerySources'],
 			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 			'smwgResultFormats' => $GLOBALS['smwgResultFormats'],
