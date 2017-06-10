@@ -20,7 +20,7 @@ mw.loader.using( [ 'mediawiki.api', 'mediawiki.notify' ] ).then( function () {
 		new mw.Api().post( postArgs ).then( function () {
 			location.reload();
 		}, function () {
-			mw.notify( mw.msg( 'purge-failed' ), { type: 'error' } );
+			mw.notify( mw.msg( 'smw-purge-failed' ), { type: 'error' } );
 		} );
 		e.preventDefault();
 	} );
