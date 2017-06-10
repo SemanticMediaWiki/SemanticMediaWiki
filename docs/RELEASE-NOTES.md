@@ -19,6 +19,8 @@ This release requires ...  (#2065, #2461)
 * [#2432](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2432) Added check for `readOnly` mode
 * [#2453](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2453) Changed the approach on how referenced properties during an article delete are generated to optimize the update dispatcher
 * #2461 Improved performance for fetching incoming properties
+* [#2471](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2471) Added [`$smwgUseCategoryRedirect`](https://www.semantic-mediawiki.org/wiki/Help:$smwgUseCategoryRedirect) setting to allow finding redirects on categories
+* #2485
 
 ## Bug fixes
 
@@ -26,7 +28,8 @@ This release requires ...  (#2065, #2461)
 
 ## Internal changes
 
-...
+* #2482 Added `TransactionalDeferredCallableUpdate`
+* #2491
 
 ## Contributors
 
