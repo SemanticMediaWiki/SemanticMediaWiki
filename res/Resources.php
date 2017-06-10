@@ -192,6 +192,11 @@ return array(
 		'scripts' => 'smw/util/ext.smw.util.purge.js',
 		'messages' => array(
 			'smw-purge-failed'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
 		)
 	),
 	
