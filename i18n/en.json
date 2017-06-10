@@ -166,6 +166,7 @@
 	"smw-wantedproperties-docu": "This page lists [https://www.semantic-mediawiki.org/wiki/Wanted_properties wanted properties] that are used in the wiki but do not have a page describing them. For a differentiated view, see the [[Special:Properties|entire]] or  [[Special:UnusedProperties|unused properties]] special pages.",
 	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|use|uses}})",
 	"smw_purge": "Refresh",
+	"smw-purge-failed": "Refreshing failed",
 	"types": "Types",
 	"smw_types_docu": "List of [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes available datatypes] with each [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] representing a unique set of attributes to describe a value in terms of storage and display characteristics that are hereditary to an assigned property.",
 	"smw-special-types-no-such-type": "The specified data type does not exist",
