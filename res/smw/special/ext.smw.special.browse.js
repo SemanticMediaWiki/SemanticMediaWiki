@@ -67,10 +67,18 @@
 			self.appendContent( data.query );
 		} ).fail ( function( xhr, status, error ) {
 
-			var text = 'Unknown API error';
+			var text = 'The API encountered an unknown error';
 
 			if ( status.hasOwnProperty( 'xhr' ) ) {
-				text = status.xhr.responseText.replace(/\<br \/\>/g," ");
+				var xhr = status.xhr;
+
+				if ( xhr.hasOwnProperty( 'responseText' ) ) {
+					text = xhr.responseText.replace(/\<br \/\>/g," " );
+				};
+
+				if ( xhr.hasOwnProperty( 'statusText' ) ) {
+					text = 'The API returned with: ' + xhr.statusText.replace(/\<br \/\>/g," " );
+				};
 			}
 
 			if ( status.hasOwnProperty( 'error' ) ) {
