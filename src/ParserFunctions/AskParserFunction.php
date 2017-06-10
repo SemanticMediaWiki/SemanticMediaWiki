@@ -53,6 +53,11 @@ class AskParserFunction {
 	private $circularReferenceGuard;
 
 	/**
+	 * @var ExpensiveFuncExecutionWatcher
+	 */
+	private $expensiveFuncExecutionWatcher;
+
+	/**
 	 * @var boolean
 	 */
 	private $showMode = false;
@@ -78,11 +83,13 @@ class AskParserFunction {
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
 	 * @param CircularReferenceGuard $circularReferenceGuard
+	 * @param ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, CircularReferenceGuard $circularReferenceGuard ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, CircularReferenceGuard $circularReferenceGuard, ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher ) {
 		$this->parserData = $parserData;
 		$this->messageFormatter = $messageFormatter;
 		$this->circularReferenceGuard = $circularReferenceGuard;
+		$this->expensiveFuncExecutionWatcher = $expensiveFuncExecutionWatcher;
 	}
 
 	/**
@@ -129,8 +136,8 @@ class AskParserFunction {
 
 		// Do we still need this?
 		// Reference found in SRF_Exhibit.php, SRF_Ploticus.php, SRF_Timeline.php, SRF_JitGraph.php
-		global $smwgIQRunningNumber;
-		$smwgIQRunningNumber++;
+		$GLOBALS['smwgIQRunningNumber']++;
+		$result = '';
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
@@ -221,6 +228,10 @@ class AskParserFunction {
 			$contextPage
 		);
 
+		if ( ( $result = $this->hasReachedExpensiveExecutionLimit( $query ) ) !== false ) {
+			return $result;
+		}
+
 		$query->setOption( Query::PROC_CONTEXT, 'AskParserFunction' );
 		$query->setOption( Query::NO_DEPENDENCY_TRACE, $this->noTrace );
 		$query->setOption( 'request.action', $this->parserData->getOption( 'request.action' ) );
@@ -254,6 +265,7 @@ class AskParserFunction {
 		}
 
 		$this->circularReferenceGuard->unmark( $queryHash );
+		$this->expensiveFuncExecutionWatcher->incrementExpensiveCount( $query );
 
 		// In case of an query error add a marker to the subject for discoverability
 		// of a failed query, don't bail-out as we can have results and errors
@@ -266,6 +278,18 @@ class AskParserFunction {
 		);
 
 		return $result;
+	}
+
+	private function hasReachedExpensiveExecutionLimit( $query ) {
+
+		if ( $this->expensiveFuncExecutionWatcher->hasReachedExpensiveLimit( $query ) === false ) {
+			return false;
+		}
+
+		// Adding to error in order to be discoverable
+		$this->addProcessingError( array( 'smw-parser-function-expensive-execution-limit' ) );
+
+		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
 
 	private function addQueryProfile( $query, $format ) {

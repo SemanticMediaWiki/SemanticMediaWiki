@@ -2,10 +2,6 @@
 
 namespace SMW\ParserFunctions;
 
-use SMW\ParserData;
-use SMW\MessageFormatter;
-use SMW\Utils\CircularReferenceGuard;
-
 /**
  * Class that provides the {{#show}} parser function
  *
@@ -17,31 +13,17 @@ use SMW\Utils\CircularReferenceGuard;
 class ShowParserFunction {
 
 	/**
-	 * @var ParserData
+	 * @var AskParserFunction
 	 */
-	private $parserData;
-
-	/**
-	 * @var MessageFormatter
-	 */
-	private $messageFormatter;
-
-	/**
-	 * @var CircularReferenceGuard
-	 */
-	private $circularReferenceGuard;
+	private $askParserFunction;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param ParserData $parserData
-	 * @param MessageFormatter $messageFormatter
-	 * @param CircularReferenceGuard $circularReferenceGuard
+	 * @param AskParserFunction $askParserFunction
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, CircularReferenceGuard $circularReferenceGuard ) {
-		$this->parserData = $parserData;
-		$this->messageFormatter = $messageFormatter;
-		$this->circularReferenceGuard = $circularReferenceGuard;
+	public function __construct( AskParserFunction $askParserFunction ) {
+		$this->askParserFunction = $askParserFunction;
 	}
 
 	/**
@@ -59,16 +41,8 @@ class ShowParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
-
-		$instance = new AskParserFunction(
-			$this->parserData,
-			$this->messageFormatter,
-			$this->circularReferenceGuard
-		);
-
-		$instance->setShowMode( true );
-
-		return $instance->parse( $rawParams );
+		$this->askParserFunction->setShowMode( true );
+		return $this->askParserFunction->parse( $rawParams );
 	}
 
 	/**
@@ -80,7 +54,7 @@ class ShowParserFunction {
 	 * @return string|null
 	 */
 	public function isQueryDisabled() {
-		return $this->messageFormatter->addFromKey( 'smw_iq_disabled' )->getHtml();
+		return $this->askParserFunction->isQueryDisabled();
 	}
 
 }

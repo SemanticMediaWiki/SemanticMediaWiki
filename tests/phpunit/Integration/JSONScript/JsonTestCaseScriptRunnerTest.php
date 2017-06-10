@@ -186,6 +186,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgEntityCollation',
 			'smwgSparqlQFeatures',
 			'smwgUseCategoryRedirect',
+			'smwgQExpensiveThreshold',
+			'smwgQExpensiveExecutionLimit',
 
 			// MW related
 			'wgLanguageCode',
