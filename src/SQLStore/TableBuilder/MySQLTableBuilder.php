@@ -38,7 +38,9 @@ class MySQLTableBuilder extends TableBuilder {
 			'boolean'    => 'TINYINT(1)',
 			'double'     => 'DOUBLE',
 			'integer'    => 'INT(8)',
+			'char long'  => 'VARBINARY(300)',
 			'char nocase'      => 'VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci',
+			'char long nocase' => 'VARCHAR(300) CHARSET utf8 COLLATE utf8_general_ci',
 			'usage count'      => 'INT(8) UNSIGNED',
 			'integer unsigned' => 'INT(8) UNSIGNED'
 		);

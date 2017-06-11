@@ -230,8 +230,10 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 	private function createFilterConditionToMatchRegexPattern( $dataItem, &$joinVariable, $comparator, $pattern ) {
 
+		$flag = $this->compoundConditionBuilder->canUseQFeature( SMW_SPARQL_QF_NOCASE ) ? 'i' : 's';
+
 		if ( $dataItem instanceof DIBlob ) {
-			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
+			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"$flag\")", array() );
 		}
 
 		if ( $dataItem instanceof DIUri ) {
@@ -250,7 +252,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$condition->condition = "?$joinVariable " . $skeyExpElement->getQName(). " ?$filterVariable .\n";
 		$condition->matchElement = "?$joinVariable";
 
-		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"s\")", array() );
+		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"$flag\")", array() );
 
 		$condition->weakConditions = array( $filterVariable => $filterCondition->getCondition() );
 

@@ -37,8 +37,10 @@ class SQLiteTableBuilder extends TableBuilder {
 			'boolean'    => 'TINYINT(1)',
 			'double'     => 'DOUBLE',
 			'integer'    => 'INT(8)',
+			'char long'  => 'VARBINARY(300)',
 			'char nocase'      => 'VARCHAR(255) NOT NULL COLLATE NOCASE',
-			'usage count'      =>'INT(8)',
+			'char long nocase' => 'VARCHAR(300) NOT NULL COLLATE NOCASE',
+			'usage count'      => 'INT(8)',
 			'integer unsigned' => 'INTEGER'
 		);
 

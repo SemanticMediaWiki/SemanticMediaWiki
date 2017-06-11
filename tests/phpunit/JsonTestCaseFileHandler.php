@@ -197,6 +197,20 @@ class JsonTestCaseFileHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 *
+	 * @return booleam
+	 */
+	public function hasSetting( $key ) {
+
+		$settings = $this->getFileContentsFor( 'settings' );
+
+		return isset( $settings[$key] );
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return array|integer|string|boolean
@@ -226,7 +240,8 @@ class JsonTestCaseFileHandler {
 		$constantFeaturesList = array(
 			'smwgSparqlQFeatures',
 			'smwgDVFeatures',
-			'smwgFulltextSearchIndexableDataTypes'
+			'smwgFulltextSearchIndexableDataTypes',
+			'smwgFieldTypeFeatures'
 		);
 
 		foreach ( $constantFeaturesList as $constantFeatures ) {

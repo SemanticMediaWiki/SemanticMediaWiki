@@ -128,6 +128,7 @@ define( 'SMW_SPARQL_QF_REDI', 2 ); // support for inverse property paths to find
 define( 'SMW_SPARQL_QF_SUBP', 4 ); // support for rdfs:subPropertyOf*
 define( 'SMW_SPARQL_QF_SUBC', 8 ); // support for rdfs:subClassOf*
 define( 'SMW_SPARQL_QF_COLLATION', 16 ); // support for use of $smwgEntityCollation
+define( 'SMW_SPARQL_QF_NOCASE', 32 ); // support case insensitive pattern matches
 /**@}*/
 
 /**@{
@@ -209,4 +210,11 @@ define( 'SMW_RF_TEMPLATE_OUTSEP', 2 ); // #2022 Enable 2.5 behaviour for templat
   */
 define( 'SMW_EL_NONE', 0 );
 define( 'SMW_EL_INPROP', 2 ); // New query for EntityLookup::getInProperties
+/**@}*/
+
+/**@{
+  * Constants for $smwgFieldTypeFeatures
+  */
+define( 'SMW_FIELDT_NONE', 0 );
+define( 'SMW_FIELDT_CHAR_NOCASE', 2 ); // Using FieldType::TYPE_CHAR_NOCASE
 /**@}*/

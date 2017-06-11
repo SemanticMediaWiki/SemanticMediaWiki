@@ -50,6 +50,16 @@ class FieldType {
 	/**
 	 * @var string
 	 */
+	const TYPE_CHAR_LONG = 'char long';
+
+	/**
+	 * @var string
+	 */
+	const TYPE_CHAR_LONG_NOCASE = 'char long nocase';
+
+	/**
+	 * @var string
+	 */
 	const TYPE_BOOL = 'boolean';
 
 	/**

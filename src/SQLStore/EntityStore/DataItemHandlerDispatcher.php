@@ -33,12 +33,26 @@ class DataItemHandlerDispatcher {
 	private $handlers = array();
 
 	/**
+	 * @var integer
+	*/
+	private $fieldTypeFeatures = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param SQLStore $store
 	 */
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $fieldTypeFeatures
+	 */
+	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
+		$this->fieldTypeFeatures = $fieldTypeFeatures;
 	}
 
 	/**
@@ -51,11 +65,15 @@ class DataItemHandlerDispatcher {
 	 */
 	public function getHandlerByType( $type ) {
 
-		if ( isset( $this->handlers[$type] ) ) {
-			return $this->handlers[$type];
+		if ( !isset( $this->handlers[$type] ) ) {
+			$this->handlers[$type] = $this->newHandlerByType( $type );
 		}
 
-		return $this->handlers[$type] = $this->newHandlerByType( $type );
+	//	$this->handlers[$type]->setFieldTypeFeatures(
+	//		$this->fieldTypeFeatures
+	//	);
+
+		return $this->handlers[$type];
 	}
 
 	private function newHandlerByType( $type ) {
@@ -94,6 +112,10 @@ class DataItemHandlerDispatcher {
 			default:
 				throw new DataItemHandlerException( "The value \"$type\" is not a valid dataitem ID." );
 		}
+
+		$handler->setFieldTypeFeatures(
+			$this->fieldTypeFeatures
+		);
 
 		return $handler;
 	}

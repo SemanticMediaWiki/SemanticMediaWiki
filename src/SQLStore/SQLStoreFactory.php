@@ -362,6 +362,8 @@ class SQLStoreFactory {
 	 */
 	public function newInstaller() {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 		$options = $this->store->getOptions();
 
@@ -379,6 +381,10 @@ class SQLStoreFactory {
 
 		$tableSchemaManager = new TableSchemaManager(
 			$this->store
+		);
+
+		$tableSchemaManager->setFieldTypeFeatures(
+			$settings->get( 'smwgFieldTypeFeatures' )
 		);
 
 		$installer = new Installer(
@@ -404,7 +410,18 @@ class SQLStoreFactory {
 	 * @return DataItemHandlerDispatcher
 	 */
 	public function newDataItemHandlerDispatcher() {
-		return new DataItemHandlerDispatcher( $this->store );
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$dataItemHandlerDispatcher = new DataItemHandlerDispatcher(
+			$this->store
+		);
+
+		$dataItemHandlerDispatcher->setFieldTypeFeatures(
+			$settings->get( 'smwgFieldTypeFeatures' )
+		);
+
+		return $dataItemHandlerDispatcher;
 	}
 
 	/**
