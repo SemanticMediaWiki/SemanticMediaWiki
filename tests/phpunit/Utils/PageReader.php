@@ -91,4 +91,15 @@ class PageReader {
 		);
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title $title
+	 *
+	 * @return ParserOutput|null
+	 */
+	public function getParserOutputFromEdit( Title $title ) {
+		return $this->getEditInfo( $title )->output;
+	}
+
 }
