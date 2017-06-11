@@ -1,11 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Updater;
 
-use SMW\DeferredCallableUpdate;
+use SMW\Updater\DeferredCallableUpdate;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\DeferredCallableUpdate
+ * @covers \SMW\Updater\DeferredCallableUpdate
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -37,7 +38,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		};
 
 		$this->assertInstanceOf(
-			'\SMW\DeferredCallableUpdate',
+			DeferredCallableUpdate::class,
 			new DeferredCallableUpdate( $callback )
 		);
 	}
@@ -64,6 +65,50 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$instance->pushUpdate();
 
 		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
+	public function testUpdateOnEmptyCallback() {
+
+		$instance = new DeferredCallableUpdate();
+
+		$instance->setLogger( $this->spyLogger );
+		$instance->pushUpdate();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+
+		$this->assertContains(
+			'DeferredCallableUpdate::emptyCallback',
+			$this->spyLogger->getMessagesAsString()
+		);
+	}
+
+	public function testUpdateOnLateCallback() {
+
+		$instance = new DeferredCallableUpdate();
+
+		$test = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'doTest' ) )
+			->getMock();
+
+		$test->expects( $this->once() )
+			->method( 'doTest' );
+
+		$callback = function() use ( $test ) {
+			$test->doTest();
+		};
+
+		$instance->setCallback( $callback );
+
+		$instance->setLogger( $this->spyLogger );
+		$instance->pushUpdate();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+
+		$this->assertContains(
+			'DeferredCallableUpdate::addUpdate',
+			$this->spyLogger->getMessagesAsString()
+		);
 	}
 
 	public function testWaitableUpdate() {
@@ -164,68 +209,21 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
-	public function testUpdateOnTransactionIdle() {
+	public function testStage() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance = new DeferredCallableUpdate();
 
-		$connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
-			->will( $this->returnCallback( function( $callback ) {
-				return call_user_func( $callback );
-			}
-			) );
-
-		$this->testEnvironment->clearPendingDeferredUpdates();
-
-		$test = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'doTest' ) )
-			->getMock();
-
-		$test->expects( $this->once() )
-			->method( 'doTest' );
-
-		$callback = function() use ( $test ) {
-			$test->doTest();
-		};
-
-		$instance = new DeferredCallableUpdate(
-			$callback,
-			$connection
+		$this->assertEquals(
+			'post',
+			$instance->getStage()
 		);
 
-		$instance->waitOnTransactionIdle();
-		$instance->pushUpdate();
+		$instance->asPresend();
 
-		$this->testEnvironment->executePendingDeferredUpdates();
-	}
-
-	public function testUpdateOnTransactionIdleWithMissingConnection() {
-
-		$this->testEnvironment->clearPendingDeferredUpdates();
-
-		$test = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'doTest' ) )
-			->getMock();
-
-		$test->expects( $this->once() )
-			->method( 'doTest' );
-
-		$callback = function() use ( $test ) {
-			$test->doTest();
-		};
-
-		$instance = new DeferredCallableUpdate(
-			$callback
+		$this->assertEquals(
+			'pre',
+			$instance->getStage()
 		);
-
-		$instance->waitOnTransactionIdle();
-		$instance->pushUpdate();
-
-		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
 }

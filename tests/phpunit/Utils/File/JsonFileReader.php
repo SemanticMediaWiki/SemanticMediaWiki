@@ -86,7 +86,15 @@ class JsonFileReader {
 
 	private function decodeJsonFileContentsToArray( $file ) {
 
-		$contents = json_decode( file_get_contents( $file ), true );
+		$json = file_get_contents( $file );
+
+		$json = preg_replace(
+			'~ ("(?:[^\\\"]+|\\\.)*") |' . // preserve strings
+			'/\* (?:[^*]+|\*+(?!/))* \*/ |' .      // strip multi-line comments
+			'//\V* ~sx',                           // strip //-comments
+			'$1', $json );
+
+		$contents = json_decode( $json, true );
 
 		if ( $contents !== null && json_last_error() === JSON_ERROR_NONE ) {
 			return $contents;

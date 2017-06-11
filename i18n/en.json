@@ -166,6 +166,7 @@
 	"smw-wantedproperties-docu": "This page lists [https://www.semantic-mediawiki.org/wiki/Wanted_properties wanted properties] that are used in the wiki but do not have a page describing them. For a differentiated view, see the [[Special:Properties|entire]] or  [[Special:UnusedProperties|unused properties]] special pages.",
 	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|use|uses}})",
 	"smw_purge": "Refresh",
+	"smw-purge-failed": "Refreshing failed",
 	"types": "Types",
 	"smw_types_docu": "List of [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes available datatypes] with each [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] representing a unique set of attributes to describe a value in terms of storage and display characteristics that are hereditary to an assigned property.",
 	"smw-special-types-no-such-type": "The specified data type does not exist",
@@ -236,7 +237,7 @@
 	"smw_browse_hide_incoming": "hide properties that link here",
 	"smw_browse_no_outgoing": "This page has no properties.",
 	"smw_browse_no_incoming": "No properties link to this page.",
-	"smw-browse-from-backend": "Information are currently retrieved from the backend.",
+	"smw-browse-from-backend": "Information is currently being retrieved from the backend.",
 	"smw-browse-intro": "This page provides details about a subject or entity instance, please enter the name of an object to be inspected.",
 	"smw-browse-invalid-subject": "The subject validation returned with a \"$1\" error.",
 	"smw-browse-api-subject-serialization-invalid" : "The subject has an invalid serialization format.",
@@ -549,5 +550,6 @@
 	"smw-format-datatable-previous": "Previous",
 	"smw-format-datatable-sortascending": ": activate to sort column ascending",
 	"smw-format-datatable-sortdescending": ": activate to sort column descending",
-	"smw-category-invalid-redirect-target": "Category \"$1\" contains an invalid redirect target to a non-category namespace."
+	"smw-category-invalid-redirect-target": "Category \"$1\" contains an invalid redirect target to a non-category namespace.",
+	"smw-parser-function-expensive-execution-limit": "The parser function has reached the limit for expensive executions (see [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit])."
 }

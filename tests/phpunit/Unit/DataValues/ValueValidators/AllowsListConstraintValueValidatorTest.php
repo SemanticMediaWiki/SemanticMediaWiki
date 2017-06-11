@@ -179,7 +179,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(
 			array(
-				'2da6400856e4455038d21793670ff9f7' => '[8,"smw_notinenum",null,"VAL1, VAL2, VAL3, VAL4, VAL5, VAL6, VAL7, VAL8, VAL9, VAL0, ...","InvalidAllowedValue"]'
+				'2da6400856e4455038d21793670ff9f7' => '[8,"smw_notinenum","","VAL1, VAL2, VAL3, VAL4, VAL5, VAL6, VAL7, VAL8, VAL9, VAL0, ...","InvalidAllowedValue"]'
 			),
 			$dataValue->getErrors()
 		);

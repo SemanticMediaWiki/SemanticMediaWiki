@@ -8,6 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\EventHandler;
+use SMW\Enum;
 use Title;
 
 /**
@@ -170,6 +171,13 @@ class UpdateJob extends JobBase {
 		$parserData->setOption(
 			$parserData::OPT_FORCED_UPDATE,
 			$this->getParameter( self::FORCED_UPDATE )
+		);
+
+		// Suspend the purge as any preceding parse process most likely has
+		// invalidated the cache for a selected subject
+		$parserData->setOption(
+			Enum::OPT_SUSPEND_PURGE,
+			true
 		);
 
 		$parserData->disableBackgroundUpdateJobs();

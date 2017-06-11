@@ -144,7 +144,6 @@ class SpecialBrowse extends SpecialPage {
 			return Html::rawElement(
 				'div',
 				array(
-					'class' => 'smwb-container',
 					'data-subject' => $this->subjectDV->getDataItem()->getHash(),
 					'data-options' => json_encode( $options )
 				),

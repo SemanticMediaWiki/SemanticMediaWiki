@@ -19,7 +19,8 @@
 			"Cwlin0416",
 			"LNDDYL",
 			"Reke",
-			"Wehwei"
+			"Wehwei",
+			"Wwycheuk"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更易於取得所需的資料 - 不論是對機器''與''人類\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件])",
@@ -231,8 +232,8 @@
 	"smw_result_noresults": "沒有結果。",
 	"smwadmin": "管理函式",
 	"smw-admin-setupsuccess": "儲存引擎已設定。",
-	"smw_smwadmin_return": "返回到 $1。",
-	"smw_smwadmin_updatestarted": "更新語意資料過程開始。\n所有已儲存資料將被按需重建或修復。\n你可以透過本特殊頁面追蹤更新程序。\n\n返回到 $1。",
+	"smw_smwadmin_return": "返回 $1",
+	"smw_smwadmin_updatestarted": "更新語意資料過程開始。\n所有已儲存資料將被按需重建或修復。\n你可以透過本特殊頁面追蹤更新程序。",
 	"smw_smwadmin_updatenotstarted": "已有更新程序正在執行，請勿建立另一個。",
 	"smw_smwadmin_updatestopped": "已停止所有更新程序。",
 	"smw_smwadmin_updatenotstopped": "若要停止更新程序，您必須活化核取方塊以指出是真的很確定。",

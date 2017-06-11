@@ -149,6 +149,11 @@ abstract class SMWDataValue {
 	private $infoLinksProvider = null;
 
 	/**
+	 * @var string
+	 */
+	private $userValue = '';
+
+	/**
 	 * @var DataValueServiceFactory
 	 */
 	protected $dataValueServiceFactory;
@@ -178,6 +183,7 @@ abstract class SMWDataValue {
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
+		$this->userValue = $value;
 
 		$value = CharArmor::removeControlChars(
 			CharArmor::removeSpecialChars( $value )
@@ -540,7 +546,7 @@ abstract class SMWDataValue {
 			return $this->m_dataitem;
 		}
 
-		return new SMWDIError( $this->mErrors );
+		return new SMWDIError( $this->mErrors, $this->userValue );
 	}
 
 	/**

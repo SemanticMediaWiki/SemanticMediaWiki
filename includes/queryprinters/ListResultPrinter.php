@@ -325,7 +325,7 @@ class ListResultPrinter extends ResultPrinter {
 
 		if ( $this->numRows > 0 && $this->isPlainlist() )  {
 			// Use comma between "rows" other than the last one:
-			return ( $this->numRows + 1 < $res->getCount() ) ? $this->listsep : $this->finallistsep;
+			return ( $this->numRows <= $res->getCount() ) ? $this->listsep : $this->finallistsep;
 		}
 
 		if ( $this->rowSortkey !== '' ) {

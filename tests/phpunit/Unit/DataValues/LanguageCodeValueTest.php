@@ -56,8 +56,8 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 		$upperCase->setUserValue( 'EN' );
 
 		$this->assertEquals(
-			$mixedCase,
-			$upperCase
+			$mixedCase->getDataItem(),
+			$upperCase->getDataItem()
 		);
 
 		$this->assertEquals(

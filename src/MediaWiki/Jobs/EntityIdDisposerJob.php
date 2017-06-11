@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use Hooks;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use SMW\Iterators\ChunkedIterator;
 use Title;
 
 /**
@@ -14,6 +15,11 @@ use Title;
  * @author mwjames
  */
 class EntityIdDisposerJob extends JobBase {
+
+	/**
+	 * Commit chunk size
+	 */
+	const CHUNK_SIZE = 200;
 
 	/**
 	 * @var PropertyTableIdReferenceDisposer
@@ -77,8 +83,24 @@ class EntityIdDisposerJob extends JobBase {
 	}
 
 	private function doDisposeAll( $outdatedEntitiesResultIterator ) {
-		foreach ( $outdatedEntitiesResultIterator as $row ) {
-			$this->dispose( $row );
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
+
+		$chunkedIterator = $applicationFactory->getIteratorFactory()->newChunkedIterator(
+			$outdatedEntitiesResultIterator,
+			self::CHUNK_SIZE
+		);
+
+		foreach ( $chunkedIterator as $chunk ) {
+
+			$transactionTicket = $connection->getEmptyTransactionTicket( __METHOD__ );
+
+			foreach ( $chunk as $row ) {
+				$this->dispose( $row );
+			}
+
+			$connection->commitAndWaitForReplication( __METHOD__, $transactionTicket );
 		}
 	}
 

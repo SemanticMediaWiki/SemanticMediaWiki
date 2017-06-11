@@ -9,15 +9,18 @@ A bug is the occurrence of an unintended or unanticipated behaviour that causes 
 
 ### Feature requests
 
-A feature request is a new or altered behaviour of an existing functionality with a request containing a detailed description of the expected behaviour to avoid misconceptions in the process of an implementation. The following notes are provided to aid the inquiry and help prioritize a request for project members.
+A feature request is a new, or altered behaviour of an existing functionality.
+
+A request should contain a detailed description of the expected behaviour in order to avoid misconceptions in the process of an implementation. The following notes are provided to aid the process and help prioritize a request for project members.
 
 * Why is the feature requested or relevant?
 * What does the feature solve? (e.g. it addresses a generalizable behaviour, it solves a specific use case etc.)
-* Examples are required and demonstrate the expected behaviour by:
-  * Being simple, clear, and targeted towards the feature and not rely on any other external functionality (such as other parser functions or extensions) and it should be anticipated that those examples are being transformed into related [integration tests](https://www.semantic-mediawiki.org/wiki/Help:Integration_tests))
+* Examples demonstrate the expected behaviour by:
+  * Being simple, clear, and targeted towards the feature and not rely on any other external functionality (such as other parser functions or extensions).
   * In case of a modified behaviour, examples demonstrate the old and new behaviour together with an explanation of the expected difference
   * In case of a new behaviour, examples are written down to outline the expected new behaviour (best practice is a step-by-step description) together with a [use case](https://en.wikipedia.org/wiki/Use_case)
-  * Practical examples are made available via the [sandbox](https://sandbox.semantic-mediawiki.org)
+* Examples made available via the [sandbox](https://sandbox.semantic-mediawiki.org).
+* Examples should be adaptable so they can be used as part of an [integration test](https://www.semantic-mediawiki.org/wiki/Help:Integration_tests).
  
 ### Improve documentation
 

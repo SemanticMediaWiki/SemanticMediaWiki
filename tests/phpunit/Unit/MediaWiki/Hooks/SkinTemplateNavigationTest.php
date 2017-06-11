@@ -46,11 +46,19 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 		$user->expects( $this->atLeastOnce() )
 			->method( 'isAllowed' )
 			->will( $this->returnValue( true ) );
+		
+		$output = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$skinTemplate->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $output ) );
+			
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
 			->will( $this->returnValue( $user ) );

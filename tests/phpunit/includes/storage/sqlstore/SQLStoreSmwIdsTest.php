@@ -103,6 +103,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$selectRow = new \stdClass;
 		$selectRow->smw_id = 9999;
+		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -138,6 +139,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$selectRow = new \stdClass;
 		$selectRow->smw_id = 9999;
+		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 
@@ -185,6 +187,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow = new \stdClass;
 		$selectRow->smw_id = 0;
 		$selectRow->o_id = 0;
+		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 

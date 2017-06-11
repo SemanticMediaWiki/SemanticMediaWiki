@@ -23,7 +23,8 @@
 			"Dan Koehl",
 			"Macofe",
 			"Rockyfelle",
-			"Nemo bis"
+			"Nemo bis",
+			"Skalman"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -175,7 +176,7 @@
 	"smw-wantedproperty-template": "$1 (använd $2 {{PLURAL:$2|gång|gånger}})",
 	"smw_purge": "Uppdatera",
 	"types": "Typer",
-	"smw_types_docu": "Här följer en lista med de datatyper som egenskaper kan ha",
+	"smw_types_docu": "Lista över [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tillgängliga datatyper] där varje [https://www.semantic-mediawiki.org/wiki/Help:Datatype typ] representerar en unik uppsättning attribut för att beskriva ett värde i termer av hur det lagras och visas, som ärvs av en tilldelad egenskap.",
 	"smw-special-types-no-such-type": "Den angivna datatypen finns inte",
 	"semanticstatistics": "Semantisk statistik",
 	"smw_semstats_text": "Denna wiki innehåller '''$1''' {{PLURAL:$1|egenskapsvärde|egenskapsvärden}} för totalt '''$2''' [[Special:Properties|{{PLURAL:$2|egenskap|olika egenskaper}}]].\n'''$3''' {{PLURAL:$3|egenskap|egenskaper}} har en egen sida, och den avsedda datatypen är specificerad för '''$4''' av dessa.\nNågra av de existerande egenskaperna kan vara [[Special:UnusedProperties|oanvända egenskaper]].\nEgenskaper som fortfarande saknar en egen sida finns på [[Special:WantedProperties|listan över önskade egenskaper]].",
@@ -258,14 +259,14 @@
 	"smw-admin-statistics-job-docu": "Jobbstatistiken visar information om schemalagda Semantic MediaWiki-jobb som inte ännu har utförts. Antalet jobb kan vara något felaktiga eller innehålla misslyckade försök, läs [https://www.mediawiki.org/wiki/Manual:Job_queue manualen] för mer information.",
 	"smw-admin-setupsuccess": "Lagringsmotorn har satts upp.",
 	"smw_smwadmin_return": "Gå tillbaka till $1",
-	"smw_smwadmin_updatestarted": "Nu har en ny process för att uppdatera semantiska data påbörjats.\nAlla semantiska data kommer att återuppbyggas och repareras där så behövs.\nDu kan följa processen på den här specialsidan.\n\nÅtergå till $1.",
-	"smw_smwadmin_updatenotstarted": "Process för att uppdatera pågår.\nStartar ingen ny process.\n\nÅtergå till $1.",
-	"smw_smwadmin_updatestopped": "Alla uppdateringsprocesser har avslutats.\n\nÅtergå till $1.",
-	"smw_smwadmin_updatenotstopped": "För att avsluta uppdaterings-processen måste du aktivera kryss-rutan.\n\nÅtergå till $1.",
-	"smw-admin-docu": "Denna specialsida hjälper dig under installation och uppgradering av <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a>.\nKom ihåg att säkerhetskopiera värdefull data innan du kör administrativa funktioner!",
+	"smw_smwadmin_updatestarted": "Nu har en ny process för att uppdatera semantiska data påbörjats.\nAlla semantiska data kommer att återuppbyggas och repareras där så behövs.\nDu kan följa processen på den här specialsidan.",
+	"smw_smwadmin_updatenotstarted": "Process för att uppdatera pågår.\nStartar ingen ny process.",
+	"smw_smwadmin_updatestopped": "Alla uppdateringsprocesser har avslutats.",
+	"smw_smwadmin_updatenotstopped": "För att avsluta uppdaterings-processen måste du aktivera kryss-rutan.",
+	"smw-admin-docu": "Denna specialsida hjälper dig under installation, uppgradering, underhåll och användning av <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a> och tillhandahåller också ytterligare administrativa funktioner och uppgifter, såväl som statistik.\nKom ihåg att säkerhetskopiera värdefull data innan du kör administrativa funktioner!",
 	"smw-admin-db": "Databasinstallation och -uppgradering",
-	"smw-admin-dbdocu": "Semantic MediaWiki behöver några tillägg till MediaWiki-databasen för att kunna lagra semantiska data.\nFunktionen nedan ser till att din databas konfigureras korrekt.\nÄndringarna som görs i detta steg påverkar inte resten av MediaWiki-databasen, och kan lätt göras ogjorda om så önskas.\nDenna installationsfunktion kan köras flera gånger utan att orsaka någon skada, men det är nödvändigt att köra den en gång vid installation eller uppgradering.",
-	"smw-admin-permissionswarn": "Om operationen misslyckas och visar SQL-fel så har din användare för databasen (kolla inställningarna i filen LocalSettings.php) förmodligen inte tillräckliga rättigheter.\nDet finns tre sätt att åtgärda detta: Ge rättigheter till användaren att skapa och radera tabeller, ändra temporärt användaren till ''root'' i LocalSettings.php, eller använd underhålls-scriptet <code>setupStore.php</code>, vilken kan använda rättigheterna för en administratör.",
+	"smw-admin-dbdocu": "Semantic MediaWiki kräver några tillägg i MediaWiki-databasen för att kunna lagra semantiska data.\nFunktionen nedan ser till att din databas konfigureras korrekt.\nÄndringarna som görs i detta steg påverkar inte resten av MediaWiki-databasen, och kan lätt göras ogjorda om så önskas.\nDenna installationsfunktion kan köras flera gånger utan att orsaka någon skada, men det är bara nödvändigt att köra den en gång vid installation eller uppgradering.",
+	"smw-admin-permissionswarn": "Om operationen misslyckas och visar SQL-fel så har din användare för databasen (kolla inställningarna i filen \"LocalSettings.php\") förmodligen inte tillräckliga rättigheter.\nDet finns tre sätt att åtgärda detta: Ge rättigheter till användaren att skapa och radera tabeller, ändra temporärt användaren till ''root'' i \"LocalSettings.php\", eller använd underhålls-scriptet <code>setupStore.php</code>, vilken kan använda rättigheterna för en administratör.",
 	"smw-admin-dbbutton": "Initialisera eller uppgradera tabeller",
 	"smw-admin-announce": "Meddela att din wiki finns",
 	"smw-admin-announce-text": "Om din wiki är offentligt kan du registrera den på <a href=\"https://wikiapiary.com\">WikiApiary</a>, wikin som listar upp wikis.",
@@ -280,7 +281,7 @@
 	"smw_smwadmin_datarefreshstop": "Stoppa denna uppdatering",
 	"smw_smwadmin_datarefreshstopconfirm": "Ja, jag är {{GENDER:$1|säker}}.",
 	"smw-admin-support": "Få support",
-	"smw-admin-supportdocu": "Det finns flera ställen att få hjälp på, om du får problem:",
+	"smw-admin-supportdocu": "Diverse resurser som kan hjälpa dig, om du får problem:",
 	"smw-admin-installfile": "Om du har problem med din installation, börja med att läsa instruktionerna i <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">installationsfilen</a>.",
 	"smw-admin-smwhomepage": "Den kompletta användardokumentationen till Semantic MediaWiki finns på <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Fel kan rapporteras till <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
@@ -387,5 +388,6 @@
 	"smw-format-datatable-last": "Sista",
 	"smw-format-datatable-next": "Nästa",
 	"smw-format-datatable-previous": "Föregående",
-	"smw-format-datatable-sortascending": ": aktivera för att sortera kolumnen stigande"
+	"smw-format-datatable-sortascending": ": aktivera för att sortera kolumnen stigande",
+	"smw-category-invalid-redirect-target": "Kategorin \"$1\" innehåller en ogiltigt omdirigeringsmål till en namnrymd som inte är en kategori."
 }

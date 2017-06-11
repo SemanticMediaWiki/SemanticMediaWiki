@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\JSONScript;
 
+use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\MediaWiki\MediaWikiNsContentReader;
@@ -130,7 +131,17 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			isset( $case['namespace'] ) ? constant( $case['namespace'] ) : NS_MAIN
 		);
 
-		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $subject->getTitle() )->output;
+		$title = $subject->getTitle();
+
+		if ( $title === null ) {
+			throw new RuntimeException( 'Could not create Title object for subject page "' . $case['subject'] . '".' );
+		}
+
+		if ( ! $title->exists() ) {
+			throw new RuntimeException( 'Subject page "' . $case['subject'] . '" does not exist.' );
+		}
+
+		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $title )->output;
 
 		if ( isset( $case['assert-output']['onOutputPage'] ) && $case['assert-output']['onOutputPage'] ) {
 			$context = new \RequestContext();

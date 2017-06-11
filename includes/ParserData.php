@@ -389,6 +389,11 @@ class ParserData {
 			return $applicationFactory->getMediaWikiLogger()->info( __METHOD__ . " (Found rev:$latestRevID, skip update)" );
 		}
 
+		$this->semanticData->setOption(
+			Enum::OPT_SUSPEND_PURGE,
+			$this->getOption( Enum::OPT_SUSPEND_PURGE )
+		);
+
 		$storeUpdater = $applicationFactory->newStoreUpdater( $this->semanticData );
 
 		$storeUpdater->isEnabledWithUpdateJob(
@@ -397,19 +402,24 @@ class ParserData {
 
 		DeferredCallableUpdate::releasePendingUpdates();
 
-		$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $storeUpdater ) {
+		$transactionalDeferredCallableUpdate = $applicationFactory->newTransactionalDeferredCallableUpdate( function() use( $storeUpdater ) {
 			$storeUpdater->doUpdate();
 		} );
 
-		$deferredCallableUpdate->setOrigin(
-			__METHOD__ . ( $this->origin !== '' ? ' from ' . $this->origin : '' ) . ': ' . $this->semanticData->getSubject()->getHash()
+		$transactionalDeferredCallableUpdate->setOrigin(
+			array(
+				__METHOD__,
+				$this->origin,
+				$this->semanticData->getSubject()->getHash()
+			)
 		);
 
-		$deferredCallableUpdate->enabledDeferredUpdate(
+		$transactionalDeferredCallableUpdate->enabledDeferredUpdate(
 			$enabledDeferredUpdate
 		);
 
-		$deferredCallableUpdate->pushUpdate();
+		$transactionalDeferredCallableUpdate->commitWithTransactionTicket();
+		$transactionalDeferredCallableUpdate->pushUpdate();
 
 		return true;
 	}

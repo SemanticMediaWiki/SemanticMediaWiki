@@ -10,6 +10,7 @@ use SMW\ParserFunctions\ShowParserFunction;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\ParserFunctions\DeclareParserFunction;
+use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
 use SMW\Utils\CircularReferenceGuard;
 use Parser;
 
@@ -73,10 +74,12 @@ class ParserFunctionFactory {
 	 */
 	public function newAskParserFunction( Parser $parser ) {
 
+		$applicationFactory =  ApplicationFactory::getInstance();
+
 		$circularReferenceGuard = new CircularReferenceGuard( 'ask-parser' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
+		$parserData = $applicationFactory->newParserData(
 			$parser->getTitle(),
 			$parser->getOutput()
 		);
@@ -92,10 +95,23 @@ class ParserFunctionFactory {
 			$parser->getTargetLanguage()
 		);
 
+		$expensiveFuncExecutionWatcher = new ExpensiveFuncExecutionWatcher(
+			$parserData
+		);
+
+		$expensiveFuncExecutionWatcher->setExpensiveThreshold(
+			$applicationFactory->getSettings()->get( 'smwgQExpensiveThreshold' )
+		);
+
+		$expensiveFuncExecutionWatcher->setExpensiveExecutionLimit(
+			$applicationFactory->getSettings()->get( 'smwgQExpensiveExecutionLimit' )
+		);
+
 		$askParserFunction = new AskParserFunction(
 			$parserData,
 			$messageFormatter,
-			$circularReferenceGuard
+			$circularReferenceGuard,
+			$expensiveFuncExecutionWatcher
 		);
 
 		return $askParserFunction;
@@ -110,29 +126,8 @@ class ParserFunctionFactory {
 	 */
 	public function newShowParserFunction( Parser $parser ) {
 
-		$circularReferenceGuard = new CircularReferenceGuard( 'show-parser' );
-		$circularReferenceGuard->setMaxRecursionDepth( 2 );
-
-		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$parser->getTitle(),
-			$parser->getOutput()
-		);
-
-		if ( isset( $parser->getOptions()->smwAskNoDependencyTracking ) ) {
-			$parserData->setOption( $parserData::NO_QUERY_DEPENDENCY_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
-		}
-
-		// Avoid possible actions during for example stashedit etc.
-		$parserData->setOption( 'request.action', $GLOBALS['wgRequest']->getVal( 'action' ) );
-
-		$messageFormatter = new MessageFormatter(
-			$parser->getTargetLanguage()
-		);
-
 		$showParserFunction = new ShowParserFunction(
-			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->newAskParserFunction( $parser )
 		);
 
 		return $showParserFunction;

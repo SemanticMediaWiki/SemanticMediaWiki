@@ -220,7 +220,7 @@
 	"smw_browse_hide_incoming": "여기에 링크 속성을 숨기기",
 	"smw_browse_no_outgoing": "이 문서에는 속성이 없습니다.",
 	"smw_browse_no_incoming": "이 문서에 링크한 속성이 없습니다.",
-	"smw-browse-from-backend": "정보는 현재 백엔드에서 검색됩니다.",
+	"smw-browse-from-backend": "정보는 현재 백엔드에서 검색되고 있습니다.",
 	"smw-browse-js-disabled": "자바스크립트가 비활성화되어 있거나 사용할 수 없는 것으로 의심되며, 지원하는 브라우저를 사용할 것을 권고합니다. 다른 옵션은 [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi $smwgBrowseByApi] 설정 문서에서 논의됩니다.",
 	"smw_inverse_label_default": "$1입니다",
 	"smw_inverse_label_property": "역 속성 레이블",
@@ -373,5 +373,6 @@
 	"smw-format-datatable-first": "처음",
 	"smw-format-datatable-last": "마지막",
 	"smw-format-datatable-next": "다음",
-	"smw-format-datatable-previous": "이전"
+	"smw-format-datatable-previous": "이전",
+	"smw-category-invalid-redirect-target": "\"$1\" 분류는 분류가 아닌 이름공간에 대한 잘못된 넘겨주기 대상을 포함하고 있습니다."
 }
