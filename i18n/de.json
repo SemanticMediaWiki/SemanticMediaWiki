@@ -179,6 +179,7 @@
 	"smw-wantedproperties-docu": "Diese Seite listet alle [https://www.semantic-mediawiki.org/wiki/Wanted_properties gewünschten Attribute] auf. Sie werden im Wiki verwendet, wurden indes noch nicht auf einer Seite im Namensraum „Attribut:“ beschrieben. Für eine differenzierte Übersicht, siehe auch die weiteren Spezialseiten „[[Special:Properties|Attribute]]“ und „[[Special:UnusedProperties|Verwaiste Attribute]]“.",
 	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|Vorkommen}})",
 	"smw_purge": "Neu laden",
+	"smw-purge-failed": "Das Neuladen ist fehlgeschlagen.",
 	"types": "Datentypen",
 	"smw_types_docu": "Dies ist eine [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes Liste aller Datentypen], die Attributen zugewiesen werden können. Jeder [https://www.semantic-mediawiki.org/wiki/Help:Datatype Datentyp] beschreibt eindeutige Merkmale zur Datenspeicherung und -anzeige eines Datenwerts für ein Attribut, dem der entsprechende Datentyp zugeordnet wurde.",
 	"smw-special-types-no-such-type": "Der angegebene Datentyp ist nicht vorhanden.",
@@ -557,5 +558,6 @@
 	"smw-format-datatable-previous": "Vorherige",
 	"smw-format-datatable-sortascending": ": aktivieren, um die Spalte aufsteigend zu sortieren",
 	"smw-format-datatable-sortdescending": ": aktivieren, um die Spalte absteigend zu sortieren",
-	"smw-category-invalid-redirect-target": "Die Kategorie „$1“ enthält ein Weiterleitungsziel, das sich nicht im Namensraum Kategorie befindet und daher ungültig ist."
+	"smw-category-invalid-redirect-target": "Die Kategorie „$1“ enthält ein Weiterleitungsziel, das sich nicht im Namensraum Kategorie befindet und daher ungültig ist.",
+	"smw-parser-function-expensive-execution-limit": "Die Parserfunktion hat die Grenze für aufwendige Ausführungen erreicht. Siehe hierzu die Seite zum [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit Konfigurationsparameter <code>$smwgQExpensiveExecutionLimit]</code>."
 }

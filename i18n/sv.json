@@ -175,6 +175,7 @@
 	"smw-wantedproperties-docu": "Denna sida listar [https://www.semantic-mediawiki.org/wiki/Wanted_properties önskade egenskaper] som används i wikin men har ännu inte en sida som beskriver dem. För en annan vy, se specialsidorna [[Special:Properties|alla]] eller  [[Special:UnusedProperties|oanvända egenskaper]].",
 	"smw-wantedproperty-template": "$1 (använd $2 {{PLURAL:$2|gång|gånger}})",
 	"smw_purge": "Uppdatera",
+	"smw-purge-failed": "Uppdatering misslyckades",
 	"types": "Typer",
 	"smw_types_docu": "Lista över [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tillgängliga datatyper] där varje [https://www.semantic-mediawiki.org/wiki/Help:Datatype typ] representerar en unik uppsättning attribut för att beskriva ett värde i termer av hur det lagras och visas, som ärvs av en tilldelad egenskap.",
 	"smw-special-types-no-such-type": "Den angivna datatypen finns inte",

@@ -97,6 +97,7 @@
 	"wantedproperties": "Gewënschten Eegeschaften",
 	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|mol benotzt|mol benotzt}})",
 	"smw_purge": "Aktualiséieren",
+	"smw-purge-failed": "Aktualisatioun huet net funktionnéiert",
 	"types": "Typen",
 	"smw-special-types-no-such-type": "Den Datentyp deen ugi gouf gëtt et net",
 	"semanticstatistics": "Semantesch Statistiken",

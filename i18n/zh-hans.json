@@ -175,6 +175,7 @@
 	"smw-wantedproperties-docu": "此页面列举在wiki中使用，但没有页面描述的[https://www.semantic-mediawiki.org/wiki/Wanted_properties 需要的属性]。要查看不同视图，请参见[[Special:Properties|完整]]或[[Special:UnusedProperties|未使用属性]]特殊页面。",
 	"smw-wantedproperty-template": "$1（$2{{PLURAL:$2|次使用}}）",
 	"smw_purge": "刷新",
+	"smw-purge-failed": "刷新失败",
 	"types": "类型",
 	"smw_types_docu": "[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes 可用数据类型]的列表，每种[https://www.semantic-mediawiki.org/wiki/Help:Datatype 类型]代表唯一的属性集，以描述存储方面的值，并显示遗传至分配属性的特征。",
 	"smw-special-types-no-such-type": "指定的数据类型不存在",
@@ -552,5 +553,6 @@
 	"smw-format-datatable-previous": "上一个",
 	"smw-format-datatable-sortascending": ":激活按升序进行列排序",
 	"smw-format-datatable-sortdescending": ":激活按降序进行列排序",
-	"smw-category-invalid-redirect-target": "分类“$1”包含无效的链至非分类名字空间的重定向目标。"
+	"smw-category-invalid-redirect-target": "分类“$1”包含无效的链至非分类名字空间的重定向目标。",
+	"smw-parser-function-expensive-execution-limit": "解析器参数已达到高开销实现的限制（参见[https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit]）。"
 }

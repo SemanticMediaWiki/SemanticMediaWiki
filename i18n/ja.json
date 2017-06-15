@@ -19,7 +19,8 @@
 			"Macofe",
 			"Ridmevo",
 			"Ochaochaocha3",
-			"Nemo bis"
+			"Nemo bis",
+			"Puntti ja"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -236,9 +237,9 @@
 	"smw_smwadmin_return": "$1 に戻る",
 	"smw_smwadmin_updatestarted": "意味的データを最新の状態にするための新しい更新プロセスを開始しました。\n格納済みのデータはすべて必要に応じて再構築または修復されます。\nこの特別ページで更新の状況を追うことができます。\n\n$1に戻る。",
 	"smw_smwadmin_updatenotstarted": "既に実行中の更新プロセスがあります。\n新たに作成しないでください。\n\n$1に戻る。",
-	"smw_smwadmin_updatestopped": "既存のすべての更新プロセスは停止されました。\n\n$1に戻る。",
-	"smw_smwadmin_updatenotstopped": "実行中の更新プロセスを停止するには、本当に理解していることを示すためにチェックボックスを選択する必要があります。\n\n$1に戻る。",
-	"smw-admin-docu": "この特別ページは <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a> のインストールとアップグレードを支援します。\n管理機能を実行する前に、重要なデータをバックアップするようにしてください。",
+	"smw_smwadmin_updatestopped": "既存のすべての更新プロセスは停止されました。",
+	"smw_smwadmin_updatenotstopped": "実行中の更新プロセスを停止するには、本当に理解していることを示すためにチェックボックスを選択する必要があります。",
+	"smw-admin-docu": "この特別ページは <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a> のインストール、アップグレード、保守および使用を支援します。また、統計と同様にさらなる管理者向け機能およびタスクを提供します。\n管理機能を実行する前に、重要なデータをバックアップするようにしてください。",
 	"smw-admin-db": "データベースのインストールおよびアップグレード",
 	"smw-admin-dbdocu": "Semantic MediaWiki は意味的データを格納するため、MediaWiki のデータベースに対していくつかの拡張を必要とします。\n以下の機能はあなたのデータベースが適切に構築されていることを確実にするものです。\nこの作業でなされた変更は MediaWiki のデータベースのその他の部分には影響を与えず、必要なら簡単に取り消しができます。\nこの機能は複数回実行しても何の害もありませんが、インストールもしくはアップグレード時に一度だけ実行すれば十分です。",
 	"smw-admin-permissionswarn": "SQL エラーを出して処理が失敗する場合、おそらくあなたのウィキのデータベース ユーザー (LocalSettings.php を確認してください) に必要な権限がありません。\nLocalSettings.php に一時的にデータベースの root のログイン情報を記入してこのユーザーにテーブルを作成および削除するための追加権限を与えるか、<code>setupStore.php</code> の認証情報を使用できるメンテナンススクリプト <code>setupStore.php</code> を使用してください。",
