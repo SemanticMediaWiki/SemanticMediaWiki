@@ -196,6 +196,7 @@
 	"smw-wantedproperties-docu": "Cette page liste [https://www.semantic-mediawiki.org/wiki/Wanted_properties les propriétés demandées] qui sont utilisées dans le wiki mais n’ont pas de page les décrivant. Pour une vue différenciée, voyez les pages spéciales [[Special:Properties|propriétés complètes]] ou  [[Special:UnusedProperties|inutilisées]].",
 	"smw-wantedproperty-template": "$1 ($2 utilisation{{PLURAL:$2||s}})",
 	"smw_purge": "Actualiser",
+	"smw-purge-failed": "Echec dans la mise à jour",
 	"types": "Types de données",
 	"smw_types_docu": "Ceci est une liste des [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes types de données disponibles], pour chacun des [https://www.semantic-mediawiki.org/wiki/Help:Datatype types] représentant un ensemble unique d’attributs pour décrire une valeur en termes de stockage et de caractéristiques d’affichage, qui sont héritables pour une propriété affectée.",
 	"smw-special-types-no-such-type": "Le type de données spécifié n’existe pas.",
@@ -424,7 +425,7 @@
 	"smw-datavalue-number-nullnotallowed": "\"$1\" rendu avec \"NULL\" qui n'est pas une valeur numérique autorisée.",
 	"smw-editpage-annotation-enabled": "Cette page prend en charge les annotations sémantiques à l’intérieur d’un texte (par exemple <nowiki>« [[Is specified as::World Heritage Site]] »</nowiki>) afin de bâtir un contenu structuré et permettant d’y faire des requêtes, cette fonction étant assurée par Semantic MediaWiki. Pour une description complète sur la façon d’utiliser les annotations ou la fonction d’analyse #ask, veuillez voir les pages d’aide [https://www.semantic-mediawiki.org/wiki/Help:Getting_started Pour commencer], [https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation Annotation à l’intérieur d’un texte] et [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries Requêtes incorporées].",
 	"smw-editpage-annotation-disabled": "Cette page n’autorise pas les annotations de sémantique dans le texte en raison des restrictions de l’espace de noms. Les détails sur la façon d’activer l’espace de noms peuvent être trouvés sur la page d’aide de la [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration].",
-	"smw-editpage-property-annotation-enabled": " Cette propriété peut être prolongée utilisant des annotations sémantiques pour spécifier un datatype (par exemple <nowiki> » [[Has type::Page]] « </nowiki>) ou d'autres déclarations de soutien (par exemple <nowiki> » [[Subproperty of::dc:date]] « </nowiki>). Pour une description sur la façon dont augmenter cette page, voyez la [déclaration de https://www.semantic-mediawiki.org/wiki/Help:Property_declaration d'une propriété] ou [liste de https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes de types de données disponibles] page d'aide.",
+	"smw-editpage-property-annotation-enabled": "Cet attribut peut être étendu en utilisant des annotations sémantiques afin de spécifier un type de données (par exemple <nowiki> « [[Has type::Page]] » </nowiki>) ou d'autres déclarations secondaires (par exemple <nowiki> « [[Subproperty of::dc:date]] » </nowiki>). Pour une description sur la façon de faire pour incrémenter cette page, veuillez consulter les pages d'aide concernant [https://www.semantic-mediawiki.org/wiki/Help:Property_declaration la déclaration d'attribut] ou [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes la liste des types de données disponibles].",
 	"smw-editpage-property-annotation-disabled": "Cette propriété ne peut pas être étendue avec une annotation de genre datatype (par exemple <nowiki> \"[[Has type::Page]]\"</nowiki>) parce qu'elle est déjà prédéfinie (voyez la page d'aide des [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriétés spéciales] pour plus d'information).",
 	"smw-editpage-concept-annotation-enabled": "Ce concept peut être étendu en utilisant la fonction #concept de l’analyseur. Pour une description de la manière dont utiliser #concept, voyez la page d’aide [https://www.semantic-mediawiki.org/wiki/Help:Concepts concept].",
 	"log-name-smw": "Sémantique du journal MediaWiki",
@@ -574,5 +575,6 @@
 	"smw-format-datatable-previous": "Précédent",
 	"smw-format-datatable-sortascending": ": activer pour trier la colonne dans l'ordre croissant",
 	"smw-format-datatable-sortdescending": ": activer pour trier la colonne en ordre décroissant",
-	"smw-category-invalid-redirect-target": "La catégorie « $1 » contient une cible de redirection non valide vers un espace de noms hors catégorie."
+	"smw-category-invalid-redirect-target": "La catégorie « $1 » contient une cible de redirection non valide vers un espace de noms hors catégorie.",
+	"smw-parser-function-expensive-execution-limit": "La fonction analyseur a atteint le temps limite autorisé pour son exécution (voir [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit])."
 }

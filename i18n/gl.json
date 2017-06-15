@@ -162,6 +162,7 @@
 	"smw-wantedproperties-docu": "Esta páxina lista [https://www.semantic-mediawiki.org/wiki/Wanted_properties propiedades solicitadas] que son utilizadas na wiki, pero que non posúen unha páxina descrivíndoas. Para uunha visión diferenciada, consulte as páxinas especiais con [[Special:Properties|tódalas propiedades]] ou coas [[Special:UnusedProperties|propiedades non utilizadas]].",
 	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|uso|usos}})",
 	"smw_purge": "Refrescar",
+	"smw-purge-failed": "Fallou o refresco",
 	"types": "Tipos",
 	"smw_types_docu": "Lista dos [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tipos de datos dispoñibles] con cada [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo] representando un conxunto único de atributos para describir un valor en termos características de almacenamento e visualización que son heredadas nunha propiedade asignada.",
 	"smw-special-types-no-such-type": "O tipo de datos especificado non existe",

@@ -160,6 +160,7 @@
 	"smw-wantedproperties-docu": "다음 속성은 위키에 사용하지만 아직 설명하는 문서가 없습니다.",
 	"smw-wantedproperty-template": "$1 ($2개 {{PLURAL:$2|사용}})",
 	"smw_purge": "새로 고침",
+	"smw-purge-failed": "새로 고침 실패",
 	"types": "유형 목록",
 	"smw_types_docu": "다음은 속성에 할당할 수 있는 모든 데이터 유형의 목록입니다.",
 	"smw-special-types-no-such-type": "지정한 데이터 유형이 존재하지 않습니다",
