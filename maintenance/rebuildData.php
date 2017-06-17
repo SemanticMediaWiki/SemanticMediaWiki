@@ -132,6 +132,9 @@ class RebuildData extends \Maintenance {
 			$maintenanceHelper->setGlobalToValue( 'wgShowExceptionDetails', true );
 			$maintenanceHelper->setGlobalToValue( 'wgShowSQLErrors', true );
 			$maintenanceHelper->setGlobalToValue( 'wgShowDBErrorBacktrace', true );
+		} else {
+			$maintenanceHelper->setGlobalToValue( 'wgDebugLogFile', '' );
+			$maintenanceHelper->setGlobalToValue( 'wgDebugLogGroups', [] );
 		}
 
 		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
