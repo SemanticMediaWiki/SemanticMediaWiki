@@ -175,6 +175,15 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function optimize( Table $table ) {
+		$this->doOptimize( $table->getName() );
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $event
@@ -214,6 +223,11 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 * @param string $tableName
 	 */
 	abstract protected function doDropTable( $tableName );
+
+	/**
+	 * @param string $tableName
+	 */
+	abstract protected function doOptimize( $tableName );
 
 	// #1978
 	// http://php.net/manual/en/function.array-search.php

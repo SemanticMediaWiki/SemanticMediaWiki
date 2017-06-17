@@ -83,6 +83,17 @@ interface TableBuilder extends MessageReporterAware {
 	public function drop( Table $table );
 
 	/**
+	 * Performs analysis on a key distribution and stores the distribution so
+	 * that the query planner can use these statistics to help determine the
+	 * most efficient execution plans for queries.
+	 *
+	 * @since 3.0
+	 *
+	 * @param Table $table
+	 */
+	public function optimize( Table $table );
+
+	/**
 	 * Database backends often have different types that need to be used
 	 * repeatedly in (Semantic) MediaWiki. This function provides the
 	 * preferred type (as a string) for various common kinds of columns.

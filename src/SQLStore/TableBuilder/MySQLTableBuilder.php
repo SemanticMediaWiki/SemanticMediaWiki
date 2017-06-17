@@ -338,4 +338,28 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function doOptimize( $tableName ) {
+
+		$this->reportMessage( "   Table $tableName ...\n" );
+
+		// https://dev.mysql.com/doc/refman/5.7/en/analyze-table.html
+		// Performs a key distribution analysis and stores the distribution for
+		// the named table or tables
+		$this->reportMessage( "   ... analyze" );
+		$this->connection->query( 'ANALYZE TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+
+		// https://dev.mysql.com/doc/refman/5.7/en/optimize-table.html
+		// Reorganizes the physical storage of table data and associated index data,
+		// to reduce storage space and improve I/O efficiency
+		$this->reportMessage( ", optimize " );
+		$this->connection->query( 'OPTIMIZE TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+
+		$this->reportMessage( "done.\n" );
+	}
+
 }

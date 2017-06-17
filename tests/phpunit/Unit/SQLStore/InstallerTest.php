@@ -56,7 +56,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableSchemaManager->expects( $this->once() )
+		$tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
 			->will( $this->returnValue( array( $table ) ) );
 
@@ -98,7 +98,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableSchemaManager->expects( $this->once() )
+		$tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
 			->will( $this->returnValue( array( $table ) ) );
 
