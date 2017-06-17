@@ -207,4 +207,48 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		$instance->cleanUpTableEntriesById( 42 );
 	}
 
+	public function testCleanUpOnTransactionIdleAvoidOnSubobject() {
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getDataItemById' ) )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getDataItemById' )
+			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->never() )
+			->method( 'onTransactionIdle' );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'delete' );
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$store
+		);
+
+		$instance->waitOnTransactionIdle();
+		$instance->cleanUpTableEntriesById( 42 );
+	}
+
 }
