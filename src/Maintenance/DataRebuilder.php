@@ -396,11 +396,7 @@ class DataRebuilder {
 			return;
 		}
 
-		$this->reportMessage( "Removing table entries (marked for deletion).\n" );
-
-		foreach ( $outdatedEntitiesResultIterator as $row ) {
-			$entityIdDisposerJob->dispose( $row );
-		}
+		$this->reportMessage( "Removing table entries (marked as outdated or deleted).\n" );
 
 		$chunkedIterator = $applicationFactory->getIteratorFactory()->newChunkedIterator(
 			$outdatedEntitiesResultIterator,
