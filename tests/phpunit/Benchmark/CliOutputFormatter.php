@@ -8,9 +8,10 @@ namespace SMW\Tests\Benchmark;
  *
  * @author mwjames
  */
-class OutputCliFormatter {
+class CliOutputFormatter {
 
 	const FORMAT_TREE = 'format.tree';
+	const FORMAT_JSON = 'format.json';
 
 	/**
 	 * @var string
@@ -37,7 +38,7 @@ class OutputCliFormatter {
 			return $this->doFormatAsTree( $report );
 		}
 
-		return json_encode( $report, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		return json_encode( $report, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
 	}
 
 	private function doFormatAsTree( $report, $label = '', $level = 1 ) {
