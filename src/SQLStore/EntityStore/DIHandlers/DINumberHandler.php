@@ -51,6 +51,13 @@ class DINumberHandler extends DataItemHandler {
 		return array(
 			// QueryEngine::getInstanceQueryResult
 			's_id,p_id,o_sortkey',
+
+			// QueryEngine::getInstanceQueryResult
+			// `smw_di_number` AS t5 ON t2.s_id=t5.s_id WHERE ... ((t5.o_sortkey>='700') AND t5.p_id='120') ORDER BY ... t5.o_sortkey
+			'o_sortkey,p_id,s_id',
+
+			// SMWSQLStore3Readers::getPropertySubjects
+			'p_id,s_id'
 		);
 	}
 

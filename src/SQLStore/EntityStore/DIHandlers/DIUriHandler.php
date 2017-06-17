@@ -48,6 +48,18 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
+	public function getTableIndexes() {
+		return array(
+			// SMWSQLStore3Readers::getPropertySubjects
+			'p_id,s_id'
+		);
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getWhereConds( DataItem $dataItem ) {
 		return array( 'o_serialized' => rawurldecode( $dataItem->getSerialization() ) );
 	}

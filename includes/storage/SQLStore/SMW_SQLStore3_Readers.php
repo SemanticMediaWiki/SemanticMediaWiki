@@ -507,7 +507,7 @@ class SMWSQLStore3Readers {
 
 		$res = $db->select(
 			$from,
-			'DISTINCT ' . $select,
+			' ' . $select,
 			$where . $this->store->getSQLConditions( $requestOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
 			__METHOD__,
 			$this->store->getSQLOptions( $requestOptions, 'smw_sort' )

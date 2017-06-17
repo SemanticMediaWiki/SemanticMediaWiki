@@ -166,6 +166,10 @@ class TableSchemaManager {
 		// ID lookup
 		$table->addIndex( 'smw_title,smw_namespace,smw_iw,smw_subobject' );
 
+		// SMW\SQLStore\QueryEngine\QueryEngine::getInstanceQueryResult
+		// ... ORDER BY t0.smw_sort ASC,t0.smw_title ASC,t0.smw_subobject
+		$table->addIndex( 'smw_sort,smw_title,smw_subobject,smw_iw' );
+
 		// InProperty lookup
 		// $table->addIndex( 'smw_iw,smw_id,smw_title,smw_sortkey,smw_sort' );
 

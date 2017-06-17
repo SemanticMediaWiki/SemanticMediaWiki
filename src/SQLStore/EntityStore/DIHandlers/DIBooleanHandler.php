@@ -45,6 +45,21 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
+	public function getTableIndexes() {
+		return array(
+			// SMWSQLStore3Readers::getPropertySubjects
+			'p_id,s_id',
+
+			// SMWSQLStore3Readers::getPropertySubjects
+			'p_id,o_value,s_id'
+		);
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getWhereConds( DataItem $dataItem ) {
 		return array(
 			'o_value' => $dataItem->getBoolean() ? 1 : 0,
