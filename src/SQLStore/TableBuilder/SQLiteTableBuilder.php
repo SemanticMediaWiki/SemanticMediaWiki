@@ -305,4 +305,20 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function doOptimize( $tableName ) {
+
+		$this->reportMessage( "   Table $tableName ...\n" );
+
+		// https://sqlite.org/lang_analyze.html
+		$this->reportMessage( "   ... analyze " );
+		$this->connection->query( 'ANALYZE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+
+		$this->reportMessage( "done.\n" );
+	}
+
 }

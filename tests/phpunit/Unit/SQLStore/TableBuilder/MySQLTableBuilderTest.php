@@ -150,4 +150,29 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->drop( $table );
 	}
 
+	public function testOptimizeTable() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'query' ) )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'mysql' ) );
+
+		$connection->expects( $this->at( 1 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ANALYZE TABLE "foo"' ) );
+
+		$connection->expects( $this->at( 2 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'OPTIMIZE TABLE "foo"' ) );
+
+		$instance = MySQLTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$instance->optimize( $table );
+	}
+
 }

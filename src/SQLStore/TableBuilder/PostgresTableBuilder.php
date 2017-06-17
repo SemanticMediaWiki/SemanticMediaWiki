@@ -356,6 +356,22 @@ EOT;
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function doOptimize( $tableName ) {
+
+		$this->reportMessage( "   Table $tableName ...\n" );
+
+		// https://www.postgresql.org/docs/9.0/static/sql-analyze.html
+		$this->reportMessage( "   ... analyze " );
+		$this->connection->query( 'ANALYZE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+
+		$this->reportMessage( "done.\n" );
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}

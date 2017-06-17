@@ -173,4 +173,25 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->checkOn( $instance::POST_CREATION );
 	}
 
+	public function testOptimizeTable() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'query' ) )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'postgres' ) );
+
+		$connection->expects( $this->at( 1 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ANALYZE "foo"' ) );
+
+		$instance = PostgresTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$instance->optimize( $table );
+	}
+
 }

@@ -115,6 +115,13 @@ class Installer implements MessageReporter, MessageReporterAware {
 		$this->tableIntegrityExaminer->checkOnPostCreation( $this->tableBuilder );
 
 		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
+		$messageReporter->reportMessage( "\nRunning table optimization.\n" );
+
+		foreach ( $this->tableSchemaManager->getTables() as $table ) {
+			$this->tableBuilder->optimize( $table );
+		}
+
+		$messageReporter->reportMessage( "\nOptimization completed.\n" );
 
 		Hooks::run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', array( $this->tableBuilder, $messageReporter ) );
 
