@@ -215,6 +215,12 @@ class PropertyTableIdReferenceDisposer {
 			return;
 		}
 
+		// Skip any reset for subobjects where it is expected that the base
+		// subject is cleaning up all related cache entries
+		if ( $subject->getSubobjectName() !== '' ) {
+			return;
+		}
+
 		if ( $onTransactionIdle ) {
 			return $this->connection->onTransactionIdle( function() use( $subject ) {
 				$this->triggerCleanUpEvents( $subject, false );
@@ -224,7 +230,7 @@ class PropertyTableIdReferenceDisposer {
 		$eventHandler = EventHandler::getInstance();
 
 		$dispatchContext = $eventHandler->newDispatchContext();
-		$dispatchContext->set( 'subject', $subject->asBase() );
+		$dispatchContext->set( 'subject', $subject );
 		$dispatchContext->set( 'context', 'PropertyTableIdReferenceDisposal' );
 
 		$eventHandler->getEventDispatcher()->dispatch(
