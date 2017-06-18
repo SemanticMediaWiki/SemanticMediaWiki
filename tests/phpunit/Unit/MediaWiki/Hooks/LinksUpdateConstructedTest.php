@@ -124,12 +124,17 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__, NS_HELP );
 		$parserOutput = new ParserOutput();
 
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserData->expects( $this->never() )
-			->method( 'getSemanticData' );
+		$parserData->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
 
 		$parserData->expects( $this->once() )
 			->method( 'updateStore' );
