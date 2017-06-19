@@ -56,7 +56,7 @@
 	"smw_printername_rdf": "Exportação para RDF",
 	"smw_printername_category": "Categoria",
 	"validator-type-class-SMWParamSource": "texto",
-	"smw-paramdesc-limit": "O número máximo de resultados a devolver",
+	"smw-paramdesc-limit": "O número máximo de resultados a serem devolvidos",
 	"smw-paramdesc-offset": "A posição do primeiro resultado",
 	"smw-paramdesc-headers": "Apresentar os nomes dos cabeçalhos e propriedades",
 	"smw-paramdesc-mainlabel": "A etiqueta a atribuir ao nome da página principal",
