@@ -24,7 +24,8 @@
 			"Macofe",
 			"Rockyfelle",
 			"Nemo bis",
-			"Skalman"
+			"Skalman",
+			"Josve05a"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -380,6 +381,7 @@
 	"smw-format-datatable-info": "Visar _START_ till _END_ av _TOTAL_ poster",
 	"smw-format-datatable-infoempty": "Visar 0 till 0 av 0 poster",
 	"smw-format-datatable-infofiltered": "(filtrerat från _MAX_ totala poster)",
+	"smw-format-datatable-infothousands": "&nbsp;",
 	"smw-format-datatable-lengthmenu": "Visar _MENU_ poster",
 	"smw-format-datatable-loadingrecords": "Läser in...",
 	"smw-format-datatable-processing": "Bearbetar...",
