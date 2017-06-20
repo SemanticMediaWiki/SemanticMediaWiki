@@ -496,7 +496,7 @@ class ListResultPrinter extends ResultPrinter {
 		if ( $this->mFormat === 'template' && $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
 			$params['valuesep'] = array(
 				'message' => 'smw-paramdesc-sep',
-				'default' => '',
+				'default' => ',',
 			);
 		}
 
