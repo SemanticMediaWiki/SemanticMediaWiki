@@ -684,15 +684,18 @@ $specialPageAliases['pt'] = array(
 $specialPageAliases['pt-br'] = array(
 	'Ask' => array( 'Consultar' ),
 	'Browse' => array( 'Navegar' ),
+	'Concepts' => array( 'Conceitos' ),
 	'ExportRDF' => array( 'ExportarRDF' ),
 	'PageProperty' => array( 'Propriedade_de_página' ),
+	'ProcessingErrorList' => array( 'Lista_de_erro_de_processamento' ),
 	'Properties' => array( 'Propriedades' ),
-	'SMWAdmin' => array( 'SMWAdmin' ),
-	'SearchByProperty' => array( 'Pesquisa_por_propriedade' ),
+	'PropertyLabelSimilarity' => array( 'Similaridade_de_nome_de_propriedade' ),
+	'SearchByProperty' => array( 'Pesquisar_por_propriedade' ),
 	'SemanticStatistics' => array( 'Estatísticas_de_semântica' ),
+	'SMWAdmin' => array( 'SemanticMediaWiki', 'SMWAdmin' ),
 	'Types' => array( 'Tipos' ),
-	'URIResolver' => array( 'URIResolver' ),
 	'UnusedProperties' => array( 'Propriedades_não_utilizadas' ),
+	'URIResolver' => array( 'URIResolver' ),
 	'WantedProperties' => array( 'Propriedades_desejadas' ),
 );
 
