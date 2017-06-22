@@ -94,6 +94,7 @@
 	"smw_iq_disabled": "الاستعلامات الدلالية مُعطّلة في هذه الويكي.",
 	"smw_iq_moreresults": "…مزيد من النتائج",
 	"smw_parseerror": "القيمة المعطاة لم يتم فهمها.",
+	"smw_decseparator": "٫",
 	"smw_kiloseparator": "،",
 	"smw_notitle": "\"$1\" لا يمكن أن يكون اسم صفحة في هذه الويكي.",
 	"smw_noproperty": "\"$1\" لا يمكن أن يكون اسم خصيصة في هذه الويكي.",
