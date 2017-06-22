@@ -12,7 +12,8 @@
 			"SuperPotato",
 			"Macofe",
 			"Jon Harald Søby",
-			"Nemo bis"
+			"Nemo bis",
+			"Kghbln"
 		]
 	},
 	"smw-desc": "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -97,6 +98,7 @@
 	"smw_iq_moreresults": "… flere resultater",
 	"smw_parseerror": "Oppgitt verdi ble ikke forstått.",
 	"smw_decseparator": ",",
+	"smw_kiloseparator": ".",
 	"smw_notitle": "«$1» kan ikke brukes som sidenavn på denne wikien.",
 	"smw_noproperty": "\"$1\" kan ikke brukes som en egenskap i denne wikien.",
 	"smw_wrong_namespace": "Kun sider i navnerommet «$1» er tillatte her.",
