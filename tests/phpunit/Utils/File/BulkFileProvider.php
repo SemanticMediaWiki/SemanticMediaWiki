@@ -75,7 +75,7 @@ class BulkFileProvider {
 		foreach ( new \RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
 			if ( strtolower( substr( $fileInfo->getFilename(), -( strlen( $extension ) + 1 ) ) ) === ( '.' . $extension ) ) {
 
-				// Use a short cut to be sortable while keep files with same name
+				// Use a shortcut to be sortable while keep files with same name
 				// in different directories distinct
 				$files[$fileInfo->getFilename() . ' (' . substr( md5( $fileInfo->getPathname() ), 0, 5 ) .')'] = $fileInfo->getPathname();
 			}
