@@ -337,6 +337,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				)
 		);
 
+		// #1
 		$provider[] = array(
 			array(
 				'title'    => $title,
@@ -356,7 +357,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				)
 		);
 
-		// #1 NS_SPECIAL, processed but no annotations
+		// #2 NS_SPECIAL, processed but no annotations
 		$title = Title::newFromText( 'Ask', NS_SPECIAL );
 
 		$provider[] = array(
@@ -381,7 +382,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				)
 		);
 
-		// #2 NS_SPECIAL, not processed
+		// #3 NS_SPECIAL, not processed, Title::isSpecial returns false
 		$title = Title::newFromText( 'Foo', NS_SPECIAL );
 
 		$provider[] = array(
@@ -393,6 +394,31 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
 					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
+				),
+				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
+					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
+					' [[foo::9001]] et Donec.',
+				),
+				array(
+					'resultText' => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
+						' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
+						' [[foo::9001]] et Donec.',
+					'propertyCount' => 0
+				)
+		);
+
+		// #4 NS_SPECIAL, not processed, invalid smwgEnabledSpecialPage setting
+		$title = Title::newFromText( 'Foobar', NS_SPECIAL );
+
+		$provider[] = array(
+			array(
+				'title'    => $title,
+				'settings' => array(
+					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+					'smwgEnabledInTextAnnotationParserStrictMode' => true,
+					'smwgLinksInValues' => false,
+					'smwgInlineErrors'  => true,
+					'smwgEnabledSpecialPage' => false
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
 					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
