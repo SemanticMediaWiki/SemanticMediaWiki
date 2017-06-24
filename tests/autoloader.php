@@ -26,23 +26,34 @@ if ( array_search( '--debug', $GLOBALS['argv'] ) === false && array_search( '--d
 	$GLOBALS['wgDebugLogFile'] = '';
 }
 
-$gitHead = array();
+$gitHead = array(
+	'smw' => '',
+	'mw'  => ''
+);
 
 if ( class_exists( 'GitInfo' ) ) {
 	$gitHead['mw'] = substr( GitInfo::headSHA1(), 0, 7 );
 
+	if ( $gitHead['mw'] !== '' ) {
+		$gitHead['mw'] .= ', ';
+	}
+
 	$gitInfo = new GitInfo( __DIR__ . '/..' );
 	$gitHead['smw'] = substr( $gitInfo->getHeadSHA1(), 0, 7 );
+
+	if ( $gitHead['smw'] !== '' ) {
+		$gitHead['smw'] .= ', ';
+	}
 }
 
 // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
-print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", $version . ' (' .  ( isset( $gitHead['smw'] ) ? $gitHead['smw'] . ', ' : '' ) . implode( ', ', SemanticMediaWiki::getEnvironment() ) . ')' );
+print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", $version . ' (' . $gitHead['smw'] . implode( ', ', SemanticMediaWiki::getEnvironment() ) . ')' );
 // @codingStandardsIgnoreEnd
 
 if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
-	print sprintf( "%-20s%s\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (Extension vendor autoloader)" );
+	print sprintf( "%-20s%s\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (" . $gitHead['mw'] . "Extension vendor autoloader)" );
 } elseif ( is_readable( $path = __DIR__ . '/../../../vendor/autoload.php' ) ) {
-	print sprintf( "%-20s%s\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (" .  ( isset( $gitHead['mw'] ) ? $gitHead['mw'] . ', ' : '' ) . "MediaWiki vendor autoloader)" );
+	print sprintf( "%-20s%s\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (" . $gitHead['mw'] . "MediaWiki vendor autoloader)" );
 } else {
 	die( 'To run the test suite it is required that packages are installed using Composer.' );
 }
