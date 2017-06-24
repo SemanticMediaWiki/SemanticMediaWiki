@@ -11,6 +11,7 @@ use SMW\Query\Language\ValueDescription;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
+use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
@@ -98,6 +99,9 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testHierarchyPattern() {
 
+		$engineOptions = new EngineOptions();
+		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBP );
+
 		$property = new DIProperty( 'Foo' );
 
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
@@ -111,7 +115,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
 		$compoundConditionBuilder->setPropertyHierarchyLookup( $propertyHierarchyLookup );
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );
