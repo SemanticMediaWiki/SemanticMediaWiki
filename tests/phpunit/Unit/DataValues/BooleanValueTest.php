@@ -126,4 +126,17 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRecognizeCanonicalForm() {
+
+		$instance = new BooleanValue();
+		$instance->setOption( BooleanValue::OPT_CONTENT_LANGUAGE, 'el' );
+
+		$instance->setUserValue( 'true' );
+
+		$this->assertEquals(
+			'true',
+			$instance->getShortWikiText()
+		);
+	}
+
 }

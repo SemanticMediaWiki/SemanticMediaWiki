@@ -191,9 +191,9 @@ class BooleanValue extends DataValue {
 			$boolvalue = true;
 		} elseif ( $lcv === '0' ) {
 			$boolvalue = false;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_true_words', $contentLanguage ), true ) ) {
+		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_true_words', $contentLanguage, 'true' ), true ) ) {
 			$boolvalue = true;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_false_words', $contentLanguage ), true ) ) {
+		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_false_words', $contentLanguage, 'false' ), true ) ) {
 			$boolvalue = false;
 		} else {
 			$this->addErrorMsg(
@@ -233,12 +233,16 @@ class BooleanValue extends DataValue {
 		return reset( $vals );
 	}
 
-	private function getBooleanWordsFrom( $msgKey, $languageCode = null ) {
+	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ) {
 
 		$vals = explode(
 			',',
 			Message::get( $msgKey, Message::TEXT, $languageCode )
 		);
+
+		if ( $canonicalForm !== null ) {
+			$vals[] = $canonicalForm;
+		}
 
 		return $vals;
 	}
