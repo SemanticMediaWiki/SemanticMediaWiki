@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Query\Language\ClassDescription;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
@@ -87,6 +88,9 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testHierarchyPattern() {
 
+		$engineOptions = new EngineOptions();
+		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBC );
+
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
@@ -104,7 +108,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
 		$compoundConditionBuilder->setPropertyHierarchyLookup( $propertyHierarchyLookup );
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );

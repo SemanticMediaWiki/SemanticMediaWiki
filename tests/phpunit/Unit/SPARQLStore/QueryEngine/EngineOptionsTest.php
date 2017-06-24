@@ -30,8 +30,7 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new EngineOptions();
 
-		$this->assertInternalType(
-			$expected,
+		$this->assertNotNull(
 			$instance->get( $setting )
 		);
 	}

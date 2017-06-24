@@ -61,7 +61,11 @@
 		},
 		"wgContLang": "en",
 		"smwgQSubpropertyDepth": 10,
-		"smwgQSubcategoryDepth": 10
+		"smwgQSubcategoryDepth": 10,
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
 	},
 	"meta": {
 		"skip-on": {
