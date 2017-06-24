@@ -253,6 +253,11 @@ annotations etc.) to follow a predefined structure.
 It is also possible to [import](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/TestCases/p-0211.json) larger text passages or [upload files](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/TestCases/p-0705.json)
 for a test scenario.
 
+When creating test scenarios, use disinct names and subjects to ensure that other
+tests will not interfer with the expected results. It may also be of advantage to split
+the setup of data (e.g. `Example/Test/1`) from the actual test subject (e.g. `Example/Test/Q.1`)
+to avoid conflicating comparisons or false positive results during the assertion process.
+
 <pre>
 "setup": [
 	{
@@ -438,10 +443,10 @@ debug phase:
 such as a file name ( e.g. `s-0014.json`) to restrict the execution of a test which
 is mostly done when running from an IDE editor
 * The command line allows to invoke a filter argument to specify a case such as
-`composer phpunit tests/phpunit/Integration/JSONScript/JsonTestCaseScriptRunnerTest -- --filter 's-0014.json'`
+`composer integration -- --filter 's-0014.json'`
 
 <pre>
-$  composer phpunit tests/phpunit/Integration/JSONScript/JsonTestCaseScriptRunnerTest -- --filter 's-0014.json'
+$  composer integration -- --filter 's-0014.json'
 Using PHP 5.6.8
 
 Semantic MediaWiki: 2.5.0-alpha (SMWSQLStore3, mysql)
