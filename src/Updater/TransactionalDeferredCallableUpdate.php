@@ -76,7 +76,7 @@ class TransactionalDeferredCallableUpdate extends DeferredCallableUpdate {
 	 * @since 3.0
 	 */
 	public function commitWithTransactionTicket() {
-		if ( $this->isCommandLineMode === false ) {
+		if ( $this->isCommandLineMode === false && $this->isDeferrableUpdate === true ) {
 			$this->transactionTicket = $this->connection->getEmptyTransactionTicket( $this->getOrigin() );
 		}
 	}
