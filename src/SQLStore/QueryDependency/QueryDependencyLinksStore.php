@@ -429,8 +429,9 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 		$title = $subject->getTitle();
 
+		// https://phabricator.wikimedia.org/T167943
 		if ( !isset( $suppressUpdateCache[$hash] ) && $title !== null ) {
-			$suppressUpdateCache[$hash] = $title->getTouched() + $this->skewFactorForDependencyUpdateInSeconds;
+			$suppressUpdateCache[$hash] = wfTimestamp( TS_MW, $title->getTouched() ) + $this->skewFactorForDependencyUpdateInSeconds;
 		}
 
 		// Check whether the query has already been registered and only then

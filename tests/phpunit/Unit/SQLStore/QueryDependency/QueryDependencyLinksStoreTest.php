@@ -508,6 +508,26 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testdoUpdateDependenciesByFromQueryResult() {
 
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getTouched' )
+			->will( $this->returnValue( 10 ) );
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subject->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$subject->expects( $this->any() )
+			->method( 'getHash' )
+			->will( $this->returnValue( 'Foo' ) );
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -541,7 +561,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getDependencyListFrom' )
-			->will( $this->returnValue( array( null, DIWikiPage::newFromText( 'Foo' ) ) ) );
+			->will( $this->returnValue( array( null, DIWikiPage::newFromText( __METHOD__ ) ) ) );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -572,7 +592,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->will( $this->returnValue( $subject ) );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
@@ -757,6 +777,18 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->once() )
 			->method( 'getTouched' )
 			->will( $this->returnValue( wfTimestamp( TS_MW ) + 60 ) );
+
+		$provider[] = array(
+			$title
+		);
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getTouched' )
+			->will( $this->returnValue( '2017-06-15 08:36:55+00' ) );
 
 		$provider[] = array(
 			$title
