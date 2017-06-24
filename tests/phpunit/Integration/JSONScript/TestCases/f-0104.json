@@ -128,7 +128,7 @@
 			"subject": "Example/F0104/Q.6",
 			"assert-output": {
 				"to-contain": [
-					"(I)Example/F0104/1:123 456Example/F0104/2:abc defExample/F0104/3:001 0011(O)"
+					"(I)Example/F0104/1:123, 456Example/F0104/2:abc, defExample/F0104/3:001, 0011(O)"
 				]
 			}
 		},
