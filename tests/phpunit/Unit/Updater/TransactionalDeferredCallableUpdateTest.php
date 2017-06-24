@@ -265,4 +265,74 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
+	public function testCommitWithTransactionTicketOnDeferrableUpdate() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'getEmptyTransactionTicket' );
+
+		$this->testEnvironment->clearPendingDeferredUpdates();
+
+		$test = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'doTest' ) )
+			->getMock();
+
+		$test->expects( $this->once() )
+			->method( 'doTest' );
+
+		$callback = function() use ( $test ) {
+			$test->doTest();
+		};
+
+		$instance = new TransactionalDeferredCallableUpdate(
+			$callback,
+			$connection
+		);
+
+		$instance->isDeferrableUpdate( true );
+		$instance->commitWithTransactionTicket();
+		$instance->pushUpdate();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
+	public function testCommitWithTransactionTicketOnNonDeferrableUpdate() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->never() )
+			->method( 'getEmptyTransactionTicket' );
+
+		$this->testEnvironment->clearPendingDeferredUpdates();
+
+		$test = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'doTest' ) )
+			->getMock();
+
+		$test->expects( $this->once() )
+			->method( 'doTest' );
+
+		$callback = function() use ( $test ) {
+			$test->doTest();
+		};
+
+		$instance = new TransactionalDeferredCallableUpdate(
+			$callback,
+			$connection
+		);
+
+		$instance->isDeferrableUpdate( false );
+		$instance->commitWithTransactionTicket();
+		$instance->pushUpdate();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
 }

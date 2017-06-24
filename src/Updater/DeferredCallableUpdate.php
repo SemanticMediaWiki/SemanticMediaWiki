@@ -41,7 +41,12 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	/**
 	 * @var boolean
 	 */
-	private $isDeferrableUpdate = true;
+	protected $isDeferrableUpdate = true;
+
+	/**
+	 * @var boolean
+	 */
+	protected $isCommandLineMode = false;
 
 	/**
 	 * @var boolean
@@ -62,11 +67,6 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @var string|null
 	 */
 	private $fingerprint = null;
-
-	/**
-	 * @var boolean
-	 */
-	protected $isCommandLineMode = false;
 
 	/**
 	 * @var array
