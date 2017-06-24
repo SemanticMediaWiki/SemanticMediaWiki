@@ -49,10 +49,10 @@ class InternalParseBeforeLinks {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array $enabledSpecialPage
+	 * @param array|boolean $enabledSpecialPage
 	 */
-	public function setEnabledSpecialPage( array $enabledSpecialPage ) {
-		$this->enabledSpecialPage = $enabledSpecialPage;
+	public function setEnabledSpecialPage( $enabledSpecialPage ) {
+		$this->enabledSpecialPage = (array)$enabledSpecialPage;
 	}
 
 	/**
@@ -93,8 +93,9 @@ class InternalParseBeforeLinks {
 			return true;
 		}
 
+		// #2529
 		foreach ( $this->enabledSpecialPage as $specialPage ) {
-			if ( $title->isSpecial( $specialPage ) ) {
+			if ( is_string( $specialPage ) && $title->isSpecial( $specialPage ) ) {
 				return true;
 			}
 		}
