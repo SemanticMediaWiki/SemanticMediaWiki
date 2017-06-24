@@ -74,14 +74,7 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 			$linksUpdate->getParserOutput()
 		);
 
-		$isEmpty = $parserData->getSemanticData()->isEmpty();
-
-		$this->log( 'LinksUpdateConstructed' . ' on ' . $title->getPrefixedDBkey() );
-
-		$this->log( 'LinksUpdateConstructed' . ' isEmpty: ' . (int)$isEmpty );
-		$this->log( 'LinksUpdateConstructed' . ' properties: ' . serialize( $parserData->getSemanticData()->getProperties() ) );
-
-		if ( $this->isSemanticEnabledNamespace( $title ) && $isEmpty ) {
+		if ( $this->isSemanticEnabledNamespace( $title ) && $parserData->getSemanticData()->isEmpty() ) {
 			$this->updateEmptySemanticData( $parserData, $title );
 		}
 
@@ -105,11 +98,9 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 		// EnqueueableDataUpdate which creates updates as JobSpecification
 		// (refreshLinksPrioritized) and posses a possibility of running an
 		// update more than once for the same RevID
-		if ( !$isEmpty ) {
-			$revId = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
-			$this->log( 'LinksUpdateConstructed' . ' markUpdate: ' . $revId );
-			$parserData->markUpdate( $revId );
-		}
+		$parserData->markUpdate(
+			$title->getLatestRevID( Title::GAID_FOR_UPDATE )
+		);
 
 		return true;
 	}
