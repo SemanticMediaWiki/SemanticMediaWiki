@@ -65,7 +65,7 @@
 				};
 				order.push( [
 					$.inArray( val, column.list ), // Find matchable index from the list
-					column.order[i] === undefined ? 'desc' : orderMap[column.order[i]]
+					column.order[i] === undefined ? 'asc' : orderMap[column.order[i]]
 				] );
 			} );
 
