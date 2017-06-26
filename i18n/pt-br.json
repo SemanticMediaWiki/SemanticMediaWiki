@@ -112,7 +112,7 @@
 	"smw_iq_moreresults": "… mais resultados",
 	"smw_parseerror": "O valor fornecido não foi compreendido.",
 	"smw_decseparator": ",",
-	"smw_kiloseparator": "&nbsp;",
+	"smw_kiloseparator": ".",
 	"smw_notitle": "\"$1\" não pode ser utilizado como nome de página neste wiki.",
 	"smw_noproperty": "\"$1\" não pode ser utilizado como um nome de propriedade neste wiki.",
 	"smw_wrong_namespace": "Apenas páginas no domínio \"$1\" são permitidas aqui.",
