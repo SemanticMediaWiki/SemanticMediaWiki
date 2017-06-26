@@ -105,6 +105,8 @@
 	"smw_iq_disabled": "As consultas semânticas foram impossibilitadas nesta wiki.",
 	"smw_iq_moreresults": "… mais resultados",
 	"smw_parseerror": "O valor fornecido não foi compreendido.",
+	"smw_decseparator": ",",
+	"smw_kiloseparator": "&nbsp;",
 	"smw_notitle": "“$1” não pode ser usado como nome de uma página nesta wiki.",
 	"smw_noproperty": "“$1” não pode ser usado como nome de uma propriedade nesta wiki.",
 	"smw_wrong_namespace": "Só são permitidas aqui páginas do espaço nominal \"$1\".",
