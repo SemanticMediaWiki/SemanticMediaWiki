@@ -18,7 +18,8 @@
 			"Alan ffm",
 			"WTM",
 			"Devwebtel",
-			"Nemo bis"
+			"Nemo bis",
+			"InternerowyGołąb"
 		]
 	},
 	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
@@ -83,6 +84,7 @@
 	"smw-paramdesc-searchlabel": "Treść linku do kolejnych wyników",
 	"smw-paramdesc-named_args": "Nazwa argumentu przekazana do szablonu",
 	"smw-paramdesc-export": "Opcje eksportu",
+	"smw-paramdesc-source": "Alternatywne źródło zapytania",
 	"smw-paramdesc-jsonsyntax": "Składnia JSON, która będzie używana",
 	"smw_iq_disabled": "Niestety, w tym wiki wyłączono możliwość tworzenia zapytań w artykułach.",
 	"smw_iq_moreresults": "&hellip; dalsze wyniki",
