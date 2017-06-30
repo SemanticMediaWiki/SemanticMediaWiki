@@ -43,7 +43,7 @@ class QueryEngineDatabaseConnectionProvider implements DBConnectionProvider {
 		global $wgDBprefix;
 		$connection->setDBPrefix( $wgDBprefix );
 
-		$connection->resetTransactionProfiler();
+		$connection->resetTransactionProfiler( $this->resetTransactionProfiler );
 
 		return $connection;
 	}
