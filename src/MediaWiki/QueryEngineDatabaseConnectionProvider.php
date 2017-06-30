@@ -6,7 +6,6 @@ namespace SMW\MediaWiki;
 use SMW\DBConnectionProvider;
 
 /**
- * Wikia Change -> whole file
  * QueryEngineDatabase use slave for read and write operation.
  * There is no write in QueryEngine but ->query() use writeConnection.
  * Query needs to create temporary tables and insert data to it.
@@ -19,8 +18,6 @@ class QueryEngineDatabaseConnectionProvider implements DBConnectionProvider {
 	/**
 	 * Returns the database connection.
 	 * Initialization of this connection is done if it was not already initialized.
-	 *
-	 * @since 0.1
 	 */
 	public function getConnection() {
 		if ($this->connection === null) {
@@ -32,8 +29,6 @@ class QueryEngineDatabaseConnectionProvider implements DBConnectionProvider {
 
 	/**
 	 * Releases the connection if doing so makes any sense resource wise.
-	 *
-	 * @since 0.1
 	 */
 	public function releaseConnection() {
 		$this->connection = null;
