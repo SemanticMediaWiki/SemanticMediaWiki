@@ -32,17 +32,17 @@ $gitHead = array(
 );
 
 if ( class_exists( 'GitInfo' ) ) {
-	$gitHead['mw'] = substr( GitInfo::headSHA1(), 0, 7 );
+	$gitHead['mw'] = GitInfo::headSHA1();
 
-	if ( $gitHead['mw'] !== '' ) {
-		$gitHead['mw'] .= ', ';
+	if ( $gitHead['mw'] ) {
+		$gitHead['mw'] = substr( $gitHead['mw'], 0, 7 ) . ', ';
 	}
 
 	$gitInfo = new GitInfo( __DIR__ . '/..' );
-	$gitHead['smw'] = substr( $gitInfo->getHeadSHA1(), 0, 7 );
+	$gitHead['smw'] = $gitInfo->getHeadSHA1();
 
-	if ( $gitHead['smw'] !== '' ) {
-		$gitHead['smw'] .= ', ';
+	if ( $gitHead['smw'] ) {
+		$gitHead['smw'] = substr( $gitHead['smw'], 0, 7 ) . ', ';
 	}
 }
 
