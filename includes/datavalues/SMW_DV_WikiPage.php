@@ -410,8 +410,14 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getWikiValue() {
-		return ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) .
-			( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
+
+		if ( $this->getTypeID() === '_wpp' || $this->m_fixNamespace == NS_MAIN ) {
+			$text = $this->getPrefixedText();
+		} else {
+			$text = $this->getText();
+		}
+
+		return $text . ( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
 	}
 
 	public function getHash() {

@@ -96,7 +96,7 @@ class ValueFormatter {
 
 		$html = $dataValue->getLongHTMLText( $linker );
 
-		if ( $dataValue->getTypeID() === '_wpg' || $dataValue->getTypeID() === '__sob' ) {
+		if ( in_array( $dataValue->getTypeID(), [ '_wpg', '_wpp', '__sob'] ) ) {
 			$html .= "&#160;" . Infolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $linker );
 		} elseif ( $incoming && $propertyValue->isVisible() ) {
 			$html .= "&#160;" . Infolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $propertyValue->getDataItem()->getLabel(), 'smwsearch' )->getHTML( $linker );
