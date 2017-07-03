@@ -542,6 +542,7 @@
 	"smw-format-datatable-info": "显示_TOTAL_条记录，从_START_至_END_",
 	"smw-format-datatable-infoempty": "显示0条记录，从0至0",
 	"smw-format-datatable-infofiltered": "（从_MAX_总记录中过滤）",
+	"smw-format-datatable-infothousands": ",",
 	"smw-format-datatable-lengthmenu": "显示_MENU_记录",
 	"smw-format-datatable-loadingrecords": "正在载入...",
 	"smw-format-datatable-processing": "正在处理...",
