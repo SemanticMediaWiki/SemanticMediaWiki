@@ -271,7 +271,7 @@
 	"smw-pa-property-predefined_asksi": "\"$1\" è una proprietà predefinita che contiene il numero delle condizioni usate in una interrogazione ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askde": "\"$1\" è una proprietà predefinita che informa sulla profondità di un'interrogazione ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-sp-properties-header-label": "Elenco delle proprietà",
-	"smw-admin-iddispose-title": "Smaltimento di ID oggetto",
+	"smw-admin-iddispose-title": "Smaltimento ID oggetto",
 	"smw-admin-iddispose-docu": "L'operazione di smaltimento non ha restrizioni e rimuove l'ID di un oggetto interno dal motore di archiviazione, se confermata. Avvia questa attività con '''cautela''' e solo dopo aver consultato la [https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal documentazione].",
 	"smw-admin-objectid": "ID oggetto:",
 	"smw-livepreview-loading": "Caricamento in corso...",
