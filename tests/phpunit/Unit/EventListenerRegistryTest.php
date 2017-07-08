@@ -64,7 +64,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 			EventDispatcherFactory::getInstance()->newGenericEventListenerCollection()
 		);
 
-		$this->verifyPropertySpecificationeChangeEvent( $instance );
 		$this->verifyExporterResetEvent( $instance );
 		$this->verifyFactboxCacheDeleteEvent( $instance );
 		$this->verifyCachedPropertyValuesPrefetcherResetEvent( $instance );
@@ -78,28 +77,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function verifyQueryComparatorResetEvent( EventListenerCollection $instance ) {
 		$this->assertListenerExecuteFor( 'query.comparator.reset', $instance, null );
-	}
-
-	public function verifyPropertySpecificationeChangeEvent( EventListenerCollection $instance ) {
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getInProperties' )
-			->will( $this->returnValue( array() ) );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
-		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'subject', new DIWikiPage( 'Foo', NS_MAIN ) );
-
-		$this->assertListenerExecuteFor( 'property.specification.change', $instance, $dispatchContext );
 	}
 
 	public function verifyFactboxCacheDeleteEvent( EventListenerCollection $instance ) {

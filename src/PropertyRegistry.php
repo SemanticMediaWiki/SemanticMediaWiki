@@ -490,6 +490,7 @@ class PropertyRegistry {
 			'_PEID'  => array( '_eid', true, true ), // External identifier
 			'_PEFU'  => array( '__pefu', true, true ), // External formatter uri
 			'_PPLB'  => array( '_mlt_rec', true, true ), // Preferred property label
+			'_CHGPRO' => array( '_cod', true, false ), // "Change propagation"
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

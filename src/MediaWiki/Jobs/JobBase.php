@@ -6,6 +6,7 @@ use Job;
 use JobQueueGroup;
 use SMW\Store;
 use Title;
+use SMW\ApplicationFactory;
 
 /**
  * @ingroup SMW
@@ -160,7 +161,7 @@ abstract class JobBase extends Job {
 
 		// MW 1.26+
 		if ( $this->isEnabledJobQueue && method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			return JobQueueGroup::singleton()->lazyPush( $this );
+			return ApplicationFactory::getInstance()->getJobQueueGroup()->lazyPush( $this );
 		}
 
 		$this->insert();
@@ -172,12 +173,16 @@ abstract class JobBase extends Job {
 	 * @return array
 	 */
 	public static function getQueueSizes() {
+		return ApplicationFactory::getInstance()->getJobQueueGroup()->getQueueSizes();
+	}
 
-		if ( class_exists( 'JobQueueGroup' ) ) {
-			return JobQueueGroup::singleton()->getQueueSizes();
-		}
-
-		return array();
+	/**
+	 * @since 3.0
+	 *
+	 * @return integer
+	 */
+	public static function getQueueSize( $type ) {
+		return ApplicationFactory::getInstance()->getJobQueueGroup()->get( $type )->getSize();
 	}
 
 }

@@ -34,7 +34,7 @@ class SMWPageLister {
 	 * @param $from string if the results were selected starting from this string
 	 * @param $until string if the results were selected reaching until this string
 	 */
-	public function __construct( array $diWikiPages, $diProperty, $limit, $from = '', $until = '' ) {
+	public function __construct( $diWikiPages, $diProperty, $limit, $from = '', $until = '' ) {
 		$this->mDiWikiPages = $diWikiPages;
 		$this->mDiProperty = $diProperty;
 		$this->mLimit = $limit;
@@ -207,8 +207,12 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getColumnList( $start, $end, array $diWikiPages, $diProperty ) {
+	public static function getColumnList( $start, $end, $diWikiPages, $diProperty ) {
 		global $wgContLang;
+
+		if ( $diWikiPages instanceof \Iterator ) {
+			$diWikiPages = iterator_to_array( $diWikiPages );
+		}
 
 		// Divide list into three equal chunks.
 		$chunk = (int) ( ( $end - $start + 1 ) / 3 );
@@ -276,7 +280,11 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getShortList( $start, $end, array $diWikiPages, $diProperty ) {
+	public static function getShortList( $start, $end, $diWikiPages, $diProperty ) {
+
+		if ( $diWikiPages instanceof \Iterator ) {
+			$diWikiPages = iterator_to_array( $diWikiPages );
+		}
 
 		$startDv = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$start], $diProperty );
 

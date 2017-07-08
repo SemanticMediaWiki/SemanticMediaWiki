@@ -23,23 +23,23 @@ class SMWSpecialTypes extends SpecialPage {
 
 	public function execute( $param ) {
 		$this->setHeaders();
-		global $wgOut;
+		$out = $this->getOutput();
 
 		$params = SMWInfolink::decodeParameters( $param, false );
 		$typeLabel = reset( $params );
 
 		if ( $typeLabel == false ) {
-			$wgOut->setPageTitle( wfMessage( 'types' )->text() );
+			$out->setPageTitle( wfMessage( 'types' )->text() );
 			$html = $this->getTypesList();
 		} else {
 			$typeLabel = str_replace( '%', '-', $typeLabel );
 			$typeName = str_replace( '_', ' ', $typeLabel );
-			$wgOut->setPageTitle( $typeName ); // Maybe add a better message for this
+			$out->setPageTitle( $typeName ); // Maybe add a better message for this
 			$html = $this->getTypeProperties( $typeLabel );
 		}
 
-		$wgOut->addHTML( $html );
-		SMWOutputs::commitToOutputPage( $wgOut );
+		$out->addHTML( $html );
+		SMWOutputs::commitToOutputPage( $out );
 
 	}
 

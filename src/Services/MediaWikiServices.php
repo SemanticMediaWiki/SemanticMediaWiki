@@ -8,6 +8,7 @@ use ImportStringSource;
 use ImportStreamSource;
 use WikiImporter;
 use LBFactory;
+use JobQueueGroup;
 use Psr\Log\NullLogger;
 
 /**
@@ -140,6 +141,18 @@ return array(
 		}
 
 		return new NullLogger();
+	},
+
+	/**
+	 * JobQueueGroup
+	 *
+	 * @return callable
+	 */
+	'JobQueueGroup' => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType( 'JobQueueGroup', '\JobQueueGroup' );
+
+		return JobQueueGroup::singleton();
 	},
 
 );

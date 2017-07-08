@@ -45,6 +45,11 @@ class DIProperty extends SMWDataItem {
 	const TYPE_DISPLAYTITLE = '_DTITLE';
 
 	/**
+	 * Change propagation
+	 */
+	const TYPE_CHANGE_PROP = '_CHGPRO';
+
+	/**
 	 * Either an internal SMW property key (starting with "_") or the DB
 	 * key of a property page in the wiki.
 	 * @var string

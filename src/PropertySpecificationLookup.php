@@ -61,6 +61,7 @@ class PropertySpecificationLookup {
 	 */
 	public function resetCacheBy( DIWikiPage $subject ) {
 		$this->cachedPropertyValuesPrefetcher->resetCacheBy( $subject );
+		$this->intermediaryMemoryCache->delete( $subject->getHash() );
 	}
 
 	/**
@@ -73,11 +74,17 @@ class PropertySpecificationLookup {
 	 */
 	public function getSpecification( DIProperty $source, DIProperty $target ) {
 
-		$definition = false;
-		$key = '-spec:'. $source->getKey() . $target->getKey();
+		$hash = $source->getCanonicalDiWikiPage()->getHash();
+		$key = $target->getKey();
 
-		if ( ( $definition = $this->intermediaryMemoryCache->fetch( $key ) ) !== false ) {
-			return $definition;
+		$definition = $this->intermediaryMemoryCache->fetch( $hash );
+
+		if ( $definition === false ) {
+			$definition = array();
+		}
+
+		if ( isset( $definition[$key] ) ) {
+			return $definition[$key];
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
@@ -89,7 +96,8 @@ class PropertySpecificationLookup {
 			$dataItems = array();
 		}
 
-		$this->intermediaryMemoryCache->save( $key, $dataItems );
+		$definition[$key] = $dataItems;
+		$this->intermediaryMemoryCache->save( $hash, $definition );
 
 		return $dataItems;
 	}

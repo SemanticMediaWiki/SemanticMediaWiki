@@ -46,6 +46,11 @@ class CachedPropertyValuesPrefetcher {
 	private $blobStore;
 
 	/**
+	 * @var boolean
+	 */
+	private $disableCache = false;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
@@ -61,6 +66,15 @@ class CachedPropertyValuesPrefetcher {
 	 */
 	public function resetCacheBy( DIWikiPage $subject ) {
 		$this->blobStore->delete( $this->getRootHashFrom( $subject ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $disableCache
+	 */
+	public function disableCache( $disableCache ) {
+		$this->disableCache = (bool)$disableCache;
 	}
 
 	/**
@@ -90,7 +104,7 @@ class CachedPropertyValuesPrefetcher {
 			$this->getRootHashFrom( $subject )
 		);
 
-		if ( $container->has( $key ) ) {
+		if ( $this->disableCache === false && $container->has( $key ) ) {
 			return $container->get( $key );
 		}
 

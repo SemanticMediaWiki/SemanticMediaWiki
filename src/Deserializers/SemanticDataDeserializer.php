@@ -40,7 +40,7 @@ class SemanticDataDeserializer implements Deserializer {
 
 		$semanticData = null;
 
-		if ( isset( $data['version'] ) && $data['version'] !== 0.1 ) {
+		if ( isset( $data['version'] ) && $data['version'] !== 0.1 && $data['version'] !== 2 ) {
 			throw new OutOfBoundsException( 'Serializer/Unserializer version does not match, please update your data' );
 		}
 
@@ -127,7 +127,7 @@ class SemanticDataDeserializer implements Deserializer {
 		// Check whether the current dataItem has a subobject reference
 		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE && $dataItem->getSubobjectName() !== '' ) {
 
-			$dataItem = $this->unserializeSubobject(
+			$dataItem = $this->doDeserializeSubSemanticData(
 				$data,
 				$value['item'],
 				new SMWContainerSemanticData( $dataItem )
@@ -156,18 +156,16 @@ class SemanticDataDeserializer implements Deserializer {
 	 *
 	 * @return DIContainer|null
 	 */
-	private function unserializeSubobject( $data, $id, $semanticData ) {
+	private function doDeserializeSubSemanticData( $data, $id, $semanticData ) {
 
 		if ( !isset( $data['sobj'] ) ) {
-			return null;
+			return new DIContainer( $semanticData );;
 		}
 
 		foreach ( $data['sobj'] as $subobject ) {
-
-			if ( isset( $subobject['subject'] ) && $subobject['subject'] === $id ) {
+			if ( isset( $subobject['subject'] ) && $subobject['subject'] === $id && isset( $subobject['data'] ) ) {
 				$this->doDeserialize( $subobject, $semanticData );
 			}
-
 		}
 
 		return new DIContainer( $semanticData );

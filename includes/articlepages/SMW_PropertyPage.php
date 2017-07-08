@@ -119,7 +119,13 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$applicationFactory->singleton( 'EditProtectionValidator' )->hasEditProtection( $this->mTitle )
 		);
 
-		return $propertyPageMessageHtmlBuilder->createMessageBody( $this->mProperty );
+		$text = $propertyPageMessageHtmlBuilder->createMessageBody(
+			$this->mProperty
+		);
+
+		$this->isLockedView = $propertySpecificationReqExaminer->reqLock();
+
+		return $text;
 	}
 
 	protected function getTopIndicators() {
@@ -177,6 +183,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$this->getDataItem(),
 			$requestOptions
 		);
+
+		// May return an iterator
+		if ( $propertyList instanceof \Iterator ) {
+			$propertyList = iterator_to_array( $propertyList );
+		}
 
 		$more = false;
 
@@ -247,6 +258,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$diWikiPages = $this->doQuerySubjectListWithValue( $value, $options );
 		} else {
 			$diWikiPages = $this->store->getAllPropertySubjects( $this->mProperty, $options );
+		}
+
+		// May return an iterator
+		if ( $diWikiPages instanceof \Iterator ) {
+			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
 
 		if ( !$options->ascending ) {
@@ -333,6 +349,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$ropts->limit = $smwgMaxPropertyValues + 1;
 			$values = $this->store->getPropertyValues( $diWikiPage, $this->mProperty, $ropts );
 			$i = 0;
+
+			// May return an iterator
+			if ( $values instanceof \Iterator ) {
+				$values = iterator_to_array( $values );
+			}
 
 			foreach ( $values as $di ) {
 				if ( $i != 0 ) {

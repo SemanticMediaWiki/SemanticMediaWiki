@@ -84,7 +84,9 @@ class EventListenerRegistry implements EventListenerCollection {
 				}
 
 				$applicationFactory = ApplicationFactory::getInstance();
-				$applicationFactory->getMediaWikiLogger()->info( 'Event: cached.propertyvalues.prefetcher.reset :: ' . $subject->getHash() );
+				$applicationFactory->getMediaWikiLogger()->info(
+					'Event (cached.propertyvalues.prefetcher.reset) on ' . $subject->getHash()
+				);
 
 				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
 					$subject
@@ -110,7 +112,9 @@ class EventListenerRegistry implements EventListenerCollection {
 				$context = $dispatchContext->has( 'context' ) ? $dispatchContext->get( 'context' ) : '';
 
 				$applicationFactory = ApplicationFactory::getInstance();
-				$applicationFactory->getMediaWikiLogger()->info( 'Event: cached.prefetcher.reset :: ' . $subject->getHash() );
+				$applicationFactory->getMediaWikiLogger()->info(
+					'Event (cached.prefetcher.reset) on ' . $subject->getHash()
+				);
 
 				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
 					$subject
@@ -138,29 +142,6 @@ class EventListenerRegistry implements EventListenerCollection {
 	}
 
 	private function registerStateChangeEvents() {
-
-		/**
-		 * Emitted during PropertySpecificationChangeNotifier::notifyDispatcher
-		 */
-		$this->eventListenerCollection->registerCallback(
-			'property.specification.change', function( $dispatchContext ) {
-
-				$applicationFactory = ApplicationFactory::getInstance();
-				$subject = $dispatchContext->get( 'subject' );
-
-				$updateDispatcherJob = $applicationFactory->newJobFactory()->newByType(
-					'SMW\UpdateDispatcherJob',
-					$subject->getTitle()
-				);
-
-				$updateDispatcherJob->run();
-
-				Exporter::getInstance()->resetCacheBy( $subject );
-				$applicationFactory->getPropertySpecificationLookup()->resetCacheBy( $subject );
-
-				$dispatchContext->set( 'propagationstop', true );
-			}
-		);
 
 		/**
 		 * Emitted during ArticleDelete

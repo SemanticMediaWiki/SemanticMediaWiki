@@ -362,7 +362,17 @@ class ApplicationFactory {
 	 * @return StoreUpdater
 	 */
 	public function newStoreUpdater( SemanticData $semanticData ) {
-		return new StoreUpdater( $this->getStore(), $semanticData );
+
+		$storeUpdater = new StoreUpdater(
+			$this->getStore(),
+			$semanticData
+		);
+
+		$storeUpdater->isCommandLineMode(
+			$GLOBALS['wgCommandLineMode']
+		);
+
+		return $storeUpdater;
 	}
 
 	/**
@@ -540,6 +550,15 @@ class ApplicationFactory {
 	 */
 	public function getMediaWikiLogger() {
 		return $this->containerBuilder->singleton( 'MediaWikiLogger' );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return JobQueueGroup
+	 */
+	public function getJobQueueGroup() {
+		return $this->containerBuilder->singleton( 'JobQueueGroup' );
 	}
 
 	private static function newContainerBuilder( CallbackContainerFactory $callbackContainerFactory, $servicesFileDir ) {

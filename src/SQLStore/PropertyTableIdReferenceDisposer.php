@@ -6,6 +6,7 @@ use SMW\EventHandler;
 use SMW\DIWikiPage;
 use SMW\Iterators\ResultIterator;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 
 /**
  * @private
@@ -243,12 +244,7 @@ class PropertyTableIdReferenceDisposer {
 			$dispatchContext
 		);
 
-		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$eventHandler->getEventDispatcher()->dispatch(
-				'property.specification.change',
-				$dispatchContext
-			);
-		}
+		ChangePropagationDispatchJob::cleanUp( $subject );
 	}
 
 }

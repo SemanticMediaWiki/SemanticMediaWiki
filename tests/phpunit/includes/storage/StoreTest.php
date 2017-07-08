@@ -80,7 +80,10 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertySubjects( $property, $value, $requestOptions );
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertInstanceOf(
+			'\Iterator',
+			$result
+		);
 
 		foreach( $result as $page ) {
 			$this->assertInstanceOf(

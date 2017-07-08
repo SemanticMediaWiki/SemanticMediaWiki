@@ -697,15 +697,23 @@ return array(
 	##
 
 	###
+	# Change propagation watchlist
+	#
 	# Properties (usually given as internal ids or DB key versions of property
 	# titles) that are relevant for declaring the behavior of a property P on a
 	# property page in the sense that changing their values requires that all
-	# pages that use P must be processed again. For example, if _PVAL (allowed
-	# values) for a property change, then pages must be processed again. This
-	# setting is not normally changed by users but by extensions that add new
-	# types that have their own additional declaration properties.
+	# pages that use P must be processed again.
+	#
+	# For example, if _PVAL (allowed values) for a property change, then pages
+	# must be processed again. This setting is not normally changed by users but
+	# by extensions that add new types that have their own additional declaration
+	# properties.
+	#
+	# @since 1.6
 	##
-	'smwgDeclarationProperties' => array( '_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB' ),
+	'smwgDeclarationProperties' => array(
+		'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC'
+	),
 	##
 
 	###
@@ -1344,7 +1352,7 @@ return array(
 	'smwgFulltextSearchPropertyExemptionList' => array(
 		'_ASKFO', '_ASKST', '_ASKPA','_IMPO', '_LCODE', '_UNIT', '_CONV',
 		'_TYPE', '_ERRT', '_INST', '_ASK', '_SOBJ', '_PVAL', '_PVALI',
-		'_REDI'
+		'_REDI', '_CHGPRO'
 	),
 	##
 
@@ -1619,6 +1627,18 @@ return array(
 	# @default false
 	##
 	'smwgFieldTypeFeatures' => false,
+	##
+
+	##
+	# Change propagation protection
+	#
+	# An administrative intervention to disable the protection for an active change
+	# propagation.
+	#
+	# @since 3.0
+	# @default true
+	##
+	'smwgChangePropagationProtection' => true,
 	##
 
 );

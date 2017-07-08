@@ -1,6 +1,7 @@
 <?php
 
 use SMW\DataTypeRegistry;
+use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SQLStore\TableDefinition;
@@ -333,6 +334,9 @@ class SMWSQLStore3Readers {
 			if ( !$propTable->isFixedPropertyTable() ) { // select property name
 				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . ' AS p ON p_id=p.smw_id';
 				$select .= 'p.smw_title as prop';
+
+				// Avoid displaying any property that has been marked deleted or outdated
+				$where .= " AND p.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND p.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
 			} // else: fixed property, no select needed
 		} elseif ( !$propTable->isFixedPropertyTable() ) { // restrict property only
 			$where .= 'p_id=' . $db->addQuotes( $id );
@@ -453,6 +457,7 @@ class SMWSQLStore3Readers {
 	 * @return array of DIWikiPage
 	 */
 	public function getPropertySubjects( SMWDIProperty $property, SMWDataItem $value = null, SMWRequestOptions $requestOptions = null ) {
+
 		/// TODO: should we share code with #ask query computation here? Just use queries?
 
 		if ( $property->isInverse() ) { // inverses are working differently
@@ -515,7 +520,7 @@ class SMWSQLStore3Readers {
 
 		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
 
-		foreach ( $res as $row ) {
+		$callback = function( $row ) use( $diHandler ) {
 			try {
 				if ( $row->smw_iw === '' || $row->smw_iw{0} != ':' ) { // filter special objects
 					$dbkeys = array(
@@ -526,14 +531,21 @@ class SMWSQLStore3Readers {
 						$row->smw_subobject
 
 					);
-					$result[] = $diHandler->dataItemFromDBKeys( $dbkeys );
+					return $diHandler->dataItemFromDBKeys( $dbkeys );
 				}
 			} catch ( DataItemHandlerException $e ) {
 				// silently drop data, should be extremely rare and will usually fix itself at next edit
 			}
-		}
+		};
 
-		$db->freeResult( $res );
+		$iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
+
+		// Return an iterator and avoid resolving the resources directly as an array
+		// as it may contain a large list of possible matches
+		$result = $iteratorFactory->newMappingIterator(
+			$iteratorFactory->newResultIterator( $res ),
+			$callback
+		);
 
 		return $result;
 	}

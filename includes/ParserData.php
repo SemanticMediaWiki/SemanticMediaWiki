@@ -38,6 +38,11 @@ class ParserData {
 	const OPT_FORCED_UPDATE = 'smw:opt.forced.update';
 
 	/**
+	 * Indicates that an update was caused by a change propagation request
+	 */
+	const OPT_CHANGE_PROP_UPDATE = 'smw:opt.change.prop.update';
+
+	/**
 	 * Indicates that no #ask dependency tracking should occur
 	 */
 	const NO_QUERY_DEPENDENCY_TRACE = 'no.query.dependency.trace';
@@ -398,6 +403,10 @@ class ParserData {
 
 		$storeUpdater->isEnabledWithUpdateJob(
 			$this->isEnabledWithUpdateJob
+		);
+
+		$storeUpdater->isChangeProp(
+			$this->getOption( self::OPT_CHANGE_PROP_UPDATE )
 		);
 
 		DeferredCallableUpdate::releasePendingUpdates();
