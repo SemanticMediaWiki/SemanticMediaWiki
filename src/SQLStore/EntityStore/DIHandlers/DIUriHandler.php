@@ -113,6 +113,10 @@ class DIUriHandler extends DataItemHandler {
 
 		$length = 255;
 
+		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_LONG ) ) {
+			$length = FieldType::CHAR_LONG_LENGTH;
+		}
+
 		return $length;
 	}
 
@@ -122,6 +126,14 @@ class DIUriHandler extends DataItemHandler {
 
 		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
 			$fieldType = FieldType::TYPE_CHAR_NOCASE;
+		}
+
+		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_LONG ) ) {
+			$fieldType = FieldType::TYPE_CHAR_LONG;
+		}
+
+		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_LONG ) && $this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
+			$fieldType = FieldType::TYPE_CHAR_LONG_NOCASE;
 		}
 
 		return $fieldType;

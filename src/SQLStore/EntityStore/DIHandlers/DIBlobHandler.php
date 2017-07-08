@@ -163,10 +163,20 @@ class DIBlobHandler extends DataItemHandler {
 	 * which should be more than enough in most contexts.
 	 *
 	 * @since 1.8
+	 *
+	 * Using `SMW_FIELDT_CHAR_LONG` as option in `smwgFieldTypeFeatures`
+	 * will extend the field size to 300 and expands the maximum matchable
+	 * string length to 300-32 for LIKE/NLIKE queries.
+	 *
+	 * @since 3.0
 	 */
 	private function getMaxLength() {
 
 		$length = 72;
+
+		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_LONG ) ) {
+			$length = FieldType::CHAR_LONG_LENGTH;
+		}
 
 		return $length;
 	}
@@ -177,6 +187,14 @@ class DIBlobHandler extends DataItemHandler {
 
 		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
 			$fieldType = FieldType::TYPE_CHAR_NOCASE;
+		}
+
+		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_LONG ) ) {
+			$fieldType = FieldType::TYPE_CHAR_LONG;
+		}
+
+		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_LONG ) && $this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
+			$fieldType = FieldType::TYPE_CHAR_LONG_NOCASE;
 		}
 
 		return $fieldType;

@@ -23,7 +23,7 @@ abstract class DataItemHandler {
 	/**
 	 * @var integer
 	*/
-	private $fieldTypeFeatures = false;
+	protected $fieldTypeFeatures = false;
 
 	/**
 	 * @var null|string

@@ -84,10 +84,10 @@ class SetupStore extends \Maintenance {
 			exit;
 		}
 
+		StoreFactory::clear();
 		$this->loadGlobalFunctions();
 
 		$store = $this->getStore();
-		StoreFactory::clear();
 
 		if ( $this->getOption( 'quiet' ) ) {
 			$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();

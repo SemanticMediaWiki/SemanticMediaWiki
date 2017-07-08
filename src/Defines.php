@@ -217,4 +217,5 @@ define( 'SMW_EL_INPROP', 2 ); // New query for EntityLookup::getInProperties
   */
 define( 'SMW_FIELDT_NONE', 0 );
 define( 'SMW_FIELDT_CHAR_NOCASE', 2 ); // Using FieldType::TYPE_CHAR_NOCASE
+define( 'SMW_FIELDT_CHAR_LONG', 4 ); // Using FieldType::TYPE_CHAR_LONG
 /**@}*/

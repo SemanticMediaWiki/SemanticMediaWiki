@@ -94,35 +94,18 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testMutableOnNoCaseFieldFeature() {
+	/**
+	 * @dataProvider fieldTypeProvider
+	 */
+	public function testMutableOnFieldTypeFeature( $fieldTypeFeatures, $expected ) {
 
 		$instance = new DIBlobHandler(
 			$this->store
 		);
 
-		$expected = [
-			'o_blob' => FieldType::TYPE_BLOB,
-			'o_hash' => FieldType::FIELD_TITLE
-		];
-
-		$this->assertEquals(
-			$expected,
-			$instance->getTableFields()
-		);
-
-		$this->assertEquals(
-			$expected,
-			$instance->getFetchFields()
-		);
-
 		$instance->setFieldTypeFeatures(
-			SMW_FIELDT_CHAR_NOCASE
+			$fieldTypeFeatures
 		);
-
-		$expected = [
-			'o_blob' => FieldType::TYPE_BLOB,
-			'o_hash' => FieldType::TYPE_CHAR_NOCASE
-		];
 
 		$this->assertEquals(
 			$expected,
@@ -218,6 +201,43 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private function createRandomString( $length = 10 ) {
 		return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+	}
+
+	public function fieldTypeProvider() {
+
+		$provider[] = array(
+			SMW_FIELDT_NONE,
+			[
+				'o_blob' => FieldType::TYPE_BLOB,
+				'o_hash' => FieldType::FIELD_TITLE
+			]
+		);
+
+		$provider[] = array(
+			SMW_FIELDT_CHAR_NOCASE,
+			[
+				'o_blob' => FieldType::TYPE_BLOB,
+				'o_hash' => FieldType::TYPE_CHAR_NOCASE
+			]
+		);
+
+		$provider[] = array(
+			SMW_FIELDT_CHAR_LONG,
+			[
+				'o_blob' => FieldType::TYPE_BLOB,
+				'o_hash' => FieldType::TYPE_CHAR_LONG
+			]
+		);
+
+		$provider[] = array(
+			SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG,
+			[
+				'o_blob' => FieldType::TYPE_BLOB,
+				'o_hash' => FieldType::TYPE_CHAR_LONG_NOCASE
+			]
+		);
+
+		return $provider;
 	}
 
 }

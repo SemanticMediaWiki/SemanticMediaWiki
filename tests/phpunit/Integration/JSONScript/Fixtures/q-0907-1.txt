@@ -1,0 +1,3 @@
+[[Has text::Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vulputate tortor nec magna volutpat suscipit. Aliquam erat volutpat. Nulla aliquam, lectus ut dictum sollicitudin, justo magna dapibus turpis, eget tincidunt justo tellus id libero. Aliquam tortor leo, aliquam eu feugiat in, efficitur ac nisl. Ut elit ante, rutrum ac varius vel, faucibus in magna. Mauris euismod erat sit amet vulputate placerat. Maecenas vitae urna eleifend, scelerisque metus vitae, rhoncus metus. Vestibulum luctus, tellus et blandit laoreet, mauris odio commodo mauris, at porttitor libero orci sit amet quam. Fusce at laoreet tortor.]]
+
+[[Category:Q0907]]

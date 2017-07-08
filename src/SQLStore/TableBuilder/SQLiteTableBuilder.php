@@ -20,6 +20,8 @@ class SQLiteTableBuilder extends TableBuilder {
 	 */
 	public function getStandardFieldType( $fieldType ) {
 
+		$charLongLength = FieldType::CHAR_LONG_LENGTH;
+
 		$fieldTypes = array(
 			 // like page_id in MW page table
 			'id'         => 'INTEGER',
@@ -37,9 +39,9 @@ class SQLiteTableBuilder extends TableBuilder {
 			'boolean'    => 'TINYINT(1)',
 			'double'     => 'DOUBLE',
 			'integer'    => 'INT(8)',
-			'char long'  => 'VARBINARY(300)',
+			'char long'  => "VARBINARY($charLongLength)",
 			'char nocase'      => 'VARCHAR(255) NOT NULL COLLATE NOCASE',
-			'char long nocase' => 'VARCHAR(300) NOT NULL COLLATE NOCASE',
+			'char long nocase' => "VARCHAR($charLongLength) NOT NULL COLLATE NOCASE",
 			'usage count'      => 'INT(8)',
 			'integer unsigned' => 'INTEGER'
 		);
