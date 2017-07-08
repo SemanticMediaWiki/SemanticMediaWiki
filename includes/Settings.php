@@ -53,6 +53,7 @@ class Settings extends Options {
 			'smwgSemanticsEnabled' => $GLOBALS['smwgSemanticsEnabled'],
 			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],
+			'smwgLocalConnectionConf' => $GLOBALS['smwgLocalConnectionConf'],
 			'smwgSparqlDatabaseConnector' => $GLOBALS['smwgSparqlDatabaseConnector'],
 			'smwgSparqlDatabase' => $GLOBALS['smwgSparqlDatabase'],
 			'smwgSparqlQueryEndpoint' => $GLOBALS['smwgSparqlQueryEndpoint'],

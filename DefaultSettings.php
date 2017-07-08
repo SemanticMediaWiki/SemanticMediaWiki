@@ -75,6 +75,34 @@ return array(
 	##
 
 	###
+	# Local connection configurations
+	#
+	# Allows to modify connection characteristics for providers that are used by
+	# Semantic MediaWiki.
+	#
+	# Changes to these settings should ONLY be made by trained professionals to
+	# avoid unexpected or unanticipated results when using connection handlers.
+	#
+	# Available DB index as provided by MediaWiki:
+	#
+	# - DB_SLAVE or DB_REPLICA (1.28+)
+	# - DB_MASTER
+	#
+	# @since 3.0
+	##
+	'smwgLocalConnectionConf' => array(
+		'mw.db' => array(
+			'read'  => DB_SLAVE,
+			'write' => DB_MASTER
+		),
+		'mw.db.queryengine' => array(
+			'read'  => DB_SLAVE,
+			'write' => DB_MASTER
+		)
+	),
+	##
+
+	###
 	# Configure SPARQL database connection for Semantic MediaWiki. This is used
 	# when SPARQL-based features are enabled, e.g. when using SMWSparqlStore as
 	# the $smwgDefaultStore.

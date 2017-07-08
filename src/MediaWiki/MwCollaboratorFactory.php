@@ -135,10 +135,25 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
+	 * @param string|null $provider
+	 *
 	 * @return DatabaseConnectionProvider
 	 */
-	public function newMediaWikiDatabaseConnectionProvider() {
-		return new DatabaseConnectionProvider();
+	public function newMediaWikiDatabaseConnectionProvider( $provider = null ) {
+
+		$databaseConnectionProvider = new DatabaseConnectionProvider(
+			$provider
+		);
+
+		$databaseConnectionProvider->setLocalConnectionConf(
+			$this->applicationFactory->getSettings()->get( 'smwgLocalConnectionConf' )
+		);
+
+		$databaseConnectionProvider->setLogger(
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+
+		return $databaseConnectionProvider;
 	}
 
 	/**
