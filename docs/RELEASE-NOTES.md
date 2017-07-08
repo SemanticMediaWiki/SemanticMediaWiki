@@ -1,22 +1,35 @@
-# Semantic MediaWiki 2.5.2
+# Semantic MediaWiki 2.5.3
 
-Released on May 17, 2017.
+Released on July 8, 2017.
 
 ## Enhancements
 
-* [#2449](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2449) as `8783268` Made property pages show the source name of the redirect (synonym) without a `DisplayTitle` formatter
+* [#2534](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2534) as `d7077b8` Added [`$smwgLocalConnectionConf`](https://www.semantic-mediawiki.org/wiki/Help:$smwgLocalConnectionConf) configuration parameter together with respective functionality allowing for modifications on connection providers in environments with multiple relational databases
 * Many new translations for numerous languages by the communtity of [translatewiki.net](https://translatewiki.net/w/i.php?title=Special%3AMessageGroupStats&x=D&group=mwgithub-semanticmediawiki&suppressempty=1)
 
 ## Bug fixes and internal code changes
 
-* [#2413](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2413) as `313d08e` Enforced `NO_DEPENDENCY_TRACE` on queries with namespace `NS_SPECIAL`
-* [#2426](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2426) as `595efea` Removed duplicate entry for `$smwgFulltextSearchPropertyExemptionList`
-* [#2434](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2434) as `bb6ef9a` Made `ParserAfterTidy` to check "readOnly" mode
-* [#2438](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2438) as `ba2c6e7` Made `ArticlePurge` add a safeguard to flush query result cache
-* [#2444](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2444) as `8c9c4c3` Fixed `NamespaceManager` to avoid reset of user settings
-* [#2446](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2446) as `6697da4` Added safeguard against duplicate ID creation
-* [#2448](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2448) as `60cd466` Added usage of `forcedUpdate` on redirect jobs
-* [#2450](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2450) as `4adfd2d` Fixed `QueryDependencyLinksStore` to avoid `ORDER BY/GROUP BY` on select
-* [#2451](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2451) as `8a9bef2` Fixed "ext.smw.dataItem.time.js" to construct a UTC date object
-* [#2457](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2457) as `5619b55` Fixed `JulianDay` values to use a consistent format
-* [#2463](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2457) as `3f7f47e` Made `SMWSql3SmwIds` set legacy cache only on success
+* [#2379](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2379) as `7c98b4a` Removed `ContentParser::forceToUseParser` from tests
+* [#2459](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2459) as `a7b3f00` Switched Travis CI integration test to use Ubuntu Trusty operating system environment
+* [#2460](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2460) as `3b6e30d` Made `ArticleDelete` restrict the pool of properties in update dispatcher
+* [#2472](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2472) as `03e0b8c` Added debug output to Travis CI integration tests
+* [#2473](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2473) as `9f78042` Replaced `isSupportedLanguage` with `isKnownLanguageTag` to allow for any known language usage
+* [#2474](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2474) as `d1ba666` Fixed limit when the number of results is greater as the `$smwgQMaxLimit` or in `$smwgQMaxInlineLimit` where it is reset to the default value despite the global limitation
+* [#2475](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2475) as `a3499b6` Fixed behavior in case of `$wgCapitalLinks = false;` by restricting property name uppercase conversion to special properties only
+* [#2477](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2477) as `c12fec7` Fixed `UpdateDispatcherJob` to check for null title
+* [#2478](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2478) as `681b0fc` Tidyed `QueryToken`
+* [#2481](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2481) as `7c3900f` Made `RequestOptions` cast "int" on `limit` and `offset`
+* [#2482](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2482) as `2ff92bd` Added TransactionalDeferredCallableUpdate
+* [#2491](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2491) as `ca36069` Provided `ChunkedIterator` to avoid possible out of memory situations in cases where outdated entities reach a unhandable level
+* [#2493](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2493) as `409025d` Prevended unintended override of `PropertyTablePrefix` in hook
+* [#2496](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2496) as `fb3d604` Normalized message value arguments
+* [#2500](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2500) as `3edb303` Made "Special:Browse" avoid API request on legacy setting
+* [#2502](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2502) as `a527bbe` Provided POST purge link to avoid confirmation by users using action "purge"
+* [#2512](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2512) as `86f9733` Made `DataRebuilder` to report progress on disposed entities
+* [#2518](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2518) as `a851f8d` Prevended "PHP Notice: A non well formed numeric value encountered" on `Title::touched`
+* [#2522](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2522) as `36cec82` Set a comma as default for `valuesep` with the "template" format
+* [#2524](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2524) as `36cec82` Ensured that only marked `isDeferrableUpdate` can use a `transactionTicket`
+* [#2526](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2526) as `9d3e0f2` Prevented failing test in `QueryDependencyLinksStoreTest`
+* [#2527](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2527) as `f72df04` Made `BooleanValue` always recognize canonical boolean string
+* [#2530](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2530) as `ad32a26` Made `InternalParseBeforeLinks` cast `$smwgEnabledSpecialPage` setting late
+* `2bf07c3` Removed update marker on delete event
