@@ -42,6 +42,7 @@ use SMW\PropertyLabelFinder;
 use SMW\CachedPropertyValuesPrefetcher;
 use SMW\Localizer;
 use SMW\MediaWiki\DatabaseConnectionProvider;
+use SMW\Utils\TempFile;
 
 /**
  * @license GNU GPL v2+
@@ -177,6 +178,14 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'DatabaseConnectionProvider', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'DatabaseConnectionProvider', '\SMW\MediaWiki\DatabaseConnectionProvider' );
 			return new DatabaseConnectionProvider();
+		} );
+
+		/**
+		 * @var TempFile
+		 */
+		$containerBuilder->registerCallback( 'TempFile', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'TempFile', '\SMW\Utils\TempFile' );
+			return new TempFile();
 		} );
 	}
 
@@ -393,6 +402,10 @@ class SharedServicesContainer implements CallbackContainer {
 
 			$editProtectionValidator->setEditProtectionRight(
 				$containerBuilder->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
+			);
+
+			$editProtectionValidator->setChangePropagationProtection(
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgChangePropagationProtection' )
 			);
 
 			return $editProtectionValidator;

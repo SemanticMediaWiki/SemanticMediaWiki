@@ -20,7 +20,7 @@ use Title;
  * due to some type change).
  *
  * @note This job does not update the page display or parser cache, so in general
- * it might happen that part of the wiki page still displays based on old data (e.g.
+ * it might happen that part of the wiki page still displays old data (e.g.
  * formatting in-page values based on a datatype thathas since been changed), whereas
  * the Factbox and query/browsing interfaces might already show the updated records.
  *
@@ -37,6 +37,16 @@ class UpdateJob extends JobBase {
 	 * Enforces an update independent of the update marker status
 	 */
 	const FORCED_UPDATE = 'forcedUpdate';
+
+	/**
+	 * Indicates the use of the _CHGPRO property as base for the SemanticData
+	 */
+	const CHANGE_PROP = 'changeProp';
+
+	/**
+	 * Indicates the use of the semanticData parameter
+	 */
+	const SEMANTIC_DATA = 'semanticData';
 
 	/**
 	 * @var ApplicationFactory
@@ -64,10 +74,6 @@ class UpdateJob extends JobBase {
 	 * @return boolean
 	 */
 	public function run() {
-		return $this->doUpdate();
-	}
-
-	private function doUpdate() {
 
 		// #2199 ("Invalid or virtual namespace -1 given")
 		if ( $this->getTitle()->isSpecialPage() ) {
@@ -83,7 +89,7 @@ class UpdateJob extends JobBase {
 		}
 
 		if ( $this->getTitle()->exists() ) {
-			return $this->doPrepareForUpdate();
+			return $this->doUpdate();
 		}
 
 		$this->applicationFactory->getStore()->clearData(
@@ -114,14 +120,73 @@ class UpdateJob extends JobBase {
 		return false;
 	}
 
-	private function doPrepareForUpdate() {
-		return $this->needToParsePageContentBeforeUpdate();
+	private function doUpdate() {
+
+		// ChangePropagationJob
+		if ( $this->hasParameter( self::CHANGE_PROP ) ) {
+			return $this->doUpdateFromChangePropagation( $this->getParameter( self::CHANGE_PROP ) );
+		}
+
+		if ( $this->hasParameter( self::SEMANTIC_DATA ) ) {
+			return $this->doUpdateFromSemanticData( $this->getParameter( self::SEMANTIC_DATA ) );
+		}
+
+		return $this->doUpdateFromFreshContentParse();
+	}
+
+	private function doUpdateFromChangePropagation( $dataItem ) {
+
+		$subject = DIWikiPage::doUnserialize( $dataItem );
+
+		// Read the _CHGPRO property and fetch the serialized
+		// SemanticData object
+		$pv = $this->applicationFactory->getStore()->getPropertyValues(
+			$subject,
+			new DIProperty( DIProperty::TYPE_CHANGE_PROP )
+		);
+
+		if ( $pv === array() ) {
+			return;
+		}
+
+		// PropertySpecificationChangeNotifier encodes the serialized content
+		// using the JSON format
+		$semanticData = json_decode( end( $pv )->getString(), true );
+
+		$this->doUpdateFromSemanticData(
+			$semanticData
+		);
+	}
+
+	private function doUpdateFromSemanticData( $semanticData ) {
+
+		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
+			$semanticData
+		);
+
+		$semanticData->removeProperty(
+			new DIProperty( DIProperty::TYPE_CHANGE_PROP )
+		);
+
+		$parserData = $this->applicationFactory->newParserData(
+			$this->getTitle(),
+			new ParserOutput()
+		);
+
+		$parserData->setSemanticData( $semanticData );
+
+		$parserData->setOption(
+			Enum::OPT_SUSPEND_PURGE,
+			false
+		);
+
+		return $this->updateStore( $parserData );
 	}
 
 	/**
 	 * SMW_UJ_PM_NP = new Parser to avoid "Parser state cleared" exception
 	 */
-	private function needToParsePageContentBeforeUpdate() {
+	private function doUpdateFromFreshContentParse() {
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
 
@@ -141,6 +206,13 @@ class UpdateJob extends JobBase {
 		$parserData = $this->applicationFactory->newParserData(
 			$this->getTitle(),
 			$contentParser->getOutput()
+		);
+
+		// Suspend the purge as any preceding parse process most likely has
+		// invalidated the cache for a selected subject
+		$parserData->setOption(
+			Enum::OPT_SUSPEND_PURGE,
+			true
 		);
 
 		return $this->updateStore( $parserData );
@@ -173,11 +245,14 @@ class UpdateJob extends JobBase {
 			$this->getParameter( self::FORCED_UPDATE )
 		);
 
-		// Suspend the purge as any preceding parse process most likely has
-		// invalidated the cache for a selected subject
 		$parserData->setOption(
-			Enum::OPT_SUSPEND_PURGE,
-			true
+			$parserData::OPT_CHANGE_PROP_UPDATE,
+			$this->getParameter( self::CHANGE_PROP )
+		);
+
+		$parserData->getSemanticData()->setOption(
+			\SMW\SemanticData::OPT_LAST_MODIFIED,
+			wfTimestamp( TS_UNIX )
 		);
 
 		$parserData->disableBackgroundUpdateJobs();
@@ -192,7 +267,10 @@ class UpdateJob extends JobBase {
 	 */
 	private function getWikiPageLastModifiedTimestamp( DIWikiPage $wikiPage ) {
 
-		$dataItems = $this->applicationFactory->getStore()->getPropertyValues( $wikiPage, new DIProperty( '_MDAT' ) );
+		$dataItems = $this->applicationFactory->getStore()->getPropertyValues(
+			$wikiPage,
+			new DIProperty( '_MDAT' )
+		);
 
 		if ( $dataItems !== array() ) {
 			return end( $dataItems )->getMwTimestamp( TS_MW );

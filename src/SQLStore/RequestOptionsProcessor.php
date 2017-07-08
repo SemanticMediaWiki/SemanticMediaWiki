@@ -128,6 +128,10 @@ class RequestOptionsProcessor {
 			}
 		}
 
+		foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
+			$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? ' AND ' : '' ) . $extraCondition;
+		}
+
 		return $sqlConds;
 	}
 

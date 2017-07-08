@@ -28,6 +28,14 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
 	}
 
 	public function testCanConstruct() {

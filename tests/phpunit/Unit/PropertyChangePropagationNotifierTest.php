@@ -4,10 +4,10 @@ namespace SMW\Tests;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\PropertySpecificationChangeNotifier;
+use SMW\PropertyChangePropagationNotifier;
 
 /**
- * @covers \SMW\PropertySpecificationChangeNotifier
+ * @covers \SMW\PropertyChangePropagationNotifier
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,9 +15,12 @@ use SMW\PropertySpecificationChangeNotifier;
  *
  * @author mwjames
  */
-class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCase {
+class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 
 	protected $mockedStoreValues;
+	private $semanticData;
+	private $serializerFactory;
+	private $store;
 	private $testEnvironment;
 
 	protected function setUp() {
@@ -31,11 +34,23 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 			)
 		);
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$semanticDataSerializer = $this->getMockBuilder( '\SMW\Serializers\SemanticDataSerializer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->serializerFactory = $this->getMockBuilder( '\SMW\SerializerFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->serializerFactory->expects( $this->any() )
+			->method( 'newSemanticDataSerializer' )
+			->will( $this->returnValue( $semanticDataSerializer ) );
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
@@ -45,13 +60,9 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( 'SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$this->assertInstanceOf(
-			'\SMW\PropertySpecificationChangeNotifier',
-			new PropertySpecificationChangeNotifier( $store )
+			PropertyChangePropagationNotifier::class,
+			new PropertyChangePropagationNotifier( $this->store, $this->serializerFactory )
 		);
 	}
 
@@ -60,34 +71,37 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 	 */
 	public function testDetectChanges( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
 
+		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
+			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
+		}
+
 		$this->mockedStoreValues = $mockedStoreValues;
 
 		$subject = new DIWikiPage( __METHOD__, SMW_NS_PROPERTY );
 
-		$updateDispatcherJob = $this->getMockBuilder( 'SMW\MediaWiki\Jobs\UpdateDispatcherJob' )
+		$expectedToRun = $expected['job'] ? $this->atLeastOnce() : $this->never();
+
+		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$expectedToRun = $expected['job'] ? $this->once() : $this->never();
+		$jobQueueGroup->expects( $expectedToRun )
+			->method( 'lazyPush' );
 
-		$updateDispatcherJob->expects( $expectedToRun )
-			->method( 'run' )
-			->will( $this->returnValue( $subject ) );
+		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
 
-		$jobFactory = $this->getMockBuilder( 'SMW\MediaWiki\Jobs\JobFactory' )
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$jobFactory->expects( $this->any() )
-			->method( 'newByType' )
-			->will( $this->returnValue( $updateDispatcherJob ) );
-
-		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getPropertyValues' ) )
+			->setMethods( array( 'getPropertyValues', 'getSemanticData' ) )
 			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
@@ -105,19 +119,19 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( $dataValues ) );
 
-		$instance = new PropertySpecificationChangeNotifier(
-			$store
+		$instance = new PropertyChangePropagationNotifier(
+			$store,
+			$this->serializerFactory
 		);
 
 		$instance->setPropertyList( $propertiesToCompare );
-		$instance->detectChangesOn( $semanticData );
+
+		$instance->checkAndNotify( $semanticData );
 
 		$this->assertEquals(
 			$expected['diff'],
 			$instance->hasDiff()
 		);
-
-		$instance->notify();
 	}
 
 	public function dataItemDataProvider() {

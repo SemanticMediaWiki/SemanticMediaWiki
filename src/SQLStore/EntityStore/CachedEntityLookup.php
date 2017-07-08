@@ -244,6 +244,11 @@ class CachedEntityLookup implements EntityLookup {
 			$requestOptions
 		);
 
+		// Returns a possible iterator, avoid "Serialization of 'Closure' is not allowed"
+		if ( $result instanceof \Iterator ) {
+			$result = iterator_to_array( $result );
+		}
+
 		$container->set( $pvid, $result );
 
 		$this->blobStore->save(
@@ -298,6 +303,11 @@ class CachedEntityLookup implements EntityLookup {
 			$dataItem,
 			$requestOptions
 		);
+
+		// Returns an iterator, avoid "Serialization of 'Closure' is not allowed"
+		if ( $result instanceof \Iterator ) {
+			$result = iterator_to_array( $result );
+		}
 
 		$container->set( $psid, $result );
 

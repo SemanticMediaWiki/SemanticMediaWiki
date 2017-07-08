@@ -5,6 +5,7 @@ namespace SMW;
 use SMW\Iterators\ResultIterator;
 use SMW\Iterators\MappingIterator;
 use SMW\Iterators\ChunkedIterator;
+use SMW\Iterators\AppendIterator;
 
 /**
  * @license GNU GPL v2+
@@ -47,6 +48,15 @@ class IteratorFactory {
 	 */
 	public function newChunkedIterator( $iterable, $chunkSize = 500 ) {
 		return new ChunkedIterator( $iterable, $chunkSize );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return AppendIterator
+	 */
+	public function newAppendIterator() {
+		return new AppendIterator();
 	}
 
 }

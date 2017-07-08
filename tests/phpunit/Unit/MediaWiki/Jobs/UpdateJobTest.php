@@ -4,6 +4,8 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Tests\TestEnvironment;
+use SMW\DIWikiPage;
+use SMWDIBlob as DIBlob;
 use Title;
 
 /**
@@ -18,6 +20,8 @@ use Title;
 class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $semanticDataFactory;
+	private $semanticDataSerializer;
 
 	protected function setUp() {
 		parent::setUp();
@@ -26,7 +30,8 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			'smwgCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false,
 			'smwgEnabledDeferredUpdate' => false,
-			'smwgDVFeatures' => ''
+			'smwgDVFeatures' => '',
+			'smwgSemanticsEnabled' => false
 		) );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
@@ -47,6 +52,9 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array() ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
+		$this->semanticDataSerializer = \SMW\ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
 	}
 
 	protected function tearDown() {
@@ -248,6 +256,70 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
+	}
+
+	public function testJobOnSerializedSemanticData() {
+
+		$title = Title::newFromText( __METHOD__ );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'updateData' ) )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'updateData' );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$semanticData = $this->semanticDataSerializer->serialize(
+			$this->semanticDataFactory->newEmptySemanticData( __METHOD__ )
+		);
+
+		$instance = new UpdateJob( $title,
+			array(
+				UpdateJob::SEMANTIC_DATA => $semanticData
+			)
+		);
+
+		$instance->isEnabledJobQueue( false );
+
+		$this->assertTrue(
+			$instance->run()
+		);
+	}
+
+	public function testJobOnChangePropagation() {
+
+		$subject = DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
+
+		$semanticData = $this->semanticDataSerializer->serialize(
+			$this->semanticDataFactory->newEmptySemanticData( __METHOD__ )
+		);
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'updateData', 'getPropertyValues' ) )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( new DIBlob( json_encode( $semanticData ) ) ) ) );
+
+		$store->expects( $this->once() )
+			->method( 'updateData' );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new UpdateJob( $subject->getTitle(),
+			array(
+				UpdateJob::CHANGE_PROP => $subject->getSerialization()
+			)
+		);
+
+		$instance->isEnabledJobQueue( false );
+
+		$instance->run();
 	}
 
 }

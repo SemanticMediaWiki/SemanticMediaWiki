@@ -42,6 +42,16 @@ class StoreUpdater {
 	private $applicationFactory = null;
 
 	/**
+	 * @var boolean
+	 */
+	private $isCommandLineMode = false;
+
+	/**
+	 * @var boolean|string
+	 */
+	private $isChangeProp = false;
+
+	/**
 	 * @since  1.9
 	 *
 	 * @param Store $store
@@ -50,6 +60,27 @@ class StoreUpdater {
 	public function __construct( Store $store, SemanticData $semanticData ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
+	 * Indicates whether MW is running in command-line mode.
+	 *
+	 * @since 3.0
+	 *
+	 * @param boolean $isCommandLineMode
+	 */
+	public function isCommandLineMode( $isCommandLineMode ) {
+		$this->isCommandLineMode = $isCommandLineMode;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isChangeProp
+	 */
+	public function isChangeProp( $isChangeProp ) {
+		$this->isChangeProp = (bool)$isChangeProp;
 	}
 
 	/**
@@ -138,7 +169,7 @@ class StoreUpdater {
 			return true;
 		}
 
-		$this->inspectPropertySpecification();
+		$this->doInspectChangePropagation();
 		$this->doRealUpdate();
 	}
 
@@ -186,22 +217,28 @@ class StoreUpdater {
 	 * @note Comparison must happen *before* the storage update;
 	 * even finding uses of a property fails after its type changed.
 	 */
-	private function inspectPropertySpecification() {
+	private function doInspectChangePropagation() {
 
-		if ( !$this->isEnabledWithUpdateJob ) {
+		if ( !$this->isEnabledWithUpdateJob || $this->isChangeProp || $this->semanticData->getSubject()->getNamespace() !== SMW_NS_PROPERTY ) {
 			return;
 		}
 
-		$propertySpecificationChangeNotifier = new PropertySpecificationChangeNotifier(
-			$this->store
+		$propertyChangePropagationNotifier = new PropertyChangePropagationNotifier(
+			$this->store,
+			$this->applicationFactory->newSerializerFactory()
 		);
 
-		$propertySpecificationChangeNotifier->setPropertyList(
+		$propertyChangePropagationNotifier->setPropertyList(
 			$this->applicationFactory->getSettings()->get( 'smwgDeclarationProperties' )
 		);
 
-		$propertySpecificationChangeNotifier->detectChangesOn( $this->semanticData );
-		$propertySpecificationChangeNotifier->notify();
+		$propertyChangePropagationNotifier->isCommandLineMode(
+			$this->isCommandLineMode
+		);
+
+		$propertyChangePropagationNotifier->checkAndNotify(
+			$this->semanticData
+		);
 	}
 
 	private function doRealUpdate() {

@@ -265,6 +265,22 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructMediaWikiLogger() {
+
+		$this->assertInstanceOf(
+			'\Psr\Log\LoggerInterface',
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+	}
+
+	public function testCanConstructJobQueueGroup() {
+
+		$this->assertInstanceOf(
+			'\JobQueueGroup',
+			$this->applicationFactory->getJobQueueGroup()
+		);
+	}
+
 	/**
 	 * @dataProvider callbackContainerProvider
 	 */

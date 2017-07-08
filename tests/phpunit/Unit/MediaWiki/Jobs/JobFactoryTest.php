@@ -105,6 +105,16 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob'
 		);
 
+		$provider[] = array(
+			'SMW\ChangePropagationDispatchJob',
+			'\SMW\MediaWiki\Jobs\ChangePropagationDispatchJob'
+		);
+
+		$provider[] = array(
+			'SMW\ChangePropagationUpdateJob',
+			'\SMW\MediaWiki\Jobs\ChangePropagationUpdateJob'
+		);
+
 		return $provider;
 	}
 

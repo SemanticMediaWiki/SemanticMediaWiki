@@ -41,6 +41,11 @@ class PropertySpecificationReqExaminer {
 	private $editProtectionRight = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $reqLock = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Store $store
@@ -69,6 +74,17 @@ class PropertySpecificationReqExaminer {
 	}
 
 	/**
+	 * Whether a specific property requires a lock nor not.
+	 *
+	 * @since 3.0
+	 *
+	 * @param boolean
+	 */
+	public function reqLock() {
+		return $this->reqLock;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param DIProperty $property
@@ -77,12 +93,24 @@ class PropertySpecificationReqExaminer {
 	 */
 	public function checkOn( DIProperty $property ) {
 
+		$semanticData = $this->store->getSemanticData( $property->getCanonicalDiWikiPage() );
+		$this->reqLock = false;
+
 		if ( $this->semanticData === null ) {
-			$this->semanticData = $this->store->getSemanticData( $property->getCanonicalDiWikiPage() );
+			$this->semanticData = $semanticData;
 		}
 
 		$type = $property->findPropertyTypeID();
 		$this->dataItemFactory = new DataItemFactory();
+
+		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
+			$this->reqLock = true;
+			return array(
+				'error',
+				'smw-property-req-violation-change-propagation-locked',
+				$property->getLabel()
+			);
+		}
 
 		if ( !$property->isUserDefined() ) {
 			return $this->checkOnTypeForPredefinedProperty( $property );

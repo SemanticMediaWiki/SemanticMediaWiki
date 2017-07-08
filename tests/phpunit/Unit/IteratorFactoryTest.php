@@ -58,4 +58,14 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructAppendIterator() {
+
+		$instance = new IteratorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\AppendIterator',
+			$instance->newAppendIterator()
+		);
+	}
+
 }

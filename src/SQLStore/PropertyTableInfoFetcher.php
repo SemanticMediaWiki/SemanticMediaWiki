@@ -161,6 +161,15 @@ class PropertyTableInfoFetcher {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getDefaultDataItemTables() {
+		return array_values( $this->defaultDiTypeTableIdMap );
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param DIProperty $property

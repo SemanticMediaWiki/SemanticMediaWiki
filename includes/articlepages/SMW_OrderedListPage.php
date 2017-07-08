@@ -55,6 +55,11 @@ abstract class SMWOrderedListPage extends Article {
 	protected $mProperty = null;
 
 	/**
+	 * @var boolean
+	 */
+	protected $isLockedView = false;
+
+	/**
 	 * Overwrite view() from Article.php to add additional HTML to the
 	 * output.
 	 */
@@ -86,7 +91,9 @@ abstract class SMWOrderedListPage extends Article {
 			$outputPage->addHTML( $this->getIntroductoryText() );
 		}
 
-		parent::view();
+		if ( $this->isLockedView === false ) {
+			parent::view();
+		}
 
 		// Copied from CategoryPage
 		$diff = $request->getVal( 'diff' );

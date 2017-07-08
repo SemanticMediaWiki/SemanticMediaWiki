@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\DIWikiPage;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableIdReferenceDisposer
@@ -17,9 +18,12 @@ use SMW\DIWikiPage;
 class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getDataItemById' ) )
@@ -36,6 +40,20 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
+
+		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobQueueGroup->expects( $this->any() )
+			->method( 'lazyPush' );
+
+		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {

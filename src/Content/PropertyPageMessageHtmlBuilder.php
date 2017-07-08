@@ -7,6 +7,7 @@ use SMW\DIProperty;
 use SMW\DataValueFactory;
 use SMW\PropertyRegistry;
 use SMW\PropertySpecificationReqExaminer;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use Html;
 
 /**
@@ -59,6 +60,7 @@ class PropertyPageMessageHtmlBuilder {
 	 */
 	public function createMessageBody( DIProperty $property ) {
 
+		$subject = $property->getCanonicalDiWikiPage();
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$property
 		);
@@ -69,8 +71,18 @@ class PropertyPageMessageHtmlBuilder {
 			$this->propertySpecificationReqExaminer->checkOn( $property )
 		);
 
-		if ( $this->hasEditProtection ) {
+		if ( $this->propertySpecificationReqExaminer->reqLock() === false && $this->hasEditProtection ) {
 			$message .= $this->createEditProtectionMessage( $propertyName );
+		}
+
+		if ( $this->propertySpecificationReqExaminer->reqLock() === false && ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {
+			$message .= $this->createReqViolationMessage(
+				array(
+					'warning',
+					'smw-property-req-violation-change-propagation-pending',
+					ChangePropagationDispatchJob::getPendingJobsCount( $subject )
+				)
+			);
 		}
 
 		if ( $property->isUserDefined() && wfMessage( 'smw-property-introductory-message-user' )->exists() ) {

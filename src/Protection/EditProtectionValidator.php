@@ -44,6 +44,11 @@ class EditProtectionValidator {
 	private $editProtectionRight = false;
 
 	/**
+	 * @var boolean|string
+	 */
+	private $changePropagationProtection = true;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher
@@ -61,6 +66,15 @@ class EditProtectionValidator {
 	 */
 	public function setEditProtectionRight( $editProtectionRight ) {
 		$this->editProtectionRight = $editProtectionRight;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $changePropagationProtection
+	 */
+	public function setChangePropagationProtection( $changePropagationProtection ) {
+		$this->changePropagationProtection = (bool)$changePropagationProtection;
 	}
 
 	/**
@@ -90,6 +104,24 @@ class EditProtectionValidator {
 	 *
 	 * @return boolean
 	 */
+	public function hasChangePropagationProtection( Title $title ) {
+
+		$subject = DIWikiPage::newFromTitle( $title )->asBase();
+
+		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $this->changePropagationProtection === false ) {
+			return false;
+		}
+
+		return $this->checkProtection( $subject, new DIProperty( '_CHGPRO' ) );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Title $title
+	 *
+	 * @return boolean
+	 */
 	public function hasProtection( Title $title ) {
 		return $this->checkProtection( DIWikiPage::newFromTitle( $title )->asBase() );
 	}
@@ -110,9 +142,13 @@ class EditProtectionValidator {
 		return !$title->userCan( 'edit' ) && $this->checkProtection( DIWikiPage::newFromTitle( $title )->asBase() );
 	}
 
-	private function checkProtection( $subject ) {
+	private function checkProtection( $subject, $property = null ) {
 
-		$key = $subject->getHash();
+		if ( $property === null ) {
+			$property = new DIProperty( '_EDIP' );
+		}
+
+		$key = $subject->getHash() . $property->getKey();
 		$hasProtection = false;
 
 		if ( $this->intermediaryMemoryCache->contains( $key ) ) {
@@ -126,12 +162,12 @@ class EditProtectionValidator {
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
 			$subject,
-			new DIProperty( '_EDIP' ),
+			$property,
 			$requestOptions
 		);
 
 		if ( $dataItems !== null && $dataItems !== array() ) {
-			$hasProtection = end( $dataItems )->getBoolean();
+			$hasProtection = $property->getKey() === '_EDIP' ? end( $dataItems )->getBoolean() : true;
 		}
 
 		$this->intermediaryMemoryCache->save( $key, $hasProtection );
