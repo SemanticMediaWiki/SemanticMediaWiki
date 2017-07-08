@@ -20,6 +20,8 @@ class MySQLTableBuilder extends TableBuilder {
 	 */
 	public function getStandardFieldType( $fieldType ) {
 
+		$charLongLength = FieldType::CHAR_LONG_LENGTH;
+
 		$fieldTypes = array(
 			 // like page_id in MW page table
 			'id'         => 'INT(8) UNSIGNED',
@@ -38,9 +40,9 @@ class MySQLTableBuilder extends TableBuilder {
 			'boolean'    => 'TINYINT(1)',
 			'double'     => 'DOUBLE',
 			'integer'    => 'INT(8)',
-			'char long'  => 'VARBINARY(300)',
+			'char long'  => "VARBINARY($charLongLength)",
 			'char nocase'      => 'VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci',
-			'char long nocase' => 'VARCHAR(300) CHARSET utf8 COLLATE utf8_general_ci',
+			'char long nocase' => "VARCHAR($charLongLength) CHARSET utf8 COLLATE utf8_general_ci",
 			'usage count'      => 'INT(8) UNSIGNED',
 			'integer unsigned' => 'INT(8) UNSIGNED'
 		);

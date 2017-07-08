@@ -98,35 +98,18 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testtMutableOnNoCaseFieldFeature() {
+	/**
+	 * @dataProvider fieldTypeProvider
+	 */
+	public function testMutableOnFieldTypeFeature( $fieldTypeFeatures, $expected ) {
 
 		$instance = new DIUriHandler(
 			$this->store
 		);
 
-		$expected = [
-			'o_blob' => FieldType::TYPE_BLOB,
-			'o_serialized' => FieldType::FIELD_TITLE
-		];
-
-		$this->assertEquals(
-			$expected,
-			$instance->getTableFields()
-		);
-
-		$this->assertEquals(
-			$expected,
-			$instance->getFetchFields()
-		);
-
 		$instance->setFieldTypeFeatures(
-			SMW_FIELDT_CHAR_NOCASE
+			$fieldTypeFeatures
 		);
-
-		$expected = [
-			'o_blob' => FieldType::TYPE_BLOB,
-			'o_serialized' => FieldType::TYPE_CHAR_NOCASE
-		];
 
 		$this->assertEquals(
 			$expected,
@@ -184,6 +167,43 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			array( '' )
+		);
+
+		return $provider;
+	}
+
+	public function fieldTypeProvider() {
+
+		$provider[] = array(
+			SMW_FIELDT_NONE,
+			[
+				'o_blob' => FieldType::TYPE_BLOB,
+				'o_serialized' => FieldType::FIELD_TITLE
+			]
+		);
+
+		$provider[] = array(
+			SMW_FIELDT_CHAR_NOCASE,
+			[
+				'o_blob' => FieldType::TYPE_BLOB,
+				'o_serialized' => FieldType::TYPE_CHAR_NOCASE
+			]
+		);
+
+		$provider[] = array(
+			SMW_FIELDT_CHAR_LONG,
+			[
+				'o_blob' => FieldType::TYPE_BLOB,
+				'o_serialized' => FieldType::TYPE_CHAR_LONG
+			]
+		);
+
+		$provider[] = array(
+			SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG,
+			[
+				'o_blob' => FieldType::TYPE_BLOB,
+				'o_serialized' => FieldType::TYPE_CHAR_LONG_NOCASE
+			]
 		);
 
 		return $provider;

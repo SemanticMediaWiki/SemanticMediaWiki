@@ -1599,6 +1599,22 @@ return array(
 	#
 	# [0] https://techblog.dorogin.com/case-insensitive-like-in-sqlite-504f594dcdc3
 	#
+	# SMW_FIELDT_CHAR_LONG - Extends the size to 300 chars for text pattern
+	# match (DIBlob and DIUri) fields.
+	#
+	# By default, those fields are limited to 72 chars that limits search depth
+	# in exchange for index size and performance. Extending fields to 300 allows
+	# to run LIKE/NLIKE matching on a larger text body without relying on a
+	# full-text index but an increased index size could potentially carry a
+	# performance penalty when the index cannot be kept in memory.
+	#
+	# No analysis has been performed on how performance is impacted. Selecting
+	# this option requires to run `rebuildData.php` to adjust the field content
+	# to the new length.
+	#
+	# SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG can be combined to build a
+	# case insensitive long field type.
+	#
 	# @since 3.0
 	# @default false
 	##

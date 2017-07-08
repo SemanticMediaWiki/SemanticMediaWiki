@@ -212,14 +212,18 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			);
 		}
 
-		$pageList = $jsonTestCaseFileHandler->getPageCreationSetupList();
+		if ( $jsonTestCaseFileHandler->hasSetting( 'smwgFieldTypeFeatures' ) ) {
+			$this->doRunTableSetupBeforeContentCreation();
+		}
 
 		// On some occasions ( e.g. fixed properties) to setup the correct
 		// table schema, run the creation once before the content is created
-		if ( $jsonTestCaseFileHandler->hasSetting( 'smwgFixedProperties' ) || $jsonTestCaseFileHandler->hasSetting( 'smwgFieldTypeFeatures' ) ) {
+		$pageList = $jsonTestCaseFileHandler->getPageCreationSetupList();
+
+		if ( $jsonTestCaseFileHandler->hasSetting( 'smwgFixedProperties' ) ) {
 			foreach ( $pageList as $page ) {
 				if ( isset( $page['namespace'] ) && $page['namespace'] === 'SMW_NS_PROPERTY' ) {
-					$this->doRunTableSetupBeforeContentCreation( $page );
+					$this->doRunTableSetupBeforeContentCreation( array( $page ) );
 				}
 			}
 		}
@@ -230,10 +234,11 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		);
 	}
 
-	private function doRunTableSetupBeforeContentCreation( $page ) {
+	private function doRunTableSetupBeforeContentCreation( $pageList = null ) {
 
-		// Create property to ...
-		$this->createPagesFrom( array( $page ) );
+		if ( $pageList !== null ) {
+			$this->createPagesFrom( $pageList );
+		}
 
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'setupStore' );
 		$maintenanceRunner->setQuiet();

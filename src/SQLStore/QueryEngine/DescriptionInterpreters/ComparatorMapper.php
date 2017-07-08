@@ -48,6 +48,10 @@ class ComparatorMapper {
 				$value = str_replace( array( 'http://', 'https://', '%2A' ), array( '', '', '*' ), $value );
 			}
 
+			if ( $value !== '' && $value{0} === '=' ) {
+				$value = substr( $value, 1 );
+			}
+
 			// Escape to prepare string matching:
 			$value = str_replace(
 				array( '\\', '%', '_', '*', '?' ),
