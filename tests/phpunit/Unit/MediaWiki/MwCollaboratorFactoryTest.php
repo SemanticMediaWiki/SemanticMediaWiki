@@ -170,7 +170,29 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructDatabaseConnectionProvider() {
 
-		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
+		$settings = $this->getMockBuilder( '\SMW\Settings' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$settings->expects( $this->atLeastOnce() )
+			->method( 'get' )
+			->will( $this->returnValue( array() ) );
+
+		$this->applicationFactory->expects( $this->atLeastOnce() )
+			->method( 'getSettings' )
+			->will( $this->returnValue( $settings ) );
+
+		$this->applicationFactory->expects( $this->atLeastOnce() )
+			->method( 'getMediaWikiLogger' )
+			->will( $this->returnValue( $logger ) );
+
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\DatabaseConnectionProvider',
