@@ -17,7 +17,7 @@ objects work.
 
 ## TestCases
 
-Contains 208 files with a total of 906 tests:
+Contains 209 files with a total of 906 tests:
 
 ### B
 * [bootstrap.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/bootstrap.json) Example bootstrap test case (see https://youtu.be/7fDKjPFaTaY)
@@ -45,6 +45,7 @@ Contains 208 files with a total of 906 tests:
 * [f-0304.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0304.json) Test `format=category` with identity collation sort (#2065, `smwgEntityCollation=identity`, `smwgSparqlQFeatures=SMW_SPARQL_QF_COLLATION`)
 * [f-0305.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0305.json) Test `format=category` with uppercase collation sort (#2065, `smwgEntityCollation=uppercase`, `smwgSparqlQFeatures=SMW_SPARQL_QF_COLLATION`)
 * [f-0306.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0306.json) Test `format=category` with numeric collation sort (same as uppercase, but with numeric sorting) (#2065, `smwgEntityCollation=numeric`, `smwgSparqlQFeatures=SMW_SPARQL_QF_COLLATION`)
+* [f-0401.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0401.json) Test `format=list` output
 * [f-0801.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0801.json) Test `format=embedded` output (skip 1.19)
 * [f-0802.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0802.json) Test `format=template` [[SMW::on/off]] regression using `named args=yes` (#1453, skip-on 1.19)
 * [f-0803.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0803.json) Test `format=template` with `sep`/`named args`/`template arguments` (#972, #2022)
@@ -326,6 +327,7 @@ should suffice to create test assertions for common test scenarios. Available ty
 are:
   * `query`, `concept`, and `format`
   * `parser`
+  * `parser-html`
   * `rdf`
   * `special`
 * The `about` describes what the test is expected to test which may help during
