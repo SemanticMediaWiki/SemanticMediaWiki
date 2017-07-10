@@ -17,7 +17,7 @@ objects work.
 
 ## TestCases
 
-Contains 208 files with a total of 906 tests:
+Contains 209 files with a total of 906 tests:
 
 ### B
 * [bootstrap.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/bootstrap.json) Example bootstrap test case (see https://youtu.be/7fDKjPFaTaY)
@@ -45,6 +45,7 @@ Contains 208 files with a total of 906 tests:
 * [f-0304.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0304.json) Test `format=category` with identity collation sort (#2065, `smwgEntityCollation=identity`, `smwgSparqlQFeatures=SMW_SPARQL_QF_COLLATION`)
 * [f-0305.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0305.json) Test `format=category` with uppercase collation sort (#2065, `smwgEntityCollation=uppercase`, `smwgSparqlQFeatures=SMW_SPARQL_QF_COLLATION`)
 * [f-0306.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0306.json) Test `format=category` with numeric collation sort (same as uppercase, but with numeric sorting) (#2065, `smwgEntityCollation=numeric`, `smwgSparqlQFeatures=SMW_SPARQL_QF_COLLATION`)
+* [f-0401.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0401.json) Test `format=list` output
 * [f-0801.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0801.json) Test `format=embedded` output (skip 1.19)
 * [f-0802.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0802.json) Test `format=template` [[SMW::on/off]] regression using `named args=yes` (#1453, skip-on 1.19)
 * [f-0803.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0803.json) Test `format=template` with `sep`/`named args`/`template arguments` (#972, #2022)
@@ -258,7 +259,7 @@ tests will not interfer with the expected results. It may also be of advantage t
 the setup of data (e.g. `Example/Test/1`) from the actual test subject (e.g. `Example/Test/Q.1`)
 to avoid conflicating comparisons or false positive results during the assertion process.
 
-<pre>
+``` json
 "setup": [
 	{
 		"page": "Has text",
@@ -280,16 +281,38 @@ to avoid conflicating comparisons or false positive results during the assertion
 		"contents": "{{#ask: [[Has text::~Some text*]] |?Has text }}"
 	}
 ],
-</pre>
+```
 
 ### Test assertions
 
+* The `type` provides specialized assertion methods with some of them requiring
+an extra setup to yield a comparable output but in most cases the `parser` type
+should suffice to create test assertions for common test scenarios. Available types
+are:
+  * `query`, `concept`, and `format`
+  * `parser`
+  * `parser-html`
+  * `rdf`
+  * `special`
+* The `about` describes what the test is expected to test which may help during
+  a failure to identify potential conflicts or hints on how to resolve an issue.
+* The `subject` refers to the page that was defined in the `setup` section.
+
+For example, as of version 2 the `parser` type (`ParserTestCaseProcessor`) knows
+two assertions methods:
+
+- `assert-store` is to validate data against `Store::getSemanticData`
+- `assert-output` is to validate string comparison against the `ParserOutput`
+  generated text
+
+
+#### Type `parser`
 The test result assertion provides simplified string comparison methods (mostly for
 output related assertion but expressive enough for users to understand the test
-objective and its expected results). For example, verifying that a the parser
+objective and its expected results). For example, verifying that the parser
 does output a certain string, one has to the define an expected output.
 
-<pre>
+``` json
 "tests": [
 	{
 		"type": "parser",
@@ -317,27 +340,60 @@ does output a certain string, one has to the define an expected output.
 			]
 		}
 	}
-}
-</pre>
+]
+```
 
-* The `type` provides specialized assertion methods with some of them requiring
-an extra setup to yield a comparable output but in most cases the `parser` type
-should suffice to create test assertions for common test scenarios. Available types
-are:
-  * `query`, `concept`, and `format`
-  * `parser`
-  * `rdf`
-  * `special`
-* The `about` describes what the test is expected to test which may help during
-  a failure to identify potential conflicts or hints on how to resolve an issue.
-* The `subject` refers to the page that was defined in the `setup` section.
+#### Type `parser-html`
 
-For example, as of version 2 the `parser` type (`ParserTestCaseProcessor`) knows
-two assertions methods:
+To verify that the HTML code produced by the parser conforms to a certain
+structure the test type `parser-html` may be used. With this type the expected
+output structure may be specified as a CSS selector. The test will succeed if at
+least one element according to that selector is found in the output.
 
-- `assert-store` is to validate data against `Store::getSemanticData`
-- `assert-output` is to validate string comparison against the `ParserOutput`
-  generated text
+Example:
+``` json
+"tests": [
+	{
+		"type": "parser-html",
+		"about": "#0 Basic List format",
+		"subject": "Example/0401",
+		"assert-output": {
+			"to-contain": [
+				"p > a[ title='Bar' ] + a[ title='Baz' ] + a[ title='Foo' ] + a[ title='Quok' ]"
+			]
+		}
+	}
+]
+```
+
+For further details and limitations on the CSS selectors see the [description of
+the Symfony CssSelector
+Component](https://symfony.com/doc/current/components/css_selector.html) that is
+used for this test type.
+
+It is also possible to require an exact number of occurences of HTML elements by
+providing an array instead of just a CSS selector string.
+
+Example:
+``` json
+		"assert-output": {
+			"to-contain": [
+				[ "p > a", 4 ]
+			]
+		}
+```
+
+Finally the general well-formedness of the HTML can be tested, although this
+will not fail for recoverable errors (see the [documentation on PHP's
+DOMDocument::loadHTML](http://php.net/manual/en/domdocument.loadhtml.php#refsect1-domdocument.loadhtml-errors)).
+
+Example:
+``` json
+		"assert-output": {
+			"to-be-valid-html": true,
+		}
+```
+
 
 ### Preparing the test environment
 
@@ -345,7 +401,7 @@ It can happen that an output is mixed with language dependent content (site vs.
 page content vs. user language) and therefore it is recommended to fix those
 settings for a test by adding something like:
 
-<pre>
+``` json
 "settings": {
 	"wgContLang": "en",
 	"wgLang": "en",
@@ -354,7 +410,7 @@ settings for a test by adding something like:
 		"SMW_NS_PROPERTY": true
 	}
 }
-</pre>
+```
 
 By default not all settings parameter are enabled in `JsonTestCaseScriptRunner::prepareTest`
 and may require an extension in case a specific test case depends on additional
@@ -369,20 +425,20 @@ Each `json` file expects a `meta` section with:
 - `debug` as flag for support of intermediary debugging that may output internal
   object state information.
 
-<pre>
+``` json
 "meta": {
 	"version": "2",
 	"is-incomplete": false,
 	"debug": false
 }
-</pre>
+```
 
 ### Skipping a test or mark as incomplete
 
 Sometimes certain data can cause inconsistencies with an environment hence it is
 possible to skip those cases by adding:
 
-<pre>
+``` json
 {
 	"skip-on": {
 		"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
@@ -390,16 +446,16 @@ possible to skip those cases by adding:
 	"page": "Example/P0413/11",
 	"contents": "[[Has date::Jan 1 300 BC]]"
 },
-</pre>
+```
 
-<pre>
+``` json
 {
 	"skip-on": {
 		"hhvm-*": "HHVM (or SQLite) shows opposite B1000, B9",
 		"mw-1.28<": "`numeric` collation only available with 1.28+"
 	}
 }
-</pre>
+```
 
 Constraints that include `hhvm-*` will indicate to exclude all HHVM versions while
 `mw-1.28<` defines that any MW version lower than 1.28 is to be ignored.
@@ -407,7 +463,7 @@ Constraints that include `hhvm-*` will indicate to exclude all HHVM versions whi
 It is also possible that an entire test scenario cannot be completed in a particular
 environment therefore it can be marked and skipped with:
 
-<pre>
+``` json
 "meta": {
 	"skip-on": {
 		"virtuoso": "Some info as to why it is skipped.",
@@ -418,7 +474,7 @@ environment therefore it can be marked and skipped with:
 	"is-incomplete": false,
 	"debug": false
 }
-</pre>
+```
 
 If a test is incomplete for some reason, use the `is-incomplete` field to indicate
 the status which henceforth avoids a test execution.
@@ -445,7 +501,7 @@ is mostly done when running from an IDE editor
 * The command line allows to invoke a filter argument to specify a case such as
 `composer integration -- --filter 's-0014.json'`
 
-<pre>
+```
 $  composer integration -- --filter 's-0014.json'
 Using PHP 5.6.8
 
@@ -467,7 +523,7 @@ Configuration:  ...\extensions\SemanticMediaWiki\phpunit.xml.dist
 Time: 13.02 seconds, Memory: 34.00Mb
 
 OK (1 test, 16 assertions)
-</pre>
+```
 
 The following [video](https://youtu.be/7fDKjPFaTaY) contains a very brief introduction on how
 to run and debug a JSONScript test case. For a general introduction to the test environment,

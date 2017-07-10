@@ -43,6 +43,11 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	private $specialPageTestCaseProcessor;
 
 	/**
+	 * @var ParserHtmlTestCaseProcessor
+	 */
+	private $parserHtmlTestCaseProcessor;
+
+	/**
 	 * @var RunnerFactory
 	 */
 	private $runnerFactory;
@@ -88,6 +93,10 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->specialPageTestCaseProcessor = new SpecialPageTestCaseProcessor(
 			$this->getStore(),
 			$stringValidator
+		);
+
+		$this->parserHtmlTestCaseProcessor = new ParserHtmlTestCaseProcessor(
+			$validatorFactory->newHtmlValidator()
 		);
 
 		$this->eventDispatcher = EventHandler::getInstance()->getEventDispatcher();
@@ -156,6 +165,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->doRunSpecialTests( $jsonTestCaseFileHandler );
 		$this->doRunRdfTests( $jsonTestCaseFileHandler );
 		$this->doRunQueryTests( $jsonTestCaseFileHandler );
+		$this->doRunParserHtmlTests( $jsonTestCaseFileHandler );
 	}
 
 	private function prepareTest( $jsonTestCaseFileHandler ) {
@@ -355,6 +365,21 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			}
 
 			$this->queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $case ) );
+		}
+	}
+
+	/**
+	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
+	 */
+	private function doRunParserHtmlTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+
+		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'parser-html' ) as $case ) {
+
+			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
+				continue;
+			}
+
+			$this->parserHtmlTestCaseProcessor->process( $case );
 		}
 	}
 
