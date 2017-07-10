@@ -529,6 +529,8 @@
 	"smw-property-req-violation-missing-formatter-uri": "由于定义<code>External formatter URI</code>属性失败，属性“$1”丢失用于已注释类型的声明详情。",
 	"smw-property-req-violation-predefined-type": "作为预定义属性，属性“$1”包含“$2”类型声明，它与此属性默认类型不兼容。",
 	"smw-property-req-violation-import-type": "检测到与预定义导入的“$1”词汇类型不兼容的类型声明。一般情况下，因为信息从导入定义中检索，所以不需要声明类型。",
+	"smw-property-req-violation-change-propagation-locked": "属性“$1”曾被修改，并触发[https://www.semantic-mediawiki.org/wiki/Change_propagation 更改传输]过程，而同时锁定了属性页面来阻止中间打断，或是恰好预防了主要数据更新时的矛盾规格。在页面可以解锁前过程会持续较长时间，这基于[https://www.mediawiki.org/wiki/Manual:Job_queue 工作队列]调度器的大小及频率。",
+	"smw-property-req-violation-change-propagation-pending": "[https://www.semantic-mediawiki.org/wiki/Change_propagation 更改传输]过程正在等待（估计$1个[https://www.mediawiki.org/wiki/Manual:Job_queue {{PLURAL:$1|工作}}]），并建议通过更改属性的方式等待，直到过程结束来阻止中间打断或矛盾规格为止。",
 	"protect-level-smw-pageedit": "只允许带页面编辑权限的用户（语义MediaWiki）",
 	"smw-edit-protection": "此页面受到[[Property:Is edit protected|保护]]，以阻止意外数据修改，并因此只有拥有适当“$1”[https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups 权限]的用户可以编辑。",
 	"smw-edit-protection-disabled": "编辑保护被禁用，因此“$1”不能用于保护实体页面不受未经授权的编辑。",
