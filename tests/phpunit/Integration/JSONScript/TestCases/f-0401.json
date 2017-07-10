@@ -33,9 +33,10 @@
 			"about": "#0 Basic List format",
 			"subject": "Example/0401",
 			"assert-output": {
-				"to-be-valid-html": 1,
+				"to-be-valid-html": true,
 				"to-contain": [
-					"p > a[ title='Bar' ] + a[ title='Baz' ] + a[ title='Foo' ] + a[ title='Quok' ]"
+					"p > a[ title='Bar' ] + a[ title='Baz' ] + a[ title='Foo' ] + a[ title='Quok' ]",
+					[ "p > a", 4 ]
 				]
 			}
 		}
