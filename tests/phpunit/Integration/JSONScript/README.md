@@ -259,7 +259,7 @@ tests will not interfer with the expected results. It may also be of advantage t
 the setup of data (e.g. `Example/Test/1`) from the actual test subject (e.g. `Example/Test/Q.1`)
 to avoid conflicating comparisons or false positive results during the assertion process.
 
-``` json
+<pre>
 "setup": [
 	{
 		"page": "Has text",
@@ -281,7 +281,7 @@ to avoid conflicating comparisons or false positive results during the assertion
 		"contents": "{{#ask: [[Has text::~Some text*]] |?Has text }}"
 	}
 ],
-```
+</pre>
 
 ### Test assertions
 
@@ -312,7 +312,7 @@ output related assertion but expressive enough for users to understand the test
 objective and its expected results). For example, verifying that the parser
 does output a certain string, one has to the define an expected output.
 
-``` json
+<pre>
 "tests": [
 	{
 		"type": "parser",
@@ -341,7 +341,7 @@ does output a certain string, one has to the define an expected output.
 		}
 	}
 ]
-```
+</pre>
 
 #### Type `parser-html`
 
@@ -351,7 +351,7 @@ output structure may be specified as a CSS selector. The test will succeed if at
 least one element according to that selector is found in the output.
 
 Example:
-``` json
+<pre>
 "tests": [
 	{
 		"type": "parser-html",
@@ -364,7 +364,7 @@ Example:
 		}
 	}
 ]
-```
+</pre>
 
 For further details and limitations on the CSS selectors see the [description of
 the Symfony CssSelector
@@ -375,24 +375,24 @@ It is also possible to require an exact number of occurences of HTML elements by
 providing an array instead of just a CSS selector string.
 
 Example:
-``` json
+<pre>
 		"assert-output": {
 			"to-contain": [
 				[ "p > a", 4 ]
 			]
 		}
-```
+</pre>
 
 Finally the general well-formedness of the HTML can be tested, although this
 will not fail for recoverable errors (see the [documentation on PHP's
 DOMDocument::loadHTML](http://php.net/manual/en/domdocument.loadhtml.php#refsect1-domdocument.loadhtml-errors)).
 
 Example:
-``` json
+<pre>
 		"assert-output": {
 			"to-be-valid-html": true,
 		}
-```
+</pre>
 
 
 ### Preparing the test environment
@@ -401,7 +401,7 @@ It can happen that an output is mixed with language dependent content (site vs.
 page content vs. user language) and therefore it is recommended to fix those
 settings for a test by adding something like:
 
-``` json
+<pre>
 "settings": {
 	"wgContLang": "en",
 	"wgLang": "en",
@@ -410,7 +410,7 @@ settings for a test by adding something like:
 		"SMW_NS_PROPERTY": true
 	}
 }
-```
+</pre>
 
 By default not all settings parameter are enabled in `JsonTestCaseScriptRunner::prepareTest`
 and may require an extension in case a specific test case depends on additional
@@ -425,20 +425,20 @@ Each `json` file expects a `meta` section with:
 - `debug` as flag for support of intermediary debugging that may output internal
   object state information.
 
-``` json
+<pre>
 "meta": {
 	"version": "2",
 	"is-incomplete": false,
 	"debug": false
 }
-```
+</pre>
 
 ### Skipping a test or mark as incomplete
 
 Sometimes certain data can cause inconsistencies with an environment hence it is
 possible to skip those cases by adding:
 
-``` json
+<pre>
 {
 	"skip-on": {
 		"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
@@ -446,16 +446,16 @@ possible to skip those cases by adding:
 	"page": "Example/P0413/11",
 	"contents": "[[Has date::Jan 1 300 BC]]"
 },
-```
+</pre>
 
-``` json
+<pre>
 {
 	"skip-on": {
 		"hhvm-*": "HHVM (or SQLite) shows opposite B1000, B9",
 		"mw-1.28<": "`numeric` collation only available with 1.28+"
 	}
 }
-```
+</pre>
 
 Constraints that include `hhvm-*` will indicate to exclude all HHVM versions while
 `mw-1.28<` defines that any MW version lower than 1.28 is to be ignored.
@@ -463,7 +463,7 @@ Constraints that include `hhvm-*` will indicate to exclude all HHVM versions whi
 It is also possible that an entire test scenario cannot be completed in a particular
 environment therefore it can be marked and skipped with:
 
-``` json
+<pre>
 "meta": {
 	"skip-on": {
 		"virtuoso": "Some info as to why it is skipped.",
@@ -474,7 +474,7 @@ environment therefore it can be marked and skipped with:
 	"is-incomplete": false,
 	"debug": false
 }
-```
+</pre>
 
 If a test is incomplete for some reason, use the `is-incomplete` field to indicate
 the status which henceforth avoids a test execution.
@@ -501,7 +501,7 @@ is mostly done when running from an IDE editor
 * The command line allows to invoke a filter argument to specify a case such as
 `composer integration -- --filter 's-0014.json'`
 
-```
+<pre>
 $  composer integration -- --filter 's-0014.json'
 Using PHP 5.6.8
 
@@ -523,7 +523,7 @@ Configuration:  ...\extensions\SemanticMediaWiki\phpunit.xml.dist
 Time: 13.02 seconds, Memory: 34.00Mb
 
 OK (1 test, 16 assertions)
-```
+</pre>
 
 The following [video](https://youtu.be/7fDKjPFaTaY) contains a very brief introduction on how
 to run and debug a JSONScript test case. For a general introduction to the test environment,
