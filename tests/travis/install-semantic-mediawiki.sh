@@ -24,10 +24,6 @@ function installSmwIntoMwWithComposer {
 	installPHPUnitWithComposer
 	composer require mediawiki/semantic-media-wiki "dev-master" --dev
 
-	# Explicitly load symfony/css-selector
-	# FIXME: Remove once composer.json with symfony/css-selector arrived at packagist
-	composer require  "symfony/css-selector" "^3.3"
-
 	cd extensions
 	cd SemanticMediaWiki
 
