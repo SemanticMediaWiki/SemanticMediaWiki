@@ -534,6 +534,8 @@
 	"smw-property-req-violation-missing-formatter-uri": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the property",
 	"smw-property-req-violation-predefined-type": "This is an error message.\n\nParameters:\n* $1 - Holds the name of the property\n* $2 - Holds the name of the datatype",
 	"smw-property-req-violation-import-type": "This is an error message.\n\nParameter:\n* $1 - holds the name of the imported vacabulary",
+	"smw-property-req-violation-change-propagation-locked": "This is an informatory message on a property page.\n\nParameters:\n* $1 - holds the name of the property",
+	"smw-property-req-violation-change-propagation-pending": "This is an informatory message on a property page.\n\nParameters:\n* $1 - holds the number of jobs queued",
 	"protect-level-smw-pageedit": "This is one of the options that may be selected when performing a page protection (<code>action=protect</code>) via the graphical interface of the wiki.",
 	"smw-edit-protection": "This is an informatory message shown on every page which is edit protected via an annotation.\n\nParameter:\n* $1 - Holds the name of the user right",
 	"smw-edit-protection-disabled": "This is an informatory message.\n\nParameter:\n* $1 - Holds the name of the special property",

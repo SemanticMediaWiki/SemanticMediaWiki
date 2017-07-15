@@ -481,6 +481,7 @@
 	"smw-datavalue-time-invalid-ampm": "«$1» contiene «$2» como elemento de hora que no es válido en el formato convencional de 12 horas.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" es una dirección URL no válida.",
 	"smw-pa-property-predefined-long_pefu": "Se espera que el URI contenga un marcador de posición que se ajustará con un valor de [[Special:Types/External identifier|identificador externo]]para formar una referencia de recuso válida.",
+	"smw-datavalue-propertylist-invalid-property-key": "La lista de propiedades «$1» contenía una clave de propiedad no válida, «$2».",
 	"smw-datavalue-type-invalid-typeuri": "No se pudo transformar el tipo «$1» en una representación de URI válida.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "El analizador de JSON devolvió «$1».",
