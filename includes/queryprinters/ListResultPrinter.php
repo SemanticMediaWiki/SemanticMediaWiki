@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Html;
+use ParamProcessor\ParamDefinition;
 use Sanitizer;
 use SMWDataItem;
 use SMWQueryResult;
@@ -100,34 +101,46 @@ class ListResultPrinter extends ResultPrinter {
 	 */
 	protected $numRows;
 
+	private $templateRenderer;
+	private $rowSortkey;
+
 
 	/**
+	 * Does any additional parameter handling that needs to be done before the
+	 * actual result is build. This includes cleaning up parameter values
+	 * and setting class fields.
+	 *
 	 * @see SMWResultPrinter::handleParameters
 	 *
 	 * @since 1.6
 	 *
 	 * @param array $params
 	 * @param $outputmode
+	 * @return string
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
 
-		$this->mTemplate = trim( $params['template'] );
-		$this->mNamedArgs = $params['named args'];
-		$this->mUserParam = trim( $params['userparam'] );
-		$this->mColumns = !$this->isPlainlist() ? $params['columns'] : 1;
-		$this->mIntroTemplate = $params['introtemplate'];
-		$this->mOutroTemplate = $params['outrotemplate'];
+		$this->mTemplate = $params[ 'template' ];
+		$this->mNamedArgs = $params[ 'named args' ];
+		$this->mUserParam = trim( $params[ 'userparam' ] );
+		$this->mColumns = $params[ 'columns' ];
+		$this->mIntroTemplate = $params[ 'introtemplate' ];
+		$this->mOutroTemplate = $params[ 'outrotemplate' ];
 	}
 
 	/**
-	 * @see SMW\ResultPrinter::getName
+	 * Get a human readable label for this printer. The default is to
+	 * return just the format identifier. Concrete implementations may
+	 * refer to messages here. The format name is normally not used in
+	 * wiki text but only in forms etc. hence the user language should be
+	 * used when retrieving messages.
 	 *
 	 */
 	public function getName() {
 		// Give grep a chance to find the usages:
 		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_template
-		return $this->msg( 'smw_printername_' . $this->mFormat )->text();
+		return $this->getContext()->msg( 'smw_printername_' . $this->mFormat )->text();
 	}
 
 	/**
@@ -140,7 +153,7 @@ class ListResultPrinter extends ResultPrinter {
 	}
 
 	/**
-	 * @see SMW\ResultPrinter::getResultText
+	 * @see ResultPrinter::getResultText
 	 *
 	 * @param SMWQueryResult $queryResult
 	 * @param $outputMode
@@ -148,12 +161,10 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
-		if ( $this->mFormat == 'template' && !$this->mTemplate ) {
-			$queryResult->addErrors( array(
-				$this->msg( 'smw_notemplategiven' )->inContentLanguage()->text()
-			) );
-			return '';
-		}
+
+		$builder = new ListResultBuilder( $this->params[ 'format' ] );
+		$builder->setLinker( $this->mLinker );
+		return $builder->getResultText( $queryResult );
 
 		$this->templateRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
 
@@ -162,9 +173,9 @@ class ListResultPrinter extends ResultPrinter {
 		$result = '';
 
 		// Set up floating divs if there's more than one column
-		if ( $this->mColumns > 1 ) {
-			$result .= '<div style="float: left; width: ' . $this->columnWidth . '%">' . "\n";
-		}
+//		if ( $this->mColumns > 1 ) {
+//			$result .= '<div style="float: left; width: ' . $this->columnWidth . '%">' . "\n";
+//		}
 
 		$result .= $this->header;
 
@@ -186,19 +197,20 @@ class ListResultPrinter extends ResultPrinter {
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $queryResult ) &&
-			( $this->mFormat != 'ol' || $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) {
+			( $this->mFormat != 'ol' || $this->getSearchLabel( SMW_OUTPUT_WIKI ) )
+		) {
 			$result .= trim( $this->getFurtherResultsText( $queryResult, $outputMode ) );
 		}
 
 		$result .= $this->footer;
 
 		if ( $this->mColumns > 1 ) {
-			$result .= "</div>\n" . '<br style="clear: both" />' . "\n";
+			$result .= "<div style=\"float: left; width: {$this->columnWidth}%\">\n$result</div>\n<br style=\"clear: both\" />\n";
 		}
 
 		// Display default if the result is empty
 		if ( $result == '' ) {
-			$result = $this->params['default'];
+			$result = $this->params[ 'default' ];
 		}
 
 		return $result;
@@ -212,6 +224,7 @@ class ListResultPrinter extends ResultPrinter {
 	 * @param SMWQueryResult $queryResult
 	 */
 	protected function initializePrintingParameters( SMWQueryResult $queryResult ) {
+
 		$this->numRows = 0;
 		$this->numRowsInColumn = 0;
 		$this->rowSortkey = '';
@@ -236,16 +249,16 @@ class ListResultPrinter extends ResultPrinter {
 		// how to apply a separator and avoiding a regression for users who did
 		// not choose a sep in the first place, if no separator is selected then
 		// the list, ul, ol will use , as default
-		if ( $this->params['format'] === 'list' && $this->params['sep'] === ',' ) {
+		if ( $this->params[ 'format' ] === 'list' && $this->params[ 'sep' ] === ',' ) {
 			// Make default list ", , , and "
 			$this->listsep = ', ';
 			$this->finallistsep = $this->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
-		} elseif ( $this->params['format'] !== 'template' && $this->params['sep'] === '' ) {
+		} elseif ( $this->params[ 'format' ] !== 'template' && $this->params[ 'sep' ] === '' ) {
 			$this->listsep = ', ';
 			$this->finallistsep = $this->listsep;
-		} elseif ( $this->params['sep'] !== '' ) {
+		} elseif ( $this->params[ 'sep' ] !== '' ) {
 			// Allow "_" for encoding spaces, as documented
-			$this->listsep = str_replace( '_', ' ', $this->params['sep'] );
+			$this->listsep = str_replace( '_', ' ', $this->params[ 'sep' ] );
 			$this->finallistsep = $this->listsep;
 		} else {
 			$this->listsep = '';
@@ -253,7 +266,7 @@ class ListResultPrinter extends ResultPrinter {
 		}
 
 		// #2329
-		if ( $this->params['format'] === 'template' && !$this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
+		if ( $this->params[ 'format' ] === 'template' && !$this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
 			$this->listsep = '';
 			$this->finallistsep = '';
 		}
@@ -330,8 +343,8 @@ class ListResultPrinter extends ResultPrinter {
 
 		if ( $this->rowSortkey !== '' ) {
 			return "\t" . Html::openElement( 'li',
-				array( 'data-sortkey' => mb_substr( $this->rowSortkey, 0, 1 ) )
-			);
+					[ 'data-sortkey' => mb_substr( $this->rowSortkey, 0, 1 ) ]
+				);
 		}
 
 		return $this->rowstart;
@@ -355,7 +368,7 @@ class ListResultPrinter extends ResultPrinter {
 		$extraFields = false; // has anything but the first field been printed?
 
 		$result = '';
-		$excluded = array( 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' );
+		$excluded = [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ];
 
 		foreach ( $row as $field ) {
 			$firstValue = true; // is this the first value in this field?
@@ -363,8 +376,9 @@ class ListResultPrinter extends ResultPrinter {
 			while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
 
 				// Add sortkey for all non-list formats
-				if ( $firstField && $this->params['format'] !== 'list' &&
-					$dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE  ) {
+				if ( $firstField && $this->params[ 'format' ] !== 'list' &&
+					$dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE
+				) {
 					$this->rowSortkey = StoreFactory::getStore()->getWikiPageSortKey( $dataValue->getDataItem() );
 				}
 
@@ -382,13 +396,13 @@ class ListResultPrinter extends ResultPrinter {
 					$firstValue = false;
 
 					if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( $field->getPrintRequest()->getLabel() !== '' ) ) {
-						$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null:$this->mLinker ) ) . ' ';
+						$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) ) . ': ';
 					}
 				}
 
 				// Remove seleted tags to avoid lists are distorted by unresolved
 				// in-text tags
-				$result .= $this->isPlainlist() ? $text : Sanitizer::removeHTMLtags( $text, null, array(), array(), $excluded );
+				$result .= $this->isPlainlist() ? $text : Sanitizer::removeHTMLtags( $text, null, [], [], $excluded );
 			}
 
 			$firstField = false;
@@ -412,25 +426,16 @@ class ListResultPrinter extends ResultPrinter {
 	protected function addTemplateContentFields( $row ) {
 
 		// In case the sep is used as outer sep, switch to the valuesep
-		$sep = $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) && $this->mFormat === 'template' ? $this->params['valuesep'] : $this->params['sep'];
+		$sep = $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) && $this->mFormat === 'template' ? $this->params[ 'valuesep' ] : $this->params[ 'sep' ];
 
 		foreach ( $row as $i => $field ) {
 
 			$value = '';
-			$fieldName = '';
+			$label = $field->getPrintRequest()->getLabel();
 
-			// {{{?Foo}}}
-			if ( $this->mNamedArgs || $this->params['template arguments'] === 'legacy'  ) {
-				$fieldName = '?' . $field->getPrintRequest()->getLabel();
-			}
-
-			// {{{Foo}}}
-			if ( $fieldName === '' && $this->params['template arguments'] === 'named' ) {
-				$fieldName = $field->getPrintRequest()->getLabel();
-			}
-
-			// {{{1}}}
-			if ( $fieldName === '' || $fieldName === '?' || $this->params['template arguments'] === 'numbered' ) {
+			if ( $label !== '' && $this->mNamedArgs === true ) {
+				$fieldName = $label;
+			} else {
 				$fieldName = intval( $i + 1 );
 			}
 
@@ -494,66 +499,78 @@ class ListResultPrinter extends ResultPrinter {
 		return true;
 	}
 
-
 	/**
-	 * @inheritdoc
+	 * @see SMWIResultPrinter::getParamDefinitions
+	 *
+	 * @since 3.0
+	 *
+	 * @param ParamDefinition[] $definitions
+	 *
+	 * @return ParamDefinition[]
 	 */
 	public function getParamDefinitions( array $definitions ) {
-		$definitions = parent::getParamDefinitions( $definitions );
 
-		$definitions['sep'] = [
-			'message' => 'smw-paramdesc-sep',
-			'default' => $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ? '' : ',',
-		];
+		$listFormatDefinitions = [
 
-		if ( $this->mFormat === 'template' && $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
-			$definitions['valuesep'] = [
+			'sep' => [
 				'message' => 'smw-paramdesc-sep',
-				'default' => ',',
-			];
-		}
+				'default' => ', ',
+			],
 
-		$definitions['template'] = [
-			'message' => 'smw-paramdesc-template',
-			'default' => '',
-		];
+			'propsep' => [
+				'message' => 'smw-paramdesc-propsep',
+				'default' => ', ',
+			],
 
-		$definitions['template arguments'] = [
-			'message' => 'smw-paramdesc-template-arguments',
-			'default' => '',
-			'values' => [ 'numbered', 'named', 'legacy' ],
-		];
+			'valuesep' => [
+				'message' => 'smw-paramdesc-valuesep',
+				'default' => ', ',
+			],
 
-		$definitions['named args'] = [
-			'type' => 'boolean',
-			'message' => 'smw-paramdesc-named_args',
-			'default' => false,
-		];
+			'template' => [
+				'message' => 'smw-paramdesc-template',
+				'default' => '',
+//				'trim' => true,
+			],
 
-		if ( !$this->isPlainlist() ) {
-			$definitions['columns'] = [
+			'named args' => [
+				'type' => 'boolean',
+				'message' => 'smw-paramdesc-named_args',
+				'default' => false,
+			],
+
+			'columns' => [
+				'name' => 'columns',
 				'type' => 'integer',
 				'message' => 'smw-paramdesc-columns',
 				'default' => 1,
 				'range' => [ 1, 10 ],
-			];
-		}
+			],
 
-		$definitions['userparam'] = [
-			'message' => 'smw-paramdesc-userparam',
-			'default' => '',
+			'userparam' => [
+				'message' => 'smw-paramdesc-userparam',
+				'default' => '',
+			],
+
+			'introtemplate' => [
+				'message' => 'smw-paramdesc-introtemplate',
+				'default' => '',
+			],
+
+			'outrotemplate' => [
+				'message' => 'smw-paramdesc-outrotemplate',
+				'default' => '',
+			],
+
+			'import-annotation' => [
+				'message' => 'smw-paramdesc-import-annotation',
+				'type' => 'boolean',
+				'default' => false,
+			],
 		];
 
-		$definitions['introtemplate'] = [
-			'message' => 'smw-paramdesc-introtemplate',
-			'default' => '',
-		];
+		$listFormatDefinitions = ParamDefinition::getCleanDefinitions( $listFormatDefinitions );
 
-		$definitions['outrotemplate'] = [
-			'message' => 'smw-paramdesc-outrotemplate',
-			'default' => '',
-		];
-
-		return $definitions;
+		return array_merge( $definitions, $listFormatDefinitions );
 	}
 }

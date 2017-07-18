@@ -267,7 +267,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		$params = array();
 
 		/**
-		 * @var \IParam $param
+		 * @var \ParamProcessor\Param $param
 		 */
 		foreach ( $fullParams as $param ) {
 			$params[$param->getName()] = $param->getValue();
@@ -464,6 +464,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * for making hyperlinks or NULL if no links should be created.
 	 *
 	 * @param boolean $firstcol True of this is the first result column (having special linkage settings).
+	 * @return Linker|null
 	 */
 	protected function getLinker( $firstcol = false ) {
 		if ( ( $firstcol && $this->mLinkFirst ) || ( !$firstcol && $this->mLinkOthers ) ) {
