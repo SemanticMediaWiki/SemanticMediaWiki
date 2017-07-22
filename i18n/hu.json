@@ -6,7 +6,8 @@
 			"TK-999",
 			"아라",
 			"Tacsipacsi",
-			"Wolf Rex"
+			"Wolf Rex",
+			"Bencemac"
 		]
 	},
 	"smw-desc": "A wiki elérhetőbbé tétele – gépek ''és'' emberek számára is ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online dokumentáció])",
@@ -180,7 +181,7 @@
 	"smw_result_next": "Következő",
 	"smw_result_results": "Eredmények",
 	"smw_result_noresults": "Nincs találat.",
-	"smwadmin": "A Szemantikus MediaWiki adminisztrációs funkciói",
+	"smwadmin": "Adminisztrációs funkciók",
 	"smw-admin-setupsuccess": "A tárolómotor be lett állítva.",
 	"smw_smwadmin_return": "Vissza ide: $1",
 	"smw_smwadmin_updatestarted": "Egy új frissítő folyamat indult a szemantikus adatok frissítése céljából.\nMinden tárolt adat újra elő lesz állítva, és javítva lesz, ahol szükséges.\nA frissítési folyamat előrehaladását ezen a speciális lapon követheted figyelemmel.\n\nVisszatérés a(z) $1 lapra.",

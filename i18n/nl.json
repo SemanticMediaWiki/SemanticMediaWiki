@@ -18,7 +18,8 @@
 			"Hex",
 			"Mainframe98",
 			"Nemo bis",
-			"DengroWikibase"
+			"DengroWikibase",
+			"Festina90"
 		]
 	},
 	"smw-desc": "Uw wiki toegankelijker maken - voor machines ''en'' mensen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
@@ -384,5 +385,6 @@
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Verwijzing naar het klembord kopiëren",
 	"smw-data-lookup": "Gegevens ophalen ...",
-	"smw-no-data-available": "Geen gegevens beschikbaar"
+	"smw-no-data-available": "Geen gegevens beschikbaar",
+	"smw-property-req-violation-change-propagation-pending": "[https://www.semantic-mediawiki.org/wiki/Change_propagation Change propagation] updates in afwachting ($1 [https://www.mediawiki.org/wiki/Manual:Job_queue {{PLURAL:$1|job|jobs}}] estimated) En het wordt aangeraden om te wachten met wijzigingen van een eigendom tot het proces is afgerond om tussenpersonenonderbrekingen of tegenstrijdige specificaties te voorkomen."
 }
