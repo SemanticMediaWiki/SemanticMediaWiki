@@ -215,5 +215,50 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			$instance->findAndMatch( $dataItem )
 		);
 	}
+	
+	public function testFindAndMatchWithIteratorAsValueResultOnPRINT_PROP() {
 
+		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
+		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		// #2541, return an iterator
+		$store->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $dataItem ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ) )
+			->will( $this->returnValue( new \ArrayIterator( array( $expected ) ) ) );
+
+		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$printRequest->expects( $this->at( 3 ) )
+			->method( 'isMode' )
+			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
+			->will( $this->returnValue( true ) );
+
+		$printRequest->expects( $this->any() )
+			->method( 'getParameter' )
+			->will( $this->returnValue( false ) );
+
+		$printRequest->expects( $this->once() )
+			->method( 'getData' )
+			->will( $this->returnValue(
+				$this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) ) );
+
+		$instance = new ResultFieldMatchFinder(
+			$store,
+			$printRequest
+		);
+
+		$this->assertEquals(
+			array( $expected ),
+			$instance->findAndMatch( $dataItem )
+		);
+	}
 }
