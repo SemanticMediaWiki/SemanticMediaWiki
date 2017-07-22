@@ -301,6 +301,7 @@ class ChangePropagationDispatchJob extends JobBase {
 	private function dispatchFromFile( $subject, $file ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$cache = $applicationFactory->getCache();
 
 		$property = DIProperty::newFromUserLabel(
 			$this->getTitle()->getText()
@@ -311,15 +312,13 @@ class ChangePropagationDispatchJob extends JobBase {
 		);
 
 		$tempFile = $applicationFactory->create( 'TempFile' );
-
-		$updateMarker = $applicationFactory->getCache()->fetch(
-			smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() )
-		);
+		$key = smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() );
 
 		// SemanticData hasn't been updated, re-enter the cycle to ensure that
 		// the update of the property took place
-		if ( $updateMarker === false ) {
+		if ( $cache->fetch( $key ) === false ) {
 
+			$cache->save( $key, 1, 60 * 60 * 24 );
 			$params = $this->params;
 
 			$changePropagationDispatchJob = new ChangePropagationDispatchJob(
