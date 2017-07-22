@@ -50,8 +50,8 @@ is minimalistic and less explanatory then what can be found on the SMW wiki. It 
 always kept up to date, and applies to the version of the code it comes bundled with. The
 most important files are linked below.
 
-* [User documentation overview](docs/README.md)
-* [Developer documentation overview](docs/technical/README.md)
+* [User documentation](docs/README.md)
+* [Technical documentation](docs/technical/README.md)
 
 ## Contribution and support
 
@@ -78,7 +78,7 @@ have a look at the contribution guideline.
 ## Tests
 
 This extension provides unit and integration tests and are normally run by a [continues integration platform][travis]
-but can also be executed manually using `composer phpunit` from the extension base directory. A more comprehensive introduction can be found in the [test section](/tests/README.md#running-tests).
+but can also be executed locally using the shortcut command `composer phpunit` from the extension base directory. A more comprehensive introduction can be found under the [test section](/tests/README.md#running-tests).
 
 ## License
 
