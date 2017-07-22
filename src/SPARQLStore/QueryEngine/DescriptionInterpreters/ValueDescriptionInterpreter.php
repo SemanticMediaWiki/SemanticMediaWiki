@@ -166,9 +166,11 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		}
 
 		// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-		$pattern = '^' . str_replace( array( 'https://', 'http://', '%2A', '.', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', "'", '\\\.', '\\', '"', '\\\\\\\"' ),
-		                              array( '', '', '*', '\.', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' , "\'", '\\\\\.', '\\\\', '\\\\\"', '\\\\\\\\\\\"' ),
-		                              $search ) . '$';
+		$pattern = '^' . str_replace(
+			array( 'https://', 'http://', '%2A', '.', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', "'", '\\\.', '\\', '"', '\\\\\\\"' ),
+			array( '', '', '*', '\.', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' , "\'", '\\\\\.', '\\\\', '\\\\\"', '\\\\\\\\\\\"' ),
+			$search
+		) . '$';
 		// @codingStandardsIgnoreEnd
 
 		$condition = $this->createFilterConditionToMatchRegexPattern(
