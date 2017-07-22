@@ -22,18 +22,17 @@ class TestEnvironment {
 	/**
 	 * @var ApplicationFactory
 	 */
-	private $applicationFactory = null;
+	private $applicationFactory;
 
 	/**
 	 * @var DataValueFactory
 	 */
-	private $dataValueFactory = null;
+	private $dataValueFactory;
 
 	/**
-	 * @var array
+	 * @var TestConfig
 	 */
-	private $configuration = [];
-	private $newKeys = [];
+	private $testConfig;
 
 	/**
 	 * @since 2.4
@@ -43,6 +42,7 @@ class TestEnvironment {
 	public function __construct( array $configuration = array() ) {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
+		$this->testConfig = new TestConfig();
 
 		$this->withConfiguration( $configuration );
 	}
@@ -83,19 +83,7 @@ class TestEnvironment {
 	 * @return self
 	 */
 	public function withConfiguration( array $configuration = array() ) {
-
-		foreach ( $configuration as $key => $value ) {
-
-			if ( array_key_exists( $key, $GLOBALS ) ) {
-				$this->configuration[$key] = $GLOBALS[$key];
-			} else {
-				$this->newKeys[] = $key;
-			}
-
-			$GLOBALS[$key] = $value;
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
-
+		$this->testConfig->set( $configuration );
 		return $this;
 	}
 
@@ -162,17 +150,7 @@ class TestEnvironment {
 	 * @since 2.4
 	 */
 	public function tearDown() {
-
-		foreach ( $this->configuration as $key => $value ) {
-			$GLOBALS[$key] = $value;
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
-
-		foreach ( $this->newKeys as $newKey ) {
-			unset( $GLOBALS[ $newKey ] );
-			$this->applicationFactory->getSettings()->delete( $newKey );
-		}
-
+		$this->testConfig->reset();
 		$this->applicationFactory->clear();
 		$this->dataValueFactory->clear();
 	}

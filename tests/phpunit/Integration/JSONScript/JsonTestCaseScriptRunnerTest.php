@@ -115,13 +115,16 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->testEnvironment->resetPoolCacheById( TurtleTriplesBuilder::POOLCACHE_ID );
 
 		// Make sure LocalSettings don't interfere with the default settings
-		$GLOBALS['smwgDVFeatures'] = $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE;
-		$GLOBALS['smwgFieldTypeFeatures'] = SMW_FIELDT_NONE;
-
-		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
-		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
-		$this->testEnvironment->addConfiguration( 'smwgExportResourcesAsIri', false );
-		$this->testEnvironment->addConfiguration( 'smwgSparqlReplicationPropertyExemptionList', array() );
+		$this->testEnvironment->withConfiguration(
+			[
+				'smwgQueryResultCacheType' => false,
+				'smwgQFilterDuplicates' => false,
+				'smwgExportResourcesAsIri' => false,
+				'smwgSparqlReplicationPropertyExemptionList' => array(),
+				'smwgFieldTypeFeatures' => SMW_FIELDT_NONE,
+				'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE
+			]
+		);
 	}
 
 	/**
@@ -168,24 +171,86 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->doRunParserHtmlTests( $jsonTestCaseFileHandler );
 	}
 
+	/**
+	 * @see JsonTestCaseScriptRunner::getPermittedSettings
+	 */
+	protected function getPermittedSettings() {
+
+		// Ensure that the context is set for a select language
+		// and dependent objects are reset
+		$langCallback = function( $val ) {
+			\RequestContext::getMain()->setLanguage( $val );
+			\SMW\Localizer::getInstance()->clear();
+			return \Language::factory( $val ); };
+
+		$this->settingsValueCallbacks = [
+			'wgContLang' => $langCallback,
+			'wgLang' => $langCallback,
+		];
+
+		return array(
+			'smwgNamespacesWithSemanticLinks',
+			'smwgPageSpecialProperties',
+			'smwgNamespace',
+			'smwgExportBCNonCanonicalFormUse',
+			'smwgExportBCAuxiliaryUse',
+			'smwgExportResourcesAsIri',
+			'smwgQMaxSize',
+			'smwStrictComparators',
+			'smwgQSubpropertyDepth',
+			'smwgQSubcategoryDepth',
+			'smwgQConceptCaching',
+			'smwgEnabledInTextAnnotationParserStrictMode',
+			'smwgMaxNonExpNumber',
+			'smwgDVFeatures',
+			'smwgEnabledQueryDependencyLinksStore',
+			'smwgEnabledFulltextSearch',
+			'smwgFulltextDeferredUpdate',
+			'smwgFulltextSearchIndexableDataTypes',
+			'smwgFixedProperties',
+			'smwgPropertyZeroCountDisplay',
+			'smwgQueryResultCacheType',
+			'smwgLinksInValues',
+			'smwgQFilterDuplicates',
+			'smwgQueryProfiler',
+			'smwgEntityCollation',
+			'smwgSparqlQFeatures',
+			'smwgUseCategoryRedirect',
+			'smwgQExpensiveThreshold',
+			'smwgQExpensiveExecutionLimit',
+			'smwgFieldTypeFeatures',
+
+			// MW related
+			'wgLanguageCode',
+			'wgContLang',
+			'wgLang',
+			'wgCapitalLinks',
+			'wgAllowDisplayTitle',
+			'wgRestrictDisplayTitle',
+			'wgSearchType',
+			'wgEnableUploads',
+			'wgFileExtensions',
+			'wgDefaultUserOptions'
+		);
+	}
+
 	private function prepareTest( $jsonTestCaseFileHandler ) {
 
 		foreach ( $this->getPermittedSettings() as $key ) {
+			$callback = isset( $this->settingsValueCallbacks[$key] ) ? $this->settingsValueCallbacks[$key] : null;
 
-			try {
-				$value = $jsonTestCaseFileHandler->getSettingsFor( $key );
-			} catch (\RuntimeException $e ) {
-				continue;
-			}
-
-			$this->changeGlobalSettingTo( $key, $value );
+			$this->changeGlobalSettingTo(
+				$key,
+				$jsonTestCaseFileHandler->getSettingsFor( $key, $callback )
+			);
 		}
 
 		if ( $jsonTestCaseFileHandler->hasSetting( 'smwgFieldTypeFeatures' ) ) {
 			$this->doRunTableSetupBeforeContentCreation();
 		}
 
-		// On some occasions ( e.g. fixed properties) to setup the correct
+		// #2135
+		// On some occasions (e.g. fixed properties) and to setup the correct
 		// table schema, run the creation once before the content is created
 		$pageList = $jsonTestCaseFileHandler->getPageCreationSetupList();
 
@@ -340,57 +405,6 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 			$this->parserHtmlTestCaseProcessor->process( $case );
 		}
-	}
-
-	/**
-	 * @return string[]
-	 * @since 3.0
-	 */
-	protected function getPermittedSettings() {
-		return [
-			'smwgNamespacesWithSemanticLinks',
-			'smwgPageSpecialProperties',
-			'smwgNamespace',
-			'smwgExportBCNonCanonicalFormUse',
-			'smwgExportBCAuxiliaryUse',
-			'smwgExportResourcesAsIri',
-			'smwgQMaxSize',
-			'smwStrictComparators',
-			'smwgQSubpropertyDepth',
-			'smwgQSubcategoryDepth',
-			'smwgQConceptCaching',
-			'smwgEnabledInTextAnnotationParserStrictMode',
-			'smwgMaxNonExpNumber',
-			'smwgDVFeatures',
-			'smwgEnabledQueryDependencyLinksStore',
-			'smwgEnabledFulltextSearch',
-			'smwgFulltextDeferredUpdate',
-			'smwgFulltextSearchIndexableDataTypes',
-			'smwgFixedProperties',
-			'smwgPropertyZeroCountDisplay',
-			'smwgQueryResultCacheType',
-			'smwgLinksInValues',
-			'smwgQFilterDuplicates',
-			'smwgQueryProfiler',
-			'smwgEntityCollation',
-			'smwgSparqlQFeatures',
-			'smwgUseCategoryRedirect',
-			'smwgQExpensiveThreshold',
-			'smwgQExpensiveExecutionLimit',
-			'smwgFieldTypeFeatures',
-
-			// MW related
-			'wgLanguageCode',
-			'wgContLang',
-			'wgLang',
-			'wgCapitalLinks',
-			'wgAllowDisplayTitle',
-			'wgRestrictDisplayTitle',
-			'wgSearchType',
-			'wgEnableUploads',
-			'wgFileExtensions',
-			'wgDefaultUserOptions'
-		];
 	}
 
 }
