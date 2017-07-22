@@ -76,27 +76,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( true );
 	}
 
-	public function testAdd() {
-
-		$instance = Settings::newFromArray( array() );
-
-		$instance->set( 'foo', 123 );
-		$instance->add( 'foo', 456 );
-
-		$this->assertEquals(
-			456,
-			$instance->get( 'foo' )
-		);
-
-		$instance->set( 'bar', array( 123 ) );
-		$instance->add( 'bar', array( 456 ) );
-
-		$this->assertEquals(
-			array( 123, 456 ),
-			$instance->get( 'bar' )
-		);
-	}
-
 	/**
 	 * @dataProvider globalsSettingsProvider
 	 */
