@@ -17,7 +17,7 @@ objects work.
 
 ## TestCases
 
-Contains 209 files with a total of 906 tests:
+Contains 216 files with a total of 926 tests:
 
 ### B
 * [bootstrap.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/bootstrap.json) Example bootstrap test case (see https://youtu.be/7fDKjPFaTaY)
@@ -123,6 +123,7 @@ Contains 209 files with a total of 906 tests:
 * [p-0449.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0449.json) Test in-text legacy `:=` and `::` annotation style with enabled LinksInValue (#2153, `wgContLang=en`, `smwgLinksInValues=SMW_LINV_OBFU`)
 * [p-0450.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0450.json) Test in-text annotation with invisible chars (`wgContLang=en`)
 * [p-0451.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0451.json) Test in-text `_dat` datatype, time zone, and JD output (#2454, `wgContLang=en`, `wgLang=en`, `smwgDVFeatures=SMW_DV_TIMEV_CM`)
+* [p-0452.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0452.json) Test in-text `_txt` datatype in combination with an "Allows value" output (#2342, `wgContLang=en`, `wgLang=en`)
 * [p-0501.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0501.json) Test `#concept` on predefined property (`wgContLang=en`, `wgLang=es`)
 * [p-0502.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0502.json) Test in-text annotation allows value list (#2295, `wgContLang=en`, `wgLang=en`)
 * [p-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0701.json) Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)
@@ -131,6 +132,7 @@ Contains 209 files with a total of 906 tests:
 * [p-0704.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0704.json) Test `#ask` sanitization of printrequest labels to avoid XSS injection (`wgContLang=en`, `wgLang=en`)
 * [p-0705.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0705.json) Test `#ask`/ NS_FILE option (`wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`, 'wgDefaultUserOptions')
 * [p-0706.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0706.json) Test `#ask` on `format=template` with message parse (`wgContLang=en`, `wgLang=en`)
+* [p-0707.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0707.json) Test `#ask` with enabled execution limit (`wgContLang=en`, `wgLang=en`, `smwgQExpensiveThreshold`, `smwgQExpensiveExecutionLimit`)
 * [p-0901.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0901.json) Test #ask on moved redirected subject (#1086)
 * [p-0902.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0902.json) Test #ask on failed queries to produce a `_ERRC` (#1297, en)
 * [p-0903.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0903.json) Test #ask on redirected printrequest (#1290, en)
@@ -147,6 +149,7 @@ Contains 209 files with a total of 906 tests:
 * [p-0914.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0914.json) Test the description optimization on `_ref_rec` type with property chain query/sort (`wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`, `smwgQFilterDuplicates=true`, `smwgQueryProfiler`)
 * [p-0915.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0915.json) Test category redirect (`smwgUseCategoryRedirect`)
 * [p-1000.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1000.json) Test property page with redirect(synonym)/displayTitle (`wgContLang=en`, `wgLang=en`, `wgAllowDisplayTitle`)
+* [p-1001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1001.json) Test property page with parameters (#2479, `wgContLang=en`, `wgLang=en`)
 
 ### Q
 * [q-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0101.json) Test `_txt` query for simple assignments, NS_HELP, and special chars
@@ -154,6 +157,7 @@ Contains 209 files with a total of 906 tests:
 * [q-0103.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0103.json) Test `_txt` for `~*` regex query with the condition to include the `\` escape character (skip sqlite, postgres)
 * [q-0104.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0104.json) Test `_txt`/`~` with enabled full-text search support (only enabled for MySQL, SQLite)
 * [q-0105.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0105.json) Test `_wpg`/`~` with enabled full-text search support (only enabled for MySQL, SQLite, `SMW_FT_WIKIPAGE`)
+* [q-0106.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0106.json) Test `_txt`/`~` with enabled full-text search support on fixed user property (only enabled for MySQL, SQLite, `smwgFixedProperties`)
 * [q-0201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0201.json) Test `_CONC` queries (skip postgres, skip virtuoso)
 * [q-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0202.json) Test `_CONC` for guarding against circular/self-reference which otherwise would fail with 'Maximum function nesting level ... reached, aborting' (#945, skip virtuoso)
 * [q-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0203.json) Test `_CONC` to use `CONCEPT_CACHE_ALL` (#1050, skip postgres + all SPARQL repository)
@@ -189,6 +193,8 @@ Contains 209 files with a total of 906 tests:
 * [q-0903.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0903.json) Test `_wpg`/`_num`/`_txt` for disjunction OR || (T31866, #1059, en)
 * [q-0904.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0904.json) Test `_wpg`/`_txt` disjunction in connection with property hierarchies (#1060, en, skip virtuoso)
 * [q-0905.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0905.json) Test `_wpg`/`_txt` conjunction queries (#1362, #1060)
+* [q-0906.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0906.json) Test `_wpg`/`_txt` with enabled `SMW_FIELDT_CHAR_NOCASE` (#1912, `smwgFieldTypeFeatures`)
+* [q-0907.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0907.json) Test `_txt` with enabled `SMW_FIELDT_CHAR_LONG` (#1912, `smwgFieldTypeFeatures`)
 * [q-1002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-1002.json) Test `_dat` range for non strict comparators (#285, `smwStrictComparators=false`, skip virtuoso)
 * [q-1003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-1003.json) Test `_dat` range for strict comparators (#285, `smwStrictComparators=true`, skip virtuoso)
 * [q-1004.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-1004.json) Test `_dat` range for `~`/`!~` comparators (#1178, `smwStrictComparators=false`, skip virtuoso)
@@ -239,8 +245,9 @@ Contains 209 files with a total of 906 tests:
 * [s-0014.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0014.json) Test `Special:Browse` with special characters `%'"&` (`wgContLang=en`, `wgLang=es` )
 * [s-0015.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0015.json) Test `Special:Ask` output for `_txt` with formatted text (#..., `wgContLang=en`, `wgLang=en`)
 * [s-0016.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0016.json) Test `Special:Ask` to produce correct printout position for `+|...` parameters (`wgContLang=en`, `wgLang=en`)
+* [s-0017.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0017.json) Test `Special:Types` (`wgContLang=en`, `wgLang=en`)
 
--- Last updated on 2017-05-27 by `readmeContentsBuilder.php`
+-- Last updated on 2017-07-22 by `readmeContentsBuilder.php`
 
 <!-- End of generated contents by readmeContentsBuilder.php -->
 
