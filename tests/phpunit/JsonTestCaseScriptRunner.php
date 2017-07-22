@@ -61,6 +61,11 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 */
 	protected $connectorId = '';
 
+	/**
+	 * @var array
+	 */
+	protected $settingsValueCallbacks = array();
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -114,6 +119,20 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 * @return array
 	 */
 	protected function getAllowedTestCaseFiles() {
+		return array();
+	}
+
+	/**
+	 * Selected list of settings (internal or MediaWiki related) that are
+	 * permissible for the time of the test run to be manipulated.
+	 *
+	 * For a configuration that requires special treatment (i.e. where a simple
+	 * assignment isn't sufficient), a callback can be assigned to a settings
+	 * key in order to sort out required manipulation (constants etc.).
+	 *
+	 * @return array
+	 */
+	protected function getPermittedSettings() {
 		return array();
 	}
 

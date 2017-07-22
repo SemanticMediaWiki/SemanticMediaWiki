@@ -216,14 +216,12 @@ class JsonTestCaseFileHandler {
 	 * @return array|integer|string|boolean
 	 * @throws RuntimeException
 	 */
-	public function getSettingsFor( $key ) {
+	public function getSettingsFor( $key, $callback = null ) {
 
 		$settings = $this->getFileContentsFor( 'settings' );
 
-		if ( ( $key === 'wgContLang' || $key === 'wgLang' ) && isset( $settings[$key] ) ) {
-			\RequestContext::getMain()->setLanguage( $settings[$key] );
-			Localizer::getInstance()->clear();
-			return \Language::factory( $settings[$key] );
+		if ( isset( $settings[$key] ) && is_callable( $callback ) ) {
+			return call_user_func_array( $callback, array( $settings[$key] ) );
 		}
 
 		// Needs special attention due to NS constant usage
@@ -279,12 +277,13 @@ class JsonTestCaseFileHandler {
 			return $settings[$key];
 		}
 
-		// Set default values
+		// Return values from the global settings as default
 		if ( isset( $GLOBALS[$key] ) || array_key_exists( $key, $GLOBALS ) ) {
 			return $GLOBALS[$key];
 		}
 
-		throw new RuntimeException( "{$key} is unknown" );
+		// Key is unknown, TestConfig will remove any remains during tearDown
+		return null;
 	}
 
 	/**
