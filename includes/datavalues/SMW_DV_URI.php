@@ -172,7 +172,7 @@ class SMWURIValue extends SMWDataValue {
 
 		// Now create the URI data item:
 		try {
-			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, $this->m_typeid );
+			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, !$this->getOption( self::OPT_QUERY_CONTEXT ) );
 		} catch ( SMWDataItemException $e ) {
 			$this->addErrorMsg( array( 'smw_baduri', $this->m_wikitext ) );
 		}

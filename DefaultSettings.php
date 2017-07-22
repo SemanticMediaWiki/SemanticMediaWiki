@@ -464,21 +464,33 @@ return array(
 										// Example with namespaces: 	'smwgQDefaultNamespaces' => array(NS_MAIN, NS_FILE),
 
 	###
-	# List of comparator characters supported by queries, separated by '|', for use in a regex.
+	# List of comparator characters
 	#
-	# Available entries:
-	#  	< (smaller than) if $smwStrictComparators is false, it's actually smaller than or equal to
-	#  	> (greater than) if $smwStrictComparators is false, it's actually bigger than or equal to
-	#  	! (unequal to)
-	#  	~ (pattern with '*' as wildcard, only for Type:String)
-	#  	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
-	#  	≤ (smaller than or equal to)
-	#  	≥ (greater than or equal to)
+	# Comparators supported by queries with available entries being:
 	#
-	# If unsupported comparators are used, they are treated as part of the queried value
+	#  < (smaller than) if $smwStrictComparators is false, it's actually smaller
+	#    than or equal to
+	#  > (greater than) if $smwStrictComparators is false, it's actually bigger
+	#    than or equal to
+	#  ! (unequal to)
+	#  ~ (pattern with '*' as wildcard)
+	#  !~ (not a pattern with '*' as wildcard, only for Type:String, need to be
+	#    placed before ! and ~ to work correctly)
+	#  ≤ (smaller than or equal to)
+	#  ≥ (greater than or equal to)
 	#
+	# Extra compartors that in case of an enabled full-text index uses the primary
+	# LIKE/NLIKE match operation with operators being:
+	#
+	#  like: to express LIKE use
+	#  nlike: to express NLIKE use
+	#
+	# If unsupported comparators are used, they are treated as part of the
+	# queried value.
+	#
+	# @since 1.0
 	##
-	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>',
+	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:',
 	##
 
 	###

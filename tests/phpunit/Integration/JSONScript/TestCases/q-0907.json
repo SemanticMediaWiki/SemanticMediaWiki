@@ -1,5 +1,5 @@
 {
-	"description": "Test `_txt` with enabled `SMW_FIELDT_CHAR_LONG` (#1912, `smwgFieldTypeFeatures`)",
+	"description": "Test `_txt`/`_uri` with enabled `SMW_FIELDT_CHAR_LONG | SMW_FIELDT_CHAR_NOCASE` (#1912, #2499, `smwgFieldTypeFeatures`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

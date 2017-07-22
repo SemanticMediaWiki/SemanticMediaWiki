@@ -67,11 +67,14 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCreateFalseConditionForNotSupportedDataItemType( $dataItem ) {
 
-		$resultVariable = 'result';
-
 		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
+			->setMethods( array( 'canUseQFeature' ) )
 			->getMock();
+
+		$compoundConditionBuilder->expects( $this->once() )
+			->method( 'canUseQFeature' )
+			->will( $this->returnValue( false ) );
 
 		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
 
@@ -157,21 +160,13 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testValueConditionOnNoCase() {
+	/**
+	 * @dataProvider noCaseDescritionProvider
+	 */
+	public function testValueConditionOnNoCase( $description, $expected ) {
 
 		$engineOptions = new EngineOptions();
 		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_NOCASE );
-
-		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
-			SMW_CMP_NLKE
-		);
-
-		$expected = UtilityFactory::getInstance()->newStringBuilder()
-			->addString( '?result swivt:page ?url .' )->addNewLine()
-			->addString( 'FILTER( !regex( ?result, "^SomePropertyValue$", "i") )' )->addNewLine()
-			->getString();
 
 		$resultVariable = 'result';
 
@@ -442,7 +437,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:page ?url .' )->addNewLine()
-			->addString( 'FILTER( regex( str( ?result ), "^//example\\\.org$", "i") )' )->addNewLine()
+			->addString( 'FILTER( regex( str( ?result ), "^.*//example\\\.org$", "i") )' )->addNewLine()
 			->getString();
 
 		$provider[] = array(
@@ -465,6 +460,109 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			$description,
 			$conditionType,
+			$expected
+		);
+
+		return $provider;
+	}
+
+	public function noCaseDescritionProvider() {
+
+		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
+
+		# 0
+		$description = new ValueDescription(
+			new DIBlob( 'SomePropertyValue' ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_NLKE
+		);
+
+		$expected = $stringBuilder->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER( !regex( ?result, "^SomePropertyValue$", "i") )' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$expected
+		);
+
+		# 1
+		$description = new ValueDescription(
+			new DIBlob( 'SomePropertyValue' ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_PRIM_LIKE
+		);
+
+		$expected = $stringBuilder->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER( regex( ?result, "^SomePropertyValue$", "i") )' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$expected
+		);
+
+		# 2
+		$description = new ValueDescription(
+			new DIBlob( 'SomePropertyValue' ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_EQ
+		);
+
+		$expected = $stringBuilder->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER( lcase(str(?result) ) = "somepropertyvalue" )' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$expected
+		);
+
+		# 3
+		$description = new ValueDescription(
+			new DIBlob( 'SomePropertyValue' ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_NEQ
+		);
+
+		$expected = $stringBuilder->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER( lcase(str(?result) ) != "somepropertyvalue" )' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$expected
+		);
+
+		# 4
+		$description = new ValueDescription(
+			new DIWikiPage( 'SomePropertyValuePage', NS_MAIN ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_EQ
+		);
+
+		$expected = $stringBuilder->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( 'FILTER( lcase(str(?resultsk) ) = "somepropertyvaluepage" )' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$expected
+		);
+
+		# 5
+		$description = new ValueDescription(
+			new DIWikiPage( 'SomePropertyValuePage', NS_MAIN ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_NEQ
+		);
+
+		$expected = $stringBuilder->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( 'FILTER( lcase(str(?resultsk) ) != "somepropertyvaluepage" )' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
 			$expected
 		);
 

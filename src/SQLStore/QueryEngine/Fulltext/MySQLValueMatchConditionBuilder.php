@@ -42,10 +42,6 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 
 		if ( $matchableText && ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE ) ) {
 
-			if ( $matchableText !== '' && $matchableText{0} === '=' ) {
-				return false;
-			}
-
 			// http://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
 			// innodb_ft_min_token_size and innodb_ft_max_token_size are used
 			// for InnoDB search indexes. ft_min_word_len and ft_max_word_len
