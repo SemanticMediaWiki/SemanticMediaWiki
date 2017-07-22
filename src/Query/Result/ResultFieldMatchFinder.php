@@ -296,6 +296,10 @@ class ResultFieldMatchFinder {
 				$this->getRequestOptions()
 			);
 
+			if ( $pv instanceof \Iterator ) {
+				$pv = iterator_to_array( $pv );
+			}
+
 			$propertyValues = array_merge( $propertyValues, $pv );
 			unset( $pv );
 		}
