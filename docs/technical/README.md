@@ -1,8 +1,11 @@
 This document contains resources that can improve the understanding on "How Semantic MediaWiki
-is working" from an implementation and development point of view.
+works" from an implementation and development point of view.
 
-If you are new to SMW development, have a look at the [Programmer's]
-(https://www.semantic-mediawiki.org/wiki/Programmer%27s_guide_to_SMW) and [Architecture guide](https://www.semantic-mediawiki.org/wiki/Architecture_guide) first.
+If you are new to SMW development, have a look at the:
+
+* [Programmer's guide](https://www.semantic-mediawiki.org/wiki/Programmer%27s_guide)
+* [Architecture guide](https://www.semantic-mediawiki.org/wiki/Architecture_guide)
+* [Developer hub](https://www.semantic-mediawiki.org/wiki/Developer_hub) and [Coding conventions](https://www.semantic-mediawiki.org/wiki/Coding_conventions)
 
 ## Overview
 
