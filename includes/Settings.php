@@ -213,12 +213,9 @@ class Settings extends Options {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param string $key
-	 * @param mixed $value
+	 * @deprecated 3.0
 	 */
-	public function add( $key, $value ) {
+	private function add( $key, $value ) {
 
 		if ( !$this->has( $key ) ) {
 			return $this->set( $key, $value );
