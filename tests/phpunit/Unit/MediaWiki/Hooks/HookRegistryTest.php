@@ -155,6 +155,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForArticleFromTitle( $instance );
 		$this->doTestExecutionForTitleIsMovable( $instance );
 		$this->doTestExecutionForEditPageForm( $instance );
+		$this->doTestExecutionForParserOptionsRegister( $instance );
 		$this->doTestExecutionForParserFirstCallInit( $instance );
 		$this->doTestExecutionForTitleQuickPermissions( $instance );
 
@@ -563,6 +564,8 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
+		$store->getOptions()->set( 'smwgSemanticsEnabled', false );
+
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
@@ -852,6 +855,23 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $editPage, $outputPage )
+		);
+	}
+
+	public function doTestExecutionForParserOptionsRegister( $instance ) {
+
+		$handler = 'ParserOptionsRegister';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$defaults = array();
+		$inCacheKey = array();
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$defaults, &$inCacheKey )
 		);
 	}
 

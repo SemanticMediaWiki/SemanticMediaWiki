@@ -3,6 +3,7 @@
 namespace SMW;
 
 use ParserOutput;
+use ParserOptions;
 use SMWDataValue as DataValue;
 use Title;
 use Onoi\Cache\Cache;
@@ -61,6 +62,11 @@ class ParserData {
 	 * @var Cache
 	 */
 	private $cache;
+
+	/**
+	 * @var ParserOptions
+	 */
+	private $parserOptions;
 
 	/**
 	 * @var SemanticData
@@ -173,6 +179,26 @@ class ParserData {
 	 */
 	public function getOutput() {
 		return $this->parserOutput;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param ParserOptions $parserOptions
+	 */
+	public function setParserOptions( ParserOptions $parserOptions ) {
+		$this->parserOptions = $parserOptions;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ParserOptions|null
+	 */
+	public function addExtraParserKey( $key ) {
+		if ( $this->parserOptions !== null ) {
+			$this->parserOptions->addExtraKey( $key );
+		}
 	}
 
 	/**

@@ -70,7 +70,7 @@ class ValueFormatter {
 	 *
 	 * @return string
 	 */
-	public static function getFormattedValue( DataValue $dataValue, PropertyValue $propertyValue, $incoming = false ) {
+	public static function getFormattedValue( DataValue $dataValue, PropertyValue $propertyValue, $incoming = false, $user = null ) {
 
 		$linker = smwfGetLinker();
 		$dataItem = $dataValue->getContextPage();
@@ -86,8 +86,14 @@ class ValueFormatter {
 			Localizer::getInstance()->getUserLanguage()->getCode()
 		);
 
+		$outputFormat = 'LOCL';
+
+		if ( Localizer::getInstance()->hasLocalTimeOffsetPreference( $user ) ) {
+			$outputFormat .= '#TO';
+		}
+
 		// Use LOCL formatting where appropriate (date)
-		$dataValue->setOutputFormat( 'LOCL' );
+		$dataValue->setOutputFormat( $outputFormat );
 
 		// For a redirect, disable the DisplayTitle to show the original (aka source) page
 		if ( $propertyValue->isValid() && $propertyValue->getDataItem()->getKey() == '_REDI' ) {

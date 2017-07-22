@@ -91,6 +91,10 @@ class ParserFunctionFactory {
 		// Avoid possible actions during for example stashedit etc.
 		$parserData->setOption( 'request.action', $GLOBALS['wgRequest']->getVal( 'action' ) );
 
+		$parserData->setParserOptions(
+			$parser->getOptions()
+		);
+
 		$messageFormatter = new MessageFormatter(
 			$parser->getTargetLanguage()
 		);

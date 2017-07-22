@@ -3,8 +3,11 @@
 namespace SMW;
 
 use SMW\ExtraneousLanguage\ExtraneousLanguage;
+use SMW\MediaWiki\LocalTime;
+use DateTime;
 use Language;
 use Title;
+use User;
 
 /**
  * @license GNU GPL v2+
@@ -70,6 +73,43 @@ class Localizer {
 	 */
 	public function getUserLanguage() {
 		return $GLOBALS['wgLang'];
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param User|null $user
+	 *
+	 * @return boolean
+	 */
+	public function hasLocalTimeOffsetPreference( $user = null ) {
+
+		if ( !$user instanceof User ) {
+			$user = $GLOBALS['wgUser'];
+		}
+
+		return $user->getOption( 'smw-prefs-general-options-time-correction' );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param DateTime $dateTime
+	 * @param User|null $user
+	 *
+	 * @return DateTime
+	 */
+	public function getLocalTime( DateTime $dateTime, $user = null ) {
+
+		if ( !$user instanceof User ) {
+			$user = $GLOBALS['wgUser'];
+		}
+
+		LocalTime::setLocalTimeOffset(
+			$GLOBALS['wgLocalTZoffset']
+		);
+
+		return LocalTime::getLocalizedTime( $dateTime, $user );
 	}
 
 	/**

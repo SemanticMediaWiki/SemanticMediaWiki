@@ -230,7 +230,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'wgSearchType',
 			'wgEnableUploads',
 			'wgFileExtensions',
-			'wgDefaultUserOptions'
+			'wgDefaultUserOptions',
+			'wgLocalTZoffset'
 		);
 	}
 
