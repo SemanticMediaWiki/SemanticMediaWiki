@@ -170,56 +170,15 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 	private function prepareTest( $jsonTestCaseFileHandler ) {
 
-		$permittedSettings = array(
-			'smwgNamespacesWithSemanticLinks',
-			'smwgPageSpecialProperties',
-			'smwgNamespace',
-			'smwgExportBCNonCanonicalFormUse',
-			'smwgExportBCAuxiliaryUse',
-			'smwgExportResourcesAsIri',
-			'smwgQMaxSize',
-			'smwStrictComparators',
-			'smwgQSubpropertyDepth',
-			'smwgQSubcategoryDepth',
-			'smwgQConceptCaching',
-			'smwgEnabledInTextAnnotationParserStrictMode',
-			'smwgMaxNonExpNumber',
-			'smwgDVFeatures',
-			'smwgEnabledQueryDependencyLinksStore',
-			'smwgEnabledFulltextSearch',
-			'smwgFulltextDeferredUpdate',
-			'smwgFulltextSearchIndexableDataTypes',
-			'smwgFixedProperties',
-			'smwgPropertyZeroCountDisplay',
-			'smwgQueryResultCacheType',
-			'smwgLinksInValues',
-			'smwgQFilterDuplicates',
-			'smwgQueryProfiler',
-			'smwgEntityCollation',
-			'smwgSparqlQFeatures',
-			'smwgUseCategoryRedirect',
-			'smwgQExpensiveThreshold',
-			'smwgQExpensiveExecutionLimit',
-			'smwgFieldTypeFeatures',
+		foreach ( $this->getPermittedSettings() as $key ) {
 
-			// MW related
-			'wgLanguageCode',
-			'wgContLang',
-			'wgLang',
-			'wgCapitalLinks',
-			'wgAllowDisplayTitle',
-			'wgRestrictDisplayTitle',
-			'wgSearchType',
-			'wgEnableUploads',
-			'wgFileExtensions',
-			'wgDefaultUserOptions'
-		);
+			try {
+				$value = $jsonTestCaseFileHandler->getSettingsFor( $key );
+			} catch (\RuntimeException $e ) {
+				continue;
+			}
 
-		foreach ( $permittedSettings as $key ) {
-			$this->changeGlobalSettingTo(
-				$key,
-				$jsonTestCaseFileHandler->getSettingsFor( $key )
-			);
+			$this->changeGlobalSettingTo( $key, $value );
 		}
 
 		if ( $jsonTestCaseFileHandler->hasSetting( 'smwgFieldTypeFeatures' ) ) {
@@ -381,6 +340,57 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 			$this->parserHtmlTestCaseProcessor->process( $case );
 		}
+	}
+
+	/**
+	 * @return string[]
+	 * @since 3.0
+	 */
+	protected function getPermittedSettings() {
+		return [
+			'smwgNamespacesWithSemanticLinks',
+			'smwgPageSpecialProperties',
+			'smwgNamespace',
+			'smwgExportBCNonCanonicalFormUse',
+			'smwgExportBCAuxiliaryUse',
+			'smwgExportResourcesAsIri',
+			'smwgQMaxSize',
+			'smwStrictComparators',
+			'smwgQSubpropertyDepth',
+			'smwgQSubcategoryDepth',
+			'smwgQConceptCaching',
+			'smwgEnabledInTextAnnotationParserStrictMode',
+			'smwgMaxNonExpNumber',
+			'smwgDVFeatures',
+			'smwgEnabledQueryDependencyLinksStore',
+			'smwgEnabledFulltextSearch',
+			'smwgFulltextDeferredUpdate',
+			'smwgFulltextSearchIndexableDataTypes',
+			'smwgFixedProperties',
+			'smwgPropertyZeroCountDisplay',
+			'smwgQueryResultCacheType',
+			'smwgLinksInValues',
+			'smwgQFilterDuplicates',
+			'smwgQueryProfiler',
+			'smwgEntityCollation',
+			'smwgSparqlQFeatures',
+			'smwgUseCategoryRedirect',
+			'smwgQExpensiveThreshold',
+			'smwgQExpensiveExecutionLimit',
+			'smwgFieldTypeFeatures',
+
+			// MW related
+			'wgLanguageCode',
+			'wgContLang',
+			'wgLang',
+			'wgCapitalLinks',
+			'wgAllowDisplayTitle',
+			'wgRestrictDisplayTitle',
+			'wgSearchType',
+			'wgEnableUploads',
+			'wgFileExtensions',
+			'wgDefaultUserOptions'
+		];
 	}
 
 }

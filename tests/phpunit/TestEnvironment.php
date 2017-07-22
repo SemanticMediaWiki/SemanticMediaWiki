@@ -32,7 +32,8 @@ class TestEnvironment {
 	/**
 	 * @var array
 	 */
-	private $configuration = array();
+	private $configuration = [];
+	private $newKeys = [];
 
 	/**
 	 * @since 2.4
@@ -85,11 +86,13 @@ class TestEnvironment {
 
 		foreach ( $configuration as $key => $value ) {
 
-			if ( isset( $GLOBALS[$key] ) || array_key_exists( $key, $GLOBALS ) ) {
+			if ( array_key_exists( $key, $GLOBALS ) ) {
 				$this->configuration[$key] = $GLOBALS[$key];
-				$GLOBALS[$key] = $value;
+			} else {
+				$this->newKeys[] = $key;
 			}
 
+			$GLOBALS[$key] = $value;
 			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
@@ -163,6 +166,11 @@ class TestEnvironment {
 		foreach ( $this->configuration as $key => $value ) {
 			$GLOBALS[$key] = $value;
 			$this->applicationFactory->getSettings()->set( $key, $value );
+		}
+
+		foreach ( $this->newKeys as $newKey ) {
+			unset( $GLOBALS[ $newKey ] );
+			$this->applicationFactory->getSettings()->delete( $newKey );
 		}
 
 		$this->applicationFactory->clear();

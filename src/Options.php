@@ -35,6 +35,15 @@ class Options {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 */
+	public function delete( $key ) {
+		unset( $this->options[ $key ] );
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param string $key
