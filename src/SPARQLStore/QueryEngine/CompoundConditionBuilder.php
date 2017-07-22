@@ -460,7 +460,7 @@ class CompoundConditionBuilder {
 
 		$condition->orderByVariable = $mainVariable . 'sk';
 
-		if ( ( (int)$this->engineOptions->get( 'smwgSparqlQFeatures' ) & SMW_SPARQL_QF_COLLATION ) != 0 ) {
+		if ( $this->canUseQFeature( SMW_SPARQL_QF_COLLATION ) ) {
 			$skeyExpElement = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'sort' );
 		} else {
 			$skeyExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );
