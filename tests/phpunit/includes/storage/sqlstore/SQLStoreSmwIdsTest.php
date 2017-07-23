@@ -5,6 +5,8 @@ namespace SMW\Tests\SQLStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMWSql3SmwIds;
+use SMW\ProcessLruCache;
+use Onoi\Cache\FixedInMemoryLruCache;
 
 /**
  * @covers \SMWSql3SmwIds
@@ -18,17 +20,37 @@ use SMWSql3SmwIds;
 class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $idToDataItemMatchFinder;
+	private $idMatchFinder;
+	private $factory;
 
 	protected function setUp() {
+
+		$processLruCache = new ProcessLruCache(
+			array(
+				'entity.id' => new FixedInMemoryLruCache(),
+				'entity.sort' => new FixedInMemoryLruCache()
+			)
+		);
+
+		$this->idMatchFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdMatchFinder' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idToDataItemMatchFinder = $this->getMockBuilder( '\SMW\SQLStore\IdToDataItemMatchFinder' )
+		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->factory->expects( $this->any() )
+			->method( 'newProcessLruCache' )
+			->will( $this->returnValue( $processLruCache ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newIdMatchFinder' )
+			->will( $this->returnValue( $this->idMatchFinder ) );
 	}
 
 	public function testCanConstruct() {
@@ -47,7 +69,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWSql3SmwIds',
-			new SMWSql3SmwIds( $store, $this->idToDataItemMatchFinder )
+			new SMWSql3SmwIds( $store, $this->factory )
 		);
 	}
 
@@ -69,7 +91,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SMWSql3SmwIds(
 			$store,
-			$this->idToDataItemMatchFinder
+			$this->factory
 		);
 
 		$this->assertFalse(
@@ -124,7 +146,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SMWSql3SmwIds(
 			$store,
-			$this->idToDataItemMatchFinder
+			$this->factory
 		);
 
 		$result = $instance->getSMWPropertyID( new DIProperty( 'Foo' ) );
@@ -161,7 +183,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SMWSql3SmwIds(
 			$store,
-			$this->idToDataItemMatchFinder
+			$this->factory
 		);
 
 		$sortkey = $parameters['sortkey'];
@@ -213,7 +235,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SMWSql3SmwIds(
 			$store,
-			$this->idToDataItemMatchFinder
+			$this->factory
 		);
 
 		$sortkey = $parameters['sortkey'];
@@ -241,14 +263,14 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->idToDataItemMatchFinder->expects( $this->once() )
+		$this->idMatchFinder->expects( $this->once() )
 			->method( 'getDataItemById' )
 			->with( $this->equalTo( 42 ) )
 			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
 
 		$instance = new SMWSql3SmwIds(
 			$this->store,
-			$this->idToDataItemMatchFinder
+			$this->factory
 		);
 
 		$this->assertInstanceOf(
@@ -280,7 +302,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SMWSql3SmwIds(
 			$store,
-			$this->idToDataItemMatchFinder
+			$this->factory
 		);
 
 		$instance->updateInterwikiField(
@@ -312,7 +334,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SMWSql3SmwIds(
 			$store,
-			$this->idToDataItemMatchFinder
+			$this->factory
 		);
 
 		$this->assertEquals(

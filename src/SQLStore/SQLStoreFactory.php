@@ -16,11 +16,14 @@ use SMW\Options;
 use SMWSQLStore3;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMWSql3SmwIds as IdTableManager;
+use Onoi\Cache\Cache;
+use SMWSql3SmwIds as EntityIdManager;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
 use SMW\SQLStore\EntityStore\CachedEntityLookup;
 use SMW\SQLStore\EntityStore\DirectEntityLookup;
 use SMW\SQLStore\EntityStore\SqlEntityLookupResultFetcher;
+use SMW\ProcessLruCache;
+use SMW\SQLStore\EntityStore\IdMatchFinder;
 
 /**
  * @license GNU GPL v2+
@@ -78,16 +81,10 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return IdTableManager
+	 * @return EntityIdManager
 	 */
-	public function newIdTableManager() {
-
-		$idToDataItemMatchFinder = new IdToDataItemMatchFinder(
-			$this->store->getConnection( 'mw.db' ),
-			$this->applicationFactory->getIteratorFactory()
-		);
-
-		return new IdTableManager( $this->store, $idToDataItemMatchFinder );
+	public function newEntityIdManager() {
+		return new EntityIdManager( $this->store, $this );
 	}
 
 	/**
@@ -472,6 +469,37 @@ class SQLStoreFactory {
 		);
 
 		return $propertyStatisticsTable;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ProcessLruCache
+	 */
+	public function newProcessLruCache( array $config ) {
+
+		$processLruCache = ProcessLruCache::newFromConfig( $config );
+		$processLruCache->reset();
+
+		return $processLruCache;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Cache $cache
+	 *
+	 * @return IdMatchFinder
+	 */
+	public function newIdMatchFinder( Cache $cache ) {
+
+		$idMatchFinder = new IdMatchFinder(
+			$this->store->getConnection( 'mw.db' ),
+			$this->applicationFactory->getIteratorFactory(),
+			$cache
+		);
+
+		return $idMatchFinder;
 	}
 
 }

@@ -102,6 +102,7 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'query', "<query> Will refresh only pages returned by a given query. Example: --query='[[Category:SomeCategory]]'", false, true );
 
 		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
+		$this->addOption( 'report-poolcache', 'Report internal poolcache memory usage', false );
 		$this->addOption( 'no-cache', 'Sets the `wgMainCacheType` to none while running the script', false );
 		$this->addOption( 'debug', 'Sets global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
@@ -170,8 +171,9 @@ class RebuildData extends \Maintenance {
 
 		$maintenanceHelper->reset();
 
-		// Only for internal use
-		// $this->reportMessage( "\n" . ApplicationFactory::getInstance()->getInMemoryPoolCache()->getFormattedStats() . "\n" );
+		if ( $this->hasOption( 'report-poolcache' ) ) {
+			$this->reportMessage( "\n" . ApplicationFactory::getInstance()->getInMemoryPoolCache()->getStats( \SMW\Utils\StatsFormatter::FORMAT_JSON ) . "\n" );
+		}
 
 		return $result;
 	}
