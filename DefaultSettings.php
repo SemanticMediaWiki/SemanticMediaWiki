@@ -424,19 +424,21 @@ return array(
 	##
 
 	###
-	# Property page to limit the query request on subproperties
+	# Property page list limits
 	#
-	# @since 2.5
-	##
-	'smwgSubPropertyListLimit' => 25,
-	##
-
-	###
-	# Property page to limit the query request on redirects
+	# 'subproperty' limit the query request on subproperties
+	# 'redirect' limit the query request on redirects
+	# 'error' limit the query request on improper assignments
 	#
-	# @since 2.5
+	# `false` as value assignment will disable the display of a selected list
+	#
+	# @since 3.0
 	##
-	'smwgRedirectPropertyListLimit' => 25,
+	'smwgPropertyListLimit' => array(
+		'subproperty' => 25,
+		'redirect' => 25,
+		'error' => 10
+	),
 	##
 
 	###
@@ -1505,7 +1507,7 @@ return array(
 	##
 
 	###
-	# Protect page edits
+	# Page edit protection
 	#
 	# To prevent accidental changes of content especially to those of property
 	# definitions, this setting allows with the help of the `Is edit protected`

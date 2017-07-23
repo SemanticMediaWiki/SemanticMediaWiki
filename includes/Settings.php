@@ -82,8 +82,7 @@ class Settings extends Options {
 			'smwgTypePagingLimit' => $GLOBALS['smwgTypePagingLimit'],
 			'smwgConceptPagingLimit' => $GLOBALS['smwgConceptPagingLimit'],
 			'smwgPropertyPagingLimit' => $GLOBALS['smwgPropertyPagingLimit'],
-			'smwgSubPropertyListLimit' => $GLOBALS['smwgSubPropertyListLimit'],
-			'smwgRedirectPropertyListLimit' => $GLOBALS['smwgRedirectPropertyListLimit'],
+			'smwgPropertyListLimit' => $GLOBALS['smwgPropertyListLimit'],
 			'smwgQEnabled' => $GLOBALS['smwgQEnabled'],
 			'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
 			'smwgIgnoreQueryErrors' => $GLOBALS['smwgIgnoreQueryErrors'],
@@ -307,18 +306,30 @@ class Settings extends Options {
 			$configuration['smwgQueryDependencyAffiliatePropertyDetectionList'] = $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'];
 		}
 
+		if ( isset( $GLOBALS['smwgSubPropertyListLimit'] ) ) {
+			$configuration['smwgPropertyListLimit']['subproperty'] = $GLOBALS['smwgSubPropertyListLimit'];
+		}
+
+		if ( isset( $GLOBALS['smwgRedirectPropertyListLimit'] ) ) {
+			$configuration['smwgPropertyListLimit']['redirect'] = $GLOBALS['smwgRedirectPropertyListLimit'];
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
 			'notice' => array(
 				'smwgAdminRefreshStore' => '3.1.0',
 				'smwgQueryDependencyPropertyExemptionlist' => '3.1.0',
-				'smwgQueryDependencyAffiliatePropertyDetectionlist' => '3.1.0'
+				'smwgQueryDependencyAffiliatePropertyDetectionlist' => '3.1.0',
+				'smwgSubPropertyListLimit' => '3.1.0',
+				'smwgRedirectPropertyListLimit' => '3.1.0'
 			),
 			'replacement' => array(
 				'smwgAdminRefreshStore' => 'smwgAdminFeatures',
 				'smwgQueryDependencyPropertyExemptionlist' => 'smwgQueryDependencyPropertyExemptionList',
-				'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList'
+				'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList',
+				'smwgSubPropertyListLimit' => 'smwgPropertyListLimit',
+				'smwgRedirectPropertyListLimit' => 'smwgPropertyListLimit'
 			),
 			'removal' => array(
 				'smwgOnDeleteAction' => '2.4.0'

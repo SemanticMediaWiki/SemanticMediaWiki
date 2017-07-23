@@ -59,23 +59,35 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$requestOptions->sort = true;
 		$requestOptions->ascending = true;
 
+		$propertyListLimit = $GLOBALS['smwgPropertyListLimit'];
+
 		// +1 look ahead
-		$requestOptions->setLimit( $GLOBALS['smwgRedirectPropertyListLimit'] + 1 );
+		$requestOptions->setLimit( $propertyListLimit['redirect'] + 1 );
 
 		$list = $this->getPropertyList(
 			new DIProperty( '_REDI' ),
 			$requestOptions,
-			$GLOBALS['smwgRedirectPropertyListLimit'],
+			$propertyListLimit['redirect'],
 			'smw-propertylist-redirect'
 		);
 
-		$requestOptions->setLimit( $GLOBALS['smwgSubPropertyListLimit'] + 1 );
+		$requestOptions->setLimit( $propertyListLimit['subproperty'] + 1 );
 
 		$list .= $this->getPropertyList(
 			new DIProperty( '_SUBP' ),
 			$requestOptions,
-			$GLOBALS['smwgSubPropertyListLimit'],
+			$propertyListLimit['subproperty'],
 			'smw-propertylist-subproperty'
+		);
+
+		$requestOptions->setLimit( $propertyListLimit['error'] + 1 );
+
+		$list .= $this->getPropertyList(
+			new DIProperty( '_ERRP' ),
+			$requestOptions,
+			$propertyListLimit['error'],
+			'smw-propertylist-error',
+			false
 		);
 
 		$list .= $this->getPropertyValueList();
@@ -176,7 +188,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 *
 	 * @return string
 	 */
-	protected function getPropertyList( $property, $requestOptions, $listLimit, $header ) {
+	protected function getPropertyList( $property, $requestOptions, $listLimit, $header, $checkProperty = true ) {
 
 		$propertyList =  $this->store->getPropertySubjects(
 			$property,
@@ -198,36 +210,44 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		}
 
 		$result = '';
+		$callback = null;
+
 		$resultCount = count( $propertyList );
 
+		$message = wfMessage( 'smw-propertylist-count', $resultCount )->text();
+
 		if ( $more ) {
-			$message = Html::rawElement(
-				'span',
-				array( 'class' => 'plainlinks' ),
-				wfMessage( 'smw-propertylist-count-with-restricted-note', $resultCount, $listLimit )->parse()
-			);
-		} else {
-			$message = wfMessage( 'smw-propertylist-count', $resultCount )->text();
+			$callback = function() use ( $property ) {
+				return \Html::element(
+					'a',
+					[
+						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( [
+							'property' => $property->getLabel(),
+							'value' => $this->getDataItem()->getDBKey()
+						] )
+					],
+					wfMessage( 'smw_browse_more' )->text()
+				);
+			};
+
+			$message = wfMessage( 'smw-propertylist-count-more-available', $resultCount )->text();
 		}
 
 		if ( $resultCount > 0 ) {
 			$titleText = htmlspecialchars( $this->mTitle->getText() );
 			$result .= "<div id=\"{$header}\">" . Html::rawElement( 'h2', array(), wfMessage( $header . '-header', $titleText )->text() ) . "\n<p>";
 
-			if ( !$this->mProperty->isUserDefined() ) {
-				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
-			}
-
 			$result .= $message . "</p>";
 
 			if ( $resultCount < 6 ) {
-				$result .= SMWPageLister::getShortList( 0, $resultCount, $propertyList, $property );
+				$result .= SMWPageLister::getShortList( 0, $resultCount, $propertyList, $checkProperty ? $property : null, $callback );
 			} else {
-				$result .= SMWPageLister::getColumnList( 0, $resultCount, $propertyList, $property );
+				$result .= SMWPageLister::getColumnList( 0, $resultCount, $propertyList, $checkProperty ? $property : null, $callback );
 			}
 
 			$result .= "\n</div>";
 		}
+
 
 		return $result;
 	}
