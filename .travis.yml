@@ -8,8 +8,8 @@ dist: trusty
 matrix:
   fast_finish: true
   include:
-    - env: DB=mysql; MW=REL1_27; PHPUNIT=4.8.*
-      php: 7.0
+    - env: DB=mysql; MW=REL1_29; PHPUNIT=5.7.*
+      php: 7.1
     - env: DB=mysql; MW=REL1_28; FUSEKI=2.4.0
       php: 5.5
     - env: DB=mysql; MW=REL1_25; VIRTUOSO=6.1
@@ -33,7 +33,7 @@ matrix:
   allow_failures:
     # Takes at least ~35 min to complete therefore allow it run without delaying
     # the status update
-    - env: DB=mysql; MW=REL1_27; PHPUNIT=4.8.*
+    - env: DB=mysql; MW=REL1_29; PHPUNIT=5.7.*
     # Can fail when pushed/used with newly Composer dependencies
     - env: DB=mysql; MW=REL1_25; TYPE=relbuild
     # Can fail when pushed/used with newly Composer dependencies
