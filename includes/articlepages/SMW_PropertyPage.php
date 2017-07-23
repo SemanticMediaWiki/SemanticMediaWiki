@@ -9,7 +9,7 @@ use SMW\PropertyRegistry;
 use SMWDataValue as DataValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
-use SMW\Content\PropertyPageMessageHtmlBuilder;
+use SMW\PropertySpecificationReqMsgBuilder;
 use SMW\PropertySpecificationReqExaminer;
 use SMW\Utils\Collator;
 
@@ -111,33 +111,30 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$propertySpecificationReqExaminer = new PropertySpecificationReqExaminer(
-			$this->store
-		);
-
-		$propertySpecificationReqExaminer->setSemanticData(
-			$this->getSemanticData()
+			$this->store,
+			$applicationFactory->singleton( 'EditProtectionValidator' )
 		);
 
 		$propertySpecificationReqExaminer->setEditProtectionRight(
 			$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
 		);
 
-		$propertyPageMessageHtmlBuilder = new PropertyPageMessageHtmlBuilder(
+		$propertySpecificationReqMsgBuilder = new PropertySpecificationReqMsgBuilder(
 			$this->store,
 			$propertySpecificationReqExaminer
 		);
 
-		$propertyPageMessageHtmlBuilder->hasEditProtection(
-			$applicationFactory->singleton( 'EditProtectionValidator' )->hasEditProtection( $this->mTitle )
+		$propertySpecificationReqMsgBuilder->setSemanticData(
+			$this->getSemanticData()
 		);
 
-		$text = $propertyPageMessageHtmlBuilder->createMessageBody(
+		$propertySpecificationReqMsgBuilder->checkOn(
 			$this->mProperty
 		);
 
-		$this->isLockedView = $propertySpecificationReqExaminer->reqLock();
+		$this->isLockedView = $propertySpecificationReqMsgBuilder->reqLock();
 
-		return $text;
+		return $propertySpecificationReqMsgBuilder->getMessage();
 	}
 
 	protected function getTopIndicators() {

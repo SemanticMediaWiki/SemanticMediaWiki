@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Content;
+namespace SMW;
 
 use SMW\Store;
 use SMW\DIProperty;
@@ -16,7 +16,7 @@ use Html;
  *
  * @author mwjames
  */
-class PropertyPageMessageHtmlBuilder {
+class PropertySpecificationReqMsgBuilder {
 
 	/**
 	 * @var Store
@@ -29,9 +29,9 @@ class PropertyPageMessageHtmlBuilder {
 	private $propertySpecificationReqExaminer;
 
 	/**
-	 * @var boolean
+	 * @var string
 	 */
-	private $hasEditProtection = false;
+	private $message = '';
 
 	/**
 	 * @since 2.5
@@ -47,18 +47,36 @@ class PropertyPageMessageHtmlBuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $hasEditLock
+	 * @param SemanticData|null $semanticData
 	 */
-	public function hasEditProtection( $hasEditProtection ) {
-		$this->hasEditProtection = $hasEditProtection;
+	public function setSemanticData( SemanticData $semanticData = null ) {
+		$this->propertySpecificationReqExaminer->setSemanticData( $semanticData );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean
+	 */
+	public function reqLock() {
+		return $this->propertySpecificationReqExaminer->reqLock();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string
+	 */
+	public function getMessage() {
+		return $this->message;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @return string
+	 * @param DIProperty $property
 	 */
-	public function createMessageBody( DIProperty $property ) {
+	public function checkOn( DIProperty $property ) {
 
 		$subject = $property->getCanonicalDiWikiPage();
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -70,10 +88,6 @@ class PropertyPageMessageHtmlBuilder {
 		$message = $this->createReqViolationMessage(
 			$this->propertySpecificationReqExaminer->checkOn( $property )
 		);
-
-		if ( $this->propertySpecificationReqExaminer->reqLock() === false && $this->hasEditProtection ) {
-			$message .= $this->createEditProtectionMessage( $propertyName );
-		}
 
 		if ( $this->propertySpecificationReqExaminer->reqLock() === false && ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {
 			$message .= $this->createReqViolationMessage(
@@ -98,12 +112,14 @@ class PropertyPageMessageHtmlBuilder {
 		}
 
 		if ( $property->isUserDefined() && $this->store->getPropertyTableInfoFetcher()->isFixedTableProperty( $property ) ) {
-			return $message . $this->createFixedTableMessage( $propertyName );
+			$message .= $this->createFixedTableMessage( $propertyName );
 		}
 
-		$message .= $this->createPredefinedPropertyMessage( $property, $propertyName );
+		if ( !$property->isUserDefined() ) {
+			$message .= $this->createPredefinedPropertyMessage( $property, $propertyName );
+		}
 
-		return $message;
+		$this->message = $message;
 	}
 
 	private function createReqViolationMessage( $violationMessage ) {
@@ -124,15 +140,15 @@ class PropertyPageMessageHtmlBuilder {
 		);
 	}
 
-	private function createEditProtectionMessage( $propertyName ) {
+	private function createEditProtectionMessage( $type, $key, $propertyName, $right ) {
 
 		return Html::rawElement(
 			'div',
 			array(
 				'id' => 'smw-property-content-editprotection-message',
-				'class' => 'plainlinks smw-callout smw-callout-warning'
+				'class' => 'plainlinks smw-callout smw-callout-' . $type
 			),
-			wfMessage( 'smw-edit-protection', $GLOBALS['smwgEditProtectionRight'] )->parse()
+			wfMessage( $key, $right )->parse()
 		);
 	}
 
