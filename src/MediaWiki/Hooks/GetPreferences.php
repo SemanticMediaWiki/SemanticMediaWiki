@@ -28,6 +28,11 @@ class GetPreferences {
 	private $preferences;
 
 	/**
+	 * @var boolean
+	 */
+	private $enabledEditPageHelp = false;
+
+	/**
 	 * @since  2.0
 	 *
 	 * @param User $user
@@ -36,6 +41,15 @@ class GetPreferences {
 	public function __construct( User $user, &$preferences ) {
 		$this->user = $user;
 		$this->preferences =& $preferences;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $enabledEditPageHelp
+	 */
+	public function isEnabledEditPageHelp( $enabledEditPageHelp ) {
+		$this->enabledEditPageHelp = (bool)$enabledEditPageHelp;
 	}
 
 	/**
@@ -63,6 +77,13 @@ class GetPreferences {
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-time-correction',
 			'section' => 'smw/general-options',
+		);
+
+		$this->preferences['smw-prefs-general-options-disable-editpage-info'] = array(
+			'type' => 'toggle',
+			'label-message' => 'smw-prefs-general-options-disable-editpage-info',
+			'section' => 'smw/general-options',
+			'disabled' => !$this->enabledEditPageHelp
 		);
 
 		// Option to enable tooltip info

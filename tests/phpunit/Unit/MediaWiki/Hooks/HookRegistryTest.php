@@ -836,6 +836,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( 'Foo' );
 
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -847,6 +851,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$outputPage->expects( $this->any() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
