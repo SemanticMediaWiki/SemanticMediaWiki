@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Content;
+namespace SMW\Tests;
 
-use SMW\Content\PropertyPageMessageHtmlBuilder;
+use SMW\PropertySpecificationReqMsgBuilder;
 use SMW\DataItemFactory;
 
 /**
- * @covers \SMW\Content\PropertyPageMessageHtmlBuilder
+ * @covers \SMW\PropertySpecificationReqMsgBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class PropertyPageMessageHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertySpecificationReqMsgBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $propertySpecificationReqExaminer;
@@ -43,24 +43,26 @@ class PropertyPageMessageHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			PropertyPageMessageHtmlBuilder::class,
-			new PropertyPageMessageHtmlBuilder( $this->store, $this->propertySpecificationReqExaminer )
+			PropertySpecificationReqMsgBuilder::class,
+			new PropertySpecificationReqMsgBuilder( $this->store, $this->propertySpecificationReqExaminer )
 		);
 	}
 
 	/**
 	 * @dataProvider propertyProvider
 	 */
-	public function testCreateMessageBody( $property ) {
+	public function testCreateMessage( $property ) {
 
-		$instance = new PropertyPageMessageHtmlBuilder(
+		$instance = new PropertySpecificationReqMsgBuilder(
 			$this->store,
 			$this->propertySpecificationReqExaminer
 		);
 
+		$instance->checkOn( $property );
+
 		$this->assertInternalType(
 			'string',
-			$instance->createMessageBody( $property )
+			$instance->getMessage()
 		);
 	}
 

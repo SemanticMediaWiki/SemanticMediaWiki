@@ -8,6 +8,7 @@ use SMW\DIProperty;
 use SMW\DataItemFactory;
 use SMWDataItem as DataItem;
 use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
+use SMW\Protection\EditProtectionValidator;
 
 /**
  * Examines codified requirements for listed types of property specifications which
@@ -24,6 +25,11 @@ class PropertySpecificationReqExaminer {
 	 * @var Store
 	 */
 	private $store;
+
+	/**
+	 * @var EditProtectionValidator
+	 */
+	private $editProtectionValidator;
 
 	/**
 	 * @var SemanticData
@@ -49,10 +55,11 @@ class PropertySpecificationReqExaminer {
 	 * @since 2.5
 	 *
 	 * @param Store $store
-	 * @param DIProperty $property
+	 * @param EditProtectionValidator $editProtectionValidator
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, EditProtectionValidator $editProtectionValidator ) {
 		$this->store = $store;
+		$this->editProtectionValidator = $editProtectionValidator;
 	}
 
 	/**
@@ -93,14 +100,16 @@ class PropertySpecificationReqExaminer {
 	 */
 	public function checkOn( DIProperty $property ) {
 
-		$semanticData = $this->store->getSemanticData( $property->getCanonicalDiWikiPage() );
-		$this->reqLock = false;
+		$subject = $property->getCanonicalDiWikiPage();
+		$title = $subject->getTitle();
+
+		$semanticData = $this->store->getSemanticData( $subject );
 
 		if ( $this->semanticData === null ) {
 			$this->semanticData = $semanticData;
 		}
 
-		$type = $property->findPropertyTypeID();
+		$this->reqLock = false;
 		$this->dataItemFactory = new DataItemFactory();
 
 		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
@@ -112,9 +121,20 @@ class PropertySpecificationReqExaminer {
 			);
 		}
 
+		if ( $this->reqLock === false && $this->editProtectionRight && $this->editProtectionValidator->hasEditProtection( $title ) ) {
+			return array(
+				$property->isUserDefined() ? 'error' : 'warning',
+				'smw-edit-protection',
+				$property->getLabel(),
+				$this->editProtectionRight
+			);
+		}
+
 		if ( !$property->isUserDefined() ) {
 			return $this->checkOnTypeForPredefinedProperty( $property );
 		}
+
+		$type = $property->findPropertyTypeID();
 
 		if ( $type === '_ref_rec' || $type === '_rec' ) {
 			return $this->checkOnFieldList( $property );
