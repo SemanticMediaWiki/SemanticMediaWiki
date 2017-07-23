@@ -292,9 +292,15 @@ class TimeValueFormatter extends DataValueFormatter {
 
 		$outputFormat = $this->dataValue->getOutputFormat();
 		$formatFlag = IntlTimeFormatter::LOCL_DEFAULT;
+		$hasTimeCorrection = false;
+
+		if ( strpos( $outputFormat, 'TO' ) !== false ) {
+			$formatFlag = IntlTimeFormatter::LOCL_TIMEOFFSET;
+			$outputFormat = str_replace( '#TO', '', $outputFormat );
+		}
 
 		if ( strpos( $outputFormat, 'TZ' ) !== false ) {
-			$formatFlag = IntlTimeFormatter::LOCL_TIMEZONE;
+			$formatFlag = $formatFlag | IntlTimeFormatter::LOCL_TIMEZONE;
 			$outputFormat = str_replace( '#TZ', '', $outputFormat );
 		}
 
@@ -313,7 +319,9 @@ class TimeValueFormatter extends DataValueFormatter {
 		// string (2147483647-01-01 00:00:0.0000000) at position 17 (0): Double
 		// time specification" for an annotation like [[Date::Jan 10000000000]]
 		try {
-			$localizedFormat = $intlTimeFormatter->getLocalizedFormat( $formatFlag ) . $this->hintCalendarModel( $dataItem );
+			$localizedFormat = $intlTimeFormatter->getLocalizedFormat( $formatFlag ) .
+				$this->hintTimeCorrection( $intlTimeFormatter->hasLocalTimeCorrection() ) .
+				$this->hintCalendarModel( $dataItem );
 		} catch ( \Exception $e ) {
 			$localizedFormat = $this->getISO8601Date();
 		}
@@ -371,6 +379,15 @@ class TimeValueFormatter extends DataValueFormatter {
 		}
 
 		return $this->getCaptionFromDataItem( $dataItem );
+	}
+
+	private function hintTimeCorrection( $hasTimeCorrection ) {
+
+		if ( $hasTimeCorrection ) {
+			return '&nbsp;' . \Html::rawElement( 'sup', array( 'title' => 'ISO: ' . $this->getISO8601Date() ), 'ᴸ' );
+		}
+
+		return '';
 	}
 
 	private function hintCalendarModel( $dataItem ) {

@@ -164,13 +164,11 @@ class AskParserFunction {
 
 		$this->parserData->pushSemanticDataToParserOutput();
 
-		// 1.23+ add options so changes are recognized in case of:
-		// - 'userlang' will trigger a cache fragmentation by user language
-		// - 'dateformat'  will trigger a cache fragmentation by date preference
-		if ( method_exists( $this->parserData->getOutput(), 'recordOption' ) ) {
-			$this->parserData->getOutput()->recordOption( 'userlang' );
-			$this->parserData->getOutput()->recordOption( 'dateformat' );
-		}
+		// 'userlang' will trigger a cache fragmentation by user language
+		$this->parserData->addExtraParserKey( 'userlang' );
+
+		// 'dateformat'  will trigger a cache fragmentation by date preference
+		$this->parserData->addExtraParserKey( 'dateformat' );
 
 		return $result;
 	}
@@ -195,6 +193,11 @@ class AskParserFunction {
 				$this->noTrace = true;
 				unset( $functionParams[$key] );
 				continue;
+			}
+
+			// @see ParserOptionsRegister hook, use registered `localTime` key
+			if ( strpos( $value, '#LOCL#TO' ) !== false ) {
+				$this->parserData->addExtraParserKey( 'localTime' );
 			}
 
 			// First and marked printrequests

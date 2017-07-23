@@ -690,6 +690,21 @@ class HookRegistry {
 	private function registerParserFunctionHooks( ApplicationFactory $applicationFactory ) {
 
 		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserOptionsRegister (Only 1.30+)
+		 */
+		$this->handlers['ParserOptionsRegister'] = function ( &$defaults, &$inCacheKey ) {
+
+			// #2509
+			// Register a new options key, used in connection with #ask/#show
+			// where the use of a localTime invalidates the ParserCache to avoid
+			// stalled settings for users with different preferences
+			$defaults['localTime'] = false;
+			$inCacheKey['localTime'] = true;
+
+			return true;
+		};
+
+		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
 		 */
 		$this->handlers['ParserFirstCallInit'] = function ( &$parser ) use( $applicationFactory ) {

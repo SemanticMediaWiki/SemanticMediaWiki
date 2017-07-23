@@ -475,4 +475,35 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testAddExtraParserKey() {
+
+		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOptions->expects( $this->once() )
+			->method( 'addExtraKey' )
+			->with( $this->stringContains( 'Foo' ) );
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( -1 ) );
+
+		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ParserData(
+			$title,
+			$parserOutput
+		);
+
+		$instance->setParserOptions( $parserOptions );
+		$instance->addExtraParserKey( 'Foo' );
+	}
+
 }

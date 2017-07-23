@@ -320,4 +320,48 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasLocalTimeOffsetPreference() {
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->once() )
+			->method( 'getOption' )
+			->with( $this->equalTo( 'smw-prefs-general-options-time-correction' ) )
+			->will( $this->returnValue( true ) );
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Localizer( $language );
+
+		$this->assertTrue(
+			$instance->hasLocalTimeOffsetPreference( $user )
+		);
+	}
+
+	public function testGetLocalTime() {
+
+		$dataTime = $this->getMockBuilder( '\DateTime' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Localizer( $language );
+
+		$this->assertInstanceOf(
+			'DateTime',
+			$instance->getLocalTime( $dataTime, $user )
+		);
+	}
+
 }

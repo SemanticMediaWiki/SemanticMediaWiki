@@ -58,6 +58,13 @@ class GetPreferences {
 				'rawrow' => 1,
 			);
 
+		// Preference to allow time correction
+		$this->preferences['smw-prefs-general-options-time-correction'] = array(
+			'type' => 'toggle',
+			'label-message' => 'smw-prefs-general-options-time-correction',
+			'section' => 'smw/general-options',
+		);
+
 		// Option to enable tooltip info
 		$this->preferences['smw-prefs-ask-options-tooltip-display'] = array(
 			'type' => 'toggle',

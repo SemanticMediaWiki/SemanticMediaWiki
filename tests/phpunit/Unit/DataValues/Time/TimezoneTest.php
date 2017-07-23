@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues\Time;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\Time\Timezone;
+use DateTime;
 
 /**
  * @covers \SMW\DataValues\Time\Timezone
@@ -67,6 +68,19 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$expected,
 			Timezone::getOffsetByAbbreviation( $abbrevation )
+		);
+	}
+
+	public function testGetModifiedTime() {
+
+		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
+		$tz = 'Asia/Tokyo';
+
+		$dateTime = Timezone::getModifiedTime( $dti, $tz );
+
+		$this->assertEquals(
+			'2017-08-01 19:00:00',
+			$dateTime->format( 'Y-m-d H:i:s' )
 		);
 	}
 
