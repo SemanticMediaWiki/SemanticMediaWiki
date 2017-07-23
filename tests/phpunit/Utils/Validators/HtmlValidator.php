@@ -13,7 +13,15 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
  */
 class HtmlValidator extends \PHPUnit_Framework_Assert {
 
+	/**
+	 * @var array
+	 */
 	private $documentCache = [];
+
+	/**
+	 * @var null|boolean
+	 */
+	private $canUse;
 
 	/**
 	 * @param string $actual
@@ -24,6 +32,18 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 		$document = $this->getDomDocumentFromHtmlFragment( $actual );
 
 		self::assertTrue( $document !== false, "Failed test `{$message}` (assertion HtmlIsValid) for $actual" );
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function canUse() {
+
+		if ( $this->canUse === null ) {
+			$this->canUse = class_exists( '\Symfony\Component\CssSelector\CssSelectorConverter' );
+		}
+
+		return $this->canUse;
 	}
 
 	/**

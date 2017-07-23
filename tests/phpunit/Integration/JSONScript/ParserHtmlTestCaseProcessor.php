@@ -23,16 +23,18 @@ class ParserHtmlTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $htmlValidator;
 
 	/**
-	 * ParserHtmlTestCaseProcessor constructor.
-	 *
 	 * @param HtmlValidator $htmlValidator
 	 */
 	public function __construct( HtmlValidator $htmlValidator ) {
-
 		parent::__construct();
-
 		$this->htmlValidator = $htmlValidator;
+	}
 
+	/**
+	 * @return boolean
+	 */
+	public function canUse() {
+		return $this->htmlValidator->canUse();
 	}
 
 	/**
