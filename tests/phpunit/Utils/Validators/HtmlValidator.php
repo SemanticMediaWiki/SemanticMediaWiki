@@ -90,10 +90,16 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 				$expectedCountText = '';
 			}
 
-			$entries = $xpath->evaluate( $converter->toXPath( $selector ) );
-			$actualCount = $entries->length;
+			$message = "Failed asserting that `{$message}` contains (HtmlContains): $expectedCountText`$selector` for: \n=====\n$htmlFragment\n=====\n";
 
-			$message = "Failed test `{$message}` for assertion HtmlContains: $expectedCountText`$selector` for \n=====\n$htmlFragment\n=====";
+			try {
+				// Symfony\Component\CssSelector\Exception\SyntaxErrorException: Expected selector ...
+				$entries = $xpath->evaluate( $converter->toXPath( $selector ) );
+				$actualCount = $entries->length;
+			} catch ( \Exception $e ) {
+				$actualCount = 0;
+				$message .= "CssSelector: " . $e->getMessage();
+			}
 
 			self::assertTrue( ( $expectedCount === false && $actualCount > 0 ) || ( $actualCount === $expectedCount ), $message );
 		}
