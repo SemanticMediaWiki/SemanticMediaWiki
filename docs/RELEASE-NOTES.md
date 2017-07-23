@@ -24,9 +24,12 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * #2485
 * [#2494](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2494) Added [`$smwgChangePropagationProtection`](https://www.semantic-mediawiki.org/wiki/Help:$smwgChangePropagationProtection) and changed the approach on how property modifications are propagated
 * [#2499](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2499) Added [`$smwgFieldTypeFeatures`](https://www.semantic-mediawiki.org/wiki/Help:$smwgFieldTypeFeatures) with `SMW_FIELDT_CHAR_NOCASE` to enable case insensitive search queries
+* [#2515](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2515) Added support for `#LOCL#TO` date formatting to display a [local time](https://www.semantic-mediawiki.org/wiki/Local_time) offset according to a user preferrence 
 * [#2516](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2516) Added an optimization run for Semantic MediaWiki managed tables during the installation process (`setupStore.php`)
 * [#2536](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2536) Added `SMW_FIELDT_CHAR_LONG` as flag for  `$smwgFieldTypeFeatures` to extend the indexable length of blob and uri fields to max of 300 chars
+* [#2543](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2543) Extended [`EditPageHelp`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEnabledEditPageHelp) to be disabled using a user preference
 * [#2558](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2558) Added `like:` and `nlike:` comparator operator
+
 
 ## Bug fixes
 
@@ -37,7 +40,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * #2482 Added `TransactionalDeferredCallableUpdate`
 * #2491
 * #2516 Added `TableBuilder::optimize`
-* [#2540](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2540) Add type `parser-html` to `JSONScript` testing to allow assertions on HTML structure
+* [#2540](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2540) Add type `parser-html` to [`JSONScript`](https://www.semantic-mediawiki.org/wiki/Help:Integration_tests) testing to allow assertions on HTML structure
 
 ## Contributors
 
