@@ -155,8 +155,11 @@ class QueryComparator {
 
 	private function getEnabledComparators( $comparatorList, $strictComparators ) {
 
-		// Note: Comparators that contain other comparators at the beginning of the string need to be at beginning of the array.
+		// Note: Comparators that contain other comparators at the beginning of
+		// the string need to be at beginning of the array.
 		$comparators = array(
+			'like:' => SMW_CMP_PRIM_LIKE,
+			'nlike:' => SMW_CMP_PRIM_NLKE,
 			'!~' => SMW_CMP_NLKE,
 			'<<' => SMW_CMP_LESS,
 			'>>' => SMW_CMP_GRTR,

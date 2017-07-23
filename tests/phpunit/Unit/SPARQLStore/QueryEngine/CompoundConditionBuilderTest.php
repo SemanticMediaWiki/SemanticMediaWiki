@@ -804,6 +804,11 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->at( 0 ) )
 			->method( 'canUseQFeature' )
+			->with( $this->equalTo( SMW_SPARQL_QF_NOCASE ) )
+			->will( $this->returnValue( false ) );
+
+		$instance->expects( $this->at( 1 ) )
+			->method( 'canUseQFeature' )
 			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
 			->will( $this->returnValue( true ) );
 
@@ -854,6 +859,11 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance->expects( $this->at( 0 ) )
+			->method( 'canUseQFeature' )
+			->with( $this->equalTo( SMW_SPARQL_QF_NOCASE ) )
+			->will( $this->returnValue( false ) );
+
+		$instance->expects( $this->at( 1 ) )
 			->method( 'canUseQFeature' )
 			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
 			->will( $this->returnValue( true ) );
