@@ -200,6 +200,11 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 			'[2,"Foo","Expression error: Unrecognized word \"yyyy\"."]'
 		);
 
+		$provider[] = array(
+			array( 'eb0afd6194bab91b6d32d2db4bb30060' => '[2,"smw-datavalue-wikipage-invalid-title","Help:"]' ),
+			'[2,"smw-datavalue-wikipage-invalid-title","Help:"]'
+		);
+
 		return $provider;
 	}
 

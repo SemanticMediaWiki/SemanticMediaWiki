@@ -111,13 +111,24 @@ class Message {
 			$type = self::TEXT;
 		}
 
+		if ( $message === array() ) {
+			return '';
+		}
+
 		$message = (array)$message;
 		$encode = array();
 		$encode[] = $type;
 
-		// Normalize arguments like "<strong>Expression error: Unrecognized word "yyyy".</strong>"
 		foreach ( $message as $value ) {
-			$encode[] = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+			// Check if the value is already encoded, and if decode to keep the
+			// structure intact
+			if ( substr( $value, 0, 1 ) === '[' && ( $dc = json_decode( $value, true ) ) && json_last_error() === JSON_ERROR_NONE ) {
+				$encode += $dc;
+			} else {
+				// Normalize arguments like "<strong>Expression error:
+				// Unrecognized word "yyyy".</strong>"
+				$encode[] = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+			}
 		}
 
 		return json_encode( $encode );

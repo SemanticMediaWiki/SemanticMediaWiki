@@ -33,7 +33,7 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 		$instance->addError( 'abc' );
 
 		$this->assertEquals(
-			array( 'abc' ),
+			array( '[2,"abc"]' ),
 			$instance->getErrors()
 		);
 
