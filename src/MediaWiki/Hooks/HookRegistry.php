@@ -405,11 +405,15 @@ class HookRegistry {
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
 		 */
-		$this->handlers['GetPreferences'] = function ( $user, &$preferences ) {
+		$this->handlers['GetPreferences'] = function ( $user, &$preferences ) use( $applicationFactory ) {
 
 			$getPreferences = new GetPreferences(
 				$user,
 				$preferences
+			);
+
+			$getPreferences->isEnabledEditPageHelp(
+				$applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' )
 			);
 
 			return $getPreferences->process();
@@ -520,7 +524,7 @@ class HookRegistry {
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
 		 */
-		$this->handlers['EditPage::showEditForm:initial'] = function ( $editPage, $output = null ) use ( $applicationFactory ) {
+		$this->handlers['EditPage::showEditForm:initial'] = function ( $editPage, $output ) use ( $applicationFactory ) {
 
 			$editPageForm = new EditPageForm(
 				$applicationFactory->getNamespaceExaminer()
@@ -528,6 +532,10 @@ class HookRegistry {
 
 			$editPageForm->isEnabledEditPageHelp(
 				$applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' )
+			);
+
+			$editPageForm->isDisabledOnUserPreference(
+				$output->getUser()->getOption( 'smw-prefs-general-options-disable-editpage-info' )
 			);
 
 			return $editPageForm->process( $editPage );

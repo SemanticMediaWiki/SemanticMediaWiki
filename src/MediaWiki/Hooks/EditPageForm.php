@@ -29,6 +29,11 @@ class EditPageForm extends HookHandler {
 	private $enabledEditPageHelp = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $disabledOnUserPreference = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param NamespaceExaminer $namespaceExaminer
@@ -47,6 +52,15 @@ class EditPageForm extends HookHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $disabledOnUserPreference
+	 */
+	public function isDisabledOnUserPreference( $disabledOnUserPreference ) {
+		$this->disabledOnUserPreference = (bool)$disabledOnUserPreference;
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param EditPage $editPage
@@ -55,7 +69,7 @@ class EditPageForm extends HookHandler {
 	 */
 	public function process( EditPage $editPage ) {
 
-		if ( !$this->enabledEditPageHelp ) {
+		if ( !$this->enabledEditPageHelp || $this->disabledOnUserPreference ) {
 			return true;
 		}
 

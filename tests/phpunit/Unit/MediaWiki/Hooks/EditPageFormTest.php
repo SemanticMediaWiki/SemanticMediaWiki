@@ -54,6 +54,29 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testDisabledOnUserPreference() {
+
+		$editPage = $this->getMockBuilder( '\EditPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EditPageForm(
+			$this->namespaceExaminer
+		);
+
+		$instance->isDisabledOnUserPreference(
+			true
+		);
+
+		$editPage->editFormPageTop = '';
+
+		$instance->process( $editPage );
+
+		$this->assertEmpty(
+			$editPage->editFormPageTop
+		);
+	}
+
 	/**
 	 * @dataProvider titleProvider
 	 */
