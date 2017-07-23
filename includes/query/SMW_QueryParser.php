@@ -1,6 +1,7 @@
 <?php
 
 use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
@@ -338,27 +339,29 @@ class SMWQueryParser {
 
 		// first process property chain syntax (e.g. "property1.property2::value"), escaped by initial " ":
 		$propertynames = ( $propertyName{0} == ' ' ) ? array( $propertyName ) : explode( '.', $propertyName );
-		$properties = array();
+		$propertyValueList = array();
 		$typeid = '_wpg';
 		$inverse = false;
 
+		// NOTE: after iteration, $property and $typeid correspond to last value
 		foreach ( $propertynames as $name ) {
 			if ( !$this->isPagePropertyType( $typeid ) ) { // non-final property in chain was no wikipage: not allowed
 				$this->descriptionProcessor->addErrorWithMsgKey( 'smw_valuesubquery', $name );
 				return null; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 
-			$property = SMWPropertyValue::makeUserProperty( $name );
+			$propertyValue = DataValueFactory::getInstance()->newPropertyValueByLabel( $name );
 
-			if ( !$property->isValid() ) { // illegal property identifier
-				$this->descriptionProcessor->addError( $property->getErrors() );
+			// Illegal property identifier
+			if ( !$propertyValue->isValid() ) {
+				$this->descriptionProcessor->addError( $propertyValue->getErrors() );
 				return null; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 
-			$typeid = $property->getDataItem()->findPropertyTypeID();
-			$inverse = $property->isInverse();
-			$properties[] = $property;
-		} ///NOTE: after iteration, $property and $typeid correspond to last value
+			$typeid = $propertyValue->getDataItem()->findPropertyTypeID();
+			$inverse = $propertyValue->isInverse();
+			$propertyValueList[] = $propertyValue;
+		}
 
 		$innerdesc = null;
 		$continue = true;
@@ -416,7 +419,7 @@ class SMWQueryParser {
 						}
 					} ///NOTE: at this point, we normally already read one more chunk behind the value
 					$outerDesription = $this->descriptionProcessor->constructDescriptionForPropertyObjectValue(
-						$property->getDataItem(),
+						$propertyValue->getDataItem(),
 						$value
 					);
 
@@ -434,13 +437,13 @@ class SMWQueryParser {
 			$innerdesc = ( !is_null( $this->defaultNamespace ) && $this->isPagePropertyType( $typeid ) ) ?
 							$this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $innerdesc, $this->defaultNamespace ) :
 							$this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $innerdesc, new ThingDescription() );
-			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_propvalueproblem', $property->getWikiValue() );
+			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_propvalueproblem', $propertyValue->getWikiValue() );
 		}
 
-		$properties = array_reverse( $properties );
+		$propertyValueList = array_reverse( $propertyValueList );
 
-		foreach ( $properties as $property ) {
-			$innerdesc = new SomeProperty( $property->getDataItem(), $innerdesc );
+		foreach ( $propertyValueList as $propertyValue ) {
+			$innerdesc = new SomeProperty( $propertyValue->getDataItem(), $innerdesc );
 		}
 
 		$result = $innerdesc;
