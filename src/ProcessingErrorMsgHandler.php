@@ -181,10 +181,11 @@ class ProcessingErrorMsgHandler {
 		}
 
 		$property = $dataValue->getProperty();
-		$hash = '';
 
 		if ( $property !== null ) {
 			$hash = $property->getKey();
+		} else {
+			$hash = $dataValue->getDataItem()->getHash();
 		}
 
 		$containerSemanticData = $this->newContainerSemanticData( $hash );

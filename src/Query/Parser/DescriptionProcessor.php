@@ -88,7 +88,14 @@ class DescriptionProcessor {
 	 * @param array|string $error
 	 */
 	public function addError( $error ) {
-		$this->errors = array_merge( $this->errors, (array)$error );
+
+		if ( !is_array( $error ) ) {
+			$error = (array)$error;
+		}
+
+		if ( $error !== array() ) {
+			$this->errors[] = Message::encode( $error );
+		}
 	}
 
 	/**
