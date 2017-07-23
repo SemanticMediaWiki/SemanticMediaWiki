@@ -10,6 +10,7 @@ use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\RedirectInfoStore;
 use SMW\SQLStore\TableFieldUpdater;
 use SMW\Utils\Collator;
+use SMW\SQLStore\SQLStoreFactory;
 
 /**
  * @ingroup SMWStore
@@ -69,7 +70,7 @@ class SMWSql3SmwIds {
 	 */
 	const TABLE_NAME = SMWSQLStore3::ID_TABLE;
 
-	const POOLCACHE_ID = 'sql.store.id.cache';
+	const MAX_CACHE_SIZE = 500;
 
 	/**
 	 * Id for which property table hashes are cached, if any.
@@ -88,31 +89,6 @@ class SMWSql3SmwIds {
 	protected $hashCacheContents = '';
 
 	/**
-	 * Maximal number of cached property IDs.
-	 *
-	 * @since 1.8
-	 * @var integer
-	 */
-	public static $PROP_CACHE_MAX_SIZE = 250;
-
-	/**
-	 * Maximal number of cached non-property IDs.
-	 *
-	 * @since 1.8
-	 * @var integer
-	 */
-	public static $PAGE_CACHE_MAX_SIZE = 500;
-
-	protected $selectrow_sort_debug = 0;
-	protected $selectrow_redi_debug = 0;
-	protected $prophit_debug = 0;
-	protected $propmiss_debug = 0;
-	protected $reghit_debug = 0;
-	protected $regmiss_debug = 0;
-
-	static protected $singleton_debug = null;
-
-	/**
 	 * Parent SMWSQLStore3.
 	 *
 	 * @since 1.8
@@ -121,21 +97,14 @@ class SMWSql3SmwIds {
 	public $store;
 
 	/**
-	 * Cache for property IDs.
-	 *
-	 * @note Tests indicate that it is more memory efficient to have two
-	 * arrays (IDs and sortkeys) than to have one array that stores both
-	 * values in some data structure (other than a single string).
-	 *
-	 * @since 1.8
-	 * @var array
+	 * @var SQLStoreFactory
 	 */
-	protected $prop_ids = array();
+	private $factory;
 
 	/**
 	 * @var IdToDataItemMatchFinder
 	 */
-	private $idToDataItemMatchFinder;
+	private $idMatchFinder;
 
 	/**
 	 * @var RedirectInfoStore
@@ -146,30 +115,6 @@ class SMWSql3SmwIds {
 	 * @var TableFieldUpdater
 	 */
 	private $tableFieldUpdater;
-
-	/**
-	 * Cache for property sortkeys.
-	 *
-	 * @since 1.8
-	 * @var array
-	 */
-	protected $prop_sortkeys = array();
-
-	/**
-	 * Cache for non-property IDs.
-	 *
-	 * @since 1.8
-	 * @var array
-	 */
-	protected $regular_ids = array();
-
-	/**
-	 * Cache for non-property sortkeys.
-	 *
-	 * @since 1.8
-	 * @var array
-	 */
-	protected $regular_sortkeys = array();
 
 	/**
 	 * Use pre-defined ids for Very Important Properties, avoiding frequent
@@ -225,24 +170,37 @@ class SMWSql3SmwIds {
 	);
 
 	/**
-	 * Constructor.
-	 *
+	 * @var ProcessLruCache
+	 */
+	private $processLruCache;
+
+	/**
 	 * @since 1.8
 	 * @param SMWSQLStore3 $store
 	 */
-	public function __construct( SMWSQLStore3 $store, IdToDataItemMatchFinder $idToDataItemMatchFinder ) {
+	public function __construct( SMWSQLStore3 $store, SQLStoreFactory $factory ) {
 		$this->store = $store;
-		// Yes, this is a hack, but we only use it for convenient debugging:
-		self::$singleton_debug = $this;
+		$this->factory = $factory;
 
-		$this->idToDataItemMatchFinder = $idToDataItemMatchFinder;
+		// Tests indicate that it is more memory efficient to have two
+		// arrays (IDs and sortkeys) than to have one array that stores both
+		// values in some data structure (other than a single string).
+		$this->processLruCache = $this->factory->newProcessLruCache(
+			array(
+				'entity.id' => self::MAX_CACHE_SIZE,
+				'entity.sort' => self::MAX_CACHE_SIZE
+			)
+		);
+
+		$this->idMatchFinder = $this->factory->newIdMatchFinder(
+			$this->processLruCache->get( 'entity.id' )
+		);
 
 		$this->redirectInfoStore = new RedirectInfoStore(
 			$this->store->getConnection( 'mw.db' )
 		);
 
 		$this->tableFieldUpdater = new TableFieldUpdater( $store );
-		$this->intermediaryIdCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -427,7 +385,7 @@ class SMWSql3SmwIds {
 				__METHOD__
 			);
 
-			$this->selectrow_sort_debug++;
+			//$this->selectrow_sort_debug++;
 
 			if ( $row !== false ) {
 				$id = $row->smw_id;
@@ -552,7 +510,7 @@ class SMWSql3SmwIds {
 
 		$hash = HashBuilder::getHashIdForDiWikiPage( $subject );
 
-		if ( ( $id = $this->intermediaryIdCache->fetch( $hash ) ) !== false ) {
+		if ( ( $id = $this->processLruCache->get( 'entity.id' )->fetch( $hash ) ) !== false ) {
 			return $id;
 		}
 
@@ -973,18 +931,8 @@ class SMWSql3SmwIds {
 
 		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
 
-		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
-			$this->checkPropertySizeLimit();
-			$this->prop_ids[$title] = $id;
-			$this->prop_sortkeys[$title] = $sortkey;
-		} else {
-			$this->checkRegularSizeLimit();
-			$this->regular_ids[$hashKey] = $id;
-			$this->regular_sortkeys[$hashKey] = $sortkey;
-		}
-
-		$this->idToDataItemMatchFinder->saveToCache( $id, $hashKey );
-		$this->intermediaryIdCache->save( $hashKey, $id );
+		$this->processLruCache->get( 'entity.id' )->save( $hashKey, $id );
+		$this->processLruCache->get( 'entity.sort' )->save( $hashKey, $sortkey );
 
 		if ( $interwiki == SMW_SQL3_SMWREDIIW ) { // speed up detection of redirects when fetching IDs
 			$this->setCache(  $title, $namespace, '', $subobject, 0, '' );
@@ -999,7 +947,7 @@ class SMWSql3SmwIds {
 	 * @return DIWikiPage|null
 	 */
 	public function getDataItemById( $id ) {
-		return $this->idToDataItemMatchFinder->getDataItemById( $id );
+		return $this->idMatchFinder->getDataItemById( $id );
 	}
 
 	/**
@@ -1011,7 +959,7 @@ class SMWSql3SmwIds {
 	 * @return string[]
 	 */
 	public function getDataItemPoolHashListFor( array $idlist, RequestOptions $requestOptions = null ) {
-		return $this->idToDataItemMatchFinder->getDataItemsFromList( $idlist, $requestOptions );
+		return $this->idMatchFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
 	/**
@@ -1025,24 +973,13 @@ class SMWSql3SmwIds {
 	 * @return integer|boolean
 	 */
 	protected function getCachedId( $title, $namespace, $interwiki, $subobject ) {
-		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
-			if ( array_key_exists( $title, $this->prop_ids ) ) {
-				$this->prophit_debug++;
-				return (int)$this->prop_ids[$title];
-			} else {
-				$this->propmiss_debug++;
-				return false;
-			}
-		} else {
-			$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
-			if ( array_key_exists( $hashKey, $this->regular_ids ) ) {
-				$this->reghit_debug++;
-				return (int)$this->regular_ids[$hashKey];
-			} else {
-				$this->regmiss_debug++;
-				return false;
-			}
+		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
+
+		if ( ( $id = $this->processLruCache->get( 'entity.id' )->fetch( $hashKey ) ) !== false ) {
+			return (int)$id;
 		}
+
+		return false;
 	}
 
 	/**
@@ -1056,20 +993,13 @@ class SMWSql3SmwIds {
 	 * @return string|boolean
 	 */
 	protected function getCachedSortKey( $title, $namespace, $interwiki, $subobject ) {
-		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
-			if ( array_key_exists( $title, $this->prop_sortkeys ) ) {
-				return $this->prop_sortkeys[$title];
-			} else {
-				return false;
-			}
-		} else {
-			$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
-			if ( array_key_exists( $hashKey, $this->regular_sortkeys ) ) {
-				return $this->regular_sortkeys[$hashKey];
-			} else {
-				return false;
-			}
+		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
+
+		if ( ( $sort = $this->processLruCache->get( 'entity.sort' )->fetch( $hashKey ) ) !== false ) {
+			return $sort;
 		}
+
+		return false;
 	}
 
 	/**
@@ -1087,18 +1017,8 @@ class SMWSql3SmwIds {
 
 		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
 
-		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
-			$id =  isset( $this->prop_ids[$title] ) ?  $this->prop_ids[$title] : 0;
-			unset( $this->prop_ids[$title] );
-			unset( $this->prop_sortkeys[$title] );
-		} else {
-			$id = isset( $this->regular_ids[$hashKey] ) ? $this->regular_ids[$hashKey] : 0;
-			unset( $this->regular_ids[$hashKey] );
-			unset( $this->regular_sortkeys[$hashKey] );
-		}
-
-		$this->intermediaryIdCache->delete( $hashKey );
-		$this->idToDataItemMatchFinder->deleteFromCache( $id );
+		$this->processLruCache->get( 'entity.id' )->delete( $hashKey );
+		$this->processLruCache->get( 'entity.sort' )->delete( $hashKey );
 	}
 
 	/**
@@ -1116,13 +1036,17 @@ class SMWSql3SmwIds {
 	public function moveSubobjects( $oldtitle, $oldnamespace, $newtitle, $newnamespace ) {
 		// Currently we have no way to change title and namespace across all entries.
 		// Best we can do is clear the cache to avoid wrong hits:
-		if ( $oldnamespace == SMW_NS_PROPERTY || $newnamespace == SMW_NS_PROPERTY ) {
-			$this->prop_ids = array();
-			$this->prop_sortkeys = array();
-		}
 		if ( $oldnamespace != SMW_NS_PROPERTY || $newnamespace != SMW_NS_PROPERTY ) {
-			$this->regular_ids = array();
-			$this->regular_sortkeys = array();
+
+			$oldHashKey = HashBuilder::createFromSegments( $oldtitle, $oldnamespace );
+
+			$this->processLruCache->get( 'entity.id' )->delete( $oldHashKey );
+			$this->processLruCache->get( 'entity.sort' )->delete( $oldHashKey );
+
+			$newHashKey = HashBuilder::createFromSegments( $newtitle, $newnamespace );
+
+			$this->processLruCache->get( 'entity.id' )->delete( $newHashKey );
+			$this->processLruCache->get( 'entity.sort' )->delete( $newHashKey );
 		}
 	}
 
@@ -1132,44 +1056,7 @@ class SMWSql3SmwIds {
 	 * @since 1.8
 	 */
 	public function clearCaches() {
-		$this->prop_ids = array();
-		$this->prop_sortkeys = array();
-		$this->regular_ids = array();
-		$this->regular_sortkeys = array();
-		$this->idToDataItemMatchFinder->clear();
-	}
-
-	/**
-	 * Ensure that the property ID and sortkey caches have space to insert
-	 * at least one more element. If not, some other entries will be unset.
-	 *
-	 * @since 1.8
-	 */
-	protected function checkPropertySizeLimit() {
-		if ( count( $this->prop_ids ) >= self::$PROP_CACHE_MAX_SIZE ) {
-			$keys = array_rand( $this->prop_ids, 10 );
-			foreach ( $keys as $key ) {
-				unset( $this->prop_ids[$key] );
-				unset( $this->prop_sortkeys[$key] );
-			}
-		}
-	}
-
-	/**
-	 * Ensure that the non-property ID and sortkey caches have space to
-	 * insert at least one more element. If not, some other entries will be
-	 * unset.
-	 *
-	 * @since 1.8
-	 */
-	protected function checkRegularSizeLimit() {
-		if ( count( $this->regular_ids ) >= self::$PAGE_CACHE_MAX_SIZE ) {
-			$keys = array_rand( $this->regular_ids, 10 );
-			foreach ( $keys as $key ) {
-				unset( $this->regular_ids[$key] );
-				unset( $this->regular_sortkeys[$key] );
-			}
-		}
+		$this->processLruCache->reset();
 	}
 
 	/**
@@ -1248,46 +1135,6 @@ class SMWSql3SmwIds {
 		//print "Cache set for $id.\n";
 		$this->hashCacheId = $id;
 		$this->hashCacheContents = $propertyTableHash;
-	}
-
-	/**
-	 * Simple helper method for debugging cache performance. Prints
-	 * statistics about the SMWSql3SmwIds object created last.
-	 * The following code can be used in LocalSettings.php to enable
-	 * this in a wiki:
-	 *
-	 * $wgHooks['SkinAfterContent'][] = 'showCacheStats';
-	 * function showCacheStats() {
-	 *   self::debugDumpCacheStats();
-	 *   return true;
-	 * }
-	 *
-	 * @note This is a debugging/profiling method that no published code
-	 * should rely on.
-	 *
-	 * @since 1.8
-	 */
-	public static function debugDumpCacheStats() {
-		$that = self::$singleton_debug;
-		if ( is_null( $that ) ) {
-			return;
-		}
-
-		$debugString =
-			"Statistics for SMWSql3SmwIds:\n" .
-			"- Executed {$that->selectrow_sort_debug} selects for sortkeys.\n" .
-			"- Executed {$that->selectrow_redi_debug} selects for redirects.\n" .
-			"- Regular cache hits: {$that->reghit_debug} misses: {$that->regmiss_debug}";
-		if ( $that->regmiss_debug + $that->reghit_debug > 0 ) {
-			$debugString .= " rate: " . round( $that->reghit_debug/( $that->regmiss_debug + $that->reghit_debug ), 3 );
-		}
-		$debugString .= " cache size: " . count( $that->regular_ids ) . "\n";
-		$debugString .= "- Property cache hits: {$that->prophit_debug} misses: {$that->propmiss_debug}";
-		if ( $that->propmiss_debug + $that->prophit_debug > 0 ) {
-			$debugString .= " rate: " . round( $that->prophit_debug/( $that->propmiss_debug + $that->prophit_debug ), 3 );
-		}
-		$debugString .= " cache size: " . count( $that->prop_ids ) . "\n";
-		wfDebug( $debugString );
 	}
 
 	/**

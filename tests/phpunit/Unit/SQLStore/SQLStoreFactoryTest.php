@@ -80,13 +80,13 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstractIdTableManager() {
+	public function testCanConstractEntityIdManager() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
 			'SMWSql3SmwIds',
-			$instance->newIdTableManager()
+			$instance->newEntityIdManager()
 		);
 	}
 
@@ -243,7 +243,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstrucSqlEntityLookupResultFetcher() {
+	public function testCanConstructSqlEntityLookupResultFetcher() {
 
 		$instance = new SQLStoreFactory( $this->store );
 
@@ -253,7 +253,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstrucPropertyStatisticsTable() {
+	public function testCanConstructPropertyStatisticsTable() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -268,6 +268,38 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\PropertyStatisticsTable',
 			$instance->newPropertyStatisticsTable()
+		);
+	}
+
+	public function testCanConstructProcessLruCache() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\ProcessLruCache',
+			$instance->newProcessLruCache( array() )
+		);
+	}
+
+	public function testCanConstructIdMatchFinder() {
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\IdMatchFinder',
+			$instance->newIdMatchFinder( $cache )
 		);
 	}
 

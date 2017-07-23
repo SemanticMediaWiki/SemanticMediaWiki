@@ -1,14 +1,13 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\InMemoryPoolCache;
-use SMW\SQLStore\IdToDataItemMatchFinder;
+use SMW\SQLStore\EntityStore\IdMatchFinder;
 use SMW\IteratorFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\SQLStore\IdToDataItemMatchFinder
+ * @covers \SMW\SQLStore\EntityStore\IdMatchFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,9 +15,10 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
+class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $cache;
 	private $iteratorFactory;
 
 	protected function setUp() {
@@ -27,10 +27,10 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
 			->disableOriginalConstructor()
 			->getMock();
-	}
 
-	protected function tearDown() {
-		$this->testEnvironment->resetPoolCacheById( IdToDataItemMatchFinder::POOLCACHE_ID );
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
@@ -40,8 +40,8 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\IdToDataItemMatchFinder',
-			new IdToDataItemMatchFinder( $connection, $this->iteratorFactory )
+			IdMatchFinder::class,
+			new IdMatchFinder( $connection, $this->iteratorFactory, $this->cache )
 		);
 	}
 
@@ -52,6 +52,16 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
 		$row->smw_subobject ='';
+
+		$this->cache->expects( $this->once() )
+			->method( 'save' )
+			->with(
+				$this->equalTo( 42 ),
+				$this->anything() );
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( 'Foo#14##' ) );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -65,26 +75,29 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$instance = new IdToDataItemMatchFinder(
+		$instance = new IdMatchFinder(
 			$connection,
-			$this->iteratorFactory
+			$this->iteratorFactory,
+			$this->cache
 		);
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
 			$instance->getDataItemById( 42 )
-		);
-
-		$stats = InMemoryPoolCache::getInstance()->getStats();
-
-		$this->assertEquals(
-			1,
-			$stats[IdToDataItemMatchFinder::POOLCACHE_ID]['count']
 		);
 	}
 
 	public function testGetDataItemForCachedId() {
 
+		$this->cache->expects( $this->atLeastOnce() )
+			->method( 'contains' )
+			->with(	$this->equalTo( 42 ) )
+			->will( $this->returnValue( true ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( 'Foo#14##' ) );
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -92,33 +105,29 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		InMemoryPoolCache::getInstance()->getPoolCacheById( IdToDataItemMatchFinder::POOLCACHE_ID )->save( 42, 'Foo#0##' );
-
-		$instance = new IdToDataItemMatchFinder(
+		$instance = new IdMatchFinder(
 			$connection,
-			$this->iteratorFactory
+			$this->iteratorFactory,
+			$this->cache
 		);
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
 			$instance->getDataItemById( 42 )
-		);
-
-		$stats = InMemoryPoolCache::getInstance()->getStats();
-
-		$this->assertEquals(
-			0,
-			$stats[IdToDataItemMatchFinder::POOLCACHE_ID]['misses']
-		);
-
-		$this->assertEquals(
-			1,
-			$stats[IdToDataItemMatchFinder::POOLCACHE_ID]['hits']
 		);
 	}
 
 	public function testPredefinedPropertyItem() {
 
+		$this->cache->expects( $this->atLeastOnce() )
+			->method( 'contains' )
+			->with(	$this->equalTo( 42 ) )
+			->will( $this->returnValue( true ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( '_MDAT#102##' ) );
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -126,61 +135,16 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$instance = new IdToDataItemMatchFinder(
+		$instance = new IdMatchFinder(
 			$connection,
-			$this->iteratorFactory
+			$this->iteratorFactory,
+			$this->cache
 		);
-
-		$instance->saveToCache( 42, '_MDAT#102##' );
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
 			$instance->getDataItemById( 42 )
 		);
-	}
-
-	public function testSaveDeleteFromCaceh() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
-
-		$instance = new IdToDataItemMatchFinder(
-			$connection,
-			$this->iteratorFactory
-		);
-
-		$instance->saveToCache( 42, 'Foo#14##' );
-		$instance->getDataItemById( 42 );
-
-		$instance->deleteFromCache( 42 );
-		$instance->getDataItemById( 42 );
-	}
-
-	public function testClearCache() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
-
-		$instance = new IdToDataItemMatchFinder(
-			$connection,
-			$this->iteratorFactory
-		);
-
-		$instance->saveToCache( 42, 'Foo#0##' );
-		$instance->getDataItemById( 42 );
-
-		$instance->clear();
-		$instance->getDataItemById( 42 );
 	}
 
 	public function testNullForUnknownId() {
@@ -193,9 +157,10 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new IdToDataItemMatchFinder(
+		$instance = new IdMatchFinder(
 			$connection,
-			$this->iteratorFactory
+			$this->iteratorFactory,
+			$this->cache
 		);
 
 		$this->assertNull(
@@ -223,9 +188,10 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => array( 42 ) ) ) )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$instance = new IdToDataItemMatchFinder(
+		$instance = new IdMatchFinder(
 			$connection,
-			new IteratorFactory()
+			new IteratorFactory(),
+			$this->cache
 		);
 
 		foreach ( $instance->getDataItemsFromList( array( 42 ) ) as $value ) {

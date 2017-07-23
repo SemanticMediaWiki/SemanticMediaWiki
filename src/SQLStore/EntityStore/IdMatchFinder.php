@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
@@ -8,6 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\Database;
 use SMW\IteratorFactory;
 use SMW\RequestOptions;
+use Onoi\Cache\Cache;
 
 /**
  * @license GNU GPL v2+
@@ -15,9 +16,7 @@ use SMW\RequestOptions;
  *
  * @author mwjames
  */
-class IdToDataItemMatchFinder {
-
-	const POOLCACHE_ID = 'sql.store.id.dataitem.finder';
+class IdMatchFinder {
 
 	/**
 	 * @var Database|null
@@ -30,46 +29,21 @@ class IdToDataItemMatchFinder {
 	private $iteratorFactory;
 
 	/**
-	 * @var InMemoryPoolCache
+	 * @var Cache
 	 */
-	private $inMemoryPoolCache;
+	private $inMemoryCache;
 
 	/**
 	 * @since 2.1
 	 *
 	 * @param Database $connection
 	 * @param IteratorFactory $iteratorFactory
+	 * @param Cache $inMemoryCache
 	 */
-	public function __construct( Database $connection, IteratorFactory $iteratorFactory ) {
+	public function __construct( Database $connection, IteratorFactory $iteratorFactory, Cache $inMemoryCache ) {
 		$this->connection = $connection;
 		$this->iteratorFactory = $iteratorFactory;
-		$this->inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache();
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param string $id
-	 * @param string $hash
-	 */
-	public function saveToCache( $id, $hash ) {
-		$this->inMemoryPoolCache->getPoolCacheById( self::POOLCACHE_ID  )->save( $id, $hash );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param string $id
-	 */
-	public function deleteFromCache( $id ) {
-		$this->inMemoryPoolCache->getPoolCacheById( self::POOLCACHE_ID )->delete( $id );
-	}
-
-	/**
-	 * @since 2.1
-	 */
-	public function clear() {
-		$this->inMemoryPoolCache->resetPoolCacheById( self::POOLCACHE_ID );
+		$this->inMemoryCache = $inMemoryCache;
 	}
 
 	/**
@@ -127,14 +101,12 @@ class IdToDataItemMatchFinder {
 	 */
 	public function getDataItemById( $id ) {
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( self::POOLCACHE_ID );
-
-		if ( !$poolCache->contains( $id ) && !$this->canMatchById( $id ) ) {
+		if ( !$this->inMemoryCache->contains( $id ) && !$this->canMatchById( $id ) ) {
 			return null;
 		}
 
 		$wikiPage = HashBuilder::newDiWikiPageFromHash(
-			$poolCache->fetch( $id )
+			$this->inMemoryCache->fetch( $id )
 		);
 
 		$wikiPage->setId( $id );
@@ -167,7 +139,7 @@ class IdToDataItemMatchFinder {
 			$row->smw_subobject
 		);
 
-		$this->saveToCache( $id, $hash );
+		$this->inMemoryCache->save( $id, $hash );
 
 		return true;
 	}

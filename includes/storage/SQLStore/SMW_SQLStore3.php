@@ -167,7 +167,7 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function __construct() {
 		$this->factory = new SQLStoreFactory( $this );
-		$this->smwIds = $this->factory->newIdTableManager();
+		$this->smwIds = $this->factory->newEntityIdManager();
 	}
 
 	/**
