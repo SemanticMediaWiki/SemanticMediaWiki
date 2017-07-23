@@ -207,7 +207,7 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getColumnList( $start, $end, $diWikiPages, $diProperty ) {
+	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
 		global $wgContLang;
 
 		if ( $diWikiPages instanceof \Iterator ) {
@@ -226,7 +226,7 @@ class SMWPageLister {
 		for ( $startChunk = $start, $endChunk = $chunk, $chunkIndex = 0;
 			$chunkIndex < 3;
 			++$chunkIndex, $startChunk = $endChunk, $endChunk += $chunk + 1 ) {
-			$r .= "<td>\n";
+			$r .= "<td width='33%'>\n";
 			$atColumnTop = true;
 
 			// output all diWikiPages
@@ -258,6 +258,10 @@ class SMWPageLister {
 				$r .= "<li>" . $dataValue->getLongHTMLText( smwfGetLinker() ) . "</li>\n";
 			}
 
+			if ( $index == $end && $moreCallback !== null ) {
+				$r .= "<li>" . call_user_func( $moreCallback ) . "</li>\n";
+			}
+
 			if ( !$atColumnTop ) {
 				$r .= "</ul>\n";
 			}
@@ -280,7 +284,7 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getShortList( $start, $end, $diWikiPages, $diProperty ) {
+	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
 
 		if ( $diWikiPages instanceof \Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
@@ -315,6 +319,10 @@ class SMWPageLister {
 			}
 
 			$r .= '<li>' . $dataValue->getLongHTMLText( smwfGetLinker() ) . '</li>';
+		}
+
+		if ( $moreCallback !== null ) {
+			$r .= '<li>' . call_user_func( $moreCallback ) . '</li>';
 		}
 
 		$r .= '</ul>';
