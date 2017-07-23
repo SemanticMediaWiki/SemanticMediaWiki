@@ -328,6 +328,10 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 				continue;
 			}
 
+			if ( !$this->parserHtmlTestCaseProcessor->canUse() ) {
+				$this->markTestIncomplete( 'The required resource for the ParserHtmlTestCaseProcessor/HtmlValidator is not available.' );
+			}
+
 			$this->parserHtmlTestCaseProcessor->process( $case );
 		}
 	}
