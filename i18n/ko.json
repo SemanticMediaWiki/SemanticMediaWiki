@@ -283,6 +283,7 @@
 	"smw-info-par-message": "표시할 메시지입니다.",
 	"smw-info-par-icon": "\"info\"나 \"warning\" 중 하나를 보여주는 아이콘입니다.",
 	"prefs-smw": "시맨틱 미디어위키",
+	"prefs-general-options": "일반 옵션",
 	"prefs-ask-options": "시맨틱 검색 설정",
 	"smw-prefs-intro-text": "아래의 옵션은 [https://www.semantic-mediawiki.org/ 시맨틱 미디어위키](또는 관련된 확장 기능)가 선택된 기능에 대한 개별 사용자 지정을 활성화하기 위해 제공됩니다. 자세한 정보에 대해서는 이 [http://semantic-mediawiki.org/wiki/Help:User_preferences 도움말 문단]에서 보시기 바랍니다.",
 	"smw-prefs-ask-options-tooltip-display": "정보 말풍선으로 변수 텍스트 표시",
