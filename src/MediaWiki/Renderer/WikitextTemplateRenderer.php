@@ -40,7 +40,7 @@ class WikitextTemplateRenderer {
 		$this->template .= '{{'. $templateName;
 
 		foreach ( $this->fields as $key => $value ) {
-			$this->template .= "|$key=$value";
+			$this->template .= "\n|$key=$value";
 		}
 
 		$this->template .= '}}';
