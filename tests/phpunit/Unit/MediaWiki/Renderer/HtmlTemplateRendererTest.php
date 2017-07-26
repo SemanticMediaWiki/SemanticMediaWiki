@@ -41,7 +41,7 @@ class HtmlTemplateRendererTest extends \PHPUnit_Framework_TestCase {
 		$parser->expects( $this->once() )
 			->method( 'recursiveTagParse' )
 			->with(
-				$this->stringContains( '{{Bar|property=Foo|value=42}}{{Foobaz|property=Bar|value=Foo}}' ) );
+				$this->stringContains( "{{Bar\n|property=Foo\n|value=42}}{{Foobaz\n|property=Bar\n|value=Foo}}" ) );
 
 		$instance = new HtmlTemplateRenderer(
 			new WikitextTemplateRenderer(),
