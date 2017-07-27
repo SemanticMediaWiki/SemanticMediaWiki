@@ -339,7 +339,7 @@
 	"smw-admin-bugsreport": "Les bogues peuvent être signalés sur <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-admin-questions": "Si vous avez d’autres questions ou des suggestions, joignez-vous à la discussion sur <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">la liste de discussion des utilisateurs de MediaWiki Sémantique</a>.",
 	"smw-admin-supplementary-section-title": "Fonctions supplémentaires",
-	"smw-admin-supplementary-section-intro": "Une partie des fonctions listées dans cette section peuvent être limitées et par conséquent inaccessibles sur ce wiki.",
+	"smw-admin-supplementary-section-intro": "Une partie des fonctions listées dans cette section peuvent être limitées et par conséquent sont inaccessibles sur ce wiki.",
 	"smw-admin-supplementary-settings-title": "Options de configuration",
 	"smw-admin-supplementary-settings-intro": "<u>$1</u> renvoie une liste collective de paramètres disponibles utilisés dans Semantic MediaWiki",
 	"smw-admin-supplementary-operational-statistics-title": "Statistiques opérationnelles",
