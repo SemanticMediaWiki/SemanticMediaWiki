@@ -260,7 +260,7 @@ class AskParserFunction {
 		$queryHash = $query->getHash();
 
 		if ( $this->postProcHandler !== null && isset( $extraKeys[self::IS_ANNOTATION] ) ) {
-			$this->postProcHandler->addQueryRef( $queryHash );
+			$this->postProcHandler->addQueryRef( $query );
 		}
 
 		$this->circularReferenceGuard->mark( $queryHash );

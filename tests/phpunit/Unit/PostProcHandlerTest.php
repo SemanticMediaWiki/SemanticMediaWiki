@@ -75,7 +75,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider queryRefProvider
 	 */
-	public function testAddQueryRef( $gExtensionData, $sExtensionData, $ref ) {
+	public function testAddQueryRef( $gExtensionData, $sExtensionData, $query ) {
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
@@ -89,21 +89,29 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PostProcHandler( $this->parserOutput );
 
-		$instance->addQueryRef( $ref );
+		$instance->addQueryRef( $query );
 	}
 
 	public function queryRefProvider() {
 
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'toArray' )
+			->will( $this->returnValue( array( 'Foo' ) ) );
+
 		$provider[] =[
 			null,
 			[ 'Foo' => true ],
-			'Foo'
+			$query
 		];
 
 		$provider[] =[
 			[ 'Bar' => true ],
 			[ 'Bar' => true, 'Foo' => true ],
-			'Foo'
+			$query
 		];
 
 		return $provider;

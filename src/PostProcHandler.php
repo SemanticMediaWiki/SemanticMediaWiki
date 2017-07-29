@@ -3,7 +3,6 @@
 namespace SMW;
 
 use SMWQuery as Query;
-use SMW\Query\QueryRefFinder;
 use ParserOutput;
 use Title;
 use WebRequest;
@@ -109,9 +108,16 @@ class PostProcHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $queryRef
+	 * @param Query $query
 	 */
-	public function addQueryRef( $queryRef ) {
+	public function addQueryRef( Query $query ) {
+
+		// Query:getHash returns a hash based on a fingerprint
+		// (when $smwgQueryResultCacheType is set) that eliminates duplicate
+		// queries, yet for the post processing it is necessary to know each
+		// single query (same-condition, different printout) to allow running
+		// alternating updates as in case of cascading value dependencies
+		$queryRef = HashBuilder::createFromArray( $query->toArray() );
 
 		$data = $this->parserOutput->getExtensionData( self::PROC_POST_QUERYREF );
 
