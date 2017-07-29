@@ -29,7 +29,7 @@ use SMW\NamespaceExaminer;
 use SMW\ParserData;
 use SMW\ContentParser;
 use SMW\Updater\DeferredCallableUpdate;
-use SMW\Updater\TransactionalDeferredCallableUpdate;
+use SMW\Updater\DeferredTransactionalUpdate;
 use SMW\InMemoryPoolCache;
 use SMW\PropertyAnnotatorFactory;
 use SMW\CacheFactory;
@@ -121,9 +121,9 @@ class SharedServicesContainer implements CallbackContainer {
 			return new PageCreator();
 		} );
 
-		$containerBuilder->registerCallback( 'PageUpdater', function( $containerBuilder, $connection, TransactionalDeferredCallableUpdate $transactionalDeferredCallableUpdate = null ) {
+		$containerBuilder->registerCallback( 'PageUpdater', function( $containerBuilder, $connection, DeferredTransactionalUpdate $deferredTransactionalUpdate = null ) {
 			$containerBuilder->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
-			return new PageUpdater( $connection, $transactionalDeferredCallableUpdate );
+			return new PageUpdater( $connection, $deferredTransactionalUpdate );
 		} );
 
 		$containerBuilder->registerCallback( 'JobQueueLookup', function( $containerBuilder, Database $connection ) {
@@ -151,9 +151,9 @@ class SharedServicesContainer implements CallbackContainer {
 			return new DeferredCallableUpdate( $callback );
 		} );
 
-		$containerBuilder->registerCallback( 'TransactionalDeferredCallableUpdate', function( $containerBuilder, \Closure $callback = null, Database $connection = null ) {
-			$containerBuilder->registerExpectedReturnType( 'TransactionalDeferredCallableUpdate', '\SMW\Updater\TransactionalDeferredCallableUpdate' );
-			return new TransactionalDeferredCallableUpdate( $callback, $connection );
+		$containerBuilder->registerCallback( 'DeferredTransactionalUpdate', function( $containerBuilder, \Closure $callback = null, Database $connection = null ) {
+			$containerBuilder->registerExpectedReturnType( 'DeferredTransactionalUpdate', '\SMW\Updater\DeferredTransactionalUpdate' );
+			return new DeferredTransactionalUpdate( $callback, $connection );
 		} );
 
 		/**

@@ -37,7 +37,6 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 
 ## Internal changes
 
-* #2482 Added `TransactionalDeferredCallableUpdate`
 * #2491
 * #2516 Added `TableBuilder::optimize`
 * [#2540](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2540) Add type `parser-html` to [`JSONScript`](https://www.semantic-mediawiki.org/wiki/Help:Integration_tests) testing to allow assertions on HTML structure

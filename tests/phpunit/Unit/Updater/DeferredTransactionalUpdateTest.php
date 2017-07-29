@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Updater;
 
-use SMW\Updater\TransactionalDeferredCallableUpdate;
+use SMW\Updater\DeferredTransactionalUpdate;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Updater\TransactionalDeferredCallableUpdate
+ * @covers \SMW\Updater\DeferredTransactionalUpdate
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
+class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $spyLogger;
@@ -43,8 +43,8 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 		};
 
 		$this->assertInstanceOf(
-			TransactionalDeferredCallableUpdate::class,
-			new TransactionalDeferredCallableUpdate( $callback, $this->connection )
+			DeferredTransactionalUpdate::class,
+			new DeferredTransactionalUpdate( $callback, $this->connection )
 		);
 	}
 
@@ -62,7 +62,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 			$test->doTest();
 		};
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			$callback,
 			$this->connection
 		);
@@ -75,7 +75,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 
 	public function testUpdateOnEmptyCallback() {
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			null,
 			$this->connection
 		);
@@ -93,7 +93,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 
 	public function testUpdateOnLateCallback() {
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			null,
 			$this->connection
 		);
@@ -137,7 +137,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 			$test->doTest();
 		};
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			$callback,
 			$this->connection
 		);
@@ -164,7 +164,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 			$test->doTest();
 		};
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			$callback,
 			$this->connection
 		);
@@ -178,7 +178,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 		$callback = function() {
 		};
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			$callback,
 			$this->connection
 		);
@@ -205,7 +205,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 			$test->doTest();
 		};
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			$callback,
 			$this->connection
 		);
@@ -214,7 +214,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 		$instance->markAsPending( true );
 		$instance->pushUpdate();
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			$callback,
 			$this->connection
 		);
@@ -254,7 +254,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 			$test->doTest();
 		};
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			$callback,
 			$connection
 		);
@@ -288,7 +288,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 			$test->doTest();
 		};
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			$callback,
 			$connection
 		);
@@ -323,7 +323,7 @@ class TransactionalDeferredCallableUpdateTest extends \PHPUnit_Framework_TestCas
 			$test->doTest();
 		};
 
-		$instance = new TransactionalDeferredCallableUpdate(
+		$instance = new DeferredTransactionalUpdate(
 			$callback,
 			$connection
 		);

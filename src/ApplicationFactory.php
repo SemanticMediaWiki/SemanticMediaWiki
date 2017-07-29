@@ -258,7 +258,7 @@ class ApplicationFactory {
 		$pageUpdater = $this->containerBuilder->create(
 			'PageUpdater',
 			$this->getStore()->getConnection( 'mw.db' ),
-			$this->newTransactionalDeferredCallableUpdate()
+			$this->newDeferredTransactionalUpdate()
 		);
 
 		$pageUpdater->setLogger(
@@ -490,29 +490,29 @@ class ApplicationFactory {
 	 *
 	 * @param Closure $callback
 	 *
-	 * @return TransactionalDeferredCallableUpdate
+	 * @return DeferredTransactionalUpdate
 	 */
-	public function newTransactionalDeferredCallableUpdate( Closure $callback = null ) {
+	public function newDeferredTransactionalUpdate( Closure $callback = null ) {
 
-		$transactionalDeferredCallableUpdate = $this->containerBuilder->create(
-			'TransactionalDeferredCallableUpdate',
+		$deferredTransactionalUpdate = $this->containerBuilder->create(
+			'DeferredTransactionalUpdate',
 			$callback,
 			$this->getStore()->getConnection( 'mw.db' )
 		);
 
-		$transactionalDeferredCallableUpdate->isDeferrableUpdate(
+		$deferredTransactionalUpdate->isDeferrableUpdate(
 			$this->getSettings()->get( 'smwgEnabledDeferredUpdate' )
 		);
 
-		$transactionalDeferredCallableUpdate->setLogger(
+		$deferredTransactionalUpdate->setLogger(
 			$this->getMediaWikiLogger()
 		);
 
-		$transactionalDeferredCallableUpdate->isCommandLineMode(
+		$deferredTransactionalUpdate->isCommandLineMode(
 			$GLOBALS['wgCommandLineMode']
 		);
 
-		return $transactionalDeferredCallableUpdate;
+		return $deferredTransactionalUpdate;
 	}
 
 	/**
