@@ -1,5 +1,5 @@
 {
-	"description": "Test `format=template` with `sep`/`named args`/`template arguments` (#972, #2022)",
+	"description": "Test `format=template` with `sep`/`named args`/`template arguments` (#972, #2022, #2567)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -36,6 +36,10 @@
 			"contents": "{{#subobject: |@category=F0803 |Has text=123 |Has text=456 }} {{#subobject: |@category=F0803 |Has text=abc }}"
 		},
 		{
+			"page": "Example/F0803/2",
+			"contents": "[[Category:F0803]][[Has text::foo\n=bar]]"
+		},
+		{
 			"page": "Example/F0803/Q.1",
 			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
@@ -66,6 +70,10 @@
 		{
 			"page": "Example/F0803/Q.8",
 			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.9",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |named args=yes |sort=Has text |order=asc }}"
 		}
 	],
 	"tests": [
@@ -146,6 +154,16 @@
 			"assert-output": {
 				"to-contain": [
 					"123, 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (#2567)",
+			"subject": "Example/F0803/Q.9",
+			"assert-output": {
+				"to-contain": [
+					"123, 456abcfoo\n=bar"
 				]
 			}
 		}
