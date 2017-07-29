@@ -106,7 +106,7 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			$this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, '[[:Property:Bar|Bar]]&nbsp;<span title="Foo.Bar">⠉</span>' ),
+			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, '[[:Property:Bar|Bar]]&nbsp;<span title="Foo.Bar">⠉</span>' ),
 			$instance->getShortWikiText( 'linker' )
 		);
 	}
@@ -118,12 +118,12 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo.Bar' );
 
 		$this->assertEquals(
-			$this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, 'Property:Bar&nbsp;<span title="Foo.Bar">⠉</span>' ),
+			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, 'Property:Bar&nbsp;<span title="Foo.Bar">⠉</span>' ),
 			$instance->getLongWikiText()
 		);
 
 		$this->assertEquals(
-			$this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, '[[:Property:Bar|Bar]]&nbsp;<span title="Foo.Bar">⠉</span>' ),
+			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, '[[:Property:Bar|Bar]]&nbsp;<span title="Foo.Bar">⠉</span>' ),
 			$instance->getLongWikiText( 'linker' )
 		);
 	}
@@ -147,7 +147,7 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo.Bar' );
 
 		$this->assertEquals(
-			$this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, 'Property:Bar&nbsp;<span title="Foo.Bar">⠉</span>' ),
+			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, 'Property:Bar&nbsp;<span title="Foo.Bar">⠉</span>' ),
 			$instance->getLongHTMLText()
 		);
 	}
