@@ -125,7 +125,7 @@ class ExtraneousLanguage {
 		$this->languageCode = strtolower( trim( $languageCode ) );
 
 		if ( !$this->languageContents->has( $this->languageCode ) ) {
-			$this->languageContents->prepareWithLanguage( $this->languageCode );
+			$this->languageContents->load( $this->languageCode );
 		}
 
 		return $this;
@@ -140,12 +140,12 @@ class ExtraneousLanguage {
 	 */
 	public function getNamespaces() {
 
-		$namespaces = $this->languageContents->getContentsByLanguageWithIndex(
+		$namespaces = $this->languageContents->getContentsFromLanguageById(
 			$this->languageCode,
 			'namespaces'
 		);
 
-		$namespaces += $this->languageContents->getContentsByLanguageWithIndex(
+		$namespaces += $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'namespaces'
 		);
@@ -174,12 +174,12 @@ class ExtraneousLanguage {
 	 */
 	public function getNamespaceAliases() {
 
-		$namespaceAliases = $this->languageContents->getContentsByLanguageWithIndex(
+		$namespaceAliases = $this->languageContents->getContentsFromLanguageById(
 			$this->languageCode,
 			'namespaceAliases'
 		);
 
-		$namespaceAliases += $this->languageContents->getContentsByLanguageWithIndex(
+		$namespaceAliases += $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'namespaceAliases'
 		);
@@ -213,12 +213,12 @@ class ExtraneousLanguage {
 	 */
 	public function getDatatypeLabels() {
 
-		$datatypeLabels = $this->languageContents->getContentsByLanguageWithIndex(
+		$datatypeLabels = $this->languageContents->getContentsFromLanguageById(
 			$this->languageCode,
 			'dataTypeLabels'
 		);
 
-		$datatypeLabels += $this->languageContents->getContentsByLanguageWithIndex(
+		$datatypeLabels += $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'dataTypeLabels'
 		);
@@ -257,7 +257,7 @@ class ExtraneousLanguage {
 	 */
 	public function getCanonicalDatatypeLabels() {
 
-		$datatypeLabels = $this->languageContents->getContentsByLanguageWithIndex(
+		$datatypeLabels = $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'dataTypeLabels'
 		);
@@ -277,12 +277,12 @@ class ExtraneousLanguage {
 	 */
 	public function getDatatypeAliases() {
 
-		$datatypeAliases = $this->languageContents->getContentsByLanguageWithIndex(
+		$datatypeAliases = $this->languageContents->getContentsFromLanguageById(
 			$this->languageCode,
 			'dataTypeAliases'
 		);
 
-		$datatypeAliases += $this->languageContents->getContentsByLanguageWithIndex(
+		$datatypeAliases += $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'dataTypeAliases'
 		);
@@ -297,19 +297,19 @@ class ExtraneousLanguage {
 	 */
 	public function getCanonicalPropertyLabels() {
 
-		$canonicalPropertyLabels = $this->languageContents->getContentsByLanguageWithIndex(
+		$canonicalPropertyLabels = $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'propertyLabels'
 		);
 
 		$canonicalPropertyLabels = array_flip( $canonicalPropertyLabels );
 
-		$canonicalPropertyLabels += $this->languageContents->getContentsByLanguageWithIndex(
+		$canonicalPropertyLabels += $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'propertyAliases'
 		);
 
-		$canonicalPropertyLabels += $this->languageContents->getContentsByLanguageWithIndex(
+		$canonicalPropertyLabels += $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'dataTypeAliases'
 		);
@@ -326,12 +326,12 @@ class ExtraneousLanguage {
 	 */
 	public function getPropertyLabels() {
 
-		$propertyLabels = $this->languageContents->getContentsByLanguageWithIndex(
+		$propertyLabels = $this->languageContents->getContentsFromLanguageById(
 			$this->languageCode,
 			'propertyLabels'
 		);
 
-		$propertyLabels += $this->languageContents->getContentsByLanguageWithIndex(
+		$propertyLabels += $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'propertyLabels'
 		);
@@ -348,14 +348,14 @@ class ExtraneousLanguage {
 	 */
 	public function getCanonicalPropertyAliases() {
 
-		$canonicalPropertyAliases = $this->languageContents->getContentsByLanguageWithIndex(
+		$canonicalPropertyAliases = $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'propertyAliases'
 		);
 
 		// Add standard property lables from the canonical language as
 		// aliases
-		$propertyLabels = $this->languageContents->getContentsByLanguageWithIndex(
+		$propertyLabels = $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'propertyLabels'
 		);
@@ -374,12 +374,12 @@ class ExtraneousLanguage {
 	 */
 	public function getPropertyAliases() {
 
-		$propertyAliases = $this->languageContents->getContentsByLanguageWithIndex(
+		$propertyAliases = $this->languageContents->getContentsFromLanguageById(
 			$this->languageCode,
 			'propertyAliases'
 		);
 
-		$propertyLabels = $this->languageContents->getContentsByLanguageWithIndex(
+		$propertyLabels = $this->languageContents->getContentsFromLanguageById(
 			$this->languageCode,
 			'propertyLabels'
 		);
@@ -394,12 +394,12 @@ class ExtraneousLanguage {
 	 */
 	protected function getPropertyId( $propertyLabel ) {
 
-		$list += $this->languageContents->getContentsByLanguageWithIndex(
+		$list += $this->languageContents->getContentsFromLanguageById(
 			$this->languageCode,
 			'propertyAliases'
 		);
 
-		$list += $this->languageContents->getContentsByLanguageWithIndex(
+		$list += $this->languageContents->getContentsFromLanguageById(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
 			'propertyAliases'
 		);
@@ -471,7 +471,7 @@ class ExtraneousLanguage {
 	 */
 	public function getPreferredDateFormatByPrecision( $precision = null ) {
 
-		$dateOutputFormats = $this->languageContents->getContentsByLanguageWithIndex(
+		$dateOutputFormats = $this->languageContents->getContentsFromLanguageById(
 			$this->languageCode,
 			'dateFormatsByPrecision'
 		);
@@ -507,7 +507,7 @@ class ExtraneousLanguage {
 		$languageCode = $this->languageCode;
 
 		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === array() ) {
-			$this->months[$languageCode] = $this->languageContents->getContentsByLanguageWithIndex( $languageCode, 'months' );
+			$this->months[$languageCode] = $this->languageContents->getContentsFromLanguageById( $languageCode, 'months' );
 		}
 
 		foreach ( $this->months[$languageCode] as $key => $value ) {
@@ -541,7 +541,7 @@ class ExtraneousLanguage {
 		$number = (int)( $number - 1 ); // array starts with 0
 
 		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === array() ) {
-			$this->months[$languageCode] = $this->languageContents->getContentsByLanguageWithIndex( $languageCode, 'months' );
+			$this->months[$languageCode] = $this->languageContents->getContentsFromLanguageById( $languageCode, 'months' );
 		}
 
 		if ( ( ( $number >= 0 ) && ( $number <= 11 ) ) && isset( $this->months[$languageCode][$number]) ) {
@@ -555,7 +555,7 @@ class ExtraneousLanguage {
 
 		$dateformats = array();
 
-		foreach ( $this->languageContents->getContentsByLanguageWithIndex( $languageCode, 'dateFormats' ) as $row ) {
+		foreach ( $this->languageContents->getContentsFromLanguageById( $languageCode, 'dateFormats' ) as $row ) {
 			$internalNumberFormat = array();
 
 			foreach ( $row as $value ) {

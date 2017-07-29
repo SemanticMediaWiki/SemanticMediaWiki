@@ -65,7 +65,7 @@ class LanguageContents {
 	 *
 	 * @return boolean
 	 */
-	public function prepareWithLanguage( $languageCode ) {
+	public function load( $languageCode ) {
 
 		if ( !$this->has( $languageCode ) && !$this->jsonLanguageContentsFileReader->canReadByLanguageCode( $languageCode ) ) {
 			$languageCode = $this->languageFallbackFinder->getFallbackLanguageBy( $languageCode );
@@ -96,16 +96,16 @@ class LanguageContents {
 	 *
 	 * @return array|string|false
 	 */
-	public function getContentsByLanguageWithIndex( $languageCode, $index ) {
+	public function getContentsFromLanguageById( $languageCode, $index ) {
 
 		if ( $this->hasLanguageWithIndex( $languageCode, $index ) ) {
 			return $this->contents[$languageCode][$index];
 		}
 
-		return $this->getFromLanguageWithIndex( $languageCode, $index );
+		return $this->getFromLanguageById( $languageCode, $index );
 	}
 
-	private function getFromLanguageWithIndex( $languageCode, $index ) {
+	private function getFromLanguageById( $languageCode, $index ) {
 
 		$canonicalFallbackLanguageCode = $this->languageFallbackFinder->getCanonicalFallbackLanguageCode();
 
@@ -124,7 +124,7 @@ class LanguageContents {
 		}
 
 		if ( $languageCode !== $canonicalFallbackLanguageCode ) {
-			return $this->getFromLanguageWithIndex( $this->languageFallbackFinder->getFallbackLanguageBy( $languageCode ), $index );
+			return $this->getFromLanguageById( $this->languageFallbackFinder->getFallbackLanguageBy( $languageCode ), $index );
 		}
 
 		return $this->getCanonicalContentsFrom( $canonicalFallbackLanguageCode, $index );

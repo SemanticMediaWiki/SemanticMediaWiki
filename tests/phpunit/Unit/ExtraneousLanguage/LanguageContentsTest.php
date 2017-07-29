@@ -73,7 +73,7 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 			$instance->has( $languageCode )
 		);
 
-		$instance->prepareWithLanguage( $languageCode );
+		$instance->load( $languageCode );
 
 		$this->assertTrue(
 			$instance->has( $languageCode )
@@ -110,7 +110,7 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			123,
-			$instance->getContentsByLanguageWithIndex( $languageCode, 'Bar' )
+			$instance->getContentsFromLanguageById( $languageCode, 'Bar' )
 		);
 	}
 
@@ -147,7 +147,7 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->getContentsByLanguageWithIndex( $languageCode, 'Bar' );
+		$instance->getContentsFromLanguageById( $languageCode, 'Bar' );
 	}
 
 }
