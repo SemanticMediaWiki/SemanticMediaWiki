@@ -3,5 +3,5 @@ using the help of MediaWiki's `DeferredUpdates::addUpdate`
 
 - `DeferredCallableUpdate` implements the `DeferrableUpdate` interface in order to be posted via `DeferredUpdates::addUpdate`
   and provides additional functionality for handling specific update requirements in Semantic MediaWiki
-- `TransactionalDeferredCallableUpdate` extends `DeferredCallableUpdate` to handle transaction related tasks or isolations
+- `DeferredTransactionalUpdate` extends `DeferredCallableUpdate` to handle transaction related tasks or isolations
   and hereby ensures an undisturbed update process before and after `MediaWiki::preOutputCommit`.

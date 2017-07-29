@@ -205,17 +205,17 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPushPendingWaitableUpdate( $purgeMethod, $titleMethod ) {
 
-		$transactionalDeferredCallableUpdate = $this->getMockBuilder( '\SMW\Updater\TransactionalDeferredCallableUpdate' )
+		$deferredTransactionalUpdate = $this->getMockBuilder( '\SMW\Updater\DeferredTransactionalUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$transactionalDeferredCallableUpdate->expects( $this->once() )
+		$deferredTransactionalUpdate->expects( $this->once() )
 			->method( 'pushUpdate' );
 
-		$transactionalDeferredCallableUpdate->expects( $this->once() )
+		$deferredTransactionalUpdate->expects( $this->once() )
 			->method( 'waitOnTransactionIdle' );
 
-		$transactionalDeferredCallableUpdate->expects( $this->once() )
+		$deferredTransactionalUpdate->expects( $this->once() )
 			->method( 'markAsPending' );
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -228,7 +228,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PageUpdater(
 			$this->connection,
-			$transactionalDeferredCallableUpdate
+			$deferredTransactionalUpdate
 		);
 
 		$instance->addPage( $title );

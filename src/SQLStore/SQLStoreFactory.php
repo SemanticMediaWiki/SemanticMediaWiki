@@ -244,14 +244,14 @@ class SQLStoreFactory {
 	 */
 	public function newDeferredCallableCachedListLookupUpdate() {
 
-		$transactionalDeferredCallableUpdate = ApplicationFactory::getInstance()->newTransactionalDeferredCallableUpdate( function() {
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate( function() {
 			$this->newPropertyUsageCachedListLookup()->deleteCache();
 			$this->newUnusedPropertyCachedListLookup()->deleteCache();
 			$this->newUndeclaredPropertyCachedListLookup()->deleteCache();
 			$this->newUsageStatisticsCachedListLookup()->deleteCache();
 		} );
 
-		return $transactionalDeferredCallableUpdate;
+		return $deferredTransactionalUpdate;
 	}
 
 	/**

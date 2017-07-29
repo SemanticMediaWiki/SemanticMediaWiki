@@ -15,7 +15,7 @@ use SMW\MediaWiki\Database;
  *
  * @author mwjames
  */
-class TransactionalDeferredCallableUpdate extends DeferredCallableUpdate {
+class DeferredTransactionalUpdate extends DeferredCallableUpdate {
 
 	/**
 	 * @var Database|null

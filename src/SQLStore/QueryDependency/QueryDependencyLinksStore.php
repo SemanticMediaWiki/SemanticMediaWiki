@@ -351,7 +351,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		$dependencyLinksTableUpdater = $this->dependencyLinksTableUpdater;
 		$queryResultDependencyListResolver = $this->queryResultDependencyListResolver;
 
-		$transactionalDeferredCallableUpdate = ApplicationFactory::getInstance()->newTransactionalDeferredCallableUpdate( function() use( $subject, $sid, $hash, $queryResult, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate( function() use( $subject, $sid, $hash, $queryResult, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
 
 			$dependencyList = $queryResultDependencyListResolver->getDependencyListFrom( $queryResult );
 
@@ -384,14 +384,14 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			$dependencyLinksTableUpdater->doUpdate();
 		} );
 
-		$transactionalDeferredCallableUpdate->setOrigin( __METHOD__ );
-		$transactionalDeferredCallableUpdate->markAsPending( $this->isCommandLineMode );
-		$transactionalDeferredCallableUpdate->setFingerprint( $hash );
+		$deferredTransactionalUpdate->setOrigin( __METHOD__ );
+		$deferredTransactionalUpdate->markAsPending( $this->isCommandLineMode );
+		$deferredTransactionalUpdate->setFingerprint( $hash );
 
-		$transactionalDeferredCallableUpdate->enabledDeferredUpdate( true );
-		$transactionalDeferredCallableUpdate->waitOnTransactionIdle();
+		$deferredTransactionalUpdate->enabledDeferredUpdate( true );
+		$deferredTransactionalUpdate->waitOnTransactionIdle();
 
-		$transactionalDeferredCallableUpdate->pushUpdate();
+		$deferredTransactionalUpdate->pushUpdate();
 
 		$this->log( __METHOD__ . ' procTime (sec): ' . Timer::getElapsedTime( __METHOD__, 7 ) );
 

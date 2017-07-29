@@ -448,11 +448,11 @@ class ParserData {
 
 		DeferredCallableUpdate::releasePendingUpdates();
 
-		$transactionalDeferredCallableUpdate = $applicationFactory->newTransactionalDeferredCallableUpdate( function() use( $storeUpdater ) {
+		$deferredTransactionalUpdate = $applicationFactory->newDeferredTransactionalUpdate( function() use( $storeUpdater ) {
 			$storeUpdater->doUpdate();
 		} );
 
-		$transactionalDeferredCallableUpdate->setOrigin(
+		$deferredTransactionalUpdate->setOrigin(
 			array(
 				__METHOD__,
 				$this->origin,
@@ -460,12 +460,12 @@ class ParserData {
 			)
 		);
 
-		$transactionalDeferredCallableUpdate->enabledDeferredUpdate(
+		$deferredTransactionalUpdate->enabledDeferredUpdate(
 			$enabledDeferredUpdate
 		);
 
-		$transactionalDeferredCallableUpdate->commitWithTransactionTicket();
-		$transactionalDeferredCallableUpdate->pushUpdate();
+		$deferredTransactionalUpdate->commitWithTransactionTicket();
+		$deferredTransactionalUpdate->pushUpdate();
 
 		return true;
 	}
