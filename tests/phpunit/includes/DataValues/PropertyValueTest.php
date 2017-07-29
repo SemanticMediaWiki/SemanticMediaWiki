@@ -31,7 +31,7 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertyValue( '__pro' );
 
-		$instance->setOptions(
+		$instance->copyOptions(
 			new Options( array( 'smwgDVFeatures' => $options ) )
 		);
 

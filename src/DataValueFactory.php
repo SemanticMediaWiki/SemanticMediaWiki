@@ -101,9 +101,7 @@ class DataValueFactory {
 	 */
 	public function newDataValueByType( $typeId, $valueString = false, $caption = false, DIProperty $property = null, $contextPage = null ) {
 
-		$dataTypeRegistry = $this->dataTypeRegistry;
-
-		if ( !$dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
+		if ( !$this->dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
 			return new ErrorValue(
 				$typeId,
 				array( 'smw_unknowntype', $typeId ),
@@ -114,25 +112,27 @@ class DataValueFactory {
 
 		$dataValue = $this->dataValueServiceFactory->newDataValueByType(
 			$typeId,
-			$dataTypeRegistry->getDataTypeClassById( $typeId )
+			$this->dataTypeRegistry->getDataTypeClassById( $typeId )
 		);
 
 		$dataValue->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
 		);
 
-		$dataValue->setOptions(
-			$dataTypeRegistry->getOptions()
+		$dataValue->copyOptions(
+			$this->dataTypeRegistry->getOptions()
 		);
+
+		$localizer = Localizer::getInstance();
 
 		$dataValue->setOption(
 			DataValue::OPT_USER_LANGUAGE,
-			Localizer::getInstance()->getUserLanguage()->getCode()
+			$localizer->getUserLanguage()->getCode()
 		);
 
 		$dataValue->setOption(
 			DataValue::OPT_CONTENT_LANGUAGE,
-			Localizer::getInstance()->getContentLanguage()->getCode()
+			$localizer->getContentLanguage()->getCode()
 		);
 
 		if ( $property !== null ) {

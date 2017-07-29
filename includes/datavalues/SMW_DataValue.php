@@ -293,7 +293,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return Options|null $options
 	 */
-	public function setOptions( Options $options = null ) {
+	public function copyOptions( Options $options = null ) {
 
 		if ( $options === null ) {
 			return;

@@ -197,7 +197,7 @@ class PropertyChainValue extends StringValue {
 			return $this->addError( $this->lastPropertyChainValue->getErrors() );
 		}
 
-		$this->lastPropertyChainValue->setOptions( $this->getOptions() );
+		$this->lastPropertyChainValue->copyOptions( $this->getOptions() );
 
 		// Generate a forward list from the remaining property labels
 		// Foo.Bar.Foobar
@@ -208,7 +208,7 @@ class PropertyChainValue extends StringValue {
 				continue;
 			}
 
-			$propertyValue->setOptions( $this->getOptions() );
+			$propertyValue->copyOptions( $this->getOptions() );
 
 			$this->propertyValues[] = $propertyValue;
 		}
