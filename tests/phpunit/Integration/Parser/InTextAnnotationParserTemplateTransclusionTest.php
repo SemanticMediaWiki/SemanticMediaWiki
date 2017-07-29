@@ -1,14 +1,13 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Integration\Parser;
 
 use ParserOutput;
-use SMW\InTextAnnotationParser;
 use SMW\ApplicationFactory;
 use Title;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\InTextAnnotationParser
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

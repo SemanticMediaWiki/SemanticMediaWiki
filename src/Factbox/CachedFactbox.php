@@ -6,7 +6,7 @@ use Onoi\Cache\Cache;
 use OutputPage;
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\InTextAnnotationParser;
+use SMW\Parser\InTextAnnotationParser;
 use Title;
 
 /**

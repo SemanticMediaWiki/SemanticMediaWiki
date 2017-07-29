@@ -13,7 +13,7 @@ use SMWDIBoolean as DIBoolean;
 use SMWDIBlob as DIBlob;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Query\QueryToken;
-use SMW\InTextAnnotationParser;
+use SMW\Parser\InTextAnnotationParser;
 
 /**
  * Returns the result content (DI objects) for a single PrintRequest, representing

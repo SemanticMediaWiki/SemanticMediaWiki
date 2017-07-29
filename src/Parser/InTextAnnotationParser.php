@@ -1,13 +1,15 @@
 <?php
 
-namespace SMW;
+namespace SMW\Parser;
 
 use Hooks;
-use SMW\Parser\Obfuscator;
-use SMW\Parser\LinksProcessor;
+use SMW\ParserData;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Utils\Timer;
+use SMW\DataValueFactory;
+use SMW\ApplicationFactory;
+use SMW\Localizer;
 use SMWOutputs;
 use Title;
 

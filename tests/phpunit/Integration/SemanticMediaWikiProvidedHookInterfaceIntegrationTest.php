@@ -380,7 +380,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->disableOriginalConstructor()
 			->getMock();
 
-		$inTextAnnotationParser = $this->getMockBuilder( '\SMW\InTextAnnotationParser' )
+		$inTextAnnotationParser = $this->getMockBuilder( '\SMW\Parser\InTextAnnotationParser' )
 			->setConstructorArgs( array( $parserData, $linksProcessor, $magicWordsFinder, $redirectTargetFinder ) )
 			->setMethods( null )
 			->getMock();
