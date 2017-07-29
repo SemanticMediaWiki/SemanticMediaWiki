@@ -222,7 +222,7 @@ class TestEnvironment {
 	 *
 	 * @return string
 	 */
-	public function getLocalizedTextByNamespace( $index, $text ) {
+	public function replaceNamespaceWithLocalizedText( $index, $text ) {
 
 		$namespace = Localizer::getInstance()->getNamespaceTextById( $index );
 

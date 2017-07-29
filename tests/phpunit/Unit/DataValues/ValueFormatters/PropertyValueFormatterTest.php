@@ -164,7 +164,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new PropertyValueFormatter( $propertyValue );
-		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
+		$expected = $this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, $expected );
 
 		$this->assertEquals(
 			$expected,
@@ -213,7 +213,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setUserValue( $property );
 
 		$instance = new PropertyValueFormatter( $propertyValue );
-		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
+		$expected = $this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, $expected );
 
 		$this->assertEquals(
 			$expected,
@@ -265,7 +265,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setCaption( $caption );
 
 		$instance = new PropertyValueFormatter( $propertyValue );
-		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
+		$expected = $this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, $expected );
 
 		$this->assertEquals(
 			$expected,
@@ -293,7 +293,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new PropertyValueFormatter( $propertyValue );
-		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
+		$expected = $this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, $expected );
 
 		$this->assertEquals(
 			$expected,

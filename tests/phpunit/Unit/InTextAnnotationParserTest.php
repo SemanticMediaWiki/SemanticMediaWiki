@@ -584,7 +584,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			),
 			'[[Foo::@@@]] [[Bar::@@@en|Foobar]]',
 			array(
-				'resultText'     => $testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, '[[:Property:Foo|Foo]] [[:Property:Bar|Foobar]]' ),
+				'resultText'     => $testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, '[[:Property:Foo|Foo]] [[:Property:Bar|Foobar]]' ),
 				'propertyCount'  => 0
 			)
 		);

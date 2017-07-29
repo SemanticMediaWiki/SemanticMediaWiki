@@ -7,7 +7,7 @@
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"page": "Example/Boostrap",
+			"page": "Example/Bootstrap",
 			"contents": "[[Has example::Example123]]"
 		}
 	],
@@ -15,7 +15,7 @@
 		{
 			"type": "parser",
 			"about": "#0 (page type annotation)",
-			"subject": "Example/Boostrap",
+			"subject": "Example/Bootstrap",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
