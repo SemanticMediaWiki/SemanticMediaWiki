@@ -1,14 +1,15 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Updater;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\StoreUpdater;
+use SMW\Updater\StoreUpdater;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\StoreUpdater
+ * @covers \SMW\Updater\StoreUpdater
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -60,7 +61,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\StoreUpdater',
+			StoreUpdater::class,
 			new StoreUpdater( $this->store, $semanticData )
 		);
 	}

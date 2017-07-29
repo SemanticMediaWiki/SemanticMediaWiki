@@ -5,3 +5,4 @@ using the help of MediaWiki's `DeferredUpdates::addUpdate`
   and provides additional functionality for handling specific update requirements in Semantic MediaWiki
 - `DeferredTransactionalUpdate` extends `DeferredCallableUpdate` to handle transaction related tasks or isolations
   and hereby ensures an undisturbed update process before and after `MediaWiki::preOutputCommit`.
+- `StoreUpdater` is the final instance to manipulate the `SemanticData` before being posted to `Store::updateData`
