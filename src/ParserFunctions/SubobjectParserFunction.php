@@ -136,9 +136,9 @@ class SubobjectParserFunction {
 	public function parse( ParserParameterProcessor $parameters ) {
 
 		if (
-			$this->parserData->canModifySemanticData() &&
+			$this->parserData->canUse() &&
 			$this->addDataValuesToSubobject( $parameters ) &&
-			!$this->subobject->getSemanticData()->isEmpty()  ) {
+			$this->subobject->getSemanticData()->isEmpty() === false ) {
 			$this->parserData->getSemanticData()->addSubobject( $this->subobject );
 		}
 

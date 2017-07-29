@@ -229,28 +229,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSetGetForNonExtensionDataLegacyAccess() {
-
-		$title = Title::newFromText( __METHOD__ );
-		$parserOutput = new ParserOutput();
-
-		$instance = $this->getMockBuilder( '\SMW\ParserData' )
-			->setConstructorArgs( array( $title, $parserOutput ) )
-			->setMethods( array( 'hasExtensionData' ) )
-			->getMock();
-
-		$instance->expects( $this->any() )
-			->method( 'hasExtensionData' )
-			->will( $this->returnValue( false ) );
-
-		$instance->pushSemanticDataToParserOutput();
-
-		$this->assertInstanceOf(
-			'\SMW\SemanticData',
-			$instance->getSemanticData()
-		);
-	}
-
 	public function testUpdateStore() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
@@ -418,7 +396,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance->addLimitReport( 'Foo', 'Bar' );
 	}
 
-	public function testCanModifySemanticData() {
+	public function testIsBlocked() {
 
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
@@ -430,24 +408,19 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput = new ParserOutput();
 
-		// FIXME 1.21+
-		if ( !method_exists( $parserOutput, 'getExtensionData' ) ) {
-			$this->markTestSkipped( 'getExtensionData is not available.' );
-		}
-
 		$instance = new ParserData(
 			$title,
 			$parserOutput
 		);
 
-		$this->assertTrue(
-			$instance->canModifySemanticData()
+		$this->assertFalse(
+			$instance->isBlocked()
 		);
 
-		$parserOutput->setExtensionData( 'smw-blockannotation', true );
+		$parserOutput->setExtensionData( ParserData::ANNOTATION_BLOCK, true );
 
-		$this->assertFalse(
-			$instance->canModifySemanticData()
+		$this->assertTrue(
+			$instance->isBlocked()
 		);
 	}
 
@@ -497,6 +470,10 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$parserOutput->expects( $this->once() )
+			->method( 'recordOption' )
+			->with( $this->stringContains( 'userlang' ) );
+
 		$instance = new ParserData(
 			$title,
 			$parserOutput
@@ -504,6 +481,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setParserOptions( $parserOptions );
 		$instance->addExtraParserKey( 'Foo' );
+		$instance->addExtraParserKey( 'userlang' );
 	}
 
 }
