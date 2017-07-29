@@ -12,6 +12,7 @@ use Parser;
 use SMWQueryProcessor as QueryProcessor;
 use SMWQuery as Query;
 use SMW\Query\DeferredQuery;
+use SMW\PostProcHandler;
 
 /**
  * Provides the {{#ask}} parser function
@@ -36,6 +37,12 @@ class AskParserFunction {
 	 * Fixed identifier
 	 */
 	const NO_TRACE = '@notrace';
+
+	/**
+	 * Fixed identifier to signal to the PostProcHandler that a post update is
+	 * required with the output being used as input value for an annotation.
+	 */
+	const IS_ANNOTATION = '@annotation';
 
 	/**
 	 * @var ParserData
@@ -68,14 +75,9 @@ class AskParserFunction {
 	private $context = QueryProcessor::INLINE_QUERY;
 
 	/**
-	 * @var boolean
+	 * @var PostProcHandler
 	 */
-	private $noTrace = false;
-
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
+	private $postProcHandler;
 
 	/**
 	 * @since 1.9
@@ -90,6 +92,15 @@ class AskParserFunction {
 		$this->messageFormatter = $messageFormatter;
 		$this->circularReferenceGuard = $circularReferenceGuard;
 		$this->expensiveFuncExecutionWatcher = $expensiveFuncExecutionWatcher;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param PostProcHandler $postProcHandler
+	 */
+	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
+		$this->postProcHandler = $postProcHandler;
 	}
 
 	/**
@@ -139,23 +150,22 @@ class AskParserFunction {
 		$GLOBALS['smwgIQRunningNumber']++;
 		$result = '';
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$functionParams = $this->prepareFunctionParameters(
+		list( $functionParams, $extraKeys ) = $this->prepareFunctionParameters(
 			$functionParams
 		);
 
-		if ( !$this->noTrace ) {
-			$this->noTrace = $this->parserData->getOption( ParserData::NO_QUERY_DEPENDENCY_TRACE );
+		if ( !isset( $extraKeys[self::NO_TRACE] ) ) {
+			$extraKeys[self::NO_TRACE] = $this->parserData->getOption( ParserData::NO_QUERY_DEPENDENCY_TRACE );
 		}
 
 		// No trace on queries invoked by special pages
 		if ( $this->parserData->getTitle()->getNamespace() === NS_SPECIAL ) {
-			$this->noTrace = true;
+			$extraKeys[self::NO_TRACE] = true;
 		}
 
 		$result = $this->doFetchResultsFromFunctionParameters(
-			$functionParams
+			$functionParams,
+			$extraKeys
 		);
 
 		if ( $this->context === QueryProcessor::DEFERRED_QUERY ) {
@@ -180,6 +190,8 @@ class AskParserFunction {
 			array_shift( $functionParams );
 		}
 
+		$extraKeys = array();
+
 		// Filter invalid parameters
 		foreach ( $functionParams as $key => $value ) {
 
@@ -190,7 +202,13 @@ class AskParserFunction {
 			}
 
 			if ( $value === self::NO_TRACE ) {
-				$this->noTrace = true;
+				$extraKeys[self::NO_TRACE] = true;
+				unset( $functionParams[$key] );
+				continue;
+			}
+
+			if ( $value === self::IS_ANNOTATION ) {
+				$extraKeys[self::IS_ANNOTATION] = true;
 				unset( $functionParams[$key] );
 				continue;
 			}
@@ -212,14 +230,14 @@ class AskParserFunction {
 			}
 		}
 
-		return $functionParams;
+		return array( $functionParams, $extraKeys );
 	}
 
-	private function doFetchResultsFromFunctionParameters( array $functionParams ) {
+	private function doFetchResultsFromFunctionParameters( array $functionParams, array $extraKeys ) {
 
 		$contextPage = $this->parserData->getSubject();
 
-		if ( $this->noTrace === true ) {
+		if ( $extraKeys[self::NO_TRACE] === true ) {
 			$contextPage = null;
 		}
 
@@ -236,10 +254,14 @@ class AskParserFunction {
 		}
 
 		$query->setOption( Query::PROC_CONTEXT, 'AskParserFunction' );
-		$query->setOption( Query::NO_DEPENDENCY_TRACE, $this->noTrace );
+		$query->setOption( Query::NO_DEPENDENCY_TRACE, $extraKeys[self::NO_TRACE] );
 		$query->setOption( 'request.action', $this->parserData->getOption( 'request.action' ) );
 
 		$queryHash = $query->getHash();
+
+		if ( $this->postProcHandler !== null && isset( $extraKeys[self::IS_ANNOTATION] ) ) {
+			$this->postProcHandler->addQueryRef( $queryHash );
+		}
 
 		$this->circularReferenceGuard->mark( $queryHash );
 
@@ -277,7 +299,8 @@ class AskParserFunction {
 
 		$this->addQueryProfile(
 			$query,
-			$format
+			$format,
+			$extraKeys[self::NO_TRACE]
 		);
 
 		return $result;
@@ -295,12 +318,13 @@ class AskParserFunction {
 		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
 
-	private function addQueryProfile( $query, $format ) {
+	private function addQueryProfile( $query, $format, $noTrace ) {
 
-		$settings = $this->applicationFactory->getSettings();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
-		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false || $this->noTrace === true ) {
+		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false || $noTrace === true ) {
 			return;
 		}
 
@@ -316,7 +340,7 @@ class AskParserFunction {
 			$this->parserData->getSubject()
 		);
 
-		$profileAnnotatorFactory = $this->applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();
+		$profileAnnotatorFactory = $applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();
 
 		$combinedProfileAnnotator = $profileAnnotatorFactory->newCombinedProfileAnnotator(
 			$query,

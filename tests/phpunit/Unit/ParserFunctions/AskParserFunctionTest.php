@@ -435,6 +435,37 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testQueryWithAnnotationMarker() {
+
+		$params = array(
+			'[[Modification date::+]]',
+			'format=table',
+			'@annotation'
+		);
+
+		$postProcHandler = $this->getMockBuilder( '\SMW\PostProcHandler' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$postProcHandler->expects( $this->once() )
+			->method( 'addQueryRef' );
+
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
+		);
+
+		$instance->setPostProcHandler( $postProcHandler );
+		$instance->parse( $params );
+	}
+
 	public function queryDataProvider() {
 
 		$categoryNS = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
