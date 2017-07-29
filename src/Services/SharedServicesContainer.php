@@ -43,6 +43,7 @@ use SMW\CachedPropertyValuesPrefetcher;
 use SMW\Localizer;
 use SMW\MediaWiki\DatabaseConnectionProvider;
 use SMW\Utils\TempFile;
+use SMW\PostProcHandler;
 
 /**
  * @license GNU GPL v2+
@@ -186,6 +187,19 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'TempFile', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'TempFile', '\SMW\Utils\TempFile' );
 			return new TempFile();
+		} );
+
+		/**
+		 * @var PostProcHandler
+		 */
+		$containerBuilder->registerCallback( 'PostProcHandler', function( $containerBuilder, \ParserOutput $parserOutput ) {
+			$containerBuilder->registerExpectedReturnType( 'PostProcHandler', PostProcHandler::class );
+
+			$postProcHandler = new PostProcHandler(
+				$parserOutput
+			);
+
+			return $postProcHandler;
 		} );
 	}
 

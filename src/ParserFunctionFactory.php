@@ -118,6 +118,10 @@ class ParserFunctionFactory {
 			$expensiveFuncExecutionWatcher
 		);
 
+		$askParserFunction->setPostProcHandler(
+			$applicationFactory->create( 'PostProcHandler', $parser->getOutput() )
+		);
+
 		return $askParserFunction;
 	}
 

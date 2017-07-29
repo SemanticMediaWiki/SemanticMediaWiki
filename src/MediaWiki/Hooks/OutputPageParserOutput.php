@@ -5,7 +5,10 @@ namespace SMW\MediaWiki\Hooks;
 use OutputPage;
 use ParserOutput;
 use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 use Title;
+use SMW\Query\QueryRefFinder;
+use SMW\Message;
 
 /**
  * OutputPageParserOutput hook is called after parse, before the HTML is
@@ -77,7 +80,21 @@ class OutputPageParserOutput {
 
 	protected function performUpdate() {
 
-		$cachedFactbox = ApplicationFactory::getInstance()->singleton( 'FactboxFactory' )->newCachedFactbox();
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$postProcHandler = $applicationFactory->create( 'PostProcHandler', $this->parserOutput );
+
+		$html = $postProcHandler->getHtml(
+			$this->outputPage->getTitle(),
+			$this->outputPage->getContext()->getRequest()
+		);
+
+		if ( $html !== '' ) {
+			$this->outputPage->addModules( $postProcHandler->getResModules() );
+			$this->outputPage->addHtml( $html );
+		}
+
+		$cachedFactbox = $applicationFactory->singleton( 'FactboxFactory' )->newCachedFactbox();
 
 		$cachedFactbox->prepareFactboxContent(
 			$this->outputPage,
