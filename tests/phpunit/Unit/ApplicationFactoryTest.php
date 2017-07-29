@@ -120,7 +120,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\InTextAnnotationParser',
+			'\SMW\Parser\InTextAnnotationParser',
 			$this->applicationFactory->newInTextAnnotationParser( $parserData )
 		);
 	}

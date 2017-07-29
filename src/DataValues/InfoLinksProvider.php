@@ -8,7 +8,7 @@ use SMW\Message;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
-use SMW\InTextAnnotationParser;
+use SMW\Parser\InTextAnnotationParser;
 
 /**
  * @license GNU GPL v2+

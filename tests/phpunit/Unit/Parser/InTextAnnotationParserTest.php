@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Parser;
 
 use ParserOutput;
 use ReflectionClass;
 use SMW\DIProperty;
-use SMW\InTextAnnotationParser;
+use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
- * @covers \SMW\InTextAnnotationParser
+ * @covers \SMW\Parser\InTextAnnotationParser
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -71,7 +71,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\InTextAnnotationParser',
+			InTextAnnotationParser::class,
 			$instance
 		);
 	}
@@ -262,7 +262,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new RedirectTargetFinder()
 		);
 
-		$reflector = new ReflectionClass( '\SMW\InTextAnnotationParser' );
+		$reflector = new ReflectionClass( '\SMW\Parser\InTextAnnotationParser' );
 
 		$method = $reflector->getMethod( 'process' );
 		$method->setAccessible( true );

@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use SMW\ApplicationFactory;
-use SMW\InTextAnnotationParser;
+use SMW\Parser\InTextAnnotationParser;
 
 /**
  * Hook: InternalParseBeforeLinks is used to process the expanded wiki

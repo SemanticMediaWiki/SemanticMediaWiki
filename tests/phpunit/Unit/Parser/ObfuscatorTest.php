@@ -33,7 +33,7 @@ class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testObfuscateLinks( $text, $expected ) {
 
-		$inTextAnnotationParser = $this->getMockBuilder( 'SMW\InTextAnnotationParser' )
+		$inTextAnnotationParser = $this->getMockBuilder( 'SMW\Parser\InTextAnnotationParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
