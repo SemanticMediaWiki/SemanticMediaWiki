@@ -160,10 +160,7 @@ class InTextAnnotationParser {
 
 		if ( $this->isEnabledNamespace ) {
 			$this->parserData->getOutput()->addModules( $this->getModules() );
-
-			if ( method_exists( $this->parserData->getOutput(), 'recordOption' ) ) {
-				$this->parserData->getOutput()->recordOption( 'userlang' );
-			}
+			$this->parserData->addExtraParserKey( 'userlang' );
 		}
 
 		$this->parserData->pushSemanticDataToParserOutput();
@@ -354,7 +351,7 @@ class InTextAnnotationParser {
 			if (
 				$this->isEnabledNamespace &&
 				$this->isAnnotation &&
-				$this->parserData->canModifySemanticData() ) {
+				$this->parserData->canUse() ) {
 				$this->parserData->addDataValue( $dataValue );
 			}
 		}

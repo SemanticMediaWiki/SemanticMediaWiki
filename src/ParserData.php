@@ -49,6 +49,11 @@ class ParserData {
 	const NO_QUERY_DEPENDENCY_TRACE = 'no.query.dependency.trace';
 
 	/**
+	 * Indicates that no #ask dependency tracking should occur
+	 */
+	const ANNOTATION_BLOCK = 'smw-blockannotation';
+
+	/**
 	 * @var Title
 	 */
 	private $title;
@@ -196,7 +201,11 @@ class ParserData {
 	 * @return ParserOptions|null
 	 */
 	public function addExtraParserKey( $key ) {
-		if ( $this->parserOptions !== null ) {
+		// Looks odd in 1.30 "Saved in parser cache ... idhash:19989-0!canonical!userlang!dateformat!userlang!dateformat!userlang!dateformat!userlang!dateformat and ..."
+		// threfore use the ParserOutput::recordOption instead
+		if ( $key === 'userlang' || $key === 'dateformat' ) {
+			$this->parserOutput->recordOption( $key );
+		} elseif ( $this->parserOptions !== null ) {
 			$this->parserOptions->addExtraKey( $key );
 		}
 	}
@@ -216,17 +225,24 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function canModifySemanticData() {
+	public function isBlocked() {
 
-		// getExtensionData returns null if no value was set for this key
-		if (
-			$this->hasExtensionData() &&
-			$this->parserOutput->getExtensionData( 'smw-blockannotation' ) !== null &&
-			$this->parserOutput->getExtensionData( 'smw-blockannotation' ) ) {
-			return false;
+		// ParserOutput::getExtensionData returns null if no value was set for this key
+		if ( $this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) !== null &&
+			$this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) ) {
+			return true;
 		}
 
-		return true;
+		return false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function canUse() {
+		return !$this->isBlocked();
 	}
 
 	/**
@@ -320,7 +336,7 @@ class ParserData {
 			return;
 		}
 
-		$semanticData = $this->fetchDataFromParserOutput( $parserOutput );
+		$semanticData = $parserOutput->getExtensionData( self::DATA_ID );
 
 		// Only import data that is known to be different
 		if ( $semanticData !== null &&
@@ -349,12 +365,7 @@ class ParserData {
 		}
 
 		$this->setSemanticDataStateToParserOutputProperty();
-
-		if ( $this->hasExtensionData() ) {
-			return $this->parserOutput->setExtensionData( self::DATA_ID, $this->semanticData );
-		}
-
-		$this->parserOutput->mSMWData = $this->semanticData;
+		$this->parserOutput->setExtensionData( self::DATA_ID, $this->semanticData );
 	}
 
 	/**
@@ -468,20 +479,7 @@ class ParserData {
 	 * @param string $value
 	 */
 	public function addLimitReport( $key, $value ) {
-
-		// FIXME 1.22+
-		if ( !method_exists( $this->parserOutput, 'setLimitReportData' ) ) {
-			return null;
-		}
-
 		$this->parserOutput->setLimitReportData( 'smw-limitreport-' . $key, $value );
-	}
-
-	/**
-	 * FIXME Remove when MW 1.21 becomes mandatory
-	 */
-	protected function hasExtensionData() {
-		return method_exists( $this->parserOutput, 'getExtensionData' );
 	}
 
 	/**
@@ -490,22 +488,11 @@ class ParserData {
 	 */
 	private function initSemanticData() {
 
-		$this->semanticData = $this->fetchDataFromParserOutput( $this->parserOutput );
+		$this->semanticData = $this->parserOutput->getExtensionData( self::DATA_ID );
 
 		if ( !( $this->semanticData instanceof SemanticData ) ) {
 			$this->setEmptySemanticData();
 		}
-	}
-
-	private function fetchDataFromParserOutput( ParserOutput $parserOutput ) {
-
-		if ( $this->hasExtensionData() ) {
-			$semanticData = $parserOutput->getExtensionData( self::DATA_ID );
-		} else {
-			$semanticData = isset( $parserOutput->mSMWData ) ? $parserOutput->mSMWData : null;
-		}
-
-		return $semanticData;
 	}
 
 	private function skipUpdateOn( $rev ) {

@@ -85,7 +85,7 @@ class SetParserFunction {
 						$subject
 					);
 
-				if ( $this->parserData->canModifySemanticData() ) {
+				if ( $this->parserData->canUse() ) {
 					$this->parserData->addDataValue( $dataValue );
 				}
 
