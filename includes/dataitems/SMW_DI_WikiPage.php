@@ -5,6 +5,7 @@ namespace SMW;
 use SMWDataItem;
 use Title;
 use SMW\Exception\DataItemDeserializationException;
+use SMW\Exception\DataItemException;
 
 /**
  * This class implements wiki page data items.
