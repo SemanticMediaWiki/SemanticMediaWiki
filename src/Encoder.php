@@ -8,7 +8,7 @@ namespace SMW;
  *
  * @author mwjames
  */
-class UrlEncoder {
+class Encoder {
 
 	/**
 	 * @see SMWInfolink::encodeParameters

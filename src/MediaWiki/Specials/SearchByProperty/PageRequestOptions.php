@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\SearchByProperty;
 use SMW\DataValueFactory;
 use SMW\DataValues\TelephoneUriValue;
 use SMWUriValue as UriValue;
-use SMW\UrlEncoder;
+use SMW\Encoder;
 use SMWNumberValue as NumberValue;
 use SMWPropertyValue as PropertyValue;
 use SMWStringValue as TextValue;
@@ -29,7 +29,7 @@ class PageRequestOptions {
 	private $requestOptions;
 
 	/**
-	 * @var UrlEncoder
+	 * @var Encoder
 	 */
 	private $urlEncoder;
 
@@ -77,7 +77,7 @@ class PageRequestOptions {
 	public function __construct( $queryString, array $requestOptions ) {
 		$this->queryString = $queryString;
 		$this->requestOptions = $requestOptions;
-		$this->urlEncoder = new UrlEncoder();
+		$this->urlEncoder = new Encoder();
 	}
 
 	/**

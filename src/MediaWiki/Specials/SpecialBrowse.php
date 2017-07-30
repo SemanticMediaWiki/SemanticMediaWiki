@@ -7,7 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\SemanticData;
-use SMW\UrlEncoder;
+use SMW\Encoder;
 use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
 use SMW\MediaWiki\Specials\Browse\FormHelper;
 use SMW\Message;
@@ -63,7 +63,7 @@ class SpecialBrowse extends SpecialPage {
 
 		// Auto-generated link is marked with a leading :
 		if ( $query !== '' && $query{0} === ':' ) {
-			$articletext = UrlEncoder::unescape( $query );
+			$articletext = Encoder::unescape( $query );
 		} elseif ( $articletext === null ) {
 			$articletext = $query;
 		}

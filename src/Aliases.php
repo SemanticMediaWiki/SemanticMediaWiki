@@ -82,3 +82,4 @@ class_alias( 'SMW\DataModel\ContainerSemanticData', 'SMWContainerSemanticData' )
 // 3.0
 class_alias( 'SMW\Updater\DeferredCallableUpdate', 'SMW\DeferredCallableUpdate' );
 class_alias( 'SMW\Parser\InTextAnnotationParser', 'SMW\InTextAnnotationParser' );
+class_alias( 'SMW\Encoder', 'SMW\UrlEncoder' );

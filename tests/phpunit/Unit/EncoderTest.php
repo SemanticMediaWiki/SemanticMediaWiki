@@ -2,10 +2,10 @@
 
 namespace SMW\Tests;
 
-use SMW\UrlEncoder;
+use SMW\Encoder;
 
 /**
- * @covers \SMW\UrlEncoder
+ * @covers \SMW\Encoder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,13 +13,37 @@ use SMW\UrlEncoder;
  *
  * @author mwjames
  */
-class UrlEncoderTest extends \PHPUnit_Framework_TestCase {
+class EncoderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'SMW\UrlEncoder',
-			new UrlEncoder()
+			'SMW\Encoder',
+			new Encoder()
+		);
+	}
+
+	public function testEscape() {
+
+		$this->assertEquals(
+			'-3C-5B-23-26-25!~`+=-7C-2D-5F-5D-3E',
+			Encoder::escape( '<[#&%!~`+=|-_]>' )
+		);
+	}
+
+	public function testUnescape() {
+
+		$this->assertEquals(
+			'<[#&%!~`+=|-_]>',
+			Encoder::unescape( '-3C-5B-23-26-25!~`+=-7C-2D-5F-5D-3E' )
+		);
+	}
+
+	public function testEncode() {
+
+		$this->assertEquals(
+			'%3C%5B%23%26%25%21~%60%2B%3D%7C-_%5D%3E',
+			Encoder::encode( '<[#&%!~`+=|-_]>' )
 		);
 	}
 
@@ -30,7 +54,7 @@ class UrlEncoderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$output,
-			UrlEncoder::decode( $input )
+			Encoder::decode( $input )
 		);
 	}
 
@@ -46,7 +70,7 @@ class UrlEncoderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$output,
-			UrlEncoder::decode( UrlEncoder::encode( UrlEncoder::escape( $output ) ) )
+			Encoder::decode( Encoder::encode( Encoder::escape( $output ) ) )
 		);
 	}
 
