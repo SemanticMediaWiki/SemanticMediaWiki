@@ -1,6 +1,6 @@
 <?php
 
-use SMW\UrlEncoder;
+use SMW\Encoder;
 use SMW\Message;
 
 /**
@@ -345,7 +345,7 @@ class SMWURIValue extends SMWDataValue {
 		// Prior to decoding turn any `-` into an internal representation to avoid
 		// potential breakage
 		if ( !$this->showUrlContextInRawFormat ) {
-			$context = UrlEncoder::decode( str_replace( '-', '-2D', $context ) );
+			$context = Encoder::decode( str_replace( '-', '-2D', $context ) );
 		}
 
 		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
