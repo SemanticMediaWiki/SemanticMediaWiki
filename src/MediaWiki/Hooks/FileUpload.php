@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use File;
 use ParserOptions;
+use SMW\NamespaceExaminer;
 use SMW\ApplicationFactory;
 use SMW\Localizer;
 use Title;
@@ -16,58 +17,54 @@ use Hooks;
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
  *
  * @license GNU GPL v2+
- * @since 1.9.1
+ * @since 1.9
  *
  * @author mwjames
  */
-class FileUpload {
+class FileUpload extends HookHandler {
 
 	/**
-	 * @var File
+	 * @var NamespaceExaminer
 	 */
-	private $file = null;
+	private $namespaceExaminer;
 
 	/**
-	 * @var boolean
-	 */
-	private $fileReUploadStatus = false;
-
-	/**
-	 * @since  1.9.1
+	 * @since 1.9
 	 *
-	 * @param File $file
-	 * @param boolean $fileReUploadStatus
+	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( File $file, $fileReUploadStatus = false ) {
-		$this->file = $file;
-		$this->fileReUploadStatus = $fileReUploadStatus;
+	public function __construct( NamespaceExaminer $namespaceExaminer ) {
+		$this->namespaceExaminer = $namespaceExaminer;
 	}
 
 	/**
-	 * @since 1.9.1
+	 * @since 3.0
+	 *
+	 * @param File $file
+	 * @param boolean $reUploadStatus
 	 *
 	 * @return true
 	 */
-	public function process() {
-		return $this->canPerformUpdate() ? $this->performUpdate() : true;
-	}
+	public function process( File $file, $reUploadStatus = false ) {
 
-	private function canPerformUpdate() {
-
-		if ( $this->file->getTitle() !== null && $this->isSemanticEnabledNamespace( $this->file->getTitle() ) ) {
-			return true;
+		 if ( $this->canProcess( $file->getTitle() ) ) {
+			$this->doProcess( $file, $reUploadStatus );
 		}
 
-		return false;
+		return true;
 	}
 
-	private function performUpdate() {
+	private function canProcess( $title ) {
+		return $title !== null && $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() );
+	}
+
+	private function doProcess( $file, $reUploadStatus = false ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$filePage = $this->makeFilePage();
+		$filePage = $this->makeFilePage( $file, $reUploadStatus );
 
 		$parserData = $applicationFactory->newParserData(
-			$this->file->getTitle(),
+			$file->getTitle(),
 			$filePage->getParserOutput( $this->makeCanonicalParserOptions() )
 		);
 
@@ -99,15 +96,14 @@ class FileUpload {
 		return true;
 	}
 
-	private function makeFilePage() {
+	private function makeFilePage( $file, $reUploadStatus ) {
 
 		$filePage = ApplicationFactory::getInstance()->newPageCreator()->createFilePage(
-			$this->file->getTitle()
+			$file->getTitle()
 		);
 
-		$filePage->setFile( $this->file );
-
-		$filePage->smwFileReUploadStatus = $this->fileReUploadStatus;
+		$filePage->setFile( $file );
+		$filePage->smwFileReUploadStatus = $reUploadStatus;
 
 		return $filePage;
 	}
@@ -120,10 +116,6 @@ class FileUpload {
 			new User(),
 			Localizer::getInstance()->getContentLanguage()
 		);
-	}
-
-	private function isSemanticEnabledNamespace( Title $title ) {
-		return ApplicationFactory::getInstance()->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }
