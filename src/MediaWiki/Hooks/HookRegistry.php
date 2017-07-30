@@ -14,6 +14,7 @@ use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\PermissionPthValidator;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\Site;
 
 /**
  * @license GNU GPL v2+
@@ -125,7 +126,7 @@ class HookRegistry {
 		// When in commandLine mode avoid deferred execution and run a process
 		// within the same transaction
 		$deferredRequestDispatchManager->isCommandLineMode(
-			$GLOBALS['wgCommandLineMode']
+			Site::isCommandLineMode()
 		);
 
 		$permissionPthValidator = new PermissionPthValidator(
@@ -143,24 +144,16 @@ class HookRegistry {
 		 */
 		$this->handlers['ParserAfterTidy'] = function ( &$parser, &$text ) {
 
-			// MediaWiki\Services\ServiceDisabledException from line 340 of
-			// ...\ServiceContainer.php: Service disabled: DBLoadBalancer
-			try {
-				$isReadOnly = wfReadOnly();
-			} catch( \MediaWiki\Services\ServiceDisabledException $e ) {
-				$isReadOnly = true;
-			}
-
 			$parserAfterTidy = new ParserAfterTidy(
 				$parser
 			);
 
 			$parserAfterTidy->isCommandLineMode(
-				$GLOBALS['wgCommandLineMode']
+				Site::isCommandLineMode()
 			);
 
 			$parserAfterTidy->isReadOnly(
-				$isReadOnly
+				Site::isReadOnly()
 			);
 
 			return $parserAfterTidy->process( $text );
@@ -408,15 +401,14 @@ class HookRegistry {
 		$this->handlers['GetPreferences'] = function ( $user, &$preferences ) use( $applicationFactory ) {
 
 			$getPreferences = new GetPreferences(
-				$user,
-				$preferences
+				$user
 			);
 
 			$getPreferences->isEnabledEditPageHelp(
 				$applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' )
 			);
 
-			return $getPreferences->process();
+			return $getPreferences->process( $preferences);
 		};
 
 		/**
@@ -451,12 +443,11 @@ class HookRegistry {
 
 			$resourceLoaderTestModules = new ResourceLoaderTestModules(
 				$resourceLoader,
-				$testModules,
 				$basePath,
 				$globalVars['IP']
 			);
 
-			return $resourceLoaderTestModules->process();
+			return $resourceLoaderTestModules->process( $testModules );
 		};
 
 		/**
@@ -464,11 +455,9 @@ class HookRegistry {
 		 */
 		$this->handlers['ExtensionTypes'] = function ( &$extTypes ) {
 
-			$extensionTypes = new ExtensionTypes(
-				$extTypes
-			);
+			$extensionTypes = new ExtensionTypes();
 
-			return $extensionTypes->process();
+			return $extensionTypes->process( $extTypes);
 		};
 
 		/**

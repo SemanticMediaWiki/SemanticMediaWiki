@@ -19,11 +19,16 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
+	private $dataValueServiceFactory;
 	private $propertySpecificationLookup;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -39,8 +44,62 @@ class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\AllowsListValue',
+			AllowsListValue::class,
 			new AllowsListValue()
+		);
+	}
+
+	public function testGetShortWikiText() {
+
+		$instance = new AllowsListValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance->setDataItem(
+			$this->dataItemFactory->newDIBlob( 'Foo' )
+		);
+
+		$this->assertContains(
+			'[[MediaWiki:Smw_allows_list_Foo|Foo]]',
+			$instance->getShortWikiText()
+		);
+	}
+
+	public function testGetLongHtmlText() {
+
+		$instance = new AllowsListValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance->setDataItem(
+			$this->dataItemFactory->newDIBlob( 'Foo' )
+		);
+
+		$this->assertContains(
+			'MediaWiki:Smw_allows_list_Foo',
+			$instance->getLongHtmlText()
+		);
+	}
+
+	public function testGetShortHtmlText() {
+
+		$instance = new AllowsListValue();
+
+		$instance->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$instance->setDataItem(
+			$this->dataItemFactory->newDIBlob( 'Foo' )
+		);
+
+		$this->assertContains(
+			'MediaWiki:Smw_allows_list_Foo',
+			$instance->getShortHtmlText()
 		);
 	}
 
