@@ -160,7 +160,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\StoreUpdater',
+			'\SMW\Updater\StoreUpdater',
 			$this->applicationFactory->newStoreUpdater( $semanticData )
 		);
 	}

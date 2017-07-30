@@ -18,6 +18,7 @@ use SMW\Parser\InTextAnnotationParser as EmbeddedTextAnnotationParser;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMWQueryParser as QueryParser;
 use Title;
+use SMW\Updater\StoreUpdater;
 use SMW\Services\SharedServicesContainer;
 
 /**

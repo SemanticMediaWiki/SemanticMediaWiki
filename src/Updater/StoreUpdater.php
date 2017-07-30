@@ -1,13 +1,29 @@
 <?php
 
-namespace SMW;
+namespace SMW\Updater;
 
+use SMW\Store;
+use SMW\SemanticData;
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\EventHandler;
+use SMW\PropertyChangePropagationNotifier;
 use Title;
 use User;
 use WikiPage;
 
 /**
- * Initiates an update of the Store
+ * This function takes care of storing the collected semantic data and
+ * clearing out any outdated entries for the processed page. It assumes
+ * that parsing has happened and that all relevant information are
+ * contained and provided for.
+ *
+ * Optionally, this function also takes care of triggering indirect updates
+ * that might be needed for an overall database consistency. If the saved page
+ * describes a property or data type, the method checks whether the property
+ * type, the data type, the allowed values, or the conversion factors have
+ * changed.
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -32,14 +48,9 @@ class StoreUpdater {
 	private $isEnabledWithUpdateJob = null;
 
 	/**
-	 * @var boolean|null
+	 * @var boolean
 	 */
-	private $processSemantics = null;
-
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
+	private $processSemantics = false;
 
 	/**
 	 * @var boolean
@@ -102,18 +113,6 @@ class StoreUpdater {
 	}
 
 	/**
-	 * This function takes care of storing the collected semantic data and
-	 * clearing out any outdated entries for the processed page. It assumes
-	 * that parsing has happened and that all relevant information are
-	 * contained and provided for.
-	 *
-	 * Optionally, this function also takes care of triggering indirect updates
-	 * that might be needed for an overall database consistency. If the saved page
-	 * describes a property or data type, the method checks whether the property
-	 * type, the data type, the allowed values, or the conversion factors have
-	 * changed. If so, it triggers UpdateDispatcherJob for the relevant articles,
-	 * which then asynchronously undergoes an update.
-	 *
 	 * @since 1.9
 	 *
 	 * @return boolean
@@ -124,9 +123,7 @@ class StoreUpdater {
 			return false;
 		}
 
-		$this->doPerformUpdate();
-
-		return true;
+		return $this->performUpdate();
 	}
 
 	private function canPerformUpdate() {
@@ -146,16 +143,16 @@ class StoreUpdater {
 	 * check if semantic data should be processed and displayed for a page in
 	 * the given namespace
 	 */
-	private function doPerformUpdate() {
+	private function performUpdate() {
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $this->isEnabledWithUpdateJob === null ) {
-			$this->isEnabledWithUpdateJob( $this->applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) );
+			$this->isEnabledWithUpdateJob( $applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) );
 		}
 
 		$title = $this->getSubject()->getTitle();
-		$wikiPage = $this->applicationFactory->newPageCreator()->createPage( $title );
+		$wikiPage = $applicationFactory->newPageCreator()->createPage( $title );
 
 		$revision = $wikiPage->getRevision();
 		$user = $revision !== null ? User::newFromId( $revision->getUser() ) : null;
@@ -170,24 +167,30 @@ class StoreUpdater {
 		}
 
 		$this->doInspectChangePropagation();
-		$this->doRealUpdate();
+		$this->updateData();
+
+		return true;
 	}
 
 	private function addFinalAnnotations( Title $title, WikiPage $wikiPage, $revision, $user ) {
 
-		$this->processSemantics = $revision !== null && $this->isSemanticEnabledNamespace( $title );
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		if ( $revision !== null ) {
+			$this->processSemantics = $applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+		}
 
 		if ( !$this->processSemantics ) {
 			return $this->semanticData = new SemanticData( $this->getSubject() );
 		}
 
-		$pageInfoProvider = $this->applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
+		$pageInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
 			$wikiPage,
 			$revision,
 			$user
 		);
 
-		$propertyAnnotatorFactory = $this->applicationFactory->singleton( 'PropertyAnnotatorFactory' );
+		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$this->semanticData
@@ -203,7 +206,9 @@ class StoreUpdater {
 
 	private function doUpdateEditProtection( $wikiPage, $user ) {
 
-		$editProtectionUpdater = $this->applicationFactory->create( 'EditProtectionUpdater',
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$editProtectionUpdater = $applicationFactory->create( 'EditProtectionUpdater',
 			$wikiPage,
 			$user
 		);
@@ -223,13 +228,15 @@ class StoreUpdater {
 			return;
 		}
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$propertyChangePropagationNotifier = new PropertyChangePropagationNotifier(
 			$this->store,
-			$this->applicationFactory->newSerializerFactory()
+			$applicationFactory->newSerializerFactory()
 		);
 
 		$propertyChangePropagationNotifier->setPropertyList(
-			$this->applicationFactory->getSettings()->get( 'smwgDeclarationProperties' )
+			$applicationFactory->getSettings()->get( 'smwgDeclarationProperties' )
 		);
 
 		$propertyChangePropagationNotifier->isCommandLineMode(
@@ -241,7 +248,7 @@ class StoreUpdater {
 		);
 	}
 
-	private function doRealUpdate() {
+	private function updateData() {
 
 		$this->store->setUpdateJobsEnabledState( $this->isEnabledWithUpdateJob );
 
@@ -262,10 +269,6 @@ class StoreUpdater {
 		}
 
 		return true;
-	}
-
-	private function isSemanticEnabledNamespace( Title $title ) {
-		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 	private function checkOnRequiredRedirectUpdate( SemanticData $semanticData ) {
