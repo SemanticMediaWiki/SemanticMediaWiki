@@ -334,7 +334,9 @@ class HookRegistry {
 		 */
 		$this->handlers['ArticleDelete'] = function ( &$wikiPage, &$user, &$reason, &$error ) use( $applicationFactory ) {
 
-			$articleDelete = new ArticleDelete();
+			$articleDelete = new ArticleDelete(
+				$applicationFactory->getStore()
+			);
 
 			$articleDelete->setLogger(
 				$applicationFactory->getMediaWikiLogger()
