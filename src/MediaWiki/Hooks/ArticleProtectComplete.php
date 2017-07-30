@@ -101,7 +101,8 @@ class ArticleProtectComplete extends HookHandler {
 		$isRestrictedUpdate = true;
 		$isAnnotationBySystem = false;
 
-		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
+		$dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
+		$property = $dataItemFactory->newDIProperty( '_EDIP' );
 
 		$dataItems = $parserData->getSemanticData()->getPropertyValues( $property );
 		$dataItem = end( $dataItems );
@@ -118,7 +119,7 @@ class ArticleProtectComplete extends HookHandler {
 			$isRestrictedUpdate = false;
 			$parserData->getSemanticData()->addPropertyObjectValue(
 				$property,
-				$this->dataItemFactory->newDIBoolean( true )
+				$dataItemFactory->newDIBoolean( true )
 			);
 		}
 
@@ -132,7 +133,7 @@ class ArticleProtectComplete extends HookHandler {
 			$isRestrictedUpdate = false;
 			$parserData->getSemanticData()->removePropertyObjectValue(
 				$property,
-				$this->dataItemFactory->newDIBoolean( true )
+				$dataItemFactory->newDIBoolean( true )
 			);
 		}
 
