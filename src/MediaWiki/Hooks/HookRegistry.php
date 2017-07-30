@@ -380,14 +380,13 @@ class HookRegistry {
 		 *
 		 * @since 1.9.1
 		 */
-		$this->handlers['FileUpload'] = function ( $file, $reupload ) {
+		$this->handlers['FileUpload'] = function ( $file, $reupload ) use( $applicationFactory ) {
 
 			$fileUpload = new FileUpload(
-				$file,
-				$reupload
+				$applicationFactory->getNamespaceExaminer()
 			);
 
-			return $fileUpload->process();
+			return $fileUpload->process( $file, $reupload );
 		};
 
 		/**
