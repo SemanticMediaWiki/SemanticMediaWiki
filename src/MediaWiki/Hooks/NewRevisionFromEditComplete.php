@@ -6,6 +6,8 @@ use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\MediaWiki\EditInfoProvider;
+use SMW\MediaWiki\PageInfoProvider;
+use Title;
 
 /**
  * Hook: NewRevisionFromEditComplete called when a revision was inserted
@@ -24,41 +26,35 @@ use SMW\MediaWiki\EditInfoProvider;
  *
  * @author mwjames
  */
-class NewRevisionFromEditComplete {
+class NewRevisionFromEditComplete extends HookHandler {
 
 	/**
-	 * @var WikiPage
+	 * @var Title
 	 */
-	private $wikiPage = null;
+	private $title;
 
 	/**
-	 * @var Revision
+	 * @var EditInfoProvider
 	 */
-	private $revision = null;
+	private $editInfoProvider;
 
 	/**
-	 * @var integer
+	 * @var PageInfoProvider
 	 */
-	private $baseId = null;
+	private $pageInfoProvider;
 
 	/**
-	 * @var User|null
-	 */
-	private $user = null;
-
-	/**
-	 * @since  1.9
+	 * @since 1.9
 	 *
-	 * @param WikiPage $article the article edited
-	 * @param Revision $rev the new revision. Revision object
-	 * @param $baseId the revision ID this was based off, if any
-	 * @param User $user the revision author. User object
+	 * @param Title $title
+	 * @param EditInfoProvider $editInfoProvider
+	 * @param PageInfoProvider $pageInfoProvider
 	 */
-	public function __construct( $wikiPage, $revision, $baseId, $user = null ) {
-		$this->wikiPage = $wikiPage;
-		$this->revision = $revision;
-		$this->baseId = $baseId;
-		$this->user = $user;
+	public function __construct( Title $title, EditInfoProvider $editInfoProvider, PageInfoProvider $pageInfoProvider ) {
+		parent::__construct();
+		$this->title = $title;
+		$this->editInfoProvider = $editInfoProvider;
+		$this->pageInfoProvider = $pageInfoProvider;
 	}
 
 	/**
@@ -68,17 +64,18 @@ class NewRevisionFromEditComplete {
 	 */
 	public function process() {
 
-		$parserOutput = $this->fetchParserOutputFromEditInfo();
+		$parserOutput = $this->editInfoProvider->fetchEditInfo()->getOutput();
 
 		if ( !$parserOutput instanceof ParserOutput ) {
 			return true;
 		}
 
-		$this->doExtendParserOutput( $parserOutput );
-		$title = $this->wikiPage->getTitle();
+		$this->addPredefinedPropertyAnnotation(
+			$parserOutput
+		);
 
 		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'title', $title );
+		$dispatchContext->set( 'title', $this->title );
 		$dispatchContext->set( 'context', 'NewRevisionFromEditComplete' );
 
 		EventHandler::getInstance()->getEventDispatcher()->dispatch(
@@ -87,38 +84,20 @@ class NewRevisionFromEditComplete {
 		);
 
 		// If the concept was altered make sure to delete the cache
-		if ( $title->getNamespace() === SMW_NS_CONCEPT ) {
-			ApplicationFactory::getInstance()->getStore()->deleteConceptCache( $title );
+		if ( $this->title->getNamespace() === SMW_NS_CONCEPT ) {
+			ApplicationFactory::getInstance()->getStore()->deleteConceptCache( $this->title );
 		}
 
 		return true;
 	}
 
-	private function fetchParserOutputFromEditInfo() {
-
-		$editInfoProvider = new EditInfoProvider(
-			$this->wikiPage,
-			$this->revision,
-			$this->user
-		);
-
-		return $editInfoProvider->fetchEditInfo()->getOutput();
-	}
-
-	private function doExtendParserOutput( $parserOutput ) {
+	private function addPredefinedPropertyAnnotation( $parserOutput ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$title = $this->wikiPage->getTitle();
 
 		$parserData = $applicationFactory->newParserData(
-			$title,
+			$this->title,
 			$parserOutput
-		);
-
-		$pageInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
-			$this->wikiPage,
-			$this->revision,
-			$this->user
 		);
 
 		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
@@ -129,7 +108,7 @@ class NewRevisionFromEditComplete {
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
 			$propertyAnnotator,
-			$pageInfoProvider
+			$this->pageInfoProvider
 		);
 
 		$propertyAnnotator->addAnnotation();

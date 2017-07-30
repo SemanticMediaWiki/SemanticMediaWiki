@@ -95,7 +95,12 @@ class EditInfoProvider {
 	}
 
 	private function prepareContentForEdit() {
-		$content  = $this->revision->getContent();
+
+		if ( !$this->revision instanceof Revision ) {
+			return null;
+		}
+
+		$content = $this->revision->getContent();
 
 		return $this->wikiPage->prepareContentForEdit(
 			$content,

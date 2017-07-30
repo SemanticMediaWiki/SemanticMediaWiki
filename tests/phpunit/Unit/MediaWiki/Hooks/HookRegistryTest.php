@@ -337,9 +337,17 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContentHandler' )
 			->will( $this->returnValue( $contentHandler ) );
 
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()

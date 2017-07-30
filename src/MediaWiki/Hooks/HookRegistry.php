@@ -245,13 +245,26 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
 		 */
-		$this->handlers['NewRevisionFromEditComplete'] = function ( $wikiPage, $revision, $baseId, $user ) {
+		$this->handlers['NewRevisionFromEditComplete'] = function ( $wikiPage, $revision, $baseId, $user ) use ( $applicationFactory ) {
 
-			$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
+			$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
+
+			$editInfoProvider = $mwCollaboratorFactory->newEditInfoProvider(
 				$wikiPage,
 				$revision,
-				$baseId,
 				$user
+			);
+
+			$pageInfoProvider = $mwCollaboratorFactory->newPageInfoProvider(
+				$wikiPage,
+				$revision,
+				$user
+			);
+
+			$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
+				$wikiPage->getTitle(),
+				$editInfoProvider,
+				$pageInfoProvider
 			);
 
 			return $newRevisionFromEditComplete->process();
