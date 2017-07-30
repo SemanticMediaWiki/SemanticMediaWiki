@@ -6,11 +6,10 @@ use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\EventHandler;
+use SMW\Store;
 use Wikipage;
 use Title;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
@@ -21,6 +20,20 @@ use Psr\Log\LoggerAwareInterface;
  * @author mwjames
  */
 class ArticleDelete extends HookHandler {
+
+	/**
+	 * @var
+	 */
+	private $store;
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Store $store
+	 */
+	public function __construct( Store $store ) {
+		$this->store = $store;
+	}
 
 	/**
 	 * @since 2.0
@@ -49,8 +62,6 @@ class ArticleDelete extends HookHandler {
 	public function doDelete( Title $title ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-
-		$store = $applicationFactory->getStore();
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
@@ -63,7 +74,7 @@ class ArticleDelete extends HookHandler {
 			$subject
 		);
 
-		$properties = $store->getInProperties( $subject );
+		$properties = $this->store->getInProperties( $subject );
 
 		foreach ( $properties as $property ) {
 			// Avoid doing $propertySubjects = $store->getPropertySubjects( $property, $subject );
@@ -81,9 +92,10 @@ class ArticleDelete extends HookHandler {
 		// Restricted to the available SemanticData
 		$parameters[UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL] = true;
 
-		$jobFactory->newUpdateDispatcherJob( $title, $parameters )->insert();
+		$updateDispatcherJob = $jobFactory->newUpdateDispatcherJob( $title, $parameters );
+		$updateDispatcherJob->insert();
 
-		$store->deleteSubject( $title );
+		$this->store->deleteSubject( $title );
 
 		$eventHandler = EventHandler::getInstance();
 		$dispatchContext = $eventHandler->newDispatchContext();

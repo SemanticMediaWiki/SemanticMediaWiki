@@ -19,21 +19,23 @@ use SMW\DIProperty;
 class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $jobFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
-
-		$this->testEnvironment->addConfiguration(
-			'smwgEnableUpdateJobs',
-			false
+		$this->testEnvironment = new TestEnvironment(
+			[
+				'smwgEnableUpdateJobs' => false,
+				'smwgEnabledDeferredUpdate' => false
+			]
 		);
 
-		$this->testEnvironment->addConfiguration(
-			'smwgEnabledDeferredUpdate',
-			false
-		);
+		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 	}
 
 	protected function tearDown() {
@@ -43,15 +45,27 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$instance = new ArticleDelete();
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new ArticleDelete( $store );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\ArticleDelete',
+			ArticleDelete::class,
 			$instance
 		);
 	}
 
-	public function testActOn() {
+	public function testProcess() {
+
+		$updateDispatcherJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateDispatcherJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->jobFactory->expects( $this->atLeastOnce() )
+			->method( 'newUpdateDispatcherJob' )
+			->will( $this->returnValue( $updateDispatcherJob ) );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -74,9 +88,9 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $subject->getTitle() ) );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
-
-		$instance = new ArticleDelete();
+		$instance = new ArticleDelete(
+			$store
+		);
 
 		$this->assertTrue(
 			$instance->process( $wikiPage )
