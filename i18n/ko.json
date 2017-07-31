@@ -179,6 +179,7 @@
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|개념}}]]",
 	"smw-statistics-subobject-count": "[[Property:Has subobject|{{PLURAL:$1|하위개체|하위개체}}]]",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|데이터유형}}]]",
+	"smw-statistics-delete-count": "오래된 {{PLURAL:$1|개체|개체들}} (삭제를 위한 표시)",
 	"smw_uri_doc": "URI 해결기는 [$1 W3C TAG의 httpRange-14에 찾은 표기]를 구현합니다.\n이것은 사람이 웹사이트에 향하지 않도록 주의합니다.",
 	"ask": "시맨틱 검색",
 	"smw_ask_sortby": "열 순서로 정렬 (선택 사항)",

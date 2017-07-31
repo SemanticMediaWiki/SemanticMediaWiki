@@ -97,7 +97,7 @@
 	"smw-paramdesc-feedpagecontent": "訂閱來源顯示的頁面內容",
 	"smw-label-feed-description": "訂閱 $1 $2 feed",
 	"smw_iq_disabled": "此 wiki 的語義查詢已被停用",
-	"smw_iq_moreresults": "更多結果",
+	"smw_iq_moreresults": "...更多結果",
 	"smw_parseerror": "輸入的值無法理解。",
 	"smw_notitle": " \"$1\" 不得被用做此 wiki 的頁面名稱。",
 	"smw_noproperty": "\"$1\"不能用作此 wiki 中的一個屬性名稱。",

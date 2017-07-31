@@ -25,7 +25,8 @@
 			"Nemo bis",
 			"Felipe L. Ewald",
 			"Trigonometria87",
-			"Kghbln"
+			"Kghbln",
+			"Walesson"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação online])",
@@ -501,5 +502,6 @@
 	"smw-format-datatable-previous": "Anterior",
 	"smw-format-datatable-sortascending": ": ativar alfabetação ascendente da tabela",
 	"smw-format-datatable-sortdescending": ": ativar alfabetação descendente da tabela",
-	"smw-category-invalid-redirect-target": "A categoria \"$1\" contém um alvo de redirecionamento inválido para um namespace que não é de categoria."
+	"smw-category-invalid-redirect-target": "A categoria \"$1\" contém um alvo de redirecionamento inválido para um namespace que não é de categoria.",
+	"smw-postproc-queryref": "A página foi marcada como sendo atualizada devido a algum processamento de postagem necessário."
 }

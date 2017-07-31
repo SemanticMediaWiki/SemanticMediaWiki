@@ -583,5 +583,6 @@
 	"smw-format-datatable-sortascending": ": activer pour trier la colonne dans l'ordre croissant",
 	"smw-format-datatable-sortdescending": ": activer pour trier la colonne en ordre décroissant",
 	"smw-category-invalid-redirect-target": "La catégorie « $1 » contient une cible de redirection non valide vers un espace de noms hors catégorie.",
-	"smw-parser-function-expensive-execution-limit": "La fonction analyseur a atteint le temps limite autorisé pour son exécution (voir [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit])."
+	"smw-parser-function-expensive-execution-limit": "La fonction analyseur a atteint le temps limite autorisé pour son exécution (voir [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit]).",
+	"smw-postproc-queryref": "La page a été marquée à recharger car elle nécessite un post-traitement."
 }

@@ -567,5 +567,6 @@
 	"smw-format-datatable-sortascending": "This is a selection message shown by the \"datatable\" format.",
 	"smw-format-datatable-sortdescending": "This is a selection message shown by the \"datatable\" format.",
 	"smw-category-invalid-redirect-target": "This is an error message.\n\nParamters:\n* $1 - holds the name of the category",
-	"smw-parser-function-expensive-execution-limit": "This is an explanatory message."
+	"smw-parser-function-expensive-execution-limit": "This is an explanatory message.",
+	"smw-postproc-queryref": "This is an informatory message."
 }

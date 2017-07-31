@@ -566,5 +566,6 @@
 	"smw-format-datatable-sortascending": ": aktivieren, um die Spalte aufsteigend zu sortieren",
 	"smw-format-datatable-sortdescending": ": aktivieren, um die Spalte absteigend zu sortieren",
 	"smw-category-invalid-redirect-target": "Die Kategorie „$1“ enthält ein Weiterleitungsziel, das sich nicht im Namensraum Kategorie befindet und daher ungültig ist.",
-	"smw-parser-function-expensive-execution-limit": "Die Parserfunktion hat die Grenze für aufwendige Ausführungen erreicht. Siehe hierzu die Seite zum [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit Konfigurationsparameter <code>$smwgQExpensiveExecutionLimit</code>]."
+	"smw-parser-function-expensive-execution-limit": "Die Parserfunktion hat die Grenze für aufwendige Ausführungen erreicht. Siehe hierzu die Seite zum [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit Konfigurationsparameter <code>$smwgQExpensiveExecutionLimit</code>].",
+	"smw-postproc-queryref": "Diese Seite muss aufgrund erforderlicher Nachverarbeitungen aktualisiert werden."
 }
