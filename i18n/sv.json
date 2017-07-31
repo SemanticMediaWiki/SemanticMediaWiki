@@ -335,6 +335,7 @@
 	"smw-qp-empty-data": "Önskad data kunde inte visas på grund av att vissa urvalskriterier är otillräckliga.",
 	"right-smw-admin": "Tillgång till administrationsåtgärder (Semantisk MediaWiki)",
 	"right-smw-pageedit": "Redigeringsåtkomst för sidor med annoteringen <code>Är redigeringsskyddad</code> (Semantic MediaWiki)",
+	"action-smw-patternedit": "redigera reguljära uttryck som Semantic MediaWiki använder",
 	"group-smwadministrator": "Administratörer (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|administratör (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Administratörer (Semantic MediaWiki)",
