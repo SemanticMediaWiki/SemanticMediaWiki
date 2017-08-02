@@ -38,7 +38,7 @@ final class SMWExternalHooks {
 	 *
 	 * @return boolean
 	 */
-	public static function addToAdminLinks( ALTree &$admin_links_tree ) {
+	public static function addToAdminLinks( ALTree $admin_links_tree ) {
 		// @codeCoverageIgnoreStart
 		$data_structure_section = new ALSection( wfMessage( 'smw_adminlinks_datastructure' )->text() );
 
@@ -46,7 +46,6 @@ final class SMWExternalHooks {
 		$smw_row->addItem( ALItem::newFromSpecialPage( 'Categories' ) );
 		$smw_row->addItem( ALItem::newFromSpecialPage( 'Properties' ) );
 		$smw_row->addItem( ALItem::newFromSpecialPage( 'UnusedProperties' ) );
-		$smw_row->addItem( ALItem::newFromSpecialPage( 'SemanticStatistics' ) );
 
 		$data_structure_section->addRow( $smw_row );
 		$smw_admin_row = new ALRow( 'smw_admin' );

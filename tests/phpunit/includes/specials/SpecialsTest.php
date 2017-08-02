@@ -21,7 +21,6 @@ use SpecialPageFactory;
  */
 
 /**
- * @covers \SMW\SpecialSemanticStatistics
  * @covers \SMW\SpecialWantedProperties
  * @covers \SMW\SpecialUnusedProperties
  * @covers \SMW\SpecialProperties
@@ -117,7 +116,6 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 			'PageProperty',
 			'SearchByProperty',
 			'SMWAdmin',
-			'SemanticStatistics',
 			'ExportRDF',
 			'Types',
 			'Properties',
