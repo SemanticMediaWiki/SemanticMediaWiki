@@ -93,8 +93,8 @@
 	"smw_purge": "Reactualizar",
 	"types": "Tipes",
 	"smw_types_docu": "Aquò es una lista de totes los tipes de donadas que pòdon èsser assignats a las proprietats.",
-	"semanticstatistics": "Estatisticas semanticas",
-	"smw_semstats_text": "Aqueste wiki conten '''$1''' {{PLURAL:$1|valor|valors}} de proprietat per una soma de '''$2''' [[Special:Properties|{{PLURAL:$2|proprietat diferenta|proprietats diferentas}}]].\n'''$3''' {{PLURAL:$3|proprietat a sa|proprietats an lor}} pagina pròpria, e lo tipe de donadas volgut es especificat per '''$4''' d'aquesta.\nUnas de las proprietats existentas pòdon en fait èsser [[Special:UnusedProperties|inutilizadas]].\nLas proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedProperties|lista de las proprietats demandadas]].",
+
+
 	"smw-statistics-property-instance": "{{PLURAL:$1|Valor|Valors}} de proprietat (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Proprietat|Proprietats}}]] (total)",
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|Proprietat|Proprietats}} (total)",

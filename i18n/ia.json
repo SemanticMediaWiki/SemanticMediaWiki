@@ -131,8 +131,8 @@
 	"smw_purge": "Refrescar",
 	"types": "Typos",
 	"smw_types_docu": "Lista del [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes typos de datos disponibile] in que cata [https://www.semantic-mediawiki.org/wiki/Help:Datatype typo] representa un insimul unic de attributos pro describer un valor in terminos de characteristicas de immagazinage e visualisation que se heredita in un proprietate assignate.",
-	"semanticstatistics": "Statisticas semantic",
-	"smw_semstats_text": "Iste wiki contine '''$1''' {{PLURAL:$1|valor|valores}} de proprietate pro un total de '''$2'''\n[[Special:Properties|{{PLURAL:$2|proprietate|proprietates distincte}}]].\n<b>$3</b> {{PLURAL:$3|proprietate ha su proprie pagina|proprietates ha lor proprie paginas}}, e le typo de datos intendite es specificate pro '''$4''' de {{PLURAL:$3|illo|illos}}.\nAlcunes del proprietates existente pote esser [[Special:UnusedProperties|proprietates non usate]].\nLe proprietates al quales manca ancora un pagina se trova in le [[Special:WantedProperties|lista de proprietates desirate]].",
+
+
 	"smw_uri_doc": "Le resolvitor de URL implementa le [$1 conclusion del Gruppo de Architectura Technic del W3C a proposito de httpRange-14].\nIllo assecura que le humanos non se transforma in sitos web.",
 	"ask": "Recerca semantic",
 	"smw_ask_sortby": "Ordinar per columna (optional)",

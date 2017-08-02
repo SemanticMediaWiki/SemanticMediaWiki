@@ -159,8 +159,8 @@
 	"types": "نوع‌ها",
 	"smw_types_docu": "در زیر فهرستی از تمام انواع داده است که می‌تواند به ویژگی‌ها اختصاص داده‌شده‌باشد.",
 	"smw-special-types-no-such-type": "نوع اطلاعات داده شده  وجود ندارد.",
-	"semanticstatistics": "آمار معنایی",
-	"smw_semstats_text": "این ویکی شامل خاصیت '''$1'''  {{PLURAL:$1|مقدار|مقادیر}} برای مجموع '''$2''' [[Special:Properties|{{PLURAL:$2|خاصیت|خواص مختلف}}]] است.\n'''$3''' {{PLURAL:$3|خاصیت دارد|خواص دارند}} خود یک صفحه دارند، و نوع اطلاعات مورد نطر برای '''$4''' آنها مشخص شده‌است.\nبرخی از خواص موجود ممکن است [[Special:UnusedProperties|خواص استفاده نشده]]باشند.\nخواصی که هنوز فاقد صفحه هستند در [[Special:WantedProperties|فهرست خواص خواسته شده]] پیدا می‌شوند.",
+
+
 	"smw-statistics": "آمارهای معنایی",
 	"smw-statistics-property-instance": "ویژگی {{PLURAL:$1|مقدار|مقادیر}} (کل)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|ویژگی|ویژگی‌ها}}]] (کل)",

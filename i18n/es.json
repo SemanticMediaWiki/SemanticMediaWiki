@@ -188,8 +188,8 @@
 	"types": "Tipos",
 	"smw_types_docu": "Lista de [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tipos de datos disponibles] donde cada [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo] representa un conjunto único de atributos para describir un valor en términos de almacenamiento y características de muestra que son hereditarios a una propiedad asignada.",
 	"smw-special-types-no-such-type": "El tipo de datos especificado no existe",
-	"semanticstatistics": "Estadísticas de semántica",
-	"smw_semstats_text": "Esta wiki contiene '''$1''' {{PLURAL:$1|valor de propiedad|valores de propiedades}} sobre un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propiedad|propiedades diferentes}}]].\n'''$3''' {{PLURAL:$3|propiedad tiene|propiedades tienen}} su propia página, y el tipo de datos previstos se ha especificado para '''$4''' de ellas.\nAlgunas de las propiedades existentes pueden estar [[Special:UnusedProperties|sin uso]].\nLas propiedades que no tengan página pueden encontrarse en la [[Special:WantedProperties|lista de propiedades requeridas]].",
+
+
 	"smw-statistics": "Estadísticas de semántica",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Valor|Valores}} de propiedad (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Propiedad|Propiedades}}]] (total)",

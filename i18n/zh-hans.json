@@ -181,8 +181,8 @@
 	"types": "类型",
 	"smw_types_docu": "[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes 可用数据类型]的列表，每种[https://www.semantic-mediawiki.org/wiki/Help:Datatype 类型]代表唯一的属性集，以描述存储方面的值，并显示遗传至分配属性的特征。",
 	"smw-special-types-no-such-type": "指定的数据类型不存在",
-	"semanticstatistics": "语义统计",
-	"smw_semstats_text": "此维基包含 '''$1''' 个属性{{PLURAL:$1|值|值}}，源自 '''$2''' 个[[Special:Properties|{{PLURAL:$2|属性|不同属性}}]]。'''$3''' 个{{PLURAL:$3|属性有|属性有}}自己的页，并且预期的数据类型被指定为 '''$4'''。某些已经存在的属性也许是[[Special:UnusedProperties|无用属性]]。缺乏页的属性可以在[[Special:WantedProperties|需要的属性列表]]中找到。",
+
+
 	"smw-statistics": "语义统计",
 	"smw-statistics-property-instance": "$1个属性值（总计）",
 	"smw-statistics-property-total": "[[Special:Properties|$1个属性]]（总计）",

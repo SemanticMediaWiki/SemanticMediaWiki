@@ -185,8 +185,8 @@
 	"types": "Datentypen",
 	"smw_types_docu": "Dies ist eine [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes Liste aller Datentypen], die Attributen zugewiesen werden können. Jeder [https://www.semantic-mediawiki.org/wiki/Help:Datatype Datentyp] beschreibt eindeutige Merkmale zur Datenspeicherung und -anzeige eines Datenwerts für ein Attribut, dem der entsprechende Datentyp zugeordnet wurde.",
 	"smw-special-types-no-such-type": "Der angegebene Datentyp ist nicht vorhanden.",
-	"semanticstatistics": "Statistiken zu semantischen Daten",
-	"smw_semstats_text": "Dieses Wiki enthält {{PLURAL:$1|'''1''' Wert|'''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]]. '''$3''' {{PLURAL:$3|Attribut wurde|Attribute wurden}} auf einer eigene Seite beschrieben und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden.\n\nEinige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste gewünschter Attribute]] aufgeführt.",
+
+
 	"smw-statistics": "Statistik zu semantischen Daten",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Attributwert|Attributwerte}} (gesamt)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Attribut|Attribute}}]] (gesamt)",

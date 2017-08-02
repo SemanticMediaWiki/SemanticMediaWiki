@@ -160,8 +160,8 @@
 	"types": "Типови",
 	"smw_types_docu": "Список ма [[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes расположиви податочни типови] со секој [https://www.semantic-mediawiki.org/wiki/Help:Datatype тип] кои претставуваат единствен збир атрибути за опишување на вредноста во однос на особености за складирање и приказ кои се наследени од доделено својство.",
 	"smw-special-types-no-such-type": "Назначениот податочен тип не постои",
-	"semanticstatistics": "Семантички статистики",
-	"smw_semstats_text": "Ова вики содржи '''$1''' {{PLURAL:$1|својствена вредност|својствени вредности}} од вкупно '''$2''' [[Special:Properties|{{PLURAL:$2|својство|различни својства}}]].\n'''$3''' {{PLURAL:$3|својство има|својства имаат}} своја страница, а предвидениот тип на податоци е назначен за '''$4''' од нив.\nНекои од постоечките својства може да се [[Special:UnusedProperties|неискористени]].\nСвојствата кои сè уште немаат страница се наведени на [[Special:WantedProperties|списокот на потребни својства]].",
+
+
 	"smw-statistics": "Семантички статистики",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Вредност на својство|Вредности на својства}} (вкупно)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Својство|Својства}}]] (вкупно)",

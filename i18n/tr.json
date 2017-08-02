@@ -65,7 +65,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|kullanım|kullanım}})",
 	"smw_purge": "Yenile",
 	"types": "Türler",
-	"semanticstatistics": "Anlamsal istatistikler",
+
 	"smw-statistics": "Semantik istatistikleri",
 	"smw-statistics-query-size": "Sorgu boyutu",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Kavram|Kavram}}",

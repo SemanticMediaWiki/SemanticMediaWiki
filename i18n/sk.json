@@ -98,8 +98,8 @@
 	"smw_purge": "Obnoviť",
 	"types": "Typy",
 	"smw_types_docu": "Nasleduje zoznam všetkých údajových typov, ktoré je možné priradiť atribútom. Každý údajový typ má stránku, kde je možné poskytnúť dodatočné informácie.",
-	"semanticstatistics": "Sémantická štatistika",
-	"smw_semstats_text": "Táto wiki obsahuje '''$1''' {{PLURAL:$1|hodnotu|hodnoty|hodnôt}} vlastností celkom {{PLURAL:$2|'''jednej''' vlastnosti|'''$2''' rozličných vlastností|'''$2''' rozličných vlastností}}. {{PLURAL:$3|'''Jedna''' vlastnosť má|'''$3''' vlastnosti majú|'''$3''' vlastností má}} vlastnú stránku a zamýšľaný údajový typ {{PLURAL:$4|má uvedený '''$4''' z nich|majú uvedené '''$4''' z nich|má uvedených '''$4''' z nich}}.\nNiektoré z existujúcich vlastností môžu byť [[Special:UnusedProperties|nepoužité]].\nVlastnosti, ktorým stále chýba stránka sa nachádzajú na [[Special:WantedProperties|zozname žiadaných vlastností]].",
+
+
 	"smw_uri_doc": "URI resolver sa stará o implementáciu [$1 W3C TAG hľadanie na httpRange-14].\nStará sa o to, aby sa ľudia nestali webstránkami.",
 	"ask": "Sémantické vyhľadávanie",
 	"smw_ask_sortby": "Zoradiť podľa stĺpca",

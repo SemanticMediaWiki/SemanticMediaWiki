@@ -31,7 +31,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|използване|използвания}})",
 	"smw_purge": "Опресняване",
 	"types": "Типове",
-	"semanticstatistics": "Семантични статистики",
+
 	"smw-statistics": "Семантични статистики",
 	"ask": "Семантично търсене",
 	"smw_ask_sortby": "Сортиране по колона (незадължително)",

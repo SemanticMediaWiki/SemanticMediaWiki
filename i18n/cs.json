@@ -139,8 +139,8 @@
 	"smw_purge": "Obnovit",
 	"types": "Typy",
 	"smw_types_docu": "Následuje seznam všech údajových typů, které je možné přiřadit vlastnostem. Každý údajový typ má stránku, kde je možné uvést dodatečné informace.",
-	"semanticstatistics": "Statistika sémantik",
-	"smw_semstats_text": "Tato wiki obsahuje <b>$1</b> hodnot vlastností celkem <b>$2</b> rozličných <a href=\"$3\">vlastností</a>.\n<b>$4</b> vlastností nemá vlastní stránku a zamýšlený datový typ má uvedený <b>$5</b> z nich.\nNěkteré z existujících vlastností mohou být <a href=\"$6\">nepoužívané</a>.\nVlastnosti, kterým stále chybí stránka se nacházejí na <a href=\"$7\">seznamu požadovaných vlastností</a>.",
+
+
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|Vlastnost|Vlastnosti}} (celkem)",
 	"smw-statistics-property-page": "{{PLURAL:$1|Vlastnost (registrovaná|Vlastnosti (registrované}} se stránkou)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Vlastnost (přiřazená|Vlastnosti (přiřazené}} datovému typu)",

@@ -164,8 +164,8 @@
 	"types": "유형 목록",
 	"smw_types_docu": "다음은 속성에 할당할 수 있는 모든 데이터 유형의 목록입니다.",
 	"smw-special-types-no-such-type": "지정한 데이터 유형이 존재하지 않습니다",
-	"semanticstatistics": "시맨틱 통계",
-	"smw_semstats_text": "이 위키에는 총 [[Special:Properties|{{PLURAL:$2|속성|다른 속성}}]] '''$2'''개의 속성 {{PLURAL:$1|값}} '''$1'''개를 포함합니다.\n{{PLURAL:$3|속성}} '''$3'''개{{PLURAL:$3|에는}} 자신의 문서가 있고, 이 가운데 '''$4'''개는 구성된 데이터 유형이 지정되어 있습니다.\n기존 속성의 일부는 [[Special:UnusedProperties|사용하지 않는 속성]]일 수 있습니다.\n여전히 문서가 없는 속성은 [[Special:WantedProperties|필요한 속성 목록]]에서 찾을 수 있습니다.",
+
+
 	"smw-statistics": "시맨틱 통계",
 	"smw-statistics-property-instance": "(총) 속성 {{PLURAL:$1|값}}",
 	"smw-statistics-property-total": "(총) [[Special:Properties|{{PLURAL:$1|속성}}]]",
