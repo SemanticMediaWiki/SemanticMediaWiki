@@ -81,7 +81,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->getMessageAsString( 'semanticstatistics' ) )
+			Html::element( 'h2', array(), $this->getMessageAsString( 'smw-statistics' ) )
 		);
 
 		$this->outputFormatter->addHTML( '<pre>' . $this->outputFormatter->encodeAsJson(
