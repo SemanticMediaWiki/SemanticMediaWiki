@@ -48,6 +48,12 @@ class SpecialAdmin extends SpecialPage {
 			throw new ExtendedPermissionsError( 'smw-admin', array( 'smw-admin-permission-missing' ) );
 		}
 
+		// https://phabricator.wikimedia.org/T109652#1562641
+		$this->getRequest()->setVal(
+			'wpEditToken',
+			$this->getUser()->getEditToken()
+		);
+
 		$this->setHeaders();
 		$output = $this->getOutput();
 		$output->setPageTitle( $this->getMessageAsString( 'smwadmin' ) );

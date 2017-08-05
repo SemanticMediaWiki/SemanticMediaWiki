@@ -97,6 +97,11 @@ class IdTaskHandler extends TaskHandler {
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ) );
 		$this->outputFormatter->addParentLink();
 
+		// https://phabricator.wikimedia.org/T109652#1562641
+		if ( !$this->user->matchEditToken( $webRequest->getVal( 'wpEditToken' ) ) ) {
+			return $this->outputFormatter->addHtml( $this->getMessageAsString( 'sessionfailure' ) );
+		}
+
 		$id = $webRequest->getText( 'id' );
 
 		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
