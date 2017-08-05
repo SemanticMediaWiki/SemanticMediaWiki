@@ -92,6 +92,10 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$webRequest->expects( $this->once() )
+			->method( 'getVal' )
+			->will( $this->returnValue( 'done' ) );
+
 		$instance = new TableSchemaTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,

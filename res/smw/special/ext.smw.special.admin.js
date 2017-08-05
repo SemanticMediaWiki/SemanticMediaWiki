@@ -105,6 +105,11 @@
 			instance.setContext( $( this ) ).doApiRequest( parameters );
 		} );
 
+		$( '.smw-admin-db-preparation' ).each( function() {
+			// https://stackoverflow.com/questions/5997450/append-to-url-and-refresh-page
+			window.location.search += '&prep=done';
+		} );
+
 	} );
 
 }( jQuery, mediaWiki ) );
