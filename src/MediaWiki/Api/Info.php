@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use ApiBase;
 use SMW\ApplicationFactory;
-use SMW\MediaWiki\Jobs\JobBase;
+use SMW\Site;
 
 /**
  * API module to obtain info about the SMW install, primarily targeted at
@@ -164,10 +164,13 @@ class Info extends ApiBase {
 
 		if ( in_array( 'jobcount', $requestedInfo ) ) {
 			$resultInfo['jobcount'] = array();
+			$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
-			foreach ( JobBase::getQueueSizes() as $job => $count ) {
-				if ( strpos( $job, 'SMW' ) !== false ) {
-					$resultInfo['jobcount'][$job] = $count;
+			foreach ( Site::getJobClasses( 'SMW' ) as $type => $class ) {
+				$size = $jobQueue->getQueueSize( $type );
+
+				if ( $size > 0 ) {
+					$resultInfo['jobcount'][$type] = $size;
 				}
 			}
 		}
