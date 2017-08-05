@@ -105,6 +105,18 @@ class IdTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->atLeastOnce() )
+			->method( 'matchEditToken' )
+			->will( $this->returnValue( true ) );
+
+		$instance->setUser(
+			$user
+		);
+
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -166,21 +178,25 @@ class IdTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$user->expects( $this->atLeastOnce() )
+			->method( 'matchEditToken' )
+			->will( $this->returnValue( true ) );
+
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$webRequest->expects( $this->at( 0 ) )
+		$webRequest->expects( $this->at( 1 ) )
 			->method( 'getText' )
 			->with( $this->equalTo( 'id' ) )
 			->will( $this->returnValue( 42 ) );
 
-		$webRequest->expects( $this->at( 1 ) )
+		$webRequest->expects( $this->at( 2 ) )
 			->method( 'getText' )
 			->with( $this->equalTo( 'dispose' ) )
 			->will( $this->returnValue( 'yes' ) );
 
-		$webRequest->expects( $this->at( 2 ) )
+		$webRequest->expects( $this->at( 3 ) )
 			->method( 'getText' )
 			->with( $this->equalTo( 'action' ) )
 			->will( $this->returnValue( 'idlookup' ) );
