@@ -31,4 +31,16 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetJobClasses() {
+
+		$this->assertInternalType(
+			'array',
+			Site::getJobClasses()
+		);
+
+		$this->assertNotEmpty(
+			Site::getJobClasses( 'SMW' )
+		);
+	}
+
 }

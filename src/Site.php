@@ -39,4 +39,29 @@ class Site {
 		return $GLOBALS['wgCommandLineMode'];
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $typeFilter
+	 *
+	 * @return array
+	 */
+	public static function getJobClasses( $typeFilter = '' ) {
+
+		$jobList = $GLOBALS['wgJobClasses'];
+
+		foreach ( $jobList as $type => $class ) {
+
+			if ( $typeFilter === '' ) {
+				continue;
+			}
+
+			if ( strpos( $type, $typeFilter ) === false ) {
+				unset( $jobList[$type] );
+			}
+		}
+
+		return $jobList;
+	}
+
 }
