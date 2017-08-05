@@ -65,7 +65,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' ) );
-		$this->outputFormatter->addParentLink();
+		$this->outputFormatter->addParentLink( [ 'tab' => 'supplement' ] );
 
 		$this->outputSemanticStatistics();
 		$this->outputJobStatistics();

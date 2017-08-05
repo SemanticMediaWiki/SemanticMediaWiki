@@ -57,7 +57,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 
 		// smw-admin-fulltext
 		$this->htmlFormRenderer
-				->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-fulltext-title' ) )
+				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-fulltext-title' ) )
 				->addParagraph( $this->getMessageAsString( 'smw-admin-fulltext-intro', Message::PARSE ) );
 
 		if ( $this->isEnabledFeature( SMW_ADM_FULLT ) && !$this->hasPendingFulltextSearchTableRebuildJob() ) {
@@ -105,7 +105,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 
 		$fulltextSearchTableRebuildJob->insert();
 
-		$this->outputFormatter->redirectToRootPage( $this->getMessageAsString( 'smw-admin-fulltext-title' ) );
+		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 	}
 
 	private function hasPendingFulltextSearchTableRebuildJob() {

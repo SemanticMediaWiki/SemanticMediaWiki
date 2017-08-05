@@ -46,25 +46,21 @@ class SupportListTaskHandler extends TaskHandler {
 	 */
 	public function getHtml() {
 
-		$html = $this->htmlFormRenderer
-			->setName( 'announce' )
-			->setMethod( 'get' )
-			->setActionUrl( 'https://wikiapiary.com/wiki/WikiApiary:Semantic_MediaWiki_Registry' )
-			->addHeader( 'h2', $this->getMessageAsString( 'smw-admin-announce' ) )
-			->addParagraph( $this->getMessageAsString( 'smw-admin-announce-text' ) )
-			->addSubmitButton(
-				$this->getMessageAsString( 'smw-admin-announce' ),
-				array(
-					'class' => ''
-				)
-			)
-			->getForm();
-
+		$html = $this->createSupportForm() . $this->createRegistryForm();
 		$html .= Html::element( 'p', array(), '' );
 
-		$html .= $this->htmlFormRenderer
+		return Html::rawElement( 'div', array(), $html );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function createSupportForm() {
+		$this->htmlFormRenderer
 			->setName( 'support' )
-			->addHeader( 'h2', $this->getMessageAsString('smw-admin-support' ) )
+			->addHeader( 'h3', $this->getMessageAsString('smw-admin-support' ) )
 			->addParagraph( $this->getMessageAsString( 'smw-admin-supportdocu' ) )
 			->addParagraph(
 				Html::rawElement( 'ul', array(),
@@ -72,10 +68,33 @@ class SupportListTaskHandler extends TaskHandler {
 					Html::rawElement( 'li', array(), $this->getMessageAsString( 'smw-admin-smwhomepage' ) ) .
 					Html::rawElement( 'li', array(), $this->getMessageAsString( 'smw-admin-bugsreport' ) ) .
 					Html::rawElement( 'li', array(), $this->getMessageAsString( 'smw-admin-questions' ) )
-				) )
-			->getForm();
+				)
+			);
 
-		return Html::rawElement( 'div', array(), $html );
+		return $this->htmlFormRenderer->getForm();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function createRegistryForm() {
+
+		$this->htmlFormRenderer
+			->setName( 'announce' )
+			->setMethod( 'get' )
+			->setActionUrl( 'https://wikiapiary.com/wiki/WikiApiary:Semantic_MediaWiki_Registry' )
+			->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-announce' ) )
+			->addParagraph( $this->getMessageAsString( 'smw-admin-announce-text' ) )
+			->addSubmitButton(
+				$this->getMessageAsString( 'smw-admin-announce' ),
+				array(
+					'class' => ''
+				)
+			);
+
+		return $this->htmlFormRenderer->getForm();
 	}
 
 	/**

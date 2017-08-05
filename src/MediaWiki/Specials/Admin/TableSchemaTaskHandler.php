@@ -67,7 +67,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 			->setName( 'buildtables' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'updatetables' )
-			->addHeader( 'h2', $this->getMessageAsString( 'smw-admin-db' ) )
+			->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-db' ) )
 			->addParagraph( $this->getMessageAsString( 'smw-admin-dbdocu' ) );
 
 		if ( $this->isEnabledFeature( SMW_ADM_SETUP ) ) {
@@ -102,7 +102,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 		$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-db' ) );
-		$this->outputFormatter->addParentLink();
+		$this->outputFormatter->addParentLink( [ 'tab' => 'rebuild' ] );
 
 		$this->store->getOptions()->set(
 			Installer::OPT_MESSAGEREPORTER,

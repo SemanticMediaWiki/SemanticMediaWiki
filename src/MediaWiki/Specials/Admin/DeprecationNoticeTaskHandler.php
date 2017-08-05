@@ -68,9 +68,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			return '';
 		}
 
-		return Html::rawElement( 'h2', array(), $this->getMessageAsString( 'smw-admin-deprecation-notice-title' ) ) .
-			Html::rawElement( 'div', array( 'class' => 'smw-admin-deprecation-notice-section' ),
-				Html::rawElement( 'p', array( 'class' => 'smw-admin-deprecation-notice-docu-section plainlinks' ), $this->getMessageAsString( 'smw-admin-deprecation-notice-docu' ) ) .
+		return Html::rawElement( 'div', array( 'class' => 'smw-admin-deprecation-notice-section' ),
+				Html::rawElement( 'p', array( 'class' => 'plainlinks' ), $this->getMessageAsString( 'smw-admin-deprecation-notice-docu' ) ) .
 				Html::rawElement( 'div', array( 'class' => 'plainlinks' ),
 					Html::rawElement( 'p', array(), implode( '', $noticeList ) )
 			)

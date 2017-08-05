@@ -61,7 +61,7 @@ class DisposeJobTaskHandler extends TaskHandler {
 
 		// smw-admin-outdateddisposal
 		$this->htmlFormRenderer
-				->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-outdateddisposal-title' ) )
+				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-outdateddisposal-title' ) )
 				->addParagraph( $this->getMessageAsString( 'smw-admin-outdateddisposal-intro', Message::PARSE ) );
 
 		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && !$this->hasPendingEntityIdDisposerJob() ) {
@@ -106,7 +106,7 @@ class DisposeJobTaskHandler extends TaskHandler {
 
 		$entityIdDisposerJob->insert();
 
-		$this->outputFormatter->redirectToRootPage( $this->getMessageAsString( 'smw-admin-outdateddisposal-title' ) );
+		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 	}
 
 	private function hasPendingEntityIdDisposerJob() {

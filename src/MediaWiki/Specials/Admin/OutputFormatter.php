@@ -31,9 +31,11 @@ class OutputFormatter {
 
 	/**
 	 * @since 2.5
+	 *
+	 * @param array $query
 	 */
-	public function addParentLink() {
-		$this->outputPage->prependHTML( $this->createParentLink() );
+	public function addParentLink( $query = array() ) {
+		$this->outputPage->prependHTML( $this->createParentLink( $query ) );
 	}
 
 	/**
@@ -69,12 +71,12 @@ class OutputFormatter {
 	 *
 	 * @param string $fragment
 	 */
-	public function redirectToRootPage( $fragment = '' ) {
+	public function redirectToRootPage( $fragment = '', $query = array() ) {
 
 		$title = \SpecialPage::getTitleFor( 'SMWAdmin' );
 		$title->setFragment( ' ' . $fragment );
 
-		$this->outputPage->redirect( $title->getFullURL() );
+		$this->outputPage->redirect( $title->getFullURL( $query ) );
 	}
 
 	/**
@@ -130,7 +132,7 @@ class OutputFormatter {
 		return FormatJson::encode( $input, true );
 	}
 
-	private function createParentLink() {
+	private function createParentLink( $query = array() ) {
 		return Html::rawElement(
 			'div',
 			array( 'class' => 'smw-breadcrumb-link' ),
@@ -141,7 +143,7 @@ class OutputFormatter {
 			) .
 			Html::rawElement(
 				'a',
-				array( 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL() ),
+				array( 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL( $query ) ),
 				Message::get( 'smwadmin', Message::TEXT, Message::USER_LANGUAGE )
 		) );
 	}
