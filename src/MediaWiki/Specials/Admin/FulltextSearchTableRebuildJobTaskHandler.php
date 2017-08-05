@@ -9,7 +9,6 @@ use SMW\Store;
 use Html;
 use WebRequest;
 use Title;
-use Job;
 
 /**
  * @license GNU GPL v2+
@@ -18,11 +17,6 @@ use Job;
  * @author mwjames
  */
 class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
 
 	/**
 	 * @var HtmlFormRenderer
@@ -37,12 +31,10 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Store $store
 	 * @param HtmlFormRenderer $htmlFormRenderer
 	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
+	public function __construct( HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
 		$this->htmlFormRenderer = $htmlFormRenderer;
 		$this->outputFormatter = $outputFormatter;
 	}
@@ -68,7 +60,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 				->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-fulltext-title' ) )
 				->addParagraph( $this->getMessageAsString( 'smw-admin-fulltext-intro', Message::PARSE ) );
 
-		if ( $this->isEnabledFeature( SMW_ADM_FULLT ) && !$this->hasFulltextSearchTableRebuildJob() ) {
+		if ( $this->isEnabledFeature( SMW_ADM_FULLT ) && !$this->hasPendingFulltextSearchTableRebuildJob() ) {
 			$this->htmlFormRenderer
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'fulltrebuild' )
@@ -99,37 +91,25 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		if ( $this->isEnabledFeature( SMW_ADM_FULLT ) && !$this->hasFulltextSearchTableRebuildJob() ) {
-			$fulltextSearchTableRebuildJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
-				'SMW\FulltextSearchTableRebuildJob',
-				\SpecialPage::getTitleFor( 'SMWAdmin' ),
-				array(
-					'mode' => 'full'
-				)
-			);
-
-			$fulltextSearchTableRebuildJob->insert();
+		if ( !$this->isEnabledFeature( SMW_ADM_FULLT ) || $this->hasPendingFulltextSearchTableRebuildJob() ) {
+			return false;
 		}
+
+		$fulltextSearchTableRebuildJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+			'SMW\FulltextSearchTableRebuildJob',
+			\SpecialPage::getTitleFor( 'SMWAdmin' ),
+			array(
+				'mode' => 'full'
+			)
+		);
+
+		$fulltextSearchTableRebuildJob->insert();
 
 		$this->outputFormatter->redirectToRootPage( $this->getMessageAsString( 'smw-admin-fulltext-title' ) );
 	}
 
-	private function hasFulltextSearchTableRebuildJob() {
-
-		if ( !$this->isEnabledFeature( SMW_ADM_FULLT ) ) {
-			return false;
-		}
-
-		$jobQueueLookup = ApplicationFactory::getInstance()->create(
-			'JobQueueLookup',
-			$this->store->getConnection( 'mw.db' )
-		);
-
-		$row = $jobQueueLookup->selectJobRowBy(
-			'SMW\FulltextSearchTableRebuildJob'
-		);
-
-		return $row !== null && $row !== false;
+	private function hasPendingFulltextSearchTableRebuildJob() {
+		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'SMW\FulltextSearchTableRebuildJob' );
 	}
 
 }

@@ -5,11 +5,9 @@ namespace SMW\MediaWiki\Specials\Admin;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Message;
-use SMW\Store;
 use Html;
 use WebRequest;
 use Title;
-use Job;
 
 /**
  * @license GNU GPL v2+
@@ -18,11 +16,6 @@ use Job;
  * @author mwjames
  */
 class DisposeJobTaskHandler extends TaskHandler {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
 
 	/**
 	 * @var HtmlFormRenderer
@@ -42,12 +35,10 @@ class DisposeJobTaskHandler extends TaskHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Store $store
 	 * @param HtmlFormRenderer $htmlFormRenderer
 	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
+	public function __construct( HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
 		$this->htmlFormRenderer = $htmlFormRenderer;
 		$this->outputFormatter = $outputFormatter;
 	}
@@ -73,7 +64,7 @@ class DisposeJobTaskHandler extends TaskHandler {
 				->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-outdateddisposal-title' ) )
 				->addParagraph( $this->getMessageAsString( 'smw-admin-outdateddisposal-intro', Message::PARSE ) );
 
-		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && !$this->hasEntityIdDisposerJob() ) {
+		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && !$this->hasPendingEntityIdDisposerJob() ) {
 			$this->htmlFormRenderer
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'dispose' )
@@ -104,34 +95,22 @@ class DisposeJobTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && !$this->hasEntityIdDisposerJob() ) {
-			$entityIdDisposerJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
-				'SMW\EntityIdDisposerJob',
-				\SpecialPage::getTitleFor( 'SMWAdmin' )
-			);
-
-			$entityIdDisposerJob->insert();
+		if ( !$this->isEnabledFeature( SMW_ADM_DISPOSAL ) || $this->hasPendingEntityIdDisposerJob() ) {
+			return false;
 		}
+
+		$entityIdDisposerJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+			'SMW\EntityIdDisposerJob',
+			\SpecialPage::getTitleFor( 'SMWAdmin' )
+		);
+
+		$entityIdDisposerJob->insert();
 
 		$this->outputFormatter->redirectToRootPage( $this->getMessageAsString( 'smw-admin-outdateddisposal-title' ) );
 	}
 
-	private function hasEntityIdDisposerJob() {
-
-		if ( !$this->isEnabledFeature( SMW_ADM_DISPOSAL ) ) {
-			return false;
-		}
-
-		$jobQueueLookup = ApplicationFactory::getInstance()->create(
-			'JobQueueLookup',
-			$this->store->getConnection( 'mw.db' )
-		);
-
-		$row = $jobQueueLookup->selectJobRowBy(
-			'SMW\EntityIdDisposerJob'
-		);
-
-		return $row !== null && $row !== false;
+	private function hasPendingEntityIdDisposerJob() {
+		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'SMW\EntityIdDisposerJob' );
 	}
 
 }

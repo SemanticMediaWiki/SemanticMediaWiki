@@ -17,27 +17,14 @@ use SMW\MediaWiki\Specials\Admin\DisposeJobTaskHandler;
 class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
-	private $connection;
 	private $htmlFormRenderer;
 	private $outputFormatter;
+	private $jobQueue;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
-			->getMockForAbstractClass();
-
-		$this->store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
 
 		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
@@ -47,7 +34,11 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'Store', $this->store );
+		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
 	protected function tearDown() {
@@ -59,7 +50,7 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\Admin\DisposeJobTaskHandler',
-			new DisposeJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
+			new DisposeJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
 
@@ -84,7 +75,6 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getForm' );
 
 		$instance = new DisposeJobTaskHandler(
-			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
@@ -92,7 +82,12 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$instance->getHtml();
 	}
 
-	public function testHandleRequest() {
+	public function testHandleRequestOnNonPendingJob() {
+
+		$this->jobQueue->expects( $this->once() )
+			->method( 'hasPendingJob' )
+			->with( $this->equalTo( 'SMW\EntityIdDisposerJob' ) )
+			->will( $this->returnValue( false ) );
 
 		$entityIdDisposerJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\EntityIdDisposerJob' )
 			->disableOriginalConstructor()
@@ -116,7 +111,35 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new DisposeJobTaskHandler(
-			$this->store,
+			$this->htmlFormRenderer,
+			$this->outputFormatter
+		);
+
+		$instance->setEnabledFeatures( SMW_ADM_DISPOSAL );
+		$instance->handleRequest( $webRequest );
+	}
+
+	public function testHandleRequestOnPendingJob() {
+
+		$this->jobQueue->expects( $this->once() )
+			->method( 'hasPendingJob' )
+			->with( $this->equalTo( 'SMW\EntityIdDisposerJob' ) )
+			->will( $this->returnValue( true ) );
+
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory->expects( $this->never() )
+			->method( 'newByType' );
+
+		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new DisposeJobTaskHandler(
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);

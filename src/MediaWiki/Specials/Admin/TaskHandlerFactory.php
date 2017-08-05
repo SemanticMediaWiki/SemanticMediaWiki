@@ -92,7 +92,7 @@ class TaskHandlerFactory {
 	 * @return DataRefreshJobTaskHandler
 	 */
 	public function newDataRefreshJobTaskHandler() {
-		return new DataRefreshJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+		return new DataRefreshJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
 	/**
@@ -101,7 +101,7 @@ class TaskHandlerFactory {
 	 * @return DisposeJobTaskHandler
 	 */
 	public function newDisposeJobTaskHandler() {
-		return new DisposeJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+		return new DisposeJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
 	/**
@@ -110,7 +110,7 @@ class TaskHandlerFactory {
 	 * @return PropertyStatsRebuildJobTaskHandler
 	 */
 	public function newPropertyStatsRebuildJobTaskHandler() {
-		return new PropertyStatsRebuildJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+		return new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
 	/**
@@ -119,7 +119,7 @@ class TaskHandlerFactory {
 	 * @return FulltextSearchTableRebuildJobTaskHandler
 	 */
 	public function newFulltextSearchTableRebuildJobTaskHandler() {
-		return new FulltextSearchTableRebuildJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+		return new FulltextSearchTableRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
 	/**

@@ -565,6 +565,15 @@ class ApplicationFactory {
 		return $this->containerBuilder->singleton( 'JobQueueGroup' );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @return JobQueue
+	 */
+	public function getJobQueue() {
+		return $this->containerBuilder->singleton( 'JobQueue' );
+	}
+
 	private static function newContainerBuilder( CallbackContainerFactory $callbackContainerFactory, $servicesFileDir ) {
 
 		$containerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
