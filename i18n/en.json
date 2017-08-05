@@ -559,5 +559,11 @@
 	"smw-format-datatable-sortdescending": ": activate to sort column descending",
 	"smw-category-invalid-redirect-target": "Category \"$1\" contains an invalid redirect target to a non-category namespace.",
 	"smw-parser-function-expensive-execution-limit": "The parser function has reached the limit for expensive executions (see [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit]).",
-	"smw-postproc-queryref": "The page was marked as to be refreshed due to some required post processing."
+	"smw-postproc-queryref": "The page was marked as to be refreshed due to some required post processing.",
+	"apihelp-smwinfo-summary": "API module to retrieve information about Semantic MediaWiki statistics and other meta information.",
+	"apihelp-ask-summary": "API module to query Semantic MediaWiki using the ask language.",
+	"apihelp-askargs-summary": "API module to query Semantic MediaWiki using the ask language as list of conditions, printouts and parameters.",
+	"apihelp-browsebyproperty-summary": "API module to retrieve information about a property or list of properties.",
+	"apihelp-browsebysubject-summary": "API module to retrieve information about a subject.",
+	"apihelp-smwtask-summary": "API module to execute Semantic MediaWiki related tasks."
 }
