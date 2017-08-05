@@ -14,6 +14,7 @@ use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\JobQueueLookup;
+use SMW\MediaWiki\JobQueue;
 use SMW\Query\QuerySourceFactory;
 use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
@@ -130,6 +131,23 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'JobQueueLookup', function( $containerBuilder, Database $connection ) {
 			$containerBuilder->registerExpectedReturnType( 'JobQueueLookup', '\SMW\MediaWiki\JobQueueLookup' );
 			return new JobQueueLookup( $connection );
+		} );
+
+		/**
+		 * JobQueue
+		 *
+		 * @return callable
+		 */
+		$containerBuilder->registerCallback( 'JobQueue', function( $containerBuilder ) {
+
+			$containerBuilder->registerExpectedReturnType(
+				'JobQueue',
+				'\SMW\MediaWiki\JobQueue'
+			);
+
+			return new JobQueue(
+				$containerBuilder->create( 'JobQueueGroup' )
+			);
 		} );
 
 		$containerBuilder->registerCallback( 'ManualEntryLogger', function( $containerBuilder ) {
