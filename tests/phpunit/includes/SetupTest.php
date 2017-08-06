@@ -22,7 +22,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 	private $defaultConfig;
-	private $mockbuilder;
 
 	protected function setUp() {
 		parent::setUp();
@@ -224,7 +223,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'PageProperty',
 			'SearchByProperty',
 			'SMWAdmin',
-			'SemanticStatistics',
 			'Concepts',
 			'ExportRDF',
 			'Types',

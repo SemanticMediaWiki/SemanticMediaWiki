@@ -181,8 +181,8 @@
 	"types": "Typer",
 	"smw_types_docu": "Lista över [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tillgängliga datatyper] där varje [https://www.semantic-mediawiki.org/wiki/Help:Datatype typ] representerar en unik uppsättning attribut för att beskriva ett värde i termer av hur det lagras och visas, som ärvs av en tilldelad egenskap.",
 	"smw-special-types-no-such-type": "Den angivna datatypen finns inte",
-	"semanticstatistics": "Semantisk statistik",
-	"smw_semstats_text": "Denna wiki innehåller '''$1''' {{PLURAL:$1|egenskapsvärde|egenskapsvärden}} för totalt '''$2''' [[Special:Properties|{{PLURAL:$2|egenskap|olika egenskaper}}]].\n'''$3''' {{PLURAL:$3|egenskap|egenskaper}} har en egen sida, och den avsedda datatypen är specificerad för '''$4''' av dessa.\nNågra av de existerande egenskaperna kan vara [[Special:UnusedProperties|oanvända egenskaper]].\nEgenskaper som fortfarande saknar en egen sida finns på [[Special:WantedProperties|listan över önskade egenskaper]].",
+
+
 	"smw-statistics": "Semantisk statistik",
 	"smw-statistics-property-instance": "Egenskaps{{PLURAL:$1|värde|värden}} (totalt)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Egenskap|Egenskaper}}]] (totalt)",

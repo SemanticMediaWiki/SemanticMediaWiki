@@ -161,8 +161,8 @@
 	"types": "Tipos",
 	"smw_types_docu": "Llista de [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tipos de datos disponibles] con cada [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipu] que representa un conxuntu únicu d'atributos pa describir un valor en términos de carauterístiques d'almacenamientu y visualización que s'herieden pa una propiedá atribuyida.",
 	"smw-special-types-no-such-type": "El tipu de datos especificáu nun esiste",
-	"semanticstatistics": "Estadístiques semántiques",
-	"smw_semstats_text": "Esta wiki contien '''$1''' {{PLURAL:$1|valor|valores}} de propiedá, d'un total {{PLURAL:$2|'''d'una'''|de '''$2'''}} [[Special:Properties|{{PLURAL:$2|propiedá|propiedaes distintes}}]].\n'''$3''' {{PLURAL:$3|propiedá tien|propiedaes tienen}} una páxina propia ya'l tipu de datos previstu ta especificáu en '''$4''' d'elles.\nDalgunes de les propiedaes esistentes pueden ser [[Special:UnusedProperties|propiedaes ensin usu]].\nLes propiedaes qu'aínda nun tienen una páxina alcuentrense na [[Special:WantedProperties|llista de propiedaes deseaes]].",
+
+
 	"smw-statistics": "Estadístiques semántiques",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Valor|Valores}} de propiedá (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Propiedá|Propiedaes}}]] (total)",

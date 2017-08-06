@@ -135,8 +135,8 @@
 	"smw_purge": "Sariwain",
 	"types": "Mga uri",
 	"smw_types_docu": "Ang sumusunod ay isang talaan ng lahat ng mga uri ng dato na maaaring italaga sa mga pag-aari.",
-	"semanticstatistics": "Mga estadistika ng Semantiko (hinggil sa kahulugan ng mga salita)",
-	"smw_semstats_text": "Naglalaman ang wiking ito ng '''$1''' {{PLURAL:$1|halaga|mga halaga}} ng ari-ariang may kabuoang '''$2''' [[Special:Properties|{{PLURAL:$2|ari-arian|iba't ibang ari-arian}}]].\n'''$3''' {{PLURAL:$3|pag-aari ang may|mga pag-aari ang may mga}} sariling pahina na, at ang inilalaang uri ng dato ay tinukoy para sa '''$4''' ng mga iyon.\nIlan sa umiiral na mga ari-arian ay maaaring [[Special:UnusedProperties|hindi ginagamit na mga pag-aari]].\nAng mga ari-ariang wala pa ring isang pahina ay matatagpuan sa [[Special:WantedProperties|talaan ng ninanais na mga pag-aari]].",
+
+
 	"smw_uri_doc": "Ipinatutupad ng tagapaglutas na URI ang [$1 Paghahanap ng W3C TAG sa httpRange-14].\nPinag-iingatan nitong huwag maging mga sityo ng web (websayt) ang mga tao.",
 	"ask": "Paghahanap hinggil sa kahulugan ng mga salita (semantiko)",
 	"smw_ask_sortby": "Pagpangkat-pangkating ayon sa pahabang kahanayan (maaaring wala nito)",

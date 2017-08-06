@@ -92,8 +92,8 @@
 	"smw_purge": "Làm tươi",
 	"types": "Các dạng",
 	"smw_types_docu": "Sau đây là danh sách tất cả các kiểu dữ liệu có thể gán vào thuộc tính.",
-	"semanticstatistics": "Thống kê ngữ nghĩa",
-	"smw_semstats_text": "Wiki này có chứa '''$1''' giá trị thuộc tính cho tổng cộng '''$2''' [[Special:Properties|thuộc tính khác nhau]].\n'''$3''' thuộc tính có trang riêng, và kiểu dữ liệu dự tính được chỉ định cho '''$4''' trong số đó.\nMột số thuộc tính hiện có có thể [[Special:UnusedProperties|chưa được sử dụng]].\nCó thể tìm thấy thuộc tính còn thiếu trang tại [[Special:WantedProperties|danh sách các thuộc tính cần có]].",
+
+
 	"smw_uri_doc": "Bộ giải URI hiện thực [$1 THẺ W3C tìm thấy tại httpRange-14].\nNó lo việc con người không quay lại trang web.",
 	"ask": "Tìm kiếm ngữ nghĩa",
 	"smw_ask_sortby": "Sắp xếp theo cột (tùy chọn)",

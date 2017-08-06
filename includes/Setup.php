@@ -301,10 +301,6 @@ final class Setup {
 				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin',
 				'group' => 'smw_group'
 			),
-			'SemanticStatistics' => array(
-				'page' => 'SMW\SpecialSemanticStatistics',
-				'group' => 'wiki'
-			),
 			'Concepts' => array(
 				'page' => 'SMW\SpecialConcepts',
 				'group' => 'pages'

@@ -60,8 +60,8 @@
 	"smw_purge": "Anyarana",
 	"types": "Jenis-jenis",
 	"smw_types_docu": "Ing ngisor iki kapacak sawijining daftar kabèh jenis data sing bisa ditunjukaké menyang sifat-sifat.\nSaben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.",
-	"semanticstatistics": "Statistik sémantik",
-	"smw_semstats_text": "Wiki iki ngandhut '''$1''' {{PLURAL:$1|aji|aji}} sifat nganti gunggung '''$2''' [[Special:Properties|{{PLURAL:$2|sifat|sifat}}]].\n'''$3''' {{PLURAL:$3|sifat nduwèni|sifat nduwèni}} kaca dhéwé, lan jinis-data sing dimaksudaké kanggo '''$4'''.\nSawetara sifat sing ana mbokmanawa [[Special:UnusedProperties|ora dipigunakaké]].\nSifat-sifat sing isih ora duwé kaca bisa ditemokaké ing [[Special:WantedProperties|dhaptar sifat-sifat sing dikarepaké]].",
+
+
 	"smw_uri_doc": "''URI resolver''-é ngimplèmèntasi [$1 W3C TAG finding on httpRange-14]. Iku ngurusi supaya manungsa ora owah lan dadi situs-situs wèb.",
 	"ask": "Panggolèkan sémantik",
 	"smw_ask_sortby": "Sortir miturut kolom (opsional)",

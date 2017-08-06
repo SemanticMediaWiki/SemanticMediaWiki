@@ -177,8 +177,8 @@
 	"types": "Typen",
 	"smw_types_docu": "Lijst van [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes beschikbare gegevenstypen] waarvan elk [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] een unieke set van attributen vertegenwoordigt die een waarde beschrijven in termen van opslag en weergavekenmerken die erfelijk zijn voor een toegewezen eigenschap.",
 	"smw-special-types-no-such-type": "Het opgegeven gegevenstype bestaat niet",
-	"semanticstatistics": "Semantische statistieken",
-	"smw_semstats_text": "Deze wiki bevat '''$1''' {{PLURAL:$1|eigenschapswaarde|eigenschapswaarden}} voor '''$2''' [[Special:Properties|{{PLURAL:$2|eigenschap|verschillende eigenschappen}}]].\n'''$3''' {{PLURAL:$3|eigenschap heeft|eigenschappen hebben}} een eigen pagina en het gegevenstype is voor '''$4''' daarvan opgegeven.\nEen aantal van de bestaande eigenschappen is wellicht [[Special:UnusedProperties|ongebruikt]].\nEigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:WantedProperties|lijst met gewenste eigenschappen]].",
+
+
 	"smw-statistics": "Semantische statistieken",
 	"smw-statistics-property-instance": "Eigenschapswaarde{{PLURAL:$1||n}} (totaal)",
 	"smw-statistics-property-total": "[[Special:Properties|Eigenschap{{PLURAL:$1||pen}}]] (totaal)",

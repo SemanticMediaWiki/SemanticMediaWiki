@@ -163,8 +163,8 @@
 	"types": "الأنواع",
 	"smw_types_docu": "فيما يلي قائمة تضم كل أنواع البيانات التي يمكن أن تسند إلى الخصائص.",
 	"smw-special-types-no-such-type": "نوع البيانات المُعيّن غير موجود",
-	"semanticstatistics": "إحصائيات دلالية",
-	"smw_semstats_text": "هذه الويكي تحتوي على '''$1''' {{PLURAL:$1|قيمة}} لخصائص عددها الإجمالي '''$2''' [[Special:Properties|{{PLURAL:$2|خصيصة|خصيصة مختلفة}}]].\n'''$3''' {{PLURAL:$3|خصيصة}} منها لها صفحات، منها '''$4''' عُيّن لها نوع البيانات المقصود.\nبعض الخصائص الموجودة ربما تكون [[Special:UnusedProperties|غير مستخدمة]].\nالخصائص التي مازالت بلا صفحات مسرودة في [[Special:WantedProperties|قائمة الخصائص المطلوبة]].",
+
+
 	"smw-statistics": "إحصائيات دلالية",
 	"smw-statistics-property-instance": "{{PLURAL:$1|قيمة|قيمتان|قيمة}} لخصائص (الإجمالي)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|خصيصة|خصيصتان|$1 خصائص}}]] (الإجمالي)",

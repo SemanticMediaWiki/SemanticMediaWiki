@@ -107,8 +107,8 @@
 	"smw_purge": "Osvježi",
 	"types": "Tipovi",
 	"smw_types_docu": "Slijedi popis svih tipova podataka koji mogu biti dodijeljeni svojstvima.\nSvaki tip podatka ima stranicu koja može pružiti dodatne informacije.",
-	"semanticstatistics": "Statistika o semantici",
-	"smw_semstats_text": "Ovaj wiki sadrži '''$1''' {{PLURAL:$1|vrijednost svojstva|vrijednosti svojstava|vrijednosti svojstava}} za ukupno '''$2''' [[Special:Properties|{{PLURAL:$2|svojstvo|različita svojstva|različitih svojstava}}]].\n'''$3''' {{PLURAL:$3|svojstvo ima|svojstva imaju|svojstava imaju}} vlastitu stranicu i '''$4''' {{PLURAL:$3|ima|od njih imaju|od njih imaju}} zadan tip podatka.\nNeka od postojećih svojstava su možda [[Special:UnusedProperties|nekorištena svojstva]].\nSvojstva koja još uvijek nemaju stranicu nalaze se na [[Special:WantedProperties|popisu traženih svojstava]].",
+
+
 	"smw_uri_doc": "URI razrješitelj implementira [$1 W3C traženje TAGova na httpRange-14]\nkoje brine da se ljudi ne pretvore u web stranice.",
 	"ask": "Semantička tražilica",
 	"smw_ask_sortby": "Razvrstavanje po stupcu (opcionalno)",

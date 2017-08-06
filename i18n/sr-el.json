@@ -104,8 +104,8 @@
 	"smw_purge": "Osveži",
 	"types": "Tipovi",
 	"smw_types_docu": "Ovo je spisak svih vrsta podataka koji mogu da se dodeljuju svojstvima.",
-	"semanticstatistics": "Semantičke statistike",
-	"smw_semstats_text": "Ovaj viki sadrži '''$1''' {{PLURAL:$1|vrednost|vrednosti|vrednosti}} svojstva od ukupno '''$2''' [[Special:Properties|{{PLURAL:$2|svojstva|različita svojstva|različitih svojstava}}]].\n'''$3''' {{PLURAL:$3|svojstvo ima svoju stranicu|svojstva imaju svoje stranice|svojstava imaju svoje stranice}}, a predviđena vrsta podataka je naznačena za '''$4''' od njih.\nNeki od postojećih svojstava mogu biti [[Special:UnusedProperties|neiskorišćeni]].\nSvojstva koja još nemaju stranicu nalaze se na [[Special:WantedProperties|spisku potrebnih svojstava]].",
+
+
 	"ask": "Semantička pretraga",
 	"smw_ask_sortby": "Sortiraj u kolone (opciono)",
 	"smw_ask_ascorder": "Rastući",

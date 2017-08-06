@@ -100,7 +100,7 @@
 	"smw-purge-failed": "Aktualisatioun huet net funktionnéiert",
 	"types": "Typen",
 	"smw-special-types-no-such-type": "Den Datentyp deen ugi gouf gëtt et net",
-	"semanticstatistics": "Semantesch Statistiken",
+
 	"smw-statistics": "Semantesch Statistiken",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Ufro|Ufroen}}",
 	"smw-statistics-query-size": "Gréisst vun der Ufro",
