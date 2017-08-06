@@ -537,8 +537,10 @@ class SMWSQLStore3Readers {
 				// silently drop data, should be extremely rare and will usually fix itself at next edit
 			}
 
+			$title = $row->smw_title !== '' ? $row->smw_title : 'Empty';
+
 			// Avoid null return in Iterator
-			return $diHandler->dataItemFromDBKeys( [ 'PROP_SUBJECT_READ', 0, ':smw-error', '', '' ] );
+			return $diHandler->dataItemFromDBKeys( [ 'Blankpage/' . $title, NS_SPECIAL, '', '', '' ] );
 		};
 
 		$iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
