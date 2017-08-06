@@ -67,19 +67,11 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$jobQueue = $this->getMockBuilder( '\JobQueue' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobQueueGroup->expects( $this->once() )
-			->method( 'get' )
-			->will( $this->returnValue( $jobQueue ) );
-
-		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->getMockForAbstractClass();
@@ -99,19 +91,11 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$jobQueue = $this->getMockBuilder( '\JobQueue' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobQueueGroup->expects( $this->atLeastOnce() )
-			->method( 'get' )
-			->will( $this->returnValue( $jobQueue ) );
-
-		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->getMockForAbstractClass();
@@ -132,14 +116,14 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobQueueGroup->expects( $this->never() )
+		$jobQueue->expects( $this->never() )
 			->method( 'lazyPush' );
 
-		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$instance = new ChangePropagationDispatchJob(
 			$subject->getTitle()
@@ -150,40 +134,32 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPlanAsJob() {
 
-		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobQueueGroup->expects( $this->once() )
+		$jobQueue->expects( $this->once() )
 			->method( 'lazyPush' );
 
-		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		ChangePropagationDispatchJob::planAsJob( $subject );
 	}
 
 	public function testCleanUp() {
 
-		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$subject = DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
-		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobQueueGroup->expects( $this->once() )
+		$jobQueue->expects( $this->once() )
 			->method( 'lazyPush' );
 
-		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -210,10 +186,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindAndDispatchOnPropertyEntity() {
 
-		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$subject = DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
 		$tempFile = $this->getMockBuilder( '\SMW\Utils\TempFile' )
@@ -225,14 +197,14 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'TempFile', $tempFile );
 
-		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobQueueGroup->expects( $this->atLeastOnce() )
+		$jobQueue->expects( $this->atLeastOnce() )
 			->method( 'lazyPush' );
 
-		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPropertyID' ) )

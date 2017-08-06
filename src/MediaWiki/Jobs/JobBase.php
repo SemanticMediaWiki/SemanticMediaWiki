@@ -131,13 +131,7 @@ abstract class JobBase extends Job {
 	 * @return boolean
 	 */
 	public static function batchInsert( $jobs ) {
-
-		if ( class_exists( 'JobQueueGroup' ) ) {
-			JobQueueGroup::singleton()->push( $jobs );
-			return true;
-		}
-
-		return parent::batchInsert( $jobs );
+		return ApplicationFactory::getInstance()->getJobQueue()->push( $jobs );
 	}
 
 	/**
@@ -158,31 +152,9 @@ abstract class JobBase extends Job {
 	 * @since 3.0
 	 */
 	public function lazyPush() {
-
-		// MW 1.26+
-		if ( $this->isEnabledJobQueue && method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			return ApplicationFactory::getInstance()->getJobQueueGroup()->lazyPush( $this );
+		if ( $this->isEnabledJobQueue ) {
+			return ApplicationFactory::getInstance()->getJobQueue()->lazyPush( $this );
 		}
-
-		$this->insert();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return array
-	 */
-	public static function getQueueSizes() {
-		return ApplicationFactory::getInstance()->getJobQueueGroup()->getQueueSizes();
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return integer
-	 */
-	public static function getQueueSize( $type ) {
-		return ApplicationFactory::getInstance()->getJobQueueGroup()->get( $type )->getSize();
 	}
 
 }
