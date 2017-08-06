@@ -95,7 +95,7 @@ class IdTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ) );
-		$this->outputFormatter->addParentLink();
+		$this->outputFormatter->addParentLink( [ 'tab' => 'supplement' ] );
 
 		// https://phabricator.wikimedia.org/T109652#1562641
 		if ( !$this->user->matchEditToken( $webRequest->getVal( 'wpEditToken' ) ) ) {
@@ -250,12 +250,24 @@ class IdTaskHandler extends TaskHandler {
 		}
 
 		if ( $references !== array() ) {
+			$msg = $id === '' ? 'smw-admin-iddispose-references-multiple' : 'smw-admin-iddispose-references';
 			$output .= Html::element(
 				'p',
 				array(),
-				$this->getMessageAsString( array( 'smw-admin-iddispose-references', $id, count( $references ) ) )
+				$this->getMessageAsString( array( $msg, $id, count( $references ) ) )
 			);
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
+		} else {
+			$output .= Html::element(
+				'div',
+				array(
+					'class' => 'smw-callout smw-callout-warning',
+					'style' => 'margin-top:20px;'
+				),
+				$this->getMessageAsString( array( 'smw-admin-iddispose-no-references', $id ) )
+			);
+
+			$id = '';
 		}
 
 		return $output;

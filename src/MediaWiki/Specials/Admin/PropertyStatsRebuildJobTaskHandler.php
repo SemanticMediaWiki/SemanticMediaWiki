@@ -57,7 +57,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 
 		// smw-admin-propertystatistics
 		$this->htmlFormRenderer
-				->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-propertystatistics-title' ) )
+				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-propertystatistics-title' ) )
 				->addParagraph( $this->getMessageAsString( 'smw-admin-propertystatistics-intro', Message::PARSE ) );
 
 		if ( $this->isEnabledFeature( SMW_ADM_PSTATS ) && !$this->hasPendingPropertyStatisticsRebuildJob() ) {
@@ -102,7 +102,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 
 		$propertyStatisticsRebuildJob->insert();
 
-		$this->outputFormatter->redirectToRootPage( $this->getMessageAsString( 'smw-admin-propertystatistics-title' ) );
+		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 	}
 
 	private function hasPendingPropertyStatisticsRebuildJob() {

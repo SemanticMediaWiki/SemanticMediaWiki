@@ -65,7 +65,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-settings-title' ) );
-		$this->outputFormatter->addParentLink();
+		$this->outputFormatter->addParentLink( [ 'tab' => 'supplement' ] );
 
 		$this->outputFormatter->addHtml(
 			Html::rawElement( 'p', array(), $this->getMessageAsString( 'smw-admin-settings-docu', Message::PARSE ) )

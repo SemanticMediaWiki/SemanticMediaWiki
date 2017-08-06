@@ -62,7 +62,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	public function getHtml() {
 
 		$this->htmlFormRenderer
-			->addHeader( 'h3', $this->getMessageAsString( 'smw_smwadmin_datarefresh' ) )
+			->addHeader( 'h4', $this->getMessageAsString( 'smw_smwadmin_datarefresh' ) )
 			->addParagraph( $this->getMessageAsString( 'smw_smwadmin_datarefreshdocu' ) );
 
 		if ( !$this->isEnabledFeature( SMW_ADM_REFRESH ) ) {
@@ -135,7 +135,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 			$jobQueue->delete( 'SMW\RefreshJob' );
 		}
 
-		$this->outputFormatter->redirectToRootPage();
+		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 	}
 
 	private function getProgressBar( $prog ) {

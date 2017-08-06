@@ -200,6 +200,33 @@ return array(
 		)
 	),
 
+	// VTabs
+	'ext.smw.vtabs.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/util/ext.smw.vertical.tabs.css'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// VTabs
+	'ext.smw.vtabs' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/util/ext.smw.vertical.tabs.css'
+		),
+		'scripts' => array(
+			'smw/util/ext.smw.vertical.tabs.js'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	// Postproc resources
 	'ext.smw.postproc' => $moduleTemplate + array(
 		'scripts' => 'smw/util/ext.smw.util.postproc.js',
