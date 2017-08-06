@@ -503,11 +503,9 @@ class SMWSQLStore3Readers {
 		$result = array();
 
 		if ( !$proptable->isFixedPropertyTable() ) {
-			if ( $where !== '' && strpos( SMW_SQL3_SMWIW_OUTDATED, $where ) === false ) {
-				$where .= " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
-			} else {
-				$where .= " smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
-			}
+			$where .= ( $where !== '' ? ' AND ' : ' ' ) . "smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
+			" AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW ) .
+			" AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW );
 		}
 
 		$res = $db->select(
@@ -537,7 +535,7 @@ class SMWSQLStore3Readers {
 				// silently drop data, should be extremely rare and will usually fix itself at next edit
 			}
 
-			$title = $row->smw_title !== '' ? $row->smw_title : 'Empty';
+			$title = ( $row->smw_title !== '' ? $row->smw_title : 'Empty' ) . '/' . $row->smw_namespace;
 
 			// Avoid null return in Iterator
 			return $diHandler->dataItemFromDBKeys( [ 'Blankpage/' . $title, NS_SPECIAL, '', '', '' ] );
