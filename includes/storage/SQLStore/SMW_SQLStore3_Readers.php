@@ -536,6 +536,9 @@ class SMWSQLStore3Readers {
 			} catch ( DataItemHandlerException $e ) {
 				// silently drop data, should be extremely rare and will usually fix itself at next edit
 			}
+
+			// Avoid null return in Iterator
+			return $diHandler->dataItemFromDBKeys( [ 'PROP_SUBJECT_READ', 0, ':smw-error', '', '' ] );
 		};
 
 		$iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
