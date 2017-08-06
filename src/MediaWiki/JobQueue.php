@@ -79,6 +79,7 @@ class JobQueue {
 
 		if ( $this->disableCache ) {
 			$jobQueue->flushCaches();
+			$this->disableCache = false;
 		}
 	}
 
@@ -127,6 +128,7 @@ class JobQueue {
 
 		if ( $this->disableCache ) {
 			$jobQueue->flushCaches();
+			$this->disableCache = false;
 		}
 
 		return $jobQueue->getSize();

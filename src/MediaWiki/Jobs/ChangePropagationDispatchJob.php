@@ -133,7 +133,9 @@ class ChangePropagationDispatchJob extends JobBase {
 	 */
 	public static function hasPendingJobs( DIWikiPage $subject ) {
 
-		if ( self::getQueueSize( 'SMW\ChangePropagationUpdateJob' ) > 0 ) {
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		if ( $applicationFactory->getJobQueue()->hasPendingJob( 'SMW\ChangePropagationUpdateJob' ) ) {
 			return true;
 		}
 
@@ -142,7 +144,7 @@ class ChangePropagationDispatchJob extends JobBase {
 			$subject->getHash()
 		);
 
-		return ApplicationFactory::getInstance()->getCache()->fetch( $key ) > 0;
+		return $applicationFactory->getCache()->fetch( $key ) > 0;
 	}
 
 	/**
@@ -158,9 +160,10 @@ class ChangePropagationDispatchJob extends JobBase {
 	 */
 	public static function getPendingJobsCount( DIWikiPage $subject ) {
 
-		$count = self::getQueueSize( 'SMW\ChangePropagationUpdateJob' );
+		$applicationFactory = ApplicationFactory::getInstance();
+		$count = $applicationFactory->getJobQueue()->getQueueSize( 'SMW\ChangePropagationUpdateJob' );
 
-		// Fallback for when JobQueueGroup::getSize doesn't yet contain the
+		// Fallback for when JobQueue::getQueueSize doesn't yet contain the
 		// updated stats
 		if ( $count == 0 && self::hasPendingJobs( $subject ) ) {
 			$key = smwfCacheKey(
@@ -168,7 +171,7 @@ class ChangePropagationDispatchJob extends JobBase {
 				$subject->getHash()
 			);
 
-			$count = ApplicationFactory::getInstance()->getCache()->fetch( $key );
+			$count = $applicationFactory->getCache()->fetch( $key );
 		}
 
 		return $count;
