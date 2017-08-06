@@ -175,18 +175,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	 * @see JsonTestCaseScriptRunner::getPermittedSettings
 	 */
 	protected function getPermittedSettings() {
-
-		// Ensure that the context is set for a select language
-		// and dependent objects are reset
-		$langCallback = function( $val ) {
-			\RequestContext::getMain()->setLanguage( $val );
-			\SMW\Localizer::getInstance()->clear();
-			return \Language::factory( $val ); };
-
-		$this->settingsValueCallbacks = [
-			'wgContLang' => $langCallback,
-			'wgLang' => $langCallback,
-		];
+		parent::getPermittedSettings();
 
 		return array(
 			'smwgNamespacesWithSemanticLinks',
@@ -238,11 +227,9 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	private function prepareTest( $jsonTestCaseFileHandler ) {
 
 		foreach ( $this->getPermittedSettings() as $key ) {
-			$callback = isset( $this->settingsValueCallbacks[$key] ) ? $this->settingsValueCallbacks[$key] : null;
-
 			$this->changeGlobalSettingTo(
 				$key,
-				$jsonTestCaseFileHandler->getSettingsFor( $key, $callback )
+				$jsonTestCaseFileHandler->getSettingsFor( $key, $this->getConfigValueCallback( $key ) )
 			);
 		}
 

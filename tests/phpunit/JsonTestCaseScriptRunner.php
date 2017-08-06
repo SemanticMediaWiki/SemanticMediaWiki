@@ -47,6 +47,11 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	private $itemsMarkedForDeletion = array();
 
 	/**
+	 * @var array
+	 */
+	private $configValueCallback = array();
+
+	/**
 	 * @var boolean
 	 */
 	protected $deletePagesOnTearDown = true;
@@ -60,11 +65,6 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 * @var string
 	 */
 	protected $connectorId = '';
-
-	/**
-	 * @var array
-	 */
-	protected $settingsValueCallbacks = array();
 
 	protected function setUp() {
 		parent::setUp();
@@ -133,7 +133,33 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 * @return array
 	 */
 	protected function getPermittedSettings() {
+
+		// Ensure that the context is set for a select language
+		// and dependent objects are reset
+		$langCallback = function( $val ) {
+			\RequestContext::getMain()->setLanguage( $val );
+			\SMW\Localizer::getInstance()->clear();
+			return \Language::factory( $val ); };
+
+		$this->registerConfigValueCallback( 'wgContLang', $langCallback );
+		$this->registerConfigValueCallback( 'wgLang', $langCallback );
+
 		return array();
+	}
+
+	/**
+	 * @param string $key
+	 * @param Closure $callback
+	 */
+	protected function registerConfigValueCallback( $key, \Closure $callback ) {
+		$this->configValueCallback[$key] = $callback;
+	}
+
+	/**
+	 * @return callable|null
+	 */
+	protected function getConfigValueCallback( $key ) {
+		return isset( $this->configValueCallback[$key] ) ? $this->configValueCallback[$key] : null;
 	}
 
 	/**
