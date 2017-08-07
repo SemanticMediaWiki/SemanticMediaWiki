@@ -170,8 +170,6 @@
 	"types": "Типи",
 	"smw_types_docu": "Список [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes доступних типів даних], де кожен [https://www.semantic-mediawiki.org/wiki/Help:Datatype тип] репрезентує унікальний набір атрибутів, що описують значення з точки зору характеристик зберігання й відображення, похідних від присвоєної властивості.",
 	"smw-special-types-no-such-type": "Указаного типу даних не існує",
-
-
 	"smw-statistics": "Семантична статистика",
 	"smw-statistics-property-instance": "{{PLURAL:$1|1= Значення|Значення}} властивості (всього)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Властивість|Властивості|Властивостей}}]] (всього)",

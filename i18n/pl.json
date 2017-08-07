@@ -159,8 +159,6 @@
 	"types": "Typy",
 	"smw_types_docu": "Poniżej znajduje się lista wszystkich typów danych, które mogą zostać przypisane atrybutom.",
 	"smw-special-types-no-such-type": "Określony typ danych nie istnieje",
-
-
 	"smw-statistics": "Statystyka semantyczna",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Wartość|Wartości}} właściwości (łącznie)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Właściwość|Właściwości}}]] (łącznie)",

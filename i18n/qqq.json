@@ -182,8 +182,6 @@
 	"types": "{{doc-special|Types}}\n{{Identical|Type}}",
 	"smw_types_docu": "This is the introductory message at the top of [[Special:Types]].",
 	"smw-special-types-no-such-type": "Error message shown on [[Special:Types]] when specifying an invalid data type.",
-
-
 	"smw-statistics": "Is a label that is displayed on the [[Special:Statistics|Statistics]] page.\n{{Identical|Semantic statistics}}",
 	"smw-statistics-property-instance": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of property values",
 	"smw-statistics-property-total": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of properties",
@@ -403,6 +401,7 @@
 	"smw-admin-iddispose-done": "This is an informatory message after an action was performed.\n\nParameter.:\n* $1 holds the ID of an object",
 	"smw-admin-iddispose-references": "This is an informatory message.\n\nParameter:\n* $1 holds the ID of an object\n* $2 holds the number of tables",
 	"smw-admin-objectid": "A label",
+	"smw-admin-tab-registry": "{{Identical|Registry}}",
 	"smw-livepreview-loading": "{{Identical|Loading}}Message displayed while data is loading.",
 	"smw-sp-searchbyproperty-description": "Extended description text for the [[Special:SearchByProperty]] page.",
 	"smw-sp-searchbyproperty-resultlist-header": "A header label",

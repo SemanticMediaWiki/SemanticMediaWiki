@@ -163,8 +163,6 @@
 	"types": "الأنواع",
 	"smw_types_docu": "فيما يلي قائمة تضم كل أنواع البيانات التي يمكن أن تسند إلى الخصائص.",
 	"smw-special-types-no-such-type": "نوع البيانات المُعيّن غير موجود",
-
-
 	"smw-statistics": "إحصائيات دلالية",
 	"smw-statistics-property-instance": "{{PLURAL:$1|قيمة|قيمتان|قيمة}} لخصائص (الإجمالي)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|خصيصة|خصيصتان|$1 خصائص}}]] (الإجمالي)",

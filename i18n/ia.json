@@ -131,8 +131,6 @@
 	"smw_purge": "Refrescar",
 	"types": "Typos",
 	"smw_types_docu": "Lista del [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes typos de datos disponibile] in que cata [https://www.semantic-mediawiki.org/wiki/Help:Datatype typo] representa un insimul unic de attributos pro describer un valor in terminos de characteristicas de immagazinage e visualisation que se heredita in un proprietate assignate.",
-
-
 	"smw_uri_doc": "Le resolvitor de URL implementa le [$1 conclusion del Gruppo de Architectura Technic del W3C a proposito de httpRange-14].\nIllo assecura que le humanos non se transforma in sitos web.",
 	"ask": "Recerca semantic",
 	"smw_ask_sortby": "Ordinar per columna (optional)",

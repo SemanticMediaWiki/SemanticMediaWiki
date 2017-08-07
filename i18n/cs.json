@@ -139,8 +139,6 @@
 	"smw_purge": "Obnovit",
 	"types": "Typy",
 	"smw_types_docu": "Následuje seznam všech údajových typů, které je možné přiřadit vlastnostem. Každý údajový typ má stránku, kde je možné uvést dodatečné informace.",
-
-
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|Vlastnost|Vlastnosti}} (celkem)",
 	"smw-statistics-property-page": "{{PLURAL:$1|Vlastnost (registrovaná|Vlastnosti (registrované}} se stránkou)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Vlastnost (přiřazená|Vlastnosti (přiřazené}} datovému typu)",

@@ -162,8 +162,6 @@
 	"types": "型",
 	"smw_types_docu": "[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes 利用可能なデータ型]の一覧です。各々の[https://www.semantic-mediawiki.org/wiki/Help:Datatype 型]は、保管および、割り当てられたプロパティから遺伝する性質の表示の点で、値を特徴付ける属性の一意な集合に相当します。",
 	"smw-special-types-no-such-type": "指定されたデータ型は存在しません",
-
-
 	"smw-statistics": "意味的統計",
 	"smw-statistics-property-instance": "プロパティ{{PLURAL:$1|値}} (合計)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|プロパティ}}]] (合計)",

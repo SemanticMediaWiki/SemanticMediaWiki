@@ -167,8 +167,6 @@
 	"types": "סוגים",
 	"smw_types_docu": "רשימה של [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes סוגי נתונים זמינים] שבה כל [https://www.semantic-mediawiki.org/wiki/Help:Datatype סוג] מייצג ערכה ייחודית של מאפיינים שמתארים ערך במונחים של מאבחני אחסון ותצוגה שיורשים ממאפיין מוחל.",
 	"smw-special-types-no-such-type": "סוג הנתונים שצוין אינו קיים",
-
-
 	"smw-statistics": "סטטיסטיקה סמנטית",
 	"smw-statistics-property-instance": "{{PLURAL:$1|ערך של מאפיין|ערכים של מאפיינים}} (סה\"כ)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|מאפיין|מאפיינים}}]] (סה\"כ)",

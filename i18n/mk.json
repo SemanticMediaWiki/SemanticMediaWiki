@@ -160,8 +160,6 @@
 	"types": "Типови",
 	"smw_types_docu": "Список ма [[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes расположиви податочни типови] со секој [https://www.semantic-mediawiki.org/wiki/Help:Datatype тип] кои претставуваат единствен збир атрибути за опишување на вредноста во однос на особености за складирање и приказ кои се наследени од доделено својство.",
 	"smw-special-types-no-such-type": "Назначениот податочен тип не постои",
-
-
 	"smw-statistics": "Семантички статистики",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Вредност на својство|Вредности на својства}} (вкупно)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Својство|Својства}}]] (вкупно)",

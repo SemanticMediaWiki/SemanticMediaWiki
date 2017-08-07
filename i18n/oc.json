@@ -93,8 +93,6 @@
 	"smw_purge": "Reactualizar",
 	"types": "Tipes",
 	"smw_types_docu": "Aquò es una lista de totes los tipes de donadas que pòdon èsser assignats a las proprietats.",
-
-
 	"smw-statistics-property-instance": "{{PLURAL:$1|Valor|Valors}} de proprietat (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Proprietat|Proprietats}}]] (total)",
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|Proprietat|Proprietats}} (total)",

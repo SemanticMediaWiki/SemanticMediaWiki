@@ -29,7 +29,8 @@
 			"Luzcaru",
 			"Peter Bowman",
 			"Javiersanp",
-			"Josecurioso"
+			"Josecurioso",
+			"MarcoAurelio"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -154,7 +155,8 @@
 	"smw_attributearticlecount": "Se {{PLURAL:$1|muestra $1 página que usa|muestran $1 páginas que usan}} esta propiedad.",
 	"smw-propertylist-subproperty-header": "Subpropiedades",
 	"smw-propertylist-redirect-header": "Sinónimos",
-	"smw-propertylist-count": "Se {{PLURAL:$1|muestra $1 propiedad relacionada|muestran $1 propiedades relacionadas}}.",
+	"smw-propertylist-error-header": "Páginas con asignaciones no apropiadas",
+	"smw-propertylist-count": "Mostrando $1 {{PLURAL:$1|entidad|entidades}}.",
 	"smw-propertylist-count-with-restricted-note": "Se {{PLURAL:$1|muestra $1 propiedad relacionada|muestran $1 propiedades relacionadas}}. Hay más disponibles pero la salida se restrinje a \"$2\".",
 	"exportrdf": "Exportar páginas a RDF",
 	"smw_exportrdf_docu": "Esta página permite obtener datos de una página en formato RDF.\nPara exportar páginas, escribe los títulos en el cuadro de abajo, uno por línea.",
@@ -188,8 +190,6 @@
 	"types": "Tipos",
 	"smw_types_docu": "Lista de [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tipos de datos disponibles] donde cada [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo] representa un conjunto único de atributos para describir un valor en términos de almacenamiento y características de muestra que son hereditarios a una propiedad asignada.",
 	"smw-special-types-no-such-type": "El tipo de datos especificado no existe",
-
-
 	"smw-statistics": "Estadísticas de semántica",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Valor|Valores}} de propiedad (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Propiedad|Propiedades}}]] (total)",
@@ -351,6 +351,7 @@
 	"smw-info-par-message": "El mensaje que mostrar.",
 	"smw-info-par-icon": "Icono que mostrar: ya sea \"info\" (información) o bien \"warning\" (advertencia).",
 	"prefs-smw": "Semantic MediaWiki",
+	"prefs-general-options": "Opciones generales",
 	"prefs-ask-options": "Opciones de búsqueda semántica",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (o extensiones relacionadas) suministran las opciones mostradas a continuación para permitir la personalización individual de las funciones seleccionadas. Para más información, consulta [https://www.semantic-mediawiki.org/wiki/Help:User_preferences esta página de ayuda].",
 	"smw-prefs-ask-options-tooltip-display": "Mostrar el texto del parámetro como ayuda informativa",

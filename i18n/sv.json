@@ -181,8 +181,6 @@
 	"types": "Typer",
 	"smw_types_docu": "Lista över [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tillgängliga datatyper] där varje [https://www.semantic-mediawiki.org/wiki/Help:Datatype typ] representerar en unik uppsättning attribut för att beskriva ett värde i termer av hur det lagras och visas, som ärvs av en tilldelad egenskap.",
 	"smw-special-types-no-such-type": "Den angivna datatypen finns inte",
-
-
 	"smw-statistics": "Semantisk statistik",
 	"smw-statistics-property-instance": "Egenskaps{{PLURAL:$1|värde|värden}} (totalt)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Egenskap|Egenskaper}}]] (totalt)",
@@ -405,5 +403,6 @@
 	"smw-format-datatable-next": "Nästa",
 	"smw-format-datatable-previous": "Föregående",
 	"smw-format-datatable-sortascending": ": aktivera för att sortera kolumnen stigande",
-	"smw-category-invalid-redirect-target": "Kategorin \"$1\" innehåller en ogiltigt omdirigeringsmål till en namnrymd som inte är en kategori."
+	"smw-category-invalid-redirect-target": "Kategorin \"$1\" innehåller en ogiltigt omdirigeringsmål till en namnrymd som inte är en kategori.",
+	"smw-postproc-queryref": "Sidan markerades för att uppdateras p.g.a. behov av efterbehandling."
 }

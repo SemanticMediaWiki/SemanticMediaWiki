@@ -173,8 +173,6 @@
 	"types": "Typer",
 	"smw_types_docu": "Liste over [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tilgjengelige datatyper] der hver [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] representerer et unikt sett av attributter for å beskrive en verdi med tanke på lagring og visningskarakteristikker som arves av en gitt egenskap.",
 	"smw-special-types-no-such-type": "Den angitte datatypen finnes ikke",
-
-
 	"smw-statistics": "Semantisk statistikk",
 	"smw-statistics-property-instance": "Egenskap {{PLURAL:$1|verdi|verdier}} (totalt)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Egenskap|Egenskaper}}]] (totalt)",

@@ -165,8 +165,6 @@
 	"types": "類型",
 	"smw_types_docu": "下列是可被指派給屬性的資料型態的[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes 清單]。",
 	"smw-special-types-no-such-type": "指定的資料型態不存在",
-
-
 	"smw-statistics": "Semantic 語義統計",
 	"smw-statistics-property-instance": "屬性{{PLURAL:$1|值|值}} (總計)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|屬性|屬性}}]] (總計)",

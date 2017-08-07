@@ -159,8 +159,6 @@
 	"types": "نوع‌ها",
 	"smw_types_docu": "در زیر فهرستی از تمام انواع داده است که می‌تواند به ویژگی‌ها اختصاص داده‌شده‌باشد.",
 	"smw-special-types-no-such-type": "نوع اطلاعات داده شده  وجود ندارد.",
-
-
 	"smw-statistics": "آمارهای معنایی",
 	"smw-statistics-property-instance": "ویژگی {{PLURAL:$1|مقدار|مقادیر}} (کل)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|ویژگی|ویژگی‌ها}}]] (کل)",

@@ -131,6 +131,7 @@
 	"smw_attributearticlecount": "Mostrando $1 {{PLURAL:$1|páxina|páxinas}} que {{PLURAL:$1|usa|usan}} esta propiedade.",
 	"smw-propertylist-subproperty-header": "Subpropiedades",
 	"smw-propertylist-redirect-header": "Sinónimos",
+	"smw-propertylist-error-header": "Páxinas con atribucións incorrectas",
 	"smw-propertylist-count": "{{PLURAL:$1|Móstrase $1 entidade relacionada|Móstranse $1 entidades relacionadas}}.",
 	"smw-propertylist-count-with-restricted-note": "{{PLURAL:$1|Móstrase a $1 entidade relacionada|Móstranse as $1 entidades relacionadas}} (hai máis dispoñibles pero a visualización está restrinxida a \"$2\").",
 	"smw-propertylist-count-more-available": "Amosando $1 {{PLURAL:$1|entidade asociada|entidades asociadas}} (hai máis dispoñibles).",
@@ -167,8 +168,6 @@
 	"types": "Tipos",
 	"smw_types_docu": "Lista dos [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tipos de datos dispoñibles] con cada [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo] representando un conxunto único de atributos para describir un valor en termos características de almacenamento e visualización que son heredadas nunha propiedade asignada.",
 	"smw-special-types-no-such-type": "O tipo de datos especificado non existe",
-
-
 	"smw-statistics": "Estatísticas semánticas",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Valor|Valores}} de propiedade (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Propiedade|Propiedades}}]] (total)",

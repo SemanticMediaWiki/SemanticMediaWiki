@@ -145,8 +145,6 @@
 	"types": "Typy",
 	"smw_types_docu": "Deleka je lisćina wšěch datowych typow, kotrež dadźa so kajkosćam připokazać.",
 	"smw-special-types-no-such-type": "Podaty datowy typ njeeksistuje",
-
-
 	"smw-statistics": "Semantiska statistika",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Kajkostna hódnota|Kajkostnej hódnoće|Kajkostne hódnoty}} (dohromady)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Kajkosć|Kajkosći|Kajkosće}}]] (dohromady)",

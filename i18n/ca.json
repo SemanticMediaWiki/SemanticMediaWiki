@@ -170,8 +170,6 @@
 	"types": "Tipus",
 	"smw_types_docu": "La següent és una [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes llista] de tots els tipus de dades que poden assignar-se a les propietats.",
 	"smw-special-types-no-such-type": "El tipus de dades especificat no existeix",
-
-
 	"smw-statistics": "Estadístiques semàntiques",
 	"smw-statistics-property-instance": "Propietat {{PLURAL:$1|valor|valors}} (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Propietat|Propietats}}]] (total)",

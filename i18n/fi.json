@@ -137,7 +137,6 @@
 	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|esiintymä|esiintymää}})",
 	"smw_purge": "Päivitä",
 	"types": "Tyypit",
-
 	"smw-statistics-query-size": "Kyselyn koko",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Käsite|Käsitteet}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Käsite|Käsitteet}}]]",

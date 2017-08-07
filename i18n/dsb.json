@@ -144,8 +144,6 @@
 	"types": "Typy",
 	"smw_types_docu": "Slědujuca lisćina wšych datowych typow, kótarež daju se kakosćam pśipokazaś.",
 	"smw-special-types-no-such-type": "Pódany datowy typ njeeksistěrujo",
-
-
 	"smw-statistics": "Semantiska statistika",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Kakostna gódnota|Kakostnej gódnośe|Kakostne gódnoty}} (dogromady)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Kakosć|Kakosći}}]] (dogromady)",

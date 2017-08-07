@@ -128,8 +128,6 @@
 	"smw_purge": "Frissítés",
 	"types": "Típusok",
 	"smw_types_docu": "Ez a tulajdonságokhoz rendelhető adattípusok listáját tartalmazza.",
-
-
 	"smw-statistics": "Szemantikus statisztikák",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Adattípus|Adattípusok}}]]",
 	"smw_uri_doc": "Az URI-feloldó implementálja a [$1 W3C TAG finding on httpRange-14]-ben meghatározottakat.\nBiztosítja, hogy az emberek ne váljanak weboldalakká.",
