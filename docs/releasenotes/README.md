@@ -1,5 +1,6 @@
 ## Release notes
 
+* [SMW 2.5.4 release notes](RELEASE-NOTES-2.5.4.md)
 * [SMW 2.5.3 release notes](RELEASE-NOTES-2.5.3.md)
 * [SMW 2.5.2 release notes](RELEASE-NOTES-2.5.2.md)
 * [SMW 2.5.1 release notes](RELEASE-NOTES-2.5.1.md)
