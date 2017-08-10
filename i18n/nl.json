@@ -174,6 +174,7 @@
 	"smw-wantedproperties-docu": "De volgende eigenschapen worden gebruikt in de wiki, maar hebben geen pagina waarop ze worden beschreven.\nOp deze pagina vindt u [https://www.semantic-mediawiki.org/wiki/Wanted_properties gevraagde eigenschappen] die worden gebruikt in de wiki, maar geen pagina hebben waarop ze worden beschreven. Voor een andere weergave, zie de speciale pagina's met [[Special:Properties|alle eigenschappen]] of de [[Special:UnusedProperties|ongebruikte eigenschappen]].",
 	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|keer|keren}} gebruikt)",
 	"smw_purge": "Vernieuwen",
+	"smw-purge-failed": "Verversen is mislukt",
 	"types": "Typen",
 	"smw_types_docu": "Lijst van [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes beschikbare gegevenstypen] waarvan elk [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] een unieke set van attributen vertegenwoordigt die een waarde beschrijven in termen van opslag en weergavekenmerken die erfelijk zijn voor een toegewezen eigenschap.",
 	"smw-special-types-no-such-type": "Het opgegeven gegevenstype bestaat niet",

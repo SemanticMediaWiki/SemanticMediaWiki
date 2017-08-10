@@ -353,6 +353,7 @@
 	"smw-admin-idlookup-docu": "Visar detaljer om ett internt objekt-Id som representerar enskilda enheter (wikisida, underobjekt etc.) i Semantisk MediaWiki.",
 	"smw-admin-iddispose-references": "{{PLURAL:$2|Tabell|Tabeller}} med minst en aktiv referens till ID \"$1\".",
 	"smw-admin-objectid": "Objekt-ID:",
+	"smw-admin-tab-general": "Översikt och support",
 	"smw-livepreview-loading": "Laddar…",
 	"smw-sp-searchbyproperty-description": "Denna sida erbjuder ett enkelt [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces navigeringsgränssnitt] för att hitta entiteter som beskrivs av en egenskap och ett namngivet värde. Andra tillgängliga sökgränssnitt inkluderar [[Special:PageProperty|sidegenskapssök]] och [[Special:Ask|ask-förfrågningsbyggare]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista med resultat",

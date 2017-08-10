@@ -207,6 +207,7 @@
 	"group-smwadministrator": "Administrateuren (Semantic MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administrateuren (Semantic MediaWiki)",
 	"smw-sp-admin-settings-button": "Lëscht vun den Astellunge generéieren",
+	"smw-admin-tab-general": "Iwwersiicht an Ënnerstëtzung",
 	"smw-livepreview-loading": "Lueden...",
 	"smw-sp-searchbyproperty-resultlist-header": "Lëscht vun de Resultater",
 	"smw-editpage-annotation-disabled": "Dës Säit ass net fir semantesch Notifikatiounen am Text konfiguréiert duerch d'Limitatiounen an dësem Nummraum. Detailer wéi dat fir den Nummraum ageschalt ka gi fannt Dir op der Hëllefssäit fir d'[https://www.semantic-mediawiki.org/wiki/Help:Configuration Astellungen].",
