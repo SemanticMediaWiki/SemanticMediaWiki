@@ -88,13 +88,6 @@ class GetPreferences extends HookHandler {
 			'section' => 'smw/ask-options',
 		);
 
-		// Preference to set option box be collapsed by default
-		$preferences['smw-prefs-ask-options-collapsed-default'] = array(
-			'type' => 'toggle',
-			'label-message' => 'smw-prefs-ask-options-collapsed-default',
-			'section' => 'smw/ask-options',
-		);
-
 		return true;
 	}
 

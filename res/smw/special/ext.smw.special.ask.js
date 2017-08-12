@@ -135,59 +135,6 @@
 	}
 
 	/**
-	 * Collapsible fieldsets
-	 * Based on the 'coolfieldset' jQuery plugin:
-	 * http://w3shaman.com/article/jquery-plugin-collapsible-fieldset
-	 *
-	 */
-	function smwHideFieldsetContent(obj, options){
-		obj.find( 'div' ).slideUp(options.speed);
-		obj.find( '.collapsed-info' ).slideDown(options.speed);
-		obj.removeClass( "smwExpandedFieldset" );
-		obj.addClass( "smwCollapsedFieldset" );
-	}
-
-	function smwShowFieldsetContent(obj, options){
-		obj.find( 'div' ).slideDown(options.speed);
-		obj.find( '.collapsed-info' ).slideUp(options.speed);
-		obj.removeClass( "smwCollapsedFieldset" );
-		obj.addClass( "smwExpandedFieldset" );
-	}
-
-	////////////////////////// PUBLIC METHODS ////////////////////////
-
-	$.fn.smwMakeCollapsible = function(options){
-		var setting = { collapsed: options.collapsed, speed: 'medium' };
-		$.extend(setting, options);
-
-		this.each(function(){
-			var fieldset = $(this);
-			var legend = fieldset.children('legend');
-			if ( setting.collapsed ) {
-				legend.toggle(
-					function(){
-						smwShowFieldsetContent(fieldset, setting);
-					},
-					function(){
-						smwHideFieldsetContent(fieldset, setting);
-					}
-				);
-
-				smwHideFieldsetContent(fieldset, {animation:false});
-			} else {
-				legend.toggle(
-					function(){
-						smwHideFieldsetContent(fieldset, setting);
-					},
-					function(){
-						smwShowFieldsetContent(fieldset, setting);
-					}
-				);
-			}
-		});
-	};
-
-	/**
 	 * Implementation of an Special:Ask instance
 	 * @since 1.8
 	 * @ignore
@@ -211,11 +158,6 @@
 		//_init.autocomplete.parameter();
 		_init.tooltip();
 		_init.formatHelp( options );
-
-		// Fieldset collapsible
-		$( '.smw-ask-options' ).smwMakeCollapsible( {
-			'collapsed' : mw.user.options.get( 'smw-prefs-ask-options-collapsed-default' )
-		} );
 
 		// Multiple sorting
 		$( '.smw-ask-delete').click( function() {
