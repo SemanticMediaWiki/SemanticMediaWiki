@@ -83,7 +83,9 @@ class SMWAskPage extends SpecialPage {
 			$this->getUser()->getOption( 'smw-prefs-ask-options-tooltip-display' )
 		);
 
-		$out->addModules( 'ext.smw.style' );
+		$out->addModuleStyles( 'ext.smw.style' );
+		$out->addModuleStyles( 'ext.smw.ask.styles' );
+
 		$out->addModules( 'ext.smw.ask' );
 		$out->addModules( 'ext.smw.property' );
 

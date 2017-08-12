@@ -241,18 +241,32 @@ return array(
 	),
 
 	// Special:Ask
+	'ext.smw.ask.styles' => $moduleTemplate + array(
+		'styles' => 'smw/special/ext.smw.special.ask.css',
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// Special:Ask
 	'ext.smw.ask' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.ask.js',
-		'styles' => 'smw/special/ext.smw.special.ask.css',
 		'dependencies' => array(
 			'ext.smw.tooltip',
-			'ext.smw.style'
+			'ext.smw.style',
+			'ext.smw.ask.styles'
 		),
 		'messages' => array(
 			'smw-ask-delete',
 			'smw-ask-format-selection-help'
 		),
-		'position' => 'top'
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
 	),
 
 	// Facts and browse
