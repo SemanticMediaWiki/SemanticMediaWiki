@@ -172,8 +172,6 @@
 	"types": "Types",
 	"smw_types_docu": "List of [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes available datatypes] with each [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] representing a unique set of attributes to describe a value in terms of storage and display characteristics that are hereditary to an assigned property.",
 	"smw-special-types-no-such-type": "The specified data type does not exist",
-
-
 	"smw-statistics": "Semantic statistics",
 	"smw-statistics-property-instance": "Property {{PLURAL:$1|value|values}} (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Property|Properties}}]] (total)",
