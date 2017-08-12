@@ -40,7 +40,11 @@ class InputFormWidget {
 	 *
 	 * @return string
 	 */
-	public function createEmbeddedCodeLinkElement() {
+	public function createEmbeddedCodeLinkElement( $isEmpty = false ) {
+
+		if ( $isEmpty ) {
+			return '';
+		}
 
 		//show|hide inline embed code
 		$embedShow = "document.getElementById('inlinequeryembed').style.display='block';" .
@@ -52,14 +56,13 @@ class InputFormWidget {
 			"document.getElementById('embed_show').style.display='inline';" .
 			"document.getElementById('embed_hide').style.display='none';";
 
-		return Html::rawElement(
+		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-lblue' ], Html::rawElement(
 			'span',
 			array(
 				'id'  => 'embed_show'
 			), Html::rawElement(
 				'a',
 				array(
-					'class' => 'smw-ask-action-btn smw-ask-action-btn-lblue',
 					'href'  => '#embed_show',
 					'rel'   => 'nofollow',
 					'onclick' => $embedShow
@@ -73,13 +76,12 @@ class InputFormWidget {
 			), Html::rawElement(
 				'a',
 				array(
-					'class' => 'smw-ask-action-btn smw-ask-action-btn-lblue',
 					'href'  => '#embed_hide',
 					'rel'   => 'nofollow',
 					'onclick' => $embedHide
 				), wfMessage( 'smw_ask_hide_embed' )->escaped()
 			)
-		);
+		) );
 	}
 
 	/**
@@ -114,21 +116,21 @@ class InputFormWidget {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $hideForm
+	 * @param boolean $isEmpty
 	 *
 	 * @return string
 	 */
-	public function createFindResultLinkElement( $hideForm = false ) {
+	public function createFindResultLinkElement( $isEmpty = false ) {
 
-		if ( !$hideForm ) {
+		if ( !$isEmpty ) {
 			return '';
 		}
 
-		return Html::element(
+		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-dblue' ], Html::element(
 			'input',
 			array(
 				'type'  => 'submit',
-				'class' => 'smw-ask-action-btn smw-ask-action-btn-dblue',
+				'class' => '',
 				'value' => wfMessage( 'smw_ask_submit' )->escaped()
 			), ''
 		) . ' ' . Html::element(
@@ -138,7 +140,7 @@ class InputFormWidget {
 				'name'  => 'eq',
 				'value' => 'yes'
 			), ''
-		);
+		) );
 	}
 
 	/**
@@ -150,15 +152,44 @@ class InputFormWidget {
 	 *
 	 * @return string
 	 */
-	public function createShowHideLinkElement( Title $title, $urlTail = '', $hideForm = false ) {
-		return Html::element(
+	public function createShowHideLinkElement( Title $title, $urlTail = '', $hideForm = false, $isEmpty = false ) {
+
+		if ( $isEmpty ) {
+			return '';
+		}
+
+		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-lblue' ], Html::element(
 			'a',
 			array(
-				'class' => 'smw-ask-action-btn smw-ask-action-btn-lblue',
 				'href'  => $title->getLocalURL( $urlTail ),
 				'rel'   => 'nofollow'
 			), wfMessage( ( $hideForm ? 'smw_ask_hidequery' : 'smw_ask_editquery' ) )->text()
-		);
+		) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title $title
+	 * @param string $urlTail
+	 * @param boolean $hideForm
+	 *
+	 * @return string
+	 */
+	public function createDebugLinkElement( Title $title, $urlTail = '', $isEmpty = false ) {
+
+		if ( $isEmpty ) {
+			return '';
+		}
+
+		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-right' ], Html::element(
+			'a',
+			array(
+				'class' => '',
+				'href'  => $title->getLocalURL( $urlTail . '&debug=true&eq=yes' ),
+				'rel'   => 'nofollow'
+			), 'Debug'
+		) );
 	}
 
 	/**
@@ -176,18 +207,17 @@ class InputFormWidget {
 
 		$this->addResourceModule( 'onoi.clipboard' );
 
-		return Html::element(
+		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey' ], Html::element(
 			'a',
 			array(
 				'data-clipboard-action' => 'copy',
 				'data-clipboard-target' => '.clipboard',
 				'data-onoi-clipboard-field' => 'value',
-				'class' => 'smw-ask-action-btn smw-ask-action-btn-lgrey clipboard',
+				'class' => 'clipboard',
 				'value' => $infolink->getURL(),
-				'style' => 'float:right;',
 				'title' =>  wfMessage( 'smw-clipboard-copy-link' )->text()
 			), '⧟'
-		);
+		) );
 	}
 
 }
