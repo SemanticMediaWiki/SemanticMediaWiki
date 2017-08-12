@@ -29,6 +29,10 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->requestOptions->expects( $this->any() )
+			->method( 'getExtraConditions' )
+			->will( $this->returnValue( array() ) );
 	}
 
 	public function testCanConstruct() {

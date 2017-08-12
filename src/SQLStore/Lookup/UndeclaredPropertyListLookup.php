@@ -99,32 +99,39 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	private function selectPropertiesFromTable( $propertyTable ) {
 
 		$options = $this->store->getSQLOptions( $this->requestOptions, 'title' );
-		$idTable = \SMWSQLStore3::ID_TABLE;
+		$idTable = SQLStore::ID_TABLE;
 
 		$options['ORDER BY'] = 'count DESC';
-		$options['GROUP BY'] = 'smw_title';
+
+		// Postgres Error: 42803 ERROR: ...smw_title must appear in the GROUP BY
+		// clause or be used in an aggregate function
+		$options['GROUP BY'] = 'smw_id, smw_title';
 
 		$conditions = array(
 			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
-			'page_id IS NULL',
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_proptable_hash IS NULL',
 			'smw_iw' => '',
 			'smw_subobject' => ''
 		);
 
-		$db = $this->store->getConnection( 'mw.db' );
+		$joinCond = 'p_id';
 
-		$res = $db->select(
-			array( $idTable, 'page', $propertyTable->getName() ),
-			array( 'smw_title', 'COUNT(*) as count' ),
+		foreach ( $this->requestOptions->getExtraConditions() as $extaCondition ) {
+			if ( isset( $extaCondition['filter.unapprove'] ) ) {
+				$joinCond = 'o_id';
+			}
+		}
+
+		$res = $this->store->getConnection( 'mw.db' )->select(
+			array( $idTable, $propertyTable->getName() ),
+			array( 'smw_id', 'smw_title', 'COUNT(*) as count' ),
 			$conditions,
 			__METHOD__,
 			$options,
 			array(
 				$idTable => array(
-					'INNER JOIN', 'p_id=smw_id'
-				),
-				'page' => array(
-					'LEFT JOIN', array( 'page_namespace=' . $db->addQuotes( SMW_NS_PROPERTY ), 'page_title=smw_title'  )
+					'INNER JOIN', "$joinCond=smw_id"
 				)
 			)
 		);
