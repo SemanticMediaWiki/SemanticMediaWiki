@@ -23,6 +23,14 @@ class ErrorFormWidgetTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSessionFailure() {
+
+		$this->assertInternalType(
+			'string',
+			ErrorFormWidget::sessionFailure()
+		);
+	}
+
 	/**
 	 * @dataProvider queryErrorProvider
 	 */

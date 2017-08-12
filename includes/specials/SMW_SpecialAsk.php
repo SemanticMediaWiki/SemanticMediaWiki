@@ -91,6 +91,15 @@ class SMWAskPage extends SpecialPage {
 
 		$this->setHeaders();
 
+		$request->setVal( 'wpEditToken',
+			$this->getUser()->getEditToken()
+		);
+
+		// #2590
+		if ( !$this->getUser()->matchEditToken( $request->getVal( 'wpEditToken' ) ) ) {
+			return $out->addHtml( ErrorFormWidget::sessionFailure() );
+		}
+
 		if ( !$smwgQEnabled ) {
 			$out->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->escaped() );
 		} else {
