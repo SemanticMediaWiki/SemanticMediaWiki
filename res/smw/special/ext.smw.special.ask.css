@@ -27,6 +27,27 @@
  * @licence GNU GPL v2+
  * @author mwjames
  */
+.float-right {
+	float: right;
+}
+
+.float-left {
+	float: left;
+}
+
+.clear-both {
+	clear: both;
+}
+
+.smw-ask-navigation a, .smw-ask-nav-prev, .smw-ask-nav-next, .smw-ask-actions-nav a, .smw-ask-navigation b {
+	vertical-align: middle;
+}
+
+.smw-ask-horizontalrule {
+	margin-bottom: 10px;
+	margin-top:10px;
+}
+
 .smw-ask-format-selection-help {
 	vertical-align: middle;
 	margin-left: 10px;
