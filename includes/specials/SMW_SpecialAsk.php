@@ -8,6 +8,7 @@ use SMW\MediaWiki\Specials\Ask\InputFormWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersFormWidget;
 use SMW\MediaWiki\Specials\Ask\FormatterWidget;
 use SMW\MediaWiki\Specials\Ask\NavigationWidget;
+use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
 use SMW\ApplicationFactory;
 
 /**
@@ -473,7 +474,7 @@ class SMWAskPage extends SpecialPage {
 			isset( $this->m_params['source'] ) ? $this->m_params['source'] : null
 		);
 
-		$downloadLink = $this->getExtraDownloadLinks();
+		$downloadLink = DownloadLinksWidget::downloadLinks( $this->queryLinker );
 		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $querySource, $isFromCache, $duration )->parse() : '';
 		$hideForm = false;
 
@@ -673,45 +674,6 @@ class SMWAskPage extends SpecialPage {
 
 	protected function getGroupName() {
 		return 'smw_group';
-	}
-
-	private function getExtraDownloadLinks() {
-
-		$downloadLinks = '';
-
-		if ( $this->queryLinker === null ) {
-			return $downloadLinks;
-		}
-
-		$queryLinker = clone $this->queryLinker;
-
-		$queryLinker->setParameter( 'true', 'prettyprint' );
-		$queryLinker->setParameter( 'true', 'unescape' );
-		$queryLinker->setParameter( 'json', 'format' );
-		$queryLinker->setParameter( 'JSON', 'searchlabel' );
-		$queryLinker->setCaption( 'JSON' );
-
-		$downloadLinks .= $queryLinker->getHtml();
-
-		$queryLinker->setCaption( 'CSV' );
-		$queryLinker->setParameter( 'csv', 'format' );
-		$queryLinker->setParameter( 'CSV', 'searchlabel' );
-
-		$downloadLinks .= ' | ' . $queryLinker->getHtml();
-
-		$queryLinker->setCaption( 'RSS' );
-		$queryLinker->setParameter( 'rss', 'format' );
-		$queryLinker->setParameter( 'RSS', 'searchlabel' );
-
-		$downloadLinks .= ' | ' . $queryLinker->getHtml();
-
-		$queryLinker->setCaption( 'RDF' );
-		$queryLinker->setParameter( 'rdf', 'format' );
-		$queryLinker->setParameter( 'RDF', 'searchlabel' );
-
-		$downloadLinks .= ' | ' . $queryLinker->getHtml();
-
-		return '(' . $downloadLinks . ')';
 	}
 
 	private function doFinalModificationsOnBorrowedOutput( &$html, &$searchInfoText ) {
