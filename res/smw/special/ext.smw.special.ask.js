@@ -194,6 +194,10 @@
 	 */
 	$( document ).ready( function() {
 
+		// Field input is kept disabled until JS is fully loaded to signal
+		// "ready for input"
+		$( '#query, #format, #options, #search, #result' ).removeClass( 'is-disabled' );
+
 		// Get initial format and language settings
 		var selected = $( '#formatSelector option:selected' ),
 			options = {

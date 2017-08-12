@@ -74,8 +74,7 @@
 					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Category smwtype_wpg\">Category:S0016</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
 				],
 				"not-contain": [
-					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>",
-					"<div class=\"smw-callout smw-callout-error\">"
+					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
 				]
 			}
 		},
@@ -103,9 +102,7 @@
 					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Category smwtype_wpg\">Category:S0016</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
 				],
 				"not-contain": [
-					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>",
-					"<div class=\"smw-callout smw-callout-error\">"
-				]
+					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"				]
 			}
 		}
 	],

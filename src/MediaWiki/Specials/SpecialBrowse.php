@@ -172,7 +172,7 @@ class SpecialBrowse extends SpecialPage {
 						array(
 							'class' => 'smw-callout smw-callout-error',
 						),
-						Message::get( 'smw-browse-js-disabled', Message::PARSE )
+						Message::get( 'smw-noscript', Message::PARSE )
 					)
 				)
 			) . Html::rawElement(

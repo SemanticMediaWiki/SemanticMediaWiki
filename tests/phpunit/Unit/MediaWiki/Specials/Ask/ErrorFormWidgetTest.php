@@ -31,6 +31,14 @@ class ErrorFormWidgetTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNoScript() {
+
+		$this->assertInternalType(
+			'string',
+			ErrorFormWidget::noScript()
+		);
+	}
+
 	/**
 	 * @dataProvider queryErrorProvider
 	 */
