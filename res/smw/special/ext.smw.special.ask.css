@@ -39,7 +39,7 @@
 	clear: both;
 }
 
-.smw-ask-navigation a, .smw-ask-nav-prev, .smw-ask-nav-next, .smw-ask-actions-nav a, .smw-ask-navigation b {
+.smw-ask-navigation a, .smw-ask-navigation b, .smw-ask-downloadlinks a, .smw-ask-nav-prev, .smw-ask-nav-next, .smw-ask-actions-nav a {
 	vertical-align: middle;
 }
 
