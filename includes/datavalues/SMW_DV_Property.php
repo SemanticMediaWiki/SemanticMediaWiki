@@ -332,12 +332,33 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @since 2.2
+	 * @since 3.0
 	 *
 	 * @return boolean
 	 */
-	public function canUse() {
-		return $this->isValid() && $this->m_dataitem->isUnrestricted();
+	public function isRestricted() {
+
+		if ( !$this->isValid() ) {
+			return true;
+		}
+
+		$propertyRestrictionExaminer = $this->dataValueServiceFactory->getPropertyRestrictionExaminer();
+
+		$propertyRestrictionExaminer->isQueryContext(
+			$this->getOption( self::OPT_QUERY_CONTEXT )
+		);
+
+		$propertyRestrictionExaminer->checkRestriction(
+			$this->m_dataitem
+		);
+
+		if ( !$propertyRestrictionExaminer->hasRestriction() ) {
+			return false;
+		}
+
+		$this->restrictionError = $propertyRestrictionExaminer->getError();
+
+		return true;
 	}
 
 	/**

@@ -8,6 +8,7 @@ use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Serializers\SemanticDataSerializer;
+use SMW\ApplicationFactory;
 use SMW\Subobject;
 
 /**
@@ -89,6 +90,8 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	}
 
 	public function semanticDataProvider() {
+
+		ApplicationFactory::clear();
 
 		$provider = array();
 		$title = \Title::newFromText( __METHOD__ );

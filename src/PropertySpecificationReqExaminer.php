@@ -8,7 +8,7 @@ use SMW\DIProperty;
 use SMW\DataItemFactory;
 use SMWDataItem as DataItem;
 use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
-use SMW\Protection\EditProtectionValidator;
+use SMW\Protection\ProtectionValidator;
 
 /**
  * Examines codified requirements for listed types of property specifications which
@@ -27,9 +27,9 @@ class PropertySpecificationReqExaminer {
 	private $store;
 
 	/**
-	 * @var EditProtectionValidator
+	 * @var ProtectionValidator
 	 */
-	private $editProtectionValidator;
+	private $protectionValidator;
 
 	/**
 	 * @var SemanticData
@@ -44,22 +44,17 @@ class PropertySpecificationReqExaminer {
 	/**
 	 * @var boolean
 	 */
-	private $editProtectionRight = false;
-
-	/**
-	 * @var boolean
-	 */
 	private $reqLock = false;
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param Store $store
-	 * @param EditProtectionValidator $editProtectionValidator
+	 * @param ProtectionValidator $protectionValidator
 	 */
-	public function __construct( Store $store, EditProtectionValidator $editProtectionValidator ) {
+	public function __construct( Store $store, ProtectionValidator $protectionValidator ) {
 		$this->store = $store;
-		$this->editProtectionValidator = $editProtectionValidator;
+		$this->protectionValidator = $protectionValidator;
 	}
 
 	/**
@@ -69,15 +64,6 @@ class PropertySpecificationReqExaminer {
 	 */
 	public function setSemanticData( SemanticData $semanticData = null ) {
 		$this->semanticData = $semanticData;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string|boolean $editProtectionRight
-	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
-		$this->editProtectionRight = $editProtectionRight;
 	}
 
 	/**
@@ -121,12 +107,21 @@ class PropertySpecificationReqExaminer {
 			);
 		}
 
-		if ( $this->reqLock === false && $this->editProtectionRight && $this->editProtectionValidator->hasEditProtection( $title ) ) {
+		if ( $this->reqLock === false && $this->protectionValidator->hasCreateProtection( $title ) ) {
+			return array(
+				$property->isUserDefined() ? 'error' : 'warning',
+				'smw-create-protection',
+				$property->getLabel(),
+				$this->protectionValidator->getCreateProtectionRight()
+			);
+		}
+
+		if ( $this->reqLock === false && $this->protectionValidator->hasEditProtection( $title ) ) {
 			return array(
 				$property->isUserDefined() ? 'error' : 'warning',
 				'smw-edit-protection',
 				$property->getLabel(),
-				$this->editProtectionRight
+				$this->protectionValidator->getEditProtectionRight()
 			);
 		}
 
@@ -191,7 +186,7 @@ class PropertySpecificationReqExaminer {
 	 */
 	private function checkOnEditProtectionRight( $property ) {
 
-		if ( $this->editProtectionRight !== false ) {
+		if ( $this->protectionValidator->getEditProtectionRight() !== false ) {
 			return;
 		}
 

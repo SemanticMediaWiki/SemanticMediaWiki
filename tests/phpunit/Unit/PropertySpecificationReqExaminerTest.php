@@ -18,7 +18,7 @@ use SMW\SemanticData;
 class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $editProtectionValidator;
+	private $protectionValidator;
 	private $dataItemFactory;
 
 	protected function setUp() {
@@ -30,7 +30,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->editProtectionValidator = $this->getMockBuilder( '\SMW\Protection\EditProtectionValidator' )
+		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -47,7 +47,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			PropertySpecificationReqExaminer::class,
-			new PropertySpecificationReqExaminer( $this->store, $this->editProtectionValidator )
+			new PropertySpecificationReqExaminer( $this->store, $this->protectionValidator )
 		);
 	}
 
@@ -58,7 +58,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertySpecificationReqExaminer(
 			$this->store,
-			$this->editProtectionValidator
+			$this->protectionValidator
 		);
 
 		$instance->setSemanticData( $semanticData );
@@ -71,15 +71,15 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckOnDisabledEditProtectionRight() {
 
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'getEditProtectionRight' )
+			->will( $this->returnValue( false ) );
+
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
 		$instance = new PropertySpecificationReqExaminer(
 			$this->store,
-			$this->editProtectionValidator
-		);
-
-		$instance->setEditProtectionRight(
-			false
+			$this->protectionValidator
 		);
 
 		$this->assertEquals(
@@ -92,21 +92,49 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCheckOnEnabledEditProtectionRight() {
+	public function testCheckOnEnabledCreateProtectionRight() {
 
-		$this->editProtectionValidator->expects( $this->any() )
-			->method( 'hasEditProtection' )
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'hasCreateProtection' )
 			->will( $this->returnValue( true ) );
+
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'getCreateProtectionRight' )
+			->will( $this->returnValue( 'foo' ) );
 
 		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
 
 		$instance = new PropertySpecificationReqExaminer(
 			$this->store,
-			$this->editProtectionValidator
+			$this->protectionValidator
 		);
 
-		$instance->setEditProtectionRight(
-			'foo'
+		$this->assertEquals(
+			array(
+				'error',
+				'smw-create-protection',
+				'Bar',
+				'foo'
+			),
+			$instance->checkOn( $property )
+		);
+	}
+
+	public function testCheckOnEnabledEditProtectionRight() {
+
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'hasEditProtection' )
+			->will( $this->returnValue( true ) );
+
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'getEditProtectionRight' )
+			->will( $this->returnValue( 'foo' ) );
+
+		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
+
+		$instance = new PropertySpecificationReqExaminer(
+			$this->store,
+			$this->protectionValidator
 		);
 
 		$this->assertEquals(
@@ -140,7 +168,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertySpecificationReqExaminer(
 			$this->store,
-			$this->editProtectionValidator
+			$this->protectionValidator
 		);
 
 		$instance->setSemanticData( $semanticData );

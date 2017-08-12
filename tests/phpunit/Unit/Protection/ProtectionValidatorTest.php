@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Protection;
 
-use SMW\Protection\EditProtectionValidator;
+use SMW\Protection\ProtectionValidator;
 use SMW\DataItemFactory;
 
 /**
- * @covers \SMW\Protection\EditProtectionValidator
+ * @covers \SMW\Protection\ProtectionValidator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class EditProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
+class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 	private $cachedPropertyValuesPrefetcher;
@@ -37,12 +37,29 @@ class EditProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			EditProtectionValidator::class,
-			new EditProtectionValidator( $this->cachedPropertyValuesPrefetcher, $this->cache )
+			ProtectionValidator::class,
+			new ProtectionValidator( $this->cachedPropertyValuesPrefetcher, $this->cache )
 		);
 	}
 
-	public function testHasProtectionOnNamespace() {
+	public function testSetGetEditProtectionRight() {
+
+		$instance = new ProtectionValidator(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->cache
+		);
+
+		$instance->setEditProtectionRight(
+			'foo'
+		);
+
+		$this->assertEquals(
+			'foo',
+			$instance->getEditProtectionRight()
+		);
+	}
+
+	public function testHasEditProtectionOnNamespace() {
 
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
@@ -58,13 +75,17 @@ class EditProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $property ) )
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
 
-		$instance = new EditProtectionValidator(
+		$instance = new ProtectionValidator(
 			$this->cachedPropertyValuesPrefetcher,
 			$this->cache
 		);
 
+		$instance->setEditProtectionRight(
+			'foo'
+		);
+
 		$this->assertTrue(
-			$instance->hasProtectionOnNamespace( $subject->getTitle() )
+			$instance->hasEditProtectionOnNamespace( $subject->getTitle() )
 		);
 	}
 
@@ -84,7 +105,7 @@ class EditProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $property ) )
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
 
-		$instance = new EditProtectionValidator(
+		$instance = new ProtectionValidator(
 			$this->cachedPropertyValuesPrefetcher,
 			$this->cache
 		);
@@ -106,13 +127,54 @@ class EditProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new EditProtectionValidator(
+		$instance = new ProtectionValidator(
 			$this->cachedPropertyValuesPrefetcher,
 			$this->cache
 		);
 
 		$this->assertFalse(
 			$instance->hasProtection( $subject->getTitle() )
+		);
+	}
+
+	public function testSetGetCreateProtectionRight() {
+
+		$instance = new ProtectionValidator(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->cache
+		);
+
+		$instance->setCreateProtectionRight(
+			'foo'
+		);
+
+		$this->assertEquals(
+			'foo',
+			$instance->getCreateProtectionRight()
+		);
+	}
+
+	public function testHasCreateProtection() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'userCan' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new ProtectionValidator(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->cache
+		);
+
+		$instance->setCreateProtectionRight(
+			'foo'
+		);
+
+		$this->assertTrue(
+			$instance->hasCreateProtection( $title )
 		);
 	}
 

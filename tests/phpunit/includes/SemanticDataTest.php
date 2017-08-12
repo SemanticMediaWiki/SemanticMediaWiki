@@ -9,6 +9,7 @@ use SMW\Localizer;
 use SMW\SemanticData;
 use SMW\Subobject;
 use SMWDITime as DITime;
+use SMW\ApplicationFactory;
 use Title;
 
 /**
@@ -30,6 +31,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->addConfiguration( 'smwgCreateProtectionRight', false );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -544,6 +546,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function removePropertyObjectProvider() {
+		ApplicationFactory::clear();
 
 		$provider = array();
 
@@ -571,6 +574,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function dataValueDataProvider() {
+		ApplicationFactory::clear();
 
 		$provider = array();
 

@@ -112,11 +112,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		$propertySpecificationReqExaminer = new PropertySpecificationReqExaminer(
 			$this->store,
-			$applicationFactory->singleton( 'EditProtectionValidator' )
-		);
-
-		$propertySpecificationReqExaminer->setEditProtectionRight(
-			$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+			$applicationFactory->singleton( 'ProtectionValidator' )
 		);
 
 		$propertySpecificationReqMsgBuilder = new PropertySpecificationReqMsgBuilder(

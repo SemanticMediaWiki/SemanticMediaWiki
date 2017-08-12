@@ -362,12 +362,20 @@ class AskParserFunction {
 			$this->parserData->getSubject()
 		);
 
-		$property = new DIProperty( '_ASK' );
-
 		foreach ( $errors as $error ) {
+
+			if ( ( $property = $processingErrorMsgHandler->grepPropertyFromRestrictionErrorMsg( $error ) ) === null ) {
+				$property = new DIProperty( '_ASK' );
+			}
+
+			$container = $processingErrorMsgHandler->newErrorContainerFromMsg(
+				$error,
+				$property
+			);
+
 			$processingErrorMsgHandler->addToSemanticData(
 				$this->parserData->getSemanticData(),
-				$processingErrorMsgHandler->newErrorContainerFromMsg( $error, $property )
+				$container
 			);
 		}
 	}

@@ -44,6 +44,13 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGrepPropertyFromRestrictionErrorMsg() {
+
+		$this->assertNull(
+			ProcessingErrorMsgHandler::grepPropertyFromRestrictionErrorMsg( 'Foo' )
+		);
+	}
+
 	/**
 	 * @dataProvider messagesProvider
 	 */

@@ -378,6 +378,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		}
 
 		$formatter = array( $dataValue, $defaultFormatter );
+		$valueSerialization = $dataValue->getDataItem()->getSerialization();
 
 		if ( isset( $expected['valueFormatter'] ) && is_callable( $expected['valueFormatter'] ) ) {
 			$formatter = $expected['valueFormatter'];
@@ -415,6 +416,11 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			}
 
 			if ( strpos( $propertyValue, $value ) !== false ) {
+				unset( $expected['propertyValues'][$key] );
+				continue;
+			}
+
+			if ( $propertyValue === $valueSerialization ) {
 				unset( $expected['propertyValues'][$key] );
 			}
 		}

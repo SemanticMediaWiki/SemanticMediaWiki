@@ -1506,6 +1506,21 @@ return array(
 	'smwgQueryResultCacheRefreshOnPurge' => true,
 	##
 
+	##
+	# Property create protection
+	#
+	# If enabled, users are able to annotate property values using existing properties
+	# but new properties can only be created by those with the assigned "authority"
+	# (aka user right).
+	#
+	# Changes to a property specification requires the permission as well.
+	#
+	# @since 3.0
+	# @default false
+	##
+	'smwgCreateProtectionRight' => false,
+	##
+
 	###
 	# Page edit protection
 	#

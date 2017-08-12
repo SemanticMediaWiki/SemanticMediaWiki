@@ -358,6 +358,15 @@ class SMWQueryParser {
 				return null; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 
+			// Avoid restriction check on pre-defined properties (Has query, Modification date etc.)
+			$propertyValue->setOption( $propertyValue::OPT_QUERY_CONTEXT, true );
+
+			// Check restriction
+			if ( $propertyValue->isRestricted() ) {
+				$this->descriptionProcessor->addError( $propertyValue->getRestrictionError() );
+				return null;
+			}
+
 			$typeid = $propertyValue->getDataItem()->findPropertyTypeID();
 			$inverse = $propertyValue->isInverse();
 			$propertyValueList[] = $propertyValue;

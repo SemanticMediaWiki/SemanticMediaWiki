@@ -34,6 +34,17 @@ class ProcessingErrorMsgHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $message
+	 *
+	 * @return DIProperty|null
+	 */
+	public static function grepPropertyFromRestrictionErrorMsg( $message ) {
+		return PropertyRestrictionExaminer::grepPropertyFromRestrictionErrorMsg( $message );
+	}
+
+	/**
 	 * Turns an encoded array of messages or text elements into a compacted array
 	 * with msg keys and arguments.
 	 *

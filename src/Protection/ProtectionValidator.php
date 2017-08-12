@@ -10,8 +10,7 @@ use SMW\DIProperty;
 use Title;
 
 /**
- * Handles edit protection validation on the basis of an annotated `Is edit protected`
- * property value assignment.
+ * Handles protection validation.
  *
  * The lookup is cached using the `CachedPropertyValuesPrefetcher` to avoid a
  * continued access to the Store or DB layer.
@@ -21,12 +20,12 @@ use Title;
  *
  * @author mwjames
  */
-class EditProtectionValidator {
+class ProtectionValidator {
 
 	/**
 	 * Reference used in InMemoryPoolCache
 	 */
-	const POOLCACHE_ID = 'edit.protection.validator';
+	const POOLCACHE_ID = 'protection.validator';
 
 	/**
 	 * @var CachedPropertyValuesPrefetcher
@@ -42,6 +41,11 @@ class EditProtectionValidator {
 	 * @var boolean|string
 	 */
 	private $editProtectionRight = false;
+
+	/**
+	 * @var boolean|string
+	 */
+	private $createProtectionRight = false;
 
 	/**
 	 * @var boolean|string
@@ -71,6 +75,33 @@ class EditProtectionValidator {
 	/**
 	 * @since 3.0
 	 *
+	 * @return string|false
+	 */
+	public function getEditProtectionRight() {
+		return $this->editProtectionRight;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string|boolean $createProtectionRight
+	 */
+	public function setCreateProtectionRight( $createProtectionRight ) {
+		$this->createProtectionRight = $createProtectionRight;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string|false
+	 */
+	public function getCreateProtectionRight() {
+		return $this->createProtectionRight;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param boolean $changePropagationProtection
 	 */
 	public function setChangePropagationProtection( $changePropagationProtection ) {
@@ -82,7 +113,7 @@ class EditProtectionValidator {
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public function resetCacheBy( DIWikiPage $subject ) {
+	private function resetCacheBy( DIWikiPage $subject ) {
 		$this->cachedPropertyValuesPrefetcher->resetCacheBy( $subject );
 	}
 
@@ -93,8 +124,8 @@ class EditProtectionValidator {
 	 *
 	 * @return boolean
 	 */
-	public function hasProtectionOnNamespace( Title $title ) {
-		return $this->checkProtection( DIWikiPage::newFromTitle( $title )->asBase() );
+	public function hasEditProtectionOnNamespace( Title $title ) {
+		return $this->editProtectionRight && $this->checkProtection( DIWikiPage::newFromTitle( $title )->asBase() );
 	}
 
 	/**
@@ -127,9 +158,21 @@ class EditProtectionValidator {
 	}
 
 	/**
-	 * @note There is not direct validation of the permission in this methods,
+	 * @since 3.0
+	 *
+	 * @param Title $title
+	 * @param Title $title
+	 *
+	 * @return boolean
+	 */
+	public function hasCreateProtection( Title $title ) {
+		return $this->createProtectionRight && !$title->userCan( 'edit' );
+	}
+
+	/**
+	 * @note There is not direct validation of the permission within this method,
 	 * it is done by the Title::userCan when probing against the User and hooks
-	 * that carry our the permission check including the validation provided by
+	 * that carry out the permission check including the validation provided by
 	 * SMW's `PermissionPthValidator`.
 	 *
 	 * @since 2.5
