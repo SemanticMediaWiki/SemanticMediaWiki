@@ -57,3 +57,105 @@
 	cursor: pointer;
 	padding-left: 20px;
 }
+
+.smw-ask-button {
+	position: relative;
+	padding: 6px 14px;
+	color: #586069;
+	border: 1px solid #e1e4e8;
+	border-radius: 3px;
+	font-size: 0.975em;
+	margin-right: 5px;
+}
+
+.smw-ask-button-right {
+	position: relative;
+	padding: 6px 14px;
+	color: #586069;
+	border: 1px solid #e1e4e8;
+	border-radius: 3px;
+	float: right;
+}
+
+.smw-ask-button:hover {
+	background-color: #f6f8fa;
+}
+
+.smw-ask-button input {
+	background: transparent;
+    border: none;
+	font-size: 1.1em;
+	color: #fff;
+	outline: none;
+	cursor: pointer;
+}
+
+.smw-ask-button-right {
+	padding: 4px 14px;
+	float: right;
+	margin-left: 5px;
+	margin-right: 0px;
+}
+
+.smw-ask-button-lblue {
+	color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    text-decoration: none;
+}
+
+.smw-ask-button-lblue:hover {
+	background-image: none;
+	background-color: #31b0d5;
+	border-color: #269abc;
+}
+
+.smw-ask-button-dblue {
+	color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    text-decoration: none;
+}
+
+.smw-ask-button-dblue:hover {
+	background-image: none;
+	background-color: #286090;
+	border-color: #204d74;
+}
+
+.smw-ask-button-lgrey {
+	background-image: none;
+	background-color: #eee;
+	border-color: #ddd;
+}
+
+.smw-ask-button-lgrey:hover {
+	background-image: none;
+	background-color: #ddd;
+	border-color: #ddd;
+}
+
+.smw-ask-button a, .smw-ask-button a:hover, .smw-ask-button a:focus, .smw-ask-button a:active, .smw-ask-button a:visited {
+	font-weight: 300;
+	line-height: 20px;
+	text-decoration: none;
+	color: #586069;
+}
+
+.smw-ask-button-lblue a, .smw-ask-button-lblue a:hover, .smw-ask-button-lblue a:focus, .smw-ask-button-lblue a:active, .smw-ask-button-lblue a:visited {
+	font-weight: 300;
+	line-height: 20px;
+	text-decoration: none;
+	color: #fff;
+}
+
+.smw-ask-button-dblue a, .smw-ask-button-dblue a:hover, .smw-ask-button-dblue a:focus, .smw-ask-button-dblue a:active, .smw-ask-button-dblue a:visited {
+	font-weight: 300;
+	line-height: 20px;
+	text-decoration: none;
+	color: #fff;
+}
+
+#inlinequeryembed {
+	margin-top: 10px;
+}

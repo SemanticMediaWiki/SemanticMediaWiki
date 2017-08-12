@@ -398,13 +398,14 @@ class SMWAskPage extends SpecialPage {
 
 					$query_result = $printer->getResult( $res, $params, SMW_OUTPUT_HTML );
 
+					$result .= $debug;
+
 					if ( is_array( $query_result ) ) {
 						$result .= $query_result[0];
 					} else {
 						$result .= $query_result;
 					}
 
-					$result .= $debug;
 				} else {
 					$result = $this->errorFormWidget->createNoResultFormElement();
 					$result .= $debug;
@@ -512,15 +513,19 @@ class SMWAskPage extends SpecialPage {
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
 		}
 
+		$title = SpecialPage::getSafeTitleFor( 'Ask' );
+		$isEmpty = $this->queryLinker === null;
+
 		// Submit
 		$result .= '<div id="search" class="is-disabled">' . '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n" .
 			'<p>' .  '' . '</p>' .
 
 			$this->inputFormWidget->createFindResultLinkElement( $hideForm ) .
-			' ' . $this->inputFormWidget->createShowHideLinkElement( SpecialPage::getSafeTitleFor( 'Ask' ), $urltail, $hideForm ) .
-			' ' . $this->inputFormWidget->createEmbeddedCodeLinkElement() .
-			' ' . $this->inputFormWidget->createClipboardLinkElement( $this->queryLinker ) .
-			' ' . $this->inputFormWidget->createEmbeddedCodeElement( $this->getQueryAsCodeString() );
+			$this->inputFormWidget->createShowHideLinkElement( $title, $urltail, $hideForm, $isEmpty ) .
+			$this->inputFormWidget->createClipboardLinkElement( $this->queryLinker ) .
+			$this->inputFormWidget->createDebugLinkElement( $title, $urltail, $isEmpty ) .
+			$this->inputFormWidget->createEmbeddedCodeLinkElement( $isEmpty ) .
+			$this->inputFormWidget->createEmbeddedCodeElement( $this->getQueryAsCodeString() );
 
 		$result .= '<p></p>';
 
@@ -529,9 +534,8 @@ class SMWAskPage extends SpecialPage {
 			$searchInfoText
 		);
 
-		$result .= ( $navigation !== '' ? '<p>'. $searchInfoText . '</p>' . '<hr class="smw-form-horizontalrule">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) .
+		$result .= ( $navigation !== '' ? '<p style="margin-top:10px;">'. $searchInfoText . '</p>' . '<hr class="smw-form-horizontalrule">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) .
 			"\n</fieldset></div>\n</form>\n";
-
 
 		$this->getOutput()->addModules(
 			$this->inputFormWidget->getResourceModules()
