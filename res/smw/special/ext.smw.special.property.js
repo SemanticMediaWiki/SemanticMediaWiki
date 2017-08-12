@@ -10,9 +10,9 @@
 ( function( $, mw ) {
 	'use strict';
 
-	$( document ).ready( function() {
+	var autocomplete = function( context ) {
 
-		$( '#smw-property-input, .smw-property-input' ).autocomplete( {
+		context.autocomplete( {
 			serviceUrl: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
 			minChars: 3,
@@ -36,6 +36,19 @@
 				};
 			}
 		} );
+	}
+
+	// Listen to an event (see Special:Ask)
+	$ ( document ).on( 'SMW::Property::Autocomplete', function( event, opts ) {
+		autocomplete( opts.context.find( '.smw-property-input' ) );
+	} );
+
+	$( document ).ready( function() {
+
+		$( '#smw-property-input, .smw-property-input' ).each( function() {
+			autocomplete( $( this ) );
+		} );
 
 	} );
+
 } )( jQuery, mediaWiki );
