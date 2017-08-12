@@ -27,21 +27,6 @@ class ErrorFormWidget {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @return string
-	 */
-	public static function sessionFailure() {
-		return Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-callout smw-callout-error'
-			],
-			Message::get( 'sessionfailure' )
-		);
-	}
-
-	/**
 	 * @since 2.5
 	 *
 	 * @param Query|null $query
