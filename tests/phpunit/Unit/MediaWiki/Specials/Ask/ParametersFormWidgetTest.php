@@ -41,13 +41,13 @@ class ParametersFormWidgetTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'',
 			array(),
-			'<table class="smw-ask-otheroptions" width="100%"><tbody><tr style="background: #eee"></tr></tbody></table>'
+			'<table class="smw-ask-options-list" width="100%"><tbody><tr class="smw-ask-options-row-odd"></tr></tbody></table>'
 		);
 
 		$provider[] = array(
 			'table',
 			array(),
-			'<table class="smw-ask-otheroptions"'
+			'<table class="smw-ask-options-list"'
 		);
 
 		return $provider;

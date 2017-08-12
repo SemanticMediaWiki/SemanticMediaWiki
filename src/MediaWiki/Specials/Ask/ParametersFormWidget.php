@@ -101,7 +101,7 @@ class ParametersFormWidget {
 
 		// Table
 		$resultHtml .= Html::openElement( 'table', array(
-			'class' => 'smw-ask-otheroptions',
+			'class' => 'smw-ask-options-list',
 			'width' => '100%'
 			)
 		);
@@ -116,7 +116,7 @@ class ParametersFormWidget {
 			// Create table row
 			if ( $i % 3 == 0 ){
 			$resultHtml .= Html::rawElement( 'tr', array(
-				'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#eee' )
+				'class' => $i % 6 == 0 ? 'smw-ask-options-row-even' : 'smw-ask-options-row-odd',
 				), $rowHtml
 			);
 			$rowHtml = '';
@@ -126,7 +126,7 @@ class ParametersFormWidget {
 
 		// Ensure left over elements are collected as well
 		$resultHtml .= Html::rawElement( 'tr', array(
-			'style' => 'background: ' . ( $n % 2 == 0 ? '#eee' : 'white' )
+			'class' => $n % 2 == 0 ? 'smw-ask-options-row-odd' : 'smw-ask-options-row-even',
 			), $rowHtml
 		);
 

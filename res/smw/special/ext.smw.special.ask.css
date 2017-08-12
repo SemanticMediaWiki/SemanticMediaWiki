@@ -70,6 +70,24 @@
 	padding-left: 20px;
 }
 
+.smw-ask-options-row-odd {
+	background: #eee;
+}
+
+.smw-ask-options-row-odd td {
+	padding: 5px;
+	vertical-align: top;
+}
+
+.smw-ask-options-row-even {
+	background: #fff;
+}
+
+.smw-ask-options-row-even td {
+	padding: 5px;
+	vertical-align: top;
+}
+
 .smw-ask-button {
 	position: relative;
 	padding: 6px 14px;
