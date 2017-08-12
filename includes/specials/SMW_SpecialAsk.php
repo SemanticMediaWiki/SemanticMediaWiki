@@ -7,6 +7,7 @@ use SMW\MediaWiki\Specials\Ask\ErrorFormWidget;
 use SMW\MediaWiki\Specials\Ask\InputFormWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersFormWidget;
 use SMW\MediaWiki\Specials\Ask\FormatterWidget;
+use SMW\MediaWiki\Specials\Ask\NavigationWidget;
 use SMW\ApplicationFactory;
 
 /**
@@ -102,6 +103,10 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		$out->addHTML( ErrorFormWidget::noScript() );
+
+		NavigationWidget::setMaxInlineLimit(
+			$GLOBALS['smwgQMaxInlineLimit']
+		);
 
 		if ( !$smwgQEnabled ) {
 			$out->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->escaped() );
@@ -382,7 +387,15 @@ class SMWAskPage extends SpecialPage {
 						$urlArgs['eq'] = 'no';
 					}
 
-					$navigation = $this->getNavigationBar( $res, $urlArgs );
+					$navigation = NavigationWidget::navigation(
+						SpecialPage::getSafeTitleFor( 'Ask' ),
+						$this->params['limit']->getValue(),
+						$res->getQuery()->getOffset(),
+						$res->getCount(),
+						$res->hasFurtherResults(),
+						$urlArgs
+					);
+
 					$query_result = $printer->getResult( $res, $params, SMW_OUTPUT_HTML );
 
 					if ( is_array( $query_result ) ) {
@@ -652,99 +665,6 @@ class SMWAskPage extends SpecialPage {
 		$result .= '<a class="smw-ask-add" href="#">' . wfMessage( 'smw_add_sortcondition' )->escaped() . '</a>' . "\n";
 
 		return $result;
-	}
-
-	/**
-	 * Build the navigation for some given query result, reuse url-tail parameters.
-	 *
-	 * @param SMWQueryResult $res
-	 * @param array $urlArgs
-	 *
-	 * @return string
-	 */
-	protected function getNavigationBar( SMWQueryResult $res, array $urlArgs ) {
-		global $smwgQMaxInlineLimit, $wgLang;
-
-		// Bug 49216
-		$offset = $res->getQuery()->getOffset();
-		$limit  = $this->params['limit']->getValue();
-		$navigation = '';
-
-		// @todo FIXME: i18n: Patchwork text.
-		$navigation .=
-			'<b>' .
-				wfMessage( 'smw_result_results' )->escaped() . ' ' . $wgLang->formatNum( $offset + 1 ) .
-			' &#150; ' .
-				$wgLang->formatNum( $offset + $res->getCount() ) .
-			'</b>&#160;&#160;&#160;&#160;';
-
-		// Prepare navigation bar.
-		if ( $offset > 0 ) {
-			$navigation .= '(' . Html::element(
-				'a',
-				array(
-					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
-						'offset' => max( 0, $offset - $limit ),
-						'limit' => $limit
-					) + $urlArgs ),
-					'rel' => 'nofollow'
-				),
-				wfMessage( 'smw_result_prev' )->text() . ' ' . $limit
-			) . ' | ';
-		} else {
-			$navigation .= '(' . wfMessage( 'smw_result_prev' )->escaped() . ' ' . $limit . ' | ';
-		}
-
-		if ( $res->hasFurtherResults() ) {
-			$navigation .= Html::element(
-				'a',
-				array(
-					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
-						'offset' => ( $offset + $limit ),
-						'limit' => $limit
-					)  + $urlArgs ),
-					'rel' => 'nofollow'
-				),
-				wfMessage( 'smw_result_next' )->text() . ' ' . $limit
-			) . ')';
-		} else {
-			$navigation .= wfMessage( 'smw_result_next' )->escaped() . ' ' . $limit . ')';
-		}
-
-		$first = true;
-
-		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
-			if ( $l > $smwgQMaxInlineLimit ) {
-				break;
-			}
-
-			if ( $first ) {
-				$navigation .= '&#160;&#160;&#160;(';
-				$first = false;
-			} else {
-				$navigation .= ' | ';
-			}
-
-			if ( $limit != $l ) {
-				$navigation .= Html::element(
-					'a',
-					array(
-						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
-							'offset' => $offset,
-							'limit' => $l
-						) + $urlArgs ),
-						'rel' => 'nofollow'
-					),
-					$l
-				);
-			} else {
-				$navigation .= '<b>' . $l . '</b>';
-			}
-		}
-
-		$navigation .= ')';
-
-		return $navigation;
 	}
 
 	protected function getGroupName() {
