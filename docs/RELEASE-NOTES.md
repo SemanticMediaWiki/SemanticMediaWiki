@@ -32,6 +32,8 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2561](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2561)
 * [#2572](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2572)
 * [#2595](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2595)
+* [#2600](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2600)
+* [#2609](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2609)
 
 ## Bug fixes
 
@@ -40,6 +42,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 ## Breaking change
 
 * [#2588](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2588) Removed special page "SemanticStatistics"
+* [#2611](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2611) Removed the user preference `smw-ask-otheroptions-collapsed-info`
 
 ## Internal changes
 
