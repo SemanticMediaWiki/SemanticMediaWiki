@@ -208,6 +208,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgQExpensiveThreshold',
 			'smwgQExpensiveExecutionLimit',
 			'smwgFieldTypeFeatures',
+			'smwgCreateProtectionRight',
 
 			// MW related
 			'wgLanguageCode',

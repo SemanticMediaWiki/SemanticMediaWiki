@@ -218,15 +218,17 @@ class DataValueFactory {
 			return $propertyDV;
 		}
 
-		if ( !$propertyDV->canUse() ) {
+		if ( $propertyDV->isRestricted() ) {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				array( 'smw-datavalue-property-restricted-use', $propertyName ),
+				$propertyDV->getRestrictionError(),
 				$valueString,
 				$caption
 			);
 
-			$dataValue->setProperty( $propertyDV->getDataItem() );
+			if ( $propertyDV->getDataItem() instanceof DIProperty ) {
+				$dataValue->setProperty( $propertyDV->getDataItem() );
+			}
 
 			return $dataValue;
 		}

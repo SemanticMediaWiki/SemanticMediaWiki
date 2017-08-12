@@ -516,6 +516,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'list', 4, 1, "[[Modification date::+]] [[$categoryNS:Foo bar]] [[Has title::!Foo bar]]" )
 			),
 			array(
+				'smwgCreateProtectionRight' => false,
 				'smwgQueryProfiler' => array(
 					'smwgQueryDurationEnabled' => false,
 					'smwgQueryParametersEnabled' => false

@@ -20,7 +20,8 @@ use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Utils\BufferedStatsdCollector;
 use SMW\Parser\LinksProcessor;
-use SMW\Protection\EditProtectionValidator;
+use SMW\PropertyRestrictionExaminer;
+use SMW\Protection\ProtectionValidator;
 use SMW\Protection\EditProtectionUpdater;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Settings;
@@ -422,25 +423,29 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var EditProtectionValidator
+		 * @var ProtectionValidator
 		 */
-		$containerBuilder->registerCallback( 'EditProtectionValidator', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'EditProtectionValidator', '\SMW\Protection\EditProtectionValidator' );
+		$containerBuilder->registerCallback( 'ProtectionValidator', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'ProtectionValidator', '\SMW\Protection\ProtectionValidator' );
 
-			$editProtectionValidator = new EditProtectionValidator(
+			$protectionValidator = new ProtectionValidator(
 				$containerBuilder->singleton( 'CachedPropertyValuesPrefetcher' ),
-				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( EditProtectionValidator::POOLCACHE_ID )
+				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( ProtectionValidator::POOLCACHE_ID )
 			);
 
-			$editProtectionValidator->setEditProtectionRight(
+			$protectionValidator->setEditProtectionRight(
 				$containerBuilder->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
 			);
 
-			$editProtectionValidator->setChangePropagationProtection(
+			$protectionValidator->setCreateProtectionRight(
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgCreateProtectionRight' )
+			);
+
+			$protectionValidator->setChangePropagationProtection(
 				$containerBuilder->singleton( 'Settings' )->get( 'smwgChangePropagationProtection' )
 			);
 
-			return $editProtectionValidator;
+			return $protectionValidator;
 		} );
 
 		/**
@@ -463,6 +468,21 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $editProtectionUpdater;
+		} );
+
+		/**
+		 * @var PropertyRestrictionExaminer
+		 */
+		$containerBuilder->registerCallback( 'PropertyRestrictionExaminer', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'PropertyRestrictionExaminer', '\SMW\PropertyRestrictionExaminer' );
+
+			$propertyRestrictionExaminer = new PropertyRestrictionExaminer();
+
+			$propertyRestrictionExaminer->setCreateProtectionRight(
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgCreateProtectionRight' )
+			);
+
+			return $propertyRestrictionExaminer;
 		} );
 
 		/**

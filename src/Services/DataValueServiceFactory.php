@@ -178,6 +178,22 @@ class DataValueServiceFactory {
 		return $this->containerBuilder->singleton( 'PropertySpecificationLookup' );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @return PropertyRestrictionExaminer
+	 */
+	public function getPropertyRestrictionExaminer() {
+
+		$propertyRestrictionExaminer = $this->containerBuilder->singleton( 'PropertyRestrictionExaminer' );
+
+		$propertyRestrictionExaminer->setUser(
+			$GLOBALS['wgUser']
+		);
+
+		return $propertyRestrictionExaminer;
+	}
+
 	private function getDispatchableValueFormatter( $dataValue ) {
 
 		if ( $this->dispatchingDataValueFormatter === null ) {

@@ -174,6 +174,7 @@ class Settings extends Options {
 			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
 			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
 			'smwgEditProtectionRight' => $GLOBALS['smwgEditProtectionRight'],
+			'smwgCreateProtectionRight' => $GLOBALS['smwgCreateProtectionRight'],
 			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty'],
 			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
 			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],

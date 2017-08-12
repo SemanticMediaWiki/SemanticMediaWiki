@@ -130,11 +130,7 @@ class HookRegistry {
 		);
 
 		$permissionPthValidator = new PermissionPthValidator(
-			$applicationFactory->singleton( 'EditProtectionValidator' )
-		);
-
-		$permissionPthValidator->setEditProtectionRight(
-			$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+			$applicationFactory->singleton( 'ProtectionValidator' )
 		);
 
 		/**
@@ -552,7 +548,7 @@ class HookRegistry {
 		 * to perform an action ..."
 		 */
 		$this->handlers['TitleQuickPermissions'] = function ( $title, $user, $action, &$errors, $rigor, $short ) use ( $permissionPthValidator ) {
-			return $permissionPthValidator->checkQuickPermissionOn( $title, $user, $action, $errors );
+			return $permissionPthValidator->checkQuickPermission( $title, $user, $action, $errors );
 		};
 
 		$this->registerHooksForInternalUse( $applicationFactory, $deferredRequestDispatchManager );

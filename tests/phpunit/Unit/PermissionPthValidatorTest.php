@@ -16,12 +16,12 @@ use Title;
  */
 class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
-	private $editProtectionValidator;
+	private $protectionValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->editProtectionValidator = $this->getMockBuilder( '\SMW\Protection\EditProtectionValidator' )
+		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -29,8 +29,8 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\PermissionPthValidator',
-			new PermissionPthValidator( $this->editProtectionValidator  )
+			PermissionPthValidator::class,
+			new PermissionPthValidator( $this->protectionValidator  )
 		);
 	}
 
@@ -45,11 +45,11 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		$result = array();
 
 		$instance = new PermissionPthValidator(
-			$this->editProtectionValidator
+			$this->protectionValidator
 		);
 
 		$this->assertTrue(
-			$instance->checkUserPermissionOn( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit', $result )
 		);
 
 		$this->assertEmpty(
@@ -62,11 +62,11 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testToReturnFalseOnMwNamespacePermissionCheck( $title, $permission, $action, $expected ) {
 
-		$this->editProtectionValidator ->expects( $this->any() )
+		$this->protectionValidator ->expects( $this->any() )
 			->method( 'hasEditProtection' )
 			->will( $this->returnValue( true ) );
 
-		$this->editProtectionValidator ->expects( $this->any() )
+		$this->protectionValidator ->expects( $this->any() )
 			->method( 'hasProtectionOnNamespace' )
 			->will( $this->returnValue( true ) );
 
@@ -82,11 +82,11 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		$result = array();
 
 		$instance = new PermissionPthValidator(
-			$this->editProtectionValidator
+			$this->protectionValidator
 		);
 
 		$this->assertFalse(
-			$instance->checkUserPermissionOn( $title, $user, $action, $result )
+			$instance->hasUserPermission( $title, $user, $action, $result )
 		);
 
 		$this->assertEquals(
@@ -95,7 +95,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testToReturnFalseOnNamespaceWithEditPermissionCheck() {
+	public function testNoUserPermissionOnNamespaceWithEditPermissionCheck() {
 
 		$editProtectionRight = 'Foo';
 
@@ -115,12 +115,16 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( SMW_NS_PROPERTY ) );
 
-		$this->editProtectionValidator->expects( $this->any() )
+		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasProtection' )
 			->will( $this->returnValue( true ) );
 
-		$this->editProtectionValidator->expects( $this->any() )
-			->method( 'hasProtectionOnNamespace' )
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'getEditProtectionRight' )
+			->will( $this->returnValue( $editProtectionRight ) );
+
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'hasEditProtectionOnNamespace' )
 			->will( $this->returnValue( true ) );
 
 		$user = $this->getMockBuilder( '\User' )
@@ -135,15 +139,11 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		$result = array();
 
 		$instance = new PermissionPthValidator(
-			$this->editProtectionValidator
-		);
-
-		$instance->setEditProtectionRight(
-			$editProtectionRight
+			$this->protectionValidator
 		);
 
 		$this->assertFalse(
-			$instance->checkUserPermissionOn( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit', $result )
 		);
 
 		$this->assertEquals(
@@ -172,7 +172,11 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( SMW_NS_PROPERTY ) );
 
-		$this->editProtectionValidator->expects( $this->never() )
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'getEditProtectionRight' )
+			->will( $this->returnValue( $editProtectionRight ) );
+
+		$this->protectionValidator->expects( $this->never() )
 			->method( 'hasProtectionOnNamespace' )
 			->will( $this->returnValue( true ) );
 
@@ -183,15 +187,55 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		$result = '';
 
 		$instance = new PermissionPthValidator(
-			$this->editProtectionValidator
-		);
-
-		$instance->setEditProtectionRight(
-			$editProtectionRight
+			$this->protectionValidator
 		);
 
 		$this->assertTrue(
-			$instance->checkUserPermissionOn( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit', $result )
+		);
+	}
+
+	public function testNoUserPermissionOnPropertyNamespaceWithCreateProtectionCheck() {
+
+		$createProtectionRight = 'Foo';
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'PermissionTest' ) );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'getCreateProtectionRight' )
+			->will( $this->returnValue( $createProtectionRight ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$result = [];
+
+		$instance = new PermissionPthValidator(
+			$this->protectionValidator
+		);
+
+		$this->assertFalse(
+			$instance->hasUserPermission( $title, $user, 'edit', $result )
+		);
+
+		$this->assertEquals(
+			array( array( 'smw-create-protection', $createProtectionRight ) ),
+			$result
 		);
 	}
 

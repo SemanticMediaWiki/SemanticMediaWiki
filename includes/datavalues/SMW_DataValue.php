@@ -139,6 +139,11 @@ abstract class SMWDataValue {
 	private $mHasErrors = false;
 
 	/**
+	 * @var false|array
+	 */
+	protected $restrictionError = false;
+
+	/**
 	 * @var Options
 	 */
 	private $options;
@@ -754,12 +759,21 @@ abstract class SMWDataValue {
 	 * while usability is determined by its accessibility to a context
 	 * (permission, convention etc.)
 	 *
-	 * @since  2.2
+	 * @since 2.2
 	 *
 	 * @return boolean
 	 */
 	public function canUse() {
 		return true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function isRestricted() {
+		return false;
 	}
 
 	/**
@@ -793,6 +807,15 @@ abstract class SMWDataValue {
 	 */
 	public function getErrors() {
 		return $this->mErrors;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array|false
+	 */
+	public function getRestrictionError() {
+		return $this->restrictionError;
 	}
 
 	/**
