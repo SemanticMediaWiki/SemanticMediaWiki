@@ -109,6 +109,13 @@ class SMWAskPage extends SpecialPage {
 			$GLOBALS['smwgQMaxInlineLimit']
 		);
 
+		$out->addHTML(
+			NavigationWidget::topLinks(
+				SpecialPage::getSafeTitleFor( 'Ask' ),
+				$this->getRequest()->getCheck( 'bTitle' )
+			)
+		);
+
 		if ( !$smwgQEnabled ) {
 			$out->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->escaped() );
 		} else {

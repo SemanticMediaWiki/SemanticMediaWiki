@@ -33,6 +33,42 @@ class NavigationWidget {
 	 * @since 3.0
 	 *
 	 * @param Title $title,
+	 * @param boolean $isHidden
+	 *
+	 * @return string
+	 */
+	public static function topLinks( Title $title, $isHidden = false ) {
+
+		if ( $isHidden ) {
+			return '';
+		}
+
+		return Html::rawElement( 'div', [ 'class' => 'smw-ask-toplinks' ], Html::rawElement(
+			'a',
+			[
+				'href' => '#search'
+			],
+			Message::get( 'smw-ask-search' )
+		) . ' | ' . Html::rawElement(
+			'a',
+			[
+				'href' => '#result'
+			],
+			Message::get( 'smw-ask-result' )
+		) . Html::rawElement(
+			'a',
+			[
+				'href' => $title->getLocalURL(),
+				'class' => 'float-right'
+			],
+			Message::get( 'smw-ask-empty' )
+		) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title $title,
 	 * @param integer $limit
 	 * @param integer $offset,
 	 * @param integer $count,
@@ -132,7 +168,7 @@ class NavigationWidget {
 
 		$navigation .= ')';
 
-		return Html::rawElement( 'span', [ 'class' => 'smw-ask-navigation' ], $navigation );
+		return Html::rawElement( 'span', [ 'class' => 'smw-ask-result-navigation' ], $navigation );
 	}
 
 }

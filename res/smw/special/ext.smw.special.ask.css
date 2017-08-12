@@ -39,7 +39,19 @@
 	clear: both;
 }
 
-.smw-ask-navigation a, .smw-ask-navigation b, .smw-ask-downloadlinks a, .smw-ask-nav-prev, .smw-ask-nav-next, .smw-ask-actions-nav a {
+.smw-ask-toplinks {
+	padding: 0px 5px 5px 0px;
+	padding: 8px 15px;
+	margin-bottom: 10px;
+	list-style: none;
+	background-color: #f5f5f5;
+	border-radius: 4px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+}
+
+.smw-ask-toplinks a, .smw-ask-result-navigation a, .smw-ask-result-navigation b, .smw-ask-downloadlinks a, .smw-ask-nav-prev, .smw-ask-nav-next, .smw-ask-actions-nav a {
 	vertical-align: middle;
 }
 

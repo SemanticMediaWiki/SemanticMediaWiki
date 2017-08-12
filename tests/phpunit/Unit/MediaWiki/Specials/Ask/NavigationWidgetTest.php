@@ -21,7 +21,6 @@ class NavigationWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-
 		$this->assertInternalType(
 			'string',
 			NavigationWidget::navigation( $title, 100, 0, 20, false, [] )
@@ -48,4 +47,28 @@ class NavigationWidgetTest extends \PHPUnit_Framework_TestCase {
 			$result
 		);
 	}
+
+	public function testTopLinks() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertContains(
+			'<div class="smw-ask-toplinks">',
+			NavigationWidget::topLinks( $title )
+		);
+	}
+
+	public function testHiddenTopLinks() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertEmpty(
+			NavigationWidget::topLinks( $title, true )
+		);
+	}
+
 }
