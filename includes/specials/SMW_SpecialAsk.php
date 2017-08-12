@@ -489,13 +489,6 @@ class SMWAskPage extends SpecialPage {
 			// Other options fieldset
 			$result .= '<fieldset id="options" class="smw-ask-options-fields"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
 
-			// Info text for when the fieldset is collapsed
-			$result .= Html::element( 'div', array(
-				'class' => 'collapsed-info',
-				'style' => 'display:none;'
-				), wfMessage( 'smw-ask-otheroptions-collapsed-info')->text()
-			);
-
 			// Individual options
 			$result .= "<div id=\"other_options\">" .  $this->parametersFormWidget->createParametersForm( $this->m_params['format'], $this->m_params ) . "</div>";
 			$result .= "</fieldset>\n";

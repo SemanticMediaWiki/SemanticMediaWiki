@@ -62,10 +62,6 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$provider[] = [
-			'smw-prefs-ask-options-collapsed-default'
-		];
-
-		$provider[] = [
 			'smw-prefs-general-options-time-correction'
 		];
 
