@@ -44,6 +44,11 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $pageReader;
 
 	/**
+	 * @var SerializerFactory
+	 */
+	private $serializerFactory;
+
+	/**
 	 * @var boolean
 	 */
 	private $debug = false;
@@ -60,6 +65,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$this->incomingSemanticDataValidator = $incomingSemanticDataValidator;
 		$this->stringValidator = $stringValidator;
 		$this->pageReader = UtilityFactory::getInstance()->newPageReader();
+		$this->serializerFactory = \SMW\ApplicationFactory::getInstance()->newSerializerFactory();
 	}
 
 	/**
@@ -111,7 +117,9 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$semanticData = $this->store->getSemanticData( $subject );
 
 		if ( $this->debug ) {
-			print_r( $semanticData );
+			print_r(
+				$this->serializerFactory->newSemanticDataSerializer()->serialize( $semanticData )
+			);
 		}
 
 		if ( isset( $case['errors'] ) && $case['errors'] !== array() ) {

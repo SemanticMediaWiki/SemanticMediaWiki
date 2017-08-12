@@ -102,11 +102,17 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param string|null $msg
 	 */
 	public function assertThatSemanticDataHasPropertyCountOf( $count, SemanticData $semanticData, $msg = null ) {
-		$this->assertCount(
-			$count,
-			$semanticData->getProperties(),
-			$msg === null ? "Asserts property count of {$count}" : $msg
-		);
+
+		$prop = [];
+
+		foreach ( $semanticData->getProperties() as $property ) {
+			$prop[] = $property->getKey();
+		}
+
+		$msg = $msg === null ? "Failed asserting property count of {$count}" : $msg;
+		$msg .= ' Counted properties include: ' . json_encode( $prop, JSON_PRETTY_PRINT );
+
+		$this->assertCount( $count, $prop, $msg );
 	}
 
 	/**
