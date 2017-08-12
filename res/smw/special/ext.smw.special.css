@@ -35,3 +35,26 @@
 	border-color: #faf2cc;
 	color: #8a6d3b;
 }
+
+.smw-special-filter{
+	padding: 5px 0px 0px 0px;
+}
+
+.smw-special-filter-button {
+	position: relative;
+	padding: 6px 14px;
+	color: #586069;
+	border: 1px solid #e1e4e8;
+	border-radius: 3px;
+}
+
+.smw-special-filter-button:hover {
+	background-color: #f6f8fa;
+}
+
+.smw-special-filter-button a, .smw-special-filter-button a:hover, .smw-special-filter-button a:focus, .smw-special-filter-button a:active, .smw-special-filter-button a:visited {
+	font-weight: 300;
+	line-height: 20px;
+	text-decoration: none;
+	color: #586069;
+}

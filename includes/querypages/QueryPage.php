@@ -77,6 +77,12 @@ abstract class QueryPage extends \QueryPage {
 			$parameters['property'] = $property;
 		}
 
+		$filter = $this->getRequest()->getVal( 'filter' );
+
+		if ( $filter !== null && $filter !== '' ) {
+			$parameters['filter'] = $filter;
+		}
+
 		return $parameters;
 	}
 
@@ -121,7 +127,7 @@ abstract class QueryPage extends \QueryPage {
 	 *
 	 * @return string
 	 */
-	public function getSearchForm( $property = '', $cacheDate = '', $propertySearch = true ) {
+	public function getSearchForm( $property = '', $cacheDate = '', $propertySearch = true, $filter = '' ) {
 
 		$this->useSerchForm = true;
 		$this->getOutput()->addModules( 'ext.smw.property' );
@@ -144,19 +150,25 @@ abstract class QueryPage extends \QueryPage {
 
 		if ( $propertySearch ) {
 			$propertySearch = Xml::tags( 'hr', array( 'style' => 'margin-bottom:10px;' ), '' ) .
-				Xml::inputLabel( $this->msg( 'smw-sp-property-searchform' )->text(), 'property', 'smw-property-input', 20, $property ) . ' ' .
+				Xml::inputLabel( $this->msg( 'smw-special-property-searchform' )->text(), 'property', 'smw-property-input', 20, $property ) . ' ' .
 				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() );
+		}
+
+		if ( $filter !== '' ) {
+			$filter = Xml::tags( 'hr', array( 'style' => 'margin-bottom:10px;' ), '' ) . $filter;
 		}
 
 		return Xml::tags( 'form', array(
 			'method' => 'get',
-			'action' => htmlspecialchars( $GLOBALS['wgScript'] )
+			'action' => htmlspecialchars( $GLOBALS['wgScript'] ),
+			'class' => 'plainlinks'
 		), Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
-			Xml::fieldset( $this->msg( 'properties' )->text(),
+			Xml::fieldset( $this->msg( 'smw-special-property-searchform-options' )->text(),
 				Xml::tags( 'p', array(), $resultCount ) .
 				Xml::tags( 'p', array(), $selection ) .
 				$cacheDate .
-				$propertySearch
+				$propertySearch .
+				$filter
 			)
 		);
 	}
@@ -182,6 +194,10 @@ abstract class QueryPage extends \QueryPage {
 
 		if ( $property ) {
 			$options->addStringCondition( $property, SMWStringCondition::STRCOND_MID );
+		}
+
+		if ( ( $filter = $this->getRequest()->getVal( 'filter' ) ) === 'unapprove' ) {
+			$options->addExtraCondition( [ 'filter.unapprove' => true ] );
 		}
 
 		$res = $this->getResults( $options );
