@@ -31,6 +31,31 @@ class ErrorFormWidget {
 	 *
 	 * @return string
 	 */
+	public static function noScript() {
+		return Html::rawElement(
+			'div',
+			array(
+				'class' => 'smw-ask-status plainlinks'
+			),
+			Html::rawElement(
+				'noscript',
+				array(),
+				Html::rawElement(
+					'div',
+					array(
+						'class' => 'smw-callout smw-callout-error',
+					),
+					Message::get( 'smw-noscript', Message::PARSE )
+				)
+			)
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
 	public static function sessionFailure() {
 		return Html::rawElement(
 			'div',

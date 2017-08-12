@@ -6,6 +6,7 @@ use SMW\Query\QueryLinker;
 use SMW\MediaWiki\Specials\Ask\ErrorFormWidget;
 use SMW\MediaWiki\Specials\Ask\InputFormWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersFormWidget;
+use SMW\MediaWiki\Specials\Ask\FormatterWidget;
 use SMW\ApplicationFactory;
 
 /**
@@ -99,6 +100,8 @@ class SMWAskPage extends SpecialPage {
 		if ( !$this->getUser()->matchEditToken( $request->getVal( 'wpEditToken' ) ) ) {
 			return $out->addHtml( ErrorFormWidget::sessionFailure() );
 		}
+
+		$out->addHTML( ErrorFormWidget::noScript() );
 
 		if ( !$smwgQEnabled ) {
 			$out->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->escaped() );
@@ -430,6 +433,8 @@ class SMWAskPage extends SpecialPage {
 				$isFromCache
 			) . $this->errorFormWidget->getFormattedQueryErrorElement( $queryobj ) . $result;
 
+			$result = FormatterWidget::div( $result, [ 'id' => 'result', "class" => 'is-disabled' ] );
+
 			$this->getOutput()->addHTML( $result );
 		}
 	}
@@ -465,10 +470,10 @@ class SMWAskPage extends SpecialPage {
 			$result .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
-			$result .= '<table class="smw-ask-query" style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->escaped() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->escaped() . "<br />\n" .
+			$result .= '<div id="query" class="is-disabled"><table class="smw-ask-query" style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->escaped() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->escaped() . "<br />\n" .
 				'<span style="font-weight: normal;">' . wfMessage( 'smw_ask_printdesc' )->escaped() . '</span>' . "</th></tr>\n" .
 				'<tr><td style="padding-left: 0px; width: 50%;"><textarea class="smw-ask-query-condition" name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
-				'<td style="padding-left: 7px; width: 50%;"><textarea id="smw-property-input" class="smw-ask-query-printout" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
+				'<td style="padding-left: 7px; width: 50%;"><textarea id="smw-property-input" class="smw-ask-query-printout" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table></div>' . "\n";
 
 			// Format selection
 			$result .= self::getFormatSelection ( $this->m_params );
@@ -482,7 +487,7 @@ class SMWAskPage extends SpecialPage {
 			}
 
 			// Other options fieldset
-			$result .= '<fieldset class="smw-ask-options-fields"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
+			$result .= '<fieldset id="options" class="smw-ask-options-fields"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
 
 			// Info text for when the fieldset is collapsed
 			$result .= Html::element( 'div', array(
@@ -502,7 +507,7 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		// Submit
-		$result .= '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n" .
+		$result .= '<div id="search" class="is-disabled">' . '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n" .
 			'<p>' .  '' . '</p>' .
 
 			$this->inputFormWidget->createFindResultLinkElement( $hideForm ) .
@@ -519,7 +524,7 @@ class SMWAskPage extends SpecialPage {
 		);
 
 		$result .= ( $navigation !== '' ? '<p>'. $searchInfoText . '</p>' . '<hr class="smw-form-horizontalrule">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) .
-			"\n</fieldset>\n</form>\n";
+			"\n</fieldset></div>\n</form>\n";
 
 
 		$this->getOutput()->addModules(
@@ -543,6 +548,11 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		foreach ( $this->params as $param ) {
+
+			if ( !isset( $this->m_params[$param->getName()] ) ) {
+				continue;
+			}
+
 			if ( !$param->wasSetToDefault() ) {
 				$code .= ' |' . htmlspecialchars( $param->getName() ) . '=';
 				$code .= htmlspecialchars( $this->m_params[$param->getName()] ) . "\n";
