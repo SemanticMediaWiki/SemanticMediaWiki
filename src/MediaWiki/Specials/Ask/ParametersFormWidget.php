@@ -21,15 +21,29 @@ class ParametersFormWidget {
 	/**
 	 * @var boolean
 	 */
-	private $isTooltipDisplay = false;
+	private static $isTooltipDisplay = false;
+
+	/**
+	 * @var integer
+	 */
+	private static $defaultLimit = 50;
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param boolean $isTooltipDisplay
 	 */
-	public function setTooltipDisplay( $isTooltipDisplay ) {
-		$this->isTooltipDisplay = (bool)$isTooltipDisplay;
+	public static function setTooltipDisplay( $isTooltipDisplay ) {
+		self::$isTooltipDisplay = (bool)$isTooltipDisplay;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $defaultLimit
+	 */
+	public static function setDefaultLimit( $defaultLimit ) {
+		self::$defaultLimit = $defaultLimit;
 	}
 
 	/**
@@ -43,7 +57,7 @@ class ParametersFormWidget {
 	 *
 	 * @return string
 	 */
-	public function createParametersForm( $format, array $paramValues ) {
+	public static function parameterList( $format, array $paramValues ) {
 
 		$definitions = QueryProcessor::getFormatParameters( $format );
 
@@ -80,17 +94,26 @@ class ParametersFormWidget {
 			$currentValue = array_key_exists( $name, $paramValues ) ? $paramValues[$name] : false;
 			$dataInfo = $definition->getMessage() !== null ? wfMessage( $definition->getMessage() )->text() : '';
 
+			// Set dafault values
+			if ( $name === 'limit' && $currentValue === null ) {
+				$currentValue = self::$defaultLimit;
+			}
+
+			if ( $name === 'offset' && $currentValue === null ) {
+				$currentValue = 0;
+			}
+
 			$optionsHtml[] =
 				'<td>' .
 				Html::rawElement( 'span',
 					array(
-						'class'     => $this->isTooltipDisplay == true ? 'smw-ask-info' : '',
+						'class'     => self::$isTooltipDisplay == true ? 'smw-ask-info' : '',
 						'word-wrap' => 'break-word',
 						'data-info' => $dataInfo
 					),
 					htmlspecialchars( $name ) . ': ' ) .
 				'</td>' .
-				$this->showFormatOption( $definition, $currentValue );
+				self::option( $definition, $currentValue );
 		}
 
 		$i = 0;
@@ -99,7 +122,7 @@ class ParametersFormWidget {
 		$resultHtml = '';
 
 		// Top info text for a collapsed option box
-		if ( $this->isTooltipDisplay == true ){
+		if ( self::$isTooltipDisplay === true ){
 			$resultHtml .= Html::element('div', array(
 				'style' => 'margin-bottom:10px;'
 				), wfMessage( 'smw-ask-otheroptions-info')->text()
@@ -153,7 +176,7 @@ class ParametersFormWidget {
 	 *
 	 * @return string
 	 */
-	private function showFormatOption( ParamDefinition $definition, $currentValue ) {
+	private static function option( ParamDefinition $definition, $currentValue ) {
 		// Init
 		$description = '';
 
@@ -166,7 +189,7 @@ class ParametersFormWidget {
 		}
 
 		// Parameter description text
-		if ( !$this->isTooltipDisplay ) {
+		if ( !self::$isTooltipDisplay ) {
 			$tooltipInfo = $definition->getMessage() !== null ? wfMessage( $definition->getMessage() )->parse() : '';
 
 			$description =  Html::rawElement( 'span', array(

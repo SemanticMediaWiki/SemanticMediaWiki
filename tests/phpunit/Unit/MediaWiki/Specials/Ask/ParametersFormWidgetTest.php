@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\ParametersFormWidget;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\ParametersFormWidget
@@ -15,12 +16,12 @@ use SMW\MediaWiki\Specials\Ask\ParametersFormWidget;
  */
 class ParametersFormWidgetTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $stringValidator;
 
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Ask\ParametersFormWidget',
-			new ParametersFormWidget()
-		);
+	protected function setUp() {
+		$testEnvironment = new TestEnvironment();
+
+		$this->stringValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 
 	/**
@@ -28,11 +29,9 @@ class ParametersFormWidgetTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCreateParametersForm( $format, $parameters, $expected ) {
 
-		$instance = new ParametersFormWidget();
-
-		$this->assertContains(
+		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$instance->createParametersForm( $format, $parameters )
+			ParametersFormWidget::parameterList( $format, $parameters )
 		);
 	}
 
@@ -47,7 +46,23 @@ class ParametersFormWidgetTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'table',
 			array(),
-			'<table class="smw-ask-options-list"'
+			[
+				'<table class="smw-ask-options-list"',
+				'<input size="6" style="width: 95%;" value="50" name="p[limit]"',
+				'<input size="6" style="width: 95%;" value="0" name="p[offset]"'
+			]
+		);
+
+		$provider[] = array(
+			'table',
+			[
+				'limit'  => 9999,
+				'offset' => 42
+			],
+			[
+				'<input size="6" style="width: 95%;" value="9999" name="p[limit]"',
+				'<input size="6" style="width: 95%;" value="42" name="p[offset]"'
+			]
 		);
 
 		return $provider;
