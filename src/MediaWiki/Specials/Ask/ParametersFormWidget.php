@@ -53,8 +53,15 @@ class ParametersFormWidget {
 		 * @var ParamProcessor\ParamDefinition $definition
 		 */
 		foreach ( $definitions as $name => $definition ) {
+
 			// Ignore the format parameter, as we got a special control in the GUI for it already.
 			if ( $name == 'format' ) {
+				continue;
+			}
+
+			// Handle sort, order separate as the generated checkbox are suboptimal, and the single
+			// field interferes with the GET request on multiple sort setters
+			if ( in_array( $name, [ 'sort', 'order' ] ) ) {
 				continue;
 			}
 

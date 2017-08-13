@@ -9,6 +9,7 @@ use SMW\MediaWiki\Specials\Ask\ParametersFormWidget;
 use SMW\MediaWiki\Specials\Ask\FormatterWidget;
 use SMW\MediaWiki\Specials\Ask\NavigationWidget;
 use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
+use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\ApplicationFactory;
 
 /**
@@ -209,29 +210,44 @@ class SMWAskPage extends SpecialPage {
 			$this->m_params['format'] = 'broadtable';
 		}
 
-		if ( !array_key_exists( 'order', $this->m_params ) ) {
-			$order_values = $request->getArray( 'order' );
+		$sort_count = 0;
 
-			if ( is_array( $order_values ) ) {
-				$this->m_params['order'] = '';
+		// First check whether the sorting options input send an
+		// request data as array
+		if ( $request->getArray( 'sort_num', [] ) !== array() ) {
+			$sort_values = $request->getArray( 'sort_num' );
 
-				foreach ( $order_values as $order_value ) {
-					if ( $order_value === '' ) {
-						$order_value = 'ASC';
-					}
-					$this->m_params['order'] .= ( $this->m_params['order'] !== '' ? ',' : '' ) . $order_value;
-				}
+			if ( is_array( $sort_values ) ) {
+				$sort = array_filter( $sort_values );
+				$sort_count = count( $sort );
+				$this->m_params['sort'] = implode( ',', $sort );
 			}
+		} elseif ( $request->getCheck( 'sort' ) ) {
+			$this->m_params['sort'] = $request->getVal( 'sort', '' );
 		}
 
-		$this->m_num_sort_values = 0;
+		// First check whether the order options input send an
+		// request data as array
+		if ( $request->getArray( 'order_num', [] ) !== array()  ) {
+			$order_values = $request->getArray( 'order_num' );
 
-		if  ( !array_key_exists( 'sort', $this->m_params ) ) {
-			$sort_values = $request->getArray( 'sort' );
-			if ( is_array( $sort_values ) ) {
-				$this->m_params['sort'] = implode( ',', $sort_values );
-				$this->m_num_sort_values = count( $sort_values );
+			// Count doesn't match means we have a order from an
+			// empty (#subject) carrying around which we don't permit when
+			// sorting via columns
+			if ( count( $order_values ) != $sort_count ) {
+				array_pop( $order_values );
 			}
+
+			if ( is_array( $order_values ) ) {
+				$order = array_filter( $order_values );
+				$this->m_params['order'] = implode( ',', $order );
+			}
+
+		} elseif ( $request->getCheck( 'order' ) ) {
+			$this->m_params['order'] = $request->getVal( 'order', '' );
+		} elseif ( !array_key_exists( 'offset', $this->m_params ) ) {
+			$this->m_params['order'] = 'asc';
+			$this->m_params['sort'] = '';
 		}
 
 		if ( !array_key_exists( 'offset', $this->m_params ) ) {
@@ -503,6 +519,17 @@ class SMWAskPage extends SpecialPage {
 		$hideForm = false;
 		$sorting = '';
 
+		SortWidget::setSortingSupport(
+			$GLOBALS['smwgQSortingSupport']
+		);
+
+		// @see #835
+		SortWidget::setRandSortingSupport(
+			$GLOBALS['smwgQRandSortingSupport']
+		);
+
+		$sorting = SortWidget::sortSection( $this->m_params );
+
 		$result .= Html::openElement( 'form',
 			array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
 
@@ -518,19 +545,11 @@ class SMWAskPage extends SpecialPage {
 			// Format selection
 			$result .= self::getFormatSelection ( $this->m_params );
 
-			// @TODO
-			// Sorting inputs
-			if ( $GLOBALS['smwgQSortingSupport'] ) {
-				$result .= '<fieldset class="smw-ask-sorting"><legend>' . wfMessage( 'smw-ask-sorting' )->escaped() . "</legend>\n";
-				$result .= self::getSortingOption( $this->m_params );
-				$result .= "</fieldset>\n";
-			}
-
 			// Other options fieldset
-			$result .= '<fieldset id="options" class="smw-ask-options"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
+			$result .= '<fieldset id="options" class="smw-ask-options"><legend>' . wfMessage( 'smw-ask-options' )->escaped() . "</legend>\n";
 
 			// Individual options
-			$result .= "<div id=\"other_options\">" .  $this->parametersFormWidget->createParametersForm( $this->m_params['format'], $this->m_params ) . "</div>";
+			$result .= "<div id=\"options-list\">" .  $this->parametersFormWidget->createParametersForm( $this->m_params['format'], $this->m_params ) . "</div>";
 						$result .= $sorting;
 			$result .= "</fieldset>\n";
 
@@ -659,52 +678,6 @@ class SMWAskPage extends SpecialPage {
 		);
 
 		$result .= "</select></span><span id=\"formatHelp\" class=\"smw-ask-format-selection-help\">" . wfMessage( 'smw-ask-format-selection-help', $default )->text() ."</span></fieldset>\n";
-
-		return $result;
-	}
-
-	/**
-	 * Build the sorting/order input
-	 *
-	 * @param array
-	 *
-	 * @return string
-	 */
-	protected static function getSortingOption ( $params ) {
-		$result = '';
-
-		if ( ! array_key_exists( 'sort', $params ) || ! array_key_exists( 'order', $params ) ) {
-			$orders = array(); // do not even show one sort input here
-		} else {
-			$sorts = explode( ',', $params['sort'] );
-			$orders = explode( ',', $params['order'] );
-			reset( $sorts );
-		}
-
-		foreach ( $orders as $i => $order ) {
-			$result .=  "<div id=\"sort_div_$i\">" . wfMessage( 'smw_ask_sortby' )->escaped() . ' <input type="text" name="sort[' . $i . ']" value="' .
-				    htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
-
-			if ( $order == 'ASC' ) {
-				$result .= 'selected="selected" ';
-			}
-			$result .=  'value="ASC">' . wfMessage( 'smw_ask_ascorder' )->escaped() . '</option><option ';
-			if ( $order == 'DESC' ) {
-				$result .= 'selected="selected" ';
-			}
-
-			$result .=  'value="DESC">' . wfMessage( 'smw_ask_descorder' )->escaped() . "</option></select>\n";
-			$result .= '[<a class="smw-ask-delete" data-target="sort_div_' . $i . '" href="#">' . wfMessage( 'delete' )->escaped() . '</a>]' . "\n";
-			$result .= "</div>\n";
-		}
-
-		$result .=  '<div id="sorting_starter" style="display: none">' . wfMessage( 'smw_ask_sortby' )->escaped() . ' <input type="text" name="sort_num" size="35" class="smw-property-input" />' . "\n";
-		$result .= ' <select name="order_num">' . "\n";
-		$result .= '	<option value="ASC">' . wfMessage( 'smw_ask_ascorder' )->escaped() . "</option>\n";
-		$result .= '	<option value="DESC">' . wfMessage( 'smw_ask_descorder' )->escaped() . "</option>\n</select>\n";
-		$result .= "</div>\n";
-		$result .= '<div id="sorting_main"></div>' . "\n";
-		$result .= '<a class="smw-ask-add" href="#">' . wfMessage( 'smw_add_sortcondition' )->escaped() . '</a>' . "\n";
 
 		return $result;
 	}

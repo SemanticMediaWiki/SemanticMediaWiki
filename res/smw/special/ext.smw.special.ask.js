@@ -105,7 +105,7 @@
 		new_div = starter_div.clone();
 
 		new_div.attr( {
-			'class': 'multipleTemplate',
+			'class': 'smw-ask-sort-input multipleTemplate',
 			'id': 'sort_div_' + num_elements
 		} );
 
@@ -113,17 +113,23 @@
 
 		//Create 'delete' link
 		var button = $( '<a>').attr( {
-			'href': '#',
-			'class': 'smw-ask-delete'
+			'class': 'smw-ask-sort-delete-action',
+			'data-target': 'sort_div_' + num_elements
 		} ).text( mw.msg( 'smw-ask-delete' ) );
 
-		button.click( function() {
-			removeInstance( 'sort_div_' + num_elements );
+		button.click( function( event ) {
+			removeInstance( $(this).data( 'target' ) );
 		} );
 
 		new_div.append(
-			$( '<span>' ).html( button )
+			$( '<span class="smw-ask-sort-delete">' ).html( button )
 		);
+
+		// Trigger an event to ensure that the input field has an autocomplete
+		// instance attach
+		main_div.trigger( 'SMW::Property::Autocomplete' , {
+			'context': new_div
+		} );
 
 		//Add the new instance
 		main_div.append( new_div );
@@ -158,12 +164,11 @@
 		_init.tooltip();
 		_init.formatHelp( options );
 
-		// Multiple sorting
-		$( '.smw-ask-delete').click( function() {
-			removeInstance( $( this).attr( 'data-target' ) );
+		$( '.smw-ask-sort-delete-action' ).click( function() {
+			removeInstance( $( this).data( 'target' ) );
 		} );
 
-		$( '.smw-ask-add').click( function() {
+		$( '.smw-ask-sort-add-action' ).click( function() {
 			addInstance( 'sorting_starter', 'sorting_main' );
 		} );
 
