@@ -16,7 +16,7 @@ use Html;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
-class ParametersFormWidget {
+class ParametersWidget {
 
 	/**
 	 * @var boolean

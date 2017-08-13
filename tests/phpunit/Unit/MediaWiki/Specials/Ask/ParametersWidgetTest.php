@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
-use SMW\MediaWiki\Specials\Ask\ParametersFormWidget;
+use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Ask\ParametersFormWidget
+ * @covers \SMW\MediaWiki\Specials\Ask\ParametersWidget
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ParametersFormWidgetTest extends \PHPUnit_Framework_TestCase {
+class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
@@ -31,7 +31,7 @@ class ParametersFormWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			ParametersFormWidget::parameterList( $format, $parameters )
+			ParametersWidget::parameterList( $format, $parameters )
 		);
 	}
 

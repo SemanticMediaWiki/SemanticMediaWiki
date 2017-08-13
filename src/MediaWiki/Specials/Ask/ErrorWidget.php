@@ -13,17 +13,21 @@ use Html;
  *
  * @author mwjames
  */
-class ErrorFormWidget {
+class ErrorWidget {
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param Query|null $query
-	 *
 	 * @return string
 	 */
-	public function createNoResultFormElement() {
-		return Html::element( 'div', array( 'class' => 'smw-callout smw-callout-info' ), wfMessage( 'smw_result_noresults' )->escaped() );
+	public static function noResult() {
+		return Html::element(
+			'div',
+			[
+				'class' => 'smw-callout smw-callout-info'
+			],
+			Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE )
+		);
 	}
 
 	/**
@@ -45,7 +49,7 @@ class ErrorFormWidget {
 					array(
 						'class' => 'smw-callout smw-callout-error',
 					),
-					Message::get( 'smw-noscript', Message::PARSE )
+					Message::get( 'smw-noscript', Message::PARSE, Message::USER_LANGUAGE )
 				)
 			)
 		);
@@ -62,7 +66,7 @@ class ErrorFormWidget {
 			[
 				'class' => 'smw-callout smw-callout-error'
 			],
-			Message::get( 'sessionfailure' )
+			Message::get( 'sessionfailure', Message::TEXT, Message::USER_LANGUAGE )
 		);
 	}
 
@@ -73,7 +77,7 @@ class ErrorFormWidget {
 	 *
 	 * @return string
 	 */
-	public function getFormattedQueryErrorElement( Query $query = null ) {
+	public static function queryError( Query $query = null ) {
 
 		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === array() ) {
 			return '';
@@ -100,7 +104,13 @@ class ErrorFormWidget {
 			$error =  implode( ' ', $errors );
 		}
 
-		return Html::rawElement( 'div', array( 'class' => 'smw-callout smw-callout-error' ), $error );
+		return Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-callout smw-callout-error'
+			],
+			$error
+		);
 	}
 
 }

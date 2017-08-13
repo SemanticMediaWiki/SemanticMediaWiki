@@ -3,11 +3,11 @@
 use ParamProcessor\Param;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
-use SMW\MediaWiki\Specials\Ask\ErrorFormWidget;
-use SMW\MediaWiki\Specials\Ask\InputFormWidget;
-use SMW\MediaWiki\Specials\Ask\ParametersFormWidget;
+use SMW\MediaWiki\Specials\Ask\ErrorWidget;
+use SMW\MediaWiki\Specials\Ask\LinksWidget;
+use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\FormatterWidget;
-use SMW\MediaWiki\Specials\Ask\NavigationWidget;
+use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
 use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\MediaWiki\Specials\Ask\FormatSelectionWidget;
@@ -38,29 +38,16 @@ class SMWAskPage extends SpecialPage {
 	private $queryLinker = null;
 
 	/**
-	 * @var InputFormWidget
-	 */
-	private $inputFormWidget;
-
-	/**
-	 * @var ErrorFormWidget
-	 */
-	private $errorFormWidget;
-
-	/**
 	 * @var Param[]
 	 */
 	private $params = array();
 
 	public function __construct() {
 		parent::__construct( 'Ask' );
-
-		$this->inputFormWidget = new InputFormWidget();
-		$this->errorFormWidget = new ErrorFormWidget();
 	}
 
 	/**
-	 * SpecialPage::doesWrites
+	 * @see SpecialPage::doesWrites
 	 *
 	 * @return boolean
 	 */
@@ -69,7 +56,7 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * Main entrypoint for the special page.
+	 * @see SpecialPage::execute
 	 *
 	 * @param string $p
 	 */
@@ -86,6 +73,10 @@ class SMWAskPage extends SpecialPage {
 		$out->addModules( 'ext.smw.ask' );
 		$out->addModules( 'ext.smw.property' );
 
+		$out->addModules(
+			LinksWidget::getModules()
+		);
+
 		$this->setHeaders();
 
 		$request->setVal( 'wpEditToken',
@@ -94,12 +85,12 @@ class SMWAskPage extends SpecialPage {
 
 		// #2590
 		if ( !$this->getUser()->matchEditToken( $request->getVal( 'wpEditToken' ) ) ) {
-			return $out->addHtml( ErrorFormWidget::sessionFailure() );
+			return $out->addHtml( ErrorWidget::sessionFailure() );
 		}
 
-		$out->addHTML( ErrorFormWidget::noScript() );
+		$out->addHTML( ErrorWidget::noScript() );
 
-		NavigationWidget::setMaxInlineLimit(
+		NavigationLinksWidget::setMaxInlineLimit(
 			$GLOBALS['smwgQMaxInlineLimit']
 		);
 
@@ -107,11 +98,11 @@ class SMWAskPage extends SpecialPage {
 			$GLOBALS['smwgResultFormats']
 		);
 
-		ParametersFormWidget::setTooltipDisplay(
+		ParametersWidget::setTooltipDisplay(
 			$this->getUser()->getOption( 'smw-prefs-ask-options-tooltip-display' )
 		);
 
-		ParametersFormWidget::setDefaultLimit(
+		ParametersWidget::setDefaultLimit(
 			$GLOBALS['smwgQDefaultLimit']
 		);
 
@@ -133,7 +124,7 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		$out->addHTML(
-			NavigationWidget::topLinks(
+			NavigationLinksWidget::topLinks(
 				SpecialPage::getSafeTitleFor( 'Ask' ),
 				$visibleLinks
 			)
@@ -147,7 +138,7 @@ class SMWAskPage extends SpecialPage {
 				$format = $request->getVal( 'showformatoptions' );
 				$params = $request->getArray( 'params' );
 				$out->disable();
-				echo ParametersFormWidget::parameterList( $format, $params );
+				echo ParametersWidget::parameterList( $format, $params );
 			} else {
 				$this->extractQueryParameters( $p );
 				$this->makeHTMLResult();
@@ -156,7 +147,15 @@ class SMWAskPage extends SpecialPage {
 
 		$this->addExternalHelpLinkFor( 'smw_ask_doculink' );
 
-		SMWOutputs::commitToOutputPage( $out ); // make sure locally collected output data is pushed to the output!
+		// make sure locally collected output data is pushed to the output!
+		SMWOutputs::commitToOutputPage( $out );
+	}
+
+	/**
+	 * @see SpecialPage::getGroupName
+	 */
+	protected function getGroupName() {
+		return 'smw_group';
 	}
 
 	/**
@@ -433,7 +432,7 @@ class SMWAskPage extends SpecialPage {
 						$urlArgs['eq'] = 'no';
 					}
 
-					$navigation = NavigationWidget::navigation(
+					$navigation = NavigationLinksWidget::navigationLinks(
 						SpecialPage::getSafeTitleFor( 'Ask' ),
 						$this->params['limit']->getValue(),
 						$res->getQuery()->getOffset(),
@@ -453,7 +452,7 @@ class SMWAskPage extends SpecialPage {
 					}
 
 				} else {
-					$result = $this->errorFormWidget->createNoResultFormElement();
+					$result = ErrorWidget::noResult();
 					$result .= $debug;
 				}
 			}
@@ -499,7 +498,7 @@ class SMWAskPage extends SpecialPage {
 				$navigation,
 				$duration,
 				$isFromCache
-			) . $this->errorFormWidget->getFormattedQueryErrorElement( $queryobj ) . $result;
+			) . ErrorWidget::queryError( $queryobj ) . $result;
 
 			// The overall form is "soft-disabled" so that when JS is fully
 			// loaded, the ask module will remove this class and releases the form
@@ -560,7 +559,7 @@ class SMWAskPage extends SpecialPage {
 			$result .= '<fieldset id="options" class="smw-ask-options"><legend>' . wfMessage( 'smw-ask-options' )->escaped() . "</legend>\n";
 
 			// Individual options
-			$result .= "<div id=\"options-list\">" .  ParametersFormWidget::parameterList( $this->m_params['format'], $this->m_params ) . "</div>";
+			$result .= "<div id=\"options-list\">" .  ParametersWidget::parameterList( $this->m_params['format'], $this->m_params ) . "</div>";
 						$result .= $sorting;
 			$result .= "</fieldset>\n";
 
@@ -576,16 +575,16 @@ class SMWAskPage extends SpecialPage {
 		$result .= '<div id="search" class="smw-ask-search">' . '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n" .
 			'<p>' .  '' . '</p>' .
 
-			$this->inputFormWidget->createFindResultLinkElement( $hideForm ) .
-			$this->inputFormWidget->createShowHideLinkElement( $title, $urltail, $hideForm, $isEmpty ) .
-			$this->inputFormWidget->createClipboardLinkElement( $this->queryLinker );
+			LinksWidget::resultSubmitLink( $hideForm ) .
+			LinksWidget::showHideLink( $title, $urltail, $hideForm, $isEmpty ) .
+			LinksWidget::clipboardLink( $this->queryLinker );
 
 			if ( !isset( $this->m_params['source'] ) || $this->m_params['source'] === '' ) {
-				$result .= $this->inputFormWidget->createDebugLinkElement( $title, $urltail, $isEmpty );
+				$result .= LinksWidget::debugLink( $title, $urltail, $isEmpty );
 			}
 
-			$result .= $this->inputFormWidget->createEmbeddedCodeLinkElement( $isEmpty ) .
-			$this->inputFormWidget->createEmbeddedCodeElement( $this->getQueryAsCodeString() );
+			$result .= LinksWidget::embeddedCodeLink( $isEmpty ) .
+			LinksWidget::embeddedCodeBlock( $this->getQueryAsCodeString() );
 
 		$result .= '<p></p>';
 
@@ -596,10 +595,6 @@ class SMWAskPage extends SpecialPage {
 
 		$result .= ( $navigation !== '' ? '<div class="smw-ask-cond-info">'. $searchInfoText . '</div>' . '<hr class="smw-form-horizontalrule"><div class="smw-ask-actions-nav">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) . '</div>' .
 			"\n</fieldset></div>\n</form>\n";
-
-		$this->getOutput()->addModules(
-			$this->inputFormWidget->getResourceModules()
-		);
 
 		return $result;
 	}
@@ -630,10 +625,6 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		return '{{#ask: ' . $code . '}}';
-	}
-
-	protected function getGroupName() {
-		return 'smw_group';
 	}
 
 	private function doFinalModificationsOnBorrowedOutput( &$html, &$searchInfoText ) {
