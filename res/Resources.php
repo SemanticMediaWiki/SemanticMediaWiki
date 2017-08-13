@@ -269,6 +269,18 @@ return array(
 		)
 	),
 
+	// Table styles
+	'ext.smw.table.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/ext.smw.table.css'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	// Facts and browse
 	'ext.smw.browse.styles' => $moduleTemplate + array(
 		'styles' => array(

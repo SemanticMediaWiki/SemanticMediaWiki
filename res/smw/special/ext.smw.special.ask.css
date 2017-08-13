@@ -75,6 +75,26 @@
 	padding: 5px;
 }
 
+.smw-ask-query .smw-table-header {
+	background-color: transparent;
+	text-align: center;
+	padding-bottom: 5px;
+}
+
+.smw-ask-query .smw-table-header .smw-table-cell {
+	border: 0px;
+	padding: 0px 0px 5px 0px;
+}
+
+.smw-ask-query .smw-table-row .smw-table-cell {
+	border: 1px solid #a2a9b1;
+    padding: 0px;
+}
+
+.smw-ask-query textarea{
+	border: 0px;
+}
+
 .smw-ask-options-row-odd {
 	background: #eee;
 }
