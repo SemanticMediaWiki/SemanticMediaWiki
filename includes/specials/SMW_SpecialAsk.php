@@ -47,11 +47,6 @@ class SMWAskPage extends SpecialPage {
 	private $errorFormWidget;
 
 	/**
-	 * @var ParametersFormWidget
-	 */
-	private $parametersFormWidget;
-
-	/**
 	 * @var Param[]
 	 */
 	private $params = array();
@@ -61,7 +56,6 @@ class SMWAskPage extends SpecialPage {
 
 		$this->inputFormWidget = new InputFormWidget();
 		$this->errorFormWidget = new ErrorFormWidget();
-		$this->parametersFormWidget = new ParametersFormWidget();
 	}
 
 	/**
@@ -83,10 +77,6 @@ class SMWAskPage extends SpecialPage {
 
 		$out = $this->getOutput();
 		$request = $this->getRequest();
-
-		$this->parametersFormWidget->setTooltipDisplay(
-			$this->getUser()->getOption( 'smw-prefs-ask-options-tooltip-display' )
-		);
 
 		$out->addModuleStyles( 'ext.smw.style' );
 		$out->addModuleStyles( 'ext.smw.ask.styles' );
@@ -115,6 +105,14 @@ class SMWAskPage extends SpecialPage {
 			$GLOBALS['smwgResultFormats']
 		);
 
+		ParametersFormWidget::setTooltipDisplay(
+			$this->getUser()->getOption( 'smw-prefs-ask-options-tooltip-display' )
+		);
+
+		ParametersFormWidget::setDefaultLimit(
+			$GLOBALS['smwgQDefaultLimit']
+		);
+
 		if ( $request->getCheck( 'bTitle' ) ) {
 			$visibleLinks = [];
 		} elseif( $request->getVal( 'eq' ) === 'no' ) {
@@ -138,7 +136,7 @@ class SMWAskPage extends SpecialPage {
 				$format = $request->getVal( 'showformatoptions' );
 				$params = $request->getArray( 'params' );
 				$out->disable();
-				echo $this->parametersFormWidget->createParametersForm( $format, $params );
+				echo ParametersFormWidget::parameterList( $format, $params );
 			} else {
 				$this->extractQueryParameters( $p );
 				$this->makeHTMLResult();
@@ -565,7 +563,7 @@ class SMWAskPage extends SpecialPage {
 			$result .= '<fieldset id="options" class="smw-ask-options"><legend>' . wfMessage( 'smw-ask-options' )->escaped() . "</legend>\n";
 
 			// Individual options
-			$result .= "<div id=\"options-list\">" .  $this->parametersFormWidget->createParametersForm( $this->m_params['format'], $this->m_params ) . "</div>";
+			$result .= "<div id=\"options-list\">" .  ParametersFormWidget::parameterList( $this->m_params['format'], $this->m_params ) . "</div>";
 						$result .= $sorting;
 			$result .= "</fieldset>\n";
 
