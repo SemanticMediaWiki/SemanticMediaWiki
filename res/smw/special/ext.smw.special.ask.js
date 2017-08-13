@@ -183,6 +183,9 @@
 				'success': function( data ) {
 					$( '#options-list' ).html( data );
 
+					// Disabled state was set during the onChange in FormatSelectionWidget
+					$( '#options-list' ).removeClass( 'is-disabled' );
+
 					// Reinitialize functions after each ajax request
 					_init.autocomplete.parameter();
 					_init.tooltip();

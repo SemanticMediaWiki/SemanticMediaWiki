@@ -10,6 +10,7 @@ use SMW\MediaWiki\Specials\Ask\FormatterWidget;
 use SMW\MediaWiki\Specials\Ask\NavigationWidget;
 use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
+use SMW\MediaWiki\Specials\Ask\FormatSelectionWidget;
 use SMW\ApplicationFactory;
 
 /**
@@ -108,6 +109,10 @@ class SMWAskPage extends SpecialPage {
 
 		NavigationWidget::setMaxInlineLimit(
 			$GLOBALS['smwgQMaxInlineLimit']
+		);
+
+		FormatSelectionWidget::setResultFormats(
+			$GLOBALS['smwgResultFormats']
 		);
 
 		if ( $request->getCheck( 'bTitle' ) ) {
@@ -524,7 +529,10 @@ class SMWAskPage extends SpecialPage {
 
 		$downloadLink = DownloadLinksWidget::downloadLinks( $this->queryLinker );
 		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $querySource, $isFromCache, $duration )->parse() : '';
+
 		$hideForm = false;
+		$title = SpecialPage::getSafeTitleFor( 'Ask' );
+
 		$sorting = '';
 
 		SortWidget::setSortingSupport(
@@ -551,7 +559,7 @@ class SMWAskPage extends SpecialPage {
 				'<td style="padding-left: 7px; width: 50%;"><textarea id="smw-property-input" class="smw-ask-query-printout" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table></div>' . "\n";
 
 			// Format selection
-			$result .= self::getFormatSelection ( $this->m_params );
+			$result .= FormatSelectionWidget::selection( $title, $this->m_params );
 
 			// Other options fieldset
 			$result .= '<fieldset id="options" class="smw-ask-options"><legend>' . wfMessage( 'smw-ask-options' )->escaped() . "</legend>\n";
@@ -567,7 +575,6 @@ class SMWAskPage extends SpecialPage {
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
 		}
 
-		$title = SpecialPage::getSafeTitleFor( 'Ask' );
 		$isEmpty = $this->queryLinker === null;
 
 		// Submit
@@ -624,70 +631,6 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		return '{{#ask: ' . $code . '}}';
-	}
-
-	/**
-	 * Build the format drop down
-	 *
-	 * @param array
-	 *
-	 * @return string
-	 */
-	protected static function getFormatSelection ( $params ) {
-		$result = '';
-
-		$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
-		$url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( 'showformatoptions=this.value' );
-
-		foreach ( $params as $param => $value ) {
-			if ( $param !== 'format' ) {
-				$url .= '&params[' . rawurlencode( $param ) . ']=' . rawurlencode( $value );
-			}
-		}
-
-		$defaultName = htmlspecialchars( $printer->getName() ) . ' (' . wfMessage( 'smw_ask_defaultformat' )->escaped() . ')';
-		$default = $printer->getName();
-
-		$result .= '<fieldset id="format" class="smw-ask-format" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-format' )->escaped() . "</legend>\n" .'<span class="smw-ask-query-format" style="vertical-align:middle;">' . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
-			Html::openElement(
-				'select',
-				array(
-					'class' => 'smw-ask-button smw-ask-button-lgrey smw-ask-query-format-selector',
-					'id' => 'formatSelector',
-					'name' => 'p[format]',
-					'data-url' => $url,
-				)
-			) . "\n" .
-			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected="selected"' : '' ) . '>' . $defaultName . '</option>' . "\n";
-
-		$formats = array();
-
-		foreach ( array_keys( $GLOBALS['smwgResultFormats'] ) as $format ) {
-			// Special formats "count" and "debug" currently not supported.
-			if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
-				$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
-				$formats[$format] = htmlspecialchars( $printer->getName() );
-			}
-		}
-
-		natcasesort( $formats );
-
-		foreach ( $formats as $format => $name ) {
-			$result .= '	<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected="selected"' : '' ) . '>' . $name . "</option>\n";
-
-			if ( $params['format'] == $format ) {
-				$default = $name;
-			}
-		}
-
-		$default = Html::rawElement( 'a', [
-				'href' => 'http://semantic-mediawiki.org/wiki/Help:' . $params['format'] . ' format'
-			], $default
-		);
-
-		$result .= "</select></span><span id=\"formatHelp\" class=\"smw-ask-format-selection-help\">" . wfMessage( 'smw-ask-format-selection-help', $default )->text() ."</span></fieldset>\n";
-
-		return $result;
 	}
 
 	protected function getGroupName() {
