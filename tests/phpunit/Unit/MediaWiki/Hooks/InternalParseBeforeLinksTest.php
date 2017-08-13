@@ -79,12 +79,13 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$text = 'Foo';
 
-		$title = $this->testEnvironment->createConfiguredStub(
-			'\Title',
-			array(
-				'isSpecialPage' => false
-			)
-		);
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'isSpecialPage' )
+			->will( $this->returnValue( false ) );
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
@@ -119,16 +120,23 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$text = 'Foo';
 
-		$title = $this->testEnvironment->createConfiguredStub(
-			'\Title',
-			array(
-				'getDBKey'      => __METHOD__,
-				'getNamespace'  => NS_MAIN,
-				'isSpecialPage' => true
-			)
-		);
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$title->expects( $this->atLeastOnce() )
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( __METHOD__ ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->any() )
+			->method( 'isSpecialPage' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
 			->method( 'isSpecial' )
 			->with( $this->equalTo( 'Bar' ) )
 			->will( $this->returnValue( true ) );
@@ -168,16 +176,23 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$text = '[[SMW::off]]Foo[[SMW::on]]';
 
-		$title = $this->testEnvironment->createConfiguredStub(
-			'\Title',
-			array(
-				'getDBKey'      => __METHOD__,
-				'getNamespace'  => NS_MAIN,
-				'isSpecialPage' => true
-			)
-		);
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$title->expects( $this->atLeastOnce() )
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( __METHOD__ ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->any() )
+			->method( 'isSpecialPage' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
 			->method( 'isSpecial' )
 			->with( $this->equalTo( 'Bar' ) )
 			->will( $this->returnValue( true ) );

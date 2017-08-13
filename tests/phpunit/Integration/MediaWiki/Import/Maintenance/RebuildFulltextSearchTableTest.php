@@ -31,7 +31,7 @@ class RebuildFulltextSearchTableTest extends MwDBaseUnitTestCase {
 		$this->testEnvironment->tearDown();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			$this->testEnvironment->getFixturesLocation( 'Import', 'cicero-de-finibus.xml' )
+			__DIR__ . '/../Fixtures/cicero-de-finibus.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {
