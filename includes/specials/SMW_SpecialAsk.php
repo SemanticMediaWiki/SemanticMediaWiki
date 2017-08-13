@@ -11,6 +11,7 @@ use SMW\MediaWiki\Specials\Ask\NavigationWidget;
 use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\MediaWiki\Specials\Ask\FormatSelectionWidget;
+use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
 use SMW\ApplicationFactory;
 
 /**
@@ -80,6 +81,7 @@ class SMWAskPage extends SpecialPage {
 
 		$out->addModuleStyles( 'ext.smw.style' );
 		$out->addModuleStyles( 'ext.smw.ask.styles' );
+		$out->addModuleStyles( 'ext.smw.table.styles' );
 
 		$out->addModules( 'ext.smw.ask' );
 		$out->addModules( 'ext.smw.property' );
@@ -111,6 +113,15 @@ class SMWAskPage extends SpecialPage {
 
 		ParametersFormWidget::setDefaultLimit(
 			$GLOBALS['smwgQDefaultLimit']
+		);
+
+		SortWidget::setSortingSupport(
+			$GLOBALS['smwgQSortingSupport']
+		);
+
+		// @see #835
+		SortWidget::setRandSortingSupport(
+			$GLOBALS['smwgQRandSortingSupport']
 		);
 
 		if ( $request->getCheck( 'bTitle' ) ) {
@@ -531,17 +542,6 @@ class SMWAskPage extends SpecialPage {
 		$hideForm = false;
 		$title = SpecialPage::getSafeTitleFor( 'Ask' );
 
-		$sorting = '';
-
-		SortWidget::setSortingSupport(
-			$GLOBALS['smwgQSortingSupport']
-		);
-
-		// @see #835
-		SortWidget::setRandSortingSupport(
-			$GLOBALS['smwgQRandSortingSupport']
-		);
-
 		$sorting = SortWidget::sortSection( $this->m_params );
 
 		$result .= Html::openElement( 'form',
@@ -551,10 +551,7 @@ class SMWAskPage extends SpecialPage {
 			$result .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
-			$result .= '<div id="query" class="smw-ask-query"><table style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->escaped() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->escaped() . "<br />\n" .
-				'<span style="font-weight: normal;"></span>' . "</th></tr>\n" .
-				'<tr><td style="padding-left: 0px; width: 50%;"><textarea class="smw-ask-query-condition" name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
-				'<td style="padding-left: 7px; width: 50%;"><textarea id="smw-property-input" class="smw-ask-query-printout" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table></div>' . "\n";
+			$result .= QueryInputWidget::input( $this->m_querystring , $printoutstring );
 
 			// Format selection
 			$result .= FormatSelectionWidget::selection( $title, $this->m_params );
