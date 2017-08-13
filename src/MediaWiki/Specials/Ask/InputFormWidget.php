@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
 use SMWInfolink as Infolink;
+use SMW\Message;
 use Title;
 
 /**
@@ -186,7 +187,7 @@ class InputFormWidget {
 			'a',
 			array(
 				'class' => '',
-				'href'  => $title->getLocalURL( $urlTail . '&debug=true&eq=yes' ),
+				'href'  => $title->getLocalURL( $urlTail . '&debug=true&eq=yes#search' ),
 				'rel'   => 'nofollow'
 			), 'Debug'
 		) );

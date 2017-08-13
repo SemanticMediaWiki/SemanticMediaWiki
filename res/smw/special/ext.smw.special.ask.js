@@ -67,8 +67,7 @@
 		formatHelp: function( options ){
 			// Make sure we don't have a pre existing element, using id as selector
 			// as it is faster compared to the class selector
-			$( '#formatHelp' ).remove();
-			$( options.selector ).after( '<span id="formatHelp" class="smw-ask-format-selection-help">' + mw.msg( 'smw-ask-format-selection-help', addFormatHelpLink( options ) ) + '</span>' );
+			$( '#formatHelp' ).replaceWith( '<span id="formatHelp" class="smw-ask-format-selection-help">' + mw.msg( 'smw-ask-format-selection-help', addFormatHelpLink( options ) ) + '</span>' );
 		}
 	};
 
@@ -83,7 +82,7 @@
 	function addFormatHelpLink ( options ){
 		var h = mw.html,
 			link = h.element( 'a', {
-					href: 'http://semantic-mediawiki.org/wiki/Help:' + options.format + ' format',
+					href: 'https://semantic-mediawiki.org/wiki/Help:' + options.format + ' format',
 					title: options.name
 				}, options.name
 			);
@@ -143,7 +142,7 @@
 
 		// Field input is kept disabled until JS is fully loaded to signal
 		// "ready for input"
-		$( '#query, #format, #options, #search, #result' ).removeClass( 'is-disabled' );
+		$( '#ask' ).removeClass( 'is-disabled' );
 
 		// Get initial format and language settings
 		var selected = $( '#formatSelector option:selected' ),

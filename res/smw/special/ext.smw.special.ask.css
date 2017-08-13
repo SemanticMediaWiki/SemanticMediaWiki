@@ -62,12 +62,17 @@
 
 .smw-ask-format-selection-help {
 	vertical-align: middle;
-	margin-left: 10px;
+	padding: 5px;
 }
 
-.smw-ask-options legend {
-	cursor: pointer;
-	padding-left: 20px;
+.smw-ask-cond-info{
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+
+.smw-ask-query-format {
+	vertical-align: middle;
+	padding: 5px;
 }
 
 .smw-ask-options-row-odd {
@@ -188,4 +193,12 @@
 
 #inlinequeryembed {
 	margin-top: 10px;
+}
+
+#inlinequeryembedinstruct {
+	margin-bottom: 10px;
+}
+
+fieldset.smw-ask-actions, fieldset.smw-ask-format, fieldset.smw-ask-options {
+	border: 1px solid #a2a9b1;
 }

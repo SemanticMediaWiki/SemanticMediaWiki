@@ -23,5 +23,12 @@ class FormatterWidgetTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHorizontalRule() {
+
+		$this->assertContains(
+			'smw-ask-horizontalrule',
+			FormatterWidget::horizontalRule( 'foo', [ 'id' => 'bar' ] )
+		);
+	}
 
 }
