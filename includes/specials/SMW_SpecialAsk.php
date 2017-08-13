@@ -447,6 +447,14 @@ class SMWAskPage extends SpecialPage {
 
 			$isFromCache = $res !== null ? $res->isFromCache() : false;
 
+			$result = FormatterWidget::div(
+				$result,
+				[
+					'id' => 'result',
+					"class" => 'smw-ask-result'
+				]
+			);
+
 			$result = $this->getInputForm(
 				$printoutstring,
 				wfArrayToCGI( $urlArgs ),
@@ -455,9 +463,18 @@ class SMWAskPage extends SpecialPage {
 				$isFromCache
 			) . $this->errorFormWidget->getFormattedQueryErrorElement( $queryobj ) . $result;
 
-			$result = FormatterWidget::div( $result, [ 'id' => 'result', "class" => 'is-disabled' ] );
-
-			$this->getOutput()->addHTML( $result );
+			// The overall form is "soft-disabled" so that when JS is fully
+			// loaded, the ask module will remove this class and releases the form
+			// for input
+			$this->getOutput()->addHTML(
+				FormatterWidget::div(
+					$result,
+					[
+						'id' => 'ask',
+						"class" => 'is-disabled'
+					]
+				)
+			);
 		}
 	}
 
@@ -484,6 +501,7 @@ class SMWAskPage extends SpecialPage {
 		$downloadLink = DownloadLinksWidget::downloadLinks( $this->queryLinker );
 		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $querySource, $isFromCache, $duration )->parse() : '';
 		$hideForm = false;
+		$sorting = '';
 
 		$result .= Html::openElement( 'form',
 			array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
@@ -492,8 +510,8 @@ class SMWAskPage extends SpecialPage {
 			$result .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
-			$result .= '<div id="query" class="is-disabled"><table class="smw-ask-query" style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->escaped() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->escaped() . "<br />\n" .
-				'<span style="font-weight: normal;">' . wfMessage( 'smw_ask_printdesc' )->escaped() . '</span>' . "</th></tr>\n" .
+			$result .= '<div id="query" class="smw-ask-query"><table style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->escaped() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->escaped() . "<br />\n" .
+				'<span style="font-weight: normal;"></span>' . "</th></tr>\n" .
 				'<tr><td style="padding-left: 0px; width: 50%;"><textarea class="smw-ask-query-condition" name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
 				'<td style="padding-left: 7px; width: 50%;"><textarea id="smw-property-input" class="smw-ask-query-printout" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table></div>' . "\n";
 
@@ -509,10 +527,11 @@ class SMWAskPage extends SpecialPage {
 			}
 
 			// Other options fieldset
-			$result .= '<fieldset id="options" class="smw-ask-options-fields"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
+			$result .= '<fieldset id="options" class="smw-ask-options"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
 
 			// Individual options
 			$result .= "<div id=\"other_options\">" .  $this->parametersFormWidget->createParametersForm( $this->m_params['format'], $this->m_params ) . "</div>";
+						$result .= $sorting;
 			$result .= "</fieldset>\n";
 
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
@@ -525,7 +544,7 @@ class SMWAskPage extends SpecialPage {
 		$isEmpty = $this->queryLinker === null;
 
 		// Submit
-		$result .= '<div id="search" class="is-disabled">' . '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n" .
+		$result .= '<div id="search" class="smw-ask-search">' . '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n" .
 			'<p>' .  '' . '</p>' .
 
 			$this->inputFormWidget->createFindResultLinkElement( $hideForm ) .
@@ -542,7 +561,7 @@ class SMWAskPage extends SpecialPage {
 			$searchInfoText
 		);
 
-		$result .= ( $navigation !== '' ? '<p style="margin-top:10px;">'. $searchInfoText . '</p>' . '<hr class="smw-form-horizontalrule">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) .
+		$result .= ( $navigation !== '' ? '<div class="smw-ask-cond-info">'. $searchInfoText . '</div>' . '<hr class="smw-form-horizontalrule"><div class="smw-ask-actions-nav">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) . '</div>' .
 			"\n</fieldset></div>\n</form>\n";
 
 		$this->getOutput()->addModules(
@@ -599,18 +618,20 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 
-		$result .= '<br /><span class="smw-ask-query-format" style="vertical-align:middle;">' . wfMessage( 'smw_ask_format_as' )->escaped() . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
+		$defaultName = htmlspecialchars( $printer->getName() ) . ' (' . wfMessage( 'smw_ask_defaultformat' )->escaped() . ')';
+		$default = $printer->getName();
+
+		$result .= '<fieldset id="format" class="smw-ask-format" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-format' )->escaped() . "</legend>\n" .'<span class="smw-ask-query-format" style="vertical-align:middle;">' . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
 			Html::openElement(
 				'select',
 				array(
-					'class' => 'smw-ask-query-format-selector',
+					'class' => 'smw-ask-button smw-ask-button-lgrey smw-ask-query-format-selector',
 					'id' => 'formatSelector',
 					'name' => 'p[format]',
 					'data-url' => $url,
 				)
 			) . "\n" .
-			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected="selected"' : '' ) . '>' .
-			htmlspecialchars( $printer->getName() ) . ' (' . wfMessage( 'smw_ask_defaultformat' )->escaped() . ')</option>' . "\n";
+			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected="selected"' : '' ) . '>' . $defaultName . '</option>' . "\n";
 
 		$formats = array();
 
@@ -626,9 +647,18 @@ class SMWAskPage extends SpecialPage {
 
 		foreach ( $formats as $format => $name ) {
 			$result .= '	<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected="selected"' : '' ) . '>' . $name . "</option>\n";
+
+			if ( $params['format'] == $format ) {
+				$default = $name;
+			}
 		}
 
-		$result .= "</select></span>\n";
+		$default = Html::rawElement( 'a', [
+				'href' => 'http://semantic-mediawiki.org/wiki/Help:' . $params['format'] . ' format'
+			], $default
+		);
+
+		$result .= "</select></span><span id=\"formatHelp\" class=\"smw-ask-format-selection-help\">" . wfMessage( 'smw-ask-format-selection-help', $default )->text() ."</span></fieldset>\n";
 
 		return $result;
 	}
@@ -692,7 +722,7 @@ class SMWAskPage extends SpecialPage {
 		$borrowedMessage = $this->getRequest()->getVal( 'bMsg' );
 
 		$searchInfoText = '';
-		$html = "\n<fieldset><p>" . ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ? wfMessage( $borrowedMessage )->parse() : '' ) . "</p>";
+		$html = "\n<fieldset class='smw-ask-actions'><p>" . ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ? wfMessage( $borrowedMessage )->parse() : '' ) . "</p>";
 
 		$borrowedTitle = $this->getRequest()->getVal( 'bTitle' );
 

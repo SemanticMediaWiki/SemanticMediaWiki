@@ -25,6 +25,17 @@ class FormatterWidget {
 		return Html::rawElement( 'div', $attributes, $html );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $hide
+	 *
+	 * @return string
+	 */
+	public static function horizontalRule( $html = '', $attributes = array() ) {
+		return Html::rawElement( 'hr', self::mergeAttributes( 'smw-ask-horizontalrule', $attributes ) );
+	}
+
 	private static function mergeAttributes( $class, $attr = array() ) {
 
 		$attributes = array();
