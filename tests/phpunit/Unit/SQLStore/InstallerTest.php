@@ -187,7 +187,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'Foo',
-			$this->testEnvironment->executeAndFetchOutputBufferContents( $callback )
+			$this->testEnvironment->fetchOutputFromCallback( $callback )
 		);
 	}
 

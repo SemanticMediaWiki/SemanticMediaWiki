@@ -162,7 +162,7 @@ class TestEnvironment {
 	 *
 	 * @return string
 	 */
-	public function executeAndFetchOutputBufferContents( callable $callback ) {
+	public function fetchOutputFromCallback( callable $callback ) {
 		ob_start();
 		call_user_func( $callback );
 		$output = ob_get_contents();
@@ -173,36 +173,10 @@ class TestEnvironment {
 	/**
 	 * @since 2.5
 	 *
-	 * @param $originalClassName
-	 * @param array $configuration
-	 *
-	 * @return PHPUnit_Framework_MockObject_MockObject
-	 */
-	public function createConfiguredStub( $originalClassName, array $configuration ) {
-		$configurableStub = new ConfigurableStub();
-		return $configurableStub->createConfiguredStub( $originalClassName, $configuration );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param $originalClassName
-	 * @param array $configuration
-	 *
-	 * @return PHPUnit_Framework_MockObject_MockObject
-	 */
-	public function createConfiguredAbstractStub( $originalClassName, array $configuration ) {
-		$configurableStub = new ConfigurableStub();
-		return $configurableStub->createConfiguredAbstractStub( $originalClassName, $configuration );
-	}
-
-	/**
-	 * @since 2.5
-	 *
 	 * @param array $pages
 	 */
 	public function flushPages( $pages ) {
-		$this->getUtilityFactory()->newPageDeleter()->doDeletePoolOfPages( $pages );
+		self::getUtilityFactory()->newPageDeleter()->doDeletePoolOfPages( $pages );
 	}
 
 	/**
@@ -210,8 +184,17 @@ class TestEnvironment {
 	 *
 	 * @return UtilityFactory
 	 */
-	public function getUtilityFactory() {
+	public static function getUtilityFactory() {
 		return UtilityFactory::getInstance();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ValidatorFactory
+	 */
+	public static function newValidatorFactory() {
+		return UtilityFactory::getInstance()->newValidatorFactory();
 	}
 
 	/**
@@ -231,27 +214,6 @@ class TestEnvironment {
 			$namespace . ':',
 			$text
 		);
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $target
-	 * @param string $file
-	 *
-	 * @return string
-	 * @throws RuntimeException
-	 */
-	public function getFixturesLocation( $target = '', $file = '' ) {
-
-		$fixturesLocation = __DIR__ . '/Fixtures' . ( $target !== '' ? "/{$target}" :  '' ) . ( $file !== '' ? '/' . $file : '' );
-		$fixturesLocation = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $fixturesLocation );
-
-		if ( !file_exists( $fixturesLocation ) && !is_dir( $fixturesLocation ) ) {
-			throw new RuntimeException( "{$fixturesLocation} does not exist." );
-		}
-
-		return $fixturesLocation;
 	}
 
 }

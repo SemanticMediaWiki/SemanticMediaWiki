@@ -19,11 +19,13 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 	private $spyMessageReporter;
 	private $importerServiceFactory;
 	private $stringValidator;
+	private $fixtures;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
+		$this->fixtures = __DIR__ . '/Fixtures';
 
 		$this->importerServiceFactory = ApplicationFactory::getInstance()->create( 'ImporterServiceFactory' );
 		$this->spyMessageReporter = $utilityFactory->newSpyMessageReporter();
@@ -32,10 +34,8 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testValidTextContent() {
 
-		$importFileDir = $this->testEnvironment->getFixturesLocation( 'Importer/ValidTextContent' );
-
 		$importer = $this->importerServiceFactory->newImporter(
-			$this->importerServiceFactory->newJsonContentIterator( $importFileDir )
+			$this->importerServiceFactory->newJsonContentIterator( $this->fixtures . '/ValidTextContent' )
 		);
 
 		$importer->setMessageReporter( $this->spyMessageReporter );
@@ -58,10 +58,8 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 			$this->markTestSkipped( "ImportSource interface is unknown (MW 1.25-)" );
 		}
 
-		$importFileDir = $this->testEnvironment->getFixturesLocation( 'Importer/ValidXmlContent' );
-
 		$importer = $this->importerServiceFactory->newImporter(
-			$this->importerServiceFactory->newJsonContentIterator( $importFileDir )
+			$this->importerServiceFactory->newJsonContentIterator( $this->fixtures . '/ValidXmlContent' )
 		);
 
 		$importer->setMessageReporter( $this->spyMessageReporter );

@@ -17,25 +17,27 @@ use SMW\Tests\TestEnvironment;
 class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $fixtures;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->fixtures = __DIR__ . '/Fixtures';
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Importer\JsonImportContentsFileDirReader',
-			new JsonImportContentsFileDirReader( $this->testEnvironment->getFixturesLocation() )
+			JsonImportContentsFileDirReader::class,
+			new JsonImportContentsFileDirReader( $this->fixtures )
 		);
 	}
 
 	public function testGetContentList() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			$this->testEnvironment->getFixturesLocation( 'Importer/ValidTextContent' )
+			$this->fixtures . '/ValidTextContent'
 		);
 
 		$contents = $instance->getContentList();
@@ -58,7 +60,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetContentListOnFalseImportFormat() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			$this->testEnvironment->getFixturesLocation( 'Importer/NoImportFormat' )
+			$this->fixtures . '/NoImportFormat'
 		);
 
 		$this->assertEmpty(
@@ -69,7 +71,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetContentListOnMissingSections() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			$this->testEnvironment->getFixturesLocation( 'Importer/MissingSections' )
+			$this->fixtures . '/MissingSections'
 		);
 
 		$contents = $instance->getContentList();
@@ -94,7 +96,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetContentListOnInvalidJsonThrowsException() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			$this->testEnvironment->getFixturesLocation( 'Importer/InvalidJsonContent' )
+			$this->fixtures . '/InvalidJsonContent'
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
