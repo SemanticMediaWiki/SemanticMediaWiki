@@ -192,7 +192,7 @@
 }
 
 #inlinequeryembed {
-	margin-top: 10px;
+	margin-top: 15px;
 }
 
 #inlinequeryembedinstruct {
@@ -201,4 +201,60 @@
 
 fieldset.smw-ask-actions, fieldset.smw-ask-format, fieldset.smw-ask-options {
 	border: 1px solid #a2a9b1;
+}
+
+/* https://stackoverflow.com/questions/2812770/add-centered-text-to-the-middle-of-a-hr-like-line */
+.strike {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 10px 0 10px 0;
+}
+
+.strike > span {
+    position: relative;
+    display: inline-block;
+    font-size: 95%;
+    margin-left: 20px;
+}
+
+.strike > span:before,
+.strike > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: #aaa;
+}
+
+.strike > span:before {
+    right: 100%;
+    margin-right: 10px;
+}
+
+.strike > span:after {
+    left: 100%;
+    margin-left: 10px;
+}
+
+.smw-ask-sort-input {
+	margin-bottom: 10px;
+}
+
+.smw-ask-sort-input input {
+	padding: 2px;
+}
+
+.smw-ask-sort-input select, .smw-ask-sort-input .smw-ask-sort-delete {
+	padding: 2px;
+    margin-left: 10px;
+}
+
+.smw-ask-sort-add a::before, .smw-ask-sort-delete a::before {
+	content:"[";
+}
+
+.smw-ask-sort-add a::after, .smw-ask-sort-delete a::after {
+	content:"]";
 }
