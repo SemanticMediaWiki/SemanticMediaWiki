@@ -402,7 +402,7 @@ class SMWAskPage extends SpecialPage {
 			$debug = '';
 
 			// Allow to generate a debug output
-			if ( $this->getRequest()->getVal( 'debug' ) ) {
+			if ( $this->getRequest()->getVal( 'debug' ) && ( !isset( $this->m_params['source'] ) || $this->m_params['source'] === '' ) ) {
 
 				$queryobj = SMWQueryProcessor::createQuery(
 					$this->m_querystring,
@@ -583,9 +583,13 @@ class SMWAskPage extends SpecialPage {
 
 			$this->inputFormWidget->createFindResultLinkElement( $hideForm ) .
 			$this->inputFormWidget->createShowHideLinkElement( $title, $urltail, $hideForm, $isEmpty ) .
-			$this->inputFormWidget->createClipboardLinkElement( $this->queryLinker ) .
-			$this->inputFormWidget->createDebugLinkElement( $title, $urltail, $isEmpty ) .
-			$this->inputFormWidget->createEmbeddedCodeLinkElement( $isEmpty ) .
+			$this->inputFormWidget->createClipboardLinkElement( $this->queryLinker );
+
+			if ( !isset( $this->m_params['source'] ) || $this->m_params['source'] === '' ) {
+				$result .= $this->inputFormWidget->createDebugLinkElement( $title, $urltail, $isEmpty );
+			}
+
+			$result .= $this->inputFormWidget->createEmbeddedCodeLinkElement( $isEmpty ) .
 			$this->inputFormWidget->createEmbeddedCodeElement( $this->getQueryAsCodeString() );
 
 		$result .= '<p></p>';
