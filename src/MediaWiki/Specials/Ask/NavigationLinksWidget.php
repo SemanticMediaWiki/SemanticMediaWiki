@@ -13,7 +13,7 @@ use Title;
  *
  * @author mwjames
  */
-class NavigationWidget {
+class NavigationLinksWidget {
 
 	/**
 	 * @var integer
@@ -119,7 +119,7 @@ class NavigationWidget {
 	 *
 	 * @return string
 	 */
-	public static function navigation( Title $title, $limit, $offset, $count, $hasFurtherResults = false, array $urlArgs ) {
+	public static function navigationLinks( Title $title, $limit, $offset, $count, $hasFurtherResults = false, array $urlArgs ) {
 
 		$userLanguage = Localizer::getInstance()->getUserLanguage();
 		$navigation = '';

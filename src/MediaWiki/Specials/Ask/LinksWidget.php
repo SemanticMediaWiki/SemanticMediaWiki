@@ -13,35 +13,23 @@ use Title;
  *
  * @author mwjames
  */
-class InputFormWidget {
-
-	/**
-	 * @var array
-	 */
-	private $resourceModules = array();
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return string $resourceModule
-	 */
-	public function addResourceModule( $resourceModule ) {
-		$this->resourceModules[] = $resourceModule;
-	}
+class LinksWidget {
 
 	/**
 	 * @return array
 	 */
-	public function getResourceModules() {
-		return $this->resourceModules;
+	public static function getModules() {
+		return [ 'onoi.clipboard' ];
 	}
 
 	/**
 	 * @since 2.5
 	 *
+	 * @param boolean $isEmpty
+	 *
 	 * @return string
 	 */
-	public function createEmbeddedCodeLinkElement( $isEmpty = false ) {
+	public static function embeddedCodeLink( $isEmpty = false ) {
 
 		if ( $isEmpty ) {
 			return '';
@@ -88,9 +76,12 @@ class InputFormWidget {
 	/**
 	 * @since 2.5
 	 *
+	 * @param string $code
+	 *
 	 * @return string
 	 */
-	public function createEmbeddedCodeElement( $code ) {
+	public static function embeddedCodeBlock( $code ) {
+
 		return Html::rawElement(
 			'div',
 			array(
@@ -121,7 +112,7 @@ class InputFormWidget {
 	 *
 	 * @return string
 	 */
-	public function createFindResultLinkElement( $isEmpty = false ) {
+	public static function resultSubmitLink( $isEmpty = false ) {
 
 		if ( !$isEmpty ) {
 			return '';
@@ -150,22 +141,29 @@ class InputFormWidget {
 	 * @param Title $title
 	 * @param string $urlTail
 	 * @param boolean $hideForm
+	 * @param boolean $isEmpty
 	 *
 	 * @return string
 	 */
-	public function createShowHideLinkElement( Title $title, $urlTail = '', $hideForm = false, $isEmpty = false ) {
+	public static function showHideLink( Title $title, $urlTail = '', $hideForm = false, $isEmpty = false ) {
 
 		if ( $isEmpty ) {
 			return '';
 		}
 
-		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-lblue' ], Html::element(
-			'a',
-			array(
-				'href'  => $title->getLocalURL( $urlTail ),
-				'rel'   => 'nofollow'
-			), wfMessage( ( $hideForm ? 'smw_ask_hidequery' : 'smw_ask_editquery' ) )->text()
-		) );
+		return Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-ask-button smw-ask-button-lblue'
+			], Html::element(
+				'a',
+				[
+					'href'  => $title->getLocalURL( $urlTail ),
+					'rel'   => 'nofollow'
+				],
+				wfMessage( ( $hideForm ? 'smw_ask_hidequery' : 'smw_ask_editquery' ) )->text()
+			)
+		);
 	}
 
 	/**
@@ -173,24 +171,31 @@ class InputFormWidget {
 	 *
 	 * @param Title $title
 	 * @param string $urlTail
-	 * @param boolean $hideForm
+	 * @param boolean $isEmpty
 	 *
 	 * @return string
 	 */
-	public function createDebugLinkElement( Title $title, $urlTail = '', $isEmpty = false ) {
+	public static function debugLink( Title $title, $urlTail = '', $isEmpty = false ) {
 
 		if ( $isEmpty ) {
 			return '';
 		}
 
-		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-right' ], Html::element(
-			'a',
-			array(
-				'class' => '',
-				'href'  => $title->getLocalURL( $urlTail . '&debug=true&eq=yes#search' ),
-				'rel'   => 'nofollow'
-			), 'Debug'
-		) );
+		return Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-ask-button smw-ask-button-right'
+			],
+			Html::element(
+				'a',
+				[
+					'class' => '',
+					'href'  => $title->getLocalURL( $urlTail . '&debug=true&eq=yes#search' ),
+					'rel'   => 'nofollow'
+				],
+				Message::get( 'smw-ask-debug', Message::TEXT, Message::USER_LANGUAGE )
+			)
+		);
 	}
 
 	/**
@@ -200,25 +205,30 @@ class InputFormWidget {
 	 *
 	 * @return string
 	 */
-	public function createClipboardLinkElement( Infolink $infolink = null ) {
+	public static function clipboardLink( Infolink $infolink = null ) {
 
 		if ( $infolink === null ) {
 			return '';
 		}
 
-		$this->addResourceModule( 'onoi.clipboard' );
-
-		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey' ], Html::element(
-			'a',
-			array(
-				'data-clipboard-action' => 'copy',
-				'data-clipboard-target' => '.clipboard',
-				'data-onoi-clipboard-field' => 'value',
-				'class' => 'clipboard',
-				'value' => $infolink->getURL(),
-				'title' =>  wfMessage( 'smw-clipboard-copy-link' )->text()
-			), '⧟'
-		) );
+		return Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey'
+			],
+			Html::element(
+				'a',
+				[
+					'data-clipboard-action' => 'copy',
+					'data-clipboard-target' => '.clipboard',
+					'data-onoi-clipboard-field' => 'value',
+					'class' => 'clipboard',
+					'value' => $infolink->getURL(),
+					'title' =>  wfMessage( 'smw-clipboard-copy-link' )->text()
+				],
+				'⧟'
+			)
+		);
 	}
 
 }

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
-use SMW\MediaWiki\Specials\Ask\ErrorFormWidget;
+use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Ask\ErrorFormWidget
+ * @covers \SMW\MediaWiki\Specials\Ask\ErrorWidget
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,21 +13,13 @@ use SMW\MediaWiki\Specials\Ask\ErrorFormWidget;
  *
  * @author mwjames
  */
-class ErrorFormWidgetTest extends \PHPUnit_Framework_TestCase {
-
-	public function testCanConstruct() {
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Ask\ErrorFormWidget',
-			new ErrorFormWidget()
-		);
-	}
+class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSessionFailure() {
 
 		$this->assertInternalType(
 			'string',
-			ErrorFormWidget::sessionFailure()
+			ErrorWidget::sessionFailure()
 		);
 	}
 
@@ -35,7 +27,15 @@ class ErrorFormWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			ErrorFormWidget::noScript()
+			ErrorWidget::noScript()
+		);
+	}
+
+	public function testNoResult() {
+
+		$this->assertInternalType(
+			'string',
+			ErrorWidget::noResult()
 		);
 	}
 
@@ -52,11 +52,9 @@ class ErrorFormWidgetTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getErrors' )
 			->will( $this->returnValue( $errors ) );
 
-		$instance = new ErrorFormWidget();
-
 		$this->assertEquals(
 			$expected,
-			$instance->getFormattedQueryErrorElement( $query )
+			ErrorWidget::queryError( $query )
 		);
 	}
 

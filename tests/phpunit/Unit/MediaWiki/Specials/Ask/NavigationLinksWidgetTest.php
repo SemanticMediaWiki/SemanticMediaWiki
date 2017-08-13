@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
-use SMW\MediaWiki\Specials\Ask\NavigationWidget;
+use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Ask\NavigationWidget
+ * @covers \SMW\MediaWiki\Specials\Ask\NavigationLinksWidget
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\MediaWiki\Specials\Ask\NavigationWidget;
  *
  * @author mwjames
  */
-class NavigationWidgetTest extends \PHPUnit_Framework_TestCase {
+class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNavigation() {
 
@@ -23,7 +23,7 @@ class NavigationWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			NavigationWidget::navigation( $title, 100, 0, 20, false, [] )
+			NavigationLinksWidget::navigationLinks( $title, 100, 0, 20, false, [] )
 		);
 	}
 
@@ -33,9 +33,9 @@ class NavigationWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		NavigationWidget::setMaxInlineLimit( 300 );
+		NavigationLinksWidget::setMaxInlineLimit( 300 );
 
-		$result = NavigationWidget::navigation( $title, 100, 0, 20, false, [] );
+		$result = NavigationLinksWidget::navigationLinks( $title, 100, 0, 20, false, [] );
 
 		$this->assertContains(
 			'<a rel="nofollow">250</a>',
@@ -56,12 +56,12 @@ class NavigationWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'<div class="smw-ask-toplinks"><a href="#options">',
-			NavigationWidget::topLinks( $title, [ 'options' ] )
+			NavigationLinksWidget::topLinks( $title, [ 'options' ] )
 		);
 
 		$this->assertContains(
 			'<div class="smw-ask-toplinks">&#160;<a class="float-right">',
-			NavigationWidget::topLinks( $title, [ 'empty' ] )
+			NavigationLinksWidget::topLinks( $title, [ 'empty' ] )
 		);
 	}
 
@@ -72,7 +72,7 @@ class NavigationWidgetTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertEmpty(
-			NavigationWidget::topLinks( $title, [] )
+			NavigationLinksWidget::topLinks( $title, [] )
 		);
 	}
 
