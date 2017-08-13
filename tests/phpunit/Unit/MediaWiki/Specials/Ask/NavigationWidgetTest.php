@@ -55,8 +55,13 @@ class NavigationWidgetTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertContains(
-			'<div class="smw-ask-toplinks">',
-			NavigationWidget::topLinks( $title )
+			'<div class="smw-ask-toplinks"><a href="#options">',
+			NavigationWidget::topLinks( $title, [ 'options' ] )
+		);
+
+		$this->assertContains(
+			'<div class="smw-ask-toplinks">&#160;<a class="float-right">',
+			NavigationWidget::topLinks( $title, [ 'empty' ] )
 		);
 	}
 
@@ -67,7 +72,7 @@ class NavigationWidgetTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertEmpty(
-			NavigationWidget::topLinks( $title, true )
+			NavigationWidget::topLinks( $title, [] )
 		);
 	}
 

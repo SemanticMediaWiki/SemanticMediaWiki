@@ -33,36 +33,78 @@ class NavigationWidget {
 	 * @since 3.0
 	 *
 	 * @param Title $title,
-	 * @param boolean $isHidden
+	 * @param array $visibleLinks
 	 *
 	 * @return string
 	 */
-	public static function topLinks( Title $title, $isHidden = false ) {
+	public static function topLinks( Title $title, $visibleLinks = [] ) {
 
-		if ( $isHidden ) {
+		if ( $visibleLinks === [] ) {
 			return '';
 		}
 
-		return Html::rawElement( 'div', [ 'class' => 'smw-ask-toplinks' ], Html::rawElement(
+		$lLinks = [];
+		$rLinks = [];
+
+		$lLinks['options'] = Html::rawElement(
+			'a',
+			[
+				'href' => '#options'
+			],
+			Message::get( 'smw-ask-options', Message::TEXT, Message::USER_LANGUAGE )
+		);
+
+		$lLinks['search'] = Html::rawElement(
 			'a',
 			[
 				'href' => '#search'
 			],
-			Message::get( 'smw-ask-search' )
-		) . ' | ' . Html::rawElement(
+			Message::get( 'smw-ask-search', Message::TEXT, Message::USER_LANGUAGE )
+		);
+
+		$lLinks['result'] = Html::rawElement(
 			'a',
 			[
 				'href' => '#result'
 			],
-			Message::get( 'smw-ask-result' )
-		) . Html::rawElement(
+			Message::get( 'smw-ask-result', Message::TEXT, Message::USER_LANGUAGE )
+		);
+
+		$rLinks['empty'] = Html::rawElement(
 			'a',
 			[
 				'href' => $title->getLocalURL(),
 				'class' => 'float-right'
 			],
-			Message::get( 'smw-ask-empty' )
-		) );
+			Message::get( 'smw-ask-empty', Message::TEXT, Message::USER_LANGUAGE )
+		);
+
+		$visibleLinks = array_flip( $visibleLinks );
+
+		foreach ( $lLinks as $key => $value ) {
+			if ( !isset( $visibleLinks[$key] ) ) {
+				unset( $lLinks[$key] );
+			}
+		}
+
+		foreach ( $rLinks as $key => $value ) {
+			if ( !isset( $visibleLinks[$key] ) ) {
+				unset( $rLinks[$key] );
+			}
+		}
+
+		return Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-ask-toplinks'
+			],
+			implode( ' | ', $lLinks ) . '&#160;' .  implode( ' | ', $rLinks )
+		) . Html::rawElement(
+			'div',
+			[
+				'class' => 'clear-both'
+			]
+		);
 	}
 
 	/**
