@@ -181,7 +181,7 @@
 				'url': $this.data( 'url' ).replace( 'this.value',  $this.val() ),
 				'context': document.body,
 				'success': function( data ) {
-					$( '#other_options' ).html( data );
+					$( '#options-list' ).html( data );
 
 					// Reinitialize functions after each ajax request
 					_init.autocomplete.parameter();

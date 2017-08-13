@@ -110,10 +110,18 @@ class SMWAskPage extends SpecialPage {
 			$GLOBALS['smwgQMaxInlineLimit']
 		);
 
+		if ( $request->getCheck( 'bTitle' ) ) {
+			$visibleLinks = [];
+		} elseif( $request->getVal( 'eq' ) === 'no' ) {
+			$visibleLinks = [ 'empty' ];
+		} else {
+			$visibleLinks = [ 'options', 'search', 'result', 'empty' ];
+		}
+
 		$out->addHTML(
 			NavigationWidget::topLinks(
 				SpecialPage::getSafeTitleFor( 'Ask' ),
-				$this->getRequest()->getCheck( 'bTitle' )
+				$visibleLinks
 			)
 		);
 
