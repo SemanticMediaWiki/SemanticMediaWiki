@@ -20,7 +20,8 @@
 			"LNDDYL",
 			"Reke",
 			"Wehwei",
-			"Wwycheuk"
+			"Wwycheuk",
+			"Hitaypayan"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更易於取得所需的資料 - 不論是對機器''與''人類\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件])",
@@ -200,6 +201,7 @@
 	"smw_ask_embed_instr": "使用以下代碼將查詢嵌入維基頁面。",
 	"smw-ask-delete": "[刪除]",
 	"smw-ask-sorting": "排序",
+	"smw-ask-debug": "除錯",
 	"smw-ask-format-selection-help": "有關詳細的描述資訊，請參觀 $1 說明頁面。",
 	"searchbyproperty": "按屬性查詢",
 	"smw_sbv_docu": "搜尋所有已設定屬性和值的頁面。",
