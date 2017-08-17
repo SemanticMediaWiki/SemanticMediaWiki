@@ -167,7 +167,7 @@
 	"smw_ask_show_embed": "Zobrazit kód pro vložení do stránky",
 	"smw_ask_hide_embed": "Skrýt kód pro vložení do stránky",
 	"smw_ask_embed_instr": "Tento kód použijte ke vložení tohoto dotazu do textu stránky na wiki.",
-	"smw-ask-delete": "[Smazat]",
+	"smw-ask-delete": "Smazat",
 	"smw-ask-sorting": "Řazení",
 	"smw-ask-format-selection-help": "Detailní popis najdete na stránce nápovědy $1.",
 	"searchbyproperty": "Hledat podle hodnoty vlastnosti",
