@@ -166,7 +166,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->will( $this->returnValue( false ) );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
@@ -209,6 +209,50 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
+			->will( $this->returnValue( false ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'getCreateProtectionRight' )
+			->will( $this->returnValue( $createProtectionRight ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$result = [];
+
+		$instance = new PermissionPthValidator(
+			$this->protectionValidator
+		);
+
+		$this->assertFalse(
+			$instance->hasUserPermission( $title, $user, 'edit', $result )
+		);
+
+		$this->assertEquals(
+			array( array( 'smw-create-protection', null, 'Foo' ) ),
+			$result
+		);
+	}
+
+	public function testNoUserPermissionOnPropertyNamespaceWithCreateProtectionCheck_TitleExists() {
+
+		$createProtectionRight = 'Foo';
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'PermissionTest' ) );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
 			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->any() )
@@ -234,7 +278,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( array( 'smw-create-protection', $createProtectionRight ) ),
+			array( array( 'smw-create-protection-exists', null, 'Foo' ) ),
 			$result
 		);
 	}
