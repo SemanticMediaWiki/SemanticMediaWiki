@@ -221,6 +221,39 @@ class SMWSql3SmwIds {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function isUnique( DIProperty $property ) {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$condition = "smw_sortkey =" . $connection->addQuotes(
+			$property->getCanonicalLabel()
+		);
+
+		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
+		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
+
+		$res = $connection->select(
+			SMWSQLStore3::ID_TABLE,
+			array(
+				'smw_id, smw_sortkey'
+			),
+			$condition,
+			__METHOD__,
+			[
+				'LIMIT' => 2
+			]
+		);
+
+		return $res->numRows() < 2;
+	}
+
+	/**
 	 * @see RedirectInfoStore::findRedirectIdFor
 	 *
 	 * @since 2.1
