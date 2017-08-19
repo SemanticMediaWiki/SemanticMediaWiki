@@ -335,7 +335,7 @@
 	"smw-admin-supplementary-operational-statistics-intro": "<u>$1</u> displays an extended set of statistics",
 	"smw-admin-supplementary-idlookup-title": "Entity lookup and disposal",
 	"smw-admin-supplementary-idlookup-intro": "<u>$1</u> contains functions to lookup and dispose individual entities",
-	"smw-property-label-uniqueness" : "The \"$1\" label was matched to at least one other property. Please consult the [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness help page] on how to resolve the situation.",
+	"smw-property-label-uniqueness" : "The \"$1\" label was matched to at least one other property. Please consult the [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness help page] on how to resolve the issue.",
 	"smw-property-label-similarity-title": "Property label similarity report",
 	"smw-property-label-similarity-intro": "<u>$1</u> calculates similarties for existing property labels",
 	"smw-property-label-similarity-threshold": "Threshold:",
