@@ -129,7 +129,6 @@ class Settings extends Options {
 			'smwgDeclarationProperties' => $GLOBALS['smwgDeclarationProperties'],
 			'smwgDataTypePropertyExemptionList' => $GLOBALS['smwgDataTypePropertyExemptionList'],
 			'smwgTranslate' => $GLOBALS['smwgTranslate'],
-			'smwgAutocompleteInSpecialAsk' => $GLOBALS['smwgAutocompleteInSpecialAsk'],
 			'smwgAutoRefreshSubject' => $GLOBALS['smwgAutoRefreshSubject'],
 			'smwgAdminFeatures' => $GLOBALS['smwgAdminFeatures'],
 			'smwgAutoRefreshOnPurge' => $GLOBALS['smwgAutoRefreshOnPurge'],
@@ -333,7 +332,8 @@ class Settings extends Options {
 				'smwgRedirectPropertyListLimit' => 'smwgPropertyListLimit'
 			),
 			'removal' => array(
-				'smwgOnDeleteAction' => '2.4.0'
+				'smwgOnDeleteAction' => '2.4.0',
+				'smwgAutocompleteInSpecialAsk' => '3.0.0'
 			)
 		);
 	}
