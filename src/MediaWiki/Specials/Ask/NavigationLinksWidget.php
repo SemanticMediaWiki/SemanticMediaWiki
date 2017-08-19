@@ -119,18 +119,19 @@ class NavigationLinksWidget {
 	 * @since 3.0
 	 *
 	 * @param Title $title,
+	 * @param UrlArgs $urlArgs
 	 * @param integer $limit
 	 * @param integer $offset,
 	 * @param integer $count,
 	 * @param boolean $hasFurtherResults
-	 * @param array $urlArgs
 	 *
 	 * @return string
 	 */
-	public static function navigationLinks( Title $title, $limit, $offset, $count, $hasFurtherResults = false, array $urlArgs ) {
+	public static function navigationLinks( Title $title, UrlArgs $urlArgs, $limit, $offset, $count, $hasFurtherResults = false ) {
 
 		$userLanguage = Localizer::getInstance()->getUserLanguage();
 		$navigation = '';
+		$urlArgs = clone $urlArgs;
 
 		// @todo FIXME: i18n: Patchwork text.
 		$navigation .=
@@ -154,17 +155,14 @@ class NavigationLinksWidget {
 
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
-			$href = $title->getLocalURL(
-				array(
-					'offset' => max( 0, $offset - $limit ),
-					'limit' => $limit
-				) + $urlArgs
-			);
+
+			$urlArgs->set( 'offset', max( 0, $offset - $limit ) );
+			$urlArgs->set( 'limit', $limit );
 
 			$navigation .= '(' . Html::element(
 				'a',
 				array(
-					'href' => $href,
+					'href' => $title->getLocalURL( $urlArgs ),
 					'rel' => 'nofollow'
 				),
 				$prev . ' ' . $limit
@@ -174,17 +172,14 @@ class NavigationLinksWidget {
 		}
 
 		if ( $hasFurtherResults ) {
-			$href = $title->getLocalURL(
-				array(
-					'offset' => ( $offset + $limit ),
-					'limit' => $limit
-				) + $urlArgs
-			);
+
+			$urlArgs->set( 'offset', $offset + $limit );
+			$urlArgs->set( 'limit', $limit );
 
 			$navigation .= Html::element(
 				'a',
 				array(
-					'href' => $href,
+					'href' => $title->getLocalURL( $urlArgs ),
 					'rel' => 'nofollow'
 				),
 				$next . ' ' . $limit
@@ -208,17 +203,14 @@ class NavigationLinksWidget {
 			}
 
 			if ( $limit != $l ) {
-				$href =  $title->getLocalURL(
-					array(
-						'offset' => $offset,
-						'limit' => $l
-					) + $urlArgs
-				);
+
+				$urlArgs->set( 'offset', $offset );
+				$urlArgs->set( 'limit', $l );
 
 				$navigation .= Html::element(
 					'a',
 					array(
-						'href' => $href,
+						'href' => $title->getLocalURL( $urlArgs ),
 						'rel' => 'nofollow'
 					),
 					$l
