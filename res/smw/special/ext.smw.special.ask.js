@@ -67,7 +67,9 @@
 		formatHelp: function( options ){
 			// Make sure we don't have a pre existing element, using id as selector
 			// as it is faster compared to the class selector
-			$( '#formatHelp' ).replaceWith( '<span id="formatHelp" class="smw-ask-format-selection-help">' + mw.msg( 'smw-ask-format-selection-help', addFormatHelpLink( options ) ) + '</span>' );
+			$( '#formatHelp' ).replaceWith(
+				'<span id="formatHelp" class="smw-ask-format-selection-help">' + mw.msg( 'smw-ask-format-selection-help', addFormatHelpLink( options ) ) + '</span>'
+			);
 		}
 	};
 
@@ -91,13 +93,10 @@
 
 	/**
 	 * Multiple sorting
-	 * Code for handling adding and removing the "sort" inputs
-	 *
-	 * @TODO Something don't quite work here but it is broken from the beginning therefore ...
 	 */
 	var num_elements = $( '#sorting_main > div' ).length;
 
-	function addInstance(starter_div_id, main_div_id) {
+	function addSortInstance(starter_div_id, main_div_id) {
 		num_elements++;
 
 		var starter_div = $( '#' + starter_div_id),
@@ -117,8 +116,9 @@
 			'data-target': 'sort_div_' + num_elements
 		} ).text( mw.msg( 'smw-ask-delete' ) );
 
+		// Register event on the added instance
 		button.click( function( event ) {
-			removeInstance( $(this).data( 'target' ) );
+			removeInstance( $( this ).data( 'target' ) );
 		} );
 
 		new_div.append(
@@ -126,12 +126,12 @@
 		);
 
 		// Trigger an event to ensure that the input field has an autocomplete
-		// instance attach
+		// instance attached
 		main_div.trigger( 'SMW::Property::Autocomplete' , {
 			'context': new_div
 		} );
 
-		//Add the new instance
+		// Add the new instance
 		main_div.append( new_div );
 	}
 
@@ -145,6 +145,8 @@
 	 * @ignore
 	 */
 	$( document ).ready( function() {
+
+		var h = mw.html;
 
 		// Field input is kept disabled until JS is fully loaded to signal
 		// "ready for input"
@@ -169,12 +171,39 @@
 		} );
 
 		$( '.smw-ask-sort-add-action' ).click( function() {
-			addInstance( 'sorting_starter', 'sorting_main' );
+			addSortInstance( 'sorting_starter', 'sorting_main' );
 		} );
 
 		// Change format parameter form via ajax
-		$( '#formatSelector' ).change( function() {
-			var $this = $( this );
+		$( '#formatSelector' ).change( function( event, $opts ) {
+
+			var $this = $( this ),
+				exportHideList = '#ask-embed, #inlinequeryembed, #ask-showhide, #ask-debug, #ask-clipboard, #ask-navinfo, #result';
+
+			// Display the options list for the time the list is being generated
+			// via an ajax request
+			$( '#options-list' ).addClass( 'is-disabled');
+
+			// Hide buttons/elements that cannot be used on an export format
+			if ( $this.find( 'option:selected' ).data( 'isexport' ) == 1 ) {
+				$( exportHideList ).hide();
+
+				if ( !$( "#export-info" ).length ) {
+					var html = h.element(
+						'div',
+						{
+							id: 'export-info',
+							class: 'smw-callout smw-callout-info'
+						},
+						mw.msg( 'smw-ask-format-export-info' )
+					);
+
+					$( '#result' ).after( html );
+				};
+			} else {
+				$( exportHideList ).show();
+				$( '#export-info' ).remove();
+			}
 
 			$.ajax( {
 				// Evil hack to get more evil Spcial:Ask stuff to work with less evil JS.
@@ -183,7 +212,8 @@
 				'success': function( data ) {
 					$( '#options-list' ).html( data );
 
-					// Disabled state was set during the onChange in FormatSelectionWidget
+					// Remove disable state that was set at the beginning of the
+					// onChange event
 					$( '#options-list' ).removeClass( 'is-disabled' );
 
 					// Reinitialize functions after each ajax request

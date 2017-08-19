@@ -16,31 +16,27 @@ use SMW\Tests\TestEnvironment;
  */
 class FormatSelectionWidgetTest extends \PHPUnit_Framework_TestCase {
 
-	private $stringValidator;
-
-	protected function setUp() {
-		$testEnvironment = new TestEnvironment();
-
-		$this->stringValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
-	}
-
 	public function testEmptyParameters() {
+
+		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->stringValidator->assertThatStringContains(
+		$stringValidator->assertThatStringContains(
 			[
 				'<fieldset id="format" class="smw-ask-format" style="margin-top:0px;"><legend>.*</legend>',
 				'<span class="smw-ask-format-list"><input type="hidden" value="yes" name="eq"',
-				'<option value="broadtable" selected="selected">.*</option>'
+				'<option value="broadtable" selected="">.*</option>'
 			],
 			FormatSelectionWidget::selection( $title, [] )
 		);
 	}
 
 	public function testSetResultFormats() {
+
+		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -52,10 +48,10 @@ class FormatSelectionWidgetTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->stringValidator->assertThatStringContains(
+		$stringValidator->assertThatStringContains(
 			[
 				'<option value="broadtable">.*</option>',
-				'<option value="rdf" selected="selected">.*</option>'
+				'<option data-isexport="1" value="rdf" selected="">.*</option>'
 			],
 			FormatSelectionWidget::selection( $title, [ 'format' => 'rdf' ] )
 		);

@@ -488,7 +488,7 @@ class SMWAskPage extends SpecialPage {
 			$searchInfoText
 		);
 
-		$result .= ( $navigation !== '' ? '<div class="smw-ask-cond-info">'. $searchInfoText . '</div>' . '<hr class="smw-form-horizontalrule"><div class="smw-ask-actions-nav">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) . '</div>' .
+		$result .= ( $navigation !== '' ? '<div id="ask-navinfo"><div class="smw-ask-cond-info">'. $searchInfoText . '</div>' . '<hr class="smw-form-horizontalrule"><div class="smw-ask-actions-nav">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) . '</div></div>' .
 			"\n</fieldset></div>\n</form>\n";
 
 		return $result;

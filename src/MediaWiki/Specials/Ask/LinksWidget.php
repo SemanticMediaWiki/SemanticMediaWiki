@@ -45,32 +45,39 @@ class LinksWidget {
 			"document.getElementById('embed_show').style.display='inline';" .
 			"document.getElementById('embed_hide').style.display='none';";
 
-		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-lblue' ], Html::rawElement(
+		return Html::rawElement(
 			'span',
-			array(
-				'id'  => 'embed_show'
-			), Html::rawElement(
-				'a',
+			[
+				'id' => 'ask-embed',
+				'class' => 'smw-ask-button smw-ask-button-lblue'
+			],
+			Html::rawElement(
+				'span',
 				array(
-					'href'  => '#embed_show',
-					'rel'   => 'nofollow',
-					'onclick' => $embedShow
-				), wfMessage( 'smw_ask_show_embed' )->escaped()
-			)
-		) . Html::rawElement(
-			'span',
-			array(
-				'id'  => 'embed_hide',
-				'style'  => 'display: none;'
-			), Html::rawElement(
-				'a',
+					'id'  => 'embed_show'
+				), Html::rawElement(
+					'a',
+					array(
+						'href'  => '#embed_show',
+						'rel'   => 'nofollow',
+						'onclick' => $embedShow
+					), wfMessage( 'smw_ask_show_embed' )->escaped()
+				)
+			) . Html::rawElement(
+				'span',
 				array(
-					'href'  => '#embed_hide',
-					'rel'   => 'nofollow',
-					'onclick' => $embedHide
-				), wfMessage( 'smw_ask_hide_embed' )->escaped()
+					'id'  => 'embed_hide',
+					'style'  => 'display: none;'
+				), Html::rawElement(
+					'a',
+					array(
+						'href'  => '#embed_hide',
+						'rel'   => 'nofollow',
+						'onclick' => $embedHide
+					), wfMessage( 'smw_ask_hide_embed' )->escaped()
+				)
 			)
-		) );
+		);
 	}
 
 	/**
@@ -154,6 +161,7 @@ class LinksWidget {
 		return Html::rawElement(
 			'span',
 			[
+				'id' => 'ask-showhide',
 				'class' => 'smw-ask-button smw-ask-button-lblue'
 			], Html::element(
 				'a',
@@ -188,6 +196,7 @@ class LinksWidget {
 		return Html::rawElement(
 			'span',
 			[
+				'id' => 'ask-debug',
 				'class' => 'smw-ask-button smw-ask-button-right'
 			],
 			Html::element(
@@ -218,6 +227,7 @@ class LinksWidget {
 		return Html::rawElement(
 			'span',
 			[
+				'id' => 'ask-clipboard',
 				'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey'
 			],
 			Html::element(

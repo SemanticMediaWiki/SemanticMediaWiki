@@ -260,7 +260,8 @@ return array(
 		),
 		'messages' => array(
 			'smw-ask-delete',
-			'smw-ask-format-selection-help'
+			'smw-ask-format-selection-help',
+			'smw-ask-format-export-info'
 		),
 		'position' => 'top',
 		'targets' => array(
