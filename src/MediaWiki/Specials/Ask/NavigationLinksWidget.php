@@ -121,18 +121,19 @@ class NavigationLinksWidget {
 	 *
 	 * @param Title $title,
 	 * @param UrlArgs $urlArgs
-	 * @param integer $limit
-	 * @param integer $offset,
 	 * @param integer $count,
 	 * @param boolean $hasFurtherResults
 	 *
 	 * @return string
 	 */
-	public static function navigationLinks( Title $title, UrlArgs $urlArgs, $limit, $offset, $count, $hasFurtherResults = false ) {
+	public static function navigationLinks( Title $title, UrlArgs $urlArgs, $count, $hasFurtherResults = false ) {
 
 		$userLanguage = Localizer::getInstance()->getUserLanguage();
 		$navigation = '';
 		$urlArgs = clone $urlArgs;
+
+		$limit = $urlArgs->get( 'limit' );
+		$offset = $urlArgs->get( 'offset' );
 
 		// @todo FIXME: i18n: Patchwork text.
 		$navigation .=
