@@ -48,19 +48,56 @@ class ParametersWidget {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $format
+	 * @param array $parameters
+	 *
+	 * @return string
+	 */
+	public static function options( $format, array $parameters ) {
+
+		$fieldset = Html::rawElement(
+			'fieldset',
+			[
+				'class' => 'smw-ask-options'
+			],
+			Html::element(
+				'legend',
+				[],
+				Message::get( 'smw-ask-options', Message::TEXT, Message::USER_LANGUAGE )
+			) . Html::rawElement(
+				'div',
+				[
+					'id' => 'options-list'
+				],
+				self::parameterList( $format, $parameters )
+			) . SortWidget::sortSection( $parameters )
+		);
+
+		return Html::rawElement(
+			'div',
+			[
+				'id' => 'options'
+			],
+			$fieldset
+		);
+	}
+
+	/**
 	 * Display a form section showing the options for a given format,
 	 * based on the getParameters() value for that format's query printer.
 	 *
 	 * @since 1.8
 	 *
 	 * @param string $format
-	 * @param array $values The current values for the parameters (name => value)
+	 * @param array $parameters The current values for the parameters (name => value)
 	 *
 	 * @return string
 	 */
 	public static function parameterList( $format, array $values ) {
 
-		$options = self::options(
+		$optionList = self::optionList(
 			QueryProcessor::getFormatParameters( $format ),
 			$values
 		);
@@ -93,7 +130,7 @@ class ParametersWidget {
 
 		$resultHtml .= Html::openElement( 'tbody' );
 
-		while ( $option = array_shift( $options ) ) {
+		while ( $option = array_shift( $optionList ) ) {
 			$i++;
 
 			// Collect elements for a row
@@ -128,7 +165,7 @@ class ParametersWidget {
 		return $resultHtml;
 	}
 
-	private static function options( $definitions, $values ) {
+	private static function optionList( $definitions, $values ) {
 
 		$html = [];
 

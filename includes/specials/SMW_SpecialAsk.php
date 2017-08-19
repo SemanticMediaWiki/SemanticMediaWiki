@@ -443,8 +443,6 @@ class SMWAskPage extends SpecialPage {
 		$downloadLink = DownloadLinksWidget::downloadLinks( $this->queryLinker );
 		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->queryString, $querySource, $isFromCache, $duration )->parse() : '';
 
-		$sorting = SortWidget::sortSection( $this->parameters );
-
 		$result .= Html::openElement( 'form',
 			array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
 
@@ -458,12 +456,7 @@ class SMWAskPage extends SpecialPage {
 			$result .= FormatSelectionWidget::selection( $title, $this->parameters );
 
 			// Other options fieldset
-			$result .= '<fieldset id="options" class="smw-ask-options"><legend>' . wfMessage( 'smw-ask-options' )->escaped() . "</legend>\n";
-
-			// Individual options
-			$result .= "<div id=\"options-list\">" .  ParametersWidget::parameterList( $this->parameters['format'], $this->parameters ) . "</div>";
-						$result .= $sorting;
-			$result .= "</fieldset>\n";
+			$result .= ParametersWidget::options( $this->parameters['format'], $this->parameters );
 
 			$urlArgs->set( 'eq', 'no' );
 			$hideForm = true;
