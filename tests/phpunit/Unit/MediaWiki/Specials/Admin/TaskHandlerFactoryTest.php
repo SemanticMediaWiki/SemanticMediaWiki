@@ -88,8 +88,8 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'newIdTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\IdTaskHandler'
+			'newEntityLookupTaskHandler',
+			'\SMW\MediaWiki\Specials\Admin\EntityLookupTaskHandler'
 		);
 
 		$provider[] = array(

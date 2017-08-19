@@ -80,10 +80,10 @@ class TaskHandlerFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return IdTaskHandler
+	 * @return EntityLookupTaskHandler
 	 */
-	public function newIdTaskHandler() {
-		return new IdTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+	public function newEntityLookupTaskHandler() {
+		return new EntityLookupTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
 	/**

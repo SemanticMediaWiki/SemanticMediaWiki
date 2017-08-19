@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\IdTaskHandler;
+use SMW\MediaWiki\Specials\Admin\EntityLookupTaskHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\IdTaskHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\EntityLookupTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\MediaWiki\Specials\Admin\IdTaskHandler;
  *
  * @author mwjames
  */
-class IdTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -57,14 +57,20 @@ class IdTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\IdTaskHandler',
-			new IdTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
+			'\SMW\MediaWiki\Specials\Admin\EntityLookupTaskHandler',
+			new EntityLookupTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
 
 	public function testGetHml() {
 
-		$instance = new IdTaskHandler(
+		$this->outputFormatter->expects( $this->any() )
+			->method( 'getSpecialPageLinkWith' )
+			->with(
+				$this->anything(),
+				$this->equalTo( [ 'action' => 'lookup' ] ) );
+
+		$instance = new EntityLookupTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
@@ -99,7 +105,7 @@ class IdTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$instance = new IdTaskHandler(
+		$instance = new EntityLookupTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
@@ -199,9 +205,9 @@ class IdTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$webRequest->expects( $this->at( 3 ) )
 			->method( 'getText' )
 			->with( $this->equalTo( 'action' ) )
-			->will( $this->returnValue( 'idlookup' ) );
+			->will( $this->returnValue( 'lookup' ) );
 
-		$instance = new IdTaskHandler(
+		$instance = new EntityLookupTaskHandler(
 			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter

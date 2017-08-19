@@ -16,7 +16,7 @@ use WebRequest;
  *
  * @author mwjames
  */
-class IdTaskHandler extends TaskHandler {
+class EntityLookupTaskHandler extends TaskHandler {
 
 	/**
 	 * @var Store
@@ -57,7 +57,7 @@ class IdTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function isTaskFor( $task ) {
-		return $task === 'idlookup';
+		return $task === 'lookup';
 	}
 
 	/**
@@ -81,7 +81,7 @@ class IdTaskHandler extends TaskHandler {
 			$this->getMessageAsString(
 				array(
 					'smw-admin-supplementary-idlookup-intro',
-					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ), array( 'action' => 'idlookup' ) )
+					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ), array( 'action' => 'lookup' ) )
 				)
 			)
 		);
@@ -117,13 +117,15 @@ class IdTaskHandler extends TaskHandler {
 	 */
 	private function doDispose( $id ) {
 
-		$entityIdDisposerJob = ApplicationFactory::getInstance()->newJobFactory()->newEntityIdDisposerJob(
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
 			\Title::newFromText( __METHOD__ )
 		);
 
 		$entityIdDisposerJob->dispose( intval( $id ) );
 
-		$manualEntryLogger = ApplicationFactory::getInstance()->create( 'ManualEntryLogger' );
+		$manualEntryLogger = $applicationFactory->create( 'ManualEntryLogger' );
 		$manualEntryLogger->registerLoggableEventType( 'admin' );
 		$manualEntryLogger->log( 'admin', $this->user, 'Special:SMWAdmin', 'Forced removal of ID '. $id );
 	}
@@ -139,11 +141,11 @@ class IdTaskHandler extends TaskHandler {
 		$html = $this->htmlFormRenderer
 			->setName( 'idlookup' )
 			->setMethod( 'get' )
-			->addHiddenField( 'action', 'idlookup' )
+			->addHiddenField( 'action', 'lookup' )
 			->addHiddenField( 'id', $id )
 			->addParagraph( $this->getMessageAsString( 'smw-admin-idlookup-docu' ) )
 			->addInputField(
-				$this->getMessageAsString( 'smw-admin-objectid' ),
+				$this->getMessageAsString( 'smw-admin-idlookup-input' ),
 				'id',
 				$id
 			)
@@ -166,7 +168,7 @@ class IdTaskHandler extends TaskHandler {
 		$html .= $this->htmlFormRenderer
 			->setName( 'iddispose' )
 			->setMethod( 'get' )
-			->addHiddenField( 'action', 'idlookup' )
+			->addHiddenField( 'action', 'lookup' )
 			->addHiddenField( 'id', $id )
 			->addHeader( 'h2', $this->getMessageAsString( 'smw-admin-iddispose-title' ) )
 			->addParagraph( $this->getMessageAsString( 'smw-admin-iddispose-docu', Message::PARSE ) )
@@ -193,7 +195,7 @@ class IdTaskHandler extends TaskHandler {
 
 	private function createInfoMessageById( $webRequest, &$id ) {
 
-		if ( $webRequest->getText( 'action' ) !== 'idlookup' || $id === '' ) {
+		if ( $webRequest->getText( 'action' ) !== 'lookup' || $id === '' ) {
 			return '';
 		}
 
