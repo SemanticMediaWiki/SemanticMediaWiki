@@ -9,7 +9,6 @@ use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 use SMW\MediaWiki\Specials\Ask\FormatterWidget;
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
-use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\MediaWiki\Specials\Ask\FormatSelectionWidget;
 use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
@@ -52,6 +51,12 @@ class SMWAskPage extends SpecialPage {
 	 * @var boolean
 	 */
 	private $isEditMode = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $isBorrowedMode = false;
+
 	private $queryLinker = null;
 
 	/**
@@ -132,11 +137,17 @@ class SMWAskPage extends SpecialPage {
 			$GLOBALS['smwgQRandSortingSupport']
 		);
 
+		ParametersProcessor::setDefaultLimit(
+			$GLOBALS['smwgQDefaultLimit']
+		);
+
 		ParametersProcessor::setMaxInlineLimit(
 			$GLOBALS['smwgQMaxInlineLimit']
 		);
 
-		if ( $request->getCheck( 'bTitle' ) ) {
+		$this->isBorrowedMode = $request->getCheck( 'bTitle' );
+
+		if ( $this->isBorrowedMode ) {
 			$visibleLinks = [];
 		} elseif( $request->getVal( 'eq' ) === 'no' || $p !== null || $request->getVal( 'x' ) ) {
 			$visibleLinks = [ 'empty' ];
@@ -246,7 +257,7 @@ class SMWAskPage extends SpecialPage {
 			$urlArgs->set( 'order', $this->parameters['order'] );
 		}
 
-		if ( $this->getRequest()->getCheck( 'bTitle' ) ) {
+		if ( $this->isBorrowedMode ) {
 			$urlArgs->set( 'bTitle', $this->getRequest()->getVal( 'bTitle' ) );
 			$urlArgs->set( 'bMsg', $this->getRequest()->getVal( 'bMsg' ) );
 		}
@@ -376,48 +387,66 @@ class SMWAskPage extends SpecialPage {
 			/**
 			 * @var SMWIExportPrinter $printer
 			 */
-			$printer->outputAsFile( $res, $params );
+			return $printer->outputAsFile( $res, $params );
+		}
+
+		if ( $this->queryString ) {
+			$this->getOutput()->setHTMLtitle( $this->queryString );
 		} else {
-			if ( $this->queryString ) {
-				$this->getOutput()->setHTMLtitle( $this->queryString );
-			} else {
-				$this->getOutput()->setHTMLtitle( wfMessage( 'ask' )->text() );
-			}
+			$this->getOutput()->setHTMLtitle( wfMessage( 'ask' )->text() );
+		}
 
-			$urlArgs->set( 'offset', $this->parameters['offset'] );
-			$urlArgs->set( 'limit', $this->parameters['limit'] );
+		$urlArgs->set( 'offset', $this->parameters['offset'] );
+		$urlArgs->set( 'limit', $this->parameters['limit'] );
 
-			$isFromCache = $res !== null ? $res->isFromCache() : false;
+		$isFromCache = $res !== null ? $res->isFromCache() : false;
 
-			$result = FormatterWidget::div(
+		$result = FormatterWidget::div(
+			$result,
+			[
+				'id' => 'result',
+				"class" => 'smw-ask-result' . ( $this->isBorrowedMode ? ' is-disabled' : '' )
+			]
+		);
+
+		$infoText = $this->getInfoText(
+			$duration,
+			$isFromCache
+		);
+
+		$result = $this->getInputForm(
+			$urlArgs,
+			$navigation,
+			$infoText
+		) . ErrorWidget::queryError( $queryobj ) . $result;
+
+		// The overall form is "soft-disabled" so that when JS is fully
+		// loaded, the ask module will remove this class and releases the form
+		// for input
+		$this->getOutput()->addHTML(
+			FormatterWidget::div(
 				$result,
 				[
-					'id' => 'result',
-					"class" => 'smw-ask-result'
+					'id' => 'ask',
+					"class" => ( $this->isBorrowedMode ? '' : 'is-disabled' )
 				]
-			);
+			)
+		);
+	}
 
-			$result = $this->getInputForm(
-				$printoutstring,
-				$urlArgs,
-				$navigation,
-				$duration,
-				$isFromCache
-			) . ErrorWidget::queryError( $queryobj ) . $result;
+	private function getInfoText( $duration, $isFromCache = false ) {
 
-			// The overall form is "soft-disabled" so that when JS is fully
-			// loaded, the ask module will remove this class and releases the form
-			// for input
-			$this->getOutput()->addHTML(
-				FormatterWidget::div(
-					$result,
-					[
-						'id' => 'ask',
-						"class" => 'is-disabled'
-					]
-				)
-			);
+		$infoText = '';
+
+		$querySource = ApplicationFactory::getInstance()->getQuerySourceFactory()->getAsString(
+			isset( $this->parameters['source'] ) ? $this->parameters['source'] : null
+		);
+
+		if ( $duration > 0 ) {
+			$infoText = wfMessage( 'smw-ask-query-search-info', $this->queryString, $querySource, $isFromCache, $duration )->parse();
 		}
+
+		return $infoText;
 	}
 
 	/**
@@ -428,70 +457,88 @@ class SMWAskPage extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function getInputForm( $printoutstring, UrlArgs $urlArgs, $navigation = '', $duration, $isFromCache = false ) {
-		global $wgScript;
+	protected function getInputForm( UrlArgs $urlArgs, $navigation = '', $infoText = '' ) {
 
-		$result = '';
+		$html = '';
 		$hideForm = false;
 
 		$title = SpecialPage::getSafeTitleFor( 'Ask' );
-
-		$querySource = ApplicationFactory::getInstance()->getQuerySourceFactory()->getAsString(
-			isset( $this->parameters['source'] ) ? $this->parameters['source'] : null
-		);
-
-		$downloadLink = DownloadLinksWidget::downloadLinks( $this->queryLinker );
-		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->queryString, $querySource, $isFromCache, $duration )->parse() : '';
-
-		$result .= Html::openElement( 'form',
-			array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
+		$urlArgs->set( 'eq', 'yes' );
 
 		if ( $this->isEditMode ) {
-			$result .= Html::hidden( 'title', $title->getPrefixedDBKey() );
+			$html .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
-			$result .= QueryInputWidget::input( $this->queryString , $printoutstring );
+			$html .= QueryInputWidget::input( $this->queryString , $urlArgs->get( 'po' ) );
 
 			// Format selection
-			$result .= FormatSelectionWidget::selection( $title, $this->parameters );
+			$html .= FormatSelectionWidget::selection( $title, $this->parameters );
 
 			// Other options fieldset
-			$result .= ParametersWidget::options( $this->parameters['format'], $this->parameters );
+			$html .= ParametersWidget::options( $this->parameters['format'], $this->parameters );
 
 			$urlArgs->set( 'eq', 'no' );
 			$hideForm = true;
-		} else { // if $this->isEditMode == false
-			$urlArgs->set( 'eq', 'yes' );
 		}
 
 		$isEmpty = $this->queryLinker === null;
 
 		// Submit
-		$result .= '<div id="search" class="smw-ask-search">' . '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n" .
-			'<p>' .  '' . '</p>' .
-
-			LinksWidget::resultSubmitLink( $hideForm ) .
+		$fieldset = LinksWidget::resultSubmitLink( $hideForm ) .
 			LinksWidget::showHideLink( $title, $urlArgs, $hideForm, $isEmpty ) .
 			LinksWidget::clipboardLink( $this->queryLinker );
 
 			if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
-				$result .= LinksWidget::debugLink( $title, $urlArgs, $isEmpty );
+				$fieldset .= LinksWidget::debugLink( $title, $urlArgs, $isEmpty );
 			}
 
-			$result .= LinksWidget::embeddedCodeLink( $isEmpty ) .
+			$fieldset .= LinksWidget::embeddedCodeLink( $isEmpty ) .
 			LinksWidget::embeddedCodeBlock( $this->getQueryAsCodeString() );
 
-		$result .= '<p></p>';
+		$fieldset .= '<p></p>';
 
-		$this->doFinalModificationsOnBorrowedOutput(
-			$result,
-			$searchInfoText
+		$this->applyFinalOutputChanges(
+			$fieldset,
+			$infoText
 		);
 
-		$result .= ( $navigation !== '' ? '<div id="ask-navinfo"><div class="smw-ask-cond-info">'. $searchInfoText . '</div>' . '<hr class="smw-form-horizontalrule"><div class="smw-ask-actions-nav">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) . '</div></div>' .
-			"\n</fieldset></div>\n</form>\n";
+		$fieldset .= NavigationLinksWidget::wrap(
+			$navigation,
+			$infoText,
+			$this->queryLinker
+		);
 
-		return $result;
+		$fieldset = Html::rawElement(
+			'fieldset',
+			[
+				'class' => 'smw-ask-actions',
+				'style' => 'margin-top:0px;'
+			],
+			Html::rawElement(
+				'legend',
+				[],
+				wfMessage( 'smw-ask-search' )->escaped()
+			) . '<p></p>' . $fieldset
+		);
+
+		$html .= Html::rawElement(
+			'div',
+			[
+				'id' => 'search',
+				'class' => 'smw-ask-search'
+			],
+			$fieldset
+		);
+
+		return Html::rawElement(
+			'form',
+			[
+				'action' => $GLOBALS['wgScript'],
+				'name' => 'ask',
+				'method' => 'get'
+			],
+			$html
+		);
 	}
 
 	private function getQueryAsCodeString() {
@@ -522,16 +569,19 @@ class SMWAskPage extends SpecialPage {
 		return '{{#ask: ' . $code . '}}';
 	}
 
-	private function doFinalModificationsOnBorrowedOutput( &$html, &$searchInfoText ) {
+	private function applyFinalOutputChanges( &$html, &$searchInfoText ) {
 
-		if ( !$this->getRequest()->getCheck( 'bTitle' ) ) {
+		if ( !$this->isBorrowedMode ) {
 			return;
 		}
 
 		$borrowedMessage = $this->getRequest()->getVal( 'bMsg' );
 
 		$searchInfoText = '';
-		$html = "\n<fieldset class='smw-ask-actions'><p>" . ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ? wfMessage( $borrowedMessage )->parse() : '' ) . "</p>";
+
+		if ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ) {
+			$html = wfMessage( $borrowedMessage )->parse();
+		}
 
 		$borrowedTitle = $this->getRequest()->getVal( 'bTitle' );
 

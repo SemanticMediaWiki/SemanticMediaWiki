@@ -46,4 +46,32 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testParametersWithDefaults() {
+
+		$request = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$request->expects( $this->at( 7 ) )
+			->method( 'getVal' )
+			->with(
+				$this->equalTo( 'offset' ),
+				$this->equalTo( 0 ) );
+
+		$request->expects( $this->at( 8 ) )
+			->method( 'getVal' )
+			->with(
+				$this->equalTo( 'limit' ),
+				$this->equalTo( 42 ) );
+
+		ParametersProcessor::setDefaultLimit( 42 );
+
+		$parameters = [
+			'[[Foo::bar]]',
+			'|?Foo=foobar'
+		];
+
+		ParametersProcessor::process( $request, $parameters );
+	}
+
 }
