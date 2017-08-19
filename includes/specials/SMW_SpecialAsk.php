@@ -6,6 +6,7 @@ use SMW\Query\QueryLinker;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\LinksWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
+use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 use SMW\MediaWiki\Specials\Ask\FormatterWidget;
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
 use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
@@ -31,10 +32,25 @@ use SMW\ApplicationFactory;
  */
 class SMWAskPage extends SpecialPage {
 
-	private $m_querystring = '';
-	private $m_params = array();
-	private $m_printouts = array();
-	private $m_editquery = false;
+	/**
+	 * @var string
+	 */
+	private $queryString = '';
+
+	/**
+	 * @var array
+	 */
+	private $parameters = array();
+
+	/**
+	 * @var array
+	 */
+	private $printouts = array();
+
+	/**
+	 * @var boolean
+	 */
+	private $isEditMode = false;
 	private $queryLinker = null;
 
 	/**
@@ -115,6 +131,10 @@ class SMWAskPage extends SpecialPage {
 			$GLOBALS['smwgQRandSortingSupport']
 		);
 
+		ParametersProcessor::setMaxInlineLimit(
+			$GLOBALS['smwgQMaxInlineLimit']
+		);
+
 		if ( $request->getCheck( 'bTitle' ) ) {
 			$visibleLinks = [];
 		} elseif( $request->getVal( 'eq' ) === 'no' || $p !== null || $request->getVal( 'x' ) ) {
@@ -159,136 +179,19 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	/**
-	 * This code rather hacky since there are many ways to call that special page, the most involved of
-	 * which is the way that this page calls itself when data is submitted via the form (since the shape
-	 * of the parameters then is governed by the UI structure, as opposed to being governed by reason).
-	 *
-	 * TODO: most of this can probably be killed now we are using Validator
-	 *
 	 * @param string $p
 	 */
 	protected function extractQueryParameters( $p ) {
-		global $smwgQMaxInlineLimit;
 
 		$request = $this->getRequest();
+		$this->isEditMode = false;
 
-		// First make all inputs into a simple parameter list that can again be parsed into components later.
-		if ( $request->getCheck( 'q' ) ) { // called by own Special, ignore full param string in that case
-			$query_val = $request->getVal( 'p' );
-
-			if ( !empty( $query_val ) ) {
-				// p is used for any additional parameters in certain links.
-				$rawparams = SMWInfolink::decodeParameters( $query_val, false );
-			}
-			else {
-				$query_values = $request->getArray( 'p' );
-
-				if ( is_array( $query_values ) ) {
-					foreach ( $query_values as $key => $val ) {
-						if ( empty( $val ) ) {
-							unset( $query_values[$key] );
-						}
-					}
-				}
-
-				// p is used for any additional parameters in certain links.
-				$rawparams = SMWInfolink::decodeParameters( $query_values, false );
-
-			}
-		} else { // called from wiki, get all parameters
-			$rawparams = SMWInfolink::decodeParameters( $p, true );
-		}
-
-		// Check for q= query string, used whenever this special page calls itself (via submit or plain link):
-		$this->m_querystring = $request->getText( 'q' );
-		if ( $this->m_querystring !== '' ) {
-			$rawparams[] = $this->m_querystring;
-		}
-
-		// Check for param strings in po (printouts), appears in some links and in submits:
-		$paramstring = $request->getText( 'po' );
-
-		if ( $paramstring !== '' ) { // parameters from HTML input fields
-			$ps = explode( "\n", $paramstring ); // params separated by newlines here (compatible with text-input for printouts)
-
-			foreach ( $ps as $param ) { // add initial ? if omitted (all params considered as printouts)
-				$param = trim( $param );
-
-				if ( ( $param !== '' ) && ( $param { 0 } != '?' ) ) {
-					$param = '?' . $param;
-				}
-
-				$rawparams[] = $param;
-			}
-		}
-
-		list( $this->m_querystring, $this->m_params, $this->m_printouts ) = $this->getComponentsFromParameters(
-			$rawparams
+		list( $this->queryString, $this->parameters, $this->printouts ) = ParametersProcessor::process(
+			$request,
+			$p
 		);
 
-		// Try to complete undefined parameter values from dedicated URL params.
-		if ( !array_key_exists( 'format', $this->m_params ) ) {
-			$this->m_params['format'] = 'broadtable';
-		}
-
-		$sort_count = 0;
-
-		// First check whether the sorting options input send an
-		// request data as array
-		if ( $request->getArray( 'sort_num', [] ) !== array() ) {
-			$sort_values = $request->getArray( 'sort_num' );
-
-			if ( is_array( $sort_values ) ) {
-				$sort = array_filter( $sort_values );
-				$sort_count = count( $sort );
-				$this->m_params['sort'] = implode( ',', $sort );
-			}
-		} elseif ( $request->getCheck( 'sort' ) ) {
-			$this->m_params['sort'] = $request->getVal( 'sort', '' );
-		}
-
-		// First check whether the order options input send an
-		// request data as array
-		if ( $request->getArray( 'order_num', [] ) !== array()  ) {
-			$order_values = $request->getArray( 'order_num' );
-
-			// Count doesn't match means we have a order from an
-			// empty (#subject) carrying around which we don't permit when
-			// sorting via columns
-			if ( count( $order_values ) != $sort_count ) {
-				array_pop( $order_values );
-			}
-
-			if ( is_array( $order_values ) ) {
-				$order = array_filter( $order_values );
-				$this->m_params['order'] = implode( ',', $order );
-			}
-
-		} elseif ( $request->getCheck( 'order' ) ) {
-			$this->m_params['order'] = $request->getVal( 'order', '' );
-		} elseif ( !array_key_exists( 'offset', $this->m_params ) ) {
-			$this->m_params['order'] = 'asc';
-			$this->m_params['sort'] = '';
-		}
-
-		if ( !array_key_exists( 'offset', $this->m_params ) ) {
-			$this->m_params['offset'] = $request->getVal( 'offset' );
-			if ( $this->m_params['offset'] === '' )  {
-				$this->m_params['offset'] = 0;
-			}
-		}
-
-		if ( !array_key_exists( 'limit', $this->m_params ) ) {
-			$this->m_params['limit'] = $request->getVal( 'limit' );
-
-			if ( $this->m_params['limit'] === '' ) {
-				 $this->m_params['limit'] = ( $this->m_params['format'] == 'rss' ) ? 10 : 20; // Standard limit for RSS.
-			}
-		}
-
-		$this->m_params['limit'] = min( $this->m_params['limit'], $smwgQMaxInlineLimit );
-
-		$this->m_editquery = ( $request->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring === '' );
+		$this->isEditMode = ( $request->getVal( 'eq' ) == 'yes' ) || ( $this->queryString === '' );
 	}
 
 	private function getStoreFromParams( array $params ) {
@@ -307,10 +210,10 @@ class SMWAskPage extends SpecialPage {
 		$res = null;
 
 		// build parameter strings for URLs, based on current settings
-		$urlArgs['q'] = $this->m_querystring;
+		$urlArgs['q'] = $this->queryString;
 
 		$tmp_parray = array();
-		foreach ( $this->m_params as $key => $value ) {
+		foreach ( $this->parameters as $key => $value ) {
 			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
 				$tmp_parray[$key] = $value;
 			}
@@ -325,7 +228,7 @@ class SMWAskPage extends SpecialPage {
 		/**
 		 * @var PrintRequest $printout
 		 */
-		foreach ( $this->m_printouts as $printout ) {
+		foreach ( $this->printouts as $printout ) {
 			$printoutstring .= $printout->getSerialisation( true ) . "\n";
 		}
 
@@ -333,12 +236,12 @@ class SMWAskPage extends SpecialPage {
 			$urlArgs['po'] = $printoutstring;
 		}
 
-		if ( array_key_exists( 'sort', $this->m_params ) ) {
-			$urlArgs['sort'] = $this->m_params['sort'];
+		if ( array_key_exists( 'sort', $this->parameters ) ) {
+			$urlArgs['sort'] = $this->parameters['sort'];
 		}
 
-		if ( array_key_exists( 'order', $this->m_params ) ) {
-			$urlArgs['order'] = $this->m_params['order'];
+		if ( array_key_exists( 'order', $this->parameters ) ) {
+			$urlArgs['order'] = $this->parameters['order'];
 		}
 
 		if ( $this->getRequest()->getCheck( 'bTitle' ) ) {
@@ -346,20 +249,20 @@ class SMWAskPage extends SpecialPage {
 			$urlArgs['bMsg'] = $this->getRequest()->getVal( 'bMsg' );
 		}
 
-		if ( $this->m_querystring !== '' ) {
+		if ( $this->queryString !== '' ) {
 			// FIXME: this is a hack
-			SMWQueryProcessor::addThisPrintout( $this->m_printouts, $this->m_params );
-			$params = SMWQueryProcessor::getProcessedParams( $this->m_params, $this->m_printouts );
-			$this->m_params['format'] = $params['format']->getValue();
+			SMWQueryProcessor::addThisPrintout( $this->printouts, $this->parameters );
+			$params = SMWQueryProcessor::getProcessedParams( $this->parameters, $this->printouts );
+			$this->parameters['format'] = $params['format']->getValue();
 
 			$this->params = $params;
 
 			$queryobj = SMWQueryProcessor::createQuery(
-				$this->m_querystring,
+				$this->queryString,
 				$params,
 				SMWQueryProcessor::SPECIAL_PAGE,
-				$this->m_params['format'],
-				$this->m_printouts
+				$this->parameters['format'],
+				$this->printouts
 			);
 
 			/**
@@ -367,7 +270,7 @@ class SMWAskPage extends SpecialPage {
 			 */
 
 			$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
-			$this->queryLinker = QueryLinker::get( $queryobj, $this->m_params );
+			$this->queryLinker = QueryLinker::get( $queryobj, $this->parameters );
 
 			// Determine query results
 			$duration = microtime( true );
@@ -375,33 +278,33 @@ class SMWAskPage extends SpecialPage {
 			$duration = number_format( (microtime( true ) - $duration), 4, '.', '' );
 
 			// Try to be smart for rss/ical if no description/title is given and we have a concept query:
-			if ( $this->m_params['format'] == 'rss' ) {
+			if ( $this->parameters['format'] == 'rss' ) {
 				$desckey = 'rssdescription';
 				$titlekey = 'rsstitle';
-			} elseif ( $this->m_params['format'] == 'icalendar' ) {
+			} elseif ( $this->parameters['format'] == 'icalendar' ) {
 				$desckey = 'icalendardescription';
 				$titlekey = 'icalendartitle';
 			} else { $desckey = false;
 			}
 
 			if ( ( $desckey ) && ( $queryobj->getDescription() instanceof SMWConceptDescription ) &&
-			     ( !isset( $this->m_params[$desckey] ) || !isset( $this->m_params[$titlekey] ) ) ) {
+			     ( !isset( $this->parameters[$desckey] ) || !isset( $this->parameters[$titlekey] ) ) ) {
 				$concept = $queryobj->getDescription()->getConcept();
 
-				if ( !isset( $this->m_params[$titlekey] ) ) {
-					$this->m_params[$titlekey] = $concept->getText();
+				if ( !isset( $this->parameters[$titlekey] ) ) {
+					$this->parameters[$titlekey] = $concept->getText();
 				}
 
-				if ( !isset( $this->m_params[$desckey] ) ) {
+				if ( !isset( $this->parameters[$desckey] ) ) {
 					// / @bug The current SMWStore will never return SMWConceptValue (an SMWDataValue) here; it might return SMWDIConcept (an SMWDataItem)
 					$dv = end( \SMW\StoreFactory::getStore()->getPropertyValues( SMWWikiPageValue::makePageFromTitle( $concept ), new SMW\DIProperty( '_CONC' ) ) );
 					if ( $dv instanceof SMWConceptValue ) {
-						$this->m_params[$desckey] = $dv->getDocu();
+						$this->parameters[$desckey] = $dv->getDocu();
 					}
 				}
 			}
 
-			$printer = SMWQueryProcessor::getResultPrinter( $this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE );
+			$printer = SMWQueryProcessor::getResultPrinter( $this->parameters['format'], SMWQueryProcessor::SPECIAL_PAGE );
 			$printer->setShowErrors( false );
 
 			global $wgRequest;
@@ -410,14 +313,14 @@ class SMWAskPage extends SpecialPage {
 			$debug = '';
 
 			// Allow to generate a debug output
-			if ( $this->getRequest()->getVal( 'debug' ) && ( !isset( $this->m_params['source'] ) || $this->m_params['source'] === '' ) ) {
+			if ( $this->getRequest()->getVal( 'debug' ) && ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) ) {
 
 				$queryobj = SMWQueryProcessor::createQuery(
-					$this->m_querystring,
+					$this->queryString,
 					$params,
 					SMWQueryProcessor::SPECIAL_PAGE,
 					'debug',
-					$this->m_printouts
+					$this->printouts
 				);
 
 				$debug = $this->getStoreFromParams( $params )->getQueryResult( $queryobj );
@@ -425,7 +328,7 @@ class SMWAskPage extends SpecialPage {
 
 			if ( !$printer->isExportFormat() ) {
 				if ( $res->getCount() > 0 ) {
-					if ( $this->m_editquery ) {
+					if ( $this->isEditMode ) {
 						$urlArgs['eq'] = 'yes';
 					}
 					elseif ( $hidequery ) {
@@ -473,14 +376,14 @@ class SMWAskPage extends SpecialPage {
 			 */
 			$printer->outputAsFile( $res, $params );
 		} else {
-			if ( $this->m_querystring ) {
-				$this->getOutput()->setHTMLtitle( $this->m_querystring );
+			if ( $this->queryString ) {
+				$this->getOutput()->setHTMLtitle( $this->queryString );
 			} else {
 				$this->getOutput()->setHTMLtitle( wfMessage( 'ask' )->text() );
 			}
 
-			$urlArgs['offset'] = $this->m_params['offset'];
-			$urlArgs['limit'] = $this->m_params['limit'];
+			$urlArgs['offset'] = $this->parameters['offset'];
+			$urlArgs['limit'] = $this->parameters['limit'];
 
 			$isFromCache = $res !== null ? $res->isFromCache() : false;
 
@@ -532,40 +435,40 @@ class SMWAskPage extends SpecialPage {
 		$title = method_exists( $this, 'getPageTitle') ? $this->getPageTitle() : $this->getTitle();
 
 		$querySource = ApplicationFactory::getInstance()->getQuerySourceFactory()->getAsString(
-			isset( $this->m_params['source'] ) ? $this->m_params['source'] : null
+			isset( $this->parameters['source'] ) ? $this->parameters['source'] : null
 		);
 
 		$downloadLink = DownloadLinksWidget::downloadLinks( $this->queryLinker );
-		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $querySource, $isFromCache, $duration )->parse() : '';
+		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->queryString, $querySource, $isFromCache, $duration )->parse() : '';
 
 		$hideForm = false;
 		$title = SpecialPage::getSafeTitleFor( 'Ask' );
 
-		$sorting = SortWidget::sortSection( $this->m_params );
+		$sorting = SortWidget::sortSection( $this->parameters );
 
 		$result .= Html::openElement( 'form',
 			array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
 
-		if ( $this->m_editquery ) {
+		if ( $this->isEditMode ) {
 			$result .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
-			$result .= QueryInputWidget::input( $this->m_querystring , $printoutstring );
+			$result .= QueryInputWidget::input( $this->queryString , $printoutstring );
 
 			// Format selection
-			$result .= FormatSelectionWidget::selection( $title, $this->m_params );
+			$result .= FormatSelectionWidget::selection( $title, $this->parameters );
 
 			// Other options fieldset
 			$result .= '<fieldset id="options" class="smw-ask-options"><legend>' . wfMessage( 'smw-ask-options' )->escaped() . "</legend>\n";
 
 			// Individual options
-			$result .= "<div id=\"options-list\">" .  ParametersWidget::parameterList( $this->m_params['format'], $this->m_params ) . "</div>";
+			$result .= "<div id=\"options-list\">" .  ParametersWidget::parameterList( $this->parameters['format'], $this->parameters ) . "</div>";
 						$result .= $sorting;
 			$result .= "</fieldset>\n";
 
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
 			$hideForm = true;
-		} else { // if $this->m_editquery == false
+		} else { // if $this->isEditMode == false
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
 		}
 
@@ -579,7 +482,7 @@ class SMWAskPage extends SpecialPage {
 			LinksWidget::showHideLink( $title, $urltail, $hideForm, $isEmpty ) .
 			LinksWidget::clipboardLink( $this->queryLinker );
 
-			if ( !isset( $this->m_params['source'] ) || $this->m_params['source'] === '' ) {
+			if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
 				$result .= LinksWidget::debugLink( $title, $urltail, $isEmpty );
 			}
 
@@ -601,11 +504,11 @@ class SMWAskPage extends SpecialPage {
 
 	private function getQueryAsCodeString() {
 
-		$code = $this->m_querystring ? htmlspecialchars( $this->m_querystring ) . "\n" : "\n";
+		$code = $this->queryString ? htmlspecialchars( $this->queryString ) . "\n" : "\n";
 
-		foreach ( $this->m_printouts as $printout ) {
+		foreach ( $this->printouts as $printout ) {
 			$serialization = $printout->getSerialisation( true );
-			$mainlabel = isset( $this->m_params['mainlabel'] ) ? '?=' . $this->m_params['mainlabel'] . '#' : '';
+			$mainlabel = isset( $this->parameters['mainlabel'] ) ? '?=' . $this->parameters['mainlabel'] . '#' : '';
 
 			if ( $serialization !== '?#' && $serialization !== $mainlabel ) {
 				$code .= ' |' . $serialization . "\n";
@@ -614,13 +517,13 @@ class SMWAskPage extends SpecialPage {
 
 		foreach ( $this->params as $param ) {
 
-			if ( !isset( $this->m_params[$param->getName()] ) ) {
+			if ( !isset( $this->parameters[$param->getName()] ) ) {
 				continue;
 			}
 
 			if ( !$param->wasSetToDefault() ) {
 				$code .= ' |' . htmlspecialchars( $param->getName() ) . '=';
-				$code .= htmlspecialchars( $this->m_params[$param->getName()] ) . "\n";
+				$code .= htmlspecialchars( $this->parameters[$param->getName()] ) . "\n";
 			}
 		}
 
@@ -655,31 +558,6 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		$this->addHelpLink( wfMessage( $key )->escaped(), true );
-	}
-
-	private function getComponentsFromParameters( $reqParameters ) {
-
-		$parameters = array();
-		unset( $reqParameters['title'] );
-
-		// Split ?Has property=Foo|+index=1 into a [ '?Has property=Foo', '+index=1' ]
-		foreach ( $reqParameters as $key => $value ) {
-			if (
-				( $key !== '' && $key{0} == '?' && strpos( $value, '|' ) !== false ) ||
-				( is_string( $value ) && $value !== '' && $value{0} == '?' && strpos( $value, '|' ) !== false ) ) {
-
-				foreach ( explode( '|', $value ) as $k => $val ) {
-					$parameters[] = $k == 0 && $key{0} == '?' ? $key . '=' . $val : $val;
-				}
-			} elseif ( is_string( $key ) ) {
-				$parameters[$key] = $value;
-			} else {
-				$parameters[] = $value;
-			}
-		}
-
-		// Now parse parameters and rebuilt the param strings for URLs.
-		return SMWQueryProcessor::getComponentsFromFunctionParams( $parameters, false );
 	}
 
 }

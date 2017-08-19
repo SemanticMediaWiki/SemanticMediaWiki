@@ -152,6 +152,7 @@ class ParametersWidget {
 			// 'source' display will be omitted where no alternative source was found or
 			// a source that was marked as default but had no other available options
 			$allowedValues = $definition->getAllowedValues();
+
 			if ( $name == 'source' && (
 					count( $allowedValues ) == 0 ||
 					in_array( 'default', $allowedValues ) && count( $allowedValues ) < 2
@@ -160,7 +161,11 @@ class ParametersWidget {
 				continue;
 			}
 
-			$currentValue = array_key_exists( $name, $values ) ? $values[$name] : false;
+			$currentValue = false;
+
+			if ( array_key_exists( $name, $values ) ) {
+				$currentValue = $values[$name];
+			}
 
 			// Set default values
 			if ( $name === 'limit' && ( $currentValue === null || $currentValue === false ) ) {
