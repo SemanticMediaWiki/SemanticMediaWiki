@@ -145,7 +145,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function showHideLink( Title $title, $urlTail = '', $hideForm = false, $isEmpty = false ) {
+	public static function showHideLink( Title $title, UrlArgs $urlArgs, $hideForm = false, $isEmpty = false ) {
 
 		if ( $isEmpty ) {
 			return '';
@@ -158,7 +158,7 @@ class LinksWidget {
 			], Html::element(
 				'a',
 				[
-					'href'  => $title->getLocalURL( $urlTail ),
+					'href'  => $title->getLocalURL( $urlArgs ),
 					'rel'   => 'nofollow'
 				],
 				wfMessage( ( $hideForm ? 'smw_ask_hidequery' : 'smw_ask_editquery' ) )->text()
@@ -175,11 +175,15 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function debugLink( Title $title, $urlTail = '', $isEmpty = false ) {
+	public static function debugLink( Title $title, UrlArgs $urlArgs, $isEmpty = false ) {
 
 		if ( $isEmpty ) {
 			return '';
 		}
+
+		$urlArgs->set( 'eq', 'yes' );
+		$urlArgs->set( 'debug', 'true' );
+		$urlArgs->setFragment( 'search' );
 
 		return Html::rawElement(
 			'span',
@@ -190,7 +194,7 @@ class LinksWidget {
 				'a',
 				[
 					'class' => '',
-					'href'  => $title->getLocalURL( $urlTail . '&debug=true&eq=yes#search' ),
+					'href'  => $title->getLocalURL( $urlArgs ),
 					'rel'   => 'nofollow'
 				],
 				Message::get( 'smw-ask-debug', Message::TEXT, Message::USER_LANGUAGE )

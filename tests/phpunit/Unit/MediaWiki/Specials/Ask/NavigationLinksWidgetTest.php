@@ -21,9 +21,13 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInternalType(
 			'string',
-			NavigationLinksWidget::navigationLinks( $title, 100, 0, 20, false, [] )
+			NavigationLinksWidget::navigationLinks( $title, $urlArgs, 100, 0, 20, false )
 		);
 	}
 
@@ -33,9 +37,13 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
 
-		$result = NavigationLinksWidget::navigationLinks( $title, 100, 0, 20, false, [] );
+		$result = NavigationLinksWidget::navigationLinks( $title, $urlArgs, 100, 0, 20, false );
 
 		$this->assertContains(
 			'<a rel="nofollow">250</a>',
@@ -46,6 +54,46 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			'<a rel="nofollow">500</a>',
 			$result
 		);
+	}
+
+	public function testOffsetLimit() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Previous
+		$urlArgs->expects( $this->at( 0 ) )
+			->method( 'set' )
+			->with(
+				$this->equalTo( 'offset' ),
+				$this->equalTo( 7 ) );
+
+		$urlArgs->expects( $this->at( 1 ) )
+			->method( 'set' )
+			->with(
+				$this->equalTo( 'limit' ),
+				$this->equalTo( 3 ) );
+
+		// Next
+		$urlArgs->expects( $this->at( 2 ) )
+			->method( 'set' )
+			->with(
+				$this->equalTo( 'offset' ),
+				$this->equalTo( 13 ) );
+
+		$urlArgs->expects( $this->at( 3 ) )
+			->method( 'set' )
+			->with(
+				$this->equalTo( 'limit' ),
+				$this->equalTo( 3 ) );
+
+		NavigationLinksWidget::setMaxInlineLimit( 300 );
+		NavigationLinksWidget::navigationLinks( $title, $urlArgs, 3, 10, 20, true );
 	}
 
 	public function testTopLinks() {

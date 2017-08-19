@@ -13,6 +13,7 @@ use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\MediaWiki\Specials\Ask\FormatSelectionWidget;
 use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
+use SMW\MediaWiki\Specials\Ask\UrlArgs;
 use SMW\ApplicationFactory;
 
 /**
@@ -208,9 +209,10 @@ class SMWAskPage extends SpecialPage {
 
 		$result = '';
 		$res = null;
+		$urlArgs = new UrlArgs();
 
 		// build parameter strings for URLs, based on current settings
-		$urlArgs['q'] = $this->queryString;
+		$urlArgs->set( 'q', $this->queryString );
 
 		$tmp_parray = array();
 		foreach ( $this->parameters as $key => $value ) {
@@ -219,7 +221,7 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 
-		$urlArgs['p'] = SMWInfolink::encodeParameters( $tmp_parray );
+		$urlArgs->set( 'p', SMWInfolink::encodeParameters( $tmp_parray ) );
 		$printoutstring = '';
 		$duration = 0;
 		$navigation = '';
@@ -233,20 +235,20 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		if ( $printoutstring !== '' ) {
-			$urlArgs['po'] = $printoutstring;
+			$urlArgs->set( 'po', $printoutstring );
 		}
 
 		if ( array_key_exists( 'sort', $this->parameters ) ) {
-			$urlArgs['sort'] = $this->parameters['sort'];
+			$urlArgs->set( 'sort', $this->parameters['sort'] );
 		}
 
 		if ( array_key_exists( 'order', $this->parameters ) ) {
-			$urlArgs['order'] = $this->parameters['order'];
+			$urlArgs->set( 'order', $this->parameters['order'] );
 		}
 
 		if ( $this->getRequest()->getCheck( 'bTitle' ) ) {
-			$urlArgs['bTitle'] = $this->getRequest()->getVal( 'bTitle' );
-			$urlArgs['bMsg'] = $this->getRequest()->getVal( 'bMsg' );
+			$urlArgs->set( 'bTitle', $this->getRequest()->getVal( 'bTitle' ) );
+			$urlArgs->set( 'bMsg', $this->getRequest()->getVal( 'bMsg' ) );
 		}
 
 		if ( $this->queryString !== '' ) {
@@ -329,19 +331,19 @@ class SMWAskPage extends SpecialPage {
 			if ( !$printer->isExportFormat() ) {
 				if ( $res->getCount() > 0 ) {
 					if ( $this->isEditMode ) {
-						$urlArgs['eq'] = 'yes';
+						$urlArgs->set( 'eq', 'yes' );
 					}
 					elseif ( $hidequery ) {
-						$urlArgs['eq'] = 'no';
+						$urlArgs->set( 'eq', 'no' );
 					}
 
 					$navigation = NavigationLinksWidget::navigationLinks(
 						SpecialPage::getSafeTitleFor( 'Ask' ),
+						$urlArgs,
 						$this->params['limit']->getValue(),
 						$res->getQuery()->getOffset(),
 						$res->getCount(),
-						$res->hasFurtherResults(),
-						$urlArgs
+						$res->hasFurtherResults()
 					);
 
 					$query_result = $printer->getResult( $res, $params, SMW_OUTPUT_HTML );
@@ -382,8 +384,8 @@ class SMWAskPage extends SpecialPage {
 				$this->getOutput()->setHTMLtitle( wfMessage( 'ask' )->text() );
 			}
 
-			$urlArgs['offset'] = $this->parameters['offset'];
-			$urlArgs['limit'] = $this->parameters['limit'];
+			$urlArgs->set( 'offset', $this->parameters['offset'] );
+			$urlArgs->set( 'limit', $this->parameters['limit'] );
 
 			$isFromCache = $res !== null ? $res->isFromCache() : false;
 
@@ -397,7 +399,7 @@ class SMWAskPage extends SpecialPage {
 
 			$result = $this->getInputForm(
 				$printoutstring,
-				wfArrayToCGI( $urlArgs ),
+				$urlArgs,
 				$navigation,
 				$duration,
 				$isFromCache
@@ -426,13 +428,13 @@ class SMWAskPage extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function getInputForm( $printoutstring, $urltail, $navigation = '', $duration, $isFromCache = false ) {
+	protected function getInputForm( $printoutstring, UrlArgs $urlArgs, $navigation = '', $duration, $isFromCache = false ) {
 		global $wgScript;
 
 		$result = '';
+		$hideForm = false;
 
-		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-		$title = method_exists( $this, 'getPageTitle') ? $this->getPageTitle() : $this->getTitle();
+		$title = SpecialPage::getSafeTitleFor( 'Ask' );
 
 		$querySource = ApplicationFactory::getInstance()->getQuerySourceFactory()->getAsString(
 			isset( $this->parameters['source'] ) ? $this->parameters['source'] : null
@@ -440,9 +442,6 @@ class SMWAskPage extends SpecialPage {
 
 		$downloadLink = DownloadLinksWidget::downloadLinks( $this->queryLinker );
 		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->queryString, $querySource, $isFromCache, $duration )->parse() : '';
-
-		$hideForm = false;
-		$title = SpecialPage::getSafeTitleFor( 'Ask' );
 
 		$sorting = SortWidget::sortSection( $this->parameters );
 
@@ -466,10 +465,10 @@ class SMWAskPage extends SpecialPage {
 						$result .= $sorting;
 			$result .= "</fieldset>\n";
 
-			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
+			$urlArgs->set( 'eq', 'no' );
 			$hideForm = true;
 		} else { // if $this->isEditMode == false
-			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
+			$urlArgs->set( 'eq', 'yes' );
 		}
 
 		$isEmpty = $this->queryLinker === null;
@@ -479,11 +478,11 @@ class SMWAskPage extends SpecialPage {
 			'<p>' .  '' . '</p>' .
 
 			LinksWidget::resultSubmitLink( $hideForm ) .
-			LinksWidget::showHideLink( $title, $urltail, $hideForm, $isEmpty ) .
+			LinksWidget::showHideLink( $title, $urlArgs, $hideForm, $isEmpty ) .
 			LinksWidget::clipboardLink( $this->queryLinker );
 
 			if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
-				$result .= LinksWidget::debugLink( $title, $urltail, $isEmpty );
+				$result .= LinksWidget::debugLink( $title, $urlArgs, $isEmpty );
 			}
 
 			$result .= LinksWidget::embeddedCodeLink( $isEmpty ) .
