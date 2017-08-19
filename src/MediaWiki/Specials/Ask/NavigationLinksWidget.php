@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials\Ask;
 
 use SMW\Message;
 use SMW\Localizer;
+use SMWInfolink as Infolink;
 use Html;
 use Title;
 
@@ -228,6 +229,53 @@ class NavigationLinksWidget {
 				'class' => 'smw-ask-result-navigation'
 			],
 			$navigation
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $navigation
+	 * @param string $infoText
+	 * @param Infolink|null $infoLink
+	 *
+	 * @return string
+	 */
+	public static function wrap( $navigation = '', $infoText = '', Infolink $infoLink = null ) {
+
+		if ( $navigation === '' ) {
+			return '';
+		}
+
+		$downloadLink = DownloadLinksWidget::downloadLinks(
+			$infoLink
+		);
+
+		$nav = Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-ask-cond-info'
+			],
+			$infoText
+		) . Html::rawElement(
+			'hr',
+			[
+				'class' => 'smw-form-horizontalrule'
+			]
+		) . Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-ask-actions-nav'
+			],
+			$navigation . '&#160;&#160;&#160;' . $downloadLink
+		);
+
+		return Html::rawElement(
+			'div',
+			[
+				'id' => 'ask-navinfo'
+			],
+			$nav
 		);
 	}
 

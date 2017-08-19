@@ -18,7 +18,21 @@ class ParametersProcessor {
 	/**
 	 * @var integer
 	 */
+	private static $defaultLimit = 50;
+
+	/**
+	 * @var integer
+	 */
 	private static $maxInlineLimit = 500;
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $defaultLimit
+	 */
+	public static function setDefaultLimit( $defaultLimit ) {
+		self::$defaultLimit = $defaultLimit;
+	}
 
 	/**
 	 * @since 3.0
@@ -115,18 +129,11 @@ class ParametersProcessor {
 		}
 
 		if ( !array_key_exists( 'offset', $parameters ) ) {
-			$parameters['offset'] = $request->getVal( 'offset' );
-			if ( $parameters['offset'] === '' )  {
-				$parameters['offset'] = 0;
-			}
+			$parameters['offset'] = $request->getVal( 'offset', 0 );
 		}
 
 		if ( !array_key_exists( 'limit', $parameters ) ) {
-			$parameters['limit'] = $request->getVal( 'limit' );
-
-			if ( $parameters['limit'] === '' ) {
-				 $parameters['limit'] = 20;
-			}
+			$parameters['limit'] = $request->getVal( 'limit', self::$defaultLimit );
 		}
 
 		$parameters['limit'] = min( $parameters['limit'], self::$maxInlineLimit );

@@ -33,6 +33,17 @@ class UrlArgs {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	public function get( $key ) {
+		return isset( $this->args[$key] ) ? $this->args[$key] : null;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param string $fragment
 	 */
 	public function setFragment( $fragment ) {

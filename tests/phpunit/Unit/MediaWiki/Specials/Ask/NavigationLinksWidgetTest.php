@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\NavigationLinksWidget
@@ -121,6 +122,21 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEmpty(
 			NavigationLinksWidget::topLinks( $title, [] )
+		);
+	}
+
+	public function testWrap() {
+
+		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
+
+		$stringValidator->assertThatStringContains(
+			[
+				'<div id="ask-navinfo">',
+				'<div class="smw-ask-cond-info">info</div>',
+				'<hr class="smw-form-horizontalrule"',
+				'<div class="smw-ask-actions-nav">foo&#160;&#160;&#160;</div></div>'
+			],
+			NavigationLinksWidget::wrap( 'foo', 'info' )
 		);
 	}
 

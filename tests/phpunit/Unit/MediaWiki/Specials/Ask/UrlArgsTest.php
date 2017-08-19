@@ -30,4 +30,21 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGet() {
+
+		$instance = new UrlArgs();
+
+		$instance->set( 'foo', 42 );
+
+		$this->assertEquals(
+			42,
+			$instance->get( 'foo' )
+		);
+
+		$this->assertEquals(
+			null,
+			$instance->get( 42 )
+		);
+	}
+
 }
