@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials\Ask;
 
 use ParamProcessor\ParamDefinition;
 use SMW\ParameterInput;
+use SMW\Message;
 use SMWQueryProcessor as QueryProcessor;
 use Html;
 
@@ -53,15 +54,83 @@ class ParametersWidget {
 	 * @since 1.8
 	 *
 	 * @param string $format
-	 * @param array $paramValues The current values for the parameters (name => value)
+	 * @param array $values The current values for the parameters (name => value)
 	 *
 	 * @return string
 	 */
-	public static function parameterList( $format, array $paramValues ) {
+	public static function parameterList( $format, array $values ) {
 
-		$definitions = QueryProcessor::getFormatParameters( $format );
+		$options = self::options(
+			QueryProcessor::getFormatParameters( $format ),
+			$values
+		);
 
-		$optionsHtml = array();
+		$i = 0;
+		$n = 0;
+
+		$rowHtml = '';
+		$resultHtml = '';
+
+		// Top info text for a collapsed option box
+		if ( self::$isTooltipDisplay === true ){
+			$resultHtml .= Html::element(
+				'div',
+				[
+					'style' => 'margin-bottom:10px;'
+				],
+				Message::get( 'smw-ask-otheroptions-info', Message::TEXT, Message::USER_LANGUAGE )
+			);
+		}
+
+		// Table
+		$resultHtml .= Html::openElement(
+			'table',
+			[
+				'class' => 'smw-ask-options-list',
+				'width' => '100%'
+			]
+		);
+
+		$resultHtml .= Html::openElement( 'tbody' );
+
+		while ( $option = array_shift( $options ) ) {
+			$i++;
+
+			// Collect elements for a row
+			$rowHtml .=  $option;
+
+			// Create table row
+			if ( $i % 3 == 0 ){
+			$resultHtml .= Html::rawElement(
+				'tr',
+				[
+					'class' => $i % 6 == 0 ? 'smw-ask-options-row-even' : 'smw-ask-options-row-odd',
+				],
+				$rowHtml
+			);
+			$rowHtml = '';
+			$n++;
+			}
+		}
+
+		// Ensure left over elements are collected as well
+		$resultHtml .= Html::rawElement(
+			'tr',
+			[
+				'class' => $n % 2 == 0 ? 'smw-ask-options-row-odd' : 'smw-ask-options-row-even',
+			],
+			$rowHtml
+		);
+
+		$resultHtml .= Html::closeElement( 'tbody' );
+		$resultHtml .= Html::closeElement( 'table' );
+
+		return $resultHtml;
+	}
+
+	private static function options( $definitions, $values ) {
+
+		$html = [];
 
 		/**
 		 * @var ParamProcessor\ParamDefinition $definition
@@ -91,94 +160,51 @@ class ParametersWidget {
 				continue;
 			}
 
-			$currentValue = array_key_exists( $name, $paramValues ) ? $paramValues[$name] : false;
-			$dataInfo = $definition->getMessage() !== null ? wfMessage( $definition->getMessage() )->text() : '';
+			$currentValue = array_key_exists( $name, $values ) ? $values[$name] : false;
 
-			// Set dafault values
-			if ( $name === 'limit' && $currentValue === null ) {
+			// Set default values
+			if ( $name === 'limit' && ( $currentValue === null || $currentValue === false ) ) {
 				$currentValue = self::$defaultLimit;
 			}
 
-			if ( $name === 'offset' && $currentValue === null ) {
+			if ( $name === 'offset' && ( $currentValue === null || $currentValue === false ) ) {
 				$currentValue = 0;
 			}
 
-			$optionsHtml[] =
-				'<td>' .
-				Html::rawElement( 'span',
-					array(
-						'class'     => self::$isTooltipDisplay == true ? 'smw-ask-info' : '',
-						'word-wrap' => 'break-word',
-						'data-info' => $dataInfo
-					),
-					htmlspecialchars( $name ) . ': ' ) .
-				'</td>' .
-				self::option( $definition, $currentValue );
+			$html[] = '<td>' . self::field( $definition, $name ) . '</td>' . self::input( $definition, $currentValue );
 		}
 
-		$i = 0;
-		$n = 0;
-		$rowHtml = '';
-		$resultHtml = '';
-
-		// Top info text for a collapsed option box
-		if ( self::$isTooltipDisplay === true ){
-			$resultHtml .= Html::element('div', array(
-				'style' => 'margin-bottom:10px;'
-				), wfMessage( 'smw-ask-otheroptions-info')->text()
-			);
-		}
-
-		// Table
-		$resultHtml .= Html::openElement( 'table', array(
-			'class' => 'smw-ask-options-list',
-			'width' => '100%'
-			)
-		);
-		$resultHtml .= Html::openElement( 'tbody' );
-
-		while ( $option = array_shift( $optionsHtml ) ) {
-			$i++;
-
-			// Collect elements for a row
-			$rowHtml .=  $option;
-
-			// Create table row
-			if ( $i % 3 == 0 ){
-			$resultHtml .= Html::rawElement( 'tr', array(
-				'class' => $i % 6 == 0 ? 'smw-ask-options-row-even' : 'smw-ask-options-row-odd',
-				), $rowHtml
-			);
-			$rowHtml = '';
-			$n++;
-			}
-		}
-
-		// Ensure left over elements are collected as well
-		$resultHtml .= Html::rawElement( 'tr', array(
-			'class' => $n % 2 == 0 ? 'smw-ask-options-row-odd' : 'smw-ask-options-row-even',
-			), $rowHtml
-		);
-
-		$resultHtml .= Html::closeElement( 'tbody' );
-		$resultHtml .= Html::closeElement( 'table' );
-
-		return $resultHtml;
+		return $html;
 	}
 
-	/**
-	 * Get the HTML for a single parameter input
-	 *
-	 * @since 1.8
-	 *
-	 * @param ParamDefinition $definition
-	 * @param mixed $currentValue
-	 *
-	 * @return string
-	 */
-	private static function option( ParamDefinition $definition, $currentValue ) {
-		// Init
+	private static function field( ParamDefinition $definition, $name ) {
+
+		$info = '';
+		$class = '';
+
+		if ( self::$isTooltipDisplay === true ) {
+			$class = 'smw-ask-info';
+		}
+
+		if ( $definition->getMessage() !== null  ) {
+			$info = Message::get( $definition->getMessage(), Message::TEXT, Message::USER_LANGUAGE );
+		}
+
+		return Html::rawElement(
+			'span',
+			[
+				'class'     =>  $class,
+				'word-wrap' => 'break-word',
+				'data-info' => $info
+			],
+			htmlspecialchars( $name ) . ': '
+		);
+	}
+
+	private static function input( ParamDefinition $definition, $currentValue ) {
+
 		$description = '';
+		$info = '';
 
 		$input = new ParameterInput( $definition );
 		$input->setInputName( 'p[' . $definition->getName() . ']' );
@@ -188,19 +214,28 @@ class ParametersWidget {
 			$input->setCurrentValue( $currentValue );
 		}
 
-		// Parameter description text
+		// Parameters description text
 		if ( !self::$isTooltipDisplay ) {
-			$tooltipInfo = $definition->getMessage() !== null ? wfMessage( $definition->getMessage() )->parse() : '';
 
-			$description =  Html::rawElement( 'span', array(
-				'class' => 'smw-ask-parameter-description'
-				), '<br />' . $tooltipInfo
+			if ( $definition->getMessage() !== null ) {
+				$info = Message::get( $definition->getMessage(), Message::PARSE, Message::USER_LANGUAGE );
+			}
+
+			$description =  Html::rawElement(
+				'span',
+				[
+					'class' => 'smw-ask-parameter-description'
+				],
+				'<br />' . $info
 			);
 		}
 
-		return Html::rawElement( 'td', array(
-			'overflow' => 'hidden'
-			), $input->getHtml() . $description
+		return Html::rawElement(
+			'td',
+			[
+				'overflow' => 'hidden'
+			],
+			$input->getHtml() . $description
 		);
 	}
 

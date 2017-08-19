@@ -93,12 +93,20 @@ class NavigationLinksWidget {
 			}
 		}
 
+		$sep = Html::rawElement(
+			'span',
+			[
+				'style' => 'color:#aaa;'
+			],
+			'|'
+		);
+
 		return Html::rawElement(
 			'div',
 			[
 				'class' => 'smw-ask-toplinks'
 			],
-			implode( ' | ', $lLinks ) . '&#160;' .  implode( ' | ', $rLinks )
+			implode( "&#160;$sep&#160;", $lLinks ) . '&#160;' .  implode( "&#160;$sep&#160;", $rLinks )
 		) . Html::rawElement(
 			'div',
 			[
@@ -127,10 +135,22 @@ class NavigationLinksWidget {
 		// @todo FIXME: i18n: Patchwork text.
 		$navigation .=
 			'<b>' .
-				Message::get( 'smw_result_results' ) . ' ' . $userLanguage->formatNum( $offset + 1 ) .
+				Message::get( 'smw_result_results', Message::TEXT, Message::USER_LANGUAGE ) . ' ' . $userLanguage->formatNum( $offset + 1 ) .
 			' &#150; ' .
 				$userLanguage->formatNum( $offset + $count ) .
 			'</b>&#160;&#160;&#160;&#160;';
+
+		$prev = Message::get(
+			'smw_result_prev',
+			Message::TEXT,
+			Message::USER_LANGUAGE
+		);
+
+		$next = Message::get(
+			'smw_result_next',
+			Message::TEXT,
+			Message::USER_LANGUAGE
+		);
 
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
@@ -147,10 +167,10 @@ class NavigationLinksWidget {
 					'href' => $href,
 					'rel' => 'nofollow'
 				),
-				Message::get( 'smw_result_prev' ) . ' ' . $limit
+				$prev . ' ' . $limit
 			) . ' | ';
 		} else {
-			$navigation .= '(' . Html::rawElement( 'span', [ 'class' => 'smw-ask-nav-prev' ], Message::get( 'smw_result_prev' ) . '&#160;' . $limit ) . ' | ';
+			$navigation .= '(' . Html::rawElement( 'span', [ 'class' => 'smw-ask-nav-prev' ], $prev . '&#160;' . $limit ) . ' | ';
 		}
 
 		if ( $hasFurtherResults ) {
@@ -167,10 +187,10 @@ class NavigationLinksWidget {
 					'href' => $href,
 					'rel' => 'nofollow'
 				),
-				Message::get( 'smw_result_next' ) . ' ' . $limit
+				$next . ' ' . $limit
 			) . ')';
 		} else {
-			$navigation .= Html::rawElement( 'span', [ 'class' => 'smw-ask-nav-prev' ], Message::get( 'smw_result_next' ) . '&#160;' . $limit ) . ')';
+			$navigation .= Html::rawElement( 'span', [ 'class' => 'smw-ask-nav-prev' ], $next . '&#160;' . $limit ) . ')';
 		}
 
 		$first = true;
@@ -210,7 +230,13 @@ class NavigationLinksWidget {
 
 		$navigation .= ')';
 
-		return Html::rawElement( 'span', [ 'class' => 'smw-ask-result-navigation' ], $navigation );
+		return Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-ask-result-navigation'
+			],
+			$navigation
+		);
 	}
 
 }

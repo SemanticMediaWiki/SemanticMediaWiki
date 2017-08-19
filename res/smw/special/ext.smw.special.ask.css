@@ -65,7 +65,7 @@
 	padding: 5px;
 }
 
-.smw-ask-cond-info{
+.smw-ask-cond-info {
 	margin-top: 15px;
 	margin-bottom: 10px;
 }
@@ -93,6 +93,7 @@
 
 .smw-ask-query textarea{
 	border: 0px;
+	resize: none;
 }
 
 .smw-ask-options-row-odd {
@@ -277,4 +278,8 @@ fieldset.smw-ask-actions, fieldset.smw-ask-format, fieldset.smw-ask-options {
 
 .smw-ask-sort-add a::after, .smw-ask-sort-delete a::after {
 	content:"]";
+}
+
+.smw-ask-sort-delete, .smw-ask-sort-add {
+	cursor: pointer;
 }

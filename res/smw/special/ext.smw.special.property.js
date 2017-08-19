@@ -26,7 +26,17 @@
 				'limit': 100
 			},
 			onSearchStart: function( query ) {
+
+				// Avoid a search request on options or invalid characters
+				if ( query.property.indexOf( '#' ) > 0 || query.property.indexOf( '|' ) > 0 ) {
+					return false;
+				};
+
+				context.addClass( 'is-disabled' );
 				query.property = query.property.replace( "?", '' );
+			},
+			onSearchComplete: function( query ) {
+				context.removeClass( 'is-disabled' );
 			},
 			transformResult: function( response ) {
 				return {
