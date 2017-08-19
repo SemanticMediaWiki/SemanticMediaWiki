@@ -15,6 +15,8 @@ use SMWQueryProcessor as QueryProcessor;
  */
 class FormatSelectionWidget {
 
+	// FormatListWidget
+
 	/**
 	 * @var array
 	 */
@@ -61,7 +63,7 @@ class FormatSelectionWidget {
 		$default = '';
 		$selectedFormat = isset( $params['format'] ) ? $params['format'] : 'broadtable';
 
-		$options = self::optionsField(
+		$formatList = self::formatList(
 			$url,
 			$selectedFormat,
 			$default,
@@ -74,7 +76,7 @@ class FormatSelectionWidget {
 			[
 				'class' => "smw-ask-format-list"
 			],
-			Html::hidden( 'eq', 'yes' ) . $options
+			Html::hidden( 'eq', 'yes' ) . $formatList
 		);
 
 		$result .= Html::rawElement(
@@ -93,54 +95,82 @@ class FormatSelectionWidget {
 				'class' => "smw-ask-format",
 				'style' => "margin-top:0px;"
 			],
-			 Html::element( 'legend', [], Message::get( 'smw-ask-format', Message::TEXT, Message::USER_LANGUAGE ) ) . $result
+			Html::element(
+				'legend',
+				[],
+				Message::get( 'smw-ask-format', Message::TEXT, Message::USER_LANGUAGE )
+			) . $result
 		);
 	}
 
-	private static function optionsField( $url, $selectedFormat, &$default, $defaultName, $defaultLocalizedName ) {
+	private static function formatList( $url, $selectedFormat, &$default, $defaultName, $defaultLocalizedName ) {
 
-		$result = Html::openElement(
-				'select',
-				array(
-					'class' => 'smw-ask-button smw-ask-button-lgrey smw-ask-format-selector',
-					'id' => 'formatSelector',
-					'name' => 'p[format]',
-					'data-url' => $url,
-					'onchange' => "$( '#options-list' ).addClass( 'is-disabled');"
-				)
-			) . "\n" .
-			'	<option value="broadtable"' . ( $selectedFormat == 'broadtable' ? ' selected="selected"' : '' ) . '>' . $defaultLocalizedName . '</option>' . "\n";
+		$formatList = Html::rawElement(
+			'option',
+			[
+				'value' => 'broadtable'
+			] + ( $selectedFormat == 'broadtable' ? [ 'selected' ] : [] ),
+			$defaultLocalizedName
+		);
 
 		$formats = array();
 
 		foreach ( array_keys( self::$resultFormats ) as $format ) {
 			// Special formats "count" and "debug" currently not supported.
 			if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
-				$printer = QueryProcessor::getResultPrinter( $format, QueryProcessor::SPECIAL_PAGE );
-				$formats[$format] = htmlspecialchars( $printer->getName() );
+				$printer = QueryProcessor::getResultPrinter(
+					$format,
+					QueryProcessor::SPECIAL_PAGE
+				);
+
+				$formats[] = [
+					'format' => $format,
+					'name'   => htmlspecialchars( $printer->getName() ),
+					'export' => $printer->isExportFormat()
+				];
 			}
 		}
 
-		natcasesort( $formats );
+		usort( $formats, function( $x, $y ) {
+			return strcasecmp( $x['name'] , $y['name'] );
+		} );
+
 		$default = $defaultName;
 
-		foreach ( $formats as $format => $name ) {
-			$result .= '	<option value="' . $format . '"' . ( $selectedFormat == $format ? ' selected="selected"' : '' ) . '>' . $name . "</option>\n";
+		foreach ( $formats as $format ) {
 
-			if ( $selectedFormat == $format ) {
-				$default = $name;
+			$formatList .= Html::rawElement(
+				'option',
+				[
+					'data-isexport' => $format['export'],
+					'value' => $format['format']
+				] + ( $selectedFormat == $format['format'] ? [ 'selected' ] : [] ),
+				$format['name']
+			);
+
+			if ( $selectedFormat == $format['format'] ) {
+				$default = $format['name'];
 			}
 		}
 
 		$default = Html::rawElement(
-			'a', [
+			'a',
+			[
 				'href' => 'https://semantic-mediawiki.org/wiki/Help:' . $selectedFormat . ' format'
-			], $default
+			],
+			$default
 		);
 
-		$result .= "</select>";
-
-		return $result;
+		return Html::rawElement(
+			'select',
+			[
+				'id' => 'formatSelector', // Used in JS as selector
+				'class' => 'smw-ask-button smw-ask-button-lgrey smw-ask-format-selector',
+				'name' => 'p[format]',
+				'data-url' => $url
+			],
+			$formatList
+		);
 	}
 
 }

@@ -39,6 +39,7 @@ class ErrorWidget {
 		return Html::rawElement(
 			'div',
 			array(
+				'id'    => 'ask-status',
 				'class' => 'smw-ask-status plainlinks'
 			),
 			Html::rawElement(
