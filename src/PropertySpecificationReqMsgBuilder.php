@@ -3,7 +3,9 @@
 namespace SMW;
 
 use SMW\Store;
+use SMW\SQLStore\SQLStore;
 use SMW\DIProperty;
+use SMW\Message;
 use SMW\DataValueFactory;
 use SMW\PropertyRegistry;
 use SMW\PropertySpecificationReqExaminer;
@@ -85,7 +87,9 @@ class PropertySpecificationReqMsgBuilder {
 
 		$propertyName = $dataValue->getFormattedLabel();
 
-		$message = $this->createReqViolationMessage(
+		$message = $this->checkUniqueness( $property, $propertyName );
+
+		$message .= $this->createReqViolationMessage(
 			$this->propertySpecificationReqExaminer->checkOn( $property )
 		);
 
@@ -223,6 +227,22 @@ class PropertySpecificationReqMsgBuilder {
 				'class' => 'smw-property-predefined-intro plainlinks'
 			),
 			$message
+		);
+	}
+
+	private function checkUniqueness( DIProperty $property, $propertyName ) {
+
+		if ( $this->store->getObjectIds()->isUnique( $property ) ) {
+			return '';
+		}
+
+		return Html::rawElement(
+			'div',
+			array(
+				'id' => 'smw-property-uniqueness',
+				'class' => 'smw-callout smw-callout-error plainlinks'
+			),
+			Message::get( [ 'smw-property-label-uniqueness', $propertyName ], Message::PARSE, Message::USER_LANGUAGE )
 		);
 	}
 
