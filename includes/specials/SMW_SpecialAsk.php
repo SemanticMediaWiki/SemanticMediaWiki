@@ -117,10 +117,10 @@ class SMWAskPage extends SpecialPage {
 
 		if ( $request->getCheck( 'bTitle' ) ) {
 			$visibleLinks = [];
-		} elseif( $request->getVal( 'eq' ) === 'no' ) {
+		} elseif( $request->getVal( 'eq' ) === 'no' || $p !== null || $request->getVal( 'x' ) ) {
 			$visibleLinks = [ 'empty' ];
 		} else {
-			$visibleLinks = [ 'options', 'search', 'result', 'empty' ];
+			$visibleLinks = [ 'options', 'search', 'empty' ];
 		}
 
 		$out->addHTML(
