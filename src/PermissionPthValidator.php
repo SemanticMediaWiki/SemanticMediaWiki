@@ -102,7 +102,13 @@ class PermissionPthValidator {
 			return $this->checkPropertyNamespaceEditPermission( $title, $user, $action, $errors );;
 		}
 
-		$errors[] = array( 'smw-create-protection', $createProtectionRight );
+		$msg = 'smw-create-protection';
+
+		if ( $title->exists() ) {
+			$msg = 'smw-create-protection-exists';
+		}
+
+		$errors[] = array( $msg, $title->getText(), $createProtectionRight );
 
 		return false;
 	}

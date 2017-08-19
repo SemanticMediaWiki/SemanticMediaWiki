@@ -108,9 +108,15 @@ class PropertySpecificationReqExaminer {
 		}
 
 		if ( $this->reqLock === false && $this->protectionValidator->hasCreateProtection( $title ) ) {
+			$msg = 'smw-create-protection';
+
+			if ( $title->exists() ) {
+				$msg = 'smw-create-protection-exists';
+			}
+
 			return array(
-				$property->isUserDefined() ? 'error' : 'warning',
-				'smw-create-protection',
+				'warning',
+				$msg,
 				$property->getLabel(),
 				$this->protectionValidator->getCreateProtectionRight()
 			);

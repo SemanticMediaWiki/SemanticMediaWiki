@@ -111,7 +111,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array(
-				'error',
+				'warning',
 				'smw-create-protection',
 				'Bar',
 				'foo'
