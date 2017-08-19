@@ -785,13 +785,6 @@ return array(
 	##
 
 	###
-	# Sets whether or not the 'printouts' textarea should have autocompletion
-	# on property names.
-	##
-	'smwgAutocompleteInSpecialAsk' => true,
-	##
-
-	###
 	# Sets whether or not to refresh the pages of which semantic data is stored.
 	# Introduced in SMW 1.5.6
 	##

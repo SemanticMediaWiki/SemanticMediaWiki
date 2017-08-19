@@ -216,8 +216,6 @@ class SMWAskPage extends SpecialPage {
 	protected function makeHTMLResult() {
 		global $wgOut;
 
-		// TODO: hold into account $smwgAutocompleteInSpecialAsk
-
 		$result = '';
 		$res = null;
 		$urlArgs = new UrlArgs();
