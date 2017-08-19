@@ -144,13 +144,13 @@ class SpecialAdmin extends SpecialPage {
 		);
 
 		// IdTaskHandler
-		$idTaskHandler = $taskHandlerFactory->newIdTaskHandler();
+		$entityLookupTaskHandler = $taskHandlerFactory->newEntityLookupTaskHandler();
 
-		$idTaskHandler->setEnabledFeatures(
+		$entityLookupTaskHandler->setEnabledFeatures(
 			$adminFeatures
 		);
 
-		$idTaskHandler->setUser(
+		$entityLookupTaskHandler->setUser(
 			$this->getUser()
 		);
 
@@ -165,7 +165,7 @@ class SpecialAdmin extends SpecialPage {
 			$tableSchemaTaskHandler,
 			$configurationListTaskHandler,
 			$operationalStatisticsListTaskHandler,
-			$idTaskHandler
+			$entityLookupTaskHandler
 		);
 
 		foreach ( $actionTaskList as $actionTask ) {
@@ -177,7 +177,7 @@ class SpecialAdmin extends SpecialPage {
 		$supplementaryTaskList = array(
 			$configurationListTaskHandler,
 			$operationalStatisticsListTaskHandler,
-			$idTaskHandler
+			$entityLookupTaskHandler
 		);
 
 		$dataRepairTaskList = array(
