@@ -283,6 +283,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$sortfields = implode( $qobj->sortfields, ',' );
 		$sortfields = $sortfields ? ', ' . $sortfields : '';
 
+		$format = QueryDebugOutputFormatter::getFormat(
+			$connection->getType()
+		);
+
 		$sql = "SELECT DISTINCT ".
 			"$qobj->alias.smw_id AS id," .
 			"$qobj->alias.smw_title AS t," .
@@ -298,7 +302,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			"OFFSET " . $sqlOptions['OFFSET'];
 
 		$res = $connection->query(
-			'EXPLAIN '. $sql,
+			"EXPLAIN $format $sql",
 			__METHOD__
 		);
 

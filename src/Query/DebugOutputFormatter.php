@@ -14,6 +14,45 @@ use SMW\ProcessingErrorMsgHandler;
  */
 class DebugOutputFormatter {
 
+	const JSON_FORMAT = 'json';
+
+	/**
+	 * @var boolean
+	 */
+	private static $explainFormat = '';
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $explainFormat
+	 */
+	public static function setExplainFormat( $explainFormat ) {
+		if ( $explainFormat === self::JSON_FORMAT ) {
+			self::$explainFormat = $explainFormat;
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public static function getFormat( $type ) {
+
+		$format = '';
+
+		// Use a more expressive explain output
+		// https://dev.mysql.com/doc/refman/5.6/en/explain.html
+		// https://mariadb.com/kb/en/mariadb/explain-formatjson-in-mysql/
+		if ( $type === 'mysql' && self::$explainFormat === self::JSON_FORMAT ) {
+			$format = 'FORMAT=json';
+		}
+
+		return $format;
+	}
+
 	/**
 	 * Generate textual debug output that shows an arbitrary list of informative
 	 * fields. Used for formatting query debug output.
@@ -96,6 +135,11 @@ class DebugOutputFormatter {
 			'<th style="text-align: left;">Extra</th></tr>';
 
 			foreach ( $res as $row ) {
+
+				if ( isset( $row->EXPLAIN ) ) {
+					return '<div class="smwpre">' . $row->EXPLAIN . '</div>';
+				}
+
 				$output .= "<tr><td>" . $row->id .
 				"</td><td>" . $row->select_type .
 				"</td><td>" . $row->table .
