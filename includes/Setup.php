@@ -274,7 +274,7 @@ final class Setup {
 
 		$specials = array(
 			'Ask' => array(
-				'page' => 'SMWAskPage',
+				'page' => 'SMW\MediaWiki\Specials\SpecialAsk',
 				'group' => 'smw_group'
 			),
 			'Browse' => array(

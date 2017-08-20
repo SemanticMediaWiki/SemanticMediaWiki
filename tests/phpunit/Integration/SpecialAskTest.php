@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use DOMDocument;
-use SMWAskPage;
+use SMW\MediaWiki\Specials\SpecialAsk;
 
 /**
  * @group semantic-mediawiki
@@ -26,7 +26,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setupGlobals( $params );
 
-		$special = new SMWAskPage();
+		$special = new SpecialAsk();
 		$special->execute( null );
 
 		$html = $GLOBALS['wgOut']->getHtml();
