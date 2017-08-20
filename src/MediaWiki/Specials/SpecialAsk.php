@@ -1,5 +1,7 @@
 <?php
 
+namespace SMW\MediaWiki\Specials;
+
 use ParamProcessor\Param;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
@@ -16,23 +18,25 @@ use SMW\MediaWiki\Specials\Ask\UrlArgs;
 use SMW\ApplicationFactory;
 use SMWQueryProcessor as QueryProcessor;
 use SMWInfoLink as InfoLink;
+use SpecialPage;
+use SMWOutputs;
+use SMWQuery;
+use Html;
 
 /**
- * This special page for MediaWiki implements a customisable form for
- * executing queries outside of articles.
+ * This special page for MediaWiki implements a customisable form for executing
+ * queries outside of articles.
  *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
+ * @license GNU GPL v2+
+ * @since   3.0
  *
+ * @author mwjames
  * @author Markus Krötzsch
  * @author Yaron Koren
  * @author Sanyam Goyal
  * @author Jeroen De Dauw
- * @author mwjames
- *
- * TODO: Split up the megamoths into sane methods.
  */
-class SMWAskPage extends SpecialPage {
+class SpecialAsk extends SpecialPage {
 
 	/**
 	 * @var QuerySourceFactory
@@ -525,7 +529,7 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 
-		$urlArgs->set( 'p', SMWInfolink::encodeParameters( $tmp_parray ) );
+		$urlArgs->set( 'p', Infolink::encodeParameters( $tmp_parray ) );
 		$printoutstring = '';
 
 		/**
