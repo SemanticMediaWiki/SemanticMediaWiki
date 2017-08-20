@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Query\DebugOutputFormatter as QueryDebugOutputFormatter;
+use SMW\Query\DebugFormatter;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -268,7 +268,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$entries['Auxilliary Tables'] = 'No auxilliary tables used.';
 		}
 
-		return QueryDebugOutputFormatter::getStringFrom( 'SQLStore', $entries, $query );
+		return DebugFormatter::getStringFrom( 'SQLStore', $entries, $query );
 	}
 
 	private function doExecuteDebugQueryResult( $qobj, $sqlOptions, &$entries ) {
@@ -283,7 +283,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$sortfields = implode( $qobj->sortfields, ',' );
 		$sortfields = $sortfields ? ', ' . $sortfields : '';
 
-		$format = QueryDebugOutputFormatter::getFormat(
+		$format = DebugFormatter::getFormat(
 			$connection->getType()
 		);
 
@@ -306,8 +306,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			__METHOD__
 		);
 
-		$entries['SQL Explain'] = QueryDebugOutputFormatter::doFormatSQLExplainOutput( $connection->getType(), $res );
-		$entries['SQL Query'] = QueryDebugOutputFormatter::doFormatSQLStatement( $sql, $qobj->alias );
+		$entries['SQL Explain'] = DebugFormatter::prettifyExplain( $connection->getType(), $res );
+		$entries['SQL Query'] = DebugFormatter::prettifySql( $sql, $qobj->alias );
 
 		$connection->freeResult( $res );
 	}
