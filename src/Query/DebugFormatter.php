@@ -12,7 +12,7 @@ use SMW\ProcessingErrorMsgHandler;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class DebugOutputFormatter {
+class DebugFormatter {
 
 	const JSON_FORMAT = 'json';
 
@@ -115,7 +115,7 @@ class DebugOutputFormatter {
 	 *
 	 * @return string
 	 */
-	public static function doFormatSQLExplainOutput( $type, $res ) {
+	public static function prettifyExplain( $type, $res ) {
 
 		$output = '';
 
@@ -182,7 +182,7 @@ class DebugOutputFormatter {
 	 *
 	 * @return string
 	 */
-	public static function doFormatSPARQLStatement( $sparql ) {
+	public static function prettifySparql( $sparql ) {
 
 		$sparql =  str_replace(
 			array(
@@ -209,7 +209,7 @@ class DebugOutputFormatter {
 	 *
 	 * @return string
 	 */
-	public static function doFormatSQLStatement( $sql, $alias ) {
+	public static function prettifySql( $sql, $alias ) {
 
 		$sql = str_replace(
 			array(

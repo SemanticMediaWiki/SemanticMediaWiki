@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\DebugOutputFormatter;
+use SMW\Query\DebugFormatter;
 
 /**
- * @covers \SMW\Query\DebugOutputFormatter
+ * @covers \SMW\Query\DebugFormatter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,11 +13,11 @@ use SMW\Query\DebugOutputFormatter;
  *
  * @author mwjames
  */
-class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
+class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFormatDebugOutputWithoutQuery() {
 
-		$instance = new DebugOutputFormatter();
+		$instance = new DebugFormatter();
 
 		$this->assertInternalType(
 			'string',
@@ -27,11 +27,11 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExplainFormat() {
 
-		DebugOutputFormatter::setExplainFormat( DebugOutputFormatter::JSON_FORMAT );
+		DebugFormatter::setExplainFormat( DebugFormatter::JSON_FORMAT );
 
 		$this->assertEquals(
 			'FORMAT=json',
-			DebugOutputFormatter::getFormat( 'mysql' )
+			DebugFormatter::getFormat( 'mysql' )
 		);
 	}
 
@@ -53,7 +53,7 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getErrors' )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new DebugOutputFormatter();
+		$instance = new DebugFormatter();
 
 		$this->assertInternalType(
 			'string',
@@ -66,36 +66,36 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFormatSQLExplainOutput( $type, $res ) {
 
-		$instance = new DebugOutputFormatter();
+		$instance = new DebugFormatter();
 
 		$this->assertInternalType(
 			'string',
-			$instance->doFormatSQLExplainOutput( $type, $res )
+			$instance->prettifyExplain( $type, $res )
 		);
 	}
 
 	public function testFormatSPARQLStatement() {
 
-		$instance = new DebugOutputFormatter();
+		$instance = new DebugFormatter();
 
 		$sparql = '';
 
 		$this->assertInternalType(
 			'string',
-			$instance->doFormatSPARQLStatement( $sparql )
+			$instance->prettifySparql( $sparql )
 		);
 	}
 
 	public function testFormatSQLStatement() {
 
-		$instance = new DebugOutputFormatter();
+		$instance = new DebugFormatter();
 
 		$sql = '';
 		$alias = '';
 
 		$this->assertInternalType(
 			'string',
-			$instance->doFormatSQLStatement( $sql, $alias )
+			$instance->prettifySql( $sql, $alias )
 		);
 	}
 
