@@ -13,9 +13,7 @@ use SMWQueryProcessor as QueryProcessor;
  *
  * @author mwjames
  */
-class FormatSelectionWidget {
-
-	// FormatListWidget
+class FormatListWidget {
 
 	/**
 	 * @var array
@@ -39,7 +37,7 @@ class FormatSelectionWidget {
 	 *
 	 * @return string
 	 */
-	public static function selection( Title $title, array $params ) {
+	public static function fieldset( Title $title, array $params ) {
 
 		$result = '';
 
@@ -90,11 +88,7 @@ class FormatSelectionWidget {
 
 		return Html::rawElement(
 			'fieldset',
-			[
-				'id' => "format",
-				'class' => "smw-ask-format",
-				'style' => "margin-top:0px;"
-			],
+			[],
 			Html::element(
 				'legend',
 				[],

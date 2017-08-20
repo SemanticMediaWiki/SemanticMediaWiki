@@ -23,6 +23,28 @@ class LinksWidget {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $html
+	 *
+	 * @return string
+	 */
+	public static function fieldset( $html = '' ) {
+
+		$html = '<p></p>' . $html;
+
+		return Html::rawElement(
+			'fieldset',
+			[],
+			Html::rawElement(
+				'legend',
+				[],
+				Message::get( 'smw-ask-search', Message::TEXT, Message::USER_LANGUAGE )
+			) . $html
+		);
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param boolean $isEmpty
@@ -93,7 +115,7 @@ class LinksWidget {
 			'div',
 			array(
 				'id'  => 'inlinequeryembed',
-				'style' => 'display: none'
+				'style' => 'display: none;'
 			), Html::rawElement(
 				'div',
 				array(

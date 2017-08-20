@@ -22,7 +22,7 @@ class QueryInputWidget {
 	 *
 	 * @return string
 	 */
-	public static function input( $queryString , $printoutString ) {
+	public static function table( $queryString , $printoutString ) {
 
 		$table = HtmlTable::open( [ 'style' => "width: 100%;" ] );
 
@@ -56,15 +56,7 @@ class QueryInputWidget {
 
 		$table .= HtmlTable::close();
 
-		return Html::rawElement(
-			'div',
-			[
-				'id' => 'query',
-				'class' => 'smw-ask-query',
-				'style' => 'margin-bottom:10px; margin-top:10px;'
-			],
-			$table
-		);
+		return $table;
 	}
 
 }
