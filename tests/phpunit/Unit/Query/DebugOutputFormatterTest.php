@@ -25,6 +25,16 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testExplainFormat() {
+
+		DebugOutputFormatter::setExplainFormat( DebugOutputFormatter::JSON_FORMAT );
+
+		$this->assertEquals(
+			'FORMAT=json',
+			DebugOutputFormatter::getFormat( 'mysql' )
+		);
+	}
+
 	public function testFormatDebugOutputWithQuery() {
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
@@ -52,7 +62,7 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider sqlFormatProvider
+	 * @dataProvider sqlExplainFormatProvider
 	 */
 	public function testFormatSQLExplainOutput( $type, $res ) {
 
@@ -89,9 +99,9 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function sqlFormatProvider() {
+	public function sqlExplainFormatProvider() {
 
-		$mysqlFormat = array(
+		$row = array(
 			'id' => '',
 			'select_type' => '',
 			'table' => '',
@@ -106,7 +116,7 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			'mysql',
-			array( (object)$mysqlFormat )
+			array( (object)$row )
 		);
 
 		$provider[] = array(
@@ -117,6 +127,15 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'sqlite',
 			''
+		);
+
+		$row = [
+			'EXPLAIN' => 'Foooooooo'
+		];
+
+		$provider[] = array(
+			'mysql',
+			array( (object)$row )
 		);
 
 		return $provider;
