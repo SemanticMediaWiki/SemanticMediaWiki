@@ -273,11 +273,11 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructJobQueueGroup() {
+	public function testCanConstructJobQueue() {
 
 		$this->assertInstanceOf(
-			'\JobQueueGroup',
-			$this->applicationFactory->getJobQueueGroup()
+			'\SMW\MediaWiki\JobQueue',
+			$this->applicationFactory->getJobQueue()
 		);
 	}
 

@@ -40,17 +40,6 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Database $connection
-	 *
-	 * @return JobQueueLookup
-	 */
-	public function newJobQueueLookup( Database $connection ) {
-		return new JobQueueLookup( $connection );
-	}
-
-	/**
-	 * @since 2.1
-	 *
 	 * @param Language|null $language
 	 *
 	 * @return MessageBuilder
