@@ -49,7 +49,16 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array( 's_id,o_hash' );
+		return array(
+
+			's_id,o_hash',
+
+			//SMW\SQLStore\QueryEngine\QueryEngine::getInstanceQueryResult
+			'o_hash,p_id',
+
+			// SMWSQLStore3Readers::getPropertySubjects
+			'p_id,s_id'
+		);
 	}
 
 	/**

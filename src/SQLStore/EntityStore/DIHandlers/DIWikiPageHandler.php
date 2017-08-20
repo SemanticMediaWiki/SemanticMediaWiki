@@ -53,7 +53,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 */
 	public function getTableIndexes() {
 		return array(
-			'o_id',
+			//'o_id',
 
 			// SMWSQLStore3Readers::fetchSemanticData
 			// ... FROM `smw_fpt_sobj` INNER JOIN `smw_object_ids` AS o0 ON
@@ -90,7 +90,7 @@ class DIWikiPageHandler extends DataItemHandler {
 
 			// SMWSQLStore3Readers::getPropertySubjects
 			// SELECT DISTINCT s_id FROM `smw_di_wikipage` WHERE (p_id='64' AND o_id='104') ORDER BY s_sort ASC
-			//'o_id,p_id,s_id,s_sort'
+			'o_id,p_id,s_id'
 		);
 	}
 

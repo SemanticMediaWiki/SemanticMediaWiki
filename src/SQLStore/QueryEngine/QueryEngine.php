@@ -283,7 +283,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$sortfields = implode( $qobj->sortfields, ',' );
 		$sortfields = $sortfields ? ', ' . $sortfields : '';
 
-		$sql = "SELECT DISTINCT ".
+		$sql = "SELECT ".
 			"$qobj->alias.smw_id AS id," .
 			"$qobj->alias.smw_title AS t," .
 			"$qobj->alias.smw_namespace AS ns," .
@@ -401,7 +401,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$res = $connection->select(
 			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from,
-			"DISTINCT ".
+			" ".
 			"$qobj->alias.smw_id AS id," .
 			"$qobj->alias.smw_title AS t," .
 			"$qobj->alias.smw_namespace AS ns," .
