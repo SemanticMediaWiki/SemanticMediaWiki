@@ -13,7 +13,6 @@ use SMW\MediaWiki\Database;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleCreator;
-use SMW\MediaWiki\JobQueueLookup;
 use SMW\MediaWiki\JobQueue;
 use SMW\Query\QuerySourceFactory;
 use SMW\SQLStore\ChangeOp\TempChangeOpStore;
@@ -127,11 +126,6 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'PageUpdater', function( $containerBuilder, $connection, DeferredTransactionalUpdate $deferredTransactionalUpdate = null ) {
 			$containerBuilder->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
 			return new PageUpdater( $connection, $deferredTransactionalUpdate );
-		} );
-
-		$containerBuilder->registerCallback( 'JobQueueLookup', function( $containerBuilder, Database $connection ) {
-			$containerBuilder->registerExpectedReturnType( 'JobQueueLookup', '\SMW\MediaWiki\JobQueueLookup' );
-			return new JobQueueLookup( $connection );
 		} );
 
 		/**

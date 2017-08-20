@@ -559,15 +559,6 @@ class ApplicationFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return JobQueueGroup
-	 */
-	public function getJobQueueGroup() {
-		return $this->containerBuilder->singleton( 'JobQueueGroup' );
-	}
-
-	/**
-	 * @since 3.0
-	 *
 	 * @return JobQueue
 	 */
 	public function getJobQueue() {

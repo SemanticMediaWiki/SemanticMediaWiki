@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\MediaWiki;
+namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use Job;
 use SMW\ApplicationFactory;
@@ -9,20 +9,15 @@ use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-integration
- * @group mediawiki-database
- *
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
- * @since 1.9.0.1
+ * @since 1.9.1
  *
  * @author mwjames
  */
-class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
+class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 
 	private $job = null;
 	private $applicationFactory;
@@ -37,7 +32,7 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $pageCreator;
 
 	private $jobQueueRunner;
-	private $jobQueueLookup;
+	private $jobQueue;
 
 	protected function setUp() {
 		parent::setUp();
@@ -69,15 +64,11 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
-		$this->jobQueueLookup = $this->applicationFactory
-			->newMwCollaboratorFactory()
-			->newJobQueueLookup( $this->getStore()->getConnection( 'mw.db' ) );
+		$this->jobQueue = $this->applicationFactory->getJobQueue();
 
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
-
-		$this->jobQueueRunner
-			->setDBConnectionProvider( $this->getDBConnectionProvider() )
-			->deleteAllJobs();
+		$this->jobQueueRunner->setDBConnectionProvider( $this->getDBConnectionProvider() );
+		$this->jobQueueRunner->deleteAllJobs();
 	}
 
 	protected function tearDown() {
@@ -239,7 +230,14 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testPropertyTypeChangeToCreateUpdateJob() {
 
-		$this->skipTestForDatabase( 'sqlite', 'No idea why SQLite fails here with "Failed asserting that 0 is greater than 0".' );
+		$this->skipTestForDatabase(
+			'sqlite', 'No idea why SQLite fails here with "Failed asserting that 0 is greater than 0".'
+		);
+
+		$this->skipTestForMediaWikiVersionLowerThan(
+			'1.27',
+			"Skipping test because JobQueue::getQueueSize only returns correct results on 1.27+"
+		);
 
 		$propertyPage = Title::newFromText( 'FooProperty', SMW_NS_PROPERTY );
 
@@ -257,24 +255,23 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		// Secondary dispatch process
-		$this->assertGreaterThan(
-			0,
-			$this->jobQueueLookup->estimateJobCountFor( 'SMW\UpdateDispatcherJob' )
-		);
-
-		$this->jobQueueRunner
-			->setType( 'SMW\UpdateDispatcherJob' )
-			->run();
+		$this->jobQueue->disableCache();
 
 		$this->assertGreaterThan(
 			0,
-			$this->jobQueueLookup->estimateJobCountFor( 'SMW\UpdateJob' )
+			$this->jobQueue->getQueueSize( 'SMW\ChangePropagationDispatchJob' )
 		);
 
-		$this->jobQueueRunner
-			->setType( 'SMW\UpdateJob' )
-			->run();
+		$this->jobQueueRunner->setType( 'SMW\ChangePropagationDispatchJob' )->run();
+
+		$this->jobQueue->disableCache();
+
+		$this->assertGreaterThan(
+			0,
+			$this->jobQueue->getQueueSize( 'SMW\UpdateJob' )
+		);
+
+		$this->jobQueueRunner->setType( 'SMW\UpdateJob' )->run();
 
 		foreach ( $this->jobQueueRunner->getStatus() as $status ) {
 			$this->assertTrue( $status['status'] );
