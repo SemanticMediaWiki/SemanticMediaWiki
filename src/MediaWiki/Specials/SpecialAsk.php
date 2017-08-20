@@ -607,14 +607,17 @@ class SpecialAsk extends SpecialPage {
 			$params['source']->getValue()
 		);
 
+		// Measure explicit to account for a federated (sourced) query
+		$duration = microtime( true );
+
 		/**
 		 * @var QueryResult $res
 		 */
-		$res = $queryEngine->getQueryResult( $queryobj );
-
-		$duration = number_format(
-			$queryobj->getOption( SMWQuery::PROC_QUERY_TIME ), 4, '.', ''
+		$res = $queryEngine->getQueryResult(
+			$queryobj
 		);
+
+		$duration = number_format( ( microtime( true ) - $duration ), 4, '.', '' );
 
 		// Allow to generate a debug output
 		if ( $this->getRequest()->getVal( 'debug' ) && $params['source']->getValue() === '' ) {
