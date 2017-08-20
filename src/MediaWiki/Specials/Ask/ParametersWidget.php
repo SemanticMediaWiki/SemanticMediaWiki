@@ -55,13 +55,11 @@ class ParametersWidget {
 	 *
 	 * @return string
 	 */
-	public static function options( $format, array $parameters ) {
+	public static function fieldset( $format, array $parameters ) {
 
-		$fieldset = Html::rawElement(
+		return Html::rawElement(
 			'fieldset',
-			[
-				'class' => 'smw-ask-options'
-			],
+			[],
 			Html::element(
 				'legend',
 				[],
@@ -73,14 +71,6 @@ class ParametersWidget {
 				],
 				self::parameterList( $format, $parameters )
 			) . SortWidget::sortSection( $parameters )
-		);
-
-		return Html::rawElement(
-			'div',
-			[
-				'id' => 'options'
-			],
-			$fieldset
 		);
 	}
 

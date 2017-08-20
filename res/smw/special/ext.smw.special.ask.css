@@ -67,12 +67,16 @@
 
 .smw-ask-cond-info {
 	margin-top: 15px;
-	margin-bottom: 10px;
+	margin-bottom: 10px;f
 }
 
 .smw-ask-format-list {
 	vertical-align: middle;
 	padding: 5px;
+}
+
+.smw-ask-query {
+	margin-bottom: 10px;
 }
 
 .smw-ask-query .smw-table-header {
@@ -91,7 +95,7 @@
     padding: 0px;
 }
 
-.smw-ask-query textarea{
+.smw-ask-query textarea {
 	border: 0px;
 	resize: none;
 }
@@ -220,7 +224,7 @@
 	margin-bottom: 10px;
 }
 
-fieldset.smw-ask-actions, fieldset.smw-ask-format, fieldset.smw-ask-options {
+.smw-ask-search fieldset, .smw-ask-format fieldset, .smw-ask-options fieldset {
 	border: 1px solid #a2a9b1;
 }
 

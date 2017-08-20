@@ -15,10 +15,15 @@ use SMW\MediaWiki\Specials\Ask\LinksWidget;
  */
 class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
+	public function testFieldset() {
+
+		$this->assertInternalType(
+			'string',
+			LinksWidget::fieldset()
+		);
+	}
 
 	public function testEmbeddedCodeLink() {
-
-		$instance = new LinksWidget();
 
 		$this->assertInternalType(
 			'string',
@@ -28,8 +33,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testEmbeddedCodeBlock() {
 
-		$instance = new LinksWidget();
-
 		$this->assertInternalType(
 			'string',
 			LinksWidget::embeddedCodeBlock( 'Foo' )
@@ -38,8 +41,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testResultSubmitLinkHide() {
 
-		$instance = new LinksWidget();
-
 		$this->assertInternalType(
 			'string',
 			LinksWidget::resultSubmitLink( true )
@@ -47,8 +48,6 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResultSubmitLinkShow() {
-
-		$instance = new LinksWidget();
 
 		$this->assertInternalType(
 			'string',

@@ -38,19 +38,6 @@
 
 	var _init = {
 
-		// Autocomplete
-		autocomplete: {
-			textarea: function(){
-				// Textarea property autocomplete
-				// @see ext.smw.autocomplete
-			//	$( '#add_property' ).smwAutocomplete( { separator: '\n' } );
-			},
-			parameter: function(){
-				// Property autocomplete for the single sort field
-				//$( '.smw-ask-input-sort' ).smwAutocomplete();
-			}
-		},
-
 		// Tooltip
 		tooltip: function(){
 			$( '.smw-ask-info' ).each( function(){
@@ -161,8 +148,6 @@
 			};
 
 		// Init
-		//_init.autocomplete.textarea();
-		//_init.autocomplete.parameter();
 		_init.tooltip();
 		_init.formatHelp( options );
 
@@ -202,6 +187,8 @@
 				};
 			} else {
 				$( exportHideList ).show();
+				$( '#inlinequeryembed, #embed_hide' ).hide();
+				$( '#embed_show' ).show();
 				$( '#export-info' ).remove();
 			}
 
@@ -217,7 +204,6 @@
 					$( '#options-list' ).removeClass( 'is-disabled' );
 
 					// Reinitialize functions after each ajax request
-					_init.autocomplete.parameter();
 					_init.tooltip();
 
 					// Update format created by the ajax instance

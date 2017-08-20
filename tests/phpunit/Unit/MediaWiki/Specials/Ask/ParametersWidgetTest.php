@@ -24,15 +24,15 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 
-	public function testOptions() {
+	public function testFieldset() {
 
 		$parameters = [];
 
 		$this->stringValidator->assertThatStringContains(
 			[
-				'<div id="options"><fieldset class="smw-ask-options">'
+				'<fieldset><legend>.*</legend><div id="options-list">'
 			],
-			ParametersWidget::options( 'foo', $parameters )
+			ParametersWidget::fieldset( 'foo', $parameters )
 		);
 	}
 

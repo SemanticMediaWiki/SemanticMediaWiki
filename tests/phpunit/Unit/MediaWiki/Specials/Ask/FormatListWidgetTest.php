@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
-use SMW\MediaWiki\Specials\Ask\FormatSelectionWidget;
+use SMW\MediaWiki\Specials\Ask\FormatListWidget;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Ask\FormatSelectionWidget
+ * @covers \SMW\MediaWiki\Specials\Ask\FormatListWidget
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FormatSelectionWidgetTest extends \PHPUnit_Framework_TestCase {
+class FormatListWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testEmptyParameters() {
 
@@ -26,11 +26,11 @@ class FormatSelectionWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$stringValidator->assertThatStringContains(
 			[
-				'<fieldset id="format" class="smw-ask-format" style="margin-top:0px;"><legend>.*</legend>',
+				'<fieldset><legend>.*</legend>',
 				'<span class="smw-ask-format-list"><input type="hidden" value="yes" name="eq"',
 				'<option value="broadtable" selected="">.*</option>'
 			],
-			FormatSelectionWidget::selection( $title, [] )
+			FormatListWidget::fieldset( $title, [] )
 		);
 	}
 
@@ -42,7 +42,7 @@ class FormatSelectionWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		FormatSelectionWidget::setResultFormats(
+		FormatListWidget::setResultFormats(
 			[
 				'rdf' => 'SomeClassReference'
 			]
@@ -53,7 +53,7 @@ class FormatSelectionWidgetTest extends \PHPUnit_Framework_TestCase {
 				'<option value="broadtable">.*</option>',
 				'<option data-isexport="1" value="rdf" selected="">.*</option>'
 			],
-			FormatSelectionWidget::selection( $title, [ 'format' => 'rdf' ] )
+			FormatListWidget::fieldset( $title, [ 'format' => 'rdf' ] )
 		);
 	}
 

@@ -9,10 +9,9 @@ use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\LinksWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
-use SMW\MediaWiki\Specials\Ask\FormatterWidget;
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
-use SMW\MediaWiki\Specials\Ask\FormatSelectionWidget;
+use SMW\MediaWiki\Specials\Ask\FormatListWidget;
 use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
 use SMW\MediaWiki\Specials\Ask\UrlArgs;
 use SMW\ApplicationFactory;
@@ -126,7 +125,7 @@ class SpecialAsk extends SpecialPage {
 			$GLOBALS['smwgQMaxInlineLimit']
 		);
 
-		FormatSelectionWidget::setResultFormats(
+		FormatListWidget::setResultFormats(
 			$GLOBALS['smwgResultFormats']
 		);
 
@@ -230,11 +229,6 @@ class SpecialAsk extends SpecialPage {
 		$isFromCache = false;
 		$duration = 0;
 
-		if ( $this->isBorrowedMode ) {
-			$urlArgs->set( 'bTitle', $this->getRequest()->getVal( 'bTitle' ) );
-			$urlArgs->set( 'bMsg', $this->getRequest()->getVal( 'bMsg' ) );
-		}
-
 		$queryLink = null;
 		$error = '';
 
@@ -299,12 +293,13 @@ class SpecialAsk extends SpecialPage {
 		$urlArgs->set( 'offset', $this->parameters['offset'] );
 		$urlArgs->set( 'limit', $this->parameters['limit'] );
 
-		$result = FormatterWidget::div(
-			$result,
+		$result = Html::rawElement(
+			'div',
 			[
 				'id' => 'result',
-				"class" => 'smw-ask-result' . ( $this->isBorrowedMode ? ' is-disabled' : '' )
-			]
+				'class' => 'smw-ask-result' . ( $this->isBorrowedMode ? ' is-disabled' : '' )
+			],
+			$result
 		);
 
 		if ( $res !== null ) {
@@ -335,12 +330,13 @@ class SpecialAsk extends SpecialPage {
 		// The overall form is "soft-disabled" so that when JS is fully
 		// loaded, the ask module will remove this class and releases the form
 		// for input
-		$html = FormatterWidget::div(
-			$form . $error . $result,
+		$html = Html::rawElement(
+			'div',
 			[
 				'id' => 'ask',
 				"class" => ( $this->isBorrowedMode ? '' : 'is-disabled' )
-			]
+			],
+			$form . $error . $result
 		);
 
 		$this->getOutput()->addHTML(
@@ -383,13 +379,43 @@ class SpecialAsk extends SpecialPage {
 			$html .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
-			$html .= QueryInputWidget::input( $this->queryString , $urlArgs->get( 'po' ) );
+			$html .= Html::rawElement(
+				'div',
+				[
+					'id' => 'query',
+					'class' => 'smw-ask-query'
+				],
+				QueryInputWidget::table(
+					$this->queryString,
+					$urlArgs->get( 'po' )
+				)
+			);
 
 			// Format selection
-			$html .= FormatSelectionWidget::selection( $title, $this->parameters );
+			$html .= Html::rawElement(
+				'div',
+				[
+					'id' => 'format',
+					'class' => "smw-ask-format"
+				],
+				FormatListWidget::fieldset(
+					$title,
+					$this->parameters
+				)
+			);
 
 			// Other options fieldset
-			$html .= ParametersWidget::options( $this->parameters['format'], $this->parameters );
+			$html .= Html::rawElement(
+				'div',
+				[
+					'id' => 'options',
+					'class' => 'smw-ask-options'
+				],
+				ParametersWidget::fieldset(
+					$this->parameters['format'],
+					$this->parameters
+				)
+			);
 
 			$urlArgs->set( 'eq', 'no' );
 			$hideForm = true;
@@ -432,26 +458,13 @@ class SpecialAsk extends SpecialPage {
 			$queryLink
 		);
 
-		$fieldset = Html::rawElement(
-			'fieldset',
-			[
-				'class' => 'smw-ask-actions',
-				'style' => 'margin-top:0px;'
-			],
-			Html::rawElement(
-				'legend',
-				[],
-				wfMessage( 'smw-ask-search' )->escaped()
-			) . '<p></p>' . $links
-		);
-
 		$html .= Html::rawElement(
 			'div',
 			[
 				'id' => 'search',
 				'class' => 'smw-ask-search'
 			],
-			$fieldset
+			LinksWidget::fieldset( $links )
 		);
 
 		return Html::rawElement(
