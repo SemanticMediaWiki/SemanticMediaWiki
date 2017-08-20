@@ -237,6 +237,7 @@ class SMWSql3SmwIds {
 
 		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
 		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
+		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWREDIIW );
 
 		$res = $connection->select(
 			SMWSQLStore3::ID_TABLE,
