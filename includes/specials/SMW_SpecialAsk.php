@@ -14,6 +14,8 @@ use SMW\MediaWiki\Specials\Ask\FormatSelectionWidget;
 use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
 use SMW\MediaWiki\Specials\Ask\UrlArgs;
 use SMW\ApplicationFactory;
+use SMWQueryProcessor as QueryProcessor;
+use SMWInfoLink as InfoLink;
 
 /**
  * This special page for MediaWiki implements a customisable form for
@@ -31,6 +33,11 @@ use SMW\ApplicationFactory;
  * TODO: Split up the megamoths into sane methods.
  */
 class SMWAskPage extends SpecialPage {
+
+	/**
+	 * @var QuerySourceFactory
+	 */
+	private $querySourceFactory;
 
 	/**
 	 * @var string
@@ -57,8 +64,6 @@ class SMWAskPage extends SpecialPage {
 	 */
 	private $isBorrowedMode = false;
 
-	private $queryLinker = null;
-
 	/**
 	 * @var Param[]
 	 */
@@ -66,6 +71,7 @@ class SMWAskPage extends SpecialPage {
 
 	public function __construct() {
 		parent::__construct( 'Ask' );
+		$this->querySourceFactory = ApplicationFactory::getInstance()->getQuerySourceFactory();
 	}
 
 	/**
@@ -150,7 +156,7 @@ class SMWAskPage extends SpecialPage {
 		if ( $this->isBorrowedMode ) {
 			$visibleLinks = [];
 		} elseif( $request->getVal( 'eq' ) === 'no' || $p !== null || $request->getVal( 'x' ) ) {
-			$visibleLinks = [ 'empty' ];
+			$visibleLinks = [ 'search', 'empty' ];
 		} else {
 			$visibleLinks = [ 'options', 'search', 'empty' ];
 		}
@@ -206,129 +212,49 @@ class SMWAskPage extends SpecialPage {
 		$this->isEditMode = ( $request->getVal( 'eq' ) == 'yes' ) || ( $this->queryString === '' );
 	}
 
-	private function getStoreFromParams( array $params ) {
-		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $params['source']->getValue() );
-	}
-
 	/**
 	 * TODO: document
 	 */
 	protected function makeHTMLResult() {
-		global $wgOut;
 
 		$result = '';
 		$res = null;
-		$urlArgs = new UrlArgs();
 
-		// build parameter strings for URLs, based on current settings
-		$urlArgs->set( 'q', $this->queryString );
-
-		$tmp_parray = array();
-		foreach ( $this->parameters as $key => $value ) {
-			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
-				$tmp_parray[$key] = $value;
-			}
-		}
-
-		$urlArgs->set( 'p', SMWInfolink::encodeParameters( $tmp_parray ) );
-		$printoutstring = '';
-		$duration = 0;
 		$navigation = '';
-		$queryobj = null;
+		$urlArgs = $this->newUrlArgs();
 
-		/**
-		 * @var PrintRequest $printout
-		 */
-		foreach ( $this->printouts as $printout ) {
-			$printoutstring .= $printout->getSerialisation( true ) . "\n";
-		}
-
-		if ( $printoutstring !== '' ) {
-			$urlArgs->set( 'po', $printoutstring );
-		}
-
-		if ( array_key_exists( 'sort', $this->parameters ) ) {
-			$urlArgs->set( 'sort', $this->parameters['sort'] );
-		}
-
-		if ( array_key_exists( 'order', $this->parameters ) ) {
-			$urlArgs->set( 'order', $this->parameters['order'] );
-		}
+		$isFromCache = false;
+		$duration = 0;
 
 		if ( $this->isBorrowedMode ) {
 			$urlArgs->set( 'bTitle', $this->getRequest()->getVal( 'bTitle' ) );
 			$urlArgs->set( 'bMsg', $this->getRequest()->getVal( 'bMsg' ) );
 		}
 
+		$queryLink = null;
+		$error = '';
+
 		if ( $this->queryString !== '' ) {
-			// FIXME: this is a hack
-			SMWQueryProcessor::addThisPrintout( $this->printouts, $this->parameters );
-			$params = SMWQueryProcessor::getProcessedParams( $this->parameters, $this->printouts );
-			$this->parameters['format'] = $params['format']->getValue();
 
-			$this->params = $params;
+			list( $res, $debug, $duration, $queryobj ) = $this->getQueryResult();
 
-			$queryobj = SMWQueryProcessor::createQuery(
-				$this->queryString,
-				$params,
-				SMWQueryProcessor::SPECIAL_PAGE,
+			$printer = QueryProcessor::getResultPrinter(
 				$this->parameters['format'],
-				$this->printouts
+				QueryProcessor::SPECIAL_PAGE
 			);
 
-			/**
-			 * @var SMWQueryResult $res
-			 */
-
-			$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
-			$this->queryLinker = QueryLinker::get( $queryobj, $this->parameters );
-
-			// Determine query results
-			$duration = microtime( true );
-			$res = $this->getStoreFromParams( $params )->getQueryResult( $queryobj );
-			$duration = number_format( (microtime( true ) - $duration), 4, '.', '' );
-
-			$printer = SMWQueryProcessor::getResultPrinter( $this->parameters['format'], SMWQueryProcessor::SPECIAL_PAGE );
 			$printer->setShowErrors( false );
-
-			global $wgRequest;
-
-			$hidequery = $wgRequest->getVal( 'eq' ) == 'no';
-			$debug = '';
-
-			// Allow to generate a debug output
-			if ( $this->getRequest()->getVal( 'debug' ) && ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) ) {
-
-				$queryobj = SMWQueryProcessor::createQuery(
-					$this->queryString,
-					$params,
-					SMWQueryProcessor::SPECIAL_PAGE,
-					'debug',
-					$this->printouts
-				);
-
-				$debug = $this->getStoreFromParams( $params )->getQueryResult( $queryobj );
-			}
+			$hidequery = $this->getRequest()->getVal( 'eq' ) == 'no';
 
 			if ( !$printer->isExportFormat() ) {
 				if ( $res->getCount() > 0 ) {
 					if ( $this->isEditMode ) {
 						$urlArgs->set( 'eq', 'yes' );
-					}
-					elseif ( $hidequery ) {
+					} elseif ( $hidequery ) {
 						$urlArgs->set( 'eq', 'no' );
 					}
 
-					$navigation = NavigationLinksWidget::navigationLinks(
-						SpecialPage::getSafeTitleFor( 'Ask' ),
-						$urlArgs,
-						$this->params['limit']->getValue(),
-						$res->getQuery()->getOffset(),
-						$res->getCount(),
-						$res->hasFurtherResults()
-					);
-
-					$query_result = $printer->getResult( $res, $params, SMW_OUTPUT_HTML );
+					$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
 
 					$result .= $debug;
 
@@ -337,7 +263,6 @@ class SMWAskPage extends SpecialPage {
 					} else {
 						$result .= $query_result;
 					}
-
 				} else {
 					$result = ErrorWidget::noResult();
 					$result .= $debug;
@@ -348,17 +273,17 @@ class SMWAskPage extends SpecialPage {
 		// FileExport will override the header and cause issues during the unit
 		// test when fetching the output stream therefore use the plain output
 		if ( defined( 'MW_PHPUNIT_TEST' ) && isset( $printer ) && $printer->isExportFormat() ) {
-			$result = $printer->getResult( $res, $params, SMW_OUTPUT_FILE );
+			$result = $printer->getResult( $res, $this->params, SMW_OUTPUT_FILE );
 			$printer = null;
 		}
 
 		if ( isset( $printer ) && $printer->isExportFormat() ) {
-			$wgOut->disable();
+			$this->getOutput()->disable();
 
 			/**
 			 * @var SMWIExportPrinter $printer
 			 */
-			return $printer->outputAsFile( $res, $params );
+			return $printer->outputAsFile( $res, $this->params );
 		}
 
 		if ( $this->queryString ) {
@@ -370,8 +295,6 @@ class SMWAskPage extends SpecialPage {
 		$urlArgs->set( 'offset', $this->parameters['offset'] );
 		$urlArgs->set( 'limit', $this->parameters['limit'] );
 
-		$isFromCache = $res !== null ? $res->isFromCache() : false;
-
 		$result = FormatterWidget::div(
 			$result,
 			[
@@ -380,28 +303,44 @@ class SMWAskPage extends SpecialPage {
 			]
 		);
 
+		if ( $res !== null ) {
+			$navigation = NavigationLinksWidget::navigationLinks(
+				SpecialPage::getSafeTitleFor( 'Ask' ),
+				$urlArgs,
+				$res->getCount(),
+				$res->hasFurtherResults()
+			);
+
+			$isFromCache = $res->isFromCache();
+			$queryLink = QueryLinker::get( $queryobj, $this->parameters );
+			$error = ErrorWidget::queryError( $queryobj );
+		}
+
 		$infoText = $this->getInfoText(
 			$duration,
 			$isFromCache
 		);
 
-		$result = $this->getInputForm(
+		$form = $this->buildForm(
 			$urlArgs,
+			$queryLink,
 			$navigation,
 			$infoText
-		) . ErrorWidget::queryError( $queryobj ) . $result;
+		);
 
 		// The overall form is "soft-disabled" so that when JS is fully
 		// loaded, the ask module will remove this class and releases the form
 		// for input
+		$html = FormatterWidget::div(
+			$form . $error . $result,
+			[
+				'id' => 'ask',
+				"class" => ( $this->isBorrowedMode ? '' : 'is-disabled' )
+			]
+		);
+
 		$this->getOutput()->addHTML(
-			FormatterWidget::div(
-				$result,
-				[
-					'id' => 'ask',
-					"class" => ( $this->isBorrowedMode ? '' : 'is-disabled' )
-				]
-			)
+			$html
 		);
 	}
 
@@ -409,7 +348,7 @@ class SMWAskPage extends SpecialPage {
 
 		$infoText = '';
 
-		$querySource = ApplicationFactory::getInstance()->getQuerySourceFactory()->getAsString(
+		$querySource = $this->querySourceFactory->getAsString(
 			isset( $this->parameters['source'] ) ? $this->parameters['source'] : null
 		);
 
@@ -428,7 +367,7 @@ class SMWAskPage extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function getInputForm( UrlArgs $urlArgs, $navigation = '', $infoText = '' ) {
+	protected function buildForm( UrlArgs $urlArgs, InfoLink $queryLink = null, $navigation = '', $infoText = '' ) {
 
 		$html = '';
 		$hideForm = false;
@@ -452,31 +391,41 @@ class SMWAskPage extends SpecialPage {
 			$hideForm = true;
 		}
 
-		$isEmpty = $this->queryLinker === null;
+		$isEmpty = $queryLink === null;
 
 		// Submit
-		$fieldset = LinksWidget::resultSubmitLink( $hideForm ) .
-			LinksWidget::showHideLink( $title, $urlArgs, $hideForm, $isEmpty ) .
-			LinksWidget::clipboardLink( $this->queryLinker );
+		$links = LinksWidget::resultSubmitLink(
+			$hideForm
+		) . LinksWidget::showHideLink(
+			$title,
+			$urlArgs,
+			$hideForm,
+			$isEmpty
+		) .	LinksWidget::clipboardLink(
+			$queryLink
+		);
 
-			if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
-				$fieldset .= LinksWidget::debugLink( $title, $urlArgs, $isEmpty );
-			}
+		if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
+			$links .= LinksWidget::debugLink( $title, $urlArgs, $isEmpty );
+		}
 
-			$fieldset .= LinksWidget::embeddedCodeLink( $isEmpty ) .
-			LinksWidget::embeddedCodeBlock( $this->getQueryAsCodeString() );
+		$links .= LinksWidget::embeddedCodeLink(
+			$isEmpty
+		) . LinksWidget::embeddedCodeBlock(
+			$this->getQueryAsCodeString()
+		);
 
-		$fieldset .= '<p></p>';
+		$links .= '<p></p>';
 
 		$this->applyFinalOutputChanges(
-			$fieldset,
+			$links,
 			$infoText
 		);
 
-		$fieldset .= NavigationLinksWidget::wrap(
+		$links .= NavigationLinksWidget::wrap(
 			$navigation,
 			$infoText,
-			$this->queryLinker
+			$queryLink
 		);
 
 		$fieldset = Html::rawElement(
@@ -489,7 +438,7 @@ class SMWAskPage extends SpecialPage {
 				'legend',
 				[],
 				wfMessage( 'smw-ask-search' )->escaped()
-			) . '<p></p>' . $fieldset
+			) . '<p></p>' . $links
 		);
 
 		$html .= Html::rawElement(
@@ -559,6 +508,112 @@ class SMWAskPage extends SpecialPage {
 		if ( $borrowedTitle !== null && wfMessage( $borrowedTitle )->exists() ) {
 			$this->getOutput()->setPageTitle( wfMessage( $borrowedTitle )->text() );
 		}
+	}
+
+	private function newUrlArgs() {
+
+		$urlArgs = new UrlArgs();
+
+		// build parameter strings for URLs, based on current settings
+		$urlArgs->set( 'q', $this->queryString );
+
+		$tmp_parray = array();
+
+		foreach ( $this->parameters as $key => $value ) {
+			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
+				$tmp_parray[$key] = $value;
+			}
+		}
+
+		$urlArgs->set( 'p', SMWInfolink::encodeParameters( $tmp_parray ) );
+		$printoutstring = '';
+
+		/**
+		 * @var PrintRequest $printout
+		 */
+		foreach ( $this->printouts as $printout ) {
+			$printoutstring .= $printout->getSerialisation( true ) . "\n";
+		}
+
+		if ( $printoutstring !== '' ) {
+			$urlArgs->set( 'po', $printoutstring );
+		}
+
+		if ( array_key_exists( 'sort', $this->parameters ) ) {
+			$urlArgs->set( 'sort', $this->parameters['sort'] );
+		}
+
+		if ( array_key_exists( 'order', $this->parameters ) ) {
+			$urlArgs->set( 'order', $this->parameters['order'] );
+		}
+
+		if ( $this->getRequest()->getCheck( 'bTitle' ) ) {
+			$urlArgs->set( 'bTitle', $this->getRequest()->getVal( 'bTitle' ) );
+			$urlArgs->set( 'bMsg', $this->getRequest()->getVal( 'bMsg' ) );
+		}
+
+		return $urlArgs;
+	}
+
+	private function getQueryResult() {
+
+		$res = null;
+		$debug = '';
+		$duration = 0;
+		$queryobj = null;
+
+		// FIXME: this is a hack
+		QueryProcessor::addThisPrintout( $this->printouts, $this->parameters );
+
+		$params = QueryProcessor::getProcessedParams(
+			$this->parameters,
+			$this->printouts
+		);
+
+		$this->parameters['format'] = $params['format']->getValue();
+		$this->params = $params;
+
+		$queryobj = QueryProcessor::createQuery(
+			$this->queryString,
+			$params,
+			QueryProcessor::SPECIAL_PAGE,
+			$this->parameters['format'],
+			$this->printouts
+		);
+
+		$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
+
+		/**
+		 * @var QueryEngine $queryEngine
+		 */
+		$queryEngine = $this->querySourceFactory->get(
+			$params['source']->getValue()
+		);
+
+		/**
+		 * @var QueryResult $res
+		 */
+		$res = $queryEngine->getQueryResult( $queryobj );
+
+		$duration = number_format(
+			$queryobj->getOption( SMWQuery::PROC_QUERY_TIME ), 4, '.', ''
+		);
+
+		// Allow to generate a debug output
+		if ( $this->getRequest()->getVal( 'debug' ) && $params['source']->getValue() === '' ) {
+
+			$queryobj = QueryProcessor::createQuery(
+				$this->queryString,
+				$params,
+				QueryProcessor::SPECIAL_PAGE,
+				'debug',
+				$this->printouts
+			);
+
+			$debug = $queryEngine->getQueryResult( $queryobj );
+		}
+
+		return [ $res, $debug, $duration, $queryobj ];
 	}
 
 	/**

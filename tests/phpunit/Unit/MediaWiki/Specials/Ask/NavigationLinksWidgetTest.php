@@ -28,7 +28,7 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			NavigationLinksWidget::navigationLinks( $title, $urlArgs, 100, 0, 20, false )
+			NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, false )
 		);
 	}
 
@@ -44,7 +44,7 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
 
-		$result = NavigationLinksWidget::navigationLinks( $title, $urlArgs, 100, 0, 20, false );
+		$result = NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, false );
 
 		$this->assertContains(
 			'<a rel="nofollow">250</a>',
@@ -67,25 +67,22 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		// Previous
 		$urlArgs->expects( $this->at( 0 ) )
-			->method( 'set' )
-			->with(
-				$this->equalTo( 'offset' ),
-				$this->equalTo( 7 ) );
+			->method( 'get' )
+			->with(	$this->equalTo( 'limit' ) )
+			->will( $this->returnValue( 3 ) );
 
 		$urlArgs->expects( $this->at( 1 ) )
-			->method( 'set' )
-			->with(
-				$this->equalTo( 'limit' ),
-				$this->equalTo( 3 ) );
+			->method( 'get' )
+			->with(	$this->equalTo( 'offset' ) )
+			->will( $this->returnValue( 10 ) );
 
-		// Next
+		// Previous
 		$urlArgs->expects( $this->at( 2 ) )
 			->method( 'set' )
 			->with(
 				$this->equalTo( 'offset' ),
-				$this->equalTo( 13 ) );
+				$this->equalTo( 7 ) );
 
 		$urlArgs->expects( $this->at( 3 ) )
 			->method( 'set' )
@@ -93,8 +90,21 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'limit' ),
 				$this->equalTo( 3 ) );
 
+		// Next
+		$urlArgs->expects( $this->at( 4 ) )
+			->method( 'set' )
+			->with(
+				$this->equalTo( 'offset' ),
+				$this->equalTo( 13 ) );
+
+		$urlArgs->expects( $this->at( 5 ) )
+			->method( 'set' )
+			->with(
+				$this->equalTo( 'limit' ),
+				$this->equalTo( 3 ) );
+
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
-		NavigationLinksWidget::navigationLinks( $title, $urlArgs, 3, 10, 20, true );
+		NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, true );
 	}
 
 	public function testTopLinks() {
