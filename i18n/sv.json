@@ -168,6 +168,7 @@
 	"smw-special-property-searchform-options": "Alternativ",
 	"smw-special-wantedproperties-filter-label": "Filter:",
 	"smw-special-wantedproperties-filter-none": "Ingen",
+	"smw-special-wantedproperties-filter-unapproved": "Inte godkänd",
 	"concepts": "Begrepp",
 	"smw-sp-concept-docu": "Ett [https://www.semantic-mediawiki.org/wiki/Help:Concepts koncept] är ett slags ”dynamisk katagori”, det vill säga en samling sidor som skapas automatiskt utifrån en semantisk sökning",
 	"smw-sp-concept-header": "Lista över begrepp",
