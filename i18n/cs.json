@@ -13,7 +13,8 @@
 			"Kghbln",
 			"Dvorapa",
 			"Marek Pavlica",
-			"Aktron"
+			"Aktron",
+			"Martin Urbanec"
 		]
 	},
 	"smw-desc": "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -127,6 +128,9 @@
 	"smw_propertyhardlyused": "Tato vlastnost se na wiki téměř nepoužívá!",
 	"smw-sp-property-searchform": "Zobrazit vlastnosti, které obsahují:",
 	"smw-sp-property-searchform-inputinfo": "Vstup je citlivý na velikost písmen a je-li použit pro filtrování, zobrazí se jen vlastnosti, které splňují danou podmínku.",
+	"smw-special-property-searchform-options": "Nastavení",
+	"smw-special-wantedproperties-filter-label": "Filtr:",
+	"smw-special-wantedproperties-filter-unapproved": "Neschváleno",
 	"concepts": "Koncepty",
 	"smw-sp-concept-header": "Seznam konceptů",
 	"smw-sp-concept-empty": "Nebyl nalezen žádný koncept.",

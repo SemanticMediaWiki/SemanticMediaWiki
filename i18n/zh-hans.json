@@ -413,7 +413,7 @@
 	"smw-admin-settings-docu": "显示所有与语义MediaWiki环境相关的默认和本地化设置的列表。关于具体设置的详细信息，请查阅[https://www.semantic-mediawiki.org/wiki/Help:Configuration 配置]帮助页面。",
 	"smw-sp-admin-settings-button": "生成设置列表",
 	"smw-admin-idlookup-title": "对象ID查找",
-	"smw-admin-idlookup-docu": "此节显示语义MediaWiki中具体实体（wiki页面、子对象、属性等）的技术详情。输入允许作为ID或字符串来匹配选定字段，但需小心任何ID引用不应错误作为MediaWiki页面或修订版本ID。",
+	"smw-admin-idlookup-docu": "此节显示语义MediaWiki中具体实体（wiki页面、子对象、属性等）的技术详情。输入允许作为ID或字符串来匹配选定字段。注意任何ID引用不应错误作为MediaWiki页面或修订版本ID。",
 	"smw-admin-iddispose-title": "ID处置",
 	"smw-admin-iddispose-docu": "处理操作不受限制，并且如果确认，将从存储引擎中移除内部对象ID。请'''慎重'''执行此任务，并只在查阅[https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal 文档]后进行。",
 	"smw-admin-iddispose-done": "ID“$1”已从存储后端中移除。",
