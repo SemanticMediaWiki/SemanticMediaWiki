@@ -91,7 +91,7 @@ class DebugFormatter {
 			$entries['Errors and Warnings'] = $errors;
 		}
 
-		$result = '<div style="border: 5px dotted #ffcc00; background: #FFF0BD; padding: 20px; ">' .
+		$result = '<div class="smw-debug" style="border: 5px dotted #ffcc00; background: #FFF0BD; padding: 20px; margin-bottom: 10px;">' .
 		          "<div class='smw-column-header'><big>$storeName debug output</big></div>";
 
 		foreach ( $entries as $header => $information ) {

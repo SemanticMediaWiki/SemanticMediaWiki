@@ -29,13 +29,17 @@ class QueryInputWidget {
 		$table .= HtmlTable::header(
 			HtmlTable::cell(
 				Message::get( 'smw_ask_queryhead', Message::TEXT, Message::USER_LANGUAGE ),
-				[]
+				[
+					'class' => 'condition'
+				]
 			) .	HtmlTable::cell(
 				'',
 				[]
 			) .	HtmlTable::cell(
 				Message::get( 'smw_ask_printhead', Message::TEXT, Message::USER_LANGUAGE ),
-				[]
+				[
+					'class' => 'printout'
+				]
 			)
 		);
 
