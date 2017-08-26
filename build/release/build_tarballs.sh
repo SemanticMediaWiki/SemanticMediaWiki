@@ -25,7 +25,7 @@ rm -rf $BUILD_DIR
 mkdir $BUILD_DIR
 cd $BUILD_DIR
 
-composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki $COMPOSER_VERSION -s dev --prefer-dist --no-dev
+composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki $COMPOSER_VERSION -s dev --prefer-dist --no-dev --no-interaction
 
 NAME="Semantic_MediaWiki_${VERSION}_and_dependencies"
 DIR="SemanticMediaWiki"
