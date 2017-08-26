@@ -169,6 +169,13 @@ class ParametersProcessor {
 			$parameterList = Infolink::decodeParameters( $query_values, false );
 		}
 
+		foreach ( $parameterList as $key => $value ) {
+			// Concatenate checkbox values into a simple comma separated list
+			if ( is_array( $value ) ) {
+				$parameterList[$key] = implode( ',', $value );
+			}
+		}
+
 		return $parameterList;
 	}
 
