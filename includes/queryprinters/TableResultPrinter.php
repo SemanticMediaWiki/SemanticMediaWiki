@@ -109,6 +109,7 @@ class TableResultPrinter extends ResultPrinter {
 
 		if ( $this->mFormat == 'broadtable' ) {
 			$tableAttrs['width'] = '100%';
+			$tableAttrs['class'] .= ' broadtable';
 		}
 
 		if ( $this->isDataTable ) {

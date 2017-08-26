@@ -67,7 +67,7 @@
 			"subject": "Broadtable-with-sep-parameter",
 			"assert-output": {
 				"to-contain": [
-					"<table class=\"sortable wikitable smwtable\" width=\"100%\">",
+					"<table class=\"sortable wikitable smwtable broadtable\" width=\"100%\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
 					"<th class=\"Has-text\">Has text</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
