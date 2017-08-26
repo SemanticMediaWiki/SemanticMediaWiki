@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
 use ParamProcessor\ParamDefinition;
@@ -118,8 +118,7 @@ class ParameterInput {
 					$html = $this->getStrInput();
 					break;
 			}
-		}
-		else {
+		} else {
 			$html = $this->param->isList() ? $this->getCheckboxListInput( $valueList ) : $this->getSelectInput( $valueList );
 		}
 
@@ -245,23 +244,37 @@ class ParameterInput {
 	 */
 	protected function getCheckboxListInput( array $valueList ) {
 		$boxes = array();
+		$currentValues = array();
 
-		$currentValues = (array)$this->getValueToUse();
-		if ( is_null( $currentValues ) ) {
-			$currentValues = array();
+		$values = $this->getValueToUse();
+
+		// List of comma separated values, see ParametersProcessor::getParameterList
+		if ( strpos( $values, ',' ) !== false ) {
+			$currentValues = array_flip(
+				array_map( 'trim', explode( ',', $values ) )
+			);
+		} elseif ( $values !== '' ) {
+			$currentValues[$values] = true;
 		}
 
 		foreach ( $valueList as $value ) {
+
+			// Use a value not a simple "true"
+			$attr = [
+				'type' => 'checkbox',
+				'name' => $this->inputName . '[]',
+				'value' => $value
+			];
+
 			$boxes[] = Html::rawElement(
 				'span',
 				array(
 					'style' => 'white-space: nowrap; padding-right: 5px;'
 				),
-				Xml::check(
-					$this->inputName . '[' . htmlspecialchars( $value ). ']',
-					in_array( $value, $currentValues )
-				) .
-				Html::element( 'tt', array(), $value )
+				Html::rawElement(
+					'input',
+					$attr + ( isset( $currentValues[$value] ) ? [ 'checked' ] : [] )
+				) . Html::element( 'tt', array(), $value )
 			);
 		}
 

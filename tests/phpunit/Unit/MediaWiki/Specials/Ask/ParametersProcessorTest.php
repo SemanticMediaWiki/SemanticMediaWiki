@@ -74,4 +74,40 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 		ParametersProcessor::process( $request, $parameters );
 	}
 
+	public function testParametersOn_p_Array_Request() {
+
+		$request = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$request->expects( $this->at( 0 ) )
+			->method( 'getCheck' )
+			->with( $this->equalTo( 'q' ) )
+			->will( $this->returnValue( true ) );
+
+		$request->expects( $this->at( 1 ) )
+			->method( 'getVal' )
+			->with( $this->equalTo( 'p' ) )
+			->will( $this->returnValue( '' ) );
+
+		$request->expects( $this->at( 2 ) )
+			->method( 'getArray' )
+			->with( $this->equalTo( 'p' ) )
+			->will( $this->returnValue( [ 'foo' => [ 'Bar', 'foobar' ] ] ) );
+
+		$parameters = [];
+
+		$res = ParametersProcessor::process( $request, $parameters );
+
+		$this->assertEquals(
+			[
+				'foo'    => 'Bar,foobar',
+				'format' => 'broadtable',
+				'offset' => null,
+				'limit'  => null
+			],
+			$res[1]
+		);
+	}
+
 }

@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use ParamProcessor\ParamDefinition;
-use SMW\ParameterInput;
 use SMW\Message;
 use SMWQueryProcessor as QueryProcessor;
 use Html;
