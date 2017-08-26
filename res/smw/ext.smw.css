@@ -848,3 +848,8 @@ a.smw-ask-action-btn-lblue:hover {
 	from {transform: rotate(0deg);}
 	to {transform: rotate(359deg);}
 }
+
+/* MobileFrontend overrides some desktop rules */
+.content table.broadtable, .smw-ask-result table.broadtable {
+	width: 100% !important;
+}
