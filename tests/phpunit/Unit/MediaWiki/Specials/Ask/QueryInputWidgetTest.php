@@ -23,7 +23,7 @@ class QueryInputWidgetTest extends \PHPUnit_Framework_TestCase {
 		$stringValidator->assertThatStringContains(
 			[
 				'<div style="width: 100%;" class="smw-table">',
-				'<div class="smw-table-header"><div class="smw-table-cell">.*</div><div class="smw-table-cell"></div><div class="smw-table-cell">.*</div></div>',
+				'<div class="smw-table-header"><div class="smw-table-cell condition">.*</div><div class="smw-table-cell"></div><div class="smw-table-cell printout">.*</div></div>',
 				'<div class="smw-table-row"><div class="smw-table-cell"><textarea class="smw-ask-query-condition" name="q" rows="6">Foo</textarea></div>',
 				'<div class="smw-table-cell"><textarea id="smw-property-input" class="smw-ask-query-printout" name="po" rows="6">Bar</textarea>'
 			],

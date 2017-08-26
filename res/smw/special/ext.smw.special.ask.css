@@ -39,6 +39,19 @@
 	clear: both;
 }
 
+/* MobileFrontend sets those to 0 therefore declare them explicitly */
+div#ask fieldset {
+	margin: 1em 0 1em 0;
+	padding: 0 1em 1em;
+}
+
+div#ask legend {
+	padding: 0.5em;
+	font-size: 95%;
+	font-weight:normal;
+	text-transform:none;
+}
+
 .smw-ask-toplinks {
 	padding: 0px 5px 5px 0px;
 	padding: 8px 15px;
@@ -98,6 +111,10 @@
 .smw-ask-query textarea {
 	border: 0px;
 	resize: none;
+}
+
+.smw-ask-query .condition {
+	width: 49.5%;
 }
 
 .smw-ask-options-row-odd {
