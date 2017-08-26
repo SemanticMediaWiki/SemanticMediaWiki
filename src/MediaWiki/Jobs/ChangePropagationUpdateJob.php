@@ -39,7 +39,7 @@ class ChangePropagationUpdateJob extends JobBase {
 	 */
 	public function run() {
 
-		ChangePropagationDispatchJob::removeProcessMarker(
+		ChangePropagationDispatchJob::cleanUp(
 			DIWikiPage::newFromTitle( $this->getTitle() )
 		);
 

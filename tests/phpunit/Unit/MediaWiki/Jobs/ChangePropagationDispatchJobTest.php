@@ -48,7 +48,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testRemoveProcessMarker() {
+	public function testCleanUp() {
 
 		$subject = DIWikiPage::newFromText(__METHOD__, SMW_NS_PROPERTY );
 
@@ -60,7 +60,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Cache', $cache );
 
-		ChangePropagationDispatchJob::removeProcessMarker( $subject );
+		ChangePropagationDispatchJob::cleanUp( $subject );
 	}
 
 	public function testHasPendingJobs() {
@@ -129,7 +129,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 			$subject->getTitle()
 		);
 
-		$instance->findAndDispatch();
+		$instance->run();
 	}
 
 	public function testPlanAsJob() {
@@ -146,42 +146,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		ChangePropagationDispatchJob::planAsJob( $subject );
-	}
-
-	public function testCleanUp() {
-
-		$subject = DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
-
-		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$jobQueue->expects( $this->once() )
-			->method( 'lazyPush' );
-
-		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( array() ) );
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
-		$tempFile = $this->getMockBuilder( '\SMW\Utils\TempFile' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'TempFile', $tempFile );
-
-		ChangePropagationDispatchJob::cleanUp( $subject );
 	}
 
 	public function testFindAndDispatchOnPropertyEntity() {
@@ -259,7 +223,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$instance->findAndDispatch();
+		$instance->run();
 	}
 
 }

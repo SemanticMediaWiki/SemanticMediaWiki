@@ -243,8 +243,6 @@ class PropertyTableIdReferenceDisposer {
 			'factbox.cache.delete',
 			$dispatchContext
 		);
-
-		ChangePropagationDispatchJob::cleanUp( $subject );
 	}
 
 }

@@ -88,29 +88,11 @@ class ChangePropagationDispatchJob extends JobBase {
 	}
 
 	/**
-	 * Called from PropertyTableIdReferenceDisposer
-	 *
-	 * @since 3.0
-	 *
-	 * @param DIWikiPage $subject
-	 * @param array $params
-	 *
-	 * @return boolean
-	 */
-	public static function cleanUp( DIWikiPage $subject, $params = array() ) {
-
-		$changePropagationDispatchJob = new self( $subject->getTitle(), $params );
-		$changePropagationDispatchJob->findAndDispatch( false );
-
-		return true;
-	}
-
-	/**
 	 * @since 3.0
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public static function removeProcessMarker( DIWikiPage $subject ) {
+	public static function cleanUp( DIWikiPage $subject ) {
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {
 			return;
@@ -190,19 +172,12 @@ class ChangePropagationDispatchJob extends JobBase {
 			return $this->dispatchFromFile( $subject, $this->getParameter( 'dataFile' ) );
 		}
 
-		$this->findAndDispatch( true );
+		$this->findAndDispatch();
 
 		return true;
 	}
 
-	/**
-	 * Called from PropertyTableIdReferenceDisposer
-	 *
-	 * @since 3.0
-	 *
-	 * @param boolean $commitSpecificationChange
-	 */
-	public function findAndDispatch( $commitSpecificationChange = true ) {
+	private function findAndDispatch() {
 
 		if ( $this->getTitle()->getNamespace() !== SMW_NS_PROPERTY ) {
 			return;
@@ -245,8 +220,7 @@ class ChangePropagationDispatchJob extends JobBase {
 		// jobs.
 		$this->commitSpecificationChangePropagationAsJob(
 			$subject,
-			$appendIterator->count(),
-			$commitSpecificationChange
+			$appendIterator->count()
 		);
 
 		$chunkedIterator = $iteratorFactory->newChunkedIterator(
@@ -376,11 +350,7 @@ class ChangePropagationDispatchJob extends JobBase {
 		}
 	}
 
-	private function commitSpecificationChangePropagationAsJob( $subject, $count, $commitSpecificationChange = true ) {
-
-		if ( $commitSpecificationChange === false ) {
-			return;
-		}
+	private function commitSpecificationChangePropagationAsJob( $subject, $count ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 

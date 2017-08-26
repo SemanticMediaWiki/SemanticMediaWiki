@@ -132,7 +132,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 
 	private function getForm( $webRequest, $id ) {
 
-		$message = $this->createInfoMessageById( $webRequest, $id );
+		list( $result, $error ) = $this->createInfoMessageById( $webRequest, $id );
 
 		if ( $id < 1 ) {
 			$id = null;
@@ -142,8 +142,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 			->setName( 'idlookup' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'lookup' )
-			->addHiddenField( 'id', $id )
-			->addParagraph( $this->getMessageAsString( 'smw-admin-idlookup-docu' ) )
+			->addParagraph( $error . $this->getMessageAsString( 'smw-admin-idlookup-docu' ) )
 			->addInputField(
 				$this->getMessageAsString( 'smw-admin-idlookup-input' ),
 				'id',
@@ -151,13 +150,13 @@ class EntityLookupTaskHandler extends TaskHandler {
 			)
 			->addNonBreakingSpace()
 			->addSubmitButton( $this->getMessageAsString( 'allpagessubmit' ) )
-			->addParagraph( $message )
+			->addParagraph( $result )
 			->getForm();
 
 		$html .= Html::element( 'p', array(), '' );
 
 		if ( $id > 0 && $webRequest->getText( 'dispose' ) == 'yes' ) {
-			$message = $this->getMessageAsString( array ('smw-admin-iddispose-done', $id ) );
+			$result = $this->getMessageAsString( array ('smw-admin-iddispose-done', $id ) );
 			$id = null;
 		}
 
@@ -196,7 +195,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 	private function createInfoMessageById( $webRequest, &$id ) {
 
 		if ( $webRequest->getText( 'action' ) !== 'lookup' || $id === '' ) {
-			return '';
+			return [ '', '' ];
 		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -229,6 +228,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 		$references = array();
 		$formattedRows = array();
 		$output = '';
+		$error = '';
 
 		if ( $rows !== array() ) {
 			foreach ( $rows as $row ) {
@@ -260,11 +260,10 @@ class EntityLookupTaskHandler extends TaskHandler {
 			);
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
 		} else {
-			$output .= Html::element(
+			$error .= Html::element(
 				'div',
 				array(
-					'class' => 'smw-callout smw-callout-warning',
-					'style' => 'margin-top:20px;'
+					'class' => 'smw-callout smw-callout-warning'
 				),
 				$this->getMessageAsString( array( 'smw-admin-iddispose-no-references', $id ) )
 			);
@@ -272,7 +271,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 			$id = '';
 		}
 
-		return $output;
+		return [ $output, $error ];
 	}
 
 }
