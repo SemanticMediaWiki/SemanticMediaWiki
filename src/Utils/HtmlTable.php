@@ -130,16 +130,22 @@ class HtmlTable {
 		);
 	}
 
-	private static function mergeAttributes( $class, $attributes ) {
+	private static function mergeAttributes( $class, $attr ) {
 
-		if ( isset( $attributes['class'] ) ) {
-			$class .= ' ' . $attributes['class'];
-			unset( $attributes['class'] );
+		$attributes = array();
+
+		// A bit of attribute order
+		if ( isset( $attr['id'] ) ) {
+			$attributes['id'] = $attr['id'];
 		}
 
-		$attributes['class'] = $class;
+		if ( isset( $attr['class'] ) ) {
+			$attributes['class'] = $class . ' ' . $attr['class'];
+		} else {
+			$attributes['class'] = $class;
+		}
 
-		return $attributes;
+		return $attributes += $attr;
 	}
 
 }

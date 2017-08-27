@@ -24,6 +24,7 @@ class ErrorWidget {
 		return Html::element(
 			'div',
 			[
+				'id'    => 'result-error',
 				'class' => 'smw-callout smw-callout-info'
 			],
 			Message::get( 'smw_result_noresults', Message::TEXT, Message::USER_LANGUAGE )
@@ -108,6 +109,7 @@ class ErrorWidget {
 		return Html::rawElement(
 			'div',
 			[
+				'id'    => 'result-error',
 				'class' => 'smw-callout smw-callout-error'
 			],
 			$error

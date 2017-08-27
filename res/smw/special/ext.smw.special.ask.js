@@ -31,6 +31,110 @@
 	'use strict';
 
 	/**
+	 * @since 3.0
+	 * @constructor
+	 *
+	 * @return {this}
+	 */
+	var change = function ( name ) {
+
+		this.name = name;
+		this.messages = {};
+
+		this.html = mw.html;
+		this.hideList = '#ask-embed, #inlinequeryembed, #ask-showhide, #ask-debug, #ask-clipboard, #ask-navinfo, #result, #result-error';
+
+		return this;
+	};
+
+	/**
+	 * @since 3.0
+	 * @method
+	 *
+	 * @param {Sting} key
+	 * @param {Sting} message
+	 */
+	change.prototype.add = function( key, message, type ) {
+		this.messages[key] = [ message, type ];
+	}
+
+	/**
+	 * @since 3.0
+	 * @method
+	 *
+	 * @param {Sting} key
+	 */
+	change.prototype.delete = function( key ) {
+		delete this.messages[key];
+	}
+
+	/**
+	 * @since 3.0
+	 * @method
+	 *
+	 * @param {Sting} key
+	 */
+	change.prototype.informAbout = function( key ) {
+
+		var informAbout = '';
+
+		// Anything to inform about?
+		if ( this.messages.hasOwnProperty( key ) ) {
+			informAbout = key;
+		} else {
+			for( var prop in this.messages ) {
+				if ( prop !== key && this.messages.hasOwnProperty( prop ) ) {
+					informAbout = prop
+				}
+			}
+		}
+
+		if ( informAbout !== '' ) {
+			this.show( informAbout );
+		} else {
+			this.hide();
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 * @method
+	 *
+	 * @param {Sting} key
+	 */
+	change.prototype.show = function( key ) {
+
+		var msg = this.messages[key];
+
+		var html = this.html.element(
+			'div',
+			{
+				id: 'status-format-change',
+				class: 'smw-callout smw-callout-' + msg[1]
+			},
+			mw.msg( msg[0], this.name )
+		);
+
+		$( this.hideList ).hide();
+
+		$( '#status-format-change' ).remove();
+		$( '#ask-status' ).append( html );
+	}
+
+	/**
+	 * @since 3.0
+	 * @method
+	 */
+	change.prototype.hide = function() {
+
+		$( this.hideList ).show();
+		$( '#status-format-change' ).remove();
+
+		$( '#inlinequeryembed, #embed_hide' ).hide();
+		$( '#embed_show' ).show();
+	}
+
+	/**
 	 * Support and helper methods
 	 * @ignore
 	 */
@@ -133,7 +237,8 @@
 	 */
 	$( document ).ready( function() {
 
-		var h = mw.html;
+		var condition = $( '#ask-query-condition' ).val(),
+			isEmpty = condition === '';
 
 		// Field input is kept disabled until JS is fully loaded to signal
 		// "ready for input"
@@ -144,8 +249,11 @@
 			options = {
 				selector : '#formatSelector',
 				format : selected.val(),
-				name : selected.text()
+				name : selected.text(),
+				isExport: selected.data( 'isexport' ) == 1
 			};
+
+		var chg = new change( options['name'] );
 
 		// Init
 		_init.tooltip();
@@ -159,38 +267,39 @@
 			addSortInstance( 'sorting_starter', 'sorting_main' );
 		} );
 
+		// Changed condition
+		$( '#ask-query-condition' ).change( function( event, $opts ) {
+
+			var that = $( this );
+
+			if ( isEmpty === false && that.val().trim() !== condition.trim() ) {
+				chg.add( 'condition', 'smw-ask-condition-change-info', 'warning' );
+			} else {
+				chg.delete( 'condition' );
+			}
+
+			chg.informAbout( 'condition' );
+		} );
+
 		// Change format parameter form via ajax
 		$( '#formatSelector' ).change( function( event, $opts ) {
 
 			var $this = $( this ),
-				exportHideList = '#ask-embed, #inlinequeryembed, #ask-showhide, #ask-debug, #ask-clipboard, #ask-navinfo, #result';
+				isExport = $this.find( 'option:selected' ).data( 'isexport' ) == 1;
 
-			// Display the options list for the time the list is being generated
+			// Opaque options list for as long as the list is being generated
 			// via an ajax request
-			$( '#options-list' ).addClass( 'is-disabled');
+			$( '#options-list' ).addClass( 'is-disabled' );
 
-			// Hide buttons/elements that cannot be used on an export format
-			if ( $this.find( 'option:selected' ).data( 'isexport' ) == 1 ) {
-				$( exportHideList ).hide();
-
-				if ( !$( "#export-info" ).length ) {
-					var html = h.element(
-						'div',
-						{
-							id: 'export-info',
-							class: 'smw-callout smw-callout-info'
-						},
-						mw.msg( 'smw-ask-format-export-info' )
-					);
-
-					$( '#result' ).after( html );
-				};
+			if ( isExport ) {
+				chg.add( 'format', 'smw-ask-format-export-info', 'info' );
+			} else if ( isEmpty === false && options['format'] !== $this.val() ) {
+				chg.add( 'format', 'smw-ask-format-change-info', 'warning' );
 			} else {
-				$( exportHideList ).show();
-				$( '#inlinequeryembed, #embed_hide' ).hide();
-				$( '#embed_show' ).show();
-				$( '#export-info' ).remove();
+				chg.delete( 'format' )
 			}
+
+			chg.informAbout( 'format' );
 
 			$.ajax( {
 				// Evil hack to get more evil Spcial:Ask stuff to work with less evil JS.
