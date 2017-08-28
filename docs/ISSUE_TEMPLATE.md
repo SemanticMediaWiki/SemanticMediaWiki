@@ -3,7 +3,7 @@
 - SMW version:
 - MW version:
 - PHP version:
-- DB version (MySQL, Blazegraph etc.):
+- DB system (MySQL, Blazegraph, etc.) and version:
 
 ### Issue
 
