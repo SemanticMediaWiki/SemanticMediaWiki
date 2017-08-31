@@ -165,6 +165,7 @@
 	"wantedproperties": "필요한 속성 목록",
 	"smw-wantedproperties-docu": "다음 속성은 위키에 사용하지만 아직 설명하는 문서가 없습니다.",
 	"smw-wantedproperty-template": "$1 ($2개 {{PLURAL:$2|사용}})",
+	"smw-special-wantedproperties-template": "$1 ($2개 {{PLURAL:$2|사용}})",
 	"smw_purge": "새로 고침",
 	"smw-purge-failed": "새로 고침 실패",
 	"types": "유형 목록",
