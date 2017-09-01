@@ -33,11 +33,6 @@ abstract class SMWDataItem {
 	const TYPE_NOTYPE    = 0;
 	/// Data item ID for SMWDINumber
 	const TYPE_NUMBER    = 1;
-	/**
-	 * Data item ID for SMWDIString.
-	 * @deprecated Will vanish after SMW 1.9; use TYPE_BLOB instead.
-	 */
-	const TYPE_STRING    = 2;
 	/// Data item ID for SMWDIBlob
 	const TYPE_BLOB      = 2;
 	///  Data item ID for SMWDIBoolean
