@@ -437,6 +437,7 @@
 	"log-description-smw": "Actividades para [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos de evento habilitados] que han sido notificados por la MediaWiki Semántica y sus componentes.",
 	"logentry-smw-maintenance": "Sucesos relacionados con el mantenimiento emitidos por Semantic MediaWiki",
 	"smw-datavalue-import-unknown-namespace": "El espacio de nombres de importación «$1» es desconocido. Comprueba que los detalles de importación de OWL estén disponibles a través de [[MediaWiki:Smw import $1]]",
+	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Importación de $1]]",
 	"smw-datavalue-import-invalid-value": "\"$1\" no tiene un formato válido. Se espera que conste de \"espacio de nombres\":\"identificador\" (por ejemplo, \"foaf:name\").",
 	"smw-datavalue-import-invalid-format": "Se esperaba que la cadena «$1» estuviese dividida en cuatro partes, pero no se comprendió su formato.",
 	"smw-pa-property-predefined_impo": "\"$1\" es una propiedad predefinida que describe una relación con un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulario importado]. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",

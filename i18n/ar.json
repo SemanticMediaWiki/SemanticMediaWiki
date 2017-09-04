@@ -407,6 +407,7 @@
 	"smw-admin-iddispose-references": "المعرف \"$1\" مع سجل جدول مرجعي واحد نشط على الأقل.",
 	"smw-admin-iddispose-references-multiple": "قائمة المطابقات مع سجل مرجع نشط واحد على الأقل.",
 	"smw-admin-iddispose-no-references": "المعرف \"$1\" لم يتم العثور عليه أو لم يحتوي على أية مراجع.",
+	"smw-admin-idlookup-input": "بحث:",
 	"smw-admin-objectid": "معرف كائن:",
 	"smw-admin-tab-general": "نظرة عامة والدعم",
 	"smw-admin-tab-notices": "إشعارات انتقاص",

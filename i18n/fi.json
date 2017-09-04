@@ -15,7 +15,7 @@
 	},
 	"smw-desc": "Lisää wikisi helppokäyttöisyyttä - niin koneille \"kuin\" ihmisillekin ([https://www.semantic-mediawiki.org/wiki/Help:User_manual käyttäjän opas])",
 	"smw-title": "Semanttinen MediaWiki",
-	"smw-semantics-not-enabled": "Semanttinen MediaWiki toiminnallisuutta ei ole otettu käyttöön tässä wikissä.",
+	"smw-semantics-not-enabled": "Semanttisen MediaWikin toiminnallisuutta ei ole otettu käyttöön tässä wikissä.",
 	"smw_viewasrdf": "RDF-syöte",
 	"smw_finallistconjunct": " ja",
 	"smw_factbox_head": "Tietoja kohteesta $1",
