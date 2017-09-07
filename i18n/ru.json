@@ -369,7 +369,7 @@
 	"smw-admin-iddispose-done": "Идентификатор «$1» был удалён из хранилища.",
 	"smw-admin-iddispose-references": "ID «$1» с по крайней мере одной активной ссылкой.",
 	"smw-admin-iddispose-references-multiple": "Список совпадений с по крайней мере одной активной ссылкой.",
-	"smw-admin-objectid": "ID объекта:",
+	"smw-admin-objectid": "Идентификатор:",
 	"smw-admin-tab-general": "Обзор и поддержка",
 	"smw-livepreview-loading": "Загрузка…",
 	"smw-sp-searchbyproperty-description": "На этой странице предоставлен простой [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces интерфейс просмотра] для нахождения сущностей по описанным свойствам и именованным значениям. Другие доступные интерфейсы поиска включают в себя [[Special:PageProperty|страницу поиск свойств]] и [[Special:Ask|построитель поисковых запросов]].",

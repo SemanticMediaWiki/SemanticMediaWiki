@@ -364,7 +364,7 @@
 	"smw-admin-supplementary-operational-statistics-intro": "<u>$1</u> affiche un ensemble étendu de statistiques",
 	"smw-admin-supplementary-idlookup-title": "Recherche et libération d’objet",
 	"smw-admin-supplementary-idlookup-intro": "<u>$1</u> contient des fonctions de recherche et de libération d'objets individuels",
-	"smw-property-label-uniqueness": "L’étiquette « $1 » correspond aussi à au moins une autre propriété. Veuillez vous reporter à la [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness page suivante] pour trouver comment résoudre le problème.",
+	"smw-property-label-uniqueness": "L’étiquette « $1 » correspond aussi à au moins une autre propriété. Veuillez vous reporter à la [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness page d’aide] pour trouver comment résoudre le problème.",
 	"smw-property-label-similarity-title": "Compte rendu de similitude des étiquettes de propriété",
 	"smw-property-label-similarity-intro": "<u>$1</u> calcule les similitudes pour les étiquettes de propriété existantes",
 	"smw-property-label-similarity-threshold": "Seuil:",
