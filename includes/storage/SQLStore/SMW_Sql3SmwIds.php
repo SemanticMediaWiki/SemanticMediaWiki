@@ -235,15 +235,21 @@ class SMWSql3SmwIds {
 			$property->getCanonicalLabel()
 		);
 
+		$condition .= " AND smw_namespace =" . $connection->addQuotes(
+			SMW_NS_PROPERTY
+		);
+
+		$condition .= " AND smw_subobject =''";
+
 		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
 		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
 		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWREDIIW );
 
 		$res = $connection->select(
 			SMWSQLStore3::ID_TABLE,
-			array(
+			[
 				'smw_id, smw_sortkey'
-			),
+			],
 			$condition,
 			__METHOD__,
 			[
