@@ -303,13 +303,18 @@ return array(
 	##
 
 	###
-	# Should SMW consider MediaWiki's subcategory hierarchy in querying? If set to
-	# true, subcategories will always be interpreted like subclasses. For example,
-	# if A is a subcategory of B then a query for all elements of B will also yield
-	# all elements of A. If this setting is disabled, then subclass relationships
-	# can still be given explicitly by using the property "subcategory of" on some
-	# category page. Only if the setting is false will such annotations be shown in
-	# the factbox (if enabled).
+	# Category hierarchy recognition
+	#
+	# Should a subcategory be considered a hierarchy element in the
+	# annotation process?
+	#
+	# If set to true, subcategories will always be interpreted as subclasses
+	# and automatically annotated with `Subcategory of`.
+	#
+	# @see CategoryPropertyAnnotator
+	#
+	# @since 1.5
+	# @default true
 	##
 	'smwgUseCategoryHierarchy' => true,
 	##
@@ -319,6 +324,9 @@ return array(
 	# elements of the category Foo? If disabled, then it is not possible to make
 	# category pages elements of other categories. See also the above setting
 	# $smwgUseCategoryHierarchy.
+	#
+	# @since 1.5
+	# @default true
 	##
 	'smwgCategoriesAsInstances' => true,
 	##
