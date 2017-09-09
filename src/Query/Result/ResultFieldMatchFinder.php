@@ -205,7 +205,9 @@ class ResultFieldMatchFinder {
 
 		$index = $this->printRequest->getParameter( 'index' );
 		$lang = $this->printRequest->getParameter( 'lang' );
+
 		$newcontent = array();
+		$property = $propertyValue->getDataItem();
 
 		// Replace content with specific content from a Container/MultiValue
 		foreach ( $content as $diContainer ) {
@@ -213,7 +215,7 @@ class ResultFieldMatchFinder {
 			/* AbstractMultiValue */
 			$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$diContainer,
-				$propertyValue->getDataItem()
+				$property
 			);
 
 			$multiValue->setOption( $multiValue::OPT_QUERY_CONTEXT, true );
@@ -223,14 +225,14 @@ class ResultFieldMatchFinder {
 				// Return the text representation without a language reference
 				// (tag) since the value has been filtered hence only matches
 				// that language
-				$newcontent[] = $this->applyContentManipulation( $textValue->getDataItem() );
+				$newcontent[] = $this->applyContentManipulation( $property, $textValue->getDataItem() );
 
 				// Set the index so ResultArray::getNextDataValue can
 				// find the correct PropertyDataItem (_TEXT;_LCODE) position
 				// to match the DI
 				$this->printRequest->setParameter( 'index', 1 );
 			} elseif ( $lang === false && $index !== false && ( $dataItemByRecord = $multiValue->getDataItemByIndex( $index ) ) !== null ) {
-				$newcontent[] = $this->applyContentManipulation( $dataItemByRecord );
+				$newcontent[] = $this->applyContentManipulation( $property, $dataItemByRecord );
 			}
 		}
 
@@ -283,6 +285,8 @@ class ResultFieldMatchFinder {
 	private function doFetchPropertyValues( $dataItems, $dataValue ) {
 
 		$propertyValues = array();
+		$property = $dataValue->getDataItem();
+		$isChain = $this->printRequest->isMode( PrintRequest::PRINT_CHAIN );
 
 		foreach ( $dataItems as $dataItem ) {
 
@@ -292,7 +296,7 @@ class ResultFieldMatchFinder {
 
 			$pv = $this->store->getPropertyValues(
 				$dataItem,
-				$dataValue->getDataItem(),
+				$property,
 				$this->getRequestOptions()
 			);
 
@@ -304,14 +308,30 @@ class ResultFieldMatchFinder {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function( &$dataItem ) {
-			$dataItem = $this->applyContentManipulation( $dataItem );
-		} );
+		foreach ( $propertyValues as $key => $value ) {
+			if ( ( $dataItem = $this->applyContentManipulation( $property, $value, $isChain ) ) !== null ) {
+				$propertyValues[$key] = $dataItem;
+			} else {
+				unset( $propertyValues[$key] );
+			}
+		}
 
 		return $propertyValues;
 	}
 
-	private function applyContentManipulation( $dataItem ) {
+	private function applyContentManipulation( $property, $dataItem, $isChain = false ) {
+
+		if ( $isChain && ( $filter = $this->printRequest->getParameter( $property->getLabel() . '.filter' ) ) !== false ) {
+
+			// Apply filter on something like ?Has subobject.Foo|+Has subobject.filter=Foobar,Bar
+			$filterList = explode( ',', $filter );
+
+			if ( $property->getKey() === '_SOBJ' && in_array( !$dataItem->getSubobjectName(), $filterList ) ) {
+				return null;
+			} elseif ( !in_array( $dataItem->getSortKey(), $filterList ) ) {
+				return null;
+			}
+		}
 
 		if ( !$dataItem instanceof DIBlob ) {
 			return $dataItem;
