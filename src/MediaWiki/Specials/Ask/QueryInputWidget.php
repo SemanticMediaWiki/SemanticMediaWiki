@@ -30,7 +30,8 @@ class QueryInputWidget {
 			HtmlTable::cell(
 				Message::get( 'smw_ask_queryhead', Message::TEXT, Message::USER_LANGUAGE ),
 				[
-					'class' => 'condition'
+					'class' => 'condition',
+					'style' => 'width: 49.5%;'
 				]
 			) .	HtmlTable::cell(
 				'',
@@ -38,14 +39,15 @@ class QueryInputWidget {
 			) .	HtmlTable::cell(
 				Message::get( 'smw_ask_printhead', Message::TEXT, Message::USER_LANGUAGE ),
 				[
-					'class' => 'printout'
+					'class' => 'printout',
+					'style' => 'width: 49.5%;'
 				]
 			)
 		);
 
 		$table .= HtmlTable::row(
 			HtmlTable::cell(
-				'<textarea class="smw-ask-query-condition" name="q" rows="6">' . htmlspecialchars( $queryString ) . '</textarea>',
+				'<textarea id="ask-query-condition" class="smw-ask-query-condition" name="q" rows="6">' . htmlspecialchars( $queryString ) . '</textarea>',
 				[]
 			) . HtmlTable::cell(
 				'',
