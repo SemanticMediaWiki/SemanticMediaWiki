@@ -40,6 +40,11 @@ class SMWInfolink {
 	protected $mStyle;
 
 	/**
+	 * @var array
+	 */
+	private $linkAttributes = [];
+
+	/**
 	 * Indicates whether $target is a page name (true) or URL (false).
 	 *
 	 * @var boolean
@@ -201,6 +206,17 @@ class SMWInfolink {
 	}
 
 	/**
+	 * Modify link attributes
+	 *
+	 * @since 3.0
+	 *
+	 * @param array $linkAttributes
+	 */
+	public function setLinkAttributes( array $linkAttributes ) {
+		$this->linkAttributes = $linkAttributes;
+	}
+
+	/**
 	 * Returns a suitable text string for displaying this link in HTML or wiki, depending
 	 * on whether $outputformat is SMW_OUTPUT_WIKI or SMW_OUTPUT_HTML.
 	 *
@@ -231,7 +247,7 @@ class SMWInfolink {
 				if ( $outputformat == SMW_OUTPUT_WIKI ) {
 					$link = "[[$titletext|$this->mCaption]]";
 				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
-					$link = $this->getLinker( $linker )->link( $title, $this->mCaption );
+					$link = $this->getLinker( $linker )->link( $title, $this->mCaption, $this->linkAttributes );
 				}
 			} else { // Title creation failed, maybe illegal symbols or too long; make a direct URL link
 			         // (only possible if offending target parts belong to some parameter
@@ -250,7 +266,7 @@ class SMWInfolink {
 						$link = $this->getLinker( $linker )->link(
 							$title,
 							$this->mCaption,
-							array(),
+							$this->linkAttributes,
 							$query
 						);
 					}
