@@ -44,6 +44,15 @@ class UrlArgs {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $key
+	 */
+	public function delete( $key ) {
+		unset( $this->args[$key] );
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param string $fragment
 	 */
 	public function setFragment( $fragment ) {

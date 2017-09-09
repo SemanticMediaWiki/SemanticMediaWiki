@@ -47,4 +47,23 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testDelete() {
+
+		$instance = new UrlArgs();
+
+		$instance->set( 'foo', 42 );
+
+		$this->assertEquals(
+			42,
+			$instance->get( 'foo' )
+		);
+
+		$instance->delete( 'foo' );
+
+		$this->assertEquals(
+			null,
+			$instance->get( 'foo' )
+		);
+	}
+
 }
