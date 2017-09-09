@@ -87,6 +87,37 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNoQCacheLink() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInternalType(
+			'string',
+			LinksWidget::noQCacheLink( $title, $urlArgs, true )
+		);
+	}
+
+	public function testNoQCacheLinkOnFalseFromCache() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertEmpty(
+			LinksWidget::noQCacheLink( $title, $urlArgs, false )
+		);
+	}
+
 	public function testClipboardLink() {
 
 		$infolink = $this->getMockBuilder( '\SMWInfolink' )

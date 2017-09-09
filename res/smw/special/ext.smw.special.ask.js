@@ -42,7 +42,7 @@
 		this.messages = {};
 
 		this.html = mw.html;
-		this.hideList = '#ask-embed, #inlinequeryembed, #ask-showhide, #ask-debug, #ask-clipboard, #ask-navinfo, #result, #result-error';
+		this.hideList = '#ask-embed, #inlinequeryembed, #ask-showhide, #ask-debug, #ask-clipboard, #ask-navinfo, #ask-cache, #result, #result-error';
 
 		return this;
 	};

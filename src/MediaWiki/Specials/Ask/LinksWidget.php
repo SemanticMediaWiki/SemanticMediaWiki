@@ -219,7 +219,8 @@ class LinksWidget {
 			'span',
 			[
 				'id' => 'ask-debug',
-				'class' => 'smw-ask-button smw-ask-button-right'
+				'class' => 'smw-ask-button smw-ask-button-right',
+				'title' => Message::get( 'smw-ask-debug-desc', Message::TEXT, Message::USER_LANGUAGE )
 			],
 			Html::element(
 				'a',
@@ -228,7 +229,46 @@ class LinksWidget {
 					'href'  => $title->getLocalURL( $urlArgs ),
 					'rel'   => 'nofollow'
 				],
-				Message::get( 'smw-ask-debug', Message::TEXT, Message::USER_LANGUAGE )
+				'ℹ'
+			)
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title $title
+	 * @param string $urlTail
+	 * @param boolean $isFromCache
+	 *
+	 * @return string
+	 */
+	public static function noQCacheLink( Title $title, UrlArgs $urlArgs, $isFromCache = false ) {
+
+		if ( $isFromCache === false ) {
+			return '';
+		}
+
+		$urlArgs->set( 'cache', 'no' );
+		$urlArgs->delete( 'debug' );
+
+		$urlArgs->setFragment( 'search' );
+
+		return Html::rawElement(
+			'span',
+			[
+				'id' => 'ask-cache',
+				'class' => 'smw-ask-button smw-ask-button-right',
+				'title' => Message::get( 'smw-ask-no-cache-desc', Message::TEXT, Message::USER_LANGUAGE )
+			],
+			Html::element(
+				'a',
+				[
+					'class' => '',
+					'href'  => $title->getLocalURL( $urlArgs ),
+					'rel'   => 'nofollow'
+				],
+				'⊘'
 			)
 		);
 	}

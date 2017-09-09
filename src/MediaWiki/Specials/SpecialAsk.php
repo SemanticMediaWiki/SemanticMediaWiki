@@ -324,7 +324,8 @@ class SpecialAsk extends SpecialPage {
 			$urlArgs,
 			$queryLink,
 			$navigation,
-			$infoText
+			$infoText,
+			$isFromCache
 		);
 
 		// The overall form is "soft-disabled" so that when JS is fully
@@ -367,7 +368,7 @@ class SpecialAsk extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function buildForm( UrlArgs $urlArgs, InfoLink $queryLink = null, $navigation = '', $infoText = '' ) {
+	protected function buildForm( UrlArgs $urlArgs, InfoLink $queryLink = null, $navigation = '', $infoText = '', $isFromCache = false ) {
 
 		$html = '';
 		$hideForm = false;
@@ -437,6 +438,7 @@ class SpecialAsk extends SpecialPage {
 
 		if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
 			$links .= LinksWidget::debugLink( $title, $urlArgs, $isEmpty );
+			$links .= LinksWidget::noQCacheLink( $title, $urlArgs, $isFromCache );
 		}
 
 		$links .= LinksWidget::embeddedCodeLink(
@@ -597,6 +599,10 @@ class SpecialAsk extends SpecialPage {
 			$this->parameters['format'],
 			$this->printouts
 		);
+
+		if ( $this->getRequest()->getVal( 'cache' ) === 'no' ) {
+			$queryobj->setOption( SMWQuery::NO_CACHE, true );
+		}
 
 		$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
 
