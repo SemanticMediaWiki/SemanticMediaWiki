@@ -108,14 +108,19 @@ class HierarchyTempTableBuilder {
 	 * @param string $type
 	 * @param string $tablename
 	 * @param string $valueComposite
+	 * @param integer|null $depth
 	 *
 	 * @throws RuntimeException
 	 */
-	public function createHierarchyTempTableFor( $type, $tablename, $valueComposite ) {
+	public function createHierarchyTempTableFor( $type, $tablename, $valueComposite, $depth = null ) {
 
 		$this->temporaryTableBuilder->create( $tablename );
 
-		list( $smwtable, $depth ) = $this->getHierarchyTableDefinitionForType( $type );
+		list( $smwtable, $d ) = $this->getHierarchyTableDefinitionForType( $type );
+
+		if ( $depth === null ) {
+			$depth = $d;
+		}
 
 		if ( array_key_exists( $valueComposite, $this->hierarchyCache ) ) { // Just copy known result.
 

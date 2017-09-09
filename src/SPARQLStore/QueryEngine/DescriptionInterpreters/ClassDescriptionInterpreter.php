@@ -62,6 +62,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 		list( $condition, $namespaces ) = $this->mapCategoriesToConditionElements(
 			$description->getCategories(),
+			$description->getHierarchyDepth(),
 			$joinVariable
 		);
 
@@ -82,7 +83,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function mapCategoriesToConditionElements( array $categories, $joinVariable ) {
+	private function mapCategoriesToConditionElements( array $categories, $depth, $joinVariable ) {
 
 		$condition = '';
 		$namespaces = array();
@@ -95,7 +96,12 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 			$namespaces[$categoryExpElement->getNamespaceId()] = $categoryExpElement->getNamespace();
 
-			$classHierarchyPattern = $this->tryToAddClassHierarchyPattern( $category, $categoryExpName );
+			$classHierarchyPattern = $this->tryToAddClassHierarchyPattern(
+				$category,
+				$depth,
+				$categoryExpName
+			);
+
 			$newcondition   = $classHierarchyPattern === '' ? "{ " : "{\n" . $classHierarchyPattern;
 			$newcondition  .= "?$joinVariable " . $instExpElement->getQName() . " $categoryExpName . }\n";
 
@@ -109,9 +115,9 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		return array( $condition, $namespaces );
 	}
 
-	private function tryToAddClassHierarchyPattern( $category, &$categoryExpName ) {
+	private function tryToAddClassHierarchyPattern( $category, $depth, &$categoryExpName ) {
 
-		if ( !$this->compoundConditionBuilder->canUseQFeature( SMW_SPARQL_QF_SUBC ) ) {
+		if ( !$this->compoundConditionBuilder->canUseQFeature( SMW_SPARQL_QF_SUBC ) || ( $depth !== null && $depth < 1 ) ) {
 			return '';
 		}
 
@@ -121,8 +127,11 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 		$subClassExpElement = $this->exporter->getSpecialPropertyResource( '_SUBC' );
 
+		// @see notes in SomePropertyInterpreter
+		$pathOp = $depth > 1 || $depth === null ? '*' : '?';
+
 		$classHierarchyByVariable = "?" . $this->compoundConditionBuilder->getNextVariable( 'sc' );
-		$condition = "$classHierarchyByVariable " . $subClassExpElement->getQName() . "*" . " $categoryExpName .\n";
+		$condition = "$classHierarchyByVariable " . $subClassExpElement->getQName() . "$pathOp $categoryExpName .\n";
 		$categoryExpName = "$classHierarchyByVariable";
 
 		return $condition;

@@ -1,0 +1,109 @@
+{
+	"description": "Test query with category hierarchy depth (#2662, `wgContLang=en`, `smwgQSubpropertyDepth`, `smwgQSubcategoryDepth`, skip virtuoso)",
+	"setup": [
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0614",
+			"contents": "Super class"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0614/1",
+			"contents": "[[Category:Q0614]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0614/1/2",
+			"contents": "[[Category:Q0614/1]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0614/1/2/3",
+			"contents": "[[Category:Q0614/1/2]]"
+		},
+		{
+			"page": "Example/Q0614/1",
+			"contents": "[[Category:Q0614]]"
+		},
+		{
+			"page": "Example/Q0614/1/2",
+			"contents": "[[Category:Q0614/1]]"
+		},
+		{
+			"page": "Example/Q0614/1/2/3",
+			"contents": "[[Category:Q0614/1/2]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 select all members",
+			"condition": "[[Category:Q0614]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0614/1#0##",
+					"Example/Q0614/1/2#0##",
+					"Example/Q0614/1/2/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 depth=0",
+			"condition": "[[Category:Q0614|+depth=0]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0614/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 depth=1",
+			"condition": "[[Category:Q0614|+depth=1]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0614/1#0##",
+					"Example/Q0614/1/2#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10,
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/subcategory hierarchies are not supported"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

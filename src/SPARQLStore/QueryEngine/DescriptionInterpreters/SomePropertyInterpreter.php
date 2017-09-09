@@ -99,7 +99,8 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		$this->tryToAddPropertyPathForSaturatedHierarchy(
 			$innerCondition,
 			$nonInverseProperty,
-			$propertyName
+			$propertyName,
+			$description->getHierarchyDepth()
 		);
 
 		$condition = $this->concatenateToConditionString(
@@ -240,9 +241,9 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @see http://www.w3.org/TR/sparql11-query/#propertypath-arbitrary-length
 	 */
-	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, DIProperty $property, &$propertyName ) {
+	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, DIProperty $property, &$propertyName, $depth ) {
 
-		if ( !$this->compoundConditionBuilder->canUseQFeature( SMW_SPARQL_QF_SUBP ) || !$property->isUserDefined() ) {
+		if ( !$this->compoundConditionBuilder->canUseQFeature( SMW_SPARQL_QF_SUBP ) || !$property->isUserDefined() || ( $depth !== null && $depth < 1 ) ) {
 			return null;
 		}
 
@@ -252,8 +253,15 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		$subPropExpElement = $this->exporter->getSpecialPropertyResource( '_SUBP', SMW_NS_PROPERTY );
 
+		// A discret depth other than 0 or 1 is difficult to achieve
+		// @see https://stackoverflow.com/questions/18126949/limit-the-sparql-query-result-to-first-level-in-hierarchy
+		// Path operator is defined as:
+		// - elt* ZeroOrMorePath
+		// - elt? ZeroOrOnePath
+		$pathOp = $depth > 1 || $depth === null ? '*' : '?';
+
 		$propertyByVariable = '?' . $this->compoundConditionBuilder->getNextVariable( 'sp' );
-		$condition->weakConditions[$propertyName] = "\n". "$propertyByVariable " . $subPropExpElement->getQName() . "*" . " $propertyName .\n"."";
+		$condition->weakConditions[$propertyName] = "\n". "$propertyByVariable " . $subPropExpElement->getQName() . "$pathOp $propertyName .\n"."";
 		$propertyName = $propertyByVariable;
 	}
 
