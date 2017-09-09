@@ -234,6 +234,7 @@
 	"smw-ask-no-cache-desc": "Results without query cache",
 	"smw-ask-result": "Result",
 	"smw-ask-empty": "Empty",
+	"smw-ask-download-link-desc": "Download queried results in $1 format",
 	"smw-ask-format": "Format",
 	"smw-ask-format-selection-help": "For a detailed description, please visit the $1 help page.",
 	"smw-ask-condition-change-info": "The condition was altered and the search engine requires to rerun the query to produce results that can match the new requirements.",

@@ -37,11 +37,23 @@ class DownloadLinksWidget {
 		$infolink->setParameter( 'JSON', 'searchlabel' );
 		$infolink->setCaption( 'JSON' );
 
+		$infolink->setLinkAttributes(
+			[
+				'title' => Message::get( [ 'smw-ask-download-link-desc', 'JSON' ], Message::TEXT, Message::USER_LANGUAGE )
+			]
+		);
+
 		$downloadLinks[] = $infolink->getHtml();
 
 		$infolink->setCaption( 'CSV' );
 		$infolink->setParameter( 'csv', 'format' );
 		$infolink->setParameter( 'CSV', 'searchlabel' );
+
+		$infolink->setLinkAttributes(
+			[
+				'title' => Message::get( [ 'smw-ask-download-link-desc', 'CSV' ], Message::TEXT, Message::USER_LANGUAGE )
+			]
+		);
 
 		$downloadLinks[] = $infolink->getHtml();
 
@@ -49,11 +61,23 @@ class DownloadLinksWidget {
 		$infolink->setParameter( 'rss', 'format' );
 		$infolink->setParameter( 'RSS', 'searchlabel' );
 
+		$infolink->setLinkAttributes(
+			[
+				'title' => Message::get( [ 'smw-ask-download-link-desc', 'RSS' ], Message::TEXT, Message::USER_LANGUAGE )
+			]
+		);
+
 		$downloadLinks[] = $infolink->getHtml();
 
 		$infolink->setCaption( 'RDF' );
 		$infolink->setParameter( 'rdf', 'format' );
 		$infolink->setParameter( 'RDF', 'searchlabel' );
+
+		$infolink->setLinkAttributes(
+			[
+				'title' => Message::get( [ 'smw-ask-download-link-desc', 'RDF' ], Message::TEXT, Message::USER_LANGUAGE )
+			]
+		);
 
 		$downloadLinks[] = $infolink->getHtml();
 
