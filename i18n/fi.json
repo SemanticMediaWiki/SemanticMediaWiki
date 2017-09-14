@@ -51,7 +51,7 @@
 	"smw-paramdesc-sep": "Arvojen erotin",
 	"smw-paramdesc-showsep": "Näytä erotin CSV-tiedoston alussa (\"sep=<arvo>\")",
 	"smw-paramdesc-template": "Tulosteiden näyttämisessä käytettävän mallineen nimi",
-	"smw-paramdesc-columns": "Tulosnäkymän sarakkeiden lukumäärä (oeltusarvo on $1)",
+	"smw-paramdesc-columns": "Tulosnäkymän sarakkeiden lukumäärä (oletusarvo on $1)",
 	"smw-paramdesc-userparam": "Arvo, joka välitetään jokaisessa mallinekutsussa, jos mallinetta käytetään",
 	"smw-paramdesc-introtemplate": "Ennen kyselytuloksia näytettävän mallineen nimi, jos tuloksia löytyi.",
 	"smw-paramdesc-outrotemplate": "Kyselytulosten jälkeen näytettävän mallineen nimi, jos tuloksia löytyi.",

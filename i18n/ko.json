@@ -222,6 +222,7 @@
 	"smw-ask-format": "형식",
 	"smw-ask-format-selection-help": "자세한 설명에 대해서는 $1 도움말 문서로 방문하세요.",
 	"smw-ask-condition-change-info": "조건이 변경되었으므로 검색 엔진은 새로운 요구사항을 충족할 수 있는 결과를 출력하기 위해 쿼리를 다시 실행해야 합니다.",
+	"smw-ask-format-change-info": "\"$1\" 포맷이 수정되었으므로 새로운 변수와 시각화 옵션을 일치시키려면 쿼리를 다시 실행해야 합니다.",
 	"smw-ask-format-export-info": "선택된 형식은 시각 표현이 없는 내보내기 형식이므로 결과는 다운로드로만 제공됩니다.",
 	"searchbyproperty": "속성으로 검색",
 	"processingerrorlist": "오류 목록을 처리합니다",

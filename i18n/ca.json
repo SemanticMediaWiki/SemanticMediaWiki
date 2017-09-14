@@ -14,7 +14,8 @@
 			"Macofe",
 			"Kghbln",
 			"Jaumeortola",
-			"Nemo bis"
+			"Nemo bis",
+			"Abella"
 		]
 	},
 	"smw-desc": "Fent el vostre wiki més accessible — per a les màquines «i també» per als humans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
@@ -215,7 +216,7 @@
 	"smw-ask-sorting": "Ordenació",
 	"smw-ask-options": "Opcions",
 	"smw-ask-search": "Cerca",
-	"smw-ask-debug": "Depuració",
+	"smw-ask-debug": "Depura",
 	"smw-ask-result": "Resultat",
 	"smw-ask-empty": "Buida",
 	"smw-ask-format-selection-help": "Per a una descripció detallada, visiteu la pàgina d'ajuda de $1.",
@@ -368,7 +369,7 @@
 	"smw-admin-iddispose-done": "L'ID «$1» s'ha suprimit del servidor d'emmagatzematge.",
 	"smw-admin-iddispose-references": "{{PLURAL:$2|Taula|Taules}} amb com a mínim una referència activa a l'ID «$1».",
 	"smw-admin-idlookup-input": "Cerca:",
-	"smw-admin-objectid": "Id.:",
+	"smw-admin-objectid": "ID:",
 	"smw-livepreview-loading": "S'està carregant…",
 	"smw-sp-searchbyproperty-description": "Aquesta pàgina proporciona una simple [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces interfície de navegació] per trobar entitats descrites per una propietat i un valor anomenat. Altres interfícies de cerca disponibles inclouen la [[Special:PageProperty|cerca de propietats de pàgina]] i el [[Special:Ask|generador de consultes ask]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Llista de resultats",
