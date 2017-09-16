@@ -236,6 +236,7 @@ class AskParserFunction {
 	private function doFetchResultsFromFunctionParameters( array $functionParams, array $extraKeys ) {
 
 		$contextPage = $this->parserData->getSubject();
+		$status = [];
 
 		if ( $extraKeys[self::NO_TRACE] === true ) {
 			$contextPage = null;
@@ -260,7 +261,12 @@ class AskParserFunction {
 		$queryHash = $query->getHash();
 
 		if ( $this->postProcHandler !== null && isset( $extraKeys[self::IS_ANNOTATION] ) ) {
+			$status[] = 100;
 			$this->postProcHandler->addQueryRef( $query );
+		}
+
+		if ( $this->context === QueryProcessor::DEFERRED_QUERY ) {
+			$status[] = 200;
 		}
 
 		$this->circularReferenceGuard->mark( $queryHash );
@@ -297,10 +303,12 @@ class AskParserFunction {
 		// at the same time
 		$this->addProcessingError( $query->getErrors() );
 
+		$query->setOption( Query::PROC_STATUS_CODE, $status );
+
 		$this->addQueryProfile(
 			$query,
 			$format,
-			$extraKeys[self::NO_TRACE]
+			$extraKeys
 		);
 
 		return $result;
@@ -318,13 +326,13 @@ class AskParserFunction {
 		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
 
-	private function addQueryProfile( $query, $format, $noTrace ) {
+	private function addQueryProfile( $query, $format, $extraKeys ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
-		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false || $noTrace === true ) {
+		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false || $extraKeys[self::NO_TRACE] === true ) {
 			return;
 		}
 
