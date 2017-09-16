@@ -398,11 +398,9 @@ class HookRegistry {
 		 */
 		$this->handlers['ResourceLoaderGetConfigVars'] = function ( &$vars ) {
 
-			$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars(
-				$vars
-			);
+			$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars();
 
-			return $resourceLoaderGetConfigVars->process();
+			return $resourceLoaderGetConfigVars->process( $vars );
 		};
 
 		/**

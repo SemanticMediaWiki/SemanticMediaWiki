@@ -17,22 +17,33 @@ class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$vars = array();
-
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars',
-			new ResourceLoaderGetConfigVars( $vars )
+			ResourceLoaderGetConfigVars::class,
+			new ResourceLoaderGetConfigVars()
 		);
 	}
 
 	public function testProcess() {
 
-		$vars = array();
+		$vars = [];
 
-		$instance = new ResourceLoaderGetConfigVars( $vars );
-		$instance->process();
+		$instance = new ResourceLoaderGetConfigVars();
+		$instance->process( $vars );
 
-		$this->assertArrayHasKey( 'smw-config', $vars );
+		$this->assertArrayHasKey(
+			'smw-config',
+			$vars
+		);
+
+		$this->assertArrayHasKey(
+			'namespaces',
+			$vars['smw-config']
+		);
+
+		$this->assertArrayHasKey(
+			'settings',
+			$vars['smw-config']
+		);
 	}
 
 }
