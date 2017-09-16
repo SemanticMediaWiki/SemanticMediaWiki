@@ -184,6 +184,7 @@ class TableResultPrinter extends ResultPrinter {
 		if ( count( $dataValues ) > 0 ) {
 			$sortKey = $dataValues[0]->getDataItem()->getSortKey();
 			$dataValueType = $dataValues[0]->getTypeID();
+			$printRequest = $resultArray->getPrintRequest();
 
 			if ( is_numeric( $sortKey ) ) {
 				$attributes['data-sort-value'] = $sortKey;
@@ -193,17 +194,26 @@ class TableResultPrinter extends ResultPrinter {
 				$attributes['data-order'] = $sortKey;
 			}
 
-			$alignment = trim( $resultArray->getPrintRequest()->getParameter( 'align' ) );
+			$alignment = trim( $printRequest->getParameter( 'align' ) );
 
 			if ( in_array( $alignment, array( 'right', 'left', 'center' ) ) ) {
 				$attributes['style'] = "text-align:$alignment;";
 			}
+
+			$width = htmlspecialchars(
+				trim( $printRequest->getParameter( 'width' ) )
+			);
+
+			if ( $width ) {
+				$attributes['style'] = isset( $attributes['style'] ) ?  $attributes['style'] . " width:$width;" . $width : "width:$width;";
+			}
+
 			$attributes['class'] = $columnClass . ( $dataValueType !== '' ? ' smwtype' . $dataValueType : '' );
 
 			$content = $this->getCellContent(
 				$dataValues,
 				$outputMode,
-				$resultArray->getPrintRequest()->getMode() == PrintRequest::PRINT_THIS
+				$printRequest->getMode() == PrintRequest::PRINT_THIS
 			);
 		}
 

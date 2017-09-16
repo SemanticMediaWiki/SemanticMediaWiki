@@ -1,5 +1,5 @@
 {
-	"description": "Test `format=table` on `|+align=`/`|+limit`/`|+order` extra printout parameters (T18571, en)",
+	"description": "Test `format=table` on `|+align=`/`|+limit`/`|+order`/`|+width=` extra printout parameters (T18571, en)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -21,6 +21,10 @@
 		{
 			"page": "Example/F0205/1b",
 			"contents": "{{#ask: [[~Example/F0205/1/*]] |?Has number |+align=left |+limit=2 |+order=desc |format=table |headers=plain }}"
+		},
+		{
+			"page": "Example/F0205/Q.2",
+			"contents": "{{#ask: [[~Example/F0205/1/*]] |?Has number |+width=50% |+limit=2 |+order=desc |format=table |headers=plain }}"
 		}
 	],
 	"tests": [
@@ -37,12 +41,23 @@
 		},
 		{
 			"type": "format",
-			"about": "#1",
+			"about": "#1 (align, left)",
 			"subject": "Example/F0205/1b",
 			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"42\" style=\"text-align:left;\" class=\"Has-number smwtype_num\">42<br />1",
 					"data-sort-value=\"1001\" style=\"text-align:left;\" class=\"Has-number smwtype_num\">1,001<br />21"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 (+width)",
+			"subject": "Example/F0205/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td data-sort-value=\"42\" style=\"width:50%;\" class=\"Has-number smwtype_num\">42<br />1</td>",
+					"<td data-sort-value=\"1001\" style=\"width:50%;\" class=\"Has-number smwtype_num\">1,001<br />21</td>"
 				]
 			}
 		}
