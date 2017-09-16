@@ -103,23 +103,33 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	 *
 	 * @since 1.9
 	 *
-	 * @param integer $propertyId
+	 * @param integer $pid
 	 * @param integer $value
 	 *
 	 * @return boolean Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
-	public function addToUsageCount( $propertyId, $value ) {
+	public function addToUsageCount( $pid, $value ) {
 
-		if ( !is_int( $value ) ) {
+		$usageVal = 0;
+		$nullVal = 0;
+
+		if ( is_array( $value ) ) {
+			$usageVal = $value[0];
+			$nullVal = $value[1];
+		} else {
+			$usageVal = $value;
+		}
+
+		if ( !is_int( $usageVal ) || !is_int( $nullVal ) ) {
 			throw new PropertyStatisticsInvalidArgumentException( 'The value to add must be an integer' );
 		}
 
-		if ( !is_int( $propertyId ) || $propertyId <= 0 ) {
+		if ( !is_int( $pid ) || $pid <= 0 ) {
 			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
 		}
 
-		if ( $value == 0 ) {
+		if ( $usageVal == 0 && $nullVal == 0 ) {
 			return true;
 		}
 
@@ -127,10 +137,11 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 			$this->connection->update(
 				$this->table,
 				array(
-					'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $value ) ),
+					'usage_count = usage_count ' . ( $usageVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $usageVal ) ),
+					'null_count = null_count ' . ( $nullVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $nullVal ) ),
 				),
 				array(
-					'p_id' => $propertyId
+					'p_id' => $pid
 				),
 				__METHOD__
 			);
@@ -138,7 +149,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 			// #2345 Do nothing as it most likely an "Error: 1264 Out of range
 			// value for column" in strict mode
 			// As an unsigned int, we expected it to be 0
-			$this->setUsageCount( $propertyId, 0 );
+			$this->setUsageCount( $pid, [ 0, 0 ] );
 		}
 
 		return true;
@@ -173,9 +184,14 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 			return $success;
 		}
 
-		// TODO: properly implement this
-		foreach ( $additions as $propertyId => $addition ) {
-			$success = $this->addToUsageCount( $propertyId, $addition ) && $success;
+		foreach ( $additions as $pid => $addition ) {
+
+			if ( is_array( $addition ) ) {
+				// We don't check this, have it fail in case this isn't set correctly
+				$addition = [ $addition['usage'], $addition['null'] ];
+			}
+
+			$success = $this->addToUsageCount( $pid, $addition ) && $success;
 		}
 
 		return $success;
@@ -187,14 +203,24 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	 * @since 1.9
 	 *
 	 * @param integer $propertyId
-	 * @param integer $value
+	 * @param integer|array $value
 	 *
 	 * @return boolean Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function setUsageCount( $propertyId, $value ) {
 
-		if ( !is_int( $value ) || $value < 0 ) {
+		$usageCount = 0;
+		$nullCount = 0;
+
+		if ( is_array( $value ) ) {
+			$usageCount = $value[0];
+			$nullCount = $value[1];
+		} else {
+			$usageCount = $value;
+		}
+
+		if ( !is_int( $usageCount ) || $usageCount < 0 || !is_int( $nullCount ) || $nullCount < 0 ) {
 			throw new PropertyStatisticsInvalidArgumentException( 'The value to add must be a positive integer' );
 		}
 
@@ -205,7 +231,8 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 		return $this->connection->update(
 			$this->table,
 			array(
-				'usage_count' => $value,
+				'usage_count' => $usageCount,
+				'null_count' => $nullCount,
 			),
 			array(
 				'p_id' => $propertyId
@@ -220,14 +247,24 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	 * @since 1.9
 	 *
 	 * @param integer $propertyId
-	 * @param integer $value
+	 * @param integer|array $value
 	 *
 	 * @return boolean Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function insertUsageCount( $propertyId, $value ) {
 
-		if ( !is_int( $value ) || $value < 0 ) {
+		$usageCount = 0;
+		$nullCount = 0;
+
+		if ( is_array( $value ) ) {
+			$usageCount = $value[0];
+			$nullCount = $value[1];
+		} else {
+			$usageCount = $value;
+		}
+
+		if ( !is_int( $usageCount ) || $usageCount < 0 || !is_int( $nullCount ) || $nullCount < 0 ) {
 			throw new PropertyStatisticsInvalidArgumentException( 'The value to add must be a positive integer' );
 		}
 
@@ -238,7 +275,8 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 		return $this->connection->insert(
 			$this->table,
 			array(
-				'usage_count' => $value,
+				'usage_count' => $usageCount,
+				'null_count' => $nullCount,
 				'p_id' => $propertyId,
 			),
 			__METHOD__

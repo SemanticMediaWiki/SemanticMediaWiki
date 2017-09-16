@@ -242,9 +242,14 @@ class TableSchemaManager {
 
 		$table->addColumn( 'p_id', FieldType::FIELD_ID );
 		$table->addColumn( 'usage_count', FieldType::FIELD_USAGE_COUNT );
+		$table->addColumn( 'null_count', FieldType::FIELD_USAGE_COUNT );
+
+		$table->addDefault( 'usage_count', 0 );
+		$table->addDefault( 'null_count', 0 );
 
 		$table->addIndex( array( 'p_id', 'UNIQUE INDEX' ) );
 		$table->addIndex( 'usage_count' );
+		$table->addIndex( 'null_count' );
 
 		return $table;
 	}
