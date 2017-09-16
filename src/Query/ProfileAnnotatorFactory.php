@@ -9,6 +9,7 @@ use SMW\Query\ProfileAnnotators\FormatProfileAnnotator;
 use SMW\Query\ProfileAnnotators\ParametersProfileAnnotator;
 use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
+use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 use SMWQuery as Query;
@@ -76,6 +77,11 @@ class ProfileAnnotatorFactory {
 			$query->getQuerySource()
 		);
 
+		$profileAnnotator = $this->newStatusCodeProfileAnnotator(
+			$profileAnnotator,
+			$query->getOption( Query::PROC_STATUS_CODE )
+		);
+
 		return $profileAnnotator;
 	}
 
@@ -93,16 +99,30 @@ class ProfileAnnotatorFactory {
 	}
 
 	private function newDurationProfileAnnotator( $profileAnnotator, $duration ) {
+
+		if ( $duration == 0 ) {
+			return $profileAnnotator;
+		}
+
 		return new DurationProfileAnnotator( $profileAnnotator, $duration );
 	}
 
 	private function newSourceProfileAnnotator( $profileAnnotator, $querySource ) {
 
-		if ( $querySource === '' ) {
+		if ( $querySource === '' || $querySource === null ) {
 			return $profileAnnotator;
 		}
 
 		return new SourceProfileAnnotator( $profileAnnotator, $querySource );
+	}
+
+	private function newStatusCodeProfileAnnotator( $profileAnnotator, $statusCodes ) {
+
+		if ( $statusCodes === false || $statusCodes === null || $statusCodes === [] ) {
+			return $profileAnnotator;
+		}
+
+		return new StatusCodeProfileAnnotator( $profileAnnotator, $statusCodes );
 	}
 
 	/**

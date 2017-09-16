@@ -477,6 +477,7 @@ class PropertyRegistry {
 			'_ASKDU' => array( '_num', true, false ), // "Query duration"
 			'_ASKSC' => array( '_txt', true, false ), // "Query source"
 			'_ASKPA' => array( '_cod', true, false ), // "Query parameters"
+			'_ASKCO' => array( '_num', true, false ), // "Query scode"
 			'_MEDIA' => array( '_txt', true, false ), // "has media type"
 			'_MIME'  => array( '_txt', true, false ), // "has mime type"
 			'_PREC'  => array( '_num', true, true ), // "Display precision of"

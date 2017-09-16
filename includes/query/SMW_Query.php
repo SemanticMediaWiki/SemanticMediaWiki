@@ -55,6 +55,11 @@ class SMWQuery implements QueryContext {
 	const PROC_CONTEXT = 'proc.context';
 
 	/**
+	 * Status code information
+	 */
+	const PROC_STATUS_CODE = 'proc.status.code';
+
+	/**
 	 * The processing parameters
 	 */
 	const OPT_PARAMETERS = 'proc.parameters';
