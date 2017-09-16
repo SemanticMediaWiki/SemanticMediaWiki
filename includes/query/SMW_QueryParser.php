@@ -8,6 +8,7 @@ use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\DescriptionProcessor;
 use SMW\Query\QueryToken;
@@ -517,11 +518,12 @@ class SMWQueryParser {
 		return $this->finishLinkDescription( $chunk, true, $result, $setNS );
 	}
 
-	private function finishLinkDescription( $chunk, $hasNamespaces, $result, &$setNS ) {
-		if ( is_null( $result ) ) { // no useful information or concrete error found
+	private function finishLinkDescription( $chunk, $hasNamespaces, $description, &$setNS ) {
+
+		if ( is_null( $description ) ) { // no useful information or concrete error found
 			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $chunk ); // was smw_badqueryatom
 		} elseif ( !$hasNamespaces && $setNS && !is_null( $this->defaultNamespace  ) ) {
-			$result = $this->descriptionProcessor->constructConjunctiveCompoundDescriptionFrom( $result, $this->defaultNamespace );
+			$description = $this->descriptionProcessor->constructConjunctiveCompoundDescriptionFrom( $description, $this->defaultNamespace );
 			$hasNamespaces = true;
 		}
 
@@ -531,11 +533,28 @@ class SMWQueryParser {
 			// Note: Using "|label" in query atoms used to be a way to set the mainlabel in SMW <1.0; no longer supported now
 			$chunk = $this->readChunk( '\]\]' );
 			$labelpart = '|';
+			$hasError = true;
+
+			// Set an individual hierarchy depth
+			if ( strpos( $chunk, '+depth' ) !== false ) {
+				list( $k, $depth ) = explode( '=', $chunk, 2 );
+
+				if ( $description instanceOf ClassDescription || $description instanceOf SomeProperty || $description instanceOf Disjunction ) {
+					$description->setHierarchyDepth( $depth );
+				}
+
+				$chunk = $this->readChunk( '\]\]' );
+				$hasError = false;
+			}
+
 			if ( $chunk != ']]' ) {
 				$labelpart .= $chunk;
 				$chunk = $this->readChunk( '\]\]' );
 			}
-			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $labelpart );
+
+			if ( $hasError ) {
+				$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $labelpart );
+			}
 		}
 
 		if ( $chunk != ']]' ) {
@@ -557,7 +576,7 @@ class SMWQueryParser {
 			}
 		}
 
-		return $result;
+		return $description;
 	}
 
 	/**

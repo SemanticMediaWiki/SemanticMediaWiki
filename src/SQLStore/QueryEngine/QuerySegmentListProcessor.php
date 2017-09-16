@@ -264,6 +264,11 @@ class QuerySegmentListProcessor {
 			$type
 		);
 
+		// An individual depth was annotated as part of the query
+		if ( $query->depth !== null ) {
+			$depth = $query->depth;
+		}
+
 		if ( $depth <= 0 ) { // treat as value, no recursion
 			$query->type = QuerySegment::Q_VALUE;
 			return;
@@ -297,7 +302,8 @@ class QuerySegmentListProcessor {
 		$this->hierarchyTempTableBuilder->createHierarchyTempTableFor(
 			$type,
 			$tablename,
-			$values
+			$values,
+			$depth
 		);
 	}
 

@@ -83,8 +83,6 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetFingerprint() {
 
-		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
-
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )
 		);
@@ -140,6 +138,67 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			new ThingDescription(),
 			$instance->prune( $maxsize, $maxDepth, $log )
+		);
+	}
+
+	public function testStableFingerprint() {
+
+		$instance = new ClassDescription(
+			new DIWikiPage( 'Foo', NS_CATEGORY )
+		);
+
+		$this->assertSame(
+			'Cl:f35b531270067b4772aa3a1a907b8c81',
+			$instance->getFingerprint()
+		);
+	}
+
+	public function testHierarchyDepthToBeCeiledOnMaxQSubcategoryDepthSetting() {
+
+		$instance = new ClassDescription(
+			new DIWikiPage( 'Foo', NS_CATEGORY )
+		);
+
+		$instance->setHierarchyDepth( 9999999 );
+
+		$this->assertSame(
+			$GLOBALS['smwgQSubcategoryDepth'],
+			$instance->getHierarchyDepth()
+		);
+	}
+
+	public function testGetQueryStringWithHierarchyDepth() {
+
+		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+
+		$instance = new ClassDescription(
+			new DIWikiPage( 'Foo', NS_CATEGORY )
+		);
+
+		$instance->setHierarchyDepth( 1 );
+
+		$this->assertSame(
+			"[[$ns:Foo|+depth=1]]",
+			$instance->getQueryString()
+		);
+	}
+
+	public function testVaryingHierarchyDepthCausesDifferentFingerprint() {
+
+		$instance = new ClassDescription(
+			new DIWikiPage( 'Foo', NS_CATEGORY )
+		);
+
+		$instance->setHierarchyDepth( 9999 );
+		$expected = $instance->getFingerprint();
+
+		$instance = new ClassDescription(
+			new DIWikiPage( 'Foo', NS_CATEGORY )
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getFingerprint()
 		);
 	}
 

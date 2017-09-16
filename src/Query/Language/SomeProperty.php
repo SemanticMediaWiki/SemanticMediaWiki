@@ -30,6 +30,11 @@ class SomeProperty extends Description {
 	protected $property;
 
 	/**
+	 * @var integer|null
+	 */
+	protected $hierarchyDepth;
+
+	/**
 	 * @since 1.6
 	 *
 	 * @param DIProperty $property
@@ -38,6 +43,29 @@ class SomeProperty extends Description {
 	public function __construct( DIProperty $property, Description $description ) {
 		$this->property = $property;
 		$this->description = $description;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $hierarchyDepth
+	 */
+	public function setHierarchyDepth( $hierarchyDepth ) {
+
+		if ( $hierarchyDepth > $GLOBALS['smwgQSubpropertyDepth'] ) {
+			$hierarchyDepth = $GLOBALS['smwgQSubpropertyDepth'];
+		}
+
+		$this->hierarchyDepth = $hierarchyDepth;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return integer|null
+	 */
+	public function getHierarchyDepth() {
+		return $this->hierarchyDepth;
 	}
 
 	/**
@@ -66,7 +94,7 @@ class SomeProperty extends Description {
 		// member to distinguish Foo.Bar.Foobar.Bam from Foo.Bar.Foobar
 		$membership = $this->getMembership() . $subDescription->getMembership();
 
-		return $this->fingerprint = 'S:' . md5( $property . '|' . $membership . '|' . $this->description->getFingerprint() );
+		return $this->fingerprint = 'S:' . md5( $property . '|' . $membership . '|' . $this->description->getFingerprint() . $this->hierarchyDepth );
 	}
 
 	/**
@@ -97,6 +125,7 @@ class SomeProperty extends Description {
 		// language indep. references
 		$propertyChainString = $this->property->getCanonicalLabel();
 		$propertyname = $propertyChainString;
+		$final = '';
 
 		while ( ( $propertyname !== '' ) && ( $subDescription instanceof SomeProperty ) ) { // try to use property chain syntax
 			$propertyname = $subDescription->getProperty()->getCanonicalLabel();
@@ -107,11 +136,15 @@ class SomeProperty extends Description {
 			}
 		}
 
-		if ( $asValue ) {
-			return '<q>[[' . $propertyChainString . '::' . $subDescription->getQueryString( true ) . ']]</q>';
+		if ( $this->hierarchyDepth !== null ) {
+			$final = '|+depth=' . $this->hierarchyDepth;
 		}
 
-		return '[[' . $propertyChainString . '::' . $subDescription->getQueryString( true ) . ']]';
+		if ( $asValue ) {
+			return '<q>[[' . $propertyChainString . '::' . $subDescription->getQueryString( true ) . $final . ']]</q>';
+		}
+
+		return '[[' . $propertyChainString . '::' . $subDescription->getQueryString( true ) . $final . ']]';
 	}
 
 	/**
@@ -170,6 +203,7 @@ class SomeProperty extends Description {
 			$this->description->prune( $maxsize, $maxdepth, $log )
 		);
 
+		$result->setHierarchyDepth( $this->getHierarchyDepth() );
 		$result->setPrintRequests( $this->getPrintRequests() );
 
 		return $result;

@@ -65,6 +65,26 @@ class Disjunction extends Description {
 		return $this->fingerprint = 'D:' . md5( implode( '|', array_keys( $fingerprint ) ) );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $hierarchyDepth
+	 */
+	public function setHierarchyDepth( $hierarchyDepth ) {
+
+		$this->fingerprint = null;
+
+		if ( $this->classDescription !== null ) {
+			$this->classDescription->setHierarchyDepth( $hierarchyDepth );
+		}
+
+		foreach ( $this->descriptions as $key => $description ) {
+			if ( $description instanceof SomeProperty ) {
+				$description->setHierarchyDepth( $hierarchyDepth );
+			}
+		}
+	}
+
 	public function getDescriptions() {
 		return $this->descriptions;
 	}

@@ -143,6 +143,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		// *** Now construct the query ... ***//
 		$query->joinTable = $proptable->getName();
+		$query->depth = $description->getHierarchyDepth();
 
 		// *** Add conditions for selecting rows for this property ***//
 		if ( !$proptable->isFixedPropertyTable() ) {
@@ -153,6 +154,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$pquery = new QuerySegment();
 			$pquery->type = QuerySegment::Q_PROP_HIERARCHY;
 			$pquery->joinfield = array( $pid );
+			$pquery->depth = $description->getHierarchyDepth();
 			$query->components[$pqid] = "{$query->alias}.p_id";
 
 			$this->querySegmentListBuilder->addQuerySegment( $pquery );
