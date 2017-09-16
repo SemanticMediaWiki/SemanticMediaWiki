@@ -20,15 +20,20 @@ class Obfuscator {
 	 */
 	public static function obfuscateLinks( $text, InTextAnnotationParser $parser ) {
 
+		// #2193
 		// Use &#x005B; instead of &#91; to distinguish it from the MW's Sanitizer
 		// who uses the same decode sequence and avoid issues when removing links
 		// after obfuscation
 
+		// #2671
+		// Use &#x005D; instead of &#93; (]) since CiteExtension use the later as
+		// encoding for the ref brackets
+
 		// Filter simple [ ... ] from [[ ... ]] links and ensure to find the correct
 		// start and end in case of [[Foo::[[Bar]]]] or [[Foo::[http://example.org/foo]]]
 		$text = str_replace(
-			array( '[', ']', '&#x005B;&#x005B;', '&#93;&#93;&#93;&#93;', '&#93;&#93;&#93;', '&#93;&#93;' ),
-			array( '&#x005B;', '&#93;', '[[', ']]]]', '&#93;]]', ']]' ),
+			array( '[', ']', '&#x005B;&#x005B;', '&#x005D;&#x005D;&#x005D;&#x005D;', '&#x005D;&#x005D;&#x005D;', '&#x005D;&#x005D;' ),
+			array( '&#x005B;', '&#x005D;', '[[', ']]]]', '&#x005D;]]', ']]' ),
 			$text
 		);
 
@@ -44,11 +49,11 @@ class Obfuscator {
 	 * @return text
 	 */
 	public static function removeLinkObfuscation( $text ) {
-		return str_replace(
-			array( '&#x005B;', '&#93;', '&#124;' ),
-			array( '[', ']', '|' ),
-			$text
-		);
+
+		$from = [ '&#x005B;', '&#x005D;', '&#124;' ];
+		$to = [ '[', ']', '|' ];
+
+		return str_replace( $from, $to,	$text );
 	}
 
 	/**
@@ -61,7 +66,7 @@ class Obfuscator {
 	public static function encodeLinks( $text ) {
 		return str_replace(
 			array( '[', ']', '|' ),
-			array( '&#x005B;', '&#93;', '&#124;' ),
+			array( '&#x005B;', '&#x005D;', '&#124;' ),
 			$text
 		);
 	}

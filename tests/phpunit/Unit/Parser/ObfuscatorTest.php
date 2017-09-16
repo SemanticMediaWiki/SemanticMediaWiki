@@ -142,12 +142,12 @@ class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			'[[Foo::[[Bar]]]]',
-			'[[Foo::&#x005B;&#x005B;Bar&#93;&#93;]]'
+			'[[Foo::&#x005B;&#x005B;Bar&#x005D;&#x005D;]]'
 		);
 
 		$provider[] = array(
 			'[[Foo::[[Foo|Bar]]]]',
-			'[[Foo::&#x005B;&#x005B;Foo&#124;Bar&#93;&#93;]]'
+			'[[Foo::&#x005B;&#x005B;Foo&#124;Bar&#x005D;&#x005D;]]'
 		);
 
 		return $provider;
