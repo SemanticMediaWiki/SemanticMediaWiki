@@ -180,8 +180,14 @@ EOT;
 			$this->processLog[$tableName] = array();
 		}
 
+		$default = '';
+
+		if ( isset( $tableOptions['defaults'][$fieldName] ) ) {
+			$default = "DEFAULT '" . $tableOptions['defaults'][$fieldName] . "'";
+		}
+
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->doCreateField( $tableName, $fieldName, $position, $fieldType );
+			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->reportMessage( "   ... changing type of field $fieldName from '$currentFields[$fieldName]' to '$fieldType' ... " );
 
@@ -215,12 +221,12 @@ EOT;
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType ) {
+	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
 
 		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
-		$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType", __METHOD__ );
+		$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType $default", __METHOD__ );
 		$this->reportMessage( "done.\n" );
 	}
 

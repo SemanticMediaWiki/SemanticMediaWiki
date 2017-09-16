@@ -27,7 +27,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'mysql' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\MySQLTableBuilder',
+			MySQLTableBuilder::class,
 			MySQLTableBuilder::factory( $connection )
 		);
 	}
@@ -60,7 +60,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( $table );
 	}
 
-	public function testUpdateExistingTable() {
+	public function testUpdateExistingTableWithNewField() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
@@ -82,12 +82,45 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text FIRST' ) );
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text  FIRST' ) );
 
 		$instance = MySQLTableBuilder::factory( $connection );
 
 		$table = new Table( 'foo' );
 		$table->addColumn( 'bar', 'text' );
+
+		$instance->create( $table );
+	}
+
+	public function testUpdateExistingTableWithNewFieldAndDefault() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'tableExists', 'query' ) )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'mysql' ) );
+
+		$connection->expects( $this->any() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( true ) );
+
+		$connection->expects( $this->at( 2 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'DESCRIBE' ) )
+			->will( $this->returnValue( array() ) );
+
+		$connection->expects( $this->at( 3 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text' . " DEFAULT '0'" . ' FIRST' ) );
+
+		$instance = MySQLTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addDefault( 'bar', 0 );
 
 		$instance->create( $table );
 	}

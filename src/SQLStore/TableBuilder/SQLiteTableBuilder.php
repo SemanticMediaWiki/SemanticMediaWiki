@@ -162,9 +162,14 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 
 		$fieldType = $this->getStandardFieldType( $fieldType );
+		$default = '';
+
+		if ( isset( $tableOptions['defaults'][$fieldName] ) ) {
+			$default = "DEFAULT '" . $tableOptions['defaults'][$fieldName] . "'";
+		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->doCreateField( $tableName, $fieldName, $position, $fieldType );
+			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->doUpdateFieldType( $tableName, $fieldName, $position, $currentFields[$fieldName], $fieldType );
 		} else {
@@ -172,7 +177,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType ) {
+	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
 
 		if ( strpos( $tableName, 'ft_search' ) !== false ) {
 			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
@@ -180,16 +185,18 @@ class SQLiteTableBuilder extends TableBuilder {
 
 		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
-		// @see https://www.sqlite.org/lang_altertable.html states that
-		// "If a NOT NULL constraint is specified, then the column must have a default value other than NULL."
-		$default = "DEFAULT NULL";
+		if ( $default === '' ) {
+			// @see https://www.sqlite.org/lang_altertable.html states that
+			// "If a NOT NULL constraint is specified, then the column must have a default value other than NULL."
+			$default = "DEFAULT NULL";
 
-		// Add DEFAULT '' to avoid
-		// Query: ALTER TABLE sunittest_rdbms_test ADD `t_num` INT(8) NOT NULL
-		// Function: SMW\SQLStore\TableBuilder\SQLiteTableBuilder::doCreateField
-		// Error: 1 Cannot add a NOT NULL column with default value NULL
-		if ( strpos( $fieldType, 'NOT NULL' ) !== false ) {
-			$default = "DEFAULT ''";
+			// Add DEFAULT '' to avoid
+			// Query: ALTER TABLE sunittest_rdbms_test ADD `t_num` INT(8) NOT NULL
+			// Function: SMW\SQLStore\TableBuilder\SQLiteTableBuilder::doCreateField
+			// Error: 1 Cannot add a NOT NULL column with default value NULL
+			if ( strpos( $fieldType, 'NOT NULL' ) !== false ) {
+				$default = "DEFAULT ''";
+			}
 		}
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );

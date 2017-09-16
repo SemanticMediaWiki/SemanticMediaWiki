@@ -132,27 +132,27 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 */
 	public function create( Table $table ) {
 
-		$configuration = $table->getConfiguration();
+		$options = $table->getOptions();
 		$tableName = $table->getName();
 
 		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
 			$this->reportMessage( "   Table not found, now creating...\n" );
-			$this->doCreateTable( $tableName, $configuration );
+			$this->doCreateTable( $tableName, $options );
 		} else {
 			$this->reportMessage( "   Table already exists, checking structure ...\n" );
-			$this->doUpdateTable( $tableName, $configuration );
+			$this->doUpdateTable( $tableName, $options );
 		}
 
 		$this->reportMessage( "   ... done.\n" );
 
-		if ( !isset( $configuration['indicies'] ) ) {
+		if ( !isset( $options['indicies'] ) ) {
 			return $this->reportMessage( "No index structures for table $tableName ...\n" );
 		}
 
 		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
-		$this->doCreateIndicies( $tableName, $configuration );
+		$this->doCreateIndicies( $tableName, $options );
 
 		$this->reportMessage( "   ... done.\n" );
 	}

@@ -318,7 +318,7 @@ class TableSchemaManager {
 		}
 
 		foreach ( $indexes as $key => $index ) {
-			$table->addIndexWithKey( $key, $index );
+			$table->addIndex( $index, $key );
 		}
 
 		return $table;
