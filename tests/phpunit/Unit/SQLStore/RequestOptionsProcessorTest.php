@@ -168,6 +168,34 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			' AND Foo >= 1 AND Bar = foo\_bar'
 		);
 
+		# 4
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ );
+		$requestOptions->addExtraCondition( 'abd = 123' );
+
+		$provider[] = array(
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' AND Foo >= 1 AND Bar = foo\_bar AND abd = 123'
+		);
+
+		# 5
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ );
+		$requestOptions->addExtraCondition( [ 'OR' => 'abd = 123' ] );
+
+		$provider[] = array(
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' AND Foo >= 1 AND Bar = foo\_bar OR abd = 123'
+		);
+
 		return $provider;
 	}
 

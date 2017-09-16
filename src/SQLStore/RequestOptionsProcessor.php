@@ -129,7 +129,17 @@ class RequestOptionsProcessor {
 		}
 
 		foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
-			$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? ' AND ' : '' ) . $extraCondition;
+
+			$expr = $addAnd ? 'AND' : '';
+
+			if ( is_array( $extraCondition ) ) {
+				foreach ( $extraCondition as $k => $v ) {
+					$expr = $k;
+					$extraCondition = $v;
+				}
+			}
+
+			$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? " $expr " : '' ) . $extraCondition;
 		}
 
 		return $sqlConds;
