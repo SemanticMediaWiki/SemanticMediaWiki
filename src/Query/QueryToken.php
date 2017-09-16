@@ -91,8 +91,10 @@ class QueryToken {
 			return;
 		}
 
-		// [[SomeProperty::~*Foo*]]
-		if ( $description->getComparator() === SMW_CMP_LIKE && $description->getDataItem() instanceof DIBlob ) {
+		$isProximate = $description->getComparator() === SMW_CMP_LIKE || $description->getComparator() === SMW_CMP_PRIM_LIKE;
+
+		// [[SomeProperty::~*Foo*]] / [[SomeProperty::like:*Foo*]]
+		if ( $isProximate && $description->getDataItem() instanceof DIBlob ) {
 			return $this->addTokensFromText( $description->getDataItem()->getString() );
 		}
 
