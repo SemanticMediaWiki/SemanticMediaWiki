@@ -23,10 +23,21 @@ class Task extends ApiBase {
 	public function execute() {
 
 		$params = $this->extractRequestParams();
-		$results = array();
+		$parameters = json_decode( $params['params'], true );
+		$results = [];
 
-		if ( $params['taskType'] === 'queryref' ) {
-			$results = $this->handleQueryRefTask( $params );
+		if ( json_last_error() !== JSON_ERROR_NONE || !is_array( $parameters ) ) {
+
+			// 1.29+
+			if ( method_exists( $this, 'dieWithError' ) ) {
+				$this->dieWithError( [ 'smw-api-invalid-parameters' ] );
+			} else {
+				$this->dieUsageMsg( 'smw-api-invalid-parameters' );
+			}
+		}
+
+		if ( $params['task'] === 'update' ) {
+			$results = $this->callUpdateTask( $parameters );
 		}
 
 		$this->getResult()->addValue(
@@ -36,41 +47,52 @@ class Task extends ApiBase {
 		);
 	}
 
-	private function handleQueryRefTask( $params ) {
+	private function callUpdateTask( $parameters ) {
 
-		if ( $params['taskParams'] === '' ) {
-			return ['done' => false ];
+		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
+			return [ 'done' => false ];
 		}
 
-		$title = DIWikiPage::doUnserialize( $params['subject'] )->getTitle();
+		$subject = DIWikiPage::doUnserialize( $parameters['subject'] );
+		$title = $subject->getTitle();
 
 		if ( $title === null ) {
 			return ['done' => false ];
 		}
 
-		if ( ( $qrefs = json_decode( $params['taskParams'] ) ) === array() ) {
-			return ['done' => false ];
+		// Each single update is required to allow for a cascading computation
+		// where one query follows another to ensure that results are updated
+		// according to the value dependency of the referenced annotations that
+		// rely on a computed (#ask) value
+		if ( !isset( $parameters['ref'] ) ) {
+			$parameters['ref'] = [ $subject->getHash() ];
 		}
 
 		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+		$isPost = isset( $parameters['post'] ) ? $parameters['post'] : false;
+		$origin = [];
 
-		// Each single update is required to allow for a cascading computation
-		// where one query follows another to ensure that results are updated
-		// according to the value dependency amon the referenced annotations that
-		// rely on a computed (#ask) value
-		foreach ( $qrefs as $qref ) {
+		if ( isset( $parameters['origin'] ) ) {
+			$origin = [ 'origin' => $parameters['origin'] ];
+		}
+
+		foreach ( $parameters['ref'] as $ref ) {
 			$updateJob = $jobFactory->newUpdateJob(
 				$title,
 				[
 					UpdateJob::FORCED_UPDATE => true,
-					'qref' => $qref
-				]
+					'ref' => $ref
+				] + $origin
 			);
 
-			$updateJob->run();
+			if ( $isPost ) {
+				$updateJob->insert();
+			} else {
+				$updateJob->run();
+			}
 		}
 
-		return ['done' => true ];
+		return [ 'done' => true ];
 	}
 
 	/**
@@ -81,17 +103,13 @@ class Task extends ApiBase {
 	 */
 	public function getAllowedParams() {
 		return array(
-			'taskType' => array(
+			'task' => array(
 				ApiBase::PARAM_REQUIRED => true,
 				ApiBase::PARAM_TYPE => array(
-					'queryref'
+					'update'
 				)
 			),
-			'subject' => array(
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true,
-			),
-			'taskParams' => array(
+			'params' => array(
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_REQUIRED => true,
 			),
@@ -106,7 +124,8 @@ class Task extends ApiBase {
 	 */
 	public function getParamDescription() {
 		return array(
-			'taskType' => 'task type'
+			'task' => 'Defines the task type',
+			'params' => 'JSON encoded parameters that matches the selected type requirement'
 		);
 	}
 
@@ -118,7 +137,7 @@ class Task extends ApiBase {
 	 */
 	public function getDescription() {
 		return array(
-			'API module ...'
+			'Semantic MediaWiki API module to invoke and execute tasks (for internal use only)'
 		);
 	}
 
@@ -154,7 +173,7 @@ class Task extends ApiBase {
 	 */
 	protected function getExamples() {
 		return array(
-			'api.php?action=smwtask&taskType=queryref',
+			'api.php?action=smwtask&task=update&params={ "subject": "Foo" }',
 		);
 	}
 
@@ -165,7 +184,7 @@ class Task extends ApiBase {
 	 * @return string
 	 */
 	public function getVersion() {
-		return __CLASS__ . ': $Id$';
+		return __CLASS__ . ':' . SMW_VERSION;
 	}
 
 }

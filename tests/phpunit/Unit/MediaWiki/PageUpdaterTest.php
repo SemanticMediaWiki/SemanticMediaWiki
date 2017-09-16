@@ -213,6 +213,10 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'pushUpdate' );
 
 		$deferredTransactionalUpdate->expects( $this->once() )
+			->method( 'setFingerprint' )
+			->with( $this->equalTo( 'Foobar' ) );
+
+		$deferredTransactionalUpdate->expects( $this->once() )
 			->method( 'waitOnTransactionIdle' );
 
 		$deferredTransactionalUpdate->expects( $this->once() )
@@ -232,6 +236,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->addPage( $title );
+		$instance->setFingerprint( 'Foobar' );
 
 		$instance->markAsPending();
 		$instance->waitOnTransactionIdle();

@@ -25,16 +25,21 @@
 
 		$( '.smw-postproc' ).each( function() {
 
-			var queryRef = $( this ).data( 'queryref' );
+			var ref = $( this ).data( 'ref' );
 
-			if ( queryRef !== '' ) {
+			if ( ref !== '' ) {
 				mw.notify( mw.msg( 'smw-postproc-queryref' ), { type: 'info', autoHide: false } );
+
+				var params = {
+					'subject': $( this ).data( 'subject' ),
+					'origin': 'api-postproc',
+					'ref' : ref
+				};
 
 				var postArgs = {
 					'action': 'smwtask',
-					'subject': $( this ).data( 'subject' ),
-					'taskType': 'queryref',
-					'taskParams': JSON.stringify( queryRef )
+					'task': 'update',
+					'params': JSON.stringify( params )
 				};
 
 				new mw.Api().postWithToken( 'csrf', postArgs ).then( function ( data ) {
