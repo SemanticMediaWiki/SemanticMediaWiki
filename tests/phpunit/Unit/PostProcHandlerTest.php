@@ -67,7 +67,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'FakeCokie' ) );
 
 		$this->assertContains(
-			'<div class="smw-postproc" data-subject="Foo#0#" data-queryref="[&quot;Bar&quot;]"></div>',
+			'<div class="smw-postproc" data-subject="Foo#0#" data-ref="[&quot;Bar&quot;]"></div>',
 			$instance->getHtml( $title,  $webRequest )
 		);
 	}

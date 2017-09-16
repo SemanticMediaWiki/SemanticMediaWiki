@@ -238,7 +238,24 @@ class UpdateJob extends JobBase {
 		// TODO
 		// Rebuild the factbox
 
-		$parserData->setOrigin( 'UpdateJob' );
+		$origin[] = 'UpdateJob';
+
+		if ( $this->hasParameter( 'origin' ) ) {
+			$origin[] = $this->getParameter( 'origin' );
+		}
+
+		if ( $this->hasParameter( 'ref' ) ) {
+			$origin[] = $this->getParameter( 'ref' );
+
+			// For a cascading reference update, allow the PageUpdate (title
+			// invalidation) to take place in succession
+			$parserData->setOption(
+				Enum::OPT_SUSPEND_PURGE,
+				false
+			);
+		}
+
+		$parserData->setOrigin( $origin );
 
 		$parserData->setOption(
 			$parserData::OPT_FORCED_UPDATE,

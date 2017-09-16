@@ -96,7 +96,7 @@ class PostProcHandler {
 				array(
 					'class' => 'smw-postproc',
 					'data-subject' => DIWikiPage::newFromTitle( $title )->getHash(),
-					'data-queryref' => json_encode( array_keys( $refs ) )
+					'data-ref' => json_encode( array_keys( $refs ) )
 				),
 				'' // Message::get( 'smw-postproc-queryref', Message::PARSE )
 			);

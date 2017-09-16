@@ -65,11 +65,10 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Task(
 			$this->apiFactory->newApiMain( array(
-					'action'     => 'smwtask',
-					'subject'    => 'Foo#0##',
-					'taskType'   => 'queryref',
-					'taskParams' => json_encode( [ 'Bar' ] ),
-					'token'      => 'foo'
+					'action'   => 'smwtask',
+					'task'     => 'update',
+					'params'   => json_encode( [ 'subject' => 'Foo#0##', 'ref' => [ 'Bar' ] ] ),
+					'token'    => 'foo'
 				)
 			),
 			'smwtask'

@@ -45,6 +45,11 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	private $origin = '';
 
 	/**
+	 * @var string|null
+	 */
+	private $fingerprint = null;
+
+	/**
 	 * @var boolean
 	 */
 	private $isHtmlCacheUpdate = true;
@@ -98,6 +103,15 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	 */
 	public function setOrigin( $origin ) {
 		$this->origin = $origin;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string|null $fingerprint
+	 */
+	public function setFingerprint( $fingerprint = null ) {
+		$this->fingerprint = $fingerprint;
 	}
 
 	/**
@@ -198,6 +212,10 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 		if ( $this->isPending ) {
 			$this->deferredTransactionalUpdate->markAsPending();
 		}
+
+		$this->deferredTransactionalUpdate->setFingerprint(
+			$this->fingerprint
+		);
 
 		$this->deferredTransactionalUpdate->setOrigin( array(
 			__METHOD__,
