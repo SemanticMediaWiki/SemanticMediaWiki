@@ -121,12 +121,16 @@ class NavigationLinksWidget {
 	 *
 	 * @param Title $title,
 	 * @param UrlArgs $urlArgs
-	 * @param integer $count,
+	 * @param integer $count
 	 * @param boolean $hasFurtherResults
 	 *
 	 * @return string
 	 */
 	public static function navigationLinks( Title $title, UrlArgs $urlArgs, $count, $hasFurtherResults = false ) {
+
+		if ( $count == 0 ) {
+			return '';
+		}
 
 		$userLanguage = Localizer::getInstance()->getUserLanguage();
 		$navigation = '';

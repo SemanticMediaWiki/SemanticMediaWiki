@@ -57,6 +57,25 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNavigationLinksOnZeroCountResult() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		NavigationLinksWidget::setMaxInlineLimit( 300 );
+
+		$result = NavigationLinksWidget::navigationLinks( $title, $urlArgs, 0, false );
+
+		$this->assertEmpty(
+			$result
+		);
+	}
+
 	public function testOffsetLimit() {
 
 		$title = $this->getMockBuilder( '\Title' )
