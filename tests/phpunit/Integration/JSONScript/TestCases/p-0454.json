@@ -1,0 +1,47 @@
+{
+	"description": "Test in-text annotation with enabled LinksInValue on `&#91;`, `&#93;` (#2671, `wgContLang=en`, `smwgLinksInValues=SMW_LINV_OBFU`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::text]]"
+		},
+		{
+			"page": "Example/P0454/1",
+			"contents": ""
+		},
+		{
+			"page": "Example/P0454/2",
+			"contents": "[[Example/P0454/1|&#91;&#91;Foo&#93;&#93;]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 `&#91;`/`&#93;` are kept during parsing",
+			"subject": "Example/P0454/2",
+			"assert-output": {
+				"to-contain": [
+					"<a href=.* title=\"Example/P0454/1\">&#91;&#91;Foo&#93;&#93;</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgLinksInValues": "SMW_LINV_OBFU",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
