@@ -180,7 +180,8 @@ class TableIntegrityExaminer implements MessageReporterAware {
 				SQLStore::PROPERTY_STATISTICS_TABLE,
 				array(
 					'p_id' => $id,
-					'usage_count' => 0
+					'usage_count' => 0,
+					'null_count' => 0
 				),
 				__METHOD__
 			);

@@ -258,4 +258,99 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		$instance->addToUsageCounts( $additions );
 	}
 
+	public function testInsertUsageCountWithArrayValue() {
+
+		$tableName = 'Foo';
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'insert' )
+			->with(
+				$this->stringContains( $tableName ),
+				$this->equalTo(
+					[
+						'usage_count' => 1,
+						'null_count'  => 9999,
+						'p_id' => 42
+					] ),
+				$this->anything() );
+
+
+		$instance = new PropertyStatisticsTable(
+			$connection,
+			$tableName
+		);
+
+		$instance->insertUsageCount( 42, [ 1, 9999 ] );
+	}
+
+	public function testAddToUsageCountsWithArrayValue() {
+
+		$tableName = 'Foo';
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->will( $this->returnArgument( 0 ) );
+
+		$connection->expects( $this->once() )
+			->method( 'update' )
+			->with(
+				$this->stringContains( $tableName ),
+				$this->equalTo(
+					[
+						'usage_count = usage_count + 1',
+						'null_count = null_count + 9999'
+					] ),
+				$this->equalTo(
+					[
+						'p_id' => 42
+					] ),
+				$this->anything() );
+
+		$instance = new PropertyStatisticsTable(
+			$connection,
+			$tableName
+		);
+
+		$instance->addToUsageCounts( [ 42 => [ 'usage' => 1, 'null' => 9999 ] ] );
+	}
+
+	public function testSetUsageCountWithArrayValue() {
+
+		$tableName = 'Foo';
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'update' )
+			->with(
+				$this->stringContains( $tableName ),
+				$this->equalTo(
+					[
+						'usage_count' => 1,
+						'null_count' => 9999
+					] ),
+				$this->equalTo(
+					[
+						'p_id' => 42
+					] ),
+				$this->anything() );
+
+		$instance = new PropertyStatisticsTable(
+			$connection,
+			$tableName
+		);
+
+		$instance->setUsageCount( 42, [ 1, 9999 ] );
+	}
+
 }

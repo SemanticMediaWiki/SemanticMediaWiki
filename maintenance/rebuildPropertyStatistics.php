@@ -42,7 +42,7 @@ class RebuildPropertyStatistics extends \Maintenance {
 		$maintenanceHelper->initRuntimeValues();
 
 		$statisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
-			$applicationFactory->getStore(),
+			$applicationFactory->getStore( 'SMW\SQLStore\SQLStore' ),
 			array( $this, 'reportMessage' )
 		);
 
