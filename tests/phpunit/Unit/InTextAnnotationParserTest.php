@@ -607,6 +607,21 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#15 (#2671) external [] decode use
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => SMW_LINV_OBFU,
+				'smwgInlineErrors'  => true,
+				'smwgEnabledInTextAnnotationParserStrictMode' => true
+			),
+			'<sup id="cite_ref-1" class="reference">[[#cite_note-1|&#91;1&#93;]]</sup>',
+			array(
+				'resultText' => '<sup id="cite_ref-1" class="reference">[[#cite_note-1|&#91;1&#93;]]</sup>'
+			)
+		);
+
 		return $provider;
 	}
 
