@@ -24,7 +24,7 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableSchemaManager',
+			TableSchemaManager::class,
 			new TableSchemaManager( $store )
 		);
 	}
@@ -105,7 +105,7 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$table = $instance->findTable( \SMW\SQLStore\SQLStore::ID_TABLE );
-		$fields = $table->getConfiguration( 'fields' );
+		$fields = $table->getOption( 'fields' );
 
 		$this->assertContains(
 			FieldType::TYPE_CHAR_NOCASE,

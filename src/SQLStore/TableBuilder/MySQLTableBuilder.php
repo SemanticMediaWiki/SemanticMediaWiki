@@ -173,9 +173,14 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 
 		$fieldType = $this->getStandardFieldType( $fieldType );
+		$default = '';
+
+		if ( isset( $tableOptions['defaults'][$fieldName] ) ) {
+			$default = "DEFAULT '" . $tableOptions['defaults'][$fieldName] . "'";
+		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->doCreateField( $tableName, $fieldName, $position, $fieldType );
+			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->doUpdateFieldType( $tableName, $fieldName, $position, $currentFields[$fieldName], $fieldType );
 		} else {
@@ -183,12 +188,12 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType ) {
+	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
 
 		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
-		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $position", __METHOD__ );
+		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $default $position", __METHOD__ );
 		$this->reportMessage( "done.\n" );
 	}
 
