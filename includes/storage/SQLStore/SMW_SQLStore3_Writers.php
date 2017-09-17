@@ -2,6 +2,8 @@
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
+use SMW\RequestOptions;
 use SMW\MediaWiki\Jobs\JobBase;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SemanticData;
@@ -10,6 +12,7 @@ use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
 use SMW\SQLStore\EntityStore\EntitySubobjectListIterator;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\DataModel\MandatoryRequirements;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.
@@ -149,6 +152,7 @@ class SMWSQLStore3Writers {
 		\Hooks::run( 'SMWSQLStore3::updateDataBefore', array( $this->store, $semanticData ) );
 
 		$subject = $semanticData->getSubject();
+		$connection = $this->store->getConnection( 'mw.db' );
 
 		$subobjects = $this->entitySubobjectListIterator->newListIteratorFor(
 			$subject
@@ -158,6 +162,23 @@ class SMWSQLStore3Writers {
 		$this->propertyTableRowDiffer->resetCompositePropertyTableDiff();
 
 		$changePropListener = new ChangePropListener();
+
+		#2669
+		$mandatoryRequirements = new MandatoryRequirements();
+		$mandatoryRequirements->setChangePropListener( $changePropListener );
+
+		$mandatoryRequirements->setNamespaceList(
+			$GLOBALS['smwgMandatoryRequirementsNamespaceList']
+		);
+
+		$mandatoryRequirements->findRequirements(
+			$this->store,
+			$semanticData
+		);
+
+		$semanticData->setMandatoryRequirements(
+			$mandatoryRequirements
+		);
 
 		$changePropListener->enabledListeners(
 			$this->store
@@ -169,10 +190,11 @@ class SMWSQLStore3Writers {
 		// Update data about our subobjects
 		$subSemanticData = $semanticData->getSubSemanticData();
 
-		$this->store->getConnection( 'mw.db' )->beginAtomicTransaction( __METHOD__ );
+		$connection->beginAtomicTransaction( __METHOD__ );
 
-		foreach( $subSemanticData as $subobjectData ) {
-			$this->doFlatDataUpdate( $subobjectData );
+		foreach( $subSemanticData as $containerSemanticData ) {
+			$containerSemanticData->setMandatoryRequirements( $mandatoryRequirements );
+			$this->doFlatDataUpdate( $containerSemanticData );
 		}
 
 		// Mark subobjects without reference to be deleted
@@ -188,7 +210,7 @@ class SMWSQLStore3Writers {
 			}
 		}
 
-		$this->store->getConnection( 'mw.db' )->endAtomicTransaction( __METHOD__ );
+		$connection->endAtomicTransaction( __METHOD__ );
 
 		$changePropListener->callListeners();
 
@@ -377,7 +399,7 @@ class SMWSQLStore3Writers {
 	 * @param array $rows array of rows to insert/delete
 	 * @param boolean $insert
 	 */
-	protected function writePropertyTableRowUpdates( array &$propertyUseIncrements, SMWSQLStore3Table $propertyTable, array $rows, $insert ) {
+	protected function writePropertyTableRowUpdates( array &$propertyUseIncrements, SMWSQLStore3Table $propertyTable, array $rows, $isInsertOp ) {
 		if ( empty( $rows ) ) {
 			return;
 		}
@@ -386,13 +408,16 @@ class SMWSQLStore3Writers {
 			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
 		}
 
-		$db = $this->store->getConnection();
+		$connection = $this->store->getConnection( 'mw.db' );
+		$tableName = $propertyTable->getName();
 
-		if ( $insert ) {
-			$db->insert(
-				$propertyTable->getName(),
+		$tableFields = $this->store->getDataItemHandlerForDIType( $propertyTable->getDiType() )->getTableFields();
+
+		if ( $isInsertOp ) {
+			$connection->insert(
+				$tableName,
 				$rows,
-				"SMW::writePropertyTableRowUpdates-insert-{$propertyTable->getName()}"
+				__METHOD__ . ':' . $tableName
 			);
 		} else {
 			$this->deleteRows(
@@ -407,6 +432,7 @@ class SMWSQLStore3Writers {
 		}
 
 		foreach ( $rows as $row ) {
+			$isNull = true;
 
 			if ( !$propertyTable->isFixedPropertyTable() ) {
 				$pid = $row['p_id'];
@@ -416,15 +442,29 @@ class SMWSQLStore3Writers {
 				$pid,
 				[
 					'row' => $row,
-					'isInsertOp' => $insert
+					'isInsertOp' => $isInsertOp
 				]
 			);
 
-			if ( !array_key_exists( $pid, $propertyUseIncrements ) ) {
-				$propertyUseIncrements[$pid] = 0;
+			if ( !isset( $propertyUseIncrements[$pid] ) ) {
+				$propertyUseIncrements[$pid] = [
+					'usage' => 0,
+					'null'  => 0
+				];
 			}
 
-			$propertyUseIncrements[$pid] += ( $insert ? 1 : -1 );
+			#2669
+			// We need to check that each field is set NULL as a single field
+			// (as in the case of a Blob, URL table) can appear with a NULL
+			foreach ( $tableFields as $field => $t ) {
+				if ( isset( $row[$field] ) ) {
+					$isNull = $row[$field] === null && $isNull === true;
+				}
+			}
+
+			// @see PropertyStatisticsTable::addToUsageCounts
+			$section = $isNull ? 'null' : 'usage';
+			$propertyUseIncrements[$pid][$section] += ( $isInsertOp ? 1 : -1 );
 		}
 	}
 

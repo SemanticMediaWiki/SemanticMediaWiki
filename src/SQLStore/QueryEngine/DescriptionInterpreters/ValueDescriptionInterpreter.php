@@ -106,6 +106,11 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			);
 
 			$query->joinfield = array( $oid );
+		} elseif( $comparator === SMW_CMP_NULL ) {
+			// #2669, treat NULL as discrete value of a state
+			$query->type = QuerySegment::Q_VALUE;
+			$query->joinfield = [];
+			$query->isNull = true;
 		} else { // Join with SMW IDs table needed for other comparators (apply to title string).
 			$query->joinTable = SMWSql3SmwIds::TABLE_NAME;
 			$query->joinfield = "{$query->alias}.smw_id";

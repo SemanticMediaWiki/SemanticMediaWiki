@@ -8,6 +8,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMWDIGeoCoord  as DIGeoCoord;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\DataModel\DataItems\DINull;
 
 /**
  * This class implements store access to DIGeoCoord data items.
@@ -80,11 +81,22 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		return array(
-			'o_serialized' => $dataItem->getSerialization(),
-			'o_lat' => (string)$dataItem->getLatitude(),
-			'o_lon' => (string)$dataItem->getLongitude()
-		);
+
+		if ( $dataItem instanceof DINull ) {
+			$serialized = null;
+			$lat = null;
+			$lon = null;
+		} else {
+			$serialized = $dataItem->getSerialization();
+			$lat = (string)$dataItem->getLatitude();
+			$lon = (string)$dataItem->getLongitude();
+		}
+
+		return [
+			'o_serialized' => $serialized,
+			'o_lat' => $lat,
+			'o_lon' => $lon
+		];
 	}
 
 	/**

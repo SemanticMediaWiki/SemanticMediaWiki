@@ -123,12 +123,31 @@ class QuerySegmentListProcessor {
 					$this->doResolveBySegment( $subQuery );
 
 					if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
-						$query->from .= ' INNER JOIN ' . $db->tableName( $subQuery->joinTable ) . " AS $subQuery->alias ON $joinField=" . $subQuery->joinfield;
+						$isNot = $subQuery->isNot ? '!' : '';
+
+						$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
+						$t = $db->tableName( $subQuery->joinTable ) ." AS $subQuery->alias";
+
+						if ( $subQuery->from ) {
+							$t = "($t $subQuery->from)";
+						}
+
+						$query->from .= " $joinType JOIN $t ON $joinField$isNot=" . $subQuery->joinfield;
+
+						if ( $joinType === 'LEFT' ) {
+							$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->joinfield . ' IS NULL)';
+						}
+
 					} elseif ( $subQuery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
 						$condition = '';
 
-						foreach ( $subQuery->joinfield as $value ) {
-							$condition .= ( $condition ? ' OR ':'' ) . "$joinField=" . $db->addQuotes( $value );
+						if ( $subQuery->isNull === true ) {
+								$condition .= ( $condition ? ' OR ': '' ) . "$joinField IS NULL";
+						} else {
+							foreach ( $subQuery->joinfield as $value ) {
+								$isNot = $subQuery->isNot ? '!' : '';
+								$condition .= ( $condition ? ' OR ': '' ) . "$joinField$isNot=" . $db->addQuotes( $value );
+							}
 						}
 
 						if ( count( $subQuery->joinfield ) > 1 ) {
@@ -136,6 +155,7 @@ class QuerySegmentListProcessor {
 						}
 
 						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . $condition;
+						$query->from .= $subQuery->from;
 					} else { // interpret empty joinfields as impossible condition (empty result)
 						$query->joinfield = ''; // make whole query false
 						$query->joinTable = '';
@@ -147,8 +167,6 @@ class QuerySegmentListProcessor {
 					if ( $subQuery->where !== '' ) {
 						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . '(' . $subQuery->where . ')';
 					}
-
-					$query->from .= $subQuery->from;
 				}
 
 				$query->components = array();

@@ -8,6 +8,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMWDINumber as DINumber;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\DataModel\DataItems\DINull;
 
 /**
  * This class implements Store access to Number data items.
@@ -71,10 +72,19 @@ class DINumberHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		return array(
-			'o_serialized' => $dataItem->getSerialization(),
-			'o_sortkey' => floatval( $dataItem->getNumber() )
-			);
+
+		if ( $dataItem instanceof DINull ) {
+			$serialized = null;
+			$number = null;
+		} else {
+			$serialized = $dataItem->getSerialization();
+			$number = floatval( $dataItem->getNumber() );
+		}
+
+		return [
+			'o_serialized' => $serialized,
+			'o_sortkey' => $number
+		];
 	}
 
 	/**

@@ -716,6 +716,10 @@ class HookRegistry {
 
 			$parserFunctionFactory = $applicationFactory->newParserFunctionFactory( $parser );
 
+			list( $name, $definition, $flag ) = $parserFunctionFactory->newMandatoryParserFunctionDefinition();
+
+			$parser->setFunctionHook( $name, $definition, $flag );
+
 			list( $name, $definition, $flag ) = $parserFunctionFactory->newAskParserFunctionDefinition();
 
 			$parser->setFunctionHook( $name, $definition, $flag );

@@ -10,6 +10,7 @@ use SMWDIContainer;
 use SMWPropertyValue;
 use SMW\Exception\SemanticDataImportException;
 use SMW\DataModel\SubSemanticData;
+use SMW\DataModel\MandatoryRequirements;
 
 /**
  * Class for representing chunks of semantic data for one given
@@ -36,6 +37,11 @@ class SemanticData {
 	 * have been fetched from cache.
 	 */
 	const OPT_LAST_MODIFIED = 'opt.last.modified';
+
+	/**
+	 * Identifies that a data block was created by a user.
+	 */
+	const USER_ANNOTATION = 'user.annotation';
 
 	/**
 	 * Cache for the localized version of the namespace prefix "Property:".
@@ -68,6 +74,11 @@ class SemanticData {
 	 * @var DIProperty[]
 	 */
 	protected $mProperties = array();
+
+	/**
+	 * @var MandatoryRequirements|null
+	 */
+	protected $mandatoryRequirements;
 
 	/**
 	 * States whether the container holds any normal properties.
@@ -145,7 +156,7 @@ class SemanticData {
 	/**
 	 * @var Options
 	 */
-	private $options = null;
+	protected $options = null;
 
 	/**
 	 * This is kept public to keep track of the depth during a recursive processing
@@ -182,7 +193,7 @@ class SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options' );
+		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options', 'mandatoryRequirements' );
 	}
 
 	/**
@@ -213,6 +224,24 @@ class SemanticData {
 	 */
 	public function hasProperty( DIProperty $property ) {
 		return isset( $this->mProperties[$property->getKey()] ) || array_key_exists( $property->getKey(), $this->mProperties );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param MandatoryRequirements $mandatoryRequirements
+	 */
+	public function setMandatoryRequirements( MandatoryRequirements $mandatoryRequirements ) {
+		$this->mandatoryRequirements = $mandatoryRequirements;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return MandatoryRequirements|null
+	 */
+	public function getMandatoryRequirements() {
+		return $this->mandatoryRequirements;
 	}
 
 	/**
@@ -633,6 +662,7 @@ class SemanticData {
 		if ( count( $this->mProperties ) == 0 &&
 		     ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
 			$this->mProperties = $semanticData->getProperties();
+			$this->mandatoryRequirements = $semanticData->getMandatoryRequirements();
 			$this->mPropVals = array();
 
 			foreach ( $this->mProperties as $property ) {

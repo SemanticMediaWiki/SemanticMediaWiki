@@ -32,6 +32,7 @@ class ComparatorMapper {
 			SMW_CMP_LEQ  => '<=',
 			SMW_CMP_GEQ  => '>=',
 			SMW_CMP_NEQ  => '!=',
+			SMW_CMP_NULL => '!+',
 			SMW_CMP_LIKE => ' LIKE ',
 			SMW_CMP_PRIM_LIKE => ' LIKE ',
 			SMW_CMP_NLKE => ' NOT LIKE ',

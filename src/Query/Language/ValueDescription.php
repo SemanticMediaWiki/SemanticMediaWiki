@@ -123,16 +123,22 @@ class ValueDescription extends Description {
 		$dataValue->setOption( UriValue::VALUE_RAW, true );
 		$dataValue->setOption( NumberValue::NO_DISP_PRECISION_LIMIT, true );
 
+		$value = $dataValue->getWikiValue();
+
+		if ( $this->comparator === SMW_CMP_NULL ) {
+			$value = '';
+		}
+
 		if ( $asValue ) {
-			return $comparator . $dataValue->getWikiValue();
+			return $comparator . $value;
 		}
 
 		// this only is possible for values of Type:Page
 		if ( $comparator === '' ) { // some extra care for Category: pages
-			return '[[:' . $dataValue->getWikiValue() . ']]';
+			return '[[:' . $value . ']]';
 		}
 
-		return '[[' . $comparator . $dataValue->getWikiValue() . ']]';
+		return '[[' . $comparator . $value . ']]';
 	}
 
 	public function isSingleton() {

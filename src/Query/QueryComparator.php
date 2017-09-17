@@ -161,6 +161,7 @@ class QueryComparator {
 			'like:' => SMW_CMP_PRIM_LIKE,
 			'nlike:' => SMW_CMP_PRIM_NLKE,
 			'!~' => SMW_CMP_NLKE,
+			'!+' => SMW_CMP_NULL,
 			'<<' => SMW_CMP_LESS,
 			'>>' => SMW_CMP_GRTR,
 			'<' => $strictComparators ? SMW_CMP_LESS : SMW_CMP_LEQ,

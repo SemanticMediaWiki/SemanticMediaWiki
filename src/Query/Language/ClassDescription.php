@@ -5,6 +5,7 @@ namespace SMW\Query\Language;
 use Exception;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use SMW\Localizer;
 
 /**
  * Description of a single class as given by a wiki category, or of a
@@ -29,8 +30,6 @@ class ClassDescription extends Description {
 	protected $hierarchyDepth;
 
 	/**
-	 * Constructor.
-	 *
 	 * @param mixed $content DIWikiPage or array of DIWikiPage
 	 *
 	 * @throws Exception
@@ -104,11 +103,12 @@ class ClassDescription extends Description {
 	public function getQueryString( $asValue = false ) {
 
 		$first = true;
+		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
 
 		foreach ( $this->m_diWikiPages as $wikiPage ) {
 			$wikiValue = DataValueFactory::getInstance()->newDataValueByItem( $wikiPage, null );
 			if ( $first ) {
-				$result = '[[' . $wikiValue->getPrefixedText();
+				$result = '[[' . $ns . ':' . $wikiValue->getText();
 				$first = false;
 			} else {
 				$result .= '||' . $wikiValue->getText();

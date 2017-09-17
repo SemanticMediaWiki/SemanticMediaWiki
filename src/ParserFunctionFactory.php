@@ -11,6 +11,7 @@ use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\ParserFunctions\DeclareParserFunction;
 use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
+use SMW\ParserFunctions\MandatoryParserFunction;
 use SMW\Utils\CircularReferenceGuard;
 use Parser;
 
@@ -63,6 +64,29 @@ class ParserFunctionFactory {
 	 */
 	public function getRecurringEventsParser() {
 		return $this->newRecurringEventsParserFunction( $this->parser );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Parser $parser
+	 *
+	 * @return MandatoryParserFunction
+	 */
+	public function newMandatoryParserFunction( Parser $parser ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$parserData = $applicationFactory->newParserData(
+			$parser->getTitle(),
+			$parser->getOutput()
+		);
+
+		$mandatoryParserFunction = new MandatoryParserFunction(
+			$parserData
+		);
+
+		return $mandatoryParserFunction;
 	}
 
 	/**
@@ -280,6 +304,25 @@ class ParserFunctionFactory {
 		);
 
 		return $declareParserFunction;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function newMandatoryParserFunctionDefinition() {
+
+		$mandatoryParserFunctionDefinition = function( $parser ) {
+
+			$mandatoryParserFunction = $this->newMandatoryParserFunction(
+				$parser
+			);
+
+			return $mandatoryParserFunction->parse( func_get_args() );
+		};
+
+		return array( 'mandatory', $mandatoryParserFunctionDefinition, 0 );
 	}
 
 	/**

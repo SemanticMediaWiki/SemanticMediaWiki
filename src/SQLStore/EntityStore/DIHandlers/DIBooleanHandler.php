@@ -7,6 +7,7 @@ use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMWDIBoolean as DIBoolean;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\DataModel\DataItems\DINull;
 
 /**
  * This class implements Store access to Boolean data items.
@@ -57,6 +58,11 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
+
+		if ( $dataItem instanceof DINull ) {
+			return [ 'o_value' => NULL ];
+		}
+
 		return array(
 			'o_value' => $dataItem->getBoolean() ? 1 : 0,
 		);
