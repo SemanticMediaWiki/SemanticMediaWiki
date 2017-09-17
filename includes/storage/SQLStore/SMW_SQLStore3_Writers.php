@@ -5,6 +5,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\JobBase;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SemanticData;
+use SMW\ChangePropListener;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
 use SMW\SQLStore\EntityStore\EntitySubobjectListIterator;
@@ -156,6 +157,12 @@ class SMWSQLStore3Writers {
 		// Reset diff before starting the update
 		$this->propertyTableRowDiffer->resetCompositePropertyTableDiff();
 
+		$changePropListener = new ChangePropListener();
+
+		$changePropListener->enabledListeners(
+			$this->store
+		);
+
 		// Update data about our main subject
 		$this->doFlatDataUpdate( $semanticData );
 
@@ -182,6 +189,8 @@ class SMWSQLStore3Writers {
 		}
 
 		$this->store->getConnection( 'mw.db' )->endAtomicTransaction( __METHOD__ );
+
+		$changePropListener->callListeners();
 
 		// Deprecated since 2.3, use SMW::SQLStore::AfterDataUpdateComplete
 		\Hooks::run( 'SMWSQLStore3::updateDataAfter', array( $this->store, $semanticData ) );
@@ -402,6 +411,14 @@ class SMWSQLStore3Writers {
 			if ( !$propertyTable->isFixedPropertyTable() ) {
 				$pid = $row['p_id'];
 			}
+
+			ChangePropListener::record(
+				$pid,
+				[
+					'row' => $row,
+					'isInsertOp' => $insert
+				]
+			);
 
 			if ( !array_key_exists( $pid, $propertyUseIncrements ) ) {
 				$propertyUseIncrements[$pid] = 0;
