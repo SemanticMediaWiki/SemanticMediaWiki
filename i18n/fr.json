@@ -39,7 +39,8 @@
 			"Kghbln",
 			"Derugon",
 			"Eric.LEWIN",
-			"Nemo bis"
+			"Nemo bis",
+			"DePlusJean"
 		]
 	},
 	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -514,7 +515,9 @@
 	"smw-pa-property-predefined_askfo": "« $1 » est une propriété prédéfinie qui contient le nom du format de résultat utilisé dans une requête, et est fourni par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined_askst": "« $1 » est une propriété prédéfinie qui décrit les conditions de la requête sous forme de chaîne, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined_askdu": "« $1 » est une propriété prédéfinie contenant une valeur temporelle (en secondes) représentant le temps pris par la requête pour achever son exécution, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
-	"smw-pa-property-predefined_asksc": "« $1 » est une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] qui identifie des sources de requêtes alternatives (par ex. distantes).",
+	"smw-pa-property-predefined_asksc": "« $1 » est une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] qui identifie des sources de requêtes alternatives (par ex. distantes, fédérées).",
+	"smw-pa-property-predefined_askco": "« $1 » est une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour décrire l'état d'une requête ou de ses composants.",
+	"smw-pa-property-predefined-long_askco": "Le nombre ou les chiffres attribués représentent un état codifié interne expliqué sur la [https://www.semantic-mediawiki.org/wiki/Help:Query_profiler page d'aide].",
 	"smw-pa-property-predefined_prec": "« $1 » est une propriété prédéfinie qui décrit une [https://www.semantic-mediawiki.org/wiki/Help:Display_precision précision d’affichage] (en nombre de chiffres) pour les types de données numériques.",
 	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Cartes Sémantiques] n’a pas été détecté, donc « $1 » est restreint dans ses capacités de traitement.",
 	"smw-datavalue-monolingual-dataitem-missing": "Un élément attendu pour construire une valeur composée monolingue manque.",
