@@ -58,6 +58,7 @@
         "_ASKDU": "Abfragedauer",
         "_ASKPA": "Abfrageparameter",
         "_ASKSC": "Abfragequelle",
+        "_ASKCO": "Abfragestatuscode",
         "_MEDIA": "Medientyp",
         "_MIME": "MIME-Typ",
         "_ERRC": "Verarbeitungsfehler",
