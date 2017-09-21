@@ -162,6 +162,7 @@
 	"smw-wantedproperties-docu": "Następujące właściwości są wykorzystywane na wiki, ale nie mają jeszcze opisującej ich strony.",
 	"smw-wantedproperty-template": "$1 (wykorzystane {{PLURAL:$2|raz|$2 razy}})",
 	"smw_purge": "Odśwież",
+	"smw-purge-failed": "Odświeżanie nie powiodło się",
 	"types": "Typy",
 	"smw_types_docu": "Poniżej znajduje się lista wszystkich typów danych, które mogą zostać przypisane atrybutom.",
 	"smw-special-types-no-such-type": "Określony typ danych nie istnieje",
@@ -285,6 +286,7 @@
 	"smw-paramdesc-category-template": "Szablon do formatowania elementów z",
 	"smw-info-par-message": "Wiadomość do wyświetlenia.",
 	"prefs-smw": "Semantyczna MediaWiki",
+	"prefs-general-options": "Opcje ogólne",
 	"prefs-ask-options": "Opcje wyszukiwania semantycznego",
 	"smw-prefs-intro-text": "Opcje poniżej są dostarczane przez [https://www.semantic-mediawiki.org/ semantyczną MediaWiki] (lub powiązane rozszerzenia), aby umożliwić indywidualne dostosowanie do wybranych funkcji. Więcej informacji na ten temat można uzyskać w [https://www.semantic-mediawiki.org/wiki/Help:User_preferences sekcji pomocy].",
 	"smw-prefs-ask-options-tooltip-display": "Wyświetlaj opis parametru za pomocą „dymku” z informacją",
@@ -317,6 +319,7 @@
 	"smw-sp-properties-header-label": "Lista właściwości",
 	"smw-sp-admin-settings-button": "Utwórz listę ustawień",
 	"smw-admin-idlookup-title": "Wyszukaj ID obiektu",
+	"smw-admin-idlookup-input": "Wyszukiwanie:",
 	"smw-admin-objectid": "Identyfikator:",
 	"smw-admin-tab-supplement": "Funkcje dodatkowe",
 	"smw-admin-tab-registry": "Rejestr",
@@ -353,5 +356,6 @@
 	"smw-format-datatable-infothousands": "&nbsp;",
 	"smw-format-datatable-loadingrecords": "Ładowanie...",
 	"smw-format-datatable-processing": "Przetwarzanie...",
+	"smw-format-datatable-search": "Wyszukiwanie:",
 	"smw-format-datatable-zerorecords": "Nie znaleziono pasujących pozycji"
 }

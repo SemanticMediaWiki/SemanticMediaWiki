@@ -498,6 +498,8 @@
 	"smw-pa-property-predefined_askst": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
 	"smw-pa-property-predefined_askdu": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
 	"smw-pa-property-predefined_asksc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 holds the name of the special property.",
+	"smw-pa-property-predefined_askco": "This informatory message describes the [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] holding the [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Query_status_code status code] of a query.\n\nParameter:\n\n* $1 - name of predefined property",
+	"smw-pa-property-predefined-long_askco": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] on the property's page. Translate \"internal codified\" in a sense of \"internally used representation of a state\" the query is in.",
 	"smw-pa-property-predefined_prec": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
 	"smw-sp-types-geo-not-available": "This is an informatory message shown to the user.\n\n* $1 holds the name of the property.",
 	"smw-datavalue-monolingual-dataitem-missing": "This is an error message shown to the user.",
