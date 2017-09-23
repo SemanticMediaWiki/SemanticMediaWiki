@@ -1,0 +1,1 @@
+[{"Has text":["Some example"],"Has number":[]},{"Has text":[],"Has number":["123","345"]}]
