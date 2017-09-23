@@ -31,9 +31,6 @@ matrix:
     - env: DB=mysql; MW=REL1_25; TYPE=relbuild
       php: 5.5
   allow_failures:
-    # Takes at least ~35 min to complete therefore allow it run without delaying
-    # the status update
-    - env: DB=mysql; MW=REL1_29; PHPUNIT=5.7.*
     # Can fail when pushed/used with newly Composer dependencies
     - env: DB=mysql; MW=REL1_25; TYPE=relbuild
     # Can fail when pushed/used with newly Composer dependencies
