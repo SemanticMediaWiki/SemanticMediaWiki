@@ -48,6 +48,11 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	private $parserHtmlTestCaseProcessor;
 
 	/**
+	 * @var ApiTestCaseProcessor
+	 */
+	private $apiTestCaseProcessor;
+
+	/**
 	 * @var RunnerFactory
 	 */
 	private $runnerFactory;
@@ -65,9 +70,10 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->runnerFactory = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
+		$utilityFactory = $this->testEnvironment->getUtilityFactory();
+		$this->runnerFactory = $utilityFactory->newRunnerFactory();
 
-		$validatorFactory = $this->testEnvironment->getUtilityFactory()->newValidatorFactory();
+		$validatorFactory = $utilityFactory->newValidatorFactory();
 		$stringValidator = $validatorFactory->newStringValidator();
 
 		$this->queryTestCaseProcessor = new QueryTestCaseProcessor(
@@ -99,10 +105,16 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			$validatorFactory->newHtmlValidator()
 		);
 
+		$this->apiTestCaseProcessor = new ApiTestCaseProcessor(
+			$utilityFactory->newMwApiFactory(),
+			$stringValidator
+		);
+
 		$this->eventDispatcher = EventHandler::getInstance()->getEventDispatcher();
 
 		// This ensures that if content is created in the NS_MEDIAWIKI namespace
 		// and an object relies on the MediaWikiNsContentReader then it uses the DB
+		ApplicationFactory::clear();
 		ApplicationFactory::getInstance()->getMediaWikiNsContentReader()->skipMessageCache();
 		DataValueFactory::getInstance()->clear();
 
@@ -169,6 +181,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->doRunRdfTests( $jsonTestCaseFileHandler );
 		$this->doRunQueryTests( $jsonTestCaseFileHandler );
 		$this->doRunParserHtmlTests( $jsonTestCaseFileHandler );
+		$this->doRunApiTests( $jsonTestCaseFileHandler );
 	}
 
 	/**
@@ -401,6 +414,25 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			}
 
 			$this->parserHtmlTestCaseProcessor->process( $case );
+		}
+	}
+
+	/**
+	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
+	 */
+	private function doRunApiTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+
+		$this->apiTestCaseProcessor->setTestCaseLocation(
+			$this->getTestCaseLocation()
+		);
+
+		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'api' ) as $case ) {
+
+			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
+				continue;
+			}
+
+			$this->apiTestCaseProcessor->process( $case );
 		}
 	}
 

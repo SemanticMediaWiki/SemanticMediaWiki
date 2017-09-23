@@ -1,0 +1,1 @@
+{"query":{"API_test_property":{"label":"API test property","key":"API_test_property","description":{"en":""},"prefLabel":{"en":""}}},"query-continue-offset":0,"version":1,"meta":{"type":"property","limit":10,"count":1,"isFromCache":false,"queryTime":.*}

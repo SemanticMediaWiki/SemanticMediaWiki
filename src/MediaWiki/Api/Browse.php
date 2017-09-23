@@ -77,7 +77,11 @@ class Browse extends ApiBase {
 	private function callListLookup( $ns, $parameters ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore();
+
+		// We explicitly want the SQLStore here to avoid
+		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
+		// since we don't use those methods anywher else other than the SQLStore
+		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
 
 		$listAugmentor = new ListAugmentor(
 			$store
