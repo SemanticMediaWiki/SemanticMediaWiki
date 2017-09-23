@@ -77,7 +77,7 @@ class JsonImportContentsFileDirReader {
 		}
 
 		foreach ( $files as $file => $path ) {
-			$importContents = $this->getImportContents( $this->doFetchContentsFrom( $path ) );
+			$importContents = $this->getImportContents( $this->readJSONFile( $path ) );
 
 			if ( $importContents === null ) {
 				continue;
@@ -163,7 +163,7 @@ class JsonImportContentsFileDirReader {
 		$importContents->setContentsFile( $file );
 	}
 
-	private function doFetchContentsFrom( $file ) {
+	private function readJSONFile( $file ) {
 
 		$contents = json_decode(
 			file_get_contents( $file ),
