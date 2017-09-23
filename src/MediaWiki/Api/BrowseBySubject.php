@@ -69,7 +69,8 @@ class BrowseBySubject extends ApiBase {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$title = $applicationFactory->newTitleCreator()->createFromText(
-			$params['subject']
+			$params['subject'],
+			$params['ns']
 		);
 
 		$deepRedirectTargetResolver = $applicationFactory->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
@@ -142,7 +143,7 @@ class BrowseBySubject extends ApiBase {
 			'ns' => array(
 				ApiBase::PARAM_TYPE => 'integer',
 				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_DFLT => '',
+				ApiBase::PARAM_DFLT => 0,
 				ApiBase::PARAM_REQUIRED => false,
 			),
 			'iw' => array(
