@@ -165,7 +165,7 @@ class QueryResultDependencyListResolver {
 		if ( $description instanceof ClassDescription ) {
 			foreach ( $description->getCategories() as $category ) {
 
-				if ( $this->propertyHierarchyLookup->hasSubcategoryFor( $category ) ) {
+				if ( $this->propertyHierarchyLookup->hasSubcategory( $category ) ) {
 					$this->doMatchSubcategory( $subjects, $category );
 				}
 
@@ -193,7 +193,7 @@ class QueryResultDependencyListResolver {
 
 		$subject = $property->getCanonicalDiWikiPage();
 
-		if ( $this->propertyHierarchyLookup->hasSubpropertyFor( $property ) ) {
+		if ( $this->propertyHierarchyLookup->hasSubproperty( $property ) ) {
 			$this->doMatchSubproperty( $subjects, $subject, $property );
 		}
 
@@ -214,14 +214,14 @@ class QueryResultDependencyListResolver {
 		// Safeguard against a possible category (or redirect thereof) to point
 		// to itself by relying on tracking the hash of already inserted objects
 		if ( !isset( $subjects[$hash] ) ) {
-			$subcategories = $this->propertyHierarchyLookup->findSubcategoryListFor( $category );
+			$subcategories = $this->propertyHierarchyLookup->findSubcategoryList( $category );
 		}
 
 		foreach ( $subcategories as $subcategory ) {
 
 			$subjects[$subcategory->getHash()] = $subcategory;
 
-			if ( $this->propertyHierarchyLookup->hasSubcategoryFor( $subcategory ) ) {
+			if ( $this->propertyHierarchyLookup->hasSubcategory( $subcategory ) ) {
 				$this->doMatchSubcategory( $subjects, $subcategory );
 			}
 		}
@@ -237,7 +237,7 @@ class QueryResultDependencyListResolver {
 		if (
 			!isset( $subjects[$subject->getHash()] ) &&
 			!isset( $this->propertyDependencyExemptionlist[$subject->getDBKey()] ) ) {
-			$subproperties = $this->propertyHierarchyLookup->findSubpropertListFor( $property );
+			$subproperties = $this->propertyHierarchyLookup->findSubpropertyList( $property );
 		}
 
 		foreach ( $subproperties as $subproperty ) {

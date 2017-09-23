@@ -93,7 +93,7 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 	 *
 	 * @return boolean
 	 */
-	public function hasSubpropertyFor( DIProperty $property ) {
+	public function hasSubproperty( DIProperty $property ) {
 
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
@@ -102,7 +102,7 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 
-		$result = $this->doFind(
+		$result = $this->lookup(
 			'_SUBP',
 			$property->getKey(),
 			$property->getDiWikiPage(),
@@ -119,7 +119,7 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 	 *
 	 * @return boolean
 	 */
-	public function hasSubcategoryFor( DIWikiPage $category ) {
+	public function hasSubcategory( DIWikiPage $category ) {
 
 		if ( $this->subcategoryDepth < 1 ) {
 			return false;
@@ -128,7 +128,7 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 
-		$result = $this->doFind(
+		$result = $this->lookup(
 			'_SUBC',
 			$category->getDBKey(),
 			$category,
@@ -145,8 +145,13 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 	 *
 	 * @return DIWikiPage[]|[]
 	 */
-	public function findSubpropertListFor( DIProperty $property ) {
-		return $this->doFind( '_SUBP', $property->getKey(), $property->getDiWikiPage(), new RequestOptions() );
+	public function findSubpropertyList( DIProperty $property ) {
+
+		if ( $this->subpropertyDepth < 1 ) {
+			return false;
+		}
+
+		return $this->lookup( '_SUBP', $property->getKey(), $property->getDiWikiPage(), new RequestOptions() );
 	}
 
 	/**
@@ -156,11 +161,16 @@ class PropertyHierarchyLookup implements LoggerAwareInterface {
 	 *
 	 * @return DIWikiPage[]|[]
 	 */
-	public function findSubcategoryListFor( DIWikiPage $category ) {
-		return $this->doFind( '_SUBC', $category->getDBKey(), $category, new RequestOptions() );
+	public function findSubcategoryList( DIWikiPage $category ) {
+
+		if ( $this->subcategoryDepth < 1 ) {
+			return [];
+		}
+
+		return $this->lookup( '_SUBC', $category->getDBKey(), $category, new RequestOptions() );
 	}
 
-	private function doFind( $id, $key, DIWikiPage $subject, $requestOptions ) {
+	private function lookup( $id, $key, DIWikiPage $subject, $requestOptions ) {
 
 		$key = $id . '#' . $key . '#' . md5( $requestOptions->getHash() );
 

@@ -102,7 +102,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$propertyHierarchyLookup->expects( $this->once() )
-			->method( 'hasSubcategoryFor' )
+			->method( 'hasSubcategory' )
 			->with( $this->equalTo( $category ) )
 			->will( $this->returnValue( true ) );
 

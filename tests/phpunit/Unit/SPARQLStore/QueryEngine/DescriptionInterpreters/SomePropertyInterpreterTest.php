@@ -109,7 +109,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$propertyHierarchyLookup->expects( $this->once() )
-			->method( 'hasSubpropertyFor' )
+			->method( 'hasSubproperty' )
 			->with( $this->equalTo( $property ) )
 			->will( $this->returnValue( true ) );
 

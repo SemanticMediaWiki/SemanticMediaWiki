@@ -121,7 +121,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 			return '';
 		}
 
-		if ( $this->compoundConditionBuilder->getPropertyHierarchyLookup() === null || !$this->compoundConditionBuilder->getPropertyHierarchyLookup()->hasSubcategoryFor( $category ) ) {
+		if ( $this->compoundConditionBuilder->getPropertyHierarchyLookup() === null || !$this->compoundConditionBuilder->getPropertyHierarchyLookup()->hasSubcategory( $category ) ) {
 			return '';
 		}
 
