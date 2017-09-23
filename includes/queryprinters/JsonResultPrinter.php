@@ -88,11 +88,17 @@ class JsonResultPrinter extends FileExportPrinter {
 			$flags = $flags | ( $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
 
 			// Serialize queryResult
-			$result = json_encode(
-				array_merge(
+			if ( isset( $this->params['type'] ) && $this->params['type'] === 'simple' ) {
+				$result = $this->serializeAsSimpleList( $res );
+			} else {
+				$result = array_merge(
 					$res->serializeToArray(),
-					array ( 'rows' => $res->getCount() )
-				),
+					[ 'rows' => $res->getCount() ]
+				);
+			}
+
+			$result = json_encode(
+				$result,
 				$flags
 			);
 
@@ -120,9 +126,15 @@ class JsonResultPrinter extends FileExportPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$params['searchlabel']->setDefault( $this->msg( 'smw_json_link' )->text() );
+		$params['searchlabel']->setDefault( $this->msg( 'smw_json_link' )->inContentLanguage()->text() );
 
 		$params['limit']->setDefault( 100 );
+
+		$params['type'] = array(
+			'values' => array( 'simple', 'full' ),
+			'default' => 'full',
+			'message' => 'smw-paramdesc-json-type',
+		);
 
 		$params['prettyprint'] = array(
 			'type' => 'boolean',
@@ -138,6 +150,42 @@ class JsonResultPrinter extends FileExportPrinter {
 
 		return $params;
 	}
+
+	private function serializeAsSimpleList( $res ) {
+
+		$result = [];
+
+		while ( $row = $res->getNext() ) {
+			$item = [];
+			$subject = '';
+
+			foreach ( $row as /* SMWResultArray */ $field ) {
+				$label = $field->getPrintRequest()->getLabel();
+
+				if ( $label === '' ) {
+					continue;
+				}
+
+				$values = [];
+				$subject = $field->getResultSubject()->getHash();
+
+				while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
+					$values[] = $dataValue->getWikiValue();
+				}
+
+				$item[$label] = $values;
+			}
+
+			if ( $this->params['mainlabel'] === '-' || $subject === '' ) {
+				$result[] = $item;
+			} else {
+				$result[$subject] = $item;
+			}
+		}
+
+		return $result;
+	}
+
 }
 
 /**

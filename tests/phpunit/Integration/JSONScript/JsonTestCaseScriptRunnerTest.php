@@ -316,6 +316,10 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			$jsonTestCaseFileHandler->getDebugMode()
 		);
 
+		$this->specialPageTestCaseProcessor->setTestCaseLocation(
+			$this->getTestCaseLocation()
+		);
+
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'special' ) as $case ) {
 
 			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {

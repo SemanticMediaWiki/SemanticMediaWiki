@@ -37,6 +37,11 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $debug = false;
 
 	/**
+	 * @var string
+	 */
+	private $testCaseLocation = '';
+
+	/**
 	 * @param Store
 	 * @param StringValidator
 	 */
@@ -53,6 +58,15 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $testCaseLocation
+	 */
+	public function setTestCaseLocation( $testCaseLocation ) {
+		$this->testCaseLocation = $testCaseLocation;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param array $case
@@ -63,7 +77,11 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$queryParameters = isset( $case['special-page']['query-parameters'] ) ? $case['special-page']['query-parameters'] : array();
+		if ( isset( $case['special-page']['query-parameters'] ) ) {
+			$queryParameters = $case['special-page']['query-parameters'];
+		} else {
+			$queryParameters = [];
+		}
 
 		$text = $this->getTextForRequestBy(
 			SpecialPageFactory::getPage( $case['special-page']['page'] ),
@@ -111,16 +129,34 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private function assertOutputForCase( $case, $text ) {
 
 		if ( isset( $case['assert-output']['to-contain'] ) ) {
+
+			if ( isset( $case['assert-output']['to-contain']['contents-file'] ) ) {
+				$contents = $this->getFileContentsWithEncodingDetection(
+					$this->testCaseLocation . $case['assert-output']['to-contain']['contents-file']
+				);
+			} else {
+				$contents = $case['assert-output']['to-contain'];
+			}
+
 			$this->stringValidator->assertThatStringContains(
-				$case['assert-output']['to-contain'],
+				$contents,
 				$text,
 				$case['about']
 			);
 		}
 
 		if ( isset( $case['assert-output']['not-contain'] ) ) {
+
+			if ( isset( $case['assert-output']['not-contain']['contents-file'] ) ) {
+				$contents = $this->getFileContentsWithEncodingDetection(
+					$this->testCaseLocation . $case['assert-output']['not-contain']['contents-file']
+				);
+			} else {
+				$contents = $case['assert-output']['not-contain'];
+			}
+
 			$this->stringValidator->assertThatStringNotContains(
-				$case['assert-output']['not-contain'],
+				$contents,
 				$text,
 				$case['about']
 			);
@@ -154,6 +190,12 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 */
 	private function getTitle( SpecialPage $page ) {
 		return method_exists( $page, 'getPageTitle') ? $page->getPageTitle() : $page->getTitle();
+	}
+
+	// http://php.net/manual/en/function.file-get-contents.php
+	private function getFileContentsWithEncodingDetection( $file ) {
+		$content = file_get_contents( $file );
+		return mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding( $content, 'UTF-8, ISO-8859-1, ISO-8859-2', true ) );
 	}
 
 }

@@ -1,0 +1,121 @@
+{
+	"description": "Test `Special:Ask` with `format=json` output (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0020/1",
+			"contents": "[[Has text::Some example]] [[Category:S0020]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0020/2",
+			"contents": "[[Has number::123]] [[Has number::345]] [[Category:S0020]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"prettyprint": false,
+						"unescape": true,
+						"format": "json"
+					},
+					"q": "[[Category:S0020]]",
+					"po": "?Has text|?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/s-0020.0.txt"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 `type=simple`",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"type": "simple",
+						"prettyprint": false,
+						"unescape": true,
+						"format": "json"
+					},
+					"q": "[[Category:S0020]]",
+					"po": "?Has text|?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/s-0020.1.txt"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 `type=simple`, `mainlabel=-`",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"type": "simple",
+						"prettyprint": false,
+						"unescape": true,
+						"format": "json"
+					},
+					"q": "[[Category:S0020]]",
+					"po": "?Has text|?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/s-0020.2.txt"
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
