@@ -3,6 +3,7 @@
 namespace SMW;
 
 use ObjectCache;
+use Title;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
 
@@ -46,30 +47,40 @@ class CacheFactory {
 	 *
 	 * @return string
 	 */
-	public function getCachePrefix() {
+	public static function getCachePrefix() {
 		return $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'];
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param string $key
+	 * @param Title|integer|string $key
 	 *
 	 * @return string
 	 */
-	public function getFactboxCacheKey( $key ) {
-		return $this->getCachePrefix() . ':smw:fc:' . md5( $key );
+	public static function getFactboxCacheKey( $key ) {
+
+		if ( $key instanceof Title ) {
+			$key = $key->getArticleID();
+		}
+
+		return self::getCachePrefix() . ':smw:fc:' . md5( $key );
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param string $key
+	 * @param Title|integer|string $key
 	 *
 	 * @return string
 	 */
-	public function getPurgeCacheKey( $key ) {
-		return $this->getCachePrefix() . ':smw:arc:' . md5( $key );
+	public static function getPurgeCacheKey( $key ) {
+
+		if ( $key instanceof Title ) {
+			$key = $key->getArticleID();
+		}
+
+		return self::getCachePrefix() . ':smw:arc:' . md5( $key );
 	}
 
 	/**

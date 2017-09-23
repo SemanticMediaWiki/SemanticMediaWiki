@@ -47,14 +47,14 @@ class EventListenerRegistry implements EventListenerCollection {
 
 				if ( $dispatchContext->has( 'subject' ) ) {
 					$title = $dispatchContext->get( 'subject' )->getTitle();
-				} else{
+				} else {
 					$title = $dispatchContext->get( 'title' );
 				}
 
 				$applicationFactory = ApplicationFactory::getInstance();
 
 				$applicationFactory->getCache()->delete(
-					$applicationFactory->newCacheFactory()->getFactboxCacheKey( $title->getArticleID() )
+					$applicationFactory->newCacheFactory()->getFactboxCacheKey( $title )
 				);
 			}
 		);

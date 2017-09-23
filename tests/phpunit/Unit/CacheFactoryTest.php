@@ -52,6 +52,42 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetFactboxCacheKey() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 42 ) );
+
+		$instance = new CacheFactory( 'hash' );
+
+		$this->assertInternalType(
+			'string',
+			$instance->getFactboxCacheKey( $title )
+		);
+	}
+
+	public function testGetPurgeCacheKey() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 42 ) );
+
+		$instance = new CacheFactory( 'hash' );
+
+		$this->assertInternalType(
+			'string',
+			$instance->getPurgeCacheKey( $title )
+		);
+	}
+
 	public function testCanConstructCacheOptions() {
 
 		$instance = new CacheFactory( 'hash' );
