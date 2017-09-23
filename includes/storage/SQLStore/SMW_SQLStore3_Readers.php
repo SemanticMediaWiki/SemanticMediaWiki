@@ -385,6 +385,8 @@ class SMWSQLStore3Readers {
 
 		if ( !$isSubject ) { // Apply sorting/string matching; only with given property
 			$where .= $this->store->getSQLConditions( $requestOptions, $valueField, $labelField, $where !== '' );
+		} elseif ( $isSubject ) {
+			$where .= ( $where !== '' ? ' AND ' : ' ' ) . "$valueField IS NOT NULL";
 		} else {
 			$valueField = '';
 		}
@@ -485,6 +487,9 @@ class SMWSQLStore3Readers {
 		$proptable = $proptables[$tableid];
 		$db = $this->store->getConnection();
 
+		$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
+		$indexField = $diHandler->getIndexField();
+
 		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
 			$from = $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
 			$select = 'smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort';
@@ -502,7 +507,17 @@ class SMWSQLStore3Readers {
 		// ***  Now execute the query and read the results  ***//
 		$result = array();
 
-		if ( !$proptable->isFixedPropertyTable() ) {
+		// Requires a NULL expression?
+		$reqNullExpr = isset( $requestOptions->reqNullExpr ) ? $requestOptions->reqNullExpr : true;
+
+		#2669
+		// When no discrete value is given make sure to add a condition IS NOT NULL to avoid
+		// including NULL assigned entities
+		if ( $proptable->usesIdSubject() && $value === null && $reqNullExpr ) {
+			$where .= ( $where ? ' AND ' : '' ) . "t1.$indexField IS NOT NULL";
+		}
+
+		if ( $proptable->usesIdSubject() ) {
 			$where .= ( $where !== '' ? ' AND ' : ' ' ) . "smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
 			" AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW ) .
 			" AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW );

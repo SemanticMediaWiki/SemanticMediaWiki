@@ -181,6 +181,12 @@ class SMWNumberValue extends SMWDataValue {
 		$number = $unit = '';
 		$error = $this->parseNumberValue( $value, $number, $unit );
 
+		// #2669
+		// Allow the transient state of `!+` in a query context
+		if ( $this->getOption( self::OPT_QUERY_CONTEXT ) && $value === SMW_IS_NULL ) {
+			return $this->convertToMainUnit( null, $unit );
+		}
+
 		if ( $error == 1 ) { // no number found
 			$this->addErrorMsg( array( 'smw_nofloat', $value ) );
 		} elseif ( $error == 2 ) { // number is too large for this platform

@@ -124,6 +124,12 @@ class SMWTimeValue extends SMWDataValue {
 
 	protected function parseUserValue( $value ) {
 
+		// #2669
+		// Allow the transient state of `!+` in a query context
+		if ( $this->getOption( self::OPT_QUERY_CONTEXT ) && $value === SMW_IS_NULL ) {
+			return $this->m_dataitem = new SMWDITime( SMWDITime::CM_GREGORIAN, null );
+		}
+
 		$value = Localizer::convertDoubleWidth( $value );
 		$this->m_wikivalue = $value;
 

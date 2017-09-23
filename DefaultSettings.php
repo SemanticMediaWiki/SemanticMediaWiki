@@ -500,7 +500,7 @@ return array(
 	#
 	# @since 1.0
 	##
-	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:',
+	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:|!+',
 	##
 
 	###
@@ -734,7 +734,7 @@ return array(
 	# @since 1.6
 	##
 	'smwgDeclarationProperties' => array(
-		'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC'
+		'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC', '_MREI'
 	),
 	##
 
@@ -1670,5 +1670,29 @@ return array(
 	##
 	'smwgChangePropagationProtection' => true,
 	##
+
+	##
+	# Supported mandatory requiremnts in namespaces
+	#
+	# Mandatory properties will be checked for each entity on those enabled
+	# namespaces. Changes to the content of the list requires to run
+	# the `rebuildData.php` script.
+	#
+	# $GLOBALS['smwgMandatoryRequirementsNamespaceList'] = [
+	#		NS_MAIN => true,
+	#		NS_HELP => true
+	# ];
+	#
+	# An empty assignment will disable any checks even though `Is mandatory`
+	# or `{{#mandatory: ...}}` are maintained.
+	#
+	# $GLOBALS['smwgMandatoryRequirementsNamespaceList'] = [];
+	#
+	# @since 3.0
+	# @default []
+	##
+	'smwgMandatoryRequirementsNamespaceList' => [
+		NS_MAIN => true
+	],
 
 );

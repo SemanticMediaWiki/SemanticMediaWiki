@@ -8,6 +8,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMWDIUri as DIUri;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\DataModel\DataItems\DINull;
 
 /**
  * This class implements Store access to Uri data items.
@@ -59,8 +60,13 @@ class DIUriHandler extends DataItemHandler {
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
 
-		$serialization = rawurldecode( $dataItem->getSerialization() );
-		$text = mb_strlen( $serialization ) <= $this->getMaxLength() ? null : $serialization;
+		if ( $dataItem instanceof DINull ) {
+			$serialization = null;
+			$text = null;
+		} else {
+			$serialization = rawurldecode( $dataItem->getSerialization() );
+			$text = mb_strlen( $serialization ) <= $this->getMaxLength() ? null : $serialization;
+		}
 
 		// bytea type handling
 		if ( $text !== null && $this->isDbType( 'postgres' ) ) {

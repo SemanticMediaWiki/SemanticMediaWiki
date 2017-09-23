@@ -5,11 +5,13 @@ namespace SMW\SQLStore;
 use InvalidArgumentException;
 use RuntimeException;
 use SMW\Exception\DataItemException;
+use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\SemanticData;
 use SMW\Store;
 use SMWDIError as DIError;
 use SMWDataItem as DataItem;
+use SMW\DataModel\DataItems\DINull;
 
 /**
  * @license GNU GPL v2+
@@ -178,6 +180,17 @@ class PropertyTableRowDiffer {
 		}
 
 		return $this->compositePropertyTableDiffIterator;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $fieldArray
+	 *
+	 * @return string
+	 */
+	public function getFieldArrayHash( array $fieldArray ) {
+		return md5( implode( '#', $fieldArray ) );;
 	}
 
 	private function fetchPropertyTableHashesForId( $sid ) {
@@ -373,11 +386,23 @@ class PropertyTableRowDiffer {
 				// if an annotation is made to a property that has a redirect pointing
 				// to the same p_id
 				$insertValues = array_merge( $insertValues, $dataItemValues );
-				$insertValuesHash = md5( implode( '#', $insertValues ) );
 
-				$updates[$propertyTable->getName()][$insertValuesHash] = $insertValues;
+				$hash = $this->getFieldArrayHash(
+					$insertValues
+				);
+
+				$updates[$propertyTable->getName()][$hash] = $insertValues;
 			}
 		}
+
+		// Only map mandatory properties on
+		$this->mapMandatoryRequirements(
+			$sid,
+			$semanticData,
+			$subject,
+			$propertyTables,
+			$updates
+		);
 
 		// Special handling of Concepts
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT && $subject->getSubobjectName() == '' ) {
@@ -385,6 +410,71 @@ class PropertyTableRowDiffer {
 		}
 
 		return $updates;
+	}
+
+	/**
+	 * #2669
+	 *
+	 * This is the part where requirementa are checked and matched against the
+	 * actual values contained in SemanticData.
+	 */
+	private function mapMandatoryRequirements( $sid, $semanticData, $subject, $propertyTables, &$updates ) {
+
+		$mandatoryRequirements = $semanticData->getMandatoryRequirements();
+
+		if ( $mandatoryRequirements === null || !$mandatoryRequirements->canCheckRequirements( $semanticData ) ) {
+			return;
+		}
+
+		wfDebugLog( 'smw-mreq', 'MandatoryRequirements: Checking requirements (PropertyTableRowDiffer) on ' . $subject->getHash() );
+
+		$dataTypeRegistry = DataTypeRegistry::getInstance();
+
+		foreach ( $mandatoryRequirements->getMandatoryProperties() as $property ) {
+
+			if ( $semanticData->hasProperty( $property )  ) {
+				continue;
+			}
+
+			$tableId = $this->store->findPropertyTableID( $property );
+
+			if ( !isset( $propertyTables[$tableId] ) ) {
+				continue;
+			}
+
+			$propertyTable = $propertyTables[$tableId];
+			$tableName = $propertyTable->getName();
+
+			if ( !array_key_exists( $tableName, $updates ) ) {
+				$updates[$tableName] = array();
+			}
+
+			$type = $dataTypeRegistry->getDataItemByType(
+				$property->findPropertyTypeID()
+			);
+
+			$dataItem = new DINull();
+
+			$dataItemValues = $this->store->getDataItemHandlerForDIType( $type )->getInsertValues(
+				$dataItem
+			);
+
+			$insertValues = [
+				's_id' => $sid
+			];
+
+			if ( !$propertyTable->isFixedPropertyTable() ) {
+				$insertValues['p_id'] = $this->store->getObjectIds()->makeSMWPropertyID( $property );
+			}
+
+			$insertValues = array_merge( $insertValues, $dataItemValues );
+
+			$hash = $this->getFieldArrayHash(
+				$insertValues
+			);
+
+			$updates[$tableName][$hash] = $insertValues;
+		}
 	}
 
 	/**

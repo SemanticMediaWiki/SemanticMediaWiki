@@ -43,6 +43,12 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 		$comparator = SMW_CMP_EQ;
 		$this->prepareValue( $value, $comparator );
 
+		// To avoid the DataValue::parse to return with an invalid as we
+		// require a matchable DI to the property
+		if ( $comparator === SMW_CMP_NULL ) {
+			$value = SMW_IS_NULL;
+		}
+
 		if( $comparator !== SMW_CMP_LIKE && $comparator !== SMW_CMP_NLKE ) {
 
 			$this->dataValue->setUserValue( $value );

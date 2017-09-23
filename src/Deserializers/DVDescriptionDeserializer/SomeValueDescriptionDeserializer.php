@@ -55,6 +55,12 @@ class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
 			( $comparator !== SMW_CMP_EQ && $comparator !== SMW_CMP_NEQ )
 		);
 
+		// To avoid the DataValue::parse to return with an invalid as we
+		// require a matchable DI to the property
+		if ( $comparator === SMW_CMP_NULL ) {
+			$value = SMW_IS_NULL;
+		}
+
 		$this->dataValue->setUserValue( $value );
 
 		if ( !$this->dataValue->isValid() ) {

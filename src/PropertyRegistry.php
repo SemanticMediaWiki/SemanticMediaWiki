@@ -463,6 +463,9 @@ class PropertyRegistry {
 			'_ERRP'  => array( '_wpp', false, false ), // "has improper value for"
 			'_LIST'  => array( '__pls', true, true ), // "has fields"
 			'_SKEY'  => array( '__key', false, true ), // sort key of a page
+			'_MREI'  => array( '_boo', true, true ), // "Is mandatory"
+			'_MREP'  => array( '_wpp', true, false ), // "Mandatory property"
+			'_MREQ'  => array( '__sob', true, false ), // "Mandatory requirement"
 
 			// FIXME SF related properties to be removed with 3.0
 			'_SF_DF' => array( '__spf', true, true ), // Semantic Form's default form property
@@ -491,7 +494,7 @@ class PropertyRegistry {
 			'_PEID'  => array( '_eid', true, true ), // External identifier
 			'_PEFU'  => array( '__pefu', true, true ), // External formatter uri
 			'_PPLB'  => array( '_mlt_rec', true, true ), // Preferred property label
-			'_CHGPRO' => array( '_cod', true, false ), // "Change propagation"
+			'_CHGPRO' => array( '_cod', true, false ), // "Change propagation",
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

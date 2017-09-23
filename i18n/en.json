@@ -605,5 +605,6 @@
 	"apihelp-askargs-summary": "API module to query Semantic MediaWiki using the ask language as list of conditions, printouts and parameters.",
 	"apihelp-browsebyproperty-summary": "API module to retrieve information about a property or list of properties.",
 	"apihelp-browsebysubject-summary": "API module to retrieve information about a subject.",
-	"apihelp-smwtask-summary": "API module to execute Semantic MediaWiki related tasks."
+	"apihelp-smwtask-summary": "API module to execute Semantic MediaWiki related tasks.",
+	"smw-pa-property-predefined_mand": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to declare a property instance to be mandatory to an entity (subject, subobject etc.)."
 }

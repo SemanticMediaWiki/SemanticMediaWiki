@@ -697,7 +697,7 @@ class SMWSql3SmwIds {
 					SMWSQLStore3::PROPERTY_STATISTICS_TABLE
 				);
 
-				$statsStore->insertUsageCount( $id, 0 );
+				$statsStore->insertUsageCount( $id, [ 0, 0 ] );
 			}
 
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );

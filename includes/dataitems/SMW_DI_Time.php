@@ -127,7 +127,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 			throw new DataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
 		}
 
-		if ( $year == 0 ) {
+		if ( $year == 0 && $year !== null ) {
 			throw new DataItemException( "There is no year 0 in Gregorian and Julian calendars." );
 		}
 
@@ -140,8 +140,14 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		$this->m_seconds = $second !== false ? floatval( $second ) : 0;
 
 		$this->timezone = $timezone !== false ? $timezone : 0;
-		$year = strval( $year );
-		$this->era      = $year{0} === '+' ? 1 : ( $year{0} === '-' ? -1 : 0 );
+
+		if ( $year !== null ) {
+			$year = strval( $year );
+		}
+
+		if ( $year !== null ) {
+			$this->era = $year{0} === '+' ? 1 : ( $year{0} === '-' ? -1 : 0 );
+		}
 
 		if ( $this->isOutOfBoundsBySome() ) {
 			throw new DataItemException( "Part of the date is out of bounds." );

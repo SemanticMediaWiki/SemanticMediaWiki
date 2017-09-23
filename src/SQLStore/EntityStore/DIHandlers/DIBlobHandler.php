@@ -8,6 +8,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMWDIBlob as DIBlob;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\DataModel\DataItems\DINull;
 
 /**
  * This class implements Store access to blob (string) data items.
@@ -68,8 +69,13 @@ class DIBlobHandler extends DataItemHandler {
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
 
-		$text = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );
-		$hash = $this->makeHash( $text );
+		if ( $dataItem instanceof DINull ) {
+			$text = null;
+			$hash = null;
+		} else {
+			$text = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );
+			$hash = $this->makeHash( $text );
+		}
 
 		if ( $this->isDbType( 'postgres' ) ) {
 			$text = pg_escape_bytea( $text );

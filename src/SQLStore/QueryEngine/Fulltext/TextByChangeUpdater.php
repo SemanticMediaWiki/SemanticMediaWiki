@@ -278,6 +278,12 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 			$key = $sid . ':' . $pid;
 
 			if ( $text === null || $text === '' ) {
+
+				// #2669
+				if ( !$fieldChangeOp->has( 'o_hash' ) ) {
+					continue;
+				}
+
 				$text = $fieldChangeOp->get( 'o_hash' );
 			}
 

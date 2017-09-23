@@ -70,7 +70,9 @@ class ContainerSemanticData extends SemanticData {
 			'mHasVisibleSpecs',
 			'mNoDuplicates',
 			'skipAnonymousCheck',
-			'subSemanticData'
+			'subSemanticData',
+			'options',
+			'mandatoryRequirements'
 		);
 	}
 
@@ -145,6 +147,7 @@ class ContainerSemanticData extends SemanticData {
 		$this->mHasVisibleProps = $semanticData->hasVisibleProperties();
 		$this->mHasVisibleSpecs = $semanticData->hasVisibleSpecialProperties();
 		$this->mNoDuplicates = $semanticData->mNoDuplicates;
+		$this->mandatoryRequirements = $semanticData->getMandatoryRequirements();
 	}
 
 }

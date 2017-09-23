@@ -78,7 +78,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
 
-		$this->store->expects( $this->exactly( 7 ) )
+		$this->store->expects( $this->exactly( 8 ) )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
@@ -139,7 +139,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$this->store->expects( $this->exactly( 7 ) )
+		$this->store->expects( $this->exactly( 8 ) )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 

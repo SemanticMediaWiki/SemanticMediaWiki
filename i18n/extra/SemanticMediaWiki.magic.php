@@ -13,6 +13,7 @@ $magicWords = array();
 
 /** English (English) */
 $magicWords['en'] = array(
+	'mandatory' => array( 0, 'mandatory' ),
 	'ask' => array( 0, 'ask' ),
 	'show' => array( 0, 'show' ),
 	'info' => array( 0, 'info' ),

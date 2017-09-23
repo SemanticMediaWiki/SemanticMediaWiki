@@ -92,7 +92,11 @@
 		"_PEFU": "External formatter URI",
 		"_PPLB": "Has preferred property label",
 		"_EDIP": "Is edit protected",
-		"_CHGPRO": "Change propagation"
+		"_CHGPRO": "Change propagation",
+		"_MREI": "Is mandatory",
+		"_MREP": "Mandatory property",
+		"_MREQ": "Mandatory requirement"
+
 	},
 	"propertyAliases": {
 		"Display unit": "_UNIT",
@@ -144,7 +148,11 @@
 		"Preferred property label": "_PPLB",
 		"Is edit protected": "_EDIP",
 		"IsEditProtected": "_EDIP",
-		"Change propagation" : "_CHGPRO"
+		"Change propagation" : "_CHGPRO",
+		"Is mandatory": "_MREI",
+		"Mandatory property": "_MREP",
+		"Mandatory requirement": "_MREQ",
+		"Has mandatory requirement": "_MREQ"
 	},
 	"namespaces":{
 		"SMW_NS_PROPERTY": "Property",

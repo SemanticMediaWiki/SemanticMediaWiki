@@ -8,6 +8,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMWDITime as DITime;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\DataModel\DataItems\DINull;
 
 /**
  * This class implements Store access to Time data items.
@@ -75,10 +76,19 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		return array(
-			'o_serialized' => $dataItem->getSerialization(),
-			'o_sortkey' => $dataItem->getSortKey()
-		);
+
+		if ( $dataItem instanceof DINull ) {
+			$serialized = null;
+			$time = null;
+		} else {
+			$serialized = $dataItem->getSerialization();
+			$time = $dataItem->getSortKey();
+		}
+
+		return [
+			'o_serialized' => $serialized,
+			'o_sortkey' => $time
+		];
 	}
 
 	/**

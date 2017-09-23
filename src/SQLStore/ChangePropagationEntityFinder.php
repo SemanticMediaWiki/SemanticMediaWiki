@@ -68,8 +68,13 @@ class ChangePropagationEntityFinder {
 		$dataItems = array();
 		$appendIterator = $this->iteratorFactory->newAppendIterator();
 
+		// Allow entities with NULL to be listed since we want them to be cleaned
+		$requestOptions = new RequestOptions();
+		$requestOptions->reqNullExpr = false;
+
 		$res = $this->store->getAllPropertySubjects(
-			$property
+			$property,
+			$requestOptions
 		);
 
 		$appendIterator->add(

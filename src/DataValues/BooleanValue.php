@@ -181,6 +181,12 @@ class BooleanValue extends DataValue {
 
 	private function doParseBoolValue( $value ) {
 
+		// #2669
+		// Allow the transient state of `!+` in a query context
+		if ( $this->getOption( self::OPT_QUERY_CONTEXT ) && $value === SMW_IS_NULL ) {
+			return null;
+		}
+
 		// Use either the global or page related content language
 		$contentLanguage = $this->getOption( 'content.language' );
 

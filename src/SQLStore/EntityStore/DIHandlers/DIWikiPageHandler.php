@@ -9,6 +9,7 @@ use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\DataModel\DataItems\DINull;
 
 /**
  * DataItemHandler for dataitems of type DIWikiPage.
@@ -117,6 +118,10 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
+
+		if ( $dataItem instanceof DINull ) {
+			return [ 'o_id' => NULL ];
+		}
 
 		$oid = $this->store->getObjectIds()->makeSMWPageID(
 			$dataItem->getDBkey(),
