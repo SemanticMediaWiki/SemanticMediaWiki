@@ -482,12 +482,12 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @var HierarchyLookup
 		 */
-		$containerBuilder->registerCallback( 'HierarchyLookup', function( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'HierarchyLookup', function( $containerBuilder, $cacheType = null ) {
 			$containerBuilder->registerExpectedReturnType( 'HierarchyLookup', '\SMW\HierarchyLookup' );
 
 			$hierarchyLookup = new HierarchyLookup(
 				$containerBuilder->create( 'Store' ),
-				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( HierarchyLookup::POOLCACHE_ID )
+				$containerBuilder->singleton( 'Cache', $cacheType )
 			);
 
 			$hierarchyLookup->setLogger(
