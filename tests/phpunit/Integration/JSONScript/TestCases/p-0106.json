@@ -3,12 +3,17 @@
 	"setup": [
 		{
 			"message-cache": "clear",
-			"page": "Info-warning",
-			"contents": "{{#info: an error text | warning }}"
+			"page": "P0106/Warning",
+			"contents": "{{#info: an warning text | warning }}"
 		},
 		{
 			"message-cache": "clear",
-			"page": "Info-note",
+			"page": "P0106/Error",
+			"contents": "{{#info: an error text | error }}"
+		},
+		{
+			"message-cache": "clear",
+			"page": "P0106/Note",
 			"contents": "{{#info: an info note | note }}"
 		}
 	],
@@ -16,22 +21,34 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Info-warning",
+			"subject": "P0106/Warning",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Error\" title=\"an error text\">",
+					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"an warning text\">",
 					"<span class=\"smwtticon warning\">",
-					"<div class=\"smwttcontent\">an error text</div>"
+					"<div class=\"smwttcontent\">an warning text</div>"
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#1",
-			"subject": "Info-note",
+			"subject": "P0106/Error",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" data-type=\"7\" data-state=\"inline\" data-title=\"Note\" title=\"an info note\">",
+					"<span class=\"smw-highlighter\" data-type=\"5\" data-state=\"inline\" data-title=\"Error\" title=\"an error text\">",
+					"<span class=\"smwtticon error\">",
+					"<div class=\"smwttcontent\">an error text</div>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "P0106/Note",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"8\" data-state=\"inline\" data-title=\"Note\" title=\"an info note\">",
 					"<span class=\"smwtticon note\">",
 					"<div class=\"smwttcontent\">an info note</div>"
 				]
