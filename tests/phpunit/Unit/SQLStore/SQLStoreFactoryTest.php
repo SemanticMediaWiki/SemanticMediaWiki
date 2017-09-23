@@ -303,4 +303,14 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructHierarchyLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\HierarchyLookup',
+			$instance->newHierarchyLookup()
+		);
+	}
+
 }

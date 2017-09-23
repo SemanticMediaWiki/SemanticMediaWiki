@@ -2,6 +2,7 @@
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\HierarchyLookup;
 use SMW\MediaWiki\Jobs\JobBase;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SemanticData;
@@ -158,6 +159,10 @@ class SMWSQLStore3Writers {
 		$this->propertyTableRowDiffer->resetCompositePropertyTableDiff();
 
 		$changePropListener = new ChangePropListener();
+
+		$this->factory->newHierarchyLookup()->addListenersTo(
+			$changePropListener
+		);
 
 		$changePropListener->enabledListeners(
 			$this->store

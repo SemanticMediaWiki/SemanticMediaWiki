@@ -25,6 +25,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,6 +36,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyStatisticsTable' )
 			->will( $this->returnValue( $propertyStatisticsTable ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newHierarchyLookup' )
+			->will( $this->returnValue( $hierarchyLookup ) );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()

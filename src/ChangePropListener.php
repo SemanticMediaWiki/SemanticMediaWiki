@@ -37,7 +37,7 @@ class ChangePropListener {
 	 * @param string $key
 	 * @param Closure $callback
 	 */
-	public static function addListenerCallback( $key, Closure $callback ) {
+	public function addListenerCallback( $key, Closure $callback ) {
 
 		if ( $key === '' ) {
 			return;

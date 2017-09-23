@@ -502,4 +502,14 @@ class SQLStoreFactory {
 		return $idMatchFinder;
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @return HierarchyLookup
+	 */
+	public function newHierarchyLookup() {
+		return $this->applicationFactory->newHierarchyLookup();
+	}
+
+
 }
