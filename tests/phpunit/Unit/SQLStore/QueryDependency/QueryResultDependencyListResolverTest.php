@@ -147,11 +147,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$propertyHierarchyLookup->expects( $this->any() )
-			->method( 'hasSubpropertyFor' )
+			->method( 'hasSubproperty' )
 			->will( $this->returnValue( true ) );
 
 		$propertyHierarchyLookup->expects( $this->at( 1 ) )
-			->method( 'findSubpropertListFor' )
+			->method( 'findSubpropertyList' )
 			->with( $this->equalTo( new DIProperty( 'Foobar' ) ) )
 			->will( $this->returnValue(
 				array( DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) ) ) );
@@ -289,11 +289,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$propertyHierarchyLookup->expects( $this->any() )
-			->method( 'hasSubpropertyFor' )
+			->method( 'hasSubproperty' )
 			->will( $this->returnValue( true ) );
 
 		$propertyHierarchyLookup->expects( $this->at( 1 ) )
-			->method( 'findSubpropertListFor' )
+			->method( 'findSubpropertyList' )
 			->with( $this->equalTo( new DIProperty( 'Foobar' ) ) )
 			->will( $this->returnValue(
 				array( DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) ) ) );
@@ -347,11 +347,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$propertyHierarchyLookup->expects( $this->any() )
-			->method( 'hasSubcategoryFor' )
+			->method( 'hasSubcategory' )
 			->will( $this->returnValue( true ) );
 
 		$propertyHierarchyLookup->expects( $this->at( 1 ) )
-			->method( 'findSubcategoryListFor' )
+			->method( 'findSubcategoryList' )
 			->with( $this->equalTo( DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) ) )
 			->will( $this->returnValue(
 				array(

@@ -28,7 +28,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyHierarchyLookup',
+			PropertyHierarchyLookup::class,
 			new PropertyHierarchyLookup( $store, $cache )
 		);
 	}
@@ -61,7 +61,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'boolean',
-			$instance->hasSubpropertyFor( new DIProperty( 'Foo' ) )
+			$instance->hasSubproperty( new DIProperty( 'Foo' ) )
 		);
 	}
 
@@ -103,7 +103,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->findSubpropertListFor( $property )
+			$instance->findSubpropertyList( $property )
 		);
 	}
 
@@ -145,7 +145,7 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->findSubcategoryListFor( $category )
+			$instance->findSubcategoryList( $category )
 		);
 	}
 
@@ -166,8 +166,14 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyHierarchyLookup( $store, $cache );
 		$instance->setSubpropertyDepth( 0 );
 
+		$property = new DIProperty( 'Foo' );
+
 		$this->assertFalse(
-			$instance->hasSubpropertyFor( new DIProperty( 'Foo' ) )
+			$instance->hasSubproperty( $property )
+		);
+
+		$this->assertEmpty(
+			$instance->findSubpropertyList( $property )
 		);
 	}
 
@@ -188,8 +194,14 @@ class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyHierarchyLookup( $store, $cache );
 		$instance->setSubcategoryDepth( 0 );
 
+		$category = DIWikiPage::newFromText( 'Foo', NS_CATEGORY );
+
 		$this->assertFalse(
-			$instance->hasSubcategoryFor( DIWikiPage::newFromText( 'Foo', NS_CATEGORY ) )
+			$instance->hasSubcategory( $category )
+		);
+
+		$this->assertEmpty(
+			$instance->findSubcategoryList( $category )
 		);
 	}
 
