@@ -13,9 +13,9 @@ use Psr\Log\LoggerAwareInterface;
  *
  * @author mwjames
  */
-class PropertyHierarchyLookup implements LoggerAwareInterface {
+class HierarchyLookup implements LoggerAwareInterface {
 
-	const POOLCACHE_ID = 'property.hierarchy.lookup';
+	const POOLCACHE_ID = 'hierarchy.lookup';
 
 	/**
 	 * @var Store

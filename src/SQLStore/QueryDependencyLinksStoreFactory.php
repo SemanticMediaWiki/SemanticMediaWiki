@@ -28,7 +28,7 @@ class QueryDependencyLinksStoreFactory {
 	public function newQueryResultDependencyListResolver() {
 
 		$queryResultDependencyListResolver = new QueryResultDependencyListResolver(
-			ApplicationFactory::getInstance()->newPropertyHierarchyLookup()
+			ApplicationFactory::getInstance()->newHierarchyLookup()
 		);
 
 		$queryResultDependencyListResolver->setPropertyDependencyExemptionlist(

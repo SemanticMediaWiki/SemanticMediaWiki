@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryDependency;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\PropertyHierarchyLookup;
+use SMW\HierarchyLookup;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
@@ -26,9 +26,9 @@ use SMWQueryResult as QueryResult;
 class QueryResultDependencyListResolver {
 
 	/**
-	 * @var PropertyHierarchyLookup
+	 * @var HierarchyLookup
 	 */
-	private $propertyHierarchyLookup;
+	private $hierarchyLookup;
 
 	/**
 	 * Specifies a list of property keys to be excluded from the detection
@@ -42,10 +42,10 @@ class QueryResultDependencyListResolver {
 	 * @since 2.3
 	 *
 	 * @param $queryResult Can be a string for when format=Debug
-	 * @param PropertyHierarchyLookup $propertyHierarchyLookup
+	 * @param HierarchyLookup $hierarchyLookup
 	 */
-	public function __construct( PropertyHierarchyLookup $propertyHierarchyLookup ) {
-		$this->propertyHierarchyLookup = $propertyHierarchyLookup;
+	public function __construct( HierarchyLookup $hierarchyLookup ) {
+		$this->hierarchyLookup = $hierarchyLookup;
 	}
 
 	/**
@@ -165,7 +165,7 @@ class QueryResultDependencyListResolver {
 		if ( $description instanceof ClassDescription ) {
 			foreach ( $description->getCategories() as $category ) {
 
-				if ( $this->propertyHierarchyLookup->hasSubcategory( $category ) ) {
+				if ( $this->hierarchyLookup->hasSubcategory( $category ) ) {
 					$this->doMatchSubcategory( $subjects, $category );
 				}
 
@@ -193,7 +193,7 @@ class QueryResultDependencyListResolver {
 
 		$subject = $property->getCanonicalDiWikiPage();
 
-		if ( $this->propertyHierarchyLookup->hasSubproperty( $property ) ) {
+		if ( $this->hierarchyLookup->hasSubproperty( $property ) ) {
 			$this->doMatchSubproperty( $subjects, $subject, $property );
 		}
 
@@ -214,14 +214,14 @@ class QueryResultDependencyListResolver {
 		// Safeguard against a possible category (or redirect thereof) to point
 		// to itself by relying on tracking the hash of already inserted objects
 		if ( !isset( $subjects[$hash] ) ) {
-			$subcategories = $this->propertyHierarchyLookup->findSubcategoryList( $category );
+			$subcategories = $this->hierarchyLookup->findSubcategoryList( $category );
 		}
 
 		foreach ( $subcategories as $subcategory ) {
 
 			$subjects[$subcategory->getHash()] = $subcategory;
 
-			if ( $this->propertyHierarchyLookup->hasSubcategory( $subcategory ) ) {
+			if ( $this->hierarchyLookup->hasSubcategory( $subcategory ) ) {
 				$this->doMatchSubcategory( $subjects, $subcategory );
 			}
 		}
@@ -237,7 +237,7 @@ class QueryResultDependencyListResolver {
 		if (
 			!isset( $subjects[$subject->getHash()] ) &&
 			!isset( $this->propertyDependencyExemptionlist[$subject->getDBKey()] ) ) {
-			$subproperties = $this->propertyHierarchyLookup->findSubpropertyList( $property );
+			$subproperties = $this->hierarchyLookup->findSubpropertyList( $property );
 		}
 
 		foreach ( $subproperties as $subproperty ) {

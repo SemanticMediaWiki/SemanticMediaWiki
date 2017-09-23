@@ -409,10 +409,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @return PropertyHierarchyLookup
+	 * @return HierarchyLookup
 	 */
-	public function newPropertyHierarchyLookup() {
-		return $this->containerBuilder->create( 'PropertyHierarchyLookup' );
+	public function newHierarchyLookup() {
+		return $this->containerBuilder->create( 'HierarchyLookup' );
 	}
 
 	/**
