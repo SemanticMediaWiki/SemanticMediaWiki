@@ -33,6 +33,8 @@ class LookupCacheTest extends \PHPUnit_Framework_TestCase {
 
 	public function testLookupWithoutCache() {
 
+		$cacheTTL = 42;
+
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -42,7 +44,11 @@ class LookupCacheTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$cache->expects( $this->atLeastOnce() )
-			->method( 'save' );
+			->method( 'save' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( $cacheTTL ) );
 
 		$listLookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ListLookup' )
 			->disableOriginalConstructor()
@@ -56,6 +62,8 @@ class LookupCacheTest extends \PHPUnit_Framework_TestCase {
 			$cache,
 			$listLookup
 		);
+
+		$instance->setCacheTTL( $cacheTTL );
 
 		$parameters = [];
 
@@ -86,6 +94,38 @@ class LookupCacheTest extends \PHPUnit_Framework_TestCase {
 			$cache,
 			$listLookup
 		);
+
+		$parameters = [];
+
+		$instance->lookup( 'Foo', $parameters );
+	}
+
+	public function testLookupWithCacheBeingDisabled() {
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache->expects( $this->never() )
+			->method( 'fetch' );
+
+		$cache->expects( $this->never() )
+			->method( 'save' );
+
+		$listLookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ListLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->atLeastOnce() )
+			->method( 'lookup' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new LookupCache(
+			$cache,
+			$listLookup
+		);
+
+		$instance->setCacheTTL( false );
 
 		$parameters = [];
 

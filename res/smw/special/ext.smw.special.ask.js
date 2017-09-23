@@ -237,8 +237,16 @@
 	 */
 	$( document ).ready( function() {
 
-		var condition = $( '#ask-query-condition' ).val(),
-			isEmpty = condition === '';
+		var condition = $( '#ask-query-condition' ),
+			condVal = condition.val().trim(),
+			isEmpty = condVal === '';
+
+		var termAutocomplete = smw.Factory.newTermAutocomplete(
+			condition
+		);
+
+		// Register autocomplete feature on ...
+		termAutocomplete.register( [ 'property', 'concept', 'category' ] );
 
 		// Field input is kept disabled until JS is fully loaded to signal
 		// "ready for input"
@@ -267,12 +275,23 @@
 			addSortInstance( 'sorting_starter', 'sorting_main' );
 		} );
 
+		// Submit the form via CTRL + q
+		$( "form" ).keypress( function ( event ) {
+			if ( event.ctrlKey && event.keyCode == 17 ) {
+				$( '#search input[type=submit]' ).click();
+				event.preventDefault();
+				return false;
+			} else {
+				return true;
+			};
+		} );
+
 		// Changed condition
 		$( '#ask-query-condition' ).change( function( event, $opts ) {
 
-			var that = $( this );
+			var $this = $( this );
 
-			if ( isEmpty === false && that.val().trim() !== condition.trim() ) {
+			if ( isEmpty === false && $this.val().trim() !== condVal ) {
 				chg.add( 'condition', 'smw-ask-condition-change-info', 'warning' );
 			} else {
 				chg.delete( 'condition' );

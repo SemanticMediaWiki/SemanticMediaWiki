@@ -858,8 +858,11 @@ return array(
 	##
 
 	###
-	# An array containing cache related settings used within Semantic MediaWiki
-	# and requires $smwgCacheType be set otherwise caching will have no effect.
+	# CacheTTL settings
+	#
+	# Defines time to live for in Semantic MediaWiki used cache instances and
+	# requires $smwgCacheType to be set otherwise related settings will have
+	# no effect.
 	#
 	# - smwgWantedPropertiesCache Enable to serve wanted properties from cache
 	# - smwgWantedPropertiesCacheExpiry Number of seconds before the cache expires
@@ -873,6 +876,8 @@ return array(
 	# - smwgStatisticsCache Enable to serve statistics from cache
 	# - smwgStatisticsCacheExpiry Number of seconds before the cache expires
 	#
+	# - api.browse TTL (in sec, or false to disable it) for the API browse module
+	#
 	# @since 1.9
 	##
 	'smwgCacheUsage' => array(
@@ -884,6 +889,7 @@ return array(
 		'smwgPropertiesCacheExpiry' => 3600,
 		'smwgStatisticsCache' => true,
 		'smwgStatisticsCacheExpiry' => 3600,
+		'api.browse' => 3600
 	),
 	##
 
