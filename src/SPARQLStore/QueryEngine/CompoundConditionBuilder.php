@@ -8,7 +8,7 @@ use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Message;
-use SMW\PropertyHierarchyLookup;
+use SMW\HierarchyLookup;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -52,9 +52,9 @@ class CompoundConditionBuilder {
 	private $circularReferenceGuard;
 
 	/**
-	 * @var PropertyHierarchyLookup
+	 * @var HierarchyLookup
 	 */
-	private $propertyHierarchyLookup;
+	private $hierarchyLookup;
 
 	/**
 	 * @var DescriptionFactory
@@ -193,19 +193,19 @@ class CompoundConditionBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param PropertyHierarchyLookup $propertyHierarchyLookup
+	 * @param HierarchyLookup $hierarchyLookup
 	 */
-	public function setPropertyHierarchyLookup( PropertyHierarchyLookup $propertyHierarchyLookup ) {
-		$this->propertyHierarchyLookup = $propertyHierarchyLookup;
+	public function setHierarchyLookup( HierarchyLookup $hierarchyLookup ) {
+		$this->hierarchyLookup = $hierarchyLookup;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @return PropertyHierarchyLookup
+	 * @return HierarchyLookup
 	 */
-	public function getPropertyHierarchyLookup() {
-		return $this->propertyHierarchyLookup;
+	public function getHierarchyLookup() {
+		return $this->hierarchyLookup;
 	}
 
 	/**

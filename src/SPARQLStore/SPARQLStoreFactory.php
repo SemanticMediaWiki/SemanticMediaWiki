@@ -67,8 +67,8 @@ class SPARQLStoreFactory {
 			$circularReferenceGuard
 		);
 
-		$compoundConditionBuilder->setPropertyHierarchyLookup(
-			ApplicationFactory::getInstance()->newPropertyHierarchyLookup()
+		$compoundConditionBuilder->setHierarchyLookup(
+			ApplicationFactory::getInstance()->newHierarchyLookup()
 		);
 
 		$queryEngine = new QueryEngine(

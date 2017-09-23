@@ -213,11 +213,11 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructPropertyHierarchyLookup() {
+	public function testCanConstructHierarchyLookup() {
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyHierarchyLookup',
-			$this->applicationFactory->newPropertyHierarchyLookup()
+			'\SMW\HierarchyLookup',
+			$this->applicationFactory->newHierarchyLookup()
 		);
 	}
 

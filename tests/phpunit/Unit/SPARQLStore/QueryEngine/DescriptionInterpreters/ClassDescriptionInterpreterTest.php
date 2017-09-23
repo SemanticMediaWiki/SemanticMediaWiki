@@ -97,11 +97,11 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
-		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
+		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyHierarchyLookup->expects( $this->once() )
+		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubcategory' )
 			->with( $this->equalTo( $category ) )
 			->will( $this->returnValue( true ) );
@@ -109,7 +109,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$resultVariable = 'result';
 
 		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
-		$compoundConditionBuilder->setPropertyHierarchyLookup( $propertyHierarchyLookup );
+		$compoundConditionBuilder->setHierarchyLookup( $hierarchyLookup );
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );
 

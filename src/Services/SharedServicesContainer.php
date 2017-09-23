@@ -38,7 +38,7 @@ use SMW\IteratorFactory;
 use SMW\QueryFactory;
 use SMW\DataItemFactory;
 use SMW\PropertySpecificationLookup;
-use SMW\PropertyHierarchyLookup;
+use SMW\HierarchyLookup;
 use SMW\PropertyLabelFinder;
 use SMW\CachedPropertyValuesPrefetcher;
 use SMW\Localizer;
@@ -480,29 +480,29 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var PropertyHierarchyLookup
+		 * @var HierarchyLookup
 		 */
-		$containerBuilder->registerCallback( 'PropertyHierarchyLookup', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PropertyHierarchyLookup', '\SMW\PropertyHierarchyLookup' );
+		$containerBuilder->registerCallback( 'HierarchyLookup', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'HierarchyLookup', '\SMW\HierarchyLookup' );
 
-			$propertyHierarchyLookup = new PropertyHierarchyLookup(
+			$hierarchyLookup = new HierarchyLookup(
 				$containerBuilder->create( 'Store' ),
-				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertyHierarchyLookup::POOLCACHE_ID )
+				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( HierarchyLookup::POOLCACHE_ID )
 			);
 
-			$propertyHierarchyLookup->setLogger(
+			$hierarchyLookup->setLogger(
 				$containerBuilder->singleton( 'MediaWikiLogger' )
 			);
 
-			$propertyHierarchyLookup->setSubcategoryDepth(
+			$hierarchyLookup->setSubcategoryDepth(
 				$containerBuilder->create( 'Settings' )->get( 'smwgQSubcategoryDepth' )
 			);
 
-			$propertyHierarchyLookup->setSubpropertyDepth(
+			$hierarchyLookup->setSubpropertyDepth(
 				$containerBuilder->create( 'Settings' )->get( 'smwgQSubpropertyDepth' )
 			);
 
-			return $propertyHierarchyLookup;
+			return $hierarchyLookup;
 		} );
 
 		/**
