@@ -37,6 +37,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2673](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2673)
 * [#2662](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2662)
 * [#2677](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2677)
+* [#2690](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2690)
 
 ## Bug fixes
 
@@ -54,6 +55,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2540](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2540) Add type `parser-html` to [`JSONScript`](https://www.semantic-mediawiki.org/wiki/Help:Integration_tests) testing to allow assertions on HTML structure
 * [#2659](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2659) Removed deprecated constant `SMWDataItem::TYPE_STRING` (replaced by `SMWDataItem::TYPE_BLOB`)
 * [#2676](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2676)
+* [#2680](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2680)
 
 ## Contributors
 
