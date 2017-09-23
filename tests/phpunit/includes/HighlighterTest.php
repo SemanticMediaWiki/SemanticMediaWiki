@@ -106,6 +106,7 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 			array( 'quantity', Highlighter::TYPE_QUANTITY ),
 			array( 'note', Highlighter::TYPE_NOTE ),
 			array( 'warning', Highlighter::TYPE_WARNING ),
+			array( 'error', Highlighter::TYPE_ERROR ),
 			array( 'PrOpErTy', Highlighter::TYPE_PROPERTY ),
 			array( 'バカなテスト', Highlighter::TYPE_NOTYPE ),
 			array( '<span>Something that should not work</span>', Highlighter::TYPE_NOTYPE ),
