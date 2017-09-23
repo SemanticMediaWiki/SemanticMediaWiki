@@ -92,8 +92,8 @@ class JsonLanguageContentsFileReader {
 	 *
 	 * @return integer
 	 */
-	public function getModificationTimeByLanguageCode( $languageCode ) {
-		return filemtime( $this->getFileForLanguageCode( $languageCode ) );
+	public function getFileModificationTime( $languageCode ) {
+		return filemtime( $this->getLanguageFile( $languageCode ) );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class JsonLanguageContentsFileReader {
 		$canReadByLanguageCode = '';
 
 		try {
-			$canReadByLanguageCode = $this->getFileForLanguageCode( $languageCode );
+			$canReadByLanguageCode = $this->getLanguageFile( $languageCode );
 		} catch ( \Exception $e ) {
 			$canReadByLanguageCode = '';
 		}
@@ -128,7 +128,7 @@ class JsonLanguageContentsFileReader {
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		file_put_contents(
-			$this->getFileForLanguageCode( $languageCode ),
+			$this->getLanguageFile( $languageCode ),
 			json_encode( $contents, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE )
 		);
 	}
@@ -157,16 +157,16 @@ class JsonLanguageContentsFileReader {
 		}
 
 		if ( $readFromFile || !isset( self::$contents[$languageCode] ) ) {
-			self::$contents[$languageCode] = $this->doReadJsonContentsFromFileBy( $languageCode, $cacheKey );
+			self::$contents[$languageCode] = $this->readJSONFile( $languageCode, $cacheKey );
 		}
 
 		return self::$contents[$languageCode];
 	}
 
-	protected function doReadJsonContentsFromFileBy( $languageCode, $cacheKey ) {
+	protected function readJSONFile( $languageCode, $cacheKey ) {
 
 		$contents = json_decode(
-			file_get_contents( $this->getFileForLanguageCode( $languageCode ) ),
+			file_get_contents( $this->getLanguageFile( $languageCode ) ),
 			true
 		);
 
@@ -178,7 +178,7 @@ class JsonLanguageContentsFileReader {
 		throw new RuntimeException( ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() ) );
 	}
 
-	private function getFileForLanguageCode( $languageCode ) {
+	private function getLanguageFile( $languageCode ) {
 
 		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
 
@@ -190,7 +190,7 @@ class JsonLanguageContentsFileReader {
 	}
 
 	private function getCacheKeyFrom( $languageCode ) {
-		return $this->cachePrefix . ':' . $languageCode . ':' . md5( $this->ttl . $this->getModificationTimeByLanguageCode( $languageCode ) );
+		return $this->cachePrefix . ':' . $languageCode . ':' . md5( $this->ttl . $this->getFileModificationTime( $languageCode ) );
 	}
 
 }
