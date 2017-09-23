@@ -191,8 +191,10 @@ final class Setup {
 
 		$this->globalVars['wgAPIModules']['smwinfo'] = '\SMW\MediaWiki\Api\Info';
 		$this->globalVars['wgAPIModules']['smwtask'] = '\SMW\MediaWiki\Api\Task';
+		$this->globalVars['wgAPIModules']['smwbrowse'] = '\SMW\MediaWiki\Api\Browse';
 		$this->globalVars['wgAPIModules']['ask']     = '\SMW\MediaWiki\Api\Ask';
 		$this->globalVars['wgAPIModules']['askargs'] = '\SMW\MediaWiki\Api\AskArgs';
+
 		$this->globalVars['wgAPIModules']['browsebysubject'] = '\SMW\MediaWiki\Api\BrowseBySubject';
 		$this->globalVars['wgAPIModules']['browsebyproperty'] = '\SMW\MediaWiki\Api\BrowseByProperty';
 	}

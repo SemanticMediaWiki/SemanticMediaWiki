@@ -603,5 +603,8 @@
 	"apihelp-askargs-summary": "API module to query Semantic MediaWiki using the ask language as list of conditions, printouts and parameters.",
 	"apihelp-browsebyproperty-summary": "API module to retrieve information about a property or list of properties.",
 	"apihelp-browsebysubject-summary": "API module to retrieve information about a subject.",
-	"apihelp-smwtask-summary": "API module to execute Semantic MediaWiki related tasks."
+	"apihelp-smwtask-summary": "API module to execute Semantic MediaWiki related tasks.",
+	"apihelp-smwbrowse-summary": "Semantic MediaWiki API module to support selected browse activties.",
+	"smw-api-smwbrowse-invalid-parameters": "Parameters format is invalid, expected a valid JSON format."
+
 }
