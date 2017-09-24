@@ -240,6 +240,42 @@ return array(
 		)
 	),
 
+	// https://github.com/ichord/Caret.js
+	'ext.jquery.caret' => $moduleTemplate + array(
+		'scripts' => 'jquery/jquery.caret.js',
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// https://github.com/ichord/At.js
+	'ext.jquery.atwho' => $moduleTemplate + array(
+		'scripts' => 'jquery/jquery.atwho.js',
+		'styles' => 'jquery/jquery.atwho.css',
+		'position' => 'top',
+		'dependencies' => array(
+			'ext.jquery.caret'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'ext.smw.autocomplete.term' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.autocomplete.term.js',
+		'position' => 'top',
+		'dependencies' => array(
+			'ext.jquery.atwho'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	// Special:Ask
 	'ext.smw.ask.styles' => $moduleTemplate + array(
 		'styles' => 'smw/special/ext.smw.special.ask.css',
@@ -256,7 +292,8 @@ return array(
 		'dependencies' => array(
 			'ext.smw.tooltip',
 			'ext.smw.style',
-			'ext.smw.ask.styles'
+			'ext.smw.ask.styles',
+			'ext.smw.autocomplete.term'
 		),
 		'messages' => array(
 			'smw-ask-delete',

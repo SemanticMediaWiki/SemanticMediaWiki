@@ -78,6 +78,16 @@ class Browse extends ApiBase {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
+		$cacheUsage = $applicationFactory->getSettings()->get(
+			'smwgCacheUsage'
+		);
+
+		$cacheTTL = LookupCache::CACHE_TTL;
+
+		if ( isset( $cacheUsage['api.browse'] ) ) {
+			$cacheTTL = $cacheUsage['api.browse'];
+		}
+
 		// We explicitly want the SQLStore here to avoid
 		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
 		// since we don't use those methods anywher else other than the SQLStore
@@ -95,6 +105,10 @@ class Browse extends ApiBase {
 		$lookupCache = new LookupCache(
 			$applicationFactory->getCache(),
 			$listLookup
+		);
+
+		$lookupCache->setCacheTTL(
+			$cacheTTL
 		);
 
 		return $lookupCache->lookup(
@@ -134,8 +148,8 @@ class Browse extends ApiBase {
 	 */
 	public function getParamDescription() {
 		return array(
-			'browse' => 'Specifies type of browse activty',
-			'params' => 'JSON encoded parameters that matches the selected type requirment'
+			'browse' => 'Specifies the type of browse activty',
+			'params' => 'JSON encoded parameters that depend on the selected type requirment'
 		);
 	}
 
@@ -147,7 +161,7 @@ class Browse extends ApiBase {
 	 */
 	public function getDescription() {
 		return array(
-			'Semantic MediaWiki API module to support browse activties.'
+			'Semantic MediaWiki API module to support browse activties for different entity types.'
 		);
 	}
 
@@ -163,8 +177,10 @@ class Browse extends ApiBase {
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true, "usageCount": true }',
-			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0 }',
-			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0 }'
+			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }',
+			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }',
+			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',
+			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }'
 		);
 	}
 

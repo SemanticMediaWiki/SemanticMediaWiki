@@ -14,7 +14,7 @@ use Onoi\Cache\Cache;
 class LookupCache {
 
 	const CACHE_NAMESPACE = 'smw:api:browse';
-	const CACHE_TTL = 1800;
+	const CACHE_TTL = 3600;
 
 	/**
 	 * @var Store
@@ -27,6 +27,11 @@ class LookupCache {
 	private $listLookup;
 
 	/**
+	 * @var integer|boolean
+	 */
+	private $cacheTTL;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Cache $cache
@@ -35,6 +40,16 @@ class LookupCache {
 	public function __construct( Cache $cache, ListLookup $listLookup ) {
 		$this->cache = $cache;
 		$this->listLookup = $listLookup;
+		$this->cacheTTL = self::CACHE_TTL;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer|boolean $cacheTTL
+	 */
+	public function setCacheTTL( $cacheTTL ) {
+		$this->cacheTTL = $cacheTTL;
 	}
 
 	/**
@@ -58,7 +73,7 @@ class LookupCache {
 			]
 		);
 
-		if ( ( $res = $this->cache->fetch( $hash ) ) !== false ) {
+		if ( $this->cacheTTL !== false && ( $res = $this->cache->fetch( $hash ) ) !== false ) {
 			$res['meta']['isFromCache'] = true;
 			$res['meta']['queryTime'] = Timer::getElapsedTime( __METHOD__, 5 );
 			return $res;
@@ -69,14 +84,12 @@ class LookupCache {
 			$parameters
 		);
 
+		if ( $this->cacheTTL !== false ) {
+			$this->cache->save( $hash, $res, $this->cacheTTL );
+		}
+
 		$res['meta']['isFromCache'] = false;
 		$res['meta']['queryTime'] = Timer::getElapsedTime( __METHOD__, 5 );
-
-		$this->cache->save(
-			$hash,
-			$res,
-			self::CACHE_TTL
-		);
 
 		return $res;
 	}

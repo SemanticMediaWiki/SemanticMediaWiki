@@ -506,13 +506,45 @@ label.smw-form-checkbox {
 	font-style: italic;
 }
 
-/* jquery-autocomplete */
+/* jquery-autocomplete
 .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto;}
 .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; font-size: 0.8em; }
 .autocomplete-selected { background: #F0F0F0; }
 .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+*/
+
+.autocomplete-suggestions {
+    background: white;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+    min-width: 120px;
+    color: rgb(111, 128, 146);
+    float: right;
+    padding-top: 2px;
+    margin-right: -15px;
+    font-size: 16px;
+    font-weight: normal;
+    z-index: 11110 !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.autocomplete-suggestion {
+    display: block;
+    padding: 5px 10px;
+    border-bottom: 1px solid #DDD;
+    cursor: pointer;
+}
+
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+
 
 .skin-vector input#smw-property-input.autocomplete-suggestions {
 	height: 1.15em;

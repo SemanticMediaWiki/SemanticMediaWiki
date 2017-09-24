@@ -187,6 +187,7 @@ class PropertyLabelFinder {
 
 		$query = $queryFactory->newQuery( $description );
 		$query->setOption( $query::PROC_CONTEXT, 'PropertyLabelFinder' );
+		$query->setLimit( 100 );
 
 		$queryResult = $this->store->getQueryResult(
 			$query

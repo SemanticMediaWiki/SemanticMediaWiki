@@ -19,11 +19,17 @@
 			maxHeight: 150,
 			paramName: 'property',
 			delimiter: "\n",
+			noCache: false,
+			triggerSelectOnValidInput: false,
 			params: {
 				'action': 'browsebyproperty',
 				'format': 'json',
 				'listonly': true,
 				'limit': 100
+			},
+			onSelect: function( suggestion ) {
+				// #611
+				$(this).off("focus");
 			},
 			onSearchStart: function( query ) {
 
