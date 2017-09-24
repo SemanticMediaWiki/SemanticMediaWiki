@@ -238,15 +238,21 @@
 	$( document ).ready( function() {
 
 		var condition = $( '#ask-query-condition' ),
+			condVal = '',
+			isEmpty = '';
+
+		if ( condition.length ) {
+
 			condVal = condition.val().trim(),
 			isEmpty = condVal === '';
 
-		var termAutocomplete = smw.Factory.newTermAutocomplete(
-			condition
-		);
+			var termAutocomplete = smw.Factory.newTermAutocomplete(
+				condition
+			);
 
-		// Register autocomplete feature on ...
-		termAutocomplete.register( [ 'property', 'concept', 'category' ] );
+			// Register autocomplete feature on ...
+			termAutocomplete.register( [ 'property', 'concept', 'category' ] );
+		};
 
 		// Field input is kept disabled until JS is fully loaded to signal
 		// "ready for input"
