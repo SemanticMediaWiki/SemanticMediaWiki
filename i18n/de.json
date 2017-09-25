@@ -98,6 +98,7 @@
 	"smw-paramdesc-export": "Die Exportoption",
 	"smw-paramdesc-prettyprint": "Die unformatierte Anzeige mit zusätzlichen Einzügen und neuen Zeilen",
 	"smw-paramdesc-json-unescape": "Die Ausgabe enthält nicht maskierte Schrägstriche und aus mehreren Bytes bestehende Unicode-Zeichen",
+	"smw-paramdesc-json-type": "Serialisierungstyp",
 	"smw-paramdesc-source": "Die alternative Abfragequelle",
 	"smw-paramdesc-jsonsyntax": "Die zu verwendende JSON-Syntax",
 	"smw-printername-feed": "Feed (RSS/Atom)",
@@ -250,6 +251,10 @@
 	"smw-ask-format": "Format",
 	"smw-ask-format-selection-help": "Weitere Informationen sind auf der Hilfeseite $1 verfügbar",
 	"smw-ask-condition-change-info": "Die Abfragebedingungen wurden geändert. Es ist daher eine erneute Ausführung der Abfrage notwendig, um die den neuen Abfragebedingungen entsprechenden Ergebnisse zu ermitteln.",
+	"smw-ask-condition-input-assistance": "Suchhilfen werden für die folgenden Präfixe angeboten:",
+	"smw-ask-condition-input-assistance-property": "<code>p:</code> Attributsuche",
+	"smw-ask-condition-input-assistance-category": "<code>c:</code> Kategoriesuche",
+	"smw-ask-condition-input-assistance-concept": "<code>con:</code> Konzeptsuche",
 	"smw-ask-format-change-info": "Das Ausgabeformat „$1“ wurde geändert. Es ist daher eine erneute Ausführung der Abfrage notwendig, um die den neuen Darstellungsoptionen entsprechenden Ergebnisse zu zeigen.",
 	"smw-ask-format-export-info": "Das ausgewählte Ergebnisformat dient dem Datenexport und verfügt über keine visuelle Darstellung. Die Ergebnisse werden nur zum Herunterladen bereitgestellt.",
 	"smw-ask-query-search-info": "Die Abfrage <code><nowiki>$1</nowiki></code> wurde von der Datenbank {{PLURAL:$3|1=„$2“ (aus dem Cache)|„$2“ (aus dem Cache)|„$2“}} in {{PLURAL:$4|einer Sekunde|$4 Sekunden}} beantwortet.",
@@ -386,7 +391,8 @@
 	"smw-ui-tooltip-title-quantity": "Einheitenumrechnung",
 	"smw-ui-tooltip-title-info": "Information",
 	"smw-ui-tooltip-title-service": "Servicelinks",
-	"smw-ui-tooltip-title-warning": "Warnhinweis",
+	"smw-ui-tooltip-title-warning": "Warnung",
+	"smw-ui-tooltip-title-error": "Fehler",
 	"smw-ui-tooltip-title-parameter": "Parameter",
 	"smw-ui-tooltip-title-event": "Ereignis",
 	"smw-ui-tooltip-title-note": "Hinweis",
@@ -611,5 +617,7 @@
 	"apihelp-askargs-summary": "API-Modul zum Abfragen eines Wikis mit der Abfragesprache von Semantic MediaWiki als Liste von Bedingungen, Ausgabeanweisungen und Parametern.",
 	"apihelp-browsebyproperty-summary": "API-Modul zum Abrufen von Informationen zu einem Attribut oder einer Liste von Attributen.",
 	"apihelp-browsebysubject-summary": "API-Modul zum Abrufen von Informationen zu einem Objekt (Seite oder Unterobjekt).",
-	"apihelp-smwtask-summary": "API-Modul zum Ausführen Semantic MediaWiki betreffender Aufgaben."
+	"apihelp-smwtask-summary": "API-Modul zum Ausführen Semantic MediaWiki betreffender Aufgaben.",
+	"apihelp-smwbrowse-summary": "API-Modul zur Unterstützung verschiedener Aktivitäten beim Browsen.",
+	"smw-api-smwbrowse-invalid-parameters": "Die Formatierung der Parameter ist fehlerhaft. Es wird eine gültige JSON-Formatierung erwartet."
 }

@@ -28,7 +28,8 @@
 			"Alex Great",
 			"Nemo bis",
 			"Redredsonia",
-			"Nitch"
+			"Nitch",
+			"Helpau"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -101,6 +102,7 @@
 	"smw-paramdesc-export": "Параметры экспорта",
 	"smw-paramdesc-prettyprint": "Красивый вывод на печать, который отображает дополнительные отступы и переводы строк",
 	"smw-paramdesc-json-unescape": "Вывод должен содержать экранированные слеши и многобайтовые символы Юникода.",
+	"smw-paramdesc-json-type": "Тип сериализации",
 	"smw-paramdesc-source": "Альтернативный источник запроса",
 	"smw-paramdesc-jsonsyntax": "Синтаксис JSON, который будет использоваться",
 	"smw-printername-feed": "Лента RSS и Atom",
@@ -256,7 +258,7 @@
 	"smw_browse_hide_incoming": "скрыть свойства, ссылающиеся сюда",
 	"smw_browse_no_outgoing": "Эта страница не содержит свойств.",
 	"smw_browse_no_incoming": "Нет свойств, ссылающихся на эту страницу.",
-	"smw-browse-from-backend": "Получение информации...",
+	"smw-browse-from-backend": "В настоящее время идёт получение информации от серверного приложения.",
 	"smw_inverse_label_default": "$1 из",
 	"smw_inverse_label_property": "Метка обратного свойства",
 	"pageproperty": "Страница поиска свойств",
@@ -333,7 +335,8 @@
 	"smw-ui-tooltip-title-quantity": "Преобразование единиц",
 	"smw-ui-tooltip-title-info": "Информация",
 	"smw-ui-tooltip-title-service": "Служебная ссылка",
-	"smw-ui-tooltip-title-warning": "Ошибка",
+	"smw-ui-tooltip-title-warning": "Предупреждение",
+	"smw-ui-tooltip-title-error": "Ошибка",
 	"smw-ui-tooltip-title-parameter": "Параметр",
 	"smw-ui-tooltip-title-event": "Событие",
 	"smw-ui-tooltip-title-note": "Примечание",

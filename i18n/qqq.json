@@ -93,6 +93,7 @@
 	"smw-paramdesc-export": "This is the description of the \"export\" parameter of the \"json\" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
 	"smw-paramdesc-prettyprint": "This is the description of the \"[[wikipedia:prettyprint|prettyprint]]\" parameter of the \"JSON\" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
 	"smw-paramdesc-json-unescape": "This is the description of the \"unescaped\" parameter of the \"json\" [https://www.semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
+	"smw-paramdesc-json-type": "This is the description of the \"type\" parameter for the \"json\" [https://www.semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
 	"smw-paramdesc-source": "This is the description of the \"source\" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].",
 	"smw-paramdesc-jsonsyntax": "This is the description of the \"syntax\" parameter used by [http://www.semantic-mediawiki.org/wiki/Help:JSON_format].",
 	"smw-printername-feed": "This is the name of the [https://semantic-mediawiki.org/wiki/Help:Feed_format Feed result format].",
@@ -248,6 +249,10 @@
 	"smw-ask-format": "This is a link label on special page \"Ask\".\n\n{{Identical|Format}}",
 	"smw-ask-format-selection-help": "This is a text displayed on [[Special:Ask]] to inform about a help page on [https://semantic-mediawiki.org/wiki/ Semantic MediaWiki].\n\nParameters:\n* $1 - a link which points to Help: page on semantic-mediawiki.org",
 	"smw-ask-condition-change-info": "This is an informatory message shown at the top of special page \"Ask\".",
+	"smw-ask-condition-input-assistance": "This is an informatory message shown in a tooltip.",
+	"smw-ask-condition-input-assistance-property": "This is an informatory message shown in a tooltip.\n\n{{Doc-important|Do not change the prefix <code>p:</code>}}",
+	"smw-ask-condition-input-assistance-category": "This is an informatory message shown in a tooltip.\n\n{{Doc-important|Do not change the prefix <code>c:</code>}}",
+	"smw-ask-condition-input-assistance-concept": "This is an informatory message shown in a tooltip.\n\n{{Doc-important|Do not change the prefix <code>con:</code>}}",
 	"smw-ask-format-change-info": "This is an informatory message shown at the top of special page \"Ask\".",
 	"smw-ask-format-export-info": "This is an informatory message shown at the top of special page \"Ask\".",
 	"smw-ask-query-search-info": "An informatory message shown on \"Special:Ask\":\n\nParameters:\n* $1 shows the code of the query, e.g. <code><nowiki>[[Has number::+]]</nowiki></code>\n* $2 shows the name of the database backend that returned the answer, e.g. \"SMWSQLStore3\"\n* $3 indicates whether it is retrieved from cache or not \n* $4 shows the elapsed time needed to return the answer, e.g. 0.00635",
@@ -385,7 +390,8 @@
 	"smw-ui-tooltip-title-quantity": "A label that is displayed on the info tooltip.",
 	"smw-ui-tooltip-title-info": "A label that is displayed on the info tooltip.\n{{Identical|Information}}",
 	"smw-ui-tooltip-title-service": "A label that is displayed on the info tooltip.",
-	"smw-ui-tooltip-title-warning": "A label that is displayed on the info tooltip.\n{{Identical|Error}}",
+	"smw-ui-tooltip-title-warning": "A label that is displayed on the info tooltip.\n{{Identical|Warning}}",
+	"smw-ui-tooltip-title-error": "A label that is displayed on the info tooltip.\n\n{{Identical|Error}}",
 	"smw-ui-tooltip-title-parameter": "A label that is displayed on the info tooltip.\n{{Identical|Parameter}}",
 	"smw-ui-tooltip-title-event": "A label that is displayed on the info tooltip.\n{{Identical|Event}}",
 	"smw-ui-tooltip-title-note": "A label that is displayed on the info tooltip.\n{{Identical|Note}}",
@@ -612,5 +618,7 @@
 	"apihelp-askargs-summary": "This is an informatory message describing and API module.",
 	"apihelp-browsebyproperty-summary": "This is an informatory message describing and API module.",
 	"apihelp-browsebysubject-summary": "This is an informatory message describing and API module.",
-	"apihelp-smwtask-summary": "This is an informatory message describing and API module."
+	"apihelp-smwtask-summary": "This is an informatory message describing and API module.",
+	"apihelp-smwbrowse-summary": "This is an informatory message describing an API module.",
+	"smw-api-smwbrowse-invalid-parameters": "This is an error message emitted by an API-module."
 }
