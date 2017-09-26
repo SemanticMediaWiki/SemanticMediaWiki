@@ -485,68 +485,71 @@ class ListResultPrinter extends ResultPrinter {
 		return $this->mFormat != 'ul' && $this->mFormat != 'ol';
 	}
 
-	public function getParameters() {
-		$params = parent::getParameters();
+	/**
+	 * @inheritdoc
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
 
-		$params['sep'] = array(
+		$definitions['sep'] = [
 			'message' => 'smw-paramdesc-sep',
 			'default' => $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ? '' : ',',
-		);
+		];
 
 		if ( $this->mFormat === 'template' && $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
-			$params['valuesep'] = array(
+			$definitions['valuesep'] = [
 				'message' => 'smw-paramdesc-sep',
 				'default' => ',',
-			);
+			];
 		}
 
-		$params['template'] = array(
+		$definitions['template'] = [
 			'message' => 'smw-paramdesc-template',
 			'default' => '',
-		);
+		];
 
-		$params['template arguments'] = array(
+		$definitions['template arguments'] = [
 			'message' => 'smw-paramdesc-template-arguments',
 			'default' => '',
-			'values' => array( 'numbered', 'named', 'legacy' ),
-		);
+			'values' => [ 'numbered', 'named', 'legacy' ],
+		];
 
-		$params['named args'] = array(
+		$definitions['named args'] = [
 			'type' => 'boolean',
 			'message' => 'smw-paramdesc-named_args',
 			'default' => false,
-		);
+		];
 
 		if ( !$this->isPlainlist() ) {
-			$params['columns'] = array(
+			$definitions['columns'] = [
 				'type' => 'integer',
 				'message' => 'smw-paramdesc-columns',
 				'default' => 1,
-				'range' => array( 1, 10 ),
-			);
+				'range' => [ 1, 10 ],
+			];
 		}
 
-		$params['userparam'] = array(
+		$definitions['userparam'] = [
 			'message' => 'smw-paramdesc-userparam',
 			'default' => '',
-		);
+		];
 
-		$params['introtemplate'] = array(
+		$definitions['introtemplate'] = [
 			'message' => 'smw-paramdesc-introtemplate',
 			'default' => '',
-		);
+		];
 
-		$params['outrotemplate'] = array(
+		$definitions['outrotemplate'] = [
 			'message' => 'smw-paramdesc-outrotemplate',
 			'default' => '',
-		);
+		];
 
-		$params['import-annotation'] = array(
+		$definitions['import-annotation'] = [
 			'message' => 'smw-paramdesc-import-annotation',
 			'type' => 'boolean',
-			'default' => false
-		);
+			'default' => false,
+		];
 
-		return $params;
+		return $definitions;
 	}
 }
