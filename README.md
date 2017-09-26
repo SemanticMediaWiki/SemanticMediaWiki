@@ -61,7 +61,7 @@ most important files are linked below.
 
 Many people have contributed to SMW. A list of people who have made contributions in the past can
 be found [here][contributors] or [on the SMW wiki](https://www.semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
-The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md)
+The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/CONTRIBUTING.md)
 provides information on the different ways available to do so.
 
 If you have remarks, questions, or suggestions, please send them to semediawiki-users@lists.sourceforge.net.
