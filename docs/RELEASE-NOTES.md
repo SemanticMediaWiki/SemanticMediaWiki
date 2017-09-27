@@ -56,6 +56,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2659](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2659) Removed deprecated constant `SMWDataItem::TYPE_STRING` (replaced by `SMWDataItem::TYPE_BLOB`)
 * [#2676](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2676)
 * [#2680](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2680)
+* [#2705](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2705) Removed usages of deprecated ``ResultPrinter::getParameters`
 
 ## Contributors
 
