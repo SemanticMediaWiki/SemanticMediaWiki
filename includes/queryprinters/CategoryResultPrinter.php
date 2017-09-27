@@ -181,44 +181,52 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $htmlColumnListRenderer->getHtml();
 	}
 
-	public function getParameters() {
-		return array_merge( parent::getParameters(), array(
-			array(
-				'name' => 'columns',
-				'type' => 'integer',
-				'message' => 'smw-paramdesc-columns',
-				'default' => 3,
-			),
-			array(
-				'name' => 'delim',
-				'message' => 'smw-paramdesc-category-delim',
-				'default' => '',
-			),
-			array(
-				'name' => 'template',
-				'message' => 'smw-paramdesc-category-template',
-				'default' => '',
-			),
-			array(
-				'name' => 'userparam',
-				'message' => 'smw-paramdesc-category-userparam',
-				'default' => '',
-			),
+	/**
+	 * @inheritdoc
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
 
-			array(
-				'name' => 'named args',
-				'type' => 'boolean',
-				'message' => 'smw-paramdesc-named_args',
-				'default' => false,
-			),
+		$definitions[] = [
+			'name' => 'columns',
+			'type' => 'integer',
+			'message' => 'smw-paramdesc-columns',
+			'default' => 3,
+		];
 
-			array(
-				'name' => 'import-annotation',
-				'type' => 'boolean',
-				'message' => 'smw-paramdesc-import-annotation',
-				'default' => false,
-			)
-		) );
+		$definitions[] = [
+			'name' => 'delim',
+			'message' => 'smw-paramdesc-category-delim',
+			'default' => '',
+		];
+
+		$definitions[] = [
+			'name' => 'template',
+			'message' => 'smw-paramdesc-category-template',
+			'default' => '',
+		];
+
+		$definitions[] = [
+			'name' => 'userparam',
+			'message' => 'smw-paramdesc-category-userparam',
+			'default' => '',
+		];
+
+		$definitions[] = [
+			'name' => 'named args',
+			'type' => 'boolean',
+			'message' => 'smw-paramdesc-named_args',
+			'default' => false,
+		];
+
+		$definitions[] = [
+			'name' => 'import-annotation',
+			'type' => 'boolean',
+			'message' => 'smw-paramdesc-import-annotation',
+			'default' => false,
+		];
+
+		return $definitions;
 	}
 
 	private function getFirstLetterForCategory( SMWQueryResult $res, SMWDataItem $dataItem ) {
