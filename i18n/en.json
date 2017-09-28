@@ -57,6 +57,7 @@
 	"smw-paramdesc-distribution": "Instead of displaying all values, count their occurrences, and show these.",
 	"smw-paramdesc-distributionsort": "Sort the value distribution by occurrence count.",
 	"smw-paramdesc-distributionlimit": "Limit the value distribution to the count of only some values.",
+	"smw-paramdesc-aggregation": "Specify to what the aggregation should relate to",
 	"smw-paramdesc-template": "The name of a template with which to display the printouts",
 	"smw-paramdesc-columns": "The number of columns in which to display results (default is $1)",
 	"smw-paramdesc-userparam": "A value passed into each template call, if a template is used",
