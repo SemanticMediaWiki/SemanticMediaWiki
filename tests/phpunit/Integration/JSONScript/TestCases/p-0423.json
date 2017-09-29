@@ -147,7 +147,7 @@
 			"subject": "Example/P0423/Q3.1",
 			"assert-output": {
 				"to-contain": [
-					"class=\"Has-date smwtype_dat\">"
+					"class=\"Has-date smwtype_dat\" "
 				]
 			}
 		}
