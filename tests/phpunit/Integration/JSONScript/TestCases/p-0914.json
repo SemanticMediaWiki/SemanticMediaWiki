@@ -52,7 +52,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Runtime-benchmark smwtype_ref_rec\">27 November 2016</td><td data-sort-value=\"16690400\" class=\"Memory-used smwtype_num\">16690400</td><td data-sort-value=\"200\" class=\"ID smwtype_num\">200</td><td data-sort-value=\"48.35\" class=\"Runtime smwtype_num\">48.35</td><td class=\"Benchmark-notes smwtype_wpg\">N/a</td>"
+					"<td class=\"Runtime-benchmark smwtype_ref_rec\">27 November 2016</td><td class=\"Memory-used smwtype_num\" data-sort-value=\"16690400\">16690400</td><td class=\"ID smwtype_num\" data-sort-value=\"200\">200</td><td class=\"Runtime smwtype_num\" data-sort-value=\"48.35\">48.35</td><td class=\"Benchmark-notes smwtype_wpg\">N/a</td>"
 				]
 			}
 		},
@@ -62,7 +62,7 @@
 			"subject": "Example/P0914/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Runtime-benchmark smwtype_ref_rec\">27 November 2016</td><td data-sort-value=\"16690400\" class=\"Memory-used smwtype_num\">16690400</td><td data-sort-value=\"200\" class=\"ID smwtype_num\">200</td><td data-sort-value=\"48.35\" class=\"Runtime smwtype_num\">48.35</td><td class=\"Benchmark-notes smwtype_wpg\">N/a</td>"
+					"<td class=\"Runtime-benchmark smwtype_ref_rec\">27 November 2016</td><td class=\"Memory-used smwtype_num\" data-sort-value=\"16690400\">16690400</td><td class=\"ID smwtype_num\" data-sort-value=\"200\">200</td><td class=\"Runtime smwtype_num\" data-sort-value=\"48.35\">48.35</td><td class=\"Benchmark-notes smwtype_wpg\">N/a</td>"
 				]
 			}
 		}

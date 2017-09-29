@@ -76,10 +76,10 @@
 			"subject": "Example/P0424/Q1.1",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">true</td>",
-					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">vrai</td>",
-					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">false</td>",
-					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">faux</td>"
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">true</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">vrai</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">false</td>",
+					"<tdclass=\"Has-boolean smwtype_boo\"  data-sort-value=\"0\">faux</td>"
 				]
 			}
 		},
@@ -89,10 +89,10 @@
 			"subject": "Example/P0424/Q1.2",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">true</td>",
-					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">真</td>",
-					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">false</td>",
-					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">偽</td>"
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">true</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">真</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">false</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">偽</td>"
 				]
 			}
 		}

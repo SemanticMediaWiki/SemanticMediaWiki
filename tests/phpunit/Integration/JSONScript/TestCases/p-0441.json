@@ -27,10 +27,10 @@
 			"subject": "Example/P0441/2",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"011\" class=\"Has-text smwtype_txt\">011<br />00011</td>"
+					"<td class=\"Has-text smwtype_txt\" data-sort-value=\"011\">011<br />00011</td>"
 				],
 				"no-contain": [
-					"<td data-sort-value=\"011\" class=\"Has-text smwtype_txt\">011</td>"
+					"<td class=\"Has-text smwtype_txt\" data-sort-value=\"011\">011</td>"
 				]
 			}
 		}

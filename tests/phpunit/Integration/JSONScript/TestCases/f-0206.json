@@ -23,7 +23,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smwttcontent\">A number to display ....</div>",
-					"<td data-sort-value=\"1001\" class=\"Has-number smwtype_num\">1,001</td>"
+					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1,001</td>"
 				]
 			}
 		}

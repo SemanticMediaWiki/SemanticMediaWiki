@@ -77,9 +77,9 @@
 			"subject": "Example/P0422/Q/2/1",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_519df0ee370ade5d506e5dd769a14b26</td><td data-sort-value=\"2321884.5\" class=\"Has-date smwtype_dat\">1645</td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0422/2#_a9167ae46aa815bb052650683c4719d6</td><td data-sort-value=\"2423420.5\" class=\"Has-date smwtype_dat\">January 1923</td></tr>",
-					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_803b6de7d53ad0173871f4e4210ce477</td><td data-sort-value=\"2436965.5\" class=\"Has-date smwtype_dat\">February 1960</td></tr>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_519df0ee370ade5d506e5dd769a14b26</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2321884.5\">1645</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0422/2#_a9167ae46aa815bb052650683c4719d6</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2423420.5\">January 1923</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_803b6de7d53ad0173871f4e4210ce477</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2436965.5\">February 1960</td></tr>"
 				]
 			}
 		},
@@ -89,9 +89,9 @@
 			"subject": "Example/P0422/Q/2/2",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_803b6de7d53ad0173871f4e4210ce477</td><td data-sort-value=\"2436965.5\" class=\"Has-date smwtype_dat\">February 1960</td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0422/2#_a9167ae46aa815bb052650683c4719d6</td><td data-sort-value=\"2423420.5\" class=\"Has-date smwtype_dat\">January 1923</td></tr>",
-					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_519df0ee370ade5d506e5dd769a14b26</td><td data-sort-value=\"2321884.5\" class=\"Has-date smwtype_dat\">1645</td></tr>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_803b6de7d53ad0173871f4e4210ce477</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2436965.5\">February 1960</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0422/2#_a9167ae46aa815bb052650683c4719d6</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2423420.5\">January 1923</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_519df0ee370ade5d506e5dd769a14b26</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2321884.5\">1645</td></tr>"
 				]
 			}
 		},

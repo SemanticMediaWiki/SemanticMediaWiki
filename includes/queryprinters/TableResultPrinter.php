@@ -172,16 +172,17 @@ class TableResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getCellForPropVals( SMWResultArray $resultArray, $outputMode, $columnClass ) {
-		$dataValues = array();
+		/** @var SMWDataValue[] $dataValues */
+		$dataValues = [];
 
 		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
 			$dataValues[] = $dv;
 		}
 
 		$printRequest = $resultArray->getPrintRequest();
-		$dataValueType = $printRequest->getTypeID();
+		$printRequestType = $printRequest->getTypeID();
 
-		$cellTypeClass = $dataValueType !== '' ? ' smwtype' . $dataValueType : '';
+		$cellTypeClass = " smwtype$printRequestType";
 
 		// We would like the cell class to always be defined, even if the cell itself is empty
 		$attributes = [
@@ -192,6 +193,12 @@ class TableResultPrinter extends ResultPrinter {
 
 		if ( count( $dataValues ) > 0 ) {
 			$sortKey = $dataValues[0]->getDataItem()->getSortKey();
+			$dataValueType = $dataValues[0]->getTypeID();
+
+			// The data value type might differ from the print request type - override in this case
+			if ( $dataValueType !== '' && $dataValueType !== $printRequestType ) {
+				$attributes['class'] = "$columnClass smwtype$dataValueType";
+			}
 
 			if ( is_numeric( $sortKey ) ) {
 				$attributes['data-sort-value'] = $sortKey;
@@ -222,6 +229,9 @@ class TableResultPrinter extends ResultPrinter {
 				$printRequest->getMode() == PrintRequest::PRINT_THIS
 			);
 		}
+
+		// Sort the cell HTML attributes, to make test behavior more deterministic
+		ksort( $attributes );
 
 		$this->htmlTableRenderer->addCell( $content, $attributes );
 	}

@@ -34,8 +34,8 @@
 			"subject": "Example/F0205/1a",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"0.02\" style=\"text-align:right;\" class=\"Has-number smwtype_num\">0.02<br />1",
-					"data-sort-value=\"2.02\" style=\"text-align:right;\" class=\"Has-number smwtype_num\">2.02<br />21"
+					"class=\"Has-number smwtype_num\" data-sort-value=\"0.02\" style=\"text-align:right;\">0.02<br />1",
+					"class=\"Has-number smwtype_num\" data-sort-value=\"2.02\" style=\"text-align:right;\">2.02<br />21"
 				]
 			}
 		},
@@ -45,8 +45,8 @@
 			"subject": "Example/F0205/1b",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"42\" style=\"text-align:left;\" class=\"Has-number smwtype_num\">42<br />1",
-					"data-sort-value=\"1001\" style=\"text-align:left;\" class=\"Has-number smwtype_num\">1,001<br />21"
+					"class=\"Has-number smwtype_num\" data-sort-value=\"42\" style=\"text-align:left;\">42<br />1",
+					"class=\"Has-number smwtype_num\" data-sort-value=\"1001\" style=\"text-align:left;\">1,001<br />21"
 				]
 			}
 		},
@@ -56,8 +56,8 @@
 			"subject": "Example/F0205/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"42\" style=\"width:50%;\" class=\"Has-number smwtype_num\">42<br />1</td>",
-					"<td data-sort-value=\"1001\" style=\"width:50%;\" class=\"Has-number smwtype_num\">1,001<br />21</td>"
+					"<td class=\"Has-number smwtype_num\" data-sort-value=\"42\" style=\"width:50%;\">42<br />1</td>",
+					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1001\" style=\"width:50%;\">1,001<br />21</td>"
 				]
 			}
 		}
