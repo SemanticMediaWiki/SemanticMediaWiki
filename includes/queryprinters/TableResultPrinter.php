@@ -178,13 +178,20 @@ class TableResultPrinter extends ResultPrinter {
 			$dataValues[] = $dv;
 		}
 
-		$attributes = array();
+		$printRequest = $resultArray->getPrintRequest();
+		$dataValueType = $printRequest->getTypeID();
+
+		$cellTypeClass = $dataValueType !== '' ? ' smwtype' . $dataValueType : '';
+
+		// We would like the cell class to always be defined, even if the cell itself is empty
+		$attributes = [
+			'class' => $columnClass . $cellTypeClass
+		];
+
 		$content = null;
 
 		if ( count( $dataValues ) > 0 ) {
 			$sortKey = $dataValues[0]->getDataItem()->getSortKey();
-			$dataValueType = $dataValues[0]->getTypeID();
-			$printRequest = $resultArray->getPrintRequest();
 
 			if ( is_numeric( $sortKey ) ) {
 				$attributes['data-sort-value'] = $sortKey;
@@ -201,14 +208,13 @@ class TableResultPrinter extends ResultPrinter {
 			}
 
 			$width = htmlspecialchars(
-				trim( $printRequest->getParameter( 'width' ) )
+				trim( $printRequest->getParameter( 'width' ) ),
+				ENT_QUOTES
 			);
 
 			if ( $width ) {
 				$attributes['style'] = isset( $attributes['style'] ) ?  $attributes['style'] . " width:$width;" . $width : "width:$width;";
 			}
-
-			$attributes['class'] = $columnClass . ( $dataValueType !== '' ? ' smwtype' . $dataValueType : '' );
 
 			$content = $this->getCellContent(
 				$dataValues,
