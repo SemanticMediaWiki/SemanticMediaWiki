@@ -12,7 +12,8 @@
 			"Mahdy Saffar",
 			"AzorAhai",
 			"DEXi",
-			"Ommmmid"
+			"Ommmmid",
+			"Obzord"
 		]
 	},
 	"smw-desc": "ویکی خود را بیشترقابل دسترس کنید- برای ماشین‌ها ''و'' انسان‌ها ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -261,7 +262,7 @@
 	"smw-admin-dbdocu": "مدیاویکی معنایی به برخی از فرمت‌ها به پایگاه اطلاعاتی مدیاویکی برای ذخیره اطلاعات معنایی، نیاز دارد.\nعملکرد زیر تضمین می کند که پایگاه اطلاعاتی شما به درستی تنظیم شده‌است.\nتغییرات ایجاد شده در این مرحله بر روی بقیه پایگاه اطلاعاتب مدیاویکی تاثیر نمی‌گذارد، و اگر مایل باشید می‌تواند آن را به راحتی انجام ندهد.\nاین تنظیم عملکرد می‌تواند چندین بار بدون انجام هر گونه آسیبی اجرا شود، اما تنها یک بار در نصب یا ارتقاء مورد نیاز است.",
 	"smw-admin-permissionswarn": "اگر عملیات با خطاهای اس‌کیو‌ال با شکست مواجه شود، کاربر پایگاه اطلاعاتی استخدام شده توسط ویکی شما ا (LocalSettings.php خود را بررسی کنید) ممکن است مجوزهای کافی را نداشته باشد.\nیا به این کاربر مجوز اضافی برای ایجاد و حذف جداول اعطاء می‌شود، موقتاً ورود اساس پایگاه اطلاعاتی خود را در LocalSettings.php وارد کنید، یا از متن نگهداری <code>setupStore.php</code> استفاده کنید که می‌تواند از اعتبارنامه‌های یک سرپرست استفاده کند.",
 	"smw-admin-dbbutton": "راه اندازی یا ارتقاء جدول‌ها",
-	"smw-admin-announce": "اعلام کردن ویکی خود",
+	"smw-admin-announce": "ویکی خود را اعلام کنید",
 	"smw-admin-deprecation-notice-title": "اعلان‌های تخریب",
 	"smw-admin-deprecation-notice-title-notice": "توجه",
 	"smw-admin-deprecation-notice-title-replacement": "جایگزینی",
@@ -304,6 +305,7 @@
 	"smw-ui-tooltip-title-info": "اطلاعات",
 	"smw-ui-tooltip-title-service": "پیوندهای خدمت",
 	"smw-ui-tooltip-title-warning": "خطا",
+	"smw-ui-tooltip-title-error": "خطا",
 	"smw-ui-tooltip-title-parameter": "پارامتر",
 	"smw-ui-tooltip-title-event": "رویداد",
 	"smw-ui-tooltip-title-note": "یادداشت",

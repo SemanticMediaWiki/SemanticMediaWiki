@@ -402,6 +402,7 @@
 	"right-smw-admin": "连接管理员工作组（Semantic MediaWiki）",
 	"right-smw-patternedit": "维护允许的正则表达式和模式的编辑访问权（Semantic MediaWiki）",
 	"right-smw-pageedit": "用于带<code>Is edit protected</code>注释页面的编辑访问权（语义MediaWiki）",
+	"restriction-level-smw-pageedit": "已保护（仅限合资格用户）",
 	"action-smw-patternedit": "编辑由语义MediaWiki使用的正则表达式",
 	"action-smw-pageedit": "编辑带注释<code>Is edit protected</code>的页面（语义MediaWiki）",
 	"group-smwadministrator": "管理员（Semantic MediaWiki）",
