@@ -320,7 +320,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2451586.4166782\">11 February 2000 22:00:01</td>",
-					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2451586.4166782\" >2000-02-11T22:00:01</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2451586.4166782\">2000-02-11T22:00:01</td>",
 					"<td class=\"ISO-Date smwtype_dat\" data-sort-value=\"2451586.4166782\">2000-02-11T22:00:01</td>",
 					"<td class=\"MW-Date smwtype_dat\" data-sort-value=\"2451586.4166782\">22:00, 11 February 2000</td>"
 				]

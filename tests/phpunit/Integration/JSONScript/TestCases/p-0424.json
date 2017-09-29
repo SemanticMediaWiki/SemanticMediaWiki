@@ -79,7 +79,7 @@
 					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">true</td>",
 					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">vrai</td>",
 					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">false</td>",
-					"<tdclass=\"Has-boolean smwtype_boo\"  data-sort-value=\"0\">faux</td>"
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">faux</td>"
 				]
 			}
 		},

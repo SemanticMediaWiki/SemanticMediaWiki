@@ -39,9 +39,9 @@
 			"subject": "Example/P0905/Q1",
 			"assert-output": {
 				"to-contain": [
-					"Assessment 1a</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td data-sort-value=\"13\"",
-					"Assessment 1b</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453736.5\">2006</td><td data-sort-value=\"2\"",
-					"Assessment 1c</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td data-sort-value=\"14\""
+					"Assessment 1a</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"13\"",
+					"Assessment 1b</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453736.5\">2006</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"2\"",
+					"Assessment 1c</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"14\""
 				]
 			}
 		},
@@ -51,11 +51,11 @@
 			"subject": "Example/P0905/Q2",
 			"assert-output": {
 				"to-contain": [
-					"Assessment 1c</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td data-sort-value=\"14\""
+					"Assessment 1c</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"14\""
 				],
 				"not-contain": [
-					"Assessment 1a</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td data-sort-value=\"13\"",
-					"Assessment 1b</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453736.5\">2006</td><td data-sort-value=\"2\""
+					"Assessment 1a</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"13\"",
+					"Assessment 1b</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453736.5\">2006</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"2\""
 				]
 			}
 		},
@@ -65,11 +65,11 @@
 			"subject": "Example/P0905/Q3",
 			"assert-output": {
 				"to-contain": [
-					"Assessment 1c</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td data-sort-value=\"14\""
+					"Assessment 1c</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"14\""
 				],
 				"not-contain": [
-					"Assessment 1a</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td data-sort-value=\"13\"",
-					"Assessment 1b</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453736.5\">2006</td><td data-sort-value=\"2\""
+					"Assessment 1a</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"13\"",
+					"Assessment 1b</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453736.5\">2006</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"2\""
 				]
 			}
 		},
@@ -79,11 +79,11 @@
 			"subject": "Example/P0905/Q4",
 			"assert-output": {
 				"to-contain": [
-					"Assessment 1b</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453736.5\">2006</td><td data-sort-value=\"2\""
+					"Assessment 1b</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453736.5\">2006</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"2\""
 				],
 				"not-contain": [
-					"Assessment 1a</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td data-sort-value=\"13\"",
-					"Assessment 1c</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td data-sort-value=\"14\""
+					"Assessment 1a</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"13\"",
+					"Assessment 1c</a></td><td class=\"Assessment-year smwtype_dat\" data-sort-value=\"2453371.5\">2005</td><td class=\"Assessment-value smwtype_num\" data-sort-value=\"14\""
 				]
 			}
 		}
