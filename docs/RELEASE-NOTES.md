@@ -40,6 +40,11 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2690](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2690) Added the `type` parameter to `format=json` in support for a simple list export
 * [#2696](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2696) Added a new `smwbrowse` API module
 * [#2699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2699) Added an input assistance for the `Special:Ask` condition textbox
+* [#2717](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2717) Added addtional index to bettter serve the `smwbrowse` API module
+* [#2718](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2718) Added ad-hoc export for the `format=table` datatable
+* [#2719](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2719) 
+* [#2721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2721)
+* [#2726](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2726)
 
 ## Bug fixes
 
@@ -47,6 +52,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2586](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2586) Fixed class assignments for empty cells in `format=table`
 * [#2621](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2621) Fixed sort/order field behaviour in `Special:Ask`
 * [#2652](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2652) Fixed handling of multiple checkbox parameter in `Special:Ask`
+
 
 ## Breaking changes and deprecations
 
@@ -57,6 +63,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2659](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2659) Removed deprecated constant `SMWDataItem::TYPE_STRING` (replaced by `SMWDataItem::TYPE_BLOB`)
 * [#2696](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2696) Soft deprecate the `browsebyproperty` API module, the new `smwbrowse` should be used instead
 * [#2705](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2705) Removed usages of deprecated `ResultPrinter::getParameters`
+* [#2724](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2724)
 
 ## Other changes
 
@@ -73,6 +80,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2680](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2680) Added `null_count` column to `PropertyStatisticsTable`
 * [#2691](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2691) Replaced `#info` icon set
 * [#2698](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2698) Added persistent caching to the `HierarchyLookup`
+* [#2714](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2714) Added `SMW::GetPreferences` hook
 
 ## Contributors
 
