@@ -33,10 +33,6 @@
 					"limit": limit
 				}
 			},
-			onSelect: function( suggestion ) {
-				// #611
-				$(this).off("focus");
-			},
 			onSearchStart: function( query ) {
 
 				// Avoid a search request on options or invalid characters
@@ -65,6 +61,9 @@
 				};
 			}
 		} );
+
+		// https://github.com/devbridge/jQuery-Autocomplete/issues/498
+		context.off( 'focus.autocomplete' );
 	}
 
 	// Listen to an event (see Special:Ask)
