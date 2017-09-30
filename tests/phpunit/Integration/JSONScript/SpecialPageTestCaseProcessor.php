@@ -9,6 +9,7 @@ use RequestContext;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
 use SpecialPageFactory;
+use RuntimeException;
 
 /**
  * @group semantic-mediawiki
@@ -128,6 +129,9 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 	private function assertOutputForCase( $case, $text ) {
 
+		// Avoid issue with \r carriage return and \n new line
+		$text = str_replace( "\r\n", "\n", $text );
+
 		if ( isset( $case['assert-output']['to-contain'] ) ) {
 
 			if ( isset( $case['assert-output']['to-contain']['contents-file'] ) ) {
@@ -139,7 +143,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			}
 
 			$this->stringValidator->assertThatStringContains(
-				$contents,
+				str_replace( "\r\n", "\n", $contents ),
 				$text,
 				$case['about']
 			);
@@ -156,7 +160,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			}
 
 			$this->stringValidator->assertThatStringNotContains(
-				$contents,
+				str_replace( "\r\n", "\n", $contents ),
 				$text,
 				$case['about']
 			);
@@ -194,6 +198,13 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 	// http://php.net/manual/en/function.file-get-contents.php
 	private function getFileContentsWithEncodingDetection( $file ) {
+
+		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $file );
+
+		if ( !is_readable( $file ) ) {
+			throw new RuntimeException( "Could not open or read: $file" );
+		}
+
 		$content = file_get_contents( $file );
 		return mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding( $content, 'UTF-8, ISO-8859-1, ISO-8859-2', true ) );
 	}
