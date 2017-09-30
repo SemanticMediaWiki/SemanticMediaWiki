@@ -111,15 +111,12 @@ class TableSchemaTaskHandler extends TaskHandler {
 
 		$preparation = $webRequest->getVal( 'prep' );
 		$result = false;
-
-		$this->outputFormatter->addHTML(
-			Html::rawElement(
-				'p',
-				array(
-					'style' => $preparation !== 'done' ? 'opacity:0.5;' : ''
-				),
-				$this->getMessageAsString( 'smw-admin-permissionswarn' )
-			)
+		$msg = Html::rawElement(
+			'p',
+			array(
+				'style' => $preparation !== 'done' ? 'opacity:0.5;' : ''
+			),
+			$this->getMessageAsString( 'smw-admin-permissionswarn' )
 		);
 
 		// Reload (via JS) the page once content is displayed as separate page to inform
@@ -129,18 +126,33 @@ class TableSchemaTaskHandler extends TaskHandler {
 				Html::rawElement(
 					'div',
 					array(
-						'class' => 'smw-admin-db-preparation smw-callout smw-callout-warning',
-						'style' => 'opacity:0.5;'
+						'class' => 'smw-admin-db-preparation smw-callout smw-callout-warning'
 					),
 					$this->getMessageAsString( 'smw-admin-db-preparation' )
 				) . Html::rawElement(
 					'div',
 					array(
-						'class' => 'smw-overlay-spinner large inline'
+						'class' => 'smw-overlay-spinner medium inline',
+						'style' => 'margin-top:50px;'
 					)
 				)
 			);
+
+			$this->outputFormatter->addHTML(
+				$msg . Html::rawElement(
+					'div',
+					[
+						'style' => 'opacity:0.5;'
+					],
+					'<pre>Processing ...</pre>'
+				)
+			);
 		} else {
+
+			$this->outputFormatter->addHTML(
+				$msg
+			);
+
 			$this->outputFormatter->addHTML( '<pre>' );
 			$result = '';
 
@@ -148,10 +160,6 @@ class TableSchemaTaskHandler extends TaskHandler {
 			$result = $this->store->setup();
 
 			$this->outputFormatter->addHTML( '</pre>' );
-		}
-
-		if ( $result === true && $webRequest->getText( 'udsure' ) == 'yes' ) {
-			$this->outputFormatter->addWikiText( '<p><b>' . $this->getMessageAsString( 'smw-admin-setupsuccess' ) . "</b></p>" );
 		}
 	}
 
