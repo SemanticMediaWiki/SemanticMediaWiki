@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Api\LookupCache;
+namespace SMW\Tests\MediaWiki\Api\Browse;
 
-use SMW\MediaWiki\Api\Browse\LookupCache;
+use SMW\MediaWiki\Api\Browse\CachingLookup;
 
 /**
- * @covers \SMW\MediaWiki\Api\Browse\LookupCache
+ * @covers \SMW\MediaWiki\Api\Browse\CachingLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\MediaWiki\Api\Browse\LookupCache;
  *
  * @author mwjames
  */
-class LookupCacheTest extends \PHPUnit_Framework_TestCase {
+class CachingLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -21,13 +21,13 @@ class LookupCacheTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$listLookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ListLookup' )
+		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->getMock();
+			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			LookupCache::class,
-			new LookupCache( $cache, $listLookup )
+			CachingLookup::class,
+			new CachingLookup( $cache, $lookup )
 		);
 	}
 
@@ -50,24 +50,25 @@ class LookupCacheTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->equalTo( $cacheTTL ) );
 
-		$listLookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ListLookup' )
+		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'getVersion', 'lookup' ] )
+			->getMockForAbstractClass();
 
-		$listLookup->expects( $this->atLeastOnce() )
+		$lookup->expects( $this->atLeastOnce() )
 			->method( 'lookup' )
 			->will( $this->returnValue( [] ) );
 
-		$instance = new LookupCache(
+		$instance = new CachingLookup(
 			$cache,
-			$listLookup
+			$lookup
 		);
 
 		$instance->setCacheTTL( $cacheTTL );
 
 		$parameters = [];
 
-		$instance->lookup( 'Foo', $parameters );
+		$instance->lookup( $parameters );
 	}
 
 	public function testLookupWithCache() {
@@ -83,21 +84,22 @@ class LookupCacheTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->never() )
 			->method( 'save' );
 
-		$listLookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ListLookup' )
+		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'getVersion', 'lookup' ] )
+			->getMockForAbstractClass();
 
-		$listLookup->expects( $this->never() )
+		$lookup->expects( $this->never() )
 			->method( 'lookup' );
 
-		$instance = new LookupCache(
+		$instance = new CachingLookup(
 			$cache,
-			$listLookup
+			$lookup
 		);
 
 		$parameters = [];
 
-		$instance->lookup( 'Foo', $parameters );
+		$instance->lookup( $parameters );
 	}
 
 	public function testLookupWithCacheBeingDisabled() {
@@ -112,24 +114,25 @@ class LookupCacheTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->never() )
 			->method( 'save' );
 
-		$listLookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ListLookup' )
+		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
 			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'getVersion', 'lookup' ] )
+			->getMockForAbstractClass();
 
-		$listLookup->expects( $this->atLeastOnce() )
+		$lookup->expects( $this->atLeastOnce() )
 			->method( 'lookup' )
 			->will( $this->returnValue( [] ) );
 
-		$instance = new LookupCache(
+		$instance = new CachingLookup(
 			$cache,
-			$listLookup
+			$lookup
 		);
 
 		$instance->setCacheTTL( false );
 
 		$parameters = [];
 
-		$instance->lookup( 'Foo', $parameters );
+		$instance->lookup( $parameters );
 	}
 
 }

@@ -6,7 +6,7 @@ use ApiBase;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Api\Browse\ListLookup;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
-use SMW\MediaWiki\Api\Browse\LookupCache;
+use SMW\MediaWiki\Api\Browse\CachingLookup;
 
 /**
  * Module to support selected browse activties including:
@@ -82,7 +82,7 @@ class Browse extends ApiBase {
 			'smwgCacheUsage'
 		);
 
-		$cacheTTL = LookupCache::CACHE_TTL;
+		$cacheTTL = CachingLookup::CACHE_TTL;
 
 		if ( isset( $cacheUsage['api.browse'] ) ) {
 			$cacheTTL = $cacheUsage['api.browse'];
@@ -93,26 +93,23 @@ class Browse extends ApiBase {
 		// since we don't use those methods anywher else other than the SQLStore
 		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
 
-		$listAugmentor = new ListAugmentor(
-			$store
-		);
-
 		$listLookup = new ListLookup(
 			$store,
-			$listAugmentor
+			new ListAugmentor( $store )
 		);
 
-		$lookupCache = new LookupCache(
+		$cachingLookup = new CachingLookup(
 			$applicationFactory->getCache(),
 			$listLookup
 		);
 
-		$lookupCache->setCacheTTL(
+		$cachingLookup->setCacheTTL(
 			$cacheTTL
 		);
 
-		return $lookupCache->lookup(
-			$ns,
+		$parameters['ns'] = $ns;
+
+		return $cachingLookup->lookup(
 			$parameters
 		);
 	}
@@ -161,7 +158,7 @@ class Browse extends ApiBase {
 	 */
 	public function getDescription() {
 		return array(
-			'Semantic MediaWiki API module to support browse activties for different entity types.'
+			'API module to support browse activties for different entity types in Semantic MediaWiki.'
 		);
 	}
 

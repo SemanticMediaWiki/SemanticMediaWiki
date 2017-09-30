@@ -32,7 +32,7 @@ class ListAugmentor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $ns
+	 * @param array &$res
 	 * @param array $parameters
 	 *
 	 * @return array
