@@ -78,7 +78,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0432/1</td>",
-					"<td data-sort-value=\"2451544.5\" class=\"Has-number-with-ref smwtype_dat\">1 January 2000</td>",
+					"<td class=\"Has-number-with-ref smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td>",
 					"<td class=\"Has-number-with-ref smwtype_uri\"><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org\">http://example.org</a></td>"
 				]
 			}
@@ -90,7 +90,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0432/2#_7b5db4a4195b1843f9a25639c0d7ff5c</td>",
-					"<td data-sort-value=\"2319299.5\" class=\"Has-number-with-ref smwtype_dat\">4 December 1637</td>",
+					"<td class=\"Has-number-with-ref smwtype_dat\" data-sort-value=\"2319299.5\">4 December 1637</td>",
 					"<td class=\"Has-number-with-ref smwtype_uri\"><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org\">http://example.org</a></td>"
 				]
 			}
@@ -103,7 +103,7 @@
 				"to-contain": [
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0432/3</td>",
 					"<td class=\"Has-mlt-with-ref smwtype_mlt_rec\">Test (en)</td>",
-					"<td data-sort-value=\"123\" class=\"Has-mlt-with-ref smwtype_num\">123</td>"
+					"<td class=\"Has-mlt-with-ref smwtype_num\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		},

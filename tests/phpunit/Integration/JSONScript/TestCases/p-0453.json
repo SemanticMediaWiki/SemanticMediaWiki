@@ -22,8 +22,8 @@
 			"subject": "Example/P0453/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2440953.0416667\" class=\"smwtype_dat\">1 January 1971 13:00:00</td>",
-					"<td data-sort-value=\"2440953.0416667\" class=\"smwtype_dat\">15:00:00, 1 January 1971&#160;<sup title=\"ISO: 1971-01-01T13:00:00\">ᴸ</sup></td>"
+					"<td class=\"smwtype_dat\" data-sort-value=\"2440953.0416667\">1 January 1971 13:00:00</td>",
+					"<td class=\"smwtype_dat\" data-sort-value=\"2440953.0416667\">15:00:00, 1 January 1971&#160;<sup title=\"ISO: 1971-01-01T13:00:00\">ᴸ</sup></td>"
 				]
 			}
 		}

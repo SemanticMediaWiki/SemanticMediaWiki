@@ -127,7 +127,7 @@
 			"assert-output": {
 				"to-contain": [
 					"title=\"Example/P0416/1\">Foo</a></td><td class=\"Display-title-of smwtype_txt\">Foo</td>",
-					"title=\"Example/P0416/1\">123#Bar</a></span></td><td data-sort-value=\"123\" class=\"Display-title-of smwtype_txt\">123</td>"
+					"title=\"Example/P0416/1\">123#Bar</a></span></td><td class=\"Display-title-of smwtype_txt\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		},

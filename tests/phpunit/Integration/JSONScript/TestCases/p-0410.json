@@ -249,16 +249,16 @@
 			"subject": "Example/P0410/3",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"0.001\" class=\"Has-number-with-prec4 smwtype_num\">0.0010",
-					"data-sort-value=\"0.001\" class=\"Has-number-with-prec2 smwtype_num\">0.00",
-					"data-sort-value=\"0.003\" class=\"Has-number smwtype_num\">0.003",
-					"data-sort-value=\"0.005\" class=\"Has-number-with-prec4 smwtype_num\">0.0050",
-					"data-sort-value=\"0.005\" class=\"Has-number-with-prec2 smwtype_num\">0.01",
-					"data-sort-value=\"0.008\" class=\"Has-number smwtype_num\">0.008",
-					"data-sort-value=\"42\" class=\"Has-number-with-prec2 smwtype_num\">42.00",
-					"data-sort-value=\"42\" class=\"Has-number smwtype_num\">42",
-					"data-sort-value=\"10000\" class=\"Has-number-with-prec2 smwtype_num\">10,000.00",
-					"data-sort-value=\"10000\" class=\"Has-number smwtype_num\">10,000"
+					"class=\"Has-number-with-prec4 smwtype_num\" data-sort-value=\"0.001\">0.0010",
+					"class=\"Has-number-with-prec2 smwtype_num\" data-sort-value=\"0.001\">0.00",
+					"class=\"Has-number smwtype_num\" data-sort-value=\"0.003\">0.003",
+					"class=\"Has-number-with-prec4 smwtype_num\" data-sort-value=\"0.005\">0.0050",
+					"class=\"Has-number-with-prec2 smwtype_num\" data-sort-value=\"0.005\">0.01",
+					"class=\"Has-number smwtype_num\" data-sort-value=\"0.008\">0.008",
+					"class=\"Has-number-with-prec2 smwtype_num\" data-sort-value=\"42\">42.00",
+					"class=\"Has-number smwtype_num\" data-sort-value=\"42\">42",
+					"class=\"Has-number-with-prec2 smwtype_num\" data-sort-value=\"10000\">10,000.00",
+					"class=\"Has-number smwtype_num\" data-sort-value=\"10000\">10,000"
 				]
 			}
 		},
@@ -268,15 +268,15 @@
 			"subject": "Example/P0410/4",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"0.02\" class=\"Has-area-with-prec4 smwtype_qty\"",
+					"class=\"Has-area-with-prec4 smwtype_qty\" data-sort-value=\"0.02\"",
 					"0.0200&#160;km²",
 					"0.0077&#160;sqmi",
 					"20.0000&#160;m²",
-					"data-sort-value=\"10\" class=\"Has-area-with-prec2 smwtype_qty\"",
+					"class=\"Has-area-with-prec2 smwtype_qty\" data-sort-value=\"10\"",
 					"10.00&#160;km²",
 					"3.86&#160;sqmi",
 					"10,000.00&#160;m²",
-					"data-sort-value=\"3.33\" class=\"Has-area-with-prec0 smwtype_qty\"",
+					"class=\"Has-area-with-prec0 smwtype_qty\" data-sort-value=\"3.33\"",
 					"3&#160;km²",
 					"1&#160;sqmi",
 					"3,330&#160;m²"
@@ -289,16 +289,16 @@
 			"subject": "Example/P0410/5",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"0.87556397264388\" class=\"Has-currency-with-prec4 smwtype_qty\"",
+					"class=\"Has-currency-with-prec4 smwtype_qty\" data-sort-value=\"0.87556397264388\"",
 					"€&#160;0.8756",
 					"¥&#160;100.0000",
-					"data-sort-value=\"5\" class=\"Has-currency-with-prec2 smwtype_qty\"",
+					"class=\"Has-currency-with-prec2 smwtype_qty\" data-sort-value=\"5\"",
 					"€&#160;5.00",
 					"¥&#160;571.06",
-					"data-sort-value=\"0.0043778198632194\" class=\"Has-currency-with-prec4 smwtype_qty\"",
+					"class=\"Has-currency-with-prec4 smwtype_qty\" data-sort-value=\"0.0043778198632194\"",
 					"€&#160;0.0044",
 					"¥&#160;0.5000",
-					"data-sort-value=\"5000\" class=\"Has-currency-with-prec2 smwtype_qty\"",
+					"class=\"Has-currency-with-prec2 smwtype_qty\" data-sort-value=\"5000\"",
 					"€&#160;5,000.00",
 					"¥&#160;571,060.50"
 				]
@@ -310,7 +310,7 @@
 			"subject": "Example/P0410/6a",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"10000\" class=\"Has-number smwtype_num\"",
+					"class=\"Has-number smwtype_num\" data-sort-value=\"10000\"",
 					"10,000.00",
 					"0.01",
 					"42.01",
@@ -324,7 +324,7 @@
 			"subject": "Example/P0410/6b",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"10000\" class=\"Has-number smwtype_num\"",
+					"class=\"Has-number smwtype_num\" data-sort-value=\"10000\"",
 					"10,000.0000",
 					"0.0050",
 					"42.0050",
@@ -338,7 +338,7 @@
 			"subject": "Example/P0410/6c",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"10000\" class=\"Has-number smwtype_num\"",
+					"class=\"Has-number smwtype_num\" data-sort-value=\"10000\"",
 					"10000.000",
 					"0.005",
 					"42.005",
@@ -352,7 +352,7 @@
 			"subject": "Example/P0410/7a",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"10\" class=\"Has-area smwtype_qty\"",
+					"class=\"Has-area smwtype_qty\" data-sort-value=\"10\"",
 					"10.00&#160;km²",
 					"3.86&#160;sqmi",
 					"10,000.00&#160;m²",
@@ -371,7 +371,7 @@
 			"subject": "Example/P0410/7b",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"10\" class=\"Has-area smwtype_qty\"",
+					"class=\"Has-area smwtype_qty\" data-sort-value=\"10\"",
 					"10,000.000&#160;m²",
 					"10.000&#160;km²",
 					"3.861&#160;sqmi",
@@ -390,7 +390,7 @@
 			"subject": "Example/P0410/7c",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"10\" class=\"Has-area smwtype_qty\"",
+					"class=\"Has-area smwtype_qty\" data-sort-value=\"10\"",
 					"10.00",
 					"0.02",
 					"3.33"
@@ -403,7 +403,7 @@
 			"subject": "Example/P0410/8a",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"273.15\" class=\"Has-temperature smwtype_tem\"",
+					"class=\"Has-temperature smwtype_tem\" data-sort-value=\"273.15\"",
 					"class=\"smwtext\">273.15&#160;K",
 					"0.00&#160;°C",
 					"32.00&#160;°F",
@@ -421,7 +421,7 @@
 			"subject": "Example/P0410/8b",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"273.15\" class=\"Has-temperature smwtype_tem\"",
+					"class=\"Has-temperature smwtype_tem\" data-sort-value=\"273.15\"",
 					"class=\"smwtext\">0.000&#160;°C",
 					"273.150&#160;K",
 					"32.000&#160;°F",
@@ -439,7 +439,7 @@
 			"subject": "Example/P0410/8c",
 			"assert-output": {
 				"to-contain": [
-					"data-sort-value=\"273.15\" class=\"Has-temperature smwtype_tem\"",
+					"class=\"Has-temperature smwtype_tem\" data-sort-value=\"273.15\"",
 					"273.15",
 					"373.15"
 				]

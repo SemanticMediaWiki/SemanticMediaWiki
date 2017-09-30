@@ -82,8 +82,8 @@
 			"subject": "Example/P0423/Q1.1",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2435851.0034722\" class=\"Has-date smwtype_dat\">12 January 1957 12:05:00</td>",
-					"<td data-sort-value=\"2435851.0034722\" class=\"Has-date smwtype_dat\">1957年1月12日 (土) 12:05</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2435851.0034722\">12 January 1957 12:05:00</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2435851.0034722\">1957年1月12日 (土) 12:05</td>"
 				]
 			}
 		},
@@ -93,8 +93,8 @@
 			"subject": "Example/P0423/Q1.2",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2435851.0034722\" class=\"smwtype_dat\">12 January 1957 12:05:00</td>",
-					"<td data-sort-value=\"2435851.0034722\" class=\"smwtype_dat\">1957年1月12日 (土) 12:05</td>"
+					"<td class=\"smwtype_dat\" data-sort-value=\"2435851.0034722\">12 January 1957 12:05:00</td>",
+					"<td class=\"smwtype_dat\" data-sort-value=\"2435851.0034722\">1957年1月12日 (土) 12:05</td>"
 				]
 			}
 		},
@@ -104,7 +104,7 @@
 			"subject": "Example/P0423/Q1.3",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2435851.0034722\" class=\"Has-date smwtype_dat\">1957年1月12日 (土) 12:05:00</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2435851.0034722\">1957年1月12日 (土) 12:05:00</td>"
 				]
 			}
 		},
@@ -147,7 +147,7 @@
 			"subject": "Example/P0423/Q3.1",
 			"assert-output": {
 				"to-contain": [
-					"class=\"Has-date smwtype_dat\">"
+					"class=\"Has-date smwtype_dat\" "
 				]
 			}
 		}

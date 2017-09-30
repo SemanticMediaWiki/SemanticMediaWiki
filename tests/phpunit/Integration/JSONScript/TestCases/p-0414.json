@@ -110,10 +110,10 @@
 			"subject": "Example/P0414/1a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">10:00:01.000000</td>",
-					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">1389/02/11 10:00 <sup>JL</sup></td>",
-					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">1389/02/19 10:00</td>",
-					"<td data-sort-value=\"2228431.9166782\" class=\"JD smwtype_dat\">2228431.9166782</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2228431.9166782\">10:00:01.000000</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2228431.9166782\">1389/02/11 10:00 <sup>JL</sup></td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2228431.9166782\">1389/02/19 10:00</td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"2228431.9166782\">2228431.9166782</td>"
 				]
 			}
 		},
@@ -147,8 +147,8 @@
 			"subject": "Example/P0414/2a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">--100000-01-01</td>",
-					"<td data-sort-value=\"-100001\" class=\"JD smwtype_dat\">-34802824.5</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"-100001\">--100000-01-01</td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"-100001\">-34802824.5</td>"
 				]
 			}
 		},
@@ -182,9 +182,9 @@
 			"subject": "Example/P0414/3a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902</td>",
-					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902/01/01</td>",
-					"<td data-sort-value=\"2415750.5\" class=\"JD smwtype_dat\">2415750.5</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">1902</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">1902/01/01</td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"2415750.5\">2415750.5</td>"
 				]
 			}
 		},
@@ -218,9 +218,9 @@
 			"subject": "Example/P0414/4a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2159657.0023727\" class=\"Has-date smwtype_dat\">1200 <sup>JL</sup></td>",
-					"<td data-sort-value=\"2159657.0023727\" class=\"Has-date smwtype_dat\">1200/10/26 <sup>JL</sup></td>",
-					"<td data-sort-value=\"2159657.0023727\" class=\"JD smwtype_dat\">2159657.0023727</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2159657.0023727\">1200 <sup>JL</sup></td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2159657.0023727\">1200/10/26 <sup>JL</sup></td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"2159657.0023727\">2159657.0023727</td>"
 				]
 			}
 		},
@@ -254,8 +254,8 @@
 			"subject": "Example/P0414/5a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">--100000-01-01</td>",
-					"<td data-sort-value=\"-100001\" class=\"JD smwtype_dat\">-34802824.5</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"-100001\">--100000-01-01</td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"-100001\">-34802824.5</td>"
 				]
 			}
 		},
@@ -289,9 +289,9 @@
 			"subject": "Example/P0414/6a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">AD 1902</td>",
-					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902</td>",
-					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902/01/01</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">AD 1902</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">1902</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">1902/01/01</td>"
 				]
 			}
 		},
@@ -328,8 +328,8 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2456116.9682395\" class=\"Has-date smwtype_dat\">8 July 2012 11:14:15</td>",
-					"<td data-sort-value=\"2456116.9682395\" class=\"Has-date smwtype_dat\">11:14:15.888500</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2456116.9682395\">8 July 2012 11:14:15</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2456116.9682395\">11:14:15.888500</td>"
 				]
 			}
 		},
@@ -363,8 +363,8 @@
 			"subject": "Example/P0414/8a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2455203.20625\" class=\"Has-date smwtype_dat\">6 January 2010 16:57:00</td>",
-					"<td data-sort-value=\"2455203.20625\" class=\"Has-date smwtype_dat\">2010年01月06日 16:57</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2455203.20625\">6 January 2010 16:57:00</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2455203.20625\">2010年01月06日 16:57</td>"
 				]
 			}
 		},
@@ -374,8 +374,8 @@
 			"subject": "Example/P0414/9a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2455203.20625\" class=\"Has-date smwtype_dat\">6 January 2010 16:57:00</td>",
-					"<td data-sort-value=\"2455203.20625\" class=\"Has-date smwtype_dat\">2010年01月06日 16:57</td>"
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2455203.20625\">6 January 2010 16:57:00</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2455203.20625\">2010年01月06日 16:57</td>"
 				]
 			}
 		}
