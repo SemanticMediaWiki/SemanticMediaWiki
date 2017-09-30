@@ -74,7 +74,7 @@ class SubobjectParserFunction {
 	/**
 	 * @var boolean
 	 */
-	private $enabledNormalization = false;
+	private $isComparableContent = false;
 
 	/**
 	 * @since 1.9
@@ -101,17 +101,16 @@ class SubobjectParserFunction {
 	}
 
 	/**
-	 * FIXME 3.0, make sorting default with 3.0
+	 * Ensures that unordered parameters and property names are normalized and
+	 * sorted to produce the same hash even if elements of the same literal
+	 * representation are placed differently.
 	 *
-	 * Ensures that unordered parameters and property names are normalized in
-	 * order to produce the same has even if elements are placed differently
+	 * @since 3.0
 	 *
-	 * @since 2.5
-	 *
-	 * @param boolean $enabledNormalization
+	 * @param boolean $isComparableContent
 	 */
-	public function enabledNormalization( $enabledNormalization = true ) {
-		$this->enabledNormalization = (bool)$enabledNormalization;
+	public function isComparableContent( $isComparableContent = true ) {
+		$this->isComparableContent = (bool)$isComparableContent;
 	}
 
 	/**
@@ -221,9 +220,18 @@ class SubobjectParserFunction {
 			$useFirstElementAsPropertyLabel
 		);
 
+		// FIXME remove the check with 3.1, should be standard by then!
+		if ( !$this->isComparableContent ) {
+			$p = $parameters;
+		} else {
+			$p = $parameters;
+			// Sort the copy not the parameters itself
+			$parserParameterProcessor->sort( $p );
+		}
+
 		// Reclaim the ID to be content hash based
 		if ( $useFirstElementAsPropertyLabel || $isAnonymous ) {
-			$id = HashBuilder::createFromContent( $parameters, '_' );
+			$id = HashBuilder::createFromContent( $p, '_' );
 		}
 
 		return array( $parameters, $id );
@@ -250,30 +258,19 @@ class SubobjectParserFunction {
 
 		$parameters = $parserParameterProcessor->toArray();
 
-		if ( !$this->enabledNormalization ) {
-			return $parameters;
-		}
-
-		// Normalize property names to generate the same hash for when
-		// CapitalLinks is enabled (has foo === Has foo)
 		foreach ( $parameters as $property => $values ) {
 
 			$prop = $property;
 
-			// Order of the values is not guaranteed
-			rsort( $values );
-
-			if ( $property{0} !== '@' && $this->isCapitalLinks ) {
+			// Normalize property names to generate the same hash for when
+			// CapitalLinks is enabled (has foo === Has foo)
+			if ( $property !== '' && $property{0} !== '@' && $this->isCapitalLinks ) {
 				$property = mb_strtoupper( mb_substr( $property, 0, 1 ) ) . mb_substr( $property, 1 );
 			}
 
 			unset( $parameters[$prop] );
 			$parameters[$property] = $values;
 		}
-
-		// Sort the array by property name to ensure that a different order would
-		// always create the same hash
-		ksort( $parameters );
 
 		return $parameters;
 	}

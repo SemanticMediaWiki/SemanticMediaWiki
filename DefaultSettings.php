@@ -1677,4 +1677,30 @@ return array(
 	'smwgChangePropagationProtection' => true,
 	##
 
+	##
+	# Subobject content hash !! BC setting ONLY !!
+	#
+	# Normalized content hash is enabled by default to ensure that a content
+	# declaration like:
+	#
+	# {{#subobject:
+	# |Has text=Foo,Bar|+sep=,
+	# }}
+	#
+	# yields the same hash as:
+	#
+	# {{#subobject:
+	# |Has text=Bar,Foo|+sep=,
+	# }}
+	#
+	# The setting is only provided to allow for a temporary backwards compatibility
+	# and will be removed with 3.1 at which point the functionality is enabled
+	# without any constraint.
+	#
+	# @since 3.0
+	# @default true
+	##
+	'smwgUseComparableContentHash' => true,
+	##
+
 );

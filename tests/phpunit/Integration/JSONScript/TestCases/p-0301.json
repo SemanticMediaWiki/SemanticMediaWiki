@@ -15,7 +15,7 @@
 		{
 			"type": "parser",
 			"about": "#0 #subobject with category annotation",
-			"subject": "Example/0301/1#_033037fca2311e746bf1871d3be6984c",
+			"subject": "Example/0301/1#_04284bb237a62f6648c369d713da3996",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -43,7 +43,7 @@
 			},
 			"assert-queryresult": {
 				"results": [
-					"Example/0301/1#0##_033037fca2311e746bf1871d3be6984c"
+					"Example/0301/1#0##_04284bb237a62f6648c369d713da3996"
 				],
 				"count": "1"
 			}

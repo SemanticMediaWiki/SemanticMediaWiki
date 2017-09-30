@@ -97,6 +97,41 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSort() {
+
+		$a = [
+			'Has test 3=One,Two,Three',
+			'+sep',
+			'Has test 4=Four'
+		];
+
+		$instance = new ParserParameterProcessor(
+			$a
+		);
+
+		$paramsA = $instance->toArray();
+		$instance->sort( $paramsA );
+
+		$b = [
+			'Has test 4=Four',
+			'Has test 3=Two,Three,One',
+			'+sep',
+		];
+
+		$instance = new ParserParameterProcessor(
+			$b
+		);
+
+		$paramsB = $instance->toArray();
+
+		$instance->sort( $paramsB );
+
+		$this->assertEquals(
+			$paramsA,
+			$paramsB
+		);
+	}
+
 	/**
 	 * @dataProvider parametersDataProvider
 	 */
