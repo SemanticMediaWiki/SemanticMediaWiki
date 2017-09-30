@@ -164,10 +164,11 @@ div#ask legend {
 }
 
 .smw-ask-button input {
-	background: transparent;
-    border: none;
+	background: transparent !important;
+	border: none !important;
 	font-size: 1.1em;
-	color: #fff;
+	color: #fff !important;
+	text-shadow: none !important;
 	outline: none;
 	cursor: pointer;
 }
