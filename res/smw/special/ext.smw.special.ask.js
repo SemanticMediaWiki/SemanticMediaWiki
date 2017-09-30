@@ -246,12 +246,18 @@
 			condVal = condition.val().trim(),
 			isEmpty = condVal === '';
 
-			var termAutocomplete = smw.Factory.newTermAutocomplete(
+			var searchSuggester = smw.Factory.newSearchSuggester(
 				condition
 			);
 
-			// Register autocomplete feature on ...
-			termAutocomplete.register( [ 'property', 'concept', 'category' ] );
+			// Register autocomplete default tokens
+			searchSuggester.registerDefaultTokenList(
+				[
+					'property',
+					'concept',
+					'category'
+				]
+			);
 		};
 
 		// Field input is kept disabled until JS is fully loaded to signal
