@@ -177,7 +177,14 @@ class TableSchemaManager {
 		$table->addIndex( 'smw_id,smw_sort' );
 		//$table->addIndex( 'smw_sort,smw_id' );
 
-		$table->addIndex( 'smw_sort,smw_id,smw_iw' );
+		// API smwbrowse primary lookup
+		// Limit the index length for MySQL (only 1000 Bytes are allowed)
+		// https://stackoverflow.com/questions/3489041/mysqlerror-specified-key-was-too-long-max-key-length-is-1000-bytes
+		$table->addIndex( 'smw_namespace,smw_iw,smw_sort(220),smw_sortkey(220),smw_id' );
+
+		// Interfered with the API lookup index, couldn't find a use case
+		// that would require the this index
+		// $table->addIndex( 'smw_sort,smw_id,smw_iw' );
 
 		return $table;
 	}

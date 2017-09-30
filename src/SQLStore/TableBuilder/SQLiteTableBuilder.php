@@ -225,6 +225,15 @@ class SQLiteTableBuilder extends TableBuilder {
 	protected function doCreateIndicies( $tableName, array $indexOptions = null ) {
 
 		$indicies = $indexOptions['indicies'];
+		$ix = [];
+
+		// In case an index has a length restriction indexZ(200), remove it since
+		// SQLite doesn't know such syntax
+		foreach ( $indicies as $k => $columns ) {
+			$ix[$k] = preg_replace("/\([^)]+\)/", "", $columns );
+		}
+
+		$indicies = $ix;
 
 		// First remove possible obsolete indicies
 		$this->doDropObsoleteIndicies( $tableName, $indicies );
