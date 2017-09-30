@@ -16,7 +16,7 @@ use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
 use SMW\MediaWiki\Specials\Ask\UrlArgs;
 use SMW\ApplicationFactory;
 use SMWQueryProcessor as QueryProcessor;
-use SMWInfoLink as InfoLink;
+use SMWInfolink as Infolink;
 use SpecialPage;
 use SMWOutputs;
 use SMWQuery;
@@ -368,7 +368,7 @@ class SpecialAsk extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function buildForm( UrlArgs $urlArgs, InfoLink $queryLink = null, $navigation = '', $infoText = '', $isFromCache = false ) {
+	protected function buildForm( UrlArgs $urlArgs, Infolink $queryLink = null, $navigation = '', $infoText = '', $isFromCache = false ) {
 
 		$html = '';
 		$hideForm = false;
