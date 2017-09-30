@@ -265,8 +265,8 @@ return array(
 		)
 	),
 
-	'ext.smw.autocomplete.term' => $moduleTemplate + array(
-		'scripts' => 'smw/util/ext.smw.util.autocomplete.term.js',
+	'ext.smw.suggester' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.suggester.js',
 		'position' => 'top',
 		'dependencies' => array(
 			'ext.smw',
@@ -315,7 +315,7 @@ return array(
 			'ext.smw.tooltip',
 			'ext.smw.style',
 			'ext.smw.ask.styles',
-			'ext.smw.autocomplete.term'
+			'ext.smw.suggester'
 		),
 		'messages' => array(
 			'smw-ask-delete',
