@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use User;
 use Xml;
+use Hooks;
 
 /**
  * Hook: GetPreferences adds user preference
@@ -59,7 +60,7 @@ class GetPreferences extends HookHandler {
 			array(
 				'type' => 'info',
 				'label' => '&#160;',
-				'default' => Xml::tags( 'tr', array(),
+				'default' => Xml::tags( 'tr', array( 'class' => 'plainlinks' ),
 					Xml::tags( 'td', array( 'colspan' => 2 ),
 						wfMessage(  'smw-prefs-intro-text' )->parseAsBlock() ) ),
 				'section' => 'smw',
@@ -87,6 +88,8 @@ class GetPreferences extends HookHandler {
 			'label-message' => 'smw-prefs-ask-options-tooltip-display',
 			'section' => 'smw/ask-options',
 		);
+
+		Hooks::run( 'SMW::GetPreferences', array( $this->user, &$preferences ) );
 
 		return true;
 	}

@@ -249,6 +249,22 @@ Implementing a hook should be made in consideration of the expected performance 
 } );
 </pre>
 
+## 3.0
+
+### SMW::GetPreferences
+
+* Version: 2.5
+* Description: Hook allows to add extra preferences that are ordered on the Semantic MediaWiki user preference tab
+* Reference class: `\SMW\MediaWiki\Hooks\GetPreferences`
+
+<pre>
+\Hooks::register( 'SMW::GetPreferences', function( $user, &$preferences ) {
+
+
+	return true;
+} );
+</pre>
+
 ## Other available hooks
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
