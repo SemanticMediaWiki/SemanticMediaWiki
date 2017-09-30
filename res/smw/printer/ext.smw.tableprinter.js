@@ -202,6 +202,7 @@
 					).draw();
 				} );
 
+				// Fire to instantiate the tooltip after the DT has been generated
 				mw.hook( 'smw.tooltip' ).fire( context );
 			} );
 		},
@@ -215,8 +216,8 @@
 		 * @param {Object} context
 		 */
 		init: function ( context ) {
-			context.removeClass( 'smw-loading-image-dots' );
-			context.find( '.smw-datatable' ).removeClass( 'smw-loading-image-dots' );
+			context.removeClass( 'smw-loading-image-dots smw-margin-small' );
+			context.find( '.smw-datatable' ).removeClass( 'smw-loading-image-dots smw-margin-small' );
 			this.attach( context.find( '.datatable' ) );
 		}
 	};

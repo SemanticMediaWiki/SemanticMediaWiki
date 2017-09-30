@@ -132,7 +132,17 @@ class TableResultPrinter extends ResultPrinter {
 
 		$html = $this->htmlTableRenderer->getHtml( $tableAttrs );
 
-		return $this->isDataTable ? Html::rawElement( 'span', array( 'class' => 'smw-datatable smw-loading-image-dots' ), $html ) : $html;
+		if ( $this->isDataTable ) {
+			$html = Html::rawElement(
+				'div',
+				[
+					'class' => 'smw-datatable smw-margin-small smw-loading-image-dots'
+				],
+				$html
+			);
+		}
+
+		return $html;
 	}
 
 	/**
