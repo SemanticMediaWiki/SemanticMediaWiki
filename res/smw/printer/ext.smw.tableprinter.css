@@ -217,6 +217,68 @@
 	margin-bottom: 10px;
 }
 
+.smw-datatable-toolbar {
+	display: inline-block;
+	margin-left: 10px;
+	padding: 0px;
+}
+
+.smw-datatable-toolbar .smw-dropdown {
+	top: -1px;
+}
+
+.smw-datatable-toolbar .smw-dropdown button {
+	padding: 4px 25px 5px 15px;
+}
+
+@-moz-document url-prefix() {
+	.smw-datatable-toolbar .smw-dropdown button {
+		padding: 3px 25px 4px 15px;
+	}
+}
+
+.smw-datatable-toolbar .smw-dropdown ul {
+	right: 0px;
+	left: initial;
+}
+
+.smw-datatable-toolbar .smw-dropdown ul li {
+	min-width: 60px;
+	text-align: right;
+}
+
+.smw-datatable-toolbar .smw-dropdown .divider {
+	margin: 4px 0;
+}
+
+.smw-datatable-sep {
+	border-left: 1px solid #ddd;
+	margin-right: 0.4em;
+	padding: 0.2em;
+}
+
+.smw-datatable-text {
+	margin-right: 10px;
+}
+
+.smw-datatable-button {
+	position: relative;
+	padding: 5px 12px;
+	color: #586069;
+	border: 1px solid #e1e4e8;
+	border-radius: 3px;
+	font-size: 0.975em;
+	margin-right: 5px;
+}
+
+.smw-datatable-button:hover {
+	background-color: #f6f8fa;
+}
+
+.smw-datatable-button a {
+	text-decoration: none;
+}
+
 /**
  * .skin-chameleon specific styles
  */

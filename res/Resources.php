@@ -31,7 +31,8 @@ return array(
 	// delay due to missing stylesheet definitions at the time of the display
 	'ext.smw.style' => $moduleTemplate + array(
 		'styles' => array(
-			'smw/ext.smw.css'
+			'smw/ext.smw.css',
+			'smw/ext.smw.dropdown.css'
 		),
 		'position' => 'top',
 		'targets' => array( 'mobile', 'desktop' )
@@ -268,6 +269,7 @@ return array(
 		'scripts' => 'smw/util/ext.smw.util.autocomplete.term.js',
 		'position' => 'top',
 		'dependencies' => array(
+			'ext.smw',
 			'ext.jquery.atwho'
 		),
 		'targets' => array(
@@ -397,7 +399,8 @@ return array(
 			'smw/printer/ext.smw.tableprinter.css'
 		),
 		'dependencies' => array(
-			'onoi.dataTables'
+			'onoi.dataTables',
+			'ext.smw.query'
 		),
 		'position' => 'top',
 		'messages' => array(
@@ -416,7 +419,8 @@ return array(
 			"smw-format-datatable-next",
 			"smw-format-datatable-previous",
 			"smw-format-datatable-sortascending",
-			"smw-format-datatable-sortdescending"
+			"smw-format-datatable-sortdescending",
+			"smw-format-datatable-toolbar-export"
 		),
 		'targets' => array( 'mobile', 'desktop' )
 	),
