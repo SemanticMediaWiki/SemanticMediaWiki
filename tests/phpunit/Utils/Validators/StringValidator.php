@@ -78,7 +78,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 		self::assertEquals(
 			$expectedToCount,
 			$actualCounted,
-			"Failed on `{$message}` for $actual with ($method) " . $this->toString( $expected )
+			"Failed $method for ({$message}) on (actual): [ $actual ]\n(expected): " . $this->toString( $expected )
 		);
 	}
 
@@ -97,7 +97,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function toString( $expected ) {
-		return "[ " . ( is_array( $expected ) ? implode( ', ', $expected ) : $expected ) . " ]";
+		return "[ " . ( is_array( $expected ) ? implode( " ], [ ", $expected ) : $expected ) . " ]\n";
 	}
 
 }
