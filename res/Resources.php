@@ -266,11 +266,24 @@ return array(
 	),
 
 	'ext.smw.suggester' => $moduleTemplate + array(
-		'scripts' => 'smw/util/ext.smw.util.suggester.js',
+		'scripts' => 'smw/suggester/ext.smw.suggester.js',
 		'position' => 'top',
 		'dependencies' => array(
 			'ext.smw',
 			'ext.jquery.atwho'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'ext.smw.suggester.textInput' => $moduleTemplate + array(
+		'scripts' => 'smw/suggester/ext.smw.suggester.textInput.js',
+		'position' => 'top',
+		'dependencies' => array(
+			'ext.smw',
+			'ext.smw.suggester'
 		),
 		'targets' => array(
 			'mobile',

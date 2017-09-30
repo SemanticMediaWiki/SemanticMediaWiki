@@ -34,6 +34,32 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRegisterModules() {
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->once() )
+			->method( 'addModules' );
+
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new BeforePageDisplay(
+			$outputPage,
+			$skin
+		);
+
+		$instance->registerModules(
+			[
+				'Foo' => true,
+				'Bar' => false
+			]
+		);
+	}
+
 	/**
 	 * @dataProvider titleDataProvider
 	 */

@@ -213,6 +213,12 @@ class HookRegistry {
 				$skin
 			);
 
+			$beforePageDisplay->registerModules(
+				[
+					'ext.smw.suggester.textInput' => $outputPage->getUser()->getOption( 'smw-prefs-general-options-suggester-textinput' )
+				]
+			);
+
 			return $beforePageDisplay->process();
 		};
 

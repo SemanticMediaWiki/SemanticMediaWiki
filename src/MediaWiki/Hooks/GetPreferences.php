@@ -82,6 +82,13 @@ class GetPreferences extends HookHandler {
 			'disabled' => !$this->enabledEditPageHelp
 		);
 
+		// Option to enable input assistance
+		$preferences['smw-prefs-general-options-suggester-textinput'] = array(
+			'type' => 'toggle',
+			'label-message' => 'smw-prefs-general-options-suggester-textinput',
+			'section' => 'smw/general-options',
+		);
+
 		// Option to enable tooltip info
 		$preferences['smw-prefs-ask-options-tooltip-display'] = array(
 			'type' => 'toggle',

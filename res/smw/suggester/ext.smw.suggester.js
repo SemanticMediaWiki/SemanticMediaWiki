@@ -27,13 +27,10 @@
 	'use strict';
 
 	/**
-	 * Inheritance class for the smw.util constructor
-	 *
 	 * @since 3.0
 	 * @class
 	 */
-	smw.util = smw.util || {};
-	smw.util.suggester = smw.util.suggester || {};
+	smw.suggester = smw.suggester || {};
 
 	/**
 	 * Class constructor
@@ -43,7 +40,7 @@
 	 * @class
 	 * @constructor
 	 */
-	smw.util.suggester = function ( context ) {
+	smw.suggester = function ( context ) {
 
 		var localizedName = mw.config.get( 'smw-config' ).namespaces.localizedName;
 		this.context = context;
@@ -234,11 +231,11 @@
 	 */
 	var Factory = {
 		newSearchSuggester: function( $context ) {
-			return new smw.util.suggester( $context );
+			return new smw.suggester( $context );
 		}
 	};
 
-	smw.util.suggester.prototype = fn;
+	smw.suggester.prototype = fn;
 
 	smw.Factory = smw.Factory || {};
 	smw.Factory = $.extend( smw.Factory, Factory );
