@@ -31,6 +31,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->parser = $this->getMockBuilder( '\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,6 +50,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->outputPage->expects( $this->any() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
 
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
