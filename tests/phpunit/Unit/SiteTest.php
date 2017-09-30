@@ -31,6 +31,14 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsCapitalLinks() {
+
+		$this->assertInternalType(
+			'boolean',
+			Site::isCapitalLinks()
+		);
+	}
+
 	public function testGetJobClasses() {
 
 		$this->assertInternalType(

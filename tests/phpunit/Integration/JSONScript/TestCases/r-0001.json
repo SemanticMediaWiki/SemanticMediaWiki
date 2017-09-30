@@ -100,9 +100,9 @@
 			"assert-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D3\">",
-					"<property:Has_subobject-23aux rdf:resource=\"&wiki;Rdf-2D3-23_352994736fdd9b50f3506c054ce554ab\"/>",
+					"<property:Has_subobject-23aux rdf:resource=\"&wiki;Rdf-2D3-23_c14ce3099ebd07ab500052b8c661832f\"/>",
 					"<property:Has_subobject-23aux rdf:resource=\"&wiki;Rdf-2D3-23Caract-C3-A8res_sp-C3-A9ciaux\"/>",
-					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D3-23_352994736fdd9b50f3506c054ce554ab\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D3-23_c14ce3099ebd07ab500052b8c661832f\">",
 					"<property:Has_page_property_for_rdf rdf:resource=\"&wiki;I-2D-2D11-2D-2DO\"/>",
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D3-23Caract-C3-A8res_sp-C3-A9ciaux\">",
 					"<property:Has_text_property_for_rdf rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">{({[[&amp;,,;-]]})}</property:Has_text_property_for_rdf>",

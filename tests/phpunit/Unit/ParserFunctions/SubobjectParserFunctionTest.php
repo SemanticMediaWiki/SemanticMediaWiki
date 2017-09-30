@@ -157,6 +157,82 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testParametersOnBeingSorted() {
+
+		$parameters = [
+			'Foo=Foobar, Bar',
+			'+sep=,'
+		];
+
+		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+
+		$instance = $this->acquireInstance( $subobject );
+
+		$instance->isComparableContent(
+			true
+		);
+
+		$instance->parse(
+			new ParserParameterFormatter( $parameters )
+		);
+
+		$this->assertEquals(
+			'_c0bea380739b21578cdcf28ed5d4cfd3',
+			$subobject->getSubobjectId()
+		);
+	}
+
+	public function testParametersOnBeingSortedWithRevertedValueOrderProducesSameHash() {
+
+		$parameters = [
+			'Foo=Bar, Foobar',
+			'+sep=,'
+		];
+
+		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+
+		$instance = $this->acquireInstance( $subobject );
+
+		$instance->isComparableContent(
+			true
+		);
+
+		$instance->parse(
+			new ParserParameterFormatter( $parameters )
+		);
+
+		$this->assertEquals(
+			'_c0bea380739b21578cdcf28ed5d4cfd3',
+			$subobject->getSubobjectId()
+		);
+	}
+
+	public function testParametersIsNotSorted() {
+
+		$parameters = [
+			'Foo=Foobar, Bar',
+			'+sep=,'
+		];
+
+		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+
+		$instance = $this->acquireInstance( $subobject );
+
+		$instance->isComparableContent(
+			false
+		);
+
+		$instance->parse(
+			new ParserParameterFormatter( $parameters )
+		);
+
+		// Expected to be stable for PHP and HHVM as well
+		$this->assertEquals(
+			'_ec7323184d89fe1409b5cfaf09950a95',
+			$subobject->getSubobjectId()
+		);
+	}
+
 	public function testCreateSameIdForNormalizedParametersWithEnabledCapitalLinks() {
 
 		$title = Title::newFromText( __METHOD__ );
@@ -177,7 +253,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->acquireInstance( $subobject );
 
-		$instance->enabledNormalization();
+		$instance->isComparableContent( true );
 		$instance->isCapitalLinks( true );
 
 		$instance->parse(

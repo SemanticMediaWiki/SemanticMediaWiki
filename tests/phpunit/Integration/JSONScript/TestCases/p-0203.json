@@ -52,7 +52,7 @@
 					],
 					"propertyValues": [
 						"Test",
-						"Transclude-Template#_49c8abd563e00e4dcf6debf1d61b5408"
+						"Transclude-Template#_2d7f2b93bd6e9816ff85f022cddc62eb"
 					]
 				}
 			}
@@ -60,7 +60,7 @@
 		{
 			"type": "parser",
 			"about": "#1 subobject check",
-			"subject": "Transclude-Template#_49c8abd563e00e4dcf6debf1d61b5408",
+			"subject": "Transclude-Template#_2d7f2b93bd6e9816ff85f022cddc62eb",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,

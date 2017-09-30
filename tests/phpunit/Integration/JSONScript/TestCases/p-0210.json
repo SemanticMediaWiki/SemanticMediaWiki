@@ -22,10 +22,10 @@
 			"subject": "Example/P0210/Q1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\">Example/P0210/1#_de6907a285b0c316fd3caa77a932d0ae</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2453767.5\">1 February 2006</td>",
-					"<td class=\"smwtype_wpg\">Example/P0210/1#_5c90cef15e8ecbb3662fe10e6cb50bb7</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2440618.5\">1 February 1970</td>",
-					"<td class=\"smwtype_wpg\">Example/P0210/1#_7582eb6443d1bd2f35114842dc700673</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2445001.5\">1 February 1982</td>",
-					"<td class=\"smwtype_wpg\">Example/P0210/1#_d9e81e6ceed8bc0ec8a92feeea25ca1a</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2449384.5\">1 February 1994</td>"
+					"<td class=\"smwtype_wpg\">Example/P0210/1#_6c0c58959b4717205b4c1b2c3b0e3e84</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2440618.5\">1 February 1970</td>",
+					"<td class=\"smwtype_wpg\">Example/P0210/1#_999d559e938eeaee07f5f52de53638e9</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2445001.5\">1 February 1982</td>",
+					"<td class=\"smwtype_wpg\">Example/P0210/1#_f42111f2b6af198c265ef2d8330b6a13</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2449384.5\">1 February 1994</td>",
+					"<td class=\"smwtype_wpg\">Example/P0210/1#_bdfba16fe62b82d1eadcb21054d8452b</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2453767.5\">1 February 2006</td>"
 				]
 			}
 		}

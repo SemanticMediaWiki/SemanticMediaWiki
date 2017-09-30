@@ -42,6 +42,15 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
+	 * @return boolean
+	 */
+	public static function isCapitalLinks() {
+		return $GLOBALS['wgCapitalLinks'];
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param string $typeFilter
 	 *
 	 * @return array

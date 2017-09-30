@@ -187,6 +187,28 @@ class ParserParameterProcessor {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param array $parameters
+	 * @param boolean $associative
+	 */
+	public static function sort( array &$parameters, $associative = true ) {
+
+		// Associative vs. simple index array sort
+		if ( $associative ) {
+			ksort( $parameters );
+		} else {
+			sort( $parameters );
+		}
+
+		foreach ( $parameters as $key => &$value ) {
+			if ( is_array( $value ) ) {
+				self::sort( $value, is_int( $key ) );
+			}
+		}
+	}
+
+	/**
 	 * Map raw parameters array into an 2n-array for simplified
 	 * via [key] => [value1, value2]
 	 */

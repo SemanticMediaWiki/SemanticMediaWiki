@@ -141,8 +141,9 @@
 			"subject": "Example/P0434/Q4.1",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_fb1dd749d7117fe311c13da0f5088d88</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_c7fd595ef59775763dd517dc39dc27a1</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_357f4a06073b86afc07cb0c6237b9f36</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_eb1c9a9f3a8ad677d7424e8d842b10dd</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_4bae31c0cd5bda46c3cf0245523a954a</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td></tr>"
 				]
 			}
 		},
@@ -152,8 +153,9 @@
 			"subject": "Example/P0434/Q4.2",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_b839bc3327e104d1aad75903fbc5a278</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_c7fd595ef59775763dd517dc39dc27a1</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_4bae31c0cd5bda46c3cf0245523a954a</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_eb1c9a9f3a8ad677d7424e8d842b10dd</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_357f4a06073b86afc07cb0c6237b9f36</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td></tr>"
 				]
 			}
 		},
@@ -163,8 +165,9 @@
 			"subject": "Example/P0434/Q4.3",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_fb1dd749d7117fe311c13da0f5088d88</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_c7fd595ef59775763dd517dc39dc27a1</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td></tr>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_357f4a06073b86afc07cb0c6237b9f36</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_eb1c9a9f3a8ad677d7424e8d842b10dd</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_4bae31c0cd5bda46c3cf0245523a954a</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td></tr>"
 				]
 			}
 		},
@@ -174,8 +177,9 @@
 			"subject": "Example/P0434/Q4.4",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_b839bc3327e104d1aad75903fbc5a278</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_c7fd595ef59775763dd517dc39dc27a1</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_4bae31c0cd5bda46c3cf0245523a954a</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_eb1c9a9f3a8ad677d7424e8d842b10dd</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_357f4a06073b86afc07cb0c6237b9f36</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td></tr>"
 				]
 			}
 		}

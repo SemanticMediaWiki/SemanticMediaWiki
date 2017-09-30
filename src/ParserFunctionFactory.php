@@ -207,7 +207,9 @@ class ParserFunctionFactory {
 	 */
 	public function newSubobjectParserFunction( Parser $parser ) {
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$parserData = $applicationFactory->newParserData(
 			$parser->getTitle(),
 			$parser->getOutput()
 		);
@@ -225,7 +227,11 @@ class ParserFunctionFactory {
 		);
 
 		$subobjectParserFunction->isCapitalLinks(
-			$GLOBALS['wgCapitalLinks']
+			Site::isCapitalLinks()
+		);
+
+		$subobjectParserFunction->isComparableContent(
+			$applicationFactory->getSettings()->get( 'smwgUseComparableContentHash' )
 		);
 
 		return $subobjectParserFunction;
@@ -240,7 +246,9 @@ class ParserFunctionFactory {
 	 */
 	public function newRecurringEventsParserFunction( Parser $parser ) {
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$parserData = $applicationFactory->newParserData(
 			$parser->getTitle(),
 			$parser->getOutput()
 		);
@@ -254,8 +262,23 @@ class ParserFunctionFactory {
 		$recurringEventsParserFunction = new RecurringEventsParserFunc(
 			$parserData,
 			$subobject,
-			$messageFormatter,
-			ApplicationFactory::getInstance()->getSettings()
+			$messageFormatter
+		);
+
+		$recurringEventsParserFunction->isCapitalLinks(
+			Site::isCapitalLinks()
+		);
+
+		$recurringEventsParserFunction->setDefaultNumRecurringEvents(
+			$applicationFactory->getSettings()->get( 'smwgDefaultNumRecurringEvents' )
+		);
+
+		$recurringEventsParserFunction->setMaxNumRecurringEvents(
+			$applicationFactory->getSettings()->get( 'smwgMaxNumRecurringEvents' )
+		);
+
+		$recurringEventsParserFunction->isComparableContent(
+			$applicationFactory->getSettings()->get( 'smwgUseComparableContentHash' )
 		);
 
 		return $recurringEventsParserFunction;
