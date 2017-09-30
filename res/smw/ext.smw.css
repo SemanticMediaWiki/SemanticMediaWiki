@@ -885,3 +885,17 @@ a.smw-ask-action-btn-lblue:hover {
 .content table.broadtable, .smw-ask-result table.broadtable {
 	width: 100% !important;
 }
+
+/**
+ * User preference
+ */
+fieldset#mw-prefsection-smw-general-options, fieldset#mw-prefsection-smw-ask-options {
+	border: 0px solid #2a4b8d;
+	border-top: 1px solid #ddd;
+	margin-top: -5px;
+	box-shadow: 0;
+}
+
+#mw-prefsection-smw-srf legend::before {
+	content: "▼ ";
+}
