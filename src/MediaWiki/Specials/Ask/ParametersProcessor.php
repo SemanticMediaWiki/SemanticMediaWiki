@@ -123,7 +123,7 @@ class ParametersProcessor {
 
 		} elseif ( $request->getCheck( 'order' ) ) {
 			$parameters['order'] = $request->getVal( 'order', '' );
-		} elseif ( !array_key_exists( 'offset', $parameters ) ) {
+		} elseif ( !array_key_exists( 'order', $parameters ) ) {
 			$parameters['order'] = 'asc';
 			$parameters['sort'] = '';
 		}
