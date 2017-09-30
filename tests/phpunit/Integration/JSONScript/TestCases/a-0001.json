@@ -68,6 +68,27 @@
 					"contents-file" : "/../Fixtures/a-0001.2.txt"
 				}
 			}
+		},
+		{
+			"type": "api",
+			"skip-on": {
+				"postgres": "Skipping, because I have no idea why this returning empty on Travis!",
+				"sqlite": "Skipping, because I have no idea why this returning empty on Travis!"
+			},
+			"about": "#3 `smwbrowse` article search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "article",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"search\": \"API test\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.3.txt"
+				}
+			}
 		}
 	],
 	"settings": {

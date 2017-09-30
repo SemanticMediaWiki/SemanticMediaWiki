@@ -18,7 +18,7 @@ class TitleCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\TitleCreator',
+			TitleCreator::class,
 			 new TitleCreator()
 		);
 	}
@@ -30,6 +30,16 @@ class TitleCreatorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\Title',
 			 $instance->createFromText( __METHOD__ )
+		);
+	}
+
+	public function testNewFromID() {
+
+		$instance = new TitleCreator();
+		$title = $instance->newFromID( 9999999 );
+
+		$this->assertTrue(
+			$title === null || $title instanceof \Title
 		);
 	}
 

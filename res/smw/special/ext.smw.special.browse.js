@@ -23,7 +23,6 @@
 
 		this.VERSION = "2.5.0";
 		this.api = mwApi;
-		this.isMobileFrontend = false;
 
 		return this;
 	};
@@ -111,11 +110,13 @@
 
 		self.context.find( '.smwb-emptysheet' ).replaceWith( content );
 
-		if ( !instance.isMobileFrontend ) {
-			mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.page.autocomplete' ] ).done( function () {
-				self.context.find( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
+		var form = self.context.find( '.smwb-form' );
+
+		mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.autocomplete' ] ).done( function () {
+			form.trigger( 'smw.article.autocomplete' , {
+				'context': form
 			} );
-		};
+		} );
 
 		mw.loader.load(
 			self.context.find( '.smwb-modules' ).data( 'modules' )
@@ -141,16 +142,13 @@
 			instance.doApiRequest();
 		} );
 
-		// Detect whether this uses the MF skin
-		instance.isMobileFrontend = $( "body" ).hasClass( "skin-minerva" );
+		var form = $( this ).find( '.smwb-form' );
 
-		// Avoid "Uncaught Error: Unknown dependency: jquery.ui.autocomplete" in
-		// mobile context as the module is not defined with target mobile
-		if ( !instance.isMobileFrontend ) {
-			mw.loader.using( [ 'ext.smw.browse.page.autocomplete' ] ).done( function () {
-				$( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
+		mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.autocomplete' ] ).done( function () {
+			form.trigger( 'smw.article.autocomplete' , {
+				'context': form
 			} );
-		};
+		} );
 
 	} );
 
