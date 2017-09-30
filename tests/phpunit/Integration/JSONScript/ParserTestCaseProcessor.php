@@ -175,6 +175,9 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$output = $parserOutput->getText();
 		}
 
+		// Strip HTML comments
+		$output = preg_replace('/<!--(.*)-->/Uis', '', $output );
+
 		if ( isset( $case['assert-output']['to-contain'] ) ) {
 			$this->stringValidator->assertThatStringContains(
 				$case['assert-output']['to-contain'],
