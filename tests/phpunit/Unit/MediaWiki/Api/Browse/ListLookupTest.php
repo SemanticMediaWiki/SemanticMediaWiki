@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Api\ListLookup;
+namespace SMW\Tests\MediaWiki\Api\Browse;
 
 use SMW\MediaWiki\Api\Browse\ListLookup;
 
@@ -69,9 +69,12 @@ class ListLookupTest extends \PHPUnit_Framework_TestCase {
 			$listAugmentor
 		);
 
-		$parameters = [ 'search' => 'Foo' ];
+		$parameters = [
+			'ns' => $ns,
+			'search' => 'Foo'
+		];
 
-		$res = $instance->lookup( $ns, $parameters );
+		$res = $instance->lookup( $parameters );
 
 		$this->assertEquals(
 			$res['query'],

@@ -11,7 +11,7 @@ use Onoi\Cache\Cache;
  *
  * @author mwjames
  */
-class LookupCache {
+class CachingLookup {
 
 	const CACHE_NAMESPACE = 'smw:api:browse';
 	const CACHE_TTL = 3600;
@@ -22,9 +22,9 @@ class LookupCache {
 	private $store;
 
 	/**
-	 * @var ListLookup
+	 * @var Lookup
 	 */
-	private $listLookup;
+	private $lookup;
 
 	/**
 	 * @var integer|boolean
@@ -35,11 +35,11 @@ class LookupCache {
 	 * @since 3.0
 	 *
 	 * @param Cache $cache
-	 * @param ListLookup $listLookup
+	 * @param Lookup $lookup
 	 */
-	public function __construct( Cache $cache, ListLookup $listLookup ) {
+	public function __construct( Cache $cache, Lookup $lookup ) {
 		$this->cache = $cache;
-		$this->listLookup = $listLookup;
+		$this->lookup = $lookup;
 		$this->cacheTTL = self::CACHE_TTL;
 	}
 
@@ -55,21 +55,19 @@ class LookupCache {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $ns
 	 * @param array $parameters
 	 *
 	 * @return array
 	 */
-	public function lookup( $ns, array $parameters ) {
+	public function lookup( array $parameters ) {
 
 		Timer::start( __METHOD__ );
 
 		$hash = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[
-				$ns,
 				$parameters,
-				ListLookup::VERSION
+				$this->lookup->getVersion()
 			]
 		);
 
@@ -79,8 +77,7 @@ class LookupCache {
 			return $res;
 		}
 
-		$res = $this->listLookup->lookup(
-			$ns,
+		$res = $this->lookup->lookup(
 			$parameters
 		);
 

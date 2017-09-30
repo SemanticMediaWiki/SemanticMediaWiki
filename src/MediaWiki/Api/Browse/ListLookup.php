@@ -16,7 +16,7 @@ use SMW\SQLStore\SQLStore;
  *
  * @author mwjames
  */
-class ListLookup {
+class ListLookup extends Lookup {
 
 	const VERSION = 1;
 
@@ -43,12 +43,20 @@ class ListLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $ns
+	 * @return string|integer
+	 */
+	public function getVersion() {
+		return 'ListLookup:' . self::VERSION;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param array $parameters
 	 *
 	 * @return array
 	 */
-	public function lookup( $ns, array $parameters ) {
+	public function lookup( array $parameters ) {
 
 		$requestOptions = $this->newRequestOptions(
 			$parameters
@@ -60,6 +68,7 @@ class ListLookup {
 
 		// Increase by one to look ahead
 		$requestOptions->setLimit( $limit + 1 );
+		$ns = isset( $parameters['ns'] ) ? $parameters['ns'] : '';
 
 		switch ( $ns ) {
 			case NS_CATEGORY:
