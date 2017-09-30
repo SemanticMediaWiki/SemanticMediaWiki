@@ -4,6 +4,7 @@ namespace SMW;
 
 use ParamProcessor\ParamDefinition;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryStringifier;
 use SMWDataValue;
 use SMWQueryResult;
 use SMWResultArray;
@@ -113,17 +114,11 @@ class TableResultPrinter extends ResultPrinter {
 		}
 
 		if ( $this->isDataTable ) {
-			ResourceManager::requireStyle( 'onoi.dataTables.styles' );
-			ResourceManager::requireResource( 'ext.smw.tableprinter' );
-			$tableAttrs['width'] = '100%';
-			// Table is made invisible until the resources are actually loaded
-			// and until then show a `smw-loading-image-dots`
-			$tableAttrs['style'] = 'display:none;';
-			$tableAttrs['data-column-sort'] = json_encode( array(
-				'list'  => $headerList,
-				'sort'  => $this->params['sort'],
-				'order' => $this->params['order']
-			) );
+			$this->addDataTableAttrs(
+				$res,
+				$headerList,
+				$tableAttrs
+			);
 		}
 
 		$this->htmlTableRenderer->transpose(
@@ -316,4 +311,29 @@ class TableResultPrinter extends ResultPrinter {
 
 		return $params;
 	}
+
+	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
+
+		ResourceManager::requireStyle( 'onoi.dataTables.styles' );
+		ResourceManager::requireResource( 'ext.smw.tableprinter' );
+
+		$tableAttrs['width'] = '100%';
+
+		// Table is made invisible until the resources are actually loaded
+		// and until then show a `smw-loading-image-dots`
+		$tableAttrs['style'] = 'display:none;';
+
+		$tableAttrs['data-column-sort'] = json_encode(
+			[
+				'list'  => $headerList,
+				'sort'  => $this->params['sort'],
+				'order' => $this->params['order']
+			]
+		);
+
+		$tableAttrs['data-query'] = json_encode(
+			QueryStringifier::toArray( $res->getQuery() )
+		);
+	}
+
 }

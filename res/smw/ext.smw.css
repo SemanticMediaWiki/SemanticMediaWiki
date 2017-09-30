@@ -27,6 +27,18 @@
  * @author mwjames
  */
 
+.float-right {
+	float: right;
+}
+
+.float-left {
+	float: left;
+}
+
+.clear-both {
+	clear: both;
+}
+
 /* highlighting for builtin elements */
 span.smwbuiltin, span.smwttactiveinline span.smwbuiltin {
 	font-style: italic;

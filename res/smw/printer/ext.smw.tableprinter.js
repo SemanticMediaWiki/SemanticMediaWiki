@@ -133,6 +133,91 @@
 				context.append( '<tfoot>' + footer.html() + '</tfoot>' );
 				footer.eq(0).remove();
 			}
+
+			context.find( '.sortbottom' ).addClass( 'plainlinks' );
+		},
+
+		/**
+		 * @since 3.0
+		 *
+		 * @param {Object} context
+		 */
+		addToolbarExportLinks: function ( context ) {
+
+			var toolbar = context.parent().find( '.smw-datatable-toolbar' ),
+				query = context.data( 'query' ),
+				exportFormats = {
+				'JSON': {
+					'format': 'json',
+					'searchlabel': 'JSON',
+					'type': 'simple',
+					'prettyprint': true,
+					'unescape': true
+				},
+				'CSV': {
+					'format': 'csv',
+					'searchlabel': 'CSV'
+				},
+				'RSS': {
+					'format': 'rss',
+					'searchlabel': 'RSS'
+				},
+				'RDF': {
+					'format': 'rdf',
+					'searchlabel': 'RDF'
+				}
+			}
+
+			if ( !query instanceof Object || query === undefined ) {
+				return;
+			}
+
+			var items = '';
+
+			Object.keys( exportFormats ).forEach( function( key ) {
+
+				// https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
+				var conf = exportFormats[key],
+					parameters = $.extend( {}, query.parameters );
+
+				// Modify the default query with that of the configuration
+				Object.keys( conf ).forEach(function( k ) {
+					parameters[k] = conf[k];
+				} );
+
+				var q = new smw.query(
+					query.printouts,
+					parameters,
+					query.conditions
+				);
+
+				q.setLinkAttributes( {
+					'title': key
+				} );
+
+				if ( key === 'RDF' ) {
+					items += '<li class="divider"></li>';
+				};
+
+				items += '<li class="action">' +  q.getLink( key ) + '</li>';
+			} );
+
+			toolbar.append(
+				'<span class="smw-datatable-sep"></span>'
+			);
+
+			toolbar.append(
+				'<span class="smw-dropdown">' +
+				'<button>' + mw.msg( 'smw-format-datatable-toolbar-export' ) + '</button>' +
+				'<label><input type="checkbox">' +
+				'<ul class="smw-dropdown-menu">' +
+				items +
+				'</ul></label></span>'
+			);
+
+			toolbar.find( '.action a' ).on( 'click', function( e ) {
+				toolbar.find( '.smw-dropdown input' ).prop( 'checked', false );
+			} );
 		},
 
 		/**
@@ -170,8 +255,9 @@
 				}
 
 				var table = context.DataTable( {
+					dom: 'l<"smw-datatable-toolbar float-right">frtip',
 					searchHighlight: true,
-					"language": {
+					language: {
 						"sProcessing": mw.msg( 'smw-format-datatable-processing' ),
 						"sLengthMenu": mw.msg( 'smw-format-datatable-lengthmenu' ),
 						"sZeroRecords": mw.msg( 'smw-format-datatable-zerorecords' ),
@@ -201,6 +287,8 @@
 						$.fn.DataTable.ext.type.search.string( $.trim( this.value ) )
 					).draw();
 				} );
+
+				self.addToolbarExportLinks( context );
 
 				// Fire to instantiate the tooltip after the DT has been generated
 				mw.hook( 'smw.tooltip' ).fire( context );
