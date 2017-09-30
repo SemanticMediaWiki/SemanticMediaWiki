@@ -102,7 +102,7 @@ class SpecialAsk extends SpecialPage {
 		$out->addModuleStyles( 'ext.smw.table.styles' );
 
 		$out->addModules( 'ext.smw.ask' );
-		$out->addModules( 'ext.smw.property' );
+		$out->addModules( 'ext.smw.autocomplete.property' );
 
 		$out->addModules(
 			LinksWidget::getModules()

@@ -380,8 +380,8 @@ return array(
 	),
 
 	// Special:SearchByProperty
-	'ext.smw.property' => $moduleTemplate + array(
-		'scripts' => 'smw/special/ext.smw.special.property.js',
+	'ext.smw.autocomplete.property' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.autocomplete.property.js',
 		'dependencies' => array(
 			'mediawiki.util',
 			'ext.jquery.autocomplete'

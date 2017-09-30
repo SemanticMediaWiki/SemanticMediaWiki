@@ -12,20 +12,26 @@
 
 	var autocomplete = function( context ) {
 
+		var limit = 20;
+
+		// https://github.com/devbridge/jQuery-Autocomplete
 		context.autocomplete( {
 			serviceUrl: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
 			minChars: 3,
 			maxHeight: 150,
-			paramName: 'property',
+			paramName: 'search',
 			delimiter: "\n",
 			noCache: false,
 			triggerSelectOnValidInput: false,
 			params: {
-				'action': 'browsebyproperty',
+				'action': 'smwbrowse',
 				'format': 'json',
-				'listonly': true,
-				'limit': 100
+				'browse': 'property',
+				'params': {
+					"search": '',
+					"limit": limit
+				}
 			},
 			onSelect: function( suggestion ) {
 				// #611
@@ -34,12 +40,19 @@
 			onSearchStart: function( query ) {
 
 				// Avoid a search request on options or invalid characters
-				if ( query.property.indexOf( '#' ) > 0 || query.property.indexOf( '|' ) > 0 ) {
+				if ( query.search.indexOf( '#' ) > 0 || query.search.indexOf( '|' ) > 0 ) {
 					return false;
 				};
 
 				context.addClass( 'is-disabled' );
-				query.property = query.property.replace( "?", '' );
+
+				query.params = JSON.stringify( {
+					'search': query.search.replace( "?", '' ),
+					'limit': limit
+				} );
+
+				// Avoids {"warnings":{"main":{"*":"Unrecognized parameter: search."}
+				delete query.search;
 			},
 			onSearchComplete: function( query ) {
 				context.removeClass( 'is-disabled' );
