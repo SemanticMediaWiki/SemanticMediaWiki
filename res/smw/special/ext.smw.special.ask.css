@@ -111,6 +111,11 @@ div#ask legend {
 .smw-ask-query textarea {
 	border: 0px;
 	resize: none;
+	padding: 2px 0 0 2px;
+	outline: none;
+	line-height: normal !important;
+	box-shadow: none !important;
+	margin:0 !important;
 }
 
 .smw-ask-query .condition {
