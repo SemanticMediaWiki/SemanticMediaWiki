@@ -7,6 +7,8 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\Api\Browse\ListLookup;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Api\Browse\CachingLookup;
+use SMW\MediaWiki\Api\Browse\ArticleLookup;
+use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
 
 /**
  * Module to support selected browse activties including:
@@ -52,6 +54,10 @@ class Browse extends ApiBase {
 
 		if ( $params['browse'] === 'concept' ) {
 			$res = $this->callListLookup( SMW_NS_CONCEPT, $parameters );
+		}
+
+		if ( $params['browse'] === 'article' ) {
+			$res = $this->callArticleLookup( $parameters );
 		}
 
 		$result = $this->getResult();
@@ -114,6 +120,43 @@ class Browse extends ApiBase {
 		);
 	}
 
+	private function callArticleLookup( $parameters ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$cacheUsage = $applicationFactory->getSettings()->get(
+			'smwgCacheUsage'
+		);
+
+		$cacheTTL = CachingLookup::CACHE_TTL;
+
+		if ( isset( $cacheUsage['api.browse'] ) ) {
+			$cacheTTL = $cacheUsage['api.browse'];
+		}
+
+		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
+
+		$articleLookup = new ArticleLookup(
+			$connection,
+			new ArticleAugmentor(
+				$applicationFactory->create( 'TitleCreator' )
+			)
+		);
+
+		$cachingLookup = new CachingLookup(
+			$applicationFactory->getCache(),
+			$articleLookup
+		);
+
+		$cachingLookup->setCacheTTL(
+			$cacheTTL
+		);
+
+		return $cachingLookup->lookup(
+			$parameters
+		);
+	}
+
 	/**
 	 * @codeCoverageIgnore
 	 * @see ApiBase::getAllowedParams
@@ -127,7 +170,8 @@ class Browse extends ApiBase {
 				ApiBase::PARAM_TYPE => array(
 					'category',
 					'property',
-					'concept'
+					'concept',
+					'article'
 				)
 			),
 			'params' => array(
@@ -177,7 +221,9 @@ class Browse extends ApiBase {
 			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }',
 			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }',
 			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',
-			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }'
+			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }',
+			'api.php?action=smwbrowse&browse=article&params={ "limit": 10, "offset": 0, "search": "Main" }',
+			'api.php?action=smwbrowse&browse=article&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }'
 		);
 	}
 

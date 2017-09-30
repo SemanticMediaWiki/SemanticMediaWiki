@@ -69,7 +69,7 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->atLeastOnce() )
+		$store->expects( $this->any() )
 			->method( 'getSQLOptions' )
 			->will( $this->returnValue( [] ) );
 
@@ -106,6 +106,10 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'concept'
+		];
+
+		$provider[] = [
+			'article'
 		];
 
 		return $provider;

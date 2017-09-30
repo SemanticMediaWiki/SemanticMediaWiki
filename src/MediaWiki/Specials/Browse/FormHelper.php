@@ -71,8 +71,8 @@ class FormHelper {
 							'dir'   => $dir,
 							'name'  => 'article',
 							'size'  => 40,
-							'id'    => 'smwb-page-search',
-							'class' => 'input mw-ui-input',
+							'id'    => 'smw-article-input',
+							'class' => 'input mw-ui-input smw-article-input',
 							'value' => htmlspecialchars( $articletext )
 						)
 					)

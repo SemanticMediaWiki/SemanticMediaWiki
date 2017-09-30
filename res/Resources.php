@@ -278,6 +278,26 @@ return array(
 		)
 	),
 
+	'ext.smw.autocomplete.article' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.autocomplete.article.js',
+		'dependencies' => array(
+			'mediawiki.util',
+			'ext.jquery.autocomplete'
+		),
+		'position' => 'bottom',
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	'ext.smw.autocomplete.property' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.autocomplete.property.js',
+		'dependencies' => array(
+			'mediawiki.util',
+			'ext.jquery.autocomplete'
+		),
+		'position' => 'bottom',
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
 	// Special:Ask
 	'ext.smw.ask.styles' => $moduleTemplate + array(
 		'styles' => 'smw/special/ext.smw.special.ask.css',
@@ -352,10 +372,10 @@ return array(
 		)
 	),
 
-	'ext.smw.browse.page.autocomplete' => $moduleTemplate + array(
+	'ext.smw.browse.autocomplete' => $moduleTemplate + array(
 		'dependencies' => array(
 			'ext.smw.browse',
-			'ext.smw.autocomplete'
+			'ext.smw.autocomplete.article'
 		),
 		'targets' => array(
 			'mobile',
@@ -377,17 +397,6 @@ return array(
 			'mobile',
 			'desktop'
 		)
-	),
-
-	// Special:SearchByProperty
-	'ext.smw.autocomplete.property' => $moduleTemplate + array(
-		'scripts' => 'smw/util/ext.smw.util.autocomplete.property.js',
-		'dependencies' => array(
-			'mediawiki.util',
-			'ext.jquery.autocomplete'
-		),
-		'position' => 'bottom',
-		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	// TableResultPrinter resource
