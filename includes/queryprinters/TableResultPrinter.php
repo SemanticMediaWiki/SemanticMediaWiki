@@ -230,7 +230,7 @@ class TableResultPrinter extends ResultPrinter {
 			);
 
 			if ( $width ) {
-				$attributes['style'] = isset( $attributes['style'] ) ?  $attributes['style'] . " width:$width;" . $width : "width:$width;";
+				$attributes['style'] = ( isset( $attributes['style'] ) ?  $attributes['style'] . ' ' : '' ) . "width:$width;";
 			}
 
 			$content = $this->getCellContent(
