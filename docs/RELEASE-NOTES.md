@@ -12,6 +12,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 
 ## New features and enhancements
 
+* [#794](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/794)
 * [#2065](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2065) Added entity specific collation support with help of the [`$smwgEntityCollation`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation) setting
 * [#2398](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2398) Added `#ask` and `#show` parser function support for `@deferred` output mode
 * [#2420](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2420) Added support for a datatable output in the `format=table` (and `broadtable`) result printer
@@ -81,6 +82,7 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2691](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2691) Replaced `#info` icon set
 * [#2698](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2698) Added persistent caching to the `HierarchyLookup`
 * [#2714](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2714) Added `SMW::GetPreferences` hook
+* [#2727](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2727)
 
 ## Contributors
 
