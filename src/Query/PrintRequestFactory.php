@@ -50,4 +50,16 @@ class PrintRequestFactory {
 		return PrintRequest::newFromText( $text, $showMode );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $label
+	 * @param array $parameters
+	 *
+	 * @return PrintRequest
+	 */
+	public function newThisPrintRequest( $label = '', array $parameters = [] ) {
+		return new PrintRequest( PrintRequest::PRINT_THIS, $label, null, false, $parameters );
+	}
+
 }

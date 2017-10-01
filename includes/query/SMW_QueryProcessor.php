@@ -11,6 +11,7 @@ use SMW\Message;
 use SMW\Query\QueryContext;
 use SMW\Query\ResultFormatNotFoundException;
 use SMW\Query\DeferredQuery;
+use SMW\Query\Processor\ParamListProcessor;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -242,74 +243,12 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return array( string, array( string => string ), array( SMWPrintRequest ) )
 	 */
 	static public function getComponentsFromFunctionParams( array $rawParams, $showMode ) {
-		$queryString = '';
-		$parameters = array();
-		$printouts = array();
 
-		$lastprintout = null;
-		$printRequestFactory = new PrintRequestFactory();
+		$paramListProcessor = new ParamListProcessor();
 
-		foreach ( $rawParams as $name => $rawParam ) {
-			// special handling for arrays - this can happen if the
-			// parameter came from a checkboxes input in Special:Ask:
-			if ( is_array( $rawParam ) ) {
-				$rawParam = implode( ',', array_keys( $rawParam ) );
-			}
-
-			// Bug 32955 / #640
-			// Modify (e.g. replace `=`) a condition string only if enclosed by [[ ... ]]
-			$rawParam = preg_replace_callback(
-				'/\[\[([^\[\]]*)\]\]/xu',
-				function( array $matches ) {
-					return str_replace( array( '=' ), array( '-3D' ), $matches[0] );
-				},
-				$rawParam
-			);
-
-			// #1258 (named_args -> named args)
-			// accept 'name' => 'value' just as '' => 'name=value':
-			if ( is_string( $name ) && ( $name !== '' ) ) {
-				$rawParam = str_replace( "_", " ", $name ) . '=' . $rawParam;
-			}
-
-			if ( $rawParam === '' ) {
-			} elseif ( $rawParam { 0 } == '?' ) { // print statement
-				$rawParam = substr( $rawParam, 1 );
-				$lastprintout = $printRequestFactory->newPrintRequestFromText( $rawParam, $showMode );
-				if ( !is_null( $lastprintout ) ) {
-					$printouts[] = $lastprintout;
-				}
-			} elseif ( $rawParam[0] == '+' ) { // print request parameter
-				if ( !is_null( $lastprintout ) ) {
-					$rawParam = substr( $rawParam, 1 );
-					$parts = explode( '=', $rawParam, 2 );
-					if ( count( $parts ) == 2 ) {
-						$lastprintout->setParameter( trim( $parts[0] ), $parts[1] );
-					} else {
-						$lastprintout->setParameter( trim( $parts[0] ), null );
-					}
-				}
-			} else { // parameter or query
-
-				// #1645
-				$parts = $showMode && $name == 0 ? $rawParam : explode( '=', $rawParam, 2 );
-
-				if ( count( $parts ) >= 2 ) {
-					// don't trim here, some parameters care for " "
-					$parameters[strtolower( trim( $parts[0] ) )] = $parts[1];
-				} else {
-					$queryString .= $rawParam;
-				}
-			}
-		}
-
-		$queryString = str_replace( array( '&lt;', '&gt;', '-3D' ), array( '<', '>', '=' ), $queryString );
-
-		if ( $showMode ) {
-			$queryString = "[[:$queryString]]";
-		}
-
-		return array( $queryString, $parameters, $printouts);
+		return $paramListProcessor->getLegacyArray(
+			$paramListProcessor->preprocess( $rawParams, $showMode )
+		);
 	}
 
 	/**
