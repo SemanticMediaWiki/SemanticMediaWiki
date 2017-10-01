@@ -864,31 +864,27 @@ return array(
 	# requires $smwgCacheType to be set otherwise related settings will have
 	# no effect.
 	#
-	# - smwgWantedPropertiesCache Enable to serve wanted properties from cache
-	# - smwgWantedPropertiesCacheExpiry Number of seconds before the cache expires
+	# - special.wantedproperties TTL (in sec, or false to disable it) for caching
+	#   the lookup on wanted property usage
 	#
-	# - smwgUnusedPropertiesCache Enable to serve unused properties from cache
-	# - smwgUnusedPropertiesCacheExpiry Number of seconds before the cache expires
+	# - special.unusedproperties TTL (in sec, or false to disable it) for caching
+	#   the lookup on unused property usage
 	#
-	# - smwgPropertiesCache Enable to serve properties from cache
-	# - smwgPropertiesCacheExpiry Number of seconds before the cache expires
+	# - special.properties TTL (in sec, or false to disable it) for caching the
+	#   lookup on property usage
 	#
-	# - smwgStatisticsCache Enable to serve statistics from cache
-	# - smwgStatisticsCacheExpiry Number of seconds before the cache expires
+	# - special.statistics TTL (in sec, or false to disable it) for caching the
+	#   lookup on statistics
 	#
 	# - api.browse TTL (in sec, or false to disable it) for the API browse module
 	#
 	# @since 1.9
 	##
 	'smwgCacheUsage' => array(
-		'smwgWantedPropertiesCache' => true,
-		'smwgWantedPropertiesCacheExpiry' => 3600,
-		'smwgUnusedPropertiesCache' => true,
-		'smwgUnusedPropertiesCacheExpiry' => 3600,
-		'smwgPropertiesCache' => true,
-		'smwgPropertiesCacheExpiry' => 3600,
-		'smwgStatisticsCache' => true,
-		'smwgStatisticsCacheExpiry' => 3600,
+		'special.wantedproperties' => 3600,
+		'special.unusedproperties' => 3600,
+		'special.properties' => 3600,
+		'special.statistics' => 3600,
 		'api.browse' => 3600
 	),
 	##
