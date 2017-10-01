@@ -65,6 +65,8 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2696](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2696) Soft deprecate the `browsebyproperty` API module, the new `smwbrowse` should be used instead
 * [#2705](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2705) Removed usages of deprecated `ResultPrinter::getParameters`
 * [#2724](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2724)
+* [#2730](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2730)
+* [#2732](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2732)
 
 ## Other changes
 
