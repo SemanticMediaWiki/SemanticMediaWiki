@@ -221,3 +221,11 @@ define( 'SMW_FIELDT_NONE', 0 );
 define( 'SMW_FIELDT_CHAR_NOCASE', 2 ); // Using FieldType::TYPE_CHAR_NOCASE
 define( 'SMW_FIELDT_CHAR_LONG', 4 ); // Using FieldType::TYPE_CHAR_LONG
 /**@}*/
+
+/**@{
+  * Constants for $smwgQueryProfiler
+  */
+define( 'SMW_QPRFL_NONE', 0 );
+define( 'SMW_QPRFL_PARAMS', 2 ); // Support for Query parameters
+define( 'SMW_QPRFL_DUR', 4 ); // Support for Query duration
+/**@}*/

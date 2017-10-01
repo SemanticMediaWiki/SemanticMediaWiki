@@ -367,6 +367,14 @@ class Settings extends Options {
 			$configuration['smwgCacheUsage']['special.wantedproperties'] = false;
 		}
 
+		if ( isset( $GLOBALS['smwgQueryProfiler']['smwgQueryDurationEnabled'] ) && $GLOBALS['smwgQueryProfiler']['smwgQueryDurationEnabled'] === true ) {
+			$configuration['smwgQueryProfiler'] = $configuration['smwgQueryProfiler'] | SMW_QPRFL_DUR;
+		}
+
+		if ( isset( $GLOBALS['smwgQueryProfiler']['smwgQueryParametersEnabled'] ) && $GLOBALS['smwgQueryProfiler']['smwgQueryParametersEnabled'] === true ) {
+			$configuration['smwgQueryProfiler'] = $configuration['smwgQueryProfiler'] | SMW_QPRFL_PARAMS;
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
@@ -386,8 +394,12 @@ class Settings extends Options {
 						'smwgUnusedPropertiesCacheExpiry' => '3.1.0',
 						'smwgWantedPropertiesCache' => '3.1.0',
 						'smwgWantedPropertiesCacheExpiry' => '3.1.0',
+					],
+					'smwgQueryProfiler' =>  [
+						'smwgQueryDurationEnabled' => '3.1.0',
+						'smwgQueryParametersEnabled' => '3.1.0'
 					]
-				],
+				]
 			),
 			'replacement' => array(
 				'smwgAdminRefreshStore' => 'smwgAdminFeatures',
@@ -401,6 +413,10 @@ class Settings extends Options {
 						'smwgPropertiesCacheExpiry' => 'special.properties',
 						'smwgUnusedPropertiesCacheExpiry' => 'special.unusedproperties',
 						'smwgWantedPropertiesCacheExpiry' => 'special.wantedproperties',
+					],
+					'smwgQueryProfiler' => [
+						'smwgQueryDurationEnabled' => 'SMW_QPRFL_DUR',
+						'smwgQueryParametersEnabled' => 'SMW_QPRFL_PARAMS'
 					]
 				]
 			),

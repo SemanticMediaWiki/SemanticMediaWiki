@@ -70,20 +70,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider isSetProvider
-	 */
-	public function testIsValueSet( $value, $is, $expected ) {
-
-		$instance = new Options();
-		$instance->set( 'Foo', $value );
-
-		$this->assertEquals(
-			$expected,
-			$instance->isValueSet( 'Foo', $is )
-		);
-	}
-
-	/**
 	 * @dataProvider isFlagSetProvider
 	 */
 	public function testIsFlagSet( $value, $flag, $expected ) {
