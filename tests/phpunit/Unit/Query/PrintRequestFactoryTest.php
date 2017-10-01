@@ -4,6 +4,7 @@ namespace SMW\Tests\Query;
 
 use SMW\DIProperty;
 use SMW\Query\PrintRequestFactory;
+use SMW\Query\PrintRequest;
 
 /**
  * @covers \SMW\Query\PrintRequestFactory
@@ -68,6 +69,19 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertNull(
 			$printRequest
+		);
+	}
+
+	public function testCanConstructThisPrintRequest() {
+
+		$instance = new PrintRequestFactory();
+
+		$printRequest = $instance->newThisPrintRequest(
+			'Foo'
+		);
+
+		$this->assertTrue(
+			$printRequest->isMode( PrintRequest::PRINT_THIS )
 		);
 	}
 
