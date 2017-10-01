@@ -144,16 +144,6 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructRequestOptionsProcessor() {
-
-		$instance = new SQLStoreFactory( $this->store );
-
-		$this->assertInstanceOf(
-			'\SMW\SQLStore\RequestOptionsProcessor',
-			$instance->newRequestOptionsProcessor()
-		);
-	}
-
 	public function testCanConstructEntityLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );

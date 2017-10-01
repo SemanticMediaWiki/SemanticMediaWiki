@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\RequestOptionsProcessor;
+use SMW\SQLStore\RequestOptionsProc;
 use SMWRequestOptions as RequestOptions;
 use SMWStringCondition as StringCondition;
 
 /**
- * @covers \SMW\SQLStore\RequestOptionsProcessor
+ * @covers \SMW\SQLStore\RequestOptionsProc
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMWStringCondition as StringCondition;
  *
  * @author mwjames
  */
-class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
+class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
@@ -26,17 +26,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	public function testCanConstruct() {
-
-		$this->assertInstanceOf(
-			'\SMW\SQLStore\RequestOptionsProcessor',
-			new RequestOptionsProcessor( $this->store )
-		);
-	}
-
-	public function testTransformToSQLOptionsWithoutOrderBy() {
-
-		$instance = new RequestOptionsProcessor( $this->store );
+	public function testGetSQLOptions() {
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
@@ -50,13 +40,13 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getSQLOptionsFrom( $requestOptions, 'Foo' )
+			RequestOptionsProc::getSQLOptions( $requestOptions, 'Foo' )
 		);
 	}
 
-	public function testTransformToSQLOptionsWithOrderBy() {
+	public function testGetSQLOptionsWithOrderBy() {
 
-		$instance = new RequestOptionsProcessor( $this->store );
+		$instance = new RequestOptionsProc( $this->store );
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 2;
@@ -71,14 +61,14 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getSQLOptionsFrom( $requestOptions, 'Foo' )
+			RequestOptionsProc::getSQLOptions( $requestOptions, 'Foo' )
 		);
 	}
 
 	/**
 	 * @dataProvider requestOptionsToSqlConditionsProvider
 	 */
-	public function testTransformToSQLConditions( $requestOptions, $valueCol, $labelCol, $expected ) {
+	public function testGetSQLConditions( $requestOptions, $valueCol, $labelCol, $expected ) {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -92,24 +82,20 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new RequestOptionsProcessor( $this->store );
-
 		$this->assertEquals(
 			$expected,
-			$instance->getSQLConditionsFrom( $requestOptions, $valueCol, $labelCol )
+			RequestOptionsProc::getSQLConditions( $this->store, $requestOptions, $valueCol, $labelCol )
 		);
 	}
 
 	/**
 	 * @dataProvider requestOptionsToApplyProvider
 	 */
-	public function testApplyRequestOptionsTo( $data, $requestOptions, $expected ) {
-
-		$instance = new RequestOptionsProcessor( $this->store );
+	public function testApplyRequestOptions( $data, $requestOptions, $expected ) {
 
 		$this->assertEquals(
 			$expected,
-			$instance->applyRequestOptionsTo( $data, $requestOptions )
+			RequestOptionsProc::applyRequestOptions( $this->store, $data, $requestOptions )
 		);
 	}
 

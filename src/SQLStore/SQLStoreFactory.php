@@ -304,15 +304,6 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.3
 	 *
-	 * @return RequestOptionsProcessor
-	 */
-	public function newRequestOptionsProcessor() {
-		return new RequestOptionsProcessor( $this->store );
-	}
-
-	/**
-	 * @since 2.3
-	 *
 	 * @return PropertyTableInfoFetcher
 	 */
 	public function newPropertyTableInfoFetcher() {
