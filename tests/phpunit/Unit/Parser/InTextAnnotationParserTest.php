@@ -248,6 +248,64 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testStripMarkerDecoding() {
+
+		$redirectTargetFinder = $this->getMockBuilder( 'SMW\MediaWiki\RedirectTargetFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$stripMarkerDecoder = $this->getMockBuilder( '\SMW\MediaWiki\StripMarkerDecoder' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'canUse', 'hasStripMarker', 'unstrip' ] )
+			->getMock();
+
+		$stripMarkerDecoder->expects( $this->once() )
+			->method( 'canUse' )
+			->will( $this->returnValue( true ) );
+
+		$stripMarkerDecoder->expects( $this->once() )
+			->method( 'hasStripMarker' )
+			->will( $this->returnValue( true ) );
+
+		$stripMarkerDecoder->expects( $this->once() )
+			->method( 'unstrip' )
+			->with( $this->stringContains( '<nowiki>Bar</nowiki>' ) )
+			->will( $this->returnValue( 'Bar' ) );
+
+		$parserData = new ParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			$this->LinksProcessor,
+			new MagicWordsFinder(),
+			$redirectTargetFinder
+		);
+
+		$text = '[[Foo::<nowiki>Bar</nowiki>]]';
+
+		$instance->setStripMarkerDecoder( $stripMarkerDecoder );
+		$instance->parse( $text );
+
+		$expected = array(
+			'propertyCount'  => 1,
+			'property'       => new DIProperty( 'Foo' ),
+			'propertyValues' => array( 'Bar' )
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserData->getSemanticData()
+		);
+
+		$this->assertEquals(
+			'<nowiki>Bar</nowiki>',
+			$text
+		);
+	}
+
 	public function testProcessOnReflection() {
 
 		$parserData = new ParserData(

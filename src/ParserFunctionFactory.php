@@ -161,12 +161,20 @@ class ParserFunctionFactory {
 			$parser->getTargetLanguage()
 		);
 
-		$templateRenderer = $applicationFactory->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
+		$mediaWikiCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
+
+		$stripMarkerDecoder = $mediaWikiCollaboratorFactory->newStripMarkerDecoder(
+			$parser->mStripState
+		);
 
 		$setParserFunction = new SetParserFunction(
 			$parserData,
 			$messageFormatter,
-			$templateRenderer
+			$mediaWikiCollaboratorFactory->newWikitextTemplateRenderer()
+		);
+
+		$setParserFunction->setStripMarkerDecoder(
+			$stripMarkerDecoder
 		);
 
 		return $setParserFunction;
@@ -232,6 +240,14 @@ class ParserFunctionFactory {
 
 		$subobjectParserFunction->isComparableContent(
 			$applicationFactory->getSettings()->get( 'smwgUseComparableContentHash' )
+		);
+
+		$stripMarkerDecoder = $applicationFactory->newMwCollaboratorFactory()->newStripMarkerDecoder(
+			$parser->mStripState
+		);
+
+		$subobjectParserFunction->setStripMarkerDecoder(
+			$stripMarkerDecoder
 		);
 
 		return $subobjectParserFunction;

@@ -31,6 +31,10 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
 
+		$this->stripState = $this->getMockBuilder( '\StripState' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -51,7 +55,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\InternalParseBeforeLinks',
-			new InternalParseBeforeLinks( $parser )
+			new InternalParseBeforeLinks( $parser, $this->stripState )
 		);
 	}
 
@@ -67,7 +71,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOptions' );
 
 		$instance = new InternalParseBeforeLinks(
-			$parser
+			$parser,
+			$this->stripState
 		);
 
 		$this->assertTrue(
@@ -108,7 +113,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $title ) );
 
 		$instance = new InternalParseBeforeLinks(
-			$parser
+			$parser,
+			$this->stripState
 		);
 
 		$this->assertTrue(
@@ -162,7 +168,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $parserOptions ) );
 
 		$instance = new InternalParseBeforeLinks(
-			$parser
+			$parser,
+			$this->stripState
 		);
 
 		$instance->setEnabledSpecialPage(
@@ -218,7 +225,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $title ) );
 
 		$instance = new InternalParseBeforeLinks(
-			$parser
+			$parser,
+			$this->stripState
 		);
 
 		$instance->process( $text );
@@ -233,7 +241,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$parser = $this->parserFactory->newFromTitle( $title );
 
 		$instance = new InternalParseBeforeLinks(
-			$parser
+			$parser,
+			$this->stripState
 		);
 
 		$this->assertTrue(
@@ -254,7 +263,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$parser = $this->parserFactory->newFromTitle( $parameters['title'] );
 
 		$instance = new InternalParseBeforeLinks(
-			$parser
+			$parser,
+			$this->stripState
 		);
 
 		$instance->setEnabledSpecialPage(

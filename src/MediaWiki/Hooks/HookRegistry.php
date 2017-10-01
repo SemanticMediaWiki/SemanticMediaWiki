@@ -228,10 +228,11 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
 		 */
-		$this->handlers['InternalParseBeforeLinks'] = function ( &$parser, &$text ) use ( $applicationFactory ) {
+		$this->handlers['InternalParseBeforeLinks'] = function ( &$parser, &$text, &$stripState ) use ( $applicationFactory ) {
 
 			$internalParseBeforeLinks = new InternalParseBeforeLinks(
-				$parser
+				$parser,
+				$stripState
 			);
 
 			$internalParseBeforeLinks->setEnabledSpecialPage(

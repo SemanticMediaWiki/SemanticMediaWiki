@@ -5,6 +5,8 @@ namespace SMW\MediaWiki\Hooks;
 use Parser;
 use SMW\ApplicationFactory;
 use SMW\Parser\InTextAnnotationParser;
+use SMW\MediaWiki\StripMarkerDecoder;
+use StripState;
 
 /**
  * Hook: InternalParseBeforeLinks is used to process the expanded wiki
@@ -33,6 +35,11 @@ class InternalParseBeforeLinks {
 	private $parser;
 
 	/**
+	 * @var StripState
+	 */
+	private $stripState;
+
+	/**
 	 * @var array
 	 */
 	private $enabledSpecialPage = array();
@@ -41,9 +48,11 @@ class InternalParseBeforeLinks {
 	 * @since 1.9
 	 *
 	 * @param Parser $parser
+	 * @param StripState $stripState
 	 */
-	public function __construct( Parser &$parser ) {
+	public function __construct( Parser &$parser, $stripState ) {
 		$this->parser = $parser;
+		$this->stripState = $stripState;
 	}
 
 	/**
@@ -125,7 +134,18 @@ class InternalParseBeforeLinks {
 			$parserData
 		);
 
-		$inTextAnnotationParser->setRedirectTarget( $this->getRedirectTarget() );
+		$stripMarkerDecoder = $applicationFactory->newMwCollaboratorFactory()->newStripMarkerDecoder(
+			$this->stripState
+		);
+
+		$inTextAnnotationParser->setStripMarkerDecoder(
+			$stripMarkerDecoder
+		);
+
+		$inTextAnnotationParser->setRedirectTarget(
+			$this->getRedirectTarget()
+		);
+
 		$inTextAnnotationParser->parse( $text );
 
 		$parserData->setSemanticDataStateToParserOutputProperty();

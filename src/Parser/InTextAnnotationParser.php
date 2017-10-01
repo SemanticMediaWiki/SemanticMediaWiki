@@ -6,6 +6,7 @@ use Hooks;
 use SMW\ParserData;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\Utils\Timer;
 use SMW\DataValueFactory;
 use SMW\ApplicationFactory;
@@ -68,6 +69,11 @@ class InTextAnnotationParser {
 	 * @var ApplicationFactory
 	 */
 	private $applicationFactory = null;
+
+	/**
+	 * @var StripMarkerDecoder
+	 */
+	private $stripMarkerDecoder;
 
 	/**
 	 * @var Settings
@@ -220,6 +226,15 @@ class InTextAnnotationParser {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param StripMarkerDecoder $stripMarkerDecoder
+	 */
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+		$this->stripMarkerDecoder = $stripMarkerDecoder;
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param Title|null $redirectTarget
@@ -341,6 +356,12 @@ class InTextAnnotationParser {
 	 */
 	protected function addPropertyValue( $subject, array $properties, $value, $valueCaption ) {
 
+		$origValue = $value;
+
+		if ( $this->stripMarkerDecoder !== null ) {
+			$value = $this->stripMarkerDecoder->decode( $value );
+		}
+
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {
 			$dataValue = $this->dataValueFactory->newDataValueByText(
@@ -358,8 +379,14 @@ class InTextAnnotationParser {
 			}
 		}
 
-		// Return the text representation
-		$result = $dataValue->getShortWikitext( true );
+		// Return the wikitext or the unmodified text representation in case of
+		// a strip marker in order for the standard Parser to work its magic since
+		// we were only interested in the value for the annotation
+		if ( $origValue !== $value ) {
+			$result = $origValue;
+		} else {
+			$result = $dataValue->getShortWikitext( true );
+		}
 
 		// If necessary add an error text
 		if ( ( $this->settings->get( 'smwgInlineErrors' ) &&
