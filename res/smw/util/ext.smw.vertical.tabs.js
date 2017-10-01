@@ -32,19 +32,25 @@
 			tabcontent = document.getElementsByClassName( "smw-vtab-content" );
 
 			for ( i = 0; i < tabcontent.length; i++ ) {
-			    tabcontent[i].style.display = "none";
+				if ( tabcontent[i] ) {
+					tabcontent[i].style.display = "none";
+				};
 			}
 
 			// Get all elements with class="smw-vtab-link" and remove the class "active"
 			tablinks = document.getElementsByClassName( "smw-vtab-link" );
 
 			for ( i = 0; i < tablinks.length; i++ ) {
-			    tablinks[i].className = tablinks[i].className.replace(" active", "" );
+				if ( tablinks[i] ) {
+					tablinks[i].className = tablinks[i].className.replace(" active", "" );
+				};
 			}
 
 			// Show the current tab, and add an "active" class to the link that opened the tab
 			document.getElementById( id ).style.display = 'inline';
-			target.className += " active";
+			if ( target ) {
+				target.className += " active";
+			};
 		}
 
 		// A request was initiated with a href hash

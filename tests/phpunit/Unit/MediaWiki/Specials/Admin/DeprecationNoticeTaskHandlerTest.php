@@ -62,10 +62,22 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$deprecationNotice = array(
 			'notice' => array(
-				'deprecationNoticeFoo' => '...'
+				'deprecationNoticeFoo' => '...',
+				'options' => [
+					'deprecationNoticeFoo' => [
+						'Foo',
+						'Bar'
+					]
+				]
 			),
 			'replacement' => array(
-				'deprecationNoticeFoobar' => '...'
+				'deprecationNoticeFoobar' => '...',
+				'options' => [
+					'deprecationNoticeFoobar' => [
+						'Foo',
+						'Bar'
+					]
+				]
 			),
 			'removal' => array(
 				'deprecationNoticeFooFoo' => '...'
