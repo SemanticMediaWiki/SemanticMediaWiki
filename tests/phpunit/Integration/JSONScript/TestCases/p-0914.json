@@ -71,9 +71,6 @@
 		"wgContLang": "en",
 		"wgLang": "en",
 		"smwgQFilterDuplicates": true,
-		"smwgQueryProfiler" : {
-			"smwgQueryDurationEnabled": false
-		},
 		"smwgQueryResultCacheType": "hash",
 		"smwgPageSpecialProperties": [
 			"_MDAT"

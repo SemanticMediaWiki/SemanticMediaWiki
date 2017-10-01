@@ -239,7 +239,8 @@ class JsonTestCaseFileHandler {
 			'smwgSparqlQFeatures',
 			'smwgDVFeatures',
 			'smwgFulltextSearchIndexableDataTypes',
-			'smwgFieldTypeFeatures'
+			'smwgFieldTypeFeatures',
+			'smwgQueryProfiler'
 		);
 
 		foreach ( $constantFeaturesList as $constantFeatures ) {

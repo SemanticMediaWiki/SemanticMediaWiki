@@ -96,18 +96,6 @@ class Options {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 *
-	 * @return boolean
-	 */
-	public function isValueSet( $key, $value ) {
-		return $this->safeGet( $key ) === $value;
-	}
-
-	/**
 	 * @since 2.4
 	 *
 	 * @return array

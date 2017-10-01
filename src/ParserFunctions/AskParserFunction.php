@@ -332,16 +332,16 @@ class AskParserFunction {
 		$settings = $applicationFactory->getSettings();
 
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
-		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false || $extraKeys[self::NO_TRACE] === true ) {
+		if ( $settings->get( 'smwgQueryProfiler' ) === false || $extraKeys[self::NO_TRACE] === true ) {
 			return;
 		}
 
-		if ( !isset( $queryProfiler['smwgQueryDurationEnabled'] ) || $queryProfiler['smwgQueryDurationEnabled'] === false ) {
+		if ( !$settings->isFlagSet( 'smwgQueryProfiler', SMW_QPRFL_DUR ) ) {
 			$query->setOption( Query::PROC_QUERY_TIME, 0 );
 		}
 
-		if ( isset( $queryProfiler['smwgQueryParametersEnabled'] ) ) {
-			$query->setOption( Query::OPT_PARAMETERS, $queryProfiler['smwgQueryParametersEnabled'] );
+		if ( $settings->isFlagSet( 'smwgQueryProfiler', SMW_QPRFL_PARAMS ) ) {
+			$query->setOption( Query::OPT_PARAMETERS, true );
 		}
 
 		$query->setContextPage(

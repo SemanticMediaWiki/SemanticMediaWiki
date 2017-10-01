@@ -1006,29 +1006,26 @@ return array(
 	##
 
 	###
-	# QueryProfiler related setting to enable/disable specific monitorable profile
-	# data
+	# QueryProfiler related settings
 	#
 	# @note If these settings are changed, please ensure to run update.php/rebuildData.php
 	#
-	# - smwgQueryProfiler can be set false itself allowing it to disable its
-	# functionality but it may impact secondary processes that rely on profile
-	# information to be available (Notification system etc.)
+	# - smwgQueryProfiler can be set false to disable its functionality but it
+	# may impact secondary processes that rely on profile information to be
+	# available (Notification system etc.)
 	#
-	# - smwgQueryDurationEnabled to record query duration (the time
+	# - SMW_QPRFL_DUR to record query duration (the time
 	# between the query result selection and output its)
 	#
-	# - smwgQueryParametersEnabled to record query parameters that are necessary
+	# - SMW_QPRFL_PARAMS to record query parameters that are necessary
 	# for allowing to generate a query result using a background job
 	#
-	# False will disabled the query profiler (not recommended)
+	# $smwgQueryProfiler = SMW_QPRFL_DUR | SMW_QPRFL_PARAMS;
 	#
 	# @since 1.9
+	# @default true
 	##
-	'smwgQueryProfiler' => array(
-		'smwgQueryDurationEnabled' => false,
-		'smwgQueryParametersEnabled' => false
-	),
+	'smwgQueryProfiler' => true,
 	##
 
 	###
