@@ -206,6 +206,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgQSubcategoryDepth',
 			'smwgQConceptCaching',
 			'smwgEnabledInTextAnnotationParserStrictMode',
+			'smwgDecodeTextAnnotationWithStripMarker',
 			'smwgMaxNonExpNumber',
 			'smwgDVFeatures',
 			'smwgEnabledQueryDependencyLinksStore',

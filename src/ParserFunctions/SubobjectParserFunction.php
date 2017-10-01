@@ -10,6 +10,7 @@ use SMW\Message;
 use SMW\HashBuilder;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\MediaWiki\StripMarkerDecoder;
 use Parser;
 
 /**
@@ -62,6 +63,11 @@ class SubobjectParserFunction {
 	protected $messageFormatter;
 
 	/**
+	 * @var StripMarkerDecoder
+	 */
+	private $stripMarkerDecoder;
+
+	/**
 	 * @var boolean
 	 */
 	private $useFirstElementAsPropertyLabel = false;
@@ -87,6 +93,15 @@ class SubobjectParserFunction {
 		$this->parserData = $parserData;
 		$this->subobject = $subobject;
 		$this->messageFormatter = $messageFormatter;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param StripMarkerDecoder $stripMarkerDecoder
+	 */
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
 	/**
@@ -201,9 +216,7 @@ class SubobjectParserFunction {
 			}
 		}
 
-		$this->doAugmentSortKeyOnAccessibleDisplayTitle(
-			$this->subobject->getSemanticData()
-		);
+		$this->augment( $this->subobject->getSemanticData() );
 
 		return true;
 	}
@@ -213,11 +226,11 @@ class SubobjectParserFunction {
 		$id = $parserParameterProcessor->getFirst();
 		$isAnonymous = in_array( $id, array( null, '' ,'-' ) );
 
-		$useFirstElementAsPropertyLabel = $this->useFirstElementAsPropertyLabel && !$isAnonymous;
+		$useFirst = $this->useFirstElementAsPropertyLabel && !$isAnonymous;
 
-		$parameters = $this->doPrepareParameters(
+		$parameters = $this->preprocess(
 			$parserParameterProcessor,
-			$useFirstElementAsPropertyLabel
+			$useFirst
 		);
 
 		// FIXME remove the check with 3.1, should be standard by then!
@@ -230,14 +243,14 @@ class SubobjectParserFunction {
 		}
 
 		// Reclaim the ID to be content hash based
-		if ( $useFirstElementAsPropertyLabel || $isAnonymous ) {
+		if ( $useFirst || $isAnonymous ) {
 			$id = HashBuilder::createFromContent( $p, '_' );
 		}
 
 		return array( $parameters, $id );
 	}
 
-	private function doPrepareParameters( ParserParameterProcessor $parserParameterProcessor, $useFirstElementAsPropertyLabel ) {
+	private function preprocess( ParserParameterProcessor $parserParameterProcessor, $useFirst ) {
 
 		if ( $parserParameterProcessor->hasParameter( self::PARAM_LINKWITH ) ) {
 			$val = $parserParameterProcessor->getParameterValuesByKey( self::PARAM_LINKWITH );
@@ -249,14 +262,16 @@ class SubobjectParserFunction {
 			$parserParameterProcessor->removeParameterByKey( self::PARAM_LINKWITH );
 		}
 
-		if ( $useFirstElementAsPropertyLabel ) {
+		if ( $useFirst ) {
 			$parserParameterProcessor->addParameter(
 				$parserParameterProcessor->getFirst(),
 				$this->parserData->getTitle()->getPrefixedText()
 			);
 		}
 
-		$parameters = $parserParameterProcessor->toArray();
+		$parameters = $this->decode(
+			$parserParameterProcessor->toArray()
+		);
 
 		foreach ( $parameters as $property => $values ) {
 
@@ -275,7 +290,27 @@ class SubobjectParserFunction {
 		return $parameters;
 	}
 
-	private function doAugmentSortKeyOnAccessibleDisplayTitle( $semanticData ) {
+	private function decode( $parameters ) {
+
+		if ( $this->stripMarkerDecoder === null || !$this->stripMarkerDecoder->canUse() ) {
+			return $parameters;
+		}
+
+		// Any decoding has to happen before the subject ID is generated otherwise
+		// the value would contain something like `UNIQ--nowiki-00000011-QINU`
+		// and be part of the hash. `UNIQ--nowiki-00000011-QINU` isn't stable
+		// and changes to text will create new marker positions therefore it
+		// cannot be part of the hash computation
+		foreach ( $parameters as $property => &$values ) {
+			foreach ( $values as &$value ) {
+				$value = $this->stripMarkerDecoder->decode( $value );
+			}
+		}
+
+		return $parameters;
+	}
+
+	private function augment( $semanticData ) {
 
 		$sortkey = new DIProperty( DIProperty::TYPE_SORTKEY );
 		$displayTitle = new DIProperty( DIProperty::TYPE_DISPLAYTITLE );

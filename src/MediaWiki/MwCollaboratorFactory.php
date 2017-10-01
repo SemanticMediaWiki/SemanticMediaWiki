@@ -14,6 +14,7 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use Title;
 use User;
 use WikiPage;
+use StripState;
 
 /**
  * @license GNU GPL v2+
@@ -201,6 +202,26 @@ class MwCollaboratorFactory {
 	 */
 	public function newMediaWikiNsContentReader() {
 		return new MediaWikiNsContentReader();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param StripState $stripState
+	 *
+	 * @return StripMarkerDecoder
+	 */
+	public function newStripMarkerDecoder( StripState $stripState ) {
+
+		$stripMarkerDecoder = new StripMarkerDecoder(
+			$stripState
+		);
+
+		$stripMarkerDecoder->isSupported(
+			$this->applicationFactory->getSettings()->get( 'smwgDecodeTextAnnotationWithStripMarker' )
+		);
+
+		return $stripMarkerDecoder;
 	}
 
 }

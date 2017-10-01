@@ -160,6 +160,7 @@ class Settings extends Options {
 			'smwgQueryDependencyPropertyExemptionList' => $GLOBALS['smwgQueryDependencyPropertyExemptionList'],
 			'smwgQueryDependencyAffiliatePropertyDetectionList' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionList'],
 			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
+			'smwgDecodeTextAnnotationWithStripMarker' => $GLOBALS['smwgDecodeTextAnnotationWithStripMarker'],
 			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
 			'smwgEnabledFulltextSearch' => $GLOBALS['smwgEnabledFulltextSearch'],
 			'smwgFulltextDeferredUpdate' => $GLOBALS['smwgFulltextDeferredUpdate'],

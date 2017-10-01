@@ -317,6 +317,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
 
+		$stripState = $this->getMockBuilder( '\StripState' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$text = '';
 
 		$this->assertTrue(
@@ -325,7 +329,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$parser, &$text )
+			array( &$parser, &$text, &$stripState )
 		);
 	}
 

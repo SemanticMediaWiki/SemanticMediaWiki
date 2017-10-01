@@ -1239,6 +1239,20 @@ return array(
 	'smwgEnabledInTextAnnotationParserStrictMode' => true,
 	##
 
+	###
+	# InText unstrip support
+	#
+	# Support decoding (unstripping) of hidden text elements (e.g. `<nowiki>` as in
+	# `[[Has description::<nowiki>{{#ask: HasStripMarkers }}</nowiki>]]` etc.)
+	# within an annotation value (can only be stored together with a `_txt` type
+	# property).
+	#
+	# @since 3.0
+	# @default false
+	##
+	'smwgDecodeTextAnnotationWithStripMarker' => false,
+	##
+
 	##
 	# Features or restrictions for specific DataValue types
 	#
