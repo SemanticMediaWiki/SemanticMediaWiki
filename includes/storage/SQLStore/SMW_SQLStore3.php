@@ -9,6 +9,7 @@ use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableDefinition;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\SQLStore\RequestOptionsProc;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
@@ -101,11 +102,6 @@ class SMWSQLStore3 extends SMWStore {
 	 * @var PropertyTableIdReferenceFinder
 	 */
 	private $propertyTableIdReferenceFinder;
-
-	/**
-	 * @var RequestOptionsProcessor|null
-	 */
-	private $requestOptionsProcessor = null;
 
 	/**
 	 * @var DataItemHandlerDispatcher
@@ -441,7 +437,7 @@ class SMWSQLStore3 extends SMWStore {
 ///// Helper methods, mostly protected /////
 
 	/**
-	 * @see RequestOptionsProcessor::getSQLOptionsFrom
+	 * @see RequestOptionsProc::getSQLOptions
 	 *
 	 * @since 1.8
 	 *
@@ -451,11 +447,11 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return array
 	 */
 	public function getSQLOptions( SMWRequestOptions $requestOptions = null, $valueCol = '' ) {
-		return $this->getRequestOptionsProcessor()->getSQLOptionsFrom( $requestOptions, $valueCol );
+		return RequestOptionsProc::getSQLOptions( $requestOptions, $valueCol );
 	}
 
 	/**
-	 * @see RequestOptionsProcessor::getSQLConditionsFrom
+	 * @see RequestOptionsProc::getSQLConditions
 	 *
 	 * @since 1.8
 	 *
@@ -467,11 +463,11 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return string
 	 */
 	public function getSQLConditions( SMWRequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
-		return $this->getRequestOptionsProcessor()->getSQLConditionsFrom( $requestOptions, $valueCol, $labelCol, $addAnd );
+		return RequestOptionsProc::getSQLConditions( $this, $requestOptions, $valueCol, $labelCol, $addAnd );
 	}
 
 	/**
-	 * @see RequestOptionsProcessor::applyRequestOptionsTo
+	 * @see RequestOptionsProc::applyRequestOptions
 	 *
 	 * @since 1.8
 	 *
@@ -481,7 +477,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return SMWDataItem[]
 	 */
 	public function applyRequestOptions( array $data, SMWRequestOptions $requestOptions = null ) {
-		return $this->getRequestOptionsProcessor()->applyRequestOptionsTo( $data, $requestOptions );
+		return RequestOptionsProc::applyRequestOptions( $this, $data, $requestOptions );
 	}
 
 	/**
@@ -665,18 +661,6 @@ class SMWSQLStore3 extends SMWStore {
 		}
 
 		return $this->propertyTableIdReferenceFinder;
-	}
-
-	/**
-	 * @return RequestOptionsProcessor
-	 */
-	private function getRequestOptionsProcessor() {
-
-		if ( $this->requestOptionsProcessor === null ) {
-			$this->requestOptionsProcessor = $this->factory->newRequestOptionsProcessor();
-		}
-
-		return $this->requestOptionsProcessor;
 	}
 
 	/**

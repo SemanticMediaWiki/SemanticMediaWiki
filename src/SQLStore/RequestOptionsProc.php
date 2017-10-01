@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
 use SMWRequestOptions as RequestOptions;
 use SMWStringCondition as StringCondition;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+
@@ -14,21 +15,7 @@ use SMWStringCondition as StringCondition;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class RequestOptionsProcessor {
-
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param SQLStore $store
-	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
-	}
+class RequestOptionsProc {
 
 	/**
 	 * Transform input parameters into a suitable array of SQL options.
@@ -42,7 +29,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return array
 	 */
-	public function getSQLOptionsFrom( RequestOptions $requestOptions = null, $valueCol = '' ) {
+	public static function getSQLOptions( RequestOptions $requestOptions = null, $valueCol = '' ) {
 		$sqlConds = array();
 
 		if ( $requestOptions === null ) {
@@ -77,6 +64,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @since 1.8
 	 *
+	 * @param Store $store
 	 * @param RequestOptions|null $requestOptions
 	 * @param string $valueCol name of SQL column to which conditions apply
 	 * @param string $labelCol name of SQL column to which string conditions apply, if any
@@ -84,14 +72,14 @@ class RequestOptionsProcessor {
 	 *
 	 * @return string
 	 */
-	public function getSQLConditionsFrom( RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
+	public static function getSQLConditions( Store $store, RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
 		$sqlConds = '';
 
 		if ( $requestOptions === null ) {
 			return $sqlConds;
 		}
 
-		$connection = $this->store->getConnection( 'mw.db' );
+		$connection = $store->getConnection( 'mw.db' );
 
 		// Apply value boundary
 		if ( ( $valueCol !== '' ) && ( $requestOptions->boundary !== null ) ) {
@@ -153,12 +141,14 @@ class RequestOptionsProcessor {
 	 * given requestoptions as appropriate.
 	 *
 	 * @since 1.8
+	 *
+	 * @param Store $store
 	 * @param array $data array of SMWDataItem objects
 	 * @param SMWRequestOptions|null $requestoptions
 	 *
 	 * @return SMWDataItem[]
 	 */
-	public function applyRequestOptionsTo( array $data, RequestOptions $requestOptions = null ) {
+	public static function applyRequestOptions( Store $store, array $data, RequestOptions $requestOptions = null ) {
 
 		if ( $data === array() || $requestOptions === null ) {
 			return $data;
@@ -174,10 +164,10 @@ class RequestOptionsProcessor {
 
 		foreach ( $data as $item ) {
 
-			list( $label, $value ) = $this->getSortKeyForItem( $item );
+			list( $label, $value ) = self::getSortKeyForItem( $store, $item );
 
-			$keepDataValue = $this->applyBoundaryConditions( $requestOptions, $value, $isNumeric );
-			$keepDataValue = $this->applyStringConditions( $requestOptions, $label, $keepDataValue );
+			$keepDataValue = self::applyBoundaryConditions( $requestOptions, $value, $isNumeric );
+			$keepDataValue = self::applyStringConditions( $requestOptions, $label, $keepDataValue );
 
 			if ( $keepDataValue ) {
 				$result[$i] = $item;
@@ -186,13 +176,13 @@ class RequestOptionsProcessor {
 			}
 		}
 
-		$this->applySortRestriction( $requestOptions, $result, $sortres, $isNumeric );
-		$this->applyLimitRestriction( $requestOptions, $result );
+		self::applySortRestriction( $requestOptions, $result, $sortres, $isNumeric );
+		self::applyLimitRestriction( $requestOptions, $result );
 
 		return $result;
 	}
 
-	private function applyStringConditions( $requestOptions, $label, $keepDataValue ) {
+	private static function applyStringConditions( $requestOptions, $label, $keepDataValue ) {
 
 		foreach ( $requestOptions->getStringConditions() as $strcond ) { // apply string conditions
 			switch ( $strcond->condition ) {
@@ -211,7 +201,7 @@ class RequestOptionsProcessor {
 		return $keepDataValue;
 	}
 
-	private function applyBoundaryConditions( $requestOptions, $value, $isNumeric ) {
+	private static function applyBoundaryConditions( $requestOptions, $value, $isNumeric ) {
 		$keepDataValue = true; // keep datavalue only if this remains true
 
 		if ( $requestOptions->boundary === null ) {
@@ -238,10 +228,10 @@ class RequestOptionsProcessor {
 		return $keepDataValue;
 	}
 
-	private function getSortKeyForItem( $item ) {
+	private static function getSortKeyForItem( $store, $item ) {
 
 		if ( $item instanceof DIWikiPage ) {
-			$label = $this->store->getWikiPageSortKey( $item );
+			$label = $store->getWikiPageSortKey( $item );
 			$value = $label;
 		} else {
 			$label = ( $item instanceof DIBlob ) ? $item->getString() : '';
@@ -251,7 +241,7 @@ class RequestOptionsProcessor {
 		return array( $label, $value );
 	}
 
-	private function applySortRestriction( $requestOptions, &$result, $sortres, $isNumeric ) {
+	private static function applySortRestriction( $requestOptions, &$result, $sortres, $isNumeric ) {
 
 		if ( !$requestOptions->sort ) {
 			return null;
@@ -274,7 +264,7 @@ class RequestOptionsProcessor {
 		$result = $newres;
 	}
 
-	private function applyLimitRestriction( $requestOptions, &$result ) {
+	private static function applyLimitRestriction( $requestOptions, &$result ) {
 
 		if ( $requestOptions->limit > 0 ) {
 			return $result = array_slice( $result, $requestOptions->offset, $requestOptions->limit );
