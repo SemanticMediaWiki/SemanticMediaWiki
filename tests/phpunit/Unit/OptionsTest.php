@@ -69,4 +69,110 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider isSetProvider
+	 */
+	public function testIsValueSet( $value, $is, $expected ) {
+
+		$instance = new Options();
+		$instance->set( 'Foo', $value );
+
+		$this->assertEquals(
+			$expected,
+			$instance->isValueSet( 'Foo', $is )
+		);
+	}
+
+	/**
+	 * @dataProvider isFlagSetProvider
+	 */
+	public function testIsFlagSet( $value, $flag, $expected ) {
+
+		$instance = new Options();
+		$instance->set( 'Foo', $value );
+
+		$this->assertEquals(
+			$expected,
+			$instance->isFlagSet( 'Foo', $flag )
+		);
+	}
+
+	public function isSetProvider() {
+
+		yield [
+			100,
+			100,
+			true
+		];
+
+		yield [
+			'foo',
+			'foo',
+			true
+		];
+
+		yield [
+			( ( 4 | 8 ) | 16 ),
+			2,
+			false
+		];
+
+		yield [
+			4 | 16,
+			15,
+			false
+		];
+
+		yield [
+			false,
+			2,
+			false
+		];
+
+		yield [
+			false,
+			false,
+			true
+		];
+
+		yield [
+			true,
+			true,
+			true
+		];
+	}
+
+	public function isFlagSetProvider() {
+
+		yield [
+			( ( 4 | 8 ) | 16 ),
+			16,
+			true
+		];
+
+		yield [
+			( ( 4 | 8 ) | 16 ),
+			4,
+			true
+		];
+
+		yield [
+			( ( 4 | 8 ) | 16 ),
+			2,
+			false
+		];
+
+		yield [
+			4 | 16,
+			15,
+			false
+		];
+
+		yield [
+			false,
+			2,
+			false
+		];
+	}
+
 }

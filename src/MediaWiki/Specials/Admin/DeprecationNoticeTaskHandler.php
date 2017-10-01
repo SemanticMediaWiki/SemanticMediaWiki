@@ -95,26 +95,42 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		$noticeList = array();
 		$list = array();
 
-		foreach ( $noticeConfigList as $setting => $msg ) {
-			if ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-notice', '$' . $setting, $msg ) );
+		foreach ( $noticeConfigList as $setting => $value ) {
+			if ( $setting === 'options' ) {
+				foreach ( $value as $key => $v ) {
+					$this->createListItems( $list, 'smw-admin-deprecation-notice-config-notice', $key, $v );
+				}
+			} elseif ( isset( $GLOBALS[$setting] ) ) {
+				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-notice', '$' . $setting, $value ) );
 			}
 		}
 
-		$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-notice' );
+		if ( $list !== [] ) {
+			$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-notice' );
+		}
 
-		foreach ( $replacementConfigList as $old => $new ) {
-			if ( isset( $GLOBALS[$old] ) ) {
-				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-replacement', '$' . $old, '$' . $new ) );
+		foreach ( $replacementConfigList as $setting => $value ) {
+			if ( $setting === 'options' ) {
+				foreach ( $value as $key => $v ) {
+					$this->createListItems( $list, 'smw-admin-deprecation-notice-config-replacement', $key, $v );
+				}
+			} elseif ( isset( $GLOBALS[$setting] ) ) {
+				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-replacement', '$' . $setting, '$' . $value ) );
 			}
 		}
 
-		$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-replacement' );
+		if ( $list !== [] ) {
+			$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-replacement' );
+		}
 
 		foreach ( $removedConfigList as $setting => $msg ) {
 			if ( isset( $GLOBALS[$setting] ) ) {
 				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-removal', '$' . $setting, $msg ) );
 			}
+		}
+
+		if ( $list !== [] ) {
+			$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-replacement' );
 		}
 
 		$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-removal' );
@@ -143,6 +159,37 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 
 	private function createListItem( $message ) {
 		return Html::rawElement( 'li', array(), $this->getMessageAsString( $message, Message::PARSE ) );
+	}
+
+	private function createListItems( &$list, $message, $setting, $options ) {
+
+		$opt = [];
+
+		if ( !is_array( $options ) ) {
+			return;
+		}
+
+		foreach ( $options as $option => $v ) {
+			if ( isset( $GLOBALS[$setting][$option] ) ) {
+				$opt[] = $this->createListItem(
+					[
+						$message . '-option-list',
+						$option,
+						$v
+					]
+				);
+			}
+		}
+
+		if ( $opt !== [] ) {
+			$list[] = $this->createListItem(
+				[
+					$message . '-option',
+					'$' . $setting,
+					count( $opt )
+				]
+			) . '<ul>' . implode( '', $opt ) . '</ul>';
+		}
 	}
 
 }
