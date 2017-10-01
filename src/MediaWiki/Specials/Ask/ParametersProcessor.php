@@ -195,6 +195,9 @@ class ParametersProcessor {
 		$parameters = array();
 		unset( $reqParameters['title'] );
 
+		// MW's internal token
+		unset( $reqParameters['wpEditToken'] );
+
 		// Split ?Has property=Foo|+index=1 into a [ '?Has property=Foo', '+index=1' ]
 		foreach ( $reqParameters as $key => $value ) {
 			if (
