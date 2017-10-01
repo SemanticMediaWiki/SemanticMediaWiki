@@ -131,8 +131,8 @@ class SQLStoreFactory {
 
 		return $this->newCachedListLookup(
 			$usageStatisticsListLookup,
-			$settings->get( 'smwgStatisticsCache' ),
-			$settings->get( 'smwgStatisticsCacheExpiry' )
+			$settings->safeGet( 'special.statistics' ),
+			$settings->safeGet( 'special.statistics' )
 		);
 	}
 
@@ -155,8 +155,8 @@ class SQLStoreFactory {
 
 		return $this->newCachedListLookup(
 			$propertyUsageListLookup,
-			$settings->get( 'smwgPropertiesCache' ),
-			$settings->get( 'smwgPropertiesCacheExpiry' )
+			$settings->safeGet( 'special.properties' ),
+			$settings->safeGet( 'special.properties' )
 		);
 	}
 
@@ -179,8 +179,8 @@ class SQLStoreFactory {
 
 		return $this->newCachedListLookup(
 			$unusedPropertyListLookup,
-			$settings->get( 'smwgUnusedPropertiesCache' ),
-			$settings->get( 'smwgUnusedPropertiesCacheExpiry' )
+			$settings->safeGet( 'special.unusedproperties' ),
+			$settings->safeGet( 'special.unusedproperties' )
 		);
 	}
 
@@ -203,8 +203,8 @@ class SQLStoreFactory {
 
 		return $this->newCachedListLookup(
 			$undeclaredPropertyListLookup,
-			$settings->get( 'smwgWantedPropertiesCache' ),
-			$settings->get( 'smwgWantedPropertiesCacheExpiry' )
+			$settings->safeGet( 'special.wantedproperties' ),
+			$settings->safeGet( 'special.wantedproperties' )
 		);
 	}
 
@@ -220,6 +220,10 @@ class SQLStoreFactory {
 	public function newCachedListLookup( ListLookup $listLookup, $useCache, $cacheExpiry ) {
 
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
+
+		if ( is_int( $useCache ) ) {
+			$useCache = true;
+		}
 
 		$cacheOptions = $cacheFactory->newCacheOptions( array(
 			'useCache' => $useCache,

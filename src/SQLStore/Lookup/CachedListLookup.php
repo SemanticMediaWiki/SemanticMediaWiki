@@ -42,7 +42,7 @@ class CachedListLookup implements ListLookup {
 	/**
 	 * @var string
 	 */
-	private $cachePrefix = 'smw:llc:';
+	private $cachePrefix = 'smw:store:lookup:';
 
 	/**
 	 * @since 2.2

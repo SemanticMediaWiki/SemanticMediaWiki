@@ -61,6 +61,15 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'foo' );
 	}
 
+	public function testSafeGetOnUnknownSetting() {
+
+		$instance = Settings::newFromArray( array( 'Foo' => 'bar' ) );
+
+		$this->assertFalse(
+			$instance->safeGet( 'foo', false )
+		);
+	}
+
 	/**
 	 * @dataProvider settingsProvider
 	 */

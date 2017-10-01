@@ -265,6 +265,25 @@ class Settings extends Options {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function safeGet( $key, $default = false ) {
+
+		try {
+			$r = $this->get( $key );
+		} catch ( SettingNotFoundException $e ) {
+			return $default;
+		}
+
+		return $r;
+	}
+
+	/**
 	 * @since 1.9
 	 */
 	public static function clear() {
@@ -316,6 +335,38 @@ class Settings extends Options {
 			$configuration['smwgPropertyListLimit']['redirect'] = $GLOBALS['smwgRedirectPropertyListLimit'];
 		}
 
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgStatisticsCacheExpiry'] ) ) {
+			$configuration['smwgCacheUsage']['special.statistics'] = $GLOBALS['smwgCacheUsage']['smwgStatisticsCacheExpiry'];
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgStatisticsCache'] ) && $GLOBALS['smwgCacheUsage']['smwgStatisticsCache'] === false ) {
+			$configuration['smwgCacheUsage']['special.statistics'] = false;
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgPropertiesCacheExpiry'] ) ) {
+			$configuration['smwgCacheUsage']['special.properties'] = $GLOBALS['smwgCacheUsage']['smwgPropertiesCacheExpiry'];
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgPropertiesCache'] ) && $GLOBALS['smwgCacheUsage']['smwgPropertiesCache'] === false ) {
+			$configuration['smwgCacheUsage']['special.properties'] = false;
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCacheExpiry'] ) ) {
+			$configuration['smwgCacheUsage']['special.unusedproperties'] = $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCacheExpiry'];
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCache'] ) && $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCache'] === false ) {
+			$configuration['smwgCacheUsage']['special.unusedproperties'] = false;
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCacheExpiry'] ) ) {
+			$configuration['smwgCacheUsage']['special.wantedproperties'] = $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCacheExpiry'];
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCache'] ) && $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCache'] === false ) {
+			$configuration['smwgCacheUsage']['special.wantedproperties'] = false;
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
@@ -324,14 +375,34 @@ class Settings extends Options {
 				'smwgQueryDependencyPropertyExemptionlist' => '3.1.0',
 				'smwgQueryDependencyAffiliatePropertyDetectionlist' => '3.1.0',
 				'smwgSubPropertyListLimit' => '3.1.0',
-				'smwgRedirectPropertyListLimit' => '3.1.0'
+				'smwgRedirectPropertyListLimit' => '3.1.0',
+				'options' => [
+					'smwgCacheUsage' =>  [
+						'smwgStatisticsCache' => '3.1.0',
+						'smwgStatisticsCacheExpiry' => '3.1.0',
+						'smwgPropertiesCache' => '3.1.0',
+						'smwgPropertiesCacheExpiry' => '3.1.0',
+						'smwgUnusedPropertiesCache' => '3.1.0',
+						'smwgUnusedPropertiesCacheExpiry' => '3.1.0',
+						'smwgWantedPropertiesCache' => '3.1.0',
+						'smwgWantedPropertiesCacheExpiry' => '3.1.0',
+					]
+				],
 			),
 			'replacement' => array(
 				'smwgAdminRefreshStore' => 'smwgAdminFeatures',
 				'smwgQueryDependencyPropertyExemptionlist' => 'smwgQueryDependencyPropertyExemptionList',
 				'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList',
 				'smwgSubPropertyListLimit' => 'smwgPropertyListLimit',
-				'smwgRedirectPropertyListLimit' => 'smwgPropertyListLimit'
+				'smwgRedirectPropertyListLimit' => 'smwgPropertyListLimit',
+				'options' => [
+					'smwgCacheUsage' => [
+						'smwgStatisticsCacheExpiry' => 'special.statistics',
+						'smwgPropertiesCacheExpiry' => 'special.properties',
+						'smwgUnusedPropertiesCacheExpiry' => 'special.unusedproperties',
+						'smwgWantedPropertiesCacheExpiry' => 'special.wantedproperties',
+					]
+				]
 			),
 			'removal' => array(
 				'smwgOnDeleteAction' => '2.4.0',
