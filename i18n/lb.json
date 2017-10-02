@@ -178,6 +178,8 @@
 	"smw-admin-dbbutton": "Tabellen initialiséieren oder aktualiséieren",
 	"smw-admin-announce": "Är Wiki ukënnegen",
 	"smw-admin-announce-text": "Wann Är Wiki ëffentlech ass kënnt Dir se op der Wiki-Tracking-Wiki <a href=\"https://wikiapiary.com\">WikiApiary</a> registréieren.",
+	"smw-admin-deprecation-notice-config-notice-option-list": "<code>$1</code> ass vereelzt a gëtt a(n) $2 ewechgeholl",
+	"smw-admin-deprecation-notice-config-replacement-option-list": "<code>$1</code> gouf schonn duerch <code>$2</code> ersat",
 	"smw-admin-deprecation-notice-title-notice": "Notiz",
 	"smw-admin-deprecation-notice-title-replacement": "Ersetzen",
 	"smw_smwadmin_datarefresh": "Donnéeë goufe restauréiert",
@@ -207,7 +209,8 @@
 	"smw-info-par-icon": "Symbol fir entweder \"Info\" oder \"Warnung\" ze weisen.",
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-general-options": "Allgemeng Optiounen",
-	"prefs-ask-options": "Semantesch Sichoptiounen",
+	"prefs-ask-options": "Spezial:Optioune Froen",
+	"smw-prefs-general-options-disable-editpage-info": "Den Aféierungstext op der Ännerungssäit ausschalten",
 	"smw-ui-tooltip-title-property": "Eegenschaft",
 	"smw-ui-tooltip-title-quantity": "Ëmwandlung vun der Eenheet",
 	"smw-ui-tooltip-title-info": "Informatioun",
@@ -222,6 +225,7 @@
 	"smw-concept-cache-text": "D'Konzept huet am Ganzen {{PLURAL:$1|eng Säit|$1 Säiten}} a gouf fir d'lescht den $2 ëm $3 aktualiséiert.",
 	"smw_concept_header": "Säite vum Konzept \"$1\"",
 	"smw_conceptarticlecount": "Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.",
+	"restriction-level-smw-pageedit": "gespaart (nëmme berechtegt Benotzer)",
 	"group-smwadministrator": "Administrateuren (Semantic MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administrateuren (Semantic MediaWiki)",
 	"smw-sp-admin-settings-button": "Lëscht vun den Astellunge generéieren",
@@ -262,5 +266,6 @@
 	"smw-format-datatable-first": "Éischt",
 	"smw-format-datatable-last": "Lescht",
 	"smw-format-datatable-next": "Nächst",
-	"smw-format-datatable-previous": "Vireg"
+	"smw-format-datatable-previous": "Vireg",
+	"smw-format-datatable-toolbar-export": "Exportéieren"
 }

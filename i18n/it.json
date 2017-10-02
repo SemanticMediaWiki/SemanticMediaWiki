@@ -26,7 +26,8 @@
 			"Samuele2002",
 			"Statix64",
 			"Kaspo",
-			"G.garatti"
+			"G.garatti",
+			"Fitoschido"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -85,7 +86,7 @@
 	"smw-paramdesc-feeddescription": "Il testo da utilizzare come descrizione del feed",
 	"smw-paramdesc-feedpagecontent": "Il contenuto della pagina da visualizzare con il feed",
 	"smw-label-feed-description": "Feed $2 $1",
-	"smw_iq_disabled": "Spiacenti. Le query semantiche sono state disabilitate per questo wiki.",
+	"smw_iq_disabled": "Le query semantiche sono state disabilitate per questo wiki.",
 	"smw_iq_moreresults": "&hellip; risultati successivi",
 	"smw_parseerror": "Il valore dato non è stato compreso.",
 	"smw_notitle": "“$1” non pu&ograve; essere utilizzato come nome di una pagina all'interno di questo wiki.",

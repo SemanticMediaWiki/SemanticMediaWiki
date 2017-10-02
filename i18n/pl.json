@@ -20,7 +20,8 @@
 			"Devwebtel",
 			"Nemo bis",
 			"InternerowyGołąb",
-			"Wojtas"
+			"Wojtas",
+			"Krottyianock"
 		]
 	},
 	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
@@ -358,5 +359,6 @@
 	"smw-format-datatable-loadingrecords": "Ładowanie...",
 	"smw-format-datatable-processing": "Przetwarzanie...",
 	"smw-format-datatable-search": "Wyszukiwanie:",
-	"smw-format-datatable-zerorecords": "Nie znaleziono pasujących pozycji"
+	"smw-format-datatable-zerorecords": "Nie znaleziono pasujących pozycji",
+	"smw-format-datatable-toolbar-export": "Eksportuj"
 }

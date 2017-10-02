@@ -25,7 +25,8 @@
 			"Rockyfelle",
 			"Nemo bis",
 			"Skalman",
-			"Josve05a"
+			"Josve05a",
+			"Bengtsson96"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -284,6 +285,9 @@
 	"smw-admin-dbbutton": "Initialisera eller uppgradera tabeller",
 	"smw-admin-announce": "Meddela att din wiki finns",
 	"smw-admin-announce-text": "Om din wiki är offentligt kan du registrera den på <a href=\"https://wikiapiary.com\">WikiApiary</a>, wikin som listar upp wikis.",
+	"smw-admin-deprecation-notice-config-notice-option": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> kommer ta bort eller ersätta följande {{PLURAL:$2|val}}:",
+	"smw-admin-deprecation-notice-config-notice-option-list": "<code>$1</code> rekommenderas inte och kommer tas bort i $2",
+	"smw-admin-deprecation-notice-config-replacement-option-list": "<code>$1</code> ersätts av <code>$2</code>",
 	"smw-admin-deprecation-notice-title-notice": "Notis",
 	"smw-admin-deprecation-notice-title-replacement": "Ersättning",
 	"smw-admin-deprecation-notice-title-removal": "Borttagning",
@@ -328,12 +332,13 @@
 	"smw-prefs-intro-text": "Alternativen här nedanför är hämtade från [https://www.semantic-mediawiki.org/ Semantic MediaWiki] (eller relaterade tillägg) i syfte att möjliggöra inställningar för utvalda funktioner. Ytterligare information finns här: [https://www.semantic-mediawiki.org/wiki/Help:User_preferences help section].",
 	"smw-prefs-ask-options-tooltip-display": "Visa parameterns text som inforuta",
 	"smw-prefs-ask-options-collapsed-default": "Gör så att alternativ-rutan är ihopfälld som standard",
-	"smw-prefs-general-options-disable-editpage-info": "Inaktivera information om sidredigering.",
+	"smw-prefs-general-options-disable-editpage-info": "Inaktivera introduktionstexten på redigeringssidan.",
 	"smw-ui-tooltip-title-property": "Egenskap",
 	"smw-ui-tooltip-title-quantity": "Enhetskonvertering",
 	"smw-ui-tooltip-title-info": "Information",
 	"smw-ui-tooltip-title-service": "Service-länkar",
-	"smw-ui-tooltip-title-warning": "Fel",
+	"smw-ui-tooltip-title-warning": "Varning",
+	"smw-ui-tooltip-title-error": "Fel",
 	"smw-ui-tooltip-title-parameter": "Parameter",
 	"smw-ui-tooltip-title-event": "Händelse",
 	"smw-ui-tooltip-title-note": "Anteckning",
@@ -417,6 +422,8 @@
 	"smw-format-datatable-next": "Nästa",
 	"smw-format-datatable-previous": "Föregående",
 	"smw-format-datatable-sortascending": ": aktivera för att sortera kolumnen stigande",
+	"smw-format-datatable-toolbar-export": "Exportera",
 	"smw-category-invalid-redirect-target": "Kategorin \"$1\" innehåller en ogiltigt omdirigeringsmål till en namnrymd som inte är en kategori.",
-	"smw-postproc-queryref": "Sidan markerades för att uppdateras p.g.a. behov av efterbehandling."
+	"smw-postproc-queryref": "Sidan markerades för att uppdateras p.g.a. behov av efterbehandling.",
+	"smw-api-smwbrowse-invalid-parameters": "Ogiltigt formaterade parametrar, giltig JSON förväntas."
 }
