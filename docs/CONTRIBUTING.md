@@ -1,3 +1,4 @@
+<!-- Note that the headers in this file are being linked to via bitly.com. In case the headers change these links must be changed, too. Just ping kghbln on changes. -->
 There are different ways to make a contribution to [Semantic MediaWiki][smw] (SMW) while a few guidelines are necessary to keep the workflow and review process most efficient.
 
 ### Report bugs
