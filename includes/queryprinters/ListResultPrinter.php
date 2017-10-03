@@ -164,255 +164,260 @@ class ListResultPrinter extends ResultPrinter {
 
 		$builder = new ListResultBuilder( $this->params[ 'format' ] );
 		$builder->setLinker( $this->mLinker );
+
+		foreach ( $this->params as $askParamName => $param ) {
+			$builder->set( $askParamName, $param );
+		}
+
 		return $builder->getResultText( $queryResult );
 
-		$this->templateRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
-
-		$this->initializePrintingParameters( $queryResult );
-
-		$result = '';
-
-		// Set up floating divs if there's more than one column
-//		if ( $this->mColumns > 1 ) {
-//			$result .= '<div style="float: left; width: ' . $this->columnWidth . '%">' . "\n";
+//		$this->templateRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
+//
+//		$this->initializePrintingParameters( $queryResult );
+//
+//		$result = '';
+//
+//		// Set up floating divs if there's more than one column
+////		if ( $this->mColumns > 1 ) {
+////			$result .= '<div style="float: left; width: ' . $this->columnWidth . '%">' . "\n";
+////		}
+//
+//		$result .= $this->header;
+//
+//		if ( $this->mIntroTemplate !== '' ) {
+//			$this->addCommonTemplateFields( $queryResult );
+//			$this->templateRenderer->packFieldsForTemplate( $this->mIntroTemplate );
+//			$result .= $this->templateRenderer->render();
 //		}
-
-		$result .= $this->header;
-
-		if ( $this->mIntroTemplate !== '' ) {
-			$this->addCommonTemplateFields( $queryResult );
-			$this->templateRenderer->packFieldsForTemplate( $this->mIntroTemplate );
-			$result .= $this->templateRenderer->render();
-		}
-
-		while ( $row = $queryResult->getNext() ) {
-			$result .= $this->getRowText( $row, $queryResult );
-		}
-
-		if ( $this->mOutroTemplate !== '' ) {
-			$this->addCommonTemplateFields( $queryResult );
-			$this->templateRenderer->packFieldsForTemplate( $this->mOutroTemplate );
-			$result .= $this->templateRenderer->render();
-		}
-
-		// Make label for finding further results
-		if ( $this->linkFurtherResults( $queryResult ) &&
-			( $this->mFormat != 'ol' || $this->getSearchLabel( SMW_OUTPUT_WIKI ) )
-		) {
-			$result .= trim( $this->getFurtherResultsText( $queryResult, $outputMode ) );
-		}
-
-		$result .= $this->footer;
-
-		if ( $this->mColumns > 1 ) {
-			$result .= "<div style=\"float: left; width: {$this->columnWidth}%\">\n$result</div>\n<br style=\"clear: both\" />\n";
-		}
-
-		// Display default if the result is empty
-		if ( $result == '' ) {
-			$result = $this->params[ 'default' ];
-		}
-
-		return $result;
+//
+//		while ( $row = $queryResult->getNext() ) {
+//			$result .= $this->getRowText( $row, $queryResult );
+//		}
+//
+//		if ( $this->mOutroTemplate !== '' ) {
+//			$this->addCommonTemplateFields( $queryResult );
+//			$this->templateRenderer->packFieldsForTemplate( $this->mOutroTemplate );
+//			$result .= $this->templateRenderer->render();
+//		}
+//
+//		// Make label for finding further results
+//		if ( $this->linkFurtherResults( $queryResult ) &&
+//			( $this->mFormat != 'ol' || $this->getSearchLabel( SMW_OUTPUT_WIKI ) )
+//		) {
+//			$result .= trim( $this->getFurtherResultsText( $queryResult, $outputMode ) );
+//		}
+//
+//		$result .= $this->footer;
+//
+//		if ( $this->mColumns > 1 ) {
+//			$result .= "<div style=\"float: left; width: {$this->columnWidth}%\">\n$result</div>\n<br style=\"clear: both\" />\n";
+//		}
+//
+//		// Display default if the result is empty
+//		if ( $result == '' ) {
+//			$result = $this->params[ 'default' ];
+//		}
+//
+//		return $result;
 	}
 
-	/**
-	 * Initialize the internal parameters that should be used to print this
-	 * list, and reset row counters.
-	 *
-	 * @since 1.9
-	 * @param SMWQueryResult $queryResult
-	 */
-	protected function initializePrintingParameters( SMWQueryResult $queryResult ) {
+//	/**
+//	 * Initialize the internal parameters that should be used to print this
+//	 * list, and reset row counters.
+//	 *
+//	 * @since 1.9
+//	 * @param SMWQueryResult $queryResult
+//	 */
+//	protected function initializePrintingParameters( SMWQueryResult $queryResult ) {
+//
+//		$this->numRows = 0;
+//		$this->numRowsInColumn = 0;
+//		$this->rowSortkey = '';
+//
+//		$this->columnWidth = floor( 100 / $this->mColumns );
+//		$this->rowsPerColumn = ceil( $queryResult->getCount() / $this->mColumns );
+//
+//		// Determine mark-up strings used around list items:
+//		if ( $this->mFormat == 'ul' || $this->mFormat == 'ol' ) {
+//			$this->header = "<" . $this->mFormat . ">\n";
+//			$this->footer = "</" . $this->mFormat . ">\n";
+//			$this->rowstart = "\t<li>";
+//			$this->rowend = "</li>\n";
+//		} else { // "list" and "template" format
+//			$this->header = '';
+//			$this->footer = '';
+//			$this->rowstart = '';
+//			$this->rowend = '';
+//		}
+//
+//		// #2022, #2090 The system defines no default sep in order for it to decide
+//		// how to apply a separator and avoiding a regression for users who did
+//		// not choose a sep in the first place, if no separator is selected then
+//		// the list, ul, ol will use , as default
+//		if ( $this->params[ 'format' ] === 'list' && $this->params[ 'sep' ] === ',' ) {
+//			// Make default list ", , , and "
+//			$this->listsep = ', ';
+//			$this->finallistsep = $this->getContext()->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
+//		} elseif ( $this->params[ 'format' ] !== 'template' && $this->params[ 'sep' ] === '' ) {
+//			$this->listsep = ', ';
+//			$this->finallistsep = $this->listsep;
+//		} elseif ( $this->params[ 'sep' ] !== '' ) {
+//			// Allow "_" for encoding spaces, as documented
+//			$this->listsep = str_replace( '_', ' ', $this->params[ 'sep' ] );
+//			$this->finallistsep = $this->listsep;
+//		} else {
+//			$this->listsep = '';
+//			$this->finallistsep = '';
+//		}
+//
+//		// #2329
+//		if ( $this->params[ 'format' ] === 'template' && !$this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
+//			$this->listsep = '';
+//			$this->finallistsep = '';
+//		}
+//	}
 
-		$this->numRows = 0;
-		$this->numRowsInColumn = 0;
-		$this->rowSortkey = '';
+//	/**
+//	 * Get result text for one result row as part of getResultText().
+//	 *
+//	 * @since 1.9
+//	 * @param SMWResultArray[] $row
+//	 * @param SMWQueryResult $res
+//	 * @return string
+//	 */
+//	protected function getRowText( array $row, SMWQueryResult $res ) {
+//		$result = '';
+//
+//		// Start new column:
+//		if ( $this->numRowsInColumn == $this->rowsPerColumn ) {
+//			// If it's a numbered list, and it's split
+//			// into columns, add in the 'start='
+//			// attribute so that each additional column
+//			// starts at the right place. This attribute
+//			// is actually deprecated, but it appears to
+//			// still be supported by the major browsers...
+//			if ( $this->mFormat == 'ol' ) {
+//				$header = "<ol start=\"" . ( $this->numRows + 1 ) . "\">";
+//			} else {
+//				$header = $this->header;
+//			}
+//
+//			$this->numRowsInColumn = 0;
+//
+//			$result .= $this->footer . '</div>' .
+//				"<div style=\"float: left; width: {$this->columnWidth}%\">" .
+//				$header;
+//		}
+//
+//		if ( $this->mTemplate !== '' ) { // Build template code
+//			$this->hasTemplates = true;
+//
+//			$this->addTemplateContentFields( $row );
+//			$this->addCommonTemplateFields( $res );
+//			$this->templateRenderer->packFieldsForTemplate( $this->mTemplate );
+//
+//			$result .= $this->getRowStart( $res ) . $this->templateRenderer->render();
+//		} else { // Build simple list
+//			$content = $this->getRowListContent( $row );
+//			$result .= $this->getRowStart( $res ) . $content;
+//		}
+//
+//		$result .= $this->rowend;
+//		$this->numRows++;
+//		$this->numRowsInColumn++;
+//		$this->rowSortkey = '';
+//
+//		return $result;
+//	}
 
-		$this->columnWidth = floor( 100 / $this->mColumns );
-		$this->rowsPerColumn = ceil( $queryResult->getCount() / $this->mColumns );
+//	/**
+//	 * Returns row start element
+//	 *
+//	 * @since 1.9
+//	 *
+//	 * @param SMWQueryResult $res
+//	 *
+//	 * @return string
+//	 */
+//	protected function getRowStart( SMWQueryResult $res ) {
+//
+//		if ( $this->numRows > 0 && $this->isPlainlist() ) {
+//			// Use comma between "rows" other than the last one:
+//			return ( $this->numRows <= $res->getCount() ) ? $this->listsep : $this->finallistsep;
+//		}
+//
+//		if ( $this->rowSortkey !== '' ) {
+//			return "\t" . Html::openElement( 'li',
+//					[ 'data-sortkey' => mb_substr( $this->rowSortkey, 0, 1 ) ]
+//				);
+//		}
+//
+//		return $this->rowstart;
+//	}
 
-		// Determine mark-up strings used around list items:
-		if ( $this->mFormat == 'ul' || $this->mFormat == 'ol' ) {
-			$this->header = "<" . $this->mFormat . ">\n";
-			$this->footer = "</" . $this->mFormat . ">\n";
-			$this->rowstart = "\t<li>";
-			$this->rowend = "</li>\n";
-		} else { // "list" and "template" format
-			$this->header = '';
-			$this->footer = '';
-			$this->rowstart = '';
-			$this->rowend = '';
-		}
-
-		// #2022, #2090 The system defines no default sep in order for it to decide
-		// how to apply a separator and avoiding a regression for users who did
-		// not choose a sep in the first place, if no separator is selected then
-		// the list, ul, ol will use , as default
-		if ( $this->params[ 'format' ] === 'list' && $this->params[ 'sep' ] === ',' ) {
-			// Make default list ", , , and "
-			$this->listsep = ', ';
-			$this->finallistsep = $this->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
-		} elseif ( $this->params[ 'format' ] !== 'template' && $this->params[ 'sep' ] === '' ) {
-			$this->listsep = ', ';
-			$this->finallistsep = $this->listsep;
-		} elseif ( $this->params[ 'sep' ] !== '' ) {
-			// Allow "_" for encoding spaces, as documented
-			$this->listsep = str_replace( '_', ' ', $this->params[ 'sep' ] );
-			$this->finallistsep = $this->listsep;
-		} else {
-			$this->listsep = '';
-			$this->finallistsep = '';
-		}
-
-		// #2329
-		if ( $this->params[ 'format' ] === 'template' && !$this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
-			$this->listsep = '';
-			$this->finallistsep = '';
-		}
-	}
-
-	/**
-	 * Get result text for one result row as part of getResultText().
-	 *
-	 * @since 1.9
-	 * @param SMWResultArray[] $row
-	 * @param SMWQueryResult $res
-	 * @return string
-	 */
-	protected function getRowText( array $row, SMWQueryResult $res ) {
-		$result = '';
-
-		// Start new column:
-		if ( $this->numRowsInColumn == $this->rowsPerColumn ) {
-			// If it's a numbered list, and it's split
-			// into columns, add in the 'start='
-			// attribute so that each additional column
-			// starts at the right place. This attribute
-			// is actually deprecated, but it appears to
-			// still be supported by the major browsers...
-			if ( $this->mFormat == 'ol' ) {
-				$header = "<ol start=\"" . ( $this->numRows + 1 ) . "\">";
-			} else {
-				$header = $this->header;
-			}
-
-			$this->numRowsInColumn = 0;
-
-			$result .= $this->footer . '</div>' .
-				"<div style=\"float: left; width: {$this->columnWidth}%\">" .
-				$header;
-		}
-
-		if ( $this->mTemplate !== '' ) { // Build template code
-			$this->hasTemplates = true;
-
-			$this->addTemplateContentFields( $row );
-			$this->addCommonTemplateFields( $res );
-			$this->templateRenderer->packFieldsForTemplate( $this->mTemplate );
-
-			$result .= $this->getRowStart( $res ) . $this->templateRenderer->render();
-		} else { // Build simple list
-			$content = $this->getRowListContent( $row );
-			$result .= $this->getRowStart( $res ) . $content;
-		}
-
-		$result .= $this->rowend;
-		$this->numRows++;
-		$this->numRowsInColumn++;
-		$this->rowSortkey = '';
-
-		return $result;
-	}
-
-	/**
-	 * Returns row start element
-	 *
-	 * @since 1.9
-	 *
-	 * @param SMWQueryResult $res
-	 *
-	 * @return string
-	 */
-	protected function getRowStart( SMWQueryResult $res ) {
-
-		if ( $this->numRows > 0 && $this->isPlainlist() )  {
-			// Use comma between "rows" other than the last one:
-			return ( $this->numRows <= $res->getCount() ) ? $this->listsep : $this->finallistsep;
-		}
-
-		if ( $this->rowSortkey !== '' ) {
-			return "\t" . Html::openElement( 'li',
-					[ 'data-sortkey' => mb_substr( $this->rowSortkey, 0, 1 ) ]
-				);
-		}
-
-		return $this->rowstart;
-	}
-
-	/**
-	 * Returns text for one result row, formatted as a list.
-	 *
-	 * @since 1.9
-	 * @todo The inner lists of values per field should use different separators.
-	 * @todo Some spaces are hard-coded here; should probably be part of separators.
-	 * @bug Bad HTML tag escaping with hardcoded exceptions (for datatype _qty)
-	 *
-	 * @param SMWResultArray[] $row
-	 *
-	 * @return string
-	 */
-	protected function getRowListContent( array $row ) {
-
-		$firstField = true; // is this the first entry in this row?
-		$extraFields = false; // has anything but the first field been printed?
-
-		$result = '';
-		$excluded = [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ];
-
-		foreach ( $row as $field ) {
-			$firstValue = true; // is this the first value in this field?
-
-			while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
-
-				// Add sortkey for all non-list formats
-				if ( $firstField && $this->params[ 'format' ] !== 'list' &&
-					$dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE
-				) {
-					$this->rowSortkey = StoreFactory::getStore()->getWikiPageSortKey( $dataValue->getDataItem() );
-				}
-
-				$text = $dataValue->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $firstField ) );
-
-				if ( !$firstField && !$extraFields ) { // first values after first column
-					$result .= ' (';
-					$extraFields = true;
-				} elseif ( $extraFields || !$firstValue ) {
-					// any value after '(' or non-first values on first column
-					$result .= $this->listsep . ' ';
-				}
-
-				if ( $firstValue ) { // first value in any field, print header
-					$firstValue = false;
-
-					if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( $field->getPrintRequest()->getLabel() !== '' ) ) {
-						$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) ) . ': ';
-					}
-				}
-
-				// Remove seleted tags to avoid lists are distorted by unresolved
-				// in-text tags
-				$result .= $this->isPlainlist() ? $text : Sanitizer::removeHTMLtags( $text, null, [], [], $excluded );
-			}
-
-			$firstField = false;
-		}
-		if ( $extraFields ) {
-			$result .= ')';
-		}
-
-		return $result;
-	}
+//	/**
+//	 * Returns text for one result row, formatted as a list.
+//	 *
+//	 * @since 1.9
+//	 * @todo The inner lists of values per field should use different separators.
+//	 * @todo Some spaces are hard-coded here; should probably be part of separators.
+//	 * @bug Bad HTML tag escaping with hardcoded exceptions (for datatype _qty)
+//	 *
+//	 * @param SMWResultArray[] $row
+//	 *
+//	 * @return string
+//	 */
+//	protected function getRowListContent( array $row ) {
+//
+//		$firstField = true; // is this the first entry in this row?
+//		$extraFields = false; // has anything but the first field been printed?
+//
+//		$result = '';
+//		$excluded = [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ];
+//
+//		foreach ( $row as $field ) {
+//			$firstValue = true; // is this the first value in this field?
+//
+//			while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
+//
+//				// Add sortkey for all non-list formats
+//				if ( $firstField && $this->params[ 'format' ] !== 'list' &&
+//					$dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE
+//				) {
+//					$this->rowSortkey = StoreFactory::getStore()->getWikiPageSortKey( $dataValue->getDataItem() );
+//				}
+//
+//				$text = $dataValue->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $firstField ) );
+//
+//				if ( !$firstField && !$extraFields ) { // first values after first column
+//					$result .= ' (';
+//					$extraFields = true;
+//				} elseif ( $extraFields || !$firstValue ) {
+//					// any value after '(' or non-first values on first column
+//					$result .= $this->listsep . ' ';
+//				}
+//
+//				if ( $firstValue ) { // first value in any field, print header
+//					$firstValue = false;
+//
+//					if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( $field->getPrintRequest()->getLabel() !== '' ) ) {
+//						$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) ) . ': ';
+//					}
+//				}
+//
+//				// Remove seleted tags to avoid lists are distorted by unresolved
+//				// in-text tags
+//				$result .= $this->isPlainlist() ? $text : Sanitizer::removeHTMLtags( $text, null, [], [], $excluded );
+//			}
+//
+//			$firstField = false;
+//		}
+//		if ( $extraFields ) {
+//			$result .= ')';
+//		}
+//
+//		return $result;
+//	}
 
 	/**
 	 * Returns text for one result row, formatted as a template call.

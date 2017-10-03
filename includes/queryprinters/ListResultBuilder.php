@@ -15,9 +15,9 @@ class ListResultBuilder {
 
 	private static $defaultConfigurations = [
 		'list' => [
-			'row-sep' => ', ',
-			'prop-sep' => ', ',
-			'value-sep' => ', ',
+			'sep' => ', ',
+			'propsep' => ', ',
+			'valuesep' => ', ',
 			'show-headers' => SMW_HEADERS_SHOW,
 			'link-first' => true,
 			'link-others' => true,
@@ -36,9 +36,9 @@ class ListResultBuilder {
 			'result-close-tag' => '</span>',
 		],
 		'ul' => [
-			'row-sep' => '',
-			'prop-sep' => ', ',
-			'value-sep' => ', ',
+			'sep' => '',
+			'propsep' => ', ',
+			'valuesep' => ', ',
 			'show-headers' => SMW_HEADERS_SHOW,
 			'link-first' => true,
 			'link-others' => true,
@@ -92,14 +92,24 @@ class ListResultBuilder {
 	}
 
 	/**
+	 * @param $setting
+	 * @return mixed
+	 */
+	public function set( $setting, $value ) {
+		if ( array_key_exists( $setting, $this->configuration ) ) {
+			$this->configuration[ $setting ] = $value;
+		}
+	}
+
+	/**
 	 * @param SMWQueryResult $queryResult
 	 * @return string
 	 */
 	public function getResultText( SMWQueryResult $queryResult ) {
 		return
-			$this->get( 'result-open-tag') .
-			join( $this->get( 'row-sep' ), $this->getRowTexts( $queryResult ) ) .
-			$this->get( 'result-close-tag');
+			$this->get( 'result-open-tag' ) .
+			join( $this->get( 'sep' ), $this->getRowTexts( $queryResult ) ) .
+			$this->get( 'result-close-tag' );
 	}
 
 	/**
@@ -132,16 +142,16 @@ class ListResultBuilder {
 		}
 
 		if ( count( $fieldTexts ) > 0 ) {
-			$otherFieldsText = $this->get( 'other-fields-open' ) . join( $this->get( 'prop-sep' ), $fieldTexts ) . $this->get( 'other-fields-close' );
+			$otherFieldsText = $this->get( 'other-fields-open' ) . join( $this->get( 'propsep' ), $fieldTexts ) . $this->get( 'other-fields-close' );
 		} else {
 			$otherFieldsText = '';
 		}
 
 		return
-			$this->get( 'row-open-tag') .
+			$this->get( 'row-open-tag' ) .
 			$firstFieldText .
 			$otherFieldsText .
-			$this->get( 'row-close-tag');
+			$this->get( 'row-close-tag' );
 	}
 
 	/**
@@ -150,14 +160,13 @@ class ListResultBuilder {
 	 */
 	protected function getFieldTexts( array $fields ) {
 
-		$columnNumber = -1;
+		$columnNumber = 0;
+		$fieldTexts = [];
 
-		$fieldTexts = array_map(
-			function ( $field ) use ( $columnNumber ) {
-				return $this->getFieldText( $field, ++$columnNumber );
-			},
-			$fields
-		);
+		foreach ( $fields as $field ) {
+			$fieldTexts[] = $this->getFieldText( $field, $columnNumber );
+			$columnNumber++;
+		}
 
 		return $fieldTexts;
 	}
@@ -172,7 +181,7 @@ class ListResultBuilder {
 		$label = $this->getFieldLabel( $field );
 		$valueTexts = $this->getValueTexts( $field, $column );
 
-		return $label . join( $this->get( 'value-sep' ), $valueTexts );
+		return $label . join( $this->get( 'valuesep' ), $valueTexts );
 
 	}
 
@@ -183,11 +192,14 @@ class ListResultBuilder {
 	protected function getFieldLabel( SMWResultArray $field ) {
 
 		if ( $this->get( 'show-headers' ) !== SMW_HEADERS_HIDE && $field->getPrintRequest()->getLabel() !== '' ) {
+
+			$linker = $this->get( 'show-headers' ) === SMW_HEADERS_PLAIN ? null : $this->linker;
+
 			return
-				$this->get( 'field-label-open-tag') .
-				$field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->get( 'show-headers' ) === SMW_HEADERS_PLAIN ? null : $this->linker ) ) .
-				$this->get( 'field-label-close-tag') .
-				$this->get( 'field-label-separator');
+				$this->get( 'field-label-open-tag' ) .
+				$field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, $linker ) .
+				$this->get( 'field-label-close-tag' ) .
+				$this->get( 'field-label-separator' );
 		}
 
 		return '';
@@ -214,9 +226,9 @@ class ListResultBuilder {
 	 * @return string
 	 */
 	protected function getValueText( SMWDataValue $value, $column = 0 ) {
-		return $this->get( 'value-open-tag') .
+		return $this->get( 'value-open-tag' ) .
 			$value->getShortText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) ) .
-			$this->get( 'value-close-tag');
+			$this->get( 'value-close-tag' );
 	}
 
 	/**
@@ -227,6 +239,7 @@ class ListResultBuilder {
 	 * @return \Linker|null
 	 */
 	protected function getLinkerForColumn( $column ) {
+
 		if ( ( $column === 0 && $this->get( 'link-first' ) ) || ( $column > 0 && $this->get( 'link-others' ) ) ) {
 			return $this->linker;
 		}
