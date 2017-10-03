@@ -680,6 +680,18 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	}
 
 	/**
+	 * Returns if the result printer supports using a "full parse" instead of a
+	 * '[[SMW::off]]' . $wgParser->replaceVariables( $result ) . '[[SMW::on]]'
+	 *
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function supportsRecursiveAnnotation() {
+		return false;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @return string
