@@ -75,7 +75,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return Processor
 	 */
 	public static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true, $context = null ) {
-		$paramDefinitions = self::getParameters( null, $context );
+		$paramDefinitions = self::getParameters( $context );
 
 		$paramDefinitions['format']->setPrintRequests( $printRequests );
 
@@ -442,7 +442,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return IParamDefinition[]
 	 */
-	public static function getParameters( $resultPrinter = null, $context = null ) {
+	public static function getParameters( $context = null, $resultPrinter = null ) {
 		$params = array();
 
 		$allowedFormats = $GLOBALS['smwgResultFormats'];
@@ -571,7 +571,7 @@ class SMWQueryProcessor implements QueryContext {
 			$resultPrinter = self::getResultPrinter( $format );
 
 			return ParamDefinition::getCleanDefinitions(
-				$resultPrinter->getParamDefinitions( self::getParameters( $resultPrinter ) )
+				$resultPrinter->getParamDefinitions( self::getParameters( null, $resultPrinter ) )
 			);
 		} else {
 			return array();
