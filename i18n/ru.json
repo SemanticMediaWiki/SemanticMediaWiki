@@ -29,7 +29,8 @@
 			"Nemo bis",
 			"Redredsonia",
 			"Nitch",
-			"Helpau"
+			"Helpau",
+			"Putnik"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -101,7 +102,7 @@
 	"smw-paramdesc-named_args": "Имена аргументов, передаваемых в шаблон",
 	"smw-paramdesc-export": "Параметры экспорта",
 	"smw-paramdesc-prettyprint": "Красивый вывод на печать, который отображает дополнительные отступы и переводы строк",
-	"smw-paramdesc-json-unescape": "Вывод должен содержать экранированные слеши и многобайтовые символы Юникода.",
+	"smw-paramdesc-json-unescape": "Выводить неэкранированные слеши и многобайтные символы Юникода.",
 	"smw-paramdesc-json-type": "Тип сериализации",
 	"smw-paramdesc-source": "Альтернативный источник запроса",
 	"smw-paramdesc-jsonsyntax": "Синтаксис JSON, который будет использоваться",

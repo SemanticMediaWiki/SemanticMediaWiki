@@ -371,7 +371,7 @@
 	"smw-info-par-icon": "Icono que mostrar: ya sea \"info\" (información) o bien \"warning\" (advertencia).",
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-general-options": "Opciones generales",
-	"prefs-ask-options": "Opciones de búsqueda semántica",
+	"prefs-ask-options": "Especial:Opciones de preguntas",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (o extensiones relacionadas) suministran las opciones mostradas a continuación para permitir la personalización individual de las funciones seleccionadas. Para más información, consulta [https://www.semantic-mediawiki.org/wiki/Help:User_preferences esta página de ayuda].",
 	"smw-prefs-ask-options-tooltip-display": "Mostrar el texto del parámetro como ayuda informativa",
 	"smw-prefs-ask-options-collapsed-default": "Contraer el cuadro de opciones de manera predeterminada",

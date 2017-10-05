@@ -255,6 +255,7 @@
 	"smw-createproperty-isproperty": "È una proprietà di tipo $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Il valore permesso per questa proprità è|I valori permessi per questa proprietà sono}}:",
 	"smw-info-par-message": "Messaggio da visualizzare.",
+	"prefs-ask-options": "Opzioni Special:Ask",
 	"smw-ui-tooltip-title-property": "Proprietà",
 	"smw-ui-tooltip-title-quantity": "Conversione unità",
 	"smw-ui-tooltip-title-info": "Informazione",
@@ -362,5 +363,6 @@
 	"smw-format-datatable-first": "Primo",
 	"smw-format-datatable-last": "Ultimo",
 	"smw-format-datatable-next": "Successivo",
-	"smw-format-datatable-previous": "Precedente"
+	"smw-format-datatable-previous": "Precedente",
+	"smw-format-datatable-toolbar-export": "Esporta"
 }
