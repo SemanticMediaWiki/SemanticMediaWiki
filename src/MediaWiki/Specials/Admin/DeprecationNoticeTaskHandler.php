@@ -130,10 +130,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		}
 
 		if ( $list !== [] ) {
-			$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-replacement' );
+			$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-removal' );
 		}
-
-		$this->createList( $noticeList, $list, 'smw-admin-deprecation-notice-title-removal' );
 
 		return $noticeList;
 	}
