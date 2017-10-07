@@ -14,7 +14,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
+abstract class TableBuilder implements TableBuilderInterface, MessageReporterAware, MessageReporter {
 
 	/**
 	 * @var DatabaseBase
@@ -197,7 +197,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getProcessLog() {
+	public function getLog() {
 		return $this->processLog;
 	}
 

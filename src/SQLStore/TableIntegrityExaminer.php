@@ -86,7 +86,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 
 		$this->checkOnActivitiesPostCreation(
 			$connection,
-			$tableBuilder->getProcessLog()
+			$tableBuilder->getLog()
 		);
 
 		// Call out for RDBMS specific implementations
