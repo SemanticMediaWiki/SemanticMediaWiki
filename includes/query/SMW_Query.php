@@ -502,7 +502,7 @@ class SMWQuery implements QueryContext {
 	 * @return string
 	 */
 	public function getAsString() {
-		return QueryStringifier::get( $this );
+		return QueryStringifier::toString( $this );
 	}
 
 	/**
