@@ -112,7 +112,6 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 			array( 'smwfNumberFormat' ),
 			array( 'smwfEncodeMessages' ),
 			array( 'smwfGetStore' ),
-			array( 'smwfGetSparqlDatabase' ),
 			array( 'smwfGetLinker' ),
 		);
 	}

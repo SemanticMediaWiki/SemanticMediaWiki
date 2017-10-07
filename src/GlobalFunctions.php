@@ -3,7 +3,6 @@
 use SMW\CompatibilityMode;
 use SMW\NamespaceManager;
 use SMW\IntlNumberFormatter;
-use SMW\SPARQLStore\SparqlDBConnectionProvider;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Highlighter;
 
@@ -173,31 +172,6 @@ function smwfCacheKey( $namespace, $key ) {
 	}
 
 	return $cachePrefix . $namespace . ':' . md5( $key );
-}
-
-/**
- * @codeCoverageIgnore
- *
- * Get the SMWSparqlDatabase object to use for connecting to a SPARQL store,
- * or null if no SPARQL backend has been set up.
- *
- * Currently, it just returns one globally defined object, but the
- * infrastructure allows to set up load balancing and task-dependent use of
- * stores (e.g. using other stores for fast querying than for storing new
- * facts), somewhat similar to MediaWiki's DB implementation.
- *
- * @since 1.6
- *
- * @return SMWSparqlDatabase or null
- */
-function &smwfGetSparqlDatabase() {
-
-	if ( !isset( $GLOBALS['smwgSparqlDatabaseMaster'] ) ) {
-		$connectionProvider = new SparqlDBConnectionProvider();
-		$GLOBALS['smwgSparqlDatabaseMaster'] = $connectionProvider->getConnection();
-	}
-
-	return $GLOBALS['smwgSparqlDatabaseMaster'];
 }
 
 /**
