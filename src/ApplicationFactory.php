@@ -170,12 +170,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Parser $parser
-	 *
 	 * @return ParserFunctionFactory
 	 */
-	public function newParserFunctionFactory( Parser $parser ) {
-		return new ParserFunctionFactory( $parser );
+	public function newParserFunctionFactory() {
+		return new ParserFunctionFactory();
 	}
 
 	/**

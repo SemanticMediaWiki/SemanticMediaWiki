@@ -172,37 +172,37 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function parserFunctionDefinitionProvider() {
 
 		$provider[] = array(
-			'newAskParserFunctionDefinition',
+			'getAskParserFunctionDefinition',
 			'ask'
 		);
 
 		$provider[] = array(
-			'newShowParserFunctionDefinition',
+			'getShowParserFunctionDefinition',
 			'show'
 		);
 
 		$provider[] = array(
-			'newSubobjectParserFunctionDefinition',
+			'getSubobjectParserFunctionDefinition',
 			'subobject'
 		);
 
 		$provider[] = array(
-			'newRecurringEventsParserFunctionDefinition',
+			'getSetRecurringEventParserFunctionDefinition',
 			'set_recurring_event'
 		);
 
 		$provider[] = array(
-			'newSetParserFunctionDefinition',
+			'getSetParserFunctionDefinition',
 			'set'
 		);
 
 		$provider[] = array(
-			'newConceptParserFunctionDefinition',
+			'getConceptParserFunctionDefinition',
 			'concept'
 		);
 
 		$provider[] = array(
-			'newDeclareParserFunctionDefinition',
+			'getDeclareParserFunctionDefinition',
 			'declare'
 		);
 
