@@ -396,12 +396,13 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	protected function postProcessParameters() {
 		$params = $this->params;
 
-		$this->mIntro = str_replace( '_', ' ', $params['intro'] );
-		$this->mOutro = str_replace( '_', ' ', $params['outro'] );
+		$this->mIntro = isset( $params['intro'] ) ? str_replace( '_', ' ', $params['intro'] ) : '';
+		$this->mOutro = isset( $params['outro'] ) ? str_replace( '_', ' ', $params['outro'] ) : '';
 
-		$this->mSearchlabel = $params['searchlabel'] === false ? null : $params['searchlabel'];
+		$this->mSearchlabel = !isset( $params['searchlabel'] ) || $params['searchlabel'] === false ? null : $params['searchlabel'];
+		$link = isset( $params['link'] ) ? $params['link'] : '';
 
-		switch ( $params['link'] ) {
+		switch ( $link ) {
 			case 'head': case 'subject':
 				$this->mLinkFirst = true;
 				$this->mLinkOthers = false;
@@ -416,11 +417,12 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 				break;
 		}
 
-		 $this->mDefault = str_replace( '_', ' ', $params['default'] );
+		$this->mDefault = isset( $params['default'] ) ? str_replace( '_', ' ', $params['default'] ) : '';
+		$headers = isset( $params['headers'] ) ? $params['headers'] : '';
 
-		if ( $params['headers'] == 'hide' ) {
+		if ( $headers == 'hide' ) {
 			$this->mShowHeaders = SMW_HEADERS_HIDE;
-		} elseif ( $params['headers'] == 'plain' ) {
+		} elseif ( $headers == 'plain' ) {
 			$this->mShowHeaders = SMW_HEADERS_PLAIN;
 		} else {
 			$this->mShowHeaders = SMW_HEADERS_SHOW;
