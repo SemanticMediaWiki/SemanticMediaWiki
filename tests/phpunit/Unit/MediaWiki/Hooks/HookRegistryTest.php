@@ -143,6 +143,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForSkinAfterContent( $instance );
 		$this->doTestExecutionForOutputPageParserOutput( $instance );
 		$this->doTestExecutionForBeforePageDisplay( $instance );
+		$this->doTestExecutionForSpecialSearchResultsPrepend( $instance );
 		$this->doTestExecutionForInternalParseBeforeLinks( $instance );
 		$this->doTestExecutionForNewRevisionFromEditComplete( $instance );
 		$this->doTestExecutionForTitleMoveComplete( $instance );
@@ -298,6 +299,24 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( &$this->outputPage, &$this->skin )
+		);
+	}
+
+	public function doTestExecutionForSpecialSearchResultsPrepend( $instance ) {
+
+		$handler = 'SpecialSearchResultsPrepend';
+
+		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $specialSearch, $this->outputPage, '' )
 		);
 	}
 

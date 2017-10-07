@@ -223,6 +223,21 @@ class HookRegistry {
 		};
 
 		/**
+		 * Hook: Called immediately before returning HTML on the search results page
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend
+		 */
+		$this->handlers['SpecialSearchResultsPrepend'] = function ( $specialSearch, $outputPage, $term ) {
+
+			$specialSearchResultsPrepend = new SpecialSearchResultsPrepend(
+				$specialSearch,
+				$outputPage
+			);
+
+			return $specialSearchResultsPrepend->process( $term );
+		};
+
+		/**
 		 * Hook: InternalParseBeforeLinks is used to process the expanded wiki
 		 * code after <nowiki>, HTML-comments, and templates have been treated.
 		 *

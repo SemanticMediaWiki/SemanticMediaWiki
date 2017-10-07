@@ -230,7 +230,7 @@
 	 * @since 3.0
 	 */
 	var Factory = {
-		newSearchSuggester: function( $context ) {
+		newEntitySuggester: function( $context ) {
 			return new smw.suggester( $context );
 		}
 	};

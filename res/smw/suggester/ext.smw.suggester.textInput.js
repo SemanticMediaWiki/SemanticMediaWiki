@@ -26,8 +26,6 @@
 	'use strict';
 
 	/**
-	 * Simple semantic links autocompleter.
-	 *
 	 * Only when the registered marker are used will the search be activated
 	 * to avoid arbitrary matches for non-semantic content.
 	 */
@@ -40,31 +38,36 @@
 		 */
 		var search = function() {
 
-			var context = $( '#searchText > input' );
+			var context = $( '#searchText > input' ),
+				isHidden = false;
 
 			if ( context.length ) {
-				smw.log( 'autocomplete.Input: search field registration' );
 
 				// This features is only enabled for SMWSearch hence when the input
 				// field contains [[ ... ]] we assume a search via the QueryEngine
-				// therefore disable the highlighlter as no meaningfull input help
-				// will be shown
+				// therefore disable the standard highlighlter as no meaningfull
+				// input help will be shown
 				context.on( 'keyup keypres focus', function( e ) {
-					var highlighter = context.parent().find( '.oo-ui-widget' );
+					var highlighter = context.parent().find( '.oo-ui-widget' ),
+						style = '';
 
 					if ( context.val().indexOf( '[' ) > -1 ) {
+						style = highlighter.attr( 'style' );
 						highlighter.hide();
-					} else {
+						isHidden = true;
+					} else if( isHidden ) {
+						highlighter.attr( 'style', style );
 						highlighter.show();
+						isHidden = false;
 					};
 				} );
 
-				var searchSuggester = smw.Factory.newSearchSuggester(
+				var entitySuggester = smw.Factory.newEntitySuggester(
 					context
 				);
 
-				// Register autocomplete default tokens
-				searchSuggester.registerDefaultTokenList(
+				// Register default tokens
+				entitySuggester.registerDefaultTokenList(
 					[
 						'property',
 						'concept',
@@ -85,14 +88,13 @@
 
 			// Attach to the textarea
 			if ( wpTextbox1.length ) {
-				smw.log( 'autocomplete.Input: textbox1 field registration' );
 
-				var searchSuggester = smw.Factory.newSearchSuggester(
+				var entitySuggester = smw.Factory.newEntitySuggester(
 					wpTextbox1
 				);
 
-				// Register autocomplete default tokens
-				searchSuggester.registerDefaultTokenList(
+				// Register default tokens
+				entitySuggester.registerDefaultTokenList(
 					[
 						'property',
 						'concept',
@@ -108,7 +110,7 @@
 				// {{#ask: ..
 				//  |?p: ...
 				// }}
-				searchSuggester.registerTokenDefinition(
+				entitySuggester.registerTokenDefinition(
 					'property',
 					{
 						token: '?p:',
@@ -123,7 +125,7 @@
 				// {{#set:
 				//  |p: ...
 				// }}
-				searchSuggester.registerTokenDefinition(
+				entitySuggester.registerTokenDefinition(
 					'property',
 					{
 						token: '|p:',

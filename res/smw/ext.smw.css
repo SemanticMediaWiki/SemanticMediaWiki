@@ -811,6 +811,16 @@ a.smw-ask-action-btn-lblue:hover {
 	margin-top: 3px;
 }
 
+.smw-search-results-prepend {
+	clear: both;
+	padding: 0.65em 0.75em 0.60em 0.75em;
+	background-color: #ddeefc;
+	margin: -1px 0 0;
+	border: 1px solid rgba(94, 157, 200, 0.25);
+	border-radius: 0 0 2px 2px;
+	margin-bottom: 1em;
+}
+
 .is-disabled {
 	opacity: .5;
 	position: relative;
