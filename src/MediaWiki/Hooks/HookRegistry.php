@@ -736,35 +736,8 @@ class HookRegistry {
 		 */
 		$this->handlers['ParserFirstCallInit'] = function ( &$parser ) use( $applicationFactory ) {
 
-			$parserFunctionFactory = $applicationFactory->newParserFunctionFactory( $parser );
-
-			list( $name, $definition, $flag ) = $parserFunctionFactory->newAskParserFunctionDefinition();
-
-			$parser->setFunctionHook( $name, $definition, $flag );
-
-			list( $name, $definition, $flag ) = $parserFunctionFactory->newShowParserFunctionDefinition();
-
-			$parser->setFunctionHook( $name, $definition, $flag );
-
-			list( $name, $definition, $flag ) = $parserFunctionFactory->newSubobjectParserFunctionDefinition();
-
-			$parser->setFunctionHook( $name, $definition, $flag );
-
-			list( $name, $definition, $flag ) = $parserFunctionFactory->newRecurringEventsParserFunctionDefinition();
-
-			$parser->setFunctionHook( $name, $definition, $flag );
-
-			list( $name, $definition, $flag ) = $parserFunctionFactory->newSetParserFunctionDefinition();
-
-			$parser->setFunctionHook( $name, $definition, $flag );
-
-			list( $name, $definition, $flag ) = $parserFunctionFactory->newConceptParserFunctionDefinition();
-
-			$parser->setFunctionHook( $name, $definition, $flag );
-
-			list( $name, $definition, $flag ) = $parserFunctionFactory->newDeclareParserFunctionDefinition();
-
-			$parser->setFunctionHook( $name, $definition, $flag );
+			$parserFunctionFactory = $applicationFactory->newParserFunctionFactory();
+			$parserFunctionFactory->registerFunctionHandlers( $parser );
 
 			$hookRegistrant = new HookRegistrant( $parser );
 
