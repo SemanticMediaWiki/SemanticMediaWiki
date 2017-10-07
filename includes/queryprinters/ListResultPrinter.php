@@ -127,7 +127,7 @@ class ListResultPrinter extends ResultPrinter {
 	public function getName() {
 		// Give grep a chance to find the usages:
 		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_template
-		return $this->getContext()->msg( 'smw_printername_' . $this->mFormat )->text();
+		return $this->msg( 'smw_printername_' . $this->mFormat )->text();
 	}
 
 	/**
@@ -150,7 +150,7 @@ class ListResultPrinter extends ResultPrinter {
 	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
 		if ( $this->mFormat == 'template' && !$this->mTemplate ) {
 			$queryResult->addErrors( array(
-				$this->getContext()->msg( 'smw_notemplategiven' )->inContentLanguage()->text()
+				$this->msg( 'smw_notemplategiven' )->inContentLanguage()->text()
 			) );
 			return '';
 		}
@@ -239,7 +239,7 @@ class ListResultPrinter extends ResultPrinter {
 		if ( $this->params['format'] === 'list' && $this->params['sep'] === ',' ) {
 			// Make default list ", , , and "
 			$this->listsep = ', ';
-			$this->finallistsep = $this->getContext()->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
+			$this->finallistsep = $this->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
 		} elseif ( $this->params['format'] !== 'template' && $this->params['sep'] === '' ) {
 			$this->listsep = ', ';
 			$this->finallistsep = $this->listsep;
