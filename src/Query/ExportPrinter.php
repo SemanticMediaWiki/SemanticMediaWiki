@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query;
 
-use SMWQueryResult;
+use SMWQueryResult as QueryResult;
 
 /**
  * Interface for SMW export related result printers
@@ -12,17 +12,17 @@ use SMWQueryResult;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-interface ExportPrinter extends QueryResultPrinter {
+interface ExportPrinter extends ResultPrinter {
 
 	/**
 	 * Outputs the result as file.
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 * @param array $params
 	 */
-	public function outputAsFile( SMWQueryResult $queryResult, array $params );
+	public function outputAsFile( QueryResult $queryResult, array $params );
 
 	/**
 	 * Some printers do not mainly produce embeddable HTML or Wikitext, but
@@ -36,11 +36,11 @@ interface ExportPrinter extends QueryResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 *
 	 * @return string
 	 */
-	public function getMimeType( SMWQueryResult $queryResult );
+	public function getMimeType( QueryResult $queryResult );
 
 	/**
 	 * Some printers can produce not only embeddable HTML or Wikitext, but
@@ -49,10 +49,10 @@ interface ExportPrinter extends QueryResultPrinter {
 	 * in such a case (the default filename is created by browsers from the
 	 * URL, and it is often not pretty).
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 *
 	 * @return string|boolean
 	 */
-	public function getFileName( SMWQueryResult $queryResult );
+	public function getFileName( QueryResult $queryResult );
 
 }

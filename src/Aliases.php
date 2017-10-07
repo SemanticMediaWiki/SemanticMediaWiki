@@ -4,6 +4,15 @@
  * SemanticMediaWiki compatibility aliases for classes that got moved into the SMW namespace
  */
 
+// 3.0
+class_alias( 'SMW\Updater\DeferredCallableUpdate', 'SMW\DeferredCallableUpdate' );
+class_alias( 'SMW\Parser\InTextAnnotationParser', 'SMW\InTextAnnotationParser' );
+class_alias( 'SMW\Encoder', 'SMW\UrlEncoder' );
+class_alias( 'SMW\Query\ResultPrinter', 'SMW\QueryResultPrinter' );
+class_alias( 'SMW\Query\ExportPrinter', 'SMW\ExportPrinter' );
+class_alias( 'SMW\Query\ResultPrinters\ResultPrinter', 'SMW\ResultPrinter' );
+class_alias( 'SMW\Query\ResultPrinters\FileExportPrinter', 'SMW\FileExportPrinter' );
+
 // 1.9.
 class_alias( 'SMW\Store', 'SMWStore' );
 class_alias( 'SMW\MediaWiki\Jobs\UpdateJob', 'SMWUpdateJob' );
@@ -79,7 +88,3 @@ class_alias( 'SMW\ParserFunctions\RecurringEventsParserFunction', 'SMW\Recurring
 class_alias( 'SMW\SQLStore\PropertyTableDefinition', 'SMW\SQLStore\TableDefinition' );
 class_alias( 'SMW\DataModel\ContainerSemanticData', 'SMWContainerSemanticData' );
 
-// 3.0
-class_alias( 'SMW\Updater\DeferredCallableUpdate', 'SMW\DeferredCallableUpdate' );
-class_alias( 'SMW\Parser\InTextAnnotationParser', 'SMW\InTextAnnotationParser' );
-class_alias( 'SMW\Encoder', 'SMW\UrlEncoder' );

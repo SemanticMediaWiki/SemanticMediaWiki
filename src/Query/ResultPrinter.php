@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query;
 
 use SMWQueryResult as QueryResult;
 
@@ -13,7 +13,7 @@ use SMWQueryResult as QueryResult;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Markus Krötzsch
  */
-interface QueryResultPrinter {
+interface ResultPrinter {
 
 	// Constructor restriction:
 	// Needs to have exactly one required argument $formatName.

@@ -279,8 +279,6 @@ class SMWQueryResult {
 	 * can also be changed afterwards with SMWInfolink::setCaption()). If empty, the
 	 * message 'smw_iq_moreresults' is used as a caption.
 	 *
-	 * @deprecated since SMW 1.8
-	 *
 	 * @param string|false $caption
 	 *
 	 * @return SMWInfolink
