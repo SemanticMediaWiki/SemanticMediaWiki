@@ -33,6 +33,14 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$subobjectListFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SubobjectListFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subobjectListFinder->expects( $this->any() )
+			->method( 'find' )
+			->will( $this->returnValue( [] ) );
+
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -44,6 +52,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newHierarchyLookup' )
 			->will( $this->returnValue( $hierarchyLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSubobjectListFinder' )
+			->will( $this->returnValue( $subobjectListFinder ) );
 	}
 
 	public function testCanConstruct() {
@@ -82,10 +94,6 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
 
 		$database->expects( $this->once() )
 			->method( 'query' )
@@ -149,10 +157,6 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->once() )
 			->method( 'query' )
 			->will( $this->returnValue( true ) );
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()

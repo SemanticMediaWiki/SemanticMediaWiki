@@ -29,6 +29,14 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$subobjectListFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SubobjectListFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subobjectListFinder->expects( $this->any() )
+			->method( 'find' )
+			->will( $this->returnValue( [] ) );
+
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,6 +48,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newHierarchyLookup' )
 			->will( $this->returnValue( $hierarchyLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSubobjectListFinder' )
+			->will( $this->returnValue( $subobjectListFinder ) );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -81,10 +93,6 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
 
 		$this->store->expects( $this->exactly( 7 ) )
 			->method( 'getObjectIds' )
@@ -130,10 +138,6 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
 
 		$database->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )

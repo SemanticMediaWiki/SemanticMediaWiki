@@ -18,7 +18,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class EntitySubobjectListIterator implements IteratorAggregate {
+class SubobjectListFinder {
 
 	/**
 	 * @var SQLStore
@@ -36,9 +36,14 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	private $subject;
 
 	/**
-	 * @var string|null
+	 * @var []
 	 */
-	private $skipOn = array();
+	private $mappingIterator = [];
+
+	/**
+	 * @var []
+	 */
+	private $skipConditions = [];
 
 	/**
 	 * @since 2.5
@@ -52,33 +57,19 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.0
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return Iterator
+	 * @return MappingIterator
 	 */
-	public function newListIteratorFor( DIWikiPage $subject, $skipOn = array() ) {
-		$this->skipOn = $skipOn;
-		$this->subject = $subject;
+	public function find( DIWikiPage $subject ) {
 
-		return $this->getIterator();
-	}
-
-	/**
-	 * @see IteratorAggregate::getIterator
-	 *
-	 * @since 2.5
-	 *
-	 * @return Iterator
-	 */
-	public function getIterator() {
-
-		if ( $this->subject === null ) {
-			throw new RuntimeException( "Subject is not initialized" );
+		if ( !isset( $this->mappingIterator[$subject->getHash()] ) ) {
+			$this->mappingIterator = $this->newMappingIterator( $subject );
 		}
 
-		return $this->newMappingIterator( $this->subject );
+		return $this->mappingIterator;
 	}
 
 	/**
@@ -123,22 +114,23 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	private function newResultIterator( DIWikiPage $subject ) {
 
 		$connection = $this->store->getConnection( 'mw.db' );
-		$dbKey = $subject->getDBkey();
+		$key = $subject->getDBkey();
 
 		// #1955 Ensure to match a possible predefined property
 		// (Modification date -> _MDAT)
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$dbKey = DIProperty::newFromUserLabel( $subject->getDBkey() )->getKey();
+			$key = DIProperty::newFromUserLabel( $key )->getKey();
 		}
 
-		$condition = 'smw_title = ' . $connection->addQuotes( $dbKey ) . ' AND ' .
-			'smw_namespace = ' . $connection->addQuotes( $subject->getNamespace() ) . ' AND ' .
-			'smw_iw = ' . $connection->addQuotes( $subject->getInterwiki() ) . ' AND ' .
-			// The "!=" is why we cannot use MW array syntax here
-			'smw_subobject != ' . $connection->addQuotes( '' );
+		$conditions = [
+			'smw_title='      . $connection->addQuotes( $key ),
+			'smw_namespace='  . $connection->addQuotes( $subject->getNamespace() ),
+			'smw_iw='         . $connection->addQuotes( $subject->getInterwiki() ),
+			'smw_subobject!=' . $connection->addQuotes( '' )
+		];
 
-		foreach ( $this->skipOn as $skipOn ) {
-			$condition .= ' AND smw_subobject != ' . $connection->addQuotes( $skipOn );
+		foreach ( $this->skipConditions as $skipOn ) {
+			$conditions[] = 'smw_subobject!=' . $connection->addQuotes( $skipOn );
 		}
 
 		$res = $connection->select(
@@ -148,7 +140,7 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 				'smw_subobject',
 				'smw_sortkey'
 			),
-			$condition,
+			implode( ' AND ' , $conditions ),
 			__METHOD__
 		);
 
