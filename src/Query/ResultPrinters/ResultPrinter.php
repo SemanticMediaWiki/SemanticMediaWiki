@@ -8,32 +8,11 @@ use ParserOptions;
 use Sanitizer;
 use SMWInfolink;
 use SMWQuery;
-use SMWQueryResult;
+use SMWQueryResult as QueryResult;
 use SMW\Message;
 use SMWOutputs as ResourceManager;
 use Title;
 use SMW\Query\ResultPrinter as IResultPrinter;
-
-/**
- * Abstract base class for printing query results.
- *
- * @since 1.9
- *
- * @ingroup SMWQuery
- *
- * @licence GNU GPL v2 or later
- * @author Markus Krötzsch
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * @author mwjames
- */
-
-/**
- * This group contains all members that are relate to query formatting and
- * printing.
- *
- * @defgroup QueryPrinter QueryPrinter
- * @ingroup SMWQuery
- */
 
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
@@ -41,9 +20,14 @@ use SMW\Query\ResultPrinter as IResultPrinter;
  * output formatting and the corresponding parameters) and is subclassed by concrete
  * printers that provide the main formatting functionality.
  *
- * @ingroup SMWQuery
+ * @license GNU GPL v2+
+ * @since 1.9
+ *
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author mwjames
  */
-abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
+abstract class ResultPrinter implements IResultPrinter {
 
 	/**
 	 * @deprecated Use $params instead. Will be removed in 1.10.
@@ -82,7 +66,7 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @var SMWQueryResult
+	 * @var QueryResult
 	 */
 	protected $results;
 
@@ -154,7 +138,7 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 * Return serialised results in specified format.
 	 * Implemented by subclasses.
 	 */
-	abstract protected function getResultText( SMWQueryResult $res, $outputMode );
+	abstract protected function getResultText( QueryResult $res, $outputMode );
 
 	/**
 	 * Constructor. The parameter $format is a format string
@@ -164,23 +148,36 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 *
 	 * @param string $format
 	 * @param boolean $inline Optional since 1.9
-	 * @param boolean $useValidator Deprecated since 1.6.2, removal in 1.10
 	 */
-	public function __construct( $format, $inline = true, $useValidator = false ) {
+	public function __construct( $format, $inline = true ) {
 		global $smwgQDefaultLinking;
-
-		// Context aware since SMW 1.9
-		//
-		// If someone cleans the constructor, please add
-		// IContextSource $context = null as for now we leave it
-		// in order to keep compatibility with the original constructor
-		$this->setContext( \RequestContext::getMain() );
 
 		$this->mFormat = $format;
 		$this->mInline = $inline;
 		$this->mLinkFirst = ( $smwgQDefaultLinking != 'none' );
 		$this->mLinkOthers = ( $smwgQDefaultLinking == 'all' );
 		$this->mLinker = new Linker(); ///TODO: how can we get the default or user skin here (depending on context)?
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $queryContext
+	 */
+	public function setQueryContext( $queryContext ) {
+		$this->mInline = $queryContext != QueryContext::SPECIAL_PAGE;
+	}
+
+	/**
+	 * This method is added temporary measures to avoid breaking those that relied
+	 * on the removed ContextSource interface.
+	 *
+	 * @since 3.0
+	 *
+	 * @return Message
+	 */
+	public function msg() {
+		return wfMessage( func_get_args() );
 	}
 
 	/**
@@ -212,18 +209,18 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	}
 
 	/**
-	 * @see SMWIResultPrinter::getResult
+	 * @see IResultPrinter::getResult
 	 *
 	 * @note: since 1.8 this method is final, since it's the entry point.
 	 * Most logic has been moved out to buildResult, which you can override.
 	 *
-	 * @param $results SMWQueryResult
+	 * @param $results QueryResult
 	 * @param $fullParams array
 	 * @param $outputMode integer
 	 *
 	 * @return string
 	 */
-	public final function getResult( SMWQueryResult $results, array $fullParams, $outputMode ) {
+	public final function getResult( QueryResult $results, array $fullParams, $outputMode ) {
 		$this->outputMode = $outputMode;
 		$this->results = $results;
 
@@ -251,11 +248,11 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $results
+	 * @param QueryResult $results
 	 *
 	 * @return string
 	 */
-	protected function buildResult( SMWQueryResult $results ) {
+	protected function buildResult( QueryResult $results ) {
 		$this->isHTML = false;
 		$this->hasTemplates = false;
 
@@ -293,12 +290,12 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 * @since 1.6
 	 *
 	 * @param string $result
-	 * @param SMWQueryResult $results
+	 * @param QueryResult $results
 	 * @param integer $outputmode
 	 *
 	 * @return string
 	 */
-	protected function handleNonFileResult( $result, SMWQueryResult $results, $outputmode ) {
+	protected function handleNonFileResult( $result, QueryResult $results, $outputmode ) {
 		/**
 		 * @var \Parser $wgParser
 		 */
@@ -466,13 +463,13 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $res
+	 * @param QueryResult $res
 	 * @param $outputMode
 	 * @param string $classAffix
 	 *
 	 * @return SMWInfolink
 	 */
-	protected function getLink( SMWQueryResult $res, $outputMode, $classAffix = '' ) {
+	protected function getLink( QueryResult $res, $outputMode, $classAffix = '' ) {
 		$link = $res->getQueryLink( $this->getSearchLabel( $outputMode ) );
 
 		if ( $classAffix !== '' ){
@@ -498,19 +495,19 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $res
+	 * @param QueryResult $res
 	 * @param $outputMode
 	 *
 	 * @return SMWInfolink
 	 */
-	protected function getFurtherResultsLink( SMWQueryResult $res, $outputMode ) {
+	protected function getFurtherResultsLink( QueryResult $res, $outputMode ) {
 		$link = $this->getLink( $res, $outputMode, 'furtherresults' );
 		$link->setParameter( $this->params['offset'] + $res->getCount(), 'offset' );
 		return $link;
 	}
 
 	/**
-	 * @see SMWIResultPrinter::getQueryMode
+	 * @see IResultPrinter::getQueryMode
 	 *
 	 * @param $context
 	 *
@@ -523,7 +520,7 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	}
 
 	/**
-	 * @see SMWIResultPrinter::getName
+	 * @see IResultPrinter::getName
 	 *
 	 * @return string
 	 */
@@ -536,16 +533,16 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 * Can be used if not specific error formatting is desired. Compatible with HTML
 	 * and Wiki.
 	 *
-	 * @param SMWQueryResult $res
+	 * @param QueryResult $res
 	 *
 	 * @return string
 	 */
-	protected function getErrorString( SMWQueryResult $res ) {
+	protected function getErrorString( QueryResult $res ) {
 		return $this->mShowErrors ? smwfEncodeMessages( array_merge( $this->mErrors, $res->getErrors() ) ) : '';
 	}
 
 	/**
-	 * @see SMWIResultPrinter::setShowErrors
+	 * @see IResultPrinter::setShowErrors
 	 *
 	 * @param boolean $show
 	 */
@@ -583,11 +580,11 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 * result set with the given parameters. Individual result printers may decide to
 	 * create or hide such a link independent of that, but this is the default.
 	 *
-	 * @param SMWQueryResult $results
+	 * @param QueryResult $results
 	 *
 	 * @return boolean
 	 */
-	protected function linkFurtherResults( SMWQueryResult $results ) {
+	protected function linkFurtherResults( QueryResult $results ) {
 		return $this->mInline && $results->hasFurtherResults() && $this->mSearchlabel !== '';
 	}
 
@@ -648,7 +645,7 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	}
 
 	/**
-	 * @see SMWIResultPrinter::getParamDefinitions
+	 * @see IResultPrinter::getParamDefinitions
 	 *
 	 * @since 1.8
 	 *
@@ -682,7 +679,7 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	}
 
 	/**
-	 * @see SMWIResultPrinter::isExportFormat
+	 * @see IResultPrinter::isExportFormat
 	 *
 	 * @since 1.8
 	 *
