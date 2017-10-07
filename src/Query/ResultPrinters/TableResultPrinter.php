@@ -1,22 +1,25 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryStringifier;
+use SMW\Utils\HtmlTable;
 use SMWDataValue;
-use SMWQueryResult;
-use SMWResultArray;
-use SMWOutputs as ResourceManager;
+use SMWQueryResult as QueryResult;
+use SMWResultArray as ResultArray;
+use SMWDIBlob as DIBlob;
+use SMW\DIWikiPage;
 use Html;
+use SMW\Message;
 
 /**
  * Print query results in tables
  *
- * @since 1.5.3
+ * @license GNU GPL v2+
+ * @since 3.0
  *
- * @license GNU GPL v2 or later
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
@@ -24,15 +27,14 @@ use Html;
 class TableResultPrinter extends ResultPrinter {
 
 	/**
-	 * @var HtmlTableRenderer
+	 * @var HtmlTable
 	 */
-	private $htmlTableRenderer;
+	private $htmlTable;
 
 	/**
-	 * @note grep search smw_printername_table, smw_printername_broadtable
-	 * @codeCoverageIgnore
+	 * @see ResultPrinter::getName
 	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function getName() {
 		return $this->msg( 'smw_printername_' . $this->mFormat )->text();
@@ -48,19 +50,52 @@ class TableResultPrinter extends ResultPrinter {
 	}
 
 	/**
-	 * Returns a table
+	 * @see ResultPrinter::getParamDefinitions
 	 *
-	 * @param SMWQueryResult $res
-	 * @param integer $outputMode
+	 * @since 1.8
 	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
-	protected function getResultText( SMWQueryResult $res, $outputMode ) {
-		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
-		$this->isDataTable = strpos( $this->params['class'], 'datatable' ) !== false && $this->mShowHeaders !== SMW_HEADERS_HIDE;
+	public function getParamDefinitions( array $definitions ) {
 
-		$this->htmlTableRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlTableRenderer();
-		$this->htmlTableRenderer->setHtmlContext( $this->isHTML );
+		$params = parent::getParamDefinitions( $definitions );
+
+		$params['class'] = array(
+			'name' => 'class',
+			'message' => 'smw-paramdesc-table-class',
+			'default' => 'sortable wikitable smwtable',
+		);
+
+		$params['transpose'] = array(
+			'type' => 'boolean',
+			'default' => false,
+			'message' => 'smw-paramdesc-table-transpose',
+		);
+
+		$params['sep'] = array(
+			'message' => 'smw-paramdesc-sep',
+			'default' => '',
+		);
+
+		return $params;
+	}
+
+	/**
+	 * @see ResultPrinter::getResultText
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function getResultText( QueryResult $res, $outputMode ) {
+
+		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
+		$this->isDataTable = false;
+		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
+
+		if ( strpos( $class, 'datatable' ) !== false && $this->mShowHeaders !== SMW_HEADERS_HIDE ) {
+			$this->isDataTable = true;
+		}
+
+		$this->htmlTable = new HtmlTable();
 
 		$columnClasses = array();
 		$headerList = array();
@@ -70,7 +105,8 @@ class TableResultPrinter extends ResultPrinter {
 			$this->params['sep'] = '<br>';
 		}
 
-		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
+		 // building headers
+		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) {
 			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
 				$attributes = array();
 				$columnClass = str_replace( array( ' ', '_' ), '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
@@ -80,7 +116,7 @@ class TableResultPrinter extends ResultPrinter {
 				$columnClasses[] = $columnClass;
 				$text = $pr->getText( $outputMode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
 				$headerList[] = $pr->getCanonicalLabel();
-				$this->htmlTableRenderer->addHeader( ( $text === '' ? '&nbsp;' : $text ), $attributes );
+				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
 		}
 
@@ -90,8 +126,10 @@ class TableResultPrinter extends ResultPrinter {
 			$rowNumber++;
 			$this->getRowForSubject( $subject, $outputMode, $columnClasses );
 
-			$this->htmlTableRenderer->addRow(
-				array( 'data-row-number' => $rowNumber )
+			$this->htmlTable->row(
+				array(
+					'data-row-number' => $rowNumber
+				)
 			);
 		}
 
@@ -99,14 +137,15 @@ class TableResultPrinter extends ResultPrinter {
 		if ( $this->linkFurtherResults( $res ) ) {
 			$link = $this->getFurtherResultsLink( $res, $outputMode );
 
-			$this->htmlTableRenderer->addCell(
+			$this->htmlTable->cell(
 					$link->getText( $outputMode, $this->mLinker ),
 					array( 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() )
 			);
-			$this->htmlTableRenderer->addRow( array( 'class' => 'smwfooter' ) );
+
+			$this->htmlTable->row( array( 'class' => 'smwfooter' ) );
 		}
 
-		$tableAttrs = array( 'class' => $this->params['class'] );
+		$tableAttrs = array( 'class' => $class );
 
 		if ( $this->mFormat == 'broadtable' ) {
 			$tableAttrs['width'] = '100%';
@@ -121,11 +160,13 @@ class TableResultPrinter extends ResultPrinter {
 			);
 		}
 
-		$this->htmlTableRenderer->transpose(
-			$this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose']
-		);
+		$transpose = $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose'];
 
-		$html = $this->htmlTableRenderer->getHtml( $tableAttrs );
+		$html = $this->htmlTable->table(
+			$tableAttrs,
+			$transpose,
+			$this->isHTML
+		);
 
 		if ( $this->isDataTable ) {
 			$html = Html::rawElement(
@@ -176,7 +217,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getCellForPropVals( SMWResultArray $resultArray, $outputMode, $columnClass ) {
+	protected function getCellForPropVals( ResultArray $resultArray, $outputMode, $columnClass ) {
 		/** @var SMWDataValue[] $dataValues */
 		$dataValues = [];
 
@@ -238,7 +279,7 @@ class TableResultPrinter extends ResultPrinter {
 		// Sort the cell HTML attributes, to make test behavior more deterministic
 		ksort( $attributes );
 
-		$this->htmlTableRenderer->addCell( $content, $attributes );
+		$this->htmlTable->cell( $content, $attributes );
 	}
 
 	/**
@@ -261,7 +302,7 @@ class TableResultPrinter extends ResultPrinter {
 			// - file/image parsing
 			// - text formatting on string elements including italic, bold etc.
 			if ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIWikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ||
-				$outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof \SMWDIBlob ) {
+				$outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIBlob ) {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
@@ -279,43 +320,11 @@ class TableResultPrinter extends ResultPrinter {
 		return implode( $this->params['sep'], $values );
 	}
 
-	/**
-	 * @see SMWResultPrinter::getParamDefinitions
-	 * @codeCoverageIgnore
-	 *
-	 * @since 1.8
-	 *
-	 * @param ParamDefinition[] $definitions
-	 *
-	 * @return array
-	 */
-	public function getParamDefinitions( array $definitions ) {
-		$params = parent::getParamDefinitions( $definitions );
-
-		$params['class'] = array(
-			'name' => 'class',
-			'message' => 'smw-paramdesc-table-class',
-			'default' => 'sortable wikitable smwtable',
-		);
-
-		$params['transpose'] = array(
-			'type' => 'boolean',
-			'default' => false,
-			'message' => 'smw-paramdesc-table-transpose',
-		);
-
-		$params['sep'] = array(
-			'message' => 'smw-paramdesc-sep',
-			'default' => '',
-		);
-
-		return $params;
-	}
-
 	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
 
-		ResourceManager::requireStyle( 'onoi.dataTables.styles' );
-		ResourceManager::requireResource( 'ext.smw.tableprinter' );
+		$this->registerResources(
+			[ 'ext.smw.tableprinter' ], [ 'onoi.dataTables.styles' ]
+		);
 
 		$tableAttrs['width'] = '100%';
 
@@ -331,8 +340,8 @@ class TableResultPrinter extends ResultPrinter {
 			]
 		);
 
-		$tableAttrs['data-query'] = json_encode(
-			QueryStringifier::toArray( $res->getQuery() )
+		$tableAttrs['data-query'] = QueryStringifier::toJson(
+			$res->getQuery()
 		);
 	}
 

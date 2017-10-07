@@ -623,11 +623,11 @@ return array(
 	# 'broadtable' should not be disabled either in order not to break Special:ask.
 	##
 	'smwgResultFormats' => array(
-		'table'      => 'SMW\TableResultPrinter',
+		'table'      => 'SMW\Query\ResultPrinters\TableResultPrinter',
+		'broadtable' => 'SMW\Query\ResultPrinters\TableResultPrinter',
 		'list'       => 'SMW\ListResultPrinter',
 		'ol'         => 'SMW\ListResultPrinter',
 		'ul'         => 'SMW\ListResultPrinter',
-		'broadtable' => 'SMW\TableResultPrinter',
 		'category'   => 'SMW\CategoryResultPrinter',
 		'embedded'   => 'SMW\EmbeddedResultPrinter',
 		'template'   => 'SMW\ListResultPrinter',

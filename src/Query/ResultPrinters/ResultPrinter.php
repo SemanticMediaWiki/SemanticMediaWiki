@@ -10,6 +10,7 @@ use SMWInfolink;
 use SMWQuery;
 use SMWQueryResult;
 use SMW\Message;
+use SMWOutputs as ResourceManager;
 use Title;
 use SMW\Query\ResultPrinter as IResultPrinter;
 
@@ -191,6 +192,23 @@ abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 	 */
 	public function isEnabledFeature( $feature ) {
 		return ( (int)$GLOBALS['smwgResultFormatsFeatures'] & $feature ) != 0;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $modules
+	 * @param array $styleModules
+	 */
+	public function registerResources( array $modules = [], array $styleModules = [] ) {
+
+		foreach ( $modules as $module ) {
+			ResourceManager::requireResource( $module );
+		}
+
+		foreach ( $styleModules as $styleModule ) {
+			ResourceManager::requireStyle( $styleModule );
+		}
 	}
 
 	/**
