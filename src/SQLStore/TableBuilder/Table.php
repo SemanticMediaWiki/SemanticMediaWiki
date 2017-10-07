@@ -94,9 +94,9 @@ class Table {
 	 */
 	public function addIndex( $index, $key = null ) {
 		if ( $key !== null ) {
-			$this->options['indicies'][$key] = $index;
+			$this->options['indices'][$key] = $index;
 		} else {
-			$this->options['indicies'][] = $index;
+			$this->options['indices'][] = $index;
 		}
 	}
 
@@ -120,7 +120,7 @@ class Table {
 	 */
 	public function addOption( $key, $option ) {
 
-		if ( $key === 'fields' || $key === 'indicies' || $key === 'defaults' ) {
+		if ( $key === 'fields' || $key === 'indices' || $key === 'defaults' ) {
 			throw new RuntimeException( "$key is a reserved option key." );
 		}
 

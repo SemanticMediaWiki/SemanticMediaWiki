@@ -48,7 +48,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 		$instance->addIndex( 'bar' );
 
 		$expected = array(
-			'indicies' => array(
+			'indices' => array(
 				'bar'
 			)
 		);
@@ -71,7 +71,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 		$instance->addIndex( array( 'foobar' ), 'bar' );
 
 		$expected = array(
-			'indicies' => array(
+			'indices' => array(
 				'bar' => array( 'foobar' )
 			)
 		);
@@ -129,7 +129,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$provider[] = [
-			'indicies'
+			'indices'
 		];
 
 		$provider[] = [

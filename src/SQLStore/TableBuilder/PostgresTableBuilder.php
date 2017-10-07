@@ -243,24 +243,24 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndicies( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
 
-		$indicies = $indexOptions['indicies'];
+		$indices = $indexOptions['indices'];
 		$ix = [];
 
 		// In case an index has a length restriction indexZ(200), remove it since
 		// Postgres doesn't know such syntax
-		foreach ( $indicies as $k => $columns ) {
+		foreach ( $indices as $k => $columns ) {
 			$ix[$k] = preg_replace("/\([^)]+\)/", "", $columns );
 		}
 
-		$indicies = $ix;
+		$indices = $ix;
 
-		// First remove possible obsolete indicies
-		$this->doDropObsoleteIndicies( $tableName, $indicies );
+		// First remove possible obsolete indices
+		$this->doDropObsoleteIndices( $tableName, $indices );
 
 		// Add new indexes.
-		foreach ( $indicies as $indexName => $index ) {
+		foreach ( $indices as $indexName => $index ) {
 			// If the index is an array, it contains the column
 			// name as first element, and index type as second one.
 			if ( is_array( $index ) ) {
@@ -275,19 +275,19 @@ EOT;
 		}
 	}
 
-	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ) {
 
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
-		$currentIndicies = $this->getIndexInfo( $tableName );
+		$currentIndices = $this->getIndexInfo( $tableName );
 
-		foreach ( $currentIndicies as $indexName => $indexColumn ) {
-			// Indicies may contain something like array( 'id', 'UNIQUE INDEX' )
-			$id = $this->recursive_array_search( $indexColumn, $indicies );
+		foreach ( $currentIndices as $indexName => $indexColumn ) {
+			// Indices may contain something like array( 'id', 'UNIQUE INDEX' )
+			$id = $this->recursive_array_search( $indexColumn, $indices );
 			if ( $id !== false || $indexName == 'PRIMARY' ) {
 				$this->reportMessage( "   ... index $indexColumn is fine.\n" );
 
 				if ( $id !== false ) {
-					unset( $indicies[$id] );
+					unset( $indices[$id] );
 				}
 
 			} else { // Duplicate or unrequired index.
