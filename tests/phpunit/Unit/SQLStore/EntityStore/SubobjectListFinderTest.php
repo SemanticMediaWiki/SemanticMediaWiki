@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\EntitySubobjectListIterator;
+use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\EntitySubobjectListIterator
+ * @covers \SMW\SQLStore\EntityStore\SubobjectListFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,15 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
+class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
+
+	private $iteratorFactory;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
+	}
 
 	public function testCanConstruct() {
 
@@ -28,8 +36,8 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\EntitySubobjectListIterator',
-			new EntitySubobjectListIterator( $store, $iteratorFactory )
+			SubobjectListFinder::class,
+			new SubobjectListFinder( $store, $iteratorFactory )
 		);
 	}
 
@@ -55,16 +63,14 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new EntitySubobjectListIterator(
+		$instance = new SubobjectListFinder(
 			$store,
-			ApplicationFactory::getInstance()->getIteratorFactory()
+			$this->iteratorFactory
 		);
-
-		$instance->newListIteratorFor( $subject );
 
 		$this->assertInstanceOf(
 			'\SMW\Iterators\MappingIterator',
-			$instance->getIterator()
+			$instance->find( $subject )
 		);
 	}
 
@@ -89,6 +95,10 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( 'smw_title= AND smw_namespace= AND smw_iw= AND smw_subobject!=' ) )
 			->will( $this->returnValue( array( $row ) ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -100,35 +110,13 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new EntitySubobjectListIterator(
+		$instance = new SubobjectListFinder(
 			$store,
-			ApplicationFactory::getInstance()->getIteratorFactory()
+			$this->iteratorFactory
 		);
 
-		$instance->newListIteratorFor( $subject );
-
-		foreach ( $instance as $v ) {
+		foreach ( $instance->find( $subject ) as $v ) {
 			$this->assertEquals( 42, $v->getId() );
-		}
-	}
-
-	public function testMissingIteratorInstanceThrowsExcetion() {
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new EntitySubobjectListIterator(
-			$store,
-			$iteratorFactory
-		);
-
-		$this->setExpectedException( 'RuntimeException' );
-		foreach ( $instance as $v ) {
 		}
 	}
 

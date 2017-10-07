@@ -14,6 +14,7 @@ use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMWRequestOptions as RequestOptions;
 use SMW\Options;
 use SMWSQLStore3;
+use SMW\DIWikiPage;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use Onoi\MessageReporter\MessageReporterFactory;
 use Onoi\Cache\Cache;
@@ -24,6 +25,7 @@ use SMW\SQLStore\EntityStore\DirectEntityLookup;
 use SMW\SQLStore\EntityStore\SqlEntityLookupResultFetcher;
 use SMW\ProcessLruCache;
 use SMW\SQLStore\EntityStore\IdMatchFinder;
+use SMW\SQLStore\EntityStore\SubobjectListFinder;
 
 /**
  * @license GNU GPL v2+
@@ -506,5 +508,19 @@ class SQLStoreFactory {
 		return $this->applicationFactory->newHierarchyLookup();
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @return SubobjectListFinder
+	 */
+	public function newSubobjectListFinder() {
+
+		$subobjectListFinder = new SubobjectListFinder(
+			$this->store,
+			$this->applicationFactory->getIteratorFactory()
+		);
+
+		return $subobjectListFinder;
+	}
 
 }
