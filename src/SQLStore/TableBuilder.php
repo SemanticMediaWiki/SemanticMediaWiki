@@ -35,7 +35,7 @@ interface TableBuilder extends MessageReporterAware {
 	const PROC_FIELD_UPD = 'update';
 
 	/**
-	 * On before the creation of tables and indicies
+	 * On before the creation of tables and indices
 	 */
 	const PRE_CREATION = 'pre.creation';
 

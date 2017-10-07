@@ -147,12 +147,12 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 
 		$this->reportMessage( "   ... done.\n" );
 
-		if ( !isset( $options['indicies'] ) ) {
+		if ( !isset( $options['indices'] ) ) {
 			return $this->reportMessage( "No index structures for table $tableName ...\n" );
 		}
 
 		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
-		$this->doCreateIndicies( $tableName, $options );
+		$this->doCreateIndices( $tableName, $options );
 
 		$this->reportMessage( "   ... done.\n" );
 	}
@@ -217,7 +217,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 * @param string $tableName
 	 * @param array $indexOptions
 	 */
-	abstract protected function doCreateIndicies( $tableName, array $indexOptions = null );
+	abstract protected function doCreateIndices( $tableName, array $indexOptions = null );
 
 	/**
 	 * @param string $tableName

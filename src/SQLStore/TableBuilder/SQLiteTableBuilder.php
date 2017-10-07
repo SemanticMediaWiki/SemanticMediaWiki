@@ -222,24 +222,24 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndicies( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
 
-		$indicies = $indexOptions['indicies'];
+		$indices = $indexOptions['indices'];
 		$ix = [];
 
 		// In case an index has a length restriction indexZ(200), remove it since
 		// SQLite doesn't know such syntax
-		foreach ( $indicies as $k => $columns ) {
+		foreach ( $indices as $k => $columns ) {
 			$ix[$k] = preg_replace("/\([^)]+\)/", "", $columns );
 		}
 
-		$indicies = $ix;
+		$indices = $ix;
 
-		// First remove possible obsolete indicies
-		$this->doDropObsoleteIndicies( $tableName, $indicies );
+		// First remove possible obsolete indices
+		$this->doDropObsoleteIndices( $tableName, $indices );
 
 		// Add new indexes.
-		foreach ( $indicies as $indexName => $index ) {
+		foreach ( $indices as $indexName => $index ) {
 			// If the index is an array, it contains the column
 			// name as first element, and index type as second one.
 			if ( is_array( $index ) ) {
@@ -254,13 +254,13 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ) {
 
-		$currentIndicies = $this->getIndexInfo( $tableName );
+		$currentIndices = $this->getIndexInfo( $tableName );
 
 		// TODO We do not currently get the right column definitions in
 		// SQLite; hence we can only drop all indexes. Wasteful.
-		foreach ( $currentIndicies as $indexName => $indexColumn ) {
+		foreach ( $currentIndices as $indexName => $indexColumn ) {
 			$this->doDropIndex( $tableName, $indexName, $indexColumn );
 		}
 	}

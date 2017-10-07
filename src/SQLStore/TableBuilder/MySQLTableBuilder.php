@@ -229,15 +229,15 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndicies( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
 
-		$indicies = $indexOptions['indicies'];
+		$indices = $indexOptions['indices'];
 
-		// First remove possible obsolete indicies
-		$this->doDropObsoleteIndicies( $tableName, $indicies );
+		// First remove possible obsolete indices
+		$this->doDropObsoleteIndices( $tableName, $indices );
 
 		// Add new indexes.
-		foreach ( $indicies as $indexName => $index ) {
+		foreach ( $indices as $indexName => $index ) {
 			// If the index is an array, it contains the column
 			// name as first element, and index type as second one.
 			if ( is_array( $index ) ) {
@@ -252,19 +252,30 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ) {
 
 		$tableName = $this->connection->tableName( $tableName );
-		$currentIndicies = $this->getIndexInfo( $tableName );
+		$currentIndices = $this->getIndexInfo( $tableName );
 
-		foreach ( $currentIndicies as $indexName => $indexColumn ) {
-			// Indicies may contain something like array( 'id', 'UNIQUE INDEX' )
-			$id = $this->recursive_array_search( $indexColumn, $indicies );
+		$idx = [];
+
+		// #2717
+		// The index info doesn't return length information (...idx1(200),idx2...)
+		// for an index hence to avoid a constant remove/create cycle we eliminate
+		// the length information from the temporary mirror when comparing new and
+		// old; of course we won't detect length changes!
+		foreach ( $indices as $k => $columns ) {
+			$idx[$k] = preg_replace("/\([^)]+\)/", "", $columns );
+		}
+
+		foreach ( $currentIndices as $indexName => $indexColumn ) {
+			// Indices may contain something like array( 'id', 'UNIQUE INDEX' )
+			$id = $this->recursive_array_search( $indexColumn, $idx );
 			if ( $id !== false || $indexName == 'PRIMARY' ) {
 				$this->reportMessage( "   ... index $indexColumn is fine.\n" );
 
 				if ( $id !== false ) {
-					unset( $indicies[$id] );
+					unset( $indices[$id] );
 				}
 
 			} else { // Duplicate or unrequired index.
