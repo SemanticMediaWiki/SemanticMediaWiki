@@ -13,15 +13,56 @@ use Html;
 class HtmlTable {
 
 	/**
+	 * @var array
+	 */
+	private $headers = [];
+
+	/**
+	 * @var array
+	 */
+	private $cells = [];
+
+	/**
+	 * @var array
+	 */
+	private $rows = [];
+
+	/**
 	 * @since 3.0
 	 *
-	 * @param string $html
+	 * @param string $content
+	 * @param array $attributes
+	 */
+	public function header( $content = '', $attributes = [] ) {
+		if ( $content !== '' ) {
+			$this->headers[] = array( 'content' => $content, 'attributes' => $attributes );
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $content
+	 * @param array $attributes
+	 */
+	public function cell( $content = '', $attributes = [] ) {
+		if ( $content !== '' ) {
+			$this->cells[] = Html::rawElement( 'td', $attributes, $content );
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param array $attributes
 	 *
-	 * @return string
+	 * @return TableBuilder
 	 */
-	public static function table( $html = '', array $attributes = array() ) {
-		return self::open( $attributes ) . $html . self::close();
+	public function row( $attributes = [] ) {
+		if ( $this->cells !== [] ) {
+			$this->rows[] = array( 'cells' => $this->cells, 'attributes' => $attributes );
+			$this->cells = [];
+		}
 	}
 
 	/**
@@ -31,121 +72,104 @@ class HtmlTable {
 	 *
 	 * @return string
 	 */
-	public static function open( array $attributes = array() ) {
-		return Html::openElement(
-			'div',
-			self::mergeAttributes( 'smw-table', $attributes ),
-			''
-		);
-	}
+	public function table( $attributes = [], $transpose = false, $htmlContext = false ) {
 
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $html
-	 * @param array $attributes
-	 *
-	 * @return string
-	 */
-	public static function header( $html = '', array $attributes = array() ) {
-		return Html::rawElement(
-			'div',
-			self::mergeAttributes( 'smw-table-header', $attributes ),
-			$html
-		);
-	}
+		$table = $transpose ? $this->getTransposedTable( $htmlContext ) : $this->getTable( $htmlContext );
 
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $html
-	 * @param array $attributes
-	 *
-	 * @return string
-	 */
-	public static function body( $html = '', array $attributes = array() ) {
-		return Html::rawElement(
-			'div',
-			self::mergeAttributes( 'smw-table-body', $attributes ),
-			$html
-		);
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $html
-	 * @param array $attributes
-	 *
-	 * @return string
-	 */
-	public static function footer( $html = '', array $attributes = array() ) {
-		return Html::rawElement(
-			'div',
-			self::mergeAttributes( 'smw-table-footer', $attributes ),
-			$html
-		);
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $html
-	 * @param array $attributes
-	 *
-	 * @return string
-	 */
-	public static function row( $html = '', array $attributes = array() ) {
-		return Html::rawElement(
-			'div',
-			self::mergeAttributes( 'smw-table-row', $attributes ),
-			$html
-		);
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $html
-	 * @param array $attributes
-	 *
-	 * @return string
-	 */
-	public static function cell( $html = '', array $attributes = array() ) {
-		return Html::rawElement(
-			'div',
-			self::mergeAttributes( 'smw-table-cell', $attributes ),
-			$html
-		);
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return string
-	 */
-	public static function close() {
-		return Html::closeElement(
-			'div'
-		);
-	}
-
-	private static function mergeAttributes( $class, $attr ) {
-
-		$attributes = array();
-
-		// A bit of attribute order
-		if ( isset( $attr['id'] ) ) {
-			$attributes['id'] = $attr['id'];
+		if ( $transpose ) {
+			$attributes['data-transpose'] = true;
 		}
 
-		if ( isset( $attr['class'] ) ) {
-			$attributes['class'] = $class . ' ' . $attr['class'];
+		$this->headers = [];
+		$this->rows = [];
+		$this->cells = [];
+
+		if ( $table !== '' ) {
+			return Html::rawElement( 'table', $attributes, $table );
+		}
+
+		return '';
+	}
+
+	private function getTable( $htmlContext ) {
+
+		$headers = [];
+		$rows = [];
+
+		foreach( $this->headers as $i => $header ) {
+			$headers[] = Html::rawElement( 'th', $header['attributes'], $header['content'] );
+		}
+
+		foreach( $this->rows as $row ) {
+			$rows[] = $this->createRow( implode( '', $row['cells'] ), $row['attributes'], count( $rows ) );
+		}
+
+		return $this->concatenateHeaders( $headers, $htmlContext ) . $this->concatenateRows( $rows, $htmlContext );
+	}
+
+	private function getTransposedTable( $htmlContext ) {
+
+		$rows = [];
+
+		foreach( $this->headers as $hIndex => $header ) {
+			$cells = [];
+			$headerItem = Html::rawElement( 'th', $header['attributes'], $header['content'] );
+
+			foreach( $this->rows as $rIndex => $row ) {
+				$cells[] = $this->getTransposedCell( $hIndex, $row );
+			}
+
+			// Collect new rows
+			$rows[] = $this->createRow( $headerItem . implode( '', $cells ), [], count( $rows ) );
+		}
+
+		return $this->concatenateRows( $rows, $htmlContext );
+	}
+
+	private function createRow( $content = '', $attributes = [], $count ) {
+
+		$alternate = $count % 2 == 0 ? 'row-odd' : 'row-even';
+
+		if ( isset( $attributes['class'] ) ) {
+			$attributes['class'] = $attributes['class'] . ' ' . $alternate;
 		} else {
-			$attributes['class'] = $class;
+			$attributes['class'] = $alternate;
 		}
 
-		return $attributes += $attr;
+		return Html::rawElement( 'tr', $attributes, $content );
+	}
+
+	private function concatenateHeaders( $headers, $htmlContext ) {
+
+		if ( $htmlContext ) {
+			return Html::rawElement( 'thead', [], implode( '', $headers ) );
+		}
+
+		return implode( '', $headers );
+	}
+
+	private function concatenateRows( $rows, $htmlContext ) {
+
+		if ( $htmlContext ) {
+			return Html::rawElement( 'tbody', [], implode( '', $rows ) );
+		}
+
+		return implode( '', $rows );
+	}
+
+	private function getTransposedCell( $index, $row ) {
+
+		if ( isset( $row['cells'][$index] ) ) {
+			return $row['cells'][$index];
+		}
+
+		$attributes = [];
+
+		if ( isset( $row['attributes']['class'] ) && $row['attributes']['class'] === 'smwfooter' ) {
+			$attributes = array( 'class' => 'footer-cell' );
+		}
+
+		return Html::rawElement( 'td', $attributes, '' );
 	}
 
 }

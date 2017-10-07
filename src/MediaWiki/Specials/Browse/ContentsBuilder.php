@@ -14,7 +14,7 @@ use SMW\Message;
 use SMWDataValue as DataValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\RequestOptions;
-use SMW\Utils\HtmlTable;
+use SMW\Utils\HtmlDivTable;
 
 /**
  * @license GNU GPL v2+
@@ -255,7 +255,7 @@ class ContentsBuilder {
 		// In this case, there is an "i" after the "smwb-". This is set here.
 		$dirPrefix = $left ? 'smwb-' : 'smwb-i';
 
-		$html = HtmlTable::open( array( 'class' => "{$dirPrefix}factbox smwb-bottom" ) );
+		$html = HtmlDivTable::open( array( 'class' => "{$dirPrefix}factbox smwb-bottom" ) );
 		$noresult = true;
 
 		$contextPage = $data->getSubject();
@@ -283,7 +283,7 @@ class ContentsBuilder {
 				continue;
 			}
 
-			$head = HtmlTable::cell( $propertyLabel, array( "class" => 'smwb-cell smwb-prophead' ) );
+			$head = HtmlDivTable::cell( $propertyLabel, array( "class" => 'smwb-cell smwb-prophead' ) );
 			$propertyValue = '';
 
 			$values = $data->getPropertyValues( $diProperty );
@@ -329,10 +329,10 @@ class ContentsBuilder {
 
 			}
 
-			$body = HtmlTable::cell( $propertyValue, array( "class" => 'smwb-cell smwb-propval' ) );
+			$body = HtmlDivTable::cell( $propertyValue, array( "class" => 'smwb-cell smwb-propval' ) );
 
 			// display row
-			$html .= HtmlTable::row(
+			$html .= HtmlDivTable::row(
 				( $left ? ( $head . $body ):( $body . $head ) ),
 				array(
 					"class" => "{$dirPrefix}propvalue"
@@ -343,15 +343,15 @@ class ContentsBuilder {
 
 		if ( $noresult ) {
 			$noMsgKey = $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing';
-			$rColumn = HtmlTable::cell( '', array( "class" => 'smwb-cell smwb-prophead' ) );
-			$lColumn = HtmlTable::cell(
+			$rColumn = HtmlDivTable::cell( '', array( "class" => 'smwb-cell smwb-prophead' ) );
+			$lColumn = HtmlDivTable::cell(
 				wfMessage( $isLoading ? 'smw-browse-from-backend' : $noMsgKey )->escaped(),
 				array(
 					"class" => 'smwb-cell smwb-propval'
 				)
 			);
 
-			$html .= HtmlTable::row(
+			$html .= HtmlDivTable::row(
 				( $left ? ( $rColumn . $lColumn ):( $lColumn . $rColumn ) ),
 				array(
 					"class" => "{$dirPrefix}propvalue"
@@ -359,7 +359,7 @@ class ContentsBuilder {
 			);
 		}
 
-		$html .= HtmlTable::close();
+		$html .= HtmlDivTable::close();
 
 		return $html;
 	}
@@ -391,8 +391,8 @@ class ContentsBuilder {
 
 		$label = ValueFormatter::getFormattedSubject( $this->subject );
 
-		return HtmlTable::table(
-			HtmlTable::row(
+		return HtmlDivTable::table(
+			HtmlDivTable::row(
 				$label,
 				array(
 					'class' => 'smwb-title'
@@ -431,8 +431,8 @@ class ContentsBuilder {
 
 		$html = FormHelper::createLinkFromMessage( $linkMsg, $parameters );
 
-		return "<a name=\"smw_browse_incoming\"></a>" . HtmlTable::table(
-			HtmlTable::row(
+		return "<a name=\"smw_browse_incoming\"></a>" . HtmlDivTable::table(
+			HtmlDivTable::row(
 				$html . "&#160;\n",
 				array(
 					'class' => 'smwb-center'
@@ -457,20 +457,20 @@ class ContentsBuilder {
 		$open  = "<div class=\"smw-table smwb-factbox\">" .
 		         "<div class=\"smw-table-row smwb-center\"><div >";
 
-		$open = HtmlTable::open(
+		$open = HtmlDivTable::open(
 			array(
 				'class' => 'smwb-factbox'
 			)
 		);
 
-		$html = HtmlTable::row(
+		$html = HtmlDivTable::row(
 			'&#160;',
 			array(
 				'class' => 'smwb-center'
 			)
 		);
 
-		$close = HtmlTable::close();
+		$close = HtmlDivTable::close();
 
 		if ( $this->getOption( 'showAll' ) ) {
 			return $open . $html . $close;
@@ -503,7 +503,7 @@ class ContentsBuilder {
 					 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
 			$html .= $more ? FormHelper::createLinkFromMessage( $linkMsg, $parameters ) : wfMessage( $linkMsg )->escaped();
 
-			$html = HtmlTable::row(
+			$html = HtmlDivTable::row(
 				$html,
 				array(
 					'class' => 'smwb-center'
