@@ -8,10 +8,10 @@ use SMWQueryResult;
 
 /**
  * Print query results in alphabetic groups displayed in columns, a la the
- * standard Category pages and the default view in Semantic Drilldown.
- * Based on SMW_QP_List by Markus Krötzsch.
+ * standard Category pages.
  *
- * @ingroup SMWQuery
+ * @license GNU GPL v2+
+ * @since 1.6
  *
  * @author David Loomer
  * @author Yaron Koren
@@ -25,22 +25,10 @@ class CategoryResultPrinter extends ResultPrinter {
 	protected $mNumColumns;
 
 	/**
-	 * @see SMWResultPrinter::handleParameters
+	 * @see ResultPrinter::getName
 	 *
-	 * @since 1.6.2
-	 *
-	 * @param array $params
-	 * @param $outputmode
+	 * {@inheritDoc}
 	 */
-	protected function handleParameters( array $params, $outputmode ) {
-		parent::handleParameters( $params, $outputmode );
-
-		$this->mUserParam = trim( $params['userparam'] );
-		$this->mDelim = trim( $params['delim'] );
-		$this->mNumColumns = $params['columns'];
-		$this->mTemplate = $params['template'];
-	}
-
 	public function getName() {
 		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
 	}
@@ -54,6 +42,79 @@ class CategoryResultPrinter extends ResultPrinter {
 		return true;
 	}
 
+	/**
+	 * @see ResultPrinter::supportsRecursiveAnnotation
+	 *
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function supportsRecursiveAnnotation() {
+		return true;
+	}
+
+	/**
+	 * @see ResultPrinter::getParamDefinitions
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
+
+		$definitions[] = [
+			'name' => 'columns',
+			'type' => 'integer',
+			'message' => 'smw-paramdesc-columns',
+			'default' => 3,
+		];
+
+		$definitions[] = [
+			'name' => 'delim',
+			'message' => 'smw-paramdesc-category-delim',
+			'default' => '',
+		];
+
+		$definitions[] = [
+			'name' => 'template',
+			'message' => 'smw-paramdesc-category-template',
+			'default' => '',
+		];
+
+		$definitions[] = [
+			'name' => 'userparam',
+			'message' => 'smw-paramdesc-category-userparam',
+			'default' => '',
+		];
+
+		$definitions[] = [
+			'name' => 'named args',
+			'type' => 'boolean',
+			'message' => 'smw-paramdesc-named_args',
+			'default' => false,
+		];
+
+		return $definitions;
+	}
+
+	/**
+	 * @see ResultPrinter::handleParameters
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function handleParameters( array $params, $outputmode ) {
+		parent::handleParameters( $params, $outputmode );
+
+		$this->mUserParam = trim( $params['userparam'] );
+		$this->mDelim = trim( $params['delim'] );
+		$this->mNumColumns = $params['columns'];
+		$this->mTemplate = $params['template'];
+	}
+
+	/**
+	 * @see ResultPrinter::getResultText
+	 *
+	 * {@inheritDoc}
+	 */
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		$contentsByIndex = array();
 
@@ -181,53 +242,6 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $htmlColumnListRenderer->getHtml();
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getParamDefinitions( array $definitions ) {
-		$definitions = parent::getParamDefinitions( $definitions );
-
-		$definitions[] = [
-			'name' => 'columns',
-			'type' => 'integer',
-			'message' => 'smw-paramdesc-columns',
-			'default' => 3,
-		];
-
-		$definitions[] = [
-			'name' => 'delim',
-			'message' => 'smw-paramdesc-category-delim',
-			'default' => '',
-		];
-
-		$definitions[] = [
-			'name' => 'template',
-			'message' => 'smw-paramdesc-category-template',
-			'default' => '',
-		];
-
-		$definitions[] = [
-			'name' => 'userparam',
-			'message' => 'smw-paramdesc-category-userparam',
-			'default' => '',
-		];
-
-		$definitions[] = [
-			'name' => 'named args',
-			'type' => 'boolean',
-			'message' => 'smw-paramdesc-named_args',
-			'default' => false,
-		];
-
-		$definitions[] = [
-			'name' => 'import-annotation',
-			'type' => 'boolean',
-			'message' => 'smw-paramdesc-import-annotation',
-			'default' => false,
-		];
-
-		return $definitions;
-	}
 
 	private function getFirstLetterForCategory( SMWQueryResult $res, SMWDataItem $dataItem ) {
 
