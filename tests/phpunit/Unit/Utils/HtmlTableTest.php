@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\HtmlTable;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Utils\HtmlTable
@@ -15,56 +16,102 @@ use SMW\Utils\HtmlTable;
  */
 class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 
-	public function testOpenClose() {
+	private $stringValidator;
 
-		$this->assertEquals(
-			'<div class="smw-table"></div>',
-			HtmlTable::open() . HtmlTable::close()
-		);
+	protected function setUp() {
+		parent::setUp();
 
-		$this->assertEquals(
-			HtmlTable::table(),
-			HtmlTable::open() . HtmlTable::close()
+		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
+	}
+
+	public function testStandardTable_Cell_Row() {
+
+		$instance = new HtmlTable();
+
+		$instance->cell( 'Foo', array( 'rel' => 'some' ) );
+		$instance->row( array( 'class' => 'bar' ) );
+
+		$this->stringValidator->assertThatStringContains(
+			'<table><tr class="bar row-odd"><td rel="some">Foo</td></tr></table>',
+			$instance->table()
 		);
 	}
 
-	public function testHeader() {
+	public function testStandardTable_Header_Cell_Row() {
 
-		$this->assertEquals(
-			'<div class="smw-table-header bar">foo</div>',
-			HtmlTable::header( 'foo', array( 'class' => 'bar' ) )
+		$instance = new HtmlTable();
+
+		$instance->header( 'Foo ');
+		$instance->cell( 'Bar' );
+		$instance->row();
+
+		$this->stringValidator->assertThatStringContains(
+			'<table><th>Foo </th><tr class="row-odd"><td>Bar</td></tr></table>',
+			$instance->table()
 		);
 	}
 
-	public function testBody() {
+	public function testStandardTable_Header_Cell_Row_IsHtml() {
 
-		$this->assertEquals(
-			'<div class="smw-table-body bar">foo</div>',
-			HtmlTable::body( 'foo', array( 'class' => 'bar' ) )
+		$instance = new HtmlTable();
+
+		$instance->header( 'Foo' );
+		$instance->cell( 'Bar' );
+		$instance->row();
+
+		$this->stringValidator->assertThatStringContains(
+			'<table><thead><th>Foo</th></thead><tbody><tr class="row-odd"><td>Bar</td></tr></tbody></table>',
+			$instance->table( [], false, true )
 		);
 	}
 
-	public function testFooter() {
+	public function testTransposedTable_Cell_Row() {
 
-		$this->assertEquals(
-			'<div class="smw-table-footer bar">foo</div>',
-			HtmlTable::footer( 'foo', array( 'class' => 'bar' ) )
+		$instance = new HtmlTable();
+
+		// We need a dedicated header definition to support a table transpose
+		$instance->header( 'Foo' );
+		$instance->header( 'Bar' );
+
+		$instance->cell( 'lala', array( 'class' => 'foo' ) );
+		$instance->row();
+
+		$instance->cell( 'lula', array( 'rel' => 'tuuu' ) );
+		$instance->cell( 'lila' );
+		$instance->row();
+
+		$this->stringValidator->assertThatStringContains(
+			[
+				'<table data-transpose="1"><tr class="row-odd"><th>Foo</th>',
+				'<td class="foo">lala</td><td rel="tuuu">lula</td></tr><tr class="row-even"><th>Bar</th>',
+				'<td></td><td>lila</td></tr></table>'
+			],
+			$instance->table( [], true )
 		);
 	}
 
-	public function testRow() {
+	public function testTransposedTable_Cell_Row_IsHtml() {
 
-		$this->assertEquals(
-			'<div class="smw-table-row bar">foo</div>',
-			HtmlTable::row( 'foo', array( 'class' => 'bar' ) )
-		);
-	}
+		$instance = new HtmlTable();
 
-	public function testCell() {
+		// We need a dedicated header definition to support a table transpose
+		$instance->header( 'Foo' );
+		$instance->header( 'Bar' );
 
-		$this->assertEquals(
-			'<div class="smw-table-cell bar">foo</div>',
-			HtmlTable::cell( 'foo', array( 'class' => 'bar' ) )
+		$instance->cell( 'lala', array( 'class' => 'foo' ) );
+		$instance->row();
+
+		$instance->cell( 'lula', array( 'rel' => 'tuuu' ) );
+		$instance->cell( 'lila' );
+		$instance->row();
+
+		$this->stringValidator->assertThatStringContains(
+			[
+				'<table data-transpose="1"><tbody><tr class="row-odd"><th>Foo</th><td class="foo">lala</td>',
+				'<td rel="tuuu">lula</td></tr><tr class="row-even"><th>Bar</th><td></td><td>lila</td></tr>',
+				'</tbody></table>'
+			],
+			$instance->table( [], true, true )
 		);
 	}
 

@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use SMW\Message;
-use SMW\Utils\HtmlTable;
+use SMW\Utils\HtmlDivTable;
 use SMW\Highlighter;
 use Html;
 
@@ -25,7 +25,7 @@ class QueryInputWidget {
 	 */
 	public static function table( $queryString , $printoutString ) {
 
-		$table = HtmlTable::open( [ 'style' => "width: 100%;" ] );
+		$table = HtmlDivTable::open( [ 'style' => "width: 100%;" ] );
 
 		$msg = Message::get( 'smw-ask-condition-input-assistance', Message::TEXT, Message::USER_LANGUAGE ) .
 		Html::rawElement(
@@ -51,17 +51,17 @@ class QueryInputWidget {
 		$note = Highlighter::factory( 'note' );
 		$note->setContent( [ 'content' => $msg ] );
 
-		$table .= HtmlTable::header(
-			HtmlTable::cell(
+		$table .= HtmlDivTable::header(
+			HtmlDivTable::cell(
 				Message::get( 'smw_ask_queryhead', Message::TEXT, Message::USER_LANGUAGE ) . '&#160;' . $note->getHtml(),
 				[
 					'class' => 'condition',
 					'style' => 'width: 49.5%;'
 				]
-			) .	HtmlTable::cell(
+			) .	HtmlDivTable::cell(
 				'',
 				[]
-			) .	HtmlTable::cell(
+			) .	HtmlDivTable::cell(
 				Message::get( 'smw_ask_printhead', Message::TEXT, Message::USER_LANGUAGE ),
 				[
 					'class' => 'printout',
@@ -70,22 +70,22 @@ class QueryInputWidget {
 			)
 		);
 
-		$table .= HtmlTable::row(
-			HtmlTable::cell(
+		$table .= HtmlDivTable::row(
+			HtmlDivTable::cell(
 				'<textarea id="ask-query-condition" class="smw-ask-query-condition" name="q" rows="6">' . htmlspecialchars( $queryString ) . '</textarea>',
 				[]
-			) . HtmlTable::cell(
+			) . HtmlDivTable::cell(
 				'',
 				[
 					'style' => 'width:10px; border:0px; padding: 0px;'
 				]
-			) . HtmlTable::cell(
+			) . HtmlDivTable::cell(
 				'<textarea id="smw-property-input" class="smw-ask-query-printout" name="po" rows="6">' . htmlspecialchars( $printoutString ) . '</textarea>',
 				[]
 			)
 		);
 
-		$table .= HtmlTable::close();
+		$table .= HtmlDivTable::close();
 
 		return $table;
 	}
