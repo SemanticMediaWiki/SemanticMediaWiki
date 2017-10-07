@@ -442,7 +442,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return IParamDefinition[]
 	 */
-	public static function getParameters( $context = null ) {
+	public static function getParameters( $context = null, $resultPrinter = null ) {
 		$params = array();
 
 		$allowedFormats = $GLOBALS['smwgResultFormats'];
@@ -524,6 +524,14 @@ class SMWQueryProcessor implements QueryContext {
 			);
 		}
 
+		if ( !( $resultPrinter instanceof \SMW\ResultPrinter ) || $resultPrinter->supportsRecursiveAnnotation() ) {
+			$params['import-annotation'] = array(
+				'message' => 'smw-paramdesc-import-annotation',
+				'type' => 'boolean',
+				'default' => false
+			);
+		}
+
 		// Give grep a chance to find the usages:
 		// smw-paramdesc-format, smw-paramdesc-source, smw-paramdesc-limit, smw-paramdesc-offset,
 		// smw-paramdesc-link, smw-paramdesc-sort, smw-paramdesc-order, smw-paramdesc-headers,
@@ -560,8 +568,10 @@ class SMWQueryProcessor implements QueryContext {
 		SMWParamFormat::resolveFormatAliases( $format );
 
 		if ( array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
+			$resultPrinter = self::getResultPrinter( $format );
+
 			return ParamDefinition::getCleanDefinitions(
-				self::getResultPrinter( $format )->getParamDefinitions( self::getParameters() )
+				$resultPrinter->getParamDefinitions( self::getParameters( null, $resultPrinter ) )
 			);
 		} else {
 			return array();

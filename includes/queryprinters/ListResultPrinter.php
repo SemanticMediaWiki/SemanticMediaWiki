@@ -486,6 +486,16 @@ class ListResultPrinter extends ResultPrinter {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function supportsRecursiveAnnotation() {
+		return true;
+	}
+
+
+	/**
 	 * @inheritdoc
 	 */
 	public function getParamDefinitions( array $definitions ) {
@@ -542,12 +552,6 @@ class ListResultPrinter extends ResultPrinter {
 		$definitions['outrotemplate'] = [
 			'message' => 'smw-paramdesc-outrotemplate',
 			'default' => '',
-		];
-
-		$definitions['import-annotation'] = [
-			'message' => 'smw-paramdesc-import-annotation',
-			'type' => 'boolean',
-			'default' => false,
 		];
 
 		return $definitions;

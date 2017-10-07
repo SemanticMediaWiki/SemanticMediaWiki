@@ -80,8 +80,10 @@ class DocumentationParserFunction implements HookHandler {
 			return array();
 		}
 
+		$resultPrinter = SMWQueryProcessor::getResultPrinter( $format );
+
 		return ParamDefinition::getCleanDefinitions(
-			SMWQueryProcessor::getResultPrinter( $format )->getParamDefinitions( SMWQueryProcessor::getParameters() )
+			$resultPrinter->getParamDefinitions( SMWQueryProcessor::getParameters( null, $resultPrinter ) )
 		);
 	}
 
