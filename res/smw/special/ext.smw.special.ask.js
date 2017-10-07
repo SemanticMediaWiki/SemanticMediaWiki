@@ -246,12 +246,12 @@
 			condVal = condition.val().trim(),
 			isEmpty = condVal === '';
 
-			var searchSuggester = smw.Factory.newSearchSuggester(
+			var entitySuggester = smw.Factory.newEntitySuggester(
 				condition
 			);
 
 			// Register autocomplete default tokens
-			searchSuggester.registerDefaultTokenList(
+			entitySuggester.registerDefaultTokenList(
 				[
 					'property',
 					'concept',
