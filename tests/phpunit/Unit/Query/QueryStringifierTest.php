@@ -29,11 +29,22 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider queryProvider
 	 */
+	public function testToJson( $query, $expected ) {
+
+		$this->assertEquals(
+			$expected,
+			json_decode( QueryStringifier::toJson( $query ), true )
+		);
+	}
+
+	/**
+	 * @dataProvider queryProvider
+	 */
 	public function testGet( $query, $array, $expected ) {
 
 		$this->assertSame(
 			$expected,
-			QueryStringifier::get( $query )
+			QueryStringifier::toString( $query )
 		);
 	}
 

@@ -20,7 +20,7 @@ class QueryStringifier {
 	 * @return string
 	 */
 	public static function rawUrlEncode( Query $query ) {
-		return rawurlencode( self::get( $query ) );
+		return rawurlencode( self::toString( $query ) );
 	}
 
 	/**
@@ -76,7 +76,18 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function get( Query $query, $printParameters = false ) {
+	public static function toJson( Query $query, $printParameters = false ) {
+		return json_encode( self::toArray( $query, $printParameters ) );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Query $query
+	 *
+	 * @return string
+	 */
+	public static function toString( Query $query, $printParameters = false ) {
 
 		$serialized = self::toArray( $query, $printParameters );
 
