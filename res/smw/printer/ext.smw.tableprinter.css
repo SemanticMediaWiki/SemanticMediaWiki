@@ -237,12 +237,12 @@
 	}
 }
 
-.smw-datatable-toolbar .smw-dropdown ul {
+.smw-datatable-toolbar .smw-dropdown .smw-dropdown-menu {
 	right: 0px;
 	left: initial;
 }
 
-.smw-datatable-toolbar .smw-dropdown ul li {
+.smw-datatable-toolbar .smw-dropdown .smw-dropdown-menu li {
 	min-width: 60px;
 	text-align: right;
 }
