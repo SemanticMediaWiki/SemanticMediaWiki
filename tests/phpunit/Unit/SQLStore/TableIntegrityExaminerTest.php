@@ -176,7 +176,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$tableBuilder->expects( $this->any() )
-			->method( 'getProcessLog' )
+			->method( 'getLog' )
 			->will( $this->returnValue( array( 'smw_object_ids' => array( 'smw_sort' => 'new' ) ) ) );
 
 		$tableBuilder->expects( $this->once() )

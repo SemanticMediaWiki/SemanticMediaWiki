@@ -60,9 +60,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTables' )
 			->will( $this->returnValue( array( $table ) ) );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'create' ] )
+			->getMockForAbstractClass();
 
 		$tableBuilder->expects( $this->once() )
 			->method( 'create' );
@@ -102,9 +103,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTables' )
 			->will( $this->returnValue( array( $table ) ) );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'create' ] )
+			->getMockForAbstractClass();
 
 		$tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
 			->disableOriginalConstructor()
@@ -137,9 +139,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTables' )
 			->will( $this->returnValue( array( $table ) ) );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'drop' ] )
+			->getMockForAbstractClass();
 
 		$tableBuilder->expects( $this->once() )
 			->method( 'drop' );

@@ -3,7 +3,6 @@
 namespace SMW\SQLStore;
 
 use SMW\SQLStore\TableBuilder\Table;
-use Onoi\MessageReporter\MessageReporterAware;
 
 /**
  * @private
@@ -17,7 +16,7 @@ use Onoi\MessageReporter\MessageReporterAware;
  *
  * @author mwjames
  */
-interface TableBuilder extends MessageReporterAware {
+interface TableBuilder {
 
 	/**
 	 * Common prefix used by all Semantic MediaWiki tables
@@ -116,7 +115,7 @@ interface TableBuilder extends MessageReporterAware {
 	 *
 	 * @param array
 	 */
-	public function getProcessLog();
+	public function getLog();
 
 	/**
 	 * Allows to check and validate the build on specific events
