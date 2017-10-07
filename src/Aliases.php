@@ -9,8 +9,10 @@ class_alias( 'SMW\Updater\DeferredCallableUpdate', 'SMW\DeferredCallableUpdate' 
 class_alias( 'SMW\Parser\InTextAnnotationParser', 'SMW\InTextAnnotationParser' );
 class_alias( 'SMW\Encoder', 'SMW\UrlEncoder' );
 class_alias( 'SMW\Query\ResultPrinter', 'SMW\QueryResultPrinter' );
+class_alias( 'SMW\Query\ResultPrinter', 'SMWIResultPrinter' );
 class_alias( 'SMW\Query\ExportPrinter', 'SMW\ExportPrinter' );
 class_alias( 'SMW\Query\ResultPrinters\ResultPrinter', 'SMW\ResultPrinter' );
+class_alias( 'SMW\Query\ResultPrinters\ResultPrinter', 'SMWResultPrinter' );
 class_alias( 'SMW\Query\ResultPrinters\FileExportPrinter', 'SMW\FileExportPrinter' );
 
 // 1.9.
@@ -25,18 +27,16 @@ class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );
 class_alias( 'SMW\Exception\DataItemException', 'SMWDataItemException' );
 class_alias( 'SMW\SQLStore\PropertyTableDefinition', 'SMWSQLStore3Table' );
 class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
-class_alias( 'SMW\TableResultPrinter', 'SMWTableResultPrinter' );
+class_alias( 'SMW\Query\ResultPrinters\TableResultPrinter', 'SMWTableResultPrinter' );
 
 // 2.0
 class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );
-class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
 class_alias( 'SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );
 class_alias( 'SMW\CategoryResultPrinter', 'SMWCategoryResultPrinter' );
 class_alias( 'SMW\DsvResultPrinter', 'SMWDSVResultPrinter' );
 class_alias( 'SMW\EmbeddedResultPrinter', 'SMWEmbeddedResultPrinter' );
 class_alias( 'SMW\RdfResultPrinter', 'SMWRDFResultPrinter' );
 class_alias( 'SMW\ListResultPrinter', 'SMWListResultPrinter' );
-class_alias( 'SMW\QueryResultPrinter', 'SMWIResultPrinter' );
 class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
 
 // 2.0
