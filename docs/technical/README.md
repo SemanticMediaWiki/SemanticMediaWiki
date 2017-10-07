@@ -21,6 +21,7 @@ If you are new to SMW development, have a look at the:
 - [`Importer`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Importer/README.md) contains a summary about the process and technical background of the content importer
 - [`ExtraneousLanguage`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/ExtraneousLanguage/README.md)
 - [`Serializers`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/doc.serializers.md) contains information about the Semantic MediaWiki serializers
+- [`ext.smw.suggester`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/res/smw/suggester/README.md) on how to register additional tokens or context objects
 
 ## Code snippets and code examples
 
