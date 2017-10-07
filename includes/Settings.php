@@ -422,7 +422,8 @@ class Settings extends Options {
 			),
 			'removal' => array(
 				'smwgOnDeleteAction' => '2.4.0',
-				'smwgAutocompleteInSpecialAsk' => '3.0.0'
+				'smwgAutocompleteInSpecialAsk' => '3.0.0',
+				'smwgSparqlDatabaseMaster' => '3.0.0'
 			)
 		);
 	}
