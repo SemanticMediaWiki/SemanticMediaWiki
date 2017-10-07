@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\ResultPrinters;
 
 use Linker;
 use ParamProcessor\ParamDefinition;
@@ -9,7 +9,9 @@ use Sanitizer;
 use SMWInfolink;
 use SMWQuery;
 use SMWQueryResult;
+use SMW\Message;
 use Title;
+use SMW\Query\ResultPrinter as IResultPrinter;
 
 /**
  * Abstract base class for printing query results.
@@ -40,7 +42,7 @@ use Title;
  *
  * @ingroup SMWQuery
  */
-abstract class ResultPrinter extends \ContextSource implements QueryResultPrinter {
+abstract class ResultPrinter extends \ContextSource implements IResultPrinter {
 
 	/**
 	 * @deprecated Use $params instead. Will be removed in 1.10.

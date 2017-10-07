@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\ResultPrinters;
 
+use SMW\Query\ExportPrinter;
 use SMWQuery;
 use SMWQueryProcessor;
 use SMWQueryResult;
