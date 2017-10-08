@@ -3,8 +3,8 @@
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
 use Onoi\HttpRequest\HttpRequest;
-use SMW\SPARQLStore\BadHttpResponseMapper;
-use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
+use SMW\SPARQLStore\HttpResponseErrorMapper;
+use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\SPARQLStore\RepositoryClient;
@@ -19,22 +19,22 @@ use SMWExporter as Exporter;
  *
  * @author Markus Krötzsch
  */
-class GenericHttpRepositoryConnector implements RepositoryConnection {
+class GenericRepositoryConnector implements RepositoryConnection {
 
 	/**
 	 * Flag denoting endpoints being capable of querying
 	 */
-	const EP_TYPE_QUERY = 1;
+	const ENDP_QUERY = 1;
 
 	/**
 	 * Flag denoting endpoints being capable of updating
 	 */
-	const EP_TYPE_UPDATE = 2;
+	const ENDP_UPDATE = 2;
 
 	/**
 	 * Flag denoting endpoints being capable of SPARQL HTTP graph management
 	 */
-	const EP_TYPE_DATA = 4;
+	const ENDP_DATA = 4;
 
 	/**
 	 * @var RepositoryClient
@@ -50,7 +50,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	protected $httpRequest;
 
 	/**
-	 * @var BadHttpResponseMapper
+	 * @var HttpResponseErrorMapper
 	 */
 	private $badHttpResponseMapper;
 
@@ -72,7 +72,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 		$this->httpRequest->setOption( CURLOPT_RETURNTRANSFER, true ); // put result into variable
 		$this->httpRequest->setOption( CURLOPT_FAILONERROR, true );
 
-		$this->setConnectionTimeoutInSeconds( 10 );
+		$this->setConnectionTimeout( 10 );
 	}
 
 	/**
@@ -96,6 +96,15 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	}
 
 	/**
+	 * @since  2.0
+	 *
+	 * @param integer $timeout in seconds
+	 */
+	public function setConnectionTimeout( $timeout = 10 ) {
+		$this->httpRequest->setOption( CURLOPT_CONNECTTIMEOUT, $timeout );
+	}
+
+	/**
 	 * Check if the database can be contacted.
 	 *
 	 * @todo SPARQL endpoints sometimes return errors if no (valid) query
@@ -108,21 +117,23 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return boolean to indicate success
 	 */
-	public function ping( $endpointType = self::EP_TYPE_QUERY ) {
-		if ( $endpointType == self::EP_TYPE_QUERY ) {
+	public function ping( $endpointType = self::ENDP_QUERY ) {
+		if ( $endpointType == self::ENDP_QUERY ) {
 			$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
 			$this->httpRequest->setOption( CURLOPT_NOBODY, true );
 			$this->httpRequest->setOption( CURLOPT_POST, true );
-		} elseif ( $endpointType == self::EP_TYPE_UPDATE ) {
+		} elseif ( $endpointType == self::ENDP_UPDATE ) {
 
 			if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 				return false;
 			}
 
 			$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
-			$this->httpRequest->setOption( CURLOPT_NOBODY, false ); // 4Store gives 404 instead of 500 with CURLOPT_NOBODY
 
-		} else { // ( $endpointType == self::EP_TYPE_DATA )
+			// 4Store gives 404 instead of 500 with CURLOPT_NOBODY
+			$this->httpRequest->setOption( CURLOPT_NOBODY, false );
+
+		} else { // ( $endpointType == self::ENDP_DATA )
 
 			if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 				return false;
@@ -138,8 +149,10 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 			return true;
 		}
 
-		// valid HTTP responses from a complaining SPARQL endpoint that is alive and kicking
+		// Valid HTTP responses from a complaining SPARQL endpoint that is
+		// alive and kicking
 		$httpCode = $this->httpRequest->getLastTransferInfo( CURLINFO_HTTP_CODE );
+
 		return ( ( $httpCode == 500 ) || ( $httpCode == 400 ) );
 	}
 
@@ -413,7 +426,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	public function doQuery( $sparql ) {
 
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
@@ -466,7 +479,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	public function doUpdate( $sparql ) {
 
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
@@ -510,7 +523,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	public function doHttpPost( $payload ) {
 
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
@@ -572,22 +585,10 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	protected function mapHttpRequestError( $endpoint, $sparql ) {
 
 		if ( $this->badHttpResponseMapper === null ) {
-			$this->badHttpResponseMapper = new BadHttpResponseMapper( $this->httpRequest );
+			$this->badHttpResponseMapper = new HttpResponseErrorMapper( $this->httpRequest );
 		}
 
-		$this->badHttpResponseMapper->mapResponseToHttpRequest( $endpoint, $sparql );
-	}
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param integer $timeout
-	 *
-	 * @return SparqlDatabase
-	 */
-	public function setConnectionTimeoutInSeconds( $timeout = 10 ) {
-		$this->httpRequest->setOption( CURLOPT_CONNECTTIMEOUT, $timeout );
-		return $this;
+		$this->badHttpResponseMapper->mapErrorResponse( $endpoint, $sparql );
 	}
 
 }

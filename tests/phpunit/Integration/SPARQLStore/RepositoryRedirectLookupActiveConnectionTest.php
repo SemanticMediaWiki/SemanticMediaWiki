@@ -34,8 +34,9 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 		}
 
 		$this->repositoryConnection = $this->store->getConnection( 'sparql' );
+		$this->repositoryConnection->setConnectionTimeout( 5 );
 
-		if ( !$this->repositoryConnection->setConnectionTimeoutInSeconds( 5 )->ping() ) {
+		if ( !$this->repositoryConnection->ping() ) {
 			$this->markTestSkipped( "Can't connect to the RepositoryConnector" );
 		}
 	}

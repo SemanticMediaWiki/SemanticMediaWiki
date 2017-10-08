@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\SPARQLStore\BadHttpResponseMapper;
+use SMW\SPARQLStore\HttpResponseErrorMapper;
 
 /**
- * @covers \SMW\SPARQLStore\BadHttpResponseMapper
+ * @covers \SMW\SPARQLStore\HttpResponseErrorMapper
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\SPARQLStore\BadHttpResponseMapper;
  *
  * @author mwjames
  */
-class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
+class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -22,8 +22,8 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\BadHttpResponseMapper',
-			new BadHttpResponseMapper( $httpRequest )
+			HttpResponseErrorMapper::class,
+			new HttpResponseErrorMapper( $httpRequest )
 		);
 	}
 
@@ -40,8 +40,8 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLastErrorCode' )
 			->will( $this->returnValue( $curlErrorCode ) );
 
-		$instance = new BadHttpResponseMapper( $httpRequest );
-		$instance->mapResponseToHttpRequest( 'Foo', 'Bar' );
+		$instance = new HttpResponseErrorMapper( $httpRequest );
+		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 
 	public function testResponseToHttpRequestForInvalidErrorCodeThrowsException() {
@@ -54,10 +54,10 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLastErrorCode' )
 			->will( $this->returnValue( 99999 ) );
 
-		$instance = new BadHttpResponseMapper( $httpRequest );
+		$instance = new HttpResponseErrorMapper( $httpRequest );
 
-		$this->setExpectedException( '\SMW\SPARQLStore\Exception\HttpDatabaseConnectionException' );
-		$instance->mapResponseToHttpRequest( 'Foo', 'Bar' );
+		$this->setExpectedException( '\SMW\SPARQLStore\Exception\HttpEndpointConnectionException' );
+		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 
 	/**
@@ -81,10 +81,10 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( CURLINFO_HTTP_CODE ) )
 			->will( $this->returnValue( $httpErrorCode ) );
 
-		$instance = new BadHttpResponseMapper( $httpRequest );
+		$instance = new HttpResponseErrorMapper( $httpRequest );
 
-		$this->setExpectedException( '\SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException' );
-		$instance->mapResponseToHttpRequest( 'Foo', 'Bar' );
+		$this->setExpectedException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
+		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 
 	public function testResponseToHttpRequesForHttpErrorThatNotThrowsException() {
@@ -102,8 +102,8 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( CURLINFO_HTTP_CODE ) )
 			->will( $this->returnValue( 404 ) );
 
-		$instance = new BadHttpResponseMapper( $httpRequest );
-		$instance->mapResponseToHttpRequest( 'Foo', 'Bar' );
+		$instance = new HttpResponseErrorMapper( $httpRequest );
+		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 
 	public function curlErrorCodeThatNotThrowsExceptionProvider() {
