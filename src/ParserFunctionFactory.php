@@ -12,6 +12,7 @@ use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\ParserFunctions\DeclareParserFunction;
 use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
 use SMW\Utils\CircularReferenceGuard;
+use SMW\Parser\RecursiveTextProcessor;
 use Parser;
 
 /**
@@ -149,6 +150,10 @@ class ParserFunctionFactory {
 
 		$askParserFunction->setPostProcHandler(
 			$applicationFactory->create( 'PostProcHandler', $parser->getOutput() )
+		);
+
+		$askParserFunction->setRecursiveTextProcessor(
+			new RecursiveTextProcessor( $parser )
 		);
 
 		return $askParserFunction;
