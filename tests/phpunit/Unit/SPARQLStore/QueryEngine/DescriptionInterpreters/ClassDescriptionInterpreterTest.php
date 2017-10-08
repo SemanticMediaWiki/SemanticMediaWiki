@@ -6,7 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Query\Language\ClassDescription;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\Tests\Utils\UtilityFactory;
@@ -32,13 +32,13 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter',
-			new ClassDescriptionInterpreter( $compoundConditionBuilder )
+			new ClassDescriptionInterpreter( $conditionBuilder )
 		);
 	}
 
@@ -48,11 +48,11 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ClassDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ClassDescriptionInterpreter( $conditionBuilder );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -66,12 +66,12 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
-		$compoundConditionBuilder->setResultVariable( $resultVariable );
-		$compoundConditionBuilder->setJoinVariable( $resultVariable );
-		$compoundConditionBuilder->setOrderByProperty( $orderByProperty );
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder->setOrderByProperty( $orderByProperty );
 
-		$instance = new ClassDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ClassDescriptionInterpreter( $conditionBuilder );
 
 		$condition = $instance->interpretDescription( $description );
 
@@ -82,7 +82,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedConditionString,
-			$compoundConditionBuilder->convertConditionToString( $condition )
+			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
 
@@ -108,12 +108,12 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
-		$compoundConditionBuilder->setHierarchyLookup( $hierarchyLookup );
-		$compoundConditionBuilder->setResultVariable( $resultVariable );
-		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
+		$conditionBuilder->setHierarchyLookup( $hierarchyLookup );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
 
-		$instance = new ClassDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ClassDescriptionInterpreter( $conditionBuilder );
 
 		$condition = $instance->interpretDescription(
 			new ClassDescription( $category )
@@ -127,7 +127,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$compoundConditionBuilder->convertConditionToString( $condition )
+			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
 

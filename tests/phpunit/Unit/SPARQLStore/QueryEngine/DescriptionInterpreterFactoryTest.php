@@ -25,7 +25,7 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructDispatchingDescriptionInterpreter() {
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -33,7 +33,7 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\DispatchingDescriptionInterpreter',
-			$instance->newDispatchingDescriptionInterpreter( $compoundConditionBuilder )
+			$instance->newDispatchingDescriptionInterpreter( $conditionBuilder )
 		);
 	}
 

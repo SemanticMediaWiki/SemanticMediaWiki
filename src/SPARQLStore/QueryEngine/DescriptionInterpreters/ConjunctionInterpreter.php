@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
@@ -26,9 +26,9 @@ use SMWTurtleSerializer as TurtleSerializer;
 class ConjunctionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var CompoundConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $compoundConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var Exporter
@@ -38,10 +38,10 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
+	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
-		$this->compoundConditionBuilder = $compoundConditionBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -61,8 +61,8 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$joinVariable = $this->compoundConditionBuilder->getJoinVariable();
-		$orderByProperty = $this->compoundConditionBuilder->getOrderByProperty();
+		$joinVariable = $this->conditionBuilder->getJoinVariable();
+		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
 		$subDescriptions = $description->getDescriptions();
 
@@ -90,7 +90,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		$result->weakConditions = $subConditionElements->weakConditions;
 		$result->orderVariables = $subConditionElements->orderVariables;
 
-		$this->compoundConditionBuilder->addOrderByDataForProperty(
+		$this->conditionBuilder->addOrderByDataForProperty(
 			$result,
 			$joinVariable,
 			$orderByProperty
@@ -105,7 +105,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 
 		// empty conjunction: true
 		if ( $count == 0 ) {
-			return $this->compoundConditionBuilder->newTrueCondition(
+			return $this->conditionBuilder->newTrueCondition(
 				$joinVariable,
 				$orderByProperty
 			);
@@ -114,10 +114,10 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		// conjunction with one element
 		if ( $count == 1 ) {
 
-			$this->compoundConditionBuilder->setJoinVariable( $joinVariable );
-			$this->compoundConditionBuilder->setOrderByProperty( $orderByProperty );
+			$this->conditionBuilder->setJoinVariable( $joinVariable );
+			$this->conditionBuilder->setOrderByProperty( $orderByProperty );
 
-			return $this->compoundConditionBuilder->mapDescriptionToCondition(
+			return $this->conditionBuilder->mapDescriptionToCondition(
 				reset( $subDescriptions )
 			);
 		}
@@ -142,10 +142,10 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 
 		foreach ( $subDescriptions as $subDescription ) {
 
-			$this->compoundConditionBuilder->setJoinVariable( $joinVariable );
-			$this->compoundConditionBuilder->setOrderByProperty( null );
+			$this->conditionBuilder->setJoinVariable( $joinVariable );
+			$this->conditionBuilder->setOrderByProperty( null );
 
-			$subCondition = $this->compoundConditionBuilder->mapDescriptionToCondition(
+			$subCondition = $this->conditionBuilder->mapDescriptionToCondition(
 				$subDescription
 			);
 

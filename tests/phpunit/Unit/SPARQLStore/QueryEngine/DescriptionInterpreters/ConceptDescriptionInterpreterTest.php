@@ -7,7 +7,7 @@ use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ConceptDescription;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\Tests\Utils\UtilityFactory;
@@ -55,13 +55,13 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter',
-			new ConceptDescriptionInterpreter( $compoundConditionBuilder )
+			new ConceptDescriptionInterpreter( $conditionBuilder )
 		);
 	}
 
@@ -71,11 +71,11 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ConceptDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ConceptDescriptionInterpreter( $conditionBuilder );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -93,13 +93,13 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
-		$compoundConditionBuilder->setResultVariable( $resultVariable );
-		$compoundConditionBuilder->setCircularReferenceGuard( $circularReferenceGuard );
-		$compoundConditionBuilder->setJoinVariable( $resultVariable );
-		$compoundConditionBuilder->setOrderByProperty( $orderByProperty );
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setCircularReferenceGuard( $circularReferenceGuard );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder->setOrderByProperty( $orderByProperty );
 
-		$instance = new ConceptDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ConceptDescriptionInterpreter( $conditionBuilder );
 
 		$condition = $instance->interpretDescription( $description );
 
@@ -110,7 +110,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedConditionString,
-			$compoundConditionBuilder->convertConditionToString( $condition )
+			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
 
@@ -146,13 +146,13 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$orderByProperty = null;
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
-		$compoundConditionBuilder->setResultVariable( $resultVariable );
-		$compoundConditionBuilder->setCircularReferenceGuard( $circularReferenceGuard );
-		$compoundConditionBuilder->setJoinVariable( $resultVariable );
-		$compoundConditionBuilder->setOrderByProperty( $orderByProperty );
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setCircularReferenceGuard( $circularReferenceGuard );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder->setOrderByProperty( $orderByProperty );
 
-		$instance = new ConceptDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ConceptDescriptionInterpreter( $conditionBuilder );
 
 		$condition = $instance->interpretDescription( $description );
 
@@ -167,7 +167,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedConditionString,
-			$compoundConditionBuilder->convertConditionToString( $condition )
+			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
 

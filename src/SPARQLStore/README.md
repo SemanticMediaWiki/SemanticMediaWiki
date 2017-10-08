@@ -6,7 +6,26 @@ The `SPARQLStore` is composed of a base store (by default using the existing `SQ
 
 ## Overview
 
-![image](https://cloud.githubusercontent.com/assets/1245473/9708428/e1e2bf1a-551b-11e5-920c-dd97d66d2ec7.png)
+```
+  SPARQLStore
+	|- SPARQLStoreFactory
+	|- ConnectionManager
+	|	|- RepositoryConnectionProvider
+	|		|- RepositoryClient
+	|		|- RepositoryConnection
+	|			|- FourstoreRepositoryConnector
+	|			|- FusekiRepositoryConnector
+	|			|- GenericRepositoryConnector
+	|			|- VirtuosoRepositoryConnector
+	|- TurtleTriplesBuilder
+		|- RepositoryRedirectLookup
+	|- ReplicationDataTruncator
+	|- QueryEngine
+		|- HttpResponseParser
+			|- XmlResponseParser
+		|- ConditionBuilder
+		|- DescriptionInterpreter
+```
 
 ## Repository connector
 
@@ -37,7 +56,7 @@ $connection = $connectionManager->getConnection( 'sparql' )
 The `QueryEngine` is responsible for transforming an `#ask` description object into a qualified
 [`SPARQL` query][sparql-query] expression.
 
-- The `CompoundConditionBuilder` builds a SPARQL condition from an `#ask` query artefact (aka [`Description`][ask query] object)
+- The `ConditionBuilder` builds a SPARQL condition from an `#ask` query artefact (aka [`Description`][ask query] object)
 - The condition is transformed into a qualified `SPARQL` statement for which the [repository connector][connector] is making a http request to the back-end while awaiting an expected list of subjects that matched the condition in form of a `XML` or `JSON` response
 - The raw results are being parsed by a `HttpResponseParser` to provide a unified `RepositoryResult` object
 - During the final step, the `QueryResultFactory` converts the `RepositoryResult` into a SMW specific `QueryResult` object which will fetch the remaining data (those selected as printrequests) from the base store and make them available to a [`QueryResultPrinter`][resultprinter]

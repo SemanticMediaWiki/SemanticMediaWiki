@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
@@ -22,9 +22,9 @@ use SMWTurtleSerializer as TurtleSerializer;
 class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var CompoundConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $compoundConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var Exporter
@@ -34,10 +34,10 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
+	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
-		$this->compoundConditionBuilder = $compoundConditionBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -57,8 +57,8 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$joinVariable = $this->compoundConditionBuilder->getJoinVariable();
-		$orderByProperty = $this->compoundConditionBuilder->getOrderByProperty();
+		$joinVariable = $this->conditionBuilder->getJoinVariable();
+		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
 		list( $condition, $namespaces ) = $this->mapCategoriesToConditionElements(
 			$description->getCategories(),
@@ -73,7 +73,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 		$result = new WhereCondition( $condition, true, $namespaces );
 
-		$this->compoundConditionBuilder->addOrderByDataForProperty(
+		$this->conditionBuilder->addOrderByDataForProperty(
 			$result,
 			$joinVariable,
 			$orderByProperty,
@@ -117,11 +117,11 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 	private function tryToAddClassHierarchyPattern( $category, $depth, &$categoryExpName ) {
 
-		if ( !$this->compoundConditionBuilder->canUseQFeature( SMW_SPARQL_QF_SUBC ) || ( $depth !== null && $depth < 1 ) ) {
+		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBC ) || ( $depth !== null && $depth < 1 ) ) {
 			return '';
 		}
 
-		if ( $this->compoundConditionBuilder->getHierarchyLookup() === null || !$this->compoundConditionBuilder->getHierarchyLookup()->hasSubcategory( $category ) ) {
+		if ( $this->conditionBuilder->getHierarchyLookup() === null || !$this->conditionBuilder->getHierarchyLookup()->hasSubcategory( $category ) ) {
 			return '';
 		}
 
@@ -130,7 +130,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		// @see notes in SomePropertyInterpreter
 		$pathOp = $depth > 1 || $depth === null ? '*' : '?';
 
-		$classHierarchyByVariable = "?" . $this->compoundConditionBuilder->getNextVariable( 'sc' );
+		$classHierarchyByVariable = "?" . $this->conditionBuilder->getNextVariable( 'sc' );
 		$condition = "$classHierarchyByVariable " . $subClassExpElement->getQName() . "$pathOp $categoryExpName .\n";
 		$categoryExpName = "$classHierarchyByVariable";
 

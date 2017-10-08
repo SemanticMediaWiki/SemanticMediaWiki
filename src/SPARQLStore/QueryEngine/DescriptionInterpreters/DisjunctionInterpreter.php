@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
@@ -26,9 +26,9 @@ use SMWTurtleSerializer as TurtleSerializer;
 class DisjunctionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var CompoundConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $compoundConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var Exporter
@@ -38,10 +38,10 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
+	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
-		$this->compoundConditionBuilder = $compoundConditionBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -61,8 +61,8 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$joinVariable = $this->compoundConditionBuilder->getJoinVariable();
-		$orderByProperty = $this->compoundConditionBuilder->getOrderByProperty();
+		$joinVariable = $this->conditionBuilder->getJoinVariable();
+		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
 		$subDescriptions = $description->getDescriptions();
 
@@ -97,7 +97,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 
 		$result->weakConditions = $subConditionElements->weakConditions;
 
-		$this->compoundConditionBuilder->addOrderByDataForProperty(
+		$this->conditionBuilder->addOrderByDataForProperty(
 			$result,
 			$joinVariable,
 			$orderByProperty
@@ -119,10 +119,10 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 		// else: proper disjunction; note that orderVariables found in subconditions cannot be used for the whole disjunction
 		if ( $count == 1 ) {
 
-			$this->compoundConditionBuilder->setJoinVariable( $joinVariable );
-			$this->compoundConditionBuilder->setOrderByProperty( $orderByProperty );
+			$this->conditionBuilder->setJoinVariable( $joinVariable );
+			$this->conditionBuilder->setOrderByProperty( $orderByProperty );
 
-			return $this->compoundConditionBuilder->mapDescriptionToCondition(
+			return $this->conditionBuilder->mapDescriptionToCondition(
 				reset( $subDescriptions )
 			);
 		}
@@ -145,17 +145,17 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 
 		foreach ( $subDescriptions as $subDescription ) {
 
-			$this->compoundConditionBuilder->setJoinVariable( $joinVariable );
-			$this->compoundConditionBuilder->setOrderByProperty( null );
+			$this->conditionBuilder->setJoinVariable( $joinVariable );
+			$this->conditionBuilder->setOrderByProperty( null );
 
-			$subCondition = $this->compoundConditionBuilder->mapDescriptionToCondition(
+			$subCondition = $this->conditionBuilder->mapDescriptionToCondition(
 				$subDescription
 			);
 
 			if ( $subCondition instanceof FalseCondition ) {
 				// empty parts in a disjunction can be ignored
 			} elseif ( $subCondition instanceof TrueCondition ) {
-				return $this->compoundConditionBuilder->newTrueCondition(
+				return $this->conditionBuilder->newTrueCondition(
 					$joinVariable,
 					$orderByProperty
 				);
@@ -222,7 +222,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 			return $this->createWhereCondition( $subConditionElements );
 		}
 
-		$subJoinVariable = $this->compoundConditionBuilder->getNextVariable();
+		$subJoinVariable = $this->conditionBuilder->getNextVariable();
 
 		$subConditionElements->unionCondition = str_replace(
 			"?$joinVariable ",

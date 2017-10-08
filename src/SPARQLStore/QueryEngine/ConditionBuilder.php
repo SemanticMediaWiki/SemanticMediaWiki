@@ -34,7 +34,7 @@ use SMW\DataValues\PropertyChainValue;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class CompoundConditionBuilder {
+class ConditionBuilder {
 
 	/**
 	 * @var EngineOptions
@@ -362,7 +362,7 @@ class CompoundConditionBuilder {
 	 */
 	public function tryToFindRedirectVariableForDataItem( DataItem $dataItem = null ) {
 
-		if ( !$dataItem instanceof DIWikiPage || !$this->canUseQFeature( SMW_SPARQL_QF_REDI ) ) {
+		if ( !$dataItem instanceof DIWikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
 			return null;
 		}
 
@@ -403,24 +403,24 @@ class CompoundConditionBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $queryFeatureFlag
+	 * @param integer $featureFlag
 	 *
 	 * @return boolean
 	 */
-	public function canUseQFeature( $queryFeatureFlag ) {
+	public function isSetFlag( $featureFlag ) {
 
 		$canUse = true;
 
 		// Adhere additional condition
-		if ( $queryFeatureFlag === SMW_SPARQL_QF_SUBP ) {
+		if ( $featureFlag === SMW_SPARQL_QF_SUBP ) {
 			$canUse = $this->engineOptions->get( 'smwgQSubpropertyDepth' ) > 0;
 		}
 
-		if ( $queryFeatureFlag === SMW_SPARQL_QF_SUBC ) {
+		if ( $featureFlag === SMW_SPARQL_QF_SUBC ) {
 			$canUse = $this->engineOptions->get( 'smwgQSubcategoryDepth' ) > 0;
 		}
 
-		return $this->engineOptions->get( 'smwgSparqlQFeatures' ) === ( (int)$this->engineOptions->get( 'smwgSparqlQFeatures' ) | (int)$queryFeatureFlag ) && $canUse;
+		return $this->engineOptions->get( 'smwgSparqlQFeatures' ) === ( (int)$this->engineOptions->get( 'smwgSparqlQFeatures' ) | (int)$featureFlag ) && $canUse;
 	}
 
 	/**
@@ -460,7 +460,7 @@ class CompoundConditionBuilder {
 
 		$condition->orderByVariable = $mainVariable . 'sk';
 
-		if ( $this->canUseQFeature( SMW_SPARQL_QF_COLLATION ) ) {
+		if ( $this->isSetFlag( SMW_SPARQL_QF_COLLATION ) ) {
 			$skeyExpElement = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'sort' );
 		} else {
 			$skeyExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );

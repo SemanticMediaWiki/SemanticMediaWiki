@@ -9,7 +9,7 @@ use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWExporter as Exporter;
@@ -24,9 +24,9 @@ use SMWExporter as Exporter;
 class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var CompoundConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $compoundConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var Exporter
@@ -36,10 +36,10 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
+	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
-		$this->compoundConditionBuilder = $compoundConditionBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -59,8 +59,8 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$joinVariable = $this->compoundConditionBuilder->getJoinVariable();
-		$orderByProperty = $this->compoundConditionBuilder->getOrderByProperty();
+		$joinVariable = $this->conditionBuilder->getJoinVariable();
+		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
 		$conceptDescription = $this->getConceptDescription(
 			$description->getConcept()
@@ -72,25 +72,25 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		$hash = 'concept-' . $conceptDescription->getQueryString();
 
-		$this->compoundConditionBuilder->getCircularReferenceGuard()->mark( $hash );
+		$this->conditionBuilder->getCircularReferenceGuard()->mark( $hash );
 
-		if ( $this->compoundConditionBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
+		if ( $this->conditionBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
 
-			$this->compoundConditionBuilder->addError(
+			$this->conditionBuilder->addError(
 				array( 'smw-query-condition-circular', $description->getQueryString() )
 			);
 
 			return new FalseCondition();
 		}
 
-		$this->compoundConditionBuilder->setJoinVariable( $joinVariable );
-		$this->compoundConditionBuilder->setOrderByProperty( $orderByProperty );
+		$this->conditionBuilder->setJoinVariable( $joinVariable );
+		$this->conditionBuilder->setOrderByProperty( $orderByProperty );
 
-		$condition = $this->compoundConditionBuilder->mapDescriptionToCondition(
+		$condition = $this->conditionBuilder->mapDescriptionToCondition(
 			$conceptDescription
 		);
 
-		$this->compoundConditionBuilder->getCircularReferenceGuard()->unmark( $hash );
+		$this->conditionBuilder->getCircularReferenceGuard()->unmark( $hash );
 
 		return $condition;
 	}
@@ -122,7 +122,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
-				$this->compoundConditionBuilder->addError(
+				$this->conditionBuilder->addError(
 					array( 'smw-query-condition-circular', $description->getQueryString() )
 				);
 				return;
