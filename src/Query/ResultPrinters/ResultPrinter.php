@@ -4,6 +4,7 @@ namespace SMW\Query\ResultPrinters;
 
 use Linker;
 use ParamProcessor\ParamDefinition;
+use SMW\Parser\RecursiveTextProcessor;
 use ParserOptions;
 use Sanitizer;
 use SMWInfolink;
@@ -135,6 +136,25 @@ abstract class ResultPrinter implements IResultPrinter {
 	public static $maxRecursionDepth = 2;
 
 	/**
+	 * @var RecursiveTextProcessor
+	 */
+	protected $recursiveTextProcessor;
+
+	/**
+	 * @var boolean
+	 */
+	private $recursiveAnnotation = false;
+
+	/**
+	 * For certaing activities (embedded pages etc.) make sure that annotations
+	 * are not tranclucded (imported) into the target page when resolving a
+	 * query.
+	 *
+	 * @var boolean
+	 */
+	protected $transcludeAnnotation = true;
+
+	/**
 	 * Return serialised results in specified format.
 	 * Implemented by subclasses.
 	 */
@@ -178,6 +198,15 @@ abstract class ResultPrinter implements IResultPrinter {
 	 */
 	public function msg() {
 		return wfMessage( func_get_args() );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param RecursiveTextProcessor $recursiveTextProcessor
+	 */
+	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ) {
+		$this->recursiveTextProcessor = $recursiveTextProcessor;
 	}
 
 	/**
@@ -296,22 +325,27 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @return string
 	 */
 	protected function handleNonFileResult( $result, QueryResult $results, $outputmode ) {
-		/**
-		 * @var \Parser $wgParser
-		 */
-		global $wgParser;
 
-		$result .= $this->getErrorString( $results ); // append errors
+		 // append errors
+		$result .= $this->getErrorString( $results );
 
-		// MW 1.21+
-		// Block recursive import of annotations unless otherwise specified for
-		// a specific use case
-		if ( method_exists( $wgParser->getOutput(), 'setExtensionData' ) ) {
-			$wgParser->getOutput()->setExtensionData(
-				'smw-blockannotation',
-				$this->params['format'] === 'embedded'
-			);
+		// Should not happen, used as fallback which in case the parser state
+		// relies on the $GLOBALS['wgParser']
+		if ( $this->recursiveTextProcessor === null ) {
+			$this->recursiveTextProcessor = new RecursiveTextProcessor();
 		}
+
+		$this->recursiveTextProcessor->setMaxRecursionDepth(
+			self::$maxRecursionDepth
+		);
+
+		$this->recursiveTextProcessor->transcludeAnnotation(
+			$this->transcludeAnnotation
+		);
+
+		$this->recursiveTextProcessor->setRecursiveAnnotation(
+			$this->recursiveAnnotation
+		);
 
 		// Apply intro parameter
 		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
@@ -333,53 +367,19 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		// Preprocess embedded templates if needed
 		if ( ( !$this->isHTML ) && ( $this->hasTemplates ) ) {
-			if ( ( $wgParser->getTitle() instanceof Title ) && ( $wgParser->getOptions() instanceof ParserOptions ) ) {
-				self::$mRecursionDepth++;
-
-				if ( self::$mRecursionDepth <= self::$maxRecursionDepth ) { // restrict recursion
-					$result = isset( $this->params['import-annotation'] ) && $this->params['import-annotation'] ? $wgParser->recursivePreprocess( $result ) : '[[SMW::off]]' . $wgParser->replaceVariables( $result ) . '[[SMW::on]]';
-				} else {
-					$result = ''; /// TODO: explain problem (too much recursive parses)
-				}
-
-				self::$mRecursionDepth--;
-			} else { // not during parsing, no preprocessing needed, still protect the result
-				$result = isset( $this->params['import-annotation'] ) && $this->params['import-annotation'] ? $result : '[[SMW::off]]' . $result . '[[SMW::on]]';
-			}
+			$result = $this->recursiveTextProcessor->recursivePreprocess( $result );
 		}
 
 		if ( ( $this->isHTML ) && ( $outputmode == SMW_OUTPUT_WIKI ) ) {
 			$result = array( $result, 'isHTML' => true );
 		} elseif ( ( !$this->isHTML ) && ( $outputmode == SMW_OUTPUT_HTML ) ) {
-			self::$mRecursionDepth++;
-
-			// check whether we are in an existing parse, or if we should start a new parse for $wgTitle
-			if ( self::$mRecursionDepth <= self::$maxRecursionDepth ) { // retrict recursion
-				if ( ( $wgParser->getTitle() instanceof Title ) && ( $wgParser->getOptions() instanceof ParserOptions ) ) {
-					$result = $wgParser->recursiveTagParse( $result );
-				} else {
-					global $wgTitle;
-
-					$popt = new ParserOptions();
-					$popt->setEditSection( false );
-					$pout = $wgParser->parse( $result . '__NOTOC__', $wgTitle, $popt );
-
-					/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
-					\SMWOutputs::requireFromParserOutput( $pout );
-					$result = $pout->getText();
-				}
-			} else {
-				$result = ''; /// TODO: explain problem (too much recursive parses)
-			}
-
-			self::$mRecursionDepth--;
+			$result = $this->recursiveTextProcessor->recursiveTagParse( $result );
 		}
 
-		if ( method_exists( $wgParser->getOutput(), 'setExtensionData' ) ) {
-			$wgParser->getOutput()->setExtensionData(
-				'smw-blockannotation',
-				false
-			);
+		$this->recursiveTextProcessor->releaseAnyAnnotationBlock();
+
+		if ( $this->mShowErrors && $this->recursiveTextProcessor->getError() !== [] ) {
+			$result .= Message::get( $this->recursiveTextProcessor->getError(), Message::TEXT, Message::USER_LANGUAGE );
 		}
 
 		return $result;
@@ -442,6 +442,8 @@ abstract class ResultPrinter implements IResultPrinter {
 		} else {
 			$this->mShowHeaders = SMW_HEADERS_SHOW;
 		}
+
+		$this->recursiveAnnotation = isset( $params['import-annotation'] ) ? $params['import-annotation'] : false;
 	}
 
 	/**

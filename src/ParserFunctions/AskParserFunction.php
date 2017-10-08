@@ -13,6 +13,7 @@ use SMWQueryProcessor as QueryProcessor;
 use SMWQuery as Query;
 use SMW\Query\DeferredQuery;
 use SMW\PostProcHandler;
+use SMW\Parser\RecursiveTextProcessor;
 
 /**
  * Provides the {{#ask}} parser function
@@ -80,6 +81,11 @@ class AskParserFunction {
 	private $postProcHandler;
 
 	/**
+	 * @var RecursiveTextProcessor
+	 */
+	private $recursiveTextProcessor;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
@@ -101,6 +107,15 @@ class AskParserFunction {
 	 */
 	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
 		$this->postProcHandler = $postProcHandler;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param RecursiveTextProcessor $recursiveTextProcessor
+	 */
+	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ) {
+		$this->recursiveTextProcessor = $recursiveTextProcessor;
 	}
 
 	/**
@@ -278,6 +293,10 @@ class AskParserFunction {
 			return '';
 		}
 
+		QueryProcessor::setRecursiveTextProcessor(
+			$this->recursiveTextProcessor
+		);
+
 		$result = QueryProcessor::getResultFromQuery(
 			$query,
 			$this->params,
@@ -287,12 +306,8 @@ class AskParserFunction {
 
 		$format = $this->params['format']->getValue();
 
-		// FIXME Parser should be injected into the ResultPrinter
-		// Enables specific formats to import its annotation data from
-		// a recursive parse process in the result format
-		// e.g. using ask query to search/set an invert property value
-		if ( isset( $this->params['import-annotation'] ) && $this->params['import-annotation']->getValue() ) {
-			$this->parserData->importFromParserOutput( $GLOBALS['wgParser']->getOutput() );
+		if ( $this->recursiveTextProcessor !== null ) {
+			$this->recursiveTextProcessor->copyData( $this->parserData );
 		}
 
 		$this->circularReferenceGuard->unmark( $queryHash );

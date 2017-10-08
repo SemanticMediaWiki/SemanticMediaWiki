@@ -54,6 +54,13 @@ class EmbeddedResultPrinter extends ResultPrinter {
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
+
+		// Ensure that there is an annotation block in place before starting the
+		// parse and transclution process. Unfortunately we are unable to block
+		// the inclusion of categories which are attached to a MediaWiki
+		// object we have no immediate access or control.
+		$this->transcludeAnnotation = false;
+
 		global $wgParser;
 		// No page should embed itself, find out who we are:
 		if ( $wgParser->getTitle() instanceof Title ) {

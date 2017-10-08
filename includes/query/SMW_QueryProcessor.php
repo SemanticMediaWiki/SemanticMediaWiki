@@ -12,6 +12,7 @@ use SMW\Query\QueryContext;
 use SMW\Query\ResultFormatNotFoundException;
 use SMW\Query\DeferredQuery;
 use SMW\Query\Processor\ParamListProcessor;
+use SMW\Parser\RecursiveTextProcessor;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -27,6 +28,20 @@ use SMW\Query\Processor\ParamListProcessor;
  * @ingroup SMWQuery
  */
 class SMWQueryProcessor implements QueryContext {
+
+	/**
+	 * @var RecursiveTextProcessor
+	 */
+	private static $recursiveTextProcessor;
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param RecursiveTextProcessor|null $recursiveTextProcessor
+	 */
+	public static function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor = null ) {
+		self::$recursiveTextProcessor = $recursiveTextProcessor;
+	}
 
 	/**
 	 * Takes an array of unprocessed parameters, processes them using
@@ -279,7 +294,7 @@ class SMWQueryProcessor implements QueryContext {
 
 		$query  = self::createQuery( $queryString, $params, $context, '', $printouts, $contextPage );
 
-		// For convenience keep parameters and options to available for immediate
+		// For convenience keep parameters and options to be available for immediate
 		// processing
 		if ( $context === self::DEFERRED_QUERY ) {
 			$query->setOption( DeferredQuery::QUERY_PARAMETERS, implode( '|', $rawParams ) );
@@ -430,7 +445,17 @@ class SMWQueryProcessor implements QueryContext {
 
 		$formatClass = $smwgResultFormats[$format];
 
-		return new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );
+		$printer = new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );
+
+		if ( self::$recursiveTextProcessor === null ) {
+			self::$recursiveTextProcessor = new RecursiveTextProcessor();
+		}
+
+		$printer->setRecursiveTextProcessor(
+			self::$recursiveTextProcessor
+		);
+
+		return $printer;
 	}
 
 	/**
