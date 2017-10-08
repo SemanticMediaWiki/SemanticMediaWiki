@@ -216,7 +216,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	public function testtestGetQueryResultForDebugQueryMode() {
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector' )
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -266,7 +266,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector' )
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -472,7 +472,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		// PHPUnit 3.7 goes drumming when trying to add a method on an
 		// interface hence the use of the concrete class
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector' )
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'getSparqlForSelect' ) )
 			->getMock();

@@ -10,7 +10,7 @@ namespace SMW\SPARQLStore\Exception;
  *
  * @author mwjames
  */
-class HttpDatabaseConnectionException extends \Exception {
+class HttpEndpointConnectionException extends \Exception {
 
 	/**
 	 * @since  2.1

@@ -41,9 +41,9 @@ class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
 
 // 2.0
 class_alias( 'SMW\SPARQLStore\SPARQLStore', 'SMWSparqlStore' );
-class_alias( 'SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector', 'SMWSparqlDatabase4Store' );
-class_alias( 'SMW\SPARQLStore\RepositoryConnectors\VirtuosoHttpRepositoryConnector', 'SMWSparqlDatabaseVirtuoso' );
-class_alias( 'SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector', 'SMWSparqlDatabase' );
+class_alias( 'SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector', 'SMWSparqlDatabase4Store' );
+class_alias( 'SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector', 'SMWSparqlDatabaseVirtuoso' );
+class_alias( 'SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector', 'SMWSparqlDatabase' );
 
 // 2.1
 class_alias( 'SMWSQLStore3', 'SMW\SQLStore\SQLStore' );

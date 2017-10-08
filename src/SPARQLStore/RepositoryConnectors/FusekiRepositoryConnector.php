@@ -2,7 +2,7 @@
 
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
-use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
+use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 
@@ -14,15 +14,15 @@ use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
  *
  * @author mwjames
  */
-class FusekiHttpRepositoryConnector extends GenericHttpRepositoryConnector {
+class FusekiRepositoryConnector extends GenericRepositoryConnector {
 
 	/**
-	 * @see GenericHttpRepositoryConnector::doQuery
+	 * @see GenericRepositoryConnector::doQuery
 	 */
 	public function doQuery( $sparql ) {
 
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );

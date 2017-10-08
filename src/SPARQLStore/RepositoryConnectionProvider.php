@@ -2,10 +2,10 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector;
-use SMW\SPARQLStore\RepositoryConnectors\FusekiHttpRepositoryConnector;
-use SMW\SPARQLStore\RepositoryConnectors\VirtuosoHttpRepositoryConnector;
-use SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector;
 use Onoi\HttpRequest\CurlRequest;
 use RuntimeException;
 use SMW\DBConnectionProvider;
@@ -28,12 +28,12 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 	 * @var array
 	 */
 	private $repositoryConnectors = array(
-		'default'   => GenericHttpRepositoryConnector::class,
-		'generic'   => GenericHttpRepositoryConnector::class,
-		'sesame'    => GenericHttpRepositoryConnector::class,
-		'fuseki'    => FusekiHttpRepositoryConnector::class,
-		'virtuoso'  => VirtuosoHttpRepositoryConnector::class,
-		'4store'    => FourstoreHttpRepositoryConnector::class,
+		'default'   => GenericRepositoryConnector::class,
+		'generic'   => GenericRepositoryConnector::class,
+		'sesame'    => GenericRepositoryConnector::class,
+		'fuseki'    => FusekiRepositoryConnector::class,
+		'virtuoso'  => VirtuosoRepositoryConnector::class,
+		'4store'    => FourstoreRepositoryConnector::class,
 	);
 
 	/**

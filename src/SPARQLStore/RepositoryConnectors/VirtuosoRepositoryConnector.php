@@ -2,7 +2,7 @@
 
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
-use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
+use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 
 /**
  * Virtuoso specific adjustments for GenericHttpDatabaseConnector
@@ -42,7 +42,7 @@ use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
  *
  * @author Markus Krötzsch
  */
-class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
+class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 
 	/**
 	 * DELETE wrapper.
@@ -151,7 +151,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	public function doUpdate( $sparql ) {
 
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
@@ -167,6 +167,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 		}
 
 		$this->mapHttpRequestError( $this->repositoryClient->getUpdateEndpoint(), $sparql );
+
 		return false;
 	}
 

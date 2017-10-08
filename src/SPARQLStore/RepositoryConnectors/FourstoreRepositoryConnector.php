@@ -2,7 +2,7 @@
 
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
-use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
+use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMWSparqlResultParser as SparqlResultParser;
@@ -16,7 +16,7 @@ use SMWTurtleSerializer as TurtleSerializer;
  *
  * @author Markus Krötzsch
  */
-class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
+class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 
 	/**
 	 * Execute a SPARQL query and return an RepositoryResult object
@@ -36,7 +36,7 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	public function doQuery( $sparql ) {
 
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
@@ -113,7 +113,7 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	public function doHttpPost( $payload ) {
 
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getDataEndpoint() );
@@ -146,7 +146,7 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	public function doUpdate( $sparql ) {
 
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );

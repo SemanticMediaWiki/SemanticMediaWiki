@@ -6,11 +6,6 @@ use SMW\SPARQLStore\RepositoryClient;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 
 /**
- * @covers \SMW\SPARQLStore\RepositoryConnectors\FusekiHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\RepositoryConnectors\VirtuosoHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,19 +13,14 @@ use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
  *
  * @author mwjames
  */
-class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
+class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 
-	private $databaseConnectors = array(
-		'\SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector',
-		'\SMW\SPARQLStore\RepositoryConnectors\FusekiHttpRepositoryConnector',
-		'\SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector',
-		'\SMW\SPARQLStore\RepositoryConnectors\VirtuosoHttpRepositoryConnector',
-
+	public function getRepositoryConnectors() {
 		// Legacy and should be removed once obsolete
-		'SMWSparqlDatabase4Store',
-		'SMWSparqlDatabaseVirtuoso',
-		'SMWSparqlDatabase'
-	);
+		return [
+			'SMWSparqlDatabase'
+		];
+	}
 
 	/**
 	 * @dataProvider httpDatabaseConnectorInstanceNameForAskProvider
@@ -143,14 +133,14 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 		$provider = array();
 		$encodedDefaultGraph = urlencode( 'http://foo/myDefaultGraph' );
 
-		foreach ( $this->databaseConnectors as $databaseConnector ) {
+		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
 
-			switch ( $databaseConnector ) {
-				case '\SMW\SPARQLStore\RepositoryConnectors\FusekiHttpRepositoryConnector':
+			switch ( $repositoryConnector ) {
+				case '\SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector':
 					$expectedPostField = '&default-graph-uri=' . $encodedDefaultGraph . '&output=xml';
 					break;
 				case 'SMWSparqlDatabase4Store':
-				case '\SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector':
+				case '\SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector':
 					$expectedPostField = "&restricted=1" . '&default-graph-uri=' . $encodedDefaultGraph;
 					break;
 				default:
@@ -158,7 +148,7 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 					break;
 			};
 
-			$provider[] = array( $databaseConnector, $expectedPostField );
+			$provider[] = array( $repositoryConnector, $expectedPostField );
 		}
 
 		return $provider;
@@ -168,11 +158,11 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = array();
 
-		foreach ( $this->databaseConnectors as $databaseConnector ) {
+		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
 
-			switch ( $databaseConnector ) {
+			switch ( $repositoryConnector ) {
 				case 'SMWSparqlDatabaseVirtuoso':
-				case '\SMW\SPARQLStore\RepositoryConnectors\VirtuosoHttpRepositoryConnector':
+				case 'SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector':
 					$expectedPostField = 'query=';
 					break;
 				default:
@@ -180,7 +170,7 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 					break;
 			};
 
-			$provider[] = array( $databaseConnector, $expectedPostField );
+			$provider[] = array( $repositoryConnector, $expectedPostField );
 		}
 
 		return $provider;
@@ -190,8 +180,8 @@ class RepositoryConnectorsIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = array();
 
-		foreach ( $this->databaseConnectors as $databaseConnector ) {
-			$provider[] = array( $databaseConnector );
+		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
+			$provider[] = array( $repositoryConnector );
 		}
 
 		return $provider;

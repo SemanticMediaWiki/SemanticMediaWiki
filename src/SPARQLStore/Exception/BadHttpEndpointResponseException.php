@@ -14,7 +14,7 @@ namespace SMW\SPARQLStore\Exception;
  *
  * @author Markus Krötzsch
  */
-class BadHttpDatabaseResponseException extends \Exception {
+class BadHttpEndpointResponseException extends \Exception {
 
 	/// Error code: malformed query
 	const ERROR_MALFORMED      = 1;

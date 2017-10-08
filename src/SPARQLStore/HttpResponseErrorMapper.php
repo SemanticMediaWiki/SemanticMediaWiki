@@ -4,8 +4,8 @@ namespace SMW\SPARQLStore;
 
 use Exception;
 use Onoi\HttpRequest\HttpRequest;
-use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
-use SMW\SPARQLStore\Exception\HttpDatabaseConnectionException;
+use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
+use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 
 /**
  * Post-processing for a bad inbound responses
@@ -18,7 +18,7 @@ use SMW\SPARQLStore\Exception\HttpDatabaseConnectionException;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class BadHttpResponseMapper {
+class HttpResponseErrorMapper {
 
 	private $httpRequest = null;
 
@@ -47,7 +47,7 @@ class BadHttpResponseMapper {
 	 * @throws Exception
 	 * @throws SparqlDatabaseException
 	 */
-	public function mapResponseToHttpRequest( $endpoint, $sparql ) {
+	public function mapErrorResponse( $endpoint, $sparql ) {
 		$error = $this->httpRequest->getLastErrorCode();
 
 		switch ( $error ) {
@@ -60,7 +60,7 @@ class BadHttpResponseMapper {
 			case CURLE_COULDNT_CONNECT:
 				break; // fail gracefully if backend is down
 			default:
-				throw new HttpDatabaseConnectionException(
+				throw new HttpEndpointConnectionException(
 					$endpoint,
 					$error,
 					$this->httpRequest->getLastError()
@@ -73,14 +73,14 @@ class BadHttpResponseMapper {
 		/// TODO We are guessing the meaning of HTTP codes here -- the SPARQL 1.1 spec does not yet provide this information for updates (April 15 2011)
 
 		if ( $httpCode == 400 ) { // malformed query
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_MALFORMED, $sparql, $endpoint, $httpCode );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_MALFORMED, $sparql, $endpoint, $httpCode );
 		} elseif ( $httpCode == 500 ) { // query refused; maybe fail gracefully here (depending on how stores use this)
-			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_REFUSED, $sparql, $endpoint, $httpCode );
+			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_REFUSED, $sparql, $endpoint, $httpCode );
 		} elseif ( $httpCode == 404 ) {
 			return; // endpoint not found, maybe down; fail gracefully
 		}
 
-		throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_OTHER, $sparql, $endpoint, $httpCode );
+		throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_OTHER, $sparql, $endpoint, $httpCode );
 	}
 
 }
