@@ -21,7 +21,7 @@ echo '$smwgNamespace = "http://example.org/id/";' >> LocalSettings.php
 if [ "$FOURSTORE" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
-	echo '$smwgSparqlDatabaseConnector = "4Store";' >> LocalSettings.php
+	echo '$smwgSparqlRepositoryConnector = "4Store";' >> LocalSettings.php
 	echo '$smwgSparqlQueryEndpoint = "http://localhost:8088/sparql/";' >> LocalSettings.php
 	echo '$smwgSparqlUpdateEndpoint = "http://localhost:8088/update/";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
@@ -29,21 +29,21 @@ then
 elif [ "$FUSEKI" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
-	echo '$smwgSparqlDatabaseConnector = "Fuseki";' >> LocalSettings.php
+	echo '$smwgSparqlRepositoryConnector = "Fuseki";' >> LocalSettings.php
 	echo '$smwgSparqlQueryEndpoint = "http://localhost:3030/db/query";' >> LocalSettings.php
 	echo '$smwgSparqlUpdateEndpoint = "http://localhost:3030/db/update";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
 elif [ "$SESAME" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
-	echo '$smwgSparqlDatabaseConnector = "Sesame";' >> LocalSettings.php
+	echo '$smwgSparqlRepositoryConnector = "Sesame";' >> LocalSettings.php
 	echo '$smwgSparqlQueryEndpoint = "http://localhost:8080/openrdf-sesame/repositories/test-smw";' >> LocalSettings.php
 	echo '$smwgSparqlUpdateEndpoint = "http://localhost:8080/openrdf-sesame/repositories/test-smw/statements";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
 elif [ "$BLAZEGRAPH" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
-	echo '$smwgSparqlDatabaseConnector = "Blazegraph";' >> LocalSettings.php
+	echo '$smwgSparqlRepositoryConnector = "Blazegraph";' >> LocalSettings.php
 	echo '$smwgSparqlQueryEndpoint = "http://localhost:9999/bigdata/namespace/kb/sparql";' >> LocalSettings.php
 	echo '$smwgSparqlUpdateEndpoint = "http://localhost:9999/bigdata/namespace/kb/sparql";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
@@ -51,7 +51,7 @@ then
 elif [ "$VIRTUOSO" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
-	echo '$smwgSparqlDatabaseConnector = "Virtuoso";' >> LocalSettings.php
+	echo '$smwgSparqlRepositoryConnector = "Virtuoso";' >> LocalSettings.php
 	echo '$smwgSparqlQueryEndpoint = "http://localhost:8890/sparql";' >> LocalSettings.php
 	echo '$smwgSparqlUpdateEndpoint = "http://localhost:8890/sparql";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php

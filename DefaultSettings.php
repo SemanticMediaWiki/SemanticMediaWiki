@@ -123,7 +123,7 @@ return array(
 	# supports this. Different wikis should normally use different default graphs
 	# unless there is a good reason to share one graph.
 	##
-	'smwgSparqlDatabase' => 'SMWSparqlDatabase',
+	'smwgSparqlCustomConnector' => 'SMWSparqlDatabase',
 	'smwgSparqlQueryEndpoint' => 'http://localhost:8080/sparql/',
 	'smwgSparqlUpdateEndpoint' => 'http://localhost:8080/update/',
 	'smwgSparqlDataEndpoint' => 'http://localhost:8080/data/',
@@ -131,32 +131,28 @@ return array(
 	##
 
 	##
-	# SparqlDBConnectionProvider
+	# Sparql repository connector
 	#
-	# Identifies a database connector that ought to be used together with the
-	# SPARQLStore
+	# Identifies a pre-deployed repository connector that is ought to be used
+	# together with the SPARQLStore.
 	#
-	# List of standard connectors ($smwgSparqlDatabase will have no effect)
+	# List of standard connectors ($smwgSparqlCustomConnector will have no effect)
 	# - 'fuseki'
 	# - 'virtuoso'
 	# - '4store'
 	# - 'sesame'
 	# - 'generic'
 	#
-	# With 2.0 it is suggested to assign the necessary connector to
-	# $smwgSparqlDatabaseConnector in order to avoid arbitrary class assignments in
-	# $smwgSparqlDatabase (which can change in future releases without further notice).
+	# In case $smwgSparqlRepositoryConnector = 'custom' is maintained, $smwgSparqlCustomConnector
+	# is expected to contain a custom class connector where $smwgSparqlCustomConnector is only
+	# for the definition of a custom connector.
 	#
-	# In case $smwgSparqlDatabaseConnector = 'custom' is maintained, $smwgSparqlDatabase
-	# is expected to contain a custom class connector where $smwgSparqlDatabase is only
-	# to be sued for when a custom database connector is necessary.
-	#
-	# $smwgSparqlDatabaseConnector = 'custom' is set as legacy configuration to allow for
+	# $smwgSparqlRepositoryConnector = 'custom' is set as legacy configuration to allow for
 	# existing (prior 2.0) customizing to work without changes.
 	#
 	# @since 2.0
 	##
-	'smwgSparqlDatabaseConnector' => 'custom',
+	'smwgSparqlRepositoryConnector' => 'custom',
 	##
 
 	##

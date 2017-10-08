@@ -82,7 +82,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 		);
 
 		if ( $this->getStore() instanceof \SMWSparqlStore ) {
-			$this->connectorId = strtolower( $GLOBALS['smwgSparqlDatabaseConnector'] );
+			$this->connectorId = strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] );
 		} else {
 			$this->connectorId = strtolower( $this->getDBConnection()->getType() );
 		}
@@ -258,7 +258,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $this->getStore() instanceof \SMWSparqlStore && $jsonTestCaseFileHandler->requiredToSkipForConnector( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
+		if ( $this->getStore() instanceof \SMWSparqlStore && $jsonTestCaseFileHandler->requiredToSkipForConnector( $GLOBALS['smwgSparqlRepositoryConnector'] ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 	}

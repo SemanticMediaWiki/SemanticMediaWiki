@@ -54,8 +54,8 @@ class Settings extends Options {
 			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],
 			'smwgLocalConnectionConf' => $GLOBALS['smwgLocalConnectionConf'],
-			'smwgSparqlDatabaseConnector' => $GLOBALS['smwgSparqlDatabaseConnector'],
-			'smwgSparqlDatabase' => $GLOBALS['smwgSparqlDatabase'],
+			'smwgSparqlRepositoryConnector' => $GLOBALS['smwgSparqlRepositoryConnector'],
+			'smwgSparqlCustomConnector' => $GLOBALS['smwgSparqlCustomConnector'],
 			'smwgSparqlQueryEndpoint' => $GLOBALS['smwgSparqlQueryEndpoint'],
 			'smwgSparqlUpdateEndpoint' => $GLOBALS['smwgSparqlUpdateEndpoint'],
 			'smwgSparqlDataEndpoint' => $GLOBALS['smwgSparqlDataEndpoint'],
@@ -375,6 +375,14 @@ class Settings extends Options {
 			$configuration['smwgQueryProfiler'] = $configuration['smwgQueryProfiler'] | SMW_QPRFL_PARAMS;
 		}
 
+		if ( isset( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
+			$configuration['smwgSparqlRepositoryConnector'] = $GLOBALS['smwgSparqlDatabaseConnector'];
+		}
+
+		if ( isset( $GLOBALS['smwgSparqlDatabase'] ) ) {
+			$configuration['smwgSparqlCustomConnector'] = $GLOBALS['smwgSparqlDatabase'];
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
@@ -384,6 +392,8 @@ class Settings extends Options {
 				'smwgQueryDependencyAffiliatePropertyDetectionlist' => '3.1.0',
 				'smwgSubPropertyListLimit' => '3.1.0',
 				'smwgRedirectPropertyListLimit' => '3.1.0',
+				'smwgSparqlDatabaseConnector' => '3.1.0',
+				'smwgSparqlDatabase' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -407,6 +417,8 @@ class Settings extends Options {
 				'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList',
 				'smwgSubPropertyListLimit' => 'smwgPropertyListLimit',
 				'smwgRedirectPropertyListLimit' => 'smwgPropertyListLimit',
+				'smwgSparqlDatabaseConnector' => 'smwgSparqlRepositoryConnector',
+				'smwgSparqlDatabase' => 'smwgSparqlCustomConnector',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',
