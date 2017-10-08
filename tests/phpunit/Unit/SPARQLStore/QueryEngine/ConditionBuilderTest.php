@@ -11,7 +11,7 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
@@ -20,7 +20,7 @@ use SMWDINumber as DINumber;
 use SMWDITime as DITime;
 
 /**
- * @covers \SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder
+ * @covers \SMW\SPARQLStore\QueryEngine\ConditionBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -28,7 +28,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringBuilder;
 	private $descriptionInterpreterFactory;
@@ -43,8 +43,8 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder',
-			new CompoundConditionBuilder( $this->descriptionInterpreterFactory )
+			ConditionBuilder::class,
+			new ConditionBuilder( $this->descriptionInterpreterFactory )
 		);
 	}
 
@@ -57,7 +57,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -87,7 +87,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance
 			->setSortKeys( array( 'Foo' => 'DESC' ) )
@@ -121,7 +121,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance
 			->setSortKeys( array( 'Bar' => 'DESC' ) )
@@ -156,7 +156,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance
 			->setSortKeys( array( '' => 'DESC' ) )
@@ -189,7 +189,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 		$instance->setSortKeys( array( 'Foo', 'ASC' ) );
 
 		$this->setExpectedException( 'RuntimeException' );
@@ -203,7 +203,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIProperty( 'Foo' )
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -233,7 +233,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ) )
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -264,7 +264,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LEQ )
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -297,7 +297,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), null, SMW_CMP_NLKE )
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -331,7 +331,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$category
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -356,7 +356,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new NamespaceDescription( NS_HELP );
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -388,7 +388,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new DIProperty( 'Bar' ), new ThingDescription() ),
 		) );
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $conjunction );
 
@@ -421,7 +421,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new ValueDescription( new DINumber( 9 ), null, SMW_CMP_LEQ ) ),
 		) );
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $conjunction );
 
@@ -452,7 +452,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() )
 		) );
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $conjunction );
 
@@ -489,7 +489,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new ValueDescription( new DIBlob( "BB?" ), null, SMW_CMP_NLKE )  )
 		) );
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $conjunction );
 
@@ -526,7 +526,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DITime( 1, 1970, 01, 01, 1, 1 ), null, SMW_CMP_GEQ )
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -557,7 +557,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -596,7 +596,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$disjunction
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -648,7 +648,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$conjunction
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -689,7 +689,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -718,7 +718,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 		$instance->addOrderByData( $condition, 'foo', DataItem::TYPE_NUMBER );
 
 		$this->assertEquals(
@@ -733,7 +733,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 		$instance->addOrderByData( $condition, 'foo', DataItem::TYPE_WIKIPAGE );
 
 		$this->assertEquals(
@@ -753,17 +753,17 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanUseQFeature() {
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$this->assertInternalType(
 			'boolean',
-			$instance->canUseQFeature( 'Foo' )
+			$instance->isSetFlag( 'Foo' )
 		);
 	}
 
 	public function testTryToFindRedirectVariableForNonWpgDataItem() {
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$this->assertNull(
 			$instance->tryToFindRedirectVariableForDataItem( new DINumber( 1 ) )
@@ -797,18 +797,18 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( $diWikiPage, $property )
 		);
 
-		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
-			->setMethods( array( 'canUseQFeature' ) )
+			->setMethods( array( 'isSetFlag' ) )
 			->getMock();
 
 		$instance->expects( $this->at( 0 ) )
-			->method( 'canUseQFeature' )
+			->method( 'isSetFlag' )
 			->with( $this->equalTo( SMW_SPARQL_QF_NOCASE ) )
 			->will( $this->returnValue( false ) );
 
 		$instance->expects( $this->at( 1 ) )
-			->method( 'canUseQFeature' )
+			->method( 'isSetFlag' )
 			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
 			->will( $this->returnValue( true ) );
 
@@ -853,18 +853,18 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new ValueDescription( $diWikiPage, null );
 
-		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
-			->setMethods( array( 'canUseQFeature' ) )
+			->setMethods( array( 'isSetFlag' ) )
 			->getMock();
 
 		$instance->expects( $this->at( 0 ) )
-			->method( 'canUseQFeature' )
+			->method( 'isSetFlag' )
 			->with( $this->equalTo( SMW_SPARQL_QF_NOCASE ) )
 			->will( $this->returnValue( false ) );
 
 		$instance->expects( $this->at( 1 ) )
-			->method( 'canUseQFeature' )
+			->method( 'isSetFlag' )
 			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
 			->will( $this->returnValue( true ) );
 
@@ -895,7 +895,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( "Foo*", NS_MAIN ), null, SMW_CMP_LIKE
 		);
 
-		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
+		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance->getConditionFrom( $description );
 

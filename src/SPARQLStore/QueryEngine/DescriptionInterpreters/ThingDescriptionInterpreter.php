@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWExporter as Exporter;
 
@@ -18,9 +18,9 @@ use SMWExporter as Exporter;
 class ThingDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var CompoundConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $compoundConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var Exporter
@@ -30,10 +30,10 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
+	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
-		$this->compoundConditionBuilder = $compoundConditionBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -52,9 +52,9 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-		return $this->compoundConditionBuilder->newTrueCondition(
-			$this->compoundConditionBuilder->getJoinVariable(),
-			$this->compoundConditionBuilder->getOrderByProperty()
+		return $this->conditionBuilder->newTrueCondition(
+			$this->conditionBuilder->getJoinVariable(),
+			$this->conditionBuilder->getOrderByProperty()
 		);
 	}
 

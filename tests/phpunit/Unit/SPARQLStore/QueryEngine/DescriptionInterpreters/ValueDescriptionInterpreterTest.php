@@ -5,7 +5,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ValueDescription;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
@@ -35,13 +35,13 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter',
-			new ValueDescriptionInterpreter( $compoundConditionBuilder )
+			new ValueDescriptionInterpreter( $conditionBuilder )
 		);
 	}
 
@@ -51,11 +51,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ValueDescriptionInterpreter( $conditionBuilder );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -67,16 +67,16 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCreateFalseConditionForNotSupportedDataItemType( $dataItem ) {
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
-			->setMethods( array( 'canUseQFeature' ) )
+			->setMethods( array( 'isSetFlag' ) )
 			->getMock();
 
-		$compoundConditionBuilder->expects( $this->once() )
-			->method( 'canUseQFeature' )
+		$conditionBuilder->expects( $this->once() )
+			->method( 'isSetFlag' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ValueDescriptionInterpreter( $conditionBuilder );
 
 		$description = new ValueDescription(
 			$dataItem,
@@ -96,11 +96,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
-		$compoundConditionBuilder->setResultVariable( $resultVariable );
-		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
 
-		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ValueDescriptionInterpreter( $conditionBuilder );
 
 		$condition = $instance->interpretDescription( $description );
 
@@ -111,7 +111,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedConditionString,
-			$compoundConditionBuilder->convertConditionToString( $condition )
+			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
 
@@ -119,19 +119,19 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
 			->setMethods( array( 'tryToFindRedirectVariableForDataItem' ) )
 			->getMock();
 
-		$compoundConditionBuilder->expects( $this->once() )
+		$conditionBuilder->expects( $this->once() )
 			->method( 'tryToFindRedirectVariableForDataItem' )
 			->will( $this->returnValue( '?r1' ) );
 
-		$compoundConditionBuilder->setResultVariable( $resultVariable );
-		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
 
-		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ValueDescriptionInterpreter( $conditionBuilder );
 
 		$description = new ValueDescription(
 			new DIWikiPage( 'Foo', NS_MAIN ),
@@ -147,7 +147,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$condition
 		);
 
-		// The redirect pattern add by compoundConditionBuilder at th end of
+		// The redirect pattern add by conditionBuilder at th end of
 		// the mapping
 		$expected = UtilityFactory::getInstance()->newStringBuilder()
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
@@ -156,7 +156,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$compoundConditionBuilder->convertConditionToString( $condition )
+			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
 
@@ -170,17 +170,17 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
-		$compoundConditionBuilder->setResultVariable( $resultVariable );
-		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
 
-		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ValueDescriptionInterpreter( $conditionBuilder );
 
 		$condition = $instance->interpretDescription( $description );
 
 		$this->assertEquals(
 			$expected,
-			$compoundConditionBuilder->convertConditionToString( $condition )
+			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
 

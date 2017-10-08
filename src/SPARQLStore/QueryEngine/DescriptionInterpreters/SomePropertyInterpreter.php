@@ -5,7 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 use SMW\DIProperty;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
@@ -27,9 +27,9 @@ use SMWTurtleSerializer as TurtleSerializer;
 class SomePropertyInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var CompoundConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $compoundConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var Exporter
@@ -39,10 +39,10 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
+	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
-		$this->compoundConditionBuilder = $compoundConditionBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -62,8 +62,8 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$joinVariable = $this->compoundConditionBuilder->getJoinVariable();
-		$orderByProperty = $this->compoundConditionBuilder->getOrderByProperty();
+		$joinVariable = $this->conditionBuilder->getJoinVariable();
+		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
 		$property = $description->getProperty();
 
@@ -119,7 +119,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$result->orderVariables[$property->getKey()] = $innerCondition->orderByVariable;
 		}
 
-		$this->compoundConditionBuilder->addOrderByDataForProperty(
+		$this->conditionBuilder->addOrderByDataForProperty(
 			$result,
 			$joinVariable,
 			$orderByProperty,
@@ -134,17 +134,17 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		$innerOrderByProperty = null;
 
 		// Find out if we should order by the values of this property
-		if ( array_key_exists( $property->getKey(), $this->compoundConditionBuilder->getSortKeys() ) ) {
+		if ( array_key_exists( $property->getKey(), $this->conditionBuilder->getSortKeys() ) ) {
 			$innerOrderByProperty = $property;
 		}
 
 		// Prepare inner condition
-		$innerJoinVariable = $this->compoundConditionBuilder->getNextVariable();
+		$innerJoinVariable = $this->conditionBuilder->getNextVariable();
 
-		$this->compoundConditionBuilder->setJoinVariable( $innerJoinVariable );
-		$this->compoundConditionBuilder->setOrderByProperty( $innerOrderByProperty );
+		$this->conditionBuilder->setJoinVariable( $innerJoinVariable );
+		$this->conditionBuilder->setOrderByProperty( $innerOrderByProperty );
 
-		$innerCondition = $this->compoundConditionBuilder->mapDescriptionToCondition(
+		$innerCondition = $this->conditionBuilder->mapDescriptionToCondition(
 			$description
 		);
 
@@ -174,7 +174,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 	private function findMostSuitablePropertyRepresentation( DIProperty $property, DIProperty $nonInverseProperty, &$namespaces ) {
 
-		$redirectByVariable = $this->compoundConditionBuilder->tryToFindRedirectVariableForDataItem(
+		$redirectByVariable = $this->conditionBuilder->tryToFindRedirectVariableForDataItem(
 			$nonInverseProperty->getDiWikiPage()
 		);
 
@@ -243,11 +243,11 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 */
 	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, DIProperty $property, &$propertyName, $depth ) {
 
-		if ( !$this->compoundConditionBuilder->canUseQFeature( SMW_SPARQL_QF_SUBP ) || !$property->isUserDefined() || ( $depth !== null && $depth < 1 ) ) {
+		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBP ) || !$property->isUserDefined() || ( $depth !== null && $depth < 1 ) ) {
 			return null;
 		}
 
-		if ( $this->compoundConditionBuilder->getHierarchyLookup() == null || !$this->compoundConditionBuilder->getHierarchyLookup()->hasSubproperty( $property ) ) {
+		if ( $this->conditionBuilder->getHierarchyLookup() == null || !$this->conditionBuilder->getHierarchyLookup()->hasSubproperty( $property ) ) {
 			return null;
 		}
 
@@ -260,7 +260,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		// - elt? ZeroOrOnePath
 		$pathOp = $depth > 1 || $depth === null ? '*' : '?';
 
-		$propertyByVariable = '?' . $this->compoundConditionBuilder->getNextVariable( 'sp' );
+		$propertyByVariable = '?' . $this->conditionBuilder->getNextVariable( 'sp' );
 		$condition->weakConditions[$propertyName] = "\n". "$propertyByVariable " . $subPropExpElement->getQName() . "$pathOp $propertyName .\n"."";
 		$propertyName = $propertyByVariable;
 	}

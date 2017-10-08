@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\NamespaceDescription;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWDataItem as DataItem;
@@ -22,9 +22,9 @@ use SMWTurtleSerializer as TurtleSerializer;
 class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var CompoundConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $compoundConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var Exporter
@@ -34,10 +34,10 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
+	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
-		$this->compoundConditionBuilder = $compoundConditionBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -57,8 +57,8 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$joinVariable = $this->compoundConditionBuilder->getJoinVariable();
-		$orderByProperty = $this->compoundConditionBuilder->getOrderByProperty();
+		$joinVariable = $this->conditionBuilder->getJoinVariable();
+		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
 		$nspropExpElement = $this->exporter->getSpecialNsResource( 'swivt', 'wikiNamespace' );
 		$nsExpElement = new ExpLiteral( strval( $description->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
@@ -68,7 +68,7 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 
 		$result = new WhereCondition( $condition, true, array() );
 
-		$this->compoundConditionBuilder->addOrderByDataForProperty(
+		$this->conditionBuilder->addOrderByDataForProperty(
 			$result,
 			$joinVariable,
 			$orderByProperty,

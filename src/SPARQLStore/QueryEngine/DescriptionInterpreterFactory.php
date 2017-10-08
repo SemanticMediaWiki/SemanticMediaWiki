@@ -23,44 +23,44 @@ class DescriptionInterpreterFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param CompoundConditionBuilder $compoundConditionBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 *
 	 * @return DispatchingDescriptionInterpreter
 	 */
-	public function newDispatchingDescriptionInterpreter( CompoundConditionBuilder $compoundConditionBuilder ) {
+	public function newDispatchingDescriptionInterpreter( ConditionBuilder $conditionBuilder ) {
 
 		$dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
 
 		$dispatchingDescriptionInterpreter->addDefaultInterpreter(
-			new ThingDescriptionInterpreter( $compoundConditionBuilder )
+			new ThingDescriptionInterpreter( $conditionBuilder )
 		);
 
 		$dispatchingDescriptionInterpreter->addInterpreter(
-			new SomePropertyInterpreter( $compoundConditionBuilder )
+			new SomePropertyInterpreter( $conditionBuilder )
 		);
 
 		$dispatchingDescriptionInterpreter->addInterpreter(
-			new ConjunctionInterpreter( $compoundConditionBuilder )
+			new ConjunctionInterpreter( $conditionBuilder )
 		);
 
 		$dispatchingDescriptionInterpreter->addInterpreter(
-			new DisjunctionInterpreter( $compoundConditionBuilder )
+			new DisjunctionInterpreter( $conditionBuilder )
 		);
 
 		$dispatchingDescriptionInterpreter->addInterpreter(
-			new NamespaceDescriptionInterpreter( $compoundConditionBuilder )
+			new NamespaceDescriptionInterpreter( $conditionBuilder )
 		);
 
 		$dispatchingDescriptionInterpreter->addInterpreter(
-			new ClassDescriptionInterpreter( $compoundConditionBuilder )
+			new ClassDescriptionInterpreter( $conditionBuilder )
 		);
 
 		$dispatchingDescriptionInterpreter->addInterpreter(
-			new ValueDescriptionInterpreter( $compoundConditionBuilder )
+			new ValueDescriptionInterpreter( $conditionBuilder )
 		);
 
 		$dispatchingDescriptionInterpreter->addInterpreter(
-			new ConceptDescriptionInterpreter( $compoundConditionBuilder )
+			new ConceptDescriptionInterpreter( $conditionBuilder )
 		);
 
 		return $dispatchingDescriptionInterpreter;

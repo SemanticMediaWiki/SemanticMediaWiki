@@ -8,7 +8,7 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
@@ -37,13 +37,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter',
-			new SomePropertyInterpreter( $compoundConditionBuilder )
+			new SomePropertyInterpreter( $conditionBuilder )
 		);
 	}
 
@@ -53,11 +53,11 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new SomePropertyInterpreter( $compoundConditionBuilder );
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -75,14 +75,14 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
-		$compoundConditionBuilder->setHierarchyLookup( $hierarchyLookup );
-		$compoundConditionBuilder->setResultVariable( $resultVariable );
-		$compoundConditionBuilder->setSortKeys( $sortkeys );
-		$compoundConditionBuilder->setJoinVariable( $resultVariable );
-		$compoundConditionBuilder->setOrderByProperty( $orderByProperty );
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setHierarchyLookup( $hierarchyLookup );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setSortKeys( $sortkeys );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder->setOrderByProperty( $orderByProperty );
 
-		$instance = new SomePropertyInterpreter( $compoundConditionBuilder );
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
 
 		$condition = $instance->interpretDescription( $description );
 
@@ -93,7 +93,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedConditionString,
-			$compoundConditionBuilder->convertConditionToString( $condition )
+			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
 
@@ -115,12 +115,12 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$compoundConditionBuilder = new CompoundConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
-		$compoundConditionBuilder->setHierarchyLookup( $hierarchyLookup );
-		$compoundConditionBuilder->setResultVariable( $resultVariable );
-		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
+		$conditionBuilder->setHierarchyLookup( $hierarchyLookup );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
 
-		$instance = new SomePropertyInterpreter( $compoundConditionBuilder );
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
 
 		$description = new SomeProperty(
 			$property,
@@ -138,7 +138,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$compoundConditionBuilder->convertConditionToString( $condition )
+			$conditionBuilder->convertConditionToString( $condition )
 		);
 	}
 
