@@ -458,6 +458,8 @@
 	"smw-editpage-property-annotation-enabled": "Esta propriedade pode ser expandida usando anotações semânticas para especificar um tipo de dados (por exemplo, <nowiki>\"[[Has type::Page]]\"</nowiki>) ou inserir outras declarações de apoio (por exemplo, <nowiki>\"[[Subproperty of::dc:date]]\"</nowiki>). Para uma descrição das formas de ampliação desta página, consulte as páginas de ajuda [https://www.semantic-mediawiki.org/wiki/Help:Property_declaration declaração de uma propriedade] e [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes lista dos tipos de dados disponíveis].",
 	"smw-editpage-property-annotation-disabled": "Esta propriedade não pode ser expandida com uma anotação de tipo de dados (por exemplo, <nowiki>\"[[Has type::Page]]\"</nowiki>) porque o tipo já está predefinido (para mais informações, consulte a página de ajuda [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedades especiais]).",
 	"smw-editpage-concept-annotation-enabled": "Este conceito não pode ser expandido usando a função #concept do analisador sintático. Para uma descrição do uso da função #concept, consulte a página de ajuda [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceitos].",
+	"smw-search-synatx-support": "A entrada da pesquisa permite o uso da sintaxe <b>[[ :: ]]</b> para encontrar correspondências usando o MediaWiki Semântico.",
+	"smw-search-input-assistance": "O [https://www.semantic-mediawiki.org/wiki/Input_assistant ajudante de preenchimento] também está ativado para permitir uma pré-seleção das entidades disponíveis.",
 	"log-name-smw": "Registo do MediaWiki Semântico",
 	"log-show-hide-smw": "$1 o registo do MediaWiki Semântico",
 	"log-description-smw": "Atividades para os [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos de eventos ativados] que foram reportados pelo MediaWiki Semântico e pelos seus componentes.",
@@ -623,5 +625,6 @@
 	"apihelp-browsebysubject-summary": "Módulo da API para obter informação sobre um assunto.",
 	"apihelp-smwtask-summary": "Módulo da API para executar tarefas relacionadas com o MediaWiki Semântico.",
 	"apihelp-smwbrowse-summary": "Módulo da API do MediaWiki Semântico para suportar atividades de navegação selecionadas.",
-	"smw-api-smwbrowse-invalid-parameters": "O formato dos parâmetros é inválido; era esperado um formato JSON válido."
+	"smw-api-smwbrowse-invalid-parameters": "O formato dos parâmetros é inválido; era esperado um formato JSON válido.",
+	"smw-parser-recursion-level-exceeded": "O nível de $1 recursões foi excedido durante um processo de análise sintática. É sugerido que a estrutura de predefinições seja validada, ou que `maxRecursionDepth` seja ajustado se necessário."
 }

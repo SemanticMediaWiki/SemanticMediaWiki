@@ -164,6 +164,8 @@
 	"smw-property-name-invalid": "De eigenschap \"$1\" kan niet gebruikt worden (ongeldige eigenschapsnaam).",
 	"smw-sp-property-searchform": "Eigenschappen weergeven die de volgende tekst bevatten:",
 	"smw-sp-property-searchform-inputinfo": "De invoer is hoofdlettergevoelig en als deze wordt gebruikt voor filteren, worden alleen eigenschappen weergegeven die overeenkomen met de voorwaarde.",
+	"smw-special-wantedproperties-filter-label": "Filter:",
+	"smw-special-wantedproperties-filter-none": "Geen",
 	"concepts": "Concepten",
 	"smw-sp-concept-docu": "Een [https://www.semantic-mediawiki.org/wiki/Help:Concepts concept] kan gezien worden als een \"dynamische categorie\", dat wil zeggen als een verzameling pagina's die niet handmatig is aangemaakt, maar is berekend door Semantic MediaWiki van een beschrijving van een gegeven zoekopdracht.",
 	"smw-sp-concept-header": "Lijst van concepten",
@@ -330,7 +332,8 @@
 	"smw-ui-tooltip-title-quantity": "Eenheidomzetting",
 	"smw-ui-tooltip-title-info": "Gegevens",
 	"smw-ui-tooltip-title-service": "Dienstenkoppelingen",
-	"smw-ui-tooltip-title-warning": "Fout",
+	"smw-ui-tooltip-title-warning": "Waarschuwing",
+	"smw-ui-tooltip-title-error": "Fout",
 	"smw-ui-tooltip-title-parameter": "Parameter",
 	"smw-ui-tooltip-title-event": "Evenement",
 	"smw-ui-tooltip-title-note": "Opmerking",
@@ -363,6 +366,7 @@
 	"smw-sp-admin-settings-button": "Genereren van de lijst met instellingen",
 	"smw-admin-idlookup-title": "Objectid opzoeken",
 	"smw-admin-idlookup-docu": "Geeft details weer over een intern objectid dat een individuele entiteit (wikipagina, subobject, eigenschap, enz.) in Semantic MediaWiki representeert. Het id dient niet te worden verward met het id van MediaWiki-pagina's of -revisies.",
+	"smw-admin-idlookup-input": "Zoeken:",
 	"smw-admin-objectid": "ID:",
 	"smw-livepreview-loading": "Bezig met laden…",
 	"smw-sp-searchbyproperty-description": "Deze pagina biedt een eenvoudige [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces bladerinteractie] voor het vinden van entiteiten met een eigenschap met een bepaalde waarde. Andere beschikbare zoekinteracties zijn de [[Special:PageProperty|zoekpagina voor pagina-eigenschappen]] en de [[Special:Ask|querybouwer]].",
@@ -404,5 +408,6 @@
 	"smw-format-datatable-first": "Eerste",
 	"smw-format-datatable-last": "Laatste",
 	"smw-format-datatable-next": "Volgende",
-	"smw-format-datatable-previous": "Vorige"
+	"smw-format-datatable-previous": "Vorige",
+	"smw-format-datatable-toolbar-export": "Exporteren"
 }

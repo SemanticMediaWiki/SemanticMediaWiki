@@ -20,7 +20,8 @@
 			"Ridmevo",
 			"Ochaochaocha3",
 			"Nemo bis",
-			"Puntti ja"
+			"Puntti ja",
+			"Hinaloe"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -198,7 +199,7 @@
 	"smw_ask_show_embed": "埋め込み用コードを表示",
 	"smw_ask_hide_embed": "埋め込み用コードを非表示",
 	"smw_ask_embed_instr": "このクエリをウィキページにインラインで埋め込むには、下記のコードを使用します。",
-	"smw-ask-delete": "[削除]",
+	"smw-ask-delete": "削除",
 	"smw-ask-sorting": "並べ替え",
 	"smw-ask-search": "検索",
 	"smw-ask-format-selection-help": "詳細な説明は、$1のヘルプ ページを参照してください。",
@@ -358,5 +359,6 @@
 	"smw-format-datatable-next": "次",
 	"smw-format-datatable-previous": "前",
 	"smw-format-datatable-sortascending": ": 列を昇順に並べ替えるにはアクティブにする",
-	"smw-format-datatable-sortdescending": ": 列を降順に並べ替えるにはアクティブにする"
+	"smw-format-datatable-sortdescending": ": 列を降順に並べ替えるにはアクティブにする",
+	"smw-format-datatable-toolbar-export": "エクスポート"
 }

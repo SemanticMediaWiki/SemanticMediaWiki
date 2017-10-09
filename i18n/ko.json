@@ -366,6 +366,7 @@
 	"smw-livepreview-loading": "불러오는 중...",
 	"smw-sp-searchbyproperty-resultlist-header": "결과 목록",
 	"smw-datavalue-number-nullnotallowed": "\"$1\"가 숫자를 허용하지 않는 \"NULL\"과 함께 반환되었습니다.",
+	"smw-search-synatx-support": "검색 입력은 시맨틱 미디어위키를 사용하여 결과 일치를 위한 <b>[[ :: ]]</b> 문법 사용을 지원합니다.",
 	"log-name-smw": "시맨틱 미디어위키 로그",
 	"log-show-hide-smw": "$1 시맨틱 미디어위키 로그",
 	"smw-datavalue-import-missing-type": "[[MediaWiki:Smw import $2|$2 가져오기]]에서 \"$1\"에 대한 유형 정의를 찾을 수 없습니다.",
