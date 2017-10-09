@@ -51,7 +51,7 @@ class SpecialSearchResultsPrepend extends HookHandler {
 
 		if ( $this->specialSearch->getSearchEngine() instanceof SMWSearch ) {
 			$html .= Message::get(
-				'smw-search-synatx-support',
+				'smw-search-syntax-support',
 				Message::TEXT,
 				Message::USER_LANGUAGE
 			);
