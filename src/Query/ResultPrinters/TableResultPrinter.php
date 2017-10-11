@@ -114,7 +114,7 @@ class TableResultPrinter extends ResultPrinter {
 				// Also add this to the array of classes, for
 				// use in displaying each row.
 				$columnClasses[] = $columnClass;
-				$text = $pr->getText( $outputMode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
+				$text = $pr->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
 				$headerList[] = $pr->getCanonicalLabel();
 				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
