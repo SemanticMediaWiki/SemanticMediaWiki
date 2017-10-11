@@ -78,32 +78,6 @@
 		};
 
 		/**
-		 * Support text input on Special:Upload
-		 *
-		 * @since 3.0
-		 */
-		var upload = function() {
-
-			var context = $( '#wpUploadDescription' );
-
-			if ( context.length ) {
-
-				var entitySuggester= smw.Factory.newEntitySuggester(
-				context
-				);
-
-				// Register autocomplete default tokens
-				entitySuggester.registerDefaultTokenList(
-					[
-						'property',
-						'concept',
-						'category'
-					]
-				);
-			};
-		};
-
-		/**
 		 * Support text input on the wikiEditor textbox
 		 *
 		 * @since 3.0
@@ -177,10 +151,6 @@
 			load( search );
 		};
 
-		if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'Upload' ) {
-			load( upload );
-		};
-			
 		var wgAction = mw.config.get( 'wgAction' );
 
 		if ( ( wgAction == 'edit' || wgAction == 'submit' ) && mw.config.get( 'wgPageContentModel' ) == 'wikitext'  ) {
