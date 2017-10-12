@@ -9,9 +9,9 @@ understanding of what is being tested by using the wikitext markup to help desig
 test cases quicker without the need to learn how `PHPUnit` or internal `MediaWiki`
 objects work.
 
-* [List of available test cases](#testcases)
-* [Designing an integration test](#designing-an-integration-test)
-* [Technical notes](#technical-notes)
+* [List of available test cases](#TestCases)
+* [Designing an integration test](#Designing_an_integration_test)
+* [Technical notes](#Technical_notes)
 
 <!-- Begin of generated contents by readmeContentsBuilder.php -->
 
