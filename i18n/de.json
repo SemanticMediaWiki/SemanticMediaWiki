@@ -462,7 +462,7 @@
 	"smw-editpage-property-annotation-enabled": "Dieses Attribut kann noch mit einem Datentyp in Form von bspw. <code><nowiki>[[</nowiki>Datentyp::Seite]]</code> oder weiteren unterstützten Deklarationen, z. B. <code><nowiki>[[</nowiki>Unterattribut von::Dokumentation]]</code>, versehen werden. Ausführliche Hinweise zu [https://www.semantic-mediawiki.org/wiki/Help:Datentyp#Datentypen Datentypen] sowie eine [https://www.semantic-mediawiki.org/wiki/Help:Datentyp#Liste_der_Datentypen Liste der Datentypen] sind auf der Website zu Semantic MediaWiki verfügbar.<!--[[Has type::Page]], [[Subproperty of::dc:date]]-->",
 	"smw-editpage-property-annotation-disabled": "Dieses Attribut kann nicht mit einem Datentyp versehen werden, da dieser bereits systemseitig festgelegt ist (Spezialattribut). Ausführliche Hinweise zu [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattributen] sind auf der Website zu Semantic MediaWiki verfügbar.<!--[[Has type::Page]]-->",
 	"smw-editpage-concept-annotation-enabled": "Dieses Konzept kann mithilfe der Parserfunktion #concept erweitert werden. Für eine Beschreibung zur Verwendung von #concept, siehe die Hilfeseite zu [https://www.semantic-mediawiki.org/wiki/Help:Concepts Konzepten].",
-	"smw-search-synatx-support": "Die Sucheingabe unterstützt die Nutzung der von Semantic MediaWiki bereitgestellten Abfragesyntax, bspw. <code><b>[[ :: ]]</b></code>, zum Ermitteln der Suchergebnisse.",
+	"smw-search-syntax-support": "Die Sucheingabe unterstützt die Nutzung der von Semantic MediaWiki bereitgestellten Abfragesyntax, bspw. <code><b>[[Attributbezeichnung::Attributwert]]</b></code>, zum Ermitteln der Suchergebnisse.",
 	"smw-search-input-assistance": "Die [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Eingabehilfe] ist ebenfalls aktiviert, um die Auswahl semantisch nutzbarer Informationsobjekte zu vereinfachen.",
 	"log-name-smw": "Semantic-MediaWiki-Logbuch",
 	"log-show-hide-smw": "Semantic-MediaWiki-Logbuch $1",
@@ -629,6 +629,6 @@
 	"apihelp-browsebysubject-summary": "API-Modul zum Abrufen von Informationen zu einem Objekt (Seite oder Unterobjekt).",
 	"apihelp-smwtask-summary": "API-Modul zum Ausführen Semantic MediaWiki betreffender Aufgaben.",
 	"apihelp-smwbrowse-summary": "API-Modul zur Unterstützung verschiedener Aktivitäten beim Browsen.",
-	"smw-api-smwbrowse-invalid-parameters": "Die Formatierung der Parameter ist fehlerhaft. Es wird eine gültige JSON-Formatierung erwartet.",
+	"smw-api-smwbrowse-invalid-parameters": "Die Formatierung der Parameter ist fehlerhaft. Es ist eine gültige JSON-Formatierung erforderlich.",
 	"smw-parser-recursion-level-exceeded": "Die Obergrenze von $1 Rekursionen wurde während des Parsens überschritten. Es wird empfohlen, die Vorlagenstruktur zu validieren oder – falls notwendig, den Konfigurationsparameter „<code>$maxRecursionDepth</code>“ anzupassen."
 }

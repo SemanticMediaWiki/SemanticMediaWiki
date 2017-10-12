@@ -18,7 +18,8 @@
 			"Hudafu",
 			"Stieizc",
 			"CXuesong",
-			"Nemo bis"
+			"Nemo bis",
+			"NeverBehave"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -278,7 +279,7 @@
 	"smw-browse-intro": "此页面提供有关主题或实体实例的详情，请输入主题名称以检查。",
 	"smw-browse-invalid-subject": "主题验证返回“$1”错误。",
 	"smw-browse-api-subject-serialization-invalid": "主题有无效的序列化格式。",
-	"smw-browse-js-disabled": "目前怀疑Javascript被禁用或不可用，并且我们推荐使用受支持的浏览器。其他选项已在[https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi $smwgBrowseByApi]设置页面讨论。",
+	"smw-browse-js-disabled": "目前怀疑Javascript被禁用或不可用，并且我们推荐使用受支持的浏览器。其他选项已在[https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi <code>$smwgBrowseByApi</code>]配置参数页面讨论。",
 	"smw-noscript": "此页面或操作需要Javascript才能工作，请在您的浏览器中启用Javascript，或使用支持Javascript的浏览器，这样就可以提供相关功能，并在请求时提供。要进一步了解详情，请查阅[https://www.semantic-mediawiki.org/wiki/Help:Noscript noscript]帮助页面。",
 	"smw_inverse_label_default": "的$1",
 	"smw_inverse_label_property": "逆属性标签",
@@ -408,7 +409,7 @@
 	"right-smw-admin": "连接管理员工作组（Semantic MediaWiki）",
 	"right-smw-patternedit": "维护允许的正则表达式和模式的编辑访问权（Semantic MediaWiki）",
 	"right-smw-pageedit": "用于带<code>Is edit protected</code>注释页面的编辑访问权（语义MediaWiki）",
-	"restriction-level-smw-pageedit": "已保护（仅限合资格用户）",
+	"restriction-level-smw-pageedit": "已保护（仅限有资格的用户）",
 	"action-smw-patternedit": "编辑由语义MediaWiki使用的正则表达式",
 	"action-smw-pageedit": "编辑带注释<code>Is edit protected</code>的页面（语义MediaWiki）",
 	"group-smwadministrator": "管理员（Semantic MediaWiki）",
@@ -423,7 +424,7 @@
 	"smw-pa-property-predefined_ask": "“$1”是表现有关个别查询中媒体信息（[https://www.semantic-mediawiki.org/wiki/Subobject 子对象]形式）的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-pa-property-predefined_asksi": "“$1”是收集一次查询中使用到的条件数的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-pa-property-predefined_askde": "“$1”是报告有关查询深度的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
-	"smw-pa-property-predefined-long_askde": "它是在子查询嵌套、属性链和可用描述元素的基础上，通过执行受<code>[https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth]</code>设置限制的查询计算出的数值。",
+	"smw-pa-property-predefined-long_askde": "它是在子查询嵌套、属性链和可用描述元素的基础上，通过执行受<code>[https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth]</code>配置参数限制的查询计算出的数值。",
 	"smw-pa-property-predefined_askpa": "“$1”是一个描述影响查询结果参数的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-pa-property-predefined-long_askpa": "这是属性集合的一部分，它指定[https://www.semantic-mediawiki.org/wiki/Help:Query_profiler 查询详情]。",
 	"smw-sp-properties-docu": "这个页面列举此wiki上可用的[https://www.semantic-mediawiki.org/wiki/Property 属性]及其使用计数。为确保获得最新的计数统计信息，我们建议您定期运行[https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics 属性统计]维护脚本。差异化的视图，请参阅[[Special:UnusedProperties|未使用的属性]]或[[Special:WantedProperties|缺乏属性]]特殊页面。",
@@ -458,8 +459,8 @@
 	"smw-editpage-property-annotation-enabled": "此属性可通过语义释文扩充以指定一个数据类型（例如<nowiki>\"[[Has type::Page]]\"</nowiki>）或其他支持的声明（例如<nowiki>\"[[Subproperty of::dc:date]]\"</nowiki>）。有关如何增大此页面的说明，参见[https://www.semantic-mediawiki.org/wiki/Help:Property_declaration 属性宣告]或[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes 可用数据类型列表]帮助页面。",
 	"smw-editpage-property-annotation-disabled": "由于此属性已经被预先定义，它不能通过一个数据类型注释（例如<nowiki>\"[[Has type::Page]]\"</nowiki>）延伸（参见[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 特殊属性]帮助页面以获取更多信息）。",
 	"smw-editpage-concept-annotation-enabled": "此概念可以通过#concept解析器函数扩充。有关如何使用#concept的说明，参见[https://www.semantic-mediawiki.org/wiki/Help:Concepts 概念]帮助页面。",
-	"smw-search-synatx-support": "搜索输入支持使用<b>[[ :: ]]</b>语法，以便使用语义MediaWiki匹配结果。",
-	"smw-search-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Input_assistant 输入助手]已启用，以便允许在可用记录中预选择。",
+	"smw-search-syntax-support": "搜索输入支持使用语义查询语法，例如<b><code>[[Property name::Property value]]</code></b>以使用Semantic MediaWiki匹配结果。",
+	"smw-search-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance 输入助手]已启用，以便在可用记录中预选择。",
 	"log-name-smw": "Semantic MediaWiki日志",
 	"log-show-hide-smw": "$1语义MediaWiki日志",
 	"log-description-smw": "为[https://www.semantic-mediawiki.org/wiki/Help:Logging 已启用的活动类型]激活，它们已经被Semantic MediaWiki及其组件汇报。",
@@ -616,7 +617,7 @@
 	"smw-format-datatable-sortdescending": ":激活按降序进行列排序",
 	"smw-format-datatable-toolbar-export": "导出",
 	"smw-category-invalid-redirect-target": "分类“$1”包含无效的链至非分类名字空间的重定向目标。",
-	"smw-parser-function-expensive-execution-limit": "解析器参数已达到高开销实现的限制（参见[https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit]）。",
+	"smw-parser-function-expensive-execution-limit": "解析器参数已达到高开销执行的限制（参见配置参数[https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit <code>$smwgQExpensiveExecutionLimit</code>]）。",
 	"smw-postproc-queryref": "由于一些必要的后处理，页面已标记将会刷新。",
 	"apihelp-smwinfo-summary": "检索有关语义MediaWiki统计信息及其他元信息的API模块。",
 	"apihelp-ask-summary": "使用请求语言查询语义MediaWiki的API模块。",
@@ -626,5 +627,5 @@
 	"apihelp-smwtask-summary": "执行语义MediaWiki相关任务的API模块。",
 	"apihelp-smwbrowse-summary": "支持选定浏览器活动的语义MediaWiki API模块。",
 	"smw-api-smwbrowse-invalid-parameters": "参数格式无效，应为有效的JSON格式。",
-	"smw-parser-recursion-level-exceeded": "$1递归的等级在解析期间溢出。建议您验证模板结果，或如有需要可调整“maxRecursionDepth”。"
+	"smw-parser-recursion-level-exceeded": "$1递归的等级在解析期间溢出。建议您验证模板结果，或如有需要可调整配置参数<code>$maxRecursionDepth</code>。"
 }
