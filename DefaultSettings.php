@@ -1615,7 +1615,7 @@ return array(
 	#   (#1234)
 	#
 	# @since 3.0
-	# @default false
+	# @default SMW_EL_INPROP
 	##
 	'smwgEntityLookupFeatures' => SMW_EL_INPROP,
 	##
