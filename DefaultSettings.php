@@ -727,7 +727,7 @@ return array(
 	# by extensions that add new types that have their own additional declaration
 	# properties.
 	#
-	# @since 1.6
+	# @since 1.5
 	##
 	'smwgDeclarationProperties' => array(
 		'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC'
