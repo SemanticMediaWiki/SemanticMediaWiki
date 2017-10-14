@@ -58,7 +58,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$circularReferenceGuard->expects( $this->once() )
-			->method( 'isCircularByRecursionFor' )
+			->method( 'isCircular' )
 			->with( $this->equalTo( 'concept-42' ) )
 			->will( $this->returnValue( true ) );
 

@@ -191,7 +191,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'unmark' );
 
 		$this->circularReferenceGuard->expects( $this->once() )
-			->method( 'isCircularByRecursionFor' )
+			->method( 'isCircular' )
 			->will( $this->returnValue( true ) );
 
 		$instance = new AskParserFunction(

@@ -289,7 +289,7 @@ class AskParserFunction {
 		// If we caught in a circular loop (due to a template referencing to itself)
 		// then we stop here before the next query execution to avoid an infinite
 		// self-reference
-		if ( $this->circularReferenceGuard->isCircularByRecursionFor( $queryHash ) ) {
+		if ( $this->circularReferenceGuard->isCircular( $queryHash ) ) {
 			return '';
 		}
 

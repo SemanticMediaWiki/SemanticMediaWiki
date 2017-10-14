@@ -74,7 +74,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		$this->conditionBuilder->getCircularReferenceGuard()->mark( $hash );
 
-		if ( $this->conditionBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
+		if ( $this->conditionBuilder->getCircularReferenceGuard()->isCircular( $hash ) ) {
 
 			$this->conditionBuilder->addError(
 				array( 'smw-query-condition-circular', $description->getQueryString() )

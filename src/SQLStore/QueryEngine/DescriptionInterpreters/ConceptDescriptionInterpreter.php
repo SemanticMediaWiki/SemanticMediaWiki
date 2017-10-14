@@ -68,7 +68,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		$this->querySegmentListBuilder->getCircularReferenceGuard()->mark( $hash );
 
-		if ( $this->querySegmentListBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
+		if ( $this->querySegmentListBuilder->getCircularReferenceGuard()->isCircular( $hash ) ) {
 
 			$this->querySegmentListBuilder->addError(
 				array( 'smw-query-condition-circular', $description->getQueryString() )
