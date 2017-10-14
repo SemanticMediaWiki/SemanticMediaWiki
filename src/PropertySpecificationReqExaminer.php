@@ -37,6 +37,11 @@ class PropertySpecificationReqExaminer {
 	private $semanticData;
 
 	/**
+	 * @var boolean
+	 */
+	private $changePropagationProtection = true;
+
+	/**
 	 * @var DataItemFactory
 	 */
 	private $dataItemFactory;
@@ -64,6 +69,15 @@ class PropertySpecificationReqExaminer {
 	 */
 	public function setSemanticData( SemanticData $semanticData = null ) {
 		$this->semanticData = $semanticData;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $changePropagationProtection
+	 */
+	public function setChangePropagationProtection( $changePropagationProtection ) {
+		$this->changePropagationProtection = (bool)$changePropagationProtection;
 	}
 
 	/**
@@ -99,10 +113,11 @@ class PropertySpecificationReqExaminer {
 		$this->dataItemFactory = new DataItemFactory();
 
 		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
+			$severity = $this->changePropagationProtection ? 'error' : 'warning';
 			$this->reqLock = true;
 			return array(
-				'error',
-				'smw-property-req-violation-change-propagation-locked',
+				$severity,
+				'smw-property-req-violation-change-propagation-locked-' . $severity,
 				$property->getLabel()
 			);
 		}

@@ -115,6 +115,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$applicationFactory->singleton( 'ProtectionValidator' )
 		);
 
+		$propertySpecificationReqExaminer->setChangePropagationProtection(
+			$applicationFactory->getSettings()->get( 'smwgChangePropagationProtection' )
+		);
+
 		$propertySpecificationReqMsgBuilder = new PropertySpecificationReqMsgBuilder(
 			$this->store,
 			$propertySpecificationReqExaminer
