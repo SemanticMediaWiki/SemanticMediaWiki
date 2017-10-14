@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Integration\JSONScript;
 
+use SMW\Tests\Utils\File\ContentsReader;
+
 /**
  * @group semantic-mediawiki
  * @group medium
@@ -85,7 +87,7 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		if ( isset( $case['assert-output']['to-contain'] ) ) {
 
 			if ( isset( $case['assert-output']['to-contain']['contents-file'] ) ) {
-				$contents = $this->getFileContentsWithEncodingDetection(
+				$contents = ContentsReader::readContentsFrom(
 					$this->testCaseLocation . $case['assert-output']['to-contain']['contents-file']
 				);
 			} else {
@@ -93,7 +95,7 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			}
 
 			$this->stringValidator->assertThatStringContains(
-				str_replace( "\r\n", "\n", $contents ),
+				$contents,
 				$text,
 				$case['about']
 			);
@@ -102,7 +104,7 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		if ( isset( $case['assert-output']['not-contain'] ) ) {
 
 			if ( isset( $case['assert-output']['not-contain']['contents-file'] ) ) {
-				$contents = $this->getFileContentsWithEncodingDetection(
+				$contents = ContentsReader::readContentsFrom(
 					$this->testCaseLocation . $case['assert-output']['not-contain']['contents-file']
 				);
 			} else {
@@ -110,24 +112,11 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			}
 
 			$this->stringValidator->assertThatStringNotContains(
-				str_replace( "\r\n", "\n", $contents ),
+				$contents,
 				$text,
 				$case['about']
 			);
 		}
-	}
-
-	// http://php.net/manual/en/function.file-get-contents.php
-	private function getFileContentsWithEncodingDetection( $file ) {
-
-		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $file );
-
-		if ( !is_readable( $file ) ) {
-			throw new RuntimeException( "Could not open or read: $file" );
-		}
-
-		$content = file_get_contents( $file );
-		return mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding( $content, 'UTF-8, ISO-8859-1, ISO-8859-2', true ) );
 	}
 
 }

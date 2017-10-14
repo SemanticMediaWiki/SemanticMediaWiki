@@ -350,7 +350,7 @@ class JsonTestCaseFileHandler {
 	 *
 	 * @return array
 	 */
-	public function findTaskBeforeTestExecutionByType( $type ) {
+	public function findTasksBeforeTestExecutionByType( $type ) {
 		$contents = $this->getContentsFor( 'beforeTest' );
 		return isset( $contents[$type] ) ? $contents[$type] : array();
 	}

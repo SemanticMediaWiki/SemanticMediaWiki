@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use SMW\ApplicationFactory;
 use SMW\Message;
 use SMW\Tests\Utils\File\LocalFileUpload;
+use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use Title;
@@ -139,7 +140,9 @@ class JsonTestCaseContentHandler {
 		}
 
 		if ( is_array( $page['contents'] ) && isset( $page['contents']['import-from'] ) ) {
-			$contents = $this->getFileContentsWithEncodingDetection( $this->testCaseLocation . $page['contents']['import-from'] );
+			$contents = ContentsReader::readContentsFrom(
+				$this->testCaseLocation . $page['contents']['import-from']
+			);
 		} else {
 			$contents = $page['contents'];
 		}
@@ -173,12 +176,6 @@ class JsonTestCaseContentHandler {
 		);
 
 		$this->pages[] = $target;
-	}
-
-	// http://php.net/manual/en/function.file-get-contents.php
-	private function getFileContentsWithEncodingDetection( $file ) {
-		$content = file_get_contents( $file );
-		return mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding( $content, 'UTF-8, ISO-8859-1, ISO-8859-2', true ) );
 	}
 
 	private function doUploadFile( $title, array $contents ) {
