@@ -137,11 +137,12 @@ return array(
 	# together with the SPARQLStore.
 	#
 	# List of standard connectors ($smwgSparqlCustomConnector will have no effect)
+	# - '4store'
+	# - 'blazegraph'
 	# - 'fuseki'
 	# - 'virtuoso'
-	# - '4store'
 	# - 'sesame'
-	# - 'generic'
+	# - 'default'
 	#
 	# In case $smwgSparqlRepositoryConnector = 'custom' is maintained, $smwgSparqlCustomConnector
 	# is expected to contain a custom class connector where $smwgSparqlCustomConnector is only
