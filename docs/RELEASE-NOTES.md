@@ -1,6 +1,6 @@
 # Semantic MediaWiki 3.0
 
-This is not a release yet and is planned to be available between Q4 2017 and Q1 2018.
+This is not a release yet and is planned to be available in Q1 2018.
 
 ## Highlights
 
@@ -9,6 +9,8 @@ Highlights for this release include ... (#2065)
 ## Upgrading
 
 This release requires to run the `setupStore.php` or `update.php` script. (#2065, #2461, #2499)
+
+After the upgrade, please check the "Deprecation notices" section in `Special:SemanticMediaWiki` to adapt and modify listed deprecated settings.
 
 ## New features and enhancements
 
@@ -46,6 +48,8 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2719](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2719) 
 * [#2721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2721)
 * [#2726](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2726)
+* [#2738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2738)
+* [#2756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2756)
 
 ## Bug fixes
 
@@ -67,6 +71,9 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2724](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2724)
 * [#2730](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2730)
 * [#2732](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2732)
+* [#2748](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2748)
+* [#2750](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2750)
+* [#2752](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2752)
 
 ## Other changes
 
@@ -85,6 +92,9 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 * [#2698](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2698) Added persistent caching to the `HierarchyLookup`
 * [#2714](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2714) Added `SMW::GetPreferences` hook
 * [#2727](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2727)
+* [#2745](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2745)
+* [#2747](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2747)
+* [#2751](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2751)
 
 ## Contributors
 
