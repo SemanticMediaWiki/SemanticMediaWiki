@@ -24,26 +24,12 @@ class GetPreferences extends HookHandler {
 	private $user;
 
 	/**
-	 * @var boolean
-	 */
-	private $enabledEditPageHelp = false;
-
-	/**
 	 * @since  2.0
 	 *
 	 * @param User $user
 	 */
 	public function __construct( User $user ) {
 		$this->user = $user;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param boolean $enabledEditPageHelp
-	 */
-	public function isEnabledEditPageHelp( $enabledEditPageHelp ) {
-		$this->enabledEditPageHelp = (bool)$enabledEditPageHelp;
 	}
 
 	/**
@@ -54,6 +40,8 @@ class GetPreferences extends HookHandler {
 	 * @return true
 	 */
 	public function process( array &$preferences ) {
+
+		$enabledEditPageHelp = $this->getOption( 'smwgEnabledEditPageHelp', false );
 
 		// Intro text
 		$preferences['smw-prefs-intro'] =
@@ -79,7 +67,7 @@ class GetPreferences extends HookHandler {
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-disable-editpage-info',
 			'section' => 'smw/general-options',
-			'disabled' => !$this->enabledEditPageHelp
+			'disabled' => !$enabledEditPageHelp
 		);
 
 		// Option to enable input assistance

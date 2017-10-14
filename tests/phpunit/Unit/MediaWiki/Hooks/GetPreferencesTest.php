@@ -41,7 +41,12 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		$preferences = array();
 
 		$instance = new GetPreferences( $user );
-		$instance->isEnabledEditPageHelp( false );
+
+		$instance->setOptions(
+			[
+				'smwgEnabledEditPageHelp' => false
+			]
+		);
 
 		$instance->process( $preferences );
 

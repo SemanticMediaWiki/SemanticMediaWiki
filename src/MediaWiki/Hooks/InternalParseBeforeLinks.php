@@ -27,7 +27,7 @@ use StripState;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinks {
+class InternalParseBeforeLinks extends HookHandler {
 
 	/**
 	 * @var Parser
@@ -40,11 +40,6 @@ class InternalParseBeforeLinks {
 	private $stripState;
 
 	/**
-	 * @var array
-	 */
-	private $enabledSpecialPage = array();
-
-	/**
 	 * @since 1.9
 	 *
 	 * @param Parser $parser
@@ -53,15 +48,6 @@ class InternalParseBeforeLinks {
 	public function __construct( Parser &$parser, $stripState ) {
 		$this->parser = $parser;
 		$this->stripState = $stripState;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param array|boolean $enabledSpecialPage
-	 */
-	public function setEnabledSpecialPage( $enabledSpecialPage ) {
-		$this->enabledSpecialPage = (array)$enabledSpecialPage;
 	}
 
 	/**
@@ -103,7 +89,7 @@ class InternalParseBeforeLinks {
 		}
 
 		// #2529
-		foreach ( $this->enabledSpecialPage as $specialPage ) {
+		foreach ( $this->getOption( 'smwgEnabledSpecialPage', [] ) as $specialPage ) {
 			if ( is_string( $specialPage ) && $title->isSpecial( $specialPage ) ) {
 				return true;
 			}
