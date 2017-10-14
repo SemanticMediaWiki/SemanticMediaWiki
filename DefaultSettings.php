@@ -147,12 +147,9 @@ return array(
 	# is expected to contain a custom class connector where $smwgSparqlCustomConnector is only
 	# for the definition of a custom connector.
 	#
-	# $smwgSparqlRepositoryConnector = 'custom' is set as legacy configuration to allow for
-	# existing (prior 2.0) customizing to work without changes.
-	#
 	# @since 2.0
 	##
-	'smwgSparqlRepositoryConnector' => 'custom',
+	'smwgSparqlRepositoryConnector' => 'default',
 	##
 
 	##
