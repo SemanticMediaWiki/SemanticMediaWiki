@@ -36,6 +36,16 @@
 	color: #8a6d3b;
 }
 
+.smw-admin-hr {
+	margin-top:20px;
+	background-color: #ddd;
+}
+
+.smw-admin-deprecation-notice-section-explanation {
+	font-size:12px;
+	font-style: italic;
+}
+
 .smw-special-filter{
 	padding: 5px 0px 0px 0px;
 }

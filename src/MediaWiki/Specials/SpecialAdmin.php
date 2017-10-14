@@ -211,7 +211,9 @@ class SpecialAdmin extends SpecialPage {
 		$dataRebuildSection = $tableSchemaTaskHandler->getHtml();
 		$dataRebuildSection .= Html::rawElement(
 			'hr',
-			array( 'style' => 'margin-top:20px; background-color: #ddd;' ),
+			[
+				'class' => 'smw-admin-hr'
+			],
 			''
 		)  . Html::rawElement(
 			'h3',
