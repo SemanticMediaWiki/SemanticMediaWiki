@@ -30,7 +30,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$settings = array(
-			'smwgDeclarationProperties' => array(),
+			'smwgChangePropagationWatchlist' => array(),
 			'smwgCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false
 		);

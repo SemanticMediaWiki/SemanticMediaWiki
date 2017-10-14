@@ -729,9 +729,21 @@ return array(
 	#
 	# @since 1.5
 	##
-	'smwgDeclarationProperties' => array(
+	'smwgChangePropagationWatchlist' => array(
 		'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC'
 	),
+	##
+
+	##
+	# Change propagation protection
+	#
+	# An administrative intervention to disable the protection for an active change
+	# propagation.
+	#
+	# @since 3.0
+	# @default true
+	##
+	'smwgChangePropagationProtection' => true,
 	##
 
 	###
@@ -1666,18 +1678,6 @@ return array(
 	# @default false
 	##
 	'smwgFieldTypeFeatures' => false,
-	##
-
-	##
-	# Change propagation protection
-	#
-	# An administrative intervention to disable the protection for an active change
-	# propagation.
-	#
-	# @since 3.0
-	# @default true
-	##
-	'smwgChangePropagationProtection' => true,
 	##
 
 	##

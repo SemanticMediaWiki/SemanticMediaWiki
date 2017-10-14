@@ -28,7 +28,7 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 
 		$this->testEnvironment = new TestEnvironment(
 			array(
-				'smwgDeclarationProperties' => array( '_PVAL' ),
+				'smwgChangePropagationWatchlist' => array( '_PVAL' ),
 				'smwgCacheType'  => 'hash',
 				'smwgEnableUpdateJobs' => false
 			)
