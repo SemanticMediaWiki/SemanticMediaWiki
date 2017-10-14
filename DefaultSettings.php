@@ -133,22 +133,22 @@ return array(
 	##
 	# Sparql repository connector
 	#
-	# Identifies a pre-deployed repository connector that is ought to be used
-	# together with the SPARQLStore.
+	# Identifies a pre-deployed repository connector that is ought to be used together
+	# with the SPARQLStore.
 	#
-	# List of standard connectors ($smwgSparqlCustomConnector will have no effect)
+	# List of standard connectors ($smwgSparqlCustomConnector will have no effect):
 	# - '4store'
 	# - 'blazegraph'
 	# - 'fuseki'
-	# - 'virtuoso'
 	# - 'sesame'
-	# - 'default'
+	# - 'virtuoso'
 	#
 	# In case $smwgSparqlRepositoryConnector = 'custom' is maintained, $smwgSparqlCustomConnector
 	# is expected to contain a custom class connector where $smwgSparqlCustomConnector is only
 	# for the definition of a custom connector.
 	#
 	# @since 2.0
+	# @default default, meaning that the default connector is used
 	##
 	'smwgSparqlRepositoryConnector' => 'default',
 	##
