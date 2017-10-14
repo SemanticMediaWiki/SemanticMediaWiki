@@ -202,7 +202,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			DataItem::class,
-			$instance->getExternalFormatterUriBy( $property )
+			$instance->getExternalFormatterUri( $property )
 		);
 	}
 

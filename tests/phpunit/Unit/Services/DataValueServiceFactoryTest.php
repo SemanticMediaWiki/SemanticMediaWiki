@@ -59,6 +59,18 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance->newDataValueByType( 'foo', 'bar' );
 	}
 
+	public function testGetDataValueFactory() {
+
+		$instance = new DataValueServiceFactory(
+			$this->containerBuilder
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\DataValueFactory',
+			$instance->getDataValueFactory()
+		);
+	}
+
 	public function testGetValueParser() {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
