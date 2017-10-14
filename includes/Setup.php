@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\MediaWiki\Hooks\HookRegistry;
+use Hooks;
 
 /**
  * Extension setup and registration
@@ -46,6 +47,7 @@ final class Setup {
 	 * @since 1.9
 	 */
 	public function run() {
+
 		$this->addSomeDefaultConfigurations();
 
 		if ( CompatibilityMode::extensionNotEnabled() ) {
@@ -64,6 +66,8 @@ final class Setup {
 		$this->registerParamDefinitions();
 		$this->registerFooterIcon();
 		$this->registerHooks();
+
+		Hooks::run( 'SMW::Setup::AfterInitializationComplete', [ &$this->globalVars ] );
 	}
 
 	private function addSomeDefaultConfigurations() {
