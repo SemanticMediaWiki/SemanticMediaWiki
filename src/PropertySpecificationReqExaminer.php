@@ -126,7 +126,6 @@ class PropertySpecificationReqExaminer {
 			return array(
 				$property->isUserDefined() ? 'error' : 'warning',
 				'smw-edit-protection',
-				$property->getLabel(),
 				$this->protectionValidator->getEditProtectionRight()
 			);
 		}
