@@ -54,7 +54,7 @@ class RedirectTargetLookup {
 		// Guard against a dataItem that points to itself
 		$this->circularReferenceGuard->mark( $hash );
 
-		if ( !$this->circularReferenceGuard->isCircularByRecursionFor( $hash ) ) {
+		if ( !$this->circularReferenceGuard->isCircular( $hash ) ) {
 			$dataItem = $this->store->getRedirectTarget( $dataItem );
 		}
 
