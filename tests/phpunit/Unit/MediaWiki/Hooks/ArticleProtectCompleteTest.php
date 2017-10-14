@@ -120,7 +120,12 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setLogger( $this->spyLogger );
-		$instance->setEditProtectionRight( 'Foo' );
+
+		$instance->setOptions(
+			[
+				'smwgEditProtectionRight' => 'Foo'
+			]
+		);
 
 		$protections = array( 'edit' => 'Foo' );
 		$reason = '';
@@ -181,7 +186,12 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setLogger( $this->spyLogger );
-		$instance->setEditProtectionRight( 'Foo2' );
+
+		$instance->setOptions(
+			[
+				'smwgEditProtectionRight' => 'Foo2'
+			]
+		);
 
 		$protections = array( 'edit' => 'Foo' );
 		$reason = '';

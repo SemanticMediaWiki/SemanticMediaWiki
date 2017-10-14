@@ -208,6 +208,8 @@ class HookRegistry {
 		 */
 		$this->handlers['BeforePageDisplay'] = function ( &$outputPage, &$skin ) {
 
+			$user = $outputPage->getUser();
+
 			$beforePageDisplay = new BeforePageDisplay(
 				$outputPage,
 				$skin
@@ -215,7 +217,7 @@ class HookRegistry {
 
 			$beforePageDisplay->registerModules(
 				[
-					'ext.smw.suggester.textInput' => $outputPage->getUser()->getOption( 'smw-prefs-general-options-suggester-textinput' )
+					'ext.smw.suggester.textInput' => $user->getOption( 'smw-prefs-general-options-suggester-textinput' )
 				]
 			);
 
@@ -250,8 +252,10 @@ class HookRegistry {
 				$stripState
 			);
 
-			$internalParseBeforeLinks->setEnabledSpecialPage(
-				$applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' )
+			$internalParseBeforeLinks->setOptions(
+				[
+					'smwgEnabledSpecialPage' => $applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' )
+				]
 			);
 
 			return $internalParseBeforeLinks->process( $text );
@@ -306,8 +310,10 @@ class HookRegistry {
 				$editInfoProvider
 			);
 
-			$articleProtectComplete->setEditProtectionRight(
-				$applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+			$articleProtectComplete->setOptions(
+				[
+					'smwgEditProtectionRight' => $applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+				]
 			);
 
 			$articleProtectComplete->setLogger(
@@ -434,8 +440,10 @@ class HookRegistry {
 				$user
 			);
 
-			$getPreferences->isEnabledEditPageHelp(
-				$applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' )
+			$getPreferences->setOptions(
+				[
+					'smwgEnabledEditPageHelp' => $applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' )
+				]
 			);
 
 			return $getPreferences->process( $preferences);
@@ -545,16 +553,17 @@ class HookRegistry {
 		 */
 		$this->handlers['EditPage::showEditForm:initial'] = function ( $editPage, $output ) use ( $applicationFactory ) {
 
+			$user = $output->getUser();
+
 			$editPageForm = new EditPageForm(
 				$applicationFactory->getNamespaceExaminer()
 			);
 
-			$editPageForm->isEnabledEditPageHelp(
-				$applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' )
-			);
-
-			$editPageForm->isDisabledOnUserPreference(
-				$output->getUser()->getOption( 'smw-prefs-general-options-disable-editpage-info' )
+			$editPageForm->setOptions(
+				[
+					'smwgEnabledEditPageHelp' => $applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' ),
+					'prefs-disable-editpage' => $user->getOption( 'smw-prefs-general-options-disable-editpage-info' )
+				]
 			);
 
 			return $editPageForm->process( $editPage );

@@ -172,8 +172,10 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			$this->stripState
 		);
 
-		$instance->setEnabledSpecialPage(
-			array( 'Bar' )
+		$instance->setOptions(
+			[
+				'smwgEnabledSpecialPage' => [ 'Bar' ]
+			]
 		);
 
 		$instance->process( $text );
@@ -267,8 +269,12 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			$this->stripState
 		);
 
-		$instance->setEnabledSpecialPage(
-			isset( $parameters['settings']['smwgEnabledSpecialPage'] ) ? $parameters['settings']['smwgEnabledSpecialPage'] : array()
+		$smwgEnabledSpecialPage = isset( $parameters['settings']['smwgEnabledSpecialPage'] ) ? $parameters['settings']['smwgEnabledSpecialPage'] : [];
+
+		$instance->setOptions(
+			[
+				'smwgEnabledSpecialPage' => $smwgEnabledSpecialPage
+			]
 		);
 
 		$this->assertTrue(
@@ -443,7 +449,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 					'smwgEnabledInTextAnnotationParserStrictMode' => true,
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
-					'smwgEnabledSpecialPage' => false
+					'smwgEnabledSpecialPage' => []
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
 					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .

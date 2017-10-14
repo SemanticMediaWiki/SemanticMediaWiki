@@ -24,40 +24,12 @@ class EditPageForm extends HookHandler {
 	private $namespaceExaminer;
 
 	/**
-	 * @var boolean
-	 */
-	private $enabledEditPageHelp = false;
-
-	/**
-	 * @var boolean
-	 */
-	private $disabledOnUserPreference = false;
-
-	/**
 	 * @since 2.5
 	 *
 	 * @param NamespaceExaminer $namespaceExaminer
 	 */
 	public function __construct( NamespaceExaminer $namespaceExaminer ) {
 		$this->namespaceExaminer = $namespaceExaminer;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param boolean $enabledEditPageHelp
-	 */
-	public function isEnabledEditPageHelp( $enabledEditPageHelp ) {
-		$this->enabledEditPageHelp = $enabledEditPageHelp;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param boolean $disabledOnUserPreference
-	 */
-	public function isDisabledOnUserPreference( $disabledOnUserPreference ) {
-		$this->disabledOnUserPreference = (bool)$disabledOnUserPreference;
 	}
 
 	/**
@@ -69,16 +41,16 @@ class EditPageForm extends HookHandler {
 	 */
 	public function process( EditPage $editPage ) {
 
-		if ( !$this->enabledEditPageHelp || $this->disabledOnUserPreference ) {
+		if ( !$this->getOption( 'smwgEnabledEditPageHelp', false ) || $this->getOption( 'prefs-disable-editpage', false ) ) {
 			return true;
 		}
 
-		$this->addHelpFormTo( $editPage );
+		$this->updateEditPage( $editPage );
 
 		return true;
 	}
 
-	private function addHelpFormTo( $editPage ) {
+	private function updateEditPage( $editPage ) {
 
 		$msgKey = $this->getMessageKey(
 			$editPage->getTitle()
