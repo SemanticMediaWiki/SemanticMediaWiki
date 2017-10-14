@@ -211,7 +211,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return DataItem|null
 	 */
-	public function getExternalFormatterUriBy( DIProperty $property ) {
+	public function getExternalFormatterUri( DIProperty $property ) {
 
 		$dataItem = null;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PEFU' ) );

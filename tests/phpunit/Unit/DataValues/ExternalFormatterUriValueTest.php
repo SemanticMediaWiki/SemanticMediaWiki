@@ -53,7 +53,7 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getFormattedUriWith( $replacement )
+			$instance->getUriWithPlaceholderSubstitution( $replacement )
 		);
 	}
 

@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\ExternalIdentifierValue;
 use SMW\DataItemFactory;
+use SMW\DataValueFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\PropertySpecificationLookup;
 
@@ -21,14 +22,41 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
+	private $dataValueServiceFactory;
 
 	protected function setUp() {
+		parent::setUp();
+
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( PropertySpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$externalFormatterUriValue = $this->getMockBuilder( '\SMW\DataValues\ExternalFormatterUriValue' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getPropertySpecificationLookup' )
+			->will( $this->returnValue( $this->propertySpecificationLookup ) );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $constraintValueValidator ) );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getDataValueFactory' )
+			->will( $this->returnValue( DataValueFactory::getInstance() ) );
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
@@ -48,10 +76,11 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	public function testGetShortWikiText() {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
-			->method( 'getExternalFormatterUriBy' )
+			->method( 'getExternalFormatterUri' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ) );
 
 		$instance = new ExternalIdentifierValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 
 		$instance->setUserValue( 'foo' );
 		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
@@ -70,10 +99,11 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	public function testGetShortHTMLText() {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
-			->method( 'getExternalFormatterUriBy' )
+			->method( 'getExternalFormatterUri' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ) );
 
 		$instance = new ExternalIdentifierValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 
 		$instance->setUserValue( 'foo' );
 		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
@@ -96,6 +126,7 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	public function testTryToGetShortHTMLTextWithLinkerOnMissingFormatterUri() {
 
 		$instance = new ExternalIdentifierValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 
 		$instance->setUserValue( 'foo' );
 		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );

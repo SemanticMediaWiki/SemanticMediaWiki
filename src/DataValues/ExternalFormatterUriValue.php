@@ -58,14 +58,14 @@ class ExternalFormatterUriValue extends UriValue {
 	 *
 	 * @return string
 	 */
-	public function getFormattedUriWith( $value ) {
+	public function getUriWithPlaceholderSubstitution( $value ) {
 
 		if ( !$this->isValid() ) {
 			return '';
 		}
 
 		// Avoid already encoded values like `W%D6LLEKLA01` to be
-		// doubled encoded
+		// encoded twice
 		$value = rawurlencode( rawurldecode( $value ) );
 
 		// %241 == encoded $1
