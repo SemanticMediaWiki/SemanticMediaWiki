@@ -276,6 +276,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 				if ( $id !== false ) {
 					unset( $indices[$id] );
+					unset( $idx[$id] );
 				}
 
 			} else { // Duplicate or unrequired index.
