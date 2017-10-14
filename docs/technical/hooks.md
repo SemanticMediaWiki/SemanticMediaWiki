@@ -265,6 +265,24 @@ Implementing a hook should be made in consideration of the expected performance 
 } );
 </pre>
 
+### SMW::Setup::AfterInitializationComplete
+
+* Version: 3.0
+* Description: Hook allows to modify global configuration after initialization of Semantic MediaWiki is completed
+* Reference class: `\SMW\Setup`
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
+
+	// #2565
+	unset( $GLOBALS['wgGroupPermissions']['smwcurator'] );
+
+	return true;
+} );
+</pre>
+
 ## Other available hooks
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
