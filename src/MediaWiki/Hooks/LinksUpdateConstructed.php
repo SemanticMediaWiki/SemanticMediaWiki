@@ -88,6 +88,12 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 			$parserData->setOption( $parserData::OPT_FORCED_UPDATE, true );
 		}
 
+		// Update incurred by a template change and is signaled through
+		// the following condition
+		if ( $linksUpdate->mTemplates !== [] && $linksUpdate->mRecursive === false ) {
+			$parserData->setOption( $parserData::OPT_FORCED_UPDATE, true );
+		}
+
 		$parserData->setOrigin( 'LinksUpdateConstructed' );
 
 		$parserData->updateStore(
