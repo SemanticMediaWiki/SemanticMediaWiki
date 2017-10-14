@@ -141,7 +141,6 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'error',
 				'smw-edit-protection',
-				'Bar',
 				'foo'
 			),
 			$instance->checkOn( $property )

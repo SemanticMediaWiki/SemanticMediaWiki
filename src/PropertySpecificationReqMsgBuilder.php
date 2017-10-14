@@ -144,18 +144,6 @@ class PropertySpecificationReqMsgBuilder {
 		);
 	}
 
-	private function createEditProtectionMessage( $type, $key, $propertyName, $right ) {
-
-		return Html::rawElement(
-			'div',
-			array(
-				'id' => 'smw-property-content-editprotection-message',
-				'class' => 'plainlinks smw-callout smw-callout-' . $type
-			),
-			wfMessage( $key, $right )->parse()
-		);
-	}
-
 	private function createIntroductoryMessage( $msgKey, $propertyName ) {
 
 		$message = wfMessage( $msgKey, $propertyName )->parse();
