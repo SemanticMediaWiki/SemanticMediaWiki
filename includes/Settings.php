@@ -126,7 +126,7 @@ class Settings extends Options {
 			'smwgEnableUpdateJobs' => $GLOBALS['smwgEnableUpdateJobs'],
 			'smwgNamespacesWithSemanticLinks' => $GLOBALS['smwgNamespacesWithSemanticLinks'],
 			'smwgPageSpecialProperties' => $GLOBALS['smwgPageSpecialProperties'],
-			'smwgDeclarationProperties' => $GLOBALS['smwgDeclarationProperties'],
+			'smwgChangePropagationWatchlist' => $GLOBALS['smwgChangePropagationWatchlist'],
 			'smwgDataTypePropertyExemptionList' => $GLOBALS['smwgDataTypePropertyExemptionList'],
 			'smwgTranslate' => $GLOBALS['smwgTranslate'],
 			'smwgAutoRefreshSubject' => $GLOBALS['smwgAutoRefreshSubject'],
@@ -383,6 +383,10 @@ class Settings extends Options {
 			$configuration['smwgSparqlCustomConnector'] = $GLOBALS['smwgSparqlDatabase'];
 		}
 
+		if ( isset( $GLOBALS['smwgDeclarationProperties'] ) ) {
+			$configuration['smwgChangePropagationWatchlist'] = $GLOBALS['smwgDeclarationProperties'];
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
@@ -394,6 +398,7 @@ class Settings extends Options {
 				'smwgRedirectPropertyListLimit' => '3.1.0',
 				'smwgSparqlDatabaseConnector' => '3.1.0',
 				'smwgSparqlDatabase' => '3.1.0',
+				'smwgDeclarationProperties' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -419,6 +424,7 @@ class Settings extends Options {
 				'smwgRedirectPropertyListLimit' => 'smwgPropertyListLimit',
 				'smwgSparqlDatabaseConnector' => 'smwgSparqlRepositoryConnector',
 				'smwgSparqlDatabase' => 'smwgSparqlCustomConnector',
+				'smwgDeclarationProperties' => 'smwgChangePropagationWatchlist',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',

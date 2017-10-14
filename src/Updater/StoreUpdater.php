@@ -236,7 +236,7 @@ class StoreUpdater {
 		);
 
 		$propertyChangePropagationNotifier->setPropertyList(
-			$applicationFactory->getSettings()->get( 'smwgDeclarationProperties' )
+			$applicationFactory->getSettings()->get( 'smwgChangePropagationWatchlist' )
 		);
 
 		$propertyChangePropagationNotifier->isCommandLineMode(

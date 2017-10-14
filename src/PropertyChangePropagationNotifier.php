@@ -114,7 +114,7 @@ class PropertyChangePropagationNotifier {
 	 * Compare and detect differences between the invoked semantic data
 	 * and the current stored data
 	 *
-	 * @note Compare on extra properties from `smwgDeclarationProperties`
+	 * @note Compare on extra properties from `smwgChangePropagationWatchlist`
 	 * (e.g '_PLIST') to find a possible specification change
 	 *
 	 * @since 1.9
