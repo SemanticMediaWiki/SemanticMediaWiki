@@ -182,6 +182,80 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCheckOnChangePropagation() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$semanticData = new SemanticData(
+			$property->getDIWikiPage()
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$this->dataItemFactory->newDIProperty( \SMW\DIProperty::TYPE_CHANGE_PROP ),
+			$this->dataItemFactory->newDIBlob( '...' )
+		);
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$instance = new PropertySpecificationReqExaminer(
+			$store,
+			$this->protectionValidator
+		);
+
+		$this->assertEquals(
+			[
+				'error',
+				'smw-property-req-violation-change-propagation-locked-error',
+				'Foo'
+			],
+			$instance->checkOn( $property )
+		);
+	}
+
+	public function testCheckOnChangePropagationAsWarning() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$semanticData = new SemanticData(
+			$property->getDIWikiPage()
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$this->dataItemFactory->newDIProperty( \SMW\DIProperty::TYPE_CHANGE_PROP ),
+			$this->dataItemFactory->newDIBlob( '...' )
+		);
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$instance = new PropertySpecificationReqExaminer(
+			$store,
+			$this->protectionValidator
+		);
+
+		$instance->setChangePropagationProtection( false );
+
+		$this->assertEquals(
+			[
+				'warning',
+				'smw-property-req-violation-change-propagation-locked-warning',
+				'Foo'
+			],
+			$instance->checkOn( $property )
+		);
+	}
+
 	public function propertyProvider() {
 
 		$dataItemFactory = new DataItemFactory();
