@@ -155,4 +155,50 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTemplateUpdate() {
+
+		$this->testEnvironment->addConfiguration(
+			'smwgNamespacesWithSemanticLinks',
+			[ NS_HELP => false ]
+		);
+
+		$title = Title::newFromText( __METHOD__, NS_HELP );
+		$parserOutput = new ParserOutput();
+
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSemanticData', 'updateStore', 'markUpdate' ] )
+			->getMock();
+
+		$parserData->expects( $this->never() )
+			->method( 'getSemanticData' );
+
+		$parserData->expects( $this->once() )
+			->method( 'updateStore' );
+
+		$this->testEnvironment->registerObject( 'ParserData', $parserData );
+
+		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$linksUpdate->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$linksUpdate->expects( $this->atLeastOnce() )
+			->method( 'getParserOutput' )
+			->will( $this->returnValue( $parserOutput ) );
+
+		$linksUpdate->mTemplates = [ 'Foo' ];
+		$linksUpdate->mRecursive = false;
+
+		$instance = new LinksUpdateConstructed();
+		$instance->process( $linksUpdate );
+
+		$this->assertTrue(
+			$parserData->getOption( $parserData::OPT_FORCED_UPDATE )
+		);
+	}
+
 }
