@@ -155,7 +155,7 @@ class SemanticMediaWiki {
 		};
 
 		if ( strpos( strtolower( $store ), 'sparql' ) ) {
-			$store .= '::' . strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] );
+			$store = [ $store, strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] ) ];
 		}
 
 		return array(
