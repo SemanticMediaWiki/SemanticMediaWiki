@@ -242,7 +242,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		);
 	}
 
-	private function prepareTest( $jsonTestCaseFileHandler ) {
+	private function prepareTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
 
 		foreach ( $this->getPermittedSettings() as $key ) {
 			$this->changeGlobalSettingTo(
@@ -285,9 +285,9 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$maintenanceRunner->run();
 	}
 
-	private function doRunBeforeTest( $jsonTestCaseFileHandler ) {
+	private function doRunBeforeTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
 
-		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'maintenance-run' ) as $runner => $options ) {
+		foreach ( $jsonTestCaseFileHandler->findTasksBeforeTestExecutionByType( 'maintenance-run' ) as $runner => $options ) {
 
 			$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( $runner );
 			$maintenanceRunner->setQuiet();
@@ -303,7 +303,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			}
 		}
 
-		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'job-run' ) as $jobType ) {
+		foreach ( $jsonTestCaseFileHandler->findTasksBeforeTestExecutionByType( 'job-run' ) as $jobType ) {
 			$jobQueueRunner = $this->runnerFactory->newJobQueueRunner( $jobType );
 			$jobQueueRunner->run();
 		}
@@ -311,7 +311,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
-	private function doRunParserTests( $jsonTestCaseFileHandler ) {
+	private function doRunParserTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
 
 		$this->parserTestCaseProcessor->setDebugMode(
 			$jsonTestCaseFileHandler->getDebugMode()
@@ -327,7 +327,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		}
 	}
 
-	private function doRunSpecialTests( $jsonTestCaseFileHandler ) {
+	private function doRunSpecialTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
 
 		$this->specialPageTestCaseProcessor->setDebugMode(
 			$jsonTestCaseFileHandler->getDebugMode()
@@ -347,7 +347,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		}
 	}
 
-	private function doRunRdfTests( $jsonTestCaseFileHandler ) {
+	private function doRunRdfTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
 
 		// For some reason there are some random failures where
 		// the instance hasn't reset the cache in time to fetch the
@@ -367,7 +367,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		}
 	}
 
-	private function doRunQueryTests( $jsonTestCaseFileHandler ) {
+	private function doRunQueryTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
 
 		// Set query parser late to ensure that expected settings are adjusted
 		// (language etc.) because the __construct relies on the context language
@@ -407,14 +407,14 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	 */
 	private function doRunParserHtmlTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
 
+		if ( !$this->parserHtmlTestCaseProcessor->canUse() ) {
+			$this->markTestIncomplete( 'The required resource for the ParserHtmlTestCaseProcessor/HtmlValidator is not available.' );
+		}
+
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'parser-html' ) as $case ) {
 
 			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
 				continue;
-			}
-
-			if ( !$this->parserHtmlTestCaseProcessor->canUse() ) {
-				$this->markTestIncomplete( 'The required resource for the ParserHtmlTestCaseProcessor/HtmlValidator is not available.' );
 			}
 
 			$this->parserHtmlTestCaseProcessor->process( $case );

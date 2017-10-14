@@ -7,6 +7,7 @@ use Language;
 use OutputPage;
 use RequestContext;
 use SMW\Tests\Utils\Mock\MockSuperUser;
+use SMW\Tests\Utils\File\ContentsReader;
 use SpecialPage;
 use SpecialPageFactory;
 use RuntimeException;
@@ -135,7 +136,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		if ( isset( $case['assert-output']['to-contain'] ) ) {
 
 			if ( isset( $case['assert-output']['to-contain']['contents-file'] ) ) {
-				$contents = $this->getFileContentsWithEncodingDetection(
+				$contents = ContentsReader::readContentsFrom(
 					$this->testCaseLocation . $case['assert-output']['to-contain']['contents-file']
 				);
 			} else {
@@ -143,7 +144,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			}
 
 			$this->stringValidator->assertThatStringContains(
-				str_replace( "\r\n", "\n", $contents ),
+				$contents,
 				$text,
 				$case['about']
 			);
@@ -152,7 +153,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		if ( isset( $case['assert-output']['not-contain'] ) ) {
 
 			if ( isset( $case['assert-output']['not-contain']['contents-file'] ) ) {
-				$contents = $this->getFileContentsWithEncodingDetection(
+				$contents = ContentsReader::readContentsFrom(
 					$this->testCaseLocation . $case['assert-output']['not-contain']['contents-file']
 				);
 			} else {
@@ -160,7 +161,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			}
 
 			$this->stringValidator->assertThatStringNotContains(
-				str_replace( "\r\n", "\n", $contents ),
+				$contents,
 				$text,
 				$case['about']
 			);
@@ -194,19 +195,6 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 */
 	private function getTitle( SpecialPage $page ) {
 		return method_exists( $page, 'getPageTitle') ? $page->getPageTitle() : $page->getTitle();
-	}
-
-	// http://php.net/manual/en/function.file-get-contents.php
-	private function getFileContentsWithEncodingDetection( $file ) {
-
-		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $file );
-
-		if ( !is_readable( $file ) ) {
-			throw new RuntimeException( "Could not open or read: $file" );
-		}
-
-		$content = file_get_contents( $file );
-		return mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding( $content, 'UTF-8, ISO-8859-1, ISO-8859-2', true ) );
 	}
 
 }
