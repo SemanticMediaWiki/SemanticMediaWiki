@@ -27,8 +27,13 @@ class ChangePropagationUpdateJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\ChangePropagationUpdateJob', $title, $params );
+	public function __construct( Title $title, $params = array(), $jobType = null ) {
+
+		if ( $jobType === null ) {
+			$jobType = 'SMW\ChangePropagationUpdateJob';
+		}
+
+		parent::__construct( $jobType, $title, $params );
 		$this->removeDuplicates = true;
 	}
 

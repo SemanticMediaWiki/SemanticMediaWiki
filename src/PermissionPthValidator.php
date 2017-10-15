@@ -67,6 +67,10 @@ class PermissionPthValidator {
 			return $this->checkPropertyNamespaceCreatePermission( $title, $user, $action, $errors );
 		}
 
+		if ( $title->getNamespace() === NS_CATEGORY ) {
+			return $this->checkChangePropagationProtection( $title, $user, $action, $errors );
+		}
+
 		if ( !$title->exists() ) {
 			return true;
 		}
@@ -118,6 +122,18 @@ class PermissionPthValidator {
 		// This renders full protection until the ChangePropagationDispatchJob was run
 		if ( !$this->protectionValidator->hasChangePropagationProtection( $title ) ) {
 			return $this->checkEditPermissionOn( $title, $user, $action, $errors );
+		}
+
+		$errors[] = array( 'smw-change-propagation-protection' );
+
+		return false;
+	}
+
+	private function checkChangePropagationProtection( Title &$title, User $user, $action, &$errors ) {
+
+		// This renders full protection until the ChangePropagationDispatchJob was run
+		if ( !$this->protectionValidator->hasChangePropagationProtection( $title ) ) {
+			return true;
 		}
 
 		$errors[] = array( 'smw-change-propagation-protection' );

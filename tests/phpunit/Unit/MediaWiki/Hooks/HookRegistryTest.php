@@ -148,6 +148,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForNewRevisionFromEditComplete( $instance );
 		$this->doTestExecutionForTitleMoveComplete( $instance );
 		$this->doTestExecutionForArticleProtectComplete( $instance );
+		$this->doTestExecutionForArticleViewHeader( $instance );
 		$this->doTestExecutionForArticlePurge( $instance );
 		$this->doTestExecutionForArticleDelete( $instance );
 		$this->doTestExecutionForLinksUpdateConstructed( $instance );
@@ -504,6 +505,31 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( &$wikiPage, &$user, $protections, $reason )
+		);
+	}
+
+	public function doTestExecutionForArticleViewHeader( $instance ) {
+
+		$handler = 'ArticleViewHeader';
+
+		$page = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->title ) );
+
+		$outputDone = '';
+		$useParserCache = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$page, &$outputDone, &$useParserCache )
 		);
 	}
 

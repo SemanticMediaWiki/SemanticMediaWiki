@@ -166,7 +166,7 @@ class StoreUpdater {
 			return true;
 		}
 
-		$this->doInspectChangePropagation();
+		$this->checkChangePropagation();
 		$this->updateData();
 
 		return true;
@@ -222,9 +222,18 @@ class StoreUpdater {
 	 * @note Comparison must happen *before* the storage update;
 	 * even finding uses of a property fails after its type changed.
 	 */
-	private function doInspectChangePropagation() {
+	private function checkChangePropagation() {
 
-		if ( !$this->isEnabledWithUpdateJob || $this->isChangeProp || $this->semanticData->getSubject()->getNamespace() !== SMW_NS_PROPERTY ) {
+		// isEnabledWithUpdateJob: if it is not enabled there's not much to do here
+		// isChangeProp: means the update is part of the ChangePropagationDispatchJob
+		// therefore skip
+		if ( !$this->isEnabledWithUpdateJob || $this->isChangeProp  ) {
+			return;
+		}
+
+		$namespace = $this->semanticData->getSubject()->getNamespace();
+
+		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
 			return;
 		}
 

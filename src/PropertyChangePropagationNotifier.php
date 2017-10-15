@@ -97,7 +97,9 @@ class PropertyChangePropagationNotifier {
 	 */
 	public function notify( DIWikiPage $subject ) {
 
-		if ( !$this->hasDiff() || $subject->getNamespace() !== SMW_NS_PROPERTY ) {
+		$namespace = $subject->getNamespace();
+
+		if ( !$this->hasDiff() || ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) ) {
 			return false;
 		}
 
@@ -121,7 +123,9 @@ class PropertyChangePropagationNotifier {
 	 */
 	public function checkAndNotify( SemanticData &$semanticData ) {
 
-		if ( $semanticData->getSubject()->getNamespace() !== SMW_NS_PROPERTY ) {
+		$namespace = $semanticData->getSubject()->getNamespace();
+
+		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
 			return;
 		}
 

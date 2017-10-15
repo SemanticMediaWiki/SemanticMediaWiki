@@ -283,6 +283,92 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNoUserPermissionOnCategoryNamespaceWithChangePropagationProtectionCheck() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'PermissionTest' ) );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_CATEGORY ) );
+
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'hasChangePropagationProtection' )
+			->will( $this->returnValue( true ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$result = [];
+
+		$instance = new PermissionPthValidator(
+			$this->protectionValidator
+		);
+
+		$this->assertFalse(
+			$instance->hasUserPermission( $title, $user, 'edit', $result )
+		);
+
+		$this->assertEquals(
+			[
+				[ 'smw-change-propagation-protection' ]
+			],
+			$result
+		);
+	}
+
+	public function testUserPermissionOnCategoryNamespaceWithChangePropagationProtectionCheck() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'PermissionTest' ) );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_CATEGORY ) );
+
+		$this->protectionValidator->expects( $this->any() )
+			->method( 'hasChangePropagationProtection' )
+			->will( $this->returnValue( false ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$result = [];
+
+		$instance = new PermissionPthValidator(
+			$this->protectionValidator
+		);
+
+		$this->assertTrue(
+			$instance->hasUserPermission( $title, $user, 'edit', $result )
+		);
+
+		$this->assertEquals(
+			[],
+			$result
+		);
+	}
+
 	public function titleProvider() {
 
 		$provider[] = array(

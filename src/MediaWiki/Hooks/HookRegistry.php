@@ -326,6 +326,35 @@ class HookRegistry {
 		};
 
 		/**
+		 * Hook: Occurs when an articleheader is shown
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleViewHeader
+		 */
+		$this->handlers['ArticleViewHeader'] = function ( &$page, &$outputDone, &$useParserCache ) use ( $applicationFactory ) {
+
+			$settings = $applicationFactory->getSettings();
+
+			$articleViewHeader = new ArticleViewHeader(
+				$applicationFactory->getStore()
+			);
+
+			$articleViewHeader->setOptions(
+				[
+					'smwgChangePropagationProtection' => $settings->get( 'smwgChangePropagationProtection' ),
+					'smwgChangePropagationWatchlist' => $settings->get( 'smwgChangePropagationWatchlist' )
+				]
+			);
+
+			$articleViewHeader->setLogger(
+				$applicationFactory->getMediaWikiLogger()
+			);
+
+			$articleViewHeader->process( $page, $outputDone, $useParserCache );
+
+			return true;
+		};
+
+		/**
 		 * Hook: TitleMoveComplete occurs whenever a request to move an article
 		 * is completed
 		 *

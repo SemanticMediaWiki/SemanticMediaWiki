@@ -253,6 +253,9 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'SMW\TempChangeOpPurgeJob',
 			'SMW\PropertyStatisticsRebuildJob',
 			'SMW\FulltextSearchTableRebuildJob',
+			'SMW\ChangePropagationDispatchJob',
+			'SMW\ChangePropagationUpdateJob',
+			'SMW\ChangePropagationClassUpdateJob',
 
 			// Legacy
 			'SMWUpdateJob',

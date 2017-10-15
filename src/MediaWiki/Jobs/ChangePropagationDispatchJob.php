@@ -18,8 +18,8 @@ use RuntimeException;
  * to allow isolating the execution and count pending jobs without using an extra
  * tracking mechanism during an update process.
  *
- * `ChangePropagationUpdateJob` itself relies on the `UpdateJob` to get the update
- * being processed.
+ * `ChangePropagationUpdateJob` (and hereby ChangePropagationClassUpdateJob) itself
+ * relies on the `UpdateJob` to initiate the update.
  *
  * `ChangePropagationDispatchJob` is responsible for:
  *
@@ -28,13 +28,13 @@ use RuntimeException;
  * - Once the selection process has been finalized, update the property with the
  *   new specification (which has been locked before this update)
  *
- * Due to the possibility that a large list of entities is connected to a
+ * Due to the possibility that a large list of entities can be connected to a
  * property and its change, an iterative or recursive processing is not viable
  * (as the changed specification should be available as soon as possible) therefore
  * the selection process will move the result of entities to chunked temp files
  * to avoid having to use a DB connection during the process (has been observed
  * during tests that would lead to an out-of-memory) to store a list of
- * entities that requires an update.
+ * entities that require an update.
  *
  * @license GNU GPL v2+
  * @since 3.0
@@ -94,7 +94,9 @@ class ChangePropagationDispatchJob extends JobBase {
 	 */
 	public static function cleanUp( DIWikiPage $subject ) {
 
-		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {
+		$namespace = $subject->getNamespace();
+
+		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
 			return;
 		}
 
@@ -117,7 +119,13 @@ class ChangePropagationDispatchJob extends JobBase {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		if ( $applicationFactory->getJobQueue()->hasPendingJob( 'SMW\ChangePropagationUpdateJob' ) ) {
+		$jobType = 'SMW\ChangePropagationUpdateJob';
+
+		if ( $subject->getNamespace() === NS_CATEGORY ) {
+			$jobType = 'SMW\ChangePropagationClassUpdateJob';
+		}
+
+		if ( $applicationFactory->getJobQueue()->hasPendingJob( $jobType ) ) {
 			return true;
 		}
 
@@ -143,7 +151,14 @@ class ChangePropagationDispatchJob extends JobBase {
 	public static function getPendingJobsCount( DIWikiPage $subject ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$count = $applicationFactory->getJobQueue()->getQueueSize( 'SMW\ChangePropagationUpdateJob' );
+
+		$jobType = 'SMW\ChangePropagationUpdateJob';
+
+		if ( $subject->getNamespace() === NS_CATEGORY ) {
+			$jobType = 'SMW\ChangePropagationClassUpdateJob';
+		}
+
+		$count = $applicationFactory->getJobQueue()->getQueueSize( $jobType );
 
 		// Fallback for when JobQueue::getQueueSize doesn't yet contain the
 		// updated stats
@@ -179,7 +194,9 @@ class ChangePropagationDispatchJob extends JobBase {
 
 	private function findAndDispatch() {
 
-		if ( $this->getTitle()->getNamespace() !== SMW_NS_PROPERTY ) {
+		$namespace = $this->getTitle()->getNamespace();
+
+		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
 			return;
 		}
 
@@ -187,10 +204,6 @@ class ChangePropagationDispatchJob extends JobBase {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$iteratorFactory = $applicationFactory->getIteratorFactory();
-
-		$property = DIProperty::newFromUserLabel(
-			$this->getTitle()->getText()
-		);
 
 		$applicationFactory->getMediaWikiLogger()->info(
 			'ChangePropagationDispatchJob on ' . $subject->getHash()
@@ -205,8 +218,14 @@ class ChangePropagationDispatchJob extends JobBase {
 			$this->getParameter( 'isTypePropagation' )
 		);
 
-		$appendIterator = $changePropagationEntityFinder->findByProperty(
-			$property
+		if ( $namespace === SMW_NS_PROPERTY ) {
+			$entity = DIProperty::newFromUserLabel( $this->getTitle()->getText() );
+		} elseif ( $namespace === NS_CATEGORY ) {
+			$entity = $subject;
+		}
+
+		$appendIterator = $changePropagationEntityFinder->findAll(
+			$entity
 		);
 
 		// Refresh the property page once more on the last dispatch
@@ -339,7 +358,7 @@ class ChangePropagationDispatchJob extends JobBase {
 
 			$title = DIWikiPage::doUnserialize( $dataItem )->getTitle();
 
-			$changePropagationUpdateJob = new ChangePropagationUpdateJob(
+			$changePropagationUpdateJob = $this->newChangePropagationUpdateJob(
 				$title,
 				array(
 					UpdateJob::FORCED_UPDATE => true
@@ -357,7 +376,7 @@ class ChangePropagationDispatchJob extends JobBase {
 		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
 		$transactionTicket = $connection->getEmptyTransactionTicket( __METHOD__ );
 
-		$changePropagationUpdateJob = new ChangePropagationUpdateJob(
+		$changePropagationUpdateJob = $this->newChangePropagationUpdateJob(
 			$subject->getTitle(),
 			array(
 				UpdateJob::CHANGE_PROP => $subject->getSerialization(),
@@ -388,6 +407,20 @@ class ChangePropagationDispatchJob extends JobBase {
 		// Make sure the cache is reset in case runJobs.php --wait is used to avoid
 		// reusing outdated type assignments
 		$applicationFactory->getStore()->clear();
+	}
+
+	private function newChangePropagationUpdateJob( $title, $parameters ) {
+
+		$namespace = $this->getTitle()->getNamespace();
+
+		if ( $namespace === NS_CATEGORY ) {
+			return new ChangePropagationClassUpdateJob( $title, $parameters );
+		}
+
+		return new ChangePropagationUpdateJob(
+			$title,
+			$parameters
+		);
 	}
 
 }
