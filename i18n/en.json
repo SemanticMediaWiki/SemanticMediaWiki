@@ -317,7 +317,7 @@
 	"smw-admin-deprecation-notice-title-notice": "Upcoming changes",
 	"smw-admin-deprecation-notice-title-notice-explanation": "The following settings have been detected to be used on this wiki and are planned to be removed or changed in a future release.",
 	"smw-admin-deprecation-notice-title-replacement": "Replaced or renamed settings",
-	"smw-admin-deprecation-notice-title-replacement-explanation": "The settings where renamed or otherwise modified, please update their name or format.",
+	"smw-admin-deprecation-notice-title-replacement-explanation": "The following section contains settings that were renamed or otherwise modified and it is recommended to forthwith update their name or format.",
 	"smw-admin-deprecation-notice-title-removal": "Removed settings",
 	"smw-admin-deprecation-notice-title-removal-explanation": "Listed settings were removed in a previous release but have yet been detected to be used on this wiki.",
 	"smw-smwadmin-refresh-title": "Data repair and update",
