@@ -396,15 +396,19 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
 		 */
-		$this->handlers['SpecialStatsAddExtra'] = function ( &$extraStats ) use( $globalVars ) {
+		$this->handlers['SpecialStatsAddExtra'] = function ( &$extraStats ) use( $applicationFactory ) {
 
 			$specialStatsAddExtra = new SpecialStatsAddExtra(
-				$extraStats,
-				$globalVars['wgVersion'],
-				$globalVars['wgLang']
+				$applicationFactory->getStore()
 			);
 
-			return $specialStatsAddExtra->process();
+			$specialStatsAddExtra->setOptions(
+				[
+					'smwgSemanticsEnabled' => $applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' )
+				]
+			);
+
+			return $specialStatsAddExtra->process( $extraStats );
 		};
 
 		/**

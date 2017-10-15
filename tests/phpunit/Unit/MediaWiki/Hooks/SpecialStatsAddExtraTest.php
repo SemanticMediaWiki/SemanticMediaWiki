@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
-use SMW\StoreFactory;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SpecialStatsAddExtra
@@ -25,33 +24,20 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$userLanguage = $this->getMockBuilder( '\Language' )
+		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->getMock();
-
-		$extraStats = array();
-		$version = '';
+			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\SpecialStatsAddExtra',
-			new SpecialStatsAddExtra( $extraStats, $version, $userLanguage )
+			SpecialStatsAddExtra::class,
+			new SpecialStatsAddExtra( $store )
 		);
 	}
 
 	/**
 	 * @dataProvider statisticsDataProvider
 	 */
-	public function testProcessForMockedStore( $setup, $expected ) {
-
-		$formatNumReturnValue = isset( $setup['statistics']['PROPUSES'] ) ? $setup['statistics']['PROPUSES'] : '';
-
-		$userLanguage = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$userLanguage->expects( $this->any() )
-			->method( 'formatNum' )
-			->will( $this->returnValue( $formatNumReturnValue ) );
+	public function testProcess( $setup, $expected ) {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -61,15 +47,19 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getStatistics' )
 			->will( $this->returnValue( $setup['statistics'] ) );
 
-		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
-		ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticsEnabled', true );
-
 		$extraStats = $setup['extraStats'];
-		$version = $setup['version'];
 
-		$instance = new SpecialStatsAddExtra( $extraStats, $version, $userLanguage );
+		$instance = new SpecialStatsAddExtra( $store );
 
-		$this->assertTrue( $instance->process() );
+		$instance->setOptions(
+			[
+				'smwgSemanticsEnabled' => true
+			]
+		);
+
+		$this->assertTrue(
+			$instance->process( $extraStats )
+		);
 
 		$this->assertTrue(
 			$this->matchArray( $extraStats, $expected['statistics'] )
@@ -78,19 +68,21 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcessOnSQLStore() {
 
-		$userLanguage = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		ApplicationFactory::getInstance()->registerObject( 'Store', StoreFactory::getStore() );
-		ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticsEnabled', true );
-
 		$extraStats = array();
-		$version = '1.21';
 
-		$instance = new SpecialStatsAddExtra( $extraStats, $version, $userLanguage );
+		$instance = new SpecialStatsAddExtra(
+			ApplicationFactory::getInstance()->getStore()
+		);
 
-		$this->assertTrue( $instance->process() );
+		$instance->setOptions(
+			[
+				'smwgSemanticsEnabled' => true
+			]
+		);
+
+		$this->assertTrue(
+			$instance->process( $extraStats )
+		);
 
 		// This is a "cheap" check against the SQLStore as it could return any
 		// value therefore we use a message key as only known constant to verify
@@ -122,10 +114,9 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			'PROPUSES' => 1001
 		);
 
-		#0 Legacy
+		#0
 		$provider[] = array(
 			array(
-				'version'    => '1.20',
 				'extraStats' => array(),
 				'statistics' => $input
 			),
@@ -134,10 +125,9 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		#1 Legacy - unknown
+		#1 unknown
 		$provider[] = array(
 			array(
-				'version'    => '1.20',
 				'extraStats' => array(),
 				'statistics' => array( 'Yeey' => 2002 )
 			),
@@ -149,7 +139,6 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 		#2 MW 1.21+
 		$provider[] = array(
 			array(
-				'version'    => '1.21',
 				'extraStats' => array(),
 				'statistics' => $input
 			),
@@ -161,7 +150,6 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 		#3 MW 1.21+ - unknown
 		$provider[] = array(
 			array(
-				'version'    => '1.21',
 				'extraStats' => array(),
 				'statistics' => array( 'Quuxy' => 2002 )
 			),
