@@ -137,6 +137,71 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasChangePropagationProtectionOnCategory_FromCache() {
+
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY );
+
+		$this->cache->expects( $this->once() )
+			->method( 'contains' )
+			->will( $this->returnValue( true ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new ProtectionValidator(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->cache
+		);
+
+		$this->assertFalse(
+			$instance->hasChangePropagationProtection( $subject->getTitle() )
+		);
+	}
+
+	public function testNoChangePropagationProtectionOnCategory_FromCache() {
+
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY );
+
+		$this->cache->expects( $this->once() )
+			->method( 'contains' )
+			->will( $this->returnValue( true ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new ProtectionValidator(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->cache
+		);
+
+		$this->assertTrue(
+			$instance->hasChangePropagationProtection( $subject->getTitle() )
+		);
+	}
+
+	public function testNoChangePropagationProtectionOnCategory_WithFalseSetting() {
+
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY );
+
+		$this->cache->expects( $this->never() )
+			->method( 'contains' );
+
+		$instance = new ProtectionValidator(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->cache
+		);
+
+		$instance->setChangePropagationProtection(
+			false
+		);
+
+		$this->assertFalse(
+			$instance->hasChangePropagationProtection( $subject->getTitle() )
+		);
+	}
+
 	public function testSetGetCreateProtectionRight() {
 
 		$instance = new ProtectionValidator(

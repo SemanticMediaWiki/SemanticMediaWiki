@@ -9,9 +9,11 @@ use SMW\RequestOptions;
 use SMW\IteratorFactory;
 use SMW\DataTypeRegistry;
 use SMWDataItem as DataItem;
+use SMW\ApplicationFactory;
+use RuntimeException;
 
 /**
- * Find all subjects to a property related to a change propagation (only expected
+ * Find all entities related to a change propagation (only expected
  * to be used by `ChangePropagationDispatchJob`).
  *
  * @license GNU GPL v2+
@@ -59,6 +61,25 @@ class ChangePropagationEntityFinder {
 	/**
 	 * @since 3.0
 	 *
+	 * @param DIProperty|DIWikiPage $entity
+	 *
+	 * @return Iterator
+	 * @throws RuntimeException
+	 */
+	public function findAll( $entity ) {
+
+		if ( $entity instanceof DIProperty ) {
+			return $this->findByProperty( $entity );
+		} elseif ( $entity instanceof DIWikiPage ) {
+			return $this->findByCategory( $entity );
+		}
+
+		throw new RuntimeException( 'Cannot match the entity type.' );
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param DIProperty $property
 	 *
 	 * @return Iterator
@@ -90,6 +111,38 @@ class ChangePropagationEntityFinder {
 		$appendIterator->add(
 			$dataItems
 		);
+
+		return $appendIterator;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param DIWikiPage $category
+	 *
+	 * @return Iterator
+	 */
+	public function findByCategory( DIWikiPage $category ) {
+
+		$appendIterator = $this->iteratorFactory->newAppendIterator();
+
+		$property = new DIProperty( '_INST' );
+
+		$appendIterator->add(
+			$this->store->getPropertySubjects( $property, $category )
+		);
+
+		// Only direct antecedents
+		$dataItems = $this->store->getPropertyValues(
+			$category,
+			new DIProperty( '_SUBC' )
+		);
+
+		foreach ( $dataItems as $dataItem ) {
+			$appendIterator->add(
+				$this->store->getPropertySubjects( $property, $dataItem )
+			);
+		}
 
 		return $appendIterator;
 	}

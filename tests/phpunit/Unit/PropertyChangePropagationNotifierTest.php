@@ -69,15 +69,46 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 	/**
 	 * @dataProvider dataItemDataProvider
 	 */
-	public function testDetectChanges( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
+	public function testDetectChangesOnProperty( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
 
 		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
 			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
 		}
 
-		$this->mockedStoreValues = $mockedStoreValues;
-
 		$subject = new DIWikiPage( __METHOD__, SMW_NS_PROPERTY );
+
+		$this->detectChanges(
+			$subject,
+			$mockedStoreValues,
+			$dataValues,
+			$propertiesToCompare,
+			$expected
+		);
+	}
+
+	/**
+	 * @dataProvider dataItemDataProvider
+	 */
+	public function testDetectChangesOnCategory( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
+
+		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
+			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
+		}
+
+		$subject = new DIWikiPage( __METHOD__, NS_CATEGORY );
+
+		$this->detectChanges(
+			$subject,
+			$mockedStoreValues,
+			$dataValues,
+			$propertiesToCompare,
+			$expected
+		);
+	}
+
+	public function detectChanges( $subject, $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
+
+		$this->mockedStoreValues = $mockedStoreValues;
 
 		$expectedToRun = $expected['job'] ? $this->atLeastOnce() : $this->never();
 

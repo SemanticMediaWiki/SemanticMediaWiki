@@ -138,8 +138,9 @@ class ProtectionValidator {
 	public function hasChangePropagationProtection( Title $title ) {
 
 		$subject = DIWikiPage::newFromTitle( $title )->asBase();
+		$namespace = $subject->getNamespace();
 
-		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $this->changePropagationProtection === false ) {
+		if ( ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) || $this->changePropagationProtection === false ) {
 			return false;
 		}
 
