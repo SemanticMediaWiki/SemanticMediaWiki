@@ -39,6 +39,11 @@ class EntityRebuildDispatcher {
 	private $jobFactory;
 
 	/**
+	 * @var NamespaceExaminer
+	 */
+	private $namespaceExaminer;
+
+	/**
 	 * @var integer
 	 */
 	private $updateJobParseMode;
@@ -77,6 +82,7 @@ class EntityRebuildDispatcher {
 		$this->store = $store;
 		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer( $store );
 		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
 
 	/**
@@ -258,6 +264,17 @@ class EntityRebuildDispatcher {
 			$emptyRange = false; // note this even if no jobs were created
 
 			if ( $this->namespaces && !in_array( $row->smw_namespace, $this->namespaces ) ) {
+				continue;
+			}
+
+			// If the reference is for some reason created as part of a not
+			// supported namespace, check and clean it!
+			//
+			// The check is required to ensure that annotations let's say
+			// [[Foo::SomeNS:Bar]] (where SomeNS is not enabled for SMW) are not
+			// removed and is kept as long as a reference to `SomeNS:Bar` exists
+			if ( !$this->namespaceExaminer->isSemanticEnabled( (int)$row->smw_namespace ) ) {
+				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
 				continue;
 			}
 

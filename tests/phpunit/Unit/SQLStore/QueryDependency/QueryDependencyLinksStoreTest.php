@@ -31,6 +31,15 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
+
+		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
@@ -504,6 +513,66 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->doUpdateDependenciesFrom( $queryResult );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
+	public function testDisabledDependenciesUpdateOnNotSupportedNamespace() {
+
+		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( false ) );
+
+		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dependencyLinksTableUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResultDependencyListResolver->expects( $this->never() )
+			->method( 'getDependencyListByLateRetrievalFrom' );
+
+		$queryResultDependencyListResolver->expects( $this->never() )
+			->method( 'getDependencyListFrom' );
+
+		$instance = new QueryDependencyLinksStore(
+			$queryResultDependencyListResolver,
+			$dependencyLinksTableUpdater
+		);
+
+		$instance->setEnabled( true );
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'getContextPage' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$instance->doUpdateDependenciesFrom( $queryResult );
 	}
 
 	public function testdoUpdateDependenciesByFromQueryResult() {

@@ -45,6 +45,11 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	private $connection;
 
 	/**
+	 * @var NamespaceExaminer
+	 */
+	private $namespaceExaminer;
+
+	/**
 	 * @var LoggerInterface
 	 */
 	private $logger;
@@ -80,6 +85,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		$this->dependencyLinksTableUpdater = $dependencyLinksTableUpdater;
 		$this->store = $this->dependencyLinksTableUpdater->getStore();
 		$this->connection = $this->store->getConnection( 'mw.db' );
+		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
 
 	/**
@@ -406,7 +412,22 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 		$query = $queryResult->getQuery();
 
-		return $query !== null && $query->getContextPage() !== null && $query->getLimit() > 0 && $query->getOption( Query::NO_DEPENDENCY_TRACE ) !== true;
+		// #2484 Avoid any update activities during a stashedit API access
+		if ( $query->getOption( 'request.action' ) === 'stashedit' ) {
+			return false;
+		}
+
+		if ( $query === null || $query->getContextPage() === null ) {
+			return false;
+		}
+
+		// Make sure that when a query is embedded in a not supported NS to bail
+		// out
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $query->getContextPage()->getNamespace() ) ) {
+			return false;
+		}
+
+		return $query->getLimit() > 0 && $query->getOption( Query::NO_DEPENDENCY_TRACE ) !== true;
 	}
 
 	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
