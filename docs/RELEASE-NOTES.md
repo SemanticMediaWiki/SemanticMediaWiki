@@ -50,6 +50,7 @@ After the upgrade, please check the "Deprecation notices" section in `Special:Se
 * [#2726](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2726)
 * [#2738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2738)
 * [#2756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2756)
+* [#2776](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2776)
 
 ## Bug fixes
 
