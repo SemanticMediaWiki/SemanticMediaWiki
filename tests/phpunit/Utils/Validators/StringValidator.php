@@ -78,7 +78,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 		self::assertEquals(
 			$expectedToCount,
 			$actualCounted,
-			"Failed $method for ({$message}) on (actual): [ $actual ]\n(expected): " . $this->toString( $expected )
+			"Failed \"{$message}\" for $method:\n==== (actual) ====\n$actual\n==== (expected) ====\n" . $this->toString( $expected )
 		);
 	}
 
