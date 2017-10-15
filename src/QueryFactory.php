@@ -7,8 +7,13 @@ use SMW\Query\Language\Description;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\ProfileAnnotatorFactory;
 use SMW\Query\QueryCreator;
+use SMW\Query\Parser\LegacyParser;
+use SMW\Query\Parser\DescriptionProcessor;
+use SMW\Query\Parser\Tokenizer;
+use SMW\Query\QueryToken;
+use SMW\Applicationfactory;
 use SMWQuery as Query;
-use SMWQueryParser as QueryParser;
+use SMW\Query\Parser as QueryParser;
 use SMWQueryResult as QueryResult;
 
 /**
@@ -88,7 +93,27 @@ class QueryFactory {
 	 * @return QueryParser
 	 */
 	public function newQueryParser( $queryFeatures = false ) {
-		return new QueryParser( $queryFeatures );
+		return $this->newLegacyQueryParser( $queryFeatures );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer|boolean $queryFeatures
+	 *
+	 * @return QueryParser
+	 */
+	public function newLegacyQueryParser( $queryFeatures = false ) {
+
+		if ( $queryFeatures === false ) {
+			$queryFeatures = Applicationfactory::getInstance()->getSettings()->get( 'smwgQFeatures' );
+		}
+
+		return new LegacyParser(
+			new DescriptionProcessor( $queryFeatures ),
+			new Tokenizer(),
+			new QueryToken()
+		);
 	}
 
 	/**

@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\JSONScript;
 
 use SMW\Store;
 use SMWQuery as Query;
-use SMWQueryParser as QueryParser;
+use SMW\Query\Parser as QueryParser;
 use Title;
 
 /**

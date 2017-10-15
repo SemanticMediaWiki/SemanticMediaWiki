@@ -11,7 +11,7 @@ use SMW\Query\Language\ValueDescription;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
-use SMWQueryParser as QueryParser;
+use SMW\ApplicationFactory;
 
 /**
  *
@@ -39,7 +39,7 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
-		$this->queryParser = new QueryParser();
+		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 
 	//	$this->getStore()->getSparqlDatabase()->deleteAll();
 	}

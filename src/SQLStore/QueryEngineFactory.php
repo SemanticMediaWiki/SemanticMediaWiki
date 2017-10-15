@@ -140,13 +140,17 @@ class QueryEngineFactory {
 	 */
 	public function newConceptQuerySegmentBuilder() {
 
+		$pplicationFactory = ApplicationFactory::getInstance();
+
 		$conceptQuerySegmentBuilder = new ConceptQuerySegmentBuilder(
 			$this->newQuerySegmentListBuilder(),
 			$this->newQuerySegmentListProcessor()
 		);
 
-		$conceptQuerySegmentBuilder->setConceptFeatures(
-			$this->applicationFactory->getSettings()->get( 'smwgQConceptFeatures' )
+		$conceptQuerySegmentBuilder->setQueryParser(
+			$pplicationFactory->getQueryFactory()->newQueryParser(
+				$pplicationFactory->getSettings()->get( 'smwgQConceptFeatures' )
+			)
 		);
 
 		return $conceptQuerySegmentBuilder;

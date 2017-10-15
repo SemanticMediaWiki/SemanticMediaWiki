@@ -93,7 +93,7 @@ class QueryFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMWQueryParser',
+			'\SMW\Query\Parser',
 			$instance->newQueryParser()
 		);
 	}

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\DataItemFactory;
+use SMW\ApplicationFactory;
 use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
@@ -21,6 +21,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySegmentValidator;
 	private $descriptionInterpreterFactory;
+	private $queryParser;
 
 	private $descriptionFactory;
 	private $dataItemFactory;
@@ -28,8 +29,12 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->descriptionFactory = new DescriptionFactory();
-		$this->dataItemFactory = new DataItemFactory();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$queryFactory = $applicationFactory->getQueryFactory();
+
+		$this->descriptionFactory = $queryFactory->newDescriptionFactory();
+		$this->queryParser = $queryFactory->newQueryParser();
+		$this->dataItemFactory = $applicationFactory->getDataItemFactory();
 
 		$this->descriptionInterpreterFactory = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory' )
 			->disableOriginalConstructor()
@@ -146,6 +151,10 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$queryEngineFactory->newQuerySegmentListBuilder()
 		);
 
+		$instance->setQueryParser(
+			$this->queryParser
+		);
+
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
 		);
@@ -158,8 +167,10 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function descriptionProvider() {
 
-		$descriptionFactory = new DescriptionFactory();
-		$dataItemFactory = new DataItemFactory();
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$descriptionFactory = $applicationFactory->getQueryFactory()->newDescriptionFactory();
+		$dataItemFactory = $applicationFactory->getDataItemFactory();
 
 		#0 No concept
 		$concept = false;

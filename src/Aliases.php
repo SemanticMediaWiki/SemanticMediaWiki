@@ -14,6 +14,7 @@ class_alias( 'SMW\Query\ExportPrinter', 'SMW\ExportPrinter' );
 class_alias( 'SMW\Query\ResultPrinters\ResultPrinter', 'SMW\ResultPrinter' );
 class_alias( 'SMW\Query\ResultPrinters\ResultPrinter', 'SMWResultPrinter' );
 class_alias( 'SMW\Query\ResultPrinters\FileExportPrinter', 'SMW\FileExportPrinter' );
+class_alias( 'SMW\Query\Parser', 'SMWQueryParser' );
 
 // 1.9.
 class_alias( 'SMW\Store', 'SMWStore' );
