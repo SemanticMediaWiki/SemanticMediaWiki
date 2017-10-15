@@ -57,6 +57,8 @@ After the upgrade, please check the "Deprecation notices" section in `Special:Se
 * [#2586](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2586) Fixed class assignments for empty cells in `format=table`
 * [#2621](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2621) Fixed sort/order field behaviour in `Special:Ask`
 * [#2652](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2652) Fixed handling of multiple checkbox parameter in `Special:Ask`
+* [#2767](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2767)
+* [#2773](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2773)
 
 
 ## Breaking changes and deprecations
@@ -74,6 +76,8 @@ After the upgrade, please check the "Deprecation notices" section in `Special:Se
 * [#2748](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2748)
 * [#2750](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2750)
 * [#2752](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2752)
+* [#2761](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2761)
+* [#2768](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2768)
 
 ## Other changes
 
@@ -95,6 +99,8 @@ After the upgrade, please check the "Deprecation notices" section in `Special:Se
 * [#2745](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2745)
 * [#2747](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2747)
 * [#2751](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2751)
+* [#2765](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2765)
+* [#2774](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2774)
 
 ## Contributors
 
