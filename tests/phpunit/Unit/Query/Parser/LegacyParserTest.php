@@ -1,47 +1,48 @@
 <?php
 
-namespace SMW\Tests\Query;
+namespace SMW\Tests\Query\Parser;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\NamespaceDescription;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
+use SMW\Query\DescriptionFactory;
+use SMW\Query\Parser\LegacyParser as QueryParser;
+use SMW\Query\Parser\DescriptionProcessor;
+use SMW\Query\Parser\Tokenizer;
+use SMW\Query\QueryToken;
 use SMW\Tests\TestEnvironment;
-use SMWQueryParser as QueryParser;
 
 /**
- * @covers \SMWQueryParser
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\Query\Parser\LegacyParser
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.0
  *
  * @author mwjames
  */
-class QueryParserTest extends \PHPUnit_Framework_TestCase {
+class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $descriptionFactory;
 	private $queryParser;
-
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->descriptionFactory = new DescriptionFactory();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
-		$this->queryParser = new QueryParser();
+
+		$this->queryParser = new QueryParser(
+			new DescriptionProcessor(),
+			new Tokenizer(),
+			new QueryToken()
+		);
 	}
 
 	protected function tearDown() {
@@ -51,17 +52,35 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
+		$descriptionProcessor = $this->getMockBuilder( '\SMW\Query\Parser\DescriptionProcessor' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$tokenizer = $this->getMockBuilder( '\SMW\Query\Parser\Tokenizer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Legacy class match
 		$this->assertInstanceOf(
 			'\SMWQueryParser',
-			new QueryParser()
+			new QueryParser( $descriptionProcessor, $tokenizer, $queryToken )
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Query\Parser',
+			new QueryParser( $descriptionProcessor, $tokenizer, $queryToken )
 		);
 	}
 
 	public function testPropertyWildardDescription() {
 
-		$description = new SomeProperty(
+		$description = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_wpg' ),
-			new ThingDescription()
+			$this->descriptionFactory->newThingDescription()
 		);
 
 		$this->assertEquals(
@@ -72,7 +91,9 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNamespaceWildardDescription() {
 
-		$description = new NamespaceDescription( NS_MAIN );
+		$description = $this->descriptionFactory->newNamespaceDescription(
+			NS_MAIN
+		);
 
 		$this->assertEquals(
 			$description,
@@ -82,7 +103,9 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPageDescription() {
 
-		$description = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN, '' ) );
+		$description = $this->descriptionFactory->newValueDescription(
+			new DIWikiPage( 'Foo', NS_MAIN, '' )
+		);
 
 		$this->assertEquals(
 			$description,
@@ -92,9 +115,9 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPropertyNotEqualValueDescription() {
 
-		$description = new SomeProperty(
+		$description = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'Has foo' )->setPropertyTypeId( '_wpg' ),
-			new ValueDescription(
+			$this->descriptionFactory->newValueDescription(
 				new DIWikiPage( 'Bar', NS_MAIN, '' ),
 				DIProperty::newFromUserLabel( 'Has foo' )->setPropertyTypeId( '_wpg' ),
 				SMW_CMP_NEQ
@@ -109,9 +132,9 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInversePropertyDescription() {
 
-		$description = new SomeProperty(
+		$description = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'Has foo', true )->setPropertyTypeId( '_wpg' ),
-			new ValueDescription(
+			$this->descriptionFactory->newValueDescription(
 				new DIWikiPage( 'Bar', NS_MAIN, '' ),
 				DIProperty::newFromUserLabel( 'Has foo', true )->setPropertyTypeId( '_wpg' ),
 				SMW_CMP_EQ
@@ -126,25 +149,25 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testConjunctionForCategoryPropertyValueGreaterThanOrEqualLessThanOrEqual() {
 
-		$someGreaterThanOrEqualProperty = new SomeProperty(
+		$someGreaterThanOrEqualProperty = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
-			new ValueDescription(
+			$this->descriptionFactory->newValueDescription(
 				new DIWikiPage( 'A', NS_MAIN, '' ),
 				DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ), SMW_CMP_GEQ	)
 		);
 
-		$someLessThanOrEqualProperty = new SomeProperty(
+		$someLessThanOrEqualProperty = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
-			new ValueDescription(
+			$this->descriptionFactory->newValueDescription(
 				new DIWikiPage( 'D', NS_MAIN, '' ),
 				DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_LEQ	)
 		);
 
-		$classDescription = new ClassDescription(
+		$classDescription = $this->descriptionFactory->newClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
-		$description = new Conjunction();
+		$description = $this->descriptionFactory->newConjunction();
 		$description->addDescription( $classDescription );
 		$description->addDescription( $someGreaterThanOrEqualProperty );
 		$description->addDescription( $someLessThanOrEqualProperty );
@@ -157,22 +180,22 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testConjunctionForCategoryPropertyChainDescription() {
 
-		$someProperty = new SomeProperty(
+		$someProperty = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
-			new SomeProperty(
+			$this->descriptionFactory->newSomeProperty(
 				DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
-				new ValueDescription(
+				$this->descriptionFactory->newValueDescription(
 					new DIWikiPage( 'Bar', NS_MAIN, '' ),
 					DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
 				)
 			)
 		);
 
-		$classDescription = new ClassDescription(
+		$classDescription = $this->descriptionFactory->newClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
-		$description = new Conjunction();
+		$description = $this->descriptionFactory->newConjunction();
 		$description->addDescription( $classDescription );
 		$description->addDescription( $someProperty );
 
@@ -189,22 +212,22 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDisjunctionForCategoryPropertyChainDescription() {
 
-		$someProperty = new SomeProperty(
+		$someProperty = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
-			new SomeProperty(
+			$this->descriptionFactory->newSomeProperty(
 				DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
-				new ValueDescription(
+				$this->descriptionFactory->newValueDescription(
 					new DIWikiPage( 'Bar', NS_MAIN, '' ),
 					DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
 				)
 			)
 		);
 
-		$classDescription = new ClassDescription(
+		$classDescription = $this->descriptionFactory->newClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
-		$description = new Disjunction();
+		$description = $this->descriptionFactory->newDisjunction();
 		$description->addDescription( $classDescription );
 		$description->addDescription( $someProperty );
 
@@ -221,15 +244,15 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDisjunctionForCategoryChainDescription() {
 
-		$classFooDescription = new ClassDescription(
+		$classFooDescription = $this->descriptionFactory->newClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
-		$classBarDescription = new ClassDescription(
+		$classBarDescription = $this->descriptionFactory->newClassDescription(
 			new DIWikiPage( 'Bar', NS_CATEGORY, '' )
 		);
 
-		$description = new Disjunction();
+		$description = $this->descriptionFactory->newDisjunction();
 		$description->addDescription( $classFooDescription );
 		$description->addDescription( $classBarDescription );
 
@@ -246,13 +269,13 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCombinedSubobjectPropertyChainDescription() {
 
-		$description = new SomeProperty(
+		$description = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
-			new SomeProperty(
+			$this->descriptionFactory->newSomeProperty(
 				DIProperty::newFromUserLabel( '_SOBJ' )->setPropertyTypeId( '__sob' ),
-				new SomeProperty(
+				$this->descriptionFactory->newSomeProperty(
 					DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
-					new ValueDescription(
+					$this->descriptionFactory->newValueDescription(
 						new DIWikiPage( 'Bar', NS_MAIN, '' ),
 						DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
 					)
@@ -271,12 +294,12 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$disjunction = new Disjunction( array(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+		$disjunction = $this->descriptionFactory->newDisjunction( array(
+			$this->descriptionFactory->newValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
+			$this->descriptionFactory->newValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
 		) );
 
-		$description = new SomeProperty(
+		$description = $this->descriptionFactory->newSomeProperty(
 			$property,
 			$disjunction
 		);
@@ -292,18 +315,18 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 		$property = DIProperty::newFromUserLabel( 'Born in' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$conjunction = new Conjunction( array(
-			new ClassDescription( new DIWikiPage( 'City', NS_CATEGORY ) ),
-			new SomeProperty(
+		$conjunction = $this->descriptionFactory->newConjunction( array(
+			$this->descriptionFactory->newClassDescription( new DIWikiPage( 'City', NS_CATEGORY ) ),
+			$this->descriptionFactory->newSomeProperty(
 				DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ),
-				new ValueDescription(
+				$this->descriptionFactory->newValueDescription(
 					new DIWikiPage( 'Outback', NS_MAIN ),
 					DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ) )
 				)
 			)
 		);
 
-		$description = new SomeProperty(
+		$description = $this->descriptionFactory->newSomeProperty(
 			$property,
 			$conjunction
 		);
@@ -319,14 +342,14 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$description = new SomeProperty(
+		$description = $this->descriptionFactory->newSomeProperty(
 			$property,
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+			$this->descriptionFactory->newValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
 		);
 
-		$description = new Conjunction( array(
+		$description = $this->descriptionFactory->newConjunction( array(
 			$description,
-			new NamespaceDescription( NS_MAIN )
+			$this->descriptionFactory->newNamespaceDescription( NS_MAIN )
 		) );
 
 		$this->queryParser->setDefaultNamespaces( array( NS_MAIN ) );

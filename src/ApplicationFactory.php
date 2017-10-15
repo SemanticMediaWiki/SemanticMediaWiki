@@ -523,8 +523,8 @@ class ApplicationFactory {
 	 *
 	 * @return QueryParser
 	 */
-	public function newQueryParser() {
-		return $this->getQueryFactory()->newQueryParser();
+	public function newQueryParser( $queryFeatures = false ) {
+		return $this->getQueryFactory()->newQueryParser( $queryFeatures );
 	}
 
 	/**

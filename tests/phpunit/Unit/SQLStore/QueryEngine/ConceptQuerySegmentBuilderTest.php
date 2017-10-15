@@ -18,6 +18,7 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySegmentListBuilder;
 	private $querySegmentListProcessor;
+	private $queryParser;
 
 	protected function setUp() {
 		parent::setUp();
@@ -27,6 +28,10 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->querySegmentListProcessor = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListProcessor' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->queryParser = $this->getMockBuilder( '\SMW\Query\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -41,9 +46,21 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetQuerySegmentFromOnNull() {
 
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->queryParser->expects( $this->any() )
+			->method( 'getQueryDescription' )
+			->will( $this->returnValue( $description ) );
+
 		$instance = new ConceptQuerySegmentBuilder(
 			$this->querySegmentListBuilder,
 			$this->querySegmentListProcessor
+		);
+
+		$instance->setQueryParser(
+			$this->queryParser
 		);
 
 		$this->assertNull(

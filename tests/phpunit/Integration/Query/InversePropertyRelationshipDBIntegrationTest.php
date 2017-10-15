@@ -10,7 +10,7 @@ use SMW\Query\Language\ValueDescription;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
-use SMWQueryParser as QueryParser;
+use SMW\ApplicationFactory;
 
 /**
  * @see http://semantic-mediawiki.org/wiki/Inverse_Properties
@@ -46,7 +46,7 @@ class InversePropertyRelationshipDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->queryParser = new QueryParser();
+		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 	}
 
 	protected function tearDown() {

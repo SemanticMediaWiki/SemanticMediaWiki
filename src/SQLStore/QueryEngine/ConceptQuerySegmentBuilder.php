@@ -3,7 +3,8 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use SMWQuery as Query;
-use SMWQueryParser as QueryParser;
+use SMW\Query\Parser as QueryParser;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -24,9 +25,9 @@ class ConceptQuerySegmentBuilder {
 	private $querySegmentListProcessor;
 
 	/**
-	 * @var integer
+	 * @var QueryParser
 	 */
-	private $conceptFeatures;
+	private $queryParser;
 
 	/**
 	 * @since 2.2
@@ -40,12 +41,12 @@ class ConceptQuerySegmentBuilder {
 	}
 
 	/**
-	 * @since 2.2
+	 * @since 3.0
 	 *
-	 * @param integer $conceptFeatures
+	 * @param QueryParser $queryParser
 	 */
-	public function setConceptFeatures( $conceptFeatures ) {
-		$this->conceptFeatures = $conceptFeatures;
+	public function setQueryParser( QueryParser $queryParser ) {
+		$this->queryParser = $queryParser;
 	}
 
 	/**
@@ -62,10 +63,12 @@ class ConceptQuerySegmentBuilder {
 		$querySegmentListBuilder = $this->querySegmentListBuilder;
 		$querySegmentListBuilder->setSortKeys( array() );
 
-		$qp = new QueryParser( $this->conceptFeatures );
+		if ( $this->queryParser === null ) {
+			throw new RuntimeException( 'Missing a QueryParser instance' );
+		}
 
 		$querySegmentListBuilder->getQuerySegmentFrom(
-			$qp->getQueryDescription( $conceptDescriptionText )
+			$this->queryParser->getQueryDescription( $conceptDescriptionText )
 		);
 
 		$qid = $querySegmentListBuilder->getLastQuerySegmentId();
@@ -75,12 +78,10 @@ class ConceptQuerySegmentBuilder {
 			return null;
 		}
 
-		// execute query tree, resolve all dependencies
-		$querySegmentListProcessor = $this->querySegmentListProcessor;
-
-		$querySegmentListProcessor->setQueryMode( Query::MODE_INSTANCES );
-		$querySegmentListProcessor->setQuerySegmentList( $querySegmentList );
-		$querySegmentListProcessor->doResolveQueryDependenciesById( $qid );
+		// Eecute query tree, resolve all dependencies
+		$this->querySegmentListProcessor->setQueryMode( Query::MODE_INSTANCES );
+		$this->querySegmentListProcessor->setQuerySegmentList( $querySegmentList );
+		$this->querySegmentListProcessor->doResolveQueryDependenciesById( $qid );
 
 		return $querySegmentList[$qid];
 	}

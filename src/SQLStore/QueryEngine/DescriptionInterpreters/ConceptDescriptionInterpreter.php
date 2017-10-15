@@ -9,8 +9,9 @@ use SMW\Query\Language\Disjunction;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMWQueryParser as QueryParser;
 use SMWSQLStore3;
+use SMW\Query\Parser as QueryParser;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -28,6 +29,11 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	private $querySegmentListBuilder;
 
 	/**
+	 * @var QueryParser
+	 */
+	private $queryParser;
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param QuerySegmentListBuilder $querySegmentListBuilder
@@ -43,6 +49,15 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 */
 	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ConceptDescription;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param QueryParser $queryParser
+	 */
+	public function setQueryParser( QueryParser $queryParser ) {
+		$this->queryParser = $queryParser;
 	}
 
 	/**
@@ -151,9 +166,12 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * Unescaping is the same as in SMW_DV_Conept's getWikiValue().
 	 */
 	private function getConceptQueryDescriptionFrom( $conceptQuery ) {
-		$queryParser = new QueryParser();
 
-		return $queryParser->getQueryDescription(
+		if ( $this->queryParser === null ) {
+			throw new RuntimeException( 'Missing a QueryParser instance' );
+		}
+
+		return $this->queryParser->getQueryDescription(
 			str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $conceptQuery )
 		);
 	}
