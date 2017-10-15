@@ -3,6 +3,8 @@
 namespace SMW\SQLStore;
 
 use SMW\DIProperty;
+use SMW\ApplicationFactory;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2+
@@ -15,12 +17,17 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @var SQLStore
 	 */
-	private $store = null;
+	private $store;
 
 	/**
 	 * @var Database
 	 */
-	private $connection = null;
+	private $connection;
+
+	/**
+	 * @var NamespaceExaminer
+	 */
+	private $namespaceExaminer;
 
 	/**
 	 * @var boolean
@@ -35,6 +42,7 @@ class PropertyTableIdReferenceFinder {
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
 		$this->connection = $this->store->getConnection( 'mw.db' );
+		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
 
 	/**
@@ -79,7 +87,7 @@ class PropertyTableIdReferenceFinder {
 			);
 		}
 
-		return $this->tryToFindAtLeastOneReferenceForId( $sid );
+		return $this->findAtLeastOneActiveReferenceById( $sid );
 	}
 
 	/**
@@ -95,7 +103,7 @@ class PropertyTableIdReferenceFinder {
 			return true;
 		}
 
-		return (bool)$this->tryToFindAtLeastOneReferenceForId( $id );
+		return (bool)$this->findAtLeastOneActiveReferenceById( $id );
 	}
 
 	/**
@@ -117,7 +125,7 @@ class PropertyTableIdReferenceFinder {
 			}
 		}
 
-		if ( ( $reference = $this->findReferenceByQueryLinksTable( $id ) ) !== false ) {
+		if ( ( $reference = $this->findQueryLinksTableReferenceById( $id ) ) !== false ) {
 			$references[SQLStore::QUERY_LINKS_TABLE] = $reference;
 		}
 
@@ -131,27 +139,45 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return DataItem|false
 	 */
-	public function tryToFindAtLeastOneReferenceForId( $id ) {
+	public function findAtLeastOneActiveReferenceById( $id ) {
 
 		$reference = false;
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
+
 			if ( ( $reference = $this->findReferenceByPropertyTable( $proptable, $id ) ) !== false ) {
-				break;
+
+				// If null is returned it means that a reference was found but no DI could
+				// be matched therefore is categorized as false positive
+				if ( isset( $reference->s_id ) ) {
+					$reference = $this->store->getObjectIds()->getDataItemById( $reference->s_id );
+
+					// If the reference is for some reason not part of a  supported namespace,
+					// it is assumed to be invalid
+					if ( $reference !== null && !$this->namespaceExaminer->isSemanticEnabled( $reference->getNamespace() ) ) {
+						$reference = false;
+					}
+				}
+			}
+
+			if ( $reference instanceof DataItem ) {
+				return $reference;
 			}
 		}
 
 		if ( !isset( $reference->s_id ) ) {
-			$reference = $this->findReferenceByQueryLinksTable( $id );
+			$reference = $this->findQueryLinksTableReferenceById( $id );
 		}
 
-		// If null is returned it means that a reference was found bu no DI could
-		// be matched therefore is categorized as false positive
 		if ( isset( $reference->s_id ) ) {
 			$reference = $this->store->getObjectIds()->getDataItemById( $reference->s_id );
 		}
 
-		return $reference === false || $reference === null ? false : $reference;
+		if ( $reference === false || $reference === null ) {
+			return false;
+		}
+
+		return $reference;
 	}
 
 	private function findReferenceByPropertyTable( $proptable, $id ) {
@@ -206,7 +232,7 @@ class PropertyTableIdReferenceFinder {
 		return $row;
 	}
 
-	private function findReferenceByQueryLinksTable( $id ) {
+	private function findQueryLinksTableReferenceById( $id ) {
 
 		// If the query table contains a reference then we keep the object (could
 		// be a subject, property, or printrequest) where in case the query is

@@ -23,7 +23,12 @@ class ParserAfterTidy extends HookHandler {
 	/**
 	 * @var Parser
 	 */
-	private $parser = null;
+	private $parser;
+
+	/**
+	 * @var NamespaceExaminer
+	 */
+	private $namespaceExaminer;
 
 	/**
 	 * @var boolean
@@ -42,6 +47,7 @@ class ParserAfterTidy extends HookHandler {
 	 */
 	public function __construct( Parser &$parser ) {
 		$this->parser = $parser;
+		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
 
 	/**
@@ -88,16 +94,22 @@ class ParserAfterTidy extends HookHandler {
 			return false;
 		}
 
+		$title = $this->parser->getTitle();
+
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
+			return false;
+		}
+
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
-		if ( $this->parser->getTitle()->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
+		if ( $title->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
 			return false;
 		}
 
 		// @see ParserData::setSemanticDataStateToParserOutputProperty
 		if ( $this->parser->getOutput()->getProperty( 'smw-semanticdata-status' ) ||
 			$this->parser->getOutput()->getProperty( 'displaytitle' ) ||
-			$this->parser->getTitle()->isProtected( 'edit' ) ||
+			$title->isProtected( 'edit' ) ||
 			$this->parser->getOutput()->getCategoryLinks() ||
 			$this->parser->getDefaultSort() ) {
 			return true;

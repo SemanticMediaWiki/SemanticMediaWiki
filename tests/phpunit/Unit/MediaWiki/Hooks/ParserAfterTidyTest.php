@@ -84,6 +84,47 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$instance->process( $text );
 	}
 
+	public function testNotEnabledNamespace() {
+
+		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( false ) );
+
+		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
+
+		$title = MockTitle::buildMock( __METHOD__ );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Using this step to verify that the previous NS check
+		// bailed out.
+		$title->expects( $this->never() )
+			->method( 'isSpecialPage' );
+
+		$parser = $this->getMockBuilder( 'Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$instance = new ParserAfterTidy( $parser );
+
+		$text = '';
+		$instance->process( $text );
+	}
+
 	private function newMockCache( $id, $containsStatus, $fetchStatus ) {
 
 		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey( $id );
@@ -259,6 +300,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'updateData' );
 
 		$title = MockTitle::buildMock( __METHOD__ );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
