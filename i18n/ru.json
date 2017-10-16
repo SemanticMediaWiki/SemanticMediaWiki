@@ -240,6 +240,8 @@
 	"smw-ask-empty": "Пусто",
 	"smw-ask-format": "Формат",
 	"smw-ask-format-selection-help": "Для подробного описания, пожалуйста, посетите страницу справки $1.",
+	"smw-ask-condition-input-assistance-property": "поиск свойства <code>p:</code>",
+	"smw-ask-condition-input-assistance-category": "поиск категории <code>c:</code>",
 	"smw-ask-query-search-info": "На запрос <code><nowiki>$1</nowiki></code> был получен ответ из {{PLURAL:$3|1=<code>$2</code> (из кеша)|<code>$2</code> (из кеша)|<code>$2</code>}} за $4 {{PLURAL:$4|секунду|секунды|секунд}}.",
 	"searchbyproperty": "Искать по свойству",
 	"processingerrorlist": "Список ошибок обработки",
@@ -291,7 +293,7 @@
 	"smw-admin-announce-text": "Если ваша вики общедоступная, вы можете зарегистрировать её в <a href=\"https://wikiapiary.com\">WikiApiary</a>.",
 	"smw-admin-deprecation-notice-title": "Уведомления об устаревании",
 	"smw-admin-deprecation-notice-docu": "Следующий раздел содержит устаревшие или удаленные параметры, которые однако все еще активны на данном вики-проекте. Предполагается, что при каждом обновлении будет удалена поддержка этих конфигураций.",
-	"smw-admin-deprecation-notice-title-notice": "Уведомление",
+	"smw-admin-deprecation-notice-title-notice": "Предстоящие изменения",
 	"smw-admin-deprecation-notice-title-replacement": "Замена",
 	"smw-admin-deprecation-notice-title-removal": "Удаление",
 	"smw-smwadmin-refresh-title": "Исправление и обновление данных",
@@ -467,5 +469,6 @@
 	"smw-data-lookup": "Извлечение данных…",
 	"smw-no-data-available": "Нет доступных данных.",
 	"smw-query-reference-link-label": "Ссылка на запрос",
-	"smw-format-datatable-loadingrecords": "Загрузка…"
+	"smw-format-datatable-loadingrecords": "Загрузка…",
+	"smw-format-datatable-toolbar-export": "Экспортировать"
 }
