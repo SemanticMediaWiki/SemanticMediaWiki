@@ -73,7 +73,8 @@
         "_PVALI": "Erlaubt Werteliste",
         "_PEID": "Kennung zur externen URI",
         "_PEFU": "Formatierungsanweisung zur externen URI",
-        "_EDIP": "Ist bearbeitungsgeschützt"
+        "_EDIP": "Ist bearbeitungsgeschützt",
+        "_CHGPRO": "Änderungsweitergabe"
     },
     "propertyAliases": {
         "Hat Datentyp": "_TYPE",
@@ -95,7 +96,8 @@
         "Hat Anzeigetitel": "_DTITLE",
         "Hat einmal erlaubten Wert": "_PVUC",
         "Externe Kennung": "_PEID",
-        "Bearbeitungsgeschützt": "_EDIP"
+        "Bearbeitungsgeschützt": "_EDIP",
+        "Ist Änderungsweitergabe": "_CHGPRO"
     },
     "dateFormatsByPrecision": {
         "SMW_PREC_Y": "Y",
