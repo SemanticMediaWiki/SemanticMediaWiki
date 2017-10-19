@@ -14,7 +14,8 @@
 			"Alaa",
 			"Moud hosny",
 			"ديفيد",
-			"Mido"
+			"Mido",
+			"20عبد العزيز"
 		]
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
@@ -300,9 +301,9 @@
 	"smw-admin-deprecation-notice-config-notice": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> تم إهماله وستتم إزالته في $2",
 	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> تم استبداله ب<code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> أُزيل في $2",
-	"smw-admin-deprecation-notice-title-notice": "ملاحظة",
-	"smw-admin-deprecation-notice-title-replacement": "استبدال",
-	"smw-admin-deprecation-notice-title-removal": "إزالة",
+	"smw-admin-deprecation-notice-title-notice": "التغييرات القادمة",
+	"smw-admin-deprecation-notice-title-replacement": "الإعدادات التي تم استبدالها أو إعادة تسميتها",
+	"smw-admin-deprecation-notice-title-removal": "تمت إزالة الإعدادات",
 	"smw-smwadmin-refresh-title": "إصلاح وتحديث البيانات",
 	"smw_smwadmin_datarefresh": "إعادة بناء البيانات",
 	"smw_smwadmin_datarefreshdocu": "من الممكن استرجاع كل بيانات ميدياويكي الدلالية بناء على المحتويات الحالية للويكي.\nقد يكون هذا مفيدا لإصلاح البيانات المعطوبة أو لتحديث البيانات في حال تغيّرت الصيغة الداخلية بسبب ترقية برمجية.\nالتحديث يتم إجراؤه صفحة بصفحة ولن يتم لحظيا.\nالتالي يعرض ما إذا كان التحديث يجري و يسمح لك ببدء أو وقف التحديثات (إلا لو كانت هذه الوظيفة قد عطّلها مدير الموقع).",

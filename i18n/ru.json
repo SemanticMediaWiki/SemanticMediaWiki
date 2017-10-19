@@ -30,7 +30,8 @@
 			"Redredsonia",
 			"Nitch",
 			"Helpau",
-			"Putnik"
+			"Putnik",
+			"LeonardoGW"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -470,5 +471,5 @@
 	"smw-no-data-available": "Нет доступных данных.",
 	"smw-query-reference-link-label": "Ссылка на запрос",
 	"smw-format-datatable-loadingrecords": "Загрузка…",
-	"smw-format-datatable-toolbar-export": "Экспортировать"
+	"smw-format-datatable-toolbar-export": "Экспорт"
 }
