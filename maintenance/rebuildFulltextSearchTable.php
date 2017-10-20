@@ -30,6 +30,17 @@ class RebuildFulltextSearchTable extends \Maintenance {
 		parent::__construct();
 	}
 
+
+	/**
+	 * @see Maintenance::addDefaultParams
+	 *
+	 * @since 2.5
+	 */
+	protected function addDefaultParams() {
+
+		parent::addDefaultParams();
+	}
+
 	/**
 	 * @see Maintenance::execute
 	 */

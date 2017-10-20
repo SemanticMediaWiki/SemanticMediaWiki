@@ -73,6 +73,16 @@ class SetupStore extends \Maintenance {
 	}
 
 	/**
+	 * @see Maintenance::addDefaultParams
+	 *
+	 * @since 2.0
+	 */
+	protected function addDefaultParams() {
+
+		parent::addDefaultParams();
+	}
+
+	/**
 	 * @since 2.0
 	 */
 	public function execute() {
