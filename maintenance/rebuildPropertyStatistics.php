@@ -26,6 +26,16 @@ class RebuildPropertyStatistics extends \Maintenance {
 	}
 
 	/**
+	 * @see Maintenance::addDefaultParams
+	 *
+	 * @since 1.9
+	 */
+	protected function addDefaultParams() {
+
+		parent::addDefaultParams();
+	}
+
+	/**
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
