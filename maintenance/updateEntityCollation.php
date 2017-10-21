@@ -31,6 +31,16 @@ class UpdateEntityCollation extends \Maintenance {
 	}
 
 	/**
+	 * @see Maintenance::addDefaultParams
+	 *
+	 * @since 3.0
+	 */
+	protected function addDefaultParams() {
+
+		parent::addDefaultParams();
+	}
+
+	/**
 	 * @see Maintenance::execute
 	 */
 	public function execute() {

@@ -66,6 +66,8 @@ class RebuildData extends \Maintenance {
 	 */
 	protected function addDefaultParams() {
 
+		parent::addDefaultParams();
+
 		$this->addOption( 'd', '<delay> Wait for this many milliseconds after processing an article, useful for limiting server load.', false, true );
 		$this->addOption( 's', '<startid> Start refreshing at given article ID, useful for partial refreshing.', false, true );
 		$this->addOption( 'e', '<endid> Stop refreshing at given article ID, useful for partial refreshing.', false, true );
