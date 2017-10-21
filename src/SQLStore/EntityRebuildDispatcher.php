@@ -310,6 +310,8 @@ class EntityRebuildDispatcher {
 					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
 					$updateJobs[] = $this->newUpdateJob( $title );
 				}
+
+				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
 				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
