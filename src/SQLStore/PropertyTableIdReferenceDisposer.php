@@ -6,7 +6,6 @@ use SMW\EventHandler;
 use SMW\DIWikiPage;
 use SMW\Iterators\ResultIterator;
 use SMW\ApplicationFactory;
-use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 
 /**
  * @private
@@ -78,7 +77,7 @@ class PropertyTableIdReferenceDisposer {
 			return null;
 		}
 
-		$this->doRemoveEntityReferencesById( $id );
+		$this->doRemoveEntityReferencesById( $id, false );
 	}
 
 	/**
@@ -123,8 +122,11 @@ class PropertyTableIdReferenceDisposer {
 	public function cleanUpTableEntriesById( $id ) {
 
 		$subject = $this->store->getObjectIds()->getDataItemById( $id );
+		$isRedirect = false;
 
 		if ( $subject instanceof DIWikiPage ) {
+			$isRedirect = $subject->getInterwiki() === SMW_SQL3_SMWREDIIW;
+
 			// Use the subject without an internal 'smw-delete' iw marker
 			$subject = new DIWikiPage(
 				$subject->getDBKey(),
@@ -167,17 +169,20 @@ class PropertyTableIdReferenceDisposer {
 			}
 		}
 
-		$this->doRemoveEntityReferencesById( $id );
+		$this->doRemoveEntityReferencesById( $id, $isRedirect );
 		$this->connection->endAtomicTransaction( __METHOD__ );
 	}
 
-	private function doRemoveEntityReferencesById( $id ) {
+	private function doRemoveEntityReferencesById( $id, $isRedirect ) {
 
-		$this->connection->delete(
-			SQLStore::ID_TABLE,
-			array( 'smw_id' => $id ),
-			__METHOD__
-		);
+		// When marked as redirect, don't remove the reference
+		if ( $isRedirect === false ) {
+			$this->connection->delete(
+				SQLStore::ID_TABLE,
+				array( 'smw_id' => $id ),
+				__METHOD__
+			);
+		}
 
 		$this->connection->delete(
 			SQLStore::PROPERTY_STATISTICS_TABLE,
