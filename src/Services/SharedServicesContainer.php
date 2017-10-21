@@ -45,6 +45,8 @@ use SMW\Localizer;
 use SMW\MediaWiki\DatabaseConnectionProvider;
 use SMW\Utils\TempFile;
 use SMW\PostProcHandler;
+use SMW\Utils\JsonSchemaValidator;
+use JsonSchema\Validator as SchemaValidator;
 
 /**
  * @license GNU GPL v2+
@@ -213,6 +215,27 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $postProcHandler;
+		} );
+
+		/**
+		 * @var JsonSchemaValidator
+		 */
+		$containerBuilder->registerCallback( 'JsonSchemaValidator', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'JsonSchemaValidator', JsonSchemaValidator::class );
+			$containerBuilder->registerAlias( 'JsonSchemaValidator', JsonSchemaValidator::class );
+
+			$schemaValidator = null;
+
+			// justinrainbow/json-schema
+			if ( class_exists( SchemaValidator::class ) ) {
+				$schemaValidator = new SchemaValidator();
+			}
+
+			$jsonSchemaValidator = new JsonSchemaValidator(
+				$schemaValidator
+			);
+
+			return $jsonSchemaValidator;
 		} );
 	}
 
