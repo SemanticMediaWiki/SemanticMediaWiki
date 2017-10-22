@@ -232,6 +232,8 @@ class SMWPageLister {
 			// output all diWikiPages
 			for ( $index = $startChunk; $index < $endChunk && $index < $end; ++$index ) {
 				$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
+				$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
+
 				// check for change of starting letter or begining of chunk
 				$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
 				$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
@@ -255,7 +257,7 @@ class SMWPageLister {
 					$prevStartChar = $startChar;
 				}
 
-				$r .= "<li>" . $dataValue->getLongHTMLText( smwfGetLinker() ) . "</li>\n";
+				$r .= "<li>" . $dataValue->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . "</li>\n";
 			}
 
 			if ( $index == $end && $moreCallback !== null ) {
@@ -291,6 +293,7 @@ class SMWPageLister {
 		}
 
 		$startDv = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$start], $diProperty );
+		$searchlink = \SMWInfolink::newBrowsingLink( '+', $startDv->getWikiValue() );
 
 		// For a redirect, disable the DisplayTitle to show the original (aka source) page
 		if ( $diProperty !== null && $diProperty->getKey() == '_REDI' ) {
@@ -300,11 +303,12 @@ class SMWPageLister {
 		$startChar = self::getFirstChar( $diWikiPages[$start] );
 
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
-		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '</li>';
+		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</li>';
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
 			$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
+			$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
 
 			// For a redirect, disable the DisplayTitle to show the original (aka source) page
 			if ( $diProperty !== null && $diProperty->getKey() == '_REDI' ) {
@@ -318,7 +322,7 @@ class SMWPageLister {
 				$prevStartChar = $startChar;
 			}
 
-			$r .= '<li>' . $dataValue->getLongHTMLText( smwfGetLinker() ) . '</li>';
+			$r .= '<li>' . $dataValue->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</li>';
 		}
 
 		if ( $moreCallback !== null ) {

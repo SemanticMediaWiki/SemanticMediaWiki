@@ -473,6 +473,20 @@ return array(
 			'mobile',
 			'desktop'
 		)
-	)
+	),
+
+	// Page styles
+	'ext.smw.page.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/ext.smw.page.css',
+			'smw/ext.smw.table.css'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 
 );

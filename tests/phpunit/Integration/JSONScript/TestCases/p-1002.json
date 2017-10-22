@@ -20,7 +20,7 @@
 			"assert-output": {
 				"onPageView": true,
 				"to-contain": [
-					"<ul><li><a href=\".*Example/P1002/1#_ERR825bfe376713b81d8177c7353181ec6e\" .*>Example/P1002/1</a></li></ul>"
+					"<ul><li><a href=\".*Example/P1002/1#_ERR825bfe376713b81d8177c7353181ec6e\".*title=\"Special:Browse/:Example-2FP1002-2F1-23-5FERR825bfe376713b81d8177c7353181ec6e\">+</a></span></li></ul>"
 				]
 			}
 		}
