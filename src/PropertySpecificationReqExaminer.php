@@ -63,7 +63,7 @@ class PropertySpecificationReqExaminer {
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.0
 	 *
 	 * @param SemanticData|null $semanticData
 	 */

@@ -559,14 +559,13 @@ class HookRegistry {
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleFromTitle
 		 */
-		$this->handlers['ArticleFromTitle'] = function ( &$title, &$article ) {
+		$this->handlers['ArticleFromTitle'] = function ( &$title, &$article ) use ( $applicationFactory ) {
 
 			$articleFromTitle = new ArticleFromTitle(
-				$title,
-				$article
+				$applicationFactory->getStore()
 			);
 
-			return $articleFromTitle->process();
+			return $articleFromTitle->process( $title, $article );
 		};
 
 		/**

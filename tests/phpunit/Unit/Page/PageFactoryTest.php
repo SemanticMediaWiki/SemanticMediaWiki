@@ -1,19 +1,19 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Hooks;
+namespace SMW\Tests\Page;
 
-use SMW\MediaWiki\Hooks\ArticleFromTitle;
+use SMW\Page\PageFactory;
 
 /**
- * @covers \SMW\MediaWiki\Hooks\ArticleFromTitle
+ * @covers \SMW\Page\PageFactory
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since 2.0
+ * @since 3.0
  *
  * @author mwjames
  */
-class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
+class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
@@ -28,15 +28,31 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ArticleFromTitle::class,
-			new ArticleFromTitle( $this->store )
+			PageFactory::class,
+			new PageFactory( $this->store )
 		);
+	}
+
+	public function testNewPageFromNotRegisteredNamespaceThrowsException() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$instance = new PageFactory( $this->store );
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->newPageFromTitle( $title );
 	}
 
 	/**
 	 * @dataProvider titleProvider
 	 */
-	public function testProcess( $namespace, $expected ) {
+	public function testNewPageFromTitle( $namespace, $expected ) {
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -46,16 +62,11 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( $namespace ) );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new ArticleFromTitle( $this->store );
-		$instance->process( $title, $wikiPage );
+		$instance = new PageFactory( $this->store );
 
 		$this->assertInstanceOf(
 			$expected,
-			$wikiPage
+			$instance->newPageFromTitle( $title )
 		);
 	}
 
