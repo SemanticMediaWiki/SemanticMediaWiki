@@ -315,7 +315,7 @@ class ValueListBuilder {
 		return HtmlDivTable::table(
 			$html,
 			array(
-				'class' => "smw-property-page-results legacy",
+				'class' => "smw-property-page-results",
 				'style' => "width: 100%;"
 			)
 		);
