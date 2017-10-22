@@ -46,6 +46,11 @@ class PropertyPage extends Page {
 	private $propertyValue;
 
 	/**
+	 * @var ListBuilder
+	 */
+	private $listBuilder;
+
+	/**
 	 * @see 3.0
 	 *
 	 * @param Title $title
@@ -205,29 +210,29 @@ class PropertyPage extends Page {
 			$this->propertyValue->getFormattedLabel( DataValueFormatter::WIKI_LONG )
 		);
 
-		$listBuilder = new ListBuilder(
+		$this->listBuilder = new ListBuilder(
 			$this->store
 		);
 
-		$listBuilder->setLanguageCode(
+		$this->listBuilder->setLanguageCode(
 			$languageCode
 		);
 
-		$listBuilder->isUserDefined(
+		$this->listBuilder->isUserDefined(
 			$this->property->isUserDefined()
 		);
 
 		// Redirects
-		$html .= $this->getList( $listBuilder, 'redirect', '_REDI', true );
+		$html .= $this->makeList( 'redirect', '_REDI', true );
 
 		// Subproperties
-		$html .= $this->getList( $listBuilder, 'subproperty', '_SUBP', true );
+		$html .= $this->makeList( 'subproperty', '_SUBP', true );
 
 		// Improper assignments
-		$html .= $this->getList( $listBuilder, 'error', '_ERRP', false );
+		$html .= $this->makeList( 'error', '_ERRP', false );
 
 		// Value and entity list
-		$html .= $this->getValueList( $context->getRequest(), $languageCode );
+		$html .= $this->makeValueList( $languageCode );
 
 		if ( $html === '' ) {
 			return '';
@@ -257,7 +262,12 @@ class PropertyPage extends Page {
 		return $editInfoProvider->fetchSemanticData();
 	}
 
-	private function getList( $listBuilder, $key, $propertyKey, $checkProperty = true ) {
+	private function makeList( $key, $propertyKey, $checkProperty = true ) {
+
+		// Ignore the list when a filter is present
+		if ( $this->getContext()->getRequest()->getVal( 'filter', '' ) !== '' ) {
+			return '';
+		}
 
 		$propertyListLimit = $this->getOption( 'smwgPropertyListLimit' );
 		$listLimit = $propertyListLimit[$key];
@@ -271,26 +281,28 @@ class PropertyPage extends Page {
 			$listLimit + 1
 		);
 
-		$listBuilder->setListLimit(
+		$this->listBuilder->setListLimit(
 			$listLimit
 		);
 
-		$listBuilder->setListHeader(
+		$this->listBuilder->setListHeader(
 			'smw-propertylist-' . $key
 		);
 
-		$listBuilder->checkProperty(
+		$this->listBuilder->checkProperty(
 			$checkProperty
 		);
 
-		return $listBuilder->createHtml(
+		return $this->listBuilder->createHtml(
 			new DIProperty( $propertyKey ),
 			$this->getDataItem(),
 			$requestOptions
 		);
 	}
 
-	private function getValueList( $request, $languageCode ) {
+	private function makeValueList( $languageCode ) {
+
+		$request = $this->getContext()->getRequest();
 
 		$valueListBuilder = new ValueListBuilder(
 			$this->store
@@ -311,13 +323,13 @@ class PropertyPage extends Page {
 		return $valueListBuilder->createHtml(
 			$this->property,
 			$this->getDataItem(),
-			array(
+			[
 				'limit'  => $request->getVal( 'limit', $this->getOption( 'smwgPropertyPagingLimit' ) ),
 				'offset' => $request->getVal( 'offset', '0' ),
 				'from'   => $request->getVal( 'from', '' ),
 				'until'  => $request->getVal( 'until', '' ),
-				'filter'  => $request->getVal( 'filter', '' )
-			)
+				'filter' => $request->getVal( 'filter', '' )
+			]
 		);
 	}
 

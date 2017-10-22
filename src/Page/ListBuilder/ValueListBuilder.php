@@ -19,6 +19,7 @@ use Html;
 use WebRequest;
 use SMW\Message;
 use SMW\Utils\Collator;
+use SMW\Query\Language\SomeProperty;
 
 /**
  * @license GNU GPL v2+
@@ -112,7 +113,7 @@ class ValueListBuilder {
 		$options->setOffset( $offset );
 
 		if ( $filter !== '' ) {
-			$dataItems = $this->queryValueMatch( $property, $filter, $options );
+			$dataItems = $this->filterByValue( $property, $filter, $options );
 			$isValueSearch = true;
 		} else {
 			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
@@ -162,7 +163,7 @@ class ValueListBuilder {
 			)
 		);
 
-		$filterInput = '';
+		$filterInput = ListPager::filterInput( $title, $limit, $offset, $filter );
 
 		$objectList = $this->createValueList(
 			$property,
@@ -177,8 +178,19 @@ class ValueListBuilder {
 			[
 				'class' => 'smw-page-nav-container'
 			],
-			ListPager::getLinks( $title, $limit, $offset, $resultCount, $query ) .
-			$filterInput
+			Html::rawElement(
+				'div' ,
+				[
+					'class' => 'float-left'
+				],
+				ListPager::getLinks( $title, $limit, $offset, $resultCount, $query )
+			) . Html::rawElement(
+				'div',
+				[
+					'class' => 'float-right'
+				],
+				$filterInput
+			)
 		);
 
 		$result .= Html::rawElement(
@@ -321,18 +333,24 @@ class ValueListBuilder {
 		);
 	}
 
-	private function queryValueMatch( $property, $value, $options ) {
+	private function filterByValue( $property, $value, $options ) {
 
-		$applicationFactory = ApplicationFactory::getInstance();
+		$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
+		$queryParser = $queryFactory->newQueryParser();
 
-		$dataValue = $applicationFactory->getDataValueFactory()->newDataValueByProperty( $property );
-		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );
-		$dataValue->setUserValue( $value );
-		$queryFactory = $applicationFactory->getQueryFactory();
-
-		$description = $queryFactory->newDescriptionFactory()->newFromDataValue(
-			$dataValue
+		$description = $queryParser->getQueryDescription(
+			$queryParser->createCondition( $property, $value )
 		);
+
+		if ( $queryParser->getErrors() !== [] ) {
+			return [];
+		}
+
+		// Make sure that no subproperty is included while executing the
+		// query
+		if ( $description instanceof SomeProperty ) {
+			$description->setHierarchyDepth( 0 );
+		}
 
 		$query = $queryFactory->newQuery( $description );
 		$query->setLimit( $options->limit );
@@ -341,7 +359,8 @@ class ValueListBuilder {
 		// We are not sorting via the backend as an ORDER BY will cause a
 		// SQL filesort and means for a large pool of value assignments a
 		// slow query
-		$results = $this->store->getQueryResult( $query )->getResults();
+		$res = $this->store->getQueryResult( $query );
+		$results = $res->getResults();
 
 		// Sort on the spot via PHP, which should be enough for the search
 		// and match functionality

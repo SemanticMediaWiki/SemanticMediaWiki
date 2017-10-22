@@ -205,6 +205,20 @@ class LegacyParser implements Parser {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function createCondition( $property, $value ) {
+
+		if ( $property instanceOf DIProperty ) {
+			$property = $property->getLabel();
+		}
+
+		return "[[$property::$value]]";
+	}
+
+	/**
 	 * Compute an SMWDescription from a query string. Returns whatever descriptions could be
 	 * wrestled from the given string (the most general result being SMWThingDescription if
 	 * no meaningful condition was extracted).
