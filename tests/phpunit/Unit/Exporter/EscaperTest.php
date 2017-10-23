@@ -26,7 +26,7 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->addConfiguration( 'smwgExportResourcesAsIri', false );
 	}
 
-	protected function setU() {
+	protected function tearDown() {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
