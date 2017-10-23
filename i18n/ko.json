@@ -130,7 +130,7 @@
 	"smw_type_header": "\"$1\" 유형의 속성",
 	"smw_typearticlecount": "이 유형을 사용하여 {{PLURAL:$1|속성}} $1개를 보여줍니다.",
 	"smw_attribute_header": "\"$1\" 유형을 사용한 문서",
-	"smw_attributearticlecount": "이 속성을 사용하여 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
+	"smw_attributearticlecount": "이 속성을 사용하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
 	"smw-propertylist-subproperty-header": "하위 속성",
 	"smw-propertylist-redirect-header": "동의어",
 	"specialpages-group-smw_group": "시맨틱 미디어위키",
@@ -311,6 +311,7 @@
 	"smw_adminlinks_displayingdata": "데이터 표시",
 	"smw_adminlinks_inlinequerieshelp": "인라인 쿼리 도움말",
 	"smw-property-indicator-type-info": "{{PLURAL:$1|사용자|시스템}} 정의된 속성",
+	"smw-concept-indicator-cache-update": "캐시 카운트\n마지막 업데이트: $1",
 	"smw-createproperty-isproperty": "$1 유형의 속성입니다.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|이 속성에 대해 허용하는 값}}:",
 	"smw-paramdesc-category-delim": "구분자",
@@ -426,5 +427,7 @@
 	"smw-format-datatable-toolbar-export": "내보내기",
 	"smw-category-invalid-redirect-target": "\"$1\" 분류는 분류가 아닌 이름공간에 대한 잘못된 넘겨주기 대상을 포함하고 있습니다.",
 	"apihelp-smwbrowse-summary": "선택된 탐색 활동을 지원하기 위한 시맨틱 미디어위키 API 모듈입니다.",
-	"smw-api-smwbrowse-invalid-parameters": "변수 형식이 유효하지 않습니다. 유효한 JSON 포맷을 예상했습니다."
+	"smw-api-smwbrowse-invalid-parameters": "변수 형식이 유효하지 않습니다. 유효한 JSON 포맷을 예상했습니다.",
+	"smw-property-page-list-count": "이 속성을 사용하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
+	"smw-property-page-list-search-count": "\"$2\" 값이 일치하고 이 속성을 사용하는 {{PLURAL:$1|문서}} $1개를 보여줍니다."
 }

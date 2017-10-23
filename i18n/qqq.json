@@ -379,6 +379,7 @@
 	"smw-page-indicator-usage-count": "This is an informatory message shown on property pages.\n\nParameter:\n* $2 holds the number from the usage count",
 	"smw-property-indicator-type-info": "This informatory message is shown on property pages. It informs if the property is either user defined (=User) or provided by the software (=System).",
 	"smw-property-indicator-last-count-update": "This informatory message is shown in a tooltip incicating the number of data values assigned to a property.\n\nParameter:\n* $1 - Holds the timestamp of the last update",
+	"smw-concept-indicator-cache-update": "This is the content of a tooltip on a concept page.\n\nParameter:\n* $1 - holds the timestamp of the update",
 	"smw-createproperty-isproperty": "This an information message at the top on a page in namespace \"Property\". Parameters:\n* $1 holds the name of the data type which was assigned to the respective property.",
 	"smw-createproperty-allowedvals": "This an information message at the top on a page in namespace \"Property\" which gets inserted in case only certain property values are [https://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed to be used] for the respective property.\n\nParameters:\n* $1 - number of allowed values",
 	"smw-paramdesc-category-delim": "This is the description of the \"delim\" parameter of the \"category\" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
@@ -593,9 +594,12 @@
 	"smw-property-req-violation-missing-formatter-uri": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the property",
 	"smw-property-req-violation-predefined-type": "This is an error message.\n\nParameters:\n* $1 - Holds the name of the property\n* $2 - Holds the name of the datatype",
 	"smw-property-req-violation-import-type": "This is an error message.\n\nParameter:\n* $1 - holds the name of the imported vacabulary",
-	"smw-property-req-violation-change-propagation-locked-error": "This is an informatory message. Similar to {{Msg-mw|Smw-property-req-violation-change-propagation-locked-warning}}\n\nParameters:\n* $1 - holds the name of the property",
-	"smw-property-req-violation-change-propagation-locked-warning": "This is an informatory message. Similar to {{Msg-mw|Smw-property-req-violation-change-propagation-locked-error}}\n\nParameters:\n* $1 - holds the name of the property",
-	"smw-property-req-violation-change-propagation-pending": "This is an informatory message on a property page.\n\nParameters:\n* $1 - holds the number of jobs queued",
+	"smw-property-req-violation-change-propagation-locked-error": "This is an informatory message. Similar to\n\n{{Msg-mw|Smw-property-req-violation-change-propagation-locked-warning}}\n\nand\n\n{{Msg-mw|smw-property-req-violation-change-propagation-pending}}\n\nParameters:\n* $1 - holds the name of the property",
+	"smw-property-req-violation-change-propagation-locked-warning": "This is an informatory message. Similar to\n\n{{Msg-mw|Smw-property-req-violation-change-propagation-locked-error}}\n\nand\n\n{{Msg-mw|smw-property-req-violation-change-propagation-pending}}\n\nParameters:\n* $1 - holds the name of the property",
+	"smw-property-req-violation-change-propagation-pending": "This is an informatory message on a property page.  Similar to\n\n{{Msg-mw|smw-property-req-violation-change-propagation-locked-error}}\n\nand\n\n{{Msg-mw|smw-property-req-violation-change-propagation-locked-warning}}\n\nParameters:\n* $1 - holds the number of jobs queued",
+	"smw-category-change-propagation-locked-error": "This is an informatory message. Similar to\n\n{{Msg-mw|Smw-category-change-propagation-locked-warning}}\n\nand\n\n{{Msg-mw|smw-category-change-propagation-pending}}\n\nParameters:\n* $1 - holds the name of the category",
+	"smw-category-change-propagation-locked-warning": "This is an informatory message. Similar to\n\n{{Msg-mw|smw-category-change-propagation-locked-error}}\n\nand\n\n{{Msg-mw|smw-category-change-propagation-pending}}\n\nParameters:\n* $1 - holds the name of the category",
+	"smw-category-change-propagation-pending": "This is an informatory message on a category page.  Similar to\n\n{{Msg-mw|Smw-category-change-propagation-locked-error}}\n\nand\n\n{{Msg-mw|smw-category-change-propagation-locked-warning}}\n\nParameters:\n* $1 - holds the number of jobs queued",
 	"protect-level-smw-pageedit": "This is one of the options that may be selected when performing a page protection (<code>action=protect</code>) via the graphical interface of the wiki.",
 	"smw-create-protection": "This is an error message shown when am edit protected property page should be edited.\n\nParameters:\n* $1 - Holds the name of property\n* $2 - Holds the name of the user right",
 	"smw-create-protection-exists": "This is an error message shown when am edit protected property page should be edited.\n\nParameters:\n* $1 - Holds the name of property\n* $2 - Holds the name of the user right",
@@ -635,5 +639,7 @@
 	"apihelp-smwtask-summary": "This is an informatory message describing and API module.",
 	"apihelp-smwbrowse-summary": "This is an informatory message describing an API module.",
 	"smw-api-smwbrowse-invalid-parameters": "This is an error message emitted by an API-module.",
-	"smw-parser-recursion-level-exceeded": "This is an error message.\n\nParameter:\n* $1 - holds the count of recursions (integer) detected by the software"
+	"smw-parser-recursion-level-exceeded": "This is an error message.\n\nParameter:\n* $1 - holds the count of recursions (integer) detected by the software",
+	"smw-property-page-list-count": "This is an informatory message on a property page.\n\nParameter:\n* $1 - holds the number of pages",
+	"smw-property-page-list-search-count": "This is an informatory message on a property page.\n\nParameters:\n* $1 - holds the number of pages\n* $2 - holds the datavalue searched for"
 }
