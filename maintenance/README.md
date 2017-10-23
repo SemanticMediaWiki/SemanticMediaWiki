@@ -16,12 +16,9 @@ done from the command line right before the php call. On Bash (Linux), e.g.
 one can use the following call to execute "setupStore.php" with a different
 MediaWiki location:
 
-  export MW_INSTALL_PATH="/path/to/mediawiki" && php setupStore.php
+    export MW_INSTALL_PATH="/path/to/mediawiki" && php setupStore.php
 
 In some setups that use a lot of shared code for many wikis, it might be
 required to specify the location of "LocalSettings.php" explicitly, too:
 
-  export MW_INSTALL_PATH="/path/to/mediawiki" &&
-  php setupStore.php --conf=/path/to/mediawiki/LocalSettings.php
-
-(do not give the linebreak in the above command)
+    export MW_INSTALL_PATH="/path/to/mediawiki" && php setupStore.php --conf=/path/to/mediawiki/LocalSettings.php
