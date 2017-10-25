@@ -1,15 +1,11 @@
-# Semantic MediaWiki 2.5.4
+# Semantic MediaWiki 2.5.5
 
-Released on August 7, 2017.
-
-## Enhancements
-
-* [#2547](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2547) as `b527e3c` Added type `parser-html` to `JSONScript` testing to allow assertions on HTML structure
-* Many new translations for numerous languages by the communtity of [translatewiki.net](https://translatewiki.net/w/i.php?title=Special%3AMessageGroupStats&x=D&group=mwgithub-semanticmediawiki&suppressempty=1)
+Released on October 25, 2017.
 
 ## Bug fixes and internal code changes
 
-* [#2563](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2563) as `f17f90f` Made `'HtmlValidator'` check for `'CssSelectorConverter'`
-* [#2568](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2568) as `c8d6718` Made each parameter of the template calls created by the template format start on a new line
-* [#2579](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2579) as `39b074b` Fixed class `'SMW\DataItemException'` not found
-* [#2590](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2590) as `61ea7e0` **SECURITY** Made "Special:SemanticMediaWiki" ("Special:SMWAdmin") to check `'wpEditToken'`
+* [#2672](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2672) as `e17160e` Changes obfuscator to use `&#x005B;` instead of `&#91;` for the links in values detection
+* [#2692](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2692) as `5ddd9ca` Fixes "EventListenerRegistry.php: Call to a member function getArticleID() on null"
+* [#2767](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2767) as `848ed0c` Forces data updates on template refreshs
+* [#2773](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2773) as `55b6b72` Adds in MediaWiki's default script parameters in non-standard setups
+* [#2780](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2780) as `4bc0d5f` Brings additional checks for namespaces that are enabled for links and annotations
