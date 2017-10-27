@@ -377,6 +377,7 @@
 	"smw-page-indicator-usage-count": "估计[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count 使用计数]：{{PLURAL:$2|'''$2'''}}",
 	"smw-property-indicator-type-info": "{{PLURAL:$1|用户|系统}}定义的属性",
 	"smw-property-indicator-last-count-update": "估计使用数 上次更新于：$1",
+	"smw-concept-indicator-cache-update": "缓存数\n\n上次更新：$1",
 	"smw-createproperty-isproperty": "它是一个类型为$1的属性。",
 	"smw-createproperty-allowedvals": "此属性允许的{{PLURAL:$1|值为}}：",
 	"smw-paramdesc-category-delim": "分隔符",
@@ -634,5 +635,7 @@
 	"apihelp-smwtask-summary": "执行语义MediaWiki相关任务的API模块。",
 	"apihelp-smwbrowse-summary": "支持选定浏览器活动的语义MediaWiki API模块。",
 	"smw-api-smwbrowse-invalid-parameters": "参数格式无效，应为有效的JSON格式。",
-	"smw-parser-recursion-level-exceeded": "$1递归的等级在解析期间溢出。建议您验证模板结果，或如有需要可调整配置参数<code>$maxRecursionDepth</code>。"
+	"smw-parser-recursion-level-exceeded": "$1递归的等级在解析期间溢出。建议您验证模板结果，或如有需要可调整配置参数<code>$maxRecursionDepth</code>。",
+	"smw-property-page-list-count": "显示$1个使用该属性的{{PLURAL:$1|页面}}。",
+	"smw-property-page-list-search-count": "显示$1个使用该属性，匹配“$2”值的{{PLURAL:$1|页面}}。"
 }

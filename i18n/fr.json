@@ -399,6 +399,7 @@
 	"smw-page-indicator-usage-count": "[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Nombre d’utilisations] estimé : {{PLURAL:$2|'''$2'''}}",
 	"smw-property-indicator-type-info": "Propriété définie par l{{PLURAL:$1|'utilisateur|e système}}",
 	"smw-property-indicator-last-count-update": "Estimation du nombre d'utilisations\nDernière mise à jour: $1",
+	"smw-concept-indicator-cache-update": "Compteur de cache\nDernière mise à jour : $1",
 	"smw-createproperty-isproperty": "C’est une propriété de type $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|La valeur autorisée pour cette propriété est|Les valeurs autorisées pour cette propriété sont}} :",
 	"smw-paramdesc-category-delim": "Le délimiteur",
@@ -656,5 +657,7 @@
 	"apihelp-smwtask-summary": "Module d'API pour exécuter les tâches relatives à Semantic MediaWiki.",
 	"apihelp-smwbrowse-summary": "Module API de MédiaWiki Sémantique pour supporter les activités de navigation sélectionnées.",
 	"smw-api-smwbrowse-invalid-parameters": "Le format des paramètres n’est pas valide, un format JSON valide est attendu.",
-	"smw-parser-recursion-level-exceeded": "Le niveau de $1 récursions a été dépassé lors du processus d’analyse. Il est suggéré de valider la structure du modèle, ou si nécessaire d’ajuster le paramètre de configuration <code>$maxRecursionDepth</code>."
+	"smw-parser-recursion-level-exceeded": "Le niveau de $1 récursions a été dépassé lors du processus d’analyse. Il est suggéré de valider la structure du modèle, ou si nécessaire d’ajuster le paramètre de configuration <code>$maxRecursionDepth</code>.",
+	"smw-property-page-list-count": "Affichage de $1 {{PLURAL:$1|page|pages}} utilisant cette propriété.",
+	"smw-property-page-list-search-count": "Affichage de $1 {{PLURAL:$1|page|pages}} utilisant cette propriété avec une valeur correspondant à « $2 »."
 }

@@ -242,6 +242,7 @@
 	"smw_result_noresults": "Niestety, brak wyników.",
 	"smwadmin": "Funkcje administracyjne",
 	"smw-admin-statistics-job-title": "Statystyki zadań",
+	"smw-admin-permission-missing": "Dostęp do tej strony został zablokowany z powodu braku uprawnień. Na stronie pomocy na temat [https://www.semantic-mediawiki.org/wiki/Help:Permissions uprawnień] znajdziesz szczegółowe informacje o niezbędnych ustawieniach.",
 	"smw-admin-setupsuccess": "Silnik przestrzeni dyskowej został ustawiony.",
 	"smw_smwadmin_return": "Powrót do $1",
 	"smw_smwadmin_updatestarted": "Uruchomiono nowy proces aktualizacji danych semantycznych.\nWszystkie zapisane dane zostaną uporządkowane oraz naprawione w razie potrzeby.\nMożesz śledzić stan procesu aktualizacji na tej stronie specjalnej.",
