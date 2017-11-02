@@ -314,7 +314,7 @@
 	"smw-admin-db": "Instalación y actualización de la base de datos",
 	"smw-admin-dbdocu": "Semantic MediaWiki necesita algunas extensiones en la base de datos de MediaWiki para poder almacenar la información semántica.\nLa función indicada abajo asegura que tu base de datos está configurada correctamente.\nLos cambios realizados en este paso no afectan el resto de la base de datos de MediaWiki y pueden ser revertidos fácilmente si así se desea.\nEsta función de configuración puede ejecutarse varias veces sin hacer ningún daño, pero es necesaria sólo una vez para la instalación o actualización.",
 	"smw-admin-permissionswarn": "Si la operación falla con errores SQL, la base de datos de usuarios empleada por su wiki (revise su archivo \"LocalSettings.php\") probablemente no tiene permisos suficientes.\nUd puede conceder a este usuario permisos adicionales para crear y borrar tablas, ingresando temporalmente la clave de acceso de su base de datos raíz en el archivo \"LocalSettings.php\", o bien usar el script de mantenimiento <code>setupStore.php</code>, que puede usar las credenciales de un administrador.",
-	"smw-admin-dbbutton": "Inicializar o actualizar tablas",
+	"smw-admin-dbbutton": "Inicializar o modernizar tablas",
 	"smw-admin-announce": "Anuncia tu wiki",
 	"smw-admin-announce-text": "Si tu wiki es público, lo puedes registrar en <a href=\"https://wikiapiary.com\">WikiApiary</a>, el wiki de seguimiento de wikis.",
 	"smw-admin-deprecation-notice-title": "Alertas de obsolescencia",
