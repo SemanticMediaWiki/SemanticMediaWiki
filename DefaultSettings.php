@@ -1215,12 +1215,10 @@ return array(
 	#
 	# @see https://www.w3.org/TR/rdf11-concepts/#section-IRIs
 	#
-	# This setting should be set TRUE with beginning of 3.x.
-	#
 	# @since 2.5
-	# @default false (to avoid any BC break for exsiting systems)
+	# @default true
 	##
-	'smwgExportResourcesAsIri' => false,
+	'smwgExportResourcesAsIri' => true,
 	##
 
 	##
