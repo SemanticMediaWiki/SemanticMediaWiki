@@ -6,8 +6,9 @@ use Parser;
 use Title;
 use ParserOptions;
 use ParserOutput;
-use RuntimeException;
 use SMW\ParserData;
+use SMW\Localizer;
+use RuntimeException;
 
 /**
  * @private
@@ -46,6 +47,11 @@ class RecursiveTextProcessor {
 	private $recursiveAnnotation = false;
 
 	/**
+	 * @var integer
+	 */
+	private $uniqid;
+
+	/**
 	 * @var string
 	 */
 	private $error = [];
@@ -82,6 +88,22 @@ class RecursiveTextProcessor {
 	}
 
 	/**
+	 * Track recursive processing
+	 *
+	 * @since 3.0
+	 *
+	 * @param string|integer|null $uniqid
+	 */
+	public function uniqid( $uniqid = null ) {
+
+		if ( $uniqid === null ) {
+			$uniqid = uniqid();
+		}
+
+		$this->uniqid = $uniqid;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param integer $maxRecursionDepth
@@ -96,9 +118,53 @@ class RecursiveTextProcessor {
 	 * @param boolean $transcludeAnnotation
 	 */
 	public function transcludeAnnotation( $transcludeAnnotation ) {
-		if ( $this->parser->getOutput() !== null ) {
-			$this->parser->getOutput()->setExtensionData( ParserData::ANNOTATION_BLOCK, !(bool)$transcludeAnnotation );
+
+		if ( $this->parser->getOutput() === null || $transcludeAnnotation === true ) {
+			return;
 		}
+
+		if ( $this->uniqid === null ) {
+			throw new RuntimeException( "Expected a uniqid and not null." );
+		}
+
+		$parserOutput = $this->parser->getOutput();
+		$track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK );
+
+		if ( $track === null ) {
+			$track = [];
+		}
+
+		// Track each embedded #ask process to ensure to remove
+		// blocks on the correct recursive iteration (e.g Page A containing
+		// #ask is transcluded in Page B using a #ask -> is embedded ...
+		// etc.)
+		$track[$this->uniqid] = true;
+
+		$parserOutput->setExtensionData( ParserData::ANNOTATION_BLOCK, $track );
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function releaseAnnotationBlock() {
+
+		if ( $this->parser->getOutput() === null ) {
+			return;
+		}
+
+		$parserOutput = $this->parser->getOutput();
+		$track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK );
+
+		if ( $track !== [] ) {
+			unset( $track[$this->uniqid] );
+		}
+
+		// No recursive tracks left, set it to false
+		if ( $track === [] ) {
+			$track = false;
+		}
+
+		$parserOutput->setExtensionData( ParserData::ANNOTATION_BLOCK, $track );
 	}
 
 	/**
@@ -156,6 +222,12 @@ class RecursiveTextProcessor {
 			$text = '';
 		}
 
+		// During a block request remove any categories from the text since we
+		// cannot block the annotation during a parse, this ensures that
+		// categories don't appear in the source text and hereby in any successive
+		// parse
+		$this->pruneCategory( $text );
+
 		$this->recursionDepth--;
 
 		return $text;
@@ -203,6 +275,32 @@ class RecursiveTextProcessor {
 		$this->recursionDepth--;
 
 		return $text;
+	}
+
+	private function pruneCategory( &$text ) {
+
+		if ( $this->parser->getOutput() === null ) {
+			return;
+		}
+
+		$parserOutput = $this->parser->getOutput();
+
+		if ( ( $track = $parserOutput->getExtensionData( ParserData::ANNOTATION_BLOCK ) ) === false ) {
+			return;
+		}
+
+		// Content language dep. category name
+		$category = Localizer::getInstance()->getNamespaceTextById(
+			NS_CATEGORY
+		);
+
+		if ( isset( $track[$this->uniqid] ) ) {
+			$text = preg_replace(
+				"/\[\[(Category|{$category}):(.*)\]\]/U",
+				'',
+				$text
+			);
+		}
 	}
 
 }
