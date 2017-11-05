@@ -6,6 +6,7 @@ use SMW\Iterators\ResultIterator;
 use SMW\Iterators\MappingIterator;
 use SMW\Iterators\ChunkedIterator;
 use SMW\Iterators\AppendIterator;
+use SMW\Iterators\CsvFileIterator;
 
 /**
  * @license GNU GPL v2+
@@ -57,6 +58,20 @@ class IteratorFactory {
 	 */
 	public function newAppendIterator() {
 		return new AppendIterator();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $file
+	 * @param boolean $parseHeader
+	 * @param string  $delimiter
+	 * @param integer $length
+	 *
+	 * @return CsvFileIterator
+	 */
+	public function newCsvFileIterator( $file, $parseHeader = false, $delimiter = "\t", $length = 8000 ) {
+		return new CsvFileIterator( $file, $parseHeader, $delimiter, $length );
 	}
 
 }

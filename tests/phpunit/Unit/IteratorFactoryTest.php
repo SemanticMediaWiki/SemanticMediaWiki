@@ -68,4 +68,16 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructCsvFileIterator() {
+
+		$instance = new IteratorFactory();
+
+		$this->setExpectedException( 'SMW\Exception\FileNotFoundException' );
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\CsvFileIterator',
+			$instance->newCsvFileIterator( 'Foo' )
+		);
+	}
+
 }
