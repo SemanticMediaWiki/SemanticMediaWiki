@@ -373,7 +373,7 @@ class ParserFunctionFactory {
 			);
 
 			if ( !$settings->get( 'smwgQEnabled' ) ) {
-				return $settings->get( 'smwgInlineErrors' ) ? $askParserFunction->isQueryDisabled(): '';
+				return $settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR ) ? $askParserFunction->isQueryDisabled(): '';
 			}
 
 			return $askParserFunction->parse( func_get_args() );
@@ -399,7 +399,7 @@ class ParserFunctionFactory {
 			);
 
 			if ( !$settings->get( 'smwgQEnabled' ) ) {
-				return $settings->get( 'smwgInlineErrors' ) ? $showParserFunction->isQueryDisabled(): '';
+				return $settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR ) ? $showParserFunction->isQueryDisabled(): '';
 			}
 
 			return $showParserFunction->parse( func_get_args() );

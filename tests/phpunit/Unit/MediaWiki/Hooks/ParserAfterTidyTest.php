@@ -189,7 +189,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnableUpdateJobs'      => false,
 			'smwgUseCategoryHierarchy'  => false,
 			'smwgCategoriesAsInstances' => true,
-			'smwgShowHiddenCategories'  => true
+			'smwgParserFeatures'        => SMW_PARSER_HID_CATS
 		);
 
 		$this->testEnvironment->withConfiguration( $settings );

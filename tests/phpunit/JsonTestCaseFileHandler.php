@@ -240,7 +240,8 @@ class JsonTestCaseFileHandler {
 			'smwgDVFeatures',
 			'smwgFulltextSearchIndexableDataTypes',
 			'smwgFieldTypeFeatures',
-			'smwgQueryProfiler'
+			'smwgQueryProfiler',
+			'smwgParserFeatures'
 		);
 
 		foreach ( $constantFeaturesList as $constantFeatures ) {

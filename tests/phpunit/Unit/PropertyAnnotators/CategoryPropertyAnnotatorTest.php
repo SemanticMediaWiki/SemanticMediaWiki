@@ -77,7 +77,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->showHiddenCategories(
-			$parameters['settings']['smwgShowHiddenCategories']
+			$parameters['settings']['showHiddenCategories']
 		);
 
 		$instance->useCategoryInstance(
@@ -119,7 +119,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->showHiddenCategories(
-			$parameters['settings']['smwgShowHiddenCategories']
+			$parameters['settings']['showHiddenCategories']
 		);
 
 		$instance->useCategoryInstance(
@@ -150,7 +150,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testAddCategoriesWithHiddenCategories( array $parameters, array $expected ) {
 
-		$expectedPageLookup = $parameters['settings']['smwgShowHiddenCategories'] ? $this->never() : $this->atLeastOnce();
+		$expectedPageLookup = $parameters['settings']['showHiddenCategories'] ? $this->never() : $this->atLeastOnce();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -183,7 +183,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->showHiddenCategories(
-			$parameters['settings']['smwgShowHiddenCategories']
+			$parameters['settings']['showHiddenCategories']
 		);
 
 		$instance->useCategoryInstance(
@@ -257,7 +257,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => false,
 					'smwgCategoriesAsInstances' => true,
-					'smwgShowHiddenCategories'  => true
+					'showHiddenCategories'  => true
 				)
 			),
 			array(
@@ -275,7 +275,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => true,
 					'smwgCategoriesAsInstances' => false,
-					'smwgShowHiddenCategories'  => true
+					'showHiddenCategories'  => true
 				)
 			),
 			array(
@@ -314,7 +314,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => false,
 					'smwgCategoriesAsInstances' => true,
-					'smwgShowHiddenCategories'  => true
+					'showHiddenCategories'  => true
 				)
 			),
 			array(
@@ -333,7 +333,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => false,
 					'smwgCategoriesAsInstances' => true,
-					'smwgShowHiddenCategories'  => false
+					'showHiddenCategories'  => false
 				)
 			),
 			array(
@@ -352,7 +352,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => true,
 					'smwgCategoriesAsInstances' => false,
-					'smwgShowHiddenCategories'  => true
+					'showHiddenCategories'  => true
 				)
 			),
 			array(
@@ -371,7 +371,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => true,
 					'smwgCategoriesAsInstances' => false,
-					'smwgShowHiddenCategories'  => false
+					'showHiddenCategories'  => false
 				)
 			),
 			array(

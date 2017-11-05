@@ -21,9 +21,6 @@ use Title;
  * This class is contains all functions necessary for parsing wiki text before
  * it is displayed or previewed while identifying SMW related annotations.
  *
- * @note Settings involve smwgNamespacesWithSemanticLinks, smwgLinksInValues,
- * smwgInlineErrors
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
@@ -76,11 +73,6 @@ class InTextAnnotationParser {
 	private $stripMarkerDecoder;
 
 	/**
-	 * @var Settings
-	 */
-	protected $settings = null;
-
-	/**
 	 * @var boolean
 	 */
 	protected $isEnabledNamespace;
@@ -96,6 +88,11 @@ class InTextAnnotationParser {
 	 * @var boolean|integer
 	 */
 	private $enabledLinksInValues = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $showErrors = true;
 
 	/**
 	 * @since 1.9
@@ -124,6 +121,15 @@ class InTextAnnotationParser {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $showErrors
+	 */
+	public function showErrors( $showErrors ) {
+		$this->showErrors = (bool)$showErrors;
+	}
+
+	/**
 	 * Parsing text before an article is displayed or previewed, strip out
 	 * semantic properties and add them to the ParserOutput object
 	 *
@@ -134,7 +140,6 @@ class InTextAnnotationParser {
 	public function parse( &$text ) {
 
 		$title = $this->parserData->getTitle();
-		$this->settings = $this->applicationFactory->getSettings();
 		Timer::start( __CLASS__ );
 
 		// Identifies the current parser run (especially when called recursively)
@@ -389,7 +394,7 @@ class InTextAnnotationParser {
 		}
 
 		// If necessary add an error text
-		if ( ( $this->settings->get( 'smwgInlineErrors' ) &&
+		if ( ( $this->showErrors &&
 			$this->isEnabledNamespace && $this->isAnnotation ) &&
 			( !$dataValue->isValid() ) ) {
 			// Encode `:` to avoid a comment block and instead of the nowiki tag

@@ -205,8 +205,6 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgQSubpropertyDepth',
 			'smwgQSubcategoryDepth',
 			'smwgQConceptCaching',
-			'smwgEnabledInTextAnnotationParserStrictMode',
-			'smwgDecodeTextAnnotationWithStripMarker',
 			'smwgMaxNonExpNumber',
 			'smwgDVFeatures',
 			'smwgEnabledQueryDependencyLinksStore',
@@ -226,6 +224,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgQExpensiveExecutionLimit',
 			'smwgFieldTypeFeatures',
 			'smwgCreateProtectionRight',
+			'smwgParserFeatures',
 
 			// MW related
 			'wgLanguageCode',

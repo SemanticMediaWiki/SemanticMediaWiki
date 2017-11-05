@@ -9,6 +9,7 @@ use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\Settings;
 use Title;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Factbox\Factbox
@@ -21,23 +22,22 @@ use Title;
  */
 class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -49,15 +49,13 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 		$title  = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
-		$settings = Settings::newFromArray( array(
-			'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
-			'smwgEnabledInTextAnnotationParserStrictMode' => true,
-			'smwgLinksInValues' => false,
-			'smwgInlineErrors'  => true,
-			)
+		$this->testEnvironment->withConfiguration(
+			[
+				'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
+				'smwgParserFeatures' => SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR,
+				'smwgLinksInValues' => false,
+			]
 		);
-
-		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 		$parserData = new ParserData( $title, $parserOutput );
 
@@ -78,13 +76,11 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( __METHOD__ );
 
-		$settings = Settings::newFromArray( array(
+		$this->testEnvironment->withConfiguration( array(
 			'smwgShowFactboxEdit' => SMW_FACTBOX_HIDDEN,
 			'smwgShowFactbox'     => SMW_FACTBOX_HIDDEN
 			)
 		);
-
-		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()

@@ -218,7 +218,7 @@ class MwCollaboratorFactory {
 		);
 
 		$stripMarkerDecoder->isSupported(
-			$this->applicationFactory->getSettings()->get( 'smwgDecodeTextAnnotationWithStripMarker' )
+			$this->applicationFactory->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_UNSTRIP )
 		);
 
 		return $stripMarkerDecoder;
