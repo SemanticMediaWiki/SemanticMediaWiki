@@ -3,6 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\CompatibilityMode;
+use SMW\Options;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
 use Onoi\MessageReporter\MessageReporterFactory;
@@ -22,6 +23,21 @@ class Installer implements MessageReporter, MessageReporterAware {
 	 * MessageReport option
 	 */
 	const OPT_MESSAGEREPORTER = 'installer.messagereporter';
+
+	/**
+	 * Optimize option
+	 */
+	const OPT_TABLE_OPTIMZE = 'installer.table.optimize';
+
+	/**
+	 * Import option
+	 */
+	const OPT_IMPORT = 'installer.import';
+
+	/**
+	 * Related to ExtensionSchemaUpdates
+	 */
+	const OPT_SCHEMA_UPDATE = 'installer.schema.update';
 
 	/**
 	 * @var TableSchemaManager
@@ -44,9 +60,9 @@ class Installer implements MessageReporter, MessageReporterAware {
 	private $messageReporter;
 
 	/**
-	 * @var boolean
+	 * @var Options
 	 */
-	private $isFromExtensionSchemaUpdate = false;
+	private $options;
 
 	/**
 	 * @since 2.5
@@ -59,15 +75,21 @@ class Installer implements MessageReporter, MessageReporterAware {
 		$this->tableSchemaManager = $tableSchemaManager;
 		$this->tableBuilder = $tableBuilder;
 		$this->tableIntegrityExaminer = $tableIntegrityExaminer;
+		$this->options = new Options();
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.0
 	 *
-	 * @param boolean $isFromExtensionSchemaUpdate
+	 * @param Options|array $options
 	 */
-	public function isFromExtensionSchemaUpdate( $isFromExtensionSchemaUpdate ) {
-		$this->isFromExtensionSchemaUpdate = (bool)$isFromExtensionSchemaUpdate;
+	public function setOptions( $options ) {
+
+		if ( !$options instanceof Options ) {
+			$options = new Options( $options );
+		}
+
+		$this->options = $options;
 	}
 
 	/**
@@ -115,17 +137,14 @@ class Installer implements MessageReporter, MessageReporterAware {
 		$this->tableIntegrityExaminer->checkOnPostCreation( $this->tableBuilder );
 
 		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
-		$messageReporter->reportMessage( "\nRunning table optimization.\n" );
 
-		foreach ( $this->tableSchemaManager->getTables() as $table ) {
-			$this->tableBuilder->optimize( $table );
+		$this->tableOptimization( $messageReporter );
+
+		Hooks::run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', array( $this->tableBuilder, $messageReporter, $this->options ) );
+
+		if ( $this->options->has( self::OPT_SCHEMA_UPDATE ) ) {
+			$messageReporter->reportMessage( "\n" );
 		}
-
-		$messageReporter->reportMessage( "\nOptimization completed.\n" );
-
-		Hooks::run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', array( $this->tableBuilder, $messageReporter ) );
-
-		$messageReporter->reportMessage( $this->isFromExtensionSchemaUpdate ? "\n" : '' );
 
 		return true;
 	}
@@ -152,7 +171,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 		$this->tableIntegrityExaminer->checkOnPostDestruction( $this->tableBuilder );
 
-		Hooks::run( 'SMW::SQLStore::Installer::AfterDropTablesComplete', array( $this->tableBuilder, $messageReporter ) );
+		Hooks::run( 'SMW::SQLStore::Installer::AfterDropTablesComplete', array( $this->tableBuilder, $messageReporter, $this->options ) );
 
 		$messageReporter->reportMessage( "\nStandard and auxiliary tables with all corresponding data\n" );
 		$messageReporter->reportMessage( "have been removed successfully.\n" );
@@ -175,6 +194,14 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 	private function newMessageReporter( $verbose = true ) {
 
+		if ( $this->messageReporter !== null ) {
+			return $this->messageReporter;
+		}
+
+		if ( ( $messageReporter = $this->options->safeGet( self::OPT_MESSAGEREPORTER, null ) ) !== null ) {
+			return $messageReporter;
+		}
+
 		if ( !$verbose ) {
 			$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 		} else {
@@ -182,7 +209,23 @@ class Installer implements MessageReporter, MessageReporterAware {
 			$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 		}
 
-		return $this->messageReporter !== null ? $this->messageReporter : $messageReporter;
+		return $messageReporter;
+	}
+
+	private function tableOptimization( $messageReporter ) {
+
+		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMZE, false ) ) {
+			return $messageReporter->reportMessage( "\nSkipping the table optimization.\n" );
+		}
+
+		$messageReporter->reportMessage( "\nRunning table optimization (this may take a moment and\n" );
+		$messageReporter->reportMessage( "depends on the size and status of a table)\n\n" );
+
+		foreach ( $this->tableSchemaManager->getTables() as $table ) {
+			$this->tableBuilder->optimize( $table );
+		}
+
+		$messageReporter->reportMessage( "\nOptimization completed.\n" );
 	}
 
 }

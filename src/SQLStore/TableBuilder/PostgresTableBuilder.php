@@ -377,7 +377,7 @@ EOT;
 	 */
 	protected function doOptimize( $tableName ) {
 
-		$this->reportMessage( "   Table $tableName ...\n" );
+		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		// https://www.postgresql.org/docs/9.0/static/sql-analyze.html
 		$this->reportMessage( "   ... analyze " );

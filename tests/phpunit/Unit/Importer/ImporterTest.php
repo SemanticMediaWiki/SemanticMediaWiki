@@ -20,6 +20,7 @@ use SMW\Tests\TestEnvironment;
  */
 class ImporterTest extends \PHPUnit_Framework_TestCase {
 
+	private $spyMessageReporter;
 	private $testEnvironment;
 	private $contentIterator;
 	private $jsonImportContentsFileDirReader;
@@ -53,6 +54,26 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\Importer\Importer',
 			new Importer( $this->contentIterator, $this->contentCreator )
+		);
+	}
+
+	public function testDisabled() {
+
+		$spyMessageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
+
+		$instance = new Importer(
+			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
+			$this->contentCreator
+		);
+
+		$instance->setMessageReporter( $spyMessageReporter );
+		$instance->isEnabled( false );
+
+		$instance->doImport();
+
+		$this->assertContains(
+			'Skipping the import process',
+			$spyMessageReporter->getMessagesAsString()
 		);
 	}
 

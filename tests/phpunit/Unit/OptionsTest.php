@@ -69,6 +69,20 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFilter() {
+
+		$instance = new Options();
+		$instance->set( 'Foo', '123' );
+		$instance->set( 'Bar', '456' );
+
+		$this->assertEquals(
+			[
+				'Foo' => '123'
+			],
+			$instance->filter( [ 'Foo' ] )
+		);
+	}
+
 	/**
 	 * @dataProvider isFlagSetProvider
 	 */

@@ -364,7 +364,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 */
 	protected function doOptimize( $tableName ) {
 
-		$this->reportMessage( "   Table $tableName ...\n" );
+		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		// https://dev.mysql.com/doc/refman/5.7/en/analyze-table.html
 		// Performs a key distribution analysis and stores the distribution for
