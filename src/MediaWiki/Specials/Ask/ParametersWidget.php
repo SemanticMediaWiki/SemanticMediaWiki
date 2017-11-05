@@ -264,7 +264,8 @@ class ParametersWidget {
 		return Html::rawElement(
 			'td',
 			[
-				'overflow' => 'hidden'
+				'overflow' => 'hidden',
+				'style' => 'width:33%;'
 			],
 			$input->getHtml() . $description
 		);
