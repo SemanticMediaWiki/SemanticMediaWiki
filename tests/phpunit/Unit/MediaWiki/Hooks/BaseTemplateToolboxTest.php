@@ -70,7 +70,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 		#0 Standard title
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-			'smwgToolboxBrowseLink'           => true
+			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK
 		);
 
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
@@ -104,7 +104,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 			array( 'count'        => 0 ),
 		);
 
-		#2 smwgToolboxBrowseLink = false
+		#2 smwgBrowseFeatures = false
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -117,7 +117,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-			'smwgToolboxBrowseLink'           => false
+			'smwgBrowseFeatures'           => SMW_BROWSE_NONE
 		);
 
 		$provider[] = array(
@@ -138,7 +138,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => false ),
-			'smwgToolboxBrowseLink'           => true
+			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK
 		);
 
 		$provider[] = array(
@@ -149,7 +149,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 		#4 Special page
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-			'smwgToolboxBrowseLink'           => true
+			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK
 		);
 
 		$title = MockTitle::buildMock( __METHOD__ );

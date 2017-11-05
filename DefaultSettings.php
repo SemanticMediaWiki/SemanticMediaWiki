@@ -281,14 +281,6 @@ return array(
 	##
 
 	###
-	# Should the toolbox of each content page show a link to browse the properties
-	# of that page using Special:Browse? This is a useful way to access properties
-	# and it is somewhat more subtle than showing a Factbox on every page.
-	##
-	'smwgToolboxBrowseLink' => true,
-	##
-
-	###
 	# Should warnings be displayed in wikitexts right after the problematic input?
 	# This affects only semantic annotations, not warnings that are displayed by
 	# inline queries or other features.
@@ -371,25 +363,28 @@ return array(
 	##
 
 	###
-	# Should the browse view for incoming links show the incoming links via its
-	# inverses, or shall they be displayed on the other side?
-	##
-	'smwgBrowseShowInverse' => false,
-	##
-
-	###
-	# Should the browse view always show the incoming links as well, and more of
-	# the incoming values?
-	##
-	'smwgBrowseShowAll' => true,
-	##
-
-	###
-	# Whether the browse display is to be generated using an API request or not.
+	# Special:Browse related settings
 	#
-	# @since 2.5
+	# - SMW_BROWSE_NONE
+	#
+	# - SMW_BROWSE_TLINK: Should the toolbox of each content page show a link
+	#   to browse the properties of that page using Special:Browse? This is a
+	#   useful way to access properties and it is somewhat more subtle than
+	#   showing a Factbox on every page. (was $smwgToolboxBrowseLink)
+	#
+	# - SMW_BROWSE_SHOW_INVERSE: Should the browse view for incoming links show
+	#   the incoming links via its inverses, or shall they be displayed on the
+	#   other side? (was $smwgBrowseShowInverse)
+	#
+	# - SMW_BROWSE_SHOW_INCOMING: Should the browse view always show the incoming links
+	#   as well, and more of the incoming values? (was $smwgBrowseShowAll)
+	#
+	# - SMW_BROWSE_USE_API: Whether the browse display is to be generated using
+	#   an API request or not. (was $smwgBrowseByApi)
+	#
+	# @since 3.0
 	##
-	'smwgBrowseByApi' => true,
+	'smwgBrowseFeatures' => SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_USE_API,
 	##
 
 	###

@@ -229,3 +229,13 @@ define( 'SMW_QPRFL_NONE', 0 );
 define( 'SMW_QPRFL_PARAMS', 2 ); // Support for Query parameters
 define( 'SMW_QPRFL_DUR', 4 ); // Support for Query duration
 /**@}*/
+
+/**@{
+  * Constants for $smwgBrowseFeatures
+  */
+define( 'SMW_BROWSE_NONE', 0 );
+define( 'SMW_BROWSE_TLINK', 2 ); // Support for the toolbox link
+define( 'SMW_BROWSE_SHOW_INVERSE', 4 ); // Support inverse direction
+define( 'SMW_BROWSE_SHOW_INCOMING', 8 ); // Support for incoming links
+define( 'SMW_BROWSE_USE_API', 16 ); // Support for using the API as request backend
+/**@}*/

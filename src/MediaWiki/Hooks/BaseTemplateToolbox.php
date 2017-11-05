@@ -60,7 +60,7 @@ class BaseTemplateToolbox {
 
 	protected function canPerformUpdate( Title $title ) {
 		return !$title->isSpecialPage() &&
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgToolboxBrowseLink' ) &&
+			ApplicationFactory::getInstance()->getSettings()->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_TLINK ) &&
 			$this->isEnabledNamespace( $title ) &&
 			$this->skinTemplate->data['isarticle'];
 	}
