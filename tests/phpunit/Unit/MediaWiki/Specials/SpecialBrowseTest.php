@@ -24,9 +24,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( array(
-			'smwgBrowseShowInverse' => false,
-			'smwgBrowseShowAll'     => true,
-			'smwgBrowseByApi'       => true
+			'smwgBrowseFeatures' => SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_USE_API
 		) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )

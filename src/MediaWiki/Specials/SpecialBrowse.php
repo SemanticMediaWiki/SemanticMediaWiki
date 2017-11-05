@@ -221,17 +221,17 @@ class SpecialBrowse extends SpecialPage {
 
 		$contentsBuilder->setOption(
 			'showInverse',
-			$settings->get( 'smwgBrowseShowInverse' )
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INVERSE )
 		);
 
 		$contentsBuilder->setOption(
 			'showAll',
-			$settings->get( 'smwgBrowseShowAll' )
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INCOMING )
 		);
 
 		$contentsBuilder->setOption(
 			'byApi',
-			$settings->get( 'smwgBrowseByApi' )
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_USE_API )
 		);
 
 		return $contentsBuilder;

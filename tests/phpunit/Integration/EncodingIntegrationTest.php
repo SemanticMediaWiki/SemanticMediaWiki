@@ -66,7 +66,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-			'smwgToolboxBrowseLink'           => true
+			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK
 		);
 
 		$message = $this->getMockBuilder( '\Message' )

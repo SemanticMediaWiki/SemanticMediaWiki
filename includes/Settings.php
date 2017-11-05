@@ -67,7 +67,6 @@ class Settings extends Options {
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
-			'smwgToolboxBrowseLink' => $GLOBALS['smwgToolboxBrowseLink'],
 			'smwgInlineErrors' => $GLOBALS['smwgInlineErrors'],
 			'smwgUseCategoryHierarchy' => $GLOBALS['smwgUseCategoryHierarchy'],
 			'smwgCategoriesAsInstances' => $GLOBALS['smwgCategoriesAsInstances'],
@@ -75,9 +74,6 @@ class Settings extends Options {
 			'smwgLinksInValues' => $GLOBALS['smwgLinksInValues'],
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],
-			'smwgBrowseShowInverse' => $GLOBALS['smwgBrowseShowInverse'],
-			'smwgBrowseShowAll' => $GLOBALS['smwgBrowseShowAll'],
-			'smwgBrowseByApi' => $GLOBALS['smwgBrowseByApi'],
 			'smwgSearchByPropertyFuzzy' => $GLOBALS['smwgSearchByPropertyFuzzy'],
 			'smwgTypePagingLimit' => $GLOBALS['smwgTypePagingLimit'],
 			'smwgConceptPagingLimit' => $GLOBALS['smwgConceptPagingLimit'],
@@ -182,6 +178,7 @@ class Settings extends Options {
 			'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'],
 			'smwgChangePropagationProtection' => $GLOBALS['smwgChangePropagationProtection'],
 			'smwgUseComparableContentHash' => $GLOBALS['smwgUseComparableContentHash'],
+			'smwgBrowseFeatures' => $GLOBALS['smwgBrowseFeatures'],
 		);
 
 		self::initLegacyMapping( $configuration );
@@ -387,6 +384,22 @@ class Settings extends Options {
 			$configuration['smwgChangePropagationWatchlist'] = $GLOBALS['smwgDeclarationProperties'];
 		}
 
+		if ( isset( $GLOBALS['smwgToolboxBrowseLink'] ) && $GLOBALS['smwgToolboxBrowseLink'] === false ) {
+			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] & ~SMW_BROWSE_TLINK;
+		}
+
+		if ( isset( $GLOBALS['smwgBrowseShowInverse'] ) && $GLOBALS['smwgBrowseShowInverse'] === true ) {
+			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] | SMW_BROWSE_SHOW_INVERSE;
+		}
+
+		if ( isset( $GLOBALS['smwgBrowseShowAll'] ) && $GLOBALS['smwgBrowseShowAll'] === false ) {
+			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] & ~SMW_BROWSE_SHOW_INCOMING;
+		}
+
+		if ( isset( $GLOBALS['smwgBrowseByApi'] ) && $GLOBALS['smwgBrowseByApi'] === false ) {
+			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] & ~SMW_BROWSE_USE_API;
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
@@ -399,6 +412,10 @@ class Settings extends Options {
 				'smwgSparqlDatabaseConnector' => '3.1.0',
 				'smwgSparqlDatabase' => '3.1.0',
 				'smwgDeclarationProperties' => '3.1.0',
+				'smwgToolboxBrowseLink' => '3.1.0',
+				'smwgBrowseShowInverse' => '3.1.0',
+				'smwgBrowseShowAll' => '3.1.0',
+				'smwgBrowseByApi' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -425,6 +442,10 @@ class Settings extends Options {
 				'smwgSparqlDatabaseConnector' => 'smwgSparqlRepositoryConnector',
 				'smwgSparqlDatabase' => 'smwgSparqlCustomConnector',
 				'smwgDeclarationProperties' => 'smwgChangePropagationWatchlist',
+				'smwgToolboxBrowseLink' => 'smwgBrowseFeatures',
+				'smwgBrowseShowInverse' => 'smwgBrowseFeatures',
+				'smwgBrowseShowAll' => 'smwgBrowseFeatures',
+				'smwgBrowseByApi' => 'smwgBrowseFeatures',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',
