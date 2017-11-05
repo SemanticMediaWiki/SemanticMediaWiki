@@ -147,12 +147,11 @@
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
-					"propertyCount": 4,
+					"propertyCount": 3,
 					"propertyKeys": [
 						"_SKEY",
 						"_MDAT",
-						"_ASK",
-						"_INST"
+						"_ASK"
 					],
 					"propertyValues": []
 				}

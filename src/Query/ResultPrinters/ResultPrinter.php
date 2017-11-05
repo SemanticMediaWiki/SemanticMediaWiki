@@ -335,6 +335,8 @@ abstract class ResultPrinter implements IResultPrinter {
 			$this->recursiveTextProcessor = new RecursiveTextProcessor();
 		}
 
+		$this->recursiveTextProcessor->uniqid();
+
 		$this->recursiveTextProcessor->setMaxRecursionDepth(
 			self::$maxRecursionDepth
 		);
@@ -376,11 +378,11 @@ abstract class ResultPrinter implements IResultPrinter {
 			$result = $this->recursiveTextProcessor->recursiveTagParse( $result );
 		}
 
-		$this->recursiveTextProcessor->releaseAnyAnnotationBlock();
-
 		if ( $this->mShowErrors && $this->recursiveTextProcessor->getError() !== [] ) {
 			$result .= Message::get( $this->recursiveTextProcessor->getError(), Message::TEXT, Message::USER_LANGUAGE );
 		}
+
+		$this->recursiveTextProcessor->releaseAnnotationBlock();
 
 		return $result;
 	}
