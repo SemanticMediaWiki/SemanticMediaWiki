@@ -1,5 +1,5 @@
 {
-	"description": "Test paser/in-text annotation with unstripped tags (nowiki etc.) (`smwgDecodeTextAnnotationWithStripMarker`)",
+	"description": "Test paser/in-text annotation with unstripped tags (nowiki etc.) (`SMW_PARSER_UNSTRIP`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -231,7 +231,10 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgDecodeTextAnnotationWithStripMarker": true
+		"smwgParserFeatures": [
+			"SMW_PARSER_UNSTRIP",
+			"SMW_PARSER_STRICT"
+		]
 	},
 	"meta": {
 		"version": "2",

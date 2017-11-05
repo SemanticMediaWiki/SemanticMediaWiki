@@ -12,9 +12,6 @@ use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
-// Due to aliasing, on 5.+ it causes a:
-// Fatal error: Cannot use SMW\Parser\InTextAnnotationParser as InTextAnnotationParser because the name is already in use ...
-use SMW\Parser\InTextAnnotationParser as EmbeddedTextAnnotationParser;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMWQueryParser as QueryParser;
 use Title;
@@ -318,10 +315,10 @@ class ApplicationFactory {
 		$linksProcessor = $this->containerBuilder->create( 'LinksProcessor' );
 
 		$linksProcessor->isStrictMode(
-			$this->getSettings()->get( 'smwgEnabledInTextAnnotationParserStrictMode' )
+			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_STRICT )
 		);
 
-		$inTextAnnotationParser = new EmbeddedTextAnnotationParser(
+		$inTextAnnotationParser = new InTextAnnotationParser(
 			$parserData,
 			$linksProcessor,
 			$mwCollaboratorFactory->newMagicWordsFinder(),
@@ -333,6 +330,10 @@ class ApplicationFactory {
 
 		$inTextAnnotationParser->enabledLinksInValues(
 			$linksInValues === true ? SMW_LINV_PCRE : $linksInValues
+		);
+
+		$inTextAnnotationParser->showErrors(
+			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
 		);
 
 		return $inTextAnnotationParser;

@@ -67,7 +67,6 @@ class Settings extends Options {
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
-			'smwgInlineErrors' => $GLOBALS['smwgInlineErrors'],
 			'smwgUseCategoryHierarchy' => $GLOBALS['smwgUseCategoryHierarchy'],
 			'smwgCategoriesAsInstances' => $GLOBALS['smwgCategoriesAsInstances'],
 			'smwgUseCategoryRedirect' => $GLOBALS['smwgUseCategoryRedirect'],
@@ -143,7 +142,6 @@ class Settings extends Options {
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
-			'smwgShowHiddenCategories' => $GLOBALS['smwgShowHiddenCategories'],
 			'smwgFactboxUseCache' => $GLOBALS['smwgFactboxUseCache'],
 			'smwgFactboxCacheRefreshOnPurge' => $GLOBALS['smwgFactboxCacheRefreshOnPurge'],
 			'smwgQueryProfiler' => $GLOBALS['smwgQueryProfiler'],
@@ -155,8 +153,7 @@ class Settings extends Options {
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
 			'smwgQueryDependencyPropertyExemptionList' => $GLOBALS['smwgQueryDependencyPropertyExemptionList'],
 			'smwgQueryDependencyAffiliatePropertyDetectionList' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionList'],
-			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
-			'smwgDecodeTextAnnotationWithStripMarker' => $GLOBALS['smwgDecodeTextAnnotationWithStripMarker'],
+			'smwgParserFeatures' => $GLOBALS['smwgParserFeatures'],
 			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
 			'smwgEnabledFulltextSearch' => $GLOBALS['smwgEnabledFulltextSearch'],
 			'smwgFulltextDeferredUpdate' => $GLOBALS['smwgFulltextDeferredUpdate'],
@@ -316,6 +313,18 @@ class Settings extends Options {
 			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
 		}
 
+		if ( isset( $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] ) && $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] === false ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_STRICT;
+		}
+
+		if ( isset( $GLOBALS['smwgInlineErrors'] ) && $GLOBALS['smwgInlineErrors'] === false ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_INL_ERROR;
+		}
+
+		if ( isset( $GLOBALS['smwgShowHiddenCategories'] ) && $GLOBALS['smwgShowHiddenCategories'] === false ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_HID_CATS;
+		}
+
 		if ( isset( $GLOBALS['smwgQueryDependencyPropertyExemptionlist'] ) ) {
 			$configuration['smwgQueryDependencyPropertyExemptionList'] = $GLOBALS['smwgQueryDependencyPropertyExemptionlist'];
 		}
@@ -416,6 +425,9 @@ class Settings extends Options {
 				'smwgBrowseShowInverse' => '3.1.0',
 				'smwgBrowseShowAll' => '3.1.0',
 				'smwgBrowseByApi' => '3.1.0',
+				'smwgEnabledInTextAnnotationParserStrictMode' => '3.1.0',
+				'smwgInlineErrors' => '3.1.0',
+				'smwgShowHiddenCategories' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -446,6 +458,9 @@ class Settings extends Options {
 				'smwgBrowseShowInverse' => 'smwgBrowseFeatures',
 				'smwgBrowseShowAll' => 'smwgBrowseFeatures',
 				'smwgBrowseByApi' => 'smwgBrowseFeatures',
+				'smwgEnabledInTextAnnotationParserStrictMode' => 'smwgParserFeatures',
+				'smwgInlineErrors' => 'smwgParserFeatures',
+				'smwgShowHiddenCategories' => 'smwgParserFeatures',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',

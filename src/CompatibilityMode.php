@@ -63,7 +63,7 @@ class CompatibilityMode {
 			'smwgPageSpecialProperties' => array(),
 			'smwgEnableUpdateJobs' => false,
 			'smwgEnabledEditPageHelp' => false,
-			'smwgInlineErrors' => false,
+			'smwgParserFeatures' => SMW_PARSER_NONE,
 		);
 
 		foreach ( $disabledSettings as $key => $value) {

@@ -9,6 +9,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\Tests\Utils\Mock\MockTitle;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\OutputPageParserOutput
@@ -27,24 +28,21 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		$this->testEnvironment = new TestEnvironment();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$settings = array(
-			'smwgShowFactbox'      => SMW_FACTBOX_NONEMPTY,
-			'smwgFactboxUseCache'  => true,
-			'smwgCacheType'        => 'hash',
-			'smwgLinksInValues'    => false,
-			'smwgInlineErrors'     => true,
+		$this->testEnvironment->withConfiguration(
+			[
+				'smwgShowFactbox'      => SMW_FACTBOX_NONEMPTY,
+				'smwgFactboxUseCache'  => true,
+				'smwgCacheType'        => 'hash',
+				'smwgLinksInValues'    => false
+			]
 		);
-
-		foreach ( $settings as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -73,9 +71,9 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$this->applicationFactory->getSettings()->set(
+		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			$parameters['smwgNamespacesWithSemanticLinks']
 		);

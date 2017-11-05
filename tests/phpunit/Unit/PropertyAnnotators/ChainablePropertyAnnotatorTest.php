@@ -50,7 +50,7 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$categoryPropertyAnnotator->showHiddenCategories(
-			$parameters['settings']['smwgShowHiddenCategories']
+			$parameters['settings']['showHiddenCategories']
 		);
 
 		$categoryPropertyAnnotator->useCategoryInstance(
@@ -100,7 +100,7 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => false,
 					'smwgCategoriesAsInstances' => true,
-					'smwgShowHiddenCategories'  => true,
+					'showHiddenCategories'  => true,
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE )
 				)
 			),

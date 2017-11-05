@@ -32,8 +32,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		$settings = array(
 			'smwgFactboxUseCache' => true,
 			'smwgCacheType'       => 'hash',
-			'smwgLinksInValues'   => false,
-			'smwgInlineErrors'    => true
+			'smwgLinksInValues'   => false
 		);
 
 		$this->testEnvironment = new TestEnvironment( $settings );

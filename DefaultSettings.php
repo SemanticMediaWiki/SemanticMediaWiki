@@ -281,14 +281,6 @@ return array(
 	##
 
 	###
-	# Should warnings be displayed in wikitexts right after the problematic input?
-	# This affects only semantic annotations, not warnings that are displayed by
-	# inline queries or other features.
-	##
-	'smwgInlineErrors' => true,
-	##
-
-	###
 	# Category hierarchy recognition
 	#
 	# Should a subcategory be considered a hierarchy element in the
@@ -994,20 +986,6 @@ return array(
 	##
 
 	###
-	# This option enables to omit categories (marked with __HIDDENCAT__) from
-	# the annotation process.
-	#
-	# If a category is updated of either being hidden or visible, pages need to
-	# be refreshed to ensure that the StoreUpdater can make use of the changed
-	# environment.
-	#
-	# @since 1.9
-	# @default true (true = legacy behaviour, false = not to show hidden categories)
-	##
-	'smwgShowHiddenCategories' => true,
-	##
-
-	###
 	# QueryProfiler related settings
 	#
 	# @note If these settings are changed, please ensure to run update.php/rebuildData.php
@@ -1216,34 +1194,34 @@ return array(
 	'smwgExportResourcesAsIri' => true,
 	##
 
-	##
-	# The strict mode is to help to remove ambiguity during the annotation [[ ... :: ... ]]
-	# parsing process.
-	#
-	# The default interpretation (strict) is to find a single triple such as
-	# [[property::value:partOfTheValue::alsoPartOfTheValue]] where in case the strict
-	# mode is disabled multiple properties can be assigned using a
-	# [[property1::property2::value]] notation but may cause value strings to be
-	# interpret unanticipated in case of additional colons.
-	#
-	# @since 2.3
-	# @default true
-	##
-	'smwgEnabledInTextAnnotationParserStrictMode' => true,
-	##
-
 	###
-	# InText unstrip support
+	# Features related to text and annotion parsing
 	#
-	# Support decoding (unstripping) of hidden text elements (e.g. `<nowiki>` as in
-	# `[[Has description::<nowiki>{{#ask: HasStripMarkers }}</nowiki>]]` etc.)
-	# within an annotation value (can only be stored together with a `_txt` type
-	# property).
+	# - SMW_PARSER_NONE
+	#
+	# - SMW_PARSER_STRICT: The default interpretation (strict) is to find a single
+	#   triple such as [[property::value:partOfTheValue::alsoPartOfTheValue]] where
+	#   in case the strict mode is disabled multiple properties can be assigned
+	#   using a [[property1::property2::value]] notation but may cause value
+	#   strings to be interpret unanticipated in case of additional colons.
+	#
+	# - SMW_PARSER_UNSTRIP: Support decoding (unstripping) of hidden text elements
+	#   (e.g. `<nowiki>` as in `[[Has description::<nowiki>{{#ask: HasStripMarkers
+	#   }}</nowiki>]]` etc.) within an annotation value (can only be stored together
+	#   with a `_txt` type property).
+	#
+	# - SMW_PARSER_INL_ERROR: Should warnings be displayed in wikitexts right after
+	#   the problematic input? This affects only semantic annotations, not warnings
+	#   that are displayed by inline queries or other features. (was $smwgInlineErrors)
+	#
+	# - SMW_PARSER_HID_CATS: Switch to omit hidden categories (marked with
+	#   __HIDDENCAT__) from the annotation process. Changing the setting requires
+	#   to run a full rebuild to ensure hidden categories are discarded during
+	#   the parsing process. (was $smwgShowHiddenCategories 1.9)
 	#
 	# @since 3.0
-	# @default false
 	##
-	'smwgDecodeTextAnnotationWithStripMarker' => false,
+	'smwgParserFeatures' => SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR | SMW_PARSER_HID_CATS,
 	##
 
 	##

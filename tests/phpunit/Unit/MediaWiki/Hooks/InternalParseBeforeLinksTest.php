@@ -350,9 +350,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgEnabledInTextAnnotationParserStrictMode' => true,
+					'smwgParserFeatures' => SMW_PARSER_STRICT,
 					'smwgLinksInValues' => false,
-					'smwgInlineErrors'  => true,
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
 					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
@@ -374,9 +373,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgEnabledInTextAnnotationParserStrictMode' => true,
+					'smwgParserFeatures' => SMW_PARSER_STRICT,
 					'smwgLinksInValues' => false,
-					'smwgInlineErrors'  => true,
 				),
 				'text'  => '#REDIRECT [[Foo]]',
 				),
@@ -396,9 +394,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgEnabledInTextAnnotationParserStrictMode' => true,
+					'smwgParserFeatures' => SMW_PARSER_STRICT,
 					'smwgLinksInValues' => false,
-					'smwgInlineErrors'  => true,
 					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
@@ -421,9 +418,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgEnabledInTextAnnotationParserStrictMode' => true,
+					'smwgParserFeatures' => SMW_PARSER_STRICT,
 					'smwgLinksInValues' => false,
-					'smwgInlineErrors'  => true,
 					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
@@ -446,9 +442,8 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgEnabledInTextAnnotationParserStrictMode' => true,
+					'smwgParserFeatures' => SMW_PARSER_STRICT,
 					'smwgLinksInValues' => false,
-					'smwgInlineErrors'  => true,
 					'smwgEnabledSpecialPage' => []
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .

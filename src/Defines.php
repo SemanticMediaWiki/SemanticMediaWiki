@@ -239,3 +239,13 @@ define( 'SMW_BROWSE_SHOW_INVERSE', 4 ); // Support inverse direction
 define( 'SMW_BROWSE_SHOW_INCOMING', 8 ); // Support for incoming links
 define( 'SMW_BROWSE_USE_API', 16 ); // Support for using the API as request backend
 /**@}*/
+
+/**@{
+  * Constants for $smwgParserFeatures
+  */
+define( 'SMW_PARSER_NONE', 0 );
+define( 'SMW_PARSER_STRICT', 2 ); // Support for strict mode
+define( 'SMW_PARSER_UNSTRIP', 4 ); // Support for using the StripMarkerDecoder
+define( 'SMW_PARSER_INL_ERROR', 8 ); // Support for display of inline errors
+define( 'SMW_PARSER_HID_CATS', 16 ); // Support for parsing hidden categories
+/**@}*/

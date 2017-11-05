@@ -149,7 +149,7 @@ class PropertyAnnotatorFactory {
 		);
 
 		$categoryPropertyAnnotator->showHiddenCategories(
-			$settings->get( 'smwgShowHiddenCategories' )
+			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_HID_CATS )
 		);
 
 		$categoryPropertyAnnotator->useCategoryInstance(

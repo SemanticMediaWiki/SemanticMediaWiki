@@ -40,7 +40,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$this->LinksProcessor = new LinksProcessor();
+		$this->linksProcessor = new LinksProcessor();
 	}
 
 	protected function tearDown() {
@@ -65,7 +65,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance =	new InTextAnnotationParser(
 			new ParserData( $title, $parserOutput ),
-			$this->LinksProcessor,
+			$this->linksProcessor,
 			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
@@ -105,7 +105,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			$this->LinksProcessor,
+			$this->linksProcessor,
 			$magicWordsFinder,
 			new RedirectTargetFinder()
 		);
@@ -128,15 +128,19 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$this->LinksProcessor->isStrictMode(
-			isset( $settings['smwgEnabledInTextAnnotationParserStrictMode'] ) ? $settings['smwgEnabledInTextAnnotationParserStrictMode'] : true
+		$this->linksProcessor->isStrictMode(
+			isset( $settings['smwgParserFeatures'] ) ? $settings['smwgParserFeatures'] : true
 		);
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			$this->LinksProcessor,
+			$this->linksProcessor,
 			new MagicWordsFinder(),
 			new RedirectTargetFinder()
+		);
+
+		$instance->showErrors(
+			isset( $settings['smwgParserFeatures'] ) ? $settings['smwgParserFeatures'] : true
 		);
 
 		$instance->enabledLinksInValues(
@@ -174,7 +178,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( $namespace => true ),
 			'smwgLinksInValues' => false,
-			'smwgInlineErrors'  => true,
+			'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 		);
 
 		$this->testEnvironment->withConfiguration(
@@ -190,7 +194,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			$this->LinksProcessor,
+			$this->linksProcessor,
 			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
@@ -218,7 +222,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( $namespace => true ),
 			'smwgLinksInValues' => false,
-			'smwgInlineErrors'  => true,
+			'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 		);
 
 		$this->testEnvironment->withConfiguration(
@@ -234,7 +238,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			$this->LinksProcessor,
+			$this->linksProcessor,
 			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
@@ -279,7 +283,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			$this->LinksProcessor,
+			$this->linksProcessor,
 			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
@@ -315,7 +319,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			$this->LinksProcessor,
+			$this->linksProcessor,
 			new MagicWordsFinder(),
 			new RedirectTargetFinder()
 		);
@@ -378,7 +382,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors' => true,
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[FooBar::dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
@@ -401,7 +405,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => SMW_LINV_PCRE,
-				'smwgInlineErrors'  => true,
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[FooBar::dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
@@ -426,7 +430,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors' => true,
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[-FooBar::dictumst|重い]] cursus. Nisl sit condimentum Quisque facilisis' .
@@ -447,7 +451,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => false,
+				'smwgParserFeatures' => SMW_PARSER_NONE,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[-FooBar::dictumst|軽い]] cursus. Nisl sit condimentum Quisque facilisis' .
@@ -471,7 +475,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_HELP => false ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[FooBar::dictumst|おもろい]] cursus. Nisl sit condimentum Quisque facilisis' .
@@ -494,7 +498,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_HELP => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' Suspendisse tincidunt semper facilisi dolor Aenean.',
@@ -513,7 +517,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 			),
 			'[[Foo::?bar]], [[Foo::Baz?]], [[Quxey::B?am]]',
 			array(
@@ -534,7 +538,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( SMW_NS_PROPERTY => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 			),
 			'[[has type::number]], [[has Type::page]] ',
 			array(
@@ -551,7 +555,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 			),
 			'[[Foo::Bar::Foobar]], [[IPv6::fc00:123:8000::/64]] [[ABC::10.1002/::AID-MRM16::]]',
 			array(
@@ -568,7 +572,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 			),
 			'[[Foo:::Foobar]] [[Bar:::ABC|DEF]] [[Foo:::0049 30 12345678/::Foo]] ',
 			array(
@@ -585,8 +589,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
-				'smwgEnabledInTextAnnotationParserStrictMode' => false
+				'smwgParserFeatures' => SMW_PARSER_NONE
 			),
 			'[[Foo::Foobar::テスト]] [[Bar:::ABC|DEF]] [[Foo:::0049 30 12345678/::Foo]] ',
 			array(
@@ -603,8 +606,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
-				'smwgEnabledInTextAnnotationParserStrictMode' => false
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR | SMW_PARSER_NONE
 			),
 			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
 			array(
@@ -619,8 +621,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
-				'smwgEnabledInTextAnnotationParserStrictMode' => true
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR | SMW_PARSER_STRICT
 			),
 			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[Foo::Foobar::テスト]] [[File:Example.png|Bar::Foobar|link=Foo]]',
 			array(
@@ -637,8 +638,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors'  => true,
-				'smwgEnabledInTextAnnotationParserStrictMode' => true
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR | SMW_PARSER_STRICT
 			),
 			'[[Foo::@@@]] [[Bar::@@@en|Foobar]]',
 			array(
@@ -653,8 +653,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => SMW_LINV_OBFU,
-				'smwgInlineErrors'  => true,
-				'smwgEnabledInTextAnnotationParserStrictMode' => true
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR | SMW_PARSER_STRICT
 			),
 			'[[Text::Bar [http://example.org/Foo Foo]]] [[Code::Foo[1] Foobar]]',
 			array(
@@ -671,8 +670,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => SMW_LINV_OBFU,
-				'smwgInlineErrors'  => true,
-				'smwgEnabledInTextAnnotationParserStrictMode' => true
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR | SMW_PARSER_STRICT
 			),
 			'<sup id="cite_ref-1" class="reference">[[#cite_note-1|&#91;1&#93;]]</sup>',
 			array(
