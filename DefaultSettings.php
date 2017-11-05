@@ -281,41 +281,24 @@ return array(
 	##
 
 	###
-	# Category hierarchy recognition
 	#
-	# Should a subcategory be considered a hierarchy element in the
-	# annotation process?
+	# - SMW_CAT_NONE
 	#
-	# If set to true, subcategories will always be interpreted as subclasses
-	# and automatically annotated with `Subcategory of`.
+	# - SMW_CAT_REDI: resolves redirects and errors in connection with categories
 	#
-	# @see CategoryPropertyAnnotator
+	# - SMW_CAT_INSTANCE: Should category pages that use some [[Category:Foo]]
+	#   statement be treated as elements of the category Foo? If disabled, then
+	#   it is not possible to make category pages elements of other categories.
+	#   See also SMW_CAT_HIERARCHY. (was $smwgCategoriesAsInstances)
 	#
-	# @since 1.5
-	# @default true
-	##
-	'smwgUseCategoryHierarchy' => true,
-	##
-
-	###
-	# Should category pages that use some [[Category:Foo]] statement be treated as
-	# elements of the category Foo? If disabled, then it is not possible to make
-	# category pages elements of other categories. See also the above setting
-	# $smwgUseCategoryHierarchy.
-	#
-	# @since 1.5
-	# @default true
-	##
-	'smwgCategoriesAsInstances' => true,
-	##
-
-	###
-	# Resolves redirects and errors in connection with categories
+	# - SMW_CAT_HIERARCHY: Should a subcategory be considered a hierarchy element
+	#   in the annotation process? If set to true, subcategories will always be
+	#   interpreted as subclasses and automatically annotated with
+	#   `Subcategory of`. (was $smwgUseCategoryHierarchy)
 	#
 	# @since 3.0
-	# @default true
 	##
-	'smwgUseCategoryRedirect' => true,
+	'smwgCategoryFeatures' => SMW_CAT_REDI | SMW_CAT_INSTANCE | SMW_CAT_HIERARCHY,
 	##
 
 	###

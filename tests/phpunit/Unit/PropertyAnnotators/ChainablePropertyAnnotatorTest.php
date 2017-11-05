@@ -54,11 +54,11 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$categoryPropertyAnnotator->useCategoryInstance(
-			$parameters['settings']['smwgCategoriesAsInstances']
+			$parameters['settings']['categoriesAsInstances']
 		);
 
 		$categoryPropertyAnnotator->useCategoryHierarchy(
-			$parameters['settings']['smwgUseCategoryHierarchy']
+			$parameters['settings']['categoryHierarchy']
 		);
 
 		$categoryPropertyAnnotator->useCategoryRedirect(
@@ -98,8 +98,8 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories' => array( 'Foo', 'Bar' ),
 				'sortkey'    => 'Lala',
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => false,
-					'smwgCategoriesAsInstances' => true,
+					'categoryHierarchy'  => false,
+					'categoriesAsInstances' => true,
 					'showHiddenCategories'  => true,
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE )
 				)
