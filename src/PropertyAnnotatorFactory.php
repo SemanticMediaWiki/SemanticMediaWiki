@@ -153,15 +153,15 @@ class PropertyAnnotatorFactory {
 		);
 
 		$categoryPropertyAnnotator->useCategoryInstance(
-			$settings->get( 'smwgCategoriesAsInstances' )
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_INSTANCE )
 		);
 
 		$categoryPropertyAnnotator->useCategoryHierarchy(
-			$settings->get( 'smwgUseCategoryHierarchy' )
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_HIERARCHY )
 		);
 
 		$categoryPropertyAnnotator->useCategoryRedirect(
-			$settings->get( 'smwgUseCategoryRedirect' )
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_REDI )
 		);
 
 		return $categoryPropertyAnnotator;

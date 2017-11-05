@@ -1,5 +1,5 @@
 {
-	"description": "Test category redirect (`smwgUseCategoryRedirect`)",
+	"description": "Test category redirect (`SMW_CAT_REDI`)",
 	"setup": [
 		{
 			"namespace": "NS_CATEGORY",
@@ -90,7 +90,11 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgUseCategoryRedirect": true,
+		"smwgCategoryFeatures": [
+			"SMW_CAT_INSTANCE",
+			"SMW_CAT_REDI",
+			"SMW_CAT_HIERARCHY"
+		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		],

@@ -68,13 +68,16 @@ class PropertyRegistry {
 			return self::$instance;
 		}
 
-		$propertyLabelFinder = ApplicationFactory::getInstance()->getPropertyLabelFinder();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$propertyLabelFinder = $applicationFactory->getPropertyLabelFinder();
 		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
 
 		$propertyAliasFinder = new PropertyAliasFinder(
 			$extraneousLanguage->getPropertyAliases(),
 			$extraneousLanguage->getCanonicalPropertyAliases()
 		);
+
+		$settings = $applicationFactory->getSettings();
 
 		self::$instance = new self(
 			DataTypeRegistry::getInstance(),
@@ -83,7 +86,9 @@ class PropertyRegistry {
 			$GLOBALS['smwgDataTypePropertyExemptionList']
 		);
 
-		self::$instance->registerPredefinedProperties( $GLOBALS['smwgUseCategoryHierarchy'] );
+		self::$instance->registerPredefinedProperties(
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_HIERARCHY )
+		);
 
 		return self::$instance;
 	}

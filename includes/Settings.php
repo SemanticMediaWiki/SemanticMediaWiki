@@ -67,9 +67,6 @@ class Settings extends Options {
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
-			'smwgUseCategoryHierarchy' => $GLOBALS['smwgUseCategoryHierarchy'],
-			'smwgCategoriesAsInstances' => $GLOBALS['smwgCategoriesAsInstances'],
-			'smwgUseCategoryRedirect' => $GLOBALS['smwgUseCategoryRedirect'],
 			'smwgLinksInValues' => $GLOBALS['smwgLinksInValues'],
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],
@@ -176,6 +173,7 @@ class Settings extends Options {
 			'smwgChangePropagationProtection' => $GLOBALS['smwgChangePropagationProtection'],
 			'smwgUseComparableContentHash' => $GLOBALS['smwgUseComparableContentHash'],
 			'smwgBrowseFeatures' => $GLOBALS['smwgBrowseFeatures'],
+			'smwgCategoryFeatures' => $GLOBALS['smwgCategoryFeatures'],
 		);
 
 		self::initLegacyMapping( $configuration );
@@ -325,6 +323,18 @@ class Settings extends Options {
 			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_HID_CATS;
 		}
 
+		if ( isset( $GLOBALS['smwgUseCategoryRedirect'] ) && $GLOBALS['smwgUseCategoryRedirect'] === false ) {
+			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_REDI;
+		}
+
+		if ( isset( $GLOBALS['smwgCategoriesAsInstances'] ) && $GLOBALS['smwgCategoriesAsInstances'] === false ) {
+			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_INSTANCE;
+		}
+
+		if ( isset( $GLOBALS['smwgUseCategoryHierarchy'] ) && $GLOBALS['smwgUseCategoryHierarchy'] === false ) {
+			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_HIERARCHY;
+		}
+
 		if ( isset( $GLOBALS['smwgQueryDependencyPropertyExemptionlist'] ) ) {
 			$configuration['smwgQueryDependencyPropertyExemptionList'] = $GLOBALS['smwgQueryDependencyPropertyExemptionlist'];
 		}
@@ -428,6 +438,9 @@ class Settings extends Options {
 				'smwgEnabledInTextAnnotationParserStrictMode' => '3.1.0',
 				'smwgInlineErrors' => '3.1.0',
 				'smwgShowHiddenCategories' => '3.1.0',
+				'smwgUseCategoryRedirect' => '3.1.0',
+				'smwgCategoriesAsInstances' => '3.1.0',
+				'smwgUseCategoryHierarchy' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -461,6 +474,9 @@ class Settings extends Options {
 				'smwgEnabledInTextAnnotationParserStrictMode' => 'smwgParserFeatures',
 				'smwgInlineErrors' => 'smwgParserFeatures',
 				'smwgShowHiddenCategories' => 'smwgParserFeatures',
+				'smwgUseCategoryRedirect' => 'smwgCategoryFeatures',
+				'smwgCategoriesAsInstances' => 'smwgCategoryFeatures',
+				'smwgUseCategoryHierarchy' => 'smwgCategoryFeatures',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',

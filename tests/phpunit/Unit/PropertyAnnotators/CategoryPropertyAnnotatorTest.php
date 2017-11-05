@@ -81,11 +81,11 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->useCategoryInstance(
-			$parameters['settings']['smwgCategoriesAsInstances']
+			$parameters['settings']['categoriesAsInstances']
 		);
 
 		$instance->useCategoryHierarchy(
-			$parameters['settings']['smwgUseCategoryHierarchy']
+			$parameters['settings']['categoryHierarchy']
 		);
 
 		$instance->useCategoryRedirect(
@@ -123,11 +123,11 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->useCategoryInstance(
-			$parameters['settings']['smwgCategoriesAsInstances']
+			$parameters['settings']['categoriesAsInstances']
 		);
 
 		$instance->useCategoryHierarchy(
-			$parameters['settings']['smwgUseCategoryHierarchy']
+			$parameters['settings']['categoryHierarchy']
 		);
 
 		$instance->useCategoryRedirect(
@@ -187,11 +187,11 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->useCategoryInstance(
-			$parameters['settings']['smwgCategoriesAsInstances']
+			$parameters['settings']['categoriesAsInstances']
 		);
 
 		$instance->useCategoryHierarchy(
-			$parameters['settings']['smwgUseCategoryHierarchy']
+			$parameters['settings']['categoryHierarchy']
 		);
 
 		$instance->useCategoryRedirect(
@@ -255,8 +255,8 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'namespace'  => NS_MAIN,
 				'categories' => array( 'Foo', 'Bar' ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => false,
-					'smwgCategoriesAsInstances' => true,
+					'categoryHierarchy'  => false,
+					'categoriesAsInstances' => true,
 					'showHiddenCategories'  => true
 				)
 			),
@@ -273,8 +273,8 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'namespace'  => NS_CATEGORY,
 				'categories' => array( 'Foo', 'Bar' ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => true,
-					'smwgCategoriesAsInstances' => false,
+					'categoryHierarchy'  => true,
+					'categoriesAsInstances' => false,
 					'showHiddenCategories'  => true
 				)
 			),
@@ -312,8 +312,8 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories'    => array( 'Foo', 'Bar' ),
 				'hidCategories' => array( $hidCategory ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => false,
-					'smwgCategoriesAsInstances' => true,
+					'categoryHierarchy'  => false,
+					'categoriesAsInstances' => true,
 					'showHiddenCategories'  => true
 				)
 			),
@@ -331,8 +331,8 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories'    => array( 'Foo', 'Bar' ),
 				'hidCategories' => array( $hidCategory ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => false,
-					'smwgCategoriesAsInstances' => true,
+					'categoryHierarchy'  => false,
+					'categoriesAsInstances' => true,
 					'showHiddenCategories'  => false
 				)
 			),
@@ -350,8 +350,8 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories'    => array( 'Foo', 'Bar' ),
 				'hidCategories' => array( $hidCategory ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => true,
-					'smwgCategoriesAsInstances' => false,
+					'categoryHierarchy'  => true,
+					'categoriesAsInstances' => false,
 					'showHiddenCategories'  => true
 				)
 			),
@@ -369,8 +369,8 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories'    => array( 'Foo', 'Bar' ),
 				'hidCategories' => array( $hidCategory ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => true,
-					'smwgCategoriesAsInstances' => false,
+					'categoryHierarchy'  => true,
+					'categoriesAsInstances' => false,
 					'showHiddenCategories'  => false
 				)
 			),
