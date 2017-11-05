@@ -740,14 +740,17 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
 		 */
-		$this->handlers['SMW::SQLStore::Installer::AfterCreateTablesComplete'] = function ( $tableBuilder, $messageReporter ) use ( $applicationFactory ) {
+		$this->handlers['SMW::SQLStore::Installer::AfterCreateTablesComplete'] = function ( $tableBuilder, $messageReporter, $options ) use ( $applicationFactory ) {
 
 			$importerServiceFactory = $applicationFactory->create( 'ImporterServiceFactory' );
 
 			$importer = $importerServiceFactory->newImporter(
-				$importerServiceFactory->newJsonContentIterator( $applicationFactory->getSettings()->get( 'smwgImportFileDir' ) )
+				$importerServiceFactory->newJsonContentIterator(
+					$applicationFactory->getSettings()->get( 'smwgImportFileDir' )
+				)
 			);
 
+			$importer->isEnabled( $options->safeGet( \SMW\SQLStore\Installer::OPT_IMPORT, false ) );
 			$importer->setMessageReporter( $messageReporter );
 			$importer->doImport();
 

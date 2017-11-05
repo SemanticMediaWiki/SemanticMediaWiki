@@ -30,6 +30,11 @@ class Importer implements MessageReporterAware {
 	private $messageReporter;
 
 	/**
+	 * @var boolean
+	 */
+	private $isEnabled = true;
+
+	/**
 	 * @var integer|boolean
 	 */
 	private $reqVersion = false;
@@ -57,6 +62,15 @@ class Importer implements MessageReporterAware {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isEnabled
+	 */
+	public function isEnabled( $isEnabled ) {
+		$this->isEnabled = $isEnabled;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param integer|boolean $reqVersion
@@ -69,6 +83,10 @@ class Importer implements MessageReporterAware {
 	 * @since 2.5
 	 */
 	public function doImport() {
+
+		if ( $this->isEnabled === false ) {
+			return $this->messageReporter->reportMessage( "\nSkipping the import process.\n" );
+		}
 
 		if ( $this->reqVersion === false ) {
 			return $this->messageReporter->reportMessage( "\nImport support not enabled, processing completed.\n" );

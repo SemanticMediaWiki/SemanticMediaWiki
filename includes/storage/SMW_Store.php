@@ -427,14 +427,32 @@ abstract class Store implements QueryEngine {
 	 * @since 1.8
 	 *
 	 * @param bool $verbose
-	 * @param bool $isFromExtensionSchemaUpdate
+	 * @param Options|null $options
 	 *
 	 * @return boolean Success indicator
 	 */
-	public static function setupStore( $verbose = true, $isFromExtensionSchemaUpdate = false ) {
+	public static function setupStore( $verbose = true, $options = null ) {
+
+		// See notes in ExtensionSchemaUpdates
+		if ( is_bool( $verbose ) ) {
+			$verbose = $verbose;
+		}
+
+		if ( isset( $options['verbose'] ) ) {
+			$verbose = $options['verbose'];
+		}
+
+		if ( isset( $options['options'] ) ) {
+			$options = $options['options'];
+		}
 
 		$store = StoreFactory::getStore();
-		$store->getOptions()->set( 'isFromExtensionSchemaUpdate', $isFromExtensionSchemaUpdate );
+
+		if ( $options instanceof Options ) {
+			foreach ( $options->getOptions() as $key => $value ) {
+				$store->getOptions()->set( $key, $value );
+			}
+		}
 
 		return $store->setup( $verbose );
 	}

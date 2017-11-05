@@ -104,4 +104,24 @@ class Options {
 		return $this->options;
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $keys
+	 *
+	 * @return array
+	 */
+	public function filter( array $keys ) {
+
+		$options = [];
+
+		foreach ( $keys as $key ) {
+			if ( isset( $this->options[$key] ) ) {
+				$options[$key] = $this->options[$key];
+			}
+		}
+
+		return $options;
+	}
+
 }

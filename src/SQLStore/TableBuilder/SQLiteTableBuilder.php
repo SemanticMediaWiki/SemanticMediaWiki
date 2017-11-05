@@ -330,7 +330,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 */
 	protected function doOptimize( $tableName ) {
 
-		$this->reportMessage( "   Table $tableName ...\n" );
+		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		// https://sqlite.org/lang_analyze.html
 		$this->reportMessage( "   ... analyze " );

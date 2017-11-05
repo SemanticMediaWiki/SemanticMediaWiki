@@ -38,8 +38,12 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * --backend  The backend to use, e.g. SMWSQLStore3.
  *
- * --nochecks When specied, no prompts are provided. Deletion will thus happen
- *            without the need to provide any confomration.
+ * --skip-optimize Skips the table optimization process.
+ *
+ * --skip-import Skips the import process.
+ *
+ * --nochecks When specified, no prompts are provided. Deletion will thus happen
+ *            without the need to provide any confirmation.
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -59,17 +63,6 @@ class SetupStore extends \Maintenance {
 	 */
 	public function __construct() {
 		parent::__construct();
-
-		$this->mDescription = 'Sets up the SMW storage backend currently selected in LocalSettings.php.';
-
-		$this->addOption( 'backend', 'Execute the operation for the storage backend of the given name.', false, true, 'b' );
-
-		$this->addOption( 'delete', 'Delete all SMW data, uninstall the selected storage backend.' );
-
-		$this->addOption(
-			'nochecks',
-			'Run the script without providing prompts. Deletion will thus happen without the need to provide any confirmation.'
-		);
 	}
 
 	/**
@@ -78,8 +71,20 @@ class SetupStore extends \Maintenance {
 	 * @since 2.0
 	 */
 	protected function addDefaultParams() {
-
 		parent::addDefaultParams();
+
+		$this->mDescription = 'Sets up the SMW storage backend currently selected in LocalSettings.php.';
+
+		$this->addOption( 'backend', 'Execute the operation for the storage backend of the given name.', false, true, 'b' );
+
+		$this->addOption( 'delete', 'Delete all SMW data, uninstall the selected storage backend.' );
+		$this->addOption( 'skip-optimize', 'Skipping the table optimization process (not recommended).', false );
+		$this->addOption( 'skip-import', 'Skipping the import process.', false );
+
+		$this->addOption(
+			'nochecks',
+			'Run the script without providing prompts. Deletion will thus happen without the need to provide any confirmation.'
+		);
 	}
 
 	/**
@@ -109,6 +114,16 @@ class SetupStore extends \Maintenance {
 		$store->getOptions()->set(
 			Installer::OPT_MESSAGEREPORTER,
 			$messageReporter
+		);
+
+		$store->getOptions()->set(
+			Installer::OPT_TABLE_OPTIMZE,
+			!$this->hasOption( 'skip-optimize' )
+		);
+
+		$store->getOptions()->set(
+			Installer::OPT_IMPORT,
+			!$this->hasOption( 'skip-import' )
 		);
 
 		if ( $this->hasOption( 'delete' ) ) {

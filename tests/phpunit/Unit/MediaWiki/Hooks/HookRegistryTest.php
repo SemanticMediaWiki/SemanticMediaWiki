@@ -173,6 +173,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		//$this->doTestExecutionForSMWStoreDropTables( $instance );
 		$this->doTestExecutionForSMWSQLStorAfterDataUpdateComplete( $instance );
 		$this->doTestExecutionForSMWStoreAfterQueryResultLookupComplete( $instance );
+		$this->doTestExecutionForSMWSQLStoreInstallerAfterCreateTablesComplete( $instance );
 	}
 
 	public function doTestExecutionForParserAfterTidy( $instance ) {
@@ -1086,6 +1087,34 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $this->store, &$result )
+		);
+	}
+
+	public function doTestExecutionForSMWSQLStoreInstallerAfterCreateTablesComplete( $instance ) {
+
+		$handler = 'SMW::SQLStore::Installer::AfterCreateTablesComplete';
+
+		$result = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$options = $this->getMockBuilder( '\SMW\Options' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $tableBuilder, $messageReporter, $options )
 		);
 	}
 

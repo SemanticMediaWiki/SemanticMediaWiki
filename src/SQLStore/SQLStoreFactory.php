@@ -359,7 +359,6 @@ class SQLStoreFactory {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
-		$options = $this->store->getOptions();
 
 		$tableBuilder = TableBuilder::factory(
 			$this->store->getConnection( DB_MASTER )
@@ -387,12 +386,15 @@ class SQLStoreFactory {
 			$tableIntegrityExaminer
 		);
 
-		if ( $options->has( Installer::OPT_MESSAGEREPORTER ) ) {
-			$installer->setMessageReporter( $options->get( Installer::OPT_MESSAGEREPORTER ) );
-		}
-
-		$installer->isFromExtensionSchemaUpdate(
-			( $options->has( 'isFromExtensionSchemaUpdate' ) ? $options->get( 'isFromExtensionSchemaUpdate' ) : false )
+		$installer->setOptions(
+			$this->store->getOptions()->filter(
+				[
+					Installer::OPT_MESSAGEREPORTER,
+					Installer::OPT_TABLE_OPTIMZE,
+					Installer::OPT_IMPORT,
+					Installer::OPT_SCHEMA_UPDATE
+				]
+			)
 		);
 
 		return $installer;
