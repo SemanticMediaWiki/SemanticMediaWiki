@@ -2,9 +2,11 @@
 
 This is not a release yet and is planned to be available in Q1 2018.
 
+
 ## Highlights
 
 Highlights for this release include ... (#2065)
+
 
 ## Upgrading
 
@@ -12,10 +14,16 @@ This release requires to run the `setupStore.php` or `update.php` script. (#2065
 
 After the upgrade, please check the "Deprecation notices" section in `Special:SemanticMediaWiki` to adapt and modify listed deprecated settings.
 
+If you are still using maintenance scripts identifiable by the `SMW_` prefix you must now migrate to the new maintenance spript names. See the help pages on [maintenance scrips](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_scripts) for further information.
+
+**Please also carefully read the section on breaking changes and deprecations further down in these release notes. We have also prepared a [migration guide](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.0.0/Migration_guide) for you.**
+
+
 ## New features and enhancements
 
 * [#794](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/794)
 * [#2065](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2065) Added entity specific collation support with help of the [`$smwgEntityCollation`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation) setting
+* [#2348](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2348) Allow showing annotations even if they are improper for datatype "Text"
 * [#2398](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2398) Added `#ask` and `#show` parser function support for `@deferred` output mode
 * [#2420](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2420) Added support for a datatable output in the `format=table` (and `broadtable`) result printer
 * [#2432](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2432) Added check for MediaWiki's `readOnly` mode
@@ -51,6 +59,9 @@ After the upgrade, please check the "Deprecation notices" section in `Special:Se
 * [#2738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2738)
 * [#2756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2756)
 * [#2776](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2776)
+* [#2796](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2796) Allows "rendering of HTML" on special page "Ask" when using `|headers=plain` in queries
+
+
 
 ## Bug fixes
 
@@ -79,6 +90,9 @@ After the upgrade, please check the "Deprecation notices" section in `Special:Se
 * [#2752](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2752)
 * [#2761](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2761)
 * [#2768](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2768)
+* [#2788](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2788) Resources are now being exported as Internationalized Resource Identifiers (IRI) by default.
+* [#2790](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2790) Removed deprecated entry points for maintenance scripts
+
 
 ## Other changes
 
@@ -102,6 +116,7 @@ After the upgrade, please check the "Deprecation notices" section in `Special:Se
 * [#2751](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2751)
 * [#2765](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2765)
 * [#2774](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2774)
+
 
 ## Contributors
 
