@@ -109,10 +109,10 @@ class QuerySegmentListProcessor {
 			throw new RuntimeException( "$id doesn't exist" );
 		}
 
-		$this->doResolveBySegment( $this->querySegmentList[$id] );
+		$this->process( $this->querySegmentList[$id] );
 	}
 
-	private function doResolveBySegment( QuerySegment &$query ) {
+	private function process( QuerySegment &$query ) {
 
 		$db = $this->connection;
 
@@ -120,7 +120,7 @@ class QuerySegmentListProcessor {
 			case QuerySegment::Q_TABLE: // Normal query with conjunctive subcondition.
 				foreach ( $query->components as $qid => $joinField ) {
 					$subQuery = $this->querySegmentList[$qid];
-					$this->doResolveBySegment( $subQuery );
+					$this->process( $subQuery );
 
 					if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 						$query->from .= ' INNER JOIN ' . $db->tableName( $subQuery->joinTable ) . " AS $subQuery->alias ON $joinField=" . $subQuery->joinfield;
@@ -170,7 +170,7 @@ class QuerySegmentListProcessor {
 				unset( $query->components[$key] );
 
 				// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
-				$this->doResolveBySegment( $result );
+				$this->process( $result );
 
 				// ... and append to this query the remaining queries.
 				foreach ( $query->components as $qid => $joinfield ) {
@@ -178,7 +178,7 @@ class QuerySegmentListProcessor {
 				}
 
 				// Second execute, now incorporating remaining conditions.
-				$this->doResolveBySegment( $result );
+				$this->process( $result );
 				$query = $result;
 			break;
 			case QuerySegment::Q_DISJUNCTION:
@@ -190,7 +190,7 @@ class QuerySegmentListProcessor {
 
 				foreach ( $query->components as $qid => $joinField ) {
 					$subQuery = $this->querySegmentList[$qid];
-					$this->doResolveBySegment( $subQuery );
+					$this->process( $subQuery );
 					$sql = '';
 
 					if ( $subQuery->joinTable !== '' ) {
@@ -295,7 +295,11 @@ class QuerySegmentListProcessor {
 
 		$db->freeResult( $res );
 		$tablename = $db->tableName( $query->alias );
-		$this->executedQueries[$query->alias] = array( "Recursively computed hierarchy for element(s) $values." );
+		$this->executedQueries[$query->alias] = [
+			"Recursively computed hierarchy for element(s) $values.",
+			"SELECT s_id FROM $smwtable WHERE $valuecond LIMIT 1"
+		];
+
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 
