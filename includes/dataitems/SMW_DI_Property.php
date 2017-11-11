@@ -166,26 +166,6 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * Whether a user can freely use this property for value declarations or
-	 * not.
-	 *
-	 * @note A user defined property is generally assumed to be unrestricted
-	 * for usage
-	 *
-	 * @since 2.2
-	 *
-	 * @return boolean
-	 */
-	public function isUnrestricted() {
-
-		if ( $this->isUserDefined() ) {
-			return true;
-		}
-
-		return PropertyRegistry::getInstance()->isUnrestrictedForAnnotationUse( $this->m_key );
-	}
-
-	/**
 	 * Find a user-readable label for this property, or return '' if it is
 	 * a predefined property that has no label. For inverse properties, the
 	 * label starts with a "-".

@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\PropertyRestrictionExaminer;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\PropertyRestrictionExaminer
@@ -110,6 +111,34 @@ class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUser( $this->user );
 
 		$instance->checkRestriction( new DIProperty( 'Foo' )  );
+
+		$this->assertFalse(
+			$instance->hasRestriction()
+		);
+	}
+
+	public function testDeclarativePropertyOnMainNamespace() {
+
+		$instance = new PropertyRestrictionExaminer();
+
+		$instance->checkRestriction(
+			new DIProperty( '_TYPE' ),
+			DIWikiPage::newFromText( 'Bar', NS_MAIN )
+		);
+
+		$this->assertTrue(
+			$instance->hasRestriction()
+		);
+	}
+
+	public function testDeclarativePropertyOnPropertyNamespace() {
+
+		$instance = new PropertyRestrictionExaminer();
+
+		$instance->checkRestriction(
+			new DIProperty( '_TYPE' ),
+			DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
+		);
 
 		$this->assertFalse(
 			$instance->hasRestriction()

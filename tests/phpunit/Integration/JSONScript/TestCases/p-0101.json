@@ -22,6 +22,14 @@
 		{
 			"page": "Has-subobject",
 			"contents": "[[Has subobject::Invalid]] {{#set:|Has subobject=Invalid}} {{#subobject:|Has subobject=Invalid}}"
+		},
+		{
+			"page": "Example/P0101/5",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0101/6",
+			"contents": "{{#set:|Has type=Page}}"
 		}
 	],
 	"tests": [
@@ -68,7 +76,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Property &quot;Modification date&quot; has been marked for restricted use."
+					"Property &quot;Modification date&quot; has a restricted application area and cannot be used as annotation property by a user."
 				]
 			}
 		},
@@ -89,7 +97,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Property &quot;Has query&quot; has been marked for restricted use."
+					"Property &quot;Has query&quot; has a restricted application area and cannot be used as annotation property by a user."
 				]
 			}
 		},
@@ -110,8 +118,44 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Property &quot;Has subobject&quot; has been marked for restricted use."
+					"Property &quot;Has subobject&quot; has a restricted application area and cannot be used as annotation property by a user."
 				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 error on [[ ...]](NS_MAIN) with restricted declarative property",
+			"subject": "Example/P0101/5#_ERR20a1185193cbb57b6472d45844e0abbe",
+			"assert-store": {
+				"semantic-data": {
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRP",
+						"_ERRT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[8,\"smw-datavalue-property-restricted-declarative-use\",\"Has type\"]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 error on #set(NS_MAIN) with restricted declarative property",
+			"subject": "Example/P0101/6#_ERR20a1185193cbb57b6472d45844e0abbe",
+			"assert-store": {
+				"semantic-data": {
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRP",
+						"_ERRT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[8,\"smw-datavalue-property-restricted-declarative-use\",\"Has type\"]"
+					]
+				}
 			}
 		}
 	],
