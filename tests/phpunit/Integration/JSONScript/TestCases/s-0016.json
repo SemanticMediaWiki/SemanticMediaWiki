@@ -42,7 +42,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<th class=\"Has-monolingual-text\">[[:Property:Has monolingual text|Has monolingual text]]</th><th class=\"Category\">[[:Special:Categories|Category]]</th><th class=\"Has-monolingual-text\">[[:Property:Has monolingual text|Has monolingual text]]</th>",
+					"<th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th><th class=\"Category\"><a .*>Category</a></th><th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th>",
 					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Category smwtype_wpg\">Category:S0016</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
 				],
 				"not-contain": [
@@ -70,7 +70,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<th class=\"Has-monolingual-text\">[[:Property:Has monolingual text|Has monolingual text]]</th><th class=\"Category\">[[:Special:Categories|Category]]</th><th class=\"Has-monolingual-text\">[[:Property:Has monolingual text|Has monolingual text]]</th>",
+					"<th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th><th class=\"Category\"><a .*>Category</a></th><th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th>",
 					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Category smwtype_wpg\">Category:S0016</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
 				],
 				"not-contain": [
@@ -98,11 +98,12 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<th class=\"Has-monolingual-text\">[[:Property:Has monolingual text|Has monolingual text]]</th><th class=\"Category\">[[:Special:Categories|Category]]</th><th class=\"Has-monolingual-text\">[[:Property:Has monolingual text|Has monolingual text]]</th>",
+					"<th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th><th class=\"Category\"><a .*>Category</a></th><th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th>",
 					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Category smwtype_wpg\">Category:S0016</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
 				],
 				"not-contain": [
-					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"				]
+					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
+				]
 			}
 		}
 	],

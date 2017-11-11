@@ -107,6 +107,7 @@ class TableResultPrinter extends ResultPrinter {
 
 		 // building headers
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) {
+			$isPlain = $this->mShowHeaders == SMW_HEADERS_PLAIN;
 			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
 				$attributes = array();
 				$columnClass = str_replace( array( ' ', '_' ), '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
@@ -114,7 +115,10 @@ class TableResultPrinter extends ResultPrinter {
 				// Also add this to the array of classes, for
 				// use in displaying each row.
 				$columnClasses[] = $columnClass;
-				$text = $pr->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
+
+				// #2702 Use a fixed output on a requested plain printout
+				$mode = $this->isHTML && $isPlain ? SMW_OUTPUT_WIKI : $outputMode;
+				$text = $pr->getText( $mode, ( $isPlain ? null : $this->mLinker ) );
 				$headerList[] = $pr->getCanonicalLabel();
 				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
