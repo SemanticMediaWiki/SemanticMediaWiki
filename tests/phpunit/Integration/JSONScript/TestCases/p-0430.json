@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for `_eid` type (`wgContLang=en`, `wgLang=en`)",
+	"description": "Test in-text annotation for `_eid` type (`#nowiki`) (`wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -26,6 +26,14 @@
 		{
 			"page": "Example/P0430/2",
 			"contents": "[[Some ID::W%D6LLEKLA01]]"
+		},
+		{
+			"page": "Example/P0430/Q2.1",
+			"contents": "{{#ask: [[Some ID::W%D6LLEKLA01]] |?Some ID }}"
+		},
+		{
+			"page": "Example/P0430/Q2.2",
+			"contents": "{{#ask: [[Some ID::W%D6LLEKLA01]] |?Some ID#nowiki }}"
 		}
 	],
 	"tests": [
@@ -86,6 +94,29 @@
 				],
 				"not-contain": [
 					"<a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/W%25D6LLEKLA01\">W%D6LLEKLA01</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4",
+			"subject": "Example/P0430/Q2.1",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/W%D6LLEKLA01\">W%D6LLEKLA01</a></span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 #nowiki",
+			"subject": "Example/P0430/Q2.2",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"plainlinks smw-eid\">https&#58;//example.org/W%D6LLEKLA01</span>"
+				],
+				"not-contain": [
+					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/W%D6LLEKLA01\">W%D6LLEKLA01</a></span>"
 				]
 			}
 		}
