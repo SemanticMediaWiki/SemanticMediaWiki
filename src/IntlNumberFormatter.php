@@ -234,9 +234,10 @@ class IntlNumberFormatter {
 			if ( substr( $value, - $lenEnd ) === $end ) {
 				$value = substr( $value, 0, - $lenEnd );
 			} else {
+				$decseparator = preg_quote( $decseparator, '/' );
 				// If above replacement occurred, no need to do the next one.
 				// Make it more readable by removing trailing zeroes from nn.n00.
-				$value = preg_replace( "/(\\$decseparator\\d+?)0*$/u", '$1', $value, 1 );
+				$value = preg_replace( "/($decseparator\\d+?)0*$/u", '$1', $value, 1 );
 			}
 		}
 
