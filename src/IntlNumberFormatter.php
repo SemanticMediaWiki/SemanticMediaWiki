@@ -3,6 +3,7 @@
 namespace SMW;
 
 use InvalidArgumentException;
+use SMWNumberValue as NumberValue;
 
 /**
  * @license GNU GPL v2+
@@ -18,18 +19,19 @@ class IntlNumberFormatter {
 	 */
 	const CONTENT_LANGUAGE = Message::CONTENT_LANGUAGE;
 	const USER_LANGUAGE = Message::USER_LANGUAGE;
+	const PREFERRED_LANGUAGE = 'preferred.language';
 
 	/**
 	 * Separator related constants
 	 */
-	const DECIMAL_SEPARATOR = 'DS';
-	const THOUSANDS_SEPARATOR = 'TS';
+	const DECIMAL_SEPARATOR = NumberValue::DECIMAL_SEPARATOR;
+	const THOUSANDS_SEPARATOR = NumberValue::THOUSANDS_SEPARATOR;
 
 	/**
 	 * Format related constants
 	 */
-	const DEFAULT_FORMAT = 'DF';
-	const VALUE_FORMAT = 'VF';
+	const DEFAULT_FORMAT = 'default.format';
+	const VALUE_FORMAT = 'value.format';
 
 	/**
 	 * @var IntlNumberFormatter
@@ -88,11 +90,11 @@ class IntlNumberFormatter {
 	 * @since 2.4
 	 */
 	public function reset() {
-		$this->options->set( 'separator.decimal', false );
-		$this->options->set( 'separator.thousands', false );
-		$this->options->set( 'user.language', false );
-		$this->options->set( 'content.language', false );
-		$this->options->set( 'preferred.language', false );
+		$this->options->set( self::DECIMAL_SEPARATOR, false );
+		$this->options->set( self::THOUSANDS_SEPARATOR, false );
+		$this->options->set( self::USER_LANGUAGE, false );
+		$this->options->set( self::CONTENT_LANGUAGE, false );
+		$this->options->set( self::PREFERRED_LANGUAGE, false );
 	}
 
 	/**
@@ -118,11 +120,11 @@ class IntlNumberFormatter {
 		$language = $locale === self::USER_LANGUAGE ? $this->getUserLanguage() : $this->getContentLanguage();
 
 		if ( $type === self::DECIMAL_SEPARATOR ) {
-			return $this->getPreferredLocalizedSeparator( 'separator.decimal', 'smw_decseparator', $language );
+			return $this->getPreferredLocalizedSeparator( self::DECIMAL_SEPARATOR, 'smw_decseparator', $language );
 		}
 
 		if ( $type === self::THOUSANDS_SEPARATOR ) {
-			return $this->getPreferredLocalizedSeparator( 'separator.thousands', 'smw_kiloseparator', $language );
+			return $this->getPreferredLocalizedSeparator( self::THOUSANDS_SEPARATOR, 'smw_kiloseparator', $language );
 		}
 
 		throw new InvalidArgumentException( $type . " is unknown" );
@@ -338,10 +340,10 @@ class IntlNumberFormatter {
 		// The preferred language is set when the output formatter contained
 		// something like LOCL@es
 
-		if ( $this->options->has( 'preferred.language' ) && $this->options->get( 'preferred.language' ) ) {
-			$language = $this->options->get( 'preferred.language' );
-		} elseif ( $this->options->has( 'user.language' ) && $this->options->get( 'user.language' ) ) {
-			$language = $this->options->get( 'user.language' );
+		if ( $this->options->has( self::PREFERRED_LANGUAGE ) && $this->options->get( self::PREFERRED_LANGUAGE ) ) {
+			$language = $this->options->get( self::PREFERRED_LANGUAGE );
+		} elseif ( $this->options->has( self::USER_LANGUAGE ) && $this->options->get( self::USER_LANGUAGE ) ) {
+			$language = $this->options->get( self::USER_LANGUAGE );
 		}
 
 		return $language;
@@ -351,8 +353,8 @@ class IntlNumberFormatter {
 
 		$language = Message::CONTENT_LANGUAGE;
 
-		if ( $this->options->has( 'content.language' ) && $this->options->get( 'content.language' ) ) {
-			$language = $this->options->get( 'content.language' );
+		if ( $this->options->has( self::CONTENT_LANGUAGE ) && $this->options->get( self::CONTENT_LANGUAGE ) ) {
+			$language = $this->options->get( self::CONTENT_LANGUAGE );
 		}
 
 		return $language;
