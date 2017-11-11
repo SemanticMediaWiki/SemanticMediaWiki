@@ -161,7 +161,7 @@ class PropertyAnnotatorFactory {
 		);
 
 		$categoryPropertyAnnotator->useCategoryRedirect(
-			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_REDI )
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_REDIRECT )
 		);
 
 		return $categoryPropertyAnnotator;

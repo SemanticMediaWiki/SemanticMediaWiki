@@ -254,7 +254,7 @@ define( 'SMW_PARSER_HID_CATS', 16 ); // Support for parsing hidden categories
   * Constants for $smwgCategoryFeatures
   */
 define( 'SMW_CAT_NONE', 0 );
-define( 'SMW_CAT_REDI', 2 ); // Support resolving category redirects
+define( 'SMW_CAT_REDIRECT', 2 ); // Support resolving category redirects
 define( 'SMW_CAT_INSTANCE', 4 ); // Support using a category as instantiatable object
 define( 'SMW_CAT_HIERARCHY', 8 ); // Support for category hierarchies
 /**@}*/

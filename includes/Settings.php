@@ -324,7 +324,7 @@ class Settings extends Options {
 		}
 
 		if ( isset( $GLOBALS['smwgUseCategoryRedirect'] ) && $GLOBALS['smwgUseCategoryRedirect'] === false ) {
-			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_REDI;
+			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_REDIRECT;
 		}
 
 		if ( isset( $GLOBALS['smwgCategoriesAsInstances'] ) && $GLOBALS['smwgCategoriesAsInstances'] === false ) {

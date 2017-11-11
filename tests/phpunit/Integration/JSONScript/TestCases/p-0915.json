@@ -1,5 +1,5 @@
 {
-	"description": "Test category redirect (`SMW_CAT_REDI`)",
+	"description": "Test category redirect (`SMW_CAT_REDIRECT`)",
 	"setup": [
 		{
 			"namespace": "NS_CATEGORY",
@@ -92,7 +92,7 @@
 		"wgLang": "en",
 		"smwgCategoryFeatures": [
 			"SMW_CAT_INSTANCE",
-			"SMW_CAT_REDI",
+			"SMW_CAT_REDIRECT",
 			"SMW_CAT_HIERARCHY"
 		],
 		"smwgPageSpecialProperties": [
