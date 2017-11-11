@@ -24,7 +24,7 @@ class ExternalIdentifierValue extends StringValue {
 	/**
 	 * @var string|null
 	 */
-	private $substitutedUri = null;
+	private $uri = null;
 
 	/**
 	 * @param string $typeid
@@ -61,7 +61,7 @@ class ExternalIdentifierValue extends StringValue {
 			return $this->m_caption;
 		}
 
-		$substitutedUri = $this->getUriWithPlaceholderSubstitution(
+		$uri = $this->makeUri(
 			$this->m_dataitem->getString()
 		);
 
@@ -69,12 +69,18 @@ class ExternalIdentifierValue extends StringValue {
 			return '';
 		}
 
+		if ( $this->getOutputFormat() == 'nowiki' ) {
+			$url = $this->makeNonlinkedWikiText( $uri );
+		} else {
+			$url = '['. $uri . ' '. $this->m_caption . ']';
+		}
+
 		return \Html::rawElement(
 			'span',
 			array(
 				'class' => 'plainlinks smw-eid'
 			),
-			'['. $substitutedUri . ' '. $this->m_caption . ']'
+			$url
 		);
 	}
 
@@ -95,7 +101,7 @@ class ExternalIdentifierValue extends StringValue {
 			return $this->m_caption;
 		}
 
-		$substitutedUri = $this->getUriWithPlaceholderSubstitution(
+		$uri = $this->makeUri(
 			$this->m_dataitem->getString()
 		);
 
@@ -106,7 +112,7 @@ class ExternalIdentifierValue extends StringValue {
 		return \Html::rawElement(
 			'a',
 			array(
-				'href'   => $substitutedUri,
+				'href'   => $uri,
 				'target' => '_blank'
 			),
 			$this->m_caption
@@ -140,16 +146,16 @@ class ExternalIdentifierValue extends StringValue {
 
 		$dataValue = $this->dataValueServiceFactory->getDataValueFactory()->newDataValueByType(
 			'_uri',
-			$this->getUriWithPlaceholderSubstitution( $this->m_dataitem->getString() )
+			$this->makeUri( $this->m_dataitem->getString() )
 		);
 
 		return $dataValue->getDataItem();
 	}
 
-	private function getUriWithPlaceholderSubstitution( $value ) {
+	private function makeUri( $value ) {
 
-		if ( $this->substitutedUri !== null ) {
-			return $this->substitutedUri;
+		if ( $this->uri !== null ) {
+			return $this->uri;
 		}
 
 		$dataItem = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getExternalFormatterUri(
@@ -171,7 +177,11 @@ class ExternalIdentifierValue extends StringValue {
 			return;
 		}
 
-		return $this->substitutedUri = $dataValue->getUriWithPlaceholderSubstitution( $value );
+		return $this->uri = $dataValue->getUriWithPlaceholderSubstitution( $value );
+	}
+
+	private function makeNonlinkedWikiText( $url ) {
+		return str_replace( ':', '&#58;', $url );
 	}
 
 }

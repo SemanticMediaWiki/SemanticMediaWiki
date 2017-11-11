@@ -96,6 +96,30 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetShortWikiText_Nowiki() {
+
+		$this->propertySpecificationLookup->expects( $this->once() )
+			->method( 'getExternalFormatterUri' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ) );
+
+		$instance = new ExternalIdentifierValue();
+		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
+
+		$instance->setUserValue( 'foo' );
+		$instance->setOutputFormat( 'nowiki' );
+		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
+
+		$this->assertEquals(
+			'foo',
+			$instance->getShortWikiText()
+		);
+
+		$this->assertEquals(
+			'<span class="plainlinks smw-eid">http&#58;//example.org/foo</span>',
+			$instance->getShortWikiText( 'linker' )
+		);
+	}
+
 	public function testGetShortHTMLText() {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
