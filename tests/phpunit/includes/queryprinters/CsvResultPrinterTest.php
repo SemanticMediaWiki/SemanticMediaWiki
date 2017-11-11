@@ -133,7 +133,8 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 			'format'    => 'csv',
 			'sep'       => ',',
 			'showsep'   => false,
-			'offset'    => 0
+			'offset'    => 0,
+			'merge'     => false
 		);
 
 		$provider[] = array(
