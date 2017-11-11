@@ -200,10 +200,10 @@ class EntityLookupTaskHandler extends TaskHandler {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		if ( intval( $id ) ) {
+		if ( ctype_digit( $id ) ) {
 			$condition = 'smw_id=' . intval( $id );
 		} else {
-			$condition = 'smw_sortkey=' . $connection->addQuotes( $id );
+			$condition = 'smw_sortkey=' . $connection->addQuotes( str_replace( '_', ' ', $id ) );
 		}
 
 		$rows = $connection->select(
