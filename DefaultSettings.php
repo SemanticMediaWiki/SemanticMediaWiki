@@ -284,7 +284,7 @@ return array(
 	#
 	# - SMW_CAT_NONE
 	#
-	# - SMW_CAT_REDI: resolves redirects and errors in connection with categories
+	# - SMW_CAT_REDIRECT: resolves redirects and errors in connection with categories
 	#
 	# - SMW_CAT_INSTANCE: Should category pages that use some [[Category:Foo]]
 	#   statement be treated as elements of the category Foo? If disabled, then
@@ -298,7 +298,7 @@ return array(
 	#
 	# @since 3.0
 	##
-	'smwgCategoryFeatures' => SMW_CAT_REDI | SMW_CAT_INSTANCE | SMW_CAT_HIERARCHY,
+	'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE | SMW_CAT_HIERARCHY,
 	##
 
 	###
