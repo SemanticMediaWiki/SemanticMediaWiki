@@ -14,7 +14,7 @@ on how to install the latest version of Semantic MediaWiki (SMW), see the [insta
 	<tr>
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/6">SMW 3.0.x</a></th>
 		<td>Development version</td>
-		<td>Q4 2017 or Q1 2018</td>
+		<td>Q1 2018</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
@@ -151,6 +151,7 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 </table>
 
+* *Note:* It is strongly recommended to also always upgrade the underlying MediaWiki software to supported versions. See the [version lifecycle](https://www.mediawiki.org/wiki/Version_lifecycle) for current information on supported versions.
 * PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (at the time of this writing). Please consult the official MediaWiki release documentation. 
 * For the 1.28 MediaWiki release branch, 1.28.1 is recommended due to [T154428](https://phabricator.wikimedia.org/T154428).
 
