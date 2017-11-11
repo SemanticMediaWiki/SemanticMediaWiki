@@ -110,7 +110,7 @@ class QueryEngineFactory {
 		);
 
 		$orderConditionsComplementor->isSupported(
-			$this->applicationFactory->getSettings()->get( 'smwgQSortingSupport' )
+			$this->applicationFactory->getSettings()->isFlagSet( 'smwgQSortFeatures', SMW_QSORT )
 		);
 
 		$querySegmentListBuildManager = new QuerySegmentListBuildManager(

@@ -18,8 +18,7 @@ class EngineOptions extends Options {
 	public function __construct() {
 		parent::__construct( array(
 			'smwgIgnoreQueryErrors'   => $GLOBALS['smwgIgnoreQueryErrors'],
-			'smwgQSortingSupport'     => $GLOBALS['smwgQSortingSupport'],
-			'smwgQRandSortingSupport' => $GLOBALS['smwgQRandSortingSupport'],
+			'smwgQSortFeatures'       => $GLOBALS['smwgQSortFeatures'],
 			'smwgQSubpropertyDepth'   => $GLOBALS['smwgQSubpropertyDepth'],
 			'smwgQSubcategoryDepth'   => $GLOBALS['smwgQSubcategoryDepth'],
 			'smwgSparqlQFeatures'     => $GLOBALS['smwgSparqlQFeatures']

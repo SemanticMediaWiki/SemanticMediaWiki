@@ -431,11 +431,25 @@ return array(
 												// performance-relevant restrictions depending on the storage engine
 	// 	'smwgQEqualitySupport' => SMW_EQ_FULL, // Evaluate 	#redirects as equality between page names in all cases
 	// 	'smwgQEqualitySupport' => SMW_EQ_NONE, // Never evaluate 	#redirects as equality between page names
-	'smwgQSortingSupport' => true, // (De)activate sorting of results.
-	'smwgQRandSortingSupport' => true, // (De)activate random sorting of results.
 	'smwgQDefaultNamespaces' => null, // Which namespaces should be searched by default?
 										// (value NULL switches off default restrictions on searching -- this is faster)
 										// Example with namespaces: 	'smwgQDefaultNamespaces' => array(NS_MAIN, NS_FILE),
+
+	###
+	# Sort features
+	#
+	# - SMW_QSORT_NONE
+	#
+	# - SMW_QSORT: General sort support for query results (was
+	#   $smwgQSortingSupport)
+	#
+	# - SMW_QSORT_RANDOM: Random sorting support for query results (was
+	#   $smwgQRandSortingSupport)
+	#
+	# @since 3.0
+	##
+	'smwgQSortFeatures' => SMW_QSORT | SMW_QSORT_RANDOM,
+	##
 
 	###
 	# List of comparator characters

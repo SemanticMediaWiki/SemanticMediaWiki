@@ -121,6 +121,8 @@ class SpecialAsk extends SpecialPage {
 
 		$out->addHTML( ErrorWidget::noScript() );
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		NavigationLinksWidget::setMaxInlineLimit(
 			$GLOBALS['smwgQMaxInlineLimit']
 		);
@@ -138,12 +140,12 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		SortWidget::setSortingSupport(
-			$GLOBALS['smwgQSortingSupport']
+			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT )
 		);
 
 		// @see #835
 		SortWidget::setRandSortingSupport(
-			$GLOBALS['smwgQRandSortingSupport']
+			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT_RANDOM )
 		);
 
 		ParametersProcessor::setDefaultLimit(

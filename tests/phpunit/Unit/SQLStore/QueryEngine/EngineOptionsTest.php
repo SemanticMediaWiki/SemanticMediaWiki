@@ -33,13 +33,8 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInternalType(
-			'boolean',
-			$instance->get( 'smwgQSortingSupport' )
-		);
-
-		$this->assertInternalType(
-			'boolean',
-			$instance->get( 'smwgQRandSortingSupport' )
+			'integer',
+			$instance->get( 'smwgQSortFeatures' )
 		);
 	}
 

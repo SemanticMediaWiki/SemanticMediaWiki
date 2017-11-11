@@ -243,7 +243,7 @@ class QueryEngine implements QueryEngineInterface {
 		);
 
 		// Build ORDER BY options using discovered sorting fields.
-		if ( !$this->engineOptions->get( 'smwgQSortingSupport' ) || !is_array( $this->sortKeys ) ) {
+		if ( !$this->engineOptions->isFlagSet( 'smwgQSortFeatures', SMW_QSORT ) || !is_array( $this->sortKeys ) ) {
 			return $options;
 		}
 
@@ -257,7 +257,7 @@ class QueryEngine implements QueryEngineInterface {
 
 			if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $compoundCondition->orderVariables ) ) {
 				$orderByString .= "$order(?" . $compoundCondition->orderVariables[$propkey] . ") ";
-			} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->get( 'smwgQRandSortingSupport' ) ) {
+			} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->isFlagSet( 'smwgQSortFeatures', SMW_QSORT_RANDOM ) ) {
 				// not supported in SPARQL; might be possible via function calls in some stores
 			}
 		}

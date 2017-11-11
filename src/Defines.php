@@ -258,3 +258,11 @@ define( 'SMW_CAT_REDIRECT', 2 ); // Support resolving category redirects
 define( 'SMW_CAT_INSTANCE', 4 ); // Support using a category as instantiatable object
 define( 'SMW_CAT_HIERARCHY', 8 ); // Support for category hierarchies
 /**@}*/
+
+/**@{
+  * Constants for $smwgQSortFeatures
+  */
+define( 'SMW_QSORT_NONE', 0 );
+define( 'SMW_QSORT', 2 ); // General sort support
+define( 'SMW_QSORT_RANDOM', 4 ); // Random sort support
+/**@}*/
