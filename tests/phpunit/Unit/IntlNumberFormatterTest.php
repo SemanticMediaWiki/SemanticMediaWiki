@@ -36,8 +36,8 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IntlNumberFormatter( $maxNonExpNumber );
 
-		$instance->setOption( 'user.language', $userLanguage );
-		$instance->setOption( 'content.language', $contentLanguage );
+		$instance->setOption( IntlNumberFormatter::USER_LANGUAGE, $userLanguage );
+		$instance->setOption( IntlNumberFormatter::CONTENT_LANGUAGE, $contentLanguage );
 
 		$this->assertEquals(
 			$expected,
@@ -52,8 +52,8 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IntlNumberFormatter( $maxNonExpNumber );
 
-		$instance->setOption( 'user.language', $userLanguage );
-		$instance->setOption( 'content.language', $contentLanguage );
+		$instance->setOption( IntlNumberFormatter::USER_LANGUAGE, $userLanguage );
+		$instance->setOption( IntlNumberFormatter::CONTENT_LANGUAGE, $contentLanguage );
 
 		$this->assertEquals(
 			$expected,
@@ -65,8 +65,8 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IntlNumberFormatter( 1000 );
 
-		$instance->setOption( 'user.language', 'en' );
-		$instance->setOption( 'content.language', 'en' );
+		$instance->setOption( IntlNumberFormatter::USER_LANGUAGE, 'en' );
+		$instance->setOption( IntlNumberFormatter::CONTENT_LANGUAGE, 'en' );
 
 		$this->assertSame(
 			$instance->format( 100.0, false, IntlNumberFormatter::VALUE_FORMAT ),
@@ -81,8 +81,8 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IntlNumberFormatter( 10000000 );
 
-		$instance->setOption( 'user.language', $userLanguage );
-		$instance->setOption( 'content.language', $contentLanguage );
+		$instance->setOption( IntlNumberFormatter::USER_LANGUAGE, $userLanguage );
+		$instance->setOption( IntlNumberFormatter::CONTENT_LANGUAGE, $contentLanguage );
 
 		$this->assertEquals(
 			$expected,
@@ -94,8 +94,8 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IntlNumberFormatter( 10000000 );
 
-		$instance->setOption( 'separator.decimal', 'FOO' );
-		$instance->setOption( 'separator.thousands', 'BAR' );
+		$instance->setOption( IntlNumberFormatter::DECIMAL_SEPARATOR, 'FOO' );
+		$instance->setOption( IntlNumberFormatter::THOUSANDS_SEPARATOR, 'BAR' );
 
 		$this->assertEquals(
 			'FOO',

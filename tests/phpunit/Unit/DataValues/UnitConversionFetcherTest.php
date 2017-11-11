@@ -86,12 +86,12 @@ class UnitConversionFetcherTest extends \PHPUnit_Framework_TestCase {
 		$numberValue = new NumberValue();
 
 		$numberValue->setOption(
-			'separator.thousands',
+			NumberValue::THOUSANDS_SEPARATOR,
 			$thousands
 		);
 
 		$numberValue->setOption(
-			'separator.decimal',
+			NumberValue::DECIMAL_SEPARATOR,
 			$decimal
 		);
 

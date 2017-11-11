@@ -53,6 +53,12 @@ class SMWNumberValue extends SMWDataValue {
 	const NO_DISP_PRECISION_LIMIT = 'num.no.displayprecision.limit';
 
 	/**
+	 * Separator related constants
+	 */
+	const DECIMAL_SEPARATOR = 'decimal.separator';
+	const THOUSANDS_SEPARATOR = 'thousands.separator';
+
+	/**
 	 * Array with entries unit=>value, mapping a normalized unit to the
 	 * converted value. Used for conversion tooltips.
 	 * @var array
@@ -114,12 +120,12 @@ class SMWNumberValue extends SMWDataValue {
 
 		// Parse to find $number and (possibly) $unit
 		$kiloseparator = $intlNumberFormatter->getSeparatorByLanguage(
-			IntlNumberFormatter::THOUSANDS_SEPARATOR,
+			self::THOUSANDS_SEPARATOR,
 			IntlNumberFormatter::CONTENT_LANGUAGE
 		);
 
 		$decseparator = $intlNumberFormatter->getSeparatorByLanguage(
-			IntlNumberFormatter::DECIMAL_SEPARATOR,
+			self::DECIMAL_SEPARATOR,
 			IntlNumberFormatter::CONTENT_LANGUAGE
 		);
 
@@ -310,7 +316,7 @@ class SMWNumberValue extends SMWDataValue {
 		// When generating an infoLink, use the normalized value without any
 		// precision limitation
 		$this->setOption( self::NO_DISP_PRECISION_LIMIT, true );
-		$this->setOption( 'content.language', Message::CONTENT_LANGUAGE );
+		$this->setOption( self::OPT_CONTENT_LANGUAGE, Message::CONTENT_LANGUAGE );
 		$infoLinks = parent::getInfolinks();
 		$this->setOption( self::NO_DISP_PRECISION_LIMIT, false );
 
@@ -502,23 +508,23 @@ class SMWNumberValue extends SMWDataValue {
 	private function getNumberFormatter() {
 
 		$this->intlNumberFormatter->setOption(
-			'user.language',
-			$this->getOption( 'user.language' )
+			IntlNumberFormatter::USER_LANGUAGE,
+			$this->getOption( self::OPT_USER_LANGUAGE )
 		);
 
 		$this->intlNumberFormatter->setOption(
-			'content.language',
-			$this->getOption( 'content.language' )
+			IntlNumberFormatter::CONTENT_LANGUAGE,
+			$this->getOption( self::OPT_CONTENT_LANGUAGE )
 		);
 
 		$this->intlNumberFormatter->setOption(
-			'separator.thousands',
-			$this->getOption( 'separator.thousands' )
+			self::THOUSANDS_SEPARATOR,
+			$this->getOption( self::THOUSANDS_SEPARATOR )
 		);
 
 		$this->intlNumberFormatter->setOption(
-			'separator.decimal',
-			$this->getOption( 'separator.decimal' )
+			self::DECIMAL_SEPARATOR,
+			$this->getOption( self::DECIMAL_SEPARATOR )
 		);
 
 		return $this->intlNumberFormatter;
@@ -528,7 +534,7 @@ class SMWNumberValue extends SMWDataValue {
 		// Localized preferred user language
 		if ( strpos( $formatstring, 'LOCL' ) !== false && ( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) !== false ) {
 			$this->intlNumberFormatter->setOption(
-				'preferred.language',
+				IntlNumberFormatter::PREFERRED_LANGUAGE,
 				$languageCode
 			);
 		}
