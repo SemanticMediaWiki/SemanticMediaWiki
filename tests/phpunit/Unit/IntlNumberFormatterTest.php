@@ -45,6 +45,22 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testZeroPadding() {
+
+		$expected = '1000(foo)42';
+
+		$instance = new IntlNumberFormatter( 10000 );
+
+		// #2797
+		$instance->setOption( IntlNumberFormatter::DECIMAL_SEPARATOR, '(foo)' );
+		$instance->setOption( IntlNumberFormatter::THOUSANDS_SEPARATOR, '' );
+
+		$this->assertEquals(
+			$expected,
+			$instance->format( 1000.42 )
+		);
+	}
+
 	/**
 	 * @dataProvider unformattedNumberByPrecisionProvider
 	 */
