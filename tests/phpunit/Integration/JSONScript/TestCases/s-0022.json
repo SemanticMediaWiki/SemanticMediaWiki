@@ -102,6 +102,30 @@
 					"contents-file" : "/../Fixtures/res.s-0022.2.csv"
 				}
 			}
+		},
+		{
+			"type": "special",
+			"about": "#3 merge rows with identical first column identifier",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"format": "csv",
+						"merge": true
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has number|?Has text"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.3.csv"
+				}
+			}
 		}
 	],
 	"settings": {

@@ -4,6 +4,7 @@ namespace SMW;
 
 use Sanitizer;
 use SMWQueryResult;
+use SMW\Utils\Csv;
 
 /**
  * CSV export for SMW Queries
@@ -61,24 +62,23 @@ class CsvResultPrinter extends FileExportPrinter {
 
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		$result = '';
+		$header = [];
 
 		if ( $outputMode == SMW_OUTPUT_FILE ) { // make CSV file
-			$csv = fopen( 'php://temp', 'r+' );
+
+			$csv = new Csv(
+				$this->params['showsep']
+			);
+
 			$sep = str_replace( '_', ' ', $this->params['sep'] );
 
-			if ( $this->params['showsep'] ) {
-				fputs( $csv, "sep=" . $sep . "\n" );
-			}
-
 			if ( $this->mShowHeaders ) {
-				$header_items = array();
-
 				foreach ( $res->getPrintRequests() as $pr ) {
-					$header_items[] = $pr->getLabel();
+					$header[] = $pr->getLabel();
 				}
-
-				fputcsv( $csv, $header_items, $sep );
 			}
+
+			$rows = [];
 
 			while ( $row = $res->getNext() ) {
 				$row_items = array();
@@ -93,11 +93,18 @@ class CsvResultPrinter extends FileExportPrinter {
 					$row_items[] = implode( ',', $growing );
 				}
 
-				fputcsv( $csv, $row_items, $sep );
+				$rows[] = $row_items;
 			}
 
-			rewind( $csv );
-			$result .= stream_get_contents( $csv );
+			if ( $this->params['merge'] === true ) {
+				$rows = $csv->merge( $rows, $sep );
+			}
+
+			$result .= $csv->toString(
+				$header,
+				$rows,
+				$sep
+			);
 		} else { // just make link to feed
 			$result .= $this->getLink( $res, $outputMode )->getText( $outputMode, $this->mLinker );
 			$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
@@ -138,6 +145,13 @@ class CsvResultPrinter extends FileExportPrinter {
 			'default' => 'result.csv',
 		);
 
+		$params['merge'] = array(
+			'type' => 'boolean',
+			'default' => false,
+			'message' => 'smw-paramdesc-csv-merge',
+		);
+
 		return $params;
 	}
+
 }
