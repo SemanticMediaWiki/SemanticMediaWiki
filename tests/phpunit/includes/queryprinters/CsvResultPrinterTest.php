@@ -134,7 +134,8 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 			'sep'       => ',',
 			'showsep'   => false,
 			'offset'    => 0,
-			'merge'     => false
+			'merge'     => false,
+			'bom'       => false
 		);
 
 		$provider[] = array(

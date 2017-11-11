@@ -16,12 +16,19 @@ class Csv {
 	private $show = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $bom = false;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param boolean $show
+	 * @param boolean $bom
 	 */
-	public function __construct( $show = false ) {
+	public function __construct( $show = false, $bom = false ) {
 		$this->show = $show;
+		$this->bom = $bom;
 	}
 
 	/**
@@ -36,6 +43,12 @@ class Csv {
 	public function toString( array $header, array $rows, $sep = ',' ) {
 
 		$handle = fopen( 'php://temp', 'r+' );
+
+		// https://en.wikipedia.org/wiki/Comma-separated_values#Standardization
+		// http://php.net/manual/en/function.fputcsv.php
+		if ( $this->bom ) {
+			fputs( $handle, ( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) ) );
+		}
 
 		// https://en.wikipedia.org/wiki/Comma-separated_values#Application_support
 		if ( $this->show ) {

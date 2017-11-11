@@ -41,6 +41,23 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testWithBOM() {
+
+		$header = [];
+		$rows = [
+			[ 'Foo', '1', '2', '3' ]
+		];
+
+		$bom = ( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ) );
+
+		$instance = new Csv( false, true );
+
+		$this->assertEquals(
+			"{$bom}Foo,1,2,3\n",
+			$instance->toString( $header, $rows, ',' )
+		);
+	}
+
 	public function rowsProvider() {
 
 		// No change

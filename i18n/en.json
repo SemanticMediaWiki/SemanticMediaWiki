@@ -70,6 +70,7 @@
 	"smw-paramdesc-rdfsyntax": "The RDF syntax to be used",
 	"smw-paramdesc-csv-sep": "The separator to use",
 	"smw-paramdesc-csv-merge": "Merge rows and column values with an identical subject identifier (aka first column)",
+	"smw-paramdesc-csv-bom": "Add a BOM (character to signal endianness) at the top of the output file",
 	"smw-paramdesc-dsv-separator": "The separator to use",
 	"smw-paramdesc-dsv-filename": "The name for the DSV file",
 	"smw-paramdesc-filename": "The name for the output file",
