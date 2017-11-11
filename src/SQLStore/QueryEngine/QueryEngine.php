@@ -211,7 +211,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		// SELECT DISTINCT and ORDER BY RANDOM causes an issue for postgres
 		// Disable RANDOM support for postgres
 		if ( $connection->isType( 'postgres' ) ) {
-			$this->engineOptions->set( 'smwgQRandSortingSupport', false );
+			$this->engineOptions->set(
+				'smwgQSortFeatures',
+				$this->engineOptions->get( 'smwgQSortFeatures' ) & ~SMW_QSORT_RANDOM
+			);
 		}
 
 		switch ( $query->querymode ) {
@@ -532,7 +535,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			'OFFSET' => $query->getOffset()
 		);
 
-		if ( !$this->engineOptions->get( 'smwgQSortingSupport' ) ) {
+		if ( !$this->engineOptions->isFlagSet( 'smwgQSortFeatures', SMW_QSORT ) ) {
 			return $result;
 		}
 
@@ -555,7 +558,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 				}
 
 				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $list . " $order ";
-			} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->get( 'smwgQRandSortingSupport' ) ) {
+			} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->isFlagSet( 'smwgQSortFeatures', SMW_QSORT_RANDOM ) ) {
 				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . ' RAND() ';
 			}
 		}

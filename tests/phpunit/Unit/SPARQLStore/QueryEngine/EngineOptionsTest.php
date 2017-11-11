@@ -67,13 +67,8 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'smwgQSortingSupport',
-			'boolean'
-		);
-
-		$provider[] = array(
-			'smwgQRandSortingSupport',
-			'boolean'
+			'smwgQSortFeatures',
+			'integer'
 		);
 
 		$provider[] = array(
