@@ -59,9 +59,11 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2738)
 * [#2756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2756)
 * [#2776](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2776)
+* [#2785](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2785)
 * [#2796](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2796) Allows "rendering of HTML" on special page "Ask" when using `|headers=plain` in queries
-
-
+* [#2801](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2801)
+* [#2803](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2803)
+* [#2805](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2805)
 
 ## Bug fixes
 
@@ -92,7 +94,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2768](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2768)
 * [#2788](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2788) Resources are now being exported as Internationalized Resource Identifiers (IRI) by default.
 * [#2790](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2790) Removed deprecated entry points for maintenance scripts
-
+* [#2802](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2802)
+* [#2806](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2806)
 
 ## Other changes
 
@@ -116,6 +119,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2751](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2751)
 * [#2765](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2765)
 * [#2774](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2774)
+* [#2783](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2783)
+* [#2785](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2785)
 
 
 ## Contributors
