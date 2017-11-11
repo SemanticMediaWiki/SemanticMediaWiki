@@ -436,6 +436,22 @@ class PropertyRegistry {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $id
+	 *
+	 * @return boolean
+	 */
+	public function isDeclarative( $id ) {
+
+		if ( !$this->isKnownPropertyId( $id ) ) {
+			return false;
+		}
+
+		return isset( $this->propertyTypes[$id][3] ) ? $this->propertyTypes[$id][3] : false;
+	}
+
+	/**
 	 * @note All ids must start with underscores. The translation for each ID,
 	 * if any, is defined in the language files. Properties without translation
 	 * cannot be entered by or displayed to users, whatever their "show" value
@@ -443,64 +459,64 @@ class PropertyRegistry {
 	 */
 	protected function registerPredefinedProperties( $useCategoryHierarchy ) {
 
-		// array( Id, isVisibleToUser, isAnnotableByUser )
+		// array( Id, isVisibleToUser, isAnnotableByUser, isDeclarative )
 
 		$this->propertyTypes = array(
-			'_TYPE'  => array( '__typ', true, true ), // "has type"
-			'_URI'   => array( '__spu', true, true ), // "equivalent URI"
-			'_INST'  => array( '__sin', false, true ), // instance of a category
-			'_UNIT'  => array( '__sps', true, true ), // "displays unit"
-			'_IMPO'  => array( '__imp', true, true ), // "imported from"
-			'_CONV'  => array( '__sps', true, true ), // "corresponds to"
-			'_SERV'  => array( '__sps', true, true ), // "provides service"
-			'_PVAL'  => array( '__pval', true, true ), // "allows value"
-			'_REDI'  => array( '__red', true, true ), // redirects to some page
-			'_SUBP'  => array( '__sup', true, true ), // "subproperty of"
-			'_SUBC'  => array( '__suc', !$useCategoryHierarchy, true ), // "subcategory of"
-			'_CONC'  => array( '__con', false, true ), // associated concept
-			'_MDAT'  => array( '_dat', false, false ), // "modification date"
-			'_CDAT'  => array( '_dat', false, false ), // "creation date"
-			'_NEWP'  => array( '_boo', false, false ), // "is a new page"
-			'_EDIP'  => array( '_boo', true, true ), // "is edit protected"
-			'_LEDT'  => array( '_wpg', false, false ), // "last editor is"
-			'_ERRC'  => array( '__sob', false, false ), // "has error"
-			'_ERRT'  => array( '__errt', false, false ), // "has error text"
-			'_ERRP'  => array( '_wpp', false, false ), // "has improper value for"
-			'_LIST'  => array( '__pls', true, true ), // "has fields"
-			'_SKEY'  => array( '__key', false, true ), // sort key of a page
+			'_TYPE'  => array( '__typ', true, true, true ), // "has type"
+			'_URI'   => array( '__spu', true, true, true ), // "equivalent URI"
+			'_INST'  => array( '__sin', false, true, false ), // instance of a category
+			'_UNIT'  => array( '__sps', true, true, true ), // "displays unit"
+			'_IMPO'  => array( '__imp', true, true, true ), // "imported from"
+			'_CONV'  => array( '__sps', true, true, true ), // "corresponds to"
+			'_SERV'  => array( '__sps', true, true, true ), // "provides service"
+			'_PVAL'  => array( '__pval', true, true, true ), // "allows value"
+			'_REDI'  => array( '__red', true, true, false ), // redirects to some page
+			'_SUBP'  => array( '__sup', true, true, true ), // "subproperty of"
+			'_SUBC'  => array( '__suc', !$useCategoryHierarchy, true, true ), // "subcategory of"
+			'_CONC'  => array( '__con', false, true, false ), // associated concept
+			'_MDAT'  => array( '_dat', false, false, false ), // "modification date"
+			'_CDAT'  => array( '_dat', false, false, false ), // "creation date"
+			'_NEWP'  => array( '_boo', false, false, false ), // "is a new page"
+			'_EDIP'  => array( '_boo', true, true, false ), // "is edit protected"
+			'_LEDT'  => array( '_wpg', false, false, false ), // "last editor is"
+			'_ERRC'  => array( '__sob', false, false, false ), // "has error"
+			'_ERRT'  => array( '__errt', false, false, false ), // "has error text"
+			'_ERRP'  => array( '_wpp', false, false, false ), // "has improper value for"
+			'_LIST'  => array( '__pls', true, true, true ), // "has fields"
+			'_SKEY'  => array( '__key', false, true, false ), // sort key of a page
 
 			// FIXME SF related properties to be removed with 3.0
-			'_SF_DF' => array( '__spf', true, true ), // Semantic Form's default form property
-			'_SF_AF' => array( '__spf', true, true ),  // Semantic Form's alternate form property
+			'_SF_DF' => array( '__spf', true, true, false ), // Semantic Form's default form property
+			'_SF_AF' => array( '__spf', true, true, false ),  // Semantic Form's alternate form property
 
-			'_SOBJ'  => array( '__sob', true, false ), // "has subobject"
-			'_ASK'   => array( '__sob', false, false ), // "has query"
-			'_ASKST' => array( '_cod', true, false ), // "Query string"
-			'_ASKFO' => array( '_txt', true, false ), // "Query format"
-			'_ASKSI' => array( '_num', true, false ), // "Query size"
-			'_ASKDE' => array( '_num', true, false ), // "Query depth"
-			'_ASKDU' => array( '_num', true, false ), // "Query duration"
-			'_ASKSC' => array( '_txt', true, false ), // "Query source"
-			'_ASKPA' => array( '_cod', true, false ), // "Query parameters"
-			'_ASKCO' => array( '_num', true, false ), // "Query scode"
-			'_MEDIA' => array( '_txt', true, false ), // "has media type"
-			'_MIME'  => array( '_txt', true, false ), // "has mime type"
-			'_PREC'  => array( '_num', true, true ), // "Display precision of"
-			'_LCODE' => array( '__lcode', true, true ), // "Language code"
-			'_TEXT'  => array( '_txt', true, true ), // "Text"
-			'_PDESC' => array( '_mlt_rec', true, true ), // "Property description"
-			'_PVAP'  => array( '__pvap', true, true ), // "Allows pattern"
-			'_PVALI'  => array( '__pvali', true, true ), // "Allows value list"
-			'_DTITLE' => array( '_txt', false, true ), // "Display title of"
-			'_PVUC'  => array( '__pvuc', true, true ), // Uniqueness constraint
-			'_PEID'  => array( '_eid', true, true ), // External identifier
-			'_PEFU'  => array( '__pefu', true, true ), // External formatter uri
-			'_PPLB'  => array( '_mlt_rec', true, true ), // Preferred property label
-			'_CHGPRO' => array( '_cod', true, false ), // "Change propagation"
+			'_SOBJ'  => array( '__sob', true, false, false ), // "has subobject"
+			'_ASK'   => array( '__sob', false, false, false ), // "has query"
+			'_ASKST' => array( '_cod', true, false, false ), // "Query string"
+			'_ASKFO' => array( '_txt', true, false, false ), // "Query format"
+			'_ASKSI' => array( '_num', true, false, false ), // "Query size"
+			'_ASKDE' => array( '_num', true, false, false ), // "Query depth"
+			'_ASKDU' => array( '_num', true, false, false ), // "Query duration"
+			'_ASKSC' => array( '_txt', true, false, false ), // "Query source"
+			'_ASKPA' => array( '_cod', true, false, false ), // "Query parameters"
+			'_ASKCO' => array( '_num', true, false, false ), // "Query scode"
+			'_MEDIA' => array( '_txt', true, false, false ), // "has media type"
+			'_MIME'  => array( '_txt', true, false, false ), // "has mime type"
+			'_PREC'  => array( '_num', true, true, true ), // "Display precision of"
+			'_LCODE' => array( '__lcode', true, true, false ), // "Language code"
+			'_TEXT'  => array( '_txt', true, true, false ), // "Text"
+			'_PDESC' => array( '_mlt_rec', true, true, true ), // "Property description"
+			'_PVAP'  => array( '__pvap', true, true, true ), // "Allows pattern"
+			'_PVALI'  => array( '__pvali', true, true, true ), // "Allows value list"
+			'_DTITLE' => array( '_txt', false, true, false ), // "Display title of"
+			'_PVUC'  => array( '__pvuc', true, true, true ), // Uniqueness constraint
+			'_PEID'  => array( '_eid', true, true, false ), // External identifier
+			'_PEFU'  => array( '__pefu', true, true, true ), // External formatter uri
+			'_PPLB'  => array( '_mlt_rec', true, true, true ), // Preferred property label
+			'_CHGPRO' => array( '_cod', true, false, true ), // "Change propagation"
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
-			$this->propertyTypes[$id] = array( $id, true, true );
+			$this->propertyTypes[$id] = array( $id, true, true, false );
 		}
 
 		// @deprecated since 2.1

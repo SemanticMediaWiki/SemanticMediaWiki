@@ -349,7 +349,8 @@ class SMWPropertyValue extends SMWDataValue {
 		);
 
 		$propertyRestrictionExaminer->checkRestriction(
-			$this->m_dataitem
+			$this->getDataItem(),
+			$this->getContextPage()
 		);
 
 		if ( !$propertyRestrictionExaminer->hasRestriction() ) {

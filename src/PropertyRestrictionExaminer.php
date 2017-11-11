@@ -26,7 +26,7 @@ class PropertyRestrictionExaminer {
 	private $user;
 
 	/**
-	 * @var boolean
+	 * @var boolean|string
 	 */
 	private $createProtectionRight = false;
 
@@ -38,7 +38,7 @@ class PropertyRestrictionExaminer {
 	/**
 	 * @var array
 	 */
-	private $propertyList = array();
+	private $exists = array();
 
 	/**
 	 * @since 2.5
@@ -107,37 +107,93 @@ class PropertyRestrictionExaminer {
 	 * @since 3.0
 	 *
 	 * @param DIProperty $property
+	 * @param DIWikiPage|null $contextPage
 	 */
-	public function checkRestriction( DIProperty $property ) {
+	public function checkRestriction( DIProperty $property, DIWikiPage $contextPage = null ) {
 
-		$this->error = array();
+		$this->error = [];
 
-		if ( !$this->isQueryContext && !$property->isUserDefined() && !$property->isUnrestricted() ) {
-			return $this->error = array( 'smw-datavalue-property-restricted-use', $property->getLabel() );
+		if ( $this->isDeclarative( $property, $contextPage ) ) {
+			return;
 		}
 
-		if ( $this->user === null || $this->createProtectionRight === false ) {
+		if ( $this->isAnnotationRestricted( $property ) ) {
 			return;
+		}
+
+		if ( $this->isCreateProtected( $property ) ) {
+			return;
+		}
+	}
+
+	private function isDeclarative( $property, $contextPage = null ) {
+
+		if ( $this->isQueryContext || $contextPage === null ) {
+			return false;
+		}
+
+		$ns = $contextPage->getNamespace();
+
+		// Property, category page are allowed to carry declarative properties
+		if ( $ns === SMW_NS_PROPERTY || $ns === NS_CATEGORY ) {
+			return false;
+		}
+
+		if ( !PropertyRegistry::getInstance()->isDeclarative( $property->getKey() ) ) {
+			return false;
+		}
+
+		return $this->error = Message::encode(
+			[
+				'smw-datavalue-property-restricted-declarative-use',
+				$property->getLabel()
+			],
+			Message::PARSE
+		);
+	}
+
+	private function isAnnotationRestricted( $property ) {
+
+		if ( $this->isQueryContext || $property->isUserDefined() ) {
+			return false;
+		}
+
+		if ( PropertyRegistry::getInstance()->isUnrestrictedForAnnotationUse( $property->getKey() ) ) {
+			return false;
+		}
+
+		return $this->error = [
+			'smw-datavalue-property-restricted-annotation-use',
+			$property->getLabel()
+		];
+	}
+
+	private function isCreateProtected( $property ) {
+
+		if ( $this->user === null || $this->createProtectionRight === false ) {
+			return false;
 		}
 
 		$key = $property->getKey();
 
 		// Non-existing property?
-		if ( !isset( $this->propertyList[$key] ) ) {
-			$this->propertyList[$key] = $property->isUserDefined() && !$property->getDiWikiPage()->getTitle()->exists();
+		if ( !isset( $this->exists[$key] ) ) {
+			$this->exists[$key] = $property->isUserDefined() && $property->getDiWikiPage()->getTitle()->exists();
+		}
+
+		if ( $this->exists[$key] || $this->user->isAllowed( $this->createProtectionRight ) ) {
+			return false;
 		}
 
 		// A user without the approriate right cannot use a non-existing property
-		if ( $this->user && $this->propertyList[$key] && !$this->user->isAllowed( $this->createProtectionRight ) ) {
-			return $this->error = Message::encode(
-				array(
-					self::CREATE_RESTRICTION,
-					$property->getLabel(),
-					$this->createProtectionRight
-				),
-				Message::PARSE
-			);
-		}
+		return $this->error = Message::encode(
+			array(
+				self::CREATE_RESTRICTION,
+				$property->getLabel(),
+				$this->createProtectionRight
+			),
+			Message::PARSE
+		);
 	}
 
 }
