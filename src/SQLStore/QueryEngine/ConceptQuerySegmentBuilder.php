@@ -78,10 +78,16 @@ class ConceptQuerySegmentBuilder {
 			return null;
 		}
 
-		// Eecute query tree, resolve all dependencies
-		$this->querySegmentListProcessor->setQueryMode( Query::MODE_INSTANCES );
-		$this->querySegmentListProcessor->setQuerySegmentList( $querySegmentList );
-		$this->querySegmentListProcessor->doResolveQueryDependenciesById( $qid );
+		// execute query tree, resolve all dependencies
+		$this->querySegmentListProcessor->setQueryMode(
+			Query::MODE_INSTANCES
+		);
+
+		$this->querySegmentListProcessor->setQuerySegmentList(
+			$querySegmentList
+		);
+
+		$this->querySegmentListProcessor->process( $qid );
 
 		return $querySegmentList[$qid];
 	}
