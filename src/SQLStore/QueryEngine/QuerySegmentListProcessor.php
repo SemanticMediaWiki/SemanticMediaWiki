@@ -109,10 +109,10 @@ class QuerySegmentListProcessor {
 			throw new RuntimeException( "$id doesn't exist" );
 		}
 
-		$this->process( $this->querySegmentList[$id] );
+		$this->resolve( $this->querySegmentList[$id] );
 	}
 
-	private function process( QuerySegment &$query ) {
+	private function resolve( QuerySegment &$query ) {
 
 		$db = $this->connection;
 
@@ -120,7 +120,7 @@ class QuerySegmentListProcessor {
 			case QuerySegment::Q_TABLE: // Normal query with conjunctive subcondition.
 				foreach ( $query->components as $qid => $joinField ) {
 					$subQuery = $this->querySegmentList[$qid];
-					$this->process( $subQuery );
+					$this->resolve( $subQuery );
 
 					if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 						$query->from .= ' INNER JOIN ' . $db->tableName( $subQuery->joinTable ) . " AS $subQuery->alias ON $joinField=" . $subQuery->joinfield;
@@ -170,7 +170,7 @@ class QuerySegmentListProcessor {
 				unset( $query->components[$key] );
 
 				// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
-				$this->process( $result );
+				$this->resolve( $result );
 
 				// ... and append to this query the remaining queries.
 				foreach ( $query->components as $qid => $joinfield ) {
@@ -178,7 +178,7 @@ class QuerySegmentListProcessor {
 				}
 
 				// Second execute, now incorporating remaining conditions.
-				$this->process( $result );
+				$this->resolve( $result );
 				$query = $result;
 			break;
 			case QuerySegment::Q_DISJUNCTION:
@@ -190,7 +190,7 @@ class QuerySegmentListProcessor {
 
 				foreach ( $query->components as $qid => $joinField ) {
 					$subQuery = $this->querySegmentList[$qid];
-					$this->process( $subQuery );
+					$this->resolve( $subQuery );
 					$sql = '';
 
 					if ( $subQuery->joinTable !== '' ) {
@@ -236,7 +236,7 @@ class QuerySegmentListProcessor {
 			break;
 			case QuerySegment::Q_PROP_HIERARCHY:
 			case QuerySegment::Q_CLASS_HIERARCHY: // make a saturated hierarchy
-				$this->resolveHierarchyForSegment( $query );
+				$this->resolveHierarchy( $query );
 			break;
 			case QuerySegment::Q_VALUE:
 			break; // nothing to do
@@ -249,7 +249,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @param QuerySegment $query
 	 */
-	private function resolveHierarchyForSegment( QuerySegment &$query ) {
+	private function resolveHierarchy( QuerySegment &$query ) {
 
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
