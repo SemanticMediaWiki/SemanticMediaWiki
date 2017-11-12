@@ -133,6 +133,20 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 				[ 'Bar', '1,A', '2,B', '3,C' ]
 			]
 		];
+
+		yield [
+			[
+				[ 'Foo', '1', '2', '3;6;2' ],
+				[ 'Bar', '1', '2', '3' ],
+				[ 'Foo', '4', '5', '6' ],
+				[ 'Bar', 'A', 'B', 'C' ],
+			],
+			';',
+			[
+				[ 'Foo', '1;4', '2;5', '3;6;2' ],
+				[ 'Bar', '1;A', '2;B', '3;C' ]
+			]
+		];
 	}
 
 	public function makeProvider() {

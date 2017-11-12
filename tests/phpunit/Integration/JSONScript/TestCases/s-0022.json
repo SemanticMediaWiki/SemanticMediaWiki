@@ -126,6 +126,106 @@
 					"contents-file" : "/../Fixtures/res.s-0022.3.csv"
 				}
 			}
+		},
+		{
+			"type": "special",
+			"about": "#4 valuesep, headers=hide",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"headers": "hide",
+						"valuesep": ";",
+						"format": "csv"
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has text|?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.4.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#5 sep, valuesep",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"format": "csv",
+						"sep": "|",
+						"valuesep": "+"
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has number|?Has text"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.5.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#6 merge rows, valuesep",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"format": "csv",
+						"valuesep": ";",
+						"merge": true
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has number|?Has text"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.6.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#7 merge rows, valuesep, sep",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"format": "csv",
+						"sep": "|",
+						"valuesep": ";",
+						"merge": true
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has number|?Has text"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.7.csv"
+				}
+			}
 		}
 	],
 	"settings": {

@@ -72,6 +72,7 @@ class CsvResultPrinter extends FileExportPrinter {
 			);
 
 			$sep = str_replace( '_', ' ', $this->params['sep'] );
+			$vsep = str_replace( '_', ' ', $this->params['valuesep'] );
 
 			if ( $this->mShowHeaders ) {
 				foreach ( $res->getPrintRequests() as $pr ) {
@@ -91,14 +92,14 @@ class CsvResultPrinter extends FileExportPrinter {
 						$growing[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
 					}
 
-					$row_items[] = implode( ',', $growing );
+					$row_items[] = implode( $vsep, $growing );
 				}
 
 				$rows[] = $row_items;
 			}
 
 			if ( $this->params['merge'] === true ) {
-				$rows = $csv->merge( $rows, $sep );
+				$rows = $csv->merge( $rows, $vsep );
 			}
 
 			$result .= $csv->toString(
@@ -131,6 +132,11 @@ class CsvResultPrinter extends FileExportPrinter {
 		$params[] = array(
 			'name' => 'sep',
 			'message' => 'smw-paramdesc-csv-sep',
+			'default' => ',',
+		);
+
+		$params['valuesep'] = array(
+			'message' => 'smw-paramdesc-csv-valuesep',
 			'default' => ',',
 		);
 
