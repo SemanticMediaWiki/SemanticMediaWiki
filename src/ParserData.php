@@ -28,6 +28,12 @@ class ParserData {
 	const DATA_ID = 'smwdata';
 
 	/**
+	 * Identifies the status property ID in the MediaWiki prop table
+	 * for convenient access
+	 */
+	const ANNOTATION_STATE = 'smw-semanticdata-status';
+
+	/**
 	 * Identifies the cache namespace for update markers
 	 */
 	const CACHE_NAMESPACE = 'smw:update';
@@ -52,6 +58,12 @@ class ParserData {
 	 * Indicates that no #ask dependency tracking should occur
 	 */
 	const ANNOTATION_BLOCK = 'smw-blockannotation';
+
+	/**
+	 * Explicitly disable update jobs (e.g when running store updates
+	 * from the job queue)
+	 */
+	const DISABLE_UPDATE_JOB = 'disable.update.job';
 
 	/**
 	 * @var Title
@@ -116,6 +128,7 @@ class ParserData {
 			$this->cache = ApplicationFactory::getInstance()->getCache();
 		}
 
+		$this->setOption( self::DISABLE_UPDATE_JOB, false );
 		$this->initSemanticData();
 	}
 
@@ -211,16 +224,6 @@ class ParserData {
 	}
 
 	/**
-	 * Explicitly disable update jobs (e.g when running store update
-	 * in the job queue)
-	 *
-	 * @since 1.9
-	 */
-	public function disableBackgroundUpdateJobs() {
-		$this->isEnabledWithUpdateJob = false;
-	}
-
-	/**
 	 * @since 2.4
 	 *
 	 * @return boolean
@@ -243,15 +246,6 @@ class ParserData {
 	 */
 	public function canUse() {
 		return !$this->isBlocked();
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return boolean
-	 */
-	public function isEnabledWithUpdateJob() {
-		return $this->isEnabledWithUpdateJob;
 	}
 
 	/**
@@ -319,10 +313,10 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 2.1, use pushSemanticDataToParserOutput
+	 * @deprecated since 3.0, use copyToParserOutput
 	 */
-	public function updateOutput() {
-		$this->pushSemanticDataToParserOutput();
+	public function pushSemanticDataToParserOutput() {
+		$this->copyToParserOutput();
 	}
 
 	/**
@@ -348,9 +342,9 @@ class ParserData {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
-	public function pushSemanticDataToParserOutput() {
+	public function copyToParserOutput() {
 
 		// Ensure that errors are reported and recorded
 		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
@@ -376,18 +370,9 @@ class ParserData {
 		$this->parserOutput->setTimestamp( wfTimestampNow() );
 
 		$this->parserOutput->setProperty(
-			'smw-semanticdata-status',
+			self::ANNOTATION_STATE,
 			$this->semanticData->getProperties() !== array()
 		);
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return boolean
-	 */
-	public function isAnnotatedWithSemanticData() {
-		return (bool)$this->parserOutput->getProperty( 'smw-semanticdata-status' );
 	}
 
 	/**
@@ -412,7 +397,14 @@ class ParserData {
 	 * @param integer $rev
 	 */
 	public function markUpdate( $rev ) {
-		$this->cache->save( smwfCacheKey( self::CACHE_NAMESPACE, $this->semanticData->getSubject()->getHash() ), $rev, 3600 );
+		$this->cache->save(
+			smwfCacheKey(
+				self::CACHE_NAMESPACE,
+				$this->semanticData->getSubject()->getHash()
+			),
+			$rev,
+			3600
+		);
 	}
 
 	/**
@@ -422,11 +414,13 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function updateStore( $enabledDeferredUpdate = false ) {
+	public function updateStore( $isDeferrableUpdate = false ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$latestRevID = $this->title->getLatestRevID( Title::GAID_FOR_UPDATE );
 
+		// #2365
+		// #2549#issuecomment-315538292
 		if ( $this->skipUpdateOn( $latestRevID ) ) {
 			return $applicationFactory->getMediaWikiLogger()->info( __METHOD__ . " (Found rev:$latestRevID, skip update)" );
 		}
@@ -439,7 +433,7 @@ class ParserData {
 		$storeUpdater = $applicationFactory->newStoreUpdater( $this->semanticData );
 
 		$storeUpdater->isEnabledWithUpdateJob(
-			$this->isEnabledWithUpdateJob
+			$this->getOption( self::DISABLE_UPDATE_JOB )
 		);
 
 		$storeUpdater->isChangeProp(
@@ -460,8 +454,8 @@ class ParserData {
 			)
 		);
 
-		$deferredTransactionalUpdate->enabledDeferredUpdate(
-			$enabledDeferredUpdate
+		$deferredTransactionalUpdate->isDeferrableUpdate(
+			$isDeferrableUpdate
 		);
 
 		$deferredTransactionalUpdate->commitWithTransactionTicket();
@@ -496,8 +490,13 @@ class ParserData {
 	}
 
 	private function skipUpdateOn( $rev ) {
-		return $this->getOption( self::OPT_FORCED_UPDATE ) !== true &&
-			$this->cache->fetch( smwfCacheKey( self::CACHE_NAMESPACE, $this->semanticData->getSubject()->getHash() ) ) === $rev;
+
+		$hash = smwfCacheKey(
+			self::CACHE_NAMESPACE,
+			$this->semanticData->getSubject()->getHash()
+		);
+
+		return $this->getOption( self::OPT_FORCED_UPDATE ) !== true && $this->cache->fetch( $hash ) === $rev;
 	}
 
 }

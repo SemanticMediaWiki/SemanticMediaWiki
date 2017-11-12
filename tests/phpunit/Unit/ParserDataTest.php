@@ -77,14 +77,17 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ParserData( $title, $parserOutput );
 
-		$this->assertTrue(
-			$instance->isEnabledWithUpdateJob()
+		$this->assertFalse(
+			$instance->getOption( ParserData::DISABLE_UPDATE_JOB )
 		);
 
-		$instance->disableBackgroundUpdateJobs();
+		$instance->setOption(
+			ParserData::DISABLE_UPDATE_JOB,
+			true
+		);
 
-		$this->assertFalse(
-			$instance->isEnabledWithUpdateJob()
+		$this->assertTrue(
+			$instance->getOption( ParserData::DISABLE_UPDATE_JOB )
 		);
 	}
 
@@ -313,7 +316,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->isAnnotatedWithSemanticData()
+			$parserOutput->getProperty( ParserData::ANNOTATION_STATE )
 		);
 
 		$instance->addDataValue(
@@ -326,7 +329,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance->setSemanticDataStateToParserOutputProperty();
 
 		$this->assertTrue(
-			$instance->isAnnotatedWithSemanticData()
+			$parserOutput->getProperty( ParserData::ANNOTATION_STATE )
 		);
 	}
 

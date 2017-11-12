@@ -267,12 +267,16 @@ class UpdateJob extends JobBase {
 			$this->getParameter( self::CHANGE_PROP )
 		);
 
+		$parserData->setOption(
+			$parserData::DISABLE_UPDATE_JOB,
+			true
+		);
+
 		$parserData->getSemanticData()->setOption(
 			\SMW\SemanticData::OPT_LAST_MODIFIED,
 			wfTimestamp( TS_UNIX )
 		);
 
-		$parserData->disableBackgroundUpdateJobs();
 		$parserData->updateStore();
 
 		return true;
