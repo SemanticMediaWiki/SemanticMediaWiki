@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\ResultPrinters;
 
 use Sanitizer;
 use SMWQueryResult;
@@ -22,7 +22,7 @@ use SMW\Utils\Csv;
  *
  * @ingroup QueryPrinter
  */
-class CsvResultPrinter extends FileExportPrinter {
+class CsvFileExportPrinter extends FileExportPrinter {
 
 	/**
 	 * @codeCoverageIgnore
