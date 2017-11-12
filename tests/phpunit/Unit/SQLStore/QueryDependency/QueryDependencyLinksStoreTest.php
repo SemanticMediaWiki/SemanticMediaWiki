@@ -441,7 +441,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->setEnabled( false );
 		$queryResult = '';
 
-		$instance->doUpdateDependenciesFrom( $queryResult );
+		$instance->updateDependencies( $queryResult );
 	}
 
 	public function testTryDoUpdateDependenciesByForWhenDependencyListReturnsEmpty() {
@@ -510,7 +510,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$instance->doUpdateDependenciesFrom( $queryResult );
+		$instance->updateDependencies( $queryResult );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
@@ -572,7 +572,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$instance->doUpdateDependenciesFrom( $queryResult );
+		$instance->updateDependencies( $queryResult );
 	}
 
 	public function testdoUpdateDependenciesByFromQueryResult() {
@@ -675,7 +675,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$instance->doUpdateDependenciesFrom( $queryResult );
+		$instance->updateDependencies( $queryResult );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
@@ -749,7 +749,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$instance->doUpdateDependenciesFrom( $queryResult );
+		$instance->updateDependencies( $queryResult );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
@@ -834,7 +834,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$instance->doUpdateDependenciesFrom( $queryResult );
+		$instance->updateDependencies( $queryResult );
 	}
 
 	public function titleProvider() {

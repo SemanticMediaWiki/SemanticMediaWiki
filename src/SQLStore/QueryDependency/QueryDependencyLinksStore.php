@@ -334,7 +334,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 *
 	 * @param QueryResult|string $queryResult
 	 */
-	public function doUpdateDependenciesFrom( $queryResult ) {
+	public function updateDependencies( $queryResult ) {
 
 		if ( !$this->canUpdateDependencies( $queryResult ) ) {
 			return null;
@@ -350,45 +350,18 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			$hash
 		);
 
-		if ( $this->canSuppressUpdateOnSkewFactorFor( $sid, $subject ) ) {
-			return $this->log( __METHOD__ . " suppressed (skewed time) for SID " . $sid );
+		if ( $this->isRegistered( $sid, $subject ) ) {
+			return $this->log( __METHOD__ . " $sid was already registered, no dependency update." );
 		}
 
-		$dependencyLinksTableUpdater = $this->dependencyLinksTableUpdater;
-		$queryResultDependencyListResolver = $this->queryResultDependencyListResolver;
+		// Executed as DeferredTransactionalUpdate
+		$callback = function() use( $queryResult, $subject, $sid, $hash ) {
+			$this->doUpdate( $queryResult, $subject, $sid, $hash );
+		};
 
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate( function() use( $subject, $sid, $hash, $queryResult, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
-
-			$dependencyList = $queryResultDependencyListResolver->getDependencyListFrom( $queryResult );
-
-			// Add extra dependencies which we only get "late" after the QueryResult
-			// object as been resolved by the ResultPrinter, this is done to
-			// avoid having to process the QueryResult recursively on its own
-			// (which would carry a performance penalty)
-			$dependencyListByLateRetrieval = $queryResultDependencyListResolver->getDependencyListByLateRetrievalFrom( $queryResult );
-
-			if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
-				return $this->log( 'No dependency list available ' . $hash );
-			}
-
-			// SID < 0 means the storage update/process has not been finalized
-			// (new object hasn't been registered)
-			if ( $sid < 1 || ( $sid = $dependencyLinksTableUpdater->getId( $subject, $hash ) ) < 1 ) {
-				$sid = $dependencyLinksTableUpdater->createId( $subject, $hash );
-			}
-
-			$dependencyLinksTableUpdater->addToUpdateList(
-				$sid,
-				$dependencyList
-			);
-
-			$dependencyLinksTableUpdater->addToUpdateList(
-				$sid,
-				$dependencyListByLateRetrieval
-			);
-
-			$dependencyLinksTableUpdater->doUpdate();
-		} );
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate(
+			$callback
+		);
 
 		$deferredTransactionalUpdate->setOrigin( __METHOD__ );
 		$deferredTransactionalUpdate->markAsPending( $this->isCommandLineMode );
@@ -402,6 +375,43 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		$this->log( __METHOD__ . ' procTime (sec): ' . Timer::getElapsedTime( __METHOD__, 7 ) );
 
 		return true;
+	}
+
+	private function doUpdate( $queryResult, $subject, $sid, $hash ) {
+
+		$dependencyList = $this->queryResultDependencyListResolver->getDependencyListFrom(
+			$queryResult
+		);
+
+		// Add extra dependencies which we only get "late" after the QueryResult
+		// object as been resolved by the ResultPrinter, this is done to
+		// avoid having to process the QueryResult recursively on its own
+		// (which would carry a performance penalty)
+		$dependencyListByLateRetrieval = $this->queryResultDependencyListResolver->getDependencyListByLateRetrievalFrom(
+			$queryResult
+		);
+
+		if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
+			return $this->log( 'No dependency list available ' . $hash );
+		}
+
+		// SID < 0 means the storage update/process has not been finalized
+		// (new object hasn't been registered)
+		if ( $sid < 1 || ( $sid = $this->dependencyLinksTableUpdater->getId( $subject, $hash ) ) < 1 ) {
+			$sid = $this->dependencyLinksTableUpdater->createId( $subject, $hash );
+		}
+
+		$this->dependencyLinksTableUpdater->addToUpdateList(
+			$sid,
+			$dependencyList
+		);
+
+		$this->dependencyLinksTableUpdater->addToUpdateList(
+			$sid,
+			$dependencyListByLateRetrieval
+		);
+
+		$this->dependencyLinksTableUpdater->doUpdate();
 	}
 
 	private function canUpdateDependencies( $queryResult ) {
@@ -430,7 +440,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		return $query->getLimit() > 0 && $query->getOption( Query::NO_DEPENDENCY_TRACE ) !== true;
 	}
 
-	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
+	private function isRegistered( $sid, $subject ) {
 
 		static $suppressUpdateCache = array();
 		$hash = $subject->getHash();
