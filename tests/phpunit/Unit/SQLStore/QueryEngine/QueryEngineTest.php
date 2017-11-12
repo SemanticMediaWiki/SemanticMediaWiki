@@ -63,7 +63,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array() ) );
 
 		$this->querySegmentListProcessor->expects( $this->any() )
-			->method( 'getListOfResolvedQueries' )
+			->method( 'getExecutedQueries' )
 			->will( $this->returnValue( array() ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );

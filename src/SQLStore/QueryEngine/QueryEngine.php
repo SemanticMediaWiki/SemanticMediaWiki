@@ -198,7 +198,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$this->querySegmentListProcessor->setQuerySegmentList( $this->querySegmentList );
 
 		// execute query tree, resolve all dependencies
-		$this->querySegmentListProcessor->doResolveQueryDependenciesById(
+		$this->querySegmentListProcessor->process(
 			$rootid
 		);
 
@@ -257,7 +257,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$this->doExecuteDebugQueryResult( $qobj, $sqlOptions, $entries );
 		$auxtables = '';
 
-		foreach ( $this->querySegmentListProcessor->getListOfResolvedQueries() as $table => $log ) {
+		foreach ( $this->querySegmentListProcessor->getExecutedQueries() as $table => $log ) {
 			$auxtables .= "<li>Temporary table $table";
 			foreach ( $log as $q ) {
 				$auxtables .= "<br />&#160;&#160;<tt>$q</tt>";
