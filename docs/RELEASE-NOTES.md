@@ -64,6 +64,11 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2801](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2801)
 * [#2803](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2803)
 * [#2805](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2805)
+* [#2815](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2815)
+* [#2820](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2820)
+* [#2822](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2822)
+* [#2824](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2824)
+* [#2826](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2826)
 
 ## Bug fixes
 
@@ -73,6 +78,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2652](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2652) Fixed handling of multiple checkbox parameter in `Special:Ask`
 * [#2767](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2767)
 * [#2773](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2773)
+* [#2817](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2817)
 
 
 ## Breaking changes and deprecations
@@ -96,6 +102,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2790](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2790) Removed deprecated entry points for maintenance scripts
 * [#2802](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2802)
 * [#2806](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2806)
+* [#2821](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2821)
 
 ## Other changes
 
