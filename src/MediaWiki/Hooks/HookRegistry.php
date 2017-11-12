@@ -693,7 +693,7 @@ class HookRegistry {
 		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $queryDependencyLinksStore, $applicationFactory ) {
 
 			$queryDependencyLinksStore->setStore( $store );
-			$queryDependencyLinksStore->doUpdateDependenciesFrom( $result );
+			$queryDependencyLinksStore->updateDependencies( $result );
 
 			$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->recordStats();
 
