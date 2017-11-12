@@ -612,7 +612,7 @@ return array(
 		'count'      => 'SMW\ListResultPrinter',
 		'debug'      => 'SMW\ListResultPrinter',
 		'feed'       => 'SMW\FeedResultPrinter',
-		'csv'        => 'SMW\CsvResultPrinter',
+		'csv'        => 'SMW\Query\ResultPrinters\CsvFileExportPrinter',
 		'dsv'        => 'SMW\DsvResultPrinter',
 		'json'       => 'SMW\JsonResultPrinter',
 		'rdf'        => 'SMW\RdfResultPrinter'
