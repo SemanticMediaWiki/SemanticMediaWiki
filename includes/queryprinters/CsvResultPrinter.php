@@ -67,7 +67,8 @@ class CsvResultPrinter extends FileExportPrinter {
 		if ( $outputMode == SMW_OUTPUT_FILE ) { // make CSV file
 
 			$csv = new Csv(
-				$this->params['showsep']
+				$this->params['showsep'],
+				$this->params['bom']
 			);
 
 			$sep = str_replace( '_', ' ', $this->params['sep'] );
@@ -149,6 +150,12 @@ class CsvResultPrinter extends FileExportPrinter {
 			'type' => 'boolean',
 			'default' => false,
 			'message' => 'smw-paramdesc-csv-merge',
+		);
+
+		$params['bom'] = array(
+			'type' => 'boolean',
+			'default' => false,
+			'message' => 'smw-paramdesc-csv-bom',
 		);
 
 		return $params;
