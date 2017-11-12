@@ -480,7 +480,9 @@ abstract class ResultPrinter implements IResultPrinter {
 			$link->setStyle(  'smw-' . $this->params['format'] . '-' . Sanitizer::escapeClass( $classAffix ) );
 		}
 
-		$link->setParameter( $this->params['format'], 'format' );
+		if ( isset( $this->params['format'] ) ) {
+			$link->setParameter( $this->params['format'], 'format' );
+		}
 
 		/**
 		 * @var \IParam $param
