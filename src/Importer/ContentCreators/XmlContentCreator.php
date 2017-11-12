@@ -59,7 +59,7 @@ class XmlContentCreator implements ContentCreator {
 	 *
 	 * @param ImportContents $importContents
 	 */
-	public function doCreateFrom( ImportContents $importContents ) {
+	public function create( ImportContents $importContents ) {
 
 		$indent = '   ...';
 

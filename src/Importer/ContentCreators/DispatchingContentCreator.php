@@ -67,12 +67,12 @@ class DispatchingContentCreator implements ContentCreator {
 	 * @param ImportContents $importContents
 	 * @throws RuntimeException
 	 */
-	public function doCreateFrom( ImportContents $importContents ) {
+	public function create( ImportContents $importContents ) {
 
 		foreach ( $this->contentCreators as $contentCreator ) {
 			if ( $contentCreator->canCreateContentsFor( $importContents ) ) {
 				$contentCreator->setMessageReporter( $this->messageReporter );
-				return $contentCreator->doCreateFrom( $importContents );
+				return $contentCreator->create( $importContents );
 			}
 		}
 

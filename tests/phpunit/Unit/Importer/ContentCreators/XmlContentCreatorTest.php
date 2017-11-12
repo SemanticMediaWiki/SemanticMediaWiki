@@ -91,7 +91,7 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		$importContents->setContentType( ImportContents::CONTENT_XML );
 		$importContents->setContentsFile( 'Foo' );
 
-		$instance->doCreateFrom( $importContents );
+		$instance->create( $importContents );
 	}
 
 }

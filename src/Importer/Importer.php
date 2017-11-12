@@ -92,6 +92,8 @@ class Importer implements MessageReporterAware {
 			return $this->messageReporter->reportMessage( "\nImport support not enabled, processing completed.\n" );
 		}
 
+		$import = false;
+
 		foreach ( $this->contentIterator as $key => $importContents ) {
 			$this->messageReporter->reportMessage( "\nImport of $key ...\n" );
 
@@ -105,29 +107,33 @@ class Importer implements MessageReporterAware {
 				$this->doImportContents( $impContents );
 			}
 
-
 			$this->messageReporter->reportMessage( "   ... done.\n" );
+			$import = true;
 		}
 
 		if ( $this->contentIterator->getErrors() !== array() ) {
 			$this->messageReporter->reportMessage(
-				"\n" . 'Import failed due to "' . implode( ", ", $this->contentIterator->getErrors() ) . '"'
+				"\n" . 'Import failed on "' . implode( ", ", $this->contentIterator->getErrors() ) . '"'
 			);
 		}
 
-		$this->messageReporter->reportMessage( "\nImport processing completed.\n" );
+		if ( $import ) {
+			$this->messageReporter->reportMessage( "\nImport processing completed.\n" );
+		}
 	}
 
 	private function doImportContents( ImportContents $importContents ) {
 
 		$indent = '   ...';
 
-		if ( $importContents->getErrors() !== array() ) {
-			return $this->messageReporter->reportMessage( "$indent ... " . implode( ',', $importContents->getErrors() ) ." ...\n" );
+		if ( $importContents->getErrors() === [] ) {
+			$this->contentCreator->setMessageReporter( $this->messageReporter );
+			$this->contentCreator->create( $importContents );
 		}
 
-		$this->contentCreator->setMessageReporter( $this->messageReporter );
-		$this->contentCreator->doCreateFrom( $importContents );
+		foreach ( $importContents->getErrors() as $error ) {
+			$this->messageReporter->reportMessage( "$indent " . $error . " ...\n" );
+		}
 	}
 
 }
