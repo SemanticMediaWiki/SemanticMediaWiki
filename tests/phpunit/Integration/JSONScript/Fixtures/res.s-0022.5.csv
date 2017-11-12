@@ -1,0 +1,5 @@
+|"Has number"|"Has text"
+Example/S0022/1||"Some example"
+Example/S0022/2|123+345|
+Example/S0022/3|123|ABC
+Example/S0022/4|123|DEF

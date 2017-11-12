@@ -132,6 +132,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 			'headers'   => SMW_HEADERS_PLAIN,
 			'format'    => 'csv',
 			'sep'       => ',',
+			'valuesep'  => ',',
 			'showsep'   => false,
 			'offset'    => 0,
 			'merge'     => false,
