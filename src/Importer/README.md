@@ -1,13 +1,13 @@
 The objective of the `Importer` is to provide a simple mechanism for deploying
-data structures and support information in a loose yet structerd form during the installation (setup) process.
+data structures and support information in a loose yet structured form during the installation (setup) process.
 
 ## Import definitions
 
-[`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs) defines the import directory from where content is to be imported.
+[`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs) defines import directories from where content can be imported.
 
-Import defintions are defined using a `JSON` definition which provides the structural means and easily adaptable and extendable by end-users.
+Import defintions are defined using a `JSON` format which provides the structural means and is considered easily extendable by end-users.
 
-The import files are sorted and therefore sequentially processed based on the file name. In case where content relies on other content an approriate naming convention should be followed to ensure required definitions are imported first.
+The import files are sorted and therefore sequentially processed based on the file name. In case where content relies on other content an approriate naming convention should be followed to ensure required definitions are imported in the expected order.
 
 ### Default definitions
 
@@ -16,7 +16,7 @@ source__ of content for a wiki and is the reason why the option `canReplace` is 
 
 ### Custom definitions
 
-It is possible for a user to define custom import definitions by extending [`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs)
+It is possible to define custom import definitions using [`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs)
 with a custom location (directory) from where import definitions can be loaded.
 
 ```
@@ -25,7 +25,7 @@ $GLOBALS['smwgImportFileDirs'] += [
 ];
 ```
 
-### Definition fields
+### Fields
 
 `JSON` schema and fields:
 
@@ -39,17 +39,16 @@ $GLOBALS['smwgImportFileDirs'] += [
   an import or not
 
 The [`$smwgImportReqVersion`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportReqVersion) stipulates
-the required version and only an import file that matches that version is permitted to be imported.
+the required version for an import and only definitions that match that version are permitted to be imported.
 
 ### Examples
 
 #### XML import
 
-It is possible to use MediaWiki's XML format as import source when linked from
-`importFrom` (any non MediaWiki XML format will be ignored).
+It is possible to use MediaWiki's XML format as import source when linked from the
+`importFrom` field (any non MediaWiki XML format will be ignored).
 
-The location for the `custom.xml` is relative to `$smwgImportFileDirs` path with the
-`Importer` using an auto discovery to find matchable source files.
+The location for the mentioned `custom.xml` is relative to the selected `$smwgImportFileDirs` directory.
 
 <pre>
 {
@@ -103,8 +102,8 @@ The location for the `custom.xml` is relative to `$smwgImportFileDirs` path with
 
 ## Import process
 
-During the setup process, the `Installer` will run the `ContentsImporter` and inform
-about the process similar to:
+During the setup process, the `Installer` will automatically run and inform
+about the process which will output something similar to:
 
 <pre>
 Import of vocabulary.json ...
