@@ -6,6 +6,7 @@ use SMW\Importer\Importer;
 use SMW\Importer\ContentIterator;
 use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
+use SMW\Importer\ContentModeller;
 use SMW\Importer\ContentCreators\DispatchingContentCreator;
 use SMW\Importer\ContentCreators\XmlContentCreator;
 use SMW\Importer\ContentCreators\TextContentCreator;
@@ -91,11 +92,12 @@ return array(
 	 *
 	 * @return callable
 	 */
-	'JsonContentIterator' => function( $containerBuilder, $importFileDir ) {
+	'JsonContentIterator' => function( $containerBuilder, $importFileDirs ) {
 		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', '\SMW\Importer\JsonContentIterator' );
 
 		$jsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(
-			$importFileDir
+			new ContentModeller(),
+			$importFileDirs
 		);
 
 		return new JsonContentIterator( $jsonImportContentsFileDirReader );

@@ -35,7 +35,7 @@ return array(
 	# Controls the content import directory and version that is expected to be
 	# imported during the setup process.
 	#
-	# For all legitimate files in `smwgImportFileDir`, the import is initiated
+	# For all legitimate files in `smwgImportFileDirs`, the import is initiated
 	# if the `smwgImportReqVersion` compares with the declared version in the file.
 	#
 	# In case `smwgImportReqVersion` is maintained with `false` then the import
@@ -43,7 +43,7 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgImportFileDir' => __DIR__ . '/src/Importer/data',
+	'smwgImportFileDirs' => [ 'default' => __DIR__ . '/src/Importer/data' ],
 	'smwgImportReqVersion' => 1,
 	##
 

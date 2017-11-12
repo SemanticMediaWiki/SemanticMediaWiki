@@ -48,7 +48,7 @@ class Settings extends Options {
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
-			'smwgImportFileDir' => $GLOBALS['smwgImportFileDir'],
+			'smwgImportFileDirs' => $GLOBALS['smwgImportFileDirs'],
 			'smwgImportReqVersion' => $GLOBALS['smwgImportReqVersion'],
 			'smwgSemanticsEnabled' => $GLOBALS['smwgSemanticsEnabled'],
 			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
@@ -433,6 +433,10 @@ class Settings extends Options {
 			$configuration['smwgQSortFeatures'] = $configuration['smwgQSortFeatures'] & ~SMW_QSORT_RANDOM;
 		}
 
+		if ( isset( $GLOBALS['smwgImportFileDir'] ) ) {
+			$configuration['smwgImportFileDirs'] = (array)$GLOBALS['smwgImportFileDir'];
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
@@ -495,6 +499,7 @@ class Settings extends Options {
 				'smwgUseCategoryHierarchy' => 'smwgCategoryFeatures',
 				'smwgQSortingSupport' => 'smwgQSortFeatures',
 				'smwgQRandSortingSupport' => 'smwgQSortFeatures',
+				'smwgImportFileDir' => 'smwgImportFileDirs',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',
