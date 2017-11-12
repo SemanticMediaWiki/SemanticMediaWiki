@@ -56,7 +56,7 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 
 		$containerBuilder->registerObject( 'Settings', new Settings( array(
 			'smwgImportReqVersion' => 1,
-			'smwgImportFileDir' => 'foo'
+			'smwgImportFileDirs' => [ 'foo' ]
 		) ) );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'ImporterServices.php' );

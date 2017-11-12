@@ -746,7 +746,7 @@ class HookRegistry {
 
 			$importer = $importerServiceFactory->newImporter(
 				$importerServiceFactory->newJsonContentIterator(
-					$applicationFactory->getSettings()->get( 'smwgImportFileDir' )
+					$applicationFactory->getSettings()->get( 'smwgImportFileDirs' )
 				)
 			);
 

@@ -35,7 +35,7 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 	public function testValidTextContent() {
 
 		$importer = $this->importerServiceFactory->newImporter(
-			$this->importerServiceFactory->newJsonContentIterator( $this->fixtures . '/ValidTextContent' )
+			$this->importerServiceFactory->newJsonContentIterator( [ $this->fixtures . '/ValidTextContent' ] )
 		);
 
 		$importer->setMessageReporter( $this->spyMessageReporter );
@@ -59,7 +59,7 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 		}
 
 		$importer = $this->importerServiceFactory->newImporter(
-			$this->importerServiceFactory->newJsonContentIterator( $this->fixtures . '/ValidXmlContent' )
+			$this->importerServiceFactory->newJsonContentIterator( [ $this->fixtures . '/ValidXmlContent' ] )
 		);
 
 		$importer->setMessageReporter( $this->spyMessageReporter );

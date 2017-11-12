@@ -14,6 +14,11 @@ use RuntimeException;
 class JsonImportContentsFileDirReader {
 
 	/**
+	 * @var ContentModeller
+	 */
+	private $contentModeller;
+
+	/**
 	 * @var array
 	 */
 	private static $contents = array();
@@ -24,20 +29,22 @@ class JsonImportContentsFileDirReader {
 	private $errors = array();
 
 	/**
-	 * @var string
+	 * @var []
 	 */
-	private $importFileDir = '';
+	private $importFileDirs = [];
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $importFileDir
+	 * @param ContentModeller $contentModeller
+	 * @param array $importFileDirs
 	 */
-	public function __construct( $importFileDir = '' ) {
-		$this->importFileDir = $importFileDir;
+	public function __construct( ContentModeller $contentModeller, $importFileDirs = [] ) {
+		$this->contentModeller = $contentModeller;
+		$this->importFileDirs = $importFileDirs;
 
-		if ( $this->importFileDir === '' ) {
-			$this->importFileDir = $GLOBALS['smwgImportFileDir'];
+		if ( $this->importFileDirs === [] ) {
+			$this->importFileDirs = $GLOBALS['smwgImportFileDirss'];
 		}
 	}
 
@@ -53,114 +60,37 @@ class JsonImportContentsFileDirReader {
 	/**
 	 * @since 2.5
 	 *
-	 * @return array
-	 */
-	public function getFiles() {
-		return $this->getFilesFromLocation( $this->getImportFileDir(), 'json' );
-	}
-
-	/**
-	 * @since 2.5
-	 *
 	 * @return ImportContents[]
-	 * @throws RuntimeException
 	 */
 	public function getContentList() {
 
-		$contents = array();
+		$contents = [];
 
-		try{
-			$files = $this->getFiles();
-		} catch( RuntimeException $e ) {
-			$this->errors[] = $this->importFileDir . ' is not accessible.';
-			$files = array();
-		}
+		foreach ( $this->importFileDirs as $importFileDir ) {
 
-		foreach ( $files as $file => $path ) {
-			$importContents = $this->getImportContents( $this->readJSONFile( $path ) );
-
-			if ( $importContents === null ) {
-				continue;
+			try{
+				$files = $this->getFilesFromLocation( $this->normalize( $importFileDir ), 'json' );
+			} catch( RuntimeException $e ) {
+				$this->errors[] = $importFileDir . ' is not accessible.';
+				$files = array();
 			}
 
-			$contents[$file] = $importContents;
-		}
+			foreach ( $files as $file => $path ) {
 
-		return $contents;
-	}
-
-	private function getImportContents( $fileContents ) {
-
-		$contents = array();
-
-		if ( !isset( $fileContents['import'] ) ) {
-			return;
-		}
-
-		foreach ( $fileContents['import'] as $value ) {
-			$importContents = new ImportContents();
-
-			if ( isset( $value['page'] ) ) {
-				$importContents->setName( $value['page'] );
-			}
-
-			if ( isset( $value['namespace'] ) ) {
-				$importContents->setNamespace(
-					defined( $value['namespace'] ) ? constant( $value['namespace'] ) : 0
+				$contentList = $this->contentModeller->makeContentList(
+					$importFileDir,
+					$this->readJSONFile( $path )
 				);
+
+				if ( $contentList === [] ) {
+					continue;
+				}
+
+				$contents[$file] = $contentList;
 			}
-
-			if ( !isset( $value['contents'] ) || $value['contents'] === '' ) {
-				$importContents->addError( 'Missing, or has empty contents section' );
-			} else {
-				$this->fetchContents( $value['contents'], $importContents );
-			}
-
-			if ( !isset( $value['description'] ) ) {
-				$importContents->setDescription( $fileContents['description'] );
-			} else {
-				$importContents->setDescription( $value['description'] );
-			}
-
-			$importContents->setVersion( $fileContents['meta']['version'] );
-
-			if ( isset( $value['options'] ) ) {
-				$importContents->setOptions( $value['options'] );
-			}
-
-			$contents[] = $importContents;
 		}
 
 		return $contents;
-	}
-
-	private function fetchContents( $contents, $importContents ) {
-
-		$importContents->setContentType( ImportContents::CONTENT_TEXT );
-
-		if ( !is_array( $contents ) || !isset( $contents['importFrom'] ) ) {
-			return $importContents->setContents( $contents );
-		}
-
-		$file = $contents['importFrom'];
-
-		$file = str_replace(
-			array( '\\', '/' ),
-			DIRECTORY_SEPARATOR,
-			$this->importFileDir . ( $file{0} === '/' ? '' : '/' ) . $file
-		);
-
-		if ( !is_readable( $file ) ) {
-			return $importContents->addError( $contents['importFrom'] . " wasn't accessible" );
-		}
-
-		$extension = pathinfo( $file, PATHINFO_EXTENSION );
-
-		if ( $extension === 'xml' ) {
-			$importContents->setContentType( ImportContents::CONTENT_XML );
-		}
-
-		$importContents->setContentsFile( $file );
 	}
 
 	private function readJSONFile( $file ) {
@@ -177,9 +107,13 @@ class JsonImportContentsFileDirReader {
 		throw new RuntimeException( ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() ) );
 	}
 
-	private function getImportFileDir() {
+	private function normalize( $importFileDir ) {
 
-		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $this->importFileDir );
+		if ( $importFileDir === '' ) {
+			return '';
+		}
+
+		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $importFileDir );
 
 		if ( is_readable( $path ) ) {
 			return $path;
@@ -189,6 +123,10 @@ class JsonImportContentsFileDirReader {
 	}
 
 	private function getFilesFromLocation( $path, $extension ) {
+
+		if ( $path === '' ) {
+			return [];
+		}
 
 		$files = array();
 
