@@ -91,7 +91,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		$importContents->setContentType( ImportContents::CONTENT_TEXT );
 		$importContents->setName( 'Foo' );
 
-		$instance->doCreateFrom( $importContents );
+		$instance->create( $importContents );
 	}
 
 }

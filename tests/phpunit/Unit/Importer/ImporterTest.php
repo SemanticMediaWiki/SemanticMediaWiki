@@ -97,7 +97,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array() ) );
 
 		$this->contentCreator->expects( $this->atLeastOnce() )
-			->method( 'doCreateFrom' );
+			->method( 'create' );
 
 		$instance = new Importer(
 			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
@@ -126,7 +126,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array( 'Error' ) ) );
 
 		$this->contentCreator->expects( $this->never() )
-			->method( 'doCreateFrom' );
+			->method( 'create' );
 
 		$instance = new Importer(
 			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),

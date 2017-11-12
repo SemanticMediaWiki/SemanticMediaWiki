@@ -82,7 +82,7 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$contentCreator->expects( $this->any() )
-			->method( 'doCreateFrom' )
+			->method( 'create' )
 			->with( $this->equalTo( $importContents ) )
 			->will( $this->returnValue( true ) );
 
@@ -97,7 +97,7 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->doCreateFrom( $importContents )
+			$instance->create( $importContents )
 		);
 	}
 
@@ -115,7 +115,7 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$contentCreator->expects( $this->never() )
-			->method( 'doCreateFrom' );
+			->method( 'create' );
 
 		$instance = new DispatchingContentCreator(
 			array(
@@ -124,7 +124,7 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->doCreateFrom( $importContents );
+		$instance->create( $importContents );
 	}
 
 }
