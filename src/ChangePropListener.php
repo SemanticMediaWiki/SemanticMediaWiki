@@ -58,7 +58,7 @@ class ChangePropListener {
 	 *
 	 * @param Store $store
 	 */
-	public static function enabledListeners( Store $store ) {
+	public function loadListeners( Store $store ) {
 
 		foreach ( self::$listenerCallbacks as $key => $value ) {
 
@@ -103,7 +103,7 @@ class ChangePropListener {
 	/**
 	 * @since 3.0
 	 */
-	public static function callListeners() {
+	public function callListeners() {
 
 		if ( self::$deferrableCallbacks === [] ) {
 			return;

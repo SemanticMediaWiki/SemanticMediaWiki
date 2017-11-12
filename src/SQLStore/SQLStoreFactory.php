@@ -26,6 +26,7 @@ use SMW\SQLStore\EntityStore\SqlEntityLookupResultFetcher;
 use SMW\ProcessLruCache;
 use SMW\SQLStore\EntityStore\IdMatchFinder;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
+use SMW\ChangePropListener;
 
 /**
  * @license GNU GPL v2+
@@ -523,6 +524,15 @@ class SQLStoreFactory {
 		);
 
 		return $subobjectListFinder;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ChangePropListener
+	 */
+	public function newChangePropListener() {
+		return new ChangePropListener();
 	}
 
 }
