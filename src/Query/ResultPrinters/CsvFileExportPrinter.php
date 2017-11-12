@@ -3,131 +3,65 @@
 namespace SMW\Query\ResultPrinters;
 
 use Sanitizer;
-use SMWQueryResult;
+use SMWQueryResult as QueryResult;
 use SMW\Utils\Csv;
 
 /**
- * CSV export for SMW Queries
- *
- * @since 1.9
- *
+ * CSV export support
  *
  * @license GNU GPL v2+
+ * @since 1.9
+ *
  * @author Nathan R. Yergler
  * @author Markus Krötzsch
- */
-
-/**
- * Printer class for generating CSV output
- *
- * @ingroup QueryPrinter
+ * @author mwjames
  */
 class CsvFileExportPrinter extends FileExportPrinter {
 
 	/**
-	 * @codeCoverageIgnore
+	 * @see ResultPrinter::getName
 	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function getName() {
 		return $this->msg( 'smw_printername_csv' )->text();
 	}
 
 	/**
-	 * @see SMWIExportPrinter::getMimeType
-	 * @codeCoverageIgnore
+	 * @see FileExportPrinter::getMimeType
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
-	public function getMimeType( SMWQueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ) {
 		return 'text/csv';
 	}
 
 	/**
-	 * @see SMWIExportPrinter::getFileName
+	 * @see FileExportPrinter::getFileName
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
-	 *
-	 * @return string|boolean
+	 * {@inheritDoc}
 	 */
-	public function getFileName( SMWQueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ) {
 		return $this->params['filename'];
 	}
 
-	protected function getResultText( SMWQueryResult $res, $outputMode ) {
-		$result = '';
-		$header = [];
-
-		if ( $outputMode == SMW_OUTPUT_FILE ) { // make CSV file
-
-			$csv = new Csv(
-				$this->params['showsep'],
-				$this->params['bom']
-			);
-
-			$sep = str_replace( '_', ' ', $this->params['sep'] );
-			$vsep = str_replace( '_', ' ', $this->params['valuesep'] );
-
-			if ( $this->mShowHeaders ) {
-				foreach ( $res->getPrintRequests() as $pr ) {
-					$header[] = $pr->getLabel();
-				}
-			}
-
-			$rows = [];
-
-			while ( $row = $res->getNext() ) {
-				$row_items = array();
-
-				foreach ( $row as /* SMWResultArray */ $field ) {
-					$growing = array();
-
-					while ( ( $object = $field->getNextDataValue() ) !== false ) {
-						$growing[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
-					}
-
-					$row_items[] = implode( $vsep, $growing );
-				}
-
-				$rows[] = $row_items;
-			}
-
-			if ( $this->params['merge'] === true ) {
-				$rows = $csv->merge( $rows, $vsep );
-			}
-
-			$result .= $csv->toString(
-				$header,
-				$rows,
-				$sep
-			);
-		} else { // just make link to feed
-			$result .= $this->getLink( $res, $outputMode )->getText( $outputMode, $this->mLinker );
-			$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
-		}
-		return $result;
-	}
-
 	/**
-	 * @see SMWResultPrinter::getParamDefinitions
-	 * @codeCoverageIgnore
+	 * @see ResultPrinter::getParamDefinitions
 	 *
 	 * @since 1.8
 	 *
-	 * @param ParamDefinition[] $definitions
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$definitions['searchlabel']->setDefault( $this->msg( 'smw_csv_link' )->inContentLanguage()->text() );
+		$definitions['searchlabel']->setDefault(
+			$this->msg( 'smw_csv_link' )->inContentLanguage()->text()
+		);
 
 		$params[] = array(
 			'name' => 'sep',
@@ -165,6 +99,82 @@ class CsvFileExportPrinter extends FileExportPrinter {
 		);
 
 		return $params;
+	}
+
+	/**
+	 * @see ResultPrinter::getResultText
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function getResultText( QueryResult $res, $outputMode ) {
+
+		// Always return a link for when the output mode is not a file request,
+		// a file request is normally only initiated when resolving the query
+		// via Special:Ask
+		if ( $outputMode !== SMW_OUTPUT_FILE ) {
+			return $this->getCsvLink( $res, $outputMode );
+		}
+
+		$csv = new Csv(
+			$this->params['showsep'],
+			$this->params['bom']
+		);
+
+		return $this->getCsv( $csv, $res );
+	}
+
+	private function getCsvLink( QueryResult $res, $outputMode ) {
+
+		// Can be viewed as HTML if requested, no more parsing needed
+		$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
+
+		$link = $this->getLink(
+			$res,
+			$outputMode
+		);
+
+		return $link->getText( $outputMode, $this->mLinker );
+	}
+
+	private function getCsv( Csv $csv, $res ) {
+
+		$sep = str_replace( '_', ' ', $this->params['sep'] );
+		$vsep = str_replace( '_', ' ', $this->params['valuesep'] );
+
+		$header = [];
+		$rows = [];
+
+		if ( $this->mShowHeaders ) {
+			foreach ( $res->getPrintRequests() as $pr ) {
+				$header[] = $pr->getLabel();
+			}
+		}
+
+		while ( $row = $res->getNext() ) {
+			$row_items = [];
+
+			foreach ( $row as /* SMWResultArray */ $field ) {
+				$growing = [];
+
+				while ( ( $object = $field->getNextDataValue() ) !== false ) {
+					$growing[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
+				}
+
+				$row_items[] = implode( $vsep, $growing );
+			}
+
+			$rows[] = $row_items;
+		}
+
+		if ( $this->params['merge'] === true ) {
+			$rows = $csv->merge( $rows, $vsep );
+		}
+
+		return $csv->toString(
+			$header,
+			$rows,
+			$sep
+		);
 	}
 
 }
