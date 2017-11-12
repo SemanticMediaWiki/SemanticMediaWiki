@@ -34,7 +34,7 @@ class ChangePropListenerTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->once() )
 			->method( 'getSMWPropertyID' )
-			->with( $this->equalTo( new DIProperty( 'Foo' ) ) )
+			->with( $this->equalTo( new DIProperty( __METHOD__ ) ) )
 			->will( $this->returnValue( 42 ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -42,7 +42,7 @@ class ChangePropListenerTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
-		$store->expects( $this->once() )
+		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
@@ -56,12 +56,13 @@ class ChangePropListenerTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( [ 'Bar' ] ) );
 
 		$instance = new ChangePropListener();
+		$instance->clearListeners();
 
-		$instance->addListenerCallback( 'Foo', function( $record ) use( $test ) {
+		$instance->addListenerCallback( __METHOD__, function( $record ) use( $test ) {
 			$test->execute( $record );
 		} );
 
-		$instance->enabledListeners( $store );
+		$instance->loadListeners( $store );
 
 		$instance->record( 42, [ 'Bar' ] );
 

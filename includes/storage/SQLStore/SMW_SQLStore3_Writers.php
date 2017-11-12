@@ -140,19 +140,22 @@ class SMWSQLStore3Writers {
 		\Hooks::run( 'SMWSQLStore3::updateDataBefore', array( $this->store, $semanticData ) );
 
 		$subject = $semanticData->getSubject();
+		$connection = $this->store->getConnection( 'mw.db' );
 
 		$subobjectListFinder = $this->factory->newSubobjectListFinder();
 
 		// Reset diff before starting the update
 		$this->propertyTableRowDiffer->resetCompositePropertyTableDiff();
 
-		$changePropListener = new ChangePropListener();
+		$changePropListener = $this->factory->newChangePropListener();
+		$hierarchyLookup = $this->factory->newHierarchyLookup();
 
-		$this->factory->newHierarchyLookup()->addListenersTo(
+		// #2698
+		$hierarchyLookup->addListenersTo(
 			$changePropListener
 		);
 
-		$changePropListener->enabledListeners(
+		$changePropListener->loadListeners(
 			$this->store
 		);
 
@@ -162,7 +165,7 @@ class SMWSQLStore3Writers {
 		// Update data about our subobjects
 		$subSemanticData = $semanticData->getSubSemanticData();
 
-		$this->store->getConnection( 'mw.db' )->beginAtomicTransaction( __METHOD__ );
+		$connection->beginAtomicTransaction( __METHOD__ );
 
 		foreach( $subSemanticData as $subobjectData ) {
 			$this->doFlatDataUpdate( $subobjectData );
@@ -181,7 +184,7 @@ class SMWSQLStore3Writers {
 			}
 		}
 
-		$this->store->getConnection( 'mw.db' )->endAtomicTransaction( __METHOD__ );
+		$connection->endAtomicTransaction( __METHOD__ );
 
 		$changePropListener->callListeners();
 
@@ -253,15 +256,15 @@ class SMWSQLStore3Writers {
 		);
 
 		// Take care of all remaining property table data
-		list( $deleteRows, $insertRows, $newHashes ) = $this->propertyTableRowDiffer->computeTableRowDiffFor(
+		list( $insertRows, $deleteRows, $newHashes ) = $this->propertyTableRowDiffer->computeTableRowDiffFor(
 			$sid,
 			$data
 		);
 
 		$this->writePropertyTableUpdates(
 			$sid,
-			$deleteRows,
 			$insertRows,
+			$deleteRows,
 			$newHashes
 		);
 

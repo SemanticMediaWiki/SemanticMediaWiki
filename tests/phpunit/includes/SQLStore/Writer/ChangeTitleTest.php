@@ -41,6 +41,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'find' )
 			->will( $this->returnValue( [] ) );
 
+		$changePropListener = $this->getMockBuilder( '\SMW\ChangePropListener' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -56,6 +60,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newSubobjectListFinder' )
 			->will( $this->returnValue( $subobjectListFinder ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newChangePropListener' )
+			->will( $this->returnValue( $changePropListener ) );
 	}
 
 	public function testCanConstruct() {
