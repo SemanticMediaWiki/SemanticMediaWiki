@@ -5,7 +5,6 @@
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/badges/quality-score.png?s=d9aac7e68e6554f95b0a89608cbc36985429d819)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/)
 [![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-media-wiki/version.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
 [![Packagist download count](https://poser.pugx.org/mediawiki/semantic-media-wiki/d/total.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
-[![Dependency Status](https://www.versioneye.com/php/mediawiki:semantic-media-wiki/badge.png)](https://www.versioneye.com/php/mediawiki:semantic-media-wiki)
 
 Semantic MediaWiki (a.k.a. SMW) is a free, open-source extension to [MediaWiki](https://www.semantic-mediawiki.org/wiki/MediaWiki) – the wiki software that
 powers Wikipedia – that lets you store and query data within the wiki's pages.
