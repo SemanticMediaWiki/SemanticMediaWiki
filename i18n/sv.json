@@ -401,7 +401,6 @@
 	"smw-datavalue-import-invalid-format": "Förväntade att strängen \"$1\" skulle delas upp i fyra delar men formatet uppfattades inte.",
 	"smw-pa-property-predefined_impo": "\"$1\" är en fördefinierade egenskap som beskriver ett förhållande till en [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary importerad ordlista] och tillhandahålls av [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_type": "\"$1\" är en fördefinierad egenskap som beskriver [[Special:Types|datatypen]] av en egenskap och tillhandahålls av [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-datavalue-property-restricted-use": "Egenskapen \"$1\" har märkts för begränsad användning.",
 	"smw-datavalue-property-invalid-character": "\"$1\" innehåller tecknet \"$2\" som del av en egenskapsetikett och har klassificerats som  ogiltig.",
 	"smw-datavalue-property-invalid-chain": "\"$1\" tillåts inte användas som en egenskapskedja under kommentarsprocessen.",
 	"smw-datavalue-restricted-use": "Datavärdet \"$1\" har märkts för begränsad användning.",

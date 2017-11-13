@@ -328,7 +328,6 @@
 	"log-description-smw": "Semantic MediaWiki とその構成要素によって報告された、[https://www.semantic-mediawiki.org/wiki/Help:Logging 有効なイベントの種類]についての活動です。",
 	"smw-datavalue-import-invalid-value": "「$1」は有効な書式ではありません。\"名前空間\":\"識別子\"（例：「foaf:name」）から成ることが要求されています。",
 	"smw-pa-property-predefined_sobj": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]によって提供される、通常の Wiki のページと同様のプロパティ値の割り当てを溜めることができ、[https://www.semantic-mediawiki.org/wiki/Help:Container コンテナ]の構造を示す定義済みのプロパティです。",
-	"smw-datavalue-property-restricted-use": "プロパティ「$1」は利用が限定されています。",
 	"smw-datavalue-invalid-number": "「$1」は数値として解釈できません。",
 	"smw-query-condition-circular": "「$1」において循環条件の可能性が検出されました。",
 	"smw-sp-types-list": "データ型の一覧",

@@ -294,7 +294,6 @@
 	"smw-pa-property-predefined-long_sobj": "Il contenitore consente di accumulare assegnazioni proprietà-valore simili a quelli di una normale pagina wiki, ma all'interno di una diversa entità di spazio, pur essendo collegati al soggetto incorporato .",
 	"smw-pa-property-predefined_errp": "\"$1\" è una proprietà predefinita per tenere traccia di errori di inserimento per valori di annotazioni irregolari che sono stati probabilmente causati da restrizioni di tipo o [[Property:Allows value|valori consentiti]] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value \"$1\"] è una proprietà predefinita che può definire una lista di valori ammissibili per limitare assegnazioni di valori per una proprietà ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-datavalue-property-restricted-use": "La proprietà \"$1\" è stata contrassegnata per l'uso limitato.",
 	"smw-datavalue-property-create-restriction": "La proprietà \"$1\" non esiste e l'utente non possiede il premesso \"$2\" (vedi [https://www.semantic-mediawiki.org/wiki/Help:Authority_mode authority mode]) per creare o annotare valori o proprietà non approvate.",
 	"smw-datavalue-restricted-use": "Il valore dei dati \"$1\" è stato contrassegnato per l'uso limitato.",
 	"smw-datavalue-invalid-number": "\"$1\" non può essere interpretato come un numero.",

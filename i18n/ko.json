@@ -376,7 +376,6 @@
 	"log-show-hide-smw": "$1 시맨틱 미디어위키 로그",
 	"smw-datavalue-import-missing-type": "[[MediaWiki:Smw import $2|$2 가져오기]]에서 \"$1\"에 대한 유형 정의를 찾을 수 없습니다.",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 가져오기]]",
-	"smw-datavalue-property-restricted-use": "\"$1\" 속성은 이용이 제한되어 있습니다.",
 	"smw-datavalue-property-create-restriction": "\"$1\" 속성은 존재하지 않으며 사용자는 승인되지 않은 속성이 있는 값을 만들거나 주석을 추가할 \"$2\" 권한이 없습니다. ([https://www.semantic-mediawiki.org/wiki/Help:Authority_mode 인가\n 방식] 참고)",
 	"smw-datavalue-restricted-use": "데이터 값 $1은(는) 이용이 제한되어 있습니다.",
 	"smw-datavalue-invalid-number": "\"$1\"는 숫자로 해석되지 않습니다.",

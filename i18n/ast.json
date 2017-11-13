@@ -455,7 +455,6 @@
 	"smw-pa-property-predefined_errp": "«$1» ye una propiedá predefinida pa siguir los errores d'entrada por anotaciones de valores irregulares causaos posiblemente por torgues de tipu o de [[Property:Allows value|valor permitíu]] y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] ye una propiedá predefinida que puede definir una llista de valores posibles pa torgar designaciones de valores pa una propiedá y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pvali": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list «$1»] ye una propiedá predefinida que puede especificar una referencia a una llista que contien valores permitíos pa torgar designaciones de valores para una propiedá, y que ta proporcionada pola [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
-	"smw-datavalue-property-restricted-use": "La propiedá «$1» marcóse pa usu acutáu.",
 	"smw-datavalue-property-invalid-character": "«$1» contien el caráuter «$2» como parte de la etiqueta d'una propiedá y clasificóse como non válidu.",
 	"smw-datavalue-property-invalid-chain": "Nun se permite usar «$1» como cadena de propiedaes mientres el procesu d'anotación.",
 	"smw-datavalue-restricted-use": "Esti valor de datos marcóse pa usu acutáu. $1",

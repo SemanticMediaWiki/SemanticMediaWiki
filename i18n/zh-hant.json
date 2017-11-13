@@ -304,7 +304,6 @@
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 匯入]]",
 	"smw-pa-property-predefined_impo": "\"$1\" 是預先定義的屬性，用來描述與[https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary 已匯入詞彙]間的關係。",
 	"smw-pa-property-predefined_type": "\"$1\" 是預先定義的屬性，用來描述屬性的[[Special:Types|資料型態]]。",
-	"smw-datavalue-property-restricted-use": "屬性 \"$1\" 被標記為限制使用。",
 	"smw-datavalue-restricted-use": "資料值被標記為限制使用。$1",
 	"smw-datavalue-invalid-number": "\"$1\" 無法作為數字解讀。",
 	"smw-query-condition-circular": "於 \"$1\" 偵測到可能會發生循環的情況。",
