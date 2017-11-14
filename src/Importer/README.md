@@ -1,5 +1,4 @@
-The objective of the `Importer` is to provide a simple mechanism for deploying
-data structures and support information in a loose yet structured form during the installation (setup) process.
+The objective of the `Importer` is to provide a simple mechanism for deploying data structures and support information in a loose yet structured form during the installation (setup) process.
 
 ## Import definitions
 
@@ -11,16 +10,14 @@ The import files are sorted and therefore sequentially processed based on the fi
 
 ### Default definitions
 
-The pre-deployed `vocabulary.json` is __not__ expected to be the __authority
-source__ of content for a wiki and is the reason why the option `canReplace` is set `false` so that pre-existing content with the same name and namespace is not replaced.
+The pre-deployed `vocabulary.json` is __not__ expected to be the __authority source__ of content for a wiki and is the reason why the option `canReplace` is set `false` so that pre-existing content with the same name and namespace is not replaced.
 
 ### Custom definitions
 
-It is possible to define custom import definitions using [`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs)
-with a custom location (directory) from where import definitions can be loaded.
+It is possible to define one or more custom import definitions using [`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs) with a custom location (directory) from where import definitions can be loaded.
 
 ```
-$GLOBALS['smwgImportFileDirs'] += [
+$GLOBALS['smwgImportFileDirs'] = [
 	'movie-actor' => __DIR__ . '/import/movie-actor'
 ];
 ```
