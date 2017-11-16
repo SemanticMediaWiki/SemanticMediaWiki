@@ -53,7 +53,7 @@
 	"smw-paramdesc-table-class": "Eng zousätzlech CSS-Klass fir Tabellen",
 	"smw-paramdesc-table-transpose": "D'Iwwerschrëfte vun Tabelle vertikal an d'Resultater horizontal weisen",
 	"smw-paramdesc-rdfsyntax": "RDF-Syntax déi benotzt gi muss",
-	"smw-paramdesc-csv-sep": "D'Trennsymbol dat benotzt gi muss",
+	"smw-paramdesc-csv-sep": "Spezifizéiert d'Trennsymbol fir Kolonnen",
 	"smw-paramdesc-dsv-separator": "D'Trennsymbol dat benotzt gi muss",
 	"smw-paramdesc-dsv-filename": "Den Numm fir den DSV-Fichier",
 	"smw-paramdesc-searchlabel": "Den Text fir mam Siche virunzefueren",
