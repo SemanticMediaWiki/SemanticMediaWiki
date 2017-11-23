@@ -31,7 +31,8 @@
 			"Nitch",
 			"Helpau",
 			"Putnik",
-			"LeonardoGW"
+			"LeonardoGW",
+			"Wirbel78"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -175,6 +176,7 @@
 	"smw-sp-property-searchform-inputinfo": "Ввод чувствителен к регистру, и когда используется для фильтрации, отображаются только те свойства, которые соответствуют условию.",
 	"smw-special-property-searchform-options": "Параметры",
 	"smw-special-wantedproperties-filter-label": "Фильтр:",
+	"smw-special-wantedproperties-filter-none": "Ничего",
 	"smw-special-wantedproperties-filter-unapproved": "неподтвержденный",
 	"smw-special-wantedproperties-filter-unapproved-desc": "Опция фильтра использована в связи с режимом полномочий",
 	"concepts": "Концепты",
@@ -383,7 +385,7 @@
 	"smw-sp-admin-settings-button": "Создать список настроек",
 	"smw-admin-idlookup-title": "Поиск ID объекта",
 	"smw-admin-idlookup-docu": "Отображает сведения об идентификаторе внутреннего объекта, который представляет отдельные сущности (вики-страницу, подобъект и т.д.) в Семантической МедиаВики.",
-	"smw-admin-iddispose-title": "Поиск ID удаление",
+	"smw-admin-iddispose-title": "Удаление ID",
 	"smw-admin-iddispose-docu": "Операция утилизации неограниченной и удалит внутренний идентификатор объекта от движка хранения при подтверждении. Пожалуйста, выполнить эту задачу с '''осторожностью''' и только после того, как [https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal documentation] были проведены консультации.",
 	"smw-admin-iddispose-done": "Идентификатор «$1» был удалён из хранилища.",
 	"smw-admin-iddispose-references": "ID «$1» с по крайней мере одной активной ссылкой.",
@@ -478,5 +480,6 @@
 	"smw-no-data-available": "Нет доступных данных.",
 	"smw-query-reference-link-label": "Ссылка на запрос",
 	"smw-format-datatable-loadingrecords": "Загрузка…",
+	"smw-format-datatable-search": "Поиск:",
 	"smw-format-datatable-toolbar-export": "Экспорт"
 }
