@@ -757,7 +757,7 @@ return array(
 	# -- FEATURE IS DISABLED --
 	# If you want to import ontologies, you need to install RAP,
 	# a free RDF API for PHP, see
-	#     http://www.wiwiss.fu-berlin.de/suhl/bizer/rdfapi/
+	#     http://wifo5-03.informatik.uni-mannheim.de/bizer/rdfapi/index.html
 	# The following is the path to your installation of RAP
 	# (the directory where you extracted the files to) as seen
 	# from your local filesystem. Note that ontology import is
