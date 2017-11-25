@@ -1,0 +1,66 @@
+{
+	"description": "Test in-text annotation `_uri` on valid/invalid scheme",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"page": "Example/P0503/1",
+			"contents": "[[Has url::ftp://example.com/foo]]"
+		},
+		{
+			"page": "Example/P0503/2",
+			"contents": "[[Has url::User:Test]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 valid ftp",
+			"subject": "Example/P0503/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has url"
+					],
+					"propertyValues": [
+						"ftp://example.com/foo"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 invalid User:",
+			"subject": "Example/P0503/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
