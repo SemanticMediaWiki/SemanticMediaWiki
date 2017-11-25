@@ -164,7 +164,7 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->stringContains( ':smw:hlkp:eebbf01df970d569b285cb5b417c7ec3' ),
+				$this->stringContains( ':smw:hierarchy:25840d7839e2fe0369c3fe16014d21d1' ),
 				$this->anything() );
 
 		$instance = new HierarchyLookup(
@@ -245,7 +245,7 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->stringContains( ':smw:hlkp:28d64caa88a077bb0746e3928f06e353' ),
+				$this->stringContains( ':smw:hierarchy:d27ae8a4539ee4c7ab76aedcbf1c08c0' ),
 				$this->anything() );
 
 		$instance = new HierarchyLookup(
