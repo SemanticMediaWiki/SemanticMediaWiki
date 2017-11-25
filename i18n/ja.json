@@ -366,5 +366,6 @@
 	"smw-format-datatable-previous": "前",
 	"smw-format-datatable-sortascending": ": 列を昇順に並べ替えるにはアクティブにする",
 	"smw-format-datatable-sortdescending": ": 列を降順に並べ替えるにはアクティブにする",
-	"smw-format-datatable-toolbar-export": "エクスポート"
+	"smw-format-datatable-toolbar-export": "エクスポート",
+	"smw-property-reserved-category": "カテゴリ"
 }

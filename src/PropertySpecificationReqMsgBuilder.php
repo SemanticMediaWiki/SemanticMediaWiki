@@ -31,6 +31,11 @@ class PropertySpecificationReqMsgBuilder {
 	private $propertySpecificationReqExaminer;
 
 	/**
+	 * @var array
+	 */
+	private $propertyReservedNameList = [];
+
+	/**
 	 * @var string
 	 */
 	private $message = '';
@@ -53,6 +58,23 @@ class PropertySpecificationReqMsgBuilder {
 	 */
 	public function setSemanticData( SemanticData $semanticData = null ) {
 		$this->propertySpecificationReqExaminer->setSemanticData( $semanticData );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $propertyReservedNameList
+	 */
+	public function setPropertyReservedNameList( array $propertyReservedNameList ) {
+
+		foreach ( $propertyReservedNameList as $name ) {
+
+			if ( strpos( $name, 'smw-property-reserved' ) !== false ) {
+				$name = Message::get( $name, Message::TEXT, Message::CONTENT_LANGUAGE );
+			}
+
+			$this->propertyReservedNameList[$name] = true;
+		}
 	}
 
 	/**
@@ -88,6 +110,16 @@ class PropertySpecificationReqMsgBuilder {
 		$propertyName = $dataValue->getFormattedLabel();
 
 		$message = $this->checkUniqueness( $property, $propertyName );
+
+		if ( isset( $this->propertyReservedNameList[$propertyName] ) ) {
+			$message .= $this->createReqViolationMessage(
+				[
+					'error',
+					'smw-property-name-reserved',
+					$propertyName
+				]
+			);
+		}
 
 		$message .= $this->createReqViolationMessage(
 			$this->propertySpecificationReqExaminer->checkOn( $property )
@@ -137,7 +169,7 @@ class PropertySpecificationReqMsgBuilder {
 		return Html::rawElement(
 			'div',
 			array(
-				'id' => 'smw-property-content-violation-message',
+				'id' => $violationMessage[0],
 				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-'. $type : '' )
 			),
 			call_user_func_array( 'wfMessage', $violationMessage )->parse()
