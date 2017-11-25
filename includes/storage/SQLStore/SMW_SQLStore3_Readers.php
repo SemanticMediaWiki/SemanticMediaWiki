@@ -312,8 +312,9 @@ class SMWSQLStore3Readers {
 		// properties always need to be given as object,
 		// subjects at least if !$proptable->idsubject
 		if ( ( $id == 0 ) ||
-			( is_null( $object ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) ) {
-				return array();
+			( is_null( $object ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) ||
+			( $propTable->getDIType() === null ) ) {
+			return array();
 		}
 
 		$result = array();
