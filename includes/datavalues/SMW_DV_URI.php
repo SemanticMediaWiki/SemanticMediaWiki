@@ -45,6 +45,11 @@ class SMWURIValue extends SMWDataValue {
 	 */
 	private $showUrlContextInRawFormat = true;
 
+	/**
+	 * @var array
+	 */
+	private $schemeList = [];
+
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		switch ( $typeid ) {
@@ -64,6 +69,8 @@ class SMWURIValue extends SMWDataValue {
 				$this->m_mode = SMW_URI_MODE_URI;
 			break;
 		}
+
+		$this->schemeList = array_flip( $GLOBALS['smwgURITypeSchemeList'] );
 	}
 
 	protected function parseUserValue( $value ) {
@@ -108,6 +115,11 @@ class SMWURIValue extends SMWDataValue {
 				}
 				// decompose general URI components
 				$scheme = $parts[0];
+
+				if ( !isset( $this->schemeList[$scheme] ) ) {
+					return $this->addErrorMsg( array( 'smw-datavalue-uri-invalid-scheme', $scheme ) );
+				}
+
 				$parts = explode( '?', $parts[1], 2 ); // try to split "hier-part?queryfrag"
 				if ( count( $parts ) == 2 ) {
 					$hierpart = $parts[0];

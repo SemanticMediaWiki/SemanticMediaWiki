@@ -1693,4 +1693,18 @@ return array(
 	'smwgUseComparableContentHash' => true,
 	##
 
+	##
+	# List of supported schemes for a URI typed property
+	#
+	# @see https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
+	# @see https://www.w3.org/wiki/UriSchemes
+	#
+	# @since 3.0
+	##
+	'smwgURITypeSchemeList' => [
+		'http', 'https', 'mailto', 'tel', 'ftp', 'news', 'file', 'urn', 'telnet',
+		'ldap', 'gopher'
+	],
+	##
+
 );

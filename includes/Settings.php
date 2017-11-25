@@ -174,6 +174,7 @@ class Settings extends Options {
 			'smwgUseComparableContentHash' => $GLOBALS['smwgUseComparableContentHash'],
 			'smwgBrowseFeatures' => $GLOBALS['smwgBrowseFeatures'],
 			'smwgCategoryFeatures' => $GLOBALS['smwgCategoryFeatures'],
+			'smwgURITypeSchemeList' => $GLOBALS['smwgURITypeSchemeList'],
 		);
 
 		self::initLegacyMapping( $configuration );
