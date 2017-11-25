@@ -502,7 +502,7 @@ class SMWSQLStore3Readers {
 		// ***  Now execute the query and read the results  ***//
 		$result = array();
 
-		if ( !$proptable->isFixedPropertyTable() ) {
+		if ( $proptable->usesIdSubject() ) {
 			$where .= ( $where !== '' ? ' AND ' : ' ' ) . "smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
 			" AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW ) .
 			" AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW );
