@@ -214,11 +214,10 @@ class QueryResultDependencyListResolver {
 		// Safeguard against a possible category (or redirect thereof) to point
 		// to itself by relying on tracking the hash of already inserted objects
 		if ( !isset( $subjects[$hash] ) ) {
-			$subcategories = $this->hierarchyLookup->findSubcategoryList( $category );
+			$subcategories = $this->hierarchyLookup->getConsecutiveHierarchyList( $category );
 		}
 
 		foreach ( $subcategories as $subcategory ) {
-
 			$subjects[$subcategory->getHash()] = $subcategory;
 
 			if ( $this->hierarchyLookup->hasSubcategory( $subcategory ) ) {
@@ -237,17 +236,19 @@ class QueryResultDependencyListResolver {
 		if (
 			!isset( $subjects[$subject->getHash()] ) &&
 			!isset( $this->propertyDependencyExemptionlist[$subject->getDBKey()] ) ) {
-			$subproperties = $this->hierarchyLookup->findSubpropertyList( $property );
+			$subproperties = $this->hierarchyLookup->getConsecutiveHierarchyList( $property );
 		}
 
 		foreach ( $subproperties as $subproperty ) {
 
-			if ( isset( $this->propertyDependencyExemptionlist[$subproperty->getDBKey()] ) ) {
+			if ( isset( $this->propertyDependencyExemptionlist[$subproperty->getKey()] ) ) {
 				continue;
 			}
 
-			$subjects[$subproperty->getHash()] = $subproperty;
-			$this->doMatchProperty( $subjects, new DIProperty( $subproperty->getDBKey() ) );
+			$subject = $subproperty->getCanonicalDiWikiPage();
+			$subjects[$subject->getHash()] = $subject;
+
+			$this->doMatchProperty( $subjects, $subproperty );
 		}
 	}
 

@@ -19,7 +19,7 @@ class HierarchyLookup implements LoggerAwareInterface {
 	/**
 	 * Persistent cache namespace
 	 */
-	const CACHE_NAMESPACE = 'smw:hlkp';
+	const CACHE_NAMESPACE = 'smw:hierarchy';
 
 	/**
 	 * Consecutive hierarchy types
@@ -96,7 +96,7 @@ class HierarchyLookup implements LoggerAwareInterface {
 
 		$callback = function( $context ) {
 			$this->cache->delete(
-				smwfCacheKey( self::CACHE_NAMESPACE, self::TYPE_PROPERTY )
+				smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_PROPERTY, $this->subpropertyDepth ] )
 			);
 		};
 
@@ -104,7 +104,7 @@ class HierarchyLookup implements LoggerAwareInterface {
 
 		$callback = function( $context ) {
 			$this->cache->delete(
-				smwfCacheKey( self::CACHE_NAMESPACE, self::TYPE_CATEGORY )
+				smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_CATEGORY, $this->subcategoryDepth ] )
 			);
 		};
 
@@ -153,17 +153,11 @@ class HierarchyLookup implements LoggerAwareInterface {
 			return false;
 		}
 
-		$requestOptions = new RequestOptions();
-		$requestOptions->limit = 1;
-
-		$result = $this->lookup(
-			'_SUBP',
-			$property->getKey(),
-			$property->getDiWikiPage(),
-			$requestOptions
+		$result = $this->getConsecutiveHierarchyList(
+			$property
 		);
 
-		return $result !== array();
+		return $result !== [];
 	}
 
 	/**
@@ -179,17 +173,11 @@ class HierarchyLookup implements LoggerAwareInterface {
 			return false;
 		}
 
-		$requestOptions = new RequestOptions();
-		$requestOptions->limit = 1;
-
-		$result = $this->lookup(
-			'_SUBC',
-			$category->getDBKey(),
-			$category,
-			$requestOptions
+		$result = $this->getConsecutiveHierarchyList(
+			$category
 		);
 
-		return $result !== array();
+		return $result !== [];
 	}
 
 	/**
@@ -253,13 +241,16 @@ class HierarchyLookup implements LoggerAwareInterface {
 		// a "global" cache should be sufficient to avoid constant DB lookups.
 		//
 		// Invalidation of the cache will occur on each _SUBP/_SUBC change event (see
-		// above).
-		$hash = smwfCacheKey(
+		// ChangePropListener).
+		$cacheKey = smwfCacheKey(
 			self::CACHE_NAMESPACE,
-			$hierarchyType
+			[
+				$hierarchyType,
+				( $hierarchyType === self::TYPE_PROPERTY ? $this->subpropertyDepth : $this->subcategoryDepth )
+			]
 		);
 
-		$hierarchyCache = $this->cache->fetch( $hash );
+		$hierarchyCache = $this->cache->fetch( $cacheKey );
 		$reqCacheUpdate = false;
 
 		if ( $hierarchyCache === false ) {
@@ -303,7 +294,7 @@ class HierarchyLookup implements LoggerAwareInterface {
 		}
 
 		if ( $reqCacheUpdate ) {
-			$this->cache->save( $hash, $hierarchyCache, $this->cacheTTL );
+			$this->cache->save( $cacheKey, $hierarchyCache, $this->cacheTTL );
 		}
 
 		return $hierarchyList[$key];
@@ -365,7 +356,14 @@ class HierarchyLookup implements LoggerAwareInterface {
 
 		$this->inMemoryCache[$key] = $res;
 
-		$this->log( __METHOD__ . " {$id} and " . $subject->getDBKey() );
+		$this->log(
+			"{fname} ID: {id}, subject: {subject}",
+			[
+				'fname' => __METHOD__,
+				'id' => $id,
+				'subject' => $subject->getDBKey()
+			]
+		);
 
 		return $res;
 	}
