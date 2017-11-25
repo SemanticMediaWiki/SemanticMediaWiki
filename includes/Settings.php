@@ -67,7 +67,6 @@ class Settings extends Options {
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
-			'smwgLinksInValues' => $GLOBALS['smwgLinksInValues'],
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],
 			'smwgSearchByPropertyFuzzy' => $GLOBALS['smwgSearchByPropertyFuzzy'],
@@ -324,6 +323,19 @@ class Settings extends Options {
 			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_HID_CATS;
 		}
 
+		// smwgLinksInValues
+		if ( isset( $GLOBALS['smwgLinksInValues'] ) && $GLOBALS['smwgLinksInValues'] === SMW_LINV_PCRE ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] | SMW_PARSER_LINV;
+		}
+
+		if ( isset( $GLOBALS['smwgLinksInValues'] ) && $GLOBALS['smwgLinksInValues'] === SMW_LINV_OBFU ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] | SMW_PARSER_LINV;
+		}
+
+		if ( isset( $GLOBALS['smwgLinksInValues'] ) && $GLOBALS['smwgLinksInValues'] === true ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] | SMW_PARSER_LINV;
+		}
+
 		// smwgCategoryFeatures
 		if ( isset( $GLOBALS['smwgUseCategoryRedirect'] ) && $GLOBALS['smwgUseCategoryRedirect'] === false ) {
 			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_REDIRECT;
@@ -462,6 +474,7 @@ class Settings extends Options {
 				'smwgUseCategoryHierarchy' => '3.1.0',
 				'smwgQSortingSupport' => '3.1.0',
 				'smwgQRandSortingSupport' => '3.1.0',
+				'smwgLinksInValues' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -495,6 +508,7 @@ class Settings extends Options {
 				'smwgEnabledInTextAnnotationParserStrictMode' => 'smwgParserFeatures',
 				'smwgInlineErrors' => 'smwgParserFeatures',
 				'smwgShowHiddenCategories' => 'smwgParserFeatures',
+				'smwgLinksInValues' => 'smwgParserFeatures',
 				'smwgUseCategoryRedirect' => 'smwgCategoryFeatures',
 				'smwgCategoriesAsInstances' => 'smwgCategoryFeatures',
 				'smwgUseCategoryHierarchy' => 'smwgCategoryFeatures',

@@ -302,33 +302,6 @@ return array(
 	##
 
 	###
-	# InText annotation to support "links in value"
-	#
-	# SMW_LINV_OBFU (2.5+)
-	#
-	# Parse [[SomeProperty::Foo [[link]] in [[Bar::AnotherValue]]]] annotation
-	# using a non-PCRE approach and hereby avoids potential PHP crashes caused
-	# by PCRE OOM.
-	#
-	# SMW_LINV_PCRE (1.3+)
-	#
-	# Should SMW accept inputs like [[property::Some [[link]] in value]]? If
-	# enabled, this may lead to PHP crashes (!) when very long texts are used as
-	# values. This is due to limitations in the library PCRE that PHP uses for
-	# pattern matching. The provoked PHP crashes will prevent requests from being
-	# completed -- usually clients will receive server errors ("invalid response")
-	# or be offered to download "index.php". It might be okay to enable this if
-	# such problems are not observed in your wiki.
-	#
-	# To enable this feature use either SMW_LINV_PCRE (for BC) or SMW_LINV_OBFU.
-	#
-	# @since 1.3
-	# @default false
-	##
-	'smwgLinksInValues' => false,
-	##
-
-	###
 	# Settings for recurring events, created with the 	#set_recurring_event parser
 	# function: the default number of instances defined, if no end date is set,
 	# and the maximum number that can be defined, regardless of end date.
@@ -1215,6 +1188,10 @@ return array(
 	#   __HIDDENCAT__) from the annotation process. Changing the setting requires
 	#   to run a full rebuild to ensure hidden categories are discarded during
 	#   the parsing process. (was $smwgShowHiddenCategories 1.9)
+	#
+	# - SMW_PARSER_LINV: Support parsing of "links in values" for annotations like
+	#   [[SomeProperty::Foo [[link]] in [[Bar::AnotherValue]]]] (was $smwgLinksInValues
+	#   with SMW_LINV_OBFU, SMW_LINV_PCRE is no longer available)
 	#
 	# @since 3.0
 	##

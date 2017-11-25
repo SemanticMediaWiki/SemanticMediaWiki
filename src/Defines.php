@@ -194,13 +194,6 @@ define( 'SMW_ADM_FULLT', 32 ); // Fulltext update
 /**@}*/
 
 /**@{
-  * Constants for LinksInValue features
-  */
-define( 'SMW_LINV_PCRE', 2 ); // Using the PCRE approach
-define( 'SMW_LINV_OBFU', 4 ); // Using the Obfuscator approach
-/**@}*/
-
-/**@{
   * Constants for ResultPrinter
   */
 define( 'SMW_RF_NONE', 0 );
@@ -248,6 +241,15 @@ define( 'SMW_PARSER_STRICT', 2 ); // Support for strict mode
 define( 'SMW_PARSER_UNSTRIP', 4 ); // Support for using the StripMarkerDecoder
 define( 'SMW_PARSER_INL_ERROR', 8 ); // Support for display of inline errors
 define( 'SMW_PARSER_HID_CATS', 16 ); // Support for parsing hidden categories
+define( 'SMW_PARSER_LINV', 32 ); // Support for links in value
+define( 'SMW_PARSER_LINKS_IN_VALUES', 32 ); // Support for links in value
+/**@}*/
+
+/**@{
+  * Constants for LinksInValue features
+  */
+define( 'SMW_LINV_PCRE', 2 ); // Using the PCRE approach
+define( 'SMW_LINV_OBFU', 4 ); // Using the Obfuscator approach
 /**@}*/
 
 /**@{

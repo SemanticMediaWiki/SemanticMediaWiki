@@ -103,7 +103,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		global $wgContLang;
 
 		// support inputs like " [[Test]] ";
-		// note that this only works in pages if $smwgLinksInValues is set to true
+		// note that this only works when SMW_PARSER_LINV is set
 		$value = ltrim( rtrim( $value, ' ]' ), ' [' );
 
 		// #1066, Manipulate the output only for when the value has no caption

@@ -87,7 +87,7 @@ class InTextAnnotationParser {
 	/**
 	 * @var boolean|integer
 	 */
-	private $enabledLinksInValues = false;
+	private $isLinksInValues = false;
 
 	/**
 	 * @var boolean
@@ -114,10 +114,10 @@ class InTextAnnotationParser {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $enabledLinksInValues
+	 * @param boolean $isLinksInValues
 	 */
-	public function enabledLinksInValues( $enabledLinksInValues ) {
-		$this->enabledLinksInValues = $enabledLinksInValues;
+	public function isLinksInValues( $isLinksInValues ) {
+		$this->isLinksInValues = $isLinksInValues;
 	}
 
 	/**
@@ -154,13 +154,14 @@ class InTextAnnotationParser {
 		);
 
 		// Obscure [/] to find a set of [[ :: ... ]] while those in-between are left for
-		// decoding for a later processing so that the regex can split the text
+		// decoding in a post-processing so that the regex can split the text
 		// appropriately
-		if ( ( $this->enabledLinksInValues & SMW_LINV_OBFU ) != 0 ) {
+		if ( $this->isLinksInValues ) {
 			$text = Obfuscator::obfuscateLinks( $text, $this );
 		}
 
-		$linksInValuesPcre = ( $this->enabledLinksInValues & SMW_LINV_PCRE ) != 0;
+		// No longer used with 3.0 given that the Obfuscator is safer and faster
+		$linksInValuesPcre = false;
 
 		$text = preg_replace_callback(
 			$this->getRegexpPattern( $linksInValuesPcre ),

@@ -52,8 +52,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->withConfiguration(
 			[
 				'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
-				'smwgParserFeatures' => SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR,
-				'smwgLinksInValues' => false,
+				'smwgParserFeatures' => SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR
 			]
 		);
 

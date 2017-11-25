@@ -35,8 +35,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->withConfiguration(
 			[
 				'smwgFactboxUseCache' => true,
-				'smwgCacheType'       => 'hash',
-				'smwgLinksInValues'   => false
+				'smwgCacheType'       => 'hash'
 			]
 		);
 	}

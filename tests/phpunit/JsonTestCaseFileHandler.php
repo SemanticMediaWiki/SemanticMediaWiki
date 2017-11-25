@@ -267,11 +267,6 @@ class JsonTestCaseFileHandler {
 		}
 
 		// Needs special attention due to constant usage
-		if ( $key === 'smwgLinksInValues' && isset( $settings[$key] ) ) {
-			return is_string( $settings[$key] ) ? constant( $settings[$key] ) : $settings[$key];
-		}
-
-		// Needs special attention due to constant usage
 		if ( strpos( $key, 'CacheType' ) !== false && isset( $settings[$key] ) ) {
 			return $settings[$key] === false ? CACHE_NONE : defined( $settings[$key] ) ? constant( $settings[$key] ) : $settings[$key];
 		}

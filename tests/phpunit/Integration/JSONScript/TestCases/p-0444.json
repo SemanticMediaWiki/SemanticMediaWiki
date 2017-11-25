@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation LinksInValue `SMW_LINV_OBFU` (#2153, `wgContLang=en`, `smwgLinksInValues=SMW_LINV_OBFU`)",
+	"description": "Test in-text annotation with links in values (#2153, `wgContLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -160,7 +160,12 @@
 	],
 	"settings": {
 		"wgContLang": "en",
-		"smwgLinksInValues": "SMW_LINV_OBFU",
+		"smwgParserFeatures": [
+			"SMW_PARSER_STRICT",
+			"SMW_PARSER_INL_ERROR",
+			"SMW_PARSER_HID_CATS",
+			"SMW_PARSER_LINV"
+		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]
