@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation `::` with left pipe (#1747, `wgContLang=en`, `smwgLinksInValues=false`)",
+	"description": "Test in-text annotation `::` with left pipe (#1747, `wgContLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -70,7 +70,11 @@
 	],
 	"settings": {
 		"wgContLang": "en",
-		"smwgLinksInValues": false,
+		"smwgParserFeatures": [
+			"SMW_PARSER_STRICT",
+			"SMW_PARSER_INL_ERROR",
+			"SMW_PARSER_HID_CATS"
+		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]

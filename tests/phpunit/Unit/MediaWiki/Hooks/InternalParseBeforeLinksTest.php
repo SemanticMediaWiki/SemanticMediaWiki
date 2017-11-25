@@ -350,8 +350,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgParserFeatures' => SMW_PARSER_STRICT,
-					'smwgLinksInValues' => false,
+					'smwgParserFeatures' => SMW_PARSER_STRICT
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
 					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
@@ -373,8 +372,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgParserFeatures' => SMW_PARSER_STRICT,
-					'smwgLinksInValues' => false,
+					'smwgParserFeatures' => SMW_PARSER_STRICT
 				),
 				'text'  => '#REDIRECT [[Foo]]',
 				),
@@ -395,7 +393,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 					'smwgParserFeatures' => SMW_PARSER_STRICT,
-					'smwgLinksInValues' => false,
 					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
@@ -419,7 +416,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 					'smwgParserFeatures' => SMW_PARSER_STRICT,
-					'smwgLinksInValues' => false,
 					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
@@ -443,7 +439,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 					'smwgParserFeatures' => SMW_PARSER_STRICT,
-					'smwgLinksInValues' => false,
 					'smwgEnabledSpecialPage' => []
 				),
 				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .

@@ -325,11 +325,8 @@ class ApplicationFactory {
 			$mwCollaboratorFactory->newRedirectTargetFinder()
 		);
 
-		// 2.5+ Changed modus operandi
-		$linksInValues = $this->getSettings()->get( 'smwgLinksInValues' );
-
-		$inTextAnnotationParser->enabledLinksInValues(
-			$linksInValues === true ? SMW_LINV_PCRE : $linksInValues
+		$inTextAnnotationParser->isLinksInValues(
+			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_LINV )
 		);
 
 		$inTextAnnotationParser->showErrors(

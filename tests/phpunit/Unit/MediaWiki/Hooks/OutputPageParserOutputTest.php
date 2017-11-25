@@ -35,8 +35,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			[
 				'smwgShowFactbox'      => SMW_FACTBOX_NONEMPTY,
 				'smwgFactboxUseCache'  => true,
-				'smwgCacheType'        => 'hash',
-				'smwgLinksInValues'    => false
+				'smwgCacheType'        => 'hash'
 			]
 		);
 	}
