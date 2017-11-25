@@ -3,6 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\ApplicationFactory;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
 use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
@@ -76,17 +77,17 @@ class QueryDependencyLinksStoreFactory {
 	 * @since 2.4
 	 *
 	 * @param Store $store
-	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 * @param ChangeOp $changeOp
 	 *
 	 * @return EntityIdListRelevanceDetectionFilter
 	 */
-	public function newEntityIdListRelevanceDetectionFilter( Store $store, CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+	public function newEntityIdListRelevanceDetectionFilter( Store $store, ChangeOp $changeOp ) {
 
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$entityIdListRelevanceDetectionFilter = new EntityIdListRelevanceDetectionFilter(
 			$store,
-			$compositePropertyTableDiffIterator
+			$changeOp
 		);
 
 		$entityIdListRelevanceDetectionFilter->setLogger(

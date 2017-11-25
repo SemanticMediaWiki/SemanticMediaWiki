@@ -53,7 +53,7 @@ class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,7 +61,7 @@ class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter',
-			$instance->newEntityIdListRelevanceDetectionFilter( $store, $compositePropertyTableDiffIterator )
+			$instance->newEntityIdListRelevanceDetectionFilter( $store, $changeOp )
 		);
 	}
 

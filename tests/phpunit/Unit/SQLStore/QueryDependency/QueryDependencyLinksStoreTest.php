@@ -86,11 +86,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compositePropertyTableDiffIterator->expects( $this->once() )
+		$changeOp->expects( $this->once() )
 			->method( 'getTableChangeOps' )
 			->will( $this->returnValue( array() ) );
 
@@ -112,7 +112,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->pruneOutdatedTargetLinks( $subject, $compositePropertyTableDiffIterator )
+			$instance->pruneOutdatedTargetLinks( $subject, $changeOp )
 		);
 	}
 
@@ -132,7 +132,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -156,7 +156,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->setEnabled( false );
 
 		$this->assertNull(
-			$instance->pruneOutdatedTargetLinks( $subject, $compositePropertyTableDiffIterator )
+			$instance->pruneOutdatedTargetLinks( $subject, $changeOp )
 		);
 	}
 

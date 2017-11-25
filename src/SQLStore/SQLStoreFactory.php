@@ -14,11 +14,11 @@ use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMWRequestOptions as RequestOptions;
 use SMW\Options;
 use SMWSQLStore3;
-use SMW\DIWikiPage;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use Onoi\MessageReporter\MessageReporterFactory;
 use Onoi\Cache\Cache;
 use SMWSql3SmwIds as EntityIdManager;
+use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
 use SMW\SQLStore\EntityStore\CachedEntityLookup;
 use SMW\SQLStore\EntityStore\DirectEntityLookup;
@@ -27,6 +27,8 @@ use SMW\ProcessLruCache;
 use SMW\SQLStore\EntityStore\IdMatchFinder;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\ChangePropListener;
+use SMW\SQLStore\PropertyTableRowDiffer;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 
 /**
  * @license GNU GPL v2+
@@ -487,6 +489,15 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
+	 * @return PropertyTableRowDiffer
+	 */
+	public function newPropertyTableRowDiffer() {
+		return new PropertyTableRowDiffer( $this->store );
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param Cache $cache
 	 *
 	 * @return IdMatchFinder
@@ -533,6 +544,17 @@ class SQLStoreFactory {
 	 */
 	public function newChangePropListener() {
 		return new ChangePropListener();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @return ChangeOp
+	 */
+	public function newChangeOp( DIWikiPage $subject ) {
+		return new ChangeOp( $subject );
 	}
 
 }

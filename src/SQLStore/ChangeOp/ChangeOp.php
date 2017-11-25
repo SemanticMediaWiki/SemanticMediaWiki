@@ -1,11 +1,10 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\ChangeOp;
 
 use ArrayIterator;
 use IteratorAggregate;
 use SMW\DIWikiPage;
-use SMW\SQLStore\ChangeOp\TableChangeOp;
 
 /**
  * @license GNU GPL v2+
@@ -13,13 +12,13 @@ use SMW\SQLStore\ChangeOp\TableChangeOp;
  *
  * @author mwjames
  */
-class CompositePropertyTableDiffIterator implements IteratorAggregate {
+class ChangeOp implements IteratorAggregate {
 
 	/**
 	 * Type of change operations
 	 */
-	const TYPE_INSERT = 'insert';
-	const TYPE_DELETE = 'delete';
+	const OP_INSERT = 'insert';
+	const OP_DELETE = 'delete';
 
 	/**
 	 * @var array
@@ -54,19 +53,12 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	/**
 	 * @since 2.3
 	 *
+	 * @param DIWikiPage|null $subject
 	 * @param array $diff
 	 */
-	public function __construct( array $diff = array() ) {
-		$this->diff = $diff;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return DIWikiPage $subject
-	 */
-	public function setSubject( DIWikiPage $subject ) {
+	public function __construct( DIWikiPage $subject = null, array $diff = array() ) {
 		$this->subject = $subject;
+		$this->diff = $diff;
 	}
 
 	/**
@@ -97,11 +89,29 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	}
 
 	/**
+	 * @since 2.3
+	 *
+	 * @param array $fixedPropertyRecord
+	 */
+	public function addFixedPropertyRecord( $tableName, array $fixedPropertyRecord ) {
+		$this->fixedPropertyRecords[$tableName] = $fixedPropertyRecord;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return array
+	 */
+	public function getFixedPropertyRecords() {
+		return $this->fixedPropertyRecords;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param array $data
 	 */
-	public function addDataRecord( $hash, array $data ) {
+	public function addDataOp( $hash, array $data ) {
 		$this->data[$hash] = $data;
 	}
 
@@ -110,7 +120,7 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 *
 	 * @return TableChangeOp[]
 	 */
-	public function getDataChangeOps() {
+	public function getDataOps() {
 
 		$dataChangeOps = array();
 
@@ -131,37 +141,19 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	/**
 	 * @since 2.3
 	 *
-	 * @param array $insertChangeOp
-	 * @param array $deleteChangeOp
+	 * @param array $insertOp
+	 * @param array $deleteOp
 	 */
-	public function addTableDiffChangeOp( array $insertChangeOp, array $deleteChangeOp ) {
+	public function addDiffOp( array $insertOp, array $deleteOp ) {
 
 		$diff = array(
-			'insert' => $insertChangeOp,
-			'delete' => $deleteChangeOp
+			'insert' => $insertOp,
+			'delete' => $deleteOp
 		);
 
 		$this->diff[] = $diff;
 
 		$this->hash .= json_encode( $diff );
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param array $fixedPropertyRecord
-	 */
-	public function addFixedPropertyRecord( $tableName, array $fixedPropertyRecord ) {
-		$this->fixedPropertyRecords[$tableName] = $fixedPropertyRecord;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return array
-	 */
-	public function getFixedPropertyRecords() {
-		return $this->fixedPropertyRecords;
 	}
 
 	/**
@@ -242,7 +234,7 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getListOfChangedEntityIdsByType( $type = null ) {
+	public function getChangedEntityIdListByType( $type = null ) {
 
 		$changedEntities = array();
 
@@ -265,12 +257,22 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getChangedEntityIdSummaryList() {
+		return array_keys( $this->getChangedEntityIdListByType() );
+	}
+
+	/**
+	 * @deprecated since 3.0, use ChangeOp::getChangedEntityIdSummaryList
 	 * @since 2.3
 	 *
 	 * @return array
 	 */
 	public function getCombinedIdListOfChangedEntities() {
-		return array_keys( $this->getListOfChangedEntityIdsByType() );
+		return $this->getChangedEntityIdSummaryList();
 	}
 
 	private function addToIdList( &$list, $value ) {

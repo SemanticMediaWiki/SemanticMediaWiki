@@ -17,7 +17,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
 class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $cache;
-	private $compositePropertyTableDiffIterator;
+	private $changeOp;
 
 	protected function setUp() {
 
@@ -25,7 +25,7 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$this->changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -33,7 +33,7 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ChangeOp\TempChangeOpStore',
+			TempChangeOpStore::class,
 			new TempChangeOpStore( $this->cache )
 		);
 	}
@@ -46,7 +46,7 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'smw:diff',
-			$instance->getSlot( $this->compositePropertyTableDiffIterator )
+			$instance->getSlot( $this->changeOp )
 		);
 	}
 
@@ -56,7 +56,7 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'save' )
 			->will( $this->returnValue( array() ) );
 
-		$this->compositePropertyTableDiffIterator->expects( $this->once() )
+		$this->changeOp->expects( $this->once() )
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( array( 'Foo' => 'Bar' ) ) );
 
@@ -66,7 +66,7 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'smw:diff',
-			$instance->createSlotFrom( $this->compositePropertyTableDiffIterator )
+			$instance->createSlotFrom( $this->changeOp )
 		);
 	}
 
@@ -75,7 +75,7 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->cache->expects( $this->never() )
 			->method( 'save' );
 
-		$this->compositePropertyTableDiffIterator->expects( $this->once() )
+		$this->changeOp->expects( $this->once() )
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( array() ) );
 
@@ -84,27 +84,27 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertNull(
-			$instance->createSlotFrom( $this->compositePropertyTableDiffIterator )
+			$instance->createSlotFrom( $this->changeOp )
 		);
 	}
 
-	public function testNewCompositePropertyTableDiffIterator() {
+	public function testNewChangeOp() {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( serialize( $this->compositePropertyTableDiffIterator ) ) );
+			->will( $this->returnValue( serialize( $this->changeOp ) ) );
 
 		$instance = new TempChangeOpStore(
 			$this->cache
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\CompositePropertyTableDiffIterator',
-			$instance->newCompositePropertyTableDiffIterator( 'foo' )
+			'\SMW\SQLStore\ChangeOp\ChangeOp',
+			$instance->newChangeOp( 'foo' )
 		);
 	}
 
-	public function testNewCompositePropertyTableDiffIteratorOnInvalidSlot() {
+	public function testNewChangeOpOnInvalidSlot() {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
@@ -115,7 +115,7 @@ class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertNull(
-			$instance->newCompositePropertyTableDiffIterator( 'foo' )
+			$instance->newChangeOp( 'foo' )
 		);
 	}
 

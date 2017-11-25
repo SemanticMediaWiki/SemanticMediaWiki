@@ -168,11 +168,10 @@ Implementing a hook should be made in consideration of the expected performance 
 ### SMW::SQLStore::AfterDataUpdateComplete
 
 * Version: 2.3
-* Description: Hook to add processing after the update has been completed and provides `CompositePropertyTableDiffIterator` to identify entities that have been added/removed during the update. (`SMWSQLStore3::updateDataAfter` was deprecated with 2.3)
-* Reference class: `\SMW\MediaWiki\Hooks\FileUpload`
+* Description: Hook to add processing after the update has been completed and provides `ChangeOp` to identify entities that have been added/removed during the update. (`SMWSQLStore3::updateDataAfter` was deprecated with 2.3)
 
 <pre>
-\Hooks::register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $propertyTableEntityDiffIterator ) {
+\Hooks::register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $changeOp ) {
 
 	return true;
 } );
@@ -184,7 +183,6 @@ Implementing a hook should be made in consideration of the expected performance 
 
 * Version: 2.4
 * Description: Hook to add extra annotations before the `Store` update is triggered
-* Reference class: `\SMW\MediaWiki\Hooks\FileUpload`
 
 <pre>
 \Hooks::register( 'SMW::FileUpload::BeforeUpdate', function( $filePage, $semanticData  ) {
