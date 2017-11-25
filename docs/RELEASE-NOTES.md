@@ -69,6 +69,9 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2822](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2822)
 * [#2824](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2824)
 * [#2826](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2826)
+* [#2840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2840)
+* [#2841](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2841)
+* [#2842](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2842)
 
 ## Bug fixes
 
@@ -79,7 +82,6 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2767](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2767)
 * [#2773](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2773)
 * [#2817](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2817)
-
 
 ## Breaking changes and deprecations
 
