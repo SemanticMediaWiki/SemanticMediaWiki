@@ -447,8 +447,8 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
 		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $test ){
-			$test->is( $compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities() );
+		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $changeOp ) use ( $test ){
+			$test->is( $changeOp->getChangedEntityIdSummaryList() );
 
 			return true;
 		} );

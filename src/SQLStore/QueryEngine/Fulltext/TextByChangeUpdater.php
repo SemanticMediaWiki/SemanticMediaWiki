@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\MediaWiki\Database;
 use SMW\DeferredRequestDispatchManager;
@@ -10,6 +9,7 @@ use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
 use SMW\SQLStore\ChangeOp\TempChangeOpStore;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use SMW\Utils\Timer;
@@ -112,10 +112,10 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 	 *
 	 * @since 2.5
 	 *
-	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 * @param ChangeOp $changeOp
 	 * @param DeferredRequestDispatchManager $deferredRequestDispatchManager
 	 */
-	public function pushUpdates( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
+	public function pushUpdates( ChangeOp $changeOp, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return;
@@ -125,19 +125,19 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 		// Update within the same transaction as started by SMW::SQLStore::AfterDataUpdateComplete
 		if ( !$this->asDeferredUpdate || $this->isCommandLineMode ) {
-			return $this->pushUpdatesFromPropertyTableDiff( $compositePropertyTableDiffIterator );
+			return $this->pushUpdatesFromPropertyTableDiff( $changeOp );
 		}
 
-		if ( !$this->canPostUpdate( $compositePropertyTableDiffIterator ) ) {
+		if ( !$this->canPostUpdate( $changeOp ) ) {
 			return;
 		}
 
 		$slot = $this->tempChangeOpStore->createSlotFrom(
-			$compositePropertyTableDiffIterator
+			$changeOp
 		);
 
 		$deferredRequestDispatchManager->dispatchFulltextSearchTableUpdateJobWith(
-			$compositePropertyTableDiffIterator->getSubject()->getTitle(),
+			$changeOp->getSubject()->getTitle(),
 			array(
 				'slot:id' => $slot
 			)
@@ -161,15 +161,15 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 		Timer::start( __METHOD__ );
 
-		$compositePropertyTableDiffIterator = $this->tempChangeOpStore->newCompositePropertyTableDiffIterator(
+		$changeOp = $this->tempChangeOpStore->newChangeOp(
 			$parameters['slot:id']
 		);
 
-		if ( $compositePropertyTableDiffIterator === null ) {
+		if ( $changeOp === null ) {
 			return $this->log( __METHOD__ . ' Failed compositePropertyTableDiff from slot: ' . $parameters['slot:id'] );
 		}
 
-		$this->pushUpdatesFromPropertyTableDiff( $compositePropertyTableDiffIterator );
+		$this->pushUpdatesFromPropertyTableDiff( $changeOp );
 
 		$this->tempChangeOpStore->delete(
 			$parameters['slot:id']
@@ -181,9 +181,9 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 * @param ChangeOp $changeOp
 	 */
-	public function pushUpdatesFromPropertyTableDiff( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+	public function pushUpdatesFromPropertyTableDiff( ChangeOp $changeOp ) {
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return;
@@ -191,11 +191,11 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 		Timer::start( __METHOD__ );
 
-		$dataChangeOps = $compositePropertyTableDiffIterator->getDataChangeOps();
-		$diffChangeOps = $compositePropertyTableDiffIterator->getTableChangeOps();
+		$dataChangeOps = $changeOp->getDataOps();
+		$diffChangeOps = $changeOp->getTableChangeOps();
 
-		$insertIds = $compositePropertyTableDiffIterator->getListOfChangedEntityIdsByType(
-			$compositePropertyTableDiffIterator::TYPE_INSERT
+		$insertIds = $changeOp->getChangedEntityIdListByType(
+			$changeOp::OP_INSERT
 		);
 
 		$updates = array();
@@ -312,13 +312,13 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 		}
 	}
 
-	private function canPostUpdate( $compositePropertyTableDiffIterator ) {
+	private function canPostUpdate( $changeOp ) {
 
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 		$canPostUpdate = false;
 
 		// Find out whether we should actual initiate an update
-		foreach ( $compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities() as $id ) {
+		foreach ( $changeOp->getChangedEntityIdSummaryList() as $id ) {
 			if ( ( $dataItem = $searchTable->getDataItemById( $id ) ) instanceof DIWikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
 				if ( !$searchTable->isExemptedPropertyById( $id ) ) {
 					$canPostUpdate = true;

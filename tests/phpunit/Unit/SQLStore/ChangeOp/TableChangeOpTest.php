@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\TableChangeOp;
+namespace SMW\Tests\SQLStore\ChangeOp;
 
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 
@@ -18,7 +18,7 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ChangeOp\TableChangeOp',
+			TableChangeOp::class,
 			new TableChangeOp( 'foo', array() )
 		);
 	}

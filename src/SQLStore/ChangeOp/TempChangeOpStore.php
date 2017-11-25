@@ -4,8 +4,6 @@ namespace SMW\SQLStore\ChangeOp;
 
 use Onoi\Cache\Cache;
 use SMW\DIWikiPage;
-use SMW\SQLStore\ChangeOp\TableChangeOp;
-use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 
@@ -20,8 +18,6 @@ use Psr\Log\LoggerAwareInterface;
  * This class will store the diff object temporarily in Cache with the possibility
  * to retrieve it at a later point without relying on the JobQueueDB as storage
  * medium.
- *
- * It is expected that the ChronologyPurgeJob is removing inactive slots.
  *
  * @license GNU GPL v2+
  * @since 2.5
@@ -38,11 +34,6 @@ class TempChangeOpStore implements LoggerAwareInterface {
 	private $cache;
 
 	/**
-	 * @var string
-	 */
-	private $prefix = '';
-
-	/**
 	 * loggerInterface
 	 */
 	private $logger;
@@ -51,11 +42,9 @@ class TempChangeOpStore implements LoggerAwareInterface {
 	 * @since 2.5
 	 *
 	 * @param Cache $cache
-	 * @param string $prefix
 	 */
-	public function __construct( Cache $cache, $prefix = '' ) {
+	public function __construct( Cache $cache ) {
 		$this->cache = $cache;
-		$this->prefix = $prefix;
 	}
 
 	/**
@@ -72,34 +61,34 @@ class TempChangeOpStore implements LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 * @param ChangeOp $changeOp
 	 *
 	 * @return string
 	 */
-	public function getSlot( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
-		return $this->prefix . self::CACHE_NAMESPACE . $compositePropertyTableDiffIterator->getHash();
+	public function getSlot( ChangeOp $changeOp ) {
+		return smwfCacheKey( self::CACHE_NAMESPACE, $changeOp->getHash() );
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 * @param ChangeOp $changeOp
 	 *
 	 * @return null|string
 	 */
-	public function createSlotFrom( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+	public function createSlotFrom( ChangeOp $changeOp ) {
 
-		$orderedDiffByTable = $compositePropertyTableDiffIterator->getOrderedDiffByTable();
+		$orderedDiffByTable = $changeOp->getOrderedDiffByTable();
 
 		if ( $orderedDiffByTable === array() ) {
 			return null;
 		}
 
-		$slot = $this->getSlot( $compositePropertyTableDiffIterator );
+		$slot = $this->getSlot( $changeOp );
 
 		$this->cache->save(
 			$slot,
-			serialize( $compositePropertyTableDiffIterator )
+			serialize( $changeOp )
 		);
 
 		return $slot;
@@ -119,19 +108,19 @@ class TempChangeOpStore implements LoggerAwareInterface {
 	 *
 	 * @param string $slot
 	 *
-	 * @return CompositePropertyTableDiffIterator|null
+	 * @return ChangeOp|null
 	 */
-	public function newCompositePropertyTableDiffIterator( $slot ) {
+	public function newChangeOp( $slot ) {
 
-		$compositePropertyTableDiffIterator = unserialize(
+		$changeOp = unserialize(
 			$this->cache->fetch( $slot )
 		);
 
-		if ( $compositePropertyTableDiffIterator === false || $compositePropertyTableDiffIterator === null ) {
+		if ( $changeOp === false || $changeOp === null ) {
 			return null;
 		}
 
-		return $compositePropertyTableDiffIterator;
+		return $changeOp;
 	}
 
 	private function log( $message, $context = array() ) {

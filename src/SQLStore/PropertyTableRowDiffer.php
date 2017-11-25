@@ -5,7 +5,9 @@ namespace SMW\SQLStore;
 use InvalidArgumentException;
 use RuntimeException;
 use SMW\Exception\DataItemException;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Store;
 use SMWDIError as DIError;
@@ -24,12 +26,12 @@ class PropertyTableRowDiffer {
 	/**
 	 * @var Store
 	 */
-	private $store = null;
+	private $store;
 
 	/**
-	 * @var CompositePropertyTableDiffIterator
+	 * @var ChangeOp
 	 */
-	private $compositePropertyTableDiffIterator = null;
+	private $changeOp;
 
 	/**
 	 * @since 2.3
@@ -38,6 +40,24 @@ class PropertyTableRowDiffer {
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param ChangeOp|null $changeOp
+	 */
+	public function setChangeOp( ChangeOp $changeOp = null ) {
+		$this->changeOp = $changeOp;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ChangeOp
+	 */
+	public function getChangeOp() {
+		return $this->changeOp;
 	}
 
 	/**
@@ -64,23 +84,26 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	public function computeTableRowDiffFor( $sid, SemanticData $semanticData ) {
+	public function computeTableRowDiff( $sid, SemanticData $semanticData ) {
 
 		$tablesDeleteRows = array();
 		$tablesInsertRows = array();
 
 		$newHashes = array();
 
-		$this->getCompositePropertyTableDiff()->setSubject(
-			$semanticData->getSubject()
-		);
+		if ( $this->changeOp === null ) {
+			$this->setChangeOp( new ChangeOp( $semanticData->getSubject() ) );
+		}
 
 		$newData = $this->mapToInsertValueFormat(
 			$sid,
 			$semanticData
 		);
 
-		$oldHashes = $this->fetchPropertyTableHashesForId( $sid );
+		$oldHashes = $this->fetchPropertyTableHashesById(
+			$sid
+		);
+
 		$propertyTables = $this->store->getPropertyTables();
 
 		foreach ( $propertyTables as $propertyTable ) {
@@ -110,13 +133,13 @@ class PropertyTableRowDiffer {
 			}
 
 			if ( $fixedProperty ) {
-				$this->getCompositePropertyTableDiff()->addFixedPropertyRecord( $tableName, $fixedProperty );
+				$this->changeOp->addFixedPropertyRecord( $tableName, $fixedProperty );
 			}
 
 			if ( array_key_exists( $tableName, $newData ) ) {
 				// Note: the order within arrays should remain the same while page is not updated.
 				// Hence we do not sort before serializing. It is hoped that this assumption is valid.
-				$newHashes[$tableName] = $this->createNewHashForTable(
+				$newHashes[$tableName] = $this->createHash(
 					$tableName,
 					$newData,
 					$semanticData->getOption( SemanticData::OPT_LAST_MODIFIED )
@@ -131,10 +154,6 @@ class PropertyTableRowDiffer {
 						$newData[$tableName],
 						$propertyTable
 					);
-
-					if ( $fixedProperty ) {
-						$this->getCompositePropertyTableDiff()->addFixedPropertyRecord( $tableName, $fixedProperty );
-					}
 				}
 			} elseif ( array_key_exists( $tableName, $oldHashes ) ) {
 				// Table contains data but should not contain any after update
@@ -146,12 +165,12 @@ class PropertyTableRowDiffer {
 			}
 		}
 
-		$this->getCompositePropertyTableDiff()->addDataRecord(
+		$this->changeOp->addDataOp(
 			$semanticData->getSubject()->getHash(),
 			$newData
 		);
 
-		$this->getCompositePropertyTableDiff()->addTableDiffChangeOp(
+		$this->changeOp->addDiffOp(
 			$tablesInsertRows,
 			$tablesDeleteRows
 		);
@@ -160,32 +179,22 @@ class PropertyTableRowDiffer {
 	}
 
 	/**
-	 * @since 2.3
-	 */
-	public function resetCompositePropertyTableDiff() {
-		$this->compositePropertyTableDiffIterator = null;
-	}
-
-	/**
-	 * @since 2.3
+	 * @since 3.0
 	 *
-	 * @return CompositePropertyTableDiffIterator
+	 * @param array $fieldArray
+	 *
+	 * @return string
 	 */
-	public function getCompositePropertyTableDiff() {
-
-		if ( $this->compositePropertyTableDiffIterator === null ) {
-			$this->compositePropertyTableDiffIterator = new CompositePropertyTableDiffIterator();
-		}
-
-		return $this->compositePropertyTableDiffIterator;
+	public function getFieldArrayHash( array $fieldArray ) {
+		return md5( implode( '#', $fieldArray ) );;
 	}
 
-	private function fetchPropertyTableHashesForId( $sid ) {
+	private function fetchPropertyTableHashesById( $sid ) {
 		return $this->store->getObjectIds()->getPropertyTableHashes( $sid );
 	}
 
 	/**
-	 * The hashModifier can be used to force a modification in order to detect
+	 * @note The hashMutator can be used to force a modification in order to detect
 	 * content edits where text has been changed but the md5 table hash remains
 	 * unchanged and therefore would not re-compute the diff and misses out
 	 * critical updates on property tables.
@@ -193,8 +202,8 @@ class PropertyTableRowDiffer {
 	 * The phenomenon has been observed in connection with a page turned from
 	 * a redirect to a normal page or for undeleted pages.
 	 */
-	private function createNewHashForTable( $tableName, $newData, $hashModifier = '' ) {
-		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashModifier );
+	private function createHash( $tableName, $newData, $hashMutator = '' ) {
+		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashMutator );
 	}
 
 	/**
@@ -369,13 +378,16 @@ class PropertyTableRowDiffer {
 					$dataItemValues['o_sortkey'] = (string)$dataItemValues['o_sortkey'];
 				}
 
+				$insertValues = array_merge( $insertValues, $dataItemValues );
+
 				// Make sure to build a unique set without duplicates which could happen
 				// if an annotation is made to a property that has a redirect pointing
 				// to the same p_id
-				$insertValues = array_merge( $insertValues, $dataItemValues );
-				$insertValuesHash = md5( implode( '#', $insertValues ) );
+				$hash = $this->getFieldArrayHash(
+					$insertValues
+				);
 
-				$updates[$propertyTable->getName()][$insertValuesHash] = $insertValues;
+				$updates[$propertyTable->getName()][$hash] = $insertValues;
 			}
 		}
 

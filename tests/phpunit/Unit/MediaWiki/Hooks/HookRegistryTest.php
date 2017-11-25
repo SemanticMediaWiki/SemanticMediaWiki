@@ -623,7 +623,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( array( 'getObjectIds', 'updateData' ) )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -1044,23 +1044,23 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSubject' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
-			->method( 'getCombinedIdListOfChangedEntities' )
+		$changeOp->expects( $this->any() )
+			->method( 'getChangedEntityIdSummaryList' )
 			->will( $this->returnValue( array() ) );
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
+		$changeOp->expects( $this->any() )
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( array() ) );
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
+		$changeOp->expects( $this->any() )
 			->method( 'getTableChangeOps' )
 			->will( $this->returnValue( array() ) );
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
+		$changeOp->expects( $this->any() )
 			->method( 'getFixedPropertyRecords' )
 			->will( $this->returnValue( array() ) );
 
@@ -1070,7 +1070,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $store, $semanticData, $compositePropertyTableDiffIterator )
+			array( $store, $semanticData, $changeOp )
 		);
 	}
 

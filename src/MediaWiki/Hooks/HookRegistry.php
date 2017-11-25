@@ -624,24 +624,22 @@ class HookRegistry {
 			$applicationFactory->getStore()
 		);
 
-		$tempChangeOpStore = $applicationFactory->singleton( 'TempChangeOpStore' );
-
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
 		 */
-		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $queryDependencyLinksStoreFactory, $queryDependencyLinksStore, $deferredRequestDispatchManager, $tempChangeOpStore ) {
+		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $changeOp ) use ( $queryDependencyLinksStoreFactory, $queryDependencyLinksStore, $deferredRequestDispatchManager ) {
 
 			$queryDependencyLinksStore->setStore( $store );
 			$subject = $semanticData->getSubject();
 
 			$queryDependencyLinksStore->pruneOutdatedTargetLinks(
 				$subject,
-				$compositePropertyTableDiffIterator
+				$changeOp
 			);
 
 			$entityIdListRelevanceDetectionFilter = $queryDependencyLinksStoreFactory->newEntityIdListRelevanceDetectionFilter(
 				$store,
-				$compositePropertyTableDiffIterator
+				$changeOp
 			);
 
 			$jobParameters = $queryDependencyLinksStore->buildParserCachePurgeJobParametersFrom(
@@ -660,7 +658,7 @@ class HookRegistry {
 			);
 
 			$textByChangeUpdater->pushUpdates(
-				$compositePropertyTableDiffIterator,
+				$changeOp,
 				$deferredRequestDispatchManager
 			);
 

@@ -561,8 +561,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$cacheType = null;
 
 			$tempChangeOpStore = new TempChangeOpStore(
-				$cacheFactory->newMediaWikiCompositeCache( $cacheType ),
-				$cacheFactory->getCachePrefix()
+				$cacheFactory->newMediaWikiCompositeCache( $cacheType )
 			);
 
 			$tempChangeOpStore->setLogger(

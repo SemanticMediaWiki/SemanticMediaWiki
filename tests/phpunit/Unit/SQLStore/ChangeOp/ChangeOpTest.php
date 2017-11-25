@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\ChangeOp;
 
-use SMW\SQLStore\CompositePropertyTableDiffIterator;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\SQLStore\CompositePropertyTableDiffIterator
+ * @covers \SMW\SQLStore\ChangeOp\ChangeOp
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,23 +14,24 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase {
+class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\CompositePropertyTableDiffIterator',
-			new CompositePropertyTableDiffIterator()
+			ChangeOp::class,
+			new ChangeOp()
 		);
 	}
 
 	/**
 	 * @dataProvider diffDataProvider
 	 */
-	public function testDiff( $list, $fixedPropertyRecord, $expectedOrdered, $expectedList ) {
+	public function testDiff( $diff, $fixedPropertyRecord, $expectedOrdered, $expectedList ) {
 
-		$instance = new CompositePropertyTableDiffIterator(
-			$list
+		$instance = new ChangeOp(
+			DIWikiPage::newFromText( __METHOD__ ),
+			$diff
 		);
 
 		$instance->addFixedPropertyRecord(
@@ -50,7 +51,7 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(
 			$expectedList,
-			$instance->getCombinedIdListOfChangedEntities()
+			$instance->getChangedEntityIdSummaryList()
 		);
 	}
 
@@ -88,7 +89,8 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$instance = new CompositePropertyTableDiffIterator(
+		$instance = new ChangeOp(
+			DIWikiPage::newFromText( __METHOD__ ),
 			$diff
 		);
 
@@ -143,7 +145,8 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$instance = new CompositePropertyTableDiffIterator(
+		$instance = new ChangeOp(
+			DIWikiPage::newFromText( __METHOD__ ),
 			$diff
 		);
 
@@ -151,7 +154,7 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 			array(
 				3667 => true
 			),
-			$instance->getListOfChangedEntityIdsByType( $instance::TYPE_DELETE )
+			$instance->getChangedEntityIdListByType( $instance::OP_DELETE )
 		);
 
 		$this->assertEquals(
@@ -160,7 +163,7 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 				3668 => true,
 				62 => true
 			),
-			$instance->getListOfChangedEntityIdsByType( $instance::TYPE_INSERT )
+			$instance->getChangedEntityIdListByType( $instance::OP_INSERT )
 		);
 	}
 
@@ -168,7 +171,8 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 
 		$diff = array();
 
-		$instance = new CompositePropertyTableDiffIterator(
+		$instance = new ChangeOp(
+			DIWikiPage::newFromText( __METHOD__ ),
 			$diff
 		);
 
@@ -181,12 +185,9 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 
 		$diff = array();
 
-		$instance = new CompositePropertyTableDiffIterator(
+		$instance = new ChangeOp(
+			DIWikiPage::newFromText( __METHOD__ ),
 			$diff
-		);
-
-		$instance->setSubject(
-			DIWikiPage::newFromText( __METHOD__ )
 		);
 
 		$this->assertInternalType(

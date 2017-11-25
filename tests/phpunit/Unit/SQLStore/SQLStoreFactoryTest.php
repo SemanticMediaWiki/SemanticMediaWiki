@@ -271,6 +271,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstrucPropertyTableRowDiffer() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\PropertyTableRowDiffer',
+			$instance->newPropertyTableRowDiffer()
+		);
+	}
+
 	public function testCanConstructIdMatchFinder() {
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -320,6 +330,20 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\ChangePropListener',
 			$instance->newChangePropListener()
+		);
+	}
+
+	public function testCanConstructChangeOp() {
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\ChangeOp\ChangeOp',
+			$instance->newChangeOp( $subject )
 		);
 	}
 

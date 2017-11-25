@@ -15,6 +15,7 @@ class_alias( 'SMW\Query\ResultPrinters\ResultPrinter', 'SMW\ResultPrinter' );
 class_alias( 'SMW\Query\ResultPrinters\ResultPrinter', 'SMWResultPrinter' );
 class_alias( 'SMW\Query\ResultPrinters\FileExportPrinter', 'SMW\FileExportPrinter' );
 class_alias( 'SMW\Query\Parser', 'SMWQueryParser' );
+class_alias( 'SMW\SQLStore\ChangeOp\ChangeOp', 'SMW\SQLStore\CompositePropertyTableDiffIterator' );
 
 // 1.9.
 class_alias( 'SMW\Store', 'SMWStore' );
@@ -88,4 +89,3 @@ class_alias( 'SMW\ParserFunctions\SubobjectParserFunction', 'SMW\SubobjectParser
 class_alias( 'SMW\ParserFunctions\RecurringEventsParserFunction', 'SMW\RecurringEventsParserFunction' );
 class_alias( 'SMW\SQLStore\PropertyTableDefinition', 'SMW\SQLStore\TableDefinition' );
 class_alias( 'SMW\DataModel\ContainerSemanticData', 'SMWContainerSemanticData' );
-

@@ -6,7 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EventHandler;
-use SMW\SQLStore\CompositePropertyTableDiffIterator;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
@@ -145,9 +145,9 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 *
 	 * @since 2.3
 	 *
-	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 * @param ChangeOp $changeOp
 	 */
-	public function pruneOutdatedTargetLinks( DIWikiPage $subject, CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+	public function pruneOutdatedTargetLinks( DIWikiPage $subject, ChangeOp $changeOp ) {
 
 		if ( !$this->isEnabled() ) {
 			return null;
@@ -159,7 +159,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			new DIProperty( '_ASK' )
 		);
 
-		$tableChangeOps = $compositePropertyTableDiffIterator->getTableChangeOps( $tableName );
+		$tableChangeOps = $changeOp->getTableChangeOps( $tableName );
 
 		// Remove any dependency for queries that are no longer used
 		foreach ( $tableChangeOps as $tableChangeOp ) {

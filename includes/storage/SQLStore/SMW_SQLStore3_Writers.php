@@ -54,7 +54,7 @@ class SMWSQLStore3Writers {
 	public function __construct( SMWSQLStore3 $parentStore, $factory ) {
 		$this->store = $parentStore;
 		$this->factory = $factory;
-		$this->propertyTableRowDiffer = new PropertyTableRowDiffer( $this->store );
+		$this->propertyTableRowDiffer = $this->factory->newPropertyTableRowDiffer();
 	}
 
 	/**
@@ -144,8 +144,13 @@ class SMWSQLStore3Writers {
 
 		$subobjectListFinder = $this->factory->newSubobjectListFinder();
 
-		// Reset diff before starting the update
-		$this->propertyTableRowDiffer->resetCompositePropertyTableDiff();
+		$changeOp = $this->factory->newChangeOp(
+			$subject
+		);
+
+		$this->propertyTableRowDiffer->setChangeOp(
+			$changeOp
+		);
 
 		$changePropListener = $this->factory->newChangePropListener();
 		$hierarchyLookup = $this->factory->newHierarchyLookup();
@@ -164,6 +169,7 @@ class SMWSQLStore3Writers {
 
 		// Update data about our subobjects
 		$subSemanticData = $semanticData->getSubSemanticData();
+		$connection = $this->store->getConnection( 'mw.db' );
 
 		$connection->beginAtomicTransaction( __METHOD__ );
 
@@ -185,6 +191,7 @@ class SMWSQLStore3Writers {
 		}
 
 		$connection->endAtomicTransaction( __METHOD__ );
+		$connection->beginAtomicTransaction( __METHOD__ );
 
 		$changePropListener->callListeners();
 
@@ -194,8 +201,10 @@ class SMWSQLStore3Writers {
 		\Hooks::run( 'SMW::SQLStore::AfterDataUpdateComplete', array(
 			$this->store,
 			$semanticData,
-			$this->propertyTableRowDiffer->getCompositePropertyTableDiff()
+			$changeOp
 		) );
+
+		$connection->endAtomicTransaction( __METHOD__ );
 	}
 
 	/**
@@ -256,7 +265,7 @@ class SMWSQLStore3Writers {
 		);
 
 		// Take care of all remaining property table data
-		list( $insertRows, $deleteRows, $newHashes ) = $this->propertyTableRowDiffer->computeTableRowDiffFor(
+		list( $insertRows, $deleteRows, $newHashes ) = $this->propertyTableRowDiffer->computeTableRowDiff(
 			$sid,
 			$data
 		);
@@ -281,11 +290,6 @@ class SMWSQLStore3Writers {
 
 		// Update caches (may be important if jobs are directly following this call)
 		$this->setSemanticDataCache( $sid, $data );
-
-		// TODO Make overall diff SMWSemanticData containers and return them.
-		// This can only be done here, since the $deleteRows/$insertRows
-		// alone do not have enough information to compute this later (sortkey
-		// and redirects may also change).
 	}
 
 	/**

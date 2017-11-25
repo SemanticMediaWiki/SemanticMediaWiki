@@ -21,9 +21,34 @@ use Title;
  */
 class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 
+	private $store;
 	private $factory;
 
 	protected function setUp() {
+
+		$entityManager = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $entityManager ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
+
+		$propertyTableRowDiffer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowDiffer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableRowDiffer->expects( $this->any() )
+			->method( 'computeTableRowDiff' )
+			->will( $this->returnValue( [ [], [], [] ] ) );
 
 		$propertyStatisticsTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsTable' )
 			->disableOriginalConstructor()
@@ -45,6 +70,26 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeOp->expects( $this->any() )
+			->method( 'getChangedEntityIdSummaryList' )
+			->will( $this->returnValue( [] ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getDataOps' )
+			->will( $this->returnValue( [] ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( [] ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getOrderedDiffByTable' )
+			->will( $this->returnValue( [] ) );
+
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,17 +109,21 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newChangePropListener' )
 			->will( $this->returnValue( $changePropListener ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertyTableRowDiffer' )
+			->will( $this->returnValue( $propertyTableRowDiffer ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newChangeOp' )
+			->will( $this->returnValue( $changeOp ) );
 	}
 
 	public function testCanConstruct() {
 
-		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMWSQLStore3Writers',
-			new SMWSQLStore3Writers( $parentStore, $this->factory )
+			new SMWSQLStore3Writers( $this->store, $this->factory )
 		);
 	}
 
