@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Onoi\EventDispatcher\EventListenerCollection;
+use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
 use SMW\Query\QueryComparator;
 use SMWExporter as Exporter;
 
@@ -149,15 +150,22 @@ class EventListenerRegistry implements EventListenerCollection {
 		$this->eventListenerCollection->registerCallback(
 			'cached.update.marker.delete', function( $dispatchContext ) {
 
-				$hash = '';
+				$cache = ApplicationFactory::getInstance()->getCache();
 
 				if ( $dispatchContext->has( 'subject' ) ) {
-					$hash = $dispatchContext->get( 'subject' )->getHash();
-				}
+					$cache->delete(
+						DependencyLinksUpdateJournal::makeKey(
+							$dispatchContext->get( 'subject' )
+						)
+					);
 
-				ApplicationFactory::getInstance()->getCache()->delete(
-					smwfCacheKey( ParserData::CACHE_NAMESPACE, $hash )
-				);
+					$cache->delete(
+						smwfCacheKey(
+							ParserData::CACHE_NAMESPACE,
+							$dispatchContext->get( 'subject' )->getHash()
+						)
+					);
+				}
 			}
 		);
 	}

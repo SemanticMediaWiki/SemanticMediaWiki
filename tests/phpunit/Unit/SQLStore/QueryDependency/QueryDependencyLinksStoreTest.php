@@ -192,7 +192,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( 'idlist' => array( 1 ) ),
+			[
+				'idlist' => [ 1 ],
+				'ex:mode' => 'exec.journal'
+			],
 			$instance->buildParserCachePurgeJobParametersFrom( $entityIdListRelevanceDetectionFilter )
 		);
 	}

@@ -211,7 +211,8 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'PostProcHandler', PostProcHandler::class );
 
 			$postProcHandler = new PostProcHandler(
-				$parserOutput
+				$parserOutput,
+				$containerBuilder->singleton( 'Cache' )
 			);
 
 			return $postProcHandler;

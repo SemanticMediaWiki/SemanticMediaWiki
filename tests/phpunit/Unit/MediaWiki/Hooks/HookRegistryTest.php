@@ -168,6 +168,9 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForParserOptionsRegister( $instance );
 		$this->doTestExecutionForParserFirstCallInit( $instance );
 		$this->doTestExecutionForTitleQuickPermissions( $instance );
+		$this->doTestExecutionForOutputPageCheckLastModified( $instance );
+		$this->doTestExecutionForIsFileCacheable( $instance );
+		$this->doTestExecutionForRejectParserCacheValue( $instance );
 
 		// Usage of registered hooks in/by smw-core
 		//$this->doTestExecutionForSMWStoreDropTables( $instance );
@@ -993,6 +996,68 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $title, $user, $action, &$errors, $rigor, $short )
+		);
+	}
+
+	public function doTestExecutionForOutputPageCheckLastModified( $instance ) {
+
+		$handler = 'OutputPageCheckLastModified';
+		$modifiedTimes = [];
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$modifiedTimes )
+		);
+	}
+
+	public function doTestExecutionForIsFileCacheable( $instance ) {
+
+		$handler = 'IsFileCacheable';
+
+		$article = $this->getMockBuilder( '\Article' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$article->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->title ) );
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$article )
+		);
+	}
+
+	public function doTestExecutionForRejectParserCacheValue( $instance ) {
+
+		$handler = 'RejectParserCacheValue';
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->title ) );
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$value = '';
+		$popts = '';
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $value, $wikiPage, $popts )
 		);
 	}
 

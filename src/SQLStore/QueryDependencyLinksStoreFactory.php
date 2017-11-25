@@ -9,6 +9,8 @@ use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
+use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
+use SMW\Site;
 use SMW\Store;
 
 /**
@@ -22,18 +24,41 @@ use SMW\Store;
 class QueryDependencyLinksStoreFactory {
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return DependencyLinksUpdateJournal
+	 */
+	public function newDependencyLinksUpdateJournal() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$dependencyLinksUpdateJournal = new DependencyLinksUpdateJournal(
+			$applicationFactory->getCache(),
+			$applicationFactory->newDeferredCallableUpdate()
+		);
+
+		$dependencyLinksUpdateJournal->setLogger(
+			$applicationFactory->getMediaWikiLogger()
+		);
+
+		return $dependencyLinksUpdateJournal;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return QueryResultDependencyListResolver
 	 */
 	public function newQueryResultDependencyListResolver() {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$queryResultDependencyListResolver = new QueryResultDependencyListResolver(
-			ApplicationFactory::getInstance()->newHierarchyLookup()
+			$applicationFactory->newHierarchyLookup()
 		);
 
 		$queryResultDependencyListResolver->setPropertyDependencyExemptionlist(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDependencyPropertyExemptionList' )
+			$applicationFactory->getSettings()->get( 'smwgQueryDependencyPropertyExemptionList' )
 		);
 
 		return $queryResultDependencyListResolver;
@@ -48,8 +73,12 @@ class QueryDependencyLinksStoreFactory {
 	 */
 	public function newQueryDependencyLinksStore( Store $store ) {
 
-		$logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
-		$dependencyLinksTableUpdater = new DependencyLinksTableUpdater( $store );
+		$applicationFactory = ApplicationFactory::getInstance();
+		$logger = $applicationFactory->getMediaWikiLogger();
+
+		$dependencyLinksTableUpdater = new DependencyLinksTableUpdater(
+			$store
+		);
 
 		$dependencyLinksTableUpdater->setLogger(
 			$logger
@@ -65,10 +94,12 @@ class QueryDependencyLinksStoreFactory {
 		);
 
 		$queryDependencyLinksStore->setEnabled(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
+			$applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
 		);
 
-		$queryDependencyLinksStore->isCommandLineMode( $GLOBALS['wgCommandLineMode'] );
+		$queryDependencyLinksStore->isCommandLineMode(
+			Site::isCommandLineMode()
+		);
 
 		return $queryDependencyLinksStore;
 	}
@@ -117,4 +148,3 @@ class QueryDependencyLinksStoreFactory {
 	}
 
 }
-

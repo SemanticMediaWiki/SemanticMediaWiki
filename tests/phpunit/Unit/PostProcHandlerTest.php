@@ -16,11 +16,16 @@ use SMW\PostProcHandler;
 class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $parserOutput;
+	private $cache;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -29,28 +34,35 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			PostProcHandler::class,
-			new PostProcHandler( $this->parserOutput )
+			new PostProcHandler( $this->parserOutput, $this->cache )
 		);
 	}
 
-	public function testGetHtml() {
+	public function testGetHtmlOnCookie() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'delete' )
+			->with( $this->stringContains( ':post' ) );
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
 			->with( $this->equalTo( PostProcHandler::PROC_POST_QUERYREF ) )
 			->will( $this->returnValue( [ 'Bar' => true ] ) );
 
-		$instance = new PostProcHandler( $this->parserOutput );
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
+		$title->expects( $this->atLeastOnce() )
 			->method( 'getDBKey' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$title->expects( $this->once() )
+		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
@@ -64,7 +76,58 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$webRequest->expects( $this->once() )
 			->method( 'getCookie' )
-			->will( $this->returnValue( 'FakeCokie' ) );
+			->will( $this->returnValue( 'FakeCookie' ) );
+
+		$this->assertContains(
+			'<div class="smw-postproc" data-subject="Foo#0#" data-ref="[&quot;Bar&quot;]"></div>',
+			$instance->getHtml( $title,  $webRequest )
+		);
+	}
+
+	public function testGetHtmlOnLinksUpdateJournalEntry() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( true ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'contains' )
+			->with( $this->stringContains( ':post' ) )
+			->will( $this->returnValue( false ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'save' )
+			->with( $this->stringContains( ':post' ) );
+
+		$this->parserOutput->expects( $this->once() )
+			->method( 'getExtensionData' )
+			->with( $this->equalTo( PostProcHandler::PROC_POST_QUERYREF ) )
+			->will( $this->returnValue( [ 'Bar' => true ] ) );
+
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->once() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 42 ) );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertContains(
 			'<div class="smw-postproc" data-subject="Foo#0#" data-ref="[&quot;Bar&quot;]"></div>',
@@ -87,7 +150,10 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( PostProcHandler::PROC_POST_QUERYREF ) )
 			->will( $this->returnValue( $sExtensionData ) );
 
-		$instance = new PostProcHandler( $this->parserOutput );
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
 
 		$instance->addQueryRef( $query );
 	}
