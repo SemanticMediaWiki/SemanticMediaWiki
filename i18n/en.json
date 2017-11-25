@@ -159,6 +159,7 @@
 	"smw_propertylackstype": "No type was specified for this property (assuming type $1 for now).",
 	"smw_propertyhardlyused": "This property is hardly used within the wiki!",
 	"smw-property-name-invalid": "Property $1 can not be used (invalid property name).",
+	"smw-property-name-reserved": "\"$1\" was listed as reserved name and should not be used as a property. The following [https://www.semantic-mediawiki.org/wiki/Help:Property_naming help page] may contain information as to why this name was reserved.",
 	"smw-sp-property-searchform": "Display properties that contain:",
 	"smw-sp-property-searchform-inputinfo": "The input is case sensitive and when used for filtering, only properties that match the condition are displayed.",
 	"smw-special-property-searchform": "Display properties that contain:",
@@ -637,5 +638,6 @@
 	"smw-api-smwbrowse-invalid-parameters": "Parameters format is invalid, expected a valid JSON format.",
 	"smw-parser-recursion-level-exceeded": "The level of $1 recursions was exceeded during a parse process. It is suggested to validated the template structure, or if necessary adjust configuration parameter <code>$maxRecursionDepth</code>.",
 	"smw-property-page-list-count": "Showing $1 {{PLURAL:$1|page|pages}} using this property.",
-	"smw-property-page-list-search-count": "Showing $1 {{PLURAL:$1|page|pages}} using this property with a \"$2\" value match."
+	"smw-property-page-list-search-count": "Showing $1 {{PLURAL:$1|page|pages}} using this property with a \"$2\" value match.",
+	"smw-property-reserved-category": "Category"
 }

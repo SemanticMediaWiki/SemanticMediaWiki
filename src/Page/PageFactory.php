@@ -79,6 +79,10 @@ class PageFactory {
 			$propertySpecificationReqExaminer
 		);
 
+		$propertySpecificationReqMsgBuilder->setPropertyReservedNameList(
+			$settings->get( 'smwgPropertyReservedNameList' )
+		);
+
 		$propertyPage = new PropertyPage(
 			$title,
 			$this->store,

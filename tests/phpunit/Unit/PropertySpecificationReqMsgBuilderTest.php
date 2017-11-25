@@ -115,6 +115,31 @@ class PropertySpecificationReqMsgBuilderTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testCheckReservedName() {
+
+		$instance = new PropertySpecificationReqMsgBuilder(
+			$this->store,
+			$this->propertySpecificationReqExaminer
+		);
+
+		$instance->setPropertyReservedNameList(
+			[
+				'Bar'
+			]
+		);
+
+		$dataItemFactory = new DataItemFactory();
+
+		$instance->checkOn(
+			$dataItemFactory->newDIProperty( 'Bar' )
+		);
+
+		$this->assertContains(
+			'smw-property-name-reserved',
+			$instance->getMessage()
+		);
+	}
+
 	public function propertyProvider() {
 
 		$dataItemFactory = new DataItemFactory();

@@ -1564,6 +1564,26 @@ return array(
 	##
 
 	##
+	# Reserved property names
+	#
+	# Listed names are reserved as they may interfere with Semantic MediaWiki or
+	# MediaWiki itself.
+	#
+	# Removing default names from the list is not recommended (extending the list
+	# is supported and may be used to customize use cases for an individual wiki).
+	#
+	# The list can contain simple names or identifiers that start with
+	# `smw-property-reserved-` to link to a translatable representation that
+	# matches a string in a content language.
+	#
+	# @see #2835, #2840
+	#
+	# @since 3.0
+	##
+	'smwgPropertyReservedNameList' => array( 'Category', 'smw-property-reserved-category' ),
+	##
+
+	##
 	# Entity specific collation
 	#
 	# This should correspond to the $wgCategoryCollation setting (also in regards

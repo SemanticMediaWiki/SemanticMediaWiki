@@ -166,6 +166,7 @@ class Settings extends Options {
 			'smwgCreateProtectionRight' => $GLOBALS['smwgCreateProtectionRight'],
 			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty'],
 			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
+			'smwgPropertyReservedNameList' => $GLOBALS['smwgPropertyReservedNameList'],
 			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],
 			'smwgEntityLookupFeatures' => $GLOBALS['smwgEntityLookupFeatures'],
 			'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'],
