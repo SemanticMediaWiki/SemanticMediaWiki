@@ -3,8 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Options;
 
 /**
@@ -13,12 +12,9 @@ use SMW\Options;
  *
  * @author mwjames
  */
-class HookHandler implements LoggerAwareInterface {
+class HookHandler {
 
-	/**
-	 * @var LoggerInterface
-	 */
-	protected $logger;
+	use LoggerAwareTrait;
 
 	/**
 	 * @var Options
@@ -29,7 +25,6 @@ class HookHandler implements LoggerAwareInterface {
 	 * @since 2.5
 	 */
 	public function __construct() {
-		$this->logger = new NullLogger();
 		$this->options = new Options();
 	}
 
@@ -54,19 +49,10 @@ class HookHandler implements LoggerAwareInterface {
 		return $this->options->safeGet( $key, $default );
 	}
 
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
-	}
-
 	protected function log( $message, $context = array() ) {
-		$this->logger->info( $message, $context );
+		if ( $this->logger instanceof LoggerInterface ) {
+			$this->logger->info( $message, $context );
+		}
 	}
 
 }
