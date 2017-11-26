@@ -317,15 +317,21 @@ class ResultFieldMatchFinder {
 			return $dataItem;
 		}
 
+		$type = $this->printRequest->getTypeID();
+
 		// Avoid `_cod`, `_eid` or similar types that use the DIBlob as storage
 		// object
-		if ( $this->printRequest->getTypeID() !== '_txt' && strpos( $this->printRequest->getTypeID(), '_rec' ) === false ) {
+		if ( $type !== '_txt' && strpos( $type, '_rec' ) === false ) {
 			return $dataItem;
 		}
 
-		// Outputs marked with -ia (import annotation) are allowed to retain a
-		// possible [[ :: ]] annotation
-		if ( strpos( $this->printRequest->getOutputFormat(), '-ia' ) !== false ) {
+		$outputFormat = $this->printRequest->getOutputFormat();
+
+		// #2325
+		// Output format marked with -raw are allowed to retain a possible [[ :: ]]
+		// annotation
+		// '-ia' is deprecated use `-raw`
+		if ( strpos( $outputFormat, '-raw' ) !== false || strpos( $outputFormat, '-ia' ) !== false ) {
 			return $dataItem;
 		}
 
@@ -334,7 +340,7 @@ class ResultFieldMatchFinder {
 			$dataItem->getString()
 		);
 
-		// #...
+		// #2253
 		if ( $this->queryToken !== null ) {
 			$string = $this->queryToken->highlight( $string );
 		}
