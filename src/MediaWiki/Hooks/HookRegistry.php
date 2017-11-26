@@ -133,6 +133,8 @@ class HookRegistry {
 			$applicationFactory->singleton( 'ProtectionValidator' )
 		);
 
+		$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
+
 		/**
 		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
 		 *
@@ -199,6 +201,40 @@ class HookRegistry {
 			);
 
 			return $outputPageParserOutput->process();
+		};
+
+		/**
+		 * Hook: When checking if the page has been modified since the last visit
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageCheckLastModified
+		 */
+		$this->handlers['OutputPageCheckLastModified'] = function ( &$lastModified ) use( $applicationFactory ) {
+
+			// Required to ensure that ViewAction doesn't bail out with
+			// "ViewAction::show: done 304" and hereby neglects to run the
+			// ArticleViewHeader hook
+
+			// Required on 1.28- for the $outputPage->checkLastModified check
+			// that would otherwise prevent running the ArticleViewHeader hook
+			$lastModified['smw'] = wfTimestamp( TS_MW, time() );
+
+			return true;
+		};
+
+		/**
+		 * Hook: Allow an extension to disable file caching on pages
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/IsFileCacheable
+		 */
+		$this->handlers['IsFileCacheable'] = function ( &$article ) use( $applicationFactory ) {
+
+			if ( !$applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $article->getTitle()->getNamespace() ) ) {
+				return true;
+			}
+
+			// Disallow the file cache to avoid skipping the ArticleViewHeader hook
+			// on Article::tryFileCache
+			return !$applicationFactory->getSettings( 'smwgEnabledQueryDependencyLinksStore' );
 		};
 
 		/**
@@ -353,6 +389,24 @@ class HookRegistry {
 
 			return true;
 		};
+
+		/**
+		 * Hook: ...
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
+		 */
+		$this->handlers['RejectParserCacheValue'] = function ( $value, $wikiPage, $popts ) use ( $queryDependencyLinksStoreFactory  ) {
+
+			$rejectParserCacheValue = new RejectParserCacheValue(
+				$queryDependencyLinksStoreFactory->newDependencyLinksUpdateJournal()
+			);
+
+			// Return false to reject the parser cache
+			// The log will contain something like "[ParserCache] ParserOutput
+			// key valid, but rejected by RejectParserCacheValue hook handler."
+			return $rejectParserCacheValue->process( $wikiPage->getTitle() );
+		};
+
 
 		/**
 		 * Hook: TitleMoveComplete occurs whenever a request to move an article
@@ -612,13 +666,11 @@ class HookRegistry {
 			return $permissionPthValidator->checkQuickPermission( $title, $user, $action, $errors );
 		};
 
-		$this->registerHooksForInternalUse( $applicationFactory, $deferredRequestDispatchManager );
+		$this->registerHooksForInternalUse( $applicationFactory, $deferredRequestDispatchManager, $queryDependencyLinksStoreFactory );
 		$this->registerParserFunctionHooks( $applicationFactory );
 	}
 
-	private function registerHooksForInternalUse( ApplicationFactory $applicationFactory, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
-
-		$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
+	private function registerHooksForInternalUse( ApplicationFactory $applicationFactory, DeferredRequestDispatchManager $deferredRequestDispatchManager, QueryDependencyLinksStoreFactory $queryDependencyLinksStoreFactory ) {
 
 		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 			$applicationFactory->getStore()

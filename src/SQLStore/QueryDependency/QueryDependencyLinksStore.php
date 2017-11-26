@@ -7,6 +7,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EventHandler;
 use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 use SMW\Store;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
@@ -205,7 +206,8 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		}
 
 		return array(
-			'idlist' => $filteredIdList
+			'idlist' => $filteredIdList,
+			'ex:mode' => ParserCachePurgeJob::EXEC_JOURNAL
 		);
 	}
 

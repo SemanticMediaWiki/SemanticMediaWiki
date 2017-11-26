@@ -627,7 +627,7 @@
 	"smw-format-datatable-toolbar-export": "Export",
 	"smw-category-invalid-redirect-target": "Category \"$1\" contains an invalid redirect target to a non-category namespace.",
 	"smw-parser-function-expensive-execution-limit": "The parser function has reached the limit for expensive executions (see configuration parameter [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit <code>$smwgQExpensiveExecutionLimit</code>]).",
-	"smw-postproc-queryref": "The page was marked as to be refreshed due to some required post processing.",
+	"smw-postproc-queryref": "Semantic MediaWiki will initiate a page refresh due to some required query post processing.",
 	"apihelp-smwinfo-summary": "API module to retrieve information about Semantic MediaWiki statistics and other meta information.",
 	"apihelp-ask-summary": "API module to query Semantic MediaWiki using the ask language.",
 	"apihelp-askargs-summary": "API module to query Semantic MediaWiki using the ask language as list of conditions, printouts and parameters.",
