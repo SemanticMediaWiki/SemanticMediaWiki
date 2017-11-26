@@ -213,7 +213,7 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @return string
 	 */
 	public function getOrigin() {
-		return is_array( $this->origin ) ? json_encode( $this->origin ) : $this->origin;
+		return is_array( $this->origin ) ? json_encode( $this->origin, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) : $this->origin;
 	}
 
 	/**
@@ -297,7 +297,7 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 
 		$this->logger->info(
 			$fname .
-			( is_array( $context ) ? ' ' . json_encode( $context, JSON_PRETTY_PRINT ) : $context )
+			( is_array( $context ) ? ' ' . json_encode( $context, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) : $context )
 		);
 	}
 
