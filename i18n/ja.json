@@ -23,7 +23,8 @@
 			"Puntti ja",
 			"Hinaloe",
 			"48pedoa",
-			"Suchichi02"
+			"Suchichi02",
+			"Omotecho"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -79,7 +80,7 @@
 	"smw-paramdesc-table-class": "表に設定する追加 CSS クラス",
 	"smw-paramdesc-table-transpose": "表の見出しを縦に、結果を横に表示する",
 	"smw-paramdesc-rdfsyntax": "使用する RDF 構文",
-	"smw-paramdesc-csv-sep": "使用する区切り文字",
+	"smw-paramdesc-csv-sep": "使用する区切り文字の指定",
 	"smw-paramdesc-dsv-separator": "使用する区切り文字",
 	"smw-paramdesc-dsv-filename": "DSV ファイルの名前",
 	"smw-paramdesc-filename": "出力ファイルの名前",

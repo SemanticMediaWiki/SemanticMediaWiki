@@ -164,6 +164,7 @@
 	"smw_propertylackstype": "Ingen typ specificerades för denna egenskap (antar typ $1 tills vidare).",
 	"smw_propertyhardlyused": "Denna egenskap används knappt i wikin!",
 	"smw-property-name-invalid": "Egenskapen $1 kan inte användas (ogiltigt egenskapsnamn).",
+	"smw-property-name-reserved": "\"$1\" har listats som ett reservat namn och bör inte användas som en egenskap. Följande [https://www.semantic-mediawiki.org/wiki/Help:Property_naming hjälpsida] kan innehålla information om varför detta namn reserverades.",
 	"smw-sp-property-searchform": "Visa egenskaper som innehåller:",
 	"smw-sp-property-searchform-inputinfo": "Indata är skiftlägeskänsligt och, när den används för filtrering, visas endast egenskaper som matchar villkoret.",
 	"smw-special-property-searchform": "Visa egenskaper som innehåller:",
@@ -446,5 +447,6 @@
 	"smw-postproc-queryref": "Sidan markerades för att uppdateras p.g.a. behov av efterbehandling.",
 	"smw-api-smwbrowse-invalid-parameters": "Ogiltigt formaterade parametrar, giltig JSON förväntas.",
 	"smw-property-page-list-count": "Visar $1 {{PLURAL:$1|sida|sidor}} som använder den här egenskapen.",
-	"smw-property-page-list-search-count": "Visar $1 {{PLURAL:$1|sida|sidor}} som använder den här egenskapen med det matchande värdet \"$2\"."
+	"smw-property-page-list-search-count": "Visar $1 {{PLURAL:$1|sida|sidor}} som använder den här egenskapen med det matchande värdet \"$2\".",
+	"smw-property-reserved-category": "Kategori"
 }

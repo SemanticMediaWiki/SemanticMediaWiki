@@ -168,6 +168,7 @@
 	"smw_propertylackstype": "Não foi especificado nenhum tipo para esta propriedade (a presumir o tipo $1 por agora).",
 	"smw_propertyhardlyused": "Esta propriedade é muito pouco usada nesta wiki!",
 	"smw-property-name-invalid": "A propriedade $1 não pode ser usada (nome inválido).",
+	"smw-property-name-reserved": "\"$1\" estava listado como sendo um nome reservado e não deve ser usado como propriedade. Talvez a seguinte [https://www.semantic-mediawiki.org/wiki/Help:Property_naming página de ajuda] contenha informação sobre a razão pela qual o nome estava reservado.",
 	"smw-sp-property-searchform": "Apresentar as propriedades que contêm:",
 	"smw-sp-property-searchform-inputinfo": "O texto de entrada é sensível a maiúsculas e minúsculas e, quando é usado para a filtragem, só são apresentadas as propriedades que correspondem à condição.",
 	"smw-special-property-searchform": "Apresentar as propriedades que contêm:",
@@ -641,5 +642,7 @@
 	"smw-api-smwbrowse-invalid-parameters": "O formato dos parâmetros é inválido; era esperado um formato JSON válido.",
 	"smw-parser-recursion-level-exceeded": "O nível de $1 recursões foi excedido durante um processo de análise sintática. É sugerido que valide a estrutura de predefinições, ou que ajuste o parâmetro de configuração <code>$maxRecursionDepth</code> se necessário.",
 	"smw-property-page-list-count": "A apresentar {{PLURAL:$1|uma página que usa|$1 páginas que usam}} esta propriedade.",
-	"smw-property-page-list-search-count": "A apresentar {{PLURAL:$1|uma página que usa|$1 páginas que usam}} esta propriedade com uma correspondência de valor \"$2\"."
+	"smw-property-page-list-search-count": "A apresentar {{PLURAL:$1|uma página que usa|$1 páginas que usam}} esta propriedade com uma correspondência de valor \"$2\".",
+	"smw-property-reserved-category": "Categoria",
+	"smw-datavalue-uri-invalid-scheme": " \"$1\" não foi listado como um esquema URI válido."
 }

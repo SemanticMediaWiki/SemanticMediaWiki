@@ -180,6 +180,7 @@
 	"smw_propertylackstype": "Ningún tipo fue especificada para esta propiedad (asumiendo tipo $1 por ahora).",
 	"smw_propertyhardlyused": "¡Esta propiedad se usa escasamente dentro del wiki!",
 	"smw-property-name-invalid": "La propiedad $1 no puede usarse (nombre de propiedad no válido).",
+	"smw-property-name-reserved": "«$1» se marcó como nombre reservado y, por lo tanto, no debería utilizarse como una propiedad. Es posible que esta [https://www.semantic-mediawiki.org/wiki/Help:Property_naming página de ayuda] incluya información sobre el motivo por el que este nombre se reservó.",
 	"smw-sp-property-searchform": "Mostrar propiedades que contengan:",
 	"smw-sp-property-searchform-inputinfo": "La entrada distingue mayúsculas y minúsculas y, cuando se utiliza para el filtrado, solo se muestran las propiedades que coinciden con la condición.",
 	"smw-special-property-searchform": "Mostrar propiedades que contengan:",
@@ -497,9 +498,9 @@
 	"smw-pa-property-predefined-long_errp": "En la mayoría de los casos lo provoca un error de correspondencia de tipos o una restricción de [[Property:Allows value|valores]].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value \"$1\"] es una propiedad predefinida que puede definir una lista de valores posibles para restringir la asignación de valores de una propiedad. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pvali": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value_list «$1»] es una propiedad predefinida, provista por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki], que permite especificar una referencia a una lista que contenga valores permisibles para restringir las asignaciones de valores en propiedades.",
-	"smw-datavalue-property-restricted-annotation-use": "La propiedad ''$1'' tiene una zona de aplicacion limitada y no puede ser utlizado como propiedad de anotacion por un usuario",
-	"smw-datavalue-property-restricted-declarative-use": "La propiedad ''$1'' debe ser declarado y puede solamente ser utilizado como propiedad o pagina de categoria.",
-	"smw-datavalue-property-create-restriction": "La propiedad ''$1'' no existe y ell usuario no tiene el permiso ''$2'' (ver a https://www.semantic-mediawiki.org/wiki/Help:Authority_mode authority mode})para crear o anotar valores de una propiedad no aprobada.",
+	"smw-datavalue-property-restricted-annotation-use": "La propiedad «$1» tiene aplicaciones limitadas y los usuarios no pueden utilizarla como propiedad de anotación.",
+	"smw-datavalue-property-restricted-declarative-use": "La propiedad «$1» es declarativa y solo puede utilizarse en páginas de propiedad o de categoría.",
+	"smw-datavalue-property-create-restriction": "No existe la propiedad «$1» y el usuario carece del permiso «$2» (consulta [https://www.semantic-mediawiki.org/wiki/Help:Authority_mode Modo de autoridad]) para crear o anotar valores con una propiedad no aprobada.",
 	"smw-datavalue-property-invalid-character": "«$1» contiene el carácter «$2» como parte de la etiqueta de una propiedad y se ha clasificado como no válido.",
 	"smw-datavalue-property-invalid-chain": "No se permite el uso de «$1» como cadena de propiedades durante el proceso de anotación.",
 	"smw-datavalue-restricted-use": "El valor de datos \"$1\" ha sido marcado para uso restringido.",
@@ -603,5 +604,7 @@
 	"apihelp-smwbrowse-summary": "Módulo de la API de Semantic MediaWiki para añadir compatibilidad a ciertas actividades de navegación.",
 	"smw-api-smwbrowse-invalid-parameters": "El formato de los parámetros no es válido; se esperaba un formato JSON válido.",
 	"smw-property-page-list-count": "Se {{PLURAL:$1|muestra $1 página que utiliza|muestran $1 páginas que utilizan}} esta propiedad.",
-	"smw-property-page-list-search-count": "Se {{PLURAL:$1|muestra $1 página que utiliza|muestran $1 páginas que utilizan}} esta propiedad con una correspondencia de valor «$2»."
+	"smw-property-page-list-search-count": "Se {{PLURAL:$1|muestra $1 página que utiliza|muestran $1 páginas que utilizan}} esta propiedad con una correspondencia de valor «$2».",
+	"smw-property-reserved-category": "Categoría",
+	"smw-datavalue-uri-invalid-scheme": "No se incluyó «$1» en los esquemas de URI válidos."
 }

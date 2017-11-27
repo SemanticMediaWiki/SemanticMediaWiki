@@ -249,7 +249,7 @@
 	"grouppage-smwcurator": "{{ns:project}}:Kuraattorit (Semantic MediaWiki)",
 	"smw-sp-properties-header-label": "Luettelo ominaisuuksista",
 	"smw-livepreview-loading": "Ladataan…",
-	"smw-sp-searchbyproperty-resultlist-header": "Luettelo tuloksistas",
+	"smw-sp-searchbyproperty-resultlist-header": "Luettelo tuloksista",
 	"log-name-smw": "Semantic MediaWiki -loki",
 	"log-show-hide-smw": "$1 Semantic MediaWiki -loki",
 	"smw-sp-types-list": "Luettelo tietotyypeistä",

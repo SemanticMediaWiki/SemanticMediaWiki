@@ -169,6 +169,7 @@
 	"smw_propertylackstype": "This is an error/warning message. Parameters:\n* $1 holds the name of the assumed data type which is in fact always data type Page.",
 	"smw_propertyhardlyused": "This is an error/warning message.",
 	"smw-property-name-invalid": "This is an information message. Parameters:\n* $1 - property name",
+	"smw-property-name-reserved": "This is an error message.\n\nParameter:\n* $1 - holds the reserved name",
 	"smw-sp-property-searchform": "Introductory text for the property search form",
 	"smw-sp-property-searchform-inputinfo": "Additional explanatory text about the filtering condition.",
 	"smw-special-property-searchform": "Introductory text for the property search form",
@@ -646,5 +647,7 @@
 	"smw-api-smwbrowse-invalid-parameters": "This is an error message emitted by an API-module.",
 	"smw-parser-recursion-level-exceeded": "This is an error message.\n\nParameter:\n* $1 - holds the count of recursions (integer) detected by the software",
 	"smw-property-page-list-count": "This is an informatory message on a property page.\n\nParameter:\n* $1 - holds the number of pages",
-	"smw-property-page-list-search-count": "This is an informatory message on a property page.\n\nParameters:\n* $1 - holds the number of pages\n* $2 - holds the datavalue searched for"
+	"smw-property-page-list-search-count": "This is an informatory message on a property page.\n\nParameters:\n* $1 - holds the number of pages\n* $2 - holds the datavalue searched for",
+	"smw-property-reserved-category": "This is the name of a reserved property name.\n\n{{Identical|Category}}",
+	"smw-datavalue-uri-invalid-scheme": "This is an error message.\n\nParameter:\n* $1 - holds the identifier of an Uniform Resource Identifier (URI) schema"
 }

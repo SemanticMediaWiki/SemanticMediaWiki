@@ -172,6 +172,7 @@
 	"smw_propertylackstype": "Für dieses Attribut wurde kein Datentyp festgelegt ($1 wird daher als Datentyp angenommen).",
 	"smw_propertyhardlyused": "Dieses Attribut wird im Wiki kaum verwendet!",
 	"smw-property-name-invalid": "Das Attribut „$1“ kann nicht verwendet werden (ungültiger Attributname).",
+	"smw-property-name-reserved": "„$1“ ist als reservierter Name gelistet und sollte nicht als Attributname verwendet werden. Die folgende [https://www.semantic-mediawiki.org/wiki/Help:Property_naming Hilfeseite] könnte Informationen darüber enthalten, warum dieser Name reserviert ist.",
 	"smw-sp-property-searchform": "Attribute anzeigen, die Folgendes enthalten:",
 	"smw-sp-property-searchform-inputinfo": "Bei der Eingabe wird zwischen Groß- und Kleinschreibung unterschieden. Bei der Filterung werden nur Attribute angezeigt, die der Bedingung entsprechen.",
 	"smw-special-property-searchform": "Attribute anzeigen, die Folgendes enthalten:",
@@ -634,7 +635,7 @@
 	"smw-format-datatable-toolbar-export": "Exportieren",
 	"smw-category-invalid-redirect-target": "Die Kategorie „$1“ enthält ein Weiterleitungsziel, das sich nicht im Namensraum Kategorie befindet und daher ungültig ist.",
 	"smw-parser-function-expensive-execution-limit": "Die Parserfunktion hat die Grenze für aufwendige Ausführungen erreicht. Siehe hierzu die Seite zum [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit Konfigurationsparameter <code>$smwgQExpensiveExecutionLimit</code>].",
-	"smw-postproc-queryref": "Diese Seite muss aufgrund erforderlicher Nachverarbeitungen aktualisiert werden.",
+	"smw-postproc-queryref": "Semantic MediaWiki wird, aufgrund erforderlicher abfragebedingter Nachverarbeitungen, eine Aktualisierung dieser Seite anstoßen.",
 	"apihelp-smwinfo-summary": "API-Modul zum Abrufen statistischer Daten und weiterer Metainformationen bezüglich der Nutzung von Semantic MediaWiki.",
 	"apihelp-ask-summary": "API-Modul zum Abfragen eines Wikis mit der Abfragesprache von Semantic MediaWiki.",
 	"apihelp-askargs-summary": "API-Modul zum Abfragen eines Wikis mit der Abfragesprache von Semantic MediaWiki als Liste von Bedingungen, Ausgabeanweisungen und Parametern.",
@@ -645,5 +646,7 @@
 	"smw-api-smwbrowse-invalid-parameters": "Die Formatierung der Parameter ist fehlerhaft. Es ist eine gültige JSON-Formatierung erforderlich.",
 	"smw-parser-recursion-level-exceeded": "Die Obergrenze von $1 Rekursionen wurde während des Parsens überschritten. Es wird empfohlen, die Vorlagenstruktur zu validieren oder – falls notwendig, den Konfigurationsparameter „<code>$maxRecursionDepth</code>“ anzupassen.",
 	"smw-property-page-list-count": "Unterhalb {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt, auf denen für dieses Attribut ein Datenwert gespeichert wurde.",
-	"smw-property-page-list-search-count": "Es {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt, auf denen für dieses Attribut der Datenwert „$2“ gespeichert wurde."
+	"smw-property-page-list-search-count": "Es {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt, auf denen für dieses Attribut der Datenwert „$2“ gespeichert wurde.",
+	"smw-property-reserved-category": "Kategorie",
+	"smw-datavalue-uri-invalid-scheme": "„$1“ ist nicht als zulässiges URI-Schema gelistet."
 }

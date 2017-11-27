@@ -268,5 +268,6 @@
 	"smw-format-datatable-last": "Lescht",
 	"smw-format-datatable-next": "Nächst",
 	"smw-format-datatable-previous": "Vireg",
-	"smw-format-datatable-toolbar-export": "Exportéieren"
+	"smw-format-datatable-toolbar-export": "Exportéieren",
+	"smw-property-reserved-category": "Kategorie"
 }
