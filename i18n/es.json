@@ -594,7 +594,7 @@
 	"smw-format-datatable-sortdescending": ": actívalo para ordenar la columna descendentemente",
 	"smw-format-datatable-toolbar-export": "Exportar",
 	"smw-category-invalid-redirect-target": "La categoría «$1» contiene un objetivo de redirección no válido a un espacio de nombres que no es de categoría.",
-	"smw-postproc-queryref": "Se marcó esta página para su actualización porque necesita posprocesamiento.",
+	"smw-postproc-queryref": "Semantic MediaWiki actualizará esta página porque hay consultas que necesitan posprocesamiento.",
 	"apihelp-smwinfo-summary": "Módulo de la API para recuperar información sobre las estadísticas de Semantic MediaWiki y otros metadatos.",
 	"apihelp-ask-summary": "Módulo de la API para realizar consultas en Semantic MediaWiki mediante el lenguaje Ask.",
 	"apihelp-askargs-summary": "Módulo de la API para realizar consultas en Semantic MediaWiki mediante el lenguaje Ask en forma de lista de condiciones, visualizaciones y parámetros.",

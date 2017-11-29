@@ -430,5 +430,6 @@
 	"smw-datavalue-import-missing-type": "لم يتم العثور على تعريف نوع ل\"$1\" في [[MediaWiki:Smw import $2|$2 استيراد]].",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 استيراد]]",
 	"smw-datavalue-parse-error": "القيمة المعطاة \"$1\" لم يتم فهمها.",
-	"smw-datavalue-reference-outputformat": "$1: $2"
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-property-reserved-category": "تصنيف"
 }

@@ -364,5 +364,6 @@
 	"smw-format-datatable-last": "Ultimo",
 	"smw-format-datatable-next": "Successivo",
 	"smw-format-datatable-previous": "Precedente",
-	"smw-format-datatable-toolbar-export": "Esporta"
+	"smw-format-datatable-toolbar-export": "Esporta",
+	"smw-property-reserved-category": "Categoria"
 }

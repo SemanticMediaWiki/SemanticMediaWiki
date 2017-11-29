@@ -149,6 +149,7 @@
 	"smw_propertylackstype": "이 속성에 지정한 유형이 없습니다. (지금은 $1 유형으로 가정합니다)",
 	"smw_propertyhardlyused": "이 속성은 거의 위키 안에 사용하지 않습니다!",
 	"smw-property-name-invalid": "$1 속성은 사용할 수 없습니다. (잘못된 속성 이름)",
+	"smw-property-name-reserved": "\"$1\"은(는) 예약어로 등재되었으므로 속성으로 사용해서는 안 됩니다. 다음의 [https://www.semantic-mediawiki.org/wiki/Help:Property_naming 도움말 문서]에는 이 이름이 예약된 이유에 관한 정보가 포함되어 있을 수 있습니다.",
 	"smw-sp-property-searchform": "다음을 포함하는 속성 표시:",
 	"smw-sp-property-searchform-inputinfo": "입력은 대소문자를 구분하여 필터에 사용되며, 조건과 일치하는 속성만 보입니다.",
 	"smw-special-property-searchform": "다음을 포함하는 속성 표시:",
@@ -426,8 +427,11 @@
 	"smw-format-datatable-previous": "이전",
 	"smw-format-datatable-toolbar-export": "내보내기",
 	"smw-category-invalid-redirect-target": "\"$1\" 분류는 분류가 아닌 이름공간에 대한 잘못된 넘겨주기 대상을 포함하고 있습니다.",
+	"smw-postproc-queryref": "일부 쿼리 후처리가 필요하므로 시맨틱 미디어위키는 페이지 새로 고침을 시작합니다.",
 	"apihelp-smwbrowse-summary": "선택된 탐색 활동을 지원하기 위한 시맨틱 미디어위키 API 모듈입니다.",
 	"smw-api-smwbrowse-invalid-parameters": "변수 형식이 유효하지 않습니다. 유효한 JSON 포맷을 예상했습니다.",
 	"smw-property-page-list-count": "이 속성을 사용하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
-	"smw-property-page-list-search-count": "\"$2\" 값이 일치하고 이 속성을 사용하는 {{PLURAL:$1|문서}} $1개를 보여줍니다."
+	"smw-property-page-list-search-count": "\"$2\" 값이 일치하고 이 속성을 사용하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
+	"smw-property-reserved-category": "분류",
+	"smw-datavalue-uri-invalid-scheme": "\"$1\"은(는) 유효한 URI 스킴으로 등재되지 않았습니다."
 }
