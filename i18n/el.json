@@ -153,6 +153,7 @@
 	"smw_propertylackstype": "Δεν έχει καθοριστεί τύπος για την ιδιότητα αυτή (προς το παρόν θεωρείται τύπος $1).",
 	"smw_propertyhardlyused": "Αυτή η ιδιότητα δεν χρησιμοποιείται σχεδόν καθόλου εντός του wiki!",
 	"smw-property-name-invalid": "Η ιδιότητα  $1  δεν μπορεί να χρησιμοποιηθεί (μη έγκυρο όνομα ιδιότητας).",
+	"smw-property-name-reserved": " Το\"$1\" ταξινομήθηκε ως όνομα καταχώρησης από αποθήκευση και δεν πρέπει να χρησιμοποιείται για ιδία χρήση. Η ακόλουθη ιστοσελίδα [https://www.semantic-mediawiki.org/wiki/Help:Property_naming help page] μπορεί να περιλαμβάνει πληροφορίες όπως το γιατί αυτό το όνομα αποθηκεύτηκε (καταχωρήθηκε).",
 	"smw-sp-property-searchform": "Προβολή ιδιοτήτων που περιέχουν:",
 	"smw-sp-property-searchform-inputinfo": "Το πλαίσιο εισαγωγής δεδομένων κάνει διάκριση πεζών-κεφαλαίων και όταν χρησιμοποιείται για φιλτράρισμα, εμφανίζονται μόνο ιδιότητες που ικανοποιούν τη συνθήκη.",
 	"concepts": "Έννοιες",
@@ -487,5 +488,8 @@
 	"smw-format-datatable-previous": "Προηγούμενο",
 	"smw-format-datatable-sortascending": ":Ενεργοποιήστε για να ταξινομήσετε αύξουσα στήλη",
 	"smw-format-datatable-sortdescending": ": Ενεργοποιήστε για να ταξινομήσετε φθίνουσα στήλη",
-	"smw-parser-function-expensive-execution-limit": "Η συνάρτηση του συντακτικού αναλυτή έχει φτάσει στο όριό της για ακριβές εκτελέσεις (βλ. παράμετρο διαμόρφωσης [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit])."
+	"smw-parser-function-expensive-execution-limit": "Η συνάρτηση του συντακτικού αναλυτή έχει φτάσει στο όριό της για ακριβές εκτελέσεις (βλ. παράμετρο διαμόρφωσης [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit]).",
+	"smw-postproc-queryref": "Το σημειολογικό πεδίο της MediaWiki θα αρχίσει την ανανέωση της σελίδας που αντιστοιχεί στην ζήτηση που απαιτείται μετά την διαδικασία.",
+	"smw-property-reserved-category": "Κατηγορία",
+	"smw-datavalue-uri-invalid-scheme": "Το \"$1\" δεν έχει καταχωρηθεί ως έγκυρο σχήμα  URI ."
 }

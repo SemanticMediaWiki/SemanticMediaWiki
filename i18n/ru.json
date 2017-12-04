@@ -481,5 +481,6 @@
 	"smw-query-reference-link-label": "Ссылка на запрос",
 	"smw-format-datatable-loadingrecords": "Загрузка…",
 	"smw-format-datatable-search": "Поиск:",
-	"smw-format-datatable-toolbar-export": "Экспорт"
+	"smw-format-datatable-toolbar-export": "Экспорт",
+	"smw-property-reserved-category": "Категория"
 }
