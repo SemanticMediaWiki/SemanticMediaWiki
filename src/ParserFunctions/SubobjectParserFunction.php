@@ -43,7 +43,7 @@ class SubobjectParserFunction {
 
 	/**
 	 * Fixed identifier that describes a property that can auto-linked the
-	 * embededding subject
+	 * embeddedding subject
 	 */
 	const PARAM_LINKWITH = '@linkWith';
 

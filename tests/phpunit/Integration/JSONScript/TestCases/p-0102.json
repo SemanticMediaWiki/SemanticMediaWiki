@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation on properties with invalid names/charaters (#1567, #1638, #1727 `wgContLang=en`)",
+	"description": "Test in-text annotation on properties with invalid names/characters (#1567, #1638, #1727 `wgContLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

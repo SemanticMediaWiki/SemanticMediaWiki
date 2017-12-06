@@ -10,7 +10,7 @@ use SMWQuery as Query;
  * to ensure a singleton instance.
  *
  * The purpose of this class is to give fragmented access to frequent (hence
- * cachable) property values to ensure that the store is only used for when a
+ * cacheable) property values to ensure that the store is only used for when a
  * match can not be found and so freeing up the capacities that can equally be
  * served from a persistent cache instance.
  *

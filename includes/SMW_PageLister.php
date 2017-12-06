@@ -234,7 +234,7 @@ class SMWPageLister {
 				$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
 				$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
 
-				// check for change of starting letter or begining of chunk
+				// check for change of starting letter or beginning of chunk
 				$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
 				$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 

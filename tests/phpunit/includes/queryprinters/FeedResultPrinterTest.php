@@ -96,7 +96,7 @@ class FeedResultPrinterTest extends QueryPrinterTestCase {
 					'[http://www.aohostels.com/en/tagungen/tagungen-berlin/ A&O Berlin Hauptbahnhof]' .
 					'&¢©«»—¡¿,åÃãÆç'
 			),
-			array( 'info'     => 'text enconding including html special characters' )
+			array( 'info'     => 'text encoding including html special characters' )
 		);
 
 		return $provider;

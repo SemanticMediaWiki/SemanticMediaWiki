@@ -19,7 +19,7 @@ use SMW\Utils\CharArmor;
 /**
  * Objects of this type represent all that is known about a certain user-provided
  * data value, especially its various representations as strings, tooltips,
- * numbers, etc.  Objects can be created as "emtpy" containers of a certain type,
+ * numbers, etc.  Objects can be created as "empty" containers of a certain type,
  * but are then usually filled with data to present one particular data value.
  *
  * Data values have two chief representation forms: the user-facing syntax and the
@@ -202,7 +202,7 @@ abstract class SMWDataValue {
 		// In general, we are not prepared to handle such content properly, and we
 		// also have no means of obtaining the user input at this point. Hence the assignment
 		// just fails, even if parseUserValue() above might not have noticed this issue.
-		// Note: \x07 was used in MediaWiki 1.11.0, \x7f is used now (backwards compatiblity, b/c)
+		// Note: \x07 was used in MediaWiki 1.11.0, \x7f is used now (backwards compatibility, b/c)
 		if ( ( strpos( $value, "\x7f" ) !== false ) || ( strpos( $value, "\x07" ) !== false ) ) {
 			$this->addErrorMsg( array( 'smw-datavalue-stripmarker-parse-error', $value ) );
 		}

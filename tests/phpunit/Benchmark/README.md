@@ -15,7 +15,7 @@ a `feature` branch.
 
 ## Designing benchmark tests
 
-The defintion of what benchmarks are executed is specified by a `JSONScript`
+The definition of what benchmarks are executed is specified by a `JSONScript`
 found in the `TestCases` directory. Supported types are:
 
 - `import` to import data from an external source

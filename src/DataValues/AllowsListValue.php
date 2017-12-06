@@ -7,7 +7,7 @@ use SMWStringValue as StringValue;
 use SMW\Message;
 
 /**
- * To suppport value list via the NS_MEDIAWIKI namespace
+ * To support value list via the NS_MEDIAWIKI namespace
  *
  * @license GNU GPL v2+
  * @since 2.5

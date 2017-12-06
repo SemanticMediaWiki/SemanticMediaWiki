@@ -665,7 +665,7 @@ class SMWSQLStore3Readers {
 				$where = 's_id=' . $db->addQuotes( $sid );
 			} elseif ( $subject->getInterwiki() === '' ) {
 				$where = 's_title=' . $db->addQuotes( $subject->getDBkey() ) . ' AND s_namespace=' . $db->addQuotes( $subject->getNamespace() );
-			} else { // subjects with non-emtpy interwiki cannot have properties
+			} else { // subjects with non-empty interwiki cannot have properties
 				continue;
 			}
 

@@ -191,7 +191,7 @@ class SMWExpData implements Element {
 
 	/**
 	 * Return the list of SMWExpData values associated to some property that is
-	 * specifed by a standard namespace id and local name.
+	 * specified by a standard namespace id and local name.
 	 *
 	 * @param $namespaceId string idetifying a known special namespace (e.g. "rdf")
 	 * @param $localName string of local name (e.g. "type")

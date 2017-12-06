@@ -9,7 +9,7 @@ use RuntimeException;
 use Title;
 
 /**
- * Convenience class to build language dependant messages and special text
+ * Convenience class to build language dependent messages and special text
  * components and decrease depdencency on the Language object with SMW's code
  * base
  *

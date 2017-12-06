@@ -8,7 +8,7 @@ use SMWStringValue as StringValue;
 
 /**
  * Handles a string value to adhere the BCP47 normative content declaration for
- * a languge code tag
+ * a language code tag
  *
  * @see https://en.wikipedia.org/wiki/IETF_language_tag
  *

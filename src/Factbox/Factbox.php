@@ -101,7 +101,7 @@ class Factbox {
 
 	/**
 	 * Builds content suitable for rendering a Factbox and
-	 * updating the ParserOuput accordingly
+	 * updating the ParserOutput accordingly
 	 *
 	 * @since 1.9
 	 *
@@ -242,7 +242,7 @@ class Factbox {
 	 * Ensure that the SemanticData container is really empty and not filled
 	 * with a single "pseudo" property that obscures from re-reading the data
 	 *
-	 * MW's internal Parser does iterate the ParserOuput object several times
+	 * MW's internal Parser does iterate the ParserOutput object several times
 	 * which can leave a '_SKEY' property while in fact the the container is
 	 * empty.
 	 *

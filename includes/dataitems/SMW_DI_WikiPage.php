@@ -63,7 +63,7 @@ class DIWikiPage extends SMWDataItem {
 	private $id = 0;
 
 	/**
-	 * Contructor. We do not bother with too much detailed validation here,
+	 * Constructor. We do not bother with too much detailed validation here,
 	 * regarding the known namespaces, canonicity of the dbkey (namespace
 	 * exrtacted?), validity of interwiki prefix (known?), and general use
 	 * of allowed characters (may depend on MW configuration). All of this

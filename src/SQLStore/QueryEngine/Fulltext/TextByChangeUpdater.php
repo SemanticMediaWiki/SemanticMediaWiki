@@ -210,7 +210,7 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 			return;
 		}
 
-		// Build a composite of replacements where a change occured, this my
+		// Build a composite of replacements where a change occurred, this my
 		// contain some false positives
 		foreach ( $dataChangeOps as $dataChangeOp ) {
 			$this->doCreateCompositeUpdate( $dataChangeOp, $updates, $insertIds );
@@ -251,7 +251,7 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 			$sid = $fieldChangeOp->get( 's_id' );
 			$pid = $fieldChangeOp->get( 'p_id' );
 
-			// Check whether changes occured for a matchable pair of subject/property
+			// Check whether changes occurred for a matchable pair of subject/property
 			// IDs
 			if ( !isset( $ids[$sid] ) && !isset( $ids[$pid] ) ) {
 				continue;

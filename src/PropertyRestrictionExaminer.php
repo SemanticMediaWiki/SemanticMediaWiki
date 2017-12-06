@@ -185,7 +185,7 @@ class PropertyRestrictionExaminer {
 			return false;
 		}
 
-		// A user without the approriate right cannot use a non-existing property
+		// A user without the appropriate right cannot use a non-existing property
 		return $this->error = Message::encode(
 			array(
 				self::CREATE_RESTRICTION,

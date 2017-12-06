@@ -331,7 +331,7 @@ class TimeValueFormatter extends DataValueFormatter {
 
 	/**
 	 * Compute a suitable string to display this date, taking into account the
-	 * output format and the preferrable calendar models for the data.
+	 * output format and the preferable calendar models for the data.
 	 *
 	 * @note MediaWiki's date functions are not applicable for the range
 	 * of historic dates we support.
