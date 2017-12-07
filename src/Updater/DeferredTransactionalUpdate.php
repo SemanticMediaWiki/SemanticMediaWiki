@@ -55,7 +55,7 @@ class DeferredTransactionalUpdate extends DeferredCallableUpdate {
 
 	/**
 	 * @note MW 1.29+ showed transaction collisions (Exception thrown with
-	 * an uncommited database transaction), use 'onTransactionIdle' to isolate
+	 * an uncommitted database transaction), use 'onTransactionIdle' to isolate
 	 * the update execution.
 	 *
 	 * @since 2.5

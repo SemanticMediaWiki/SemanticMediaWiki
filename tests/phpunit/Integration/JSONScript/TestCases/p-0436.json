@@ -87,7 +87,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#3 (en, different label, does't contain a prefLabel marker)",
+			"about": "#3 (en, different label, doesn't contain a prefLabel marker)",
 			"subject": "Example/P0436/Q.4",
 			"assert-output": {
 				"to-contain": [

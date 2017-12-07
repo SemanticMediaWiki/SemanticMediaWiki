@@ -31,7 +31,7 @@ class ExternalIdentifierPropertyValueResourceBuilder extends PropertyValueResour
 
 	/**
 	 * Instead of representing an external identifier as "owl:sameAs", the weaker
-	 * declarative axiom "skos:exactMatch" has been choosen to avoid potential
+	 * declarative axiom "skos:exactMatch" has been chosen to avoid potential
 	 * issues with undesirable entailments.
 	 *
 	 * "skos:exactMatch" has been defined as "... indicating a high degree of

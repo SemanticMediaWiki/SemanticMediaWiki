@@ -7,7 +7,7 @@ use SMW\ApplicationFactory;
 use SMWDataValue as DataValue;
 
 /**
- * To suppport regular expressions in connection with the `Allows pattern`
+ * To support regular expressions in connection with the `Allows pattern`
  * property.
  *
  * @license GNU GPL v2+

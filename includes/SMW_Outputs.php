@@ -16,7 +16,7 @@
  * Ideally, all functions that generate hypertext with dependencies would also include parameters to
  * record required scripts. Since this would require major API changes, the current solution is to have
  * a "temporal" global storage for the required items, managed in this class. It is not safe to use
- * such a global store accross hooks -- you never know what happens in between! Hence, every function
+ * such a global store across hooks -- you never know what happens in between! Hence, every function
  * that creates SMW outputs that may require head items must afterwards clear the temporal store by
  * writing its contents to the according output.
  *
@@ -150,7 +150,7 @@ class SMWOutputs {
 	}
 
 	/**
-	 * Acutally commit the collected requirements to a given parser that is about to parse
+	 * Actually commit the collected requirements to a given parser that is about to parse
 	 * what will later be the HTML output. This makes sure that HTML output based on the
 	 * parser results contains all required output items.
 	 *
@@ -197,7 +197,7 @@ class SMWOutputs {
 	}
 
 	/**
-	 * Acutally commit the collected requirements to a given OutputPage object that
+	 * Actually commit the collected requirements to a given OutputPage object that
 	 * will later generate the HTML output. This makes sure that HTML output contains
 	 * all required output items. Note that there is no parser caching at this level of
 	 * processing. In particular, data should not be committed to $wgOut in methods

@@ -61,7 +61,7 @@ abstract class Condition {
 
 	/**
 	 * Get the SPARQL condition string that this object represents. This
-	 * does not inlcude the weak conditions, or additional formulations to
+	 * does not include the weak conditions, or additional formulations to
 	 * match singletons (see SMWSparqlSingletonCondition).
 	 *
 	 * @return string

@@ -435,8 +435,8 @@ class SMWInfolink {
 
 	/**
 	 * Obtain an array of parameters from the parameters given to some HTTP service.
-	 * In particular, this function perfoms all necessary decoding as may be needed, e.g.,
-	 * to recover the proper paramter strings after encoding for use in wiki title names
+	 * In particular, this function performs all necessary decoding as may be needed, e.g.,
+	 * to recover the proper parameter strings after encoding for use in wiki title names
 	 * as done by SMWInfolink::encodeParameters().
 	 *
 	 * If $allparams is set to true, it is assumed that further data should be obtained

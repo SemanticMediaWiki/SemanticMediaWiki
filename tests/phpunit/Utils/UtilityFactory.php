@@ -188,7 +188,7 @@ class UtilityFactory {
 	 */
 	public function newLocalFileUploadWithCopy( $localUploadPath, $desiredDestName ) {
 
-		// Use to create a copy to avoid having the orginal file being
+		// Use to create a copy to avoid having the original file being
 		// deleted after the upload
 		$dummyFileCreator = new DummyFileCreator();
 		$dummyFileCreator->createFileWithCopyFrom(  $desiredDestName, $localUploadPath );

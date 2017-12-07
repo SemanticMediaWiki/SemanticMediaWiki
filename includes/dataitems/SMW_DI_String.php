@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Unused class, kept for compatibilty.
+ * Unused class, kept for compatibility.
  *
  * @deprecated Will be removed after SMW 1.9; do not use
  */

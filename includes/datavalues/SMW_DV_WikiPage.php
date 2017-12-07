@@ -23,7 +23,7 @@ use SMW\Message;
  * input. The long display always includes all relevant information. Only if a
  * fixed namespace is used for the datatype, the namespace prefix is omitted.
  * This behavior has changed in SMW 1.7: up to this time, short displays have
- * always inlcuded the namespace and long displays used the pipe trick, leading
+ * always included the namespace and long displays used the pipe trick, leading
  * to a paradoxical confusion of "long" and "short".
  *
  * @author Nikolas Iwan

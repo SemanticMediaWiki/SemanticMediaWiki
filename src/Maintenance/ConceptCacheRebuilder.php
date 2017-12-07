@@ -179,7 +179,7 @@ class ConceptCacheRebuilder {
 		$skip = false;
 
 		if ( $concept === null ) {
-			$skip = 'page not cachable (no concept description, maybe a redirect)';
+			$skip = 'page not cacheable (no concept description, maybe a redirect)';
 		} elseif ( ( $this->hasOption( 'update' ) ) && ( $concept->getCacheStatus() !== 'full' ) ) {
 			$skip = 'page not cached yet';
 		} elseif ( ( $this->hasOption( 'old' ) ) && ( $concept->getCacheStatus() === 'full' ) &&

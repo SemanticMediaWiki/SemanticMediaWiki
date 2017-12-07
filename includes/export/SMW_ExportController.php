@@ -97,7 +97,7 @@ class SMWExportController {
 	 * Returns true if initialization was successful (this means that the
 	 * optional output file is writable).
 	 * @param string $outfilename URL of the file that output should be written
-	 * to, or empty string for writting to the standard output.
+	 * to, or empty string for writing to the standard output.
 	 *
 	 * @return boolean
 	 */

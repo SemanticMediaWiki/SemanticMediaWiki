@@ -147,7 +147,7 @@ class DataItemToExpResourceEncoder {
 	 * can be given to make variants of a URI, typically done for
 	 * auxiliary properties. In this case, the URI is modiied by appending
 	 * "-23$modifier" where "-23" is the URI encoding of "#" (a symbol not
-	 * occuring in MW titles).
+	 * occurring in MW titles).
 	 *
 	 * @param DIWikiPage $diWikiPage
 	 * @param boolean $useAuxiliaryModifier
@@ -248,7 +248,7 @@ class DataItemToExpResourceEncoder {
 		}
 
 		// "-23$modifier" where "-23" is the URI encoding of "#" (a symbol not
-	 	// occuring in MW titles).
+	 	// occurring in MW titles).
 		if ( $modifier !== '' ) {
 			$localName .=  '-23' . Escaper::encodeUri( $modifier );
 		}

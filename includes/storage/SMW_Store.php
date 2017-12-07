@@ -375,7 +375,7 @@ abstract class Store implements QueryEngine {
 	 * to report on its progress. This is doen by just using print and
 	 * possibly ob_flush/flush. This is also relevant for preventing
 	 * timeouts during long operations. All output must be valid in an HTML
-	 * context, but should preferrably be plain text, possibly with some
+	 * context, but should preferably be plain text, possibly with some
 	 * linebreaks and weak markup.
 	 *
 	 * @param boolean $verbose

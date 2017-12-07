@@ -115,7 +115,7 @@ class Localizer {
 	/**
 	 * @note
 	 *
-	 * 1. If the page content language is availabe use it as preferred language
+	 * 1. If the page content language is available use it as preferred language
 	 * (as it is clear that the page content was intended to be in a specific
 	 * language)
 	 * 2. If no page content language was assigned use the global content

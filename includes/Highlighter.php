@@ -46,7 +46,7 @@ class Highlighter {
 	const TYPE_ERROR = 5;
 
 	/**
-	 * Highlighter ID for informations
+	 * Highlighter ID for information
 	 */
 	const TYPE_INFO = 6;
 
@@ -271,7 +271,7 @@ class Highlighter {
 	}
 
 	/**
-	 * Returns initial configuation settings
+	 * Returns initial configuration settings
 	 *
 	 * @note You could create a class per entity type but does this
 	 * really make sense just to get some configuration parameters?

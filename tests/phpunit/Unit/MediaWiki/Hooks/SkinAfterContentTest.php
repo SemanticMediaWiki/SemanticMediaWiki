@@ -106,7 +106,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
 		$text = __METHOD__ . 'text-0';
 
-		#0 Retrive content from outputPage property
+		#0 Retrieve content from outputPage property
 		$title = MockTitle::buildMock( __METHOD__ . 'from-property' );
 
 		$title->expects( $this->atLeastOnce() )
@@ -148,7 +148,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			array( 'text' => $text )
 		);
 
-		#1 Retrive content from cache
+		#1 Retrieve content from cache
 		$title = MockTitle::buildMock( __METHOD__ . 'from-cache' );
 
 		$title->expects( $this->atLeastOnce() )

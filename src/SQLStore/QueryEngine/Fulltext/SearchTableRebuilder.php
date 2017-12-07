@@ -298,7 +298,7 @@ class SearchTableRebuilder {
 
 			$text = $this->searchTableUpdater->read( $sid, $pid );
 
-			// Unkown, so let's create the row
+			// Unknown, so let's create the row
 			if ( $text === false ) {
 				$this->searchTableUpdater->insert( $sid, $pid );
 			}

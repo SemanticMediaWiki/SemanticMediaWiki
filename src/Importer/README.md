@@ -4,9 +4,9 @@ The objective of the `Importer` is to provide a simple mechanism for deploying d
 
 [`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs) defines import directories from where content can be imported.
 
-Import defintions are defined using a `JSON` format which provides the structural means and is considered easily extendable by end-users.
+Import definitions are defined using a `JSON` format which provides the structural means and is considered easily extendable by end-users.
 
-The import files are sorted and therefore sequentially processed based on the file name. In case where content relies on other content an approriate naming convention should be followed to ensure required definitions are imported in the expected order.
+The import files are sorted and therefore sequentially processed based on the file name. In case where content relies on other content an appropriate naming convention should be followed to ensure required definitions are imported in the expected order.
 
 ### Default definitions
 

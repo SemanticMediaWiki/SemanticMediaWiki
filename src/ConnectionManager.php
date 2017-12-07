@@ -14,7 +14,7 @@ class ConnectionManager {
 
 	/**
 	 * By design this variable is static to ensure that ConnectionProvider
-	 * instances are only intialized once per request.
+	 * instances are only initialized once per request.
 	 *
 	 * @var array
 	 */

@@ -14,7 +14,7 @@ use Html;
 
 /**
  * This special page for MediaWiki provides an administrative interface
- * that allows to execute certain functions related to the maintainance
+ * that allows to execute certain functions related to the maintenance
  * of the semantic database. It is restricted to users with siteadmin status.
  *
  * @license GNU GPL v2+
@@ -262,7 +262,7 @@ class SpecialAdmin extends SpecialPage {
 
 		$tab = 'general';
 
-		// If we want to remain on a specifc tab on a GET request, use the `tab`
+		// If we want to remain on a specific tab on a GET request, use the `tab`
 		// parameter since we are unable to fetch any #href hash from a request
 		if ( $this->getRequest()->getVal( 'tab' ) ) {
 			$tab = $this->getRequest()->getVal( 'tab' );

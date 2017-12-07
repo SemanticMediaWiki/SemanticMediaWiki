@@ -557,7 +557,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	}
 
 	/**
-	 * If $outputmode is SMW_OUTPUT_HTML, escape special characters occuring in the
+	 * If $outputmode is SMW_OUTPUT_HTML, escape special characters occurring in the
 	 * given text. Otherwise return text as is.
 	 *
 	 * @param string $text

@@ -30,7 +30,7 @@ use SMW\ApplicationFactory;
  * Subclasses that support unit conversion may interpret the output format set
  * via setOutputFormat() to allow a unit to be selected for display. Note that
  * this setting does not affect the internal representation of the value
- * though. So chosing a specific output format will change the behavior of
+ * though. So choosing a specific output format will change the behavior of
  * output functions like getLongWikiText(), but not of functions that access
  * the value itself, such as getUnit() or getDBKeys().
  *

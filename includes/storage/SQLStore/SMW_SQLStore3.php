@@ -419,7 +419,7 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * Return status of the concept cache for the given concept as an array
 	 * with key 'status' ('empty': not cached, 'full': cached, 'no': not
-	 * cachable). If status is not 'no', the array also contains keys 'size'
+	 * cacheable). If status is not 'no', the array also contains keys 'size'
 	 * (query size), 'depth' (query depth), 'features' (query features). If
 	 * status is 'full', the array also contains keys 'date' (timestamp of
 	 * cache), 'count' (number of results in cache).

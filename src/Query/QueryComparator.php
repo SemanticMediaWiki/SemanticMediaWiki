@@ -61,7 +61,7 @@ class QueryComparator {
 	}
 
 	/**
-	 * Gets an array with all suported comparator strings.
+	 * Gets an array with all supported comparator strings.
 	 * The string for SMW_CMP_EQ, which is an empty string, is not in this list.
 	 *
 	 * @since 1.5.3

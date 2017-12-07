@@ -29,7 +29,7 @@
   - Comments: sudo apt-get install virtuoso-opensource
 
 - 4store
-  - Connector: 4store (Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been sucessfully tested with the available test suite. ([issue #110](https://github.com/garlik/4store/issues/110))
+  - Connector: 4store (Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been successfully tested with the available test suite. ([issue #110](https://github.com/garlik/4store/issues/110))
   - QueryEndPoint: http://localhost:8088/sparql/
   - UpdateEndPoint: http://localhost:8088/update/
   - DataEndpoint:
@@ -42,7 +42,7 @@
   - UpdateEndPoint: http://localhost:8080/openrdf-sesame/repositories/test-smw/statements
   - DataEndpoint:
   - DefaultGraph:
-  - Comments: `test-smw` is specifed as native in-memory store
+  - Comments: `test-smw` is specified as native in-memory store
 
 - Blazegraph
   - Connector: Blazegraph
