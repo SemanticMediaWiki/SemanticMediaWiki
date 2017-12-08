@@ -85,16 +85,11 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 		if ( method_exists( $outputPage, 'getHeadLinksArray' ) ) {
 			foreach ( $outputPage->getHeadLinksArray() as $key => $value ) {
-				if ( strpos( $value, 'ExportRDF' ) ){
+				if ( strpos( $value, 'alternate' ) ){
 					$contains = true;
 					break;
 				};
 			}
-		} else{
-			// MW 1.19
-			if ( strpos( $outputPage->getHeadLinks(), 'ExportRDF' ) ){
-				$contains = true;
-			};
 		}
 
 		$expected['result'] ? $this->assertTrue( $contains ) : $this->assertFalse( $contains );
