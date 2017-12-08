@@ -91,8 +91,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 	public function titleDataProvider() {
 
-		$language = Language::factory( 'en' );
-
 		#0 Standard title
 		$title = MockTitle::buildMockForMainNamespace();
 
@@ -103,10 +101,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( false ) );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
 
 		$provider[] = array(
 			array(
@@ -123,10 +117,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
 
 		$provider[] = array(
 			array(
