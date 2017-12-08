@@ -65,34 +65,28 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $setup, $expected ) {
 
+		$expected = $expected['result'] ? $this->atLeastOnce() : $this->never();
+
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$context = new \RequestContext();
-		$context->setTitle( $setup['title'] );
-		$context->setLanguage( Language::factory( 'en' ) );
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$outputPage = new OutputPage( $context );
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $setup['title'] ) );
+
+		$outputPage->expects( $expected )
+			->method( 'addLink' );
 
 		$instance = new BeforePageDisplay( $outputPage, $skin );
-		$result   = $instance->process();
 
-		$this->assertInternalType( 'boolean', $result );
-		$this->assertTrue( $result );
-
-		$contains = false;
-
-		if ( method_exists( $outputPage, 'getHeadLinksArray' ) ) {
-			foreach ( $outputPage->getHeadLinksArray() as $key => $value ) {
-				if ( strpos( $value, 'alternate' ) ){
-					$contains = true;
-					break;
-				};
-			}
-		}
-
-		$expected['result'] ? $this->assertTrue( $contains ) : $this->assertFalse( $contains );
+		$this->assertTrue(
+			$instance->process()
+		);
 	}
 
 	public function titleDataProvider() {
