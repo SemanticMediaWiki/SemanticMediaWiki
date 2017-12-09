@@ -11,6 +11,7 @@ use SMW\HashBuilder;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\MediaWiki\StripMarkerDecoder;
+use SMW\SemanticData;
 use Parser;
 
 /**
@@ -311,6 +312,9 @@ class SubobjectParserFunction {
 	}
 
 	private function augment( $semanticData ) {
+
+		// Data block created by a user
+		$semanticData->setOption( SemanticData::PROC_USER, true );
 
 		$sortkey = new DIProperty( DIProperty::TYPE_SORTKEY );
 		$displayTitle = new DIProperty( DIProperty::TYPE_DISPLAYTITLE );

@@ -38,6 +38,16 @@ class SemanticData {
 	const OPT_LAST_MODIFIED = 'opt.last.modified';
 
 	/**
+	 * Identifies that a data block was created by a user.
+	 */
+	const PROC_USER = 'proc.user';
+
+	/**
+	 * Identifies that a data block was initiated by a delete request.
+	 */
+	const PROC_DELETE = 'proc.delete';
+
+	/**
 	 * Cache for the localized version of the namespace prefix "Property:".
 	 *
 	 * @var string
@@ -145,7 +155,7 @@ class SemanticData {
 	/**
 	 * @var Options
 	 */
-	private $options = null;
+	protected $options;
 
 	/**
 	 * This is kept public to keep track of the depth during a recursive processing

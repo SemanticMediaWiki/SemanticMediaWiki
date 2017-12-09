@@ -81,6 +81,8 @@ class SMWSQLStore3Writers {
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$emptySemanticData = new SemanticData( $subject );
+		$emptySemanticData->setOption( SemanticData::PROC_DELETE, true );
+
 		$subobjectListFinder = $this->factory->newSubobjectListFinder();
 
 		$this->doDataUpdate( $emptySemanticData );
