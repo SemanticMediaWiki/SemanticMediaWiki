@@ -49,6 +49,18 @@ class HookHandler {
 		return $this->options->safeGet( $key, $default );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $flag
+	 *
+	 * @return boolean
+	 */
+	public function isFlagSet( $key, $flag ) {
+		return $this->options->isFlagSet( $key, $flag );
+	}
+
 	protected function log( $message, $context = array() ) {
 		if ( $this->logger instanceof LoggerInterface ) {
 			$this->logger->info( $message, $context );

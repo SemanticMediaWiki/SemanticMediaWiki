@@ -34,9 +34,17 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
 
-		$instance = new BaseTemplateToolbox( $setup['skinTemplate'], $toolbox );
+		$instance = new BaseTemplateToolbox(
+			ApplicationFactory::getInstance()->getNamespaceExaminer()
+		);
 
-		$instance->process();
+		$instance->setOptions(
+			[
+				'smwgBrowseFeatures' => $setup['settings']['smwgBrowseFeatures']
+			]
+		);
+
+		$instance->process( $setup['skinTemplate'], $toolbox );
 
 		$this->assertContains(
 			$expected,
