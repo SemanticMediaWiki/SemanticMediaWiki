@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
-use SMW\SQLStore\QueryEngine\OrderConditionsComplementor;
+use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\OrderConditionsComplementor
+ * @covers \SMW\SQLStore\QueryEngine\OrderCondition
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  *
  * @author mwjames
  */
-class OrderConditionsComplementorTest extends \PHPUnit_Framework_TestCase {
+class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySegmentListBuilder;
 
@@ -28,27 +28,27 @@ class OrderConditionsComplementorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\OrderConditionsComplementor',
-			new OrderConditionsComplementor( $this->querySegmentListBuilder )
+			OrderCondition::class,
+			new OrderCondition( $this->querySegmentListBuilder )
 		);
 	}
 
-	public function testApplyOrderConditionsWithoutSortKey() {
+	public function testApplyWithoutSortKey() {
 
 		$this->querySegmentListBuilder->expects( $this->once() )
 			->method( 'getQuerySegmentList' );
 
-		$instance = new OrderConditionsComplementor(
+		$instance = new OrderCondition(
 			$this->querySegmentListBuilder
 		);
 
-		$instance->applyOrderConditions( 42 );
+		$instance->apply( 42 );
 	}
 
 	/**
 	 * @dataProvider sortKeyProvider
 	 */
-	public function testApplyOrderConditionsWithSortKey( $sortKeys ) {
+	public function testApplyWithSortKey( $sortKeys ) {
 
 		$querySegment = new QuerySegment();
 
@@ -59,17 +59,17 @@ class OrderConditionsComplementorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'findQuerySegment' )
 			->will( $this->returnValue( $querySegment ) );
 
-		$instance = new OrderConditionsComplementor(
+		$instance = new OrderCondition(
 			$this->querySegmentListBuilder
 		);
 
 		$instance->setSortKeys( $sortKeys );
 
-		$instance->applyOrderConditions( 42 );
+		$instance->apply( 42 );
 		$querySegment->reset();
 	}
 
-	public function testApplyOrderConditionsWithInvalidSortKeyThrowsException() {
+	public function testApplyWithInvalidSortKeyThrowsException() {
 
 		$querySegment = new QuerySegment();
 
@@ -80,7 +80,7 @@ class OrderConditionsComplementorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'findQuerySegment' )
 			->will( $this->returnValue( $querySegment ) );
 
-		$instance = new OrderConditionsComplementor(
+		$instance = new OrderCondition(
 			$this->querySegmentListBuilder
 		);
 
@@ -90,7 +90,7 @@ class OrderConditionsComplementorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->applyOrderConditions( 42 );
+		$instance->apply( 42 );
 
 		$querySegment->reset();
 	}
