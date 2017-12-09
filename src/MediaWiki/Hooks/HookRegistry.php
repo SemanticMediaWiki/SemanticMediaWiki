@@ -244,20 +244,9 @@ class HookRegistry {
 		 */
 		$this->handlers['BeforePageDisplay'] = function ( &$outputPage, &$skin ) {
 
-			$user = $outputPage->getUser();
+			$beforePageDisplay = new BeforePageDisplay();
 
-			$beforePageDisplay = new BeforePageDisplay(
-				$outputPage,
-				$skin
-			);
-
-			$beforePageDisplay->registerModules(
-				[
-					'ext.smw.suggester.textInput' => $user->getOption( 'smw-prefs-general-options-suggester-textinput' )
-				]
-			);
-
-			return $beforePageDisplay->process();
+			return $beforePageDisplay->process( $outputPage, $skin );
 		};
 
 		/**
