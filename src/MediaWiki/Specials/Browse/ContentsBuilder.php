@@ -160,9 +160,7 @@ class ContentsBuilder {
 	 * @return string
 	 */
 	public function getEmptyHtml() {
-		global $wgContLang;
 
-		$leftside = !( $wgContLang->isRTL() );
 		$html = '';
 		$form = '';
 
@@ -170,7 +168,7 @@ class ContentsBuilder {
 		$this->articletext = $this->subject->getWikiValue();
 
 		$html .= $this->displayHead();
-		$html .= $this->displayData( $semanticData, $leftside, false, true );
+		$html .= $this->displayData( $semanticData, true, false, true );
 		$html .= $this->displayBottom( false );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
@@ -192,9 +190,9 @@ class ContentsBuilder {
 	 * @return string  A HTML string with the factbox
 	 */
 	private function doGenerateHtml() {
-		global $wgContLang;
 		$html = "<div class=\"smwb-datasheet\">";
-		$leftside = !( $wgContLang->isRTL() ); // For right to left languages, all is mirrored
+
+		$leftside = true;
 		$modules = array();
 
 		if ( !$this->subject->isValid() ) {
@@ -283,8 +281,12 @@ class ContentsBuilder {
 				continue;
 			}
 
-			$head = HtmlDivTable::cell( $propertyLabel, array( "class" => 'smwb-cell smwb-prophead' ) );
-			$propertyValue = '';
+			$head = HtmlDivTable::cell(
+				$propertyLabel,
+				[
+					"class" => 'smwb-cell smwb-prophead'
+				]
+			);
 
 			$values = $data->getPropertyValues( $diProperty );
 
@@ -295,22 +297,34 @@ class ContentsBuilder {
 				$moreIncoming = false;
 			}
 
-			$first = true;
-			foreach ( $values as /* SMWDataItem */ $di ) {
-				if ( $first ) {
-					$first = false;
-				} else {
-					$propertyValue .= ', ';
-				}
+			$list = [];
+			$propertyValue = '';
 
+			foreach ( $values as /* SMWDataItem */ $di ) {
 				if ( $incoming ) {
 					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, null );
 				} else {
 					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, $diProperty );
 				}
 
-				$propertyValue .= "<span class=\"{$dirPrefix}value\">" .
-				         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>\n";
+				$list[] = Html::rawElement(
+					'span',
+					[
+						'class' => "{$dirPrefix}value"
+					],
+					$this->displayValue( $dvProperty, $dv, $incoming )
+				);
+			}
+
+			$last = array_pop( $list );
+			$propertyValue = implode( wfMessage( 'comma-separator' )->escaped(), $list );
+
+			if ( $moreIncoming && $last !== '' ) {
+				$propertyValue .= wfMessage( 'comma-separator' )->escaped() . $last;
+			} elseif( $list !== [] && $last !== '' ) {
+				$propertyValue .= ' ' . wfMessage( 'and' )->escaped() . ' ' . $last;
+			} else {
+				$propertyValue .= $last;
 			}
 
 			// Added in 2.3
@@ -329,15 +343,21 @@ class ContentsBuilder {
 
 			}
 
-			$body = HtmlDivTable::cell( $propertyValue, array( "class" => 'smwb-cell smwb-propval' ) );
+			$body = HtmlDivTable::cell(
+				$propertyValue,
+				[
+					"class" => 'smwb-cell smwb-propval'
+				]
+			);
 
 			// display row
 			$html .= HtmlDivTable::row(
-				( $left ? ( $head . $body ):( $body . $head ) ),
+				( $left ? ( $head . $body ) : ( $body . $head ) ),
 				array(
 					"class" => "{$dirPrefix}propvalue"
 				)
 			);
+
 			$noresult = false;
 		} // end foreach properties
 
