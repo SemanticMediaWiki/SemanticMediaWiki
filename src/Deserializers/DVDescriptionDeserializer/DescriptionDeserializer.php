@@ -119,6 +119,20 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 */
 	protected function prepareValue( &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
+
+		if ( $comparator === SMW_CMP_IN ) {
+			$comparator = SMW_CMP_LIKE;
+
+			// `in:...` is for the "busy" user to avoid adding wildcards now and
+			// then to the value string
+			$value = "*$value*";
+
+			// No property and the assumption is [[in:...]] with the expected use
+			// of the wide proximity as indicated by an additional `~`
+			if ( $this->dataValue->getProperty() === null ) {
+				$value = "~$value";
+			}
+		}
 	}
 
 }

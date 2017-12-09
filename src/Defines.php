@@ -91,6 +91,7 @@ define( 'SMW_CMP_LESS', 7 ); // Matches only datavalues that are less than the g
 define( 'SMW_CMP_GRTR', 8 ); // Matches only datavalues that are greater than the given value.
 define( 'SMW_CMP_PRIM_LIKE', 20 ); // Native LIKE matches (in disregards of an existing full-text index)
 define( 'SMW_CMP_PRIM_NLKE', 21 ); // Native NLIKE matches (in disregards of an existing full-text index)
+define( 'SMW_CMP_IN', 22 ); // Short-cut for ~* ... *
 /**@}*/
 
 /**@{

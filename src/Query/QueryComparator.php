@@ -160,6 +160,7 @@ class QueryComparator {
 		$comparators = array(
 			'like:' => SMW_CMP_PRIM_LIKE,
 			'nlike:' => SMW_CMP_PRIM_NLKE,
+			'in:' => SMW_CMP_IN,
 			'!~' => SMW_CMP_NLKE,
 			'<<' => SMW_CMP_LESS,
 			'>>' => SMW_CMP_GRTR,

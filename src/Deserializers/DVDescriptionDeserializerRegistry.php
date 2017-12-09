@@ -8,6 +8,7 @@ use SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionD
 use SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer;
+use SMW\Deserializers\DVDescriptionDeserializer\NumberValueDescriptionDeserializer;
 use SMWDataValue as DataValue;
 
 /**
@@ -95,6 +96,7 @@ class DVDescriptionDeserializerRegistry {
 
 		$dispatchingDescriptionDeserializer = new DispatchingDescriptionDeserializer();
 		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new TimeValueDescriptionDeserializer() );
+		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new NumberValueDescriptionDeserializer() );
 		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new RecordValueDescriptionDeserializer() );
 		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new MonolingualTextValueDescriptionDeserializer() );
 
