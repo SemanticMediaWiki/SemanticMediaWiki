@@ -227,6 +227,7 @@
 				// Remove title content which is supposed to be used when nojs is enabled
 				// and the "real" tooltip cannot show the ccontent
 				$this.removeAttr( "title" );
+				$this.removeClass( "is-disabled" );
 
 				// Call instance
 				self.show( {
