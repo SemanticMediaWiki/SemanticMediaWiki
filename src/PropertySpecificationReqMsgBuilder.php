@@ -210,7 +210,9 @@ class PropertySpecificationReqMsgBuilder {
 	 *
 	 * @note In order to enable a more detailed description for a specific
 	 * predefined property a concatenated message key can be used (e.g
-	 * 'smw-pa-property-predefined' + <internal property key> => '_asksi' )
+	 * 'smw-property-predefined' + <internal property key> => '_asksi' ) but
+	 * because translatewiki.net doesn't handle `_` well, convert `_` to `-`
+	 * resulting in 'smw-property-predefined-asksi' as translatable key
 	 */
 	private function createPredefinedPropertyMessage( $property, $propertyName ) {
 
@@ -224,21 +226,21 @@ class PropertySpecificationReqMsgBuilder {
 		if ( ( $messageKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) !== '' ) {
 			$messageKeyLong = $messageKey . '-long';
 		} else {
-			$messageKey = 'smw-pa-property-predefined' . strtolower( $key );
-			$messageKeyLong = 'smw-pa-property-predefined-long' . strtolower( $key );
+			$messageKey = 'smw-property-predefined' . str_replace( '_', '-', strtolower( $key ) );
+			$messageKeyLong = 'smw-property-predefined-long' . str_replace( '_', '-', strtolower( $key ) );
 		}
 
 		if ( wfMessage( $messageKey )->exists() ) {
 			$message .= wfMessage( $messageKey, $propertyName )->parse();
 		} else {
-			$message .= wfMessage( 'smw-pa-property-predefined-default', $propertyName )->parse();
+			$message .= wfMessage( 'smw-property-predefined-default', $propertyName )->parse();
 		}
 
 		if ( wfMessage( $messageKeyLong )->exists() ) {
 			$message .= ' ' . wfMessage( $messageKeyLong )->parse();
 		}
 
-		$message .= ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse();
+		$message .= ' ' . wfMessage( 'smw-property-predefined-common' )->parse();
 
 		return Html::rawElement(
 			'div',
