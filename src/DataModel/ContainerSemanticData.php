@@ -70,7 +70,8 @@ class ContainerSemanticData extends SemanticData {
 			'mHasVisibleSpecs',
 			'mNoDuplicates',
 			'skipAnonymousCheck',
-			'subSemanticData'
+			'subSemanticData',
+			'options'
 		);
 	}
 
