@@ -24,6 +24,9 @@
 		// JS is loaded, now remove the "soft" disabled functionality
 		$( "#ca-purge" ).removeClass( 'is-disabled' );
 
+		// Observed on the chameleon skin
+		$( "#ca-purge a" ).removeClass( 'is-disabled' );
+
 		$( "#ca-purge a" ).on( 'click', function ( e ) {
 			var postArgs = { action: 'purge', titles: mw.config.get( 'wgPageName' ) };
 			new mw.Api().post( postArgs ).then( function () {
