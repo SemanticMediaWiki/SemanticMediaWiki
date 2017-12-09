@@ -131,9 +131,9 @@ class Settings extends Options {
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
 			'smwgCacheType' => $GLOBALS['smwgCacheType'],
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
-			'smwgValueLookupCacheType' => $GLOBALS['smwgValueLookupCacheType'],
-			'smwgValueLookupCacheLifetime' => $GLOBALS['smwgValueLookupCacheLifetime'],
-			'smwgValueLookupFeatures' => $GLOBALS['smwgValueLookupFeatures'],
+			'smwgEntityLookupCacheType' => $GLOBALS['smwgEntityLookupCacheType'],
+			'smwgEntityLookupCacheLifetime' => $GLOBALS['smwgEntityLookupCacheLifetime'],
+			'smwgEntityLookupFeatures' => $GLOBALS['smwgEntityLookupFeatures'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
@@ -167,7 +167,7 @@ class Settings extends Options {
 			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
 			'smwgPropertyReservedNameList' => $GLOBALS['smwgPropertyReservedNameList'],
 			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],
-			'smwgEntityLookupFeatures' => $GLOBALS['smwgEntityLookupFeatures'],
+			'smwgEntityStoreFeatures' => $GLOBALS['smwgEntityStoreFeatures'],
 			'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'],
 			'smwgChangePropagationProtection' => $GLOBALS['smwgChangePropagationProtection'],
 			'smwgUseComparableContentHash' => $GLOBALS['smwgUseComparableContentHash'],
@@ -451,6 +451,19 @@ class Settings extends Options {
 			$configuration['smwgImportFileDirs'] = (array)$GLOBALS['smwgImportFileDir'];
 		}
 
+		// smwgValueLookupFeatures
+		if ( isset( $GLOBALS['smwgValueLookupCacheType'] ) ) {
+			$configuration['smwgEntityLookupCacheType'] = $GLOBALS['smwgValueLookupCacheType'];
+		}
+
+		if ( isset( $GLOBALS['smwgValueLookupCacheLifetime'] ) ) {
+			$configuration['smwgEntityLookupCacheLifetime'] = $GLOBALS['smwgValueLookupCacheLifetime'];
+		}
+
+		if ( isset( $GLOBALS['smwgValueLookupFeatures'] ) ) {
+			$configuration['smwgEntityLookupFeatures'] = $GLOBALS['smwgValueLookupFeatures'];
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
@@ -516,6 +529,9 @@ class Settings extends Options {
 				'smwgQSortingSupport' => 'smwgQSortFeatures',
 				'smwgQRandSortingSupport' => 'smwgQSortFeatures',
 				'smwgImportFileDir' => 'smwgImportFileDirs',
+				'smwgValueLookupCacheType' => 'smwgEntityLookupCacheType',
+				'smwgValueLookupCacheLifetime' => 'smwgEntityLookupCacheLifetime',
+				'smwgValueLookupFeatures' => 'smwgEntityLookupFeatures',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',

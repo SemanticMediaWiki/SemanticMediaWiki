@@ -15,7 +15,7 @@ use SMW\RequestOptions;
  *
  * @author mwjames
  */
-class DirectEntityLookup implements EntityLookup {
+class NativeEntityLookup implements EntityLookup {
 
 	/**
 	 * @var SQLStore
@@ -98,11 +98,10 @@ class DirectEntityLookup implements EntityLookup {
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.0
 	 *
 	 * {@inheritDoc}
 	 */
-	public function resetCacheBy( DIWikiPage $subject = null ) {
-	}
+	public function invalidateCache() {}
 
 }

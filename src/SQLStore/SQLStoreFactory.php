@@ -20,9 +20,9 @@ use Onoi\Cache\Cache;
 use SMWSql3SmwIds as EntityIdManager;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
-use SMW\SQLStore\EntityStore\CachedEntityLookup;
-use SMW\SQLStore\EntityStore\DirectEntityLookup;
-use SMW\SQLStore\EntityStore\SqlEntityLookupResultFetcher;
+use SMW\SQLStore\EntityStore\CachingEntityLookup;
+use SMW\SQLStore\EntityStore\NativeEntityLookup;
+use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\ProcessLruCache;
 use SMW\SQLStore\EntityStore\IdMatchFinder;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
@@ -280,34 +280,34 @@ class SQLStoreFactory {
 	public function newEntityLookup() {
 
 		$settings = $this->applicationFactory->getSettings();
-		$directEntityLookup = new DirectEntityLookup( $this->store );
+		$nativeEntityLookup = new NativeEntityLookup( $this->store );
 
-		if ( $settings->get( 'smwgValueLookupCacheType' ) === CACHE_NONE ) {
-			return $directEntityLookup;
+		if ( $settings->get( 'smwgEntityLookupCacheType' ) === CACHE_NONE ) {
+			return $nativeEntityLookup;
 		}
 
-		$circularReferenceGuard = new CircularReferenceGuard( 'vl:store' );
+		$circularReferenceGuard = new CircularReferenceGuard( 'store:entitylookup' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
 
 		$blobStore = $cacheFactory->newBlobStore(
-			'smw:vl:store',
-			$settings->get( 'smwgValueLookupCacheType' ),
-			$settings->get( 'smwgValueLookupCacheLifetime' )
+			'smw:store:entitylookup:',
+			$settings->get( 'smwgEntityLookupCacheType' ),
+			$settings->get( 'smwgEntityLookupCacheLifetime' )
 		);
 
-		$cachedEntityLookup = new CachedEntityLookup(
-			$directEntityLookup,
+		$cachingEntityLookup = new CachingEntityLookup(
+			$nativeEntityLookup,
 			new RedirectTargetLookup( $this->store, $circularReferenceGuard ),
 			$blobStore
 		);
 
-		$cachedEntityLookup->setCachedLookupFeatures(
-			$settings->get( 'smwgValueLookupFeatures' )
+		$cachingEntityLookup->setLookupFeatures(
+			$settings->get( 'smwgEntityLookupFeatures' )
 		);
 
-		return $cachedEntityLookup;
+		return $cachingEntityLookup;
 	}
 
 	/**
@@ -435,19 +435,19 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return SqlEntityLookupResultFetcher
+	 * @return TraversalPropertyLookup
 	 */
-	public function newSqlEntityLookupResultFetcher() {
+	public function newTraversalPropertyLookup() {
 
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$options = new Options(
 			array(
-				'smwgEntityLookupFeatures' => $settings->get( 'smwgEntityLookupFeatures' )
+				'smwgEntityStoreFeatures' => $settings->get( 'smwgEntityStoreFeatures' )
 			)
 		);
 
-		return new SqlEntityLookupResultFetcher( $this->store, $options );
+		return new TraversalPropertyLookup( $this->store, $options );
 	}
 
 	/**

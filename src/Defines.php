@@ -201,10 +201,10 @@ define( 'SMW_RF_TEMPLATE_OUTSEP', 2 ); // #2022 Enable 2.5 behaviour for templat
 /**@}*/
 
 /**@{
-  * Constants for $smwgEntityLookupFeatures
+  * Constants for $smwgEntityStoreFeatures
   */
-define( 'SMW_EL_NONE', 0 );
-define( 'SMW_EL_INPROP', 2 ); // New query for EntityLookup::getInProperties
+define( 'SMW_ESTORE_NONE', 0 );
+define( 'SMW_ESTORE_IN_PROP', 2 ); // New query for EntityLookup::getInProperties
 /**@}*/
 
 /**@{

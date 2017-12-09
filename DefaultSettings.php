@@ -787,16 +787,16 @@ return array(
 	# @default: CACHE_NONE, users need to actively enable it in order
 	# to make use of it
 	##
-	'smwgValueLookupCacheType' => CACHE_NONE,
+	'smwgEntityLookupCacheType' => CACHE_NONE,
 	##
 
 	###
-	# Declares a lifetime of a cached item for `smwgValueLookupCacheType` until it
+	# Declares a lifetime of a cached item for `smwgEntityLookupCacheType` until it
 	# is removed if not invalidated before.
 	#
 	# @since 2.3
 	##
-	'smwgValueLookupCacheLifetime' => 60 * 60 * 24 * 7, // a week
+	'smwgEntityLookupCacheLifetime' => 60 * 60 * 24 * 7, // a week
 	##
 
 	##
@@ -806,7 +806,7 @@ return array(
 	# feature is disabled then a connection is always established to the standard
 	# Repository/DB backend.
 	#
-	# The settings are only relevant for cases where `smwgValueLookupCacheType` is
+	# The settings are only relevant for cases where `smwgEntityLookupCacheType` is
 	# set.
 	#
 	# - SMW_VL_SD: corresponds to Store::getSemanticData
@@ -818,7 +818,7 @@ return array(
 	#
 	# @default: all features are enabled
 	##
-	'smwgValueLookupFeatures' => SMW_VL_SD | SMW_VL_PL | SMW_VL_PV | SMW_VL_PS,
+	'smwgEntityLookupFeatures' => SMW_VL_SD | SMW_VL_PL | SMW_VL_PV | SMW_VL_PS,
 	##
 
 	###
@@ -1583,17 +1583,17 @@ return array(
 	##
 
 	##
-	# Entity lookup specific features
+	# Entity store specific lookup features (internal use)
 	#
-	# - SMW_EL_NONE applies no query or schema changes
+	# - SMW_ESTORE_NONE applies no query or schema changes
 	#
-	# - SMW_EL_INPROP enables a new query form for selecting incoming properties
+	# - SMW_ESTORE_IN_PROP enables a new query form for selecting incoming properties
 	#   (#1234)
 	#
 	# @since 3.0
 	# @default SMW_EL_INPROP
 	##
-	'smwgEntityLookupFeatures' => SMW_EL_INPROP,
+	'smwgEntityStoreFeatures' => SMW_ESTORE_IN_PROP,
 	##
 
 	##

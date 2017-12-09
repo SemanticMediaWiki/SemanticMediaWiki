@@ -17,7 +17,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class SqlEntityLookupResultFetcher {
+class TraversalPropertyLookup {
 
 	/**
 	 * @var SQLStore
@@ -52,7 +52,7 @@ class SqlEntityLookupResultFetcher {
 	 * @return boolean
 	 */
 	public function isEnabledFeature( $feature ) {
-		return ( (int)$this->options->safeGet( 'smwgEntityLookupFeatures' ) & $feature ) != 0;
+		return ( (int)$this->options->safeGet( 'smwgEntityStoreFeatures' ) & $feature ) != 0;
 	}
 
 	/**
@@ -62,7 +62,7 @@ class SqlEntityLookupResultFetcher {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetchIncomingProperties( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
+	public function fetch( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 

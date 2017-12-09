@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\SqlEntityLookupResultFetcher;
+use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Options;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\SqlEntityLookupResultFetcher
+ * @covers \SMW\SQLStore\EntityStore\TraversalPropertyLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\Options;
  *
  * @author mwjames
  */
-class SqlEntityLookupResultFetcherTest extends \PHPUnit_Framework_TestCase {
+class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -25,12 +25,12 @@ class SqlEntityLookupResultFetcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			SqlEntityLookupResultFetcher::class,
-			new SqlEntityLookupResultFetcher( $store )
+			TraversalPropertyLookup::class,
+			new TraversalPropertyLookup( $store )
 		);
 	}
 
-	public function testFetchIncomingPropertiesForNonFixedPropertyTable() {
+	public function testfetchForNonFixedPropertyTable() {
 
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
@@ -79,15 +79,15 @@ class SqlEntityLookupResultFetcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
-		$instance = new SqlEntityLookupResultFetcher(
+		$instance = new TraversalPropertyLookup(
 			$store,
-			new Options( array( 'smwgEntityLookupFeatures' => SMW_EL_INPROP ) )
+			new Options( array( 'smwgEntityLookupFeatures' => SMW_ESTORE_IN_PROP ) )
 		);
 
-		$instance->fetchIncomingProperties( $propertyTableDef, $dataItem );
+		$instance->fetch( $propertyTableDef, $dataItem );
 	}
 
-	public function testFetchIncomingPropertiesForFixedPropertyTable() {
+	public function testfetchForFixedPropertyTable() {
 
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
@@ -132,12 +132,12 @@ class SqlEntityLookupResultFetcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
-		$instance = new SqlEntityLookupResultFetcher(
+		$instance = new TraversalPropertyLookup(
 			$store,
-			new Options( array( 'smwgEntityLookupFeatures' => SMW_EL_INPROP ) )
+			new Options( array( 'smwgEntityLookupFeatures' => SMW_ESTORE_IN_PROP ) )
 		);
 
-		$instance->fetchIncomingProperties( $propertyTableDef, $dataItem );
+		$instance->fetch( $propertyTableDef, $dataItem );
 	}
 
 }

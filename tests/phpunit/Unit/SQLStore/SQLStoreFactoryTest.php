@@ -148,17 +148,17 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SQLStoreFactory( $this->store );
 
-		$this->testEnvironment->addConfiguration( 'smwgValueLookupCacheType', CACHE_NONE );
+		$this->testEnvironment->addConfiguration( 'smwgEntityLookupCacheType', CACHE_NONE );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\EntityStore\DirectEntityLookup',
+			'SMW\SQLStore\EntityStore\NativeEntityLookup',
 			$instance->newEntityLookup()
 		);
 
-		$this->testEnvironment->addConfiguration( 'smwgValueLookupCacheType', 'hash' );
+		$this->testEnvironment->addConfiguration( 'smwgEntityLookupCacheType', 'hash' );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\EntityStore\CachedEntityLookup',
+			'SMW\SQLStore\EntityStore\CachingEntityLookup',
 			$instance->newEntityLookup()
 		);
 	}
@@ -233,13 +233,13 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructSqlEntityLookupResultFetcher() {
+	public function testCanConstrucTraversalPropertyLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\SqlEntityLookupResultFetcher',
-			$instance->newSqlEntityLookupResultFetcher()
+			'\SMW\SQLStore\EntityStore\TraversalPropertyLookup',
+			$instance->newTraversalPropertyLookup()
 		);
 	}
 
