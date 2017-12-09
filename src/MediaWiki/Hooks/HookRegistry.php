@@ -163,14 +163,23 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
 		 */
-		$this->handlers['BaseTemplateToolbox'] = function ( $skinTemplate, &$toolbox ) {
+		$this->handlers['BaseTemplateToolbox'] = function ( $skinTemplate, &$toolbox ) use( $applicationFactory ) {
 
 			$baseTemplateToolbox = new BaseTemplateToolbox(
-				$skinTemplate,
-				$toolbox
+				$applicationFactory->getNamespaceExaminer()
 			);
 
-			return $baseTemplateToolbox->process();
+			$baseTemplateToolbox->setOptions(
+				[
+					'smwgBrowseFeatures' => $applicationFactory->getSettings()->get( 'smwgBrowseFeatures' )
+				]
+			);
+
+			$baseTemplateToolbox->setLogger(
+				$applicationFactory->getMediaWikiLogger()
+			);
+
+			return $baseTemplateToolbox->process( $skinTemplate, $toolbox );
 		};
 
 		/**

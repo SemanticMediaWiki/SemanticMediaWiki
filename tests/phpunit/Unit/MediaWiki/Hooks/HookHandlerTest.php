@@ -41,6 +41,10 @@ class HookHandlerTest extends \PHPUnit_Framework_TestCase {
 			42,
 			$instance->getOption( 'Foo' )
 		);
+
+		$this->assertTrue(
+			$instance->isFlagSet( 'Foo', 42 )
+		);
 	}
 
 }
