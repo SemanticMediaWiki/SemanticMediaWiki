@@ -37,21 +37,21 @@ class QuerySegmentListBuildManager {
 	private $querySegmentListBuilder;
 
 	/**
-	 * @var OrderConditionsComplementor
+	 * @var OrderCondition
 	 */
-	private $orderConditionsComplementor;
+	private $orderCondition;
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param Database $connection
 	 * @param QuerySegmentListBuilder $querySegmentListBuilder
-	 * @param OrderConditionsComplementor $orderConditionsComplementor
+	 * @param OrderCondition $orderCondition
 	 */
-	public function __construct( Database $connection, QuerySegmentListBuilder $querySegmentListBuilder, OrderConditionsComplementor $orderConditionsComplementor ) {
+	public function __construct( Database $connection, QuerySegmentListBuilder $querySegmentListBuilder, OrderCondition $orderCondition ) {
 		$this->connection = $connection;
 		$this->querySegmentListBuilder = $querySegmentListBuilder;
-		$this->orderConditionsComplementor = $orderConditionsComplementor;
+		$this->orderCondition = $orderCondition;
 	}
 
 	/**
@@ -138,17 +138,17 @@ class QuerySegmentListBuildManager {
 			$rootid = $qid;
 		}
 
-		$this->orderConditionsComplementor->setSortKeys(
+		$this->orderCondition->setSortKeys(
 			$this->sortKeys
 		);
 
 		// Include order conditions (may extend query if needed for sorting):
-		$this->querySegmentList = $this->orderConditionsComplementor->applyOrderConditions(
+		$this->querySegmentList = $this->orderCondition->apply(
 			$rootid
 		);
 
-		$this->sortKeys = $this->orderConditionsComplementor->getSortKeys();
-		$this->errors = $this->orderConditionsComplementor->getErrors();
+		$this->sortKeys = $this->orderCondition->getSortKeys();
+		$this->errors = $this->orderCondition->getErrors();
 
 		return $rootid;
 	}

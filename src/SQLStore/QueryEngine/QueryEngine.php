@@ -89,11 +89,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	private $engineOptions;
 
 	/**
-	 * @var OrderConditionsComplementor
-	 */
-	private $orderConditionsComplementor;
-
-	/**
 	 * @var QueryFactory
 	 */
 	private $queryFactory;

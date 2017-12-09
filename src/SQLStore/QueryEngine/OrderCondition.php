@@ -20,7 +20,7 @@ use RuntimeException;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class OrderConditionsComplementor {
+class OrderCondition {
 
 	/**
 	 * @var QuerySegmentListBuilder
@@ -99,7 +99,7 @@ class OrderConditionsComplementor {
 	 *
 	 * @return QuerySegment[]
 	 */
-	public function applyOrderConditions( $qid ) {
+	public function apply( $qid ) {
 
 		if ( !$this->isSupported ) {
 			return $this->querySegmentListBuilder->getQuerySegmentList();
