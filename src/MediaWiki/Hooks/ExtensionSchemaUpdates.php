@@ -5,6 +5,8 @@ namespace SMW\MediaWiki\Hooks;
 use DatabaseUpdater;
 use SMW\SQLStore\Installer;
 use SMW\Options;
+use ReflectionProperty;
+use Maintenance;
 
 /**
  * Schema update to set up the needed database tables
@@ -49,6 +51,10 @@ class ExtensionSchemaUpdates {
 			]
 		);
 
+		if ( $this->hasMaintenanceArg( 'skip-optimize' ) ) {
+			$options->set( Installer::OPT_TABLE_OPTIMZE, false );
+		}
+
 		// Needs a static caller otherwise the DatabaseUpdater returns with:
 		// "Warning: call_user_func_array() expects parameter 1 to be a
 		// valid callback ..."
@@ -68,6 +74,30 @@ class ExtensionSchemaUpdates {
 		);
 
 		return true;
+	}
+
+	private function hasMaintenanceArg( $key ) {
+
+		$maintenance = null;
+
+		// We don't have access to the `update.php` internals due to lack
+		// of public methods ... it is far from a clean approach but the only
+		// way to fetch arguments invoked during the execution of `update.php`
+		// Check required due to missing property in MW 1.29-
+		if ( property_exists( $this->updater, 'maintenance' ) ) {
+			$reflectionProperty = new ReflectionProperty( $this->updater, 'maintenance' );
+			$reflectionProperty->setAccessible( true );
+			$maintenance = $reflectionProperty->getValue( $this->updater );
+		}
+
+		if ( $maintenance instanceof Maintenance ) {
+			$reflectionProperty = new ReflectionProperty( $maintenance, 'mOptions' );
+			$reflectionProperty->setAccessible( true );
+			$options = $reflectionProperty->getValue( $maintenance );
+			return isset( $options[$key] );
+		}
+
+		return false;
 	}
 
 }
