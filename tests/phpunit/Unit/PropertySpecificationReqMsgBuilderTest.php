@@ -67,7 +67,7 @@ class PropertySpecificationReqMsgBuilderTest extends \PHPUnit_Framework_TestCase
 			$this->propertySpecificationReqExaminer
 		);
 
-		$instance->checkOn( $property );
+		$instance->check( $property );
 
 		$this->assertInternalType(
 			'string',
@@ -105,7 +105,7 @@ class PropertySpecificationReqMsgBuilderTest extends \PHPUnit_Framework_TestCase
 
 		$dataItemFactory = new DataItemFactory();
 
-		$instance->checkOn(
+		$instance->check(
 			$dataItemFactory->newDIProperty( 'Foo' )
 		);
 
@@ -130,7 +130,7 @@ class PropertySpecificationReqMsgBuilderTest extends \PHPUnit_Framework_TestCase
 
 		$dataItemFactory = new DataItemFactory();
 
-		$instance->checkOn(
+		$instance->check(
 			$dataItemFactory->newDIProperty( 'Bar' )
 		);
 

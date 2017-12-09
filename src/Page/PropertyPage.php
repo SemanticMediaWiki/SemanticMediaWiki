@@ -87,7 +87,7 @@ class PropertyPage extends Page {
 			$this->fetchSemanticDataFromEditInfo()
 		);
 
-		$this->propertySpecificationReqMsgBuilder->checkOn(
+		$this->propertySpecificationReqMsgBuilder->check(
 			$this->property
 		);
 
