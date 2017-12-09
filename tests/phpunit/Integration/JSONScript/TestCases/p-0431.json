@@ -67,7 +67,7 @@
 			"assert-output": {
 				"to-contain": [
 					"Property:Has record",
-					"<td class=\"Has-property-description smwtype&#95;_lcode\">en</td>"
+					"<td class=\"Property-description smwtype&#95;_lcode\">en</td>"
 				]
 			}
 		}
