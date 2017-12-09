@@ -244,8 +244,8 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryTargetLinksHashListBySubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
-		return $this->findEmbeddedQueryTargetLinksHashListFrom(
+	public function findDependencyTargetLinksForSubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
+		return $this->findDependencyTargetLinks(
 			array( $this->dependencyLinksTableUpdater->getId( $subject ) ),
 			$requestOptions
 		);
@@ -274,7 +274,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryTargetLinksHashListFrom( array $idlist, RequestOptions $requestOptions ) {
+	public function findDependencyTargetLinks( array $idlist, RequestOptions $requestOptions ) {
 
 		if ( $idlist === array() || !$this->isEnabled() ) {
 			return array();

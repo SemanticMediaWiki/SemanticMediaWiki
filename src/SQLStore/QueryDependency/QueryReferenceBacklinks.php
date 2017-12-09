@@ -75,7 +75,7 @@ class QueryReferenceBacklinks {
 	 */
 	public function findReferenceLinks( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
 
-		$queryTargetLinksHashList = $this->queryDependencyLinksStore->findEmbeddedQueryTargetLinksHashListBySubject(
+		$queryTargetLinksHashList = $this->queryDependencyLinksStore->findDependencyTargetLinksForSubject(
 			$subject,
 			$requestOptions
 		);
