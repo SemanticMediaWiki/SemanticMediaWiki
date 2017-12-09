@@ -78,7 +78,7 @@ class BeforePageDisplay {
 
 		// Add export link to the head
 		if ( $title instanceof Title && !$title->isSpecialPage() ) {
-			$linkarr['rel']   = 'ExportRDF';
+			$linkarr['rel']   = 'alternate';
 			$linkarr['type']  = 'application/rdf+xml';
 			$linkarr['title'] = $title->getPrefixedText();
 			$linkarr['href']  = SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' );
