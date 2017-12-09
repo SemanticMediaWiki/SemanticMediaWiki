@@ -327,12 +327,15 @@ return array(
 	# - SMW_BROWSE_SHOW_INCOMING: Should the browse view always show the incoming links
 	#   as well, and more of the incoming values? (was $smwgBrowseShowAll)
 	#
+	# - SMW_BROWSE_SHOW_GROUP: Should the browse view create group sections for
+	#   properties that belong to the same property group?
+	#
 	# - SMW_BROWSE_USE_API: Whether the browse display is to be generated using
 	#   an API request or not. (was $smwgBrowseByApi)
 	#
 	# @since 3.0
 	##
-	'smwgBrowseFeatures' => SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_USE_API,
+	'smwgBrowseFeatures' => SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_SHOW_GROUP | SMW_BROWSE_USE_API,
 	##
 
 	###

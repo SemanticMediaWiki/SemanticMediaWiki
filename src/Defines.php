@@ -230,7 +230,8 @@ define( 'SMW_BROWSE_NONE', 0 );
 define( 'SMW_BROWSE_TLINK', 2 ); // Support for the toolbox link
 define( 'SMW_BROWSE_SHOW_INVERSE', 4 ); // Support inverse direction
 define( 'SMW_BROWSE_SHOW_INCOMING', 8 ); // Support for incoming links
-define( 'SMW_BROWSE_USE_API', 16 ); // Support for using the API as request backend
+define( 'SMW_BROWSE_SHOW_GROUP', 16 ); // Support for grouping properties
+define( 'SMW_BROWSE_USE_API', 32 ); // Support for using the API as request backend
 /**@}*/
 
 /**@{
