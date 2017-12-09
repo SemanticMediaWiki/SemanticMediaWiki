@@ -5,7 +5,7 @@
 - PHP version:
 - DB system (MySQL, Blazegraph, etc.) and version:
 
-_Note that it is **required** to provide the setup and configuration information. If you believe to have detected a regression after updating your software please also provide information about your previous setup as well. **In any case only this information will enable us to allocate approriate review time.** Thank you for you help._
+_Note that it is **required** to provide the setup and configuration information. If you believe to have detected a regression after updating your software please also provide information about your previous setup as well. **In any case only this information will enable us to allocate appropriate review time.** Thank you for you help._
 
 ### Issue
 _Please describe the issue as best as you can and also fill in the following two sections if applicable._
