@@ -482,7 +482,7 @@
 	"smw-datavalue-property-restricted-annotation-use": "Property \"$1\" has a restricted application area and cannot be used as annotation property by a user.",
 	"smw-datavalue-property-restricted-declarative-use": "Property \"$1\" is a declarative property and can only be used on a property or category page.",
 	"smw-datavalue-property-create-restriction": "Property \"$1\" doesn't exist and the user is missing the \"$2\" permission (see [https://www.semantic-mediawiki.org/wiki/Help:Authority_mode authority mode]) to create or annotate values with an unapproved property.",
-	"smw-datavalue-property-invalid-character": "\"$1\" contains the \"$2\" character as part of a property label and has been classified as invalid.",
+	"smw-datavalue-property-invalid-character": "\"$1\" contains a listed \"$2\" character as part of the property label and has therefore been classified as invalid.",
 	"smw-datavalue-property-invalid-chain": "Using \"$1\" as property chain is not permitted during the annotation process.",
 	"smw-datavalue-restricted-use": "Datavalue \"$1\" has been marked for restricted use.",
 	"smw-datavalue-invalid-number": "\"$1\" can not be interpreted as a number.",

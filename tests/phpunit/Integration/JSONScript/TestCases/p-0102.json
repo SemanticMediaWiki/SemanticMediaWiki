@@ -45,6 +45,10 @@
 		{
 			"page": "Example/P0102/9",
 			"contents": "[[Foo-<Bar>::abc]]"
+		},
+		{
+			"page": "Example/P0102/10",
+			"contents": "[[Foo\nBar::abc]] [[Foo\rBar::123]] [[Foo\r\nBar::456]]"
 		}
 	],
 	"tests": [
@@ -212,6 +216,22 @@
 					"propertyCount": 3,
 					"propertyKeys": [
 						"Foo-",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#10 (CR, LF are invalid)",
+			"subject": "Example/P0102/10",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
 						"_MDAT",
 						"_SKEY"
 					]

@@ -111,14 +111,14 @@ class PropertyValueParser implements ValueParser {
 			htmlspecialchars_decode( $userValue )
 		);
 
-		if ( !$this->doCheckValidCharacters( $userValue ) ) {
+		if ( !$this->hasValidCharacters( $userValue ) ) {
 			return array( null, null, null );
 		}
 
 		return $this->getNormalizedValueFrom( $userValue );
 	}
 
-	private function doCheckValidCharacters( $value ) {
+	private function hasValidCharacters( $value ) {
 
 		if ( trim( $value ) === '' ) {
 			$this->errors[] = array( 'smw_emptystring' );
@@ -134,12 +134,21 @@ class PropertyValueParser implements ValueParser {
 			}
 		}
 
-		// #1567, only on a query context so that |sort=# are allowed
+		// #1567, Only allowed in connection with a query context (e.g sort=#)
 		if ( $invalidCharacter === '' && strpos( $value, '#' ) !== false && !$this->isQueryContext ) {
 			$invalidCharacter = '#';
 		}
 
 		if ( $invalidCharacter !== '' ) {
+
+			// Replace selected control chars otherwise the error display becomes
+			// unreadable
+			$invalidCharacter = str_replace(
+				[ "\r", "\n", ],
+				[ "CR", "LF" ],
+				$invalidCharacter
+			);
+
 			$this->errors[] = array( 'smw-datavalue-property-invalid-character', $value, $invalidCharacter );
 			return false;
 		}

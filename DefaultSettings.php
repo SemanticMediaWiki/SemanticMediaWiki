@@ -1537,7 +1537,7 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '%' ),
+	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '%', "\r", "\n" ),
 	##
 
 	##
