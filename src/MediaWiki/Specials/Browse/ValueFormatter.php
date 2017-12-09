@@ -137,7 +137,7 @@ class ValueFormatter {
 			$propertyValue->setCaption( self::findPropertyLabel( $propertyValue, $incoming, $showInverse ) );
 			$proptext = $propertyValue->getShortHTMLText( $linker ) . "\n";
 		} elseif ( $property->getKey() == '_INST' ) {
-			$proptext = $linker->specialLink( 'Categories' );
+			$proptext = $linker->specialLink( 'Categories', 'smw-category' );
 		} elseif ( $property->getKey() == '_REDI' ) {
 			$proptext = $linker->specialLink( 'Listredirects', 'isredirect' );
 		}
