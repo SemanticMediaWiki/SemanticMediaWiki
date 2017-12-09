@@ -640,5 +640,6 @@
 	"smw-property-page-list-count": "Showing $1 {{PLURAL:$1|page|pages}} using this property.",
 	"smw-property-page-list-search-count": "Showing $1 {{PLURAL:$1|page|pages}} using this property with a \"$2\" value match.",
 	"smw-property-reserved-category": "Category",
+	"smw-category": "Category",
 	"smw-datavalue-uri-invalid-scheme": " \"$1\" has not been listed as valid URI scheme."
 }

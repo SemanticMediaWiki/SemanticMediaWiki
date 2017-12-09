@@ -98,8 +98,13 @@ class Deserializer {
 	}
 
 	private static function isCategory( $text ) {
-		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == mb_convert_case( $text, MB_CASE_TITLE ) ||
-		$text == 'Category';
+
+		// Check for the canonical form (singular, plural)
+		if ( $text == 'Category' || $text == 'Categories' ) {
+			return true;
+		}
+
+		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == mb_convert_case( $text, MB_CASE_TITLE );
 	}
 
 	private static function getPartsFromText( $text ) {
