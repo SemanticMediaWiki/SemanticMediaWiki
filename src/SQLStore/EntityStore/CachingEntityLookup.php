@@ -36,7 +36,7 @@ use SMW\RequestOptions;
  *
  * @author mwjames
  */
-class CachedEntityLookup implements EntityLookup {
+class CachingEntityLookup implements EntityLookup {
 
 	/**
 	 * Update this version number when the serialization format
@@ -62,7 +62,7 @@ class CachedEntityLookup implements EntityLookup {
 	/**
 	 * @var integer
 	 */
-	private $valueLookupFeatures = 0;
+	private $lookupFeatures = 0;
 
 	/**
 	 * @since 2.3
@@ -80,21 +80,21 @@ class CachedEntityLookup implements EntityLookup {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $valueLookupFeatures
+	 * @param integer $lookupFeatures
 	 */
-	public function setCachedLookupFeatures( $valueLookupFeatures ) {
-		$this->valueLookupFeatures = $valueLookupFeatures;
+	public function setLookupFeatures( $lookupFeatures ) {
+		$this->lookupFeatures = $lookupFeatures;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $valueLookupFeature
+	 * @param integer $lookupFeatures
 	 *
 	 * @return boolean
 	 */
-	public function canUseValueLookupFeature( $valueLookupFeature ) {
-		return $this->valueLookupFeatures === ( $this->valueLookupFeatures | $valueLookupFeature );
+	public function isEnabledFeature( $lookupFeatures ) {
+		return $this->lookupFeatures === ( $this->lookupFeatures | $lookupFeatures );
 	}
 
 	/**
@@ -106,7 +106,7 @@ class CachedEntityLookup implements EntityLookup {
 	 */
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
 
-		if ( !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_SD ) ) {
+		if ( !$this->blobStore->canUse() || !$this->isEnabledFeature( SMW_VL_SD ) ) {
 			return $this->entityLookup->getSemanticData( $subject, $filter );
 		}
 
@@ -165,7 +165,7 @@ class CachedEntityLookup implements EntityLookup {
 	 */
 	public function getProperties( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
 
-		if ( !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PL ) ) {
+		if ( !$this->blobStore->canUse() || !$this->isEnabledFeature( SMW_VL_PL ) ) {
 			return $this->entityLookup->getProperties( $subject, $requestOptions );
 		}
 
@@ -211,7 +211,7 @@ class CachedEntityLookup implements EntityLookup {
 
 		// The cache is not used for $subject === null (means all values for
 		// the given property are returned)
-		if ( $subject === null || !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PV ) ) {
+		if ( $subject === null || !$this->blobStore->canUse() || !$this->isEnabledFeature( SMW_VL_PV ) ) {
 			return $this->entityLookup->getPropertyValues( $subject, $property, $requestOptions );
 		}
 
@@ -271,7 +271,7 @@ class CachedEntityLookup implements EntityLookup {
 
 		// The cache is not used for $dataItem === null (means all values for
 		// the given property are returned)
-		if ( $dataItem === null || !$dataItem instanceof DIWikiPage || !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PS ) ) {
+		if ( $dataItem === null || !$dataItem instanceof DIWikiPage || !$this->blobStore->canUse() || !$this->isEnabledFeature( SMW_VL_PS ) ) {
 			return $this->entityLookup->getPropertySubjects( $property, $dataItem, $requestOptions );
 		}
 
@@ -352,12 +352,13 @@ class CachedEntityLookup implements EntityLookup {
 	 * change, delete) to ensure that we always have the correct set of matches.
 	 *
 	 * @since 2.3
-	 *
-	 * @param DIWikiPage|null $subject
 	 */
-	public function resetCacheBy( DIWikiPage $subject = null ) {
+	public function invalidateCache() {
 
-		if ( !$this->blobStore->canUse() || $subject === null ) {
+		$args = func_get_args();
+		$subject = array_shift( $args );
+
+		if ( !$this->blobStore->canUse() || !$subject instanceof DIWikiPage ) {
 			return null;
 		}
 

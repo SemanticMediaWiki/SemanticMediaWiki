@@ -5,10 +5,10 @@ namespace SMW\Tests\SQLStore\EntityStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\SQLStore\EntityStore\DirectEntityLookup;
+use SMW\SQLStore\EntityStore\NativeEntityLookup;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\DirectEntityLookup
+ * @covers \SMW\SQLStore\EntityStore\NativeEntityLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\SQLStore\EntityStore\DirectEntityLookup;
  *
  * @author mwjames
  */
-class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
+class NativeEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -25,8 +25,8 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\DirectEntityLookup',
-			new DirectEntityLookup( $store )
+			NativeEntityLookup::class,
+			new NativeEntityLookup( $store )
 		);
 	}
 
@@ -53,7 +53,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getReader' )
 			->will( $this->returnValue( $reader ) );
 
-		$instance = new DirectEntityLookup(
+		$instance = new NativeEntityLookup(
 			$store
 		);
 
@@ -83,7 +83,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getReader' )
 			->will( $this->returnValue( $reader ) );
 
-		$instance = new DirectEntityLookup(
+		$instance = new NativeEntityLookup(
 			$store
 		);
 
@@ -115,7 +115,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getReader' )
 			->will( $this->returnValue( $reader ) );
 
-		$instance = new DirectEntityLookup(
+		$instance = new NativeEntityLookup(
 			$store
 		);
 
@@ -147,7 +147,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getReader' )
 			->will( $this->returnValue( $reader ) );
 
-		$instance = new DirectEntityLookup(
+		$instance = new NativeEntityLookup(
 			$store
 		);
 
@@ -175,7 +175,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getReader' )
 			->will( $this->returnValue( $reader ) );
 
-		$instance = new DirectEntityLookup(
+		$instance = new NativeEntityLookup(
 			$store
 		);
 
@@ -203,7 +203,7 @@ class DirectEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getReader' )
 			->will( $this->returnValue( $reader ) );
 
-		$instance = new DirectEntityLookup(
+		$instance = new NativeEntityLookup(
 			$store
 		);
 

@@ -5,10 +5,10 @@ namespace SMW\Tests\SQLStore\EntityStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\SQLStore\EntityStore\CachedEntityLookup;
+use SMW\SQLStore\EntityStore\CachingEntityLookup;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\CachedEntityLookup
+ * @covers \SMW\SQLStore\EntityStore\CachingEntityLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\SQLStore\EntityStore\CachedEntityLookup;
  *
  * @author mwjames
  */
-class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
+class CachingEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $entityLookup;
 	private $redirectTargetLookup;
@@ -41,8 +41,8 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\CachedEntityLookup',
-			new CachedEntityLookup( $this->entityLookup, $this->redirectTargetLookup, $this->blobStore )
+			CachingEntityLookup::class,
+			new CachingEntityLookup( $this->entityLookup, $this->redirectTargetLookup, $this->blobStore )
 		);
 	}
 
@@ -65,13 +65,13 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new CachedEntityLookup(
+		$instance = new CachingEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
 		);
 
-		$instance->setCachedLookupFeatures( SMW_VL_PL );
+		$instance->setLookupFeatures( SMW_VL_PL );
 		$instance->getSemanticData( $subject );
 	}
 
@@ -89,7 +89,7 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'canUse' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new CachedEntityLookup(
+		$instance = new CachingEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
@@ -138,13 +138,13 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->blobStore->expects( $this->exactly( 2 ) )
 			->method( 'save' );
 
-		$instance = new CachedEntityLookup(
+		$instance = new CachingEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
 		);
 
-		$instance->setCachedLookupFeatures( SMW_VL_SD );
+		$instance->setLookupFeatures( SMW_VL_SD );
 		$instance->getSemanticData( $subject );
 	}
 
@@ -174,13 +174,13 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new CachedEntityLookup(
+		$instance = new CachingEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
 		);
 
-		$instance->setCachedLookupFeatures( SMW_VL_SD );
+		$instance->setLookupFeatures( SMW_VL_SD );
 
 		$this->assertEquals(
 			'Foo',
@@ -221,13 +221,13 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new CachedEntityLookup(
+		$instance = new CachingEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
 		);
 
-		$instance->setCachedLookupFeatures( SMW_VL_PL );
+		$instance->setLookupFeatures( SMW_VL_PL );
 
 		$this->assertEquals(
 			$expected,
@@ -268,13 +268,13 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new CachedEntityLookup(
+		$instance = new CachingEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
 		);
 
-		$instance->setCachedLookupFeatures( SMW_VL_PV );
+		$instance->setLookupFeatures( SMW_VL_PV );
 
 		$this->assertEquals(
 			$expected,
@@ -314,13 +314,13 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new CachedEntityLookup(
+		$instance = new CachingEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
 		);
 
-		$instance->setCachedLookupFeatures( SMW_VL_PS );
+		$instance->setLookupFeatures( SMW_VL_PS );
 
 		$this->assertEquals(
 			$expected,
@@ -328,7 +328,7 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testResetCacheBy() {
+	public function tesClearCache() {
 
 		$subject = new DIWikiPage( 'Foobar', NS_MAIN, '', 'abc' );
 
@@ -374,14 +374,14 @@ class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->blobStore->expects( $this->exactly( 4 ) )
 			->method( 'delete' );
 
-		$instance = new CachedEntityLookup(
+		$instance = new CachingEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
 		);
 
-		$instance->setCachedLookupFeatures( SMW_VL_SD );
-		$instance->resetCacheBy( $subject );
+		$instance->setLookupFeatures( SMW_VL_SD );
+		$instance->invalidateCache( $subject );
 	}
 
 }

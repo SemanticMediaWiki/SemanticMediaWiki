@@ -34,9 +34,9 @@ class SMWSQLStore3Readers {
 	private $factory;
 
 	/**
-	 * @var SqlEntityLookupResultFetcher
+	 * @var traversalPropertyLookup
 	 */
-	private $sqlEntityLookupResultFetcher;
+	private $traversalPropertyLookup;
 
 	/**
 	 *  >0 while getSemanticData runs, used to prevent nested calls from clearing the cache
@@ -49,7 +49,7 @@ class SMWSQLStore3Readers {
 	public function __construct( SMWSQLStore3 $parentStore, $factory ) {
 		$this->store = $parentStore;
 		$this->factory = $factory;
-		$this->sqlEntityLookupResultFetcher = $this->factory->newSqlEntityLookupResultFetcher();
+		$this->traversalPropertyLookup = $this->factory->newTraversalPropertyLookup();
 	}
 
 	/**
@@ -743,9 +743,9 @@ class SMWSQLStore3Readers {
 
 			$where = $from = '';
 
-			if ( $this->sqlEntityLookupResultFetcher->isEnabledFeature( SMW_EL_INPROP ) ) {
+			if ( $this->traversalPropertyLookup->isEnabledFeature( SMW_ESTORE_IN_PROP ) ) {
 
-				$res = $this->sqlEntityLookupResultFetcher->fetchIncomingProperties(
+				$res = $this->traversalPropertyLookup->fetch(
 					$proptable,
 					$value,
 					$requestOptions

@@ -241,7 +241,7 @@ class SMWSQLStore3 extends SMWStore {
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$this->getEntityLookup()->resetCacheBy(
+		$this->getEntityLookup()->invalidateCache(
 			$subject
 		);
 
@@ -254,7 +254,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
 
-		$this->getEntityLookup()->resetCacheBy(
+		$this->getEntityLookup()->invalidateCache(
 			$semanticData->getSubject()
 		);
 
@@ -267,11 +267,11 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 
-		$this->getEntityLookup()->resetCacheBy(
+		$this->getEntityLookup()->invalidateCache(
 			DIWikiPage::newFromTitle( $oldtitle )
 		);
 
-		$this->getEntityLookup()->resetCacheBy(
+		$this->getEntityLookup()->invalidateCache(
 			DIWikiPage::newFromTitle( $newtitle )
 		);
 
