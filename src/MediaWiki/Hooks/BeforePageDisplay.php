@@ -13,60 +13,28 @@ use Title;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
  *
- * @ingroup FunctionHook
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class BeforePageDisplay {
-
-	/**
-	 * @var OutputPage
-	 */
-	protected $outputPage = null;
-
-	/**
-	 * @var Skin
-	 */
-	protected $skin = null;
-
-	/**
-	 * @since  1.9
-	 *
-	 * @param OutputPage &$outputPage
-	 * @param Skin &$skin
-	 */
-	public function __construct( OutputPage &$outputPage, Skin &$skin ) {
-		$this->outputPage = $outputPage;
-		$this->skin = $skin;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param array $modules
-	 */
-	public function registerModules( $modules ) {
-		foreach ( $modules as $name => $enabled ) {
-			if ( $enabled ) {
-				$this->outputPage->addModules( $name );
-			};
-		}
-	}
+class BeforePageDisplay extends HookHandler {
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param OutputPage $outputPage,
+	 * @param Skin $skin
+	 *
 	 * @return boolean
 	 */
-	public function process() {
+	public function process( OutputPage $outputPage, Skin $skin ) {
 
-		$title = $this->outputPage->getTitle();
+		$title = $outputPage->getTitle();
+		$user = $outputPage->getUser();
 
 		// MW 1.26 / T107399 / Async RL causes style delay
-		$this->outputPage->addModuleStyles(
+		$outputPage->addModuleStyles(
 			[
 				'ext.smw.style',
 				'ext.smw.tooltip.styles'
@@ -74,15 +42,20 @@ class BeforePageDisplay {
 		);
 
 		// Add style resources to avoid unstyled content
-		$this->outputPage->addModules( array( 'ext.smw.style' ) );
+		$outputPage->addModules( 'ext.smw.style' );
+
+		// #2726
+		if ( $user->getOption( 'smw-prefs-general-options-suggester-textinput' ) ) {
+			$outputPage->addModules( 'ext.smw.suggester.textInput' );
+		}
 
 		// Add export link to the head
 		if ( $title instanceof Title && !$title->isSpecialPage() ) {
-			$linkarr['rel']   = 'alternate';
-			$linkarr['type']  = 'application/rdf+xml';
-			$linkarr['title'] = $title->getPrefixedText();
-			$linkarr['href']  = SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' );
-			$this->outputPage->addLink( $linkarr );
+			$link['rel']   = 'alternate';
+			$link['type']  = 'application/rdf+xml';
+			$link['title'] = $title->getPrefixedText();
+			$link['href']  = SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' );
+			$outputPage->addLink( $link );
 		}
 
 		return true;
