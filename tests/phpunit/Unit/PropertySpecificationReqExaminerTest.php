@@ -54,7 +54,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider propertyProvider
 	 */
-	public function testCheckOn( $property, $semanticData, $expected ) {
+	public function testCheck( $property, $semanticData, $expected ) {
 
 		$instance = new PropertySpecificationReqExaminer(
 			$this->store,
@@ -65,11 +65,11 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->checkOn( $property )
+			$instance->check( $property )
 		);
 	}
 
-	public function testCheckOnDisabledEditProtectionRight() {
+	public function testCheckDisabledEditProtectionRight() {
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getEditProtectionRight' )
@@ -88,11 +88,11 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 				'smw-edit-protection-disabled',
 				'Is edit protected'
 			),
-			$instance->checkOn( $property )
+			$instance->check( $property )
 		);
 	}
 
-	public function testCheckOnEnabledCreateProtectionRight() {
+	public function testCheckEnabledCreateProtectionRight() {
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasCreateProtection' )
@@ -116,11 +116,11 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 				'Bar',
 				'foo'
 			),
-			$instance->checkOn( $property )
+			$instance->check( $property )
 		);
 	}
 
-	public function testCheckOnEnabledEditProtectionRight() {
+	public function testCheckEnabledEditProtectionRight() {
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasEditProtection' )
@@ -143,11 +143,11 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 				'smw-edit-protection',
 				'foo'
 			),
-			$instance->checkOn( $property )
+			$instance->check( $property )
 		);
 	}
 
-	public function testCheckOnImportedVocabTypeMismatch() {
+	public function testCheckImportedVocabTypeMismatch() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
@@ -178,11 +178,11 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 				'smw-property-req-violation-import-type',
 				'Foo'
 			),
-			$instance->checkOn( $property )
+			$instance->check( $property )
 		);
 	}
 
-	public function testCheckOnChangePropagation() {
+	public function testCheckChangePropagation() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
@@ -214,11 +214,11 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 				'smw-property-req-violation-change-propagation-locked-error',
 				'Foo'
 			],
-			$instance->checkOn( $property )
+			$instance->check( $property )
 		);
 	}
 
-	public function testCheckOnChangePropagationAsWarning() {
+	public function testCheckChangePropagationAsWarning() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
@@ -252,7 +252,7 @@ class PropertySpecificationReqExaminerTest extends \PHPUnit_Framework_TestCase {
 				'smw-property-req-violation-change-propagation-locked-warning',
 				'Foo'
 			],
-			$instance->checkOn( $property )
+			$instance->check( $property )
 		);
 	}
 

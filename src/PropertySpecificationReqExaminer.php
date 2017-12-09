@@ -98,7 +98,7 @@ class PropertySpecificationReqExaminer {
 	 *
 	 * @return array|null
 	 */
-	public function checkOn( DIProperty $property ) {
+	public function check( DIProperty $property ) {
 
 		$subject = $property->getCanonicalDiWikiPage();
 		$title = $subject->getTitle();
@@ -146,21 +146,21 @@ class PropertySpecificationReqExaminer {
 		}
 
 		if ( !$property->isUserDefined() ) {
-			return $this->checkOnTypeForPredefinedProperty( $property );
+			return $this->checkTypeForPredefinedProperty( $property );
 		}
 
 		$type = $property->findPropertyTypeID();
 
 		if ( $type === '_ref_rec' || $type === '_rec' ) {
-			return $this->checkOnFieldList( $property );
+			return $this->checkFieldList( $property );
 		}
 
 		if ( $type === '_eid' ) {
-			return $this->checkOnExternalFormatterUri( $property );
+			return $this->checkExternalFormatterUri( $property );
 		}
 
 		if ( $this->semanticData->getOption( MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) ) {
-			return $this->checkOnImportedVocabType( $property );
+			return $this->checkImportedVocabType( $property );
 		}
 	}
 
@@ -168,10 +168,10 @@ class PropertySpecificationReqExaminer {
 	 * A violation occurs when a predefined property contains a `Has type` annotation
 	 * that is incompatible with the default type.
 	 */
-	private function checkOnTypeForPredefinedProperty( $property ) {
+	private function checkTypeForPredefinedProperty( $property ) {
 
 		if ( $property->getKey() === '_EDIP' ) {
-			return $this->checkOnEditProtectionRight( $property );
+			return $this->checkEditProtectionRight( $property );
 		}
 
 		if ( !$this->semanticData->hasProperty( $this->dataItemFactory->newDIProperty( '_TYPE' ) ) ) {
@@ -204,7 +204,7 @@ class PropertySpecificationReqExaminer {
 	 * Examines whether the setting `smwgEditProtectionRight` contains an appropriate
 	 * value or is disabled in order for the `Is edit protected` property to function.
 	 */
-	private function checkOnEditProtectionRight( $property ) {
+	private function checkEditProtectionRight( $property ) {
 
 		if ( $this->protectionValidator->getEditProtectionRight() !== false ) {
 			return;
@@ -221,7 +221,7 @@ class PropertySpecificationReqExaminer {
 	 * A violation occurs when a Reference or Record typed property does not denote
 	 * a `Has fields` declaration.
 	 */
-	private function checkOnFieldList( $property ) {
+	private function checkFieldList( $property ) {
 
 		if ( $this->semanticData->hasProperty( $this->dataItemFactory->newDIProperty( '_LIST' ) ) ) {
 			return;
@@ -241,7 +241,7 @@ class PropertySpecificationReqExaminer {
 	 * A violation occurs when the External Identifier typed property does not declare
 	 * a `External formatter URI` declaration.
 	 */
-	private function checkOnExternalFormatterUri( $property ) {
+	private function checkExternalFormatterUri( $property ) {
 
 		if ( $this->semanticData->hasProperty( $this->dataItemFactory->newDIProperty( '_PEFU' ) ) ) {
 			return;
@@ -258,7 +258,7 @@ class PropertySpecificationReqExaminer {
 	 * A violation occurs when the `Imported from` property detects an incompatible
 	 * `Has type` declaration.
 	 */
-	private function checkOnImportedVocabType( $property ) {
+	private function checkImportedVocabType( $property ) {
 
 		$typeValues = $this->semanticData->getPropertyValues(
 			$this->dataItemFactory->newDIProperty( '_TYPE' )

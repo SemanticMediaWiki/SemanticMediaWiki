@@ -100,7 +100,7 @@ class PropertySpecificationReqMsgBuilder {
 	 *
 	 * @param DIProperty $property
 	 */
-	public function checkOn( DIProperty $property ) {
+	public function check( DIProperty $property ) {
 
 		$subject = $property->getCanonicalDiWikiPage();
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -109,10 +109,10 @@ class PropertySpecificationReqMsgBuilder {
 
 		$propertyName = $dataValue->getFormattedLabel();
 
-		$message = $this->checkUniqueness( $property, $propertyName );
+		$this->message = $this->checkUniqueness( $property, $propertyName );
 
 		if ( isset( $this->propertyReservedNameList[$propertyName] ) ) {
-			$message .= $this->createReqViolationMessage(
+			$this->message .= $this->createMessage(
 				[
 					'error',
 					'smw-property-name-reserved',
@@ -121,12 +121,12 @@ class PropertySpecificationReqMsgBuilder {
 			);
 		}
 
-		$message .= $this->createReqViolationMessage(
-			$this->propertySpecificationReqExaminer->checkOn( $property )
+		$this->message .= $this->createMessage(
+			$this->propertySpecificationReqExaminer->check( $property )
 		);
 
 		if ( $this->propertySpecificationReqExaminer->reqLock() === false && ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {
-			$message .= $this->createReqViolationMessage(
+			$this->message .= $this->createMessage(
 				array(
 					'warning',
 					'smw-property-req-violation-change-propagation-pending',
@@ -136,43 +136,41 @@ class PropertySpecificationReqMsgBuilder {
 		}
 
 		if ( $property->isUserDefined() && wfMessage( 'smw-property-introductory-message-user' )->exists() ) {
-			$message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-user', $propertyName );
+			$this->message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-user', $propertyName );
 		}
 
 		if ( !$property->isUserDefined() && wfMessage( 'smw-property-introductory-message-special' )->exists() ) {
-			$message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-special', $propertyName );
+			$this->message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-special', $propertyName );
 		}
 
 		if ( wfMessage( 'smw-property-introductory-message' )->exists() ) {
-			$message .= $this->createIntroductoryMessage( 'smw-property-introductory-message', $propertyName );
+			$this->message .= $this->createIntroductoryMessage( 'smw-property-introductory-message', $propertyName );
 		}
 
 		if ( $property->isUserDefined() && $this->store->getPropertyTableInfoFetcher()->isFixedTableProperty( $property ) ) {
-			$message .= $this->createFixedTableMessage( $propertyName );
+			$this->message .= $this->createFixedTableMessage( $propertyName );
 		}
 
 		if ( !$property->isUserDefined() ) {
-			$message .= $this->createPredefinedPropertyMessage( $property, $propertyName );
+			$this->message .= $this->createPredefinedPropertyMessage( $property, $propertyName );
 		}
-
-		$this->message = $message;
 	}
 
-	private function createReqViolationMessage( $violationMessage ) {
+	private function createMessage( $messsage ) {
 
-		if ( !is_array( $violationMessage ) ) {
+		if ( !is_array( $messsage ) ) {
 			return '';
 		}
 
-		$type = array_shift( $violationMessage );
+		$type = array_shift( $messsage );
 
 		return Html::rawElement(
 			'div',
 			array(
-				'id' => $violationMessage[0],
+				'id' => $messsage[0],
 				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-'. $type : '' )
 			),
-			call_user_func_array( 'wfMessage', $violationMessage )->parse()
+			Message::get( $messsage, Message::PARSE, Message::USER_LANGUAGE )
 		);
 	}
 
