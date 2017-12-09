@@ -116,7 +116,7 @@ class SMWURIValue extends SMWDataValue {
 				// decompose general URI components
 				$scheme = $parts[0];
 
-				if ( !isset( $this->schemeList[$scheme] ) ) {
+				if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !isset( $this->schemeList[$scheme] ) ) {
 					return $this->addErrorMsg( array( 'smw-datavalue-uri-invalid-scheme', $scheme ) );
 				}
 

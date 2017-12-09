@@ -13,6 +13,10 @@
 		{
 			"page": "Example/P0503/2",
 			"contents": "[[Has url::User:Test]]"
+		},
+		{
+			"page": "Example/P0503/Q.1",
+			"contents": "{{#ask: [[Has url::User:Test]] |default=No result }}"
 		}
 	],
 	"tests": [
@@ -49,6 +53,19 @@
 						"_ERRC"
 					]
 				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (allow invalid scheme in query context)",
+			"subject": "Example/P0503/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"No result"
+				],
+				"not-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\""
+				]
 			}
 		}
 	],
