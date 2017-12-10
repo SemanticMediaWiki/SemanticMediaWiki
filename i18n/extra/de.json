@@ -74,7 +74,8 @@
         "_PEID": "Kennung zur externen URI",
         "_PEFU": "Formatierungsanweisung zur externen URI",
         "_EDIP": "Ist bearbeitungsgeschützt",
-        "_CHGPRO": "Änderungsweitergabe"
+        "_CHGPRO": "Änderungsweitergabe",
+        "_PPGR": "Attributgruppe"
     },
     "propertyAliases": {
         "Hat Datentyp": "_TYPE",
@@ -97,7 +98,8 @@
         "Hat einmal erlaubten Wert": "_PVUC",
         "Externe Kennung": "_PEID",
         "Bearbeitungsgeschützt": "_EDIP",
-        "Ist Änderungsweitergabe": "_CHGPRO"
+        "Ist Änderungsweitergabe": "_CHGPRO",
+        "Ist Attributgruppe": "_PPGR"
     },
     "dateFormatsByPrecision": {
         "SMW_PREC_Y": "Y",
