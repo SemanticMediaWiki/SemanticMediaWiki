@@ -64,7 +64,10 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
 		$allowedValues = $propertySpecificationLookup->getAllowedValuesBy( $property );
-		$allowedListValues = $propertySpecificationLookup->getAllowedListValueBy( $property );
+
+		$allowedListValues = $propertySpecificationLookup->getAllowedListValues(
+			$property
+		);
 
 		if ( $allowedValues === array() && $allowedListValues === array() ) {
 			return $this->hasConstraintViolation;
@@ -72,7 +75,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
 		$allowedValueList = array();
 
-		$isAllowed = $this->checkOnConstraintViolation(
+		$isAllowed = $this->checkConstraintViolation(
 			$dataValue,
 			$allowedValues,
 			$allowedValueList
@@ -84,9 +87,13 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 					$allowedList->getString()
 				);
 			}
+
+			// On assignments like [Foo => Foo] (* Foo) or [Foo => Bar] (* Foo|Bar)
+			// use the key as comparison entity
+			$allowedValues = array_keys( $allowedValues );
 		}
 
-		$isAllowed = $this->checkOnConstraintViolation(
+		$isAllowed = $this->checkConstraintViolation(
 			$dataValue,
 			$allowedValues,
 			$allowedValueList
@@ -116,7 +123,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$this->hasConstraintViolation = true;
 	}
 
-	private function checkOnConstraintViolation( $dataValue, $allowedValues, &$allowedValueList ) {
+	private function checkConstraintViolation( $dataValue, $allowedValues, &$allowedValueList ) {
 
 		if ( !is_array( $allowedValues ) ) {
 			return true;

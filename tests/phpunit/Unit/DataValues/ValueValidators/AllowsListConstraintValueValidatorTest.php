@@ -58,7 +58,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Foo' ) ) ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedListValueBy' )
+			->method( 'getAllowedListValues' )
 			->will( $this->returnValue( array() ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -98,7 +98,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'NOTALLOWED' ) ) ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedListValueBy' )
+			->method( 'getAllowedListValues' )
 			->will( $this->returnValue( array() ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -151,7 +151,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 					$this->dataItemFactory->newDIBlob( 'VAL11' ) ) ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedListValueBy' )
+			->method( 'getAllowedListValues' )
 			->will( $this->returnValue( array( ) ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )

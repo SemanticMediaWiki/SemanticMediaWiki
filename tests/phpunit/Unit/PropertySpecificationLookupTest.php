@@ -258,7 +258,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( 'Foo' ),
-			$instance->getAllowedListValueBy( $property )
+			$instance->getAllowedListValues( $property )
 		);
 	}
 
