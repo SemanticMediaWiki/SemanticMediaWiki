@@ -74,7 +74,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array( 'Foo#0##' => 42 ) ) );
 
 		$queryDependencyLinksStore->expects( $this->once() )
-			->method( 'findEmbeddedQueryTargetLinksHashListBySubject' )
+			->method( 'findDependencyTargetLinksForSubject' )
 			->will( $this->returnValue( array( 'Foo#0##' ) ) );
 
 		$instance = new QueryReferenceBacklinks(
@@ -97,7 +97,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$queryDependencyLinksStore->expects( $this->any() )
-			->method( 'findEmbeddedQueryTargetLinksHashListBySubject' )
+			->method( 'findDependencyTargetLinksForSubject' )
 			->will( $this->returnValue( array( 'Foo#0##' ) ) );
 
 		$instance = new QueryReferenceBacklinks(

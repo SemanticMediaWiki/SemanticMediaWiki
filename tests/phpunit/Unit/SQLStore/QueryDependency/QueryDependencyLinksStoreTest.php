@@ -336,7 +336,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->setLimit( 1 );
 		$requestOptions->setOffset( 200 );
 
-		$instance->findEmbeddedQueryTargetLinksHashListFrom( array( 42 ), $requestOptions );
+		$instance->findDependencyTargetLinks( array( 42 ), $requestOptions );
 	}
 
 	public function testFindEmbeddedQueryTargetLinksHashListBySubject() {
@@ -407,7 +407,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->setLimit( 1 );
 		$requestOptions->setOffset( 200 );
 
-		$instance->findEmbeddedQueryTargetLinksHashListBySubject( DIWikiPage::newFromText( 'Foo' ), $requestOptions );
+		$instance->findDependencyTargetLinksForSubject( DIWikiPage::newFromText( 'Foo' ), $requestOptions );
 	}
 
 	public function testTryDoUpdateDependenciesByWhileBeingDisabled() {
