@@ -647,5 +647,6 @@
 	"smw-browse-property-group-title": "Property group",
 	"smw-browse-property-group-label": "Property group label",
 	"smw-browse-property-group-description": "Property group description",
-	"smw-pa-property-predefined_ppgr": "\"$1\" is a predefined property that identifies entities (mainly categories) that are used as grouping instance for properties and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
+	"smw-pa-property-predefined_ppgr": "\"$1\" is a predefined property that identifies entities (mainly categories) that are used as grouping instance for properties and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-list-pager-filter": "Filter:"
 }

@@ -47,34 +47,52 @@ class ListPager {
 	 *
 	 * @return string
 	 */
-	public static function searchInputElement( Title $title, $limit = 0, $offset = 0 ) {
+	public static function filterInput( Title $title, $limit = 0, $offset = 0, $filter = '' ) {
 
-		$searchLabel = wfMessage( 'smw-format-datatable-search' )->text();
-
-		$form = \Xml::tags( 'form', array(
-			'id'     => 'search',
-			'name'   =>'foo',
-			'action' => $GLOBALS['wgScript']
-		), Html::hidden(
+		$form = \Xml::tags(
+			'form',
+			[
+				'id'     => 'search',
+				'name'   => 'foo',
+				'action' => $GLOBALS['wgScript']
+			],
+			Html::hidden(
 			'title',
 			strtok( $title->getPrefixedText(), '/' )
-		) . Html::hidden(
-			'limit',
-			$limit
-		) . Html::hidden(
-			'offset',
-			$offset
-		) . '<label>' . $searchLabel . '<input type="search" name="value" class="" placeholder="" aria-controls="" form="search"></label>' );
+			) . Html::hidden(
+				'limit',
+				$limit
+			) . Html::hidden(
+				'offset',
+				$offset
+			)
+		);
 
-		$search = '<div id="list-pager" class="list-pager-value-filter">' . $form . '</div>';
+		$label = wfMessage( 'smw-list-pager-filter' )->text();
+
+		$form .= Html::rawElement(
+			'label',
+			[],
+			$label . Html::rawElement(
+				'input',
+				[
+					'type' => 'search',
+					'name' => 'filter',
+					'value' => $filter,
+					'form' => 'search'
+				]
+			)
+		);
 
 		return Html::rawElement(
 			'div',
-			array(),
-			$search
+			[
+				'id' => 'list-pager',
+				'class' => 'list-pager-value-filter'
+			],
+			$form
 		);
 	}
-
 
 	/**
 	 * Generate (prev x| next x) (20|50|100...) type links for paging

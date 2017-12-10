@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since 2.0
+ * @since 3.0
  *
  * @author mwjames
  */
@@ -73,6 +73,19 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\Query\Parser',
 			new QueryParser( $descriptionProcessor, $tokenizer, $queryToken )
+		);
+	}
+
+	public function testCreateCondition() {
+
+		$this->assertEquals(
+			'[[Foo::Bar]]',
+			$this->queryParser->createCondition( 'Foo', 'Bar' )
+		);
+
+		$this->assertEquals(
+			'[[Foo::Bar]]',
+			$this->queryParser->createCondition( new DIProperty( 'Foo' ), 'Bar' )
 		);
 	}
 

@@ -133,7 +133,6 @@
 }
 
 .list-pager-value-filter {
-	float: right;
 	text-align: right;
 }
 
@@ -162,7 +161,7 @@
 
 	position: relative;
 		/* display: block; */
-		padding: 0.5rem 0.75rem;
+		/* padding: 0.5rem 0.75rem; */
 		/* margin-left: -1px; */
 		line-height: 1.25;
 		/* color: #0275d8; */

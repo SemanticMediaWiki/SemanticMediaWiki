@@ -13,6 +13,10 @@
 		{
 			"page": "Example/P1001/2",
 			"contents": "[[Has page test::Two]]"
+		},
+		{
+			"page": "Example/P1001/3",
+			"contents": "[[Has page test::Foo]]"
 		}
 	],
 	"tests": [
@@ -49,6 +53,23 @@
 				"to-contain": [
 					"Has_page_test&amp;limit=1&amp;offset=0",
 					"title=\"Example/P1001/2\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (use a filter)",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Has page test",
+			"assert-output": {
+				"onPageView": {
+					"parameters": {
+						"filter": "Foo"
+					}
+				},
+				"to-contain": [
+					"=&amp;filter=Foo",
+					"title=\"Example/P1001/3\""
 				]
 			}
 		}
