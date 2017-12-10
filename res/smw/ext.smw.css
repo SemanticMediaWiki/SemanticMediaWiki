@@ -245,18 +245,6 @@ span.smwsearchicon {
 	margin-right: 2px;
 }
 
-#bodyContent span.smwmap a {
-	padding-right: 20px;
-	color: #888888;
-	/* @embed */ background: url(../images/world.png) center right no-repeat;
-}
-
-#bodyContent span.smwmap a:hover {
-	padding-right: 20px;
-	color: #0000FF;
-	/* @embed */ background: url(../images/world.png) center right no-repeat;
-}
-
 .smwrdflink {
 	float: right;
 	font-size: small;
