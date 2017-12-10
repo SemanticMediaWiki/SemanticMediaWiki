@@ -72,6 +72,13 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2840)
 * [#2841](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2841)
 * [#2842](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2842)
+* [#2844](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2844)
+* [#2861](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2861)
+* [#2867](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2867)
+* [#2873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2873)
+* [#2874](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2874)
+* [#2875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2875)
+* [#2878](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2878)
 
 ## Bug fixes
 
@@ -130,6 +137,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2774](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2774)
 * [#2783](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2783)
 * [#2785](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2785)
+* [#2845](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2845)
+* [#2847](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2847)
 
 
 ## Contributors
