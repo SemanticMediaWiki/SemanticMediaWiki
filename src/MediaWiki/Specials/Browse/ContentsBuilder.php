@@ -190,7 +190,7 @@ class ContentsBuilder {
 	 */
 	private function createHtml() {
 
-		$html = "<div class=\"smwb-datasheet\">";
+		$html = "<div class=\"smwb-datasheet smwb-theme-light\">";
 
 		$leftside = true;
 		$modules = array();

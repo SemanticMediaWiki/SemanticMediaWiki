@@ -176,3 +176,22 @@ span.smwb-ivalue {
 	border-color: #ddd;
 	outline: 0;
 }
+
+/**
+ * Light theme
+ */
+.smwb-theme-light .smwb-factbox {
+	border-left: 0.5em solid #f0f0f0;
+}
+
+.smwb-theme-light .smwb-ifactbox {
+	border-right: 0.5em solid #f0f0f0;
+}
+
+.smwb-theme-light .smwb-title, .smwb-theme-light .smwb-center, .smwb-theme-light .smwb-actions, .smwb-theme-light .smwb-prophead  {
+	background-color: #f0f0f0;
+}
+
+.smwb-theme-light .smwb-propval  {
+	background-color: #f7f7f7;
+}
