@@ -322,10 +322,10 @@ class SearchTableRebuilder {
 		// Page, Uri, or blob?
 		if ( isset( $row->o_id ) ) {
 			$dataItem = $searchTable->getDataItemById( $row->o_id );
-			$indexableText = $dataItem !== false ? $dataItem->getSortKey() : '';
+			$indexableText = $dataItem instanceof DataItem ? $dataItem->getSortKey() : '';
 		} elseif ( isset( $row->o_serialized ) ) {
 			$indexableText = $row->o_blob === null ? $row->o_serialized : $row->o_blob;
-		} else {
+		} elseif ( isset( $row->o_blob ) && isset( $row->o_hash ) ) {
 			$indexableText = $row->o_blob === null ? $row->o_hash : $row->o_blob;
 		}
 
