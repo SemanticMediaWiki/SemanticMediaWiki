@@ -689,7 +689,7 @@ return array(
 	##
 	'smwgChangePropagationWatchlist' => array(
 		'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC',
-		'_SUBP', '_SUBC'
+		'_SUBP', '_SUBC', '_PVALI'
 	),
 	##
 
