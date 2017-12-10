@@ -264,6 +264,35 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSubDataType() {
+
+		$extraneousLanguage = $this->getMockBuilder( '\SMW\ExtraneousLanguage\ExtraneousLanguage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$extraneousLanguage->expects( $this->once() )
+			->method( 'getDatatypeLabels' )
+			->will( $this->returnValue( [] ) );
+
+		$extraneousLanguage->expects( $this->once() )
+			->method( 'getDatatypeAliases' )
+			->will( $this->returnValue( [] ) );
+
+		$extraneousLanguage->expects( $this->once() )
+			->method( 'getCanonicalDatatypeLabels' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new DataTypeRegistry(
+			$extraneousLanguage
+		);
+
+		$instance->registerDataType( '_foo', 'FooValue', DataItem::TYPE_NOTYPE, false, true );
+
+		$this->assertTrue(
+			$instance->isSubDataType( '_foo' )
+		);
+	}
+
 	protected function assertRegistryFindsIdForLabels( $inputLabel, array $equivalentLabels ) {
 
 		$id = '_wpg';
