@@ -58,7 +58,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2 (use a filter)",
+			"about": "#2 (use a filter, #2878)",
 			"namespace": "SMW_NS_PROPERTY",
 			"subject": "Has page test",
 			"assert-output": {
@@ -70,6 +70,10 @@
 				"to-contain": [
 					"=&amp;filter=Foo",
 					"title=\"Example/P1001/3\""
+				],
+				"not-contain": [
+					"Example/P1001/1",
+					"Example/P1001/2"
 				]
 			}
 		}
