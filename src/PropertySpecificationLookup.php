@@ -415,7 +415,7 @@ class PropertySpecificationLookup {
 		$key = $property->getKey();
 
 		if ( ( $msgKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) === '' ) {
-			$msgKey = 'smw-pa-property-predefined' . strtolower( $key );
+			$msgKey = 'smw-property-predefined' . str_replace( '_', '-', strtolower( $key ) );
 		}
 
 		if ( !Message::exists( $msgKey ) ) {
