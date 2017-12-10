@@ -513,6 +513,7 @@ class PropertyRegistry {
 			'_PEFU'  => array( '__pefu', true, true, true ), // External formatter uri
 			'_PPLB'  => array( '_mlt_rec', true, true, true ), // Preferred property label
 			'_CHGPRO' => array( '_cod', true, false, true ), // "Change propagation"
+			'_PPGR' => array( '_boo', true, true, true ), // "Property group"
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

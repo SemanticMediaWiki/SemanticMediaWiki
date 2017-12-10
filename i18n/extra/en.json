@@ -92,7 +92,8 @@
 		"_PEFU": "External formatter URI",
 		"_PPLB": "Preferred property label",
 		"_EDIP": "Is edit protected",
-		"_CHGPRO": "Change propagation"
+		"_CHGPRO": "Change propagation",
+		"_PPGR": "Is property group"
 	},
 	"propertyAliases": {
 		"Display unit": "_UNIT",
@@ -144,7 +145,8 @@
 		"Has preferred property label": "_PPLB",
 		"Is edit protected": "_EDIP",
 		"IsEditProtected": "_EDIP",
-		"Change propagation" : "_CHGPRO"
+		"Change propagation" : "_CHGPRO",
+		"Property group": "_PPGR"
 	},
 	"namespaces":{
 		"SMW_NS_PROPERTY": "Property",

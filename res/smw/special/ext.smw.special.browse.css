@@ -36,14 +36,28 @@
 }
 
 .smwb-factbox .smwb-propvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
-	width: 25%
+	width: 30%;
 }
 
 /* Only apply when less then 350*/
 @media (max-width: 400px) {
 	.smwb-factbox .smwb-propvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
 		width: 50%
+		min-width: 20%;
 	}
+}
+
+.smwb-factbox .smwb-propvalue.smwb-group {
+	width: 100%;
+}
+
+.smwb-prophead a {
+	overflow-wrap: break-word;
+	word-break: break-word;
+	word-wrap: break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
 }
 
 .smwb-cell {
@@ -92,9 +106,13 @@
 	vertical-align: top;
 }
 
-.smwb-center {
+.smwb-center,  .smwb-actions {
 	background-color: #DDDDDD;
 	padding: 0px;
+}
+
+.smwb-title a, .smwb-center a:first-child, .smwb-actions a:first-child {
+	padding-left: 8px;
 }
 
 span.smwb-value {

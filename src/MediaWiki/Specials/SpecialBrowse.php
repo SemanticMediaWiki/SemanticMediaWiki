@@ -133,9 +133,11 @@ class SpecialBrowse extends SpecialPage {
 
 		$options = array(
 			'dir'         => $contentsBuilder->getOption( 'dir' ),
+			'group'       => $contentsBuilder->getOption( 'group' ),
 			'offset'      => $contentsBuilder->getOption( 'offset' ),
 			'printable'   => $contentsBuilder->getOption( 'printable' ),
 			'showInverse' => $contentsBuilder->getOption( 'showInverse' ),
+			'showGroup'   => $contentsBuilder->getOption( 'showGroup' ),
 			'showAll'     => $contentsBuilder->getOption( 'showAll' ),
 			'including'   => $contentsBuilder->getOption( 'including' )
 		);
@@ -205,6 +207,11 @@ class SpecialBrowse extends SpecialPage {
 		);
 
 		$contentsBuilder->setOption(
+			'group',
+			$webRequest->getVal( 'group' )
+		);
+
+		$contentsBuilder->setOption(
 			'printable',
 			$webRequest->getVal( 'printable' )
 		);
@@ -227,6 +234,11 @@ class SpecialBrowse extends SpecialPage {
 		$contentsBuilder->setOption(
 			'showAll',
 			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INCOMING )
+		);
+
+		$contentsBuilder->setOption(
+			'showGroup',
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_GROUP )
 		);
 
 		$contentsBuilder->setOption(

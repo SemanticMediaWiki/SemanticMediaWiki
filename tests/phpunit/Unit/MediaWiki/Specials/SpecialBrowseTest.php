@@ -78,7 +78,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 			'Foo/Bar',
 			array(
 				'data-subject="Foo/Bar#0#"',
-				'data-options="{&quot;dir&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true,&quot;including&quot;:null}"'
+				'data-options="{&quot;dir&quot;:null,&quot;group&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showGroup&quot;:false,&quot;showAll&quot;:true,&quot;including&quot;:null}"'
 			)
 		);
 
@@ -87,7 +87,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 			':Main-20Page-23_QUERY140d50d705e9566904fc4a877c755964',
 			array(
 				'data-subject="Main_Page#0##_QUERY140d50d705e9566904fc4a877c755964"',
-				'data-options="{&quot;dir&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true,&quot;including&quot;:null}"'
+				'data-options="{&quot;dir&quot;:null,&quot;group&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showGroup&quot;:false,&quot;showAll&quot;:true,&quot;including&quot;:null}"'
 			)
 		);
 

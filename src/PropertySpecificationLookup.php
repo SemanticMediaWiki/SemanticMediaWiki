@@ -6,6 +6,7 @@ use SMW\Query\DescriptionFactory;
 use Onoi\Cache\Cache;
 use SMW\Message;
 use SMWDIBlob as DIBlob;
+use SMWDIBoolean as DIBoolean;
 use SMWQuery as Query;
 
 /**
@@ -202,6 +203,37 @@ class PropertySpecificationLookup {
 		}
 
 		return $hasUniquenessConstraint;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return DataItem|null
+	 */
+	public function getPropertyGroup( DIProperty $property ) {
+
+		$dataItem = null;
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_INST' ) );
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+
+			foreach ( $dataItems as $dataItem ) {
+				$pv = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+					$dataItem,
+					new DIProperty( '_PPGR' )
+				);
+
+				$di = end( $pv );
+
+				if ( $di instanceof DIBoolean && $di->getBoolean() ) {
+					return $dataItem;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**

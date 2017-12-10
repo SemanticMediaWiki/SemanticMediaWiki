@@ -497,10 +497,6 @@ label.smw-form-checkbox {
 	hyphens: auto;
 }
 
-.smwb-title a, .smwb-center a:first-child {
-	padding-left: 8px;
-}
-
 /* Only apply when less then 350*/
 @media (max-width: 400px) {
 	.smwb-propvalue, .smwb-ipropvalue {
