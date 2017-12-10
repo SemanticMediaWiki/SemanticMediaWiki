@@ -268,7 +268,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return array
 	 */
-	public function getAllowedListValueBy( DIProperty $property ) {
+	public function getAllowedListValues( DIProperty $property ) {
 
 		$allowsListValue = array();
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVALI' ) );
