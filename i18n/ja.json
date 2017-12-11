@@ -306,7 +306,7 @@
 	"group-smwcurator-member": "{{GENDER:$1|キュレーター (Semantic MediaWiki)}}",
 	"grouppage-smwcurator": "{{ns:project}}:キュレーター (Semantic MediaWiki)",
 	"action-smw-admin": "Semantic MediaWiki 管理作業へのアクセス",
-	"smw-pa-property-predefined-default": "「$1」は予め定義されたプロパティです。",
+	"smw-property-predefined-default": "「$1」は予め定義されたプロパティです。",
 	"smw-sp-properties-docu": "このページはこのウィキにおける[https://www.semantic-mediawiki.org/wiki/Property プロパティ]およびその使用回数の一覧を表示します。最新の回数統計を表示するために、[https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics プロパティ統計]メンテナンススクリプトを定期的に実行することをお勧めします。異なる表示を行うには、[[Special:UnusedProperties|使われていないプロパティ]]あるいは[[Special:WantedProperties|望まれているプロパティ]]特別ページを参照してください。",
 	"smw-sp-properties-header-label": "プロパティ一覧",
 	"smw-admin-settings-docu": "Semantic MediaWiki 環境に関連するすべての既定とローカルの設定の一覧を表示します。個別の設定の詳細については、[https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration] ヘルプページを参照してください。",

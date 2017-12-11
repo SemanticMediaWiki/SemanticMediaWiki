@@ -319,7 +319,7 @@
 	"group-smwcurator-member": "{{GENDER:$1|kurator (Semantic MediaWiki)}}",
 	"grouppage-smwcurator": "{{ns:project}}:Kuratorzy (Semantic MediaWiki)",
 	"action-smw-admin": "dostęp do zarządzania semantycznej MediaWiki",
-	"smw-pa-property-predefined-default": "„$1” jest właściwością predefiniowaną.",
+	"smw-property-predefined-default": "„$1” jest właściwością predefiniowaną.",
 	"smw-sp-properties-cache-info": "Wymienione dane zostały pobrane z [https://www.semantic-mediawiki.org/wiki/Caching cache] i były ostatnio aktualizowane $1.",
 	"smw-sp-properties-header-label": "Lista właściwości",
 	"smw-sp-admin-settings-button": "Utwórz listę ustawień",

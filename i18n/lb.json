@@ -154,10 +154,12 @@
 	"browse": "Duerch d'Wiki goen",
 	"smw_browse_go": "Lass",
 	"smw_browse_show_incoming": "Eegeschafte weisen déi heihi linken",
-	"smw_browse_hide_incoming": "Eegeschafte verstoppen déi hei hi linken",
+	"smw_browse_hide_incoming": "Eegeschaften verstoppen déi hei hi linken",
 	"smw_browse_no_outgoing": "Dës Säit huet keng Eegeschaften.",
 	"smw_browse_no_incoming": "Et linke keng Eegeschaften op dës Säit.",
 	"smw-browse-from-backend": "Informatioune ginn elo vum Backend ofgeruff.",
+	"smw-browse-show-group": "Gruppe weisen",
+	"smw-browse-hide-group": "Gruppe verstoppen",
 	"smw_inverse_label_default": "$1 vu(n)",
 	"pageproperty": "An den Eegeschafte vun der Säit sichen",
 	"smw_pp_from": "Vun der Säit",
@@ -269,5 +271,7 @@
 	"smw-format-datatable-next": "Nächst",
 	"smw-format-datatable-previous": "Vireg",
 	"smw-format-datatable-toolbar-export": "Exportéieren",
-	"smw-property-reserved-category": "Kategorie"
+	"smw-property-reserved-category": "Kategorie",
+	"smw-category": "Kategorie",
+	"smw-list-pager-filter": "Filter:"
 }
