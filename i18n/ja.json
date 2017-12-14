@@ -24,7 +24,8 @@
 			"Hinaloe",
 			"48pedoa",
 			"Suchichi02",
-			"Omotecho"
+			"Omotecho",
+			"Eduardo Addad de Oliveira"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -265,7 +266,7 @@
 	"smw-admin-support": "支援を得る",
 	"smw-admin-supportdocu": "問題が発生したときにさまざまなリソースが助けとなるかもしれません:",
 	"smw-admin-installfile": "インストールに問題を発見した場合、<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL ファイル</a>にある指針を確認することから始めてください。",
-	"smw-admin-smwhomepage": "Semantic MediaWiki 利用者用の完全なドキュメントは <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b> にあります。",
+	"smw-admin-smwhomepage": "Semantic MediaWiki 利用者用の完全なドキュメントは <b><a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_-_cover_page_(ja)\">semantic-mediawiki.org</a></b> にあります。",
 	"smw-admin-bugsreport": "バグは <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> で報告できます。",
 	"smw-admin-questions": "さらなる質問や提案がある場合は、<a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Semantic MediaWiki 利用者フォーラム</a>での議論に参加してください。",
 	"smw_adminlinks_datastructure": "データ構造",
@@ -328,7 +329,7 @@
 	"log-show-hide-smw": "Semantic MediaWiki ログを$1",
 	"log-description-smw": "Semantic MediaWiki とその構成要素によって報告された、[https://www.semantic-mediawiki.org/wiki/Help:Logging 有効なイベントの種類]についての活動です。",
 	"smw-datavalue-import-invalid-value": "「$1」は有効な書式ではありません。\"名前空間\":\"識別子\"（例：「foaf:name」）から成ることが要求されています。",
-	"smw-pa-property-predefined_sobj": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]によって提供される、通常の Wiki のページと同様のプロパティ値の割り当てを溜めることができ、[https://www.semantic-mediawiki.org/wiki/Help:Container コンテナ]の構造を示す定義済みのプロパティです。",
+	"smw-property-predefined-sobj": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]によって提供される、通常の Wiki のページと同様のプロパティ値の割り当てを溜めることができ、[https://www.semantic-mediawiki.org/wiki/Help:Container コンテナ]の構造を示す定義済みのプロパティです。",
 	"smw-datavalue-invalid-number": "「$1」は数値として解釈できません。",
 	"smw-query-condition-circular": "「$1」において循環条件の可能性が検出されました。",
 	"smw-sp-types-list": "データ型の一覧",
@@ -341,8 +342,8 @@
 	"smw-sp-types_tel": "「$1」は RFC 3966 に従った国際電話番号を記述するための特別なデータ型です。",
 	"smw-sp-types_txt": "「$1」は任意の長さの文字列を記述するためのプリミティブデータ型です。",
 	"smw-sp-types_dat": "「$1」は統一された書式で時点を表すためのデータ型です。",
-	"smw-pa-property-predefined_errt": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]によって提供される、エラーの説明を含んだ定義済みのプロパティです。",
-	"smw-pa-property-predefined_askst": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] によって提供される、文字列として問い合わせ条件を記述する定義済みのプロパティです。",
+	"smw-property-predefined-errt": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]によって提供される、エラーの説明を含んだ定義済みのプロパティです。",
+	"smw-property-predefined-askst": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] によって提供される、文字列として問い合わせ条件を記述する定義済みのプロパティです。",
 	"smw-limitreport-intext-parsertime": "[SMW] テキスト内注記パーサー時間",
 	"smw-limitreport-intext-parsertime-value": "$1{{PLURAL:$1|秒}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1{{PLURAL:$1|秒}}",
