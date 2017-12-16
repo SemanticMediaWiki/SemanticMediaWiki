@@ -176,17 +176,43 @@ class SMWExporter {
 			$subject = DIProperty::newFromUserLabel( $subject->getDBKey() )->getCanonicalDiWikiPage();
 		}
 
-	       // #1690 Couldn't match a CanonicalDiWikiPage which is most likely caused
-	       // by an outdated pre-defined property therefore use the original subject
-	       if ( $subject->getDBKey() === '' ) {
-	           $subject = $semdata->getSubject();
-	       }
+		// #1690 Couldn't match a CanonicalDiWikiPage which is most likely caused
+		// by an outdated pre-defined property therefore use the original subject
+		if ( $subject->getDBKey() === '' ) {
+			$subject = $semdata->getSubject();
+		}
 
 		// #649 Alwways make sure to have a least one valid sortkey
 		if ( !$semdata->getPropertyValues( new DIProperty( '_SKEY' ) ) && $subject->getSortKey() !== '' ) {
+
+			// @see SMWSQLStore3Writers::getSortKey
+			if ( $semdata->getExtensionData( 'sort.extension' ) !== null ) {
+				$sortkey = $semdata->getExtensionData( 'sort.extension' );
+			} else {
+				$sortkey = $subject->getSortKey();
+			}
+
+			// Extend the subobject sortkey in case no @sortkey was given for an
+			// entity
+			if ( $subject->getSubobjectName() !== '' ) {
+
+				// Add sort data from some dedicated containers (of a record or
+				// reference type etc.) otherwise use the sobj name as extension
+				// to distinguish each entity
+				if ( $semdata->getExtensionData( 'sort.data' ) !== null ) {
+					$sortkey .= '#' . $semdata->getExtensionData( 'sort.data' );
+				} else {
+					$sortkey .= '#' . $subject->getSubobjectName();
+				}
+			}
+
+			// #649 Be consistent about how sortkeys are stored therefore always
+			// normalize even for usages like {{DEFAULTSORT: Foo_bar }}
+			$sortkey = str_replace( '_', ' ', $sortkey );
+
 			$semdata->addPropertyObjectValue(
 				new DIProperty( '_SKEY' ),
-				new SMWDIBlob( $subject->getSortKey() )
+				new SMWDIBlob( $sortkey )
 			);
 		}
 

@@ -71,7 +71,8 @@ class ContainerSemanticData extends SemanticData {
 			'mNoDuplicates',
 			'skipAnonymousCheck',
 			'subSemanticData',
-			'options'
+			'options',
+			'extensionData'
 		);
 	}
 

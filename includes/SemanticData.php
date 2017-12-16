@@ -158,6 +158,11 @@ class SemanticData {
 	protected $options;
 
 	/**
+	 * @var array
+	 */
+	protected $extensionData = [];
+
+	/**
 	 * This is kept public to keep track of the depth during a recursive processing
 	 * when accessed through the SubSemanticData instance.
 	 *
@@ -192,7 +197,7 @@ class SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options' );
+		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options', 'extensionData' );
 	}
 
 	/**
@@ -241,6 +246,32 @@ class SemanticData {
 		}
 
 		return array();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function setExtensionData( $key, $value ) {
+		$this->extensionData[$key] = $value;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed|null
+	 */
+	public function getExtensionData( $key ) {
+
+		if ( isset( $this->extensionData[$key] ) ) {
+			return $this->extensionData[$key];
+		}
+
+		return null;
 	}
 
 	/**
@@ -427,12 +458,12 @@ class SemanticData {
 			$this->mHasVisibleProps = true;
 		}
 
-		// Inherit the sortkey from the root if not explicitly given
+		// Account for things like DISPLAYTITLE or DEFAULTSORT which are only set
+		// after #subobject has been processed therefore keep them in-memory
+		// for a post process
 		if ( $this->mSubject->getSubobjectName() === '' && $property->getKey() === DIProperty::TYPE_SORTKEY ) {
 			foreach ( $this->getSubSemanticData() as $subSemanticData ) {
-				if ( !$subSemanticData->hasProperty( $property ) ) {
-					$subSemanticData->addPropertyObjectValue( $property, $dataItem );
-				}
+				$subSemanticData->setExtensionData( 'sort.extension', $dataItem->getString() );
 			}
 		}
 	}

@@ -2,6 +2,7 @@
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\HierarchyLookup;
 use SMW\MediaWiki\Jobs\JobBase;
 use SMW\MediaWiki\Jobs\UpdateJob;
@@ -243,20 +244,6 @@ class SMWSQLStore3Writers {
 			);
 		}
 
-		// Take care of the sortkey
-		$sortkeyDataItems = $data->getPropertyValues( new SMW\DIProperty( '_SKEY' ) );
-		$sortkeyDataItem = end( $sortkeyDataItems );
-
-		if ( $sortkeyDataItem instanceof SMWDIBlob ) {
-			$sortkey = $sortkeyDataItem->getString();
-		} else { // default sortkey
-			$sortkey = $subject->getSortKey();
-		}
-
-		// #649 Be consistent about how sortkeys are stored therefore always
-		// normalize even for usages like {{DEFAULTSORT: Foo_bar }}
-		$sortkey = str_replace( '_', ' ', $sortkey );
-
 		// Always make an ID; this also writes sortkey and namespace data
 		$sid = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
@@ -264,7 +251,7 @@ class SMWSQLStore3Writers {
 			$subject->getInterwiki(),
 			$subject->getSubobjectName(),
 			true,
-			$sortkey,
+			$this->getSortKey( $subject, $data ),
 			true
 		);
 
@@ -313,6 +300,43 @@ class SMWSQLStore3Writers {
 
 		// Update caches (may be important if jobs are directly following this call)
 		$this->setSemanticDataCache( $sid, $data );
+	}
+
+	private function getSortKey( $subject, $data ) {
+
+		$property = new DIProperty( '_SKEY' );
+
+		// Take care of the sortkey
+		$pv = $data->getPropertyValues( $property );
+		$dataItem = end( $pv );
+
+		if ( $dataItem instanceof SMWDIBlob ) {
+			$sortkey = $dataItem->getString();
+		} elseif ( $data->getExtensionData( 'sort.extension' ) !== null ) {
+			$sortkey = $data->getExtensionData( 'sort.extension' );
+		} else {
+			$sortkey = $subject->getSortKey();
+		}
+
+		// Extend the subobject sortkey in case no @sortkey was given for an
+		// entity
+		if ( $subject->getSubobjectName() !== '' && !$dataItem instanceof SMWDIBlob ) {
+
+			// Add sort data from some dedicated containers (of a record or
+			// reference type etc.) otherwise use the sobj name as extension
+			// to distinguish each entity
+			if ( $data->getExtensionData( 'sort.data' ) !== null ) {
+				$sortkey .= '#' . $data->getExtensionData( 'sort.data' );
+			} else {
+				$sortkey .= '#' . $subject->getSubobjectName();
+			}
+		}
+
+		// #649 Be consistent about how sortkeys are stored therefore always
+		// normalize even for usages like {{DEFAULTSORT: Foo_bar }}
+		$sortkey = str_replace( '_', ' ', $sortkey );
+
+		return $sortkey;
 	}
 
 	/**
