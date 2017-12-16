@@ -57,19 +57,44 @@ class ParametersWidget {
 	 */
 	public static function fieldset( $format, array $parameters ) {
 
+		$toggle = '&#160;[' . Html::rawElement(
+			'span',
+			[
+				'class' => 'options-toggle-action',
+			],
+			Html::rawElement(
+				'label',
+				[
+					'for' => 'options-toggle',
+					'title' => Message::get( 'smw-section-expand', Message::TEXT, Message::USER_LANGUAGE )
+				],
+				'+'
+			)
+		) . ']&#160;';
+
 		return Html::rawElement(
 			'fieldset',
 			[],
-			Html::element(
+			Html::rawElement(
 				'legend',
 				[],
-				Message::get( 'smw-ask-options', Message::TEXT, Message::USER_LANGUAGE )
-			) . Html::rawElement(
+				Html::rawElement(
+					'span',
+					[],
+					Message::get( 'smw-ask-options', Message::TEXT, Message::USER_LANGUAGE )
+				) . $toggle
+			) . '<input type="checkbox" id="options-toggle"/>' . Html::rawElement(
 				'div',
 				[
 					'id' => 'options-list'
 				],
-				self::parameterList( $format, $parameters )
+				Html::rawElement(
+					'div',
+					[
+						'class' => 'options-parameter-list'
+					],
+					self::parameterList( $format, $parameters )
+				)
 			) . SortWidget::sortSection( $parameters )
 		);
 	}

@@ -108,7 +108,8 @@ return array(
 		'dependencies' => array(
 			'ext.smw',
 			'mediawiki.util'
-		)
+		),
+		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	// API
@@ -336,7 +337,9 @@ return array(
 			'smw-ask-format-selection-help',
 			'smw-ask-condition-change-info',
 			'smw-ask-format-change-info',
-			'smw-ask-format-export-info'
+			'smw-ask-format-export-info',
+			'smw-section-expand',
+			'smw-section-collapse'
 		),
 		'position' => 'top',
 		'targets' => array(

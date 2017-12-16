@@ -74,13 +74,12 @@ div#ask legend {
 }
 
 .smw-ask-format-selection-help {
-	vertical-align: middle;
-	padding: 5px;
+	padding: 5px 5px 0 5px;
 }
 
 .smw-ask-cond-info {
 	margin-top: 15px;
-	margin-bottom: 10px;f
+	margin-bottom: 10px;
 }
 
 .smw-ask-format-list {
@@ -89,7 +88,7 @@ div#ask legend {
 }
 
 .smw-ask-query {
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 }
 
 .smw-ask-query .smw-table-header {
@@ -313,6 +312,57 @@ div#ask legend {
 }
 
 /**
+ * Toggle
+ */
+
+.options-toggle-action {
+	min-width: 15px;
+	display: inline-block;
+	text-align: center;
+}
+
+.options-toggle-action label {
+	cursor: pointer;
+}
+
+.options-parameter-list {
+	 position: relative;
+}
+
+#options-toggle {
+  display: none;
+}
+
+#options-list .options-parameter-list {
+	min-height: 80px;
+	overflow: hidden;
+	max-height: 0;
+	padding: 0;
+	margin: 0 auto;
+	-webkit-transition: all 0.3s ease;
+}
+
+#options-toggle:checked + #options-list .options-parameter-list {
+  max-height: none;
+}
+
+#options-toggle:checked + #options-list .options-message {
+  display:none;
+}
+
+#options-toggle:not(:checked) + #options-list .options-parameter-list:after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	left: 0;
+	pointer-events: none;
+	background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+	width: 100%;
+	height: 4em;
+}
+
+/**
  * Responsive settings (#see smw.table.css)
  */
 @media screen and (max-width: 800px) {
@@ -321,7 +371,28 @@ div#ask legend {
 		margin: 0.5em 0;
 	}
 
-	.smw-table-cell .parameter-number-input, .smw-table-cell .parameter-string-input {
+	.smw-table-cell .parameter-number-input, .smw-table-cell .parameter-string-input, .smw-ask-sort-input {
 		width:100% !important;
+	}
+
+	.smw-ask-button-right {
+		clear:both;
+		float:none;
+		margin: 0 5px 0 0;
+	}
+
+	.smw-ask-button {
+		display: flex;
+		margin-bottom: 5px;
+	}
+
+	.smw-ask-button input, .smw-ask-button-right input, .smw-ask-button a, .smw-ask-button-right a, #embed_show a, #embed_hide a {
+		width: 100%;
+		text-align: center;
+	}
+
+	.smw-ask-format-selector {
+		display: inline-block;
+		margin-bottom: 0;
 	}
 }
