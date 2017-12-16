@@ -32,6 +32,7 @@ return array(
 	'ext.smw.style' => $moduleTemplate + array(
 		'styles' => array(
 			'smw/ext.smw.css',
+			'smw/ext.smw.skin.css',
 			'smw/ext.smw.dropdown.css'
 		),
 		'position' => 'top',
@@ -361,6 +362,7 @@ return array(
 		'styles' => array(
 			'smw/ext.smw.table.css',
 			'smw/special/ext.smw.special.browse.css',
+			'smw/special/ext.smw.special.browse.skin.css',
 		),
 		'position' => 'top',
 		'targets' => array(
@@ -420,7 +422,8 @@ return array(
 			'smw/printer/ext.smw.tableprinter.js'
 		),
 		'styles'   => array(
-			'smw/printer/ext.smw.tableprinter.css'
+			'smw/printer/ext.smw.tableprinter.css',
+			'smw/printer/ext.smw.tableprinter.skin.css'
 		),
 		'dependencies' => array(
 			'onoi.dataTables',
@@ -452,7 +455,10 @@ return array(
 	// Deferred
 	'ext.smw.deferred.styles'  => $moduleTemplate + array(
 		'position' => 'top',
-		'styles'   => array( 'smw/deferred/ext.smw.deferred.css' ),
+		'styles'   => array(
+			'smw/deferred/ext.smw.deferred.css',
+			'smw/deferred/ext.smw.deferred.skin.css'
+		),
 		'targets' => array(
 			'mobile',
 			'desktop'
@@ -461,7 +467,10 @@ return array(
 
 	'ext.smw.deferred'  => $moduleTemplate + array(
 		'position' => 'top',
-		'styles'   => array( 'smw/deferred/ext.smw.deferred.css' ),
+		'styles'   => array(
+			'smw/deferred/ext.smw.deferred.css',
+			'smw/deferred/ext.smw.deferred.skin.css'
+		),
 		'scripts'  => array( 'smw/deferred/ext.smw.deferred.js' ),
 		'dependencies'  => array(
 			'mediawiki.api',

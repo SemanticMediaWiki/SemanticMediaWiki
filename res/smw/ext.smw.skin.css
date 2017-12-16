@@ -1,0 +1,52 @@
+/**
+ * .skin-vector specific styles
+ */
+
+.skin-vector input#smw-property-input.autocomplete-suggestions {
+	height: 1.15em;
+	padding: 2px 2px;
+}
+
+.skin-vector .smw-overlay-spinner {
+	left: 45%;
+	top: 30%;
+}
+
+.skin-chameleon .smw-page-indicator {
+	padding: 0.35rem 0.85rem;
+	line-height: 1.55;
+}
+
+/**
+ * .skin-chameleon specific styles
+ */
+.skin-chameleon input#smw-property-input.autocomplete-suggestions {
+	height: 30px;
+	padding: 2px 2px;
+}
+
+.skin-chameleon .autocomplete-suggestion {
+	padding: 2px 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 0.9em;
+}
+
+.skin-chameleon .smwfact td {
+	padding: 5px;
+}
+
+/**
+ * .skin-foreground specific styles
+ */
+.skin-foreground input#smw-property-input.autocomplete-suggestions {
+	height: 32px;
+	padding: 2px 0px 0px 8px;
+}
+
+.skin-foreground .autocomplete-suggestion {
+	padding: 2px 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 0.9em;
+}

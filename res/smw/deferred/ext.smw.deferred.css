@@ -59,20 +59,3 @@
     height: 100%;
     content: ' ';
 }
-
-.skin-vector .smw-overlay-spinner {
-    left: 43%;
-    top: 40%;
-}
-
-@media (min-width: 400px) {
-    .skin-vector .smw-overlay-spinner {
-        left: 46%;
-    }
-}
-
-@media (max-width: 399px) {
-    .skin-vector .smw-overlay-spinner {
-        left: 47%;
-    }
-}
