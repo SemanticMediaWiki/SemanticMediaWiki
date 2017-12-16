@@ -115,6 +115,8 @@ class SMWSQLStore3Writers {
 			);
 		}
 
+		$subject->setId( $id );
+
 		// Mark subject/subobjects with a special IW, the final removal is being
 		// triggered by the `EntityRebuildDispatcher`
 		$this->store->getObjectIds()->updateInterwikiField(

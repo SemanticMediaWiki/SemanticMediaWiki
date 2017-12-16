@@ -65,11 +65,13 @@ class SubobjectListFinder {
 	 */
 	public function find( DIWikiPage $subject ) {
 
-		if ( !isset( $this->mappingIterator[$subject->getHash()] ) ) {
-			$this->mappingIterator = $this->newMappingIterator( $subject );
+		$key = $subject->getHash() . ':' . $subject->getId();
+
+		if ( !isset( $this->mappingIterator[$key] ) ) {
+			$this->mappingIterator[$key] = $this->newMappingIterator( $subject );
 		}
 
-		return $this->mappingIterator;
+		return $this->mappingIterator[$key];
 	}
 
 	/**
