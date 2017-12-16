@@ -11,6 +11,7 @@ use SMW\SQLStore\RedirectInfoStore;
 use SMW\SQLStore\TableFieldUpdater;
 use SMW\Utils\Collator;
 use SMW\SQLStore\SQLStoreFactory;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @ingroup SMWStore
@@ -462,6 +463,49 @@ class SMWSql3SmwIds {
 		}
 
 		return $id;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
+	public function findDuplicateEntries() {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$tableName = $connection->tableName(
+			SQLStore::ID_TABLE
+		);
+
+		$query = "SELECT ".
+		"COUNT(*) as count, smw_title, smw_namespace, smw_iw, smw_subobject " .
+		"FROM $tableName " .
+		"GROUP BY smw_title, smw_namespace, smw_iw, smw_subobject ".
+		"HAVING count > 1";
+
+		$rows = $connection->query(
+			$query,
+			__METHOD__
+		);
+
+		if ( $rows === false ) {
+			return [];
+		}
+
+		$matches = [];
+
+		foreach ( $rows as $row ) {
+			$matches[] = [
+				'count'=> $row->count,
+				'smw_title'=> $row->smw_title,
+				'smw_namespace'=> $row->smw_namespace,
+				'smw_iw'=> $row->smw_iw,
+				'smw_subobject'=> $row->smw_subobject
+			];
+		}
+
+		return $matches;
 	}
 
 	/**

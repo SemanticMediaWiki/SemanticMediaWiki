@@ -77,4 +77,51 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$instance->execute();
 	}
 
+	public function testDupLookupTask() {
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		$cache->expects( $this->once() )
+			->method( 'save' );
+
+		$entityTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$entityTable->expects( $this->atLeastOnce() )
+			->method( 'findDuplicateEntries' )
+			->will( $this->returnValue( [] ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $entityTable ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Cache', $cache );
+
+		$instance = new Task(
+			$this->apiFactory->newApiMain(
+				[
+					'action'   => 'smwtask',
+					'task'     => 'duplookup',
+					'params'   => [],
+					'token'    => 'foo'
+				]
+			),
+			'smwtask'
+		);
+
+		$instance->execute();
+	}
+
 }

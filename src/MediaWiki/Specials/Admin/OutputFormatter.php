@@ -39,6 +39,15 @@ class OutputFormatter {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $url
+	 */
+	public function addHelpLink( $url ) {
+		$this->outputPage->addHelpLink( $url, true );
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $title

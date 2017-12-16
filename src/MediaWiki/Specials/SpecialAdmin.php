@@ -154,6 +154,9 @@ class SpecialAdmin extends SpecialPage {
 			$this->getUser()
 		);
 
+		// DuplicateLookupTaskHandler
+		$duplicateLookupTaskHandler = $taskHandlerFactory->newDuplicateLookupTaskHandler();
+
 		// SupportListTaskHandler
 		$supportListTaskHandler = $taskHandlerFactory->newSupportListTaskHandler();
 
@@ -165,7 +168,8 @@ class SpecialAdmin extends SpecialPage {
 			$tableSchemaTaskHandler,
 			$configurationListTaskHandler,
 			$operationalStatisticsListTaskHandler,
-			$entityLookupTaskHandler
+			$entityLookupTaskHandler,
+			$duplicateLookupTaskHandler
 		);
 
 		foreach ( $actionTaskList as $actionTask ) {
@@ -177,7 +181,8 @@ class SpecialAdmin extends SpecialPage {
 		$supplementaryTaskList = array(
 			$configurationListTaskHandler,
 			$operationalStatisticsListTaskHandler,
-			$entityLookupTaskHandler
+			$entityLookupTaskHandler,
+			$duplicateLookupTaskHandler
 		);
 
 		$dataRepairTaskList = array(
