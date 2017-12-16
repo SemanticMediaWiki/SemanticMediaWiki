@@ -757,15 +757,6 @@ a.smw-ask-action-btn-dblue:focus {
 	color: #800000;
 }
 
-.skin-chameleon .smwfact td {
-	padding: 5px;
-}
-
-.skin-chameleon .smw-page-indicator {
-	padding: 0.35rem 0.85rem;
-	line-height: 1.55;
-}
-
 .smw-page-indicator-rdflink {
 	line-height: 24px;
 	margin-right: 10px;
@@ -875,11 +866,6 @@ a.smw-ask-action-btn-dblue:focus {
 	border-bottom:6px solid rgba(0,174,239,.15);
 	border-top:6px solid rgba(0,174,239,.8);
 	border-radius:100%;
-}
-
-.skin-vector .smw-overlay-spinner {
-	left: 45%;
-	top: 30%;
 }
 
 @-webkit-keyframes rotation {
