@@ -46,9 +46,6 @@ class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = $this->getMockBuilder( '\SMW\NamespaceManager' )
-			->setConstructorArgs( array(
-				&$default
-			) )
 			->setMethods( array( 'isDefinedConstant' ) )
 			->getMock();
 
@@ -56,7 +53,7 @@ class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isDefinedConstant' )
 			->will( $this->returnValue( false ) );
 
-		$instance->init();
+		$instance->init( $default );
 	}
 
 	public function testCanonicalNames() {

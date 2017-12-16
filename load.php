@@ -105,11 +105,11 @@ class SemanticMediaWiki {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$namespace = new NamespaceManager( $GLOBALS );
-		$namespace->init();
+		$namespace = new NamespaceManager();
+		$namespace->init( $GLOBALS );
 
-		$setup = new Setup( $applicationFactory, $GLOBALS, __DIR__ );
-		$setup->run();
+		$setup = new Setup( $applicationFactory );
+		$setup->init( $GLOBALS, __DIR__ );
 	}
 
 	/**

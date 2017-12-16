@@ -51,6 +51,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnableUpdateJobs' => false,
 			'wgNamespacesWithSubpages' => array(),
 			'wgExtensionAssetsPath'    => false,
+			'smwgResourceLoaderDefFiles' => [],
 			'wgResourceModules' => array(),
 			'wgScriptPath'      => '/Foo',
 			'wgServer'          => 'http://example.org',
@@ -78,22 +79,19 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$config = array();
-		$basepath = 'Foo';
-
 		$this->assertInstanceOf(
-			'\SMW\Setup',
-			new Setup( $applicationFactory, $config, $basepath )
+			Setup::class,
+			new Setup( $applicationFactory )
 		);
 	}
 
 	public function testResourceModules() {
 
-		$config   = $this->defaultConfig;
-		$basepath = $this->applicationFactory->getSettings()->get( 'smwgIP' );
+		$config = $this->defaultConfig;
+		$config['smwgResourceLoaderDefFiles'] = $GLOBALS['smwgResourceLoaderDefFiles'];
 
-		$instance = new Setup( $this->applicationFactory, $config, $basepath );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, '' );
 
 		$this->assertNotEmpty(
 			$config['wgResourceModules']
@@ -139,8 +137,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$config = $this->defaultConfig;
 
-		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
 			$config['wgAvailableRights']
@@ -174,8 +172,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$localConfig
 		);
 
-		$instance = new Setup( $this->applicationFactory, $localConfig, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $localConfig, 'Foo' );
 
 		$this->assertFalse(
 			$localConfig['wgGroupPermissions']['sysop']['smw-admin']
@@ -197,8 +195,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$config['wgParamDefinitions']['smwformat']
 		);
 
-		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
 			$config['wgParamDefinitions']['smwformat']
@@ -211,8 +209,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$config['wgFooterIcons']['poweredby'] = array();
 
-		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
 			$config['wgFooterIcons']['poweredby']['semanticmediawiki']
@@ -297,8 +295,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			"Asserts that {$entry} is empty"
 		);
 
-		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty( $config[$target][$entry] );
 
