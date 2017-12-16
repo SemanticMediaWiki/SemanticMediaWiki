@@ -6,6 +6,7 @@ use ParamProcessor\ParamDefinition;
 use SMW\Message;
 use SMWQueryProcessor as QueryProcessor;
 use Html;
+use SMW\Utils\HtmlDivTable;
 
 /**
  * @private
@@ -109,15 +110,12 @@ class ParametersWidget {
 		}
 
 		// Table
-		$resultHtml .= Html::openElement(
-			'table',
+		$resultHtml = HtmlDivTable::open(
 			[
 				'class' => 'smw-ask-options-list',
 				'width' => '100%'
 			]
 		);
-
-		$resultHtml .= Html::openElement( 'tbody' );
 
 		while ( $option = array_shift( $optionList ) ) {
 			$i++;
@@ -126,30 +124,27 @@ class ParametersWidget {
 			$rowHtml .=  $option;
 
 			// Create table row
-			if ( $i % 3 == 0 ){
-			$resultHtml .= Html::rawElement(
-				'tr',
-				[
-					'class' => $i % 6 == 0 ? 'smw-ask-options-row-even' : 'smw-ask-options-row-odd',
-				],
-				$rowHtml
-			);
-			$rowHtml = '';
-			$n++;
+			if ( $i % 3 == 0 ) {
+				$resultHtml .= HtmlDivTable::row(
+					$rowHtml,
+					[
+						'class' => $i % 6 == 0 ? 'smw-ask-options-row-even' : 'smw-ask-options-row-odd',
+					]
+				);
+				$rowHtml = '';
+				$n++;
 			}
 		}
 
 		// Ensure left over elements are collected as well
-		$resultHtml .= Html::rawElement(
-			'tr',
+		$resultHtml .= HtmlDivTable::row(
+			$rowHtml,
 			[
 				'class' => $n % 2 == 0 ? 'smw-ask-options-row-odd' : 'smw-ask-options-row-even',
-			],
-			$rowHtml
+			]
 		);
 
-		$resultHtml .= Html::closeElement( 'tbody' );
-		$resultHtml .= Html::closeElement( 'table' );
+		$resultHtml .= HtmlDivTable::close();
 
 		return $resultHtml;
 	}
@@ -221,14 +216,20 @@ class ParametersWidget {
 			$info = Message::get( $definition->getMessage(), Message::TEXT, Message::USER_LANGUAGE );
 		}
 
-		return Html::rawElement(
-			'span',
+		return HtmlDivTable::cell(
+			Html::rawElement(
+				'span',
+				[
+					'class'     =>  $class,
+					'word-wrap' => 'break-word',
+					'data-info' => $info
+				],
+				htmlspecialchars( $name ) . ': '
+			),
 			[
-				'class'     =>  $class,
-				'word-wrap' => 'break-word',
-				'data-info' => $info
-			],
-			htmlspecialchars( $name ) . ': '
+				'overflow' => 'hidden',
+				'style' => 'border:none;'
+			]
 		);
 	}
 
@@ -261,13 +262,12 @@ class ParametersWidget {
 			);
 		}
 
-		return Html::rawElement(
-			'td',
+		return HtmlDivTable::cell(
+			$input->getHtml() . $description,
 			[
 				'overflow' => 'hidden',
-				'style' => 'width:33%;'
-			],
-			$input->getHtml() . $description
+				'style' => 'width:33%;border:none;'
+			]
 		);
 	}
 

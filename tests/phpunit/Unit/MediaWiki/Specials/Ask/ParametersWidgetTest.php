@@ -52,16 +52,16 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'',
 			array(),
-			'<table class="smw-ask-options-list" width="100%"><tbody><tr class="smw-ask-options-row-odd"></tr></tbody></table>'
+			'<div class="smw-table smw-ask-options-list" width="100%"><div class="smw-table-row smw-ask-options-row-odd"></div></div>'
 		);
 
 		$provider[] = array(
 			'table',
 			array(),
 			[
-				'<table class="smw-ask-options-list"',
-				'<input size="6" style="width: 95%;" value="50" name="p[limit]"',
-				'<input size="6" style="width: 95%;" value="0" name="p[offset]"'
+				'<div class="smw-table smw-ask-options-list" width="100%"',
+				'<input class="parameter-number-input" size="6" style="width: 95%;" value="50" name="p[limit]"',
+				'<input class="parameter-number-input" size="6" style="width: 95%;" value="0" name="p[offset]"'
 			]
 		);
 
@@ -72,8 +72,8 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 				'offset' => 42
 			],
 			[
-				'<input size="6" style="width: 95%;" value="9999" name="p[limit]"',
-				'<input size="6" style="width: 95%;" value="42" name="p[offset]"'
+				'<input class="parameter-number-input" size="6" style="width: 95%;" value="9999" name="p[limit]"',
+				'<input class="parameter-number-input" size="6" style="width: 95%;" value="42" name="p[offset]"'
 			]
 		);
 

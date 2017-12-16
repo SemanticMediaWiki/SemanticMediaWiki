@@ -311,3 +311,17 @@ div#ask legend {
 .smw-ask-sort-delete, .smw-ask-sort-add {
 	cursor: pointer;
 }
+
+/**
+ * Responsive settings (#see smw.table.css)
+ */
+@media screen and (max-width: 800px) {
+	.smw-table-row .smw-table-cell {
+		width: auto !important;
+		margin: 0.5em 0;
+	}
+
+	.smw-table-cell .parameter-number-input, .smw-table-cell .parameter-string-input {
+		width:100% !important;
+	}
+}

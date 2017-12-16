@@ -64,8 +64,8 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 			'Foo',
 			[ 'Foo', 'Bar' ],
 			[
-				'<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
-				'<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Bar".*><tt>Bar</tt></span>'
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Bar".*><tt>Bar</tt></span>'
 			],
 
 		];
@@ -74,8 +74,8 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 			[ 'Foo' ],
 			[ 'Foo', 'Bar' ],
 			[
-				'<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
-				'<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Bar".*><tt>Bar</tt></span>'
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Bar".*><tt>Bar</tt></span>'
 			],
 
 		];
@@ -84,8 +84,8 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 			[ 'Foo, Bar' ],
 			[ 'Foo', 'Bar' ],
 			[
-				'<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
-				'<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Bar" checked="".*><tt>Bar</tt></span>'
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Bar" checked="".*><tt>Bar</tt></span>'
 			],
 
 		];
@@ -94,8 +94,8 @@ class ParameterInputTest extends \PHPUnit_Framework_TestCase {
 			[ 'Foo,foo bar' ],
 			[ 'Foo', 'foo bar' ],
 			[
-				'<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
-				'<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="foo bar" checked="".*><tt>foo bar</tt></span>'
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="foo bar" checked="".*><tt>foo bar</tt></span>'
 			],
 
 		];

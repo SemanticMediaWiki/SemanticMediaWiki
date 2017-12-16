@@ -288,9 +288,9 @@ class ContentsBuilder {
 			if ( $group !== '' ) {
 
 				$c = HtmlDivTable::cell(
-					$groupFormatter->getGroupLink( $group ),
+					$groupFormatter->getGroupLink( $group ) . '<span></span>',
 					[
-						"class" => 'smwb-cell smwb-propvalue smwb-propval'
+						"class" => 'smwb-cell smwb-propval'
 					]
 				);
 
@@ -455,7 +455,7 @@ class ContentsBuilder {
 			if ( $moreIncoming && $last !== '' ) {
 				$propertyValue .= $comma . $last;
 			} elseif( $list !== [] && $last !== '' ) {
-				$propertyValue .= ' ' . $and . ' ' . $last;
+				$propertyValue .= '&nbsp;' . $and . '&nbsp;' . $last;
 			} else {
 				$propertyValue .= $last;
 			}
@@ -783,7 +783,7 @@ class ContentsBuilder {
 			) . HtmlDivTable::cell(
 				$val,
 				[
-					"class" => 'smwb-cell smwb-propvalue smwb-propval'
+					"class" => 'smwb-cell smwb-propval'
 				]
 			);
 
@@ -799,12 +799,12 @@ class ContentsBuilder {
 			$h = HtmlDivTable::cell(
 				wfMessage( 'smw-browse-property-group-title' )->text(),
 				[
-					"class" => 'smwb-cell smwb-propvalue smwb-propval'
+					"class" => 'smwb-cell smwb-propval'
 				]
 			) . HtmlDivTable::cell(
 				'',
 				[
-					"class" => 'smwb-cell smwb-propvalue smwb-propval'
+					"class" => 'smwb-cell smwb-propval'
 				]
 			);
 

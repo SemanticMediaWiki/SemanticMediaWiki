@@ -128,7 +128,7 @@ class GroupFormatter {
 		return Html::rawElement(
 			'span',
 			[
-				'class' => 'smwb-group'
+				'class' => 'group-link'
 			],
 			$this->groupLinks[$group]
 		);
