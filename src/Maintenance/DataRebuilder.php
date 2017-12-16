@@ -259,6 +259,7 @@ class DataRebuilder {
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
 			$progress = '';
+			$dispatchedId = $id;
 
 			$this->rebuildCount++;
 			$this->exceptionLog = array();
@@ -271,16 +272,16 @@ class DataRebuilder {
 
 			foreach ( $entityRebuildDispatcher->getDispatchedEntities() as $value ) {
 
-				$text = $this->getHumanReadableTextFrom( $id, $value );
+				$text = $this->getHumanReadableTextFrom( $dispatchedId, $value );
 
 				$this->reportMessage(
 					sprintf( "%-16s%s\n", "($this->rebuildCount/$total)", "Finished processing ID " . $text ),
 					$this->options->has( 'v' )
 				);
 
-				if ( $this->options->has( 'ignore-exceptions' ) && isset( $this->exceptionLog[$id] ) ) {
+				if ( $this->options->has( 'ignore-exceptions' ) && isset( $this->exceptionLog[$dispatchedId] ) ) {
 					$this->exceptionFileLogger->doWriteExceptionLog(
-						array( $id . ' ' . $text => $this->exceptionLog[$id] )
+						array( $dispatchedId . ' ' . $text => $this->exceptionLog[$dispatchedId] )
 					);
 				}
 			}
