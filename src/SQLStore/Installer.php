@@ -218,8 +218,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 			return $messageReporter->reportMessage( "\nSkipping the table optimization.\n" );
 		}
 
-		$messageReporter->reportMessage( "\nRunning table optimization (this may take a moment and\n" );
-		$messageReporter->reportMessage( "depends on the size and status of a table)\n\n" );
+		$messageReporter->reportMessage( "\nRunning table optimization (this may take a moment) ...\n\n" );
 
 		foreach ( $this->tableSchemaManager->getTables() as $table ) {
 			$this->tableBuilder->optimize( $table );
