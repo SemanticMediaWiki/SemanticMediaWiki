@@ -31,6 +31,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$entityManager->expects( $this->any() )
+			->method( 'getListOfIdMatchesFor' )
+			->will( $this->returnValue( [] ) );
+
 		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -141,6 +145,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$objectIdGenerator->expects( $this->any() )
+			->method( 'getListOfIdMatchesFor' )
+			->will( $this->returnValue( [] ) );
+
 		$objectIdGenerator->expects( $this->once() )
 			->method( 'getSMWPageIDandSort' )
 			->will( $this->returnValue( 0 ) );
@@ -197,6 +205,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$objectIdGenerator->expects( $this->any() )
+			->method( 'getListOfIdMatchesFor' )
+			->will( $this->returnValue( [] ) );
 
 		$objectIdGenerator->expects( $this->once() )
 			->method( 'getSMWPageIDandSort' )

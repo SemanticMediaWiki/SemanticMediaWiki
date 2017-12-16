@@ -266,6 +266,25 @@ class SMWSQLStore3Writers {
 			true
 		);
 
+		// Find any potential duplicate entries for the current subject and
+		// if matched, mark them as to be deleted
+		$idList = $this->store->getObjectIds()->getListOfIdMatchesFor(
+			$subject->getDBkey(),
+			$subject->getNamespace(),
+			$subject->getInterwiki(),
+			$subject->getSubobjectName()
+		);
+
+		foreach ( $idList as $id ) {
+			if ( $id != $sid ) {
+				$this->store->getObjectIds()->updateInterwikiField(
+					$id,
+					$subject,
+					SMW_SQL3_SMWDELETEIW
+				);
+			}
+		}
+
 		// Take care of all remaining property table data
 		list( $insertRows, $deleteRows, $newHashes ) = $this->propertyTableRowDiffer->computeTableRowDiff(
 			$sid,
