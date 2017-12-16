@@ -21,12 +21,13 @@ return array(
 	###
 	# This is the path to your installation of Semantic MediaWiki as seen on your
 	# local filesystem. Used against some PHP file path issues.
-	# If needed, you can also change this path in LocalSettings.php after including
-	# this file.
+	#
+	# @since 1.0
 	##
 	'smwgIP' => __DIR__ . '/',
 	'smwgExtraneousLanguageFileDir' => __DIR__ . '/i18n/extra',
 	'smwgServicesFileDir' => __DIR__ . '/src/Services',
+	'smwgResourceLoaderDefFiles' => [ 'smw' => __DIR__ . '/res/Resources.php' ],
 	##
 
 	###
