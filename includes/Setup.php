@@ -44,6 +44,125 @@ final class Setup {
 	}
 
 	/**
+	 * Runs at the earliest possible event to initialize functions or hooks that
+	 * are otherwise too late for the hook system to recognized.
+	 *
+	 * @since 3.0
+	 */
+	public static function initExtension( &$vars ) {
+
+		/**
+		 * @see https://www.mediawiki.org/wiki/Localisation#Localising_namespaces_and_special_page_aliases
+		 */
+		$vars['wgMessagesDirs']['SemanticMediaWiki'] = $vars['smwgIP'] . 'i18n';
+		$vars['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $vars['smwgIP'] . 'i18n/extra/SemanticMediaWiki.alias.php';
+		$vars['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $vars['smwgIP'] . 'i18n/extra/SemanticMediaWiki.magic.php';
+
+		HookRegistry::initExtension( $vars );
+	}
+
+	/**
+	 * @see HookRegistry::initExtension
+	 */
+	public static function getAPIModules() {
+
+		if ( !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+			return [];
+		}
+
+		return [
+			'smwinfo' => '\SMW\MediaWiki\Api\Info',
+			'smwtask' => '\SMW\MediaWiki\Api\Task',
+			'smwbrowse' => '\SMW\MediaWiki\Api\Browse',
+			'ask' => '\SMW\MediaWiki\Api\Ask',
+			'askargs' => '\SMW\MediaWiki\Api\AskArgs',
+			'browsebysubject' => '\SMW\MediaWiki\Api\BrowseBySubject',
+			'browsebyproperty' => '\SMW\MediaWiki\Api\BrowseByProperty'
+		];
+	}
+
+	/**
+	 * @see HookRegistry::initExtension
+	 */
+	public static function initSpecialPageList( array &$specialPages ) {
+
+		if ( !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+			return;
+		}
+
+		$specials = array(
+			'Ask' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialAsk',
+				'group' => 'smw_group'
+			),
+			'Browse' => array(
+				'page' =>  'SMW\MediaWiki\Specials\SpecialBrowse',
+				'group' => 'smw_group'
+			),
+			'PageProperty' => array(
+				'page' =>  'SMWPageProperty',
+				'group' => 'smw_group'
+			),
+			'SearchByProperty' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty',
+				'group' => 'smw_group'
+			),
+			'ProcessingErrorList' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList',
+				'group' => 'smw_group'
+			),
+			'PropertyLabelSimilarity' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity',
+				'group' => 'smw_group'
+			),
+			'SMWAdmin' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin',
+				'group' => 'smw_group'
+			),
+			'Concepts' => array(
+				'page' => 'SMW\SpecialConcepts',
+				'group' => 'pages'
+			),
+			'ExportRDF' => array(
+				'page' => 'SMWSpecialOWLExport',
+				'group' => 'smw_group'
+			),
+			'Types' => array(
+				'page' => 'SMWSpecialTypes',
+				'group' => 'pages'
+			),
+			'URIResolver' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialURIResolver'
+			),
+			'Properties' => array(
+				'page' => 'SMW\SpecialProperties',
+				'group' => 'pages'
+			),
+			'UnusedProperties' => array(
+				'page' => 'SMW\SpecialUnusedProperties',
+				'group' => 'maintenance'
+			),
+			'WantedProperties' => array(
+				'page' => 'SMW\SpecialWantedProperties',
+				'group' => 'maintenance'
+			),
+			'DeferredRequestDispatcher' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher',
+				'group' => 'maintenance'
+			),
+		);
+
+		// Register data
+		foreach ( $specials as $special => $page ) {
+			$specialPages[$special] = $page['page'];
+
+			if ( isset( $page['group'] ) ) {
+				$GLOBALS['wgSpecialPageGroups'][$special] = $page['group'];
+			}
+		}
+	}
+
+	/**
 	 * @since 1.9
 	 */
 	public function run() {
@@ -57,10 +176,7 @@ final class Setup {
 		$this->registerConnectionProviders();
 		$this->registerMessageCallbackHandler();
 
-		$this->registerI18n();
-		$this->registerWebApi();
 		$this->registerJobClasses();
-		$this->registerSpecialPages();
 		$this->registerPermissions();
 
 		$this->registerParamDefinitions();
@@ -173,37 +289,6 @@ final class Setup {
 	}
 
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgExtensionMessagesFiles
-	 */
-	private function registerI18n() {
-
-		$smwgIP = $this->applicationFactory->getSettings()->get( 'smwgIP' );
-
-		$this->globalVars['wgMessagesDirs']['SemanticMediaWiki'] = $smwgIP . 'i18n';
-		$this->globalVars['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $smwgIP . 'i18n/extra/SemanticMediaWiki.alias.php';
-		$this->globalVars['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $smwgIP . 'i18n/extra/SemanticMediaWiki.magic.php';
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgAPIModules
-	 */
-	private function registerWebApi() {
-
-		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
-			return;
-		}
-
-		$this->globalVars['wgAPIModules']['smwinfo'] = '\SMW\MediaWiki\Api\Info';
-		$this->globalVars['wgAPIModules']['smwtask'] = '\SMW\MediaWiki\Api\Task';
-		$this->globalVars['wgAPIModules']['smwbrowse'] = '\SMW\MediaWiki\Api\Browse';
-		$this->globalVars['wgAPIModules']['ask']     = '\SMW\MediaWiki\Api\Ask';
-		$this->globalVars['wgAPIModules']['askargs'] = '\SMW\MediaWiki\Api\AskArgs';
-
-		$this->globalVars['wgAPIModules']['browsebysubject'] = '\SMW\MediaWiki\Api\BrowseBySubject';
-		$this->globalVars['wgAPIModules']['browsebyproperty'] = '\SMW\MediaWiki\Api\BrowseByProperty';
-	}
-
-	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
 	 */
 	private function registerJobClasses() {
@@ -267,87 +352,6 @@ final class Setup {
 		// Add an additional protection level restricting edit/move/etc
 		if ( ( $editProtectionRight = $this->applicationFactory->getSettings()->get( 'smwgEditProtectionRight' ) ) !== false ) {
 			$this->globalVars['wgRestrictionLevels'][] = $editProtectionRight;
-		}
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgSpecialPages
-	 */
-	private function registerSpecialPages() {
-
-		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
-			return;
-		}
-
-		$specials = array(
-			'Ask' => array(
-				'page' => 'SMW\MediaWiki\Specials\SpecialAsk',
-				'group' => 'smw_group'
-			),
-			'Browse' => array(
-				'page' =>  'SMW\MediaWiki\Specials\SpecialBrowse',
-				'group' => 'smw_group'
-			),
-			'PageProperty' => array(
-				'page' =>  'SMWPageProperty',
-				'group' => 'smw_group'
-			),
-			'SearchByProperty' => array(
-				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty',
-				'group' => 'smw_group'
-			),
-			'ProcessingErrorList' => array(
-				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList',
-				'group' => 'smw_group'
-			),
-			'PropertyLabelSimilarity' => array(
-				'page' => 'SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity',
-				'group' => 'smw_group'
-			),
-			'SMWAdmin' => array(
-				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin',
-				'group' => 'smw_group'
-			),
-			'Concepts' => array(
-				'page' => 'SMW\SpecialConcepts',
-				'group' => 'pages'
-			),
-			'ExportRDF' => array(
-				'page' => 'SMWSpecialOWLExport',
-				'group' => 'smw_group'
-			),
-			'Types' => array(
-				'page' => 'SMWSpecialTypes',
-				'group' => 'pages'
-			),
-			'URIResolver' => array(
-				'page' => 'SMW\MediaWiki\Specials\SpecialURIResolver'
-			),
-			'Properties' => array(
-				'page' => 'SMW\SpecialProperties',
-				'group' => 'pages'
-			),
-			'UnusedProperties' => array(
-				'page' => 'SMW\SpecialUnusedProperties',
-				'group' => 'maintenance'
-			),
-			'WantedProperties' => array(
-				'page' => 'SMW\SpecialWantedProperties',
-				'group' => 'maintenance'
-			),
-			'DeferredRequestDispatcher' => array(
-				'page' => 'SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher',
-				'group' => 'maintenance'
-			),
-		);
-
-		// Register data
-		foreach ( $specials as $special => $page ) {
-			$this->globalVars['wgSpecialPages'][$special] = $page['page'];
-
-			if ( isset( $page['group'] ) ) {
-				$this->globalVars['wgSpecialPageGroups'][$special] = $page['group'];
-			}
 		}
 	}
 

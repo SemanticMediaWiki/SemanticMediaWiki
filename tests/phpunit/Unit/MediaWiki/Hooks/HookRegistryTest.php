@@ -122,6 +122,43 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testInitExtension() {
+
+		$vars = [];
+
+		HookRegistry::initExtension( $vars );
+
+		// CanonicalNamespaces
+		$callback = end( $vars['wgHooks']['CanonicalNamespaces'] );
+		$namespaces = [];
+
+		$this->assertThatHookIsExcutable(
+			$callback,
+			array( &$namespaces )
+		);
+
+		// SpecialPage_initList
+		$callback = end( $vars['wgHooks']['SpecialPage_initList'] );
+		$specialPages = [];
+
+		$this->assertThatHookIsExcutable(
+			$callback,
+			array( &$specialPages )
+		);
+
+		// ApiMain::moduleManager
+		$callback = end( $vars['wgHooks']['ApiMain::moduleManager'] );
+
+		$apiModuleManager = $this->getMockBuilder( '\ApiModuleManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertThatHookIsExcutable(
+			$callback,
+			array( $apiModuleManager )
+		);
+	}
+
 	public function testRegister() {
 
 		$language = $this->getMockBuilder( '\Language' )

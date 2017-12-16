@@ -46,7 +46,7 @@ class SemanticMediaWiki {
 			}
 		}
 
-		// In case extension.json is being used, the the succeeding steps will
+		// In case extension.json is being used, the succeeding steps will
 		// be handled by the ExtensionRegistry
 		self::initExtension();
 
@@ -82,28 +82,8 @@ class SemanticMediaWiki {
 		// @deprecated, removal in SMW 3.0
 		define( 'SEMANTIC_EXTENSION_TYPE', true );
 
-		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'i18n';
-		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $GLOBALS['smwgIP'] . 'i18n/extra/SemanticMediaWiki.alias.php';
-		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgIP'] . 'i18n/extra/SemanticMediaWiki.magic.php';
-
-		self::onCanonicalNamespaces();
-	}
-
-	/**
-	 * CanonicalNamespaces initialization
-	 *
-	 * @note According to T104954 registration via wgExtensionFunctions can be
-	 * too late and should happen before that in case RequestContext::getLanguage
-	 * invokes Language::getNamespaces before the `wgExtensionFunctions` execution.
-	 *
-	 * @see https://phabricator.wikimedia.org/T104954#2391291
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
-	 * @Bug 34383
-	 *
-	 * @since 2.5
-	 */
-	public static function onCanonicalNamespaces() {
-		$GLOBALS['wgHooks']['CanonicalNamespaces'][] = 'SMW\NamespaceManager::initCanonicalNamespaces';
+		// Registration point for required early registration
+		Setup::initExtension( $GLOBALS );
 	}
 
 	/**
