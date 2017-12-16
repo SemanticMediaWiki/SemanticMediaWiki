@@ -103,8 +103,14 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider apiModulesDataProvider
 	 */
-	public function testRegisterApiModules( $moduleEntry, $setup ) {
-		$this->assertArrayEntryExists( 'wgAPIModules', $moduleEntry, $setup );
+	public function testGetAPIModules( $name ) {
+
+		$vars = Setup::getAPIModules();
+
+		$this->assertArrayHasKey(
+			$name,
+			$vars
+		);
 	}
 
 	/**
@@ -115,17 +121,18 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider messagesFilesDataProvider
-	 */
-	public function testRegisterMessageFiles( $moduleEntry, $setup ) {
-		$this->assertArrayEntryExists( 'wgExtensionMessagesFiles', $moduleEntry, $setup, 'file' );
-	}
-
-	/**
 	 * @dataProvider specialPageDataProvider
 	 */
-	public function testRegisterSpecialPages( $specialEntry, $setup ) {
-		$this->assertArrayEntryExists( 'wgSpecialPages', $specialEntry, $setup );
+	public function testInitSpecialPageList( $name ) {
+
+		$vars = [];
+
+		Setup::initSpecialPageList( $vars );
+
+		$this->assertArrayHasKey(
+			$name,
+			$vars
+		);
 	}
 
 	public function testRegisterDefaultRightsUserGroupPermissions() {
@@ -279,20 +286,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		return $this->buildDataProvider( 'wgAPIModules', $modules, '' );
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function messagesFilesDataProvider() {
-
-		$modules = array(
-			'SemanticMediaWikiAlias',
-			'SemanticMediaWikiMagic'
-		);
-
-		return $this->buildDataProvider( 'wgExtensionMessagesFiles', $modules, '' );
 	}
 
 	private function assertArrayEntryExists( $target, $entry, $config, $type = 'class' ) {

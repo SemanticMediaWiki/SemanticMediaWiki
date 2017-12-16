@@ -97,7 +97,10 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 				}
 			}
 
-			$this->assertTrue( $found, "{$name} alias not found in language {$langCode}" );
+			$this->assertTrue(
+				$found,
+				"{$name} alias not found in language {$langCode}"
+			);
 		}
 	}
 
@@ -129,23 +132,22 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 
 		foreach ( $specialPages as $special ) {
 
-			if ( array_key_exists( $special, $GLOBALS['wgSpecialPages'] ) ) {
+			$specialPage = SpecialPageFactory::getPage(
+				$special
+			);
 
-				$specialPage = SpecialPageFactory::getPage( $special );
+			// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
+			$title = method_exists( $specialPage, 'getPageTitle') ? $specialPage->getPageTitle() : $specialPage->getTitle();
 
-				// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-				$title = method_exists( $specialPage, 'getPageTitle') ? $specialPage->getPageTitle() : $specialPage->getTitle();
+			$context = RequestContext::newExtraneousContext( $title );
+			$context->setRequest( $request );
 
-				$context = RequestContext::newExtraneousContext( $title );
-				$context->setRequest( $request );
+			$specialPage->setContext( clone $context );
+			$argLists[] = array( clone $specialPage );
 
-				$specialPage->setContext( clone $context );
-				$argLists[] = array( clone $specialPage );
-
-				$context->setUser( $this->getUser() );
-				$specialPage->setContext( $context );
-				$argLists[] = array( $specialPage );
-			}
+			$context->setUser( $this->getUser() );
+			$specialPage->setContext( $context );
+			$argLists[] = array( $specialPage );
 		}
 
 		return $argLists;

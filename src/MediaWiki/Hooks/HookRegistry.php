@@ -15,6 +15,7 @@ use SMW\ParserFunctions\InfoParserFunction;
 use SMW\PermissionPthValidator;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Site;
+use SMW\Setup;
 
 /**
  * @license GNU GPL v2+
@@ -44,6 +45,67 @@ class HookRegistry {
 		$this->globalVars =& $globalVars;
 
 		$this->addCallbackHandlers( $directory, $globalVars );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array &$vars
+	 */
+	public static function initExtension( array &$vars ) {
+
+		/**
+		 * CanonicalNamespaces initialization
+		 *
+		 * @note According to T104954 registration via wgExtensionFunctions can be
+		 * too late and should happen before that in case RequestContext::getLanguage
+		 * invokes Language::getNamespaces before the `wgExtensionFunctions` execution.
+		 *
+		 * @see https://phabricator.wikimedia.org/T104954#2391291
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
+		 * @Bug 34383
+		 */
+		$vars['wgHooks']['CanonicalNamespaces'][] = function( array &$namespaces ) {
+
+			NamespaceManager::initCanonicalNamespaces(
+				$namespaces
+			);
+
+			return true;
+		};
+
+		/**
+		 * To add to or remove pages from the special page list. This array has
+		 * the same structure as $wgSpecialPages.
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialPage_initList
+		 *
+		 * #2813
+		 */
+		$vars['wgHooks']['SpecialPage_initList'][] = function( array &$specialPages ) {
+
+			Setup::initSpecialPageList(
+				$specialPages
+			);
+
+			return true;
+		};
+
+		/**
+		 * Called when ApiMain has finished initializing its module manager. Can
+		 * be used to conditionally register API modules.
+		 *
+		 * #2813
+		 */
+		$vars['wgHooks']['ApiMain::moduleManager'][] = function( $apiModuleManager ) {
+
+			$apiModuleManager->addModules(
+				Setup::getAPIModules(),
+				'action'
+			);
+
+			return true;
+		};
 	}
 
 	/**
