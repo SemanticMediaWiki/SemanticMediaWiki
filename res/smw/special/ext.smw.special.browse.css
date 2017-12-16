@@ -160,14 +160,19 @@ span.smwb-value {
 	padding-right: 1em;
 }
 
-span.smwb-ivalue {
+.smwb-input {
+	display: flex;
 }
 
-.browse-input-resp { display: flex; }
-.browse-input-resp .input-field { flex: 1; margin: 0 0 0 0; }
-.browse-input-resp .button-field { flex: 0; margin: 0 0 0 1rem; }
+.smwb-input .input-field {
+	flex: 1; margin: 0 0 0 0;
+}
 
-.browse-input-resp .mw-ui-input:focus {
+.smwb-input .button-field {
+	flex: 0; margin: 0 0 0 1rem;
+}
+
+.smwb-input .mw-ui-input:focus {
 	box-shadow: inset 0 0 0 1px #ddd;
 	border-color: #ddd;
 	outline: 0;
