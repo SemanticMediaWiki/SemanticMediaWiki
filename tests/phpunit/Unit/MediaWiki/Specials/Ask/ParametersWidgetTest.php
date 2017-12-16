@@ -30,7 +30,7 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			[
-				'<fieldset><legend>.*</legend><div id="options-list">'
+				'<fieldset><legend>.*</legend><input type="checkbox" id="options-toggle"/><div id="options-list">'
 			],
 			ParametersWidget::fieldset( 'foo', $parameters )
 		);

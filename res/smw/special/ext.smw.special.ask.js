@@ -287,6 +287,17 @@
 			addSortInstance( 'sorting_starter', 'sorting_main' );
 		} );
 
+		// Options toggle icon
+		$( '.options-toggle-action label' ).click( function() {
+			if ( $( '#options-toggle' ).prop( 'checked' ) ) {
+				$( this).html( '+' );
+				$( this).attr( 'title', mw.msg( 'smw-section-expand' ) );
+			} else {
+				$( this).html( '-' );
+				$( this).attr( 'title', mw.msg( 'smw-section-collapse' ) );
+			}
+		} );
+
 		// Submit the form via CTRL + q
 		$( "form" ).keypress( function ( event ) {
 			if ( event.ctrlKey && event.keyCode == 17 ) {
@@ -337,7 +348,9 @@
 				'url': $this.data( 'url' ).replace( 'this.value',  $this.val() ),
 				'context': document.body,
 				'success': function( data ) {
-					$( '#options-list' ).html( data );
+					$( '#options-list' ).html(
+						'<div class="options-parameter-list">' + data + '</div>'
+					);
 
 					// Remove disable state that was set at the beginning of the
 					// onChange event
