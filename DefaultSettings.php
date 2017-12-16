@@ -844,6 +844,7 @@ return array(
 	#   lookup on statistics
 	#
 	# - api.browse TTL (in sec, or false to disable it) for the API browse module
+	# - api.task TTL (in sec, or false to disable it) for the API task module
 	#
 	# @since 1.9
 	##
@@ -852,7 +853,8 @@ return array(
 		'special.unusedproperties' => 3600,
 		'special.properties' => 3600,
 		'special.statistics' => 3600,
-		'api.browse' => 3600
+		'api.browse' => 3600,
+		'api.task'  => 3600
 	),
 	##
 

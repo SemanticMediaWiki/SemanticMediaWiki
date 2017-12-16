@@ -311,6 +311,46 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFindDuplicateEntries() {
+
+		$expected = [
+			'count' => 2,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => ''
+		];
+
+		$row = (object)$expected;
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'query' )
+			->with( $this->stringContains( 'HAVING count > 1' ) )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->factory
+		);
+
+		$this->assertEquals(
+			[ $expected ],
+			$instance->findDuplicateEntries()
+		);
+	}
+
 	public function testGetIDOnPredefinedProperty() {
 
 		$row = new \stdClass;

@@ -403,7 +403,9 @@ return array(
 			'mediawiki.api'
 		),
 		'messages' => array(
-			'smw-no-data-available'
+			'smw-no-data-available',
+			'smw-list-count',
+			'smw-list-count-from-cache'
 		),
 		'position' => 'top',
 		'targets' => array(

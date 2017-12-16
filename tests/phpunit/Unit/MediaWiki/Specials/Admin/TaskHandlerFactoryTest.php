@@ -117,6 +117,11 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\MediaWiki\Specials\Admin\DeprecationNoticeTaskHandler'
 		);
 
+		$provider[] = array(
+			'newDuplicateLookupTaskHandler',
+			'\SMW\MediaWiki\Specials\Admin\DuplicateLookupTaskHandler'
+		);
+
 		return $provider;
 	}
 

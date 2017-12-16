@@ -17,27 +17,28 @@ use SMW\DIWikiPage;
  */
 class Task extends ApiBase {
 
+	const CACHE_NAMESPACE = 'smw:api:task';
+
 	/**
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
 
 		$params = $this->extractRequestParams();
-		$parameters = json_decode( $params['params'], true );
+
+		$parameters = json_decode(
+			$params['params'],
+			true
+		);
+
 		$results = [];
-
-		if ( json_last_error() !== JSON_ERROR_NONE || !is_array( $parameters ) ) {
-
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-api-invalid-parameters' ] );
-			} else {
-				$this->dieUsageMsg( 'smw-api-invalid-parameters' );
-			}
-		}
 
 		if ( $params['task'] === 'update' ) {
 			$results = $this->callUpdateTask( $parameters );
+		}
+
+		if ( $params['task'] === 'duplookup' ) {
+			$results = $this->callDupLookupTask( $parameters );
 		}
 
 		$this->getResult()->addValue(
@@ -47,7 +48,49 @@ class Task extends ApiBase {
 		);
 	}
 
+	private function callDupLookupTask( $parameters ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$cache = $applicationFactory->getCache();
+
+		$cacheUsage = $applicationFactory->getSettings()->get(
+			'smwgCacheUsage'
+		);
+
+		$cacheTTL = 3600;
+
+		if ( isset( $cacheUsage['api.task'] ) ) {
+			$cacheTTL = $cacheUsage['api.task'];
+		}
+
+		$key = smwfCacheKey(
+			self::CACHE_NAMESPACE,
+			[
+				'duplookup'
+			]
+		);
+
+		// Guard against repeated API calls (or fuzzing)
+		if ( ( $result = $cache->fetch( $key ) ) !== false ) {
+			return $result + ['isFromCache' => true ];
+		}
+
+		$rows = $applicationFactory->getStore()->getObjectIds()->findDuplicateEntries();
+
+		$result = [
+			'list' => $rows,
+			'count' => count( $rows ),
+			'time' => time()
+		];
+
+		$cache->save( $key, $result, $cacheTTL );
+
+		return $result;
+	}
+
 	private function callUpdateTask( $parameters ) {
+
+		$this->checkParameters( $parameters );
 
 		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
@@ -95,6 +138,18 @@ class Task extends ApiBase {
 		return [ 'done' => true ];
 	}
 
+	private function checkParameters( $parameters ) {
+		if ( json_last_error() !== JSON_ERROR_NONE || !is_array( $parameters ) ) {
+
+			// 1.29+
+			if ( method_exists( $this, 'dieWithError' ) ) {
+				$this->dieWithError( [ 'smw-api-invalid-parameters' ] );
+			} else {
+				$this->dieUsageMsg( 'smw-api-invalid-parameters' );
+			}
+		}
+	}
+
 	/**
 	 * @codeCoverageIgnore
 	 * @see ApiBase::getAllowedParams
@@ -106,12 +161,13 @@ class Task extends ApiBase {
 			'task' => array(
 				ApiBase::PARAM_REQUIRED => true,
 				ApiBase::PARAM_TYPE => array(
-					'update'
+					'update',
+					'duplookup'
 				)
 			),
 			'params' => array(
 				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true,
+				ApiBase::PARAM_REQUIRED => false,
 			),
 		);
 	}

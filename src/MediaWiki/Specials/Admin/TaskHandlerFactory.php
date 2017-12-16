@@ -131,4 +131,13 @@ class TaskHandlerFactory {
 		return new DeprecationNoticeTaskHandler( $this->outputFormatter, $GLOBALS['smwgDeprecationNotices'] );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @return DuplicateLookupTaskHandler
+	 */
+	public function newDuplicateLookupTaskHandler() {
+		return new DuplicateLookupTaskHandler( $this->outputFormatter );
+	}
+
 }

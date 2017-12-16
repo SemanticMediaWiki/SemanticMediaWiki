@@ -49,16 +49,40 @@
 		var self = this,
 			content = mw.msg( 'smw-no-data-available' );
 
-		self.api.get( parameters ).done( function( data ) {
+		self.api.postWithToken( 'csrf', parameters ).done( function( data ) {
 
 			if ( data.hasOwnProperty( 'info' ) ) {
 				content = data.info.jobcount.length === 0 ? content : '<pre>' + JSON.stringify( data.info.jobcount, null, 2 ) + '</pre>';
+			} else if ( data.hasOwnProperty( 'task' ) ) {
+
+				if ( data.task.hasOwnProperty( 'isFromCache' ) ) {
+					var time = new Date( data.task.time * 1000 );
+					content = '<p>' + mw.msg( 'smw-list-count-from-cache', data.task.count, time.toUTCString() ) + '</p>';;
+				} else {
+					content = '<p>' + mw.msg( 'smw-list-count', data.task.count ) + '</p>';
+				}
+
+				if ( data.task.list.length === 0 ) {
+					content = mw.msg( 'smw-no-data-available' );
+				} else {
+					content = content + '<pre>' + JSON.stringify( data.task.list, null, 2 ) + '</pre>';
+				}
 			}
 
 			self.appendContent( content );
 		} ).fail ( function( xhr, status, error ) {
 
-			var text = 'Unknown API error';
+			var text = 'The API encountered an unknown error';
+
+			if ( status.hasOwnProperty( 'xhr' ) ) {
+				var xhr = status.xhr;
+
+				if ( xhr.hasOwnProperty( 'responseText' ) ) {
+					text = xhr.responseText.replace(/\<br \/\>/g," " );
+				} else if ( xhr.hasOwnProperty( 'statusText' ) ) {
+					text = 'The API returned with: ' + xhr.statusText.replace(/\<br \/\>/g," " );
+				};
+			}
 
 			if ( status.hasOwnProperty( 'error' ) ) {
 				text = status.error.code + ': ' + status.error.info;
@@ -108,6 +132,17 @@
 		$( '.smw-admin-db-preparation' ).each( function() {
 			// https://stackoverflow.com/questions/5997450/append-to-url-and-refresh-page
 			window.location.search += '&prep=done';
+		} );
+
+		$( '.smw-admin-supplementary-duplookup' ).each( function() {
+
+			var parameters = {
+				action: 'smwtask',
+				task: 'duplookup',
+				params: []
+			};
+
+			instance.setContext( $( this ) ).doApiRequest( parameters );
 		} );
 
 	} );
