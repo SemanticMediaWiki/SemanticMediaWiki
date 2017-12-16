@@ -57,7 +57,7 @@ class FormHelper {
 			Html::rawElement(
 				'div',
 				array(
-					'class' => 'browse-input-resp'
+					'class' => 'smwb-input'
 				),
 				Html::rawElement(
 					'div',
