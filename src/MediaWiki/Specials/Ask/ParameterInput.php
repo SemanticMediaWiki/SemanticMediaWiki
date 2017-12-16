@@ -53,6 +53,11 @@ class ParameterInput {
 	protected $inputName;
 
 	/**
+	 * @var array
+	 */
+	private $attributes = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.9
@@ -86,6 +91,15 @@ class ParameterInput {
 	 */
 	public function setInputName( $name ) {
 		$this->inputName = $name;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $attributes
+	 */
+	public function setAttributes( array $attributes ) {
+		$this->attributes = $attributes;
 	}
 
 	/**
@@ -155,14 +169,22 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getNumberInput() {
+
+		$attributes = [
+			'class' => 'parameter-number-input',
+			'size' => 6,
+			'style' => "width: 95%;"
+		];
+
+		if ( $this->attributes !==[] ) {
+			$attributes = $this->attributes;
+		}
+
 		return Html::input(
 			$this->inputName,
 			$this->getValueToUse(),
 			'text',
-			array(
-				'size' => 6,
-				'style' => "width: 95%;",
-			)
+			$attributes
 		);
 	}
 
@@ -174,14 +196,22 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getStrInput() {
+
+		$attributes = [
+			'class' => 'parameter-string-input',
+			'size' => 20,
+			'style' => "width: 95%;"
+		];
+
+		if ( $this->attributes !==[] ) {
+			$attributes = $this->attributes;
+		}
+
 		return Html::input(
 			$this->inputName,
 			$this->getValueToUse(),
 			'text',
-			array(
-				'size'  => 20,
-				'style' => "width: 95%;",
-			)
+			$attributes
 		);
 	}
 
@@ -193,9 +223,19 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getBooleanInput() {
+
+		$attributes = [
+			'class' => 'parameter-boolean-input'
+		];
+
+		if ( $this->attributes !==[] ) {
+			$attributes = $this->attributes;
+		}
+
 		return Xml::check(
 			$this->inputName,
-			$this->getValueToUse()
+			$this->getValueToUse(),
+			$attributes
 		);
 	}
 
@@ -227,7 +267,8 @@ class ParameterInput {
 		return Html::rawElement(
 			'select',
 			array(
-				'name' => $this->inputName
+				'name' => $this->inputName,
+				'class'=> 'parameter-select-input'
 			),
 			implode( "\n", $options )
 		);
@@ -269,6 +310,7 @@ class ParameterInput {
 			$boxes[] = Html::rawElement(
 				'span',
 				array(
+					'class' => 'parameter-checkbox-input',
 					'style' => 'white-space: nowrap; padding-right: 5px;'
 				),
 				Html::rawElement(

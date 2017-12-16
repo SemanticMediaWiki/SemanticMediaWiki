@@ -65,7 +65,7 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertContains(
-			'<span class="smwb-group">',
+			'<span class="group-link">',
 			$instance->getGroupLink( 'Bar' )
 		);
 	}

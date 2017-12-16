@@ -61,3 +61,18 @@
 .smw-table-body {
 	display: table-row-group;
 }
+
+/**
+ * Responsive settings
+ */
+@media screen and (max-width: 800px) {
+	.smw-table-cell {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.smw-table-row, .smw-table-header {
+		flex: 1 1 150px;
+	}
+}
