@@ -36,22 +36,6 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 		parent::tearDown();
 	}
 
-	public function testSemanticMediaWikiScriptPath() {
-
-		$wgScriptPath   = $this->globalsProvider->get( 'wgScriptPath' );
-		$expectedPath   = $wgScriptPath . '/extensions/SemanticMediaWiki';
-
-		$this->assertSame(
-			$expectedPath,
-			$this->applicationFactory->getSettings()->get( 'smwgScriptPath' )
-		);
-
-		$this->assertContains(
-			'SemanticMediaWiki',
-			$this->applicationFactory->getSettings()->get( 'smwgScriptPath' )
-		);
-	}
-
 	public function testNamespaceSettingOnExampleIfSet() {
 
 		$expected = 'http://example.org/id/';
