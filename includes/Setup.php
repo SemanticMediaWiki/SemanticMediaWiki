@@ -187,10 +187,6 @@ final class Setup {
 			$vars['smwgNamespace'] = parse_url( $vars['wgServer'], PHP_URL_HOST );
 		}
 
-		if ( !isset( $vars['smwgScriptPath'] ) ) {
-			$vars['smwgScriptPath'] = ( $vars['wgExtensionAssetsPath'] === false ? $vars['wgScriptPath'] . '/extensions' : $vars['wgExtensionAssetsPath'] ) . '/SemanticMediaWiki';
-		}
-
 		foreach ( $vars['smwgResourceLoaderDefFiles'] as $key => $file ) {
 			if ( is_readable( $file ) ) {
 				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include ( $file ) );

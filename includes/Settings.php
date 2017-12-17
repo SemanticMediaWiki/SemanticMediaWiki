@@ -44,7 +44,6 @@ class Settings extends Options {
 	public static function newFromGlobals() {
 
 		$configuration = array(
-			'smwgScriptPath' => isset( $GLOBALS['smwgScriptPath'] ) ? $GLOBALS['smwgScriptPath'] : '',
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
