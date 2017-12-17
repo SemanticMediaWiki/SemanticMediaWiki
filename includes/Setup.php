@@ -169,7 +169,7 @@ final class Setup {
 		$this->registerPermissions( $vars );
 
 		$this->registerParamDefinitions( $vars );
-		$this->registerFooterIcon( $vars );
+		$this->registerFooterIcon( $vars, $directory );
 		$this->registerHooks( $vars, $directory );
 
 		Hooks::run( 'SMW::Setup::AfterInitializationComplete', [ &$vars ] );
@@ -355,7 +355,7 @@ final class Setup {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
 	 */
-	private function registerFooterIcon( &$vars ) {
+	private function registerFooterIcon( &$vars, $path ) {
 
 		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
 			return;
@@ -365,15 +365,17 @@ final class Setup {
 			return;
 		}
 
-		$pathParts = ( explode( '/extensions/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__ ), 2 ) );
+		$src = '';
 
-		$vars['wgFooterIcons']['poweredby']['semanticmediawiki'] = array(
-			'src' => $vars['wgScriptPath'] . '/extensions/'
-				. end( $pathParts )
-				. '/../res/images/smw_button.png',
+		if ( is_file( $path . '/res/DataURI.php' ) && ( $dataURI = include $path . '/res/DataURI.php' ) !== [] ) {
+			$src = $dataURI['footer'];
+		}
+
+		$vars['wgFooterIcons']['poweredby']['semanticmediawiki'] = [
+			'src' => $src,
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
-			'alt' => 'Powered by Semantic MediaWiki',
-		);
+			'alt' => 'Powered by Semantic MediaWiki'
+		];
 	}
 
 	/**
