@@ -578,7 +578,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected function getShortCaptionText() {
 		if ( $this->m_fragment !== '' && $this->m_fragment[0] != '_' ) {
-			$fragmentText = '#' . $this->m_fragment;
+			$fragmentText = '#' . str_replace( '_', ' ', $this->m_fragment );
 		} else {
 			$fragmentText = '';
 		}
@@ -608,7 +608,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected function getLongCaptionText() {
 		if ( $this->m_fragment !== '' && $this->m_fragment[0] != '_' ) {
-			$fragmentText = '#' . $this->m_fragment;
+			$fragmentText = '#' . str_replace( '_', ' ', $this->m_fragment );
 		} else {
 			$fragmentText = '';
 		}
