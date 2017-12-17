@@ -178,10 +178,10 @@ class SpecialAsk extends SpecialPage {
 		} else {
 			if ( $request->getCheck( 'showformatoptions' ) ) {
 				// handle Ajax action
-				$format = $request->getVal( 'showformatoptions' );
 				$params = $request->getArray( 'params' );
+				$params['format'] = $request->getVal( 'showformatoptions' );
 				$out->disable();
-				echo ParametersWidget::parameterList( $format, $params );
+				echo ParametersWidget::parameterList( $params );
 			} else {
 				$this->extractQueryParameters( $p );
 				$this->makeHTMLResult();
@@ -401,10 +401,7 @@ class SpecialAsk extends SpecialPage {
 					'id' => 'format',
 					'class' => "smw-ask-format"
 				],
-				FormatListWidget::fieldset(
-					$title,
-					$this->parameters
-				)
+				''
 			);
 
 			// Other options fieldset
@@ -415,7 +412,7 @@ class SpecialAsk extends SpecialPage {
 					'class' => 'smw-ask-options'
 				],
 				ParametersWidget::fieldset(
-					$this->parameters['format'],
+					$title,
 					$this->parameters
 				)
 			);

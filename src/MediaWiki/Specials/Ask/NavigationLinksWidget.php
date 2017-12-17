@@ -263,10 +263,11 @@ class NavigationLinksWidget {
 			],
 			$infoText
 		) . Html::rawElement(
-			'hr',
+			'div',
 			[
-				'class' => 'smw-form-horizontalrule'
-			]
+				'class' => 'smw-horizontalrule'
+			],
+			''
 		) . Html::rawElement(
 			'div',
 			[

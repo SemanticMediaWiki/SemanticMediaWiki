@@ -30,9 +30,10 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			[
-				'<fieldset><legend>.*</legend><input type="checkbox" id="options-toggle"/><div id="options-list">'
+				'<fieldset><legend>.*</legend><span class="smw-ask-format-list">',
+				'<input type="checkbox" id="options-toggle"/><div id="options-list" class="options-list"><div class="options-parameter-list">'
 			],
-			ParametersWidget::fieldset( 'foo', $parameters )
+			ParametersWidget::fieldset( \Title::newFromText( 'Foo' ), $parameters )
 		);
 	}
 
@@ -41,9 +42,11 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCreateParametersForm( $format, $parameters, $expected ) {
 
+		$parameters['format'] = $format;
+
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			ParametersWidget::parameterList( $format, $parameters )
+			ParametersWidget::parameterList( $parameters )
 		);
 	}
 

@@ -26,11 +26,10 @@ class FormatListWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$stringValidator->assertThatStringContains(
 			[
-				'<fieldset><legend>.*</legend>',
 				'<span class="smw-ask-format-list"><input type="hidden" value="yes" name="eq"',
 				'<option value="broadtable" selected="">.*</option>'
 			],
-			FormatListWidget::fieldset( $title, [] )
+			FormatListWidget::selectList( $title, [] )
 		);
 	}
 
@@ -53,7 +52,7 @@ class FormatListWidgetTest extends \PHPUnit_Framework_TestCase {
 				'<option value="broadtable">.*</option>',
 				'<option data-isexport="1" value="rdf" selected="">.*</option>'
 			],
-			FormatListWidget::fieldset( $title, [ 'format' => 'rdf' ] )
+			FormatListWidget::selectList( $title, [ 'format' => 'rdf' ] )
 		);
 	}
 

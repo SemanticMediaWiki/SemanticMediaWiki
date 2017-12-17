@@ -6,6 +6,7 @@ use ParamProcessor\ParamDefinition;
 use SMW\Message;
 use SMWQueryProcessor as QueryProcessor;
 use Html;
+use Title;
 use SMW\Utils\HtmlDivTable;
 
 /**
@@ -50,52 +51,75 @@ class ParametersWidget {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $format
+	 * @param Title $title
 	 * @param array $parameters
 	 *
 	 * @return string
 	 */
-	public static function fieldset( $format, array $parameters ) {
+	public static function fieldset( Title $title, array $parameters ) {
 
-		$toggle = '&#160;[' . Html::rawElement(
+		$toggle = Html::rawElement(
 			'span',
 			[
-				'class' => 'options-toggle-action',
+				'style' => 'margin-left:5px;'
+			],
+			'&#160;[' . Html::rawElement(
+				'span',
+				[
+					'class' => 'options-toggle-action',
+				],
+				Html::rawElement(
+					'label',
+					[
+						'for' => 'options-toggle',
+						'title' => Message::get( 'smw-section-expand', Message::TEXT, Message::USER_LANGUAGE )
+					],
+					'+'
+				)
+			) . ']&#160;'
+		);
+
+		$options = Html::rawElement(
+			'div',
+			[
+				'id' => 'parameter-title',
+				'class' => 'strike'
 			],
 			Html::rawElement(
-				'label',
-				[
-					'for' => 'options-toggle',
-					'title' => Message::get( 'smw-section-expand', Message::TEXT, Message::USER_LANGUAGE )
-				],
-				'+'
-			)
-		) . ']&#160;';
-
-		return Html::rawElement(
-			'fieldset',
-			[],
-			Html::rawElement(
-				'legend',
+				'span',
 				[],
-				Html::rawElement(
-					'span',
-					[],
-					Message::get( 'smw-ask-options', Message::TEXT, Message::USER_LANGUAGE )
-				) . $toggle
-			) . '<input type="checkbox" id="options-toggle"/>' . Html::rawElement(
+				Message::get( 'smw-ask-parameters', Message::TEXT, Message::USER_LANGUAGE ) . $toggle
+			)
+		) . Html::rawElement(
+			'div',
+			[],
+			'<input type="checkbox" id="options-toggle"/>' . Html::rawElement(
 				'div',
 				[
-					'id' => 'options-list'
+					'id' => 'options-list',
+					'class' => 'options-list'
 				],
 				Html::rawElement(
 					'div',
 					[
 						'class' => 'options-parameter-list'
 					],
-					self::parameterList( $format, $parameters )
+					self::parameterList( $parameters )
 				)
-			) . SortWidget::sortSection( $parameters )
+			)
+		);
+
+		return Html::rawElement(
+			'fieldset',
+			[],
+			Html::element(
+				'legend',
+				[],
+				Message::get( 'smw-ask-options', Message::TEXT, Message::USER_LANGUAGE )
+			). FormatListWidget::selectList(
+				$title,
+				$parameters
+			) . $options . SortWidget::sortSection( $parameters )
 		);
 	}
 
@@ -110,7 +134,13 @@ class ParametersWidget {
 	 *
 	 * @return string
 	 */
-	public static function parameterList( $format, array $values ) {
+	public static function parameterList( array $values ) {
+
+		$format = 'broadtable';
+
+		if ( isset( $values['format'] ) ) {
+			$format = $values['format'];
+		}
 
 		$optionList = self::optionList(
 			QueryProcessor::getFormatParameters( $format ),
