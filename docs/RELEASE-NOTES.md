@@ -79,6 +79,12 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2874](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2874)
 * [#2875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2875)
 * [#2878](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2878)
+* [#2882](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2882)
+* [#2883](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2883)
+* [#2891](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2891)
+* [#2893](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2893)
+* [#2889](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2889)
+* [#2895](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2895)
 
 ## Bug fixes
 
@@ -89,6 +95,9 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2767](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2767)
 * [#2773](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2773)
 * [#2817](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2817)
+* [#2881](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2881)
+* [#2884](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2884)
+* [#2896](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2896)
 
 ## Breaking changes and deprecations
 
@@ -112,6 +121,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2802](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2802)
 * [#2806](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2806)
 * [#2821](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2821)
+* [#2880](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2880)
 
 ## Other changes
 
@@ -139,6 +149,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2785](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2785)
 * [#2845](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2845)
 * [#2847](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2847)
+* [#2888](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2888)
 
 
 ## Contributors
