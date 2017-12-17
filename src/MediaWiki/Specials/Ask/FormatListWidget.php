@@ -37,7 +37,7 @@ class FormatListWidget {
 	 *
 	 * @return string
 	 */
-	public static function fieldset( Title $title, array $params ) {
+	public static function selectList( Title $title, array $params ) {
 
 		$result = '';
 
@@ -77,24 +77,7 @@ class FormatListWidget {
 			Html::hidden( 'eq', 'yes' ) . $formatList
 		);
 
-		$result .= Html::rawElement(
-			'span',
-			[
-				'id' => "formatHelp",
-				'class' => "smw-ask-format-selection-help"
-			],
-			Message::get( [ 'smw-ask-format-selection-help', $default ], Message::TEXT, Message::USER_LANGUAGE )
-		);
-
-		return Html::rawElement(
-			'fieldset',
-			[],
-			Html::element(
-				'legend',
-				[],
-				Message::get( 'smw-ask-format', Message::TEXT, Message::USER_LANGUAGE )
-			) . $result
-		);
+		return $result;
 	}
 
 	private static function formatList( $url, $selectedFormat, &$default, $defaultName, $defaultLocalizedName ) {

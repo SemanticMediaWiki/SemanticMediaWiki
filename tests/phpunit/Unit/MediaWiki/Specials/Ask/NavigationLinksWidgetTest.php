@@ -162,7 +162,7 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			[
 				'<div id="ask-navinfo">',
 				'<div class="smw-ask-cond-info">info</div>',
-				'<hr class="smw-form-horizontalrule"',
+				'<div class="smw-horizontalrule"',
 				'<div class="smw-ask-actions-nav">foo&#160;&#160;&#160;</div></div>'
 			],
 			NavigationLinksWidget::wrap( 'foo', 'info' )

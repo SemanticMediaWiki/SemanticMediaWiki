@@ -41,7 +41,7 @@
 
 /* MobileFrontend sets those to 0 therefore declare them explicitly */
 div#ask fieldset {
-	margin: 1em 0 1em 0;
+	margin: 0.5em 0 0.5em 0;
 	padding: 0 1em 1em;
 }
 
@@ -82,9 +82,9 @@ div#ask legend {
 	margin-bottom: 10px;
 }
 
-.smw-ask-format-list {
+.smw-ask-format-list select {
 	vertical-align: middle;
-	padding: 5px;
+	margin-top: 5px;
 }
 
 .smw-ask-query {
@@ -256,7 +256,7 @@ div#ask legend {
     display: block;
     overflow: hidden;
     white-space: nowrap;
-    padding: 10px 0 10px 0;
+    padding: 15px 0 15px 0;
 }
 
 .strike > span {
@@ -334,7 +334,7 @@ div#ask legend {
 }
 
 #options-list .options-parameter-list {
-	min-height: 80px;
+	min-height: 100px;
 	overflow: hidden;
 	max-height: 0;
 	padding: 0;
