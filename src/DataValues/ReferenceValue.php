@@ -235,11 +235,10 @@ class ReferenceValue extends AbstractMultiValue {
 			$this->addErrorMsg( array( 'smw_novalues' ) );
 		}
 
-		$this->m_dataitem = new DIContainer( $containerSemanticData );
+		// Remember the data to extend the sortkey
+		$containerSemanticData->setExtensionData( 'sort.data', implode( ';', $sortKeys ) );
 
-		// Composite sortkey is to ensure that Store::getPropertyValues can
-		// apply sorting during value selection
-		$this->m_dataitem->setSortKey( implode( ';', $sortKeys ) );
+		$this->m_dataitem = new DIContainer( $containerSemanticData );
 	}
 
 	/**

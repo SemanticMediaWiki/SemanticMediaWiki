@@ -79,7 +79,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mStubPropVals' );
+		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mStubPropVals', 'options', 'extensionData' );
 	}
 
 	/**

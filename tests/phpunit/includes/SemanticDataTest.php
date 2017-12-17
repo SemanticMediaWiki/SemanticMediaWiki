@@ -520,6 +520,20 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $instance->isEmpty() );
 	}
 
+	public function testExtensionData() {
+
+		$instance = new SemanticData(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
+
+		$instance->setExtensionData( 'Foo', 42 );
+
+		$this->assertEquals(
+			42,
+			$instance->getExtensionData( 'Foo' )
+		);
+	}
+
 	/**
 	 * @dataProvider dataValueDataProvider
 	 */

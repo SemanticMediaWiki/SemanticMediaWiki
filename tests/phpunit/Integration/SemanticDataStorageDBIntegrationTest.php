@@ -157,7 +157,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 				new DIProperty( 'Foo' ),
 				new DIProperty( '_SKEY' )
 			),
-			'propertyValues' => array( 'Bar', __METHOD__ )
+			'propertyValues' => array( 'Bar', __METHOD__ . '#SomeSubobject' )
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
