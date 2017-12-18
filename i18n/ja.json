@@ -25,7 +25,8 @@
 			"48pedoa",
 			"Suchichi02",
 			"Omotecho",
-			"Eduardo Addad de Oliveira"
+			"Eduardo Addad de Oliveira",
+			"Yusuke1109"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -207,6 +208,8 @@
 	"smw_ask_embed_instr": "このクエリをウィキページにインラインで埋め込むには、下記のコードを使用します。",
 	"smw-ask-delete": "削除",
 	"smw-ask-sorting": "並べ替え",
+	"smw-ask-format-options": "フォーマットとオプション",
+	"smw-ask-parameters": "パラメータ",
 	"smw-ask-search": "検索",
 	"smw-ask-debug": "デバッグ",
 	"smw-ask-format": "フォーマット",
@@ -352,6 +355,7 @@
 	"smw-datavalue-propertylist-invalid-property-key": "プロパティリスト「$1」は無効なプロパティキー「$2」を含んでいました。",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parse": "$1",
+	"smw-data-lookup-with-wait": "要求は処理中です。しばらく時間がかかることがあります。",
 	"smw-format-datatable-emptytable": "テーブルにデータがありません",
 	"smw-format-datatable-info": "_TOTAL_ 件中 _START_ から _END_ まで表示",
 	"smw-format-datatable-infoempty": "0 件中 0 から 0 まで表示",
@@ -369,5 +373,7 @@
 	"smw-format-datatable-sortascending": ": 列を昇順に並べ替えるにはアクティブにする",
 	"smw-format-datatable-sortdescending": ": 列を降順に並べ替えるにはアクティブにする",
 	"smw-format-datatable-toolbar-export": "エクスポート",
-	"smw-property-reserved-category": "カテゴリ"
+	"smw-property-reserved-category": "カテゴリ",
+	"smw-section-expand": "すべての節を展開",
+	"smw-section-collapse": "節を折りたたむ"
 }

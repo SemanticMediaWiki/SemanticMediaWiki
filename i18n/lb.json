@@ -153,7 +153,7 @@
 	"smw_sbv_submit": "Resultater sichen",
 	"browse": "Duerch d'Wiki goen",
 	"smw_browse_go": "Lass",
-	"smw_browse_show_incoming": "Eegeschafte weisen déi heihi linken",
+	"smw_browse_show_incoming": "Eegenschafte weisen déi heihi linken",
 	"smw_browse_hide_incoming": "Eegeschaften verstoppen déi hei hi linken",
 	"smw_browse_no_outgoing": "Dës Säit huet keng Eegeschaften.",
 	"smw_browse_no_incoming": "Et linke keng Eegeschaften op dës Säit.",
@@ -257,6 +257,7 @@
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Link an den Tëschespäicher kopéieren",
 	"smw-data-lookup": "Donnéeën ofruffen...",
+	"smw-data-lookup-with-wait": "D'Ufro gëtt verschafft an et kann een Ament daueren.",
 	"smw-no-data-available": "Keng Donnéeën disponibel.",
 	"smw-edit-protection-enabled": "Gespaart fir z'änneren (Semantic Mediawiki)",
 	"smw-format-datatable-emptytable": "An der Tabell si keng Donnéeën disponibel",
@@ -273,5 +274,7 @@
 	"smw-format-datatable-toolbar-export": "Exportéieren",
 	"smw-property-reserved-category": "Kategorie",
 	"smw-category": "Kategorie",
-	"smw-list-pager-filter": "Filter:"
+	"smw-list-pager-filter": "Filter:",
+	"smw-section-expand": "Den Abschnitt opklappen",
+	"smw-section-collapse": "Den Abschnitt zesummeklappen"
 }

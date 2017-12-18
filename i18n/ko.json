@@ -15,7 +15,8 @@
 			"Jonghaya",
 			"Jerrykim306",
 			"Nemo bis",
-			"Kghbln"
+			"Kghbln",
+			"Ellif"
 		]
 	},
 	"smw-desc": "위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://www.semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])",
@@ -215,6 +216,8 @@
 	"smw-ask-sorting": "정렬",
 	"smw-ask-options": "옵션",
 	"smw-ask-options-sort": "정렬 옵션",
+	"smw-ask-format-options": "형식 및 옵션",
+	"smw-ask-parameters": "변수",
 	"smw-ask-search": "검색",
 	"smw-ask-debug": "디버그",
 	"smw-ask-debug-desc": "쿼리 디버그 정보를 생성합니다",
@@ -230,7 +233,7 @@
 	"smw-ask-condition-input-assistance-property": "<code>p:</code> 속성 검색",
 	"smw-ask-condition-input-assistance-category": "<code>c:</code> 분류 검색",
 	"smw-ask-condition-input-assistance-concept": "<code>con:</code> 개념 검색",
-	"smw-ask-format-change-info": "\"$1\" 포맷이 수정되었으므로 새로운 변수와 시각화 옵션을 일치시키려면 쿼리를 다시 실행해야 합니다.",
+	"smw-ask-format-change-info": "포맷이 수정되었으므로 새로운 변수와 시각화 옵션을 일치시키려면 쿼리를 다시 실행해야 합니다.",
 	"smw-ask-format-export-info": "선택된 형식은 시각 표현이 없는 내보내기 형식이므로 결과는 다운로드로만 제공됩니다.",
 	"searchbyproperty": "속성으로 검색",
 	"processingerrorlist": "오류 목록을 처리합니다",
@@ -308,6 +311,11 @@
 	"smw-admin-supplementary-section-title": "추가 기능",
 	"smw-admin-supplementary-settings-title": "구성 설정",
 	"smw-admin-supplementary-settings-intro": "<u>$1</u>은 시맨틱 미디어위키에 쓰이는 사용 가능한 설정의 공통 목록을 출력합니다",
+	"smw-admin-supplementary-duplookup-title": "중복 개체",
+	"smw-admin-supplementary-duplookup-docu": "이 문서는 [https://www.semantic-mediawiki.org/wiki/Help:Entity_table 개체 표]에서 중복된 것으로 분류된 개체들의 목록입니다. 중복 개체들은 (존재한다면) 데이터베이스 업데이트 중에 프로세스가 종료되거나 롤백 행동이 성공스럽지 못했을 때와 같이 매우 드문 경우에만 발생할 수 있습니다.",
+	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities",
+	"smw-list-count": "이 목록은 {{PLURAL:$1|항목}} $1개를 갖고 있습니다.",
+	"smw-list-count-from-cache": "이 목록은 {{PLURAL:$1|항목}} $1개를 갖고 있으며 $2(UTC)에 캐시에서 검색됐습니다.",
 	"smw-property-label-similarity-intro": "<u>$1</u> 문서는 기존 속성 레이블의 유사성을 계산합니다",
 	"smw-property-label-similarity-threshold": "한계치:",
 	"smw-property-label-similarity-type": "표시 유형 ID",
@@ -412,6 +420,7 @@
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "클립보드에 링크 복사하기",
 	"smw-data-lookup": "정보 수집 중...",
+	"smw-data-lookup-with-wait": "이 요청은 처리 중이며 시간이 잠시 소요될 수 있습니다.",
 	"smw-no-data-available": "이용 가능한 데이터 없음.",
 	"protect-level-smw-pageedit": "문서 편집 권한이 있는 사용자만 허용 (시맨틱 미디어위키)",
 	"smw-edit-protection-enabled": "편집 보호됨 (시맨틱 미디어위키)",
@@ -442,5 +451,7 @@
 	"smw-browse-property-group-title": "속성 그룹",
 	"smw-browse-property-group-label": "속성 그룹 레이블",
 	"smw-browse-property-group-description": "속성 그룹 설명",
-	"smw-list-pager-filter": "필터:"
+	"smw-list-pager-filter": "필터:",
+	"smw-section-expand": "문단 펼치기",
+	"smw-section-collapse": "문단 접기"
 }

@@ -431,5 +431,7 @@
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 استيراد]]",
 	"smw-datavalue-parse-error": "القيمة المعطاة \"$1\" لم يتم فهمها.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
-	"smw-property-reserved-category": "تصنيف"
+	"smw-property-reserved-category": "تصنيف",
+	"smw-section-expand": "وسع هذا القسم",
+	"smw-section-collapse": "اطو هذا القسم"
 }

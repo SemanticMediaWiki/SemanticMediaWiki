@@ -184,6 +184,8 @@
 	"smw_ask_embed_instr": "Per includere questa query in linea in una pagina wiki, usa il codice qui sotto.",
 	"smw-ask-delete": "Cancella",
 	"smw-ask-sorting": "Ordinamento",
+	"smw-ask-format-options": "Formato e opzioni",
+	"smw-ask-parameters": "Parametri",
 	"smw-ask-search": "Cerca",
 	"smw-ask-result": "Risultato",
 	"smw-ask-empty": "Vuoto",
@@ -369,5 +371,7 @@
 	"smw-format-datatable-toolbar-export": "Esporta",
 	"smw-property-reserved-category": "Categoria",
 	"smw-category": "Categoria",
-	"smw-list-pager-filter": "Filtro:"
+	"smw-list-pager-filter": "Filtro:",
+	"smw-section-expand": "Espandi la sezione",
+	"smw-section-collapse": "Compimi la sezione"
 }
