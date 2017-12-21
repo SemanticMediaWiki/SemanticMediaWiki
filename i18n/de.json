@@ -262,7 +262,7 @@
 	"smw-ask-condition-input-assistance-property": "<code>p:</code> Attributsuche",
 	"smw-ask-condition-input-assistance-category": "<code>c:</code> Kategoriesuche",
 	"smw-ask-condition-input-assistance-concept": "<code>con:</code> Konzeptsuche",
-	"smw-ask-format-change-info": "Das Format wurde verändert und es ist daher eine erneute Ausführung der Abfrage erforderlich, damit die neuen Parameter und Darstellungsoptionen angezeigt werden können.",
+	"smw-ask-format-change-info": "Das Ausgabeformat wurde geändert. Es ist daher eine erneute Ausführung der Abfrage notwendig, um die den neuen Darstellungsoptionen entsprechenden Ergebnisse anzeigen zu können.",
 	"smw-ask-format-export-info": "Das ausgewählte Ergebnisformat dient dem Datenexport und verfügt über keine visuelle Darstellung. Die Ergebnisse werden nur zum Herunterladen bereitgestellt.",
 	"smw-ask-query-search-info": "Die Abfrage <code><nowiki>$1</nowiki></code> wurde von der Datenbank {{PLURAL:$3|1=„$2“ (aus dem Cache)|„$2“ (aus dem Cache)|„$2“}} in {{PLURAL:$4|einer Sekunde|$4 Sekunden}} beantwortet.",
 	"searchbyproperty": "Suche mittels Attribut",

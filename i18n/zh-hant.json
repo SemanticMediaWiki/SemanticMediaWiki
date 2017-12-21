@@ -278,6 +278,7 @@
 	"smw-ui-tooltip-title-info": "資訊",
 	"smw-ui-tooltip-title-service": "服務連結",
 	"smw-ui-tooltip-title-warning": "錯誤",
+	"smw-ui-tooltip-title-error": "錯誤",
 	"smw-ui-tooltip-title-parameter": "參數",
 	"smw-ui-tooltip-title-event": "事件",
 	"smw-ui-tooltip-title-note": "註釋",
