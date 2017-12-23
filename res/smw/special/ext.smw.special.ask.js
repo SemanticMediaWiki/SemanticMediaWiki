@@ -156,10 +156,8 @@
 
 		// Format help link
 		formatHelp: function( options ){
-			// Make sure we don't have a pre existing element, using id as selector
-			// as it is faster compared to the class selector
-			$( '#formatHelp' ).replaceWith(
-				'<span id="formatHelp" class="smw-ask-format-selection-help">' + mw.msg( 'smw-ask-format-selection-help', addFormatHelpLink( options ) ) + '</span>'
+			$( '.smw-ask-format-help-link' ).replaceWith(
+				'<li class="smw-ask-format-help-link">'+ mw.msg( 'smw-ask-format-selection-help', addFormatHelpLink( options ) )  + '</li>'
 			);
 		}
 	};
@@ -177,7 +175,7 @@
 			link = h.element( 'a', {
 					href: 'https://semantic-mediawiki.org/wiki/Help:' + options.format + ' format',
 					title: options.name
-				}, options.name
+				}, options.name.toLowerCase()
 			);
 		return link;
 	}

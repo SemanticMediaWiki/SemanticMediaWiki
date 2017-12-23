@@ -233,6 +233,33 @@ return array(
 		)
 	),
 
+	// Modal
+	'ext.smw.modal.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/util/ext.smw.modal.css'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// Modal
+	'ext.smw.modal' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/util/ext.smw.modal.css'
+		),
+		'scripts' => array(
+			'smw/util/ext.smw.modal.js'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	// Postproc resources
 	'ext.smw.postproc' => $moduleTemplate + array(
 		'scripts' => 'smw/util/ext.smw.util.postproc.js',
@@ -341,6 +368,7 @@ return array(
 			'smw-ask-condition-change-info',
 			'smw-ask-format-change-info',
 			'smw-ask-format-export-info',
+			'smw-ask-format-help-link',
 			'smw-section-expand',
 			'smw-section-collapse'
 		),

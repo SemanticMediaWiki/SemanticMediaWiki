@@ -10,10 +10,12 @@ use SMW\MediaWiki\Specials\Ask\LinksWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
+use SMW\MediaWiki\Specials\Ask\HelpWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\MediaWiki\Specials\Ask\FormatListWidget;
 use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
 use SMW\MediaWiki\Specials\Ask\UrlArgs;
+use SMW\Utils\HtmlModal;
 use SMW\ApplicationFactory;
 use SMWQueryProcessor as QueryProcessor;
 use SMWInfolink as Infolink;
@@ -101,11 +103,19 @@ class SpecialAsk extends SpecialPage {
 		$out->addModuleStyles( 'ext.smw.ask.styles' );
 		$out->addModuleStyles( 'ext.smw.table.styles' );
 
+		$out->addModuleStyles(
+			HtmlModal::getModuleStyles()
+		);
+
 		$out->addModules( 'ext.smw.ask' );
 		$out->addModules( 'ext.smw.autocomplete.property' );
 
 		$out->addModules(
 			LinksWidget::getModules()
+		);
+
+		$out->addModules(
+			HtmlModal::getModules()
 		);
 
 		$this->setHeaders();
@@ -163,7 +173,7 @@ class SpecialAsk extends SpecialPage {
 		} elseif( $request->getVal( 'eq' ) === 'no' || $p !== null || $request->getVal( 'x' ) ) {
 			$visibleLinks = [ 'search', 'empty' ];
 		} else {
-			$visibleLinks = [ 'options', 'search', 'empty' ];
+			$visibleLinks = [ 'options', 'search', 'help', 'empty' ];
 		}
 
 		$out->addHTML(
@@ -187,6 +197,10 @@ class SpecialAsk extends SpecialPage {
 				$this->makeHTMLResult();
 			}
 		}
+
+		$out->addHTML(
+			HelpWidget::html()
+		);
 
 		$this->addExternalHelpLinkFor( 'smw_ask_doculink' );
 
