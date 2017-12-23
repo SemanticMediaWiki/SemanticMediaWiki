@@ -51,6 +51,11 @@ class ChangeOp implements IteratorAggregate {
 	private $fixedPropertyRecords = array();
 
 	/**
+	 * @var array
+	 */
+	private $propertyList = [];
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param DIWikiPage|null $subject
@@ -104,6 +109,24 @@ class ChangeOp implements IteratorAggregate {
 	 */
 	public function getFixedPropertyRecords() {
 		return $this->fixedPropertyRecords;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function addPropertyList( $propertyList ) {
+		$this->propertyList = array_merge( $this->propertyList, $propertyList );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getPropertyList() {
+		return $this->propertyList;
 	}
 
 	/**
@@ -175,6 +198,19 @@ class ChangeOp implements IteratorAggregate {
 		}
 
 		return $tableChangeOps;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ChangeDiff
+	 */
+	public function newChangeDiff() {
+		return new ChangeDiff(
+			$this->subject,
+			$this->getTableChangeOps(),
+			$this->getPropertyList()
+		);
 	}
 
 	/**

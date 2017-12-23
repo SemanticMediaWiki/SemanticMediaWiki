@@ -3,6 +3,8 @@
 namespace SMW\Tests;
 
 use SMW\PostProcHandler;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\PostProcHandler
@@ -86,7 +88,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetHtmlOnLinksUpdateJournalEntry() {
 
-		$this->cache->expects( $this->once() )
+		$this->cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
 			->will( $this->returnValue( true ) );
 
@@ -131,6 +133,74 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'<div class="smw-postproc" data-subject="Foo#0#" data-ref="[&quot;Bar&quot;]"></div>',
+			$instance->getHtml( $title,  $webRequest )
+		);
+	}
+
+	public function testGetHtmlOnCookieAndValidChangeDiff() {
+
+		$fieldChangeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\FieldChangeOp' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$fieldChangeOp->expects( $this->any() )
+			->method( 'get' )
+			->will( $this->returnValue( 42 ) );
+
+		$tableChangeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\TableChangeOp' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$tableChangeOp->expects( $this->any() )
+			->method( 'getFieldChangeOps' )
+			->will( $this->returnValue( [ $fieldChangeOp ] ) );
+
+		$changeDiff = new ChangeDiff(
+			DIWikiPage::newFromText( 'Foo' ),
+			[ $tableChangeOp ],
+			[ 'Foo' => 42 ]
+		);
+
+		$this->cache->expects( $this->at( 0 ) )
+			->method( 'fetch' )
+			->will( $this->returnValue( $changeDiff->serialize() ) );
+
+		$this->parserOutput->expects( $this->once() )
+			->method( 'getExtensionData' )
+			->with( $this->equalTo( PostProcHandler::PROC_POST_QUERYREF ) )
+			->will( $this->returnValue( [ 'Bar' ] ) );
+
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->once() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 42 ) );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$webRequest->expects( $this->once() )
+			->method( 'getCookie' )
+			->will( $this->returnValue( 'FakeCookie' ) );
+
+		$this->assertContains(
+			'<div class="smw-postproc" data-subject="Foo#0#" data-ref="[0]"></div>',
 			$instance->getHtml( $title,  $webRequest )
 		);
 	}

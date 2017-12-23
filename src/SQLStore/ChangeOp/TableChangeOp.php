@@ -53,14 +53,31 @@ class TableChangeOp {
 	}
 
 	/**
-	 * @since 2.4
+	 * @since 3.0
 	 *
-	 * @param string $id
+	 * @param string $field
 	 *
 	 * @return null|string
 	 */
-	public function getFixedPropertyValueBy( $id ) {
-		return $this->isFixedPropertyOp() && isset( $this->changeOps['property'][$id] ) ? $this->changeOps['property'][$id] : null;
+	public function getFixedPropertyValByField( $field ) {
+
+		if ( $this->isFixedPropertyOp() && isset( $this->changeOps['property'][$field] ) ) {
+			return $this->changeOps['property'][$field];
+		}
+
+		return null;
+	}
+
+	/**
+	 * @deprecated since 3.0, use TableChangeOp::getFixedPropertyValByField
+	 * @since 2.4
+	 *
+	 * @param string $field
+	 *
+	 * @return null|string
+	 */
+	public function getFixedPropertyValueBy( $field ) {
+		return $this->getFixedPropertyValByField( $field );
 	}
 
 	/**
@@ -96,11 +113,27 @@ class TableChangeOp {
 
 		unset( $changeOps['property'] );
 
-		foreach ( $changeOps as $op ) {
-			$fieldOps[] = new FieldChangeOp( $op );
+		foreach ( $changeOps as $changeOp ) {
+
+			if ( isset( $changeOp[0] ) && is_array( $changeOp[0] ) ) {
+				$changeOp = $changeOp[0];
+			}
+
+			if ( isset( $this->changeOps['property'] ) ) {
+				$changeOp['p_id'] = $this->changeOps['property']['p_id'];
+			}
+
+			$fieldOps[] = new FieldChangeOp( $changeOp );
 		}
 
 		return $fieldOps;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function __toString() {
+		return json_encode( [ $this->tableName => $this->changeOps ], JSON_PRETTY_PRINT );
 	}
 
 }
