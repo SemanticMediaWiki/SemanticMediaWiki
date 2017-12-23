@@ -17,6 +17,8 @@
  */
 class SMWInfolink {
 
+	const LINK_UPPER_LENGTH_RESTRICTION = 2000;
+
 	/**
 	 * The actual link target.
 	 *
@@ -59,6 +61,11 @@ class SMWInfolink {
 	protected $mParams;
 
 	/**
+	 * @var boolean
+	 */
+	private $isRestricted = false;
+
+	/**
 	 * Create a new link to some internal page or to some external URL.
 	 *
 	 * @param boolean $internal Indicates whether $target is a page name (true) or URL (false).
@@ -73,6 +80,15 @@ class SMWInfolink {
 		$this->mTarget = $target;
 		$this->mStyle = $style;
 		$this->mParams = $params;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isRestricted
+	 */
+	public function isRestricted( $isRestricted ) {
+		$this->isRestricted = (bool)$isRestricted;
 	}
 
 	/**
@@ -116,13 +132,22 @@ class SMWInfolink {
 	 */
 	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ) {
 		global $wgContLang;
-		return new SMWInfolink(
+
+		$infolink = new SMWInfolink(
 			true,
 			$caption,
 			$wgContLang->getNsText( NS_SPECIAL ) . ':SearchByProperty',
 			$style,
 			array( ':' . $propertyName, $propertyValue ) // `:` is marking that the link was auto-generated
 		);
+
+		// Link that reaches a length restriction will most likely cause a
+		// "HTTP 414 "Request URI too long ..." therefore prevent a link creation
+		if ( mb_strlen( $propertyName . $propertyValue ) > self::LINK_UPPER_LENGTH_RESTRICTION ) {
+			$infolink->isRestricted( true );
+		}
+
+		return $infolink;
 	}
 
 	/**
@@ -225,6 +250,11 @@ class SMWInfolink {
 	 * if needed and not provided.
 	 */
 	public function getText( $outputformat, $linker = null ) {
+
+		if ( $this->isRestricted ) {
+			return '';
+		}
+
 		if ( $this->mStyle !== false ) {
 			SMWOutputs::requireResource( 'ext.smw.style' );
 			$start = "<span class=\"$this->mStyle\">";
