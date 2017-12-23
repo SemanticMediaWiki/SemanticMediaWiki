@@ -16,6 +16,7 @@ use SMW\Settings;
 class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 
 	private $callbackContainerFactory;
+	private $connectionProvider;
 	private $servicesFileDir;
 	private $pageCreator;
 
@@ -30,11 +31,11 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->databaseConnectionProvider = $this->getMockBuilder( '\SMW\MediaWiki\DatabaseConnectionProvider' )
+		$this->connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->databaseConnectionProvider->expects( $this->any() )
+		$this->connectionProvider->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
@@ -52,7 +53,7 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
 
 		$containerBuilder->registerObject( 'PageCreator', $this->pageCreator );
-		$containerBuilder->registerObject( 'DatabaseConnectionProvider', $this->databaseConnectionProvider );
+		$containerBuilder->registerObject( 'DBConnectionProvider', $this->connectionProvider );
 
 		$containerBuilder->registerObject( 'Settings', new Settings( array(
 			'smwgImportReqVersion' => 1,

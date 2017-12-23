@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
-use SMW\ConnectionManager;
+use SMW\Connection\ConnectionManager;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;

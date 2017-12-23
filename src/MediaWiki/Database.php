@@ -6,7 +6,7 @@ use DBError;
 use Exception;
 use ResultWrapper;
 use RuntimeException;
-use SMW\DBConnectionProvider;
+use SMW\Connection\ConnectionProviderRef;
 use SMW\ApplicationFactory;
 use UnexpectedValueException;
 
@@ -23,14 +23,22 @@ use UnexpectedValueException;
 class Database {
 
 	/**
-	 * @var DBConnectionProvider
+	 * Identifies a request to be executed using an auto commit state
+	 *
+	 * @note (#1605 "... creating temporary tables in a transaction is not
+	 * replication-safe and causes errors in MySQL 5.6. ...")
 	 */
-	private $readConnectionProvider = null;
+	const AUTO_COMMIT = 'auto.commit';
 
 	/**
-	 * @var DBConnectionProvider
+	 * @var ConnectionProviderRef
 	 */
-	private $writeConnectionProvider = null;
+	private $connectionProviderRef;
+
+	/**
+	 * @var ILBFactory
+	 */
+	private $loadBalancerFactory;
 
 	/**
 	 * @var Database
@@ -43,11 +51,6 @@ class Database {
 	private $writeConnection;
 
 	/**
-	 * @var ILBFactory
-	 */
-	private $loadBalancerFactory;
-
-	/**
 	 * @var string
 	 */
 	private $dbPrefix = '';
@@ -58,15 +61,23 @@ class Database {
 	private $resetTransactionProfiler = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $initConnection = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $autoCommit = false;
+
+	/**
 	 * @since 1.9
 	 *
-	 * @param DBConnectionProvider $readConnectionProvider
-	 * @param DBConnectionProvider|null $writeConnectionProvider
+	 * @param ConnectionProviderRef $connectionProviderRef
 	 * @param ILBFactory|null $loadBalancerFactory
 	 */
-	public function __construct( DBConnectionProvider $readConnectionProvider, DBConnectionProvider $writeConnectionProvider = null, $loadBalancerFactory = null ) {
-		$this->readConnectionProvider = $readConnectionProvider;
-		$this->writeConnectionProvider = $writeConnectionProvider;
+	public function __construct( ConnectionProviderRef $connectionProviderRef, $loadBalancerFactory = null ) {
+		$this->connectionProviderRef = $connectionProviderRef;
 		$this->loadBalancerFactory = $loadBalancerFactory;
 
 		if ( $this->loadBalancerFactory === null ) {
@@ -81,19 +92,40 @@ class Database {
 	 *
 	 * @return boolean
 	 */
+	public function releaseConnection() {
+		$this->connectionProviderRef->releaseConnection();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $type
+	 *
+	 * @return boolean
+	 */
 	public function isType( $type ) {
-		return $this->readConnection()->getType() === $type;
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->getType() === $type;
 	}
 
 	/**
 	 * @see DatabaseBase::getType
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 *
 	 * @return string
 	 */
 	public function getType() {
-		return $this->readConnection()->getType();
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->getType();
 	}
 
 	/**
@@ -108,7 +140,7 @@ class Database {
 	/**
 	 * @see DatabaseBase::tableName
 	 *
-	 * @since 1.9.0.2
+	 * @since 1.9
 	 *
 	 * @param string $tableName
 	 *
@@ -116,11 +148,15 @@ class Database {
 	 */
 	public function tableName( $tableName ) {
 
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
 		if ( $this->getType() === 'sqlite' ) {
 			return $this->dbPrefix . $tableName;
 		}
 
-		return $this->readConnection()->tableName( $tableName );
+		return $this->readConnection->tableName( $tableName );
 	}
 
 	/**
@@ -133,63 +169,88 @@ class Database {
 	 * @return string
 	 */
 	public function timestamp( $ts = 0 ) {
-		return $this->readConnection()->timestamp( $ts );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->timestamp( $ts );
 	}
 
 	/**
 	 * @see DatabaseBase::addQuotes
 	 *
-	 * @since 1.9.0.2
+	 * @since 1.9
 	 *
 	 * @param string $tableName
 	 *
 	 * @return string
 	 */
 	public function addQuotes( $value ) {
-		return $this->readConnection()->addQuotes( $value );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->addQuotes( $value );
 	}
 
 	/**
 	 * @see DatabaseBase::fetchObject
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 *
 	 * @param ResultWrapper $res
 	 *
 	 * @return string
 	 */
 	public function fetchObject( $res ) {
-		return $this->readConnection()->fetchObject( $res );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->fetchObject( $res );
 	}
 
 	/**
 	 * @see DatabaseBase::numRows
 	 *
-	 * @since 1.9.0.2
+	 * @since 1.9
 	 *
 	 * @param mixed $results
 	 *
 	 * @return integer
 	 */
 	public function numRows( $results ) {
-		return $this->readConnection()->numRows( $results );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->numRows( $results );
 	}
 
 	/**
 	 * @see DatabaseBase::freeResult
 	 *
-	 * @since 1.9.0.2
+	 * @since 1.9
 	 *
 	 * @param ResultWrapper $res
 	 */
 	public function freeResult( $res ) {
-		$this->readConnection()->freeResult( $res );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		$this->readConnection->freeResult( $res );
 	}
 
 	/**
 	 * @see DatabaseBase::select
 	 *
-	 * @since 1.9.0.2
+	 * @since 1.9
 	 *
 	 * @param string $tableName
 	 * @param $fields
@@ -204,11 +265,16 @@ class Database {
 
 		$tablePrefix = null;
 
-		// MW's SQLite implementation adds an auto prefix to the tableName but
-		// not to the conditions and since ::tableName will handle prefixing
-		// consistently ensure that the select doesn't add an extra prefix
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
 		if ( $this->getType() === 'sqlite' ) {
-			$tablePrefix = $this->readConnection()->tablePrefix( '' );
+
+			// MW's SQLite implementation adds an auto prefix to the tableName but
+			// not to the conditions and since ::tableName will handle prefixing
+			// consistently ensure that the select doesn't add an extra prefix
+			$tablePrefix = $this->readConnection->tablePrefix( '' );
 
 			if ( isset( $options['ORDER BY'] ) ) {
 				$options['ORDER BY'] = str_replace( 'RAND', 'RANDOM', $options['ORDER BY'] );
@@ -216,7 +282,7 @@ class Database {
 		}
 
 		try {
-			$results = $this->readConnection()->select(
+			$results = $this->readConnection->select(
 				$tableName,
 				$fields,
 				$conditions,
@@ -224,15 +290,12 @@ class Database {
 				$options,
 				$joinConditions
 			);
-		} catch  ( DBError $e ) {
-			throw new RuntimeException (
-				$e->getMessage() . "\n" .
-				$e->getTraceAsString()
-			);
+		} catch ( DBError $e ) {
+			throw new RuntimeException ( $e->getMessage() . "\n" . $e->getTraceAsString() );
 		}
 
 		if ( $tablePrefix !== null ) {
-			$this->readConnection()->tablePrefix( $tablePrefix );
+			$this->readConnection->tablePrefix( $tablePrefix );
 		}
 
 		if ( $results instanceof ResultWrapper ) {
@@ -250,21 +313,20 @@ class Database {
 	/**
 	 * @see DatabaseBase::query
 	 *
-	 * @note WithAutoCommit (#1605
-	 * "... creating temporary tables in a transaction is not replication-safe
-	 * and causes errors in MySQL 5.6. ...")
-	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 *
 	 * @param string $sql
 	 * @param string $fname
 	 * @param boolean $ignoreException
-	 * @param boolean $withAutoCommit
 	 *
 	 * @return ResultWrapper
 	 * @throws RuntimeException
 	 */
-	public function query( $sql, $fname = __METHOD__, $ignoreException = false, $withAutoCommit = false ) {
+	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
 
 		if ( !$this->isType( 'postgres' ) ) {
 			$sql = str_replace( '@INT', '', $sql );
@@ -286,22 +348,20 @@ class Database {
 			$sql = str_replace( 'RAND', 'RANDOM', $sql );
 		}
 
-		$writeConnection = $this->writeConnection();
-
 		// https://github.com/wikimedia/mediawiki/blob/42d5e6f43a00eb8bedc3532876125f74e3188343/includes/deferred/AutoCommitUpdate.php
 		// https://github.com/wikimedia/mediawiki/blob/f7dad57c64db3eb1296894c2d3ae97b9f7f27c4c/includes/installer/DatabaseInstaller.php#L157
-		if ( $withAutoCommit ) {
-			$autoTrx = $writeConnection->getFlag( DBO_TRX );
-			$writeConnection->clearFlag( DBO_TRX );
+		if ( $this->autoCommit ) {
+			$autoTrx = $this->writeConnection->getFlag( DBO_TRX );
+			$this->writeConnection->clearFlag( DBO_TRX );
 
-			if ( $autoTrx && $writeConnection->trxLevel() ) {
-				$writeConnection->commit( __METHOD__ );
+			if ( $autoTrx && $this->writeConnection->trxLevel() ) {
+				$this->writeConnection->commit( __METHOD__ );
 			}
 		}
 
 		try {
 			$exception = null;
-			$results = $writeConnection->query(
+			$results = $this->writeConnection->query(
 				$sql,
 				$fname,
 				$ignoreException
@@ -309,9 +369,12 @@ class Database {
 		} catch ( Exception $exception ) {
 		}
 
-		if ( $withAutoCommit && $autoTrx ) {
-			$writeConnection->setFlag( DBO_TRX );
+		if ( $this->autoCommit && $autoTrx ) {
+			$this->writeConnection->setFlag( DBO_TRX );
 		}
+
+		// State is only valid for a single transaction
+		$this->autoCommit = false;
 
 		if ( $exception ) {
 			throw $exception;
@@ -323,10 +386,15 @@ class Database {
 	/**
 	 * @see DatabaseBase::selectRow
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 */
 	public function selectRow( $table, $vars, $conds, $fname = __METHOD__, $options = array(), $joinConditions = array() ) {
-		return $this->readConnection()->selectRow(
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->selectRow(
 			$table,
 			$vars,
 			$conds,
@@ -339,12 +407,17 @@ class Database {
 	/**
 	 * @see DatabaseBase::affectedRows
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 *
 	 * @return int
 	 */
 	function affectedRows() {
-		return $this->readConnection()->affectedRows();
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->affectedRows();
 	}
 
 	/**
@@ -353,7 +426,7 @@ class Database {
 	 *
 	 * @see DatabaseBase::makeSelectOptions
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 *
 	 * @param array $options
 	 *
@@ -366,25 +439,35 @@ class Database {
 	/**
 	 * @see DatabaseBase::nextSequenceValue
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 *
 	 * @param string $seqName
 	 *
 	 * @return int|null
 	 */
 	public function nextSequenceValue( $seqName ) {
-		return $this->writeConnection()->nextSequenceValue( $seqName );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->writeConnection->nextSequenceValue( $seqName );
 	}
 
 	/**
 	 * @see DatabaseBase::insertId
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 *
 	 * @return int
 	 */
 	function insertId() {
-		return (int)$this->writeConnection()->insertId();
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return (int)$this->writeConnection->insertId();
 	}
 
 	/**
@@ -402,7 +485,12 @@ class Database {
 	 * @since 2.4
 	 */
 	function clearFlag( $flag ) {
-		$this->writeConnection()->clearFlag( $flag );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		$this->writeConnection->clearFlag( $flag );
 	}
 
 	/**
@@ -411,7 +499,12 @@ class Database {
 	 * @since 2.4
 	 */
 	function getFlag( $flag ) {
-		$this->writeConnection()->getFlag( $flag );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->writeConnection->getFlag( $flag );
 	}
 
 	/**
@@ -420,34 +513,58 @@ class Database {
 	 * @since 2.4
 	 */
 	function setFlag( $flag ) {
-		$this->writeConnection()->setFlag( $flag );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		if ( $flag === self::AUTO_COMMIT ) {
+			return $this->autoCommit = true;
+		}
+
+		$this->writeConnection->setFlag( $flag );
 	}
 
 	/**
 	 * @see DatabaseBase::insert
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 */
 	public function insert( $table, $rows, $fname = __METHOD__, $options = array() ) {
-		return $this->writeConnection()->insert( $table, $rows, $fname, $options );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->writeConnection->insert( $table, $rows, $fname, $options );
 	}
 
 	/**
 	 * @see DatabaseBase::update
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 */
 	function update( $table, $values, $conds, $fname = __METHOD__, $options = array() ) {
-		return $this->writeConnection()->update( $table, $values, $conds, $fname, $options );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->writeConnection->update( $table, $values, $conds, $fname, $options );
 	}
 
 	/**
 	 * @see DatabaseBase::delete
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 */
 	public function delete( $table, $conds, $fname = __METHOD__ ) {
-		return $this->writeConnection()->delete( $table, $conds, $fname );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->writeConnection->delete( $table, $conds, $fname );
 	}
 
 	/**
@@ -456,22 +573,32 @@ class Database {
 	 * @since 2.5
 	 */
 	public function replace( $table, $uniqueIndexes, $rows, $fname = __METHOD__ ) {
-		return $this->writeConnection()->replace( $table, $uniqueIndexes, $rows, $fname );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->writeConnection->replace( $table, $uniqueIndexes, $rows, $fname );
 	}
 
 	/**
 	 * @see DatabaseBase::makeList
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 */
 	public function makeList( $data, $mode ) {
-		return $this->writeConnection()->makeList( $data, $mode );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->writeConnection->makeList( $data, $mode );
 	}
 
 	/**
 	 * @see DatabaseBase::tableExists
 	 *
-	 * @since 1.9.1
+	 * @since 1.9
 	 *
 	 * @param string $table
 	 * @param string $fname
@@ -479,7 +606,12 @@ class Database {
 	 * @return bool
 	 */
 	public function tableExists( $table, $fname = __METHOD__ ) {
-		return $this->writeConnection()->tableExists( $table, $fname );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->tableExists( $table, $fname );
 	}
 
 	/**
@@ -488,7 +620,12 @@ class Database {
 	 * @since 1.9.2
 	 */
 	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = array() ) {
-		return $this->readConnection()->selectField( $table, $fieldName, $conditions, $fname, $options );
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->selectField( $table, $fieldName, $conditions, $fname, $options );
 	}
 
 	/**
@@ -497,7 +634,12 @@ class Database {
 	 * @since 2.1
 	 */
 	public function estimateRowCount( $table, $vars = '*', $conditions = '', $fname = __METHOD__, $options = array() ) {
-		return $this->readConnection()->estimateRowCount(
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->estimateRowCount(
 			$table,
 			$vars,
 			$conditions,
@@ -561,12 +703,16 @@ class Database {
 	 */
 	public function beginAtomicTransaction( $fname = __METHOD__ ) {
 
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
 		// MW 1.23
-		if ( !method_exists( $this->writeConnection(), 'startAtomic' ) ) {
+		if ( !method_exists( $this->writeConnection, 'startAtomic' ) ) {
 			return null;
 		}
 
-		$this->writeConnection()->startAtomic( $fname );
+		$this->writeConnection->startAtomic( $fname );
 	}
 
 	/**
@@ -576,12 +722,16 @@ class Database {
 	 */
 	public function endAtomicTransaction( $fname = __METHOD__ ) {
 
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
 		// MW 1.23
-		if ( !method_exists( $this->writeConnection(), 'endAtomic' ) ) {
+		if ( !method_exists( $this->writeConnection, 'endAtomic' ) ) {
 			return null;
 		}
 
-		$this->writeConnection()->endAtomic( $fname );
+		$this->writeConnection->endAtomic( $fname );
 	}
 
 	/**
@@ -591,41 +741,29 @@ class Database {
 	 */
 	public function onTransactionIdle( $callback ) {
 
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
 		// FIXME For 1.19 it is an unknown method hence execute without idle
-		if ( !method_exists( $this->readConnection(), 'onTransactionIdle' ) ) {
+		if ( !method_exists( $this->writeConnection, 'onTransactionIdle' ) ) {
 			return call_user_func( $callback );
 		}
 
-		$this->writeConnection()->onTransactionIdle( $callback );
+		$this->writeConnection->onTransactionIdle( $callback );
 	}
 
-	private function readConnection() {
+	private function initConnection() {
 
-		if ( $this->readConnection !== null ) {
-			return $this->readConnection;
+		if ( $this->readConnection === null ) {
+			$this->readConnection = $this->connectionProviderRef->getConnection( 'read' );
 		}
 
-		return $this->readConnection = $this->readConnectionProvider->getConnection();
-	}
-
-	private function writeConnection() {
-
-		if ( $this->writeConnection !== null ) {
-			return $this->writeConnection;
+		if ( $this->writeConnection === null && $this->connectionProviderRef->hasConnection( 'write' ) ) {
+			$this->writeConnection = $this->connectionProviderRef->getConnection( 'write' );
 		}
 
-		if ( !$this->writeConnectionProvider instanceof DBConnectionProvider ) {
-			throw new RuntimeException( 'Expected a DBConnectionProvider instance' );
-		}
-
-		$this->writeConnection = $this->writeConnectionProvider->getConnection();
-
-		// MW 1.27 (only)
-		if ( $this->resetTransactionProfiler && method_exists( $this->writeConnection, 'setTransactionProfiler' ) ) {
-			$this->writeConnection->setTransactionProfiler( new \TransactionProfiler() );
-		}
-
-		return $this->writeConnection;
+		$this->initConnection = true;
 	}
 
 }

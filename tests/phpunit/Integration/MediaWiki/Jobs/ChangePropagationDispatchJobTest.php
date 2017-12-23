@@ -42,7 +42,7 @@ class ChangePropagationDispatchJob extends MwDBaseUnitTestCase {
 		$this->jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
-		$this->jobQueueRunner->setDBConnectionProvider( $this->getDBConnectionProvider() );
+		$this->jobQueueRunner->setConnectionProvider( $this->getConnectionProvider() );
 		$this->jobQueueRunner->deleteAllJobs();
 
 		$this->testEnvironment->addConfiguration( 'smwgEnableUpdateJobs', true );

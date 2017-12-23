@@ -162,7 +162,7 @@ class QueryEngineFactory {
 			$this->store->getConnection( 'mw.db.queryengine' )
 		);
 
-		$temporaryTableBuilder->withAutoCommit(
+		$temporaryTableBuilder->setAutoCommitFlag(
 			$this->applicationFactory->getSettings()->get( 'smwgQTemporaryTablesAutoCommitMode' )
 		);
 

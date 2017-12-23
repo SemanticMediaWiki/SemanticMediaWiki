@@ -107,7 +107,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $extraNamespaces ) )
 			->will( $this->returnValue( true ) );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -149,7 +149,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'insertData' );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -276,7 +276,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getRepositoryClient' )
 			->will( $this->returnValue( $repositoryClient ) );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -319,7 +319,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getRepositoryClient' )
 			->will( $this->returnValue( $repositoryClient ) );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

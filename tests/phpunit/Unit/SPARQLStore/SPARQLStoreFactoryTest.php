@@ -66,7 +66,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\ConnectionManager',
+			'\SMW\Connection\ConnectionManager',
 			$instance->newConnectionManager()
 		);
 	}

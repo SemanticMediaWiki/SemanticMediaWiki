@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use SMW\DBConnectionProvider;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use SMW\Connection\ConnectionProvider;
+use SMW\Connection\ConnectionProviderRef;
+use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 
 /**
@@ -13,7 +13,9 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class DatabaseConnectionProvider implements DBConnectionProvider, LoggerAwareInterface {
+class DBConnectionProvider implements ConnectionProvider {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var string
@@ -23,17 +25,7 @@ class DatabaseConnectionProvider implements DBConnectionProvider, LoggerAwareInt
 	/**
 	 * @var Database
 	 */
-	private $connection = null;
-
-	/**
-	 * @var DBConnectionProvider[]
-	 */
-	private $connectionProviders = array();
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
+	private $connection;
 
 	/**
 	 * @var array
@@ -52,17 +44,6 @@ class DatabaseConnectionProvider implements DBConnectionProvider, LoggerAwareInt
 	 */
 	public function __construct( $provider = null ) {
 		$this->provider = $provider;
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 3.0
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -103,23 +84,14 @@ class DatabaseConnectionProvider implements DBConnectionProvider, LoggerAwareInt
 	}
 
 	/**
-	 * @see #1499, #1603
-	 *
-	 * @since 2.4
-	 */
-	public function resetTransactionProfiler() {
-		$this->resetTransactionProfiler = true;
-	}
-
-	/**
 	 * @see DBConnectionProvider::releaseConnection
 	 *
 	 * @since 2.1
 	 */
 	public function releaseConnection() {
 
-		foreach ( $this->connectionProviders as $connectionProvider ) {
-			$connectionProvider->releaseConnection();
+		if ( $this->connection !== null ) {
+			$this->connection->releaseConnection();
 		}
 
 		$this->connection = null;
@@ -132,35 +104,39 @@ class DatabaseConnectionProvider implements DBConnectionProvider, LoggerAwareInt
 		}
 
 		if ( !isset( $connectionConf['read'] ) || !isset( $connectionConf['write'] ) ) {
-			throw new RuntimeException( "The configuration is incomplete (required read, write identifier)." );
+			throw new RuntimeException( "The configuration is incomplete (requires a read + write identifier)." );
 		}
 
-		$this->connectionProviders['read'] = new LazyDBConnectionProvider(
+		$connectionProviders = [];
+
+		$connectionProviders['read'] = new DBLoadBalancerConnectionProvider(
 			$connectionConf['read']
 		);
 
 		if ( $connectionConf['read'] === $connectionConf['write'] ) {
-			$this->connectionProviders['write'] = $this->connectionProviders['read'];
+			$connectionProviders['write'] = $connectionProviders['read'];
 		} else {
-			$this->connectionProviders['write'] = new LazyDBConnectionProvider(
+			$connectionProviders['write'] = new DBLoadBalancerConnectionProvider(
 				$connectionConf['write']
 			);
 		}
 
 		$connection = new Database(
-			$this->connectionProviders['read'],
-			$this->connectionProviders['write']
+			new ConnectionProviderRef( $connectionProviders )
 		);
 
 		// Only required because of SQlite
 		$connection->setDBPrefix( $GLOBALS['wgDBprefix'] );
 
-		// Has no effect with 1.28+
-		// https://github.com/wikimedia/mediawiki/commit/5c681e438fd162ac6b140e07e15f2dbc1393a775
-		$connection->resetTransactionProfiler( $this->resetTransactionProfiler );
-
 		if ( $this->logger !== null ) {
-			$this->logger->info( "[$this->provider] connection provider with " . json_encode( $connectionConf ) );
+			$this->logger->info(
+				"Init '{provider}' connection provider with [read:{read}, write:{write}]",
+				[
+					'provider' => $this->provider,
+					'read' => $connectionConf['read'],
+					'write' => $connectionConf['write']
+				]
+			);
 		}
 
 		return $connection;

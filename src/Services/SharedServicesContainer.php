@@ -42,7 +42,7 @@ use SMW\HierarchyLookup;
 use SMW\PropertyLabelFinder;
 use SMW\CachedPropertyValuesPrefetcher;
 use SMW\Localizer;
-use SMW\MediaWiki\DatabaseConnectionProvider;
+use SMW\MediaWiki\DBConnectionProvider;
 use SMW\Utils\TempFile;
 use SMW\PostProcHandler;
 use SMW\Utils\JsonSchemaValidator;
@@ -189,11 +189,11 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var DatabaseConnectionProvider
+		 * @var DBConnectionProvider
 		 */
-		$containerBuilder->registerCallback( 'DatabaseConnectionProvider', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'DatabaseConnectionProvider', '\SMW\MediaWiki\DatabaseConnectionProvider' );
-			return new DatabaseConnectionProvider();
+		$containerBuilder->registerCallback( 'DBConnectionProvider', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'DBConnectionProvider', '\SMW\MediaWiki\DBConnectionProvider' );
+			return new DBConnectionProvider();
 		} );
 
 		/**

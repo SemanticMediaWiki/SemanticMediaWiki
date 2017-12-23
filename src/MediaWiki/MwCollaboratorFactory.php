@@ -116,10 +116,10 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @return LazyDBConnectionProvider
+	 * @return DBLoadBalancerConnectionProvider
 	 */
-	public function newLazyDBConnectionProvider( $connectionType ) {
-		return new LazyDBConnectionProvider( $connectionType );
+	public function newDBLoadBalancerConnectionProvider( $connectionType ) {
+		return new DBLoadBalancerConnectionProvider( $connectionType );
 	}
 
 	/**
@@ -127,23 +127,23 @@ class MwCollaboratorFactory {
 	 *
 	 * @param string|null $provider
 	 *
-	 * @return DatabaseConnectionProvider
+	 * @return DBConnectionProvider
 	 */
-	public function newMediaWikiDatabaseConnectionProvider( $provider = null ) {
+	public function newDBConnectionProvider( $provider = null ) {
 
-		$databaseConnectionProvider = new DatabaseConnectionProvider(
+		$dbConnectionProvider = new DBConnectionProvider(
 			$provider
 		);
 
-		$databaseConnectionProvider->setLocalConnectionConf(
+		$dbConnectionProvider->setLocalConnectionConf(
 			$this->applicationFactory->getSettings()->get( 'smwgLocalConnectionConf' )
 		);
 
-		$databaseConnectionProvider->setLogger(
+		$dbConnectionProvider->setLogger(
 			$this->applicationFactory->getMediaWikiLogger()
 		);
 
-		return $databaseConnectionProvider;
+		return $dbConnectionProvider;
 	}
 
 	/**

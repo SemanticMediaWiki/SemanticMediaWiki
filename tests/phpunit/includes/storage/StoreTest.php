@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\ConnectionManager;
+use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;

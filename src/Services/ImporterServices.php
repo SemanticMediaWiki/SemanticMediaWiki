@@ -54,7 +54,7 @@ return array(
 
 		$textContentCreator = new TextContentCreator(
 			$containerBuilder->create( 'PageCreator' ),
-			$containerBuilder->create( 'DatabaseConnectionProvider' )->getConnection()
+			$containerBuilder->create( 'DBConnectionProvider' )->getConnection()
 		);
 
 		return $textContentCreator;

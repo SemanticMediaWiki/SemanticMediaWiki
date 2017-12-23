@@ -6,9 +6,9 @@ use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
 use SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector;
 use SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector;
+use SMW\Connection\ConnectionProvider;
 use Onoi\HttpRequest\CurlRequest;
 use RuntimeException;
-use SMW\DBConnectionProvider;
 
 /**
  * @private
@@ -20,7 +20,7 @@ use SMW\DBConnectionProvider;
  *
  * @author mwjames
  */
-class RepositoryConnectionProvider implements DBConnectionProvider {
+class RepositoryConnectionProvider implements ConnectionProvider {
 
 	/**
 	 * List of supported standard connectors
@@ -132,7 +132,7 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 	}
 
 	/**
-	 * @see DBConnectionProvider::getConnection
+	 * @see ConnectionProvider::getConnection
 	 *
 	 * @since 2.0
 	 *
@@ -149,7 +149,7 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 	}
 
 	/**
-	 * @see DBConnectionProvider::releaseConnection
+	 * @see ConnectionProvider::releaseConnection
 	 *
 	 * @since 2.0
 	 */
