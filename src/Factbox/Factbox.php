@@ -417,7 +417,7 @@ class Factbox {
 				$dataValue->setOption( $dataValue::OPT_DISABLE_INFOLINKS, true );
 
 				if ( $dataValue->isValid() ) {
-					$list[] = $dataValue->getLongWikiText( true ) . $this->getInfolink( $dataValue );
+					$list[] = $dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
 				}
 			}
 
@@ -447,29 +447,6 @@ class Factbox {
 		}
 
 		return $rows;
-	}
-
-	private function getInfolink( $dataValue ) {
-
-		if ( $dataValue->getProperty()->getKey() !== '_SOBJ' ) {
-			return $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
-		}
-
-		$value = $dataValue->getWikiValue();
-
-		// InTextAnnotationParser will detect :: therefore avoid link
-		// breakage by encoding the string
-		if ( strpos( $value, '::' ) !== false ) {
-			$value = str_replace( ':', '-3A', $value );
-		}
-
-		$browselink = SMWInfolink::newBrowsingLink(
-			' +',
-			$value,
-			'smwbrowse'
-		);
-
-		return $browselink->getWikiText();
 	}
 
 	private function isEmpty( SemanticData $semanticData ) {

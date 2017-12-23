@@ -51,6 +51,11 @@ class InfoLinksProvider {
 	private $serviceLinkParameters = false;
 
 	/**
+	 * @var []
+	 */
+	private $browseLinks = [ '__sob' ];
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param DataValue $dataValue
@@ -111,7 +116,7 @@ class InfoLinksProvider {
 			return $this->infoLinks;
 		}
 
-		if ( !$this->dataValue->isValid() || $this->dataValue->getProperty() === null ) {
+		if ( !$this->dataValue->isValid() ) {
 			return array();
 		}
 
@@ -126,12 +131,20 @@ class InfoLinksProvider {
 			$value = str_replace( ':', '-3A', $value );
 		}
 
-		$this->hasSearchLink = true;
-		$this->infoLinks[] = Infolink::newPropertySearchLink(
-			'+',
-			$this->dataValue->getProperty()->getLabel(),
-			$value
-		);
+		if ( in_array( $this->dataValue->getTypeID(), $this->browseLinks ) ) {
+			$this->infoLinks[] = Infolink::newBrowsingLink(
+				'+',
+				$this->dataValue->getLongWikiText()
+			);
+		} elseif ( $this->dataValue->getProperty() !== null ) {
+			$this->infoLinks[] = Infolink::newPropertySearchLink(
+				'+',
+				$this->dataValue->getProperty()->getLabel(),
+				$value
+			);
+		}
+
+		$this->hasSearchLink = $this->infoLinks !== [];
 
 		 // add further service links
 		if ( !$this->hasServiceLinks && $this->enabledServiceLinks ) {
@@ -195,6 +208,8 @@ class InfoLinksProvider {
 		if ( $this->hasServiceLinks ) {
 			return;
 		}
+
+		$propertyDiWikiPage = null;
 
 		if ( $this->dataValue->getProperty() !== null ) {
 			$propertyDiWikiPage = $this->dataValue->getProperty()->getDiWikiPage();
