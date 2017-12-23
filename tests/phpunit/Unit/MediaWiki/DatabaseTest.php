@@ -362,8 +362,12 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getEmptyTransactionTicket' ) )
+			->setMethods( array( 'getEmptyTransactionTicket', 'hasMasterChanges' ) )
 			->getMock();
+
+		$loadBalancerFactory->expects( $this->once() )
+			->method( 'hasMasterChanges' )
+			->will( $this->returnValue( false ) );
 
 		$loadBalancerFactory->expects( $this->once() )
 			->method( 'getEmptyTransactionTicket' );
@@ -381,7 +385,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$instance->getEmptyTransactionTicket( __METHOD__ );
 	}
 
-	public function testGetEmptyTransactionTicketThrowsException() {
+	public function testGetEmptyTransactionTicketOnMasterChanges() {
 
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
@@ -392,12 +396,15 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getEmptyTransactionTicket' ) )
+			->setMethods( array( 'getEmptyTransactionTicket', 'hasMasterChanges' ) )
 			->getMock();
 
 		$loadBalancerFactory->expects( $this->once() )
-			->method( 'getEmptyTransactionTicket' )
-			->will( $this->throwException( new \RuntimeException() ) );
+			->method( 'hasMasterChanges' )
+			->will( $this->returnValue( true ) );
+
+		$loadBalancerFactory->expects( $this->never() )
+			->method( 'getEmptyTransactionTicket' );
 
 		$instance = new Database(
 			new ConnectionProviderRef(

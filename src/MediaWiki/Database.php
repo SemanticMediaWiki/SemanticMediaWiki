@@ -664,11 +664,11 @@ class Database {
 			return $ticket;
 		}
 
-		try {
+		// @see LBFactory::getEmptyTransactionTicket
+		// We don't try very hard at this point and will continue without a ticket
+		// if the check fails and hereby avoid a "... does not have outer scope" error
+		if ( !$this->loadBalancerFactory->hasMasterChanges() ) {
 			$ticket = $this->loadBalancerFactory->getEmptyTransactionTicket( $fname );
-		} catch ( RuntimeException $e ) {
-			// We don't try very hard at ths point since "... does not have outer scope"
-			// isn't clear, we will continue without a ticket
 		}
 
 		return $ticket;
