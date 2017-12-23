@@ -208,6 +208,7 @@
 	"smw_uri_doc": "The URI resolver implements the [$1 W3C TAG finding on httpRange-14].\nIt takes care that humans do not turn into websites.",
 	"ask": "Semantic search",
 	"smw_ask_doculink": "https://www.semantic-mediawiki.org/wiki/Help:Semantic_search",
+	"smw-ask-help": "This section contains some links to help explain how to use the semantic search and the <code>#ask</code> syntax.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Selecting pages] describes how to selected pages and build conditions\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Search_operators Search operators] lists available search operators including those for range and wildcard queries\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Displaying information] outlines the use of printout statements and formatting options",
 	"smw_ask_sortby": "Sort by column (optional)",
 	"smw_ask_ascorder": "Ascending",
 	"smw_ask_descorder": "Descending",
@@ -244,12 +245,13 @@
 	"smw-ask-empty": "Empty",
 	"smw-ask-download-link-desc": "Download queried results in $1 format",
 	"smw-ask-format": "Format",
-	"smw-ask-format-selection-help": "For a detailed description, please visit the $1 help page.",
+	"smw-ask-format-selection-help": "Help with the $1 format",
 	"smw-ask-condition-change-info": "The condition was altered and the search engine requires to rerun the query to produce results that matches the new requirements.",
-	"smw-ask-condition-input-assistance": "Search assistance is provided for the following prefixes:",
-	"smw-ask-condition-input-assistance-property": "<code>p:</code> property search",
-	"smw-ask-condition-input-assistance-category": "<code>c:</code> category search",
-	"smw-ask-condition-input-assistance-concept": "<code>con:</code> concept search",
+	"smw-ask-input-assistance": "Input assistance",
+	"smw-ask-condition-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Input assistance] is provided for the printout, sort, and condition field. The condition field requires to use one of following prefixes:",
+	"smw-ask-condition-input-assistance-property": "<code>p:</code> to activate a property search (e.g. <code>[[p:Has ...</code>)",
+	"smw-ask-condition-input-assistance-category": "<code>c:</code> to activate a category search",
+	"smw-ask-condition-input-assistance-concept": "<code>con:</code> to activate a concept search",
 	"smw-ask-format-change-info": "The format was modified and it is required to execute the query again to match new parameters and visualization options.",
 	"smw-ask-format-export-info": "The selected format is an export format which has no visual representation therefore results are only provided as download.",
 	"smw-ask-query-search-info": "The query <code><nowiki>$1</nowiki></code> was answered by the {{PLURAL:$3|1=<code>$2</code> (from cache)|<code>$2</code> (from cache)|<code>$2</code>}} in $4 {{PLURAL:$4|second|seconds}}.",
@@ -659,6 +661,8 @@
 	"smw-property-predefined-ppgr": "\"$1\" is a predefined property that identifies entities (mainly categories) that are used as grouping instance for properties and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-list-pager-filter": "Filter:",
 	"smw-section-expand": "Expand the section",
-	"smw-section-collapse": "Collapse the section"
-
+	"smw-section-collapse": "Collapse the section",
+	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] format",
+	"smw-help": "Help",
+	"smw-cheat-sheet": "Cheat sheet"
 }

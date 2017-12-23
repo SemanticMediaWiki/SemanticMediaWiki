@@ -7,6 +7,7 @@ use SMW\Localizer;
 use SMWInfolink as Infolink;
 use Html;
 use Title;
+use SMW\Utils\HtmlModal;
 
 /**
  * @license GNU GPL v2+
@@ -80,6 +81,14 @@ class NavigationLinksWidget {
 			Message::get( 'smw-ask-empty', Message::TEXT, Message::USER_LANGUAGE )
 		);
 
+		$rLinks['help'] = HtmlModal::link(
+			Message::get( 'smw-cheat-sheet', Message::TEXT, Message::USER_LANGUAGE ),
+			[
+				'class'   => 'float-right',
+				'data-id' => 'ask-help'
+			]
+		);
+
 		$visibleLinks = array_flip( $visibleLinks );
 
 		foreach ( $lLinks as $key => $value ) {
@@ -94,26 +103,37 @@ class NavigationLinksWidget {
 			}
 		}
 
-		$sep = Html::rawElement(
+		$lsep = Html::rawElement(
 			'span',
 			[
 				'style' => 'color:#aaa;'
 			],
-			'|'
+			'&#160;|&#160;'
 		);
 
-		return Html::rawElement(
+		$rsep = Html::rawElement(
+			'span',
+			[
+				'style' => 'color:#aaa;',
+				'class' => 'float-right'
+			],
+			'&#160;|&#160;'
+		);
+
+		$html = Html::rawElement(
 			'div',
 			[
 				'class' => 'smw-ask-toplinks'
 			],
-			implode( "&#160;$sep&#160;", $lLinks ) . '&#160;' .  implode( "&#160;$sep&#160;", $rLinks )
+			implode( "$lsep", $lLinks ) . '&#160;' .  implode( "$rsep", $rLinks )
 		) . Html::rawElement(
 			'div',
 			[
 				'class' => 'clear-both'
 			]
 		);
+
+		return $html;
 	}
 
 	/**

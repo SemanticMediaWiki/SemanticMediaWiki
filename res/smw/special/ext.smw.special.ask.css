@@ -286,6 +286,17 @@ div#ask legend {
     margin-left: 10px;
 }
 
+.smw-ask-format-help-link {
+	margin-top: 10px;
+	width: auto;
+	word-break: break-word;
+	word-wrap: break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+}
+
+}
 .smw-ask-sort-input {
 	margin-bottom: 10px;
 }
@@ -358,6 +369,27 @@ div#ask legend {
 	left: 0;
 	pointer-events: none;
 	background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+	width: 100%;
+	height: 4em;
+}
+
+.options-parameter-list-plain {
+	min-height: 100px;
+	overflow: hidden;
+	max-height: 0;
+	padding: 0;
+	margin: 0 auto;
+	-webkit-transition: all 0.3s ease;
+}
+
+.options-parameter-list-plain:after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	left: 0;
+	pointer-events: none;
+	background-image: none;
 	width: 100%;
 	height: 4em;
 }
