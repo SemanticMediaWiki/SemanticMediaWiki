@@ -328,6 +328,35 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$instance->getEmptyTransactionTicket( __METHOD__ );
 	}
 
+	public function testGetEmptyTransactionTicketThrowsException() {
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getEmptyTransactionTicket' ) )
+			->getMock();
+
+		$loadBalancerFactory->expects( $this->once() )
+			->method( 'getEmptyTransactionTicket' )
+			->will( $this->throwException( new \RuntimeException() ) );
+
+		$instance = new Database(
+			$readConnectionProvider,
+			$writeConnectionProvider,
+			$loadBalancerFactory
+		);
+
+		$this->assertNull(
+			$instance->getEmptyTransactionTicket( __METHOD__ )
+		);
+	}
+
 	public function testCommitAndWaitForReplication() {
 
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )

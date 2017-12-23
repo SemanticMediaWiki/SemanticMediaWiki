@@ -516,11 +516,20 @@ class Database {
 	 */
 	public function getEmptyTransactionTicket( $fname = __METHOD__ ) {
 
-		if ( method_exists( $this->loadBalancerFactory, 'getEmptyTransactionTicket' ) ) {
-			return $this->loadBalancerFactory->getEmptyTransactionTicket( $fname );
+		$ticket = null;
+
+		if ( !method_exists( $this->loadBalancerFactory, 'getEmptyTransactionTicket' ) ) {
+			return $ticket;
 		}
 
-		return null;
+		try {
+			$ticket = $this->loadBalancerFactory->getEmptyTransactionTicket( $fname );
+		} catch ( RuntimeException $e ) {
+			// We don't try very hard at ths point since "... does not have outer scope"
+			// isn't clear, we will continue without a ticket
+		}
+
+		return $ticket;
 	}
 
 	/**
