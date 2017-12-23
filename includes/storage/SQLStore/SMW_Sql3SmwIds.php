@@ -478,9 +478,12 @@ class SMWSql3SmwIds {
 			SQLStore::ID_TABLE
 		);
 
+		$condition = " smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
+		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
+
 		$query = "SELECT ".
 		"COUNT(*) as count, smw_title, smw_namespace, smw_iw, smw_subobject " .
-		"FROM $tableName " .
+		"FROM $tableName WHERE $condition " .
 		"GROUP BY smw_title, smw_namespace, smw_iw, smw_subobject ".
 		"HAVING count > 1";
 
