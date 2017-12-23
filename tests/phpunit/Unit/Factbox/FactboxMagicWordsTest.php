@@ -107,7 +107,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		if ( isset( $expected['preview'] ) && $expected['preview'] ) {
-			$instance->useInPreview( true );
+			$instance->setPreviewFlag( true );
 		}
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );

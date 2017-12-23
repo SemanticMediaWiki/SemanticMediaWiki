@@ -7,6 +7,7 @@ use OutputPage;
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\Parser\InTextAnnotationParser;
+use SMW\Localizer;
 use Title;
 
 /**
@@ -121,7 +122,9 @@ class CachedFactbox {
 
 		$content = '';
 		$title = $outputPage->getTitle();
-		$revisionId = $this->getRevisionId( $title, $outputPage->getContext() );
+
+		$revId = $this->findRevId( $title, $outputPage->getContext() );
+		$lang = $outputPage->getContext()->getLanguage()->getCode();
 
 		$key = $this->cacheFactory->getFactboxCacheKey(
 			$title->getArticleID()
@@ -131,13 +134,9 @@ class CachedFactbox {
 			$content = $this->retrieveFromCache( $key );
 		}
 
-		if ( $this->cacheIsAvailableFor( $revisionId, $content, $outputPage->getContext() ) ) {
-			$this->isCached = true;
-			$outputPage->mSMWFactboxText = $content['text'];
-			return;
+		if ( $this->hasCachedContent( $revId, $lang, $content, $outputPage->getContext() ) ) {
+			return $outputPage->mSMWFactboxText = $content['text'];
 		}
-
-		$this->isCached = false;
 
 		$text = $this->rebuild(
 			$title,
@@ -148,7 +147,8 @@ class CachedFactbox {
 		$this->addContentToCache(
 			$key,
 			$text,
-			$revisionId
+			$revId,
+			$lang
 		);
 
 		$outputPage->mSMWFactboxText = $text;
@@ -161,11 +161,12 @@ class CachedFactbox {
 	 * @param string $text
 	 * @param integer|null $revisionId
 	 */
-	public function addContentToCache( $key, $text, $revisionId = null ) {
+	public function addContentToCache( $key, $text, $revisionId = null, $lang = 'en' ) {
 		$this->saveToCache(
 			$key,
 			array(
 				'revId' => $revisionId,
+				'lang'  => $lang,
 				'text'  => $text
 			)
 		);
@@ -209,7 +210,7 @@ class CachedFactbox {
 	 * Return a revisionId either from the WebRequest object (display an old
 	 * revision or permalink etc.) or from the title object
 	 */
-	private function getRevisionId( Title $title, $requestContext ) {
+	private function findRevId( Title $title, $requestContext ) {
 
 		if ( $requestContext->getRequest()->getCheck( 'oldid' ) ) {
 			return (int)$requestContext->getRequest()->getVal( 'oldid' );
@@ -227,11 +228,12 @@ class CachedFactbox {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$factbox = $applicationFactory->singleton( 'FactboxFactory' )->newFactbox(
-			$applicationFactory->newParserData( $title, $parserOutput ),
-			$requestContext
+			$applicationFactory->newParserData( $title, $parserOutput )
 		);
 
-		$factbox->useInPreview( $requestContext->getRequest()->getCheck( 'wpPreview' ) );
+		$factbox->setPreviewFlag(
+			$requestContext->getRequest()->getCheck( 'wpPreview' )
+		);
 
 		if ( $factbox->doBuild()->isVisible() ) {
 
@@ -241,26 +243,26 @@ class CachedFactbox {
 			$text = InTextAnnotationParser::removeAnnotation(
 				$contentParser->getOutput()->getText()
 			);
+
+			$text = $factbox->tabs( $text );
 		}
 
 		return $text;
 	}
 
-	private function cacheIsAvailableFor( $revId, $content, $requestContext ) {
-
-		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowFactbox' ) === SMW_FACTBOX_HIDDEN ) {
-			return false;
-		}
+	private function hasCachedContent( $revId, $lang, $content, $requestContext ) {
 
 		if ( $requestContext->getRequest()->getVal( 'action' ) === 'edit' ) {
-			return false;
+			return $this->isCached = false;
 		}
 
 		if ( $revId !== 0 && isset( $content['revId'] ) && ( $content['revId'] === $revId ) && $content['text'] !== null ) {
-			return true;
+			if ( isset( $content['lang'] ) && ( $content['lang'] === $lang ) ) {
+				return $this->isCached = true;
+			}
 		}
 
-		return false;
+		return $this->isCached = false;
 	}
 
 	private function retrieveFromCache( $key ) {

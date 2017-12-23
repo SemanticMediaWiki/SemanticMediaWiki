@@ -56,7 +56,7 @@ class SkinAfterContent {
 
 		$request = $this->skin->getContext()->getRequest();
 
-		if ( in_array( $request->getVal( 'action' ), array( 'delete', 'purge', 'protect', 'unprotect' ) ) ) {
+		if ( in_array( $request->getVal( 'action' ), array( 'delete', 'purge', 'protect', 'unprotect', 'history' ) ) ) {
 			return false;
 		}
 

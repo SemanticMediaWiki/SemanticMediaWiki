@@ -46,9 +46,11 @@
 	-webkit-hyphens: auto;
 	-moz-hyphens: auto;
 	hyphens: auto;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
 }
 
-.smwb-cell {
+.smwb-factbox .smwb-cell {
 	border: 0px solid #999999;
 	border-top: 2px solid #fff;
 /*	border-bottom: 2px solid #fff; */
@@ -100,6 +102,8 @@
 
 .smwb-title a, .smwb-center a:first-child, .smwb-actions a:first-child {
 	padding-left: 8px;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
 }
 
 span.smwb-value {
@@ -116,6 +120,12 @@ span.smwb-value {
 .smwb-ifactbox {
 	border-right: 0.5em solid #DDDDDD;
 	width: 100%
+}
+
+.smwb-ifactbox .smwb-cell {
+	border: 0px solid #999999;
+	border-top: 2px solid #fff;
+/*	border-bottom: 2px solid #fff; */
 }
 
 .smwb-ititle {
