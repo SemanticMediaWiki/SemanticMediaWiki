@@ -200,11 +200,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'getSubject' )
 			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
 
-		$contextSource = $this->getMockBuilder( '\IContextSource' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = $this->applicationFactory->singleton( 'FactboxFactory' )->newFactbox( $parserData, $contextSource );
+		$instance = $this->applicationFactory->singleton( 'FactboxFactory' )->newFactbox( $parserData );
 		$instance->doBuild();
 
 		$this->assertEquals(

@@ -44,21 +44,13 @@ class FactboxFactory {
 	 * @since 2.0
 	 *
 	 * @param ParserData $parserData
-	 * @param IContextSource $context
 	 *
 	 * @return Factbox
 	 */
-	public function newFactbox( ParserData $parserData, IContextSource $context ) {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$messageBuilder = $applicationFactory->newMwCollaboratorFactory()->newMessageBuilder();
-		$messageBuilder->setLanguageFromContext( $context );
-
+	public function newFactbox( ParserData $parserData ) {
 		return new Factbox(
-			$applicationFactory->getStore(),
-			$parserData,
-			$messageBuilder
+			ApplicationFactory::getInstance()->getStore(),
+			$parserData
 		);
 	}
 
