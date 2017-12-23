@@ -4,7 +4,8 @@ namespace SMW\MediaWiki;
 
 use DatabaseBase;
 use RuntimeException;
-use SMW\DBConnectionProvider;
+use SMW\Connection\ConnectionProvider;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * @license GNU GPL v2+
@@ -12,7 +13,9 @@ use SMW\DBConnectionProvider;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class LazyDBConnectionProvider implements DBConnectionProvider {
+class DBLoadBalancerConnectionProvider implements ConnectionProvider {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var DatabaseBase|null
@@ -22,7 +25,7 @@ class LazyDBConnectionProvider implements DBConnectionProvider {
 	/**
 	 * @var int|null
 	 */
-	protected $connectionId = null;
+	protected $id = null;
 
 	/**
 	 * @var string|array
@@ -37,12 +40,12 @@ class LazyDBConnectionProvider implements DBConnectionProvider {
 	/**
 	 * @since 1.9
 	 *
-	 * @param int $connectionId
+	 * @param int $id
 	 * @param string|array $groups
 	 * @param string|boolean $wiki
 	 */
-	public function __construct( $connectionId, $groups = array(), $wiki = false ) {
-		$this->connectionId = $connectionId;
+	public function __construct( $id, $groups = array(), $wiki = false ) {
+		$this->id = $id;
 		$this->groups = $groups;
 		$this->wiki = $wiki;
 	}
@@ -58,10 +61,10 @@ class LazyDBConnectionProvider implements DBConnectionProvider {
 	public function getConnection() {
 
 		if ( $this->connection === null ) {
-			$this->connection = wfGetLB( $this->wiki )->getConnection( $this->connectionId, $this->groups, $this->wiki );
+			$this->connection = wfGetLB( $this->wiki )->getConnection( $this->id, $this->groups, $this->wiki );
 		}
 
-		if ( $this->isConnection( $this->connection ) ) {
+		if ( $this->connection instanceof DatabaseBase ) {
 			return $this->connection;
 		}
 
@@ -77,10 +80,6 @@ class LazyDBConnectionProvider implements DBConnectionProvider {
 		if ( $this->wiki !== false && $this->connection !== null ) {
 			wfGetLB( $this->wiki )->reuseConnection( $this->connection );
 		}
-	}
-
-	protected function isConnection( $connection ) {
-		return $connection instanceof DatabaseBase;
 	}
 
 }

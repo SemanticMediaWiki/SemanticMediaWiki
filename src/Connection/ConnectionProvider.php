@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Connection;
 
 /**
  * Interface for database connection providers.
@@ -10,20 +10,20 @@ namespace SMW;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-interface DBConnectionProvider {
+interface ConnectionProvider {
 
 	/**
 	 * Returns the database connection.
 	 * Initialization of this connection is done if it was not already initialized.
 	 *
-	 * @since 0.1
+	 * @since 1.9
 	 */
 	public function getConnection();
 
 	/**
 	 * Releases the connection if doing so makes any sense resource wise.
 	 *
-	 * @since 0.1
+	 * @since 1.9
 	 */
 	public function releaseConnection();
 

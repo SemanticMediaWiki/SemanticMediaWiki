@@ -47,9 +47,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 			'smwgPageSpecialProperties' => array( '_MDAT' ),
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 			'smwgCacheType' => 'hash',
-			'smwgAutoRefreshOnPurge' => true,
-			'smwgDeleteSubjectAsDeferredJob' => false,
-			'smwgDeleteSubjectWithAssociatesRefresh' => false
+			'smwgAutoRefreshOnPurge' => true
 		);
 
 		foreach ( $settings as $key => $value ) {

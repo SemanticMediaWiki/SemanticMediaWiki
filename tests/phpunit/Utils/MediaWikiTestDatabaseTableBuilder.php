@@ -6,7 +6,7 @@ use CloneDatabase;
 use HashBagOStuff;
 use ObjectCache;
 use RuntimeException;
-use SMW\DBConnectionProvider;
+use SMW\Connection\ConnectionProvider;
 use SMW\Store;
 use Title;
 
@@ -17,19 +17,27 @@ use Title;
  *
  * @author mwjames
  */
-class MwDatabaseTableBuilder {
+class MediaWikiTestDatabaseTableBuilder {
 
-	/* @var MwDatabaseTableBuilder */
+	/**
+	 * @var MediaWikiTestDatabaseTableBuilder
+	 */
 	private static $instance = null;
 
-	/* @var Store */
-	protected $store = null;
+	/**
+	 * @var Store
+	 */
+	protected $store;
 
-	/* @var DBConnectionProvider */
-	protected $dbConnectionProvider = null;
+	/**
+	 * @var ConnectionProvider
+	 */
+	protected $connectionProvider;
 
-	/* @var CloneDatabase */
-	protected $cloneDatabase = null;
+	/**
+	 * @var CloneDatabase
+	 */
+	protected $cloneDatabase;
 
 	protected $defaultDatabaseTypes = array(
 		'mysql',
@@ -48,11 +56,11 @@ class MwDatabaseTableBuilder {
 	 * @since 2.0
 	 *
 	 * @param Store $store
-	 * @param DBConnectionProvider $dbConnectionProvider
+	 * @param connectionProvider $connectionProvider
 	 */
-	public function __construct( Store $store, DBConnectionProvider $dbConnectionProvider ) {
+	public function __construct( Store $store, ConnectionProvider $connectionProvider ) {
 		$this->store = $store;
-		$this->dbConnectionProvider = $dbConnectionProvider;
+		$this->connectionProvider = $connectionProvider;
 		$this->availableDatabaseTypes = $this->defaultDatabaseTypes;
 
 		self::$UTDB_PREFIX = 'sunittest_';
@@ -76,7 +84,7 @@ class MwDatabaseTableBuilder {
 	public static function getInstance( Store $store ) {
 
 		if ( self::$instance === null ) {
-			self::$instance = new self( $store, new MwDBConnectionProvider() );
+			self::$instance = new self( $store, new MediaWikiTestConnectionProvider() );
 		}
 
 		return self::$instance;
@@ -145,16 +153,16 @@ class MwDatabaseTableBuilder {
 	 * @return DatabaseBase
 	 */
 	public function getDBConnection() {
-		return $this->dbConnectionProvider->getConnection();
+		return $this->connectionProvider->getConnection();
 	}
 
 	/**
 	 * @since  2.0
 	 *
-	 * @return DBConnectionProvider
+	 * @return connectionProvider
 	 */
-	public function getDBConnectionProvider() {
-		return $this->dbConnectionProvider;
+	public function getconnectionProvider() {
+		return $this->connectionProvider;
 	}
 
 	/**

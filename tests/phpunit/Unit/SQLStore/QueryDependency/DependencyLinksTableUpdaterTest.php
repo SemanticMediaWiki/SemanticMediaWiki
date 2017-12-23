@@ -77,7 +77,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
 				$this->equalTo( $insert ) );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -174,7 +174,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
 				$this->equalTo( $insert ) );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

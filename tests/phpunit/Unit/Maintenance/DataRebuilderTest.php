@@ -34,7 +34,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
 
-		$this->connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$this->connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

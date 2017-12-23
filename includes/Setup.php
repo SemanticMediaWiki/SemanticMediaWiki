@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\MediaWiki\Hooks\HookRegistry;
+use SMW\Connection\ConnectionManager;
 use Hooks;
 
 /**
@@ -202,26 +203,23 @@ final class Setup {
 
 		$connectionManager->registerConnectionProvider(
 			DB_MASTER,
-			$mwCollaboratorFactory->newLazyDBConnectionProvider( DB_MASTER )
+			$mwCollaboratorFactory->newDBLoadBalancerConnectionProvider( DB_MASTER )
 		);
 
 		$connectionManager->registerConnectionProvider(
 			DB_SLAVE,
-			$mwCollaboratorFactory->newLazyDBConnectionProvider( DB_SLAVE )
+			$mwCollaboratorFactory->newDBLoadBalancerConnectionProvider( DB_SLAVE )
 		);
 
 		$connectionManager->registerConnectionProvider(
 			'mw.db',
-			$mwCollaboratorFactory->newMediaWikiDatabaseConnectionProvider( 'mw.db' )
+			$mwCollaboratorFactory->newDBConnectionProvider( 'mw.db' )
 		);
 
 		// Connection can be used to redirect queries to another DB cluster
-		$queryengineConnectionProvider = $mwCollaboratorFactory->newMediaWikiDatabaseConnectionProvider( 'mw.db.queryengine' );
-		$queryengineConnectionProvider->resetTransactionProfiler();
-
 		$connectionManager->registerConnectionProvider(
 			'mw.db.queryengine',
-			$queryengineConnectionProvider
+			$mwCollaboratorFactory->newDBConnectionProvider( 'mw.db.queryengine' )
 		);
 	}
 

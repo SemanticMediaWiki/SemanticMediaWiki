@@ -8,6 +8,7 @@ use SMWQueryResult;
 use SMWRequestOptions;
 use SMWSemanticData;
 use Title;
+use SMW\Connection\ConnectionManager;
 use SMW\QueryEngine;
 use SMW\Options;
 use SMW\Utils\Timer;

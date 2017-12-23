@@ -54,7 +54,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DBConnectionProvider',
+			'\SMW\Connection\ConnectionProvider',
 			$instance
 		);
 	}

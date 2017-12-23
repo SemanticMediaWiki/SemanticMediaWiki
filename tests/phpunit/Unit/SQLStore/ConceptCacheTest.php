@@ -68,7 +68,7 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->once() )
 			->method( 'delete' );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

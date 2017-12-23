@@ -55,9 +55,7 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 		$GLOBALS['smwgEnableUpdateJobs'] = true;
 
 		$settings = array(
-			'smwgEnableUpdateJobs' => true,
-			'smwgDeleteSubjectAsDeferredJob' => true,
-			'smwgDeleteSubjectWithAssociatesRefresh' => true
+			'smwgEnableUpdateJobs' => true
 		);
 
 		foreach ( $settings as $key => $value ) {
@@ -67,7 +65,7 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 		$this->jobQueue = $this->applicationFactory->getJobQueue();
 
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
-		$this->jobQueueRunner->setDBConnectionProvider( $this->getDBConnectionProvider() );
+		$this->jobQueueRunner->setConnectionProvider( $this->getConnectionProvider() );
 		$this->jobQueueRunner->deleteAllJobs();
 	}
 

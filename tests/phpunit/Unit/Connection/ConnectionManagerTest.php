@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Connection;
 
-use SMW\ConnectionManager;
+use SMW\Connection\ConnectionManager;
 
 /**
- * @covers \SMW\ConnectionManager
+ * @covers \SMW\Connection\ConnectionManager
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,12 +18,12 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\ConnectionManager',
+			ConnectionManager::class,
 			new ConnectionManager()
 		);
 	}
 
-	public function testMwDBSQLConnectionProvidedBySetupRegistration() {
+	public function testDefaultRegisteredConnectionProvided() {
 
 		$instance = new ConnectionManager();
 		$instance->releaseConnections();
@@ -58,7 +58,7 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRegisterConnectionProvider() {
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
