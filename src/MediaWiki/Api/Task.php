@@ -71,7 +71,7 @@ class Task extends ApiBase {
 		);
 
 		// Guard against repeated API calls (or fuzzing)
-		if ( ( $result = $cache->fetch( $key ) ) !== false ) {
+		if ( ( $result = $cache->fetch( $key ) ) !== false && $cacheTTL !== false ) {
 			return $result + ['isFromCache' => true ];
 		}
 

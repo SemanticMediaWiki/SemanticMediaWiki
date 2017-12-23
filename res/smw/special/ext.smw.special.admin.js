@@ -85,7 +85,7 @@
 			}
 
 			if ( status.hasOwnProperty( 'error' ) ) {
-				text = status.error.code + ': ' + status.error.info;
+				text = status.error.code + ': ' + status.error.info + status.error['*'];
 			}
 
 			self.reportError( text );
