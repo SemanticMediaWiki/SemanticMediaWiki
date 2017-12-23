@@ -8,6 +8,10 @@ This is not a release yet and is planned to be available in Q1 2018.
 Highlights for this release include ... (#2065)
 
 
+### Visual changes
+
+#2893, #2898 (`Special:Ask`), #2891, #2875, (`Special:Browse`), and #2906 (Factbox) contains changes to the appearance to help improve responsiveness on small screens and/or distinguish visual components more clearly from each other.
+
 ## Upgrading
 
 This release requires to run the `setupStore.php` or `update.php` script. (#2065, #2461, #2499)
@@ -85,6 +89,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2893](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2893)
 * [#2889](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2889)
 * [#2895](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2895)
+* [#2898](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2898)
+* [#2906](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906)
 
 ## Bug fixes
 
@@ -98,6 +104,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2881](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2881)
 * [#2884](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2884)
 * [#2896](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2896)
+* [#2902](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2902)
 
 ## Breaking changes and deprecations
 
@@ -122,6 +129,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2806](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2806)
 * [#2821](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2821)
 * [#2880](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2880)
+* [#2899](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2899)
 
 ## Other changes
 
