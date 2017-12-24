@@ -59,7 +59,11 @@ class PersonalUrls extends HookHandler {
 		$queue = [];
 
 		foreach ( $watchlist as $job ) {
-			$queue[$job] = $this->humanReadable( $this->jobQueue->getQueueSize( $job ) );
+			$size = $this->jobQueue->getQueueSize( $job );
+
+			if ( $size > 0 ) {
+				$queue[$job] = $this->humanReadable( $size );
+			}
 		}
 
 		$out = $this->skin->getOutput();
@@ -67,10 +71,6 @@ class PersonalUrls extends HookHandler {
 
 		$out->addModules( 'ext.smw.personal' );
 		$out->addJsConfigVars( 'smwgJobQueueWatchlist', $queue );
-
-		$queue = array_filter( $queue, function( $v ) {
-			return $v > 0;
-		} );
 
 		$personalUrl['smw-jobqueue-watchlist'] = [
 			'text'   => 'ⅉ [ ' . ( $queue === [] ? '0' : implode( ' | ', $queue ) ) . ' ]' ,
