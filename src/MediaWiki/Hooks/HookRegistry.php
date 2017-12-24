@@ -583,17 +583,43 @@ class HookRegistry {
 		 */
 		$this->handlers['GetPreferences'] = function ( $user, &$preferences ) use( $applicationFactory ) {
 
+			$settings = $applicationFactory->getSettings();
 			$getPreferences = new GetPreferences(
 				$user
 			);
 
 			$getPreferences->setOptions(
 				[
-					'smwgEnabledEditPageHelp' => $applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' )
+					'smwgEnabledEditPageHelp' => $settings->get( 'smwgEnabledEditPageHelp' ),
+					'smwgJobQueueWatchlist' => $settings->get( 'smwgJobQueueWatchlist' )
 				]
 			);
 
 			return $getPreferences->process( $preferences);
+		};
+
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
+		 */
+		$this->handlers['PersonalUrls'] = function( array &$personal_urls, $title, $skinTemplate ) use( $applicationFactory ) {
+
+			$personalUrls = new PersonalUrls(
+				$skinTemplate,
+				$applicationFactory->getJobQueue()
+			);
+
+			$user = $skinTemplate->getUser();
+
+			$personalUrls->setOptions(
+				[
+					'smwgJobQueueWatchlist' => $applicationFactory->getSettings()->get( 'smwgJobQueueWatchlist' ),
+					'prefs-jobqueue-watchlist' => $user->getOption( 'smw-prefs-general-options-jobqueue-watchlist' )
+				]
+			);
+
+			$personalUrls->process( $personal_urls );
+
+			return true;
 		};
 
 		/**

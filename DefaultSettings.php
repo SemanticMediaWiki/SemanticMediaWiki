@@ -659,6 +659,34 @@ return array(
 	'smwgEnableUpdateJobs' => true,
 	##
 
+	###
+	# JobQueue watchlist
+	#
+	# This setting allows to display a personal bar link that shows the queue
+	# sizes for listed jobs. The information presented is fetched from the
+	# MediaWiki API and might be slightly inaccurate but should allow to make
+	# assumptions as to where the system needs attention.
+	#
+	# @see https://www.mediawiki.org/wiki/Manual:Job_queue#Special:Statistics
+	#
+	# To make this feature available, assign a simple list to the setting as in:
+	#
+	# $GLOBALS['smwgJobQueueWatchlist'] = [
+	#	'SMW\UpdateJob',
+	#	'SMW\ParserCachePurgeJob',
+	#	'SMW\FulltextSearchTableUpdateJob',
+	#	'SMW\ChangePropagationUpdateJob'
+	# ]
+	#
+	# Information are not displayed unless a user enables the setting in his or
+	# her preference setting.
+	#
+	# @since 3.0
+	# @default disabled (empty array)
+	##
+	'smwgJobQueueWatchlist' => [],
+	##
+
 	### List of enabled special page properties.
 	# Modification date (_MDAT) is enabled by default for backward compatibility.
 	# Extend array to enable other properties:

@@ -41,8 +41,6 @@ class GetPreferences extends HookHandler {
 	 */
 	public function process( array &$preferences ) {
 
-		$enabledEditPageHelp = $this->getOption( 'smwgEnabledEditPageHelp', false );
-
 		// Intro text
 		$preferences['smw-prefs-intro'] =
 			array(
@@ -67,7 +65,14 @@ class GetPreferences extends HookHandler {
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-disable-editpage-info',
 			'section' => 'smw/general-options',
-			'disabled' => !$enabledEditPageHelp
+			'disabled' => !$this->getOption( 'smwgEnabledEditPageHelp', false )
+		);
+
+		$preferences['smw-prefs-general-options-jobqueue-watchlist'] = array(
+			'type' => 'toggle',
+			'label-message' => 'smw-prefs-general-options-jobqueue-watchlist',
+			'section' => 'smw/general-options',
+			'disabled' => $this->getOption( 'smwgJobQueueWatchlist', [] ) === []
 		);
 
 		// Option to enable input assistance

@@ -39,6 +39,15 @@
 	clear: both;
 }
 
+.smw-personal-jobqueue-watchlist:hover, .smw-personal-jobqueue-watchlist:focus, .smw-personal-jobqueue-watchlist:active {
+	text-decoration: none;
+	color: #0645ad;
+}
+
+.smw-personal-table {
+	font-size: 90%;
+}
+
 /* highlighting for builtin elements */
 span.smwbuiltin,
 span.smwttactiveinline span.smwbuiltin {

@@ -404,8 +404,9 @@
 	"smw-prefs-ask-options-tooltip-display": "Display parameter text as an info tooltip",
 	"smw-prefs-ask-options-collapsed-default": "Enable option box to be collapsed by default",
 	"smw-prefs-general-options-time-correction": "Enable time correction for special pages using the local [[Special:Preferences#mw-prefsection-rendering|time offset]] preference",
+	"smw-prefs-general-options-jobqueue-watchlist": "Show the [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist job queue watchlist] in my personal bar",
 	"smw-prefs-general-options-disable-editpage-info": "Disable the introductory text on the edit page",
-	"smw-prefs-general-options-suggester-textinput": "Enable input assistance for semantic entity suggestions",
+	"smw-prefs-general-options-suggester-textinput": "Enable [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance input assistance] for semantic entity suggestions",
 	"smw-ui-tooltip-title-property": "Property",
 	"smw-ui-tooltip-title-quantity": "Unit conversion",
 	"smw-ui-tooltip-title-info": "Information",
@@ -670,5 +671,6 @@
 	"smw-section-collapse": "Collapse the section",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] format",
 	"smw-help": "Help",
-	"smw-cheat-sheet": "Cheat sheet"
+	"smw-cheat-sheet": "Cheat sheet",
+	"smw-personal-jobqueue-watchlist": "Job queue watchlist"
 }
