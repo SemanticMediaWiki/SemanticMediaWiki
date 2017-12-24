@@ -198,6 +198,11 @@ class SMWSQLStore3Writers {
 		$connection->endAtomicTransaction( __METHOD__ );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
+		// Store the diff in cache so any post processing has a chance to find
+		// what entities and values were changed
+		$changeDiff = $changeOp->newChangeDiff();
+		$changeDiff->save( ApplicationFactory::getInstance()->getCache() );
+
 		$changePropListener->callListeners();
 
 		// Deprecated since 2.3, use SMW::SQLStore::AfterDataUpdateComplete

@@ -88,6 +88,7 @@ class PropertyTableRowDiffer {
 
 		$tablesDeleteRows = array();
 		$tablesInsertRows = array();
+		$propertyList = [];
 
 		$newHashes = array();
 
@@ -95,10 +96,12 @@ class PropertyTableRowDiffer {
 			$this->setChangeOp( new ChangeOp( $semanticData->getSubject() ) );
 		}
 
-		$newData = $this->mapToInsertValueFormat(
+		list( $newData, $propertyList ) = $this->mapToInsertValueFormat(
 			$sid,
 			$semanticData
 		);
+
+		$this->changeOp->addPropertyList( $propertyList );
 
 		$oldHashes = $this->fetchPropertyTableHashesById(
 			$sid
@@ -334,6 +337,10 @@ class PropertyTableRowDiffer {
 		$subject = $semanticData->getSubject();
 		$propertyTables = $this->store->getPropertyTables();
 
+		// Keep the list for the Diff to avoid having to lookup any property ID
+		// reference during a post processing
+		$propertyList = [];
+
 		foreach ( $semanticData->getProperties() as $property ) {
 
 			$tableId = $this->store->findPropertyTableID( $property );
@@ -359,6 +366,9 @@ class PropertyTableRowDiffer {
 
 			if ( !$propertyTable->isFixedPropertyTable() ) {
 				$insertValues['p_id'] = $this->store->getObjectIds()->makeSMWPropertyID( $property );
+				$propertyList[$property->getKey()] = $insertValues['p_id'];
+			} else {
+				$propertyList[$property->getKey()] = $this->store->getObjectIds()->makeSMWPropertyID( $property );
 			}
 
 			foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
@@ -396,7 +406,7 @@ class PropertyTableRowDiffer {
 			$this->fetchConceptTableInserts( $sid, $updates );
 		}
 
-		return $updates;
+		return [ $updates, $propertyList ];
 	}
 
 	/**

@@ -74,9 +74,17 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$changeOp->expects( $this->any() )
+			->method( 'newChangeDiff' )
+			->will( $this->returnValue( $changeDiff ) );
 
 		$changeOp->expects( $this->any() )
 			->method( 'getChangedEntityIdSummaryList' )

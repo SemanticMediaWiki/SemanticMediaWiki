@@ -246,13 +246,6 @@ class UpdateJob extends JobBase {
 
 		if ( $this->hasParameter( 'ref' ) ) {
 			$origin[] = $this->getParameter( 'ref' );
-
-			// For a cascading reference update, allow the PageUpdate (title
-			// invalidation) to take place in succession
-			$parserData->setOption(
-				Enum::OPT_SUSPEND_PURGE,
-				false
-			);
 		}
 
 		$parserData->setOrigin( $origin );

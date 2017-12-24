@@ -8,7 +8,9 @@ use Onoi\Cache\Cache;
 use ParserOutput;
 use Title;
 use WebRequest;
+use Html;
 use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
 
 /**
  * Some updates require to be handled in a "post" process meaning after an update
@@ -72,7 +74,7 @@ class PostProcHandler {
 	 *
 	 * @return array|string
 	 */
-	public function getResModules() {
+	public function getModules() {
 		return 'ext.smw.postproc';
 	}
 
@@ -86,12 +88,18 @@ class PostProcHandler {
 	 */
 	public function getHtml( Title $title, WebRequest $webRequest ) {
 
-		// Is `@annotation` available as part of a #ask query?
-		$refs = $this->parserOutput->getExtensionData( self::PROC_POST_QUERYREF );
-
-		if ( $this->isEnabled === false || $refs === null ) {
+		if ( $this->isEnabled === false ) {
 			return '';
 		}
+
+		$subject = DIWikiPage::newFromTitle(
+			$title
+		);
+
+		$attributes = [
+			'class' => 'smw-postproc',
+			'data-subject' => $subject->getHash()
+		];
 
 		// Ensure to detect the post edit process to distinguish between an edit
 		// event and any other post, get request in order to only sent a html
@@ -102,37 +110,44 @@ class PostProcHandler {
 			\EditPage::POST_EDIT_COOKIE_KEY_PREFIX . $title->getLatestRevID()
 		);
 
-		$key = DependencyLinksUpdateJournal::makeKey(
-			$title
-		);
-
-		// In case the dependency journal contains an active reference then
-		// prepare for an additional update since `@annotation` is used to ensure
-		// that values are recomputed without an explicit `edit` action.
-		if ( $this->cache->fetch( $key ) && !$this->cache->contains( $key . ':post' ) ) {
-			$postEdit = true;
-
-			// Add a update marker (5 min.) to avoid running twice in case the
-			// journal reference hasn't been deleted yet as result of an existing
-			// PostProcHandler update request.
-			$this->cache->save( $key . ':post', true, 300 );
-		} else {
-			$this->cache->delete( $key . ':post' );
+		// Was the edit SMW specific or contains it an unrelated (e.g altered
+		// some text unrelated to any property/value annotation) change?
+		if ( $postEdit !== null && ( $changeDiff = ChangeDiff::fetch( $this->cache, $subject ) ) !== false ) {
+			$postEdit = $this->checkDiff( $changeDiff );
 		}
 
-		// The element is only added temporary in the event of a postEdit, a
+		// Is `@annotation` available as part of a #ask query?
+		$refs = $this->parserOutput->getExtensionData( self::PROC_POST_QUERYREF );
+
+		if ( $refs !== null && $refs !== [] ) {
+			$key = DependencyLinksUpdateJournal::makeKey(
+				$title
+			);
+
+			// In case the dependency journal contains an active reference then
+			// prepare for an additional update since `@annotation` is used to ensure
+			// that values are recomputed without an explicit `edit` action.
+			if ( $this->cache->fetch( $key ) && !$this->cache->contains( $key . ':post' ) ) {
+				$postEdit = true;
+
+				// Add an update marker (5 min.) to avoid running twice in case the
+				// journal reference hasn't been deleted yet as result of an existing
+				// PostProcHandler update request.
+				$this->cache->save( $key . ':post', true, 300 );
+			} else {
+				$this->cache->delete( $key . ':post' );
+			}
+
+			$attributes['data-ref'] = json_encode( array_keys( $refs ) );
+		} else {
+			$postEdit = null;
+		}
+
+		// The element is only added temporarily in the event of a postEdit, a
 		// reload of the page will not have the cookie being set and is therefore
 		// neglected
-		if ( $postEdit !== null && $refs !== [] ) {
-			return \Html::rawElement(
-				'div',
-				array(
-					'class' => 'smw-postproc',
-					'data-subject' => DIWikiPage::newFromTitle( $title )->getHash(),
-					'data-ref' => json_encode( array_keys( $refs ) )
-				),
-				'' // Message::get( 'smw-postproc-queryref', Message::PARSE )
-			);
+		if ( $postEdit !== null ) {
+			return Html::rawElement( 'div', $attributes );
 		}
 
 		return '';
@@ -164,6 +179,38 @@ class PostProcHandler {
 			self::PROC_POST_QUERYREF,
 			$data
 		);
+	}
+
+	private function checkDiff( $changeDiff ) {
+
+		$propertyList = $changeDiff->getPropertyList(
+			true
+		);
+
+		// Investigate whether the changeDiff contains a user invoked modification
+		// and if so, allow the postEdit process to continue in order to act
+		// on SMW data and not on text that doesn't involve changes to a property
+		// value pair.
+		foreach ( $changeDiff->getTableChangeOps() as $tableChangeOp ) {
+			foreach ( $tableChangeOp->getFieldChangeOps() as $fieldChangeOp ) {
+				$pid = $fieldChangeOp->get( 'p_id' );
+
+				// Does the change involve an operation with a user defined
+				// property?
+				//
+				// Some data were altered but since we cannot (within the request
+				// framework and without further computation) anticipate whether
+				// this influences a query or not, it is a good enough heuristic
+				// to allow to continue the postProc.
+				if ( isset( $propertyList[$pid] ) && $propertyList[$pid]{0} !== '_' ) {
+					return true;
+				}
+			}
+		}
+
+		// Avoid any update since the condition of the diff containing any altered
+		// SMW data was not meet.
+		return null;
 	}
 
 }
