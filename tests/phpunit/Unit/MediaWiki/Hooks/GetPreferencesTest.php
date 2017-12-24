@@ -74,6 +74,10 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 			'smw-prefs-general-options-disable-editpage-info'
 		];
 
+		$provider[] = [
+			'smw-prefs-general-options-jobqueue-watchlist'
+		];
+
 		return $provider;
 	}
 

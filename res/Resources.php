@@ -450,6 +450,23 @@ return array(
 		)
 	),
 
+	// Personal resource
+	'ext.smw.personal' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.personal.js',
+		'dependencies' => array(
+			'ext.smw.tooltip',
+			'mediawiki.api'
+		),
+		'messages' => array(
+			'smw-personal-jobqueue-watchlist'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	// TableResultPrinter resource
 	'ext.smw.tableprinter' => $moduleTemplate + array(
 		'scripts' => array(

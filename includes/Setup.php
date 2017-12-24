@@ -312,26 +312,33 @@ final class Setup {
 			return;
 		}
 
-		// Rights
-		$vars['wgAvailableRights'][] = 'smw-admin';
-		$vars['wgAvailableRights'][] = 'smw-patternedit';
-		$vars['wgAvailableRights'][] = 'smw-pageedit';
+		$rights = [
+			'smw-admin' => [
+				'sysop',
+				'smwadministrator'
+			],
+			'smw-patternedit' => [
+				'smwcurator'
+			],
+			'smw-pageedit' => [
+				'smwcurator'
+			],
+		//	'smw-watchlist' => [
+		//		'smwcurator'
+		//	],
+		];
 
-		// User group rights
-		if ( !isset( $vars['wgGroupPermissions']['sysop']['smw-admin'] ) ) {
-			$vars['wgGroupPermissions']['sysop']['smw-admin'] = true;
-		}
+		foreach ( $rights as $right => $roles ) {
 
-		if ( !isset( $vars['wgGroupPermissions']['smwcurator']['smw-patternedit'] ) ) {
-			$vars['wgGroupPermissions']['smwcurator']['smw-patternedit'] = true;
-		}
+			// Rights
+			$vars['wgAvailableRights'][] = $right;
 
-		if ( !isset( $vars['wgGroupPermissions']['smwcurator']['smw-pageedit'] ) ) {
-			$vars['wgGroupPermissions']['smwcurator']['smw-pageedit'] = true;
-		}
-
-		if ( !isset( $vars['wgGroupPermissions']['smwadministrator']['smw-admin'] ) ) {
-			$vars['wgGroupPermissions']['smwadministrator']['smw-admin'] = true;
+			// User group rights
+			foreach ( $roles as $role ) {
+				if ( !isset( $vars['wgGroupPermissions'][$role][$right] ) ) {
+					$vars['wgGroupPermissions'][$role][$right] = true;
+				}
+			}
 		}
 
 		// Add an additional protection level restricting edit/move/etc
