@@ -86,7 +86,7 @@
 	background-color: #f5f5f5;
 }
 
-.smw-property-page-results .header-row > .smw-table-cell {
+.smw-property-page-results .header-row > .header-title {
 	border-bottom: 1px solid #ddd;
 }
 
@@ -180,7 +180,7 @@
 }
 
 .smw-property-page-results .header-title {
-	 border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 }
 
 .clearfix::after {
@@ -208,4 +208,18 @@
 .smw-property-page-results.legacy .smwprops {
 	padding: 0px 0px;
 	padding-top: 0.3em;
+}
+
+/**
+ * Responsive settings (@see ext.smw.table)
+ */
+@media screen and (max-width: 800px) {
+
+	.smw-property-page-results .header-title, .smw-property-page-results .header-row > .header-title {
+		border-bottom: none;
+	}
+
+	.smw-property-page-results .header-title:first-child, .smw-property-page-results .header-row > .header-title:first-child {
+		border-bottom: 1px solid #ddd;
+	}
 }
