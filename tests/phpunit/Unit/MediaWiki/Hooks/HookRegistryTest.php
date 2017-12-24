@@ -193,6 +193,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForFileUpload( $instance );
 		$this->doTestExecutionForResourceLoaderGetConfigVars( $instance );
 		$this->doTestExecutionForGetPreferences( $instance );
+		$this->doTestExecutionForPersonalUrls( $instance );
 		$this->doTestExecutionForSkinTemplateNavigation( $instance );
 		$this->doTestExecutionForLoadExtensionSchemaUpdates( $instance );
 		$this->doTestExecutionForResourceLoaderTestModules( $instance );
@@ -775,6 +776,38 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $user, &$preferences )
+		);
+	}
+
+	public function doTestExecutionForPersonalUrls( $instance ) {
+
+		$handler = 'PersonalUrls';
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skinTemplate->expects( $this->any() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
+
+		$personal_urls = [];
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$personal_urls, $title, $skinTemplate )
 		);
 	}
 
