@@ -26,15 +26,17 @@
 				}
 			}
 
-			text = '<table class="smw-personal-table"><tbody>' + text + '</tbody></table>';
+			if ( text !== '' ) {
+				text = '<table class="smw-personal-table"><tbody>' + text + '</tbody></table>';
 
-			var tooltip = smw.Factory.newTooltip();
-			tooltip.show ( {
-				context: $( this ),
-				title: mw.msg( 'smw-personal-jobqueue-watchlist' ),
-				type: 'inline',
-				content: text
-			} );
+				var tooltip = smw.Factory.newTooltip();
+				tooltip.show ( {
+					context: $( this ),
+					title: mw.msg( 'smw-personal-jobqueue-watchlist' ),
+					type: 'inline',
+					content: text
+				} );
+			};
 		} );
 
 	} );
