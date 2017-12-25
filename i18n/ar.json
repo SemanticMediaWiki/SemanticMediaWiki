@@ -15,7 +15,8 @@
 			"Moud hosny",
 			"ديفيد",
 			"Mido",
-			"20عبد العزيز"
+			"20عبد العزيز",
+			"Yasser Yousssef"
 		]
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
@@ -23,7 +24,8 @@
 	"smw-semantics-not-enabled": "لم يتم تمكين وظائف ميدياويكي الدلالي لهذا الويكي.",
 	"smw_viewasrdf": "تلقيمة RDF",
 	"smw_finallistconjunct": " و",
-	"smw_factbox_head": "حقائق عن $1",
+	"smw-factbox-facts-help": "يعرض البيانات والحقائق التي تم إنشاؤها بواسطة مستخدم",
+	"smw-factbox-facts-derived-help": "يعرض الحقائق التي تم استخلاصها من القواعد أو بمساعدة تقنيات التفكير الأخرى",
 	"smw_isspecprop": "هذه خصيصة مميَّزة في هذه الويكي.",
 	"smw-concept-cache-header": "استخدام ذاكرة التخزين المؤقت",
 	"smw-concept-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count مخبأ مفهوم] يحتوي على {{PLURAL:$1|كيان '''واحد'''|'''$1''' كيانات}} ($2).",
@@ -239,6 +241,7 @@
 	"smw-ask-empty": "فارغ",
 	"smw-ask-format": "الصيغة",
 	"smw-ask-format-selection-help": "لوصف تفصيلي زُر صفحة المساعدة $1",
+	"smw-ask-input-assistance": "مساعدة الإدخال",
 	"smw-ask-query-search-info": "الاستعلام <code><nowiki>$1</nowiki></code> was تم الرد عليه من قبل {{PLURAL:$3|1=<code>$2</code> (من ذاكرة التخزين المؤقت)|<code>$2</code> (من ذاكرة التخزين المؤقت)|<code>$2</code>}} في $4 {{PLURAL:$4|ثانية|ثواني}}.",
 	"searchbyproperty": "البحث بالخصائص",
 	"processingerrorlist": "قائمة معالجة الخطأ",
@@ -433,5 +436,7 @@
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-reserved-category": "تصنيف",
 	"smw-section-expand": "وسع هذا القسم",
-	"smw-section-collapse": "اطو هذا القسم"
+	"smw-section-collapse": "اطو هذا القسم",
+	"smw-help": "مساعدة",
+	"smw-cheat-sheet": "صحيفة الغش"
 }

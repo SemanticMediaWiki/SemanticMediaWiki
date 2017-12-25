@@ -28,7 +28,6 @@
 	"smw-desc": "讓您的 Wiki 更易於取得所需的資料 - 不論是對機器''與''人類\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件])",
 	"smw_viewasrdf": "訂閱 RDF feed",
 	"smw_finallistconjunct": " 和",
-	"smw_factbox_head": "關於 \"$1\" 的事實",
 	"smw_isspecprop": "此屬性為此 Wiki 的特殊屬性。",
 	"smw-concept-cache-header": "暫存使用",
 	"smw_concept_description": "概念 \"$1\" 的描述",

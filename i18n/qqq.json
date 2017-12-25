@@ -22,7 +22,6 @@
 	"smw-semantics-not-enabled": "This is an informatory message.",
 	"smw_viewasrdf": "This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [https://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].",
 	"smw_finallistconjunct": "The last separator in a list. For example a list could look like this: \"A, B, and C\". The comma might not be appropriate in your language.\n\t{{Identical|And}}",
-	"smw_factbox_head": "Title of the box [https://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values.\n\nParameters:\n* $1 - the page name",
 	"smw_isspecprop": "Used on [[Special:Properties]] to identify a special (build in) property.",
 	"smw-concept-cache-header": "This is a section header on a page containing a concept.",
 	"smw-concept-cache-count": "This is an informatory message shown on the page containing a concept.\n\nParameter:\n* $1 holds the number of cached objects.\n* $2 holds the timestamp the cache was generated.",
@@ -664,5 +663,6 @@
 	"smw-browse-property-group-label": "This is the label of an entity similar to special property which is shown er on special page \"Browse\".",
 	"smw-browse-property-group-description": "This is the label of an entity similar to special property which is shown er on special page \"Browse\".",
 	"smw-property-predefined-ppgr": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
-	"smw-list-pager-filter": "This is the label of a selection field.\n\n{{Identical|Filter}}"
+	"smw-list-pager-filter": "This is the label of a selection field.\n\n{{Identical|Filter}}",
+	"smw-help": "{{Identical|Help}}"
 }

@@ -25,7 +25,6 @@
 	"smw-semantics-not-enabled": "Функціонал Семантичного Медіавікі не ввімкнено в цій вікі.",
 	"smw_viewasrdf": "вивід RDF",
 	"smw_finallistconjunct": " і",
-	"smw_factbox_head": "Відомості про $1",
 	"smw_isspecprop": "Ця властивість є спеціальною у цій вікі",
 	"smw-concept-cache-header": "Використання кешу",
 	"smw-concept-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count Кеш концептів] містить {{PLURAL:$1|'''одну''' суність|'''$1''' сутрості|'''$1''' сутростей}} ($2).",

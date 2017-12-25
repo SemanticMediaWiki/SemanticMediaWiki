@@ -11,7 +11,6 @@
 	"smw-semantics-not-enabled": "Nun s'activó la función de MediaWiki Semántica pa esta wiki.",
 	"smw_viewasrdf": "Canal RDF",
 	"smw_finallistconjunct": ", ⴷ",
-	"smw_factbox_head": "Fechos sobro $1",
 	"smw_isspecprop": "Esta propiedá ye una propiedá especial nesta wiki.",
 	"smw-concept-cache-header": "Usu de la caché",
 	"smw-concept-cache-count": "La [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count caché de conceptos] contien {{PLURAL:$1|'''una''' entidá|'''$1''' entidaes}} ($2).",

@@ -35,7 +35,6 @@
 	"smw-semantics-not-enabled": "Le funzionalità di Semantic MediaWiki non sono abilitate per questo wiki.",
 	"smw_viewasrdf": "Feed RDF",
 	"smw_finallistconjunct": " e",
-	"smw_factbox_head": "Fatti riguardanti $1",
 	"smw_isspecprop": "Questa proprietà è una proprietà speciale all'interno di questo wiki.",
 	"smw-concept-cache-header": "Utilizzo della cache",
 	"smw-concept-cache-count": "La [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count cache di concetti] contiene {{PLURAL:$1|'''una''' entità|'''$1''' entità}} ($2).",

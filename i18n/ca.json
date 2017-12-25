@@ -23,7 +23,6 @@
 	"smw-semantics-not-enabled": "No s'ha habilitat la funcionalitat de Semantic MediaWiki en aquest wiki.",
 	"smw_viewasrdf": "Canal RDF",
 	"smw_finallistconjunct": ", i",
-	"smw_factbox_head": "Dades sobre «$1»",
 	"smw_isspecprop": "Aquesta és una propietat especial en aquest wiki.",
 	"smw-concept-cache-header": "Ús de la memòria cau",
 	"smw-concept-no-cache": "No hi ha memòria cau disponible.",

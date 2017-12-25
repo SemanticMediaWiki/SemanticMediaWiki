@@ -22,7 +22,6 @@
 	"smw-semantics-not-enabled": "Η λειτουργικότητα Σημασιολογικού MediaWiki δεν είναι ενεργοποιημένη για αυτό το wiki.",
 	"smw_viewasrdf": "Ροή RDF",
 	"smw_finallistconjunct": " και",
-	"smw_factbox_head": "Γεγονότα για «$1»",
 	"smw_isspecprop": "Αυτή η ιδιότητα είναι μια ειδική ιδιότητα σε αυτό το wiki.",
 	"smw-concept-cache-header": "Χρήση προσωρινής μνήμης",
 	"smw-concept-cache-count": "Η [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count προσωρινή μνήμη έννοιας] περιέχει {{PLURAL:$1|'''μία''' οντότητα|'''$1''' οντότητες}} ($2).",

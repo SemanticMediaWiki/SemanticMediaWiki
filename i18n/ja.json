@@ -34,7 +34,6 @@
 	"smw-semantics-not-enabled": "この wiki では Semantic MediaWiki の機能が有効化されていませんでした。",
 	"smw_viewasrdf": "RDF フィード",
 	"smw_finallistconjunct": ",",
-	"smw_factbox_head": "「$1」に関する事実",
 	"smw_isspecprop": "このプロパティはこのウィキ内の特別なプロパティです。",
 	"smw-concept-no-cache": "利用可能なキャッシュはありません。",
 	"smw_concept_description": "コンセプト「$1」の説明",
@@ -375,5 +374,7 @@
 	"smw-format-datatable-toolbar-export": "エクスポート",
 	"smw-property-reserved-category": "カテゴリ",
 	"smw-section-expand": "すべての節を展開",
-	"smw-section-collapse": "節を折りたたむ"
+	"smw-section-collapse": "節を折りたたむ",
+	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] 形式",
+	"smw-help": "ヘルプ"
 }

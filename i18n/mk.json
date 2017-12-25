@@ -12,7 +12,6 @@
 	"smw-semantics-not-enabled": "Семантички МедијаВики не е овозможен на ова вики.",
 	"smw_viewasrdf": "RDF-тековник",
 	"smw_finallistconjunct": " и",
-	"smw_factbox_head": "Факти за $1",
 	"smw_isspecprop": "Ова својство е специјално својство во ова вики.",
 	"smw-concept-cache-header": "Употреба на меѓусклад",
 	"smw-concept-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count Меѓускладот на концепти] содржи {{PLURAL:$1|'''единица''' entity|'''$1''' единици}} ($2).",

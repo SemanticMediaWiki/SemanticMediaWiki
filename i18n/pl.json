@@ -29,7 +29,6 @@
 	"smw-semantics-not-enabled": "Funkcjonalność Semantycznej MediaWiki dla tej wiki nie została włączona.",
 	"smw_viewasrdf": "Kanał RDF",
 	"smw_finallistconjunct": " i",
-	"smw_factbox_head": "Fakty o $1",
 	"smw_isspecprop": "Ta właściwość jest unikalna dla tej wiki.",
 	"smw-concept-cache-header": "Użycie pamięci podręcznej",
 	"smw-concept-no-cache": "Brak dostępnej pamięci podręcznej.",

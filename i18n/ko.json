@@ -24,7 +24,6 @@
 	"smw-semantics-not-enabled": "시맨틱 미디어위키 기능은 이 위키에서 사용할 수 없습니다.",
 	"smw_viewasrdf": "RDF 피드",
 	"smw_finallistconjunct": ", 그리고",
-	"smw_factbox_head": "\"$1\"에 대한 사실",
 	"smw_isspecprop": "이 속성은 이 위키에 특수한 속성입니다.",
 	"smw-concept-cache-header": "캐시 사용률",
 	"smw-concept-no-cache": "이용 가능한 캐시가 없습니다.",
@@ -227,7 +226,7 @@
 	"smw-ask-empty": "비었음",
 	"smw-ask-download-link-desc": "조회된 결과를 $1 형식으로 다운로드합니다",
 	"smw-ask-format": "형식",
-	"smw-ask-format-selection-help": "자세한 설명에 대해서는 $1 도움말 문서로 방문하세요.",
+	"smw-ask-format-selection-help": "$1 형식의 도움말",
 	"smw-ask-condition-change-info": "조건이 변경되었으므로 검색 엔진은 새로운 요구사항을 충족하는 결과를 출력하기 위해 쿼리를 다시 실행해야 합니다.",
 	"smw-ask-condition-input-assistance": "검색 지원은 다음의 접두사에 대해 지원됩니다:",
 	"smw-ask-condition-input-assistance-property": "<code>p:</code> 속성 검색",
@@ -400,7 +399,9 @@
 	"smw-datavalue-record-invalid-property-declaration": "레코드 정의에는 그 자체가 레코드 타입으로 선언된, 허용되지 않는 \"$1\" 프로퍼티를 포함하고 있습니다.",
 	"smw-datavalue-languagecode-invalid": "\"$1\"는 지원되는 언어 코드로 인식되지 않습니다.",
 	"smw-limitreport-intext-parsertime": "[SMW] 텍스트 내 주석 파서 시간",
+	"smw-limitreport-intext-postproctime": "[SMW] 후처리 시간",
 	"smw-limitreport-intext-parsertime-value": "$1초",
+	"smw-limitreport-intext-postproctime-value": "$1{{PLURAL:$1|초}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1초",
 	"smw-datavalue-allows-pattern-mismatch": "\"$1\"은(는) \"$2\" 정규 표현식에 의해 유효하지 않은 것으로 분류되었습니다.",
 	"smw-datavalue-feature-not-supported": "\"$1\" 기능은 이 위키에서 지원되지 않거나 비활성화되었습니다.",
@@ -453,5 +454,7 @@
 	"smw-browse-property-group-description": "속성 그룹 설명",
 	"smw-list-pager-filter": "필터:",
 	"smw-section-expand": "문단 펼치기",
-	"smw-section-collapse": "문단 접기"
+	"smw-section-collapse": "문단 접기",
+	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] 형식",
+	"smw-help": "도움말"
 }

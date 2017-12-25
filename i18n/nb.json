@@ -21,7 +21,6 @@
 	"smw-semantics-not-enabled": "Semantic MediaWiki-funksjonalitet har ikke blitt slått på på denne wikien.",
 	"smw_viewasrdf": "RDF-kilde",
 	"smw_finallistconjunct": " og",
-	"smw_factbox_head": "Fakta om $1",
 	"smw_isspecprop": "Denne egenskapen er en spesialegenskap på denne wikien.",
 	"smw-concept-cache-header": "Bruk av mellomlager",
 	"smw-concept-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count Konseptmellomlageret] inneholder {{PLURAL:$1|'''en''' enhet|'''$1''' enheter}} ($2).",

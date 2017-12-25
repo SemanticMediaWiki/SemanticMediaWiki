@@ -29,7 +29,6 @@
 	"smw-semantics-not-enabled": "Semantic MediaWiki-functionaliteit is niet ingeschakeld voor deze wiki.",
 	"smw_viewasrdf": "RDF-feed",
 	"smw_finallistconjunct": " en",
-	"smw_factbox_head": "Feiten over \"$1\"",
 	"smw_isspecprop": "Dit is een speciale eigenschap in deze wiki.",
 	"smw-concept-cache-header": "Cachegebruik",
 	"smw-concept-cache-count": "De [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count conceptcache] bevat {{PLURAL:$1|'''één''' element|'''$1''' elementen}} ($2).",
