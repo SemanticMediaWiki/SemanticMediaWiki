@@ -370,7 +370,7 @@
 	"smw-admin-supplementary-idlookup-title": "Entity lookup and disposal",
 	"smw-admin-supplementary-idlookup-intro": "<u>$1</u> contains functions to lookup and dispose individual entities",
 	"smw-admin-supplementary-duplookup-title": "Duplicate entities",
-	"smw-admin-supplementary-duplookup-intro": "<u>$1</u> to list entries that are catagorized as to contain duplicates in the entity table",
+	"smw-admin-supplementary-duplookup-intro": "<u>$1</u> to list entries that are categorized as to contain duplicates in the entity table",
 	"smw-admin-supplementary-duplookup-docu": "This page lists entries from the [https://www.semantic-mediawiki.org/wiki/Help:Entity_table entity table] that have been categorized as duplicates. Duplicate entries should (if at all) only occur on rare occasions potentially caused by a terminated process during a database update or an unsuccessful rollback transaction.",
 	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities",
 	"smw-list-count": "The list contains $1 {{PLURAL:$1|entry|entries}}.",
