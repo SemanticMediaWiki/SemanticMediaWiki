@@ -413,8 +413,9 @@
 	"smw-prefs-ask-options-tooltip-display": "显示参数文本为信息提示",
 	"smw-prefs-ask-options-collapsed-default": "启用选项框以按默认方式折叠",
 	"smw-prefs-general-options-time-correction": "使用本地[[Special:Preferences#mw-prefsection-rendering|时间偏移]]参数设置，为特殊页面启用时间修正",
+	"smw-prefs-general-options-jobqueue-watchlist": "在我的个人工具栏中显示[https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist 工作队列监视列表]",
 	"smw-prefs-general-options-disable-editpage-info": "禁用编辑页面上的介绍文本",
-	"smw-prefs-general-options-suggester-textinput": "为语义实体建议启用输入帮助",
+	"smw-prefs-general-options-suggester-textinput": "为语义实体建议启用[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance 输入帮助]",
 	"smw-ui-tooltip-title-property": "属性",
 	"smw-ui-tooltip-title-quantity": "单位转换",
 	"smw-ui-tooltip-title-info": "信息",
@@ -676,5 +677,6 @@
 	"smw-section-collapse": "关闭章节",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]格式",
 	"smw-help": "帮助",
-	"smw-cheat-sheet": "小抄"
+	"smw-cheat-sheet": "小抄",
+	"smw-personal-jobqueue-watchlist": "工作队列监视列表"
 }

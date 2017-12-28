@@ -42,6 +42,7 @@
 	"smw-semantics-not-enabled": "Функциональность Semantic MediaWiki не подключена на этой вики.",
 	"smw_viewasrdf": "RDF источник",
 	"smw_finallistconjunct": " и",
+	"smw-factbox-facts": "Факты",
 	"smw_isspecprop": "Это свойство относится к числу специальных свойств данного вики-сайта.",
 	"smw-concept-cache-header": "Использование кэша",
 	"smw-concept-no-cache": "Кэш отсутствует.",
