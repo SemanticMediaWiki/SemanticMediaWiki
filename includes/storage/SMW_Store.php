@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMWDataItem;
+use SMWDataItem as DataItem;
 use SMWQuery;
 use SMWQueryResult;
 use SMWRequestOptions;
@@ -12,6 +12,7 @@ use SMW\Connection\ConnectionManager;
 use SMW\QueryEngine;
 use SMW\Options;
 use SMW\Utils\Timer;
+use InvalidArgumentException;
 
 /**
  * This group contains all parts of SMW that relate to storing and retrieving
@@ -66,7 +67,7 @@ abstract class Store implements QueryEngine {
 	 * @param $property DIProperty
 	 * @param $requestoptions SMWRequestOptions
 	 *
-	 * @return array of SMWDataItem
+	 * @return array of DataItem
 	 */
 	public abstract function getPropertyValues( $subject, DIProperty $property, $requestoptions = null );
 
@@ -91,7 +92,7 @@ abstract class Store implements QueryEngine {
 	 * @param DIWikiPage $subject denoting the subject
 	 * @param SMWRequestOptions|null $requestOptions optionally defining further options
 	 *
-	 * @return SMWDataItem
+	 * @return DataItem
 	 */
 	public abstract function getProperties( DIWikiPage $subject, $requestOptions = null );
 
@@ -103,7 +104,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return DataItem[]|[]
 	 */
-	public abstract function getInProperties( SMWDataItem $object, $requestoptions = null );
+	public abstract function getInProperties( DataItem $object, $requestoptions = null );
 
 	/**
 	 * Convenience method to find the sortkey of an SMWDIWikiPage. The
@@ -111,17 +112,19 @@ abstract class Store implements QueryEngine {
 	 * the MediaWiki database entry about a Title objects sortkey. If no
 	 * sortkey is stored, the default sortkey (title string) is returned.
 	 *
-	 * @param $wikiPage DIWikiPage to find the sortkey for
+	 * @param DIWikiPage $dataItem
+	 *
 	 * @return string sortkey
 	 */
-	public function getWikiPageSortKey( DIWikiPage $wikiPage ) {
-		$sortkeyDataItems = $this->getPropertyValues( $wikiPage, new DIProperty( '_SKEY' ) );
+	public function getWikiPageSortKey( DIWikiPage $dataItem ) {
 
-		if ( count( $sortkeyDataItems ) > 0 ) {
-			return end( $sortkeyDataItems )->getString();
-		} else {
-			return str_replace( '_', ' ', $wikiPage->getDBkey() );
+		$dataItems = $this->getPropertyValues( $dataItem, new DIProperty( '_SKEY' ) );
+
+		if ( count( $dataItems ) > 0 ) {
+			return end( $dataItems )->getString();
 		}
+
+		return str_replace( '_', ' ', $dataItem->getDBkey() );
 	}
 
 	/**
@@ -129,42 +132,40 @@ abstract class Store implements QueryEngine {
 	 * or DIProperty object. Returns a dataitem of the same type that
 	 * the input redirects to, or the input itself if there is no redirect.
 	 *
-	 * @param $dataItem SMWDataItem to find the redirect for.
-	 * @return SMWDataItem
+	 * @param DataItem $dataItem
+	 *
+	 * @return DataItem
 	 */
-	public function getRedirectTarget( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
+	public function getRedirectTarget( DataItem $dataItem ) {
+
+		$type = $dataItem->getDIType();
+
+		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
+			throw new InvalidArgumentException( 'Store::getRedirectTarget expects a DIProperty or DIWikiPage object.' );
+		}
+
+		if ( $type === DataItem::TYPE_PROPERTY ) {
+
 			if ( !$dataItem->isUserDefined() ) {
 				return $dataItem;
 			}
+
 			$wikipage = $dataItem->getDiWikiPage();
-		} elseif ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
+		} elseif ( $type === DataItem::TYPE_WIKIPAGE ) {
 			$wikipage = $dataItem;
-		} else {
-			throw new InvalidArgumentException( 'SMWStore::getRedirectTarget() expects an object of type IProperty or SMWDIWikiPage.' );
 		}
 
-		$hash = $wikipage->getHash();
-		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'store.redirectTarget.lookup' );
+		$dataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
 
-		// Ensure that the same type context is used
-		if ( ( $di = $poolCache->fetch( $hash ) ) !== false && $di->getDIType() === $dataItem->getDIType() ) {
-			return $di;
-		}
+		if ( count( $dataItems ) > 0 ) {
 
-		$redirectDataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
+			$redirectDataItem = end( $dataItems );
 
-		if ( count( $redirectDataItems ) > 0 ) {
-
-			$redirectDataItem = end( $redirectDataItems );
-
-			if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY && $redirectDataItem instanceof DIWikiPage ) {
+			if ( $type == DataItem::TYPE_PROPERTY && $redirectDataItem instanceof DIWikiPage ) {
 				$dataItem = DIProperty::newFromUserLabel( $redirectDataItem->getDBkey() );
 			} else {
 				$dataItem = $redirectDataItem;
 			}
-
-			$poolCache->save( $hash, $dataItem );
 		}
 
 		return $dataItem;
@@ -209,9 +210,6 @@ abstract class Store implements QueryEngine {
 
 		$subject = $semanticData->getSubject();
 		$hash = $subject->getHash();
-
-		// @see Store::getRedirectTarget
-		$applicationFactory->getInMemoryPoolCache()->getPoolCacheById( 'store.redirectTarget.lookup' )->delete( $hash );
 
 		/**
 		 * @since 1.6
@@ -493,8 +491,6 @@ abstract class Store implements QueryEngine {
 		if ( $this->connectionManager !== null ) {
 			$this->connectionManager->releaseConnections();
 		}
-
-		InMemoryPoolCache::getInstance()->resetPoolCacheById( 'store.redirectTarget.lookup' );
 	}
 
 	/**
