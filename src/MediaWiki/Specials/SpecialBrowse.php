@@ -138,6 +138,7 @@ class SpecialBrowse extends SpecialPage {
 			'printable'   => $contentsBuilder->getOption( 'printable' ),
 			'showInverse' => $contentsBuilder->getOption( 'showInverse' ),
 			'showGroup'   => $contentsBuilder->getOption( 'showGroup' ),
+			'showSort'    => $contentsBuilder->getOption( 'showSort' ),
 			'showAll'     => $contentsBuilder->getOption( 'showAll' ),
 			'including'   => $contentsBuilder->getOption( 'including' )
 		);
@@ -239,6 +240,11 @@ class SpecialBrowse extends SpecialPage {
 		$contentsBuilder->setOption(
 			'showGroup',
 			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_GROUP )
+		);
+
+		$contentsBuilder->setOption(
+			'showSort',
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_SORTKEY )
 		);
 
 		$contentsBuilder->setOption(

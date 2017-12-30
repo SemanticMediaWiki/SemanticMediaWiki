@@ -672,5 +672,6 @@
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] format",
 	"smw-help": "Help",
 	"smw-cheat-sheet": "Cheat sheet",
-	"smw-personal-jobqueue-watchlist": "Job queue watchlist"
+	"smw-personal-jobqueue-watchlist": "Job queue watchlist",
+	"smw-property-predefined-label-skey": "Sortkey"
 }
