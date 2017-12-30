@@ -111,8 +111,7 @@ class SetupStore extends \Maintenance {
 			$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 		}
 
-		$store->getOptions()->set(
-			Installer::OPT_MESSAGEREPORTER,
+		$store->setMessageReporter(
 			$messageReporter
 		);
 

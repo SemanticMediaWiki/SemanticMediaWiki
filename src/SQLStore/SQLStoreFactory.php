@@ -15,7 +15,8 @@ use SMWRequestOptions as RequestOptions;
 use SMW\Options;
 use SMWSQLStore3;
 use SMW\SQLStore\TableBuilder\TableBuilder;
-use Onoi\MessageReporter\MessageReporterFactory;
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\NullMessageReporter;
 use Onoi\Cache\Cache;
 use SMWSql3SmwIds as EntityIdManager;
 use SMW\DIWikiPage;
@@ -45,6 +46,11 @@ class SQLStoreFactory {
 	private $store;
 
 	/**
+	 * @var MessageReporter
+	 */
+	private $messageReporter;
+
+	/**
 	 * @var ApplicationFactory
 	 */
 	private $applicationFactory;
@@ -58,9 +64,16 @@ class SQLStoreFactory {
 	 * @since 2.2
 	 *
 	 * @param SMWSQLStore3 $store
+	 * @param MessageReporter|null $messageReporter
 	 */
-	public function __construct( SMWSQLStore3 $store ) {
+	public function __construct( SMWSQLStore3 $store, MessageReporter $messageReporter = null ) {
 		$this->store = $store;
+		$this->messageReporter = $messageReporter;
+
+		if ( $this->messageReporter === null ) {
+			$this->messageReporter = new NullMessageReporter();
+		}
+
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->queryEngineFactory = new QueryEngineFactory( $store );
 	}
@@ -361,14 +374,12 @@ class SQLStoreFactory {
 
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
-		$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
-
 		$tableBuilder = TableBuilder::factory(
 			$this->store->getConnection( DB_MASTER )
 		);
 
 		$tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->messageReporter
 		);
 
 		$tableIntegrityExaminer = new TableIntegrityExaminer(
@@ -389,10 +400,13 @@ class SQLStoreFactory {
 			$tableIntegrityExaminer
 		);
 
+		$installer->setMessageReporter(
+			$this->messageReporter
+		);
+
 		$installer->setOptions(
 			$this->store->getOptions()->filter(
 				[
-					Installer::OPT_MESSAGEREPORTER,
 					Installer::OPT_TABLE_OPTIMZE,
 					Installer::OPT_IMPORT,
 					Installer::OPT_SCHEMA_UPDATE,

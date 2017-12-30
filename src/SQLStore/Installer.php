@@ -6,9 +6,9 @@ use SMW\CompatibilityMode;
 use SMW\Options;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
-use Onoi\MessageReporter\MessageReporter;
-use Onoi\MessageReporter\MessageReporterAware;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
+use Onoi\MessageReporter\MessageReporter;
 use Hooks;
 
 /**
@@ -19,12 +19,9 @@ use Hooks;
  *
  * @author mwjames
  */
-class Installer implements MessageReporter, MessageReporterAware {
+class Installer implements MessageReporter {
 
-	/**
-	 * MessageReport option
-	 */
-	const OPT_MESSAGEREPORTER = 'installer.messagereporter';
+	use MessageReporterAwareTrait;
 
 	/**
 	 * Optimize option
@@ -62,11 +59,6 @@ class Installer implements MessageReporter, MessageReporterAware {
 	private $tableIntegrityExaminer;
 
 	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
-
-	/**
 	 * @var Options
 	 */
 	private $options;
@@ -97,17 +89,6 @@ class Installer implements MessageReporter, MessageReporterAware {
 		}
 
 		$this->options = $options;
-	}
-
-	/**
-	 * @see MessageReporterAware::setMessageReporter
-	 *
-	 * @since 2.5
-	 *
-	 * @param MessageReporter $messageReporter
-	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
-		$this->messageReporter = $messageReporter;
 	}
 
 	/**
@@ -220,14 +201,12 @@ class Installer implements MessageReporter, MessageReporterAware {
 			return $this->messageReporter;
 		}
 
-		if ( ( $messageReporter = $this->options->safeGet( self::OPT_MESSAGEREPORTER, null ) ) !== null ) {
-			return $messageReporter;
-		}
+		$messageReporterFactory = MessageReporterFactory::getInstance();
 
 		if ( !$verbose ) {
-			$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
+			$messageReporter = $messageReporterFactory->newNullMessageReporter();
 		} else {
-			$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+			$messageReporter = $messageReporterFactory->newObservableMessageReporter();
 			$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 		}
 

@@ -9,6 +9,8 @@ use SMWRequestOptions;
 use SMWSemanticData;
 use Title;
 use SMW\Connection\ConnectionManager;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
+use Psr\Log\LoggerAwareTrait;
 use SMW\QueryEngine;
 use SMW\Options;
 use SMW\Utils\Timer;
@@ -34,6 +36,9 @@ use InvalidArgumentException;
  * @author Markus Krötzsch
  */
 abstract class Store implements QueryEngine {
+
+	use MessageReporterAwareTrait;
+	use LoggerAwareTrait;
 
 	/**
 	 * @var boolean
