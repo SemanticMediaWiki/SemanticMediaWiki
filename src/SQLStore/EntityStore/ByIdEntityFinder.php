@@ -17,7 +17,7 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class IdMatchFinder {
+class ByIdEntityFinder {
 
 	/**
 	 * @var Store
@@ -84,7 +84,7 @@ class IdMatchFinder {
 		$resultIterator = $this->iteratorFactory->newResultIterator( $rows );
 
 		$mappingIterator = $this->iteratorFactory->newMappingIterator( $resultIterator, function( $row ) {
-			return HashBuilder::createHashIdFromSegments(
+			return HashBuilder::createFromSegments(
 				$row->smw_title,
 				$row->smw_namespace,
 				$row->smw_iw,
@@ -137,7 +137,7 @@ class IdMatchFinder {
 			return false;
 		}
 
-		$hash = HashBuilder::createHashIdFromSegments(
+		$hash = HashBuilder::createFromSegments(
 			$row->smw_title,
 			$row->smw_namespace,
 			$row->smw_iw,

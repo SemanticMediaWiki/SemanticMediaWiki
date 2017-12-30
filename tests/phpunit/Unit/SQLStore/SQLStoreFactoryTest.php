@@ -86,7 +86,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'SMWSql3SmwIds',
-			$instance->newEntityIdManager()
+			$instance->newEntityTable()
 		);
 	}
 
@@ -281,7 +281,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructIdMatchFinder() {
+	public function testCanConstructByIdEntityFinder() {
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -290,8 +290,8 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\IdMatchFinder',
-			$instance->newIdMatchFinder( $cache )
+			'\SMW\SQLStore\EntityStore\ByIdEntityFinder',
+			$instance->newByIdEntityFinder( $cache )
 		);
 	}
 

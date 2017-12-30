@@ -658,7 +658,7 @@ class SMWSQLStore3Writers {
 				''
 			);
 
-			$this->store->getObjectIds()->addRedirectForId(
+			$this->store->getObjectIds()->addRedirect(
 				$sid,
 				$oldTitle->getDBkey(),
 				$oldTitle->getNamespace()
@@ -807,7 +807,7 @@ class SMWSQLStore3Writers {
 		/// NOTE: $sid can be 0 here; this is useful to know since it means that fewer table updates are needed
 		$new_tid = $curtarget_t ? ( $this->store->getObjectIds()->makeSMWPageID( $curtarget_t, $curtarget_ns, '', '', false ) ) : 0; // real id of new target, if given
 
-		$old_tid = $this->store->getObjectIds()->findRedirectIdFor(
+		$old_tid = $this->store->getObjectIds()->findRedirect(
 			$subject_t,
 			$subject_ns
 		);
@@ -835,7 +835,7 @@ class SMWSQLStore3Writers {
 
 		} elseif ( $old_tid != 0 ) { // existing redirect is changed or deleted
 
-			$this->store->getObjectIds()->deleteRedirectEntry(
+			$this->store->getObjectIds()->deleteRedirect(
 				$subject_t,
 				$subject_ns
 			);
@@ -959,7 +959,7 @@ class SMWSQLStore3Writers {
 				}
 			}
 
-			$this->store->getObjectIds()->addRedirectForId(
+			$this->store->getObjectIds()->addRedirect(
 				$new_tid,
 				$subject_t,
 				$subject_ns

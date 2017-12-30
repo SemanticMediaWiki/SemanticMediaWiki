@@ -24,7 +24,7 @@ use SMW\SQLStore\EntityStore\CachingEntityLookup;
 use SMW\SQLStore\EntityStore\NativeEntityLookup;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\ProcessLruCache;
-use SMW\SQLStore\EntityStore\IdMatchFinder;
+use SMW\SQLStore\EntityStore\ByIdEntityFinder;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\ChangePropListener;
 use SMW\SQLStore\PropertyTableRowDiffer;
@@ -88,7 +88,7 @@ class SQLStoreFactory {
 	 *
 	 * @return EntityIdManager
 	 */
-	public function newEntityIdManager() {
+	public function newEntityTable() {
 		return new EntityIdManager( $this->store, $this );
 	}
 
@@ -501,11 +501,11 @@ class SQLStoreFactory {
 	 *
 	 * @param Cache $cache
 	 *
-	 * @return IdMatchFinder
+	 * @return ByIdEntityFinder
 	 */
-	public function newIdMatchFinder( Cache $cache ) {
+	public function newByIdEntityFinder( Cache $cache ) {
 
-		$idMatchFinder = new IdMatchFinder(
+		$idMatchFinder = new ByIdEntityFinder(
 			$this->store,
 			$this->applicationFactory->getIteratorFactory(),
 			$cache

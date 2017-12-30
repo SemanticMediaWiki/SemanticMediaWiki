@@ -158,11 +158,11 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 5 ) );
 
 		$objectIdGenerator->expects( $this->at( 1 ) )
-			->method( 'findRedirectIdFor' )
+			->method( 'findRedirect' )
 			->will( $this->returnValue( 0 ) );
 
 		$objectIdGenerator->expects( $this->never() )
-			->method( 'deleteRedirectEntry' );
+			->method( 'deleteRedirect' );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()

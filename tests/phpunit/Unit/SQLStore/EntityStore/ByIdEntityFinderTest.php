@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\IdMatchFinder;
+use SMW\SQLStore\EntityStore\ByIdEntityFinder;
 use SMW\IteratorFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\IdMatchFinder
+ * @covers \SMW\SQLStore\EntityStore\ByIdEntityFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
+class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $cache;
@@ -51,8 +51,8 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			IdMatchFinder::class,
-			new IdMatchFinder( $this->store, $this->iteratorFactory, $this->cache )
+			ByIdEntityFinder::class,
+			new ByIdEntityFinder( $this->store, $this->iteratorFactory, $this->cache )
 		);
 	}
 
@@ -82,7 +82,7 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$instance = new IdMatchFinder(
+		$instance = new ByIdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
 			$this->cache
@@ -108,7 +108,7 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$instance = new IdMatchFinder(
+		$instance = new ByIdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
 			$this->cache
@@ -134,7 +134,7 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$instance = new IdMatchFinder(
+		$instance = new ByIdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
 			$this->cache
@@ -152,7 +152,7 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new IdMatchFinder(
+		$instance = new ByIdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
 			$this->cache
@@ -179,7 +179,7 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => array( 42 ) ) ) )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$instance = new IdMatchFinder(
+		$instance = new ByIdEntityFinder(
 			$this->store,
 			new IteratorFactory(),
 			$this->cache

@@ -3,6 +3,7 @@
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMWDataItem as DataItem;
 use SMW\HashBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\IdToDataItemMatchFinder;
@@ -193,7 +194,7 @@ class SMWSql3SmwIds {
 			)
 		);
 
-		$this->idMatchFinder = $this->factory->newIdMatchFinder(
+		$this->byIdEntityFinder = $this->factory->newByIdEntityFinder(
 			$this->processLruCache->get( 'entity.id' )
 		);
 
@@ -213,47 +214,62 @@ class SMWSql3SmwIds {
 	 *
 	 * @return boolean
 	 */
-	public function checkIsRedirect( DIWikiPage $subject ) {
-
-		$redirectId = $this->findRedirectIdFor(
-			$subject->getDBKey(),
-			$subject->getNamespace()
-		);
-
-		return $redirectId != 0;
+	public function isRedirect( DIWikiPage $subject ) {
+		return $this->redirectInfoStore->isRedirect( $subject->getDBKey(), $subject->getNamespace() );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param DataItem $dataItem
 	 *
 	 * @return boolean
 	 */
-	public function isUnique( DIProperty $property ) {
+	public function isUnique( DataItem $dataItem ) {
+
+		$type = $dataItem->getDIType();
+
+		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
+			throw new InvalidArgumentException( 'Expects a DIProperty or DIWikiPage object.' );
+		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
+		$conditions = [];
 
-		$condition = "smw_sortkey =" . $connection->addQuotes(
-			$property->getCanonicalLabel()
-		);
+		if ( $type === DataItem::TYPE_WIKIPAGE ) {
+			$conditions[] = "smw_title=" . $connection->addQuotes(
+				$dataItem->getDBKey()
+			);
 
-		$condition .= " AND smw_namespace =" . $connection->addQuotes(
-			SMW_NS_PROPERTY
-		);
+			$conditions[] = "smw_namespace=" . $connection->addQuotes(
+				$dataItem->getNamespace()
+			);
 
-		$condition .= " AND smw_subobject =''";
+			$conditions[] = "smw_subobject=" . $connection->addQuotes(
+				$dataItem->getSubobjectName()
+			);
+		} else {
+			$conditions[] = "smw_sortkey=" . $connection->addQuotes(
+				$dataItem->getCanonicalLabel()
+			);
 
-		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
-		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
-		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWREDIIW );
+			$conditions[] = "smw_namespace=" . $connection->addQuotes(
+				SMW_NS_PROPERTY
+			);
+
+			$conditions[] = "smw_subobject=''";
+		}
+
+		$conditions[] = "smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
+		$conditions[] = "smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
+		$conditions[] = "smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWREDIIW );
 
 		$res = $connection->select(
 			SMWSQLStore3::ID_TABLE,
 			[
 				'smw_id, smw_sortkey'
 			],
-			$condition,
+			$conditions,
 			__METHOD__,
 			[
 				'LIMIT' => 2
@@ -264,7 +280,7 @@ class SMWSql3SmwIds {
 	}
 
 	/**
-	 * @see RedirectInfoStore::findRedirectIdFor
+	 * @see RedirectInfoStore::findRedirect
 	 *
 	 * @since 2.1
 	 *
@@ -273,12 +289,12 @@ class SMWSql3SmwIds {
 	 *
 	 * @return integer
 	 */
-	public function findRedirectIdFor( $title, $namespace ) {
-		return $this->redirectInfoStore->findRedirectIdFor( $title, $namespace );
+	public function findRedirect( $title, $namespace ) {
+		return $this->redirectInfoStore->findRedirect( $title, $namespace );
 	}
 
 	/**
-	 * @see RedirectInfoStore::addRedirectForId
+	 * @see RedirectInfoStore::addRedirect
 	 *
 	 * @since 2.1
 	 *
@@ -286,20 +302,20 @@ class SMWSql3SmwIds {
 	 * @param string $title
 	 * @param integer $namespace
 	 */
-	public function addRedirectForId( $id, $title, $namespace ) {
-		$this->redirectInfoStore->addRedirectForId( $id, $title, $namespace );
+	public function addRedirect( $id, $title, $namespace ) {
+		$this->redirectInfoStore->addRedirect( $id, $title, $namespace );
 	}
 
 	/**
-	 * @see RedirectInfoStore::deleteRedirectEntry
+	 * @see RedirectInfoStore::deleteRedirect
 	 *
 	 * @since 2.1
 	 *
 	 * @param string $title
 	 * @param integer $namespace
 	 */
-	public function deleteRedirectEntry( $title, $namespace ) {
-		$this->redirectInfoStore->deleteRedirectEntry( $title, $namespace );
+	public function deleteRedirect( $title, $namespace ) {
+		$this->redirectInfoStore->deleteRedirect( $title, $namespace );
 	}
 
 	/**
@@ -365,7 +381,7 @@ class SMWSql3SmwIds {
 		// for objects marked as redirect
 		if ( $iw === SMW_SQL3_SMWREDIIW && $canonical &&
 			$smwgQEqualitySupport !== SMW_EQ_NONE && $subobjectName === '' ) {
-			$id = $this->findRedirectIdFor( $title, $namespace );
+			$id = $this->findRedirect( $title, $namespace );
 		} else {
 			$id = $this->getCachedId(
 				$title,
@@ -379,7 +395,7 @@ class SMWSql3SmwIds {
 			$sortkey = $this->getCachedSortKey( $title, $namespace, $iw, $subobjectName );
 		} elseif ( $iw == SMW_SQL3_SMWREDIIW && $canonical &&
 			$smwgQEqualitySupport != SMW_EQ_NONE && $subobjectName === '' ) {
-			$id = $this->findRedirectIdFor( $title, $namespace );
+			$id = $this->findRedirect( $title, $namespace );
 			if ( $id != 0 ) {
 
 				if ( $fetchHashes ) {
@@ -1036,7 +1052,7 @@ class SMWSql3SmwIds {
 	 * @return DIWikiPage|null
 	 */
 	public function getDataItemById( $id ) {
-		return $this->idMatchFinder->getDataItemById( $id );
+		return $this->byIdEntityFinder->getDataItemById( $id );
 	}
 
 	/**
@@ -1048,7 +1064,7 @@ class SMWSql3SmwIds {
 	 * @return string[]
 	 */
 	public function getDataItemPoolHashListFor( array $idlist, RequestOptions $requestOptions = null ) {
-		return $this->idMatchFinder->getDataItemsFromList( $idlist, $requestOptions );
+		return $this->byIdEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
 	/**

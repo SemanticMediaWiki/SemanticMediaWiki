@@ -213,7 +213,7 @@ class PropertyTableIdReferenceFinder {
 			);
 
 			if ( $row !== false && strpos( $proptable->getName(), 'redi' ) ) {
-				$row->s_id = $this->store->getObjectIds()->findRedirectIdFor( $row->s_title, $row->s_namespace );
+				$row->s_id = $this->store->getObjectIds()->findRedirect( $row->s_title, $row->s_namespace );
 			}
 		}
 
