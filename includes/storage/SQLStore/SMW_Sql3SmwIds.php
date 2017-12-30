@@ -534,24 +534,36 @@ class SMWSql3SmwIds {
 	 *
 	 * @param string $title DB key
 	 * @param integer $namespace namespace
-	 * @param string $iw interwiki prefix
+	 * @param string|null $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
 	 *
 	 * @param array
 	 */
-	public function getListOfIdMatchesFor( $title, $namespace, $iw, $subobjectName = '' ) {
+	public function findAllEntitiesThatMatch( $title, $namespace, $iw = null, $subobjectName = '' ) {
 
-		$matches = array();
+		$matches = [];
+		$query = [];
 
-		$rows = $this->store->getConnection( 'mw.db' )->select(
+		$query['fields'] = ['smw_id'];
+
+		$query['conditions'] = [
+			'smw_title' => $title,
+			'smw_namespace' => $namespace,
+			'smw_iw' => $iw,
+			'smw_subobject' => $subobjectName
+		];
+
+		// Null means select all (incl. those marked delete, redi etc.)
+		if ( $iw === null ) {
+			unset( $query['conditions']['smw_iw'] );
+		}
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$rows = $connection->select(
 			self::TABLE_NAME,
-			$select = array( 'smw_id' ),
-			array(
-				'smw_title' => $title,
-				'smw_namespace' => $namespace,
-				'smw_iw' => $iw,
-				'smw_subobject' => $subobjectName
-			),
+			$query['fields'],
+			$query['conditions'],
 			__METHOD__
 		);
 

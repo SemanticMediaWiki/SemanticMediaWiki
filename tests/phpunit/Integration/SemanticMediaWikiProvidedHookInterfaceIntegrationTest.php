@@ -261,7 +261,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->getMock();
 
 		$idGenerator->expects( $this->any() )
-			->method( 'getListOfIdMatchesFor' )
+			->method( 'findAllEntitiesThatMatch' )
 			->will( $this->returnValue( array( 42 ) ) );
 
 		$store = $this->getMockBuilder( $storeClass )
@@ -299,7 +299,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->getMock();
 
 		$idGenerator->expects( $this->any() )
-			->method( 'getListOfIdMatchesFor' )
+			->method( 'findAllEntitiesThatMatch' )
 			->will( $this->returnValue( array( 42 ) ) );
 
 		$store = $this->getMockBuilder( $storeClass )
