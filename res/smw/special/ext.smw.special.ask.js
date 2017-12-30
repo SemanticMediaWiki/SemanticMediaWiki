@@ -175,7 +175,7 @@
 			link = h.element( 'a', {
 					href: 'https://semantic-mediawiki.org/wiki/Help:' + options.format + ' format',
 					title: options.name
-				}, options.name.toLowerCase()
+				}, options.name
 			);
 		return link;
 	}
