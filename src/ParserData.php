@@ -39,6 +39,11 @@ class ParserData {
 	const OPT_FORCED_UPDATE = 'smw:opt.forced.update';
 
 	/**
+	 * Option whether creation of iteratibe update jobs are allowed
+	 */
+	const OPT_CREATE_UPDATE_JOB = 'smw:opt.create.update.job';
+
+	/**
 	 * Indicates that an update was caused by a change propagation request
 	 */
 	const OPT_CHANGE_PROP_UPDATE = 'smw:opt.change.prop.update';
@@ -84,9 +89,9 @@ class ParserData {
 	private $errors = array();
 
 	/**
-	 * @var $isEnabledWithUpdateJob
+	 * @var $canCreateUpdateJob
 	 */
-	private $isEnabledWithUpdateJob = true;
+	private $canCreateUpdateJob = true;
 
 	/**
 	 * Identifies the origin of a request.
@@ -123,16 +128,17 @@ class ParserData {
 	 * @since 2.5
 	 *
 	 * @param string $key
+	 * @param mixed $default
 	 *
 	 * @return mixed
 	 */
-	public function getOption( $key ) {
+	public function getOption( $key, $default = null ) {
 
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
 
-		return $this->options->has( $key ) ? $this->options->get( $key ) : null;
+		return $this->options->safeGet( $key, $default );
 	}
 
 	/**
@@ -211,16 +217,6 @@ class ParserData {
 	}
 
 	/**
-	 * Explicitly disable update jobs (e.g when running store update
-	 * in the job queue)
-	 *
-	 * @since 1.9
-	 */
-	public function disableBackgroundUpdateJobs() {
-		$this->isEnabledWithUpdateJob = false;
-	}
-
-	/**
 	 * @since 2.4
 	 *
 	 * @return boolean
@@ -243,15 +239,6 @@ class ParserData {
 	 */
 	public function canUse() {
 		return !$this->isBlocked();
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return boolean
-	 */
-	public function isEnabledWithUpdateJob() {
-		return $this->isEnabledWithUpdateJob;
 	}
 
 	/**
@@ -436,10 +423,12 @@ class ParserData {
 			$this->getOption( Enum::OPT_SUSPEND_PURGE )
 		);
 
-		$storeUpdater = $applicationFactory->newStoreUpdater( $this->semanticData );
+		$storeUpdater = $applicationFactory->newStoreUpdater(
+			$this->semanticData
+		);
 
-		$storeUpdater->isEnabledWithUpdateJob(
-			$this->isEnabledWithUpdateJob
+		$storeUpdater->canCreateUpdateJob(
+			$this->getOption( self::OPT_CREATE_UPDATE_JOB, true )
 		);
 
 		$storeUpdater->isChangeProp(

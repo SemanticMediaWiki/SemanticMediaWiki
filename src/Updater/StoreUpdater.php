@@ -45,7 +45,7 @@ class StoreUpdater {
 	/**
 	 * @var boolean|null
 	 */
-	private $isEnabledWithUpdateJob = null;
+	private $canCreateUpdateJob = null;
 
 	/**
 	 * @var boolean
@@ -106,10 +106,10 @@ class StoreUpdater {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $isEnabledWithUpdateJob
+	 * @param boolean $canCreateUpdateJob
 	 */
-	public function isEnabledWithUpdateJob( $isEnabledWithUpdateJob ) {
-		$this->isEnabledWithUpdateJob = (bool)$isEnabledWithUpdateJob;
+	public function canCreateUpdateJob( $canCreateUpdateJob ) {
+		$this->canCreateUpdateJob = (bool)$canCreateUpdateJob;
 	}
 
 	/**
@@ -147,8 +147,8 @@ class StoreUpdater {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		if ( $this->isEnabledWithUpdateJob === null ) {
-			$this->isEnabledWithUpdateJob( $applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) );
+		if ( $this->canCreateUpdateJob === null ) {
+			$this->canCreateUpdateJob( $applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) );
 		}
 
 		$title = $this->getSubject()->getTitle();
@@ -224,10 +224,10 @@ class StoreUpdater {
 	 */
 	private function checkChangePropagation() {
 
-		// isEnabledWithUpdateJob: if it is not enabled there's not much to do here
+		// canCreateUpdateJob: if it is not enabled there's not much to do here
 		// isChangeProp: means the update is part of the ChangePropagationDispatchJob
 		// therefore skip
-		if ( !$this->isEnabledWithUpdateJob || $this->isChangeProp  ) {
+		if ( !$this->canCreateUpdateJob || $this->isChangeProp  ) {
 			return;
 		}
 
@@ -259,7 +259,10 @@ class StoreUpdater {
 
 	private function updateData() {
 
-		$this->store->setUpdateJobsEnabledState( $this->isEnabledWithUpdateJob );
+		$this->store->setOption(
+			Store::OPT_CREATE_UPDATE_JOB,
+			$this->canCreateUpdateJob
+		);
 
 		$semanticData = $this->checkOnRequiredRedirectUpdate(
 			$this->semanticData
@@ -284,7 +287,7 @@ class StoreUpdater {
 
 		// Check only during online-mode so that when a user operates Special:MovePage
 		// or #redirect the same process is applied
-		if ( !$this->isEnabledWithUpdateJob ) {
+		if ( !$this->canCreateUpdateJob ) {
 			return $semanticData;
 		}
 

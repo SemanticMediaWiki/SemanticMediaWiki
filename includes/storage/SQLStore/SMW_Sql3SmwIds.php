@@ -307,6 +307,19 @@ class SMWSql3SmwIds {
 	}
 
 	/**
+	 * @see RedirectInfoStore::updateRedirect
+	 *
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 * @param string $title
+	 * @param integer $namespace
+	 */
+	public function updateRedirect( $id, $title, $namespace ) {
+		$this->redirectInfoStore->updateRedirect( $id, $title, $namespace );
+	}
+
+	/**
 	 * @see RedirectInfoStore::deleteRedirect
 	 *
 	 * @since 2.1

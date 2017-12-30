@@ -41,9 +41,10 @@ abstract class Store implements QueryEngine {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var boolean
+	 * Option to define whether creating updates jobs is allowed for a request
+	 * or not.
 	 */
-	private $updateJobsEnabledState = true;
+	const OPT_CREATE_UPDATE_JOB = 'opt.create.update.job';
 
 	/**
 	 * @var ConnectionManager
@@ -206,7 +207,7 @@ abstract class Store implements QueryEngine {
 	 */
 	public function updateData( SemanticData $semanticData ) {
 
-		if ( !$this->getOptions()->get( 'smwgSemanticsEnabled' ) ) {
+		if ( !$this->getOption( 'smwgSemanticsEnabled' ) ) {
 			return;
 		}
 
@@ -489,6 +490,38 @@ abstract class Store implements QueryEngine {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function setOption( $key, $value ) {
+
+		if ( $this->options === null ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->set( $key, $value );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key, $default = null ) {
+
+		if ( $this->options === null ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->safeGet( $key, $default );
+	}
+
+	/**
 	 * @since 2.0
 	 */
 	public function clear() {
@@ -496,24 +529,6 @@ abstract class Store implements QueryEngine {
 		if ( $this->connectionManager !== null ) {
 			$this->connectionManager->releaseConnections();
 		}
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param boolean $status
-	 */
-	public function setUpdateJobsEnabledState( $status ) {
-		$this->updateJobsEnabledState = $status;
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return boolean
-	 */
-	public function getUpdateJobsEnabledState() {
-		return $this->updateJobsEnabledState && $GLOBALS['smwgEnableUpdateJobs'];
 	}
 
 	/**
@@ -531,17 +546,17 @@ abstract class Store implements QueryEngine {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $connectionTypeId
+	 * @param string $type
 	 *
 	 * @return mixed
 	 */
-	public function getConnection( $connectionTypeId ) {
+	public function getConnection( $type ) {
 
 		if ( $this->connectionManager === null ) {
 			$this->setConnectionManager( new ConnectionManager() );
 		}
 
-		return $this->connectionManager->getConnection( $connectionTypeId );
+		return $this->connectionManager->getConnection( $type );
 	}
 
 }

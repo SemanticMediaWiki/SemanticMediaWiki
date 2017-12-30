@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\InMemoryPoolCache;
 use SMW\SQLStore\RedirectInfoStore;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\RedirectInfoStore
@@ -19,8 +20,12 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $conection;
 	private $cache;
+	private $testEnvironment;
+	private $connectionManager;
 
 	protected function setUp() {
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -30,26 +35,39 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
-			->getMockForAbstractClass();
+			->setMethods( null )
+			->getMock();
 
-		$this->store->expects( $this->any() )
+		$this->connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->connection ) );
+
+		$this->store->setConnectionManager( $this->connectionManager );
+
+		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 
 		InMemoryPoolCache::getInstance()->clear();
 	}
 
 	protected function tearDown() {
+		$this->testEnvironment->tearDown();
 		InMemoryPoolCache::getInstance()->clear();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\RedirectInfoStore',
+			RedirectInfoStore::class,
 			new RedirectInfoStore( $this->store )
 		);
 	}
@@ -160,6 +178,83 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			0,
 			$instance->findRedirect( 'Foo', 9001 )
 		);
+	}
+
+	public function testUpdateRedirect() {
+
+		$row = new \stdClass;
+		$row->ns = NS_MAIN;
+		$row->t = 'Bar';
+
+		$this->connection->expects( $this->once() )
+			->method( 'select' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( [ 'Foo' => 42 ] ) )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTable->expects( $this->once() )
+			->method( 'getFields' )
+			->will( $this->returnValue( [ 'Foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyTables' ] )
+			->getMock();
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ $propertyTable ] ) );
+
+		$store->setOption(
+			\SMW\Store::OPT_CREATE_UPDATE_JOB,
+			true
+		);
+
+		$this->testEnvironment->addConfiguration(
+			'smwgEnableUpdateJobs',
+			true
+		);
+
+		$store->setOption(
+			'smwgEnableUpdateJobs',
+			true
+		);
+
+		$this->jobQueue->expects( $this->once() )
+			->method( 'push' );
+
+		$instance = new RedirectInfoStore(
+			$store
+		);
+
+		$instance->setEqualitySupportFlag( SMW_EQ_FULL );
+		$instance->updateRedirect( 42, 'Foo', '' );
+	}
+
+	public function testUpdateRedirectNotEnabled() {
+
+		$this->store->expects( $this->never() )
+			->method( 'getPropertyTables' );
+
+		$this->store->setOption(
+			\SMW\Store::OPT_CREATE_UPDATE_JOB,
+			false
+		);
+
+		$instance = new RedirectInfoStore(
+			$this->store
+		);
+
+		$instance->setEqualitySupportFlag( SMW_EQ_NONE );
+		$instance->updateRedirect( 42, 'Foo', '' );
 	}
 
 }

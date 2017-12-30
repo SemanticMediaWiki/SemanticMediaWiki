@@ -635,12 +635,12 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $connectionTypeId
+	 * @param string $type
 	 *
-	 * @return \SMW\MediaWiki\Database
+	 * @return Database
 	 */
-	public function getConnection( $connectionTypeId = 'mw.db' ) {
-		return parent::getConnection( $connectionTypeId );
+	public function getConnection( $type = 'mw.db' ) {
+		return parent::getConnection( $type );
 	}
 
 	/**
