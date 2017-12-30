@@ -395,7 +395,8 @@ class SQLStoreFactory {
 					Installer::OPT_MESSAGEREPORTER,
 					Installer::OPT_TABLE_OPTIMZE,
 					Installer::OPT_IMPORT,
-					Installer::OPT_SCHEMA_UPDATE
+					Installer::OPT_SCHEMA_UPDATE,
+					Installer::OPT_SUPPLEMENT_JOBS
 				]
 			)
 		);

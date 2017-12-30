@@ -4,6 +4,8 @@ namespace SMW\SQLStore;
 
 use SMW\CompatibilityMode;
 use SMW\Options;
+use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
 use Onoi\MessageReporter\MessageReporterFactory;
@@ -28,6 +30,11 @@ class Installer implements MessageReporter, MessageReporterAware {
 	 * Optimize option
 	 */
 	const OPT_TABLE_OPTIMZE = 'installer.table.optimize';
+
+	/**
+	 * Job option
+	 */
+	const OPT_SUPPLEMENT_JOBS = 'installer.supplement.jobs';
 
 	/**
 	 * Import option
@@ -139,8 +146,16 @@ class Installer implements MessageReporter, MessageReporterAware {
 		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
 
 		$this->tableOptimization( $messageReporter );
+		$this->supplementJobs( $messageReporter );
 
-		Hooks::run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', array( $this->tableBuilder, $messageReporter, $this->options ) );
+		Hooks::run(
+			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
+			[
+				$this->tableBuilder,
+				$messageReporter,
+				$this->options
+			]
+		);
 
 		if ( $this->options->has( self::OPT_SCHEMA_UPDATE ) ) {
 			$messageReporter->reportMessage( "\n" );
@@ -171,7 +186,14 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 		$this->tableIntegrityExaminer->checkOnPostDestruction( $this->tableBuilder );
 
-		Hooks::run( 'SMW::SQLStore::Installer::AfterDropTablesComplete', array( $this->tableBuilder, $messageReporter, $this->options ) );
+		Hooks::run(
+			'SMW::SQLStore::Installer::AfterDropTablesComplete',
+			[
+				$this->tableBuilder,
+				$messageReporter,
+				$this->options
+			]
+		);
 
 		$messageReporter->reportMessage( "\nStandard and auxiliary tables with all corresponding data\n" );
 		$messageReporter->reportMessage( "have been removed successfully.\n" );
@@ -225,6 +247,32 @@ class Installer implements MessageReporter, MessageReporterAware {
 		}
 
 		$messageReporter->reportMessage( "\nOptimization completed.\n" );
+	}
+
+	private function supplementJobs( $messageReporter ) {
+
+		if ( !$this->options->safeGet( self::OPT_SUPPLEMENT_JOBS, false ) ) {
+			return $messageReporter->reportMessage( "\nSkipping supplement job creation.\n" );
+		}
+
+		$messageReporter->reportMessage( "\nAdding property statistics rebuild job ...\n" );
+
+		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
+			\Title::newFromText( 'SMW\SQLStore\Installer' )
+		);
+
+		$propertyStatisticsRebuildJob->insert();
+
+		$messageReporter->reportMessage( "   ... done.\n" );
+		$messageReporter->reportMessage( "\nAdding entity disposer job ...\n" );
+
+		$entityIdDisposerJob = new EntityIdDisposerJob(
+			\Title::newFromText( 'SMW\SQLStore\Installer' )
+		);
+
+		$entityIdDisposerJob->insert();
+
+		$messageReporter->reportMessage( "   ... done.\n" );
 	}
 
 }

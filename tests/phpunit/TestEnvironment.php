@@ -162,7 +162,7 @@ class TestEnvironment {
 	 *
 	 * @return string
 	 */
-	public function fetchOutputFromCallback( callable $callback ) {
+	public function outputFromCallbackExec( callable $callback ) {
 		ob_start();
 		call_user_func( $callback );
 		$output = ob_get_contents();

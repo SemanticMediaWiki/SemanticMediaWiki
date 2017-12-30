@@ -47,7 +47,8 @@ class ExtensionSchemaUpdates {
 			[
 				Installer::OPT_SCHEMA_UPDATE => true,
 				Installer::OPT_TABLE_OPTIMZE => true,
-				Installer::OPT_IMPORT => true
+				Installer::OPT_IMPORT => true,
+				Installer::OPT_SUPPLEMENT_JOBS => true
 			]
 		);
 

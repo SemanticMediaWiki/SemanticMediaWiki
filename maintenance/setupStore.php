@@ -126,6 +126,11 @@ class SetupStore extends \Maintenance {
 			!$this->hasOption( 'skip-import' )
 		);
 
+		$store->getOptions()->set(
+			Installer::OPT_SUPPLEMENT_JOBS,
+			true
+		);
+
 		if ( $this->hasOption( 'delete' ) ) {
 			$this->dropStore( $store );
 		} else {
