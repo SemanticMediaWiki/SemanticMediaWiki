@@ -10,6 +10,7 @@ use SMW\SemanticData;
 use SMW\ChangePropListener;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
+use SMW\SQLStore\EntityStore\StubSemanticData;
 use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
@@ -525,7 +526,8 @@ class SMWSQLStore3Writers {
 	 * @param SMWSemanticData $semanticData
 	 */
 	protected function setSemanticDataCache( $sid, SMWSemanticData $semanticData ) {
-		$this->store->m_semdata[$sid] = SMWSql3StubSemanticData::newFromSemanticData( $semanticData, $this->store );
+		$this->store->m_semdata[$sid] = StubSemanticData::newFromSemanticData( $semanticData, $this->store );
+
 		// This is everything one can know:
 		$this->store->m_sdstate[$sid] = array();
 		$propertyTables = $this->store->getPropertyTables();

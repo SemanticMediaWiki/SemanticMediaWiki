@@ -1,29 +1,31 @@
 <?php
 
+namespace SMW\SQLStore\EntityStore;
+
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\Exception\DataItemException;
+use SMWDataItem as DataItem;
+use SMWSemanticData as SemanticData;
 
 /**
- * This class provides a subclass of SMWSemanticData that can store
- * prefetched values from SMW's SQL stores, and unstub this data on demand when
- * it is accessed.
+ * This class provides a subclass of SemanticData that can store prefetched values
+ * from the SQL store, and unstub this data on demand when it is accessed.
  *
+ * @license GNU GPL v2+
  * @since 1.8
- * @author Markus Krötzsch
  *
- * @ingroup SMWStore
+ * @author Markus Krötzs
+ * @author mwjames
  */
-class SMWSql3StubSemanticData extends SMWSemanticData {
+class StubSemanticData extends SemanticData {
 
 	/**
-	 * The store object.
-	 *
-	 * @since 1.8
-	 *
-	 * @var SMWSQLStore3
+	 * @var SQLStore
 	 */
 	protected $store;
 
@@ -40,13 +42,13 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	protected $mStubPropVals = array();
 
 	/**
-	 * SMWDIWikiPage object that is the subject of this container.
+	 * DIWikiPage object that is the subject of this container.
 	 * Subjects that are null are used to represent "internal objects"
 	 * only.
 	 *
 	 * @since 1.8
 	 *
-	 * @var SMWDIWikiPage
+	 * @var DIWikiPage
 	 */
 	protected $mSubject;
 
@@ -58,15 +60,13 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	private $subSemanticDataInit = false;
 
 	/**
-	 * Constructor.
-	 *
 	 * @since 1.8
 	 *
-	 * @param SMWDIWikiPage $subject to which this data refers
-	 * @param SMWSQLStore3 $store (the parent store)
+	 * @param DIWikiPage $subject to which this data refers
+	 * @param SQLStore $store (the parent store)
 	 * @param boolean $noDuplicates stating if duplicate data should be avoided
 	 */
-	public function __construct( SMWDIWikiPage $subject, SMWSQLStore3 $store, $noDuplicates = true ) {
+	public function __construct( DIWikiPage $subject, SQLStore $store, $noDuplicates = true ) {
 		$this->store = $store;
 		parent::__construct( $subject, $noDuplicates );
 	}
@@ -84,29 +84,27 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @return array
 	 */
 	public function __wakeup() {
 		$this->store = StoreFactory::getStore( 'SMW\SQLStore\SQLStore' );
 	}
 
 	/**
-	 * Create a new SMWSql3StubSemanticData object that holds the data of a
-	 * given SMWSemanticData object. Array assignments create copies in PHP
+	 * Create a new StubSemanticData object that holds the data of a
+	 * given SemanticData object. Array assignments create copies in PHP
 	 * so the arrays are distinct in input and output object. The object
 	 * references are copied as references in a shallow way. This is
 	 * sufficient as the data items used there are immutable.
 	 *
 	 * @since 1.8
 	 *
-	 * @param $semanticData SMWSemanticData
-	 * @param SMWSQLStore3 $store
+	 * @param $semanticData SemanticData
+	 * @param SQLStore $store
 	 *
-	 * @return SMWSql3StubSemanticData
+	 * @return StubSemanticData
 	 */
-	public static function newFromSemanticData( SMWSemanticData $semanticData, SMWSQLStore3 $store ) {
-		$result = new SMWSql3StubSemanticData( $semanticData->getSubject(), $store );
+	public static function newFromSemanticData( SemanticData $semanticData, SQLStore $store ) {
+		$result = new self( $semanticData->getSubject(), $store );
 		$result->mPropVals = $semanticData->mPropVals;
 		$result->mProperties = $semanticData->mProperties;
 		$result->mHasVisibleProps = $semanticData->mHasVisibleProps;
@@ -147,7 +145,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return array of SMWDataItem
+	 * @return array of DataItem
 	 */
 	public function getPropertyValues( DIProperty $property ) {
 		if ( $property->isInverse() ) { // we never have any data for inverses
@@ -242,7 +240,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	}
 
 	/**
-	 * Remove a value for a property identified by its SMWDataItem object.
+	 * Remove a value for a property identified by its DataItem object.
 	 * This method removes a property-value specified by the property and
 	 * dataitem. If there are no more property-values for this property it
 	 * also removes the property from the mProperties.
@@ -253,11 +251,11 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * types anyway.
 	 *
 	 * @param $property SMWDIProperty
-	 * @param $dataItem SMWDataItem
+	 * @param $dataItem DataItem
 	 *
 	 * @since 1.8
 	 */
-	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
+	public function removePropertyObjectValue( DIProperty $property, DataItem $dataItem ) {
 		$this->unstubProperties();
 		$this->getPropertyValues( $property );
 		parent::removePropertyObjectValue($property, $dataItem);
@@ -323,7 +321,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 		foreach ( $this->mStubPropVals as $pkey => $values ) { // unstub property values only, the value lists are still kept as stubs
 			try {
 				$this->unstubProperty( $pkey );
-			} catch ( SMWDataItemException $e ) {
+			} catch ( DataItemException $e ) {
 				// Likely cause: a property name from the DB is no longer valid.
 				// Do nothing; we could unset the data, but it will never be
 				// unstubbed anyway if there is no valid property DI for it.
@@ -341,7 +339,8 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 *
 	 * @param string $propertyKey
 	 * @param SMWDIProperty $diProperty if available
-	 * @throws SMWDataItemException if property key is not valid
+	 *
+	 * @throws DataItemException if property key is not valid
 	 * 	and $diProperty is null
 	 */
 	protected function unstubProperty( $propertyKey, $diProperty = null ) {
