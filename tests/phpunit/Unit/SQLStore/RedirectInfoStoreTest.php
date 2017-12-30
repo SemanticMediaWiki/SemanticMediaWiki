@@ -75,7 +75,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			42,
-			$instance->findRedirectIdFor( 'Foo', 0 )
+			$instance->findRedirect( 'Foo', 0 )
 		);
 
 		$stats = InMemoryPoolCache::getInstance()->getStats();
@@ -85,7 +85,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			$stats['sql.store.redirect.infostore']['hits']
 		);
 
-		$instance->findRedirectIdFor( 'Foo', 0 );
+		$instance->findRedirect( 'Foo', 0 );
 
 		$stats = InMemoryPoolCache::getInstance()->getStats();
 
@@ -113,7 +113,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			0,
-			$instance->findRedirectIdFor( 'Foo', 0 )
+			$instance->findRedirect( 'Foo', 0 )
 		);
 	}
 
@@ -132,11 +132,11 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->addRedirectForId( 42, 'Foo', 0 );
+		$instance->addRedirect( 42, 'Foo', 0 );
 
 		$this->assertEquals(
 			42,
-			$instance->findRedirectIdFor( 'Foo', 0 )
+			$instance->findRedirect( 'Foo', 0 )
 		);
 	}
 
@@ -154,11 +154,11 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->deleteRedirectEntry( 'Foo', 9001 );
+		$instance->deleteRedirect( 'Foo', 9001 );
 
 		$this->assertEquals(
 			0,
-			$instance->findRedirectIdFor( 'Foo', 9001 )
+			$instance->findRedirect( 'Foo', 9001 )
 		);
 	}
 

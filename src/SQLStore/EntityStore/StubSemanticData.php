@@ -363,7 +363,7 @@ class StubSemanticData extends SemanticData {
 	}
 
 	protected function isRedirect() {
-		return $this->store->getObjectIds()->checkIsRedirect( $this->mSubject );
+		return $this->store->getObjectIds()->isRedirect( $this->mSubject );
 	}
 
 	private function initSubSemanticData( DIProperty $property ) {

@@ -32,7 +32,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->idMatchFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdMatchFinder' )
+		$this->byIdEntityFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\ByIdEntityFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,8 +49,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $processLruCache ) );
 
 		$this->factory->expects( $this->any() )
-			->method( 'newIdMatchFinder' )
-			->will( $this->returnValue( $this->idMatchFinder ) );
+			->method( 'newByIdEntityFinder' )
+			->will( $this->returnValue( $this->byIdEntityFinder ) );
 	}
 
 	public function testCanConstruct() {
@@ -95,29 +95,29 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->checkIsRedirect( $subject )
+			$instance->isRedirect( $subject )
 		);
 
-		$instance->addRedirectForId( 42, 'Foo', 9001 );
+		$instance->addRedirect( 42, 'Foo', 9001 );
 
 		$this->assertEquals(
 			42,
-			$instance->findRedirectIdFor( 'Foo', 9001 )
+			$instance->findRedirect( 'Foo', 9001 )
 		);
 
 		$this->assertTrue(
-			$instance->checkIsRedirect( $subject )
+			$instance->isRedirect( $subject )
 		);
 
-		$instance->deleteRedirectEntry( 'Foo', 9001 );
+		$instance->deleteRedirect( 'Foo', 9001 );
 
 		$this->assertEquals(
 			0,
-			$instance->findRedirectIdFor( 'Foo', 9001 )
+			$instance->findRedirect( 'Foo', 9001 )
 		);
 
 		$this->assertFalse(
-			$instance->checkIsRedirect( $subject )
+			$instance->isRedirect( $subject )
 		);
 	}
 
@@ -263,7 +263,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->idMatchFinder->expects( $this->once() )
+		$this->byIdEntityFinder->expects( $this->once() )
 			->method( 'getDataItemById' )
 			->with( $this->equalTo( 42 ) )
 			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );

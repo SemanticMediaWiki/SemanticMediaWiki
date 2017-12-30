@@ -44,6 +44,18 @@ class RedirectInfoStore {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $title DB key
+	 * @param integer $namespace
+	 *
+	 * @return boolean
+	 */
+	public function isRedirect( $title, $namespace ) {
+		return $this->findRedirect( $title, $namespace ) != 0;
+	}
+
+	/**
 	 * Returns an id for a redirect if no redirect is found 0 is returned
 	 *
 	 * @since 2.1
@@ -53,7 +65,7 @@ class RedirectInfoStore {
 	 *
 	 * @return integer
 	 */
-	public function findRedirectIdFor( $title, $namespace ) {
+	public function findRedirect( $title, $namespace ) {
 
 		$hash = HashBuilder::createHashIdFromSegments(
 			$title,
@@ -78,7 +90,7 @@ class RedirectInfoStore {
 	 * @param string $title
 	 * @param integer $namespace
 	 */
-	public function addRedirectForId( $id, $title, $namespace ) {
+	public function addRedirect( $id, $title, $namespace ) {
 
 		$this->insert( $id, $title, $namespace );
 
@@ -96,7 +108,7 @@ class RedirectInfoStore {
 	 * @param string $title
 	 * @param integer $namespace
 	 */
-	public function deleteRedirectEntry( $title, $namespace ) {
+	public function deleteRedirect( $title, $namespace ) {
 
 		$this->delete( $title, $namespace );
 
