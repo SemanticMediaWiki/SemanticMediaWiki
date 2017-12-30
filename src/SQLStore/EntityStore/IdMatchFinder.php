@@ -9,6 +9,7 @@ use SMW\MediaWiki\Database;
 use SMW\IteratorFactory;
 use SMW\RequestOptions;
 use Onoi\Cache\Cache;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+
@@ -19,9 +20,9 @@ use Onoi\Cache\Cache;
 class IdMatchFinder {
 
 	/**
-	 * @var Database|null
+	 * @var Store
 	 */
-	private $connection = null;
+	private $store;
 
 	/**
 	 * @var IteratorFactory
@@ -31,19 +32,19 @@ class IdMatchFinder {
 	/**
 	 * @var Cache
 	 */
-	private $inMemoryCache;
+	private $cache;
 
 	/**
 	 * @since 2.1
 	 *
-	 * @param Database $connection
+	 * @param Store $store
 	 * @param IteratorFactory $iteratorFactory
-	 * @param Cache $inMemoryCache
+	 * @param Cache $cache
 	 */
-	public function __construct( Database $connection, IteratorFactory $iteratorFactory, Cache $inMemoryCache ) {
-		$this->connection = $connection;
+	public function __construct( Store $store, IteratorFactory $iteratorFactory, Cache $cache ) {
+		$this->store = $store;
 		$this->iteratorFactory = $iteratorFactory;
-		$this->inMemoryCache = $inMemoryCache;
+		$this->cache = $cache;
 	}
 
 	/**
@@ -66,7 +67,9 @@ class IdMatchFinder {
 			}
 		}
 
-		$rows = $this->connection->select(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$rows = $connection->select(
 			\SMWSQLStore3::ID_TABLE,
 			array(
 				'smw_title',
@@ -101,12 +104,12 @@ class IdMatchFinder {
 	 */
 	public function getDataItemById( $id ) {
 
-		if ( !$this->inMemoryCache->contains( $id ) && !$this->canMatchById( $id ) ) {
+		if ( !$this->cache->contains( $id ) && !$this->canMatchById( $id ) ) {
 			return null;
 		}
 
 		$wikiPage = HashBuilder::newDiWikiPageFromHash(
-			$this->inMemoryCache->fetch( $id )
+			$this->cache->fetch( $id )
 		);
 
 		$wikiPage->setId( $id );
@@ -116,7 +119,9 @@ class IdMatchFinder {
 
 	private function canMatchById( $id ) {
 
-		$row = $this->connection->selectRow(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$row = $connection->selectRow(
 			\SMWSQLStore3::ID_TABLE,
 			array(
 				'smw_title',
@@ -139,7 +144,7 @@ class IdMatchFinder {
 			$row->smw_subobject
 		);
 
-		$this->inMemoryCache->save( $id, $hash );
+		$this->cache->save( $id, $hash );
 
 		return true;
 	}

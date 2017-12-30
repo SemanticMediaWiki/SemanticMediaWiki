@@ -489,7 +489,11 @@ abstract class Store implements QueryEngine {
 	 * @since 2.0
 	 */
 	public function clear() {
-		$this->connectionManager->releaseConnections();
+
+		if ( $this->connectionManager !== null ) {
+			$this->connectionManager->releaseConnections();
+		}
+
 		InMemoryPoolCache::getInstance()->resetPoolCacheById( 'store.redirectTarget.lookup' );
 	}
 

@@ -198,10 +198,12 @@ class SMWSql3SmwIds {
 		);
 
 		$this->redirectInfoStore = new RedirectInfoStore(
-			$this->store->getConnection( 'mw.db' )
+			$this->store
 		);
 
-		$this->tableFieldUpdater = new TableFieldUpdater( $store );
+		$this->tableFieldUpdater = new TableFieldUpdater(
+			$this->store
+		);
 	}
 
 	/**

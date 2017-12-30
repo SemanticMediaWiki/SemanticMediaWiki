@@ -259,7 +259,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store->expects( $this->atLeastOnce() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
