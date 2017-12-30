@@ -4,6 +4,8 @@ namespace SMW;
 
 use RuntimeException;
 use SMW\Exception\StoreNotFoundException;
+use Onoi\MessageReporter\NullMessageReporter;
+use Onoi\MessageReporter\MessageReporterAware;
 
 /**
  * Factory method that returns an instance of the default store, or an
@@ -77,6 +79,12 @@ class StoreFactory {
 
 		if ( !( $instance instanceof Store ) ) {
 			throw new StoreNotFoundException( "{$store} can not be used as a store instance" );
+		}
+
+		// Traits cannot implement an interface (really!!) so we check for the
+		// method otherwise we would use an interface
+		if ( method_exists( $instance, 'setMessageReporter' ) ) {
+			$instance->setMessageReporter( new NullMessageReporter() );
 		}
 
 		return $instance;

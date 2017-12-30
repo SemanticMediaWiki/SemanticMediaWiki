@@ -104,8 +104,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-db' ) );
 		$this->outputFormatter->addParentLink( [ 'tab' => 'rebuild' ] );
 
-		$this->store->getOptions()->set(
-			Installer::OPT_MESSAGEREPORTER,
+		$this->store->setMessageReporter(
 			$messageReporter
 		);
 

@@ -162,7 +162,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @since 1.8
 	 */
 	public function __construct() {
-		$this->factory = new SQLStoreFactory( $this );
+		$this->factory = new SQLStoreFactory( $this, $this->messageReporter );
 		$this->smwIds = $this->factory->newEntityTable();
 	}
 
@@ -369,7 +369,11 @@ class SMWSQLStore3 extends SMWStore {
 	 * {@inheritDoc}
 	 */
 	public function setup( $verbose = true ) {
-		return $this->factory->newInstaller()->install( $verbose );
+
+		$installer = $this->factory->newInstaller();
+		$installer->setMessageReporter( $this->messageReporter );
+
+		return $installer->install( $verbose );
 	}
 
 	/**
@@ -378,7 +382,11 @@ class SMWSQLStore3 extends SMWStore {
 	 * {@inheritDoc}
 	 */
 	public function drop( $verbose = true ) {
-		return $this->factory->newInstaller()->uninstall( $verbose );
+
+		$installer = $this->factory->newInstaller();
+		$installer->setMessageReporter( $this->messageReporter );
+
+		return $installer->uninstall( $verbose );
 	}
 
 	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ) {
