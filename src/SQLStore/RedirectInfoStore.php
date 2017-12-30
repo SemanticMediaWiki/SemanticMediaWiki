@@ -5,6 +5,8 @@ namespace SMW\SQLStore;
 use SMW\HashBuilder;
 use SMW\InMemoryPoolCache;
 use SMW\MediaWiki\Database;
+use SMW\Store;
+use Onoi\Cache\Cache;
 
 /**
  * @license GNU GPL v2+
@@ -17,23 +19,28 @@ class RedirectInfoStore {
 	const TABLENAME = 'smw_fpt_redi';
 
 	/**
-	 * @var Database
+	 * @var Store
 	 */
-	private $connection = null;
+	private $store;
 
 	/**
-	 * @var InMemoryPoolCache
+	 * @var Cache
 	 */
-	private $inMemoryPoolCache;
+	private $cache;
 
 	/**
 	 * @since 2.1
 	 *
-	 * @param Database $connection
+	 * @param Store $store
+	 * @param Cache|null $cache
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
-		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
+	public function __construct( Store $store, Cache $cache = null ) {
+		$this->store = $store;
+		$this->cache = $cache;
+
+		if ( $this->cache === null ) {
+			$this->cache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'sql.store.redirect.infostore' );
+		}
 	}
 
 	/**
@@ -53,15 +60,13 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'sql.store.redirect.infostore' );
-
-		if ( $poolCache->contains( $hash ) ) {
-			return $poolCache->fetch( $hash );
+		if ( $this->cache->contains( $hash ) ) {
+			return $this->cache->fetch( $hash );
 		}
 
 		$id = $this->select( $title, $namespace );
 
-		$poolCache->save( $hash, $id );
+		$this->cache->save( $hash, $id );
 
 		return $id;
 	}
@@ -82,7 +87,7 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$this->inMemoryPoolCache->getPoolCacheById( 'sql.store.redirect.infostore' )->save( $hash, $id );
+		$this->cache->save( $hash, $id );
 	}
 
 	/**
@@ -100,12 +105,14 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$this->inMemoryPoolCache->getPoolCacheById( 'sql.store.redirect.infostore' )->delete( $hash );
+		$this->cache->delete( $hash );
 	}
 
 	private function select( $title, $namespace ) {
 
-		$row = $this->connection->selectRow(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$row = $connection->selectRow(
 			self::TABLENAME,
 			'o_id',
 			array(
@@ -120,7 +127,9 @@ class RedirectInfoStore {
 
 	private function insert( $id, $title, $namespace ) {
 
-		$this->connection->insert(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$connection->insert(
 			self::TABLENAME,
 			array(
 				's_title' => $title,
@@ -132,7 +141,9 @@ class RedirectInfoStore {
 
 	private function delete( $title, $namespace ) {
 
-		$this->connection->delete(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$connection->delete(
 			self::TABLENAME,
 			array(
 				's_title' => $title,

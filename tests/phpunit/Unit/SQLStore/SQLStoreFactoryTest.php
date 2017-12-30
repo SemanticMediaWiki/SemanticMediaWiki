@@ -287,14 +287,6 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->store->expects( $this->once() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(

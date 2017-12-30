@@ -16,19 +16,41 @@ use SMW\SQLStore\RedirectInfoStore;
  */
 class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 
+	private $store;
+	private $conection;
+	private $cache;
+
+	protected function setUp() {
+
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection' ] )
+			->getMockForAbstractClass();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+
+		InMemoryPoolCache::getInstance()->clear();
+	}
+
 	protected function tearDown() {
 		InMemoryPoolCache::getInstance()->clear();
 	}
 
 	public function testCanConstruct() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\RedirectInfoStore',
-			new RedirectInfoStore( $connection )
+			new RedirectInfoStore( $this->store )
 		);
 	}
 
@@ -37,11 +59,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 		$row = new \stdClass;
 		$row->o_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
@@ -52,7 +70,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $row ) );
 
 		$instance = new RedirectInfoStore(
-			$connection
+			$this->store
 		);
 
 		$this->assertEquals(
@@ -79,11 +97,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindRedirectIdForNonCachedNonRedirect() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
@@ -93,7 +107,9 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					's_namespace' => 0 ) ) )
 			->will( $this->returnValue( false ) );
 
-		$instance = new RedirectInfoStore( $connection );
+		$instance = new RedirectInfoStore(
+			$this->store
+		);
 
 		$this->assertEquals(
 			0,
@@ -103,11 +119,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddRedirectInfoRecordToFetchFromCache() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
 				$this->anything(),
@@ -117,7 +129,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					'o_id' => 42 ) ) );
 
 		$instance = new RedirectInfoStore(
-			$connection
+			$this->store
 		);
 
 		$instance->addRedirectForId( 42, 'Foo', 0 );
@@ -130,11 +142,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDeleteRedirectInfoRecord() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
@@ -142,7 +150,10 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					's_title' => 'Foo',
 					's_namespace' => 9001 ) ) );
 
-		$instance = new RedirectInfoStore( $connection );
+		$instance = new RedirectInfoStore(
+			$this->store
+		);
+
 		$instance->deleteRedirectEntry( 'Foo', 9001 );
 
 		$this->assertEquals(

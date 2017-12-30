@@ -20,6 +20,8 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $cache;
 	private $iteratorFactory;
+	private $store;
+	private $conection;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
@@ -31,17 +33,26 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection' ] )
+			->getMockForAbstractClass();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
 	}
 
 	public function testCanConstruct() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			IdMatchFinder::class,
-			new IdMatchFinder( $connection, $this->iteratorFactory, $this->cache )
+			new IdMatchFinder( $this->store, $this->iteratorFactory, $this->cache )
 		);
 	}
 
@@ -63,11 +74,7 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( 'Foo#14##' ) );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
@@ -76,7 +83,7 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $row ) );
 
 		$instance = new IdMatchFinder(
-			$connection,
+			$this->store,
 			$this->iteratorFactory,
 			$this->cache
 		);
@@ -98,15 +105,11 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( 'Foo#14##' ) );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->never() )
+		$this->connection->expects( $this->never() )
 			->method( 'selectRow' );
 
 		$instance = new IdMatchFinder(
-			$connection,
+			$this->store,
 			$this->iteratorFactory,
 			$this->cache
 		);
@@ -128,15 +131,11 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( '_MDAT#102##' ) );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->never() )
+		$this->connection->expects( $this->never() )
 			->method( 'selectRow' );
 
 		$instance = new IdMatchFinder(
-			$connection,
+			$this->store,
 			$this->iteratorFactory,
 			$this->cache
 		);
@@ -149,16 +148,12 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNullForUnknownId() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
 		$instance = new IdMatchFinder(
-			$connection,
+			$this->store,
 			$this->iteratorFactory,
 			$this->cache
 		);
@@ -176,11 +171,7 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_iw = '';
 		$row->smw_subobject ='';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'select' )
 			->with(
 				$this->anything(),
@@ -189,7 +180,7 @@ class IdMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array( $row ) ) );
 
 		$instance = new IdMatchFinder(
-			$connection,
+			$this->store,
 			new IteratorFactory(),
 			$this->cache
 		);

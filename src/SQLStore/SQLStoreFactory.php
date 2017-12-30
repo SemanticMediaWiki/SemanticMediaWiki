@@ -505,7 +505,7 @@ class SQLStoreFactory {
 	public function newIdMatchFinder( Cache $cache ) {
 
 		$idMatchFinder = new IdMatchFinder(
-			$this->store->getConnection( 'mw.db' ),
+			$this->store,
 			$this->applicationFactory->getIteratorFactory(),
 			$cache
 		);
