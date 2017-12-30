@@ -73,10 +73,9 @@ class SMWSQLStore3Writers {
 
 		// Fetch all possible matches (including any duplicates created by
 		// incomplete rollback or DB deadlock)
-		$ids = $this->store->getObjectIds()->getListOfIdMatchesFor(
+		$ids = $this->store->getObjectIds()->findAllEntitiesThatMatch(
 			$title->getDBkey(),
-			$title->getNamespace(),
-			$title->getInterwiki()
+			$title->getNamespace()
 		);
 
 		$subject = DIWikiPage::newFromTitle( $title );
@@ -262,7 +261,7 @@ class SMWSQLStore3Writers {
 
 		// Find any potential duplicate entries for the current subject and
 		// if matched, mark them as to be deleted
-		$idList = $this->store->getObjectIds()->getListOfIdMatchesFor(
+		$idList = $this->store->getObjectIds()->findAllEntitiesThatMatch(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
 			$subject->getInterwiki(),

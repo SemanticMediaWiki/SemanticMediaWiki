@@ -143,7 +143,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$objectIdGenerator->expects( $this->atLeastOnce() )
-			->method( 'getListOfIdMatchesFor' )
+			->method( 'findAllEntitiesThatMatch' )
 			->will( $this->returnValue( array( 0 ) ) );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -183,7 +183,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$objectIdGenerator->expects( $this->atLeastOnce() )
-			->method( 'getListOfIdMatchesFor' )
+			->method( 'findAllEntitiesThatMatch' )
 			->with(
 				$this->equalTo( $title->getDBkey() ),
 				$this->equalTo( $title->getNamespace() ),

@@ -31,7 +31,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$entityManager->expects( $this->any() )
-			->method( 'getListOfIdMatchesFor' )
+			->method( 'findAllEntitiesThatMatch' )
 			->will( $this->returnValue( [] ) );
 
 		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
@@ -146,7 +146,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$objectIdGenerator->expects( $this->any() )
-			->method( 'getListOfIdMatchesFor' )
+			->method( 'findAllEntitiesThatMatch' )
 			->will( $this->returnValue( [] ) );
 
 		$objectIdGenerator->expects( $this->at( 0 ) )
@@ -216,7 +216,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$objectIdGenerator->expects( $this->any() )
-			->method( 'getListOfIdMatchesFor' )
+			->method( 'findAllEntitiesThatMatch' )
 			->will( $this->returnValue( [] ) );
 
 		$objectIdGenerator->expects( $this->at( 0 ) )
