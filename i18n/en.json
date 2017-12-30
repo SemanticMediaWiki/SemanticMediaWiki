@@ -249,7 +249,7 @@
 	"smw-ask-empty": "Empty",
 	"smw-ask-download-link-desc": "Download queried results in $1 format",
 	"smw-ask-format": "Format",
-	"smw-ask-format-selection-help": "Help with the $1 format",
+	"smw-ask-format-selection-help": "Help with the selected format: $1",
 	"smw-ask-condition-change-info": "The condition was altered and the search engine requires to rerun the query to produce results that matches the new requirements.",
 	"smw-ask-input-assistance": "Input assistance",
 	"smw-ask-condition-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Input assistance] is provided for the printout, sort, and condition field. The condition field requires to use one of following prefixes:",
