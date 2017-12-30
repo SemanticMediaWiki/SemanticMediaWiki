@@ -1,27 +1,23 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 use SMWDITime as DITime;
-use SMWSql3StubSemanticData as StubSemanticData;
-use Title;
+use SMW\SQLStore\EntityStore\StubSemanticData;
 
 /**
- * @covers \SMWSql3StubSemanticData
- *
- * @group SMW
- * @group SMWExtension
+ * @covers SMW\SQLStore\EntityStore\StubSemanticData
  *
  * @license GNU GPL v2+
- * @since 1.9.0.2
+ * @since 1.9
  *
  * @author mwjames
  */
-class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $testEnvironment;
@@ -47,7 +43,7 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -58,14 +54,14 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $subject ) );
 
 		$this->assertInstanceOf(
-			'\SMWSql3StubSemanticData',
+			StubSemanticData::class,
 			StubSemanticData::newFromSemanticData( $semanticData, $this->store )
 		);
 	}
 
 	public function testNotToResolveSubobjectsForRedirect() {
 
-		$instance = $this->getMockBuilder( '\SMWSql3StubSemanticData' )
+		$instance = $this->getMockBuilder( StubSemanticData::class )
 			->setConstructorArgs( array(
 				DIWikiPage::newFromText( __METHOD__ ),
 				$this->store ) )
@@ -92,7 +88,7 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	public function testGetPropertyValues() {
 
 		$instance = StubSemanticData::newFromSemanticData(
-			new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) ),
+			new SemanticData( DIWikiPage::newFromText( __METHOD__ ) ),
 			$this->store
 		);
 

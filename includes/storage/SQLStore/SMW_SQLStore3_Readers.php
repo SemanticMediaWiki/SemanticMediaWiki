@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SQLStore\TableDefinition;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\SQLStore\EntityStore\StubSemanticData;
 use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
@@ -141,9 +142,10 @@ class SMWSQLStore3Readers {
 	 */
 	private function initSemanticDataCache( $subjectId, DIWikiPage $subject ) {
 
+
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $subjectId, $this->store->m_semdata ) ) { // new cache entry
-			$this->store->m_semdata[$subjectId] = new SMWSql3StubSemanticData( $subject, $this->store, false );
+			$this->store->m_semdata[$subjectId] = new StubSemanticData( $subject, $this->store, false );
 			$this->store->m_sdstate[$subjectId] = array();
 		}
 
@@ -152,7 +154,7 @@ class SMWSQLStore3Readers {
 		// subject id ensure that in all cases the requested subject matches with
 		// the selected DB id
 		if ( $this->store->m_semdata[$subjectId]->getSubject()->getHash() !== $subject->getHash() ) {
-			$this->store->m_semdata[$subjectId] = new SMWSql3StubSemanticData( $subject, $this->store, false );
+			$this->store->m_semdata[$subjectId] = new StubSemanticData( $subject, $this->store, false );
 			$this->store->m_sdstate[$subjectId] = array();
 		}
 
