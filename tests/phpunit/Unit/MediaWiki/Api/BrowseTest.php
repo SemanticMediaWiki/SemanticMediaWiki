@@ -22,7 +22,12 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment = new TestEnvironment(
+			[
+				'smwgCacheUsage' => [ 'api.browse' => true ]
+			]
+		);
+
 		$this->apiFactory = $this->testEnvironment->getUtilityFactory()->newMwApiFactory();
 	}
 
