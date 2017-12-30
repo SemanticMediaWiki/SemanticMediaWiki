@@ -34,6 +34,7 @@ class EntityIdDisposerJob extends JobBase {
 	 */
 	public function __construct( Title $title, $params = array() ) {
 		parent::__construct( 'SMW\EntityIdDisposerJob', $title, $params );
+		$this->removeDuplicates = true;
 
 		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
 			ApplicationFactory::getInstance()->getStore( '\SMW\SQLStore\SQLStore' )

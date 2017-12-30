@@ -21,6 +21,7 @@ class PropertyStatisticsRebuildJob extends JobBase {
 	 */
 	public function __construct( Title $title, $params = array() ) {
 		parent::__construct( 'SMW\PropertyStatisticsRebuildJob', $title, $params );
+		$this->removeDuplicates = true;
 	}
 
 	/**
