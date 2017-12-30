@@ -15,10 +15,15 @@ use SMW\PropertyAliasFinder;
  */
 class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 
+	private $cache;
 	private $store;
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -30,8 +35,8 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 		$languageIndependentPropertyLabels = array();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAliasFinder',
-			new PropertyAliasFinder()
+			PropertyAliasFinder::class,
+			new PropertyAliasFinder( $this->cache )
 		);
 	}
 
@@ -40,6 +45,7 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 		$propertyAliases = array( 'Bar' => '_Foo' );
 
 		$instance = new PropertyAliasFinder(
+			$this->cache,
 			$propertyAliases
 		);
 
@@ -59,6 +65,7 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 		$canonicalPropertyAliases = array( 'Bar' => '_Foo' );
 
 		$instance = new PropertyAliasFinder(
+			$this->cache,
 			array(),
 			$canonicalPropertyAliases
 		);
@@ -71,12 +78,53 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRegisterAliasByFixedLabel() {
 
-		$instance = new PropertyAliasFinder();
+		$instance = new PropertyAliasFinder(
+			$this->cache
+		);
+
 		$instance->registerAliasByFixedLabel( '_Foo', 'Bar' );
 
 		$this->assertEquals(
 			'_Foo',
 			$instance->findPropertyIdByAlias( 'Bar' )
+		);
+	}
+
+	public function testGetKnownPropertyAliasesByLanguageCodeCached() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( [ '⧼smw-bar⧽' => '_Foo' ] ) );
+
+		$instance = new PropertyAliasFinder(
+			$this->cache
+		);
+
+		$instance->registerAliasByMsgKey( '_Foo', 'smw-bar' );
+
+		$this->assertEquals(
+			[ '⧼smw-bar⧽' => '_Foo' ],
+			$instance->getKnownPropertyAliasesByLanguageCode( 'en' )
+		);
+	}
+
+	public function testGetKnownPropertyAliasesByLanguageCode() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new PropertyAliasFinder(
+			$this->cache
+		);
+
+		$instance->registerAliasByMsgKey( '_Foo', 'smw-bar' );
+
+		$msgKey = version_compare( $GLOBALS['wgVersion'], '1.28', '<' ) ? '<smw-bar>' : '⧼smw-bar⧽' ;
+
+		$this->assertEquals(
+			[ $msgKey => '_Foo' ],
+			$instance->getKnownPropertyAliasesByLanguageCode( 'en' )
 		);
 	}
 

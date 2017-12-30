@@ -73,6 +73,7 @@ class PropertyRegistry {
 		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
 
 		$propertyAliasFinder = new PropertyAliasFinder(
+			$applicationFactory->getCache(),
 			$extraneousLanguage->getPropertyAliases(),
 			$extraneousLanguage->getCanonicalPropertyAliases()
 		);
@@ -369,8 +370,8 @@ class PropertyRegistry {
 
 		// Those are mostly from extension that register a msgKey as no dedicated
 		// lang. file exists; maybe this should be cached somehow?
-		foreach ( $this->propertyAliasFinder->getKnownPropertyAliasesWithMsgKey() as $key => $id ) {
-			if ( $label === Message::get( $key, Message::TEXT, $languageCode ) ) {
+		foreach ( $this->propertyAliasFinder->getKnownPropertyAliasesByLanguageCode( $languageCode ) as $alias => $id ) {
+			if ( $label === $alias ) {
 				return $id;
 			}
 		}
