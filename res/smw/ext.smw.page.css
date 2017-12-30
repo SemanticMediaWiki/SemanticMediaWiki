@@ -222,4 +222,13 @@
 	.smw-property-page-results .header-title:first-child, .smw-property-page-results .header-row > .header-title:first-child {
 		border-bottom: 1px solid #ddd;
 	}
+
+	.smw-property-page-results .smwpropname {
+		font-weight: bold;
+		width: 100%;
+	}
+
+	.smw-property-page-results .smwprops {
+		width: 100%;
+	}
 }
