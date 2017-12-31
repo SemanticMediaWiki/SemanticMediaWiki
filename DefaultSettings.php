@@ -331,6 +331,8 @@ return array(
 	# - SMW_BROWSE_SHOW_GROUP: Should the browse view create group sections for
 	#   properties that belong to the same property group?
 	#
+	# - SMW_BROWSE_SHOW_SORTKEY: Should the sortkey be displayed?
+	#
 	# - SMW_BROWSE_USE_API: Whether the browse display is to be generated using
 	#   an API request or not. (was $smwgBrowseByApi)
 	#

@@ -378,6 +378,7 @@ class ContentsBuilder {
 
 		$contextPage = $semanticData->getSubject();
 		$showInverse = $this->getOption( 'showInverse' );
+		$showSort = $this->getOption( 'showSort' );
 
 		$comma = Message::get(
 			'comma-separator',
@@ -409,6 +410,11 @@ class ContentsBuilder {
 				$incoming,
 				$showInverse
 			);
+
+			// Make the sortkey visible which is otherwise hidden from the user
+			if ( $showSort && $diProperty->getKey() === '_SKEY' ) {
+				$propertyLabel = Message::get( 'smw-property-predefined-label-skey', Message::TEXT, Message::USER_LANGUAGE );
+			}
 
 			if ( $propertyLabel === null ) {
 				continue;
