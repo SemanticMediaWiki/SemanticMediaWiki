@@ -243,7 +243,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructPropertyStatisticsTable() {
+	public function testCanConstructPropertyStatisticsStore() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -256,8 +256,8 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\PropertyStatisticsTable',
-			$instance->newPropertyStatisticsTable()
+			'\SMW\SQLStore\PropertyStatisticsStore',
+			$instance->newPropertyStatisticsStore()
 		);
 	}
 

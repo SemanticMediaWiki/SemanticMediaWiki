@@ -32,6 +32,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->byIdEntityFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\ByIdEntityFinder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,6 +51,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newProcessLruCache' )
 			->will( $this->returnValue( $processLruCache ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertyStatisticsStore' )
+			->will( $this->returnValue( $propertyStatisticsStore ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newByIdEntityFinder' )

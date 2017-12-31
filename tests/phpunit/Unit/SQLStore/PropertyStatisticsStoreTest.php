@@ -1,15 +1,14 @@
 <?php
 
-namespace SMW\Test\SQLStore;
+namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\PropertyStatisticsTable;
+use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\MwDBaseUnitTestCase;
 
 /**
- * @covers \SMW\SQLStore\PropertyStatisticsTable
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\SQLStore\PropertyStatisticsStore
+ * @group semantic-mediawiki
  *
  * @group medium
  *
@@ -18,7 +17,7 @@ use SMW\Tests\MwDBaseUnitTestCase;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
+class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 
 	protected $statsTable = null;
 
@@ -35,9 +34,8 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 
 	public function testDeleteAll() {
 
-		$statsTable = new PropertyStatisticsTable(
-			$this->getStore()->getConnection( 'mw.db' ),
-			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		$statsTable = new PropertyStatisticsStore(
+			$this->getStore()->getConnection( 'mw.db' )
 		);
 
 		$this->assertTrue( $statsTable->deleteAll() !== false );
@@ -71,9 +69,8 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 	protected function getTable() {
 		if ( $this->statsTable === null ) {
 
-			$this->statsTable = new PropertyStatisticsTable(
-				$this->getStore()->getConnection( 'mw.db' ),
-				\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+			$this->statsTable = new PropertyStatisticsStore(
+				$this->getStore()->getConnection( 'mw.db' )
 			);
 
 			$this->assertTrue( $this->statsTable->deleteAll() !== false );
@@ -103,7 +100,7 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PropertyStatisticsTable(
+		$instance = new PropertyStatisticsStore(
 			$connection,
 			'foo'
 		);
@@ -118,9 +115,8 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PropertyStatisticsTable(
-			$connection,
-			'foo'
+		$instance = new PropertyStatisticsStore(
+			$connection
 		);
 
 		$this->setExpectedException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException');
@@ -156,9 +152,8 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 
 	public function testAddToUsageCounts() {
 
-		$statsTable = new PropertyStatisticsTable(
-			$this->getStore()->getConnection( 'mw.db' ),
-			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		$statsTable = new PropertyStatisticsStore(
+			$this->getStore()->getConnection( 'mw.db' )
 		);
 
 		$this->assertTrue( $statsTable->deleteAll() !== false );
@@ -211,9 +206,8 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'update' );
 
-		$instance = new PropertyStatisticsTable(
-			$connection,
-			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		$instance = new PropertyStatisticsStore(
+			$connection
 		);
 
 		$additions = array(
@@ -241,9 +235,8 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'update' );
 
-		$instance = new PropertyStatisticsTable(
-			$connection,
-			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		$instance = new PropertyStatisticsStore(
+			$connection
 		);
 
 		$additions = array(
@@ -269,7 +262,7 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		$connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
-				$this->stringContains( $tableName ),
+				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
 				$this->equalTo(
 					[
 						'usage_count' => 1,
@@ -279,17 +272,14 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 				$this->anything() );
 
 
-		$instance = new PropertyStatisticsTable(
-			$connection,
-			$tableName
+		$instance = new PropertyStatisticsStore(
+			$connection
 		);
 
 		$instance->insertUsageCount( 42, [ 1, 9999 ] );
 	}
 
 	public function testAddToUsageCountsWithArrayValue() {
-
-		$tableName = 'Foo';
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -302,7 +292,7 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		$connection->expects( $this->once() )
 			->method( 'update' )
 			->with(
-				$this->stringContains( $tableName ),
+				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
 				$this->equalTo(
 					[
 						'usage_count = usage_count + 1',
@@ -314,17 +304,14 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 					] ),
 				$this->anything() );
 
-		$instance = new PropertyStatisticsTable(
-			$connection,
-			$tableName
+		$instance = new PropertyStatisticsStore(
+			$connection
 		);
 
 		$instance->addToUsageCounts( [ 42 => [ 'usage' => 1, 'null' => 9999 ] ] );
 	}
 
 	public function testSetUsageCountWithArrayValue() {
-
-		$tableName = 'Foo';
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -333,7 +320,7 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		$connection->expects( $this->once() )
 			->method( 'update' )
 			->with(
-				$this->stringContains( $tableName ),
+				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
 				$this->equalTo(
 					[
 						'usage_count' => 1,
@@ -345,9 +332,8 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 					] ),
 				$this->anything() );
 
-		$instance = new PropertyStatisticsTable(
-			$connection,
-			$tableName
+		$instance = new PropertyStatisticsStore(
+			$connection
 		);
 
 		$instance->setUsageCount( 42, [ 1, 9999 ] );

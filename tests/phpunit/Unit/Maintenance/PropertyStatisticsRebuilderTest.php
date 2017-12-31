@@ -22,7 +22,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -92,7 +92,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [ $this->newPropertyTable( $tableName ) ] ) );
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
 			->getMock();
 

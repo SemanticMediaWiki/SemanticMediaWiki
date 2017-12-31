@@ -7,7 +7,7 @@ use SMWDataItem as DataItem;
 use SMW\HashBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\IdToDataItemMatchFinder;
-use SMW\SQLStore\PropertyStatisticsTable;
+use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\RedirectInfoStore;
 use SMW\SQLStore\TableFieldUpdater;
 use SMW\Utils\Collator;
@@ -782,12 +782,11 @@ class SMWSql3SmwIds {
 			// Properties also need to be in the property statistics table
 			if( $namespace === SMW_NS_PROPERTY ) {
 
-				$statsStore = new PropertyStatisticsTable(
-					$db,
-					SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+				$propertyStatisticsStore = $this->factory->newPropertyStatisticsStore(
+					$db
 				);
 
-				$statsStore->insertUsageCount( $id, 0 );
+				$propertyStatisticsStore->insertUsageCount( $id, 0 );
 			}
 
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
