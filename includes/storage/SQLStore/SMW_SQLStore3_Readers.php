@@ -35,22 +35,20 @@ class SMWSQLStore3Readers {
 	private $factory;
 
 	/**
-	 * @var traversalPropertyLookup
+	 * @var TraversalPropertyLookup
 	 */
 	private $traversalPropertyLookup;
 
 	/**
-	 *  >0 while getSemanticData runs, used to prevent nested calls from clearing the cache
-	 * while another call runs and is about to fill it with data
-	 *
-	 * @var int
+	 * @var SemanticDataLookup
 	 */
-	private static $in_getSemanticData = 0;
+	private $semanticDataLookup;
 
 	public function __construct( SMWSQLStore3 $parentStore, $factory ) {
 		$this->store = $parentStore;
 		$this->factory = $factory;
 		$this->traversalPropertyLookup = $this->factory->newTraversalPropertyLookup();
+		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();
 	}
 
 	/**
@@ -111,92 +109,26 @@ class SMWSQLStore3Readers {
 				}
 			}
 
-			$this->getSemanticDataFromTable( $sid, $subject, $proptable );
+			$this->semanticDataLookup->getSemanticDataFromTable( $sid, $subject, $proptable );
 		}
 
 		// Note: the sortkey is always set but belongs to no property table,
 		// hence no entry in $this->store->m_sdstate[$sid] is made.
-		self::$in_getSemanticData++;
-		$this->initSemanticDataCache( $sid, $subject );
+		$this->semanticDataLookup->lockCache();
+		$this->semanticDataLookup->initLookupCache( $sid, $subject );
+
+		$semanticData = $this->semanticDataLookup->getSemanticDataById(
+			$sid
+		);
 
 		// Avoid adding a sortkey for an already extended stub
-		if ( !$this->store->m_semdata[$sid]->hasProperty( new DIProperty( '_SKEY' ) ) ) {
-			$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( '', $sortKey ) );
+		if ( !$semanticData->hasProperty( new DIProperty( '_SKEY' ) ) ) {
+			$semanticData->addPropertyStubValue( '_SKEY', array( '', $sortKey ) );
 		}
 
-		self::$in_getSemanticData--;
+		$this->semanticDataLookup->unlockCache();
 
-		return $this->store->m_semdata[$sid];
-	}
-
-	/**
-	 * Helper method to make sure there is a cache entry for the data about
-	 * the given subject with the given ID.
-	 *
-	 * @todo The management of this cache should be revisited.
-	 *
-	 * @since 1.8
-	 *
-	 * @param int $subjectId
-	 * @param DIWikiPage $subject
-	 */
-	private function initSemanticDataCache( $subjectId, DIWikiPage $subject ) {
-
-
-		// *** Prepare the cache ***//
-		if ( !array_key_exists( $subjectId, $this->store->m_semdata ) ) { // new cache entry
-			$this->store->m_semdata[$subjectId] = new StubSemanticData( $subject, $this->store, false );
-			$this->store->m_sdstate[$subjectId] = array();
-		}
-
-		// Issue #622
-		// If a redirect was cached preceding this request and points to the same
-		// subject id ensure that in all cases the requested subject matches with
-		// the selected DB id
-		if ( $this->store->m_semdata[$subjectId]->getSubject()->getHash() !== $subject->getHash() ) {
-			$this->store->m_semdata[$subjectId] = new StubSemanticData( $subject, $this->store, false );
-			$this->store->m_sdstate[$subjectId] = array();
-		}
-
-		if ( ( count( $this->store->m_semdata ) > 20 ) && ( self::$in_getSemanticData == 1 ) ) {
-			// prevent memory leak;
-			// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),
-			// The value of 20 was chosen by profiling runtimes for large inline queries and heavily annotated pages.
-			// However, things might have changed in the meantime ...
-			$this->store->m_semdata = array( $subjectId => $this->store->m_semdata[$subjectId] );
-			$this->store->m_sdstate = array( $subjectId => $this->store->m_sdstate[$subjectId] );
-		}
-	}
-
-	/**
-	 * Fetch the data storder about one subject in one particular table.
-	 *
-	 * @param integer $sid
-	 * @param DIWikiPage $subject
-	 * @param TableDefinition $proptable
-	 *
-	 * @return SMWSemanticData
-	 */
-	private function getSemanticDataFromTable( $sid, DIWikiPage $subject, TableDefinition $proptable, SMWRequestOptions $requestOptions = null ) {
-		// Do not clear the cache when called recursively.
-		self::$in_getSemanticData++;
-
-		$this->initSemanticDataCache( $sid, $subject );
-
-		if ( array_key_exists( $proptable->getName(), $this->store->m_sdstate[$sid] ) ) {
-			self::$in_getSemanticData--;
-			return $this->store->m_semdata[$sid];
-		}
-
-		// *** Read the data ***//
-		$data = $this->fetchSemanticData( $sid, $subject, $proptable, true, $requestOptions );
-		foreach ( $data as $d ) {
-			$this->store->m_semdata[$sid]->addPropertyStubValue( reset( $d ), end( $d ) );
-		}
-		$this->store->m_sdstate[$sid][$proptable->getName()] = true;
-
-		self::$in_getSemanticData--;
-		return $this->store->m_semdata[$sid];
+		return $semanticData;
 	}
 
 	/**
@@ -238,7 +170,7 @@ class SMWSQLStore3Readers {
 					return array();
 				}
 
-				$sd = $this->getSemanticDataFromTable( $sid, $subject, $proptables[$propTableId] );
+				$sd = $this->semanticDataLookup->getSemanticDataFromTable( $sid, $subject, $proptables[$propTableId] );
 				$result = $this->store->applyRequestOptions( $sd->getPropertyValues( $property ), $requestOptions );
 			}
 		} else { // no subject given, get all values for the given property
@@ -250,7 +182,14 @@ class SMWSQLStore3Readers {
 			}
 
 			$proptables =  $this->store->getPropertyTables();
-			$data = $this->fetchSemanticData( $pid, $property, $proptables[$tableid], false, $requestOptions );
+			$data = $this->semanticDataLookup->fetchSemanticData(
+				$pid,
+				$property,
+				$proptables[$tableid],
+				false,
+				$requestOptions
+			);
+
 			$result = array();
 			$propertyTypeId = $property->findPropertyTypeID();
 			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
@@ -266,183 +205,6 @@ class SMWSQLStore3Readers {
 			}
 		}
 
-
-		return $result;
-	}
-
-	/**
-	 * Helper function for reading all data for from a given property table
-	 * (specified by an SMWSQLStore3Table object), based on certain
-	 * restrictions. The function can filter data based on the subject (1)
-	 * or on the property it belongs to (2) -- but one of those must be
-	 * done. The Boolean $issubject is true for (1) and false for (2).
-	 *
-	 * In case (1), the first two parameters are taken to refer to a
-	 * subject; in case (2) they are taken to refer to a property. In any
-	 * case, the retrieval is limited to the specified $proptable. The
-	 * parameters are an internal $id (of a subject or property), and an
-	 * $object (being an DIWikiPage or SMWDIProperty). Moreover, when
-	 * filtering by property, it is assumed that the given $proptable
-	 * belongs to the property: if it is a table with fixed property, it
-	 * will not be checked that this is the same property as the one that
-	 * was given in $object.
-	 *
-	 * In case (1), the result in general is an array of pairs (arrays of
-	 * size 2) consisting of a property key (string), and DB keys (array if
-	 * many, string if one) from which a datvalue object for this value can
-	 * be built. It is possible that some of the DB keys are based on
-	 * internal objects; these will be represented by similar result arrays
-	 * of (recursive calls of) fetchSemanticData().
-	 *
-	 * In case (2), the result is simply an array of DB keys (array)
-	 * without the property keys. Container objects will be encoded with
-	 * nested arrays like in case (1).
-	 *
-	 * @todo Maybe share DB handler; asking for it seems to take quite some
-	 * time and we do not want to change it in one call.
-	 *
-	 * @param integer $id
-	 * @param SMWDataItem $object
-	 * @param TableDefinition $propTable
-	 * @param boolean $isSubject
-	 * @param SMWRequestOptions $requestOptions
-	 *
-	 * @return array
-	 */
-	private function fetchSemanticData( $id, SMWDataItem $object = null, TableDefinition $propTable, $isSubject = true, SMWRequestOptions $requestOptions = null ) {
-		// stop if there is not enough data:
-		// properties always need to be given as object,
-		// subjects at least if !$proptable->idsubject
-		if ( ( $id == 0 ) ||
-			( is_null( $object ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) ||
-			( $propTable->getDIType() === null ) ) {
-			return array();
-		}
-
-		$result = array();
-		$db = $this->store->getConnection();
-
-		$diHandler = $this->store->getDataItemHandlerForDIType( $propTable->getDiType() );
-
-		// ***  First build $from, $select, and $where for the DB query  ***//
-		$from = $db->tableName( $propTable->getName() ); // always use actual table
-
-		$select = '';
-		$where  = '';
-
-		if ( $isSubject ) { // restrict subject, select property
-			$where .= ( $propTable->usesIdSubject() ) ? 's_id=' . $db->addQuotes( $id ) :
-					  's_title=' . $db->addQuotes( $object->getDBkey() ) .
-					  ' AND s_namespace=' . $db->addQuotes( $object->getNamespace() );
-			if ( !$propTable->isFixedPropertyTable() ) { // select property name
-				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . ' AS p ON p_id=p.smw_id';
-				$select .= 'p.smw_title as prop';
-
-				// Avoid displaying any property that has been marked deleted or outdated
-				$where .= " AND p.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND p.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
-			} // else: fixed property, no select needed
-		} elseif ( !$propTable->isFixedPropertyTable() ) { // restrict property only
-			$where .= 'p_id=' . $db->addQuotes( $id );
-		}
-
-		$valuecount = 0;
-		// Don't use DISTINCT for value of one subject:
-		$usedistinct = !$isSubject;
-
-		$valueField = $diHandler->getIndexField();
-		$labelField = $diHandler->getLabelField();
-		$fields = $diHandler->getFetchFields();
-		foreach ( $fields as $fieldname => $fieldType ) { // select object column(s)
-			if ( $fieldType === FieldType::FIELD_ID ) { // get data from ID table
-				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
-				$select .= ( ( $select !== '' ) ? ',' : '' ) .
-					"$fieldname AS id$valuecount" .
-					",o$valuecount.smw_title AS v$valuecount" .
-					",o$valuecount.smw_namespace AS v" . ( $valuecount + 1 ) .
-					",o$valuecount.smw_iw AS v" . ( $valuecount + 2 ) .
-					",o$valuecount.smw_sortkey AS v" . ( $valuecount + 3 ) .
-					",o$valuecount.smw_subobject AS v" . ( $valuecount + 4 );
-
-				if ( $valueField == $fieldname ) {
-					$valueField = "o$valuecount.smw_sortkey";
-				}
-				if ( $labelField == $fieldname ) {
-					$labelField = "o$valuecount.smw_sortkey";
-				}
-
-				$valuecount += 4;
-			} else {
-				$select .= ( ( $select !== '' ) ? ',' : '' ) .
-					"$fieldname AS v$valuecount";
-			}
-
-			$valuecount += 1;
-		}
-
-		// Postgres
-		// Function: SMWSQLStore3Readers::fetchSemanticData
-		// Error: 42P10 ERROR: for SELECT DISTINCT, ORDER BY expressions must appear in select list
-		if ( strpos( $select, $valueField ) === false ) {
-			$select .= ", $valueField AS v" . ( $valuecount + 1 );
-		}
-
-		if ( !$isSubject ) { // Apply sorting/string matching; only with given property
-			$where .= $this->store->getSQLConditions( $requestOptions, $valueField, $labelField, $where !== '' );
-		} else {
-			$valueField = '';
-		}
-
-		// ***  Now execute the query and read the results  ***//
-		$res = $db->select( $from, $select, $where, __METHOD__,
-				( $usedistinct ?
-					$this->store->getSQLOptions( $requestOptions, $valueField ) + array( 'DISTINCT' ) :
-					$this->store->getSQLOptions( $requestOptions, $valueField )
-				) );
-
-		foreach ( $res as $row ) {
-
-			$valueHash = '';
-
-			if ( $isSubject ) { // use joined or predefined property name
-				$propertykey = $propTable->isFixedPropertyTable() ? $propTable->getFixedProperty() : $row->prop;
-				$valueHash = $propertykey;
-			}
-
-			// Use enclosing array only for results with many values:
-			if ( $valuecount > 1 ) {
-				$valuekeys = array();
-				for ( $i = 0; $i < $valuecount; $i += 1 ) { // read the value fields from the current row
-					$fieldname = "v$i";
-					$valuekeys[] = $row->$fieldname;
-				}
-			} else {
-				$valuekeys = $row->v0;
-			}
-
-			// #Issue 615
-			// If the iw field contains a redirect marker then remove it
-			if ( isset( $valuekeys[2] ) && ( $valuekeys[2] === SMW_SQL3_SMWREDIIW || $valuekeys[2] === SMW_SQL3_SMWDELETEIW ) ) {
-				$valuekeys[2] = '';
-			}
-
-			// The valueHash prevents from inserting duplicate entries of the same content
-			$valueHash = $valuecount > 1 ? md5( $valueHash . implode( '#', $valuekeys ) ) : md5( $valueHash . $valuekeys );
-
-			// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
-			if ( $valuecount < 3 ||
-				implode( '', $fields ) !== FieldType::FIELD_ID ||
-				$valuekeys[2] === '' ||
-				$valuekeys[2]{0} != ':' ) {
-
-				if ( isset( $result[$valueHash] ) ) {
-					$this->factory->getLogger()->info( __METHOD__ . " Duplicate entry for {$propertykey} with " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) . "\n" );
-				}
-
-				$result[$valueHash] = $isSubject ? array( $propertykey, $valuekeys ) : $valuekeys;
-			}
-		}
-
-		$db->freeResult( $res );
 
 		return $result;
 	}

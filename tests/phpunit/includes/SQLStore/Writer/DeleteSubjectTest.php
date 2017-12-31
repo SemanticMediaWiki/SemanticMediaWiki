@@ -89,6 +89,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'computeTableRowDiff' )
 			->will( $this->returnValue( [ [], [], [] ] ) );
 
+		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SemanticDataLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -120,6 +124,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableRowDiffer' )
 			->will( $this->returnValue( $propertyTableRowDiffer ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSemanticDataLookup' )
+			->will( $this->returnValue( $semanticDataLookup ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newChangeOp' )
@@ -162,7 +170,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$this->store->expects( $this->exactly( 2 ) )
+		$this->store->expects( $this->exactly( 1 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
@@ -211,7 +219,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$this->store->expects( $this->exactly( 2 ) )
+		$this->store->expects( $this->exactly( 1 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
