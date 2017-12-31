@@ -271,6 +271,13 @@ class ValueListBuilder {
 			// Property values
 			$ropts = new RequestOptions();
 			$ropts->limit = $this->maxPropertyValues + 1;
+
+			// Restrict the request otherwise the entire SemanticData record
+			// is fetched which can in case of a subject with a large
+			// subobject/subpage pool create excessive DB queries that are not
+			// used for the display
+			$ropts->conditionConstraint = true;
+
 			$values = $this->store->getPropertyValues( $diWikiPage, $property, $ropts );
 
 			// May return an iterator
