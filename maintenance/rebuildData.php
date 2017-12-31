@@ -4,6 +4,7 @@ namespace SMW\Maintenance;
 
 use SMW\ApplicationFactory;
 use SMW\StoreFactory;
+use SMW\Store;
 use SMW\Options;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
@@ -141,7 +142,7 @@ class RebuildData extends \Maintenance {
 		}
 
 		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
-		$store->setUpdateJobsEnabledState( false );
+		$store->setOption( Store::OPT_CREATE_UPDATE_JOB, false );
 
 		$dataRebuilder = $maintenanceFactory->newDataRebuilder(
 			$store,

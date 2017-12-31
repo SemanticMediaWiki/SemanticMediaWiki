@@ -265,7 +265,11 @@ class UpdateJob extends JobBase {
 			wfTimestamp( TS_UNIX )
 		);
 
-		$parserData->disableBackgroundUpdateJobs();
+		$parserData->setOption(
+			$parserData::OPT_CREATE_UPDATE_JOB,
+			false
+		);
+
 		$parserData->updateStore();
 
 		return true;

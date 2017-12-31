@@ -7,6 +7,9 @@ use SMW\InMemoryPoolCache;
 use SMW\MediaWiki\Database;
 use SMW\Store;
 use Onoi\Cache\Cache;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\SQLStore\TableBuilder\FieldType;
+use Title;
 
 /**
  * @license GNU GPL v2+
@@ -16,7 +19,7 @@ use Onoi\Cache\Cache;
  */
 class RedirectInfoStore {
 
-	const TABLENAME = 'smw_fpt_redi';
+	const TABLE_NAME = 'smw_fpt_redi';
 
 	/**
 	 * @var Store
@@ -27,6 +30,11 @@ class RedirectInfoStore {
 	 * @var Cache
 	 */
 	private $cache;
+
+	/**
+	 * @var boolean
+	 */
+	private $hasEqualitySupport = false;
 
 	/**
 	 * @since 2.1
@@ -41,6 +49,17 @@ class RedirectInfoStore {
 		if ( $this->cache === null ) {
 			$this->cache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'sql.store.redirect.infostore' );
 		}
+
+		$this->setEqualitySupportFlag( $GLOBALS['smwgQEqualitySupport'] );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $equalitySupport
+	 */
+	public function setEqualitySupportFlag( $equalitySupport ) {
+		$this->hasEqualitySupport = $equalitySupport != SMW_EQ_NONE;
 	}
 
 	/**
@@ -103,6 +122,71 @@ class RedirectInfoStore {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $id
+	 * @param string $title
+	 * @param integer $namespace
+	 */
+	public function updateRedirect( $id, $title, $namespace ) {
+
+		$this->deleteRedirect( $title, $namespace );
+
+		if ( !$this->canCreateUpdateJobs() || !$this->hasEqualitySupport ) {
+			return;
+		}
+
+		// Entries that refer to old target may in fact refer to subject,
+		// but we don't know which: schedule affected pages for update
+		$propertyTables = $this->store->getPropertyTables();
+		$connection = $this->store->getConnection( 'mw.db' );
+		$jobs = [];
+
+		foreach ( $propertyTables as $proptable ) {
+
+			 // Can be skipped safely
+			if ( $proptable->getName() == self::TABLE_NAME ) {
+				continue;
+			}
+
+			$query = [
+				'from' => '',
+				'fields' => ''
+			];
+
+			$query['condition'] = [ 'p_id' => $id ];
+
+			if ( $proptable->usesIdSubject() ) {
+				$query['from'] .= $connection->tableName( $proptable->getName() );
+				$query['from'] .= ' INNER JOIN ';
+				$query['from'] .= $connection->tableName( SQLStore::ID_TABLE ) . ' ON s_id=smw_id';
+				$query['fields'] = 'DISTINCT smw_title AS t,smw_namespace AS ns';
+			} else {
+				$query['from'] = $connection->tableName( $proptable->getName() );
+				$query['fields'] = 'DISTINCT s_title AS t,s_namespace AS ns';
+			}
+
+			if ( $namespace === SMW_NS_PROPERTY && !$proptable->isFixedPropertyTable() ) {
+				$this->findUpdateJobs( $connection, $query, $jobs );
+			}
+
+			foreach ( $proptable->getFields( $this->store ) as $fieldName => $fieldType ) {
+
+				if ( $fieldType !== FieldType::FIELD_ID ) {
+					continue;
+				}
+
+				$query['condition'] = [ $fieldName => $id ];
+				$this->findUpdateJobs( $connection, $query, $jobs );
+			}
+		}
+
+		foreach ( $jobs as $job ) {
+			$job->insert();
+		}
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param string $title
@@ -125,7 +209,7 @@ class RedirectInfoStore {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
-			self::TABLENAME,
+			self::TABLE_NAME,
 			'o_id',
 			array(
 				's_title' => $title,
@@ -142,7 +226,7 @@ class RedirectInfoStore {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$connection->insert(
-			self::TABLENAME,
+			self::TABLE_NAME,
 			array(
 				's_title' => $title,
 				's_namespace' => $namespace,
@@ -156,12 +240,36 @@ class RedirectInfoStore {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$connection->delete(
-			self::TABLENAME,
+			self::TABLE_NAME,
 			array(
 				's_title' => $title,
 				's_namespace' => $namespace ),
 			__METHOD__
 		);
+	}
+
+	private function canCreateUpdateJobs() {
+		return $this->store->getOption( Store::OPT_CREATE_UPDATE_JOB, true ) && $this->store->getOption( 'smwgEnableUpdateJobs' );
+	}
+
+	private function findUpdateJobs( $connection, $query, &$jobs ) {
+
+		$res = $connection->select(
+			$query['from'],
+			$query['fields'],
+			$query['condition'],
+			__METHOD__
+		);
+
+		foreach ( $res as $row ) {
+			$title = Title::makeTitleSafe( $row->ns, $row->t );
+
+			if ( $title !== null ) {
+				$jobs[] = new UpdateJob( $title );
+			}
+		}
+
+		$connection->freeResult( $res );
 	}
 
 }

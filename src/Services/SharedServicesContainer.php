@@ -82,11 +82,17 @@ class SharedServicesContainer implements CallbackContainer {
 
 			$store = StoreFactory::getStore( $storeClass );
 
-			$options = $store->getOptions();
-			$options->set( 'smwgDefaultStore', $settings->get( 'smwgDefaultStore' ) );
-			$options->set( 'smwgSemanticsEnabled', $settings->get( 'smwgSemanticsEnabled' ) );
-			$options->set( 'smwgAutoRefreshSubject', $settings->get( 'smwgAutoRefreshSubject' ) );
-			$options->set( 'smwgEnableUpdateJobs', $settings->get( 'smwgEnableUpdateJobs' ) );
+			$configs = [
+				'smwgDefaultStore',
+				'smwgSemanticsEnabled',
+				'smwgAutoRefreshSubject',
+				'smwgEnableUpdateJobs',
+				'smwgQEqualitySupport'
+			];
+
+			foreach ( $configs as $config ) {
+				$store->setOption( $config, $settings->get( $config ) );
+			}
 
 			return $store;
 		} );

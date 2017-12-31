@@ -834,80 +834,13 @@ class SMWSQLStore3Writers {
 
 		} elseif ( $old_tid != 0 ) { // existing redirect is changed or deleted
 
-			$this->store->getObjectIds()->deleteRedirect(
+			$count--;
+
+			$this->store->getObjectIds()->updateRedirect(
+				$old_tid,
 				$subject_t,
 				$subject_ns
 			);
-
-			$count--;
-
-			if ( $this->store->getUpdateJobsEnabledState() && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
-				// entries that refer to old target may in fact refer to subject,
-				// but we don't know which: schedule affected pages for update
-				$propertyTables = $this->store->getPropertyTables();
-
-				foreach ( $propertyTables as $proptable ) {
-					if ( $proptable->getName() == 'smw_fpt_redi' ) {
-						continue; // can safely be skipped
-					}
-
-					if ( $proptable->usesIdSubject() ) {
-						$from   = $db->tableName( $proptable->getName() ) . ' INNER JOIN ' .
-							  $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . ' ON s_id=smw_id';
-						$select = 'DISTINCT smw_title AS t,smw_namespace AS ns';
-					} else {
-						$from   = $db->tableName( $proptable->getName() );
-						$select = 'DISTINCT s_title AS t,s_namespace AS ns';
-					}
-
-					if ( $subject_ns === SMW_NS_PROPERTY && !$proptable->isFixedPropertyTable() ) {
-
-						$res = $db->select(
-							$from,
-							$select,
-							array( 'p_id' => $old_tid ),
-							__METHOD__
-						);
-
-						foreach ( $res as $row ) {
-							$title = Title::makeTitleSafe( $row->ns, $row->t );
-							if ( !is_null( $title ) ) {
-								$jobs[] = new UpdateJob( $title );
-							}
-						}
-
-						$db->freeResult( $res );
-					}
-
-					foreach ( $proptable->getFields( $this->store ) as $fieldName => $fieldType ) {
-						if ( $fieldType === FieldType::FIELD_ID ) {
-
-							$res = $db->select(
-								$from,
-								$select,
-								array( $fieldName => $old_tid ),
-								__METHOD__
-							);
-
-							foreach ( $res as $row ) {
-								$title = Title::makeTitleSafe( $row->ns, $row->t );
-								if ( !is_null( $title ) ) {
-									$jobs[] = new UpdateJob( $title );
-								}
-							}
-
-							$db->freeResult( $res );
-						}
-					}
-				}
-
-				/// NOTE: we do not update the concept cache here; this remains an offline task
-
-			}
-		}
-
-		if ( $this->store->getUpdateJobsEnabledState() ) {
-			JobBase::batchInsert( $jobs );
 		}
 
 		// *** Finally, write the new redirect data ***//

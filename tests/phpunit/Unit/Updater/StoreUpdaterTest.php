@@ -122,7 +122,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$semanticData
 		);
 
-		$instance->isEnabledWithUpdateJob(
+		$instance->canCreateUpdateJob(
 			$updateJobStatus
 		);
 
@@ -178,7 +178,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$semanticData
 		);
 
-		$instance->isEnabledWithUpdateJob(
+		$instance->canCreateUpdateJob(
 			$updateJobStatus
 		);
 
@@ -288,7 +288,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$semanticData
 		);
 
-		$instance->isEnabledWithUpdateJob( true );
+		$instance->canCreateUpdateJob( true );
 		$instance->doUpdate();
 	}
 
