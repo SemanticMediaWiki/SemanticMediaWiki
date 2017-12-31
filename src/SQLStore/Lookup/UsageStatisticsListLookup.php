@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\DIProperty;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Store\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyStatisticsStore;
 
 /**
  * @license GNU GPL v2+

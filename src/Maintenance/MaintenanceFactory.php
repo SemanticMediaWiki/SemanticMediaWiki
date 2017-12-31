@@ -5,7 +5,7 @@ namespace SMW\Maintenance;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\ManualEntryLogger;
-use SMW\SQLStore\PropertyStatisticsTable;
+use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -85,14 +85,13 @@ class MaintenanceFactory {
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$messageReporter->registerReporterCallback( $reporterCallback );
 
-		$propertyStatisticsTable = new PropertyStatisticsTable(
-			$store->getConnection( 'mw.db' ),
-			SQLStore::PROPERTY_STATISTICS_TABLE
+		$propertyStatisticsStore = new PropertyStatisticsStore(
+			$store->getConnection( 'mw.db' )
 		);
 
 		$propertyStatisticsRebuilder = new PropertyStatisticsRebuilder(
 			$store,
-			$propertyStatisticsTable
+			$propertyStatisticsStore
 		);
 
 		$propertyStatisticsRebuilder->setMessageReporter( $messageReporter );

@@ -7,7 +7,7 @@ use SMW\DIProperty;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Store\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyStatisticsStore;
 use SMWDIError as DIError;
 use SMWRequestOptions as RequestOptions;
 

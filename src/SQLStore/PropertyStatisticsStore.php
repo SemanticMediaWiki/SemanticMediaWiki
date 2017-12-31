@@ -4,10 +4,8 @@ namespace SMW\SQLStore;
 
 use MWException;
 use SMW\MediaWiki\Database;
-use SMW\Store\PropertyStatisticsStore;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Simple implementation of PropertyStatisticsTable using MediaWikis
@@ -19,22 +17,14 @@ use Psr\Log\LoggerAwareInterface;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Nischay Nahata
  */
-class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInterface {
+class PropertyStatisticsStore {
 
-	/**
-	 * @var string
-	 */
-	private $table;
+	use LoggerAwareTrait;
 
 	/**
 	 * @var Database
 	 */
 	private $connection;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
 
 	/**
 	 * @var boolean
@@ -50,24 +40,9 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	 * @since 1.9
 	 *
 	 * @param Database $connection
-	 * @param string $table
 	 */
-	public function __construct( Database $connection, $table ) {
-		assert( is_string( $table ) );
-
+	public function __construct( Database $connection ) {
 		$this->connection = $connection;
-		$this->table = $table;
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -95,19 +70,19 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	 * @return string
 	 */
 	public function getStatisticsTable() {
-		return $this->table;
+		return SQLStore::PROPERTY_STATISTICS_TABLE;
 	}
 
 	/**
-	 * @see PropertyStatisticsStore::addToUsageCount
+	 * Change the usage count for the property of the given ID by the given
+	 * value. The method does nothing if the count is 0.
 	 *
 	 * @since 1.9
 	 *
-	 * @param integer $pid
+	 * @param integer $propertyId
 	 * @param integer $value
 	 *
 	 * @return boolean Success indicator
-	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function addToUsageCount( $pid, $value ) {
 
@@ -135,7 +110,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 
 		try {
 			$this->connection->update(
-				$this->table,
+				SQLStore::PROPERTY_STATISTICS_TABLE,
 				array(
 					'usage_count = usage_count ' . ( $usageVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $usageVal ) ),
 					'null_count = null_count ' . ( $nullVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $nullVal ) ),
@@ -156,7 +131,11 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	}
 
 	/**
-	 * @see PropertyStatisticsStore::addToUsageCounts
+	 * Increase the usage counts of multiple properties.
+	 *
+	 * The $additions parameter should be an array with integer
+	 * keys that are property ids, and associated integer values
+	 * that are the amount the usage count should be increased.
 	 *
 	 * @since 1.9
 	 *
@@ -198,12 +177,12 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	}
 
 	/**
-	 * @see PropertyStatisticsStore::setUsageCount
+	 * Updates an existing usage count.
 	 *
 	 * @since 1.9
 	 *
 	 * @param integer $propertyId
-	 * @param integer|array $value
+	 * @param integer $value
 	 *
 	 * @return boolean Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
@@ -229,7 +208,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 		}
 
 		return $this->connection->update(
-			$this->table,
+			SQLStore::PROPERTY_STATISTICS_TABLE,
 			array(
 				'usage_count' => $usageCount,
 				'null_count' => $nullCount,
@@ -242,12 +221,12 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	}
 
 	/**
-	 * @see PropertyStatisticsStore::insertUsageCount
+	 * Adds a new usage count.
 	 *
 	 * @since 1.9
 	 *
 	 * @param integer $propertyId
-	 * @param integer|array $value
+	 * @param integer $value
 	 *
 	 * @return boolean Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
@@ -273,7 +252,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 		}
 
 		return $this->connection->insert(
-			$this->table,
+			SQLStore::PROPERTY_STATISTICS_TABLE,
 			array(
 				'usage_count' => $usageCount,
 				'null_count' => $nullCount,
@@ -284,6 +263,8 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	}
 
 	/**
+	 * Returns the usage count for a provided property id.
+	 *
 	 * @since 2.2
 	 *
 	 * @param integer $propertyId
@@ -297,7 +278,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 		}
 
 		$row = $this->connection->selectRow(
-			$this->table,
+			SQLStore::PROPERTY_STATISTICS_TABLE,
 			array(
 				'usage_count'
 			),
@@ -311,7 +292,13 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	}
 
 	/**
-	 * @see PropertyStatisticsStore::getUsageCounts
+	 * Returns the usage counts of the provided properties.
+	 *
+	 * The returned array contains integer keys which are property ids,
+	 * with the associated values being their usage count (also integers).
+	 *
+	 * Properties for which no usage count is found will not have
+	 * an entry in the result array.
 	 *
 	 * @since 1.9
 	 *
@@ -325,7 +312,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 		}
 
 		$propertyStatistics = $this->connection->select(
-			$this->connection->tablename( $this->table ),
+			$this->connection->tablename( SQLStore::PROPERTY_STATISTICS_TABLE ),
 			array(
 				'usage_count',
 				'p_id',
@@ -349,7 +336,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	}
 
 	/**
-	 * @see PropertyStatisticsStore::deleteAll
+	 * Deletes all rows in the table.
 	 *
 	 * @since 1.9
 	 *
@@ -357,7 +344,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	 */
 	public function deleteAll() {
 		return $this->connection->delete(
-			$this->table,
+			SQLStore::PROPERTY_STATISTICS_TABLE,
 			'*',
 			__METHOD__
 		);

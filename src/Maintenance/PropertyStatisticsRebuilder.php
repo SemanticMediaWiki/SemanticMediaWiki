@@ -5,7 +5,7 @@ namespace SMW\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\Store;
-use SMW\Store\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyStatisticsStore;
 
 /**
  * Simple class for rebuilding property usage statistics.

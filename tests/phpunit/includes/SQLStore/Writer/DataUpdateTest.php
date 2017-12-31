@@ -55,7 +55,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'computeTableRowDiff' )
 			->will( $this->returnValue( [ [], [], [] ] ) );
 
-		$propertyStatisticsTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsTable' )
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -108,8 +108,8 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->factory->expects( $this->any() )
-			->method( 'newPropertyStatisticsTable' )
-			->will( $this->returnValue( $propertyStatisticsTable ) );
+			->method( 'newPropertyStatisticsStore' )
+			->will( $this->returnValue( $propertyStatisticsStore ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newHierarchyLookup' )

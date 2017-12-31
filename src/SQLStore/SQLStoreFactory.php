@@ -144,7 +144,7 @@ class SQLStoreFactory {
 
 		$usageStatisticsListLookup = new UsageStatisticsListLookup(
 			$this->store,
-			$this->newPropertyStatisticsTable()
+			$this->newPropertyStatisticsStore()
 		);
 
 		return $this->newCachedListLookup(
@@ -167,7 +167,7 @@ class SQLStoreFactory {
 
 		$propertyUsageListLookup = new PropertyUsageListLookup(
 			$this->store,
-			$this->newPropertyStatisticsTable(),
+			$this->newPropertyStatisticsStore(),
 			$requestOptions
 		);
 
@@ -191,7 +191,7 @@ class SQLStoreFactory {
 
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
 			$this->store,
-			$this->newPropertyStatisticsTable(),
+			$this->newPropertyStatisticsStore(),
 			$requestOptions
 		);
 
@@ -468,24 +468,23 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return PropertyStatisticsTable
+	 * @return PropertyStatisticsStore
 	 */
-	public function newPropertyStatisticsTable() {
+	public function newPropertyStatisticsStore() {
 
-		$propertyStatisticsTable = new PropertyStatisticsTable(
-			$this->store->getConnection( 'mw.db' ),
-			SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		$propertyStatisticsStore = new PropertyStatisticsStore(
+			$this->store->getConnection( 'mw.db' )
 		);
 
-		$propertyStatisticsTable->setLogger(
+		$propertyStatisticsStore->setLogger(
 			$this->getLogger()
 		);
 
-		$propertyStatisticsTable->isCommandLineMode(
+		$propertyStatisticsStore->isCommandLineMode(
 			$GLOBALS['wgCommandLineMode']
 		);
 
-		return $propertyStatisticsTable;
+		return $propertyStatisticsStore;
 	}
 
 	/**

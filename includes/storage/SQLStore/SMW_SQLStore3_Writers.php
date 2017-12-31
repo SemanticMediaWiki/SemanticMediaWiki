@@ -408,9 +408,11 @@ class SMWSQLStore3Writers {
 			$this->store->smwIds->setPropertyTableHashes( $sid, $newHashes );
 		}
 
-		$statsTable = $this->factory->newPropertyStatisticsTable();
+		$propertyStatisticsStore = $this->factory->newPropertyStatisticsStore();
 
-		$statsTable->addToUsageCounts( $propertyUseIncrements );
+		$propertyStatisticsStore->addToUsageCounts(
+			$propertyUseIncrements
+		);
 	}
 
 	/**
@@ -663,9 +665,9 @@ class SMWSQLStore3Writers {
 				$oldTitle->getNamespace()
 			);
 
-			$statsTable = $this->factory->newPropertyStatisticsTable();
+			$propertyStatisticsStore = $this->factory->newPropertyStatisticsStore();
 
-			$statsTable->addToUsageCount(
+			$propertyStatisticsStore->addToUsageCount(
 				$this->store->getObjectIds()->getSMWPropertyID( new SMW\DIProperty( '_REDI' ) ),
 				1
 			);
@@ -942,9 +944,9 @@ class SMWSQLStore3Writers {
 		unset( $this->store->m_sdstate[$old_tid] );
 
 		// *** Update reference count for _REDI property ***//
-		$statsTable = $this->factory->newPropertyStatisticsTable();
+		$propertyStatisticsStore = $this->factory->newPropertyStatisticsStore();
 
-		$statsTable->addToUsageCount(
+		$propertyStatisticsStore->addToUsageCount(
 			$this->store->getObjectIds()->getSMWPropertyID( new SMW\DIProperty( '_REDI' ) ),
 			$count
 		);
