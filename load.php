@@ -78,10 +78,6 @@ class SemanticMediaWiki {
 			'license-name'   => 'GPL-2.0+'
 		);
 
-		// A flag used to indicate SMW defines a semantic extension type for extension credits.
-		// @deprecated, removal in SMW 3.0
-		define( 'SEMANTIC_EXTENSION_TYPE', true );
-
 		// Registration point for required early registration
 		Setup::initExtension( $GLOBALS );
 	}
