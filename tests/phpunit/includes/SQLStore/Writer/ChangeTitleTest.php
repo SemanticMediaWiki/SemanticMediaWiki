@@ -74,6 +74,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SemanticDataLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -125,6 +129,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableRowDiffer' )
 			->will( $this->returnValue( $propertyTableRowDiffer ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSemanticDataLookup' )
+			->will( $this->returnValue( $semanticDataLookup ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newChangeOp' )

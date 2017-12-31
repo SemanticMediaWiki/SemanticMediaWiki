@@ -315,6 +315,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructSemanticDataLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\SemanticDataLookup',
+			$instance->newSemanticDataLookup()
+		);
+	}
+
 	public function testCanConstructChangePropListener() {
 
 		$instance = new SQLStoreFactory( $this->store );

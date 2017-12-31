@@ -48,6 +48,11 @@ class SMWSQLStore3Writers {
 	private $propertyTableRowDiffer;
 
 	/**
+	 * @var SemanticDataLookup
+	 */
+	private $semanticDataLookup;
+
+	/**
 	 * @since 1.8
 	 *
 	 * @param SMWSQLStore3 $parentStore
@@ -57,6 +62,7 @@ class SMWSQLStore3Writers {
 		$this->store = $parentStore;
 		$this->factory = $factory;
 		$this->propertyTableRowDiffer = $this->factory->newPropertyTableRowDiffer();
+		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();
 	}
 
 	/**
@@ -304,7 +310,7 @@ class SMWSQLStore3Writers {
 		}
 
 		// Update caches (may be important if jobs are directly following this call)
-		$this->setSemanticDataCache( $sid, $data );
+		$this->semanticDataLookup->setLookupCache( $sid, $data );
 	}
 
 	private function getSortKey( $subject, $data ) {
@@ -514,26 +520,6 @@ class SMWSQLStore3Writers {
 			array( $condition ),
 			"SMW::writePropertyTableRowUpdates-delete-{$propertyTable->getName()}"
 		);
-	}
-
-	/**
-	 * Set the semantic data cache to hold exactly the given value for the
-	 * given ID.
-	 *
-	 * @since 1.8
-	 * @param integer $sid
-	 * @param SMWSemanticData $semanticData
-	 */
-	protected function setSemanticDataCache( $sid, SMWSemanticData $semanticData ) {
-		$this->store->m_semdata[$sid] = StubSemanticData::newFromSemanticData( $semanticData, $this->store );
-
-		// This is everything one can know:
-		$this->store->m_sdstate[$sid] = array();
-		$propertyTables = $this->store->getPropertyTables();
-
-		foreach ( $propertyTables as $tableId => $tableDeclaration ) {
-			$this->store->m_sdstate[$sid][$tableId] = true;
-		}
 	}
 
 	/**
@@ -933,13 +919,9 @@ class SMWSQLStore3Writers {
 		}
 
 		// *** Flush some caches to be safe, though they are not essential in runs with redirect updates ***//
-		unset( $this->store->m_semdata[$sid] );
-		unset( $this->store->m_semdata[$new_tid] );
-		unset( $this->store->m_semdata[$old_tid] );
-
-		unset( $this->store->m_sdstate[$sid] );
-		unset( $this->store->m_sdstate[$new_tid] );
-		unset( $this->store->m_sdstate[$old_tid] );
+		$this->semanticDataLookup->invalidateCache( $sid );
+		$this->semanticDataLookup->invalidateCache( $new_tid );
+		$this->semanticDataLookup->invalidateCache( $old_tid );
 
 		// *** Update reference count for _REDI property ***//
 		$statsTable = $this->factory->newPropertyStatisticsTable();

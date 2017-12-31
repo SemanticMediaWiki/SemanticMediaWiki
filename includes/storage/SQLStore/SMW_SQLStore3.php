@@ -140,25 +140,6 @@ class SMWSQLStore3 extends SMWStore {
 	protected $writer = false;
 
 	/**
-	 * Cache for SemanticData objects, indexed by SMW ID.
-	 *
-	 * @todo In the future, the cache should be managed by a helper class.
-	 *
-	 * @since 1.8
-	 * @var array
-	 */
-	public $m_semdata = array();
-
-	/**
-	 * Like SMWSQLStore3::m_semdata, but containing flags indicating
-	 * completeness of the SemanticData objs.
-	 *
-	 * @since 1.8
-	 * @var array
-	 */
-	public $m_sdstate = array();
-
-	/**
 	 * @since 1.8
 	 */
 	public function __construct() {
@@ -626,8 +607,7 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function clear() {
 		parent::clear();
-		$this->m_semdata = array();
-		$this->m_sdstate = array();
+		$this->factory->newSemanticDataLookup()->clear();
 		$this->propertyTableInfoFetcher = null;
 		$this->getObjectIds()->clearCaches();
 	}
