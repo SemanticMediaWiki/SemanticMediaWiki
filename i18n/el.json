@@ -305,6 +305,7 @@
 	"smw-admin-supplementary-operational-statistics-intro": "Τα <u>$1</u> παρουσιάζουν ένα εκτεταμένο σύνολο στατιστικών",
 	"smw-admin-supplementary-idlookup-title": "Αναζήτηση και απόρριψη οντότητας",
 	"smw-admin-supplementary-idlookup-intro": "Η <u>$1</u> περιέχει λειτουργίες για αναζήτηση και απόρριψη μεμονωμένων οντοτήτων.",
+	"smw-admin-supplementary-duplookup-intro": "<u>$1</u> για να φτιάξετε λίστα εγγραφών που είναι ταξινομημένες καθώς και να περιλάβετε διπλές εγγραφές στον πίνακα ενοτήτων",
 	"smw-property-label-similarity-threshold": "Κατώφλιο:",
 	"smw-property-label-similarity-noresult": "Δεν βρέθηκαν αποτελέσματα για τις συγκεκριμένες επιλογές.",
 	"smw-admin-operational-statistics": "Αυτή η σελίδα περιέχει στατιστικά στοιχεία λειτουργίας που συλλέγονται σε ή από συναφείς λειτουργίες του Σημασιολογικού MediaWiki. Μια εκτεταμένη λίστα στατιστικών στοιχείων σχετικά με το wiki μπορεί να βρεθεί [[Special:Statistics|<b>εδώ</b>]].",
@@ -326,7 +327,9 @@
 	"smw-prefs-intro-text": "Οι παρακάτω επιλογές παρέχονται από το [https://www.semantic-mediawiki.org/ Σημασιολογικό MediaWiki] (ή άλλες σχετικές επεκτάσεις) για να επιτρέψουν εξατομικευμένη παραμετροποίηση σε επιλεγμένες λειτουργίες. Για περισσότερες πληροφορίες, παρακαλούμε ρίξτε μια ματιά σε αυτήν την [https://www.semantic-mediawiki.org/wiki/Help:User_preferences ενότητα βοηθείας].",
 	"smw-prefs-ask-options-tooltip-display": "Εμφάνιση κειμένου παραμέτρου ως πληροφορίες στο δείκτη του ποντικιού",
 	"smw-prefs-ask-options-collapsed-default": "Το πλαίσιο επιλογών να είναι συμπτυγμένο εκ προεπιλογής",
+	"smw-prefs-general-options-jobqueue-watchlist": "Δείξετε  [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist job queue watchlist] στην προσωπική μου σειρά",
 	"smw-prefs-general-options-disable-editpage-info": "Απενεργοποίηση πληροφοριών σελίδας επεξεργασίας",
+	"smw-prefs-general-options-suggester-textinput": " Ενεργοποιήστε ταhttps://www.semantic-mediawiki.org/wiki/Help:Input_assistance input assistance] για προτάσεις σημασιολογικού πεδίου (προτάσεις εννοιών)",
 	"smw-ui-tooltip-title-property": "Ιδιότητα",
 	"smw-ui-tooltip-title-quantity": "Μετατροπή μονάδας",
 	"smw-ui-tooltip-title-info": "Πληροφορίες",
@@ -436,7 +439,9 @@
 	"smw-property-predefined-pdesc": "Η «$1» είναι μια εκ των προτέρων ορισμένη ιδιότητα η οποία επιτρέπει τη λεκτική περιγραφή μιας ιδιότητας σε κάποια γλώσσα και παρέχεται από το [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Σημασιολογικό MediaWiki].",
 	"smw-property-predefined-list": "Η «$1» είναι μια εκ των προτέρων ορισμένη ιδιότητα που ορίζει μια λίστα ιδιοτήτων που χρησιμοποιούνται με ιδιότητα τύπου [[Special:Types/Record|record]] και παρέχεται από το [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Σημασιολογικό MediaWiki].",
 	"smw-limitreport-intext-parsertime": "[SMW] Χρόνος συντακτικού αναλυτή για ενδοκειμενική σημειογραφία",
+	"smw-limitreport-intext-postproctime": "[SMW] χρόνος μετά την διαδικασία",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|δευτερόλεπτο|δευτερόλεπτα}}",
+	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|second|seconds}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|δευτερόλεπτο|δευτερόλεπτα}}",
 	"smw_allows_pattern": "Αυτή η σελίδα αναμένεται να περιλαμβάνει μια λίστα από παραπομπές (ακολουθούμενες από [https://en.wikipedia.org/wiki/Regular_expression κανονικές εκφράσεις]) και να γίνουν διαθέσιμες από την ιδιότητα [[Property:Allows pattern|Allows pattern]]. Για να επεξεργαστείτε αυτή τη σελίδα, απαιτείται το δικαίωμα <code>smw-patternedit</code>.",
 	"smw-datavalue-allows-pattern-mismatch": "Η τιμή «$1» χαρακτηρίστηκε ως μη έγκυρη από την κανονική έκφραση «$2».",
@@ -490,5 +495,6 @@
 	"smw-parser-function-expensive-execution-limit": "Η συνάρτηση του συντακτικού αναλυτή έχει φτάσει στο όριό της για ακριβές εκτελέσεις (βλ. παράμετρο διαμόρφωσης [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit]).",
 	"smw-postproc-queryref": "Το σημειολογικό πεδίο της MediaWiki θα αρχίσει την ανανέωση της σελίδας που αντιστοιχεί στην ζήτηση που απαιτείται μετά την διαδικασία.",
 	"smw-property-reserved-category": "Κατηγορία",
-	"smw-datavalue-uri-invalid-scheme": "Το \"$1\" δεν έχει καταχωρηθεί ως έγκυρο σχήμα  URI ."
+	"smw-datavalue-uri-invalid-scheme": "Το \"$1\" δεν έχει καταχωρηθεί ως έγκυρο σχήμα  URI .",
+	"smw-personal-jobqueue-watchlist": "Λίστα Παρακολούθησης σειράς επαγγελμάτων"
 }

@@ -681,5 +681,6 @@
 	"smw-ask-format-help-link": "This is an informatory message.\n\nParameter:\n* $1 - holds the name of a format",
 	"smw-help": "{{Identical|Help}}",
 	"smw-cheat-sheet": "This is the label of a link opening a tooltip.",
-	"smw-personal-jobqueue-watchlist": "This is the label of a link pointing to a help page."
+	"smw-personal-jobqueue-watchlist": "This is the label of a link pointing to a help page.",
+	"smw-property-predefined-label-skey": "This is a label.\n\n{{Identical|Sortkey}}"
 }

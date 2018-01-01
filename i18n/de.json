@@ -224,7 +224,7 @@
 	"smw-statistics-delete-count": "{{PLURAL:$1|Veraltetes Objekt|Veraltete Objekte}} (zur Entfernung markiert)",
 	"smw_uri_doc": "Der URI-Auflöser setzt die Empfehlungen „[$1 W3C TAG finding on httpRange-14]“ um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.",
 	"ask": "Semantische Suche",
-	"smw-ask-help": "Dieser Abschnitt enthält einige Links zur Erläuterung der Nutzung der semantischen Suche und der semantischen Abfragesyntax (<code>#ask</code>-Syntax).\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Seiten auswählen] beschreibt, wie Seiten ausgewählt und Abfragebedingungen erstellt werden.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Search_operators Suchoperatoren] listet verfügbare Suchoperatoren inklusive solcher für Bereichs- und Platzhalterabfragen auf.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Informationen anzeigen] erläutert die Nutzung der Ausgabeanweisungen und Formatierungsoptionen.",
+	"smw-ask-help": "Dieser Abschnitt enthält einige Links zur Erläuterung der Nutzung der semantischen Suche und der semantischen Abfragesyntax (<code>#ask</code>-Syntax):\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Seiten auswählen] beschreibt, wie Seiten ausgewählt und Abfragebedingungen erstellt werden\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Search_operators Suchoperatoren] listet verfügbare Suchoperatoren inklusive solcher für Bereichs- und Platzhalterabfragen auf\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Informationen anzeigen] erläutert die Nutzung der Ausgabeanweisungen und Formatierungsoptionen",
 	"smw_ask_sortby": "Sortiere nach Spalte (optional)",
 	"smw_ask_ascorder": "Aufsteigend",
 	"smw_ask_descorder": "Absteigend",
@@ -249,7 +249,7 @@
 	"smw-ask-delete": "Entfernen",
 	"smw-ask-sorting": "Sortierung",
 	"smw-ask-options": "Optionen",
-	"smw-ask-options-sort": "Sortieroptionen",
+	"smw-ask-options-sort": "Sortierbedingungen",
 	"smw-ask-format-options": "Ausgabeformate und Optionen",
 	"smw-ask-parameters": "Parameter",
 	"smw-ask-search": "Suche",
@@ -261,7 +261,7 @@
 	"smw-ask-empty": "Leeren",
 	"smw-ask-download-link-desc": "Ermittelte Ergebnisse im Format $1 herunterladen",
 	"smw-ask-format": "Format",
-	"smw-ask-format-selection-help": "Hilfe zum Ausgabeformat $1",
+	"smw-ask-format-selection-help": "Hilfe zum Ausgabeformat: $1",
 	"smw-ask-condition-change-info": "Die Abfragebedingungen wurden geändert. Es ist daher eine erneute Ausführung der Abfrage notwendig, um die den neuen Abfragebedingungen entsprechenden Ergebnisse zu ermitteln.",
 	"smw-ask-input-assistance": "Eingabeunterstützung",
 	"smw-ask-condition-input-assistance": "Es wird eine [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Eingabeunterstützung] in den Feldern für die Ausgabeanweisungen, Sortieranweisungen und Abfragebedingungen angeboten. Das Feld für Abfragebedingungen erfordert die Nutzung eines der folgenden Präfixe:",
@@ -412,7 +412,7 @@
 	"prefs-general-options": "Allgemeine Optionen",
 	"prefs-ask-options": "Optionen für die Spezialseite „Semantische Suche“",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite Semantic MediaWiki] und zugehörige Erweiterungen bieten die Möglichkeit individueller Einstellungen für ausgewählte Funktionen. Siehe hierzu auch die entsprechende [https://www.semantic-mediawiki.org/wiki/Help:Benutzereinstellungen Hilfeseite] für eine ausführliche Beschreibung.",
-	"smw-prefs-ask-options-tooltip-display": "Beschreibung der Ausgabeparameter als Tooltip anzeigen",
+	"smw-prefs-ask-options-tooltip-display": "Beschreibung der möglichen Ausgabeparameter zu Abfragen als Tooltip anzeigen",
 	"smw-prefs-ask-options-collapsed-default": "Bereich mit den Ausgabeparametern standardmäßig einklappen",
 	"smw-prefs-general-options-time-correction": "Zeitkorrektur für Spezialseiten mithilfe der lokalen [[Special:Preferences#mw-prefsection-rendering|Einstellung zum Zeitunterschied]] aktivieren",
 	"smw-prefs-general-options-jobqueue-watchlist": "[https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist Auftragswarteschlangen-Beobachtungsliste] in meiner persönlichen Werkzeugleiste anzeigen",
@@ -680,5 +680,6 @@
 	"smw-ask-format-help-link": "Ausgabeformat [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",
 	"smw-help": "Hilfe",
 	"smw-cheat-sheet": "Hilfestellung",
-	"smw-personal-jobqueue-watchlist": "Auftragswarteschlangen-Beobachtungsliste"
+	"smw-personal-jobqueue-watchlist": "Auftragswarteschlangen-Beobachtungsliste",
+	"smw-property-predefined-label-skey": "Sortierschlüssel"
 }

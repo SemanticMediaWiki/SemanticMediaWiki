@@ -259,7 +259,7 @@
 	"smw-ask-empty": "空",
 	"smw-ask-download-link-desc": "下载查询结果为$1格式",
 	"smw-ask-format": "格式",
-	"smw-ask-format-selection-help": "有关$1格式的帮助",
+	"smw-ask-format-selection-help": "有关选定格式的帮助：$1",
 	"smw-ask-condition-change-info": "条件已改变，搜索引擎需要重新运行查询来产生匹配新要求的结果。",
 	"smw-ask-input-assistance": "输入帮助",
 	"smw-ask-condition-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance 输入帮助]为打印输出、排序和条件字段提供帮助。条件字段需要使用以下前缀之一：",
@@ -678,5 +678,6 @@
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]格式",
 	"smw-help": "帮助",
 	"smw-cheat-sheet": "小抄",
-	"smw-personal-jobqueue-watchlist": "工作队列监视列表"
+	"smw-personal-jobqueue-watchlist": "工作队列监视列表",
+	"smw-property-predefined-label-skey": "Sortkey"
 }

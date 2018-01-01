@@ -129,7 +129,7 @@
 	"smw_iq_moreresults": "... más resultados",
 	"smw_parseerror": "No se comprendió el valor provisto.",
 	"smw_decseparator": ",",
-	"smw_kiloseparator": ".",
+	"smw_kiloseparator": "&nbsp;",
 	"smw_notitle": "\"$1\" no puede usarse como un nombre de página en este wiki.",
 	"smw_noproperty": "\"$1\" no puede usarse como un nombre de propiedad en este wiki.",
 	"smw_wrong_namespace": "Aquí se permiten solo las páginas en el espacio de nombres \"$1\".",
@@ -270,7 +270,7 @@
 	"smw-ask-empty": "Vaciar",
 	"smw-ask-download-link-desc": "Descargar los resultados de la consulta en el formato $1",
 	"smw-ask-format": "Formato",
-	"smw-ask-format-selection-help": "Ayuda con el formato $1",
+	"smw-ask-format-selection-help": "Ayuda con el formato seleccionado: $1",
 	"smw-ask-condition-change-info": "Se modificó la condición; por ello, el buscador necesita ejecutar otra vez la consulta para producir resultados adecuados a los requisitos nuevos.",
 	"smw-ask-input-assistance": "Asistencia de entrada",
 	"smw-ask-condition-input-assistance": "Se brinda [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance asistencia de entrada] para los campos de salida, de ordenación y de condición. Para utilizar este último, es necesario emplear alguno de estos prefijos:",
@@ -636,5 +636,6 @@
 	"smw-section-collapse": "Contraer la sección",
 	"smw-ask-format-help-link": "Formato [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",
 	"smw-help": "Ayuda",
-	"smw-personal-jobqueue-watchlist": "Lista de seguimiento de cola de tareas"
+	"smw-personal-jobqueue-watchlist": "Lista de seguimiento de cola de tareas",
+	"smw-property-predefined-label-skey": "Clave de ordenación"
 }

@@ -34,7 +34,8 @@
 			"LeonardoGW",
 			"Wirbel78",
 			"Eduardo Addad de Oliveira",
-			"Lugimax"
+			"Lugimax",
+			"Edible Melon"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -492,5 +493,6 @@
 	"smw-browse-property-group-title": "Группа свойств",
 	"smw-browse-property-group-label": "Метка группы свойств",
 	"smw-browse-property-group-description": "Описание группы свойств",
-	"smw-list-pager-filter": "Фильтр:"
+	"smw-list-pager-filter": "Фильтр:",
+	"smw-help": "Справка"
 }

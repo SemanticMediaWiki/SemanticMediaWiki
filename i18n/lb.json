@@ -118,12 +118,12 @@
 	"smw-ask-order-rand": "Zoufall",
 	"smw_ask_submit": "Resultater sichen",
 	"smw_ask_editquery": "Ufro änneren",
-	"smw_add_sortcondition": "[Konditioun fir d'Zortéieren derbäisetzen]",
+	"smw_add_sortcondition": "[Konditioun fir d'Zortéieren dobäisetzen]",
 	"smw_ask_hidequery": "Ufro verstoppen",
 	"smw_ask_help": "Hëllef ufroen",
 	"smw_ask_queryhead": "Konditioun",
 	"smw_ask_printhead": "Eraussiche fir ze drécken",
-	"smw_ask_printdesc": "(eng Eegenschaft pro Linn derbäisetzen)",
+	"smw_ask_printdesc": "(eng Eegenschaft pro Linn dobäisetzen)",
 	"smw_ask_format_as": "Formatéieren als:",
 	"smw_ask_defaultformat": "Standard",
 	"smw_ask_otheroptions": "Aner Optiounen",
@@ -143,7 +143,7 @@
 	"smw-ask-result": "Resultat",
 	"smw-ask-empty": "Eidel",
 	"smw-ask-format": "Format",
-	"smw-ask-format-selection-help": "Hëllef fir de Format $1",
+	"smw-ask-format-selection-help": "Hëllef fir den erausgesichte Format: $1",
 	"smw-ask-condition-input-assistance-property": "<code>p:</code> Fir 'D'Sichen no enger Eegenschaft z'aktivéieren  (z. Bsp. <code>[[p:Huet ...</code>)",
 	"smw-ask-condition-input-assistance-category": "<code>c:</code> fir d'Sichen no Kategorien z'aktivéieren",
 	"smw-ask-condition-input-assistance-concept": "<code>con:</code> fir d'Konzeptsichen z'aktivéieren",
@@ -282,5 +282,6 @@
 	"smw-section-expand": "Den Abschnitt opklappen",
 	"smw-section-collapse": "Den Abschnitt zesummeklappen",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] Format",
-	"smw-help": "Hëllef"
+	"smw-help": "Hëllef",
+	"smw-property-predefined-label-skey": "Zortéierschlëssel"
 }
