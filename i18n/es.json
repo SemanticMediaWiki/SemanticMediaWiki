@@ -535,6 +535,7 @@
 	"smw-property-predefined-errc": "\"$1\" es una propiedad predefinida que representa errores que aparecen en conexión con anotaciones de valores o procesamiento de la entrada inapropiados. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-long-errc": "Los errores se recopilan en un [https://www.semantic-mediawiki.org/wiki/Help:Container contenedor] que puede incluir una referencia a la propiedad que provocó la discrepancia.",
 	"smw-property-predefined-errt": "\"$1\" es una propiedad predefinida que contiene una descripción textual de un error. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-datavalue-record-invalid-property-declaration": "La definición del registro contiene la propiedad «$1», la cual está declarada ella misma como tipo de registro. Esto no se permite.",
 	"smw-property-predefined-mdat": "\"$1\" es una propiedad predefinida que corresponde a la fecha de la última modificación de un asunto. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-cdat": "\"$1\" es una propiedad predefinida que corresponde a la fecha de la primera revisión de un asunto. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-newp": "\"$1\" es una propiedad predefinida que indica si un asunto es nuevo o no. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
@@ -594,6 +595,7 @@
 	"protect-level-smw-pageedit": "Permitir únicamente usuarios con el permiso de edición de páginas (Semantic MediaWiki)",
 	"smw-create-protection": "La creación de la propiedad «$1» está restringida a los usuarios que cuenten con el privilegio (o pertenezcan al [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups grupo de usuarios]) «$2» adecuado, siempre que esté activado el [https://www.semantic-mediawiki.org/wiki/Help:Authority_mode modo de autoridad].",
 	"smw-create-protection-exists": "Las modificaciones a la propiedad «$1» están restringidas a los usuarios que cuenten con el privilegio (o pertenezcan al [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups grupo de usuarios]) «$2» adecuado, siempre que esté activado el [https://www.semantic-mediawiki.org/wiki/Help:Authority_mode modo de autoridad].",
+	"smw-property-predefined-long-edip": "Aunque cualquier usuario puede añadir esta propiedad a un tema, solo aquellos usuarios que posean un privilegio especializado pueden editar o revocar la protección de una entidad después de haberse añadido esta.",
 	"smw-query-reference-link-label": "Referencia de consulta",
 	"smw-format-datatable-emptytable": "No hay datos disponibles en la tabla",
 	"smw-format-datatable-info": "Se muestran las entradas _START_ a _END_, de _TOTAL_",
@@ -636,6 +638,7 @@
 	"smw-section-collapse": "Contraer la sección",
 	"smw-ask-format-help-link": "Formato [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",
 	"smw-help": "Ayuda",
+	"smw-cheat-sheet": "Hoja de referencia",
 	"smw-personal-jobqueue-watchlist": "Lista de seguimiento de cola de tareas",
 	"smw-property-predefined-label-skey": "Clave de ordenación"
 }

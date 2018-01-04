@@ -281,7 +281,7 @@
 	"smw-ask-empty": "Vide",
 	"smw-ask-download-link-desc": "Télécharger les résultats recherchés au format $1",
 	"smw-ask-format": "Format",
-	"smw-ask-format-selection-help": "Aide pour le format $1",
+	"smw-ask-format-selection-help": "Aide pour le format sélectionné : $1",
 	"smw-ask-condition-change-info": "La condition a été modifiée et le moteur de recherche a besoin de réexécuter la requête pour obtenir des résultats qui correspondent aux nouvelles exigences.",
 	"smw-ask-input-assistance": "Assistance de saisie",
 	"smw-ask-condition-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance L’assistance à la saisie] est fournie pour la sortie, le tri et le champ de condition. Le champ de condition requiert un des préfixes suivants :",
@@ -700,5 +700,6 @@
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] format",
 	"smw-help": "Aide",
 	"smw-cheat-sheet": "Aide-mémoire",
-	"smw-personal-jobqueue-watchlist": "Liste de suivi de la file des tâches"
+	"smw-personal-jobqueue-watchlist": "Liste de suivi de la file des tâches",
+	"smw-property-predefined-label-skey": "Clé de tri"
 }

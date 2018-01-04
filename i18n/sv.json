@@ -251,7 +251,7 @@
 	"smw-ask-empty": "Tom",
 	"smw-ask-download-link-desc": "Ladda ned frågeresultat i formatet $1",
 	"smw-ask-format": "Format",
-	"smw-ask-format-selection-help": "Hjälp med formatet $1.",
+	"smw-ask-format-selection-help": "Hjälp med det valda formatet $1.",
 	"smw-ask-condition-change-info": "Villkoret förändrades och sökmotorn behöver köra frågan igen för att producera resultat som matchar de nya kraven.",
 	"smw-ask-input-assistance": "Inmatningassistans",
 	"smw-ask-condition-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Inmatnings assistans] tillhandahålls för utskrifter, sortering och villkorsfält. Villkorsfältet kräver att en av följande prefix används:",
