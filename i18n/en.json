@@ -673,5 +673,6 @@
 	"smw-help": "Help",
 	"smw-cheat-sheet": "Cheat sheet",
 	"smw-personal-jobqueue-watchlist": "Job queue watchlist",
-	"smw-property-predefined-label-skey": "Sortkey"
+	"smw-property-predefined-label-skey": "Sortkey",
+	"smw-processing": "Processing..."
 }
