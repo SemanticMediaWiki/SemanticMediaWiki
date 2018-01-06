@@ -4,12 +4,9 @@ namespace SMW\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\EntityLookup;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMW\RequestOptions;
-use Onoi\Cache\Cache;
-use Onoi\Cache\NullCache;
 use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\TableBuilder\FieldType;
@@ -32,161 +29,12 @@ class SemanticDataLookup {
 	private $store;
 
 	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * Cache for SemanticData dataItems, indexed by SMW ID.
-	 *
-	 * @var array
-	 */
-	private static $data = [];
-
-	/**
-	 * Like SMWSQLStore3::data, but containing flags indicating
-	 * completeness of the SemanticData objs.
-	 *
-	 * @var array
-	 */
-	private static $state = [];
-
-	/**
-	 * >0 while getSemanticData runs, used to prevent nested calls from clearing
-	 * the cache while another call runs and is about to fill it with data
-	 *
-	 * @var int
-	 */
-	private static $lookupCount = 0;
-
-	/**
 	 * @since 3.0
 	 *
 	 * @param SQLStore $store
-	 * @param Cache|null $cache
 	 */
-	public function __construct( SQLStore $store, Cache $cache = null ) {
+	public function __construct( SQLStore $store ) {
 		$this->store = $store;
-		$this->cache = $cache;
-
-		if ( $this->cache === null ) {
-			$this->cache = new NullCache();
-		}
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function lockCache() {
-		self::$lookupCount++;
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function unlockCache() {
-		self::$lookupCount--;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param integer $id
-	 */
-	public function invalidateCache( $id ) {
-		unset( self::$data[$id] );
-		unset( self::$state[$id] );
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public static function clear() {
-		self::$data = [];
-		self::$state = [];
-		self::$lookupCount = 0;
-	}
-
-	/**
-	 * Helper method to make sure there is a cache entry for the data about
-	 * the given subject with the given ID.
-	 *
-	 * @todo The management of this cache should be revisited.
-	 *
-	 * @since 3.0
-	 *
-	 * @param int $id
-	 * @param DIWikiPage $subject
-	 */
-	public function initLookupCache( $id, DIWikiPage $subject ) {
-
-		// *** Prepare the cache ***//
-		if ( !isset( self::$data[$id] ) ) {
-			self::$data[$id] = new StubSemanticData( $subject, $this->store, false );
-			self::$state[$id] = [];
-		}
-
-		// Issue #622
-		// If a redirect was cached preceding this request and points to the same
-		// subject id ensure that in all cases the requested subject matches with
-		// the selected DB id
-		if ( self::$data[$id]->getSubject()->getHash() !== $subject->getHash() ) {
-			self::$data[$id] = new StubSemanticData( $subject, $this->store, false );
-			self::$state[$id] = [];
-		}
-
-		// prevent memory leak;
-		// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),
-		// The value of 20 was chosen by profiling runtimes for large inline queries and heavily annotated pages.
-		// However, things might have changed in the meantime ...
-		if ( ( count( self::$data ) > 20 ) && ( self::$lookupCount == 1 ) ) {
-			self::$data = array( $id => self::$data[$id] );
-			self::$state = array( $id => self::$state[$id] );
-		}
-	}
-
-	/**
-	 * Set the semantic data lookup cache to hold exactly the given value for the
-	 * given ID.
-	 *
-	 * @since 3.0
-	 *
-	 * @param integer $id
-	 * @param SemanticData $semanticData
-	 */
-	public function setLookupCache( $id, SemanticData $semanticData ) {
-
-		self::$data[$id] = StubSemanticData::newFromSemanticData(
-			$semanticData,
-			$this->store
-		);
-
-		self::$state[$id] = [];
-		$propertyTables = $this->store->getPropertyTables();
-
-		foreach ( $propertyTables as $tableId => $propertyTableDef ) {
-			self::$state[$id][$propertyTableDef->getName()] = true;
-		}
-	}
-
-	/**
-	 * Helper method to make sure there is a cache entry for the data about
-	 * the given subject with the given ID.
-	 *
-	 * @todo The management of this cache should be revisited.
-	 *
-	 * @since 3.0
-	 *
-	 * @param int $id
-	 * @param DIWikiPage $subject
-	 */
-	public function getSemanticDataById( $id ) {
-
-		if ( !isset( self::$data[$id] ) ) {
-			throw new RuntimeException( 'Data are not initialized.' );
-		}
-
-		return self::$data[$id];
 	}
 
 	/**
@@ -197,7 +45,7 @@ class SemanticDataLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function findConditionConstraint( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
+	public function makeOptionsFromConstraint( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
 
 		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
 			return null;
@@ -228,45 +76,74 @@ class SemanticDataLookup {
 	}
 
 	/**
-	 * Fetch and cache the data about one subject for one particular table
+	 * @since 3.0
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @return StubSemanticData
+	 */
+	public function newStubSemanticData( DIWikiPage $subject ) {
+		return new StubSemanticData( $subject, $this->store, false );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param SemanticData $semanticData
+	 *
+	 * @return StubSemanticData
+	 */
+	public function newFromSemanticData( SemanticData $semanticData ) {
+		return StubSemanticData::newFromSemanticData( $semanticData, $this->store );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param SemanticData $semanticData
+	 *
+	 * @return array
+	 */
+	public function getTableUsageInfo( SemanticData $semanticData ) {
+		$state = [];
+
+		foreach ( $semanticData->getProperties() as $property ) {
+			$state[$this->store->findPropertyTableID( $property )] = true;
+		}
+
+		return $state;
+	}
+
+	/**
+	 * @since 3.0
 	 *
 	 * @param integer $id
-	 * @param DIWikiPage $subject
-	 * @param PropertyTableDefinition $proptable
-	 * @param RequestOptions|null $requestOptions
+	 * @param DataItem $dataItem
+	 * @param PropertyTableDefinition $propTable
+	 * @param RequestOptions $requestOptions
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticDataFromTable( $id, DataItem $dataItem = null, PropertyTableDefinition $proptable, RequestOptions $requestOptions = null ) {
+	public function getSemanticData( $id, DataItem $dataItem = null, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
 
-		// Avoid the cache when a request is constrainted
-		if ( $requestOptions !== null || !$dataItem instanceof DIWikiPage ) {
-			return $this->fetchSemanticDataWithConstraint( $id, $dataItem, $proptable, $requestOptions );
+		if ( !$dataItem instanceof DIWikiPage ) {
+			throw new RuntimeException( 'Expected a DIWikiPage instance' );
 		}
 
-		// Do not clear the cache when called recursively.
-		$this->lockCache();
-		$this->initLookupCache( $id, $dataItem );
+		$stubSemanticData = $this->newStubSemanticData( $dataItem );
 
-		// @see also setLookupCache
-		$name = $proptable->getName();
-
-		if ( isset( self::$state[$id][$name] ) ) {
-			$this->unlockCache();
-			return self::$data[$id];
-		}
-
-		$data = $this->fetchSemanticData( $id, $dataItem, $proptable );
+		$data = $this->fetchSemanticData(
+			$id,
+			$dataItem,
+			$propTable,
+			$requestOptions
+		);
 
 		foreach ( $data as $d ) {
-			self::$data[$id]->addPropertyStubValue( reset( $d ), end( $d ) );
+			$stubSemanticData->addPropertyStubValue( reset( $d ), end( $d ) );
 		}
 
-		self::$state[$id][$name] = true;
-
-		$this->unlockCache();
-
-		return self::$data[$id];
+		return $stubSemanticData;
 	}
 
 	/**
@@ -321,7 +198,8 @@ class SemanticDataLookup {
 
 		// Build something like:
 		//
-		// SELECT o_id AS id0,o0.smw_title AS v0,o0.smw_namespace AS v1,o0.smw_iw AS v2,o0.smw_sortkey AS v3,o0.smw_subobject AS v4
+		// SELECT o_id AS id0,o0.smw_title AS v0,o0.smw_namespace AS v1,o0.smw_iw
+		// AS v2,o0.smw_sortkey AS v3,o0.smw_subobject AS v4
 		// FROM `smw_fpt_sobj`
 		// INNER JOIN `smw_object_ids` AS o0 ON o_id=o0.smw_id
 		// WHERE s_id='852'
@@ -426,23 +304,6 @@ class SemanticDataLookup {
 		$connection->freeResult( $res );
 
 		return $result;
-	}
-
-	private function fetchSemanticDataWithConstraint( $id, DataItem $dataItem = null, PropertyTableDefinition $proptable, RequestOptions $requestOptions ) {
-
-		$stubSemanticData = new StubSemanticData(
-			$dataItem,
-			$this->store,
-			false
-		);
-
-		$data = $this->fetchSemanticData( $id, $dataItem, $proptable, $requestOptions );
-
-		foreach ( $data as $d ) {
-			$stubSemanticData->addPropertyStubValue( reset( $d ), end( $d ) );
-		}
-
-		return $stubSemanticData;
 	}
 
 	private function buildQueryInfo( &$query, $id, $isSubject, $propTable, $dataItem ) {
@@ -574,8 +435,10 @@ class SemanticDataLookup {
 
 	private function reportDuplicate( $propertykey, $valueKeys ) {
 		$this->logger->info(
-			__METHOD__ . " Duplicate entry for {propertykey} with {valueKeys}",
+			"Found duplicate entry for {propertykey} with {valueKeys}",
 			[
+				'method' => __METHOD__,
+				'role' => 'user',
 				'propertykey' => $propertykey,
 				'valueKeys' => ( is_array( $valueKeys ) ? implode( ',', $valueKeys ) : $valueKeys )
 			]

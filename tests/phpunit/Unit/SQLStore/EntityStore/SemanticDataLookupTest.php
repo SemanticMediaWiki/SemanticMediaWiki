@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\RequestOptions;
 
 /**
@@ -30,7 +31,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyTables', 'getDataItemHandlerForDIType', 'getObjectIds' ] )
+			->setMethods( [ 'findPropertyTableID', 'getDataItemHandlerForDIType', 'getObjectIds' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -53,7 +54,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tearDown() {
-		SemanticDataLookup::clear();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -64,56 +65,66 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testInitLookupCache() {
+	public function testNewStubSemanticData() {
 
 		$instance = new SemanticDataLookup(
 			$this->store
 		);
-
-		$instance->initLookupCache( 42, DIWikiPage::newFromText( 'Foo' ) );
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\EntityStore\StubSemanticData',
-			$instance->getSemanticDataById( 42 )
+			$instance->newStubSemanticData( DIWikiPage::newFromText( __METHOD__ ) )
 		);
 	}
 
-	public function testUninitializedGetSemanticDataByIdThrowsException() {
-
-		$instance = new SemanticDataLookup(
-			$this->store
-		);
-
-		$this->setExpectedException( '\RuntimeException' );
-		$instance->getSemanticDataById( 42 );
-	}
-
-	public function testSetLookupCache() {
-
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
-			->disableOriginalConstructor()
-			->getMock();
+	public function testNewFromSemanticData() {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData->expects( $this->once() )
+		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
-
-		$this->store->expects( $this->once() )
-			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $propertyTable ] ) );
 
 		$instance = new SemanticDataLookup(
 			$this->store
 		);
 
-		$instance->setLookupCache( 42, $semanticData );
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\StubSemanticData',
+			$instance->newFromSemanticData( $semanticData )
+		);
 	}
 
-	public function testGetSemanticDataFromTable() {
+	public function testGetTableUsageInfo() {
+
+		$property =  new DIProperty( 'Foo' );
+
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->with(	$this->equalTo( $property ) )
+			->will( $this->returnValue( '__bar__' ) );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( [ $property ] ) );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertEquals(
+			[ '__bar__' => true ],
+			$instance->getTableUsageInfo( $semanticData )
+		);
+	}
+
+	public function testSemanticDataFromTable() {
 
 		$row = new \stdClass;
 		$row->prop = 'FOO';
@@ -145,19 +156,14 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$semanticData = $instance->getSemanticDataFromTable(
+		$semanticData = $instance->fetchSemanticData(
 			42,
 			$subject,
 			$propertyTable
 		);
-
-		$this->assertSame(
-			$semanticData,
-			$instance->getSemanticDataById( 42 )
-		);
 	}
 
-	public function testGetSemanticDataFromTable_WithConstraint() {
+	public function testSemanticDataFromTable_WithConstraint() {
 
 		$row = new \stdClass;
 		$row->prop = 'FOO';
@@ -220,16 +226,16 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->conditionConstraint = true;
 		$requestOptions->setLimit( 4 );
 
-		$requestOptions = $instance->findConditionConstraint(
+		$requestOptions = $instance->makeOptionsFromConstraint(
 			$propertyTable,
 			$property,
 			$requestOptions
 		);
 
-		$instance->getSemanticDataFromTable( 42, $subject, $propertyTable, $requestOptions );
+		$instance->fetchSemanticData( 42, $subject, $propertyTable, $requestOptions );
 	}
 
-	public function testFetchSemanticData_NoDataItem() {
+	public function testSemanticData_NoDataItem() {
 
 		$row = new \stdClass;
 		$row->prop = 'FOO';

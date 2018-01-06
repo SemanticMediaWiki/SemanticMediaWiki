@@ -25,6 +25,7 @@ use SMW\SQLStore\EntityStore\CachingEntityLookup;
 use SMW\SQLStore\EntityStore\NativeEntityLookup;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\ProcessLruCache;
 use SMW\SQLStore\EntityStore\ByIdEntityFinder;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
@@ -567,7 +568,12 @@ class SQLStoreFactory {
 			$this->getLogger()
 		);
 
-		return $semanticDataLookup;
+		$cachingSemanticDataLookup = new CachingSemanticDataLookup(
+			$semanticDataLookup,
+			ApplicationFactory::getInstance()->getCache()
+		);
+
+		return $cachingSemanticDataLookup;
 	}
 
 	/**

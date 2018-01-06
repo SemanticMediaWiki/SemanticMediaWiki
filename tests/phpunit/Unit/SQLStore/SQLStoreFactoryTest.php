@@ -320,7 +320,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\SemanticDataLookup',
+			'\SMW\SQLStore\EntityStore\CachingSemanticDataLookup',
 			$instance->newSemanticDataLookup()
 		);
 	}

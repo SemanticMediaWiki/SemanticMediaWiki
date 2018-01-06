@@ -75,7 +75,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SemanticDataLookup' )
+		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
