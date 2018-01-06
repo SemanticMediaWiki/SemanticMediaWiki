@@ -308,6 +308,10 @@ label.smw-form-checkbox {
 	border-radius: 3px;
 }
 
+.smw-callout p {
+	margin: 5px 0 5px 0;
+}
+
 .smw-callout-info {
 	border: 1px solid #d9edf7;
 	background-color: #d9edf7;
