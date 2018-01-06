@@ -42,11 +42,6 @@ class QueryDependencyLinksStore {
 	private $queryResultDependencyListResolver;
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var NamespaceExaminer
 	 */
 	private $namespaceExaminer;
@@ -81,7 +76,6 @@ class QueryDependencyLinksStore {
 		$this->queryResultDependencyListResolver = $queryResultDependencyListResolver;
 		$this->dependencyLinksTableUpdater = $dependencyLinksTableUpdater;
 		$this->store = $this->dependencyLinksTableUpdater->getStore();
-		$this->connection = $this->store->getConnection( 'mw.db' );
 		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
 
@@ -288,7 +282,9 @@ class QueryDependencyLinksStore {
 			$conditions[] = $extraCondition;
 		}
 
-		$rows = $this->connection->select(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$rows = $connection->select(
 			SQLStore::QUERY_LINKS_TABLE,
 			array( 's_id' ),
 			$conditions,
@@ -312,8 +308,8 @@ class QueryDependencyLinksStore {
 		$poolRequestOptions = new RequestOptions();
 
 		$poolRequestOptions->addExtraCondition(
-			'smw_iw !=' . $this->connection->addQuotes( SMW_SQL3_SMWREDIIW ) . ' AND '.
-			'smw_iw !=' . $this->connection->addQuotes( SMW_SQL3_SMWDELETEIW )
+			'smw_iw !=' . $connection->addQuotes( SMW_SQL3_SMWREDIIW ) . ' AND '.
+			'smw_iw !=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW )
 		);
 
 		return $this->store->getObjectIds()->getDataItemPoolHashListFor(
@@ -476,7 +472,9 @@ class QueryDependencyLinksStore {
 			return false;
 		}
 
-		$row = $this->connection->selectRow(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$row = $connection->selectRow(
 			SQLStore::QUERY_LINKS_TABLE,
 			array(
 				's_id'

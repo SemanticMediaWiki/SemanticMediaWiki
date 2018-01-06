@@ -25,12 +25,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @var Store
 	 */
-	private $store = null;
-
-	/**
-	 * @var Database
-	 */
-	private $connection = null;
+	private $store;
 
 	/**
 	 * @since 2.4
@@ -39,7 +34,6 @@ class DependencyLinksTableUpdater {
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
-		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 
 	/**
@@ -107,9 +101,10 @@ class DependencyLinksTableUpdater {
 
 		$this->logger->info( '[QueryDependency] Delete dependencies: {list}', $context );
 
-		$this->connection->beginAtomicTransaction( __METHOD__ );
+		$connection = $this->store->getConnection( 'mw.db' );
+		$connection->beginAtomicTransaction( __METHOD__ );
 
-		$this->connection->delete(
+		$connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
 			array(
 				's_id' => $deleteIdList
@@ -117,7 +112,7 @@ class DependencyLinksTableUpdater {
 			__METHOD__
 		);
 
-		$this->connection->endAtomicTransaction( __METHOD__ );
+		$connection->endAtomicTransaction( __METHOD__ );
 	}
 
 	/**
@@ -128,12 +123,13 @@ class DependencyLinksTableUpdater {
 	 */
 	private function updateDependencyList( $sid, array $dependencyList ) {
 
-		$this->connection->beginAtomicTransaction( __METHOD__ );
+		$connection = $this->store->getConnection( 'mw.db' );
+		$connection->beginAtomicTransaction( __METHOD__ );
 
 		// Before an insert, delete all entries that for the criteria which is
 		// cheaper then doing an individual upsert or selectRow, this also ensures
 		// that entries are self-corrected for dependencies matched
-		$this->connection->delete(
+		$connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
 			array(
 				's_id' => $sid
@@ -142,7 +138,7 @@ class DependencyLinksTableUpdater {
 		);
 
 		if ( $sid == 0 ) {
-			return $this->connection->endAtomicTransaction( __METHOD__ );
+			return $connection->endAtomicTransaction( __METHOD__ );
 		}
 
 		$inserts = array();
@@ -171,7 +167,7 @@ class DependencyLinksTableUpdater {
 		}
 
 		if ( $inserts === array() ) {
-			return $this->connection->endAtomicTransaction( __METHOD__ );
+			return $connection->endAtomicTransaction( __METHOD__ );
 		}
 
 		// MW's multi-array insert needs a numeric dimensional array but the key
@@ -186,13 +182,13 @@ class DependencyLinksTableUpdater {
 
 		$this->logger->info( '[QueryDependency] Table insert: {id} ID', $context );
 
-		$this->connection->insert(
+		$connection->insert(
 			SQLStore::QUERY_LINKS_TABLE,
 			$inserts,
 			__METHOD__
 		);
 
-		$this->connection->endAtomicTransaction( __METHOD__ );
+		$connection->endAtomicTransaction( __METHOD__ );
 	}
 
 	/**
