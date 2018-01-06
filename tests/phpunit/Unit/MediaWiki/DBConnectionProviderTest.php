@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\DBConnectionProvider;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\DBConnectionProvider
@@ -25,6 +26,9 @@ class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetConnection() {
 
 		$instance = new DBConnectionProvider();
+		$instance->setLogger(
+			TestEnvironment::newSpyLogger()
+		);
 
 		$connection = $instance->getConnection();
 
@@ -50,6 +54,10 @@ class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DBConnectionProvider(
 			'foo'
+		);
+
+		$instance->setLogger(
+			TestEnvironment::newSpyLogger()
 		);
 
 		$conf = array(

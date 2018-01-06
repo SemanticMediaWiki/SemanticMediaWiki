@@ -50,7 +50,7 @@ class ChangePropagationUpdateJob extends JobBase {
 
 		$updateJob = new UpdateJob(
 			$this->getTitle(),
-			$this->params
+			$this->params + [ 'origin' => 'ChangePropagationUpdateJob' ]
 		);
 
 		$updateJob->run();

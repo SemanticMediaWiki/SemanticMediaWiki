@@ -54,6 +54,7 @@ class Settings extends Options {
 			'smwgJobQueueWatchlist' => $GLOBALS['smwgJobQueueWatchlist'],
 			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],
+			'smwgDefaultLoggerRole' => $GLOBALS['smwgDefaultLoggerRole'],
 			'smwgLocalConnectionConf' => $GLOBALS['smwgLocalConnectionConf'],
 			'smwgSparqlRepositoryConnector' => $GLOBALS['smwgSparqlRepositoryConnector'],
 			'smwgSparqlCustomConnector' => $GLOBALS['smwgSparqlCustomConnector'],

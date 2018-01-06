@@ -4,8 +4,7 @@ namespace SMW;
 
 use Onoi\Cache\Cache;
 use SMW\Store;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use InvalidArgumentException;
 
 /**
@@ -14,7 +13,9 @@ use InvalidArgumentException;
  *
  * @author mwjames
  */
-class HierarchyLookup implements LoggerAwareInterface {
+class HierarchyLookup {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * Persistent cache namespace
@@ -46,11 +47,6 @@ class HierarchyLookup implements LoggerAwareInterface {
 	 * @var integer
 	 */
 	private $cacheTTL;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
@@ -109,17 +105,6 @@ class HierarchyLookup implements LoggerAwareInterface {
 		};
 
 		$changePropListener->addListenerCallback( '_SUBC', $callback );
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -356,25 +341,16 @@ class HierarchyLookup implements LoggerAwareInterface {
 
 		$this->inMemoryCache[$key] = $res;
 
-		$this->log(
-			"{fname} ID: {id}, subject: {subject}",
-			[
-				'fname' => __METHOD__,
-				'id' => $id,
-				'subject' => $subject->getDBKey()
-			]
-		);
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'user',
+			'id' => $id,
+			'origin' => $subject
+		];
+
+		$this->logger->info( "[HierarchyLookup] Lookup: {id}, {origin}", $context );
 
 		return $res;
-	}
-
-	private function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }

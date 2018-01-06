@@ -19,12 +19,14 @@ use SMW\Tests\TestEnvironment;
 class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $spyLogger;
 	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -98,6 +100,10 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksTableUpdater(
 			$store
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$instance->clear();
@@ -195,6 +201,10 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksTableUpdater(
 			$store
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$instance->clear();

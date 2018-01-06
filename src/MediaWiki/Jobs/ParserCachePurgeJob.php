@@ -107,16 +107,19 @@ class ParserCachePurgeJob extends JobBase {
 
 		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', array( $this ) );
 
+		$context = [
+			'method'  => __METHOD__,
+			'role' => 'user',
+			'procTime' => Timer::getElapsedTime( __METHOD__, 7 ),
+			'limit'  => $this->limit,
+			'offset' => $this->offset,
+			'count'  => $count,
+			'links'  => $links
+		];
+
 		$this->applicationFactory->getMediaWikiLogger()->info(
-			"{fname} (procTime in sec: {time}) | C:{count} LC:{links} | L:{limit} O:{offset}",
-			[
-				'fname'  => __METHOD__,
-				'time'   => Timer::getElapsedTime( __METHOD__, 7 ),
-				'limit'  => $this->limit,
-				'offset' => $this->offset,
-				'count'  => $count,
-				'links'  => $links
-			]
+			"[Job] ParserCachePurgeJob: Count:{count} Links:{links} | Limit:{limit} Offset:{offset} (procTime in sec: {procTime})",
+			$context
 		);
 
 		return true;

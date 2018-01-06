@@ -6,8 +6,7 @@ use Closure;
 use DeferrableUpdate;
 use DeferredUpdates;
 use RuntimeException;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Database;
 
 /**
@@ -16,7 +15,9 @@ use SMW\MediaWiki\Database;
  * @license GNU GPL v2+
  * @since 2.4
  */
-class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
+class DeferredCallableUpdate implements DeferrableUpdate {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * Updates that should run before flushing output buffer
@@ -32,11 +33,6 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @var Closure|callable
 	 */
 	private $callback;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
 
 	/**
 	 * @var boolean
@@ -132,17 +128,6 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	}
 
 	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
-	}
-
-	/**
 	 * @deprecated since 3.0, use DeferredCallableUpdate::isDeferrableUpdate
 	 * @since 2.4
 	 */
@@ -213,7 +198,12 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @return string
 	 */
 	public function getOrigin() {
-		return is_array( $this->origin ) ? json_encode( $this->origin, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) : $this->origin;
+
+		if ( is_string( $this->origin ) ) {
+			$this->origin = [ $this->origin ];
+		}
+
+		return json_encode( $this->origin );
 	}
 
 	/**
@@ -236,9 +226,14 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 		call_user_func( $this->callback );
 		unset( self::$queueList[$this->fingerprint] );
 
-		$this->log(
-			$this->getOrigin() . ' finished doUpdate' . ( $this->fingerprint ? ' (fingerprint: ' . $this->fingerprint . ')' : '' )
-		);
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $this->getOrigin(),
+			'fingerprint' => $this->fingerprint
+		];
+
+		$this->logger->info( '[DeferrableUpdate] Update completed: {origin} (fingerprint:{fingerprint})', $context );
 	}
 
 	/**
@@ -246,15 +241,22 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 */
 	public function pushUpdate() {
 
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $this->getOrigin(),
+			'fingerprint' => $this->fingerprint
+		];
+
 		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
-			$this->log( $this->getOrigin() . ' (fingerprint: ' . $this->fingerprint .' is already listed therefore skip)' );
+			$this->logger->info( '[DeferrableUpdate] Push: {origin} (fingerprint: {fingerprint} is already listed, skip)', $context );
 			return;
 		}
 
 		self::$queueList[$this->fingerprint] = true;
 
 		if ( $this->isPending && $this->isDeferrableUpdate ) {
-			$this->log( $this->getOrigin() . ' (as pending DeferredCallableUpdate)' );
+			$this->logger->info( '[DeferrableUpdate] Push: {origin} (as pending DeferredCallableUpdate)', $context );
 			return self::$pendingUpdates[] = $this;
 		}
 
@@ -267,7 +269,15 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 
 	protected function addUpdate( $update ) {
 
-		$this->log( __METHOD__, $this->getLoggableContext() );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'ctx' => json_encode(
+				$this->getLoggableContext(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+			)
+		];
+
+		$this->logger->info( '[DeferrableUpdate] Added: {ctx}', $context );
 		$stage = null;
 
 		if ( $update->getStage() === self::STAGE_POSTSEND && defined( 'DeferredUpdates::POSTSEND' ) ) {
@@ -289,20 +299,8 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 		);
 	}
 
-	protected function log( $fname, $context = '' ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info(
-			$fname .
-			( is_array( $context ) ? ' ' . json_encode( $context, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) : $context )
-		);
-	}
-
 	private function emptyCallback() {
-		$this->log( __METHOD__, ' is an empty callback!' );
+		$this->logger->info( '[DeferrableUpdate] Empty callback!', [ 'role' => 'developer', 'method' => __METHOD__ ] );
 	}
 
 }

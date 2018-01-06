@@ -89,6 +89,8 @@ class ArticleDelete extends HookHandler {
 			$semanticData
 		);
 
+		$parameters['origin'] = 'ArticleDelete';
+
 		// Restricted to the available SemanticData
 		$parameters[UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL] = true;
 

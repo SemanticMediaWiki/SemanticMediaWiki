@@ -13,8 +13,7 @@ use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Utils\Timer;
 
 /**
@@ -23,7 +22,9 @@ use SMW\Utils\Timer;
  *
  * @author mwjames
  */
-class QueryDependencyLinksStore implements LoggerAwareInterface {
+class QueryDependencyLinksStore {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var Store
@@ -49,11 +50,6 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 * @var NamespaceExaminer
 	 */
 	private $namespaceExaminer;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
 
 	/**
 	 * @var boolean
@@ -87,17 +83,6 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		$this->store = $this->dependencyLinksTableUpdater->getStore();
 		$this->connection = $this->store->getConnection( 'mw.db' );
 		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -178,7 +163,17 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
-		$this->log( __METHOD__ . ' finished on ' . $subject->getHash() . ' with procTime (sec): ' . Timer::getElapsedTime( __METHOD__, 7 ) );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $subject->getHash(),
+			'procTime' => Timer::getElapsedTime( __METHOD__, 7 )
+		];
+
+		$this->logger->info(
+			'[QueryDependency] Prune links completed: {origin} (procTime in sec: {procTime})',
+			$context
+		);
 
 		return true;
 	}
@@ -352,8 +347,17 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			$hash
 		);
 
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'id' => $sid
+		];
+
 		if ( $this->isRegistered( $sid, $subject ) ) {
-			return $this->log( __METHOD__ . " $sid was already registered, no dependency update." );
+			return $this->logger->info(
+				'[QueryDependency] Skipping update: {id} (already registered, no dependency update)',
+				$context
+			);
 		}
 
 		// Executed as DeferredTransactionalUpdate
@@ -365,7 +369,9 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			$callback
 		);
 
-		$deferredTransactionalUpdate->setOrigin( __METHOD__ );
+		$origin = $subject->getHash();
+
+		$deferredTransactionalUpdate->setOrigin( [ __METHOD__, $origin ] );
 		$deferredTransactionalUpdate->markAsPending( $this->isCommandLineMode );
 		$deferredTransactionalUpdate->setFingerprint( $hash );
 
@@ -374,7 +380,17 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 		$deferredTransactionalUpdate->pushUpdate();
 
-		$this->log( __METHOD__ . ' procTime (sec): ' . Timer::getElapsedTime( __METHOD__, 7 ) );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $origin,
+			'procTime' => Timer::getElapsedTime( __METHOD__, 7 )
+		];
+
+		$this->logger->info(
+			'[QueryDependency] Update dependencies registered: {origin} (procTime in sec: {procTime})',
+			$context
+		);
 
 		return true;
 	}
@@ -393,8 +409,17 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			$queryResult
 		);
 
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $hash
+		];
+
 		if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
-			return $this->log( 'No dependency list available ' . $hash );
+			return $this->logger->info(
+				'[QueryDependency] no update: {origin} (no dependency list available)',
+				$context
+			);
 		}
 
 		// SID < 0 means the storage update/process has not been finalized
@@ -470,15 +495,6 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		// Check whether the query has already been registered and only then
 		// check for a possible divergent time
 		return $row !== false && $suppressUpdateCache[$hash] > wfTimestamp( TS_MW );
-	}
-
-	private function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }

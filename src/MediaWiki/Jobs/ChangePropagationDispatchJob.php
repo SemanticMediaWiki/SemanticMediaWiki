@@ -412,6 +412,7 @@ class ChangePropagationDispatchJob extends JobBase {
 	private function newChangePropagationUpdateJob( $title, $parameters ) {
 
 		$namespace = $this->getTitle()->getNamespace();
+		$parameters =  $parameters + [ 'origin' => 'ChangePropagationDispatchJob' ];
 
 		if ( $namespace === NS_CATEGORY ) {
 			return new ChangePropagationClassUpdateJob( $title, $parameters );

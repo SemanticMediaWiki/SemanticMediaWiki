@@ -229,8 +229,17 @@ abstract class Store implements QueryEngine {
 		 */
 		\Hooks::run( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
 
-		if ( !$this->getOptions()->get( 'smwgAutoRefreshSubject' ) || $semanticData->getOption( Enum::OPT_SUSPEND_PURGE ) ) {
-			return;
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'production',
+			'origin' => $hash,
+			'procTime' => Timer::getElapsedTime( __METHOD__, 5 ),
+		];
+
+		$this->logger->info( '[Store] Update completed: {origin} (procTime in sec: {procTime})', $context );
+
+		if ( !$this->getOption( 'smwgAutoRefreshSubject' ) || $semanticData->getOption( Enum::OPT_SUSPEND_PURGE ) ) {
+			return $this->logger->info( '[Store] Skipping html, parser cache purge', [ 'role' => 'user' ] );
 		}
 
 		$pageUpdater = $applicationFactory->newPageUpdater();
@@ -243,10 +252,6 @@ abstract class Store implements QueryEngine {
 		$pageUpdater->doPurgeParserCache();
 		$pageUpdater->doPurgeHtmlCache();
 		$pageUpdater->pushUpdate();
-
-		$applicationFactory->getMediaWikiLogger()->info(
-			__METHOD__ . ' (procTime in sec: '. Timer::getElapsedTime( __METHOD__, 5 ) . ')'
-		);
 	}
 
 	/**

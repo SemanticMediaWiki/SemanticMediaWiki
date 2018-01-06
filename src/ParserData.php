@@ -415,7 +415,14 @@ class ParserData {
 		$latestRevID = $this->title->getLatestRevID( Title::GAID_FOR_UPDATE );
 
 		if ( $this->skipUpdateOn( $latestRevID ) ) {
-			return $applicationFactory->getMediaWikiLogger()->info( __METHOD__ . " (Found rev:$latestRevID, skip update)" );
+
+			$context = [
+				'method' => __METHOD__,
+				'role' => 'user',
+				'revID' => $latestRevID
+			];
+
+			return $applicationFactory->getMediaWikiLogger()->info( 'Update (Found rev:{revID}, skip update)' );
 		}
 
 		$this->semanticData->setOption(

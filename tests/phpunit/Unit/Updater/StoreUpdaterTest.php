@@ -21,6 +21,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $semanticDataFactory;
+	private $spyLogger;
 	private $store;
 
 	protected function setUp() {
@@ -31,6 +32,8 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			'smwgEnableUpdateJobs'            => false,
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true )
 		) );
+
+		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'exists' ) )
@@ -44,6 +47,8 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
+
+		$this->store->setLogger( $this->spyLogger );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
@@ -273,8 +278,10 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'changeTitle' );
 
-		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
-		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
+		$store->setOption( 'smwgSemanticsEnabled', true );
+		$store->setOption( 'smwgAutoRefreshSubject', true );
+
+		$store->setLogger( $this->spyLogger );
 
 		$semanticData = new SemanticData( $subject );
 

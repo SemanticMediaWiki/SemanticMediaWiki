@@ -548,8 +548,8 @@ class ApplicationFactory {
 	 *
 	 * @return LoggerInterface
 	 */
-	public function getMediaWikiLogger() {
-		return $this->containerBuilder->singleton( 'MediaWikiLogger' );
+	public function getMediaWikiLogger( $channel = 'smw' ) {
+		return $this->containerBuilder->singleton( 'MediaWikiLogger', $channel, $GLOBALS['smwgDefaultLoggerRole'] );
 	}
 
 	/**

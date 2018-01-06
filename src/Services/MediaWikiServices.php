@@ -10,6 +10,7 @@ use WikiImporter;
 use LBFactory;
 use JobQueueGroup;
 use Psr\Log\NullLogger;
+use SMW\Utils\Logger;
 
 /**
  * @codeCoverageIgnore
@@ -132,15 +133,17 @@ return array(
 	 *
 	 * @return callable
 	 */
-	'MediaWikiLogger' => function( $containerBuilder ) {
+	'MediaWikiLogger' => function( $containerBuilder, $channel = 'smw', $role = Logger::ROLE_DEVELOPER ) {
 
 		$containerBuilder->registerExpectedReturnType( 'MediaWikiLogger', '\Psr\Log\LoggerInterface' );
 
 		if ( class_exists( '\MediaWiki\Logger\LoggerFactory' ) ) {
-			return LoggerFactory::getInstance( 'smw' );
+			$logger = LoggerFactory::getInstance( $channel );
+		} else {
+			$logger = new NullLogger();
 		}
 
-		return new NullLogger();
+		return new Logger( $logger, $role );
 	},
 
 	/**

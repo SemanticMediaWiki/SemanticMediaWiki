@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Specials;
 
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
@@ -20,9 +20,13 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 	private $stringValidator;
+	private $spyLogger;
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
@@ -35,16 +39,18 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
 
-		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
-		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
+		$store->setOption( 'smwgSemanticsEnabled', true );
+		$store->setOption( 'smwgAutoRefreshSubject', true );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$store->setLogger( $this->spyLogger );
 
-		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -117,6 +123,8 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
+
+		$store->setLogger( $this->spyLogger );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 

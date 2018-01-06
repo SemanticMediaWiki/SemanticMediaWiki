@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration;
 use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
@@ -19,11 +19,15 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 	private $mwHooksHandler;
 	private $applicationFactory;
+	private $spyLogger;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
+		$this->testEnvironment = new TestEnvironment();
+		$this->spyLogger = $this->testEnvironment->newSpyLogger();
+
+		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -32,7 +36,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 	protected function tearDown() {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -440,8 +444,10 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
-		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
-		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
+		$store->setOption( 'smwgSemanticsEnabled', true );
+		$store->setOption( 'smwgAutoRefreshSubject', true );
+
+		$store->setLogger( $this->spyLogger );
 
 		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $changeOp ) use ( $test ){
 			$test->is( $changeOp->getChangedEntityIdSummaryList() );

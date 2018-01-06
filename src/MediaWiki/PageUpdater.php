@@ -3,8 +3,7 @@
 namespace SMW\MediaWiki;
 
 use Title;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Utils\Timer;
 use DeferrableUpdate;
 use DeferredpendingUpdates;
@@ -17,7 +16,9 @@ use SMW\MediaWiki\Database;
  *
  * @author mwjames
  */
-class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
+class PageUpdater implements DeferrableUpdate {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var DeferredTransactionalUpdate
@@ -33,11 +34,6 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	 * @var Title[]
 	 */
 	private $titles = array();
-
-	/**
-	 * LoggerInterface
-	 */
-	private $logger;
 
 	/**
 	 * @var string
@@ -83,17 +79,6 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 	public function __construct( Database $connection = null, DeferredTransactionalUpdate $deferredTransactionalUpdate = null ) {
 		$this->connection = $connection;
 		$this->deferredTransactionalUpdate = $deferredTransactionalUpdate;
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -338,16 +323,13 @@ class PageUpdater implements LoggerAwareInterface, DeferrableUpdate {
 			__METHOD__
 		);
 
-		$this->log( __METHOD__ . ' (procTime in sec: ' . Timer::getElapsedTime( __METHOD__, 7 ) . ')' );
-	}
+		$context = [
+			'method' => __METHOD__,
+			'procTime' => Timer::getElapsedTime( __METHOD__, 7 ),
+			'role' => 'developer'
+		];
 
-	private function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
+		$this->logger->info( 'Page update, pool update (procTime in sec: {procTime})', $context );
 	}
 
 }

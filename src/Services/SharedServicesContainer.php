@@ -94,6 +94,10 @@ class SharedServicesContainer implements CallbackContainer {
 				$store->setOption( $config, $settings->get( $config ) );
 			}
 
+			$store->setLogger(
+				$containerBuilder->singleton( 'MediaWikiLogger' )
+			);
+
 			return $store;
 		} );
 
@@ -199,7 +203,14 @@ class SharedServicesContainer implements CallbackContainer {
 		 */
 		$containerBuilder->registerCallback( 'DBConnectionProvider', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'DBConnectionProvider', '\SMW\MediaWiki\DBConnectionProvider' );
-			return new DBConnectionProvider();
+
+			$dbConnectionProvider = new DBConnectionProvider();
+
+			$dbConnectionProvider->setLogger(
+				$containerBuilder->singleton( 'MediaWikiLogger' )
+			);
+
+			return $dbConnectionProvider;
 		} );
 
 		/**

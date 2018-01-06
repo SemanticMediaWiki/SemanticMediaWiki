@@ -23,6 +23,11 @@ class ChangePropagationClassUpdateJob extends ChangePropagationUpdateJob {
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = array() ) {
+
+		$params = $params + [
+			'origin' => 'ChangePropagationClassUpdateJob'
+		];
+
 		parent::__construct( $title, $params, 'SMW\ChangePropagationClassUpdateJob' );
 	}
 

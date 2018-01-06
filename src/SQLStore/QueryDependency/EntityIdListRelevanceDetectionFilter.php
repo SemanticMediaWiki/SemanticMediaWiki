@@ -5,8 +5,7 @@ namespace SMW\SQLStore\QueryDependency;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Utils\Timer;
 
 /**
@@ -25,7 +24,9 @@ use SMW\Utils\Timer;
  *
  * @author mwjames
  */
-class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
+class EntityIdListRelevanceDetectionFilter {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var Store
@@ -48,11 +49,6 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 	private $affiliatePropertyDetectionList = array();
 
 	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-
-	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
@@ -61,17 +57,6 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 	public function __construct( Store $store, ChangeOp $changeOp ) {
 		$this->store = $store;
 		$this->changeOp = $changeOp;
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -125,7 +110,13 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 			array_keys( $affiliateEntityList )
 		);
 
-		$this->log( __METHOD__ . ' procTime (sec): ' . Timer::getElapsedTime( __CLASS__, 6 ) );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'procTime' => Timer::getElapsedTime( __CLASS__, 6 )
+		];
+
+		$this->logger->info( '[QueryDependency] Filter changeOp list (procTime in sec: {procTime})', $context );
 
 		return $filteredIdList;
 	}
@@ -185,15 +176,6 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 		if ( $fieldChangeOp->has( 's_id' ) ) {
 			unset( $changedEntityIdSummaryList[$fieldChangeOp->get( 's_id' )] );
 		}
-	}
-
-	private function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }
