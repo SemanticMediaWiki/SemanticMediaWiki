@@ -459,7 +459,7 @@ class SQLStoreFactory {
 
 		$options = new Options(
 			array(
-				'smwgEntityStoreFeatures' => $settings->get( 'smwgEntityStoreFeatures' )
+				'smwgExperimentalFeatures' => $settings->get( 'smwgExperimentalFeatures' )
 			)
 		);
 

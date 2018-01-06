@@ -1640,17 +1640,22 @@ return array(
 	##
 
 	##
-	# Entity store specific lookup features (internal use)
+	# Experimental settings
 	#
-	# - SMW_ESTORE_NONE applies no query or schema changes
+	# Features enabled are considered stable but for any unforeseen behaviour, the
+	# feature can be disabled to return to a previous working state avoiding
+	# the need for hot-patching a system.
 	#
-	# - SMW_ESTORE_IN_PROP enables a new query form for selecting incoming properties
-	#   (#1234)
+	# After a certain in-production period, features will be moved permanently
+	# to the desired target state and hereby automatically retires the related
+	# setting.
+	#
+	# - SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP enables a new query form for selecting
+	#   incoming properties (#1234)
 	#
 	# @since 3.0
-	# @default SMW_EL_INPROP
 	##
-	'smwgEntityStoreFeatures' => SMW_ESTORE_IN_PROP,
+	'smwgExperimentalFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP,
 	##
 
 	##

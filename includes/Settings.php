@@ -169,7 +169,7 @@ class Settings extends Options {
 			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
 			'smwgPropertyReservedNameList' => $GLOBALS['smwgPropertyReservedNameList'],
 			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],
-			'smwgEntityStoreFeatures' => $GLOBALS['smwgEntityStoreFeatures'],
+			'smwgExperimentalFeatures' => $GLOBALS['smwgExperimentalFeatures'],
 			'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'],
 			'smwgChangePropagationProtection' => $GLOBALS['smwgChangePropagationProtection'],
 			'smwgUseComparableContentHash' => $GLOBALS['smwgUseComparableContentHash'],

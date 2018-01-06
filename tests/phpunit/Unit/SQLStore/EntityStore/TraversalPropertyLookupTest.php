@@ -30,7 +30,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testfetchForNonFixedPropertyTable() {
+	public function testlookupForNonFixedPropertyTable() {
 
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
@@ -81,13 +81,13 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TraversalPropertyLookup(
 			$store,
-			new Options( array( 'smwgEntityLookupFeatures' => SMW_ESTORE_IN_PROP ) )
+			new Options( array( 'smwgEntityLookupFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP ) )
 		);
 
-		$instance->fetch( $propertyTableDef, $dataItem );
+		$instance->lookup( $propertyTableDef, $dataItem );
 	}
 
-	public function testfetchForFixedPropertyTable() {
+	public function testlookupForFixedPropertyTable() {
 
 		$dataItem = DIWikiPage::newFromText( __METHOD__ );
 
@@ -134,10 +134,10 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TraversalPropertyLookup(
 			$store,
-			new Options( array( 'smwgEntityLookupFeatures' => SMW_ESTORE_IN_PROP ) )
+			new Options( array( 'smwgEntityLookupFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP ) )
 		);
 
-		$instance->fetch( $propertyTableDef, $dataItem );
+		$instance->lookup( $propertyTableDef, $dataItem );
 	}
 
 }

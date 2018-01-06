@@ -524,9 +524,9 @@ class SMWSQLStore3Readers {
 
 			$where = $from = '';
 
-			if ( $this->traversalPropertyLookup->isEnabledFeature( SMW_ESTORE_IN_PROP ) ) {
+			if ( $this->traversalPropertyLookup->isEnabledFeature( SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP ) ) {
 
-				$res = $this->traversalPropertyLookup->fetch(
+				$res = $this->traversalPropertyLookup->lookup(
 					$proptable,
 					$value,
 					$requestOptions
