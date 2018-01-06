@@ -501,7 +501,7 @@ class SMWSql3SmwIds {
 	 *
 	 * @return []
 	 */
-	public function findDuplicateEntries() {
+	public function findDuplicateEntityRecords() {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
