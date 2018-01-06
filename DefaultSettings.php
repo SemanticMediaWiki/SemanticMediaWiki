@@ -1687,11 +1687,21 @@ return array(
 	# SMW_FIELDT_CHAR_LONG - Extends the size to 300 chars for text pattern
 	# match (DIBlob and DIUri) fields.
 	#
-	# By default, those fields are limited to 72 chars that limits search depth
-	# in exchange for index size and performance. Extending fields to 300 allows
-	# to run LIKE/NLIKE matching on a larger text body without relying on a
-	# full-text index but an increased index size could potentially carry a
-	# performance penalty when the index cannot be kept in memory.
+	# 300 has been selected to be able to build an index prefix with the available
+	# default setting of MySQL/MariaDB which restricts the prefix length to 767
+	# bytes for InnoDB tables [1]. The index length can be lifted [2] to up to
+	# 3072 bytes for InnoDB tables that use the DYNAMIC or COMPRESSED row format but
+	# that requires custom intervention.
+	#
+	# [1] https://dev.mysql.com/doc/refman/5.7/en/innodb-restrictions.html
+	# [2] https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_large_prefix
+	#
+	# By default, the SQLStore has restricted the DIBlob and DIUri fields to a
+	# 72 chars search depth in exchange for index size and performance.
+	# Extending fields to 300 allows to run LIKE/NLIKE matching on a larger text
+	# body without relying on a full-text index but an increased index size could
+	# potentially carry a performance penalty when the index cannot be kept in
+	# memory.
 	#
 	# No analysis has been performed on how performance is impacted. Selecting
 	# this option requires to run `rebuildData.php` to adjust the field content
