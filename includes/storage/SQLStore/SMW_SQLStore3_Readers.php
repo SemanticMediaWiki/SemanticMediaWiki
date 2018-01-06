@@ -4,6 +4,7 @@ use SMW\DataTypeRegistry;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\RequestOptions;
 use SMW\SQLStore\TableDefinition;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\EntityStore\StubSemanticData;
@@ -170,8 +171,25 @@ class SMWSQLStore3Readers {
 					return array();
 				}
 
-				$sd = $this->semanticDataLookup->getSemanticDataFromTable( $sid, $subject, $proptables[$propTableId] );
-				$result = $this->store->applyRequestOptions( $sd->getPropertyValues( $property ), $requestOptions );
+				$propertyTableDef = $proptables[$propTableId];
+
+				$ropts = $this->semanticDataLookup->findConditionConstraint(
+					$propertyTableDef,
+					$property,
+					$requestOptions
+				);
+
+				$semanticData = $this->semanticDataLookup->getSemanticDataFromTable(
+					$sid,
+					$subject,
+					$propertyTableDef,
+					$ropts
+				);
+
+				$result = $this->store->applyRequestOptions(
+					$semanticData->getPropertyValues( $property ),
+					$requestOptions
+				);
 			}
 		} else { // no subject given, get all values for the given property
 			$pid = $this->store->smwIds->getSMWPropertyID( $property );
@@ -186,7 +204,6 @@ class SMWSQLStore3Readers {
 				$pid,
 				$property,
 				$proptables[$tableid],
-				false,
 				$requestOptions
 			);
 

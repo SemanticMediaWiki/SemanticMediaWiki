@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\DIWikiPage;
+use SMW\RequestOptions;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SemanticDataLookup
@@ -29,7 +30,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyTables', 'getDataItemHandlerForDIType' ] )
+			->setMethods( [ 'getPropertyTables', 'getDataItemHandlerForDIType', 'getObjectIds' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -156,6 +157,78 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetSemanticDataFromTable_WithConstraint() {
+
+		$row = new \stdClass;
+		$row->prop = 'FOO';
+		$row->v0 = '1001';
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSMWPropertyID' ] )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getSMWPropertyID' )
+			->will( $this->returnValue( 9999 ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataItemHandler->expects( $this->any() )
+			->method( 'getFetchFields' )
+			->will( $this->returnValue( [ 'fooField' => 'fieldType' ] ) );
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'usesIdSubject' )
+			->will( $this->returnValue( true ) );
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'getDIType' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$this->connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'select' )
+			->with(
+				$this->equalTo( ' INNER JOIN  AS p ON p_id=p.smw_id' ),
+				$this->equalTo( 'p.smw_title as prop,fooField AS v0,  AS v2' ),
+				$this->equalTo( "s_id='42' AND p.smw_iw!=':smw' AND p.smw_iw!=':smw-delete' AND p_id='9999'" ),
+				$this->anything(),
+				$this->equalTo( [ 'LIMIT' => 4 ] ) )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$subject = DIWikiPage::newFromText( __METHOD__ );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->conditionConstraint = true;
+		$requestOptions->setLimit( 4 );
+
+		$requestOptions = $instance->findConditionConstraint(
+			$propertyTable,
+			$property,
+			$requestOptions
+		);
+
+		$instance->getSemanticDataFromTable( 42, $subject, $propertyTable, $requestOptions );
+	}
+
 	public function testFetchSemanticData_NoDataItem() {
 
 		$row = new \stdClass;
@@ -178,12 +251,16 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDIType' )
 			->will( $this->returnValue( 'Foo' ) );
 
+		$this->connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
 			->with(
 				$this->equalTo( ' INNER JOIN  AS p ON p_id=p.smw_id' ),
 				$this->equalTo( 'p.smw_title as prop,fooField AS v0,  AS v2' ),
-				$this->equalTo( 's_id= AND p.smw_iw!= AND p.smw_iw!=' ),
+				$this->equalTo( "s_id='42' AND p.smw_iw!=':smw' AND p.smw_iw!=':smw-delete'" ),
 				$this->anything(),
 				$this->equalTo( [] ) )
 			->will( $this->returnValue( [ $row ] ) );

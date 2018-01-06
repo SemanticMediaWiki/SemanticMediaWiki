@@ -190,19 +190,63 @@ class SemanticDataLookup {
 	}
 
 	/**
-	 * Fetch the data about one subject for one particular table
+	 * @since 3.0
+	 *
+	 * @param PropertyTableDefinition $propertyTableDef
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return RequestOptions|null
+	 */
+	public function findConditionConstraint( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
+
+		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
+			return null;
+		}
+
+		$ropts = new RequestOptions();
+
+		$ropts->setLimit( $requestOptions->getLimit() );
+		$ropts->setOffset( $requestOptions->getOffset() );
+
+		if ( $propertyTableDef->isFixedPropertyTable() ) {
+			return $ropts;
+		}
+
+		$pid = $this->store->getObjectIds()->getSMWPropertyID(
+			$property
+		);
+
+		if ( $pid > 0 ) {
+			$connection = $this->store->getConnection( 'mw.db' );
+
+			$ropts->addExtraCondition(
+				[ 'p_id' => $connection->addQuotes( $pid ) ]
+			);
+		}
+
+		return $ropts;
+	}
+
+	/**
+	 * Fetch and cache the data about one subject for one particular table
 	 *
 	 * @param integer $id
 	 * @param DIWikiPage $subject
 	 * @param PropertyTableDefinition $proptable
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticDataFromTable( $id, DIWikiPage $subject, PropertyTableDefinition $proptable, RequestOptions $requestOptions = null ) {
+	public function getSemanticDataFromTable( $id, DataItem $dataItem = null, PropertyTableDefinition $proptable, RequestOptions $requestOptions = null ) {
+
+		// Avoid the cache when a request is constrainted
+		if ( $requestOptions !== null || !$dataItem instanceof DIWikiPage ) {
+			return $this->fetchSemanticDataWithConstraint( $id, $dataItem, $proptable, $requestOptions );
+		}
 
 		// Do not clear the cache when called recursively.
 		$this->lockCache();
-		$this->initLookupCache( $id, $subject );
+		$this->initLookupCache( $id, $dataItem );
 
 		// @see also setLookupCache
 		$name = $proptable->getName();
@@ -212,7 +256,7 @@ class SemanticDataLookup {
 			return self::$data[$id];
 		}
 
-		$data = $this->fetchSemanticData( $id, $subject, $proptable, true, $requestOptions );
+		$data = $this->fetchSemanticData( $id, $dataItem, $proptable );
 
 		foreach ( $data as $d ) {
 			self::$data[$id]->addPropertyStubValue( reset( $d ), end( $d ) );
@@ -256,17 +300,19 @@ class SemanticDataLookup {
 	 * @param integer $id
 	 * @param DataItem $dataItem
 	 * @param PropertyTableDefinition $propTable
-	 * @param boolean $isSubject
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return array
 	 */
-	public function fetchSemanticData( $id, DataItem $dataItem = null, PropertyTableDefinition $propTable, $isSubject = true, RequestOptions $requestOptions = null ) {
+	public function fetchSemanticData( $id, DataItem $dataItem = null, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
+
+		$isSubject = $dataItem instanceof DIWikiPage || $dataItem === null;
+
 		// stop if there is not enough data:
 		// properties always need to be given as dataItem,
 		// subjects at least if !$proptable->idsubject
 		if ( ( $id == 0 ) ||
-			( is_null( $dataItem ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) ||
+			( $dataItem === null && ( !$isSubject || !$propTable->usesIdSubject() ) ) ||
 			( $propTable->getDIType() === null ) ) {
 			return [];
 		}
@@ -301,6 +347,14 @@ class SemanticDataLookup {
 			$propTable,
 			$dataItem
 		);
+
+		if ( $requestOptions !== null ) {
+			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
+				if ( isset( $extraCondition['p_id' ] ) ) {
+					$query['conditions'] .= ' AND p_id=' . $extraCondition['p_id' ];
+				}
+			}
+		}
 
 		$valueCount = 0;
 		$fieldname = '';
@@ -372,6 +426,23 @@ class SemanticDataLookup {
 		$connection->freeResult( $res );
 
 		return $result;
+	}
+
+	private function fetchSemanticDataWithConstraint( $id, DataItem $dataItem = null, PropertyTableDefinition $proptable, RequestOptions $requestOptions ) {
+
+		$stubSemanticData = new StubSemanticData(
+			$dataItem,
+			$this->store,
+			false
+		);
+
+		$data = $this->fetchSemanticData( $id, $dataItem, $proptable, $requestOptions );
+
+		foreach ( $data as $d ) {
+			$stubSemanticData->addPropertyStubValue( reset( $d ), end( $d ) );
+		}
+
+		return $stubSemanticData;
 	}
 
 	private function buildQueryInfo( &$query, $id, $isSubject, $propTable, $dataItem ) {
