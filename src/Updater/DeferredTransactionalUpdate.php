@@ -118,23 +118,29 @@ class DeferredTransactionalUpdate extends DeferredCallableUpdate {
 	 */
 	public function doUpdate() {
 
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $this->getOrigin()
+		];
+
 		if ( $this->onTransactionIdle ) {
 			return $this->connection->onTransactionIdle( function() {
-				$this->log( $this->getOrigin() . ' doUpdate (onTransactionIdle)' );
+				$this->logger->info( '[DeferredTransactionalUpdate] Update: {origin} (onTransactionIdle)', $context );
 				$this->onTransactionIdle = false;
 				$this->doUpdate();
 			} );
 		}
 
 		foreach ( $this->preCommitableCallbacks as $fname => $preCallback ) {
-			$this->log( $this->getOrigin() . " (pre-commitable callback: $fname)" );
+			$this->logger->info( '[DeferredTransactionalUpdate] Update: {origin} (pre-commitable callback: {fname})', $context + [ 'fname' => $fname ] );
 			call_user_func( $preCallback, $this->transactionTicket );
 		}
 
 		parent::doUpdate();
 
 		foreach ( $this->postCommitableCallbacks as $fname => $postCallback ) {
-			$this->log( $this->getOrigin() . " (post-commitable callback: $fname)" );
+			$this->logger->info( '[DeferredTransactionalUpdate] Update: {origin} (post-commitable callback: {fname})', $context + [ 'fname' => $fname ] );
 			call_user_func( $postCallback, $this->transactionTicket );
 		}
 
@@ -143,8 +149,14 @@ class DeferredTransactionalUpdate extends DeferredCallableUpdate {
 
 	protected function addUpdate( $update ) {
 
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $this->getOrigin()
+		];
+
 		if ( $this->onTransactionIdle ) {
-			$this->log( $this->getOrigin() . ' (as waitable DeferrableUpdate)' );
+			$this->logger->info( '[DeferredTransactionalUpdate] Added: {origin} (onTransactionIdle)', $context );
 			return $this->connection->onTransactionIdle( function() use( $update ) {
 				$update->onTransactionIdle = false;
 				parent::addUpdate( $update );

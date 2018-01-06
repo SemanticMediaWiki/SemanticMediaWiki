@@ -75,6 +75,27 @@ return array(
 	'smwgDefaultStore' => "SMWSQLStore3",
 	##
 
+	##
+	# Debug logger role
+	#
+	# A role (developer, user, production) defines the detail of information
+	# (granularity) that are expected to be logged. Roles include:
+	#
+	# - `developer` outputs any loggable event produced by SMW
+	# - `user` outputs certain events deemed important
+	# - `production` outputs a minimal set of events produced by SMW
+	#
+	# Logging only happens in case `$wgDebugLogFile` or `$wgDebugLogGroups`
+	# are actively maintained.
+	#
+	# @see https://www.mediawiki.org/wiki/Manual:How_to_debug#Logging
+	#
+	# @since 3.0
+	# @default production
+	##
+	'smwgDefaultLoggerRole' => 'production',
+	##
+
 	###
 	# Local connection configurations
 	#

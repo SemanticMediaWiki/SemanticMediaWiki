@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\PageUpdater;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\PageUpdater
@@ -16,9 +17,12 @@ use SMW\MediaWiki\PageUpdater;
 class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
+	private $spyLogger;
 
 	protected function setUp() {
 		parent::setup();
+
+		$this->spyLogger = TestEnvironment::newSpyLogger();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -276,6 +280,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'invalidateCache' );
 
 		$instance = new PageUpdater( $this->connection );
+		$instance->setLogger( $this->spyLogger );
 		$instance->addPage( $title );
 
 		$instance->waitOnTransactionIdle();

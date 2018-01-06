@@ -420,7 +420,7 @@ class EntityRebuildDispatcher {
 	}
 
 	private function newUpdateJob( $title ) {
-		return $this->jobFactory->newUpdateJob( $title, array( 'pm' => $this->updateJobParseMode ) );
+		return $this->jobFactory->newUpdateJob( $title, array( 'pm' => $this->updateJobParseMode, 'origin' => 'EntityRebuildDispatcher' ) );
 	}
 
 }

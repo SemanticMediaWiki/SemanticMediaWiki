@@ -198,6 +198,15 @@ class TestEnvironment {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return SpyLogger
+	 */
+	public static function newSpyLogger() {
+		return self::getUtilityFactory()->newSpyLogger();
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param integer $index

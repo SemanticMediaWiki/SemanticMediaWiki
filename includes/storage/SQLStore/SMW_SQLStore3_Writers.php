@@ -940,7 +940,8 @@ class SMWSQLStore3Writers {
 
 		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 		$parameters = array(
-			UpdateJob::FORCED_UPDATE => true
+			UpdateJob::FORCED_UPDATE => true,
+			'origin' => 'Store::changeTitle'
 		);
 
 		if ( $redirectId != 0 ) {

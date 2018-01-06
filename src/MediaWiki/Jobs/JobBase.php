@@ -119,8 +119,18 @@ abstract class JobBase extends Job {
 	 *
 	 * @return boolean
 	 */
-	public function getParameter( $key ) {
-		return $this->hasParameter( $key ) ? $this->params[$key] : false;
+	public function getParameter( $key, $default = false ) {
+		return $this->hasParameter( $key ) ? $this->params[$key] : $default;
+	}
+
+	/**
+	 * @since  3.0
+	 *
+	 * @param mixed $key
+	 * @param mixed $value
+	 */
+	public function setParameter( $key, $value ) {
+		$this->params[$key] = $value;
 	}
 
 	/**

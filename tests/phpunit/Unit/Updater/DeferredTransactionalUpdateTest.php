@@ -86,7 +86,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->assertContains(
-			'DeferredCallableUpdate::emptyCallback',
+			'Empty callback',
 			$this->spyLogger->getMessagesAsString()
 		);
 	}
@@ -118,7 +118,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->assertContains(
-			'DeferredCallableUpdate::addUpdate',
+			'[DeferrableUpdate] Added',
 			$this->spyLogger->getMessagesAsString()
 		);
 	}
@@ -141,6 +141,8 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$callback,
 			$this->connection
 		);
+
+		$instance->setLogger( $this->spyLogger );
 
 		$instance->markAsPending( true );
 		$instance->pushUpdate();
@@ -169,6 +171,8 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$this->connection
 		);
 
+		$instance->setLogger( $this->spyLogger );
+
 		$instance->enabledDeferredUpdate( false );
 		$instance->pushUpdate();
 	}
@@ -183,9 +187,11 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$this->connection
 		);
 
+		$instance->setLogger( $this->spyLogger );
+
 		$instance->setOrigin( 'Foo' );
 
-		$this->assertEquals(
+		$this->assertContains(
 			'Foo',
 			$instance->getOrigin()
 		);
@@ -210,6 +216,8 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$this->connection
 		);
 
+		$instance->setLogger( $this->spyLogger );
+
 		$instance->setFingerprint( __METHOD__ );
 		$instance->markAsPending( true );
 		$instance->pushUpdate();
@@ -218,6 +226,8 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$callback,
 			$this->connection
 		);
+
+		$instance->setLogger( $this->spyLogger );
 
 		$instance->setFingerprint( __METHOD__ );
 		$instance->markAsPending( true );
@@ -259,6 +269,8 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$connection
 		);
 
+		$instance->setLogger( $this->spyLogger );
+
 		$instance->waitOnTransactionIdle();
 		$instance->pushUpdate();
 
@@ -292,6 +304,8 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$callback,
 			$connection
 		);
+
+		$instance->setLogger( $this->spyLogger );
 
 		$instance->isDeferrableUpdate( true );
 		$instance->commitWithTransactionTicket();
@@ -327,6 +341,8 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$callback,
 			$connection
 		);
+
+		$instance->setLogger( $this->spyLogger );
 
 		$instance->isDeferrableUpdate( false );
 		$instance->commitWithTransactionTicket();

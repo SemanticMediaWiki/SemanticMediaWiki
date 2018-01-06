@@ -124,18 +124,19 @@ class UpdateJob extends JobBase {
 
 		// ChangePropagationJob
 		if ( $this->hasParameter( self::CHANGE_PROP ) ) {
-			return $this->doUpdateFromChangePropagation( $this->getParameter( self::CHANGE_PROP ) );
+			return $this->doupdateTypeChangePropagation( $this->getParameter( self::CHANGE_PROP ) );
 		}
 
 		if ( $this->hasParameter( self::SEMANTIC_DATA ) ) {
-			return $this->doUpdateFromSemanticData( $this->getParameter( self::SEMANTIC_DATA ) );
+			return $this->doupdateTypeSemanticData( $this->getParameter( self::SEMANTIC_DATA ) );
 		}
 
-		return $this->doUpdateFromFreshContentParse();
+		return $this->doupdateTypeFreshContentParse();
 	}
 
-	private function doUpdateFromChangePropagation( $dataItem ) {
+	private function doupdateTypeChangePropagation( $dataItem ) {
 
+		$this->setParameter( 'updateType', 'ChangePropagation' );
 		$subject = DIWikiPage::doUnserialize( $dataItem );
 
 		// Read the _CHGPRO property and fetch the serialized
@@ -153,12 +154,14 @@ class UpdateJob extends JobBase {
 		// using the JSON format
 		$semanticData = json_decode( end( $pv )->getString(), true );
 
-		$this->doUpdateFromSemanticData(
+		$this->doupdateTypeSemanticData(
 			$semanticData
 		);
 	}
 
-	private function doUpdateFromSemanticData( $semanticData ) {
+	private function doupdateTypeSemanticData( $semanticData ) {
+
+		$this->setParameter( 'updateType', 'SemanticData' );
 
 		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
 			$semanticData
@@ -186,7 +189,9 @@ class UpdateJob extends JobBase {
 	/**
 	 * SMW_UJ_PM_NP = new Parser to avoid "Parser state cleared" exception
 	 */
-	private function doUpdateFromFreshContentParse() {
+	private function doupdateTypeFreshContentParse() {
+
+		$this->setParameter( 'updateType', 'ContentParse' );
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
 
@@ -219,6 +224,20 @@ class UpdateJob extends JobBase {
 	}
 
 	private function updateStore( $parserData ) {
+
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'user',
+			'title' => $this->getTitle()->getPrefixedDBKey(),
+			'origin' => $this->getParameter( 'origin', 'N/A' ),
+			'updateType' => $this->getParameter( 'updateType' ),
+			'forcedUpdate' => $this->getParameter( self::FORCED_UPDATE )
+		];
+
+		$this->applicationFactory->getMediaWikiLogger()->info(
+			"[Job] UpdateJob: {title} (Type:{updateType}, Origin:{origin}, forcedUpdate: {forcedUpdate})",
+			$context
+		);
 
 		$eventHandler = EventHandler::getInstance();
 

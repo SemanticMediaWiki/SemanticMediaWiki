@@ -5,7 +5,7 @@ namespace SMW;
 use RuntimeException;
 use SMW\Exception\StoreNotFoundException;
 use Onoi\MessageReporter\NullMessageReporter;
-use Onoi\MessageReporter\MessageReporterAware;
+use Psr\Log\NullLogger;
 
 /**
  * Factory method that returns an instance of the default store, or an
@@ -27,11 +27,6 @@ class StoreFactory {
 	private static $instance = array();
 
 	/**
-	 * @var null
-	 */
-	private static $defaultStore = null;
-
-	/**
 	 * @since 1.9
 	 *
 	 * @param string|null $store
@@ -42,12 +37,8 @@ class StoreFactory {
 	 */
 	public static function getStore( $store = null ) {
 
-		if ( self::$defaultStore === null ) {
-			self::$defaultStore = self::getConfiguration()->get( 'smwgDefaultStore' );
-		}
-
 		if ( $store === null ) {
-			$store = self::$defaultStore;
+			$store = $GLOBALS['smwgDefaultStore'];
 		}
 
 		if ( !isset( self::$instance[$store] ) ) {
@@ -62,11 +53,6 @@ class StoreFactory {
 	 */
 	public static function clear() {
 		self::$instance = array();
-		self::$defaultStore = null;
-	}
-
-	private static function getConfiguration() {
-		return Settings::newFromGlobals();
 	}
 
 	private static function newInstance( $store ) {
@@ -81,11 +67,8 @@ class StoreFactory {
 			throw new StoreNotFoundException( "{$store} can not be used as a store instance" );
 		}
 
-		// Traits cannot implement an interface (really!!) so we check for the
-		// method otherwise we would use an interface
-		if ( method_exists( $instance, 'setMessageReporter' ) ) {
-			$instance->setMessageReporter( new NullMessageReporter() );
-		}
+		$instance->setMessageReporter( new NullMessageReporter() );
+		$instance->setLogger( new NullLogger() );
 
 		return $instance;
 	}

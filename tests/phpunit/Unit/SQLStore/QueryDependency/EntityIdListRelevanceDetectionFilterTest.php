@@ -19,11 +19,13 @@ use SMW\Tests\TestEnvironment;
 class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $spyLogger;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -100,6 +102,10 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 			$changeOp
 		);
 
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
 		$instance->setPropertyExemptionList(
 			array( '_MDAT' )
 		);
@@ -155,6 +161,10 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 		$instance = new EntityIdListRelevanceDetectionFilter(
 			$store,
 			$changeOp
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$instance->setAffiliatePropertyDetectionList(
@@ -224,6 +234,10 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 		$instance = new EntityIdListRelevanceDetectionFilter(
 			$store,
 			$changeOp
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$instance->setPropertyExemptionList(

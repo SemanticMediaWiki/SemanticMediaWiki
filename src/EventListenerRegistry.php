@@ -21,6 +21,11 @@ class EventListenerRegistry implements EventListenerCollection {
 	private $eventListenerCollection = null;
 
 	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param EventListenerCollection $eventListenerCollection
@@ -39,6 +44,8 @@ class EventListenerRegistry implements EventListenerCollection {
 	}
 
 	private function addListenersToCollection() {
+
+		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 
 		/**
 		 * Emitted during UpdateJob, ArticlePurge
@@ -85,9 +92,14 @@ class EventListenerRegistry implements EventListenerCollection {
 				}
 
 				$applicationFactory = ApplicationFactory::getInstance();
-				$applicationFactory->getMediaWikiLogger()->info(
-					'Event (cached.propertyvalues.prefetcher.reset) on ' . $subject->getHash()
-				);
+
+				$context = [
+					'role' => 'developer',
+					'event' => 'cached.propertyvalues.prefetcher.reset',
+					'origin' => $subject
+				];
+
+				$this->logger->info( '[Event] {event}: {origin}', $context );
 
 				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
 					$subject
@@ -113,9 +125,14 @@ class EventListenerRegistry implements EventListenerCollection {
 				$context = $dispatchContext->has( 'context' ) ? $dispatchContext->get( 'context' ) : '';
 
 				$applicationFactory = ApplicationFactory::getInstance();
-				$applicationFactory->getMediaWikiLogger()->info(
-					'Event (cached.prefetcher.reset) on ' . $subject->getHash()
-				);
+
+				$context = [
+					'role' => 'developer',
+					'event' => 'cached.prefetcher.reset',
+					'origin' => $subject
+				];
+
+				$this->logger->info( '[Event] {event}: {origin}', $context );
 
 				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
 					$subject

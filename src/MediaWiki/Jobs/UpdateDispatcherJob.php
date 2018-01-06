@@ -192,7 +192,8 @@ class UpdateDispatcherJob extends JobBase {
 	private function createUpdateJobsFromJobList( array $subjects ) {
 
 		$parameters = array(
-			UpdateJob::FORCED_UPDATE => true
+			UpdateJob::FORCED_UPDATE => true,
+			'origin' => $this->getParameter( 'origin', 'UpdateDispatcherJob' )
 		);
 
 		// We expect non-duplicate subjects in the list and therefore deserialize

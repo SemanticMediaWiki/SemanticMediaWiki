@@ -20,16 +20,22 @@ use SMW\RequestOptions;
 class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $spyLogger;
 	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$this->store->setLogger(
+			$this->spyLogger
+		);
 
 		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
@@ -109,6 +115,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
 			$dependencyLinksTableUpdater
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$this->assertTrue(
@@ -441,6 +451,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			$dependencyLinksTableUpdater
 		);
 
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
 		$instance->setEnabled( false );
 		$queryResult = '';
 
@@ -489,6 +503,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
 			$dependencyLinksTableUpdater
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$instance->setEnabled( true );
@@ -658,6 +676,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			$dependencyLinksTableUpdater
 		);
 
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -732,6 +754,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			$dependencyLinksTableUpdater
 		);
 
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -766,7 +792,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$subject->expects( $this->once() )
+		$subject->expects( $this->atLeastOnce() )
 			->method( 'getHash' )
 			->will( $this->returnValue( 'Foo###' ) );
 
@@ -815,6 +841,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
 			$dependencyLinksTableUpdater
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$query = $this->getMockBuilder( '\SMWQuery' )

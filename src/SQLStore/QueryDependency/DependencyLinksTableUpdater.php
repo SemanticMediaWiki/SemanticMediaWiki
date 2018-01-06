@@ -5,8 +5,7 @@ namespace SMW\SQLStore\QueryDependency;
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * @license GNU GPL v2+
@@ -14,7 +13,9 @@ use Psr\Log\LoggerAwareInterface;
  *
  * @author mwjames
  */
-class DependencyLinksTableUpdater implements LoggerAwareInterface {
+class DependencyLinksTableUpdater {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var array
@@ -32,11 +33,6 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 	private $connection = null;
 
 	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-
-	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
@@ -44,17 +40,6 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 	public function __construct( Store $store ) {
 		$this->store = $store;
 		$this->connection = $this->store->getConnection( 'mw.db' );
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -114,7 +99,13 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 	 */
 	public function deleteDependenciesFromList( array $deleteIdList ) {
 
-		$this->log( __METHOD__ . ' ' . implode( ' ,', $deleteIdList ) );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'list' => implode( ' ,', $deleteIdList )
+		];
+
+		$this->logger->info( '[QueryDependency] Delete dependencies: {list}', $context );
 
 		$this->connection->beginAtomicTransaction( __METHOD__ );
 
@@ -187,7 +178,13 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 		// was used with a hash to avoid duplicate entries hence the re-copy
 		$inserts = array_values( $inserts );
 
-		$this->log( __METHOD__ . ' insert for SID ' . $sid );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'id' => $sid
+		];
+
+		$this->logger->info( '[QueryDependency] Table insert: {id} ID', $context );
 
 		$this->connection->insert(
 			SQLStore::QUERY_LINKS_TABLE,
@@ -238,18 +235,17 @@ class DependencyLinksTableUpdater implements LoggerAwareInterface {
 			false
 		);
 
-		$this->log( __METHOD__ . " add new {$id} ID for " . $subject->getHash() . " {$subobjectName}" );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'id' => $id,
+			'origin' => $subject->getHash() . $subobjectName
+
+		];
+
+		$this->logger->info( '[QueryDependency] Table update: new {id} ID; {origin}', $context );
 
 		return $id;
-	}
-
-	private function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }

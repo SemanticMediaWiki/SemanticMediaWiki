@@ -299,6 +299,10 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$recordStats = false;
 		$context = $context === '' ? 'Undefined' : $context;
 
+		if ( is_array( $context ) ) {
+			$context = implode( '.', $context );
+		}
+
 		foreach ( $items as $item ) {
 			$id = $this->getHashFrom( $item );
 			$this->tempCache->delete( $id );

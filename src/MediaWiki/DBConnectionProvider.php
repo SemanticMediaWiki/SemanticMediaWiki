@@ -128,16 +128,14 @@ class DBConnectionProvider implements ConnectionProvider {
 		// Only required because of SQlite
 		$connection->setDBPrefix( $GLOBALS['wgDBprefix'] );
 
-		if ( $this->logger !== null ) {
-			$this->logger->info(
-				"Init '{provider}' connection provider with [read:{read}, write:{write}]",
-				[
-					'provider' => $this->provider,
-					'read' => $connectionConf['read'],
-					'write' => $connectionConf['write']
-				]
-			);
-		}
+		$context = [
+			'role' => 'developer',
+			'provider' => $this->provider,
+			'read' => $connectionConf['read'],
+			'write' => $connectionConf['write'],
+		];
+
+		$this->logger->info( "[Connection] '{provider}': [read:{read}, write:{write}]", $context );
 
 		return $connection;
 	}

@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HierarchyLookup;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\HierarchyLookup
@@ -19,8 +20,11 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $cache;
+	private $spyLogger;
 
 	protected function setUp() {
+
+		$this->spyLogger = TestEnvironment::newSpyLogger();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -62,6 +66,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
 		$instance->addListenersTo( $changePropListener );
 	}
 
@@ -82,6 +90,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new HierarchyLookup(
 			$store,
 			$cache
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$property = new DIProperty( 'Foo' );
@@ -120,6 +132,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new HierarchyLookup(
 			$store,
 			$cache
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$this->assertEquals(
@@ -172,6 +188,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
 		$instance->setSubpropertyDepth( 2 );
 
 		$this->assertEquals(
@@ -199,6 +219,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$instance->setSubpropertyDepth( 2 );
@@ -253,6 +277,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
 		$instance->setSubcategoryDepth( 2 );
 
 		$this->assertEquals(
@@ -280,6 +308,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new HierarchyLookup(
 			$this->store,
 			$this->cache
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$instance->setSubcategoryDepth( 2 );
@@ -329,6 +361,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new HierarchyLookup(
 			$store,
 			$cache
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
 		);
 
 		$this->assertEquals(
