@@ -337,7 +337,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'query' )
-			->with( $this->stringContains( 'HAVING count > 1' ) )
+			->with( $this->stringContains( 'HAVING count(*) > 1' ) )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
