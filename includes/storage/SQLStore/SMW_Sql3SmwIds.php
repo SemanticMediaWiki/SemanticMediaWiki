@@ -516,7 +516,10 @@ class SMWSql3SmwIds {
 		"COUNT(*) as count, smw_title, smw_namespace, smw_iw, smw_subobject " .
 		"FROM $tableName WHERE $condition " .
 		"GROUP BY smw_title, smw_namespace, smw_iw, smw_subobject ".
-		"HAVING count > 1";
+		"HAVING count(*) > 1";
+
+		// @see https://stackoverflow.com/questions/8119489/postgresql-where-count-condition
+		// "HAVING count > 1"; doesn't work on postgres
 
 		$rows = $connection->query(
 			$query,
