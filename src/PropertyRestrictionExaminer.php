@@ -158,7 +158,7 @@ class PropertyRestrictionExaminer {
 			return false;
 		}
 
-		if ( PropertyRegistry::getInstance()->isUnrestrictedForAnnotationUse( $property->getKey() ) ) {
+		if ( PropertyRegistry::getInstance()->isAnnotable( $property->getKey() ) ) {
 			return false;
 		}
 

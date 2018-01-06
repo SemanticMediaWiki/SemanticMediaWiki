@@ -7,7 +7,7 @@ use RuntimeException;
 use SMWDataItem;
 use SMWDIUri;
 use SMW\Exception\PropertyLabelNotResolvedException;
-use SMW\Exception\PropertyDataTypeLookupExeption;
+use SMW\Exception\DataTypeLookupExeption;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
 /**
@@ -152,7 +152,7 @@ class DIProperty extends SMWDataItem {
 			return true;
 		}
 
-		return PropertyRegistry::getInstance()->isVisibleToUser( $this->m_key );
+		return PropertyRegistry::getInstance()->isVisible( $this->m_key );
 	}
 
 	/**
@@ -213,7 +213,7 @@ class DIProperty extends SMWDataItem {
 	 */
 	public function getPreferredLabel( $languageCode = '' ) {
 
-		$label = PropertyRegistry::getInstance()->findPreferredPropertyLabelById( $this->m_key, $languageCode );
+		$label = PropertyRegistry::getInstance()->findPreferredPropertyLabelFromIdByLanguageCode( $this->m_key, $languageCode );
 
 		if ( $label !== '' ) {
 			return ( $this->m_inverse ? '-' : '' ) . $label;
@@ -267,7 +267,7 @@ class DIProperty extends SMWDataItem {
 		} elseif ( $this->m_key === $this->findPropertyTypeID() ) {
 			// If _dat as property [[Date::...]] refers directly to its _dat type
 			// then use the en-label as canonical representation
-			$dbkey = PropertyRegistry::getInstance()->findPropertyLabelByLanguageCode( $this->m_key, 'en' );
+			$dbkey = PropertyRegistry::getInstance()->findPropertyLabelFromIdByLanguageCode( $this->m_key, 'en' );
 		} else {
 			$dbkey = PropertyRegistry::getInstance()->findCanonicalPropertyLabelById( $this->m_key );
 		}
@@ -293,13 +293,13 @@ class DIProperty extends SMWDataItem {
 	 * @since  2.0
 	 *
 	 * @return self
-	 * @throws PropertyDataTypeLookupExeption
+	 * @throws DataTypeLookupExeption
 	 * @throws InvalidArgumentException
 	 */
 	public function setPropertyTypeId( $propertyTypeId ) {
 
-		if ( !DataTypeRegistry::getInstance()->isKnownByType( $propertyTypeId ) ) {
-			throw new PropertyDataTypeLookupExeption( "{$propertyTypeId} is an unknown type id" );
+		if ( !DataTypeRegistry::getInstance()->isRegistered( $propertyTypeId ) ) {
+			throw new DataTypeLookupExeption( "{$propertyTypeId} is an unknown type id" );
 		}
 
 		if ( $this->isUserDefined() && $this->m_proptypeid === null ) {

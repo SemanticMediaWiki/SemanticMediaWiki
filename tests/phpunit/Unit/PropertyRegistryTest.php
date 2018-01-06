@@ -156,19 +156,19 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( '_TYPE' => array( '__typ', true, true ) ),
-			$instance->getKnownPropertyTypes()
+			$instance->getPropertyList()
 		);
 
 		$this->assertTrue(
-			$instance->isVisibleToUser( '_TYPE' )
+			$instance->isVisible( '_TYPE' )
 		);
 
 		$this->assertTrue(
-			$instance->isUnrestrictedForAnnotationUse( '_TYPE' )
+			$instance->isAnnotable( '_TYPE' )
 		);
 
 		$this->assertTrue(
-			$instance->isKnownPropertyId( '_TYPE' )
+			$instance->isRegistered( '_TYPE' )
 		);
 	}
 
@@ -201,15 +201,15 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->isVisibleToUser( '_UnregisteredType' )
+			$instance->isVisible( '_UnregisteredType' )
 		);
 
 		$this->assertFalse(
-			$instance->isUnrestrictedForAnnotationUse( '_UnregisteredType' )
+			$instance->isAnnotable( '_UnregisteredType' )
 		);
 
 		$this->assertFalse(
-			$instance->isKnownPropertyId( '_UnregisteredType' )
+			$instance->isRegistered( '_UnregisteredType' )
 		);
 	}
 
@@ -448,7 +448,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'A le type',
-			$instance->findPropertyLabelByLanguageCode( '_TYPE', 'fr' )
+			$instance->findPropertyLabelFromIdByLanguageCode( '_TYPE', 'fr' )
 		);
 	}
 

@@ -64,7 +64,7 @@ class DIPropertyTest extends DataItemTest {
 
 		$property = new DIProperty( 'SomeUnknownTypeIdProperty' );
 
-		$this->setExpectedException( '\SMW\Exception\PropertyDataTypeLookupExeption' );
+		$this->setExpectedException( '\SMW\Exception\DataTypeLookupExeption' );
 		$property->setPropertyTypeId( '_unknownTypeId' );
 	}
 

@@ -109,7 +109,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->dataTypeRegistry->registerDataTypeAlias( '_foo', 'FooBar' );
 
 		$this->assertTrue(
-			$this->dataTypeRegistry->isKnownByType( '_foo' )
+			$this->dataTypeRegistry->isRegistered( '_foo' )
 		);
 
 		$this->assertEquals(

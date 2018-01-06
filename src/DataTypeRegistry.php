@@ -130,7 +130,9 @@ class DataTypeRegistry {
 			$extraneousLanguage
 		);
 
-		self::$instance->initDatatypes( TypeList::getList() );
+		self::$instance->initDatatypes(
+			DefaultList::getTypeList()
+		);
 
 		self::$instance->setOption(
 			'smwgDVFeatures',
@@ -194,7 +196,7 @@ class DataTypeRegistry {
 	 *
 	 * @return boolean
 	 */
-	public function isKnownByType( $typeId ) {
+	public function isRegistered( $typeId ) {
 		return isset( $this->typeDataItemIds[$typeId] );
 	}
 

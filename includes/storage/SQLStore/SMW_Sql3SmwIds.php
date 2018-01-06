@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMWDataItem as DataItem;
 use SMW\HashBuilder;
 use SMW\RequestOptions;
+use SMW\PropertyRegistry;
 use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\RedirectStore;
@@ -933,10 +934,10 @@ class SMWSql3SmwIds {
 			if ( $title{0} != '_' ) {
 				// This normalization also applies to
 				// subobjects of predefined properties.
-				$newTitle = SMW\DIProperty::findPropertyID( str_replace( '_', ' ', $title ) );
+				$newTitle = PropertyRegistry::getInstance()->findPropertyIdByLabel( str_replace( '_', ' ', $title ) );
 				if ( $newTitle ) {
 					$title = $newTitle;
-					$sortkey = SMW\DIProperty::findPropertyLabel( $title );
+					$sortkey = PropertyRegistry::getInstance()->findPropertyLabelById( $title );
 					if ( $sortkey === '' ) {
 						$iw = SMW_SQL3_SMWINTDEFIW;
 					}

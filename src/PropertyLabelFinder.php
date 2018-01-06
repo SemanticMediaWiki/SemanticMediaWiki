@@ -105,7 +105,7 @@ class PropertyLabelFinder {
 	 *
 	 * @return string
 	 */
-	public function findPropertyLabelByLanguageCode( $id, $languageCode = '' ) {
+	public function findPropertyLabelFromIdByLanguageCode( $id, $languageCode = '' ) {
 
 		if ( $languageCode === '' ) {
 			return $this->findPropertyLabelById( $id );
