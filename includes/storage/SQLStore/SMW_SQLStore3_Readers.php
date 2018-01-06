@@ -173,7 +173,7 @@ class SMWSQLStore3Readers {
 
 				$propertyTableDef = $proptables[$propTableId];
 
-				$ropts = $this->semanticDataLookup->findConditionConstraint(
+				$opts = $this->semanticDataLookup->makeOptionsFromConstraint(
 					$propertyTableDef,
 					$property,
 					$requestOptions
@@ -183,7 +183,7 @@ class SMWSQLStore3Readers {
 					$sid,
 					$subject,
 					$propertyTableDef,
-					$ropts
+					$opts
 				);
 
 				$result = $this->store->applyRequestOptions(

@@ -89,7 +89,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'computeTableRowDiff' )
 			->will( $this->returnValue( [ [], [], [] ] ) );
 
-		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SemanticDataLookup' )
+		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
