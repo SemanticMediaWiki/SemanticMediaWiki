@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMWSql3SmwIds;
 use SMW\ProcessLruCache;
+use SMW\SQLStore\RedirectStore;
 use Onoi\Cache\FixedInMemoryLruCache;
 
 /**
@@ -40,9 +41,19 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$redirectStore = new RedirectStore( $this->store );
 
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
@@ -51,6 +62,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newProcessLruCache' )
 			->will( $this->returnValue( $processLruCache ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newRedirectStore' )
+			->will( $this->returnValue( $redirectStore ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyStatisticsStore' )
@@ -63,21 +78,9 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
 		$this->assertInstanceOf(
 			'\SMWSql3SmwIds',
-			new SMWSql3SmwIds( $store, $this->factory )
+			new SMWSql3SmwIds( $this->store, $this->factory )
 		);
 	}
 
@@ -85,20 +88,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', 9001 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
 		$instance = new SMWSql3SmwIds(
-			$store,
+			$this->store,
 			$this->factory
 		);
 

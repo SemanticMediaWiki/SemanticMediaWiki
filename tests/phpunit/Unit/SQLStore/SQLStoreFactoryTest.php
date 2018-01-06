@@ -325,6 +325,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructRedirectStore() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\RedirectStore',
+			$instance->newRedirectStore()
+		);
+	}
+
 	public function testCanConstructChangePropListener() {
 
 		$instance = new SQLStoreFactory( $this->store );
