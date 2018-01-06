@@ -210,15 +210,19 @@ span.smwb-value {
  * Responsive settings (#see smw.table.css)
  */
 @media screen and (max-width: 800px) {
-  .smwb-factbox .smwb-propvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
-    width: auto;
-  }
+	.smwb-factbox .smwb-propvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
+		width: auto;
+	}
 
-  .smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-propval, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
-    justify-content: flex-end;
-  }
+	.smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-propval, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
+		justify-content: flex-end;
+	}
 
-  .smwb-group .smwb-propval, .smwb-group .smwb-theme-light .smwb-propval {
-	background-color: #d9e8f3;
-  }
+	.smwb-group .smwb-propval, .smwb-group .smwb-theme-light .smwb-propval {
+		background-color: #d9e8f3;
+	}
+
+	.smwb-emptysheet .smwb-prophead {
+		border-top: none;
+	}
 }
