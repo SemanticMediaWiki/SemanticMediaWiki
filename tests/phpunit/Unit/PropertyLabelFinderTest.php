@@ -166,12 +166,12 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'Booléen',
-			$instance->findPropertyLabelByLanguageCode( '_boo', 'fr' )
+			$instance->findPropertyLabelFromIdByLanguageCode( '_boo', 'fr' )
 		);
 
 		$this->assertEquals(
 			'Boolean',
-			$instance->findPropertyLabelByLanguageCode( '_boo', 'en' )
+			$instance->findPropertyLabelFromIdByLanguageCode( '_boo', 'en' )
 		);
 	}
 

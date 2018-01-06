@@ -35,7 +35,7 @@ class PropertyRegistry {
 	 *
 	 * @var array
 	 */
-	private $propertyTypes = array();
+	private $propertyList = array();
 
 	/**
 	 * @var string[]
@@ -69,7 +69,6 @@ class PropertyRegistry {
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$propertyLabelFinder = $applicationFactory->getPropertyLabelFinder();
 		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
 
 		$propertyAliasFinder = new PropertyAliasFinder(
@@ -82,13 +81,15 @@ class PropertyRegistry {
 
 		self::$instance = new self(
 			DataTypeRegistry::getInstance(),
-			$propertyLabelFinder,
+			$applicationFactory->getPropertyLabelFinder(),
 			$propertyAliasFinder,
-			$GLOBALS['smwgDataTypePropertyExemptionList']
+			$settings->get( 'smwgDataTypePropertyExemptionList' )
 		);
 
-		self::$instance->registerPredefinedProperties(
-			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_HIERARCHY )
+		self::$instance->initProperties(
+			DefaultList::getPropertyList(
+				$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_HIERARCHY )
+			)
 		);
 
 		return self::$instance;
@@ -142,8 +143,8 @@ class PropertyRegistry {
 	 *
 	 * @return array
 	 */
-	public function getKnownPropertyTypes() {
-		return $this->propertyTypes;
+	public function getPropertyList() {
+		return $this->propertyList;
 	}
 
 	/**
@@ -162,16 +163,14 @@ class PropertyRegistry {
 	 * future confusion with SMW built-ins.
 	 *
 	 * @param string $id
-	 * @param string $typeId SMW type id
+	 * @param string $valueType SMW type id
 	 * @param string|bool $label user label or false (internal property)
 	 * @param boolean $isVisible only used if label is given, see isShown()
 	 * @param boolean $isAnnotable
-	 *
-	 * @note See self::isShown() for information it
 	 */
-	public function registerProperty( $id, $typeId, $label = false, $isVisible = false, $isAnnotable = true ) {
+	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true ) {
 
-		$this->propertyTypes[$id] = array( $typeId, $isVisible, $isAnnotable );
+		$this->propertyList[$id] = array( $valueType, $isVisible, $isAnnotable );
 
 		if ( $label !== false ) {
 			$this->registerPropertyLabel( $id, $label );
@@ -216,8 +215,15 @@ class PropertyRegistry {
 	 * @param string $id
 	 * @param string $msgKey
 	 */
-	public function registerPropertyDescriptionMsgKeyById( $id, $msgKey ) {
+	public function registerPropertyDescriptionByMsgKey( $id, $msgKey ) {
 		$this->propertyDescriptionMsgKeys[$id] = $msgKey;
+	}
+
+	/**
+	 * @deprecated since 3.0, use PropertyRegistry::registerPropertyDescriptionByMsgKey
+	 */
+	public function registerPropertyDescriptionMsgKeyById( $id, $msgKey ) {
+		$this->registerPropertyDescriptionByMsgKey( $id, $msgKey );
 	}
 
 	/**
@@ -280,8 +286,8 @@ class PropertyRegistry {
 	 *
 	 * @return string
 	 */
-	public function findPropertyLabelByLanguageCode( $id, $languageCode = '' ) {
-		return $this->propertyLabelFinder->findPropertyLabelByLanguageCode( $id, $languageCode );
+	public function findPropertyLabelFromIdByLanguageCode( $id, $languageCode = '' ) {
+		return $this->propertyLabelFinder->findPropertyLabelFromIdByLanguageCode( $id, $languageCode );
 	}
 
 	/**
@@ -301,20 +307,27 @@ class PropertyRegistry {
 	 *
 	 * @return string
 	 */
-	public function getPropertyTypeId( $id ) {
+	public function getPropertyValueTypeById( $id ) {
 
-		if ( $this->isKnownPropertyId( $id ) ) {
-			return $this->propertyTypes[$id][0];
+		if ( $this->isRegistered( $id ) ) {
+			return $this->propertyList[$id][0];
 		}
 
 		return '';
 	}
 
 	/**
-	 * @deprecated since 2.1 use getPropertyTypeId instead
+	 * @deprecated since 3.0, use PropertyRegistry::getPropertyValueTypeById instead
+	 */
+	public function getPropertyTypeId( $id ) {
+		return $this->getPropertyValueTypeById( $id );
+	}
+
+	/**
+	 * @deprecated since 2.1 use getPropertyValueTypeById instead
 	 */
 	public function getPredefinedPropertyTypeId( $id ) {
-		return $this->getPropertyTypeId( $id );
+		return $this->getPropertyValueTypeById( $id );
 	}
 
 	/**
@@ -387,7 +400,7 @@ class PropertyRegistry {
 	 *
 	 * @return string
 	 */
-	public function findPreferredPropertyLabelById( $id, $languageCode = '' ) {
+	public function findPreferredPropertyLabelFromIdByLanguageCode( $id, $languageCode = '' ) {
 
 		if ( $languageCode === false || $languageCode === '' ) {
 			$languageCode = Localizer::getInstance()->getUserLanguage()->getCode();
@@ -404,14 +417,10 @@ class PropertyRegistry {
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @param  string $id
-	 *
-	 * @return boolean
+	 * @deprecated since 3.0 use isRegistered instead
 	 */
 	public function isKnownPropertyId( $id ) {
-		return isset( $this->propertyTypes[$id] ) || array_key_exists( $id, $this->propertyTypes );
+		return $this->isRegistered( $id );
 	}
 
 	/**
@@ -421,19 +430,30 @@ class PropertyRegistry {
 	 *
 	 * @return boolean
 	 */
-	public function isVisibleToUser( $id ) {
-		return $this->isKnownPropertyId( $id ) ? $this->propertyTypes[$id][1] : false;
+	public function isRegistered( $id ) {
+		return isset( $this->propertyList[$id] ) || array_key_exists( $id, $this->propertyList );
 	}
 
 	/**
-	 * @since 2.2
+	 * @since 2.1
 	 *
 	 * @param  string $id
 	 *
 	 * @return boolean
 	 */
-	public function isUnrestrictedForAnnotationUse( $id ) {
-		return $this->isKnownPropertyId( $id ) ? $this->propertyTypes[$id][2] : false;
+	public function isVisible( $id ) {
+		return $this->isRegistered( $id ) ? $this->propertyList[$id][1] : false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $id
+	 *
+	 * @return boolean
+	 */
+	public function isAnnotable( $id ) {
+		return $this->isRegistered( $id ) ? $this->propertyList[$id][2] : false;
 	}
 
 	/**
@@ -445,11 +465,11 @@ class PropertyRegistry {
 	 */
 	public function isDeclarative( $id ) {
 
-		if ( !$this->isKnownPropertyId( $id ) ) {
+		if ( !$this->isRegistered( $id ) ) {
 			return false;
 		}
 
-		return isset( $this->propertyTypes[$id][3] ) ? $this->propertyTypes[$id][3] : false;
+		return isset( $this->propertyList[$id][3] ) ? $this->propertyList[$id][3] : false;
 	}
 
 	/**
@@ -458,67 +478,12 @@ class PropertyRegistry {
 	 * cannot be entered by or displayed to users, whatever their "show" value
 	 * below.
 	 */
-	protected function registerPredefinedProperties( $useCategoryHierarchy ) {
+	protected function initProperties( array $propertyList ) {
 
-		// array( Id, isVisibleToUser, isAnnotableByUser, isDeclarative )
-
-		$this->propertyTypes = array(
-			'_TYPE'  => array( '__typ', true, true, true ), // "has type"
-			'_URI'   => array( '__spu', true, true, true ), // "equivalent URI"
-			'_INST'  => array( '__sin', false, true, false ), // instance of a category
-			'_UNIT'  => array( '__sps', true, true, true ), // "displays unit"
-			'_IMPO'  => array( '__imp', true, true, true ), // "imported from"
-			'_CONV'  => array( '__sps', true, true, true ), // "corresponds to"
-			'_SERV'  => array( '__sps', true, true, true ), // "provides service"
-			'_PVAL'  => array( '__pval', true, true, true ), // "allows value"
-			'_REDI'  => array( '__red', true, true, false ), // redirects to some page
-			'_SUBP'  => array( '__sup', true, true, true ), // "subproperty of"
-			'_SUBC'  => array( '__suc', !$useCategoryHierarchy, true, true ), // "subcategory of"
-			'_CONC'  => array( '__con', false, true, false ), // associated concept
-			'_MDAT'  => array( '_dat', false, false, false ), // "modification date"
-			'_CDAT'  => array( '_dat', false, false, false ), // "creation date"
-			'_NEWP'  => array( '_boo', false, false, false ), // "is a new page"
-			'_EDIP'  => array( '_boo', true, true, false ), // "is edit protected"
-			'_LEDT'  => array( '_wpg', false, false, false ), // "last editor is"
-			'_ERRC'  => array( '__sob', false, false, false ), // "has error"
-			'_ERRT'  => array( '__errt', false, false, false ), // "has error text"
-			'_ERRP'  => array( '_wpp', false, false, false ), // "has improper value for"
-			'_LIST'  => array( '__pls', true, true, true ), // "has fields"
-			'_SKEY'  => array( '__key', false, true, false ), // sort key of a page
-
-			// FIXME SF related properties to be removed with 3.0
-			'_SF_DF' => array( '__spf', true, true, false ), // Semantic Form's default form property
-			'_SF_AF' => array( '__spf', true, true, false ),  // Semantic Form's alternate form property
-
-			'_SOBJ'  => array( '__sob', true, false, false ), // "has subobject"
-			'_ASK'   => array( '__sob', false, false, false ), // "has query"
-			'_ASKST' => array( '_cod', true, false, false ), // "Query string"
-			'_ASKFO' => array( '_txt', true, false, false ), // "Query format"
-			'_ASKSI' => array( '_num', true, false, false ), // "Query size"
-			'_ASKDE' => array( '_num', true, false, false ), // "Query depth"
-			'_ASKDU' => array( '_num', true, false, false ), // "Query duration"
-			'_ASKSC' => array( '_txt', true, false, false ), // "Query source"
-			'_ASKPA' => array( '_cod', true, false, false ), // "Query parameters"
-			'_ASKCO' => array( '_num', true, false, false ), // "Query scode"
-			'_MEDIA' => array( '_txt', true, false, false ), // "has media type"
-			'_MIME'  => array( '_txt', true, false, false ), // "has mime type"
-			'_PREC'  => array( '_num', true, true, true ), // "Display precision of"
-			'_LCODE' => array( '__lcode', true, true, false ), // "Language code"
-			'_TEXT'  => array( '_txt', true, true, false ), // "Text"
-			'_PDESC' => array( '_mlt_rec', true, true, true ), // "Property description"
-			'_PVAP'  => array( '__pvap', true, true, true ), // "Allows pattern"
-			'_PVALI'  => array( '__pvali', true, true, true ), // "Allows value list"
-			'_DTITLE' => array( '_txt', false, true, false ), // "Display title of"
-			'_PVUC'  => array( '__pvuc', true, true, true ), // Uniqueness constraint
-			'_PEID'  => array( '_eid', true, true, false ), // External identifier
-			'_PEFU'  => array( '__pefu', true, true, true ), // External formatter uri
-			'_PPLB'  => array( '_mlt_rec', true, true, true ), // Preferred property label
-			'_CHGPRO' => array( '_cod', true, false, true ), // "Change propagation"
-			'_PPGR' => array( '_boo', true, true, true ), // "Property group"
-		);
+		$this->propertyList = $propertyList;
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
-			$this->propertyTypes[$id] = array( $id, true, true, false );
+			$this->propertyList[$id] = array( $id, true, true, false );
 		}
 
 		// @deprecated since 2.1

@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\PageInfo;
 use SMW\PropertyAnnotator;
+use SMW\PropertyRegistry;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
@@ -76,7 +77,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function isRegisteredPropertyId( $propertyId, $cachedProperties ) {
-		return ( DIProperty::getPredefinedPropertyTypeId( $propertyId ) === '' ) ||
+		return ( PropertyRegistry::getInstance()->getPropertyValueTypeById( $propertyId ) === '' ) ||
 			array_key_exists( $propertyId, $cachedProperties );
 	}
 

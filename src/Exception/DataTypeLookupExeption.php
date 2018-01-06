@@ -10,6 +10,6 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class PropertyDataTypeLookupExeption extends RuntimeException {
+class DataTypeLookupExeption extends RuntimeException {
 
 }

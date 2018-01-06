@@ -298,7 +298,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 			$prefix = '-';
 		}
 
-		return $prefix . ApplicationFactory::getInstance()->getPropertyLabelFinder()->findPropertyLabelByLanguageCode(
+		return $prefix . ApplicationFactory::getInstance()->getPropertyLabelFinder()->findPropertyLabelFromIdByLanguageCode(
 			$property->getKey(),
 			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);
