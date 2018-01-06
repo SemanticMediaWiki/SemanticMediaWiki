@@ -579,6 +579,20 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
+	 * @return RedirectStore
+	 */
+	public function newRedirectStore() {
+
+		$redirectStore = new RedirectStore(
+			$this->store
+		);
+
+		return $redirectStore;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return ChangePropListener
 	 */
 	public function newChangePropListener() {

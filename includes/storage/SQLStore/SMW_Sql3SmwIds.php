@@ -8,7 +8,7 @@ use SMW\HashBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\SQLStore\PropertyStatisticsStore;
-use SMW\SQLStore\RedirectInfoStore;
+use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\TableFieldUpdater;
 use SMW\Utils\Collator;
 use SMW\SQLStore\SQLStoreFactory;
@@ -109,9 +109,9 @@ class SMWSql3SmwIds {
 	private $idMatchFinder;
 
 	/**
-	 * @var RedirectInfoStore
+	 * @var RedirectStore
 	 */
-	private $redirectInfoStore;
+	private $redirectStore;
 
 	/**
 	 * @var TableFieldUpdater
@@ -198,9 +198,7 @@ class SMWSql3SmwIds {
 			$this->processLruCache->get( 'entity.id' )
 		);
 
-		$this->redirectInfoStore = new RedirectInfoStore(
-			$this->store
-		);
+		$this->redirectStore = $this->factory->newRedirectStore();
 
 		$this->tableFieldUpdater = new TableFieldUpdater(
 			$this->store
@@ -215,7 +213,7 @@ class SMWSql3SmwIds {
 	 * @return boolean
 	 */
 	public function isRedirect( DIWikiPage $subject ) {
-		return $this->redirectInfoStore->isRedirect( $subject->getDBKey(), $subject->getNamespace() );
+		return $this->redirectStore->isRedirect( $subject->getDBKey(), $subject->getNamespace() );
 	}
 
 	/**
@@ -280,7 +278,7 @@ class SMWSql3SmwIds {
 	}
 
 	/**
-	 * @see RedirectInfoStore::findRedirect
+	 * @see RedirectStore::findRedirect
 	 *
 	 * @since 2.1
 	 *
@@ -290,11 +288,11 @@ class SMWSql3SmwIds {
 	 * @return integer
 	 */
 	public function findRedirect( $title, $namespace ) {
-		return $this->redirectInfoStore->findRedirect( $title, $namespace );
+		return $this->redirectStore->findRedirect( $title, $namespace );
 	}
 
 	/**
-	 * @see RedirectInfoStore::addRedirect
+	 * @see RedirectStore::addRedirect
 	 *
 	 * @since 2.1
 	 *
@@ -303,11 +301,11 @@ class SMWSql3SmwIds {
 	 * @param integer $namespace
 	 */
 	public function addRedirect( $id, $title, $namespace ) {
-		$this->redirectInfoStore->addRedirect( $id, $title, $namespace );
+		$this->redirectStore->addRedirect( $id, $title, $namespace );
 	}
 
 	/**
-	 * @see RedirectInfoStore::updateRedirect
+	 * @see RedirectStore::updateRedirect
 	 *
 	 * @since 3.0
 	 *
@@ -316,11 +314,11 @@ class SMWSql3SmwIds {
 	 * @param integer $namespace
 	 */
 	public function updateRedirect( $id, $title, $namespace ) {
-		$this->redirectInfoStore->updateRedirect( $id, $title, $namespace );
+		$this->redirectStore->updateRedirect( $id, $title, $namespace );
 	}
 
 	/**
-	 * @see RedirectInfoStore::deleteRedirect
+	 * @see RedirectStore::deleteRedirect
 	 *
 	 * @since 2.1
 	 *
@@ -328,7 +326,7 @@ class SMWSql3SmwIds {
 	 * @param integer $namespace
 	 */
 	public function deleteRedirect( $title, $namespace ) {
-		$this->redirectInfoStore->deleteRedirect( $title, $namespace );
+		$this->redirectStore->deleteRedirect( $title, $namespace );
 	}
 
 	/**
@@ -390,7 +388,7 @@ class SMWSql3SmwIds {
 
 		// Integration test "query-04-02-subproperty-dc-import-marc21.json"
 		// showed a deterministic failure (due to a wrong cache id during querying
-		// for redirects) hence we force to read directly from the RedirectInfoStore
+		// for redirects) hence we force to read directly from the RedirectStore
 		// for objects marked as redirect
 		if ( $iw === SMW_SQL3_SMWREDIIW && $canonical &&
 			$smwgQEqualitySupport !== SMW_EQ_NONE && $subobjectName === '' ) {

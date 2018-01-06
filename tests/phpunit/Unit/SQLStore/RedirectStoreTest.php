@@ -3,11 +3,11 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\InMemoryPoolCache;
-use SMW\SQLStore\RedirectInfoStore;
+use SMW\SQLStore\RedirectStore;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\SQLStore\RedirectInfoStore
+ * @covers \SMW\SQLStore\RedirectStore
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
+class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $conection;
@@ -67,8 +67,8 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			RedirectInfoStore::class,
-			new RedirectInfoStore( $this->store )
+			RedirectStore::class,
+			new RedirectStore( $this->store )
 		);
 	}
 
@@ -87,7 +87,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					's_namespace' => 0 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$instance = new RedirectInfoStore(
+		$instance = new RedirectStore(
 			$this->store
 		);
 
@@ -125,7 +125,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					's_namespace' => 0 ) ) )
 			->will( $this->returnValue( false ) );
 
-		$instance = new RedirectInfoStore(
+		$instance = new RedirectStore(
 			$this->store
 		);
 
@@ -146,7 +146,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					's_namespace' => 0,
 					'o_id' => 42 ) ) );
 
-		$instance = new RedirectInfoStore(
+		$instance = new RedirectStore(
 			$this->store
 		);
 
@@ -168,7 +168,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					's_title' => 'Foo',
 					's_namespace' => 9001 ) ) );
 
-		$instance = new RedirectInfoStore(
+		$instance = new RedirectStore(
 			$this->store
 		);
 
@@ -231,7 +231,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' );
 
-		$instance = new RedirectInfoStore(
+		$instance = new RedirectStore(
 			$store
 		);
 
@@ -249,7 +249,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			false
 		);
 
-		$instance = new RedirectInfoStore(
+		$instance = new RedirectStore(
 			$this->store
 		);
 

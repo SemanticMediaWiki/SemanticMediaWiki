@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class RedirectInfoStore {
+class RedirectStore {
 
 	const TABLE_NAME = 'smw_fpt_redi';
 
