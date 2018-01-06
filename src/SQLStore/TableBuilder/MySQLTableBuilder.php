@@ -198,7 +198,15 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ) {
-		$this->reportMessage( "   ... changing type of field $fieldName from '$oldFieldType' to '$newFieldType' ... " );
+
+		// Continue to alter the type but silence the output since we cannot get
+		// any better information from MySQL about the types hence we a hack the
+		// message
+		if ( strpos( $oldFieldType, 'binary' ) !== false && strpos( $newFieldType, 'CHARSET utf8 COLLATE utf8_general_ci' ) !== false ) {
+			$this->reportMessage( "   ... changing to a CHARSET utf8 field type ... " );
+		} else {
+			$this->reportMessage( "   ... changing type of field $fieldName from '$oldFieldType' to '$newFieldType' ... " );
+		}
 
 		// To avoid Error: 1068 Multiple primary key defined when a PRIMARY is involved
 		if ( strpos( $newFieldType, 'AUTO_INCREMENT' ) !== false ) {
