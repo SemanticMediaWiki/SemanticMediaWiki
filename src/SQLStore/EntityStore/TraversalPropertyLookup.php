@@ -52,7 +52,7 @@ class TraversalPropertyLookup {
 	 * @return boolean
 	 */
 	public function isEnabledFeature( $feature ) {
-		return ( (int)$this->options->safeGet( 'smwgEntityStoreFeatures' ) & $feature ) != 0;
+		return $this->options->isFlagSet( 'smwgExperimentalFeatures', $feature );
 	}
 
 	/**
@@ -62,7 +62,7 @@ class TraversalPropertyLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetch( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
+	public function lookup( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
