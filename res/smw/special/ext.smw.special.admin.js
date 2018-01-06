@@ -69,7 +69,7 @@
 				}
 			}
 
-			self.appendContent( content );
+			self.replace( content );
 		} ).fail ( function( xhr, status, error ) {
 
 			var text = 'The API encountered an unknown error';
@@ -109,8 +109,11 @@
 	 *
 	 * @param {string} content
 	 */
-	admin.prototype.appendContent = function( content ) {
-		this.context.find( '.' + this.config.contentClass ).replaceWith( '<div class="' + this.config.contentClass + '">' + content + '</div>' );
+	admin.prototype.replace = function( content ) {
+		this.context
+			.css( 'opacity', 1 )
+			.find( '.' + this.config.contentClass )
+			.replaceWith( '<div class="' + this.config.contentClass + '">' + content + '</div>'	);
 	};
 
 	var instance = new admin(

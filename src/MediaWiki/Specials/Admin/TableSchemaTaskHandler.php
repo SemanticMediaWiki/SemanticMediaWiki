@@ -138,7 +138,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 							'class' => 'smw-admin-db-preparation'
 						],
 						$this->getMessageAsString( 'smw-admin-db-preparation' ) .
-						"\n\nProcessing ...\n" .
+						"\n\n" . $this->getMessageAsString( 'smw-processing' ) . "\n" .
 						Html::rawElement(
 							'span',
 							[

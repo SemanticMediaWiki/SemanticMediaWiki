@@ -94,20 +94,12 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 			)
 		);
 
-		$this->outputFormatter->addHtml(
-			Html::rawElement(
-				'h2',
-				[],
-				$this->getMessageAsString( 'smw_result_results' )
-			)
-		);
-
 		// Ajax is doing the query and result display to avoid a timeout issue
-		$this->outputFormatter->addHtml(
-			Html::rawElement(
+		$html = Html::rawElement(
 				'div',
 				[
 					'class' => 'smw-admin-supplementary-duplookup',
+					'style' => 'opacity:0.5;position: relative;',
 					'data-config' => json_encode(
 						[
 							'contentClass' => 'smw-admin-supplementary-duplookup-content',
@@ -121,25 +113,23 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 						'class' => 'smw-admin-supplementary-duplookup-error'
 					]
 				) . Html::rawElement(
-					'div',
+				'pre',
+				[
+					'class' => 'smw-admin-supplementary-duplookup-content'
+				],
+				$this->getMessageAsString( 'smw-data-lookup-with-wait' ) .
+				"\n\n\n" . $this->getMessageAsString( 'smw-processing' ) . "\n" .
+				Html::rawElement(
+					'span',
 					[
-						'class' => 'smw-admin-supplementary-duplookup-content'
-					],
-					Html::element(
-						'div',
-						[
-							'style' => 'font-style: italic;margin-bottom:10px;'
-						],
-						$this->getMessageAsString( 'smw-data-lookup-with-wait' )
-					) . Html::element(
-						'div',
-						[
-							'class' => 'smw-loading-image-dots'
-						]
-					)
+						'class' => 'smw-overlay-spinner medium',
+						'style' => 'transform: translate(-50%, -50%);'
+					]
 				)
 			)
 		);
+
+		$this->outputFormatter->addHtml( $html );
 	}
 
 }
