@@ -197,7 +197,7 @@ class Installer implements MessageReporter {
 
 	private function newMessageReporter( $verbose = true ) {
 
-		if ( $this->messageReporter !== null ) {
+		if ( $this->messageReporter !== null && !$this->options->safeGet( self::OPT_SCHEMA_UPDATE, false ) ) {
 			return $this->messageReporter;
 		}
 

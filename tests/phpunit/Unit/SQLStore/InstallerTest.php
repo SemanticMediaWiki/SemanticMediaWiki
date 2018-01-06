@@ -86,7 +86,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setOptions(
 			[
-				Installer::OPT_SCHEMA_UPDATE => true
+				Installer::OPT_SCHEMA_UPDATE => false
 			]
 		);
 
