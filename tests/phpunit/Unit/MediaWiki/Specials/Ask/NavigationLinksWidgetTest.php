@@ -133,12 +133,12 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertContains(
-			'<div class="smw-ask-toplinks"><a href="#options">',
+			'<div class="smw-ask-toplinks"><span class="float-left"><a href="#options">',
 			NavigationLinksWidget::topLinks( $title, [ 'options' ] )
 		);
 
 		$this->assertContains(
-			'<div class="smw-ask-toplinks">&#160;<a class="float-right">',
+			'<div class="smw-ask-toplinks"><span class="float-left"></span>&#160;<span class="float-right">',
 			NavigationLinksWidget::topLinks( $title, [ 'empty' ] )
 		);
 	}

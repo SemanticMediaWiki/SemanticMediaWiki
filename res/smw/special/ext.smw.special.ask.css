@@ -64,7 +64,7 @@ div#ask legend {
 	line-height: 1.42857143;
 }
 
-.smw-ask-toplinks a, .smw-ask-result-navigation a, .smw-ask-result-navigation b, .smw-ask-downloadlinks a, .smw-ask-nav-prev, .smw-ask-nav-next, .smw-ask-actions-nav a {
+.smw-ask-result-navigation a, .smw-ask-result-navigation b, .smw-ask-downloadlinks a, .smw-ask-nav-prev, .smw-ask-nav-next, .smw-ask-actions-nav a {
 	vertical-align: middle;
 }
 

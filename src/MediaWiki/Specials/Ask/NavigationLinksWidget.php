@@ -76,7 +76,6 @@ class NavigationLinksWidget {
 			'a',
 			[
 				'href' => $title->getLocalURL(),
-				'class' => 'float-right'
 			],
 			Message::get( 'smw-ask-empty', Message::TEXT, Message::USER_LANGUAGE )
 		);
@@ -84,7 +83,6 @@ class NavigationLinksWidget {
 		$rLinks['help'] = HtmlModal::link(
 			Message::get( 'smw-cheat-sheet', Message::TEXT, Message::USER_LANGUAGE ),
 			[
-				'class'   => 'float-right',
 				'data-id' => 'ask-help'
 			]
 		);
@@ -103,21 +101,28 @@ class NavigationLinksWidget {
 			}
 		}
 
-		$lsep = Html::rawElement(
+		$sep = Html::rawElement(
 			'span',
 			[
-				'style' => 'color:#aaa;'
+				'style' => 'color:#aaa;font-size: 95%;margin-top: 2px;'
 			],
 			'&#160;|&#160;'
 		);
 
-		$rsep = Html::rawElement(
+		$left = Html::rawElement(
 			'span',
 			[
-				'style' => 'color:#aaa;',
+				'class' => 'float-left'
+			],
+			implode( "$sep", $lLinks )
+		);
+
+		$right = Html::rawElement(
+			'span',
+			[
 				'class' => 'float-right'
 			],
-			'&#160;|&#160;'
+			implode( "$sep", $rLinks )
 		);
 
 		$html = Html::rawElement(
@@ -125,7 +130,7 @@ class NavigationLinksWidget {
 			[
 				'class' => 'smw-ask-toplinks'
 			],
-			implode( "$lsep", $lLinks ) . '&#160;' .  implode( "$rsep", $rLinks )
+			$left . '&#160;' . $right
 		) . Html::rawElement(
 			'div',
 			[
