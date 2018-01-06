@@ -75,7 +75,7 @@ class Task extends ApiBase {
 			return $result + ['isFromCache' => true ];
 		}
 
-		$rows = $applicationFactory->getStore()->getObjectIds()->findDuplicateEntries();
+		$rows = $applicationFactory->getStore()->getObjectIds()->findDuplicateEntityRecords();
 
 		$result = [
 			'list' => $rows,

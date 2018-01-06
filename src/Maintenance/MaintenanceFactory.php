@@ -6,6 +6,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\Maintenance\DuplicateEntitiesDisposer;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -106,6 +107,27 @@ class MaintenanceFactory {
 	 */
 	public function newRebuildPropertyStatistics() {
 		return new RebuildPropertyStatistics();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return DuplicateEntitiesDisposer
+	 */
+	public function newDuplicateEntitiesDisposer( Store $store, $reporterCallback = null  ) {
+
+		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+		$messageReporter->registerReporterCallback( $reporterCallback );
+
+		$duplicateEntitiesDisposer = new DuplicateEntitiesDisposer(
+			$store
+		);
+
+		$duplicateEntitiesDisposer->setMessageReporter(
+			$messageReporter
+		);
+
+		return $duplicateEntitiesDisposer;
 	}
 
 	/**

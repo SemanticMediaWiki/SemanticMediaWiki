@@ -60,8 +60,32 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\PropertyTableIdReferenceDisposer',
+			PropertyTableIdReferenceDisposer::class,
 			new PropertyTableIdReferenceDisposer( $this->store )
+		);
+	}
+
+	public function testIsDisposable() {
+
+		$propertyTableIdReferenceFinder = $connection = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableIdReferenceFinder->expects( $this->any() )
+			->method( 'hasResidualReferenceForId' )
+			->with( $this->equalTo( 42 ) )
+			->will( $this->returnValue( false ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTableIdReferenceFinder' )
+			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store
+		);
+
+		$this->assertTrue(
+			$instance->isDisposable( 42 )
 		);
 	}
 

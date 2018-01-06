@@ -37,6 +37,11 @@ class PropertyTableIdReferenceDisposer {
 	private $onTransactionIdle = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $redirectRemoval = false;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param SQLStore $store
@@ -44,6 +49,15 @@ class PropertyTableIdReferenceDisposer {
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
 		$this->connection = $this->store->getConnection( 'mw.db' );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $redirectRemoval
+	 */
+	public function setRedirectRemoval( $redirectRemoval ) {
+		$this->redirectRemoval = $redirectRemoval;
 	}
 
 	/**
@@ -55,6 +69,17 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	public function waitOnTransactionIdle() {
 		$this->onTransactionIdle = true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 *
+	 * @return boolean
+	 */
+	public function isDisposable( $id ) {
+		return $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) === false;
 	}
 
 	/**
@@ -176,7 +201,7 @@ class PropertyTableIdReferenceDisposer {
 	private function doRemoveEntityReferencesById( $id, $isRedirect ) {
 
 		// When marked as redirect, don't remove the reference
-		if ( $isRedirect === false ) {
+		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
 			$this->connection->delete(
 				SQLStore::ID_TABLE,
 				array( 'smw_id' => $id ),
