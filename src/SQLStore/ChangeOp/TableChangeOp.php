@@ -107,13 +107,13 @@ class TableChangeOp {
 		$fieldOps = array();
 		$changeOps = $this->changeOps;
 
-		if ( $opType !== null ) {
-			$changeOps = $this->changeOps[$opType];
-		}
-
 		unset( $changeOps['property'] );
 
-		foreach ( $changeOps as $changeOp ) {
+		foreach ( $changeOps as $type => $changeOp ) {
+
+			if ( $opType !== null && $opType !== $type ) {
+				continue;
+			}
 
 			if ( isset( $changeOp[0] ) && is_array( $changeOp[0] ) ) {
 				$changeOp = $changeOp[0];
@@ -123,7 +123,7 @@ class TableChangeOp {
 				$changeOp['p_id'] = $this->changeOps['property']['p_id'];
 			}
 
-			$fieldOps[] = new FieldChangeOp( $changeOp );
+			$fieldOps[] = new FieldChangeOp( $changeOp, $type );
 		}
 
 		return $fieldOps;
