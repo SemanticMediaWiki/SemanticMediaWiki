@@ -898,6 +898,9 @@ return array(
 	# - api.browse TTL (in sec, or false to disable it) for the API browse module
 	# - api.task TTL (in sec, or false to disable it) for the API task module
 	#
+	# - lookup.semanticdata TTL for the SemanticDataLookup persitent cache
+	#   instance
+	#
 	# @since 1.9
 	##
 	'smwgCacheUsage' => array(
@@ -906,7 +909,8 @@ return array(
 		'special.properties' => 3600,
 		'special.statistics' => 3600,
 		'api.browse' => 3600,
-		'api.task'  => 3600
+		'api.task'  => 3600,
+		'lookup.semanticdata' => 604800 // 1w
 	),
 	##
 
@@ -1653,9 +1657,13 @@ return array(
 	# - SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP enables a new query form for selecting
 	#   incoming properties (#1234)
 	#
+	# - SMW_SQLSTORE_SEMCACHE_LOOKUP enables to retrieve the SemanticData from a
+	#   persistent cache to reduce the amount of DB queries on each GET request
+	#   that requires the data without modification.
+	#
 	# @since 3.0
 	##
-	'smwgExperimentalFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP,
+	'smwgExperimentalFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP | SMW_SQLSTORE_SEMCACHE_LOOKUP,
 	##
 
 	##

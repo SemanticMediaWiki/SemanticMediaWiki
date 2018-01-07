@@ -8,6 +8,7 @@ use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMW\RequestOptions;
 use SMW\SemanticData;
+use SMW\PropertyRegistry;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\TableBuilder\FieldType;
 use Psr\Log\LoggerAwareTrait;
@@ -78,23 +79,21 @@ class SemanticDataLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param DIWikiPage|SemanticData $object
 	 *
 	 * @return StubSemanticData
 	 */
-	public function newStubSemanticData( DIWikiPage $subject ) {
-		return new StubSemanticData( $subject, $this->store, false );
-	}
+	public function newStubSemanticData( $object ) {
 
-	/**
-	 * @since 3.0
-	 *
-	 * @param SemanticData $semanticData
-	 *
-	 * @return StubSemanticData
-	 */
-	public function newFromSemanticData( SemanticData $semanticData ) {
-		return StubSemanticData::newFromSemanticData( $semanticData, $this->store );
+		if ( $object instanceof DIWikiPage ) {
+			return new StubSemanticData( $object, $this->store, false );
+		}
+
+		if ( $object instanceof SemanticData ) {
+			return StubSemanticData::newFromSemanticData( $object, $this->store );
+		}
+
+		throw new RuntimeException( 'Expectd either a DIWikiPage or SemanticData object' );
 	}
 
 	/**
@@ -112,6 +111,54 @@ class SemanticDataLookup {
 		}
 
 		return $state;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param SemanticData $semanticData
+	 *
+	 * @return array
+	 */
+	public function isLikelyFresh( array $data, $type ) {
+
+		if ( $type !== DataItem::TYPE_WIKIPAGE ) {
+			return true;
+		}
+
+		$diHandler = $this->store->getDataItemHandlerForDIType(
+			DataItem::TYPE_WIKIPAGE
+		);
+
+		foreach ( $data as $d ) {
+
+			$property = reset( $d );
+
+			// Remove the redirect from cache to avoid having Store::getRedirectTarget
+			// contain an outdated reference when it calls Store::getPropertyValues
+			if ( $property === '_REDI' ) {
+				return false;
+			}
+
+			$wikipage = $diHandler->dataItemFromDBKeys( end( $d ) );
+
+			// A non-annotable property with a non-existing title reference most
+			// likely points to an outdated (deleted) entity, hence the cache is
+			// not fresh
+			if ( !PropertyRegistry::getInstance()->isAnnotable( $property ) ) {
+				if ( $wikipage->getTitle()->exists() === false ) {
+					return false;
+				}
+			}
+
+			// Found one pair where the cached data and the redirect don't
+			// match, throw away the data
+			if ( !$this->store->getRedirectTarget( $wikipage )->equals( $wikipage ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**

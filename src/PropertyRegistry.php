@@ -453,7 +453,12 @@ class PropertyRegistry {
 	 * @return boolean
 	 */
 	public function isAnnotable( $id ) {
-		return $this->isRegistered( $id ) ? $this->propertyList[$id][2] : false;
+
+		if ( !$this->isRegistered( $id ) ) {
+			return true;
+		}
+
+		return isset( $this->propertyList[$id][2] ) ? $this->propertyList[$id][2] : false;
 	}
 
 	/**

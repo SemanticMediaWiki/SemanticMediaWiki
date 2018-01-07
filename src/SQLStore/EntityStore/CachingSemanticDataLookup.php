@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
+use SMW\PropertyRegistry;
 use SMW\RequestOptions;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
@@ -23,6 +24,13 @@ use RuntimeException;
 class CachingSemanticDataLookup {
 
 	use LoggerAwareTrait;
+
+	/**
+	 * Persitent cache indentifier
+	 */
+	const CACHE_NAMESPACE = 'smw:store:data';
+	const CACHE_TTL = 604800;
+	const CACHE_VERSION = 1;
 
 	/**
 	 * @var SemanticDataLookup
@@ -66,8 +74,29 @@ class CachingSemanticDataLookup {
 	public function __construct( SemanticDataLookup $semanticDataLookup, Cache $cache = null ) {
 		$this->semanticDataLookup = $semanticDataLookup;
 		$this->cache = $cache;
+		$this->cacheTTL = self::CACHE_TTL;
 
 		if ( $this->cache === null ) {
+			$this->cache = new NullCache();
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $cacheUsage
+	 */
+	public function setPersistentCacheTTL( array $cacheUsage ) {
+		$this->cacheTTL = isset( $cacheUsage['lookup.semanticdata'] ) ? $cacheUsage['lookup.semanticdata'] : self::CACHE_TTL;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $disablePersistentCache
+	 */
+	public function disablePersistentCache( $disablePersistentCache ) {
+		if ( $disablePersistentCache ) {
 			$this->cache = new NullCache();
 		}
 	}
@@ -94,6 +123,13 @@ class CachingSemanticDataLookup {
 	public function invalidateCache( $id ) {
 		unset( self::$data[$id] );
 		unset( self::$state[$id] );
+
+		$key = smwfCacheKey(
+			self::CACHE_NAMESPACE,
+			[ $id, self::CACHE_VERSION ]
+		);
+
+		$this->cache->delete( $key );
 	}
 
 	/**
@@ -133,10 +169,10 @@ class CachingSemanticDataLookup {
 			self::$state[$id] = [];
 		}
 
-		// prevent memory leak;
-		// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),
-		// The value of 20 was chosen by profiling runtimes for large inline queries and heavily annotated pages.
-		// However, things might have changed in the meantime ...
+		// It is not so easy to find the sweet spot between cache size and
+		// performance gains (both memory and time), The value of 20 was chosen
+		// by profiling runtimes for large inline queries and heavily annotated
+		// pages. However, things might have changed in the meantime ...
 		if ( ( count( self::$data ) > 20 ) && ( self::$lookupCount == 1 ) ) {
 			self::$data = array( $id => self::$data[$id] );
 			self::$state = array( $id => self::$state[$id] );
@@ -154,13 +190,23 @@ class CachingSemanticDataLookup {
 	 */
 	public function setLookupCache( $id, SemanticData $semanticData ) {
 
-		self::$data[$id] = $this->semanticDataLookup->newFromSemanticData(
+		self::$data[$id] = $this->semanticDataLookup->newStubSemanticData(
 			$semanticData
 		);
 
 		self::$state[$id] = $this->semanticDataLookup->getTableUsageInfo(
 			$semanticData
 		);
+
+		$key = smwfCacheKey(
+			self::CACHE_NAMESPACE,
+			[ $id, self::CACHE_VERSION ]
+		);
+
+		// Throw away the cache since the updater sets a local cache for the
+		// entire SemanticData object which cannot be easily "split by table" at
+		// this point
+		$this->cache->delete( $key );
 	}
 
 	/**
@@ -230,33 +276,62 @@ class CachingSemanticDataLookup {
 
 	private function fetchFromCache( $id, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef ) {
 
+		// @see also setLookupCache
+		$name = $propertyTableDef->getName();
+
 		// Do not clear the cache when called recursively.
 		$this->lockCache();
 		$this->initLookupCache( $id, $dataItem );
-
-		// @see also setLookupCache
-		$name = $propertyTableDef->getName();
 
 		if ( isset( self::$state[$id][$name] ) ) {
 			$this->unlockCache();
 			return self::$data[$id];
 		}
 
-		$data = $this->semanticDataLookup->fetchSemanticData(
-			$id,
-			$dataItem,
-			$propertyTableDef
+		$key = smwfCacheKey(
+			self::CACHE_NAMESPACE,
+			[ $id, self::CACHE_VERSION ]
 		);
+
+		if ( ( $dataCache = $this->cache->fetch( $key ) ) === false  ) {
+			$dataCache = [];
+		}
+
+		// Verify that the cache can be used and doesn't involve any unresolved
+		// or outdated redirect references
+		if ( isset( $dataCache[$name] ) ) {
+			$dataCache[$name] = $this->isFreshCache( $dataCache[$name], $propertyTableDef->getDiType() );
+		}
+
+		if ( !isset( $dataCache[$name] ) || $dataCache[$name] === false ) {
+			$data = $this->semanticDataLookup->fetchSemanticData(
+				$id,
+				$dataItem,
+				$propertyTableDef
+			);
+			$dataCache[$name] = $data;
+			$this->cache->save( $key, $dataCache, $this->cacheTTL );
+		} else {
+			$data = $dataCache[$name];
+		}
 
 		foreach ( $data as $d ) {
 			self::$data[$id]->addPropertyStubValue( reset( $d ), end( $d ) );
 		}
 
 		self::$state[$id][$name] = true;
-
 		$this->unlockCache();
 
 		return self::$data[$id];
+	}
+
+	private function isFreshCache( $data, $type ) {
+
+		if ( $this->semanticDataLookup->isLikelyFresh( $data, $type ) ) {
+			return $data;
+		}
+
+		return false;
 	}
 
 }

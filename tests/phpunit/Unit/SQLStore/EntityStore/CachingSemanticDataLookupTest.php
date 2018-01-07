@@ -86,7 +86,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->semanticDataLookup->expects( $this->once() )
-			->method( 'newFromSemanticData' )
+			->method( 'newStubSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
 		$this->semanticDataLookup->expects( $this->once() )
@@ -208,21 +208,13 @@ class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->semanticDataLookup->expects( $this->any() )
-			->method( 'newStubSemanticData' )
-			->will( $this->returnValue( $stubSemanticData ) );
-
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$semanticData->expects( $this->atLeastOnce() )
+		$stubSemanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( $subject ) );
 
-		$this->semanticDataLookup->expects( $this->once() )
-			->method( 'newFromSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+		$this->semanticDataLookup->expects( $this->any() )
+			->method( 'newStubSemanticData' )
+			->will( $this->returnValue( $stubSemanticData ) );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'getTableUsageInfo' )
@@ -237,6 +229,107 @@ class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->invalidateCache( 42 );
 		$instance->setLookupCache( 42, $stubSemanticData );
+
+		$instance->getSemanticDataFromTable( 42, $subject, $propertyTableDefinition );
+	}
+
+	public function testGetSemanticDataFromTable_FreshFetch_StoreInPersitentCache() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache->expects( $this->once() )
+			->method( 'save' )
+			->with(
+				$this->anything(),
+				$this->equalTo( [  '__foo__' => [] ] ),
+				$this->equalTo( 999999999 ) );
+
+		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableDefinition->expects( $this->once() )
+			->method( 'getName' )
+			->will( $this->returnValue( '__foo__' ) );
+
+		$stubSemanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$stubSemanticData->expects( $this->once() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$this->semanticDataLookup->expects( $this->once() )
+			->method( 'newStubSemanticData' )
+			->will( $this->returnValue( $stubSemanticData ) );
+
+		$this->semanticDataLookup->expects( $this->once() )
+			->method( 'fetchSemanticData' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new CachingSemanticDataLookup(
+			$this->semanticDataLookup,
+			$cache
+		);
+
+		$instance->setPersistentCacheTTL(
+			[
+				'lookup.semanticdata' => 999999999
+			]
+		);
+
+		$instance->getSemanticDataFromTable( 42, $subject, $propertyTableDefinition );
+	}
+
+	public function testGetSemanticDataFromTable_FromPersistentCache() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( ['__foo__' => [ [ 'Bar' ], [ 'Foobar' ] ] ] ) );
+
+		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableDefinition->expects( $this->once() )
+			->method( 'getName' )
+			->will( $this->returnValue( '__foo__' ) );
+
+		$stubSemanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$stubSemanticData->expects( $this->atLeastOnce() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$this->semanticDataLookup->expects( $this->any() )
+			->method( 'newStubSemanticData' )
+			->will( $this->returnValue( $stubSemanticData ) );
+
+		$this->semanticDataLookup->expects( $this->once() )
+			->method( 'isLikelyFresh' )
+			->with( $this->equalTo( [ [ 'Bar' ], [ 'Foobar' ] ] ) )
+			->will( $this->returnValue( true ) );
+
+		$this->semanticDataLookup->expects( $this->never() )
+			->method( 'fetchSemanticData' );
+
+		$instance = new CachingSemanticDataLookup(
+			$this->semanticDataLookup,
+			$cache
+		);
 
 		$instance->getSemanticDataFromTable( 42, $subject, $propertyTableDefinition );
 	}

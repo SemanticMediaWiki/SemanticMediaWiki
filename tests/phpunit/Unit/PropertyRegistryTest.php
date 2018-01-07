@@ -204,7 +204,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			$instance->isVisible( '_UnregisteredType' )
 		);
 
-		$this->assertFalse(
+		$this->assertTrue(
 			$instance->isAnnotable( '_UnregisteredType' )
 		);
 

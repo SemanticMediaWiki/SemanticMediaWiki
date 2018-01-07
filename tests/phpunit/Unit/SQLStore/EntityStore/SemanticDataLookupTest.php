@@ -31,7 +31,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'findPropertyTableID', 'getDataItemHandlerForDIType', 'getObjectIds' ] )
+			->setMethods( [ 'findPropertyTableID', 'getDataItemHandlerForDIType', 'getObjectIds', 'getRedirectTarget' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -65,7 +65,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewStubSemanticData() {
+	public function testNewStubSemanticData_FromDIWikiPage() {
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -77,7 +77,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewFromSemanticData() {
+	public function testNewStubSemanticData_FromSemanticData() {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -93,8 +93,18 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\EntityStore\StubSemanticData',
-			$instance->newFromSemanticData( $semanticData )
+			$instance->newStubSemanticData( $semanticData )
 		);
+	}
+
+	public function testNewStubSemanticDataThrowsException() {
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->newStubSemanticData( 'Foo' );
 	}
 
 	public function testGetTableUsageInfo() {
@@ -276,6 +286,70 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->fetchSemanticData( 42, null, $propertyTable );
+	}
+
+	public function testIsLikelyFresh_ForNon_TYPE_WIKIPAGE() {
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertTrue(
+			$instance->isLikelyFresh( [], \SMWDataItem::TYPE_NUMBER )
+		);
+	}
+
+	public function testIsLikelyFresh_TYPE_WIKIPAGE() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->will( $this->returnValue( $subject ) );
+
+		$this->dataItemHandler->expects( $this->any() )
+			->method( 'dataItemFromDBKeys' )
+			->will( $this->returnValue( $subject ) );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertTrue(
+			$instance->isLikelyFresh( [ ['Foo'], ['Bar'] ], \SMWDataItem::TYPE_WIKIPAGE )
+		);
+	}
+
+	public function testIsLikelyNotFresh_REDI() {
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertFalse(
+			$instance->isLikelyFresh( [ ['_REDI'], ['Bar'] ], \SMWDataItem::TYPE_WIKIPAGE )
+		);
+	}
+
+	public function testIsLikelyNotFreshDueToDiffererentRedirectTarget_TYPE_WIKIPAGE() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->will( $this->returnValue(  DIWikiPage::newFromText( 'Bar' ) ) );
+
+		$this->dataItemHandler->expects( $this->any() )
+			->method( 'dataItemFromDBKeys' )
+			->will( $this->returnValue( $subject ) );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertFalse(
+			$instance->isLikelyFresh( [ ['Foo'], ['Bar'] ], \SMWDataItem::TYPE_WIKIPAGE )
+		);
 	}
 
 }

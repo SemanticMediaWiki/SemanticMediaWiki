@@ -560,6 +560,9 @@ class SQLStoreFactory {
 	 */
 	public function newSemanticDataLookup() {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
+
 		$semanticDataLookup = new SemanticDataLookup(
 			$this->store
 		);
@@ -570,7 +573,15 @@ class SQLStoreFactory {
 
 		$cachingSemanticDataLookup = new CachingSemanticDataLookup(
 			$semanticDataLookup,
-			ApplicationFactory::getInstance()->getCache()
+			$applicationFactory->getCache()
+		);
+
+		$cachingSemanticDataLookup->setPersistentCacheTTL(
+			$settings->get( 'smwgCacheUsage' )
+		);
+
+		$cachingSemanticDataLookup->disablePersistentCache(
+			!$settings->isFlagSet( 'smwgExperimentalFeatures', SMW_SQLSTORE_SEMCACHE_LOOKUP )
 		);
 
 		return $cachingSemanticDataLookup;
