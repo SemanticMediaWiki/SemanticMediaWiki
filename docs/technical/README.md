@@ -23,6 +23,8 @@ If you are new to SMW development, have a look at the:
 - [`Serializers`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/doc.serializers.md) contains information about the Semantic MediaWiki serializers
 - [`ext.smw.suggester`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/res/smw/suggester/README.md) on how to register additional tokens or context objects
 
+- ['3.0 migration guide'](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/migration-guide-3.0.md) contains information about the wmigration from 2.x to 3.x
+
 ## Code snippets and code examples
 
 - [phpunit.test.property](code-snippets/phpunit.test.property.md)

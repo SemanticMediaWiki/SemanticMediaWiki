@@ -11,11 +11,11 @@ use SMW\Exception\DataTypeLookupExeption;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
 /**
- * This class implements Property data items.
+ * This class implements Property item
  *
- * @note PropertyRegistry class manages global registrations of
- * predefined (built-in) properties, and maintains an association of
- * property IDs, localized labels, and aliases.
+ * @note PropertyRegistry class manages global registrations of predefined
+ * (built-in) properties, and maintains an association of property IDs, localized
+ * labels, and aliases.
  *
  * @since 1.6
  *
@@ -63,10 +63,9 @@ class DIProperty extends SMWDataItem {
 	private $m_inverse;
 
 	/**
-	 * Cache for property type ID.
 	 * @var string
 	 */
-	private $m_proptypeid;
+	private $propertyValueType;
 
 	/**
 	 * Interwiki prefix for when a property represents a non-local entity
@@ -92,7 +91,7 @@ class DIProperty extends SMWDataItem {
 		}
 
 		if ( $key{0} == '_' ) {
-			if ( !PropertyRegistry::getInstance()->isKnownPropertyId( $key ) ) {
+			if ( !PropertyRegistry::getInstance()->isRegistered( $key ) ) {
 				throw new PredefinedPropertyLabelMismatchException( "There is no predefined property with \"$key\"." );
 			}
 		}
@@ -166,6 +165,25 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
+	 * Whether a user can freely use this property for value annotation or
+	 * not.
+	 *
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function isUserAnnotable() {
+
+		// A user defined property is generally assumed to be unrestricted for
+		// usage
+		if ( $this->isUserDefined() ) {
+			return true;
+		}
+
+		return PropertyRegistry::getInstance()->isAnnotable( $this->m_key );
+	}
+
+	/**
 	 * Find a user-readable label for this property, or return '' if it is
 	 * a predefined property that has no label. For inverse properties, the
 	 * label starts with a "-".
@@ -213,7 +231,10 @@ class DIProperty extends SMWDataItem {
 	 */
 	public function getPreferredLabel( $languageCode = '' ) {
 
-		$label = PropertyRegistry::getInstance()->findPreferredPropertyLabelFromIdByLanguageCode( $this->m_key, $languageCode );
+		$label = PropertyRegistry::getInstance()->findPreferredPropertyLabelFromIdByLanguageCode(
+			$this->m_key,
+			$languageCode
+		);
 
 		if ( $label !== '' ) {
 			return ( $this->m_inverse ? '-' : '' ) . $label;
@@ -244,9 +265,9 @@ class DIProperty extends SMWDataItem {
 	 */
 	public function getDiWikiPage( $subobjectName = '' ) {
 
-		if ( $this->isUserDefined() ) {
-			$dbkey = $this->m_key;
-		} else {
+		$dbkey = $this->m_key;
+
+		if ( !$this->isUserDefined() ) {
 			$dbkey = $this->getLabel();
 		}
 
@@ -290,29 +311,45 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * @since  2.0
+	 * @deprecated since 3.0, use DIProperty::setPropertyValueType
+	 */
+	public function setPropertyTypeId( $valueType ) {
+		return $this->setPropertyValueType( $valueType );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $valueType
 	 *
 	 * @return self
 	 * @throws DataTypeLookupExeption
-	 * @throws InvalidArgumentException
+	 * @throws RuntimeException
 	 */
-	public function setPropertyTypeId( $propertyTypeId ) {
+	public function setPropertyValueType( $valueType ) {
 
-		if ( !DataTypeRegistry::getInstance()->isRegistered( $propertyTypeId ) ) {
-			throw new DataTypeLookupExeption( "{$propertyTypeId} is an unknown type id" );
+		if ( !DataTypeRegistry::getInstance()->isRegistered( $valueType ) ) {
+			throw new DataTypeLookupExeption( "{$valueType} is an unknown type id" );
 		}
 
-		if ( $this->isUserDefined() && $this->m_proptypeid === null ) {
-			$this->m_proptypeid = $propertyTypeId;
+		if ( $this->isUserDefined() && $this->propertyValueType === null ) {
+			$this->propertyValueType = $valueType;
 			return $this;
 		}
 
-		if ( !$this->isUserDefined() && $propertyTypeId === self::getPredefinedPropertyTypeId( $this->m_key ) ) {
-			$this->m_proptypeid = $propertyTypeId;
+		if ( !$this->isUserDefined() && $valueType === PropertyRegistry::getInstance()->getPropertyValueTypeById( $this->m_key ) ) {
+			$this->propertyValueType = $valueType;
 			return $this;
 		}
 
-		throw new RuntimeException( 'Property type can not be altered for a predefined object' );
+		throw new RuntimeException( 'DataType cannot be altered for a predefined property' );
+	}
+
+	/**
+	 * @deprecated since 3.0, use DIProperty::findPropertyValueType
+	 */
+	public function findPropertyTypeId() {
+		return $this->findPropertyValueType();
 	}
 
 	/**
@@ -321,41 +358,55 @@ class DIProperty extends SMWDataItem {
 	 * If no type is stored for a user defined property, the global default
 	 * type will be used.
 	 *
+	 * @since 3.0
+	 *
 	 * @return string type ID
 	 */
-	public function findPropertyTypeID() {
-		global $smwgPDefaultType;
+	public function findPropertyValueType() {
 
-		if ( !isset( $this->m_proptypeid ) ) {
-			if ( $this->isUserDefined() ) { // normal property
-				$diWikiPage = new DIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
-				$typearray = ApplicationFactory::getInstance()->getStore()->getPropertyValues( $diWikiPage, new self( '_TYPE' ) );
-
-				if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
-					$typeDataItem = reset( $typearray );
-
-					if ( $typeDataItem instanceof SMWDIUri ) {
-						$this->m_proptypeid = $typeDataItem->getFragment();
-					} else {
-						$this->m_proptypeid = $smwgPDefaultType;
-						// This is important. If a page has an invalid assignment to "has type", no
-						// value will be stored, so the elseif case below occurs. But if the value
-						// is retrieved within the same run, then the error value for "has type" is
-						// cached and thus this case occurs. This is why it is important to tolerate
-						// this case -- it is not necessarily a DB error.
-					}
-				} elseif ( count( $typearray ) == 0 ) { // no type given
-					$this->m_proptypeid = $smwgPDefaultType;
-				}
-			} else { // pre-defined property
-				$this->m_proptypeid = PropertyRegistry::getInstance()->getPredefinedPropertyTypeId( $this->m_key );
-			}
+		if ( isset( $this->propertyValueType ) ) {
+			return $this->propertyValueType;
 		}
 
-		return $this->m_proptypeid;
+		if ( !$this->isUserDefined() ) {
+			return $this->propertyValueType = PropertyRegistry::getInstance()->getPropertyValueTypeById( $this->m_key );
+		}
+
+		$diWikiPage = new DIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$defaultType = $applicationFactory->getSettings()->get( 'smwgPDefaultType' );
+
+		$typearray = $applicationFactory->getStore()->getPropertyValues(
+			$diWikiPage,
+			new self( '_TYPE' )
+		);
+
+		if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
+			$typeDataItem = reset( $typearray );
+
+			if ( $typeDataItem instanceof SMWDIUri ) {
+				$this->propertyValueType = $typeDataItem->getFragment();
+			} else {
+				// This is important. If a page has an invalid assignment to "has type", no
+				// value will be stored, so the elseif case below occurs. But if the value
+				// is retrieved within the same run, then the error value for "has type" is
+				// cached and thus this case occurs. This is why it is important to tolerate
+				// this case -- it is not necessarily a DB error.
+				$this->propertyValueType = $defaultType;
+			}
+		} elseif ( count( $typearray ) == 0 ) { // no type given
+			$this->propertyValueType = $defaultType;
+		}
+
+		return $this->propertyValueType;
 	}
 
-
+	/**
+	 * @see DataItem::getSerialization
+	 *
+	 * @return string
+	 */
 	public function getSerialization() {
 		return ( $this->m_inverse ? '-' : '' ) . $this->m_key;
 	}
@@ -441,41 +492,6 @@ class DIProperty extends SMWDataItem {
 		}
 
 		return new self( $id, $inverse );
-	}
-
-	/**
-	 * @deprecated since 2.1, use PropertyRegistry::findPropertyIdByLabel
-	 */
-	public static function findPropertyID( $label, $useAlias = true ) {
-		return PropertyRegistry::getInstance()->findPropertyIdByLabel( $label, $useAlias );
-	}
-
-	/**
-	 * @deprecated since 2.1, use PropertyRegistry::getPredefinedPropertyTypeId
-	 */
-	public static function getPredefinedPropertyTypeId( $key ) {
-		return PropertyRegistry::getInstance()->getPredefinedPropertyTypeId( $key );
-	}
-
-	/**
-	 * @deprecated since 2.1, use PropertyRegistry::findPropertyLabelById
-	 */
-	static public function findPropertyLabel( $id ) {
-		return PropertyRegistry::getInstance()->findPropertyLabel( $id );
-	}
-
-	/**
-	 * @deprecated since 2.1, use PropertyRegistry::registerProperty
-	 */
-	static public function registerProperty( $id, $typeid, $label = false, $show = false ) {
-		PropertyRegistry::getInstance()->registerProperty( $id, $typeid, $label, $show);
-	}
-
-	/**
-	 * @deprecated since 2.1, use PropertyRegistry::registerPropertyAlias
-	 */
-	static public function registerPropertyAlias( $id, $label ) {
-		PropertyRegistry::getInstance()->registerPropertyAlias( $id, $label );
 	}
 
 	private function newDIWikiPage( $dbkey, $subobjectName ) {

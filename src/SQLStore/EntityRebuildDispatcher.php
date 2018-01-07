@@ -4,9 +4,9 @@ namespace SMW\SQLStore;
 
 use Hooks;
 use SMW\ApplicationFactory;
-use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\PropertyRegistry;
 use SMW\Store;
 use Title;
 
@@ -282,7 +282,7 @@ class EntityRebuildDispatcher {
 			if ( $row->smw_title != '' && $row->smw_title{0} != '_' ) {
 				$titleKey = $row->smw_title;
 			} elseif ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
-				$titleKey = str_replace( ' ', '_', DIProperty::findPropertyLabel( $row->smw_title ) );
+				$titleKey = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $row->smw_title ) );
 			} else {
 				$titleKey = '';
 			}
