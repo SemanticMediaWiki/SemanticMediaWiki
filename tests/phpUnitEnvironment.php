@@ -103,6 +103,8 @@ class PHPUnitEnvironment {
 
 			if ( $this->gitHead['mw'] ) {
 				$this->gitHead['mw'] = substr( $this->gitHead['mw'], 0, 7 );
+			} else {
+				$this->gitHead['mw'] = 'N/A';
 			}
 
 			$gitInfo = new GitInfo( __DIR__ . '/..' );
