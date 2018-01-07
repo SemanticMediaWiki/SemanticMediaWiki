@@ -158,7 +158,7 @@ class PropertyRestrictionExaminer {
 			return false;
 		}
 
-		if ( PropertyRegistry::getInstance()->isAnnotable( $property->getKey() ) ) {
+		if ( $property->isUserAnnotable() ) {
 			return false;
 		}
 

@@ -157,7 +157,7 @@ class HashBuilder {
 		// A leading underscore is an internal SMW convention to describe predefined
 		// properties and as such need to be transformed into a valid representation
 		if ( $title{0} === '_' ) {
-			$title = str_replace( ' ', '_', DIProperty::findPropertyLabel( $title ) );
+			$title = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $title ) );
 		}
 
 		return new DIWikiPage( $title, $namespace, $interwiki, $subobjectName );

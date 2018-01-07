@@ -5,6 +5,7 @@ namespace SMW\SQLStore;
 use Hooks;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
+use SMW\PropertyRegistry;
 use SMWDataItem as DataItem;
 
 /**
@@ -186,7 +187,7 @@ class PropertyTableDefinitionBuilder {
 			$propertyKey = is_int( $propertyKey ) ? $propertyTableSuffix : $propertyKey;
 
 			$this->addPropertyTable(
-				DataTypeRegistry::getInstance()->getDataItemId( DIProperty::getPredefinedPropertyTypeId( $propertyKey ) ),
+				DataTypeRegistry::getInstance()->getDataItemByType( PropertyRegistry::getInstance()->getPropertyValueTypeById( $propertyKey ) ),
 				$tablePrefix . strtolower( $propertyTableSuffix ),
 				$propertyKey
 			);
@@ -223,7 +224,7 @@ class PropertyTableDefinitionBuilder {
 			$property = new DIProperty( $propertyKey );
 
 			$this->addPropertyTable(
-				DataTypeRegistry::getInstance()->getDataItemId( $this->propertyTypeFinder->findTypeID( $property ) ),
+				DataTypeRegistry::getInstance()->getDataItemByType( $this->propertyTypeFinder->findTypeID( $property ) ),
 				$this->createHashedTableNameFrom( $propertyKey ),
 				$propertyKey
 			);
