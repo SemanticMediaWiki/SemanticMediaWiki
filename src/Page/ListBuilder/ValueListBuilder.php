@@ -317,7 +317,8 @@ class ValueListBuilder {
 				HtmlDivTable::cell(
 					$dvWikiPage->getShortHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ),
 					array(
-						'class' => "smwpropname"
+						'class' => "smwpropname",
+						'data-list-index' => $index
 					)
 				) . HtmlDivTable::cell(
 					$pvCells,
