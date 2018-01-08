@@ -20,8 +20,8 @@ if ( defined( 'SMW_VERSION' ) ) {
 	return 1;
 }
 
-if ( version_compare( $GLOBALS['wgVersion'], '1.23c', '<' ) ) {
-	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.23 or above.' );
+if ( version_compare( $GLOBALS['wgVersion'], '1.27c', '<' ) ) {
+	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.27 or above.' );
 }
 
 /**
