@@ -75,7 +75,7 @@ class SemanticMediaWiki {
 				),
 			'url' => 'https://www.semantic-mediawiki.org',
 			'descriptionmsg' => 'smw-desc',
-			'license-name'   => 'GPL-2.0+'
+			'license-name'   => 'GPL-2.0-or-later'
 		);
 
 		// Registration point for required early registration
