@@ -457,5 +457,6 @@
 	"smw-section-collapse": "문단 접기",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] 형식",
 	"smw-help": "도움말",
-	"smw-property-predefined-label-skey": "정렬키"
+	"smw-property-predefined-label-skey": "정렬키",
+	"smw-processing": "처리 중..."
 }

@@ -701,5 +701,7 @@
 	"smw-help": "Aide",
 	"smw-cheat-sheet": "Aide-mémoire",
 	"smw-personal-jobqueue-watchlist": "Liste de suivi de la file des tâches",
-	"smw-property-predefined-label-skey": "Clé de tri"
+	"smw-property-predefined-label-skey": "Clé de tri",
+	"smw-processing": "Traitement...",
+	"smw-redirect-target-unresolvable": "Cette cible ne peut pas être résolue pour la raison \"$1\""
 }

@@ -30,7 +30,7 @@
 	"smw-semantics-not-enabled": "Momentan kann Semantic MediaWiki nicht auf diesem Wiki genutzt werden.",
 	"smw_viewasrdf": "RDF-Feed",
 	"smw_finallistconjunct": " und",
-	"smw-factbox-head": "… mehr über „$1“",
+	"smw-factbox-head": "… weitere Daten zur Seite „$1“",
 	"smw-factbox-facts": "Fakten",
 	"smw-factbox-facts-help": "Zeigt Aussagen und Fakten an, die von Benutzern erstellt wurden.",
 	"smw-factbox-facts-derived": "Abgeleitete Fakten",
@@ -681,5 +681,7 @@
 	"smw-help": "Hilfe",
 	"smw-cheat-sheet": "Hilfestellung",
 	"smw-personal-jobqueue-watchlist": "Auftragswarteschlangen-Beobachtungsliste",
-	"smw-property-predefined-label-skey": "Sortierschlüssel"
+	"smw-property-predefined-label-skey": "Sortierschlüssel",
+	"smw-processing": "Verarbeitung …",
+	"smw-redirect-target-unresolvable": "Das Weiterleitungsziel ist nicht auflösbar. Grund: „$1“"
 }

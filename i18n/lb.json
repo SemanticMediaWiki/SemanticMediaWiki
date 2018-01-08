@@ -283,5 +283,6 @@
 	"smw-section-collapse": "Den Abschnitt zesummeklappen",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] Format",
 	"smw-help": "Hëllef",
-	"smw-property-predefined-label-skey": "Zortéierschlëssel"
+	"smw-property-predefined-label-skey": "Zortéierschlëssel",
+	"smw-processing": "Verschaffen..."
 }

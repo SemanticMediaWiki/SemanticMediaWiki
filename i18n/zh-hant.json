@@ -22,7 +22,8 @@
 			"Wehwei",
 			"Wwycheuk",
 			"Hitaypayan",
-			"机智的小鱼君"
+			"机智的小鱼君",
+			"A2093064"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更易於取得所需的資料 - 不論是對機器''與''人類\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件])",
@@ -76,7 +77,7 @@
 	"smw-paramdesc-table-class": "額外套用到表格上的 CSS 類別",
 	"smw-paramdesc-table-transpose": "垂直顯示表格標題，水平顯示結果",
 	"smw-paramdesc-rdfsyntax": "使用 RDF 語法",
-	"smw-paramdesc-csv-sep": "使用的分隔符號",
+	"smw-paramdesc-csv-sep": "指定的欄位分隔符號",
 	"smw-paramdesc-dsv-separator": "使用的分隔符號",
 	"smw-paramdesc-dsv-filename": "DSV 檔案名稱",
 	"smw-paramdesc-filename": "輸出的檔案名稱",
@@ -189,7 +190,7 @@
 	"smw_add_sortcondition": "[增加排序條件]",
 	"smw_ask_hidequery": "隱藏查詢",
 	"smw_ask_help": "查詢幫助",
-	"smw_ask_queryhead": "查詢",
+	"smw_ask_queryhead": "條件",
 	"smw_ask_printhead": "需要顯示的附加資料",
 	"smw_ask_printdesc": " (每行增加一個查詢名)",
 	"smw_ask_format_as": "格式為：",

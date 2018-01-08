@@ -20,7 +20,8 @@
 			"CXuesong",
 			"Nemo bis",
 			"NeverBehave",
-			"Eduardo Addad de Oliveira"
+			"Eduardo Addad de Oliveira",
+			"A2093064"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -87,7 +88,7 @@
 	"smw-paramdesc-table-class": "添加的设置表的CSS类",
 	"smw-paramdesc-table-transpose": "垂直方向显示表头，水平方向显示结果",
 	"smw-paramdesc-rdfsyntax": "所要使用的RDF语法",
-	"smw-paramdesc-csv-sep": "指定列的分隔符",
+	"smw-paramdesc-csv-sep": "指定的栏分隔符",
 	"smw-paramdesc-csv-valuesep": "指定值的分隔符",
 	"smw-paramdesc-csv-merge": "合并行和列值与独立的对象标识符（或称首列）",
 	"smw-paramdesc-csv-bom": "在输出文件的顶端添加BOM（信号字节顺序字符）",
@@ -679,5 +680,7 @@
 	"smw-help": "帮助",
 	"smw-cheat-sheet": "小抄",
 	"smw-personal-jobqueue-watchlist": "工作队列监视列表",
-	"smw-property-predefined-label-skey": "Sortkey"
+	"smw-property-predefined-label-skey": "Sortkey",
+	"smw-processing": "处理中...",
+	"smw-redirect-target-unresolvable": "目标无法解决，原因是“$1”"
 }
