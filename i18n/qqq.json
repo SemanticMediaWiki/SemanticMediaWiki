@@ -682,5 +682,7 @@
 	"smw-help": "{{Identical|Help}}",
 	"smw-cheat-sheet": "This is the label of a link opening a tooltip.",
 	"smw-personal-jobqueue-watchlist": "This is the label of a link pointing to a help page.",
-	"smw-property-predefined-label-skey": "This is a label.\n\n{{Identical|Sortkey}}"
+	"smw-property-predefined-label-skey": "This is a label.\n\n{{Identical|Sortkey}}",
+	"smw-processing": "This is an informatory message.",
+	"smw-redirect-target-unresolvable": "This is an error message.\n\nParameter:\n* $1 - holds an error note."
 }

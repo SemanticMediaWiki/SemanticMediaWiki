@@ -296,6 +296,7 @@
 	"smw-sp-properties-header-label": "屬性清單",
 	"smw-sp-admin-settings-button": "產生設定清單",
 	"smw-admin-idlookup-title": "ObjectId 查詢",
+	"smw-admin-idlookup-input": "搜尋：",
 	"smw-admin-objectid": "物件 Id：",
 	"smw-livepreview-loading": "讀取中...",
 	"smw-sp-searchbyproperty-resultlist-header": "結果清單",

@@ -572,7 +572,7 @@
 	"smw-datavalue-time-invalid": "Imposible interpretar o valor da entrada \"$1\" como unha data ou un compoñente de tempo válidos con \"$2\" sendo informado.",
 	"smw-datavalue-external-formatter-uri-missing-placeholder": "Falta o espazo reservado \"$1\" no URI do formatador.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" é un enderezo URL non válido.",
-	"smw-datavalue-external-identifier-formatter-missing": "Falta a propiedade a atribución dun [[Property:External formatter uri|\"URI de formatador externo\"]].",
+	"smw-datavalue-external-identifier-formatter-missing": "Á propiedade fáltalle a atribución dun [[Property:External formatter uri|\"formatador externo de URI\"]].",
 	"smw-property-predefined-eid": "\"$1\" é un [[Special:Types/External identifier|tipo]] e propiedade predefinida proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica] para representar identificadores externos.",
 	"smw-property-predefined-peid": "\"$1\" é unha propiedade predefinida que especifica un identificador externo. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-property-predefined-pefu": "\"$1\" é unha propiedade predefinida proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica] para especificar un recurso externo cun espazo reservado.",
@@ -655,5 +655,6 @@
 	"smw-help": "Axuda",
 	"smw-cheat-sheet": "Folla de referencia",
 	"smw-personal-jobqueue-watchlist": "Lista de vixilancia da fila de tarefas",
-	"smw-property-predefined-label-skey": "Chave de ordenación"
+	"smw-property-predefined-label-skey": "Chave de ordenación",
+	"smw-processing": "Procesando..."
 }

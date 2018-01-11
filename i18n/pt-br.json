@@ -685,5 +685,7 @@
 	"smw-help": "Ajuda",
 	"smw-cheat-sheet": "Auxiliar",
 	"smw-personal-jobqueue-watchlist": "Lista de vigiados da fila de tarefas",
-	"smw-property-predefined-label-skey": "Chave de ordenação"
+	"smw-property-predefined-label-skey": "Chave de ordenação",
+	"smw-processing": "Processando…",
+	"smw-redirect-target-unresolvable": "O destino é irresolúvel pela razão \"$1\""
 }
