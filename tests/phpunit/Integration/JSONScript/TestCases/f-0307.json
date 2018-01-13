@@ -1,0 +1,150 @@
+{
+	"description": "Test `format=table` with natural printout sorting (n-asc, n-desc)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "Example/F0307/1",
+			"contents": "[[Category:F0307-Text]] [[Has text::1.4.4.8.3.1]] [[Has text::1.4.4.8.3.2]] [[Has text::1.4.4.8.3.3]] [[Has text::1.4.4.8.3.4]] [[Has text::1.4.4.8.3.5]] [[Has text::1.4.4.8.3.6]] [[Has text::1.4.4.8.3.7]] [[Has text::1.4.4.8.3.8]] [[Has text::1.4.4.8.3.9]] [[Has text::1.4.4.8.3.10]] [[Has text::1.4.4.8.3.11]] [[Has text::1.4.4.8.3.12]] [[Has text::1.4.4.8.3.1001]]"
+		},
+		{
+			"page": "Example/F0307/2",
+			"contents": "[[Category:F0307-Number]] [[Has number::1]] [[Has number::2]] [[Has number::3]] [[Has number::4]] [[Has number::5]] [[Has number::6]] [[Has number::7]] [[Has number::8]] [[Has number::9]] [[Has number::10]] [[Has number::11]] [[Has number::12]] [[Has number::1001]]"
+		},
+		{
+			"page": "Example/F0307/Q.1.1",
+			"contents": "{{#ask: [[Category:F0307-Text]] |?Has text|+order=asc |format=table |link=none }}"
+		},
+		{
+			"page": "Example/F0307/Q.1.2",
+			"contents": "{{#ask: [[Category:F0307-Text]] |?Has text|+order=desc |format=table |link=none }}"
+		},
+		{
+			"page": "Example/F0307/Q.1.3",
+			"contents": "{{#ask: [[Category:F0307-Text]] |?Has text|+order=n-asc |format=table |link=none }}"
+		},
+		{
+			"page": "Example/F0307/Q.1.4",
+			"contents": "{{#ask: [[Category:F0307-Text]] |?Has text|+order=n-desc |format=table |link=none }}"
+		},
+		{
+			"page": "Example/F0307/Q.2.1",
+			"contents": "{{#ask: [[Category:F0307-Number]] |?Has number|+order=asc |format=table |link=none }}"
+		},
+		{
+			"page": "Example/F0307/Q.2.2",
+			"contents": "{{#ask: [[Category:F0307-Number]] |?Has number|+order=desc |format=table |link=none }}"
+		},
+		{
+			"page": "Example/F0307/Q.2.3",
+			"contents": "{{#ask: [[Category:F0307-Number]] |?Has number|+order=n-asc |format=table |link=none }}"
+		},
+		{
+			"page": "Example/F0307/Q.2.4",
+			"contents": "{{#ask: [[Category:F0307-Number]] |?Has number|+order=n-desc |format=table |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 asc printout (SORT_LOCALE_STRING)",
+			"subject": "Example/F0307/Q.1.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">1.4.4.8.3.1<br />1.4.4.8.3.10<br />1.4.4.8.3.1001<br />1.4.4.8.3.11<br />1.4.4.8.3.12<br />1.4.4.8.3.2<br />1.4.4.8.3.3<br />1.4.4.8.3.4<br />1.4.4.8.3.5<br />1.4.4.8.3.6<br />1.4.4.8.3.7<br />1.4.4.8.3.8<br />1.4.4.8.3.9</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 desc printout (SORT_LOCALE_STRING)",
+			"subject": "Example/F0307/Q.1.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">1.4.4.8.3.9<br />1.4.4.8.3.8<br />1.4.4.8.3.7<br />1.4.4.8.3.6<br />1.4.4.8.3.5<br />1.4.4.8.3.4<br />1.4.4.8.3.3<br />1.4.4.8.3.2<br />1.4.4.8.3.12<br />1.4.4.8.3.11<br />1.4.4.8.3.1001<br />1.4.4.8.3.10<br />1.4.4.8.3.1</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 n-asc printout (SORT_NATURAL)",
+			"subject": "Example/F0307/Q.1.3",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">1.4.4.8.3.1<br />1.4.4.8.3.2<br />1.4.4.8.3.3<br />1.4.4.8.3.4<br />1.4.4.8.3.5<br />1.4.4.8.3.6<br />1.4.4.8.3.7<br />1.4.4.8.3.8<br />1.4.4.8.3.9<br />1.4.4.8.3.10<br />1.4.4.8.3.11<br />1.4.4.8.3.12<br />1.4.4.8.3.1001</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#3 n-desc printout (SORT_NATURAL)",
+			"subject": "Example/F0307/Q.1.4",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">1.4.4.8.3.1001<br />1.4.4.8.3.12<br />1.4.4.8.3.11<br />1.4.4.8.3.10<br />1.4.4.8.3.9<br />1.4.4.8.3.8<br />1.4.4.8.3.7<br />1.4.4.8.3.6<br />1.4.4.8.3.5<br />1.4.4.8.3.4<br />1.4.4.8.3.3<br />1.4.4.8.3.2<br />1.4.4.8.3.1</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#4 asc printout (SORT_NUMERIC)",
+			"subject": "Example/F0307/Q.2.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1\">1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12<br />1,001</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5 desc printout (SORT_NUMERIC)",
+			"subject": "Example/F0307/Q.2.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1,001<br />12<br />11<br />10<br />9<br />8<br />7<br />6<br />5<br />4<br />3<br />2<br />1</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#6 n-asc printout (SORT_NATURAL)",
+			"subject": "Example/F0307/Q.2.3",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1\">1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12<br />1,001</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#7 n-desc printout (SORT_NATURAL)",
+			"subject": "Example/F0307/Q.2.4",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1,001<br />12<br />11<br />10<br />9<br />8<br />7<br />6<br />5<br />4<br />3<br />2<br />1</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

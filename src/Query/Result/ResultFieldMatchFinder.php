@@ -170,6 +170,12 @@ class ResultFieldMatchFinder {
 				$options->limit = trim( $limit );
 			}
 
+			// Expecting a natural sort behaviour (n-asc, n-desc)?
+			if ( strpos( $order, 'n-' ) !== false ) {
+				$order = str_replace( 'n-', '', $order );
+				$options->natural = true;
+			}
+
 			if ( ( $order == 'descending' ) || ( $order == 'reverse' ) || ( $order == 'desc' ) ) {
 				$options->sort = true;
 				$options->ascending = false;
