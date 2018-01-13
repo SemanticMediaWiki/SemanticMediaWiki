@@ -249,6 +249,11 @@ class RequestOptionsProc {
 
 		$flag = $isNumeric ? SORT_NUMERIC : SORT_LOCALE_STRING;
 
+		// SORT_NATURAL is selected on n-asc, n-desc
+		if ( isset( $requestOptions->natural ) ) {
+			$flag = SORT_NATURAL;
+		}
+
 		if ( $requestOptions->ascending ) {
 			asort( $sortres, $flag );
 		} else {
