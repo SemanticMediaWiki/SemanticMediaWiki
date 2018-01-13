@@ -25,7 +25,7 @@ class DocumentationParserFunction implements HookHandler {
 	/**
 	 * @var string
 	 */
-	private $language;
+	private $language = 'en';
 
 	/**
 	 * @param Parser $parser
@@ -57,7 +57,13 @@ class DocumentationParserFunction implements HookHandler {
 
 		$docBuilder = new ParameterListDocBuilder( $this->newMessageFunction() );
 
-		return $docBuilder->getParameterTable( $params );
+		if ( ( $output = $docBuilder->getParameterTable( $params ) ) === '' ) {
+			$output = wfMessage(
+				'smw-smwdoc-default-no-parameter-list',	$parameters['format']->getValue()
+			)->inLanguage( $this->language )->text();
+		}
+		
+		return $output;
 	}
 
 	private function newMessageFunction() {
