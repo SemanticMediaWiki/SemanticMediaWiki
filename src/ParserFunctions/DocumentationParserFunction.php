@@ -25,7 +25,7 @@ class DocumentationParserFunction implements HookHandler {
 	/**
 	 * @var string
 	 */
-	private $language;
+	private $language = 'en';
 
 	/**
 	 * @param Parser $parser
