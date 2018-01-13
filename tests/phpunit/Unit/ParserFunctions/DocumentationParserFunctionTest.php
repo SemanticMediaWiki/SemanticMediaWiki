@@ -34,6 +34,14 @@ class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$processedParam = $this->getMockBuilder( '\ParamProcessor\ProcessedParam' )
 			->disableOriginalConstructor()
 			->getMock();
+		
+		$language = $this->getMockBuilder( '\ParamProcessor\ProcessedParam' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$language->expects( $this->any() )
+			->method( 'getValue' )
+			->will( $this->returnValue( 'en' ) );
 
 		$processingResult = $this->getMockBuilder( '\ParamProcessor\ProcessingResult' )
 			->disableOriginalConstructor()
@@ -42,7 +50,7 @@ class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$processingResult->expects( $this->any() )
 			->method( 'getParameters' )
 			->will( $this->returnValue( array(
-				'language'   => $processedParam,
+				'language'   => $language,
 				'format'     => $processedParam,
 				'parameters' => $processedParam ) ) );
 
