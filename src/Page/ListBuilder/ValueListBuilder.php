@@ -181,13 +181,13 @@ class ValueListBuilder {
 			Html::rawElement(
 				'div' ,
 				[
-					'class' => 'float-left'
+					'class' => 'smw-page-nav-left'
 				],
 				ListPager::getLinks( $title, $limit, $offset, $resultCount, $query )
 			) . Html::rawElement(
 				'div',
 				[
-					'class' => 'float-right'
+					'class' => 'smw-page-nav-right'
 				],
 				$filterInput
 			)
