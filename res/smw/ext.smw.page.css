@@ -113,6 +113,14 @@
 	clear: both;
 }
 
+.smw-page-nav-left {
+	float: left;
+}
+
+.smw-page-nav-right {
+	float: right;
+}
+
 .smw-property-page-results .header-title {
 	font-weight: bold;
 	font-size: 1.17em;
@@ -214,6 +222,11 @@
  * Responsive settings (@see ext.smw.table)
  */
 @media screen and (max-width: 800px) {
+
+	.smw-page-nav-right {
+		margin-top: 8px;
+		float: left;
+	}
 
 	.smw-property-page-results .header-title, .smw-property-page-results .header-row > .header-title {
 		border-bottom: none;
