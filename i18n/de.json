@@ -95,6 +95,7 @@
 	"smw-paramdesc-dsv-filename": "Der Name für die DSV-Datei",
 	"smw-paramdesc-filename": "Legt fest, welcher Name für die Ausgabedatei verwendet werden soll",
 	"smw-smwdoc-description": "Zeigt eine Übersicht aller Parameter mitsamt deren Standardwerten einschließlich ihrer Beschreibung, die im Zusammenhang mit dem angegebenen Ergebnisformat genutzt werden können.",
+	"smw-smwdoc-default-no-parameter-list": "Dieses Ergebnisformat bietet keine formatspezifischen Parameter.",
 	"smw-smwdoc-par-format": "Das Ergebnisformat zu dessen Parametern die Dokumentation angezeigt werden soll.",
 	"smw-smwdoc-par-parameters": "Die anzuzeigenden Parameter: „specific“ für die vom jeweiligen Ergebnisformat bereitgestellten, „base“ für die für alle Ergebnisformate verfügbaren und „all“ zur Anzeige aller.",
 	"smw-paramdesc-sort": "Das Attribut nach dem die Abfrage sortiert werden soll",

@@ -95,6 +95,7 @@
 	"smw-paramdesc-dsv-filename": "O nome para o ficheiro DSV",
 	"smw-paramdesc-filename": "O nome para o ficheiro de saída",
 	"smw-smwdoc-description": "Apresenta uma tabela de todos os parâmetros que podem ser usados para o formato de resultados especificado, com os respetivos valores por omissão e descrições",
+	"smw-smwdoc-default-no-parameter-list": "Este formato de resultado não fornece parâmetros específicos do formato.",
 	"smw-smwdoc-par-format": "O formato de resultados para o qual será apresentada a documentação dos parâmetros.",
 	"smw-smwdoc-par-parameters": "Os parâmetros a serem apresentados. \"specific\" (específicos) para aqueles adicionados pelo formato, \"base\" para aqueles disponíveis em todos os formatos, e \"all\" (todos) para ambos.",
 	"smw-paramdesc-sort": "A propriedade pela qual a consulta será ordenada",

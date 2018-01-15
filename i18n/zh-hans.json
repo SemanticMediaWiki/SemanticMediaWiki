@@ -96,6 +96,7 @@
 	"smw-paramdesc-dsv-filename": "DSV文件的名称",
 	"smw-paramdesc-filename": "输出文件的名称",
 	"smw-smwdoc-description": "显示可以用于指定结果格式的所有参数以及默认值和说明的表格。",
+	"smw-smwdoc-default-no-parameter-list": "此结果格式未提供格式特定参数。",
 	"smw-smwdoc-par-format": "显示参数文档的结果格式。",
 	"smw-smwdoc-par-parameters": "要显示哪些参数。\"specific\"（专用）表示该格式所添加那些的，\"base\"（基础）表示所有格式当中可用的那些，而\"all\"（全部）表示两种情况具有。",
 	"smw-paramdesc-sort": "排序查询的属性",

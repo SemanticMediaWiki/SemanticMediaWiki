@@ -13,7 +13,8 @@
 			"AzorAhai",
 			"DEXi",
 			"Ommmmid",
-			"Obzord"
+			"Obzord",
+			"Alifakoor"
 		]
 	},
 	"smw-desc": "ویکی خود را بیشترقابل دسترس کنید- برای ماشین‌ها ''و'' انسان‌ها ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -219,7 +220,7 @@
 	"smw-ask-result": "نتیجه",
 	"smw-ask-empty": "خالی",
 	"smw-ask-format": "قالب",
-	"smw-ask-format-selection-help": "برای شرح مفصل، لطفاً صفحه راهنما $1 را مشاهده کنید.",
+	"smw-ask-format-selection-help": "راهنمایی برای فرمت انتخاب شده: $1",
 	"searchbyproperty": "جستجو بر اساس ویژگی",
 	"processingerrorlist": "پردازش فهرست خطا",
 	"smw_sbv_docu": "جستجو برای همه صفحاتی که یک خاصیت داده شده و مقدار دارند.",

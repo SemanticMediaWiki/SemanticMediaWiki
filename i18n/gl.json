@@ -656,5 +656,6 @@
 	"smw-cheat-sheet": "Folla de referencia",
 	"smw-personal-jobqueue-watchlist": "Lista de vixilancia da fila de tarefas",
 	"smw-property-predefined-label-skey": "Chave de ordenación",
-	"smw-processing": "Procesando..."
+	"smw-processing": "Procesando...",
+	"smw-redirect-target-unresolvable": "O destino é irresoluble polo motivo «$1»"
 }

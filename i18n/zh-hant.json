@@ -23,12 +23,16 @@
 			"Wwycheuk",
 			"Hitaypayan",
 			"机智的小鱼君",
-			"A2093064"
+			"A2093064",
+			"Kly"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更易於取得所需的資料 - 不論是對機器''與''人類\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件])",
+	"smw-title": "語義 MediaWiki",
+	"smw-semantics-not-enabled": "語義 MediaWiki 功能沒有為此 wiki 啟用。",
 	"smw_viewasrdf": "訂閱 RDF feed",
 	"smw_finallistconjunct": " 和",
+	"smw-factbox-head": "...更多有關「$1」",
 	"smw_isspecprop": "此屬性為此 Wiki 的特殊屬性。",
 	"smw-concept-cache-header": "暫存使用",
 	"smw_concept_description": "概念 \"$1\" 的描述",
