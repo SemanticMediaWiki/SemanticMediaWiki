@@ -12,13 +12,13 @@
 			"아라",
 			"Arief",
 			"Rachmat.Wahidi",
-			"Presidenvolksraad"
+			"Presidenvolksraad",
+			"Rachmat04"
 		]
 	},
 	"smw-desc": "Membuat wiki Anda lebih mudah diakses - oleh mesin ''dan'' manusia ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentasi daring])",
 	"smw_viewasrdf": "Umpan RDF",
 	"smw_finallistconjunct": ", dan",
-	"smw_factbox_head": "Fakta tentang $1",
 	"smw_isspecprop": "Sifat ini adalah sifat khusus di wiki ini.",
 	"smw_concept_description": "Deskripsi konsep \"$1\"",
 	"smw_no_concept_namespace": "Konsep hanya dapat didefinisikan pada halaman dalam ruang nama Konsep:.",
@@ -122,8 +122,6 @@
 	"smw_purge": "Segarkan",
 	"types": "Tipe",
 	"smw_types_docu": "Berikut ini adalah daftar semua jenis data yang dapat ditetapkan ke properti.",
-
-
 	"smw_uri_doc": "Pengurai URI menerapkan [$1 W3C pencarian TAG pada httpRange-14].\nIni memastikan bahwa manusia tidak berubah menjadi situs web.",
 	"ask": "Pencarian semantik",
 	"smw_ask_sortby": "Urut berdasar kolom (pilihan)",

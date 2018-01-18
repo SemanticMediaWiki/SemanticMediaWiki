@@ -13,7 +13,6 @@
 	"smw-desc": "A wiki elérhetőbbé tétele – gépek ''és'' emberek számára is ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online dokumentáció])",
 	"smw_viewasrdf": "RDF hírcsatorna",
 	"smw_finallistconjunct": ", és",
-	"smw_factbox_head": "$1-tények",
 	"smw_isspecprop": "Ez a tulajdonság különleges ebben a wikiben.",
 	"smw_concept_description": "A(z) „$1” koncepció leírása",
 	"smw_no_concept_namespace": "Koncepciókat csak a ''Koncepció:'' névtérben levő lapokon lehet megadni.",
@@ -149,7 +148,7 @@
 	"smw_ask_show_embed": "Beágyazási kód megjelenítése",
 	"smw_ask_hide_embed": "Beágyazási kód elrejtése",
 	"smw_ask_embed_instr": "Ha egy wikilapra szeretnéd beilleszteni ezt a lekérdezést, másold be az alábbi kódot.",
-	"smw-ask-delete": "[Törlés]",
+	"smw-ask-delete": "Törlés",
 	"smw-ask-sorting": "Rendezés",
 	"smw-ask-search": "Keresés",
 	"searchbyproperty": "Keresés tulajdonság szerint",
@@ -230,6 +229,8 @@
 	"group-smwadministrator": "Adminisztrátorok (Szemantikus MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Adminisztrátorok (Szemantikus MediaWiki)",
 	"smw-sp-properties-header-label": "Tulajdonságok listája",
+	"smw-admin-idlookup-input": "Keresés:",
+	"smw-admin-objectid": "Azonosító:",
 	"smw-livepreview-loading": "Betöltés…",
 	"smw-datavalue-allows-value-list-missing-marker": "A(z) „$1” lista tartalmában nincsenek elemek * listajelzővel."
 }

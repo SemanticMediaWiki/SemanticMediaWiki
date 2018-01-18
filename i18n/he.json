@@ -21,6 +21,7 @@
 	"smw-semantics-not-enabled": "התכונה \"מדיה־ויקי סמנטית\" לא הופעלה באתר זה.",
 	"smw_viewasrdf": "הזנת RDF",
 	"smw_finallistconjunct": " וגם",
+	"smw-factbox-facts": "עובדות",
 	"smw_isspecprop": "זהו מאפיין מיוחד באתר ויקי זה.",
 	"smw-concept-cache-header": "שימוש במטמון",
 	"smw-concept-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count מטמון הרעיונות] מכיל {{PLURAL:$1|ישות אחת|'''$1''' ישויות}} ($2)",

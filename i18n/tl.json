@@ -9,7 +9,7 @@
 	"smw-desc": "Ginagawang mas napupuntahan ang wiki mo - para sa ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentasyon habang nasa Internet]) ng mga makina ''at'' mga tao",
 	"smw_viewasrdf": "Pasubo/pakaing RDF",
 	"smw_finallistconjunct": ", at",
-	"smw_factbox_head": "Totoong mga bagay hinggil sa $1",
+	"smw-factbox-facts": "Mga katunayan",
 	"smw_isspecprop": "Ang pag-aaring ito ay isang natatanging pag-aari sa wiking ito.",
 	"smw_concept_description": "Paglalarawan ng diwa/konseptong \"$1\"",
 	"smw_no_concept_namespace": "Mabibigyang kahulugan lamang ang mga diwa (konsepto) sa ibabaw ng mga pahinang nasa loob ng Diwa: espasyo ng pangalan.",
@@ -135,8 +135,6 @@
 	"smw_purge": "Sariwain",
 	"types": "Mga uri",
 	"smw_types_docu": "Ang sumusunod ay isang talaan ng lahat ng mga uri ng dato na maaaring italaga sa mga pag-aari.",
-
-
 	"smw_uri_doc": "Ipinatutupad ng tagapaglutas na URI ang [$1 Paghahanap ng W3C TAG sa httpRange-14].\nPinag-iingatan nitong huwag maging mga sityo ng web (websayt) ang mga tao.",
 	"ask": "Paghahanap hinggil sa kahulugan ng mga salita (semantiko)",
 	"smw_ask_sortby": "Pagpangkat-pangkating ayon sa pahabang kahanayan (maaaring wala nito)",
@@ -238,5 +236,6 @@
 	"smw-format-datatable-infothousands": ",",
 	"smw-format-datatable-loadingrecords": "Ikinakasa...",
 	"smw-format-datatable-search": "Maghanap:",
-	"smw-format-datatable-last": "Dulo"
+	"smw-format-datatable-last": "Dulo",
+	"smw-help": "Makatulong"
 }
