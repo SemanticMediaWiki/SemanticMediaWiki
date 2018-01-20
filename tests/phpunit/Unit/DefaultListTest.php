@@ -62,9 +62,9 @@ class DefaultListTest extends \PHPUnit_Framework_TestCase {
 
 		$excludes = [];
 
-		if ( !defined( 'SM_VERSION' ) ) {
-			$excludes = [ '_geo', '_gpo' ];
-		}
+		// Requires Maps/Semantic Maps hence remove from the
+		// test list
+		$excludes = [ '_geo', '_gpo' ];
 
 		foreach ( DefaultList::getTypeList() as $key => $def ) {
 
