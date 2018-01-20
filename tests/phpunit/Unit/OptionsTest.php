@@ -84,6 +84,19 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @dataProvider dotProvider
+	 */
+	public function testDotGet( $options, $key, $expected ) {
+
+		$instance = new Options( $options );
+
+		$this->assertEquals(
+			$expected,
+			$instance->dotGet( $key )
+		);
+	}
+
+	/**
 	 * @dataProvider isFlagSetProvider
 	 */
 	public function testIsFlagSet( $value, $flag, $expected ) {
@@ -171,6 +184,46 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 		yield [
 			false,
 			2,
+			false
+		];
+	}
+
+	public function dotProvider() {
+
+		$o = [ 'Foo' => [
+			'Bar' => [ 'Foobar' => 42 ],
+			'Foobar' => 1001,
+			'some.other.options' => 9999
+			],
+		];
+
+		yield [
+			$o,
+			'Foo.Bar',
+			[ 'Foobar' => 42 ]
+		];
+
+		yield [
+			$o,
+			'Foo.Foobar',
+			1001
+		];
+
+		yield [
+			$o,
+			'Foo.Bar.Foobar',
+			 42
+		];
+
+		yield [
+			$o,
+			'Foo.some.other.options',
+			9999
+		];
+
+		yield [
+			$o,
+			'Foo.Bar.Foobar.unkown',
 			false
 		];
 	}
