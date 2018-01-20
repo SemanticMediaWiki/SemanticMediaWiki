@@ -97,6 +97,15 @@ class Database {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function ping() {
+		return true;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $type
