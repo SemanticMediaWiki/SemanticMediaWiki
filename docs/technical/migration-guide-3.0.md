@@ -22,6 +22,10 @@
 - Removed `DIProperty::registerProperty`, deprecated since 2.1, use PropertyRegistry::registerProperty
 - Removed `DIProperty::registerPropertyAlias`, deprecated since 2.1, use PropertyRegistry::registerPropertyAlias
 
+## Hooks
+
+- Renamed `smwAddToRDFExport` to `SMW::Exporter::AddExpDataAfterPageSerializationComplete`
+
 ## Store
 
 - `Store::getPropertySubjects` is to return an `Iterator` hence an `array`

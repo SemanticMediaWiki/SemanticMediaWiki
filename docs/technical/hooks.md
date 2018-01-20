@@ -281,11 +281,29 @@ Hooks::register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
 } );
 </pre>
 
+### SMW::Exporter::AddExpDataAfterPageSerializationComplete
+
+* Version: 3.0
+* Description: Hook allows to add additional RDF data for a selected page (was `smwAddToRDFExport`)
+* Reference class: `SMWExportController`
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::Exporter::AddExpDataAfterPageSerializationComplete', function( DIWikiPage $subject, &$extraExpDataList, $hasRecursionDepth, $withBacklinks ) {
+
+	$expData = new ExpData( ... );
+
+	$extraExpDataList[] = $expData;
+
+	return true;
+} );
+</pre>
+
 ## Other available hooks
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
 
-* `SMWExportController`, smwAddToRDFExport (SMW::Exporter::AfterRdfExportComplete)
 * `SMWParamFormat`, SMWResultFormat
 * `\SMW\Store`, SMWStore::updateDataBefore (SMW::Store::BeforeDataUpdateComplete)
 * `\SMW\Store`, SMWStore::updateDataAfter (SMW::Store::AfterDataUpdateComplete)
