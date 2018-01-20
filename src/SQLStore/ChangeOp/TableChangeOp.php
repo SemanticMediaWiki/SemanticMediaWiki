@@ -95,10 +95,11 @@ class TableChangeOp {
 	 * @since 2.4
 	 *
 	 * @param string|null $opType
+	 * @param array $filter
 	 *
 	 * @return FieldChangeOp[]|[]
 	 */
-	public function getFieldChangeOps( $opType = null ) {
+	public function getFieldChangeOps( $opType = null, $filter = [] ) {
 
 		if ( $opType !== null && !$this->hasChangeOp( $opType ) ) {
 			return array();
@@ -107,23 +108,30 @@ class TableChangeOp {
 		$fieldOps = array();
 		$changeOps = $this->changeOps;
 
+		if ( $opType !== null ) {
+			$changeOps = $this->changeOps[$opType];
+		} elseif ( !isset( $this->changeOps[self::OP_DELETE] ) && !isset( $this->changeOps[self::OP_INSERT] ) )  {
+			$changeOps = $this->changeOps;
+		} else  {
+			return array_merge(
+				$this->getFieldChangeOps( self::OP_DELETE, $filter ),
+				$this->getFieldChangeOps( self::OP_INSERT, $filter )
+			);
+		}
+
 		unset( $changeOps['property'] );
 
-		foreach ( $changeOps as $type => $changeOp ) {
+		foreach ( $changeOps as $changeOp ) {
 
-			if ( $opType !== null && $opType !== $type ) {
+			if ( isset( $filter['s_id' ] ) && isset( $changeOp['s_id'] ) && isset( $filter['s_id' ][$changeOp['s_id']] ) ) {
 				continue;
-			}
-
-			if ( isset( $changeOp[0] ) && is_array( $changeOp[0] ) ) {
-				$changeOp = $changeOp[0];
 			}
 
 			if ( isset( $this->changeOps['property'] ) ) {
 				$changeOp['p_id'] = $this->changeOps['property']['p_id'];
 			}
 
-			$fieldOps[] = new FieldChangeOp( $changeOp, $type );
+			$fieldOps[] = new FieldChangeOp( $changeOp, $opType );
 		}
 
 		return $fieldOps;
@@ -133,8 +141,7 @@ class TableChangeOp {
 	 * @since 3.0
 	 */
 	public function __toString() {
-		return json_encode( [ $this->tableName => $this->changeOps ], JSON_PRETTY_PRINT );
+		return json_encode( [ $this->tableName => $this->changeOps ] );
 	}
 
 }
-
