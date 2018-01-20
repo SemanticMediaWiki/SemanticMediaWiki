@@ -84,7 +84,7 @@ class FieldChangeOp {
 	 * @since 3.0
 	 */
 	public function __toString() {
-		return json_encode( [ $this->type => $this->changeOp ], JSON_PRETTY_PRINT );
+		return json_encode( [ $this->type => $this->changeOp ] );
 	}
 
 }
