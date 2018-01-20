@@ -75,9 +75,19 @@ class JsonTestCaseFileHandler {
 		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : array();
 		$identifier = strtolower( $identifier );
 
-		$mwVersion = $GLOBALS['wgVersion'];
+		$version = $GLOBALS['wgVersion'];
 
-		foreach ( $skipOn as $id => $reason ) {
+		foreach ( $skipOn as $id => $value ) {
+
+			$versionToSkip = '';
+			$compare = '=';
+
+			if ( is_array( $value ) ) {
+				$versionToSkip = $value[0];
+				$reason = $value[1];
+			} else {
+				$reason = $value;
+			}
 
 			if ( $identifier === $id ) {
 				return true;
@@ -88,20 +98,27 @@ class JsonTestCaseFileHandler {
 				return true;
 			}
 
-			if ( strpos( $id, 'mw-' ) === false ) {
-				continue;
+			if ( strpos( $id, 'mw-' ) !== false ) {
+				list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
 			}
 
-			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
-			$compare = '=';
+			if ( $versionToSkip !== '' && ( $versionToSkip{0} === '<' || $versionToSkip{0} === '>' ) ) {
+				$compare = $versionToSkip{0};
+				$versionToSkip = substr( $versionToSkip, 1 );
+			}
 
 			if ( strpos( $versionToSkip, '.x' ) ) {
 				$versionToSkip = str_replace( '.x', '.9999', $versionToSkip );
+				$compare = $compare === '=' ? '<' : $compare;
+			}
+
+			if ( strpos( $versionToSkip, '<' ) ) {
+				$versionToSkip = str_replace( '<', '', $versionToSkip );
 				$compare = '<';
 			}
 
-			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
-				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
+			if ( version_compare( $version, $versionToSkip, $compare ) ) {
+				$this->reasonToSkip = "$version version is not supported ({$reason})";
 				return true;
 			}
 		}
