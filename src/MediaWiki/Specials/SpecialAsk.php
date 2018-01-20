@@ -270,7 +270,7 @@ class SpecialAsk extends SpecialPage {
 
 					$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
 
-					$result .= $debug;
+					$result .= is_string( $debug ) ? $debug : '';
 
 					if ( is_array( $query_result ) ) {
 						$result .= $query_result[0];
@@ -279,7 +279,7 @@ class SpecialAsk extends SpecialPage {
 					}
 				} else {
 					$result = ErrorWidget::noResult();
-					$result .= $debug;
+					$result .= is_string( $debug ) ? $debug : '';
 				}
 			}
 		}
