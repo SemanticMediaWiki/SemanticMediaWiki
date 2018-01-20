@@ -166,10 +166,25 @@ class SMWExportController {
 		}
 
 		// let other extensions add additional RDF data for this page
-		$additionalDataArray = array();
-		\Hooks::run( 'smwAddToRDFExport', array( $diWikiPage, &$additionalDataArray, ( $recursiondepth != 0 ), $this->add_backlinks ) );
-		foreach ( $additionalDataArray as $additionalData ) {
-			$this->serializer->serializeExpData( $additionalData ); // serialise
+		$extraExpDataList = array();
+
+		\Hooks::run(
+			'SMW::Exporter::AddExpDataAfterPageSerializationComplete',
+			[
+				$diWikiPage,
+				&$extraExpDataList,
+				( $recursiondepth != 0 ),
+				$this->add_backlinks
+			]
+		);
+
+		foreach ( $extraExpDataList as $extraExpData ) {
+
+			if ( !$extraExpData instanceof SMWExpData ) {
+				continue;
+			}
+
+			$this->serializer->serializeExpData( $extraExpData );
 		}
 
 		if ( $recursiondepth != 0 ) {
