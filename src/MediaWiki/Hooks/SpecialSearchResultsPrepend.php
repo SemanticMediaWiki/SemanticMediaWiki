@@ -52,17 +52,17 @@ class SpecialSearchResultsPrepend extends HookHandler {
 		if ( $this->specialSearch->getSearchEngine() instanceof SMWSearch ) {
 			$html .= Message::get(
 				'smw-search-syntax-support',
-				Message::TEXT,
-				Message::USER_LANGUAGE
-			);
-		}
-
-		if ( $this->outputPage->getUser()->getOption( 'smw-prefs-general-options-suggester-textinput' ) ) {
-			$html .= ' ' . Message::get(
-				'smw-search-input-assistance',
 				Message::PARSE,
 				Message::USER_LANGUAGE
 			);
+
+			if ( $this->outputPage->getUser()->getOption( 'smw-prefs-general-options-suggester-textinput' ) ) {
+				$html .= ' ' . Message::get(
+					'smw-search-input-assistance',
+					Message::PARSE,
+					Message::USER_LANGUAGE
+				);
+			}		
 		}
 
 		if ( $html !== '' ) {
