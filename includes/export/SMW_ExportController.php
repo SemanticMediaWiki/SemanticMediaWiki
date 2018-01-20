@@ -149,8 +149,20 @@ class SMWExportController {
 		$expData = SMWExporter::getInstance()->makeExportData( $semData );
 		$this->serializer->serializeExpData( $expData, $recursiondepth );
 
-		foreach( $semData->getSubSemanticData() as $subobjectSemData ) {
-			$this->serializer->serializeExpData( SMWExporter::getInstance()->makeExportData( $subobjectSemData ) );
+		foreach( $semData->getSubSemanticData() as $subSemanticData ) {
+
+			// Mark SubSemanticData subjects as well to ensure that backlinks to
+			// the same subject do not create duplicate XML export entities
+			$this->markPageAsDone(
+				$subSemanticData->getSubject(),
+				$recursiondepth
+			);
+
+			$expData = SMWExporter::getInstance()->makeExportData(
+				$subSemanticData
+			);
+
+			$this->serializer->serializeExpData( $expData );
 		}
 
 		// let other extensions add additional RDF data for this page
