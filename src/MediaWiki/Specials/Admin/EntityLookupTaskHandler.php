@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Store;
+use SMW\SQLStore\SQLStore;
 use SMW\Message;
 use SMW\NamespaceManager;
 use Html;
@@ -203,7 +204,8 @@ class EntityLookupTaskHandler extends TaskHandler {
 		if ( ctype_digit( $id ) ) {
 			$condition = 'smw_id=' . intval( $id );
 		} else {
-			$condition = 'smw_sortkey=' . $connection->addQuotes( str_replace( '_', ' ', $id ) );
+			$op = strpos( $id, '*' ) !== false ? ' LIKE ' : '=';
+			$condition = "smw_sortkey $op " . $connection->addQuotes( str_replace( [ '_', '*' ], [ ' ', '%' ], $id ) );
 		}
 
 		$rows = $connection->select(
@@ -225,6 +227,8 @@ class EntityLookupTaskHandler extends TaskHandler {
 
 	private function createMessageFromRows( &$id, $rows ) {
 
+		$connection = $this->store->getConnection( 'mw.db' );
+
 		$references = array();
 		$formattedRows = array();
 		$output = '';
@@ -239,6 +243,23 @@ class EntityLookupTaskHandler extends TaskHandler {
 				);
 
 				$formattedRows[$id] = (array)$row;
+
+				$row = $connection->selectRow(
+						SQLStore::FT_SEARCH_TABLE,
+						[
+							's_id',
+							'p_id',
+							'o_text'
+						],
+						[
+							's_id' => $id
+						],
+						__METHOD__
+				);
+
+				if ( $row !== false ) {
+					$references[$id][SQLStore::FT_SEARCH_TABLE] = (array)$row;
+				}
 			}
 		}
 
