@@ -36,7 +36,8 @@
 			"Eduardo Addad de Oliveira",
 			"Lugimax",
 			"Edible Melon",
-			"Staspotanin2"
+			"Staspotanin2",
+			"Gehhrr"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -172,8 +173,9 @@
 	"smw-propertylist-subproperty-header": "Подсвойства",
 	"smw-propertylist-redirect-header": "Синонимы",
 	"smw-propertylist-error-header": "Страницы с неправильными назначениями",
-	"smw-propertylist-count": "$1 {{PLURAL:$1|1=связанное свойство|связанных свойств}}.",
-	"smw-propertylist-count-with-restricted-note": "$1 {{PLURAL:$1|1=связанное свойство|связанных свойств}} (доступно больше, но отобразить можно только «$2»).",
+	"smw-propertylist-count": "Показ $1 {{PLURAL:$1|1=связанной сущности|связанных сущностей}}.",
+	"smw-propertylist-count-with-restricted-note": "Показ $1 {{PLURAL:$1|1=связанной сущности|связанных сущностей}} (доступно больше, но отобразить можно только «$2»).",
+	"smw-propertylist-count-more-available": "Показ $1 {{PLURAL:$1|1=связанной сущности|связанных сущностей}} (доступно больше).",
 	"exportrdf": "Экспорт страниц в RDF",
 	"smw_exportrdf_docu": "Эта страница позволяет экспортировать части статьи в формате RDF. Наберите заголовки необходимых статей по одному на строку.",
 	"smw_exportrdf_recursive": "Рекурсивный экспорт всех связанных страниц. Результат этой операции может быть очень большим!",
@@ -439,6 +441,7 @@
 	"smw-editpage-property-annotation-enabled": "Это свойство можно расширить с помощью семантических аннотаций для указания типа данных (например <nowiki>\"[[Has type::Page]]\"</nowiki>) или других поддерживаемых утверждений (e.g. <nowiki>\"[[Subproperty of::dc:date]]\"</nowiki>). Описание, как расширить эту страницу смотрите на странице справки о [https://www.semantic-mediawiki.org/wiki/Help:Property_declaration \nзаявлении свойства] или [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes список доступных типов данных].",
 	"smw-editpage-property-annotation-disabled": "Это свойство нельзя расширить аннотацией типа данных (например <nowiki>\"[[Has type::Page]]\"</nowiki>), поскольку она уже предварительно определена (см. более подробную информацию на справочной странице о [https://www.semantic-mediawiki.org/wiki/Help:Special_properties специальные свойства]).",
 	"smw-editpage-concept-annotation-enabled": "Этот концепт можно расширить с использованием парсерной функции #concept. Описание, как использовать #concept, см. на справочной странице о [https://www.semantic-mediawiki.org/wiki/Help:Concepts концептах].",
+	"smw-search-input-assistance": "Ссылка [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance input assistant] включена что упростить выбор всех возможных опций и категорий.",
 	"log-name-smw": "Журнал Semantic MediaWiki",
 	"log-show-hide-smw": "$1 журнал Semantic MediaWiki",
 	"log-description-smw": "Деятельность относительно [https://www.semantic-mediawiki.org/wiki/Help:Logging включенных типов событий], которую регистрирует Semantic MediaWiki и ее компоненты.",

@@ -366,5 +366,6 @@
 	"smw-format-datatable-toolbar-export": "Eksportuj",
 	"smw-section-expand": "Rozwiń sekcję",
 	"smw-section-collapse": "Zwiń sekcję",
-	"smw-help": "Pomoc"
+	"smw-help": "Pomoc",
+	"smw-processing": "Przetwarzanie..."
 }

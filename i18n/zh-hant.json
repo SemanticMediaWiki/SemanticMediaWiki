@@ -156,6 +156,7 @@
 	"smw-property-name-invalid": "無法使用屬性 $1 (無效的屬性名稱)。",
 	"smw-sp-property-searchform": "顯示包含以下內容的屬性：",
 	"smw-sp-property-searchform-inputinfo": "輸入區分大小寫且當用來搜尋時只會顯示符合條件的屬性。",
+	"smw-special-wantedproperties-filter-label": "篩選器：",
 	"concepts": "概念",
 	"smw-sp-concept-docu": "[https://www.semantic-mediawiki.org/wiki/Help:Concepts 概念]可被看做是 \"動態分類\"，即非手動建立的頁面集合，是由 Semantic MediaWiki 從指定查詢中的描述所找出。",
 	"smw-sp-concept-header": "概念清單",
@@ -206,6 +207,7 @@
 	"smw_ask_embed_instr": "使用以下代碼將查詢嵌入維基頁面。",
 	"smw-ask-delete": "刪除",
 	"smw-ask-sorting": "排序",
+	"smw-ask-parameters": "參數",
 	"smw-ask-debug": "除錯",
 	"smw-ask-format-selection-help": "有關詳細的描述資訊，請參觀 $1 說明頁面。",
 	"searchbyproperty": "按屬性查詢",
@@ -324,5 +326,8 @@
 	"smw-sp-types_txt": "\"$1\" 是原始資料型態，用來描述任意長度的字串。",
 	"smw-sp-types_dat": "\"$1\" 是資料型態，用來代表時間點，使用統一格式。",
 	"smw-format-datatable-previous": "上一個",
-	"smw-format-datatable-toolbar-export": "匯出"
+	"smw-format-datatable-toolbar-export": "匯出",
+	"smw-property-reserved-category": "分類",
+	"smw-category": "分類",
+	"smw-list-pager-filter": "篩選器："
 }
