@@ -610,6 +610,7 @@
 	"protect-level-smw-pageedit": "Permitir únicamente usuarios con el permiso de edición de páginas (Semantic MediaWiki)",
 	"smw-create-protection": "La creación de la propiedad «$1» está restringida a los usuarios que cuenten con el privilegio (o pertenezcan al [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups grupo de usuarios]) «$2» adecuado, siempre que esté activado el [https://www.semantic-mediawiki.org/wiki/Help:Authority_mode modo de autoridad].",
 	"smw-create-protection-exists": "Las modificaciones a la propiedad «$1» están restringidas a los usuarios que cuenten con el privilegio (o pertenezcan al [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups grupo de usuarios]) «$2» adecuado, siempre que esté activado el [https://www.semantic-mediawiki.org/wiki/Help:Authority_mode modo de autoridad].",
+	"smw-edit-protection-disabled": "Se desactivó la protección contra ediciones; por ello, no se puede utilizar «$1» para proteger las páginas de entidades de ediciones no autorizadas.",
 	"smw-edit-protection-enabled": "Edición protegida (Semantic MediaWiki)",
 	"smw-patternedit-protection": "Esta página está protegida y solo pueden modificarla aquellos usuarios que cuenten con el [https://www.semantic-mediawiki.org/wiki/Help:Permissions permiso] <code>smw-patternedit</code> adecuado.",
 	"smw-property-predefined-edip": "«$1» es una propiedad predefinida, provista por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki], para señalar si la edición está protegida o no.",

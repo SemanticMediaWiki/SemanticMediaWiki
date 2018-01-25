@@ -14,7 +14,8 @@
 			"Nike",
 			"Ochaochaocha3",
 			"Hamilton Abreu",
-			"Robby"
+			"Robby",
+			"McDutchie"
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
@@ -183,7 +184,7 @@
 	"smw-special-wantedproperties-filter-label": "This is a field label on special page \"WantedProperties\".\n\n{{Identical|Filter}}",
 	"smw-special-wantedproperties-filter-none": "This is an option selectable via a drop-down menu for filtering options on special page \"WantedProperties\". Translate in a sense: Apply no filter.\n\n{{Identical|None}}",
 	"smw-special-wantedproperties-filter-unapproved": "This is an option selectable via a drop-down menu on special page \"WantedProperties\".\nTranslate in a sense: Apply filter for Unapproved.\n\n{{Identical|Unapproved}}",
-	"smw-special-wantedproperties-filter-unapproved-desc": "This is an informatory message.",
+	"smw-special-wantedproperties-filter-unapproved-desc": "This is an informative message.",
 	"concepts": "{{doc-special|Concepts}}\n{{Identical|Concept}}",
 	"smw-sp-concept-docu": "This is an introductory message at the top of [[Special:Concepts]].",
 	"smw-sp-concept-header": "This is a header used on [[Special:Concepts]].",

@@ -289,6 +289,7 @@
 	"smw-ui-tooltip-title-event": "事件",
 	"smw-ui-tooltip-title-note": "註釋",
 	"smw-ui-tooltip-title-legend": "圖例",
+	"smw-ui-tooltip-title-reference": "參考文獻",
 	"smw_unknowntype": "此定義的屬性類型不被支援",
 	"smw-concept-cache-text": "此概念總共有 $1 {{PLURAL:$1|個頁面|個頁面}}，最後更新於 $2 $3。",
 	"smw_concept_header": "概念 \"$1\" 的頁面",
