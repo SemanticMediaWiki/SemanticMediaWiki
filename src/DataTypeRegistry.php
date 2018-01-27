@@ -310,6 +310,22 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public function getFieldType( $type ) {
+
+		if ( isset( $this->typeDataItemIds[$type] ) ) {
+			return $this->defaultDataItemTypeMap[ $this->typeDataItemIds[$type]];
+		}
+
+		return '_wpg';
+	}
+
+	/**
 	 * Get the translated user label for a given internal ID. If the ID does
 	 * not have a label associated with it in the current language, the
 	 * empty string is returned. This is the case both for internal type ids
