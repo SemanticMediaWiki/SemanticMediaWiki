@@ -57,6 +57,9 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Format/Embedded/A",
+			"skip-on": {
+				"mw": [ ">1.30.x", "See #2966" ]
+			},
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -75,6 +78,39 @@
 				"to-contain": [
 					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA.2F1\">",
 					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA.2F2\">",
+					"ABC",
+					"DEF"
+				],
+				"not-contain": [
+					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA\">.*selflink\">Format/Embedded/A.*</h1>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.x",
+			"subject": "Format/Embedded/A",
+			"skip-on": {
+				"mw": [ "<1.31", "See #2966" ]
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					],
+					"propertyValues": [
+						"Format/Embedded/A#_QUERYc91dabd03c0f49de2dc535c5b099aa45"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<h1><span id=\"Format/Embedded/A/1\"></span><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA.2F1\">",
+					"<h1><span id=\"Format/Embedded/A/2\"></span><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA.2F2\">",
 					"ABC",
 					"DEF"
 				],
@@ -104,8 +140,8 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F1\">",
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F2\">",
+					"<h1>.*<span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F1\">",
+					"<h1>.*<span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F2\">",
 					"ABC",
 					"DEF"
 				],
@@ -158,8 +194,8 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F1\">",
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F2\">",
+					"<h1>.*<span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F1\">",
+					"<h1>.*<span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F2\">",
 					"A123",
 					"ABC",
 					"DEF"
