@@ -71,7 +71,8 @@ class ListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$parameters = [
 			'ns' => $ns,
-			'search' => 'Foo'
+			'search' => 'Foo',
+			'sort' => true
 		];
 
 		$res = $instance->lookup( $parameters );

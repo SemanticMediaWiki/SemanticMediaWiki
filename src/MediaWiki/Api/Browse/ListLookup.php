@@ -86,7 +86,7 @@ class ListLookup extends Lookup {
 		}
 
 		if ( isset( $parameters['search'] ) ) {
-			list( $list, $continueOffset ) = $this->search( $ns, $requestOptions );
+			list( $list, $continueOffset ) = $this->search( $ns, $requestOptions, $parameters );
 		}
 
 		// Changing this output format requires to set a new version
@@ -164,10 +164,11 @@ class ListLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function search( $ns, $requestOptions ) {
+	private function search( $ns, $requestOptions, $parameters ) {
 
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];
+		$options = [];
 
 		$fields = [
 			'smw_id',
@@ -175,8 +176,10 @@ class ListLookup extends Lookup {
 		];
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = $this->store->getSQLOptions( $requestOptions, 'smw_sort' );
-		$fields[] = 'smw_sort';
+		if ( isset( $parameters['sort'] ) ) {
+			$options = $this->store->getSQLOptions( $requestOptions, 'smw_sort' );
+			$fields[] = 'smw_sort';
+		}
 
 		$conditions = [
 			'smw_namespace' => $ns,
