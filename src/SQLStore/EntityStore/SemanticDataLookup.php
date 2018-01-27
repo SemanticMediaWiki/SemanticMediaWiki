@@ -11,6 +11,7 @@ use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\TableBuilder\FieldType;
 use Psr\Log\LoggerAwareTrait;
+use SMW\PropertyRegistry;
 use RuntimeException;
 
 /**
@@ -400,6 +401,13 @@ class SemanticDataLookup {
 			}
 		} else {
 			$valueKeys = $row->v0;
+		}
+
+		// In case it is a deleted value in connection with a predefined property
+		// that is not annotable, remove it since the intention cannot be altered
+		// by a user with the value being removed from the fact assignment
+		if ( isset( $valueKeys[2] ) && $valueKeys[2] === SMW_SQL3_SMWDELETEIW && !PropertyRegistry::getInstance()->isAnnotable( $propertykey ) ) {
+			return;
 		}
 
 		// #Issue 615
