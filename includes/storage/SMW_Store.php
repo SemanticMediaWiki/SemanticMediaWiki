@@ -126,7 +126,7 @@ abstract class Store implements QueryEngine {
 
 		$dataItems = $this->getPropertyValues( $dataItem, new DIProperty( '_SKEY' ) );
 
-		if ( count( $dataItems ) > 0 ) {
+		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
 			return end( $dataItems )->getString();
 		}
 
@@ -163,7 +163,7 @@ abstract class Store implements QueryEngine {
 
 		$dataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
 
-		if ( count( $dataItems ) > 0 ) {
+		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
 
 			$redirectDataItem = end( $dataItems );
 

@@ -256,7 +256,7 @@ class SMWTimeValue extends SMWDataValue {
 			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && in_array( $match, array( 'st', 'nd', 'rd', 'th' ) ) ) {
 				$datecomponents[] = 'd' . strval( array_pop( $datecomponents ) ); // must be a day; add standard marker
 				$matchisdate = true;
-			} elseif ( count( $match ) == 1 ) {
+			} elseif ( is_string( $match ) ) {
 				$microseconds = $match;
 			} else {
 				$unclearparts[] = $match;

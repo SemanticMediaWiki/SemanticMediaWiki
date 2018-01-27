@@ -126,13 +126,13 @@ class ListBuilder {
 		$more = false;
 
 		// Pop the +1 look ahead from the list
-		if ( count( $subjectList ) > $this->listLimit ) {
+		if ( is_array( $subjectList ) && count( $subjectList ) > $this->listLimit ) {
 			array_pop( $subjectList );
 			$more = true;
 		}
 
 		$result = '';
-		$resultCount = count( $subjectList );
+		$resultCount = is_array( $subjectList ) ? count( $subjectList ) : 0;
 
 		$callback = null;
 		$message = wfMessage( 'smw-propertylist-count', $resultCount )->text();

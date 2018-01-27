@@ -112,7 +112,7 @@ class ParametersProcessor {
 			// Count doesn't match means we have a order from an
 			// empty (#subject) carrying around which we don't permit when
 			// sorting via columns
-			if ( count( $order_values ) != $sort_count ) {
+			if ( is_array( $order_values ) && count( $order_values ) != $sort_count ) {
 				array_pop( $order_values );
 			}
 
