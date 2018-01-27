@@ -74,8 +74,9 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testArmorOnUCA() {
 
-		// Not testing uca-default directly as it depends on the installed ICU
-		// version of the testing platform
+		if ( !extension_loaded( 'intl' ) ) {
+			$this->markTestSkipped( 'Skipping because intl (ICU) is not availabe.' );
+		}
 
 		$instance = Collator::singleton( 'uca-default' );
 		$text = 'XmlTest';
