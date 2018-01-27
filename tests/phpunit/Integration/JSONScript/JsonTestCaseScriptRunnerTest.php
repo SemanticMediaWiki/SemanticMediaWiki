@@ -201,6 +201,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgExportBCAuxiliaryUse',
 			'smwgExportResourcesAsIri',
 			'smwgQMaxSize',
+			'smwgQMaxDepth',
 			'smwStrictComparators',
 			'smwgQSubpropertyDepth',
 			'smwgQSubcategoryDepth',

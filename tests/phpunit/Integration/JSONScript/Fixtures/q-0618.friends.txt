@@ -1,0 +1,109 @@
+<pre>
+Andy Mars,USA,business
+Andy Mars,Prague,both
+Andy Mars,Japan,pleasure
+John Maier,Prague,both
+John Maier,USA,both
+John Maier,Greece,pleasure
+Yan Chow,Canada,pleasure
+Yan Chow,USA,business
+Yan Chow,China,business
+Mike Bloom,Amsterdam,both
+Mike Bloom,USA,both
+Charles Banning,USA,pleasure
+Charles Banning,Greece,pleasure
+Charles Banning,Andora,pleasure
+Kevin Mikaelson,USA,both
+Kevin Mikaelson,Japan,business
+Kevin Mikaelson,Andora,pleasure
+Charlotte Beans,Prague,pleasure
+Charlotte Beans,USA,both
+Charlotte Beans,Kazakhstan,pleasure
+Yumi Tanaka,USA,both
+Yumi Tanaka,Greece,pleasure
+Yumi Tanaka,Amsterdam,pleasure
+Rosalia Alvarez,USA,pleasure
+Rosalia Alvarez,Canada,pleasure
+Rosalia Alvarez,China,pleasure
+Mandy Rose,Amsterdam,pleasure
+Mandy Rose,Russia,pleasure
+James Ross,Amsterdam,business
+Evelyne Lynn,Germany,business
+Evelyne Lynn,Greece,pleasure
+Evelyne Lynn,Italy,pleasure
+Michael Chester,Amsterdam,pleasure
+Michael Chester,Germany,pleasure
+Michael Chester,Thailand,pleasure
+</pre>
+
+{{#subobject:
+ |Person=Andy Mars |Place visited=USA |Type of visit=business
+}}{{#subobject:
+ |Person=Andy Mars |Place visited=Prague |Type of visit=both
+}}{{#subobject:
+ |Person=Andy Mars |Place visited=Japan |Type of visit=pleasure
+}}{{#subobject:
+ |Person=John Maier |Place visited=Prague |Type of visit=both
+}}{{#subobject:
+ |Person=John Maier |Place visited=USA |Type of visit=both
+}}{{#subobject:
+ |Person=John Maier |Place visited=Greece  |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Yan Chow |Place visited=Canada |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Yan Chow |Place visited=,USA |Type of visit=business
+}}{{#subobject:
+ |Person=Yan Chow |Place visited=China  |Type of visit=business
+}}{{#subobject:
+ |Person=Mike Bloom |Place visited=Amsterdam |Type of visit=both
+}}{{#subobject:
+ |Person=Mike Bloom |Place visited=USA |Type of visit=both
+}}{{#subobject:
+ |Person=Charles Banning |Place visited=USA |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Charles Banning |Place visited=,Greece |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Charles Banning |Place visited=Andora |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Kevin Mikaelson |Place visited=USA |Type of visit=both
+}}{{#subobject:
+ |Person=Kevin Mikaelson |Place visited=Japan |Type of visit=business
+}}{{#subobject:
+ |Person=Kevin Mikaelson  |Place visited=Andora |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Charlotte Beans |Place visited=Prague |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Charlotte Beans |Place visited=USA |Type of visit=both
+}}{{#subobject:
+ |Person=Charlotte Beans |Place visited=Kazakhstan |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Yumi Tanaka |Place visited=USA |Type of visit=both
+}}{{#subobject:
+ |Person=Yumi Tanaka |Place visited=Greece |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Yumi Tanaka |Place visited=Amsterdam |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Rosalia Alvarez |Place visited=USA |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Rosalia Alvarez |Place visited=Canada |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Rosalia Alvarez |Place visited=China |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Mandy Rose |Place visited=Amsterdam |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Mandy Rose |Place visited=Russia |Type of visit=pleasure
+}}{{#subobject:
+ |Person=James Ross |Place visited=Amsterdam |Type of visit=business
+}}{{#subobject:
+ |Person=Evelyne Lynn |Place visited=Germany |Type of visit=business
+}}{{#subobject:
+ |Person=Evelyne Lynn |Place visited=Greece |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Evelyne Lynn |Place visited=Italy |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Michael Chester |Place visited=Amsterdam |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Michael Chester |Place visited=Germany |Type of visit=pleasure
+}}{{#subobject:
+ |Person=Michael Chester |Place visited=Thailand |Type of visit=pleasure
+}}
