@@ -223,7 +223,7 @@ class PropertiesQueryPage extends QueryPage {
 		$typeProperty = new DIProperty( '_TYPE' );
 		$types = $this->store->getPropertyValues( $property->getDiWikiPage(), $typeProperty );
 
-		if ( count( $types ) >= 1 ) {
+		if ( is_array( $types ) && count( $types ) >= 1 ) {
 			$typeDataValue = DataValueFactory::getInstance()->newDataValueByItem( current( $types ), $typeProperty );
 			$typestring = $typeDataValue->getLongHTMLText( $this->getLinker() );
 		} else {

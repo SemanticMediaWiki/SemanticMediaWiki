@@ -93,7 +93,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$resultWrapper = $this->getMockBuilder( '\FakeResultWrapper' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()

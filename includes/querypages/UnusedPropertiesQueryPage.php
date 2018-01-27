@@ -157,7 +157,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 			$types = $this->store->getPropertyValues( $property->getDiWikiPage(), new DIProperty( '_TYPE' ) );
 
-			if ( count( $types ) >= 1 ) {
+			if ( is_array( $types ) && count( $types ) >= 1 ) {
 				$typeDataValue = DataValueFactory::getInstance()->newDataValueByItem( current( $types ), new DIProperty( '_TYPE' ) );
 			} else {
 				$typeDataValue = SMWTypesValue::newFromTypeId( '_wpg' );

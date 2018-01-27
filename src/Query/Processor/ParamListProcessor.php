@@ -214,7 +214,7 @@ class ParamListProcessor {
 		// #1645
 		$parts = $showMode && $name == 0 ? $param : explode( '=', $param, 2 );
 
-		if ( count( $parts ) >= 2 ) {
+		if ( is_array( $parts ) && count( $parts ) >= 2 ) {
 			$p = strtolower( trim( $parts[0] ) );
 
 			// don't trim here, some parameters care for " "
