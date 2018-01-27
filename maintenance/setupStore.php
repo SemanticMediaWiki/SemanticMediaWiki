@@ -5,6 +5,8 @@ namespace SMW\Maintenance;
 use SMW\Store;
 use SMW\StoreFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\Connection\ConnectionManager;
+use SMW\Connection\CallbackConnectionProvider;
 use SMW\SQLStore\Installer;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
@@ -110,6 +112,24 @@ class SetupStore extends \Maintenance {
 			$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 			$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 		}
+
+		// #2963 Use the DB handler from the Maintenance script which may access
+		// the `$wgDBadminuser` instead of the regular `$wgDBuser`
+		$callbackConnectionProvider = new CallbackConnectionProvider( function() {
+				return $this->getDB( DB_MASTER );
+			}
+		);
+
+		$connectionManager = new ConnectionManager();
+
+		$connectionManager->registerConnectionProvider(
+			DB_MASTER,
+			$callbackConnectionProvider
+		);
+
+		$store->setConnectionManager(
+			$connectionManager
+		);
 
 		$store->setMessageReporter(
 			$messageReporter
