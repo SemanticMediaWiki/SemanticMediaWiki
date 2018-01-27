@@ -155,8 +155,8 @@ class QueryToken {
 
 		// Remove query related chars
 		$text = str_replace(
-			array( '*', '"', '~', '_' ),
-			array( '',  '',  '',  ' ' ),
+			array( '*', '"', '~', '_', '+', '-' ),
+			array( '',  '',  '',  ' ', '', '' ),
 			$text
 		);
 
