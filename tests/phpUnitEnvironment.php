@@ -74,7 +74,7 @@ class PHPUnitEnvironment {
 			return [
 				SemanticMediaWiki::getVersion(),
 				$this->getGitInfo( 'smw' ),
-				json_encode( SemanticMediaWiki::getEnvironment() )
+				str_replace( '\\\\', '\\', json_encode( SemanticMediaWiki::getEnvironment(), JSON_UNESCAPED_SLASHES ) )
 			];
 		}
 
