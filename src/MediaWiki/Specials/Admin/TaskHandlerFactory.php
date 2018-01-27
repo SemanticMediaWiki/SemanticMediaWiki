@@ -46,6 +46,77 @@ class TaskHandlerFactory {
 	 *
 	 * @return TableSchemaTaskHandler
 	 */
+	public function getTaskHandlerList( $user, $adminFeatures ) {
+
+		$handlers = [
+			// TaskHandler::SECTION_SCHEMA
+			$this->newTableSchemaTaskHandler(),
+
+			// TaskHandler::SECTION_DATAREPAIR
+			$this->newDataRefreshJobTaskHandler(),
+			$this->newDisposeJobTaskHandler(),
+			$this->newPropertyStatsRebuildJobTaskHandler(),
+			$this->newFulltextSearchTableRebuildJobTaskHandler(),
+
+			// TaskHandler::SECTION_DEPRECATION
+			$this->newDeprecationNoticeTaskHandler(),
+
+			// TaskHandler::SECTION_SUPPLEMENT
+			$this->newConfigurationListTaskHandler(),
+			$this->newOperationalStatisticsListTaskHandler(),
+			$this->newDuplicateLookupTaskHandler(),
+			$this->newEntityLookupTaskHandler( $user ),
+
+			// TaskHandler::SECTION_SUPPORT
+			$this->newSupportListTaskHandler()
+		];
+
+		$taskHandlerList = [
+			TaskHandler::SECTION_SCHEMA => [],
+			TaskHandler::SECTION_DATAREPAIR => [],
+			TaskHandler::SECTION_DEPRECATION => [],
+			TaskHandler::SECTION_SUPPLEMENT => [],
+			TaskHandler::SECTION_SUPPORT => [],
+			'actions' => []
+		];
+
+		foreach ( $handlers as $handler ) {
+
+			$handler->setEnabledFeatures(
+				$adminFeatures
+			);
+
+			switch ( $handler->getSection() ) {
+				case TaskHandler::SECTION_SCHEMA:
+					$taskHandlerList[TaskHandler::SECTION_SCHEMA][] = $handler;
+					break;
+				case TaskHandler::SECTION_DATAREPAIR:
+					$taskHandlerList[TaskHandler::SECTION_DATAREPAIR][] = $handler;
+					break;
+				case TaskHandler::SECTION_DEPRECATION:
+					$taskHandlerList[TaskHandler::SECTION_DEPRECATION][] = $handler;
+					break;
+				case TaskHandler::SECTION_SUPPLEMENT:
+					$taskHandlerList[TaskHandler::SECTION_SUPPLEMENT][] = $handler;
+					break;
+				case TaskHandler::SECTION_SUPPORT:
+					$taskHandlerList[TaskHandler::SECTION_SUPPORT][] = $handler;
+					break;
+			}
+
+			if ( $handler->hasAction() ) {
+				$taskHandlerList['actions'][] = $handler;
+			}
+		}
+
+		return $taskHandlerList;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return TableSchemaTaskHandler
+	 */
 	public function newTableSchemaTaskHandler() {
 		return new TableSchemaTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
 	}
@@ -82,8 +153,19 @@ class TaskHandlerFactory {
 	 *
 	 * @return EntityLookupTaskHandler
 	 */
-	public function newEntityLookupTaskHandler() {
-		return new EntityLookupTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+	public function newEntityLookupTaskHandler( $user = null ) {
+
+		$entityLookupTaskHandler = new EntityLookupTaskHandler(
+			$this->store,
+			$this->htmlFormRenderer,
+			$this->outputFormatter
+		);
+
+		$entityLookupTaskHandler->setUser(
+			$user
+		);
+
+		return $entityLookupTaskHandler;
 	}
 
 	/**

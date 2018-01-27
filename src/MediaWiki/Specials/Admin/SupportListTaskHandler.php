@@ -31,6 +31,24 @@ class SupportListTaskHandler extends TaskHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getSection() {
+		return self::SECTION_SUPPORT;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function hasAction() {
+		return false;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}

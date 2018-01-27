@@ -44,6 +44,24 @@ class DisposeJobTaskHandler extends TaskHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getSection() {
+		return self::SECTION_DATAREPAIR;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function hasAction() {
+		return true;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
