@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\Store;
 use SpecialPage;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 use SMW\Message;
@@ -99,109 +100,20 @@ class SpecialAdmin extends SpecialPage {
 			$outputFormatter
 		);
 
-		// DeprecationNoticeTaskHandler
-		$deprecationNoticeTaskHandler = $taskHandlerFactory->newDeprecationNoticeTaskHandler();
-
-		// DataRefreshJobTaskHandler
-		$dataRefreshJobTaskHandler = $taskHandlerFactory->newDataRefreshJobTaskHandler();
-
-		$dataRefreshJobTaskHandler->setEnabledFeatures(
+		$taskHandlerList = $taskHandlerFactory->getTaskHandlerList(
+			$this->getUser(),
 			$adminFeatures
 		);
 
-		// DisposeJobTaskHandler
-		$disposeJobTaskHandler = $taskHandlerFactory->newDisposeJobTaskHandler();
-
-		$disposeJobTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		// PropertyStatsRebuildJobTaskHandler
-		$propertyStatsRebuildJobTaskHandler = $taskHandlerFactory->newPropertyStatsRebuildJobTaskHandler();
-
-		$propertyStatsRebuildJobTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		// FulltextSearchTableRebuildJobTaskHandler
-		$fulltextSearchTableRebuildJobTaskHandler = $taskHandlerFactory->newFulltextSearchTableRebuildJobTaskHandler();
-
-		$fulltextSearchTableRebuildJobTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		// ConfigurationListTaskHandler
-		$configurationListTaskHandler = $taskHandlerFactory->newConfigurationListTaskHandler();
-
-		// OperationalStatisticsListTaskHandler
-		$operationalStatisticsListTaskHandler = $taskHandlerFactory->newOperationalStatisticsListTaskHandler();
-
-		// TableSchemaTaskHandler
-		$tableSchemaTaskHandler = $taskHandlerFactory->newTableSchemaTaskHandler();
-
-		$tableSchemaTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		// IdTaskHandler
-		$entityLookupTaskHandler = $taskHandlerFactory->newEntityLookupTaskHandler();
-
-		$entityLookupTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		$entityLookupTaskHandler->setUser(
-			$this->getUser()
-		);
-
-		// DuplicateLookupTaskHandler
-		$duplicateLookupTaskHandler = $taskHandlerFactory->newDuplicateLookupTaskHandler();
-
-		// SupportListTaskHandler
-		$supportListTaskHandler = $taskHandlerFactory->newSupportListTaskHandler();
-
-		$actionTaskList = array(
-			$dataRefreshJobTaskHandler,
-			$disposeJobTaskHandler,
-			$propertyStatsRebuildJobTaskHandler,
-			$fulltextSearchTableRebuildJobTaskHandler,
-			$tableSchemaTaskHandler,
-			$configurationListTaskHandler,
-			$operationalStatisticsListTaskHandler,
-			$entityLookupTaskHandler,
-			$duplicateLookupTaskHandler
-		);
-
-		foreach ( $actionTaskList as $actionTask ) {
+		foreach ( $taskHandlerList['actions'] as $actionTask ) {
 			if ( $actionTask->isTaskFor( $action ) ) {
 				return $actionTask->handleRequest( $this->getRequest() );
 			}
 		}
 
-		$supplementaryTaskList = array(
-			$configurationListTaskHandler,
-			$operationalStatisticsListTaskHandler,
-			$entityLookupTaskHandler,
-			$duplicateLookupTaskHandler
+		$output->addHTML(
+			$this->getHtml( $taskHandlerList )
 		);
-
-		$dataRepairTaskList = array(
-			$dataRefreshJobTaskHandler,
-			$disposeJobTaskHandler,
-			$propertyStatsRebuildJobTaskHandler,
-			$fulltextSearchTableRebuildJobTaskHandler
-		);
-
-		// General intro
-		$html = $this->getHtml(
-			$deprecationNoticeTaskHandler,
-			$tableSchemaTaskHandler,
-			$dataRepairTaskList,
-			$supplementaryTaskList,
-			$supportListTaskHandler
-		);
-
-		$output->addHTML( $html );
 	}
 
 	/**
@@ -211,9 +123,11 @@ class SpecialAdmin extends SpecialPage {
 		return 'smw_group';
 	}
 
-	private function getHtml( $deprecationNoticeTaskHandler, $tableSchemaTaskHandler, $dataRepairTaskList, $supplementaryTaskList, $supportListTaskHandler ) {
+	private function getHtml( $taskHandlerList ) {
 
-		$dataRebuildSection = $tableSchemaTaskHandler->getHtml();
+		$tableSchemaTaskList = $taskHandlerList[TaskHandler::SECTION_SCHEMA];
+
+		$dataRebuildSection = end( $tableSchemaTaskList )->getHtml();
 		$dataRebuildSection .= Html::rawElement(
 			'hr',
 			[
@@ -231,6 +145,7 @@ class SpecialAdmin extends SpecialPage {
 		);
 
 		$list = '';
+		$dataRepairTaskList = $taskHandlerList[TaskHandler::SECTION_DATAREPAIR];
 
 		foreach ( $dataRepairTaskList as $dataRepairTask ) {
 			$list .= $dataRepairTask->getHtml();
@@ -251,6 +166,7 @@ class SpecialAdmin extends SpecialPage {
 		);
 
 		$list = '';
+		$supplementaryTaskList = $taskHandlerList[TaskHandler::SECTION_SUPPLEMENT];
 
 		foreach ( $supplementaryTaskList as $supplementaryTask ) {
 			$list .= $supplementaryTask->getHtml();
@@ -261,6 +177,9 @@ class SpecialAdmin extends SpecialPage {
 				$list
 			)
 		);
+
+		$deprecationNoticeTaskList = $taskHandlerList[TaskHandler::SECTION_DEPRECATION];
+		$deprecationNoticeTaskHandler = end( $deprecationNoticeTaskList );
 
 		$deprecationNotices = $deprecationNoticeTaskHandler->getHtml();
 		$isHidden = $deprecationNotices === '' ? HtmlVTabs::IS_HIDDEN : false;
@@ -300,6 +219,9 @@ class SpecialAdmin extends SpecialPage {
 				$findActiveLink
 			)
 		);
+
+		$supportTaskList = $taskHandlerList[TaskHandler::SECTION_SUPPORT];
+		$supportListTaskHandler = end( $supportTaskList );
 
 		// Content
 		$html .= HtmlVTabs::content(

@@ -14,6 +14,15 @@ use SMW\Message;
 abstract class TaskHandler {
 
 	/**
+	 * Identifies an individual section to where the task is associated with.
+	 */
+	const SECTION_SUPPLEMENT = 'section.supplement';
+	const SECTION_SCHEMA = 'section.schema';
+	const SECTION_DATAREPAIR = 'section.datarepair';
+	const SECTION_DEPRECATION ='section.deprecation';
+	const SECTION_SUPPORT ='section.support';
+
+	/**
 	 * @var integer
 	 */
 	private $enabledFeatures = 0;
@@ -26,7 +35,7 @@ abstract class TaskHandler {
 	 * @return boolean
 	 */
 	public function isEnabledFeature( $feature ) {
-		return ( $this->enabledFeatures & $feature ) != 0;
+		return ( ( $this->enabledFeatures & $feature ) == $feature );
 	}
 
 	/**
@@ -36,6 +45,24 @@ abstract class TaskHandler {
 	 */
 	public function setEnabledFeatures( $enabledFeatures ) {
 		$this->enabledFeatures = $enabledFeatures;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getSection() {
+		return '';
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function hasAction() {
+		return false;
 	}
 
 	/**
