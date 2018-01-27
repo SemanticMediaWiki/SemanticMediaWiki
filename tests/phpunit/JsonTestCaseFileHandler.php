@@ -89,6 +89,13 @@ class JsonTestCaseFileHandler {
 				$reason = $value;
 			}
 
+			// Allows to define { "skip-on": { "foo": [ "not", "Exclude all except foo ..."] }
+			if ( $versionToSkip === 'not' && $identifier === $id ) {
+				continue;
+			} elseif ( $versionToSkip === 'not' && $identifier !== $id ) {
+				return true;
+			}
+
 			if ( $identifier === $id ) {
 				return true;
 			}

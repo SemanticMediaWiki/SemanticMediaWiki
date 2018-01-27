@@ -258,7 +258,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $this->getStore() instanceof \SMWSparqlStore && $jsonTestCaseFileHandler->requiredToSkipForConnector( $GLOBALS['smwgSparqlRepositoryConnector'] ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->connectorId ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 	}
