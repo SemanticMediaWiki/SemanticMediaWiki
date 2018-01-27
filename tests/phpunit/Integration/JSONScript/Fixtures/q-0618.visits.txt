@@ -1,0 +1,27 @@
+<pre>
+Andy Mars,John Maier
+Andy Mars,Peter Dunn
+Andy Mars,Yan Chow
+Andy Mars,Mike Bloom
+Andy Mars,Charles Banning
+Andy Mars,Kevin Mikaelson
+John Maier,Charlotte Beans
+John Maier,James Ross
+John Maier,Evelyne Lynn
+Peter Dunn,Yumi Tanaka
+Peter Dunn,Michael Chester
+Yan Chow,Rosalia Alvarez
+Mike Bloom,Mandy Rose
+</pre>
+
+{{#subobject:Andy Mars
+ |Person=Andy Mars|Has friend=John Maier,Peter Dunn,Yan Chow,Mike Bloom,Charles Banning,Kevin Mikaelson |+sep=, |@category=Friends
+}}{{#subobject:John Maier
+ |Person=John Maier |Has friend=Charlotte Beans, James Ross,Evelyne Lynn |+sep=, |@category=Friends
+}}{{#subobject:Peter Dunn
+ |Person=Peter Dunn |Has friend=Yumi Tanaka,Michael Chester |+sep=, |@category=Friends
+}}{{#subobject:Yan Chow
+ |Person=Yan Chow |Has friend=Rosalia Alvarez|+sep=, |@category=Friends
+}}{{#subobject:Mike Bloom
+ |Person=Mike Bloom |Has friend=Mandy Rose|+sep=, |@category=Friends
+}}
