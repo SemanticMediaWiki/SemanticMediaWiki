@@ -300,6 +300,21 @@ Hooks::register( 'SMW::Exporter::AddExpDataAfterPageSerializationComplete', func
 } );
 </pre>
 
+### SMW::SQLStore::EntityReferenceCleanUpComplete
+
+* Version: 3.0
+* Description: Hook allows to get information about which entities have been removed
+* Reference class: `PropertyTableIdReferenceDisposer`
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::SQLStore::EntityReferenceCleanUpComplete', function( $store, $id, $subject, $isRedirect ) {
+
+	return true;
+} );
+</pre>
+
 ## Other available hooks
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.

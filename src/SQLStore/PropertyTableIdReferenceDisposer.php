@@ -196,6 +196,11 @@ class PropertyTableIdReferenceDisposer {
 
 		$this->doRemoveEntityReferencesById( $id, $isRedirect );
 		$this->connection->endAtomicTransaction( __METHOD__ );
+
+		\Hooks::run(
+			'SMW::SQLStore::EntityReferenceCleanUpComplete',
+			[ $this->store, $id, $subject, $isRedirect ]
+		);
 	}
 
 	private function doRemoveEntityReferencesById( $id, $isRedirect ) {
