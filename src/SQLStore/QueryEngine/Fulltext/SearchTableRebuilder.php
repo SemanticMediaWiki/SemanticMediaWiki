@@ -325,9 +325,11 @@ class SearchTableRebuilder {
 			$indexableText = $dataItem instanceof DataItem ? $dataItem->getSortKey() : '';
 		} elseif ( isset( $row->o_serialized ) ) {
 			$indexableText = $row->o_blob === null ? $row->o_serialized : $row->o_blob;
-		} elseif ( isset( $row->o_blob ) && isset( $row->o_hash ) ) {
-			$indexableText = $row->o_blob === null ? $row->o_hash : $row->o_blob;
-		}
+		} elseif ( isset( $row->o_blob ) ) {
+			$indexableText = $row->o_blob;
+		} elseif ( isset( $row->o_hash ) ) {
+			$indexableText = $row->o_hash;
+ 		}
 
 		return trim( $indexableText );
 	}
