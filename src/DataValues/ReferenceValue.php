@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\DataModel\ContainerSemanticData;
 use SMWDataItem as DataItem;
+use SMWDITime as DITime;
 use SMWDataValue as DataValue;
 use SMWDIContainer as DIContainer;
 
@@ -216,8 +217,19 @@ class ReferenceValue extends AbstractMultiValue {
 				);
 
 				if ( $dataValue->isValid() ) { // valid DV: keep
-					$containerSemanticData->addPropertyObjectValue( $property, $dataValue->getDataItem() );
-					$sortKeys[] = $dataValue->getDataItem()->getSortKey();
+					$dataItem = $dataValue->getDataItem();
+
+					$containerSemanticData->addPropertyObjectValue(
+						$property,
+						$dataItem
+					);
+
+					// Chronological order determined first
+					if ( $dataItem instanceof DITime ) {
+						array_unshift( $sortKeys, $dataItem->getSortKey() );
+					} else {
+						$sortKeys[] = $dataItem->getSortKey();
+					}
 
 					$index++;
 					$empty = false;

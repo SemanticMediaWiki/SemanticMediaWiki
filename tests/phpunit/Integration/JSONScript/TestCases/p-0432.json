@@ -38,6 +38,18 @@
 		{
 			"page": "Example/P0432/4",
 			"contents": "[[Has number with ref:: {{#show: Example/P0432/1 |?Has number with ref |link=none }}]]"
+		},
+		{
+			"page": "Example/P0432/5",
+			"contents": "{{#subobject: Has number with ref=999;1.1.2000 12:00;http://example.org}} {{#subobject: Has number with ref=999;1.1.2000 13:00;http://example.org}}"
+		},
+		{
+			"page": "Example/P0432/Q5.1",
+			"contents": "{{#ask: [[Has number with ref::999]] |order=asc |link=none}}"
+		},
+		{
+			"page": "Example/P0432/Q5.2",
+			"contents": "{{#ask: [[Has number with ref::999]] |order=desc |link=none}}"
 		}
 	],
 	"tests": [
@@ -108,6 +120,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 (#show + link=none)",
 			"subject": "Example/P0432/4",
 			"store": {
@@ -131,6 +144,32 @@
 			"assert-output": {
 				"to-contain": [
 					"123<span class=\"smw-reference smw-reference-indicator smw-highlighter smwttinline\" data-title=\"Reference\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (chronological order, asc)",
+			"subject": "Example/P0432/Q5.1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-output": {
+				"to-contain": [
+					"<p>Example/P0432/5#_1c26bb9aac2df0c73a22cacd64a2b56a, Example/P0432/5#_f3d26f55b0c2b1edf58613dd875ba0e5"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (chronological order, desc)",
+			"subject": "Example/P0432/Q5.2",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-output": {
+				"to-contain": [
+					"<p>Example/P0432/5#_f3d26f55b0c2b1edf58613dd875ba0e5, Example/P0432/5#_1c26bb9aac2df0c73a22cacd64a2b56a"
 				]
 			}
 		}
