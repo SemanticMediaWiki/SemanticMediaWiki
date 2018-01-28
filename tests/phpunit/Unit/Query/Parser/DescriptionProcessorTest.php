@@ -67,7 +67,7 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			new DIWikiPage( 'Bar', NS_MAIN ),
+			new DIWikiPage( 'bar', NS_MAIN ),
 			$valueDescription->getDataItem()
 		);
 	}

@@ -125,10 +125,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		// transformed by the Title object
 		// If the vaue contains a valid NS then use the Title to create a correct
 		// instance to distinguish [[~Foo*]] from [[Help:~Foo*]]
-		if ( $this->getOption( self::OPT_QUERY_COMP_CONTEXT ) ) {
-			if ( ( $title = Title::newFromText( $value ) ) !== null && $title->getNamespace() !== NS_MAIN ) {
-				return $this->m_dataitem = SMWDIWikiPage::newFromTitle( $title );
-			} else {
+		if ( $this->getOption( self::OPT_QUERY_COMP_CONTEXT ) || $this->getOption( self::OPT_QUERY_CONTEXT ) ) {
+			if ( ( $title = Title::newFromText( $value ) ) !== null ) {
+				// T:P0427 If the user value says `ab c*` then make sure to use this one
+				// instead of the transformed DBKey which would be `Ab c*`
+				return $this->m_dataitem = SMWDIWikiPage::newFromTitle( $title, true );
+			// T:P0902 (`[[Help:]]`)
+			} elseif( !Localizer::getInstance()->getNamespaceIndexByName( substr( $value, 0, -1 ) ) ) {
 				return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
 			}
 		}
