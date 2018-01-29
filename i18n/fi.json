@@ -230,6 +230,7 @@
 	"smw-admin-smwhomepage": "Semantic MediaWikin täydellinen käyttäjän opas löytyy osoitteesta <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Ohjelmistovirheet voi raportoida <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHubiin</a>.",
 	"smw-admin-questions": "Jos sinulla on kysymyksiä tai ehdotuksia, liity keskusteluun <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Semanttisen MediaWikin käyttäjäfoorumilla</a>.",
+	"smw-property-label-similarity-threshold": "Kynnys:",
 	"smw_adminlinks_datastructure": "Tietorakenne",
 	"smw_adminlinks_inlinequerieshelp": "Upotettujen kyselyjen ohje",
 	"smw-createproperty-isproperty": "Se on tyypin $1 ominaisuus.",
@@ -239,6 +240,7 @@
 	"smw-paramdesc-category-userparam": "Parametri, jotka välitetään mallineeseen",
 	"smw-info-par-message": "Näytettävä sanoma.",
 	"prefs-smw": "Semantic MediaWiki",
+	"prefs-general-options": "Yleiset asetukset",
 	"prefs-ask-options": "Semanttiset hakuvalinnat",
 	"smw-prefs-ask-options-tooltip-display": "Näytä parametri työkaluvihjeenä",
 	"smw-prefs-ask-options-collapsed-default": "Mahdollistaa valintaruudun laajentamisen oletusarvoisesti",
@@ -282,5 +284,8 @@
 	"smw-format-datatable-previous": "Edellinen",
 	"smw-format-datatable-toolbar-export": "Vie",
 	"smw-property-reserved-category": "Luokka",
-	"smw-category": "Luokka"
+	"smw-category": "Luokka",
+	"smw-help": "Ohje",
+	"smw-property-predefined-label-skey": "Pikanäppäin",
+	"smw-processing": "Käsitellään..."
 }

@@ -11,7 +11,8 @@
 			"Kghbln",
 			"Obsuser",
 			"Srdjan m",
-			"Милан Јелисавчић"
+			"Милан Јелисавчић",
+			"Acamicamacaraca"
 		]
 	},
 	"smw_viewasrdf": "RDF довод",
@@ -107,7 +108,7 @@
 	"types": "Типови",
 	"smw_types_docu": "Списак [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes доступних врста података] са сваком [https://www.semantic-mediawiki.org/wiki/Help:Datatype врстом] представља јединствен скуп атрибута који описују вредност у смислу карактеристика чување и излагање које су наследне по додељеним својствима.",
 	"ask": "Семантичка претрага",
-	"smw_ask_sortby": "Сортирај у колоне (опционо)",
+	"smw_ask_sortby": "Сортирај у колоне (необавезно)",
 	"smw_ask_ascorder": "Растући",
 	"smw_ask_descorder": "Опадајући",
 	"smw_ask_submit": "Пронађи резултате",
@@ -168,7 +169,7 @@
 	"smw-admin-dbbutton": "Покретање или ажурирање табела",
 	"smw-admin-announce": "Најавите Вашу викију",
 	"smw-admin-deprecation-notice-title": "Напомене о застаревању",
-	"smw-admin-deprecation-notice-docu": "Следећа секција садржи подешавања која су застарела или су уклоњена али су детектована као активна на овој Вики. Очекује се да ће се неким будућим ажурирањем уклонити подрша за ова подешавања.",
+	"smw-admin-deprecation-notice-docu": "Следећи одељак садржи подешавања која су застарела или су уклоњена али су детектована као активна на овој Вики. Очекује се да ће се неким будућим ажурирањем уклонити подрша за ова подешавања.",
 	"smw-admin-deprecation-notice-config-notice": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> је застарео параметар и биће уклоњен у верзији $2",
 	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> је замењен параметар са параметром <code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> је уклоњен параметар у верзији $2",
@@ -211,7 +212,7 @@
 	"smw-format-datatable-infofiltered": "(филтрирано од _MAX_ укупно ставки)",
 	"smw-format-datatable-infothousands": ".",
 	"smw-format-datatable-lengthmenu": "Прикажи _MENU_ ставки",
-	"smw-format-datatable-loadingrecords": "Учитавање...",
+	"smw-format-datatable-loadingrecords": "Учитавам...",
 	"smw-format-datatable-processing": "Обрада...",
 	"smw-format-datatable-search": "Претрага:",
 	"smw-format-datatable-zerorecords": "Нема нађених одговарајућих података",

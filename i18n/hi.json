@@ -12,7 +12,9 @@
 			"Sachinkatiyar",
 			"Sfic",
 			"Shypoetess",
-			"चक्रपाणी"
+			"चक्रपाणी",
+			"Bhatakati aatma",
+			"Swapnil.Karambelkar"
 		]
 	},
 	"smw-title": "सिमेंटिक मीडियाविकि",
@@ -139,7 +141,7 @@
 	"smw-browse-show-group": "समुह दिखाये",
 	"smw-browse-hide-group": "समुह छुपाए",
 	"smw-noscript": "इस प्रष्ठ या क्रिया पर काम करने के लिए जावास्क्रिप्ट आवश्यक है, कृपया अपने ब्राउज़र में जावास्क्रिप्ट सक्षम करें या जावास्क्रिप्ट समर्थित ब्राउज़र का उपयोग करें ताकि कार्यक्षमता का लाभ दिया जा सके और अनुरोध पर उपलब्ध कराया जाता है। आगे की सहायता के लिए, कृपया सहायता प्रष्ठ पर नजर डालें [https://www.semantic-mediawiki.org/wiki/Help:Noscript noscript]।",
-	"smw_pp_from": "पेज से",
+	"smw_pp_from": "पृष्ठ से",
 	"smw_pp_type": "गुणधर्म",
 	"smw_pp_submit": "परिणाम खोजें",
 	"smw_result_prev": "पिछला",
@@ -177,6 +179,7 @@
 	"smw-admin-objectid": "वस्तु आईडी:",
 	"smw-livepreview-loading": "लोड हो रहा है...",
 	"smw-sp-searchbyproperty-resultlist-header": "परिणामों की सूची",
+	"smw-search-input-assistance": "उपलब्ध संपत्तियों और श्रेणियों के पूर्व चयन को सरल करने के लिए [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance input assistant] भी सक्षम है।",
 	"log-name-smw": "सिमेंटिक मीडियाविकि लॉग",
 	"log-show-hide-smw": "$1 सिमेंटिक मीडियाविकि लॉग",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 आयात]]",
