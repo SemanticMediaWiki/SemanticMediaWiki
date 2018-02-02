@@ -21,7 +21,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'instance', 1, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.time( '1362200400' );
 		assert.ok( result instanceof Object, pass + 'the smw.dataItem.time instance was accessible' );
@@ -33,7 +34,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getDIType', 1, function ( assert ) {
+	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.time( '1362200400' );
 		assert.equal( result.getDIType(), '_dat', pass + 'returned _dat' );
@@ -45,7 +47,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getMwTimestamp', 2, function ( assert ) {
+	QUnit.test( 'getMwTimestamp', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		result = new smw.dataItem.time( '1362200400' );
@@ -61,7 +65,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getDate', 1, function ( assert ) {
+	QUnit.test( 'getDate', function ( assert ) {
+		assert.expect( 1 );
+
 		var result;
 
 		result = new smw.dataItem.time( '1362200400' );
@@ -74,7 +80,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getISO8601Date', 1, function ( assert ) {
+	QUnit.test( 'getISO8601Date', function ( assert ) {
+		assert.expect( 1 );
+
 		var result;
 
 		result = new smw.dataItem.time( '1362200400' );
@@ -87,7 +95,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getTimeString', 1, function ( assert ) {
+	QUnit.test( 'getTimeString', function ( assert ) {
+		assert.expect( 1 );
+
 		var result;
 
 		result = new smw.dataItem.time( '1362200400' );
@@ -100,7 +110,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getMediaWikiDate', 1, function ( assert ) {
+	QUnit.test( 'getMediaWikiDate', function ( assert ) {
+		assert.expect( 1 );
+
 		var result;
 
 		// Use as helper to fetch language dep. month name

@@ -21,7 +21,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'instance', 1, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.property( 'Has test' );
 		assert.ok( result instanceof Object, pass + 'the smw.dataItem.property instance was accessible' );
@@ -33,7 +34,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getLabel', 1, function ( assert ) {
+	QUnit.test( 'getLabel', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.property( 'Has test' );
 		assert.equal( result.getLabel(), 'Has test', pass + 'a label was returned' );
@@ -45,7 +47,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getHtml', 2, function ( assert ) {
+	QUnit.test( 'getHtml', function ( assert ) {
+		assert.expect( 2 );
 
 		var result = new smw.dataItem.property( 'Has type' );
 		var href = mw.util.wikiGetlink( 'Property:');

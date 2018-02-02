@@ -37,7 +37,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'instance', 1, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
+
 		var tooltip = new smw.util.tooltip();
 
 		assert.ok( tooltip instanceof Object, 'smw.util.tooltip instance was accessible' );
@@ -49,7 +51,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'show', 2, function ( assert ) {
+	QUnit.test( 'show', function ( assert ) {
+		assert.expect( 2 );
+
 		var tooltip = new smw.util.tooltip();
 		var fixture = $( '#qunit-fixture' );
 
@@ -71,7 +75,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'add', 3, function ( assert ) {
+	QUnit.test( 'add', function ( assert ) {
+		assert.expect( 3 );
+
 		var tooltip = new smw.util.tooltip();
 		var fixture = $( '#qunit-fixture' );
 
