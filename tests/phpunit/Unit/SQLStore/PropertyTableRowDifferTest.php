@@ -19,6 +19,19 @@ use SMW\SQLStore\SQLStore;
  */
 class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
+	private $propertyTableRowMapper;
+
+	protected function setUp() {
+
+		$this->propertyTableRowMapper = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowMapper' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyTableRowMapper->expects( $this->any() )
+			->method( 'mapToRows' )
+			->will( $this->returnValue( [ [], [], [], [] ] ) );
+	}
+
 	public function testCanConstruct() {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -27,7 +40,7 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\PropertyTableRowDiffer',
-			new PropertyTableRowDiffer( $store )
+			new PropertyTableRowDiffer( $store, $this->propertyTableRowMapper )
 		);
 	}
 
@@ -46,7 +59,10 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( $propertyTables ) );
 
-		$instance = new PropertyTableRowDiffer( $store );
+		$instance = new PropertyTableRowDiffer(
+			$store,
+			$this->propertyTableRowMapper
+		);
 
 		$result = $instance->computeTableRowDiff(
 			42,
@@ -74,7 +90,11 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( $propertyTables ) );
 
-		$instance = new PropertyTableRowDiffer( $store );
+		$instance = new PropertyTableRowDiffer(
+			$store,
+			$this->propertyTableRowMapper
+		);
+
 		$instance->setChangeOp( new ChangeOp( $subject ) );
 
 		$result = $instance->computeTableRowDiff(
@@ -119,7 +139,11 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( $propertyTables ) );
 
-		$instance = new PropertyTableRowDiffer( $store );
+		$instance = new PropertyTableRowDiffer(
+			$store,
+			$this->propertyTableRowMapper
+		);
+
 		$instance->setChangeOp( new ChangeOp( $subject ) );
 
 		$result = $instance->computeTableRowDiff(

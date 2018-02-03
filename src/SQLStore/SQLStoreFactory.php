@@ -508,7 +508,17 @@ class SQLStoreFactory {
 	 * @return PropertyTableRowDiffer
 	 */
 	public function newPropertyTableRowDiffer() {
-		return new PropertyTableRowDiffer( $this->store );
+
+		$propertyTableRowMapper = new PropertyTableRowMapper(
+			$this->store
+		);
+
+		$propertyTableRowDiffer = new PropertyTableRowDiffer(
+			$this->store,
+			$propertyTableRowMapper
+		);
+
+		return $propertyTableRowDiffer;
 	}
 
 	/**
@@ -607,7 +617,15 @@ class SQLStoreFactory {
 	 * @return ChangeOp
 	 */
 	public function newChangeOp( DIWikiPage $subject ) {
-		return new ChangeOp( $subject );
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+		$changeOp = new ChangeOp( $subject );
+
+		$changeOp->setTextItemsFlag(
+			$settings->get( 'smwgEnabledFulltextSearch' )
+		);
+
+		return $changeOp;
 	}
 
 }

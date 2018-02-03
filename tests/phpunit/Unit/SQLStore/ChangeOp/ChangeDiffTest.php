@@ -20,7 +20,7 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			ChangeDiff::class,
-			new ChangeDiff( DIWikiPage::newFromText( 'Foo' ), [], [] )
+			new ChangeDiff( DIWikiPage::newFromText( 'Foo' ), [], [], [] )
 		);
 	}
 
@@ -29,6 +29,7 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$instance = new ChangeDiff(
 			$subject,
+			[],
 			[],
 			[]
 		);
@@ -43,6 +44,7 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ChangeDiff(
 			DIWikiPage::newFromText( 'Foo' ),
+			[],
 			[],
 			[ 'Foo' => 42 ]
 		);
@@ -71,6 +73,7 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ChangeDiff(
 			DIWikiPage::newFromText( 'Foo' ),
 			[ $tableChangeOp ],
+			[],
 			[ 'Foo' => 42 ]
 		);
 
@@ -98,6 +101,7 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ChangeDiff(
 			DIWikiPage::newFromText( 'Foo' ),
 			[ $tableChangeOp ],
+			[],
 			[ 'Foo' => 42 ]
 		);
 
@@ -108,6 +112,36 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$instance,
 			ChangeDiff::fetch( $cache, $subject )
+		);
+	}
+
+	public function testChangeList() {
+
+		$instance = new ChangeDiff(
+			DIWikiPage::newFromText( 'Foo' ),
+			[],
+			[],
+			[]
+		);
+
+		$instance->setChangeList( 'Foo', [ '42', 1001 ] );
+
+		$this->assertEquals(
+			[ '42', 1001 ],
+			$instance->getChangeListByType( 'Foo' )
+		);
+	}
+
+	public function FetchFromCache() {
+
+		$changeDiff = ChangeDiff::fetch(
+			\SMW\ApplicationFactory::getInstance()->getCache(),
+			DIWikiPage::newFromText( 'DifferentSort' )
+		);
+
+		$this->assertInstanceOf(
+			ChangeDiff::class,
+			$changeDiff
 		);
 	}
 

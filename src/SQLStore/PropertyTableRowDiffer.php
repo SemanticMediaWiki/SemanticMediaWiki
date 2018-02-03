@@ -43,10 +43,11 @@ class PropertyTableRowDiffer {
 	 * @since 2.3
 	 *
 	 * @param Store $store
+	 * @param PropertyTableRowMapper $propertyTableRowMapper
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, PropertyTableRowMapper $propertyTableRowMapper ) {
 		$this->store = $store;
-		$this->propertyTableRowMapper = new PropertyTableRowMapper( $store );
+		$this->propertyTableRowMapper = $propertyTableRowMapper;
 	}
 
 	/**
@@ -95,7 +96,9 @@ class PropertyTableRowDiffer {
 
 		$tablesDeleteRows = array();
 		$tablesInsertRows = array();
+
 		$propertyList = [];
+		$textItems = [];
 
 		$newHashes = array();
 
@@ -103,7 +106,7 @@ class PropertyTableRowDiffer {
 			$this->setChangeOp( new ChangeOp( $semanticData->getSubject() ) );
 		}
 
-		list( $newData, $propertyList, $fixedPropertyList ) = $this->propertyTableRowMapper->mapToRows(
+		list( $newData, $textItems, $propertyList, $fixedPropertyList ) = $this->propertyTableRowMapper->mapToRows(
 			$sid,
 			$semanticData
 		);
@@ -174,6 +177,11 @@ class PropertyTableRowDiffer {
 				);
 			}
 		}
+
+		$this->changeOp->addTextItems(
+			$sid,
+			$textItems
+		);
 
 		$this->changeOp->addDataOp(
 			$semanticData->getSubject()->getHash(),

@@ -179,25 +179,6 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param Title|null $title
-	 * @param array $parameters
-	 */
-	public function dispatchTempChangeOpPurgeJobWith( Title $title = null, $parameters = array() ) {
-
-		if ( $title === null || $parameters === array() ) {
-			return;
-		}
-
-		if ( !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === null ) {
-			return;
-		}
-
-		return $this->dispatchJobRequestWith( 'SMW\TempChangeOpPurgeJob', $title, $parameters );
-	}
-
-	/**
 	 * @since 2.3
 	 *
 	 * @param string $type
@@ -271,8 +252,7 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 		$allowedJobs = array(
 			'SMW\ParserCachePurgeJob',
 			'SMW\UpdateJob',
-			'SMW\FulltextSearchTableUpdateJob',
-			'SMW\TempChangeOpPurgeJob'
+			'SMW\FulltextSearchTableUpdateJob'
 		);
 
 		return in_array( $type, $allowedJobs );

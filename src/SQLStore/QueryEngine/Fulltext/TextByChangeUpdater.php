@@ -8,10 +8,10 @@ use SMW\DeferredRequestDispatchManager;
 use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
-use SMW\SQLStore\ChangeOp\TempChangeOpStore;
+use Onoi\Cache\Cache;
 use SMW\SQLStore\ChangeOp\ChangeOp;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Utils\Timer;
 
 /**
@@ -20,7 +20,9 @@ use SMW\Utils\Timer;
  *
  * @author mwjames
  */
-class TextByChangeUpdater implements LoggerAwareInterface {
+class TextByChangeUpdater {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var Database
@@ -28,24 +30,14 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 	private $connection;
 
 	/**
+	 * @var Cache
+	 */
+	private $cache;
+
+	/**
 	 * @var SearchTableUpdater
 	 */
 	private $searchTableUpdater;
-
-	/**
-	 * @var TextSanitizer
-	 */
-	private $textSanitizer;
-
-	/**
-	 * @var TempChangeOpStore
-	 */
-	private $tempChangeOpStore;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
 
 	/**
 	 * @var boolean
@@ -61,26 +53,14 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 	 * @since 2.5
 	 *
 	 * @param Database $connection
+	 * @param Cache $cache
 	 * @param SearchTableUpdater $searchTableUpdater
 	 * @param TextSanitizer $textSanitizer
-	 * @param TempChangeOpStore $tempChangeOpStore
 	 */
-	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater, TextSanitizer $textSanitizer, TempChangeOpStore $tempChangeOpStore ) {
+	public function __construct( Database $connection, Cache $cache, SearchTableUpdater $searchTableUpdater ) {
 		$this->connection = $connection;
+		$this->cache = $cache;
 		$this->searchTableUpdater = $searchTableUpdater;
-		$this->textSanitizer = $textSanitizer;
-		$this->tempChangeOpStore = $tempChangeOpStore;
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
 	}
 
 	/**
@@ -125,25 +105,26 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 		// Update within the same transaction as started by SMW::SQLStore::AfterDataUpdateComplete
 		if ( !$this->asDeferredUpdate || $this->isCommandLineMode ) {
-			return $this->pushUpdatesFromPropertyTableDiff( $changeOp );
+			return $this->doUpdateFromChangeDiff( $changeOp->newChangeDiff() );
 		}
 
 		if ( !$this->canPostUpdate( $changeOp ) ) {
 			return;
 		}
 
-		$slot = $this->tempChangeOpStore->createSlotFrom(
-			$changeOp
-		);
-
 		$deferredRequestDispatchManager->dispatchFulltextSearchTableUpdateJobWith(
 			$changeOp->getSubject()->getTitle(),
 			array(
-				'slot:id' => $slot
+				'slot:id' => $changeOp->getSubject()->getHash()
 			)
 		);
 
-		$this->log( __METHOD__ . ' (procTime in sec: '. Timer::getElapsedTime( __METHOD__, 5 ) . ')' );
+		$context = [
+			'method' => __METHOD__,
+			'procTime' => Timer::getElapsedTime( __METHOD__, 5 )
+		];
+
+		$this->logger->info( 'Fulltext table update scheduled (procTime in sec: {procTime})' );
 	}
 
 	/**
@@ -159,23 +140,14 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 			return;
 		}
 
-		Timer::start( __METHOD__ );
+		$subject = DIWikiPage::doUnserialize( $parameters['slot:id'] );
+		$changeDiff = ChangeDiff::fetch( $this->cache, $subject );
 
-		$changeOp = $this->tempChangeOpStore->newChangeOp(
-			$parameters['slot:id']
-		);
-
-		if ( $changeOp === null ) {
-			return $this->log( __METHOD__ . ' Failed compositePropertyTableDiff from slot: ' . $parameters['slot:id'] );
+		if ( $changeDiff === false ) {
+			return $this->logger->info( 'Failed fulltext update for ' . $parameters['slot:id'] );
 		}
 
-		$this->pushUpdatesFromPropertyTableDiff( $changeOp );
-
-		$this->tempChangeOpStore->delete(
-			$parameters['slot:id']
-		);
-
-		$this->log( __METHOD__ . ' (procTime in sec: '. Timer::getElapsedTime( __METHOD__, 5 ) . ')' );
+		$this->doUpdateFromChangeDiff( $changeDiff );
 	}
 
 	/**
@@ -183,7 +155,7 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function pushUpdatesFromPropertyTableDiff( ChangeOp $changeOp ) {
+	public function doUpdateFromChangeDiff( ChangeDiff $changeDiff ) {
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return;
@@ -191,13 +163,10 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 
 		Timer::start( __METHOD__ );
 
-		$dataChangeOps = $changeOp->getDataOps();
-		$diffChangeOps = $changeOp->getTableChangeOps();
+		$textItems = $changeDiff->getTextItems();
+		$diffChangeOps = $changeDiff->getTableChangeOps();
 
-		$insertIds = $changeOp->getChangedEntityIdListByType(
-			$changeOp::OP_INSERT
-		);
-
+		$changeList = $changeDiff->getChangeListByType( 'insert' );
 		$updates = array();
 
 		// Ensure that any delete operation is being accounted for to avoid that
@@ -206,14 +175,15 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 			$this->doDeleteFromTableChangeOps( $diffChangeOps );
 		}
 
-		if ( $insertIds === array() ) {
-			return;
-		}
-
 		// Build a composite of replacements where a change occurred, this my
 		// contain some false positives
-		foreach ( $dataChangeOps as $dataChangeOp ) {
-			$this->doCreateCompositeUpdate( $dataChangeOp, $updates, $insertIds );
+		foreach ( $textItems as $sid => $textItem ) {
+
+			if ( !isset( $changeList[$sid] ) ) {
+				continue;
+			}
+
+			$this->collectUpdates( $sid, $textItem, $changeList, $updates );
 		}
 
 		foreach ( $updates as $key => $value ) {
@@ -230,56 +200,27 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 			);
 		}
 
-		$this->log( __METHOD__ . ' (procTime in sec: '. Timer::getElapsedTime( __METHOD__, 5 ) . ')' );
+		$context = [
+			'method' => __METHOD__,
+			'procTime' => Timer::getElapsedTime( __METHOD__, 5 )
+		];
+
+		$this->logger->info( 'Fulltext table update completed (procTime in sec: {procTime})' );
 	}
 
-	private function doCreateCompositeUpdate( TableChangeOp $dataChangeOp, &$updates, $ids ) {
+	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ) {
 
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 
-		foreach ( $dataChangeOp->getFieldChangeOps() as $fieldChangeOp ) {
-
-			if ( $dataChangeOp->isFixedPropertyOp() ) {
-				$fieldChangeOp->set( 'p_id', $dataChangeOp->getFixedPropertyValueBy( 'p_id' ) );
-			}
+		foreach ( $textItem as $pid => $text ) {
 
 			// Exempted property -> out
-			if ( !$fieldChangeOp->has( 'p_id' ) || $searchTable->isExemptedPropertyById( $fieldChangeOp->get( 'p_id' ) ) ) {
+			if ( $searchTable->isExemptedPropertyById( $pid ) ) {
 				continue;
 			}
 
-			$sid = $fieldChangeOp->get( 's_id' );
-			$pid = $fieldChangeOp->get( 'p_id' );
-
-			// Check whether changes occurred for a matchable pair of subject/property
-			// IDs
-			if ( !isset( $ids[$sid] ) && !isset( $ids[$pid] ) ) {
-				continue;
-			}
-
-			if ( !$fieldChangeOp->has( 'o_blob' ) && !$fieldChangeOp->has( 'o_hash' ) && !$fieldChangeOp->has( 'o_serialized' ) && !$fieldChangeOp->has( 'o_id' ) ) {
-				continue;
-			}
-
-			// Re-map (url type)
-			if ( $fieldChangeOp->has( 'o_serialized' ) ) {
-				$fieldChangeOp->set( 'o_blob', $fieldChangeOp->get( 'o_serialized' ) );
-			}
-
-			// Re-map (wpg type)
-			if ( $fieldChangeOp->has( 'o_id' ) ) {
-				$dataItem = $searchTable->getDataItemById( $fieldChangeOp->get( 'o_id' ) );
-				$fieldChangeOp->set( 'o_blob', $dataItem !== null ? $dataItem->getSortKey() : 'NO_TEXT' );
-			}
-
-			// If the blob value is empty then the DIHandler has put any text < 72
-			// into the hash field
-			$text = $fieldChangeOp->get( 'o_blob' );
+			$text = implode( ' ', $text );
 			$key = $sid . ':' . $pid;
-
-			if ( $text === null || $text === '' ) {
-				$text = $fieldChangeOp->get( 'o_hash' );
-			}
 
 			$updates[$key] = !isset( $updates[$key] ) ? $text : $updates[$key] . ' ' . $text;
 		}
@@ -328,15 +269,6 @@ class TextByChangeUpdater implements LoggerAwareInterface {
 		}
 
 		return $canPostUpdate;
-	}
-
-	private function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }

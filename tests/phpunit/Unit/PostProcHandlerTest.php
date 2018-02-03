@@ -158,6 +158,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 		$changeDiff = new ChangeDiff(
 			DIWikiPage::newFromText( 'Foo' ),
 			[ $tableChangeOp ],
+			[],
 			[ 'Foo' => 42 ]
 		);
 

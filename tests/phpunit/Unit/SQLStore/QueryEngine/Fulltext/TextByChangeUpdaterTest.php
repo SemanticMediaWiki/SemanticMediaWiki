@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
 use SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater;
 use SMW\DataItemFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater
@@ -19,13 +20,15 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $connection;
 	private $searchTableUpdater;
-	private $textSanitizer;
-	private $tempChangeOpStore;
+	private $cache;
 	private $slot;
+	private $logger;
 
 	protected function setUp() {
 
 		$this->dataItemFactory = new DataItemFactory();
+
+		$this->logger = TestEnvironment::newSpyLogger();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -35,11 +38,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->tempChangeOpStore = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\TempChangeOpStore' )
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +49,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater',
-			new TextByChangeUpdater( $this->connection, $this->searchTableUpdater, $this->textSanitizer, $this->tempChangeOpStore )
+			new TextByChangeUpdater( $this->connection, $this->cache, $this->searchTableUpdater )
 		);
 	}
 
@@ -60,17 +59,25 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );
 
+		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeDiff->expects( $this->once() )
+			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( array() ) );
+
+		$changeDiff->expects( $this->once() )
+			->method( 'getTextItems' )
+			->will( $this->returnValue( array() ) );
+
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$changeOp->expects( $this->once() )
-			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( array() ) );
-
-		$changeOp->expects( $this->once() )
-			->method( 'getDataOps' )
-			->will( $this->returnValue( array() ) );
+			->method( 'newChangeDiff' )
+			->will( $this->returnValue( $changeDiff ) );
 
 		$changeOp->expects( $this->never() )
 			->method( 'getSubject' );
@@ -81,9 +88,12 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TextByChangeUpdater(
 			$this->connection,
-			$this->searchTableUpdater,
-			$this->textSanitizer,
-			$this->tempChangeOpStore
+			$this->cache,
+			$this->searchTableUpdater
+		);
+
+		$instance->setLogger(
+			$this->logger
 		);
 
 		$instance->asDeferredUpdate( false );
@@ -97,10 +107,6 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	public function testPushUpdatesAsDeferredUpdate() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
-
-		$this->tempChangeOpStore->expects( $this->once() )
-			->method( 'createSlotFrom' )
-			->will( $this->returnValue( 42 ) );
 
 		$searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
 			->disableOriginalConstructor()
@@ -126,9 +132,9 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getChangedEntityIdSummaryList' )
 			->will( $this->returnValue( array( '42' ) ) );
 
-		$changeOp->expects( $this->once() )
+		$changeOp->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+			->will( $this->returnValue( $dataItem ) );
 
 		$deferredRequestDispatchManager = $this->getMockBuilder( '\SMW\DeferredRequestDispatchManager' )
 			->disableOriginalConstructor()
@@ -138,13 +144,16 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'dispatchFulltextSearchTableUpdateJobWith' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'slot:id' => 42 ) ) );
+				$this->equalTo( array( 'slot:id' => 'Foo#0#' ) ) );
 
 		$instance = new TextByChangeUpdater(
 			$this->connection,
-			$this->searchTableUpdater,
-			$this->textSanitizer,
-			$this->tempChangeOpStore
+			$this->cache,
+			$this->searchTableUpdater
+		);
+
+		$instance->setLogger(
+			$this->logger
 		);
 
 		$instance->asDeferredUpdate( true );
@@ -161,17 +170,25 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );
 
+		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeDiff->expects( $this->once() )
+			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( array() ) );
+
+		$changeDiff->expects( $this->once() )
+			->method( 'getTextItems' )
+			->will( $this->returnValue( array() ) );
+
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$changeOp->expects( $this->once() )
-			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( array() ) );
-
-		$changeOp->expects( $this->once() )
-			->method( 'getDataOps' )
-			->will( $this->returnValue( array() ) );
+			->method( 'newChangeDiff' )
+			->will( $this->returnValue( $changeDiff ) );
 
 		$changeOp->expects( $this->never() )
 			->method( 'getSubject' );
@@ -182,9 +199,12 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TextByChangeUpdater(
 			$this->connection,
-			$this->searchTableUpdater,
-			$this->textSanitizer,
-			$this->tempChangeOpStore
+			$this->cache,
+			$this->searchTableUpdater
+		);
+
+		$instance->setLogger(
+			$this->logger
 		);
 
 		$instance->asDeferredUpdate( true );
