@@ -19,6 +19,8 @@
 		// Iterate over available nav links onClick
 		$( '.smw-modal-link' ).on( "click", function( event ) {
 
+			var that = this;
+
 			// Avoid visual disruption on the parameter list (uses a fading field
 			// display with the help of an ::after element) and override the element
 			// for the time the modal window is displayed
@@ -43,11 +45,14 @@
 
 			// When the user clicks anywhere outside of the modal, close it
 			window.onclick = function( e ) {
-			    if ( e.target == modal ) {
-			        modal.style.display = "none";
+
+				var isClickInside = that.contains( e.target );
+
+				if ( e.target == modal || ( isClickInside === false && modal.contains( e.target ) === false ) ) {
+					modal.style.display = "none";
 					parameterList.removeClass( 'options-parameter-list-plain' );
 					parameterList.addClass( 'options-parameter-list' );
-			    }
+				}
 			}
 
 			event.preventDefault();
