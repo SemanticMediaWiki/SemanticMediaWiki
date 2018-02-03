@@ -51,6 +51,16 @@ class ConnectionManager {
 		self::$connectionProviders[strtolower( $id )] = $connectionProvider;
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $id
+	 * @param callable $callback
+	 */
+	public function registerCallbackConnection( $id, callable $callback ) {
+		self::$connectionProviders[strtolower( $id )] = new CallbackConnectionProvider( $callback );
+	}
+
 	private function findConnectionProvider( $id ) {
 
 		if ( isset( self::$connectionProviders[$id] ) ) {

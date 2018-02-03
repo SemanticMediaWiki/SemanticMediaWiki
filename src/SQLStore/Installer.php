@@ -26,7 +26,7 @@ class Installer implements MessageReporter {
 	/**
 	 * Optimize option
 	 */
-	const OPT_TABLE_OPTIMZE = 'installer.table.optimize';
+	const OPT_TABLE_OPTIMIZE = 'installer.table.optimize';
 
 	/**
 	 * Job option
@@ -215,7 +215,7 @@ class Installer implements MessageReporter {
 
 	private function tableOptimization( $messageReporter ) {
 
-		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMZE, false ) ) {
+		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMIZE, false ) ) {
 			return $messageReporter->reportMessage( "\nSkipping the table optimization.\n" );
 		}
 

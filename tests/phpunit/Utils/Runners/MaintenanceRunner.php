@@ -5,6 +5,7 @@ namespace SMW\Tests\Utils\Runners;
 use DomainException;
 use RuntimeException;
 use SMW\ApplicationFactory;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
 
 /**
  * Running maintenance scripts via phpunit is not really possible but instead
@@ -20,6 +21,8 @@ use SMW\ApplicationFactory;
  * @author mwjames
  */
 class MaintenanceRunner {
+
+	use MessageReporterAwareTrait;
 
 	protected $maintenanceClass = null;
 	protected $options = array();
@@ -91,6 +94,10 @@ class MaintenanceRunner {
 			$this->maintenanceClass,
 			$this->options
 		);
+
+		if ( $this->messageReporter !== null && method_exists( $maintenance, 'setMessageReporter' ) ) {
+			$maintenance->setMessageReporter( $this->messageReporter );
+		}
 
 		ob_start();
 		$result = $maintenance->execute();

@@ -355,6 +355,7 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 */
 	public function setup( $verbose = true ) {
+		$this->baseStore->setMessageReporter( $this->messageReporter );
 		$this->baseStore->setup( $verbose );
 	}
 

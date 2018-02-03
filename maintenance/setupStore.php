@@ -5,8 +5,8 @@ namespace SMW\Maintenance;
 use SMW\Store;
 use SMW\StoreFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
+use Onoi\MessageReporter\MessageReporter;
 use SMW\Connection\ConnectionManager;
-use SMW\Connection\CallbackConnectionProvider;
 use SMW\SQLStore\Installer;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
@@ -61,6 +61,11 @@ class SetupStore extends \Maintenance {
 	protected $originalStore;
 
 	/**
+	 * @var MessageReporter
+	 */
+	protected $messageReporter;
+
+	/**
 	 * @since 2.0
 	 */
 	public function __construct() {
@@ -90,41 +95,37 @@ class SetupStore extends \Maintenance {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param MessageReporter $messageReporter
+	 */
+	public function setMessageReporter( MessageReporter $messageReporter ) {
+		$this->messageReporter = $messageReporter;
+	}
+
+	/**
 	 * @since 2.0
 	 */
 	public function execute() {
 
-		// TODO It would be good if this script would work with SMW not being enable (yet).
-		// Then one could setup the store without first enabling SMW (which will break the wiki until the store is setup).
 		if ( !defined( 'SMW_VERSION' ) || !$GLOBALS['smwgSemanticsEnabled'] ) {
 			$this->output( "\nYou need to have SMW enabled in order to use this maintenance script!\n" );
 			exit;
 		}
 
 		StoreFactory::clear();
-		$this->loadGlobalFunctions();
 
+		$this->loadGlobalFunctions();
 		$store = $this->getStore();
 
-		if ( $this->getOption( 'quiet' ) ) {
-			$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
-		} else {
-			$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-			$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
-		}
-
-		// #2963 Use the DB handler from the Maintenance script which may access
-		// the `$wgDBadminuser` instead of the regular `$wgDBuser`
-		$callbackConnectionProvider = new CallbackConnectionProvider( function() {
-				return $this->getDB( DB_MASTER );
-			}
-		);
 
 		$connectionManager = new ConnectionManager();
 
-		$connectionManager->registerConnectionProvider(
+		// #2963 Use the DB handler from the Maintenance script which may access
+		// the `$wgDBadminuser` instead of the regular `$wgDBuser`
+		$connectionManager->registerCallbackConnection(
 			DB_MASTER,
-			$callbackConnectionProvider
+			function() { return $this->getDB( DB_MASTER ); }
 		);
 
 		$store->setConnectionManager(
@@ -132,29 +133,32 @@ class SetupStore extends \Maintenance {
 		);
 
 		$store->setMessageReporter(
-			$messageReporter
+			$this->getMessageReporter()
 		);
 
-		$store->getOptions()->set(
-			Installer::OPT_TABLE_OPTIMZE,
-			!$this->hasOption( 'skip-optimize' )
-		);
-
-		$store->getOptions()->set(
-			Installer::OPT_IMPORT,
-			!$this->hasOption( 'skip-import' )
-		);
-
-		$store->getOptions()->set(
-			Installer::OPT_SUPPLEMENT_JOBS,
-			true
-		);
+		$store->setOption( Installer::OPT_TABLE_OPTIMIZE, !$this->hasOption( 'skip-optimize' ) );
+		$store->setOption( Installer::OPT_IMPORT, !$this->hasOption( 'skip-import' ) );
+		$store->setOption( Installer::OPT_SUPPLEMENT_JOBS, true );
 
 		if ( $this->hasOption( 'delete' ) ) {
 			$this->dropStore( $store );
 		} else {
 			$store->setup();
 		}
+	}
+
+	protected function getMessageReporter() {
+
+		$messageReporterFactory = MessageReporterFactory::getInstance();
+
+		if ( $this->messageReporter === null && $this->getOption( 'quiet' ) ) {
+			$this->messageReporter = $messageReporterFactory->newNullMessageReporter();
+		} elseif( $this->messageReporter === null ) {
+			$this->messageReporter = $messageReporterFactory->newObservableMessageReporter();
+			$this->messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
+		}
+
+		return $this->messageReporter;
 	}
 
 	protected function loadGlobalFunctions() {
