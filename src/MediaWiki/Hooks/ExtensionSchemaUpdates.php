@@ -46,14 +46,14 @@ class ExtensionSchemaUpdates {
 		$options = new Options(
 			[
 				Installer::OPT_SCHEMA_UPDATE => true,
-				Installer::OPT_TABLE_OPTIMZE => true,
+				Installer::OPT_TABLE_OPTIMIZE => true,
 				Installer::OPT_IMPORT => true,
 				Installer::OPT_SUPPLEMENT_JOBS => true
 			]
 		);
 
 		if ( $this->hasMaintenanceArg( 'skip-optimize' ) ) {
-			$options->set( Installer::OPT_TABLE_OPTIMZE, false );
+			$options->set( Installer::OPT_TABLE_OPTIMIZE, false );
 		}
 
 		// Needs a static caller otherwise the DatabaseUpdater returns with:

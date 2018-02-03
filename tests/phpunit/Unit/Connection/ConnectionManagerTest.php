@@ -71,4 +71,23 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->getConnection( 'FOO' );
 	}
 
+	public function testRegisterCallbackConnection() {
+
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionProvider->expects( $this->once() )
+			->method( 'getConnection' );
+
+		$callback = function() use( $connectionProvider ) {
+			return $connectionProvider->getConnection();
+		};
+
+		$instance = new ConnectionManager();
+		$instance->registerCallbackConnection( 'foo', $callback );
+
+		$instance->getConnection( 'FOO' );
+	}
+
 }

@@ -1,15 +1,12 @@
 <?php
 
-namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
+namespace SMW\Tests\Integration\MediaWiki\Maintenance;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-import
- * @group mediawiki-database
+ * @group semantic-mediawiki-integration
  * @group medium
  *
  * @license GNU GPL v2+
@@ -24,15 +21,17 @@ class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
 	private $importedTitles = array();
 	private $runnerFactory;
 	private $titleValidator;
+	private $spyMessageReporter;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
-		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
+		$this->runnerFactory  = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
+		$this->titleValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newTitleValidator();
+		$this->spyMessageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'
+			__DIR__ . '/Fixtures/test-import-19.7.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {
@@ -42,10 +41,7 @@ class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function tearDown() {
-
-		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
-		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
-
+		$this->testEnvironment->flushPages( $this->importedTitles );
 		parent::tearDown();
 	}
 
@@ -71,7 +67,18 @@ class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\SetupStore' );
-		$maintenanceRunner->setQuiet()->run();
+
+		$maintenanceRunner->setMessageReporter(
+			$this->spyMessageReporter
+		);
+
+		$maintenanceRunner->setQuiet();
+		$maintenanceRunner->run();
+
+		$this->assertContains(
+			'Database initialized completed',
+			$this->spyMessageReporter->getMessagesAsString()
+		);
 	}
 
 }
