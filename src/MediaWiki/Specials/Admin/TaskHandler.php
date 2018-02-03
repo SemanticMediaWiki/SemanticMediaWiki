@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use WebRequest;
 use SMW\Message;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+
@@ -28,6 +29,11 @@ abstract class TaskHandler {
 	private $enabledFeatures = 0;
 
 	/**
+	 * @var Store
+	 */
+	private $store;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param integer $feature
@@ -45,6 +51,24 @@ abstract class TaskHandler {
 	 */
 	public function setEnabledFeatures( $enabledFeatures ) {
 		$this->enabledFeatures = $enabledFeatures;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Store $store
+	 */
+	public function setStore( Store $store ) {
+		$this->store = $store;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return Store
+	 */
+	public function getStore() {
+		return $this->store;
 	}
 
 	/**

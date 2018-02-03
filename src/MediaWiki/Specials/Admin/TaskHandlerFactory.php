@@ -44,7 +44,7 @@ class TaskHandlerFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return TableSchemaTaskHandler
+	 * @return []
 	 */
 	public function getTaskHandlerList( $user, $adminFeatures ) {
 
@@ -84,6 +84,10 @@ class TaskHandlerFactory {
 
 			$handler->setEnabledFeatures(
 				$adminFeatures
+			);
+
+			$handler->setStore(
+				$this->store
 			);
 
 			switch ( $handler->getSection() ) {
