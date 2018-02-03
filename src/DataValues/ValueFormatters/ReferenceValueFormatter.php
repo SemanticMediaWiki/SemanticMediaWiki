@@ -5,6 +5,7 @@ namespace SMW\DataValues\ValueFormatters;
 use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DataValues\ReferenceValue;
+use SMW\DataValues\ExternalIdentifierValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Message;
@@ -152,7 +153,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		// Turn Uri/Page links into a href representation when not used as value
 		if ( !$isValue &&
 			( $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage ) &&
-			$type !== self::VALUE ) {
+			$type !== self::VALUE || $dataValue->getTypeID() === ExternalIdentifierValue::TYPE_ID ) {
 			return $dataValue->getShortHTMLText( smwfGetLinker() );
 		}
 
