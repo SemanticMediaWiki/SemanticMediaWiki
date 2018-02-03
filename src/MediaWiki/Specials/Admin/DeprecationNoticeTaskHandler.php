@@ -139,8 +139,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] ) {
-			$noticeList[] = $this->mergeList( 'smw-admin-deprecation-notice-title-replacement', $list );
+		if ( $list !== [] && ( $mList = $this->mergeList( 'smw-admin-deprecation-notice-title-replacement', $list ) ) !== null ) {
+			$noticeList[] = $mList;
 		}
 
 		// Changes
@@ -152,8 +152,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] ) {
-			$noticeList[] = $this->mergeList( 'smw-admin-deprecation-notice-title-notice', $list );
+		if ( $list !== [] && ( $mList = $this->mergeList( 'smw-admin-deprecation-notice-title-notice', $list ) ) !== null ) {
+			$noticeList[] = $mList;
 		}
 
 		// Removals
@@ -163,8 +163,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 		}
 
-		if ( $list !== [] ) {
-			$noticeList[] = $this->mergeList( 'smw-admin-deprecation-notice-title-removal', $list );
+		if ( $list !== [] && ( $mList = $this->mergeList( 'smw-admin-deprecation-notice-title-removal', $list ) ) !== null ) {
+			$noticeList[] = $mList;
 		}
 
 		return $noticeList;

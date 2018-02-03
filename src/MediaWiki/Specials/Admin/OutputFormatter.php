@@ -34,8 +34,8 @@ class OutputFormatter {
 	 *
 	 * @param array $query
 	 */
-	public function addParentLink( $query = array() ) {
-		$this->outputPage->prependHTML( $this->createParentLink( $query ) );
+	public function addParentLink( $query = array(), $title = 'smwadmin' ) {
+		$this->outputPage->prependHTML( $this->createParentLink( $query, $title ) );
 	}
 
 	/**
@@ -55,6 +55,15 @@ class OutputFormatter {
 	public function setPageTitle( $title ) {
 		$this->outputPage->setArticleRelated( false );
 		$this->outputPage->setPageTitle( $title );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $html
+	 */
+	public function addAsPreformattedText( $html ) {
+		$this->outputPage->addHTML( '<pre>' . $html . '</pre>' );
 	}
 
 	/**
@@ -95,6 +104,16 @@ class OutputFormatter {
 	 * @param array $query
 	 */
 	public function getSpecialPageLinkWith( $caption = '', $query = array() ) {
+		return $this->createSpecialPageLink( $caption, $query );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $caption
+	 * @param array $query
+	 */
+	public function createSpecialPageLink( $caption = '', $query = array() ) {
 		return '<a href="' . htmlspecialchars( \SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL( $query ) ) . '">' . $caption . '</a>';
 	}
 
@@ -141,7 +160,7 @@ class OutputFormatter {
 		return FormatJson::encode( $input, true );
 	}
 
-	private function createParentLink( $query = array() ) {
+	private function createParentLink( $query = array(), $title = 'smwadmin' ) {
 		return Html::rawElement(
 			'div',
 			array( 'class' => 'smw-breadcrumb-link' ),
@@ -153,7 +172,7 @@ class OutputFormatter {
 			Html::rawElement(
 				'a',
 				array( 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL( $query ) ),
-				Message::get( 'smwadmin', Message::TEXT, Message::USER_LANGUAGE )
+				Message::get( $title, Message::TEXT, Message::USER_LANGUAGE )
 		) );
 	}
 
