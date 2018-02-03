@@ -49,7 +49,7 @@ class SpecialWantedProperties extends SpecialPage {
 
 		$page = new WantedPropertiesQueryPage( $this->getStore(), $this->getSettings() );
 		$page->setContext( $this->getContext() );
-		$page->setTitle( $this->getTitle() );
+		$page->setTitle( $this->getPageTitle() );
 
 		list( $limit, $offset ) = $this->getLimitOffset();
 		$page->doQuery( $offset, $limit );
