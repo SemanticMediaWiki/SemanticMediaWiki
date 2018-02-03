@@ -38,7 +38,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'init', 17, function ( assert ) {
+	QUnit.test( 'init', function ( assert ) {
+		assert.expect( 17 );
 
 		assert.ok( smw instanceof Object, 'the smw instance was accessible' );
 
@@ -70,7 +71,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'settings', 4, function ( assert ) {
+	QUnit.test( 'settings', function ( assert ) {
+		assert.expect( 4 );
 
 		assert.equal( $.type( smw.settings.getList() ), 'object', '.getList() returned a list of settings object' );
 		assert.equal( $.type( smw.settings.get( 'smwgQMaxLimit' ) ), 'number', '.get( "smwgQMaxLimit" ) returned a value for the key' );
@@ -84,7 +86,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'util', 3, function ( assert ) {
+	QUnit.test( 'util', function ( assert ) {
+		assert.expect( 3 );
 
 		assert.equal( smw.util.clean( ' Foo | ; : - < >_= () {} bar ' ), 'Foo_;_:_-__=_()_bar', '.clean() returned a cleaned string' );
 		assert.equal( smw.util.clean( 'Foo | ; : - < >_= () {} bar' ), 'Foo_;_:_-__=_()_bar', '.clean() returned a cleaned string' );
@@ -97,7 +100,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'util.namespace', 7, function ( assert ) {
+	QUnit.test( 'util.namespace', function ( assert ) {
+		assert.expect( 7 );
 
 		assert.equal( $.type( smw.util.namespace.getList() ), 'object', '.getList() returned a list of namespaces' );
 
@@ -116,13 +120,16 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.asyncTest( 'async', 7, function ( assert ) {
+	QUnit.test( 'async', function ( assert ) {
+		assert.expect( 7 );
+
+		var done = assert.async();
 
 		var context;
 		var argument;
 		var result;
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			smw.async.load( context );
 		}, '.async.load() thrown an error because of a missing method callback' );
 
@@ -166,9 +173,11 @@
 				argument = 'lila-' + i;
 				smw.async.load( context, test1, argument );
 			}
-			QUnit.start();
+
 			assert.ok( smw.async.isEnabled(), '.async.isEnabled() returned true' );
 			assert.ok( context.find( '#' + argument ), '.async.load() was executed and created an element using the invoked argument in async mode' );
+
+			done();
 		} );
 
 	} );
@@ -178,7 +187,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'formats', 7, function ( assert ) {
+	QUnit.test( 'formats', function ( assert ) {
+		assert.expect( 7 );
 
 		assert.equal( $.type( smw.formats.getList() ), 'object', '.getList() returned an object' );
 		assert.equal( $.type( smw.formats.getName( 'table' ) ), 'string', '.getName( "table" ) returned a string' );
@@ -196,7 +206,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'version', 1, function ( assert ) {
+	QUnit.test( 'version', function ( assert ) {
+		assert.expect( 1 );
 
 		assert.equal( $.type( smw.version() ), 'string', '.version() returned a string' );
 

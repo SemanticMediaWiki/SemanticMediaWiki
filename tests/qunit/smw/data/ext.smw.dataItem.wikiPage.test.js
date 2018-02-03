@@ -81,7 +81,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'instance', 1, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.wikiPage( 'foo', 'bar' );
 		assert.ok( result instanceof Object, 'the smw.dataItem.wikiPage instance was accessible' );
@@ -93,7 +94,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getDIType', 1, function ( assert ) {
+	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.wikiPage( 'foo', 'bar' );
 		assert.equal( result.getDIType(), '_wpg', 'returned _wpg' );
@@ -105,7 +107,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getPrefixedText', 10, function ( assert ) {
+	QUnit.test( 'getPrefixedText', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -120,7 +124,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getText', 10, function ( assert ) {
+	QUnit.test( 'getText', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -135,7 +141,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getUri', 10, function ( assert ) {
+	QUnit.test( 'getUri', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -150,7 +158,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getNamespaceId', 10, function ( assert ) {
+	QUnit.test( 'getNamespaceId', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -165,7 +175,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getTitle', 2, function ( assert ) {
+	QUnit.test( 'getTitle', function ( assert ) {
+		assert.expect( 2 );
 
 		var wikiPage = new smw.dataItem.wikiPage( 'File:foo', 'bar' );
 		var title = new mw.Title( 'File:foo' );
@@ -180,7 +191,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'isKnown', 10, function ( assert ) {
+	QUnit.test( 'isKnown', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -195,7 +208,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getHtml( false )', 10, function ( assert ) {
+	QUnit.test( 'getHtml( false )', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -210,7 +225,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getHtml( true )', 10, function ( assert ) {
+	QUnit.test( 'getHtml( true )', function ( assert ) {
+		assert.expect( 10 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {

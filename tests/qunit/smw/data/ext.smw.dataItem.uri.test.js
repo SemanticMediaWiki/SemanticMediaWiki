@@ -27,7 +27,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'instance', 1, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.uri( 'http://foo.com/test/' );
 		assert.ok( result instanceof Object, pass + 'the smw.dataItem.uri instance was accessible' );
@@ -39,7 +40,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getDIType', 1, function ( assert ) {
+	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.uri( 'http://foo.com/test/' );
 		assert.equal( result.getDIType(), '_uri', pass + 'returned _uri' );
@@ -51,7 +53,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getUri', 2, function ( assert ) {
+	QUnit.test( 'getUri', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -66,7 +70,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getHtml', 4, function ( assert ) {
+	QUnit.test( 'getHtml', function ( assert ) {
+		assert.expect( 4 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {

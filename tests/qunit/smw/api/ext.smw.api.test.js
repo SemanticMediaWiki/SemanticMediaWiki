@@ -46,7 +46,8 @@
 	 * @since: 1.9
 	 * @ignore
 	 */
-	QUnit.test( 'instance', 1, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.api();
 		assert.ok( result instanceof Object, pass + 'the api instance was accessible' );
@@ -59,22 +60,26 @@
 	 * @since: 1.9
 	 * @ignore
 	 */
-	QUnit.test( 'fetch()', 4, function ( assert ) {
+	QUnit.test( 'fetch()', function ( assert ) {
+		assert.expect( 4 );
+
+		var done = assert.async();
 
 		var smwApi = new smw.api();
 
-		QUnit.raises( function() { smwApi.fetch( '' , '' ); }, pass + 'an error was raised (query was empty)' );
-		QUnit.raises( function() { smwApi.fetch( {'foo': 'bar' } , '' ); }, pass + 'an error was raised (query was an object)' );
+		assert.throws( function() { smwApi.fetch( '' , '' ); }, pass + 'an error was raised (query was empty)' );
+		assert.throws( function() { smwApi.fetch( {'foo': 'bar' } , '' ); }, pass + 'an error was raised (query was an object)' );
 
 		// Ajax
 		var query = '[[Modification date::+]]|?Modification date|limit=10|offset=0';
-		QUnit.stop();
+
 		smwApi.fetch( query )
 		.done( function ( results ) {
 
 			assert.ok( true, pass + 'of an positive server response' );
 			assert.ok( results instanceof Object, pass + 'an object was returned' );
-			QUnit.start();
+
+			done();
 		} );
 
 	} );
@@ -85,48 +90,49 @@
 	 * @since: 1.9
 	 * @ignore
 	 */
-	QUnit.test( 'fetch() cache test', 4, function ( assert ) {
+	QUnit.test( 'fetch() cache test', function ( assert ) {
+		assert.expect( 4 );
 
 		var smwApi = new smw.api();
 
 		// Ajax
 		var queryString = '[[Modification date::+]]|?Modification date|?Modification date|?Modification date|limit=100';
+		var undefCacheDone = assert.async();
 
-		QUnit.stop();
 		smwApi.fetch( queryString )
 		.done( function ( results ) {
 			assert.equal( results.isCached, false , pass + ' caching is set "undefined" and results are not cached' );
-			QUnit.start();
+			undefCacheDone();
 		} );
 
-		QUnit.stop();
+		var falseCacheDone = assert.async();
 		smwApi.fetch( queryString, false )
 		.done( function ( results ) {
 			assert.equal( results.isCached , false , pass + ' caching is set "false" and results are not cached' );
-			QUnit.start();
+			falseCacheDone();
 		} );
 
 		// Make sure the cache is initialized otherwise the asserts will fail
 		// for the first test run
-		QUnit.stop();
+		var cacheDone = assert.async();
 		smwApi.fetch( queryString, true )
 		.done( function () {
+			var firstCacheDone = assert.async();
 
-			QUnit.stop();
 			smwApi.fetch( queryString, 60 * 1000 )
 			.done( function ( results ) {
 				assert.equal( results.isCached , true , pass + ' caching is set to "60 * 1000" and results are cached' );
-				QUnit.start();
+				firstCacheDone();
 			} );
 
-			QUnit.stop();
+			var otherCacheDone = assert.async();
 			smwApi.fetch( queryString, true )
 			.done( function ( results ) {
 				assert.equal( results.isCached , true , pass + ' caching is set "true" and results are cached' );
-				QUnit.start();
+				otherCacheDone();
 			} );
 
-			QUnit.start();
+			cacheDone();
 		} );
 
 	} );
@@ -135,9 +141,14 @@
 	 * Test fetch vs. a normal $.ajax call
 	 *
 	 * @since: 1.9
-	 * @ignore
+	 * @ignore since 2013 - should this test be removed?
 	 */
-	QUnit.test( 'fetch() vs. $.ajax', 3, function ( assert ) {
+	QUnit.test( 'fetch() vs. $.ajax', function ( assert ) {
+		assert.expect( 3 );
+
+		var ajaxDone = assert.async();
+		var fetchDone = assert.async();
+		var cachedFetchDone = assert.async();
 
 		var smwApi = new smw.api();
 		var startDate;
@@ -147,7 +158,6 @@
 
 		startDate = new Date();
 
-		QUnit.stop();
 		$.ajax( {
 			url: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
@@ -159,22 +169,20 @@
 			} )
 			.done( function ( results ) {
 				assert.ok( results, 'Fetch ' + results.query.meta.count + ' items using $.ajax which took: ' + ( new Date().getTime() - startDate.getTime() ) + ' ms' );
-				QUnit.start();
 				startDate = new Date();
+				ajaxDone();
 			} );
 
-		QUnit.stop();
 		smwApi.fetch( queryString )
 		.done( function ( results ) {
 			assert.ok( results, 'Fetch ' + results.query.meta.count + ' items using smw.Api.fetch() which took: ' + ( new Date().getTime() - startDate.getTime() ) + ' ms' );
-			QUnit.start();
+			fetchDone();
 		} );
 
-		QUnit.stop();
 		smwApi.fetch( queryString, true )
 		.done( function ( results ) {
 			assert.ok( results, 'Fetch ' + results.query.meta.count + ' items using smw.Api.fetch() which were cached and took: ' + ( new Date().getTime() - startDate.getTime() ) + ' ms' );
-			QUnit.start();
+			cachedFetchDone();
 		} );
 
 	} );

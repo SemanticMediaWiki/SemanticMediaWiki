@@ -47,7 +47,9 @@
 	 * @since: 1.9
 	 * @ignore
 	 */
-	QUnit.test( 'instance', 2, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		result = new smw.api();
@@ -64,30 +66,32 @@
 	 * @since: 1.9
 	 * @ignore
 	 */
-	QUnit.test( 'toString sanity test', 11, function ( assert ) {
+	QUnit.test( 'toString sanity test', function ( assert ) {
+		assert.expect( 11 );
+
 		var result;
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.query( '', '' ,'' ).toString();
 		}, pass + 'an error was raised due to missing conditions' );
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.query( [], {} ,'' ).toString();
 		}, pass + 'an error was raised due to missing conditions' );
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.query( [], [] , '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to parameters being a non object' );
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.query( '', [] , '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to parameters being a non object' );
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.query( '?Modification date', {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to printouts weren\'t empty at first, contained values but those weren\'t of type array' );
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.query( ['?Modification date'], ['limit'], '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to parameters weren\'t empty at first, contained values but those weren\'t of type object' );
 
@@ -126,7 +130,10 @@
 	 * @since: 1.9
 	 * @ignore
 	 */
-	QUnit.test( 'toString Ajax response test', 4, function ( assert ) {
+	QUnit.test( 'toString Ajax response test', function ( assert ) {
+		assert.expect( 4 );
+
+		var done = assert.async();
 
 		var smwApi = new smw.api();
 		var queryObject = smwApi.parse( jsonString );
@@ -137,13 +144,13 @@
 		assert.ok( $.type( query.getQueryString() ) === 'string', pass + 'the function alias returned a string' );
 
 		// Ajax
-		QUnit.stop();
 		smwApi.fetch( query.toString() )
 		.done( function ( results ) {
 
 			assert.ok( true, pass + 'the query returned with a positive server response' );
 			assert.ok( results instanceof Object, pass + 'the query returned with a result object' );
-			QUnit.start();
+
+			done();
 		} );
 
 	} );
@@ -154,7 +161,8 @@
 	 * @since: 1.9
 	 * @ignore
 	 */
-	QUnit.test( 'getLimit', 1, function ( assert ) {
+	QUnit.test( 'getLimit', function ( assert ) {
+		assert.expect( 1 );
 
 		var smwApi = new smw.api();
 		var queryObject = smwApi.parse( jsonString );
@@ -171,7 +179,9 @@
 	 * @since: 1.9
 	 * @ignore
 	 */
-	QUnit.test( 'getLink', 5, function ( assert ) {
+	QUnit.test( 'getLink', function ( assert ) {
+		assert.expect( 5 );
+
 		var result, context;
 
 		var smwApi = new smw.api();
