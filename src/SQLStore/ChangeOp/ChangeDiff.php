@@ -25,6 +25,11 @@ class ChangeDiff {
 	const CACHE_TTL = 604800;
 
 	/**
+	 * @var string
+	 */
+	private $time;
+
+	/**
 	 * @var DIWikiPage
 	 */
 	private $subject;
@@ -37,19 +42,39 @@ class ChangeDiff {
 	/**
 	 * @var array
 	 */
+	private $dataOps = [];
+
+	/**
+	 * @var array
+	 */
 	private $propertyList = [];
+
+	/**
+	 * @var array
+	 */
+	private $textItems = [];
+
+	/**
+	 * @var array
+	 */
+	private $changeList = [];
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param DIWikiPage $subject
 	 * @param array $tableChangeOps
+	 * @param array $dataOps
 	 * @param array $propertyList
+	 * @param array $textItems
 	 */
-	public function __construct( DIWikiPage $subject, array $tableChangeOps, array $propertyList ) {
+	public function __construct( DIWikiPage $subject, array $tableChangeOps, array $dataOps, array $propertyList, array $textItems = [] ) {
+		$this->time = time();
 		$this->subject = $subject;
 		$this->tableChangeOps = $tableChangeOps;
+		$this->dataOps = $dataOps;
 		$this->propertyList = $propertyList;
+		$this->textItems = $textItems;
 	}
 
 	/**
@@ -73,6 +98,24 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
+	 * @return TableChangeOps[]
+	 */
+	public function getDataOps() {
+		return $this->dataOps;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
+	public function getTextItems() {
+		return $this->textItems;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param boolean $flip
 	 *
 	 * @return []
@@ -89,10 +132,66 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $type
+	 * @param array $changes
+	 */
+	public function setChangeList( $type, array $changes ) {
+		$this->changeList[$type] = $changes;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $type
+	 *
+	 * @return array
+	 */
+	public function getChangeListByType( $type ) {
+		return isset( $this->changeList[$type] ) ? $this->changeList[$type] : [];
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return string
 	 */
 	public function serialize() {
-		return HmacSerializer::serialize( $this );
+		return HmacSerializer::compress( $this );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function toJson( $prettify = false ) {
+
+		$changes = [];
+
+		foreach ( $this->tableChangeOps as $tableChangeOp ) {
+			$changes[] = $tableChangeOp->toArray();
+		}
+
+		$data = [];
+
+		foreach ( $this->dataOps as $dataOp ) {
+			$data[] = $dataOp->toArray();
+		}
+
+		$flags = $prettify ? JSON_PRETTY_PRINT : 0;
+
+		return json_encode(
+			[
+				'time' => $this->time,
+				'subject' => $this->subject->getHash(),
+				'changes' => $changes,
+				'change_list' => $this->changeList,
+				'data' => $data,
+				'text_items' => $this->textItems,
+				'property_list' => $this->propertyList
+			],
+			$flags
+		);
 	}
 
 	/**
@@ -108,7 +207,7 @@ class ChangeDiff {
 		);
 
 		// Keep it a week
-		$cache->save( $key, HmacSerializer::serialize( $this ), self::CACHE_TTL );
+		$cache->save( $key, HmacSerializer::compress( $this ), self::CACHE_TTL );
 	}
 
 	/**
@@ -125,7 +224,7 @@ class ChangeDiff {
 		);
 
 		if ( ( $diff = $cache->fetch( $key ) ) !== false ) {
-			return HmacSerializer::unserialize( $diff );
+			return HmacSerializer::uncompress( $diff );
 		}
 
 		return false;

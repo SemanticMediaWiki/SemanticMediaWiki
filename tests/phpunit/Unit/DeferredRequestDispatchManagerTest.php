@@ -240,11 +240,6 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'SMW\TempChangeOpPurgeJob',
-			true
-		);
-
-		$provider[] = array(
 			'SMW\ParserCachePurgeJob',
 			false,
 			array( 'idlist' => '1|2' )
@@ -267,10 +262,6 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			'dispatchFulltextSearchTableUpdateJobWith'
-		);
-
-		$provider[] = array(
-			'dispatchTempChangeOpPurgeJobWith'
 		);
 
 		return $provider;

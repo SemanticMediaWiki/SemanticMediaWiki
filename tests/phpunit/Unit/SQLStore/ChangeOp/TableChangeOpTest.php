@@ -197,4 +197,30 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testToArray() {
+
+		$diff = [
+			[
+				's_id' => 462,
+				'o_serialized' => '1/2016/6/10/2/1/0/0',
+				'o_sortkey' => '2457549.5840278',
+			],
+			[
+				's_id' => 42,
+				'p_id' => 1001,
+				'o_id' => 9999
+			]
+		];
+
+		$instance = new TableChangeOp(
+			'foo',
+			$diff
+		);
+
+		$this->assertSame(
+			['foo' => $diff ],
+			$instance->toArray()
+		);
+	}
+
 }

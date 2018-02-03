@@ -131,4 +131,44 @@ class HmacSerializer {
 		return false;
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param mixed $data
+	 * @param string $key
+	 * @param string $algo = 'md5'
+	 *
+	 * @return string|boolean
+	 */
+	public static function compress( $data, $key = null, $algo = 'md5' ) {
+
+		if ( $key === null ) {
+			$key = $GLOBALS['wgSecretKey'];
+		}
+
+		$key = $key . 'compress';
+
+		return gzcompress( self::serialize( $data, $key, $algo ), 9 );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $data
+	 * @param string $key
+	 * @param string $algo = 'md5'
+	 *
+	 * @return mixed|boolean
+	 */
+	public static function uncompress( $data, $key = null, $algo = 'md5' ) {
+
+		if ( $key === null ) {
+			$key = $GLOBALS['wgSecretKey'];
+		}
+
+		$key = $key . 'compress';
+
+		return self::unserialize( @gzuncompress( $data ), $key, $algo );
+	}
+
 }

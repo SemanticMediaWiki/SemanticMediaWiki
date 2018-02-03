@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Store;
 use SMWDIError as DIError;
+use SMWDataItem as DataItem;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
 /**
@@ -46,7 +47,7 @@ class PropertyTableRowMapper {
 	 */
 	public function newChangeOp( $id, SemanticData $semanticData ) {
 
-		list( $dataArray, $propertyList, $fixedPropertyList ) = $this->mapToRows(
+		list( $dataArray, $textItems, $propertyList, $fixedPropertyList ) = $this->mapToRows(
 			$id,
 			$semanticData
 		);
@@ -92,12 +93,12 @@ class PropertyTableRowMapper {
 	 */
 	public function mapToRows( $sid, SemanticData $semanticData ) {
 
-		list( $rows, $propertyList, $fixedPropertyList ) = $this->mapData(
+		list( $rows, $textItems, $propertyList, $fixedPropertyList ) = $this->mapData(
 			$sid,
 			$semanticData
 		);
 
-		return [ $rows, $propertyList, $fixedPropertyList ];
+		return [ $rows, $textItems, $propertyList, $fixedPropertyList ];
 	}
 
 	/**
@@ -144,6 +145,7 @@ class PropertyTableRowMapper {
 		// reference during a post processing
 		$propertyList = [];
 		$fixedPropertyList = [];
+		$textItems = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
 
@@ -187,6 +189,12 @@ class PropertyTableRowMapper {
 				$propertyList[$property->getKey()] = $pid;
 			}
 
+			$pid = $propertyList[$property->getKey()];
+
+			if ( !isset( $textItems[$pid] ) ) {
+				$textItems[$pid] = [];
+			}
+
 			// Avoid issues when an expected predefined property is no longer
 			// available (i.e. an extension that defined that property was disabled)
 			try {
@@ -207,6 +215,14 @@ class PropertyTableRowMapper {
 					$rows[$tableName] = [];
 				}
 
+				if ( $dataItem->getDIType() === DataItem::TYPE_BLOB ) {
+					$textItems[$pid][] = $dataItem->getString();
+				} elseif ( $dataItem->getDIType() === DataItem::TYPE_URI ) {
+					$textItems[$pid][] = $dataItem->getSortKey();
+				} elseif ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
+					$textItems[$pid][] = $dataItem->getSortKey();
+				}
+
 				$dataItemValues = $this->store->getDataItemHandlerForDIType( $dataItem->getDIType() )->getInsertValues( $dataItem );
 
 				// Ensure that the sortkey is a string
@@ -225,6 +241,11 @@ class PropertyTableRowMapper {
 
 				$rows[$tableName][$hash] = $insertValues;
 			}
+
+			// Unused
+			if ( $textItems[$pid] === [] ) {
+				unset( $textItems[$pid] );
+			}
 		}
 
 		// Special handling of Concepts
@@ -232,7 +253,7 @@ class PropertyTableRowMapper {
 			$this->mapConceptTable( $sid, $rows );
 		}
 
-		return [ $rows, $propertyList, $fixedPropertyList ];
+		return [ $rows, $textItems, $propertyList, $fixedPropertyList ];
 	}
 
 	/**

@@ -96,6 +96,18 @@ class HmacSerializerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRoundtripCompressUncompress() {
+
+		$instance = new HmacSerializer();
+
+		$data = [ 'Foo' ];
+
+		$this->assertEquals(
+			$data,
+			$instance->uncompress( $instance->compress( $data, 'def' ), 'def' )
+		);
+	}
+
 	public function testRoundtripSerializeDeserializeWithDifferentKey() {
 
 		$instance = new HmacSerializer();

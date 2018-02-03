@@ -33,17 +33,17 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @var array
 	 */
+	private $textItems = array();
+
+	/**
+	 * @var array
+	 */
 	private $orderedDiff = array();
 
 	/**
 	 * @var DIWikiPage
 	 */
 	private $subject;
-
-	/**
-	 * @var string
-	 */
-	private $hash = '';
 
 	/**
 	 * @var array
@@ -56,6 +56,11 @@ class ChangeOp implements IteratorAggregate {
 	private $propertyList = [];
 
 	/**
+	 * @var boolean
+	 */
+	private $textItemsFlag = false;
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param DIWikiPage|null $subject
@@ -64,6 +69,15 @@ class ChangeOp implements IteratorAggregate {
 	public function __construct( DIWikiPage $subject = null, array $diff = array() ) {
 		$this->subject = $subject;
 		$this->diff = $diff;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $textItemsFlag
+	 */
+	public function setTextItemsFlag( $textItemsFlag ) {
+		$this->textItemsFlag = (bool)$textItemsFlag;
 	}
 
 	/**
@@ -90,7 +104,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @return string
 	 */
 	public function getHash() {
-		return md5( $this->hash . ( $this->subject !== null ? $this->subject->asBase()->getHash() : '' ) );
+		return $this->subject->getHash();
 	}
 
 	/**
@@ -132,6 +146,7 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $hash
 	 * @param array $data
 	 */
 	public function addDataOp( $hash, array $data ) {
@@ -162,6 +177,18 @@ class ChangeOp implements IteratorAggregate {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 * @param array $data
+	 */
+	public function addTextItems( $id, array $textItems ) {
+		if ( $this->textItemsFlag ) {
+			$this->textItems[$id] = $textItems;
+		}
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param array $insertOp
@@ -175,8 +202,6 @@ class ChangeOp implements IteratorAggregate {
 		);
 
 		$this->diff[] = $diff;
-
-		$this->hash .= json_encode( $diff );
 	}
 
 	/**
@@ -206,11 +231,26 @@ class ChangeOp implements IteratorAggregate {
 	 * @return ChangeDiff
 	 */
 	public function newChangeDiff() {
-		return new ChangeDiff(
+
+		$changeDiff = new ChangeDiff(
 			$this->subject,
 			$this->getTableChangeOps(),
-			$this->getPropertyList()
+			$this->getDataOps(),
+			$this->getPropertyList(),
+			$this->textItems
 		);
+
+		$changeDiff->setChangeList(
+			self::OP_INSERT,
+			$this->getChangedEntityIdListByType( self::OP_INSERT )
+		);
+
+		$changeDiff->setChangeList(
+			self::OP_DELETE,
+			$this->getChangedEntityIdListByType( self::OP_DELETE )
+		);
+
+		return $changeDiff;
 	}
 
 	/**

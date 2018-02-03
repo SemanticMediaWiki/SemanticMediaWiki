@@ -120,7 +120,7 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
-		list( $rows, $propertyList, $fixedPropertyList ) = $instance->mapToRows(
+		list( $rows, $textItems, $propertyList, $fixedPropertyList ) = $instance->mapToRows(
 			42,
 			$semanticData
 		);

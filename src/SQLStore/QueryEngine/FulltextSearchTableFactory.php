@@ -140,9 +140,8 @@ class FulltextSearchTableFactory {
 
 		$textByChangeUpdater = new TextByChangeUpdater(
 			$store->getConnection( 'mw.db' ),
-			$this->newSearchTableUpdater( $store ),
-			$this->newTextSanitizer(),
-			$applicationFactory->singleton( 'TempChangeOpStore' )
+			$applicationFactory->getCache(),
+			$this->newSearchTableUpdater( $store )
 		);
 
 		$textByChangeUpdater->setLogger(

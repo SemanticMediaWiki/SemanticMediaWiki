@@ -123,7 +123,8 @@ class TableChangeOp {
 
 		foreach ( $changeOps as $changeOp ) {
 
-			if ( isset( $filter['s_id' ] ) && isset( $changeOp['s_id'] ) && isset( $filter['s_id' ][$changeOp['s_id']] ) ) {
+			// Filter defined as: [ 's_id' => [ 42 => true, 1001 => true ] ]
+			if ( isset( $filter['s_id' ] ) && isset( $changeOp['s_id'] ) && isset( $filter['s_id'][$changeOp['s_id']] ) ) {
 				continue;
 			}
 
@@ -139,9 +140,20 @@ class TableChangeOp {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @return string
 	 */
 	public function __toString() {
-		return json_encode( [ $this->tableName => $this->changeOps ] );
+		return json_encode( $this->toArray() );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function toArray() {
+		return [ $this->tableName => $this->changeOps ];
 	}
 
 }
