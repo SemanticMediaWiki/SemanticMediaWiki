@@ -100,6 +100,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2932](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2932)
 * [#2933](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2933)
 * [#2953](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2953)
+* [#2973](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2973)
+* [#2982](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2982)
 
 ## Bug fixes
 
@@ -117,6 +119,9 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2909](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2909)
 * [#2915](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2915)
 * [#2917](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2917)
+* [#2958](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2958)
+* [#2963](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2963)
+* [#2986](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2986)
 
 ## Breaking changes and deprecations
 
@@ -144,6 +149,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2899](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2899)
 * [#2927](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2927)
 * [#2944](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2944)
+* [#2961](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2961)
 
 ## Other changes
 
@@ -174,6 +180,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2888](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2888)
 * [#2908](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2908)
 * [#2928](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2928)
+* [#2969](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2969)
+* [#2972](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2972)
 
 
 ## Contributors
