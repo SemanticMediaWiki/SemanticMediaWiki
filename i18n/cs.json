@@ -14,7 +14,8 @@
 			"Dvorapa",
 			"Marek Pavlica",
 			"Aktron",
-			"Martin Urbanec"
+			"Martin Urbanec",
+			"Ilimanaq29"
 		]
 	},
 	"smw-desc": "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -231,6 +232,9 @@
 	"smw-info-par-message": "Jaká zpráva se má zobrazit.",
 	"smw-info-par-icon": "Jaká ikona se má zobrazit, buď „info“ nebo „warning“ (varování).",
 	"prefs-smw": "Sémantická MediaWiki",
+	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Sémantická MediaWiki] (a podobná rozšíření) poskytuje individuální úpravy pro nějaké zvolené funkce. Podívejte se prosím na [https://www.semantic-mediawiki.org/wiki/Help:User_preferences nápovědu] pro další informace.",
+	"smw-prefs-ask-options-tooltip-display": "Zobrazit parametr textu jako informační nástroj",
+	"smw-prefs-ask-options-collapsed-default": "Povolit vrácení všech nastavení do výchozího stavu",
 	"smw-ui-tooltip-title-property": "Vlastnost",
 	"smw-ui-tooltip-title-quantity": "Množství",
 	"smw-ui-tooltip-title-warning": "Varování",
@@ -247,5 +251,8 @@
 	"smw-livepreview-loading": "Nahrávám…",
 	"smw-sp-searchbyproperty-resultlist-header": "Seznam výsledků",
 	"smw-editpage-annotation-enabled": "Tato stránka podporuje sémantické anotace uvnitř textu (např. <nowiki>„[[Is specified as::World Heritage Site]]“</nowiki>), které slouží k budování strukturovaného a prohledávatelného obsahu prostřednictvím Semantic MediaWiki. Podrobný popis, jak používat anotace a funkci parseru #ask, naleznete na stránkách nápovědy [https://www.semantic-mediawiki.org/wiki/Help:Getting_started ''Začínáme''], [https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation ''Anotace uvnitř textu''] či [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries ''inline dotazy''].",
-	"smw-editpage-annotation-disabled": "Na této stránce nejsou povoleny sémantické anotace uvnitř textu kvůli omezením jmenného prostoru. Podrobný popis, jak tento jmenný prostor povolit, najdete v [https://www.semantic-mediawiki.org/wiki/Help:Configuration nápovědě ke konfiguraci]."
+	"smw-editpage-annotation-disabled": "Na této stránce nejsou povoleny sémantické anotace uvnitř textu kvůli omezením jmenného prostoru. Podrobný popis, jak tento jmenný prostor povolit, najdete v [https://www.semantic-mediawiki.org/wiki/Help:Configuration nápovědě ke konfiguraci].",
+	"smw-search-syntax-support": "Vyhledávací vstup podporuje použití sémantické [https://www.semantic-mediawiki.org/wiki/Help:Semantic_search syntaxové otázky], která pomůže získávání výsledků s použitím Semantic MediaWiki.",
+	"smw-search-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Vstupní asistent] je také aktivní pro zjednodušení zvolení možných vlastností a kategorií.",
+	"smw-change-propagation-protection": "Tato stránka je zamčena kvůli prevenci náhodných editací dat během [https://www.semantic-mediawiki.org/wiki/Change_propagation změny anotací hodnot]. Proces může trvat chvíli, než bude stránka odemčena, což záleží na velikosti a frekvenci [https://www.mediawiki.org/wiki/Manual:Job_queue plánovače]."
 }

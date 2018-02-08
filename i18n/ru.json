@@ -37,7 +37,8 @@
 			"Lugimax",
 			"Edible Melon",
 			"Staspotanin2",
-			"Gehhrr"
+			"Gehhrr",
+			"Movses"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -237,7 +238,7 @@
 	"smw-statistics-delete-count": "{{PLURAL:$1|Устаревший объект (отмеченный для удаления)|Устаревших объекта (отмеченных для удаления)|Устаревших объектов (отмеченных для удаления)}}",
 	"smw_uri_doc": "Преобразователь URI осуществляет [$1 W3C поиск http тэгов с использованием Range-14].\nДанная возможность упрощает поиск семантической информации.",
 	"ask": "Семантический поиск",
-	"smw-ask-help": "Эта секция содержит ссылки, которые помогают объяснить, как использовать семантический поиск и <code>#ask</code> синтаксис.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Selecting pages] описывает выбранные страницы и условия сборки\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Search_operators Search operators] лист доступных операторов поиска, включая их для запросов диапазона и знаков подстановки\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Displaying information] выделяет использование распечатки условий и опций форматирования",
+	"smw-ask-help": "Эта секция содержит ссылки, которые помогают объяснить, как использовать семантический поиск и <code>#ask</code> синтаксис.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Selecting pages] описывает выбранные страницы и условия сборки\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Search_operators Search operators] список доступных операторов поиска, включая операторы для запроса диапазона и знаки подстановки\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Displaying information] выделяет использование распечатки условий и опций форматирования",
 	"smw_ask_sortby": "Сортировать по столбцу (необязательно)",
 	"smw_ask_ascorder": "По возрастанию",
 	"smw_ask_descorder": "По убыванию",
@@ -441,7 +442,7 @@
 	"smw-editpage-property-annotation-enabled": "Это свойство можно расширить с помощью семантических аннотаций для указания типа данных (например <nowiki>\"[[Has type::Page]]\"</nowiki>) или других поддерживаемых утверждений (e.g. <nowiki>\"[[Subproperty of::dc:date]]\"</nowiki>). Описание, как расширить эту страницу смотрите на странице справки о [https://www.semantic-mediawiki.org/wiki/Help:Property_declaration \nзаявлении свойства] или [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes список доступных типов данных].",
 	"smw-editpage-property-annotation-disabled": "Это свойство нельзя расширить аннотацией типа данных (например <nowiki>\"[[Has type::Page]]\"</nowiki>), поскольку она уже предварительно определена (см. более подробную информацию на справочной странице о [https://www.semantic-mediawiki.org/wiki/Help:Special_properties специальные свойства]).",
 	"smw-editpage-concept-annotation-enabled": "Этот концепт можно расширить с использованием парсерной функции #concept. Описание, как использовать #concept, см. на справочной странице о [https://www.semantic-mediawiki.org/wiki/Help:Concepts концептах].",
-	"smw-search-input-assistance": "Ссылка [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance input assistant] включена что упростить выбор всех возможных опций и категорий.",
+	"smw-search-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Помощник по вводу] включён, чтобы упростить выбор всех возможных опций и категорий.",
 	"log-name-smw": "Журнал Semantic MediaWiki",
 	"log-show-hide-smw": "$1 журнал Semantic MediaWiki",
 	"log-description-smw": "Деятельность относительно [https://www.semantic-mediawiki.org/wiki/Help:Logging включенных типов событий], которую регистрирует Semantic MediaWiki и ее компоненты.",

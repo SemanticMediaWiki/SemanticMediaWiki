@@ -513,7 +513,7 @@
 	"smw-datavalue-property-create-restriction": "Das Attribut „$1“ ist nicht vorhanden und kann nur von Benutzern der hierfür vorgesehenen [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups Benutzergruppe] oder mit der hierfür benötigten Berechtigung („$2“) erstellt werden, während der [https://www.semantic-mediawiki.org/wiki/Help:Authority_mode Berechtigungsmodus] aktiviert ist. Erst wenn dieses unbestätigte Attribut erstellt wurde, kann es für Annotationen genutzt werden.",
 	"smw-datavalue-property-invalid-character": "Der Name des Attributs „$1“ enthält das ungültige Zeichen „$2“, das nicht hierfür verwendet werden kann.",
 	"smw-datavalue-property-invalid-chain": "Die Verwendung von „$1“ als Attributkette ist während des Hinzufügens von Annotationen nicht möglich.",
-	"smw-datavalue-restricted-use": "Der Datenwert „$1“ wurde zur eingeschränkten Nutzung markiert.",
+	"smw-datavalue-restricted-use": "Der Datenwert „$1“ ist nicht uneingeschränkt nutzbar und kann daher nicht gespeichert werden.",
 	"smw-datavalue-invalid-number": "„$1“ ist keine gültige Zahl.",
 	"smw-query-condition-circular": "In Vorlage „$1“ wurde ein möglicher Zirkelbezug festgestellt.",
 	"smw-sp-types-list": "Liste der Datentypen",

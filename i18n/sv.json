@@ -434,7 +434,7 @@
 	"smw-no-data-available": "Ingen tillgänglig data.",
 	"protect-level-smw-pageedit": "Tillåt endast användare med sidredigeringsbehörighet (Semantic MediaWiki)",
 	"smw-edit-protection-auto-update": "Semantic MediaWiki har uppdaterat skyddsstatusen enligt egenskapen `Är redigeringsskyddad`.",
-	"smw-edit-protection-enabled": "Redigeringsskydd (Semantic MediaWiki)",
+	"smw-edit-protection-enabled": "Redigeringsskyddad (Semantic MediaWiki)",
 	"smw-patternedit-protection": "Denna sida skyddas och kan endast redigeras av användare med den lämpliga [https://www.semantic-mediawiki.org/wiki/Help:Permissions behörigheten <code>smw-patternedit</code>].",
 	"smw-property-predefined-edip": "\"$1\" är en fördefinierad egenskap tillhandahållen av [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] för att indikera om redigering är skyddad eller inte.",
 	"smw-format-datatable-emptytable": "Ingen data tillgänglig i tabellen",
@@ -462,8 +462,15 @@
 	"smw-property-reserved-category": "Kategori",
 	"smw-category": "Kategori",
 	"smw-browse-property-group-title": "Egenskapsgrupp",
+	"smw-browse-property-group-label": "Etikett för egenskapsgrupp",
+	"smw-browse-property-group-description": "Beskrivning för egenskapsgrupp",
 	"smw-list-pager-filter": "Filter:",
+	"smw-section-expand": "Expandera avsnittet",
+	"smw-section-collapse": "Stäng avsnittet",
 	"smw-ask-format-help-link": "Formatet [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",
 	"smw-help": "Hjälp",
-	"smw-cheat-sheet": "Lathund"
+	"smw-cheat-sheet": "Lathund",
+	"smw-personal-jobqueue-watchlist": "Bevakningslista för jobbkö",
+	"smw-property-predefined-label-skey": "Sorteringsnyckel",
+	"smw-processing": "Bearbetar..."
 }

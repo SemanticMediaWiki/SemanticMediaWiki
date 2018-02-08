@@ -513,7 +513,7 @@
 	"smw-datavalue-property-create-restriction": "This is an error message shown when am edit protected property page should be created.\n\nParameters:\n* $1 - Holds the name of property\n* $2 - Holds the name of the user right",
 	"smw-datavalue-property-invalid-character": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the invalid characters withing the name of the property",
 	"smw-datavalue-property-invalid-chain": "This is an error message.\n\nParameter:\n* $1 - holds the name of the property chain",
-	"smw-datavalue-restricted-use": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the datavalue causing the error/warning.",
+	"smw-datavalue-restricted-use": "This is an error/warning message. This basically means that the datavalue may not be annotated.\n\nParameters:\n\n* $1 holds the datavalue causing the error/warning.",
 	"smw-datavalue-invalid-number": "This is an error message shown to the user in case the stored value is not a number.",
 	"smw-query-condition-circular": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the name of the template causing the error/warning.",
 	"smw-sp-types-list": "A header",

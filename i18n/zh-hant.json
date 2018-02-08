@@ -25,7 +25,8 @@
 			"机智的小鱼君",
 			"A2093064",
 			"Kly",
-			"Assoc"
+			"Assoc",
+			"Laundry Machine"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更易於取得所需的資料 - 不論是對機器''與''人類\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件])",
@@ -278,6 +279,8 @@
 	"smw_browse_hide_incoming": "隱藏連結到此頁的屬性",
 	"smw_browse_no_outgoing": "這個頁面沒有設定屬性。",
 	"smw_browse_no_incoming": "沒有屬性連結到此頁。",
+	"smw-browse-show-group": "顯示群組",
+	"smw-browse-hide-group": "隱藏群組",
 	"smw_inverse_label_default": "的 $1",
 	"smw_inverse_label_property": "逆屬性標籤",
 	"pageproperty": "頁面屬性搜尋",
@@ -290,6 +293,7 @@
 	"smw_result_results": "結果",
 	"smw_result_noresults": "沒有結果。",
 	"smwadmin": "管理函式",
+	"smw-admin-statistics-job-title": "工作統計",
 	"smw-admin-setupsuccess": "儲存引擎已設定。",
 	"smw_smwadmin_return": "返回 $1",
 	"smw_smwadmin_updatestarted": "更新語意資料過程開始。\n所有已儲存資料將被按需重建或修復。\n你可以透過本特殊頁面追蹤更新程序。",
@@ -377,7 +381,8 @@
 	"smw-info-par-message": "顯示的訊息。",
 	"smw-info-par-icon": "顯示的圖示，\"訊息\"或\"警告\"。",
 	"prefs-smw": "語義 MediaWiki",
-	"prefs-ask-options": "語義搜尋選項",
+	"prefs-general-options": "一般選項",
+	"prefs-ask-options": "Special:Ask 選項",
 	"smw-prefs-intro-text": "下方選項由[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (或相關擴充套件) 提供，在所選的功能上開啟個別自訂。更多資訊請參閱這裡的[https://www.semantic-mediawiki.org/wiki/Help:User_preferences 使用說明章節]。",
 	"smw-prefs-ask-options-tooltip-display": "顯示參數文字作為資訊提示",
 	"smw-prefs-ask-options-collapsed-default": "開啟選項框以預設摺疊",
