@@ -202,6 +202,40 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testInitCustomNamespace_NamespaceAliases() {
+
+		$extraneousLanguage = $this->getMockBuilder( '\SMW\ExtraneousLanguage\ExtraneousLanguage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$extraneousLanguage->expects( $this->any() )
+			->method( 'fetchByLanguageCode' )
+			->will( $this->returnSelf() );
+
+		$extraneousLanguage->expects( $this->any() )
+			->method( 'getNamespaces' )
+			->will( $this->returnValue( array() ) );
+
+		$extraneousLanguage->expects( $this->once() )
+			->method( 'getNamespaceAliases' )
+			->will( $this->returnValue( array( 'Foo' => SMW_NS_PROPERTY ) ) );
+
+		$vars = $this->default + [
+			'wgExtraNamespaces'  => '',
+			'wgNamespaceAliases' => '',
+		];
+
+		$instance = NamespaceManager::initCustomNamespace(
+			$vars,
+			$extraneousLanguage
+		);
+
+		$this->assertArrayHasKey(
+			'Foo',
+			$vars['wgNamespaceAliases']
+		);
+	}
+
 	public function testInitWithoutOverridingUserSettingsOnExtraNamespaceSettings() {
 
 		$vars = array(
