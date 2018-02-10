@@ -55,7 +55,7 @@ span.smwttactiveinline span.smwbuiltin {
 }
 
 /* make divs look like <pre> */
-div.smwpre {
+.smwpre {
 	font-family: monospace;
 	padding: 1em;
 	border: 1px dashed #2f6fab;
@@ -71,6 +71,29 @@ div.smwpre {
 	word-wrap: break-word;
 	word-break: break-word;
 	margin-right: 5px;
+}
+
+.smwpre-no-margin {
+	margin: 0px;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+}
+
+.smw-debug-box {
+	border: 5px dotted #ffcc00;
+	background: #FFF0BD;
+	padding: 15px
+	margin-bottom: 10px;
+}
+
+.smw-debug-box-header {
+	font-family: sans-serif;
+	padding-bottom: 15px;
+	padding-top: 10px;
+	font-weight: bolder;
+	font-size: 16px;
+	border-bottom: 1px dotted #ffcc00;
+	margin-bottom: 15px;
 }
 
 /* terminate page contents when inserting stuff below a page, typically used in <br> */
