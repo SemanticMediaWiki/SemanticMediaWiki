@@ -56,6 +56,11 @@ abstract class Store implements QueryEngine {
 	 */
 	protected $options = null;
 
+	/**
+	 * @var array
+	 */
+	public $extensionData = [];
+
 ///// Reading methods /////
 
 	/**

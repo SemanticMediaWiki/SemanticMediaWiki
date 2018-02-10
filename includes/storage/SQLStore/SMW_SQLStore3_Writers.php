@@ -80,11 +80,12 @@ class SMWSQLStore3Writers {
 
 		// Fetch all possible matches (including any duplicates created by
 		// incomplete rollback or DB deadlock)
-		$ids = $this->store->getObjectIds()->findAllEntitiesThatMatch(
+		$idList = $this->store->getObjectIds()->findAllEntitiesThatMatch(
 			$title->getDBkey(),
 			$title->getNamespace()
 		);
 
+		$extensionList = array_flip( $idList );
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$emptySemanticData = new SemanticData( $subject );
@@ -92,11 +93,14 @@ class SMWSQLStore3Writers {
 
 		$subobjectListFinder = $this->factory->newSubobjectListFinder();
 
-		$this->doDataUpdate( $emptySemanticData );
-
-		foreach ( $ids as $id ) {
-			$this->doDelete( $id, $subject, $subobjectListFinder );
+		foreach ( $idList as $id ) {
+			$this->doDelete( $id, $subject, $subobjectListFinder, $extensionList );
 		}
+
+		$this->doDataUpdate( $emptySemanticData );
+		$extensionList = array_keys( $extensionList );
+
+		$this->store->extensionData['delete.list'] = $extensionList;
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
 		\Hooks::run( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
@@ -104,7 +108,7 @@ class SMWSQLStore3Writers {
 		\Hooks::run( 'SMW::SQLStore::AfterDeleteSubjectComplete', array( $this->store, $title ) );
 	}
 
-	private function doDelete( $id, $subject, $subobjectListFinder ) {
+	private function doDelete( $id, $subject, $subobjectListFinder, &$extensionList ) {
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = $this->store->getConnection();
@@ -133,6 +137,8 @@ class SMWSQLStore3Writers {
 		);
 
 		foreach( $subobjectListFinder->find( $subject ) as $subobject ) {
+			$extensionList[$subobject->getId()] = true;
+
 			$this->store->getObjectIds()->updateInterwikiField(
 				$subobject->getId(),
 				$subobject,
@@ -188,10 +194,13 @@ class SMWSQLStore3Writers {
 			$this->doFlatDataUpdate( $subobjectData );
 		}
 
+		$deleteList = [];
+
 		// Mark subobjects without reference to be deleted
 		foreach( $subobjectListFinder->find( $subject ) as $subobject ) {
 			if( !$semanticData->hasSubSemanticData( $subobject->getSubobjectName() ) ) {
 				$this->doFlatDataUpdate( new SMWSemanticData( $subobject ) );
+				$deleteList[] = $subobject->getId();
 
 				$this->store->getObjectIds()->updateInterwikiField(
 					$subobject->getId(),
@@ -210,6 +219,9 @@ class SMWSQLStore3Writers {
 		$changeDiff->save( ApplicationFactory::getInstance()->getCache() );
 
 		$changePropListener->callListeners();
+
+		$this->store->extensionData['delete.list'] = $deleteList;
+		$this->store->extensionData['change.diff'] = $changeDiff;
 
 		// Deprecated since 2.3, use SMW::SQLStore::AfterDataUpdateComplete
 		\Hooks::run( 'SMWSQLStore3::updateDataAfter', array( $this->store, $semanticData ) );
@@ -256,15 +268,19 @@ class SMWSQLStore3Writers {
 		}
 
 		// Always make an ID; this also writes sortkey and namespace data
+		$sortKey = $this->getSortKey( $subject, $data );
+
 		$sid = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
 			$subject->getInterwiki(),
 			$subject->getSubobjectName(),
 			true,
-			$this->getSortKey( $subject, $data ),
+			$sortKey,
 			true
 		);
+
+		$subject->setSortKey( $sortKey );
 
 		// Find any potential duplicate entries for the current subject and
 		// if matched, mark them as to be deleted
@@ -314,6 +330,11 @@ class SMWSQLStore3Writers {
 	}
 
 	private function getSortKey( $subject, $data ) {
+
+		// Don't mind the delete process
+		if ( $data->getOption( SemanticData::PROC_DELETE ) ) {
+			return '';
+		}
 
 		$property = new DIProperty( '_SKEY' );
 
