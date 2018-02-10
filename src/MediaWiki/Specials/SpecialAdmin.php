@@ -74,7 +74,11 @@ class SpecialAdmin extends SpecialPage {
 
 		$output->addModules( HtmlVTabs::getModules() );
 
-		$action = $query !== null ? $query : $this->getRequest()->getText( 'action' );
+		if ( $query !== null ) {
+			$this->getRequest()->setVal( 'action', $query );
+		}
+
+		$action = $this->getRequest()->getText( 'action' );
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
