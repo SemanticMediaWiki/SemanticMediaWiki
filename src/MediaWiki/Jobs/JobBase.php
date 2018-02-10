@@ -24,6 +24,11 @@ abstract class JobBase extends Job {
 	protected $isEnabledJobQueue = true;
 
 	/**
+	 * @var JobQueue
+	 */
+	protected $jobQueue;
+
+	/**
 	 * @var Job
 	 */
 	protected $jobs = array();
@@ -163,8 +168,43 @@ abstract class JobBase extends Job {
 	 */
 	public function lazyPush() {
 		if ( $this->isEnabledJobQueue ) {
-			return ApplicationFactory::getInstance()->getJobQueue()->lazyPush( $this );
+			return $this->getJobQueue()->lazyPush( $this );
 		}
+	}
+
+	/**
+	 * @see Translate::TTMServerMessageUpdateJob
+	 * @since 3.0
+	 *
+	 * @param integer $delay
+	 */
+	public function setDelay( $delay ) {
+
+		$isDelayedJobsEnabled = $this->getJobQueue()->isDelayedJobsEnabled(
+			$this->getType()
+		);
+
+		if ( !$delay || !$isDelayedJobsEnabled ) {
+			return;
+		}
+
+		$oldTime = $this->getReleaseTimestamp();
+		$newTime = time() + $delay;
+
+		if ( $oldTime !== null && $oldTime >= $newTime ) {
+			return;
+		}
+
+		$this->params[ 'jobReleaseTimestamp' ] = $newTime;
+	}
+
+	protected function getJobQueue() {
+
+		if ( $this->jobQueue === null ) {
+			$this->jobQueue = ApplicationFactory::getInstance()->getJobQueue();
+		}
+
+		return $this->jobQueue;
 	}
 
 }

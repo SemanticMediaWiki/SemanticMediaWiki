@@ -50,6 +50,17 @@ class JobQueue {
 	 *
 	 * @param string $type
 	 *
+	 * @return boolean
+	 */
+	public function isDelayedJobsEnabled( $type ) {
+		return $this->jobQueueGroup->get( $type )->delayedJobsEnabled();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $type
+	 *
 	 * @return Job|boolean
 	 */
 	public function pop( $type ) {
