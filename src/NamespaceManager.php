@@ -143,10 +143,11 @@ class NamespaceManager {
 	 * @since 1.9
 	 *
 	 * @param array &$vars
+	 * @param ExtraneousLanguage|null $extraneousLanguage
 	 */
-	public static function initCustomNamespace( &$vars ) {
+	public static function initCustomNamespace( &$vars, ExtraneousLanguage $extraneousLanguage = null ) {
 
-		$instance = new self();
+		$instance = new self( $extraneousLanguage );
 
 		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
 			$vars['smwgNamespaceIndex'] = 100;
@@ -175,9 +176,13 @@ class NamespaceManager {
 			$vars['wgLanguageCode']
 		);
 
+		$namespaceAliases = $instance->getNamespaceAliasesByLanguageCode(
+			$vars['wgLanguageCode']
+		);
+
 		$vars['wgCanonicalNamespaceNames'] += $instance->getCanonicalNames();
 		$vars['wgExtraNamespaces'] += $extraNamespaces + $instance->getCanonicalNames();
-		$vars['wgNamespaceAliases'] = array_flip( $extraNamespaces ) + array_flip( $instance->getCanonicalNames() ) + $vars['wgNamespaceAliases'];
+		$vars['wgNamespaceAliases'] = $namespaceAliases + array_flip( $extraNamespaces ) + array_flip( $instance->getCanonicalNames() ) + $vars['wgNamespaceAliases'];
 
 		$instance->addNamespaceSettings( $vars );
 
@@ -253,6 +258,10 @@ class NamespaceManager {
 	protected function getNamespacesByLanguageCode( $languageCode ) {
 		$GLOBALS['smwgContLang'] = $this->extraneousLanguage->fetchByLanguageCode( $languageCode );
 		return $GLOBALS['smwgContLang']->getNamespaces();
+	}
+
+	private function getNamespaceAliasesByLanguageCode( $languageCode ) {
+		return $this->extraneousLanguage->fetchByLanguageCode( $languageCode )->getNamespaceAliases();
 	}
 
 }
