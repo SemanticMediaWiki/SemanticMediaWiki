@@ -85,8 +85,8 @@
         "SMW_NS_CONCEPT_TALK": "Concepto_discusión"
     },
     "namespaceAliases": {
-      "Atributo": "SMW_NS_PROPERTY",
-      "Atributo_discusión": "SMW_NS_PROPERTY_TALK"
+        "Atributo": "SMW_NS_PROPERTY",
+        "Atributo_discusión": "SMW_NS_PROPERTY_TALK"
      },
     "dateFormats": [
         [
