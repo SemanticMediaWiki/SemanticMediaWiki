@@ -1,0 +1,80 @@
+{
+	"description": "Test `_wpg` user case (#2982)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/Q0619/1",
+			"contents": "[[Has page::userCase]]"
+		},
+		{
+			"page": "Example/Q0619/user Case",
+			"contents": "[[Has page::Example/Q0619/1]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (userCase, UserCase on _wpg type)",
+			"condition": "[[Has page::userCase]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0619/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (userCase, UserCase on _wpg type)",
+			"condition": "[[Has page::UserCase]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0619/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"condition": "[[~*user Case*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0619/user Case#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_HELP": true
+		},
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
