@@ -84,7 +84,10 @@
         "SMW_NS_CONCEPT": "Concepto",
         "SMW_NS_CONCEPT_TALK": "Concepto_discusión"
     },
-    "namespaceAliases": [],
+    "namespaceAliases": {
+      "Atributo": "SMW_NS_PROPERTY",
+      "Atributo_discusión": "SMW_NS_PROPERTY_TALK"
+     },
     "dateFormats": [
         [
             "SMW_Y"
