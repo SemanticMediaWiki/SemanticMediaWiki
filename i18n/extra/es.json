@@ -77,8 +77,8 @@
         "SMW_PREC_YMDT": "H:i:s j M Y"
     },
     "namespaces": {
-        "SMW_NS_PROPERTY": "Atributo",
-        "SMW_NS_PROPERTY_TALK": "Atributo_discusión",
+        "SMW_NS_PROPERTY": "Propiedad",
+        "SMW_NS_PROPERTY_TALK": "Propiedad_discusión",
         "SMW_NS_TYPE": "Tipo",
         "SMW_NS_TYPE_TALK": "Tipo_discusión",
         "SMW_NS_CONCEPT": "Concepto",
