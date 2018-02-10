@@ -422,7 +422,7 @@ class ParserData {
 				'revID' => $latestRevID
 			];
 
-			return $applicationFactory->getMediaWikiLogger()->info( 'Update (Found rev:{revID}, skip update)' );
+			return $applicationFactory->getMediaWikiLogger()->info( 'Update (Found rev:{revID}, skip update)', $context );
 		}
 
 		$this->semanticData->setOption(
