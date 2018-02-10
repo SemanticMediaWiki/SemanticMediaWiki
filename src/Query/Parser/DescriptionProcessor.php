@@ -6,6 +6,7 @@ use SMW\DataValueFactory;
 use SMWDataValue as DataValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Site;
 use SMW\Message;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Conjunction;
@@ -123,6 +124,7 @@ class DescriptionProcessor {
 		// Indicates whether a value is being used by a query condition or not which
 		// can lead to a modified validation of a value.
 		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );
+		$dataValue->setOption( 'isCapitalLinks', Site::isCapitalLinks() );
 
 		$description = $dataValue->getQueryDescription( $chunk );
 		$this->addError( $dataValue->getErrors() );
