@@ -75,6 +75,8 @@
         "_PPGR": "Es un grupo de propiedad"
     },
     "propertyAliases": {
+        "Es página nueva": "_NEWP",
+        "Tiene restricción de unicidad": "_PVUC",
         "Unidad de medida": "_UNIT"
     },
     "dateFormatsByPrecision": {
