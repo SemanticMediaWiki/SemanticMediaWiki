@@ -259,7 +259,7 @@
 	"smw-ask-no-cache": "Abfragecache deaktivieren",
 	"smw-ask-no-cache-desc": "Ergebnisse ohne Verwendung des Abfragecaches anzeigen",
 	"smw-ask-result": "Ergebnis",
-	"smw-ask-empty": "Leeren",
+	"smw-ask-empty": "Alle Einträge löschen",
 	"smw-ask-download-link-desc": "Ermittelte Ergebnisse im Format $1 herunterladen",
 	"smw-ask-format": "Format",
 	"smw-ask-format-selection-help": "Hilfe zum Ausgabeformat: $1",

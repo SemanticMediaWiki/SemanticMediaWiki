@@ -259,7 +259,7 @@
 	"smw-ask-no-cache": "無緩存",
 	"smw-ask-no-cache-desc": "沒有査詢緩存的結果",
 	"smw-ask-result": "結果",
-	"smw-ask-empty": "空的",
+	"smw-ask-empty": "清空所有記錄",
 	"smw-ask-download-link-desc": "下載查詢結果為$1格式",
 	"smw-ask-format": "格式",
 	"smw-ask-format-selection-help": "有關選定格式的幫助：$1",

@@ -206,7 +206,7 @@
 	"smw_ask_show_embed": "Revelar codice de incastrar",
 	"smw_ask_hide_embed": "Celar codice de incastrar",
 	"smw_ask_embed_instr": "Pro incastrar iste consulta in linea in un pagina wiki usa le codice sequente.",
-	"smw-ask-delete": "Deler",
+	"smw-ask-delete": "Remover",
 	"searchbyproperty": "Cercar per proprietate",
 	"smw_sbv_docu": "Cercar tote le paginas que ha un proprietate e valor date.",
 	"smw_sbv_novalue": "Entra un valor valide pro le proprietate, o vide tote le valores possibile del proprietate \"$1\".",

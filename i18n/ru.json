@@ -135,7 +135,6 @@
 	"smw_iq_moreresults": "… следующие результаты",
 	"smw_parseerror": "Переданное значение не было понято.",
 	"smw_decseparator": ",",
-	"smw_kiloseparator": "",
 	"smw_notitle": "“$1” не может быть использован как заголовок статьи на данном сайте.",
 	"smw_noproperty": "«$1» не может использоваться как имя свойства в вики.",
 	"smw_wrong_namespace": "Здесь допустимы только страницы из пространства имён «$1».",
@@ -466,7 +465,7 @@
 	"smw-sp-types_tel": "«$1» — это специальный тип данных для описания международных телефонных номеров согласно RFC 3966.",
 	"smw-sp-types_txt": "«$1» — это примитивный тип данных для описания строк произвольной длины.",
 	"smw-sp-types_dat": "«$1» — это тип данных для представления моментов времени в едином формате.",
-	"smw-property-predefined-errc": "«$1» — это предварительно определенное свойство, обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] и представляет ошибки, которые возникли в связи с неправильными аннотациями значений или обработкой ввода.",
+	"smw-property-predefined-errc": "«$1» — это предварительно определённое свойство, обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] и представляет ошибки, которые возникли в связи с неправильными аннотациями значений или обработкой ввода.",
 	"smw-property-predefined-long-errc": "Ошибки накапливаются в [https://www.semantic-mediawiki.org/wiki/Help:Container контейнере], который также может включать ссылки на свойство, которое и повлекло несоответствие.",
 	"smw-property-predefined-errt": "«$1» — это предварительно определенное свойство, содержит текстовое описание ошибки и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-subobject-parser-invalid-naming-scheme": "Определенный пользователем подобъект содержал недействительную схему наименования. Точка ($1) в первых пяти символах предназначена для использования исключительно расширениями. Вы можете установить [https://www.semantic-mediawiki.org/wiki/Help:Adding_subobjects#Named_identifier именованный идентификатор].",
@@ -493,6 +492,7 @@
 	"smw-property-predefined-list": "«$1» — это предварительно определенное свойство для определения списка свойств, использованных со свойством типа [[Special:Types/Record|record]], и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-limitreport-intext-parsertime": "[SMW] Время разбора внутритекстовой аннотации",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|секунда|секунды|секунд}}",
+	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|секунда|секунды|секунд}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Время обновления store-базы данных (при обновлении страницы)",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|секунда|секунды|секунд}}",
 	"smw_allows_pattern": "Чтобы доступ к странице был открыт с помощью свойства «[[Property:Allows pattern|Allows pattern]]», эта страница должна содержать список ссылок (после которого идут [https://ru.wikipedia.org/wiki/Регулярные_выражения регулярные выражения]). Для редактирования этой страницы необходимы права <code>smw-patternedit</code>.",
@@ -518,7 +518,9 @@
 	"smw-no-data-available": "Нет доступных данных.",
 	"smw-query-reference-link-label": "Ссылка на запрос",
 	"smw-format-datatable-loadingrecords": "Загрузка…",
+	"smw-format-datatable-processing": "Обработка…",
 	"smw-format-datatable-search": "Поиск:",
+	"smw-format-datatable-zerorecords": "Соответствующие записи не найдены",
 	"smw-format-datatable-toolbar-export": "Экспорт",
 	"smw-property-reserved-category": "Категория",
 	"smw-category": "Категория",
@@ -526,5 +528,7 @@
 	"smw-browse-property-group-label": "Метка группы свойств",
 	"smw-browse-property-group-description": "Описание группы свойств",
 	"smw-list-pager-filter": "Фильтр:",
-	"smw-help": "Справка"
+	"smw-help": "Справка",
+	"smw-property-predefined-label-skey": "Ключ сортировки",
+	"smw-processing": "Обработка…"
 }
