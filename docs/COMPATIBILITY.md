@@ -18,7 +18,7 @@ on how to install the latest version of Semantic MediaWiki (SMW), see the [insta
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">2.5.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">SMW 2.5.x</a></th>
 		<td>Stable version</td>
 		<td>2017-03-14</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.5.x">master</a></td>
@@ -111,7 +111,7 @@ Note that HHVM is only required if you do not use PHP.
 		<th>SMW 2.5.x</th>
 		<td><strong><a href="https://php.net/supported-versions.php">5.5.0</a></strong> - latest</td>
 		<td>3.5.0 - latest</td>
-		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.23.0</a></strong> - 1.29</td>
+		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.23.0</a></strong> - 1.30</td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>

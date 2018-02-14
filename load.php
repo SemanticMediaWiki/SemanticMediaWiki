@@ -60,7 +60,7 @@ class SemanticMediaWiki {
 	 */
 	public static function initExtension() {
 
-		define( 'SMW_VERSION', '2.5.6-alpha' );
+		define( 'SMW_VERSION', '2.5.6' );
 
 		// Registration of the extension credits, see Special:Version.
 		$GLOBALS['wgExtensionCredits']['semantic'][] = array(
@@ -75,7 +75,7 @@ class SemanticMediaWiki {
 				),
 			'url' => 'https://www.semantic-mediawiki.org',
 			'descriptionmsg' => 'smw-desc',
-			'license-name'   => 'GPL-2.0+'
+			'license-name'   => 'GPL-2.0-or-later'
 		);
 
 		// A flag used to indicate SMW defines a semantic extension type for extension credits.
