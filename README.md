@@ -63,8 +63,8 @@ be found [here][contributors] or [on the SMW wiki](https://www.semantic-mediawik
 The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/CONTRIBUTING.md)
 provides information on the different ways available to do so.
 
-If you have remarks, questions, or suggestions, please send them to semediawiki-users@lists.sourceforge.net.
-You can subscribe to this list [here](https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/).
+If you have remarks, questions, or suggestions, please send them to <semediawiki-users@lists.sourceforge.net>.
+You can subscribe to this list [here](https://sourceforge.net/projects/semediawiki/lists/semediawiki-user).
 
 If you want to contribute work to the project please subscribe to the developers mailing list and
 have a look at the contribution guideline.
