@@ -34,10 +34,20 @@ class TypesValue extends DataValue {
 	 */
 	const TYPE_ID = '__typ';
 
-	protected $m_isAlias; // record whether this is an alias to another type, used to avoid duplicates when listing page types
-	protected $m_realLabel;
-	protected $m_givenLabel;
-	protected $m_typeId;
+	/**
+	 * @var string
+	 */
+	private $typeLabel;
+
+	/**
+	 * @var string
+	 */
+	private $givenLabel;
+
+	/**
+	 * @var string
+	 */
+	private $m_typeId;
 
 	/**
 	 * @param string $typeid
@@ -46,6 +56,13 @@ class TypesValue extends DataValue {
 		parent::__construct( self::TYPE_ID );
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @param string $typeId
+	 *
+	 * @return TypesValue
+	 */
 	public static function newFromTypeId( $typeId ) {
 		$result = new TypesValue( self::TYPE_ID );
 
@@ -60,10 +77,117 @@ class TypesValue extends DataValue {
 		return $result;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @param string $typeId
+	 *
+	 * @return DIUri
+	 */
 	public static function getTypeUriFromTypeId( $typeId ) {
 		return new DIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
 	}
 
+	/**
+	 * @see DataValue::getShortWikiText
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getShortWikiText( $linker = null ) {
+
+		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === '' ) {
+			return $this->m_caption;
+		}
+
+		$titleText = $this->makeSpecialPageTitleText();
+
+		$contentLanguage = Localizer::getInstance()->getLanguage(
+			$this->getOption( self::OPT_CONTENT_LANGUAGE )
+		);
+
+		$namespace = $contentLanguage->getNsText(
+			NS_SPECIAL
+		);
+
+		return "[[$namespace:$titleText|{$this->m_caption}]]";
+	}
+
+	/**
+	 * @see DataValue::getShortHTMLText
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getShortHTMLText( $linker = null ) {
+
+		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === ''  ) {
+			return htmlspecialchars( $this->m_caption );
+		}
+
+		$title = Title::makeTitle(
+			NS_SPECIAL,
+			$this->makeSpecialPageTitleText()
+		);
+
+		return $linker->link( $title, htmlspecialchars( $this->m_caption ) );
+	}
+
+	/**
+	 * @see DataValue::getLongWikiText
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getLongWikiText( $linker = null ) {
+
+		if ( !$linker || $this->typeLabel === '' ) {
+			return $this->typeLabel;
+		}
+
+		$titleText = $this->makeSpecialPageTitleText();
+
+		$contentLanguage = Localizer::getInstance()->getLanguage(
+			$this->getOption( self::OPT_CONTENT_LANGUAGE )
+		);
+
+		$namespace = $contentLanguage->getNsText(
+			NS_SPECIAL
+		);
+
+		return "[[$namespace:$titleText|{$this->typeLabel}]]";
+	}
+
+	/**
+	 * @see DataValue::getLongHTMLText
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getLongHTMLText( $linker = null ) {
+
+		if ( !$linker || $this->typeLabel === '' ) {
+			return htmlspecialchars( $this->typeLabel );
+		}
+
+		$title = Title::makeTitle(
+			NS_SPECIAL,
+			$this->makeSpecialPageTitleText()
+		);
+
+		return $linker->link( $title, htmlspecialchars( $this->typeLabel ) );
+	}
+
+	/**
+	 * @see DataValue::getWikiValue
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getWikiValue() {
+		return $this->typeLabel;
+	}
+
+	/**
+	 * @see DataValue::loadDataItem
+	 *
+	 * {@inheritDoc}
+	 */
 	protected function parseUserValue( $value ) {
 		global $smwgHistoricTypeNamespace;
 
@@ -78,141 +202,58 @@ class TypesValue extends DataValue {
 			$namespace = smwfNormalTitleText( $valueParts[0] );
 			$value = $valueParts[1];
 			$typeNamespace = Localizer::getInstance()->getLanguage( $contentLanguage )->getNsText( SMW_NS_TYPE );
+
 			if ( $namespace != $typeNamespace ) {
-				$this->addErrorMsg( array( 'smw_wrong_namespace', $typeNamespace ) );
+				$this->addErrorMsg( [ 'smw_wrong_namespace', $typeNamespace ] );
 			}
 		}
 
 		if ( $value !== '' && $value{0} === '_' ) {
 			$this->m_typeId = $value;
 		} else {
-			$this->m_givenLabel = smwfNormalTitleText( $value );
-			$this->m_typeId = DataTypeRegistry::getInstance()->findTypeByLabelAndLanguage( $this->m_givenLabel, $contentLanguage );
+			$this->givenLabel = smwfNormalTitleText( $value );
+			$this->m_typeId = DataTypeRegistry::getInstance()->findTypeByLabelAndLanguage( $this->givenLabel, $contentLanguage );
 		}
 
 		if ( $this->m_typeId === '' ) {
-			$this->addErrorMsg( array( 'smw_unknowntype', $this->m_givenLabel ) );
-			$this->m_realLabel = $this->m_givenLabel;
+			$this->addErrorMsg( [ 'smw_unknowntype', $this->givenLabel ] );
+			$this->typeLabel = $this->givenLabel;
 		} else {
-			$this->m_realLabel = DataTypeRegistry::getInstance()->findTypeLabel( $this->m_typeId );
+			$this->typeLabel = DataTypeRegistry::getInstance()->findTypeLabel( $this->m_typeId );
 		}
-		$this->m_isAlias = ( $this->m_realLabel === $this->m_givenLabel ) ? false : true;
 
 		try {
 			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
 		} catch ( DataItemException $e ) {
 			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
-			$this->addErrorMsg( array( 'smw-datavalue-type-invalid-typeuri', $this->m_typeId ) );
+			$this->addErrorMsg( [ 'smw-datavalue-type-invalid-typeuri', $this->m_typeId ] );
 		}
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem DataItem
-	 * @return boolean
+	 * @see DataValue::loadDataItem
+	 *
+	 * {@inheritDoc}
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
+
 		if ( ( $dataItem instanceof DIUri ) && ( $dataItem->getScheme() == 'http' ) &&
-		     ( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
-		     ( $dataItem->getQuery() === '' ) ) {
-			$this->m_isAlias = false;
+			( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
+			( $dataItem->getQuery() === '' ) ) {
+
 			$this->m_typeId = $dataItem->getFragment();
-			$this->m_realLabel = DataTypeRegistry::getInstance()->findTypeLabel( $this->m_typeId );
-			$this->m_caption = $this->m_givenLabel = $this->m_realLabel;
+			$this->typeLabel = DataTypeRegistry::getInstance()->findTypeLabel( $this->m_typeId );
+			$this->m_caption = $this->givenLabel = $this->typeLabel;
 			$this->m_dataitem = $dataItem;
+
 			return true;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
-	public function getShortWikiText( $linker = null ) {
-		global $wgContLang;
-		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === '' ) {
-			return $this->m_caption;
-		} else {
-			$titleText = $this->getSpecialPageTitleText();
-			$namespace = $wgContLang->getNsText( NS_SPECIAL );
-			return "[[$namespace:$titleText|{$this->m_caption}]]";
-		}
-	}
-
-	public function getShortHTMLText( $linker = null ) {
-		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === ''  ) {
-			return htmlspecialchars( $this->m_caption );
-		} else {
-			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );
-			return $linker->link( $title, htmlspecialchars( $this->m_caption ) );
-		}
-	}
-
-	public function getLongWikiText( $linker = null ) {
-		global $wgContLang;
-		if ( !$linker || $this->m_realLabel === '' ) {
-			return $this->m_realLabel;
-		} else {
-			$titleText = $this->getSpecialPageTitleText();
-			$namespace = $wgContLang->getNsText( NS_SPECIAL );
-			return "[[$namespace:$titleText|{$this->m_realLabel}]]";
-		}
-	}
-
-	public function getLongHTMLText( $linker = null ) {
-		if ( !$linker || $this->m_realLabel === '' ) {
-			return htmlspecialchars( $this->m_realLabel );
-		} else {
-			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );
-			return $linker->link( $title, htmlspecialchars( $this->m_realLabel ) );
-		}
-	}
-
-	/**
-	 * Gets the title text for the types special page.
-	 *
-	 * @since 1.6
-	 *
-	 * @return string
-	 */
-	protected function getSpecialPageTitleText() {
-		return SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
-	}
-
-	public function getWikiValue() {
-		return $this->m_realLabel;
-	}
-
-	public function getHash() {
-		return $this->m_realLabel;
-	}
-
-	/**
-	 * This class uses type ids as DB keys.
-	 *
-	 * @return string
-	 */
-	public function getDBkey() {
-		return ( $this->isValid() ) ? DataTypeRegistry::getInstance()->findTypeID( $this->m_realLabel ) : '';
-	}
-
-	/**
-	 * Is this a built-in datatype shipped with SMW (or an extension of SMW)?
-	 * (Alternatively it would be a user-defined derived datatype.)
-	 *
-	 * @deprecated As of SMW 1.6, there are no more user-defined datatypes, making this method useless. Will vanish in SMW 1.6.
-	 */
-	public function isBuiltIn() {
-		return true;
-	}
-
-	/**
-	 * Is this an alias for another datatype in SMW? This information is used to
-	 * explain entries in Special:Types that are found since they have pages.
-	 *
-	 * @return boolean
-	 */
-	public function isAlias() {
-		return $this->m_isAlias;
+	protected function makeSpecialPageTitleText() {
+		return SpecialPageFactory::getLocalNameFor( 'Types', $this->typeLabel );
 	}
 
 }
-

@@ -677,5 +677,6 @@
 	"smw-personal-jobqueue-watchlist": "Job queue watchlist",
 	"smw-property-predefined-label-skey": "Sortkey",
 	"smw-processing": "Processing...",
-	"smw-redirect-target-unresolvable": "The target is unresolvable on the reason of \"$1\""
+	"smw-redirect-target-unresolvable": "The target is unresolvable on the reason of \"$1\"",
+	"smw-types-title": "Type: $1"
 }

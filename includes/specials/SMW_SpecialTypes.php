@@ -3,6 +3,7 @@
 use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\Message;
 
 /**
  * This special page for MediaWiki provides information about types. Type information is
@@ -34,7 +35,7 @@ class SMWSpecialTypes extends SpecialPage {
 		} else {
 			$typeLabel = str_replace( '%', '-', $typeLabel );
 			$typeName = str_replace( '_', ' ', $typeLabel );
-			$out->setPageTitle( $typeName ); // Maybe add a better message for this
+			$out->setPageTitle( wfMessage( 'smw-types-title', $typeName )->text() );
 			$html = $this->getTypeProperties( $typeLabel );
 		}
 
@@ -62,11 +63,11 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$htmlColumnListRenderer->setNumberOfColumns( 2 );
 		$htmlColumnListRenderer->addContentsByNoIndex( $contentsByIndex );
-		$htmlColumnListRenderer->setColumnListClass( 'smw-sp-types-list' );
+		$htmlColumnListRenderer->setColumnListClass( 'smw-types-list' );
 
 		$html = \Html::rawElement(
 			'p',
-			array( 'class' => 'smw-sp-types-intro' ),
+			array( 'class' => 'smw-types-intro' ),
 			wfMessage( 'smw_types_docu' )->parse()
 		).  \Html::element(
 			'h2',
@@ -98,6 +99,11 @@ class SMWSpecialTypes extends SpecialPage {
 		$options = SMWPageLister::getRequestOptions( $smwgTypePagingLimit, $from, $until );
 		$diWikiPages = $store->getPropertySubjects( new SMW\DIProperty( '_TYPE' ), $typeValue->getDataItem(), $options );
 
+		// May return an iterator
+		if ( $diWikiPages instanceof \Iterator ) {
+			$diWikiPages = iterator_to_array( $diWikiPages );
+		}
+
 		if ( !$options->ascending ) {
 			$diWikiPages = array_reverse( $diWikiPages );
 		}
@@ -114,7 +120,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$result = \Html::rawElement(
 			'div',
-			array( 'class' => 'smw-sp-types-intro'. $typeKey ),
+			array( 'class' => 'plainlinks smw-types-intro '. $typeKey ),
 			wfMessage( $messageKey, str_replace( '_', ' ', $escapedTypeLabel ) )->parse() . ' ' .
 			wfMessage( 'smw-sp-types-help', str_replace( ' ', '_', $canonicalLabel ) )->parse()
 		);
