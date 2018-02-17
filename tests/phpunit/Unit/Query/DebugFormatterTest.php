@@ -84,6 +84,11 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 			'string',
 			$instance->prettifySparql( $sparql )
 		);
+
+		$this->assertEquals(
+			'<div class="smwpre">&#91;&#x003A;&#x0020;&#x3C;Foo&#x3E;&#x0020;]</div>',
+			$instance->prettifySparql( '[: <Foo> ]' )
+		);
 	}
 
 	public function testFormatSQLStatement() {
