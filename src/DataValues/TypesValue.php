@@ -1,7 +1,16 @@
 <?php
 
+namespace SMW\DataValues;
+
 use SMW\DataTypeRegistry;
 use SMW\Message;
+use SMW\Localizer;
+use SMWDataValue as DataValue;
+use SMWDataItemException as DataItemException;
+use SMWDataItem as DataItem;
+use SMWDIUri as DIUri;
+use Title;
+use SpecialPageFactory;
 
 /**
  * This datavalue implements special processing suitable for defining types of
@@ -12,28 +21,47 @@ use SMW\Message;
  * in SMW (built-in). Third, they use type ids for storing data (DB keys)
  * instead of using page titles.
  *
+ * @license GNU GPL v2+
+ * @since 3.0
+ *
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @author mwjames
  */
-class SMWTypesValue extends SMWDataValue {
+class TypesValue extends DataValue {
+
+	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '__typ';
+
 	protected $m_isAlias; // record whether this is an alias to another type, used to avoid duplicates when listing page types
 	protected $m_realLabel;
 	protected $m_givenLabel;
 	protected $m_typeId;
 
+	/**
+	 * @param string $typeid
+	 */
+	public function __construct( $typeid = '' ) {
+		parent::__construct( self::TYPE_ID );
+	}
+
 	public static function newFromTypeId( $typeId ) {
-		$result = new SMWTypesValue( '__typ' );
+		$result = new TypesValue( self::TYPE_ID );
+
 		try {
 			$dataItem = self::getTypeUriFromTypeId( $typeId );
-		} catch ( SMWDataItemException $e ) {
+		} catch ( DataItemException $e ) {
 			$dataItem = self::getTypeUriFromTypeId( 'notype' );
 		}
+
 		$result->setDataItem( $dataItem );
+
 		return $result;
 	}
 
 	public static function getTypeUriFromTypeId( $typeId ) {
-		return new SMWDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
+		return new DIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
 	}
 
 	protected function parseUserValue( $value ) {
@@ -72,7 +100,7 @@ class SMWTypesValue extends SMWDataValue {
 
 		try {
 			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
-		} catch ( SMWDataItemException $e ) {
+		} catch ( DataItemException $e ) {
 			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
 			$this->addErrorMsg( array( 'smw-datavalue-type-invalid-typeuri', $this->m_typeId ) );
 		}
@@ -80,11 +108,11 @@ class SMWTypesValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
+	 * @param $dataitem DataItem
 	 * @return boolean
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( ( $dataItem instanceof SMWDIUri ) && ( $dataItem->getScheme() == 'http' ) &&
+	protected function loadDataItem( DataItem $dataItem ) {
+		if ( ( $dataItem instanceof DIUri ) && ( $dataItem->getScheme() == 'http' ) &&
 		     ( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
 		     ( $dataItem->getQuery() === '' ) ) {
 			$this->m_isAlias = false;
