@@ -15,7 +15,6 @@ use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\JobQueue;
 use SMW\Query\QuerySourceFactory;
-use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Utils\BufferedStatsdCollector;
 use SMW\Parser\LinksProcessor;
@@ -567,26 +566,6 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $propertyLabelFinder;
-		} );
-
-		/**
-		 * @var TempChangeOpStore
-		 */
-		$containerBuilder->registerCallback( 'TempChangeOpStore', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'TempChangeOpStore', '\SMW\SQLStore\ChangeOp\TempChangeOpStore' );
-
-			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
-			$cacheType = null;
-
-			$tempChangeOpStore = new TempChangeOpStore(
-				$cacheFactory->newMediaWikiCompositeCache( $cacheType )
-			);
-
-			$tempChangeOpStore->setLogger(
-				$containerBuilder->singleton( 'MediaWikiLogger' )
-			);
-
-			return $tempChangeOpStore;
 		} );
 	}
 
