@@ -77,6 +77,20 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">foo</div></div>'
 		);
 
+		$provider[] = array(
+			'<code><nowiki>&#x005B;&#x005B;Foo]]</nowiki></code>',
+			CodeStringValueFormatter::HTML_LONG,
+			null,
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">&#91;&#91;Foo]]</div></div>'
+		);
+
+		$provider[] = array(
+			'<code><nowiki>[[Foo]]</nowiki></code>',
+			CodeStringValueFormatter::HTML_LONG,
+			null,
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">&#91;&#91;Foo]]</div></div>'
+		);
+
 		// > 255
 		$text = 'Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede ' .
 		'lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan ' .
@@ -130,7 +144,7 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			$jsonString,
 			CodeStringValueFormatter::WIKI_LONG,
 			null,
-			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">' . CodeStringValueFormatter::formatAsPrettyJson( $jsonString ) . '</div></div>'
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">' . CodeStringValueFormatter::asJson( $jsonString ) . '</div></div>'
 		);
 
 		return $provider;
