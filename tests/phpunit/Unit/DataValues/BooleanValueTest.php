@@ -19,7 +19,7 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\BooleanValue',
+			BooleanValue::class,
 			new BooleanValue()
 		);
 	}
@@ -39,7 +39,7 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testParseUserValueWhereContentPageHasSpecificContentLanguage() {
+	public function testParseUserValueOnSpecificPageContentLanguage() {
 
 		$language = Localizer::getInstance()->getLanguage( 'ja' );
 
@@ -113,7 +113,7 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetLongWikiTextForPlainFormattedValue() {
+	public function testGetLongWikiText_PlainFormatter() {
 
 		$instance = new BooleanValue();
 
@@ -122,6 +122,69 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'true',
+			$instance->getLongWikiText()
+		);
+	}
+
+	public function testGetLongWikiText_NumFormatter() {
+
+		$instance = new BooleanValue();
+
+		$instance->setUserValue( 'true' );
+		$instance->setOutputFormat( 'num' );
+
+		$this->assertEquals(
+			1,
+			$instance->getLongWikiText()
+		);
+
+		$instance->setUserValue( 'false' );
+		$instance->setOutputFormat( 'num' );
+
+		$this->assertEquals(
+			0,
+			$instance->getLongWikiText()
+		);
+	}
+
+	public function testGetLongWikiText_TickFormatter() {
+
+		$instance = new BooleanValue();
+
+		$instance->setUserValue( 'true' );
+		$instance->setOutputFormat( 'tick' );
+
+		$this->assertEquals(
+			'✓',
+			$instance->getLongWikiText()
+		);
+
+		$instance->setUserValue( 'false' );
+		$instance->setOutputFormat( 'tick' );
+
+		$this->assertEquals(
+			'✕',
+			$instance->getLongWikiText()
+		);
+	}
+
+	public function testGetLongWikiText_xFormatter() {
+
+		$instance = new BooleanValue();
+
+		$instance->setUserValue( 'true' );
+		$instance->setOutputFormat( 'x' );
+
+		$this->assertEquals(
+			'<span style="font-family: sans-serif; ">X</span>',
+			$instance->getLongWikiText()
+		);
+
+		$instance->setUserValue( 'false' );
+		$instance->setOutputFormat( 'x' );
+
+		$this->assertEquals(
+			'&nbsp;',
 			$instance->getLongWikiText()
 		);
 	}
