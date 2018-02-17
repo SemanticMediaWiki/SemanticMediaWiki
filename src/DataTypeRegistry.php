@@ -267,17 +267,24 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @deprecated since 3.0, use DataTypeRegistry::findTypeByLabel
+	 */
+	public function findTypeId( $label ) {
+		return $this->findTypeByLabel( $label );
+	}
+
+	/**
 	 * Look up the ID that identifies the datatype of the given label
 	 * internally. This id is used for all internal operations. If the
 	 * label does not belong to a known type, the empty string is returned.
 	 *
-	 * The lookup is case insensitive.
+	 * @since 3.0
 	 *
 	 * @param string $label
 	 *
 	 * @return string
 	 */
-	public function findTypeId( $label ) {
+	public function findTypeByLabel( $label ) {
 
 		$label = mb_strtolower( $label );
 
@@ -296,10 +303,10 @@ class DataTypeRegistry {
 	 *
 	 * @return string
 	 */
-	public function findTypeByLanguage( $label, $languageCode = false ) {
+	public function findTypeByLabelAndLanguage( $label, $languageCode = false ) {
 
 		if ( !$languageCode ) {
-			return $this->findTypeId( $label );
+			return $this->findTypeByLabel( $label );
 		}
 
 		$extraneousLanguage = $this->extraneousLanguage->fetchByLanguageCode(

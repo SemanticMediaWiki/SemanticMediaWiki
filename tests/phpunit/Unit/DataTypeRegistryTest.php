@@ -103,7 +103,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			->registerDataType( '_foo', '\SMW\Tests\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
 
 		$this->assertEmpty(
-			$this->dataTypeRegistry->findTypeId( 'FooBar' )
+			$this->dataTypeRegistry->findTypeByLabel( 'FooBar' )
 		);
 
 		$this->dataTypeRegistry->registerDataTypeAlias( '_foo', 'FooBar' );
@@ -114,8 +114,8 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'_foo',
-			$this->dataTypeRegistry->findTypeId( 'FooBar' ),
-			'Asserts that findTypeID returns the registered alias label'
+			$this->dataTypeRegistry->findTypeByLabel( 'FooBar' ),
+			'Asserts that findTypeByLabel returns the registered alias label'
 		);
 	}
 
@@ -163,8 +163,8 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'_wpg',
-			$instance->findTypeId( 'Page' ),
-			'Asserts that findTypeID returns empty label'
+			$instance->findTypeByLabel( 'Page' ),
+			'Asserts that findTypeByLabel returns empty label'
 		);
 
 		$this->assertEquals(
@@ -251,16 +251,16 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	public function testFindTypeIdByLanguage() {
+	public function testFindTypeByLabelAndLanguage() {
 
 		$this->assertSame(
 			'_num',
-			$this->dataTypeRegistry->findTypeByLanguage( 'Número', 'es' )
+			$this->dataTypeRegistry->findTypeByLabelAndLanguage( 'Número', 'es' )
 		);
 
 		$this->assertSame(
 			'_num',
-			$this->dataTypeRegistry->findTypeByLanguage( '数值型', 'zh-Hans' )
+			$this->dataTypeRegistry->findTypeByLabelAndLanguage( '数值型', 'zh-Hans' )
 		);
 	}
 
@@ -348,7 +348,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		foreach ( $equivalentLabels as $caseVariant ) {
-			$this->assertEquals( $id, $instance->findTypeId( $caseVariant ) );
+			$this->assertEquals( $id, $instance->findTypeByLabel( $caseVariant ) );
 		}
 	}
 
@@ -376,7 +376,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		foreach ( $equivalentLabels as $caseVariant ) {
-			$this->assertEquals( $id, $instance->findTypeId( $caseVariant ) );
+			$this->assertEquals( $id, $instance->findTypeByLabel( $caseVariant ) );
 		}
 	}
 
