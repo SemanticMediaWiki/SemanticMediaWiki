@@ -561,7 +561,7 @@ label.smw-form-checkbox {
 	color: #7d7d7d;
 	font-size: 84%;
 	line-height: 1.2em;
-	margin: 0 0 0.8em 0;
+	margin: 0.4em 0 0.6em 0;
 	width: auto;
 }
 
@@ -571,7 +571,7 @@ label.smw-form-checkbox {
 	border-left: 5px solid #aaa;
 	display: inline-block;
 	position: relative;
-	margin-left: 4px;
+	margin-left: 0px;
 	margin-right: 4px;
 }
 
