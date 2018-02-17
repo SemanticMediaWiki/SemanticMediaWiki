@@ -285,14 +285,10 @@ class ValueListBuilder {
 				$values = iterator_to_array( $values );
 			}
 
+			$hasLocalTimeOffsetPreference = Localizer::getInstance()->hasLocalTimeOffsetPreference();
+
 			$i = 0;
 			$pvCells = '';
-
-			$outputFormat = 'LOCL';
-
-			if ( Localizer::getInstance()->hasLocalTimeOffsetPreference() ) {
-				$outputFormat .= '#TO';
-			}
 
 			foreach ( $values as $di ) {
 				if ( $i != 0 ) {
@@ -302,6 +298,12 @@ class ValueListBuilder {
 
 				if ( $i < $this->maxPropertyValues + 1 ) {
 					$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $di, $property );
+					$outputFormat = $dataValue->getOutputFormat();
+
+					if ( $outputFormat === false ) {
+						$outputFormat = 'LOCL' . ( $hasLocalTimeOffsetPreference ? '#TO' : '' );
+					}
+
 					$dataValue->setOutputFormat( $outputFormat );
 
 					$pvCells .= $dataValue->getShortHTMLText( smwfGetLinker() ) . $dataValue->getInfolinkText( SMW_OUTPUT_HTML, smwfGetLinker() );

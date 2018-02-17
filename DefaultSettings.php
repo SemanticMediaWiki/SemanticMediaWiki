@@ -771,6 +771,33 @@ return array(
 	),
 	##
 
+	##
+	# Default output formatter
+	#
+	# Users who want to alter the default output for a specific type can do so by
+	# setting a specify default formatter.
+	#
+	# The expected form is:
+	#
+	# [ <_typeID> => '<Formatter>' ] OR
+	# [ <typeName> => '<Formatter>' ] OR
+	# [ <propertyName> => '<Formatter>' ]
+	#
+	# Only valid formatters will be considered for an individual type, no
+	# errors or exceptions are raised in case of an improper formatter.
+	#
+	# The formatter is applied to values displayed on special pages
+	# as well.
+	#
+	# @since 3.0
+	# @default: []
+	##
+	'smwgDefaultOutputFormatters' => [
+		// '_dat' => 'LOCL',
+		// 'Boolean' => 'tick',
+	],
+	##
+
 	// some default settings which usually need no modification
 
 	###
