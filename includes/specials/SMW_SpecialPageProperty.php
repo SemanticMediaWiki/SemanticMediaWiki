@@ -1,4 +1,8 @@
 <?php
+
+use SMWInfolink as Infolink;
+use SMW\Encoder;
+
 /**
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
@@ -30,6 +34,16 @@ class SMWPageProperty extends SpecialPage {
 	public function execute( $query ) {
 		global $wgRequest, $wgOut;
 		$this->setHeaders();
+
+		if ( $wgRequest->getText( 'cl', '' ) !== '' ) {
+			$query = Infolink::decodeCompactLink( 'cl:'. $wgRequest->getText( 'cl' ) );
+		} else {
+			$query = Infolink::decodeCompactLink( $query );
+		}
+
+		if ( $query !== '' ) {
+			$query = Encoder::unescape( $query );
+		}
 
 		// Get parameters
 		$pagename = $wgRequest->getVal( 'from' );

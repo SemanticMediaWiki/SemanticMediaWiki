@@ -166,6 +166,11 @@ class DataValueFactory {
 			$localizer->getContentLanguage()->getCode()
 		);
 
+		$dataValue->setOption(
+			DataValue::OPT_COMPACT_INFOLINKS,
+			$GLOBALS['smwgCompactLinkSupport']
+		);
+
 		if ( isset( $this->defaultOutputFormatters[$typeId] ) ) {
 			$dataValue->setOutputFormat( $this->defaultOutputFormatters[$typeId] );
 		}

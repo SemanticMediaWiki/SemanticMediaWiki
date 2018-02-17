@@ -132,6 +132,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 				'smwgQueryResultCacheType' => false,
 				'smwgQFilterDuplicates' => false,
 				'smwgExportResourcesAsIri' => false,
+				'smwgCompactLinkSupport' => false,
 				'smwgSparqlReplicationPropertyExemptionList' => array(),
 				'smwgFieldTypeFeatures' => SMW_FIELDT_NONE,
 				'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE,
@@ -227,6 +228,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgParserFeatures',
 			'smwgCategoryFeatures',
 			'smwgDefaultOutputFormatters',
+			'smwgCompactLinkSupport',
 
 			// MW related
 			'wgLanguageCode',

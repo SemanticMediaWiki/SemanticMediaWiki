@@ -223,6 +223,12 @@ class SpecialAsk extends SpecialPage {
 		$request = $this->getRequest();
 		$this->isEditMode = false;
 
+		if ( $request->getText( 'cl', '' ) !== '' ) {
+			$p = Infolink::decodeCompactLink( 'cl:'. $request->getText( 'cl' ) );
+		} else {
+			$p = Infolink::decodeCompactLink( $p );
+		}
+
 		list( $this->queryString, $this->parameters, $this->printouts ) = ParametersProcessor::process(
 			$request,
 			$p

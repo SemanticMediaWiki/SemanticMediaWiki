@@ -75,6 +75,11 @@ abstract class SMWDataValue {
 	const OPT_DISABLE_INFOLINKS = 'disable.infolinks';
 
 	/**
+	 * Option to use compact infolinks
+	 */
+	const OPT_COMPACT_INFOLINKS = 'compact.infolinks';
+
+	/**
 	 * Associated data item. This is the reference to the immutable object
 	 * that represents the current data content. All other data stored here
 	 * is only about presentation and parsing, but is not relevant to the
@@ -331,13 +336,13 @@ abstract class SMWDataValue {
 	 *
 	 * @return mixed|false
 	 */
-	public function getOption( $key ) {
+	public function getOption( $key, $default = false ) {
 
 		if ( $this->options !== null && $this->options->has( $key ) ) {
 			return $this->options->get( $key );
 		}
 
-		return false;
+		return $default;
 	}
 
 	/**
@@ -665,6 +670,10 @@ abstract class SMWDataValue {
 		if ( $this->getOption( self::OPT_DISABLE_INFOLINKS ) === true ) {
 			$this->infoLinksProvider->disableServiceLinks();
 		}
+
+		$this->infoLinksProvider->setCompactLink(
+			$this->getOption( self::OPT_COMPACT_INFOLINKS, false )
+		);
 
 		return $this->infoLinksProvider->getInfolinkText( $outputformat, $linker );
 	}

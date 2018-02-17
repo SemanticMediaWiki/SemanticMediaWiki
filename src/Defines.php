@@ -27,6 +27,7 @@ define( 'SMW_HEADERS_HIDE', 0 ); // Used to be "false" hence use "0" to support 
 define( 'SMW_OUTPUT_HTML', 1 );
 define( 'SMW_OUTPUT_WIKI', 2 );
 define( 'SMW_OUTPUT_FILE', 3 );
+define( 'SMW_OUTPUT_RAW', 4 );
 /**@}*/
 
 /**@{

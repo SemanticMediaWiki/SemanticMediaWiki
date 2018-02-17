@@ -303,6 +303,29 @@ return array(
 	##
 
 	###
+	# Compact infolink support
+	#
+	# Special:Browse, Special:Ask, and Special:SearchByProperty links can contain
+	# arbitrary text elements and therefore become difficult to transfer when its
+	# length exceeds a certain character length.
+	#
+	# A compact link will be encoded and compressed to ensure that it can be handled
+	# more easily when referring to it as an URL representation.
+	#
+	# It is not expected to be used as a short-url service, yet in some instances
+	# the generate URL can be comparatively shorter than the plain URL.
+	#
+	# The generated link has no security relevance therefore is is not
+	# cryptographically hashed or secure and should not be seen as such, it is
+	# foremost to "compact" an URL address.
+	#
+	# @since 3.0
+	# @default true
+	##
+	'smwgCompactLinkSupport' => true,
+	##
+
+	###
 	#
 	# - SMW_CAT_NONE
 	#

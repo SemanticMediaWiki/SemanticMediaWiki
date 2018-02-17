@@ -19,16 +19,23 @@ use SMW\Tests\TestEnvironment;
 class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $testEnvironment;
 	private $stringValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
+		$this->testEnvironment = new TestEnvironment( [ 'smwgCompactLinkSupport' => false ] );
+		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {

@@ -164,6 +164,11 @@ class NavigationLinksWidget {
 		$limit = $urlArgs->get( 'limit' );
 		$offset = $urlArgs->get( 'offset' );
 
+		// Remove any contents that is cruft
+		if ( strpos( $urlArgs->get( 'p' ), 'cl=' ) !== false ) {
+			$urlArgs->set( 'p', mb_substr( $urlArgs->get( 'p' ), stripos( $urlArgs->get( 'p' ), '/' ) + 1 ) );
+		}
+
 		// @todo FIXME: i18n: Patchwork text.
 		$navigation .=
 			'<b>' .
