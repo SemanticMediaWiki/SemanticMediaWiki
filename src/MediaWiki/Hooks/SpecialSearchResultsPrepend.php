@@ -50,6 +50,8 @@ class SpecialSearchResultsPrepend extends HookHandler {
 		$html = '';
 
 		if ( $this->specialSearch->getSearchEngine() instanceof SMWSearch ) {
+			$this->outputPage->addModules( 'ext.smw.special.search');
+
 			$html .= Message::get(
 				'smw-search-syntax-support',
 				Message::PARSE,
@@ -62,7 +64,7 @@ class SpecialSearchResultsPrepend extends HookHandler {
 					Message::PARSE,
 					Message::USER_LANGUAGE
 				);
-			}		
+			}
 		}
 
 		if ( $html !== '' ) {

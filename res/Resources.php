@@ -260,6 +260,16 @@ return array(
 		)
 	),
 
+	// Special:Search
+	'ext.smw.special.search' => $moduleTemplate + array(
+		'scripts' => 'smw/special/ext.smw.special.search.js',
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	// Postproc resources
 	'ext.smw.postproc' => $moduleTemplate + array(
 		'scripts' => 'smw/util/ext.smw.util.postproc.js',
