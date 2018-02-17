@@ -413,7 +413,10 @@ class Factbox {
 			foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
 
 				$dataValue = $this->dataValueFactory->newDataValueByItem( $dataItem, $property );
-				$dataValue->setOutputFormat( 'LOCL' );
+
+				$outputFormat = $dataValue->getOutputFormat();
+				$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+
 				$dataValue->setOption( $dataValue::OPT_DISABLE_INFOLINKS, true );
 
 				if ( $dataValue->isValid() ) {

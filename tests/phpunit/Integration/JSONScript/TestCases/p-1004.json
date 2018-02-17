@@ -1,0 +1,59 @@
+{
+	"description": "Test different default output formatter `_dat` (`smwgDefaultOutputFormatters`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date 2",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P1004/1",
+			"contents": "[[Has date::1 Jan 1970]] [[Has date 2::2 Jan 2000]] [[Category:P1004]]"
+		},
+		{
+			"page": "Example/P1004/Q.1",
+			"contents": "{{#ask: [[Category:P1004]] |?Modification date |?Has date |?Has date 2 |?Has date#ISO |limit=10 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (all `_dat` (Has date 2) -> JD, `_MDAT` (Modification date) -> ISO, First `Has date` -> MEDIAWIKI, Second `Has date` overrides default with ISO)",
+			"subject": "Example/P1004/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Modification-date smwtype_dat\" data-sort-value=.*T.*</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2440587.5\">1 January 1970</td>",
+					"<td class=\"Has-date-2 smwtype_dat\" data-sort-value=\"2451545.5\">2451545.5</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2440587.5\">1970-01-01</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgDefaultOutputFormatters": {
+			"_dat": "JD",
+			"_MDAT": "ISO",
+			"Has date": "MEDIAWIKI"
+		},
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

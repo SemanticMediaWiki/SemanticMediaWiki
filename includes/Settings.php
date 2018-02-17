@@ -120,6 +120,7 @@ class Settings extends Options {
 			'smwgPageSpecialProperties' => $GLOBALS['smwgPageSpecialProperties'],
 			'smwgChangePropagationWatchlist' => $GLOBALS['smwgChangePropagationWatchlist'],
 			'smwgDataTypePropertyExemptionList' => $GLOBALS['smwgDataTypePropertyExemptionList'],
+			'smwgDefaultOutputFormatters' => $GLOBALS['smwgDefaultOutputFormatters'],
 			'smwgTranslate' => $GLOBALS['smwgTranslate'],
 			'smwgAutoRefreshSubject' => $GLOBALS['smwgAutoRefreshSubject'],
 			'smwgAdminFeatures' => $GLOBALS['smwgAdminFeatures'],

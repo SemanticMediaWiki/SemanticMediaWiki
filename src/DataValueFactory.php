@@ -43,6 +43,11 @@ class DataValueFactory {
 	private $dataValueServiceFactory;
 
 	/**
+	 * @var array
+	 */
+	private $defaultOutputFormatters;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param DataTypeRegistry $dataTypeRegistry
@@ -64,7 +69,8 @@ class DataValueFactory {
 			return self::$instance;
 		}
 
-		$dataValueServiceFactory = ApplicationFactory::getInstance()->create( 'DataValueServiceFactory' );
+		$applicationFactory = ApplicationFactory::getInstance();
+		$dataValueServiceFactory = $applicationFactory->create( 'DataValueServiceFactory' );
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 
 		$dataValueServiceFactory->importExtraneousFunctions(
@@ -76,6 +82,10 @@ class DataValueFactory {
 			$dataValueServiceFactory
 		);
 
+		self::$instance->setDefaultOutputFormatters(
+			$applicationFactory->getSettings()->get( 'smwgDefaultOutputFormatters' )
+		);
+
 		return self::$instance;
 	}
 
@@ -85,6 +95,27 @@ class DataValueFactory {
 	public function clear() {
 		$this->dataTypeRegistry->clear();
 		self::$instance = null;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $defaultOutputFormatters
+	 */
+	public function setDefaultOutputFormatters( array $defaultOutputFormatters ) {
+
+		$this->defaultOutputFormatters = [];
+
+		foreach ( $defaultOutputFormatters as $type => $formatter ) {
+
+			$type = str_replace( ' ' , '_', $type );
+
+			if ( $type{0} !== '_' && ( $dType = $this->dataTypeRegistry->findTypeByLabel( $type ) ) !== '' ) {
+				$type = $dType;
+			}
+
+			$this->defaultOutputFormatters[$type] = $formatter;
+		}
 	}
 
 	/**
@@ -135,8 +166,16 @@ class DataValueFactory {
 			$localizer->getContentLanguage()->getCode()
 		);
 
+		if ( isset( $this->defaultOutputFormatters[$typeId] ) ) {
+			$dataValue->setOutputFormat( $this->defaultOutputFormatters[$typeId] );
+		}
+
 		if ( $property !== null ) {
 			$dataValue->setProperty( $property );
+
+			if ( isset( $this->defaultOutputFormatters[$property->getKey()] ) ) {
+				$dataValue->setOutputFormat( $this->defaultOutputFormatters[$property->getKey()] );
+			}
 		}
 
 		if ( !is_null( $contextPage ) ) {

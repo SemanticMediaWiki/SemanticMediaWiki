@@ -86,10 +86,14 @@ class ValueFormatter {
 			Localizer::getInstance()->getUserLanguage()->getCode()
 		);
 
-		$outputFormat = 'LOCL';
+		$outputFormat = $dataValue->getOutputFormat();
 
-		if ( Localizer::getInstance()->hasLocalTimeOffsetPreference( $user ) ) {
-			$outputFormat .= '#TO';
+		if ( $outputFormat === false ) {
+			$outputFormat = 'LOCL';
+
+			if ( Localizer::getInstance()->hasLocalTimeOffsetPreference( $user ) ) {
+				$outputFormat .= '#TO';
+			}
 		}
 
 		// Use LOCL formatting where appropriate (date)

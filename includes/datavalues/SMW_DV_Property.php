@@ -285,7 +285,13 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	public function setOutputFormat( $formatstring ) {
+
+		if ( $formatstring === false || $formatstring === '' ) {
+			return;
+		}
+
 		$this->m_outformat = $formatstring;
+
 		if ( $this->getWikiPageValue() instanceof SMWDataValue ) {
 			$this->m_wikipage->setOutputFormat( $formatstring );
 		}
