@@ -16,6 +16,7 @@ use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\UniquenessConstraintValue;
 use SMW\DataValues\ExternalFormatterUriValue;
+use SMW\DataValues\TypesValue;
 use SMW\DataValues\ErrorMsgTextValue;
 use SMW\DataValues\BooleanValue;
 use SMWPropertyValue as PropertyValue;
@@ -96,7 +97,7 @@ class DefaultList {
 			QuantityValue::TYPE_ID => [ QuantityValue::class, DataItem::TYPE_NUMBER, false ],
 			// Special types are not avaialble directly for users (and have no local language name):
 			// Special type page type
-			'__typ' => [ 'SMWTypesValue', DataItem::TYPE_URI, false ],
+			TypesValue::TYPE_ID => [ TypesValue::class, DataItem::TYPE_URI, false ],
 			// Special type list for decalring _rec properties
 			'__pls' => [ 'SMWPropertyListValue', DataItem::TYPE_BLOB, false ],
 			// Special concept page type

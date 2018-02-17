@@ -17,6 +17,7 @@ class_alias( 'SMW\Query\ResultPrinters\FileExportPrinter', 'SMW\FileExportPrinte
 class_alias( 'SMW\Query\Parser', 'SMWQueryParser' );
 class_alias( 'SMW\SQLStore\ChangeOp\ChangeOp', 'SMW\SQLStore\CompositePropertyTableDiffIterator' );
 class_alias( 'SMW\Connection\ConnectionProvider', 'SMW\DBConnectionProvider' );
+class_alias( 'SMW\DataValues\TypesValue', 'SMWTypesValue' );
 
 // 1.9.
 class_alias( 'SMW\Store', 'SMWStore' );
