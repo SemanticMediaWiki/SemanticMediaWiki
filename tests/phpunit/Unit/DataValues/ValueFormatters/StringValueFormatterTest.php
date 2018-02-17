@@ -161,6 +161,18 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'Lorem ipsum dolor sit amet consectetuer ju <span class="smwwarning">…</span> nec facilisis tortor Nunc Sed ipsum tellus'
 		);
 
+		// Avoid breaking links
+		$text = 'Lorem ipsum dolor sit amet consectetuer [[justo Nam quis lobortis vel]]. Sapien nulla enim Lorem enim pede ' .
+		'lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan ' .
+		'tincidunt [[Sed adipiscing nec]] facilisis tortor Nunc Sed ipsum tellus';
+
+		$provider[] = array(
+			$text,
+			StringValueFormatter::HTML_LONG,
+			null,
+			'Lorem ipsum dolor sit amet consectetuer [[justo Nam quis lobortis vel]] <span class="smwwarning">…</span> [[Sed adipiscing nec]] facilisis tortor Nunc Sed ipsum tellus'
+		);
+
 		// XMLContentEncode
 		$provider[] = array(
 			'<foo>',
