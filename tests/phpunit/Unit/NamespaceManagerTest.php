@@ -47,6 +47,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgNamespaceAliases' => array(),
 			'wgContentNamespaces' => array(),
 			'wgNamespacesToBeSearchedDefault' => array(),
+			'wgNamespaceContentModels' => [],
 			'wgLanguageCode'     => 'en'
 		);
 	}
@@ -93,7 +94,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			4,
+			6,
 			$result
 		);
 	}
@@ -113,7 +114,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			6,
+			8,
 			$result
 		);
 	}
@@ -163,6 +164,10 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_CONCEPT]
+		);
+
+		$this->assertTrue(
+			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_RULE]
 		);
 
 		$this->assertFalse(
@@ -263,6 +268,19 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertFalse(
 			$vars['wgContentNamespaces'][SMW_NS_PROPERTY]
+		);
+	}
+
+	public function testInit_wgNamespaceContentModels() {
+
+		$vars = $this->default;
+
+		$instance = new NamespaceManager( $this->extraneousLanguage );
+		$instance->init( $vars );
+
+		$this->assertEquals(
+			CONTENT_MODEL_JSON,
+			$vars['wgNamespaceContentModels'][SMW_NS_RULE]
 		);
 	}
 

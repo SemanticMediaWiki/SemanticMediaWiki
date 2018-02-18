@@ -11,7 +11,9 @@ use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
 use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
 use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
 use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
+use SMW\PropertyAnnotators\RuleDefinitionPropertyAnnotator;
 use SMW\Store;
+use SMW\Rule\RuleDefinition;
 use Title;
 
 /**
@@ -46,6 +48,24 @@ class PropertyAnnotatorFactory {
 			$propertyAnnotator,
 			$redirectTargetFinder
 		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param RuleDefinition $ruleDefinition
+	 *
+	 * @return RuleDefinitionPropertyAnnotator
+	 */
+	public function newRuleDefinitionPropertyAnnotator( PropertyAnnotator $propertyAnnotator, RuleDefinition $ruleDefinition = null ) {
+
+		$ruleDefinitionPropertyAnnotator = new RuleDefinitionPropertyAnnotator(
+			$propertyAnnotator,
+			$ruleDefinition
+		);
+
+		return $ruleDefinitionPropertyAnnotator;
 	}
 
 	/**

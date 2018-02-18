@@ -94,6 +94,9 @@ class SMWWikiPageValue extends SMWDataValue {
 			case '_wpf' : case '__spf':
 				$this->m_fixNamespace = SF_NS_FORM;
 			break;
+			case '_wpr' :
+				$this->m_fixNamespace = SMW_NS_RULE;
+			break;
 			default: // case '_wpg':
 				$this->m_fixNamespace = NS_MAIN;
 		}

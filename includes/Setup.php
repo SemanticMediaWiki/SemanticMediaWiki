@@ -319,6 +319,9 @@ final class Setup {
 			'smw-patternedit' => [
 				'smwcurator'
 			],
+			'smw-ruleedit' => [
+				'smwcurator'
+			],
 			'smw-pageedit' => [
 				'smwcurator'
 			],

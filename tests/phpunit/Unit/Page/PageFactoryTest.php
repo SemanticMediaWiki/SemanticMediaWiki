@@ -50,7 +50,7 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider titleProvider
+	 * @dataProvider namespaceProvider
 	 */
 	public function testNewPageFromTitle( $namespace, $expected ) {
 
@@ -70,7 +70,7 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function titleProvider() {
+	public function namespaceProvider() {
 
 		$provider[] = array(
 			SMW_NS_PROPERTY,
@@ -80,6 +80,11 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			SMW_NS_CONCEPT,
 			'SMW\Page\ConceptPage'
+		);
+
+		$provider[] = array(
+			SMW_NS_RULE,
+			'SMW\Page\RulePage'
 		);
 
 		return $provider;

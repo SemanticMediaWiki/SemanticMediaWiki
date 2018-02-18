@@ -99,7 +99,9 @@ class NamespaceManager {
 			SMW_NS_TYPE          => 'Type',
 			SMW_NS_TYPE_TALK     => 'Type_talk',
 			SMW_NS_CONCEPT       => 'Concept',
-			SMW_NS_CONCEPT_TALK  => 'Concept_talk'
+			SMW_NS_CONCEPT_TALK  => 'Concept_talk',
+			SMW_NS_RULE          => 'Rule',
+			SMW_NS_RULE_TALK     => 'Rule_talk'
 		);
 
 		if ( !array_key_exists( 'smwgHistoricTypeNamespace', $GLOBALS ) || !$GLOBALS['smwgHistoricTypeNamespace'] ) {
@@ -119,6 +121,12 @@ class NamespaceManager {
 	 */
 	public static function buildNamespaceIndex( $offset ) {
 
+		// 100 and 101 used to be occupied by SMW's now obsolete namespaces
+		// "Relation" and "Relation_Talk"
+
+		// 106 and 107 are occupied by the Semantic Forms, we define them here
+		// to offer some (easy but useful) support to SF
+
 		$namespaceIndex = array(
 			'SMW_NS_PROPERTY'      => $offset + 2,
 			'SMW_NS_PROPERTY_TALK' => $offset + 3,
@@ -128,18 +136,14 @@ class NamespaceManager {
 			'SF_NS_FORM_TALK'      => $offset + 7,
 			'SMW_NS_CONCEPT'       => $offset + 8,
 			'SMW_NS_CONCEPT_TALK'  => $offset + 9,
+			'SMW_NS_RULE'          => $offset + 10,
+			'SMW_NS_RULE_TALK'     => $offset + 11,
 		);
 
 		return $namespaceIndex;
 	}
 
 	/**
-	 * 100 and 101 used to be occupied by SMW's now obsolete namespaces
-	 * "Relation" and "Relation_Talk"
-	 *
-	 * 106 and 107 are occupied by the Semantic Forms, we define them here
-	 * to offer some (easy but useful) support to SF
-	 *
 	 * @since 1.9
 	 *
 	 * @param array &$vars
@@ -202,6 +206,8 @@ class NamespaceManager {
 			SMW_NS_TYPE_TALK => false,
 			SMW_NS_CONCEPT => true,
 			SMW_NS_CONCEPT_TALK => false,
+			SMW_NS_RULE => true,
+			SMW_NS_RULE_TALK => false,
 		);
 
 		if ( !array_key_exists( 'smwgHistoricTypeNamespace', $GLOBALS ) || !$GLOBALS['smwgHistoricTypeNamespace'] ) {
@@ -216,6 +222,8 @@ class NamespaceManager {
 			$smwNamespacesSettings,
 			$vars['smwgNamespacesWithSemanticLinks']
 		);
+
+		$vars['wgNamespaceContentModels'][SMW_NS_RULE] = CONTENT_MODEL_JSON;
 	}
 
 	private function addExtraNamespaceSettings( &$vars ) {

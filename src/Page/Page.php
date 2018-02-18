@@ -92,7 +92,8 @@ abstract class Page extends Article {
 				$outputPage->setIndicators( $indicators );
 			}
 
-			$outputPage->addHTML( $this->getIntroductoryText() );
+			$outputPage->addHTML( $this->initHtml() );
+			$outputPage->addHTML( $this->beforeView() );
 		}
 
 		if ( $this->isLockedView() === false ) {
@@ -102,6 +103,8 @@ abstract class Page extends Article {
 		if ( !isset( $diff ) || !$diffOnly ) {
 			$this->showList();
 		}
+
+		$outputPage->addHTML( $this->afterHtml() );
 	}
 
 	/**
@@ -154,6 +157,15 @@ abstract class Page extends Article {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	protected function initHtml() {
+		return $this->getIntroductoryText();
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return string
@@ -183,8 +195,8 @@ abstract class Page extends Article {
 		$this->until = $request->getVal( 'until', '' );
 
 		$outputPage->addHTML( $this->getHtml() );
-		Outputs::commitToOutputPage( $outputPage );
 
+		Outputs::commitToOutputPage( $outputPage );
 	}
 
 	/**
@@ -197,6 +209,24 @@ abstract class Page extends Article {
 	 */
 	protected function initParameters() {
 		$this->limit = 20;
+	}
+
+	/**
+	 * Returns HTML to be displayed before the article text.
+	 *
+	 * @return string
+	 */
+	protected function beforeView() {
+		return '';
+	}
+
+	/**
+	 * Returns HTML to be displayed after the list display.
+	 *
+	 * @return string
+	 */
+	protected function afterHtml() {
+		return '';
 	}
 
 	/**

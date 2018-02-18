@@ -369,6 +369,100 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNoUserEditPermissionOnMissingRight_RuleNamespace() {
+
+		$editProtectionRight = 'Foo';
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'PermissionTest' ) );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_RULE ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->once() )
+			->method( 'isAllowed' )
+			->with( $this->equalTo( 'smw-ruleedit' ) )
+			->will( $this->returnValue( false ) );
+
+		$result = array();
+
+		$instance = new PermissionPthValidator(
+			$this->protectionValidator
+		);
+
+		$this->assertFalse(
+			$instance->hasUserPermission( $title, $user, 'edit', $result )
+		);
+
+		$this->assertEquals(
+			[
+				[ 'smw-rule-namespace-edit-protection', 'smw-ruleedit' ]
+			],
+			$result
+		);
+	}
+
+	public function testNoEditcontentmodelPermissionForAnyUser_RuleNamespace() {
+
+		$editProtectionRight = 'Foo';
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'PermissionTest' ) );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_RULE ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->once() )
+			->method( 'isAllowed' )
+			->with( $this->equalTo( 'smw-ruleedit' ) )
+			->will( $this->returnValue( true ) );
+
+		$result = array();
+
+		$instance = new PermissionPthValidator(
+			$this->protectionValidator
+		);
+
+		$this->assertFalse(
+			$instance->hasUserPermission( $title, $user, 'editcontentmodel', $result )
+		);
+
+		$this->assertEquals(
+			[
+				[ 'smw-rule-namespace-editcontentmodel-disallowed' ]
+			],
+			$result
+		);
+	}
+
 	public function titleProvider() {
 
 		$provider[] = array(

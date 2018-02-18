@@ -2,11 +2,10 @@
 
 namespace SMW\Page;
 
-use SMW\Page\PropertyPage;
-use SMW\Page\ConceptPage;
 use SMW\PropertySpecificationReqMsgBuilder;
 use SMW\ApplicationFactory;
 use SMW\PropertySpecificationReqExaminer;
+use SMW\Rule\RuleFactory;
 use SMW\Store;
 use SMW\Settings;
 use Title;
@@ -48,6 +47,8 @@ class PageFactory {
 			return $this->newPropertyPage( $title );
 		} elseif ( $title->getNamespace() === SMW_NS_CONCEPT ) {
 			return $this->newConceptPage( $title );
+		} elseif ( $title->getNamespace() === SMW_NS_RULE ) {
+			return $this->newRulePage( $title );
 		}
 
 		throw new RuntimeException( 'No supported ContentPage instance for namespace ' . $title->getNamespace() );
@@ -58,7 +59,7 @@ class PageFactory {
 	 *
 	 * @param Title $title
 	 *
-	 * @return PropertyPageView
+	 * @return PropertyPage
 	 */
 	public function newPropertyPage( Title $title ) {
 
@@ -117,24 +118,44 @@ class PageFactory {
 	 *
 	 * @param Title $title
 	 *
-	 * @return ConceptPageView
+	 * @return ConceptPage
 	 */
 	public function newConceptPage( Title $title ) {
 
-		$ConceptPage = new ConceptPage( $title );
+		$conceptPage = new ConceptPage( $title );
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
-		$ConceptPage->setOption(
+		$conceptPage->setOption(
 			'smwgSemanticsEnabled',
 			$settings->get( 'smwgSemanticsEnabled' )
 		);
 
-		$ConceptPage->setOption(
+		$conceptPage->setOption(
 			'smwgConceptPagingLimit',
 			$settings->get( 'smwgConceptPagingLimit' )
 		);
 
-		return $ConceptPage;
+		return $conceptPage;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title $title
+	 *
+	 * @return RulePage
+	 */
+	public function newRulePage( Title $title ) {
+
+		$rulePage = new RulePage( $title, new RuleFactory() );
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$rulePage->setOption(
+			'smwgSemanticsEnabled',
+			$settings->get( 'smwgSemanticsEnabled' )
+		);
+
+		return $rulePage;
 	}
 
 }

@@ -178,6 +178,7 @@ class Settings extends Options {
 			'smwgBrowseFeatures' => $GLOBALS['smwgBrowseFeatures'],
 			'smwgCategoryFeatures' => $GLOBALS['smwgCategoryFeatures'],
 			'smwgURITypeSchemeList' => $GLOBALS['smwgURITypeSchemeList'],
+			'smwgRuleTypes' => $GLOBALS['smwgRuleTypes'],
 		);
 
 		self::initLegacyMapping( $configuration );
