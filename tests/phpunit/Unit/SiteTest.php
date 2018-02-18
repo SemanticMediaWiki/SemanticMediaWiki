@@ -23,6 +23,22 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testName() {
+
+		$this->assertInternalType(
+			'string',
+			Site::name()
+		);
+	}
+
+	public function testLanguageCode() {
+
+		$this->assertInternalType(
+			'string',
+			Site::languageCode()
+		);
+	}
+
 	public function testIsCommandLineMode() {
 
 		$this->assertInternalType(
@@ -36,6 +52,14 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'boolean',
 			Site::isCapitalLinks()
+		);
+	}
+
+	public function testStats() {
+
+		$this->assertInternalType(
+			'array',
+			Site::stats()
 		);
 	}
 

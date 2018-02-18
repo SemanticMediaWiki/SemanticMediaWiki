@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SiteStats;
+
 /**
  * @license GNU GPL v2+
  * @since 3.0
@@ -33,6 +35,24 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
+	 * @return string
+	 */
+	public static function name() {
+		return $GLOBALS['wgSitename'];
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public static function languageCode() {
+		return $GLOBALS['wgLanguageCode'];
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return boolean
 	 */
 	public static function isCommandLineMode() {
@@ -46,6 +66,22 @@ class Site {
 	 */
 	public static function isCapitalLinks() {
 		return $GLOBALS['wgCapitalLinks'];
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
+	public static function stats() {
+		return [
+			'pageCount' => SiteStats::pages(),
+			'contentPageCount' => SiteStats::articles(),
+			'mediaCount' => SiteStats::images(),
+			'editCount' => SiteStats::edits(),
+			'userCount' => SiteStats::users(),
+			'adminCount' => SiteStats::numberingroup( 'sysop' )
+		];
 	}
 
 	/**
