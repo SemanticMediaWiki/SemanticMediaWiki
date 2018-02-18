@@ -93,7 +93,11 @@
 		"_PPLB": "Preferred property label",
 		"_EDIP": "Is edit protected",
 		"_CHGPRO": "Change propagation",
-		"_PPGR": "Is property group"
+		"_PPGR": "Is property group",
+		"_RL_DESC": "Rule description",
+		"_RL_TAG": "Rule tag",
+		"_RL_TYPE": "Rule type",
+		"_RL_DEF": "Rule definition"
 	},
 	"propertyAliases": {
 		"Display unit": "_UNIT",
@@ -146,7 +150,11 @@
 		"Is edit protected": "_EDIP",
 		"IsEditProtected": "_EDIP",
 		"Change propagation" : "_CHGPRO",
-		"Property group": "_PPGR"
+		"Property group": "_PPGR",
+		"Rule description": "_RL_DESC",
+		"Rule tag": "_RL_TAG",
+		"Rule type": "_RL_TYPE",
+		"Rule definition": "_RL_DEF"
 	},
 	"namespaces":{
 		"SMW_NS_PROPERTY": "Property",
@@ -154,7 +162,9 @@
 		"SMW_NS_TYPE": "Type",
 		"SMW_NS_TYPE_TALK": "Type_talk",
 		"SMW_NS_CONCEPT": "Concept",
-		"SMW_NS_CONCEPT_TALK": "Concept_talk"
+		"SMW_NS_CONCEPT_TALK": "Concept_talk",
+		"SMW_NS_RULE": "Rule",
+		"SMW_NS_RULE_TALK": "Rule_talk"
 	},
 	"namespaceAliases": {
 		"Property": "SMW_NS_PROPERTY",
@@ -162,7 +172,9 @@
 		"Type": "SMW_NS_TYPE",
 		"Type_talk": "SMW_NS_TYPE_TALK",
 		"Concept": "SMW_NS_CONCEPT",
-		"Concept_talk": "SMW_NS_CONCEPT_TALK"
+		"Concept_talk": "SMW_NS_CONCEPT_TALK",
+		"Rule": "SMW_NS_RULE",
+		"Rule_talk": "SMW_NS_RULE_TALK"
 	},
 	"dateFormatsByPrecision": {
 		"SMW_PREC_Y": "Y",

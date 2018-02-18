@@ -16,9 +16,22 @@ use SMW\MediaWiki\Hooks\BeforePageDisplay;
 class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 	private $outputPage;
+	private $request;
 	private $skin;
 
 	protected function setUp() {
+
+		$this->request = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$requestContext = $this->getMockBuilder( '\RequestContext' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$requestContext->expects( $this->any() )
+			->method( 'getRequest' )
+			->will( $this->returnValue( $this->request ) );
 
 		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -27,6 +40,10 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$this->skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->skin->expects( $this->any() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $requestContext ) );
 	}
 
 	public function testCanConstruct() {
@@ -54,10 +71,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
 			->will( $this->returnValue( $user ) );
-
-		$this->skin = $this->getMockBuilder( '\Skin' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$instance = new BeforePageDisplay();
 

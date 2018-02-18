@@ -272,3 +272,9 @@ define( 'SMW_QSORT_NONE', 0 );
 define( 'SMW_QSORT', 2 ); // General sort support
 define( 'SMW_QSORT_RANDOM', 4 ); // Random sort support
 /**@}*/
+
+/**@{
+  * Constants for Rule groups
+  */
+define( 'SMW_RULE_GROUP_FORMAT', 'rule.group.format' );
+/**@}*/

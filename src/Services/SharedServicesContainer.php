@@ -46,6 +46,7 @@ use SMW\Utils\TempFile;
 use SMW\PostProcHandler;
 use SMW\Utils\JsonSchemaValidator;
 use JsonSchema\Validator as SchemaValidator;
+use SMW\Rule\RuleFactory;
 
 /**
  * @license GNU GPL v2+
@@ -254,6 +255,23 @@ class SharedServicesContainer implements CallbackContainer {
 
 			return $jsonSchemaValidator;
 		} );
+
+		/**
+		 * @var RuleFactory
+		 */
+		$containerBuilder->registerCallback( 'RuleFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'RuleFactory', RuleFactory::class );
+			$containerBuilder->registerAlias( 'RuleFactory', RuleFactory::class );
+
+			$settings = $containerBuilder->singleton( 'Settings' );
+
+			$ruleFactory = new RuleFactory(
+				$settings->get( 'smwgRuleTypes' )
+			);
+
+			return $ruleFactory;
+		} );
+
 	}
 
 	private function registerCallbackHandlersByFactory( $containerBuilder ) {

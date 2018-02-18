@@ -46,7 +46,7 @@ class ArticleFromTitle extends HookHandler {
 
 		$ns = $title->getNamespace();
 
-		if ( $ns !== SMW_NS_PROPERTY && $ns !== SMW_NS_CONCEPT ) {
+		if ( $ns !== SMW_NS_PROPERTY && $ns !== SMW_NS_CONCEPT && $ns !== SMW_NS_RULE ) {
 			return true;
 		}
 

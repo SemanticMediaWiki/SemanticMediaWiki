@@ -1806,4 +1806,23 @@ return array(
 	],
 	##
 
+	##
+	# Rule types
+	#
+	# The mapping defines the relation between a specific type, group and
+	# a possible interpreter which validates the expected rule syntax.
+	#
+	# Each type will have its own interpretation about rule specific syntax
+	# elements and how to define and enact requirements.
+	#
+	# @since 3.0
+	##
+	'smwgRuleTypes' => [
+		'LINK_FORMAT_RULE' => [
+			'schema'  => __DIR__ . '/data/schema/rule/link-format-rule-schema.v1.json',
+			'group'   => SMW_RULE_GROUP_FORMAT,
+		]
+	],
+	##
+
 );

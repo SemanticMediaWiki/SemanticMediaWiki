@@ -159,6 +159,56 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
+		#2 on rule page
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo_rule' ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_RULE ) );
+
+		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getOutput' ] )
+			->getMock();
+
+		$editInfoProvider->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( new ParserOutput() ) );
+
+		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$data = json_encode(
+			[ 'description' => 'Foobar', 'type' => 'FOO_ROLE' ]
+		);
+
+		$pageInfoProvider->expects( $this->atLeastOnce() )
+			->method( 'getNativeData' )
+			->will( $this->returnValue( $data ) );
+
+		$provider[] =[
+			[
+				'smwgPageSpecialProperties' => [],
+				'smwgDVFeatures' => '',
+				'smwgRuleTypes' => [ 'FOO_ROLE' => [] ]
+			],
+			$title,
+			$editInfoProvider,
+			$pageInfoProvider,
+			[
+				'propertyCount'  => 3,
+				'propertyKeys'   => [ '_RL_DESC', '_RL_TYPE', '_RL_DEF' ],
+				'propertyValues' => [ 'Foobar', 'FOO_ROLE', '{"description":"Foobar","type":"FOO_ROLE"}' ],
+			]
+		];
+
 		return $provider;
 	}
 

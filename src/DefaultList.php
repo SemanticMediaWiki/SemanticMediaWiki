@@ -75,6 +75,8 @@ class DefaultList {
 			'_wpc' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
 			 // Form page type for Semantic Forms
 			'_wpf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			 // Rule page
+			'_wpr'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
 			 // Number type
 			NumberValue::TYPE_ID => [ NumberValue::class, DataItem::TYPE_NUMBER, false ],
 			 // Temperature type
@@ -202,6 +204,12 @@ class DefaultList {
 			'_PPLB' => [ '_mlt_rec', true, true, true ], // Preferred property label
 			'_CHGPRO' => [ '_cod', true, false, true ], // "Change propagation"
 			'_PPGR' => [ '_boo', true, true, true ], // "Property group"
+
+			// Rule
+			'_RL_TYPE' => [ '_txt', true, false, false ], // "Rule type"
+			'_RL_DEF'  => [ '_cod', true, false, false ], // "Rule definition"
+			'_RL_DESC' => [ '_txt', true, false, false ], // "Rule description"
+			'_RL_TAG'  => [ '_txt', true, false, false ], // "Rule tag"
 		];
 	}
 

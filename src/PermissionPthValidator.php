@@ -55,6 +55,10 @@ class PermissionPthValidator {
 	 */
 	public function hasUserPermission( Title &$title, User $user, $action, &$errors ) {
 
+		if ( $title->getNamespace() === SMW_NS_RULE ) {
+			return $this->checkRuleNamespacePermission( $title, $user, $action, $errors );
+		}
+
 		if ( $action !== 'edit' && $action !== 'delete' && $action !== 'move' && $action !== 'upload' ) {
 			return true;
 		}
@@ -96,6 +100,22 @@ class PermissionPthValidator {
 		$errors[] = array( 'smw-patternedit-protection', 'smw-patternedit' );
 
 		return false;
+	}
+
+	private function checkRuleNamespacePermission( Title &$title, User $user, $action, &$errors ) {
+
+		if ( !$user->isAllowed( 'smw-ruleedit' ) ) {
+			$errors[] = array( 'smw-rule-namespace-edit-protection', 'smw-ruleedit' );
+			return false;
+		}
+
+		// Disallow to change the content model
+		if ( $action === 'editcontentmodel' ) {
+			$errors[] = array( 'smw-rule-namespace-editcontentmodel-disallowed' );
+			return false;
+		}
+
+		return true;
 	}
 
 	private function checkPropertyNamespaceCreatePermission( Title &$title, User $user, $action, &$errors ) {

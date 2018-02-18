@@ -262,6 +262,32 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( null, $instance->getMimeType() );
 	}
 
+	public function testWikiPage_NativeData() {
+
+		$content = $this->getMockBuilder( '\Content' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$content->expects( $this->any() )
+			->method( 'getNativeData' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getContent' )
+			->will( $this->returnValue( $content ) );
+
+		$instance = new PageInfoProvider( $wikiPage );
+
+		$this->assertEquals(
+			'Foo',
+			$instance->getNativeData()
+		);
+	}
+
 	public function uploadStatusWikiFilePageDataProvider() {
 
 		$provider = array(
