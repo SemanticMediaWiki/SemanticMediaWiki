@@ -69,6 +69,7 @@ class Settings extends Options {
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
+			'smwgCompactLinkSupport' => $GLOBALS['smwgCompactLinkSupport'],
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],
 			'smwgSearchByPropertyFuzzy' => $GLOBALS['smwgSearchByPropertyFuzzy'],

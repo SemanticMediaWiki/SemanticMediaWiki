@@ -105,13 +105,18 @@ class ValueFormatter {
 		}
 
 		$html = $dataValue->getLongHTMLText( $linker );
+		$isCompactLink = $dataValue->getOption( DataValue::OPT_COMPACT_INFOLINKS, false );
 
 		$noInfolinks = [ '_INST', '_SKEY' ];
 
 		if ( in_array( $dataValue->getTypeID(), [ '_wpg', '_wpp', '__sob'] ) ) {
-			$html .= "&#160;" . Infolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $linker );
+			$infolink = Infolink::newBrowsingLink( '+', $dataValue->getLongWikiText() );
+			$infolink->setCompactLink( $isCompactLink );
+			$html .= "&#160;" . $infolink->getHTML( $linker );
 		} elseif ( $incoming && $propertyValue->isVisible() ) {
-			$html .= "&#160;" . Infolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $propertyValue->getDataItem()->getLabel(), 'smwsearch' )->getHTML( $linker );
+			$infolink = Infolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $propertyValue->getDataItem()->getLabel(), 'smwsearch' );
+			$infolink->setCompactLink( $isCompactLink );
+			$html .= "&#160;" . $infolink->getHTML( $linker );
 		} elseif ( $dataValue->getProperty() instanceof DIProperty && !in_array( $dataValue->getProperty()->getKey(), $noInfolinks ) ) {
 			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $linker );
 		}

@@ -11,6 +11,7 @@ use SMW\Encoder;
 use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
 use SMW\MediaWiki\Specials\Browse\FormHelper;
 use SMW\Message;
+use SMWInfolink as Infolink;
 use SpecialPage;
 use Html;
 
@@ -54,6 +55,13 @@ class SpecialBrowse extends SpecialPage {
 
 		// get the GET parameters
 		$articletext = $webRequest->getVal( 'article' );
+
+		if ( $webRequest->getText( 'cl', '' ) !== '' ) {
+			$query = Infolink::decodeCompactLink( 'cl:'. $webRequest->getText( 'cl' ) );
+		} else {
+			$query = Infolink::decodeCompactLink( $query );
+		}
+
 		$isEmptyRequest = $query === null && ( $webRequest->getVal( 'article' ) === '' || $webRequest->getVal( 'article' ) === null );
 
 		// @see SMWInfolink::encodeParameters

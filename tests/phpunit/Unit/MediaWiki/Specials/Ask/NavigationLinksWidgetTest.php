@@ -97,26 +97,26 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 10 ) );
 
 		// Previous
-		$urlArgs->expects( $this->at( 2 ) )
+		$urlArgs->expects( $this->at( 3 ) )
 			->method( 'set' )
 			->with(
 				$this->equalTo( 'offset' ),
 				$this->equalTo( 7 ) );
 
-		$urlArgs->expects( $this->at( 3 ) )
+		$urlArgs->expects( $this->at( 4 ) )
 			->method( 'set' )
 			->with(
 				$this->equalTo( 'limit' ),
 				$this->equalTo( 3 ) );
 
 		// Next
-		$urlArgs->expects( $this->at( 4 ) )
+		$urlArgs->expects( $this->at( 5 ) )
 			->method( 'set' )
 			->with(
 				$this->equalTo( 'offset' ),
 				$this->equalTo( 13 ) );
 
-		$urlArgs->expects( $this->at( 5 ) )
+		$urlArgs->expects( $this->at( 6 ) )
 			->method( 'set' )
 			->with(
 				$this->equalTo( 'limit' ),

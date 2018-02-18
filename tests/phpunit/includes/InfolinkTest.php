@@ -2,44 +2,164 @@
 
 namespace SMW\Test;
 
-use SMWInfolink;
+use SMWInfolink as Infolink;
+use SMW\Tests\TestEnvironment;
 
 /**
- * Tests for the SMWInfolink class
+ * @covers \SMWInfolink
+ * @group semantic-mediawiki
  *
+ * @license GNU GPL v2+
  * @since 1.9
  *
- * @file
- *
- * @licence GNU GPL v2+
  * @author mwjames
  */
+class InfolinkTest extends \PHPUnit_Framework_TestCase {
 
-/**
- * Tests for the SMWInfolink class
- * @covers \SMWInfolink
- *
- *
- * @group SMW
- * @group SMWExtension
- */
-class InfolinkTest extends SemanticMediaWikiTestCase {
+	private $testEnvironment;
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMWInfolink';
+	protected function setUp() {
+
+		$this->testEnvironment = new TestEnvironment(
+			[
+				'wgContLang' => \Language::factory( 'en' )
+			]
+		);
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	/**
-	 * Parameter dataProvider
-	 *
-	 * @return array
+	 * @dataProvider parameterDataProvider
 	 */
-	public function getParameterDataProvider() {
+	public function testEncodeParameters_ForTitle( array $params, array $expected ) {
+
+		$encodeResult = Infolink::encodeParameters( $params, true );
+
+		$this->assertEquals(
+			$expected[0],
+			$encodeResult
+		);
+	}
+
+	/**
+	 * @dataProvider parameterDataProvider
+	 */
+	public function testEncodeParameters_NotForTitle( array $params, array $expected ) {
+
+		$encodeResult = Infolink::encodeParameters( $params, false );
+
+		$this->assertEquals(
+			$expected[1],
+			$encodeResult
+		);
+	}
+
+	public function testNewPropertySearchLink_GetText() {
+
+		$instance = Infolink::newPropertySearchLink( 'Foo', 'Bar', 'Foobar' );
+
+		$instance->setCompactLink( false );
+
+		$this->assertContains(
+			'title=Special:SearchByProperty&x=%3ABar%2FFoobar',
+			$instance->getText( SMW_OUTPUT_RAW )
+		);
+
+		$instance->setCompactLink( true );
+
+		$this->assertContains(
+			'title=Special:SearchByProperty&cl=eD0lM0FCYXIlMkZGb29iYXI',
+			$instance->getText( SMW_OUTPUT_RAW )
+		);
+
+		$this->assertEquals(
+			$instance->getURL(),
+			$instance->getText( SMW_OUTPUT_RAW )
+		);
+	}
+
+	/**
+	 * @dataProvider base64Provider
+	 */
+	public function testEncodeBase64( $source, $target ) {
+
+		$this->assertContains(
+			$target,
+			Infolink::encodeCompactLink( $source )
+		);
+	}
+
+	/**
+	 * @dataProvider base64Provider
+	 */
+	public function testEncodeDecodeBase64RoundTrip( $source, $target ) {
+
+		$this->assertEquals(
+			$source,
+			Infolink::decodeCompactLink( Infolink::encodeCompactLink( $source ) )
+		);
+	}
+
+	/**
+	 * @dataProvider base64DecodeProvider
+	 */
+	public function testDecodeBase64( $source, $target ) {
+
+		$this->assertEquals(
+			$source,
+			Infolink::decodeCompactLink( $target )
+		);
+	}
+
+	public function testNotDecodable() {
+
+		$this->assertNotContains(
+			'%3ABar/Foobar',
+			Infolink::decodeCompactLink( 'eD0lM0FCYXIlMkZGb29iYXI' )
+		);
+	}
+
+	public function base64Provider() {
+
+		yield [
+			'%3ABar/Foobar',
+			'cl:JTNBQmFyL0Zvb2Jhcg'
+		];
+
+		yield [
+			'-5B-5BProperty%3A%2B-5D-5D-20-5B-5BCategory%3ALorem-20ipsum-5D-5D/-3FHas-20description%3DDescription/-3FHas-20type/mainlabel=/format=table/class=datatable/sort=/order=asc/offset=100/limit=50',
+			'cl:YzpFijEOgzAMRU_DGCUFMXooRVUHhl7BgKkiJTiy3YHbF8qA9Jf33ndt59ruLVxIbKuae1Xvoj9WB_ePDzT6sBxxYKG8h1j0m8-bd83zhbrLmXSSWCzyWjV9f9F1sa2QzxjXhCMl8AtLRgPDMZGfEqrCjIYnK4uBZ5lJAHXyvCxKBrcQfIo5GrThBw'
+		];
+	}
+
+	public function base64DecodeProvider() {
+
+		yield [
+			'%3ABar/Foobar',
+			'cl:JTNBQmFyL0Zvb2Jhcg'
+		];
+
+		yield [
+			'%3ABar/Foobar',
+			'%3ABar/Foobar'
+		];
+
+		yield [
+			'-5B-5BProperty%3A%2B-5D-5D-20-5B-5BCategory%3ALorem-20ipsum-5D-5D/-3FHas-20description%3DDescription/-3FHas-20type/mainlabel=/format=table/class=datatable/sort=/order=asc/offset=100/limit=50',
+			'cl:YzpNijEOgzAMRU-TbJVSEKOHtgh16NArGDBVpARHtiuV2zeIBekv773_g0t3r3sLFxLbXHtzTRX9viYc8YFGH5Y9vlgo1xCLfvNxc81waYcnatUz6SSxWOTVtX1_otPJtkI-Y1wTjpTALywZDQzHRH5KqAozGh6sLAaeZSYB1MnzsigZXEPwKeZo0IU'
+		];
+
+		yield [
+			'-5B-5BProperty%3A%2B-5D-5D-20-5B-5BCategory%3ALorem-20ipsum-5D-5D/-3FHas-20description%3DDescription/-3FHas-20type/mainlabel=/format=table/class=datatable/sort=/order=asc/offset=100/limit=50',
+			'cl:YzpFijEOgzAMRU_DGCUFMXooRVUHhl7BgKkiJTiy3YHbF8qA9Jf33ndt59ruLVxIbKuae1Xvoj9WB_ePDzT6sBxxYKG8h1j0m8-bd83zhbrLmXSSWCzyWjV9f9F1sa2QzxjXhCMl8AtLRgPDMZGfEqrCjIYnK4uBZ5lJAHXyvCxKBrcQfIo5GrThBw'
+		];
+	}
+
+	public function parameterDataProvider() {
 		return array(
 			array(
 				// #0
@@ -79,20 +199,4 @@ class InfolinkTest extends SemanticMediaWikiTestCase {
 		);
 	}
 
-	/**
-	 * @test SMWInfolink::encodeParameters
-	 * @dataProvider getParameterDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expectedEncode
-	 */
-	public function testEncodeParameters( array $params, array $expectedEncode ) {
-		$encodeResult = SMWInfolink::encodeParameters( $params, true );
-		$this->assertEquals( $expectedEncode[0], $encodeResult );
-
-		$encodeResult = SMWInfolink::encodeParameters( $params, false );
-		$this->assertEquals( $expectedEncode[1], $encodeResult );
-	}
 }

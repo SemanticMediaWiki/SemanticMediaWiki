@@ -46,6 +46,11 @@ class InfoLinksProvider {
 	private $enabledServiceLinks = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $compactLink = false;
+
+	/**
 	 * @var boolean|array
 	 */
 	private $serviceLinkParameters = false;
@@ -73,6 +78,7 @@ class InfoLinksProvider {
 		$this->hasServiceLinks = false;
 		$this->enabledServiceLinks = true;
 		$this->serviceLinkParameters = false;
+		$this->compactLink = false;
 	}
 
 	/**
@@ -80,6 +86,15 @@ class InfoLinksProvider {
 	 */
 	public function disableServiceLinks() {
 		$this->enabledServiceLinks = false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $compactLink
+	 */
+	public function setCompactLink( $compactLink ) {
+		$this->compactLink = (bool)$compactLink;
 	}
 
 	/**
@@ -124,6 +139,7 @@ class InfoLinksProvider {
 		$this->dataValue->setOutputFormat( '' );
 
 		$value = $this->dataValue->getWikiValue();
+		$property = $this->dataValue->getProperty();
 
 		// InTextAnnotationParser will detect :: therefore avoid link
 		// breakage by encoding the string
@@ -132,18 +148,14 @@ class InfoLinksProvider {
 		}
 
 		if ( in_array( $this->dataValue->getTypeID(), $this->browseLinks ) ) {
-			$this->infoLinks[] = Infolink::newBrowsingLink(
-				'+',
-				$this->dataValue->getLongWikiText()
-			);
-		} elseif ( $this->dataValue->getProperty() !== null ) {
-			$this->infoLinks[] = Infolink::newPropertySearchLink(
-				'+',
-				$this->dataValue->getProperty()->getLabel(),
-				$value
-			);
+			$infoLink = Infolink::newBrowsingLink( '+', $this->dataValue->getLongWikiText() );
+			$infoLink->setCompactLink( $this->compactLink );
+		} elseif ( $property !== null ) {
+			$infoLink = Infolink::newPropertySearchLink( '+', $property->getLabel(), $value );
+			$infoLink->setCompactLink( $this->compactLink );
 		}
 
+		$this->infoLinks[] = $infoLink;
 		$this->hasSearchLink = $this->infoLinks !== [];
 
 		 // add further service links
