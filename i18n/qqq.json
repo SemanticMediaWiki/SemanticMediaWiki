@@ -258,7 +258,7 @@
 	"smw-ask-no-cache": "This is the label of a button. Translate in a sense that no cache should be used after clicking.",
 	"smw-ask-no-cache-desc": "This is an explanatory message shown in a tooltip.",
 	"smw-ask-result": "This is a link label on special page \"Ask\".\n\n{{Identical|Result}}",
-	"smw-ask-empty": "This is a link label on special page \"Ask\". Translate as an action: to empty something.\n\n{{Identical|Empty}}",
+	"smw-ask-empty": "This is a link label on special page \"Ask\". Translate as an action: to empty something.",
 	"smw-ask-download-link-desc": "This is an explanatory message shown in a tooltip.",
 	"smw-ask-format": "This is a link label on special page \"Ask\".\n\n{{Identical|Format}}",
 	"smw-ask-format-selection-help": "This is a text displayed on [[Special:Ask]] to inform about a help page on [https://semantic-mediawiki.org/wiki/ Semantic MediaWiki].\n\nParameters:\n* $1 - a link which points to Help: page on semantic-mediawiki.org displaying the name of the format.",
@@ -687,5 +687,9 @@
 	"smw-personal-jobqueue-watchlist": "This is the label of a link pointing to a help page.",
 	"smw-property-predefined-label-skey": "This is a label.\n\n{{Identical|Sortkey}}",
 	"smw-processing": "This is an informatory message.",
-	"smw-redirect-target-unresolvable": "This is an error message.\n\nParameter:\n* $1 - holds an error note."
+	"smw-redirect-target-unresolvable": "This is an error message.\n\nParameter:\n* $1 - holds an error note.",
+	"smw-types-title": "{{Identical|Type}}",
+	"smw-rule-page-definition": "{{Identical|Definition}}",
+	"smw-rule-page-description": "{{Identical|Description}}",
+	"smw-rule-page-type": "{{Identical|Type}}"
 }

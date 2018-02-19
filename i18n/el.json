@@ -14,7 +14,8 @@
 			"Ανώνυμος Βικιπαιδιστής",
 			"Nemo bis",
 			"Thodoris",
-			"KATRINE1992"
+			"KATRINE1992",
+			"Tgkarounos"
 		]
 	},
 	"smw-desc": "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([https://www.semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
@@ -347,6 +348,7 @@
 	"smw-qp-empty-data": "Τα ζητούμενα δεδομένα δεν μπορούν να προβληθούν λόγω ανεπαρκών κριτηρίων επιλογής.",
 	"right-smw-admin": "Εργασίες διαχείρισης πρόσβασης (Σημασιολογικό MediaWiki)",
 	"right-smw-patternedit": "Πρόσβαση επεξεργασίας για τη συντήρηση των επιτρεπτών κανονικών εκφράσεων και μοτίβων (Σημασιολογικό MediaWiki)",
+	"right-smw-ruleedit": "Επεξεργασία σελίδων κανόνων (Σημασιολογικό MediaWiki)",
 	"action-smw-patternedit": "επεξεργαστείτε κανονικές εκφράσεις που χρησιμοποιούνται από το Σημασιολογικό MediaWiki",
 	"group-smwadministrator": "Διαχειριστές (Σημασιολογικού MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|διαχειριστής|διαχειρίστρια}} (Σημασιολογικού MediaWiki)",
@@ -355,6 +357,7 @@
 	"group-smwcurator-member": "{{GENDER:$1|επιμελητής (Σημασιολογικό MediaWiki)}}",
 	"grouppage-smwcurator": "{{ns:project}}:Επιμελητές (Σημασιολογικό MediaWiki)",
 	"action-smw-admin": "μεταβείτε στις διαχειριστικές εργασίες του Σημασιολογικού MediaWiki",
+	"action-smw-ruleedit": "επεξεργασία σελίδων κανόνων (Semantic MediaWiki)",
 	"smw-property-predefined-default": "Η «$1» είναι μια εκ των προτέρων ορισμένη ιδιότητα.",
 	"smw-property-predefined-common": "Αυτή η ιδιότητα είναι μια εκ των προτέρων ορισμένη ιδιότητα (γνωστή επίσης ως [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ειδική ιδιότητα]) και συνοδεύεται από επιπλέον διαχειριστικά προνόμια αλλά μπορεί να χρησιμοποιηθεί ακριβώς όπως μια οποιαδήποτε άλλη [https://www.semantic-mediawiki.org/wiki/Property ιδιότητα που ορίζεται από χρήστη].",
 	"smw-property-predefined-ask": "Η «$1» είναι μια εκ των προτέρων ορισμένη ιδιότητα που αναπαριστά μεταπληροφορία (με τη μορφή [https://www.semantic-mediawiki.org/wiki/Subobject υποαντικειμένου]) σχετικά με μεμονωμένα ερωτήματα και παρέχεται από το [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Σημασιολογικό MediaWiki].",
@@ -496,5 +499,18 @@
 	"smw-postproc-queryref": "Το σημειολογικό πεδίο της MediaWiki θα αρχίσει την ανανέωση της σελίδας που αντιστοιχεί στην ζήτηση που απαιτείται μετά την διαδικασία.",
 	"smw-property-reserved-category": "Κατηγορία",
 	"smw-datavalue-uri-invalid-scheme": "Το \"$1\" δεν έχει καταχωρηθεί ως έγκυρο σχήμα  URI .",
-	"smw-personal-jobqueue-watchlist": "Λίστα Παρακολούθησης σειράς επαγγελμάτων"
+	"smw-personal-jobqueue-watchlist": "Λίστα Παρακολούθησης σειράς επαγγελμάτων",
+	"smw-types-title": "Τύπος: $1",
+	"smw-rule-namespace-editcontentmodel-disallowed": "Δεν επιτρέπεται η αλλαγή του μοντέλου περιεχομένου μιας σελίδας [https://www.semantic-mediawiki.org/wiki/Help:Rule_page].",
+	"smw-rule-namespace-edit-protection": "Αυτή η σελίδα προστατεύεται και μπορεί να επεξεργαστεί μόνο από χρήστες με την κατάλληλη άδεια χρήσης <code>smw-ruleedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions permission].",
+	"smw-rule-error-schema": "Σφάλμα σχήματος ($1)",
+	"smw-rule-page-definition": "Ορισμός",
+	"smw-rule-page-description": "Περιγραφή:",
+	"smw-rule-page-type": "Τύπος:",
+	"smw-rule-page-tag": "Ετικέτα:",
+	"smw-property-predefined-rl-desc": "Το \"$1\" είναι μια προκαθορισμένη ιδιότητα που αποθηκεύει μια περιγραφή κανόνων και παρέχεται από το [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-property-predefined-rl-tag": "Το \"$1\" είναι μια προκαθορισμένη ιδιότητα που παρέχεται από το [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] για την επισήμανση εισηγμένων κανόνων.",
+	"smw-property-predefined-long-rl-tag": "Μια σχολιασμένη ετικέτα κειμένου προσδιορίζει μια ομάδα κανόνων που ισχύουν για το ίδιο περιεχόμενο ή θέμα.",
+	"smw-property-predefined-rl-type": "Το \"$1\" είναι μια προκαθορισμένη ιδιότητα που αποθηκεύει μια περιγραφή κανόνων και παρέχεται από το [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-property-predefined-long-rl_type": "Each rule type has it own [https://www.semantic-mediawiki.org/wiki/Help:Rule#schema schema] assigned and the following [https://www.semantic-mediawiki.org/wiki/Help:Rule/Type help page] should contain a comprehensive overview and description."
 }

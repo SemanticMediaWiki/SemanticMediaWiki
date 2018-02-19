@@ -272,7 +272,7 @@
 	"smw-ask-no-cache": "Нет кэша",
 	"smw-ask-no-cache-desc": "Результаты без кеша запроса",
 	"smw-ask-result": "Результат",
-	"smw-ask-empty": "Пусто",
+	"smw-ask-empty": "Очистить все записи",
 	"smw-ask-download-link-desc": "Загружать запрошенные результаты в формате $1",
 	"smw-ask-format": "Формат",
 	"smw-ask-format-selection-help": "Справка для выбранного формата: $1.",

@@ -284,5 +284,9 @@
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] Format",
 	"smw-help": "Hëllef",
 	"smw-property-predefined-label-skey": "Zortéierschlëssel",
-	"smw-processing": "Verschaffen..."
+	"smw-processing": "Verschaffen...",
+	"smw-types-title": "Typ: $1",
+	"smw-rule-page-definition": "Definitioun",
+	"smw-rule-page-description": "Beschreiwung:",
+	"smw-rule-page-type": "Typ:"
 }

@@ -426,7 +426,7 @@
 	"log-show-hide-smw": "$1語意 MediaWiki 日誌",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 匯入]]",
 	"smw-property-predefined-impo": "“$1”是描述与[https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary 导入词汇]间关系的预定义屬性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
-	"smw-property-predefined-type": "“$1”是用来描述屬性[[Special:Types|数据类型]]的预定义屬性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
+	"smw-property-predefined-type": "“$1”是用來描述屬性[[Special:Types|資料類型]]的預設屬性，並由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 語義MediaWiki]提供。",
 	"smw-datavalue-restricted-use": "資料值被標記為限制使用。$1",
 	"smw-datavalue-invalid-number": "\"$1\" 無法作為數字解讀。",
 	"smw-query-condition-circular": "於 \"$1\" 偵測到可能會發生循環的情況。",
@@ -444,5 +444,6 @@
 	"smw-format-datatable-toolbar-export": "匯出",
 	"smw-property-reserved-category": "分類",
 	"smw-category": "分類",
-	"smw-list-pager-filter": "篩選器："
+	"smw-list-pager-filter": "篩選器：",
+	"smw-types-title": "類型：$1"
 }

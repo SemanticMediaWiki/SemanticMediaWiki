@@ -14,7 +14,8 @@
 			"Shypoetess",
 			"चक्रपाणी",
 			"Bhatakati aatma",
-			"Swapnil.Karambelkar"
+			"Swapnil.Karambelkar",
+			"Nitin1485"
 		]
 	},
 	"smw-title": "सिमेंटिक मीडियाविकि",
@@ -203,5 +204,10 @@
 	"smw-format-datatable-next": "अगला",
 	"smw-format-datatable-previous": "पिछला",
 	"smw-section-expand": "अंश का विस्तार करें",
-	"smw-section-collapse": "अंश को संक्षिप्त करें"
+	"smw-section-collapse": "अंश को संक्षिप्त करें",
+	"smw-types-title": "प्रकार: $1",
+	"smw-rule-page-definition": "परिभाषा",
+	"smw-rule-page-description": "विवरण:",
+	"smw-rule-page-type": "प्रकार:",
+	"smw-rule-page-tag": "टैग:"
 }

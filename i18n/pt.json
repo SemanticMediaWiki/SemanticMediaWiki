@@ -684,5 +684,6 @@
 	"smw-personal-jobqueue-watchlist": "Lista de vigilância da fila de tarefas",
 	"smw-property-predefined-label-skey": "Chave de ordenação",
 	"smw-processing": "A processar...",
-	"smw-redirect-target-unresolvable": "O destino é irresolúvel pela razão \"$1\""
+	"smw-redirect-target-unresolvable": "O destino é irresolúvel pela razão \"$1\"",
+	"smw-types-title": "Tipo: $1"
 }
