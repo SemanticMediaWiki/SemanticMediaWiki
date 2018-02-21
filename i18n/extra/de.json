@@ -75,7 +75,11 @@
         "_PEFU": "Formatierungsanweisung zur externen URI",
         "_EDIP": "Ist bearbeitungsgeschützt",
         "_CHGPRO": "Änderungsweitergabe",
-        "_PPGR": "Attributgruppe"
+        "_PPGR": "Attributgruppe",
+        "_RL_DESC": "Regelbeschreibung",
+        "_RL_TAG": "Regelkennzeichen",
+        "_RL_TYPE": "Regeltyp",
+        "_RL_DEF": "Regeldefinition"
     },
     "propertyAliases": {
         "Hat Datentyp": "_TYPE",
@@ -99,7 +103,11 @@
         "Externe Kennung": "_PEID",
         "Bearbeitungsgeschützt": "_EDIP",
         "Ist Änderungsweitergabe": "_CHGPRO",
-        "Ist Attributgruppe": "_PPGR"
+        "Ist Attributgruppe": "_PPGR",
+        "Hat Regelbeschreigung": "_RL_DESC",
+        "Hat Regelkennzeichen": "_RL_TAG",
+        "Hat Regeltyp": "_RL_TYPE",
+        "Hat Regeldefinition": "_RL_DEF"
     },
     "dateFormatsByPrecision": {
         "SMW_PREC_Y": "Y",
@@ -113,7 +121,9 @@
         "SMW_NS_TYPE": "Datentyp",
         "SMW_NS_TYPE_TALK": "Datentyp_Diskussion",
         "SMW_NS_CONCEPT": "Konzept",
-        "SMW_NS_CONCEPT_TALK": "Konzept_Diskussion"
+        "SMW_NS_CONCEPT_TALK": "Konzept_Diskussion",
+        "SMW_NS_RULE": "Regel",
+        "SMW_NS_RULE_TALK": "Regel_Diskussion"
     },
     "namespaceAliases": [],
     "dateFormats": [
