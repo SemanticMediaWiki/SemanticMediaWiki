@@ -216,7 +216,7 @@
 	"smw-livepreview-loading": "Kargatzen…",
 	"smw-sp-searchbyproperty-resultlist-header": "Emaitzen zerrenda",
 	"log-name-smw": "MediaWiki sarrera semantikoa",
-	"smw-sp-types-list": "Datu-moten zerrenda",
+	"smw-types-list": "Datu-moten zerrenda",
 	"smw-limitreport-intext-parsertime-value": "{{PLURAL:$1|segundo $1|$1 segundo}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "{{PLURAL:$1|segundo $1|$1 segundo}}",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" baliogabeko URLa da.",

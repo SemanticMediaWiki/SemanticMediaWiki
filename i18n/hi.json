@@ -185,7 +185,7 @@
 	"log-show-hide-smw": "$1 सिमेंटिक मीडियाविकि लॉग",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 आयात]]",
 	"smw-datavalue-property-create-restriction": "संपत्ति \"$1\" मौजूद नहीं है और उपयोगकर्ता को \"$2\" (देखें [https://www.semantic-mediawiki.org/wiki/Help:Authority_mode authority mode]) बनाने की या असमर्थित संपत्ति के साथ कथित टिप्पणी की अनुमति नहीं है।",
-	"smw-sp-types-list": "डाटा प्रकारों की सूची",
+	"smw-types-list": "डाटा प्रकारों की सूची",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|सेकंड}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|सेकंड}}",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" अमान्य पता है।",

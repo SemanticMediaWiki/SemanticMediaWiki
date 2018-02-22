@@ -16,5 +16,5 @@
 	"smw-sp-property-searchform-inputinfo": "Bei der Eingabe wird zwischen Gross- und Kleinschreibung unterschieden. Bei der Filterung werden nur Attribute angezeigt, die der Bedingung entsprechen.",
 	"smw-statistics-query-size": "Abfragegrösse",
 	"smw-prefs-ask-options-collapsed-default": "Bereich mit den Ausgabeparametern standardmässig einklappen",
-	"smw-sp-types_tel": "„$1“ ist ein Datentyp der für die Ziffernfolge zur Anwahl eines Zielteilnehmers (Rufnummer) gemäss RFC 3966 genutzt wird."
+	"smw-type-tel": "„$1“ ist ein Datentyp der für die Ziffernfolge zur Anwahl eines Zielteilnehmers (Rufnummer) gemäss RFC 3966 genutzt wird."
 }

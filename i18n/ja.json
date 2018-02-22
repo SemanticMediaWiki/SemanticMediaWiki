@@ -26,7 +26,8 @@
 			"Suchichi02",
 			"Omotecho",
 			"Eduardo Addad de Oliveira",
-			"Yusuke1109"
+			"Yusuke1109",
+			"Zero 1 k"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -334,16 +335,16 @@
 	"smw-property-predefined-sobj": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]によって提供される、通常の Wiki のページと同様のプロパティ値の割り当てを溜めることができ、[https://www.semantic-mediawiki.org/wiki/Help:Container コンテナ]の構造を示す定義済みのプロパティです。",
 	"smw-datavalue-invalid-number": "「$1」は数値として解釈できません。",
 	"smw-query-condition-circular": "「$1」において循環条件の可能性が検出されました。",
-	"smw-sp-types-list": "データ型の一覧",
-	"smw-sp-types-default": "「$1」は組み込みのデータ型です。",
-	"smw-sp-types-help": "追加の情報と例を[https://www.semantic-mediawiki.org/wiki/Help:Type_$1 ヘルプページ]で見ることができます。",
-	"smw-sp-types_anu": "「$1」は [[Special:Types/URL|URL]] データ型の異形です。主に「owl:AnnotationProperty」の出力定義に使われます。",
-	"smw-sp-types_boo": "「$1」は真偽値を記述するためのプリミティブデータ型です。",
-	"smw-sp-types_cod": "「$1」はソースコードリストのような任意の長さの技術的テキストに使われる [[Special:Types/Text|Text]] データ型の異形です。",
-	"smw-sp-types_geo": "「$1」は地理的な場所を記述するデータ型です。[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] を必要とします。",
-	"smw-sp-types_tel": "「$1」は RFC 3966 に従った国際電話番号を記述するための特別なデータ型です。",
-	"smw-sp-types_txt": "「$1」は任意の長さの文字列を記述するためのプリミティブデータ型です。",
-	"smw-sp-types_dat": "「$1」は統一された書式で時点を表すためのデータ型です。",
+	"smw-types-list": "データ型の一覧",
+	"smw-types-default": "「$1」は組み込みのデータ型です。",
+	"smw-types-help": "追加の情報と例を[https://www.semantic-mediawiki.org/wiki/Help:Type_$1 ヘルプページ]で見ることができます。",
+	"smw-type-anu": "「$1」は [[Special:Types/URL|URL]] データ型の異形です。主に「owl:AnnotationProperty」の出力定義に使われます。",
+	"smw-type-boo": "「$1」は真偽値を記述するためのプリミティブデータ型です。",
+	"smw-type-cod": "「$1」はソースコードリストのような任意の長さの技術的テキストに使われる [[Special:Types/Text|Text]] データ型の異形です。",
+	"smw-type-geo": "「$1」は地理的な場所を記述するデータ型です。[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] を必要とします。",
+	"smw-type-tel": "「$1」は RFC 3966 に従った国際電話番号を記述するための特別なデータ型です。",
+	"smw-type-txt": "「$1」は任意の長さの文字列を記述するためのプリミティブデータ型です。",
+	"smw-type-dat": "「$1」は統一された書式で時点を表すためのデータ型です。",
 	"smw-property-predefined-errt": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]によって提供される、エラーの説明を含んだ定義済みのプロパティです。",
 	"smw-property-predefined-askst": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] によって提供される、文字列として問い合わせ条件を記述する定義済みのプロパティです。",
 	"smw-limitreport-intext-parsertime": "[SMW] テキスト内注記パーサー時間",
@@ -376,5 +377,7 @@
 	"smw-section-expand": "すべての節を展開",
 	"smw-section-collapse": "節を折りたたむ",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] 形式",
-	"smw-help": "ヘルプ"
+	"smw-help": "ヘルプ",
+	"smw-rule-page-type": "タイプ",
+	"smw-rule-page-tag": "タグ:"
 }
