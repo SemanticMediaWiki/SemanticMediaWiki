@@ -72,7 +72,11 @@
         "_PPLB": "Etiqueta de propiedad preferida",
         "_EDIP": "Está protegida de edición",
         "_CHGPRO": "Propagación de cambio",
-        "_PPGR": "Es un grupo de propiedad"
+        "_PPGR": "Es un grupo de propiedad",
+        "_RL_DESC": "Descripción de regla",
+        "_RL_TAG": "Etiqueta de regla",
+        "_RL_TYPE": "Tipo de regla",
+        "_RL_DEF": "Definición de regla"
     },
     "propertyAliases": {
         "Es página nueva": "_NEWP",
@@ -91,7 +95,9 @@
         "SMW_NS_TYPE": "Tipo",
         "SMW_NS_TYPE_TALK": "Tipo_discusión",
         "SMW_NS_CONCEPT": "Concepto",
-        "SMW_NS_CONCEPT_TALK": "Concepto_discusión"
+        "SMW_NS_CONCEPT_TALK": "Concepto_discusión",
+        "SMW_NS_RULE": "Regla",
+        "SMW_NS_RULE_TALK": "Regla discusión"
     },
     "namespaceAliases": {
         "Atributo": "SMW_NS_PROPERTY",
