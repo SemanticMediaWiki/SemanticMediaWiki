@@ -20,6 +20,7 @@
 		"_qty": "Quantity",
 		"_mlt_rec": "Monolingual text",
 		"_eid": "External identifier",
+		"_keyw": "Keyword",
 		"_ref_rec": "Reference"
 	},
 	"dataTypeAliases":{
@@ -48,6 +49,7 @@
 		"Record": "_rec",
 		"Monolingual text": "_mlt_rec",
 		"External identifier": "_eid",
+		"Keyword": "_keyw",
 		"Reference": "_ref_rec"
 	},
 	"propertyLabels":{
@@ -97,7 +99,8 @@
 		"_RL_DESC": "Rule description",
 		"_RL_TAG": "Rule tag",
 		"_RL_TYPE": "Rule type",
-		"_RL_DEF": "Rule definition"
+		"_RL_DEF": "Rule definition",
+		"_FORMAT_RL": "Formatter rule"
 	},
 	"propertyAliases": {
 		"Display unit": "_UNIT",
@@ -154,7 +157,8 @@
 		"Rule description": "_RL_DESC",
 		"Rule tag": "_RL_TAG",
 		"Rule type": "_RL_TYPE",
-		"Rule definition": "_RL_DEF"
+		"Rule definition": "_RL_DEF",
+		"Formatter rule": "_FORMAT_RL"
 	},
 	"namespaces":{
 		"SMW_NS_PROPERTY": "Property",

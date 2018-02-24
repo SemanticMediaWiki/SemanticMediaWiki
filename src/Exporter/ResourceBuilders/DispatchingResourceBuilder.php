@@ -114,14 +114,15 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 		$this->addResourceBuilder( new PreferredPropertyLabelResourceBuilder() );
 
 		$this->addResourceBuilder( new ExternalIdentifierPropertyValueResourceBuilder() );
+		$this->addResourceBuilder( new KeywordPropertyValueResourceBuilder() );
+
 		$this->addResourceBuilder( new MonolingualTextPropertyValueResourceBuilder() );
-
 		$this->addResourceBuilder( new ConceptPropertyValueResourceBuilder() );
+
 		$this->addResourceBuilder( new ImportFromPropertyValueResourceBuilder() );
-
 		$this->addResourceBuilder( new RedirectPropertyValueResourceBuilder() );
-		$this->addResourceBuilder( new AuxiliaryPropertyValueResourceBuilder() );
 
+		$this->addResourceBuilder( new AuxiliaryPropertyValueResourceBuilder() );
 		$this->addResourceBuilder( new PredefinedPropertyValueResourceBuilder() );
 
 		$this->addDefaultResourceBuilder( new PropertyValueResourceBuilder() );

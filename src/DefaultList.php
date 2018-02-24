@@ -10,6 +10,7 @@ use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ExternalIdentifierValue;
+use SMW\DataValues\KeywordValue;
 use SMW\DataValues\LanguageCodeValue;
 use SMW\DataValues\AllowsValue;
 use SMW\DataValues\AllowsListValue;
@@ -95,6 +96,8 @@ class DefaultList {
 			'_gpo' => [ null, DataItem::TYPE_BLOB, false ],
 			// External identifier
 			ExternalIdentifierValue::TYPE_ID => [ ExternalIdentifierValue::class, DataItem::TYPE_BLOB, false ],
+			// KeywordValue
+			KeywordValue::TYPE_ID => [ KeywordValue::class, DataItem::TYPE_BLOB, false ],
 			 // Type for numbers with units of measurement
 			QuantityValue::TYPE_ID => [ QuantityValue::class, DataItem::TYPE_NUMBER, false ],
 			// Special types are not avaialble directly for users (and have no local language name):
@@ -210,6 +213,10 @@ class DefaultList {
 			'_RL_DEF'  => [ '_cod', true, false, false ], // "Rule definition"
 			'_RL_DESC' => [ '_txt', true, false, false ], // "Rule description"
 			'_RL_TAG'  => [ '_txt', true, false, false ], // "Rule tag"
+
+			//
+			'_FORMAT_RL'  => [ '_wpr', true, true, false ], // "Formatter rule"
+
 		];
 	}
 

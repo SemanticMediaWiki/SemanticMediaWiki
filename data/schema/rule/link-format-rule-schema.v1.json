@@ -71,9 +71,6 @@
                 "default": "",
                 "examples": [
                   "Has description"
-                ],
-                "enum": [
-                  "Has description"
                 ]
               }
             }
@@ -89,14 +86,15 @@
               "enum": ["Special:Ask"]
             }
           },
-          "required": ["parameters"]
+          "required": [ "parameters" ]
         },
         {
           "properties": {
             "link_to": {
-              "enum": ["Special:SearchByProperty"]
+              "enum": ["Special:SearchByProperty" ]
             }
-          }
+          },
+          "additionalProperties": false
         }
       ]
     },

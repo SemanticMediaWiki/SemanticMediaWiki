@@ -586,11 +586,14 @@
 	"smw-datavalue-external-formatter-uri-missing-placeholder": "Formatter URI is missing the ''$1'' placeholder.",
 	"smw-datavalue-external-formatter-invalid-uri": " \"$1\" is an invalid URL.",
 	"smw-datavalue-external-identifier-formatter-missing": "The property is missing an [[Property:External formatter uri|\"External formatter URI\"]] assignment.",
+	"smw-datavalue-keyword-maximum-length": "Keyword exceeded the maximum length of $1.",
 	"smw-property-predefined-eid": "\"$1\" is a [[Special:Types/External identifier|type]] and predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to represent external identifiers.",
 	"smw-property-predefined-peid": "\"$1\" is a predefined property that specifies an external identifier and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-pefu": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to specify an external resource with a placeholder.",
 	"smw-property-predefined-long-pefu": "The URI is expected to contain a placeholder that will be adjusted with an [[Special:Types/External identifier|external identifier]] value to form a valid resource reference.",
 	"smw-type-eid": "\"$1\" is a restricted [https://www.semantic-mediawiki.org/wiki/Type_String String] type that requires assigned properties to declare an [[Property:External formatter uri|External formatter URI]].",
+	"smw-property-predefined-keyw": "\"$1\" is a predefined property and [[Special:Types/Keyword|type]] provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] that normalizes a text and has a restricted character length.",
+	"smw-type-keyw": "\"$1\" is a text type that has a restricted character length and normalizes its content representation.",
 	"smw-datavalue-stripmarker-parse-error": "The given value \"$1\" contains [https://en.wikipedia.org/wiki/Help:Strip_markers strip markers] and therefore it cannot be parsed sufficiently.",
 	"smw-datavalue-parse-error": "The given value \"$1\" was not understood.",
 	"smw-datavalue-propertylist-invalid-property-key": "The property list \"$1\" contained an invalid property key \"$2\".",
@@ -694,5 +697,7 @@
 	"smw-property-predefined-rl-tag": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to tag listed rules.",
 	"smw-property-predefined-long-rl-tag": "An annotated textual tag is to identify a group of rules that apply to the same content or topic.",
 	"smw-property-predefined-rl-type": "\"$1\" is a predefined property that describes a type by which a rule or set of rules is interpret and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-property-predefined-long-rl_type": "Each rule type has it own [https://www.semantic-mediawiki.org/wiki/Help:Rule#schema schema] assigned and the following [https://www.semantic-mediawiki.org/wiki/Help:Rule/Type help page] should contain a comprehensive overview and description."
+	"smw-property-predefined-long-rl_type": "Each rule type has it own [https://www.semantic-mediawiki.org/wiki/Help:Rule#schema schema] assigned and the following [https://www.semantic-mediawiki.org/wiki/Help:Rule/Type help page] should contain a comprehensive overview and description.",
+	"smw-ask-title-keyword-type":"Keyword search",
+	"smw-ask-message-keyword-type": "This search matches the <code><nowiki>$1</nowiki></code> condition."
 }

@@ -301,6 +301,17 @@ class Localizer {
 
 		$namespace = $this->getNamespaceTextById( $index );
 
+		if ( strpos( $url, 'title=' ) !== false ) {
+			return str_replace(
+				[
+					'title=' . wfUrlencode( $namespace ) . ':',
+					'title=' . $namespace . ':'
+				],
+				'title=' . $this->getCanonicalNamespaceTextById( $index ) .':',
+				$url
+			);
+		}
+
 		return str_replace(
 			array(
 				wfUrlencode( '/' . $namespace .':' ),

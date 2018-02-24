@@ -284,7 +284,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$language->expects( $this->exactly( 2 ) )
+		$language->expects( $this->exactly( 3 ) )
 			->method( 'getNsText' )
 			->will( $this->returnValue( 'Spécial' ) );
 
@@ -298,6 +298,11 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'http://example.org/wiki/Special:URIResolver/Property-3AHas_query',
 			$instance->getCanonicalizedUrlByNamespace( NS_SPECIAL, 'http://example.org/wiki/Spécial:URIResolver/Property-3AHas_query' )
+		);
+
+		$this->assertEquals(
+			'http://example.org/index.php?title=Special:URIResolver&Property-3AHas_query',
+			$instance->getCanonicalizedUrlByNamespace( NS_SPECIAL, 'http://example.org/index.php?title=Spécial:URIResolver&Property-3AHas_query' )
 		);
 	}
 
