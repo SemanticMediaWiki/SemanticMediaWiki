@@ -236,26 +236,12 @@ class SMWSql3SmwIds {
 		$conditions = [];
 
 		if ( $type === DataItem::TYPE_WIKIPAGE ) {
-			$conditions[] = "smw_title=" . $connection->addQuotes(
-				$dataItem->getDBKey()
-			);
-
-			$conditions[] = "smw_namespace=" . $connection->addQuotes(
-				$dataItem->getNamespace()
-			);
-
-			$conditions[] = "smw_subobject=" . $connection->addQuotes(
-				$dataItem->getSubobjectName()
-			);
+			$conditions[] = "smw_title=" . $connection->addQuotes( $dataItem->getDBKey() );
+			$conditions[] = "smw_namespace=" . $connection->addQuotes( $dataItem->getNamespace() );
+			$conditions[] = "smw_subobject=" . $connection->addQuotes( $dataItem->getSubobjectName() );
 		} else {
-			$conditions[] = "smw_sortkey=" . $connection->addQuotes(
-				$dataItem->getCanonicalLabel()
-			);
-
-			$conditions[] = "smw_namespace=" . $connection->addQuotes(
-				SMW_NS_PROPERTY
-			);
-
+			$conditions[] = "smw_sortkey=" . $connection->addQuotes( $dataItem->getCanonicalLabel() );
+			$conditions[] = "smw_namespace=" . $connection->addQuotes( SMW_NS_PROPERTY );
 			$conditions[] = "smw_subobject=''";
 		}
 
