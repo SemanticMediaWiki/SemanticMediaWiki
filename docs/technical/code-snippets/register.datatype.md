@@ -10,7 +10,7 @@ This example shows how to register a new dataType/dataValue in Semantic MediaWik
 All IDs must start with an underscore, two underscores indicate a truly internal
 (non user-interacted type), three underscores should be used by an extension.
 
-`TypeList::getList` expects that the following information are provided:
+`DefaultList::getTypeList` expects that the following information are provided:
 
 * A type id (e.g. `FooValue::TYPE_ID`)
 * An associated class
@@ -20,7 +20,7 @@ All IDs must start with an underscore, two underscores indicate a truly internal
 <pre>
 return array(
 	// ...
-	FooValue::TYPE_ID => array( FooValue::class, DataItem::TYPE_WIKIPAGE, true ),
+	FooValue::TYPE_ID => [ FooValue::class, DataItem::TYPE_WIKIPAGE, false ],
 );
 </pre>
 
@@ -50,7 +50,7 @@ By default, DataTypes (Date, URL etc.) are registered with a corresponding prope
 of the same name to match the expected semantics. For an exemption, see
 `smwgDataTypePropertyExemptionList`.
 
-`i18n/extra/en.json` to extend the canonical description (which is English)
+Find `i18n/extra/en.json` and extend the canonical description (which is English) with something like:
 
 <pre>
 	"dataTypeLabels":{
