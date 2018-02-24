@@ -41,7 +41,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_id = 42;
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getPropertyInterwiki', 'moveSMWPageID' ) )
+			->setMethods( array( 'getPropertyInterwiki', 'moveSMWPageID', 'getPropertyTableHashes' ) )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
