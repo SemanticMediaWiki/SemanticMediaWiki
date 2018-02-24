@@ -6,9 +6,9 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\NamespaceUriFinder;
-use SMW\Exporter\DataItemByExpElementMatchFinder;
+use SMW\Exporter\DataItemMatchFinder;
 use SMW\Exporter\ElementFactory;
-use SMW\Exporter\DataItemToExpResourceEncoder;
+use SMW\Exporter\ExpResourceMapper;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
@@ -32,9 +32,9 @@ class SMWExporter {
 	private static $instance = null;
 
 	/**
-	 * @var DataItemToExpResourceEncoder
+	 * @var ExpResourceMapper
 	 */
-	private static $dataItemToExpResourceEncoder = null;
+	private static $expResourceMapper = null;
 
 	/**
 	 * @var ElementFactory
@@ -42,9 +42,9 @@ class SMWExporter {
 	private static $elementFactory = null;
 
 	/**
-	 * @var DataItemByExpElementMatchFinder
+	 * @var DataItemMatchFinder
 	 */
-	private static $dataItemByExpElementMatchFinder = null;
+	private static $dataItemMatchFinder = null;
 
 	/**
 	 * @var DispatchingResourceBuilder
@@ -80,17 +80,17 @@ class SMWExporter {
 
 			self::$dispatchingResourceBuilder = new DispatchingResourceBuilder();
 
-			self::$dataItemToExpResourceEncoder = new DataItemToExpResourceEncoder(
+			self::$expResourceMapper = new ExpResourceMapper(
 				$applicationFactory->getStore()
 			);
 
-			self::$dataItemToExpResourceEncoder->reset();
+			self::$expResourceMapper->reset();
 
-			self::$dataItemToExpResourceEncoder->setBCAuxiliaryUse(
+			self::$expResourceMapper->setBCAuxiliaryUse(
 				$applicationFactory->getSettings()->get( 'smwgExportBCAuxiliaryUse' )
 			);
 
-			self::$dataItemByExpElementMatchFinder = new DataItemByExpElementMatchFinder(
+			self::$dataItemMatchFinder = new DataItemMatchFinder(
 				$applicationFactory->getStore(),
 				self::$m_ent_wiki
 			);
@@ -111,7 +111,7 @@ class SMWExporter {
 	 * @since 2.2
 	 */
 	public function resetCacheBy( SMWDIWikiPage $diWikiPage ) {
-		self::$dataItemToExpResourceEncoder->resetCacheBy( $diWikiPage );
+		self::$expResourceMapper->invalidateCache( $diWikiPage );
 	}
 
 	/**
@@ -393,17 +393,17 @@ class SMWExporter {
 	}
 
 	/**
-	 * @see DataItemToExpResourceEncoder::mapPropertyToResourceElement
+	 * @see ExpResourceMapper::mapPropertyToResourceElement
 	 */
 	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false, $seekImportVocabulary = true ) {
-		return self::$dataItemToExpResourceEncoder->mapPropertyToResourceElement( $diProperty, $helperProperty, $seekImportVocabulary );
+		return self::$expResourceMapper->mapPropertyToResourceElement( $diProperty, $helperProperty, $seekImportVocabulary );
 	}
 
 	/**
-	 * @see DataItemToExpResourceEncoder::mapWikiPageToResourceElement
+	 * @see ExpResourceMapper::mapWikiPageToResourceElement
 	 */
 	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
-		return self::$dataItemToExpResourceEncoder->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
+		return self::$expResourceMapper->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
 	}
 
 	/**
@@ -414,7 +414,7 @@ class SMWExporter {
 	 * @return SMWDataItem or null
 	 */
 	public function findDataItemForExpElement( ExpElement $expElement ) {
-		return self::$dataItemByExpElementMatchFinder->tryToFindDataItemForExpElement( $expElement );
+		return self::$dataItemMatchFinder->matchExpElement( $expElement );
 	}
 
 	/**
@@ -424,7 +424,7 @@ class SMWExporter {
 	 */
 	static public function getOWLPropertyType( $type = '' ) {
 		if ( $type instanceof SMWDIWikiPage ) {
-			$type = DataTypeRegistry::getInstance()->findTypeId( str_replace( '_', ' ', $type->getDBkey() ) );
+			$type = DataTypeRegistry::getInstance()->findTypeByLabel( str_replace( '_', ' ', $type->getDBkey() ) );
 		} elseif ( $type == false ) {
 			$type = '';
 		}
@@ -605,7 +605,7 @@ class SMWExporter {
 	 * @see ElementFactory::mapDataItemToElement
 	 */
 	static public function getDataItemExpElement( SMWDataItem $dataItem ) {
-		return self::$elementFactory->newByDataItem( $dataItem );
+		return self::$elementFactory->newFromDataItem( $dataItem );
 	}
 
 	/**

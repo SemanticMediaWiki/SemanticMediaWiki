@@ -26,7 +26,7 @@ use SMWExporter as Exporter;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class ConceptToExpDataMapper {
+class ConceptMapper {
 
 	/**
 	 * @var Exporter

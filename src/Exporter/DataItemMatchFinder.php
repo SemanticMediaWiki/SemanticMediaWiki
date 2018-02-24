@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class DataItemByExpElementMatchFinder {
+class DataItemMatchFinder {
 
 	/**
 	 * @var Store
@@ -49,7 +49,7 @@ class DataItemByExpElementMatchFinder {
 	 *
 	 * @return DataItem|null
 	 */
-	public function tryToFindDataItemForExpElement( ExpElement $expElement ) {
+	public function matchExpElement( ExpElement $expElement ) {
 
 		$dataItem = null;
 
@@ -60,16 +60,16 @@ class DataItemByExpElementMatchFinder {
 		$uri = $expElement->getUri();
 
 		if ( strpos( $uri, $this->wikiNamespace ) !== false ) {
-			$dataItem = $this->tryToMatchDataItemForWikiNamespaceUri( $uri );
+			$dataItem = $this->matchToWikiNamespaceUri( $uri );
 		} else {
 			 // Not in wikiNamespace therefore most likely an imported URI
-			$dataItem = $this->tryToMatchDataItemForUnmatchedWikiNamespaceUri( $uri );
+			$dataItem = $this->matchToUnknownWikiNamespaceUri( $uri );
 		}
 
 		return $dataItem;
 	}
 
-	private function tryToMatchDataItemForWikiNamespaceUri( $uri ) {
+	private function matchToWikiNamespaceUri( $uri ) {
 
 		$dataItem = null;
 		$localName = substr( $uri, strlen( $this->wikiNamespace ) );
@@ -91,7 +91,7 @@ class DataItemByExpElementMatchFinder {
 			return new DIWikiPage( $dbKey, NS_MAIN, '', $subobjectname );
 		}
 
-		$namespaceId = $this->tryToMatchNamespaceName( $parts[0] );
+		$namespaceId = $this->matchToNamespaceName( $parts[0] );
 
 		if ( $namespaceId != -1 && $namespaceId !== false ) {
 			$dataItem = new DIWikiPage( $parts[1], $namespaceId, '', $subobjectname );
@@ -106,7 +106,7 @@ class DataItemByExpElementMatchFinder {
 		return $dataItem;
 	}
 
-	private function tryToMatchNamespaceName( $name ) {
+	private function matchToNamespaceName( $name ) {
 		// try the by far most common cases directly before using Title
 		$namespaceName = str_replace( '_', ' ', $name );
 
@@ -124,7 +124,7 @@ class DataItemByExpElementMatchFinder {
 		return $namespaceId;
 	}
 
-	private function tryToMatchDataItemForUnmatchedWikiNamespaceUri( $uri ) {
+	private function matchToUnknownWikiNamespaceUri( $uri ) {
 
 		$dataItem = null;
 
@@ -158,7 +158,7 @@ class DataItemByExpElementMatchFinder {
 			}
 
 			$dataItem = new DIWikiPage(
-				$this->getFittingKeyByCapitalLinks( $dbKey, $namespace ),
+				$this->getFittingDBKey( $dbKey, $namespace ),
 				$namespace
 			);
 		}
@@ -166,7 +166,7 @@ class DataItemByExpElementMatchFinder {
 		return $dataItem;
 	}
 
-	private function getFittingKeyByCapitalLinks( $dbKey, $namespace ) {
+	private function getFittingDBKey( $dbKey, $namespace ) {
 
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinks
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinkOverrides

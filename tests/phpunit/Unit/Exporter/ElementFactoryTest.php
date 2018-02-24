@@ -19,13 +19,13 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider supportedDataItemProvider
 	 */
-	public function testnewByDataItemForSupportedTypes( $dataItem ) {
+	public function testNewFromDataItemForSupportedTypes( $dataItem ) {
 
 		$instance = new ElementFactory();
 
 		$this->assertInstanceOf(
 			'\SMW\Exporter\Element',
-			$instance->newByDataItem( $dataItem )
+			$instance->newFromDataItem( $dataItem )
 		);
 	}
 
@@ -37,7 +37,7 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ElementFactory();
 
 		$this->assertNull(
-			$instance->newByDataItem( $dataItem )
+			$instance->newFromDataItem( $dataItem )
 		);
 	}
 
@@ -46,12 +46,12 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 		$dataItemFactory = new DataItemFactory();
 		$instance = new ElementFactory();
 
-		$instance->registerDataItemEncoder( \SMWDataItem::TYPE_BLOB, function( $datatem ) {
+		$instance->registerDataItemMapper( \SMWDataItem::TYPE_BLOB, function( $datatem ) {
 			return new \stdclass;
 		} );
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->newByDataItem( $dataItemFactory->newDIBlob( 'foo' ) );
+		$instance->newFromDataItem( $dataItemFactory->newDIBlob( 'foo' ) );
 	}
 
 	public function supportedDataItemProvider() {

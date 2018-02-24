@@ -38,7 +38,7 @@ class XsdValueMapper {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function process( DataItem $dataItem ) {
+	public function map( DataItem $dataItem ) {
 
 		if ( $dataItem instanceof DIBoolean ) {
 			$this->parseToBooleanValue( $dataItem );
