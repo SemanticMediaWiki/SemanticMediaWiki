@@ -6,6 +6,7 @@ use LinksUpdate;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
 use Title;
+use Hooks;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 
@@ -66,6 +67,13 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$title = $linksUpdate->getTitle();
 
+		$latestRevID = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+
+		// Allow any third-party extension to suppress the update process
+		if ( \Hooks::run( 'SMW::LinksUpdate::ApprovedUpdate', [ $title, $latestRevID ] ) === false ) {
+			return true;
+		}
+
 		/**
 		 * @var ParserData $parserData
 		 */
@@ -104,9 +112,7 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 		// EnqueueableDataUpdate which creates updates as JobSpecification
 		// (refreshLinksPrioritized) and posses a possibility of running an
 		// update more than once for the same RevID
-		$parserData->markUpdate(
-			$title->getLatestRevID( Title::GAID_FOR_UPDATE )
-		);
+		$parserData->markUpdate( $latestRevID );
 
 		return true;
 	}

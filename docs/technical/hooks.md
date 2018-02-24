@@ -315,6 +315,46 @@ Hooks::register( 'SMW::SQLStore::EntityReferenceCleanUpComplete', function( $sto
 } );
 </pre>
 
+### SMW::LinksUpdate::ApprovedUpdate
+
+* Version: 3.0
+* Description: Hook allows to suppress an update where for example the `latestRevID` is not the revision that is approved an should not be used for the `SemanticData` representation.
+* Reference class: `SMW\MediaWiki\Hooks\LinksUpdateConstructed`
+
+If you do suppress a revision, please log the event and make it visible to a user (or administrator) that an update was refused.
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::LinksUpdate::ApprovedUpdate', function( $title, $latestRevID ) {
+
+	// If you need to decline an update
+	// return false;
+
+	return true;
+} );
+</pre>
+
+### SMW::Parser::ChangeRevision
+
+* Version: 3.0
+* Description: Hook allows to forcibly to change a revision used during content parsing as in case of execution the `UpdateJob` or running `rebuildData.php`.
+* Reference class: `SMW\ContentParser`
+
+If you do alter a revision, please log the event and make it visible to a user (or administrator) that it was changed.
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::Parser::ChangeRevision', function( $title, &$revision ) {
+
+	// Set a revision
+	// $revision = \Revision::newFromId( $id );
+
+	return true;
+} );
+</pre>
+
 ## Other available hooks
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
