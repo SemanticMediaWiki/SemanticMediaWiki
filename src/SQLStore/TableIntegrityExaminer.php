@@ -157,7 +157,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 				continue;
 			}
 
-			$this->updatePredefinedProperty( $connection, $property, $id );
+			$this->updatePredefinedProperty( $property, $id );
 		}
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
@@ -236,7 +236,9 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function updatePredefinedProperty( $connection, $property, $id ) {
+	private function updatePredefinedProperty( $property, $id ) {
+
+		$connection = $this->store->getConnection( DB_MASTER );
 
 		// Try to find the ID for a non-fixed predefined property
 		if ( $id === null ) {
@@ -258,9 +260,20 @@ class TableIntegrityExaminer implements MessageReporterAware {
 			}
 		} else {
 			$label = $property->getCanonicalLabel();
+
 			$iw = $this->store->getObjectIds()->getPropertyInterwiki(
 				$property
 			);
+
+			$propertyTableHashes = $this->store->getObjectIds()->getPropertyTableHashes(
+				$id
+			);
+
+			if ( is_array( $propertyTableHashes ) && $propertyTableHashes !== [] ) {
+				$propertyTableHashes = serialize( $propertyTableHashes );
+			} else {
+				$propertyTableHashes = null;
+			}
 
 			$connection->replace(
 				SQLStore::ID_TABLE,
@@ -272,7 +285,8 @@ class TableIntegrityExaminer implements MessageReporterAware {
 					'smw_iw' => $iw,
 					'smw_subobject' => '',
 					'smw_sortkey' => $label,
-					'smw_sort' => Collator::singleton()->getSortKey( $label )
+					'smw_sort' => Collator::singleton()->getSortKey( $label ),
+					'smw_proptable_hash' => $propertyTableHashes
 				],
 				__METHOD__
 			);
