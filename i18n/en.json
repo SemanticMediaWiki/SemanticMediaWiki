@@ -45,6 +45,7 @@
 	"smw_printername_table": "Table",
 	"smw_printername_broadtable": "Broad table",
 	"smw_printername_template": "Template",
+	"smw_printername_templatefile": "Template file",
 	"smw_printername_rdf": "RDF export",
 	"smw_printername_category": "Category",
 	"validator-type-class-SMWParamSource": "text",

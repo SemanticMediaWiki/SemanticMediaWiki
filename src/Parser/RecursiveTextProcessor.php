@@ -24,6 +24,12 @@ use RuntimeException;
 class RecursiveTextProcessor {
 
 	/**
+	 * @see Special:ExpandTemplates
+	 * @var int Maximum size in bytes to include. 50MB allows fixing those huge pages
+	 */
+	const MAX_INCLUDE_SIZE = 50000000;
+
+	/**
 	 * @var Parser
 	 */
 	private $parser;
@@ -197,6 +203,50 @@ class RecursiveTextProcessor {
 	}
 
 	/**
+	 * @see Special:ExpandTemplates
+	 * @since 3.0
+	 *
+	 * @param string $text
+	 *
+	 * @return text
+	 */
+	public function expandTemplates( $text ) {
+
+		if ( $this->parser === null ) {
+			throw new RuntimeException( 'Missing a parser instance!' );
+		}
+
+		$options = $this->parser->getOptions();
+
+		if ( !$options instanceof ParserOptions ) {
+			$options = new ParserOptions();
+			$options->setRemoveComments( true );
+			$options->setTidy( true );
+			$options->setMaxIncludeSize( self::MAX_INCLUDE_SIZE );
+		}
+
+		$title = $this->parser->getTitle();
+
+		if ( !$title instanceof Title ) {
+			$title = $GLOBALS['wgTitle'];
+
+			if ( !$title instanceof Title ) {
+				$title = Title::newFromText( 'UNKNOWN_TITLE' );
+			}
+		}
+
+		$text = $this->parser->preprocess( $text, $title, $options );
+
+		$text = str_replace(
+			[ '_&lt;nowiki&gt;_', '_&lt;/nowiki&gt;_', '_&lt;nowiki */&gt;_', '<nowiki>', '</nowiki>' ],
+			'',
+			$text
+		);
+
+		return $text;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $text
@@ -243,7 +293,7 @@ class RecursiveTextProcessor {
 	public function recursiveTagParse( $text ) {
 
 		if ( $this->parser === null ) {
-			throw new RuntimeException( 'Missing a parser instance' );
+			throw new RuntimeException( 'Missing a parser instance!' );
 		}
 
 		$this->recursionDepth++;
