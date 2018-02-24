@@ -39,10 +39,6 @@ class MaintenanceFactory {
 
 		$messageReporter = $this->newMessageReporter( $reporterCallback );
 
-		$store->setMessageReporter(
-			$messageReporter
-		);
-
 		$dataRebuilder = new DataRebuilder(
 			$store,
 			ApplicationFactory::getInstance()->newTitleCreator()
