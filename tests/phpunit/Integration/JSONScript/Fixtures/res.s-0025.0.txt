@@ -1,0 +1,12 @@
+#FORMAT: BEACON
+#PREFIX: http://d-nb.info/gnd/
+#TARGET:.*
+#VERSION: 0.1
+#HOMEPAGE: https://www.semantic-mediawiki.org/w/index.php?title=Help:BEACON
+#FEED: https://www.semantic-mediawiki.org/w/index.php?title=BEACON&action=render
+#LINK: http://www.w3.org/2000/01/rdf-schema#seeAlso
+#INSTITUTION: Semantic MediaWiki
+#MESSAGE: Person test data in Semantic MediaWiki
+#TIMESTAMP: .*
+#UPDATE: always
+123456789||John Doe

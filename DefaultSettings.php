@@ -615,7 +615,9 @@ return array(
 	'smwgQConceptCacheLifetime' => 24 * 60,
 	##
 
-	### Predefined result formats for queries
+	##
+	# Predefined result formats for queries
+	#
 	# Array of available formats for formatting queries. Can be redefined in
 	# the settings to disallow certain formats or to register extension formats.
 	# To disable a format, do "unset($smwgResultFormats['template'])," Disabled
@@ -636,19 +638,25 @@ return array(
 		'debug'      => 'SMW\ListResultPrinter',
 		'feed'       => 'SMW\FeedResultPrinter',
 		'csv'        => 'SMW\Query\ResultPrinters\CsvFileExportPrinter',
+		'templatefile' => 'SMW\Query\ResultPrinters\TemplateFileExportPrinter',
 		'dsv'        => 'SMW\DsvResultPrinter',
 		'json'       => 'SMW\JsonResultPrinter',
 		'rdf'        => 'SMW\RdfResultPrinter'
 	),
 	##
 
-	### Predefined aliases for result formats
+	##
+	# Predefined aliases for result formats
+	#
 	# Array of available aliases for result formats. Can be redefined in
 	# the settings to disallow certain aliases or to register extension aliases.
 	# To disable an alias, do "unset($smwgResultAliases['alias'])," Disabled
 	# aliases will be treated like if the alias parameter had been omitted.
 	##
-	'smwgResultAliases' => array( 'feed' => array( 'rss' ) ),
+	'smwgResultAliases' => [
+		'feed' => [ 'rss' ],
+		'templatefile' => [ 'template file' ]
+	],
 	##
 
 	##

@@ -223,6 +223,17 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public function expandTemplates( $text ) {
+		return $this->recursiveTextProcessor->expandTemplates( $text );
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param array $modules
 	 * @param array $styleModules
 	 */
