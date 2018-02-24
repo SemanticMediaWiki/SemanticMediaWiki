@@ -29,6 +29,11 @@ class RulePage extends Page {
 	private $ruleFactory;
 
 	/**
+	 * @var RuleDefinition
+	 */
+	private $ruleDefinition;
+
+	/**
 	 * @see 3.0
 	 *
 	 * @param Title $title
@@ -132,7 +137,7 @@ class RulePage extends Page {
 	 */
 	protected function afterHtml() {
 
-		if ( $this->ruleDefinition->get( RuleDefinition::RULE_TAG, '' ) === '' ) {
+		if ( $this->ruleDefinition === null || $this->ruleDefinition->get( RuleDefinition::RULE_TAG, '' ) === '' ) {
 			return '';
 		}
 
