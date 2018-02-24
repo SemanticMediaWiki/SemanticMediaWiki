@@ -461,6 +461,65 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->updateDependencies( $queryResult );
 	}
 
+	public function testUpdateDependencies_ExcludedRequestAction() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dependencyLinksTableUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResultDependencyListResolver->expects( $this->never() )
+			->method( 'getDependencyListByLateRetrievalFrom' )
+			->will( $this->returnValue( array() ) );
+
+		$queryResultDependencyListResolver->expects( $this->never() )
+			->method( 'getDependencyListFrom' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$queryResultDependencyListResolver,
+			$dependencyLinksTableUpdater
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->setEnabled( true );
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->once() )
+			->method( 'getOption' )
+			->with(	$this->equalTo( 'request.action' ) )
+			->will( $this->returnValue( 'parse' ) );
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$this->assertNull(
+			$instance->updateDependencies( $queryResult )
+		);
+	}
+
 	public function testTryDoUpdateDependenciesByForWhenDependencyListReturnsEmpty() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
