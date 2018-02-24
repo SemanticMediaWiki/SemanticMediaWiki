@@ -22,7 +22,7 @@ class ElementFactory {
 	/**
 	 * @var array
 	 */
-	private $dataItemEncoderMap = array();
+	private $dataItemMapper = array();
 
 	/**
 	 * @var array
@@ -32,11 +32,11 @@ class ElementFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer $dataItemType
+	 * @param integer $type
 	 * @param Closure $dataItemEncoder
 	 */
-	public function registerDataItemEncoder( $dataItemType, \Closure $dataItemEncoder ) {
-		$this->dataItemEncoderMap[$dataItemType] = $dataItemEncoder;
+	public function registerDataItemMapper( $type, \Closure $dataItemEncoder ) {
+		$this->dataItemMapper[$type] = $dataItemEncoder;
 	}
 
 	/**
@@ -49,10 +49,10 @@ class ElementFactory {
 	 * @return Element|null
 	 * @throws RuntimeException
 	 */
-	public function newByDataItem( DataItem $dataItem ) {
+	public function newFromDataItem( DataItem $dataItem ) {
 
-		if ( $this->dataItemEncoderMap === array() ) {
-			$this->initDataItemEncoderMap();
+		if ( $this->dataItemMapper === array() ) {
+			$this->initDataItemMap();
 		}
 
 		if ( $this->dataItemToElementMapper === array() ) {
@@ -76,9 +76,9 @@ class ElementFactory {
 			}
 		}
 
-		foreach ( $this->dataItemEncoderMap as $dataItemType => $dataItemEncoder ) {
-			if ( $dataItemType === $dataItem->getDIType() ) {
-				return $dataItemEncoder( $dataItem );
+		foreach ( $this->dataItemMapper as $type => $callback ) {
+			if ( $type === $dataItem->getDIType() ) {
+				return $callback( $dataItem );
 			}
 		}
 
@@ -86,29 +86,17 @@ class ElementFactory {
 	}
 
 	private function initDataItemToElementMapper() {
-		$this->dataItemToElementMapper[] = new ConceptToExpDataMapper();
+		$this->dataItemToElementMapper[] = new ConceptMapper();
 	}
 
-	private function initDataItemEncoderMap() {
+	private function initDataItemMap() {
 
 		$lang = '';
 		$xsdValueMapper = new XsdValueMapper();
 
-		$this->registerDataItemEncoder( DataItem::TYPE_NUMBER, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
+		$this->registerDataItemMapper( DataItem::TYPE_NUMBER, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
 
-			$xsdValueMapper->process( $dataItem );
-
-			return new ExpLiteral(
-				$xsdValueMapper->getXsdValue(),
-				$xsdValueMapper->getXsdType(),
-				$lang,
-				$dataItem
-			);
-		} );
-
-		$this->registerDataItemEncoder( DataItem::TYPE_BLOB, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
-
-			$xsdValueMapper->process( $dataItem );
+			$xsdValueMapper->map( $dataItem );
 
 			return new ExpLiteral(
 				$xsdValueMapper->getXsdValue(),
@@ -118,9 +106,9 @@ class ElementFactory {
 			);
 		} );
 
-		$this->registerDataItemEncoder( DataItem::TYPE_BOOLEAN, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
+		$this->registerDataItemMapper( DataItem::TYPE_BLOB, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
 
-			$xsdValueMapper->process( $dataItem );
+			$xsdValueMapper->map( $dataItem );
 
 			return new ExpLiteral(
 				$xsdValueMapper->getXsdValue(),
@@ -130,17 +118,29 @@ class ElementFactory {
 			);
 		} );
 
-		$this->registerDataItemEncoder( DataItem::TYPE_URI, function( $dataItem ) {
+		$this->registerDataItemMapper( DataItem::TYPE_BOOLEAN, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
+
+			$xsdValueMapper->map( $dataItem );
+
+			return new ExpLiteral(
+				$xsdValueMapper->getXsdValue(),
+				$xsdValueMapper->getXsdType(),
+				$lang,
+				$dataItem
+			);
+		} );
+
+		$this->registerDataItemMapper( DataItem::TYPE_URI, function( $dataItem ) {
 			return new ExpResource(
 				$dataItem->getURI(),
 				$dataItem
 			);
 		} );
 
-		$this->registerDataItemEncoder( DataItem::TYPE_TIME, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
+		$this->registerDataItemMapper( DataItem::TYPE_TIME, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
 
 			$gregorianTime = $dataItem->getForCalendarModel( DITime::CM_GREGORIAN );
-			$xsdValueMapper->process( $gregorianTime );
+			$xsdValueMapper->map( $gregorianTime );
 
 			return new ExpLiteral(
 				$xsdValueMapper->getXsdValue(),
@@ -150,26 +150,26 @@ class ElementFactory {
 			);
 		} );
 
-		$this->registerDataItemEncoder( DataItem::TYPE_CONTAINER, function( $dataItem ) {
+		$this->registerDataItemMapper( DataItem::TYPE_CONTAINER, function( $dataItem ) {
 			return Exporter::getInstance()->makeExportData(
 				$dataItem->getSemanticData()
 			);
 		} );
 
-		$this->registerDataItemEncoder( DataItem::TYPE_WIKIPAGE, function( $dataItem ) {
+		$this->registerDataItemMapper( DataItem::TYPE_WIKIPAGE, function( $dataItem ) {
 			return Exporter::getInstance()->getResourceElementForWikiPage(
 				$dataItem
 			);
 		} );
 
-		$this->registerDataItemEncoder( DataItem::TYPE_PROPERTY, function( $dataItem ) {
+		$this->registerDataItemMapper( DataItem::TYPE_PROPERTY, function( $dataItem ) {
 			return Exporter::getInstance()->getResourceElementForProperty(
 				$dataItem
 			);
 		} );
 
 		// Not implemented
-		$this->registerDataItemEncoder( DataItem::TYPE_GEO, function( $dataItem ) {
+		$this->registerDataItemMapper( DataItem::TYPE_GEO, function( $dataItem ) {
 			return null;
 		} );
 	}

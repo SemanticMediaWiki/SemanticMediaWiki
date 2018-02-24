@@ -3,12 +3,12 @@
 namespace SMW\Tests\Exporter;
 
 use SMW\DIWikiPage;
-use SMW\Exporter\ConceptToExpDataMapper;
+use SMW\Exporter\ConceptMapper;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Query\DescriptionFactory;
 
 /**
- * @covers \SMW\Exporter\ConceptToExpDataMapper
+ * @covers \SMW\Exporter\ConceptMapper
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class ConceptToExpDataMapperTest extends \PHPUnit_Framework_TestCase {
+class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 
 	private $descriptionFactory;
 
@@ -27,8 +27,8 @@ class ConceptToExpDataMapperTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\ConceptToExpDataMapper',
-			new ConceptToExpDataMapper()
+			ConceptMapper::class,
+			new ConceptMapper()
 		);
 	}
 
@@ -38,7 +38,7 @@ class ConceptToExpDataMapperTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ConceptToExpDataMapper();
+		$instance = new ConceptMapper();
 
 		$this->assertTrue(
 			$instance->isMapperFor( $dataItem )
@@ -47,7 +47,7 @@ class ConceptToExpDataMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetExpDataForSingleClassDescription() {
 
-		$instance = new ConceptToExpDataMapper();
+		$instance = new ConceptMapper();
 
 		$exact = false;
 
@@ -81,7 +81,7 @@ class ConceptToExpDataMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetExpDataForMultipleClassDescriptions() {
 
-		$instance = new ConceptToExpDataMapper();
+		$instance = new ConceptMapper();
 
 		$exact = false;
 
@@ -123,7 +123,7 @@ class ConceptToExpDataMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetExpDataForThingDescription() {
 
-		$instance = new ConceptToExpDataMapper();
+		$instance = new ConceptMapper();
 
 		$exact = false;
 

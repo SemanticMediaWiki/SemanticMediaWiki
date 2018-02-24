@@ -3,10 +3,10 @@
 namespace SMW\Tests\Exporter;
 
 use SMW\DIWikiPage;
-use SMW\Exporter\DataItemByExpElementMatchFinder;
+use SMW\Exporter\DataItemMatchFinder;
 
 /**
- * @covers \SMW\Exporter\DataItemByExpElementMatchFinder
+ * @covers \SMW\Exporter\DataItemMatchFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Exporter\DataItemByExpElementMatchFinder;
  *
  * @author mwjames
  */
-class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
+class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -23,12 +23,12 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\DataItemByExpElementMatchFinder',
-			new DataItemByExpElementMatchFinder( $store )
+			DataItemMatchFinder::class,
+			new DataItemMatchFinder( $store )
 		);
 	}
 
-	public function testFindDataItemFromExpElementOnMatchableWikiNamespaceUri() {
+	public function testMatchExpElementOnMatchableWikiNamespaceUri() {
 
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
 
@@ -36,7 +36,7 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DataItemByExpElementMatchFinder(
+		$instance = new DataItemMatchFinder(
 			$store,
 			'http://example.org/id/'
 		);
@@ -51,11 +51,11 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$dataItem,
-			$instance->tryToFindDataItemForExpElement( $expResource )
+			$instance->matchExpElement( $expResource )
 		);
 	}
 
-	public function testFindDataItemFromExpElementOnMatchableWikiNamespaceUriWithHelpWikiNs() {
+	public function testMatchExpElementOnMatchableWikiNamespaceUriWithHelpWikiNs() {
 
 		$dataItem = new DIWikiPage( 'Foo', NS_HELP, '', 'Bar' );
 
@@ -63,7 +63,7 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DataItemByExpElementMatchFinder(
+		$instance = new DataItemMatchFinder(
 			$store,
 			'http://example.org/id/'
 		);
@@ -78,11 +78,11 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$dataItem,
-			$instance->tryToFindDataItemForExpElement( $expResource )
+			$instance->matchExpElement( $expResource )
 		);
 	}
 
-	public function testtryToFindDataItemForExpElementOnUnmatchableWikiNamespaceUri() {
+	public function testMatchExpElementOnUnmatchableWikiNamespaceUri() {
 
 		$dataItem = new DIWikiPage( 'UNKNOWN', NS_MAIN, '', '' );
 
@@ -106,7 +106,7 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $repositoryConnector ) );
 
-		$instance = new DataItemByExpElementMatchFinder(
+		$instance = new DataItemMatchFinder(
 			$store,
 			'http://example.org/id/'
 		);
@@ -121,7 +121,7 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$dataItem,
-			$instance->tryToFindDataItemForExpElement( $expResource )
+			$instance->matchExpElement( $expResource )
 		);
 	}
 
@@ -131,7 +131,7 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataItemByExpElementMatchFinder(
+		$instance = new DataItemMatchFinder(
 			$store,
 			'http://example.org/id/'
 		);
@@ -145,7 +145,7 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( '_node1abjt1k9bx17' ) );
 
 		$this->assertNull(
-			$instance->tryToFindDataItemForExpElement( $expResource )
+			$instance->matchExpElement( $expResource )
 		);
 	}
 

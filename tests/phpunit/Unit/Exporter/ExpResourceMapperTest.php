@@ -4,13 +4,13 @@ namespace SMW\Tests\Exporter;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Exporter\DataItemToExpResourceEncoder;
+use SMW\Exporter\ExpResourceMapper;
 use SMW\Exporter\Element;
 use SMW\Exporter\Escaper;
 use SMW\InMemoryPoolCache;
 
 /**
- * @covers \SMW\Exporter\DataItemToExpResourceEncoder
+ * @covers \SMW\Exporter\ExpResourceMapper
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,7 +18,7 @@ use SMW\InMemoryPoolCache;
  *
  * @author mwjames
  */
-class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
+class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 
 	private $inMemoryPoolCache;
 
@@ -30,11 +30,11 @@ class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
 		$this->inMemoryPoolCache->clear();
 	}
 
-	public function testResetCache() {
+	public function testInvalidateCache() {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.dataitem.resource.encoder' );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.expresource.mapper' );
 
 		$poolCache->save(
 			$subject->getHash(),
@@ -42,7 +42,7 @@ class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$poolCache->save(
-			$subject->getHash() . DataItemToExpResourceEncoder::AUX_MARKER,
+			$subject->getHash() . ExpResourceMapper::AUX_MARKER,
 			true
 		);
 
@@ -50,11 +50,11 @@ class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DataItemToExpResourceEncoder(
+		$instance = new ExpResourceMapper(
 			$store
 		);
 
-		$instance->resetCacheBy(
+		$instance->invalidateCache(
 			$subject
 		);
 
@@ -69,7 +69,7 @@ class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DataItemToExpResourceEncoder(
+		$instance = new ExpResourceMapper(
 			$store
 		);
 
@@ -88,7 +88,7 @@ class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DataItemToExpResourceEncoder(
+		$instance = new ExpResourceMapper(
 			$store
 		);
 
@@ -114,7 +114,7 @@ class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
 			->will(
 				$this->returnValue( array( new \SMWDIBlob( 'foo:bar:fom:fuz' ) ) ) );
 
-		$instance = new DataItemToExpResourceEncoder(
+		$instance = new ExpResourceMapper(
 			$store
 		);
 

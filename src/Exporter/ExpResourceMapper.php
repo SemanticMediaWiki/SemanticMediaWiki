@@ -21,7 +21,7 @@ use Title;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class DataItemToExpResourceEncoder {
+class ExpResourceMapper {
 
 	/**
 	 * Identifies auxiliary data (helper values)
@@ -70,7 +70,7 @@ class DataItemToExpResourceEncoder {
 	 * @since 2.3
 	 */
 	public function reset() {
-		$this->inMemoryPoolCache->resetPoolCacheById( 'exporter.dataitem.resource.encoder' );
+		$this->inMemoryPoolCache->resetPoolCacheById( 'exporter.expresource.mapper' );
 	}
 
 	/**
@@ -87,11 +87,13 @@ class DataItemToExpResourceEncoder {
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public function resetCacheBy( DIWikiPage $subject ) {
+	public function invalidateCache( DIWikiPage $subject ) {
 
 		$hash = $subject->getHash();
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.dataitem.resource.encoder' );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheById(
+			'exporter.expresource.mapper'
+		);
 
 		foreach ( array( $hash, $hash . self::AUX_MARKER . $this->seekImportVocabulary ) as $key ) {
 			$poolCache->delete( $key );
@@ -160,7 +162,7 @@ class DataItemToExpResourceEncoder {
 
 		$hash = $diWikiPage->getHash() . $modifier . $this->seekImportVocabulary;
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.dataitem.resource.encoder' );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.expresource.mapper' );
 
 		if ( $poolCache->contains( $hash ) ) {
 			return $poolCache->fetch( $hash );
@@ -185,7 +187,7 @@ class DataItemToExpResourceEncoder {
 
 	private function newExpNsResource( $diWikiPage, $modifier ) {
 
-		 $importDataItem = $this->seekImportDataItem( $diWikiPage, $modifier );
+		 $importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {
 			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForImportDataItem( $importDataItem );
@@ -260,7 +262,7 @@ class DataItemToExpResourceEncoder {
 		);
 	}
 
-	private function seekImportDataItem( DIWikiPage $diWikiPage, $modifier ) {
+	private function findImportDataItem( DIWikiPage $diWikiPage, $modifier ) {
 
 		$importDataItems = null;
 
