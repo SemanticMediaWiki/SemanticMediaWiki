@@ -445,8 +445,18 @@ class QueryDependencyLinksStore {
 
 		$query = $queryResult->getQuery();
 
-		// #2484 Avoid any update activities during a stashedit API access
-		if ( $query->getOption( 'request.action' ) === 'stashedit' ) {
+		$actions = [
+			// #2484 Avoid any update activities during a stashedit API access
+			'stashedit',
+
+			// Avoid update on `submit` during a preview
+			'submbit',
+
+			// Avoid update on `parse` during a wikieditor preview
+			'parse'
+		];
+
+		if ( in_array( $query->getOption( 'request.action' ), $actions ) ) {
 			return false;
 		}
 
