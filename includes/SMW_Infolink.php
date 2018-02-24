@@ -572,7 +572,9 @@ class SMWInfolink {
 		}
 
 		// https://en.wikipedia.org/wiki/Base64#URL_applications
-		$value = rtrim( strtr( base64_encode( $value ), '+/', '-_' ), '=' );
+		// The MW parser swallows `__` and transforms it into a simple `_`
+		// hence we need to encode it once more
+		$value = rtrim( str_replace( '__', '.', strtr( base64_encode( $value ), '+/', '-_' ) ), '=' );
 
 		if ( $compound ) {
 			return [ 'cl' => $value ];
@@ -597,7 +599,7 @@ class SMWInfolink {
 		$value = mb_substr( $value, 3 );
 
 		$value = base64_decode(
-			str_pad( strtr( $value, '-_', '+/' ), strlen( $value ) % 4, '=', STR_PAD_RIGHT )
+			str_pad( strtr( str_replace( '.', '__', $value ), '-_', '+/' ), strlen( $value ) % 4, '=', STR_PAD_RIGHT )
 		);
 
 		// Compressed?
