@@ -251,15 +251,22 @@ class PropertyStatisticsStore {
 			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
 		}
 
-		return $this->connection->insert(
-			SQLStore::PROPERTY_STATISTICS_TABLE,
-			array(
-				'usage_count' => $usageCount,
-				'null_count' => $nullCount,
-				'p_id' => $propertyId,
-			),
-			__METHOD__
-		);
+		try {
+			$this->connection->insert(
+				SQLStore::PROPERTY_STATISTICS_TABLE,
+				[
+					'usage_count' => $usageCount,
+					'null_count' => $nullCount,
+					'p_id' => $propertyId,
+				],
+				__METHOD__
+			);
+		} catch ( \DBQueryError $e ) {
+			// Most likely hit "Error: 1062 Duplicate entry ..."
+			$this->setUsageCount( $propertyId, $value );
+		}
+
+		return true;
 	}
 
 	/**

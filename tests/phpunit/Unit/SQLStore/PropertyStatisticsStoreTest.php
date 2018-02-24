@@ -339,4 +339,37 @@ class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 		$instance->setUsageCount( 42, [ 1, 9999 ] );
 	}
 
+	public function testUpsertOnInsertUsageCount() {
+
+		$error = $this->getMockBuilder( '\DBQueryError' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'insert' )
+			->will( $this->throwException( $error ) );
+
+		$connection->expects( $this->once() )
+			->method( 'update' )
+			->with(
+				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
+				$this->equalTo(
+					[
+						'usage_count' => 12,
+						'null_count' => 0
+					] ),
+				$this->equalTo( [ 'p_id' => 42 ] ),
+				$this->anything() );
+
+		$instance = new PropertyStatisticsStore(
+			$connection
+		);
+
+		$instance->insertUsageCount( 42, 12 );
+	}
+
 }
