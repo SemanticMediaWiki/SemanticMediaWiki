@@ -2,6 +2,7 @@
 ## Examples and code snippets
 
 * [register.datatype.md](register.datatype.md) Shows how to register a new dataType/dataValue
+* [approve.update.md](register.datatype.md) Shows how to alter the data representation in Semantic MediaWiki with the help of selected hooks in connection with the `ApprovedRevs` extension
 
 ### Using hooks
 

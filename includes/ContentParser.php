@@ -239,6 +239,8 @@ class ContentParser {
 			$this->revision = Revision::newFromTitle( $this->getTitle() );
 		}
 
+		\Hooks::run( 'SMW::Parser::ChangeRevision', [ $this->getTitle(), &$this->revision ] );
+
 		return $this->revision;
 	}
 
