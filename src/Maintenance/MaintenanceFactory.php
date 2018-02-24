@@ -37,15 +37,20 @@ class MaintenanceFactory {
 	 */
 	public function newDataRebuilder( Store $store, $reporterCallback = null ) {
 
-		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$messageReporter->registerReporterCallback( $reporterCallback );
+		$messageReporter = $this->newMessageReporter( $reporterCallback );
+
+		$store->setMessageReporter(
+			$messageReporter
+		);
 
 		$dataRebuilder = new DataRebuilder(
 			$store,
 			ApplicationFactory::getInstance()->newTitleCreator()
 		);
 
-		$dataRebuilder->setMessageReporter( $messageReporter );
+		$dataRebuilder->setMessageReporter(
+			$messageReporter
+		);
 
 		return $dataRebuilder;
 	}
@@ -60,15 +65,14 @@ class MaintenanceFactory {
 	 */
 	public function newConceptCacheRebuilder( Store $store, $reporterCallback = null ) {
 
-		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$messageReporter->registerReporterCallback( $reporterCallback );
-
 		$conceptCacheRebuilder = new ConceptCacheRebuilder(
 			$store,
 			ApplicationFactory::getInstance()->getSettings()
 		);
 
-		$conceptCacheRebuilder->setMessageReporter( $messageReporter );
+		$conceptCacheRebuilder->setMessageReporter(
+			$this->newMessageReporter( $reporterCallback )
+		);
 
 		return $conceptCacheRebuilder;
 	}
@@ -83,9 +87,6 @@ class MaintenanceFactory {
 	 */
 	public function newPropertyStatisticsRebuilder( Store $store, $reporterCallback = null ) {
 
-		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$messageReporter->registerReporterCallback( $reporterCallback );
-
 		$propertyStatisticsStore = new PropertyStatisticsStore(
 			$store->getConnection( 'mw.db' )
 		);
@@ -95,7 +96,9 @@ class MaintenanceFactory {
 			$propertyStatisticsStore
 		);
 
-		$propertyStatisticsRebuilder->setMessageReporter( $messageReporter );
+		$propertyStatisticsRebuilder->setMessageReporter(
+			$this->newMessageReporter( $reporterCallback )
+		);
 
 		return $propertyStatisticsRebuilder;
 	}
@@ -116,15 +119,12 @@ class MaintenanceFactory {
 	 */
 	public function newDuplicateEntitiesDisposer( Store $store, $reporterCallback = null  ) {
 
-		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$messageReporter->registerReporterCallback( $reporterCallback );
-
 		$duplicateEntitiesDisposer = new DuplicateEntitiesDisposer(
 			$store
 		);
 
 		$duplicateEntitiesDisposer->setMessageReporter(
-			$messageReporter
+			$this->newMessageReporter( $reporterCallback )
 		);
 
 		return $duplicateEntitiesDisposer;
@@ -143,6 +143,19 @@ class MaintenanceFactory {
 		$maintenanceLogger->setMaxNameChars( $GLOBALS['wgMaxNameChars'] );
 
 		return $maintenanceLogger;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return MessageReporter
+	 */
+	public function newMessageReporter( $reporterCallback = null ) {
+
+		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+		$messageReporter->registerReporterCallback( $reporterCallback );
+
+		return $messageReporter;
 	}
 
 }
