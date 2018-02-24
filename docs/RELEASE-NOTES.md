@@ -1,6 +1,6 @@
 # Semantic MediaWiki 3.0
 
-This is not a release yet and is planned to be available in Q1 2018.
+This is not a release yet and is planned to be available in Q2 2018.
 
 
 ## Highlights
@@ -106,6 +106,10 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3008](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3008)
 * [#3009](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3009)
 * [#3011](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3011)
+* [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017)
+* [#3019](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3019)
+* [#3020](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3020)
+* [#3024](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3024)
 
 ## Bug fixes
 
@@ -128,6 +132,11 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2986](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2986)
 * [#3000](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3000)
 * [#3010](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3010)
+* [#3025](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3025)
+* [#3026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3026)
+* [#3029](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3029)
+* [#3031](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3031)
+* [#3033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3033)
 
 ## Breaking changes and deprecations
 
@@ -189,6 +198,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2928](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2928)
 * [#2969](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2969)
 * [#2972](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2972)
+* [#3032](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3032)
 
 
 ## Contributors
