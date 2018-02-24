@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\PropertyRegistry;
 use SMW\Store;
+use SMW\Utils\Lru;
 use Title;
 
 /**
@@ -74,6 +75,11 @@ class EntityRebuildDispatcher {
 	private $dispatchedEntities = array();
 
 	/**
+	 * @var Lru
+	 */
+	private $lru;
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param SQLStore $store
@@ -83,6 +89,7 @@ class EntityRebuildDispatcher {
 		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer( $store );
 		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
+		$this->lru = new Lru( 10000 );
 	}
 
 	/**
@@ -170,7 +177,7 @@ class EntityRebuildDispatcher {
 
 	/**
 	 * Dispatching of a single or a chunk of ids in either online or batch mode
-	 * using the JobQueueScheduler
+	 * using the JoblruScheduler
 	 *
 	 * @since 2.3
 	 *
@@ -228,10 +235,18 @@ class EntityRebuildDispatcher {
 		$titles = Title::newFromIDs( $tids );
 
 		foreach ( $titles as $title ) {
+
+			$hash = $title->getPrefixedDBKey() . '#' . $title->getNamespace();
+
+			if ( $this->lru->get( $hash ) !== null ) {
+				continue;
+			}
+
 			if ( ( $this->namespaces == false ) || ( in_array( $title->getNamespace(), $this->namespaces ) ) ) {
 				$updateJobs[] = $this->newUpdateJob( $title );
 			}
 
+			$this->lru->set( $hash, true );
 			$this->dispatchedEntities[] = array( 't' => $title->getPrefixedDBKey() );
 		}
 	}
@@ -293,6 +308,15 @@ class EntityRebuildDispatcher {
 			} elseif ( $this->isPlainObjectValue( $row ) ) {
 				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
 			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
+
+				$hash = $titleKey . '#' . $row->smw_namespace;
+
+				if ( $this->lru->get( $hash ) !== null ) {
+					continue;
+				} else {
+					$this->lru->set( $hash, true );
+				}
+
 				// objects representing pages
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
 
@@ -302,6 +326,15 @@ class EntityRebuildDispatcher {
 				}
 
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $titleKey != '' ) {
+
+				$hash = $titleKey . '#' . $row->smw_namespace;
+
+				if ( $this->lru->get( $hash ) !== null ) {
+					continue;
+				} else {
+					$this->lru->set( $hash, true );
+				}
+
 				// TODO: special treatment of redirects needed, since the store will
 				// not act on redirects that did not change according to its records
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
@@ -315,6 +348,15 @@ class EntityRebuildDispatcher {
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
 				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
+
+				$hash = $titleKey . '#' . $row->smw_namespace;
+
+				if ( $this->lru->get( $hash ) !== null ) {
+					continue;
+				} else {
+					$this->lru->set( $hash, true );
+				}
+
 				$diWikiPage = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SemanticData( $diWikiPage );
 				$this->store->updateData( $emptySemanticData );
