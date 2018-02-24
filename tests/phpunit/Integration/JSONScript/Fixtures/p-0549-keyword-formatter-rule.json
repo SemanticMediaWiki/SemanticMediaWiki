@@ -1,0 +1,15 @@
+{
+    "description": "Specifies a formatting rule for a keyword type",
+    "type": "LINK_FORMAT_RULE",
+    "rule": {
+        "link_to": "Special:Ask",
+        "parameters": {
+            "format": "list"
+        }
+    },
+    "tags": [
+        "formatter",
+        "link formatter",
+        "keyword"
+    ]
+}

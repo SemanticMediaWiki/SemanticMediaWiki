@@ -8,6 +8,7 @@ use SMW\Message;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWQuery as Query;
+use RuntimeException;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
@@ -68,14 +69,22 @@ class PropertySpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $source
+	 * @param DIProperty|DIWikiPage $source
 	 * @param DIProperty $target
 	 *
 	 * @return []|DataItem[]
 	 */
-	public function getSpecification( DIProperty $source, DIProperty $target ) {
+	public function getSpecification( $source, DIProperty $target ) {
 
-		$hash = $source->getCanonicalDiWikiPage()->getHash();
+		if ( $source instanceof DIProperty ) {
+			$dataItem = $source->getCanonicalDiWikiPage();
+		} elseif( $source instanceof DIWikiPage ) {
+			$dataItem = $source;
+		} else {
+			throw new RuntimeException( "Invalid request instance type" );
+		}
+
+		$hash = $dataItem->getHash();
 		$key = $target->getKey();
 
 		$definition = $this->intermediaryMemoryCache->fetch( $hash );
@@ -89,7 +98,7 @@ class PropertySpecificationLookup {
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$source->getCanonicalDiWikiPage(),
+			$dataItem,
 			$target
 		);
 

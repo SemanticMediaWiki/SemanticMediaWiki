@@ -798,7 +798,8 @@ return array(
 	##
 	'smwgDataTypePropertyExemptionList' => array(
 		'Record',
-		'Reference'
+		'Reference',
+		'Keyword'
 	),
 	##
 

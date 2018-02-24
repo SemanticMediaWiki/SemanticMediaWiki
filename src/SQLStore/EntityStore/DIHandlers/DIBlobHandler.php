@@ -58,7 +58,13 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return array( 'o_hash' => $this->makeHash( $dataItem->getString() ) );
+
+		$isKeyword = $dataItem->getOption( 'is.keyword' );
+		$text = $dataItem->getString();
+
+		return [
+			'o_hash' => $isKeyword ? $dataItem->normalize( $text ) : $this->makeHash( $text )
+		];
 	}
 
 	/**
@@ -68,14 +74,16 @@ class DIBlobHandler extends DataItemHandler {
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
 
+		$isKeyword = $dataItem->getOption( 'is.keyword' );
+
 		$text = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );
-		$hash = $this->makeHash( $text );
+		$hash = $isKeyword ? $dataItem->normalize( $text ) : $this->makeHash( $text );
 
 		if ( $this->isDbType( 'postgres' ) ) {
 			$text = pg_escape_bytea( $text );
 		}
 
-		if ( mb_strlen( $text ) <= $this->getMaxLength() ) {
+		if ( mb_strlen( $text ) <= $this->getMaxLength() && !$isKeyword ) {
 			$text = null;
 		}
 
