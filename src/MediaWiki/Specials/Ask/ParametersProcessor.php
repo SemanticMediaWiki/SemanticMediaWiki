@@ -83,6 +83,8 @@ class ParametersProcessor {
 			false
 		);
 
+		unset( $parameters['cl'] );
+
 		// Try to complete undefined parameter values from dedicated URL params.
 		if ( !array_key_exists( 'format', $parameters ) ) {
 			$parameters['format'] = 'broadtable';

@@ -166,22 +166,7 @@ class SpecialAsk extends SpecialPage {
 			$GLOBALS['smwgQMaxInlineLimit']
 		);
 
-		$this->isBorrowedMode = $request->getCheck( 'bTitle' );
-
-		if ( $this->isBorrowedMode ) {
-			$visibleLinks = [];
-		} elseif( $request->getVal( 'eq' ) === 'no' || $p !== null || $request->getVal( 'x' ) ) {
-			$visibleLinks = [ 'search', 'empty' ];
-		} else {
-			$visibleLinks = [ 'options', 'search', 'help', 'empty' ];
-		}
-
-		$out->addHTML(
-			NavigationLinksWidget::topLinks(
-				SpecialPage::getSafeTitleFor( 'Ask' ),
-				$visibleLinks
-			)
-		);
+		$this->isBorrowedMode = $request->getCheck( 'bTitle' ) || $request->getCheck( 'btitle' );
 
 		if ( !$smwgQEnabled ) {
 			$out->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->escaped() );
@@ -194,6 +179,22 @@ class SpecialAsk extends SpecialPage {
 				echo ParametersWidget::parameterList( $params );
 			} else {
 				$this->extractQueryParameters( $p );
+
+				if ( $this->isBorrowedMode ) {
+					$visibleLinks = [];
+				} elseif( $request->getVal( 'eq', '' ) === 'no' || $p !== null || $request->getVal( 'x' ) || $request->getVal( 'cl' ) ) {
+					$visibleLinks = [ 'search', 'empty' ];
+				} else {
+					$visibleLinks = [ 'options', 'search', 'help', 'empty' ];
+				}
+
+				$out->addHTML(
+					NavigationLinksWidget::topLinks(
+						SpecialPage::getSafeTitleFor( 'Ask' ),
+						$visibleLinks
+					)
+				);
+
 				$this->makeHTMLResult();
 			}
 		}
@@ -233,6 +234,10 @@ class SpecialAsk extends SpecialPage {
 			$request,
 			$p
 		);
+
+		if ( isset( $this->parameters['btitle'] ) ) {
+			$this->isBorrowedMode = true;
+		}
 
 		$this->isEditMode = ( $request->getVal( 'eq' ) == 'yes' ) || ( $this->queryString === '' );
 	}
@@ -314,6 +319,7 @@ class SpecialAsk extends SpecialPage {
 
 		$urlArgs->set( 'offset', $this->parameters['offset'] );
 		$urlArgs->set( 'limit', $this->parameters['limit'] );
+		$urlArgs->set( 'eq', $this->isEditMode ? 'yes' : 'no' );
 
 		$result = Html::rawElement(
 			'div',
@@ -483,7 +489,7 @@ class SpecialAsk extends SpecialPage {
 			'div',
 			[
 				'id' => 'search',
-				'class' => 'smw-ask-search'
+				'class' => 'smw-ask-search plainlinks'
 			],
 			LinksWidget::fieldset( $links )
 		);
@@ -535,13 +541,21 @@ class SpecialAsk extends SpecialPage {
 
 		$borrowedMessage = $this->getRequest()->getVal( 'bMsg' );
 
+		if ( isset( $this->parameters['bmsg'] ) ) {
+			$borrowedMessage = $this->parameters['bmsg'];
+		}
+
 		$searchInfoText = '';
 
 		if ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ) {
-			$html = wfMessage( $borrowedMessage )->parse();
+			$html = wfMessage( $borrowedMessage, $this->queryString )->parse();
 		}
 
 		$borrowedTitle = $this->getRequest()->getVal( 'bTitle' );
+
+		if ( isset( $this->parameters['btitle'] ) ) {
+			$borrowedTitle = $this->parameters['btitle'];
+		}
 
 		if ( $borrowedTitle !== null && wfMessage( $borrowedTitle )->exists() ) {
 			$this->getOutput()->setPageTitle( wfMessage( $borrowedTitle )->text() );
@@ -588,6 +602,11 @@ class SpecialAsk extends SpecialPage {
 		if ( $this->getRequest()->getCheck( 'bTitle' ) ) {
 			$urlArgs->set( 'bTitle', $this->getRequest()->getVal( 'bTitle' ) );
 			$urlArgs->set( 'bMsg', $this->getRequest()->getVal( 'bMsg' ) );
+		}
+
+		if ( isset( $this->parameters['btitle'] ) ) {
+			$urlArgs->set( 'bTitle', $this->parameters['btitle'] );
+			$urlArgs->set( 'bMsg', $this->parameters['bmsg'] );
 		}
 
 		return $urlArgs;
