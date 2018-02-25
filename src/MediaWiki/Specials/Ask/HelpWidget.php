@@ -94,7 +94,8 @@ class HelpWidget {
 			$text,
 			[
 				'id' => 'ask-help',
-				'class' => 'plainlinks'
+				'class' => 'plainlinks',
+				'style' => 'display:none;'
 			]
 		);
 
