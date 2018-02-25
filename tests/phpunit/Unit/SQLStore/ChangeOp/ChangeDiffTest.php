@@ -60,6 +60,21 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetPropertyList_SortById() {
+
+		$instance = new ChangeDiff(
+			DIWikiPage::newFromText( 'Foo' ),
+			[],
+			[],
+			[ 'Foo' => [ '_id' => 42, '_type' => '_foo' ] ]
+		);
+
+		$this->assertEquals(
+			[ 42 => [ '_key' => 'Foo', '_type' => '_foo' ] ],
+			$instance->getPropertyList( 'id' )
+		);
+	}
+
 	public function testSave() {
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
