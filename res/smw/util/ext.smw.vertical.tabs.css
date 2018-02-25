@@ -126,6 +126,7 @@ div.smw-vtab-nav.nav-left button.active {
 div.smw-vtab-nav button.active a {
     color: black;
     text-decoration: none;
+    font-weight: bold;
 }
 
 div.smw-vtab-nav.nav-right button.active, div.smw-vtab-nav.nav-right button.active a {
