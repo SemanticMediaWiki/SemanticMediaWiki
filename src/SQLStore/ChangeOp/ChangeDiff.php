@@ -116,14 +116,36 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $flip
+	 * @param boolean $op
 	 *
 	 * @return []
 	 */
-	public function getPropertyList( $flip = false ) {
+	public function getPropertyList( $op = false ) {
 
-		if ( $flip === true ) {
-			return array_flip( $this->propertyList );
+		if ( $op === true || $op === 'flip' ) {
+			$list = [];
+
+			foreach ( $this->propertyList as $key => $value ) {
+				if ( is_array( $value ) ) {
+					$list[$value['_id']] = $key;
+				} else {
+					$list[$value] = $key;
+				}
+			}
+
+			return $list;
+		}
+
+		if ( $op === 'id' ) {
+			$list = [];
+
+			foreach ( $this->propertyList as $key => $value ) {
+				if ( is_array( $value ) ) {
+					$list[$value['_id']] = [ '_key' => $key, '_type'=> $value['_type'] ];
+				}
+			}
+
+			return $list;
 		}
 
 		return $this->propertyList;

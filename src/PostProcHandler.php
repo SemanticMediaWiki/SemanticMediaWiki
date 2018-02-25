@@ -184,7 +184,7 @@ class PostProcHandler {
 	private function checkDiff( $changeDiff ) {
 
 		$propertyList = $changeDiff->getPropertyList(
-			true
+			'flip'
 		);
 
 		// Investigate whether the changeDiff contains a user invoked modification

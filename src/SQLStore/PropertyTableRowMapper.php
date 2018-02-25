@@ -169,13 +169,14 @@ class PropertyTableRowMapper {
 			}
 
 			$insertValues = array( 's_id' => $sid );
+			$p_type = $property->findPropertyValueType();
 
 			if ( !$propertyTable->isFixedPropertyTable() ) {
 				$insertValues['p_id'] = $this->store->getObjectIds()->makeSMWPropertyID(
 					$property
 				);
 
-				$propertyList[$property->getKey()] = $insertValues['p_id'];
+				$propertyList[$property->getKey()] = [ '_id' => $insertValues['p_id'], '_type' => $p_type ];
 			} else {
 				$pid = $this->store->getObjectIds()->makeSMWPropertyID(
 					$property
@@ -186,10 +187,10 @@ class PropertyTableRowMapper {
 					'p_id' => $pid,
 				];
 
-				$propertyList[$property->getKey()] = $pid;
+				$propertyList[$property->getKey()] = [ '_id' => $pid, '_type' => $p_type ];
 			}
 
-			$pid = $propertyList[$property->getKey()];
+			$pid = $propertyList[$property->getKey()]['_id'];
 
 			if ( !isset( $textItems[$pid] ) ) {
 				$textItems[$pid] = [];
