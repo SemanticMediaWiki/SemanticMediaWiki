@@ -23,6 +23,7 @@
         "_qty": "Maß",
         "_mlt_rec": "Einsprachiger Text",
         "_eid": "Externe Kennung",
+        "_keyw": "Stichwort",
         "_ref_rec": "Referenzierung"
     },
     "dataTypeAliases": {
@@ -31,7 +32,8 @@
         "Dezimalzahl": "_num",
         "Aufzählung": "_txt",
         "Zeichenkette": "_txt",
-        "Menge": "_qty"
+        "Menge": "_qty",
+        "Schlagwort": "_keyw"
     },
     "propertyLabels": {
         "_TYPE": "Datentyp",
@@ -79,7 +81,8 @@
         "_RL_DESC": "Regelbeschreibung",
         "_RL_TAG": "Regelkennzeichen",
         "_RL_TYPE": "Regeltyp",
-        "_RL_DEF": "Regeldefinition"
+        "_RL_DEF": "Regeldefinition",
+        "_FORMAT_RL": "Formatierungsregel"
     },
     "propertyAliases": {
         "Hat Datentyp": "_TYPE",
@@ -107,7 +110,8 @@
         "Hat Regelbeschreigung": "_RL_DESC",
         "Hat Regelkennzeichen": "_RL_TAG",
         "Hat Regeltyp": "_RL_TYPE",
-        "Hat Regeldefinition": "_RL_DEF"
+        "Hat Regeldefinition": "_RL_DEF",
+        "Hat Formatierungsregel": "_FORMAT_RL"
     },
     "dateFormatsByPrecision": {
         "SMW_PREC_Y": "Y",
