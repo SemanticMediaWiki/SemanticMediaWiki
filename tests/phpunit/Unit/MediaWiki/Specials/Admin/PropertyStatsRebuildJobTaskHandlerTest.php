@@ -17,27 +17,14 @@ use SMW\MediaWiki\Specials\Admin\PropertyStatsRebuildJobTaskHandler;
 class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
-	private $connection;
 	private $htmlFormRenderer;
 	private $outputFormatter;
+	private $jobQueue;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
-			->getMockForAbstractClass();
-
-		$this->store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
 
 		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
@@ -47,7 +34,11 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'Store', $this->store );
+		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
 	protected function tearDown() {
@@ -59,7 +50,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\Admin\PropertyStatsRebuildJobTaskHandler',
-			new PropertyStatsRebuildJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
+			new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
 
@@ -84,7 +75,6 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 			->method( 'getForm' );
 
 		$instance = new PropertyStatsRebuildJobTaskHandler(
-			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
@@ -92,7 +82,12 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 		$instance->getHtml();
 	}
 
-	public function testHandleRequest() {
+	public function testHandleRequestOnNonPendingJob() {
+
+		$this->jobQueue->expects( $this->once() )
+			->method( 'hasPendingJob' )
+			->with( $this->equalTo( 'SMW\PropertyStatisticsRebuildJob' ) )
+			->will( $this->returnValue( false ) );
 
 		$propertyStatisticsRebuildJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob' )
 			->disableOriginalConstructor()
@@ -116,7 +111,35 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 			->getMock();
 
 		$instance = new PropertyStatsRebuildJobTaskHandler(
-			$this->store,
+			$this->htmlFormRenderer,
+			$this->outputFormatter
+		);
+
+		$instance->setEnabledFeatures( SMW_ADM_PSTATS );
+		$instance->handleRequest( $webRequest );
+	}
+
+	public function testHandleRequestOnPendingJob() {
+
+		$this->jobQueue->expects( $this->once() )
+			->method( 'hasPendingJob' )
+			->with( $this->equalTo( 'SMW\PropertyStatisticsRebuildJob' ) )
+			->will( $this->returnValue( true ) );
+
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory->expects( $this->never() )
+			->method( 'newByType' );
+
+		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyStatsRebuildJobTaskHandler(
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);

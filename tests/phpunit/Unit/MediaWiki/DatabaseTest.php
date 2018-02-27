@@ -3,13 +3,14 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\Database;
+use SMW\Connection\ConnectionProviderRef;
 
 /**
  * @covers \SMW\MediaWiki\Database
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since 1.9.0.2
+ * @since 1.9.0
  *
  * @author mwjames
  */
@@ -17,13 +18,13 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProviderRef = $this->getMockBuilder( '\SMW\Connection\ConnectionProviderRef' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Database',
-			new Database( $connectionProvider )
+			Database::class,
+			new Database( $connectionProviderRef )
 		);
 	}
 
@@ -39,7 +40,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Fuyu' ) )
 			->will( $this->returnValue( 1 ) );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -47,7 +48,13 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$instance = new Database( $connectionProvider );
+		$instance = new Database(
+			new ConnectionProviderRef(
+				[
+					'read' => $connectionProvider
+				]
+			)
+		);
 
 		$this->assertEquals(
 			1,
@@ -67,7 +74,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Fan' ) )
 			->will( $this->returnValue( 'Fan' ) );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +82,13 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$instance = new Database( $connectionProvider );
+		$instance = new Database(
+			new ConnectionProviderRef(
+				[
+					'read' => $connectionProvider
+				]
+			)
+		);
 
 		$this->assertEquals(
 			'Fan',
@@ -102,7 +115,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getType' )
 			->will( $this->returnValue( $type ) );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -110,7 +123,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$instance = new Database( $connectionProvider );
+		$instance = new Database(
+			new ConnectionProviderRef(
+				[
+					'read' => $connectionProvider
+				]
+			)
+		);
+
 		$instance->setDBPrefix( 'bar_' );
 
 		$expected = $type === 'sqlite' ? 'bar_Foo' : 'Foo';
@@ -136,7 +156,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( $resultWrapper ) );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -144,7 +164,13 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$instance = new Database( $connectionProvider );
+		$instance = new Database(
+			new ConnectionProviderRef(
+				[
+					'read' => $connectionProvider
+				]
+			)
+		);
 
 		$this->assertInstanceOf(
 			'ResultWrapper',
@@ -164,7 +190,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Foo' ) )
 			->will( $this->returnValue( 'Bar' ) );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +198,13 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$instance = new Database( $connectionProvider );
+		$instance = new Database(
+			new ConnectionProviderRef(
+				[
+					'read' => $connectionProvider
+				]
+			)
+		);
 
 		$this->assertEquals(
 			'Bar',
@@ -198,7 +230,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getType' )
 			->will( $this->returnValue( 'sqlite' ) );
 
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -216,7 +248,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $expected ) )
 			->will( $this->returnValue( $resultWrapper ) );
 
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -224,7 +256,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $write ) );
 
-		$instance = new Database( $readConnectionProvider, $writeConnectionProvider );
+		$instance = new Database(
+			new ConnectionProviderRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			)
+		);
 
 		$this->assertInstanceOf(
 			'ResultWrapper',
@@ -254,7 +293,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->once() )
 			->method( 'select' );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -262,7 +301,13 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$instance = new Database( $connectionProvider );
+		$instance = new Database(
+			new ConnectionProviderRef(
+				[
+					'read'  => $connectionProvider
+				]
+			)
+		);
 
 		$this->setExpectedException( 'RuntimeException' );
 
@@ -285,7 +330,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->will( $this->throwException( $databaseException ) );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -294,73 +339,116 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			$connectionProvider,
-			$connectionProvider
+			new ConnectionProviderRef(
+				[
+					'read'  => $connectionProvider,
+					'write' => $connectionProvider
+				]
+			)
 		);
 
 		$this->setExpectedException( 'Exception' );
 		$instance->query( 'Foo', __METHOD__ );
 	}
 
-	public function testBeginTransaction() {
+	public function testGetEmptyTransactionTicket() {
 
-		$database = $this->getMockBuilder( '\DatabaseBase' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$writeConnectionProvider->expects( $this->once() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getEmptyTransactionTicket', 'hasMasterChanges' ) )
+			->getMock();
+
+		$loadBalancerFactory->expects( $this->once() )
+			->method( 'hasMasterChanges' )
+			->will( $this->returnValue( false ) );
+
+		$loadBalancerFactory->expects( $this->once() )
+			->method( 'getEmptyTransactionTicket' );
 
 		$instance = new Database(
-			$readConnectionProvider,
-			$writeConnectionProvider
+			new ConnectionProviderRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			),
+			$loadBalancerFactory
 		);
 
-		// Can't reach the `DatabaseBase::begin` with a mock because
-		// it is declared as final
-		$instance->beginTransaction( __METHOD__ );
+		$instance->getEmptyTransactionTicket( __METHOD__ );
 	}
 
-	public function testCommitTransaction() {
+	public function testGetEmptyTransactionTicketOnMasterChanges() {
 
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
-		$database->expects( $this->any() )
-			->method( 'isOpen' )
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getEmptyTransactionTicket', 'hasMasterChanges' ) )
+			->getMock();
+
+		$loadBalancerFactory->expects( $this->once() )
+			->method( 'hasMasterChanges' )
 			->will( $this->returnValue( true ) );
 
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$writeConnectionProvider->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+		$loadBalancerFactory->expects( $this->never() )
+			->method( 'getEmptyTransactionTicket' );
 
 		$instance = new Database(
-			$readConnectionProvider,
-			$writeConnectionProvider
+			new ConnectionProviderRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			),
+			$loadBalancerFactory
 		);
 
-		// Can't reach the `DatabaseBase::begin`/`DatabaseBase::commit`
-		// with a mock because it is declared as final
-		$instance->beginTransaction( __METHOD__ );
-		$instance->commitTransaction( __METHOD__ );
+		$this->assertNull(
+			$instance->getEmptyTransactionTicket( __METHOD__ )
+		);
+	}
+
+	public function testCommitAndWaitForReplication() {
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'commitAndWaitForReplication' ) )
+			->getMock();
+
+		$loadBalancerFactory->expects( $this->once() )
+			->method( 'commitAndWaitForReplication' );
+
+		$instance = new Database(
+			new ConnectionProviderRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			),
+			$loadBalancerFactory
+		);
+
+		$instance->commitAndWaitForReplication( __METHOD__, 123 );
 	}
 
 	public function testDoQueryWithAutoCommit() {
@@ -384,7 +472,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->once() )
 			->method( 'setFlag' );
 
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -392,7 +480,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -401,23 +489,33 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			$readConnectionProvider,
-			$writeConnectionProvider
+			new ConnectionProviderRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			)
 		);
 
-		$instance->query( 'foo', __METHOD__, false, true );
+		$instance->setFlag( Database::AUTO_COMMIT );
+		$instance->query( 'foo', __METHOD__, false );
 	}
 
-	public function testMissingWriteConnectionThrowsException() {
+	/**
+	 * @dataProvider missingWriteConnectionProvider
+	 */
+	public function testMissingWriteConnectionThrowsException( $func, $args ) {
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new Database( $connectionProvider );
+		$instance = new Database(
+			new ConnectionProviderRef( [] )
+		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->tableExists( 'Foo' );
+		call_user_func_array( [ $instance, $func ], $args );
 	}
 
 	public function dbTypeProvider() {
@@ -426,6 +524,65 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			array( 'sqlite' ),
 			array( 'postgres' )
 		);
+	}
+
+	public function missingWriteConnectionProvider() {
+
+		yield [
+			'query', [ 'foo' ]
+		];
+
+		yield [
+			'nextSequenceValue', [ 'foo' ]
+		];
+
+		yield [
+			'insertId', []
+		];
+
+		yield [
+			'clearFlag', [ 'Foo' ]
+		];
+
+		yield [
+			'getFlag', [ 'Foo' ]
+		];
+
+		yield [
+			'setFlag', [ 'Foo' ]
+		];
+
+		yield [
+			'insert', [ 'Foo', 'Bar' ]
+		];
+
+		yield [
+			'update', [ 'Foo', 'Bar', 'Foobar' ]
+		];
+
+		yield [
+			'delete', [ 'Foo', 'Bar' ]
+		];
+
+		yield [
+			'replace', [ 'Foo', 'Bar', 'Foobar' ]
+		];
+
+		yield [
+			'makeList', [ 'Foo', 'Bar' ]
+		];
+
+		yield [
+			'beginAtomicTransaction', [ 'Foo' ]
+		];
+
+		yield [
+			'endAtomicTransaction', [ 'Foo' ]
+		];
+
+		yield [
+			'onTransactionIdle', [ 'Foo' ]
+		];
 	}
 
 }

@@ -27,7 +27,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'postgres' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\PostgresTableBuilder',
+			PostgresTableBuilder::class,
 			PostgresTableBuilder::factory( $connection )
 		);
 	}
@@ -59,7 +59,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( $table );
 	}
 
-	public function testUpdateTableOnOldTable() {
+	public function testUpdateTableWithNewField() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
@@ -91,6 +91,39 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( $table );
 	}
 
+	public function testUpdateTableWithNewFieldAndDefault() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'tableExists', 'query' ) )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'postgres' ) );
+
+		$connection->expects( $this->any() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( true ) );
+
+		$connection->expects( $this->at( 2 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'SELECT a.attname as' ) )
+			->will( $this->returnValue( array() ) );
+
+		$connection->expects( $this->at( 3 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD "bar" TEXT'. " DEFAULT '0'" ) );
+
+		$instance = PostgresTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addDefault( 'bar', 0 );
+
+		$instance->create( $table );
+	}
+
 	public function testCreateIndex() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
@@ -117,7 +150,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->at( 5 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'CREATE INDEX foo_index0 ON foo (bar)' ) );
+			->with( $this->stringContains( 'CREATE INDEX foo_idx_bar ON foo (bar)' ) );
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
@@ -171,6 +204,27 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = PostgresTableBuilder::factory( $connection );
 
 		$instance->checkOn( $instance::POST_CREATION );
+	}
+
+	public function testOptimizeTable() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'query' ) )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'postgres' ) );
+
+		$connection->expects( $this->at( 1 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ANALYZE "foo"' ) );
+
+		$instance = PostgresTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$instance->optimize( $table );
 	}
 
 }

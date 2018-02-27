@@ -42,7 +42,7 @@ class CircularReferenceGuardTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->isCircularByRecursionFor( 'Foo' )
+			$instance->isCircular( 'Foo' )
 		);
 
 		$instance->unmark( 'Foo' );
@@ -53,7 +53,7 @@ class CircularReferenceGuardTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->isCircularByRecursionFor( 'Foo' )
+			$instance->isCircular( 'Foo' )
 		);
 
 		$instance->unmark( 'notBeenMarkedBefore' );

@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\PropertyAnnotator;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * Handling category annotation
@@ -32,17 +33,22 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @var boolean
 	 */
-	private $showHiddenCategoriesState = true;
+	private $showHiddenCategories = true;
 
 	/**
 	 * @var boolean
 	 */
-	private $categoryInstanceUsageState = true;
+	private $useCategoryInstance = true;
 
 	/**
 	 * @var boolean
 	 */
-	private $categoryHierarchyUsageState = true;
+	private $useCategoryHierarchy = true;
+
+	/**
+	 * @var boolean
+	 */
+	private $useCategoryRedirect = true;
 
 	/**
 	 * @since 1.9
@@ -58,28 +64,37 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $showHiddenCategoriesState
+	 * @param boolean $showHiddenCategories
 	 */
-	public function setShowHiddenCategoriesState( $showHiddenCategoriesState ) {
-		$this->showHiddenCategoriesState = (bool)$showHiddenCategoriesState;
+	public function showHiddenCategories( $showHiddenCategories ) {
+		$this->showHiddenCategories = (bool)$showHiddenCategories;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $categoryInstanceUsageState
+	 * @param boolean $useCategoryInstance
 	 */
-	public function setCategoryInstanceUsageState( $categoryInstanceUsageState ) {
-		$this->categoryInstanceUsageState = (bool)$categoryInstanceUsageState;
+	public function useCategoryInstance( $useCategoryInstance ) {
+		$this->useCategoryInstance = (bool)$useCategoryInstance;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $categoryHierarchyUsageState
+	 * @param boolean $useCategoryHierarchy
 	 */
-	public function setCategoryHierarchyUsageState( $categoryHierarchyUsageState ) {
-		$this->categoryHierarchyUsageState = (bool)$categoryHierarchyUsageState;
+	public function useCategoryHierarchy( $useCategoryHierarchy ) {
+		$this->useCategoryHierarchy = (bool)$useCategoryHierarchy;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $useCategoryRedirect
+	 */
+	public function useCategoryRedirect( $useCategoryRedirect ) {
+		$this->useCategoryRedirect = (bool)$useCategoryRedirect;
 	}
 
 	/**
@@ -88,27 +103,52 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	protected function addPropertyValues() {
 
 		$namespace = $this->getSemanticData()->getSubject()->getNamespace();
+		$property = null;
+
+		$this->processingErrorMsgHandler = new ProcessingErrorMsgHandler(
+			$this->getSemanticData()->getSubject()
+		);
+
+		if ( $this->useCategoryInstance && ( $namespace !== NS_CATEGORY ) ) {
+			$property = new DIProperty( DIProperty::TYPE_CATEGORY );
+		}
+
+		if ( $this->useCategoryHierarchy && ( $namespace === NS_CATEGORY ) ) {
+			$property = new DIProperty( DIProperty::TYPE_SUBCATEGORY );
+		}
 
 		foreach ( $this->categories as $catname ) {
 
-			if ( !$this->showHiddenCategoriesState && $this->isHiddenCategory( $catname ) ) {
+			if ( ( !$this->showHiddenCategories && $this->isHiddenCategory( $catname ) ) || $property === null ) {
 				continue;
 			}
 
-			if ( $this->categoryInstanceUsageState && ( $namespace !== NS_CATEGORY ) ) {
-				$this->getSemanticData()->addPropertyObjectValue(
-					new DIProperty( DIProperty::TYPE_CATEGORY ),
-					new DIWikiPage( $catname, NS_CATEGORY, '' )
-				);
-			}
-
-			if ( $this->categoryHierarchyUsageState && ( $namespace === NS_CATEGORY ) ) {
-				$this->getSemanticData()->addPropertyObjectValue(
-					new DIProperty( DIProperty::TYPE_SUBCATEGORY ),
-					new DIWikiPage( $catname, NS_CATEGORY, '' )
-				);
-			}
+			$this->modifySemanticData( $property, $catname );
 		}
+	}
+
+	private function modifySemanticData( $property, $catname ) {
+
+		$cat = new DIWikiPage( $catname, NS_CATEGORY );
+
+		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
+			return $this->getSemanticData()->addPropertyObjectValue(
+				$property,
+				$cat
+			);
+		}
+
+		$container = $this->processingErrorMsgHandler->newErrorContainerFromMsg(
+			array(
+				'smw-category-invalid-redirect-target',
+				str_replace( '_', ' ', $catname )
+			)
+		);
+
+		$this->processingErrorMsgHandler->addToSemanticData(
+			$this->getSemanticData(),
+			$container
+		);
 	}
 
 	private function isHiddenCategory( $catName ) {
@@ -131,6 +171,15 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 
 		return false;
+	}
+
+	private function getRedirectTarget( $subject ) {
+
+		if ( $this->useCategoryRedirect ) {
+			return ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $subject );
+		}
+
+		return $subject;
 	}
 
 }

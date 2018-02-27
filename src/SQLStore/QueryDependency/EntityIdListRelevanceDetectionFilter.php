@@ -2,15 +2,14 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\SQLStore\CompositePropertyTableDiffIterator;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Utils\Timer;
 
 /**
- * This class filters entities recorded in the CompositePropertyTableDiffIterator
+ * This class filters entities recorded in the ChangeOp
  * and applies a relevance rule set by:
  *
  * - Remove exempted properties (not relevant)
@@ -25,7 +24,9 @@ use SMW\Utils\Timer;
  *
  * @author mwjames
  */
-class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
+class EntityIdListRelevanceDetectionFilter {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var Store
@@ -33,66 +34,50 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 	private $store = null;
 
 	/**
-	 * @var CompositePropertyTableDiffIterator
+	 * @var ChangeOp
 	 */
-	private $compositePropertyTableDiffIterator = null;
+	private $changeOp = null;
 
 	/**
 	 * @var array
 	 */
-	private $propertyExemptionlist = array();
+	private $propertyExemptionList = array();
 
 	/**
 	 * @var array
 	 */
-	private $affiliatePropertyDetectionlist = array();
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
+	private $affiliatePropertyDetectionList = array();
 
 	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
-	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 * @param ChangeOp $changeOp
 	 */
-	public function __construct( Store $store, CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+	public function __construct( Store $store, ChangeOp $changeOp ) {
 		$this->store = $store;
-		$this->compositePropertyTableDiffIterator = $compositePropertyTableDiffIterator;
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
+		$this->changeOp = $changeOp;
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param array $propertyExemptionlist
+	 * @param array $propertyExemptionList
 	 */
-	public function setPropertyExemptionlist( array $propertyExemptionlist ) {
-		$this->propertyExemptionlist = array_flip(
-			str_replace( ' ', '_', $propertyExemptionlist )
+	public function setPropertyExemptionList( array $propertyExemptionList ) {
+		$this->propertyExemptionList = array_flip(
+			str_replace( ' ', '_', $propertyExemptionList )
 		);
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param array $affiliatePropertyDetectionlist
+	 * @param array $affiliatePropertyDetectionList
 	 */
-	public function setAffiliatePropertyDetectionlist( array $affiliatePropertyDetectionlist ) {
-		$this->affiliatePropertyDetectionlist = array_flip(
-			str_replace( ' ', '_', $affiliatePropertyDetectionlist )
+	public function setAffiliatePropertyDetectionList( array $affiliatePropertyDetectionList ) {
+		$this->affiliatePropertyDetectionList = array_flip(
+			str_replace( ' ', '_', $affiliatePropertyDetectionList )
 		);
 	}
 
@@ -105,32 +90,38 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 
 		Timer::start( __CLASS__ );
 
-		$combinedChangedEntityList = array_flip(
-			$this->compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities()
+		$changedEntityIdSummaryList = array_flip(
+			$this->changeOp->getChangedEntityIdSummaryList()
 		);
 
 		$affiliateEntityList = array();
-		$tableChangeOps = $this->compositePropertyTableDiffIterator->getTableChangeOps();
+		$tableChangeOps = $this->changeOp->getTableChangeOps();
 
 		foreach ( $tableChangeOps as $tableChangeOp ) {
 			$this->applyFilterToTableChangeOp(
 				$tableChangeOp,
 				$affiliateEntityList,
-				$combinedChangedEntityList
+				$changedEntityIdSummaryList
 			);
 		}
 
 		$filteredIdList = array_merge(
-			array_keys( $combinedChangedEntityList ),
+			array_keys( $changedEntityIdSummaryList ),
 			array_keys( $affiliateEntityList )
 		);
 
-		$this->log( __METHOD__ . ' procTime (sec): ' . Timer::getElapsedTime( __CLASS__, 6 ) );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'procTime' => Timer::getElapsedTime( __CLASS__, 6 )
+		];
+
+		$this->logger->info( '[QueryDependency] Filter changeOp list (procTime in sec: {procTime})', $context );
 
 		return $filteredIdList;
 	}
 
-	private function applyFilterToTableChangeOp( $tableChangeOp, &$affiliateEntityList, &$combinedChangedEntityList ) {
+	private function applyFilterToTableChangeOp( $tableChangeOp, &$affiliateEntityList, &$changedEntityIdSummaryList ) {
 
 		foreach ( $tableChangeOp->getFieldChangeOps( 'insert' ) as $insertFieldChangeOp ) {
 
@@ -140,7 +131,7 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 				$insertFieldChangeOp->set( 'key', $tableChangeOp->getFixedPropertyValueBy( 'key' ) );
 			}
 
-			$this->modifyEntityList( $insertFieldChangeOp, $affiliateEntityList, $combinedChangedEntityList );
+			$this->modifyEntityList( $insertFieldChangeOp, $affiliateEntityList, $changedEntityIdSummaryList );
 		}
 
 		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $deleteFieldChangeOp ) {
@@ -150,11 +141,11 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 				$deleteFieldChangeOp->set( 'key', $tableChangeOp->getFixedPropertyValueBy( 'key' ) );
 			}
 
-			$this->modifyEntityList( $deleteFieldChangeOp, $affiliateEntityList, $combinedChangedEntityList );
+			$this->modifyEntityList( $deleteFieldChangeOp, $affiliateEntityList, $changedEntityIdSummaryList );
 		}
 	}
 
-	private function modifyEntityList( $fieldChangeOp, &$affiliateEntityList, &$combinedChangedEntityList ) {
+	private function modifyEntityList( $fieldChangeOp, &$affiliateEntityList, &$changedEntityIdSummaryList ) {
 		$key = '';
 
 		if ( $fieldChangeOp->has( 'key' ) ) {
@@ -165,35 +156,26 @@ class EntityIdListRelevanceDetectionFilter implements LoggerAwareInterface {
 		}
 
 		// Exclusion before inclusion
-		if ( isset( $this->propertyExemptionlist[$key]) ) {
-			$this->unsetEntityList( $fieldChangeOp, $combinedChangedEntityList );
+		if ( isset( $this->propertyExemptionList[$key]) ) {
+			$this->unsetEntityList( $fieldChangeOp, $changedEntityIdSummaryList );
 			return;
 		}
 
-		if ( isset( $this->affiliatePropertyDetectionlist[$key] ) && $fieldChangeOp->has( 's_id' ) ) {
+		if ( isset( $this->affiliatePropertyDetectionList[$key] ) && $fieldChangeOp->has( 's_id' ) ) {
 			$affiliateEntityList[$fieldChangeOp->get( 's_id' )] = true;
 		}
 	}
 
-	private function unsetEntityList( $fieldChangeOp, &$combinedChangedEntityList ) {
+	private function unsetEntityList( $fieldChangeOp, &$changedEntityIdSummaryList ) {
 		// Remove matched blacklisted property reference
 		if ( $fieldChangeOp->has( 'p_id' ) ) {
-			unset( $combinedChangedEntityList[$fieldChangeOp->get( 'p_id' )] );
+			unset( $changedEntityIdSummaryList[$fieldChangeOp->get( 'p_id' )] );
 		}
 
 		// Remove associated subject ID's
 		if ( $fieldChangeOp->has( 's_id' ) ) {
-			unset( $combinedChangedEntityList[$fieldChangeOp->get( 's_id' )] );
+			unset( $changedEntityIdSummaryList[$fieldChangeOp->get( 's_id' )] );
 		}
-	}
-
-	private function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }

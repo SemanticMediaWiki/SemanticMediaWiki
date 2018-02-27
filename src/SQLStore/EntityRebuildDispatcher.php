@@ -4,10 +4,11 @@ namespace SMW\SQLStore;
 
 use Hooks;
 use SMW\ApplicationFactory;
-use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\PropertyRegistry;
 use SMW\Store;
+use SMW\Utils\Lru;
 use Title;
 
 /**
@@ -37,6 +38,11 @@ class EntityRebuildDispatcher {
 	 * @var JobFactory
 	 */
 	private $jobFactory;
+
+	/**
+	 * @var NamespaceExaminer
+	 */
+	private $namespaceExaminer;
 
 	/**
 	 * @var integer
@@ -69,6 +75,11 @@ class EntityRebuildDispatcher {
 	private $dispatchedEntities = array();
 
 	/**
+	 * @var Lru
+	 */
+	private $lru;
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param SQLStore $store
@@ -77,6 +88,8 @@ class EntityRebuildDispatcher {
 		$this->store = $store;
 		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer( $store );
 		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
+		$this->lru = new Lru( 10000 );
 	}
 
 	/**
@@ -164,7 +177,7 @@ class EntityRebuildDispatcher {
 
 	/**
 	 * Dispatching of a single or a chunk of ids in either online or batch mode
-	 * using the JobQueueScheduler
+	 * using the JoblruScheduler
 	 *
 	 * @since 2.3
 	 *
@@ -222,10 +235,18 @@ class EntityRebuildDispatcher {
 		$titles = Title::newFromIDs( $tids );
 
 		foreach ( $titles as $title ) {
+
+			$hash = $title->getPrefixedDBKey() . '#' . $title->getNamespace();
+
+			if ( $this->lru->get( $hash ) !== null ) {
+				continue;
+			}
+
 			if ( ( $this->namespaces == false ) || ( in_array( $title->getNamespace(), $this->namespaces ) ) ) {
 				$updateJobs[] = $this->newUpdateJob( $title );
 			}
 
+			$this->lru->set( $hash, true );
 			$this->dispatchedEntities[] = array( 't' => $title->getPrefixedDBKey() );
 		}
 	}
@@ -240,7 +261,7 @@ class EntityRebuildDispatcher {
 		// update by internal SMW id --> make sure we get all objects in SMW
 		$db = $this->store->getConnection( 'mw.db' );
 
-		// MW 1.29+ "Exception thrown with an uncommited database transaction ...
+		// MW 1.29+ "Exception thrown with an uncommitted database transaction ...
 		// MWCallableUpdate::doUpdate: transaction round 'SMW\MediaWiki\Jobs\RefreshJob::run' already started"
 		$this->propertyTableIdReferenceDisposer->waitOnTransactionIdle();
 
@@ -261,11 +282,22 @@ class EntityRebuildDispatcher {
 				continue;
 			}
 
+			// If the reference is for some reason created as part of a not
+			// supported namespace, check and clean it!
+			//
+			// The check is required to ensure that annotations let's say
+			// [[Foo::SomeNS:Bar]] (where SomeNS is not enabled for SMW) are not
+			// removed and is kept as long as a reference to `SomeNS:Bar` exists
+			if ( !$this->namespaceExaminer->isSemanticEnabled( (int)$row->smw_namespace ) ) {
+				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
+				continue;
+			}
+
 			// Find page to refresh, even for special properties:
 			if ( $row->smw_title != '' && $row->smw_title{0} != '_' ) {
 				$titleKey = $row->smw_title;
 			} elseif ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
-				$titleKey = str_replace( ' ', '_', DIProperty::findPropertyLabel( $row->smw_title ) );
+				$titleKey = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $row->smw_title ) );
 			} else {
 				$titleKey = '';
 			}
@@ -276,6 +308,15 @@ class EntityRebuildDispatcher {
 			} elseif ( $this->isPlainObjectValue( $row ) ) {
 				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
 			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
+
+				$hash = $titleKey . '#' . $row->smw_namespace;
+
+				if ( $this->lru->get( $hash ) !== null ) {
+					continue;
+				} else {
+					$this->lru->set( $hash, true );
+				}
+
 				// objects representing pages
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
 
@@ -285,6 +326,15 @@ class EntityRebuildDispatcher {
 				}
 
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $titleKey != '' ) {
+
+				$hash = $titleKey . '#' . $row->smw_namespace;
+
+				if ( $this->lru->get( $hash ) !== null ) {
+					continue;
+				} else {
+					$this->lru->set( $hash, true );
+				}
+
 				// TODO: special treatment of redirects needed, since the store will
 				// not act on redirects that did not change according to its records
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
@@ -293,9 +343,20 @@ class EntityRebuildDispatcher {
 					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
 					$updateJobs[] = $this->newUpdateJob( $title );
 				}
+
+				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
 				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
+
+				$hash = $titleKey . '#' . $row->smw_namespace;
+
+				if ( $this->lru->get( $hash ) !== null ) {
+					continue;
+				} else {
+					$this->lru->set( $hash, true );
+				}
+
 				$diWikiPage = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SemanticData( $diWikiPage );
 				$this->store->updateData( $emptySemanticData );
@@ -401,7 +462,7 @@ class EntityRebuildDispatcher {
 	}
 
 	private function newUpdateJob( $title ) {
-		return $this->jobFactory->newUpdateJob( $title, array( 'pm' => $this->updateJobParseMode ) );
+		return $this->jobFactory->newUpdateJob( $title, array( 'pm' => $this->updateJobParseMode, 'origin' => 'EntityRebuildDispatcher' ) );
 	}
 
 }

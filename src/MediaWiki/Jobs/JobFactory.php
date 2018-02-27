@@ -49,14 +49,16 @@ class JobFactory {
 				return $this->newParserCachePurgeJob( $title, $parameters );
 			case 'SMW\EntityIdDisposerJob':
 				return $this->newEntityIdDisposerJob( $title, $parameters );
-			case 'SMW\TempChangeOpPurgeJob':
-				return $this->newTempChangeOpPurgeJob( $title, $parameters );
 			case 'SMW\PropertyStatisticsRebuildJob':
 				return $this->newPropertyStatisticsRebuildJob( $title, $parameters );
 			case 'SMW\FulltextSearchTableUpdateJob':
 				return $this->newFulltextSearchTableUpdateJob( $title, $parameters );
 			case 'SMW\FulltextSearchTableRebuildJob':
 				return $this->newFulltextSearchTableRebuildJob( $title, $parameters );
+			case 'SMW\ChangePropagationDispatchJob':
+				return $this->newChangePropagationDispatchJob( $title, $parameters );
+			case 'SMW\ChangePropagationUpdateJob':
+				return $this->newChangePropagationUpdateJob( $title, $parameters );
 		}
 
 		throw new RuntimeException( "Unable to match $type to a valid Job type" );
@@ -140,18 +142,6 @@ class JobFactory {
 	 * @param Title $title
 	 * @param array $parameters
 	 *
-	 * @return TempChangeOpPurgeJob
-	 */
-	public function newTempChangeOpPurgeJob( Title $title, array $parameters = array() ) {
-		return new TempChangeOpPurgeJob( $title, $parameters );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
 	 * @return PropertyStatisticsRebuildJob
 	 */
 	public function newPropertyStatisticsRebuildJob( Title $title, array $parameters = array() ) {
@@ -168,6 +158,30 @@ class JobFactory {
 	 */
 	public function newFulltextSearchTableRebuildJob( Title $title, array $parameters = array() ) {
 		return new FulltextSearchTableRebuildJob( $title, $parameters );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return ChangePropagationDispatchJob
+	 */
+	public function newChangePropagationDispatchJob( Title $title, array $parameters = array() ) {
+		return new ChangePropagationDispatchJob( $title, $parameters );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return ChangePropagationUpdateJob
+	 */
+	public function newChangePropagationUpdateJob( Title $title, array $parameters = array() ) {
+		return new ChangePropagationUpdateJob( $title, $parameters );
 	}
 
 }

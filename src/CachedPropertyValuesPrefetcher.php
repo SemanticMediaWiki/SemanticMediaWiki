@@ -10,7 +10,7 @@ use SMWQuery as Query;
  * to ensure a singleton instance.
  *
  * The purpose of this class is to give fragmented access to frequent (hence
- * cachable) property values to ensure that the store is only used for when a
+ * cacheable) property values to ensure that the store is only used for when a
  * match can not be found and so freeing up the capacities that can equally be
  * served from a persistent cache instance.
  *
@@ -46,6 +46,11 @@ class CachedPropertyValuesPrefetcher {
 	private $blobStore;
 
 	/**
+	 * @var boolean
+	 */
+	private $disableCache = false;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
@@ -61,6 +66,15 @@ class CachedPropertyValuesPrefetcher {
 	 */
 	public function resetCacheBy( DIWikiPage $subject ) {
 		$this->blobStore->delete( $this->getRootHashFrom( $subject ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $disableCache
+	 */
+	public function disableCache( $disableCache ) {
+		$this->disableCache = (bool)$disableCache;
 	}
 
 	/**
@@ -90,7 +104,7 @@ class CachedPropertyValuesPrefetcher {
 			$this->getRootHashFrom( $subject )
 		);
 
-		if ( $container->has( $key ) ) {
+		if ( $this->disableCache === false && $container->has( $key ) ) {
 			return $container->get( $key );
 		}
 

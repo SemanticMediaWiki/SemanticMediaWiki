@@ -32,6 +32,12 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
@@ -70,16 +76,20 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			$parameters['categories']
 		);
 
-		$instance->setShowHiddenCategoriesState(
-			$parameters['settings']['smwgShowHiddenCategories']
+		$instance->showHiddenCategories(
+			$parameters['settings']['showHiddenCategories']
 		);
 
-		$instance->setCategoryInstanceUsageState(
-			$parameters['settings']['smwgCategoriesAsInstances']
+		$instance->useCategoryInstance(
+			$parameters['settings']['categoriesAsInstances']
 		);
 
-		$instance->setCategoryHierarchyUsageState(
-			$parameters['settings']['smwgUseCategoryHierarchy']
+		$instance->useCategoryHierarchy(
+			$parameters['settings']['categoryHierarchy']
+		);
+
+		$instance->useCategoryRedirect(
+			false
 		);
 
 		$instance->addAnnotation();
@@ -108,16 +118,20 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			$parameters['categories']
 		);
 
-		$instance->setShowHiddenCategoriesState(
-			$parameters['settings']['smwgShowHiddenCategories']
+		$instance->showHiddenCategories(
+			$parameters['settings']['showHiddenCategories']
 		);
 
-		$instance->setCategoryInstanceUsageState(
-			$parameters['settings']['smwgCategoriesAsInstances']
+		$instance->useCategoryInstance(
+			$parameters['settings']['categoriesAsInstances']
 		);
 
-		$instance->setCategoryHierarchyUsageState(
-			$parameters['settings']['smwgUseCategoryHierarchy']
+		$instance->useCategoryHierarchy(
+			$parameters['settings']['categoryHierarchy']
+		);
+
+		$instance->useCategoryRedirect(
+			false
 		);
 
 		$instance->addAnnotation();
@@ -136,7 +150,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testAddCategoriesWithHiddenCategories( array $parameters, array $expected ) {
 
-		$expectedPageLookup = $parameters['settings']['smwgShowHiddenCategories'] ? $this->never() : $this->atLeastOnce();
+		$expectedPageLookup = $parameters['settings']['showHiddenCategories'] ? $this->never() : $this->atLeastOnce();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -168,16 +182,20 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			$parameters['categories']
 		);
 
-		$instance->setShowHiddenCategoriesState(
-			$parameters['settings']['smwgShowHiddenCategories']
+		$instance->showHiddenCategories(
+			$parameters['settings']['showHiddenCategories']
 		);
 
-		$instance->setCategoryInstanceUsageState(
-			$parameters['settings']['smwgCategoriesAsInstances']
+		$instance->useCategoryInstance(
+			$parameters['settings']['categoriesAsInstances']
 		);
 
-		$instance->setCategoryHierarchyUsageState(
-			$parameters['settings']['smwgUseCategoryHierarchy']
+		$instance->useCategoryHierarchy(
+			$parameters['settings']['categoryHierarchy']
+		);
+
+		$instance->useCategoryRedirect(
+			false
 		);
 
 		$instance->addAnnotation();
@@ -185,6 +203,45 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$semanticData
+		);
+	}
+
+	public function testAddCategoryOnInvalidRedirect() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getRedirectTarget' ) )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getRedirectTarget' )
+			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$semanticData = $this->semanticDataFactory
+			->setSubject( new DIWikiPage( __METHOD__, NS_MAIN ) )
+			->newEmptySemanticData();
+
+		$instance = new CategoryPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			array( 'Bar' )
+		);
+
+		$instance->useCategoryRedirect(
+			true
+		);
+
+		$instance->addAnnotation();
+
+		$expected = array(
+			'propertyCount'  => 1,
+			'propertyKeys'   => '_ERRC'
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
 		);
 	}
 
@@ -198,9 +255,9 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'namespace'  => NS_MAIN,
 				'categories' => array( 'Foo', 'Bar' ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => false,
-					'smwgCategoriesAsInstances' => true,
-					'smwgShowHiddenCategories'  => true
+					'categoryHierarchy'  => false,
+					'categoriesAsInstances' => true,
+					'showHiddenCategories'  => true
 				)
 			),
 			array(
@@ -216,9 +273,9 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'namespace'  => NS_CATEGORY,
 				'categories' => array( 'Foo', 'Bar' ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => true,
-					'smwgCategoriesAsInstances' => false,
-					'smwgShowHiddenCategories'  => true
+					'categoryHierarchy'  => true,
+					'categoriesAsInstances' => false,
+					'showHiddenCategories'  => true
 				)
 			),
 			array(
@@ -255,9 +312,9 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories'    => array( 'Foo', 'Bar' ),
 				'hidCategories' => array( $hidCategory ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => false,
-					'smwgCategoriesAsInstances' => true,
-					'smwgShowHiddenCategories'  => true
+					'categoryHierarchy'  => false,
+					'categoriesAsInstances' => true,
+					'showHiddenCategories'  => true
 				)
 			),
 			array(
@@ -274,9 +331,9 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories'    => array( 'Foo', 'Bar' ),
 				'hidCategories' => array( $hidCategory ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => false,
-					'smwgCategoriesAsInstances' => true,
-					'smwgShowHiddenCategories'  => false
+					'categoryHierarchy'  => false,
+					'categoriesAsInstances' => true,
+					'showHiddenCategories'  => false
 				)
 			),
 			array(
@@ -293,9 +350,9 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories'    => array( 'Foo', 'Bar' ),
 				'hidCategories' => array( $hidCategory ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => true,
-					'smwgCategoriesAsInstances' => false,
-					'smwgShowHiddenCategories'  => true
+					'categoryHierarchy'  => true,
+					'categoriesAsInstances' => false,
+					'showHiddenCategories'  => true
 				)
 			),
 			array(
@@ -312,9 +369,9 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories'    => array( 'Foo', 'Bar' ),
 				'hidCategories' => array( $hidCategory ),
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => true,
-					'smwgCategoriesAsInstances' => false,
-					'smwgShowHiddenCategories'  => false
+					'categoryHierarchy'  => true,
+					'categoriesAsInstances' => false,
+					'showHiddenCategories'  => false
 				)
 			),
 			array(

@@ -2,14 +2,19 @@
 
 namespace SMW;
 
-use SMWDataItem;
+use SMWDataItem as DataItem;
 use SMWQuery;
 use SMWQueryResult;
 use SMWRequestOptions;
 use SMWSemanticData;
 use Title;
+use SMW\Connection\ConnectionManager;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
+use Psr\Log\LoggerAwareTrait;
 use SMW\QueryEngine;
 use SMW\Options;
+use SMW\Utils\Timer;
+use InvalidArgumentException;
 
 /**
  * This group contains all parts of SMW that relate to storing and retrieving
@@ -32,10 +37,14 @@ use SMW\Options;
  */
 abstract class Store implements QueryEngine {
 
+	use MessageReporterAwareTrait;
+	use LoggerAwareTrait;
+
 	/**
-	 * @var boolean
+	 * Option to define whether creating updates jobs is allowed for a request
+	 * or not.
 	 */
-	private $updateJobsEnabledState = true;
+	const OPT_CREATE_UPDATE_JOB = 'opt.create.update.job';
 
 	/**
 	 * @var ConnectionManager
@@ -46,6 +55,11 @@ abstract class Store implements QueryEngine {
 	 * @var Options
 	 */
 	protected $options = null;
+
+	/**
+	 * @var array
+	 */
+	public $extensionData = [];
 
 ///// Reading methods /////
 
@@ -64,7 +78,7 @@ abstract class Store implements QueryEngine {
 	 * @param $property DIProperty
 	 * @param $requestoptions SMWRequestOptions
 	 *
-	 * @return array of SMWDataItem
+	 * @return array of DataItem
 	 */
 	public abstract function getPropertyValues( $subject, DIProperty $property, $requestoptions = null );
 
@@ -89,7 +103,7 @@ abstract class Store implements QueryEngine {
 	 * @param DIWikiPage $subject denoting the subject
 	 * @param SMWRequestOptions|null $requestOptions optionally defining further options
 	 *
-	 * @return SMWDataItem
+	 * @return DataItem
 	 */
 	public abstract function getProperties( DIWikiPage $subject, $requestOptions = null );
 
@@ -101,7 +115,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return DataItem[]|[]
 	 */
-	public abstract function getInProperties( SMWDataItem $object, $requestoptions = null );
+	public abstract function getInProperties( DataItem $object, $requestoptions = null );
 
 	/**
 	 * Convenience method to find the sortkey of an SMWDIWikiPage. The
@@ -109,17 +123,19 @@ abstract class Store implements QueryEngine {
 	 * the MediaWiki database entry about a Title objects sortkey. If no
 	 * sortkey is stored, the default sortkey (title string) is returned.
 	 *
-	 * @param $wikiPage DIWikiPage to find the sortkey for
+	 * @param DIWikiPage $dataItem
+	 *
 	 * @return string sortkey
 	 */
-	public function getWikiPageSortKey( DIWikiPage $wikiPage ) {
-		$sortkeyDataItems = $this->getPropertyValues( $wikiPage, new DIProperty( '_SKEY' ) );
+	public function getWikiPageSortKey( DIWikiPage $dataItem ) {
 
-		if ( count( $sortkeyDataItems ) > 0 ) {
-			return end( $sortkeyDataItems )->getString();
-		} else {
-			return str_replace( '_', ' ', $wikiPage->getDBkey() );
+		$dataItems = $this->getPropertyValues( $dataItem, new DIProperty( '_SKEY' ) );
+
+		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
+			return end( $dataItems )->getString();
 		}
+
+		return str_replace( '_', ' ', $dataItem->getDBkey() );
 	}
 
 	/**
@@ -127,42 +143,40 @@ abstract class Store implements QueryEngine {
 	 * or DIProperty object. Returns a dataitem of the same type that
 	 * the input redirects to, or the input itself if there is no redirect.
 	 *
-	 * @param $dataItem SMWDataItem to find the redirect for.
-	 * @return SMWDataItem
+	 * @param DataItem $dataItem
+	 *
+	 * @return DataItem
 	 */
-	public function getRedirectTarget( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
+	public function getRedirectTarget( DataItem $dataItem ) {
+
+		$type = $dataItem->getDIType();
+
+		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
+			throw new InvalidArgumentException( 'Store::getRedirectTarget expects a DIProperty or DIWikiPage object.' );
+		}
+
+		if ( $type === DataItem::TYPE_PROPERTY ) {
+
 			if ( !$dataItem->isUserDefined() ) {
 				return $dataItem;
 			}
+
 			$wikipage = $dataItem->getDiWikiPage();
-		} elseif ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
+		} elseif ( $type === DataItem::TYPE_WIKIPAGE ) {
 			$wikipage = $dataItem;
-		} else {
-			throw new InvalidArgumentException( 'SMWStore::getRedirectTarget() expects an object of type IProperty or SMWDIWikiPage.' );
 		}
 
-		$hash = $wikipage->getHash();
-		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'store.redirectTarget.lookup' );
+		$dataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
 
-		// Ensure that the same type context is used
-		if ( ( $di = $poolCache->fetch( $hash ) ) !== false && $di->getDIType() === $dataItem->getDIType() ) {
-			return $di;
-		}
+		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
 
-		$redirectDataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
+			$redirectDataItem = end( $dataItems );
 
-		if ( count( $redirectDataItems ) > 0 ) {
-
-			$redirectDataItem = end( $redirectDataItems );
-
-			if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY && $redirectDataItem instanceof DIWikiPage ) {
+			if ( $type == DataItem::TYPE_PROPERTY && $redirectDataItem instanceof DIWikiPage ) {
 				$dataItem = DIProperty::newFromUserLabel( $redirectDataItem->getDBkey() );
 			} else {
 				$dataItem = $redirectDataItem;
 			}
-
-			$poolCache->save( $hash, $dataItem );
 		}
 
 		return $dataItem;
@@ -198,17 +212,15 @@ abstract class Store implements QueryEngine {
 	 */
 	public function updateData( SemanticData $semanticData ) {
 
-		if ( !$this->getOptions()->get( 'smwgSemanticsEnabled' ) ) {
+		if ( !$this->getOption( 'smwgSemanticsEnabled' ) ) {
 			return;
 		}
 
+		Timer::start( __METHOD__ );
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$subject = $semanticData->getSubject();
 		$hash = $subject->getHash();
-
-		// @see Store::getRedirectTarget
-		$applicationFactory->getInMemoryPoolCache()->getPoolCacheById( 'store.redirectTarget.lookup' )->delete( $hash );
 
 		/**
 		 * @since 1.6
@@ -222,17 +234,29 @@ abstract class Store implements QueryEngine {
 		 */
 		\Hooks::run( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
 
-		$pageUpdater = $applicationFactory->newPageUpdater();
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'production',
+			'origin' => $hash,
+			'procTime' => Timer::getElapsedTime( __METHOD__, 5 ),
+		];
 
-		if ( !$this->getOptions()->get( 'smwgAutoRefreshSubject' ) || !$pageUpdater->canUpdate() ) {
-			return;
+		$this->logger->info( '[Store] Update completed: {origin} (procTime in sec: {procTime})', $context );
+
+		if ( !$this->getOption( 'smwgAutoRefreshSubject' ) || $semanticData->getOption( Enum::OPT_SUSPEND_PURGE ) ) {
+			return $this->logger->info( '[Store] Skipping html, parser cache purge', [ 'role' => 'user' ] );
 		}
+
+		$pageUpdater = $applicationFactory->newPageUpdater();
 
 		$pageUpdater->addPage( $subject->getTitle() );
 		$pageUpdater->waitOnTransactionIdle();
+		$pageUpdater->markAsPending();
+		$pageUpdater->setOrigin( __METHOD__ );
 
 		$pageUpdater->doPurgeParserCache();
 		$pageUpdater->doPurgeHtmlCache();
+		$pageUpdater->pushUpdate();
 	}
 
 	/**
@@ -366,7 +390,7 @@ abstract class Store implements QueryEngine {
 	 * to report on its progress. This is doen by just using print and
 	 * possibly ob_flush/flush. This is also relevant for preventing
 	 * timeouts during long operations. All output must be valid in an HTML
-	 * context, but should preferrably be plain text, possibly with some
+	 * context, but should preferably be plain text, possibly with some
 	 * linebreaks and weak markup.
 	 *
 	 * @param boolean $verbose
@@ -418,14 +442,32 @@ abstract class Store implements QueryEngine {
 	 * @since 1.8
 	 *
 	 * @param bool $verbose
-	 * @param bool $isFromExtensionSchemaUpdate
+	 * @param Options|null $options
 	 *
 	 * @return boolean Success indicator
 	 */
-	public static function setupStore( $verbose = true, $isFromExtensionSchemaUpdate = false ) {
+	public static function setupStore( $verbose = true, $options = null ) {
+
+		// See notes in ExtensionSchemaUpdates
+		if ( is_bool( $verbose ) ) {
+			$verbose = $verbose;
+		}
+
+		if ( isset( $options['verbose'] ) ) {
+			$verbose = $options['verbose'];
+		}
+
+		if ( isset( $options['options'] ) ) {
+			$options = $options['options'];
+		}
 
 		$store = StoreFactory::getStore();
-		$store->getOptions()->set( 'isFromExtensionSchemaUpdate', $isFromExtensionSchemaUpdate );
+
+		if ( $options instanceof Options ) {
+			foreach ( $options->getOptions() as $key => $value ) {
+				$store->getOptions()->set( $key, $value );
+			}
+		}
 
 		return $store->setup( $verbose );
 	}
@@ -458,29 +500,45 @@ abstract class Store implements QueryEngine {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function setOption( $key, $value ) {
+
+		if ( $this->options === null ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->set( $key, $value );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key, $default = null ) {
+
+		if ( $this->options === null ) {
+			$this->options = new Options();
+		}
+
+		return $this->options->safeGet( $key, $default );
+	}
+
+	/**
 	 * @since 2.0
 	 */
 	public function clear() {
-		$this->connectionManager->releaseConnections();
-		InMemoryPoolCache::getInstance()->resetPoolCacheById( 'store.redirectTarget.lookup' );
-	}
 
-	/**
-	 * @since 2.1
-	 *
-	 * @param boolean $status
-	 */
-	public function setUpdateJobsEnabledState( $status ) {
-		$this->updateJobsEnabledState = $status;
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return boolean
-	 */
-	public function getUpdateJobsEnabledState() {
-		return $this->updateJobsEnabledState && $GLOBALS['smwgEnableUpdateJobs'];
+		if ( $this->connectionManager !== null ) {
+			$this->connectionManager->releaseConnections();
+		}
 	}
 
 	/**
@@ -498,17 +556,17 @@ abstract class Store implements QueryEngine {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $connectionTypeId
+	 * @param string $type
 	 *
 	 * @return mixed
 	 */
-	public function getConnection( $connectionTypeId ) {
+	public function getConnection( $type ) {
 
 		if ( $this->connectionManager === null ) {
 			$this->setConnectionManager( new ConnectionManager() );
 		}
 
-		return $this->connectionManager->getConnection( $connectionTypeId );
+		return $this->connectionManager->getConnection( $type );
 	}
 
 }

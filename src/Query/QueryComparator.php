@@ -61,7 +61,7 @@ class QueryComparator {
 	}
 
 	/**
-	 * Gets an array with all suported comparator strings.
+	 * Gets an array with all supported comparator strings.
 	 * The string for SMW_CMP_EQ, which is an empty string, is not in this list.
 	 *
 	 * @since 1.5.3
@@ -155,8 +155,12 @@ class QueryComparator {
 
 	private function getEnabledComparators( $comparatorList, $strictComparators ) {
 
-		// Note: Comparators that contain other comparators at the beginning of the string need to be at beginning of the array.
+		// Note: Comparators that contain other comparators at the beginning of
+		// the string need to be at beginning of the array.
 		$comparators = array(
+			'like:' => SMW_CMP_PRIM_LIKE,
+			'nlike:' => SMW_CMP_PRIM_NLKE,
+			'in:' => SMW_CMP_IN,
 			'!~' => SMW_CMP_NLKE,
 			'<<' => SMW_CMP_LESS,
 			'>>' => SMW_CMP_GRTR,

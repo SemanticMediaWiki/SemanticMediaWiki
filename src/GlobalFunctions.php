@@ -3,8 +3,8 @@
 use SMW\CompatibilityMode;
 use SMW\NamespaceManager;
 use SMW\IntlNumberFormatter;
-use SMW\SPARQLStore\SparqlDBConnectionProvider;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Highlighter;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -107,40 +107,38 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 
 	$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
-	if (  $messages !== array() ) {
-
-		if ( $escape ) {
-			$messages = array_map( 'htmlspecialchars', $messages );
-		}
-
-		if ( count( $messages ) == 1 )  {
-			$errorList = $messages[0];
-		}
-		else {
-			foreach ( $messages as &$message ) {
-				$message = '<li>' . $message . '</li>';
-			}
-
-			$errorList = '<ul>' . implode( $seperator, $messages ) . '</ul>';
-		}
-
-		$errorList = str_replace(
-			array( '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>', '[',  ),
-			array( '&', '<', '>', ' ', '', '', '&#x005B;' ),
-			$errorList
-		);
-
-		// Type will be converted internally
-		$highlighter = SMW\Highlighter::factory( $type );
-		$highlighter->setContent( array (
-			'caption'   => null,
-			'content'   => $errorList
-		) );
-
-		return $highlighter->getHtml();
-	} else {
+	if ( $messages === array() ) {
 		return '';
 	}
+
+	if ( $escape ) {
+		$messages = array_map( 'htmlspecialchars', $messages );
+	}
+
+	if ( count( $messages ) == 1 )  {
+		$content = $messages[0];
+	} else {
+		foreach ( $messages as &$message ) {
+			$message = '<li>' . $message . '</li>';
+		}
+
+		$content = '<ul>' . implode( $seperator, $messages ) . '</ul>';
+	}
+
+	// Stop when a previous processing produced an error and it is expected to be
+	// added to a new tooltip (e.g {{#info {{#show ...}} }} ) instance
+	if ( Highlighter::hasHighlighterClass( $content, 'warning' ) ) {
+		return $content;
+	}
+
+	$highlighter = Highlighter::factory( $type );
+
+	$highlighter->setContent( array(
+		'caption'   => null,
+		'content'   => Highlighter::decode( $content )
+	) );
+
+	return $highlighter->getHtml();
 }
 
 /**
@@ -154,28 +152,26 @@ function &smwfGetStore() {
 }
 
 /**
- * @codeCoverageIgnore
+ * @since 3.0
  *
- * Get the SMWSparqlDatabase object to use for connecting to a SPARQL store,
- * or null if no SPARQL backend has been set up.
+ * @param string $namespace
+ * @param string $key
  *
- * Currently, it just returns one globally defined object, but the
- * infrastructure allows to set up load balancing and task-dependent use of
- * stores (e.g. using other stores for fast querying than for storing new
- * facts), somewhat similar to MediaWiki's DB implementation.
- *
- * @since 1.6
- *
- * @return SMWSparqlDatabase or null
+ * @return string
  */
-function &smwfGetSparqlDatabase() {
+function smwfCacheKey( $namespace, $key ) {
 
-	if ( !isset( $GLOBALS['smwgSparqlDatabaseMaster'] ) ) {
-		$connectionProvider = new SparqlDBConnectionProvider();
-		$GLOBALS['smwgSparqlDatabaseMaster'] = $connectionProvider->getConnection();
+	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'];
+
+	if ( $namespace{0} !== ':' ) {
+		$namespace = ':' . $namespace;
 	}
 
-	return $GLOBALS['smwgSparqlDatabaseMaster'];
+	if ( is_array( $key ) ) {
+		$key = json_encode( $key );
+	}
+
+	return $cachePrefix . $namespace . ':' . md5( $key );
 }
 
 /**

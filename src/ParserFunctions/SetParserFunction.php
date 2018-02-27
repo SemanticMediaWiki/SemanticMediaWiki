@@ -8,6 +8,7 @@ use SMW\MessageFormatter;
 use SMW\DataValueFactory;
 use SMW\ParserParameterProcessor;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\MediaWiki\StripMarkerDecoder;
 
 /**
  * Class that provides the {{#set}} parser function
@@ -40,6 +41,11 @@ class SetParserFunction {
 	private $templateRenderer;
 
 	/**
+	 * @var StripMarkerDecoder
+	 */
+	private $stripMarkerDecoder;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
@@ -50,6 +56,15 @@ class SetParserFunction {
 		$this->parserData = $parserData;
 		$this->messageFormatter = $messageFormatter;
 		$this->templateRenderer = $templateRenderer;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param StripMarkerDecoder $stripMarkerDecoder
+	 */
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
 	/**
@@ -78,6 +93,10 @@ class SetParserFunction {
 
 			foreach ( $values as $key => $value ) {
 
+				if ( $this->stripMarkerDecoder !== null ) {
+					$value = $this->stripMarkerDecoder->decode( $value );
+				}
+
 				$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 						$property,
 						$value,
@@ -85,7 +104,7 @@ class SetParserFunction {
 						$subject
 					);
 
-				if ( $this->parserData->canModifySemanticData() ) {
+				if ( $this->parserData->canUse() ) {
 					$this->parserData->addDataValue( $dataValue );
 				}
 

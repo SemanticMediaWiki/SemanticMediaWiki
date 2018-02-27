@@ -11,7 +11,9 @@ use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
 use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
 use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
 use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
+use SMW\PropertyAnnotators\RuleDefinitionPropertyAnnotator;
 use SMW\Store;
+use SMW\Rule\RuleDefinition;
 use Title;
 
 /**
@@ -46,6 +48,24 @@ class PropertyAnnotatorFactory {
 			$propertyAnnotator,
 			$redirectTargetFinder
 		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param RuleDefinition $ruleDefinition
+	 *
+	 * @return RuleDefinitionPropertyAnnotator
+	 */
+	public function newRuleDefinitionPropertyAnnotator( PropertyAnnotator $propertyAnnotator, RuleDefinition $ruleDefinition = null ) {
+
+		$ruleDefinitionPropertyAnnotator = new RuleDefinitionPropertyAnnotator(
+			$propertyAnnotator,
+			$ruleDefinition
+		);
+
+		return $ruleDefinitionPropertyAnnotator;
 	}
 
 	/**
@@ -141,21 +161,27 @@ class PropertyAnnotatorFactory {
 	 */
 	public function newCategoryPropertyAnnotator( PropertyAnnotator $propertyAnnotator, array $categories ) {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
 			$propertyAnnotator,
 			$categories
 		);
 
-		$categoryPropertyAnnotator->setShowHiddenCategoriesState(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowHiddenCategories' )
+		$categoryPropertyAnnotator->showHiddenCategories(
+			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_HID_CATS )
 		);
 
-		$categoryPropertyAnnotator->setCategoryInstanceUsageState(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgCategoriesAsInstances' )
+		$categoryPropertyAnnotator->useCategoryInstance(
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_INSTANCE )
 		);
 
-		$categoryPropertyAnnotator->setCategoryHierarchyUsageState(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgUseCategoryHierarchy' )
+		$categoryPropertyAnnotator->useCategoryHierarchy(
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_HIERARCHY )
+		);
+
+		$categoryPropertyAnnotator->useCategoryRedirect(
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_REDIRECT )
 		);
 
 		return $categoryPropertyAnnotator;

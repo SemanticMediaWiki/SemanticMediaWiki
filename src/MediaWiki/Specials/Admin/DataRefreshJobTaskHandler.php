@@ -9,7 +9,7 @@ use SMW\Store;
 use Html;
 use WebRequest;
 use Title;
-use Job;
+use SMW\MediaWiki\Jobs\JobBase;
 
 /**
  * @license GNU GPL v2+
@@ -18,11 +18,6 @@ use Job;
  * @author mwjames
  */
 class DataRefreshJobTaskHandler extends TaskHandler {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
 
 	/**
 	 * @var HtmlFormRenderer
@@ -42,14 +37,30 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Store $store
 	 * @param HtmlFormRenderer $htmlFormRenderer
 	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
+	public function __construct( HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
 		$this->htmlFormRenderer = $htmlFormRenderer;
 		$this->outputFormatter = $outputFormatter;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getSection() {
+		return self::SECTION_DATAREPAIR;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function hasAction() {
+		return true;
 	}
 
 	/**
@@ -69,7 +80,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	public function getHtml() {
 
 		$this->htmlFormRenderer
-			->addHeader( 'h3', $this->getMessageAsString( 'smw_smwadmin_datarefresh' ) )
+			->addHeader( 'h4', $this->getMessageAsString( 'smw_smwadmin_datarefresh' ) )
 			->addParagraph( $this->getMessageAsString( 'smw_smwadmin_datarefreshdocu' ) );
 
 		if ( !$this->isEnabledFeature( SMW_ADM_REFRESH ) ) {
@@ -116,18 +127,18 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		if ( !$this->isEnabledFeature( SMW_ADM_REFRESH ) ) {
-			return $this->outputFormatter->redirectToRootPage();
+			return '';
 		}
 
-		$refreshjob = $this->getRefreshJob();
 		$sure = $webRequest->getText( 'rfsure' );
-		$connection = $this->store->getConnection( 'mw.db' );
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $sure == 'yes' ) {
+			$refreshjob = $this->getRefreshJob();
 
 			if ( $refreshjob === null ) { // careful, there might be race conditions here
 
-				$newjob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+				$newjob = $applicationFactory->newJobFactory()->newByType(
 					'SMW\RefreshJob',
 					\SpecialPage::getTitleFor( 'SMWAdmin' ),
 					array( 'spos' => 1, 'prog' => 0, 'rc' => 2 )
@@ -137,16 +148,12 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 			}
 
 		} elseif ( $sure == 'stop' ) {
-
-			// delete (all) existing iteration jobs
-			$connection->delete(
-				'job',
-				array( 'job_cmd' => 'SMW\RefreshJob' ),
-				__METHOD__
-			);
+			$jobQueue = $applicationFactory->getJobQueue();
+			$jobQueue->disableCache();
+			$jobQueue->delete( 'SMW\RefreshJob' );
 		}
 
-		$this->outputFormatter->redirectToRootPage();
+		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 	}
 
 	private function getProgressBar( $prog ) {
@@ -167,19 +174,16 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 			return $this->refreshjob;
 		}
 
-		$this->refreshjob = null;
+		$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
-		$jobQueueLookup = ApplicationFactory::getInstance()->create(
-			'JobQueueLookup',
-			$this->store->getConnection( 'mw.db' )
-		);
+		// Pop and acknowledge the job to fetch progress details
+		// from the itself
+		$refreshJob = $jobQueue->pop( 'SMW\RefreshJob' );
 
-		$row = $jobQueueLookup->selectJobRowBy( 'SMW\RefreshJob' );
-
-		if ( $row !== null && $row !== false ) { // similar to Job::pop_type, but without deleting the job
-			$title = Title::makeTitleSafe( $row->job_namespace, $row->job_title );
-			$blob = (string)$row->job_params !== '' ? unserialize( $row->job_params ) : false;
-			$this->refreshjob = Job::factory( $row->job_cmd, $title, $blob, $row->job_id );
+		if ( $refreshJob instanceof JobBase ) {
+			$refreshJob->run();
+			$jobQueue->ack( $refreshJob );
+			$this->refreshjob = $refreshJob;
 		}
 
 		return $this->refreshjob;

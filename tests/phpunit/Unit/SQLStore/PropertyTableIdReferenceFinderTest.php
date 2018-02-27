@@ -35,19 +35,15 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testTryToFindAtLeastOneReferenceForId() {
+	public function testFindAtLeastOneActiveReferenceById() {
 
-		$tableDefinition = $connection = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$tableDefinition->expects( $this->atLeastOnce() )
 			->method( 'getFields' )
 			->will( $this->returnValue( array( 'o_id' => 42 ) ) );
-
-		$PropertyTableIdReferenceFinder = $connection = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -69,7 +65,9 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->tryToFindAtLeastOneReferenceForId( 42 );
+		$this->assertFalse(
+			$instance->findAtLeastOneActiveReferenceById( 42 )
+		);
 	}
 
 	public function testTryToFindAtLeastOneReferenceForProperty() {

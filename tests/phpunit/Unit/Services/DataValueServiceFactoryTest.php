@@ -59,6 +59,18 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance->newDataValueByType( 'foo', 'bar' );
 	}
 
+	public function testGetDataValueFactory() {
+
+		$instance = new DataValueServiceFactory(
+			$this->containerBuilder
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\DataValueFactory',
+			$instance->getDataValueFactory()
+		);
+	}
+
 	public function testGetValueParser() {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -154,6 +166,24 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->newExtraneousFunctionByName( 'Foo' );
+	}
+
+	public function testGetPropertyRestrictionExaminer() {
+
+		$propertyRestrictionExaminer = $this->getMockBuilder( '\SMW\PropertyRestrictionExaminer' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->containerBuilder->expects( $this->atLeastOnce() )
+			->method( 'singleton' )
+			->with( $this->stringContains( 'PropertyRestrictionExaminer' ) )
+			->will( $this->returnValue( $propertyRestrictionExaminer ) );
+
+		$instance = new DataValueServiceFactory(
+			$this->containerBuilder
+		);
+
+		$instance->getPropertyRestrictionExaminer();
 	}
 
 }

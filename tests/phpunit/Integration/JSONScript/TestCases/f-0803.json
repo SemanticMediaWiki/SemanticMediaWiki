@@ -1,5 +1,5 @@
 {
-	"description": "Test `format=template` with `sep`/`named args`/`template arguments` (#972, #2022)",
+	"description": "Test `format=template` with `sep`/`named args`/`template arguments` (#972, #2022, #2567)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -36,32 +36,44 @@
 			"contents": "{{#subobject: |@category=F0803 |Has text=123 |Has text=456 }} {{#subobject: |@category=F0803 |Has text=abc }}"
 		},
 		{
+			"page": "Example/F0803/2",
+			"contents": "[[Category:F0803]][[Has text::foo\n=bar]]"
+		},
+		{
 			"page": "Example/F0803/Q.1",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.2",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |template arguments=named |named args=yes |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |template arguments=named |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.3",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Legacy |mainlabel=main |template arguments=named |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Legacy |mainlabel=main |template arguments=named |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.4",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Named |mainlabel=main |template arguments=named |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Named |mainlabel=main |template arguments=named |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.5",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/NamedWithMainlabel |mainlabel=main |template arguments=named |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/NamedWithMainlabel |mainlabel=main |template arguments=named |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.6",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Numbered |mainlabel=main |template arguments=numbered |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Numbered |mainlabel=main |template arguments=numbered |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.7",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Numbered |mainlabel=- |template arguments=numbered |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Numbered |mainlabel=- |template arguments=numbered |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.8",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.9",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |named args=yes |sort=Has text |order=asc }}"
 		}
 	],
 	"tests": [
@@ -132,6 +144,26 @@
 			"assert-output": {
 				"to-contain": [
 					"123&#32;&#8226;&#32; 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (`valuesep` parameter omitted)",
+			"subject": "Example/F0803/Q.8",
+			"assert-output": {
+				"to-contain": [
+					"123, 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (#2567)",
+			"subject": "Example/F0803/Q.9",
+			"assert-output": {
+				"to-contain": [
+					"123, 456abcfoo\n=bar"
 				]
 			}
 		}

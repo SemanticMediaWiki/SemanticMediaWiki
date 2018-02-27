@@ -31,7 +31,20 @@ return array(
 	// delay due to missing stylesheet definitions at the time of the display
 	'ext.smw.style' => $moduleTemplate + array(
 		'styles' => array(
-			'smw/ext.smw.css'
+			'smw/ext.smw.css',
+			'smw/ext.smw.skin.css',
+			'smw/ext.smw.dropdown.css',
+			'smw/ext.smw.table.css',
+			'smw/ext.smw.tabs.css',
+			'smw/ext.smw.factbox.css'
+		),
+		'position' => 'top',
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	'ext.smw.special.style' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/special/ext.smw.special.css'
 		),
 		'position' => 'top',
 		'targets' => array( 'mobile', 'desktop' )
@@ -98,7 +111,8 @@ return array(
 		'dependencies' => array(
 			'ext.smw',
 			'mediawiki.util'
-		)
+		),
+		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	// API
@@ -178,32 +192,249 @@ return array(
 		'dependencies' => 'jquery.ui.autocomplete',
 		'targets' => array( 'mobile', 'desktop' )
 	),
+
+	// Purge resources
+	'ext.smw.purge' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.purge.js',
+		'messages' => array(
+			'smw-purge-failed'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// VTabs
+	'ext.smw.vtabs.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/util/ext.smw.vertical.tabs.css'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// VTabs
+	'ext.smw.vtabs' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/util/ext.smw.vertical.tabs.css'
+		),
+		'scripts' => array(
+			'smw/util/ext.smw.vertical.tabs.js'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// Modal
+	'ext.smw.modal.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/util/ext.smw.modal.css'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// Modal
+	'ext.smw.modal' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/util/ext.smw.modal.css'
+		),
+		'scripts' => array(
+			'smw/util/ext.smw.modal.js'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// Special:Search
+	'ext.smw.special.search' => $moduleTemplate + array(
+		'scripts' => 'smw/special/ext.smw.special.search.js',
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// Postproc resources
+	'ext.smw.postproc' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.postproc.js',
+		'position' => 'top',
+		'messages' => array(
+			'smw-postproc-queryref'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// https://github.com/ichord/Caret.js
+	'ext.jquery.caret' => $moduleTemplate + array(
+		'scripts' => 'jquery/jquery.caret.js',
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// https://github.com/ichord/At.js
+	'ext.jquery.atwho' => $moduleTemplate + array(
+		'scripts' => 'jquery/jquery.atwho.js',
+		'styles' => 'jquery/jquery.atwho.css',
+		'position' => 'top',
+		'dependencies' => array(
+			'ext.jquery.caret'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'ext.smw.suggester' => $moduleTemplate + array(
+		'scripts' => 'smw/suggester/ext.smw.suggester.js',
+		'position' => 'top',
+		'dependencies' => array(
+			'ext.smw',
+			'ext.jquery.atwho'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'ext.smw.suggester.textInput' => $moduleTemplate + array(
+		'scripts' => 'smw/suggester/ext.smw.suggester.textInput.js',
+		'position' => 'top',
+		'dependencies' => array(
+			'ext.smw',
+			'ext.smw.suggester'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'ext.smw.autocomplete.article' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.autocomplete.article.js',
+		'dependencies' => array(
+			'mediawiki.util',
+			'ext.jquery.autocomplete'
+		),
+		'position' => 'bottom',
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	'ext.smw.autocomplete.property' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.autocomplete.property.js',
+		'dependencies' => array(
+			'mediawiki.util',
+			'ext.jquery.autocomplete'
+		),
+		'position' => 'bottom',
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	// Special:Ask
+	'ext.smw.ask.styles' => $moduleTemplate + array(
+		'styles' => 'smw/special/ext.smw.special.ask.css',
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	// Special:Ask
 	'ext.smw.ask' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.ask.js',
-		'styles' => 'smw/special/ext.smw.special.ask.css',
 		'dependencies' => array(
 			'ext.smw.tooltip',
-			'ext.smw.style'
+			'ext.smw.style',
+			'ext.smw.ask.styles',
+			'ext.smw.suggester'
 		),
 		'messages' => array(
 			'smw-ask-delete',
-			'smw-ask-format-selection-help'
+			'smw-ask-format-selection-help',
+			'smw-ask-condition-change-info',
+			'smw-ask-format-change-info',
+			'smw-ask-format-export-info',
+			'smw-ask-format-help-link',
+			'smw-section-expand',
+			'smw-section-collapse'
 		),
-		'position' => 'top'
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// Table styles
+	'ext.smw.table.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/ext.smw.table.css'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
 	),
 
 	// Facts and browse
+	'ext.smw.browse.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/ext.smw.table.css',
+			'smw/special/ext.smw.special.browse.css',
+			'smw/special/ext.smw.special.browse.skin.css',
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	'ext.smw.browse' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.browse.js',
 		'dependencies' => array(
 			'mediawiki.api',
-			'ext.smw.style',
-			'ext.smw.autocomplete'
+			'ext.smw.style'
 		),
 		'position' => 'top',
 		'messages' => array(
 			'smw-browse-api-subject-serialization-invalid'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'ext.smw.browse.autocomplete' => $moduleTemplate + array(
+		'dependencies' => array(
+			'ext.smw.browse',
+			'ext.smw.autocomplete.article'
 		),
 		'targets' => array(
 			'mobile',
@@ -218,7 +449,9 @@ return array(
 			'mediawiki.api'
 		),
 		'messages' => array(
-			'smw-no-data-available'
+			'smw-no-data-available',
+			'smw-list-count',
+			'smw-list-count-from-cache'
 		),
 		'position' => 'top',
 		'targets' => array(
@@ -227,14 +460,105 @@ return array(
 		)
 	),
 
-	// Special:SearchByProperty
-	'ext.smw.property' => $moduleTemplate + array(
-		'scripts' => 'smw/special/ext.smw.special.property.js',
+	// Personal resource
+	'ext.smw.personal' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.personal.js',
 		'dependencies' => array(
-			'mediawiki.util',
-			'ext.jquery.autocomplete'
+			'ext.smw.tooltip',
+			'mediawiki.api'
 		),
-		'position' => 'bottom',
+		'messages' => array(
+			'smw-personal-jobqueue-watchlist'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// TableResultPrinter resource
+	'ext.smw.tableprinter' => $moduleTemplate + array(
+		'scripts' => array(
+			'smw/printer/ext.smw.tableprinter.js'
+		),
+		'styles'   => array(
+			'smw/printer/ext.smw.tableprinter.css',
+			'smw/printer/ext.smw.tableprinter.skin.css'
+		),
+		'dependencies' => array(
+			'onoi.dataTables',
+			'ext.smw.query'
+		),
+		'position' => 'top',
+		'messages' => array(
+			"smw-format-datatable-emptytable",
+			"smw-format-datatable-info",
+			"smw-format-datatable-infoempty",
+			"smw-format-datatable-infofiltered",
+			"smw-format-datatable-infothousands",
+			"smw-format-datatable-lengthmenu",
+			"smw-format-datatable-loadingrecords",
+			"smw-format-datatable-processing",
+			"smw-format-datatable-search",
+			"smw-format-datatable-zerorecords",
+			"smw-format-datatable-first",
+			"smw-format-datatable-last",
+			"smw-format-datatable-next",
+			"smw-format-datatable-previous",
+			"smw-format-datatable-sortascending",
+			"smw-format-datatable-sortdescending",
+			"smw-format-datatable-toolbar-export"
+		),
 		'targets' => array( 'mobile', 'desktop' )
-	)
+	),
+
+	// Deferred
+	'ext.smw.deferred.styles'  => $moduleTemplate + array(
+		'position' => 'top',
+		'styles'   => array(
+			'smw/deferred/ext.smw.deferred.css',
+			'smw/deferred/ext.smw.deferred.skin.css'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'ext.smw.deferred'  => $moduleTemplate + array(
+		'position' => 'top',
+		'styles'   => array(
+			'smw/deferred/ext.smw.deferred.css',
+			'smw/deferred/ext.smw.deferred.skin.css'
+		),
+		'scripts'  => array( 'smw/deferred/ext.smw.deferred.js' ),
+		'dependencies'  => array(
+			'mediawiki.api',
+			'mediawiki.api.parse',
+			'onoi.rangeslider'
+		),
+		'messages' => array(
+			'smw_result_noresults'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	// Page styles
+	'ext.smw.page.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/ext.smw.page.css',
+			'smw/ext.smw.table.css'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+
 );

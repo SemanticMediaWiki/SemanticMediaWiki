@@ -49,16 +49,20 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			$parameters['categories']
 		);
 
-		$categoryPropertyAnnotator->setShowHiddenCategoriesState(
-			$parameters['settings']['smwgShowHiddenCategories']
+		$categoryPropertyAnnotator->showHiddenCategories(
+			$parameters['settings']['showHiddenCategories']
 		);
 
-		$categoryPropertyAnnotator->setCategoryInstanceUsageState(
-			$parameters['settings']['smwgCategoriesAsInstances']
+		$categoryPropertyAnnotator->useCategoryInstance(
+			$parameters['settings']['categoriesAsInstances']
 		);
 
-		$categoryPropertyAnnotator->setCategoryHierarchyUsageState(
-			$parameters['settings']['smwgUseCategoryHierarchy']
+		$categoryPropertyAnnotator->useCategoryHierarchy(
+			$parameters['settings']['categoryHierarchy']
+		);
+
+		$categoryPropertyAnnotator->useCategoryRedirect(
+			false
 		);
 
 		$sortKeyPropertyAnnotator = new SortKeyPropertyAnnotator(
@@ -94,9 +98,9 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'categories' => array( 'Foo', 'Bar' ),
 				'sortkey'    => 'Lala',
 				'settings'   => array(
-					'smwgUseCategoryHierarchy'  => false,
-					'smwgCategoriesAsInstances' => true,
-					'smwgShowHiddenCategories'  => true,
+					'categoryHierarchy'  => false,
+					'categoriesAsInstances' => true,
+					'showHiddenCategories'  => true,
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE )
 				)
 			),

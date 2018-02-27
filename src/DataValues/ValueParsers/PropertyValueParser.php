@@ -4,6 +4,7 @@ namespace SMW\DataValues\ValueParsers;
 
 use SMWPropertyValue as PropertyValue;
 use SMWDataValue as DataValue;
+use SMW\Localizer;
 
 /**
  * @private
@@ -28,7 +29,12 @@ class PropertyValueParser implements ValueParser {
 	/**
 	 * @var boolean
 	 */
-	private $requireUpperCase = false;
+	private $isCapitalLinks = true;
+
+	/**
+	 * @var boolean
+	 */
+	private $reqCapitalizedFirstChar = false;
 
 	/**
 	 * @var boolean
@@ -54,16 +60,26 @@ class PropertyValueParser implements ValueParser {
 	}
 
 	/**
-	 * Enforce upper case for the first character that are used within the
-	 * property namespace in order to avoid invalid types when the $wgCapitalLinks
-	 * setting is disabled.
+	 * Corresponds to the $wgCapitalLinks setting
+	 *
+	 * @since 3.0
+	 *
+	 * @param boolean $isCapitalLinks
+	 */
+	public function isCapitalLinks( $isCapitalLinks ) {
+		$this->isCapitalLinks = (bool)$isCapitalLinks;
+	}
+
+	/**
+	 * Whether upper case for the first character is required or not in case of
+	 * $wgCapitalLinks = false.
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $requireUpperCase
+	 * @param boolean $reqCapitalizedFirstChar
 	 */
-	public function requireUpperCase( $requireUpperCase ) {
-		$this->requireUpperCase = (bool)$requireUpperCase;
+	public function reqCapitalizedFirstChar( $reqCapitalizedFirstChar ) {
+		$this->reqCapitalizedFirstChar = (bool)$reqCapitalizedFirstChar;
 	}
 
 	/**
@@ -95,14 +111,14 @@ class PropertyValueParser implements ValueParser {
 			htmlspecialchars_decode( $userValue )
 		);
 
-		if ( !$this->doCheckValidCharacters( $userValue ) ) {
-			return array( null, null );
+		if ( !$this->hasValidCharacters( $userValue ) ) {
+			return array( null, null, null );
 		}
 
 		return $this->getNormalizedValueFrom( $userValue );
 	}
 
-	private function doCheckValidCharacters( $value ) {
+	private function hasValidCharacters( $value ) {
 
 		if ( trim( $value ) === '' ) {
 			$this->errors[] = array( 'smw_emptystring' );
@@ -118,12 +134,21 @@ class PropertyValueParser implements ValueParser {
 			}
 		}
 
-		// #1567, only on a query context so that |sort=# are allowed
+		// #1567, Only allowed in connection with a query context (e.g sort=#)
 		if ( $invalidCharacter === '' && strpos( $value, '#' ) !== false && !$this->isQueryContext ) {
 			$invalidCharacter = '#';
 		}
 
 		if ( $invalidCharacter !== '' ) {
+
+			// Replace selected control chars otherwise the error display becomes
+			// unreadable
+			$invalidCharacter = str_replace(
+				[ "\r", "\n", ],
+				[ "CR", "LF" ],
+				$invalidCharacter
+			);
+
 			$this->errors[] = array( 'smw-datavalue-property-invalid-character', $value, $invalidCharacter );
 			return false;
 		}
@@ -140,27 +165,38 @@ class PropertyValueParser implements ValueParser {
 	private function getNormalizedValueFrom( $value ) {
 
 		$inverse = false;
-
-		if ( $this->requireUpperCase ) {
-			$value = $this->applyUpperCaseToLeadingCharacter( $value );
-		}
+		$capitalizedName = '';
 
 		// slightly normalise label
-		$propertyName = smwfNormalTitleText( ltrim( rtrim( $value, ' ]' ), ' [' ) );
+		$propertyName = $this->doNormalize(
+			ltrim( rtrim( $value, ' ]' ), ' [' ),
+			$this->isCapitalLinks
+		);
 
-		if ( ( $propertyName !== '' ) && ( $propertyName { 0 } == '-' ) ) { // property refers to an inverse
-			$propertyName = smwfNormalTitleText( (string)substr( $value, 1 ) );
+		if ( $this->reqCapitalizedFirstChar ) {
+			$capitalizedName = $this->doNormalize( $propertyName, true );
+		}
+
+		// property refers to an inverse
+		if ( ( $propertyName !== '' ) && ( $propertyName { 0 } == '-' ) ) {
+			$propertyName = $this->doNormalize( (string)substr( $value, 1 ), $this->isCapitalLinks );
 			/// NOTE The cast is necessary at least in PHP 5.3.3 to get string '' instead of boolean false.
 			/// NOTE It is necessary to normalize again here, since normalization may uppercase the first letter.
 			$inverse = true;
 		}
 
-		return array( $propertyName, $inverse );
+		return array( $propertyName, $capitalizedName, $inverse );
 	}
 
-	private function applyUpperCaseToLeadingCharacter( $value ) {
-		// ucfirst is not utf-8 safe hence the reliance on mb_strtoupper
-		return mb_strtoupper( mb_substr( $value, 0, 1 ) ) . mb_substr( $value, 1 );
+	private function doNormalize( $text, $isCapitalLinks ) {
+
+		$text = trim( $text );
+
+		if ( $isCapitalLinks ) {
+			$text = Localizer::getInstance()->getContentLanguage()->ucfirst( $text );
+		}
+
+		return str_replace( '_', ' ', $text );
 	}
 
 }

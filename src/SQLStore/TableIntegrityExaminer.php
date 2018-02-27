@@ -9,7 +9,9 @@ use SMW\SQLStore\TableBuilder\Table;
 use SMWDataItem as DataItem;
 use SMW\DIProperty;
 use SMWSql3SmwIds;
+use SMW\PropertyRegistry;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Utils\Collator;
 
 /**
  * @private
@@ -47,7 +49,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
 		$this->messageReporter = new NullMessageReporter();
-		$this->predefinedProperties = SMWSql3SmwIds::$special_ids;
+		$this->setPredefinedPropertyList( PropertyRegistry::getInstance()->getPropertyList() );
 	}
 
 	/**
@@ -64,10 +66,24 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array $predefinedProperties
+	 * @param array $propertyList
 	 */
-	public function setPredefinedProperties( array $predefinedProperties ) {
-		$this->predefinedProperties = $predefinedProperties;
+	public function setPredefinedPropertyList( array $propertyList ) {
+
+		$fixedPropertyList = SMWSql3SmwIds::$special_ids;
+		$predefinedPropertyList = [];
+
+		foreach ( $propertyList as $key => $val ) {
+			$predefinedPropertyList[$key] = null;
+
+			if ( isset( $fixedPropertyList[$key] ) ) {
+				$predefinedPropertyList[$key] = $fixedPropertyList[$key];
+			} elseif ( is_integer( $val ) ) {
+				$predefinedPropertyList[$key] = $val;
+			}
+		}
+
+		$this->predefinedPropertyList = $predefinedPropertyList;
 	}
 
 	/**
@@ -77,10 +93,10 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	 */
 	public function checkOnPostCreation( TableBuilder $tableBuilder ) {
 
-		$connection = $this->store->getConnection( DB_MASTER );
+		$this->checkOnPredefinedPropertyIndicesPostCreation();
 
-		$this->doCheckPredefinedPropertyIndices(
-			$connection
+		$this->checkOnActivitiesPostCreation(
+			$tableBuilder->getLog()
 		);
 
 		// Call out for RDBMS specific implementations
@@ -117,7 +133,9 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	 * is needed. At the same time, the entries in the DB make sure that DB-based
 	 * functions work as with all other properties.
 	 */
-	private function doCheckPredefinedPropertyIndices( $connection ) {
+	private function checkOnPredefinedPropertyIndicesPostCreation() {
+
+		$connection = $this->store->getConnection( DB_MASTER );
 
 		$this->messageReporter->reportMessage( "Checking predefined properties ...\n" );
 		$this->doCheckPredefinedPropertyBorder( $connection );
@@ -126,7 +144,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		// and we can update sortkeys by current language
 		$this->messageReporter->reportMessage( "   ... writing properties ...\n" );
 
-		foreach ( $this->predefinedProperties as $prop => $id ) {
+		foreach ( $this->predefinedPropertyList as $prop => $id ) {
 
 			try{
 				$property = new DIProperty( $prop );
@@ -139,42 +157,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 				continue;
 			}
 
-			$connection->replace(
-				SQLStore::ID_TABLE,
-				array( 'smw_id' ),
-				array(
-					'smw_id' => $id,
-					'smw_title' => $property->getKey(),
-					'smw_namespace' => SMW_NS_PROPERTY,
-					'smw_iw' => $this->store->getObjectIds()->getPropertyInterwiki( $property ),
-					'smw_subobject' => '',
-					'smw_sortkey' => $property->getCanonicalLabel()
-				),
-				__METHOD__
-			);
-
-			$row = $connection->selectRow(
-				SQLStore::PROPERTY_STATISTICS_TABLE,
-				array(
-					'p_id'
-				),
-				array( 'p_id' => $id ),
-				__METHOD__
-			);
-
-			// Entry is available therefore don't try to override the count value
-			if ( $row !== false ) {
-				continue;
-			}
-
-			$connection->insert(
-				SQLStore::PROPERTY_STATISTICS_TABLE,
-				array(
-					'p_id' => $id,
-					'usage_count' => 0
-				),
-				__METHOD__
-			);
+			$this->updatePredefinedProperty( $property, $id );
 		}
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
@@ -190,6 +173,10 @@ class TableIntegrityExaminer implements MessageReporterAware {
 			'smw_id',
 			'smw_iw=' . $connection->addQuotes( SMW_SQL3_SMWBORDERIW )
 		);
+
+		if ( $currentIdUpperbound === null ) {
+			return $this->messageReporter->reportMessage( "   ... done.\n" );
+		}
 
 		if ( $currentIdUpperbound !== false && $currentIdUpperbound->smw_id == $expectedIdUpperbound ) {
 			return $this->messageReporter->reportMessage( "   ... space for internal properties already allocated.\n" );
@@ -226,6 +213,111 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		}
 
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
+	}
+
+	private function checkOnActivitiesPostCreation( $processLog ) {
+
+		$connection = $this->store->getConnection( DB_MASTER );
+
+		$tableName = $connection->tableName( SQLStore::ID_TABLE );
+		$this->messageReporter->reportMessage( "Checking post creation activities ...\n" );
+
+		// #2429, copy smw_sortkey content to the new smw_sort field once
+		if ( isset( $processLog[$tableName]['smw_sort'] ) && $processLog[$tableName]['smw_sort'] === TableBuilder::PROC_FIELD_NEW ) {
+			$emptyField = 'smw_sort';
+			$copyField = 'smw_sortkey';
+
+			$this->messageReporter->reportMessage( "   Table " . SQLStore::ID_TABLE . " ...\n" );
+			$this->messageReporter->reportMessage( "   ... copying $copyField to $emptyField ... " );
+			$connection->query( "UPDATE $tableName SET $emptyField = $copyField", __METHOD__ );
+			$this->messageReporter->reportMessage( "done.\n" );
+		}
+
+		$this->messageReporter->reportMessage( "   ... done.\n" );
+	}
+
+	private function updatePredefinedProperty( $property, $id ) {
+
+		$connection = $this->store->getConnection( DB_MASTER );
+
+		// Try to find the ID for a non-fixed predefined property
+		if ( $id === null ) {
+			$row = $connection->selectRow(
+				SQLStore::ID_TABLE,
+				[
+					'smw_id'
+				],
+				[
+					'smw_title' => $property->getKey(),
+					'smw_namespace' => SMW_NS_PROPERTY,
+					'smw_subobject' => ''
+				],
+				__METHOD__
+			);
+
+			if ( $row !== false ) {
+				$id = $row->smw_id;
+			}
+		} else {
+			$label = $property->getCanonicalLabel();
+
+			$iw = $this->store->getObjectIds()->getPropertyInterwiki(
+				$property
+			);
+
+			$propertyTableHashes = $this->store->getObjectIds()->getPropertyTableHashes(
+				$id
+			);
+
+			if ( is_array( $propertyTableHashes ) && $propertyTableHashes !== [] ) {
+				$propertyTableHashes = serialize( $propertyTableHashes );
+			} else {
+				$propertyTableHashes = null;
+			}
+
+			$connection->replace(
+				SQLStore::ID_TABLE,
+				[ 'smw_id' ],
+				[
+					'smw_id' => $id,
+					'smw_title' => $property->getKey(),
+					'smw_namespace' => SMW_NS_PROPERTY,
+					'smw_iw' => $iw,
+					'smw_subobject' => '',
+					'smw_sortkey' => $label,
+					'smw_sort' => Collator::singleton()->getSortKey( $label ),
+					'smw_proptable_hash' => $propertyTableHashes
+				],
+				__METHOD__
+			);
+		}
+
+		if ( $id === null ) {
+			return;
+		}
+
+		$row = $connection->selectRow(
+			SQLStore::PROPERTY_STATISTICS_TABLE,
+			[ 'p_id' ],
+			[ 'p_id' => $id ],
+			__METHOD__
+		);
+
+		// Entry is available therefore don't try to override the count
+		// value
+		if ( $row !== false ) {
+			return;
+		}
+
+		$connection->insert(
+			SQLStore::PROPERTY_STATISTICS_TABLE,
+			[
+				'p_id' => $id,
+				'usage_count' => 0,
+				'null_count' => 0
+			],
+			__METHOD__
+		);
 	}
 
 }

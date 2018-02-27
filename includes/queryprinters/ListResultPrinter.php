@@ -127,7 +127,16 @@ class ListResultPrinter extends ResultPrinter {
 	public function getName() {
 		// Give grep a chance to find the usages:
 		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_template
-		return $this->getContext()->msg( 'smw_printername_' . $this->mFormat )->text();
+		return $this->msg( 'smw_printername_' . $this->mFormat )->text();
+	}
+
+	/**
+	 * @see ResultPrinter::isDeferrable
+	 *
+	 * {@inheritDoc}
+	 */
+	public function isDeferrable() {
+		return true;
 	}
 
 	/**
@@ -141,7 +150,7 @@ class ListResultPrinter extends ResultPrinter {
 	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
 		if ( $this->mFormat == 'template' && !$this->mTemplate ) {
 			$queryResult->addErrors( array(
-				$this->getContext()->msg( 'smw_notemplategiven' )->inContentLanguage()->text()
+				$this->msg( 'smw_notemplategiven' )->inContentLanguage()->text()
 			) );
 			return '';
 		}
@@ -230,7 +239,7 @@ class ListResultPrinter extends ResultPrinter {
 		if ( $this->params['format'] === 'list' && $this->params['sep'] === ',' ) {
 			// Make default list ", , , and "
 			$this->listsep = ', ';
-			$this->finallistsep = $this->getContext()->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
+			$this->finallistsep = $this->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
 		} elseif ( $this->params['format'] !== 'template' && $this->params['sep'] === '' ) {
 			$this->listsep = ', ';
 			$this->finallistsep = $this->listsep;
@@ -239,6 +248,12 @@ class ListResultPrinter extends ResultPrinter {
 			$this->listsep = str_replace( '_', ' ', $this->params['sep'] );
 			$this->finallistsep = $this->listsep;
 		} else {
+			$this->listsep = '';
+			$this->finallistsep = '';
+		}
+
+		// #2329
+		if ( $this->params['format'] === 'template' && !$this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
 			$this->listsep = '';
 			$this->finallistsep = '';
 		}
@@ -396,6 +411,9 @@ class ListResultPrinter extends ResultPrinter {
 	 */
 	protected function addTemplateContentFields( $row ) {
 
+		// In case the sep is used as outer sep, switch to the valuesep
+		$sep = $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) && $this->mFormat === 'template' ? $this->params['valuesep'] : $this->params['sep'];
+
 		foreach ( $row as $i => $field ) {
 
 			$value = '';
@@ -417,7 +435,7 @@ class ListResultPrinter extends ResultPrinter {
 			}
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) ) ) !== false ) {
-				$value .= $value === '' ? $text : $this->params['sep'] . ' ' . $text;
+				$value .= $value === '' ? $text : $sep . ' ' . $text;
 			}
 
 			$this->templateRenderer->addField( $fieldName, $value );
@@ -467,61 +485,75 @@ class ListResultPrinter extends ResultPrinter {
 		return $this->mFormat != 'ul' && $this->mFormat != 'ol';
 	}
 
-	public function getParameters() {
-		$params = parent::getParameters();
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function supportsRecursiveAnnotation() {
+		return true;
+	}
 
-		$params['sep'] = array(
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
+
+		$definitions['sep'] = [
 			'message' => 'smw-paramdesc-sep',
-			'default' => '',
-		);
+			'default' => $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ? '' : ',',
+		];
 
-		$params['template'] = array(
+		if ( $this->mFormat === 'template' && $this->isEnabledFeature( SMW_RF_TEMPLATE_OUTSEP ) ) {
+			$definitions['valuesep'] = [
+				'message' => 'smw-paramdesc-sep',
+				'default' => ',',
+			];
+		}
+
+		$definitions['template'] = [
 			'message' => 'smw-paramdesc-template',
 			'default' => '',
-		);
+		];
 
-		$params['template arguments'] = array(
+		$definitions['template arguments'] = [
 			'message' => 'smw-paramdesc-template-arguments',
 			'default' => '',
-			'values' => array( 'numbered', 'named', 'legacy' ),
-		);
+			'values' => [ 'numbered', 'named', 'legacy' ],
+		];
 
-		$params['named args'] = array(
+		$definitions['named args'] = [
 			'type' => 'boolean',
 			'message' => 'smw-paramdesc-named_args',
 			'default' => false,
-		);
+		];
 
 		if ( !$this->isPlainlist() ) {
-			$params['columns'] = array(
+			$definitions['columns'] = [
 				'type' => 'integer',
 				'message' => 'smw-paramdesc-columns',
 				'default' => 1,
-				'range' => array( 1, 10 ),
-			);
+				'range' => [ 1, 10 ],
+			];
 		}
 
-		$params['userparam'] = array(
+		$definitions['userparam'] = [
 			'message' => 'smw-paramdesc-userparam',
 			'default' => '',
-		);
+		];
 
-		$params['introtemplate'] = array(
+		$definitions['introtemplate'] = [
 			'message' => 'smw-paramdesc-introtemplate',
 			'default' => '',
-		);
+		];
 
-		$params['outrotemplate'] = array(
+		$definitions['outrotemplate'] = [
 			'message' => 'smw-paramdesc-outrotemplate',
 			'default' => '',
-		);
+		];
 
-		$params['import-annotation'] = array(
-			'message' => 'smw-paramdesc-import-annotation',
-			'type' => 'boolean',
-			'default' => false
-		);
-
-		return $params;
+		return $definitions;
 	}
 }

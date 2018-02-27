@@ -20,6 +20,8 @@ class MySQLTableBuilder extends TableBuilder {
 	 */
 	public function getStandardFieldType( $fieldType ) {
 
+		$charLongLength = FieldType::CHAR_LONG_LENGTH;
+
 		$fieldTypes = array(
 			 // like page_id in MW page table
 			'id'         => 'INT(8) UNSIGNED',
@@ -38,7 +40,9 @@ class MySQLTableBuilder extends TableBuilder {
 			'boolean'    => 'TINYINT(1)',
 			'double'     => 'DOUBLE',
 			'integer'    => 'INT(8)',
+			'char long'  => "VARBINARY($charLongLength)",
 			'char nocase'      => 'VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci',
+			'char long nocase' => "VARCHAR($charLongLength) CHARSET utf8 COLLATE utf8_general_ci",
 			'usage count'      => 'INT(8) UNSIGNED',
 			'integer unsigned' => 'INT(8) UNSIGNED'
 		);
@@ -164,10 +168,19 @@ class MySQLTableBuilder extends TableBuilder {
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
 
+		if ( !isset( $this->processLog[$tableName] ) ) {
+			$this->processLog[$tableName] = array();
+		}
+
 		$fieldType = $this->getStandardFieldType( $fieldType );
+		$default = '';
+
+		if ( isset( $tableOptions['defaults'][$fieldName] ) ) {
+			$default = "DEFAULT '" . $tableOptions['defaults'][$fieldName] . "'";
+		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->doCreateField( $tableName, $fieldName, $position, $fieldType );
+			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->doUpdateFieldType( $tableName, $fieldName, $position, $currentFields[$fieldName], $fieldType );
 		} else {
@@ -175,14 +188,25 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType ) {
+	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
+
+		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
+
 		$this->reportMessage( "   ... creating field $fieldName ... " );
-		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $position", __METHOD__ );
+		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $default $position", __METHOD__ );
 		$this->reportMessage( "done.\n" );
 	}
 
 	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ) {
-		$this->reportMessage( "   ... changing type of field $fieldName from '$oldFieldType' to '$newFieldType' ... " );
+
+		// Continue to alter the type but silence the output since we cannot get
+		// any better information from MySQL about the types hence we a hack the
+		// message
+		if ( strpos( $oldFieldType, 'binary' ) !== false && strpos( $newFieldType, 'CHARSET utf8 COLLATE utf8_general_ci' ) !== false ) {
+			$this->reportMessage( "   ... changing to a CHARSET utf8 field type ... " );
+		} else {
+			$this->reportMessage( "   ... changing type of field $fieldName from '$oldFieldType' to '$newFieldType' ... " );
+		}
 
 		// To avoid Error: 1068 Multiple primary key defined when a PRIMARY is involved
 		if ( strpos( $newFieldType, 'AUTO_INCREMENT' ) !== false ) {
@@ -213,15 +237,15 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndicies( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
 
-		$indicies = $indexOptions['indicies'];
+		$indices = $indexOptions['indices'];
 
-		// First remove possible obsolete indicies
-		$this->doDropObsoleteIndicies( $tableName, $indicies );
+		// First remove possible obsolete indices
+		$this->doDropObsoleteIndices( $tableName, $indices );
 
 		// Add new indexes.
-		foreach ( $indicies as $indexName => $index ) {
+		foreach ( $indices as $indexName => $index ) {
 			// If the index is an array, it contains the column
 			// name as first element, and index type as second one.
 			if ( is_array( $index ) ) {
@@ -236,19 +260,31 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ) {
 
 		$tableName = $this->connection->tableName( $tableName );
-		$currentIndicies = $this->getIndexInfo( $tableName );
+		$currentIndices = $this->getIndexInfo( $tableName );
 
-		foreach ( $currentIndicies as $indexName => $indexColumn ) {
-			// Indicies may contain something like array( 'id', 'UNIQUE INDEX' )
-			$id = $this->recursive_array_search( $indexColumn, $indicies );
+		$idx = [];
+
+		// #2717
+		// The index info doesn't return length information (...idx1(200),idx2...)
+		// for an index hence to avoid a constant remove/create cycle we eliminate
+		// the length information from the temporary mirror when comparing new and
+		// old; of course we won't detect length changes!
+		foreach ( $indices as $k => $columns ) {
+			$idx[$k] = preg_replace("/\([^)]+\)/", "", $columns );
+		}
+
+		foreach ( $currentIndices as $indexName => $indexColumn ) {
+			// Indices may contain something like array( 'id', 'UNIQUE INDEX' )
+			$id = $this->recursive_array_search( $indexColumn, $idx );
 			if ( $id !== false || $indexName == 'PRIMARY' ) {
 				$this->reportMessage( "   ... index $indexColumn is fine.\n" );
 
 				if ( $id !== false ) {
-					unset( $indicies[$id] );
+					unset( $indices[$id] );
+					unset( $idx[$id] );
 				}
 
 			} else { // Duplicate or unrequired index.
@@ -327,6 +363,30 @@ class MySQLTableBuilder extends TableBuilder {
 	 */
 	protected function doDropTable( $tableName ) {
 		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function doOptimize( $tableName ) {
+
+		$this->reportMessage( "Checking table $tableName ...\n" );
+
+		// https://dev.mysql.com/doc/refman/5.7/en/analyze-table.html
+		// Performs a key distribution analysis and stores the distribution for
+		// the named table or tables
+		$this->reportMessage( "   ... analyze" );
+		$this->connection->query( 'ANALYZE TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+
+		// https://dev.mysql.com/doc/refman/5.7/en/optimize-table.html
+		// Reorganizes the physical storage of table data and associated index data,
+		// to reduce storage space and improve I/O efficiency
+		$this->reportMessage( ", optimize " );
+		$this->connection->query( 'OPTIMIZE TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+
+		$this->reportMessage( "done.\n" );
 	}
 
 }

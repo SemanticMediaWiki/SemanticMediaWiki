@@ -64,18 +64,21 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
 		$allowedValues = $propertySpecificationLookup->getAllowedValuesBy( $property );
-		$allowedListValues = $propertySpecificationLookup->getAllowedListValueBy( $property );
+
+		$allowedListValues = $propertySpecificationLookup->getAllowedListValues(
+			$property
+		);
 
 		if ( $allowedValues === array() && $allowedListValues === array() ) {
 			return $this->hasConstraintViolation;
 		}
 
-		$errorList = '';
+		$allowedValueList = array();
 
-		$isAllowed = $this->checkOnConstraintViolation(
+		$isAllowed = $this->checkConstraintViolation(
 			$dataValue,
 			$allowedValues,
-			$errorList
+			$allowedValueList
 		);
 
 		if ( !$isAllowed ) {
@@ -84,31 +87,43 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 					$allowedList->getString()
 				);
 			}
+
+			// On assignments like [Foo => Foo] (* Foo) or [Foo => Bar] (* Foo|Bar)
+			// use the key as comparison entity
+			$allowedValues = array_keys( $allowedValues );
 		}
 
-		$isAllowed = $this->checkOnConstraintViolation(
+		$isAllowed = $this->checkConstraintViolation(
 			$dataValue,
 			$allowedValues,
-			$errorList
+			$allowedValueList
 		);
 
-		if ( $isAllowed === false ) {
-
-			$dataValue->addErrorMsg(
-				array(
-					'smw_notinenum',
-					$dataValue->getWikiValue(),
-					$errorList,
-					$property->getLabel()
-				),
-				Message::PARSE
-			);
-
-			$this->hasConstraintViolation = true;
+		if ( $isAllowed === true ) {
+			return;
 		}
+
+		$count = count( $allowedValueList );
+
+		// Only the first 10 values otherwise the list may become too long
+		$allowedValueList = implode( ', ', array_slice(
+			array_keys( $allowedValueList ), 0 , 10 )
+		);
+
+		$dataValue->addErrorMsg(
+			array(
+				'smw_notinenum',
+				$dataValue->getWikiValue(),
+				$allowedValueList . ( $count > 10 ? ', ...' : '' ),
+				$property->getLabel()
+			),
+			Message::PARSE
+		);
+
+		$this->hasConstraintViolation = true;
 	}
 
-	private function checkOnConstraintViolation( $dataValue, $allowedValues, &$errorList = '' ) {
+	private function checkConstraintViolation( $dataValue, $allowedValues, &$allowedValueList ) {
 
 		if ( !is_array( $allowedValues ) ) {
 			return true;
@@ -138,7 +153,8 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 				$isAllowed = true;
 				break;
 			} else {
-				$errorList .= ( $errorList !== '' ? ', ' : '' ) . $allowedValue->getString();
+				// Filter dups
+				$allowedValueList[$allowedValue->getString()] = true;
 			}
 		}
 

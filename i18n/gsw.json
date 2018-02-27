@@ -109,8 +109,8 @@
 	"smw_purge": "nej lade",
 	"types": "Datetype",
 	"smw_types_docu": "Die Datetype chenne Eigeschafte zuegwise wäre. E jede Datetyp het e eigeni Syte, wu gnaueri Informatione druf chenne yytrage wäre.",
-	"semanticstatistics": "Statischtik iber semantischi Date",
-	"smw_semstats_text": "In däm Wiki {{PLURAL:$1|isch '''1''' Wert|sin '''$1''' Wärt}} fir insgsamt '''$2''' [[Special:Properties|{{PLURAL:$2|Eigeschaft|verschideni Eigeschafte}}]] yygee wore. '''$3''' {{PLURAL:$3|Eigeschaft het|Eigeschafte hän}} e eigeni Syte un dr gwischt Datetyp isch fir '''$4''' vu däne aagee wore. E paar vo dr Eigeschafte, wu s het, chenne [[Special:UnusedProperties|verwaisti Eigeschafte]] syy. Eigeschafte, wu no ne Syte sott aagleit wäre derfir, sin in dr [[Special:WantedProperties|Lischt vu dr gwinschte Eigeschafte]] ufgfiert.",
+
+
 	"smw_uri_doc": "Dr URI-Ufleser setzt d Empfählige »[$1 W3C TAG finding on httpRange-14]« um.\nÄr sorgt defir, ass Mänsche nit zue Netzsyte wäre.",
 	"ask": "Semantischi Suechi",
 	"smw_ask_sortby": "Sortiere no Spalte (optional)",

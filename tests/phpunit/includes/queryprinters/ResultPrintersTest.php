@@ -78,7 +78,7 @@ class ResultPrintersTest extends QueryPrinterTestCase {
 	 * @param \SMWResultPrinter $printer
 	 */
 	public function testGetParamDefinitions( ResultPrinter $printer ) {
-		$params = $printer->getParamDefinitions( SMWQueryProcessor::getParameters() );
+		$params = $printer->getParamDefinitions( SMWQueryProcessor::getParameters( null, $printer ) );
 
 		$params = ParamDefinition::getCleanDefinitions( $params );
 

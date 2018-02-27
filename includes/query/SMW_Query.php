@@ -55,6 +55,11 @@ class SMWQuery implements QueryContext {
 	const PROC_CONTEXT = 'proc.context';
 
 	/**
+	 * Status code information
+	 */
+	const PROC_STATUS_CODE = 'proc.status.code';
+
+	/**
 	 * The processing parameters
 	 */
 	const OPT_PARAMETERS = 'proc.parameters';
@@ -67,7 +72,7 @@ class SMWQuery implements QueryContext {
 	/**
 	 * Indicates no dependency trace
 	 */
-	const NO_DEP_TRACE = 'no.dep.trace';
+	const NO_DEPENDENCY_TRACE = 'no.dependency.trace';
 
 	public $sort = false;
 	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
@@ -121,7 +126,7 @@ class SMWQuery implements QueryContext {
 
 		// stating whether this query runs in an inline context; used to
 		// determine proper default parameters (e.g. the default limit)
-		if ( $context === self::INLINE_QUERY ) {
+		if ( $context === self::INLINE_QUERY || $context === self::DEFERRED_QUERY ) {
 			$inline = true;
 		}
 
@@ -497,7 +502,7 @@ class SMWQuery implements QueryContext {
 	 * @return string
 	 */
 	public function getAsString() {
-		return QueryStringifier::get( $this );
+		return QueryStringifier::toString( $this );
 	}
 
 	/**

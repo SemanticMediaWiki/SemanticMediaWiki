@@ -22,32 +22,129 @@ use Title;
  */
 class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 
+	private $store;
 	private $factory;
 
 	protected function setUp() {
 
-		$propertyStatisticsTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsTable' )
+		$entityManager = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$entityManager->expects( $this->any() )
+			->method( 'findAllEntitiesThatMatch' )
+			->will( $this->returnValue( [] ) );
+
+		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $entityManager ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
+
+		$propertyTableRowDiffer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowDiffer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableRowDiffer->expects( $this->any() )
+			->method( 'computeTableRowDiff' )
+			->will( $this->returnValue( [ [], [], [] ] ) );
+
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subobjectListFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SubobjectListFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subobjectListFinder->expects( $this->any() )
+			->method( 'find' )
+			->will( $this->returnValue( [] ) );
+
+		$changePropListener = $this->getMockBuilder( '\SMW\ChangePropListener' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeOp->expects( $this->any() )
+			->method( 'newChangeDiff' )
+			->will( $this->returnValue( $changeDiff ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getChangedEntityIdSummaryList' )
+			->will( $this->returnValue( [] ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getDataOps' )
+			->will( $this->returnValue( [] ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( [] ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getOrderedDiffByTable' )
+			->will( $this->returnValue( [] ) );
 
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->factory->expects( $this->any() )
-			->method( 'newPropertyStatisticsTable' )
-			->will( $this->returnValue( $propertyStatisticsTable ) );
+			->method( 'newPropertyStatisticsStore' )
+			->will( $this->returnValue( $propertyStatisticsStore ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newHierarchyLookup' )
+			->will( $this->returnValue( $hierarchyLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSubobjectListFinder' )
+			->will( $this->returnValue( $subobjectListFinder ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newChangePropListener' )
+			->will( $this->returnValue( $changePropListener ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertyTableRowDiffer' )
+			->will( $this->returnValue( $propertyTableRowDiffer ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSemanticDataLookup' )
+			->will( $this->returnValue( $semanticDataLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newChangeOp' )
+			->will( $this->returnValue( $changeOp ) );
 	}
 
 	public function testCanConstruct() {
 
-		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMWSQLStore3Writers',
-			new SMWSQLStore3Writers( $parentStore, $this->factory )
+			new SMWSQLStore3Writers( $this->store, $this->factory )
 		);
 	}
 
@@ -64,6 +161,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$objectIdGenerator->expects( $this->any() )
+			->method( 'findAllEntitiesThatMatch' )
+			->will( $this->returnValue( [] ) );
+
 		$objectIdGenerator->expects( $this->once() )
 			->method( 'getSMWPageIDandSort' )
 			->will( $this->returnValue( 0 ) );
@@ -72,17 +173,9 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'makeSMWPageID' )
 			->will( $this->returnValue( 0 ) );
 
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'getPropertyTableHashes' )
-			->will( $this->returnValue( array() ) );
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -129,6 +222,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$objectIdGenerator->expects( $this->any() )
+			->method( 'findAllEntitiesThatMatch' )
+			->will( $this->returnValue( [] ) );
+
 		$objectIdGenerator->expects( $this->once() )
 			->method( 'getSMWPageIDandSort' )
 			->will( $this->returnValue( 0 ) );
@@ -137,21 +234,9 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'makeSMWPageID' )
 			->will( $this->returnValue( 0 ) );
 
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'getPropertyTableHashes' )
-			->will( $this->returnValue( array() ) );
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
-
-		$database->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -213,10 +298,6 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -280,10 +361,6 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$database->expects( $this->atLeastOnce() )
 			->method( 'endAtomicTransaction' );
-
-		$database->expects( $this->once() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()

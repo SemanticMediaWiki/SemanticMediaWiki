@@ -33,7 +33,7 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 		$instance->addError( 'abc' );
 
 		$this->assertEquals(
-			array( 'abc' ),
+			array( '[2,"abc"]' ),
 			$instance->getErrors()
 		);
 
@@ -45,21 +45,21 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testconstructDescriptionForPropertyObjectValue() {
+	public function testDescriptionForPropertyObjectValue() {
 
 		$instance = new DescriptionProcessor();
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Description',
-			$instance->constructDescriptionForPropertyObjectValue( new DIProperty( 'Foo' ), 'bar' )
+			$instance->newDescriptionForPropertyObjectValue( new DIProperty( 'Foo' ), 'bar' )
 		);
 	}
 
-	public function testconstructDescriptionForWikiPageValueChunk() {
+	public function testDescriptionForWikiPageValueChunk() {
 
 		$instance = new DescriptionProcessor();
 
-		$valueDescription = $instance->constructDescriptionForWikiPageValueChunk( 'bar' );
+		$valueDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ValueDescription',
@@ -67,16 +67,16 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			new DIWikiPage( 'Bar', NS_MAIN ),
+			new DIWikiPage( 'bar', NS_MAIN ),
 			$valueDescription->getDataItem()
 		);
 	}
 
-	public function testconstructDescriptionForWikiPageValueChunkOnApproximateValue() {
+	public function testnewDescriptionForWikiPageValueChunkOnApproximateValue() {
 
 		$instance = new DescriptionProcessor();
 
-		$valueDescription = $instance->constructDescriptionForWikiPageValueChunk( '~bar' );
+		$valueDescription = $instance->newDescriptionForWikiPageValueChunk( '~bar' );
 
 		$this->assertEquals(
 			new DIWikiPage( 'bar', NS_MAIN ),
@@ -88,16 +88,16 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DescriptionProcessor();
 
-		$currentDescription = $instance->constructDescriptionForWikiPageValueChunk( 'bar' );
+		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
-		$newDescription = $instance->constructDescriptionForPropertyObjectValue(
+		$newDescription = $instance->newDescriptionForPropertyObjectValue(
 			new DIProperty( 'Foo' ),
 			'foobar'
 		);
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Disjunction',
-			$instance->constructDisjunctiveCompoundDescriptionFrom( $currentDescription, $newDescription )
+			$instance->asOr( $currentDescription, $newDescription )
 		);
 	}
 
@@ -107,14 +107,14 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$currentDescription = new Conjunction();
 
-		$newDescription = $instance->constructDescriptionForPropertyObjectValue(
+		$newDescription = $instance->newDescriptionForPropertyObjectValue(
 			new DIProperty( 'Foo' ),
 			'foobar'
 		);
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Disjunction',
-			$instance->constructDisjunctiveCompoundDescriptionFrom( $currentDescription, $newDescription )
+			$instance->asOr( $currentDescription, $newDescription )
 		);
 	}
 
@@ -124,14 +124,14 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$currentDescription = new Disjunction();
 
-		$newDescription = $instance->constructDescriptionForPropertyObjectValue(
+		$newDescription = $instance->newDescriptionForPropertyObjectValue(
 			new DIProperty( 'Foo' ),
 			'foobar'
 		);
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Disjunction',
-			$instance->constructDisjunctiveCompoundDescriptionFrom( $currentDescription, $newDescription )
+			$instance->asOr( $currentDescription, $newDescription )
 		);
 	}
 
@@ -139,11 +139,11 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DescriptionProcessor();
 
-		$currentDescription = $instance->constructDescriptionForWikiPageValueChunk( 'bar' );
+		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ValueDescription',
-			$instance->constructDisjunctiveCompoundDescriptionFrom( $currentDescription, null )
+			$instance->asOr( $currentDescription, null )
 		);
 	}
 
@@ -151,11 +151,11 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DescriptionProcessor();
 
-		$newDescription = $instance->constructDescriptionForWikiPageValueChunk( 'bar' );
+		$newDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ValueDescription',
-			$instance->constructDisjunctiveCompoundDescriptionFrom( null, $newDescription )
+			$instance->asOr( null, $newDescription )
 		);
 	}
 
@@ -163,16 +163,16 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DescriptionProcessor();
 
-		$currentDescription = $instance->constructDescriptionForWikiPageValueChunk( 'bar' );
+		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
-		$newDescription = $instance->constructDescriptionForPropertyObjectValue(
+		$newDescription = $instance->newDescriptionForPropertyObjectValue(
 			new DIProperty( 'Foo' ),
 			'foobar'
 		);
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Conjunction',
-			$instance->constructConjunctiveCompoundDescriptionFrom( $currentDescription, $newDescription )
+			$instance->asAnd( $currentDescription, $newDescription )
 		);
 	}
 
@@ -182,14 +182,14 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$currentDescription = new Conjunction();
 
-		$newDescription = $instance->constructDescriptionForPropertyObjectValue(
+		$newDescription = $instance->newDescriptionForPropertyObjectValue(
 			new DIProperty( 'Foo' ),
 			'foobar'
 		);
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Conjunction',
-			$instance->constructConjunctiveCompoundDescriptionFrom( $currentDescription, $newDescription )
+			$instance->asAnd( $currentDescription, $newDescription )
 		);
 	}
 
@@ -199,14 +199,14 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$currentDescription = new Disjunction();
 
-		$newDescription = $instance->constructDescriptionForPropertyObjectValue(
+		$newDescription = $instance->newDescriptionForPropertyObjectValue(
 			new DIProperty( 'Foo' ),
 			'foobar'
 		);
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Conjunction',
-			$instance->constructConjunctiveCompoundDescriptionFrom( $currentDescription, $newDescription )
+			$instance->asAnd( $currentDescription, $newDescription )
 		);
 	}
 
@@ -214,11 +214,11 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DescriptionProcessor();
 
-		$currentDescription = $instance->constructDescriptionForWikiPageValueChunk( 'bar' );
+		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ValueDescription',
-			$instance->constructConjunctiveCompoundDescriptionFrom( $currentDescription, null )
+			$instance->asAnd( $currentDescription, null )
 		);
 	}
 
@@ -226,11 +226,11 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DescriptionProcessor();
 
-		$newDescription = $instance->constructDescriptionForWikiPageValueChunk( 'bar' );
+		$newDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ValueDescription',
-			$instance->constructConjunctiveCompoundDescriptionFrom( null, $newDescription )
+			$instance->asAnd( null, $newDescription )
 		);
 	}
 
@@ -244,14 +244,14 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$currentDescription = new Disjunction();
 
-		$newDescription = $instance->constructDescriptionForPropertyObjectValue(
+		$newDescription = $instance->newDescriptionForPropertyObjectValue(
 			new DIProperty( 'Foo' ),
 			'foobar'
 		);
 
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Conjunction',
-			$instance->constructConjunctiveCompoundDescriptionFrom( $currentDescription, $newDescription )
+			$instance->asAnd( $currentDescription, $newDescription )
 		);
 	}
 

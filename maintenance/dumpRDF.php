@@ -70,6 +70,8 @@ class DumpRdf extends \Maintenance {
 	 */
 	protected function addDefaultParams() {
 
+		parent::addDefaultParams();
+
 		$this->addOption( 'd', '<delay> Wait for this many milliseconds after processing, useful for limiting server load.', false, true );
 		$this->addOption( 'e', '<each> after how many exported entities should the process take a nap.', false, true );
 		$this->addOption( 'file', '<file> output file.', false, true, 'o' );

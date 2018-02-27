@@ -7,7 +7,7 @@ use SMW\DIProperty;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Store\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyStatisticsStore;
 use SMWDIError as DIError;
 use SMWRequestOptions as RequestOptions;
 
@@ -93,7 +93,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	private function selectPropertiesFromTable() {
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = array( 'ORDER BY' => 'smw_sortkey' );
+		$options = array( 'ORDER BY' => 'smw_sort' );
 
 		if ( $this->requestOptions->limit > 0 ) {
 			$options['LIMIT'] = $this->requestOptions->limit;

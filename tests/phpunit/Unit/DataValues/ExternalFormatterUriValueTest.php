@@ -53,7 +53,7 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getFormattedUriWith( $replacement )
+			$instance->getUriWithPlaceholderSubstitution( $replacement )
 		);
 	}
 
@@ -147,6 +147,13 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 			'urn:oasis:names:specification:docbook:dtd:xml:$1',
 			'foo',
 			'urn:oasis:names:specification:docbook:dtd:xml:foo'
+		);
+
+		// https://phabricator.wikimedia.org/T160281
+		$provider[] = array(
+			'http://foo/bar/$1',
+			'W%D6LLEKLA01',
+			'http://foo/bar/W%D6LLEKLA01'
 		);
 
 		return $provider;

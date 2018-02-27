@@ -47,7 +47,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$circularReferenceGuard->expects( $this->atLeastOnce() )
-			->method( 'isCircularByRecursionFor' )
+			->method( 'isCircular' )
 			->will( $this->returnValue( false ) );
 
 		$instance = new RedirectTargetLookup(
@@ -73,7 +73,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$circularReferenceGuard->expects( $this->never() )
-			->method( 'isCircularByRecursionFor' );
+			->method( 'isCircular' );
 
 		$instance = new RedirectTargetLookup(
 			$store,
@@ -98,7 +98,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$circularReferenceGuard->expects( $this->atLeastOnce() )
-			->method( 'isCircularByRecursionFor' )
+			->method( 'isCircular' )
 			->will( $this->returnValue( true ) );
 
 		$instance = new RedirectTargetLookup(

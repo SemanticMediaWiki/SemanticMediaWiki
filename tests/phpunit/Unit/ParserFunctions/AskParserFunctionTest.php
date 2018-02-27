@@ -23,6 +23,9 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $semanticDataValidator;
+	private $messageFormatter;
+	private $circularReferenceGuard;
+	private $expensiveFuncExecutionWatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -30,12 +33,42 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', array(
-			'smwgQueryDurationEnabled' => false,
-			'smwgQueryParametersEnabled' => false
-		) );
-
+		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', true );
 		$this->testEnvironment->addConfiguration( 'smwgQMaxLimit', 1000 );
+
+		$this->messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->expensiveFuncExecutionWatcher = $this->getMockBuilder( '\SMW\ParserFunctions\ExpensiveFuncExecutionWatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->expensiveFuncExecutionWatcher->expects( $this->any() )
+			->method( 'hasReachedExpensiveLimit' )
+			->will( $this->returnValue( false ) );
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( [] ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
@@ -49,17 +82,9 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\ParserFunctions\AskParserFunction',
-			new AskParserFunction( $parserData, $messageFormatter, $circularReferenceGuard )
+			new AskParserFunction( $parserData, $this->messageFormatter, $this->circularReferenceGuard, $this->expensiveFuncExecutionWatcher )
 		);
 	}
 
@@ -73,18 +98,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
 		);
 
 		$this->assertInternalType(
@@ -99,28 +117,59 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageFormatter->expects( $this->any() )
+		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
 			->will( $this->returnSelf() );
 
-		$messageFormatter->expects( $this->once() )
+		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
 		);
 
 		$instance->isQueryDisabled();
+	}
+
+	public function testHasReachedExpensiveLimit() {
+
+		$params = array(
+			'[[Modification date::+]]',
+			'?Modification date',
+			'format=list'
+		);
+
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$expensiveFuncExecutionWatcher = $this->getMockBuilder( '\SMW\ParserFunctions\ExpensiveFuncExecutionWatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$expensiveFuncExecutionWatcher->expects( $this->any() )
+			->method( 'hasReachedExpensiveLimit' )
+			->will( $this->returnValue( true ) );
+
+		$this->messageFormatter->expects( $this->any() )
+			->method( 'addFromKey' )
+			->will( $this->returnSelf() );
+
+		$this->messageFormatter->expects( $this->once() )
+			->method( 'getHtml' );
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$expensiveFuncExecutionWatcher
+		);
+
+		$instance->parse( $params );
 	}
 
 	public function testSetShowMode() {
@@ -129,18 +178,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
 		);
 
 		$reflector = new ReflectionClass( '\SMW\ParserFunctions\AskParserFunction' );
@@ -160,28 +202,21 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard->expects( $this->once() )
+		$this->circularReferenceGuard->expects( $this->once() )
 			->method( 'mark' );
 
-		$circularReferenceGuard->expects( $this->never() )
+		$this->circularReferenceGuard->expects( $this->never() )
 			->method( 'unmark' );
 
-		$circularReferenceGuard->expects( $this->once() )
-			->method( 'isCircularByRecursionFor' )
+		$this->circularReferenceGuard->expects( $this->once() )
+			->method( 'isCircular' )
 			->will( $this->returnValue( true ) );
 
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
 		);
 
 		$params = array();
@@ -201,18 +236,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
 		);
 
 		$params = array(
@@ -254,18 +282,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
 		);
 
 		$params = array(
@@ -311,18 +332,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
 		);
 
 		$instance->parse( $params );
@@ -354,18 +368,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
 		);
 
 		$instance->parse( $params );
@@ -394,18 +401,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
 		);
 
 		$instance->parse( $params );
@@ -414,6 +414,70 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$expected,
 			$parserData->getSemanticData()
 		);
+	}
+
+	public function testNoQueryProfileOnSpecialPages() {
+
+		$params = array(
+			'[[Modification date::+]]',
+			'format=table'
+		);
+
+		$expected = array(
+			'propertyCount'  => 0
+		);
+
+		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', true );
+
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			Title::newFromText( __METHOD__, NS_SPECIAL ),
+			new ParserOutput()
+		);
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
+		);
+
+		$instance->parse( $params );
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserData->getSemanticData()
+		);
+	}
+
+	public function testQueryWithAnnotationMarker() {
+
+		$params = array(
+			'[[Modification date::+]]',
+			'format=table',
+			'@annotation'
+		);
+
+		$postProcHandler = $this->getMockBuilder( '\SMW\PostProcHandler' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$postProcHandler->expects( $this->once() )
+			->method( 'addQueryRef' );
+
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
+		);
+
+		$instance->setPostProcHandler( $postProcHandler );
+		$instance->parse( $params );
 	}
 
 	public function queryDataProvider() {
@@ -440,10 +504,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]' )
 			),
 			array(
-				'smwgQueryProfiler' => array(
-					'smwgQueryDurationEnabled' => false,
-					'smwgQueryParametersEnabled' => false
-				)
+				'smwgQueryProfiler' => true
 			)
 		);
 
@@ -466,10 +527,8 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'list', 4, 1, "[[Modification date::+]] [[$categoryNS:Foo bar]] [[Has title::!Foo bar]]" )
 			),
 			array(
-				'smwgQueryProfiler' => array(
-					'smwgQueryDurationEnabled' => false,
-					'smwgQueryParametersEnabled' => false
-				)
+				'smwgCreateProtectionRight' => false,
+				'smwgQueryProfiler' => true
 			)
 		);
 
@@ -492,10 +551,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'list', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
 			),
 			array(
-				'smwgQueryProfiler' => array(
-					'smwgQueryDurationEnabled' => false,
-					'smwgQueryParametersEnabled' => false
-				)
+				'smwgQueryProfiler' => true
 			)
 		);
 
@@ -518,10 +574,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'feed', 1, 1, "[[:$fileNS:Fooo]]" )
 			),
 			array(
-				'smwgQueryProfiler' => array(
-					'smwgQueryDurationEnabled' => false,
-					'smwgQueryParametersEnabled' => false
-				)
+				'smwgQueryProfiler' => true
 			)
 		);
 
@@ -544,30 +597,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'table', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
 			),
 			array(
-				'smwgQueryProfiler' => array(
-					'smwgQueryDurationEnabled' => false,
-					'smwgQueryParametersEnabled' => false
-				)
-			)
-		);
-
-		// #5 QueryTime enabled
-		$provider[] = array(
-			array(
-				'[[Modification date::+]][[Category:Foo]]',
-				'?Modification date',
-				'?Has title',
-				'format=lula'
-			),
-			array(
-				'propertyCount'  => 5,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO', '_ASKDU' ),
-			),
-			array(
-				'smwgQueryProfiler' => array(
-					'smwgQueryDurationEnabled' => true,
-					'smwgQueryParametersEnabled' => false
-				)
+				'smwgQueryProfiler' => true
 			)
 		);
 
@@ -594,10 +624,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]', '{"limit":50,"offset":0,"sort":[""],"order":["asc"],"mode":1}' )
 			),
 			array(
-				'smwgQueryProfiler' => array(
-					'smwgQueryDurationEnabled' => false,
-					'smwgQueryParametersEnabled' => true
-				)
+				'smwgQueryProfiler' => SMW_QPRFL_PARAMS
 			)
 		);
 

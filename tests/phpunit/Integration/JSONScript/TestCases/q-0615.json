@@ -1,0 +1,148 @@
+{
+	"description": "Test query with property hierarchy depth (#2662, `wgContLang=en`, `smwgQSubpropertyDepth`, `smwgQSubcategoryDepth`, skip virtuoso)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Q0615",
+			"contents": "Super property"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Q0615/1",
+			"contents": "[[Subproperty of::Q0615]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Q0615/1/2",
+			"contents": "[[Subproperty of::Q0615/1]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Q0615/1/2/3",
+			"contents": "[[Subproperty of::Q0615/1/2]]"
+		},
+		{
+			"page": "Example/Q0615/1",
+			"contents": "[[Q0615::123]]"
+		},
+		{
+			"page": "Example/Q0615/1/2.1",
+			"contents": "[[Q0615/1::123]]"
+		},
+		{
+			"page": "Example/Q0615/1/2.2",
+			"contents": "[[Q0615/1::456]]"
+		},
+		{
+			"page": "Example/Q0615/1/2/3",
+			"contents": "[[Q0615/1/2::123]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 select all members on discrete value",
+			"condition": "[[Q0615::123]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0615/1#0##",
+					"Example/Q0615/1/2.1#0##",
+					"Example/Q0615/1/2/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 select all members on any value",
+			"condition": "[[Q0615::+]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Example/Q0615/1#0##",
+					"Example/Q0615/1/2.1#0##",
+					"Example/Q0615/1/2.2#0##",
+					"Example/Q0615/1/2/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 depth=0",
+			"condition": "[[Q0615::123|+depth=0]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0615/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 depth=1 on discrete value",
+			"condition": "[[Q0615::123|+depth=1]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0615/1#0##",
+					"Example/Q0615/1/2.1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 depth=1 on any value",
+			"condition": "[[Q0615::+|+depth=1]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0615/1#0##",
+					"Example/Q0615/1/2.1#0##",
+					"Example/Q0615/1/2.2#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10,
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/subcategory hierarchies are not supported"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -16,12 +16,32 @@ use Title;
  */
 class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 
-	private $factory;
 	private $store;
+	private $factory;
 
 	protected function setUp() {
 
-		$propertyStatisticsTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsTable' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subobjectListFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SubobjectListFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subobjectListFinder->expects( $this->any() )
+			->method( 'find' )
+			->will( $this->returnValue( [] ) );
+
+		$changePropListener = $this->getMockBuilder( '\SMW\ChangePropListener' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -30,8 +50,20 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->factory->expects( $this->any() )
-			->method( 'newPropertyStatisticsTable' )
-			->will( $this->returnValue( $propertyStatisticsTable ) );
+			->method( 'newPropertyStatisticsStore' )
+			->will( $this->returnValue( $propertyStatisticsStore ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newHierarchyLookup' )
+			->will( $this->returnValue( $hierarchyLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSubobjectListFinder' )
+			->will( $this->returnValue( $subobjectListFinder ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newChangePropListener' )
+			->will( $this->returnValue( $changePropListener ) );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -42,8 +74,64 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
+
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+
+		$propertyTableRowDiffer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowDiffer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableRowDiffer->expects( $this->any() )
+			->method( 'computeTableRowDiff' )
+			->will( $this->returnValue( [ [], [], [] ] ) );
+
+		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeOp->expects( $this->any() )
+			->method( 'newChangeDiff' )
+			->will( $this->returnValue( $changeDiff ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getChangedEntityIdSummaryList' )
+			->will( $this->returnValue( [] ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getDataOps' )
+			->will( $this->returnValue( [] ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( [] ) );
+
+		$changeOp->expects( $this->any() )
+			->method( 'getOrderedDiffByTable' )
+			->will( $this->returnValue( [] ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertyTableRowDiffer' )
+			->will( $this->returnValue( $propertyTableRowDiffer ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSemanticDataLookup' )
+			->will( $this->returnValue( $semanticDataLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newChangeOp' )
+			->will( $this->returnValue( $changeOp ) );
 	}
 
 	public function testCanConstruct() {
@@ -62,21 +150,13 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'getListOfIdMatchesFor' )
+		$objectIdGenerator->expects( $this->atLeastOnce() )
+			->method( 'findAllEntitiesThatMatch' )
 			->will( $this->returnValue( array( 0 ) ) );
-
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'getPropertyTableHashes' )
-			->will( $this->returnValue( array() ) );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
 
 		$this->store->expects( $this->exactly( 7 ) )
 			->method( 'getObjectIds' )
@@ -90,7 +170,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$this->store->expects( $this->exactly( 4 ) )
+		$this->store->expects( $this->exactly( 1 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
@@ -110,8 +190,8 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'getListOfIdMatchesFor' )
+		$objectIdGenerator->expects( $this->atLeastOnce() )
+			->method( 'findAllEntitiesThatMatch' )
 			->with(
 				$this->equalTo( $title->getDBkey() ),
 				$this->equalTo( $title->getNamespace() ),
@@ -122,14 +202,6 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$database->expects( $this->atLeastOnce() )
-			->method( 'select' )
-			->will( $this->returnValue( array() ) );
-
-		$database->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
 
 		$database->expects( $this->exactly( 2 ) )
 			->method( 'delete' )
@@ -147,7 +219,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$this->store->expects( $this->exactly( 4 ) )
+		$this->store->expects( $this->exactly( 1 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 

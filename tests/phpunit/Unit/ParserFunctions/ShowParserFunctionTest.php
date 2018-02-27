@@ -5,6 +5,7 @@ namespace SMW\Tests\ParserFunctions;
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\ParserFunctions\ShowParserFunction;
+use SMW\ParserFunctions\AskParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
 
@@ -21,6 +22,9 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $semanticDataValidator;
+	private $messageFormatter;
+	private $circularReferenceGuard;
+	private $expensiveFuncExecutionWatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -28,9 +32,25 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->testEnvironment->addConfiguration( 'smwgQueryDurationEnabled', false );
+		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', true );
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
+
+		$this->messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->expensiveFuncExecutionWatcher = $this->getMockBuilder( '\SMW\ParserFunctions\ExpensiveFuncExecutionWatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->expensiveFuncExecutionWatcher->expects( $this->any() )
+			->method( 'hasReachedExpensiveLimit' )
+			->will( $this->returnValue( false ) );
 	}
 
 	protected function tearDown() {
@@ -44,17 +64,16 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
+		$askParserFunction = new AskParserFunction(
+			$parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard,
+			$this->expensiveFuncExecutionWatcher
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\ParserFunctions\ShowParserFunction',
-			new ShowParserFunction( $parserData, $messageFormatter, $circularReferenceGuard )
+			new ShowParserFunction( $askParserFunction )
 		);
 	}
 
@@ -68,18 +87,13 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new ShowParserFunction(
-			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			new AskParserFunction(
+				$parserData,
+				$this->messageFormatter,
+				$this->circularReferenceGuard,
+				$this->expensiveFuncExecutionWatcher
+			)
 		);
 
 		$result = $instance->parse( $params );
@@ -97,25 +111,20 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageFormatter->expects( $this->any() )
+		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
 			->will( $this->returnSelf() );
 
-		$messageFormatter->expects( $this->once() )
+		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new ShowParserFunction(
-			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			new AskParserFunction(
+				$parserData,
+				$this->messageFormatter,
+				$this->circularReferenceGuard,
+				$this->expensiveFuncExecutionWatcher
+			)
 		);
 
 		$instance->isQueryDisabled();
@@ -131,18 +140,13 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new ShowParserFunction(
-			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			new AskParserFunction(
+				$parserData,
+				$this->messageFormatter,
+				$this->circularReferenceGuard,
+				$this->expensiveFuncExecutionWatcher
+			)
 		);
 
 		$instance->parse( $params );
@@ -164,18 +168,13 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new ShowParserFunction(
-			$parserData,
-			$messageFormatter,
-			$circularReferenceGuard
+			new AskParserFunction(
+				$parserData,
+				$this->messageFormatter,
+				$this->circularReferenceGuard,
+				$this->expensiveFuncExecutionWatcher
+			)
 		);
 
 		// #2 [[..]] is not acknowledged therefore displays an error message

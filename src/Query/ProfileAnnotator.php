@@ -5,7 +5,7 @@ namespace SMW\Query;
 use SMW\PropertyAnnotator;
 
 /**
- * Specifing the ProfileAnnotator interface
+ * Specifying the ProfileAnnotator interface
  *
  * @ingroup SMW
  *

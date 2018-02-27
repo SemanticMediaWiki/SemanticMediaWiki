@@ -29,7 +29,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueParsers\ImportValueParser',
+			ImportValueParser::class,
 			new ImportValueParser( $this->mediaWikiNsContentReader )
 		);
 	}
@@ -161,6 +161,16 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			"http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n",
 			array( 'name' => 'Type:Text' )
+		);
+
+		$provider[] = array(
+			'',
+			array()
+		);
+
+		$provider[] = array(
+			' ',
+			array()
 		);
 
 		return $provider;

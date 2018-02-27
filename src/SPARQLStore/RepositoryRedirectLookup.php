@@ -82,7 +82,7 @@ class RepositoryRedirectLookup {
 			return $expNsResource;
 		}
 
-		if ( count( $firstRow ) > 1 && !is_null( $firstRow[1] ) ) {
+		if ( is_array( $firstRow ) && count( $firstRow ) > 1 && !is_null( $firstRow[1] ) ) {
 			return $this->getResourceForTargetElement( $expNsResource, $firstRow[1] );
 		}
 

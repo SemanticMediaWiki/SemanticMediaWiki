@@ -27,7 +27,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'instance', 1, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.unknown( 'foo', '_bar' );
 		assert.ok( result instanceof Object, pass + 'the smw.dataItem.unknown instance was accessible' );
@@ -39,7 +40,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getDIType', 1, function ( assert ) {
+	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataItem.unknown( 'foo', '_bar' );
 		assert.equal( result.getDIType(), '_bar', pass + 'returned "_bar"' );
@@ -51,7 +53,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getValue', 2, function ( assert ) {
+	QUnit.test( 'getValue', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {

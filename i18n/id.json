@@ -12,13 +12,13 @@
 			"아라",
 			"Arief",
 			"Rachmat.Wahidi",
-			"Presidenvolksraad"
+			"Presidenvolksraad",
+			"Rachmat04"
 		]
 	},
 	"smw-desc": "Membuat wiki Anda lebih mudah diakses - oleh mesin ''dan'' manusia ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentasi daring])",
 	"smw_viewasrdf": "Umpan RDF",
 	"smw_finallistconjunct": ", dan",
-	"smw_factbox_head": "Fakta tentang $1",
 	"smw_isspecprop": "Sifat ini adalah sifat khusus di wiki ini.",
 	"smw_concept_description": "Deskripsi konsep \"$1\"",
 	"smw_no_concept_namespace": "Konsep hanya dapat didefinisikan pada halaman dalam ruang nama Konsep:.",
@@ -122,8 +122,6 @@
 	"smw_purge": "Segarkan",
 	"types": "Tipe",
 	"smw_types_docu": "Berikut ini adalah daftar semua jenis data yang dapat ditetapkan ke properti.",
-	"semanticstatistics": "Statistik semantik",
-	"smw_semstats_text": "Wiki ini memiliki '''$1''' {{PLURAL:$1|nilai|nilai}} properti dari total '''$2''' [[Special:Properties|{{PLURAL:$2|properti|properti}}]].\n'''$3''' {{PLURAL:$3|properti|properti}} telah memiliki halaman sendiri, dan tipe data telah diberikan pada '''$4''' di antaranya.\nBeberapa properti yang ada mungkin merupakan [[Special:UnusedProperties|properti yang tak digunakan]].\nProperti yang masih tidak memiliki halaman ditemukan pada [[Special:WantedProperties|daftar properti yang diinginkan]].",
 	"smw_uri_doc": "Pengurai URI menerapkan [$1 W3C pencarian TAG pada httpRange-14].\nIni memastikan bahwa manusia tidak berubah menjadi situs web.",
 	"ask": "Pencarian semantik",
 	"smw_ask_sortby": "Urut berdasar kolom (pilihan)",

@@ -3,7 +3,6 @@
 namespace SMW\Parser;
 
 use SMW\Parser\Obfuscator;
-use SMW\InTextAnnotationParser;
 
 /**
  * @license GNU GPL v2+

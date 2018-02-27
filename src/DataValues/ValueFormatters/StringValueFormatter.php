@@ -49,7 +49,7 @@ class StringValueFormatter extends DataValueFormatter {
 		}
 
 		if ( !$this->dataValue->isValid() ) {
-			return '';
+			return $this->dataValue->getDataItem()->getUserValue();
 		}
 
 		return $this->doFormatFinalOutputFor( $type, $linker );
@@ -99,7 +99,19 @@ class StringValueFormatter extends DataValueFormatter {
 			$ellipsis = $highlighter->getHtml();
 		}
 
-		return mb_substr( $text, 0, 42 ) . $ellipsis . mb_substr( $text, $length - 42 );
+		$startOff = 42;
+		$endOff = 42;
+
+		// Avoid breaking a link (i.e. [[ ... ]])
+		if ( ( $pos = stripos ( $text, '[[' ) ) && $pos < 42 ) {
+			$startOff = stripos ( $text, ']]' ) + 2;
+		}
+
+		if ( ( $pos = strrpos ( $text, ']]' ) ) && $pos > $length - $endOff ) {
+			$endOff = $length - strrpos( $text, '[[' );
+		}
+
+		return mb_substr( $text, 0, $startOff ) . $ellipsis . mb_substr( $text, $length - $endOff );
 	}
 
 }

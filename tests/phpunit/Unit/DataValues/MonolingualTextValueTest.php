@@ -3,7 +3,6 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\MonolingualTextValue;
-use SMW\Options;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 
@@ -56,10 +55,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 			$this->dataValueServiceFactory
 		);
 
-		$instance->setOptions(
-			new Options( array( 'smwgDVFeatures' => SMW_DV_MLTV_LCODE ) )
-		);
-
+		$instance->setOption( 'smwgDVFeatures', SMW_DV_MLTV_LCODE );
 		$instance->setUserValue( 'Foo' );
 
 		$this->assertNotEmpty(
@@ -75,10 +71,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 			$this->dataValueServiceFactory
 		);
 
-		$instance->setOptions(
-			new Options( array( 'smwgDVFeatures' => false ) )
-		);
-
+		$instance->setOption( 'smwgDVFeatures', false );
 		$instance->setUserValue( 'Foo' );
 
 		$this->assertEmpty(
@@ -89,7 +82,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testErrorForInvalidLanguageCode() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
-			$this->markTestSkipped( 'Skipping because `Language::isSupportedLanguage` is not supported on 1.19' );
+			$this->markTestSkipped( 'Skipping because `Language::isKnownLanguageTag` is not supported on 1.19' );
 		}
 
 		$instance = new MonolingualTextValue();
@@ -178,7 +171,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 	public function testGetWikiValueForInvalidMonolingualTextValue() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
-			$this->markTestSkipped( 'Skipping because `Language::isSupportedLanguage` is not supported on 1.19' );
+			$this->markTestSkipped( 'Skipping because `Language::isKnownLanguageTag` is not supported on 1.19' );
 		}
 
 		$instance = new MonolingualTextValue();

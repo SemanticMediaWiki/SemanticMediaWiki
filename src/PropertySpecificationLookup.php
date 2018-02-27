@@ -6,7 +6,9 @@ use SMW\Query\DescriptionFactory;
 use Onoi\Cache\Cache;
 use SMW\Message;
 use SMWDIBlob as DIBlob;
+use SMWDIBoolean as DIBoolean;
 use SMWQuery as Query;
+use RuntimeException;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
@@ -61,27 +63,42 @@ class PropertySpecificationLookup {
 	 */
 	public function resetCacheBy( DIWikiPage $subject ) {
 		$this->cachedPropertyValuesPrefetcher->resetCacheBy( $subject );
+		$this->intermediaryMemoryCache->delete( $subject->getHash() );
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $source
+	 * @param DIProperty|DIWikiPage $source
 	 * @param DIProperty $target
 	 *
 	 * @return []|DataItem[]
 	 */
-	public function getSpecification( DIProperty $source, DIProperty $target ) {
+	public function getSpecification( $source, DIProperty $target ) {
 
-		$definition = false;
-		$key = '-spec:'. $source->getKey() . $target->getKey();
+		if ( $source instanceof DIProperty ) {
+			$dataItem = $source->getCanonicalDiWikiPage();
+		} elseif( $source instanceof DIWikiPage ) {
+			$dataItem = $source;
+		} else {
+			throw new RuntimeException( "Invalid request instance type" );
+		}
 
-		if ( ( $definition = $this->intermediaryMemoryCache->fetch( $key ) ) !== false ) {
-			return $definition;
+		$hash = $dataItem->getHash();
+		$key = $target->getKey();
+
+		$definition = $this->intermediaryMemoryCache->fetch( $hash );
+
+		if ( $definition === false ) {
+			$definition = array();
+		}
+
+		if ( isset( $definition[$key] ) ) {
+			return $definition[$key];
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$source->getCanonicalDiWikiPage(),
+			$dataItem,
 			$target
 		);
 
@@ -89,7 +106,8 @@ class PropertySpecificationLookup {
 			$dataItems = array();
 		}
 
-		$this->intermediaryMemoryCache->save( $key, $dataItems );
+		$definition[$key] = $dataItems;
+		$this->intermediaryMemoryCache->save( $hash, $definition );
 
 		return $dataItems;
 	}
@@ -197,13 +215,44 @@ class PropertySpecificationLookup {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return DataItem|null
+	 */
+	public function getPropertyGroup( DIProperty $property ) {
+
+		$dataItem = null;
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_INST' ) );
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+
+			foreach ( $dataItems as $dataItem ) {
+				$pv = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+					$dataItem,
+					new DIProperty( '_PPGR' )
+				);
+
+				$di = end( $pv );
+
+				if ( $di instanceof DIBoolean && $di->getBoolean() ) {
+					return $dataItem;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param DIProperty $property
 	 *
 	 * @return DataItem|null
 	 */
-	public function getExternalFormatterUriBy( DIProperty $property ) {
+	public function getExternalFormatterUri( DIProperty $property ) {
 
 		$dataItem = null;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PEFU' ) );
@@ -260,7 +309,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return array
 	 */
-	public function getAllowedListValueBy( DIProperty $property ) {
+	public function getAllowedListValues( DIProperty $property ) {
 
 		$allowsListValue = array();
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVALI' ) );
@@ -375,7 +424,7 @@ class PropertySpecificationLookup {
 		$key = $property->getKey();
 
 		if ( ( $msgKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) === '' ) {
-			$msgKey = 'smw-pa-property-predefined' . strtolower( $key );
+			$msgKey = 'smw-property-predefined' . str_replace( '_', '-', strtolower( $key ) );
 		}
 
 		if ( !Message::exists( $msgKey ) ) {

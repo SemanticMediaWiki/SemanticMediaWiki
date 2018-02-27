@@ -27,6 +27,7 @@ define( 'SMW_HEADERS_HIDE', 0 ); // Used to be "false" hence use "0" to support 
 define( 'SMW_OUTPUT_HTML', 1 );
 define( 'SMW_OUTPUT_WIKI', 2 );
 define( 'SMW_OUTPUT_FILE', 3 );
+define( 'SMW_OUTPUT_RAW', 4 );
 /**@}*/
 
 /**@{
@@ -89,6 +90,9 @@ define( 'SMW_CMP_LIKE', 5 ); // Matches only datavalues that are LIKE the given 
 define( 'SMW_CMP_NLKE', 6 ); // Matches only datavalues that are not LIKE the given value.
 define( 'SMW_CMP_LESS', 7 ); // Matches only datavalues that are less than the given value.
 define( 'SMW_CMP_GRTR', 8 ); // Matches only datavalues that are greater than the given value.
+define( 'SMW_CMP_PRIM_LIKE', 20 ); // Native LIKE matches (in disregards of an existing full-text index)
+define( 'SMW_CMP_PRIM_NLKE', 21 ); // Native NLIKE matches (in disregards of an existing full-text index)
+define( 'SMW_CMP_IN', 22 ); // Short-cut for ~* ... *
 /**@}*/
 
 /**@{
@@ -127,6 +131,8 @@ define( 'SMW_SPARQL_QF_NONE', 0 ); // does not support any features
 define( 'SMW_SPARQL_QF_REDI', 2 ); // support for inverse property paths to find redirects
 define( 'SMW_SPARQL_QF_SUBP', 4 ); // support for rdfs:subPropertyOf*
 define( 'SMW_SPARQL_QF_SUBC', 8 ); // support for rdfs:subClassOf*
+define( 'SMW_SPARQL_QF_COLLATION', 16 ); // support for use of $smwgEntityCollation
+define( 'SMW_SPARQL_QF_NOCASE', 32 ); // support case insensitive pattern matches
 /**@}*/
 
 /**@{
@@ -150,6 +156,7 @@ define( 'SMW_UJ_PM_CLASTMDATE', 4 ); // compare last modified
   */
 define( 'SMW_HTTP_DEFERRED_ASYNC', true );
 define( 'SMW_HTTP_DEFERRED_SYNC_JOB', 4 );
+define( 'SMW_HTTP_DEFERRED_LAZY_JOB', 8 );
 /**@}*/
 
 /**@{
@@ -189,8 +196,85 @@ define( 'SMW_ADM_FULLT', 32 ); // Fulltext update
 /**@}*/
 
 /**@{
+  * Constants for ResultPrinter
+  */
+define( 'SMW_RF_NONE', 0 );
+define( 'SMW_RF_TEMPLATE_OUTSEP', 2 ); // #2022 Enable 2.5 behaviour for template handling
+/**@}*/
+
+/**@{
+  * Constants for $smwgExperimentalFeatures
+  */
+define( 'SMW_ESTORE_NONE', 0 );
+define( 'SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP', 2 ); // New query for EntityLookup::getInProperties
+/**@}*/
+
+/**@{
+  * Constants for $smwgFieldTypeFeatures
+  */
+define( 'SMW_FIELDT_NONE', 0 );
+define( 'SMW_FIELDT_CHAR_NOCASE', 2 ); // Using FieldType::TYPE_CHAR_NOCASE
+define( 'SMW_FIELDT_CHAR_LONG', 4 ); // Using FieldType::TYPE_CHAR_LONG
+/**@}*/
+
+/**@{
+  * Constants for $smwgQueryProfiler
+  */
+define( 'SMW_QPRFL_NONE', 0 );
+define( 'SMW_QPRFL_PARAMS', 2 ); // Support for Query parameters
+define( 'SMW_QPRFL_DUR', 4 ); // Support for Query duration
+/**@}*/
+
+/**@{
+  * Constants for $smwgBrowseFeatures
+  */
+define( 'SMW_BROWSE_NONE', 0 );
+define( 'SMW_BROWSE_TLINK', 2 ); // Support for the toolbox link
+define( 'SMW_BROWSE_SHOW_INVERSE', 4 ); // Support inverse direction
+define( 'SMW_BROWSE_SHOW_INCOMING', 8 ); // Support for incoming links
+define( 'SMW_BROWSE_SHOW_GROUP', 16 ); // Support for grouping properties
+define( 'SMW_BROWSE_SHOW_SORTKEY', 32 ); // Support for the sortkey display
+define( 'SMW_BROWSE_USE_API', 64 ); // Support for using the API as request backend
+/**@}*/
+
+/**@{
+  * Constants for $smwgParserFeatures
+  */
+define( 'SMW_PARSER_NONE', 0 );
+define( 'SMW_PARSER_STRICT', 2 ); // Support for strict mode
+define( 'SMW_PARSER_UNSTRIP', 4 ); // Support for using the StripMarkerDecoder
+define( 'SMW_PARSER_INL_ERROR', 8 ); // Support for display of inline errors
+define( 'SMW_PARSER_HID_CATS', 16 ); // Support for parsing hidden categories
+define( 'SMW_PARSER_LINV', 32 ); // Support for links in value
+define( 'SMW_PARSER_LINKS_IN_VALUES', 32 ); // Support for links in value
+/**@}*/
+
+/**@{
   * Constants for LinksInValue features
   */
 define( 'SMW_LINV_PCRE', 2 ); // Using the PCRE approach
 define( 'SMW_LINV_OBFU', 4 ); // Using the Obfuscator approach
+/**@}*/
+
+/**@{
+  * Constants for $smwgCategoryFeatures
+  */
+define( 'SMW_CAT_NONE', 0 );
+define( 'SMW_CAT_REDIRECT', 2 ); // Support resolving category redirects
+define( 'SMW_CAT_INSTANCE', 4 ); // Support using a category as instantiatable object
+define( 'SMW_CAT_HIERARCHY', 8 ); // Support for category hierarchies
+/**@}*/
+
+/**@{
+  * Constants for $smwgQSortFeatures
+  */
+define( 'SMW_QSORT_NONE', 0 );
+define( 'SMW_QSORT', 2 ); // General sort support
+define( 'SMW_QSORT_RANDOM', 4 ); // Random sort support
+/**@}*/
+
+/**@{
+  * Constants for Rule groups
+  */
+define( 'SMW_RULE_GROUP_FORMAT', 'rule.group.format' );
 /**@}*/

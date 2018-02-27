@@ -120,7 +120,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\InTextAnnotationParser',
+			'\SMW\Parser\InTextAnnotationParser',
 			$this->applicationFactory->newInTextAnnotationParser( $parserData )
 		);
 	}
@@ -160,7 +160,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\StoreUpdater',
+			'\SMW\Updater\StoreUpdater',
 			$this->applicationFactory->newStoreUpdater( $semanticData )
 		);
 	}
@@ -213,11 +213,11 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructPropertyHierarchyLookup() {
+	public function testCanConstructHierarchyLookup() {
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyHierarchyLookup',
-			$this->applicationFactory->newPropertyHierarchyLookup()
+			'\SMW\HierarchyLookup',
+			$this->applicationFactory->newHierarchyLookup()
 		);
 	}
 
@@ -252,8 +252,32 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		};
 
 		$this->assertInstanceOf(
-			'\SMW\DeferredCallableUpdate',
+			'\SMW\Updater\DeferredCallableUpdate',
 			$this->applicationFactory->newDeferredCallableUpdate( $callback )
+		);
+	}
+
+	public function testCanConstructDeferredTransactionalUpdate() {
+
+		$this->assertInstanceOf(
+			'\SMW\Updater\DeferredTransactionalUpdate',
+			$this->applicationFactory->newDeferredTransactionalUpdate( null )
+		);
+	}
+
+	public function testCanConstructMediaWikiLogger() {
+
+		$this->assertInstanceOf(
+			'\Psr\Log\LoggerInterface',
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+	}
+
+	public function testCanConstructJobQueue() {
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\JobQueue',
+			$this->applicationFactory->getJobQueue()
 		);
 	}
 

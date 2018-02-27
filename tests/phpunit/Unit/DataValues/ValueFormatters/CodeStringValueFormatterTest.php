@@ -3,7 +3,7 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
-use SMWStringValue as StringValue;
+use SMW\DataValueFactory;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\CodeStringValueFormatter
@@ -27,12 +27,12 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider stringValueProvider
 	 */
-	public function testFormat( $stringUserValue, $type, $linker, $expected ) {
+	public function testFormat( $userValue, $type, $linker, $expected ) {
 
-		$stringValue = new StringValue( '_cod' );
-		$stringValue->setUserValue( $stringUserValue );
+		$codeStringValue = DataValueFactory::getInstance()->newDataValueByType( '_cod' );
+		$codeStringValue->setUserValue( $userValue );
 
-		$instance = new CodeStringValueFormatter( $stringValue );
+		$instance = new CodeStringValueFormatter( $codeStringValue );
 
 		$this->assertEquals(
 			$expected,
@@ -75,6 +75,20 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			CodeStringValueFormatter::HTML_LONG,
 			null,
 			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">foo</div></div>'
+		);
+
+		$provider[] = array(
+			'<code><nowiki>&#x005B;&#x005B;Foo]]</nowiki></code>',
+			CodeStringValueFormatter::HTML_LONG,
+			null,
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">&#91;&#91;Foo]]</div></div>'
+		);
+
+		$provider[] = array(
+			'<code><nowiki>[[Foo]]</nowiki></code>',
+			CodeStringValueFormatter::HTML_LONG,
+			null,
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">&#91;&#91;Foo]]</div></div>'
 		);
 
 		// > 255
@@ -130,7 +144,7 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			$jsonString,
 			CodeStringValueFormatter::WIKI_LONG,
 			null,
-			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">' . CodeStringValueFormatter::formatAsPrettyJson( $jsonString ) . '</div></div>'
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">' . CodeStringValueFormatter::asJson( $jsonString ) . '</div></div>'
 		);
 
 		return $provider;

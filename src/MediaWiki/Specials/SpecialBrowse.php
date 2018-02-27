@@ -7,10 +7,11 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\SemanticData;
-use SMW\UrlEncoder;
+use SMW\Encoder;
 use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
 use SMW\MediaWiki\Specials\Browse\FormHelper;
 use SMW\Message;
+use SMWInfolink as Infolink;
 use SpecialPage;
 use Html;
 
@@ -54,6 +55,13 @@ class SpecialBrowse extends SpecialPage {
 
 		// get the GET parameters
 		$articletext = $webRequest->getVal( 'article' );
+
+		if ( $webRequest->getText( 'cl', '' ) !== '' ) {
+			$query = Infolink::decodeCompactLink( 'cl:'. $webRequest->getText( 'cl' ) );
+		} else {
+			$query = Infolink::decodeCompactLink( $query );
+		}
+
 		$isEmptyRequest = $query === null && ( $webRequest->getVal( 'article' ) === '' || $webRequest->getVal( 'article' ) === null );
 
 		// @see SMWInfolink::encodeParameters
@@ -63,7 +71,7 @@ class SpecialBrowse extends SpecialPage {
 
 		// Auto-generated link is marked with a leading :
 		if ( $query !== '' && $query{0} === ':' ) {
-			$articletext = UrlEncoder::unescape( $query );
+			$articletext = Encoder::unescape( $query );
 		} elseif ( $articletext === null ) {
 			$articletext = $query;
 		}
@@ -83,7 +91,8 @@ class SpecialBrowse extends SpecialPage {
 		$out->addModuleStyles( array(
 			'mediawiki.ui',
 			'mediawiki.ui.button',
-			'mediawiki.ui.input'
+			'mediawiki.ui.input',
+			'ext.smw.browse.styles'
 		) );
 
 		$out->addModules( array(
@@ -130,18 +139,28 @@ class SpecialBrowse extends SpecialPage {
 			$this->applicationFactory->getSettings()
 		);
 
-		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$contentsBuilder->getOption( 'byApi' ) ) {
-			return $contentsBuilder->getHtml();
-		}
-
 		$options = array(
 			'dir'         => $contentsBuilder->getOption( 'dir' ),
+			'group'       => $contentsBuilder->getOption( 'group' ),
 			'offset'      => $contentsBuilder->getOption( 'offset' ),
 			'printable'   => $contentsBuilder->getOption( 'printable' ),
 			'showInverse' => $contentsBuilder->getOption( 'showInverse' ),
+			'showGroup'   => $contentsBuilder->getOption( 'showGroup' ),
+			'showSort'    => $contentsBuilder->getOption( 'showSort' ),
 			'showAll'     => $contentsBuilder->getOption( 'showAll' ),
 			'including'   => $contentsBuilder->getOption( 'including' )
 		);
+
+		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$contentsBuilder->getOption( 'byApi' ) ) {
+			return Html::rawElement(
+				'div',
+				array(
+					'data-subject' => $this->subjectDV->getDataItem()->getHash(),
+					'data-options' => json_encode( $options )
+				),
+				$contentsBuilder->getHtml()
+			);
+		}
 
 		// Ajax/API is doing the data fetch
 		$html = Html::rawElement(
@@ -164,13 +183,13 @@ class SpecialBrowse extends SpecialPage {
 						array(
 							'class' => 'smw-callout smw-callout-error',
 						),
-						Message::get( 'smw-browse-js-disabled', Message::PARSE )
+						Message::get( 'smw-noscript', Message::PARSE )
 					)
 				)
 			) . Html::rawElement(
 				'div',
 				array(
-					'class' => 'smwb-content is-disabled'
+					'class' => 'smwb-emptysheet is-disabled'
 				),
 				Html::rawElement(
 					'span',
@@ -197,6 +216,11 @@ class SpecialBrowse extends SpecialPage {
 		);
 
 		$contentsBuilder->setOption(
+			'group',
+			$webRequest->getVal( 'group' )
+		);
+
+		$contentsBuilder->setOption(
 			'printable',
 			$webRequest->getVal( 'printable' )
 		);
@@ -213,17 +237,27 @@ class SpecialBrowse extends SpecialPage {
 
 		$contentsBuilder->setOption(
 			'showInverse',
-			$settings->get( 'smwgBrowseShowInverse' )
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INVERSE )
 		);
 
 		$contentsBuilder->setOption(
 			'showAll',
-			$settings->get( 'smwgBrowseShowAll' )
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INCOMING )
+		);
+
+		$contentsBuilder->setOption(
+			'showGroup',
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_GROUP )
+		);
+
+		$contentsBuilder->setOption(
+			'showSort',
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_SORTKEY )
 		);
 
 		$contentsBuilder->setOption(
 			'byApi',
-			$settings->get( 'smwgBrowseByApi' )
+			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_USE_API )
 		);
 
 		return $contentsBuilder;

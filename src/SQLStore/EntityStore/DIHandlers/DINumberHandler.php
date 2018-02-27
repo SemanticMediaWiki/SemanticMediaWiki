@@ -47,6 +47,18 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
+	public function getTableIndexes() {
+		return array(
+			// QueryEngine::getInstanceQueryResult
+			's_id,p_id,o_sortkey',
+		);
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getWhereConds( DataItem $dataItem ) {
 		return array(
 			'o_sortkey' => floatval( $dataItem->getNumber() )

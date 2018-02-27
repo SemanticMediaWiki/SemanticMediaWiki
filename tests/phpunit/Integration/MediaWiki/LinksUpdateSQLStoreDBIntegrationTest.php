@@ -188,6 +188,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$contentParser = new ContentParser( $this->title );
 		$parserOutput =	$contentParser->setRevision( $revision )->parse()->getOutput();
+		$parserOutput->setExtensionData( ParserData::OPT_FORCED_UPDATE, true );
 
 		if ( $parserOutput instanceof ParserOutput ) {
 			return new ParserData( $this->title, $parserOutput );

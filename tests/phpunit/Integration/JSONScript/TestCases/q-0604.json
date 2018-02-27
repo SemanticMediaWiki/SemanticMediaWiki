@@ -174,7 +174,13 @@
 			}
 		}
 	],
-	"settings": [],
+	"settings": {
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_REDI",
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
+	},
 	"meta": {
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 does not support property paths / SPARQL compiler, line 0: Invalid character in SPARQL expression at '^'"

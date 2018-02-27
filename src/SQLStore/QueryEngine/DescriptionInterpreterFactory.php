@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
+use SMW\ApplicationFactory;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DisjunctionConjunctionInterpreter;
@@ -28,6 +29,7 @@ class DescriptionInterpreterFactory {
 	 */
 	public function newDispatchingDescriptionInterpreter( QuerySegmentListBuilder $querySegmentListBuilder ) {
 
+		$pplicationFactory = ApplicationFactory::getInstance();
 		$dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
 
 		$dispatchingDescriptionInterpreter->addDefaultInterpreter(
@@ -54,8 +56,18 @@ class DescriptionInterpreterFactory {
 			new ValueDescriptionInterpreter( $querySegmentListBuilder )
 		);
 
+		$conceptDescriptionInterpreter = new ConceptDescriptionInterpreter(
+			$querySegmentListBuilder
+		);
+
+		$conceptDescriptionInterpreter->setQueryParser(
+			$pplicationFactory->getQueryFactory()->newQueryParser(
+				$pplicationFactory->getSettings()->get( 'smwgQConceptFeatures' )
+			)
+		);
+
 		$dispatchingDescriptionInterpreter->addInterpreter(
-			new ConceptDescriptionInterpreter( $querySegmentListBuilder )
+			$conceptDescriptionInterpreter
 		);
 
 		return $dispatchingDescriptionInterpreter;

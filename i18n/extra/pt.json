@@ -77,7 +77,7 @@
         "_PEID": "Identificador externo",
         "_PEFU": "Formato de URI externo",
         "_PPLB": "Rótulo preferido para a propriedade",
-        "_ASKSC": "Query source"
+        "_ASKSC": "Fonte de consulta"
     },
     "propertyAliases": {
         "Exibe unidade": "_UNIT",

@@ -230,7 +230,12 @@
 		}
 	],
 	"settings": {
-		"smwgQSubpropertyDepth": 10
+		"smwgQSubpropertyDepth": 10,
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_REDI",
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
 	},
 	"meta": {
 		"skip-on": {

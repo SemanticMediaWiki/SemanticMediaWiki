@@ -13,7 +13,7 @@ use SMWDIBoolean as DIBoolean;
 use SMWDIBlob as DIBlob;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Query\QueryToken;
-use SMW\InTextAnnotationParser;
+use SMW\Parser\InTextAnnotationParser;
 
 /**
  * Returns the result content (DI objects) for a single PrintRequest, representing
@@ -77,7 +77,7 @@ class ResultFieldMatchFinder {
 
 		$this->queryToken = $queryToken;
 
-		$this->queryToken->canHighlight(
+		$this->queryToken->setOutputFormat(
 			$this->printRequest->getOutputFormat()
 		);
 	}
@@ -168,6 +168,12 @@ class ResultFieldMatchFinder {
 
 			if ( $limit !== false ) {
 				$options->limit = trim( $limit );
+			}
+
+			// Expecting a natural sort behaviour (n-asc, n-desc)?
+			if ( strpos( $order, 'n-' ) !== false ) {
+				$order = str_replace( 'n-', '', $order );
+				$options->natural = true;
 			}
 
 			if ( ( $order == 'descending' ) || ( $order == 'reverse' ) || ( $order == 'desc' ) ) {
@@ -296,6 +302,10 @@ class ResultFieldMatchFinder {
 				$this->getRequestOptions()
 			);
 
+			if ( $pv instanceof \Iterator ) {
+				$pv = iterator_to_array( $pv );
+			}
+
 			$propertyValues = array_merge( $propertyValues, $pv );
 			unset( $pv );
 		}
@@ -313,15 +323,21 @@ class ResultFieldMatchFinder {
 			return $dataItem;
 		}
 
+		$type = $this->printRequest->getTypeID();
+
 		// Avoid `_cod`, `_eid` or similar types that use the DIBlob as storage
 		// object
-		if ( $this->printRequest->getTypeID() !== '_txt' && strpos( $this->printRequest->getTypeID(), '_rec' ) === false ) {
+		if ( $type !== '_txt' && strpos( $type, '_rec' ) === false ) {
 			return $dataItem;
 		}
 
-		// Outputs marked with -ia (import annotation) are allowed to retain a
-		// possible [[ :: ]] annotation
-		if ( strpos( $this->printRequest->getOutputFormat(), '-ia' ) !== false ) {
+		$outputFormat = $this->printRequest->getOutputFormat();
+
+		// #2325
+		// Output format marked with -raw are allowed to retain a possible [[ :: ]]
+		// annotation
+		// '-ia' is deprecated use `-raw`
+		if ( strpos( $outputFormat, '-raw' ) !== false || strpos( $outputFormat, '-ia' ) !== false ) {
 			return $dataItem;
 		}
 
@@ -330,7 +346,7 @@ class ResultFieldMatchFinder {
 			$dataItem->getString()
 		);
 
-		// #...
+		// #2253
 		if ( $this->queryToken !== null ) {
 			$string = $this->queryToken->highlight( $string );
 		}

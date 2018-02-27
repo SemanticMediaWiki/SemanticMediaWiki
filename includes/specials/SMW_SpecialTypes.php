@@ -3,6 +3,7 @@
 use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\Message;
 
 /**
  * This special page for MediaWiki provides information about types. Type information is
@@ -23,23 +24,23 @@ class SMWSpecialTypes extends SpecialPage {
 
 	public function execute( $param ) {
 		$this->setHeaders();
-		global $wgOut;
+		$out = $this->getOutput();
 
 		$params = SMWInfolink::decodeParameters( $param, false );
 		$typeLabel = reset( $params );
 
 		if ( $typeLabel == false ) {
-			$wgOut->setPageTitle( wfMessage( 'types' )->text() );
+			$out->setPageTitle( wfMessage( 'types' )->text() );
 			$html = $this->getTypesList();
 		} else {
 			$typeLabel = str_replace( '%', '-', $typeLabel );
 			$typeName = str_replace( '_', ' ', $typeLabel );
-			$wgOut->setPageTitle( $typeName ); // Maybe add a better message for this
+			$out->setPageTitle( wfMessage( 'smw-types-title', $typeName )->text() );
 			$html = $this->getTypeProperties( $typeLabel );
 		}
 
-		$wgOut->addHTML( $html );
-		SMWOutputs::commitToOutputPage( $wgOut );
+		$out->addHTML( $html );
+		SMWOutputs::commitToOutputPage( $out );
 
 	}
 
@@ -62,16 +63,16 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$htmlColumnListRenderer->setNumberOfColumns( 2 );
 		$htmlColumnListRenderer->addContentsByNoIndex( $contentsByIndex );
-		$htmlColumnListRenderer->setColumnListClass( 'smw-sp-types-list' );
+		$htmlColumnListRenderer->setColumnListClass( 'smw-types-list' );
 
 		$html = \Html::rawElement(
 			'p',
-			array( 'class' => 'smw-sp-types-intro' ),
+			array( 'class' => 'plainlinks smw-types-intro' ),
 			wfMessage( 'smw_types_docu' )->parse()
 		).  \Html::element(
 			'h2',
 			array(),
-			wfMessage( 'smw-sp-types-list' )->escaped()
+			wfMessage( 'smw-types-list' )->escaped()
 		);
 
 		return $html . $htmlColumnListRenderer->getHtml();
@@ -98,6 +99,11 @@ class SMWSpecialTypes extends SpecialPage {
 		$options = SMWPageLister::getRequestOptions( $smwgTypePagingLimit, $from, $until );
 		$diWikiPages = $store->getPropertySubjects( new SMW\DIProperty( '_TYPE' ), $typeValue->getDataItem(), $options );
 
+		// May return an iterator
+		if ( $diWikiPages instanceof \Iterator ) {
+			$diWikiPages = iterator_to_array( $diWikiPages );
+		}
+
 		if ( !$options->ascending ) {
 			$diWikiPages = array_reverse( $diWikiPages );
 		}
@@ -108,18 +114,16 @@ class SMWSpecialTypes extends SpecialPage {
 			$typeValue->getDataItem()->getFragment()
 		);
 
-		$typeKey  = 'smw-sp-types' . strtolower( $typeValue->getDataItem()->getFragment() );
+		$typeKey  = 'smw-type' . str_replace( '_', '-', strtolower( $typeValue->getDataItem()->getFragment() ) );
 
-		$messageKey = wfMessage( $typeKey )->exists() ? $typeKey : 'smw-sp-types-default';
+		$messageKey = wfMessage( $typeKey )->exists() ? $typeKey : 'smw-types-default';
 
 		$result = \Html::rawElement(
 			'div',
-			array( 'class' => 'smw-sp-types-intro'. $typeKey ),
+			array( 'class' => 'plainlinks smw-types-intro '. $typeKey ),
 			wfMessage( $messageKey, str_replace( '_', ' ', $escapedTypeLabel ) )->parse() . ' ' .
-			wfMessage( 'smw-sp-types-help', str_replace( ' ', '_', $canonicalLabel ) )->parse()
+			wfMessage( 'smw-types-help', str_replace( ' ', '_', $canonicalLabel ) )->parse() . $this->displayExtraInformationAbout( $typeValue )
 		);
-
-		$result .= $this->displayExtraInformationAbout( $typeValue );
 
 		if ( count( $diWikiPages ) > 0 ) {
 			$pageLister = new SMWPageLister( $diWikiPages, null, $smwgTypePagingLimit, $from, $until );
@@ -156,20 +160,16 @@ class SMWSpecialTypes extends SpecialPage {
 
 		if ( $typeValue->getDataItem()->getFragment() === '_geo' ) {
 			if ( $dataValue instanceof \SMWErrorValue ) {
-				$html = \Html::rawElement(
-					'p',
-					array(),
-					wfMessage( 'smw-sp-types-geo-not-available', $escapedTypeLabel )->parse()
+				$html =  \Html::rawElement(
+					'div',
+					[ 'class' => 'smw-callout smw-callout-error' ],
+					wfMessage( 'smw-types-extra-geo-not-available', $escapedTypeLabel )->parse()
 				);
 			}
 		}
 
 		if ( $typeValue->getDataItem()->getFragment() === '_mlt_rec' ) {
-			$html = \Html::rawElement(
-				'p',
-				array(),
-				wfMessage( 'smw-sp-types-mlt-lcode', $escapedTypeLabel, ( $dataValue->isEnabledFeature( SMW_DV_MLTV_LCODE ) ? 1 : 2 ) )->parse()
-			);
+			$html =  ' ' . wfMessage( 'smw-types-extra-mlt-lcode', $escapedTypeLabel, ( $dataValue->isEnabledFeature( SMW_DV_MLTV_LCODE ) ? 1 : 2 ) )->parse();
 		}
 
 		return $html;

@@ -4,6 +4,7 @@ namespace SMW\Maintenance;
 
 use SMW\ApplicationFactory;
 use SMW\StoreFactory;
+use SMW\Store;
 use SMW\Options;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
@@ -66,6 +67,8 @@ class RebuildData extends \Maintenance {
 	 */
 	protected function addDefaultParams() {
 
+		parent::addDefaultParams();
+
 		$this->addOption( 'd', '<delay> Wait for this many milliseconds after processing an article, useful for limiting server load.', false, true );
 		$this->addOption( 's', '<startid> Start refreshing at given article ID, useful for partial refreshing.', false, true );
 		$this->addOption( 'e', '<endid> Stop refreshing at given article ID, useful for partial refreshing.', false, true );
@@ -102,6 +105,7 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'query', "<query> Will refresh only pages returned by a given query. Example: --query='[[Category:SomeCategory]]'", false, true );
 
 		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
+		$this->addOption( 'report-poolcache', 'Report internal poolcache memory usage', false );
 		$this->addOption( 'no-cache', 'Sets the `wgMainCacheType` to none while running the script', false );
 		$this->addOption( 'debug', 'Sets global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
@@ -124,7 +128,7 @@ class RebuildData extends \Maintenance {
 
 		if ( $this->hasOption( 'no-cache' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'wgMainCacheType', CACHE_NONE );
-			$maintenanceHelper->setGlobalToValue( 'smwgValueLookupCacheType', CACHE_NONE );
+			$maintenanceHelper->setGlobalToValue( 'smwgEntityLookupCacheType', CACHE_NONE );
 			$maintenanceHelper->setGlobalToValue( 'smwgQueryResultCacheType', CACHE_NONE );
 		}
 
@@ -132,10 +136,13 @@ class RebuildData extends \Maintenance {
 			$maintenanceHelper->setGlobalToValue( 'wgShowExceptionDetails', true );
 			$maintenanceHelper->setGlobalToValue( 'wgShowSQLErrors', true );
 			$maintenanceHelper->setGlobalToValue( 'wgShowDBErrorBacktrace', true );
+		} else {
+			$maintenanceHelper->setGlobalToValue( 'wgDebugLogFile', '' );
+			$maintenanceHelper->setGlobalToValue( 'wgDebugLogGroups', [] );
 		}
 
 		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
-		$store->setUpdateJobsEnabledState( false );
+		$store->setOption( Store::OPT_CREATE_UPDATE_JOB, false );
 
 		$dataRebuilder = $maintenanceFactory->newDataRebuilder(
 			$store,
@@ -167,8 +174,9 @@ class RebuildData extends \Maintenance {
 
 		$maintenanceHelper->reset();
 
-		// Only for internal use
-		// $this->reportMessage( "\n" . ApplicationFactory::getInstance()->getInMemoryPoolCache()->getFormattedStats() . "\n" );
+		if ( $this->hasOption( 'report-poolcache' ) ) {
+			$this->reportMessage( "\n" . ApplicationFactory::getInstance()->getInMemoryPoolCache()->getStats( \SMW\Utils\StatsFormatter::FORMAT_JSON ) . "\n" );
+		}
 
 		return $result;
 	}

@@ -1,5 +1,5 @@
 {
-	"description": "Test `#ask` with (`#-ia`) formatter using `#set` (#..., `wgContLang=en`, `wgLang=en`)",
+	"description": "Test `#ask` with (`#-raw`) formatter using `#set` (#..., `wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -21,7 +21,7 @@
 		},
 		{
 			"page": "Example/P0912/Q.2",
-			"contents": "{{#ask: [[Category:P0912]] [[Has text::+]] |?Has text#-ia |link=none }}"
+			"contents": "{{#ask: [[Category:P0912]] [[Has text::+]] |?Has text#-raw |link=none }}"
 		}
 	],
 	"tests": [
@@ -47,7 +47,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 (without `-ia`)",
+			"about": "#1 (without `-raw`)",
 			"subject": "Example/P0912/Q.1",
 			"assert-store": {
 				"semantic-data": {
@@ -68,7 +68,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2 (with `-ia`)",
+			"about": "#2 (with `-raw`)",
 			"subject": "Example/P0912/Q.2",
 			"assert-store": {
 				"semantic-data": {

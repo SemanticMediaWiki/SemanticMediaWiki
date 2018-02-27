@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\ConnectionManager;
+use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
@@ -80,7 +80,10 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertySubjects( $property, $value, $requestOptions );
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertInstanceOf(
+			'\Iterator',
+			$result
+		);
 
 		foreach( $result as $page ) {
 			$this->assertInstanceOf(
@@ -120,7 +123,7 @@ class StoreTest extends MwDBaseUnitTestCase {
 ///// Special page functions /////
 
 	public function testGetPropertiesSpecial() {
-		// Really bailing out here and making the test database dependant!!
+		// Really bailing out here and making the test database dependent!!
 
 		// This test fails on mysql http://bugs.mysql.com/bug.php?id=10327
 		if( $GLOBALS['wgDBtype'] == 'mysql' ) {

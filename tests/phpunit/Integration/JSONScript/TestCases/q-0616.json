@@ -1,0 +1,128 @@
+{
+	"description": "Test `in:` syntax on `_txt`, `_dat`, and `_num` values",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/Q0616/1",
+			"contents": "[[Has date::1 Jan 1970 12:00]] [[Category:0616]]"
+		},
+		{
+			"page": "Example/Q0616/2",
+			"contents": "[[Has date::1 Jan 1971 12:00]] [[Category:0616]]"
+		},
+		{
+			"page": "Example/Q0616/3",
+			"contents": "[[Has text::abc def foo]] [[Category:0616]]"
+		},
+		{
+			"page": "Example/Q0616/4",
+			"contents": "[[Has text::abc foo]] [[Category:0616]]"
+		},
+		{
+			"page": "Example/Q0616/5",
+			"contents": "[[Has number::50]] [[Category:0616]]"
+		},
+		{
+			"page": "Example/Q0616/6",
+			"contents": "[[Has number::99]] [[Category:0616]]"
+		},
+		{
+			"page": "Example/Q0616/7",
+			"contents": "[[Has number::100]] [[Category:0616]]"
+		},
+		{
+			"page": "Example/Q0616/8",
+			"contents": "[[Has number::-20]] [[Category:0616]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (in: on date converted to `[[Has date:: [[≥1970]] [[<<1 January 1971 00:00:00]] ]]`)",
+			"condition": "[[Has date::in:1970]] [[Category:0616]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0616/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (in: on text converted to `[[Has text::~*abc d*]]`)",
+			"condition": "[[Has text::in:abc d]] [[Category:0616]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0616/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (in: on number converted to `[[Has number:: [[≥0]] [[≤99]] ]]`)",
+			"condition": "[[Has number::in:99]] [[Category:0616]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0616/5#0##",
+					"Example/Q0616/6#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (in: on number converted to `[[Has number:: [[≥-100]] [[≤0]] ]]`)",
+			"condition": "[[Has number::in:-100]] [[Category:0616]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0616/8#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_HELP": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

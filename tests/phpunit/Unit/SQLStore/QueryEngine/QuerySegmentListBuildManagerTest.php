@@ -18,7 +18,7 @@ class QuerySegmentListBuildManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 	private $querySegmentListBuilder;
-	private $qrderConditionsComplementor;
+	private $orderCondition;
 
 	protected function setUp() {
 
@@ -30,7 +30,7 @@ class QuerySegmentListBuildManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->qrderConditionsComplementor = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\OrderConditionsComplementor' )
+		$this->orderCondition = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\OrderCondition' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -38,8 +38,8 @@ class QuerySegmentListBuildManagerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager',
-			new QuerySegmentListBuildManager( $this->connection, $this->querySegmentListBuilder, $this->qrderConditionsComplementor )
+			QuerySegmentListBuildManager::class,
+			new QuerySegmentListBuildManager( $this->connection, $this->querySegmentListBuilder, $this->orderCondition )
 		);
 	}
 
@@ -60,13 +60,13 @@ class QuerySegmentListBuildManagerTest extends \PHPUnit_Framework_TestCase {
 		$this->querySegmentListBuilder->expects( $this->once() )
 			->method( 'getQuerySegmentFrom' );
 
-		$this->qrderConditionsComplementor->expects( $this->once() )
-			->method( 'applyOrderConditions' );
+		$this->orderCondition->expects( $this->once() )
+			->method( 'apply' );
 
 		$instance = new QuerySegmentListBuildManager(
 			$this->connection,
 			$this->querySegmentListBuilder,
-			$this->qrderConditionsComplementor
+			$this->orderCondition
 		);
 
 		$instance->getQuerySegmentFrom( $query );

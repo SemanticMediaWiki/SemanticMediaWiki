@@ -34,7 +34,7 @@ final class FeedResultPrinter extends FileExportPrinter {
 	 * @return string
 	 */
 	public function getName() {
-		return $this->getContext()->msg( 'smw-printername-feed' )->text();
+		return $this->msg( 'smw-printername-feed' )->text();
 	}
 
 	/**
@@ -74,7 +74,7 @@ final class FeedResultPrinter extends FileExportPrinter {
 
 		if ( $outputMode == SMW_OUTPUT_FILE ) {
 			if ( $res->getCount() == 0 ){
-				$res->addErrors( array( $this->getContext()->msg( 'smw_result_noresults' )->inContentLanguage()->text() ) );
+				$res->addErrors( array( $this->msg( 'smw_result_noresults' )->inContentLanguage()->text() ) );
 			}
 
 			$result = $this->getFeed( $res, $this->params['type'] );
@@ -101,7 +101,7 @@ final class FeedResultPrinter extends FileExportPrinter {
 		global $wgFeedClasses;
 
 		if( !isset( $wgFeedClasses[$type] ) ) {
-			$results->addErrors( array( $this->getContext()->msg( 'feed-invalid' )->inContentLanguage()->text() ) );
+			$results->addErrors( array( $this->msg( 'feed-invalid' )->inContentLanguage()->text() ) );
 			return '';
 		}
 
@@ -149,7 +149,7 @@ final class FeedResultPrinter extends FileExportPrinter {
 	 * @return string
 	 */
 	protected function feedDescription() {
-		return $this->params['description'] !== '' ? $this->getContext()->msg( 'smw-label-feed-description', $this->params['description'], $this->params['type'] )->text() : $this->getContext()->msg( 'tagline' )->text();
+		return $this->params['description'] !== '' ? $this->msg( 'smw-label-feed-description', $this->params['description'], $this->params['type'] )->text() : $this->msg( 'tagline' )->text();
 	}
 
 	/**
@@ -312,7 +312,7 @@ final class FeedResultPrinter extends FileExportPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$params['searchlabel']->setDefault( $this->getContext()->msg( 'smw-label-feed-link' )->inContentLanguage()->text() );
+		$params['searchlabel']->setDefault( $this->msg( 'smw-label-feed-link' )->inContentLanguage()->text() );
 
 		$params['type'] = array(
 			'type' => 'string',

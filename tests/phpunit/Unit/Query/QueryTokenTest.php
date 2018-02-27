@@ -95,7 +95,7 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryToken();
 
 		$instance->addFromDesciption( $description );
-		$instance->canHighlight( '-hL' );
+		$instance->setOutputFormat( '-hL' );
 
 		$this->assertEquals(
 			$expected,
@@ -192,6 +192,25 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 			'Integer porttitor mi id ante consequat consequat <b>porttitor</b>',
 			QueryToken::HL_SPAN,
 			"<span class='smw-query-token'>Integer</span> <span class='smw-query-token'>porttitor</span> mi id ante consequat consequat <b><span class='smw-query-token'>porttitor</span></b>"
+		);
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$description->expects( $this->any() )
+			->method( 'getComparator' )
+			->will( $this->returnValue( SMW_CMP_PRIM_LIKE ) );
+
+		$description->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $dataItemFactory->newDIBlob( 'abc Foo 123 foobar' ) ) );
+
+		$provider[] = array(
+			$description,
+			'Lorem abc foobar',
+			QueryToken::HL_BOLD,
+			"Lorem <b>abc</b> <b>foo</b>bar"
 		);
 
 		return $provider;

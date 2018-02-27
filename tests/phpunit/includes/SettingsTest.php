@@ -61,6 +61,15 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'foo' );
 	}
 
+	public function testSafeGetOnUnknownSetting() {
+
+		$instance = Settings::newFromArray( array( 'Foo' => 'bar' ) );
+
+		$this->assertFalse(
+			$instance->safeGet( 'foo', false )
+		);
+	}
+
 	/**
 	 * @dataProvider settingsProvider
 	 */
@@ -74,27 +83,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->assertTrue( true );
-	}
-
-	public function testAdd() {
-
-		$instance = Settings::newFromArray( array() );
-
-		$instance->set( 'foo', 123 );
-		$instance->add( 'foo', 456 );
-
-		$this->assertEquals(
-			456,
-			$instance->get( 'foo' )
-		);
-
-		$instance->set( 'bar', array( 123 ) );
-		$instance->add( 'bar', array( 456 ) );
-
-		$this->assertEquals(
-			array( 123, 456 ),
-			$instance->get( 'bar' )
-		);
 	}
 
 	/**
@@ -184,6 +172,8 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		$settings = array_intersect_key( $GLOBALS,
 			array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
 		);
+
+		unset( $settings['smwgDeprecationNotices'] );
 
 		return array( array( $settings ) );
 	}

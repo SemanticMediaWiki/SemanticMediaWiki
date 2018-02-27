@@ -32,10 +32,14 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
-		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
+		$store->setOption( 'smwgSemanticsEnabled', true );
+		$store->setOption( 'smwgAutoRefreshSubject', true );
 
 		$this->testEnvironment = new TestEnvironment();
+		$spyLogger = $this->testEnvironment->newSpyLogger();
+
+		$store->setLogger( $spyLogger );
+
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -46,7 +50,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
 
-		$this->connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$this->connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -20,7 +20,53 @@ class QueryStringifier {
 	 * @return string
 	 */
 	public static function rawUrlEncode( Query $query ) {
-		return rawurlencode( self::get( $query ) );
+		return rawurlencode( self::toString( $query ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Query $query
+	 * @param boolean $printParameters
+	 *
+	 * @return string
+	 */
+	public static function toArray( Query $query, $printParameters = false ) {
+
+		$serialized = [];
+		$serialized['conditions'] = $query->getQueryString();
+
+		$serialized['parameters'] = [
+			'limit' => $query->getLimit(),
+			'offset' => $query->getOffset(),
+			'mainlabel' => $query->getMainlabel()
+		];
+
+		if ( $query->getQuerySource() !== null && $query->getQuerySource() !== '' ) {
+			$serialized['parameters']['source'] = $query->getQuerySource();
+		}
+
+		list( $serialized['sort'], $serialized['order'] ) = self::sortKeys(
+			$query
+		);
+
+		if ( $serialized['sort'] !== [] ) {
+			$serialized['parameters']['sort'] = implode( ',', $serialized['sort'] );
+		}
+
+		if ( $serialized['order'] !== [] ) {
+			$serialized['parameters']['order'] = implode( ',', $serialized['order'] );
+		}
+
+		unset( $serialized['sort'] );
+		unset( $serialized['order'] );
+
+		$serialized['printouts'] = self::printouts(
+			$query,
+			$printParameters
+		);
+
+		return $serialized;
 	}
 
 	/**
@@ -30,34 +76,35 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function get( Query $query ) {
-		$serialized = array();
-
-		$serialized['conditions'] = $query->getQueryString();
-
-		$serialized['parameters'] = array(
-			'limit=' . $query->getLimit(),
-			'offset=' . $query->getOffset(),
-			'mainlabel=' . $query->getMainlabel()
-		);
-
-		if ( $query->getQuerySource() !== null && $query->getQuerySource() !== '' ) {
-			$serialized['parameters'] = array_merge( $serialized['parameters'], array( 'source=' . $query->getQuerySource() ) );
-		}
-
-		list( $serialized['sort'], $serialized['order'] ) = self::doSerializeSortKeys( $query );
-		$serialized['printouts'] = self::doSerializePrintouts( $query );
-
-		$encoded = $serialized['conditions'] . '|' .
-			( $serialized['printouts'] !== array() ? implode( '|', $serialized['printouts'] ) . '|' : '' ) .
-			implode( '|', $serialized['parameters'] ) .
-			( $serialized['sort'] !==  array() ? '|sort=' . implode( ',', $serialized['sort'] ) : '' ) .
-			( $serialized['order'] !== array() ? '|order=' . implode( ',', $serialized['order'] ) : '' );
-
-		return $encoded;
+	public static function toJson( Query $query, $printParameters = false ) {
+		return json_encode( self::toArray( $query, $printParameters ) );
 	}
 
-	private static function doSerializePrintouts( $query ) {
+	/**
+	 * @since 2.5
+	 *
+	 * @param Query $query
+	 *
+	 * @return string
+	 */
+	public static function toString( Query $query, $printParameters = false ) {
+
+		$serialized = self::toArray( $query, $printParameters );
+
+		$string = $serialized['conditions'];
+
+		if ( $serialized['printouts'] !== [] ) {
+			$string .= '|' . implode( '|', $serialized['printouts'] );
+		}
+
+		foreach ( $serialized['parameters'] as $key => $value ) {
+			$string .= "|$key=$value";
+		}
+
+		return $string;
+	}
+
+	private static function printouts( $query, $showParams = false ) {
 
 		$printouts = array();
 
@@ -66,7 +113,7 @@ class QueryStringifier {
 		}
 
 		foreach ( $query->getExtraPrintouts() as $printout ) {
-			$serialization = $printout->getSerialisation();
+			$serialization = $printout->getSerialisation( $showParams );
 			if ( $serialization !== '?#' ) {
 				// #show adds an extra = at the end which is interpret as
 				// requesting an empty result hence it is removed
@@ -77,7 +124,7 @@ class QueryStringifier {
 		return $printouts;
 	}
 
-	private static function doSerializeSortKeys( $query ) {
+	private static function sortKeys( $query ) {
 
 		$sort = array();
 		$order = array();
@@ -92,7 +139,7 @@ class QueryStringifier {
 				continue;
 			}
 
-			$sort[] = $key;
+			$sort[] = str_replace( '_', ' ', $key );
 			$order[] = strtolower( $value );
 		}
 

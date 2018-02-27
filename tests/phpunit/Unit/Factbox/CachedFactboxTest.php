@@ -9,6 +9,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Factbox\CachedFactbox;
 use SMW\Tests\Utils\Mock\MockTitle;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Factbox\CachedFactbox
@@ -22,30 +23,25 @@ use SMW\Tests\Utils\Mock\MockTitle;
  */
 class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 	private $memoryCache;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->memoryCache = $this->applicationFactory->newCacheFactory()->newFixedInMemoryCache();
+		$this->testEnvironment = new TestEnvironment();
+		$this->memoryCache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache();
 
-		$settings = array(
-			'smwgFactboxUseCache' => true,
-			'smwgCacheType'       => 'hash',
-			'smwgLinksInValues'   => false,
-			'smwgInlineErrors'    => true
+		$this->testEnvironment->withConfiguration(
+			[
+				'smwgFactboxUseCache' => true,
+				'smwgCacheType'       => 'hash'
+			]
 		);
-
-		foreach ( $settings as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -66,17 +62,17 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcessAndRetrieveContent( $parameters, $expected ) {
 
-		$this->applicationFactory->getSettings()->set(
+		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			$parameters['smwgNamespacesWithSemanticLinks']
 		);
 
-		$this->applicationFactory->getSettings()->set(
+		$this->testEnvironment->addConfiguration(
 			'smwgShowFactbox',
 			$parameters['smwgShowFactbox']
 		);
 
-		$this->applicationFactory->registerObject( 'Store', $parameters['store'] );
+		$this->testEnvironment->registerObject( 'Store', $parameters['store'] );
 
 		$outputPage = $parameters['outputPage'];
 

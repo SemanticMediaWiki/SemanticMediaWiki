@@ -34,7 +34,7 @@ class SMWPageLister {
 	 * @param $from string if the results were selected starting from this string
 	 * @param $until string if the results were selected reaching until this string
 	 */
-	public function __construct( array $diWikiPages, $diProperty, $limit, $from = '', $until = '' ) {
+	public function __construct( $diWikiPages, $diProperty, $limit, $from = '', $until = '' ) {
 		$this->mDiWikiPages = $diWikiPages;
 		$this->mDiProperty = $diProperty;
 		$this->mLimit = $limit;
@@ -207,8 +207,12 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getColumnList( $start, $end, array $diWikiPages, $diProperty ) {
+	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
 		global $wgContLang;
+
+		if ( $diWikiPages instanceof \Iterator ) {
+			$diWikiPages = iterator_to_array( $diWikiPages );
+		}
 
 		// Divide list into three equal chunks.
 		$chunk = (int) ( ( $end - $start + 1 ) / 3 );
@@ -222,13 +226,15 @@ class SMWPageLister {
 		for ( $startChunk = $start, $endChunk = $chunk, $chunkIndex = 0;
 			$chunkIndex < 3;
 			++$chunkIndex, $startChunk = $endChunk, $endChunk += $chunk + 1 ) {
-			$r .= "<td>\n";
+			$r .= "<td width='33%'>\n";
 			$atColumnTop = true;
 
 			// output all diWikiPages
 			for ( $index = $startChunk; $index < $endChunk && $index < $end; ++$index ) {
 				$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
-				// check for change of starting letter or begining of chunk
+				$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
+
+				// check for change of starting letter or beginning of chunk
 				$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
 				$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 
@@ -251,7 +257,11 @@ class SMWPageLister {
 					$prevStartChar = $startChar;
 				}
 
-				$r .= "<li>" . $dataValue->getLongHTMLText( smwfGetLinker() ) . "</li>\n";
+				$r .= "<li>" . $dataValue->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . "</li>\n";
+			}
+
+			if ( $index == $end && $moreCallback !== null ) {
+				$r .= "<li>" . call_user_func( $moreCallback ) . "</li>\n";
 			}
 
 			if ( !$atColumnTop ) {
@@ -276,17 +286,35 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getShortList( $start, $end, array $diWikiPages, $diProperty ) {
+	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
+
+		if ( $diWikiPages instanceof \Iterator ) {
+			$diWikiPages = iterator_to_array( $diWikiPages );
+		}
 
 		$startDv = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$start], $diProperty );
+		$searchlink = \SMWInfolink::newBrowsingLink( '+', $startDv->getWikiValue() );
+
+		// For a redirect, disable the DisplayTitle to show the original (aka source) page
+		if ( $diProperty !== null && $diProperty->getKey() == '_REDI' ) {
+			$startDv->setOption( 'smwgDVFeatures', ( $startDv->getOption( 'smwgDVFeatures' ) & ~SMW_DV_WPV_DTITLE ) );
+		}
+
 		$startChar = self::getFirstChar( $diWikiPages[$start] );
 
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
-		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '</li>';
+		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</li>';
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
 			$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
+			$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
+
+			// For a redirect, disable the DisplayTitle to show the original (aka source) page
+			if ( $diProperty !== null && $diProperty->getKey() == '_REDI' ) {
+				$dataValue->setOption( 'smwgDVFeatures', ( $dataValue->getOption( 'smwgDVFeatures' ) & ~SMW_DV_WPV_DTITLE ) );
+			}
+
 			$startChar = self::getFirstChar( $diWikiPages[$index] );
 
 			if ( $startChar != $prevStartChar ) {
@@ -294,7 +322,11 @@ class SMWPageLister {
 				$prevStartChar = $startChar;
 			}
 
-			$r .= '<li>' . $dataValue->getLongHTMLText( smwfGetLinker() ) . '</li>';
+			$r .= '<li>' . $dataValue->getLongHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</li>';
+		}
+
+		if ( $moreCallback !== null ) {
+			$r .= '<li>' . call_user_func( $moreCallback ) . '</li>';
 		}
 
 		$r .= '</ul>';

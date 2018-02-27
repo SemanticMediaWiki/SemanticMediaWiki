@@ -4,6 +4,21 @@
  * SemanticMediaWiki compatibility aliases for classes that got moved into the SMW namespace
  */
 
+// 3.0
+class_alias( 'SMW\Updater\DeferredCallableUpdate', 'SMW\DeferredCallableUpdate' );
+class_alias( 'SMW\Parser\InTextAnnotationParser', 'SMW\InTextAnnotationParser' );
+class_alias( 'SMW\Encoder', 'SMW\UrlEncoder' );
+class_alias( 'SMW\Query\ResultPrinter', 'SMW\QueryResultPrinter' );
+class_alias( 'SMW\Query\ResultPrinter', 'SMWIResultPrinter' );
+class_alias( 'SMW\Query\ExportPrinter', 'SMW\ExportPrinter' );
+class_alias( 'SMW\Query\ResultPrinters\ResultPrinter', 'SMW\ResultPrinter' );
+class_alias( 'SMW\Query\ResultPrinters\ResultPrinter', 'SMWResultPrinter' );
+class_alias( 'SMW\Query\ResultPrinters\FileExportPrinter', 'SMW\FileExportPrinter' );
+class_alias( 'SMW\Query\Parser', 'SMWQueryParser' );
+class_alias( 'SMW\SQLStore\ChangeOp\ChangeOp', 'SMW\SQLStore\CompositePropertyTableDiffIterator' );
+class_alias( 'SMW\Connection\ConnectionProvider', 'SMW\DBConnectionProvider' );
+class_alias( 'SMW\DataValues\TypesValue', 'SMWTypesValue' );
+
 // 1.9.
 class_alias( 'SMW\Store', 'SMWStore' );
 class_alias( 'SMW\MediaWiki\Jobs\UpdateJob', 'SMWUpdateJob' );
@@ -16,25 +31,23 @@ class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );
 class_alias( 'SMW\Exception\DataItemException', 'SMWDataItemException' );
 class_alias( 'SMW\SQLStore\PropertyTableDefinition', 'SMWSQLStore3Table' );
 class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
-class_alias( 'SMW\TableResultPrinter', 'SMWTableResultPrinter' );
+class_alias( 'SMW\Query\ResultPrinters\TableResultPrinter', 'SMWTableResultPrinter' );
 
 // 2.0
 class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );
-class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
 class_alias( 'SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );
 class_alias( 'SMW\CategoryResultPrinter', 'SMWCategoryResultPrinter' );
 class_alias( 'SMW\DsvResultPrinter', 'SMWDSVResultPrinter' );
 class_alias( 'SMW\EmbeddedResultPrinter', 'SMWEmbeddedResultPrinter' );
 class_alias( 'SMW\RdfResultPrinter', 'SMWRDFResultPrinter' );
 class_alias( 'SMW\ListResultPrinter', 'SMWListResultPrinter' );
-class_alias( 'SMW\QueryResultPrinter', 'SMWIResultPrinter' );
 class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
 
 // 2.0
 class_alias( 'SMW\SPARQLStore\SPARQLStore', 'SMWSparqlStore' );
-class_alias( 'SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector', 'SMWSparqlDatabase4Store' );
-class_alias( 'SMW\SPARQLStore\RepositoryConnectors\VirtuosoHttpRepositoryConnector', 'SMWSparqlDatabaseVirtuoso' );
-class_alias( 'SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector', 'SMWSparqlDatabase' );
+class_alias( 'SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector', 'SMWSparqlDatabase4Store' );
+class_alias( 'SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector', 'SMWSparqlDatabaseVirtuoso' );
+class_alias( 'SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector', 'SMWSparqlDatabase' );
 
 // 2.1
 class_alias( 'SMWSQLStore3', 'SMW\SQLStore\SQLStore' );

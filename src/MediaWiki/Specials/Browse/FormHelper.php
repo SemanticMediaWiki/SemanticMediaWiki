@@ -32,7 +32,7 @@ class FormHelper {
 		$title = SpecialPage::getTitleFor( 'Browse' );
 		$dir = $title->getPageLanguage()->isRTL() ? 'rtl' : 'ltr';
 
-		$html = Html::rawElement(
+		$html = "<div class=\"smwb-form\">". Html::rawElement(
 			'div',
 			array( 'style' => 'margin-top:15px;' ),
 			''
@@ -57,7 +57,7 @@ class FormHelper {
 			Html::rawElement(
 				'div',
 				array(
-					'class' => 'browse-input-resp'
+					'class' => 'smwb-input'
 				),
 				Html::rawElement(
 					'div',
@@ -71,8 +71,8 @@ class FormHelper {
 							'dir'   => $dir,
 							'name'  => 'article',
 							'size'  => 40,
-							'id'    => 'smwb-page-search',
-							'class' => 'input mw-ui-input',
+							'id'    => 'smw-article-input',
+							'class' => 'input mw-ui-input smw-article-input',
 							'value' => htmlspecialchars( $articletext )
 						)
 					)
@@ -94,7 +94,7 @@ class FormHelper {
 			)
 		);
 
-		return $html;
+		return $html . "</div>";
 	}
 
 	/**
@@ -107,7 +107,7 @@ class FormHelper {
 	 *
 	 * @return string
 	 */
-	public static function createLink( $linkMsg, array $parameters ) {
+	public static function createLinkFromMessage( $linkMsg, array $parameters ) {
 
 		$title = SpecialPage::getSafeTitleFor( 'Browse' );
 		$fragment = $linkMsg === 'smw_browse_show_incoming' ? '#smw_browse_incoming' : '';

@@ -3,7 +3,6 @@
 namespace SMW\SQLStore;
 
 use SMW\SQLStore\TableBuilder\Table;
-use Onoi\MessageReporter\MessageReporterAware;
 
 /**
  * @private
@@ -17,7 +16,7 @@ use Onoi\MessageReporter\MessageReporterAware;
  *
  * @author mwjames
  */
-interface TableBuilder extends MessageReporterAware {
+interface TableBuilder {
 
 	/**
 	 * Common prefix used by all Semantic MediaWiki tables
@@ -25,7 +24,17 @@ interface TableBuilder extends MessageReporterAware {
 	const TABLE_PREFIX = 'smw_';
 
 	/**
-	 * On before the creation of tables and indicies
+	 * Processing field activity status
+	 */
+	const PROC_FIELD_NEW = 'new';
+
+	/**
+	 * Processing field activity status
+	 */
+	const PROC_FIELD_UPD = 'update';
+
+	/**
+	 * On before the creation of tables and indices
 	 */
 	const PRE_CREATION = 'pre.creation';
 
@@ -73,6 +82,17 @@ interface TableBuilder extends MessageReporterAware {
 	public function drop( Table $table );
 
 	/**
+	 * Performs analysis on a key distribution and stores the distribution so
+	 * that the query planner can use these statistics to help determine the
+	 * most efficient execution plans for queries.
+	 *
+	 * @since 3.0
+	 *
+	 * @param Table $table
+	 */
+	public function optimize( Table $table );
+
+	/**
 	 * Database backends often have different types that need to be used
 	 * repeatedly in (Semantic) MediaWiki. This function provides the
 	 * preferred type (as a string) for various common kinds of columns.
@@ -87,6 +107,15 @@ interface TableBuilder extends MessageReporterAware {
 	 * @return string|false SQL type declaration
 	 */
 	public function getStandardFieldType( $fieldType );
+
+	/**
+	 * Returns a list of process activities
+	 *
+	 * @since 3.0
+	 *
+	 * @param array
+	 */
+	public function getLog();
 
 	/**
 	 * Allows to check and validate the build on specific events

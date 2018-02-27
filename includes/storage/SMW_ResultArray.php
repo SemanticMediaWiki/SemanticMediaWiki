@@ -3,7 +3,7 @@
 use SMW\DataValueFactory;
 use SMW\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
-use SMW\Query\Result\EntityListAccumulator;
+use SMW\Query\Result\InMemoryEntityProcessList;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMW\Query\Result\ResultFieldMatchFinder;
@@ -42,9 +42,9 @@ class SMWResultArray {
 	private $mContent;
 
 	/**
-	 * @var EntityListAccumulator
+	 * @var InMemoryEntityProcessList
 	 */
-	private $entityListAccumulator;
+	private $inMemoryEntityProcessList;
 
 	/**
 	 * @var ResultFieldMatchFinder
@@ -100,10 +100,10 @@ class SMWResultArray {
 	 *
 	 * @since  2.4
 	 *
-	 * @return EntityListAccumulator
+	 * @return InMemoryEntityProcessList
 	 */
-	public function setEntityListAccumulator( EntityListAccumulator $entityListAccumulator ) {
-		$this->entityListAccumulator = $entityListAccumulator;
+	public function setInMemoryEntityProcessList( InMemoryEntityProcessList $inMemoryEntityProcessList ) {
+		$this->inMemoryEntityProcessList = $inMemoryEntityProcessList;
 	}
 
 	/**
@@ -155,8 +155,8 @@ class SMWResultArray {
 		$this->loadContent();
 		$result = current( $this->mContent );
 
-		if ( $this->entityListAccumulator !== null && $result instanceof DataItem ) {
-			$this->entityListAccumulator->addToEntityList( $result );
+		if ( $this->inMemoryEntityProcessList !== null && $result instanceof DataItem ) {
+			$this->inMemoryEntityProcessList->addDataItem( $result );
 		}
 
 		next( $this->mContent );
@@ -225,8 +225,9 @@ class SMWResultArray {
 			$dataValue->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
 		}
 
-		if ( $this->entityListAccumulator !== null && $dataItem instanceof DataItem ) {
-			$this->entityListAccumulator->addToEntityList( $dataItem, $diProperty );
+		if ( $this->inMemoryEntityProcessList !== null && $dataItem instanceof DataItem ) {
+			$this->inMemoryEntityProcessList->addDataItem( $dataItem );
+			$this->inMemoryEntityProcessList->addProperty( $diProperty );
 		}
 
 		return $dataValue;

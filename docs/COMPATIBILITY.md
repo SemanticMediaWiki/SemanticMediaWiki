@@ -12,20 +12,20 @@ on how to install the latest version of Semantic MediaWiki (SMW), see the [insta
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestones/SMW%203.0">SMW 3.0.x</a></th>
-		<td>Planned release</td>
-		<td>Q4 2017 or Q1 2018</td>
-		<td></td>
-	</tr>
-	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestones/SMW%202.5">SMW 2.5.x</a></th>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/6">SMW 3.0.x</a></th>
 		<td>Development version</td>
-		<td>Q1 2017</td>
+		<td>Q1 2018</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.4.x</a></th>
-		<td>Stable release</td>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">SMW 2.5.x</a></th>
+		<td>Stable version</td>
+		<td>2017-03-14</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.5.x">2.5.x</a></td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.4.0">SMW 2.4.x</a></th>
+		<td>Obsolete release</td>
 		<td>2016-07-09</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.4.x">2.4.x</a></td>
 	</tr>
@@ -109,13 +109,13 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 	<tr>
 		<th>SMW 2.5.x</th>
-		<td><strong><a href="https://php.net/supported-versions.php">5.5.0</a></strong> - latest</td>
-		<td>3.5.0 - latest</td>
+		<td><strong><a href="https://php.net/supported-versions.php">5.5.0</a></strong> - 7.1.x</td>
+		<td>3.5.0 - 3.12.x</td>
 		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.23.0</a></strong> - 1.29</td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
-		<td>5.3.2 - 7.0</td>
+		<td>5.3.2 - 7.0.x</td>
 		<td>3.5.0 - 3.9.x</td>
 		<td>1.19 - 1.27</td>
 	</tr>
@@ -151,8 +151,10 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 </table>
 
-* PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (at the time of this writing). Please consult the official MediaWiki release documentation. 
-* For the 1.28 MediaWiki release branch, 1.28.1 is recommended due to [T154428](https://phabricator.wikimedia.org/T154428).
+* *Note:* It is strongly recommended to also always upgrade the underlying MediaWiki software to supported versions. See the [version lifecycle](https://www.mediawiki.org/wiki/Version_lifecycle) for current information on supported versions.
+* For the 1.28 MediaWiki release branch, 1.28.1 or later is recommended due to [T154428](https://phabricator.wikimedia.org/T154428).
+* For the 1.27 MediaWiki release branch, 1.27.4 or later is recommended due to [T100085](https://phabricator.wikimedia.org/T100085).
+* PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (at the time of this writing). Please also consult the official MediaWiki release documentation. 
 
 **Releases before Composer support:**
 

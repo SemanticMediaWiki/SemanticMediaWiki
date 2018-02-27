@@ -20,6 +20,8 @@ class SQLiteTableBuilder extends TableBuilder {
 	 */
 	public function getStandardFieldType( $fieldType ) {
 
+		$charLongLength = FieldType::CHAR_LONG_LENGTH;
+
 		$fieldTypes = array(
 			 // like page_id in MW page table
 			'id'         => 'INTEGER',
@@ -37,8 +39,10 @@ class SQLiteTableBuilder extends TableBuilder {
 			'boolean'    => 'TINYINT(1)',
 			'double'     => 'DOUBLE',
 			'integer'    => 'INT(8)',
+			'char long'  => "VARBINARY($charLongLength)",
 			'char nocase'      => 'VARCHAR(255) NOT NULL COLLATE NOCASE',
-			'usage count'      =>'INT(8)',
+			'char long nocase' => "VARCHAR($charLongLength) NOT NULL COLLATE NOCASE",
+			'usage count'      => 'INT(8)',
 			'integer unsigned' => 'INTEGER'
 		);
 
@@ -153,10 +157,19 @@ class SQLiteTableBuilder extends TableBuilder {
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
 
+		if ( !isset( $this->processLog[$tableName] ) ) {
+			$this->processLog[$tableName] = array();
+		}
+
 		$fieldType = $this->getStandardFieldType( $fieldType );
+		$default = '';
+
+		if ( isset( $tableOptions['defaults'][$fieldName] ) ) {
+			$default = "DEFAULT '" . $tableOptions['defaults'][$fieldName] . "'";
+		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->doCreateField( $tableName, $fieldName, $position, $fieldType );
+			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->doUpdateFieldType( $tableName, $fieldName, $position, $currentFields[$fieldName], $fieldType );
 		} else {
@@ -164,22 +177,26 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType ) {
+	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
 
 		if ( strpos( $tableName, 'ft_search' ) !== false ) {
 			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
 		}
 
-		// @see https://www.sqlite.org/lang_altertable.html states that
-		// "If a NOT NULL constraint is specified, then the column must have a default value other than NULL."
-		$default = "DEFAULT NULL";
+		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
-		// Add DEFAULT '' to avoid
-		// Query: ALTER TABLE sunittest_rdbms_test ADD `t_num` INT(8) NOT NULL
-		// Function: SMW\SQLStore\TableBuilder\SQLiteTableBuilder::doCreateField
-		// Error: 1 Cannot add a NOT NULL column with default value NULL
-		if ( strpos( $fieldType, 'NOT NULL' ) !== false ) {
-			$default = "DEFAULT ''";
+		if ( $default === '' ) {
+			// @see https://www.sqlite.org/lang_altertable.html states that
+			// "If a NOT NULL constraint is specified, then the column must have a default value other than NULL."
+			$default = "DEFAULT NULL";
+
+			// Add DEFAULT '' to avoid
+			// Query: ALTER TABLE sunittest_rdbms_test ADD `t_num` INT(8) NOT NULL
+			// Function: SMW\SQLStore\TableBuilder\SQLiteTableBuilder::doCreateField
+			// Error: 1 Cannot add a NOT NULL column with default value NULL
+			if ( strpos( $fieldType, 'NOT NULL' ) !== false ) {
+				$default = "DEFAULT ''";
+			}
 		}
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
@@ -205,15 +222,24 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndicies( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
 
-		$indicies = $indexOptions['indicies'];
+		$indices = $indexOptions['indices'];
+		$ix = [];
 
-		// First remove possible obsolete indicies
-		$this->doDropObsoleteIndicies( $tableName, $indicies );
+		// In case an index has a length restriction indexZ(200), remove it since
+		// SQLite doesn't know such syntax
+		foreach ( $indices as $k => $columns ) {
+			$ix[$k] = preg_replace("/\([^)]+\)/", "", $columns );
+		}
+
+		$indices = $ix;
+
+		// First remove possible obsolete indices
+		$this->doDropObsoleteIndices( $tableName, $indices );
 
 		// Add new indexes.
-		foreach ( $indicies as $indexName => $index ) {
+		foreach ( $indices as $indexName => $index ) {
 			// If the index is an array, it contains the column
 			// name as first element, and index type as second one.
 			if ( is_array( $index ) ) {
@@ -228,13 +254,13 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ) {
 
-		$currentIndicies = $this->getIndexInfo( $tableName );
+		$currentIndices = $this->getIndexInfo( $tableName );
 
 		// TODO We do not currently get the right column definitions in
 		// SQLite; hence we can only drop all indexes. Wasteful.
-		foreach ( $currentIndicies as $indexName => $indexColumn ) {
+		foreach ( $currentIndices as $indexName => $indexColumn ) {
 			$this->doDropIndex( $tableName, $indexName, $indexColumn );
 		}
 	}
@@ -295,6 +321,22 @@ class SQLiteTableBuilder extends TableBuilder {
 	 */
 	protected function doDropTable( $tableName ) {
 		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function doOptimize( $tableName ) {
+
+		$this->reportMessage( "Checking table $tableName ...\n" );
+
+		// https://sqlite.org/lang_analyze.html
+		$this->reportMessage( "   ... analyze " );
+		$this->connection->query( 'ANALYZE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+
+		$this->reportMessage( "done.\n" );
 	}
 
 }

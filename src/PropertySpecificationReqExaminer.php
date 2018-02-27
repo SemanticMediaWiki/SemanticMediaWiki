@@ -8,6 +8,7 @@ use SMW\DIProperty;
 use SMW\DataItemFactory;
 use SMWDataItem as DataItem;
 use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
+use SMW\Protection\ProtectionValidator;
 
 /**
  * Examines codified requirements for listed types of property specifications which
@@ -26,9 +27,19 @@ class PropertySpecificationReqExaminer {
 	private $store;
 
 	/**
+	 * @var ProtectionValidator
+	 */
+	private $protectionValidator;
+
+	/**
 	 * @var SemanticData
 	 */
 	private $semanticData;
+
+	/**
+	 * @var boolean
+	 */
+	private $changePropagationProtection = true;
 
 	/**
 	 * @var DataItemFactory
@@ -38,20 +49,21 @@ class PropertySpecificationReqExaminer {
 	/**
 	 * @var boolean
 	 */
-	private $editProtectionRight = false;
+	private $reqLock = false;
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param Store $store
-	 * @param DIProperty $property
+	 * @param ProtectionValidator $protectionValidator
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, ProtectionValidator $protectionValidator ) {
 		$this->store = $store;
+		$this->protectionValidator = $protectionValidator;
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.0
 	 *
 	 * @param SemanticData|null $semanticData
 	 */
@@ -60,12 +72,23 @@ class PropertySpecificationReqExaminer {
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.0
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param boolean $changePropagationProtection
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
-		$this->editProtectionRight = $editProtectionRight;
+	public function setChangePropagationProtection( $changePropagationProtection ) {
+		$this->changePropagationProtection = (bool)$changePropagationProtection;
+	}
+
+	/**
+	 * Whether a specific property requires a lock nor not.
+	 *
+	 * @since 3.0
+	 *
+	 * @param boolean
+	 */
+	public function reqLock() {
+		return $this->reqLock;
 	}
 
 	/**
@@ -75,29 +98,69 @@ class PropertySpecificationReqExaminer {
 	 *
 	 * @return array|null
 	 */
-	public function checkOn( DIProperty $property ) {
+	public function check( DIProperty $property ) {
+
+		$subject = $property->getCanonicalDiWikiPage();
+		$title = $subject->getTitle();
+
+		$semanticData = $this->store->getSemanticData( $subject );
 
 		if ( $this->semanticData === null ) {
-			$this->semanticData = $this->store->getSemanticData( $property->getCanonicalDiWikiPage() );
+			$this->semanticData = $semanticData;
+		}
+
+		$this->reqLock = false;
+		$this->dataItemFactory = new DataItemFactory();
+
+		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
+			$severity = $this->changePropagationProtection ? 'error' : 'warning';
+			$this->reqLock = true;
+			return array(
+				$severity,
+				'smw-property-req-violation-change-propagation-locked-' . $severity,
+				$property->getLabel()
+			);
+		}
+
+		if ( $this->reqLock === false && $this->protectionValidator->hasCreateProtection( $title ) ) {
+			$msg = 'smw-create-protection';
+
+			if ( $title->exists() ) {
+				$msg = 'smw-create-protection-exists';
+			}
+
+			return array(
+				'warning',
+				$msg,
+				$property->getLabel(),
+				$this->protectionValidator->getCreateProtectionRight()
+			);
+		}
+
+		if ( $this->reqLock === false && $this->protectionValidator->hasEditProtection( $title ) ) {
+			return array(
+				$property->isUserDefined() ? 'error' : 'warning',
+				'smw-edit-protection',
+				$this->protectionValidator->getEditProtectionRight()
+			);
+		}
+
+		if ( !$property->isUserDefined() ) {
+			return $this->checkTypeForPredefinedProperty( $property );
 		}
 
 		$type = $property->findPropertyTypeID();
-		$this->dataItemFactory = new DataItemFactory();
-
-		if ( !$property->isUserDefined() ) {
-			return $this->checkOnTypeForPredefinedProperty( $property );
-		}
 
 		if ( $type === '_ref_rec' || $type === '_rec' ) {
-			return $this->checkOnFieldList( $property );
+			return $this->checkFieldList( $property );
 		}
 
 		if ( $type === '_eid' ) {
-			return $this->checkOnExternalFormatterUri( $property );
+			return $this->checkExternalFormatterUri( $property );
 		}
 
 		if ( $this->semanticData->getOption( MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) ) {
-			return $this->checkOnImportedVocabType( $property );
+			return $this->checkImportedVocabType( $property );
 		}
 	}
 
@@ -105,10 +168,10 @@ class PropertySpecificationReqExaminer {
 	 * A violation occurs when a predefined property contains a `Has type` annotation
 	 * that is incompatible with the default type.
 	 */
-	private function checkOnTypeForPredefinedProperty( $property ) {
+	private function checkTypeForPredefinedProperty( $property ) {
 
 		if ( $property->getKey() === '_EDIP' ) {
-			return $this->checkOnEditProtectionRight( $property );
+			return $this->checkEditProtectionRight( $property );
 		}
 
 		if ( !$this->semanticData->hasProperty( $this->dataItemFactory->newDIProperty( '_TYPE' ) ) ) {
@@ -141,9 +204,9 @@ class PropertySpecificationReqExaminer {
 	 * Examines whether the setting `smwgEditProtectionRight` contains an appropriate
 	 * value or is disabled in order for the `Is edit protected` property to function.
 	 */
-	private function checkOnEditProtectionRight( $property ) {
+	private function checkEditProtectionRight( $property ) {
 
-		if ( $this->editProtectionRight !== false ) {
+		if ( $this->protectionValidator->getEditProtectionRight() !== false ) {
 			return;
 		}
 
@@ -158,7 +221,7 @@ class PropertySpecificationReqExaminer {
 	 * A violation occurs when a Reference or Record typed property does not denote
 	 * a `Has fields` declaration.
 	 */
-	private function checkOnFieldList( $property ) {
+	private function checkFieldList( $property ) {
 
 		if ( $this->semanticData->hasProperty( $this->dataItemFactory->newDIProperty( '_LIST' ) ) ) {
 			return;
@@ -178,7 +241,7 @@ class PropertySpecificationReqExaminer {
 	 * A violation occurs when the External Identifier typed property does not declare
 	 * a `External formatter URI` declaration.
 	 */
-	private function checkOnExternalFormatterUri( $property ) {
+	private function checkExternalFormatterUri( $property ) {
 
 		if ( $this->semanticData->hasProperty( $this->dataItemFactory->newDIProperty( '_PEFU' ) ) ) {
 			return;
@@ -195,7 +258,7 @@ class PropertySpecificationReqExaminer {
 	 * A violation occurs when the `Imported from` property detects an incompatible
 	 * `Has type` declaration.
 	 */
-	private function checkOnImportedVocabType( $property ) {
+	private function checkImportedVocabType( $property ) {
 
 		$typeValues = $this->semanticData->getPropertyValues(
 			$this->dataItemFactory->newDIProperty( '_TYPE' )

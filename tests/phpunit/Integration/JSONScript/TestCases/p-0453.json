@@ -1,0 +1,41 @@
+{
+	"description": "Test in-text `_dat` annotation with `#LOCL#TO` (`wgLocalTZoffset`, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0453/1",
+			"contents": "[[Has date::1 Jan 1971 13:00]]"
+		},
+		{
+			"page": "Example/P0453/Q.1",
+			"contents": "{{#show: Example/P0453/1 |?Has date |?Has date#LOCL#TO }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0453/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_dat\" data-sort-value=\"2440953.0416667\">1 January 1971 13:00:00</td>",
+					"<td class=\"smwtype_dat\" data-sort-value=\"2440953.0416667\">15:00:00, 1 January 1971&#160;<sup title=\"ISO: 1971-01-01T13:00:00\">ᴸ</sup></td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLocalTZoffset": 120
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

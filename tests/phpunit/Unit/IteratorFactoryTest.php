@@ -44,4 +44,40 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructChunkedIterator() {
+
+		$instance = new IteratorFactory();
+
+		$iterator = $this->getMockBuilder( '\Iterator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\ChunkedIterator',
+			$instance->newChunkedIterator( $iterator )
+		);
+	}
+
+	public function testCanConstructAppendIterator() {
+
+		$instance = new IteratorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\AppendIterator',
+			$instance->newAppendIterator()
+		);
+	}
+
+	public function testCanConstructCsvFileIterator() {
+
+		$instance = new IteratorFactory();
+
+		$this->setExpectedException( 'SMW\Exception\FileNotFoundException' );
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\CsvFileIterator',
+			$instance->newCsvFileIterator( 'Foo' )
+		);
+	}
+
 }

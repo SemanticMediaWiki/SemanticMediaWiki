@@ -44,7 +44,23 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		return wfMessage( 'smw_printername_embedded' )->text();
 	}
 
+	/**
+	 * @see ResultPrinter::isDeferrable
+	 *
+	 * {@inheritDoc}
+	 */
+	public function isDeferrable() {
+		return true;
+	}
+
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
+
+		// Ensure that there is an annotation block in place before starting the
+		// parse and transclution process. Unfortunately we are unable to block
+		// the inclusion of categories which are attached to a MediaWiki
+		// object we have no immediate access or control.
+		$this->transcludeAnnotation = false;
+
 		global $wgParser;
 		// No page should embed itself, find out who we are:
 		if ( $wgParser->getTitle() instanceof Title ) {
@@ -113,24 +129,27 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		return $result;
 	}
 
-	public function getParameters() {
-		$params = parent::getParameters();
+	/**
+	 * @inheritdoc
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
 
-		$params[] = array(
+		$definitions[] = [
 			'name' => 'embedformat',
 			'message' => 'smw-paramdesc-embedformat',
 			'default' => 'h1',
-			'values' => array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul' ),
-		);
+			'values' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul' ],
+		];
 
-		$params[] = array(
+		$definitions[] = [
 			'name' => 'embedonly',
 			'type' => 'boolean',
 			'message' => 'smw-paramdesc-embedonly',
 			'default' => false,
-		);
+		];
 
-		return $params;
+
+		return $definitions;
 	}
-
 }

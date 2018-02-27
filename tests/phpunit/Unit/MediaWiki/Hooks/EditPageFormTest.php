@@ -45,12 +45,39 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 			$this->namespaceExaminer
 		);
 
-		$instance->isEnabledEditPageHelp(
-			false
+		$instance->setOptions(
+			[
+				'smwgEnabledEditPageHelp' => false
+			]
 		);
 
 		$this->assertTrue(
 			$instance->process( $editPage )
+		);
+	}
+
+	public function testDisabledOnUserPreference() {
+
+		$editPage = $this->getMockBuilder( '\EditPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EditPageForm(
+			$this->namespaceExaminer
+		);
+
+		$instance->setOptions(
+			[
+				'prefs-disable-editpage' => true
+			]
+		);
+
+		$editPage->editFormPageTop = '';
+
+		$instance->process( $editPage );
+
+		$this->assertEmpty(
+			$editPage->editFormPageTop
 		);
 	}
 
@@ -78,8 +105,10 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 			$this->namespaceExaminer
 		);
 
-		$instance->isEnabledEditPageHelp(
-			true
+		$instance->setOptions(
+			[
+				'smwgEnabledEditPageHelp' => true
+			]
 		);
 
 		$instance->process( $editPage );

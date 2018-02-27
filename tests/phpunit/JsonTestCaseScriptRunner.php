@@ -47,6 +47,11 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	private $itemsMarkedForDeletion = array();
 
 	/**
+	 * @var array
+	 */
+	private $configValueCallback = array();
+
+	/**
 	 * @var boolean
 	 */
 	protected $deletePagesOnTearDown = true;
@@ -77,7 +82,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 		);
 
 		if ( $this->getStore() instanceof \SMWSparqlStore ) {
-			$this->connectorId = strtolower( $GLOBALS['smwgSparqlDatabaseConnector'] );
+			$this->connectorId = strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] );
 		} else {
 			$this->connectorId = strtolower( $this->getDBConnection()->getType() );
 		}
@@ -115,6 +120,46 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 */
 	protected function getAllowedTestCaseFiles() {
 		return array();
+	}
+
+	/**
+	 * Selected list of settings (internal or MediaWiki related) that are
+	 * permissible for the time of the test run to be manipulated.
+	 *
+	 * For a configuration that requires special treatment (i.e. where a simple
+	 * assignment isn't sufficient), a callback can be assigned to a settings
+	 * key in order to sort out required manipulation (constants etc.).
+	 *
+	 * @return array
+	 */
+	protected function getPermittedSettings() {
+
+		// Ensure that the context is set for a select language
+		// and dependent objects are reset
+		$langCallback = function( $val ) {
+			\RequestContext::getMain()->setLanguage( $val );
+			\SMW\Localizer::getInstance()->clear();
+			return \Language::factory( $val ); };
+
+		$this->registerConfigValueCallback( 'wgContLang', $langCallback );
+		$this->registerConfigValueCallback( 'wgLang', $langCallback );
+
+		return array();
+	}
+
+	/**
+	 * @param string $key
+	 * @param Closure $callback
+	 */
+	protected function registerConfigValueCallback( $key, \Closure $callback ) {
+		$this->configValueCallback[$key] = $callback;
+	}
+
+	/**
+	 * @return callable|null
+	 */
+	protected function getConfigValueCallback( $key ) {
+		return isset( $this->configValueCallback[$key] ) ? $this->configValueCallback[$key] : null;
 	}
 
 	/**
@@ -213,7 +258,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $this->getStore() instanceof \SMWSparqlStore && $jsonTestCaseFileHandler->requiredToSkipForConnector( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->connectorId ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 	}

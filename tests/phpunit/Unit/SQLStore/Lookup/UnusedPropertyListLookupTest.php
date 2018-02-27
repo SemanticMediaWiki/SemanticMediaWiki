@@ -18,7 +18,7 @@ use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $propertyStatisticsTable;
+	private $propertyStatisticsStore;
 	private $requestOptions;
 
 	protected function setUp() {
@@ -27,7 +27,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyStatisticsTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsTable' )
+		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +40,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\Lookup\UnusedPropertyListLookup',
-			new UnusedPropertyListLookup( $this->store, $this->propertyStatisticsTable, null )
+			new UnusedPropertyListLookup( $this->store, $this->propertyStatisticsStore, null )
 		);
 	}
 
@@ -48,7 +48,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
-			$this->propertyStatisticsTable,
+			$this->propertyStatisticsStore,
 			$this->requestOptions
 		);
 
@@ -73,7 +73,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
-			$this->propertyStatisticsTable,
+			$this->propertyStatisticsStore,
 			$requestOptions
 		);
 
@@ -83,7 +83,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
-			$this->propertyStatisticsTable,
+			$this->propertyStatisticsStore,
 			$requestOptions
 		);
 
@@ -97,7 +97,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
-			$this->propertyStatisticsTable
+			$this->propertyStatisticsStore
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
@@ -132,7 +132,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
-			$this->propertyStatisticsTable,
+			$this->propertyStatisticsStore,
 			$this->requestOptions
 		);
 
@@ -174,7 +174,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'ORDER BY' => 'smw_sortkey', 'LIMIT' => 1001, 'OFFSET' => 0 ) ),
+				$this->equalTo( array( 'ORDER BY' => 'smw_sort', 'LIMIT' => 1001, 'OFFSET' => 0 ) ),
 				$this->anything() )
 			->will( $this->returnValue( array( $row ) ) );
 
@@ -194,7 +194,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
-			$this->propertyStatisticsTable,
+			$this->propertyStatisticsStore,
 			$this->requestOptions
 		);
 

@@ -28,12 +28,13 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'instance', 2, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 2 );
 
 		var result = new smw.dataValue.quantity( 3 );
 		assert.ok( result instanceof Object, pass + 'the smw.dataValue.quantity instance was accessible' );
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.dataValue.quantity( 'foo' );
 		}, pass + 'an error was raised due to wrong type' );
 
@@ -44,7 +45,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getDIType', 1, function ( assert ) {
+	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.dataValue.quantity( 3 );
 		assert.equal( result.getDIType(), '_qty', pass + 'returned _qty' );
@@ -56,7 +58,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getValue', 3, function ( assert ) {
+	QUnit.test( 'getValue', function ( assert ) {
+		assert.expect( 3 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -71,7 +75,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getUnit', 3, function ( assert ) {
+	QUnit.test( 'getUnit', function ( assert ) {
+		assert.expect( 3 );
+
 		var result;
 
 		$.map( testCases, function ( testCase ) {

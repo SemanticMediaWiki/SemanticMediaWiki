@@ -9,6 +9,7 @@ use SMW\ContentParser;
 use TextContent;
 use TextContentHandler;
 use Title;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\ContentParser
@@ -61,18 +62,13 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @dataProvider titleRevisionDataProvider
-	 *
-	 * @since 1.9.0.2
 	 */
 	public function testRunParseOnTitle( $setup, $expected, $withContentHandler = false ) {
 
-		$instance = $this->getMock( $this->getClass(),
-			array( 'hasContentHandler' ),
-			array(
-				$setup['title'],
-				new Parser()
-			)
-		);
+		$instance = $this->getMockBuilder( '\SMW\ContentParser' )
+			->setConstructorArgs( array( $setup['title'], new Parser() ) )
+			->setMethods( array( 'hasContentHandler' ) )
+			->getMock();
 
 		$instance->expects( $this->any() )
 			->method( 'hasContentHandler' )
@@ -227,12 +223,15 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 		$text     = 'Foo-3-' . __METHOD__;
 
 		// #0 Title does not exists
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'getDBkey'        => 'Lila',
-			'exists'          => false,
-			'getText'         => null,
-			'getPageLanguage' => $this->getLanguage()
-		) );
+		$title = MockTitle::buildMock( 'Lila' );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( false ) );
+
+		$title->expects( $this->any() )
+			->method( 'getPageLanguage' )
+			->will( $this->returnValue( $this->getLanguage() ) );
 
 		$provider[] = array(
 			array(

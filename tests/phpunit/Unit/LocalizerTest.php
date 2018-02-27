@@ -79,22 +79,22 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	public function testSupportedLanguageForLowerCaseLetter() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
-			$this->markTestSkipped( 'Skipping because `Language::isSupportedLanguage` is not supported on 1.19' );
+			$this->markTestSkipped( 'Skipping because `Language::isKnownLanguageTag` is not supported on 1.19' );
 		}
 
 		$this->assertTrue(
-			Localizer::isSupportedLanguage( 'en' )
+			Localizer::isKnownLanguageTag( 'en' )
 		);
 	}
 
 	public function testSupportedLanguageForUpperCaseLetter() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
-			$this->markTestSkipped( 'Skipping because `Language::isSupportedLanguage` is not supported on 1.19' );
+			$this->markTestSkipped( 'Skipping because `Language::isKnownLanguageTag` is not supported on 1.19' );
 		}
 
 		$this->assertTrue(
-			Localizer::isSupportedLanguage( 'ZH-HANS' )
+			Localizer::isKnownLanguageTag( 'ZH-HANS' )
 		);
 	}
 
@@ -284,7 +284,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$language->expects( $this->exactly( 2 ) )
+		$language->expects( $this->exactly( 3 ) )
 			->method( 'getNsText' )
 			->will( $this->returnValue( 'Spécial' ) );
 
@@ -298,6 +298,11 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'http://example.org/wiki/Special:URIResolver/Property-3AHas_query',
 			$instance->getCanonicalizedUrlByNamespace( NS_SPECIAL, 'http://example.org/wiki/Spécial:URIResolver/Property-3AHas_query' )
+		);
+
+		$this->assertEquals(
+			'http://example.org/index.php?title=Special:URIResolver&Property-3AHas_query',
+			$instance->getCanonicalizedUrlByNamespace( NS_SPECIAL, 'http://example.org/index.php?title=Spécial:URIResolver&Property-3AHas_query' )
 		);
 	}
 
@@ -317,6 +322,50 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'Help',
 			$instance->getCanonicalNamespaceTextById( NS_HELP )
+		);
+	}
+
+	public function testHasLocalTimeOffsetPreference() {
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->once() )
+			->method( 'getOption' )
+			->with( $this->equalTo( 'smw-prefs-general-options-time-correction' ) )
+			->will( $this->returnValue( true ) );
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Localizer( $language );
+
+		$this->assertTrue(
+			$instance->hasLocalTimeOffsetPreference( $user )
+		);
+	}
+
+	public function testGetLocalTime() {
+
+		$dataTime = $this->getMockBuilder( '\DateTime' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Localizer( $language );
+
+		$this->assertInstanceOf(
+			'DateTime',
+			$instance->getLocalTime( $dataTime, $user )
 		);
 	}
 

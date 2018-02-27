@@ -14,11 +14,12 @@ use SMW\Localizer;
 use SMW\Message;
 use SMW\Options;
 use SMW\Query\QueryComparator;
+use SMW\Utils\CharArmor;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
  * data value, especially its various representations as strings, tooltips,
- * numbers, etc.  Objects can be created as "emtpy" containers of a certain type,
+ * numbers, etc.  Objects can be created as "empty" containers of a certain type,
  * but are then usually filled with data to present one particular data value.
  *
  * Data values have two chief representation forms: the user-facing syntax and the
@@ -72,6 +73,11 @@ abstract class SMWDataValue {
 	 * Option to disable an infolinks highlight/tooltip
 	 */
 	const OPT_DISABLE_INFOLINKS = 'disable.infolinks';
+
+	/**
+	 * Option to use compact infolinks
+	 */
+	const OPT_COMPACT_INFOLINKS = 'compact.infolinks';
 
 	/**
 	 * Associated data item. This is the reference to the immutable object
@@ -138,6 +144,11 @@ abstract class SMWDataValue {
 	private $mHasErrors = false;
 
 	/**
+	 * @var false|array
+	 */
+	protected $restrictionError = false;
+
+	/**
 	 * @var Options
 	 */
 	private $options;
@@ -146,6 +157,11 @@ abstract class SMWDataValue {
 	 * @var InfoLinksProvider
 	 */
 	private $infoLinksProvider = null;
+
+	/**
+	 * @var string
+	 */
+	private $userValue = '';
 
 	/**
 	 * @var DataValueServiceFactory
@@ -177,6 +193,11 @@ abstract class SMWDataValue {
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
+		$this->userValue = $value;
+
+		$value = CharArmor::removeControlChars(
+			CharArmor::removeSpecialChars( $value )
+		);
 
 		$this->parseUserValue( $value ); // may set caption if not set yet, depending on datavalue
 
@@ -186,7 +207,7 @@ abstract class SMWDataValue {
 		// In general, we are not prepared to handle such content properly, and we
 		// also have no means of obtaining the user input at this point. Hence the assignment
 		// just fails, even if parseUserValue() above might not have noticed this issue.
-		// Note: \x07 was used in MediaWiki 1.11.0, \x7f is used now (backwards compatiblity, b/c)
+		// Note: \x07 was used in MediaWiki 1.11.0, \x7f is used now (backwards compatibility, b/c)
 		if ( ( strpos( $value, "\x7f" ) !== false ) || ( strpos( $value, "\x07" ) !== false ) ) {
 			$this->addErrorMsg( array( 'smw-datavalue-stripmarker-parse-error', $value ) );
 		}
@@ -282,7 +303,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return Options|null $options
 	 */
-	public function setOptions( Options $options = null ) {
+	public function copyOptions( Options $options = null ) {
 
 		if ( $options === null ) {
 			return;
@@ -315,13 +336,13 @@ abstract class SMWDataValue {
 	 *
 	 * @return mixed|false
 	 */
-	public function getOption( $key ) {
+	public function getOption( $key, $default = false ) {
 
 		if ( $this->options !== null && $this->options->has( $key ) ) {
 			return $this->options->get( $key );
 		}
 
-		return false;
+		return $default;
 	}
 
 	/**
@@ -535,7 +556,7 @@ abstract class SMWDataValue {
 			return $this->m_dataitem;
 		}
 
-		return new SMWDIError( $this->mErrors );
+		return new SMWDIError( $this->mErrors, $this->userValue );
 	}
 
 	/**
@@ -650,6 +671,10 @@ abstract class SMWDataValue {
 			$this->infoLinksProvider->disableServiceLinks();
 		}
 
+		$this->infoLinksProvider->setCompactLink(
+			$this->getOption( self::OPT_COMPACT_INFOLINKS, false )
+		);
+
 		return $this->infoLinksProvider->getInfolinkText( $outputformat, $linker );
 	}
 
@@ -743,12 +768,21 @@ abstract class SMWDataValue {
 	 * while usability is determined by its accessibility to a context
 	 * (permission, convention etc.)
 	 *
-	 * @since  2.2
+	 * @since 2.2
 	 *
 	 * @return boolean
 	 */
 	public function canUse() {
 		return true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function isRestricted() {
+		return false;
 	}
 
 	/**
@@ -782,6 +816,15 @@ abstract class SMWDataValue {
 	 */
 	public function getErrors() {
 		return $this->mErrors;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array|false
+	 */
+	public function getRestrictionError() {
+		return $this->restrictionError;
 	}
 
 	/**

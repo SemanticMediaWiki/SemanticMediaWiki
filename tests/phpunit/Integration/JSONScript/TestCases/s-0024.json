@@ -1,0 +1,49 @@
+{
+	"description": "Test `Special:Browse` with compact links (`smwgCompactLinkSupport`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/S0024/L'oéal",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:S0024]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "cl:OkV4YW1wbGUtMkZTMDAyNC0yRkwnb8OpYWw",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smwbrowse\"><a href=.*cl:OkV4YW1wbGUtMkZTMDAyNC0yRkwnb8OpYWw\" title=\"Special:Browse/cl:OkV4YW1wbGUtMkZTMDAyNC0yRkwnb8OpYWw\">+</a></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgCompactLinkSupport": true,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -53,7 +53,7 @@ function installSmwAsTarballLikeBuild {
 	echo -e "Running tarball build on $TRAVIS_BRANCH \n"
 
 	cd $MW_INSTALL_PATH/extensions
-	composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki dev-master -s dev --prefer-dist --no-dev
+	composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki dev-master -s dev --prefer-dist --no-dev --no-interaction
 
 	cd SemanticMediaWiki
 	installPHPUnitWithComposer

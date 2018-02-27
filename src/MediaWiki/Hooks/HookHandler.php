@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
-use SMW\ApplicationFactory;
+use Psr\Log\LoggerAwareTrait;
+use SMW\Options;
 
 /**
  * @license GNU GPL v2+
@@ -12,56 +12,59 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class HookHandler implements LoggerAwareInterface {
+class HookHandler {
+
+	use LoggerAwareTrait;
 
 	/**
-	 * @var DataItemFactory
+	 * @var Options
 	 */
-	protected $dataItemFactory;
+	private $options;
 
 	/**
-	 * @var DataValueFactory
+	 * @since 2.5
 	 */
-	protected $dataValueFactory;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	protected $logger;
-
-	/**
-	 * @since  2.5
-	 *
-	 * @param ApplicationFactory|null $applicationFactory
-	 */
-	public function __construct( $applicationFactory = null ) {
-
-		if ( $applicationFactory === null ) {
-			$applicationFactory = ApplicationFactory::getInstance();
-		}
-
-		$this->dataItemFactory = $applicationFactory->getDataItemFactory();
-		$this->dataValueFactory = $applicationFactory->getDataValueFactory();
+	public function __construct() {
+		$this->options = new Options();
 	}
 
 	/**
-	 * @see LoggerAwareInterface::setLogger
+	 * @since 3.0
 	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
+	 * @param array $options
 	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
+	public function setOptions( array $options ) {
+		$this->options = new Options( $options );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key, $default = null ) {
+		return $this->options->safeGet( $key, $default );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $flag
+	 *
+	 * @return boolean
+	 */
+	public function isFlagSet( $key, $flag ) {
+		return $this->options->isFlagSet( $key, $flag );
 	}
 
 	protected function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
+		if ( $this->logger instanceof LoggerInterface ) {
+			$this->logger->info( $message, $context );
 		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }

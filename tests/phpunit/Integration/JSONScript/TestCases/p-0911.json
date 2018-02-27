@@ -44,10 +44,10 @@
 		"wgContLang": "en",
 		"wgLang": "en",
 		"smwgQueryResultCacheType": "hash",
-		"smwgQueryProfiler" : {
-			"smwgQueryDurationEnabled": true,
-			"smwgQueryParametersEnabled": true
-		},
+		"smwgQueryProfiler" : [
+			"SMW_QPRFL_DUR",
+			"SMW_QPRFL_PARAMS"
+		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		],

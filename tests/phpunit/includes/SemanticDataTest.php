@@ -9,6 +9,7 @@ use SMW\Localizer;
 use SMW\SemanticData;
 use SMW\Subobject;
 use SMWDITime as DITime;
+use SMW\ApplicationFactory;
 use Title;
 
 /**
@@ -30,6 +31,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->addConfiguration( 'smwgCreateProtectionRight', false );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -486,6 +488,22 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetPropertyValuesToReturnAnUnmappedArray() {
+
+		$property = new DIProperty( 'Foo' );
+		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
+
+		$instance->addPropertyObjectValue(
+			$property,
+			new DIWikiPage( 'Bar', NS_MAIN )
+		);
+
+		$this->assertArrayHasKey(
+			0,
+			$instance->getPropertyValues( $property )
+		);
+	}
+
 	public function testClear() {
 
 		$title = Title::newFromText( __METHOD__ );
@@ -500,6 +518,20 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->clear();
 		$this->assertTrue( $instance->isEmpty() );
+	}
+
+	public function testExtensionData() {
+
+		$instance = new SemanticData(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
+
+		$instance->setExtensionData( 'Foo', 42 );
+
+		$this->assertEquals(
+			42,
+			$instance->getExtensionData( 'Foo' )
+		);
 	}
 
 	/**
@@ -528,6 +560,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function removePropertyObjectProvider() {
+		ApplicationFactory::clear();
 
 		$provider = array();
 
@@ -555,6 +588,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function dataValueDataProvider() {
+		ApplicationFactory::clear();
 
 		$provider = array();
 

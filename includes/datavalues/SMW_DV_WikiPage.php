@@ -23,7 +23,7 @@ use SMW\Message;
  * input. The long display always includes all relevant information. Only if a
  * fixed namespace is used for the datatype, the namespace prefix is omitted.
  * This behavior has changed in SMW 1.7: up to this time, short displays have
- * always inlcuded the namespace and long displays used the pipe trick, leading
+ * always included the namespace and long displays used the pipe trick, leading
  * to a paradoxical confusion of "long" and "short".
  *
  * @author Nikolas Iwan
@@ -94,6 +94,9 @@ class SMWWikiPageValue extends SMWDataValue {
 			case '_wpf' : case '__spf':
 				$this->m_fixNamespace = SF_NS_FORM;
 			break;
+			case '_wpr' :
+				$this->m_fixNamespace = SMW_NS_RULE;
+			break;
 			default: // case '_wpg':
 				$this->m_fixNamespace = NS_MAIN;
 		}
@@ -103,7 +106,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		global $wgContLang;
 
 		// support inputs like " [[Test]] ";
-		// note that this only works in pages if $smwgLinksInValues is set to true
+		// note that this only works when SMW_PARSER_LINV is set
 		$value = ltrim( rtrim( $value, ' ]' ), ' [' );
 
 		// #1066, Manipulate the output only for when the value has no caption
@@ -125,10 +128,23 @@ class SMWWikiPageValue extends SMWDataValue {
 		// transformed by the Title object
 		// If the vaue contains a valid NS then use the Title to create a correct
 		// instance to distinguish [[~Foo*]] from [[Help:~Foo*]]
-		if ( $this->getOption( self::OPT_QUERY_COMP_CONTEXT ) ) {
-			if ( ( $title = Title::newFromText( $value ) ) !== null && $title->getNamespace() !== NS_MAIN ) {
-				return $this->m_dataitem = SMWDIWikiPage::newFromTitle( $title );
-			} else {
+		if ( $this->getOption( self::OPT_QUERY_COMP_CONTEXT ) || $this->getOption( self::OPT_QUERY_CONTEXT ) ) {
+
+			$userCase = true;
+
+			// If we know that it is a wikipage in a query context and the wiki
+			// requires `isCapitalLinks` then use the standard transformation so
+			// they appear as standard links even though the user input was `abc.
+			if ( $this->getOption( 'isCapitalLinks' ) ) {
+				$userCase = false;
+			}
+
+			if ( ( $title = Title::newFromText( $value ) ) !== null ) {
+				// T:P0427 If the user value says `ab c*` then make sure to use this one
+				// instead of the transformed DBKey which would be `Ab c*`
+				return $this->m_dataitem = SMWDIWikiPage::newFromTitle( $title, $userCase );
+			// T:P0902 (`[[Help:]]`)
+			} elseif( !Localizer::getInstance()->getNamespaceIndexByName( substr( $value, 0, -1 ) ) ) {
 				return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
 			}
 		}
@@ -147,7 +163,9 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		/// TODO: Escape the text so users can see punctuation problems (bug 11666).
-		if ( is_null( $this->m_title ) ) {
+		if ( $this->m_title === null && $this->getProperty() !== null ) {
+			$this->addErrorMsg( array( 'smw-datavalue-wikipage-property-invalid-title', $this->getProperty()->getLabel(), $value ) );
+		} elseif ( $this->m_title === null ) {
 			$this->addErrorMsg( array( 'smw-datavalue-wikipage-invalid-title', $value ) );
 		} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
@@ -408,8 +426,14 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getWikiValue() {
-		return ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) .
-			( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
+
+		if ( $this->getTypeID() === '_wpp' || $this->m_fixNamespace == NS_MAIN ) {
+			$text = $this->getPrefixedText();
+		} else {
+			$text = $this->getText();
+		}
+
+		return $text . ( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
 	}
 
 	public function getHash() {
@@ -570,7 +594,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected function getShortCaptionText() {
 		if ( $this->m_fragment !== '' && $this->m_fragment[0] != '_' ) {
-			$fragmentText = '#' . $this->m_fragment;
+			$fragmentText = '#' . str_replace( '_', ' ', $this->m_fragment );
 		} else {
 			$fragmentText = '';
 		}
@@ -600,7 +624,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected function getLongCaptionText() {
 		if ( $this->m_fragment !== '' && $this->m_fragment[0] != '_' ) {
-			$fragmentText = '#' . $this->m_fragment;
+			$fragmentText = '#' . str_replace( '_', ' ', $this->m_fragment );
 		} else {
 			$fragmentText = '';
 		}

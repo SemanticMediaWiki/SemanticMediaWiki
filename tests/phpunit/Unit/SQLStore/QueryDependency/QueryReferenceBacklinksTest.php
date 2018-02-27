@@ -44,7 +44,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddQueryReferenceBacklinksTo() {
 
-		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', 'foobar' );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -69,16 +69,12 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$queryDependencyLinksStore->expects( $this->any() )
-			->method( 'getIdBySubject' )
-			->with( $this->equalTo( $subject ) );
-
-		$queryDependencyLinksStore->expects( $this->any() )
 			->method( 'findEmbeddedQueryIdListBySubject' )
 			->with( $this->equalTo( $subject ) )
 			->will( $this->returnValue( array( 'Foo#0##' => 42 ) ) );
 
 		$queryDependencyLinksStore->expects( $this->once() )
-			->method( 'findEmbeddedQueryTargetLinksHashListBySubject' )
+			->method( 'findDependencyTargetLinksForSubject' )
 			->will( $this->returnValue( array( 'Foo#0##' ) ) );
 
 		$instance = new QueryReferenceBacklinks(
@@ -101,11 +97,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$queryDependencyLinksStore->expects( $this->any() )
-			->method( 'getIdBySubject' )
-			->with( $this->equalTo( $subject ) );
-
-		$queryDependencyLinksStore->expects( $this->any() )
-			->method( 'findEmbeddedQueryTargetLinksHashListBySubject' )
+			->method( 'findDependencyTargetLinksForSubject' )
 			->will( $this->returnValue( array( 'Foo#0##' ) ) );
 
 		$instance = new QueryReferenceBacklinks(

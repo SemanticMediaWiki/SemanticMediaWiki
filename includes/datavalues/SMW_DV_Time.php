@@ -256,7 +256,7 @@ class SMWTimeValue extends SMWDataValue {
 			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && in_array( $match, array( 'st', 'nd', 'rd', 'th' ) ) ) {
 				$datecomponents[] = 'd' . strval( array_pop( $datecomponents ) ); // must be a day; add standard marker
 				$matchisdate = true;
-			} elseif ( count( $match ) == 1 ) {
+			} elseif ( is_string( $match ) ) {
 				$microseconds = $match;
 			} else {
 				$unclearparts[] = $match;
@@ -595,7 +595,7 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Determine the calender model under which an input should be
+	 * Determine the calendar model under which an input should be
 	 * interpreted based on the given input data.
 	 * @param $presetmodel mixed string related to a user input calendar model (OS, Jl, Gr) or false
 	 * @param $year integer of the given year (adjusted for BC(E), i.e. possibly negative)

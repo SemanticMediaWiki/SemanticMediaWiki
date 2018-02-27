@@ -54,7 +54,7 @@
 
 		subject = subject.split( "#" );
 
-		self.api.get( {
+		self.api.post( {
 			action: "browsebysubject",
 			subject: subject[0],
 			ns: subject[1],
@@ -66,10 +66,18 @@
 			self.appendContent( data.query );
 		} ).fail ( function( xhr, status, error ) {
 
-			var text = 'Unknown API error';
+			var text = 'The API encountered an unknown error';
 
 			if ( status.hasOwnProperty( 'xhr' ) ) {
-				text = status.xhr.responseText.replace(/\<br \/\>/g," ");
+				var xhr = status.xhr;
+
+				if ( xhr.hasOwnProperty( 'responseText' ) ) {
+					text = xhr.responseText.replace(/\<br \/\>/g," " );
+				};
+
+				if ( xhr.hasOwnProperty( 'statusText' ) ) {
+					text = 'The API returned with: ' + xhr.statusText.replace(/\<br \/\>/g," " );
+				};
 			}
 
 			if ( status.hasOwnProperty( 'error' ) ) {
@@ -100,10 +108,14 @@
 
 		var self = this;
 
-		self.context.find( '.smwb-content' ).replaceWith( content );
+		self.context.find( '.smwb-emptysheet' ).replaceWith( content );
 
-		mw.loader.using( 'ext.smw.browse' ).done( function () {
-			self.context.find( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
+		var form = self.context.find( '.smwb-form' );
+
+		mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.autocomplete' ] ).done( function () {
+			form.trigger( 'smw.article.autocomplete' , {
+				'context': form
+			} );
 		} );
 
 		mw.loader.load(
@@ -130,7 +142,14 @@
 			instance.doApiRequest();
 		} );
 
-		$( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
+		var form = $( this ).find( '.smwb-form' );
+
+		mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.autocomplete' ] ).done( function () {
+			form.trigger( 'smw.article.autocomplete' , {
+				'context': form
+			} );
+		} );
+
 	} );
 
 }( jQuery, mediaWiki ) );

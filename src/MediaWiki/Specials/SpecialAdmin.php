@@ -6,14 +6,16 @@ use SMW\ApplicationFactory;
 use SMW\Store;
 use SpecialPage;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 use SMW\Message;
+use SMW\Utils\HtmlVTabs;
 use Html;
 
 /**
  * This special page for MediaWiki provides an administrative interface
- * that allows to execute certain functions related to the maintainance
+ * that allows to execute certain functions related to the maintenance
  * of the semantic database. It is restricted to users with siteadmin status.
  *
  * @license GNU GPL v2+
@@ -48,15 +50,35 @@ class SpecialAdmin extends SpecialPage {
 			throw new ExtendedPermissionsError( 'smw-admin', array( 'smw-admin-permission-missing' ) );
 		}
 
+		// https://phabricator.wikimedia.org/T109652#1562641
+		$this->getRequest()->setVal(
+			'wpEditToken',
+			$this->getUser()->getEditToken()
+		);
+
+		HtmlVTabs::init();
+
 		$this->setHeaders();
 		$output = $this->getOutput();
 		$output->setPageTitle( $this->getMessageAsString( 'smwadmin' ) );
+
+		$output->addModuleStyles( array(
+			'ext.smw.special.style'
+		) );
+
+		$output->addModuleStyles( HtmlVTabs::getModuleStyles() );
 
 		$output->addModules( array(
 			'ext.smw.admin'
 		) );
 
-		$action = $query !== null ? $query : $this->getRequest()->getText( 'action' );
+		$output->addModules( HtmlVTabs::getModules() );
+
+		if ( $query !== null ) {
+			$this->getRequest()->setVal( 'action', $query );
+		}
+
+		$action = $this->getRequest()->getText( 'action' );
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
@@ -76,111 +98,26 @@ class SpecialAdmin extends SpecialPage {
 			$adminFeatures = $adminFeatures & ~SMW_ADM_FULLT;
 		}
 
-		// Ensure BC for a deprecated setting
-		if ( $applicationFactory->getSettings()->get( 'smwgAdminRefreshStore' ) === false ) {
-			$adminFeatures = $adminFeatures & ~SMW_ADM_REFRESH;
-		}
-
 		$taskHandlerFactory = new TaskHandlerFactory(
 			$store,
 			$htmlFormRenderer,
 			$outputFormatter
 		);
 
-		// DataRefreshJobTaskHandler
-		$dataRefreshJobTaskHandler = $taskHandlerFactory->newDataRefreshJobTaskHandler();
-
-		$dataRefreshJobTaskHandler->setEnabledFeatures(
+		$taskHandlerList = $taskHandlerFactory->getTaskHandlerList(
+			$this->getUser(),
 			$adminFeatures
 		);
 
-		// DisposeJobTaskHandler
-		$disposeJobTaskHandler = $taskHandlerFactory->newDisposeJobTaskHandler();
-
-		$disposeJobTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		// PropertyStatsRebuildJobTaskHandler
-		$propertyStatsRebuildJobTaskHandler = $taskHandlerFactory->newPropertyStatsRebuildJobTaskHandler();
-
-		$propertyStatsRebuildJobTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		// FulltextSearchTableRebuildJobTaskHandler
-		$fulltextSearchTableRebuildJobTaskHandler = $taskHandlerFactory->newFulltextSearchTableRebuildJobTaskHandler();
-
-		$fulltextSearchTableRebuildJobTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		// ConfigurationListTaskHandler
-		$configurationListTaskHandler = $taskHandlerFactory->newConfigurationListTaskHandler();
-
-		// OperationalStatisticsListTaskHandler
-		$operationalStatisticsListTaskHandler = $taskHandlerFactory->newOperationalStatisticsListTaskHandler();
-
-		// TableSchemaTaskHandler
-		$tableSchemaTaskHandler = $taskHandlerFactory->newTableSchemaTaskHandler();
-
-		$tableSchemaTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		// IdTaskHandler
-		$idTaskHandler = $taskHandlerFactory->newIdTaskHandler();
-
-		$idTaskHandler->setEnabledFeatures(
-			$adminFeatures
-		);
-
-		$idTaskHandler->setUser(
-			$this->getUser()
-		);
-
-		// SupportListTaskHandler
-		$supportListTaskHandler = $taskHandlerFactory->newSupportListTaskHandler();
-
-		$actionTaskList = array(
-			$dataRefreshJobTaskHandler,
-			$disposeJobTaskHandler,
-			$propertyStatsRebuildJobTaskHandler,
-			$fulltextSearchTableRebuildJobTaskHandler,
-			$tableSchemaTaskHandler,
-			$configurationListTaskHandler,
-			$operationalStatisticsListTaskHandler,
-			$idTaskHandler
-		);
-
-		foreach ( $actionTaskList as $actionTask ) {
+		foreach ( $taskHandlerList['actions'] as $actionTask ) {
 			if ( $actionTask->isTaskFor( $action ) ) {
 				return $actionTask->handleRequest( $this->getRequest() );
 			}
 		}
 
-		$supplementaryTaskList = array(
-			$configurationListTaskHandler,
-			$operationalStatisticsListTaskHandler,
-			$idTaskHandler
+		$output->addHTML(
+			$this->getHtml( $taskHandlerList )
 		);
-
-		$dataRepairTaskList = array(
-			$dataRefreshJobTaskHandler,
-			$disposeJobTaskHandler,
-			$propertyStatsRebuildJobTaskHandler,
-			$fulltextSearchTableRebuildJobTaskHandler
-		);
-
-		// General intro
-		$html = $this->getHtml(
-			$tableSchemaTaskHandler,
-			$dataRepairTaskList,
-			$supplementaryTaskList,
-			$supportListTaskHandler
-		);
-
-		$output->addHTML( $html );
 	}
 
 	/**
@@ -190,34 +127,135 @@ class SpecialAdmin extends SpecialPage {
 		return 'smw_group';
 	}
 
-	private function getHtml( $tableSchemaTaskHandler, $dataRepairTaskList, $supplementaryTaskList, $supportListTaskHandler ) {
+	private function getHtml( $taskHandlerList ) {
 
-		$html = $this->getMessageAsString( 'smw-admin-docu' );
-		$html .= $tableSchemaTaskHandler->getHtml();
+		$tableSchemaTaskList = $taskHandlerList[TaskHandler::SECTION_SCHEMA];
 
-		$html .= Html::rawElement( 'h2', array(), $this->getMessageAsString( array( 'smw-smwadmin-refresh-title' ) ) );
-		$html .= Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-job-scheduler-note' ) ) );
-
-		foreach ( $dataRepairTaskList as $dataRepairTask ) {
-			$html .= $dataRepairTask->getHtml();
-		}
-
-		$html .= Html::rawElement( 'h2', array(), $this->getMessageAsString( array( 'smw-admin-supplementary-section-title' ) ) );
-		$html .= Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-supplementary-section-intro' ) ) );
+		$dataRebuildSection = end( $tableSchemaTaskList )->getHtml();
+		$dataRebuildSection .= Html::rawElement(
+			'hr',
+			[
+				'class' => 'smw-admin-hr'
+			],
+			''
+		)  . Html::rawElement(
+			'h3',
+			array(),
+			$this->getMessageAsString( array( 'smw-smwadmin-refresh-title' ) )
+		) . Html::rawElement(
+			'p',
+			array(),
+			$this->getMessageAsString( array( 'smw-admin-job-scheduler-note' ) )
+		);
 
 		$list = '';
+		$dataRepairTaskList = $taskHandlerList[TaskHandler::SECTION_DATAREPAIR];
+
+		foreach ( $dataRepairTaskList as $dataRepairTask ) {
+			$list .= $dataRepairTask->getHtml();
+		}
+
+		$dataRebuildSection .= Html::rawElement( 'div', array( 'class' => 'smw-admin-data-repair-section' ),
+			$list
+		);
+
+		$supplementarySection = Html::rawElement(
+			'h3',
+			array(),
+			$this->getMessageAsString( array( 'smw-admin-supplementary-section-title' ) )
+		)  . Html::rawElement(
+			'p',
+			array(),
+			$this->getMessageAsString( array( 'smw-admin-supplementary-section-intro' ) )
+		);
+
+		$list = '';
+		$supplementaryTaskList = $taskHandlerList[TaskHandler::SECTION_SUPPLEMENT];
 
 		foreach ( $supplementaryTaskList as $supplementaryTask ) {
 			$list .= $supplementaryTask->getHtml();
 		}
 
-		$html .= Html::rawElement( 'div', array( 'class' => 'smw-admin-supplementary-linksection' ),
+		$supplementarySection .= Html::rawElement( 'div', array( 'class' => 'smw-admin-supplementary-section' ),
 			Html::rawElement( 'ul', array(),
 				$list
 			)
 		);
 
-		$html .= $supportListTaskHandler->getHtml();
+		$deprecationNoticeTaskList = $taskHandlerList[TaskHandler::SECTION_DEPRECATION];
+		$deprecationNoticeTaskHandler = end( $deprecationNoticeTaskList );
+
+		$deprecationNotices = $deprecationNoticeTaskHandler->getHtml();
+		$isHidden = $deprecationNotices === '' ? HtmlVTabs::IS_HIDDEN : false;
+
+		$tab = 'general';
+
+		// If we want to remain on a specific tab on a GET request, use the `tab`
+		// parameter since we are unable to fetch any #href hash from a request
+		if ( $this->getRequest()->getVal( 'tab' ) ) {
+			$tab = $this->getRequest()->getVal( 'tab' );
+		}
+
+		$findActiveLink = [ HtmlVTabs::FIND_ACTIVE_LINK => $tab ];
+
+		// Navigation tabs
+		$html = HtmlVTabs::nav(
+			HtmlVTabs::navLink(
+				'general',
+				$this->getMessageAsString( 'smw-admin-tab-general' ),
+				$findActiveLink
+			) . HtmlVTabs::navLink(
+				'notices',
+				$this->getMessageAsString( 'smw-admin-tab-notices' ),
+				$isHidden,
+				[ 'class' => 'smw-vtab-warning' ]
+			) . HtmlVTabs::navLink(
+				'rebuild',
+				$this->getMessageAsString( 'smw-admin-tab-rebuild' ),
+				$findActiveLink
+			) . HtmlVTabs::navLink(
+				'supplement',
+				$this->getMessageAsString( 'smw-admin-tab-supplement' ),
+				$findActiveLink
+			) . HtmlVTabs::navLink(
+				'registry',
+				$this->getMessageAsString( 'smw-admin-tab-registry' ),
+				$findActiveLink
+			)
+		);
+
+		$supportTaskList = $taskHandlerList[TaskHandler::SECTION_SUPPORT];
+		$supportListTaskHandler = end( $supportTaskList );
+
+		// Content
+		$html .= HtmlVTabs::content(
+			'general',
+			Html::rawElement(
+				'p',
+				array(),
+				$this->getMessageAsString( 'smw-admin-docu' )
+			) . $supportListTaskHandler->createSupportForm()
+		);
+
+		$html .= HtmlVTabs::content(
+			'notices',
+			$deprecationNotices
+		);
+
+		$html .= HtmlVTabs::content(
+			'rebuild',
+			$dataRebuildSection
+		);
+
+		$html .= HtmlVTabs::content(
+			'supplement',
+			$supplementarySection
+		);
+
+		$html .= HtmlVTabs::content(
+			'registry',
+			$supportListTaskHandler->createRegistryForm()
+		);
 
 		return $html;
 	}

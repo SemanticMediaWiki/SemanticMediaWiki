@@ -227,6 +227,7 @@
 				// Remove title content which is supposed to be used when nojs is enabled
 				// and the "real" tooltip cannot show the ccontent
 				$this.removeAttr( "title" );
+				$this.removeClass( "is-disabled" );
 
 				// Call instance
 				self.show( {
@@ -261,6 +262,16 @@
 		// Listen to the Special:Browse event
 		mw.hook( 'smw.browse.apiparsecomplete' ).add( function( context ) {
 			 self.initFromContext( context );
+		} );
+
+		// Listen to the Special:Browse event
+		mw.hook( 'smw.tooltip' ).add( function( context ) {
+			self.initFromContext( context );
+		} );
+
+		// Listen to the smw.deferred.query event
+		mw.hook( 'smw.deferred.query' ).add( function( context ) {
+			self.initFromContext( context );
 		} );
 
 		// SemanticForms/PageForms instance trigger

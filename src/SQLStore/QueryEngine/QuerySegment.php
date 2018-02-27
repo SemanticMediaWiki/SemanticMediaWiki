@@ -67,6 +67,11 @@ class QuerySegment {
 	public $type = self::Q_TABLE;
 
 	/**
+	 * @var integer|null
+	 */
+	public $depth;
+
+	/**
 	 * @var string
 	 */
 	public $fingerprint = '';

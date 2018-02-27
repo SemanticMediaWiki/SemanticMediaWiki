@@ -24,7 +24,7 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new XsdValueMapper();
 
-		$instance->process( $dataItem );
+		$instance->map( $dataItem );
 
 		$this->assertEquals(
 			$xsdValue,
@@ -45,7 +45,7 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 		$instance = new XsdValueMapper();
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->process( $dataItem );
+		$instance->map( $dataItem );
 	}
 
 	public function supportedDataItemProvider() {

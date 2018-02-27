@@ -20,6 +20,16 @@ use Hooks;
 class UpdateDispatcherJob extends JobBase {
 
 	/**
+	 * Restict disptach process on available pool of data
+	 */
+	const RESTRICTED_DISPATCH_POOL = 'restricted.disp.pool';
+
+	/**
+	 * Restict disptach process on available pool of data
+	 */
+	const JOB_LIST = 'job-list';
+
+	/**
 	 * Size of chunks used when invoking the secondary dispatch run
 	 */
 	const CHUNK_SIZE = 500;
@@ -53,9 +63,9 @@ class UpdateDispatcherJob extends JobBase {
 	 */
 	public function run() {
 
-		if ( $this->hasParameter( 'job-list' ) ) {
-			return $this->createUpdateJobsFromSecondaryDispatchRunJobList(
-				$this->getParameter( 'job-list' )
+		if ( $this->hasParameter( self::JOB_LIST ) ) {
+			return $this->createUpdateJobsFromJobList(
+				$this->getParameter( self::JOB_LIST )
 			);
 		}
 
@@ -63,6 +73,8 @@ class UpdateDispatcherJob extends JobBase {
 			$this->dispatchUpdateForProperty(
 				DIProperty::newFromUserLabel( $this->getTitle()->getText() )
 			);
+
+			$this->jobs[] = DIWikiPage::newFromTitle( $this->getTitle() )->getHash();
 		} else {
 			$this->dispatchUpdateForSubject(
 				DIWikiPage::newFromTitle( $this->getTitle() )
@@ -86,7 +98,7 @@ class UpdateDispatcherJob extends JobBase {
 
 			$job = new self(
 				Title::newFromText( 'UpdateDispatcherChunkedJobList::' . $hash ),
-				array( 'job-list' => $jobList )
+				array( self::JOB_LIST => $jobList )
 			);
 
 			$job->insert();
@@ -95,13 +107,15 @@ class UpdateDispatcherJob extends JobBase {
 
 	private function dispatchUpdateForSubject( DIWikiPage $subject ) {
 
-		$this->addUpdateJobsForProperties(
-			$this->store->getProperties( $subject )
-		);
+		if ( $this->getParameter( self::RESTRICTED_DISPATCH_POOL ) !== true ) {
+			$this->addUpdateJobsForProperties(
+				$this->store->getProperties( $subject )
+			);
 
-		$this->addUpdateJobsForProperties(
-			$this->store->getInProperties( $subject )
-		);
+			$this->addUpdateJobsForProperties(
+				$this->store->getInProperties( $subject )
+			);
+		}
 
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
@@ -152,7 +166,7 @@ class UpdateDispatcherJob extends JobBase {
 		);
 	}
 
-	private function addUniqueSubjectsToUpdateJobList( array $subjects = array() ) {
+	private function addUniqueSubjectsToUpdateJobList( $subjects = array() ) {
 
 		foreach ( $subjects as $subject ) {
 
@@ -175,17 +189,32 @@ class UpdateDispatcherJob extends JobBase {
 		}
 	}
 
-	private function createUpdateJobsFromSecondaryDispatchRunJobList( array $listOfSubjects ) {
+	private function createUpdateJobsFromJobList( array $subjects ) {
 
-		$subjects = array_keys( $listOfSubjects );
+		$parameters = array(
+			UpdateJob::FORCED_UPDATE => true,
+			'origin' => $this->getParameter( 'origin', 'UpdateDispatcherJob' )
+		);
 
-		// We are confident that as this point we only have valid, non-duplicate
-		// subjects in the list and therefore can be deserialized without any
-		// extra validation
-		foreach ( $subjects as $subject ) {
-			$this->jobs[] = new UpdateJob(
-				DIWikiPage::doUnserialize( $subject )->getTitle()
-			);
+		// We expect non-duplicate subjects in the list and therefore deserialize
+		// without any extra validation
+		foreach ( $subjects as $key => $subject ) {
+
+			if ( is_string( $key ) ) {
+				$subject = $key;
+			}
+
+			try {
+				$title = DIWikiPage::doUnserialize( $subject )->getTitle();
+			} catch( \SMW\Exception\DataItemDeserializationException $e ) {
+				continue;
+			}
+
+			if ( $title === null ) {
+				continue;
+			}
+
+			$this->jobs[] = new UpdateJob( $title, $parameters );
 		}
 
 		$this->pushToJobQueue();

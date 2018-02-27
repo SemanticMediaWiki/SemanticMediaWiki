@@ -166,7 +166,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 		 */
 		foreach ( $queryResult->getResults() as $diWikiPage ) {
 
-			if ( !($diWikiPage->getTitle() instanceof Title ) ) {
+			if ( $diWikiPage === null || !($diWikiPage->getTitle() instanceof Title ) ) {
 				continue;
 			}
 

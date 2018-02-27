@@ -46,7 +46,7 @@ class SemanticMediaWiki {
 			}
 		}
 
-		// In case extension.json is being used, the the succeeding steps will
+		// In case extension.json is being used, the succeeding steps will
 		// be handled by the ExtensionRegistry
 		self::initExtension();
 
@@ -60,7 +60,7 @@ class SemanticMediaWiki {
 	 */
 	public static function initExtension() {
 
-		define( 'SMW_VERSION', '2.5.0-rc.1' );
+		define( 'SMW_VERSION', '3.0.0-alpha' );
 
 		// Registration of the extension credits, see Special:Version.
 		$GLOBALS['wgExtensionCredits']['semantic'][] = array(
@@ -75,35 +75,11 @@ class SemanticMediaWiki {
 				),
 			'url' => 'https://www.semantic-mediawiki.org',
 			'descriptionmsg' => 'smw-desc',
-			'license-name'   => 'GPL-2.0+'
+			'license-name'   => 'GPL-2.0-or-later'
 		);
 
-		// A flag used to indicate SMW defines a semantic extension type for extension credits.
-		// @deprecated, removal in SMW 3.0
-		define( 'SEMANTIC_EXTENSION_TYPE', true );
-
-		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'i18n';
-		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $GLOBALS['smwgIP'] . 'i18n/extra/SemanticMediaWiki.alias.php';
-		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgIP'] . 'i18n/extra/SemanticMediaWiki.magic.php';
-
-		self::onCanonicalNamespaces();
-	}
-
-	/**
-	 * CanonicalNamespaces initialization
-	 *
-	 * @note According to T104954 registration via wgExtensionFunctions can be
-	 * too late and should happen before that in case RequestContext::getLanguage
-	 * invokes Language::getNamespaces before the `wgExtensionFunctions` execution.
-	 *
-	 * @see https://phabricator.wikimedia.org/T104954#2391291
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
-	 * @Bug 34383
-	 *
-	 * @since 2.5
-	 */
-	public static function onCanonicalNamespaces() {
-		$GLOBALS['wgHooks']['CanonicalNamespaces'][] = 'SMW\NamespaceManager::initCanonicalNamespaces';
+		// Registration point for required early registration
+		Setup::initExtension( $GLOBALS );
 	}
 
 	/**
@@ -125,11 +101,11 @@ class SemanticMediaWiki {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$namespace = new NamespaceManager( $GLOBALS );
-		$namespace->init();
+		$namespace = new NamespaceManager();
+		$namespace->init( $GLOBALS );
 
-		$setup = new Setup( $applicationFactory, $GLOBALS, __DIR__ );
-		$setup->run();
+		$setup = new Setup( $applicationFactory );
+		$setup->init( $GLOBALS, __DIR__ );
 	}
 
 	/**
@@ -155,7 +131,7 @@ class SemanticMediaWiki {
 		};
 
 		if ( strpos( strtolower( $store ), 'sparql' ) ) {
-			$store .= '::' . strtolower( $GLOBALS['smwgSparqlDatabaseConnector'] );
+			$store = [ $store, strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] ) ];
 		}
 
 		return array(

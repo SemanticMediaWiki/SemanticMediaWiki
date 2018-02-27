@@ -33,19 +33,21 @@ class ComparatorMapper {
 			SMW_CMP_GEQ  => '>=',
 			SMW_CMP_NEQ  => '!=',
 			SMW_CMP_LIKE => ' LIKE ',
-			SMW_CMP_NLKE => ' NOT LIKE '
+			SMW_CMP_PRIM_LIKE => ' LIKE ',
+			SMW_CMP_NLKE => ' NOT LIKE ',
+			SMW_CMP_PRIM_NLKE => ' NOT LIKE '
 		);
 
 		$comparator = $description->getComparator();
 
 		if ( !isset( $comparatorMap[$comparator] ) ) {
-			throw new RuntimeException( "Unsupported comparator '" . $comparator . "' in value description." );
+			throw new RuntimeException( "Unsupported comparator $comparator in value description." );
 		}
 
-		if ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE ) {
+		if ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE || $comparator === SMW_CMP_PRIM_LIKE || $comparator === SMW_CMP_PRIM_NLKE ) {
 
 			if ( $description->getDataItem() instanceof DIUri ) {
-				$value = str_replace( array( 'http://', 'https://', '%2A' ), array( '', '', '*' ), $value );
+				$value = str_replace( array( 'http://', 'https://', '%2A' ), array( '*', '*', '*' ), $value );
 			}
 
 			// Escape to prepare string matching:

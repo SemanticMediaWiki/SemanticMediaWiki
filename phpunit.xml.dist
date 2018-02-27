@@ -56,8 +56,12 @@
     <php>
        <var name="smwgSemanticsEnabled" value="true"/>
        <var name="wgUseFileCache" value="false"/>
+       <var name="smwgEntityCollation" value="identity"/>
+       <var name="smwgFieldTypeFeatures" value="false"/>
+       <var name="smwgCreateProtectionRight" value="false"/>
        <var name="smwgSparqlDefaultGraph" value="http://example.org/phpunit-testrun"/>
-       <var name="smwgValueLookupCacheType" value="hash"/>
+       <var name="smwgSparqlQFeatures" value="false"/>
+       <var name="smwgEntityLookupCacheType" value="hash"/>
        <var name="smwgEnabledDeferredUpdate" value="false"/>
        <var name="smwgImportReqVersion" value="false"/>
        <var name="smwgEnabledFulltextSearch" value="false"/>

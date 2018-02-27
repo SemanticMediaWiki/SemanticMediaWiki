@@ -44,17 +44,20 @@ class Settings extends Options {
 	public static function newFromGlobals() {
 
 		$configuration = array(
-			'smwgScriptPath' => isset( $GLOBALS['smwgScriptPath'] ) ? $GLOBALS['smwgScriptPath'] : '',
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
-			'smwgImportFileDir' => $GLOBALS['smwgImportFileDir'],
+			'smwgResourceLoaderDefFiles' => $GLOBALS['smwgResourceLoaderDefFiles'],
+			'smwgImportFileDirs' => $GLOBALS['smwgImportFileDirs'],
 			'smwgImportReqVersion' => $GLOBALS['smwgImportReqVersion'],
 			'smwgSemanticsEnabled' => $GLOBALS['smwgSemanticsEnabled'],
+			'smwgJobQueueWatchlist' => $GLOBALS['smwgJobQueueWatchlist'],
 			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],
-			'smwgSparqlDatabaseConnector' => $GLOBALS['smwgSparqlDatabaseConnector'],
-			'smwgSparqlDatabase' => $GLOBALS['smwgSparqlDatabase'],
+			'smwgDefaultLoggerRole' => $GLOBALS['smwgDefaultLoggerRole'],
+			'smwgLocalConnectionConf' => $GLOBALS['smwgLocalConnectionConf'],
+			'smwgSparqlRepositoryConnector' => $GLOBALS['smwgSparqlRepositoryConnector'],
+			'smwgSparqlCustomConnector' => $GLOBALS['smwgSparqlCustomConnector'],
 			'smwgSparqlQueryEndpoint' => $GLOBALS['smwgSparqlQueryEndpoint'],
 			'smwgSparqlUpdateEndpoint' => $GLOBALS['smwgSparqlUpdateEndpoint'],
 			'smwgSparqlDataEndpoint' => $GLOBALS['smwgSparqlDataEndpoint'],
@@ -66,30 +69,20 @@ class Settings extends Options {
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
-			'smwgToolboxBrowseLink' => $GLOBALS['smwgToolboxBrowseLink'],
-			'smwgInlineErrors' => $GLOBALS['smwgInlineErrors'],
-			'smwgUseCategoryHierarchy' => $GLOBALS['smwgUseCategoryHierarchy'],
-			'smwgCategoriesAsInstances' => $GLOBALS['smwgCategoriesAsInstances'],
-			'smwgLinksInValues' => $GLOBALS['smwgLinksInValues'],
+			'smwgCompactLinkSupport' => $GLOBALS['smwgCompactLinkSupport'],
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],
-			'smwgBrowseShowInverse' => $GLOBALS['smwgBrowseShowInverse'],
-			'smwgBrowseShowAll' => $GLOBALS['smwgBrowseShowAll'],
-			'smwgBrowseByApi' => $GLOBALS['smwgBrowseByApi'],
 			'smwgSearchByPropertyFuzzy' => $GLOBALS['smwgSearchByPropertyFuzzy'],
 			'smwgTypePagingLimit' => $GLOBALS['smwgTypePagingLimit'],
 			'smwgConceptPagingLimit' => $GLOBALS['smwgConceptPagingLimit'],
 			'smwgPropertyPagingLimit' => $GLOBALS['smwgPropertyPagingLimit'],
-			'smwgSubPropertyListLimit' => $GLOBALS['smwgSubPropertyListLimit'],
-			'smwgRedirectPropertyListLimit' => $GLOBALS['smwgRedirectPropertyListLimit'],
+			'smwgPropertyListLimit' => $GLOBALS['smwgPropertyListLimit'],
 			'smwgQEnabled' => $GLOBALS['smwgQEnabled'],
 			'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
 			'smwgIgnoreQueryErrors' => $GLOBALS['smwgIgnoreQueryErrors'],
 			'smwgQSubcategoryDepth' => $GLOBALS['smwgQSubcategoryDepth'],
 			'smwgQSubpropertyDepth' => $GLOBALS['smwgQSubpropertyDepth'],
 			'smwgQEqualitySupport' => $GLOBALS['smwgQEqualitySupport'],
-			'smwgQSortingSupport' => $GLOBALS['smwgQSortingSupport'],
-			'smwgQRandSortingSupport' => $GLOBALS['smwgQRandSortingSupport'],
 			'smwgQDefaultNamespaces' => $GLOBALS['smwgQDefaultNamespaces'],
 			'smwgQComparators' => $GLOBALS['smwgQComparators'],
 			'smwgQFilterDuplicates' => $GLOBALS['smwgQFilterDuplicates'],
@@ -108,9 +101,13 @@ class Settings extends Options {
 			'smwgQConceptMaxDepth' => $GLOBALS['smwgQConceptMaxDepth'],
 			'smwgQConceptFeatures' => $GLOBALS['smwgQConceptFeatures'],
 			'smwgQConceptCacheLifetime' => $GLOBALS['smwgQConceptCacheLifetime'],
+			'smwgQExpensiveThreshold' => $GLOBALS['smwgQExpensiveThreshold'],
+			'smwgQExpensiveExecutionLimit' => $GLOBALS['smwgQExpensiveExecutionLimit'],
 			'smwgQuerySources' => $GLOBALS['smwgQuerySources'],
 			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
+			'smwgQSortFeatures' => $GLOBALS['smwgQSortFeatures'],
 			'smwgResultFormats' => $GLOBALS['smwgResultFormats'],
+			'smwgResultFormatsFeatures' => $GLOBALS['smwgResultFormatsFeatures'],
 			'smwgResultAliases' => $GLOBALS['smwgResultAliases'],
 			'smwgPDefaultType' => $GLOBALS['smwgPDefaultType'],
 			'smwgAllowRecursiveExport' => $GLOBALS['smwgAllowRecursiveExport'],
@@ -122,11 +119,10 @@ class Settings extends Options {
 			'smwgEnableUpdateJobs' => $GLOBALS['smwgEnableUpdateJobs'],
 			'smwgNamespacesWithSemanticLinks' => $GLOBALS['smwgNamespacesWithSemanticLinks'],
 			'smwgPageSpecialProperties' => $GLOBALS['smwgPageSpecialProperties'],
-			'smwgDeclarationProperties' => $GLOBALS['smwgDeclarationProperties'],
+			'smwgChangePropagationWatchlist' => $GLOBALS['smwgChangePropagationWatchlist'],
 			'smwgDataTypePropertyExemptionList' => $GLOBALS['smwgDataTypePropertyExemptionList'],
+			'smwgDefaultOutputFormatters' => $GLOBALS['smwgDefaultOutputFormatters'],
 			'smwgTranslate' => $GLOBALS['smwgTranslate'],
-			'smwgAdminRefreshStore' => $GLOBALS['smwgAdminRefreshStore'],
-			'smwgAutocompleteInSpecialAsk' => $GLOBALS['smwgAutocompleteInSpecialAsk'],
 			'smwgAutoRefreshSubject' => $GLOBALS['smwgAutoRefreshSubject'],
 			'smwgAdminFeatures' => $GLOBALS['smwgAdminFeatures'],
 			'smwgAutoRefreshOnPurge' => $GLOBALS['smwgAutoRefreshOnPurge'],
@@ -139,13 +135,12 @@ class Settings extends Options {
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
 			'smwgCacheType' => $GLOBALS['smwgCacheType'],
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
-			'smwgValueLookupCacheType' => $GLOBALS['smwgValueLookupCacheType'],
-			'smwgValueLookupCacheLifetime' => $GLOBALS['smwgValueLookupCacheLifetime'],
-			'smwgValueLookupFeatures' => $GLOBALS['smwgValueLookupFeatures'],
+			'smwgEntityLookupCacheType' => $GLOBALS['smwgEntityLookupCacheType'],
+			'smwgEntityLookupCacheLifetime' => $GLOBALS['smwgEntityLookupCacheLifetime'],
+			'smwgEntityLookupFeatures' => $GLOBALS['smwgEntityLookupFeatures'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
-			'smwgShowHiddenCategories' => $GLOBALS['smwgShowHiddenCategories'],
 			'smwgFactboxUseCache' => $GLOBALS['smwgFactboxUseCache'],
 			'smwgFactboxCacheRefreshOnPurge' => $GLOBALS['smwgFactboxCacheRefreshOnPurge'],
 			'smwgQueryProfiler' => $GLOBALS['smwgQueryProfiler'],
@@ -155,9 +150,9 @@ class Settings extends Options {
 			'smwgEnabledDeferredUpdate' => $GLOBALS['smwgEnabledDeferredUpdate'],
 			'smwgEnabledHttpDeferredJobRequest' => $GLOBALS['smwgEnabledHttpDeferredJobRequest'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
-			'smwgQueryDependencyPropertyExemptionlist' => $GLOBALS['smwgQueryDependencyPropertyExemptionlist'],
-			'smwgQueryDependencyAffiliatePropertyDetectionlist' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'],
-			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
+			'smwgQueryDependencyPropertyExemptionList' => $GLOBALS['smwgQueryDependencyPropertyExemptionList'],
+			'smwgQueryDependencyAffiliatePropertyDetectionList' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionList'],
+			'smwgParserFeatures' => $GLOBALS['smwgParserFeatures'],
 			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
 			'smwgEnabledFulltextSearch' => $GLOBALS['smwgEnabledFulltextSearch'],
 			'smwgFulltextDeferredUpdate' => $GLOBALS['smwgFulltextDeferredUpdate'],
@@ -171,9 +166,22 @@ class Settings extends Options {
 			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
 			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
 			'smwgEditProtectionRight' => $GLOBALS['smwgEditProtectionRight'],
+			'smwgCreateProtectionRight' => $GLOBALS['smwgCreateProtectionRight'],
 			'smwgSimilarityLookupExemptionProperty' => $GLOBALS['smwgSimilarityLookupExemptionProperty'],
 			'smwgPropertyInvalidCharacterList' => $GLOBALS['smwgPropertyInvalidCharacterList'],
+			'smwgPropertyReservedNameList' => $GLOBALS['smwgPropertyReservedNameList'],
+			'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'],
+			'smwgExperimentalFeatures' => $GLOBALS['smwgExperimentalFeatures'],
+			'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'],
+			'smwgChangePropagationProtection' => $GLOBALS['smwgChangePropagationProtection'],
+			'smwgUseComparableContentHash' => $GLOBALS['smwgUseComparableContentHash'],
+			'smwgBrowseFeatures' => $GLOBALS['smwgBrowseFeatures'],
+			'smwgCategoryFeatures' => $GLOBALS['smwgCategoryFeatures'],
+			'smwgURITypeSchemeList' => $GLOBALS['smwgURITypeSchemeList'],
+			'smwgRuleTypes' => $GLOBALS['smwgRuleTypes'],
 		);
+
+		self::initLegacyMapping( $configuration );
 
 		\Hooks::run( 'SMW::Config::BeforeCompletion', array( &$configuration ) );
 
@@ -203,12 +211,9 @@ class Settings extends Options {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param string $key
-	 * @param mixed $value
+	 * @deprecated 3.0
 	 */
-	public function add( $key, $value ) {
+	private function add( $key, $value ) {
 
 		if ( !$this->has( $key ) ) {
 			return $this->set( $key, $value );
@@ -257,6 +262,25 @@ class Settings extends Options {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function safeGet( $key, $default = false ) {
+
+		try {
+			$r = $this->get( $key );
+		} catch ( SettingNotFoundException $e ) {
+			return $default;
+		}
+
+		return $r;
+	}
+
+	/**
 	 * @since 1.9
 	 */
 	public static function clear() {
@@ -284,6 +308,254 @@ class Settings extends Options {
 		}
 
 		throw new SettingNotFoundException( "'{$key}' is not a valid settings key" );
+	}
+
+	private static function initLegacyMapping( &$configuration ) {
+
+		if ( isset( $GLOBALS['smwgAdminRefreshStore'] ) && $GLOBALS['smwgAdminRefreshStore'] === false ) {
+			$configuration['smwgAdminFeatures'] = $configuration['smwgAdminFeatures'] & ~SMW_ADM_REFRESH;
+		}
+
+		// smwgParserFeatures
+		if ( isset( $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] ) && $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] === false ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_STRICT;
+		}
+
+		if ( isset( $GLOBALS['smwgInlineErrors'] ) && $GLOBALS['smwgInlineErrors'] === false ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_INL_ERROR;
+		}
+
+		if ( isset( $GLOBALS['smwgShowHiddenCategories'] ) && $GLOBALS['smwgShowHiddenCategories'] === false ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_HID_CATS;
+		}
+
+		// smwgLinksInValues
+		if ( isset( $GLOBALS['smwgLinksInValues'] ) && $GLOBALS['smwgLinksInValues'] === SMW_LINV_PCRE ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] | SMW_PARSER_LINV;
+		}
+
+		if ( isset( $GLOBALS['smwgLinksInValues'] ) && $GLOBALS['smwgLinksInValues'] === SMW_LINV_OBFU ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] | SMW_PARSER_LINV;
+		}
+
+		if ( isset( $GLOBALS['smwgLinksInValues'] ) && $GLOBALS['smwgLinksInValues'] === true ) {
+			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] | SMW_PARSER_LINV;
+		}
+
+		// smwgCategoryFeatures
+		if ( isset( $GLOBALS['smwgUseCategoryRedirect'] ) && $GLOBALS['smwgUseCategoryRedirect'] === false ) {
+			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_REDIRECT;
+		}
+
+		if ( isset( $GLOBALS['smwgCategoriesAsInstances'] ) && $GLOBALS['smwgCategoriesAsInstances'] === false ) {
+			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_INSTANCE;
+		}
+
+		if ( isset( $GLOBALS['smwgUseCategoryHierarchy'] ) && $GLOBALS['smwgUseCategoryHierarchy'] === false ) {
+			$configuration['smwgCategoryFeatures'] = $configuration['smwgCategoryFeatures'] & ~SMW_CAT_HIERARCHY;
+		}
+
+		if ( isset( $GLOBALS['smwgQueryDependencyPropertyExemptionlist'] ) ) {
+			$configuration['smwgQueryDependencyPropertyExemptionList'] = $GLOBALS['smwgQueryDependencyPropertyExemptionlist'];
+		}
+
+		if ( isset( $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'] ) ) {
+			$configuration['smwgQueryDependencyAffiliatePropertyDetectionList'] = $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'];
+		}
+
+		// smwgPropertyListLimit
+		if ( isset( $GLOBALS['smwgSubPropertyListLimit'] ) ) {
+			$configuration['smwgPropertyListLimit']['subproperty'] = $GLOBALS['smwgSubPropertyListLimit'];
+		}
+
+		if ( isset( $GLOBALS['smwgRedirectPropertyListLimit'] ) ) {
+			$configuration['smwgPropertyListLimit']['redirect'] = $GLOBALS['smwgRedirectPropertyListLimit'];
+		}
+
+		// smwgCacheUsage
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgStatisticsCacheExpiry'] ) ) {
+			$configuration['smwgCacheUsage']['special.statistics'] = $GLOBALS['smwgCacheUsage']['smwgStatisticsCacheExpiry'];
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgStatisticsCache'] ) && $GLOBALS['smwgCacheUsage']['smwgStatisticsCache'] === false ) {
+			$configuration['smwgCacheUsage']['special.statistics'] = false;
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgPropertiesCacheExpiry'] ) ) {
+			$configuration['smwgCacheUsage']['special.properties'] = $GLOBALS['smwgCacheUsage']['smwgPropertiesCacheExpiry'];
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgPropertiesCache'] ) && $GLOBALS['smwgCacheUsage']['smwgPropertiesCache'] === false ) {
+			$configuration['smwgCacheUsage']['special.properties'] = false;
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCacheExpiry'] ) ) {
+			$configuration['smwgCacheUsage']['special.unusedproperties'] = $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCacheExpiry'];
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCache'] ) && $GLOBALS['smwgCacheUsage']['smwgUnusedPropertiesCache'] === false ) {
+			$configuration['smwgCacheUsage']['special.unusedproperties'] = false;
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCacheExpiry'] ) ) {
+			$configuration['smwgCacheUsage']['special.wantedproperties'] = $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCacheExpiry'];
+		}
+
+		if ( isset( $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCache'] ) && $GLOBALS['smwgCacheUsage']['smwgWantedPropertiesCache'] === false ) {
+			$configuration['smwgCacheUsage']['special.wantedproperties'] = false;
+		}
+
+		// smwgQueryProfiler
+		if ( isset( $GLOBALS['smwgQueryProfiler']['smwgQueryDurationEnabled'] ) && $GLOBALS['smwgQueryProfiler']['smwgQueryDurationEnabled'] === true ) {
+			$configuration['smwgQueryProfiler'] = $configuration['smwgQueryProfiler'] | SMW_QPRFL_DUR;
+		}
+
+		if ( isset( $GLOBALS['smwgQueryProfiler']['smwgQueryParametersEnabled'] ) && $GLOBALS['smwgQueryProfiler']['smwgQueryParametersEnabled'] === true ) {
+			$configuration['smwgQueryProfiler'] = $configuration['smwgQueryProfiler'] | SMW_QPRFL_PARAMS;
+		}
+
+		if ( isset( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
+			$configuration['smwgSparqlRepositoryConnector'] = $GLOBALS['smwgSparqlDatabaseConnector'];
+		}
+
+		if ( isset( $GLOBALS['smwgSparqlDatabase'] ) ) {
+			$configuration['smwgSparqlCustomConnector'] = $GLOBALS['smwgSparqlDatabase'];
+		}
+
+		if ( isset( $GLOBALS['smwgDeclarationProperties'] ) ) {
+			$configuration['smwgChangePropagationWatchlist'] = $GLOBALS['smwgDeclarationProperties'];
+		}
+
+		// smwgBrowseFeatures
+		if ( isset( $GLOBALS['smwgToolboxBrowseLink'] ) && $GLOBALS['smwgToolboxBrowseLink'] === false ) {
+			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] & ~SMW_BROWSE_TLINK;
+		}
+
+		if ( isset( $GLOBALS['smwgBrowseShowInverse'] ) && $GLOBALS['smwgBrowseShowInverse'] === true ) {
+			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] | SMW_BROWSE_SHOW_INVERSE;
+		}
+
+		if ( isset( $GLOBALS['smwgBrowseShowAll'] ) && $GLOBALS['smwgBrowseShowAll'] === false ) {
+			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] & ~SMW_BROWSE_SHOW_INCOMING;
+		}
+
+		if ( isset( $GLOBALS['smwgBrowseByApi'] ) && $GLOBALS['smwgBrowseByApi'] === false ) {
+			$configuration['smwgBrowseFeatures'] = $configuration['smwgBrowseFeatures'] & ~SMW_BROWSE_USE_API;
+		}
+
+		// smwgQSortFeatures
+		if ( isset( $GLOBALS['smwgQSortingSupport'] ) && $GLOBALS['smwgQSortingSupport'] === false ) {
+			$configuration['smwgQSortFeatures'] = $configuration['smwgQSortFeatures'] & ~SMW_QSORT;
+		}
+
+		if ( isset( $GLOBALS['smwgQRandSortingSupport'] ) && $GLOBALS['smwgQRandSortingSupport'] === false ) {
+			$configuration['smwgQSortFeatures'] = $configuration['smwgQSortFeatures'] & ~SMW_QSORT_RANDOM;
+		}
+
+		if ( isset( $GLOBALS['smwgImportFileDir'] ) ) {
+			$configuration['smwgImportFileDirs'] = (array)$GLOBALS['smwgImportFileDir'];
+		}
+
+		// smwgValueLookupFeatures
+		if ( isset( $GLOBALS['smwgValueLookupCacheType'] ) ) {
+			$configuration['smwgEntityLookupCacheType'] = $GLOBALS['smwgValueLookupCacheType'];
+		}
+
+		if ( isset( $GLOBALS['smwgValueLookupCacheLifetime'] ) ) {
+			$configuration['smwgEntityLookupCacheLifetime'] = $GLOBALS['smwgValueLookupCacheLifetime'];
+		}
+
+		if ( isset( $GLOBALS['smwgValueLookupFeatures'] ) ) {
+			$configuration['smwgEntityLookupFeatures'] = $GLOBALS['smwgValueLookupFeatures'];
+		}
+
+		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
+		// output notices
+		$GLOBALS['smwgDeprecationNotices'] = array(
+			'notice' => array(
+				'smwgAdminRefreshStore' => '3.1.0',
+				'smwgQueryDependencyPropertyExemptionlist' => '3.1.0',
+				'smwgQueryDependencyAffiliatePropertyDetectionlist' => '3.1.0',
+				'smwgSubPropertyListLimit' => '3.1.0',
+				'smwgRedirectPropertyListLimit' => '3.1.0',
+				'smwgSparqlDatabaseConnector' => '3.1.0',
+				'smwgSparqlDatabase' => '3.1.0',
+				'smwgDeclarationProperties' => '3.1.0',
+				'smwgToolboxBrowseLink' => '3.1.0',
+				'smwgBrowseShowInverse' => '3.1.0',
+				'smwgBrowseShowAll' => '3.1.0',
+				'smwgBrowseByApi' => '3.1.0',
+				'smwgEnabledInTextAnnotationParserStrictMode' => '3.1.0',
+				'smwgInlineErrors' => '3.1.0',
+				'smwgShowHiddenCategories' => '3.1.0',
+				'smwgUseCategoryRedirect' => '3.1.0',
+				'smwgCategoriesAsInstances' => '3.1.0',
+				'smwgUseCategoryHierarchy' => '3.1.0',
+				'smwgQSortingSupport' => '3.1.0',
+				'smwgQRandSortingSupport' => '3.1.0',
+				'smwgLinksInValues' => '3.1.0',
+				'options' => [
+					'smwgCacheUsage' =>  [
+						'smwgStatisticsCache' => '3.1.0',
+						'smwgStatisticsCacheExpiry' => '3.1.0',
+						'smwgPropertiesCache' => '3.1.0',
+						'smwgPropertiesCacheExpiry' => '3.1.0',
+						'smwgUnusedPropertiesCache' => '3.1.0',
+						'smwgUnusedPropertiesCacheExpiry' => '3.1.0',
+						'smwgWantedPropertiesCache' => '3.1.0',
+						'smwgWantedPropertiesCacheExpiry' => '3.1.0',
+					],
+					'smwgQueryProfiler' =>  [
+						'smwgQueryDurationEnabled' => '3.1.0',
+						'smwgQueryParametersEnabled' => '3.1.0'
+					]
+				]
+			),
+			'replacement' => array(
+				'smwgAdminRefreshStore' => 'smwgAdminFeatures',
+				'smwgQueryDependencyPropertyExemptionlist' => 'smwgQueryDependencyPropertyExemptionList',
+				'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList',
+				'smwgSubPropertyListLimit' => 'smwgPropertyListLimit',
+				'smwgRedirectPropertyListLimit' => 'smwgPropertyListLimit',
+				'smwgSparqlDatabaseConnector' => 'smwgSparqlRepositoryConnector',
+				'smwgSparqlDatabase' => 'smwgSparqlCustomConnector',
+				'smwgDeclarationProperties' => 'smwgChangePropagationWatchlist',
+				'smwgToolboxBrowseLink' => 'smwgBrowseFeatures',
+				'smwgBrowseShowInverse' => 'smwgBrowseFeatures',
+				'smwgBrowseShowAll' => 'smwgBrowseFeatures',
+				'smwgBrowseByApi' => 'smwgBrowseFeatures',
+				'smwgEnabledInTextAnnotationParserStrictMode' => 'smwgParserFeatures',
+				'smwgInlineErrors' => 'smwgParserFeatures',
+				'smwgShowHiddenCategories' => 'smwgParserFeatures',
+				'smwgLinksInValues' => 'smwgParserFeatures',
+				'smwgUseCategoryRedirect' => 'smwgCategoryFeatures',
+				'smwgCategoriesAsInstances' => 'smwgCategoryFeatures',
+				'smwgUseCategoryHierarchy' => 'smwgCategoryFeatures',
+				'smwgQSortingSupport' => 'smwgQSortFeatures',
+				'smwgQRandSortingSupport' => 'smwgQSortFeatures',
+				'smwgImportFileDir' => 'smwgImportFileDirs',
+				'smwgValueLookupCacheType' => 'smwgEntityLookupCacheType',
+				'smwgValueLookupCacheLifetime' => 'smwgEntityLookupCacheLifetime',
+				'smwgValueLookupFeatures' => 'smwgEntityLookupFeatures',
+				'options' => [
+					'smwgCacheUsage' => [
+						'smwgStatisticsCacheExpiry' => 'special.statistics',
+						'smwgPropertiesCacheExpiry' => 'special.properties',
+						'smwgUnusedPropertiesCacheExpiry' => 'special.unusedproperties',
+						'smwgWantedPropertiesCacheExpiry' => 'special.wantedproperties',
+					],
+					'smwgQueryProfiler' => [
+						'smwgQueryDurationEnabled' => 'SMW_QPRFL_DUR',
+						'smwgQueryParametersEnabled' => 'SMW_QPRFL_PARAMS'
+					]
+				]
+			),
+			'removal' => array(
+				'smwgOnDeleteAction' => '2.4.0',
+				'smwgAutocompleteInSpecialAsk' => '3.0.0',
+				'smwgSparqlDatabaseMaster' => '3.0.0'
+			)
+		);
 	}
 
 }

@@ -3,6 +3,7 @@
 namespace SMW\TestsImporter;
 
 use SMW\Importer\JsonImportContentsFileDirReader;
+use SMW\Importer\ContentModeller;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,29 +17,35 @@ use SMW\Tests\TestEnvironment;
  */
 class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 
+	private $contentModeller;
 	private $testEnvironment;
+	private $fixtures;
 
 	protected function setUp() {
 		parent::setUp();
 
+		$this->contentModeller = new ContentModeller();
+
 		$this->testEnvironment = new TestEnvironment();
+		$this->fixtures = __DIR__ . '/Fixtures';
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Importer\JsonImportContentsFileDirReader',
-			new JsonImportContentsFileDirReader( $this->testEnvironment->getFixturesLocation() )
+			JsonImportContentsFileDirReader::class,
+			new JsonImportContentsFileDirReader( $this->contentModeller, $this->fixtures )
 		);
 	}
 
-	public function testGetContents() {
+	public function testGetContentList() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			$this->testEnvironment->getFixturesLocation( 'Importer/ValidContent' )
+			$this->contentModeller,
+			[ $this->fixtures . '/ValidTextContent' ]
 		);
 
-		$contents = $instance->getContents();
+		$contents = $instance->getContentList();
 
 		$this->assertArrayHasKey(
 			'content.json',
@@ -47,31 +54,34 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $contents as $content ) {
 			foreach ( $content as $importContents ) {
-				$this->assertNotEmpty(
-					$importContents->getContents()
+				$this->assertInstanceOf(
+					'\SMW\Importer\ImportContents',
+					$importContents
 				);
 			}
 		}
 	}
 
-	public function testGetContentsOnFalseImportFormat() {
+	public function testGetContentListOnFalseImportFormat() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			$this->testEnvironment->getFixturesLocation( 'Importer/NoImportFormat' )
+			$this->contentModeller,
+			[ $this->fixtures . '/NoImportFormat' ]
 		);
 
 		$this->assertEmpty(
-			$instance->getContents()
+			$instance->getContentList()
 		);
 	}
 
-	public function testGetContentsOnMissingSections() {
+	public function testGetContentListOnMissingSections() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			$this->testEnvironment->getFixturesLocation( 'Importer/MissingSections' )
+			$this->contentModeller,
+			[ $this->fixtures . '/MissingSections' ]
 		);
 
-		$contents = $instance->getContents();
+		$contents = $instance->getContentList();
 
 		$this->assertArrayHasKey(
 			'error.json',
@@ -79,24 +89,27 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetContentsFromInvalidPathThrowsException() {
+	public function testGetContentListWithInvalidPath() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			__DIR__ . '/InvalidPath'
+			$this->contentModeller,
+			[ __DIR__ . '/InvalidPath' ]
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
-		$instance->getContents();
+		$this->assertEmpty(
+			$instance->getContentList()
+		);
 	}
 
-	public function testGetContentsOnInvalidJsonThrowsException() {
+	public function testGetContentListOnInvalidJsonThrowsException() {
 
 		$instance = new JsonImportContentsFileDirReader(
-			$this->testEnvironment->getFixturesLocation( 'Importer/InvalidJsonContent' )
+			$this->contentModeller,
+			[ $this->fixtures . '/InvalidJsonContent' ]
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->getContents();
+		$instance->getContentList();
 	}
 
 }

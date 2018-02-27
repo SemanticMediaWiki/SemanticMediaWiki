@@ -59,7 +59,7 @@ interface EntityLookup {
 	 * @param DIProperty $property
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DataItem[]|[]
+	 * @return DataItem[]|[]|Iterator
 	 */
 	public function getPropertyValues( DIWikiPage $subject = null, DIProperty $property, RequestOptions $requestOptions = null );
 
@@ -74,7 +74,7 @@ interface EntityLookup {
 	 * @param DIProperty $property
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DIWikiPage[]|[]
+	 * @return DIWikiPage[]|[]|Iterator
 	 */
 	public function getPropertySubjects( DIProperty $property, DataItem $dataItem = null, RequestOptions $requestOptions = null );
 
@@ -87,7 +87,7 @@ interface EntityLookup {
 	 * @param DIProperty $property
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DIWikiPage[]
+	 * @return DIWikiPage[]|Iterator
 	 */
 	public function getAllPropertySubjects( DIProperty $property, RequestOptions $requestOptions = null );
 
@@ -99,6 +99,8 @@ interface EntityLookup {
 	 * @note In some stores, this function might be implemented partially
 	 * so that only values of type Page (_wpg) are supported.
 	 *
+	 * @since 2.5
+	 *
 	 * @param DataItem $object
 	 * @param RequestOptions|null $requestOptions
 	 *
@@ -107,10 +109,8 @@ interface EntityLookup {
 	public function getInProperties( DataItem $object, RequestOptions $requestOptions = null );
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param DIWikiPage|null $subject
+	 * @since 3.0
 	 */
-	public function resetCacheBy( DIWikiPage $subject = null );
+	public function invalidateCache();
 
 }

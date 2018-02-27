@@ -2,16 +2,16 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\ByLanguageCollationMapper;
+use SMW\Utils\Collator;
 use SMWDataItem;
 use SMWQueryResult;
 
 /**
  * Print query results in alphabetic groups displayed in columns, a la the
- * standard Category pages and the default view in Semantic Drilldown.
- * Based on SMW_QP_List by Markus Krötzsch.
+ * standard Category pages.
  *
- * @ingroup SMWQuery
+ * @license GNU GPL v2+
+ * @since 1.6
  *
  * @author David Loomer
  * @author Yaron Koren
@@ -25,12 +25,81 @@ class CategoryResultPrinter extends ResultPrinter {
 	protected $mNumColumns;
 
 	/**
-	 * @see SMWResultPrinter::handleParameters
+	 * @see ResultPrinter::getName
 	 *
-	 * @since 1.6.2
+	 * {@inheritDoc}
+	 */
+	public function getName() {
+		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
+	}
+
+	/**
+	 * @see ResultPrinter::isDeferrable
 	 *
-	 * @param array $params
-	 * @param $outputmode
+	 * {@inheritDoc}
+	 */
+	public function isDeferrable() {
+		return true;
+	}
+
+	/**
+	 * @see ResultPrinter::supportsRecursiveAnnotation
+	 *
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function supportsRecursiveAnnotation() {
+		return true;
+	}
+
+	/**
+	 * @see ResultPrinter::getParamDefinitions
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
+
+		$definitions[] = [
+			'name' => 'columns',
+			'type' => 'integer',
+			'message' => 'smw-paramdesc-columns',
+			'default' => 3,
+		];
+
+		$definitions[] = [
+			'name' => 'delim',
+			'message' => 'smw-paramdesc-category-delim',
+			'default' => '',
+		];
+
+		$definitions[] = [
+			'name' => 'template',
+			'message' => 'smw-paramdesc-category-template',
+			'default' => '',
+		];
+
+		$definitions[] = [
+			'name' => 'userparam',
+			'message' => 'smw-paramdesc-category-userparam',
+			'default' => '',
+		];
+
+		$definitions[] = [
+			'name' => 'named args',
+			'type' => 'boolean',
+			'message' => 'smw-paramdesc-named_args',
+			'default' => false,
+		];
+
+		return $definitions;
+	}
+
+	/**
+	 * @see ResultPrinter::handleParameters
+	 *
+	 * {@inheritDoc}
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
@@ -41,10 +110,11 @@ class CategoryResultPrinter extends ResultPrinter {
 		$this->mTemplate = $params['template'];
 	}
 
-	public function getName() {
-		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
-	}
-
+	/**
+	 * @see ResultPrinter::getResultText
+	 *
+	 * {@inheritDoc}
+	 */
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		$contentsByIndex = array();
 
@@ -172,45 +242,6 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $htmlColumnListRenderer->getHtml();
 	}
 
-	public function getParameters() {
-		return array_merge( parent::getParameters(), array(
-			array(
-				'name' => 'columns',
-				'type' => 'integer',
-				'message' => 'smw-paramdesc-columns',
-				'default' => 3,
-			),
-			array(
-				'name' => 'delim',
-				'message' => 'smw-paramdesc-category-delim',
-				'default' => '',
-			),
-			array(
-				'name' => 'template',
-				'message' => 'smw-paramdesc-category-template',
-				'default' => '',
-			),
-			array(
-				'name' => 'userparam',
-				'message' => 'smw-paramdesc-category-userparam',
-				'default' => '',
-			),
-
-			array(
-				'name' => 'named args',
-				'type' => 'boolean',
-				'message' => 'smw-paramdesc-named_args',
-				'default' => false,
-			),
-
-			array(
-				'name' => 'import-annotation',
-				'type' => 'boolean',
-				'message' => 'smw-paramdesc-import-annotation',
-				'default' => false,
-			)
-		) );
-	}
 
 	private function getFirstLetterForCategory( SMWQueryResult $res, SMWDataItem $dataItem ) {
 
@@ -218,10 +249,9 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
 			$sortKey = $res->getStore()->getWikiPageSortKey( $dataItem );
-
 		}
 
-		return ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory( $sortKey );
+		return Collator::singleton()->getFirstLetter( $sortKey );
 	}
 
 	private function addRowFieldsToTemplate( $res, $row, &$first_col, $templateRenderer ) {

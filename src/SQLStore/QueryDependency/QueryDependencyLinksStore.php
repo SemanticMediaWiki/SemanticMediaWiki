@@ -6,14 +6,14 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EventHandler;
-use SMW\SQLStore\CompositePropertyTableDiffIterator;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 use SMW\Store;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Utils\Timer;
 
 /**
@@ -22,7 +22,9 @@ use SMW\Utils\Timer;
  *
  * @author mwjames
  */
-class QueryDependencyLinksStore implements LoggerAwareInterface {
+class QueryDependencyLinksStore {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var Store
@@ -40,14 +42,9 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	private $queryResultDependencyListResolver;
 
 	/**
-	 * @var Database
+	 * @var NamespaceExaminer
 	 */
-	private $connection;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
+	private $namespaceExaminer;
 
 	/**
 	 * @var boolean
@@ -79,18 +76,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		$this->queryResultDependencyListResolver = $queryResultDependencyListResolver;
 		$this->dependencyLinksTableUpdater = $dependencyLinksTableUpdater;
 		$this->store = $this->dependencyLinksTableUpdater->getStore();
-		$this->connection = $this->store->getConnection( 'mw.db' );
-	}
-
-	/**
-	 * @see LoggerAwareInterface::setLogger
-	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
+		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
 
 	/**
@@ -139,9 +125,9 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 *
 	 * @since 2.3
 	 *
-	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 * @param ChangeOp $changeOp
 	 */
-	public function pruneOutdatedTargetLinks( DIWikiPage $subject, CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+	public function pruneOutdatedTargetLinks( DIWikiPage $subject, ChangeOp $changeOp ) {
 
 		if ( !$this->isEnabled() ) {
 			return null;
@@ -153,7 +139,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			new DIProperty( '_ASK' )
 		);
 
-		$tableChangeOps = $compositePropertyTableDiffIterator->getTableChangeOps( $tableName );
+		$tableChangeOps = $changeOp->getTableChangeOps( $tableName );
 
 		// Remove any dependency for queries that are no longer used
 		foreach ( $tableChangeOps as $tableChangeOp ) {
@@ -171,7 +157,17 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
-		$this->log( __METHOD__ . ' finished on ' . $subject->getHash() . ' with procTime (sec): ' . Timer::getElapsedTime( __METHOD__, 7 ) );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $subject->getHash(),
+			'procTime' => Timer::getElapsedTime( __METHOD__, 7 )
+		];
+
+		$this->logger->info(
+			'[QueryDependency] Prune links completed: {origin} (procTime in sec: {procTime})',
+			$context
+		);
 
 		return true;
 	}
@@ -199,7 +195,8 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		}
 
 		return array(
-			'idlist' => $filteredIdList
+			'idlist' => $filteredIdList,
+			'ex:mode' => ParserCachePurgeJob::EXEC_JOURNAL
 		);
 	}
 
@@ -236,8 +233,8 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryTargetLinksHashListBySubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
-		return $this->findEmbeddedQueryTargetLinksHashListFrom(
+	public function findDependencyTargetLinksForSubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
+		return $this->findDependencyTargetLinks(
 			array( $this->dependencyLinksTableUpdater->getId( $subject ) ),
 			$requestOptions
 		);
@@ -266,7 +263,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryTargetLinksHashListFrom( array $idlist, RequestOptions $requestOptions ) {
+	public function findDependencyTargetLinks( array $idlist, RequestOptions $requestOptions ) {
 
 		if ( $idlist === array() || !$this->isEnabled() ) {
 			return array();
@@ -275,10 +272,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 		$options = array(
 			'LIMIT'     => $requestOptions->getLimit(),
 			'OFFSET'    => $requestOptions->getOffset(),
-			'GROUP BY'  => 's_id',
-			'ORDER BY'  => 's_id',
-			'DISTINCT'  => true
-		);
+		) + array( 'DISTINCT' );
 
 		$conditions = array(
 			'o_id' => $idlist
@@ -288,7 +282,9 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			$conditions[] = $extraCondition;
 		}
 
-		$rows = $this->connection->select(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$rows = $connection->select(
 			SQLStore::QUERY_LINKS_TABLE,
 			array( 's_id' ),
 			$conditions,
@@ -306,16 +302,19 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			return array();
 		}
 
-		$requestOptions = new RequestOptions();
+		// Return the expected count of targets
+		$requestOptions->targetLinksCount = count( $targetLinksIdList );
 
-		$requestOptions->addExtraCondition(
-			'smw_iw !=' . $this->connection->addQuotes( SMW_SQL3_SMWREDIIW ) . ' AND '.
-			'smw_iw !=' . $this->connection->addQuotes( SMW_SQL3_SMWDELETEIW )
+		$poolRequestOptions = new RequestOptions();
+
+		$poolRequestOptions->addExtraCondition(
+			'smw_iw !=' . $connection->addQuotes( SMW_SQL3_SMWREDIIW ) . ' AND '.
+			'smw_iw !=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW )
 		);
 
 		return $this->store->getObjectIds()->getDataItemPoolHashListFor(
 			$targetLinksIdList,
-			$requestOptions
+			$poolRequestOptions
 		);
 	}
 
@@ -328,7 +327,7 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 	 *
 	 * @param QueryResult|string $queryResult
 	 */
-	public function doUpdateDependenciesFrom( $queryResult ) {
+	public function updateDependencies( $queryResult ) {
 
 		if ( !$this->canUpdateDependencies( $queryResult ) ) {
 			return null;
@@ -344,55 +343,98 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			$hash
 		);
 
-		if ( $this->canSuppressUpdateOnSkewFactorFor( $sid, $subject ) ) {
-			return $this->log( __METHOD__ . " suppressed (skewed time) for SID " . $sid );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'id' => $sid
+		];
+
+		if ( $this->isRegistered( $sid, $subject ) ) {
+			return $this->logger->info(
+				'[QueryDependency] Skipping update: {id} (already registered, no dependency update)',
+				$context
+			);
 		}
 
-		$dependencyLinksTableUpdater = $this->dependencyLinksTableUpdater;
-		$queryResultDependencyListResolver = $this->queryResultDependencyListResolver;
+		// Executed as DeferredTransactionalUpdate
+		$callback = function() use( $queryResult, $subject, $sid, $hash ) {
+			$this->doUpdate( $queryResult, $subject, $sid, $hash );
+		};
 
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $subject, $sid, $hash, $queryResult, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate(
+			$callback
+		);
 
-			$dependencyList = $queryResultDependencyListResolver->getDependencyListFrom( $queryResult );
+		$origin = $subject->getHash();
 
-			// Add extra dependencies which we only get "late" after the QueryResult
-			// object as been resolved by the ResultPrinter, this is done to
-			// avoid having to process the QueryResult recursively on its own
-			// (which would carry a performance penalty)
-			$dependencyListByLateRetrieval = $queryResultDependencyListResolver->getDependencyListByLateRetrievalFrom( $queryResult );
+		$deferredTransactionalUpdate->setOrigin( [ __METHOD__, $origin ] );
+		$deferredTransactionalUpdate->markAsPending( $this->isCommandLineMode );
+		$deferredTransactionalUpdate->setFingerprint( $hash );
 
-			if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
-				return $this->log( 'No dependency list available ' . $hash );
-			}
+		$deferredTransactionalUpdate->enabledDeferredUpdate( true );
+		$deferredTransactionalUpdate->waitOnTransactionIdle();
 
-			// SID < 0 means the storage update/process has not been finalized
-			// (new object hasn't been registered)
-			if ( $sid < 1 || ( $sid = $dependencyLinksTableUpdater->getId( $subject, $hash ) ) < 1 ) {
-				$sid = $dependencyLinksTableUpdater->createId( $subject, $hash );
-			}
+		$deferredTransactionalUpdate->pushUpdate();
 
-			$dependencyLinksTableUpdater->addToUpdateList(
-				$sid,
-				$dependencyList
-			);
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $origin,
+			'procTime' => Timer::getElapsedTime( __METHOD__, 7 )
+		];
 
-			$dependencyLinksTableUpdater->addToUpdateList(
-				$sid,
-				$dependencyListByLateRetrieval
-			);
-
-			$dependencyLinksTableUpdater->doUpdate();
-		} );
-
-		$deferredCallableUpdate->setOrigin( __METHOD__ );
-
-		$deferredCallableUpdate->markAsPending( $this->isCommandLineMode );
-		$deferredCallableUpdate->enabledDeferredUpdate( true );
-		$deferredCallableUpdate->pushUpdate();
-
-		$this->log( __METHOD__ . ' procTime (sec): ' . Timer::getElapsedTime( __METHOD__, 7 ) );
+		$this->logger->info(
+			'[QueryDependency] Update dependencies registered: {origin} (procTime in sec: {procTime})',
+			$context
+		);
 
 		return true;
+	}
+
+	private function doUpdate( $queryResult, $subject, $sid, $hash ) {
+
+		$dependencyList = $this->queryResultDependencyListResolver->getDependencyListFrom(
+			$queryResult
+		);
+
+		// Add extra dependencies which we only get "late" after the QueryResult
+		// object as been resolved by the ResultPrinter, this is done to
+		// avoid having to process the QueryResult recursively on its own
+		// (which would carry a performance penalty)
+		$dependencyListByLateRetrieval = $this->queryResultDependencyListResolver->getDependencyListByLateRetrievalFrom(
+			$queryResult
+		);
+
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'origin' => $hash
+		];
+
+		if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
+			return $this->logger->info(
+				'[QueryDependency] no update: {origin} (no dependency list available)',
+				$context
+			);
+		}
+
+		// SID < 0 means the storage update/process has not been finalized
+		// (new object hasn't been registered)
+		if ( $sid < 1 || ( $sid = $this->dependencyLinksTableUpdater->getId( $subject, $hash ) ) < 1 ) {
+			$sid = $this->dependencyLinksTableUpdater->createId( $subject, $hash );
+		}
+
+		$this->dependencyLinksTableUpdater->addToUpdateList(
+			$sid,
+			$dependencyList
+		);
+
+		$this->dependencyLinksTableUpdater->addToUpdateList(
+			$sid,
+			$dependencyListByLateRetrieval
+		);
+
+		$this->dependencyLinksTableUpdater->doUpdate();
 	}
 
 	private function canUpdateDependencies( $queryResult ) {
@@ -403,10 +445,35 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 		$query = $queryResult->getQuery();
 
-		return $query !== null && $query->getContextPage() !== null && $query->getLimit() > 0 && $query->getOption( Query::NO_DEP_TRACE ) !== true;
+		$actions = [
+			// #2484 Avoid any update activities during a stashedit API access
+			'stashedit',
+
+			// Avoid update on `submit` during a preview
+			'submbit',
+
+			// Avoid update on `parse` during a wikieditor preview
+			'parse'
+		];
+
+		if ( in_array( $query->getOption( 'request.action' ), $actions ) ) {
+			return false;
+		}
+
+		if ( $query === null || $query->getContextPage() === null ) {
+			return false;
+		}
+
+		// Make sure that when a query is embedded in a not supported NS to bail
+		// out
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $query->getContextPage()->getNamespace() ) ) {
+			return false;
+		}
+
+		return $query->getLimit() > 0 && $query->getOption( Query::NO_DEPENDENCY_TRACE ) !== true;
 	}
 
-	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
+	private function isRegistered( $sid, $subject ) {
 
 		static $suppressUpdateCache = array();
 		$hash = $subject->getHash();
@@ -415,7 +482,9 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 			return false;
 		}
 
-		$row = $this->connection->selectRow(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$row = $connection->selectRow(
 			SQLStore::QUERY_LINKS_TABLE,
 			array(
 				's_id'
@@ -426,22 +495,14 @@ class QueryDependencyLinksStore implements LoggerAwareInterface {
 
 		$title = $subject->getTitle();
 
+		// https://phabricator.wikimedia.org/T167943
 		if ( !isset( $suppressUpdateCache[$hash] ) && $title !== null ) {
-			$suppressUpdateCache[$hash] = $title->getTouched() + $this->skewFactorForDependencyUpdateInSeconds;
+			$suppressUpdateCache[$hash] = wfTimestamp( TS_MW, $title->getTouched() ) + $this->skewFactorForDependencyUpdateInSeconds;
 		}
 
 		// Check whether the query has already been registered and only then
 		// check for a possible divergent time
 		return $row !== false && $suppressUpdateCache[$hash] > wfTimestamp( TS_MW );
-	}
-
-	private function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }

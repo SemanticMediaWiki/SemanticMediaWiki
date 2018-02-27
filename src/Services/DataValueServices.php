@@ -62,6 +62,10 @@ return array(
 			$containerBuilder->singleton( 'Settings' )->get( 'smwgPropertyInvalidCharacterList' )
 		);
 
+		$propertyValueParser->isCapitalLinks(
+			$GLOBALS['wgCapitalLinks']
+		);
+
 		return $propertyValueParser;
 	},
 

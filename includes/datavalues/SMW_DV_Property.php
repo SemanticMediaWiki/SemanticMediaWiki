@@ -175,21 +175,25 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->getOption( self::OPT_QUERY_CONTEXT )
 		);
 
-		$propertyValueParser->requireUpperCase(
-			$this->getContextPage() !== null &&
-			$this->getContextPage()->getNamespace() === SMW_NS_PROPERTY
+		$reqCapitalizedFirstChar = $this->getContextPage() !== null && $this->getContextPage()->getNamespace() === SMW_NS_PROPERTY;
+
+		$propertyValueParser->reqCapitalizedFirstChar(
+			$reqCapitalizedFirstChar
 		);
 
-		list( $propertyName, $inverse ) = $propertyValueParser->parse( $value );
+		list( $propertyName, $capitalizedName, $inverse ) = $propertyValueParser->parse( $value );
 
 		foreach ( $propertyValueParser->getErrors() as $error ) {
 			return $this->addErrorMsg( $error, Message::PARSE );
 		}
 
-		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
-
 		try {
-			$this->m_dataitem = DIProperty::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
+			$this->m_dataitem = $this->createDataItemFrom(
+				$reqCapitalizedFirstChar,
+				$propertyName,
+				$capitalizedName,
+				$inverse
+			);
 		} catch ( SMWDataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
 			$this->addErrorMsg( array( 'smw_noproperty', $value ) );
 			$this->m_dataitem = new DIProperty( 'ERROR', false ); // just to have something
@@ -281,7 +285,13 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	public function setOutputFormat( $formatstring ) {
+
+		if ( $formatstring === false || $formatstring === '' ) {
+			return;
+		}
+
 		$this->m_outformat = $formatstring;
+
 		if ( $this->getWikiPageValue() instanceof SMWDataValue ) {
 			$this->m_wikipage->setOutputFormat( $formatstring );
 		}
@@ -309,7 +319,7 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->m_wikipage = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null, $this->m_caption );
 			$this->m_wikipage->setOutputFormat( $this->m_outformat );
 			$this->m_wikipage->setLinkAttributes( $this->linkAttributes );
-			$this->m_wikipage->setOptions( $this->getOptions() );
+			$this->m_wikipage->copyOptions( $this->getOptions() );
 			$this->addError( $this->m_wikipage->getErrors() );
 		} else { // should rarely happen ($value is only changed if the input $value really was a label for a predefined prop)
 			$this->m_wikipage = null;
@@ -328,12 +338,34 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @since 2.2
+	 * @since 3.0
 	 *
 	 * @return boolean
 	 */
-	public function canUse() {
-		return $this->isValid() && $this->m_dataitem->isUnrestricted();
+	public function isRestricted() {
+
+		if ( !$this->isValid() ) {
+			return true;
+		}
+
+		$propertyRestrictionExaminer = $this->dataValueServiceFactory->getPropertyRestrictionExaminer();
+
+		$propertyRestrictionExaminer->isQueryContext(
+			$this->getOption( self::OPT_QUERY_CONTEXT )
+		);
+
+		$propertyRestrictionExaminer->checkRestriction(
+			$this->getDataItem(),
+			$this->getContextPage()
+		);
+
+		if ( !$propertyRestrictionExaminer->hasRestriction() ) {
+			return false;
+		}
+
+		$this->restrictionError = $propertyRestrictionExaminer->getError();
+
+		return true;
 	}
 
 	/**
@@ -520,6 +552,21 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getText() {
 		return $this->m_dataitem->getLabel();
+	}
+
+	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ) {
+
+		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
+
+		// Probe on capitalizedFirstChar because we only want predefined
+		// properties (e.g. Has type vs. has type etc.) to adhere the rule while
+		// custom (user) defined properties can appear in any form
+		if ( $reqCapitalizedFirstChar ) {
+			$dataItem = DIProperty::newFromUserLabel( $capitalizedName, $inverse, $contentLanguage );
+			$propertyName = $dataItem->isUserDefined() ? $propertyName : $capitalizedName;
+		}
+
+		return DIProperty::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
 	}
 
 }

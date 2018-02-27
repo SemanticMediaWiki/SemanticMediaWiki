@@ -118,7 +118,7 @@ class RequestOptions {
 	 * @param integer $limit
 	 */
 	public function setLimit( $limit ) {
-		$this->limit = $limit;
+		$this->limit = (int)$limit;
 	}
 
 	/**
@@ -127,7 +127,7 @@ class RequestOptions {
 	 * @return integer
 	 */
 	public function getLimit() {
-		return $this->limit;
+		return (int)$this->limit;
 	}
 
 	/**
@@ -136,7 +136,7 @@ class RequestOptions {
 	 * @param integer $offset
 	 */
 	public function setOffset( $offset ) {
-		$this->offset = $offset;
+		$this->offset = (int)$offset;
 	}
 
 	/**
@@ -145,7 +145,7 @@ class RequestOptions {
 	 * @return integer
 	 */
 	public function getOffset() {
-		return $this->offset;
+		return (int)$this->offset;
 	}
 
 	/**

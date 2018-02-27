@@ -33,11 +33,6 @@ abstract class SMWDataItem {
 	const TYPE_NOTYPE    = 0;
 	/// Data item ID for SMWDINumber
 	const TYPE_NUMBER    = 1;
-	/**
-	 * Data item ID for SMWDIString.
-	 * @deprecated Will vanish after SMW 1.9; use TYPE_BLOB instead.
-	 */
-	const TYPE_STRING    = 2;
 	/// Data item ID for SMWDIBlob
 	const TYPE_BLOB      = 2;
 	///  Data item ID for SMWDIBoolean
@@ -154,8 +149,8 @@ abstract class SMWDataItem {
 	 * Create a data item of the given dataitem ID based on the the
 	 * provided serialization string and (optional) typeid.
 	 *
-	 * @param $diType integer dataitem ID
-	 * @param $serialization string
+	 * @param integer $diType dataitem ID
+	 * @param string $serialization
 	 *
 	 * @return SMWDataItem
 	 */
@@ -176,27 +171,27 @@ abstract class SMWDataItem {
 	public static function getDataItemClassNameForId( $diType ) {
 		switch ( $diType ) {
 			case self::TYPE_NUMBER:
-				return 'SMWDINumber';
+				return SMWDINumber::class;
 			case self::TYPE_BLOB:
-				return 'SMWDIBlob';
+				return SMWDIBlob::class;
 			case self::TYPE_BOOLEAN:
-				return 'SMWDIBoolean';
+				return SMWDIBoolean::class;
 			case self::TYPE_URI:
-				return 'SMWDIUri';
+				return SMWDIUri::class;
 			case self::TYPE_TIME:
-				return 'SMWDITime';
+				return SMWDITime::class;
 			case self::TYPE_GEO:
-				return 'SMWDIGeoCoord';
+				return SMWDIGeoCoord::class;
 			case self::TYPE_CONTAINER:
-				return 'SMWDIContainer';
+				return SMWDIContainer::class;
 			case self::TYPE_WIKIPAGE:
-				return 'SMWDIWikiPage';
+				return SMWDIWikiPage::class;
 			case self::TYPE_CONCEPT:
-				return 'SMWDIConcept';
+				return SMWDIConcept::class;
 			case self::TYPE_PROPERTY:
-				return 'SMWDIProperty';
+				return SMWDIProperty::class;
 			case self::TYPE_ERROR:
-				return 'SMWDIError';
+				return SMWDIError::class;
 			case self::TYPE_NOTYPE: default:
 				throw new InvalidArgumentException( "The value \"$diType\" is not a valid dataitem ID." );
 		}
@@ -209,12 +204,11 @@ abstract class SMWDataItem {
 	 * @param string $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
 
-		return $this->options->set( $key, $value );
+		$this->options->set( $key, $value );
 	}
 
 	/**

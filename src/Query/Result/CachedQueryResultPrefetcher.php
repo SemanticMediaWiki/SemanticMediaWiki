@@ -120,7 +120,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @var string/integer
 	 */
-	private $hashModifier = '';
+	private $dependantHashIdExtension = '';
 
 	/**
 	 * @since 2.5
@@ -173,10 +173,10 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|integer $hashModifier
+	 * @param string|integer $dependantHashIdExtension
 	 */
-	public function setHashModifier( $hashModifier ) {
-		$this->hashModifier = $hashModifier;
+	public function setDependantHashIdExtension( $dependantHashIdExtension ) {
+		$this->dependantHashIdExtension = $dependantHashIdExtension;
 	}
 
 	/**
@@ -283,20 +283,28 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage|array $list
+	 * @param DIWikiPage|array $items
 	 * @param string $context
 	 */
-	public function resetCacheBy( $item, $context = '' ) {
+	public function resetCacheBy( $items, $context = '' ) {
 
-		if ( !is_array( $item ) ) {
-			$item = array( $item );
+		if ( !$this->blobStore->canUse() ) {
+			return;
+		}
+
+		if ( !is_array( $items ) ) {
+			$items = array( $items );
 		}
 
 		$recordStats = false;
 		$context = $context === '' ? 'Undefined' : $context;
 
-		foreach ( $item as $id ) {
-			$id = $this->getHashFrom( $id );
+		if ( is_array( $context ) ) {
+			$context = implode( '.', $context );
+		}
+
+		foreach ( $items as $item ) {
+			$id = $this->getHashFrom( $item );
 			$this->tempCache->delete( $id );
 
 			if ( $this->blobStore->exists( $id ) ) {
@@ -395,13 +403,22 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$this->doCacheQueryResult( $queryResult, $queryId, $container, $query );
 		};
 
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate(
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate(
 			$callback
 		);
 
-		$deferredCallableUpdate->setOrigin( __METHOD__ );
-		$deferredCallableUpdate->setFingerprint( __METHOD__ . $queryId );
-		$deferredCallableUpdate->pushUpdate();
+		$deferredTransactionalUpdate->setOrigin( __METHOD__ );
+		$deferredTransactionalUpdate->setFingerprint( __METHOD__ . $queryId );
+		$deferredTransactionalUpdate->waitOnTransactionIdle();
+
+		// Make sure that in any event the collector is executed after
+		// the process has finished
+		$deferredTransactionalUpdate->addPostCommitableCallback(
+			BufferedStatsdCollector::class,
+			[ $this, 'recordStats' ]
+		);
+
+		$deferredTransactionalUpdate->pushUpdate();
 	}
 
 	private function doCacheQueryResult( $queryResult, $queryId, $container, $query ) {
@@ -462,10 +479,15 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	private function getHashFrom( $subject ) {
 
 		if ( $subject instanceof DIWikiPage ) {
-			$subject = $subject->asBase()->getHash();
+			// In case the we detect a _QUERY subobject, use it directly
+			if ( ( $subobjectName = $subject->getSubobjectName() ) !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
+				$subject = $subobjectName;
+			} else {
+				$subject = $subject->asBase()->getHash();
+			}
 		}
 
-		return md5( $subject . self::VERSION . $this->hashModifier );
+		return md5( $subject . self::VERSION . $this->dependantHashIdExtension );
 	}
 
 	private function log( $message, $context = array() ) {

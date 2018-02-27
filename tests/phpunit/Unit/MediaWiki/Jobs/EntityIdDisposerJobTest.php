@@ -32,10 +32,14 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array( 'Foo' ) ) );
 
+		$connection->expects( $this->any() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
+
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->getMockForAbstractClass();
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +64,7 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
+			EntityIdDisposerJob::class,
 			new EntityIdDisposerJob( $title )
 		);
 	}

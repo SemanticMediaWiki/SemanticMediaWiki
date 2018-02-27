@@ -37,6 +37,11 @@ class PropertyTableIdReferenceDisposer {
 	private $onTransactionIdle = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $redirectRemoval = false;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param SQLStore $store
@@ -44,6 +49,15 @@ class PropertyTableIdReferenceDisposer {
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
 		$this->connection = $this->store->getConnection( 'mw.db' );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $redirectRemoval
+	 */
+	public function setRedirectRemoval( $redirectRemoval ) {
+		$this->redirectRemoval = $redirectRemoval;
 	}
 
 	/**
@@ -55,6 +69,17 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	public function waitOnTransactionIdle() {
 		$this->onTransactionIdle = true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 *
+	 * @return boolean
+	 */
+	public function isDisposable( $id ) {
+		return $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) === false;
 	}
 
 	/**
@@ -77,7 +102,7 @@ class PropertyTableIdReferenceDisposer {
 			return null;
 		}
 
-		$this->doRemoveEntityReferencesById( $id );
+		$this->doRemoveEntityReferencesById( $id, false );
 	}
 
 	/**
@@ -122,8 +147,11 @@ class PropertyTableIdReferenceDisposer {
 	public function cleanUpTableEntriesById( $id ) {
 
 		$subject = $this->store->getObjectIds()->getDataItemById( $id );
+		$isRedirect = false;
 
 		if ( $subject instanceof DIWikiPage ) {
+			$isRedirect = $subject->getInterwiki() === SMW_SQL3_SMWREDIIW;
+
 			// Use the subject without an internal 'smw-delete' iw marker
 			$subject = new DIWikiPage(
 				$subject->getDBKey(),
@@ -166,17 +194,25 @@ class PropertyTableIdReferenceDisposer {
 			}
 		}
 
-		$this->doRemoveEntityReferencesById( $id );
+		$this->doRemoveEntityReferencesById( $id, $isRedirect );
 		$this->connection->endAtomicTransaction( __METHOD__ );
+
+		\Hooks::run(
+			'SMW::SQLStore::EntityReferenceCleanUpComplete',
+			[ $this->store, $id, $subject, $isRedirect ]
+		);
 	}
 
-	private function doRemoveEntityReferencesById( $id ) {
+	private function doRemoveEntityReferencesById( $id, $isRedirect ) {
 
-		$this->connection->delete(
-			SQLStore::ID_TABLE,
-			array( 'smw_id' => $id ),
-			__METHOD__
-		);
+		// When marked as redirect, don't remove the reference
+		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
+			$this->connection->delete(
+				SQLStore::ID_TABLE,
+				array( 'smw_id' => $id ),
+				__METHOD__
+			);
+		}
 
 		$this->connection->delete(
 			SQLStore::PROPERTY_STATISTICS_TABLE,
@@ -215,6 +251,12 @@ class PropertyTableIdReferenceDisposer {
 			return;
 		}
 
+		// Skip any reset for subobjects where it is expected that the base
+		// subject is cleaning up all related cache entries
+		if ( $subject->getSubobjectName() !== '' ) {
+			return;
+		}
+
 		if ( $onTransactionIdle ) {
 			return $this->connection->onTransactionIdle( function() use( $subject ) {
 				$this->triggerCleanUpEvents( $subject, false );
@@ -236,13 +278,6 @@ class PropertyTableIdReferenceDisposer {
 			'factbox.cache.delete',
 			$dispatchContext
 		);
-
-		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$eventHandler->getEventDispatcher()->dispatch(
-				'property.specification.change',
-				$dispatchContext
-			);
-		}
 	}
 
 }

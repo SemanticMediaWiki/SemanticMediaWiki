@@ -61,8 +61,8 @@
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Project one</td><td data-sort-value=\"1\" class=\"Has-success-state smwtype_boo\"><span style=\"font-family: sans-serif;\">X</span></td><td class=\"Has-project-name smwtype_txt\">One</td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Project two</td><td data-sort-value=\"0\" class=\"Has-success-state smwtype_boo\">&#160;</td><td class=\"Has-project-name smwtype_txt\">Two</td></tr>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Project one</td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"1\"><span style=\"font-family: sans-serif;\">X</span></td><td class=\"Has-project-name smwtype_txt\">One</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Project two</td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"0\">&#160;</td><td class=\"Has-project-name smwtype_txt\">Two</td></tr>",
 					"</table>"
 				]
 			}
@@ -75,8 +75,8 @@
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
 					"title=\"Property:Has success state\">Has success state</a></th><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">",
-					"title=\"Project one\">Project one</a></td><td data-sort-value=\"1\" class=\"Has-success-state smwtype_boo\">success</td>",
-					"title=\"Project two\">Project two</a></td><td data-sort-value=\"0\" class=\"Has-success-state smwtype_boo\">failure</td>",
+					"title=\"Project one\">Project one</a></td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"1\">success</td>",
+					"title=\"Project two\">Project two</a></td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"0\">failure</td>",
 					"</table>"
 				]
 			}
@@ -89,8 +89,8 @@
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
 					"title=\"Property:Has success state\">Status</a></th><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">",
-					"title=\"Project one\">Project one</a></td><td data-sort-value=\"1\" class=\"Status smwtype_boo\">success</td>",
-					"title=\"Project two\">Project two</a></td><td data-sort-value=\"0\" class=\"Status smwtype_boo\">failure</td>",
+					"title=\"Project one\">Project one</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"1\">success</td>",
+					"title=\"Project two\">Project two</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"0\">failure</td>",
 					"</table>"
 				]
 			}
@@ -101,8 +101,8 @@
 			"subject": "Example/F0201/3a",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">✓</td>",
-					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">✕</td>"
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">✓</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">✕</td>"
 				]
 			}
 		},
@@ -112,8 +112,8 @@
 			"subject": "Example/F0201/3b",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">○</td>",
-					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">×</td>"
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">○</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">×</td>"
 				]
 			}
 		},
@@ -123,8 +123,8 @@
 			"subject": "Example/F0201/3c",
 			"assert-output": {
 				"to-contain": [
-					"<td data-sort-value=\"1\" class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\"><span style=\"color: green; font-size: 120%;\">&#10003;</span></td>",
-					"<td data-sort-value=\"0\" class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\"><span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span></td>"
+					"<td class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\" data-sort-value=\"1\"><span style=\"color: green; font-size: 120%;\">&#10003;</span></td>",
+					"<td class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\" data-sort-value=\"0\"><span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span></td>"
 				]
 			}
 		}

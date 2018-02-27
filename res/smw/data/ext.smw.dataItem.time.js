@@ -52,39 +52,47 @@
 			}
 		}
 
-		// SMW seralization format with:
+		// SMW serialization format with:
 		if ( this.raw !== null ) {
 			var date = this.raw.split( '/' );
 
 			// [0] contains the calendar model
 			this.calendarModel = date[0];
-
-			this.date = new Date( date[1] );
 			this.precision = FLAG_YEAR;
 
-			// Note: January is 0, February is 1, and so on
 			if ( typeof date[2] !== 'undefined' ) {
-				this.date.setMonth( ( date[2] - 1 ) );
+				// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+				// Note: January is 0, February is 1, and so on
+				date[2] = date[2] - 1;
 				this.precision = this.precision | FLAG_MONTH;
-			};
+			} else {
+				date[2] = 0;
+			}
 
 			if ( typeof date[3] !== 'undefined' ) {
-				this.date.setDate( date[3] );
 				this.precision = this.precision | FLAG_DAY;
-			};
+			} else {
+				date[3] = 0;
+			}
 
 			if ( typeof date[4] !== 'undefined' ) {
-				this.date.setHours( date[4] );
 				this.precision = this.precision | FLAG_TIME;
-			};
+			} else {
+				date[4] = 0;
+			}
 
-			if ( typeof date[5] !== 'undefined' ) {
-				this.date.setMinutes( date[5] );
-			};
+			if ( typeof date[5] === 'undefined' ) {
+				date[5] = 0;
+			}
 
-			if ( typeof date[6] !== 'undefined' ) {
-				this.date.setSeconds( date[6] );
-			};
+			if ( typeof date[6] === 'undefined' ) {
+				date[6] = 0;
+			}
+
+			// Date is called as a constructor with more than one argument, the
+			// specifed arguments represent local time. If UTC is desired, use
+			// new Date(Date.UTC(...))
+			this.date = new Date( Date.UTC( date[1], date[2], date[3], date[4], date[5], date[6] ) );
 		};
 
 		return this;
@@ -181,12 +189,12 @@
 		 */
 		getTimeString: function() {
 			var d = this.date;
-			if ( d.getHours() + d.getMinutes() + d.getSeconds() === 0 ){
+			if ( d.getUTCHours() + d.getUTCMinutes() + d.getUTCSeconds() === 0 ){
 				return '00:00:00';
 			}
-			return ( d.getHours() < 10 ? '0' + d.getHours() : d.getHours() ) +
-				':' + ( d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes() ) +
-				':' + ( d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds() );
+			return ( d.getUTCHours() < 10 ? '0' + d.getUTCHours() : d.getUTCHours() ) +
+				':' + ( d.getUTCMinutes() < 10 ? '0' + d.getUTCMinutes() : d.getUTCMinutes() ) +
+				':' + ( d.getUTCSeconds() < 10 ? '0' + d.getUTCSeconds() : d.getUTCSeconds() );
 		},
 
 		/**
@@ -217,14 +225,14 @@
 				var calendarModel = this.calendarModel !== undefined && this.calendarModel == CM_JULIAN ? ' <sup>JL</sup>' : '';
 
 				return '' +
-					( ( this.precision & FLAG_DAY ) ? ( this.date.getDate() ) + ' ' + ( monthNames[(this.date.getMonth())] ) + ' ' : '' ) +
-					( ( this.precision & FLAG_YEAR ) ? ( this.date.getFullYear() ) + ' ' : '' ) +
+					( ( this.precision & FLAG_DAY ) ? ( this.date.getUTCDate() ) + ' ' + ( monthNames[(this.date.getUTCMonth())] ) + ' ' : '' ) +
+					( ( this.precision & FLAG_YEAR ) ? ( this.date.getUTCFullYear() ) + ' ' : '' ) +
 					( ( this.precision & FLAG_TIME ) && this.getTimeString() !== '00:00:00' ? ( this.getTimeString() ) : '' ) + calendarModel;
 			};
 
-			return this.date.getDate() + ' ' +
-				monthNames[this.date.getMonth()] + ' ' +
-				this.date.getFullYear() +
+			return this.date.getUTCDate() + ' ' +
+				monthNames[this.date.getUTCMonth()] + ' ' +
+				this.date.getUTCFullYear() +
 				( this.getTimeString() !== '00:00:00' ? ' ' + this.getTimeString() : '' );
 		}
 	};

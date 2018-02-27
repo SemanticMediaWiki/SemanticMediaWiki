@@ -38,11 +38,6 @@ class ArticleProtectComplete extends HookHandler {
 	private $editInfoProvider;
 
 	/**
-	 * @var boolean|string
-	 */
-	private $editProtectionRight = false;
-
-	/**
 	 * @since  2.5
 	 *
 	 * @param Title $title
@@ -52,15 +47,6 @@ class ArticleProtectComplete extends HookHandler {
 		parent::__construct();
 		$this->title = $title;
 		$this->editInfoProvider = $editInfoProvider;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string|boolean $editProtectionRight
-	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
-		$this->editProtectionRight = $editProtectionRight;
 	}
 
 	/**
@@ -101,7 +87,8 @@ class ArticleProtectComplete extends HookHandler {
 		$isRestrictedUpdate = true;
 		$isAnnotationBySystem = false;
 
-		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
+		$dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
+		$property = $dataItemFactory->newDIProperty( '_EDIP' );
 
 		$dataItems = $parserData->getSemanticData()->getPropertyValues( $property );
 		$dataItem = end( $dataItems );
@@ -110,15 +97,17 @@ class ArticleProtectComplete extends HookHandler {
 			$isAnnotationBySystem = $dataItem->getOption( EditProtectedPropertyAnnotator::SYSTEM_ANNOTATION );
 		}
 
+		$editProtectionRight = $this->getOption( 'smwgEditProtectionRight', false );
+
 		// No _EDIP annotation but a selected protection matches the
 		// `EditProtectionRight` setting
-		if ( !$dataItem && isset( $protections['edit'] ) && $protections['edit'] === $this->editProtectionRight ) {
+		if ( !$dataItem && isset( $protections['edit'] ) && $protections['edit'] === $editProtectionRight ) {
 			$this->log( 'ArticleProtectComplete addProperty `Is edit protected`' );
 
 			$isRestrictedUpdate = false;
 			$parserData->getSemanticData()->addPropertyObjectValue(
 				$property,
-				$this->dataItemFactory->newDIBoolean( true )
+				$dataItemFactory->newDIBoolean( true )
 			);
 		}
 
@@ -126,13 +115,13 @@ class ArticleProtectComplete extends HookHandler {
 		// means that is has been set by the system and is not a "human" added
 		// annotation) but since the selected protection doesn't match the
 		// `EditProtectionRight` setting, remove the annotation
-		if ( $dataItem && $isAnnotationBySystem && isset( $protections['edit'] ) && $protections['edit'] !== $this->editProtectionRight ) {
+		if ( $dataItem && $isAnnotationBySystem && isset( $protections['edit'] ) && $protections['edit'] !== $editProtectionRight ) {
 			$this->log( 'ArticleProtectComplete removeProperty `Is edit protected`' );
 
 			$isRestrictedUpdate = false;
 			$parserData->getSemanticData()->removePropertyObjectValue(
 				$property,
-				$this->dataItemFactory->newDIBoolean( true )
+				$dataItemFactory->newDIBoolean( true )
 			);
 		}
 

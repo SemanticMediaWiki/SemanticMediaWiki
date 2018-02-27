@@ -40,6 +40,33 @@ class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testShortWikiText() {
+
+		$instance = new ErrorMsgTextValue();
+		$instance->setOption( ErrorMsgTextValue::OPT_USER_LANGUAGE, 'en' );
+		$instance->setUserValue( '[2,"smw-datavalue-uniqueness-constraint-error","Has Url","http:\/\/loremipsum.org\/2","Lorem ipsum\/2"]' );
+
+		$this->assertContains(
+			"''http://loremipsum.org/2''",
+			$instance->getShortWikiText( true )
+		);
+
+		$this->assertContains(
+			"''http://loremipsum.org/2''",
+			$instance->getShortWikiText( null )
+		);
+
+		$this->assertNotContains(
+			'<a rel="nofollow" class="external free" href="http://loremipsum.org/2">http://loremipsum.org/2</a>',
+			$instance->getShortWikiText( true )
+		);
+
+		$this->assertNotContains(
+			'<a rel="nofollow" class="external free" href="http://loremipsum.org/2">http://loremipsum.org/2</a>',
+			$instance->getShortWikiText( null )
+		);
+	}
+
 	/**
 	 * @dataProvider textProvider
 	 */

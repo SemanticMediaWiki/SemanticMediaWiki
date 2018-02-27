@@ -4,8 +4,13 @@ namespace SMW\Services;
 
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use ImportStringSource;
+use ImportStreamSource;
+use WikiImporter;
 use LBFactory;
+use JobQueueGroup;
 use Psr\Log\NullLogger;
+use SMW\Utils\Logger;
 
 /**
  * @codeCoverageIgnore
@@ -21,13 +26,75 @@ use Psr\Log\NullLogger;
 return array(
 
 	/**
+	 * ImportStringSource
+	 *
+	 * @return callable
+	 */
+	'ImportStringSource' => function( $containerBuilder, $source ) {
+		$containerBuilder->registerExpectedReturnType( 'ImportStringSource', '\ImportStringSource' );
+		return new ImportStringSource( $source );
+	},
+
+	/**
+	 * ImportStreamSource
+	 *
+	 * @return callable
+	 */
+	'ImportStreamSource' => function( $containerBuilder, $source ) {
+		$containerBuilder->registerExpectedReturnType( 'ImportStreamSource', '\ImportStreamSource' );
+		return new ImportStreamSource( $source );
+	},
+
+	/**
+	 * WikiImporter
+	 *
+	 * @return callable
+	 */
+	'WikiImporter' => function( $containerBuilder, \ImportSource $importSource ) {
+		$containerBuilder->registerExpectedReturnType( 'WikiImporter', '\WikiImporter' );
+		return new WikiImporter( $importSource, $containerBuilder->create( 'MainConfig' ) );
+	},
+
+	/**
 	 * WikiPage
 	 *
 	 * @return callable
 	 */
-	'WikiPage' => function( $containerBuilder, \Title $title  ) {
+	'WikiPage' => function( $containerBuilder, \Title $title ) {
 		$containerBuilder->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
 		return \WikiPage::factory( $title );
+	},
+
+	/**
+	 * Config
+	 *
+	 * @return callable
+	 */
+	'MainConfig' => function( $containerBuilder ) {
+
+		// > MW 1.27
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getMainConfig' ) ) {
+			return MediaWikiServices::getInstance()->getMainConfig();
+		}
+
+		return \ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
+	},
+
+	/**
+	 * LBFactory
+	 *
+	 * @return callable
+	 */
+	'DBLoadBalancerFactory' => function( $containerBuilder ) {
+
+		 $containerBuilder->registerExpectedReturnType( 'DBLoadBalancerFactory', '\LBFactory' );
+
+		// > MW 1.28
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getDBLoadBalancerFactory' ) ) {
+			return MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		}
+
+		return LBFactory::singleton();
 	},
 
 	/**
@@ -38,7 +105,7 @@ return array(
 	'DBLoadBalancer' => function( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'DBLoadBalancer', '\LoadBalancer' );
 
-		 // > MW 1.27
+		// > MW 1.27
 		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getDBLoadBalancer' ) ) {
 			return MediaWikiServices::getInstance()->getDBLoadBalancer();
 		}
@@ -66,15 +133,29 @@ return array(
 	 *
 	 * @return callable
 	 */
-	'MediaWikiLogger' => function( $containerBuilder ) {
+	'MediaWikiLogger' => function( $containerBuilder, $channel = 'smw', $role = Logger::ROLE_DEVELOPER ) {
 
 		$containerBuilder->registerExpectedReturnType( 'MediaWikiLogger', '\Psr\Log\LoggerInterface' );
 
 		if ( class_exists( '\MediaWiki\Logger\LoggerFactory' ) ) {
-			return LoggerFactory::getInstance( 'smw' );
+			$logger = LoggerFactory::getInstance( $channel );
+		} else {
+			$logger = new NullLogger();
 		}
 
-		return new NullLogger();
+		return new Logger( $logger, $role );
+	},
+
+	/**
+	 * JobQueueGroup
+	 *
+	 * @return callable
+	 */
+	'JobQueueGroup' => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType( 'JobQueueGroup', '\JobQueueGroup' );
+
+		return JobQueueGroup::singleton();
 	},
 
 );

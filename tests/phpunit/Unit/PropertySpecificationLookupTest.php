@@ -202,7 +202,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			DataItem::class,
-			$instance->getExternalFormatterUriBy( $property )
+			$instance->getExternalFormatterUri( $property )
 		);
 	}
 
@@ -258,7 +258,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( 'Foo' ),
-			$instance->getAllowedListValueBy( $property )
+			$instance->getAllowedListValues( $property )
 		);
 	}
 
@@ -445,6 +445,41 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'string',
 			$instance->getPropertyDescriptionBy( $property )
+		);
+	}
+
+	public function testGetPropertyGroup() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+		$ppgr = $this->dataItemFactory->newDIProperty( '_PPGR' );
+
+		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_CATEGORY );
+		$bool = $this->dataItemFactory->newDIBoolean( true );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->at( 0 ) )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->anything(),
+				$this->anything() )
+			->will( $this->returnValue( [ $dataItem ] ) );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->at( 1 ) )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $dataItem ),
+				$this->equalTo( $ppgr ),
+				$this->anything() )
+			->will( $this->returnValue( [ $bool ] ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->intermediaryMemoryCache
+		);
+
+		$this->assertEquals(
+			$dataItem,
+			$instance->getPropertyGroup( $property )
 		);
 	}
 

@@ -1,0 +1,40 @@
+{
+	"description": "Test output of `Special:WantedProperties` on unapproved property (`wgContLang=en`, `wgLang=en`, `smwgCreateProtectionRight`)",
+	"setup": [
+		{
+			"page": "Example/S0019/1",
+			"contents": "[[SomeWantedProperty::123]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 restricted property causes unapproved listing",
+			"special-page": {
+				"page": "WantedProperties",
+				"query-parameters": [],
+				"request-parameters": {
+					"filter": "unapprove"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<li><a .*SomeWantedProperty&amp;action=view\" .*SomeWantedProperty</a> (1 use)</li>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgCreateProtectionRight": "foo"
+	},
+	"meta": {
+		"skip-on": {
+			"sqlite": "Returns a `database is locked`"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

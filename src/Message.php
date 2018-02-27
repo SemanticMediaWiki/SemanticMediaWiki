@@ -111,7 +111,27 @@ class Message {
 			$type = self::TEXT;
 		}
 
-		return json_encode( array_merge( (array)$type, (array)$message ) );
+		if ( $message === array() ) {
+			return '';
+		}
+
+		$message = (array)$message;
+		$encode = array();
+		$encode[] = $type;
+
+		foreach ( $message as $value ) {
+			// Check if the value is already encoded, and if decode to keep the
+			// structure intact
+			if ( substr( $value, 0, 1 ) === '[' && ( $dc = json_decode( $value, true ) ) && json_last_error() === JSON_ERROR_NONE ) {
+				$encode += $dc;
+			} else {
+				// Normalize arguments like "<strong>Expression error:
+				// Unrecognized word "yyyy".</strong>"
+				$encode[] = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+			}
+		}
+
+		return json_encode( $encode );
 	}
 
 	/**

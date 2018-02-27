@@ -21,20 +21,21 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'instance', 4, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 4 );
 
 		var result = new smw.dataItem.text( 'foo' );
 		assert.ok( result instanceof Object, pass + 'the smw.dataItem.text instance was accessible' );
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.dataItem.text( {} );
 		}, pass + 'an error was raised due to the wrong type' );
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.dataItem.text( [] );
 		}, pass + 'an error was raised due to the wrong type' );
 
-		QUnit.raises( function() {
+		assert.throws( function() {
 			new smw.dataItem.text( 3 );
 		}, pass + 'an error was raised due to the wrong type' );
 
@@ -45,7 +46,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getDIType', 2, function ( assert ) {
+	QUnit.test( 'getDIType', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		result = new smw.dataItem.text( 'foo' );
@@ -61,7 +64,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getText', 2, function ( assert ) {
+	QUnit.test( 'getText', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 
 		var testString = 'Lorem ipsum dolor sit ...';

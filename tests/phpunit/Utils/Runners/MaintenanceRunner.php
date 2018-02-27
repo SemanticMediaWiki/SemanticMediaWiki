@@ -5,6 +5,7 @@ namespace SMW\Tests\Utils\Runners;
 use DomainException;
 use RuntimeException;
 use SMW\ApplicationFactory;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
 
 /**
  * Running maintenance scripts via phpunit is not really possible but instead
@@ -20,6 +21,8 @@ use SMW\ApplicationFactory;
  * @author mwjames
  */
 class MaintenanceRunner {
+
+	use MessageReporterAwareTrait;
 
 	protected $maintenanceClass = null;
 	protected $options = array();
@@ -55,7 +58,7 @@ class MaintenanceRunner {
 	 * @return MaintenanceRunner
 	 */
 	public function setQuiet() {
-		$this->quiet = true;
+		$this->options['quiet'] = true;
 		return $this;
 	}
 
@@ -72,6 +75,8 @@ class MaintenanceRunner {
 			throw new RuntimeException( "Expected a valid {$this->maintenanceClass} class" );
 		}
 
+		$obLevel = ob_get_level();
+
 		// Avoid outdated reference to invoked store instance
 		ApplicationFactory::getInstance()->clear();
 		$maintenance = new $this->maintenanceClass;
@@ -80,15 +85,27 @@ class MaintenanceRunner {
 			throw new DomainException( "Expected a Maintenance instance" );
 		}
 
+		// isset/ null
+		if ( isset( $this->options['quiet'] ) && $this->options['quiet'] === false ) {
+			unset( $this->options['quiet'] );
+		}
+
 		$maintenance->loadParamsAndArgs(
 			$this->maintenanceClass,
-			array_merge( $this->options, array( 'quiet' => $this->quiet ) )
+			$this->options
 		);
+
+		if ( $this->messageReporter !== null && method_exists( $maintenance, 'setMessageReporter' ) ) {
+			$maintenance->setMessageReporter( $this->messageReporter );
+		}
 
 		ob_start();
 		$result = $maintenance->execute();
 		$this->output = ob_get_contents();
-		ob_end_clean();
+
+		while ( ob_get_level() > $obLevel ) {
+			ob_end_clean();
+		}
 
 		return $result;
 	}

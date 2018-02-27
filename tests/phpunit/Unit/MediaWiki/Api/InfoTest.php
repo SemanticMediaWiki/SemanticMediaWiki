@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\ApplicationFactory;
 use SMW\MediaWiki\Api\Info;
-use SMW\Tests\Utils\MwApiFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Api\Info
@@ -18,18 +17,23 @@ use SMW\Tests\Utils\MwApiFactory;
 class InfoTest extends \PHPUnit_Framework_TestCase {
 
 	private $apiFactory;
-	private $applicationFactory;
+	private $jobQueue;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->apiFactory = new MwApiFactory();
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
+		$this->apiFactory = $this->testEnvironment->getUtilityFactory()->newMwApiFactory();
+
+		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
 	protected function tearDown() {
-		ApplicationFactory::clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -79,7 +83,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getStatistics' )
 			->will( $this->returnValue( $statistics ) );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new Info(
 			$this->apiFactory->newApiMain( array( 'info' => $type ) ),
@@ -118,6 +122,25 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'array',
 			$data['warnings']
+		);
+	}
+
+	public function testJobCount() {
+
+		$this->jobQueue->expects( $this->any() )
+			->method( 'getQueueSize' )
+			->will( $this->returnValue( 1 ) );
+
+		$result = $this->apiFactory->doApiRequest(
+			array(
+				'action' => 'smwinfo',
+				'info' => 'jobcount'
+			)
+		);
+
+		$this->assertArrayHasKey(
+			'SMW\UpdateJob',
+			$result['info']['jobcount']
 		);
 	}
 

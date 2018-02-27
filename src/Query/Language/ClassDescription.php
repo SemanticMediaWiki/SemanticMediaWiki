@@ -24,6 +24,11 @@ class ClassDescription extends Description {
 	protected $m_diWikiPages;
 
 	/**
+	 * @var integer|null
+	 */
+	protected $hierarchyDepth;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param mixed $content DIWikiPage or array of DIWikiPage
@@ -38,6 +43,29 @@ class ClassDescription extends Description {
 		} else {
 			throw new Exception( "ClassDescription::__construct(): parameter must be an DIWikiPage object or an array of such objects." );
 		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $hierarchyDepth
+	 */
+	public function setHierarchyDepth( $hierarchyDepth ) {
+
+		if ( $hierarchyDepth > $GLOBALS['smwgQSubcategoryDepth'] ) {
+			$hierarchyDepth = $GLOBALS['smwgQSubcategoryDepth'];
+		}
+
+		$this->hierarchyDepth = $hierarchyDepth;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return integer|null
+	 */
+	public function getHierarchyDepth() {
+		return $this->hierarchyDepth;
 	}
 
 	/**
@@ -63,7 +91,7 @@ class ClassDescription extends Description {
 
 		ksort( $hash );
 
-		return 'Cl:' . md5( implode( '|', array_keys( $hash ) ) );
+		return 'Cl:' . md5( implode( '|', array_keys( $hash ) ) . $this->hierarchyDepth );
 	}
 
 	/**
@@ -85,6 +113,10 @@ class ClassDescription extends Description {
 			} else {
 				$result .= '||' . $wikiValue->getText();
 			}
+		}
+
+		if ( $this->hierarchyDepth !== null ) {
+			$result .= '|+depth=' . $this->hierarchyDepth;
 		}
 
 		$result .= ']]';
@@ -130,11 +162,16 @@ class ClassDescription extends Description {
 			$result = new ClassDescription( array_slice( $this->m_diWikiPages, 0, $maxsize ) );
 			$rest = new ClassDescription( array_slice( $this->m_diWikiPages, $maxsize ) );
 
+			$result->setHierarchyDepth(
+				$this->getHierarchyDepth()
+			);
+
 			$log[] = $rest->getQueryString();
 			$maxsize = 0;
 		}
 
 		$result->setPrintRequests( $this->getPrintRequests() );
+
 		return $result;
 	}
 

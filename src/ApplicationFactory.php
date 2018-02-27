@@ -15,6 +15,7 @@ use SMW\MediaWiki\TitleCreator;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMWQueryParser as QueryParser;
 use Title;
+use SMW\Updater\StoreUpdater;
 use SMW\Services\SharedServicesContainer;
 
 /**
@@ -166,12 +167,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Parser $parser
-	 *
 	 * @return ParserFunctionFactory
 	 */
-	public function newParserFunctionFactory( Parser $parser ) {
-		return new ParserFunctionFactory( $parser );
+	public function newParserFunctionFactory() {
+		return new ParserFunctionFactory();
 	}
 
 	/**
@@ -257,15 +256,21 @@ class ApplicationFactory {
 
 		$pageUpdater = $this->containerBuilder->create(
 			'PageUpdater',
-			$this->getStore()->getConnection( 'mw.db' )
+			$this->getStore()->getConnection( 'mw.db' ),
+			$this->newDeferredTransactionalUpdate()
 		);
 
 		$pageUpdater->setLogger(
 			$this->getMediaWikiLogger()
 		);
 
-		$pageUpdater->isCommandLineMode(
-			$GLOBALS['wgCommandLineMode']
+		// https://phabricator.wikimedia.org/T154427
+		// It is unclear what changed in MW 1.29 but it has been observed that
+		// executing a HTMLCacheUpdate from within an transaction can lead to a
+		// "ErrorException ... 1 buffered job ... HTMLCacheUpdateJob never
+		// inserted" hence disable the update functionality
+		$pageUpdater->isHtmlCacheUpdate(
+			false
 		);
 
 		return $pageUpdater;
@@ -310,7 +315,7 @@ class ApplicationFactory {
 		$linksProcessor = $this->containerBuilder->create( 'LinksProcessor' );
 
 		$linksProcessor->isStrictMode(
-			$this->getSettings()->get( 'smwgEnabledInTextAnnotationParserStrictMode' )
+			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_STRICT )
 		);
 
 		$inTextAnnotationParser = new InTextAnnotationParser(
@@ -320,11 +325,12 @@ class ApplicationFactory {
 			$mwCollaboratorFactory->newRedirectTargetFinder()
 		);
 
-		// 2.5+ Changed modus operandi
-		$linksInValues = $this->getSettings()->get( 'smwgLinksInValues' );
+		$inTextAnnotationParser->isLinksInValues(
+			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_LINV )
+		);
 
-		$inTextAnnotationParser->enabledLinksInValues(
-			$linksInValues === true ? SMW_LINV_PCRE : $linksInValues
+		$inTextAnnotationParser->showErrors(
+			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
 		);
 
 		return $inTextAnnotationParser;
@@ -356,7 +362,17 @@ class ApplicationFactory {
 	 * @return StoreUpdater
 	 */
 	public function newStoreUpdater( SemanticData $semanticData ) {
-		return new StoreUpdater( $this->getStore(), $semanticData );
+
+		$storeUpdater = new StoreUpdater(
+			$this->getStore(),
+			$semanticData
+		);
+
+		$storeUpdater->isCommandLineMode(
+			$GLOBALS['wgCommandLineMode']
+		);
+
+		return $storeUpdater;
 	}
 
 	/**
@@ -389,10 +405,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @return PropertyHierarchyLookup
+	 * @return HierarchyLookup
 	 */
-	public function newPropertyHierarchyLookup() {
-		return $this->containerBuilder->create( 'PropertyHierarchyLookup' );
+	public function newHierarchyLookup() {
+		return $this->containerBuilder->create( 'HierarchyLookup' );
 	}
 
 	/**
@@ -447,17 +463,14 @@ class ApplicationFactory {
 	 *
 	 * @return DeferredCallableUpdate
 	 */
-	public function newDeferredCallableUpdate( Closure $callback ) {
-
-		$store = $this->getStore();
+	public function newDeferredCallableUpdate( Closure $callback = null ) {
 
 		$deferredCallableUpdate = $this->containerBuilder->create(
 			'DeferredCallableUpdate',
-			$callback,
-			$store->getConnection( 'mw.db' )
+			$callback
 		);
 
-		$deferredCallableUpdate->enabledDeferredUpdate(
+		$deferredCallableUpdate->isDeferrableUpdate(
 			$this->getSettings()->get( 'smwgEnabledDeferredUpdate' )
 		);
 
@@ -466,10 +479,40 @@ class ApplicationFactory {
 		);
 
 		$deferredCallableUpdate->isCommandLineMode(
-			$store->getOptions()->has( 'isCommandLineMode' ) ? $store->getOptions()->get( 'isCommandLineMode' ) : $GLOBALS['wgCommandLineMode']
+			$GLOBALS['wgCommandLineMode']
 		);
 
 		return $deferredCallableUpdate;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Closure $callback
+	 *
+	 * @return DeferredTransactionalUpdate
+	 */
+	public function newDeferredTransactionalUpdate( Closure $callback = null ) {
+
+		$deferredTransactionalUpdate = $this->containerBuilder->create(
+			'DeferredTransactionalUpdate',
+			$callback,
+			$this->getStore()->getConnection( 'mw.db' )
+		);
+
+		$deferredTransactionalUpdate->isDeferrableUpdate(
+			$this->getSettings()->get( 'smwgEnabledDeferredUpdate' )
+		);
+
+		$deferredTransactionalUpdate->setLogger(
+			$this->getMediaWikiLogger()
+		);
+
+		$deferredTransactionalUpdate->isCommandLineMode(
+			$GLOBALS['wgCommandLineMode']
+		);
+
+		return $deferredTransactionalUpdate;
 	}
 
 	/**
@@ -478,8 +521,8 @@ class ApplicationFactory {
 	 *
 	 * @return QueryParser
 	 */
-	public function newQueryParser() {
-		return $this->getQueryFactory()->newQueryParser();
+	public function newQueryParser( $queryFeatures = false ) {
+		return $this->getQueryFactory()->newQueryParser( $queryFeatures );
 	}
 
 	/**
@@ -505,8 +548,17 @@ class ApplicationFactory {
 	 *
 	 * @return LoggerInterface
 	 */
-	public function getMediaWikiLogger() {
-		return $this->containerBuilder->singleton( 'MediaWikiLogger' );
+	public function getMediaWikiLogger( $channel = 'smw' ) {
+		return $this->containerBuilder->singleton( 'MediaWikiLogger', $channel, $GLOBALS['smwgDefaultLoggerRole'] );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return JobQueue
+	 */
+	public function getJobQueue() {
+		return $this->containerBuilder->singleton( 'JobQueue' );
 	}
 
 	private static function newContainerBuilder( CallbackContainerFactory $callbackContainerFactory, $servicesFileDir ) {

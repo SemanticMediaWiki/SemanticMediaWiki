@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use Parser;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
+use SMW\MediaWiki\MediaWiki;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -22,12 +23,22 @@ class ParserAfterTidy extends HookHandler {
 	/**
 	 * @var Parser
 	 */
-	private $parser = null;
+	private $parser;
+
+	/**
+	 * @var NamespaceExaminer
+	 */
+	private $namespaceExaminer;
 
 	/**
 	 * @var boolean
 	 */
 	private $isCommandLineMode = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $isReadOnly = false;
 
 	/**
 	 * @since  1.9
@@ -36,6 +47,7 @@ class ParserAfterTidy extends HookHandler {
 	 */
 	public function __construct( Parser &$parser ) {
 		$this->parser = $parser;
+		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}
 
 	/**
@@ -47,6 +59,15 @@ class ParserAfterTidy extends HookHandler {
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isReadOnly
+	 */
+	public function isReadOnly( $isReadOnly ) {
+		$this->isReadOnly = (bool)$isReadOnly;
 	}
 
 	/**
@@ -67,16 +88,28 @@ class ParserAfterTidy extends HookHandler {
 
 	private function canPerformUpdate() {
 
+		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
+		// when for example Title::isProtected is accessed
+		if ( $this->isReadOnly ) {
+			return false;
+		}
+
+		$title = $this->parser->getTitle();
+
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
+			return false;
+		}
+
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
-		if ( $this->parser->getTitle()->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
+		if ( $title->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
 			return false;
 		}
 
 		// @see ParserData::setSemanticDataStateToParserOutputProperty
 		if ( $this->parser->getOutput()->getProperty( 'smw-semanticdata-status' ) ||
 			$this->parser->getOutput()->getProperty( 'displaytitle' ) ||
-			$this->parser->getTitle()->isProtected( 'edit' ) ||
+			$title->isProtected( 'edit' ) ||
 			$this->parser->getOutput()->getCategoryLinks() ||
 			$this->parser->getDefaultSort() ) {
 			return true;
@@ -185,6 +218,11 @@ class ParserAfterTidy extends HookHandler {
 			$parserData->getSemanticData()->setOption(
 				SemanticData::OPT_LAST_MODIFIED,
 				wfTimestamp( TS_UNIX )
+			);
+
+			$parserData->setOption(
+				$parserData::OPT_FORCED_UPDATE,
+				true
 			);
 
 			$parserData->updateStore( true );

@@ -1,0 +1,11 @@
+/**
+ * .skin-chameleon specific styles
+ */
+.skin-chameleon .smwb-datasheet, .skin-chameleon .smwb-content {
+	margin-right: 0em;
+}
+
+.skin-chameleon .smwb-input .mw-ui-input {
+	padding-top: 0.35em;
+	padding-bottom: 0.45em;
+}

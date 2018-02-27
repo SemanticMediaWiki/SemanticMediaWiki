@@ -23,4 +23,15 @@ class TitleCreator {
 		return Title::newFromText( $text, $namespace );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 *
+	 * @return Title|null
+	 */
+	public function newFromID( $id ) {
+		return Title::newFromID( $id );
+	}
+
 }

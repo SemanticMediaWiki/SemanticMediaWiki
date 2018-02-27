@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
+use SMW\MediaWiki\Database;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\TemporaryTableBuilder
@@ -28,12 +29,12 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\TemporaryTableBuilder',
+			TemporaryTableBuilder::class,
 			new TemporaryTableBuilder( $this->connection )
 		);
 	}
 
-	public function testcreateWithoutAutoCommit() {
+	public function testCreateWithoutAutoCommit() {
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' );
@@ -45,15 +46,17 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( 'Foo' );
 	}
 
-	public function testcreateWithoutAutoCommitOnPostgres() {
+	public function testCreateWithoutAutoCommitOnPostgres() {
+
+		$this->connection->expects( $this->never() )
+			->method( 'setFlag' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->anything(),
-				$this->equalTo( false ) );
+				$this->anything() );
 
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
@@ -67,33 +70,38 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( 'Foo' );
 	}
 
-	public function testCreateWithAutoCommit() {
+	public function testCreateWithAutoCommitFlag() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'setFlag' )
+			->with( $this->equalTo( Database::AUTO_COMMIT ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->anything(),
-				$this->equalTo( true ) );
+				$this->anything() );
 
 		$instance = new TemporaryTableBuilder(
 			$this->connection
 		);
 
-		$instance->WithAutoCommit( true );
+		$instance->setAutoCommitFlag( true );
 		$instance->create( 'Foo' );
 	}
 
 	public function testDropWithoutAutoCommit() {
+
+		$this->connection->expects( $this->never() )
+			->method( 'setFlag' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->anything(),
-				$this->equalTo( false ) );
+				$this->anything() );
 
 		$instance = new TemporaryTableBuilder(
 			$this->connection
@@ -102,21 +110,24 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->drop( 'Foo' );
 	}
 
-	public function testDropWithAutoCommit() {
+	public function testDropWithAutoCommitFlag() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'setFlag' )
+			->with( $this->equalTo( Database::AUTO_COMMIT ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->anything(),
-				$this->equalTo( true ) );
+				$this->anything() );
 
 		$instance = new TemporaryTableBuilder(
 			$this->connection
 		);
 
-		$instance->WithAutoCommit( true );
+		$instance->setAutoCommitFlag( true );
 		$instance->drop( 'Foo' );
 	}
 

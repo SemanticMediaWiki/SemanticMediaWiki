@@ -34,22 +34,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructJobQueueLookup() {
-
-		$instance = new MwCollaboratorFactory(
-			$this->applicationFactory
-		);
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\JobQueueLookup',
-			$instance->newJobQueueLookup( $connection )
-		);
-	}
-
 	public function testCanConstructMessageBuilder() {
 
 		$instance = new MwCollaboratorFactory(
@@ -158,23 +142,45 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructLazyDBConnectionProvider() {
+	public function testCanConstructDBLoadBalancerConnectionProvider() {
 
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\LazyDBConnectionProvider',
-			$instance->newLazyDBConnectionProvider( DB_SLAVE )
+			'\SMW\MediaWiki\DBLoadBalancerConnectionProvider',
+			$instance->newDBLoadBalancerConnectionProvider( DB_SLAVE )
 		);
 	}
 
-	public function testCanConstructDatabaseConnectionProvider() {
+	public function testCanConstructDBConnectionProvider() {
 
-		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
+		$settings = $this->getMockBuilder( '\SMW\Settings' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$settings->expects( $this->atLeastOnce() )
+			->method( 'get' )
+			->will( $this->returnValue( array() ) );
+
+		$this->applicationFactory->expects( $this->atLeastOnce() )
+			->method( 'getSettings' )
+			->will( $this->returnValue( $settings ) );
+
+		$this->applicationFactory->expects( $this->atLeastOnce() )
+			->method( 'getMediaWikiLogger' )
+			->will( $this->returnValue( $logger ) );
+
+		$instance = new MwCollaboratorFactory(
+			$this->applicationFactory
+		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\DatabaseConnectionProvider',
-			$instance->newMediaWikiDatabaseConnectionProvider()
+			'\SMW\MediaWiki\DBConnectionProvider',
+			$instance->newDBConnectionProvider()
 		);
 	}
 

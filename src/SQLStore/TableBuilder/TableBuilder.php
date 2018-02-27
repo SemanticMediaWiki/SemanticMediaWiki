@@ -14,7 +14,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
+abstract class TableBuilder implements TableBuilderInterface, MessageReporterAware, MessageReporter {
 
 	/**
 	 * @var DatabaseBase
@@ -30,6 +30,11 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 * @var array
 	 */
 	protected $configurations = array();
+
+	/**
+	 * @var array
+	 */
+	protected $processLog = array();
 
 	/**
 	 * @since 2.5
@@ -127,27 +132,27 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 */
 	public function create( Table $table ) {
 
-		$configuration = $table->getConfiguration();
+		$options = $table->getOptions();
 		$tableName = $table->getName();
 
 		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
 			$this->reportMessage( "   Table not found, now creating...\n" );
-			$this->doCreateTable( $tableName, $configuration );
+			$this->doCreateTable( $tableName, $options );
 		} else {
 			$this->reportMessage( "   Table already exists, checking structure ...\n" );
-			$this->doUpdateTable( $tableName, $configuration );
+			$this->doUpdateTable( $tableName, $options );
 		}
 
 		$this->reportMessage( "   ... done.\n" );
 
-		if ( !isset( $configuration['indicies'] ) ) {
+		if ( !isset( $options['indices'] ) ) {
 			return $this->reportMessage( "No index structures for table $tableName ...\n" );
 		}
 
 		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
-		$this->doCreateIndicies( $tableName, $configuration );
+		$this->doCreateIndices( $tableName, $options );
 
 		$this->reportMessage( "   ... done.\n" );
 	}
@@ -170,12 +175,30 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function optimize( Table $table ) {
+		$this->doOptimize( $table->getName() );
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $event
 	 */
 	public function checkOn( $event ) {
 		return false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getLog() {
+		return $this->processLog;
 	}
 
 	/**
@@ -194,12 +217,17 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 * @param string $tableName
 	 * @param array $indexOptions
 	 */
-	abstract protected function doCreateIndicies( $tableName, array $indexOptions = null );
+	abstract protected function doCreateIndices( $tableName, array $indexOptions = null );
 
 	/**
 	 * @param string $tableName
 	 */
 	abstract protected function doDropTable( $tableName );
+
+	/**
+	 * @param string $tableName
+	 */
+	abstract protected function doOptimize( $tableName );
 
 	// #1978
 	// http://php.net/manual/en/function.array-search.php

@@ -30,8 +30,7 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new EngineOptions();
 
-		$this->assertInternalType(
-			$expected,
+		$this->assertNotNull(
 			$instance->get( $setting )
 		);
 	}
@@ -68,13 +67,8 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'smwgQSortingSupport',
-			'boolean'
-		);
-
-		$provider[] = array(
-			'smwgQRandSortingSupport',
-			'boolean'
+			'smwgQSortFeatures',
+			'integer'
 		);
 
 		$provider[] = array(

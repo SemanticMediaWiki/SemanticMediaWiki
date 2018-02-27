@@ -16,7 +16,7 @@
  * Ideally, all functions that generate hypertext with dependencies would also include parameters to
  * record required scripts. Since this would require major API changes, the current solution is to have
  * a "temporal" global storage for the required items, managed in this class. It is not safe to use
- * such a global store accross hooks -- you never know what happens in between! Hence, every function
+ * such a global store across hooks -- you never know what happens in between! Hence, every function
  * that creates SMW outputs that may require head items must afterwards clear the temporal store by
  * writing its contents to the according output.
  *
@@ -41,8 +41,19 @@ class SMWOutputs {
 	 */
 	protected static $scripts = array();
 
-	/// Protected member for temporarily storing resource modules.
+	/**
+	 * Protected member for temporarily storing resource modules.
+	 *
+	 * @var array
+	 */
 	protected static $resourceModules = array();
+
+	/**
+	 * Protected member for temporarily storing resource modules.
+	 *
+	 * @var array
+	 */
+	protected static $resourceStyles = array();
 
 	/**
 	 * Adds a resource module to the parser output.
@@ -53,6 +64,15 @@ class SMWOutputs {
 	 */
 	public static function requireResource( $moduleName ) {
 		self::$resourceModules[$moduleName] = $moduleName;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $stylesName
+	 */
+	public static function requireStyle( $stylesName ) {
+		self::$resourceStyles[$stylesName] = $stylesName;
 	}
 
 	/**
@@ -91,7 +111,7 @@ class SMWOutputs {
 					self::requireResource( 'ext.smw.tooltips' );
 				break;
 				case SMW_HEADER_STYLE:
-					self::requireResource( 'ext.smw.style' );
+					self::requireStyle( 'ext.smw.style' );
 				break;
 			}
 		} else {
@@ -130,7 +150,7 @@ class SMWOutputs {
 	}
 
 	/**
-	 * Acutally commit the collected requirements to a given parser that is about to parse
+	 * Actually commit the collected requirements to a given parser that is about to parse
 	 * what will later be the HTML output. This makes sure that HTML output based on the
 	 * parser results contains all required output items.
 	 *
@@ -159,21 +179,25 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function commitToParserOutput( ParserOutput $parserOutput ) {
+
 		foreach ( self::$scripts as $key => $script ) {
 			$parserOutput->addHeadItem( $script . "\n", $key );
 		}
+
 		foreach ( self::$headItems as $key => $item ) {
 			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
 		}
 
+		$parserOutput->addModuleStyles( array_values( self::$resourceStyles ) );
 		$parserOutput->addModules( array_values( self::$resourceModules ) );
 
+		self::$resourceStyles = array();
 		self::$resourceModules = array();
 		self::$headItems = array();
 	}
 
 	/**
-	 * Acutally commit the collected requirements to a given OutputPage object that
+	 * Actually commit the collected requirements to a given OutputPage object that
 	 * will later generate the HTML output. This makes sure that HTML output contains
 	 * all required output items. Note that there is no parser caching at this level of
 	 * processing. In particular, data should not be committed to $wgOut in methods
@@ -190,8 +214,10 @@ class SMWOutputs {
 			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
 		}
 
+		$output->addModuleStyles( array_values( self::$resourceStyles ) );
 		$output->addModules( array_values( self::$resourceModules ) );
 
+		self::$resourceStyles = array();
 		self::$resourceModules = array();
 		self::$headItems = array();
 	}

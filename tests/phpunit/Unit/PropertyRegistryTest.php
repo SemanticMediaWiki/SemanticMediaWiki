@@ -19,6 +19,17 @@ use SMW\PropertyRegistry;
  */
 class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
+	private $cache;
+	private $store;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	protected function tearDown() {
 		PropertyRegistry::clear();
 		DataTypeRegistry::clear();
@@ -89,7 +100,10 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyAliases = new PropertyAliasFinder( array( 'Has type' => '_TYPE' ) );
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache,
+			array( 'Has type' => '_TYPE' )
+		);
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -123,7 +137,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyAliases = new PropertyAliasFinder();
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache
+		);
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -140,19 +156,19 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( '_TYPE' => array( '__typ', true, true ) ),
-			$instance->getKnownPropertyTypes()
+			$instance->getPropertyList()
 		);
 
 		$this->assertTrue(
-			$instance->isVisibleToUser( '_TYPE' )
+			$instance->isVisible( '_TYPE' )
 		);
 
 		$this->assertTrue(
-			$instance->isUnrestrictedForAnnotationUse( '_TYPE' )
+			$instance->isAnnotable( '_TYPE' )
 		);
 
 		$this->assertTrue(
-			$instance->isKnownPropertyId( '_TYPE' )
+			$instance->isRegistered( '_TYPE' )
 		);
 	}
 
@@ -174,7 +190,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyAliases = new PropertyAliasFinder();
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache
+		);
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -183,15 +201,15 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->isVisibleToUser( '_UnregisteredType' )
+			$instance->isVisible( '_UnregisteredType' )
 		);
 
 		$this->assertFalse(
-			$instance->isUnrestrictedForAnnotationUse( '_UnregisteredType' )
+			$instance->isAnnotable( '_UnregisteredType' )
 		);
 
 		$this->assertFalse(
-			$instance->isKnownPropertyId( '_UnregisteredType' )
+			$instance->isRegistered( '_UnregisteredType' )
 		);
 	}
 
@@ -215,7 +233,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = new PropertyAliasFinder();
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache
+		);
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -269,7 +289,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = new PropertyAliasFinder();
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache
+		);
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -329,7 +351,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = new PropertyAliasFinder();
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache
+		);
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -376,7 +400,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = new PropertyAliasFinder();
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache
+		);
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -410,7 +436,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = new PropertyAliasFinder();
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache
+		);
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -420,7 +448,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'A le type',
-			$instance->findPropertyLabelByLanguageCode( '_TYPE', 'fr' )
+			$instance->findPropertyLabelFromIdByLanguageCode( '_TYPE', 'fr' )
 		);
 	}
 
@@ -444,7 +472,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = new PropertyAliasFinder();
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache
+		);
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -484,7 +514,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = new PropertyAliasFinder();
+		$propertyAliases = new PropertyAliasFinder(
+			$this->cache
+		);
 
 		$dataTypePropertyExemptionList = array( 'Foo', 'Bar' );
 

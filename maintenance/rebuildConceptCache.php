@@ -84,6 +84,8 @@ class RebuildConceptCache extends \Maintenance {
 	 */
 	protected function addDefaultParams() {
 
+		parent::addDefaultParams();
+
 		// Actions
 		$this->addOption( 'status', 'Show the cache status of the selected concepts' );
 		$this->addOption( 'create', 'Rebuild caches for the selected concepts.' );

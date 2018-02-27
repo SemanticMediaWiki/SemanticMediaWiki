@@ -1,0 +1,44 @@
+{
+	"description": "Test property page with improper assignment list (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "Example/P1002/1",
+			"contents": "[[Has number::abc]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Has number",
+			"assert-output": {
+				"onPageView": true,
+				"to-contain": [
+					"<ul><li><a href=\".*Example/P1002/1#_ERR825bfe376713b81d8177c7353181ec6e\".*title=\"Special:Browse/:Example-2FP1002-2F1-23-5FERR825bfe376713b81d8177c7353181ec6e\">+</a></span></li></ul>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

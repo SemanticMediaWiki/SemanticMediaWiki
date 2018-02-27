@@ -31,6 +31,24 @@ class ConfigurationListTaskHandler extends TaskHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getSection() {
+		return self::SECTION_SUPPLEMENT;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function hasAction() {
+		return true;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
@@ -65,7 +83,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-settings-title' ) );
-		$this->outputFormatter->addParentLink();
+		$this->outputFormatter->addParentLink( [ 'tab' => 'supplement' ] );
 
 		$this->outputFormatter->addHtml(
 			Html::rawElement( 'p', array(), $this->getMessageAsString( 'smw-admin-settings-docu', Message::PARSE ) )

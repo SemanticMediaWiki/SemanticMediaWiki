@@ -102,10 +102,10 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAskParserFunctionWithParserOption() {
 
-		$this->parserData->expects( $this->once() )
+		$this->parserData->expects( $this->at( 0 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( \SMW\ParserData::NO_QUERY_DEP_TRACE ),
+				$this->equalTo( \SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE ),
 				$this->anything() );
 
 		$parser = $this->parserFactory->create( __METHOD__ );
@@ -172,37 +172,37 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function parserFunctionDefinitionProvider() {
 
 		$provider[] = array(
-			'newAskParserFunctionDefinition',
+			'getAskParserFunctionDefinition',
 			'ask'
 		);
 
 		$provider[] = array(
-			'newShowParserFunctionDefinition',
+			'getShowParserFunctionDefinition',
 			'show'
 		);
 
 		$provider[] = array(
-			'newSubobjectParserFunctionDefinition',
+			'getSubobjectParserFunctionDefinition',
 			'subobject'
 		);
 
 		$provider[] = array(
-			'newRecurringEventsParserFunctionDefinition',
+			'getSetRecurringEventParserFunctionDefinition',
 			'set_recurring_event'
 		);
 
 		$provider[] = array(
-			'newSetParserFunctionDefinition',
+			'getSetParserFunctionDefinition',
 			'set'
 		);
 
 		$provider[] = array(
-			'newConceptParserFunctionDefinition',
+			'getConceptParserFunctionDefinition',
 			'concept'
 		);
 
 		$provider[] = array(
-			'newDeclareParserFunctionDefinition',
+			'getDeclareParserFunctionDefinition',
 			'declare'
 		);
 

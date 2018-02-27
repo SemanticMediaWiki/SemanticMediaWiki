@@ -30,6 +30,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 
 	private $testEnvironment;
 	private $store;
+	private $hierarchyLookup;
 
 	protected function setUp() {
 		parent::setUp();
@@ -39,6 +40,10 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -51,24 +56,16 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 
 	public function testCanConstruct() {
 
-		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver',
-			new QueryResultDependencyListResolver( $propertyHierarchyLookup )
+			new QueryResultDependencyListResolver( $this->hierarchyLookup )
 		);
 	}
 
 	public function testTryTogetDependencyListFromForNonSetQueryResult() {
 
-		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new QueryResultDependencyListResolver(
-			$propertyHierarchyLookup
+			$this->hierarchyLookup
 		);
 
 		$this->assertEmpty(
@@ -101,12 +98,16 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getStore' )
 			->will( $this->returnValue( $this->store ) );
 
-		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->hierarchyLookup->expects( $this->any() )
+			->method( 'getConsecutiveHierarchyList' )
+			->will( $this->returnValue( [] ) );
+
 		$instance = new QueryResultDependencyListResolver(
-			$propertyHierarchyLookup
+			$this->hierarchyLookup
 		);
 
 		$this->assertEmpty(
@@ -142,22 +143,22 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getStore' )
 			->will( $this->returnValue( $this->store ) );
 
-		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyHierarchyLookup->expects( $this->any() )
-			->method( 'hasSubpropertyFor' )
+		$this->hierarchyLookup->expects( $this->any() )
+			->method( 'hasSubproperty' )
 			->will( $this->returnValue( true ) );
 
-		$propertyHierarchyLookup->expects( $this->at( 1 ) )
-			->method( 'findSubpropertListFor' )
+		$this->hierarchyLookup->expects( $this->at( 1 ) )
+			->method( 'getConsecutiveHierarchyList' )
 			->with( $this->equalTo( new DIProperty( 'Foobar' ) ) )
 			->will( $this->returnValue(
-				array( DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) ) ) );
+				array( new DIProperty( 'Subprop' ) ) ) );
 
 		$instance = new QueryResultDependencyListResolver(
-			$propertyHierarchyLookup
+			$this->hierarchyLookup
 		);
 
 		$instance->setPropertyDependencyExemptionlist( array( 'Subprop' ) );
@@ -197,12 +198,12 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getStore' )
 			->will( $this->returnValue( $this->store ) );
 
-		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new QueryResultDependencyListResolver(
-			$propertyHierarchyLookup
+			$this->hierarchyLookup
 		);
 
 		$this->assertEquals(
@@ -222,11 +223,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( DIWikiPage::newFromText( 'Foo' ) );
 
-		$entityListAccumulator = $this->getMockBuilder( '\SMW\Query\Result\EntityListAccumulator' )
+		$inMemoryEntityProcessList = $this->getMockBuilder( '\SMW\Query\Result\InMemoryEntityProcessList' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$entityListAccumulator->expects( $this->once() )
+		$inMemoryEntityProcessList->expects( $this->once() )
 			->method( 'getEntityList' )
 			->will( $this->returnValue( array( $subject ) ) );
 
@@ -235,19 +236,19 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$queryResult->expects( $this->once() )
-			->method( 'getEntityListAccumulator' )
-			->will( $this->returnValue( $entityListAccumulator ) );
+			->method( 'getInMemoryEntityProcessList' )
+			->will( $this->returnValue( $inMemoryEntityProcessList ) );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new QueryResultDependencyListResolver(
-			$propertyHierarchyLookup
+			$this->hierarchyLookup
 		);
 
 		$this->assertEquals(
@@ -284,22 +285,22 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getStore' )
 			->will( $this->returnValue( $this->store ) );
 
-		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyHierarchyLookup->expects( $this->any() )
-			->method( 'hasSubpropertyFor' )
+		$this->hierarchyLookup->expects( $this->any() )
+			->method( 'hasSubproperty' )
 			->will( $this->returnValue( true ) );
 
-		$propertyHierarchyLookup->expects( $this->at( 1 ) )
-			->method( 'findSubpropertListFor' )
+		$this->hierarchyLookup->expects( $this->at( 1 ) )
+			->method( 'getConsecutiveHierarchyList' )
 			->with( $this->equalTo( new DIProperty( 'Foobar' ) ) )
 			->will( $this->returnValue(
-				array( DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) ) ) );
+				array( new DIProperty( 'Subprop' ) ) ) );
 
 		$instance = new QueryResultDependencyListResolver(
-			$propertyHierarchyLookup
+			$this->hierarchyLookup
 		);
 
 		$expected = array(
@@ -342,16 +343,16 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getStore' )
 			->will( $this->returnValue( $this->store ) );
 
-		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyHierarchyLookup->expects( $this->any() )
-			->method( 'hasSubcategoryFor' )
+		$this->hierarchyLookup->expects( $this->any() )
+			->method( 'hasSubcategory' )
 			->will( $this->returnValue( true ) );
 
-		$propertyHierarchyLookup->expects( $this->at( 1 ) )
-			->method( 'findSubcategoryListFor' )
+		$this->hierarchyLookup->expects( $this->at( 1 ) )
+			->method( 'getConsecutiveHierarchyList' )
 			->with( $this->equalTo( DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) ) )
 			->will( $this->returnValue(
 				array(
@@ -359,7 +360,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 					DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) ) ) );
 
 		$instance = new QueryResultDependencyListResolver(
-			$propertyHierarchyLookup
+			$this->hierarchyLookup
 		);
 
 		$expected = array(

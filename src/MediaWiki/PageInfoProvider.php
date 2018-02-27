@@ -108,6 +108,15 @@ class PageInfoProvider implements PageInfo {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return text
+	 */
+	public function getNativeData() {
+		return $this->wikiPage->getContent()->getNativeData();
+	}
+
+	/**
 	 * @since 1.9.1
 	 *
 	 * @return string|null

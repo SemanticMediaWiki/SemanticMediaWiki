@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text legacy `:=` and `::` annotation style with enabled LinksInValue (#2153, `wgContLang=en`, `smwgLinksInValues=SMW_LINV_OBFU`)",
+	"description": "Test in-text legacy `:=` and `::` annotation style with enabled links in values (#2153, `wgContLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -125,12 +125,11 @@
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
-					"propertyCount": 4,
+					"propertyCount": 3,
 					"propertyKeys": [
 						"_SKEY",
 						"_MDAT",
-						"_ASK",
-						"_INST"
+						"_ASK"
 					],
 					"propertyValues": []
 				}
@@ -139,7 +138,12 @@
 	],
 	"settings": {
 		"wgContLang": "en",
-		"smwgLinksInValues": "SMW_LINV_OBFU",
+		"smwgParserFeatures": [
+			"SMW_PARSER_STRICT",
+			"SMW_PARSER_INL_ERROR",
+			"SMW_PARSER_HID_CATS",
+			"SMW_PARSER_LINV"
+		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]

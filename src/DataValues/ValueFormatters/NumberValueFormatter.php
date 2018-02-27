@@ -36,21 +36,21 @@ class NumberValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::VALUE ) {
-			return $this->doFormatByValue();
+			return $this->valueFormat();
 		}
 
 		if ( $type === self::WIKI_SHORT || $type === self::HTML_SHORT ) {
-			return $this->doFormatByShort( $linker );
+			return $this->shortFormat( $linker );
 		}
 
 		if ( $type === self::WIKI_LONG || $type === self::HTML_LONG ) {
-			return $this->doFormatByLong( $linker );
+			return $this->longFormat( $linker );
 		}
 
 		return 'UNKNOWN';
 	}
 
-	private function doFormatByValue() {
+	private function valueFormat() {
 
 		if ( !$this->dataValue->isValid() ) {
 			return 'error';
@@ -69,7 +69,7 @@ class NumberValueFormatter extends DataValueFormatter {
 		return $this->dataValue->hasPrefixalUnitPreference( $unit ) ? $unit . ' ' . $number : $number . ' ' . $unit;
 	}
 
-	private function doFormatByShort( $linker = null ) {
+	private function shortFormat( $linker = null ) {
 
 		$outformat = $this->dataValue->getOutputFormat();
 
@@ -102,16 +102,22 @@ class NumberValueFormatter extends DataValueFormatter {
 			return $this->dataValue->getCaption();
 		}
 
-		$highlighter = Highlighter::factory( Highlighter::TYPE_QUANTITY, $this->dataValue->getOption( 'user.language' ) );
-		$highlighter->setContent( array (
-			'caption' => $this->dataValue->getCaption(),
-			'content' => $tooltip
-		) );
+		$highlighter = Highlighter::factory(
+			Highlighter::TYPE_QUANTITY,
+			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
+		);
+
+		$highlighter->setContent(
+			[
+				'caption' => $this->dataValue->getCaption(),
+				'content' => $tooltip
+			]
+		);
 
 		return $highlighter->getHtml();
 	}
 
-	private function doFormatByLong( $linker = null ) {
+	private function longFormat( $linker = null ) {
 
 		if ( !$this->dataValue->isValid() ) {
 			return $this->dataValue->getErrorText();

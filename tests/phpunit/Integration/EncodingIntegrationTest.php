@@ -34,9 +34,17 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
 
-		$instance = new BaseTemplateToolbox( $setup['skinTemplate'], $toolbox );
+		$instance = new BaseTemplateToolbox(
+			ApplicationFactory::getInstance()->getNamespaceExaminer()
+		);
 
-		$instance->process();
+		$instance->setOptions(
+			[
+				'smwgBrowseFeatures' => $setup['settings']['smwgBrowseFeatures']
+			]
+		);
+
+		$instance->process( $setup['skinTemplate'], $toolbox );
 
 		$this->assertContains(
 			$expected,
@@ -49,7 +57,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	public function baseTemplateToolboxDataProvider() {
 
 		$specialName = str_replace( '%3A', ':',
-			\SMW\UrlEncoder::encode( \SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
+			\SMW\Encoder::encode( \SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
 		);
 
 		$provider = array();
@@ -66,7 +74,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-			'smwgToolboxBrowseLink'           => true
+			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK
 		);
 
 		$message = $this->getMockBuilder( '\Message' )

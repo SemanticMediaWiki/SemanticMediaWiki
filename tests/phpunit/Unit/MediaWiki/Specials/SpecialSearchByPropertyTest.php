@@ -108,17 +108,11 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 		#0
 		$provider[] = array(
-			'',
-			array( 'value=""' )
-		);
-
-		#1
-		$provider[] = array(
 			'Foo/Bar',
 			array( 'property=Foo', 'value=Bar' )
 		);
 
-		#2
+		#1
 		$provider[] = array(
 			':Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
 			array( 'property=Has+foo', 'value=http%3A%2F%2Fexample.org%2Fid%2FCurly%2520Brackets%257B%257D' )

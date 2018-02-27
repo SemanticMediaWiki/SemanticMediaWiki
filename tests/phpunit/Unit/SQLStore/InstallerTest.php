@@ -19,30 +19,39 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 	private $spyMessageReporter;
 	private $testEnvironment;
+	private $tableSchemaManager;
+	private $tableBuilder;
+	private $tableIntegrityExaminer;
 
 	protected function setUp() {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyMessageReporter = MessageReporterFactory::getInstance()->newSpyMessageReporter();
+
+		$this->tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableSchemaManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
 	public function testCanConstruct() {
 
-		$tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableSchemaManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\Installer',
-			new Installer( $tableSchemaManager, $tableBuilder, $tableIntegrityExaminer )
+			Installer::class,
+			new Installer( $this->tableSchemaManager, $this->tableBuilder, $this->tableIntegrityExaminer )
 		);
 	}
 
@@ -52,40 +61,78 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableSchemaManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableSchemaManager->expects( $this->once() )
+		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
 			->will( $this->returnValue( array( $table ) ) );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'create' ] )
+			->getMockForAbstractClass();
 
 		$tableBuilder->expects( $this->once() )
 			->method( 'create' );
 
-		$tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableIntegrityExaminer->expects( $this->once() )
+		$this->tableIntegrityExaminer->expects( $this->once() )
 			->method( 'checkOnPostCreation' );
 
 		$instance = new Installer(
-			$tableSchemaManager,
+			$this->tableSchemaManager,
 			$tableBuilder,
-			$tableIntegrityExaminer
+			$this->tableIntegrityExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
-		$instance->isFromExtensionSchemaUpdate( true );
+
+		$instance->setOptions(
+			[
+				Installer::OPT_SCHEMA_UPDATE => false
+			]
+		);
 
 		$this->assertTrue(
 			$instance->install()
 		);
+	}
+
+	public function testInstallWithSupplementJobs() {
+
+		$this->jobQueue->expects( $this->exactly( 2 ) )
+			->method( 'push' );
+
+		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->tableSchemaManager->expects( $this->atLeastOnce() )
+			->method( 'getTables' )
+			->will( $this->returnValue( array( $table ) ) );
+
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'create' ] )
+			->getMockForAbstractClass();
+
+		$tableBuilder->expects( $this->once() )
+			->method( 'create' );
+
+		$this->tableIntegrityExaminer->expects( $this->once() )
+			->method( 'checkOnPostCreation' );
+
+		$instance = new Installer(
+			$this->tableSchemaManager,
+			$tableBuilder,
+			$this->tableIntegrityExaminer
+		);
+
+		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->setOptions(
+			[
+				Installer::OPT_SUPPLEMENT_JOBS => true
+			]
+		);
+
+		$instance->install();
 	}
 
 	public function testInstallNonVerbose() {
@@ -94,26 +141,19 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableSchemaManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableSchemaManager->expects( $this->once() )
+		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
 			->will( $this->returnValue( array( $table ) ) );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->getMock();
-
-		$tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
-			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'create' ] )
+			->getMockForAbstractClass();
 
 		$instance = new Installer(
-			$tableSchemaManager,
+			$this->tableSchemaManager,
 			$tableBuilder,
-			$tableIntegrityExaminer
+			$this->tableIntegrityExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -129,29 +169,22 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableSchemaManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableSchemaManager->expects( $this->once() )
+		$this->tableSchemaManager->expects( $this->once() )
 			->method( 'getTables' )
 			->will( $this->returnValue( array( $table ) ) );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'drop' ] )
+			->getMockForAbstractClass();
 
 		$tableBuilder->expects( $this->once() )
 			->method( 'drop' );
 
-		$tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new Installer(
-			$tableSchemaManager,
+			$this->tableSchemaManager,
 			$tableBuilder,
-			$tableIntegrityExaminer
+			$this->tableIntegrityExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -163,22 +196,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testReportMessage() {
 
-		$tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableSchemaManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new Installer(
-			$tableSchemaManager,
-			$tableBuilder,
-			$tableIntegrityExaminer
+			$this->tableSchemaManager,
+			$this->tableBuilder,
+			$this->tableIntegrityExaminer
 		);
 
 		$callback = function() use( $instance ) {
@@ -187,7 +208,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'Foo',
-			$this->testEnvironment->executeAndFetchOutputBufferContents( $callback )
+			$this->testEnvironment->outputFromCallbackExec( $callback )
 		);
 	}
 

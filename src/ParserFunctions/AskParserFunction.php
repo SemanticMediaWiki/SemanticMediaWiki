@@ -11,6 +11,9 @@ use SMW\DIProperty;
 use Parser;
 use SMWQueryProcessor as QueryProcessor;
 use SMWQuery as Query;
+use SMW\Query\DeferredQuery;
+use SMW\PostProcHandler;
+use SMW\Parser\RecursiveTextProcessor;
 
 /**
  * Provides the {{#ask}} parser function
@@ -25,6 +28,22 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class AskParserFunction {
+
+	/**
+	 * Fixed identifier for a deferred query request
+	 */
+	const DEFERRED_REQUEST = '@deferred';
+
+	/**
+	 * Fixed identifier
+	 */
+	const NO_TRACE = '@notrace';
+
+	/**
+	 * Fixed identifier to signal to the PostProcHandler that a post update is
+	 * required with the output being used as input value for an annotation.
+	 */
+	const IS_ANNOTATION = '@annotation';
 
 	/**
 	 * @var ParserData
@@ -42,14 +61,29 @@ class AskParserFunction {
 	private $circularReferenceGuard;
 
 	/**
+	 * @var ExpensiveFuncExecutionWatcher
+	 */
+	private $expensiveFuncExecutionWatcher;
+
+	/**
 	 * @var boolean
 	 */
 	private $showMode = false;
 
 	/**
-	 * @var ApplicationFactory
+	 * @var integer
 	 */
-	private $applicationFactory;
+	private $context = QueryProcessor::INLINE_QUERY;
+
+	/**
+	 * @var PostProcHandler
+	 */
+	private $postProcHandler;
+
+	/**
+	 * @var RecursiveTextProcessor
+	 */
+	private $recursiveTextProcessor;
 
 	/**
 	 * @since 1.9
@@ -57,11 +91,31 @@ class AskParserFunction {
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
 	 * @param CircularReferenceGuard $circularReferenceGuard
+	 * @param ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, CircularReferenceGuard $circularReferenceGuard ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, CircularReferenceGuard $circularReferenceGuard, ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher ) {
 		$this->parserData = $parserData;
 		$this->messageFormatter = $messageFormatter;
 		$this->circularReferenceGuard = $circularReferenceGuard;
+		$this->expensiveFuncExecutionWatcher = $expensiveFuncExecutionWatcher;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param PostProcHandler $postProcHandler
+	 */
+	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
+		$this->postProcHandler = $postProcHandler;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param RecursiveTextProcessor $recursiveTextProcessor
+	 */
+	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ) {
+		$this->recursiveTextProcessor = $recursiveTextProcessor;
 	}
 
 	/**
@@ -108,28 +162,38 @@ class AskParserFunction {
 
 		// Do we still need this?
 		// Reference found in SRF_Exhibit.php, SRF_Ploticus.php, SRF_Timeline.php, SRF_JitGraph.php
-		global $smwgIQRunningNumber;
-		$smwgIQRunningNumber++;
+		$GLOBALS['smwgIQRunningNumber']++;
+		$result = '';
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$functionParams = $this->prepareFunctionParameters(
+		list( $functionParams, $extraKeys ) = $this->prepareFunctionParameters(
 			$functionParams
 		);
+
+		if ( !isset( $extraKeys[self::NO_TRACE] ) ) {
+			$extraKeys[self::NO_TRACE] = $this->parserData->getOption( ParserData::NO_QUERY_DEPENDENCY_TRACE );
+		}
+
+		// No trace on queries invoked by special pages
+		if ( $this->parserData->getTitle()->getNamespace() === NS_SPECIAL ) {
+			$extraKeys[self::NO_TRACE] = true;
+		}
 
 		$result = $this->doFetchResultsFromFunctionParameters(
-			$functionParams
+			$functionParams,
+			$extraKeys
 		);
+
+		if ( $this->context === QueryProcessor::DEFERRED_QUERY ) {
+			DeferredQuery::registerResourceModules( $this->parserData->getOutput() );
+		}
 
 		$this->parserData->pushSemanticDataToParserOutput();
 
-		// 1.23+ add options so changes are recognized in case of:
-		// - 'userlang' will trigger a cache fragmentation by user language
-		// - 'dateformat'  will trigger a cache fragmentation by date preference
-		if ( method_exists( $this->parserData->getOutput(), 'recordOption' ) ) {
-			$this->parserData->getOutput()->recordOption( 'userlang' );
-			$this->parserData->getOutput()->recordOption( 'dateformat' );
-		}
+		// 'userlang' will trigger a cache fragmentation by user language
+		$this->parserData->addExtraParserKey( 'userlang' );
+
+		// 'dateformat'  will trigger a cache fragmentation by date preference
+		$this->parserData->addExtraParserKey( 'dateformat' );
 
 		return $result;
 	}
@@ -141,8 +205,33 @@ class AskParserFunction {
 			array_shift( $functionParams );
 		}
 
+		$extraKeys = array();
+
 		// Filter invalid parameters
 		foreach ( $functionParams as $key => $value ) {
+
+			if ( $value === self::DEFERRED_REQUEST ) {
+				$this->context = QueryProcessor::DEFERRED_QUERY;
+				unset( $functionParams[$key] );
+				continue;
+			}
+
+			if ( $value === self::NO_TRACE ) {
+				$extraKeys[self::NO_TRACE] = true;
+				unset( $functionParams[$key] );
+				continue;
+			}
+
+			if ( $value === self::IS_ANNOTATION ) {
+				$extraKeys[self::IS_ANNOTATION] = true;
+				unset( $functionParams[$key] );
+				continue;
+			}
+
+			// @see ParserOptionsRegister hook, use registered `localTime` key
+			if ( strpos( $value, '#LOCL#TO' ) !== false ) {
+				$this->parserData->addExtraParserKey( 'localTime' );
+			}
 
 			// First and marked printrequests
 			if (  $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
@@ -156,92 +245,125 @@ class AskParserFunction {
 			}
 		}
 
-		return $functionParams;
+		return array( $functionParams, $extraKeys );
 	}
 
-	private function doFetchResultsFromFunctionParameters( array $functionParams ) {
+	private function doFetchResultsFromFunctionParameters( array $functionParams, array $extraKeys ) {
 
 		$contextPage = $this->parserData->getSubject();
+		$status = [];
+
+		if ( $extraKeys[self::NO_TRACE] === true ) {
+			$contextPage = null;
+		}
 
 		list( $query, $this->params ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$functionParams,
 			SMW_OUTPUT_WIKI,
-			QueryProcessor::INLINE_QUERY,
+			$this->context,
 			$this->showMode,
 			$contextPage
 		);
 
-		$query->setContextPage(
-			$contextPage
-		);
-
-		$query->setOption( Query::PROC_CONTEXT, 'AskParserFunction' );
-
-		if ( $this->parserData->getOption( ParserData::NO_QUERY_DEP_TRACE ) ) {
-			$query->setOption( $query::NO_DEP_TRACE, true );
+		if ( ( $result = $this->hasReachedExpensiveExecutionLimit( $query ) ) !== false ) {
+			return $result;
 		}
 
+		$query->setOption( Query::PROC_CONTEXT, 'AskParserFunction' );
+		$query->setOption( Query::NO_DEPENDENCY_TRACE, $extraKeys[self::NO_TRACE] );
+		$query->setOption( 'request.action', $this->parserData->getOption( 'request.action' ) );
+
 		$queryHash = $query->getHash();
+
+		if ( $this->postProcHandler !== null && isset( $extraKeys[self::IS_ANNOTATION] ) ) {
+			$status[] = 100;
+			$this->postProcHandler->addQueryRef( $query );
+		}
+
+		if ( $this->context === QueryProcessor::DEFERRED_QUERY ) {
+			$status[] = 200;
+		}
 
 		$this->circularReferenceGuard->mark( $queryHash );
 
 		// If we caught in a circular loop (due to a template referencing to itself)
 		// then we stop here before the next query execution to avoid an infinite
 		// self-reference
-		if ( $this->circularReferenceGuard->isCircularByRecursionFor( $queryHash ) ) {
+		if ( $this->circularReferenceGuard->isCircular( $queryHash ) ) {
 			return '';
 		}
+
+		QueryProcessor::setRecursiveTextProcessor(
+			$this->recursiveTextProcessor
+		);
 
 		$result = QueryProcessor::getResultFromQuery(
 			$query,
 			$this->params,
 			SMW_OUTPUT_WIKI,
-			QueryProcessor::INLINE_QUERY
+			$this->context
 		);
 
 		$format = $this->params['format']->getValue();
 
-		// FIXME Parser should be injected into the ResultPrinter
-		// Enables specific formats to import its annotation data from
-		// a recursive parse process in the result format
-		// e.g. using ask query to search/set an invert property value
-		if ( isset( $this->params['import-annotation'] ) && $this->params['import-annotation']->getValue() ) {
-			$this->parserData->importFromParserOutput( $GLOBALS['wgParser']->getOutput() );
+		if ( $this->recursiveTextProcessor !== null ) {
+			$this->recursiveTextProcessor->copyData( $this->parserData );
 		}
 
 		$this->circularReferenceGuard->unmark( $queryHash );
+		$this->expensiveFuncExecutionWatcher->incrementExpensiveCount( $query );
 
 		// In case of an query error add a marker to the subject for discoverability
 		// of a failed query, don't bail-out as we can have results and errors
 		// at the same time
 		$this->addProcessingError( $query->getErrors() );
 
+		$query->setOption( Query::PROC_STATUS_CODE, $status );
+
 		$this->addQueryProfile(
 			$query,
-			$format
+			$format,
+			$extraKeys
 		);
 
 		return $result;
 	}
 
-	private function addQueryProfile( $query, $format ) {
+	private function hasReachedExpensiveExecutionLimit( $query ) {
 
-		$settings = $this->applicationFactory->getSettings();
+		if ( $this->expensiveFuncExecutionWatcher->hasReachedExpensiveLimit( $query ) === false ) {
+			return false;
+		}
+
+		// Adding to error in order to be discoverable
+		$this->addProcessingError( array( 'smw-parser-function-expensive-execution-limit' ) );
+
+		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
+	}
+
+	private function addQueryProfile( $query, $format, $extraKeys ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
-		if ( ( $queryProfiler = $settings->get( 'smwgQueryProfiler' ) ) === false ) {
+		if ( $settings->get( 'smwgQueryProfiler' ) === false || $extraKeys[self::NO_TRACE] === true ) {
 			return;
 		}
 
-		if ( !isset( $queryProfiler['smwgQueryDurationEnabled'] ) || $queryProfiler['smwgQueryDurationEnabled'] === false ) {
+		if ( !$settings->isFlagSet( 'smwgQueryProfiler', SMW_QPRFL_DUR ) ) {
 			$query->setOption( Query::PROC_QUERY_TIME, 0 );
 		}
 
-		if ( isset( $queryProfiler['smwgQueryParametersEnabled'] ) ) {
-			$query->setOption( Query::OPT_PARAMETERS, $queryProfiler['smwgQueryParametersEnabled'] );
+		if ( $settings->isFlagSet( 'smwgQueryProfiler', SMW_QPRFL_PARAMS ) ) {
+			$query->setOption( Query::OPT_PARAMETERS, true );
 		}
 
-		$profileAnnotatorFactory = $this->applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();
+		$query->setContextPage(
+			$this->parserData->getSubject()
+		);
+
+		$profileAnnotatorFactory = $applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();
 
 		$combinedProfileAnnotator = $profileAnnotatorFactory->newCombinedProfileAnnotator(
 			$query,
@@ -263,12 +385,20 @@ class AskParserFunction {
 			$this->parserData->getSubject()
 		);
 
-		$property = new DIProperty( '_ASK' );
-
 		foreach ( $errors as $error ) {
+
+			if ( ( $property = $processingErrorMsgHandler->grepPropertyFromRestrictionErrorMsg( $error ) ) === null ) {
+				$property = new DIProperty( '_ASK' );
+			}
+
+			$container = $processingErrorMsgHandler->newErrorContainerFromMsg(
+				$error,
+				$property
+			);
+
 			$processingErrorMsgHandler->addToSemanticData(
 				$this->parserData->getSemanticData(),
-				$processingErrorMsgHandler->newErrorContainerFromMsg( $error, $property )
+				$container
 			);
 		}
 	}

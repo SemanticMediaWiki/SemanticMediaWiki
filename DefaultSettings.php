@@ -21,12 +21,13 @@ return array(
 	###
 	# This is the path to your installation of Semantic MediaWiki as seen on your
 	# local filesystem. Used against some PHP file path issues.
-	# If needed, you can also change this path in LocalSettings.php after including
-	# this file.
+	#
+	# @since 1.0
 	##
 	'smwgIP' => __DIR__ . '/',
 	'smwgExtraneousLanguageFileDir' => __DIR__ . '/i18n/extra',
 	'smwgServicesFileDir' => __DIR__ . '/src/Services',
+	'smwgResourceLoaderDefFiles' => [ 'smw' => __DIR__ . '/res/Resources.php' ],
 	##
 
 	###
@@ -35,7 +36,7 @@ return array(
 	# Controls the content import directory and version that is expected to be
 	# imported during the setup process.
 	#
-	# For all legitimate files in `smwgImportFileDir`, the import is initiated
+	# For all legitimate files in `smwgImportFileDirs`, the import is initiated
 	# if the `smwgImportReqVersion` compares with the declared version in the file.
 	#
 	# In case `smwgImportReqVersion` is maintained with `false` then the import
@@ -43,7 +44,7 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgImportFileDir' => __DIR__ . '/src/Importer/data',
+	'smwgImportFileDirs' => [ 'default' => __DIR__ . '/src/Importer/data' ],
 	'smwgImportReqVersion' => 1,
 	##
 
@@ -74,6 +75,55 @@ return array(
 	'smwgDefaultStore' => "SMWSQLStore3",
 	##
 
+	##
+	# Debug logger role
+	#
+	# A role (developer, user, production) defines the detail of information
+	# (granularity) that are expected to be logged. Roles include:
+	#
+	# - `developer` outputs any loggable event produced by SMW
+	# - `user` outputs certain events deemed important
+	# - `production` outputs a minimal set of events produced by SMW
+	#
+	# Logging only happens in case `$wgDebugLogFile` or `$wgDebugLogGroups`
+	# are actively maintained.
+	#
+	# @see https://www.mediawiki.org/wiki/Manual:How_to_debug#Logging
+	#
+	# @since 3.0
+	# @default production
+	##
+	'smwgDefaultLoggerRole' => 'production',
+	##
+
+	###
+	# Local connection configurations
+	#
+	# Allows to modify connection characteristics for providers that are used by
+	# Semantic MediaWiki.
+	#
+	# Changes to these settings should ONLY be made by trained professionals to
+	# avoid unexpected or unanticipated results when using connection handlers.
+	#
+	# Available DB index as provided by MediaWiki:
+	#
+	# - DB_SLAVE or DB_REPLICA (1.28+)
+	# - DB_MASTER
+	#
+	# @since 3.0
+	##
+	'smwgLocalConnectionConf' => array(
+		'mw.db' => array(
+			'read'  => DB_SLAVE,
+			'write' => DB_MASTER
+		),
+		'mw.db.queryengine' => array(
+			'read'  => DB_SLAVE,
+			'write' => DB_MASTER
+		)
+	),
+	##
+
 	###
 	# Configure SPARQL database connection for Semantic MediaWiki. This is used
 	# when SPARQL-based features are enabled, e.g. when using SMWSparqlStore as
@@ -95,7 +145,7 @@ return array(
 	# supports this. Different wikis should normally use different default graphs
 	# unless there is a good reason to share one graph.
 	##
-	'smwgSparqlDatabase' => 'SMWSparqlDatabase',
+	'smwgSparqlCustomConnector' => 'SMWSparqlDatabase',
 	'smwgSparqlQueryEndpoint' => 'http://localhost:8080/sparql/',
 	'smwgSparqlUpdateEndpoint' => 'http://localhost:8080/update/',
 	'smwgSparqlDataEndpoint' => 'http://localhost:8080/data/',
@@ -103,32 +153,26 @@ return array(
 	##
 
 	##
-	# SparqlDBConnectionProvider
+	# Sparql repository connector
 	#
-	# Identifies a database connector that ought to be used together with the
-	# SPARQLStore
+	# Identifies a pre-deployed repository connector that is ought to be used together
+	# with the SPARQLStore.
 	#
-	# List of standard connectors ($smwgSparqlDatabase will have no effect)
-	# - 'fuseki'
-	# - 'virtuoso'
+	# List of standard connectors ($smwgSparqlCustomConnector will have no effect):
 	# - '4store'
+	# - 'blazegraph'
+	# - 'fuseki'
 	# - 'sesame'
-	# - 'generic'
+	# - 'virtuoso'
 	#
-	# With 2.0 it is suggested to assign the necessary connector to
-	# $smwgSparqlDatabaseConnector in order to avoid arbitrary class assignments in
-	# $smwgSparqlDatabase (which can change in future releases without further notice).
-	#
-	# In case $smwgSparqlDatabaseConnector = 'custom' is maintained, $smwgSparqlDatabase
-	# is expected to contain a custom class connector where $smwgSparqlDatabase is only
-	# to be sued for when a custom database connector is necessary.
-	#
-	# $smwgSparqlDatabaseConnector = 'custom' is set as legacy configuration to allow for
-	# existing (prior 2.0) customizing to work without changes.
+	# In case $smwgSparqlRepositoryConnector = 'custom' is maintained, $smwgSparqlCustomConnector
+	# is expected to contain a custom class connector where $smwgSparqlCustomConnector is only
+	# for the definition of a custom connector.
 	#
 	# @since 2.0
+	# @default default, meaning that the default connector is used
 	##
-	'smwgSparqlDatabaseConnector' => 'custom',
+	'smwgSparqlRepositoryConnector' => 'default',
 	##
 
 	##
@@ -140,6 +184,19 @@ return array(
 	#   Sesame)
 	# - SMW_SPARQL_QF_SUBP to resolve subproperties
 	# - SMW_SPARQL_QF_SUBC to resolve subcategories
+	#
+	# - SMW_SPARQL_QF_COLLATION allows to add support for the sorting collation as
+	#   maintained in $smwgEntityCollation. It is not enabled by default as the
+	#   `uca-*` collation generates a UTF-8 string that contains unrecognized
+	#   UTF codepoints that may not be understood by the back-end hence the
+	#   Collator prevents and armors those unrecognized characters by replacing
+	#   them with a ? to avoid a cURL communication failure but of course this
+	#   means that not all elements of the sort string can be transfered to the
+	#   back-end and can therefore cause a sorting distortion for close matches
+	#   as in case of for example "Ennis, Ennis Hill, Ennis Jones, Ennis-Hill,
+	#   Ennis-London"
+	#
+	# - SMW_SPARQL_QF_NOCASE to support case insensitive pattern matches
 	#
 	# Please check with your repository provider whether SPARQL 1.1 is fully
 	# supported or not, and if not SMW_SPARQL_QF_NONE should be set.
@@ -214,8 +271,8 @@ return array(
 		NS_USER_TALK => false,
 		NS_PROJECT => true,
 		NS_PROJECT_TALK => false,
-		NS_IMAGE => true,
-		NS_IMAGE_TALK => false,
+		NS_FILE => true,
+		NS_FILE_TALK => false,
 		NS_MEDIAWIKI => false,
 		NS_MEDIAWIKI_TALK => false,
 		NS_TEMPLATE => false,
@@ -246,67 +303,47 @@ return array(
 	##
 
 	###
-	# Should the toolbox of each content page show a link to browse the properties
-	# of that page using Special:Browse? This is a useful way to access properties
-	# and it is somewhat more subtle than showing a Factbox on every page.
+	# Compact infolink support
+	#
+	# Special:Browse, Special:Ask, and Special:SearchByProperty links can contain
+	# arbitrary text elements and therefore become difficult to transfer when its
+	# length exceeds a certain character length.
+	#
+	# A compact link will be encoded and compressed to ensure that it can be handled
+	# more easily when referring to it as an URL representation.
+	#
+	# It is not expected to be used as a short-url service, yet in some instances
+	# the generate URL can be comparatively shorter than the plain URL.
+	#
+	# The generated link has no security relevance therefore is is not
+	# cryptographically hashed or secure and should not be seen as such, it is
+	# foremost to "compact" an URL address.
+	#
+	# @since 3.0
+	# @default true
 	##
-	'smwgToolboxBrowseLink' => true,
+	'smwgCompactLinkSupport' => true,
 	##
 
 	###
-	# Should warnings be displayed in wikitexts right after the problematic input?
-	# This affects only semantic annotations, not warnings that are displayed by
-	# inline queries or other features.
-	##
-	'smwgInlineErrors' => true,
-	##
-
-	###
-	# Should SMW consider MediaWiki's subcategory hierarchy in querying? If set to
-	# true, subcategories will always be interpreted like subclasses. For example,
-	# if A is a subcategory of B then a query for all elements of B will also yield
-	# all elements of A. If this setting is disabled, then subclass relationships
-	# can still be given explicitly by using the property "subcategory of" on some
-	# category page. Only if the setting is false will such annotations be shown in
-	# the factbox (if enabled).
-	##
-	'smwgUseCategoryHierarchy' => true,
-	##
-
-	###
-	# Should category pages that use some [[Category:Foo]] statement be treated as
-	# elements of the category Foo? If disabled, then it is not possible to make
-	# category pages elements of other categories. See also the above setting
-	# $smwgUseCategoryHierarchy.
-	##
-	'smwgCategoriesAsInstances' => true,
-	##
-
-	###
-	# InText annotation to support "links in value"
 	#
-	# SMW_LINV_OBFU (2.5+)
+	# - SMW_CAT_NONE
 	#
-	# Parse [[SomeProperty::Foo [[link]] in [[Bar::AnotherValue]]]] annotation
-	# using a non-PCRE approach and hereby avoids potential PHP crashes caused
-	# by PCRE OOM.
+	# - SMW_CAT_REDIRECT: resolves redirects and errors in connection with categories
 	#
-	# SMW_LINV_PCRE (1.3+)
+	# - SMW_CAT_INSTANCE: Should category pages that use some [[Category:Foo]]
+	#   statement be treated as elements of the category Foo? If disabled, then
+	#   it is not possible to make category pages elements of other categories.
+	#   See also SMW_CAT_HIERARCHY. (was $smwgCategoriesAsInstances)
 	#
-	# Should SMW accept inputs like [[property::Some [[link]] in value]]? If
-	# enabled, this may lead to PHP crashes (!) when very long texts are used as
-	# values. This is due to limitations in the library PCRE that PHP uses for
-	# pattern matching. The provoked PHP crashes will prevent requests from being
-	# completed -- usually clients will receive server errors ("invalid response")
-	# or be offered to download "index.php". It might be okay to enable this if
-	# such problems are not observed in your wiki.
+	# - SMW_CAT_HIERARCHY: Should a subcategory be considered a hierarchy element
+	#   in the annotation process? If set to true, subcategories will always be
+	#   interpreted as subclasses and automatically annotated with
+	#   `Subcategory of`. (was $smwgUseCategoryHierarchy)
 	#
-	# To enable this feature use either SMW_LINV_PCRE (for BC) or SMW_LINV_OBFU.
-	#
-	# @since 1.3
-	# @default false
+	# @since 3.0
 	##
-	'smwgLinksInValues' => false,
+	'smwgCategoryFeatures' => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE | SMW_CAT_HIERARCHY,
 	##
 
 	###
@@ -319,25 +356,33 @@ return array(
 	##
 
 	###
-	# Should the browse view for incoming links show the incoming links via its
-	# inverses, or shall they be displayed on the other side?
-	##
-	'smwgBrowseShowInverse' => false,
-	##
-
-	###
-	# Should the browse view always show the incoming links as well, and more of
-	# the incoming values?
-	##
-	'smwgBrowseShowAll' => true,
-	##
-
-	###
-	# Whether the browse display is to be generated using an API request or not.
+	# Special:Browse related settings
 	#
-	# @since 2.5
+	# - SMW_BROWSE_NONE
+	#
+	# - SMW_BROWSE_TLINK: Should the toolbox of each content page show a link
+	#   to browse the properties of that page using Special:Browse? This is a
+	#   useful way to access properties and it is somewhat more subtle than
+	#   showing a Factbox on every page. (was $smwgToolboxBrowseLink)
+	#
+	# - SMW_BROWSE_SHOW_INVERSE: Should the browse view for incoming links show
+	#   the incoming links via its inverses, or shall they be displayed on the
+	#   other side? (was $smwgBrowseShowInverse)
+	#
+	# - SMW_BROWSE_SHOW_INCOMING: Should the browse view always show the incoming links
+	#   as well, and more of the incoming values? (was $smwgBrowseShowAll)
+	#
+	# - SMW_BROWSE_SHOW_GROUP: Should the browse view create group sections for
+	#   properties that belong to the same property group?
+	#
+	# - SMW_BROWSE_SHOW_SORTKEY: Should the sortkey be displayed?
+	#
+	# - SMW_BROWSE_USE_API: Whether the browse display is to be generated using
+	#   an API request or not. (was $smwgBrowseByApi)
+	#
+	# @since 3.0
 	##
-	'smwgBrowseByApi' => true,
+	'smwgBrowseFeatures' => SMW_BROWSE_TLINK | SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_SHOW_GROUP | SMW_BROWSE_USE_API,
 	##
 
 	###
@@ -374,19 +419,21 @@ return array(
 	##
 
 	###
-	# Property page to limit the query request on subproperties
+	# Property page list limits
 	#
-	# @since 2.5
-	##
-	'smwgSubPropertyListLimit' => 25,
-	##
-
-	###
-	# Property page to limit the query request on redirects
+	# 'subproperty' limit the query request on subproperties
+	# 'redirect' limit the query request on redirects
+	# 'error' limit the query request on improper assignments
 	#
-	# @since 2.5
+	# `false` as value assignment will disable the display of a selected list
+	#
+	# @since 3.0
 	##
-	'smwgRedirectPropertyListLimit' => 25,
+	'smwgPropertyListLimit' => array(
+		'subproperty' => 25,
+		'redirect' => 25,
+		'error' => 10
+	),
 	##
 
 	###
@@ -407,28 +454,54 @@ return array(
 												// performance-relevant restrictions depending on the storage engine
 	// 	'smwgQEqualitySupport' => SMW_EQ_FULL, // Evaluate 	#redirects as equality between page names in all cases
 	// 	'smwgQEqualitySupport' => SMW_EQ_NONE, // Never evaluate 	#redirects as equality between page names
-	'smwgQSortingSupport' => true, // (De)activate sorting of results.
-	'smwgQRandSortingSupport' => true, // (De)activate random sorting of results.
 	'smwgQDefaultNamespaces' => null, // Which namespaces should be searched by default?
 										// (value NULL switches off default restrictions on searching -- this is faster)
-										// Example with namespaces: 	'smwgQDefaultNamespaces' => array(NS_MAIN, NS_IMAGE),
+										// Example with namespaces: 	'smwgQDefaultNamespaces' => array(NS_MAIN, NS_FILE),
 
 	###
-	# List of comparator characters supported by queries, separated by '|', for use in a regex.
+	# Sort features
 	#
-	# Available entries:
-	#  	< (smaller than) if $smwStrictComparators is false, it's actually smaller than or equal to
-	#  	> (greater than) if $smwStrictComparators is false, it's actually bigger than or equal to
-	#  	! (unequal to)
-	#  	~ (pattern with '*' as wildcard, only for Type:String)
-	#  	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
-	#  	≤ (smaller than or equal to)
-	#  	≥ (greater than or equal to)
+	# - SMW_QSORT_NONE
 	#
-	# If unsupported comparators are used, they are treated as part of the queried value
+	# - SMW_QSORT: General sort support for query results (was
+	#   $smwgQSortingSupport)
 	#
+	# - SMW_QSORT_RANDOM: Random sorting support for query results (was
+	#   $smwgQRandSortingSupport)
+	#
+	# @since 3.0
 	##
-	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>',
+	'smwgQSortFeatures' => SMW_QSORT | SMW_QSORT_RANDOM,
+	##
+
+	###
+	# List of comparator characters
+	#
+	# Comparators supported by queries with available entries being:
+	#
+	#  < (smaller than) if $smwStrictComparators is false, it's actually smaller
+	#    than or equal to
+	#  > (greater than) if $smwStrictComparators is false, it's actually bigger
+	#    than or equal to
+	#  ! (unequal to)
+	#  ~ (pattern with '*' as wildcard)
+	#  !~ (not a pattern with '*' as wildcard, only for Type:String, need to be
+	#    placed before ! and ~ to work correctly)
+	#  ≤ (smaller than or equal to)
+	#  ≥ (greater than or equal to)
+	#
+	# Extra compartors that in case of an enabled full-text index uses the primary
+	# LIKE/NLIKE match operation with operators being:
+	#
+	#  like: to express LIKE use
+	#  nlike: to express NLIKE use
+	#
+	# If unsupported comparators are used, they are treated as part of the
+	# queried value.
+	#
+	# @since 1.0
+	##
+	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:|in:',
 	##
 
 	###
@@ -449,6 +522,31 @@ return array(
 	##
 	'smwgQMaxSize' => 16, // Maximal number of conditions in queries, use format=debug for example sizes
 	'smwgQMaxDepth' => 4, // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
+	##
+
+	###
+	# Expensive threshold
+	#
+	# The threshold defined in seconds denotes the ceiling as to when a #ask or
+	# #show call is classified as expensive and will count towards the
+	# $smwgQExpensiveExecutionLimit setting.
+	#
+	# @since 3.0
+	# @default 10
+	##
+	'smwgQExpensiveThreshold' => 10,
+	##
+
+	###
+	# Limit of expensive #ask/#show functions
+	#
+	# The limit will count all classified #ask/#show parser functions and restricts
+	# further use on pages that exceed that limit.
+	#
+	# @since 3.0
+	# @default false (== no limit)
+	##
+	'smwgQExpensiveExecutionLimit' => false,
 	##
 
 	###
@@ -517,7 +615,9 @@ return array(
 	'smwgQConceptCacheLifetime' => 24 * 60,
 	##
 
-	### Predefined result formats for queries
+	##
+	# Predefined result formats for queries
+	#
 	# Array of available formats for formatting queries. Can be redefined in
 	# the settings to disallow certain formats or to register extension formats.
 	# To disable a format, do "unset($smwgResultFormats['template'])," Disabled
@@ -526,31 +626,48 @@ return array(
 	# 'broadtable' should not be disabled either in order not to break Special:ask.
 	##
 	'smwgResultFormats' => array(
-		'table'      => 'SMW\TableResultPrinter',
+		'table'      => 'SMW\Query\ResultPrinters\TableResultPrinter',
+		'broadtable' => 'SMW\Query\ResultPrinters\TableResultPrinter',
 		'list'       => 'SMW\ListResultPrinter',
 		'ol'         => 'SMW\ListResultPrinter',
 		'ul'         => 'SMW\ListResultPrinter',
-		'broadtable' => 'SMW\TableResultPrinter',
 		'category'   => 'SMW\CategoryResultPrinter',
 		'embedded'   => 'SMW\EmbeddedResultPrinter',
 		'template'   => 'SMW\ListResultPrinter',
 		'count'      => 'SMW\ListResultPrinter',
 		'debug'      => 'SMW\ListResultPrinter',
 		'feed'       => 'SMW\FeedResultPrinter',
-		'csv'        => 'SMW\CsvResultPrinter',
+		'csv'        => 'SMW\Query\ResultPrinters\CsvFileExportPrinter',
+		'templatefile' => 'SMW\Query\ResultPrinters\TemplateFileExportPrinter',
 		'dsv'        => 'SMW\DsvResultPrinter',
 		'json'       => 'SMW\JsonResultPrinter',
 		'rdf'        => 'SMW\RdfResultPrinter'
 	),
 	##
 
-	### Predefined aliases for result formats
+	##
+	# Predefined aliases for result formats
+	#
 	# Array of available aliases for result formats. Can be redefined in
 	# the settings to disallow certain aliases or to register extension aliases.
 	# To disable an alias, do "unset($smwgResultAliases['alias'])," Disabled
 	# aliases will be treated like if the alias parameter had been omitted.
 	##
-	'smwgResultAliases' => array( 'feed' => array( 'rss' ) ),
+	'smwgResultAliases' => [
+		'feed' => [ 'rss' ],
+		'templatefile' => [ 'template file' ]
+	],
+	##
+
+	##
+	# Result printer features
+	#
+	# - SMW_RF_NONE
+	# - SMW_RF_TEMPLATE_OUTSEP, #2022 (use the sep parameter as outer separator)
+	#
+	# @since 2.3
+	##
+	'smwgResultFormatsFeatures' => SMW_RF_TEMPLATE_OUTSEP,
 	##
 
 	### Predefined sources for queries
@@ -596,6 +713,34 @@ return array(
 	'smwgEnableUpdateJobs' => true,
 	##
 
+	###
+	# JobQueue watchlist
+	#
+	# This setting allows to display a personal bar link that shows the queue
+	# sizes for listed jobs. The information presented is fetched from the
+	# MediaWiki API and might be slightly inaccurate but should allow to make
+	# assumptions as to where the system needs attention.
+	#
+	# @see https://www.mediawiki.org/wiki/Manual:Job_queue#Special:Statistics
+	#
+	# To make this feature available, assign a simple list to the setting as in:
+	#
+	# $GLOBALS['smwgJobQueueWatchlist'] = [
+	#	'SMW\UpdateJob',
+	#	'SMW\ParserCachePurgeJob',
+	#	'SMW\FulltextSearchTableUpdateJob',
+	#	'SMW\ChangePropagationUpdateJob'
+	# ]
+	#
+	# Information are not displayed unless a user enables the setting in his or
+	# her preference setting.
+	#
+	# @since 3.0
+	# @default disabled (empty array)
+	##
+	'smwgJobQueueWatchlist' => [],
+	##
+
 	### List of enabled special page properties.
 	# Modification date (_MDAT) is enabled by default for backward compatibility.
 	# Extend array to enable other properties:
@@ -611,15 +756,36 @@ return array(
 	##
 
 	###
+	# Change propagation watchlist
+	#
 	# Properties (usually given as internal ids or DB key versions of property
 	# titles) that are relevant for declaring the behavior of a property P on a
 	# property page in the sense that changing their values requires that all
-	# pages that use P must be processed again. For example, if _PVAL (allowed
-	# values) for a property change, then pages must be processed again. This
-	# setting is not normally changed by users but by extensions that add new
-	# types that have their own additional declaration properties.
+	# pages that use P must be processed again.
+	#
+	# For example, if _PVAL (allowed values) for a property change, then pages
+	# must be processed again. This setting is not normally changed by users but
+	# by extensions that add new types that have their own additional declaration
+	# properties.
+	#
+	# @since 1.5
 	##
-	'smwgDeclarationProperties' => array( '_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB' ),
+	'smwgChangePropagationWatchlist' => array(
+		'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC',
+		'_SUBP', '_SUBC', '_PVALI'
+	),
+	##
+
+	##
+	# Change propagation protection
+	#
+	# An administrative intervention to disable the protection for an active change
+	# propagation.
+	#
+	# @since 3.0
+	# @default true
+	##
+	'smwgChangePropagationProtection' => true,
 	##
 
 	###
@@ -632,8 +798,36 @@ return array(
 	##
 	'smwgDataTypePropertyExemptionList' => array(
 		'Record',
-		'Reference'
+		'Reference',
+		'Keyword'
 	),
+	##
+
+	##
+	# Default output formatter
+	#
+	# Users who want to alter the default output for a specific type can do so by
+	# setting a specify default formatter.
+	#
+	# The expected form is:
+	#
+	# [ <_typeID> => '<Formatter>' ] OR
+	# [ <typeName> => '<Formatter>' ] OR
+	# [ <propertyName> => '<Formatter>' ]
+	#
+	# Only valid formatters will be considered for an individual type, no
+	# errors or exceptions are raised in case of an improper formatter.
+	#
+	# The formatter is applied to values displayed on special pages
+	# as well.
+	#
+	# @since 3.0
+	# @default: []
+	##
+	'smwgDefaultOutputFormatters' => [
+		// '_dat' => 'LOCL',
+		// 'Boolean' => 'tick',
+	],
 	##
 
 	// some default settings which usually need no modification
@@ -650,7 +844,7 @@ return array(
 	# -- FEATURE IS DISABLED --
 	# If you want to import ontologies, you need to install RAP,
 	# a free RDF API for PHP, see
-	#     http://www.wiwiss.fu-berlin.de/suhl/bizer/rdfapi/
+	#     http://wifo5-03.informatik.uni-mannheim.de/bizer/rdfapi/index.html
 	# The following is the path to your installation of RAP
 	# (the directory where you extracted the files to) as seen
 	# from your local filesystem. Note that ontology import is
@@ -659,15 +853,6 @@ return array(
 	##
 	// 	'smwgRAPPath' => $smwgIP . 'libs/rdfapi-php',
 	// 	'smwgRAPPath' => '/another/example/path/rdfapi-php',
-	##
-
-	###
-	# If the following is set to true, it is possible to initiate the repairing
-	# or updating of all wiki data using the interface on Special:SMWAdmin.
-	#
-	# @deprecated since 2.5, use $smwgAdminFeatures
-	##
-	'smwgAdminRefreshStore' => true,
 	##
 
 	###
@@ -683,13 +868,6 @@ return array(
 	# @sine 2.5
 	##
 	'smwgAdminFeatures' => SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT,
-	##
-
-	###
-	# Sets whether or not the 'printouts' textarea should have autocompletion
-	# on property names.
-	##
-	'smwgAutocompleteInSpecialAsk' => true,
 	##
 
 	###
@@ -723,16 +901,16 @@ return array(
 	# @default: CACHE_NONE, users need to actively enable it in order
 	# to make use of it
 	##
-	'smwgValueLookupCacheType' => CACHE_NONE,
+	'smwgEntityLookupCacheType' => CACHE_NONE,
 	##
 
 	###
-	# Declares a lifetime of a cached item for `smwgValueLookupCacheType` until it
+	# Declares a lifetime of a cached item for `smwgEntityLookupCacheType` until it
 	# is removed if not invalidated before.
 	#
 	# @since 2.3
 	##
-	'smwgValueLookupCacheLifetime' => 60 * 60 * 24 * 7, // a week
+	'smwgEntityLookupCacheLifetime' => 60 * 60 * 24 * 7, // a week
 	##
 
 	##
@@ -742,7 +920,7 @@ return array(
 	# feature is disabled then a connection is always established to the standard
 	# Repository/DB backend.
 	#
-	# The settings are only relevant for cases where `smwgValueLookupCacheType` is
+	# The settings are only relevant for cases where `smwgEntityLookupCacheType` is
 	# set.
 	#
 	# - SMW_VL_SD: corresponds to Store::getSemanticData
@@ -754,36 +932,40 @@ return array(
 	#
 	# @default: all features are enabled
 	##
-	'smwgValueLookupFeatures' => SMW_VL_SD | SMW_VL_PL | SMW_VL_PV | SMW_VL_PS,
+	'smwgEntityLookupFeatures' => SMW_VL_SD | SMW_VL_PL | SMW_VL_PV | SMW_VL_PS,
 	##
 
 	###
-	# An array containing cache related settings used within Semantic MediaWiki
-	# and requires $smwgCacheType be set otherwise caching will have no effect.
+	# CacheTTL settings
 	#
-	# - smwgWantedPropertiesCache Enable to serve wanted properties from cache
-	# - smwgWantedPropertiesCacheExpiry Number of seconds before the cache expires
+	# Defines time to live for in Semantic MediaWiki used cache instances and
+	# requires $smwgCacheType to be set otherwise related settings will have
+	# no effect.
 	#
-	# - smwgUnusedPropertiesCache Enable to serve unused properties from cache
-	# - smwgUnusedPropertiesCacheExpiry Number of seconds before the cache expires
+	# - special.wantedproperties TTL (in sec, or false to disable it) for caching
+	#   the lookup on wanted property usage
 	#
-	# - smwgPropertiesCache Enable to serve properties from cache
-	# - smwgPropertiesCacheExpiry Number of seconds before the cache expires
+	# - special.unusedproperties TTL (in sec, or false to disable it) for caching
+	#   the lookup on unused property usage
 	#
-	# - smwgStatisticsCache Enable to serve statistics from cache
-	# - smwgStatisticsCacheExpiry Number of seconds before the cache expires
+	# - special.properties TTL (in sec, or false to disable it) for caching the
+	#   lookup on property usage
+	#
+	# - special.statistics TTL (in sec, or false to disable it) for caching the
+	#   lookup on statistics
+	#
+	# - api.browse TTL (in sec, or false to disable it) for the API browse module
+	# - api.task TTL (in sec, or false to disable it) for the API task module
 	#
 	# @since 1.9
 	##
 	'smwgCacheUsage' => array(
-		'smwgWantedPropertiesCache' => true,
-		'smwgWantedPropertiesCacheExpiry' => 3600,
-		'smwgUnusedPropertiesCache' => true,
-		'smwgUnusedPropertiesCacheExpiry' => 3600,
-		'smwgPropertiesCache' => true,
-		'smwgPropertiesCacheExpiry' => 3600,
-		'smwgStatisticsCache' => true,
-		'smwgStatisticsCacheExpiry' => 3600,
+		'special.wantedproperties' => 3600,
+		'special.unusedproperties' => 3600,
+		'special.properties' => 3600,
+		'special.statistics' => 3600,
+		'api.browse' => 3600,
+		'api.task'  => 3600
 	),
 	##
 
@@ -890,43 +1072,26 @@ return array(
 	##
 
 	###
-	# This option enables to omit categories (marked with __HIDDENCAT__) from
-	# the annotation process.
-	#
-	# If a category is updated of either being hidden or visible, pages need to
-	# be refreshed to ensure that the StoreUpdater can make use of the changed
-	# environment.
-	#
-	# @since 1.9
-	# @default true (true = legacy behaviour, false = not to show hidden categories)
-	##
-	'smwgShowHiddenCategories' => true,
-	##
-
-	###
-	# QueryProfiler related setting to enable/disable specific monitorable profile
-	# data
+	# QueryProfiler related settings
 	#
 	# @note If these settings are changed, please ensure to run update.php/rebuildData.php
 	#
-	# - smwgQueryProfiler can be set false itself allowing it to disable its
-	# functionality but it may impact secondary processes that rely on profile
-	# information to be available (Notification system etc.)
+	# - smwgQueryProfiler can be set false to disable its functionality but it
+	# may impact secondary processes that rely on profile information to be
+	# available (Notification system etc.)
 	#
-	# - smwgQueryDurationEnabled to record query duration (the time
+	# - SMW_QPRFL_DUR to record query duration (the time
 	# between the query result selection and output its)
 	#
-	# - smwgQueryParametersEnabled to record query parameters that are necessary
+	# - SMW_QPRFL_PARAMS to record query parameters that are necessary
 	# for allowing to generate a query result using a background job
 	#
-	# False will disabled the query profiler (not recommended)
+	# $smwgQueryProfiler = SMW_QPRFL_DUR | SMW_QPRFL_PARAMS;
 	#
 	# @since 1.9
+	# @default true
 	##
-	'smwgQueryProfiler' => array(
-		'smwgQueryDurationEnabled' => false,
-		'smwgQueryParametersEnabled' => false
-	),
+	'smwgQueryProfiler' => true,
 	##
 
 	###
@@ -1015,7 +1180,7 @@ return array(
 	#
 	# @since 2.3 (experimental)
 	##
-	'smwgQueryDependencyPropertyExemptionlist' => array( '_MDAT', '_SOBJ', '_ASKDU' ),
+	'smwgQueryDependencyPropertyExemptionList' => array( '_MDAT', '_SOBJ', '_ASKDU' ),
 	##
 
 	###
@@ -1028,7 +1193,7 @@ return array(
 	#
 	# @since 2.4 (experimental)
 	##
-	'smwgQueryDependencyAffiliatePropertyDetectionlist' => array(),
+	'smwgQueryDependencyAffiliatePropertyDetectionList' => array(),
 	##
 
 	###
@@ -1109,28 +1274,44 @@ return array(
 	#
 	# @see https://www.w3.org/TR/rdf11-concepts/#section-IRIs
 	#
-	# This setting should be set TRUE with beginning of 3.x.
-	#
 	# @since 2.5
-	# @default false (to avoid any BC break for exsiting systems)
-	##
-	'smwgExportResourcesAsIri' => false,
-	##
-
-	##
-	# The strict mode is to help to remove ambiguity during the annotation [[ ... :: ... ]]
-	# parsing process.
-	#
-	# The default interpretation (strict) is to find a single triple such as
-	# [[property::value:partOfTheValue::alsoPartOfTheValue]] where in case the strict
-	# mode is disabled multiple properties can be assigned using a
-	# [[property1::property2::value]] notation but may cause value strings to be
-	# interpret unanticipated in case of additional colons.
-	#
-	# @since 2.3
 	# @default true
 	##
-	'smwgEnabledInTextAnnotationParserStrictMode' => true,
+	'smwgExportResourcesAsIri' => true,
+	##
+
+	###
+	# Features related to text and annotion parsing
+	#
+	# - SMW_PARSER_NONE
+	#
+	# - SMW_PARSER_STRICT: The default interpretation (strict) is to find a single
+	#   triple such as [[property::value:partOfTheValue::alsoPartOfTheValue]] where
+	#   in case the strict mode is disabled multiple properties can be assigned
+	#   using a [[property1::property2::value]] notation but may cause value
+	#   strings to be interpret unanticipated in case of additional colons.
+	#
+	# - SMW_PARSER_UNSTRIP: Support decoding (unstripping) of hidden text elements
+	#   (e.g. `<nowiki>` as in `[[Has description::<nowiki>{{#ask: HasStripMarkers
+	#   }}</nowiki>]]` etc.) within an annotation value (can only be stored together
+	#   with a `_txt` type property).
+	#
+	# - SMW_PARSER_INL_ERROR: Should warnings be displayed in wikitexts right after
+	#   the problematic input? This affects only semantic annotations, not warnings
+	#   that are displayed by inline queries or other features. (was $smwgInlineErrors)
+	#
+	# - SMW_PARSER_HID_CATS: Switch to omit hidden categories (marked with
+	#   __HIDDENCAT__) from the annotation process. Changing the setting requires
+	#   to run a full rebuild to ensure hidden categories are discarded during
+	#   the parsing process. (was $smwgShowHiddenCategories 1.9)
+	#
+	# - SMW_PARSER_LINV: Support parsing of "links in values" for annotations like
+	#   [[SomeProperty::Foo [[link]] in [[Bar::AnotherValue]]]] (was $smwgLinksInValues
+	#   with SMW_LINV_OBFU, SMW_LINV_PCRE is no longer available)
+	#
+	# @since 3.0
+	##
+	'smwgParserFeatures' => SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR | SMW_PARSER_HID_CATS,
 	##
 
 	##
@@ -1266,7 +1447,8 @@ return array(
 	##
 	'smwgFulltextSearchPropertyExemptionList' => array(
 		'_ASKFO', '_ASKST', '_ASKPA','_IMPO', '_LCODE', '_UNIT', '_CONV',
-		'_TYPE', '_ERRT', '_INST', '_ASK', '_INST', '_SOBJ', '_PVAL', '_PVALI'
+		'_TYPE', '_ERRT', '_INST', '_ASK', '_SOBJ', '_PVAL', '_PVALI',
+		'_REDI', '_CHGPRO'
 	),
 	##
 
@@ -1406,8 +1588,23 @@ return array(
 	'smwgQueryResultCacheRefreshOnPurge' => true,
 	##
 
+	##
+	# Property create protection
+	#
+	# If enabled, users are able to annotate property values using existing properties
+	# but new properties can only be created by those with the assigned "authority"
+	# (aka user right).
+	#
+	# Changes to a property specification requires the permission as well.
+	#
+	# @since 3.0
+	# @default false
+	##
+	'smwgCreateProtectionRight' => false,
+	##
+
 	###
-	# Protect page edits
+	# Page edit protection
 	#
 	# To prevent accidental changes of content especially to those of property
 	# definitions, this setting allows with the help of the `Is edit protected`
@@ -1456,7 +1653,185 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '%' ),
+	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '%', "\r", "\n" ),
+	##
+
+	##
+	# Reserved property names
+	#
+	# Listed names are reserved as they may interfere with Semantic MediaWiki or
+	# MediaWiki itself.
+	#
+	# Removing default names from the list is not recommended (extending the list
+	# is supported and may be used to customize use cases for an individual wiki).
+	#
+	# The list can contain simple names or identifiers that start with
+	# `smw-property-reserved-` to link to a translatable representation that
+	# matches a string in a content language.
+	#
+	# @see #2835, #2840
+	#
+	# @since 3.0
+	##
+	'smwgPropertyReservedNameList' => array( 'Category', 'smw-property-reserved-category' ),
+	##
+
+	##
+	# Entity specific collation
+	#
+	# This should correspond to the $wgCategoryCollation setting (also in regards
+	# to selected argument values), yet it is kept separate to have a better
+	# control over changes in regards to the collation, sorting, and display of
+	# values.
+	#
+	# This setting is "global" and applies to any entity that is maintained for
+	# a wiki. In being global means that it cannot be selective (use one collation
+	# for one query and use another collation for a different query) because the
+	# field (smw_sort) contains a computed representation of the sort value.
+	#
+	# ANY change to this setting requires to run the `updateEntityCollation.php`
+	# maintenance script.
+	#
+	# @since 3.0
+	# @default identity (as legacy setting)
+	##
+	'smwgEntityCollation' => 'identity',
+	##
+
+	##
+	# Experimental settings
+	#
+	# Features enabled are considered stable but for any unforeseen behaviour, the
+	# feature can be disabled to return to a previous working state avoiding
+	# the need for hot-patching a system.
+	#
+	# After a certain in-production period, features will be moved permanently
+	# to the desired target state and hereby automatically retires the related
+	# setting.
+	#
+	# - SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP enables a new query form for selecting
+	#   incoming properties (#1234)
+	#
+	# @since 3.0
+	##
+	'smwgExperimentalFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP,
+	##
+
+	##
+	# SQLStore specific field type features
+	#
+	# SMW_FIELDT_NONE
+	#
+	# SMW_FIELDT_CHAR_NOCASE - Modifies selected search fields to use a case
+	# insensitive collation and may require additional extension (e.g. Postgres
+	# requires `citext`) on non MySQL related systems therefore it is disabled
+	# by default.
+	#
+	# Furthermore, no extensive analysis has been performed on how the switch
+	# from VARBINARY to a collated VARCHAR field type affects the search
+	# performance.
+	#
+	# If enabled, the setting will replace selected `FieldType::FIELD_TITLE`
+	# types with `FieldType::TYPE_CHAR_NOCASE`.
+	#
+	# `FieldType::TYPE_CHAR_NOCASE` has been defined as:
+	#
+	# - MySQL: VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci
+	# - Postgres: citext NOT NULL
+	# - SQLite: VARCHAR(255) NOT NULL COLLATE NOCASE but according to [0] this may
+	#   not work and need a special solution as hinted in [0]
+	#
+	# [0] https://techblog.dorogin.com/case-insensitive-like-in-sqlite-504f594dcdc3
+	#
+	# SMW_FIELDT_CHAR_LONG - Extends the size to 300 chars for text pattern
+	# match (DIBlob and DIUri) fields.
+	#
+	# 300 has been selected to be able to build an index prefix with the available
+	# default setting of MySQL/MariaDB which restricts the prefix length to 767
+	# bytes for InnoDB tables [1]. The index length can be lifted [2] to up to
+	# 3072 bytes for InnoDB tables that use the DYNAMIC or COMPRESSED row format but
+	# that requires custom intervention.
+	#
+	# [1] https://dev.mysql.com/doc/refman/5.7/en/innodb-restrictions.html
+	# [2] https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_large_prefix
+	#
+	# By default, the SQLStore has restricted the DIBlob and DIUri fields to a
+	# 72 chars search depth in exchange for index size and performance.
+	# Extending fields to 300 allows to run LIKE/NLIKE matching on a larger text
+	# body without relying on a full-text index but an increased index size could
+	# potentially carry a performance penalty when the index cannot be kept in
+	# memory.
+	#
+	# No analysis has been performed on how performance is impacted. Selecting
+	# this option requires to run `rebuildData.php` to adjust the field content
+	# to the new length.
+	#
+	# SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG can be combined to build a
+	# case insensitive long field type.
+	#
+	# @since 3.0
+	# @default false
+	##
+	'smwgFieldTypeFeatures' => false,
+	##
+
+	##
+	# Subobject content hash !! BC setting ONLY !!
+	#
+	# Normalized content hash is enabled by default to ensure that a content
+	# declaration like:
+	#
+	# {{#subobject:
+	# |Has text=Foo,Bar|+sep=,
+	# }}
+	#
+	# yields the same hash as:
+	#
+	# {{#subobject:
+	# |Has text=Bar,Foo|+sep=,
+	# }}
+	#
+	# The setting is only provided to allow for a temporary backwards compatibility
+	# and will be removed with 3.1 at which point the functionality is enabled
+	# without any constraint.
+	#
+	# @since 3.0
+	# @default true
+	##
+	'smwgUseComparableContentHash' => true,
+	##
+
+	##
+	# List of supported schemes for a URI typed property
+	#
+	# @see https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
+	# @see https://www.w3.org/wiki/UriSchemes
+	#
+	# @since 3.0
+	##
+	'smwgURITypeSchemeList' => [
+		'http', 'https', 'mailto', 'tel', 'ftp', 'news', 'file', 'urn', 'telnet',
+		'ldap', 'gopher'
+	],
+	##
+
+	##
+	# Rule types
+	#
+	# The mapping defines the relation between a specific type, group and
+	# a possible interpreter which validates the expected rule syntax.
+	#
+	# Each type will have its own interpretation about rule specific syntax
+	# elements and how to define and enact requirements.
+	#
+	# @since 3.0
+	##
+	'smwgRuleTypes' => [
+		'LINK_FORMAT_RULE' => [
+			'schema'  => __DIR__ . '/data/schema/rule/link-format-rule-schema.v1.json',
+			'group'   => SMW_RULE_GROUP_FORMAT,
+		]
+	],
 	##
 
 );

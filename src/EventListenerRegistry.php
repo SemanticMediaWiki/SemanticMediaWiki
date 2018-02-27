@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Onoi\EventDispatcher\EventListenerCollection;
+use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
 use SMW\Query\QueryComparator;
 use SMWExporter as Exporter;
 
@@ -18,6 +19,11 @@ class EventListenerRegistry implements EventListenerCollection {
 	 * @var EventListenerCollection
 	 */
 	private $eventListenerCollection = null;
+
+	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
 
 	/**
 	 * @since 2.2
@@ -39,6 +45,8 @@ class EventListenerRegistry implements EventListenerCollection {
 
 	private function addListenersToCollection() {
 
+		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
+
 		/**
 		 * Emitted during UpdateJob, ArticlePurge
 		 */
@@ -47,14 +55,14 @@ class EventListenerRegistry implements EventListenerCollection {
 
 				if ( $dispatchContext->has( 'subject' ) ) {
 					$title = $dispatchContext->get( 'subject' )->getTitle();
-				} else{
+				} else {
 					$title = $dispatchContext->get( 'title' );
 				}
 
 				$applicationFactory = ApplicationFactory::getInstance();
 
 				$applicationFactory->getCache()->delete(
-					$applicationFactory->newCacheFactory()->getFactboxCacheKey( $title->getArticleID() )
+					$applicationFactory->newCacheFactory()->getFactboxCacheKey( $title )
 				);
 			}
 		);
@@ -84,7 +92,14 @@ class EventListenerRegistry implements EventListenerCollection {
 				}
 
 				$applicationFactory = ApplicationFactory::getInstance();
-				$applicationFactory->getMediaWikiLogger()->info( 'Event: cached.propertyvalues.prefetcher.reset :: ' . $subject->getHash() );
+
+				$context = [
+					'role' => 'developer',
+					'event' => 'cached.propertyvalues.prefetcher.reset',
+					'origin' => $subject
+				];
+
+				$this->logger->info( '[Event] {event}: {origin}', $context );
 
 				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
 					$subject
@@ -110,7 +125,14 @@ class EventListenerRegistry implements EventListenerCollection {
 				$context = $dispatchContext->has( 'context' ) ? $dispatchContext->get( 'context' ) : '';
 
 				$applicationFactory = ApplicationFactory::getInstance();
-				$applicationFactory->getMediaWikiLogger()->info( 'Event: cached.prefetcher.reset :: ' . $subject->getHash() );
+
+				$context = [
+					'role' => 'developer',
+					'event' => 'cached.prefetcher.reset',
+					'origin' => $subject
+				];
+
+				$this->logger->info( '[Event] {event}: {origin}', $context );
 
 				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
 					$subject
@@ -120,6 +142,13 @@ class EventListenerRegistry implements EventListenerCollection {
 					$subject,
 					$context
 				);
+
+				if ( $dispatchContext->has( 'ask' ) ) {
+					$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
+						$dispatchContext->get( 'ask' ),
+						$context
+					);
+				}
 
 				$dispatchContext->set( 'propagationstop', true );
 			}
@@ -133,25 +162,27 @@ class EventListenerRegistry implements EventListenerCollection {
 	private function registerStateChangeEvents() {
 
 		/**
-		 * Emitted during PropertySpecificationChangeNotifier::notifyDispatcher
+		 * Emitted during ArticleDelete
 		 */
 		$this->eventListenerCollection->registerCallback(
-			'property.specification.change', function( $dispatchContext ) {
+			'cached.update.marker.delete', function( $dispatchContext ) {
 
-				$applicationFactory = ApplicationFactory::getInstance();
-				$subject = $dispatchContext->get( 'subject' );
+				$cache = ApplicationFactory::getInstance()->getCache();
 
-				$updateDispatcherJob = $applicationFactory->newJobFactory()->newByType(
-					'SMW\UpdateDispatcherJob',
-					$subject->getTitle()
-				);
+				if ( $dispatchContext->has( 'subject' ) ) {
+					$cache->delete(
+						DependencyLinksUpdateJournal::makeKey(
+							$dispatchContext->get( 'subject' )
+						)
+					);
 
-				$updateDispatcherJob->run();
-
-				Exporter::getInstance()->resetCacheBy( $subject );
-				$applicationFactory->getPropertySpecificationLookup()->resetCacheBy( $subject );
-
-				$dispatchContext->set( 'propagationstop', true );
+					$cache->delete(
+						smwfCacheKey(
+							ParserData::CACHE_NAMESPACE,
+							$dispatchContext->get( 'subject' )->getHash()
+						)
+					);
+				}
 			}
 		);
 	}

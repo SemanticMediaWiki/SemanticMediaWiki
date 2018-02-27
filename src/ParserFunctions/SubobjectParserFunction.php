@@ -10,6 +10,8 @@ use SMW\Message;
 use SMW\HashBuilder;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\MediaWiki\StripMarkerDecoder;
+use SMW\SemanticData;
 use Parser;
 
 /**
@@ -42,7 +44,7 @@ class SubobjectParserFunction {
 
 	/**
 	 * Fixed identifier that describes a property that can auto-linked the
-	 * embededding subject
+	 * embeddedding subject
 	 */
 	const PARAM_LINKWITH = '@linkWith';
 
@@ -62,6 +64,11 @@ class SubobjectParserFunction {
 	protected $messageFormatter;
 
 	/**
+	 * @var StripMarkerDecoder
+	 */
+	private $stripMarkerDecoder;
+
+	/**
 	 * @var boolean
 	 */
 	private $useFirstElementAsPropertyLabel = false;
@@ -74,7 +81,7 @@ class SubobjectParserFunction {
 	/**
 	 * @var boolean
 	 */
-	private $enabledNormalization = false;
+	private $isComparableContent = false;
 
 	/**
 	 * @since 1.9
@@ -90,6 +97,15 @@ class SubobjectParserFunction {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param StripMarkerDecoder $stripMarkerDecoder
+	 */
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+		$this->stripMarkerDecoder = $stripMarkerDecoder;
+	}
+
+	/**
 	 * @see $wgCapitalLinks
 	 *
 	 * @since 2.5
@@ -101,17 +117,16 @@ class SubobjectParserFunction {
 	}
 
 	/**
-	 * FIXME 3.0, make sorting default with 3.0
+	 * Ensures that unordered parameters and property names are normalized and
+	 * sorted to produce the same hash even if elements of the same literal
+	 * representation are placed differently.
 	 *
-	 * Ensures that unordered parameters and property names are normalized in
-	 * order to produce the same has even if elements are placed differently
+	 * @since 3.0
 	 *
-	 * @since 2.5
-	 *
-	 * @param boolean $enabledNormalization
+	 * @param boolean $isComparableContent
 	 */
-	public function enabledNormalization( $enabledNormalization = true ) {
-		$this->enabledNormalization = (bool)$enabledNormalization;
+	public function isComparableContent( $isComparableContent = true ) {
+		$this->isComparableContent = (bool)$isComparableContent;
 	}
 
 	/**
@@ -136,9 +151,9 @@ class SubobjectParserFunction {
 	public function parse( ParserParameterProcessor $parameters ) {
 
 		if (
-			$this->parserData->canModifySemanticData() &&
+			$this->parserData->canUse() &&
 			$this->addDataValuesToSubobject( $parameters ) &&
-			!$this->subobject->getSemanticData()->isEmpty()  ) {
+			$this->subobject->getSemanticData()->isEmpty() === false ) {
 			$this->parserData->getSemanticData()->addSubobject( $this->subobject );
 		}
 
@@ -202,9 +217,7 @@ class SubobjectParserFunction {
 			}
 		}
 
-		$this->doAugmentSortKeyOnAccessibleDisplayTitle(
-			$this->subobject->getSemanticData()
-		);
+		$this->augment( $this->subobject->getSemanticData() );
 
 		return true;
 	}
@@ -214,22 +227,31 @@ class SubobjectParserFunction {
 		$id = $parserParameterProcessor->getFirst();
 		$isAnonymous = in_array( $id, array( null, '' ,'-' ) );
 
-		$useFirstElementAsPropertyLabel = $this->useFirstElementAsPropertyLabel && !$isAnonymous;
+		$useFirst = $this->useFirstElementAsPropertyLabel && !$isAnonymous;
 
-		$parameters = $this->doPrepareParameters(
+		$parameters = $this->preprocess(
 			$parserParameterProcessor,
-			$useFirstElementAsPropertyLabel
+			$useFirst
 		);
 
+		// FIXME remove the check with 3.1, should be standard by then!
+		if ( !$this->isComparableContent ) {
+			$p = $parameters;
+		} else {
+			$p = $parameters;
+			// Sort the copy not the parameters itself
+			$parserParameterProcessor->sort( $p );
+		}
+
 		// Reclaim the ID to be content hash based
-		if ( $useFirstElementAsPropertyLabel || $isAnonymous ) {
-			$id = HashBuilder::createFromContent( $parameters, '_' );
+		if ( $useFirst || $isAnonymous ) {
+			$id = HashBuilder::createFromContent( $p, '_' );
 		}
 
 		return array( $parameters, $id );
 	}
 
-	private function doPrepareParameters( ParserParameterProcessor $parserParameterProcessor, $useFirstElementAsPropertyLabel ) {
+	private function preprocess( ParserParameterProcessor $parserParameterProcessor, $useFirst ) {
 
 		if ( $parserParameterProcessor->hasParameter( self::PARAM_LINKWITH ) ) {
 			$val = $parserParameterProcessor->getParameterValuesByKey( self::PARAM_LINKWITH );
@@ -241,29 +263,24 @@ class SubobjectParserFunction {
 			$parserParameterProcessor->removeParameterByKey( self::PARAM_LINKWITH );
 		}
 
-		if ( $useFirstElementAsPropertyLabel ) {
+		if ( $useFirst ) {
 			$parserParameterProcessor->addParameter(
 				$parserParameterProcessor->getFirst(),
 				$this->parserData->getTitle()->getPrefixedText()
 			);
 		}
 
-		$parameters = $parserParameterProcessor->toArray();
+		$parameters = $this->decode(
+			$parserParameterProcessor->toArray()
+		);
 
-		if ( !$this->enabledNormalization ) {
-			return $parameters;
-		}
-
-		// Normalize property names to generate the same hash for when
-		// CapitalLinks is enabled (has foo === Has foo)
 		foreach ( $parameters as $property => $values ) {
 
 			$prop = $property;
 
-			// Order of the values is not guaranteed
-			rsort( $values );
-
-			if ( $property{0} !== '@' && $this->isCapitalLinks ) {
+			// Normalize property names to generate the same hash for when
+			// CapitalLinks is enabled (has foo === Has foo)
+			if ( $property !== '' && $property{0} !== '@' && $this->isCapitalLinks ) {
 				$property = mb_strtoupper( mb_substr( $property, 0, 1 ) ) . mb_substr( $property, 1 );
 			}
 
@@ -271,14 +288,33 @@ class SubobjectParserFunction {
 			$parameters[$property] = $values;
 		}
 
-		// Sort the array by property name to ensure that a different order would
-		// always create the same hash
-		ksort( $parameters );
+		return $parameters;
+	}
+
+	private function decode( $parameters ) {
+
+		if ( $this->stripMarkerDecoder === null || !$this->stripMarkerDecoder->canUse() ) {
+			return $parameters;
+		}
+
+		// Any decoding has to happen before the subject ID is generated otherwise
+		// the value would contain something like `UNIQ--nowiki-00000011-QINU`
+		// and be part of the hash. `UNIQ--nowiki-00000011-QINU` isn't stable
+		// and changes to text will create new marker positions therefore it
+		// cannot be part of the hash computation
+		foreach ( $parameters as $property => &$values ) {
+			foreach ( $values as &$value ) {
+				$value = $this->stripMarkerDecoder->decode( $value );
+			}
+		}
 
 		return $parameters;
 	}
 
-	private function doAugmentSortKeyOnAccessibleDisplayTitle( $semanticData ) {
+	private function augment( $semanticData ) {
+
+		// Data block created by a user
+		$semanticData->setOption( SemanticData::PROC_USER, true );
 
 		$sortkey = new DIProperty( DIProperty::TYPE_SORTKEY );
 		$displayTitle = new DIProperty( DIProperty::TYPE_DISPLAYTITLE );

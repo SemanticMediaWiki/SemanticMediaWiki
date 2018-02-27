@@ -33,7 +33,9 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		],
-		"smwgEnabledInTextAnnotationParserStrictMode": false
+		"smwgParserFeatures": [
+			"SMW_PARSER_NONE"
+		]
 	},
 	"meta": {
 		"version": "2",

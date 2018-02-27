@@ -14,6 +14,7 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use Title;
 use User;
 use WikiPage;
+use StripState;
 
 /**
  * @license GNU GPL v2+
@@ -35,17 +36,6 @@ class MwCollaboratorFactory {
 	 */
 	public function __construct( ApplicationFactory $applicationFactory ) {
 		$this->applicationFactory = $applicationFactory;
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param Database $connection
-	 *
-	 * @return JobQueueLookup
-	 */
-	public function newJobQueueLookup( Database $connection ) {
-		return new JobQueueLookup( $connection );
 	}
 
 	/**
@@ -126,19 +116,34 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @return LazyDBConnectionProvider
+	 * @return DBLoadBalancerConnectionProvider
 	 */
-	public function newLazyDBConnectionProvider( $connectionType ) {
-		return new LazyDBConnectionProvider( $connectionType );
+	public function newDBLoadBalancerConnectionProvider( $connectionType ) {
+		return new DBLoadBalancerConnectionProvider( $connectionType );
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @return DatabaseConnectionProvider
+	 * @param string|null $provider
+	 *
+	 * @return DBConnectionProvider
 	 */
-	public function newMediaWikiDatabaseConnectionProvider() {
-		return new DatabaseConnectionProvider();
+	public function newDBConnectionProvider( $provider = null ) {
+
+		$dbConnectionProvider = new DBConnectionProvider(
+			$provider
+		);
+
+		$dbConnectionProvider->setLocalConnectionConf(
+			$this->applicationFactory->getSettings()->get( 'smwgLocalConnectionConf' )
+		);
+
+		$dbConnectionProvider->setLogger(
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+
+		return $dbConnectionProvider;
 	}
 
 	/**
@@ -197,6 +202,26 @@ class MwCollaboratorFactory {
 	 */
 	public function newMediaWikiNsContentReader() {
 		return new MediaWikiNsContentReader();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param StripState $stripState
+	 *
+	 * @return StripMarkerDecoder
+	 */
+	public function newStripMarkerDecoder( StripState $stripState ) {
+
+		$stripMarkerDecoder = new StripMarkerDecoder(
+			$stripState
+		);
+
+		$stripMarkerDecoder->isSupported(
+			$this->applicationFactory->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_UNSTRIP )
+		);
+
+		return $stripMarkerDecoder;
 	}
 
 }

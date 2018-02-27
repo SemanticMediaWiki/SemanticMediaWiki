@@ -143,6 +143,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		// *** Now construct the query ... ***//
 		$query->joinTable = $proptable->getName();
+		$query->depth = $description->getHierarchyDepth();
 
 		// *** Add conditions for selecting rows for this property ***//
 		if ( !$proptable->isFixedPropertyTable() ) {
@@ -153,6 +154,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$pquery = new QuerySegment();
 			$pquery->type = QuerySegment::Q_PROP_HIERARCHY;
 			$pquery->joinfield = array( $pid );
+			$pquery->depth = $description->getHierarchyDepth();
 			$query->components[$pqid] = "{$query->alias}.p_id";
 
 			$this->querySegmentListBuilder->addQuerySegment( $pquery );
@@ -192,7 +194,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 				// Can we prevent that? (PERFORMANCE)
 				$query->from = ' INNER JOIN ' .	$db->tableName( SMWSql3SmwIds::TABLE_NAME ) .
 						" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$o_id}";
-				$query->sortfields[$sortkey] = "ids{$query->alias}.smw_sortkey";
+				$query->sortfields[$sortkey] = "ids{$query->alias}.smw_sort";
 			}
 		} else { // non-page value description
 			$query->joinfield = "{$query->alias}.s_id";

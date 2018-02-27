@@ -135,6 +135,15 @@ to activate the [automatic data update](https://www.semantic-mediawiki.org/wiki/
 As final step, you can now verify SMW got installed by looking at the "Special:Version" page on your wiki and check that
 the Semantic MediaWiki section is listed.
 
+### Installation of development versions and release candidates
+
+If you would like to install a development version or release candidate then replace the lines as stated in step 3 of the
+"Installation with Composer" section with the following line
+
+* master: `"mediawiki/semantic-media-wiki": "@dev"`
+* legacy branch: `"mediawiki/semantic-media-wiki": "2.5.x@dev"`
+* release candidate: `"mediawiki/semantic-media-wiki": "~2.5@rc"`
+
 ## More instructions
 
 * [Verbose installation instructions](https://www.semantic-mediawiki.org/wiki/Help:Installation)

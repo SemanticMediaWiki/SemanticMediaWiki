@@ -86,4 +86,13 @@ class ValidatorFactory {
 		return new QuerySegmentValidator();
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @return HtmlValidator
+	 */
+	public function newHtmlValidator() {
+		return new HtmlValidator();
+	}
+
 }

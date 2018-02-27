@@ -19,8 +19,8 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	public function assertThatStringContains( $expected, $actual, $message = '' ) {
 
 		$callback = function( &$expected, $actual, &$actualCounted ) {
-			foreach ( $expected as $key => $string ) {
-				if ( strpos( $actual, $string ) !== false ) {
+			foreach ( $expected as $key => $pattern ) {
+				if ( $this->isMatch( $pattern, $actual ) ) {
 					$actualCounted++;
 					unset( $expected[$key] );
 				}
@@ -78,12 +78,26 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 		self::assertEquals(
 			$expectedToCount,
 			$actualCounted,
-			"Failed on `{$message}` for $actual with ($method) " . $this->toString( $expected )
+			"Failed \"{$message}\" for $method:\n==== (actual) ====\n$actual\n==== (expected) ====\n" . $this->toString( $expected )
 		);
 	}
 
+	private function isMatch( $pattern, $source ) {
+
+		// .* indicator to use the preg_match/wildcard search match otherwise
+		// use a simple strpos (as it is faster)
+		if ( strpos( $pattern, '.*' ) === false ) {
+			return strpos( $source, $pattern ) !== false;
+		}
+
+		$pattern = preg_quote( $pattern, '/' );
+		$pattern = str_replace( '\.\*' , '.*?', $pattern );
+
+		return (bool)preg_match( '/' . $pattern . '/' , $source );
+	}
+
 	private function toString( $expected ) {
-		return "[ " . ( is_array( $expected ) ? implode( ', ', $expected ) : $expected ) . " ]";
+		return "[ " . ( is_array( $expected ) ? implode( " ], [ ", $expected ) : $expected ) . " ]\n";
 	}
 
 }

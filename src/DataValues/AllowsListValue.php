@@ -7,7 +7,7 @@ use SMWStringValue as StringValue;
 use SMW\Message;
 
 /**
- * To suppport value list via the NS_MEDIAWIKI namespace
+ * To support value list via the NS_MEDIAWIKI namespace
  *
  * @license GNU GPL v2+
  * @since 2.5
@@ -50,8 +50,10 @@ class AllowsListValue extends StringValue {
 			$value
 		);
 
-		if ( !$content ) {
-			$this->addErrorMsg( array( 'smw-datavalue-allows-value-list-unknown', $value ), Message::ESCAPED );
+		if ( $allowsListValueParser->getErrors() !== array() ) {
+			foreach ( $allowsListValueParser->getErrors() as $error ) {
+				$this->addErrorMsg( $error );
+			}
 		}
 
 		parent::parseUserValue( $value );

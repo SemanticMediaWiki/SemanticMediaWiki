@@ -3,8 +3,11 @@
 namespace SMW;
 
 use SMW\ExtraneousLanguage\ExtraneousLanguage;
+use SMW\MediaWiki\LocalTime;
+use DateTime;
 use Language;
 use Title;
+use User;
 
 /**
  * @license GNU GPL v2+
@@ -73,9 +76,46 @@ class Localizer {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param User|null $user
+	 *
+	 * @return boolean
+	 */
+	public function hasLocalTimeOffsetPreference( $user = null ) {
+
+		if ( !$user instanceof User ) {
+			$user = $GLOBALS['wgUser'];
+		}
+
+		return $user->getOption( 'smw-prefs-general-options-time-correction' );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param DateTime $dateTime
+	 * @param User|null $user
+	 *
+	 * @return DateTime
+	 */
+	public function getLocalTime( DateTime $dateTime, $user = null ) {
+
+		if ( !$user instanceof User ) {
+			$user = $GLOBALS['wgUser'];
+		}
+
+		LocalTime::setLocalTimeOffset(
+			$GLOBALS['wgLocalTZoffset']
+		);
+
+		return LocalTime::getLocalizedTime( $dateTime, $user );
+	}
+
+	/**
 	 * @note
 	 *
-	 * 1. If the page content language is availabe use it as preferred language
+	 * 1. If the page content language is available use it as preferred language
 	 * (as it is clear that the page content was intended to be in a specific
 	 * language)
 	 * 2. If no page content language was assigned use the global content
@@ -200,16 +240,16 @@ class Localizer {
 	 *
 	 * @return boolean
 	 */
-	public static function isSupportedLanguage( $languageCode ) {
+	public static function isKnownLanguageTag( $languageCode ) {
 
 		$languageCode = mb_strtolower( $languageCode );
 
-		// FIXME 1.19 doesn't know Language::isSupportedLanguage
-		if ( !method_exists( '\Language', 'isSupportedLanguage' ) ) {
+		// FIXME 1.19 doesn't know Language::isKnownLanguageTag
+		if ( !method_exists( '\Language', 'isKnownLanguageTag' ) ) {
 			return Language::isValidBuiltInCode( $languageCode );
 		}
 
-		return Language::isSupportedLanguage( $languageCode );
+		return Language::isKnownLanguageTag( $languageCode );
 	}
 
 	/**
@@ -261,6 +301,17 @@ class Localizer {
 
 		$namespace = $this->getNamespaceTextById( $index );
 
+		if ( strpos( $url, 'title=' ) !== false ) {
+			return str_replace(
+				[
+					'title=' . wfUrlencode( $namespace ) . ':',
+					'title=' . $namespace . ':'
+				],
+				'title=' . $this->getCanonicalNamespaceTextById( $index ) .':',
+				$url
+			);
+		}
+
 		return str_replace(
 			array(
 				wfUrlencode( '/' . $namespace .':' ),
@@ -288,7 +339,7 @@ class Localizer {
 			$value = str_replace( '_', ' ', substr_replace( $value, '', ( mb_strlen( $langCode ) + 1 ) * -1 ) );
 		}
 
-		// Do we want to check here whether isSupportedLanguage or not?
+		// Do we want to check here whether isKnownLanguageTag or not?
 		if ( $langCode !== '' && ctype_alpha( str_replace( array( '-' ), '', $langCode ) ) ) {
 			return $langCode;
 		}

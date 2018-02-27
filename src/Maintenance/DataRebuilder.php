@@ -259,6 +259,7 @@ class DataRebuilder {
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
 			$progress = '';
+			$dispatchedId = $id;
 
 			$this->rebuildCount++;
 			$this->exceptionLog = array();
@@ -271,16 +272,16 @@ class DataRebuilder {
 
 			foreach ( $entityRebuildDispatcher->getDispatchedEntities() as $value ) {
 
-				$text = $this->getHumanReadableTextFrom( $id, $value );
+				$text = $this->getHumanReadableTextFrom( $dispatchedId, $value );
 
 				$this->reportMessage(
 					sprintf( "%-16s%s\n", "($this->rebuildCount/$total)", "Finished processing ID " . $text ),
 					$this->options->has( 'v' )
 				);
 
-				if ( $this->options->has( 'ignore-exceptions' ) && isset( $this->exceptionLog[$id] ) ) {
+				if ( $this->options->has( 'ignore-exceptions' ) && isset( $this->exceptionLog[$dispatchedId] ) ) {
 					$this->exceptionFileLogger->doWriteExceptionLog(
-						array( $id . ' ' . $text => $this->exceptionLog[$id] )
+						array( $dispatchedId . ' ' . $text => $this->exceptionLog[$dispatchedId] )
 					);
 				}
 			}
@@ -383,7 +384,8 @@ class DataRebuilder {
 
 	private function doDisposeMarkedOutdatedEntities() {
 
-		$entityIdDisposerJob = ApplicationFactory::getInstance()->newJobFactory()->newEntityIdDisposerJob(
+		$applicationFactory = ApplicationFactory::getInstance();
+		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
 			Title::newFromText( __METHOD__ )
 		);
 
@@ -395,12 +397,19 @@ class DataRebuilder {
 			return;
 		}
 
-		$this->reportMessage( "Removing table entries (marked for deletion).\n" );
+		$this->reportMessage( "Removing table entries (marked as outdated or deleted).\n" );
 
-		foreach ( $outdatedEntitiesResultIterator as $row ) {
-			$counter++;
-			$this->doPrintDotProgressIndicator( false, $counter, round( $counter / $matchesCount * 100 ) . ' %' );
-			$entityIdDisposerJob->dispose( $row );
+		$chunkedIterator = $applicationFactory->getIteratorFactory()->newChunkedIterator(
+			$outdatedEntitiesResultIterator,
+			200
+		);
+
+		foreach ( $chunkedIterator as $chunk ) {
+			foreach ( $chunk as $row ) {
+				$counter++;
+				$this->doPrintDotProgressIndicator( false, $counter, round( $counter / $matchesCount * 100 ) . ' %' );
+				$entityIdDisposerJob->dispose( $row );
+			}
 		}
 
 		$this->reportMessage( "\n\n{$matchesCount} IDs removed.\n\n" );

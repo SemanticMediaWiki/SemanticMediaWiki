@@ -40,15 +40,11 @@ class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$contextSource = $this->getMockBuilder( '\IContextSource' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new FactboxFactory();
 
 		$this->assertInstanceOf(
 			'\SMW\Factbox\Factbox',
-			$instance->newFactbox( $parserData, $contextSource )
+			$instance->newFactbox( $parserData )
 		);
 	}
 

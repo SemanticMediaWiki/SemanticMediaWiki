@@ -45,8 +45,25 @@ class JulianDay implements CalendarModel {
 	 * @return float
 	 */
 	public static function getJD( $calendarModel = self::CM_GREGORIAN, $year, $month, $day, $hour, $minute, $second ) {
+		return self::format( self::date2JD( $calendarModel, $year, $month, $day ) + self::time2JDoffset( $hour, $minute, $second ) );
+	}
+
+	/**
+	 * Return a formatted value
+	 *
+	 * @note April 25, 2017 20:00-4:00 is expected to be 2457869.5 and not
+	 * 2457869.4999999665 hence apply the same formatting on all values to avoid
+	 * some unexpected behaviour as observed in #2454
+	 *
+	 * @since 3.0
+	 *
+	 * @param $value
+	 *
+	 * @return float
+	 */
+	public static function format( $value ) {
 		// Keep microseconds to a certain degree distinguishable
-		return floatval( number_format( self::date2JD( $calendarModel, $year, $month, $day ) + self::time2JDoffset( $hour, $minute, $second ), 7, '.', '' ) );
+		return floatval( number_format( $value, 7, '.', '' ) );
 	}
 
 	/**

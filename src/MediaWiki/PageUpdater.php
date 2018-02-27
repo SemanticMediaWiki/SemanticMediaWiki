@@ -3,8 +3,12 @@
 namespace SMW\MediaWiki;
 
 use Title;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use SMW\Utils\Timer;
+use DeferrableUpdate;
+use DeferredpendingUpdates;
+use SMW\Updater\DeferredTransactionalUpdate;
+use SMW\MediaWiki\Database;
 
 /**
  * @license GNU GPL v2+
@@ -12,7 +16,14 @@ use Psr\Log\LoggerAwareInterface;
  *
  * @author mwjames
  */
-class PageUpdater implements LoggerAwareInterface {
+class PageUpdater implements DeferrableUpdate {
+
+	use LoggerAwareTrait;
+
+	/**
+	 * @var DeferredTransactionalUpdate
+	 */
+	private $deferredTransactionalUpdate;
 
 	/**
 	 * @var Database
@@ -25,14 +36,19 @@ class PageUpdater implements LoggerAwareInterface {
 	private $titles = array();
 
 	/**
-	 * LoggerInterface
+	 * @var string
 	 */
-	private $logger;
+	private $origin = '';
+
+	/**
+	 * @var string|null
+	 */
+	private $fingerprint = null;
 
 	/**
 	 * @var boolean
 	 */
-	private $isCommandLineMode = false;
+	private $isHtmlCacheUpdate = true;
 
 	/**
 	 * @var boolean
@@ -40,35 +56,65 @@ class PageUpdater implements LoggerAwareInterface {
 	private $onTransactionIdle = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $asPoolPurge = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $isPending = false;
+
+	/**
+	 * @var array
+	 */
+	private $pendingUpdates = array();
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Database|null $connection
+	 * @param DeferredTransactionalUpdate|null $deferredTransactionalUpdate
 	 */
-	public function __construct( Database $connection = null ) {
+	public function __construct( Database $connection = null, DeferredTransactionalUpdate $deferredTransactionalUpdate = null ) {
 		$this->connection = $connection;
+		$this->deferredTransactionalUpdate = $deferredTransactionalUpdate;
 	}
 
 	/**
-	 * @see LoggerAwareInterface::setLogger
+	 * @since 3.0
 	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
+	 * @param string $origin
 	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
+	public function setOrigin( $origin ) {
+		$this->origin = $origin;
 	}
 
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-	 * Indicates whether MW is running in command-line mode or not.
+	 * @since 3.0
 	 *
-	 * @since 2.5
-	 *
-	 * @param boolean $isCommandLineMode
+	 * @param string|null $fingerprint
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
-		$this->isCommandLineMode = $isCommandLineMode;
+	public function setFingerprint( $fingerprint = null ) {
+		$this->fingerprint = $fingerprint;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isHtmlCacheUpdate
+	 */
+	public function isHtmlCacheUpdate( $isHtmlCacheUpdate ) {
+		$this->isHtmlCacheUpdate = $isHtmlCacheUpdate;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param booloan $isPending
+	 */
+	public function markAsPending() {
+		$this->isPending = true;
 	}
 
 	/**
@@ -82,7 +128,7 @@ class PageUpdater implements LoggerAwareInterface {
 			return;
 		}
 
-		$this->titles[$title->getPrefixedDBKey()] = $title;
+		$this->titles[$title->getDBKey()] = $title;
 	}
 
 	/**
@@ -94,13 +140,23 @@ class PageUpdater implements LoggerAwareInterface {
 	 * @since 2.5
 	 */
 	public function waitOnTransactionIdle() {
+		$this->onTransactionIdle = true;
+	}
 
-		if ( $this->connection === null ) {
-			$this->log( __METHOD__ . ' is missing an active connection therefore `onTransactionIdle` cannot be used.' );
-			return $this->onTransactionIdle = false;
+	/**
+	 * Controls the purge to use a direct DB access to make changes to avoid
+	 * racing conditions for a large number of title entities.
+	 *
+	 * @since 3.0
+	 */
+	public function doPurgeParserCacheAsPool() {
+		if ( $this->connection !== null ) {
+			$this->connection->onTransactionIdle( function() {
+				 $this->doPoolPurge();
+			} );
+		} else {
+			$this->doPoolPurge();
 		}
-
-		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
 	/**
@@ -120,19 +176,63 @@ class PageUpdater implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Push pendingUpdates to be either deferred or direct executable, pending
+	 * the setting invoked by PageUPdater::markAsPending.
+	 *
+	 * @since 3.0
+	 */
+	public function pushUpdate() {
+
+		if ( $this->deferredTransactionalUpdate === null ) {
+			return $this->log( __METHOD__ . ' it is not possible to push updates as DeferredTransactionalUpdate)' );
+		}
+
+		$this->deferredTransactionalUpdate->setCallback( function(){
+			$this->doUpdate();
+		} );
+
+		if ( $this->onTransactionIdle ) {
+			$this->deferredTransactionalUpdate->waitOnTransactionIdle();
+		}
+		if ( $this->isPending ) {
+			$this->deferredTransactionalUpdate->markAsPending();
+		}
+
+		$this->deferredTransactionalUpdate->setFingerprint(
+			$this->fingerprint
+		);
+
+		$this->deferredTransactionalUpdate->setOrigin( array(
+			__METHOD__,
+			$this->origin
+		) );
+
+		$this->deferredTransactionalUpdate->pushUpdate();
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function doUpdate() {
+		$this->isPending = false;
+		$this->onTransactionIdle = false;
+
+		foreach ( array_keys( $this->pendingUpdates ) as $update ) {
+			call_user_func( [ $this, $update ] );
+		}
+
+		$this->pendingUpdates = array();
+	}
+
+	/**
 	 * @since 2.1
 	 */
 	public function doPurgeParserCache() {
 
 		$method = __METHOD__;
 
-		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function () use( $method ) {
-				$this->log( $method . ' (onTransactionIdle)' );
-				$this->onTransactionIdle = false;
-				$this->doPurgeParserCache();
-				$this->onTransactionIdle = true;
-			} );
+		if ( $this->isPending || $this->onTransactionIdle ) {
+			return $this->pendingUpdates['doPurgeParserCache'] = true;
 		}
 
 		foreach ( $this->titles as $title ) {
@@ -145,22 +245,20 @@ class PageUpdater implements LoggerAwareInterface {
 	 */
 	public function doPurgeHtmlCache() {
 
-		$method = __METHOD__;
-
-		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function () use ( $method ) {
-				$this->log( $method . ' (onTransactionIdle)' );
-				$this->onTransactionIdle = false;
-				$this->doPurgeHtmlCache();
-				$this->onTransactionIdle = true;
-			} );
+		if ( $this->isHtmlCacheUpdate === false ) {
+			return;
 		}
 
+		if ( $this->isPending || $this->onTransactionIdle ) {
+			return $this->pendingUpdates['doPurgeHtmlCache'] = true;
+		}
+
+		$method = __METHOD__;
+
+		// Calls HTMLCacheUpdate, HTMLCacheUpdateJob including HTMLFileCache,
+		// CdnCacheUpdate
 		foreach ( $this->titles as $title ) {
 			$title->touchLinks();
-
-			// @see MW 1.19 Title::invalidateCache
-			\HTMLFileCache::clearFileCache( $title );
 		}
 	}
 
@@ -171,13 +269,8 @@ class PageUpdater implements LoggerAwareInterface {
 
 		$method = __METHOD__;
 
-		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function () use ( $method ) {
-				$this->log( $method . ' (onTransactionIdle)' );
-				$this->onTransactionIdle = false;
-				$this->doPurgeWebCache();
-				$this->onTransactionIdle = true;
-			} );
+		if ( $this->isPending || $this->onTransactionIdle ) {
+			return $this->pendingUpdates['doPurgeWebCache'] = true;
 		}
 
 		foreach ( $this->titles as $title ) {
@@ -185,13 +278,58 @@ class PageUpdater implements LoggerAwareInterface {
 		}
 	}
 
-	private function log( $message, $context = array() ) {
+	/**
+	 * Copied from PurgeJobUtils to avoid the AutoCommitUpdate from
+	 * Title::invalidateCache introduced with MW 1.28/1.29 on a large update pool
+	 */
+	private function doPoolPurge() {
 
-		if ( $this->logger === null ) {
+		Timer::start( __METHOD__ );
+
+		// Required due to postgres and "Error: 22007 ERROR:  invalid input
+		// syntax for type timestamp with time zone: "20170408113703""
+		$now = $this->connection->timestamp();
+		$res = $this->connection->select(
+			'page',
+			'page_id',
+			[
+				'page_title' => array_keys( $this->titles ),
+				'page_touched < ' . $this->connection->addQuotes( $now )
+			],
+			__METHOD__
+		);
+
+		if ( $res === false ) {
 			return;
 		}
 
-		$this->logger->info( $message, $context );
+		$ids = [];
+
+		foreach ( $res as $row ) {
+			$ids[] = $row->page_id;
+		}
+
+		if ( $ids === array() ) {
+			return;
+		}
+
+		$this->connection->update(
+			'page',
+			[ 'page_touched' => $now ],
+			[
+				'page_id' => $ids,
+				'page_touched < ' . $this->connection->addQuotes( $now )
+			],
+			__METHOD__
+		);
+
+		$context = [
+			'method' => __METHOD__,
+			'procTime' => Timer::getElapsedTime( __METHOD__, 7 ),
+			'role' => 'developer'
+		];
+
+		$this->logger->info( 'Page update, pool update (procTime in sec: {procTime})', $context );
 	}
 
 }

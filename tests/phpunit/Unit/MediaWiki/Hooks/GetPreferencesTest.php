@@ -24,12 +24,15 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		$preferences = array();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\GetPreferences',
-			new GetPreferences( $user, $preferences )
+			GetPreferences::class,
+			new GetPreferences( $user )
 		);
 	}
 
-	public function testProcess() {
+	/**
+	 * @dataProvider keyProvider
+	 */
+	public function testProcess( $key ) {
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -37,12 +40,45 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 		$preferences = array();
 
-		$instance = new GetPreferences( $user, $preferences );
-		$instance->process();
+		$instance = new GetPreferences( $user );
 
-		$this->assertArrayHasKey( 'smw-prefs-intro', $preferences );
-		$this->assertArrayHasKey( 'smw-prefs-ask-options-tooltip-display', $preferences );
-		$this->assertArrayHasKey( 'smw-prefs-ask-options-collapsed-default', $preferences );
+		$instance->setOptions(
+			[
+				'smwgEnabledEditPageHelp' => false
+			]
+		);
+
+		$instance->process( $preferences );
+
+		$this->assertArrayHasKey(
+			$key,
+			$preferences
+		);
+	}
+
+	public function keyProvider() {
+
+		$provider[] = [
+			'smw-prefs-intro'
+		];
+
+		$provider[] = [
+			'smw-prefs-ask-options-tooltip-display'
+		];
+
+		$provider[] = [
+			'smw-prefs-general-options-time-correction'
+		];
+
+		$provider[] = [
+			'smw-prefs-general-options-disable-editpage-info'
+		];
+
+		$provider[] = [
+			'smw-prefs-general-options-jobqueue-watchlist'
+		];
+
+		return $provider;
 	}
 
 }

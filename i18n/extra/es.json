@@ -41,7 +41,7 @@
         "_PVAL": "Permite el valor",
         "_MDAT": "Fecha de modificación",
         "_CDAT": "Fecha de creación",
-        "_NEWP": "Es página nueva",
+        "_NEWP": "Es una página nueva",
         "_LEDT": "Último editor es",
         "_ERRP": "Tiene valor incorrecto para",
         "_LIST": "Tiene campos",
@@ -52,6 +52,9 @@
         "_ASKSI": "Tamaño de consulta",
         "_ASKDE": "Profundidad de consulta",
         "_ASKDU": "Duración de consulta",
+        "_ASKSC": "Fuente de consulta",
+        "_ASKPA": "Parámetros de consulta",
+        "_ASKCO": "Código de estado de consulta",
         "_MEDIA": "Tipo Media",
         "_MIME": "Tipo MIME",
         "_ERRC": "Tiene error de procesamiento",
@@ -61,13 +64,23 @@
         "_TEXT": "Texto",
         "_PDESC": "Tiene descripción de propiedad",
         "_PVAP": "Permite patrón",
+        "_PVALI": "Permite lista de valores",
         "_DTITLE": "Mostrar título de",
-        "_PVUC": "Tiene restricción de unicidad",
+        "_PVUC": "Tiene restricción de singularidad",
         "_PEID": "Identificador externo",
-        "_PEFU": "Formateador de uri externo",
-        "_ASKSC": "Query source"
+        "_PEFU": "Formateador de URI externa",
+        "_PPLB": "Etiqueta de propiedad preferida",
+        "_EDIP": "Está protegida de edición",
+        "_CHGPRO": "Propagación de cambio",
+        "_PPGR": "Es un grupo de propiedad",
+        "_RL_DESC": "Descripción de regla",
+        "_RL_TAG": "Etiqueta de regla",
+        "_RL_TYPE": "Tipo de regla",
+        "_RL_DEF": "Definición de regla"
     },
     "propertyAliases": {
+        "Es página nueva": "_NEWP",
+        "Tiene restricción de unicidad": "_PVUC",
         "Unidad de medida": "_UNIT"
     },
     "dateFormatsByPrecision": {
@@ -77,14 +90,19 @@
         "SMW_PREC_YMDT": "H:i:s j M Y"
     },
     "namespaces": {
-        "SMW_NS_PROPERTY": "Atributo",
-        "SMW_NS_PROPERTY_TALK": "Atributo_discusión",
+        "SMW_NS_PROPERTY": "Propiedad",
+        "SMW_NS_PROPERTY_TALK": "Propiedad_discusión",
         "SMW_NS_TYPE": "Tipo",
         "SMW_NS_TYPE_TALK": "Tipo_discusión",
         "SMW_NS_CONCEPT": "Concepto",
-        "SMW_NS_CONCEPT_TALK": "Concepto_discusión"
+        "SMW_NS_CONCEPT_TALK": "Concepto_discusión",
+        "SMW_NS_RULE": "Regla",
+        "SMW_NS_RULE_TALK": "Regla discusión"
     },
-    "namespaceAliases": [],
+    "namespaceAliases": {
+        "Atributo": "SMW_NS_PROPERTY",
+        "Atributo_discusión": "SMW_NS_PROPERTY_TALK"
+     },
     "dateFormats": [
         [
             "SMW_Y"

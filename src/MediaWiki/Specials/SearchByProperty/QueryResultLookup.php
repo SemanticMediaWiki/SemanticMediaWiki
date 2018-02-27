@@ -202,6 +202,9 @@ class QueryResultLookup {
 	}
 
 	private function doQueryForExactValue( PageRequestOptions $pageRequestOptions, RequestOptions $requestOptions ) {
+
+		$pageRequestOptions->value->setOption( 'is.search', true );
+
 		return $this->store->getPropertySubjects(
 			$pageRequestOptions->property->getDataItem(),
 			$pageRequestOptions->value->getDataItem(),

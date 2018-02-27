@@ -355,6 +355,7 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 */
 	public function setup( $verbose = true ) {
+		$this->baseStore->setMessageReporter( $this->messageReporter );
 		$this->baseStore->setup( $verbose );
 	}
 
@@ -415,26 +416,17 @@ class SPARQLStore extends Store {
 	/**
 	 * @since 2.1
 	 *
-	 * @param boolean $status
-	 */
-	public function setUpdateJobsEnabledState( $status ) {
-		$this->baseStore->setUpdateJobsEnabledState( $status );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param string $connectionTypeId
+	 * @param string $type
 	 *
 	 * @return mixed
 	 */
-	public function getConnection( $connectionTypeId = 'sparql' ) {
+	public function getConnection( $type = 'sparql' ) {
 
 		if ( $this->connectionManager === null ) {
 			$this->setConnectionManager( $this->factory->newConnectionManager() );
 		}
 
-		return parent::getConnection( $connectionTypeId );
+		return parent::getConnection( $type );
 	}
 
 	private function isEnabledQueryEndpoint() {

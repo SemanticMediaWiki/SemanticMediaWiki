@@ -69,7 +69,8 @@ class BrowseBySubject extends ApiBase {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$title = $applicationFactory->newTitleCreator()->createFromText(
-			$params['subject']
+			$params['subject'],
+			$params['ns']
 		);
 
 		$deepRedirectTargetResolver = $applicationFactory->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
@@ -77,7 +78,13 @@ class BrowseBySubject extends ApiBase {
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
 		} catch ( \Exception $e ) {
-			$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable'  );
+
+			// 1.29+
+			if ( method_exists( $this, 'dieWithError' ) ) {
+				$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
+			} else {
+				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable'  );
+			}
 		}
 
 		$dataItem = new DIWikiPage(
@@ -142,7 +149,7 @@ class BrowseBySubject extends ApiBase {
 			'ns' => array(
 				ApiBase::PARAM_TYPE => 'integer',
 				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_DFLT => '',
+				ApiBase::PARAM_DFLT => 0,
 				ApiBase::PARAM_REQUIRED => false,
 			),
 			'iw' => array(

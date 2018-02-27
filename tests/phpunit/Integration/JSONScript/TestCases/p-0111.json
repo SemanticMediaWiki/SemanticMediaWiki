@@ -1,0 +1,35 @@
+{
+	"description": "Test reserved property names",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Category",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 reserved category name",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Category",
+			"assert-output": {
+				"onPageView": {},
+				"to-contain": [
+					"<div id=\"smw-property-name-reserved\" class=\"plainlinks smw-callout smw-callout-error\">"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

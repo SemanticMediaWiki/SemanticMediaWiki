@@ -104,7 +104,9 @@ class ImportValueParser implements ValueParser {
 		 * and non-redundant. Vocabulary definitions adhere only a limited set of
 		 * rules/constraints (e.g. Type/Label)
 		 */
-		$controlledVocabulary = $this->mediaWikiNsContentReader->read( ImportValue::IMPORT_PREFIX . $namespace );
+		$controlledVocabulary = $this->mediaWikiNsContentReader->read(
+			ImportValue::IMPORT_PREFIX . $namespace
+		);
 
 		// Check that elements exists for the namespace
 		if ( $controlledVocabulary === '' ) {
@@ -155,11 +157,6 @@ class ImportValueParser implements ValueParser {
 	private function doParse( $controlledVocabulary ) {
 
 		$list = array();
-
-		if ( $controlledVocabulary === '' ) {
-			return null;
-		}
-
 		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
 
 		// Get definition from first line

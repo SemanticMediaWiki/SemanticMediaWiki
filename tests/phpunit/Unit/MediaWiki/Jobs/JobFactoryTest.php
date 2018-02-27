@@ -91,11 +91,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'SMW\TempChangeOpPurgeJob',
-			'\SMW\MediaWiki\Jobs\TempChangeOpPurgeJob'
-		);
-
-		$provider[] = array(
 			'SMW\PropertyStatisticsRebuildJob',
 			'\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob'
 		);
@@ -103,6 +98,16 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'SMW\FulltextSearchTableRebuildJob',
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob'
+		);
+
+		$provider[] = array(
+			'SMW\ChangePropagationDispatchJob',
+			'\SMW\MediaWiki\Jobs\ChangePropagationDispatchJob'
+		);
+
+		$provider[] = array(
+			'SMW\ChangePropagationUpdateJob',
+			'\SMW\MediaWiki\Jobs\ChangePropagationUpdateJob'
 		);
 
 		return $provider;

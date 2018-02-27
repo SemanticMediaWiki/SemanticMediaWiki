@@ -1,0 +1,46 @@
+<pre>
+Andy Mars,32,male,married
+John Maier,32,male,married
+Peter Dunn,32,male,married
+Yan Chow,32,male,married
+Mike Bloom,31,male,married
+Charles Banning,33,male,single
+Kevin Mikaelson,32,male,single
+Charlotte Beans,30,female,married
+Yumi Tanaka,31,female,married
+Rosalia Alvarez,31,female,married
+Mandy Rose,31,female,married
+James Ross,26,male,single
+Evelyne Lynn,31,female,married
+Michael Chester,34,male,single
+</pre>
+
+{{#subobject:
+ |Person=Andy Mars |Age=32 |Gender= male |Material status= married
+}}{{#subobject:
+ |Person=John Maier |Age=32 |Gender=male |Material status=married
+}}{{#subobject:
+ |Person=Peter Dunn |Age=32 |Gender=male |Material status=married
+}}{{#subobject:
+ |Person=Yan Chow |Age=32 |Gender=male |Material status=married
+}}{{#subobject:
+ |Person=Mike Bloom |Age=31 |Gender=male |Material status=married
+}}{{#subobject:
+ |Person=Charles Banning |Age=33 |Gender=male |Material status=single
+}}{{#subobject:
+ |Person=Kevin Mikaelson |Age=32 |Gender=male |Material status=single
+}}{{#subobject:
+ |Person=Charlotte Beans |Age=30 |Gender=female |Material status=married
+}}{{#subobject:
+ |Person=Yumi Tanaka |Age=31 |Gender=female |Material status=married
+}}{{#subobject:
+ |Person=Rosalia Alvarez |Age=31 |Gender=female |Material status=married
+}}{{#subobject:
+ |Person=Mandy Rose |Age=31 |Gender=female |Material status=married
+}}{{#subobject:
+ |Person=James Ross |Age=26 |Gender=male |Material status=single
+}}{{#subobject:
+ |Person=Evelyne Lynn |Age=31 |Gender=female |Material status=married
+}}{{#subobject:
+ |Person=Michael Chester |Age=34 |Gender=male |Material status=single
+}}

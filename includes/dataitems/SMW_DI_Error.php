@@ -21,8 +21,14 @@ class SMWDIError extends SMWDataItem {
 	 */
 	protected $m_errors;
 
-	public function __construct( $errors ) {
+	/**
+	 * @var string
+	 */
+	private $userValue;
+
+	public function __construct( $errors, $userValue = '' ) {
 		$this->m_errors = $errors;
+		$this->userValue = $userValue;
 	}
 
 	public function getDIType() {
@@ -31,6 +37,15 @@ class SMWDIError extends SMWDataItem {
 
 	public function getErrors() {
 		return $this->m_errors;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getUserValue() {
+		return $this->userValue;
 	}
 
 	public function getSortKey() {

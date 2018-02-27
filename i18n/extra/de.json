@@ -23,6 +23,7 @@
         "_qty": "Maß",
         "_mlt_rec": "Einsprachiger Text",
         "_eid": "Externe Kennung",
+        "_keyw": "Stichwort",
         "_ref_rec": "Referenzierung"
     },
     "dataTypeAliases": {
@@ -31,7 +32,8 @@
         "Dezimalzahl": "_num",
         "Aufzählung": "_txt",
         "Zeichenkette": "_txt",
-        "Menge": "_qty"
+        "Menge": "_qty",
+        "Schlagwort": "_keyw"
     },
     "propertyLabels": {
         "_TYPE": "Datentyp",
@@ -58,6 +60,7 @@
         "_ASKDU": "Abfragedauer",
         "_ASKPA": "Abfrageparameter",
         "_ASKSC": "Abfragequelle",
+        "_ASKCO": "Abfragestatuscode",
         "_MEDIA": "Medientyp",
         "_MIME": "MIME-Typ",
         "_ERRC": "Verarbeitungsfehler",
@@ -69,9 +72,17 @@
         "_PVAP": "Erlaubt Muster",
         "_DTITLE": "Anzeigetitel",
         "_PVUC": "Erlaubt Wert einmal",
+        "_PVALI": "Erlaubt Werteliste",
         "_PEID": "Kennung zur externen URI",
         "_PEFU": "Formatierungsanweisung zur externen URI",
-        "_EDIP": "Ist bearbeitungsgeschützt"
+        "_EDIP": "Ist bearbeitungsgeschützt",
+        "_CHGPRO": "Änderungsweitergabe",
+        "_PPGR": "Attributgruppe",
+        "_RL_DESC": "Regelbeschreibung",
+        "_RL_TAG": "Regelkennzeichen",
+        "_RL_TYPE": "Regeltyp",
+        "_RL_DEF": "Regeldefinition",
+        "_FORMAT_RL": "Formatierungsregel"
     },
     "propertyAliases": {
         "Hat Datentyp": "_TYPE",
@@ -93,7 +104,14 @@
         "Hat Anzeigetitel": "_DTITLE",
         "Hat einmal erlaubten Wert": "_PVUC",
         "Externe Kennung": "_PEID",
-        "Bearbeitungsgeschützt": "_EDIP"
+        "Bearbeitungsgeschützt": "_EDIP",
+        "Ist Änderungsweitergabe": "_CHGPRO",
+        "Ist Attributgruppe": "_PPGR",
+        "Hat Regelbeschreigung": "_RL_DESC",
+        "Hat Regelkennzeichen": "_RL_TAG",
+        "Hat Regeltyp": "_RL_TYPE",
+        "Hat Regeldefinition": "_RL_DEF",
+        "Hat Formatierungsregel": "_FORMAT_RL"
     },
     "dateFormatsByPrecision": {
         "SMW_PREC_Y": "Y",
@@ -107,7 +125,9 @@
         "SMW_NS_TYPE": "Datentyp",
         "SMW_NS_TYPE_TALK": "Datentyp_Diskussion",
         "SMW_NS_CONCEPT": "Konzept",
-        "SMW_NS_CONCEPT_TALK": "Konzept_Diskussion"
+        "SMW_NS_CONCEPT_TALK": "Konzept_Diskussion",
+        "SMW_NS_RULE": "Regel",
+        "SMW_NS_RULE_TALK": "Regel_Diskussion"
     },
     "namespaceAliases": [],
     "dateFormats": [

@@ -105,7 +105,7 @@ class PropertyLabelFinder {
 	 *
 	 * @return string
 	 */
-	public function findPropertyLabelByLanguageCode( $id, $languageCode = '' ) {
+	public function findPropertyLabelFromIdByLanguageCode( $id, $languageCode = '' ) {
 
 		if ( $languageCode === '' ) {
 			return $this->findPropertyLabelById( $id );
@@ -184,8 +184,13 @@ class PropertyLabelFinder {
 		) );
 
 		$propertyList = array();
+
+		$query = $queryFactory->newQuery( $description );
+		$query->setOption( $query::PROC_CONTEXT, 'PropertyLabelFinder' );
+		$query->setLimit( 100 );
+
 		$queryResult = $this->store->getQueryResult(
-			$queryFactory->newQuery( $description )
+			$query
 		);
 
 		if ( !$queryResult instanceof \SMWQueryResult ) {

@@ -44,6 +44,27 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetPropertyMaxCount() {
+
+		$this->store->expects( $this->any() )
+			->method( 'getStatistics' )
+			->will( $this->returnValue( array( 'TOTALPROPS' => 42 ) ) );
+
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyLabelSimilarityLookup(
+			$this->store,
+			$propertySpecificationLookup
+		);
+
+		$this->assertEquals(
+			42,
+			$instance->getPropertyMaxCount()
+		);
+	}
+
 	public function testCompareAndFindLabels() {
 
 		$row = new \stdClass;

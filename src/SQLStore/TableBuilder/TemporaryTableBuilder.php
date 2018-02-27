@@ -21,7 +21,7 @@ class TemporaryTableBuilder {
 	/**
 	 * @var boolean
 	 */
-	private $withAutoCommit = false;
+	private $autoCommitFlag = false;
 
 	/**
 	 * @since 2.3
@@ -36,10 +36,10 @@ class TemporaryTableBuilder {
 	 * @see $smwgQTemporaryTablesWithAutoCommit
 	 * @since 2.5
 	 *
-	 * @param boolean $withAutoCommit
+	 * @param boolean $autoCommitFlag
 	 */
-	public function withAutoCommit( $withAutoCommit ) {
-		$this->withAutoCommit = (bool)$withAutoCommit;
+	public function setAutoCommitFlag( $autoCommitFlag ) {
+		$this->autoCommitFlag = (bool)$autoCommitFlag;
 	}
 
 	/**
@@ -48,7 +48,16 @@ class TemporaryTableBuilder {
 	 * @param string $tableName
 	 */
 	public function create( $tableName ) {
-		$this->connection->query( $this->getSQLCodeFor( $tableName ), __METHOD__, false, $this->withAutoCommit );
+
+		if ( $this->autoCommitFlag ) {
+			$this->connection->setFlag( Database::AUTO_COMMIT );
+		}
+
+		$this->connection->query(
+			$this->getSQLCodeFor( $tableName ),
+			__METHOD__,
+			false
+		);
 	}
 
 	/**
@@ -57,7 +66,16 @@ class TemporaryTableBuilder {
 	 * @param string $tableName
 	 */
 	public function drop( $tableName ) {
-		$this->connection->query( "DROP TEMPORARY TABLE " . $tableName, __METHOD__, false, $this->withAutoCommit );
+
+		if ( $this->autoCommitFlag ) {
+			$this->connection->setFlag( Database::AUTO_COMMIT );
+		}
+
+		$this->connection->query(
+			"DROP TEMPORARY TABLE " . $tableName,
+			__METHOD__,
+			false
+		);
 	}
 
 	/**

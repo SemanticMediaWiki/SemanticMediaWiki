@@ -8,6 +8,7 @@ use SMW\Message;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
+use SMW\Parser\InTextAnnotationParser;
 
 /**
  * @license GNU GPL v2+
@@ -45,9 +46,19 @@ class InfoLinksProvider {
 	private $enabledServiceLinks = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $compactLink = false;
+
+	/**
 	 * @var boolean|array
 	 */
 	private $serviceLinkParameters = false;
+
+	/**
+	 * @var []
+	 */
+	private $browseLinks = [ '__sob' ];
 
 	/**
 	 * @since 2.4
@@ -67,6 +78,7 @@ class InfoLinksProvider {
 		$this->hasServiceLinks = false;
 		$this->enabledServiceLinks = true;
 		$this->serviceLinkParameters = false;
+		$this->compactLink = false;
 	}
 
 	/**
@@ -74,6 +86,15 @@ class InfoLinksProvider {
 	 */
 	public function disableServiceLinks() {
 		$this->enabledServiceLinks = false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $compactLink
+	 */
+	public function setCompactLink( $compactLink ) {
+		$this->compactLink = (bool)$compactLink;
 	}
 
 	/**
@@ -110,7 +131,7 @@ class InfoLinksProvider {
 			return $this->infoLinks;
 		}
 
-		if ( !$this->dataValue->isValid() || $this->dataValue->getProperty() === null ) {
+		if ( !$this->dataValue->isValid() ) {
 			return array();
 		}
 
@@ -118,19 +139,24 @@ class InfoLinksProvider {
 		$this->dataValue->setOutputFormat( '' );
 
 		$value = $this->dataValue->getWikiValue();
+		$property = $this->dataValue->getProperty();
 
 		// InTextAnnotationParser will detect :: therefore avoid link
 		// breakage by encoding the string
-		if ( strpos( $value, '::' ) !== false && !$this->hasInternalAnnotationMarker( $value ) ) {
+		if ( strpos( $value, '::' ) !== false && !InTextAnnotationParser::hasMarker( $value ) ) {
 			$value = str_replace( ':', '-3A', $value );
 		}
 
-		$this->hasSearchLink = true;
-		$this->infoLinks[] = Infolink::newPropertySearchLink(
-			'+',
-			$this->dataValue->getProperty()->getLabel(),
-			$value
-		);
+		if ( in_array( $this->dataValue->getTypeID(), $this->browseLinks ) ) {
+			$infoLink = Infolink::newBrowsingLink( '+', $this->dataValue->getLongWikiText() );
+			$infoLink->setCompactLink( $this->compactLink );
+		} elseif ( $property !== null ) {
+			$infoLink = Infolink::newPropertySearchLink( '+', $property->getLabel(), $value );
+			$infoLink->setCompactLink( $this->compactLink );
+		}
+
+		$this->infoLinks[] = $infoLink;
+		$this->hasSearchLink = $this->infoLinks !== [];
 
 		 // add further service links
 		if ( !$this->hasServiceLinks && $this->enabledServiceLinks ) {
@@ -178,7 +204,7 @@ class InfoLinksProvider {
 		}
 
 		// #1453 SMW::on/off will break any potential link therefore just don't even try
-		return !$this->hasInternalAnnotationMarker( $result ) ? $result : '';
+		return !InTextAnnotationParser::hasMarker( $result ) ? $result : '';
 	}
 
 	/**
@@ -194,6 +220,8 @@ class InfoLinksProvider {
 		if ( $this->hasServiceLinks ) {
 			return;
 		}
+
+		$propertyDiWikiPage = null;
 
 		if ( $this->dataValue->getProperty() !== null ) {
 			$propertyDiWikiPage = $this->dataValue->getProperty()->getDiWikiPage();
@@ -235,10 +263,6 @@ class InfoLinksProvider {
 		}
 
 		$this->hasServiceLinks = true;
-	}
-
-	private function hasInternalAnnotationMarker( $value ) {
-		return strpos( $value, 'SMW::off' ) !== false || strpos( $value, 'SMW::on' ) !== false;
 	}
 
 }

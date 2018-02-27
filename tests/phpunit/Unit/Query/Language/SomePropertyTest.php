@@ -266,6 +266,98 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testStableFingerprint() {
+
+		$property = new DIProperty( 'Foo' );
+
+		$description = new ValueDescription(
+			new DIWikiPage( 'Bar', NS_MAIN ),
+			$property
+		);
+
+		$instance = new SomeProperty(
+			$property,
+			$description
+		);
+
+		$this->assertSame(
+			'S:17184798751fd76ae86d1c18bbce6954',
+			$instance->getFingerprint()
+		);
+	}
+
+	public function testHierarchyDepthToBeCeiledOnMaxQSubpropertyDepthSetting() {
+
+		$property = new DIProperty( 'Foo' );
+
+		$description = new ValueDescription(
+			new DIWikiPage( 'Bar', NS_MAIN ),
+			$property
+		);
+
+		$instance = new SomeProperty(
+			$property,
+			$description
+		);
+
+		$instance->setHierarchyDepth( 9999999 );
+
+		$this->assertSame(
+			$GLOBALS['smwgQSubpropertyDepth'],
+			$instance->getHierarchyDepth()
+		);
+	}
+
+	public function testGetQueryStringWithHierarchyDepth() {
+
+		$property = new DIProperty( 'Foo' );
+
+		$description = new ValueDescription(
+			new DIWikiPage( 'Bar', NS_MAIN ),
+			$property
+		);
+
+		$instance = new SomeProperty(
+			$property,
+			$description
+		);
+
+		$instance->setHierarchyDepth( 1 );
+
+		$this->assertSame(
+			"[[Foo::Bar|+depth=1]]",
+			$instance->getQueryString()
+		);
+	}
+
+	public function testVaryingHierarchyDepthCausesDifferentFingerprint() {
+
+		$property = new DIProperty( 'Foo' );
+
+		$description = new ValueDescription(
+			new DIWikiPage( 'Bar', NS_MAIN ),
+			$property
+		);
+
+		$instance = new SomeProperty(
+			$property,
+			$description
+		);
+
+		$instance->setHierarchyDepth( 9999 );
+		$expected = $instance->getFingerprint();
+
+		$instance = new SomeProperty(
+			$property,
+			$description
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getFingerprint()
+		);
+	}
+
 	public function comparativeHashProvider() {
 
 		// Same property, different description === different hash

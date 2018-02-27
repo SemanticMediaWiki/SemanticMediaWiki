@@ -90,6 +90,12 @@ class BooleanValue extends DataValue {
 		} elseif ( strtolower( $formatstring ) == '-' ) { // "plain" format
 			$this->trueCaption = 'true';
 			$this->falseCaption = 'false';
+		} elseif ( strtolower( $formatstring ) == 'num' ) { // "numeric" format
+			$this->trueCaption = 1;
+			$this->falseCaption = 0;
+		} elseif ( strtolower( $formatstring ) == 'tick' ) { // "tick" format
+			$this->trueCaption = '✓';
+			$this->falseCaption = '✕';
 		} elseif ( strtolower( $formatstring ) == 'x' ) { // X format
 			$this->trueCaption = '<span style="font-family: sans-serif; ">X</span>';
 			$this->falseCaption = '&nbsp;';
@@ -191,9 +197,9 @@ class BooleanValue extends DataValue {
 			$boolvalue = true;
 		} elseif ( $lcv === '0' ) {
 			$boolvalue = false;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_true_words', $contentLanguage ), true ) ) {
+		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_true_words', $contentLanguage, 'true' ), true ) ) {
 			$boolvalue = true;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_false_words', $contentLanguage ), true ) ) {
+		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_false_words', $contentLanguage, 'false' ), true ) ) {
 			$boolvalue = false;
 		} else {
 			$this->addErrorMsg(
@@ -233,12 +239,16 @@ class BooleanValue extends DataValue {
 		return reset( $vals );
 	}
 
-	private function getBooleanWordsFrom( $msgKey, $languageCode = null ) {
+	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ) {
 
 		$vals = explode(
 			',',
 			Message::get( $msgKey, Message::TEXT, $languageCode )
 		);
+
+		if ( $canonicalForm !== null ) {
+			$vals[] = $canonicalForm;
+		}
 
 		return $vals;
 	}

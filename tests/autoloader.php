@@ -16,33 +16,33 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'MediaWiki is not available.' );
 }
 
-if ( !class_exists( 'SemanticMediaWiki' ) || ( $version = SemanticMediaWiki::getVersion() ) === null ) {
+if ( !class_exists( 'SemanticMediaWiki' ) || SemanticMediaWiki::getVersion() === null ) {
 	die( "\nSemantic MediaWiki is not available, please check your LocalSettings or Composer settings.\n" );
 }
 
-// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
-print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", $version . ' ('. implode( ', ', SemanticMediaWiki::getEnvironment() ) . ')' );
-// @codingStandardsIgnoreEnd
-
 if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
-	print sprintf( "%-20s%s\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (Extension vendor autoloader)" );
+	$autoloadType = "Extension vendor autoloader";
 } elseif ( is_readable( $path = __DIR__ . '/../../../vendor/autoload.php' ) ) {
-	print sprintf( "%-20s%s\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (MediaWiki vendor autoloader)" );
+	$autoloadType = "MediaWiki vendor autoloader";
 } else {
 	die( 'To run the test suite it is required that packages are installed using Composer.' );
 }
 
-print sprintf( "%-20s%s\n", "Site language:", $GLOBALS['wgLanguageCode'] );
+require __DIR__ . '/phpUnitEnvironment.php';
+$phpUnitEnvironment = new PHPUnitEnvironment();
 
-$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
-print sprintf( "\n%-20s%s\n", "Execution time:", $dateTimeUtc->format( 'Y-m-d h:i' ) );
-print sprintf( "%-20s%s\n", "Debug logs:", $GLOBALS['wgDebugLogGroups'] !== array() || $GLOBALS['wgDebugLogFile'] !== '' ? 'Enabled' : 'Disabled' );
-
-if ( extension_loaded('xdebug') && xdebug_is_enabled() ) {
-	print sprintf( "%-20s%s\n\n", "Xdebug:", phpversion('xdebug') . ' (enabled)' );
-} else {
-	print sprintf( "%-20s%s\n\n", "Xdebug:", 'Disabled (or not installed)' );
+if ( $phpUnitEnvironment->hasDebugRequest( $GLOBALS['argv'] ) === false ) {
+	$phpUnitEnvironment->emptyDebugVars();
 }
+
+$phpUnitEnvironment->writeLn( "\n", "Semantic MediaWiki:", $phpUnitEnvironment->getVersion( 'smw' ), "\n" );
+$phpUnitEnvironment->writeLn( "", "MediaWiki:", $phpUnitEnvironment->getVersion( 'mw' ) + [ 'type' => $autoloadType ], "\n" );
+$phpUnitEnvironment->writeLn( "", "Site language:", $phpUnitEnvironment->getSiteLanguageCode(), "\n" );
+$phpUnitEnvironment->writeLn( "\n", "Execution time:", $phpUnitEnvironment->executionTime(),"\n" );
+$phpUnitEnvironment->writeLn( "", "Debug logs:", $phpUnitEnvironment->enabledDebugLogs() ? 'Enabled' : 'Disabled', "\n" );
+$phpUnitEnvironment->writeLn( "", "Xdebug:", ( $version = $phpUnitEnvironment->getXdebugInfo() ) ? $version : 'Disabled (or not installed)' , "\n\n" );
+
+unset( $phpUnitEnvironment );
 
 /**
  * Available to aid third-party extensions therefore any change should be made with
@@ -56,12 +56,14 @@ $autoloader->addPsr4( 'SMW\\Tests\\Utils\\', __DIR__ . '/phpunit/Utils' );
 
 $autoloader->addClassMap( array(
 	'SMW\Tests\TestEnvironment'             => __DIR__ . '/phpunit/TestEnvironment.php',
+	'SMW\Tests\TestConfig'                  => __DIR__ . '/phpunit/TestConfig.php',
 	'SMW\Tests\MwDBaseUnitTestCase'         => __DIR__ . '/phpunit/MwDBaseUnitTestCase.php',
 	'SMW\Tests\JsonTestCaseScriptRunner'    => __DIR__ . '/phpunit/JsonTestCaseScriptRunner.php',
 	'SMW\Tests\JsonTestCaseFileHandler'     => __DIR__ . '/phpunit/JsonTestCaseFileHandler.php',
 	'SMW\Tests\JsonTestCaseContentHandler'  => __DIR__ . '/phpunit/JsonTestCaseContentHandler.php',
 	'SMW\Test\QueryPrinterTestCase'         => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
 	'SMW\Test\QueryPrinterRegistryTestCase' => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
+	'SMW\Tests\SPARQLStore\RepositoryConnectors\ElementaryRepositoryConnectorTest' => __DIR__ . '/phpunit/Unit/SPARQLStore/RepositoryConnectors/ElementaryRepositoryConnectorTest.php',
 ) );
 
 return $autoloader;

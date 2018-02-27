@@ -1,0 +1,106 @@
+{
+	"description": "Test `format=templatefile` (with `_eid`) output via `Special:Ask`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has GND",
+			"contents": "[[Has type::External identifier]] [[External formatter uri::http://d-nb.info/gnd/$1]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has name",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "BEACON",
+			"contents": {
+				"import-from": "/../Fixtures/s-0025-beacon.txt"
+			}
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "BEACON-INTRO",
+			"contents": {
+				"import-from": "/../Fixtures/s-0025-beacon-intro.txt"
+			}
+		},
+		{
+			"page": "Example/S0025/1",
+			"contents": "[[Has name::John Doe]] [[Has GND::123456789]]"
+		},
+		{
+			"page": "Example/S0025/2",
+			"contents": "[[Has name::Jane Doe]] [[Has GND::987654321]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "templatefile",
+						"template": "BEACON",
+						"introtemplate": "BEACON-INTRO"
+					},
+					"q": "[[Has GND::123456789]]",
+					"po": "?Has GND=GND|?Has name=Name"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0025.0.txt"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "templatefile",
+						"template": "BEACON",
+						"introtemplate": "BEACON-INTRO"
+					},
+					"q": "[[Has GND::123456789]] OR [[Has GND::987654321]]",
+					"po": "?Has GND=GND|?Has name=Name"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0025.1.txt"
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

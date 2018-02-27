@@ -1,0 +1,88 @@
+{
+	"description": "Test the description optimization on `_ref_rec` type with property chain query/sort (`wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`, `smwgQFilterDuplicates=true`, `smwgQueryProfiler`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "ID",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Runtime",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Memory used",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Runtime benchmark",
+			"contents": "[[Has type::Reference]] [[Has fields::Date; Version; Memory used; Runtime;ID;Benchmark notes]]"
+		},
+		{
+			"page": "Example/P0914/1",
+			"contents": "{{#subobject: |Runtime benchmark=27 Nov 2016;0583b05;16690400;48.35;200;n/a }}"
+		},
+		{
+			"page": "Example/P0914/Q.1",
+			"contents": "{{#ask: [[Runtime benchmark.ID::+]] |?Runtime benchmark |?Runtime benchmark.Memory used#- |?Runtime benchmark.ID |?Runtime benchmark.Runtime|?Runtime benchmark.Benchmark notes |format=broadtable |sort=Runtime benchmark.ID,Runtime benchmark.Runtime |order=desc |limit=2 |link=none }}"
+		},
+		{
+			"page": "Example/P0914/Q.2",
+			"contents": "{{#ask: [[Runtime benchmark.ID::+]] OR [[Runtime benchmark.Runtime::+]] <q> [[Runtime benchmark.ID::+]]</q> |?Runtime benchmark |?Runtime benchmark.Memory used#- |?Runtime benchmark.ID |?Runtime benchmark.Runtime|?Runtime benchmark.Benchmark notes |format=broadtable |sort=Runtime benchmark.ID,Runtime benchmark.Runtime |order=desc |limit=2 |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (no `Error: 1066 Not unique table/alias ...`)",
+			"subject": "Example/P0914/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Runtime-benchmark smwtype_ref_rec\">27 November 2016</td><td class=\"Memory-used smwtype_num\" data-sort-value=\"16690400\">16690400</td><td class=\"ID smwtype_num\" data-sort-value=\"200\">200</td><td class=\"Runtime smwtype_num\" data-sort-value=\"48.35\">48.35</td><td class=\"Benchmark-notes smwtype_wpg\">N/a</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0 (no `Error: 1066 Not unique table/alias ...`)",
+			"subject": "Example/P0914/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Runtime-benchmark smwtype_ref_rec\">27 November 2016</td><td class=\"Memory-used smwtype_num\" data-sort-value=\"16690400\">16690400</td><td class=\"ID smwtype_num\" data-sort-value=\"200\">200</td><td class=\"Runtime smwtype_num\" data-sort-value=\"48.35\">48.35</td><td class=\"Benchmark-notes smwtype_wpg\">N/a</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgQFilterDuplicates": true,
+		"smwgQueryResultCacheType": "hash",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

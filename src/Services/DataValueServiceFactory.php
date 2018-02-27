@@ -6,6 +6,7 @@ use Onoi\CallbackContainer\ContainerBuilder;
 use Onoi\CallbackContainer\Exception\ServiceNotFoundException;
 use SMW\DataValues\InfoLinksProvider;
 use SMWDataValue as DataValue;
+use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMWStringValue as StringValue;
@@ -81,6 +82,15 @@ class DataValueServiceFactory {
 	 */
 	public function newInfoLinksProvider( DataValue $dataValue ) {
 		return new InfoLinksProvider( $dataValue );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return DataValueFactory
+	 */
+	public function getDataValueFactory() {
+		return DataValueFactory::getInstance();
 	}
 
 	/**
@@ -176,6 +186,22 @@ class DataValueServiceFactory {
 	 */
 	public function getPropertySpecificationLookup() {
 		return $this->containerBuilder->singleton( 'PropertySpecificationLookup' );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return PropertyRestrictionExaminer
+	 */
+	public function getPropertyRestrictionExaminer() {
+
+		$propertyRestrictionExaminer = $this->containerBuilder->singleton( 'PropertyRestrictionExaminer' );
+
+		$propertyRestrictionExaminer->setUser(
+			$GLOBALS['wgUser']
+		);
+
+		return $propertyRestrictionExaminer;
 	}
 
 	private function getDispatchableValueFormatter( $dataValue ) {

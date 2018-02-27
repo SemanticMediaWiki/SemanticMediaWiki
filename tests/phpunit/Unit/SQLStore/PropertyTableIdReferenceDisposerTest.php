@@ -3,7 +3,9 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use SMW\SQLStore\SQLStore;
 use SMW\DIWikiPage;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableIdReferenceDisposer
@@ -17,9 +19,12 @@ use SMW\DIWikiPage;
 class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getDataItemById' ) )
@@ -36,13 +41,51 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
+
+		$jobQueueGroup = $this->getMockBuilder( '\JobQueueGroup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobQueueGroup->expects( $this->any() )
+			->method( 'lazyPush' );
+
+		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\PropertyTableIdReferenceDisposer',
+			PropertyTableIdReferenceDisposer::class,
 			new PropertyTableIdReferenceDisposer( $this->store )
+		);
+	}
+
+	public function testIsDisposable() {
+
+		$propertyTableIdReferenceFinder = $connection = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableIdReferenceFinder->expects( $this->any() )
+			->method( 'hasResidualReferenceForId' )
+			->with( $this->equalTo( 42 ) )
+			->will( $this->returnValue( false ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTableIdReferenceFinder' )
+			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store
+		);
+
+		$this->assertTrue(
+			$instance->isDisposable( 42 )
 		);
 	}
 
@@ -204,6 +247,112 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->waitOnTransactionIdle();
+		$instance->cleanUpTableEntriesById( 42 );
+	}
+
+	public function testCleanUpOnTransactionIdleAvoidOnSubobject() {
+
+		if ( !method_exists( '\PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'withConsecutive' ) ) {
+			$this->markTestSkipped( 'PHPUnit_Framework_MockObject_Builder_InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
+		}
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getDataItemById' ) )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getDataItemById' )
+			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->never() )
+			->method( 'onTransactionIdle' );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'delete' )
+			->withConsecutive(
+				[ $this->equalTo( SQLStore::ID_TABLE ) ],
+				[ $this->equalTo( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
+				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
+				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
+				[ $this->equalTo( SQLStore::FT_SEARCH_TABLE ) ]
+			);
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$store
+		);
+
+		$instance->waitOnTransactionIdle();
+		$instance->cleanUpTableEntriesById( 42 );
+	}
+
+	public function testCleanUp_Redirect() {
+
+		if ( !method_exists( '\PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'withConsecutive' ) ) {
+			$this->markTestSkipped( 'PHPUnit_Framework_MockObject_Builder_InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
+		}
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getDataItemById' ) )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getDataItemById' )
+			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN, SMW_SQL3_SMWREDIIW ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// No SQLStore::ID_TABLE
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'delete' )
+			->withConsecutive(
+				[ $this->equalTo( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
+				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
+				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
+				[ $this->equalTo( SQLStore::FT_SEARCH_TABLE ) ]
+			);
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$store
+		);
+
 		$instance->cleanUpTableEntriesById( 42 );
 	}
 

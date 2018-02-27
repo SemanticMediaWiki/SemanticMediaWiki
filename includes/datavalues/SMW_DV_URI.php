@@ -1,6 +1,6 @@
 <?php
 
-use SMW\UrlEncoder;
+use SMW\Encoder;
 use SMW\Message;
 
 /**
@@ -45,6 +45,11 @@ class SMWURIValue extends SMWDataValue {
 	 */
 	private $showUrlContextInRawFormat = true;
 
+	/**
+	 * @var array
+	 */
+	private $schemeList = [];
+
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		switch ( $typeid ) {
@@ -64,6 +69,8 @@ class SMWURIValue extends SMWDataValue {
 				$this->m_mode = SMW_URI_MODE_URI;
 			break;
 		}
+
+		$this->schemeList = array_flip( $GLOBALS['smwgURITypeSchemeList'] );
 	}
 
 	protected function parseUserValue( $value ) {
@@ -108,6 +115,11 @@ class SMWURIValue extends SMWDataValue {
 				}
 				// decompose general URI components
 				$scheme = $parts[0];
+
+				if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !isset( $this->schemeList[$scheme] ) ) {
+					return $this->addErrorMsg( array( 'smw-datavalue-uri-invalid-scheme', $scheme ) );
+				}
+
 				$parts = explode( '?', $parts[1], 2 ); // try to split "hier-part?queryfrag"
 				if ( count( $parts ) == 2 ) {
 					$hierpart = $parts[0];
@@ -172,7 +184,7 @@ class SMWURIValue extends SMWDataValue {
 
 		// Now create the URI data item:
 		try {
-			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, $this->m_typeid );
+			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, !$this->getOption( self::OPT_QUERY_CONTEXT ) );
 		} catch ( SMWDataItemException $e ) {
 			$this->addErrorMsg( array( 'smw_baduri', $this->m_wikitext ) );
 		}
@@ -345,7 +357,7 @@ class SMWURIValue extends SMWDataValue {
 		// Prior to decoding turn any `-` into an internal representation to avoid
 		// potential breakage
 		if ( !$this->showUrlContextInRawFormat ) {
-			$context = UrlEncoder::decode( str_replace( '-', '-2D', $context ) );
+			$context = Encoder::decode( str_replace( '-', '-2D', $context ) );
 		}
 
 		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {

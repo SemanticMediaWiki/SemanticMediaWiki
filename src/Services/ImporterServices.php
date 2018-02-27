@@ -2,10 +2,14 @@
 
 namespace SMW\Services;
 
-use SMW\Importer\ContentsImporter;
-use SMW\Importer\ImportContentsIterator;
-use SMW\Importer\JsonImportContentsIterator;
+use SMW\Importer\Importer;
+use SMW\Importer\ContentIterator;
+use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
+use SMW\Importer\ContentModeller;
+use SMW\Importer\ContentCreators\DispatchingContentCreator;
+use SMW\Importer\ContentCreators\XmlContentCreator;
+use SMW\Importer\ContentCreators\TextContentCreator;
 
 /**
  * @codeCoverageIgnore
@@ -21,48 +25,82 @@ use SMW\Importer\JsonImportContentsFileDirReader;
 return array(
 
 	/**
-	 * ContentsImporter
+	 * ImporterServiceFactory
 	 *
 	 * @return callable
 	 */
-	'ContentsImporter' => function( $containerBuilder, ImportContentsIterator $importContentsIterator  ) {
-		$containerBuilder->registerExpectedReturnType( 'ContentsImporter', '\SMW\Importer\ContentsImporter' );
+	'ImporterServiceFactory' => function( $containerBuilder ) {
+		$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', '\SMW\Services\ImporterServiceFactory' );
+		return new ImporterServiceFactory( $containerBuilder );
+	},
 
-		$fileImporter = new ContentsImporter(
-			$importContentsIterator,
-			$containerBuilder->create( 'PageCreator' )
+	/**
+	 * XmlContentCreator
+	 *
+	 * @return callable
+	 */
+	'XmlContentCreator' => function( $containerBuilder ) {
+		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', '\SMW\Importer\ContentCreators\XmlContentCreator' );
+		return new XmlContentCreator( $containerBuilder->create( 'ImporterServiceFactory' ) );
+	},
+
+	/**
+	 * TextContentCreator
+	 *
+	 * @return callable
+	 */
+	'TextContentCreator' => function( $containerBuilder ) {
+		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', '\SMW\Importer\ContentCreators\TextContentCreator' );
+
+		$textContentCreator = new TextContentCreator(
+			$containerBuilder->create( 'PageCreator' ),
+			$containerBuilder->create( 'DBConnectionProvider' )->getConnection()
 		);
 
-		$fileImporter->setReqVersion(
+		return $textContentCreator;
+	},
+
+	/**
+	 * Importer
+	 *
+	 * @return callable
+	 */
+	'Importer' => function( $containerBuilder, ContentIterator $contentIterator  ) {
+		$containerBuilder->registerExpectedReturnType( 'Importer', '\SMW\Importer\Importer' );
+
+		$dispatchingContentCreator = new DispatchingContentCreator(
+			array(
+				$containerBuilder->create( 'XmlContentCreator' ),
+				$containerBuilder->create( 'TextContentCreator' )
+			)
+		);
+
+		$importer = new Importer(
+			$contentIterator,
+			$dispatchingContentCreator
+		);
+
+		$importer->setReqVersion(
 			$containerBuilder->singleton( 'Settings' )->get( 'smwgImportReqVersion' )
 		);
 
-		return $fileImporter;
+		return $importer;
 	},
 
 	/**
-	 * JsonImportContentsIterator
+	 * JsonContentIterator
 	 *
 	 * @return callable
 	 */
-	'JsonImportContentsIterator' => function( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'JsonImportContentsIterator', '\SMW\Importer\JsonImportContentsIterator' );
+	'JsonContentIterator' => function( $containerBuilder, $importFileDirs ) {
+		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', '\SMW\Importer\JsonContentIterator' );
 
-		$JsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(
-			$containerBuilder->singleton( 'Settings' )->get( 'smwgImportFileDir' )
+		$jsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(
+			new ContentModeller(),
+			$importFileDirs
 		);
 
-		return new JsonImportContentsIterator( $JsonImportContentsFileDirReader );
-	},
-
-	/**
-	 * ContentsImporter
-	 *
-	 * @return callable
-	 */
-	'JsonContentsImporter' => function( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'JsonContentsImporter', '\SMW\Importer\ContentsImporter' );
-		return $containerBuilder->create( 'ContentsImporter', $containerBuilder->create( 'JsonImportContentsIterator' ) );
+		return new JsonContentIterator( $jsonImportContentsFileDirReader );
 	},
 
 );

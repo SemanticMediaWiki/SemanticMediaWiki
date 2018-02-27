@@ -10,6 +10,9 @@ namespace SMW\Importer;
  */
 class ImportContents {
 
+	const CONTENT_TEXT = 'content.text';
+	const CONTENT_XML = 'content.xml';
+
 	/**
 	 * @var string
 	 */
@@ -34,6 +37,16 @@ class ImportContents {
 	 * @var string
 	 */
 	private $contents = '';
+
+	/**
+	 * @var string
+	 */
+	private $contentsFile = '';
+
+	/**
+	 * @var string
+	 */
+	private $contentType = self::CONTENT_TEXT;
 
 	/**
 	 * @var string
@@ -82,6 +95,24 @@ class ImportContents {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $contentType
+	 */
+	public function setContentType( $contentType ) {
+		$this->contentType = $contentType;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getContentType() {
+		return $this->contentType;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $name
@@ -115,6 +146,24 @@ class ImportContents {
 	 */
 	public function getNamespace() {
 		return $this->namespace;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $contentsFile
+	 */
+	public function setContentsFile( $contentsFile ) {
+		$this->contentsFile = $contentsFile;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getContentsFile() {
+		return $this->contentsFile;
 	}
 
 	/**

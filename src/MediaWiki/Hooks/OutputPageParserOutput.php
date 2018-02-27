@@ -5,7 +5,10 @@ namespace SMW\MediaWiki\Hooks;
 use OutputPage;
 use ParserOutput;
 use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 use Title;
+use SMW\Query\QueryRefFinder;
+use SMW\Message;
 
 /**
  * OutputPageParserOutput hook is called after parse, before the HTML is
@@ -55,29 +58,51 @@ class OutputPageParserOutput {
 	 * @return true
 	 */
 	public function process() {
-		return $this->canPerformUpdate() ? $this->performUpdate() : true;
-	}
-
-	protected function canPerformUpdate() {
 
 		$title = $this->outputPage->getTitle();
 
 		if ( $title->isSpecialPage() ||
 			$title->isRedirect() ||
 			!$this->isSemanticEnabledNamespace( $title ) ) {
-			return false;
+			return true;
 		}
 
-		if ( isset( $this->outputPage->mSMWFactboxText ) && $this->outputPage->getContext()->getRequest()->getCheck( 'wpPreview' ) ) {
-			return false;
-		}
+		$request = $this->outputPage->getContext()->getRequest();
 
-		return true;
+		$this->execFactbox( $request );
+		$this->execPostProc( $title, $request );
 	}
 
-	protected function performUpdate() {
+	private function execPostProc( $title, $request) {
 
-		$cachedFactbox = ApplicationFactory::getInstance()->singleton( 'FactboxFactory' )->newCachedFactbox();
+		if ( in_array( $request->getVal( 'action' ), array( 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit' ) ) ) {
+			return '';
+		}
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$postProcHandler = $applicationFactory->create( 'PostProcHandler', $this->parserOutput );
+
+		$html = $postProcHandler->getHtml(
+			$title,
+			$request
+		);
+
+		if ( $html !== '' ) {
+			$this->outputPage->addModules( $postProcHandler->getModules() );
+			$this->outputPage->addHtml( $html );
+		}
+	}
+
+	protected function execFactbox( $request ) {
+
+		if ( isset( $this->outputPage->mSMWFactboxText ) && $request->getCheck( 'wpPreview' ) ) {
+			return '';
+		}
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$cachedFactbox = $applicationFactory->singleton( 'FactboxFactory' )->newCachedFactbox();
 
 		$cachedFactbox->prepareFactboxContent(
 			$this->outputPage,

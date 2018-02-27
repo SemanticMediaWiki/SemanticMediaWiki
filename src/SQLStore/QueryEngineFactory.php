@@ -12,7 +12,7 @@ use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
-use SMW\SQLStore\QueryEngine\OrderConditionsComplementor;
+use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager;
 
 /**
@@ -105,18 +105,18 @@ class QueryEngineFactory {
 
 		$querySegmentListBuilder = $this->newQuerySegmentListBuilder();
 
-		$orderConditionsComplementor = new OrderConditionsComplementor(
+		$orderCondition = new OrderCondition(
 			$querySegmentListBuilder
 		);
 
-		$orderConditionsComplementor->isSupported(
-			$this->applicationFactory->getSettings()->get( 'smwgQSortingSupport' )
+		$orderCondition->isSupported(
+			$this->applicationFactory->getSettings()->isFlagSet( 'smwgQSortFeatures', SMW_QSORT )
 		);
 
 		$querySegmentListBuildManager = new QuerySegmentListBuildManager(
 			$this->store->getConnection( 'mw.db.queryengine' ),
 			$querySegmentListBuilder,
-			$orderConditionsComplementor
+			$orderCondition
 		);
 
 		$queryEngine = new QueryEngine(
@@ -140,13 +140,17 @@ class QueryEngineFactory {
 	 */
 	public function newConceptQuerySegmentBuilder() {
 
+		$pplicationFactory = ApplicationFactory::getInstance();
+
 		$conceptQuerySegmentBuilder = new ConceptQuerySegmentBuilder(
 			$this->newQuerySegmentListBuilder(),
 			$this->newQuerySegmentListProcessor()
 		);
 
-		$conceptQuerySegmentBuilder->setConceptFeatures(
-			$this->applicationFactory->getSettings()->get( 'smwgQConceptFeatures' )
+		$conceptQuerySegmentBuilder->setQueryParser(
+			$pplicationFactory->getQueryFactory()->newQueryParser(
+				$pplicationFactory->getSettings()->get( 'smwgQConceptFeatures' )
+			)
 		);
 
 		return $conceptQuerySegmentBuilder;
@@ -158,7 +162,7 @@ class QueryEngineFactory {
 			$this->store->getConnection( 'mw.db.queryengine' )
 		);
 
-		$temporaryTableBuilder->withAutoCommit(
+		$temporaryTableBuilder->setAutoCommitFlag(
 			$this->applicationFactory->getSettings()->get( 'smwgQTemporaryTablesAutoCommitMode' )
 		);
 

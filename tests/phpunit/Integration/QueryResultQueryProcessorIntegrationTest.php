@@ -3,10 +3,10 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DataValueFactory;
+use SMW\ApplicationFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
-use SMWQueryParser as QueryParser;
 use SMWQueryProcessor as QueryProcessor;
 
 /**
@@ -46,7 +46,7 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->queryParser = new QueryParser();
+		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 	}
 
 	protected function tearDown() {

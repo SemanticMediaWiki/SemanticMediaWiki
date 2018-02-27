@@ -292,7 +292,13 @@ class PropertyValueFormatter extends DataValueFormatter {
 			return '';
 		}
 
-		return ApplicationFactory::getInstance()->getPropertyLabelFinder()->findPropertyLabelByLanguageCode(
+		$prefix = '';
+
+		if ( $property->isInverse() ) {
+			$prefix = '-';
+		}
+
+		return $prefix . ApplicationFactory::getInstance()->getPropertyLabelFinder()->findPropertyLabelFromIdByLanguageCode(
 			$property->getKey(),
 			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE )
 		);

@@ -26,6 +26,16 @@ class RebuildPropertyStatistics extends \Maintenance {
 	}
 
 	/**
+	 * @see Maintenance::addDefaultParams
+	 *
+	 * @since 1.9
+	 */
+	protected function addDefaultParams() {
+
+		parent::addDefaultParams();
+	}
+
+	/**
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
@@ -42,7 +52,7 @@ class RebuildPropertyStatistics extends \Maintenance {
 		$maintenanceHelper->initRuntimeValues();
 
 		$statisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
-			$applicationFactory->getStore(),
+			$applicationFactory->getStore( 'SMW\SQLStore\SQLStore' ),
 			array( $this, 'reportMessage' )
 		);
 

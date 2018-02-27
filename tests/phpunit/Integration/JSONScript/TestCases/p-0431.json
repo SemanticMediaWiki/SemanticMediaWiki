@@ -44,7 +44,7 @@
 					"<td class=\"Has-record smwtype_txt\">Foo</td>"
 				],
 				"not-contain": [
-					"<td data-sort-value=\"123\" class=\"Has-record smwtype_num\">123</td>"
+					"<td class=\"Has-record smwtype_num\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		},
@@ -56,7 +56,7 @@
 				"to-contain": [
 					"Example/P0431/1",
 					"<td class=\"Has-record smwtype_txt\">Foo</td>",
-					"<td data-sort-value=\"123\" class=\"Has-record smwtype_num\">123</td>"
+					"<td class=\"Has-record smwtype_num\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		},
@@ -67,7 +67,7 @@
 			"assert-output": {
 				"to-contain": [
 					"Property:Has record",
-					"<td class=\"Has-property-description smwtype&#95;_lcode\">en</td>"
+					"<td class=\"Property-description smwtype&#95;_lcode\">en</td>"
 				]
 			}
 		}

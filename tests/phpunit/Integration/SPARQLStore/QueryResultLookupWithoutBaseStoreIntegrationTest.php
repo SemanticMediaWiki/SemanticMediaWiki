@@ -40,13 +40,14 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 			$this->markTestSkipped( "Requires a SPARQLStore instance" );
 		}
 
-		$sparqlDatabase = $this->store->getConnection();
+		$repositoryConnection = $this->store->getConnection( 'sparql' );
+		$repositoryConnection->setConnectionTimeout( 5 );
 
-		if ( !$sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
-			$this->markTestSkipped( "Can't connect to the SPARQL database" );
+		if ( !$repositoryConnection->ping() ) {
+			$this->markTestSkipped( "Can't connect to the SPARQL repository" );
 		}
 
-		$sparqlDatabase->deleteAll();
+		$repositoryConnection->deleteAll();
 
 		$this->queryResultValidator = new QueryResultValidator();
 		$this->semanticDataFactory = new SemanticDataFactory();

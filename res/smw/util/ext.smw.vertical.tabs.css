@@ -1,0 +1,160 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @see https://www.w3schools.com/howto/howto_js_vertical_tabs.asp
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+/* Style the tab */
+div.smw-vtab-nav {
+    margin-bottom: 10px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+div.smw-vtab-nav.nav-right {
+    float: right;
+    margin-left: 10px;
+}
+
+div.smw-vtab-nav.nav-left {
+    float: left;
+    margin-right: 20px;
+}
+
+@media ( min-width: 300px ) {
+    div.smw-vtab-nav {
+        width: 25%;
+        word-wrap: break-word;
+    }
+}
+
+@media ( min-width: 600px ) {
+    div.smw-vtab-nav {
+        width: 250px;
+    }
+}
+
+/* Style the buttons inside the tab */
+div.smw-vtab-nav button {
+    display: block;
+    color: black;
+    padding: 12px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1.2em;
+    background-color: #fff;
+    color: #428bca;
+    /* font-family: "Nimbus Sans L", "Liberation Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif; */
+}
+
+div.smw-vtab-nav button a {
+    color: #428bca;
+    text-decoration: none;
+}
+
+div.smw-vtab-nav.nav-right button {
+    border-left: 1px solid #ddd;
+    text-align: left;
+}
+
+div.smw-vtab-nav.nav-left button {
+    border-right: 1px solid #ddd;
+    text-align: right;
+}
+
+/* Change background color of buttons on hover */
+div.smw-vtab-nav button:hover {
+    background-color: #eee;
+    border-radius: 0 4px 4px 0;
+    border-color: #ddd #ddd #ddd #ddd;
+}
+
+div.smw-vtab-nav.nav-right button:hover {
+    border-left: 1px solid #ddd;
+    border-color: #ddd #ddd #ddd #ddd;
+}
+
+div.smw-vtab-nav.nav-left button:hover {
+    border-right: 1px solid #ddd;
+    border-color: #ddd #ddd #ddd #ddd;
+}
+
+/* Create an active/current "tab button" class */
+div.smw-vtab-nav button.active {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-style: normal;
+    color: black;
+}
+
+div.smw-vtab-nav.nav-right button.active {
+    border-radius: 0 4px 4px 0;
+}
+
+div.smw-vtab-nav.nav-left button.active {
+    border-radius: 4px 0 0 4px;
+}
+
+div.smw-vtab-nav button.active a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+div.smw-vtab-nav.nav-right button.active, div.smw-vtab-nav.nav-right button.active a {
+    border-left: 0px;
+    border-color: #ddd #ddd #ddd #ddd;
+}
+
+div.smw-vtab-nav.nav-left button.active, div.smw-vtab-nav.nav-left button.active a {
+    border-right: 0px;
+    border-color: #ddd #ddd #ddd #ddd;
+}
+
+/* Style the tab content */
+.smw-vtab-content {
+    padding: 0px 0px;
+    border: 1px solid #ccc;
+    border: none;
+    min-height: 200px;
+}
+
+div.smw-vtab-nav .smw-vtab-warning a {
+    color: #ffc876;
+}
+
+div.smw-vtab-nav .smw-vtab-warning.active a {
+    color: #eb8c00;
+}
+
+div.smw-vtab-nav .smw-vtab-warning a::before, div.smw-vtab-nav .smw-vtab-warning.active a::before {
+    content: "⚠ ";
+}

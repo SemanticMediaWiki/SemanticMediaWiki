@@ -139,6 +139,30 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetInfolinkTextOnSobValue() {
+
+		$stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
+
+		$sobValue = $this->dataValueFactory->newDataValueByType( '__sob' );
+		$sobValue->setUserValue( 'Text with :: content' );
+
+		$instance = new InfoLinksProvider( $sobValue );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'newInfoLinksProvider' )
+			->will( $this->returnValue( $instance ) );
+
+		$stringValidator->assertThatStringContains(
+			'<span class="smwbrowse">[[.*/:Text-20with-20::-20content|+]]</span>',
+			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
+		);
+
+		$stringValidator->assertThatStringContains(
+			'<span class="smwbrowse"><a .*/:Text-20with-20::-20content" title=".*/:Text-20with-20::-20content">+</a></span>',
+			$instance->getInfolinkText( SMW_OUTPUT_HTML )
+		);
+	}
+
 	public function testGetInfolinkTextOnTimeValueWithoutLocalizedOutput() {
 
 		$timeValue = $this->dataValueFactory->newDataValueByType( '_dat' );
@@ -215,7 +239,7 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $instance ) );
 
 		$this->assertContains(
-			'<div class="smwttcontent">&#x005B;SERVICELINK-B SERVICELINK-A]</div>',
+			'<div class="smwttcontent">[SERVICELINK-B SERVICELINK-A]</div>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 

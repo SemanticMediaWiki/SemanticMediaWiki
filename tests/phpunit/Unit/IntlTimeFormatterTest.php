@@ -134,21 +134,24 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000/12/12 01:01:20.200000'
 		);
 
-		#3
-		$provider[] = array(
-			'2/1300/11/02/12/03/25.888499949',
-			'en',
-			'Y-m-d H:i:s.u',
-			'1300-11-02 12:03:25.888500'
-		);
+		// Skip on HHVM to avoid .888500 vs. .888499 msec @see hhvm#6899
+		if ( !defined( 'HHVM_VERSION' ) ) {
+			#3
+			$provider[] = array(
+				'2/1300/11/02/12/03/25.888499949',
+				'en',
+				'Y-m-d H:i:s.u',
+				'1300-11-02 12:03:25.888500'
+			);
 
-		#4 time alone doesn't require a calendar model
-		$provider[] = array(
-			'2/1300/11/02/12/03/25.888499949',
-			'en',
-			'H:i:s.u',
-			'12:03:25.888500'
-		);
+			#4 time alone doesn't require a calendar model
+			$provider[] = array(
+				'2/1300/11/02/12/03/25.888499949',
+				'en',
+				'H:i:s.u',
+				'12:03:25.888500'
+			);
+		}
 
 		#5
 		$provider['on monthnumber 12'] = array(

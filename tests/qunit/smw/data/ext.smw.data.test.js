@@ -50,7 +50,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'instance', 1, function ( assert ) {
+	QUnit.test( 'instance', function ( assert ) {
+		assert.expect( 1 );
 
 		var result = new smw.Data();
 		assert.ok( result instanceof Object, pass + 'the smw.dataItem instance was accessible' );
@@ -62,7 +63,9 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'comparison $.parseJSON() vs. smw.Api.parse()', 2, function ( assert ) {
+	QUnit.test( 'comparison $.parseJSON() vs. smw.Api.parse()', function ( assert ) {
+		assert.expect( 2 );
+
 		var result;
 		var startDate;
 		var smwApi = new smw.Api();
@@ -82,7 +85,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'smw.dataItem.property factory test', 5, function ( assert ) {
+	QUnit.test( 'smw.dataItem.property factory test', function ( assert ) {
+		assert.expect( 5 );
 
 		// Testing indirect via the smw.Api otherwise the whole JSON parsing
 		// needs to be copied
@@ -102,7 +106,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'smw.dataItem.property subject less factory test', 3, function ( assert ) {
+	QUnit.test( 'smw.dataItem.property subject less factory test', function ( assert ) {
+		assert.expect( 3 );
 
 		// Testing indirect via the smw.Api otherwise the whole JSON parsing
 		// needs to be copied
@@ -126,7 +131,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'smw.dataItem.wikiPage subject factory test', 3, function ( assert ) {
+	QUnit.test( 'smw.dataItem.wikiPage subject factory test', function ( assert ) {
+		assert.expect( 3 );
 
 		// Testing indirect via the smw.Api otherwise the whole JSON parsing
 		// needs to be copied
@@ -144,7 +150,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'smw.dataItem.wikiPage multiValue factory test', 4, function ( assert ) {
+	QUnit.test( 'smw.dataItem.wikiPage multiValue factory test', function ( assert ) {
+		assert.expect( 4 );
 
 		// Testing indirect via the smw.Api otherwise the whole JSON parsing
 		// needs to be copied
@@ -171,7 +178,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'smw.dataItem.time factory', 4, function ( assert ) {
+	QUnit.test( 'smw.dataItem.time factory', function ( assert ) {
+		assert.expect( 4 );
 
 		// Use as helper to fetch language dep. month name
 		var monthNames = [];
@@ -215,7 +223,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'smw.dataItem.uri factory', 4, function ( assert ) {
+	QUnit.test( 'smw.dataItem.uri factory', function ( assert ) {
+		assert.expect( 4 );
 
 		// Testing indirect via the smw.Api otherwise the whole JSON parsing
 		// needs to be copied
@@ -241,7 +250,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'smw.dataItem.number factory', 3, function ( assert ) {
+	QUnit.test( 'smw.dataItem.number factory', function ( assert ) {
+		assert.expect( 3 );
 
 		// Testing indirect via the smw.Api otherwise the whole JSON parsing
 		// needs to be copied
@@ -250,18 +260,16 @@
 		var expectedNumber = [1220,1320,99];
 		var i=0;
 
-		$.map ( result.query.result.results, function( printouts ) {
-			$.map ( printouts, function( values ) {
-				$.map ( values, function( property ) {
-					if ( property instanceof smw.dataItem.property ){
-						$.map ( property, function( value ) {
-							if ( value instanceof smw.dataItem.number ){
-								assert.equal( value.getNumber(), expectedNumber[i] , pass + 'getNumber() returned ' + expectedNumber[i] );
-								i++;
-							}
-						} );
-					}
-				} );
+		Object.values( result.query.result.results ).forEach( function ( result ) {
+			Object.values( result.printouts ).forEach( function ( property ) {
+				if ( property instanceof smw.dataItem.property ){
+					$.map ( property, function( value ) {
+						if ( value instanceof smw.dataItem.number ){
+							assert.equal( value.getNumber(), expectedNumber[i] , pass + 'getNumber() returned ' + expectedNumber[i] );
+							i++;
+						}
+					} );
+				}
 			} );
 		} );
 	} );
@@ -271,7 +279,8 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'smw.dataValue.quantity factory', 2, function ( assert ) {
+	QUnit.test( 'smw.dataValue.quantity factory', function ( assert ) {
+		assert.expect( 2 );
 
 		// Testing indirect via the smw.Api otherwise the whole JSON parsing
 		// needs to be copied
@@ -279,18 +288,16 @@
 		var result = smwApi.parse( quantityType );
 		var expected = { value: 891.85, unit: 'km²' };
 
-		$.map ( result.query.result.results, function( printouts ) {
-			$.map ( printouts, function( values ) {
-				$.map ( values, function( property ) {
-					if ( property instanceof smw.dataItem.property ){
-						$.map ( property, function( value ) {
-							if ( value instanceof smw.dataValue.quantity ){
-								assert.equal( value.getValue(), expected.value , pass + 'getValue() returned ' + expected.value );
-								assert.equal( value.getUnit(), expected.unit , pass + 'getUnit() returned ' + expected.unit );
-							}
-						} );
-					}
-				} );
+		Object.values( result.query.result.results ).forEach( function ( result ) {
+			Object.values( result.printouts ).forEach( function ( property ) {
+				if ( property instanceof smw.dataItem.property ){
+					$.map ( property, function( value ) {
+						if ( value instanceof smw.dataValue.quantity ){
+							assert.equal( value.getValue(), expected.value , pass + 'getValue() returned ' + expected.value );
+							assert.equal( value.getUnit(), expected.unit , pass + 'getUnit() returned ' + expected.unit );
+						}
+					} );
+				}
 			} );
 		} );
 	} );
@@ -301,25 +308,24 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'smw.dataItem.unknown factory', 4, function ( assert ) {
+	QUnit.test( 'smw.dataItem.unknown factory', function ( assert ) {
+		assert.expect( 4 );
 
 		// Testing indirect via the smw.Api otherwise the whole JSON parsing
 		// needs to be copied
 		var smwApi = new smw.Api();
 		var result = smwApi.parse( unknownType );
 
-		$.map ( result.query.result.results, function( printouts ) {
-			$.map ( printouts, function( values ) {
-				$.map ( values, function( property ) {
-					if ( property instanceof smw.dataItem.property ){
-						$.map ( property, function( value ) {
-							if ( value instanceof smw.dataItem.unknown ){
-								assert.ok( value instanceof smw.dataItem.unknown, pass + 'the parser returned a smw.dataItem.unknown object' );
-								assert.equal( value.getDIType(), '_foo' , pass + 'getDIType() returned an unknown type _foo' );
-							}
-						} );
-					}
-				} );
+		Object.values( result.query.result.results ).forEach( function ( result ) {
+			Object.values( result.printouts ).forEach( function ( property ) {
+				if ( property instanceof smw.dataItem.property ){
+					$.map ( property, function( value ) {
+						if ( value instanceof smw.dataItem.unknown ){
+							assert.ok( value instanceof smw.dataItem.unknown, pass + 'the parser returned a smw.dataItem.unknown object' );
+							assert.equal( value.getDIType(), '_foo' , pass + 'getDIType() returned an unknown type _foo' );
+						}
+					} );
+				}
 			} );
 		} );
 	} );

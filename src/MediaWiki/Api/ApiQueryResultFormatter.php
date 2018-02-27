@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use InvalidArgumentException;
 use SMWQueryResult;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * This class handles the Api related query result formatting
@@ -96,7 +97,9 @@ class ApiQueryResultFormatter {
 	public function doFormat() {
 
 		if ( $this->queryResult->getErrors() !== array() ) {
-			$this->result = $this->formatErrors( $this->queryResult->getErrors() );
+			$this->result = $this->formatErrors(
+				ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $this->queryResult->getErrors() )
+			);
 		} else {
 			$this->result = $this->formatResults( $this->queryResult->toArray() );
 

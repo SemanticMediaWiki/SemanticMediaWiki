@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use WebRequest;
 use SMW\Message;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+
@@ -14,9 +15,23 @@ use SMW\Message;
 abstract class TaskHandler {
 
 	/**
+	 * Identifies an individual section to where the task is associated with.
+	 */
+	const SECTION_SUPPLEMENT = 'section.supplement';
+	const SECTION_SCHEMA = 'section.schema';
+	const SECTION_DATAREPAIR = 'section.datarepair';
+	const SECTION_DEPRECATION ='section.deprecation';
+	const SECTION_SUPPORT ='section.support';
+
+	/**
 	 * @var integer
 	 */
 	private $enabledFeatures = 0;
+
+	/**
+	 * @var Store
+	 */
+	private $store;
 
 	/**
 	 * @since 2.5
@@ -26,7 +41,7 @@ abstract class TaskHandler {
 	 * @return boolean
 	 */
 	public function isEnabledFeature( $feature ) {
-		return ( $this->enabledFeatures & $feature ) != 0;
+		return ( ( $this->enabledFeatures & $feature ) == $feature );
 	}
 
 	/**
@@ -36,6 +51,42 @@ abstract class TaskHandler {
 	 */
 	public function setEnabledFeatures( $enabledFeatures ) {
 		$this->enabledFeatures = $enabledFeatures;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Store $store
+	 */
+	public function setStore( Store $store ) {
+		$this->store = $store;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return Store
+	 */
+	public function getStore() {
+		return $this->store;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getSection() {
+		return '';
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function hasAction() {
+		return false;
 	}
 
 	/**

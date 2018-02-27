@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation on properties with invalid names/charaters (#1567, #1638, #1727 `wgContLang=en`)",
+	"description": "Test in-text annotation on properties with invalid names/characters (#1567, #1638, #1727 `wgContLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -45,6 +45,10 @@
 		{
 			"page": "Example/P0102/9",
 			"contents": "[[Foo-<Bar>::abc]]"
+		},
+		{
+			"page": "Example/P0102/10",
+			"contents": "[[Foo\nBar::abc]] [[Foo\rBar::123]] [[Foo\r\nBar::456]]"
 		}
 	],
 	"tests": [
@@ -217,11 +221,31 @@
 					]
 				}
 			}
+		},
+		{
+			"type": "parser",
+			"about": "#10 (CR, LF are invalid)",
+			"subject": "Example/P0102/10",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
 		}
 	],
 	"settings": {
 		"wgContLang": "en",
-		"smwgLinksInValues": false,
+		"smwgParserFeatures": [
+			"SMW_PARSER_STRICT",
+			"SMW_PARSER_INL_ERROR",
+			"SMW_PARSER_HID_CATS"
+		],
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]

@@ -1,0 +1,68 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.8/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.8/ http://www.mediawiki.org/xml/export-0.8.xsd" version="0.8" xml:lang="en">
+  <siteinfo>
+    <sitename>test</sitename>
+    <base>http://localhost:8080/test/index.php/Main_Page</base>
+    <generator>MediaWiki 1.23.9</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">test</namespace>
+      <namespace key="5" case="first-letter">test talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="108" case="first-letter">Concept</namespace>
+      <namespace key="109" case="first-letter">Concept talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Property:ImportTest</title>
+    <ns>102</ns>
+    <id>4119</id>
+    <revision>
+      <id>10260</id>
+      <timestamp>2000-03-29T10:48:42Z</timestamp>
+      <contributor>
+        <username>Importer</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::Number]]&quot;</comment>
+      <text xml:space="preserve" bytes="20">[[Has type::Number]]</text>
+      <sha1>kph48zlgloy5jxc3qmxgjzz2179e04c</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+  <page>
+    <title>ImportTest</title>
+    <ns>0</ns>
+    <id>4118</id>
+    <revision>
+      <id>10259</id>
+      <timestamp>2000-03-29T10:48:21Z</timestamp>
+      <contributor>
+        <username>Importer</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[ImportTest::123]]&quot;</comment>
+      <text xml:space="preserve" bytes="19">[[ImportTest::123]]</text>
+      <sha1>az827f6th4x9hr9udej643f9p13akgf</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+</mediawiki>

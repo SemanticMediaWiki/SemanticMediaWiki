@@ -119,6 +119,18 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 			SMW_CMP_LESS
 		);
 
+		$provider[] = array(
+			'like:Foo',
+			'Foo',
+			SMW_CMP_PRIM_LIKE
+		);
+
+		$provider[] = array(
+			'nlike:Foo',
+			'Foo',
+			SMW_CMP_PRIM_NLKE
+		);
+
 		return $provider;
 	}
 
@@ -157,6 +169,19 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'<<someThing',
 			SMW_CMP_LESS,
+			true
+		);
+
+
+		$provider[] = array(
+			'like:someThing',
+			SMW_CMP_PRIM_LIKE,
+			true
+		);
+
+		$provider[] = array(
+			'nlike:someThing',
+			SMW_CMP_PRIM_NLKE,
 			true
 		);
 

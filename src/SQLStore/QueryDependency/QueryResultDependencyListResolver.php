@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryDependency;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\PropertyHierarchyLookup;
+use SMW\HierarchyLookup;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
@@ -26,9 +26,9 @@ use SMWQueryResult as QueryResult;
 class QueryResultDependencyListResolver {
 
 	/**
-	 * @var PropertyHierarchyLookup
+	 * @var HierarchyLookup
 	 */
-	private $propertyHierarchyLookup;
+	private $hierarchyLookup;
 
 	/**
 	 * Specifies a list of property keys to be excluded from the detection
@@ -42,10 +42,10 @@ class QueryResultDependencyListResolver {
 	 * @since 2.3
 	 *
 	 * @param $queryResult Can be a string for when format=Debug
-	 * @param PropertyHierarchyLookup $propertyHierarchyLookup
+	 * @param HierarchyLookup $hierarchyLookup
 	 */
-	public function __construct( PropertyHierarchyLookup $propertyHierarchyLookup ) {
-		$this->propertyHierarchyLookup = $propertyHierarchyLookup;
+	public function __construct( HierarchyLookup $hierarchyLookup ) {
+		$this->hierarchyLookup = $hierarchyLookup;
 	}
 
 	/**
@@ -84,17 +84,10 @@ class QueryResultDependencyListResolver {
 			return array();
 		}
 
-		$id = $queryResult->getQuery()->getQueryId();
-		$entityListAccumulator = $queryResult->getEntityListAccumulator();
+		$inMemoryEntityProcessList = $queryResult->getInMemoryEntityProcessList();
 
-		$dependencyList = $entityListAccumulator->getEntityList(
-			$id
-		);
-
-		// Avoid a possible memory-leak by clearing the retrieved list
-		$entityListAccumulator->pruneEntityList(
-			$id
-		);
+		$dependencyList = $inMemoryEntityProcessList->getEntityList();
+		$inMemoryEntityProcessList->prune();
 
 		return $dependencyList;
 	}
@@ -172,7 +165,7 @@ class QueryResultDependencyListResolver {
 		if ( $description instanceof ClassDescription ) {
 			foreach ( $description->getCategories() as $category ) {
 
-				if ( $this->propertyHierarchyLookup->hasSubcategoryFor( $category ) ) {
+				if ( $this->hierarchyLookup->hasSubcategory( $category ) ) {
 					$this->doMatchSubcategory( $subjects, $category );
 				}
 
@@ -200,7 +193,7 @@ class QueryResultDependencyListResolver {
 
 		$subject = $property->getCanonicalDiWikiPage();
 
-		if ( $this->propertyHierarchyLookup->hasSubpropertyFor( $property ) ) {
+		if ( $this->hierarchyLookup->hasSubproperty( $property ) ) {
 			$this->doMatchSubproperty( $subjects, $subject, $property );
 		}
 
@@ -221,14 +214,13 @@ class QueryResultDependencyListResolver {
 		// Safeguard against a possible category (or redirect thereof) to point
 		// to itself by relying on tracking the hash of already inserted objects
 		if ( !isset( $subjects[$hash] ) ) {
-			$subcategories = $this->propertyHierarchyLookup->findSubcategoryListFor( $category );
+			$subcategories = $this->hierarchyLookup->getConsecutiveHierarchyList( $category );
 		}
 
 		foreach ( $subcategories as $subcategory ) {
-
 			$subjects[$subcategory->getHash()] = $subcategory;
 
-			if ( $this->propertyHierarchyLookup->hasSubcategoryFor( $subcategory ) ) {
+			if ( $this->hierarchyLookup->hasSubcategory( $subcategory ) ) {
 				$this->doMatchSubcategory( $subjects, $subcategory );
 			}
 		}
@@ -244,17 +236,19 @@ class QueryResultDependencyListResolver {
 		if (
 			!isset( $subjects[$subject->getHash()] ) &&
 			!isset( $this->propertyDependencyExemptionlist[$subject->getDBKey()] ) ) {
-			$subproperties = $this->propertyHierarchyLookup->findSubpropertListFor( $property );
+			$subproperties = $this->hierarchyLookup->getConsecutiveHierarchyList( $property );
 		}
 
 		foreach ( $subproperties as $subproperty ) {
 
-			if ( isset( $this->propertyDependencyExemptionlist[$subproperty->getDBKey()] ) ) {
+			if ( isset( $this->propertyDependencyExemptionlist[$subproperty->getKey()] ) ) {
 				continue;
 			}
 
-			$subjects[$subproperty->getHash()] = $subproperty;
-			$this->doMatchProperty( $subjects, new DIProperty( $subproperty->getDBKey() ) );
+			$subject = $subproperty->getCanonicalDiWikiPage();
+			$subjects[$subject->getHash()] = $subject;
+
+			$this->doMatchProperty( $subjects, $subproperty );
 		}
 	}
 

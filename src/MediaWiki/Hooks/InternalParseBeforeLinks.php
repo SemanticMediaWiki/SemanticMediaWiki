@@ -4,6 +4,9 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use SMW\ApplicationFactory;
+use SMW\Parser\InTextAnnotationParser;
+use SMW\MediaWiki\StripMarkerDecoder;
+use StripState;
 
 /**
  * Hook: InternalParseBeforeLinks is used to process the expanded wiki
@@ -24,7 +27,7 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinks {
+class InternalParseBeforeLinks extends HookHandler {
 
 	/**
 	 * @var Parser
@@ -32,26 +35,19 @@ class InternalParseBeforeLinks {
 	private $parser;
 
 	/**
-	 * @var array
+	 * @var StripState
 	 */
-	private $enabledSpecialPage = array();
+	private $stripState;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param Parser $parser
+	 * @param StripState $stripState
 	 */
-	public function __construct( Parser &$parser ) {
+	public function __construct( Parser &$parser, $stripState ) {
 		$this->parser = $parser;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param array $enabledSpecialPage
-	 */
-	public function setEnabledSpecialPage( array $enabledSpecialPage ) {
-		$this->enabledSpecialPage = $enabledSpecialPage;
+		$this->stripState = $stripState;
 	}
 
 	/**
@@ -76,12 +72,15 @@ class InternalParseBeforeLinks {
 			return true;
 		}
 
+		// #2209, #2370 Allow content to be parsed that contain [[SMW::off]]/[[SMW::on]]
+		// even in case of MediaWiki messages
+		if ( InTextAnnotationParser::hasMarker( $text ) ) {
+			return true;
+		}
+
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
-		//
-		// #2209 If the text was a `InterfaceMessage` send from a SpecialPage such as
-		// Special:Booksources we allow to proceed
-		if ( $text === '' || ( $this->parser->getOptions()->getInterfaceMessage() && !$title->isSpecialPage() ) ) {
+		if ( $text === '' || $this->parser->getOptions()->getInterfaceMessage() ) {
 			return false;
 		}
 
@@ -89,8 +88,9 @@ class InternalParseBeforeLinks {
 			return true;
 		}
 
-		foreach ( $this->enabledSpecialPage as $specialPage ) {
-			if ( $title->isSpecial( $specialPage ) ) {
+		// #2529
+		foreach ( $this->getOption( 'smwgEnabledSpecialPage', [] ) as $specialPage ) {
+			if ( is_string( $specialPage ) && $title->isSpecial( $specialPage ) ) {
 				return true;
 			}
 		}
@@ -120,7 +120,18 @@ class InternalParseBeforeLinks {
 			$parserData
 		);
 
-		$inTextAnnotationParser->setRedirectTarget( $this->getRedirectTarget() );
+		$stripMarkerDecoder = $applicationFactory->newMwCollaboratorFactory()->newStripMarkerDecoder(
+			$this->stripState
+		);
+
+		$inTextAnnotationParser->setStripMarkerDecoder(
+			$stripMarkerDecoder
+		);
+
+		$inTextAnnotationParser->setRedirectTarget(
+			$this->getRedirectTarget()
+		);
+
 		$inTextAnnotationParser->parse( $text );
 
 		$parserData->setSemanticDataStateToParserOutputProperty();

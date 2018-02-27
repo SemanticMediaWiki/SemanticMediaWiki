@@ -130,7 +130,9 @@ class DataTypeRegistry {
 			$extraneousLanguage
 		);
 
-		self::$instance->initDatatypes( TypeList::getList() );
+		self::$instance->initDatatypes(
+			DefaultList::getTypeList()
+		);
 
 		self::$instance->setOption(
 			'smwgDVFeatures',
@@ -194,7 +196,7 @@ class DataTypeRegistry {
 	 *
 	 * @return boolean
 	 */
-	public function isKnownByType( $typeId ) {
+	public function isRegistered( $typeId ) {
 		return isset( $this->typeDataItemIds[$typeId] );
 	}
 
@@ -265,17 +267,24 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @deprecated since 3.0, use DataTypeRegistry::findTypeByLabel
+	 */
+	public function findTypeId( $label ) {
+		return $this->findTypeByLabel( $label );
+	}
+
+	/**
 	 * Look up the ID that identifies the datatype of the given label
 	 * internally. This id is used for all internal operations. If the
 	 * label does not belong to a known type, the empty string is returned.
 	 *
-	 * The lookup is case insensitive.
+	 * @since 3.0
 	 *
 	 * @param string $label
 	 *
 	 * @return string
 	 */
-	public function findTypeId( $label ) {
+	public function findTypeByLabel( $label ) {
 
 		$label = mb_strtolower( $label );
 
@@ -294,10 +303,10 @@ class DataTypeRegistry {
 	 *
 	 * @return string
 	 */
-	public function findTypeByLanguage( $label, $languageCode = false ) {
+	public function findTypeByLabelAndLanguage( $label, $languageCode = false ) {
 
 		if ( !$languageCode ) {
-			return $this->findTypeId( $label );
+			return $this->findTypeByLabel( $label );
 		}
 
 		$extraneousLanguage = $this->extraneousLanguage->fetchByLanguageCode(
@@ -305,6 +314,22 @@ class DataTypeRegistry {
 		);
 
 		return $extraneousLanguage->findDatatypeByLabel( $label );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public function getFieldType( $type ) {
+
+		if ( isset( $this->typeDataItemIds[$type] ) ) {
+			return $this->defaultDataItemTypeMap[ $this->typeDataItemIds[$type]];
+		}
+
+		return '_wpg';
 	}
 
 	/**

@@ -5,7 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 use SMW\DIWikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
@@ -27,9 +27,9 @@ use SMWTurtleSerializer as TurtleSerializer;
 class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var CompoundConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $compoundConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var Exporter
@@ -39,10 +39,10 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
+	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
-		$this->compoundConditionBuilder = $compoundConditionBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
 
@@ -62,8 +62,9 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$joinVariable = $this->compoundConditionBuilder->getJoinVariable();
-		$orderByProperty = $this->compoundConditionBuilder->getOrderByProperty();
+		$joinVariable = $this->conditionBuilder->getJoinVariable();
+		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
+		$asNoCase = $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE );
 
 		$dataItem = $description->getDataItem();
 		$property = $description->getProperty();
@@ -81,16 +82,18 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			break;
 			case SMW_CMP_NEQ:  $comparator = '!=';
 			break;
+			case SMW_CMP_PRIM_LIKE;
 			case SMW_CMP_LIKE: $comparator = 'regex';
 			break;
+			case SMW_CMP_PRIM_NLKE;
 			case SMW_CMP_NLKE: $comparator = '!regex';
 			break;
-			default:           $comparator = ''; // unkown, unsupported
+			default: $comparator = ''; // unkown, unsupported
 		}
 
 		if ( $comparator === '' ) {
 			return $this->createConditionForEmptyComparator( $joinVariable, $orderByProperty );
-		} elseif ( $comparator == '=' ) {
+		} elseif ( $comparator == '=' && $asNoCase === false ) {
 			return $this->createConditionForEqualityComparator( $dataItem, $property, $joinVariable, $orderByProperty );
 		} elseif ( $comparator == 'regex' || $comparator == '!regex' ) {
 			return $this->createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, $comparator );
@@ -105,7 +108,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function createConditionForEmptyComparator( $joinVariable, $orderByProperty ) {
-		return $this->compoundConditionBuilder->newTrueCondition( $joinVariable, $orderByProperty );
+		return $this->conditionBuilder->newTrueCondition( $joinVariable, $orderByProperty );
 	}
 
 	private function createConditionForEqualityComparator( $dataItem, $property, $joinVariable, $orderByProperty ) {
@@ -122,7 +125,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		$condition = new SingletonCondition( $expElement );
 
-		$redirectByVariable = $this->compoundConditionBuilder->tryToFindRedirectVariableForDataItem(
+		$redirectByVariable = $this->conditionBuilder->tryToFindRedirectVariableForDataItem(
 			$dataItem
 		);
 
@@ -143,7 +146,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$condition->matchElement = $redirectByVariable;
 		}
 
-		$this->compoundConditionBuilder->addOrderByDataForProperty(
+		$this->conditionBuilder->addOrderByDataForProperty(
 			$condition,
 			$joinVariable,
 			$orderByProperty,
@@ -156,7 +159,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	private function createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
 
 		if ( !$dataItem instanceof DIBlob && !$dataItem instanceof DIWikiPage && !$dataItem instanceof DIUri ) {
-			return $this->compoundConditionBuilder->newTrueCondition( $joinVariable, $orderByProperty );
+			return $this->conditionBuilder->newTrueCondition( $joinVariable, $orderByProperty );
 		}
 
 		if ( $dataItem instanceof DIBlob ) {
@@ -166,9 +169,11 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		}
 
 		// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-		$pattern = '^' . str_replace( array( 'https://', 'http://', '%2A', '.', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', "'", '\\\.', '\\', '"', '\\\\\\\"' ),
-		                              array( '', '', '*', '\.', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' , "\'", '\\\\\.', '\\\\', '\\\\\"', '\\\\\\\\\\\"' ),
-		                              $search ) . '$';
+		$pattern = '^' . str_replace(
+			array( 'https://', 'http://', '%2A', '.', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', "'", '\\\.', '\\', '"', '\\\\\\\"' ),
+			array( '*', '*', '*', '\.', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' , "\'", '\\\\\.', '\\\\', '\\\\\"', '\\\\\\\\\\\"' ),
+			$search
+		) . '$';
 		// @codingStandardsIgnoreEnd
 
 		$condition = $this->createFilterConditionToMatchRegexPattern(
@@ -178,7 +183,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$pattern
 		);
 
-		$redirectByVariable = $this->compoundConditionBuilder->tryToFindRedirectVariableForDataItem(
+		$redirectByVariable = $this->conditionBuilder->tryToFindRedirectVariableForDataItem(
 			$dataItem
 		);
 
@@ -186,7 +191,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$condition->matchElement = $redirectByVariable;
 		}
 
-		$this->compoundConditionBuilder->addOrderByDataForProperty(
+		$this->conditionBuilder->addOrderByDataForProperty(
 			$condition,
 			$joinVariable,
 			$orderByProperty,
@@ -200,13 +205,13 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		$result = new FilterCondition( '', array() );
 
-		$this->compoundConditionBuilder->addOrderByData(
+		$this->conditionBuilder->addOrderByData(
 			$result,
 			$joinVariable,
 			$dataItem->getDIType()
 		);
 
-		$orderByVariable = $result->orderByVariable;
+		$orderByVariable = '?' . $result->orderByVariable;
 
 		if ( $dataItem instanceof DIWikiPage ) {
 			$expElement = $this->exporter->getDataItemExpElement( new DIBlob( $dataItem->getSortKey() ) );
@@ -221,17 +226,22 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		if ( $expElement instanceof ExpNsResource ) {
 			$result->namespaces[$expElement->getNamespaceId()] = $expElement->getNamespace();
+			$dataItem = $expElement->getDataItem();
 		}
 
-		$result->filter = "?$orderByVariable $comparator $valueName";
+		$this->lcase( $dataItem, $orderByVariable, $valueName );
+
+		$result->filter = "$orderByVariable $comparator $valueName";
 
 		return $result;
 	}
 
 	private function createFilterConditionToMatchRegexPattern( $dataItem, &$joinVariable, $comparator, $pattern ) {
 
+		$flag = $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE ) ? 'i' : 's';
+
 		if ( $dataItem instanceof DIBlob ) {
-			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
+			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"$flag\")", array() );
 		}
 
 		if ( $dataItem instanceof DIUri ) {
@@ -245,16 +255,27 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$expElement = $this->exporter->getDataItemExpElement( $dataItem->getSortKeyDataItem() );
 		$condition = new SingletonCondition( $expElement );
 
-		$filterVariable = $this->compoundConditionBuilder->getNextVariable();
+		$filterVariable = $this->conditionBuilder->getNextVariable();
 
 		$condition->condition = "?$joinVariable " . $skeyExpElement->getQName(). " ?$filterVariable .\n";
 		$condition->matchElement = "?$joinVariable";
 
-		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"s\")", array() );
+		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"$flag\")", array() );
 
 		$condition->weakConditions = array( $filterVariable => $filterCondition->getCondition() );
 
 		return $condition;
+	}
+
+	private function lcase( $dataItem, &$orderByVariable, &$valueName ) {
+
+		$isValidDataItem = $dataItem instanceof DIBlob || $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage;
+
+		// https://stackoverflow.com/questions/10660030/how-to-write-sparql-query-that-efficiently-matches-string-literals-while-ignorin
+		if ( $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE ) && $isValidDataItem ) {
+			$orderByVariable = "lcase(str($orderByVariable) )";
+			$valueName = mb_strtolower( $valueName );
+		}
 	}
 
 }

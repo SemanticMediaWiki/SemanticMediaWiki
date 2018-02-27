@@ -44,6 +44,81 @@ class TaskHandlerFactory {
 	/**
 	 * @since 2.5
 	 *
+	 * @return []
+	 */
+	public function getTaskHandlerList( $user, $adminFeatures ) {
+
+		$handlers = [
+			// TaskHandler::SECTION_SCHEMA
+			$this->newTableSchemaTaskHandler(),
+
+			// TaskHandler::SECTION_DATAREPAIR
+			$this->newDataRefreshJobTaskHandler(),
+			$this->newDisposeJobTaskHandler(),
+			$this->newPropertyStatsRebuildJobTaskHandler(),
+			$this->newFulltextSearchTableRebuildJobTaskHandler(),
+
+			// TaskHandler::SECTION_DEPRECATION
+			$this->newDeprecationNoticeTaskHandler(),
+
+			// TaskHandler::SECTION_SUPPLEMENT
+			$this->newConfigurationListTaskHandler(),
+			$this->newOperationalStatisticsListTaskHandler(),
+			$this->newDuplicateLookupTaskHandler(),
+			$this->newEntityLookupTaskHandler( $user ),
+
+			// TaskHandler::SECTION_SUPPORT
+			$this->newSupportListTaskHandler()
+		];
+
+		$taskHandlerList = [
+			TaskHandler::SECTION_SCHEMA => [],
+			TaskHandler::SECTION_DATAREPAIR => [],
+			TaskHandler::SECTION_DEPRECATION => [],
+			TaskHandler::SECTION_SUPPLEMENT => [],
+			TaskHandler::SECTION_SUPPORT => [],
+			'actions' => []
+		];
+
+		foreach ( $handlers as $handler ) {
+
+			$handler->setEnabledFeatures(
+				$adminFeatures
+			);
+
+			$handler->setStore(
+				$this->store
+			);
+
+			switch ( $handler->getSection() ) {
+				case TaskHandler::SECTION_SCHEMA:
+					$taskHandlerList[TaskHandler::SECTION_SCHEMA][] = $handler;
+					break;
+				case TaskHandler::SECTION_DATAREPAIR:
+					$taskHandlerList[TaskHandler::SECTION_DATAREPAIR][] = $handler;
+					break;
+				case TaskHandler::SECTION_DEPRECATION:
+					$taskHandlerList[TaskHandler::SECTION_DEPRECATION][] = $handler;
+					break;
+				case TaskHandler::SECTION_SUPPLEMENT:
+					$taskHandlerList[TaskHandler::SECTION_SUPPLEMENT][] = $handler;
+					break;
+				case TaskHandler::SECTION_SUPPORT:
+					$taskHandlerList[TaskHandler::SECTION_SUPPORT][] = $handler;
+					break;
+			}
+
+			if ( $handler->hasAction() ) {
+				$taskHandlerList['actions'][] = $handler;
+			}
+		}
+
+		return $taskHandlerList;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @return TableSchemaTaskHandler
 	 */
 	public function newTableSchemaTaskHandler() {
@@ -80,10 +155,21 @@ class TaskHandlerFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return IdTaskHandler
+	 * @return EntityLookupTaskHandler
 	 */
-	public function newIdTaskHandler() {
-		return new IdTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+	public function newEntityLookupTaskHandler( $user = null ) {
+
+		$entityLookupTaskHandler = new EntityLookupTaskHandler(
+			$this->store,
+			$this->htmlFormRenderer,
+			$this->outputFormatter
+		);
+
+		$entityLookupTaskHandler->setUser(
+			$user
+		);
+
+		return $entityLookupTaskHandler;
 	}
 
 	/**
@@ -92,7 +178,7 @@ class TaskHandlerFactory {
 	 * @return DataRefreshJobTaskHandler
 	 */
 	public function newDataRefreshJobTaskHandler() {
-		return new DataRefreshJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+		return new DataRefreshJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
 	/**
@@ -101,7 +187,7 @@ class TaskHandlerFactory {
 	 * @return DisposeJobTaskHandler
 	 */
 	public function newDisposeJobTaskHandler() {
-		return new DisposeJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+		return new DisposeJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
 	/**
@@ -110,7 +196,7 @@ class TaskHandlerFactory {
 	 * @return PropertyStatsRebuildJobTaskHandler
 	 */
 	public function newPropertyStatsRebuildJobTaskHandler() {
-		return new PropertyStatsRebuildJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+		return new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
 	/**
@@ -119,7 +205,25 @@ class TaskHandlerFactory {
 	 * @return FulltextSearchTableRebuildJobTaskHandler
 	 */
 	public function newFulltextSearchTableRebuildJobTaskHandler() {
-		return new FulltextSearchTableRebuildJobTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter );
+		return new FulltextSearchTableRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return DeprecationNoticeTaskHandler
+	 */
+	public function newDeprecationNoticeTaskHandler() {
+		return new DeprecationNoticeTaskHandler( $this->outputFormatter, $GLOBALS['smwgDeprecationNotices'] );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return DuplicateLookupTaskHandler
+	 */
+	public function newDuplicateLookupTaskHandler() {
+		return new DuplicateLookupTaskHandler( $this->outputFormatter );
 	}
 
 }

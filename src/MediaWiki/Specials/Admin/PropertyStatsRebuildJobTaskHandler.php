@@ -9,7 +9,6 @@ use SMW\Store;
 use Html;
 use WebRequest;
 use Title;
-use Job;
 
 /**
  * @license GNU GPL v2+
@@ -18,11 +17,6 @@ use Job;
  * @author mwjames
  */
 class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
 
 	/**
 	 * @var HtmlFormRenderer
@@ -37,14 +31,30 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Store $store
 	 * @param HtmlFormRenderer $htmlFormRenderer
 	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
+	public function __construct( HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
 		$this->htmlFormRenderer = $htmlFormRenderer;
 		$this->outputFormatter = $outputFormatter;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getSection() {
+		return self::SECTION_DATAREPAIR;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function hasAction() {
+		return true;
 	}
 
 	/**
@@ -65,10 +75,10 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 
 		// smw-admin-propertystatistics
 		$this->htmlFormRenderer
-				->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-propertystatistics-title' ) )
+				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-propertystatistics-title' ) )
 				->addParagraph( $this->getMessageAsString( 'smw-admin-propertystatistics-intro', Message::PARSE ) );
 
-		if ( $this->isEnabledFeature( SMW_ADM_PSTATS ) && !$this->hasPropertyStatisticsRebuildJob() ) {
+		if ( $this->isEnabledFeature( SMW_ADM_PSTATS ) && !$this->hasPendingPropertyStatisticsRebuildJob() ) {
 			$this->htmlFormRenderer
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'pstatsrebuild' )
@@ -99,34 +109,22 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		if ( $this->isEnabledFeature( SMW_ADM_PSTATS ) && !$this->hasPropertyStatisticsRebuildJob() ) {
-			$propertyStatisticsRebuildJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
-				'SMW\PropertyStatisticsRebuildJob',
-				\SpecialPage::getTitleFor( 'SMWAdmin' )
-			);
-
-			$propertyStatisticsRebuildJob->insert();
-		}
-
-		$this->outputFormatter->redirectToRootPage( $this->getMessageAsString( 'smw-admin-propertystatistics-title' ) );
-	}
-
-	private function hasPropertyStatisticsRebuildJob() {
-
-		if ( !$this->isEnabledFeature( SMW_ADM_PSTATS ) ) {
+		if ( !$this->isEnabledFeature( SMW_ADM_PSTATS ) || $this->hasPendingPropertyStatisticsRebuildJob() ) {
 			return false;
 		}
 
-		$jobQueueLookup = ApplicationFactory::getInstance()->create(
-			'JobQueueLookup',
-			$this->store->getConnection( 'mw.db' )
+		$propertyStatisticsRebuildJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+			'SMW\PropertyStatisticsRebuildJob',
+			\SpecialPage::getTitleFor( 'SMWAdmin' )
 		);
 
-		$row = $jobQueueLookup->selectJobRowBy(
-			'SMW\PropertyStatisticsRebuildJob'
-		);
+		$propertyStatisticsRebuildJob->insert();
 
-		return $row !== null && $row !== false;
+		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
+	}
+
+	private function hasPendingPropertyStatisticsRebuildJob() {
+		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'SMW\PropertyStatisticsRebuildJob' );
 	}
 
 }

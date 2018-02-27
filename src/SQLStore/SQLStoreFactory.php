@@ -12,13 +12,26 @@ use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMWRequestOptions as RequestOptions;
+use SMW\Options;
 use SMWSQLStore3;
 use SMW\SQLStore\TableBuilder\TableBuilder;
-use Onoi\MessageReporter\MessageReporterFactory;
-use SMWSql3SmwIds as IdTableManager;
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\NullMessageReporter;
+use Onoi\Cache\Cache;
+use SMWSql3SmwIds as EntityIdManager;
+use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
-use SMW\SQLStore\EntityStore\CachedEntityLookup;
-use SMW\SQLStore\EntityStore\DirectEntityLookup;
+use SMW\SQLStore\EntityStore\CachingEntityLookup;
+use SMW\SQLStore\EntityStore\NativeEntityLookup;
+use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
+use SMW\SQLStore\EntityStore\SemanticDataLookup;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\ProcessLruCache;
+use SMW\SQLStore\EntityStore\ByIdEntityFinder;
+use SMW\SQLStore\EntityStore\SubobjectListFinder;
+use SMW\ChangePropListener;
+use SMW\SQLStore\PropertyTableRowDiffer;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 
 /**
  * @license GNU GPL v2+
@@ -35,6 +48,11 @@ class SQLStoreFactory {
 	private $store;
 
 	/**
+	 * @var MessageReporter
+	 */
+	private $messageReporter;
+
+	/**
 	 * @var ApplicationFactory
 	 */
 	private $applicationFactory;
@@ -48,9 +66,16 @@ class SQLStoreFactory {
 	 * @since 2.2
 	 *
 	 * @param SMWSQLStore3 $store
+	 * @param MessageReporter|null $messageReporter
 	 */
-	public function __construct( SMWSQLStore3 $store ) {
+	public function __construct( SMWSQLStore3 $store, MessageReporter $messageReporter = null ) {
 		$this->store = $store;
+		$this->messageReporter = $messageReporter;
+
+		if ( $this->messageReporter === null ) {
+			$this->messageReporter = new NullMessageReporter();
+		}
+
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->queryEngineFactory = new QueryEngineFactory( $store );
 	}
@@ -76,16 +101,10 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return IdTableManager
+	 * @return EntityIdManager
 	 */
-	public function newIdTableManager() {
-
-		$idToDataItemMatchFinder = new IdToDataItemMatchFinder(
-			$this->store->getConnection( 'mw.db' ),
-			$this->applicationFactory->getIteratorFactory()
-		);
-
-		return new IdTableManager( $this->store, $idToDataItemMatchFinder );
+	public function newEntityTable() {
+		return new EntityIdManager( $this->store, $this );
 	}
 
 	/**
@@ -127,13 +146,13 @@ class SQLStoreFactory {
 
 		$usageStatisticsListLookup = new UsageStatisticsListLookup(
 			$this->store,
-			$this->newPropertyStatisticsTable()
+			$this->newPropertyStatisticsStore()
 		);
 
 		return $this->newCachedListLookup(
 			$usageStatisticsListLookup,
-			$settings->get( 'smwgStatisticsCache' ),
-			$settings->get( 'smwgStatisticsCacheExpiry' )
+			$settings->safeGet( 'special.statistics' ),
+			$settings->safeGet( 'special.statistics' )
 		);
 	}
 
@@ -150,14 +169,14 @@ class SQLStoreFactory {
 
 		$propertyUsageListLookup = new PropertyUsageListLookup(
 			$this->store,
-			$this->newPropertyStatisticsTable(),
+			$this->newPropertyStatisticsStore(),
 			$requestOptions
 		);
 
 		return $this->newCachedListLookup(
 			$propertyUsageListLookup,
-			$settings->get( 'smwgPropertiesCache' ),
-			$settings->get( 'smwgPropertiesCacheExpiry' )
+			$settings->safeGet( 'special.properties' ),
+			$settings->safeGet( 'special.properties' )
 		);
 	}
 
@@ -174,14 +193,14 @@ class SQLStoreFactory {
 
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
 			$this->store,
-			$this->newPropertyStatisticsTable(),
+			$this->newPropertyStatisticsStore(),
 			$requestOptions
 		);
 
 		return $this->newCachedListLookup(
 			$unusedPropertyListLookup,
-			$settings->get( 'smwgUnusedPropertiesCache' ),
-			$settings->get( 'smwgUnusedPropertiesCacheExpiry' )
+			$settings->safeGet( 'special.unusedproperties' ),
+			$settings->safeGet( 'special.unusedproperties' )
 		);
 	}
 
@@ -204,8 +223,8 @@ class SQLStoreFactory {
 
 		return $this->newCachedListLookup(
 			$undeclaredPropertyListLookup,
-			$settings->get( 'smwgWantedPropertiesCache' ),
-			$settings->get( 'smwgWantedPropertiesCacheExpiry' )
+			$settings->safeGet( 'special.wantedproperties' ),
+			$settings->safeGet( 'special.wantedproperties' )
 		);
 	}
 
@@ -221,6 +240,10 @@ class SQLStoreFactory {
 	public function newCachedListLookup( ListLookup $listLookup, $useCache, $cacheExpiry ) {
 
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
+
+		if ( is_int( $useCache ) ) {
+			$useCache = true;
+		}
 
 		$cacheOptions = $cacheFactory->newCacheOptions( array(
 			'useCache' => $useCache,
@@ -245,18 +268,14 @@ class SQLStoreFactory {
 	 */
 	public function newDeferredCallableCachedListLookupUpdate() {
 
-		// PHP 5.3
-		$factory = $this;
-
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $factory ) {
-			$factory->newPropertyUsageCachedListLookup()->deleteCache();
-			$factory->newUnusedPropertyCachedListLookup()->deleteCache();
-			$factory->newUndeclaredPropertyCachedListLookup()->deleteCache();
-			$factory->newUsageStatisticsCachedListLookup()->deleteCache();
-
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate( function() {
+			$this->newPropertyUsageCachedListLookup()->deleteCache();
+			$this->newUnusedPropertyCachedListLookup()->deleteCache();
+			$this->newUndeclaredPropertyCachedListLookup()->deleteCache();
+			$this->newUsageStatisticsCachedListLookup()->deleteCache();
 		} );
 
-		return $deferredCallableUpdate;
+		return $deferredTransactionalUpdate;
 	}
 
 	/**
@@ -276,43 +295,34 @@ class SQLStoreFactory {
 	public function newEntityLookup() {
 
 		$settings = $this->applicationFactory->getSettings();
-		$directEntityLookup = new DirectEntityLookup( $this->store );
+		$nativeEntityLookup = new NativeEntityLookup( $this->store );
 
-		if ( $settings->get( 'smwgValueLookupCacheType' ) === CACHE_NONE ) {
-			return $directEntityLookup;
+		if ( $settings->get( 'smwgEntityLookupCacheType' ) === CACHE_NONE ) {
+			return $nativeEntityLookup;
 		}
 
-		$circularReferenceGuard = new CircularReferenceGuard( 'vl:store' );
+		$circularReferenceGuard = new CircularReferenceGuard( 'store:entitylookup' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
 
 		$blobStore = $cacheFactory->newBlobStore(
-			'smw:vl:store',
-			$settings->get( 'smwgValueLookupCacheType' ),
-			$settings->get( 'smwgValueLookupCacheLifetime' )
+			'smw:store:entitylookup:',
+			$settings->get( 'smwgEntityLookupCacheType' ),
+			$settings->get( 'smwgEntityLookupCacheLifetime' )
 		);
 
-		$cachedEntityLookup = new CachedEntityLookup(
-			$directEntityLookup,
+		$cachingEntityLookup = new CachingEntityLookup(
+			$nativeEntityLookup,
 			new RedirectTargetLookup( $this->store, $circularReferenceGuard ),
 			$blobStore
 		);
 
-		$cachedEntityLookup->setCachedLookupFeatures(
-			$settings->get( 'smwgValueLookupFeatures' )
+		$cachingEntityLookup->setLookupFeatures(
+			$settings->get( 'smwgEntityLookupFeatures' )
 		);
 
-		return $cachedEntityLookup;
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @return RequestOptionsProcessor
-	 */
-	public function newRequestOptionsProcessor() {
-		return new RequestOptionsProcessor( $this->store );
+		return $cachingEntityLookup;
 	}
 
 	/**
@@ -322,7 +332,7 @@ class SQLStoreFactory {
 	 */
 	public function newPropertyTableInfoFetcher() {
 
-		$settings = $this->applicationFactory->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyTableInfoFetcher = new PropertyTableInfoFetcher(
 			new PropertyTypeFinder( $this->store->getConnection( 'mw.db' ) )
@@ -364,15 +374,14 @@ class SQLStoreFactory {
 	 */
 	public function newInstaller() {
 
-		$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
-		$options = $this->store->getOptions();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$tableBuilder = TableBuilder::factory(
 			$this->store->getConnection( DB_MASTER )
 		);
 
 		$tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->messageReporter
 		);
 
 		$tableIntegrityExaminer = new TableIntegrityExaminer(
@@ -383,18 +392,29 @@ class SQLStoreFactory {
 			$this->store
 		);
 
+		$tableSchemaManager->setFieldTypeFeatures(
+			$settings->get( 'smwgFieldTypeFeatures' )
+		);
+
 		$installer = new Installer(
 			$tableSchemaManager,
 			$tableBuilder,
 			$tableIntegrityExaminer
 		);
 
-		if ( $options->has( Installer::OPT_MESSAGEREPORTER ) ) {
-			$installer->setMessageReporter( $options->get( Installer::OPT_MESSAGEREPORTER ) );
-		}
+		$installer->setMessageReporter(
+			$this->messageReporter
+		);
 
-		$installer->isFromExtensionSchemaUpdate(
-			( $options->has( 'isFromExtensionSchemaUpdate' ) ? $options->get( 'isFromExtensionSchemaUpdate' ) : false )
+		$installer->setOptions(
+			$this->store->getOptions()->filter(
+				[
+					Installer::OPT_TABLE_OPTIMIZE,
+					Installer::OPT_IMPORT,
+					Installer::OPT_SCHEMA_UPDATE,
+					Installer::OPT_SUPPLEMENT_JOBS
+				]
+			)
 		);
 
 		return $installer;
@@ -406,7 +426,18 @@ class SQLStoreFactory {
 	 * @return DataItemHandlerDispatcher
 	 */
 	public function newDataItemHandlerDispatcher() {
-		return new DataItemHandlerDispatcher( $this->store );
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$dataItemHandlerDispatcher = new DataItemHandlerDispatcher(
+			$this->store
+		);
+
+		$dataItemHandlerDispatcher->setFieldTypeFeatures(
+			$settings->get( 'smwgFieldTypeFeatures' )
+		);
+
+		return $dataItemHandlerDispatcher;
 	}
 
 	/**
@@ -419,26 +450,182 @@ class SQLStoreFactory {
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.0
 	 *
-	 * @return PropertyStatisticsTable
+	 * @return TraversalPropertyLookup
 	 */
-	public function newPropertyStatisticsTable() {
+	public function newTraversalPropertyLookup() {
 
-		$propertyStatisticsTable = new PropertyStatisticsTable(
-			$this->store->getConnection( 'mw.db' ),
-			SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$options = new Options(
+			array(
+				'smwgExperimentalFeatures' => $settings->get( 'smwgExperimentalFeatures' )
+			)
 		);
 
-		$propertyStatisticsTable->setLogger(
+		return new TraversalPropertyLookup( $this->store, $options );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return PropertyStatisticsStore
+	 */
+	public function newPropertyStatisticsStore() {
+
+		$propertyStatisticsStore = new PropertyStatisticsStore(
+			$this->store->getConnection( 'mw.db' )
+		);
+
+		$propertyStatisticsStore->setLogger(
 			$this->getLogger()
 		);
 
-		$propertyStatisticsTable->isCommandLineMode(
+		$propertyStatisticsStore->isCommandLineMode(
 			$GLOBALS['wgCommandLineMode']
 		);
 
-		return $propertyStatisticsTable;
+		return $propertyStatisticsStore;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ProcessLruCache
+	 */
+	public function newProcessLruCache( array $config ) {
+
+		$processLruCache = ProcessLruCache::newFromConfig( $config );
+		$processLruCache->reset();
+
+		return $processLruCache;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return PropertyTableRowDiffer
+	 */
+	public function newPropertyTableRowDiffer() {
+
+		$propertyTableRowMapper = new PropertyTableRowMapper(
+			$this->store
+		);
+
+		$propertyTableRowDiffer = new PropertyTableRowDiffer(
+			$this->store,
+			$propertyTableRowMapper
+		);
+
+		return $propertyTableRowDiffer;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Cache $cache
+	 *
+	 * @return ByIdEntityFinder
+	 */
+	public function newByIdEntityFinder( Cache $cache ) {
+
+		$idMatchFinder = new ByIdEntityFinder(
+			$this->store,
+			$this->applicationFactory->getIteratorFactory(),
+			$cache
+		);
+
+		return $idMatchFinder;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return HierarchyLookup
+	 */
+	public function newHierarchyLookup() {
+		return $this->applicationFactory->newHierarchyLookup();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return SubobjectListFinder
+	 */
+	public function newSubobjectListFinder() {
+
+		$subobjectListFinder = new SubobjectListFinder(
+			$this->store,
+			$this->applicationFactory->getIteratorFactory()
+		);
+
+		return $subobjectListFinder;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return SemanticDataLookup
+	 */
+	public function newSemanticDataLookup() {
+
+		$semanticDataLookup = new SemanticDataLookup(
+			$this->store
+		);
+
+		$semanticDataLookup->setLogger(
+			$this->getLogger()
+		);
+
+		$cachingSemanticDataLookup = new CachingSemanticDataLookup(
+			$semanticDataLookup,
+			ApplicationFactory::getInstance()->getCache()
+		);
+
+		return $cachingSemanticDataLookup;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return RedirectStore
+	 */
+	public function newRedirectStore() {
+
+		$redirectStore = new RedirectStore(
+			$this->store
+		);
+
+		return $redirectStore;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ChangePropListener
+	 */
+	public function newChangePropListener() {
+		return new ChangePropListener();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @return ChangeOp
+	 */
+	public function newChangeOp( DIWikiPage $subject ) {
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+		$changeOp = new ChangeOp( $subject );
+
+		$changeOp->setTextItemsFlag(
+			$settings->get( 'smwgEnabledFulltextSearch' )
+		);
+
+		return $changeOp;
 	}
 
 }

@@ -64,7 +64,7 @@
 		},
 		{
 			"page": "Example/F0104/Q.7",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |sep=; |format=template |template arguments=named |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |sep=; |valuesep=; |format=template |template arguments=named |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
 		}
 	],
 	"tests": [
@@ -128,7 +128,7 @@
 			"subject": "Example/F0104/Q.6",
 			"assert-output": {
 				"to-contain": [
-					"(I)Example/F0104/1:123 456Example/F0104/2:abc defExample/F0104/3:001 0011(O)"
+					"(I)Example/F0104/1:123, 456Example/F0104/2:abc, defExample/F0104/3:001, 0011(O)"
 				]
 			}
 		},

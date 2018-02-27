@@ -160,9 +160,11 @@ class BenchmarkJsonScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'benchmarks' => $this->benchmarkReports
 		);
 
-		$outputCliFormatter = new OutputCliFormatter( OutputCliFormatter::FORMAT_TREE );
+		$cliOutputFormatter = new CliOutputFormatter(
+			CliOutputFormatter::FORMAT_JSON
+		);
 
-		return print "\n\n" . $outputCliFormatter->format( $report );
+		return print "\n\n" . $cliOutputFormatter->format( $report );
 	}
 
 	private function doRunImportBenchmarks( $jsonTestCaseFileHandler ) {

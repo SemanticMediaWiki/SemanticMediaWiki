@@ -31,9 +31,20 @@ class OutputFormatter {
 
 	/**
 	 * @since 2.5
+	 *
+	 * @param array $query
 	 */
-	public function addParentLink() {
-		$this->outputPage->prependHTML( $this->createParentLink() );
+	public function addParentLink( $query = array(), $title = 'smwadmin' ) {
+		$this->outputPage->prependHTML( $this->createParentLink( $query, $title ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $url
+	 */
+	public function addHelpLink( $url ) {
+		$this->outputPage->addHelpLink( $url, true );
 	}
 
 	/**
@@ -44,6 +55,15 @@ class OutputFormatter {
 	public function setPageTitle( $title ) {
 		$this->outputPage->setArticleRelated( false );
 		$this->outputPage->setPageTitle( $title );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $html
+	 */
+	public function addAsPreformattedText( $html ) {
+		$this->outputPage->addHTML( '<pre>' . $html . '</pre>' );
 	}
 
 	/**
@@ -69,12 +89,12 @@ class OutputFormatter {
 	 *
 	 * @param string $fragment
 	 */
-	public function redirectToRootPage( $fragment = '' ) {
+	public function redirectToRootPage( $fragment = '', $query = array() ) {
 
 		$title = \SpecialPage::getTitleFor( 'SMWAdmin' );
 		$title->setFragment( ' ' . $fragment );
 
-		$this->outputPage->redirect( $title->getFullURL() );
+		$this->outputPage->redirect( $title->getFullURL( $query ) );
 	}
 
 	/**
@@ -84,6 +104,16 @@ class OutputFormatter {
 	 * @param array $query
 	 */
 	public function getSpecialPageLinkWith( $caption = '', $query = array() ) {
+		return $this->createSpecialPageLink( $caption, $query );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $caption
+	 * @param array $query
+	 */
+	public function createSpecialPageLink( $caption = '', $query = array() ) {
 		return '<a href="' . htmlspecialchars( \SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL( $query ) ) . '">' . $caption . '</a>';
 	}
 
@@ -130,7 +160,7 @@ class OutputFormatter {
 		return FormatJson::encode( $input, true );
 	}
 
-	private function createParentLink() {
+	private function createParentLink( $query = array(), $title = 'smwadmin' ) {
 		return Html::rawElement(
 			'div',
 			array( 'class' => 'smw-breadcrumb-link' ),
@@ -141,8 +171,8 @@ class OutputFormatter {
 			) .
 			Html::rawElement(
 				'a',
-				array( 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL() ),
-				Message::get( 'smwadmin', Message::TEXT, Message::USER_LANGUAGE )
+				array( 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL( $query ) ),
+				Message::get( $title, Message::TEXT, Message::USER_LANGUAGE )
 		) );
 	}
 

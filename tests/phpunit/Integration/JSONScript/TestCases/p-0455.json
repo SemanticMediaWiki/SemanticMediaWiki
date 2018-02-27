@@ -1,0 +1,244 @@
+{
+	"description": "Test paser/in-text annotation with unstripped tags (nowiki etc.) (`SMW_PARSER_UNSTRIP`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has description",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/P0455/1",
+			"contents": "[[Has description::<nowiki>Contains nowiki tag</nowiki>]]"
+		},
+		{
+			"page": "Example/P0455/2",
+			"contents": "[[Has description::<pre>Contains pre tag</pre>]]"
+		},
+		{
+			"page": "Example/P0455/3",
+			"contents": "[[Has description::<code><nowiki>{{#ask: [[Has strip::Markers]] }}</nowiki></code>]]"
+		},
+		{
+			"page": "Example/P0455/4",
+			"contents": "{{#set: Has description=<nowiki>Contains nowiki tag</nowiki> }}"
+		},
+		{
+			"page": "Example/P0455/5",
+			"contents": "{{#set: Has description=<pre>Contains pre tag</pre> }}"
+		},
+		{
+			"page": "Example/P0455/6",
+			"contents": "{{#set: Has description=<code><nowiki>{{#ask: [[Has strip::Markers]] }}</nowiki></code> }}"
+		},
+		{
+			"page": "Example/P0455/7",
+			"contents": "{{#subobject: Has description=<nowiki>Contains nowiki tag</nowiki> }}"
+		},
+		{
+			"page": "Example/P0455/8",
+			"contents": "{{#subobject: Has description=<pre>Contains pre tag</pre> }}"
+		},
+		{
+			"page": "Example/P0455/9",
+			"contents": "{{#subobject: Has description=<code><nowiki>{{#ask: [[Has strip::Markers]] }}</nowiki></code> }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 nowiki parse/unstrip",
+			"subject": "Example/P0455/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_description",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"&lt;nowiki&gt;Contains nowiki tag&lt;/nowiki&gt;"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Contains nowiki tag"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 pre parse/unstrip",
+			"subject": "Example/P0455/2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_description",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"&lt;pre&gt;Contains pre tag&lt;/pre&gt;"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<pre>Contains pre tag</pre>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 code/nowiki recursive parse/unstrip",
+			"subject": "Example/P0455/3",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_description",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"&lt;nowiki&gt;&lt;code&gt;&#x007B;&#x007B;#ask&#58; &#x005B;&#x005B;Has strip&#58;&#58;Markers]] }}&lt;/code&gt;&lt;/nowiki&gt;"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<code>{{#ask: [[Has strip::Markers]] }}</code>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 #set nowiki parse/unstrip",
+			"subject": "Example/P0455/4",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_description",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"&lt;nowiki&gt;Contains nowiki tag&lt;/nowiki&gt;"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 #set pre parse/unstrip",
+			"subject": "Example/P0455/5",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_description",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"&lt;pre&gt;Contains pre tag&lt;/pre&gt;"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 #set code/nowiki recursive parse/unstrip",
+			"subject": "Example/P0455/6",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_description",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"&lt;nowiki&gt;&lt;code&gt;&#x007B;&#x007B;#ask&#58; &#x005B;&#x005B;Has strip&#58;&#58;Markers]] }}&lt;/code&gt;&lt;/nowiki&gt;"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 #subobject nowiki parse/unstrip",
+			"subject": "Example/P0455/7#_726a6109c10cb1ff73b7d5659ad54a18",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"Has_description",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"&lt;nowiki&gt;Contains nowiki tag&lt;/nowiki&gt;"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 #subobject pre parse/unstrip",
+			"subject": "Example/P0455/8#_74c67f7dc0f33736ec2d8f4f2132a585",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"Has_description",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"&lt;pre&gt;Contains pre tag&lt;/pre&gt;"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 #subobject code/nowiki recursive parse/unstrip",
+			"subject": "Example/P0455/9#_4bb289f3707ef1e08395efb545cae8f3",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"Has_description",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"&lt;nowiki&gt;&lt;code&gt;&#x007B;&#x007B;#ask&#58; &#x005B;&#x005B;Has strip&#58;&#58;Markers]] }}&lt;/code&gt;&lt;/nowiki&gt;"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgParserFeatures": [
+			"SMW_PARSER_UNSTRIP",
+			"SMW_PARSER_STRICT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

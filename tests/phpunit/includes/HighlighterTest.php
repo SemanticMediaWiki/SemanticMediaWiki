@@ -43,6 +43,14 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testDecode() {
+
+		$this->assertEquals(
+			'&<> ',
+			Highlighter::decode( '&amp;&lt;&gt;&#160;<nowiki></nowiki>' )
+		);
+	}
+
 	/**
 	 * @dataProvider getTypeDataProvider
 	 */
@@ -72,6 +80,21 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasHighlighterClass() {
+
+		$instance = Highlighter::factory(
+			Highlighter::TYPE_WARNING
+		);
+
+		$instance->setContent( array(
+			'title' => 'Foo'
+		) );
+
+		$this->assertTrue(
+			Highlighter::hasHighlighterClass( $instance->getHtml(), 'warning' )
+		);
+	}
+
 	public function getTypeDataProvider() {
 		return array(
 			array( '' , Highlighter::TYPE_NOTYPE ),
@@ -83,6 +106,7 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 			array( 'quantity', Highlighter::TYPE_QUANTITY ),
 			array( 'note', Highlighter::TYPE_NOTE ),
 			array( 'warning', Highlighter::TYPE_WARNING ),
+			array( 'error', Highlighter::TYPE_ERROR ),
 			array( 'PrOpErTy', Highlighter::TYPE_PROPERTY ),
 			array( 'バカなテスト', Highlighter::TYPE_NOTYPE ),
 			array( '<span>Something that should not work</span>', Highlighter::TYPE_NOTYPE ),

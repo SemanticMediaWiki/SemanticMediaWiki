@@ -6,6 +6,7 @@ use Job;
 use JobQueueGroup;
 use SMW\Store;
 use Title;
+use SMW\ApplicationFactory;
 
 /**
  * @ingroup SMW
@@ -21,6 +22,11 @@ abstract class JobBase extends Job {
 	 * @var boolean
 	 */
 	protected $isEnabledJobQueue = true;
+
+	/**
+	 * @var JobQueue
+	 */
+	protected $jobQueue;
 
 	/**
 	 * @var Job
@@ -118,8 +124,18 @@ abstract class JobBase extends Job {
 	 *
 	 * @return boolean
 	 */
-	public function getParameter( $key ) {
-		return $this->hasParameter( $key ) ? $this->params[$key] : false;
+	public function getParameter( $key, $default = false ) {
+		return $this->hasParameter( $key ) ? $this->params[$key] : $default;
+	}
+
+	/**
+	 * @since  3.0
+	 *
+	 * @param mixed $key
+	 * @param mixed $value
+	 */
+	public function setParameter( $key, $value ) {
+		$this->params[$key] = $value;
 	}
 
 	/**
@@ -130,13 +146,7 @@ abstract class JobBase extends Job {
 	 * @return boolean
 	 */
 	public static function batchInsert( $jobs ) {
-
-		if ( class_exists( 'JobQueueGroup' ) ) {
-			JobQueueGroup::singleton()->push( $jobs );
-			return true;
-		}
-
-		return parent::batchInsert( $jobs );
+		return ApplicationFactory::getInstance()->getJobQueue()->push( $jobs );
 	}
 
 	/**
@@ -149,17 +159,52 @@ abstract class JobBase extends Job {
 	}
 
 	/**
-	 * @since 2.5
+	 * @see JobQueueGroup::lazyPush
 	 *
-	 * @return array
+	 * @note Registered jobs are pushed using JobQueueGroup::pushLazyJobs at the
+	 * end of MediaWiki::restInPeace
+	 *
+	 * @since 3.0
 	 */
-	public static function getQueueSizes() {
+	public function lazyPush() {
+		if ( $this->isEnabledJobQueue ) {
+			return $this->getJobQueue()->lazyPush( $this );
+		}
+	}
 
-		if ( class_exists( 'JobQueueGroup' ) ) {
-			return JobQueueGroup::singleton()->getQueueSizes();
+	/**
+	 * @see Translate::TTMServerMessageUpdateJob
+	 * @since 3.0
+	 *
+	 * @param integer $delay
+	 */
+	public function setDelay( $delay ) {
+
+		$isDelayedJobsEnabled = $this->getJobQueue()->isDelayedJobsEnabled(
+			$this->getType()
+		);
+
+		if ( !$delay || !$isDelayedJobsEnabled ) {
+			return;
 		}
 
-		return array();
+		$oldTime = $this->getReleaseTimestamp();
+		$newTime = time() + $delay;
+
+		if ( $oldTime !== null && $oldTime >= $newTime ) {
+			return;
+		}
+
+		$this->params[ 'jobReleaseTimestamp' ] = $newTime;
+	}
+
+	protected function getJobQueue() {
+
+		if ( $this->jobQueue === null ) {
+			$this->jobQueue = ApplicationFactory::getInstance()->getJobQueue();
+		}
+
+		return $this->jobQueue;
 	}
 
 }

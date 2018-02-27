@@ -7,6 +7,7 @@ use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
 use SpecialPage;
+use SMWInfolink as Infolink;
 
 /**
  * A special page to search for entities that have a certain property with
@@ -37,12 +38,19 @@ class SpecialSearchByProperty extends SpecialPage {
 
 		$this->setHeaders();
 		$output = $this->getOutput();
+		$request = $this->getRequest();
 
 		$output->setPageTitle( $this->msg( 'searchbyproperty' )->text() );
 		$output->addModules( 'ext.smw.tooltip' );
-		$output->addModules( 'ext.smw.property' );
+		$output->addModules( 'ext.smw.autocomplete.property' );
 
 		list( $limit, $offset ) = $this->getLimitOffset();
+
+		if ( $request->getText( 'cl', '' ) !== '' ) {
+			$query = Infolink::decodeCompactLink( 'cl:'. $request->getText( 'cl' ) );
+		} else {
+			$query = Infolink::decodeCompactLink( $query );
+		}
 
 		// @see SMWInfolink::encodeParameters
 		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {

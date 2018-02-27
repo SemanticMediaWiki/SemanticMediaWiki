@@ -76,6 +76,12 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			'\Psr\Log\LoggerInterface'
 		);
 
+		$provider[] = array(
+			'JobQueueGroup',
+			array(),
+			'\JobQueueGroup'
+		);
+
 		return $provider;
 	}
 }

@@ -1,0 +1,128 @@
+{
+	"description": "Test `Special:Ask` to produce correct printout position for `+|...` parameters (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has monolingual text",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0016/1",
+			"contents": "[[Has monolingual text::Test@en]] [[Has monolingual text::テスト@ja]] [[Category:S0016]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (column order for printouts with additional `+|...` parameter)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0016-5D-5D/-3FHas-20monolingual-20text-7C%2Blang%3Den/-3FModification-20date/mainlabel%3D/offset%3D0/format%3Dtable/link%3Dnone",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\"><thead><th>&nbsp;</th><th class=\"Has-monolingual-text\">",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td>"
+				],
+				"not-contain": [
+					"<table class=\"sortable wikitable smwtable\"><thead><th>&nbsp;</th><th class=\"Modification-date\">",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td data-sort-value=\"2457858.0750926\" class=\"Modification-date smwtype_dat\">"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (column order for mixed printout)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0016-5D-5D/-3FHas-20monolingual-20text-7C%2Blang%3Den/-3FCategory/-3FHas-20monolingual-20text-7C%2Blang%3Dja/mainlabel%3D/offset%3D0/format%3Dtable/link%3Dnone",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th><th class=\"Category\"><a .*>Category</a></th><th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th>",
+					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Category smwtype_wpg\">Category:S0016</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
+				],
+				"not-contain": [
+					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 (column order for mixed printout)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": [],
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"searchlabel": "some..."
+					},
+					"q": "[[Category:S0016]]",
+					"po": "?Has monolingual text|+lang=en|?Category|?Has monolingual text|+lang=ja"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th><th class=\"Category\"><a .*>Category</a></th><th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th>",
+					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Category smwtype_wpg\">Category:S0016</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
+				],
+				"not-contain": [
+					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#3 (column order for mixed printout)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": [],
+				"request-parameters": {
+					"p": [
+						"link=none",
+						"limit=10",
+						"offset=0",
+						"mainlabel=",
+						"searchlabel=some..."
+					],
+					"q": "[[Category:S0016]]",
+					"po": "?Has monolingual text|+lang=en|?Category|?Has monolingual text|+lang=ja"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th><th class=\"Category\"><a .*>Category</a></th><th class=\"Has-monolingual-text\"><a .* title=\"Property:Has monolingual text\">Has monolingual text</a></th>",
+					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Category smwtype_wpg\">Category:S0016</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
+				],
+				"not-contain": [
+					"<tbody><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/S0016/1</td><td class=\"Has-monolingual-text smwtype_txt\">Test</td><td class=\"Has-monolingual-text smwtype_txt\">テスト</td></tr></tbody>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespace": "http://example.org/id/",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -34,6 +34,11 @@ class TableSchemaManager {
 	private $tables = array();
 
 	/**
+	 * @var integer
+	 */
+	private $fieldTypeFeatures = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param SQLStore $store
@@ -59,6 +64,44 @@ class TableSchemaManager {
 		sort( $hash );
 
 		return md5( json_encode( $hash ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $fieldTypeFeatures
+	 */
+	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
+		$this->fieldTypeFeatures = $fieldTypeFeatures;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $feature
+	 *
+	 * @return boolean
+	 */
+	public function isEnabledFeature( $feature ) {
+		return ( (int)$this->fieldTypeFeatures & $feature ) != 0;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $tableName
+	 *
+	 * @return Table|null
+	 */
+	public function findTable( $tableName ) {
+
+		foreach ( $this->getTables() as $table ) {
+			if ( $table->getName() === $tableName ) {
+				return $table;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -105,14 +148,43 @@ class TableSchemaManager {
 		$table->addColumn( 'smw_title', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
 		$table->addColumn( 'smw_iw', array( FieldType::FIELD_INTERWIKI, 'NOT NULL' ) );
 		$table->addColumn( 'smw_subobject', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
-		$table->addColumn( 'smw_sortkey', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
+
+		$table->addColumn( 'smw_sortkey', array(
+			$this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ? FieldType::TYPE_CHAR_NOCASE : FieldType::FIELD_TITLE,
+			'NOT NULL'
+		) );
+
+		$table->addColumn( 'smw_sort', array( FieldType::FIELD_TITLE ) );
 		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
 
 		$table->addIndex( 'smw_id' );
 		$table->addIndex( 'smw_id,smw_sortkey' );
-		$table->addIndex( 'smw_iw' ); // iw match lookup
-		$table->addIndex( 'smw_title,smw_namespace,smw_iw,smw_subobject' ); // id lookup
-		$table->addIndex( 'smw_sortkey' ); // select by sortkey (range queries)
+		// IW match lookup
+		$table->addIndex( 'smw_iw' );
+		$table->addIndex( 'smw_iw,smw_id' );
+
+		// ID lookup
+		$table->addIndex( 'smw_title,smw_namespace,smw_iw,smw_subobject' );
+
+		// InProperty lookup
+		// $table->addIndex( 'smw_iw,smw_id,smw_title,smw_sortkey,smw_sort' );
+
+		// Select by sortkey (range queries)
+		$table->addIndex( 'smw_sortkey' );
+
+		// Sort related indices
+		// $table->addIndex( 'smw_sort' );
+		$table->addIndex( 'smw_id,smw_sort' );
+		//$table->addIndex( 'smw_sort,smw_id' );
+
+		// API smwbrowse primary lookup
+		// Limit the index length for MySQL (only 1000 Bytes are allowed)
+		// https://stackoverflow.com/questions/3489041/mysqlerror-specified-key-was-too-long-max-key-length-is-1000-bytes
+		$table->addIndex( 'smw_namespace,smw_iw,smw_sort(220),smw_sortkey(220),smw_id' );
+
+		// Interfered with the API lookup index, couldn't find a use case
+		// that would require the this index
+		// $table->addIndex( 'smw_sort,smw_id,smw_iw' );
 
 		return $table;
 	}
@@ -177,9 +249,14 @@ class TableSchemaManager {
 
 		$table->addColumn( 'p_id', FieldType::FIELD_ID );
 		$table->addColumn( 'usage_count', FieldType::FIELD_USAGE_COUNT );
+		$table->addColumn( 'null_count', FieldType::FIELD_USAGE_COUNT );
+
+		$table->addDefault( 'usage_count', 0 );
+		$table->addDefault( 'null_count', 0 );
 
 		$table->addIndex( array( 'p_id', 'UNIQUE INDEX' ) );
 		$table->addIndex( 'usage_count' );
+		$table->addIndex( 'null_count' );
 
 		return $table;
 	}
@@ -223,7 +300,23 @@ class TableSchemaManager {
 			unset( $indexes['po'] );
 		}
 
-		$indexes = array_merge( $indexes, $diHandler->getTableIndexes() );
+		foreach ( $diHandler->getTableIndexes() as $value ) {
+
+			if ( strpos( $value, 'p_id' ) !== false && $propertyTable->isFixedPropertyTable() ) {
+				continue;
+			}
+
+			if ( strpos( $value, 'o_id' ) !== false && !$propertyTable->usesIdSubject() ) {
+				continue;
+			}
+
+			if ( strpos( $value, 's_id' ) !== false && !$propertyTable->usesIdSubject() ) {
+				continue;
+			}
+
+			$indexes = array_merge( $indexes, array( $value ) );
+		}
+
 		$indexes = array_unique( $indexes );
 
 		foreach ( $diHandler->getTableFields() as $fieldname => $fieldType ) {
@@ -237,7 +330,7 @@ class TableSchemaManager {
 		}
 
 		foreach ( $indexes as $key => $index ) {
-			$table->addIndexWithKey( $key, $index );
+			$table->addIndex( $index, $key );
 		}
 
 		return $table;

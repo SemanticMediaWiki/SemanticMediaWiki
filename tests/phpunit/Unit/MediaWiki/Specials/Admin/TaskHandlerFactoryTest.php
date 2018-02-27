@@ -43,8 +43,28 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\TaskHandlerFactory',
+			TaskHandlerFactory::class,
 			new TaskHandlerFactory( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
+		);
+	}
+
+	public function testGetTaskHandlerList() {
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$adminFeatures = '';
+
+		$instance = new TaskHandlerFactory(
+			$this->store,
+			$this->htmlFormRenderer,
+			$this->outputFormatter
+		);
+
+		$this->assertInternalType(
+			'array',
+			$instance->getTaskHandlerList( $user, $adminFeatures )
 		);
 	}
 
@@ -88,8 +108,8 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'newIdTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\IdTaskHandler'
+			'newEntityLookupTaskHandler',
+			'\SMW\MediaWiki\Specials\Admin\EntityLookupTaskHandler'
 		);
 
 		$provider[] = array(
@@ -110,6 +130,16 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'newFulltextSearchTableRebuildJobTaskHandler',
 			'\SMW\MediaWiki\Specials\Admin\FulltextSearchTableRebuildJobTaskHandler'
+		);
+
+		$provider[] = array(
+			'newDeprecationNoticeTaskHandler',
+			'\SMW\MediaWiki\Specials\Admin\DeprecationNoticeTaskHandler'
+		);
+
+		$provider[] = array(
+			'newDuplicateLookupTaskHandler',
+			'\SMW\MediaWiki\Specials\Admin\DuplicateLookupTaskHandler'
 		);
 
 		return $provider;

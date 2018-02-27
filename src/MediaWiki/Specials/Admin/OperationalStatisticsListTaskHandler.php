@@ -31,6 +31,24 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getSection() {
+		return self::SECTION_SUPPLEMENT;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function hasAction() {
+		return true;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
@@ -65,7 +83,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' ) );
-		$this->outputFormatter->addParentLink();
+		$this->outputFormatter->addParentLink( [ 'tab' => 'supplement' ] );
 
 		$this->outputSemanticStatistics();
 		$this->outputJobStatistics();
@@ -81,7 +99,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->getMessageAsString( 'semanticstatistics' ) )
+			Html::element( 'h2', array(), $this->getMessageAsString( 'smw-statistics' ) )
 		);
 
 		$this->outputFormatter->addHTML( '<pre>' . $this->outputFormatter->encodeAsJson(

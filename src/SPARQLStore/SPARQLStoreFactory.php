@@ -4,8 +4,8 @@ namespace SMW\SPARQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
-use SMW\ConnectionManager;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\Connection\ConnectionManager;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
@@ -58,22 +58,22 @@ class SPARQLStoreFactory {
 		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-queryengine' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
-		$compoundConditionBuilder = new CompoundConditionBuilder(
+		$conditionBuilder = new ConditionBuilder(
 			new DescriptionInterpreterFactory(),
 			$engineOptions
 		);
 
-		$compoundConditionBuilder->setCircularReferenceGuard(
+		$conditionBuilder->setCircularReferenceGuard(
 			$circularReferenceGuard
 		);
 
-		$compoundConditionBuilder->setPropertyHierarchyLookup(
-			ApplicationFactory::getInstance()->newPropertyHierarchyLookup()
+		$conditionBuilder->setHierarchyLookup(
+			ApplicationFactory::getInstance()->newHierarchyLookup()
 		);
 
 		$queryEngine = new QueryEngine(
 			$this->store->getConnection( 'sparql' ),
-			$compoundConditionBuilder,
+			$conditionBuilder,
 			new QueryResultFactory( $this->store ),
 			$engineOptions
 		);

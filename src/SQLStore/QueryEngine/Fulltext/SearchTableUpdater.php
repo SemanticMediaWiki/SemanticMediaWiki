@@ -99,6 +99,29 @@ class SearchTableUpdater {
 	 * @param integer $sid
 	 * @param integer $pid
 	 *
+	 * @return boolean
+	 */
+	public function exists( $sid, $pid ) {
+
+		$row = $this->connection->selectRow(
+			$this->searchTable->getTableName(),
+			array( 's_id' ),
+			array(
+				's_id' => (int)$sid,
+				'p_id' => (int)$pid
+			),
+			__METHOD__
+		);
+
+		return $row !== false;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $sid
+	 * @param integer $pid
+	 *
 	 * @return false|string
 	 */
 	public function read( $sid, $pid ) {

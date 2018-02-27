@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Query\DebugOutputFormatter as QueryDebugOutputFormatter;
+use SMW\Query\DebugFormatter;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -87,11 +87,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @var EngineOptions
 	 */
 	private $engineOptions;
-
-	/**
-	 * @var OrderConditionsComplementor
-	 */
-	private $orderConditionsComplementor;
 
 	/**
 	 * @var QueryFactory
@@ -198,7 +193,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$this->querySegmentListProcessor->setQuerySegmentList( $this->querySegmentList );
 
 		// execute query tree, resolve all dependencies
-		$this->querySegmentListProcessor->doResolveQueryDependenciesById(
+		$this->querySegmentListProcessor->process(
 			$rootid
 		);
 
@@ -211,7 +206,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		// SELECT DISTINCT and ORDER BY RANDOM causes an issue for postgres
 		// Disable RANDOM support for postgres
 		if ( $connection->isType( 'postgres' ) ) {
-			$this->engineOptions->set( 'smwgQRandSortingSupport', false );
+			$this->engineOptions->set(
+				'smwgQSortFeatures',
+				$this->engineOptions->get( 'smwgQSortFeatures' ) & ~SMW_QSORT_RANDOM
+			);
 		}
 
 		switch ( $query->querymode ) {
@@ -254,7 +252,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$this->doExecuteDebugQueryResult( $qobj, $sqlOptions, $entries );
 		$auxtables = '';
 
-		foreach ( $this->querySegmentListProcessor->getListOfResolvedQueries() as $table => $log ) {
+		foreach ( $this->querySegmentListProcessor->getExecutedQueries() as $table => $log ) {
 			$auxtables .= "<li>Temporary table $table";
 			foreach ( $log as $q ) {
 				$auxtables .= "<br />&#160;&#160;<tt>$q</tt>";
@@ -268,7 +266,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$entries['Auxilliary Tables'] = 'No auxilliary tables used.';
 		}
 
-		return QueryDebugOutputFormatter::getStringFrom( 'SQLStore', $entries, $query );
+		return DebugFormatter::getStringFrom( 'SQLStore', $entries, $query );
 	}
 
 	private function doExecuteDebugQueryResult( $qobj, $sqlOptions, &$entries ) {
@@ -282,6 +280,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$sortfields = implode( $qobj->sortfields, ',' );
 		$sortfields = $sortfields ? ', ' . $sortfields : '';
+
+		$format = DebugFormatter::getFormat(
+			$connection->getType()
+		);
 
 		$sql = "SELECT DISTINCT ".
 			"$qobj->alias.smw_id AS id," .
@@ -298,12 +300,12 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			"OFFSET " . $sqlOptions['OFFSET'];
 
 		$res = $connection->query(
-			'EXPLAIN '. $sql,
+			"EXPLAIN $format $sql",
 			__METHOD__
 		);
 
-		$entries['SQL Explain'] = QueryDebugOutputFormatter::doFormatSQLExplainOutput( $connection->getType(), $res );
-		$entries['SQL Query'] = QueryDebugOutputFormatter::doFormatSQLStatement( $sql, $qobj->alias );
+		$entries['SQL Explain'] = DebugFormatter::prettifyExplain( $connection->getType(), $res );
+		$entries['SQL Query'] = DebugFormatter::prettifySql( $sql, $qobj->alias );
 
 		$connection->freeResult( $res );
 	}
@@ -528,7 +530,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			'OFFSET' => $query->getOffset()
 		);
 
-		if ( !$this->engineOptions->get( 'smwgQSortingSupport' ) ) {
+		if ( !$this->engineOptions->isFlagSet( 'smwgQSortFeatures', SMW_QSORT ) ) {
 			return $result;
 		}
 
@@ -542,8 +544,16 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			}
 
 			if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $qobj->sortfields ) ) { // Field was successfully added.
-				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $qobj->sortfields[$propkey] . " $order ";
-			} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->get( 'smwgQRandSortingSupport' ) ) {
+
+				$list = $qobj->sortfields[$propkey];
+
+				// Contains a compound list of sortfields without order?
+				if ( strpos( $list, ',' ) !== false && strpos( $list, $order ) === false ) {
+					$list = str_replace( ',', " $order,", $list );
+				}
+
+				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $list . " $order ";
+			} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->isFlagSet( 'smwgQSortFeatures', SMW_QSORT_RANDOM ) ) {
 				$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . ' RAND() ';
 			}
 		}

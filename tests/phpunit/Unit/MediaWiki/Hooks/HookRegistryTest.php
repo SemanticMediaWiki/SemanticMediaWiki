@@ -31,6 +31,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->parser = $this->getMockBuilder( '\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,6 +50,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->outputPage->expects( $this->any() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
 
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
@@ -114,6 +122,43 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testInitExtension() {
+
+		$vars = [];
+
+		HookRegistry::initExtension( $vars );
+
+		// CanonicalNamespaces
+		$callback = end( $vars['wgHooks']['CanonicalNamespaces'] );
+		$namespaces = [];
+
+		$this->assertThatHookIsExcutable(
+			$callback,
+			array( &$namespaces )
+		);
+
+		// SpecialPage_initList
+		$callback = end( $vars['wgHooks']['SpecialPage_initList'] );
+		$specialPages = [];
+
+		$this->assertThatHookIsExcutable(
+			$callback,
+			array( &$specialPages )
+		);
+
+		// ApiMain::moduleManager
+		$callback = end( $vars['wgHooks']['ApiMain::moduleManager'] );
+
+		$apiModuleManager = $this->getMockBuilder( '\ApiModuleManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertThatHookIsExcutable(
+			$callback,
+			array( $apiModuleManager )
+		);
+	}
+
 	public function testRegister() {
 
 		$language = $this->getMockBuilder( '\Language' )
@@ -135,10 +180,12 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForSkinAfterContent( $instance );
 		$this->doTestExecutionForOutputPageParserOutput( $instance );
 		$this->doTestExecutionForBeforePageDisplay( $instance );
+		$this->doTestExecutionForSpecialSearchResultsPrepend( $instance );
 		$this->doTestExecutionForInternalParseBeforeLinks( $instance );
 		$this->doTestExecutionForNewRevisionFromEditComplete( $instance );
 		$this->doTestExecutionForTitleMoveComplete( $instance );
 		$this->doTestExecutionForArticleProtectComplete( $instance );
+		$this->doTestExecutionForArticleViewHeader( $instance );
 		$this->doTestExecutionForArticlePurge( $instance );
 		$this->doTestExecutionForArticleDelete( $instance );
 		$this->doTestExecutionForLinksUpdateConstructed( $instance );
@@ -146,6 +193,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForFileUpload( $instance );
 		$this->doTestExecutionForResourceLoaderGetConfigVars( $instance );
 		$this->doTestExecutionForGetPreferences( $instance );
+		$this->doTestExecutionForPersonalUrls( $instance );
 		$this->doTestExecutionForSkinTemplateNavigation( $instance );
 		$this->doTestExecutionForLoadExtensionSchemaUpdates( $instance );
 		$this->doTestExecutionForResourceLoaderTestModules( $instance );
@@ -155,13 +203,18 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForArticleFromTitle( $instance );
 		$this->doTestExecutionForTitleIsMovable( $instance );
 		$this->doTestExecutionForEditPageForm( $instance );
+		$this->doTestExecutionForParserOptionsRegister( $instance );
 		$this->doTestExecutionForParserFirstCallInit( $instance );
 		$this->doTestExecutionForTitleQuickPermissions( $instance );
+		$this->doTestExecutionForOutputPageCheckLastModified( $instance );
+		$this->doTestExecutionForIsFileCacheable( $instance );
+		$this->doTestExecutionForRejectParserCacheValue( $instance );
 
 		// Usage of registered hooks in/by smw-core
 		//$this->doTestExecutionForSMWStoreDropTables( $instance );
 		$this->doTestExecutionForSMWSQLStorAfterDataUpdateComplete( $instance );
 		$this->doTestExecutionForSMWStoreAfterQueryResultLookupComplete( $instance );
+		$this->doTestExecutionForSMWSQLStoreInstallerAfterCreateTablesComplete( $instance );
 	}
 
 	public function doTestExecutionForParserAfterTidy( $instance ) {
@@ -292,6 +345,24 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function doTestExecutionForSpecialSearchResultsPrepend( $instance ) {
+
+		$handler = 'SpecialSearchResultsPrepend';
+
+		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $specialSearch, $this->outputPage, '' )
+		);
+	}
+
 	public function doTestExecutionForInternalParseBeforeLinks( $instance ) {
 
 		$handler = 'InternalParseBeforeLinks';
@@ -308,6 +379,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
 
+		$stripState = $this->getMockBuilder( '\StripState' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$text = '';
 
 		$this->assertTrue(
@@ -316,7 +391,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$parser, &$text )
+			array( &$parser, &$text, &$stripState )
 		);
 	}
 
@@ -336,9 +411,17 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContentHandler' )
 			->will( $this->returnValue( $contentHandler ) );
 
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
@@ -467,6 +550,31 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function doTestExecutionForArticleViewHeader( $instance ) {
+
+		$handler = 'ArticleViewHeader';
+
+		$page = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->title ) );
+
+		$outputDone = '';
+		$useParserCache = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$page, &$outputDone, &$useParserCache )
+		);
+	}
+
 	public function doTestExecutionForArticlePurge( $instance ) {
 
 		$handler = 'ArticlePurge';
@@ -556,12 +664,14 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( array( 'getObjectIds', 'updateData' ) )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
+
+		$store->getOptions()->set( 'smwgSemanticsEnabled', false );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -666,6 +776,38 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $user, &$preferences )
+		);
+	}
+
+	public function doTestExecutionForPersonalUrls( $instance ) {
+
+		$handler = 'PersonalUrls';
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skinTemplate->expects( $this->any() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
+
+		$personal_urls = [];
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$personal_urls, $title, $skinTemplate )
 		);
 	}
 
@@ -833,6 +975,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( 'Foo' );
 
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -845,6 +991,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$outputPage->expects( $this->any() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
+
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
 		);
@@ -852,6 +1002,23 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $editPage, $outputPage )
+		);
+	}
+
+	public function doTestExecutionForParserOptionsRegister( $instance ) {
+
+		$handler = 'ParserOptionsRegister';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$defaults = array();
+		$inCacheKey = array();
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$defaults, &$inCacheKey )
 		);
 	}
 
@@ -899,6 +1066,68 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $title, $user, $action, &$errors, $rigor, $short )
+		);
+	}
+
+	public function doTestExecutionForOutputPageCheckLastModified( $instance ) {
+
+		$handler = 'OutputPageCheckLastModified';
+		$modifiedTimes = [];
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$modifiedTimes )
+		);
+	}
+
+	public function doTestExecutionForIsFileCacheable( $instance ) {
+
+		$handler = 'IsFileCacheable';
+
+		$article = $this->getMockBuilder( '\Article' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$article->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->title ) );
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$article )
+		);
+	}
+
+	public function doTestExecutionForRejectParserCacheValue( $instance ) {
+
+		$handler = 'RejectParserCacheValue';
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->title ) );
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$value = '';
+		$popts = '';
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $value, $wikiPage, $popts )
 		);
 	}
 
@@ -950,23 +1179,23 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSubject' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
-			->method( 'getCombinedIdListOfChangedEntities' )
+		$changeOp->expects( $this->any() )
+			->method( 'getChangedEntityIdSummaryList' )
 			->will( $this->returnValue( array() ) );
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
+		$changeOp->expects( $this->any() )
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( array() ) );
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
+		$changeOp->expects( $this->any() )
 			->method( 'getTableChangeOps' )
 			->will( $this->returnValue( array() ) );
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
+		$changeOp->expects( $this->any() )
 			->method( 'getFixedPropertyRecords' )
 			->will( $this->returnValue( array() ) );
 
@@ -976,7 +1205,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $store, $semanticData, $compositePropertyTableDiffIterator )
+			array( $store, $semanticData, $changeOp )
 		);
 	}
 
@@ -993,6 +1222,34 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $this->store, &$result )
+		);
+	}
+
+	public function doTestExecutionForSMWSQLStoreInstallerAfterCreateTablesComplete( $instance ) {
+
+		$handler = 'SMW::SQLStore::Installer::AfterCreateTablesComplete';
+
+		$result = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$options = $this->getMockBuilder( '\SMW\Options' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $tableBuilder, $messageReporter, $options )
 		);
 	}
 

@@ -107,6 +107,21 @@ class PropertyLabelSimilarityLookup {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return integer
+	 */
+	public function getPropertyMaxCount() {
+		$statistics = $this->store->getStatistics();
+
+		if ( isset( $statistics['TOTALPROPS'] ) ) {
+			return $statistics['TOTALPROPS'];
+		}
+
+		return 0;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param RequestOptions|null $requestOptions
@@ -262,7 +277,7 @@ class PropertyLabelSimilarityLookup {
 		$propertyList = array();
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = array( 'ORDER BY' => 'smw_sortkey' );
+		$options = array( 'ORDER BY' => 'smw_sort' );
 
 		$conditions = array(
 			'smw_namespace' => SMW_NS_PROPERTY,

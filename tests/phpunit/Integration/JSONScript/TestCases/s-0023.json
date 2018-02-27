@@ -1,0 +1,44 @@
+{
+	"description": "Test `Special:Browse` output category (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"page": "Example/S0023/1",
+			"contents": "[[Category:S0023]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (category singular display)",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0023/1",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-table-cell smwb-cell smwb-prophead\"><a href=.*>Category</a></div>",
+					"<div class=\"smw-table-cell smwb-cell smwb-propval\"><span class=\"smwb-value\"><a href=.*>S0023</a></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

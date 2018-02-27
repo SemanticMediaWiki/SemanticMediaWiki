@@ -41,10 +41,15 @@ class SpecialWantedProperties extends SpecialPage {
 
 		$out = $this->getOutput();
 
+		$out->addModuleStyles( array(
+			'ext.smw.special.style'
+		) );
+
 		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );
 
 		$page = new WantedPropertiesQueryPage( $this->getStore(), $this->getSettings() );
 		$page->setContext( $this->getContext() );
+		$page->setTitle( $this->getPageTitle() );
 
 		list( $limit, $offset ) = $this->getLimitOffset();
 		$page->doQuery( $offset, $limit );
