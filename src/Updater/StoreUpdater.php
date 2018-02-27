@@ -201,6 +201,23 @@ class StoreUpdater {
 			$pageInfoProvider
 		);
 
+		// Standard text hooks are not run through a JSON content object therefore
+		// we attach possible annotations at this point
+		if ( $title->getNamespace() === SMW_NS_RULE ) {
+
+			$ruleFactory = $applicationFactory->singleton( 'RuleFactory' );
+
+			$ruleDefinition = $ruleFactory->newRuleDefinition(
+				$title->getDBKey(),
+				$wikiPage->getContent()->getNativeData()
+			);
+
+			$propertyAnnotator = $propertyAnnotatorFactory->newRuleDefinitionPropertyAnnotator(
+				$propertyAnnotator,
+				$ruleDefinition
+			);
+		}		
+		
 		$propertyAnnotator->addAnnotation();
 	}
 
