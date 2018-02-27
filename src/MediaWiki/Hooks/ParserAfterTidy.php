@@ -100,6 +100,10 @@ class ParserAfterTidy extends HookHandler {
 			return false;
 		}
 
+		if ( $title->getNamespace() === SMW_NS_RULE ) {
+			return true;
+		}
+		
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
 		if ( $title->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
@@ -190,7 +194,7 @@ class ParserAfterTidy extends HookHandler {
 		// Only carry out a purge where InTextAnnotationParser have set
 		// an appropriate context reference otherwise it is assumed that the hook
 		// call is part of another non SMW related parse
-		if ( $parserData->getSemanticData()->getSubject()->getContextReference() === null ) {
+		if ( $parserData->getSemanticData()->getSubject()->getContextReference() === null && $this->parser->getTitle()->getNamespace() !== SMW_NS_RULE ) {
 			return true;
 		}
 
