@@ -20,6 +20,7 @@
         "_qty": "Quantitat",
         "_mlt_rec": "Text monolingüe",
         "_eid": "Identificador extern",
+        "_keyw": "Paraula clau",
         "_ref_rec": "Referència"
     },
     "dataTypeAliases": {
