@@ -46,6 +46,7 @@
 	"smw_printername_table": "표",
 	"smw_printername_broadtable": "넓은 표",
 	"smw_printername_template": "틀",
+	"smw_printername_templatefile": "틀 파일",
 	"smw_printername_rdf": "PDF 내보내기",
 	"smw_printername_category": "분류",
 	"validator-type-class-SMWParamSource": "텍스트",
@@ -414,6 +415,7 @@
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\"에는 세 개 이상의 구성 요소가 포함되어 있습니다.",
 	"smw-datavalue-time-invalid-ampm": "\"$1\"에는 12시간 변환에 유효하지 않은 시간 요소로서 \"$2\"이(가) 포함되어 있습니다.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\"은(는) 유효하지 않은 URL입니다.",
+	"smw-datavalue-keyword-maximum-length": "키워드가 $1의 최대 길이를 초과했습니다.",
 	"smw-datavalue-parse-error": "지정한 \"$1\" 값을 인식하지 못했습니다.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "JSON 파서가 \"$1\"로 반환했습니다.",
@@ -466,5 +468,7 @@
 	"smw-rule-page-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Rule/Type/$1",
 	"smw-rule-page-description": "설명:",
 	"smw-rule-page-type": "유형:",
-	"smw-rule-page-tag": "태그:"
+	"smw-rule-page-tag": "태그:",
+	"smw-ask-title-keyword-type": "키워드 검색",
+	"smw-ask-message-keyword-type": "이 검색은 <code><nowiki>$1</nowiki></code> 조건과 일치합니다."
 }

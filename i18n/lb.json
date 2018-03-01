@@ -290,5 +290,6 @@
 	"smw-rule-page-definition": "Definitioun",
 	"smw-rule-page-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Rule/Type/$1",
 	"smw-rule-page-description": "Beschreiwung:",
-	"smw-rule-page-type": "Typ:"
+	"smw-rule-page-type": "Typ:",
+	"smw-ask-title-keyword-type": "Schlësselwuert sichen"
 }

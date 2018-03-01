@@ -40,6 +40,7 @@
 	"smw_printername_table": "Tabulka",
 	"smw_printername_broadtable": "Široká tabulka",
 	"smw_printername_template": "Šablona",
+	"smw_printername_templatefile": "Soubor šablony",
 	"smw_printername_rdf": "Export do RDF",
 	"smw_printername_category": "Kategorie",
 	"validator-type-class-SMWParamSource": "text",
@@ -257,6 +258,9 @@
 	"smw-editpage-annotation-disabled": "Na této stránce nejsou povoleny sémantické anotace uvnitř textu kvůli omezením jmenného prostoru. Podrobný popis, jak tento jmenný prostor povolit, najdete v [https://www.semantic-mediawiki.org/wiki/Help:Configuration nápovědě ke konfiguraci].",
 	"smw-search-syntax-support": "Vyhledávací vstup podporuje použití sémantické [https://www.semantic-mediawiki.org/wiki/Help:Semantic_search syntaxové otázky], která pomůže získávání výsledků s použitím Semantic MediaWiki.",
 	"smw-search-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Vstupní asistent] je také aktivní pro zjednodušení zvolení možných vlastností a kategorií.",
+	"smw-datavalue-keyword-maximum-length": "Klíčové slovo je delší než maximální délka $1.",
+	"smw-property-predefined-keyw": "\"$1\" je předdefinovaná vlastnost a [[Special:Types/Keyword|druh]] poskytnutý [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Sémantickou MediaWiki], který normalizuje text a má omezenou délku.",
+	"smw-type-keyw": "\"$1\" je druh textu, který má omezenou délku a normalizuje reprezentaci obsahu",
 	"smw-change-propagation-protection": "Tato stránka je zamčena kvůli prevenci náhodných editací dat během [https://www.semantic-mediawiki.org/wiki/Change_propagation změny anotací hodnot]. Proces může trvat chvíli, než bude stránka odemčena, což záleží na velikosti a frekvenci [https://www.mediawiki.org/wiki/Manual:Job_queue plánovače].",
 	"smw-types-title": "Typ: $1",
 	"smw-rule-namespace-editcontentmodel-disallowed": "Změna modelu obsahu [https://www.semantic-mediawiki.org/wiki/Help:Rule_page stránky s pravidly] není povoleno.",
@@ -271,5 +275,7 @@
 	"smw-property-predefined-rl-tag": "\"$1\" je předdefinovaná vlastnost poskytnutá [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Sémantickou MediaWiki] k označování pravidel v seznamu.",
 	"smw-property-predefined-long-rl-tag": "Anotovaná textová značka slouží k identifikování skupiny pravidel, která platí na stejný obsah nebo téma.",
 	"smw-property-predefined-rl-type": "\"$1\" je předdefinovaná vlastnost popisující, jestli je pravidlo nebo určitá skupina pravidel vysvětlena a je poskytnutá [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Sémantickou MediaWiki].",
-	"smw-property-predefined-long-rl_type": "Každý druh pravidel má vlastní přidělené [https://www.semantic-mediawiki.org/wiki/Help:Rule#schema schéma] a následující [https://www.semantic-mediawiki.org/wiki/Help:Rule/Type nápověda] by měla obsahovat obsáhlý přehled a popis."
+	"smw-property-predefined-long-rl_type": "Každý druh pravidel má vlastní přidělené [https://www.semantic-mediawiki.org/wiki/Help:Rule#schema schéma] a následující [https://www.semantic-mediawiki.org/wiki/Help:Rule/Type nápověda] by měla obsahovat obsáhlý přehled a popis.",
+	"smw-ask-title-keyword-type": "Hledání klíčových slov",
+	"smw-ask-message-keyword-type": "Toto vyhledává shody se stavem <code><nowiki>$1</nowiki></code>."
 }
