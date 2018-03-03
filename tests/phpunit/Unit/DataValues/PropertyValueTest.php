@@ -3,10 +3,10 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\Options;
-use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\PropertyValue;
 
 /**
- * @covers \SMWPropertyValue
+ * @covers \SMW\DataValues\PropertyValue
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -19,21 +19,18 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMWPropertyValue',
-			new PropertyValue( '__pro' )
+			PropertyValue::class,
+			new PropertyValue()
 		);
 	}
 
 	/**
-	 * @dataProvider optionsProvider
+	 * @dataProvider featuresProvider
 	 */
 	public function testOptions( $options, $expected ) {
 
-		$instance = new PropertyValue( '__pro' );
-
-		$instance->copyOptions(
-			new Options( array( 'smwgDVFeatures' => $options ) )
-		);
+		$instance = new PropertyValue();
+		$instance->setOption( 'smwgDVFeatures', $options );
 
 		$this->assertEquals(
 			$expected,
@@ -41,7 +38,7 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function optionsProvider() {
+	public function featuresProvider() {
 
 		$provider[] = array(
 			SMW_DV_PROV_REDI,

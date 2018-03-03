@@ -6,7 +6,6 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMWDataItem;
-use SMWPropertyValue;
 
 /**
  * @covers \SMW\DataValueFactory
@@ -73,7 +72,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testNewPropertyObjectValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
 
-		$propertyDV = SMWPropertyValue::makeUserProperty( $propertyName );
+		$propertyDV = DataValueFactory::getInstance()->newPropertyValueByLabel( $propertyName );
 		$propertyDI = $propertyDV->getDataItem();
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty( $propertyDI, $value );

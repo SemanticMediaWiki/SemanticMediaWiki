@@ -18,6 +18,7 @@ class_alias( 'SMW\Query\Parser', 'SMWQueryParser' );
 class_alias( 'SMW\SQLStore\ChangeOp\ChangeOp', 'SMW\SQLStore\CompositePropertyTableDiffIterator' );
 class_alias( 'SMW\Connection\ConnectionProvider', 'SMW\DBConnectionProvider' );
 class_alias( 'SMW\DataValues\TypesValue', 'SMWTypesValue' );
+class_alias( 'SMW\DataValues\PropertyValue', 'SMWPropertyValue' );
 
 // 1.9.
 class_alias( 'SMW\Store', 'SMWStore' );

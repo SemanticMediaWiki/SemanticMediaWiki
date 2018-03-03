@@ -7,7 +7,6 @@ use SMW\DataValues\TelephoneUriValue;
 use SMWUriValue as UriValue;
 use SMW\Encoder;
 use SMWNumberValue as NumberValue;
-use SMWPropertyValue as PropertyValue;
 use SMWStringValue as TextValue;
 
 /**
@@ -101,7 +100,7 @@ class PageRequestOptions {
 			$property = $this->urlEncoder->unescape( ltrim( $property, ':' ) );
 		}
 
-		$this->property = PropertyValue::makeUserProperty(
+		$this->property = DataValueFactory::getInstance()->newPropertyValueByLabel(
 			str_replace( array( '_' ), array( ' ' ), $property )
 		);
 

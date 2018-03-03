@@ -20,7 +20,7 @@ use SMW\DataValues\ExternalFormatterUriValue;
 use SMW\DataValues\TypesValue;
 use SMW\DataValues\ErrorMsgTextValue;
 use SMW\DataValues\BooleanValue;
-use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\PropertyValue;
 use SMWStringValue as StringValue;
 use SMWQuantityValue as QuantityValue;
 use SMWNumberValue as NumberValue;

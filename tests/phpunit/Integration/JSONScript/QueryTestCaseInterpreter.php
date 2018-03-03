@@ -9,7 +9,6 @@ use SMW\DIProperty;
 use SMW\Query\PrintRequest as PrintRequest;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * @license GNU GPL v2+
@@ -129,7 +128,7 @@ class QueryTestCaseInterpreter {
 			$extraPrintouts[] = new PrintRequest(
 				PrintRequest::PRINT_PROP,
 				$label,
-				PropertyValue::makeUserProperty( $printout )
+				DataValueFactory::getInstance()->newPropertyValueByLabel( $printout )
 			);
 		}
 

@@ -2,6 +2,7 @@
 
 use SMWInfolink as Infolink;
 use SMW\Encoder;
+use SMW\DataValueFactory;
 
 /**
  * @ingroup SMWSpecialPage
@@ -60,9 +61,9 @@ class SMWPageProperty extends SpecialPage {
 			}
 		}
 
-		$subject = \SMW\DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $pagename );
+		$subject = DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $pagename );
 		$pagename = $subject->isValid() ? $subject->getPrefixedText() : '';
-		$property = SMWPropertyValue::makeUserProperty( $propname );
+		$property = DataValueFactory::getInstance()->newPropertyValueByLabel( $propname );
 		$propname = $property->isValid() ? $property->getWikiValue() : '';
 
 		// Produce output
@@ -140,11 +141,11 @@ class SMWPageProperty extends SpecialPage {
 						continue;
 					}
 
-					$dv = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $di, $property->getDataItem() );
+					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, $property->getDataItem() );
 					$html .= '<li>' . $dv->getLongHTMLText( $linker ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
 
 					if ( $property->getDataItem()->findPropertyTypeID() == '_wpg' ) {
-						$browselink = SMWInfolink::newBrowsingLink( '+', $dv->getLongWikiText() );
+						$browselink = Infolink::newBrowsingLink( '+', $dv->getLongWikiText() );
 						$html .= ' &#160;' . $browselink->getHTML( $linker );
 					}
 

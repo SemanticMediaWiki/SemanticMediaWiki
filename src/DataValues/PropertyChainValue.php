@@ -3,9 +3,9 @@
 namespace SMW\DataValues;
 
 use SMWStringValue as StringValue;
-use SMWPropertyValue as PropertyValue;
 use SMWDIBlob as DIBlob;
 use SMWDataItem as DataItem;
+use SMW\DataValueFactory;
 
 /**
  * @private
@@ -191,7 +191,7 @@ class PropertyChainValue extends StringValue {
 		// Foo.Bar.Foobar.Baz
 		$last = array_pop( $chain );
 
-		$this->lastPropertyChainValue = PropertyValue::makeUserProperty( $last );
+		$this->lastPropertyChainValue = DataValueFactory::getInstance()->newPropertyValueByLabel( $last );
 
 		if ( !$this->lastPropertyChainValue->isValid() ) {
 			return $this->addError( $this->lastPropertyChainValue->getErrors() );
@@ -202,7 +202,7 @@ class PropertyChainValue extends StringValue {
 		// Generate a forward list from the remaining property labels
 		// Foo.Bar.Foobar
 		foreach ( $chain as $value ) {
-			$propertyValue = PropertyValue::makeUserProperty( $value );
+			$propertyValue = DataValueFactory::getInstance()->newPropertyValueByLabel( $value );
 
 			if ( !$propertyValue->isValid() ) {
 				continue;
