@@ -1253,7 +1253,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	private function assertThatHookIsExcutable( \Closure $handler, $arguments ) {
+	private function assertThatHookIsExcutable( callable $handler, $arguments ) {
 		$this->assertInternalType(
 			'boolean',
 			call_user_func_array( $handler, $arguments )
