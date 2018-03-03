@@ -10,59 +10,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class TempFile {
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $file
-	 * @param string $content
-	 */
-	public function write( $file, $contents ) {
-		file_put_contents( $file, $contents );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $file
-	 * @param integer|null $checkSum
-	 *
-	 * @return string
-	 * @throws RuntimeException
-	 */
-	public function read( $file, $checkSum = null ) {
-
-		if ( !is_readable( $file ) ) {
-			throw new RuntimeException( "$file is not readable." );
-		}
-
-		if ( $checkSum !== null && $this->getCheckSum( $file ) !== $checkSum ) {
-			throw new RuntimeException( "Processing of $file failed with a checkSum error." );
-		}
-
-		return file_get_contents( $file );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $file
-	 */
-	public function delete( $file ) {
-		@unlink( $file );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $file
-	 *
-	 * @return integer
-	 */
-	public function getCheckSum( $file ) {
-		return md5_file( $file );
-	}
+class TempFile extends File {
 
 	/**
 	 * @since 3.0
@@ -75,7 +23,7 @@ class TempFile {
 		$args = func_get_args();
 		$key = array_shift( $args );
 
-		if ( $args === array() ) {
+		if ( $args === [] ) {
 			$key = '';
 		}
 
@@ -94,10 +42,13 @@ class TempFile {
 	 */
 	public function get( $file ) {
 
-		$tmpDir = array();
+		$tmpDir = [];
 		$path = '';
 
-		$tmpDir[] = $GLOBALS['wgTmpDirectory'];
+		if ( isset( $GLOBALS['wgTmpDirectory'] ) ) {
+			$tmpDir[] = $GLOBALS['wgTmpDirectory'];
+		}
+
 		$tmpDir[] = sys_get_temp_dir();
 		$tmpDir[] = ini_get( 'upload_tmp_dir' );
 

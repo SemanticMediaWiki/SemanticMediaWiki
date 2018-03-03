@@ -12,6 +12,7 @@ use SMW\Options;
 use SMW\Store;
 use SMWQueryProcessor;
 use Title;
+use Exception;
 
 /**
  * @license GNU GPL v2+
@@ -42,9 +43,14 @@ class DistinctEntityDataRebuilder {
 	private $reporter;
 
 	/**
+	 * @var ExceptionFileLogger
+	 */
+	private $exceptionFileLogger;
+
+	/**
 	 * @var array
 	 */
-	private $exceptionLog = array();
+	private $filters = [];
 
 	/**
 	 * @var integer
@@ -82,6 +88,15 @@ class DistinctEntityDataRebuilder {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param ExceptionFileLogger $exceptionFileLogger
+	 */
+	public function setExceptionFileLogger( ExceptionFileLogger $exceptionFileLogger ) {
+		$this->exceptionFileLogger = $exceptionFileLogger;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return int
@@ -93,71 +108,67 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @since 2.4
 	 *
-	 * @return array
-	 */
-	public function getExceptionLog() {
-		return $this->exceptionLog;
-	}
-
-	/**
-	 * @since 2.4
-	 *
 	 * @return boolean
 	 */
 	public function doRebuild() {
 
-		$this->reportMessage(
-			"Refreshing selected pages"  .
-			( $this->options->has( 'redirects' ) ? ' (redirects)' : '' ) .
-			( $this->options->has( 'categories' ) ? ' (categories)' : '' ) .
-			( $this->options->has( 'query' ) ? ' (queries)' : '' ) .
-			( $this->options->has( 'p' ) ? ' (properties)' : '' ) .
-			".\n"
-		);
+		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
+		( $this->options->has( 'categories' ) ? 'category' : '' ) .
+		( $this->options->has( 'query' ) ? 'query (' . $this->options->get( 'query' ) .')' : '' ) .
+		( $this->options->has( 'p' ) ? 'property' : '' );
 
-		$pages = array();
-		$this->setNamespaceFiltersFromOptions();
+		$pages = [];
+		$this->findFilters();
 
 		if ( $this->options->has( 'page' ) ) {
 			$pages = explode( '|', $this->options->get( 'page' ) );
 		}
 
-		$pages = array_merge( $this->getPagesFromQuery(), $pages, $this->getPagesFromFilters(), $this->getRedirectPages() );
+		$pages = $this->normalize(
+			[
+				$this->getPagesFromQuery(),
+				$pages,
+				$this->getPagesFromFilters(),
+				$this->getRedirectPages()
+			]
+		);
 
-		$this->normalizeBulkOfPages( $pages );
-		$numPages = count( $pages );
+		$total = count( $pages );
+		$this->reportMessage( "Processing $total $type pages ...\n" );
 
-		foreach ( $pages as $page ) {
+		foreach ( $pages as $key => $page ) {
 
+			$progress = round( ( $this->rebuildCount / $total ) * 100 );
+
+			if ( !$this->options->has( 'v' ) ) {
+				$this->reportMessage(
+					"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $this->rebuildCount, $progress ) )
+				);
+			} else {
+				$this->reportMessage(
+					sprintf( "%-16s%s\n", "   ... ($this->rebuildCount/$total $progress)", "Page " . $key ),
+					$this->options->has( 'v' )
+				);
+			}
+
+			$this->doUpdate( $page );
 			$this->rebuildCount++;
-			$percentage = round( ( $this->rebuildCount / $numPages ) * 100 ) ."%";
-
-			$this->reportMessage(
-				sprintf( "%-16s%s\n", "($this->rebuildCount/$numPages $percentage)", "Page " . $page->getPrefixedDBkey() ),
-				$this->options->has( 'v' )
-			);
-
-			$this->doExecuteUpdateJobFor(
-				$page
-			);
-
-			$this->doPrintDotProgressIndicator(
-				$this->options->has( 'v' ),
-				$percentage
-			);
 		}
 
-		$this->reportMessage( "\n\n$this->rebuildCount pages refreshed.\n" );
+		$this->reportMessage( ( $this->options->has( 'v' ) ? "" : "\n" ) . "   ... done.\n" );
 
 		return true;
 	}
 
-	private function doExecuteUpdateJobFor( $page ) {
+	private function doUpdate( $page ) {
 
-		$updatejob = new UpdateJob( $page, array(
-			UpdateJob::FORCED_UPDATE => true,
-			'pm' => $this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
-		) );
+		$updatejob = new UpdateJob(
+			$page,
+			[
+				UpdateJob::FORCED_UPDATE => true,
+				'pm' => $this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
+			]
+		);
 
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
 			return $updatejob->run();
@@ -165,15 +176,12 @@ class DistinctEntityDataRebuilder {
 
 		try {
 			$updatejob->run();
-		} catch ( \Exception $e ) {
-			$this->exceptionLog[$page->getPrefixedDBkey()] = array(
-				'msg'   => $e->getMessage(),
-				'trace' => $e->getTraceAsString()
-			);
+		} catch ( Exception $e ) {
+			$this->exceptionFileLogger->recordException( $page->getPrefixedDBkey(), $e );
 		}
 	}
 
-	private function setNamespaceFiltersFromOptions() {
+	private function findFilters() {
 		$this->filters = array();
 
 		if ( $this->options->has( 'categories' ) ) {
@@ -246,47 +254,36 @@ class DistinctEntityDataRebuilder {
 		return $titleLookup->getRedirectPages();
 	}
 
-	private function normalizeBulkOfPages( &$pages ) {
+	private function normalize( $list ) {
 
-		$titleCache = array();
+		$titleCache = [];
+		$p = [];
 
-		foreach ( $pages as $key => &$page ) {
+		foreach ( $list as $pages ) {
+			foreach ( $pages as $key => $page ) {
 
-			if ( $page instanceof DIWikiPage ) {
-				$page = $page->getTitle();
-			}
+				if ( $page instanceof DIWikiPage ) {
+					$page = $page->getTitle();
+				}
 
-			if ( !$page instanceof Title ) {
-				$page = $this->titleCreator->createFromText( $page );
-			}
+				if ( !$page instanceof Title ) {
+					$page = $this->titleCreator->createFromText( $page );
+				}
 
-			// Filter out pages with fragments (subobjects)
-			if ( isset( $titleCache[$page->getPrefixedDBkey()] ) ) {
-				unset( $pages[$key] );
-			} else{
-				$titleCache[$page->getPrefixedDBkey()] = true;
+				$id = $page->getPrefixedDBkey();
+
+				if ( !isset( $p[$id] ) ) {
+					$p[$id] = $page;
+				}
 			}
 		}
 
-		unset( $titleCache );
+		return $p;
 	}
 
 	private function reportMessage( $message, $output = true ) {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
-		}
-	}
-
-	private function doPrintDotProgressIndicator( $verbose, $progress ) {
-
-		if ( ( $this->rebuildCount - 1 ) % 60 === 0 ) {
-			$this->reportMessage( "\n", !$verbose );
-		}
-
-		$this->reportMessage( '.', !$verbose );
-
-		if ( $this->rebuildCount % 60 === 0 ) {
-			$this->reportMessage( " $progress", !$verbose );
 		}
 	}
 

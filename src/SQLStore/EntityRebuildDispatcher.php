@@ -183,7 +183,7 @@ class EntityRebuildDispatcher {
 	 *
 	 * @param integer &$id
 	 */
-	public function startRebuildWith( &$id ) {
+	public function rebuild( &$id ) {
 
 		$updateJobs = array();
 		$this->dispatchedEntities = array();

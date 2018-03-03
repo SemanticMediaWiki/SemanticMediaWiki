@@ -82,7 +82,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$entityRebuildDispatcher->expects( $this->once() )
-			->method( 'startRebuildWith' )
+			->method( 'rebuild' )
 			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
 
 		$entityRebuildDispatcher->expects( $this->any() )
@@ -128,7 +128,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$entityRebuildDispatcher->expects( $this->atLeastOnce() )
-			->method( 'startRebuildWith' )
+			->method( 'rebuild' )
 			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
 
 		$entityRebuildDispatcher->expects( $this->any() )
@@ -180,7 +180,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$entityRebuildDispatcher->expects( $this->exactly( 6 ) )
-			->method( 'startRebuildWith' )
+			->method( 'rebuild' )
 			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
 
 		$entityRebuildDispatcher->expects( $this->any() )

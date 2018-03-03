@@ -58,16 +58,13 @@ class PropertyStatisticsRebuilder {
 	 * @since 1.9
 	 */
 	public function rebuild() {
-		$this->reportMessage( "\nProperty statistics update\n" );
+		$this->reportMessage( "\nRebulding property statistics (this may take a while) ..." );
+		$table = $this->propertyStatisticsStore->getStatisticsTable();
 
-
-		$this->reportMessage( "\nDeleting table content ..." );
+		$this->reportMessage( "\n   ... deleting `$table` content ..." );
 		$this->propertyStatisticsStore->deleteAll();
-		$this->reportMessage( "\n   ... done.\n" );
 
 		$connection = $this->store->getConnection( 'mw.db' );
-
-		$this->reportMessage( "\nSelecting properties ..." );
 
 		$res = $connection->select(
 			\SMWSql3SmwIds::TABLE_NAME,
@@ -80,14 +77,17 @@ class PropertyStatisticsRebuilder {
 		);
 
 		$propCount = $res->numRows();
-		$this->reportMessage( "\n   ... $propCount properties selected ..." );
-		$this->reportMessage( "\n   ... done.\n" );
+		$this->reportMessage( "\n   ... selecting $propCount properties ...\n" );
 
-		$this->reportMessage( "\nProcessing (this may take a while) ...\n" );
 		$i = 0;
 
 		foreach ( $res as $row ) {
-			$this->reportMessage( $this->progress( $propCount, $i++ ) );
+
+			$i++;
+
+			$this->reportMessage(
+				"\r". sprintf( "%-47s%s", "   ... updating", sprintf( "%4.0f%% (%s/%s)", round( ( $i / $propCount ) * 100 ), $i, $propCount ) )
+			);
 
 			$this->propertyStatisticsStore->insertUsageCount(
 				(int)$row->smw_id,
@@ -97,7 +97,7 @@ class PropertyStatisticsRebuilder {
 
 		$connection->freeResult( $res );
 
-		$this->reportMessage( "\n\nCompleted.\n" );
+		$this->reportMessage( "\n   ... done.\n" );
 	}
 
 	private function getCountFormRow( $row ) {

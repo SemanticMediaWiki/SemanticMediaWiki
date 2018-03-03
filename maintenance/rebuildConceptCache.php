@@ -143,7 +143,8 @@ class RebuildConceptCache extends \Maintenance {
 		);
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
-			$this->reportMessage( "\n" . $maintenanceHelper->getFormattedRuntimeValues() . "\n" );
+			$this->reportMessage( "\n" . "Runtime report ..." . "\n" );
+			$this->reportMessage( $maintenanceHelper->getFormattedRuntimeValues( '   ...' ) . "\n" );
 		}
 
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {

@@ -86,7 +86,7 @@ class RefreshSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 			$useJobs
 		);
 
-		$entityRebuildDispatcher->startRebuildWith( $refreshPosition );
+		$entityRebuildDispatcher->rebuild( $refreshPosition );
 
 		$this->assertGreaterThan(
 			0,

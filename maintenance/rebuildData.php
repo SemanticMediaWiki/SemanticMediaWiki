@@ -146,7 +146,7 @@ class RebuildData extends \Maintenance {
 
 		$dataRebuilder = $maintenanceFactory->newDataRebuilder(
 			$store,
-			array( $this, 'reportMessage' )
+			[ $this, 'reportMessage' ]
 		);
 
 		$dataRebuilder->setOptions(
@@ -158,18 +158,27 @@ class RebuildData extends \Maintenance {
 		);
 
 		if ( $result && $this->hasOption( 'with-property-statistics' ) ) {
-			$this->reportMessage( "---\n\n" );
 			$rebuildPropertyStatistics = $maintenanceFactory->newRebuildPropertyStatistics();
 			$rebuildPropertyStatistics->execute();
 		}
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
-			$this->reportMessage( "\n" . $maintenanceHelper->getFormattedRuntimeValues() . "\n" );
+			$this->reportMessage( "\n" . "Runtime report ..." . "\n" );
+			$this->reportMessage( $maintenanceHelper->getFormattedRuntimeValues( '   ...' ) . "\n" );
 		}
 
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
 			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildDataLogger' );
-			$maintenanceLogger->log( $maintenanceHelper->getFormattedRuntimeValues() );
+			$runtimeValues = $maintenanceHelper->getRuntimeValues();
+
+			$log = [
+				'Memory used: ' . $runtimeValues['memory-used'],
+				'Time used: ' . $runtimeValues['humanreadable-time'],
+				'Rebuild count: ' . $dataRebuilder->getRebuildCount(),
+				'Exception count: ' . $dataRebuilder->getExceptionCount()
+			];
+
+			$maintenanceLogger->log( implode( ', ', $log ) );
 		}
 
 		$maintenanceHelper->reset();

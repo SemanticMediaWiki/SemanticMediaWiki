@@ -85,7 +85,7 @@ class RefreshJob extends JobBase {
 			$this->getNamespace( $run )
 		);
 
-		$entityRebuildDispatcher->startRebuildWith( $spos );
+		$entityRebuildDispatcher->rebuild( $spos );
 		$prog = $entityRebuildDispatcher->getEstimatedProgress();
 
 		if ( $spos > 0 ) {

@@ -73,7 +73,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$entityRebuildDispatcher->expects( $this->any() )
-			->method( 'startRebuildWith' )
+			->method( 'rebuild' )
 			->will( $this->returnValue( $parameters['spos'] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
