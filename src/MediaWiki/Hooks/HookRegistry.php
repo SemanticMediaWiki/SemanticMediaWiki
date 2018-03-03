@@ -36,6 +36,26 @@ class HookRegistry {
 	private $globalVars;
 
 	/**
+	 * @var string
+	 */
+	private $basePath;
+
+	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory;
+
+	/**
+	 * @var PermissionPthValidator
+	 */
+	private $permissionPthValidator;
+
+	/**
+	 * @var QueryDependencyLinksStoreFactory
+	 */
+	private $queryDependencyLinksStoreFactory;
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param array &$globalVars
@@ -43,8 +63,11 @@ class HookRegistry {
 	 */
 	public function __construct( &$globalVars = array(), $directory = '' ) {
 		$this->globalVars =& $globalVars;
+		$this->basePath = $directory;
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
 
-		$this->addCallbackHandlers( $directory, $globalVars );
+		$this->addCallableHandlers( $directory, $globalVars );
 	}
 
 	/**
@@ -159,9 +182,10 @@ class HookRegistry {
 		}
 	}
 
-	private function addCallbackHandlers( $basePath, $globalVars ) {
+	private function addCallableHandlers( $basePath, $globalVars ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory = $applicationFactory;
 
 		$httpRequestFactory = new HttpRequestFactory();
 
@@ -191,581 +215,662 @@ class HookRegistry {
 			Site::isCommandLineMode()
 		);
 
-		$permissionPthValidator = new PermissionPthValidator(
-			$applicationFactory->singleton( 'ProtectionValidator' )
-		);
-
-		$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
-
-		/**
-		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
-		 */
-		$this->handlers['ParserAfterTidy'] = function ( &$parser, &$text ) {
-
-			$parserAfterTidy = new ParserAfterTidy(
-				$parser
-			);
-
-			$parserAfterTidy->isCommandLineMode(
-				Site::isCommandLineMode()
-			);
-
-			$parserAfterTidy->isReadOnly(
-				Site::isReadOnly()
-			);
-
-			return $parserAfterTidy->process( $text );
-		};
-
-		/**
-		 * Hook: Called by BaseTemplate when building the toolbox array and
-		 * returning it for the skin to output.
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
-		 */
-		$this->handlers['BaseTemplateToolbox'] = function ( $skinTemplate, &$toolbox ) use( $applicationFactory ) {
-
-			$baseTemplateToolbox = new BaseTemplateToolbox(
-				$applicationFactory->getNamespaceExaminer()
-			);
-
-			$baseTemplateToolbox->setOptions(
-				[
-					'smwgBrowseFeatures' => $applicationFactory->getSettings()->get( 'smwgBrowseFeatures' )
-				]
-			);
-
-			$baseTemplateToolbox->setLogger(
-				$applicationFactory->getMediaWikiLogger()
-			);
-
-			return $baseTemplateToolbox->process( $skinTemplate, $toolbox );
-		};
-
-		/**
-		 * Hook: Allows extensions to add text after the page content and article
-		 * metadata.
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
-		 */
-		$this->handlers['SkinAfterContent'] = function ( &$data, $skin = null ) {
-
-			$skinAfterContent = new SkinAfterContent(
-				$skin
-			);
-
-			return $skinAfterContent->performUpdate( $data );
-		};
-
-		/**
-		 * Hook: Called after parse, before the HTML is added to the output
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageParserOutput
-		 */
-		$this->handlers['OutputPageParserOutput'] = function ( &$outputPage, $parserOutput ) {
-
-			$outputPageParserOutput = new OutputPageParserOutput(
-				$outputPage,
-				$parserOutput
-			);
-
-			return $outputPageParserOutput->process();
-		};
-
-		/**
-		 * Hook: When checking if the page has been modified since the last visit
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageCheckLastModified
-		 */
-		$this->handlers['OutputPageCheckLastModified'] = function ( &$lastModified ) use( $applicationFactory ) {
-
-			// Required to ensure that ViewAction doesn't bail out with
-			// "ViewAction::show: done 304" and hereby neglects to run the
-			// ArticleViewHeader hook
-
-			// Required on 1.28- for the $outputPage->checkLastModified check
-			// that would otherwise prevent running the ArticleViewHeader hook
-			$lastModified['smw'] = wfTimestamp( TS_MW, time() );
-
-			return true;
-		};
-
-		/**
-		 * Hook: Allow an extension to disable file caching on pages
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/IsFileCacheable
-		 */
-		$this->handlers['IsFileCacheable'] = function ( &$article ) use( $applicationFactory ) {
-
-			if ( !$applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $article->getTitle()->getNamespace() ) ) {
-				return true;
-			}
-
-			// Disallow the file cache to avoid skipping the ArticleViewHeader hook
-			// on Article::tryFileCache
-			return !$applicationFactory->getSettings( 'smwgEnabledQueryDependencyLinksStore' );
-		};
-
-		/**
-		 * Hook: Add changes to the output page, e.g. adding of CSS or JavaScript
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
-		 */
-		$this->handlers['BeforePageDisplay'] = function ( &$outputPage, &$skin ) {
-
-			$beforePageDisplay = new BeforePageDisplay();
-
-			return $beforePageDisplay->process( $outputPage, $skin );
-		};
-
-		/**
-		 * Hook: Called immediately before returning HTML on the search results page
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend
-		 */
-		$this->handlers['SpecialSearchResultsPrepend'] = function ( $specialSearch, $outputPage, $term ) {
-
-			$specialSearchResultsPrepend = new SpecialSearchResultsPrepend(
-				$specialSearch,
-				$outputPage
-			);
-
-			return $specialSearchResultsPrepend->process( $term );
-		};
-
-		/**
-		 * Hook: InternalParseBeforeLinks is used to process the expanded wiki
-		 * code after <nowiki>, HTML-comments, and templates have been treated.
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
-		 */
-		$this->handlers['InternalParseBeforeLinks'] = function ( &$parser, &$text, &$stripState ) use ( $applicationFactory ) {
-
-			$internalParseBeforeLinks = new InternalParseBeforeLinks(
-				$parser,
-				$stripState
-			);
-
-			$internalParseBeforeLinks->setOptions(
-				[
-					'smwgEnabledSpecialPage' => $applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' )
-				]
-			);
-
-			return $internalParseBeforeLinks->process( $text );
-		};
-
-		/**
-		 * Hook: NewRevisionFromEditComplete called when a revision was inserted
-		 * due to an edit
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
-		 */
-		$this->handlers['NewRevisionFromEditComplete'] = function ( $wikiPage, $revision, $baseId, $user ) use ( $applicationFactory ) {
-
-			$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
-
-			$editInfoProvider = $mwCollaboratorFactory->newEditInfoProvider(
-				$wikiPage,
-				$revision,
-				$user
-			);
-
-			$pageInfoProvider = $mwCollaboratorFactory->newPageInfoProvider(
-				$wikiPage,
-				$revision,
-				$user
-			);
-
-			$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
-				$wikiPage->getTitle(),
-				$editInfoProvider,
-				$pageInfoProvider
-			);
-
-			return $newRevisionFromEditComplete->process();
-		};
-
-		/**
-		 * Hook: Occurs after the protect article request has been processed
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleProtectComplete
-		 */
-		$this->handlers['ArticleProtectComplete'] = function ( &$wikiPage, &$user, $protections, $reason ) use ( $applicationFactory ) {
-
-			$editInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newEditInfoProvider(
-				$wikiPage,
-				$wikiPage->getRevision(),
-				$user
-			);
-
-			$articleProtectComplete = new ArticleProtectComplete(
-				$wikiPage->getTitle(),
-				$editInfoProvider
-			);
-
-			$articleProtectComplete->setOptions(
-				[
-					'smwgEditProtectionRight' => $applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
-				]
-			);
-
-			$articleProtectComplete->setLogger(
-				$applicationFactory->getMediaWikiLogger()
-			);
-
-			$articleProtectComplete->process( $protections, $reason );
-
-			return true;
-		};
-
-		/**
-		 * Hook: Occurs when an articleheader is shown
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleViewHeader
-		 */
-		$this->handlers['ArticleViewHeader'] = function ( &$page, &$outputDone, &$useParserCache ) use ( $applicationFactory ) {
-
-			$settings = $applicationFactory->getSettings();
-
-			$articleViewHeader = new ArticleViewHeader(
-				$applicationFactory->getStore()
-			);
-
-			$articleViewHeader->setOptions(
-				[
-					'smwgChangePropagationProtection' => $settings->get( 'smwgChangePropagationProtection' ),
-					'smwgChangePropagationWatchlist' => $settings->get( 'smwgChangePropagationWatchlist' )
-				]
-			);
-
-			$articleViewHeader->setLogger(
-				$applicationFactory->getMediaWikiLogger()
-			);
-
-			$articleViewHeader->process( $page, $outputDone, $useParserCache );
-
-			return true;
-		};
-
-		/**
-		 * Hook: ...
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
-		 */
-		$this->handlers['RejectParserCacheValue'] = function ( $value, $wikiPage, $popts ) use ( $queryDependencyLinksStoreFactory  ) {
-
-			$rejectParserCacheValue = new RejectParserCacheValue(
-				$queryDependencyLinksStoreFactory->newDependencyLinksUpdateJournal()
-			);
-
-			// Return false to reject the parser cache
-			// The log will contain something like "[ParserCache] ParserOutput
-			// key valid, but rejected by RejectParserCacheValue hook handler."
-			return $rejectParserCacheValue->process( $wikiPage->getTitle() );
-		};
-
-
-		/**
-		 * Hook: TitleMoveComplete occurs whenever a request to move an article
-		 * is completed
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
-		 */
-		$this->handlers['TitleMoveComplete'] = function ( $oldTitle, $newTitle, $user, $oldId, $newId ) {
-
-			$titleMoveComplete = new TitleMoveComplete(
-				$oldTitle,
-				$newTitle,
-				$user,
-				$oldId,
-				$newId
-			);
-
-			return $titleMoveComplete->process();
-		};
-
-		/**
-		 * Hook: ArticlePurge executes before running "&action=purge"
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
-		 */
-		$this->handlers['ArticlePurge']= function ( &$wikiPage ) {
-
-			$articlePurge = new ArticlePurge();
-
-			return $articlePurge->process( $wikiPage );
-		};
-
-		/**
-		 * Hook: ArticleDelete occurs whenever the software receives a request
-		 * to delete an article
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
-		 */
-		$this->handlers['ArticleDelete'] = function ( &$wikiPage, &$user, &$reason, &$error ) use( $applicationFactory ) {
-
-			$articleDelete = new ArticleDelete(
-				$applicationFactory->getStore()
-			);
-
-			$articleDelete->setLogger(
-				$applicationFactory->getMediaWikiLogger()
-			);
-
-			return $articleDelete->process( $wikiPage );
-		};
-
-		/**
-		 * Hook: LinksUpdateConstructed called at the end of LinksUpdate() construction
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
-		 */
-		$this->handlers['LinksUpdateConstructed'] = function ( $linksUpdate ) use( $applicationFactory ) {
-
-			$linksUpdateConstructed = new LinksUpdateConstructed();
-
-			$linksUpdateConstructed->setLogger(
-				$applicationFactory->getMediaWikiLogger()
-			);
-
-			return $linksUpdateConstructed->process( $linksUpdate );
-		};
-
-		/**
-		 * Hook: Add extra statistic at the end of Special:Statistics
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
-		 */
-		$this->handlers['SpecialStatsAddExtra'] = function ( &$extraStats ) use( $applicationFactory ) {
-
-			$specialStatsAddExtra = new SpecialStatsAddExtra(
-				$applicationFactory->getStore()
-			);
-
-			$specialStatsAddExtra->setOptions(
-				[
-					'smwgSemanticsEnabled' => $applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' )
-				]
-			);
-
-			return $specialStatsAddExtra->process( $extraStats );
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
-		 *
-		 * @since 1.9.1
-		 */
-		$this->handlers['FileUpload'] = function ( $file, $reupload ) use( $applicationFactory ) {
-
-			$fileUpload = new FileUpload(
-				$applicationFactory->getNamespaceExaminer()
-			);
-
-			return $fileUpload->process( $file, $reupload );
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
-		 */
-		$this->handlers['ResourceLoaderGetConfigVars'] = function ( &$vars ) {
-
-			$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars();
-
-			return $resourceLoaderGetConfigVars->process( $vars );
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
-		 */
-		$this->handlers['GetPreferences'] = function ( $user, &$preferences ) use( $applicationFactory ) {
-
-			$settings = $applicationFactory->getSettings();
-			$getPreferences = new GetPreferences(
-				$user
-			);
-
-			$getPreferences->setOptions(
-				[
-					'smwgEnabledEditPageHelp' => $settings->get( 'smwgEnabledEditPageHelp' ),
-					'smwgJobQueueWatchlist' => $settings->get( 'smwgJobQueueWatchlist' )
-				]
-			);
-
-			return $getPreferences->process( $preferences);
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
-		 */
-		$this->handlers['PersonalUrls'] = function( array &$personal_urls, $title, $skinTemplate ) use( $applicationFactory ) {
-
-			$personalUrls = new PersonalUrls(
-				$skinTemplate,
-				$applicationFactory->getJobQueue()
-			);
-
-			$user = $skinTemplate->getUser();
-
-			$personalUrls->setOptions(
-				[
-					'smwgJobQueueWatchlist' => $applicationFactory->getSettings()->get( 'smwgJobQueueWatchlist' ),
-					'prefs-jobqueue-watchlist' => $user->getOption( 'smw-prefs-general-options-jobqueue-watchlist' )
-				]
-			);
-
-			$personalUrls->process( $personal_urls );
-
-			return true;
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
-		 */
-		$this->handlers['SkinTemplateNavigation'] = function ( &$skinTemplate, &$links ) {
-
-			$skinTemplateNavigation = new SkinTemplateNavigation(
-				$skinTemplate,
-				$links
-			);
-
-			return $skinTemplateNavigation->process();
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
-		 */
-		$this->handlers['LoadExtensionSchemaUpdates'] = function ( $databaseUpdater ) {
-
-			$extensionSchemaUpdates = new ExtensionSchemaUpdates(
-				$databaseUpdater
-			);
-
-			return $extensionSchemaUpdates->process();
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
-		 */
-		$this->handlers['ResourceLoaderTestModules'] = function ( &$testModules, &$resourceLoader ) use ( $basePath, $globalVars ) {
-
-			$resourceLoaderTestModules = new ResourceLoaderTestModules(
-				$resourceLoader,
-				$basePath,
-				$globalVars['IP']
-			);
-
-			return $resourceLoaderTestModules->process( $testModules );
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
-		 */
-		$this->handlers['ExtensionTypes'] = function ( &$extTypes ) {
-
-			$extensionTypes = new ExtensionTypes();
-
-			return $extensionTypes->process( $extTypes);
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsAlwaysKnown
-		 */
-		$this->handlers['TitleIsAlwaysKnown'] = function ( $title, &$result ) {
-
-			$titleIsAlwaysKnown = new TitleIsAlwaysKnown(
-				$title,
-				$result
-			);
-
-			return $titleIsAlwaysKnown->process();
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforeDisplayNoArticleText
-		 */
-		$this->handlers['BeforeDisplayNoArticleText'] = function ( $article ) {
-
-			$beforeDisplayNoArticleText = new BeforeDisplayNoArticleText(
-				$article
-			);
-
-			return $beforeDisplayNoArticleText->process();
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleFromTitle
-		 */
-		$this->handlers['ArticleFromTitle'] = function ( &$title, &$article ) use ( $applicationFactory ) {
-
-			$articleFromTitle = new ArticleFromTitle(
-				$applicationFactory->getStore()
-			);
-
-			return $articleFromTitle->process( $title, $article );
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable
-		 */
-		$this->handlers['TitleIsMovable'] = function ( $title, &$isMovable ) {
-
-			$titleIsMovable = new TitleIsMovable(
-				$title
-			);
-
-			return $titleIsMovable->process( $isMovable );
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
-		 */
-		$this->handlers['EditPage::showEditForm:initial'] = function ( $editPage, $output ) use ( $applicationFactory ) {
-
-			$user = $output->getUser();
-
-			$editPageForm = new EditPageForm(
-				$applicationFactory->getNamespaceExaminer()
-			);
-
-			$editPageForm->setOptions(
-				[
-					'smwgEnabledEditPageHelp' => $applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' ),
-					'prefs-disable-editpage' => $user->getOption( 'smw-prefs-general-options-disable-editpage-info' )
-				]
-			);
-
-			return $editPageForm->process( $editPage );
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleQuickPermissions
-		 *
-		 * "...Quick permissions are checked first in the Title::checkQuickPermissions
-		 * function. Quick permissions are the most basic of permissions needed
-		 * to perform an action ..."
-		 */
-		$this->handlers['TitleQuickPermissions'] = function ( $title, $user, $action, &$errors, $rigor, $short ) use ( $permissionPthValidator ) {
-			return $permissionPthValidator->checkQuickPermission( $title, $user, $action, $errors );
-		};
-
-		$this->registerHooksForInternalUse( $applicationFactory, $deferredRequestDispatchManager, $queryDependencyLinksStoreFactory );
-		$this->registerParserFunctionHooks( $applicationFactory );
+		$hooks = [
+			'ParserAfterTidy' => 'newParserAfterTidy',
+			'ParserOptionsRegister' => 'newParserOptionsRegister',
+			'ParserFirstCallInit' => 'newParserFirstCallInit',
+			'InternalParseBeforeLinks' => 'newInternalParseBeforeLinks',
+			'RejectParserCacheValue' => 'newRejectParserCacheValue',
+			'IsFileCacheable' => 'newIsFileCacheable',
+
+			'BaseTemplateToolbox' => 'newBaseTemplateToolbox',
+			'SkinAfterContent' => 'newSkinAfterContent',
+			'OutputPageParserOutput' => 'newOutputPageParserOutput',
+			'OutputPageCheckLastModified' => 'newOutputPageCheckLastModified',
+			'BeforePageDisplay' => 'newBeforePageDisplay',
+			'BeforeDisplayNoArticleText' => 'newBeforeDisplayNoArticleText',
+			'EditPage::showEditForm:initial' => 'newEditPageShowEditFormInitial',
+
+			'TitleMoveComplete' => 'newTitleMoveComplete',
+			'TitleIsAlwaysKnown' => 'newTitleIsAlwaysKnown',
+			'TitleQuickPermissions' => 'newTitleQuickPermissions',
+			'TitleIsMovable' => 'newTitleIsMovable',
+
+			'ArticlePurge' => 'newArticlePurge',
+			'ArticleDelete' => 'newArticleDelete',
+			'ArticleFromTitle' => 'newArticleFromTitle',
+			'ArticleProtectComplete' => 'newArticleProtectComplete',
+			'ArticleViewHeader' => 'newArticleViewHeader',
+
+			'NewRevisionFromEditComplete' => 'newNewRevisionFromEditComplete',
+			'LinksUpdateConstructed' => 'newLinksUpdateConstructed',
+			'FileUpload' => 'newFileUpload',
+
+			'ResourceLoaderGetConfigVars' => 'newResourceLoaderGetConfigVars',
+			'ResourceLoaderTestModules' => 'newResourceLoaderTestModules',
+			'GetPreferences' => 'newGetPreferences',
+			'PersonalUrls' => 'newPersonalUrls',
+			'SkinTemplateNavigation' => 'newSkinTemplateNavigation',
+			'LoadExtensionSchemaUpdates' => 'newLoadExtensionSchemaUpdates',
+
+			'ExtensionTypes' => 'newExtensionTypes',
+			'SpecialSearchResultsPrepend' => 'newSpecialSearchResultsPrepend',
+			'SpecialStatsAddExtra' => 'newSpecialStatsAddExtra',
+		];
+
+		foreach ( $hooks as $hook => $handler ) {
+			$this->handlers[$hook] = [ $this, $handler ];
+		}
+
+		$this->registerHooksForInternalUse( $applicationFactory, $deferredRequestDispatchManager );
 	}
 
-	private function registerHooksForInternalUse( ApplicationFactory $applicationFactory, DeferredRequestDispatchManager $deferredRequestDispatchManager, QueryDependencyLinksStoreFactory $queryDependencyLinksStoreFactory ) {
+	/**
+	 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
+	 */
+	public function newParserAfterTidy( &$parser, &$text ) {
 
-		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+		$parserAfterTidy = new ParserAfterTidy(
+			$parser
+		);
+
+		$parserAfterTidy->isCommandLineMode(
+			Site::isCommandLineMode()
+		);
+
+		$parserAfterTidy->isReadOnly(
+			Site::isReadOnly()
+		);
+
+		return $parserAfterTidy->process( $text );
+	}
+
+	/**
+	 * Hook: Called by BaseTemplate when building the toolbox array and
+	 * returning it for the skin to output.
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
+	 */
+	public function newBaseTemplateToolbox( $skinTemplate, &$toolbox ) {
+
+		$baseTemplateToolbox = new BaseTemplateToolbox(
+			$this->applicationFactory->getNamespaceExaminer()
+		);
+
+		$baseTemplateToolbox->setOptions(
+			[
+				'smwgBrowseFeatures' => $this->applicationFactory->getSettings()->get( 'smwgBrowseFeatures' )
+			]
+		);
+
+		$baseTemplateToolbox->setLogger(
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+
+		return $baseTemplateToolbox->process( $skinTemplate, $toolbox );
+	}
+
+	/**
+	 * Hook: Allows extensions to add text after the page content and article
+	 * metadata.
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
+	 */
+	public function newSkinAfterContent( &$data, $skin = null ) {
+
+		$skinAfterContent = new SkinAfterContent(
+			$skin
+		);
+
+		return $skinAfterContent->performUpdate( $data );
+	}
+
+	/**
+	 * Hook: Called after parse, before the HTML is added to the output
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageParserOutput
+	 */
+	public function newOutputPageParserOutput( &$outputPage, $parserOutput ) {
+
+		$outputPageParserOutput = new OutputPageParserOutput(
+			$outputPage,
+			$parserOutput
+		);
+
+		return $outputPageParserOutput->process();
+	}
+
+	/**
+	 * Hook: When checking if the page has been modified since the last visit
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageCheckLastModified
+	 */
+	public function newOutputPageCheckLastModified( &$lastModified ) {
+
+		// Required to ensure that ViewAction doesn't bail out with
+		// "ViewAction::show: done 304" and hereby neglects to run the
+		// ArticleViewHeader hook
+
+		// Required on 1.28- for the $outputPage->checkLastModified check
+		// that would otherwise prevent running the ArticleViewHeader hook
+		$lastModified['smw'] = wfTimestamp( TS_MW, time() );
+
+		return true;
+	}
+
+	/**
+	 * Hook: Allow an extension to disable file caching on pages
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/IsFileCacheable
+	 */
+	public function newIsFileCacheable( &$article ) {
+
+		if ( !$this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $article->getTitle()->getNamespace() ) ) {
+			return true;
+		}
+
+		// Disallow the file cache to avoid skipping the ArticleViewHeader hook
+		// on Article::tryFileCache
+		return !$this->applicationFactory->getSettings( 'smwgEnabledQueryDependencyLinksStore' );
+	}
+
+	/**
+	 * Hook: Add changes to the output page, e.g. adding of CSS or JavaScript
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
+	 */
+	public function newBeforePageDisplay( &$outputPage, &$skin ) {
+
+		$beforePageDisplay = new BeforePageDisplay();
+
+		return $beforePageDisplay->process( $outputPage, $skin );
+	}
+
+	/**
+	 * Hook: Called immediately before returning HTML on the search results page
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend
+	 */
+	public function newSpecialSearchResultsPrepend( $specialSearch, $outputPage, $term ) {
+
+		$specialSearchResultsPrepend = new SpecialSearchResultsPrepend(
+			$specialSearch,
+			$outputPage
+		);
+
+		return $specialSearchResultsPrepend->process( $term );
+	}
+
+	/**
+	 * Hook: InternalParseBeforeLinks is used to process the expanded wiki
+	 * code after <nowiki>, HTML-comments, and templates have been treated.
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
+	 */
+	public function newInternalParseBeforeLinks( &$parser, &$text, &$stripState ) {
+
+		$internalParseBeforeLinks = new InternalParseBeforeLinks(
+			$parser,
+			$stripState
+		);
+
+		$internalParseBeforeLinks->setOptions(
+			[
+				'smwgEnabledSpecialPage' => $this->applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' )
+			]
+		);
+
+		return $internalParseBeforeLinks->process( $text );
+	}
+
+	/**
+	 * Hook: NewRevisionFromEditComplete called when a revision was inserted
+	 * due to an edit
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
+	 */
+	public function newNewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) {
+
+		$mwCollaboratorFactory = $this->applicationFactory->newMwCollaboratorFactory();
+
+		$editInfoProvider = $mwCollaboratorFactory->newEditInfoProvider(
+			$wikiPage,
+			$revision,
+			$user
+		);
+
+		$pageInfoProvider = $mwCollaboratorFactory->newPageInfoProvider(
+			$wikiPage,
+			$revision,
+			$user
+		);
+
+		$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
+			$wikiPage->getTitle(),
+			$editInfoProvider,
+			$pageInfoProvider
+		);
+
+		return $newRevisionFromEditComplete->process();
+	}
+
+	/**
+	 * Hook: Occurs after the protect article request has been processed
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleProtectComplete
+	 */
+	public function newArticleProtectComplete( &$wikiPage, &$user, $protections, $reason ) {
+
+		$editInfoProvider = $this->applicationFactory->newMwCollaboratorFactory()->newEditInfoProvider(
+			$wikiPage,
+			$wikiPage->getRevision(),
+			$user
+		);
+
+		$articleProtectComplete = new ArticleProtectComplete(
+			$wikiPage->getTitle(),
+			$editInfoProvider
+		);
+
+		$articleProtectComplete->setOptions(
+			[
+				'smwgEditProtectionRight' => $this->applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+			]
+		);
+
+		$articleProtectComplete->setLogger(
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+
+		$articleProtectComplete->process( $protections, $reason );
+
+		return true;
+	}
+
+	/**
+	 * Hook: Occurs when an articleheader is shown
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleViewHeader
+	 */
+	public function newArticleViewHeader( &$page, &$outputDone, &$useParserCache ) {
+
+		$settings = $this->applicationFactory->getSettings();
+
+		$articleViewHeader = new ArticleViewHeader(
+			$this->applicationFactory->getStore()
+		);
+
+		$articleViewHeader->setOptions(
+			[
+				'smwgChangePropagationProtection' => $settings->get( 'smwgChangePropagationProtection' ),
+				'smwgChangePropagationWatchlist' => $settings->get( 'smwgChangePropagationWatchlist' )
+			]
+		);
+
+		$articleViewHeader->setLogger(
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+
+		$articleViewHeader->process( $page, $outputDone, $useParserCache );
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
+	 */
+	public function newRejectParserCacheValue( $value, $wikiPage, $popts ) {
+
+		$rejectParserCacheValue = new RejectParserCacheValue(
+			$this->queryDependencyLinksStoreFactory->newDependencyLinksUpdateJournal()
+		);
+
+		// Return false to reject the parser cache
+		// The log will contain something like "[ParserCache] ParserOutput
+		// key valid, but rejected by RejectParserCacheValue hook handler."
+		return $rejectParserCacheValue->process( $wikiPage->getTitle() );
+	}
+
+	/**
+	 * Hook: TitleMoveComplete occurs whenever a request to move an article
+	 * is completed
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
+	 */
+	public function newTitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) {
+
+		$titleMoveComplete = new TitleMoveComplete(
+			$oldTitle,
+			$newTitle,
+			$user,
+			$oldId,
+			$newId
+		);
+
+		return $titleMoveComplete->process();
+	}
+
+	/**
+	 * Hook: ArticlePurge executes before running "&action=purge"
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
+	 */
+	public function newArticlePurge( &$wikiPage ) {
+
+		$articlePurge = new ArticlePurge();
+
+		return $articlePurge->process( $wikiPage );
+	}
+
+	/**
+	 * Hook: ArticleDelete occurs whenever the software receives a request
+	 * to delete an article
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
+	 */
+	public function newArticleDelete( &$wikiPage, &$user, &$reason, &$error ) {
+
+		$articleDelete = new ArticleDelete(
+			$this->applicationFactory->getStore()
+		);
+
+		$articleDelete->setLogger(
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+
+		return $articleDelete->process( $wikiPage );
+	}
+
+	/**
+	 * Hook: LinksUpdateConstructed called at the end of LinksUpdate() construction
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
+	 */
+	public function newLinksUpdateConstructed( $linksUpdate ) {
+
+		$linksUpdateConstructed = new LinksUpdateConstructed();
+
+		$linksUpdateConstructed->setLogger(
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+
+		return $linksUpdateConstructed->process( $linksUpdate );
+	}
+
+	/**
+	 * Hook: Add extra statistic at the end of Special:Statistics
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
+	 */
+	public function newSpecialStatsAddExtra( &$extraStats ) {
+
+		$specialStatsAddExtra = new SpecialStatsAddExtra(
+			$this->applicationFactory->getStore()
+		);
+
+		$specialStatsAddExtra->setOptions(
+			[
+				'smwgSemanticsEnabled' => $this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' )
+			]
+		);
+
+		return $specialStatsAddExtra->process( $extraStats );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
+	 */
+	public function newFileUpload( $file, $reupload ) {
+
+		$fileUpload = new FileUpload(
+			$this->applicationFactory->getNamespaceExaminer()
+		);
+
+		return $fileUpload->process( $file, $reupload );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
+	 */
+	public function newResourceLoaderGetConfigVars( &$vars ) {
+
+		$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars();
+
+		return $resourceLoaderGetConfigVars->process( $vars );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
+	 */
+	public function newGetPreferences( $user, &$preferences ) {
+
+		$settings = $this->applicationFactory->getSettings();
+
+		$getPreferences = new GetPreferences(
+			$user
+		);
+
+		$getPreferences->setOptions(
+			[
+				'smwgEnabledEditPageHelp' => $settings->get( 'smwgEnabledEditPageHelp' ),
+				'smwgJobQueueWatchlist' => $settings->get( 'smwgJobQueueWatchlist' )
+			]
+		);
+
+		return $getPreferences->process( $preferences);
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
+	 */
+	public function newPersonalUrls( array &$personal_urls, $title, $skinTemplate ) {
+
+		$personalUrls = new PersonalUrls(
+			$skinTemplate,
+			$this->applicationFactory->getJobQueue()
+		);
+
+		$user = $skinTemplate->getUser();
+
+		$personalUrls->setOptions(
+			[
+				'smwgJobQueueWatchlist' => $this->applicationFactory->getSettings()->get( 'smwgJobQueueWatchlist' ),
+				'prefs-jobqueue-watchlist' => $user->getOption( 'smw-prefs-general-options-jobqueue-watchlist' )
+			]
+		);
+
+		$personalUrls->process( $personal_urls );
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
+	 */
+	public function newSkinTemplateNavigation( &$skinTemplate, &$links ) {
+
+		$skinTemplateNavigation = new SkinTemplateNavigation(
+			$skinTemplate,
+			$links
+		);
+
+		return $skinTemplateNavigation->process();
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
+	 */
+	public function newLoadExtensionSchemaUpdates( $databaseUpdater ) {
+
+		$extensionSchemaUpdates = new ExtensionSchemaUpdates(
+			$databaseUpdater
+		);
+
+		return $extensionSchemaUpdates->process();
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
+	 */
+	public function newResourceLoaderTestModules( &$testModules, &$resourceLoader ) {
+
+		$resourceLoaderTestModules = new ResourceLoaderTestModules(
+			$resourceLoader,
+			$this->basePath,
+			$this->globalVars['IP']
+		);
+
+		return $resourceLoaderTestModules->process( $testModules );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
+	 */
+	public function newExtensionTypes( &$extTypes ) {
+
+		$extensionTypes = new ExtensionTypes();
+
+		return $extensionTypes->process( $extTypes);
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsAlwaysKnown
+	 */
+	public function newTitleIsAlwaysKnown( $title, &$result ) {
+
+		$titleIsAlwaysKnown = new TitleIsAlwaysKnown(
+			$title,
+			$result
+		);
+
+		return $titleIsAlwaysKnown->process();
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleFromTitle
+	 */
+	public function newArticleFromTitle( &$title, &$article ) {
+
+		$articleFromTitle = new ArticleFromTitle(
+			$this->applicationFactory->getStore()
+		);
+
+		return $articleFromTitle->process( $title, $article );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable
+	 */
+	public function newTitleIsMovable( $title, &$isMovable ) {
+
+		$titleIsMovable = new TitleIsMovable(
+			$title
+		);
+
+		return $titleIsMovable->process( $isMovable );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforeDisplayNoArticleText
+	 */
+	public function newBeforeDisplayNoArticleText( $article ) {
+
+		$beforeDisplayNoArticleText = new BeforeDisplayNoArticleText(
+			$article
+		);
+
+		return $beforeDisplayNoArticleText->process();
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
+	 */
+	public function newEditPageShowEditFormInitial( $editPage, $output ) {
+
+		$user = $output->getUser();
+
+		$editPageForm = new EditPageForm(
+			$this->applicationFactory->getNamespaceExaminer()
+		);
+
+		$editPageForm->setOptions(
+			[
+				'smwgEnabledEditPageHelp' => $this->applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' ),
+				'prefs-disable-editpage' => $user->getOption( 'smw-prefs-general-options-disable-editpage-info' )
+			]
+		);
+
+		return $editPageForm->process( $editPage );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleQuickPermissions
+	 *
+	 * "...Quick permissions are checked first in the Title::checkQuickPermissions
+	 * function. Quick permissions are the most basic of permissions needed
+	 * to perform an action ..."
+	 */
+	public function newTitleQuickPermissions( $title, $user, $action, &$errors, $rigor, $short ) {
+
+		if ( $this->permissionPthValidator === null ) {
+			$this->permissionPthValidator = new PermissionPthValidator(
+				$this->applicationFactory->singleton( 'ProtectionValidator' )
+			);
+		}
+
+		return $this->permissionPthValidator->checkQuickPermission( $title, $user, $action, $errors );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserOptionsRegister (Only 1.30+)
+	 */
+	public function newParserOptionsRegister( &$defaults, &$inCacheKey ) {
+
+		// #2509
+		// Register a new options key, used in connection with #ask/#show
+		// where the use of a localTime invalidates the ParserCache to avoid
+		// stalled settings for users with different preferences
+		$defaults['localTime'] = false;
+		$inCacheKey['localTime'] = true;
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
+	 */
+	public function newParserFirstCallInit( &$parser ) {
+
+		$parserFunctionFactory = $this->applicationFactory->newParserFunctionFactory();
+		$parserFunctionFactory->registerFunctionHandlers( $parser );
+
+		$hookRegistrant = new HookRegistrant( $parser );
+
+		$infoFunctionDefinition = InfoParserFunction::getHookDefinition();
+		$infoFunctionHandler = new InfoParserFunction();
+		$hookRegistrant->registerFunctionHandler( $infoFunctionDefinition, $infoFunctionHandler );
+		$hookRegistrant->registerHookHandler( $infoFunctionDefinition, $infoFunctionHandler );
+
+		$docsFunctionDefinition = DocumentationParserFunction::getHookDefinition();
+		$docsFunctionHandler = new DocumentationParserFunction();
+		$hookRegistrant->registerFunctionHandler( $docsFunctionDefinition, $docsFunctionHandler );
+		$hookRegistrant->registerHookHandler( $docsFunctionDefinition, $docsFunctionHandler );
+
+		return true;
+	}
+
+	private function registerHooksForInternalUse( ApplicationFactory $applicationFactory, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
+
+		$queryDependencyLinksStore = $this->queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 			$applicationFactory->getStore()
 		);
 
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
 		 */
-		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $changeOp ) use ( $queryDependencyLinksStoreFactory, $queryDependencyLinksStore, $deferredRequestDispatchManager ) {
+		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $changeOp ) use ( $queryDependencyLinksStore, $deferredRequestDispatchManager ) {
 
 			$queryDependencyLinksStore->setStore( $store );
 			$subject = $semanticData->getSubject();
@@ -775,7 +880,7 @@ class HookRegistry {
 				$changeOp
 			);
 
-			$entityIdListRelevanceDetectionFilter = $queryDependencyLinksStoreFactory->newEntityIdListRelevanceDetectionFilter(
+			$entityIdListRelevanceDetectionFilter = $this->queryDependencyLinksStoreFactory->newEntityIdListRelevanceDetectionFilter(
 				$store,
 				$changeOp
 			);
@@ -839,9 +944,9 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::AfterIncomingPropertiesLookupComplete
 		 */
-		$this->handlers['SMW::Browse::AfterIncomingPropertiesLookupComplete'] = function ( $store, $semanticData, $requestOptions ) use ( $queryDependencyLinksStoreFactory ) {
+		$this->handlers['SMW::Browse::AfterIncomingPropertiesLookupComplete'] = function ( $store, $semanticData, $requestOptions ) {
 
-			$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
+			$queryReferenceBacklinks = $this->queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
 				$store
 			);
 
@@ -856,9 +961,9 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
 		 */
-		$this->handlers['SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate'] = function ( $property, $subject, &$html ) use ( $queryDependencyLinksStoreFactory, $applicationFactory ) {
+		$this->handlers['SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate'] = function ( $property, $subject, &$html ) use ( $applicationFactory ) {
 
-			$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
+			$queryReferenceBacklinks = $this->queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
 				$applicationFactory->getStore()
 			);
 
@@ -889,47 +994,6 @@ class HookRegistry {
 			$importer->isEnabled( $options->safeGet( \SMW\SQLStore\Installer::OPT_IMPORT, false ) );
 			$importer->setMessageReporter( $messageReporter );
 			$importer->doImport();
-
-			return true;
-		};
-	}
-
-	private function registerParserFunctionHooks( ApplicationFactory $applicationFactory ) {
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserOptionsRegister (Only 1.30+)
-		 */
-		$this->handlers['ParserOptionsRegister'] = function ( &$defaults, &$inCacheKey ) {
-
-			// #2509
-			// Register a new options key, used in connection with #ask/#show
-			// where the use of a localTime invalidates the ParserCache to avoid
-			// stalled settings for users with different preferences
-			$defaults['localTime'] = false;
-			$inCacheKey['localTime'] = true;
-
-			return true;
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
-		 */
-		$this->handlers['ParserFirstCallInit'] = function ( &$parser ) use( $applicationFactory ) {
-
-			$parserFunctionFactory = $applicationFactory->newParserFunctionFactory();
-			$parserFunctionFactory->registerFunctionHandlers( $parser );
-
-			$hookRegistrant = new HookRegistrant( $parser );
-
-			$infoFunctionDefinition = InfoParserFunction::getHookDefinition();
-			$infoFunctionHandler = new InfoParserFunction();
-			$hookRegistrant->registerFunctionHandler( $infoFunctionDefinition, $infoFunctionHandler );
-			$hookRegistrant->registerHookHandler( $infoFunctionDefinition, $infoFunctionHandler );
-
-			$docsFunctionDefinition = DocumentationParserFunction::getHookDefinition();
-			$docsFunctionHandler = new DocumentationParserFunction();
-			$hookRegistrant->registerFunctionHandler( $docsFunctionDefinition, $docsFunctionHandler );
-			$hookRegistrant->registerHookHandler( $docsFunctionDefinition, $docsFunctionHandler );
 
 			return true;
 		};

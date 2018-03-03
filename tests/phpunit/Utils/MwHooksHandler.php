@@ -96,7 +96,7 @@ class MwHooksHandler {
 	 *
 	 * @return MwHooksHandler
 	 */
-	public function register( $name, Closure $callback ) {
+	public function register( $name, callable $callback ) {
 
 		$listOfHooks = array_merge(
 			$this->listOfSmwHooks,
