@@ -591,7 +591,7 @@
 	"smw-property-predefined-peid": "\"$1\" is a predefined property that specifies an external identifier and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-pefu": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to specify an external resource with a placeholder.",
 	"smw-property-predefined-long-pefu": "The URI is expected to contain a placeholder that will be adjusted with an [[Special:Types/External identifier|external identifier]] value to form a valid resource reference.",
-	"smw-type-eid": "\"$1\" is a variant of the [[Special:Types/Text|Text]] datatype that has a restricted character length and requires assigned properties to declare an [[Property:External formatter uri|External formatter URI]].",
+	"smw-type-eid": "\"$1\" is a variant of the [[Special:Types/Text|Text]] datatype that requires assigned properties to declare an [[Property:External formatter uri|External formatter URI]].",
 	"smw-property-predefined-keyw": "\"$1\" is a predefined property and [[Special:Types/Keyword|type]] provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] that normalizes a text and has a restricted character length.",
 	"smw-type-keyw": "\"$1\" is a variant of the [[Special:Types/Text|Text]] datatype that has a restricted character length and normalizes its content representation.",
 	"smw-datavalue-stripmarker-parse-error": "The given value \"$1\" contains [https://en.wikipedia.org/wiki/Help:Strip_markers strip markers] and therefore it cannot be parsed sufficiently.",
