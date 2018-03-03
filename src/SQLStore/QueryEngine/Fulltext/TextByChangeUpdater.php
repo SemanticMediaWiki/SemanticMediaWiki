@@ -124,7 +124,7 @@ class TextByChangeUpdater {
 			'procTime' => Timer::getElapsedTime( __METHOD__, 5 )
 		];
 
-		$this->logger->info( 'Fulltext table update scheduled (procTime in sec: {procTime})' );
+		$this->logger->info( 'Fulltext table update scheduled (procTime in sec: {procTime})', $context );
 	}
 
 	/**
@@ -205,7 +205,7 @@ class TextByChangeUpdater {
 			'procTime' => Timer::getElapsedTime( __METHOD__, 5 )
 		];
 
-		$this->logger->info( 'Fulltext table update completed (procTime in sec: {procTime})' );
+		$this->logger->info( 'Fulltext table update completed (procTime in sec: {procTime})', $context );
 	}
 
 	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ) {
