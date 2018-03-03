@@ -317,7 +317,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			2,
-			$instance->getDisplayPrecisionBy( $property )
+			$instance->getDisplayPrecision( $property )
 		);
 	}
 
@@ -342,7 +342,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( 'abc', 'def', '123' ),
-			$instance->getDisplayUnitsBy( $property )
+			$instance->getDisplayUnits( $property )
 		);
 	}
 

@@ -328,7 +328,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return integer|false
 	 */
-	public function getDisplayPrecisionBy( DIProperty $property ) {
+	public function getDisplayPrecision( DIProperty $property ) {
 
 		$displayPrecision = false;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PREC' ) );
@@ -348,7 +348,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return array
 	 */
-	public function getDisplayUnitsBy( DIProperty $property ) {
+	public function getDisplayUnits( DIProperty $property ) {
 
 		$units = array();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\DataValues;
+namespace SMW\DataValues\Number;
 
 use SMW\ApplicationFactory;
 use SMW\CachedPropertyValuesPrefetcher;
@@ -20,7 +20,7 @@ use SMWNumberValue as NumberValue;
  *
  * @author mwjames
  */
-class UnitConversionFetcher {
+class UnitConverter {
 
 	/**
 	 * @var NumberValue
@@ -143,6 +143,7 @@ class UnitConversionFetcher {
 
 		$number = '';
 		$unit = '';
+		$asPrefix = false;
 
 		foreach ( $factors as $di ) {
 
@@ -179,7 +180,7 @@ class UnitConversionFetcher {
 	 *
 	 * @param DIProperty|null $property
 	 */
-	public function fetchCachedConversionData( DIProperty $property = null ) {
+	public function initConversionData( DIProperty $property = null ) {
 
 		if ( $property === null || ( $propertyDiWikiPage = $property->getDiWikiPage() ) === null ) {
 			return;

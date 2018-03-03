@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\DataValues;
+namespace SMW\Tests\DataValues\Number;
 
 use SMW\DataItemFactory;
-use SMW\DataValues\UnitConversionFetcher;
+use SMW\DataValues\Number\UnitConverter;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
 
 /**
- * @covers \SMW\DataValues\UnitConversionFetcher
+ * @covers \SMW\DataValues\Number\UnitConverter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMWNumberValue as NumberValue;
  *
  * @author mwjames
  */
-class UnitConversionFetcherTest extends \PHPUnit_Framework_TestCase {
+class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -44,8 +44,8 @@ class UnitConversionFetcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\UnitConversionFetcher',
-			new UnitConversionFetcher( $numberValue )
+			UnitConverter::class,
+			new UnitConverter( $numberValue )
 		);
 	}
 
@@ -55,7 +55,7 @@ class UnitConversionFetcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new UnitConversionFetcher(
+		$instance = new UnitConverter(
 			$numberValue
 		);
 
@@ -95,7 +95,7 @@ class UnitConversionFetcherTest extends \PHPUnit_Framework_TestCase {
 			$decimal
 		);
 
-		$instance = new UnitConversionFetcher(
+		$instance = new UnitConverter(
 			$numberValue,
 			$cachedPropertyValuesPrefetcher
 		);
@@ -129,7 +129,7 @@ class UnitConversionFetcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFetchCachedConversionData() {
+	public function testInitConversionData() {
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
 			->disableOriginalConstructor()
@@ -166,17 +166,17 @@ class UnitConversionFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$numberValue = new NumberValue();
 
-		$instance = new UnitConversionFetcher(
+		$instance = new UnitConverter(
 			$numberValue,
 			$cachedPropertyValuesPrefetcher
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
-		$instance->fetchCachedConversionData( $property );
+		$instance->initConversionData( $property );
 
 		// Cached
-		$instance->fetchCachedConversionData( $property);
+		$instance->initConversionData( $property);
 	}
 
 	public function conversionDataProvider() {

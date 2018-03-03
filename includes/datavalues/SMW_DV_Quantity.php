@@ -1,6 +1,6 @@
 <?php
 
-use SMW\DataValues\UnitConversionFetcher;
+use SMW\DataValues\Number\UnitConverter;
 use SMW\Message;
 use SMW\ApplicationFactory;
 
@@ -167,15 +167,16 @@ class SMWQuantityValue extends SMWNumberValue {
 	 * This method initializes $m_unitfactors, $m_unitids, and $m_mainunit.
 	 */
 	protected function initConversionData() {
+
 		if ( $this->m_unitids !== false ) {
-			return; // do the below only once
+			return;
 		}
 
-		$unitConversionFetcher = new UnitConversionFetcher( $this );
-		$unitConversionFetcher->fetchCachedConversionData( $this->m_property );
+		$unitConverter = new UnitConverter( $this );
+		$unitConverter->initConversionData( $this->m_property );
 
-		if ( $unitConversionFetcher->getErrors() !== array() ) {
-			foreach ( $unitConversionFetcher->getErrors() as $error ) {
+		if ( $unitConverter->getErrors() !== array() ) {
+			foreach ( $unitConverter->getErrors() as $error ) {
 				$this->addErrorMsg(
 					$error,
 					Message::TEXT,
@@ -184,10 +185,10 @@ class SMWQuantityValue extends SMWNumberValue {
 			}
 		}
 
-		$this->m_unitids = $unitConversionFetcher->getUnitIds();
-		$this->m_unitfactors = $unitConversionFetcher->getUnitFactors();
-		$this->m_mainunit = $unitConversionFetcher->getMainUnit();
-		$this->prefixalUnitPreference = $unitConversionFetcher->getPrefixalUnitPreference();
+		$this->m_unitids = $unitConverter->getUnitIds();
+		$this->m_unitfactors = $unitConverter->getUnitFactors();
+		$this->m_mainunit = $unitConverter->getMainUnit();
+		$this->prefixalUnitPreference = $unitConverter->getPrefixalUnitPreference();
 	}
 
 	/**
@@ -204,7 +205,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			return;
 		}
 
-		$units = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getDisplayUnitsBy(
+		$units = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getDisplayUnits(
 			$this->getProperty()
 		);
 

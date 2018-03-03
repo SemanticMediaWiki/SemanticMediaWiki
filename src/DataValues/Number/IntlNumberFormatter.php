@@ -1,9 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataValues\Number;
 
 use InvalidArgumentException;
 use SMWNumberValue as NumberValue;
+use SMW\Options;
+use SMW\Message;
 
 /**
  * @license GNU GPL v2+

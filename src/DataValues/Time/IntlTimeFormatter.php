@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataValues\Time;
 
 use Language;
 use SMWDITime as DITime;
 use DateTimeZone;
 use DateTime;
-use SMW\DataValues\Time\Timezone;
-use SMW\DataValues\Time\LocalTime;
+use SMW\Localizer;
 
 /**
  * @license GNU GPL v2+

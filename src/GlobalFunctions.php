@@ -2,7 +2,7 @@
 
 use SMW\CompatibilityMode;
 use SMW\NamespaceManager;
-use SMW\IntlNumberFormatter;
+use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Highlighter;
 

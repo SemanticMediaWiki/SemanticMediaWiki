@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\DataValues\Number;
 
 use Language;
-use SMW\IntlNumberFormatter;
+use SMW\DataValues\Number\IntlNumberFormatter;
 
 /**
- * @covers \SMW\IntlNumberFormatter
+ * @covers \SMW\DataValues\Number\IntlNumberFormatter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -19,12 +19,12 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\IntlNumberFormatter',
+			IntlNumberFormatter::class,
 			new IntlNumberFormatter( 10000 )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\IntlNumberFormatter',
+			IntlNumberFormatter::class,
 			IntlNumberFormatter::getInstance()
 		);
 	}
