@@ -133,9 +133,14 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @since 1.7
 	 *
-	 * @param $semanticData SemanticData object to copy from
+	 * @param SemanticData|null $semanticData
 	 */
-	public function copyDataFrom( SemanticData $semanticData ) {
+	public function copyDataFrom( SemanticData $semanticData = null ) {
+
+		if ( $semanticData === null ) {
+			return;
+		}		
+		
 		$this->mSubject = $semanticData->getSubject();
 		$this->mProperties = $semanticData->getProperties();
 		$this->mPropVals = array();
