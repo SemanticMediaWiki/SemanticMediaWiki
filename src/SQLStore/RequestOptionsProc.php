@@ -110,9 +110,13 @@ class RequestOptionsProc {
 					break;
 				}
 
-				$conditionOperator = $strcond->isDisjunctiveCondition ? ' OR ' : ' AND ';
+				$conditionOperator = $strcond->isOr ? ' OR ' : ' AND ';
 
-				$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? $conditionOperator : '' ) . "$labelCol $condition " . $connection->addQuotes( $string );
+				if ( $strcond->isNot ) {
+					$sqlConds = " ($sqlConds) AND ($labelCol NOT $condition ". $connection->addQuotes( $string ) . ") ";
+				} else {
+					$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? $conditionOperator : '' ) . "$labelCol $condition " . $connection->addQuotes( $string );
+				}
 			}
 		}
 

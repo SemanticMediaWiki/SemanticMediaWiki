@@ -182,6 +182,48 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 			' AND Foo >= 1 AND Bar = foo\_bar OR abd = 123'
 		);
 
+		# 6
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ, true, true );
+
+		$provider[] = array(
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' ( AND Foo >= 1) AND (Bar NOT = foo\_bar) '
+		);
+
+		# 7
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ, true );
+		$requestOptions->addStringCondition( 'foobar', StringCondition::COND_POST, true, true );
+
+		$provider[] = array(
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' ( AND Foo >= 1 OR Bar = foo\_bar) AND (Bar NOT LIKE %foobar) '
+		);
+
+		# 8
+		$requestOptions = new RequestOptions();
+		$requestOptions->boundary = true;
+
+		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ, true );
+		$requestOptions->addStringCondition( 'foobar', StringCondition::COND_POST, false, true );
+		$requestOptions->addStringCondition( 'foobar_ex', StringCondition::COND_EQ, false, true );
+
+		$provider[] = array(
+			$requestOptions,
+			'Foo',
+			'Bar',
+			' ( ( AND Foo >= 1 OR Bar = foo\_bar) AND (Bar NOT LIKE %foobar) ) AND (Bar NOT = foobar\_ex) '
+		);
+
 		return $provider;
 	}
 

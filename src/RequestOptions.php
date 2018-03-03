@@ -77,10 +77,11 @@ class RequestOptions {
 	 *
 	 * @param string $string to match
 	 * @param integer $condition one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
-	 * @param boolean $isDisjunctiveCondition
+	 * @param boolean $isOr
+	 * @param boolean $isNot
 	 */
-	public function addStringCondition( $string, $condition, $isDisjunctiveCondition = false ) {
-		$this->stringConditions[] = new StringCondition( $string, $condition, $isDisjunctiveCondition );
+	public function addStringCondition( $string, $condition, $isOr = false, $isNot = false ) {
+		$this->stringConditions[] = new StringCondition( $string, $condition, $isOr, $isNot );
 	}
 
 	/**
