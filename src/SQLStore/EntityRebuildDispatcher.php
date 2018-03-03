@@ -191,13 +191,13 @@ class EntityRebuildDispatcher {
 		// was nothing done in this run?
 		$emptyRange = true;
 
-		$this->createUpdateJobsForTitleIdRange( $id, $updateJobs );
+		$this->findUpdateJobsFromMWTable( $id, $updateJobs );
 
 		if ( $updateJobs !== array() ) {
 			$emptyRange = false;
 		}
 
-		$this->createUpdateJobsForSmwIdRange( $id, $updateJobs, $emptyRange );
+		$this->findUpdateJobsFromSMWTable( $id, $updateJobs, $emptyRange );
 
 		// Deprecated since 2.3, use 'SMW::SQLStore::BeforeDataRebuildJobInsert'
 		\Hooks::run('smwRefreshDataJobs', array( &$updateJobs ) );
@@ -213,7 +213,7 @@ class EntityRebuildDispatcher {
 		}
 
 		// -1 means that no next position is available
-		$this->findNextIdPosition( $id, $emptyRange );
+		$this->findNextPosition( $id, $emptyRange );
 
 		return $this->progress = $id > 0 ? $id / $this->getMaxId() : 1;
 	}
@@ -222,7 +222,7 @@ class EntityRebuildDispatcher {
 	 * @param integer $id
 	 * @param UpdateJob[] &$updateJobs
 	 */
-	private function createUpdateJobsForTitleIdRange( $id, &$updateJobs ) {
+	private function findUpdateJobsFromMWTable( $id, &$updateJobs ) {
 
 		// Update by MediaWiki page id --> make sure we get all pages.
 		$tids = array();
@@ -236,9 +236,7 @@ class EntityRebuildDispatcher {
 
 		foreach ( $titles as $title ) {
 
-			$hash = $title->getPrefixedDBKey() . '#' . $title->getNamespace();
-
-			if ( $this->lru->get( $hash ) !== null ) {
+			if ( $this->lru->get( $title->getDBKey() . '#' . $title->getNamespace() ) !== null ) {
 				continue;
 			}
 
@@ -246,7 +244,6 @@ class EntityRebuildDispatcher {
 				$updateJobs[] = $this->newUpdateJob( $title );
 			}
 
-			$this->lru->set( $hash, true );
 			$this->dispatchedEntities[] = array( 't' => $title->getPrefixedDBKey() );
 		}
 	}
@@ -256,7 +253,7 @@ class EntityRebuildDispatcher {
 	 * @param UpdateJob[] &$updateJobs
 	 * @param bool $emptyRange
 	 */
-	private function createUpdateJobsForSmwIdRange( $id, &$updateJobs, &$emptyRange ) {
+	private function findUpdateJobsFromSMWTable( $id, &$updateJobs, &$emptyRange ) {
 
 		// update by internal SMW id --> make sure we get all objects in SMW
 		$db = $this->store->getConnection( 'mw.db' );
@@ -267,11 +264,19 @@ class EntityRebuildDispatcher {
 
 		$res = $db->select(
 			\SMWSql3SmwIds::TABLE_NAME,
-			array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject', 'smw_sortkey', 'smw_proptable_hash' ),
-			array(
+			[
+				'smw_id',
+				'smw_title',
+				'smw_namespace',
+				'smw_iw',
+				'smw_subobject',
+				'smw_sortkey',
+				'smw_proptable_hash'
+			],
+			[
 				"smw_id >= $id ",
 				" smw_id < " . $db->addQuotes( $id + $this->iterationLimit )
-			),
+			],
 			__METHOD__
 		);
 
@@ -309,12 +314,8 @@ class EntityRebuildDispatcher {
 				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
 			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
 
-				$hash = $titleKey . '#' . $row->smw_namespace;
-
-				if ( $this->lru->get( $hash ) !== null ) {
+				if ( $this->lru->get( $titleKey . '#' . $row->smw_namespace ) !== null ) {
 					continue;
-				} else {
-					$this->lru->set( $hash, true );
 				}
 
 				// objects representing pages
@@ -327,12 +328,8 @@ class EntityRebuildDispatcher {
 
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $titleKey != '' ) {
 
-				$hash = $titleKey . '#' . $row->smw_namespace;
-
-				if ( $this->lru->get( $hash ) !== null ) {
+				if ( $this->lru->get( $titleKey . '#' . $row->smw_namespace ) !== null ) {
 					continue;
-				} else {
-					$this->lru->set( $hash, true );
 				}
 
 				// TODO: special treatment of redirects needed, since the store will
@@ -349,12 +346,8 @@ class EntityRebuildDispatcher {
 				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
 
-				$hash = $titleKey . '#' . $row->smw_namespace;
-
-				if ( $this->lru->get( $hash ) !== null ) {
+				if ( $this->lru->get( $titleKey . '#' . $row->smw_namespace ) !== null ) {
 					continue;
-				} else {
-					$this->lru->set( $hash, true );
 				}
 
 				$diWikiPage = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
@@ -364,7 +357,7 @@ class EntityRebuildDispatcher {
 			}
 
 			if ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
-				$this->markPossibleDuplicateProperties( $row );
+				$this->findDuplicateProperties( $row );
 			}
 		}
 
@@ -388,7 +381,7 @@ class EntityRebuildDispatcher {
 			$row->smw_proptable_hash === null;
 	}
 
-	private function markPossibleDuplicateProperties( $row ) {
+	private function findDuplicateProperties( $row ) {
 
 		$db = $this->store->getConnection( 'mw.db' );
 
@@ -396,15 +389,19 @@ class EntityRebuildDispatcher {
 		// to match possible duplicate properties by label (not by key)
 		$duplicates = $db->select(
 			\SMWSql3SmwIds::TABLE_NAME,
-			array( 'smw_id', 'smw_title' ),
-			array(
+			[
+				'smw_id',
+				'smw_title' ],
+			[
 				"smw_id !=" . $db->addQuotes( $row->smw_id ),
 				"smw_sortkey =" . $db->addQuotes( $row->smw_sortkey ),
 				"smw_namespace =" . $row->smw_namespace,
 				"smw_subobject =" . $db->addQuotes( $row->smw_subobject )
-			),
+			],
 			__METHOD__,
-			array( 'ORDER BY' => "smw_id ASC" )
+			[
+				'ORDER BY' => "smw_id ASC"
+			]
 		);
 
 		if ( $duplicates === false ) {
@@ -430,7 +427,7 @@ class EntityRebuildDispatcher {
 		}
 	}
 
-	private function findNextIdPosition( &$id, $emptyRange ) {
+	private function findNextPosition( &$id, $emptyRange ) {
 
 		$nextPosition = $id + $this->iterationLimit;
 		$db = $this->store->getConnection( 'mw.db' );
@@ -443,7 +440,9 @@ class EntityRebuildDispatcher {
 				'page_id',
 				"page_id >= $nextPosition",
 				__METHOD__,
-				array( 'ORDER BY' => "page_id ASC" )
+				[
+					'ORDER BY' => "page_id ASC"
+				]
 			);
 
 			$nextBySmwId = (int)$db->selectField(
@@ -451,7 +450,9 @@ class EntityRebuildDispatcher {
 				'smw_id',
 				"smw_id >= $nextPosition",
 				__METHOD__,
-				array( 'ORDER BY' => "smw_id ASC" )
+				[
+					'ORDER BY' => "smw_id ASC"
+				]
 			);
 
 			// Next position is determined by the pool with the maxId
@@ -462,7 +463,17 @@ class EntityRebuildDispatcher {
 	}
 
 	private function newUpdateJob( $title ) {
-		return $this->jobFactory->newUpdateJob( $title, array( 'pm' => $this->updateJobParseMode, 'origin' => 'EntityRebuildDispatcher' ) );
+
+		$hash = $title->getDBKey() . '#' . $title->getNamespace();
+		$this->lru->set( $hash, true );
+
+		return $this->jobFactory->newUpdateJob(
+			$title,
+			[
+				'pm' => $this->updateJobParseMode,
+				'origin' => 'EntityRebuildDispatcher'
+			]
+		);
 	}
 
 }
