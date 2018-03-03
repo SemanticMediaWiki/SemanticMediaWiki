@@ -11,6 +11,7 @@ use SMW\ApplicationFactory;
 use SMW\Options;
 use SMW\Store;
 use Title;
+use Exception;
 
 /**
  * Is part of the `rebuildData.php` maintenance script to rebuild existing data
@@ -56,14 +57,14 @@ class DataRebuilder {
 	private $exceptionFileLogger;
 
 	/**
-	 * @var array
+	 * @var integer
 	 */
-	private $exceptionLog = array();
+	private $rebuildCount = 0;
 
 	/**
 	 * @var integer
 	 */
-	private $rebuildCount = 0;
+	private $exceptionCount = 0;
 
 	private $delay = false;
 	private $canWriteToIdFile = false;
@@ -162,7 +163,7 @@ class DataRebuilder {
 		}
 
 		if ( $this->options->has( 'page' ) || $this->options->has( 'query' ) || $this->hasFilters() || $this->options->has( 'redirects' ) ) {
-			return $this->doRebuildDistinctEntities();
+			return $this->callDistinctEntityRebuilder();
 		}
 
 		return $this->doRebuildAll();
@@ -181,7 +182,16 @@ class DataRebuilder {
 		return $this->rebuildCount;
 	}
 
-	private function doRebuildDistinctEntities() {
+	/**
+	 * @since 3.0
+	 *
+	 * @return int
+	 */
+	public function getExceptionCount() {
+		return $this->exceptionCount;
+	}
+
+	private function callDistinctEntityRebuilder() {
 
 		$this->distinctEntityDataRebuilder->setOptions(
 			$this->options
@@ -191,19 +201,24 @@ class DataRebuilder {
 			$this->reporter
 		);
 
+		$this->distinctEntityDataRebuilder->setExceptionFileLogger(
+			$this->exceptionFileLogger
+		);
+
 		$this->distinctEntityDataRebuilder->doRebuild();
 
 		$this->rebuildCount = $this->distinctEntityDataRebuilder->getRebuildCount();
 
-		$this->exceptionFileLogger->doWriteExceptionLog(
-			$this->distinctEntityDataRebuilder->getExceptionLog()
-		);
+		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCount() > 0 ) {
+			$count = $this->exceptionFileLogger->getExceptionCount();
+			$this->exceptionFileLogger->doWrite();
 
-		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCounter() > 0 ) {
-			$this->reportMessage( "\n" .
-				$this->exceptionFileLogger->getExceptionCounter() . " exceptions were ignored! (See " .
-				$this->exceptionFileLogger->getExceptionFile() . ").\n"
-			);
+			$file = '...' . substr( $this->exceptionFileLogger->getExceptionFile(), -50 );
+
+			$this->reportMessage( "\nException log ..." );
+			$this->reportMessage( "\n   ... counted $count exceptions (see $file)"	);
+			$this->reportMessage( "\n   ... done.\n" );
+			$this->exceptionCount += $count;
 		}
 
 		return true;
@@ -227,94 +242,98 @@ class DataRebuilder {
 
 		if ( !$this->options->has( 'skip-properties' ) ) {
 			$this->options->set( 'p', true );
-			$this->doRebuildDistinctEntities();
+			$this->callDistinctEntityRebuilder();
 			$this->reportMessage( "\n" );
 		}
 
 		$this->store->clear();
 
-		$this->reportMessage( "Refreshing all semantic data in the database!\n---\n" .
-			" Some versions of PHP suffer from memory leaks in long-running \n" .
-			" scripts. If your machine gets very slow after many pages \n" .
-			" (typically more than 1000) were refreshed, please abort with\n" .
-			" CTRL-C and resume this script at the last processed page id\n" .
-			" using the parameter -s (use -v to display page ids during \n" .
-			" refresh). Continue this until all pages have been refreshed.\n---\n"
+		$this->reportMessage(
+			"Refreshing all semantic data in the database!\n"
+		);
+
+		$this->reportMessage(
+			"\nSome versions of PHP suffer from memory leaks in long-running \n" .
+			"scripts. If your machine gets very slow after many pages \n" .
+			"(typically more than 1000) were refreshed, please abort with\n" .
+			"CTRL-C and resume this script at the last processed page id\n" .
+			"using the parameter -s (use -v to display page ids during \n" .
+			"refresh). Continue this until all pages have been refreshed.\n"
 		);
 
 		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $entityRebuildDispatcher->getMaxId();
 		$id = $this->start;
 
 		$this->reportMessage(
-			" The progress displayed is an estimation and is self-adjusting \n" .
-			" during the update process.\n---\n" );
+			"\nThe progress displayed is an estimation and is self-adjusting \n" .
+			"during the update process.\n" );
 
 		$this->reportMessage(
-			"Processing all IDs from $this->start to " .
+			"\nProcessing IDs from $this->start to " .
 			( $this->end ? "$this->end" : $entityRebuildDispatcher->getMaxId() ) . " ...\n"
 		);
 
 		$this->rebuildCount = 0;
+		$progress = 0;
+		$estimatedProgress = 0;
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
-			$progress = '';
 			$dispatchedId = $id;
-
-			$this->rebuildCount++;
-			$this->exceptionLog = array();
-
-			$this->doExecuteFor( $entityRebuildDispatcher, $id );
+			$this->doUpdate( $entityRebuildDispatcher, $id );
 
 			if ( $this->rebuildCount % 60 === 0 ) {
-				$progress = round( ( $this->end - $this->start > 0 ? $this->rebuildCount / $total : $entityRebuildDispatcher->getEstimatedProgress() ) * 100 ) . "%";
+				$estimatedProgress = $entityRebuildDispatcher->getEstimatedProgress();
 			}
+
+			$progress = round( ( $this->end - $this->start > 0 ? $this->rebuildCount / $total : $estimatedProgress ) * 100 );
 
 			foreach ( $entityRebuildDispatcher->getDispatchedEntities() as $value ) {
 
 				$text = $this->getHumanReadableTextFrom( $dispatchedId, $value );
 
 				$this->reportMessage(
-					sprintf( "%-16s%s\n", "($this->rebuildCount/$total)", "Finished processing ID " . $text ),
+					sprintf( "%-16s%s\n", "   ... updating", sprintf( "%-10s%s", $text[0], $text[1] ) ),
 					$this->options->has( 'v' )
 				);
-
-				if ( $this->options->has( 'ignore-exceptions' ) && isset( $this->exceptionLog[$dispatchedId] ) ) {
-					$this->exceptionFileLogger->doWriteExceptionLog(
-						array( $dispatchedId . ' ' . $text => $this->exceptionLog[$dispatchedId] )
-					);
-				}
 			}
 
-			$this->doPrintDotProgressIndicator( $this->verbose, $this->rebuildCount, $progress );
+			if ( !$this->options->has( 'v' ) && $id > 0 ) {
+				$this->reportMessage(
+					"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $id, $progress ) )
+				);
+			}
 		}
 
 		$this->writeIdToFile( $id );
-		$this->reportMessage( "\n\n$this->rebuildCount IDs refreshed.\n" );
 
-		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCounter() > 0 ) {
-			$this->reportMessage( "\n" .
-				$this->exceptionFileLogger->getExceptionCounter() . " exceptions were ignored! (See " .
-				$this->exceptionFileLogger->getExceptionFile() . ").\n"
-			);
+		$this->reportMessage( "\n   ... $this->rebuildCount IDs refreshed ..." );
+		$this->reportMessage( "\n   ... done.\n" );
+
+		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCount() > 0 ) {
+			$this->exceptionCount += $this->exceptionFileLogger->getExceptionCount();
+			$this->exceptionFileLogger->doWrite();
+
+			$file = '...' . substr( $this->exceptionFileLogger->getExceptionFile(), -50 );
+
+			$this->reportMessage( "\nException log ..." );
+			$this->reportMessage( "\n   ... counted $this->exceptionCount exceptions (see $file)"	);
+			$this->reportMessage( "\n   ... done.\n" );
 		}
 
 		return true;
 	}
 
-	private function doExecuteFor( $entityRebuildDispatcher, &$id ) {
+	private function doUpdate( $entityRebuildDispatcher, &$id ) {
 
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
-			$entityRebuildDispatcher->startRebuildWith( $id );
+			$entityRebuildDispatcher->rebuild( $id );
 		} else {
 
 			try {
-				$entityRebuildDispatcher->startRebuildWith( $id );
-			} catch ( \Exception $e ) {
-				$this->exceptionLog[$id] = array(
-					'msg'   => $e->getMessage(),
-					'trace' => $e->getTraceAsString()
-				);
+				$entityRebuildDispatcher->rebuild( $id );
+			} catch ( Exception $e ) {
+				$this->exceptionFileLogger->recordException( $id, $e );
 			}
 		}
 
@@ -325,52 +344,65 @@ class DataRebuilder {
 		if ( $this->rebuildCount % 100 === 0 ) { // every 100 pages only
 			LinkCache::singleton()->clear(); // avoid memory leaks
 		}
+
+		$this->rebuildCount++;
 	}
 
 	private function getHumanReadableTextFrom( $id, array $entities ) {
 
 		if ( !$this->options->has( 'v' ) ) {
-			return '';
+			return [ '', ''];
 		}
 
 		// Indicates whether this is a MW page (*) or SMW's object table
-		$text = $id . ( isset( $entities['t'] ) ? '*' : '' );
+		$text = $id . ( isset( $entities['t'] ) ? '*' : ' ' );
 
 		$entity = end( $entities );
 
 		if ( $entity instanceof \Title ) {
-			return $text . ' (' . $entity->getPrefixedDBKey() .')';
+			return [ $text, '[' . $entity->getPrefixedDBKey() .']' ];
 		}
 
 		if ( $entity instanceof DIWikiPage ) {
-			return $text . ' (' . $entity->getHash() .')';
+			return [ $text, '[' . $entity->getHash() .']' ];
 		}
 
-		return $text . ' (' . ( is_string( $entity ) && $entity !== '' ? $entity : 'N/A' ) . ')';
+		return [ $text, '[' . ( is_string( $entity ) && $entity !== '' ? $entity : 'N/A' ) . ']' ];
 	}
 
 	private function performFullDelete() {
 
-		$this->reportMessage( "Deleting all stored data completely and rebuilding it again later!\n---\n" .
-			" Semantic data in the wiki might be incomplete for some time while this operation runs.\n\n" .
-			" NOTE: It is usually necessary to run this script ONE MORE TIME after this operation,\n" .
-			" since some properties' types are not stored yet in the first run.\n---\n"
+		$this->reportMessage(
+			"Deleting all stored data completely and rebuilding it again later!\n\n" .
+			"Semantic data in the wiki might be incomplete for some time while\n".
+			"this operation runs.\n\n" .
+			"NOTE: It is usually necessary to run this script ONE MORE TIME\n".
+			"after this operation,since some properties' types are not stored\n" .
+			"yet in the first run.\n\n"
 		);
 
 		if ( $this->options->has( 's' ) || $this->options->has( 'e' ) ) {
-			$this->reportMessage( " WARNING: -s or -e are used, so some pages will not be refreshed at all!\n" .
-				" Data for those pages will only be available again when they have been\n" .
-				" refreshed as well!\n\n"
+			$this->reportMessage(
+				"WARNING: -s or -e are used, so some pages will not be refreshed at all!\n" .
+				"Data for those pages will only be available again when they have been\n" .
+				"refreshed as well!\n\n"
 			);
 		}
 
 		$obLevel = ob_get_level();
 
-		$this->reportMessage( ' Abort with control-c in the next five seconds ...  ' );
+		$this->reportMessage( 'Abort with control-c in the next five seconds ...  ' );
 		wfCountDown( 6 );
 
+		$this->reportMessage( "\nDeleting all data ..." );
+
+		$this->reportMessage( "\n   ... dropping tables ..." );
 		$this->store->drop( $this->verbose );
+
+		$this->reportMessage( "\n   ... creating tables ..." );
 		$this->store->setupStore( $this->verbose );
+
+		$this->reportMessage( "\n   ... done.\n" );
 
 		// Be sure to have some buffer, otherwise some PHPs complain
 		while ( ob_get_level() > $obLevel ) {
@@ -397,7 +429,7 @@ class DataRebuilder {
 			return;
 		}
 
-		$this->reportMessage( "Removing table entries (marked as outdated or deleted).\n" );
+		$this->reportMessage( "Removing outdated entities ...\n" );
 
 		$chunkedIterator = $applicationFactory->getIteratorFactory()->newChunkedIterator(
 			$outdatedEntitiesResultIterator,
@@ -407,12 +439,17 @@ class DataRebuilder {
 		foreach ( $chunkedIterator as $chunk ) {
 			foreach ( $chunk as $row ) {
 				$counter++;
-				$this->doPrintDotProgressIndicator( false, $counter, round( $counter / $matchesCount * 100 ) . ' %' );
+
+				$this->reportMessage(
+					"\r". sprintf( "%-50s%s", "   ... cleaning up document no.", sprintf( "%s (%1.0f%%)", $row->smw_id, round( $counter / $matchesCount * 100 ) ) )
+				);
+
 				$entityIdDisposerJob->dispose( $row );
 			}
 		}
 
-		$this->reportMessage( "\n\n{$matchesCount} IDs removed.\n\n" );
+		$this->reportMessage( "\n   ... {$matchesCount} IDs removed ..." );
+		$this->reportMessage( "\n   ... done.\n\n" );
 	}
 
 	private function idFileIsWritable( $startIdFile ) {
