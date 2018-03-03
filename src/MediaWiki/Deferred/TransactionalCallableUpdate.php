@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Updater;
+namespace SMW\MediaWiki\Deferred;
 
 use Closure;
 use SMW\MediaWiki\Database;
@@ -15,7 +15,7 @@ use SMW\MediaWiki\Database;
  *
  * @author mwjames
  */
-class DeferredTransactionalUpdate extends DeferredCallableUpdate {
+class TransactionalCallableUpdate extends CallableUpdate {
 
 	/**
 	 * @var Database|null
@@ -126,21 +126,21 @@ class DeferredTransactionalUpdate extends DeferredCallableUpdate {
 
 		if ( $this->onTransactionIdle ) {
 			return $this->connection->onTransactionIdle( function() {
-				$this->logger->info( '[DeferredTransactionalUpdate] Update: {origin} (onTransactionIdle)', $context );
+				$this->logger->info( '[TransactionalCallableUpdate] Update: {origin} (onTransactionIdle)', $context );
 				$this->onTransactionIdle = false;
 				$this->doUpdate();
 			} );
 		}
 
 		foreach ( $this->preCommitableCallbacks as $fname => $preCallback ) {
-			$this->logger->info( '[DeferredTransactionalUpdate] Update: {origin} (pre-commitable callback: {fname})', $context + [ 'fname' => $fname ] );
+			$this->logger->info( '[TransactionalCallableUpdate] Update: {origin} (pre-commitable callback: {fname})', $context + [ 'fname' => $fname ] );
 			call_user_func( $preCallback, $this->transactionTicket );
 		}
 
 		parent::doUpdate();
 
 		foreach ( $this->postCommitableCallbacks as $fname => $postCallback ) {
-			$this->logger->info( '[DeferredTransactionalUpdate] Update: {origin} (post-commitable callback: {fname})', $context + [ 'fname' => $fname ] );
+			$this->logger->info( '[TransactionalCallableUpdate] Update: {origin} (post-commitable callback: {fname})', $context + [ 'fname' => $fname ] );
 			call_user_func( $postCallback, $this->transactionTicket );
 		}
 
@@ -156,7 +156,7 @@ class DeferredTransactionalUpdate extends DeferredCallableUpdate {
 		];
 
 		if ( $this->onTransactionIdle ) {
-			$this->logger->info( '[DeferredTransactionalUpdate] Added: {origin} (onTransactionIdle)', $context );
+			$this->logger->info( '[TransactionalCallableUpdate] Added: {origin} (onTransactionIdle)', $context );
 			return $this->connection->onTransactionIdle( function() use( $update ) {
 				$update->onTransactionIdle = false;
 				parent::addUpdate( $update );

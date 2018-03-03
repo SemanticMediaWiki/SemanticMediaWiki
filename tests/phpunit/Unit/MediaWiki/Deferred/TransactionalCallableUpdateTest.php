@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Updater;
+namespace SMW\Tests\MediaWiki\Deferred;
 
-use SMW\Updater\DeferredTransactionalUpdate;
+use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Updater\DeferredTransactionalUpdate
+ * @covers \SMW\MediaWiki\Deferred\TransactionalCallableUpdate
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
+class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $spyLogger;
@@ -43,8 +43,8 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 		};
 
 		$this->assertInstanceOf(
-			DeferredTransactionalUpdate::class,
-			new DeferredTransactionalUpdate( $callback, $this->connection )
+			TransactionalCallableUpdate::class,
+			new TransactionalCallableUpdate( $callback, $this->connection )
 		);
 	}
 
@@ -62,7 +62,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			$callback,
 			$this->connection
 		);
@@ -75,7 +75,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateOnEmptyCallback() {
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			null,
 			$this->connection
 		);
@@ -93,7 +93,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateOnLateCallback() {
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			null,
 			$this->connection
 		);
@@ -118,7 +118,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->assertContains(
-			'[DeferrableUpdate] Added',
+			'[CallableUpdate] Added',
 			$this->spyLogger->getMessagesAsString()
 		);
 	}
@@ -137,7 +137,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			$callback,
 			$this->connection
 		);
@@ -166,7 +166,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			$callback,
 			$this->connection
 		);
@@ -182,7 +182,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 		$callback = function() {
 		};
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			$callback,
 			$this->connection
 		);
@@ -211,7 +211,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			$callback,
 			$this->connection
 		);
@@ -222,7 +222,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 		$instance->markAsPending( true );
 		$instance->pushUpdate();
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			$callback,
 			$this->connection
 		);
@@ -264,7 +264,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			$callback,
 			$connection
 		);
@@ -300,7 +300,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			$callback,
 			$connection
 		);
@@ -337,7 +337,7 @@ class DeferredTransactionalUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredTransactionalUpdate(
+		$instance = new TransactionalCallableUpdate(
 			$callback,
 			$connection
 		);

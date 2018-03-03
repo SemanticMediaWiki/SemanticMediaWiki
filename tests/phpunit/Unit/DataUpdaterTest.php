@@ -5,11 +5,11 @@ namespace SMW\Tests\Updater;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\Updater\StoreUpdater;
+use SMW\DataUpdater;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Updater\StoreUpdater
+ * @covers \SMW\DataUpdater
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -17,9 +17,10 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
+class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $transactionalCallableUpdate;
 	private $semanticDataFactory;
 	private $spyLogger;
 	private $store;
@@ -51,6 +52,13 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$this->store->setLogger( $this->spyLogger );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
+
+		$this->transactionalCallableUpdate = $this->getMockBuilder( '\SMW\MediaWiki\Deferred\TransactionalCallableUpdate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'DeferredTransactionalCallableUpdate', $this->transactionalCallableUpdate );
+
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 	}
 
@@ -66,8 +74,8 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			StoreUpdater::class,
-			new StoreUpdater( $this->store, $semanticData )
+			DataUpdater::class,
+			new DataUpdater( $this->store, $semanticData )
 		);
 	}
 
@@ -75,7 +83,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
-		$instance = new StoreUpdater(
+		$instance = new DataUpdater(
 			$this->store,
 			$semanticData
 		);
@@ -83,6 +91,22 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(
 			$instance->doUpdate()
 		);
+	}
+
+	public function testDeferredUpdate() {
+
+		$this->transactionalCallableUpdate->expects( $this->once() )
+			->method( 'pushUpdate' );
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
+		$instance = new DataUpdater(
+			$this->store,
+			$semanticData
+		);
+
+		$instance->isDeferrableUpdate( true );
+		$instance->doUpdate();
 	}
 
 	/**
@@ -122,7 +146,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
-		$instance = new StoreUpdater(
+		$instance = new DataUpdater(
 			$store,
 			$semanticData
 		);
@@ -178,7 +202,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
-		$instance = new StoreUpdater(
+		$instance = new DataUpdater(
 			$store,
 			$semanticData
 		);
@@ -202,7 +226,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = $this->semanticDataFactory->setSubject( $wikiPage )->newEmptySemanticData();
 
-		$instance = new StoreUpdater(
+		$instance = new DataUpdater(
 			$this->store,
 			$semanticData
 		);
@@ -223,7 +247,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = $this->semanticDataFactory->setSubject( $wikiPage )->newEmptySemanticData();
 
-		$instance = new StoreUpdater(
+		$instance = new DataUpdater(
 			$this->store,
 			$semanticData
 		);
@@ -290,7 +314,7 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$target
 		);
 
-		$instance = new StoreUpdater(
+		$instance = new DataUpdater(
 			$store,
 			$semanticData
 		);

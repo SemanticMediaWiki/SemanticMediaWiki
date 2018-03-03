@@ -217,7 +217,7 @@ class BufferedStatsdCollector {
 		// environment therefore rely on the deferred update and any caller
 		// that invokes the recordStats method
 
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate(
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
 			function() { $this->saveStats();
 			}
 		);

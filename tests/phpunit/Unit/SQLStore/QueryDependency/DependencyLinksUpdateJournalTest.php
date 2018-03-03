@@ -19,7 +19,7 @@ use Title;
 class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 	private $cache;
-	private $deferredCallableUpdate;
+	private $callableUpdate;
 
 	protected function setUp() {
 		parent::setUp();
@@ -28,7 +28,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->deferredCallableUpdate = $this->getMockBuilder( '\SMW\Updater\DeferredCallableUpdate' )
+		$this->callableUpdate = $this->getMockBuilder( '\SMW\MediaWiki\Deferred\CallableUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -45,7 +45,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			DependencyLinksUpdateJournal::class,
-			new DependencyLinksUpdateJournal( $this->cache, $this->deferredCallableUpdate )
+			new DependencyLinksUpdateJournal( $this->cache, $this->callableUpdate )
 		);
 	}
 
@@ -57,7 +57,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksUpdateJournal(
 			$this->cache,
-			$this->deferredCallableUpdate
+			$this->callableUpdate
 		);
 
 		$hashList = [
@@ -75,7 +75,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksUpdateJournal(
 			$this->cache,
-			$this->deferredCallableUpdate
+			$this->callableUpdate
 		);
 
 		$instance->update( DIWikiPage::newFromText( 'Foo' ) );
@@ -89,7 +89,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksUpdateJournal(
 			$this->cache,
-			$this->deferredCallableUpdate
+			$this->callableUpdate
 		);
 
 		$instance->update( Title::newFromText( 'Foo' ) );
@@ -104,7 +104,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksUpdateJournal(
 			$this->cache,
-			$this->deferredCallableUpdate
+			$this->callableUpdate
 		);
 
 		$this->assertTrue(
@@ -121,7 +121,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksUpdateJournal(
 			$this->cache,
-			$this->deferredCallableUpdate
+			$this->callableUpdate
 		);
 
 		$this->assertTrue(
@@ -138,7 +138,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksUpdateJournal(
 			$this->cache,
-			$this->deferredCallableUpdate
+			$this->callableUpdate
 		);
 
 		$this->assertTrue(
@@ -152,7 +152,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->with( $this->stringContains( 'smw:update:qdep:7ab9f795d4ce7c20051947ede72baec3' ) );
 
-		$this->deferredCallableUpdate->expects( $this->once() )
+		$this->callableUpdate->expects( $this->once() )
 			->method( 'setCallback' )
 			->will( $this->returnCallback( function( $callback ) {
 				return call_user_func( $callback );
@@ -160,7 +160,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksUpdateJournal(
 			$this->cache,
-			$this->deferredCallableUpdate
+			$this->callableUpdate
 		);
 
 		$instance->delete( DIWikiPage::newFromText( 'Foo' ) );
@@ -172,7 +172,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->with( $this->stringContains( 'smw:update:qdep:7ab9f795d4ce7c20051947ede72baec3' ) );
 
-		$this->deferredCallableUpdate->expects( $this->once() )
+		$this->callableUpdate->expects( $this->once() )
 			->method( 'setCallback' )
 			->will( $this->returnCallback( function( $callback ) {
 				return call_user_func( $callback );
@@ -180,7 +180,7 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DependencyLinksUpdateJournal(
 			$this->cache,
-			$this->deferredCallableUpdate
+			$this->callableUpdate
 		);
 
 		$instance->delete( Title::newFromText( 'Foo' ) );

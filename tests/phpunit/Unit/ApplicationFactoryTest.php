@@ -153,15 +153,15 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructStoreUpdater() {
+	public function testCanConstructDataUpdater() {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Updater\StoreUpdater',
-			$this->applicationFactory->newStoreUpdater( $semanticData )
+			'\SMW\DataUpdater',
+			$this->applicationFactory->newDataUpdater( $semanticData )
 		);
 	}
 
@@ -252,16 +252,16 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		};
 
 		$this->assertInstanceOf(
-			'\SMW\Updater\DeferredCallableUpdate',
+			'\SMW\MediaWiki\Deferred\CallableUpdate',
 			$this->applicationFactory->newDeferredCallableUpdate( $callback )
 		);
 	}
 
-	public function testCanConstructDeferredTransactionalUpdate() {
+	public function testCanConstructDeferredTransactionalCallableUpdate() {
 
 		$this->assertInstanceOf(
-			'\SMW\Updater\DeferredTransactionalUpdate',
-			$this->applicationFactory->newDeferredTransactionalUpdate( null )
+			'\SMW\MediaWiki\Deferred\TransactionalCallableUpdate',
+			$this->applicationFactory->newDeferredTransactionalCallableUpdate( null )
 		);
 	}
 

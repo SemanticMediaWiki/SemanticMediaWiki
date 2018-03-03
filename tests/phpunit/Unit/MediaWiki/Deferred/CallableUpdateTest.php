@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Updater;
+namespace SMW\Tests\MediaWiki\Deferred;
 
-use SMW\Updater\DeferredCallableUpdate;
+use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Updater\DeferredCallableUpdate
+ * @covers \SMW\MediaWiki\Deferred\CallableUpdate
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
+class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $spyLogger;
@@ -38,8 +38,8 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		};
 
 		$this->assertInstanceOf(
-			DeferredCallableUpdate::class,
-			new DeferredCallableUpdate( $callback )
+			CallableUpdate::class,
+			new CallableUpdate( $callback )
 		);
 	}
 
@@ -57,7 +57,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredCallableUpdate(
+		$instance = new CallableUpdate(
 			$callback
 		);
 
@@ -69,7 +69,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateOnEmptyCallback() {
 
-		$instance = new DeferredCallableUpdate();
+		$instance = new CallableUpdate();
 
 		$instance->setLogger( $this->spyLogger );
 		$instance->pushUpdate();
@@ -84,7 +84,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateOnLateCallback() {
 
-		$instance = new DeferredCallableUpdate();
+		$instance = new CallableUpdate();
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -106,7 +106,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->assertContains(
-			'[DeferrableUpdate] Added',
+			'[CallableUpdate] Added',
 			$this->spyLogger->getMessagesAsString()
 		);
 	}
@@ -125,7 +125,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredCallableUpdate(
+		$instance = new CallableUpdate(
 			$callback
 		);
 
@@ -153,7 +153,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredCallableUpdate(
+		$instance = new CallableUpdate(
 			$callback
 		);
 
@@ -168,7 +168,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$callback = function() {
 		};
 
-		$instance = new DeferredCallableUpdate(
+		$instance = new CallableUpdate(
 			$callback
 		);
 
@@ -194,7 +194,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 			$test->doTest();
 		};
 
-		$instance = new DeferredCallableUpdate(
+		$instance = new CallableUpdate(
 			$callback
 		);
 
@@ -204,7 +204,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$instance->markAsPending( true );
 		$instance->pushUpdate();
 
-		$instance = new DeferredCallableUpdate(
+		$instance = new CallableUpdate(
 			$callback
 		);
 
@@ -219,7 +219,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testStage() {
 
-		$instance = new DeferredCallableUpdate();
+		$instance = new CallableUpdate();
 
 		$this->assertEquals(
 			'post',

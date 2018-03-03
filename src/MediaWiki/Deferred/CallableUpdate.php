@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Updater;
+namespace SMW\MediaWiki\Deferred;
 
 use Closure;
 use DeferrableUpdate;
@@ -15,7 +15,7 @@ use SMW\MediaWiki\Database;
  * @license GNU GPL v2+
  * @since 2.4
  */
-class DeferredCallableUpdate implements DeferrableUpdate {
+class CallableUpdate implements DeferrableUpdate {
 
 	use LoggerAwareTrait;
 
@@ -233,7 +233,7 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 			'fingerprint' => $this->fingerprint
 		];
 
-		$this->logger->info( '[DeferrableUpdate] Update completed: {origin} (fingerprint:{fingerprint})', $context );
+		$this->logger->info( '[CallableUpdate] Update completed: {origin} (fingerprint:{fingerprint})', $context );
 	}
 
 	/**
@@ -249,14 +249,14 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 		];
 
 		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
-			$this->logger->info( '[DeferrableUpdate] Push: {origin} (fingerprint: {fingerprint} is already listed, skip)', $context );
+			$this->logger->info( '[CallableUpdate] Push: {origin} (fingerprint: {fingerprint} is already listed, skip)', $context );
 			return;
 		}
 
 		self::$queueList[$this->fingerprint] = true;
 
 		if ( $this->isPending && $this->isDeferrableUpdate ) {
-			$this->logger->info( '[DeferrableUpdate] Push: {origin} (as pending DeferredCallableUpdate)', $context );
+			$this->logger->info( '[CallableUpdate] Push: {origin} (as pending DeferredCallableUpdate)', $context );
 			return self::$pendingUpdates[] = $this;
 		}
 
@@ -277,7 +277,7 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 			)
 		];
 
-		$this->logger->info( '[DeferrableUpdate] Added: {ctx}', $context );
+		$this->logger->info( '[CallableUpdate] Added: {ctx}', $context );
 		$stage = null;
 
 		if ( $update->getStage() === self::STAGE_POSTSEND && defined( 'DeferredUpdates::POSTSEND' ) ) {
@@ -300,7 +300,7 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	}
 
 	private function emptyCallback() {
-		$this->logger->info( '[DeferrableUpdate] Empty callback!', [ 'role' => 'developer', 'method' => __METHOD__ ] );
+		$this->logger->info( '[CallableUpdate] Empty callback!', [ 'role' => 'developer', 'method' => __METHOD__ ] );
 	}
 
 }

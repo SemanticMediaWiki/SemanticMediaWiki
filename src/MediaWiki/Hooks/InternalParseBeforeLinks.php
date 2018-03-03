@@ -134,7 +134,7 @@ class InternalParseBeforeLinks extends HookHandler {
 
 		$inTextAnnotationParser->parse( $text );
 
-		$parserData->setSemanticDataStateToParserOutputProperty();
+		$parserData->markParserOutput();
 
 		return true;
 	}

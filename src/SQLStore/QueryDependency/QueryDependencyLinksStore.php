@@ -361,7 +361,7 @@ class QueryDependencyLinksStore {
 			$this->doUpdate( $queryResult, $subject, $sid, $hash );
 		};
 
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate(
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
 			$callback
 		);
 

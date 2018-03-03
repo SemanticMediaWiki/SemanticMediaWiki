@@ -119,7 +119,7 @@ class ChangePropListener {
 			}
 		};
 
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate(
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
 			$callback
 		);
 

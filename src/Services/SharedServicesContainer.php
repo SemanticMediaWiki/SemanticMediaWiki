@@ -28,8 +28,8 @@ use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
 use SMW\ParserData;
 use SMW\ContentParser;
-use SMW\Updater\DeferredCallableUpdate;
-use SMW\Updater\DeferredTransactionalUpdate;
+use SMW\MediaWiki\Deferred\CallableUpdate;
+use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\InMemoryPoolCache;
 use SMW\PropertyAnnotatorFactory;
 use SMW\CacheFactory;
@@ -111,8 +111,15 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'ParserData', function( $containerBuilder, \Title $title, \ParserOutput $parserOutput ) {
-			$containerBuilder->registerExpectedReturnType( 'ParserData', '\SMW\ParserData' );
-			return new ParserData( $title, $parserOutput );
+			$containerBuilder->registerExpectedReturnType( 'ParserData', ParserData::class );
+
+			$parserData = new ParserData( $title, $parserOutput );
+
+			$parserData->setLogger(
+				$containerBuilder->singleton( 'MediaWikiLogger' )
+			);
+
+			return $parserData;
 		} );
 
 		$containerBuilder->registerCallback( 'LinksProcessor', function( $containerBuilder ) {
@@ -135,9 +142,9 @@ class SharedServicesContainer implements CallbackContainer {
 			return new PageCreator();
 		} );
 
-		$containerBuilder->registerCallback( 'PageUpdater', function( $containerBuilder, $connection, DeferredTransactionalUpdate $deferredTransactionalUpdate = null ) {
+		$containerBuilder->registerCallback( 'PageUpdater', function( $containerBuilder, $connection, TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
 			$containerBuilder->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
-			return new PageUpdater( $connection, $deferredTransactionalUpdate );
+			return new PageUpdater( $connection, $transactionalCallableUpdate );
 		} );
 
 		/**
@@ -173,13 +180,17 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'DeferredCallableUpdate', function( $containerBuilder, \Closure $callback = null ) {
-			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\Updater\DeferredCallableUpdate' );
-			return new DeferredCallableUpdate( $callback );
+			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\MediaWiki\Deferred\CallableUpdate' );
+			$containerBuilder->registerAlias( 'CallableUpdate', CallableUpdate::class );
+
+			return new CallableUpdate( $callback );
 		} );
 
-		$containerBuilder->registerCallback( 'DeferredTransactionalUpdate', function( $containerBuilder, \Closure $callback = null, Database $connection = null ) {
-			$containerBuilder->registerExpectedReturnType( 'DeferredTransactionalUpdate', '\SMW\Updater\DeferredTransactionalUpdate' );
-			return new DeferredTransactionalUpdate( $callback, $connection );
+		$containerBuilder->registerCallback( 'DeferredTransactionalCallableUpdate', function( $containerBuilder, \Closure $callback = null, Database $connection = null ) {
+			$containerBuilder->registerExpectedReturnType( 'DeferredTransactionalUpdate', '\SMW\MediaWiki\Deferred\TransactionalCallableUpdate' );
+			$containerBuilder->registerAlias( 'DeferredTransactionalUpdate', TransactionalCallableUpdate::class );
+
+			return new TransactionalCallableUpdate( $callback, $connection );
 		} );
 
 		/**

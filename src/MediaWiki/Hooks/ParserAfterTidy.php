@@ -6,6 +6,7 @@ use Parser;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
 use SMW\MediaWiki\MediaWiki;
+use SMW\ParserData;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -103,15 +104,14 @@ class ParserAfterTidy extends HookHandler {
 		if ( $title->getNamespace() === SMW_NS_RULE ) {
 			return true;
 		}
-		
+
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
 		if ( $title->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
 			return false;
 		}
 
-		// @see ParserData::setSemanticDataStateToParserOutputProperty
-		if ( $this->parser->getOutput()->getProperty( 'smw-semanticdata-status' ) ||
+		if ( ParserData::hasSemanticData( $this->parser->getOutput() ) ||
 			$this->parser->getOutput()->getProperty( 'displaytitle' ) ||
 			$title->isProtected( 'edit' ) ||
 			$this->parser->getOutput()->getCategoryLinks() ||
@@ -131,17 +131,25 @@ class ParserAfterTidy extends HookHandler {
 			$this->parser->getOutput()
 		);
 
-		$this->updateAnnotationsOnAfterParse(
+		$semanticData = $parserData->getSemanticData();
+
+		$this->addPropertyAnnotations(
 			$applicationFactory->singleton( 'PropertyAnnotatorFactory' ),
-			$parserData->getSemanticData()
+			$semanticData
 		);
 
-		$parserData->pushSemanticDataToParserOutput();
+		$parserData->copyToParserOutput();
+		$subject = $semanticData->getSubject();
 
-		$this->checkOnPurgeRequest( $parserData );
+		// Only carry out a purge where the InTextAnnotationParser have set
+		// an appropriate context reference otherwise it is assumed that the hook
+		// call is part of another non SMW related parse
+		if ( $subject->getContextReference() !== null || $subject->getNamespace() === SMW_NS_RULE ) {
+			$this->checkPurgeRequest( $parserData );
+		}
 	}
 
-	private function updateAnnotationsOnAfterParse( $propertyAnnotatorFactory, $semanticData ) {
+	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ) {
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$semanticData
@@ -189,14 +197,7 @@ class ParserAfterTidy extends HookHandler {
 	 * a static variable or any other messaging that is not persistent will not
 	 * work hence the reliance on the cache as temporary persistence marker
 	 */
-	private function checkOnPurgeRequest( $parserData ) {
-
-		// Only carry out a purge where InTextAnnotationParser have set
-		// an appropriate context reference otherwise it is assumed that the hook
-		// call is part of another non SMW related parse
-		if ( $parserData->getSemanticData()->getSubject()->getContextReference() === null && $this->parser->getTitle()->getNamespace() !== SMW_NS_RULE ) {
-			return true;
-		}
+	private function checkPurgeRequest( $parserData ) {
 
 		$cache = ApplicationFactory::getInstance()->getCache();
 		$start = microtime( true );

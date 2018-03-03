@@ -7,7 +7,7 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\Utils\Timer;
 use DeferrableUpdate;
 use DeferredpendingUpdates;
-use SMW\Updater\DeferredTransactionalUpdate;
+use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\MediaWiki\Database;
 
 /**
@@ -21,9 +21,9 @@ class PageUpdater implements DeferrableUpdate {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var DeferredTransactionalUpdate
+	 * @var TransactionalCallableUpdate
 	 */
-	private $deferredTransactionalUpdate;
+	private $transactionalCallableUpdate;
 
 	/**
 	 * @var Database
@@ -74,11 +74,11 @@ class PageUpdater implements DeferrableUpdate {
 	 * @since 2.5
 	 *
 	 * @param Database|null $connection
-	 * @param DeferredTransactionalUpdate|null $deferredTransactionalUpdate
+	 * @param TransactionalCallableUpdate|null $transactionalCallableUpdate
 	 */
-	public function __construct( Database $connection = null, DeferredTransactionalUpdate $deferredTransactionalUpdate = null ) {
+	public function __construct( Database $connection = null, TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
 		$this->connection = $connection;
-		$this->deferredTransactionalUpdate = $deferredTransactionalUpdate;
+		$this->transactionalCallableUpdate = $transactionalCallableUpdate;
 	}
 
 	/**
@@ -183,31 +183,31 @@ class PageUpdater implements DeferrableUpdate {
 	 */
 	public function pushUpdate() {
 
-		if ( $this->deferredTransactionalUpdate === null ) {
+		if ( $this->transactionalCallableUpdate === null ) {
 			return $this->log( __METHOD__ . ' it is not possible to push updates as DeferredTransactionalUpdate)' );
 		}
 
-		$this->deferredTransactionalUpdate->setCallback( function(){
+		$this->transactionalCallableUpdate->setCallback( function(){
 			$this->doUpdate();
 		} );
 
 		if ( $this->onTransactionIdle ) {
-			$this->deferredTransactionalUpdate->waitOnTransactionIdle();
+			$this->transactionalCallableUpdate->waitOnTransactionIdle();
 		}
 		if ( $this->isPending ) {
-			$this->deferredTransactionalUpdate->markAsPending();
+			$this->transactionalCallableUpdate->markAsPending();
 		}
 
-		$this->deferredTransactionalUpdate->setFingerprint(
+		$this->transactionalCallableUpdate->setFingerprint(
 			$this->fingerprint
 		);
 
-		$this->deferredTransactionalUpdate->setOrigin( array(
+		$this->transactionalCallableUpdate->setOrigin( array(
 			__METHOD__,
 			$this->origin
 		) );
 
-		$this->deferredTransactionalUpdate->pushUpdate();
+		$this->transactionalCallableUpdate->pushUpdate();
 	}
 
 	/**

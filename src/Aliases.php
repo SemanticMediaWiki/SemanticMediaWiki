@@ -5,7 +5,7 @@
  */
 
 // 3.0
-class_alias( 'SMW\Updater\DeferredCallableUpdate', 'SMW\DeferredCallableUpdate' );
+class_alias( 'SMW\MediaWiki\Deferred\CallableUpdate', 'SMW\DeferredCallableUpdate' );
 class_alias( 'SMW\Parser\InTextAnnotationParser', 'SMW\InTextAnnotationParser' );
 class_alias( 'SMW\Encoder', 'SMW\UrlEncoder' );
 class_alias( 'SMW\Query\ResultPrinter', 'SMW\QueryResultPrinter' );
