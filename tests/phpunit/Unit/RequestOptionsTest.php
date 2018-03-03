@@ -19,7 +19,7 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\RequestOptions',
+			RequestOptions::class,
 			new RequestOptions()
 		);
 	}
@@ -36,12 +36,12 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			);
 
 			$this->assertFalse(
-				$stringCondition->isDisjunctiveCondition
+				$stringCondition->isOr
 			);
 		}
 
 		$this->assertEquals(
-			'[-1,0,false,true,null,true,"Foo#0#",[]]',
+			'[-1,0,false,true,null,true,"Foo#0##",[]]',
 			$instance->getHash()
 		);
 	}

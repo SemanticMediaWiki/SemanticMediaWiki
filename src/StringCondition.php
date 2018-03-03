@@ -50,7 +50,12 @@ class StringCondition {
 	 *
 	 * @var boolean
 	 */
-	public $isDisjunctiveCondition;
+	public $isOr;
+
+	/**
+	 * @var boolean
+	 */
+	public $isNot;
 
 	/**
 	 * @var integer
@@ -62,12 +67,13 @@ class StringCondition {
 	 *
 	 * @param srting $string
 	 * @param integer $condition
-	 * @param boolean $isDisjunctiveCondition
+	 * @param boolean $isOr
 	 */
-	public function __construct( $string, $condition, $isDisjunctiveCondition = false ) {
+	public function __construct( $string, $condition, $isOr = false, $isNot = false ) {
 		$this->string = $string;
 		$this->condition = $condition;
-		$this->isDisjunctiveCondition = $isDisjunctiveCondition;
+		$this->isOr = $isOr;
+		$this->isNot = $isNot;
 	}
 
 	/**
@@ -76,7 +82,7 @@ class StringCondition {
 	 * @return string
 	 */
 	public function getHash() {
-		return $this->string . '#' . $this->condition . '#' . $this->isDisjunctiveCondition;
+		return $this->string . '#' . $this->condition . '#' . $this->isOr . '#' . $this->isNot;
 	}
 
 }
