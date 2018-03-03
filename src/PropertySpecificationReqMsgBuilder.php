@@ -26,6 +26,11 @@ class PropertySpecificationReqMsgBuilder {
 	private $store;
 
 	/**
+	 * @var SemanticData
+	 */
+	private $semanticData;
+
+	/**
 	 * @var PropertySpecificationReqExaminer
 	 */
 	private $propertySpecificationReqExaminer;
@@ -57,7 +62,11 @@ class PropertySpecificationReqMsgBuilder {
 	 * @param SemanticData|null $semanticData
 	 */
 	public function setSemanticData( SemanticData $semanticData = null ) {
-		$this->propertySpecificationReqExaminer->setSemanticData( $semanticData );
+		$this->semanticData = $semanticData;
+
+		$this->propertySpecificationReqExaminer->setSemanticData(
+			$semanticData
+		);
 	}
 
 	/**
@@ -135,6 +144,10 @@ class PropertySpecificationReqMsgBuilder {
 			);
 		}
 
+		if ( $this->semanticData !== null && $this->semanticData->hasProperty( new DIProperty( '_ERRC' ) ) ) {
+			$this->message .= $this->findErrorMessages();
+		}
+
 		if ( $property->isUserDefined() && wfMessage( 'smw-property-introductory-message-user' )->exists() ) {
 			$this->message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-user', $propertyName );
 		}
@@ -153,6 +166,12 @@ class PropertySpecificationReqMsgBuilder {
 
 		if ( !$property->isUserDefined() ) {
 			$this->message .= $this->createPredefinedPropertyMessage( $property, $propertyName );
+		}
+
+		$label = mb_strtolower( str_replace( ' ', '-', $propertyName ) );
+
+		if ( wfMessage( "smw-property-message-$label" )->exists() ) {
+			$this->message .= $this->createIntroductoryMessage( "smw-property-message-$label", $propertyName, false );
 		}
 	}
 
@@ -174,7 +193,7 @@ class PropertySpecificationReqMsgBuilder {
 		);
 	}
 
-	private function createIntroductoryMessage( $msgKey, $propertyName ) {
+	private function createIntroductoryMessage( $msgKey, $propertyName, $class = true ) {
 
 		$message = wfMessage( $msgKey, $propertyName )->parse();
 
@@ -182,11 +201,15 @@ class PropertySpecificationReqMsgBuilder {
 			return '';
 		}
 
+		if ( $class === true ) {
+			$class = 'smw-callout smw-callout-info';
+		}
+
 		return Html::rawElement(
 			'div',
 			array(
-				'id' => 'smw-property-content-introductory-message',
-				'class' => 'plainlinks smw-callout smw-callout-info'
+				'id' => "$msgKey",
+				'class' => "plainlinks $msgKey " . $class
 			),
 			$message
 		);
@@ -247,6 +270,35 @@ class PropertySpecificationReqMsgBuilder {
 				'class' => 'smw-property-predefined-intro plainlinks'
 			),
 			$message
+		);
+	}
+
+	private function findErrorMessages() {
+
+		$pv = $this->semanticData->getPropertyValues( new DIProperty( '_ERRC' ) );
+		$errors = [];
+
+		foreach ( $pv as $v ) {
+			$subSemanticData = $this->semanticData->findSubSemanticData(
+				$v->getSubobjectName()
+			);
+
+			foreach ( $subSemanticData->getPropertyValues( new DIProperty( '_ERRT' ) ) as $error ) {
+				$errors[] = Message::decode( $error->getString(), Message::PARSE, Message::USER_LANGUAGE );
+			}
+		}
+
+		if ( $errors === [] ) {
+			return '';
+		}
+
+		return Html::rawElement(
+			'div',
+			[
+				'id' => 'smw-property-error-list',
+				'class' => 'plainlinks smw-callout smw-callout-error'
+			],
+			count( $errors ) > 1 ? '<ul><li>' . implode( '</li><li>', $errors ) . '</li></ul>' : implode( '', $errors )
 		);
 	}
 

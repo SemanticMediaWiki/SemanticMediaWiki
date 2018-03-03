@@ -4,6 +4,8 @@ namespace SMW\Tests;
 
 use SMW\PropertySpecificationReqMsgBuilder;
 use SMW\DataItemFactory;
+use SMW\SemanticData;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * @covers \SMW\PropertySpecificationReqMsgBuilder
@@ -75,7 +77,47 @@ class PropertySpecificationReqMsgBuilderTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
-	public function testCheckUniquenesse() {
+	public function testFindErrMessages() {
+
+		$dataItemFactory = new DataItemFactory();
+		$subject = $dataItemFactory->newDIWikiPage( 'Test', NS_MAIN );
+
+		$semanticData = new SemanticData(
+			$subject
+		);
+
+		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
+			$subject
+		);
+
+		$processingErrorMsgHandler->addToSemanticData(
+			$semanticData,
+			$processingErrorMsgHandler->newErrorContainerFromMsg( [ 'testFindErrMessages' ] )
+		);
+
+		$instance = new PropertySpecificationReqMsgBuilder(
+			$this->store,
+			$this->propertySpecificationReqExaminer
+		);
+
+		$instance->setSemanticData( $semanticData );
+
+		$instance->check(
+			$dataItemFactory->newDIProperty( 'Foo' )
+		);
+
+		$this->assertContains(
+			'smw-property-error-list',
+			$instance->getMessage()
+		);
+
+		$this->assertContains(
+			'testFindErrMessages',
+			$instance->getMessage()
+		);
+	}
+
+	public function testCheckUniqueness() {
 
 		$entityManager = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
