@@ -3,7 +3,6 @@
 namespace SMW\Query\PrintRequest;
 
 use SMW\Query\PrintRequest;
-use SMWPropertyValue as PropertyValue;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\Localizer;
@@ -70,7 +69,7 @@ class Deserializer {
 				$label = $showMode ? '' : $title->getText();  // default
 			} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
 				$printmode = PrintRequest::PRINT_PROP;
-				$data = PropertyValue::makeUserProperty( $printRequestLabel );
+				$data = DataValueFactory::getInstance()->newPropertyValueByLabel( $printRequestLabel );
 				if ( !$data->isValid() ) { // not a property; give up
 					return null;
 				}

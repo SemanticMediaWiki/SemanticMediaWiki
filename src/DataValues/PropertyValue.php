@@ -1,37 +1,46 @@
 <?php
 
+namespace SMW\DataValues;
+
 use SMW\ApplicationFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValueFactory;
+use SMW\Exception\DataItemException;
 use SMW\DIProperty;
 use SMW\Highlighter;
 use SMW\Message;
+use SMWDataValue as DataValue;
+use SMWDataItem as DataItem;
 
 /**
  * Objects of this class represent properties in SMW.
  *
- * This class represents both normal (user-defined) properties and
- * predefined ("special") properties. Predefined properties may still
- * have a standard label (and associated wiki article) and they will
- * behave just like user-defined properties in most cases (e.g. when
- * asking for a printout text, a link to the according page is produced).
- * It is possible that predefined properties have no visible label at all,
- * if they are used only internally and never specified by or shown to
- * the user. Those will use their internal ID as DB key, and
- * empty texts for most printouts. All other proeprties use their
- * canonical DB key (even if they are predefined and have an id).
+ * This class represents both normal (user-defined) properties and predefined
+ * ("special") properties. Predefined properties may still have a standard label
+ * (and associated wiki article) and they will behave just like user-defined
+ * properties in most cases (e.g. when asking for a printout text, a link to the
+ * according page is produced).
+ *
+ * It is possible that predefined properties have no visible label at all, if they
+ * are used only internally and never specified by or shown to the user. Those
+ * will use their internal ID as DB key, and empty texts for most printouts. All
+ * other properties use their canonical DB key (even if they are predefined and
+ * have an id).
+ *
  * Functions are provided to check whether a property is visible or
  * user-defined, and to get the internal ID, if any.
  *
- * @note This datavalue is used only for representing properties and,
- * possibly objects/values, but never for subjects (pages as such). Hence
- * it does not provide a complete Title-like interface, or support for
- * things like sortkey.
+ * @note This datavalue is used only for representing properties and, possibly
+ * objects/values, but never for subjects (pages as such). Hence it does not
+ * provide a complete Title-like interface, or support for things like sortkey.
+ *
+ * @license GNU GPL v2+
+ * @since 3.0
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @author mwjames
  */
-class SMWPropertyValue extends SMWDataValue {
+class PropertyValue extends DataValue {
 
 	/**
 	 * DV identifier
@@ -81,15 +90,14 @@ class SMWPropertyValue extends SMWDataValue {
 	private $preferredLabel = '';
 
 	/**
-	 * Cache for type value of this property, or null if not calculated yet.
-	 * @var SMWTypesValue
+	 * @var DIProperty
 	 */
-	private $mPropTypeValue;
+	private $inceptiveProperty;
 
 	/**
 	 * @var DIProperty
 	 */
-	private $inceptiveProperty = null;
+	private $valueFormatter;
 
 	/**
 	 * @since 2.4
@@ -101,33 +109,16 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * Static function for creating a new property object from a
-	 * propertyname (string) as a user might enter it.
-	 * @note The resulting property object might be invalid if
-	 * the provided name is not allowed. An object is returned
-	 * in any case.
-	 *
-	 * @param string $propertyName
-	 *
-	 * @return SMWPropertyValue
+	 * @deprecated since 3.0
 	 */
-	static public function makeUserProperty( $propertyLabel ) {
+	static private function makeUserProperty( $propertyLabel ) {
 		return DataValueFactory::getInstance()->newPropertyValueByLabel( $propertyLabel );
 	}
 
 	/**
-	 * Static function for creating a new property object from a property
-	 * identifier (string) as it might be used internally. This might be
-	 * the DB key version of some property title text or the id of a
-	 * predefined property (such as '_TYPE').
-	 * @note This function strictly requires an internal identifier, i.e.
-	 * predefined properties must be referred to by their ID, and '-' is
-	 * not supported for indicating inverses.
-	 * @note The resulting property object might be invalid if
-	 * the provided name is not allowed. An object is returned
-	 * in any case.
+	 * @removed since 3.0
 	 */
-	static public function makeProperty( $propertyid ) {
+	static private function makeProperty( $propertyid ) {
 		$diProperty = new DIProperty( $propertyid );
 		$dvProperty = new SMWPropertyValue( self::TYPE_ID );
 		$dvProperty->setDataItem( $diProperty );
@@ -164,7 +155,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @todo Accept/enforce property namespace.
 	 */
 	protected function parseUserValue( $value ) {
-		$this->mPropTypeValue = null;
 		$this->m_wikipage = null;
 
 		$propertyValueParser = $this->dataValueServiceFactory->getValueParser(
@@ -194,7 +184,7 @@ class SMWPropertyValue extends SMWDataValue {
 				$capitalizedName,
 				$inverse
 			);
-		} catch ( SMWDataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
+		} catch ( DataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
 			$this->addErrorMsg( array( 'smw_noproperty', $value ) );
 			$this->m_dataitem = new DIProperty( 'ERROR', false ); // just to have something
 		}
@@ -230,12 +220,12 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
+	 * @param $dataitem DataItem
 	 * @return boolean
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ) {
 
-		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_PROPERTY ) {
+		if ( $dataItem->getDIType() !== DataItem::TYPE_PROPERTY ) {
 			return false;
 		}
 
@@ -243,7 +233,6 @@ class SMWPropertyValue extends SMWDataValue {
 		$this->m_dataitem = $dataItem;
 		$this->preferredLabel = $this->m_dataitem->getPreferredLabel();
 
-		$this->mPropTypeValue = null;
 		unset( $this->m_wikipage );
 		$this->m_caption = false;
 		$this->linkAttributes = array();
@@ -374,7 +363,14 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_SHORT, $linker );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
 	/**
@@ -383,7 +379,14 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_SHORT, $linker );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
 	/**
@@ -392,7 +395,14 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongWikiText( $linker = null ) {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_LONG, $linker );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
@@ -401,7 +411,14 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_LONG, $linker );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
 	/**
@@ -410,7 +427,14 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getWikiValue() {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::VALUE );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::VALUE );
 	}
 
 	/**
@@ -424,14 +448,18 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getFormattedLabel( $format = DataValueFormatter::VALUE, $linker = null ) {
 
-		$dataValueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
 
-		$dataValueFormatter->setOption(
+		$this->valueFormatter->setDataValue( $this );
+
+		$this->valueFormatter->setOption(
 			self::FORMAT_LABEL,
 			$format
 		);
 
-		return $dataValueFormatter->format( self::FORMAT_LABEL, $linker );
+		return $this->valueFormatter->format( self::FORMAT_LABEL, $linker );
 	}
 
 	/**
@@ -444,28 +472,14 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getSearchLabel() {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( self::SEARCH_LABEL );
-	}
 
-	/**
-	 * If this property was not user defined, return the internal ID string referring to
-	 * that property. Otherwise return FALSE;
-	 */
-	public function getPropertyID() {
-		return $this->m_dataitem->isUserDefined() ? false : $this->m_dataitem->getKey();
-	}
-
-	/**
-	 * Return an SMWTypesValue object representing the datatype of this
-	 * property.
-	 * @deprecated Types values are not a good way to exchange SMW type information. They are for input only. Use getPropertyTypeID() if you want the type id. This method will vanish in SMW 1.7.
-	 */
-	public function getTypesValue() {
-		$result = SMWTypesValue::newFromTypeId( $this->getPropertyTypeID() );
-		if ( !$this->isValid() ) {
-			$result->addError( $this->getErrors() );
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
-		return $result;
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( self::SEARCH_LABEL );
 	}
 
 	/**
@@ -477,81 +491,12 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getPropertyTypeID() {
-		if ( $this->isValid() ) {
-			return $this->m_dataitem->findPropertyTypeId();
-		} else {
+
+		if ( !$this->isValid() ) {
 			return '__err';
 		}
-	}
 
-	/**
-	 * A function for registering/overwriting predefined properties for SMW. Should be called from
-	 * within the hook 'smwInitProperties'. Ids should start with three underscores "___" to avoid
-	 * current and future confusion with SMW built-ins.
-	 *
-	 * @deprecated Use DIProperty::registerProperty(). Will vanish before SMW 1.7.
-	 */
-	static public function registerProperty( $id, $typeid, $label = false, $show = false ) {
-		DIProperty::registerProperty( $id, $typeid, $label, $show );
-	}
-
-	/**
-	 * Add a new alias label to an existing datatype id. Note that every ID should have a primary
-	 * label, either provided by SMW or registered with registerDatatype. This function should be
-	 * called from within the hook 'smwInitDatatypes'.
-	 *
-	 * @deprecated Use DIProperty::registerPropertyAlias(). Will vanish before SMW 1.7.
-	 */
-	static public function registerPropertyAlias( $id, $label ) {
-		DIProperty::registerPropertyAlias( $id, $label );
-	}
-
-	/**
-	 * @see DIProperty::isUserDefined()
-	 *
-	 * @deprecated since 1.6
-	 */
-	public function isUserDefined() {
-		return $this->m_dataitem->isUserDefined();
-	}
-
-	/**
-	 * @see DIProperty::isShown()
-	 *
-	 * @deprecated since 1.6
-	 */
-	public function isShown() {
-		return $this->m_dataitem->isShown();
-	}
-
-	/**
-	 * @see DIProperty::isInverse()
-	 *
-	 * @deprecated since 1.6
-	 */
-	public function isInverse() {
-		return $this->m_dataitem->isInverse();
-	}
-
-	/**
-	 * Return a DB-key-like string: for visible properties, it is the actual DB key,
-	 * for internal (invisible) properties, it is the property ID. The value agrees
-	 * with the first component of getDBkeys() and it can be used in its place.
-	 * @see DIProperty::getKey()
-	 *
-	 * @deprecated since 1.6
-	 */
-	public function getDBkey() {
-		return $this->m_dataitem->getKey();
-	}
-
-	/**
-	 * @see DIProperty::getLabel()
-	 *
-	 * @deprecated since 1.6
-	 */
-	public function getText() {
-		return $this->m_dataitem->getLabel();
+		return $this->m_dataitem->findPropertyTypeId();
 	}
 
 	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ) {

@@ -6,7 +6,7 @@ use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIError;
 use SMWErrorValue as ErrorValue;
-use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\PropertyValue;
 use SMW\Services\DataValueServiceFactory;
 
 /**

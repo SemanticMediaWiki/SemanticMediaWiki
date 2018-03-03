@@ -21,6 +21,8 @@
 - Removed `DIProperty::findPropertyLabel`, deprecated since 2.1, use PropertyRegistry::findPropertyLabelById
 - Removed `DIProperty::registerProperty`, deprecated since 2.1, use PropertyRegistry::registerProperty
 - Removed `DIProperty::registerPropertyAlias`, deprecated since 2.1, use PropertyRegistry::registerPropertyAlias
+- Deprecated `PropertyValue::makeUserProperty`, use DataValueFactory::getInstance()->newPropertyValueByLabel;
+- Removed `PropertyValue::makeProperty`, use DataValueFactory
 
 ## Hooks
 

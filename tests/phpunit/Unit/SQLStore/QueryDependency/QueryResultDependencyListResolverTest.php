@@ -13,6 +13,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
+use SMW\DataValueFactory;
 use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
 use SMW\Tests\TestEnvironment;
@@ -510,7 +511,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		#7 Printrequest
-		$pv = \SMWPropertyValue::makeUserProperty( 'Foobaz' );
+		$pv = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Foobaz' );
 
 		$description = new SomeProperty(
 			new DIProperty( 'Foobar', true ),
@@ -535,7 +536,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		#8 Inverse printrequest
-		$pv = \SMWPropertyValue::makeUserProperty( 'Foobaz' );
+		$pv = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Foobaz' );
 		$pv->setInverse( true );
 
 		$description = new SomeProperty(

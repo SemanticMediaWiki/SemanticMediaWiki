@@ -6,7 +6,7 @@ use SMW\Message;
 use SMW\ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
-use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMWInfolink as Infolink;
@@ -170,7 +170,7 @@ class ValueFormatter {
 			return self::addNonBreakingSpace( $propertyValue->getWikiValue() );
 		}
 
-		$inverseProperty = PropertyValue::makeUserProperty( wfMessage( 'smw_inverse_label_property' )->text() );
+		$inverseProperty = DataValueFactory::getInstance()->newPropertyValueByLabel( wfMessage( 'smw_inverse_label_property' )->text() );
 
 		$dataItems = ApplicationFactory::getInstance()->getStore()->getPropertyValues(
 			$property->getDiWikiPage(),
