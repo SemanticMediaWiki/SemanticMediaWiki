@@ -168,7 +168,7 @@ class TemperatureValue extends NumberValue {
 			return $unit;
 		}
 
-		$units = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getDisplayUnitsBy(
+		$units = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getDisplayUnits(
 			$this->getProperty()
 		);
 

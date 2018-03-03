@@ -1,7 +1,7 @@
 <?php
 
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\IntlNumberFormatter;
+use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Localizer;
 use SMW\Message;
 use SMW\ApplicationFactory;
@@ -91,7 +91,12 @@ class SMWNumberValue extends SMWDataValue {
 	/**
 	 * @var IntlNumberFormatter
 	 */
-	private $intlNumberFormatter = null;
+	private $intlNumberFormatter;
+
+	/**
+	 * @var ValueFormatter
+	 */
+	private $valueFormatter;
 
 	/**
 	 * @since 2.4
@@ -245,6 +250,20 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	/**
+	 * @since 1.6
+	 *
+	 * @return float
+	 */
+	public function getNumber() {
+
+		if ( !$this->isValid() ) {
+			return 999999999999999;
+		}
+
+		return $this->m_dataitem->getNumber();
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return float
@@ -268,7 +287,14 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_SHORT, $linker );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
 	/**
@@ -277,7 +303,14 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_SHORT, $linker );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
 	/**
@@ -286,7 +319,14 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongWikiText( $linker = null ) {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::WIKI_LONG, $linker );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
@@ -295,15 +335,30 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::HTML_LONG, $linker );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
-	public function getNumber() {
-		return $this->isValid() ? $this->m_dataitem->getNumber() : 32202;
-	}
-
+	/**
+	 * @see DataValue::getWikiValue
+	 *
+	 * @return string
+	 */
 	public function getWikiValue() {
-		return $this->dataValueServiceFactory->getValueFormatter( $this )->format( DataValueFormatter::VALUE );
+
+		if ( $this->valueFormatter === null ) {
+			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
+		}
+
+		$this->valueFormatter->setDataValue( $this );
+
+		return $this->valueFormatter->format( DataValueFormatter::VALUE );
 	}
 
 	/**
@@ -317,7 +372,9 @@ class SMWNumberValue extends SMWDataValue {
 		// precision limitation
 		$this->setOption( self::NO_DISP_PRECISION_LIMIT, true );
 		$this->setOption( self::OPT_CONTENT_LANGUAGE, Message::CONTENT_LANGUAGE );
+
 		$infoLinks = parent::getInfolinks();
+
 		$this->setOption( self::NO_DISP_PRECISION_LIMIT, false );
 
 		return $infoLinks;
@@ -475,7 +532,7 @@ class SMWNumberValue extends SMWDataValue {
 		}
 
 		if ( $this->precision === null ) {
-			$this->precision = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getDisplayPrecisionBy(
+			$this->precision = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getDisplayPrecision(
 				$this->getProperty()
 			);
 		}

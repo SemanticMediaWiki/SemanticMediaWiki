@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\DataValues\Time;
 
-use SMW\IntlTimeFormatter;
+use SMW\DataValues\Time\IntlTimeFormatter;
 use SMW\Localizer;
 use SMWDITime as DITime;
 
 /**
- * @covers \SMW\IntlTimeFormatter
+ * @covers \SMW\DataValues\Time\IntlTimeFormatter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -24,7 +24,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\IntlTimeFormatter',
+			IntlTimeFormatter::class,
 			new IntlTimeFormatter( $dataItem )
 		);
 	}
