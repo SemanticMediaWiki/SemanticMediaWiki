@@ -67,6 +67,24 @@ class MonolingualTextValueParserTest extends \PHPUnit_Framework_TestCase {
 			'zh-Hans'
 		);
 
+		$provider[] = array(
+			[ 'EN' =>'Foo' ],
+			'Foo',
+			'en'
+		);
+
+		$provider[] = array(
+			[ 'EN', 'Foo' ],
+			'Foo',
+			''
+		);
+
+		$provider[] = array(
+			[ 'EN', [] ],
+			'',
+			''
+		);
+
 		return $provider;
 	}
 
