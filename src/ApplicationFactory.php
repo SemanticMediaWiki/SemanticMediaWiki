@@ -15,7 +15,6 @@ use SMW\MediaWiki\TitleCreator;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMWQueryParser as QueryParser;
 use Title;
-use SMW\Updater\StoreUpdater;
 use SMW\Services\SharedServicesContainer;
 
 /**
@@ -257,7 +256,7 @@ class ApplicationFactory {
 		$pageUpdater = $this->containerBuilder->create(
 			'PageUpdater',
 			$this->getStore()->getConnection( 'mw.db' ),
-			$this->newDeferredTransactionalUpdate()
+			$this->newDeferredTransactionalCallableUpdate()
 		);
 
 		$pageUpdater->setLogger(
@@ -359,20 +358,20 @@ class ApplicationFactory {
 	 *
 	 * @param SemanticData $semanticData
 	 *
-	 * @return StoreUpdater
+	 * @return DataUpdater
 	 */
-	public function newStoreUpdater( SemanticData $semanticData ) {
+	public function newDataUpdater( SemanticData $semanticData ) {
 
-		$storeUpdater = new StoreUpdater(
+		$dataUpdater = new DataUpdater(
 			$this->getStore(),
 			$semanticData
 		);
 
-		$storeUpdater->isCommandLineMode(
+		$dataUpdater->isCommandLineMode(
 			$GLOBALS['wgCommandLineMode']
 		);
 
-		return $storeUpdater;
+		return $dataUpdater;
 	}
 
 	/**
@@ -492,10 +491,10 @@ class ApplicationFactory {
 	 *
 	 * @return DeferredTransactionalUpdate
 	 */
-	public function newDeferredTransactionalUpdate( Closure $callback = null ) {
+	public function newDeferredTransactionalCallableUpdate( Closure $callback = null ) {
 
 		$deferredTransactionalUpdate = $this->containerBuilder->create(
-			'DeferredTransactionalUpdate',
+			'DeferredTransactionalCallableUpdate',
 			$callback,
 			$this->getStore()->getConnection( 'mw.db' )
 		);

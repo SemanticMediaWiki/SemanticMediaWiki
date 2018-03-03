@@ -293,7 +293,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected['propertyCount'] > 0,
-			$parserData->isAnnotatedWithSemanticData()
+			$parserData->hasSemanticData( $parser->getOutput() )
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(

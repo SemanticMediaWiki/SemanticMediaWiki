@@ -273,6 +273,10 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
+		$logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -292,6 +296,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			$cache
 		);
 
+		$instance->setLogger( $logger );
 		$instance->markUpdate( 42 );
 
 		$this->assertNull(
@@ -299,7 +304,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSemanticDataStateToParserOutput() {
+	public function testHasSemanticData() {
 
 		$parserOutput = new ParserOutput();
 
@@ -309,7 +314,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->isAnnotatedWithSemanticData()
+			$instance->hasSemanticData( $parserOutput )
 		);
 
 		$instance->addDataValue(
@@ -319,10 +324,10 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$instance->setSemanticDataStateToParserOutputProperty();
+		$instance->markParserOutput();
 
 		$this->assertTrue(
-			$instance->isAnnotatedWithSemanticData()
+			$instance->hasSemanticData( $parserOutput )
 		);
 	}
 

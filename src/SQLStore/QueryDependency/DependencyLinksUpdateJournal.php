@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryDependency;
 use Onoi\Cache\Cache;
 use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
-use SMW\Updater\DeferredCallableUpdate;
+use SMW\MediaWiki\Deferred\CallableUpdate;
 use Psr\Log\LoggerAwareTrait;
 use Title;
 
@@ -38,19 +38,19 @@ class DependencyLinksUpdateJournal {
 	private $cache;
 
 	/**
-	 * @var DeferredCallableUpdate
+	 * @var CallableUpdate
 	 */
-	private $deferredCallableUpdate;
+	private $callableUpdate;
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param Cache $cache
-	 * @param DeferredCallableUpdate $deferredCallableUpdate
+	 * @param callableUpdate $callableUpdate
 	 */
-	public function __construct( Cache $cache, DeferredCallableUpdate $deferredCallableUpdate ) {
+	public function __construct( Cache $cache, CallableUpdate $callableUpdate ) {
 		$this->cache = $cache;
-		$this->deferredCallableUpdate = $deferredCallableUpdate;
+		$this->callableUpdate = $callableUpdate;
 	}
 
 	/**
@@ -145,18 +145,18 @@ class DependencyLinksUpdateJournal {
 
 		// Avoid interference with any other process during a preOutputCommit
 		// stage especially when CACHE_DB is used as instance
-		$this->deferredCallableUpdate->setCallback( function() use( $subject ) {
+		$this->callableUpdate->setCallback( function() use( $subject ) {
 			$this->cache->delete( self::makeKey( $subject ) );
 		} );
 
-		$this->deferredCallableUpdate->setOrigin(
+		$this->callableUpdate->setOrigin(
 			[
 				__METHOD__,
 				$subject->getDBKey() . '#' . $subject->getNamespace() . '#' . $subject->getInterwiki()
 			]
 		);
 
-		$this->deferredCallableUpdate->pushUpdate();
+		$this->callableUpdate->pushUpdate();
 	}
 
 }

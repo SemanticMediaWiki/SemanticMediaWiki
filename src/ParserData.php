@@ -7,6 +7,7 @@ use ParserOptions;
 use SMWDataValue as DataValue;
 use Title;
 use Onoi\Cache\Cache;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Handling semantic data exchange with a ParserOutput object
@@ -21,6 +22,8 @@ use Onoi\Cache\Cache;
  * @author Markus Krötzsch
  */
 class ParserData {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * Identifies the extension data
@@ -299,20 +302,6 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 2.1, use setEmptySemanticData
-	 */
-	public function clearData() {
-		$this->setEmptySemanticData();
-	}
-
-	/**
-	 * @deprecated since 2.1, use pushSemanticDataToParserOutput
-	 */
-	public function updateOutput() {
-		$this->pushSemanticDataToParserOutput();
-	}
-
-	/**
 	 * @since 2.1
 	 *
 	 * @param ParserOutput|null
@@ -335,9 +324,9 @@ class ParserData {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
-	public function pushSemanticDataToParserOutput() {
+	public function copyToParserOutput() {
 
 		// Ensure that errors are reported and recorded
 		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
@@ -351,14 +340,21 @@ class ParserData {
 			);
 		}
 
-		$this->setSemanticDataStateToParserOutputProperty();
+		$this->markParserOutput();
 		$this->parserOutput->setExtensionData( self::DATA_ID, $this->semanticData );
 	}
 
 	/**
-	 * @since 2.1
+	 * @deprecated since 3.0, use copyToParserOutput
 	 */
-	public function setSemanticDataStateToParserOutputProperty() {
+	public function pushSemanticDataToParserOutput() {
+		$this->copyToParserOutput();
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function markParserOutput() {
 
 		$this->parserOutput->setTimestamp( wfTimestampNow() );
 
@@ -369,12 +365,21 @@ class ParserData {
 	}
 
 	/**
+	 * @deprecated since 3.0, use pushSemanticDataToParserOutput
+	 */
+	public function setSemanticDataStateToParserOutputProperty() {
+		$this->markParserOutput();
+	}
+
+	/**
 	 * @since 2.5
+	 *
+	 * @param ParserOutput $parserOutput
 	 *
 	 * @return boolean
 	 */
-	public function isAnnotatedWithSemanticData() {
-		return (bool)$this->parserOutput->getProperty( 'smw-semanticdata-status' );
+	public static function hasSemanticData( ParserOutput $parserOutput ) {
+		return (bool)$parserOutput->getProperty( 'smw-semanticdata-status' );
 	}
 
 	/**
@@ -409,12 +414,12 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function updateStore( $enabledDeferredUpdate = false ) {
+	public function updateStore( $isDeferrableUpdate = false ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$latestRevID = $this->title->getLatestRevID( Title::GAID_FOR_UPDATE );
 
-		if ( $this->skipUpdateOn( $latestRevID ) ) {
+		if ( $this->skipUpdate( $latestRevID ) ) {
 
 			$context = [
 				'method' => __METHOD__,
@@ -422,7 +427,7 @@ class ParserData {
 				'revID' => $latestRevID
 			];
 
-			return $applicationFactory->getMediaWikiLogger()->info( 'Update (Found rev:{revID}, skip update)', $context );
+			return $this->logger->info( 'Update (Found rev:{revID}, skip update)', $context );
 		}
 
 		$this->semanticData->setOption(
@@ -430,38 +435,27 @@ class ParserData {
 			$this->getOption( Enum::OPT_SUSPEND_PURGE )
 		);
 
-		$storeUpdater = $applicationFactory->newStoreUpdater(
+		$dataUpdater = $applicationFactory->newDataUpdater(
 			$this->semanticData
 		);
 
-		$storeUpdater->canCreateUpdateJob(
+		$dataUpdater->canCreateUpdateJob(
 			$this->getOption( self::OPT_CREATE_UPDATE_JOB, true )
 		);
 
-		$storeUpdater->isChangeProp(
+		$dataUpdater->isChangeProp(
 			$this->getOption( self::OPT_CHANGE_PROP_UPDATE )
 		);
 
-		DeferredCallableUpdate::releasePendingUpdates();
-
-		$deferredTransactionalUpdate = $applicationFactory->newDeferredTransactionalUpdate( function() use( $storeUpdater ) {
-			$storeUpdater->doUpdate();
-		} );
-
-		$deferredTransactionalUpdate->setOrigin(
-			array(
-				__METHOD__,
-				$this->origin,
-				$this->semanticData->getSubject()->getHash()
-			)
+		$dataUpdater->isDeferrableUpdate(
+			$isDeferrableUpdate
 		);
 
-		$deferredTransactionalUpdate->enabledDeferredUpdate(
-			$enabledDeferredUpdate
+		$dataUpdater->setOrigin(
+			$this->origin
 		);
 
-		$deferredTransactionalUpdate->commitWithTransactionTicket();
-		$deferredTransactionalUpdate->pushUpdate();
+		$dataUpdater->doUpdate();
 
 		return true;
 	}
@@ -491,9 +485,18 @@ class ParserData {
 		}
 	}
 
-	private function skipUpdateOn( $rev ) {
-		return $this->getOption( self::OPT_FORCED_UPDATE ) !== true &&
-			$this->cache->fetch( smwfCacheKey( self::CACHE_NAMESPACE, $this->semanticData->getSubject()->getHash() ) ) === $rev;
+	private function skipUpdate( $rev ) {
+
+		if ( $this->getOption( self::OPT_FORCED_UPDATE, false ) ) {
+			return false;
+		}
+
+		$key = smwfCacheKey(
+			self::CACHE_NAMESPACE,
+			$this->semanticData->getSubject()->getHash()
+		);
+
+		return $this->cache->fetch( $key ) === $rev;
 	}
 
 }

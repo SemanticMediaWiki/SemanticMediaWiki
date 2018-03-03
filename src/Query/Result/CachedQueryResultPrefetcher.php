@@ -403,7 +403,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$this->doCacheQueryResult( $queryResult, $queryId, $container, $query );
 		};
 
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalUpdate(
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
 			$callback
 		);
 

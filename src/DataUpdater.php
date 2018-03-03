@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Updater;
+namespace SMW;
 
 use SMW\Store;
 use SMW\SemanticData;
@@ -30,7 +30,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class StoreUpdater {
+class DataUpdater {
 
 	/**
 	 * @var Store
@@ -41,6 +41,11 @@ class StoreUpdater {
 	 * @var SemanticData
 	 */
 	private $semanticData;
+
+	/**
+	 * @var TransactionalCallableUpdate
+	 */
+	private $transactionalCallableUpdate;
 
 	/**
 	 * @var boolean|null
@@ -63,6 +68,16 @@ class StoreUpdater {
 	private $isChangeProp = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $isDeferrableUpdate = false;
+
+	/**
+	 * @var string
+	 */
+	private $origin = '';
+
+	/**
 	 * @since  1.9
 	 *
 	 * @param Store $store
@@ -71,6 +86,7 @@ class StoreUpdater {
 	public function __construct( Store $store, SemanticData $semanticData ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
+		$this->transactionalCallableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate();
 	}
 
 	/**
@@ -92,6 +108,24 @@ class StoreUpdater {
 	 */
 	public function isChangeProp( $isChangeProp ) {
 		$this->isChangeProp = (bool)$isChangeProp;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isChangeProp
+	 */
+	public function isDeferrableUpdate( $isDeferrableUpdate ) {
+		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $origin
+	 */
+	public function setOrigin( $origin ) {
+		$this->origin = $origin;
 	}
 
 	/**
@@ -123,7 +157,32 @@ class StoreUpdater {
 			return false;
 		}
 
-		return $this->performUpdate();
+		DeferredCallableUpdate::releasePendingUpdates();
+
+		if ( $this->isDeferrableUpdate === false || $this->isCommandLineMode ) {
+			return $this->performUpdate();
+		}
+
+		$this->transactionalCallableUpdate->setCallback( function() {
+			$this->performUpdate();
+		} );
+
+		$this->transactionalCallableUpdate->setOrigin(
+			[
+				__METHOD__,
+				$this->origin,
+				$this->getSubject()->getHash()
+			]
+		);
+
+		$this->transactionalCallableUpdate->isDeferrableUpdate(
+			$this->isDeferrableUpdate
+		);
+
+		$this->transactionalCallableUpdate->commitWithTransactionTicket();
+		$this->transactionalCallableUpdate->pushUpdate();
+
+		return true;
 	}
 
 	private function canPerformUpdate() {
@@ -157,12 +216,12 @@ class StoreUpdater {
 		$revision = $wikiPage->getRevision();
 		$user = $revision !== null ? User::newFromId( $revision->getUser() ) : null;
 
-		$this->addFinalAnnotations( $title, $wikiPage, $revision, $user );
+		$this->addAnnotations( $title, $wikiPage, $revision, $user );
 
 		// In case of a restricted update, only the protection update is required
 		// hence the process bails-out early to avoid unnecessary DB connections
 		// or updates
-		if ( $this->doUpdateEditProtection( $wikiPage, $user ) === true ) {
+		if ( $this->checkUpdateEditProtection( $wikiPage, $user ) === true ) {
 			return true;
 		}
 
@@ -172,7 +231,7 @@ class StoreUpdater {
 		return true;
 	}
 
-	private function addFinalAnnotations( Title $title, WikiPage $wikiPage, $revision, $user ) {
+	private function addAnnotations( Title $title, WikiPage $wikiPage, $revision, $user ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -216,12 +275,12 @@ class StoreUpdater {
 				$propertyAnnotator,
 				$ruleDefinition
 			);
-		}		
-		
+		}
+
 		$propertyAnnotator->addAnnotation();
 	}
 
-	private function doUpdateEditProtection( $wikiPage, $user ) {
+	private function checkUpdateEditProtection( $wikiPage, $user ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
