@@ -3,7 +3,8 @@
 namespace SMW;
 
 use Html;
-use SMW\Query\Language\NamespaceDescription;
+use SMW\SQLStore\SQLStore;
+use SMW\Page\ListPager;
 use SMWPageLister;
 
 /**
@@ -42,27 +43,40 @@ class SpecialConcepts extends SpecialPage {
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public function getResults( $limit, $from, $until ) {
-		$description = new NamespaceDescription( SMW_NS_CONCEPT );
-		$query = SMWPageLister::getQuery( $description, $limit, $from, $until );
+	public function getResults( $limit, $offset, $from, $until ) {
 
-		$results = $this->getStore()->getQueryResult( $query )->getResults();
+		$connection = $this->getStore()->getConnection( 'mw.db' );
+		$results = [];
 
-		foreach ( $results as $key => $subject ) {
+		$fields = [
+			'smw_id',
+			'smw_title'
+		];
 
-			// Don't display subobjects like _QUERY... on the list
-			if ( $subject->getSubobjectName() !== '' ) {
-				unset( $results[$key] );
-			}
+		$conditions = [
+			'smw_namespace' => SMW_NS_CONCEPT,
+			'smw_iw' => '',
+			'smw_subobject' => ''
+		];
 
-			// Avoid concepts that are mentioned in a query but doesn't
-			// exist as real page
-			if ( !$subject->getTitle()->exists() ) {
-				unset( $results[$key] );
-			}
+		$options = [
+			'LIMIT' => $limit + 1,
+			'OFFSET' => $offset,
+		];
+
+		$res = $connection->select(
+			$connection->tableName( SQLStore::ID_TABLE ),
+			$fields,
+			$conditions,
+			__METHOD__,
+			$options
+		);
+
+		foreach ( $res as $row ) {
+			$results[] = new DIWikiPage( $row->smw_title, SMW_NS_CONCEPT );
 		}
 
-		return array_values( $results );
+		return $results;
 	}
 
 	/**
@@ -77,7 +91,7 @@ class SpecialConcepts extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	public function getHtml( $diWikiPages, $limit, $from, $until ) {
+	public function getHtml( $diWikiPages, $limit, $offset, $from, $until ) {
 		$resultNumber = min( $limit, count( $diWikiPages ) );
 		$pageLister   = new SMWPageLister( $diWikiPages, null, $limit, $from, $until );
 		$key = $resultNumber == 0 ? 'smw-sp-concept-empty' : 'smw-sp-concept-count';
@@ -103,8 +117,8 @@ class SpecialConcepts extends SpecialPage {
 					array( 'class' => $key ),
 					$this->msg( $key, $resultNumber )->parse()
 				) .	' ' .
-				$pageLister->getNavigationLinks( $title ) .
-				$pageLister->formatList()
+				"<br>" . Html::rawElement( 'div', [ 'style' => 'margin-top:5px;'], ListPager::getPagingLinks( $title, $limit, $offset, count( $diWikiPages ) ) ) .
+				$pageLister->getColumnList( $offset, $limit, $diWikiPages, null )
 			);
 	}
 
@@ -116,18 +130,21 @@ class SpecialConcepts extends SpecialPage {
 	 * @param array $param
 	 */
 	public function execute( $param ) {
-		$this->setHeaders();
 
-		$this->getOutput()->setPageTitle( $this->msg( 'concepts' )->text() );
+		$this->setHeaders();
+		$out = $this->getOutput();
 
 		$from  = $this->getRequest()->getVal( 'from', '' );
 		$until = $this->getRequest()->getVal( 'until', '' );
 		$limit = $this->getRequest()->getVal( 'limit', 50 );
+		$offset = $this->getRequest()->getVal( 'offset', 0 );
 
-		$diWikiPages = $this->getResults( $limit, $from, $until );
-		$diWikiPages = $until !== '' ? array_reverse( $diWikiPages ) : $diWikiPages;
+		$diWikiPages = $this->getResults( $limit, $offset, $from, $until );
+	//	$diWikiPages = $until !== '' ? array_reverse( $diWikiPages ) : $diWikiPages;
+		$html = $this->getHtml( $diWikiPages, $limit, $offset, $from, $until );
 
-		$this->getOutput()->addHTML( $this->getHtml( $diWikiPages, $limit, $from, $until ) );
+		$out->setPageTitle( $this->msg( 'concepts' )->text() );
+		$out->addHTML( $html );
 	}
 
 	protected function getGroupName() {

@@ -65,7 +65,7 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			'span class="smw-sp-concept-empty"',
-			$instance->getHtml( array(), 0, 0, 0 )
+			$instance->getHtml( array(), 0, 0, 0, 0 )
 		);
 	}
 
@@ -79,7 +79,7 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			'span class="smw-sp-concept-count"',
-			$instance->getHtml( array( $subject ), 1, 1, 1 )
+			$instance->getHtml( array( $subject ), 1, 0, 1, 1 )
 		);
 	}
 
