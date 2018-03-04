@@ -256,6 +256,10 @@ class HookRegistry {
 			'ExtensionTypes' => 'newExtensionTypes',
 			'SpecialSearchResultsPrepend' => 'newSpecialSearchResultsPrepend',
 			'SpecialStatsAddExtra' => 'newSpecialStatsAddExtra',
+
+			'BlockIpComplete' => 'newBlockIpComplete',
+			'UnblockUserComplete' => 'newUnblockUserComplete',
+			'UserGroupsChanged' => 'newUserGroupsChanged',
 		];
 
 		foreach ( $hooks as $hook => $handler ) {
@@ -857,6 +861,62 @@ class HookRegistry {
 		$docsFunctionHandler = new DocumentationParserFunction();
 		$hookRegistrant->registerFunctionHandler( $docsFunctionDefinition, $docsFunctionHandler );
 		$hookRegistrant->registerHookHandler( $docsFunctionDefinition, $docsFunctionHandler );
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BlockIpComplete
+	 * @provided by MW 1.4
+	 *
+	 * "... occurs after the request to block (or change block settings of)
+	 * an IP or user has been processed ..."
+	 */
+	public function newBlockIpComplete( $block, $performer, $priorBlock ) {
+
+		$userChange = new UserChange(
+			$this->applicationFactory->getNamespaceExaminer()
+		);
+
+		$userChange->setOrigin( 'BlockIpComplete' );
+		$userChange->process( $block->getTarget() );
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/UnblockUserComplete
+	 * @provided by MW 1.29
+	 *
+	 * "... occurs after the request to unblock an IP or user has been
+	 * processed ..."
+	 */
+	public function newUnblockUserComplete( $block, $performer ) {
+
+		$userChange = new UserChange(
+			$this->applicationFactory->getNamespaceExaminer()
+		);
+
+		$userChange->setOrigin( 'UnblockUserComplete' );
+		$userChange->process( $block->getTarget() );
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/UserGroupsChanged
+	 * @provided by MW 1.26
+	 *
+	 * "... called after user groups are changed ..."
+	 */
+	public function newUserGroupsChanged( $user ) {
+
+		$userChange = new UserChange(
+			$this->applicationFactory->getNamespaceExaminer()
+		);
+
+		$userChange->setOrigin( 'UserGroupsChanged' );
+		$userChange->process( $user->getName() );
 
 		return true;
 	}
