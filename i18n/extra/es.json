@@ -20,6 +20,7 @@
         "_qty": "Cantidad",
         "_mlt_rec": "Texto monolingüe",
         "_eid": "Identificador externo",
+        "_keyw": "Palabra clave",
         "_ref_rec": "Referencia"
     },
     "dataTypeAliases": {
@@ -76,7 +77,8 @@
         "_RL_DESC": "Descripción de regla",
         "_RL_TAG": "Etiqueta de regla",
         "_RL_TYPE": "Tipo de regla",
-        "_RL_DEF": "Definición de regla"
+        "_RL_DEF": "Definición de regla",
+        "_FORMAT_RL": "Regla de formateador"
     },
     "propertyAliases": {
         "Es página nueva": "_NEWP",
