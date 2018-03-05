@@ -62,6 +62,7 @@
 	"smw_printername_table": "Tabell",
 	"smw_printername_broadtable": "Bred tabell",
 	"smw_printername_template": "Mall",
+	"smw_printername_templatefile": "Mallfil",
 	"smw_printername_rdf": "RDF",
 	"smw_printername_category": "Kategori",
 	"validator-type-class-SMWParamSource": "text",
@@ -472,5 +473,7 @@
 	"smw-cheat-sheet": "Lathund",
 	"smw-personal-jobqueue-watchlist": "Bevakningslista för jobbkö",
 	"smw-property-predefined-label-skey": "Sorteringsnyckel",
-	"smw-processing": "Bearbetar..."
+	"smw-processing": "Bearbetar...",
+	"smw-ask-title-keyword-type": "Nyckelordssökning",
+	"smw-ask-message-keyword-type": "Denna sökning matchar villkoret <code><nowiki>$1</nowiki></code>."
 }
