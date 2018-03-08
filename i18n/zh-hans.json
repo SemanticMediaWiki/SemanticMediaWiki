@@ -598,7 +598,7 @@
 	"smw-property-predefined-peid": "“$1”是一个指定外部标识符的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-property-predefined-pefu": "“$1”是一个由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，通过占位符指定外部资源的预定义属性。",
 	"smw-property-predefined-long-pefu": "URI预计包含将调整为[[Special:Types/External identifier|外部标识符]]值，以形成有效的资源引用的占位符。",
-	"smw-type-eid": "“$1”是一个限制[https://www.semantic-mediawiki.org/wiki/Type_String 字符串]类型，它要求属性声明[[Property:External formatter uri|外部格式化程序URI]]。",
+	"smw-type-eid": "“$1”是一个[[Special:Types/Text|文本]]数据类型的变体，它要求属性声明[[Property:External formatter uri|外部格式化程序URI]]。",
 	"smw-property-predefined-keyw": "“$1”是一个由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，正常化文本的预定义属性和[[Special:Types/Keyword|类型]]，并拥有有限字符长度。",
 	"smw-type-keyw": "“$1”是一种[[Special:Types/Text|文本]]数据类型的变体，它拥有有限字符长度，并正常化其内容表现形式。",
 	"smw-datavalue-stripmarker-parse-error": "提供的值“$1”包含[https://en.wikipedia.org/wiki/Help:Strip_markers 条形标记]，并因此不能充分解析。",

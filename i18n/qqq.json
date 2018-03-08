@@ -699,7 +699,7 @@
 	"smw-rule-namespace-edit-protection": "This is an informatory message shown on every page which is edit protected via a software setting.",
 	"smw-rule-error-schema": "This is an informatory message preceeding an unordered list of errors.\n\nParamter:\n* $1 - Holds the name of the json-file containing the error, e.g. link-format-rule-schema.v1.json",
 	"smw-rule-page-definition": "This is a section header on a page in namespace \"Rule\".\n\n{{Identical|Definition}}",
-	"smw-rule-page-type-help-link": "This is the link on a page in namespace \"Rule\".\n\nParameter:\n* $1 - holds the string of the configuration defining the rule formatter, e.g. \"LINK_FORMAT_RULE\"\n\n{{Notranslate}}",
+	"smw-rule-page-type-help-link": "This is the link on a page in namespace \"Rule\".\n\nParameter:\n* $1 - holds the string of the configuration defining the rule formatter, e.g. \"LINK_FORMAT_RULE\"\n\n{{Notranslate}}\n{{Optional}}",
 	"smw-rule-page-description": "This is the lable of a field on a page in namespace \"Rule\".\n\n{{Identical|Description}}",
 	"smw-rule-page-type": "This is the lable of a field on a page in namespace \"Rule\". Do not confuse this with a dataype.\n\n{{Identical|Type}}",
 	"smw-rule-page-tag": "This is the lable of a field on a page in namespace \"Rule\".\n\n{{Identical|Tag}}",

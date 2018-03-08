@@ -15,7 +15,8 @@
 			"Nemo bis",
 			"Thodoris",
 			"KATRINE1992",
-			"Tgkarounos"
+			"Tgkarounos",
+			"Nikosgranturismogt"
 		]
 	},
 	"smw-desc": "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([https://www.semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
@@ -23,6 +24,7 @@
 	"smw-semantics-not-enabled": "Η λειτουργικότητα Σημασιολογικού MediaWiki δεν είναι ενεργοποιημένη για αυτό το wiki.",
 	"smw_viewasrdf": "Ροή RDF",
 	"smw_finallistconjunct": " και",
+	"smw-factbox-facts": "Γεγονότα",
 	"smw_isspecprop": "Αυτή η ιδιότητα είναι μια ειδική ιδιότητα σε αυτό το wiki.",
 	"smw-concept-cache-header": "Χρήση προσωρινής μνήμης",
 	"smw-concept-cache-count": "Η [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count προσωρινή μνήμη έννοιας] περιέχει {{PLURAL:$1|'''μία''' οντότητα|'''$1''' οντότητες}} ($2).",
@@ -156,6 +158,10 @@
 	"smw-property-name-reserved": " Το\"$1\" ταξινομήθηκε ως όνομα καταχώρησης από αποθήκευση και δεν πρέπει να χρησιμοποιείται για ιδία χρήση. Η ακόλουθη ιστοσελίδα [https://www.semantic-mediawiki.org/wiki/Help:Property_naming help page] μπορεί να περιλαμβάνει πληροφορίες όπως το γιατί αυτό το όνομα αποθηκεύτηκε (καταχωρήθηκε).",
 	"smw-sp-property-searchform": "Προβολή ιδιοτήτων που περιέχουν:",
 	"smw-sp-property-searchform-inputinfo": "Το πλαίσιο εισαγωγής δεδομένων κάνει διάκριση πεζών-κεφαλαίων και όταν χρησιμοποιείται για φιλτράρισμα, εμφανίζονται μόνο ιδιότητες που ικανοποιούν τη συνθήκη.",
+	"smw-special-property-searchform-options": "Επιλογές",
+	"smw-special-wantedproperties-filter-label": "Φίλτρο:",
+	"smw-special-wantedproperties-filter-none": "Κανένα",
+	"smw-special-wantedproperties-filter-unapproved": "Μη εγκεκριμένο",
 	"concepts": "Έννοιες",
 	"smw-sp-concept-docu": "Μια [https://www.semantic-mediawiki.org/wiki/Help:Concepts έννοια] μπορεί να θεωρηθεί ως «δυναμική κατηγορία», δηλαδή ως μία συλλογή σελίδων που δεν δημιουργήθηκαν με το χέρι αλλά μέσω υπολογισμών από το Σημασιολογικό MediaWiki από την περιγραφή δεδομένου ερωτήματος.",
 	"smw-sp-concept-header": "Κατάλογος εννοιών",

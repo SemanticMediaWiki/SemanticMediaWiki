@@ -594,7 +594,7 @@
 	"smw-property-predefined-peid": "\"$1\" خاصية محددة مسبقا تحدد معرفا خارجيا ويتم توفيرها بواسطة [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ميدياويكي الدلالي].",
 	"smw-property-predefined-pefu": "\"$1\" خاصية محددة مسبقا يقدمها [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ميدياويكي الدلالي] للتحديد مورد خارجي به عنصر نائب.",
 	"smw-property-predefined-long-pefu": "من المتوقع أن يحتوي URI على عنصر نائب سيتم تعديله باستخدام قيمة [[Special:Types/External identifier|معرف خارجي]] لتكوين مرجع مرجعي صالح.",
-	"smw-type-eid": "\"$1\" هو نوع [https://www.semantic-mediawiki.org/wiki/Type_String سلسلة] مقيد يتطلب خصائص معينة لإعلان [[Property:External formatter uri|URI خارجي منسق]].",
+	"smw-type-eid": "\"$1\" هو بديل  نوع البيانات [[Special:Types/Text|نص]] الذي يتطلب خصائص معينة للإعلان عن [[Property:External formatter uri|URI المنسق الخارجي]].",
 	"smw-property-predefined-keyw": "\"$1\" خاصية و[[Special:Types/Keyword|نوع]] محددة مسبقا مقدمة من [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ميدياويكي الدلالي] تقوم بتطبيع النص ولها قيود طول الحرف.",
 	"smw-type-keyw": "\"$1\" هو بديل نوع البيانات [[Special:Types/Text|النص]] الذي يحتوي على طول حرف مقيد ويطبع تمثيل محتواه.",
 	"smw-datavalue-stripmarker-parse-error": "القيمة المعطاة \"$1\" تحتوي على [https://en.wikipedia.org/wiki/Help:Strip_markers علامات الشريط]  وبالتالي فإنه لا يمكن تحليلها بما فيه الكفاية.",

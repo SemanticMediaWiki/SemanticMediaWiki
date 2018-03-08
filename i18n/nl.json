@@ -453,7 +453,14 @@
 	"smw-format-datatable-toolbar-export": "Exporteren",
 	"smw-property-reserved-category": "Categorie",
 	"smw-category": "Categorie",
+	"smw-list-pager-filter": "Filter:",
 	"smw-section-expand": "De selectie uitvouwen",
 	"smw-section-collapse": "De selectie invouwen",
-	"smw-help": "Hulp"
+	"smw-help": "Hulp",
+	"smw-processing": "Verwerken...",
+	"smw-types-title": "Type: $1",
+	"smw-rule-page-definition": "Definitie",
+	"smw-rule-page-description": "Beschrijving:",
+	"smw-rule-page-type": "Type:",
+	"smw-rule-page-tag": "Label:"
 }
