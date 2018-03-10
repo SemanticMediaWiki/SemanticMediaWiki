@@ -25,6 +25,9 @@ return array(
 	# @since 1.0
 	##
 	'smwgIP' => __DIR__ . '/',
+	#
+	# @since 2.5
+	##
 	'smwgExtraneousLanguageFileDir' => __DIR__ . '/i18n/extra',
 	'smwgServicesFileDir' => __DIR__ . '/src/Services',
 	'smwgResourceLoaderDefFiles' => [ 'smw' => __DIR__ . '/res/Resources.php' ],
@@ -71,6 +74,8 @@ return array(
 	###
 	# Use another storage backend for Semantic MediaWiki. The default is suitable
 	# for most uses of SMW.
+	#
+	# @since 0.7
 	##
 	'smwgDefaultStore' => "SMWSQLStore3",
 	##
@@ -110,7 +115,7 @@ return array(
 	# - DB_SLAVE or DB_REPLICA (1.28+)
 	# - DB_MASTER
 	#
-	# @since 3.0
+	# @since 2.5.3
 	##
 	'smwgLocalConnectionConf' => array(
 		'mw.db' => array(
@@ -144,11 +149,16 @@ return array(
 	# store is configure to use some default default graph or if it generally
 	# supports this. Different wikis should normally use different default graphs
 	# unless there is a good reason to share one graph.
+	#
+	# @since 1.6
 	##
 	'smwgSparqlCustomConnector' => 'SMWSparqlDatabase',
 	'smwgSparqlQueryEndpoint' => 'http://localhost:8080/sparql/',
 	'smwgSparqlUpdateEndpoint' => 'http://localhost:8080/update/',
 	'smwgSparqlDataEndpoint' => 'http://localhost:8080/data/',
+	#
+	# @since 1.7
+	##
 	'smwgSparqlDefaultGraph' => '',
 	##
 
@@ -240,6 +250,8 @@ return array(
 	# done to make the pages of this namespace temporarily accessible in order to
 	# move their content to other pages. If the namespace is not registered, then
 	# existing pages in this namespace cannot be found in the wiki.
+	#
+	# @since 1.6
 	##
 	'smwgHistoricTypeNamespace' => false,
 	##
@@ -250,6 +262,8 @@ return array(
 	# into your LocalSettings.php *before* including this file. The number ??? must
 	# be the smallest even namespace number that is not in use yet. However, it
 	# must not be smaller than 100.
+	#
+	# @since 1.6
 	##
 	# 'smwgNamespaceIndex' => 100,
 	##
@@ -263,6 +277,8 @@ return array(
 	# a talk page could be. Pages without annotations will also be ignored
 	# during full RDF export, unless they are referred to from another
 	# article.
+	#
+	# @since 0.7
 	##
 	'smwgNamespacesWithSemanticLinks' => array(
 		NS_MAIN => true,
@@ -289,6 +305,8 @@ return array(
 	# appear below an article. Note that the Magic Words __SHOWFACTBOX__ and
 	# __HIDEFACTBOX__ can be used to control Factbox display for individual pages.
 	# Other options for this setting include:
+	#
+	# @since 0.7
 	##
 	// 	'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY, 	# show only those factboxes that have some content
 	// 	'smwgShowFactbox' => SMW_FACTBOX_SPECIAL 	# show only if special properties were set
@@ -298,6 +316,8 @@ return array(
 
 	###
 	# Same as $smwgShowFactbox but for edit mode and same possible values.
+	#
+	# @since 1.0
 	##
 	'smwgShowFactboxEdit' => SMW_FACTBOX_NONEMPTY,
 	##
@@ -350,6 +370,8 @@ return array(
 	# Settings for recurring events, created with the 	#set_recurring_event parser
 	# function: the default number of instances defined, if no end date is set,
 	# and the maximum number that can be defined, regardless of end date.
+	#
+	# @since 1.4.3
 	##
 	'smwgDefaultNumRecurringEvents' => 100,
 	'smwgMaxNumRecurringEvents' => 500,
@@ -400,10 +422,15 @@ return array(
 	# Number results shown in the listings on pages in the namespaces Property,
 	# Type, and Concept. If a value of 0 is given, the respective listings are
 	# hidden completely.
+	#
+	# @since 0.7
 	##
 	'smwgTypePagingLimit' => 200,   // same number as for categories
-	'smwgConceptPagingLimit' => 200, // same number as for categories
 	'smwgPropertyPagingLimit' => 25, // use smaller value since property lists need more space
+	#
+	# @since 1.3
+	##
+	'smwgConceptPagingLimit' => 200, // same number as for categories
 	##
 
 	###
@@ -441,22 +468,30 @@ return array(
 	# general. This can especially be used to prevent overly high server-load due
 	# to complex queries. The following settings affect all queries, wherever they
 	# occur.
+	#
+	# @since 1.0
 	##
 	'smwgQEnabled' => true,   // (De)activates all query related features and interfaces
 	'smwgQMaxLimit' => 10000, // Max number of results *ever* retrieved, even when using special query pages.
+	#
+	# @since 1.5
+	##
 	'smwgIgnoreQueryErrors' => true, // Should queries be executed even if some errors were detected?
-										// A hint that points out errors is shown in any case.
-
-	'smwgQSubcategoryDepth' => 10,  // Restrict level of sub-category inclusion (steps within category hierarchy)
-	'smwgQSubpropertyDepth' => 10,  // Restrict level of sub-property inclusion (steps within property hierarchy)
-										// (Use 0 to disable hierarchy-inferencing in queries)
-	'smwgQEqualitySupport' => SMW_EQ_SOME, // Evaluate 	#redirects as equality between page names, with possible
-												// performance-relevant restrictions depending on the storage engine
-	// 	'smwgQEqualitySupport' => SMW_EQ_FULL, // Evaluate 	#redirects as equality between page names in all cases
-	// 	'smwgQEqualitySupport' => SMW_EQ_NONE, // Never evaluate 	#redirects as equality between page names
+						// A hint that points out errors is shown in any case.
+	##
+	#
+	# @since 1.0
+	##
+	'smwgQSubcategoryDepth' => 10, // Restrict level of sub-category inclusion (steps within category hierarchy)
+	'smwgQSubpropertyDepth' => 10, // Restrict level of sub-property inclusion (steps within property hierarchy)
+					// (Use 0 to disable hierarchy-inferencing in queries)
+	'smwgQEqualitySupport' => SMW_EQ_SOME, // Evaluate #redirects as equality between page names, with possible
+						// performance-relevant restrictions depending on the storage engine
+	// 'smwgQEqualitySupport' => SMW_EQ_FULL, // Evaluate #redirects as equality between page names in all cases
+	// 'smwgQEqualitySupport' => SMW_EQ_NONE, // Never evaluate #redirects as equality between page names
 	'smwgQDefaultNamespaces' => null, // Which namespaces should be searched by default?
-										// (value NULL switches off default restrictions on searching -- this is faster)
-										// Example with namespaces: 	'smwgQDefaultNamespaces' => array(NS_MAIN, NS_FILE),
+						// (value NULL switches off default restrictions on searching -- this is faster)
+						// Example with namespaces: 'smwgQDefaultNamespaces' => array(NS_MAIN, NS_FILE)
 
 	###
 	# Sort features
@@ -507,6 +542,8 @@ return array(
 	###
 	# Sets whether the > and < comparators should be strict or not. If they are strict,
 	# values that are equal will not be accepted.
+	#
+	# @since 1.5.3
 	##
 	'smwStrictComparators' => false,
 
@@ -519,6 +556,8 @@ return array(
 	# and querying special pages. Essentially they should mirror the kind of
 	# queries that should immediately be answered by the wiki, using whatever
 	# computations are needed.
+	#
+	# @since 1.0
 	##
 	'smwgQMaxSize' => 16, // Maximal number of conditions in queries, use format=debug for example sizes
 	'smwgQMaxDepth' => 4, // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
@@ -558,6 +597,8 @@ return array(
 	# only single concepts:       	'smwgQFeatures' => SMW_CONCEPT_QUERY,
 	# anything but disjunctions:  	'smwgQFeatures' => SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY,
 	# The default is to support all basic features.
+	#
+	# @since 1.2
 	##
 	'smwgQFeatures' => SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY,
 	##
@@ -577,12 +618,17 @@ return array(
 
 	###
 	# Settings about printout of (especially inline) queries:
+	#
+	# @since 1.0
 	##
-	'smwgQDefaultLimit' => 50,      // Default number of rows returned in a query. Can be increased with limit=num in 	#ask
+	'smwgQDefaultLimit' => 50,      // Default number of rows returned in a query. Can be increased with limit=num in #ask
 	'smwgQMaxInlineLimit' => 500,   // Max number of rows ever printed in a single inline query on a single page.
-	'smwgQUpperbound' => 5000,      // Max number of rows ever printed in a single inline query on a single page.
 	'smwgQPrintoutLimit'  => 100,   // Max number of supported printouts (added columns in result table, ?-statements)
 	'smwgQDefaultLinking' => 'all', // Default linking behavior. Can be one of "none", "subject" (first column), "all".
+	#
+	# @since 2.1
+	##
+	'smwgQUpperbound' => 5000,      // Max number of rows ever printed in a single inline query on a single page with an offset.
 	##
 
 	###
@@ -652,6 +698,8 @@ return array(
 	# the settings to disallow certain aliases or to register extension aliases.
 	# To disable an alias, do "unset($smwgResultAliases['alias'])," Disabled
 	# aliases will be treated like if the alias parameter had been omitted.
+	#
+	# @since 1.8
 	##
 	'smwgResultAliases' => [
 		'feed' => [ 'rss' ],
@@ -677,6 +725,8 @@ return array(
 	# Note that the basic installation comes with no additional source besides
 	# the local source (which in turn cannot be disabled or set explicitly).
 	# Set a new store like this: $smwgQuerySources['freebase' => "SMWFreebaseStore",
+	#
+	# @since 1.4.3
 	##
 	'smwgQuerySources' => array(
 	//	'local'      => '',
@@ -688,6 +738,8 @@ return array(
 	# statement) will be assumed to be of this type. This is an internal type id.
 	# See the file languages/SMW_LanguageXX.php to find what IDs to use for
 	# datatpyes in your language. The default corresponds to "Type:Page".
+	#
+	# @since 1.1.2
 	##
 	'smwgPDefaultType' => '_wpg',
 	##
@@ -696,6 +748,8 @@ return array(
 	# The maximal number that SMW will normally display without using scientific exp
 	# notation. The deafult is rather large since some users have problems understanding
 	# exponents. Scineitfic applications may prefer a smaller value for concise display.
+	#
+	# @since 1.4.3
 	##
 	'smwgMaxNonExpNumber' => 1000000000000000,
 	##
@@ -709,6 +763,8 @@ return array(
 	# following setting can be used to disable jobs. Note that this will cause some
 	# parts of the semantic data to get out of date, so that manual modifications
 	# or the use of SMW_refreshData.php might be needed.
+	#
+	# @since 1.1.2
 	##
 	'smwgEnableUpdateJobs' => true,
 	##
@@ -751,6 +807,8 @@ return array(
 	#     	'smwgPageSpecialProperties' => array( '_MDAT', '_CDAT' ),
 	# However, DO NOT use `+=' operator! This DOES NOT work:
 	#     $smwgPageSpecialProperties += array( '_MDAT' ),
+	#
+	# @since 1.7
 	##
 	'smwgPageSpecialProperties' => array( '_MDAT' ),
 	##
@@ -836,6 +894,8 @@ return array(
 	# -- FEATURE IS DISABLED --
 	# Setting this to true allows to translate all the labels within
 	# the browser GIVEN that they have interwiki links.
+	#
+	# @since 0.7
 	##
 	'smwgTranslate' => false,
 	##
@@ -850,6 +910,8 @@ return array(
 	# from your local filesystem. Note that ontology import is
 	# highly experimental at the moment, and may not do what you
 	# extect.
+	#
+	# @since 1.0
 	##
 	// 	'smwgRAPPath' => $smwgIP . 'libs/rdfapi-php',
 	// 	'smwgRAPPath' => '/another/example/path/rdfapi-php',
@@ -865,14 +927,15 @@ return array(
 	# - SMW_ADM_PSTATS: Property statistics update
 	# - SMW_ADM_FULLT:
 	#
-	# @sine 2.5
+	# @since 2.5
 	##
 	'smwgAdminFeatures' => SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT,
 	##
 
 	###
 	# Sets whether or not to refresh the pages of which semantic data is stored.
-	# Introduced in SMW 1.5.6
+	# 
+	# @since 1.5.6
 	##
 	'smwgAutoRefreshSubject' => true,
 	##
@@ -1201,7 +1264,7 @@ return array(
 	#
 	# Whether or not "normal" users can request an recursive export.
 	#
-	# @since ??
+	# @since 0.7
 	# @default = false
 	##
 	'smwgAllowRecursiveExport' => false,
@@ -1212,7 +1275,7 @@ return array(
 	#
 	# Whether or not backlinks should be included by default.
 	#
-	# @since ??
+	# @since 0.7
 	# @default = true
 	##
 	'smwgExportBacklinks' => true,
@@ -1229,7 +1292,7 @@ return array(
 	# @see https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics
 	# @see https://www.semantic-mediawiki.org/wiki/Help:Pretty_URIs
 	#
-	# @since ??
+	# @since 1.0
 	# @default = ''
 	##
 	// 	'smwgNamespace' => "http://example.org/id/",
