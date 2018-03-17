@@ -319,7 +319,8 @@ class ValueListBuilder {
 				HtmlDivTable::cell(
 					$dvWikiPage->getShortHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ),
 					array(
-						'class' => "smwpropname"
+						'class' => "smwpropname",
+						'data-list-index' => $index
 					)
 				) . HtmlDivTable::cell(
 					$pvCells,
@@ -371,11 +372,23 @@ class ValueListBuilder {
 		$res = $this->store->getQueryResult( $query );
 		$results = $res->getResults();
 
+		$sort = [];
+		$collator = Collator::singleton();
+
+		foreach ( $results as $result ) {
+
+			$firstLetter = $collator->getFirstLetter(
+				$this->store->getWikiPageSortKey( $result )
+			);
+
+			$sort[$firstLetter . '#' . $result->getHash()] = $result;
+		}
+
 		// Sort on the spot via PHP, which should be enough for the search
 		// and match functionality
-		sort( $results );
+		ksort( $sort );
 
-		return $results;
+		return array_values( $sort );
 	}
 
 }
