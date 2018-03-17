@@ -48,7 +48,7 @@ class TaskHandlerFactory {
 	 */
 	public function getTaskHandlerList( $user, $adminFeatures ) {
 
-		$handlers = [
+		$taskHandlers = [
 			// TaskHandler::SECTION_SCHEMA
 			$this->newTableSchemaTaskHandler(),
 
@@ -71,6 +71,8 @@ class TaskHandlerFactory {
 			$this->newSupportListTaskHandler()
 		];
 
+		\Hooks::run( 'SMW::Admin::TaskHandlerFactory', [ &$taskHandlers, $this->store, $this->outputFormatter, $user ] );
+
 		$taskHandlerList = [
 			TaskHandler::SECTION_SCHEMA => [],
 			TaskHandler::SECTION_DATAREPAIR => [],
@@ -80,36 +82,40 @@ class TaskHandlerFactory {
 			'actions' => []
 		];
 
-		foreach ( $handlers as $handler ) {
+		foreach ( $taskHandlers as $taskHandler ) {
 
-			$handler->setEnabledFeatures(
+			if ( !is_a( $taskHandler, 'SMW\MediaWiki\Specials\Admin\TaskHandler' ) ) {
+				continue;
+			}
+
+			$taskHandler->setEnabledFeatures(
 				$adminFeatures
 			);
 
-			$handler->setStore(
+			$taskHandler->setStore(
 				$this->store
 			);
 
-			switch ( $handler->getSection() ) {
+			switch ( $taskHandler->getSection() ) {
 				case TaskHandler::SECTION_SCHEMA:
-					$taskHandlerList[TaskHandler::SECTION_SCHEMA][] = $handler;
+					$taskHandlerList[TaskHandler::SECTION_SCHEMA][] = $taskHandler;
 					break;
 				case TaskHandler::SECTION_DATAREPAIR:
-					$taskHandlerList[TaskHandler::SECTION_DATAREPAIR][] = $handler;
+					$taskHandlerList[TaskHandler::SECTION_DATAREPAIR][] = $taskHandler;
 					break;
 				case TaskHandler::SECTION_DEPRECATION:
-					$taskHandlerList[TaskHandler::SECTION_DEPRECATION][] = $handler;
+					$taskHandlerList[TaskHandler::SECTION_DEPRECATION][] = $taskHandler;
 					break;
 				case TaskHandler::SECTION_SUPPLEMENT:
-					$taskHandlerList[TaskHandler::SECTION_SUPPLEMENT][] = $handler;
+					$taskHandlerList[TaskHandler::SECTION_SUPPLEMENT][] = $taskHandler;
 					break;
 				case TaskHandler::SECTION_SUPPORT:
-					$taskHandlerList[TaskHandler::SECTION_SUPPORT][] = $handler;
+					$taskHandlerList[TaskHandler::SECTION_SUPPORT][] = $taskHandler;
 					break;
 			}
 
-			if ( $handler->hasAction() ) {
-				$taskHandlerList['actions'][] = $handler;
+			if ( $taskHandler->hasAction() ) {
+				$taskHandlerList['actions'][] = $taskHandler;
 			}
 		}
 

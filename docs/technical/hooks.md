@@ -338,7 +338,7 @@ Hooks::register( 'SMW::LinksUpdate::ApprovedUpdate', function( $title, $latestRe
 ### SMW::Parser::ChangeRevision
 
 * Version: 3.0
-* Description: Hook allows to forcibly to change a revision used during content parsing as in case of execution the `UpdateJob` or running `rebuildData.php`.
+* Description: Hook allows to forcibly change a revision used during content parsing as in case of the `UpdateJob` execution or when running `rebuildData.php`.
 * Reference class: `SMW\ContentParser`
 
 If you do alter a revision, please log the event and make it visible to a user (or administrator) that it was changed.
@@ -350,6 +350,24 @@ Hooks::register( 'SMW::Parser::ChangeRevision', function( $title, &$revision ) {
 
 	// Set a revision
 	// $revision = \Revision::newFromId( $id );
+
+	return true;
+} );
+</pre>
+
+### SMW::Admin::TaskHandlerFactory
+
+* Version: 3.0
+* Description: Hook allows to extend available `TaskHandler` in `Special:SemanticMediaWiki`
+* Reference class: `SMW\MediaWiki\Specials\Admin\TaskHandlerFactory`
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::Admin::TaskHandlerFactory', function( &$taskHandlers, $store, $outputFormatter, $user ) {
+
+	// Instance of TaskHandler
+	// $taskHandlers[] = new FooTaskHandler();
 
 	return true;
 } );
