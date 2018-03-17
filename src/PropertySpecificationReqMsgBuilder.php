@@ -148,6 +148,15 @@ class PropertySpecificationReqMsgBuilder {
 			$this->message .= $this->findErrorMessages();
 		}
 
+		if ( $this->semanticData !== null && ( $props = $this->semanticData->getPropertyValues( new DIProperty( '_TYPE' ) ) ) && count( $props ) > 1 ) {
+			$this->message .= $this->createMessage(
+				[
+					'warning',
+					'smw-property-req-violation-type'
+				]
+			);
+		}
+
 		if ( $property->isUserDefined() && wfMessage( 'smw-property-introductory-message-user' )->exists() ) {
 			$this->message .= $this->createIntroductoryMessage( 'smw-property-introductory-message-user', $propertyName );
 		}

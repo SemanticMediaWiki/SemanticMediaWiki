@@ -117,6 +117,42 @@ class PropertySpecificationReqMsgBuilderTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testErrorOnCompetingTypes() {
+
+		$dataItemFactory = new DataItemFactory();
+		$subject = $dataItemFactory->newDIWikiPage( 'Test', NS_MAIN );
+
+		$semanticData = new SemanticData(
+			$subject
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$dataItemFactory->newDIProperty( '_TYPE' ),
+			$dataItemFactory->newDIBlob( '_num' )
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$dataItemFactory->newDIProperty( '_TYPE' ),
+			$dataItemFactory->newDIBlob( '_dat' )
+		);
+
+		$instance = new PropertySpecificationReqMsgBuilder(
+			$this->store,
+			$this->propertySpecificationReqExaminer
+		);
+
+		$instance->setSemanticData( $semanticData );
+
+		$instance->check(
+			$dataItemFactory->newDIProperty( 'Foo' )
+		);
+
+		$this->assertContains(
+			'smw-property-req-violation-type',
+			$instance->getMessage()
+		);
+	}
+
 	public function testCheckUniqueness() {
 
 		$entityManager = $this->getMockBuilder( '\SMWSql3SmwIds' )
