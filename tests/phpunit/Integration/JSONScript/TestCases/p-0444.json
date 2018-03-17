@@ -42,6 +42,10 @@
 		{
 			"page": "Example/P0444/Q.1",
 			"contents": "{{#ask: [[Category:P0444]] |format=embedded }}"
+		},
+		{
+			"page": "Example/P0444/5",
+			"contents": "[[Has text::[[:Lorem ipsum]] [[:Lorem ipsum|Bar]]]]"
 		}
 	],
 	"tests": [
@@ -155,6 +159,31 @@
 					],
 					"propertyValues": []
 				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 internal wiki link (`[[:...`)",
+			"subject": "Example/P0444/5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text"
+					],
+					"propertyValues": [
+						"[[:Lorem ipsum]] [[:Lorem ipsum|Bar]]"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					">Lorem ipsum</a>",
+					">Bar</a>"
+				]
 			}
 		}
 	],
