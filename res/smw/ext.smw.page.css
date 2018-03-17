@@ -115,6 +115,7 @@
 
 .smw-page-nav-left {
 	float: left;
+	margin-right: 20px;
 }
 
 .smw-page-nav-right {
@@ -224,8 +225,11 @@
 @media screen and (max-width: 800px) {
 
 	.smw-page-nav-right {
-		margin-top: 8px;
 		float: left;
+	}
+
+	.smw-page-nav-left {
+		margin-bottom: 8px;
 	}
 
 	.smw-property-page-results .header-title, .smw-property-page-results .header-row > .header-title {
