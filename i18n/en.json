@@ -663,6 +663,7 @@
 	"apihelp-browsebysubject-summary": "API module to retrieve information about a subject.",
 	"apihelp-smwtask-summary": "API module to execute Semantic MediaWiki related tasks.",
 	"apihelp-smwbrowse-summary": "Semantic MediaWiki API module to support selected browse activties.",
+	"apihelp-ask-parameter-api-version": "Output formatting:\n;2:Backwards-compatible format using {} for the result list.\n;3:Experimental format using [] as result list.",
 	"smw-api-smwbrowse-invalid-parameters": "Parameters format is invalid, expected a valid JSON format.",
 	"smw-parser-recursion-level-exceeded": "The level of $1 recursions was exceeded during a parse process. It is suggested to validated the template structure, or if necessary adjust configuration parameter <code>$maxRecursionDepth</code>.",
 	"smw-property-page-list-count": "Showing $1 {{PLURAL:$1|page|pages}} using this property.",

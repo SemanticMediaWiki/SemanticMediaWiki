@@ -76,6 +76,11 @@ class SMWQueryResult {
 	private $inMemoryEntityProcessList;
 
 	/**
+	 * @var integer
+	 */
+	private $serializer_version = 2;
+
+	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
 	 *
@@ -307,6 +312,15 @@ class SMWQueryResult {
 	}
 
 	/**
+	 * @private
+	 *
+	 * @since 3.0
+	 */
+	public function setSerializerVersion( $version ) {
+		$this->serializer_version = $version;
+	}
+
+	/**
 	 * @see DISerializer::getSerializedQueryResult
 	 * @since 1.7
 	 * @return array
@@ -314,9 +328,12 @@ class SMWQueryResult {
 	public function serializeToArray() {
 
 		$serializerFactory = new SerializerFactory();
-		$serialized = $serializerFactory->newQueryResultSerializer()->serialize( $this );
+		$serializer = $serializerFactory->newQueryResultSerializer();
+		$serializer->version( $this->serializer_version );
 
+		$serialized = $serializer->serialize( $this );
 		reset( $this->mResults );
+
 		return $serialized;
 	}
 
