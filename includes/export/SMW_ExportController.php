@@ -167,25 +167,25 @@ class SMWExportController {
 		}
 
 		// let other extensions add additional RDF data for this page
-		$extraExpDataList = array();
+		$expDataList = [];
 
 		\Hooks::run(
-			'SMW::Exporter::AddExpDataAfterPageSerializationComplete',
+			'SMW::Exporter::Controller::AddExpData',
 			[
 				$diWikiPage,
-				&$extraExpDataList,
+				&$expDataList,
 				( $recursiondepth != 0 ),
 				$this->add_backlinks
 			]
 		);
 
-		foreach ( $extraExpDataList as $extraExpData ) {
+		foreach ( $expDataList as $data ) {
 
-			if ( !$extraExpData instanceof SMWExpData ) {
+			if ( !$data instanceof SMWExpData ) {
 				continue;
 			}
 
-			$this->serializer->serializeExpData( $extraExpData );
+			$this->serializer->serializeExpData( $data );
 		}
 
 		if ( $recursiondepth != 0 ) {
