@@ -181,8 +181,9 @@ class Obfuscator {
 		// identify the boundaries of the enclosing annotation
 		foreach ( $matches[0] as $match ) {
 
-			// Normal link
-			if ( strpos( $match, '[[:' ) !== false ) {
+			// Ignore simple links like `[[:Property:Has URL|Has URL]]` but
+			// do parse `[[Has description::[[foo]][[:bar]]]]` (:= legacy notation)
+			if ( strpos( $match, '[[' ) !== false && strpos( $match, '::' ) === false && strpos( $match, ':=' ) === false ) {
 				continue;
 			}
 
