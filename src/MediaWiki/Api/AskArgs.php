@@ -20,6 +20,8 @@ class AskArgs extends Query {
 	 */
 	public function execute() {
 
+		$params = $this->extractRequestParams();
+
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
 		$outputFormat = 'json';
 
@@ -31,6 +33,10 @@ class AskArgs extends Query {
 
 		if ( $this->getMain()->getPrinter() instanceof \ApiFormatXml ) {
 			$outputFormat = 'xml';
+		}
+
+		if ( isset( $params['api_version'] ) ) {
+			$queryResult->setSerializerVersion( $params['api_version'] );
 		}
 
 		$this->addQueryResult( $queryResult, $outputFormat );
@@ -58,6 +64,11 @@ class AskArgs extends Query {
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_DFLT => '',
 				ApiBase::PARAM_ISMULTI => true,
+			),
+			'api_version' => array(
+				ApiBase::PARAM_TYPE => [ 2, 3 ],
+				ApiBase::PARAM_DFLT => 2,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
 			),
 		);
 	}

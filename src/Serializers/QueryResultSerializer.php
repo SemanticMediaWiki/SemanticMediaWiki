@@ -29,6 +29,20 @@ use Title;
 class QueryResultSerializer implements DispatchableSerializer {
 
 	/**
+	 * @var integer
+	 */
+	private static $version = 2;
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $version
+	 */
+	public function version( $version ) {
+		self::$version = (int)$version;
+	}
+
+	/**
 	 * @see SerializerInterface::serialize
 	 *
 	 * @since 1.9
@@ -42,7 +56,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
 
-		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 2 );
+		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => self::$version );
 	}
 
 	/**
@@ -157,7 +171,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 		$printRequests = array();
 
 		foreach ( $queryResult->getPrintRequests() as $printRequest ) {
-			$printRequests[] = self::getSerializedPrintRequestFormat( $printRequest );
+			$printRequests[] = self::serialize_printrequest( $printRequest );
 		}
 
 		/**
@@ -192,14 +206,34 @@ class QueryResultSerializer implements DispatchableSerializer {
 				}
 			}
 
-			$results[$diWikiPage->getTitle()->getFullText()] = $result;
+			$id = $diWikiPage->getTitle()->getFullText();
 
+			/**
+			 * #3038
+			 *
+			 * Version 2: ... "results": { "Foo": {} ... }
+			 * Version 3: ... "results": [ { "Foo": {} } ... ]
+			 */
+			if ( self::$version >= 3 ) {
+				$results[] = [ $id => $result ];
+			} else{
+				$results[$id] = $result;
+			}
 		}
 
-		return array( 'printrequests' => $printRequests, 'results' => $results);
+		$serialization = [
+			'printrequests' => $printRequests,
+			'results' => $results,
+
+			// If we wanted to be able to deserialize a serialized QueryResult,
+			// we would need to following information as well.
+			// 'ask' => $queryResult->getQuery()->toArray()
+		];
+
+		return $serialization;
 	}
 
-	private static function getSerializedPrintRequestFormat( $printRequest ) {
+	private static function serialize_printrequest( $printRequest ) {
 
 		$serialized = array(
 			'label'  => $printRequest->getLabel(),

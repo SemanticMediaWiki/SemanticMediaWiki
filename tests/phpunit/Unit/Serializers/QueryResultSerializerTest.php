@@ -161,6 +161,10 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
 
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
 			'getDIType' => DataItem::TYPE_WIKIPAGE,
 			'getTitle'  => null
@@ -169,6 +173,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
 			'getPrintRequests'  => array(),
 			'getResults'        => array( $dataItem ),
+			'getQuery'          => $query
 		) );
 
 		$instance = new QueryResultSerializer();
@@ -210,6 +215,10 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @return QueryResult
 	 */
 	private function buildMockQueryResult( $setup ) {
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$printRequests = array();
 		$resultArray   = array();
@@ -253,6 +262,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			'getPrintRequests'  => $printRequests,
 			'getNext'           => $resultArray,
 			'getResults'        => $getResults,
+			'getQuery'          => $query,
 			'getStore'          => $this->newMockBuilder()->newObject( 'Store' ),
 			'getLink'           => new \SMWInfolink( true, 'Lala', 'Lula' ),
 			'hasFurtherResults' => true
