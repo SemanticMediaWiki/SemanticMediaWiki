@@ -231,6 +231,11 @@ class SMWPageLister {
 
 			// output all diWikiPages
 			for ( $index = $startChunk; $index < $endChunk && $index < $end; ++$index ) {
+
+				if ( !isset( $diWikiPages[$index] ) ) {
+					continue;
+				}
+
 				$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
 				$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
 
