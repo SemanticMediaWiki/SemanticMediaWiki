@@ -149,7 +149,12 @@ class TaskHandlerFactory {
 	 * @return OperationalStatisticsListTaskHandler
 	 */
 	public function newOperationalStatisticsListTaskHandler() {
-		return new OperationalStatisticsListTaskHandler( $this->outputFormatter );
+
+		$taskHandlers = [
+			new CacheStatisticsListTaskHandler( $this->outputFormatter )
+		];
+
+		return new OperationalStatisticsListTaskHandler( $this->outputFormatter, $taskHandlers );
 	}
 
 	/**

@@ -127,12 +127,22 @@ class Options {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function toArray() {
+		return $this->options;
+	}
+
+	/**
+	 * @deprecated since 3.0, use Options::toArray
 	 * @since 2.4
 	 *
 	 * @return array
 	 */
 	public function getOptions() {
-		return $this->options;
+		return $this->toArray();
 	}
 
 	/**

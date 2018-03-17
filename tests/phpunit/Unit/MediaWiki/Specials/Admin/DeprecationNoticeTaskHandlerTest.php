@@ -37,7 +37,7 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\DeprecationNoticeTaskHandler',
+			DeprecationNoticeTaskHandler::class,
 			new DeprecationNoticeTaskHandler( $this->outputFormatter )
 		);
 	}
@@ -57,6 +57,47 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testGetHtmlWithFakeDetection() {
 
 		$GLOBALS['deprecationNoticeFoo'] = 'Foo';
+		$GLOBALS['deprecationNoticeFoobar'] = 'Foo';
+		$GLOBALS['deprecationNoticeFooFoo'] = 'Foo';
+
+		$deprecationNotice = array(
+			'notice' => array(
+				'deprecationNoticeFoo' => '...',
+				'options' => [
+					'deprecationNoticeFoo' => [
+						'Foo',
+						'Bar'
+					]
+				]
+			),
+			'replacement' => array(
+				'deprecationNoticeFoobar' => '...',
+				'options' => [
+					'deprecationNoticeFoobar' => [
+						'Foo',
+						'Bar'
+					]
+				]
+			),
+			'removal' => array(
+				'deprecationNoticeFooFoo' => '...'
+			)
+		);
+
+		$instance = new DeprecationNoticeTaskHandler(
+			$this->outputFormatter,
+			$deprecationNotice
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getHtml()
+		);
+	}
+
+	public function testGetHtmlWithFakeDetectionArray() {
+
+		$GLOBALS['deprecationNoticeFoo'] = [ 'Bar' => false ];
 		$GLOBALS['deprecationNoticeFoobar'] = 'Foo';
 		$GLOBALS['deprecationNoticeFooFoo'] = 'Foo';
 
