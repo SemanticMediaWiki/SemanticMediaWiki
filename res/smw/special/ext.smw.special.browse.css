@@ -155,6 +155,7 @@ span.smwb-value {
 .smwb-ipropvalue .smwb-propval {
 	background-color: #EEEEEE;
 	padding-right: 1em;
+	padding: 0.4em 0.6em;
 }
 
 .smwb-factbox .group-link:before {
