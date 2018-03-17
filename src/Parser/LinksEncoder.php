@@ -8,7 +8,7 @@ namespace SMW\Parser;
  *
  * @author mwjames
  */
-class Obfuscator {
+class LinksEncoder {
 
 	/**
 	 * @since 2.5
@@ -18,7 +18,7 @@ class Obfuscator {
 	 *
 	 * @return text
 	 */
-	public static function obfuscateLinks( $text, InTextAnnotationParser $parser ) {
+	public static function findAndEncodeLinks( $text, InTextAnnotationParser $parser ) {
 
 		// #2193
 		// Use &#x005B; instead of &#91; to distinguish it from the MW's Sanitizer
@@ -38,7 +38,7 @@ class Obfuscator {
 		);
 
 		// Deep nesting is NOT supported as in [[Foo::[[abc]] [[Bar::123[[abc]] ]] ]]
-		return self::doObfuscate( $text, $parser );
+		return self::matchAndReplace( $text, $parser );
 	}
 
 	/**
@@ -156,7 +156,7 @@ class Obfuscator {
 		return $caption !== false ? $caption : $value;
 	}
 
-	private static function doObfuscate( $text, $parser ) {
+	private static function matchAndReplace( $text, $parser ) {
 
 		/**
 		 * @see http://blog.angeloff.name/post/2012/08/05/php-recursive-patterns/
@@ -197,7 +197,7 @@ class Obfuscator {
 
 			// Only engage if the match contains more than one [[ :: ]] pair
 			if ( $annotationOpenNum > 1 ) {
-				$replace = self::doMatchAndReplace( $match, $parser, $isOffAnnotation );
+				$replace = self::replace( $match, $parser, $isOffAnnotation );
 				$text = str_replace( $match, $replace, $text );
 			}
 		}
@@ -205,7 +205,7 @@ class Obfuscator {
 		return $text;
 	}
 
-	private static function doMatchAndReplace( $match, $parser, $isOffAnnotation = false ) {
+	private static function replace( $match, $parser, $isOffAnnotation = false ) {
 
 		// Remove the Leading and last square bracket to avoid distortion
 		// during the annotation parsing
