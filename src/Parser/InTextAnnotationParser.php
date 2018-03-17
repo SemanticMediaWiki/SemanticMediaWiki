@@ -157,10 +157,10 @@ class InTextAnnotationParser {
 		// decoding in a post-processing so that the regex can split the text
 		// appropriately
 		if ( $this->isLinksInValues ) {
-			$text = Obfuscator::obfuscateLinks( $text, $this );
+			$text = LinksEncoder::findAndEncodeLinks( $text, $this );
 		}
 
-		// No longer used with 3.0 given that the Obfuscator is safer and faster
+		// No longer used with 3.0 given that the LinksEncoder is safer and faster
 		$linksInValuesPcre = false;
 
 		$text = preg_replace_callback(
@@ -170,7 +170,7 @@ class InTextAnnotationParser {
 		);
 
 		// Ensure remaining encoded entities are decoded again
-		$text = Obfuscator::removeLinkObfuscation( $text );
+		$text = LinksEncoder::removeLinkObfuscation( $text );
 
 		if ( $this->isEnabledNamespace ) {
 			$this->parserData->getOutput()->addModules( $this->getModules() );
@@ -206,7 +206,7 @@ class InTextAnnotationParser {
 	 * @return text
 	 */
 	public static function decodeSquareBracket( $text ) {
-		return Obfuscator::decodeSquareBracket( $text );
+		return LinksEncoder::decodeSquareBracket( $text );
 	}
 
 	/**
@@ -217,7 +217,7 @@ class InTextAnnotationParser {
 	 * @return text
 	 */
 	public static function obfuscateAnnotation( $text ) {
-		return Obfuscator::obfuscateAnnotation( $text );
+		return LinksEncoder::obfuscateAnnotation( $text );
 	}
 
 	/**
@@ -228,7 +228,7 @@ class InTextAnnotationParser {
 	 * @return text
 	 */
 	public static function removeAnnotation( $text ) {
-		return Obfuscator::removeAnnotation( $text );
+		return LinksEncoder::removeAnnotation( $text );
 	}
 
 	/**

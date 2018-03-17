@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Parser;
 
-use SMW\Parser\Obfuscator;
+use SMW\Parser\LinksEncoder;
 
 /**
- * @covers \SMW\Parser\Obfuscator
+ * @covers \SMW\Parser\LinksEncoder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,25 +13,25 @@ use SMW\Parser\Obfuscator;
  *
  * @author mwjames
  */
-class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
+class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider obfuscateProvider
 	 */
 	public function testRoundTripLinkObfuscation( $text ) {
 
-		$newText = Obfuscator::encodeLinks( $text );
+		$newText = LinksEncoder::encodeLinks( $text );
 
 		$this->assertEquals(
 			$text,
-			Obfuscator::removeLinkObfuscation( $newText )
+			LinksEncoder::removeLinkObfuscation( $newText )
 		);
 	}
 
 	/**
 	 * @dataProvider obfuscateProvider
 	 */
-	public function testObfuscateLinks( $text, $expected ) {
+	public function testfindAndEncodeLinks( $text, $expected ) {
 
 		$inTextAnnotationParser = $this->getMockBuilder( 'SMW\Parser\InTextAnnotationParser' )
 			->disableOriginalConstructor()
@@ -39,7 +39,7 @@ class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			Obfuscator::obfuscateLinks( $text, $inTextAnnotationParser )
+			LinksEncoder::findAndEncodeLinks( $text, $inTextAnnotationParser )
 		);
 	}
 
@@ -50,12 +50,12 @@ class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedRemoval,
-			Obfuscator::removeAnnotation( $text )
+			LinksEncoder::removeAnnotation( $text )
 		);
 
 		$this->assertEquals(
 			$expectedObscuration,
-			Obfuscator::obfuscateAnnotation( $text )
+			LinksEncoder::obfuscateAnnotation( $text )
 		);
 	}
 

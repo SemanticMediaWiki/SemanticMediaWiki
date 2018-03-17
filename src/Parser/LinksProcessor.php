@@ -161,7 +161,7 @@ class LinksProcessor {
 			$value = $semanticLink[2];
 		}
 
-		$value = Obfuscator::removeLinkObfuscation( $value );
+		$value = LinksEncoder::removeLinkObfuscation( $value );
 
 		if ( $value === '' ) { // silently ignore empty values
 			return '';

@@ -2,8 +2,6 @@
 
 namespace SMW\Parser;
 
-use SMW\Parser\Obfuscator;
-
 /**
  * @license GNU GPL v2+
  * @since 2.5
