@@ -25,12 +25,11 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 
 ## New features and enhancements
 
-* [#794](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/794)
+* [#794](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/794) Added `SMW_PARSER_UNSTRIP` to [$smwgParserFeatures](https://www.semantic-mediawiki.org/wiki/Help:$smwgParserFeatures) enabling to use unstripped content on a text annotation
 * [#2065](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2065) Added entity specific collation support with help of the [`$smwgEntityCollation`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation) setting
 * [#2348](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2348) Allow showing annotations even if they are improper for datatype "Text"
 * [#2398](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2398) Added `#ask` and `#show` parser function support for `@deferred` output mode
 * [#2420](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2420) Added support for a datatable output in the `format=table` (and `broadtable`) result printer
-* [#2432](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2432) Added check for MediaWiki's `readOnly` mode
 * [#2435](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2435) Added filtering of invisible characters (non-printable, shyness etc.) to armor against incorrect annotations
 * [#2453](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2453) Changed the approach on how referenced properties during an article delete are generated to optimize the update dispatcher
 * [#2461](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2461) Improved performance on fetching incoming properties
@@ -48,72 +47,64 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2595](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2595) Improved the content navigation in `Special:SemanticMediaWiki`
 * [#2600](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2600) Added `$smwgCreateProtectionRight` setting to control the creation of new properties and hereby annotations as part of the [authority mode](https://www.semantic-mediawiki.org/wiki/Authority_mode)
 * [#2615](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2615) Added `filter=unapprove` to `Special:WantedProperties`
-* [#2632](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2632) Added [uniqueness violation](https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness) for a property label to be displayed on the property page
+* [#2632](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2632) Added [uniqueness violation](https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness) check on the property page for the property label used
 * [#2662](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2662) Added `+depth` as syntax component for a condition to restrict the depth of class and property hierarchy queries
 * [#2673](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2673)
 * [#2677](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2677) Added `+width` as parameter to the `format=table` (and `broadtable`) result printer
 * [#2690](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2690) Added the `type` parameter to `format=json` in support for a simple list export
-* [#2696](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2696) Added a new `smwbrowse` API module
-* [#2699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2699) Added an input assistance for the `Special:Ask` condition textbox
-* [#2717](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2717) Added addtional index to bettter serve the `smwbrowse` API module
+* [#2696](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2696) Added a new `smwbrowse` API module ([#2717](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2717, [#2719](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2719), [#2721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2721))
+* [#2699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2699) Added an [input assistance](https://www.semantic-mediawiki.org/wiki/Help:Input_assistance) for the `Special:Ask` condition textbox
 * [#2718](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2718) Added ad-hoc export for the `format=table` datatable
-* [#2719](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2719) 
-* [#2721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2721)
-* [#2726](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2726)
-* [#2738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2738)
-* [#2756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2756)
-* [#2776](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2776)
-* [#2785](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2785)
+* [#2726](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2726) Added entity [input assistance](https://www.semantic-mediawiki.org/wiki/Help:Input_assistance) for wikiEditor and the `Special:Search` input field ([#2756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2756))
+* [#2738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2738) Added information whether `SMWSearch` search mode is enabled or not for `Special:Search`
+* [#2776](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2776) Added tracking of changes to categories (see 2495)
+* [#2785](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2785) Added new styling to property page value list
 * [#2796](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2796) Allows "rendering of HTML" on special page "Ask" when using `|headers=plain` in queries
-* [#2801](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2801)
-* [#2803](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2803)
-* [#2805](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2805)
-* [#2815](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2815)
-* [#2820](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2820)
-* [#2822](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2822)
-* [#2824](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2824)
-* [#2826](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2826)
-* [#2840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2840)
-* [#2841](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2841)
-* [#2842](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2842)
-* [#2844](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2844)
-* [#2861](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2861)
-* [#2867](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2867)
-* [#2873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2873)
-* [#2874](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2874)
-* [#2875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2875)
-* [#2878](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2878)
-* [#2882](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2882)
-* [#2883](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2883)
-* [#2891](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2891)
-* [#2893](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2893)
-* [#2889](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2889)
-* [#2895](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2895)
-* [#2898](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2898)
-* [#2906](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906)
-* [#2907](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2907)
-* [#2913](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2913)
-* [#2916](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2916)
-* [#2919](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2919)
-* [#2922](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2922)
-* [#2930](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2930)
-* [#2932](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2932)
-* [#2933](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2933)
-* [#2953](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2953)
+* [#2801](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2801) Added `--skip-optimize` and `--skip-import` to `setupStore.php` (see 2516)
+* [#2803](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2803) Filter categories from transcluded content in `format=embedded`
+* [#2815](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2815) Added `#nowiki` support for external identifier type
+* [#2820](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2820) Added check on declarative property usage
+* [#2822](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2822) Added add `merge` parameter to `format=csv`
+* [#2824](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2824) Added `bom` as parameter to `format=csv`
+* [#2826](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2826) Added `valuesep` as parameter to `format=csv` to define a value separator
+* [#2840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2840) Added [`$smwgPropertyReservedNameList`](https://www.semantic-mediawiki.org/wiki/Help:$smwgPropertyReservedNameList) to define reserved property names
+* [#2842](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2842) Added [`$smwgURITypeSchemeList`]((https://www.semantic-mediawiki.org/wiki/Help:$smwgURITypeSchemeList)) to restrict valid URI scheme
+* [#2844](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2844) Rename output formatter `#-ia` to `#-raw`
+* [#2861](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2861) Added restriction for a property name that contains a CR, LF
+* [#2867](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2867) Added singular, plural category canonical check
+* [#2873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2873) Added support for `in:` as expression to the #ask syntax
+* [#2874](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2874) Added property group support in `Special:Browse`
+* [#2875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2875) Changed the `Special:Browse` theme to `smwb-theme-light`
+* [#2878](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2878) Added value filter to the property page
+* [#2882](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2882) Added detection of duplicate entities upon storage
+* [#2883](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2883) Added display of duplicate entities to `Special:Admin`
+* [#2889](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2889) Added method to make subobject sortkeys distinguishable
+* [#2891](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2891) Added flex (responsive) mode to `Special:Ask` and `Special:Browse` div table
+* [#2893](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2893) Changed `Special:Ask` appearance ([#2898](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2898))
+* [#2895](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2895) Changed display of named subobject caption to appear without an underscore
+* [#2906](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906) Added flex (responsive) mode to the factbox
+* [#2907](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2907) Added modal help to `Special:Ask`
+* [#2913](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2913) Added a job queue watchlist feature and the [`$smwgJobQueueWatchlist`](https://www.semantic-mediawiki.org/wiki/Help:$smwgJobQueueWatchlist) setting
+* [#2916](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2916) Added supplements jobs during the installation process
+* [#2922](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2922) Added `SMW_BROWSE_SHOW_SORTKEY` flag to the `$smwgBrowseFeatures` setting
+* [#2930](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2930) Added limit to value selection on the property page
+* [#2932](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2932) Added `removeDuplicateEntities.php` script to remove duplicate entities
+* [#2933](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2933) Added [`$smwgDefaultLoggerRole`](https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultLoggerRole) setting to define logging granularity for Semantic MediaWiki
+* [#2953](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2953) Added support for natural sort (`n-asc`, `n-desc`) of printout column values
 * [#2973](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2973)
-* [#2982](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2982)
-* [#3006](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3006)
-* [#3008](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3008)
-* [#3009](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3009)
-* [#3011](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3011)
-* [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017)
-* [#3019](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3019)
-* [#3020](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3020)
-* [#3024](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3024)
+* [#3006](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3006) Disabled autocomplete on `[[...` in Special:Search for `SMWSearch` type
+* [#3009](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3009) Added `#tick` and `#num` output formatter to boolean value type
+* [#3011](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3011) Added the [`$smwgDefaultOutputFormatters`]https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultOutputFormatters) setting to declare default output formatter for a type or property
+* [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) Added the [`$smwgCompactLinkSupport`]https://www.semantic-mediawiki.org/wiki/Help:$smwgCompactLinkSupport) setting to compact links produced by `Special:Ask` and `Special:Browse`
+* [#3019](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3019) Added experimental support for the `SMW_NS_RULE` namespace
+* [#3020](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3020) Added the keyword (`_keyw`) type
+* [#3024](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3024) Added `format=templatefile` to support individual export formats defined using MediaWiki templates
+* [#3029](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3029) Added function to keep updated entities in-memory to improve rebuild performance
 
 ## Bug fixes
 
 * [#839](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/839) Fixed and extended `Special:Ask` to be more maintainable
+* [#2505](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2505) Fixed hard-coded default value for `format=csv`
 * [#2586](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2586) Fixed class assignments for empty cells in `format=table`
 * [#2621](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2621) Fixed sort/order field behaviour in `Special:Ask`
 * [#2652](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2652) Fixed handling of multiple checkbox parameter in `Special:Ask`
@@ -127,16 +118,16 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2909](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2909)
 * [#2915](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2915)
 * [#2917](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2917)
+* [#2919](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2919) Fixed fetching all entities during a delete
 * [#2958](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2958)
 * [#2963](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2963)
 * [#2986](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2986)
 * [#3000](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3000)
 * [#3010](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3010)
-* [#3025](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3025)
-* [#3026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3026)
-* [#3029](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3029)
-* [#3031](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3031)
-* [#3033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3033)
+* [#3025](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3025) Fixed storage of query information during a `preview` activity
+* [#3026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3026) Fixed replacement of `smw_proptable_hash` during setup
+* [#3031](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3031) Fixed duplicate entry `smw_prop_stats` exception
+* [#3033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3033) Fixed "The supplied ParserOptions are not safe ... set $forceParse = true" during `Special:Upload`
 
 ## Breaking changes and deprecations
 
@@ -160,6 +151,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2802](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2802)
 * [#2806](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2806)
 * [#2821](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2821)
+* [#2841](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2841) Replaced `$smwgLinksInValues` with the `SMW_PARSER_LINV` flag now maintained in `$smwgParserFeatures`, PCRE option has been removed
 * [#2880](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2880)
 * [#2899](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2899)
 * [#2927](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2927)
@@ -198,7 +190,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2928](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2928)
 * [#2969](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2969)
 * [#2972](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2972)
-* [#3032](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3032)
+* [#3032](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3032) Added the `SMW::LinksUpdate::ApprovedUpdate` and `SMW::Parser::ChangeRevision` hook
 
 
 ## Contributors
