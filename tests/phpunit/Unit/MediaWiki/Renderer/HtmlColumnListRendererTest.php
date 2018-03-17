@@ -190,4 +190,72 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testItemListWithAttributes() {
+
+		$instance = new HtmlColumnListRenderer();
+
+		$instance->setColumnListClass( 'foo-class' )
+			->setNumberOfColumns( 2 ) // being set to 1 when it is responsive
+			->setColumnClass( 'bar-responsive' )
+			->setColumnRTLDirectionalityState( true )
+			->setListType( 'ul' );
+
+		$instance->addContentsByNoIndex(
+			array( 'Foo', 'Baz', 'Bar' )
+		);
+
+		$instance->setItemAttributes(
+			[
+				md5( 'Foo' ) => [
+					'id' => 123
+				],
+				md5( 'Bar' ) => 456
+			]
+		);
+
+		$expected = array(
+			'<div class="foo-class" dir="rtl"><div class="bar-responsive" style="width:100%;" dir="rtl">',
+			'<ul start=1><li id="123">Foo</li><li>Baz</li><li 0="456">Bar</li></ul></div> <!-- end column -->'
+		);
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$instance->getHtml()
+		);
+	}
+
+	public function testOListWithAttributes() {
+
+		$instance = new HtmlColumnListRenderer();
+
+		$instance->setColumnListClass( 'foo-class' )
+			->setNumberOfColumns( 2 ) // being set to 1 when it is responsive
+			->setColumnClass( 'bar-responsive' )
+			->setColumnRTLDirectionalityState( true )
+			->setListType( 'ol', 'i' );
+
+		$instance->addContentsByNoIndex(
+			array( 'Foo', 'Baz', 'Bar' )
+		);
+
+		$instance->setItemAttributes(
+			[
+				md5( 'Foo' ) => [
+					'id' => 123
+				],
+				md5( 'Bar' ) => 456
+			]
+		);
+
+		$expected = array(
+			'<div class="foo-class" dir="rtl"><div class="bar-responsive" style="width:100%;" dir="rtl">',
+			'<ol type=i start=1><li id="123">Foo</li><li>Baz</li><li 0="456">Bar</li></ol></div> <!-- end column -->'
+		);
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$instance->getHtml()
+		);
+	}
+
 }
