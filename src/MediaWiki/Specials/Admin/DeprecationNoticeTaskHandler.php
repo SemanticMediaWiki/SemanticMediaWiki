@@ -221,7 +221,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			$opt = [];
 
 			foreach ( $options as $option => $v ) {
-				if ( isset( $GLOBALS[$setting][$option] ) ) {
+				if ( $this->hasOption( $setting, $option ) ) {
 					$opt[] = $this->createListItem(
 						[
 							$message . '-option-list',
@@ -244,6 +244,10 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		}
 
 		return implode( '', $list );
+	}
+
+	private function hasOption( $setting, $option ) {
+		return isset( $GLOBALS[$setting][$option] ) || ( is_array( $GLOBALS[$setting] ) && array_search( $option, $GLOBALS[$setting] ) );
 	}
 
 }

@@ -88,8 +88,13 @@ class SpecialAdmin extends SpecialPage {
 			$this->getLanguage()
 		);
 
-		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
-		$outputFormatter = new OutputFormatter( $this->getOutput() );
+		if ( !is_a( ( $store = $applicationFactory->getStore() ), '\SMW\SQLStore\SQLStore' ) ) {
+			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		}
+
+		$outputFormatter = new OutputFormatter(
+			$this->getOutput()
+		);
 
 		$adminFeatures = $applicationFactory->getSettings()->get( 'smwgAdminFeatures' );
 
@@ -188,13 +193,9 @@ class SpecialAdmin extends SpecialPage {
 		$deprecationNotices = $deprecationNoticeTaskHandler->getHtml();
 		$isHidden = $deprecationNotices === '' ? HtmlVTabs::IS_HIDDEN : false;
 
-		$tab = 'general';
-
 		// If we want to remain on a specific tab on a GET request, use the `tab`
 		// parameter since we are unable to fetch any #href hash from a request
-		if ( $this->getRequest()->getVal( 'tab' ) ) {
-			$tab = $this->getRequest()->getVal( 'tab' );
-		}
+		$tab = $this->getRequest()->getVal( 'tab', 'general' );
 
 		$findActiveLink = [ HtmlVTabs::FIND_ACTIVE_LINK => $tab ];
 

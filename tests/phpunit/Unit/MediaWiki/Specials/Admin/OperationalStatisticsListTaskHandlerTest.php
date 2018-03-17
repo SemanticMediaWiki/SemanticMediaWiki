@@ -44,7 +44,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\OperationalStatisticsListTaskHandler',
+			OperationalStatisticsListTaskHandler::class,
 			new OperationalStatisticsListTaskHandler( $this->outputFormatter )
 		);
 	}
@@ -58,6 +58,17 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 		$this->assertInternalType(
 			'string',
 			$instance->getHtml()
+		);
+	}
+
+	public function testIsTaskFor() {
+
+		$instance = new OperationalStatisticsListTaskHandler(
+			$this->outputFormatter
+		);
+
+		$this->assertTrue(
+			$instance->isTaskFor( 'stats')
 		);
 	}
 
@@ -87,9 +98,39 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 			$this->outputFormatter
 		);
 
+		$instance->setStore( $this->store );
+
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$instance->handleRequest( $webRequest );
+	}
+
+	public function testHandleSubRequest() {
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$taskHandler->expects( $this->once() )
+			->method( 'isTaskFor' )
+			->will( $this->returnValue( true ) );
+
+		$taskHandler->expects( $this->once() )
+			->method( 'handleRequest' )
+			->with( $this->equalTo( $webRequest ) );
+
+		$instance = new OperationalStatisticsListTaskHandler(
+			$this->outputFormatter,
+			[ $taskHandler ]
+		);
+
+		$instance->setStore( $this->store );
 
 		$instance->handleRequest( $webRequest );
 	}

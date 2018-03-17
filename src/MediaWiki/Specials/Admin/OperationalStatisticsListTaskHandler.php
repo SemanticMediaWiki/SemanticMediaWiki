@@ -22,12 +22,19 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	private $outputFormatter;
 
 	/**
+	 * @var TaskHandler[]
+	 */
+	private $taskHandlers = [];
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param OutputFormatter $outputFormatter
+	 * @param TaskHandler[] $taskHandlers
 	 */
-	public function __construct( OutputFormatter $outputFormatter ) {
+	public function __construct( OutputFormatter $outputFormatter, array $taskHandlers = [] ) {
 		$this->outputFormatter = $outputFormatter;
+		$this->taskHandlers = $taskHandlers;
 	}
 
 	/**
@@ -54,7 +61,13 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function isTaskFor( $task ) {
-		return $task === 'stats';
+
+		$actions = [
+			'stats',
+			'stats/cache'
+		];
+
+		return in_array( $task, $actions );
 	}
 
 	/**
@@ -63,14 +76,20 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
+
+		$link = $this->outputFormatter->getSpecialPageLinkWith(
+			$this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' ),
+			[ 'action' => 'stats' ]
+		);
+
 		return Html::rawElement(
 			'li',
-			array(),
+			[],
 			$this->getMessageAsString(
-				array(
+				[
 					'smw-admin-supplementary-operational-statistics-intro',
-					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' ), array( 'action' => 'stats' ) )
-				)
+					$link
+				]
 			)
 		);
 	}
@@ -82,17 +101,55 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' ) );
-		$this->outputFormatter->addParentLink( [ 'tab' => 'supplement' ] );
+		$action = $webRequest->getText( 'action' );
+
+		if ( $action === 'stats' ) {
+			$this->outputHead();
+		} else {
+			foreach ( $this->taskHandlers as $taskHandler ) {
+				if ( $taskHandler->isTaskFor( $action ) ) {
+					$taskHandler->setStore( $this->getStore());
+					return $taskHandler->handleRequest( $webRequest );
+				}
+			}
+		}
 
 		$this->outputSemanticStatistics();
 		$this->outputJobStatistics();
-		$this->outputQueryCacheStatistics();
+		$this->outputInfo();
+	}
+
+	private function outputHead() {
+
+		$this->outputFormatter->setPageTitle(
+			$this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' )
+		);
+
+		$this->outputFormatter->addParentLink(
+			[ 'tab' => 'supplement' ]
+		);
+	}
+
+	private function outputInfo() {
+
+		$list = '';
+
+		foreach ( $this->taskHandlers as $taskHandler ) {
+			$list .= $taskHandler->getHtml();
+		}
+
+		$this->outputFormatter->addHTML(
+			Html::element( 'h2', [], $this->getMessageAsString( 'smw-admin-other-functions' ) )
+		);
+
+		$this->outputFormatter->addHTML(
+			Html::rawElement( 'ul', [], $list )
+		);
 	}
 
 	private function outputSemanticStatistics() {
 
-		$semanticStatistics = ApplicationFactory::getInstance()->getStore()->getStatistics();
+		$semanticStatistics = $this->getStore()->getStatistics();
 
 		$this->outputFormatter->addHTML(
 			Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-operational-statistics' ), Message::PARSE ) )
@@ -102,19 +159,21 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 			Html::element( 'h2', array(), $this->getMessageAsString( 'smw-statistics' ) )
 		);
 
-		$this->outputFormatter->addHTML( '<pre>' . $this->outputFormatter->encodeAsJson(
-			array(
-				'propertyValues' => $semanticStatistics['PROPUSES'],
-				'errorCount' => $semanticStatistics['ERRORUSES'],
-				'totalProperties' => $semanticStatistics['TOTALPROPS'],
-				'usedProperties' => $semanticStatistics['USEDPROPS'],
-				'ownPage' => $semanticStatistics['OWNPAGE'],
-				'declaredType' => $semanticStatistics['DECLPROPS'],
-				'oudatedEntities' => $semanticStatistics['DELETECOUNT'],
-				'subobjects' => $semanticStatistics['SUBOBJECTS'],
-				'queries' => $semanticStatistics['QUERY'],
-				'concepts' => $semanticStatistics['CONCEPTS'],
-			) ) . '</pre>'
+		$this->outputFormatter->addAsPreformattedText(
+			$this->outputFormatter->encodeAsJson(
+				[
+					'propertyValues' => $semanticStatistics['PROPUSES'],
+					'errorCount' => $semanticStatistics['ERRORUSES'],
+					'totalProperties' => $semanticStatistics['TOTALPROPS'],
+					'usedProperties' => $semanticStatistics['USEDPROPS'],
+					'ownPage' => $semanticStatistics['OWNPAGE'],
+					'declaredType' => $semanticStatistics['DECLPROPS'],
+					'oudatedEntities' => $semanticStatistics['DELETECOUNT'],
+					'subobjects' => $semanticStatistics['SUBOBJECTS'],
+					'queries' => $semanticStatistics['QUERY'],
+					'concepts' => $semanticStatistics['CONCEPTS'],
+				]
+			)
 		);
 	}
 
@@ -141,29 +200,6 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-error' ), '' ) .
 				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-content' ), $this->getMessageAsString( 'smw-data-lookup' ) )
 			)
-		);
-	}
-
-	private function outputQueryCacheStatistics() {
-
-		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->getMessageAsString( 'smw-admin-statistics-querycache-title' ) )
-		);
-
-		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
-
-		if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
-			return $this->outputFormatter->addHTML(
-				Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-statistics-querycache-disabled' ), Message::PARSE ) )
-			);
-		}
-
-		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-statistics-querycache-explain' ), Message::PARSE ) )
-		);
-
-		$this->outputFormatter->addHTML(
-			'<pre>' . $this->outputFormatter->encodeAsJson( $cachedQueryResultPrefetcher->getStats() ) . '</pre>'
 		);
 	}
 
