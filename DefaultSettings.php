@@ -47,7 +47,7 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgImportFileDirs' => [ 'default' => __DIR__ . '/src/Importer/data' ],
+	'smwgImportFileDirs' => [ 'default' => __DIR__ . '/data/import' ],
 	'smwgImportReqVersion' => 1,
 	##
 

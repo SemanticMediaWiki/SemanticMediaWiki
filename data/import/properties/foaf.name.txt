@@ -1,0 +1,4 @@
+* [[Imported from::foaf:name]]
+* [[Property description::A name for some thing or agent.@en]]
+
+[[Category:Imported vocabulary]] {{DISPLAYTITLE:foaf:name}}
