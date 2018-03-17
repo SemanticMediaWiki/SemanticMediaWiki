@@ -211,6 +211,9 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForOutputPageCheckLastModified( $instance );
 		$this->doTestExecutionForIsFileCacheable( $instance );
 		$this->doTestExecutionForRejectParserCacheValue( $instance );
+		$this->doTestExecutionForBlockIpComplete( $instance );
+		$this->doTestExecutionForUnblockUserComplete( $instance );
+		$this->doTestExecutionForUserGroupsChanged( $instance );
 
 		// Usage of registered hooks in/by smw-core
 		//$this->doTestExecutionForSMWStoreDropTables( $instance );
@@ -1203,6 +1206,84 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $value, $wikiPage, $popts )
+		);
+
+		$this->handlers[$handler] = true;
+	}
+
+	public function doTestExecutionForBlockIpComplete( $instance ) {
+
+		$handler = 'BlockIpComplete';
+
+		$block = $this->getMockBuilder( '\Block' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$block->expects( $this->any() )
+			->method( 'getTarget' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$performer = '';
+		$priorBlock = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $block, $performer, $priorBlock )
+		);
+
+		$this->handlers[$handler] = true;
+	}
+
+	public function doTestExecutionForUnblockUserComplete( $instance ) {
+
+		$handler = 'UnblockUserComplete';
+
+		$block = $this->getMockBuilder( '\Block' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$block->expects( $this->any() )
+			->method( 'getTarget' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$performer = '';
+		$priorBlock = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $block, $performer, $priorBlock )
+		);
+
+		$this->handlers[$handler] = true;
+	}
+
+	public function doTestExecutionForUserGroupsChanged( $instance ) {
+
+		$handler = 'UserGroupsChanged';
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->any() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $user )
 		);
 
 		$this->handlers[$handler] = true;
