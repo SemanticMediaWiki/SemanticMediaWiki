@@ -1,0 +1,53 @@
+{
+	"description": "Test property page with parameters/sort",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page test",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P1005/A",
+			"contents": "[[Has page test::Sort]] {{DEFAULTSORT:XXX}}"
+		},
+		{
+			"page": "Example/P1005/B",
+			"contents": "[[Has page test::Sort]] {{DEFAULTSORT:AAA}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (use a filter with correct sorting )",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Has page test",
+			"assert-output": {
+				"onPageView": {
+					"parameters": {
+						"filter": "Sort"
+					}
+				},
+				"to-contain": [
+					"<div class=\"smw-table-cell header-title\"><div id=\"A\">A</div>.*<div class=\"smw-table-cell smwpropname\" data-list-index=\"0\"><a href=\".*/Example/P1005/B\" title=\"Example/P1005/B\">Example/P1005/B</a>",
+					"<div class=\"smw-table-cell header-title\"><div id=\"X\">X</div>.*<div class=\"smw-table-cell smwpropname\" data-list-index=\"1\"><a href=\".*/Example/P1005/A\" title=\"Example/P1005/A\">Example/P1005/A</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
