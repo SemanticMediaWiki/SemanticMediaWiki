@@ -157,9 +157,7 @@ class SearchTableRebuilder {
 
 	private function doOptimize() {
 
-		$this->reportMessage(
-			"\n## Optimization\n"
-		);
+		$this->reportMessage( "\nOptimization ...\n" );
 
 		$this->reportMessage(
 			"\nRunning table optimization (Depending on the SQL back-end " .
@@ -168,7 +166,7 @@ class SearchTableRebuilder {
 		);
 
 		if ( $this->searchTableUpdater->optimize() ) {
-			$this->reportMessage( "\nOptimization has finished.\n" );
+			$this->reportMessage( "\n   ... optimization has finished.\n" );
 		} else {
 			$this->reportMessage( "\nThe SQL back-end does not support this operation.\n" );
 		}
@@ -179,44 +177,36 @@ class SearchTableRebuilder {
 	private function doRebuild() {
 
 		$this->reportMessage(
-			"\n## Indexing\n"
+			"\nThe entire index table is going to be purged first and it may\n" .
+			"take a moment before the rebuild is completed due to varying\n" .
+			"table contents.\n"
 		);
 
-		$this->reportMessage(
-			"\nThe entire index table is going to be purged first and \n" .
-			"it may take a moment before the rebuild is completed due to\n" .
-			"dependencies on table content including varying options.\n"
-		);
+		$this->reportMessage( "\nIndex process ..." );
+		$this->reportMessage( "\n" . "   ... purging the index table ..." );
 
 		$this->searchTableUpdater->flushTable();
-
-		$this->reportMessage( "\n" . "The index table was purged." ."\n" );
-		$this->reportMessage( "\n" . "Rebuilding the content from (rows finished/expected):" ."\n\n" );
+		$this->reportMessage( "\n" . "   ... rebuilding (finished/expected) ..." );
 
 		foreach ( $this->searchTableUpdater->getPropertyTables() as $proptable ) {
 
 			// Only care for Blob/Uri tables
 			if ( !$this->getSearchTable()->isValidByType( $proptable->getDiType() ) ) {
-				$this->skippedTables[$proptable->getName()] = 'Not a valid DI type.';
+				$this->skippedTables[$proptable->getName()] = 'Not a valid DI type';
 				continue;
 			}
 
 			$this->doRebuildByPropertyTable( $proptable );
 		}
 
-		$this->reportMessage(
-			"\n## Notes\n",
-			$this->reportVerbose
-		);
-
-		$this->reportMessage(
-			"\n" . "Table(s) not used for indexing:" ."\n\n",
-			$this->reportVerbose
-		);
+		$this->reportMessage( "\n   ... done." );
+		$this->reportMessage( "\n   ... report unindexed table(s) ...", $this->reportVerbose );
 
 		foreach ( $this->skippedTables as $tableName => $reason ) {
-			$this->reportMessage( "\r". sprintf( "%-36s%s", "- {$tableName}", $reason . "\n" ), $this->reportVerbose );
+			$this->reportMessage( "\n". sprintf( "%-38s%s", "      ... {$tableName}", $reason ), $this->reportVerbose );
 		}
+
+		$this->reportMessage( "\n" );
 	}
 
 	private function doRebuildByPropertyTable( $proptable ) {
@@ -242,7 +232,7 @@ class SearchTableRebuilder {
 			$property = new DIProperty( $proptable->getFixedProperty() );
 
 			if ( $property->getLabel() === '' ) {
-				return $this->skippedTables[$table] = 'Fixed property is ' . $property->getKey() . ' invalid.';
+				return $this->skippedTables[$table] = 'Fixed property, ' . $property->getKey() . ' is invalid';
 			}
 
 			$pid = $searchTable->getPropertyIdBy(
@@ -250,7 +240,7 @@ class SearchTableRebuilder {
 			);
 
 			if ( $searchTable->isExemptedPropertyById( $pid ) ) {
-				return $this->skippedTables[$table] = 'Fixed property table that belongs to the ' . $proptable->getFixedProperty() . ' exempted property.';
+				return $this->skippedTables[$table] = 'Fixed property table, belongs to exempted ' . $proptable->getFixedProperty() . ' property';
 			}
 		}
 
@@ -262,7 +252,7 @@ class SearchTableRebuilder {
 		);
 
 		if ( $rows === false || $rows === null ) {
-			return $this->skippedTables[$table] = 'Empty table.';
+			return $this->skippedTables[$table] = 'Empty table';
 		}
 
 		$this->doRebuildFromRows( $searchTable, $table, $pid, $rows );
@@ -274,8 +264,10 @@ class SearchTableRebuilder {
 		$expected = $rows->numRows();
 
 		if ( $expected == 0 ) {
-			return $this->skippedTables[$table] = 'Empty table.';
+			return $this->skippedTables[$table] = 'Empty table';
 		}
+
+		$this->reportMessage( "\n" );
 
 		foreach ( $rows as $row ) {
 			$i++;
@@ -293,7 +285,7 @@ class SearchTableRebuilder {
 			}
 
 			$this->reportMessage(
-				"\r". sprintf( "%-35s%s", "- {$table}", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
+				"\r". sprintf( "%-38s%s", "      ... {$table}", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
 			);
 
 			$text = $this->searchTableUpdater->read( $sid, $pid );
@@ -305,8 +297,6 @@ class SearchTableRebuilder {
 
 			$this->searchTableUpdater->update( $sid, $pid, trim( $text ) . ' ' . $indexableText );
 		}
-
-		$this->reportMessage( "\n" );
 	}
 
 	private function reportMessage( $message, $verbose = true ) {
