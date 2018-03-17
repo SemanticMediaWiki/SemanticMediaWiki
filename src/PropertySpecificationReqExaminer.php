@@ -159,6 +159,10 @@ class PropertySpecificationReqExaminer {
 			return $this->checkExternalFormatterUri( $property );
 		}
 
+		if ( $type === '_geo' ) {
+			return $this->checkMaps( $property );
+		}
+
 		if ( $this->semanticData->getOption( MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) ) {
 			return $this->checkImportedVocabType( $property );
 		}
@@ -250,6 +254,19 @@ class PropertySpecificationReqExaminer {
 		return array(
 			'error',
 			'smw-property-req-violation-missing-formatter-uri',
+			$property->getLabel()
+		);
+	}
+
+	private function checkMaps( $property ) {
+
+		if ( defined( 'SM_VERSION' ) ) {
+			return;
+		}
+
+		return array(
+			'error',
+			'smw-property-req-violation-missing-maps-extension',
 			$property->getLabel()
 		);
 	}
