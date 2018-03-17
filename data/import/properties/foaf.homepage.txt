@@ -1,0 +1,4 @@
+* [[Imported from::foaf:homepage]]
+* [[Property description::URL of the homepage of something, which is a general web resource.@en]] 
+
+[[Category:Imported vocabulary]] {{DISPLAYTITLE:foaf:homepage}}

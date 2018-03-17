@@ -10,17 +10,28 @@ The import files are sorted and therefore sequentially processed based on the fi
 
 ### Default definitions
 
-The pre-deployed `vocabulary.json` is __not__ expected to be the __authority source__ of content for a wiki and is the reason why the option `canReplace` is set `false` so that pre-existing content with the same name and namespace is not replaced.
+Preselected import content is defined in the "default.json" file and includes:
+
+* "Smw import skos"
+* "Smw import owl"
+* "Smw import foaf"
+* "Foaf:knows"
+* "Foaf:name" and
+* "Foaf:homepage"
+
+It should be noted that `default.json` is __not__ expected to be the __authority source__ of content for a wiki and is the reason why the option `canReplace` is set `false` so that pre-existing content with the same name and namespace is not replaced.
 
 ### Custom definitions
 
 It is possible to define one or more custom import definitions using [`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs) with a custom location (directory) from where import definitions can be loaded.
 
-```
-$GLOBALS['smwgImportFileDirs'] = [
-	'movie-actor' => __DIR__ . '/import/movie-actor'
-];
-```
+<pre>
+$GLOBALS['smwgImportFileDirs']['movie-actor-vocab'] = __DIR__ . '/import/movie-actor';
+</pre>
+
+<pre>
+$GLOBALS['smwgImportFileDirs']['custom-vocab'] = __DIR__ . '/custom';
+</pre>
 
 ### Fields
 
@@ -64,8 +75,6 @@ The location for the mentioned `custom.xml` is relative to the selected `$smwgIm
 }
 </pre>
 
-#### Template import
-
 <pre>
 {
 	"description": "Template import",
@@ -103,7 +112,7 @@ During the setup process, the `Installer` will automatically run and inform
 about the process which will output something similar to:
 
 <pre>
-Import of vocabulary.json ...
+Import of default.json ...
    ... replacing MediaWiki:Smw import foaf contents ...
    ... skipping Property:Foaf:knows, already exists ...
 
@@ -114,34 +123,29 @@ If not otherwise specified, content (a.k.a. pages) that pre-exists are going to 
 
 ## Technical notes
 
-Services are defined in `ImporterServices.php` and the `SMW::SQLStore::Installer::AfterCreateTablesComplete` hook
-provides the execution event during the setup.
-
 <pre>
-ImporterServiceFactory
-
-Importer
-	|- ContentIterator
-	|- ContentCreator
-
-ContentIterator
-	|- JsonContentIterator
-		|- JsonImportContentsFileDirReader
-		|- ContentModeller
-
-ContentCreator
-	| - DispatchingContentCreator
-		|- XmlContentCreator
-		|- TextContentCreator
+SMW\Importer
+│	└─ ContentCreators
+│		├─ DispatchingContentCreator
+│		├─ XmlContentCreator
+│		└─ TextContentCreator
+│
+├─ ImporterServiceFactory # access to import services
+├─ ContentIterator
+├─ ContentCreator
+├─ JsonContentIterator
+├─ JsonImportContentsFileDirReader
+└─ ContentModeller
 </pre>
 
+- `SMW::SQLStore::Installer::AfterCreateTablesComplete` provides the hook and is the event to execute the import during the setup
 - `ImporterServiceFactory` access to import services
 - `Importer` is responsible for importing contents provided by a `ContentIterator`
 - `ContentIterator` an interface to provide access to individual `ImportContents` instances
-  - `JsonContentIterator` implements the `ContentIterator` interface
-    - `JsonImportContentsFileDirReader` provides contents of all recursively fetched files from a location (e.g[`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs) setting ) that meets the requirements
-    - `ContentModeller` interprets the `JSON` definition and returns a set of `ImportContents` instances
+- `JsonContentIterator` implements the `ContentIterator` interface
+- `JsonImportContentsFileDirReader` provides contents of all recursively fetched files from a location (e.g[`$smwgImportFileDirs`](https://www.semantic-mediawiki.org/wiki/Help:$smwgImportFileDirs) setting ) that meets the requirements
+- `ContentModeller` interprets the `JSON` definition and returns a set of `ImportContents` instances
 - `ContentCreator` an interface to specify different creation methods (e.g. text, XML etc.)
-  - `DispatchingContentCreator` dispatches to the actual content creation instance based on `ImportContents::getContentType`
-    - `XmlContentCreator` support the creation of MediaWiki XML specific content
-    - `TextContentCreator` support for raw wikitext
+- `DispatchingContentCreator` dispatches to the actual content creation instance based on `ImportContents::getContentType`
+- `XmlContentCreator` support the creation of MediaWiki XML specific content
+- `TextContentCreator` support for raw wikitext
