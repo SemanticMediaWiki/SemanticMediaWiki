@@ -179,6 +179,7 @@
 	"smw-ask-parameters": "Parametrit",
 	"smw-ask-search": "Hae",
 	"smw-ask-debug": "Vianetsintä",
+	"smw-ask-no-cache": "Ei välimuistia",
 	"smw-ask-result": "Tulos",
 	"smw-ask-empty": "Tyhjennä kaikki merkinnät",
 	"smw-ask-download-link-desc": "Lataa kysytyt tulokset $1-muodossa",

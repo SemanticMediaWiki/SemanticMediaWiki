@@ -418,6 +418,7 @@
 	"smw-property-predefined-qty": "\"$1\" הוא [[Special:Types/Quantity|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכי כמות.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" אינה כתובת URL תקינה.",
 	"smw-property-preferred-title-format": "$1 ($2)",
+	"smw-clipboard-copy-link": "העתקת קישור ללוח",
 	"smw-no-data-available": "אין מידע זמין.",
 	"smw-format-datatable-search": "חיפוש:",
 	"smw-format-datatable-toolbar-export": "ייצוא"

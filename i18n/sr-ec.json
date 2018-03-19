@@ -13,7 +13,8 @@
 			"Srdjan m",
 			"Милан Јелисавчић",
 			"Acamicamacaraca",
-			"Prevodim"
+			"Prevodim",
+			"BadDog"
 		]
 	},
 	"smw_viewasrdf": "RDF довод",
@@ -206,6 +207,7 @@
 	"smw_unknowntype": "Тип овог својства је погрешан.",
 	"smw_concept_header": "Странице концепта \"$1\"",
 	"smw_conceptarticlecount": "Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.",
+	"right-smw-admin": "приступање администраторским задацима (Семантички Медијавики)",
 	"smw-admin-tab-registry": "Регистар",
 	"smw-livepreview-loading": "Учитавам…",
 	"smw-limitreport-intext-parsertime": "[SMW] Време рашчлањивања унутартекстуалних анотација",
