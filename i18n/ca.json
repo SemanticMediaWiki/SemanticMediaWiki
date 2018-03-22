@@ -340,6 +340,7 @@
 	"smw-admin-supplementary-operational-statistics-title": "Estadístiques operacionals",
 	"smw-admin-supplementary-operational-statistics-intro": "<u>$1</u> mostra un conjunt estès d'estadístiques",
 	"smw-admin-supplementary-duplookup-title": "Entitats duplicades",
+	"smw-admin-supplementary-operational-statistics-cache-title": "Estadístiques de la memòria cau",
 	"smw-list-count": "La llista conté $1 {{PLURAL:$1|entrada|entrades}}.",
 	"smw-list-count-from-cache": "La llista conté $1 {{PLURAL:$1|entrada|entrades}} i s'ha recuperat de la memòria cau (UTC: $2).",
 	"smw-property-label-similarity-title": "Informe de similitud d'etiquetes de propietat",

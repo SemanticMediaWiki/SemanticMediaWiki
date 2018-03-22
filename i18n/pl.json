@@ -281,6 +281,7 @@
 	"smw-admin-smwhomepage": "Kompletna dokumentacja Semantic MediaWiki znajduje się na stronie <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Błędy możesz zgłaszać w <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-admin-questions": "Jeśli nadal masz pytania lub sugestie, przyłącz się do dyskusji na <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">forum użytkowników Semantic MediaWiki</a>.",
+	"smw-admin-other-functions": "Inne funkcje",
 	"smw-admin-supplementary-section-title": "Funkcje dodatkowe",
 	"smw-admin-supplementary-section-intro": "Niektóre z wymienionych funkcji w tej sekcji mogą być ograniczone i dlatego niedostępne w tej wiki.",
 	"smw-admin-supplementary-settings-title": "Ustawienia konfiguracji",
