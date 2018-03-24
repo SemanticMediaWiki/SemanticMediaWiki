@@ -77,34 +77,23 @@ class UpdateEntityCollation extends \Maintenance {
 
 		$expected = $res->numRows() + $i;
 
-		$this->reportMessage(
-			"\n[ Notes ]\n\n"
-		);
-
-		$this->reportMessage(
-			"\r". sprintf( "%-36s%s", '- $smwgEntityCollation', $applicationFactory->getSettings()->get( 'smwgEntityCollation' ) )  . "\n"
-		);
-
-		$this->reportMessage(
-			"\r". sprintf( "%-36s%s", '- $wgCategoryCollation', $GLOBALS['wgCategoryCollation'] )  . "\n"
-		);
-
 		if ( $applicationFactory->getSettings()->get( 'smwgEntityCollation' ) !== $GLOBALS['wgCategoryCollation'] ) {
 			$this->reportMessage(
 				"\n" . 'The setting of $smwgEntityCollation and $wgCategoryCollation are different' . "\n" .
 				'and may result in an inconsitent sorting display for entities.' . "\n"
 			);
+
+			$this->reportMessage( "\n" . '$smwgEntityCollation: ' . $applicationFactory->getSettings()->get( 'smwgEntityCollation' ) );
+			$this->reportMessage( "\n" . '$wgCategoryCollation: ' . $GLOBALS['wgCategoryCollation'] . "\n" );
 		}
 
 		$this->reportMessage(
-			"\n[ Update ]\n"
+			"\nPerforming the update ..."
 		);
 
-		$this->reportMessage(
-			"\n\r". sprintf( "%-36s%s", "- Selecting rows ...", sprintf( "%s to %s", $i, $expected ) )
-		);
-
+		$this->reportMessage( "\n   ... selecting $expected rows ..." );
 		$this->reportMessage( "\n" );
+
 		$this->doUpdate( $store, $tableFieldUpdater, $res, $i, $expected );
 		$this->reportMessage( "\n" );
 	}
@@ -130,7 +119,7 @@ class UpdateEntityCollation extends \Maintenance {
 			}
 
 			$this->reportMessage(
-				"\r". sprintf( "%-35s%s", "- Updating collation ... ", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
+				"\r". sprintf( "%-35s%s", "   ... updating document no.", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
 			);
 
 			$tableFieldUpdater->updateCollationField( $row->smw_id, $search );
