@@ -17,6 +17,7 @@ use SMW\Maintenance\DuplicateEntitiesDisposer;
 class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $cache;
 	private $messageReporter;
 	private $connection;
 	private $propertyTableIdReferenceFinder;
@@ -42,6 +43,10 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
@@ -56,7 +61,7 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable = $this->getMockBuilder( '\stdClss' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'findDuplicateEntityRecords' ] )
+			->setMethods( [ 'findDuplicates' ] )
 			->getMock();
 
 		$this->store->expects( $this->atLeastOnce() )
@@ -67,7 +72,7 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->findDuplicateEntityRecords();
+		$instance->findDuplicates();
 	}
 
 	public function testVerifyAndDispose_NoDuplicates() {
@@ -77,6 +82,26 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DuplicateEntitiesDisposer(
 			$this->store
+		);
+
+		$instance->setMessageReporter(
+			$this->messageReporter
+		);
+
+		$instance->verifyAndDispose( [] );
+	}
+
+	public function testVerifyAndDispose_NoDuplicates_WithCache() {
+
+		$this->store->expects( $this->never() )
+			->method( 'getConnection' );
+
+		$this->cache->expects( $this->atLeastOnce() )
+			->method( 'delete' );
+
+		$instance = new DuplicateEntitiesDisposer(
+			$this->store,
+			$this->cache
 		);
 
 		$instance->setMessageReporter(

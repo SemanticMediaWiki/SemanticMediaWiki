@@ -178,6 +178,11 @@ class SMWSql3SmwIds {
 	private $idCacheManager;
 
 	/**
+	 * @var IdEntityFinder
+	 */
+	private $idEntityFinder;
+
+	/**
 	 * @since 1.8
 	 * @param SMWSQLStore3 $store
 	 */
@@ -186,7 +191,7 @@ class SMWSql3SmwIds {
 		$this->factory = $factory;
 		$this->initCache();
 
-		$this->byIdEntityFinder = $this->factory->newByIdEntityFinder(
+		$this->idEntityFinder = $this->factory->newIdEntityFinder(
 			$this->idCacheManager->get( 'entity.lookup' )
 		);
 
@@ -472,48 +477,8 @@ class SMWSql3SmwIds {
 	 *
 	 * @return []
 	 */
-	public function findDuplicateEntityRecords() {
-
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$tableName = $connection->tableName(
-			SQLStore::ID_TABLE
-		);
-
-		$condition = " smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
-		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
-
-		$query = "SELECT ".
-		"COUNT(*) as count, smw_title, smw_namespace, smw_iw, smw_subobject " .
-		"FROM $tableName WHERE $condition " .
-		"GROUP BY smw_title, smw_namespace, smw_iw, smw_subobject ".
-		"HAVING count(*) > 1";
-
-		// @see https://stackoverflow.com/questions/8119489/postgresql-where-count-condition
-		// "HAVING count > 1"; doesn't work on postgres
-
-		$rows = $connection->query(
-			$query,
-			__METHOD__
-		);
-
-		if ( $rows === false ) {
-			return [];
-		}
-
-		$matches = [];
-
-		foreach ( $rows as $row ) {
-			$matches[] = [
-				'count'=> $row->count,
-				'smw_title'=> $row->smw_title,
-				'smw_namespace'=> $row->smw_namespace,
-				'smw_iw'=> $row->smw_iw,
-				'smw_subobject'=> $row->smw_subobject
-			];
-		}
-
-		return $matches;
+	public function findDuplicates() {
+		return $this->idEntityFinder->findDuplicates();
 	}
 
 	/**
@@ -1036,7 +1001,7 @@ class SMWSql3SmwIds {
 	 * @return DIWikiPage|null
 	 */
 	public function getDataItemById( $id ) {
-		return $this->byIdEntityFinder->getDataItemById( $id );
+		return $this->idEntityFinder->getDataItemById( $id );
 	}
 
 	/**
@@ -1048,7 +1013,7 @@ class SMWSql3SmwIds {
 	 * @return string[]
 	 */
 	public function getDataItemPoolHashListFor( array $idlist, RequestOptions $requestOptions = null ) {
-		return $this->byIdEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
+		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
 	/**

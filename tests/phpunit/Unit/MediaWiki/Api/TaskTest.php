@@ -95,7 +95,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$entityTable->expects( $this->atLeastOnce() )
-			->method( 'findDuplicateEntityRecords' )
+			->method( 'findDuplicates' )
 			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

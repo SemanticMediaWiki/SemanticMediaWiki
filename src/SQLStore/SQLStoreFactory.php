@@ -27,7 +27,7 @@ use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\ProcessLruCache;
-use SMW\SQLStore\EntityStore\ByIdEntityFinder;
+use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\ChangePropListener;
@@ -538,11 +538,11 @@ class SQLStoreFactory {
 	 *
 	 * @param Cache $cache
 	 *
-	 * @return ByIdEntityFinder
+	 * @return IdEntityFinder
 	 */
-	public function newByIdEntityFinder( Cache $cache ) {
+	public function newIdEntityFinder( Cache $cache ) {
 
-		$idMatchFinder = new ByIdEntityFinder(
+		$idMatchFinder = new IdEntityFinder(
 			$this->store,
 			$this->applicationFactory->getIteratorFactory(),
 			$cache

@@ -116,7 +116,8 @@ class MaintenanceFactory {
 	public function newDuplicateEntitiesDisposer( Store $store, $reporterCallback = null  ) {
 
 		$duplicateEntitiesDisposer = new DuplicateEntitiesDisposer(
-			$store
+			$store,
+			ApplicationFactory::getInstance()->getCache()
 		);
 
 		$duplicateEntitiesDisposer->setMessageReporter(

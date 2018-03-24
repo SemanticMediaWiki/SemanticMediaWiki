@@ -11,6 +11,7 @@ use SMW\PropertyRegistry;
 use SMW\RequestOptions;
 use Onoi\Cache\Cache;
 use SMW\Store;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GNU GPL v2+
@@ -18,7 +19,7 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class ByIdEntityFinder {
+class IdEntityFinder {
 
 	/**
 	 * @var Store
@@ -46,6 +47,58 @@ class ByIdEntityFinder {
 		$this->store = $store;
 		$this->iteratorFactory = $iteratorFactory;
 		$this->cache = $cache;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return Iterator|[]
+	 */
+	public function findDuplicates() {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$tableName = $connection->tableName(
+			SQLStore::ID_TABLE
+		);
+
+		$condition = " smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
+		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
+
+		$query = "SELECT " .
+		"COUNT(*) as count, smw_title, smw_namespace, smw_iw, smw_subobject " .
+		"FROM $tableName " .
+		"WHERE $condition " .
+		"GROUP BY smw_title, smw_namespace, smw_iw, smw_subobject " .
+		"HAVING count(*) > 1";
+
+		// @see https://stackoverflow.com/questions/8119489/postgresql-where-count-condition
+		// "HAVING count > 1"; doesn't work with postgres
+
+		$rows = $connection->query(
+			$query,
+			__METHOD__
+		);
+
+		if ( $rows === false ) {
+			return [];
+		}
+
+		$resultIterator = $this->iteratorFactory->newResultIterator(
+			$rows
+		);
+
+		$mappingIterator = $this->iteratorFactory->newMappingIterator( $resultIterator, function( $row ) {
+			return [
+				'count'=> $row->count,
+				'smw_title'=> $row->smw_title,
+				'smw_namespace'=> $row->smw_namespace,
+				'smw_iw'=> $row->smw_iw,
+				'smw_subobject'=> $row->smw_subobject
+			];
+		} );
+
+		return $mappingIterator;
 	}
 
 	/**

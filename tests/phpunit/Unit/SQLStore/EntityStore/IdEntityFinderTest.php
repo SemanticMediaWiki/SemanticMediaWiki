@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\ByIdEntityFinder;
+use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\IteratorFactory;
 use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\ByIdEntityFinder
+ * @covers \SMW\SQLStore\EntityStore\IdEntityFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
+class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $cache;
@@ -52,8 +52,8 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ByIdEntityFinder::class,
-			new ByIdEntityFinder( $this->store, $this->iteratorFactory, $this->cache )
+			IdEntityFinder::class,
+			new IdEntityFinder( $this->store, $this->iteratorFactory, $this->cache )
 		);
 	}
 
@@ -85,7 +85,7 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$instance = new ByIdEntityFinder(
+		$instance = new IdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
 			$this->cache
@@ -106,7 +106,7 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$instance = new ByIdEntityFinder(
+		$instance = new IdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
 			$this->cache
@@ -145,7 +145,7 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$instance = new ByIdEntityFinder(
+		$instance = new IdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
 			$this->cache
@@ -167,7 +167,7 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new ByIdEntityFinder(
+		$instance = new IdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
 			$this->cache
@@ -194,7 +194,7 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => array( 42 ) ) ) )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$instance = new ByIdEntityFinder(
+		$instance = new IdEntityFinder(
 			$this->store,
 			new IteratorFactory(),
 			$this->cache
@@ -206,6 +206,32 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 				$value
 			);
 		}
+	}
+
+	public function testFindDuplicates() {
+
+		$row = new \stdClass;
+		$row->count = 42;
+		$row->smw_title = 'Foo';
+		$row->smw_namespace = 0;
+		$row->smw_iw = '';
+		$row->smw_subobject ='';
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->with( $this->stringContains( 'HAVING count(*) > 1' ) )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$instance = new IdEntityFinder(
+			$this->store,
+			new IteratorFactory(),
+			$this->cache
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\MappingIterator',
+			$instance->findDuplicates()
+		);
 	}
 
 }

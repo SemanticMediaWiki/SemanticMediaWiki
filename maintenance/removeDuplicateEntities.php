@@ -61,7 +61,7 @@ class RemoveDuplicateEntities extends \Maintenance {
 			array( $this, 'reportMessage' )
 		);
 
-		$duplicateEntityRecords = $duplicateEntitiesDisposer->findDuplicateEntityRecords();
+		$duplicateEntityRecords = $duplicateEntitiesDisposer->findDuplicates();
 		$duplicateEntitiesDisposer->verifyAndDispose( $duplicateEntityRecords );
 
 		return true;
