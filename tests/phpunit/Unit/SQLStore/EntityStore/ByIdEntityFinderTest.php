@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\SQLStore\EntityStore\ByIdEntityFinder;
 use SMW\IteratorFactory;
+use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -63,6 +64,8 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
 		$row->smw_subobject ='';
+		$row->smw_sortkey ='';
+		$row->smw_sort ='';
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
@@ -72,7 +75,7 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( 'Foo#14##' ) );
+			->will( $this->returnValue( false ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
@@ -96,14 +99,9 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDataItemForCachedId() {
 
-		$this->cache->expects( $this->atLeastOnce() )
-			->method( 'contains' )
-			->with(	$this->equalTo( 42 ) )
-			->will( $this->returnValue( true ) );
-
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( 'Foo#14##' ) );
+			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
 
 		$this->connection->expects( $this->never() )
 			->method( 'selectRow' );
@@ -122,17 +120,30 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPredefinedPropertyItem() {
 
-		$this->cache->expects( $this->atLeastOnce() )
-			->method( 'contains' )
-			->with(	$this->equalTo( 42 ) )
-			->will( $this->returnValue( true ) );
+		$dataItem = new DIWikiPage( '_MDAT', SMW_NS_PROPERTY );
+		$dataItem->setId( 42 );
+		$dataItem->setSortKey( 'bar' );
+		$dataItem->setOption( 'sort', 'BAR' );
+
+		$row = new \stdClass;
+		$row->smw_title = '_MDAT';
+		$row->smw_namespace = SMW_NS_PROPERTY;
+		$row->smw_iw = '';
+		$row->smw_subobject = '';
+		$row->smw_sortkey = 'bar';
+		$row->smw_sort = 'BAR';
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( '_MDAT#102##' ) );
+			->will( $this->returnValue( false ) );
 
-		$this->connection->expects( $this->never() )
-			->method( 'selectRow' );
+		$this->connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( array( 'smw_id' => 42 ) ) )
+			->will( $this->returnValue( $row ) );
 
 		$instance = new ByIdEntityFinder(
 			$this->store,
@@ -140,13 +151,17 @@ class ByIdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
-		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
+		$this->assertEquals(
+			$dataItem,
 			$instance->getDataItemById( 42 )
 		);
 	}
 
 	public function testNullForUnknownId() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )

@@ -35,6 +35,10 @@ class IdCacheManager {
 		if ( !isset( $this->caches['entity.sort'] ) ) {
 			throw new RuntimeException( "Missing 'entity.sort' instance.");
 		}
+
+		if ( !isset( $this->caches['entity.lookup'] ) ) {
+			throw new RuntimeException( "Missing 'entity.lookup' instance.");
+		}
 	}
 
  	/**
@@ -103,6 +107,12 @@ class IdCacheManager {
 		$this->caches['entity.id']->save( $hash, $id );
 		$this->caches['entity.sort']->save( $hash, $sortkey );
 
+		$dataItem = new DIWikiPage( $title, $namespace, $interwiki, $subobject );
+		$dataItem->setId( $id );
+		$dataItem->setSortKey( $sortkey );
+
+		$this->caches['entity.lookup']->save( $id, $dataItem );
+
 		// Speed up detection of redirects when fetching IDs
 		if ( $interwiki == SMW_SQL3_SMWREDIIW ) {
 			$this->setCache( $title, $namespace, '', $subobject, 0, '' );
@@ -125,6 +135,10 @@ class IdCacheManager {
 
 		$this->caches['entity.id']->delete( $hash );
 		$this->caches['entity.sort']->delete( $hash );
+
+		if ( ( $id = $this->caches['entity.id']->fetch( $hash ) ) !== false ) {
+			$this->caches['entity.lookup']->delete( $id );
+		}
 	}
 
 	/**

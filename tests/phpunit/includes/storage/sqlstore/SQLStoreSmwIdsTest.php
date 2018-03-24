@@ -29,7 +29,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$idCacheManager = new IdCacheManager(
 			[
 				'entity.id' => new FixedInMemoryLruCache(),
-				'entity.sort' => new FixedInMemoryLruCache()
+				'entity.sort' => new FixedInMemoryLruCache(),
+				'entity.lookup' => new FixedInMemoryLruCache()
 			]
 		);
 

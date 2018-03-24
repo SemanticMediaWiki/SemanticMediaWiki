@@ -187,7 +187,7 @@ class SMWSql3SmwIds {
 		$this->initCache();
 
 		$this->byIdEntityFinder = $this->factory->newByIdEntityFinder(
-			$this->idCacheManager->get( 'entity.id' )
+			$this->idCacheManager->get( 'entity.lookup' )
 		);
 
 		$this->redirectStore = $this->factory->newRedirectStore();
@@ -1099,7 +1099,8 @@ class SMWSql3SmwIds {
 			self::POOLCACHE_ID,
 			[
 				'entity.id' => self::MAX_CACHE_SIZE,
-				'entity.sort' => self::MAX_CACHE_SIZE
+				'entity.sort' => self::MAX_CACHE_SIZE,
+				'entity.lookup' => 2000
 			]
 		);
 	}
