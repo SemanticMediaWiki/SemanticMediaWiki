@@ -90,6 +90,28 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNoPushOnEmptyMagicWordsList() {
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOutput->expects( $this->never() )
+			->method( 'setExtensionData' );
+
+		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'hasExtensionData' ) )
+			->getMock();
+
+		$instance->expects( $this->any() )
+			->method( 'hasExtensionData' )
+			->will( $this->returnValue( true ) );
+
+		$instance->setOutput( $parserOutput );
+		$instance->pushMagicWordsToParserOutput( [] );
+	}
+
 	protected function assertMagicWordFromParserOutput( $instance, $magicWord, $expectedMagicWords ) {
 
 		$this->assertEmpty(

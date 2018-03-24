@@ -160,7 +160,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut',
 			array(
-				'magicWords' => array(),
+				'magicWords' => null,
 				'constants'  => SMW_FACTBOX_HIDDEN,
 				'textOutput' => ''
 			)
@@ -172,7 +172,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut',
 			array(
-				'magicWords' => array(),
+				'magicWords' => null,
 				'preview'    => true,
 				'constants'  => SMW_FACTBOX_HIDDEN,
 				'textOutput' => ''
