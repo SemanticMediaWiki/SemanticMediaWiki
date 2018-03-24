@@ -66,10 +66,6 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'hasEditProtection' )
 			->will( $this->returnValue( true ) );
 
-		$this->protectionValidator ->expects( $this->any() )
-			->method( 'hasProtectionOnNamespace' )
-			->will( $this->returnValue( true ) );
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -175,10 +171,6 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getEditProtectionRight' )
 			->will( $this->returnValue( $editProtectionRight ) );
-
-		$this->protectionValidator->expects( $this->never() )
-			->method( 'hasProtectionOnNamespace' )
-			->will( $this->returnValue( true ) );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
