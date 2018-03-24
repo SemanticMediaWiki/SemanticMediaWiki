@@ -93,13 +93,13 @@ class EventListenerRegistry implements EventListenerCollection {
 
 				$applicationFactory = ApplicationFactory::getInstance();
 
-				$context = [
+				$logContext = [
 					'role' => 'developer',
 					'event' => 'cached.propertyvalues.prefetcher.reset',
 					'origin' => $subject
 				];
 
-				$this->logger->info( '[Event] {event}: {origin}', $context );
+				$this->logger->info( '[Event] {event}: {origin}', $logContext );
 
 				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
 					$subject
@@ -126,13 +126,13 @@ class EventListenerRegistry implements EventListenerCollection {
 
 				$applicationFactory = ApplicationFactory::getInstance();
 
-				$context = [
+				$logContext = [
 					'role' => 'developer',
 					'event' => 'cached.prefetcher.reset',
 					'origin' => $subject
 				];
 
-				$this->logger->info( '[Event] {event}: {origin}', $context );
+				$this->logger->info( '[Event] {event}: {origin}', $logContext );
 
 				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
 					$subject
