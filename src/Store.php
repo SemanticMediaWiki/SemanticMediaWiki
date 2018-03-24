@@ -545,12 +545,9 @@ abstract class Store implements QueryEngine {
 	 * @since 2.1
 	 *
 	 * @param ConnectionManager $connectionManager
-	 *
-	 * @return Store
 	 */
 	public function setConnectionManager( ConnectionManager $connectionManager ) {
 		$this->connectionManager = $connectionManager;
-		return $this;
 	}
 
 	/**
