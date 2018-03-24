@@ -133,7 +133,7 @@ class UpdateEntityCollation extends \Maintenance {
 				"\r". sprintf( "%-35s%s", "- Updating collation ... ", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
 			);
 
-			$tableFieldUpdater->updateCollationField( $row->smw_id, $search );
+			$tableFieldUpdater->updateSortField( $row->smw_id, $search );
 		}
 	}
 

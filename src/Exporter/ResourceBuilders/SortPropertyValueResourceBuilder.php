@@ -11,7 +11,7 @@ use SMW\DataValueFactory;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
 use SMWExpLiteral as ExpLiteral;
-use SMW\Utils\Collator;
+use SMW\MediaWiki\Collator;
 
 /**
  * @private

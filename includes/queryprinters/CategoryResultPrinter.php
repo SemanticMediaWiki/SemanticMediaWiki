@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\Utils\Collator;
+use SMW\MediaWiki\Collator;
 use SMWDataItem;
 use SMWQueryResult;
 

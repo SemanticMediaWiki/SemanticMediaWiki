@@ -11,7 +11,7 @@ use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\TableFieldUpdater;
-use SMW\Utils\Collator;
+use SMW\MediaWiki\Collator;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\SQLStore;
 
@@ -785,10 +785,10 @@ class SMWSql3SmwIds {
 
 		} elseif ( $sortkey !== '' && $sortkey != $oldsort ) {
 
-			$this->tableFieldUpdater->updateCollationField( $id, $sortkey );
+			$this->tableFieldUpdater->updateSortField( $id, $sortkey );
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
-		} elseif ( $sortkey !== '' && !$this->tableFieldUpdater->isEqualByCollation( $oldsort, $sortkey ) ) {
-			$this->tableFieldUpdater->updateCollationField( $id, $sortkey );
+		} elseif ( $sortkey !== '' && $this->tableFieldUpdater->canUpdateSortField( $oldsort, $sortkey ) ) {
+			$this->tableFieldUpdater->updateSortField( $id, $sortkey );
 		}
 
 		$db->endAtomicTransaction( __METHOD__ );

@@ -11,7 +11,7 @@ use SMW\DIProperty;
 use SMWSql3SmwIds;
 use SMW\PropertyRegistry;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Utils\Collator;
+use SMW\MediaWiki\Collator;
 
 /**
  * @private

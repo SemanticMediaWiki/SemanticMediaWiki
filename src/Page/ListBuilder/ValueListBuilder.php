@@ -18,7 +18,7 @@ use SMW\Utils\HtmlDivTable;
 use Html;
 use WebRequest;
 use SMW\Message;
-use SMW\Utils\Collator;
+use SMW\MediaWiki\Collator;
 use SMW\Query\Language\SomeProperty;
 
 /**

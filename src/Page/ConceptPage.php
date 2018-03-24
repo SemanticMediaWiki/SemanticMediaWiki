@@ -8,7 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\RequestOptions;
 use SMWDataItem as DataItem;
-use SMW\Utils\Collator;
+use SMW\MediaWiki\Collator;
 use SMW\DIConcept;
 use SMW\Message;
 use Html;

@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Utils;
+namespace SMW\Tests\MediaWiki;
 
-use SMW\Utils\Collator;
+use SMW\MediaWiki\Collator;
 
 /**
- * @covers \SMW\Utils\Collator
+ * @covers \SMW\MediaWiki\Collator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
