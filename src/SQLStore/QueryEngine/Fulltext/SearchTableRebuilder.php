@@ -118,6 +118,15 @@ class SearchTableRebuilder {
 	}
 
 	/**
+	 * @since 3.0
+	 */
+	public function flushTable() {
+		if ( $this->searchTableUpdater->isEnabled() ) {
+			$this->searchTableUpdater->flushTable();
+		}
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @return array

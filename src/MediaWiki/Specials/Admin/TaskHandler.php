@@ -34,6 +34,11 @@ abstract class TaskHandler {
 	private $store;
 
 	/**
+	 * @var boolean
+	 */
+	protected $isApiTask = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param integer $feature
@@ -78,6 +83,15 @@ abstract class TaskHandler {
 	 */
 	public function getSection() {
 		return '';
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function isApiTask() {
+		return false;
 	}
 
 	/**

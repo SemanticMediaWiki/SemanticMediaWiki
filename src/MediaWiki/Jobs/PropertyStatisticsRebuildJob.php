@@ -3,6 +3,8 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\ApplicationFactory;
+use SMW\RequestOptions;
+use SMW\Site;
 use Title;
 
 /**
@@ -31,14 +33,18 @@ class PropertyStatisticsRebuildJob extends JobBase {
 	 */
 	public function run() {
 
+		if ( $this->waitOnCommandLineMode() ) {
+			return true;
+		}
+
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 
-		$statisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
+		$propertyStatisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
 			$applicationFactory->getStore()
 		);
 
-		$statisticsRebuilder->rebuild();
+		$propertyStatisticsRebuilder->rebuild();
 
 		return true;
 	}

@@ -144,13 +144,12 @@ class SpecialAdmin extends SpecialPage {
 			],
 			''
 		)  . Html::rawElement(
-			'h3',
-			array(),
-			$this->getMessageAsString( array( 'smw-smwadmin-refresh-title' ) )
-		) . Html::rawElement(
 			'p',
-			array(),
-			$this->getMessageAsString( array( 'smw-admin-job-scheduler-note' ) )
+			[
+				'class' => 'plainlinks',
+				'style' => 'margin-top:0.8em;'
+			],
+			$this->getMessageAsString( array( 'smw-admin-job-scheduler-note' ),Message::PARSE )
 		);
 
 		$list = '';

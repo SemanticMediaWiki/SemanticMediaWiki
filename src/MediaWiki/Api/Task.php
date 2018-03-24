@@ -41,6 +41,10 @@ class Task extends ApiBase {
 			$results = $this->callDupLookupTask( $parameters );
 		}
 
+		if ( $params['task'] === 'job' ) {
+			$results = $this->callGenericJobTask( $parameters );
+		}
+
 		$this->getResult()->addValue(
 			null,
 			'task',
@@ -86,6 +90,41 @@ class Task extends ApiBase {
 		$cache->save( $key, $result, $cacheTTL );
 
 		return $result;
+	}
+
+	private function callGenericJobTask( $params ) {
+
+		$this->checkParameters( $params );
+
+		if ( $params['subject'] === '' ) {
+			return ['done' => false ];
+		}
+
+		$title = DIWikiPage::doUnserialize( $params['subject'] )->getTitle();
+
+		if ( $title === null ) {
+			return ['done' => false ];
+		}
+
+		if ( !isset( $params['job'] ) ) {
+			return ['done' => false ];
+		}
+
+		$parameters = [];
+
+		if ( isset( $params['parameters'] ) ) {
+			$parameters = $params['parameters'];
+		}
+
+		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+
+		$job = $jobFactory->newByType(
+			$params['job'],
+			$title,
+			$parameters
+		);
+
+		$job->insert();
 	}
 
 	private function callUpdateTask( $parameters ) {
@@ -162,7 +201,8 @@ class Task extends ApiBase {
 				ApiBase::PARAM_REQUIRED => true,
 				ApiBase::PARAM_TYPE => array(
 					'update',
-					'duplookup'
+					'duplookup',
+					'job'
 				)
 			),
 			'params' => array(

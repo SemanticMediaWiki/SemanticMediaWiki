@@ -115,6 +115,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 			$this->outputFormatter
 		);
 
+		$instance->isApiTask = false;
 		$instance->setEnabledFeatures( SMW_ADM_PSTATS );
 		$instance->handleRequest( $webRequest );
 	}

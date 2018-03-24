@@ -115,6 +115,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 			$this->outputFormatter
 		);
 
+		$instance->isApiTask = false;
 		$instance->setEnabledFeatures( SMW_ADM_FULLT );
 		$instance->handleRequest( $webRequest );
 	}

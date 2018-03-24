@@ -6,6 +6,7 @@ use Hooks;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\Iterators\ChunkedIterator;
+use SMW\Site;
 use Title;
 
 /**
@@ -84,6 +85,10 @@ class EntityIdDisposerJob extends JobBase {
 	}
 
 	private function doDisposeAll( $outdatedEntitiesResultIterator ) {
+
+		if ( $this->waitOnCommandLineMode() ) {
+			return true;
+		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
