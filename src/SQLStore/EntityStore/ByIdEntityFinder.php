@@ -7,6 +7,7 @@ use SMW\HashBuilder;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Database;
 use SMW\IteratorFactory;
+use SMW\PropertyRegistry;
 use SMW\RequestOptions;
 use Onoi\Cache\Cache;
 use SMW\Store;
@@ -104,32 +105,32 @@ class ByIdEntityFinder {
 	 */
 	public function getDataItemById( $id ) {
 
-		if ( !$this->cache->contains( $id ) && !$this->canMatchById( $id ) ) {
-			return null;
+		if ( ( $dataItem = $this->get( (int)$id ) ) !== false ) {
+			return $dataItem;
 		}
 
-		$wikiPage = HashBuilder::newDiWikiPageFromHash(
-			$this->cache->fetch( $id )
-		);
-
-		$wikiPage->setId( $id );
-
-		return $wikiPage;
+		return null;
 	}
 
-	private function canMatchById( $id ) {
+	private function get( $id ) {
+
+		if ( ( $dataItem = $this->cache->fetch( $id ) ) !== false ) {
+			return $dataItem;
+		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
 			\SMWSQLStore3::ID_TABLE,
-			array(
+			[
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
-				'smw_subobject'
-			),
-			array( 'smw_id' => $id ),
+				'smw_subobject',
+				'smw_sortkey',
+				'smw_sort'
+			],
+			[ 'smw_id' => $id ],
 			__METHOD__
 		);
 
@@ -137,16 +138,24 @@ class ByIdEntityFinder {
 			return false;
 		}
 
-		$hash = HashBuilder::createFromSegments(
+		if ( $row->smw_title !== '' && $row->smw_title{0} === '_' && (int)$row->smw_namespace === SMW_NS_PROPERTY ) {
+		//	$row->smw_title = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $row->smw_title ) );
+		}
+
+		$dataItem = new DIWikiPage(
 			$row->smw_title,
 			$row->smw_namespace,
 			$row->smw_iw,
 			$row->smw_subobject
 		);
 
-		$this->cache->save( $id, $hash );
+		$dataItem->setId( $id );
+		$dataItem->setSortKey( $row->smw_sortkey );
+		$dataItem->setOption( 'sort', $row->smw_sort );
 
-		return true;
+		$this->cache->save( $id, $dataItem );
+
+		return $dataItem;
 	}
 
 }
