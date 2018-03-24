@@ -5,8 +5,8 @@ namespace SMW\Tests\SQLStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMWSql3SmwIds;
-use SMW\ProcessLruCache;
 use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\EntityStore\IdCacheManager;
 use Onoi\Cache\FixedInMemoryLruCache;
 
 /**
@@ -26,11 +26,11 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$processLruCache = new ProcessLruCache(
-			array(
+		$idCacheManager = new IdCacheManager(
+			[
 				'entity.id' => new FixedInMemoryLruCache(),
 				'entity.sort' => new FixedInMemoryLruCache()
-			)
+			]
 		);
 
 		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
@@ -60,8 +60,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->factory->expects( $this->any() )
-			->method( 'newProcessLruCache' )
-			->will( $this->returnValue( $processLruCache ) );
+			->method( 'newIdCacheManager' )
+			->will( $this->returnValue( $idCacheManager ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newRedirectStore' )

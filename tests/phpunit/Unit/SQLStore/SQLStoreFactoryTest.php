@@ -261,13 +261,13 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructProcessLruCache() {
+	public function testCanConstructIdCacheManager() {
 
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\ProcessLruCache',
-			$instance->newProcessLruCache( array() )
+			'\SMW\SQLStore\EntityStore\IdCacheManager',
+			$instance->newIdCacheManager( 'foo', [ 'entity.id' => '', 'entity.sort' => '' ] )
 		);
 	}
 
