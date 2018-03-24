@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use Job;
 use JobQueueGroup;
 use SMW\Store;
+use SMW\Site;
 use Title;
 use SMW\ApplicationFactory;
 
@@ -196,6 +197,28 @@ abstract class JobBase extends Job {
 		}
 
 		$this->params[ 'jobReleaseTimestamp' ] = $newTime;
+	}
+
+	/**
+	 * Only run the job via commandLine or the cronJob and avoid execution via
+	 * Special:RunJobs as it can cause the script to timeout.
+	 */
+	public function waitOnCommandLineMode() {
+
+		if ( !$this->hasParameter( 'waitOnCommandLine' ) || Site::isCommandLineMode() ) {
+			return false;
+		}
+
+		if ( $this->hasParameter( 'waitOnCommandLine' ) ) {
+			$this->params['waitOnCommandLine'] = $this->getParameter( 'waitOnCommandLine' ) + 1;
+		} else {
+			$this->params['waitOnCommandLine'] = 1;
+		}
+
+		$job = new static( $this->title, $this->params );
+		$job->insert();
+
+		return true;
 	}
 
 	protected function getJobQueue() {

@@ -115,6 +115,7 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
+		$instance->isApiTask = false;
 		$instance->setEnabledFeatures( SMW_ADM_DISPOSAL );
 		$instance->handleRequest( $webRequest );
 	}

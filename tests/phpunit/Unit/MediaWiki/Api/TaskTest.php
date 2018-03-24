@@ -44,7 +44,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testHandleQueryRefTask() {
+	public function testUpdateTask() {
 
 		$updateJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
 			->disableOriginalConstructor()
@@ -115,6 +115,49 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 					'action'   => 'smwtask',
 					'task'     => 'duplookup',
 					'params'   => [],
+					'token'    => 'foo'
+				]
+			),
+			'smwtask'
+		);
+
+		$instance->execute();
+	}
+
+	public function testGenericJobTask() {
+
+		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$nullJob->expects( $this->atLeastOnce() )
+			->method( 'insert' );
+
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory->expects( $this->atLeastOnce() )
+			->method( 'newByType' )
+			->with(
+				$this->equalTo( 'Foobar' ),
+				$this->anything(),
+				$this->anything() )
+			->will( $this->returnValue( $nullJob ) );
+
+		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
+
+		$instance = new Task(
+			$this->apiFactory->newApiMain(
+				[
+					'action'   => 'smwtask',
+					'task'     => 'job',
+					'params'   => json_encode(
+						[
+							'subject' => 'Foo#0##',
+							'job' => 'Foobar'
+						]
+					),
 					'token'    => 'foo'
 				]
 			),

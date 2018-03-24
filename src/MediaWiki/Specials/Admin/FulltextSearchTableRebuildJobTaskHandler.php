@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Message;
+use SMW\DIWikiPage;
 use SMW\Store;
 use Html;
 use WebRequest;
@@ -27,6 +28,11 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 	 * @var OutputFormatter
 	 */
 	private $outputFormatter;
+
+	/**
+	 * @var boolean
+	 */
+	public $isApiTask = true;
 
 	/**
 	 * @since 2.5
@@ -58,6 +64,15 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function isApiTask() {
+		return $this->isApiTask;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
@@ -73,33 +88,48 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 	 */
 	public function getHtml() {
 
-		// smw-admin-fulltext
-		$this->htmlFormRenderer
-				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-fulltext-title' ) )
-				->addParagraph( $this->getMessageAsString( 'smw-admin-fulltext-intro', Message::PARSE ) );
+		$subject = DIWikiPage::newFromTitle( \SpecialPage::getTitleFor( 'SMWAdmin' ) );
 
-		if ( $this->isEnabledFeature( SMW_ADM_FULLT ) && !$this->hasPendingFulltextSearchTableRebuildJob() ) {
+		if ( $this->isEnabledFeature( SMW_ADM_FULLT ) && !$this->hasPendingJob() ) {
 			$this->htmlFormRenderer
+				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-fulltext-title' ) )
+				->addParagraph( $this->getMessageAsString( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'fulltrebuild' )
 				->addSubmitButton(
 					$this->getMessageAsString( 'smw-admin-fulltext-button' ),
-					array(
-						'class' => ''
-					)
+					[
+						'class' => $this->isApiTask() ? 'smw-admin-api-job-task' : '',
+						'data-job' => 'SMW\FulltextSearchTableRebuildJob',
+						'data-subject' => $subject->getHash(),
+						'data-parameters' => json_encode( [ 'mode' => '' ] )
+					]
 				);
 		} elseif ( $this->isEnabledFeature( SMW_ADM_FULLT ) ) {
 			$this->htmlFormRenderer
+				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-fulltext-title' ) )
+				->addParagraph( $this->getMessageAsString( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 				->addParagraph(
-					Html::element( 'span', array( 'class' => 'smw-admin-circle-orange' ), '' ) .
-					Html::element( 'span', array( 'style' => 'font-style:italic; margin-left:25px;' ), $this->getMessageAsString( 'smw-admin-fulltext-active' ) )
+					Html::element(
+						'span',
+						[
+							'class' => 'smw-admin-circle-orange'
+						]
+					) . Html::element(
+						'span',
+						[
+							'style' => 'font-style:italic; margin-left:25px;'
+						],
+						$this->getMessageAsString( 'smw-admin-fulltext-active' )
+					)
 				);
-		} else {
-			$this->htmlFormRenderer
-				->addParagraph( $this->getMessageAsString( 'smw-admin-feature-disabled' ) );
 		}
 
-		return Html::rawElement( 'div', array(), $this->htmlFormRenderer->getForm() );
+		return Html::rawElement(
+			'div',
+			[],
+			$this->htmlFormRenderer->getForm()
+		);
 	}
 
 	/**
@@ -109,8 +139,8 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		if ( !$this->isEnabledFeature( SMW_ADM_FULLT ) || $this->hasPendingFulltextSearchTableRebuildJob() ) {
-			return false;
+		if ( !$this->isEnabledFeature( SMW_ADM_FULLT ) || $this->hasPendingJob() || $this->isApiTask() ) {
+			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 		}
 
 		$fulltextSearchTableRebuildJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
@@ -126,7 +156,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 	}
 
-	private function hasPendingFulltextSearchTableRebuildJob() {
+	private function hasPendingJob() {
 		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'SMW\FulltextSearchTableRebuildJob' );
 	}
 

@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\ApplicationFactory;
+use SMW\Site;
 use Title;
 
 /**
@@ -31,6 +32,10 @@ class FulltextSearchTableRebuildJob extends JobBase {
 	 */
 	public function run() {
 
+		if ( $this->waitOnCommandLineMode() ) {
+			return true;
+		}
+
 		$fulltextSearchTableFactory = new FulltextSearchTableFactory();
 
 		// Only the SQLStore is supported
@@ -43,6 +48,7 @@ class FulltextSearchTableRebuildJob extends JobBase {
 		} elseif ( $this->hasParameter( 'mode' ) && $this->getParameter( 'mode' ) === 'full' ) {
 			$searchTableRebuilder->rebuild();
 		} else {
+			$searchTableRebuilder->flushTable();
 			$this->createJobsFromTableList( $searchTableRebuilder->getQualifiedTableList() );
 		}
 
@@ -62,7 +68,6 @@ class FulltextSearchTableRebuildJob extends JobBase {
 
 			$fulltextSearchTableRebuildJob->insert();
 		}
-
 	}
 
 }
