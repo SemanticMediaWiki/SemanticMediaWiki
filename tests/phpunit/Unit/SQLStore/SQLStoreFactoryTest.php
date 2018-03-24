@@ -281,7 +281,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructByIdEntityFinder() {
+	public function testCanConstructIdEntityFinder() {
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -290,8 +290,8 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\ByIdEntityFinder',
-			$instance->newByIdEntityFinder( $cache )
+			'\SMW\SQLStore\EntityStore\IdEntityFinder',
+			$instance->newIdEntityFinder( $cache )
 		);
 	}
 

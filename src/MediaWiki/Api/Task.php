@@ -6,6 +6,7 @@ use ApiBase;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use Iterator;
 
 /**
  * Module to support various tasks initiate using the API interface
@@ -18,6 +19,17 @@ use SMW\DIWikiPage;
 class Task extends ApiBase {
 
 	const CACHE_NAMESPACE = 'smw:api:task';
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 */
+	public static function makeCacheKey( $key ) {
+		return smwfCacheKey( self::CACHE_NAMESPACE, [ $key ] );
+	}
 
 	/**
 	 * @see ApiBase::execute
@@ -67,19 +79,19 @@ class Task extends ApiBase {
 			$cacheTTL = $cacheUsage['api.task'];
 		}
 
-		$key = smwfCacheKey(
-			self::CACHE_NAMESPACE,
-			[
-				'duplookup'
-			]
-		);
+		$key = self::makeCacheKey( 'duplookup' );
 
 		// Guard against repeated API calls (or fuzzing)
 		if ( ( $result = $cache->fetch( $key ) ) !== false && $cacheTTL !== false ) {
 			return $result + ['isFromCache' => true ];
 		}
 
-		$rows = $applicationFactory->getStore()->getObjectIds()->findDuplicateEntityRecords();
+		$rows = $applicationFactory->getStore()->getObjectIds()->findDuplicates();
+
+		// Avoid "Exception caught: Serialization of 'Closure' is not allowedException ..."
+		if ( $rows instanceof Iterator ) {
+			$rows = iterator_to_array( $rows );
+		}
 
 		$result = [
 			'list' => $rows,

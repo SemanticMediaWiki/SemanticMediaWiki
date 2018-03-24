@@ -6,6 +6,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Store;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use Onoi\Cache\Cache;
 
 /**
  * @license GNU GPL v2+
@@ -20,40 +21,51 @@ class DuplicateEntitiesDisposer {
 	/**
 	 * @var Store
 	 */
-	private $store = null;
+	private $store;
+
+	/**
+	 * @var Store
+	 */
+	private $cache;
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param Store $store
+	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, Cache $cache = null ) {
 		$this->store = $store;
+		$this->cache = $cache;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function findDuplicateEntityRecords() {
-		return $this->store->getObjectIds()->findDuplicateEntityRecords();
+	public function findDuplicates() {
+		return $this->store->getObjectIds()->findDuplicates();
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $duplicateEntityRecords
+	 * @param Iterator|array $duplicates
 	 */
-	public function verifyAndDispose( array $duplicateEntityRecords ) {
+	public function verifyAndDispose( $duplicates ) {
 
-		$count = count( $duplicateEntityRecords );
+		$count = count( $duplicates );
 		$this->messageReporter->reportMessage( "Found: $count duplicates\n" );
 
 		if ( $count > 0 ) {
-			$this->doDispose( $duplicateEntityRecords );
+			$this->doDispose( $duplicates );
+		}
+
+		if ( $this->cache !== null ) {
+			$this->cache->delete( \SMW\MediaWiki\Api\Task::makeCacheKey( 'duplookup' ) );
 		}
 	}
 
-	private function doDispose( array $duplicateEntityRecords ) {
+	private function doDispose( array $duplicates ) {
 
 		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -68,8 +80,8 @@ class DuplicateEntitiesDisposer {
 		];
 
 		$i = 0;
-		foreach ( $duplicateEntityRecords as $entityRecord ) {
-			unset( $entityRecord['count'] );
+		foreach ( $duplicates as $duplicate ) {
+			unset( $duplicate['count'] );
 
 			if ( ( $i ) % 60 === 0 ) {
 				$this->messageReporter->reportMessage( "\n" );
@@ -83,10 +95,10 @@ class DuplicateEntitiesDisposer {
 					'smw_id',
 				],
 				[
-					'smw_title'=> $entityRecord['smw_title'],
-					'smw_namespace'=> $entityRecord['smw_namespace'],
-					'smw_iw'=> $entityRecord['smw_iw'],
-					'smw_subobject'=> $entityRecord['smw_subobject']
+					'smw_title'=> $duplicate['smw_title'],
+					'smw_namespace'=> $duplicate['smw_namespace'],
+					'smw_iw'=> $duplicate['smw_iw'],
+					'smw_subobject'=> $duplicate['smw_subobject']
 				],
 				__METHOD__
 			);
@@ -94,9 +106,9 @@ class DuplicateEntitiesDisposer {
 			foreach ( $res as $row ) {
 				if ( $propertyTableIdReferenceDisposer->isDisposable( $row->smw_id ) ) {
 					$propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
-					$log['disposed'][$row->smw_id] = $entityRecord;
+					$log['disposed'][$row->smw_id] = $duplicate;
 				} else {
-					$log['untouched'][$row->smw_id] = $entityRecord;
+					$log['untouched'][$row->smw_id] = $duplicate;
 				}
 			}
 

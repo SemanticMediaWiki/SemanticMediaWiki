@@ -38,7 +38,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->byIdEntityFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\ByIdEntityFinder' )
+		$this->idEntityFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdEntityFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,8 +73,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $propertyStatisticsStore ) );
 
 		$this->factory->expects( $this->any() )
-			->method( 'newByIdEntityFinder' )
-			->will( $this->returnValue( $this->byIdEntityFinder ) );
+			->method( 'newidEntityFinder' )
+			->will( $this->returnValue( $this->idEntityFinder ) );
 	}
 
 	public function testCanConstruct() {
@@ -263,7 +263,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->byIdEntityFinder->expects( $this->once() )
+		$this->idEntityFinder->expects( $this->once() )
 			->method( 'getDataItemById' )
 			->with( $this->equalTo( 42 ) )
 			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
@@ -321,33 +321,20 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			'smw_subobject' => ''
 		];
 
-		$row = (object)$expected;
+		$row = $expected;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
-			->method( 'query' )
-			->with( $this->stringContains( 'HAVING count(*) > 1' ) )
+		$this->idEntityFinder->expects( $this->once() )
+			->method( 'findDuplicates' )
 			->will( $this->returnValue( [ $row ] ) );
 
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
 		$instance = new SMWSql3SmwIds(
-			$store,
+			$this->store,
 			$this->factory
 		);
 
 		$this->assertEquals(
 			[ $expected ],
-			$instance->findDuplicateEntityRecords()
+			$instance->findDuplicates()
 		);
 	}
 
