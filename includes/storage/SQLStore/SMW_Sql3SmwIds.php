@@ -74,7 +74,7 @@ class SMWSql3SmwIds {
 	const TABLE_NAME = SMWSQLStore3::ID_TABLE;
 
 	const MAX_CACHE_SIZE = 500;
-
+	const POOLCACHE_ID = 'smw.sqlstore';
 	/**
 	 * Id for which property table hashes are cached, if any.
 	 *
@@ -173,9 +173,9 @@ class SMWSql3SmwIds {
 	);
 
 	/**
-	 * @var ProcessLruCache
+	 * @var IdCacheManager
 	 */
-	private $processLruCache;
+	private $idCacheManager;
 
 	/**
 	 * @since 1.8
@@ -184,19 +184,10 @@ class SMWSql3SmwIds {
 	public function __construct( SMWSQLStore3 $store, SQLStoreFactory $factory ) {
 		$this->store = $store;
 		$this->factory = $factory;
-
-		// Tests indicate that it is more memory efficient to have two
-		// arrays (IDs and sortkeys) than to have one array that stores both
-		// values in some data structure (other than a single string).
-		$this->processLruCache = $this->factory->newProcessLruCache(
-			array(
-				'entity.id' => self::MAX_CACHE_SIZE,
-				'entity.sort' => self::MAX_CACHE_SIZE
-			)
-		);
+		$this->initCache();
 
 		$this->byIdEntityFinder = $this->factory->newByIdEntityFinder(
-			$this->processLruCache->get( 'entity.id' )
+			$this->idCacheManager->get( 'entity.id' )
 		);
 
 		$this->redirectStore = $this->factory->newRedirectStore();
@@ -381,16 +372,11 @@ class SMWSql3SmwIds {
 			$smwgQEqualitySupport !== SMW_EQ_NONE && $subobjectName === '' ) {
 			$id = $this->findRedirect( $title, $namespace );
 		} else {
-			$id = $this->getCachedId(
-				$title,
-				$namespace,
-				$iw,
-				$subobjectName
-			);
+			$id = $this->idCacheManager->getId( [ $title, (int)$namespace, $iw, $subobjectName ] );
 		}
 
 		if ( $id !== false ) { // cache hit
-			$sortkey = $this->getCachedSortKey( $title, $namespace, $iw, $subobjectName );
+			$sortkey = $this->idCacheManager->getSort( [ $title, (int)$namespace, $iw, $subobjectName ] );
 		} elseif ( $iw == SMW_SQL3_SMWREDIIW && $canonical &&
 			$smwgQEqualitySupport != SMW_EQ_NONE && $subobjectName === '' ) {
 			$id = $this->findRedirect( $title, $namespace );
@@ -626,9 +612,7 @@ class SMWSql3SmwIds {
 			}
 		}
 
-		$hash = HashBuilder::getHashIdForDiWikiPage( $subject );
-
-		if ( ( $id = $this->processLruCache->get( 'entity.id' )->fetch( $hash ) ) !== false ) {
+		if ( ( $id = $this->idCacheManager->getId( $subject ) ) !== false ) {
 			return $id;
 		}
 
@@ -1041,19 +1025,7 @@ class SMWSql3SmwIds {
 	 * @param string $sortkey
 	 */
 	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
-
-		if ( strpos( $title, ' ' ) !== false ) {
-			throw new RuntimeException( "Somebody tried to use spaces in a cache title! ($title)");
-		}
-
-		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
-
-		$this->processLruCache->get( 'entity.id' )->save( $hashKey, $id );
-		$this->processLruCache->get( 'entity.sort' )->save( $hashKey, $sortkey );
-
-		if ( $interwiki == SMW_SQL3_SMWREDIIW ) { // speed up detection of redirects when fetching IDs
-			$this->setCache(  $title, $namespace, '', $subobject, 0, '' );
-		}
+		$this->idCacheManager->setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey );
 	}
 
 	/**
@@ -1080,46 +1052,6 @@ class SMWSql3SmwIds {
 	}
 
 	/**
-	 * Get a cached SMW ID, or false if no cache entry is found.
-	 *
-	 * @since 1.8
-	 * @param string $title
-	 * @param integer $namespace
-	 * @param string $interwiki
-	 * @param string $subobject
-	 * @return integer|boolean
-	 */
-	protected function getCachedId( $title, $namespace, $interwiki, $subobject ) {
-		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
-
-		if ( ( $id = $this->processLruCache->get( 'entity.id' )->fetch( $hashKey ) ) !== false ) {
-			return (int)$id;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Get a cached SMW sortkey, or false if no cache entry is found.
-	 *
-	 * @since 1.8
-	 * @param string $title
-	 * @param integer $namespace
-	 * @param string $interwiki
-	 * @param string $subobject
-	 * @return string|boolean
-	 */
-	protected function getCachedSortKey( $title, $namespace, $interwiki, $subobject ) {
-		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
-
-		if ( ( $sort = $this->processLruCache->get( 'entity.sort' )->fetch( $hashKey ) ) !== false ) {
-			return $sort;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Remove any cache entry for the given data. The key consists of the
 	 * parameters $title, $namespace, $interwiki, and $subobject. The
 	 * cached data is $id and $sortkey.
@@ -1131,11 +1063,7 @@ class SMWSql3SmwIds {
 	 * @param string $subobject
 	 */
 	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
-
-		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
-
-		$this->processLruCache->get( 'entity.id' )->delete( $hashKey );
-		$this->processLruCache->get( 'entity.sort' )->delete( $hashKey );
+		$this->idCacheManager->deleteCache( $title, $namespace, $interwiki, $subobject );
 	}
 
 	/**
@@ -1154,26 +1082,26 @@ class SMWSql3SmwIds {
 		// Currently we have no way to change title and namespace across all entries.
 		// Best we can do is clear the cache to avoid wrong hits:
 		if ( $oldnamespace != SMW_NS_PROPERTY || $newnamespace != SMW_NS_PROPERTY ) {
-
-			$oldHashKey = HashBuilder::createFromSegments( $oldtitle, $oldnamespace );
-
-			$this->processLruCache->get( 'entity.id' )->delete( $oldHashKey );
-			$this->processLruCache->get( 'entity.sort' )->delete( $oldHashKey );
-
-			$newHashKey = HashBuilder::createFromSegments( $newtitle, $newnamespace );
-
-			$this->processLruCache->get( 'entity.id' )->delete( $newHashKey );
-			$this->processLruCache->get( 'entity.sort' )->delete( $newHashKey );
+			$this->idCacheManager->deleteCache( $oldtitle, $oldnamespace, '', '' );
+			$this->idCacheManager->deleteCache( $newtitle, $newnamespace, '', '' );
 		}
 	}
 
 	/**
-	 * Delete all cached information.
-	 *
-	 * @since 1.8
+	 * @since 3.0
 	 */
-	public function clearCaches() {
-		$this->processLruCache->reset();
+	public function initCache() {
+
+		// Tests indicate that it is more memory efficient to have two
+		// arrays (IDs and sortkeys) than to have one array that stores both
+		// values in some data structure (other than a single string).
+		$this->idCacheManager = $this->factory->newIdCacheManager(
+			self::POOLCACHE_ID,
+			[
+				'entity.id' => self::MAX_CACHE_SIZE,
+				'entity.sort' => self::MAX_CACHE_SIZE
+			]
+		);
 	}
 
 	/**

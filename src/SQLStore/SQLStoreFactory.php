@@ -29,6 +29,7 @@ use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\ProcessLruCache;
 use SMW\SQLStore\EntityStore\ByIdEntityFinder;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
+use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\ChangePropListener;
 use SMW\SQLStore\PropertyTableRowDiffer;
 use SMW\SQLStore\ChangeOp\ChangeOp;
@@ -492,14 +493,25 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return ProcessLruCache
+	 * @return IdCacheManager
 	 */
-	public function newProcessLruCache( array $config ) {
+	public function newIdCacheManager( $id, array $config ) {
 
-		$processLruCache = ProcessLruCache::newFromConfig( $config );
-		$processLruCache->reset();
+		$inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache();
+		$caches = [];
 
-		return $processLruCache;
+		foreach ( $config as $key => $cacheSize ) {
+			$inMemoryPoolCache->resetPoolCacheById(
+				"$id.$key"
+			);
+
+			$caches[$key] = $inMemoryPoolCache->getPoolCacheById(
+				"$id.$key",
+				$cacheSize
+			);
+		}
+
+		return new IdCacheManager( $caches );
 	}
 
 	/**
