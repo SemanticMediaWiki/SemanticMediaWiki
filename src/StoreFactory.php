@@ -9,13 +9,10 @@ use Psr\Log\NullLogger;
 
 /**
  * Factory method that returns an instance of the default store, or an
- * alternative store
- *
- * @ingroup Factory
- * @ingroup Store
+ * alternative store instance.
  *
  * @license GNU GPL v2+
- * @since   1.9
+ * @since 1.9
  *
  * @author mwjames
  */
@@ -24,7 +21,7 @@ class StoreFactory {
 	/**
 	 * @var array
 	 */
-	private static $instance = array();
+	private static $instance = [];
 
 	/**
 	 * @since 1.9
@@ -52,19 +49,19 @@ class StoreFactory {
 	 * @since 1.9
 	 */
 	public static function clear() {
-		self::$instance = array();
+		self::$instance = [];
 	}
 
 	private static function newInstance( $store ) {
 
 		if ( !class_exists( $store ) ) {
-			throw new RuntimeException( "Expected a {$store} class" );
+			throw new RuntimeException( "{$store} was not found!" );
 		}
 
 		$instance = new $store;
 
 		if ( !( $instance instanceof Store ) ) {
-			throw new StoreNotFoundException( "{$store} can not be used as a store instance" );
+			throw new StoreNotFoundException( "{$store} cannot be used as a store instance!" );
 		}
 
 		$instance->setMessageReporter( new NullMessageReporter() );
