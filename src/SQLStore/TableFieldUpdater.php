@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Utils\Collator;
+use SMW\MediaWiki\Collator;
 
 /**
  * @license GNU GPL v2+
@@ -44,8 +44,8 @@ class TableFieldUpdater {
 	 *
 	 * @return boolean
 	 */
-	public function isEqualByCollation( $key1, $key2 ) {
-		return $this->collator->getSortKey( $key1 ) === $this->collator->getSortKey( $key2 );
+	public function canUpdateSortField( $key1, $key2 ) {
+		return $this->collator->getSortKey( $key1 ) !== $this->collator->getSortKey( $key2 );
 	}
 
 	/**
@@ -56,7 +56,7 @@ class TableFieldUpdater {
 	 *
 	 * @return integer
 	 */
-	public function updateCollationField( $id, $searchKey ) {
+	public function updateSortField( $id, $searchKey ) {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 

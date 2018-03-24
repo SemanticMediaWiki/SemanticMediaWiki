@@ -27,13 +27,13 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testIsEqualSortKey() {
+	public function tesCanUpdateSortField() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$collator = $this->getMockBuilder( '\SMW\Utils\Collator' )
+		$collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,14 +46,14 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$collator
 		);
 
-		$this->assertTrue(
-			$instance->isEqualByCollation( 'Foo', 'Foo' )
+		$this->assertFalse(
+			$instance->canUpdateSortField( 'Foo', 'Foo' )
 		);
 	}
 
-	public function testUpdateSearchAndSortField() {
+	public function testUpdateSortField() {
 
-		$collator = $this->getMockBuilder( '\SMW\Utils\Collator' )
+		$collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +84,7 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$collator
 		);
 
-		$instance->updateCollationField( 42, 'Foo' );
+		$instance->updateSortField( 42, 'Foo' );
 	}
 
 }

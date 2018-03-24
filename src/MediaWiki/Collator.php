@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Utils;
+namespace SMW\MediaWiki;
 
 use Collation;
 
