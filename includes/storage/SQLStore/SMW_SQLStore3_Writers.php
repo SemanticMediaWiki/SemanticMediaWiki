@@ -199,7 +199,10 @@ class SMWSQLStore3Writers {
 		// Mark subobjects without reference to be deleted
 		foreach( $subobjectListFinder->find( $subject ) as $subobject ) {
 			if( !$semanticData->hasSubSemanticData( $subobject->getSubobjectName() ) ) {
-				$this->doFlatDataUpdate( new SMWSemanticData( $subobject ) );
+				$semanticData = new SemanticData( $subobject );
+				$semanticData->setOption( SemanticData::PROC_DELETE, true );
+
+				$this->doFlatDataUpdate( $semanticData );
 				$deleteList[] = $subobject->getId();
 
 				$this->store->getObjectIds()->updateInterwikiField(
