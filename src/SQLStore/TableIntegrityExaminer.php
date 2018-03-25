@@ -93,11 +93,9 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	 */
 	public function checkOnPostCreation( TableBuilder $tableBuilder ) {
 
-		$this->checkOnPredefinedPropertyIndicesPostCreation();
-
-		$this->checkOnActivitiesPostCreation(
-			$tableBuilder->getLog()
-		);
+		$this->checkPredefinedPropertyIndices();
+		$this->checkHashField();
+		$this->checkSortField( $tableBuilder->getLog() );
 
 		// Call out for RDBMS specific implementations
 		$tableBuilder->checkOn( TableBuilder::POST_CREATION );
@@ -133,7 +131,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	 * is needed. At the same time, the entries in the DB make sure that DB-based
 	 * functions work as with all other properties.
 	 */
-	private function checkOnPredefinedPropertyIndicesPostCreation() {
+	private function checkPredefinedPropertyIndices() {
 
 		$connection = $this->store->getConnection( DB_MASTER );
 
@@ -215,15 +213,15 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 	}
 
-	private function checkOnActivitiesPostCreation( $processLog ) {
+	private function checkSortField( $log ) {
 
 		$connection = $this->store->getConnection( DB_MASTER );
 
 		$tableName = $connection->tableName( SQLStore::ID_TABLE );
-		$this->messageReporter->reportMessage( "Checking post creation activities ...\n" );
+		$this->messageReporter->reportMessage( "Checking smw_sortkey, smw_sort fields ...\n" );
 
 		// #2429, copy smw_sortkey content to the new smw_sort field once
-		if ( isset( $processLog[$tableName]['smw_sort'] ) && $processLog[$tableName]['smw_sort'] === TableBuilder::PROC_FIELD_NEW ) {
+		if ( isset( $log[$tableName]['smw_sort'] ) && $log[$tableName]['smw_sort'] === TableBuilder::PROC_FIELD_NEW ) {
 			$emptyField = 'smw_sort';
 			$copyField = 'smw_sortkey';
 
@@ -265,14 +263,20 @@ class TableIntegrityExaminer implements MessageReporterAware {
 				$property
 			);
 
-			$propertyTableHashes = $this->store->getObjectIds()->getPropertyTableHashes(
-				$id
+			$row = $connection->selectRow(
+				SQLStore::ID_TABLE,
+				[
+					'smw_proptable_hash',
+					'smw_hash'
+				],
+				[
+					'smw_id' => $id
+				],
+				__METHOD__
 			);
 
-			if ( is_array( $propertyTableHashes ) && $propertyTableHashes !== [] ) {
-				$propertyTableHashes = serialize( $propertyTableHashes );
-			} else {
-				$propertyTableHashes = null;
+			if ( $row === false ) {
+				$row = (object)[ 'smw_proptable_hash' => null, 'smw_hash' => null ];
 			}
 
 			$connection->replace(
@@ -282,11 +286,12 @@ class TableIntegrityExaminer implements MessageReporterAware {
 					'smw_id' => $id,
 					'smw_title' => $property->getKey(),
 					'smw_namespace' => SMW_NS_PROPERTY,
-					'smw_iw' => $iw,
+					'smw_iw' =>  $iw,
 					'smw_subobject' => '',
 					'smw_sortkey' => $label,
 					'smw_sort' => Collator::singleton()->getSortKey( $label ),
-					'smw_proptable_hash' => $propertyTableHashes
+					'smw_proptable_hash' => $row->smw_proptable_hash,
+					'smw_hash' => $row->smw_hash
 				],
 				__METHOD__
 			);
@@ -318,6 +323,62 @@ class TableIntegrityExaminer implements MessageReporterAware {
 			],
 			__METHOD__
 		);
+	}
+
+	private function checkHashField() {
+
+		$this->messageReporter->reportMessage( "Checking smw_hash field ...\n" );
+		$connection = $this->store->getConnection( DB_MASTER );
+
+		$rows = $connection->select(
+			SQLStore::ID_TABLE,
+			[
+				'smw_id',
+				'smw_title',
+				'smw_namespace',
+				'smw_iw',
+				'smw_subobject'
+			],
+			[
+				'smw_hash' => null
+			],
+			__METHOD__
+		);
+
+		$count = $rows !== null ? $rows->numRows() : 0;
+		$i = 0;
+
+		if ( $count == 0 ) {
+			return $this->messageReporter->reportMessage( "   ...done.\n"  );
+		}
+
+		$this->messageReporter->reportMessage( "   ... missing $count rows ...\n"  );
+
+		foreach ( $rows as $row ) {
+			$i++;
+
+			$hash = $this->store->getObjectIds()->computeSha1(
+				[
+					$row->smw_title,
+					(int)$row->smw_namespace,
+					$row->smw_iw,
+					$row->smw_subobject
+				]
+			);
+
+			$this->messageReporter->reportMessage(
+				"\r". sprintf( "%-35s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $row->smw_id, round( ( $i / $count ) * 100 ) ) )
+			);
+
+			$connection->update(
+				SQLStore::ID_TABLE,
+				[ 'smw_hash' => $hash ],
+				[ 'smw_id' => $row->smw_id ],
+				__METHOD__
+			);
+		}
+
+		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 	}
 
 }

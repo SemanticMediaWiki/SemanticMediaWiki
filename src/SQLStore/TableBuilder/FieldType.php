@@ -30,6 +30,11 @@ class FieldType {
 	/**
 	 * @var string
 	 */
+	const FIELD_HASH = 'hash';
+
+	/**
+	 * @var string
+	 */
 	const FIELD_NAMESPACE = 'namespace';
 
 	/**

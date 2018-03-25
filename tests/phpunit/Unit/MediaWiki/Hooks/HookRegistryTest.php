@@ -1401,6 +1401,19 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'SMW::Store::AfterQueryResultLookupComplete';
 
+		$idTableLookup = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'warmUpCache' ] )
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getObjectIds', 'getPropertyValues' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTableLookup ) );
+
 		$result = '';
 
 		$this->assertTrue(
@@ -1409,7 +1422,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $this->store, &$result )
+			array( $store, &$result )
 		);
 
 		$this->handlers[$handler] = true;

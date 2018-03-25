@@ -34,6 +34,7 @@ class MySQLTableBuilder extends TableBuilder {
 			 // like iw_prefix in MW interwiki table
 			'interwiki'  => 'VARBINARY(32)',
 			'iw'         => 'VARBINARY(32)',
+			'hash'       => 'VARBINARY(40)',
 			 // larger blobs of character data, usually not subject to SELECT conditions
 			'blob'       => 'MEDIUMBLOB',
 			'text'       => 'TEXT',

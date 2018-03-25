@@ -33,6 +33,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			 // like iw_prefix in MW interwiki table
 			'interwiki'  => 'TEXT',
 			'iw'         => 'TEXT',
+			'hash'       => 'VARBINARY(40)',
 			 // larger blobs of character data, usually not subject to SELECT conditions
 			'blob'       => 'MEDIUMBLOB',
 			'text'       => 'TEXT',

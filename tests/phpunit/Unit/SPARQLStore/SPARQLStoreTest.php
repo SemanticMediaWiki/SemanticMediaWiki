@@ -260,9 +260,18 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDescription' )
 			->will( $this->returnValue( $description ) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$idLookup = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->setMethods( [ 'warmUpCache' ] )
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->setMethods( array( 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idLookup ) );
 
 		$repositoryClient = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryClient' )
 			->disableOriginalConstructor()
