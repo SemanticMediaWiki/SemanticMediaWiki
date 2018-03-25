@@ -129,6 +129,14 @@ class SMWSQLStore3Readers {
 
 		$this->semanticDataLookup->unlockCache();
 
+		$this->store->smwIds->warmUpCache(
+			$semanticData->getProperties()
+		);
+
+		$this->store->smwIds->warmUpCache(
+			$semanticData->getPropertyValues( new DIProperty( '_INST' ) )
+		);
+
 		return $semanticData;
 	}
 
@@ -222,6 +230,7 @@ class SMWSQLStore3Readers {
 			}
 		}
 
+		$this->store->smwIds->warmUpCache( $result );
 
 		return $result;
 	}
@@ -331,6 +340,8 @@ class SMWSQLStore3Readers {
 			$iteratorFactory->newResultIterator( $res ),
 			$callback
 		);
+
+		$this->store->smwIds->warmUpCache( $result );
 
 		return $result;
 	}
@@ -484,7 +495,7 @@ class SMWSQLStore3Readers {
 
 		// apply options to overall result
 		$result = $this->store->applyRequestOptions( $result, $requestOptions );
-
+		$this->store->smwIds->warmUpCache( $result );
 
 		return $result;
 	}
@@ -570,6 +581,7 @@ class SMWSQLStore3Readers {
 		}
 
 		$result = $this->store->applyRequestOptions( $result, $requestOptions ); // apply options to overall result
+		$this->store->smwIds->warmUpCache( $result );
 
 		return $result;
 	}

@@ -14,6 +14,7 @@ use SMW\SQLStore\TableFieldUpdater;
 use SMW\MediaWiki\Collator;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\EntityStore\IdCacheManager;
 
 /**
  * @ingroup SMWStore
@@ -709,7 +710,8 @@ class SMWSql3SmwIds {
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName,
 					'smw_sortkey' => $sortkey,
-					'smw_sort' => Collator::singleton()->getSortKey( $sortkey )
+					'smw_sort' => Collator::singleton()->getSortKey( $sortkey ),
+					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] )
 				),
 				__METHOD__
 			);
@@ -974,6 +976,101 @@ class SMWSql3SmwIds {
 		);
 
 		$db->endAtomicTransaction( __METHOD__ );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string|array $args
+	 *
+	 * @return string
+	 */
+	public function computeSha1( $args = '' ) {
+		return IdCacheManager::computeSha1( $args );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $list
+	 */
+	public function warmUpCache( $list = [] ) {
+
+		$hashList = [];
+
+		if ( $list instanceof \SMWQueryResult ) {
+			$list = $list->getResults();
+		}
+
+		if ( !is_array( $list ) ) {
+			return;
+		}
+
+		foreach ( $list as $item ) {
+
+			$hash = null;
+
+			if ( $item instanceof DIWikiPage ) {
+				$hash = [ $item->getDBKey(), (int)$item->getNamespace(), $item->getInterwiki(), $item->getSubobjectName() ];
+			}
+
+			if ( $item instanceof DIProperty ) {
+
+				// Avoid _SKEY as it is not used during an entity lookup to
+				// match an ID
+				if ( $item->getKey() === '_SKEY' ) {
+					continue;
+				}
+
+				$hash = [ $item->getKey(), SMW_NS_PROPERTY, '', '' ];
+			}
+
+			if ( $hash === null ) {
+				continue;
+			}
+
+			$hash = IdCacheManager::computeSha1( $hash );
+
+			if ( !$this->idCacheManager->hasCache( $hash ) ) {
+				$hashList[] = $hash;
+			}
+		}
+
+		if ( $hashList === [] ) {
+			return;
+		}
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$rows = $connection->select(
+			SQLStore::ID_TABLE,
+			[
+				'smw_id',
+				'smw_title',
+				'smw_namespace',
+				'smw_iw',
+				'smw_subobject',
+				'smw_sortkey',
+				'smw_sort'
+			],
+			[
+				'smw_hash' => $hashList
+			],
+			__METHOD__
+		);
+
+		foreach ( $rows as $row ) {
+			$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
+
+			$this->idCacheManager->setCache(
+				$row->smw_title,
+				$row->smw_namespace,
+				$row->smw_iw,
+				$row->smw_subobject,
+				$row->smw_id,
+				$sortkey
+			);
+		}
 	}
 
 	/**

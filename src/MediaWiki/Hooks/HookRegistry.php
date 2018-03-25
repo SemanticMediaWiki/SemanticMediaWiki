@@ -998,6 +998,8 @@ class HookRegistry {
 
 			$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->recordStats();
 
+			$store->getObjectIds()->warmUpCache( $result );
+
 			return true;
 		};
 

@@ -156,9 +156,12 @@ class TableSchemaManager {
 
 		$table->addColumn( 'smw_sort', array( FieldType::FIELD_TITLE ) );
 		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
+		$table->addColumn( 'smw_hash', FieldType::FIELD_HASH );
 
 		$table->addIndex( 'smw_id' );
 		$table->addIndex( 'smw_id,smw_sortkey' );
+		$table->addIndex( 'smw_hash,smw_id' );
+
 		// IW match lookup
 		$table->addIndex( 'smw_iw' );
 		$table->addIndex( 'smw_iw,smw_id' );

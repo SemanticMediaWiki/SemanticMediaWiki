@@ -21,6 +21,7 @@ use Onoi\Cache\FixedInMemoryLruCache;
 class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $cache;
 	private $idMatchFinder;
 	private $factory;
 
@@ -33,6 +34,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 				'entity.lookup' => new FixedInMemoryLruCache()
 			]
 		);
+
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
@@ -373,6 +378,65 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			42,
 			$instance->getIDFor( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY, '', 'Foo' ) )
 		);
+	}
+
+	public function testWarmUpCache() {
+
+		$row = [
+			'smw_id' => 42,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => '',
+			'smw_sortkey' => 'Foo',
+			'smw_sort' => '',
+		];
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idCacheManager->expects( $this->once() )
+			->method( 'setCache' );
+
+		$idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->will( $this->returnValue( $this->cache ) );
+
+		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$factory->expects( $this->any() )
+			->method( 'newIdCacheManager' )
+			->will( $this->returnValue( $idCacheManager ) );
+
+		$factory->expects( $this->any() )
+			->method( 'newIdEntityFinder' )
+			->will( $this->returnValue( $this->idEntityFinder ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'select' )
+			->will( $this->returnValue( [ (object)$row ] ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$factory
+		);
+
+		$instance->warmUpCache( [ new DIWikiPage( 'Bar', NS_MAIN ) ] );
 	}
 
 	public function pageIdandSortProvider() {

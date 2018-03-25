@@ -37,8 +37,12 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckOnPostCreationOnValidProperty() {
 
-		$row = new \stdClass;
-		$row->smw_id = 42;
+		$row = [
+			'smw_id' => 42,
+			'smw_iw' => '',
+			'smw_proptable_hash' => '',
+			'smw_hash' => ''
+		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getPropertyInterwiki', 'moveSMWPageID', 'getPropertyTableHashes' ) )
@@ -54,7 +58,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $row ) );
+			->will( $this->returnValue( (object)$row ) );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'replace' );
