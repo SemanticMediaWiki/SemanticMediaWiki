@@ -307,6 +307,7 @@
 	"smw-admin-smwhomepage": "Η πλήρης τεκμηρίωση χρήσης του Σημασιολογικού MediaWiki βρίσκεται στο <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Προγραμματιστικά σφάλματα μπορούν να αναφερθούν στη <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">σελίδα παρακολούθησης προβλημάτων</a>, η σελίδα <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">αναφοράς προγραμματιστικών σφαλμάτων</a> παρέχει κάποιες οδηγίες για το πώς να γράψετε μια αποτελεσματική αναφορά για κάποιο πρόβλημα.",
 	"smw-admin-questions": "Εάν έχετε περαιτέρω ερωτήσεις ή προτάσεις, λάβετε μέρος στη συζήτηση στη <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">λίστα αλληλογραφίας χρηστών</a> ή στο <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">χώρο συνομιλίας</a> του Σημασιολογικού MediaWiki.",
+	"smw-admin-other-functions": "Άλλες λειτουργείες",
 	"smw-admin-supplementary-section-title": "Συμπληρωματικές λειτουργίες",
 	"smw-admin-supplementary-section-intro": "Μερικές από τις λειτουργίες που αναφέρονται σε αυτήν την ενότητα μπορεί να υπόκεινται σε περιορισμούς και ως εκ τούτου να είναι μη προσβάσιμες σε αυτό το wiki.",
 	"smw-admin-supplementary-settings-title": "Ρυθμίσεις διαμόρφωσης",

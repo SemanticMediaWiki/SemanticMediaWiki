@@ -133,6 +133,7 @@
 	"smw_attributearticlecount": "Pokazano $1 {{PLURAL:$1|stronę używającą|strony używające|stron używających}} tego atrybutu.",
 	"smw-propertylist-subproperty-header": "Podwłaściwości",
 	"smw-propertylist-redirect-header": "Synonimy",
+	"smw-propertylist-error-header": "Strony z nieprawidłowymi przypisaniami",
 	"specialpages-group-smw_group": "Semantyczna MediaWiki",
 	"exportrdf": "Eksport stron do RDF",
 	"smw_exportrdf_docu": "Ta strona pozwala eksportować fragmenty artykułu w formacie RDF.  Aby wyeksportować artykuły, wpisz ich tytuły w poniższym polu tekstowym, po jednym tytule w wierszu.",
