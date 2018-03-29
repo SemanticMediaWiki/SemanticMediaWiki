@@ -5,7 +5,8 @@
 			"아라",
 			"Kghbln",
 			"Nicolas Eynaud",
-			"Nemo bis"
+			"Nemo bis",
+			"Unuaiga"
 		]
 	},
 	"smw-desc": "Rendre lo wiki mai accessible - per las maquinas ''e'' los umans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentacion en linha])",
@@ -170,9 +171,13 @@
 	"smw_smwadmin_datarefresh": "Reconstruccion de las donadas",
 	"smw_smwadmin_datarefreshdocu": "Es possible de restablir totas las donadas Semantic MediaWiki basadas suls contenguts corrents d'aqueste wiki.\nAquò pòt èsser util per reparar de donadas rompudas o per refrescar las donadas se lo format intèrne a cambiat al moment de las remesas a nivèl.\nLa mesa a jorn es executada pagina per pagina e se serà pas acabada immediatament.\nLa pagina seguenta aficha se una mesa a jorn es en cors d’execucion e vos permet de començar o d’arrestar aquestas (levat s'aquesta foncionalitat est desactivada per l’administrator del site).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Una mesa a jorn es en cors d’execucion.</strong>\nEs normal qu’una mesa a jorn progresse lentament dempuèi que refresca unicament las donadas dins de troces pichons a cada còp qu’un utilizaire accedís al wiki.\nPer acabar aquesta mesa a jorn mai rapidament, podètz invocar l'escript de mantenença Mediawiki <code>runJobs.php</code> (utilizatz l’opcion <code>--maxjobs 1000</code> per restrénher lo nombre de las mesas a jorn per escript aviat).\nProgression estimada de la mesa a jorn actuala :",
-	"smw_smwadmin_datarefreshbutton": "Començar la mesa a jorn de las donadas",
+	"smw_smwadmin_datarefreshbutton": "Planificar la reconstruccion de las donadas",
 	"smw_smwadmin_datarefreshstop": "Arrestar aquesta mesa a jorn",
 	"smw_smwadmin_datarefreshstopconfirm": "Òc, ne soi {{GENDER:$1|segur|segura}}.",
+	"smw-admin-job-scheduler-note": "La màger part de las activitats dins aquesta seccion son faitas com de tascas per evitar las situacions de camin d'enlòc pendent l'execucion. Lo [https://www.mediawiki.org/wiki/Manual:Job_queue job scheduler] es responsable de l'execucion e es critic que l'escript de mantenença <code>runJobs.php</code> (veire tanben <code>$wgRunJobsAsync</code>) aja una capacitat adaptada.",
+	"smw-admin-outdateddisposal-active": "Una tasca de supression d'entitats obsoletas es estada planificada.",
+	"smw-admin-propertystatistics-active": "Una tasca de reconstruccion d'estatisticas de proprietat es estada planificada.",
+	"smw-admin-fulltext-active": "Una tasca de reconstruccion de la recèrca plen tèxte es estat planificat.",
 	"smw-admin-support": "Obténer d’ajuda",
 	"smw-admin-supportdocu": "Divèrsas ressorsas vos poirián ajudar en cas de problèmas :",
 	"smw-admin-installfile": "S'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">fichièr INSTALL</a>.",
@@ -208,6 +213,7 @@
 	"smw-sp-properties-header-label": "Lista de las proprietats",
 	"smw-sp-admin-settings-button": "Generar la lista dels paramètres",
 	"smw-admin-objectid": "Id de l’objècte :",
+	"smw-admin-tab-rebuild": "Actualizacion e reconstruccion de las donadas",
 	"smw-livepreview-loading": "Cargament…",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultats",
 	"smw-datavalue-number-nullnotallowed": "\"$1\" tornat amb \"NULL\" qu'es pas una valor numerica autorizada.",

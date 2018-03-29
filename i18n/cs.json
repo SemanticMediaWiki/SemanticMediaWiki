@@ -216,7 +216,7 @@
 	"smw_smwadmin_datarefresh": "Nové vytvoření dat",
 	"smw_smwadmin_datarefreshdocu": "Na základě obsahu stránek wiki je možné obnovit všechna data Semantic MediaWiki.\nTo může být užitečné při opravě poškozených dat nebo při jejich úpravě, pokud se v důsledku upgradu softwaru změní vnitřní formát.\nUpdate se spouští stránku po stránce a nebude dokončen ihned.\nNásledující se zobrazuje pokud update právě probíhá a umožňuje vám updaty spouštět či zastavovat (pokud tuto možnost nezakázal administrátor).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Probíhá update.</strong>\nJe normální, že update postupuje pomalu, protože data zpracovává v malých dávkách vždy, když wiki navštíví nějaký uživatel.\nChcete-li update dokončit rychleji, můžete spustit údržbový skript MediaWiki <code>runJobs.php</code> (k omezení počtu updatů provedených v jedné dávce použijte nastavení <code>--maxjobs 1000</code>).\nOdhadovaný průběh updatu:",
-	"smw_smwadmin_datarefreshbutton": "Spustit update dat",
+	"smw_smwadmin_datarefreshbutton": "Naplánovat znovusestavení dat",
 	"smw_smwadmin_datarefreshstop": "Zastavit update",
 	"smw_smwadmin_datarefreshstopconfirm": "Ano, jsem si {{GENDER:$1|jistý|jistá|jistý/á}}.",
 	"smw-admin-support": "Získání podpory",
