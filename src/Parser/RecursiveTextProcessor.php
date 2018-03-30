@@ -309,14 +309,18 @@ class RecursiveTextProcessor {
 			}
 
 			$popt = new ParserOptions();
-			$popt->setEditSection( false );
+
+			// FIXME: Remove the if block once compatibility with MW <1.31 is dropped
+			if ( ! defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {
+				$popt->setEditSection( false );
+			}
 			$parserOutput = $this->parser->parse( $text . '__NOTOC__', $title, $popt );
 
 			// Maybe better to use Parser::recursiveTagParseFully ??
 
 			/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
 			\SMWOutputs::requireFromParserOutput( $parserOutput );
-			$text = $parserOutput->getText();
+			$text = $parserOutput->getText( [ 'enableSectionEditLinks' => false ] );
 		} else {
 			$this->error = [ 'smw-parser-recursion-level-exceeded', $this->maxRecursionDepth ];
 			$text = '';
