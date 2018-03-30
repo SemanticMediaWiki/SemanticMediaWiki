@@ -344,12 +344,18 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 					global $wgTitle;
 
 					$popt = new ParserOptions();
-					$popt->setEditSection( false );
+
+					// FIXME: Remove the if block once compatibility with MW <1.31 is dropped
+					if ( !defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {
+						$popt->setEditSection( false );
+
+					}
+
 					$pout = $wgParser->parse( $result . '__NOTOC__', $wgTitle, $popt );
 
 					/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
 					\SMWOutputs::requireFromParserOutput( $pout );
-					$result = $pout->getText();
+					$result = $pout->getText( [ 'enableSectionEditLinks' => false ] );
 				}
 			} else {
 				$result = ''; /// TODO: explain problem (too much recursive parses)
