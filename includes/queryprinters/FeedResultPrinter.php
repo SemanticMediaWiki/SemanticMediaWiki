@@ -222,12 +222,7 @@ final class FeedResultPrinter extends FileExportPrinter {
 	protected function getPageContent( WikiPage $wikiPage ) {
 		if ( in_array( $this->params['page'], array( 'abstract', 'full' ) ) ) {
 			$parserOptions = new ParserOptions();
-
-			// FIXME: Remove the if block once compatibility with MW <1.31 is dropped
-			if ( !defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {
-				$parserOptions->setEditSection( false );
-
-			}
+			$parserOptions->setEditSection( false );
 
 			if ( $this->params['page'] === 'abstract' ) {
 				// Abstract of the first 30 words
@@ -246,7 +241,7 @@ final class FeedResultPrinter extends FileExportPrinter {
 					$text = $wikiPage->getText();
 				}
 			}
-			return $GLOBALS['wgParser']->parse( $text, $wikiPage->getTitle(), $parserOptions )->getText( [ 'enableSectionEditLinks' => false ] );
+			return $GLOBALS['wgParser']->parse( $text, $wikiPage->getTitle(), $parserOptions )->getText();
 		} else {
 			return '';
 		}
