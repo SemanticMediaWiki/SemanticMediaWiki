@@ -343,7 +343,7 @@
 	"smw_smwadmin_datarefreshbutton": "Schedule data rebuild",
 	"smw_smwadmin_datarefreshstop": "Stop this update",
 	"smw_smwadmin_datarefreshstopconfirm": "Yes, I am {{GENDER:$1|sure}}.",
-	"smw-admin-job-scheduler-note": "Most activities in this section are performed as job to avoid deadlock situations during the execution. The [https://www.mediawiki.org/wiki/Manual:Job_queue job scheduler] is responsible for the processing and it is critical that the maintenance <code>runJobs.php</code> script (see also <code>$wgRunJobsAsync</code>) has an appropriate capacity.",
+	"smw-admin-job-scheduler-note": "Most activities in this section are performed as jobs to avoid deadlock situations during their execution. The [https://www.mediawiki.org/wiki/Manual:Job_queue job scheduler] is responsible for the processing and it is critical that maintenance script <code>runJobs.php</code> (see also configuration parameter <code>$wgRunJobsAsync</code>) has an appropriate capacity.",
 	"smw-admin-outdateddisposal-title": "Outdated entities disposal",
 	"smw-admin-outdateddisposal-intro": "Some activities (a change to a property type, the removal of wikipages, or the correction of error values) will result in [https://www.semantic-mediawiki.org/wiki/Outdated_entities outdated entities] and it is suggested to remove them periodically to free associated table space.",
 	"smw-admin-outdateddisposal-active": "An outdated entities disposal job has been scheduled.",
