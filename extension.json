@@ -2,14 +2,15 @@
 	"name": "SemanticMediaWiki",
 	"version": "3.0.0-alpha",
 	"author": [
-        "[http://korrekt.org Markus Krötzsch]",
-        "[https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw Jeroen De Dauw]",
-        "James Hong Kong",
-        "[https://www.semantic-mediawiki.org/wiki/Contributors ...]"
+		"[http://korrekt.org Markus Krötzsch]",
+		"[https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw Jeroen De Dauw]",
+		"James Hong Kong",
+		"[https://www.semantic-mediawiki.org/wiki/Contributors ...]"
 	],
 	"url": "https://www.semantic-mediawiki.org",
 	"descriptionmsg": "smw-desc",
-	"license-name": "GPL-2.0+",
+	"namemsg": "smw-name",
+	"license-name": "GPL-2.0-or-later",
 	"type": "semantic",
 	"requires": {
 		"MediaWiki": ">= 1.27"
