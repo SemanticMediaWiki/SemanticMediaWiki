@@ -196,8 +196,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 				$id,
 				null,
 				20,
-				'',
-				true
+				[ 'disabled' => true ]
 			)
 			->addNonBreakingSpace()
 			->addSubmitButton( $this->getMessageAsString( 'allpagessubmit' ) )

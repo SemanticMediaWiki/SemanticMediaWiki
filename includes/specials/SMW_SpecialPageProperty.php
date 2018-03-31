@@ -3,41 +3,51 @@
 use SMWInfolink as Infolink;
 use SMW\Encoder;
 use SMW\DataValueFactory;
+use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
+use SMW\ApplicationFactory;
+use SMW\Options;
+use SMW\RequestOptions;
 
 /**
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
+ * This special page implements a view on a object-relation pair, i.e. a page that
+ * shows all the values of a property for a certain page.
  *
- * Special page to show object relation pairs.
+ * This is typically used for overflow results from other dynamic output pages.
+ *
+ * @license GNU GPL v2+
+ * @since 1.4
  *
  * @author Denny Vrandecic
- */
-
-/**
- * This special page for Semantic MediaWiki implements a
- * view on a object-relation pair, i.e. a page that shows
- * all the fillers of a property for a certain page.
- * This is typically used for overflow results from other
- * dynamic output pages.
- *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
+ * @author mwjames
  */
 class SMWPageProperty extends SpecialPage {
 
 	/**
-	 * Constructor
+	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
 		parent::__construct( 'PageProperty', '', false );
 	}
 
+	/**
+	 * @see SpecialPage::execute
+	 */
 	public function execute( $query ) {
-		global $wgRequest, $wgOut;
-		$this->setHeaders();
 
-		if ( $wgRequest->getText( 'cl', '' ) !== '' ) {
-			$query = Infolink::decodeCompactLink( 'cl:'. $wgRequest->getText( 'cl' ) );
+		$output = $this->getOutput();
+		$request = $this->getRequest();
+
+		$this->setHeaders();
+		$output->setPagetitle( wfMessage( 'pageproperty' )->text() );
+
+		$output->addModuleStyles( 'ext.smw.special.style' );
+		$output->addModules( 'ext.smw.tooltip' );
+
+		$output->addModules( 'ext.smw.autocomplete.property' );
+		$output->addModules( 'ext.smw.autocomplete.article' );
+
+		if ( $request->getText( 'cl', '' ) !== '' ) {
+			$query = Infolink::decodeCompactLink( 'cl:'. $request->getText( 'cl' ) );
 		} else {
 			$query = Infolink::decodeCompactLink( $query );
 		}
@@ -47,12 +57,11 @@ class SMWPageProperty extends SpecialPage {
 		}
 
 		// Get parameters
-		$pagename = $wgRequest->getVal( 'from' );
-		$propname = $wgRequest->getVal( 'type' );
-		$limit = $wgRequest->getVal( 'limit', 20 );
-		$offset = $wgRequest->getVal( 'offset', 0 );
+		$pagename = $request->getVal( 'from' );
+		$propname = $request->getVal( 'type' );
 
-		if ( $propname == '' ) { // No GET parameters? Try the URL:
+		// No GET parameters? Try the URL with the convention `PageName::PropertyName`
+		if ( $propname == '' ) {
 			$queryparts = explode( '::', $query );
 			$propname = $query;
 			if ( count( $queryparts ) > 1 ) {
@@ -61,119 +70,87 @@ class SMWPageProperty extends SpecialPage {
 			}
 		}
 
-		$subject = DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $pagename );
-		$pagename = $subject->isValid() ? $subject->getPrefixedText() : '';
-		$property = DataValueFactory::getInstance()->newPropertyValueByLabel( $propname );
-		$propname = $property->isValid() ? $property->getWikiValue() : '';
+		$options = new Options(
+			[
+				'from' => $pagename,
+				'type' => $propname,
+				'property' => $propname,
+				'limit' => $request->getVal( 'limit', 20 ),
+				'offset' => $request->getVal( 'offset', 0 ),
+			]
+		);
 
-		// Produce output
-		$html = '';
-		if ( ( $propname === '' ) ) { // no property given, show a message
-			$html .= wfMessage( 'smw_pp_docu' )->text() . "\n";
-		} else { // property given, find and display results
-			// @todo FIXME: very ugly, needs i18n
-			$wgOut->setPagetitle( ( $pagename !== '' ? $pagename . ' ':'' ) . $property->getWikiValue() );
+		$this->addHelpLink(
+			wfMessage( 'smw-special-pageproperty-helplink' )->escaped(),
+			true
+		);
 
-			// get results (get one more, to see if we have to add a link to more)
-			$options = new SMWRequestOptions();
-			$options->limit = $limit + 1;
-			$options->offset = $offset;
-			$options->sort = true;
-			$results = \SMW\StoreFactory::getStore()->getPropertyValues( $pagename !== '' ? $subject->getDataItem() : null, $property->getDataItem(), $options );
-
-			// prepare navigation bar if needed
-			$navigation = '';
-			if ( ( $offset > 0 ) || ( count( $results ) > $limit ) ) {
-				if ( $offset > 0 ) {
-					$navigation .= Html::element(
-						'a',
-						array(
-							'href' => $this->getTitle()->getLocalURL( array(
-								'offset' => max( 0, $offset - $limit ),
-								'limit' => $limit,
-								'type' => $propname,
-								'from' => $pagename
-							) )
-						),
-						wfMessage( 'smw_result_prev' )->text()
-					);
-				} else {
-					$navigation = wfMessage( 'smw_result_prev' )->text();
-				}
-
-				// @todo FIXME: i18n patchwork.
-				$navigation .=
-					'&#160;&#160;&#160;&#160; <b>' .
-						wfMessage( 'smw_result_results' )->text() . ' ' .
-						( $offset + 1 ) . '– ' . ( $offset + min( count( $results ), $limit ) ) .
-					'</b>&#160;&#160;&#160;&#160;';
-
-				if ( count( $results ) == ( $limit + 1 ) ) {
-					$navigation .= Html::element(
-						'a',
-						array(
-							'href' => $this->getTitle()->getLocalURL( array(
-								'offset' => ( $offset + $limit ),
-								'limit' => $limit,
-								'type' => $propname,
-								'from' => $pagename
-							) )
-						),
-						wfMessage( 'smw_result_next' )->text()
-					);
-				} else {
-					$navigation .= wfMessage( 'smw_result_next' )->text();
-				}
-			}
-
-			// display results
-			$html .= '<br />' . $navigation;
-			if ( count( $results ) == 0 ) {
-				$html .= wfMessage( 'smw_result_noresults' )->text();
-			} else {
-				$linker = smwfGetLinker();
-				$html .= "<ul>\n";
-				$count = $limit + 1;
-
-				foreach ( $results as $di ) {
-					$count--;
-					if ( $count < 1 ) {
-						continue;
-					}
-
-					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, $property->getDataItem() );
-					$html .= '<li>' . $dv->getLongHTMLText( $linker ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
-
-					if ( $property->getDataItem()->findPropertyTypeID() == '_wpg' ) {
-						$browselink = Infolink::newBrowsingLink( '+', $dv->getLongWikiText() );
-						$html .= ' &#160;' . $browselink->getHTML( $linker );
-					}
-
-					$html .=  "</li> \n";
-				}
-
-				$html .= "</ul>\n";
-			}
-
-			$html .= $navigation;
-		}
-
-		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-		$spectitle = method_exists( $this, 'getPageTitle') ? $this->getPageTitle() : $this->getTitle();
-
-		// Display query form
-		$html .= '<p>&#160;</p>';
-		$html .= '<form name="pageproperty" action="' . htmlspecialchars( $spectitle->getLocalURL() ) . '" method="get">' . "\n" .
-		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
-		$html .= wfMessage( 'smw_pp_from' )->text() . ' <input type="text" name="from" value="' . htmlspecialchars( $pagename ) . '" />' . "&#160;&#160;&#160;\n";
-		$html .= wfMessage( 'smw_pp_type' )->text() . ' <input type="text" name="type" value="' . htmlspecialchars( $propname ) . '" />' . "\n";
-		$html .= '<input type="submit" value="' . wfMessage( 'smw_pp_submit' )->text() . "\"/>\n</form>\n";
-
-		$wgOut->addHTML( $html );
-		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
+		$output->addHTML( $this->createHtml( $options ) );
 	}
 
+	/**
+	 * @see SpecialPage::getGroupName
+	 */
 	protected function getGroupName() {
 		return 'smw_group';
 	}
+
+	private function createHtml( $options ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$dataValueFactory = DataValueFactory::getInstance();
+
+		$subject = $dataValueFactory->newTypeIDValue(
+			'_wpg',
+			$options->get( 'from' )
+		);
+
+		$pagename = $subject->isValid() ? $subject->getPrefixedText() : '';
+
+		$property = $dataValueFactory->newPropertyValueByLabel(
+			$options->get( 'property' )
+		);
+
+		$propname = $property->isValid() ? $property->getWikiValue() : '';
+
+		$options->set( 'from', $pagename );
+		$options->set( 'property', $propname );
+		$options->set( 'type', $propname );
+
+		$htmlFormRenderer = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormRenderer(
+			$this->getContext()->getTitle(),
+			$this->getLanguage()
+		);
+
+		$pageBuilder = new PageBuilder(
+			$htmlFormRenderer,
+			$options
+		);
+
+		$html = '';
+
+		// No property given, no results
+		if ( $propname === '' ) {
+			$html .= $pageBuilder->getForm();
+			$html .= wfMessage( 'smw_result_noresults' )->text();
+		} else {
+
+			$requestOptions = new RequestOptions();
+			$requestOptions->setLimit( $options->get( 'limit' ) + 1 );
+			$requestOptions->setOffset( $options->get( 'offset' ) );
+			$requestOptions->sort = true;
+
+			$results = $applicationFactory->getStore()->getPropertyValues(
+				$pagename !== '' ? $subject->getDataItem() : null,
+				$property->getDataItem(),
+				$requestOptions
+			);
+
+			$html .= $pageBuilder->getForm( count( $results ) );
+			$html .= $pageBuilder->getHtml( $results );
+		}
+
+		return $html;
+	}
+
 }

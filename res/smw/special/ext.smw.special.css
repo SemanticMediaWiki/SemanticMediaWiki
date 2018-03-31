@@ -68,3 +68,14 @@
 	text-decoration: none;
 	color: #586069;
 }
+
+/**
+ * Responsive settings
+ */
+@media screen and (max-width: 800px) {
+	.smw-special-pageproperty-input {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+	}
+}

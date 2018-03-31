@@ -264,42 +264,59 @@ class HtmlFormRenderer {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 *
-	 * @param string $label
-	 * @param string $inputName
-	 * @param string $inputValue
-	 * @param string|null $id
-	 * @param integer $length
-	 * @param string $placeholder
+	 * @param string $element
+	 * @param array $attributes
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addInputField( $label, $inputName, $inputValue, $id = null, $length = 20, $placeholder = '', $disabled = false ) {
+	public function openElement( $element = 'div', array $attributes = [] ) {
+		$this->content[] = Html::openElement( $element, $attributes );
+		return $this;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $element
+	 * @param array $attributes
+	 *
+	 * @return HtmlFormRenderer
+	 */
+	public function closeElement( $element = 'div', array $attributes = [] ) {
+		$this->content[] = Html::closeElement( $element, $attributes );
+		return $this;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $label
+	 * @param string $name
+	 * @param string $value
+	 * @param string|null $id
+	 * @param integer $length
+	 * @param array $attributes
+	 *
+	 * @return HtmlFormRenderer
+	 */
+	public function addInputField( $label, $name, $value, $id = null, $size = 20, array $attributes = [] ) {
 
 		if ( $id === null ) {
-			$id = $inputName;
+			$id = $name;
 		}
 
-		$this->addQueryParameter( $inputName, $inputValue );
+		$this->addQueryParameter( $name, $value );
 
-		$attributes = array(
-			'class' => $this->defaultPrefix . '-input',
-			'placeholder' => $placeholder
-		);
-
-		if ( $disabled ) {
-			$attributes['disabled'] = true;
+		if ( !isset( $attributes['class'] ) ) {
+			$attributes['class'] = $this->defaultPrefix . '-input';
 		}
 
-		$this->content[] = Xml::inputLabel(
-			$label,
-			$inputName,
-			$id,
-			$length,
-			$inputValue,
-			$attributes
-		);
+		$label = Xml::label( $label, $id, [] );
+		$input = Xml::input( $name, $size, $value, [ 'id' => $id ] + $attributes );
+
+		$this->content[] = $label . '&#160;' . $input;
 
 		return $this;
 	}
