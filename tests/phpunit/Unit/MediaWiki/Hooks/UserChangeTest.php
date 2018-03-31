@@ -75,6 +75,40 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnEnabledUserNamespace_User() {
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->once() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$job = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->jobFactory->expects( $this->once() )
+			->method( 'newUpdateJob' )
+			->will( $this->returnValue( $job ) );
+
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->with( $this->equalTo( NS_USER ) )
+			->will( $this->returnValue( true ) );
+
+		$instance = new UserChange(
+			$this->namespaceExaminer
+		);
+
+		$instance->setOrigin( 'Foo' );
+
+		$this->assertTrue(
+			$instance->process( $user )
+		);
+	}
+
 	public function testOnDisabledUserNamespace() {
 
 		$this->jobFactory->expects( $this->never() )

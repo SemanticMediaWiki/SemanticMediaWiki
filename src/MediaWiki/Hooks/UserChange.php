@@ -6,6 +6,7 @@ use SMW\NamespaceExaminer;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use Title;
+use User;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/BlockIpComplete
@@ -54,12 +55,16 @@ class UserChange extends HookHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $user
+	 * @param User|string $user
 	 */
 	public function process( $user ) {
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;
+		}
+
+		if ( $user instanceof User ) {
+			$user = $user->getName();
 		}
 
 		$updateJob = ApplicationFactory::getInstance()->newJobFactory()->newUpdateJob(
