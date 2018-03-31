@@ -400,15 +400,14 @@ EOT;
 
 	private function doCheckOnPostCreation() {
 
-		$this->reportMessage( "\nChecking consistency after table creation ...\n" );
-
 		// To avoid things like:
 		// "Error: 23505 ERROR:  duplicate key value violates unique constraint "smw_object_ids_pkey""
 		$sequenceIndex = SQLStore::ID_TABLE . '_smw_id_seq';
 		$max = $this->connection->selectField( SQLStore::ID_TABLE, 'max(smw_id)', array(), __METHOD__ );
 		$max += 1;
 
-		$this->reportMessage( "   ... updating {$sequenceIndex} sequence to {$max} accordingly.\n" );
+		$this->reportMessage( "Checking {$sequenceIndex} sequence consistency ...\n" );
+		$this->reportMessage( "   ... setting sequence to {$max} ...\n" );
 
 		$this->connection->query( "ALTER SEQUENCE {$sequenceIndex} RESTART WITH {$max}", __METHOD__ );
 		$this->reportMessage( "   ... done.\n" );
