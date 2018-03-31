@@ -54,6 +54,13 @@ class SemanticMediaWiki {
 				$GLOBALS[$key] = $value;
 			}
 		}
+
+		if ( is_readable( __DIR__ . '/.smw.json' ) ) {
+			$GLOBALS['smw.json'] = json_decode(
+				file_get_contents( __DIR__ . '/.smw.json' ),
+				true
+			);
+		}
 	}
 
 	/**

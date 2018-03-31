@@ -63,6 +63,24 @@ return array(
 	##
 
 	###
+	# Upgrade key
+	#
+	# This key verifies that a correct upgrade (update.php/setupStore.php) path
+	# was selected and hereby ensures a consistent DB setup.
+	#
+	# Whenever a DB table change occurs, modify the key value (e.g. `DB-Foo...`)
+	# to reflect the requirement for the client to follow the processes as
+	# outlined in the installation manual.
+	#
+	# Once the installer is run, the `.smw.json` will be updated and no longer
+	# causes an exception.
+	#
+	# @since 3.0
+	##
+	'smwgUpgradeKey' => 'DB-2018-03',
+	##
+
+	###
 	# CompatibilityMode is to force SMW to work with other extensions that may impact
 	# performance in an unanticipated way or may contain potential incompatibilities.
 	#
@@ -934,7 +952,7 @@ return array(
 
 	###
 	# Sets whether or not to refresh the pages of which semantic data is stored.
-	# 
+	#
 	# @since 1.5.6
 	##
 	'smwgAutoRefreshSubject' => true,

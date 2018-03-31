@@ -5,6 +5,7 @@ namespace SMW\Maintenance;
 use SMW\ApplicationFactory;
 use SMW\StoreFactory;
 use SMW\Store;
+use SMW\Setup;
 use SMW\Options;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
@@ -116,8 +117,13 @@ class RebuildData extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !defined( 'SMW_VERSION' ) || !$GLOBALS['smwgSemanticsEnabled'] ) {
+		if ( !Setup::isEnabled() ) {
 			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
+			return false;
+		}
+
+		if ( !Setup::hasUpgradeKey( true ) ) {
+			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first!\n" );
 			return false;
 		}
 

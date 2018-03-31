@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMW\MediaWiki\Hooks\HookRegistry;
 use SMW\Connection\ConnectionManager;
+use SMW\SQLStore\Installer;
 use Hooks;
 
 /**
@@ -150,12 +151,34 @@ final class Setup {
 	}
 
 	/**
+	 * @since 3.0
+	 */
+	public static function isEnabled() {
+		return defined( 'SMW_VERSION' ) && $GLOBALS['smwgSemanticsEnabled'];
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public static function hasUpgradeKey( $isCli = false ) {
+		return Installer::hasUpgradeKey( $isCli );
+	}
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param array &$vars
 	 * @param string $directory
 	 */
 	public function init( &$vars, $directory ) {
+
+		if ( $this->hasUpgradeKey() === false ) {
+			die(
+				'<b>Error:</b> Semantic MediaWiki was installed and enabled but is missing an appropriate ' .
+				'<a href="https://www.semantic-mediawiki.org/wiki/Help:Upgrade">upgrade key</a>. ' .
+				'Please run the `update.php` or <a href="https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php">setupStore.php</a> script first.'
+			);
+		}
 
 		$this->addDefaultConfigurations( $vars );
 
