@@ -1002,7 +1002,7 @@ class SMWSql3SmwIds {
 			$list = $list->getResults();
 		}
 
-		if ( !is_array( $list ) ) {
+		if ( !$list instanceof \Iterator && !is_array( $list ) ) {
 			return;
 		}
 
