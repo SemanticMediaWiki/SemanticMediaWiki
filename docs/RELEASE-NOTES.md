@@ -52,7 +52,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2673](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2673)
 * [#2677](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2677) Added `+width` as parameter to the `format=table` (and `broadtable`) result printer
 * [#2690](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2690) Added the `type` parameter to `format=json` in support for a simple list export
-* [#2696](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2696) Added a new `smwbrowse` API module ([#2717](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2717, [#2719](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2719), [#2721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2721))
+* [#2696](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2696) Added a new `smwbrowse` API module ([#2717](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2717), [#2719](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2719), [#2721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2721))
 * [#2699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2699) Added an [input assistance](https://www.semantic-mediawiki.org/wiki/Help:Input_assistance) for the `Special:Ask` condition textbox
 * [#2718](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2718) Added ad-hoc export for the `format=table` datatable
 * [#2726](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2726) Added entity [input assistance](https://www.semantic-mediawiki.org/wiki/Help:Input_assistance) for wikiEditor and the `Special:Search` input field ([#2756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2756))
@@ -94,12 +94,15 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2973](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2973)
 * [#3006](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3006) Disabled autocomplete on `[[...` in Special:Search for `SMWSearch` type
 * [#3009](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3009) Added `#tick` and `#num` output formatter to boolean value type
-* [#3011](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3011) Added the [`$smwgDefaultOutputFormatters`]https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultOutputFormatters) setting to declare default output formatter for a type or property
-* [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) Added the [`$smwgCompactLinkSupport`]https://www.semantic-mediawiki.org/wiki/Help:$smwgCompactLinkSupport) setting to compact links produced by `Special:Ask` and `Special:Browse`
+* [#3011](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3011) Added the [`$smwgDefaultOutputFormatters`](https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultOutputFormatters) setting to declare default output formatter for a type or property
+* [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) Added the [`$smwgCompactLinkSupport`](https://www.semantic-mediawiki.org/wiki/Help:$smwgCompactLinkSupport) setting to compact links produced by `Special:Ask` and `Special:Browse`
 * [#3019](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3019) Added experimental support for the `SMW_NS_RULE` namespace
 * [#3020](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3020) Added the keyword (`_keyw`) type
 * [#3024](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3024) Added `format=templatefile` to support individual export formats defined using MediaWiki templates
 * [#3029](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3029) Added function to keep updated entities in-memory to improve rebuild performance
+* [#3052](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3052)
+* [#3080](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3080)
+* [#3088](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3088)
 
 ## Bug fixes
 
@@ -128,6 +131,9 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3026) Fixed replacement of `smw_proptable_hash` during setup
 * [#3031](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3031) Fixed duplicate entry `smw_prop_stats` exception
 * [#3033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3033) Fixed "The supplied ParserOptions are not safe ... set $forceParse = true" during `Special:Upload`
+* [#3049](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3049)
+* [#3067](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3067)
+* [#3076](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3076)
 
 ## Breaking changes and deprecations
 
@@ -191,6 +197,10 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2969](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2969)
 * [#2972](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2972)
 * [#3032](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3032) Added the `SMW::LinksUpdate::ApprovedUpdate` and `SMW::Parser::ChangeRevision` hook
+* [#3061](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3061)
+* [#3063](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3063)
+* [#3070](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3070)
+* [#3082](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3082)
 
 
 ## Contributors
