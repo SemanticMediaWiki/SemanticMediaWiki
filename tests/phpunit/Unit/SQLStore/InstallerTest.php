@@ -212,4 +212,41 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasUpgradeKey() {
+
+		$instance = new Installer(
+			$this->tableSchemaManager,
+			$this->tableBuilder,
+			$this->tableIntegrityExaminer
+		);
+
+		$this->assertInternalType(
+			'boolean',
+			$instance->hasUpgradeKey()
+		);
+	}
+
+	public function testSetUpgradeKey() {
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$file->expects( $this->once() )
+			->method( 'write' );
+
+		$instance = new Installer(
+			$this->tableSchemaManager,
+			$this->tableBuilder,
+			$this->tableIntegrityExaminer
+		);
+
+		$vars = [
+			'smwgIP' => '',
+			'smwgUpgradeKey' => ''
+		];
+
+		$instance->setUpgradeKey( $file, $vars );
+	}
+
 }

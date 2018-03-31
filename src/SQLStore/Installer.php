@@ -9,6 +9,7 @@ use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
 use Onoi\MessageReporter\MessageReporter;
+use SMW\Utils\File;
 use Hooks;
 
 /**
@@ -129,6 +130,10 @@ class Installer implements MessageReporter {
 		$this->tableOptimization( $messageReporter );
 		$this->addSupplementJobs( $messageReporter );
 
+		if ( $this->setUpgradeKey( new File(), $GLOBALS ) ) {
+			$messageReporter->reportMessage( "\nSetting upgrade key ...\n   ... done.\n" );
+		};
+
 		Hooks::run(
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
 			[
@@ -178,6 +183,47 @@ class Installer implements MessageReporter {
 
 		$messageReporter->reportMessage( "\nStandard and auxiliary tables with all corresponding data\n" );
 		$messageReporter->reportMessage( "have been removed successfully.\n" );
+
+		return true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isCli
+	 *
+	 * @return boolean
+	 */
+	public static function hasUpgradeKey( $isCli = false ) {
+
+		if ( $isCli === false && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
+			return true;
+		}
+
+		return isset( $GLOBALS['smw.json']['upgradeKey'] ) && sha1( $GLOBALS['smwgUpgradeKey'] ) === $GLOBALS['smw.json']['upgradeKey'];
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param File $file
+	 * @param array $vars
+	 */
+	public function setUpgradeKey( File $file, $vars ) {
+
+		if ( isset( $vars['smw.json']['upgradeKey'] ) && sha1( $vars['smwgUpgradeKey'] ) === $vars['smw.json']['upgradeKey'] ) {
+			return false;
+		}
+
+		if ( !isset( $vars['smw.json'] ) ) {
+			$vars['smw.json'] = [];
+		}
+
+		$vars['smw.json']['upgradeKey'] = sha1(
+			$vars['smwgUpgradeKey']
+		);
+
+		$file->write( $vars['smwgIP'] . '/.smw.json', json_encode( $vars['smw.json'] ) );
 
 		return true;
 	}
