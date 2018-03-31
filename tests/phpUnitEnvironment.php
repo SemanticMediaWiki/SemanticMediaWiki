@@ -68,22 +68,26 @@ class PHPUnitEnvironment {
 	 *
 	 * @return array
 	 */
-	public function getVersion( $id ) {
+	public function getVersion( $id, $extra = [] ) {
+
+		$info = [];
 
 		if ( $id === 'smw' ) {
-			return [
+			$info = [
 				SemanticMediaWiki::getVersion(),
 				$this->getGitInfo( 'smw' ),
 				str_replace( '\\\\', '\\', json_encode( SemanticMediaWiki::getEnvironment(), JSON_UNESCAPED_SLASHES ) )
-			];
+			] + $extra;
 		}
 
 		if ( $id === 'mw' ) {
-			return [
+			$info = [
 				$GLOBALS['wgVersion'],
 				$this->getGitInfo( 'mw' )
-			];
+			] + $extra;
 		}
+
+		return implode( ', ', $info );
 	}
 
 	/**
@@ -121,20 +125,28 @@ class PHPUnitEnvironment {
 	}
 
 	/**
-	 * @param string $bl
 	 * @param string $arg1
 	 * @param string|array $arg2
-	 * @param string $al
 	 *
 	 * @return string
 	 */
-	public function writeLn( $bl, $arg1, $arg2, $al ) {
+	public function writeLn( $arg1, $arg2 ) {
+		return print sprintf( "%-20s%s\n", $arg1, $arg2 );
+	}
 
-		if ( is_array( $arg2 ) ) {
-			$arg2 = implode( ', ', array_values( $arg2 ) );
+	/**
+	 * @param string $arg1
+	 * @param string|array $arg2
+	 *
+	 * @return string
+	 */
+	public function writeNewLn( $arg1 = '', $arg2 = '' ) {
+
+		if ( $arg1 === '' && $arg2 === '' ) {
+			return print "\n";
 		}
 
-		return print sprintf( "$bl%-20s%s$al", $arg1, $arg2 );
+		return print sprintf( "\n%-20s%s\n", $arg1, $arg2 );
 	}
 
 }
