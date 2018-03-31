@@ -35,12 +35,13 @@ if ( $phpUnitEnvironment->hasDebugRequest( $GLOBALS['argv'] ) === false ) {
 	$phpUnitEnvironment->emptyDebugVars();
 }
 
-$phpUnitEnvironment->writeLn( "\n", "Semantic MediaWiki:", $phpUnitEnvironment->getVersion( 'smw' ), "\n" );
-$phpUnitEnvironment->writeLn( "", "MediaWiki:", $phpUnitEnvironment->getVersion( 'mw' ) + [ 'type' => $autoloadType ], "\n" );
-$phpUnitEnvironment->writeLn( "", "Site language:", $phpUnitEnvironment->getSiteLanguageCode(), "\n" );
-$phpUnitEnvironment->writeLn( "\n", "Execution time:", $phpUnitEnvironment->executionTime(),"\n" );
-$phpUnitEnvironment->writeLn( "", "Debug logs:", $phpUnitEnvironment->enabledDebugLogs() ? 'Enabled' : 'Disabled', "\n" );
-$phpUnitEnvironment->writeLn( "", "Xdebug:", ( $version = $phpUnitEnvironment->getXdebugInfo() ) ? $version : 'Disabled (or not installed)' , "\n\n" );
+$phpUnitEnvironment->writeNewLn( "Semantic MediaWiki:", $phpUnitEnvironment->getVersion( 'smw' ) );
+$phpUnitEnvironment->writeLn( "MediaWiki:", $phpUnitEnvironment->getVersion( 'mw', [ 'type' => $autoloadType ] ) );
+$phpUnitEnvironment->writeLn( "Site language:", $phpUnitEnvironment->getSiteLanguageCode() );
+$phpUnitEnvironment->writeNewLn( "Execution time:", $phpUnitEnvironment->executionTime() );
+$phpUnitEnvironment->writeLn( "Debug logs:", ( $phpUnitEnvironment->enabledDebugLogs() ? 'Enabled' : 'Disabled' ) );
+$phpUnitEnvironment->writeLn( "Xdebug:", ( ( $version = $phpUnitEnvironment->getXdebugInfo() ) ? $version : 'Disabled (or not installed)' ) );
+$phpUnitEnvironment->writeNewLn();
 
 unset( $phpUnitEnvironment );
 
