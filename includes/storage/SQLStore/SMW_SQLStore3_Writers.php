@@ -199,10 +199,8 @@ class SMWSQLStore3Writers {
 		// Mark subobjects without reference to be deleted
 		foreach( $subobjectListFinder->find( $subject ) as $subobject ) {
 			if( !$semanticData->hasSubSemanticData( $subobject->getSubobjectName() ) ) {
-				$semanticData = new SemanticData( $subobject );
-				$semanticData->setOption( SemanticData::PROC_DELETE, true );
 
-				$this->doFlatDataUpdate( $semanticData );
+				$this->doFlatDataUpdate( new SemanticData( $subobject ) );
 				$deleteList[] = $subobject->getId();
 
 				$this->store->getObjectIds()->updateInterwikiField(
@@ -270,20 +268,22 @@ class SMWSQLStore3Writers {
 			);
 		}
 
-		// Always make an ID; this also writes sortkey and namespace data
-		$sortKey = $this->getSortKey( $subject, $data );
+		if ( ( $sid = $subject->getId() ) == 0 ) {
+			// Always make an ID; this also writes sortkey and namespace data
+			$sortKey = $this->getSortKey( $subject, $data );
 
-		$sid = $this->store->getObjectIds()->makeSMWPageID(
-			$subject->getDBkey(),
-			$subject->getNamespace(),
-			$subject->getInterwiki(),
-			$subject->getSubobjectName(),
-			true,
-			$sortKey,
-			true
-		);
+			$sid = $this->store->getObjectIds()->makeSMWPageID(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				$subject->getSubobjectName(),
+				true,
+				$sortKey,
+				true
+			);
 
-		$subject->setSortKey( $sortKey );
+			$subject->setSortKey( $sortKey );
+		}
 
 		// Find any potential duplicate entries for the current subject and
 		// if matched, mark them as to be deleted
