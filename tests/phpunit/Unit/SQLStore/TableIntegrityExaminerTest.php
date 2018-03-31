@@ -97,11 +97,15 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckOnPostCreationOnValidProperty_NotFixed() {
 
-		$row = new \stdClass;
-		$row->smw_id = 42;
+		$row = [
+			'smw_id' => 42,
+			'smw_iw' => '',
+			'smw_proptable_hash' => '',
+			'smw_hash' => ''
+		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'moveSMWPageID' ) )
+			->setMethods( array( 'moveSMWPageID', 'getPropertyInterwiki' ) )
 			->getMock();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -117,11 +121,11 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 					'smw_title' => 'Foo',
 					'smw_namespace' => SMW_NS_PROPERTY,
 					'smw_subobject' => '' ] ) )
-			->will( $this->returnValue( $row ) );
+			->will( $this->returnValue( (object)$row ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $row ) );
+			->will( $this->returnValue( (object)$row ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
