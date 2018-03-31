@@ -127,7 +127,7 @@ class Installer implements MessageReporter {
 		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
 
 		$this->tableOptimization( $messageReporter );
-		$this->supplementJobs( $messageReporter );
+		$this->addSupplementJobs( $messageReporter );
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
@@ -228,7 +228,7 @@ class Installer implements MessageReporter {
 		$messageReporter->reportMessage( "\nOptimization completed.\n" );
 	}
 
-	private function supplementJobs( $messageReporter ) {
+	private function addSupplementJobs( $messageReporter ) {
 
 		if ( !$this->options->safeGet( self::OPT_SUPPLEMENT_JOBS, false ) ) {
 			return $messageReporter->reportMessage( "\nSkipping supplement job creation.\n" );
@@ -236,20 +236,22 @@ class Installer implements MessageReporter {
 
 		$messageReporter->reportMessage( "\nAdding property statistics rebuild job ...\n" );
 
-		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
-			\Title::newFromText( 'SMW\SQLStore\Installer' )
+		$job = new PropertyStatisticsRebuildJob(
+			\Title::newFromText( 'SMW\SQLStore\Installer' ),
+			[ 'waitOnCommandLine' => true ]
 		);
 
-		$propertyStatisticsRebuildJob->insert();
+		$job->insert();
 
 		$messageReporter->reportMessage( "   ... done.\n" );
 		$messageReporter->reportMessage( "\nAdding entity disposer job ...\n" );
 
-		$entityIdDisposerJob = new EntityIdDisposerJob(
-			\Title::newFromText( 'SMW\SQLStore\Installer' )
+		$job = new EntityIdDisposerJob(
+			\Title::newFromText( 'SMW\SQLStore\Installer' ),
+			[ 'waitOnCommandLine' => true ]
 		);
 
-		$entityIdDisposerJob->insert();
+		$job->insert();
 
 		$messageReporter->reportMessage( "   ... done.\n" );
 	}
