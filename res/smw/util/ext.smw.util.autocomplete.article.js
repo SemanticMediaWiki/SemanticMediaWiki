@@ -14,6 +14,8 @@
 
 		var limit = 20;
 
+		context.removeClass( 'is-disabled' );
+
 		// https://github.com/devbridge/jQuery-Autocomplete
 		context.autocomplete( {
 			serviceUrl: mw.util.wikiScript( 'api' ),
