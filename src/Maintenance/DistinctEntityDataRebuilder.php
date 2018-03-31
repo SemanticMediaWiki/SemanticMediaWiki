@@ -138,6 +138,7 @@ class DistinctEntityDataRebuilder {
 
 		foreach ( $pages as $key => $page ) {
 
+			$this->rebuildCount++;
 			$progress = round( ( $this->rebuildCount / $total ) * 100 );
 
 			if ( !$this->options->has( 'v' ) ) {
@@ -152,7 +153,6 @@ class DistinctEntityDataRebuilder {
 			}
 
 			$this->doUpdate( $page );
-			$this->rebuildCount++;
 		}
 
 		$this->reportMessage( ( $this->options->has( 'v' ) ? "" : "\n" ) . "   ... done.\n" );
