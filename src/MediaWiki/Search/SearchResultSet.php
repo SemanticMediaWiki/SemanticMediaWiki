@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Search;
 
-use SearchResult;
 use SMW\DIWikiPage;
 
 /**

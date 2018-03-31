@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki\Search;
 use SMW\MediaWiki\Search\SearchResultSet;
 
 /**
- * @covers  \SMW\MediaWiki\Search\SearchResultSet
+ * @covers \SMW\MediaWiki\Search\SearchResultSet
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
