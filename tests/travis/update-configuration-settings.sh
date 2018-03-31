@@ -13,7 +13,8 @@ echo '$wgExtraNamespaces[NS_TRAVIS] = "Travis";' >> LocalSettings.php
 echo '$wgExtraNamespaces[NS_TRAVIS_TALK] = "Travis_talk";' >> LocalSettings.php
 echo '$wgNamespacesWithSubpages[NS_TRAVIS] = true;' >> LocalSettings.php
 
-echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
+# echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
+echo 'wfLoadExtension( "SemanticMediaWiki" );' >> LocalSettings.php
 
 echo '$smwgNamespacesWithSemanticLinks = array( NS_MAIN => true, NS_FILE => true, NS_TRAVIS => true );' >> LocalSettings.php
 echo '$smwgNamespace = "http://example.org/id/";' >> LocalSettings.php
