@@ -302,7 +302,7 @@ class EntityRebuildDispatcher {
 			if ( $row->smw_title != '' && $row->smw_title{0} != '_' ) {
 				$titleKey = $row->smw_title;
 			} elseif ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
-				$titleKey = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $row->smw_title ) );
+				$titleKey = str_replace( ' ', '_', PropertyRegistry::getInstance()->findCanonicalPropertyLabelById( $row->smw_title ) );
 			} else {
 				$titleKey = '';
 			}

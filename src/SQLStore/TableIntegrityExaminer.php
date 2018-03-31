@@ -256,46 +256,50 @@ class TableIntegrityExaminer implements MessageReporterAware {
 			if ( $row !== false ) {
 				$id = $row->smw_id;
 			}
-		} else {
-			$label = $property->getCanonicalLabel();
-
-			$iw = $this->store->getObjectIds()->getPropertyInterwiki(
-				$property
-			);
-
-			$row = $connection->selectRow(
-				SQLStore::ID_TABLE,
-				[
-					'smw_proptable_hash',
-					'smw_hash'
-				],
-				[
-					'smw_id' => $id
-				],
-				__METHOD__
-			);
-
-			if ( $row === false ) {
-				$row = (object)[ 'smw_proptable_hash' => null, 'smw_hash' => null ];
-			}
-
-			$connection->replace(
-				SQLStore::ID_TABLE,
-				[ 'smw_id' ],
-				[
-					'smw_id' => $id,
-					'smw_title' => $property->getKey(),
-					'smw_namespace' => SMW_NS_PROPERTY,
-					'smw_iw' =>  $iw,
-					'smw_subobject' => '',
-					'smw_sortkey' => $label,
-					'smw_sort' => Collator::singleton()->getSortKey( $label ),
-					'smw_proptable_hash' => $row->smw_proptable_hash,
-					'smw_hash' => $row->smw_hash
-				],
-				__METHOD__
-			);
 		}
+
+		if ( $id === null ) {
+			return;
+		}
+
+		$label = $property->getCanonicalLabel();
+
+		$iw = $this->store->getObjectIds()->getPropertyInterwiki(
+			$property
+		);
+
+		$row = $connection->selectRow(
+			SQLStore::ID_TABLE,
+			[
+				'smw_proptable_hash',
+				'smw_hash'
+			],
+			[
+				'smw_id' => $id
+			],
+			__METHOD__
+		);
+
+		if ( $row === false ) {
+			$row = (object)[ 'smw_proptable_hash' => null, 'smw_hash' => null ];
+		}
+
+		$connection->replace(
+			SQLStore::ID_TABLE,
+			[ 'smw_id' ],
+			[
+				'smw_id' => $id,
+				'smw_title' => $property->getKey(),
+				'smw_namespace' => SMW_NS_PROPERTY,
+				'smw_iw' =>  $iw,
+				'smw_subobject' => '',
+				'smw_sortkey' => $label,
+				'smw_sort' => Collator::singleton()->getSortKey( $label ),
+				'smw_proptable_hash' => $row->smw_proptable_hash,
+				'smw_hash' => $row->smw_hash
+			],
+			__METHOD__
+		);
 
 		if ( $id === null ) {
 			return;
