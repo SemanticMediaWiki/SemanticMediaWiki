@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Search;
 
 use SearchResult;
+use SMW\DIWikiPage;
 
 /**
  * @ingroup SMW
@@ -47,7 +48,16 @@ class SearchResultSet extends \SearchResultSet {
 	 * @return SearchResult
 	 */
 	public function next() {
-		return ( list( , $page ) = each( $this->pages ) ) !== false ? ( SearchResult::newFromTitle( $page->getTitle() ) ) : false;
+
+		$res = current( $this->pages );
+
+		if ( $res instanceof DIWikiPage ) {
+			$res = SearchResult::newFromTitle( $res->getTitle() );
+		}
+
+		next( $this->pages );
+
+		return $res;
 	}
 
 	/**
