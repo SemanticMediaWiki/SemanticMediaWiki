@@ -71,6 +71,11 @@ class DataTypeRegistry {
 	private $subDataTypes = array();
 
 	/**
+	 * @var []
+	 */
+	private $browsableTypes = [];
+
+	/**
 	 * Lookup map that allows finding a datatype id given a label or alias.
 	 * All labels and aliases (ie array keys) are stored lower case.
 	 *
@@ -212,6 +217,17 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $typeId
+	 *
+	 * @return boolean
+	 */
+	public function isBrowsableType( $typeId ) {
+		return isset( $this->browsableTypes[$typeId] ) && $this->browsableTypes[$typeId];
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $srcType
@@ -232,11 +248,13 @@ class DataTypeRegistry {
 	 * @param $dataItemId integer ID of the data item class that this data value uses, see DataItem
 	 * @param $label mixed string label or false for types that cannot be accessed by users
 	 * @param boolean $isSubDataType
+	 * @param boolean $isBrowsableType
 	 */
-	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false ) {
+	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false, $isBrowsableType = false ) {
 		$this->typeClasses[$id] = $className;
 		$this->typeDataItemIds[$id] = $dataItemId;
 		$this->subDataTypes[$id] = $isSubDataType;
+		$this->browsableTypes[$id] = $isBrowsableType;
 
 		if ( $label !== false ) {
 			$this->registerTypeLabel( $id, $label );
@@ -473,6 +491,7 @@ class DataTypeRegistry {
 
 			$this->typeDataItemIds[$id] = $definition[1];
 			$this->subDataTypes[$id] = $definition[2];
+			$this->browsableTypes[$id] = $definition[3];
 		}
 
 		// Deprecated since 1.9
