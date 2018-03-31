@@ -67,7 +67,7 @@
 	text-align: right;
 	vertical-align: top;
 	padding-right: 1em;
-	min-width: 33%;
+	width: 33%;
 }
 
 .smwfact .smw-table-row:nth-child(odd) {
