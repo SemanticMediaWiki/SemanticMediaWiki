@@ -22,11 +22,11 @@ then
 	then
 
 		# Fuseki requires Java8 for Fuseki2 v2.3.0 onwards
-		sudo apt-get install oracle-java8-installer
+		#sudo apt-get install oracle-java8-installer
 
-		export JAVA_HOME="/usr/lib/jvm/java-8-oracle";
-		export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin";
-		export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java";
+		#export JAVA_HOME="/usr/lib/jvm/java-8-oracle";
+		#export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin";
+		#export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java";
 
 		wget https://github.com/mwjames/travis-support/raw/master/fuseki/$FUSEKI/apache-jena-fuseki-$FUSEKI.tar.gz
 
