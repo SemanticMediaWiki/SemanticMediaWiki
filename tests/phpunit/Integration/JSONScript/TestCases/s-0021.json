@@ -3,16 +3,16 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"page": "Has text",
+			"page": "Has extra text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"page": "Example/S0021/1",
-			"contents": "[[Has text::S0021]]"
+			"contents": "[[Has extra text::S0021]]"
 		},
 		{
 			"page": "Example/S0021/2",
-			"contents": "[[Has text::S0021]]"
+			"contents": "[[Has extra text::S0021]]"
 		}
 	],
 	"tests": [
@@ -28,13 +28,13 @@
 						"headers": "",
 						"format": "table"
 					},
-					"q": "[[Has text::S0021]]",
-					"po": "?Has text=Modified <i>label</i> for text"
+					"q": "[[Has extra text::S0021]]",
+					"po": "?Has extra text=Modified <i>label</i> for text"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"<thead><th>&nbsp;</th><th class=\"Modified-label-for-text\"><a href=.* title=\"Property:Has text\">Modified <i>label</i> for text</a></th></thead>",
+					"<thead><th>&nbsp;</th><th class=\"Modified-label-for-text\"><a href=.* title=\"Property:Has extra text\">Modified <i>label</i> for text</a></th></thead>",
 					"<a href=.* title=\"Example/S0021/1\">Example/S0021/1</a>",
 					"<a href=.* title=\"Example/S0021/2\">Example/S0021/2</a>"
 				]
@@ -52,8 +52,8 @@
 						"headers": "plain",
 						"format": "table"
 					},
-					"q": "[[Has text::S0021]]",
-					"po": "?Has text=Modified <i>label</i> for text"
+					"q": "[[Has extra text::S0021]]",
+					"po": "?Has extra text=Modified <i>label</i> for text"
 				}
 			},
 			"assert-output": {
