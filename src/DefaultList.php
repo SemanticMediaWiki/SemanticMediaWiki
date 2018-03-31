@@ -46,95 +46,95 @@ class DefaultList {
 	public static function getTypeList() {
 		return [
 
-			// ID => Class, DI type, isSubDataType
+			// ID => [ Class, DI type, isSubDataType, isBrowsable ]
 
 			// Special import vocabulary type
-			ImportValue::TYPE_ID => [ ImportValue::class, DataItem::TYPE_BLOB, false ],
+			ImportValue::TYPE_ID => [ ImportValue::class, DataItem::TYPE_BLOB, false, false ],
 			// Property chain
-			PropertyChainValue::TYPE_ID => [ PropertyChainValue::class, DataItem::TYPE_BLOB, false ],
+			PropertyChainValue::TYPE_ID => [ PropertyChainValue::class, DataItem::TYPE_BLOB, false, false ],
 			// Property type (possibly predefined, not always based on a page)
-			PropertyValue::TYPE_ID => [ PropertyValue::class, DataItem::TYPE_PROPERTY, false ],
+			PropertyValue::TYPE_ID => [ PropertyValue::class, DataItem::TYPE_PROPERTY, false, false ],
 			 // Text type
-			StringValue::TYPE_ID => [ StringValue::class, DataItem::TYPE_BLOB, false ],
+			StringValue::TYPE_ID => [ StringValue::class, DataItem::TYPE_BLOB, false, false ],
 			 // Code type
-			StringValue::TYPE_COD_ID => [ StringValue::class, DataItem::TYPE_BLOB, false ],
+			StringValue::TYPE_COD_ID => [ StringValue::class, DataItem::TYPE_BLOB, false, false ],
 			 // Legacy string ID `_str`
-			StringValue::TYPE_LEGACY_ID => [ StringValue::class, DataItem::TYPE_BLOB, false ],
+			StringValue::TYPE_LEGACY_ID => [ StringValue::class, DataItem::TYPE_BLOB, false, false ],
 			 // Email type
-			'_ema' => [ 'SMWURIValue', DataItem::TYPE_URI, false ],
+			'_ema' => [ 'SMWURIValue', DataItem::TYPE_URI, false, false ],
 			 // URL/URI type
-			'_uri' => [ 'SMWURIValue', DataItem::TYPE_URI, false ],
+			'_uri' => [ 'SMWURIValue', DataItem::TYPE_URI, false, false ],
 			 // Annotation URI type
-			'_anu' => [ 'SMWURIValue', DataItem::TYPE_URI, false ],
+			'_anu' => [ 'SMWURIValue', DataItem::TYPE_URI, false, false ],
 			 // Phone number (URI) type
-			'_tel' => [ TelephoneUriValue::class, DataItem::TYPE_URI, false ],
+			'_tel' => [ TelephoneUriValue::class, DataItem::TYPE_URI, false, false ],
 			 // Page type
-			'_wpg' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'_wpg' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Property page type TODO: make available to user space
-			'_wpp' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'_wpp' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Category page type TODO: make available to user space
-			'_wpc' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'_wpc' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Form page type for Semantic Forms
-			'_wpf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'_wpf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Rule page
-			'_wpr'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'_wpr'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Number type
-			NumberValue::TYPE_ID => [ NumberValue::class, DataItem::TYPE_NUMBER, false ],
+			NumberValue::TYPE_ID => [ NumberValue::class, DataItem::TYPE_NUMBER, false, false ],
 			 // Temperature type
-			TemperatureValue::TYPE_ID => [ TemperatureValue::class, DataItem::TYPE_NUMBER, false ],
+			TemperatureValue::TYPE_ID => [ TemperatureValue::class, DataItem::TYPE_NUMBER, false, false ],
 			 // Time type
-			TimeValue::TYPE_ID => [ TimeValue::class, DataItem::TYPE_TIME, false ],
+			TimeValue::TYPE_ID => [ TimeValue::class, DataItem::TYPE_TIME, false, false ],
 			 // Boolean type
-			'_boo' => [ BooleanValue::class, DataItem::TYPE_BOOLEAN, false ],
+			'_boo' => [ BooleanValue::class, DataItem::TYPE_BOOLEAN, false, false ],
 			 // Value list type (replacing former nary properties)
-			'_rec' => [ 'SMWRecordValue', DataItem::TYPE_WIKIPAGE, true ],
-			MonolingualTextValue::TYPE_ID => [ MonolingualTextValue::class, DataItem::TYPE_WIKIPAGE, true ],
-			ReferenceValue::TYPE_ID => [ ReferenceValue::class, DataItem::TYPE_WIKIPAGE, true ],
+			'_rec' => [ 'SMWRecordValue', DataItem::TYPE_WIKIPAGE, true, false ],
+			MonolingualTextValue::TYPE_ID => [ MonolingualTextValue::class, DataItem::TYPE_WIKIPAGE, true, false ],
+			ReferenceValue::TYPE_ID => [ ReferenceValue::class, DataItem::TYPE_WIKIPAGE, true, false ],
 			 // Geographical coordinates
-			'_geo' => [ null, DataItem::TYPE_GEO, false ],
+			'_geo' => [ null, DataItem::TYPE_GEO, false, false ],
 			 // Geographical polygon
-			'_gpo' => [ null, DataItem::TYPE_BLOB, false ],
+			'_gpo' => [ null, DataItem::TYPE_BLOB, false, false ],
 			// External identifier
-			ExternalIdentifierValue::TYPE_ID => [ ExternalIdentifierValue::class, DataItem::TYPE_BLOB, false ],
+			ExternalIdentifierValue::TYPE_ID => [ ExternalIdentifierValue::class, DataItem::TYPE_BLOB, false, false ],
 			// KeywordValue
-			KeywordValue::TYPE_ID => [ KeywordValue::class, DataItem::TYPE_BLOB, false ],
+			KeywordValue::TYPE_ID => [ KeywordValue::class, DataItem::TYPE_BLOB, false, false ],
 			 // Type for numbers with units of measurement
-			QuantityValue::TYPE_ID => [ QuantityValue::class, DataItem::TYPE_NUMBER, false ],
+			QuantityValue::TYPE_ID => [ QuantityValue::class, DataItem::TYPE_NUMBER, false, false ],
 			// Special types are not avaialble directly for users (and have no local language name):
 			// Special type page type
-			TypesValue::TYPE_ID => [ TypesValue::class, DataItem::TYPE_URI, false ],
+			TypesValue::TYPE_ID => [ TypesValue::class, DataItem::TYPE_URI, false, false ],
 			// Special type list for decalring _rec properties
-			'__pls' => [ 'SMWPropertyListValue', DataItem::TYPE_BLOB, false ],
+			'__pls' => [ 'SMWPropertyListValue', DataItem::TYPE_BLOB, false, false ],
 			// Special concept page type
-			'__con' => [ 'SMWConceptValue', DataItem::TYPE_CONCEPT, false ],
+			'__con' => [ 'SMWConceptValue', DataItem::TYPE_CONCEPT, false, false ],
 			// Special string type
-			'__sps' => [ 'SMWStringValue', DataItem::TYPE_BLOB, false ],
+			'__sps' => [ 'SMWStringValue', DataItem::TYPE_BLOB, false, false ],
 			// Special uri type
-			'__spu' => [ 'SMWURIValue', DataItem::TYPE_URI, false ],
+			'__spu' => [ 'SMWURIValue', DataItem::TYPE_URI, false, false ],
 			// Special subobject type
-			'__sob' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, true ],
+			'__sob' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, true, true ],
 			// Special subproperty type
-			'__sup' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'__sup' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special subcategory type
-			'__suc' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'__suc' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special Form page type for Semantic Forms
-			'__spf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'__spf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special instance of type
-			'__sin' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'__sin' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special redirect type
-			'__red' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false ],
+			'__red' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special error type
-			'__err' => [ 'SMWErrorValue', DataItem::TYPE_ERROR, false ],
+			'__err' => [ 'SMWErrorValue', DataItem::TYPE_ERROR, false, false ],
 			// Special error type
-			'__errt' => [ ErrorMsgTextValue::class, DataItem::TYPE_BLOB, false ],
+			'__errt' => [ ErrorMsgTextValue::class, DataItem::TYPE_BLOB, false, false ],
 			// Sort key of a page
-			'__key' => [ 'SMWStringValue', DataItem::TYPE_BLOB, false ],
-			LanguageCodeValue::TYPE_ID => [ LanguageCodeValue::class, DataItem::TYPE_BLOB, false ],
-			AllowsValue::TYPE_ID => [ AllowsValue::class, DataItem::TYPE_BLOB, false ],
-			AllowsListValue::TYPE_ID => [ AllowsListValue::class, DataItem::TYPE_BLOB, false ],
-			AllowsPatternValue::TYPE_ID => [ AllowsPatternValue::class, DataItem::TYPE_BLOB, false ],
-			'__pvuc' => [ UniquenessConstraintValue::class, DataItem::TYPE_BOOLEAN, false ],
-			'__pefu' => [ ExternalFormatterUriValue::class, DataItem::TYPE_URI, false ]
+			'__key' => [ 'SMWStringValue', DataItem::TYPE_BLOB, false, false ],
+			LanguageCodeValue::TYPE_ID => [ LanguageCodeValue::class, DataItem::TYPE_BLOB, false, false ],
+			AllowsValue::TYPE_ID => [ AllowsValue::class, DataItem::TYPE_BLOB, false, false ],
+			AllowsListValue::TYPE_ID => [ AllowsListValue::class, DataItem::TYPE_BLOB, false, false ],
+			AllowsPatternValue::TYPE_ID => [ AllowsPatternValue::class, DataItem::TYPE_BLOB, false, false ],
+			'__pvuc' => [ UniquenessConstraintValue::class, DataItem::TYPE_BOOLEAN, false, false ],
+			'__pefu' => [ ExternalFormatterUriValue::class, DataItem::TYPE_URI, false, false ]
 		];
 	}
 
