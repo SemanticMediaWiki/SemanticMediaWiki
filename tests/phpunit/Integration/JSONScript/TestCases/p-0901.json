@@ -1,5 +1,14 @@
 {
 	"description": "Test #ask on moved redirected subject (#1086)",
+	"meta": {
+		"skip-on": {
+			// FIXME: Should skip on 1.27 now (or maybe not at all)
+			"mw-master": "Skipping because redirect/move causes a failure in 1.27 (#1376) with the DeferredUpdate blocking succeeding tests"
+		},
+		"version": "2",
+		"is-incomplete": true,
+		"debug": false
+	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -100,13 +109,5 @@
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
-	},
-	"meta": {
-		"skip-on": {
-			"mw-master": "Skipping because redirect/move causes a failure in 1.27 (#1376) with the DeferredUpdate blocking succeeding tests"
-		},
-		"version": "2",
-		"is-incomplete": false,
-		"debug": false
 	}
 }

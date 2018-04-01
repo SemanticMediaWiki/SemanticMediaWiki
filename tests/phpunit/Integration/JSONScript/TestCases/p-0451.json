@@ -1,5 +1,10 @@
 {
 	"description": "Test in-text `_dat` datatype, time zone, and JD output (#2454, `wgContLang=en`, `wgLang=en`, `smwgDVFeatures=SMW_DV_TIMEV_CM`)",
+	"meta": {
+		"version": "2",
+		"is-incomplete": true,
+		"debug": false
+	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -96,10 +101,5 @@
 		"smwgDVFeatures": [
 			"SMW_DV_TIMEV_CM"
 		]
-	},
-	"meta": {
-		"version": "2",
-		"is-incomplete": false,
-		"debug": false
 	}
 }

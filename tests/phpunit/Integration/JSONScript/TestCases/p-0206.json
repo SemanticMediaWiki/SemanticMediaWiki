@@ -1,5 +1,10 @@
 {
 	"description": "Test #show parser on inverse printrequest (#1222, #1223)",
+	"meta": {
+		"version": "2",
+		"is-incomplete": true,
+		"debug": false
+	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -96,10 +101,5 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]
-	},
-	"meta": {
-		"version": "2",
-		"is-incomplete": false,
-		"debug": false
 	}
 }

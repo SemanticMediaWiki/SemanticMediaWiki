@@ -1,5 +1,10 @@
 {
 	"description": "Test `format=table` on formatted indent when using */#/: (en)",
+	"meta": {
+		"version": "2",
+		"is-incomplete": true,
+		"debug": false
+	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -129,10 +134,5 @@
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
-	},
-	"meta": {
-		"version": "2",
-		"is-incomplete": false,
-		"debug": false
 	}
 }

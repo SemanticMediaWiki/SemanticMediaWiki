@@ -1,5 +1,10 @@
 {
 	"description": "Test `format=list` output",
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -23,6 +28,10 @@
 			"contents": "[[Has page property::ABC]]"
 		},
 		{
+			"page": "Quuz",
+			"contents": "[[Has page property::DEF]]"
+		},
+		{
 			"page": "Example/0401",
 			"contents": "{{#ask:[[Has page property::ABC]] |format=list}}"
 		}
@@ -30,13 +39,22 @@
 	"tests": [
 		{
 			"type": "parser-html",
-			"about": "#0 Basic List format",
+			"about": "#0 Basic List format (structure)",
 			"subject": "Example/0401",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					"p > a[ title='Bar' ] + a[ title='Baz' ] + a[ title='Foo' ] + a[ title='Quok' ]",
-					[ "p > a", 4 ]
+					[ "p > span.list-format > span.list-format-row > span.list-format-value > a[title]", 4 ]
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 Basic List format (order)",
+			"subject": "Example/0401",
+			"assert-output": {
+				"to-contain": [
+					"Bar.*Baz.*Foo.*Quok"
 				]
 			}
 		}
@@ -46,10 +64,5 @@
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
-	},
-	"meta": {
-		"version": "2",
-		"is-incomplete": false,
-		"debug": false
 	}
 }

@@ -1,5 +1,10 @@
 {
 	"description": "Test `format=template` output using unnamed arguments (#885)",
+	"meta": {
+		"version": "2",
+		"is-incomplete": true,
+		"debug": false
+	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -76,10 +81,5 @@
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
-	},
-	"meta": {
-		"version": "2",
-		"is-incomplete": false,
-		"debug": false
 	}
 }

@@ -1,5 +1,10 @@
 {
 	"description": "Test in-text annotation for unrestricted template parse using `import-annotation=true` (#1055)",
+	"meta": {
+		"version": "2",
+		"is-incomplete": true,
+		"debug": false
+	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -51,10 +56,5 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]
-	},
-	"meta": {
-		"version": "2",
-		"is-incomplete": false,
-		"debug": false
 	}
 }
