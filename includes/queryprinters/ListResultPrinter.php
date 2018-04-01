@@ -116,7 +116,6 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @param array $params
 	 * @param $outputmode
-	 * @return string
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
@@ -140,7 +139,7 @@ class ListResultPrinter extends ResultPrinter {
 	public function getName() {
 		// Give grep a chance to find the usages:
 		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_template
-		return $this->getContext()->msg( 'smw_printername_' . $this->mFormat )->text();
+		return Message::decode( 'smw_printername_' . $this->mFormat );
 	}
 
 	/**
