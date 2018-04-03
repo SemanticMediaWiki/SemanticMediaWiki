@@ -64,20 +64,13 @@ class ListResultPrinter extends ResultPrinter {
 	 */
 	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
 
-		$time = microtime( true );
-
 		$builder = new ListResultBuilder( $queryResult, $this->mLinker );
 		$builder->set( $this->params );
 
-		$str = $builder->getResultText() .
-			$this->getFurtherResultsText( $queryResult, $outputMode );
-
-		// FIXME: Ask the ListBuilder
 		$this->hasTemplates = $builder->hasTemplates();
 
-		$time = microtime( true ) - $time;
-
-		return $time . $str;
+		return $builder->getResultText() .
+			$this->getFurtherResultsText( $queryResult, $outputMode );
 
 		// FIXME: This should be taken care of by ResultPrinter, right? Right?
 		//// Display default if the result is empty

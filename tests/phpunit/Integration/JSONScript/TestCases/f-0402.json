@@ -1,0 +1,456 @@
+{
+	"description": "Test `format=list` output",
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": true
+	},
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Version",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Developer",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Company",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Website",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"page": "f-0401/Aerified",
+			"contents": "[[Category:0402]][[Version::0.23]][[Developer::Maggi McKellen]][[Company::Flashpoint]]"
+		},
+		{
+			"page": "f-0401/Alpha",
+			"contents": "[[Category:0402]][[Version::2.4]][[Developer::Renee Vasyagin]][[Company::Bubbletube]]"
+		},
+		{
+			"page": "f-0401/Alphazap",
+			"contents": "[[Category:0402]][[Version::5.3]][[Developer::El Grealey]][[Company::Browsecat]]"
+		},
+		{
+			"page": "f-0401/Andalax",
+			"contents": "[[Category:0402]][[Version::6.7.3]][[Developer::Estrella Pezey]][[Company::Miboo]]"
+		},
+		{
+			"page": "f-0401/Asoka",
+			"contents": "[[Category:0402]][[Version::3.8]][[Developer::Shae Erley]][[Developer::Keeley Considine]][[Company::Edgewire]]"
+		},
+		{
+			"page": "f-0401/Bamity",
+			"contents": "[[Category:0402]][[Version::0.5.6]][[Developer::Malia Bernetti]][[Company::Twitterworks]]"
+		},
+		{
+			"page": "f-0401/Bigtax",
+			"contents": "[[Category:0402]][[Version::0.93]][[Developer::Isaak Simounet]][[Developer::Stefanie Moyles]][[Company::Blogspan]]"
+		},
+		{
+			"page": "f-0401/Bitchip",
+			"contents": "[[Category:0402]][[Version::1.0.1]][[Developer::Sherry McIvor]][[Company::Kwinu]]"
+		},
+		{
+			"page": "f-0401/Bitwolf",
+			"contents": "[[Category:0402]][[Version::0.3.8]][[Developer::Nealy Dawes]][[Developer::Harmony Hadgraft]][[Company::Eadel]]"
+		},
+		{
+			"page": "f-0401/Bytecard",
+			"contents": "[[Category:0402]][[Version::0.77]][[Developer::Lita Bonnick]][[Company::Agimba]]"
+		},
+		{
+			"page": "f-0401/Cardguard",
+			"contents": "[[Category:0402]][[Version::0.4.9]][[Developer::Concettina Gorling]][[Company::Divanoodle]]"
+		},
+		{
+			"page": "f-0401/Cardify",
+			"contents": "[[Category:0402]][[Version::0.93]][[Developer::Normie MacAnulty]][[Company::Trudoo]]"
+		},
+		{
+			"page": "f-0401/Cookley",
+			"contents": "[[Category:0402]][[Version::3.82]][[Developer::Tate Kull]][[Company::Rhyzio]]"
+		},
+		{
+			"page": "f-0401/Domainer",
+			"contents": "[[Category:0402]][[Version::9.49]][[Developer::Maridel Murdoch]][[Developer::Wiatt Crowest]][[Developer::Lottie Cruz]][[Company::Skimia]][[Website::https://icio.us/vestibulum/rutrum/rutrum/neque.aspx]]"
+		},
+		{
+			"page": "f-0401/Duobam",
+			"contents": "[[Category:0402]][[Version::0.41]][[Developer::Oralla Jeandin]][[Developer::Derward Codi]][[Company::Wikivu]][[Website::https://mashable.com/odio/elementum/eu.png]]"
+		},
+		{
+			"page": "f-0401/Fintone",
+			"contents": "[[Category:0402]][[Version::6.5]][[Developer::Rebekkah Mara]][[Developer::Fianna De Ambrosis]][[Company::Tagcat]][[Website::https://kickstarter.com/ac/consequat/metus.png]]"
+		},
+		{
+			"page": "f-0401/Fix San",
+			"contents": "[[Category:0402]][[Version::9.93]][[Developer::Burg Minigo]][[Company::Mynte]]"
+		},
+		{
+			"page": "f-0401/Fixflex",
+			"contents": "[[Category:0402]][[Version::6.3]][[Developer::Saba Ruffler]][[Company::Skiba]][[Website::https://reverbnation.com/nam/nulla/integer/pede/justo/lacinia/eget.js]]"
+		},
+		{
+			"page": "f-0401/Flexidy",
+			"contents": "[[Category:0402]][[Version::0.23]][[Developer::Aland Waters]][[Company::Oyondu]]"
+		},
+		{
+			"page": "f-0401/Flowdesk",
+			"contents": "[[Category:0402]][[Version::0.5.9]][[Developer::Tammi Bice]][[Company::Skippad]]"
+		},
+		{
+			"page": "f-0401/Gembucket",
+			"contents": "[[Category:0402]][[Version::7.68]][[Developer::Felic Bellis]][[Developer::Milka Espie]][[Company::Aimbo]]"
+		},
+		{
+			"page": "f-0401/Greenlam",
+			"contents": "[[Category:0402]][[Version::1.5.9]][[Developer::Arden OCarrol]][[Company::Zooxo]]"
+		},
+		{
+			"page": "f-0401/Hatity",
+			"contents": "[[Category:0402]][[Version::0.84]][[Developer::Gaelan Milington]][[Developer::Loren Purcell]][[Company::Shufflester]]"
+		},
+		{
+			"page": "f-0401/Holdlamis",
+			"contents": "[[Category:0402]][[Version::0.1.3]][[Developer::Muire Jaszczak]][[Company::Oyondu]]"
+		},
+		{
+			"page": "f-0401/Home Ing",
+			"contents": "[[Category:0402]][[Version::5.0.8]][[Developer::Mimi Kemish]][[Company::Oyope]]"
+		},
+		{
+			"page": "f-0401/It",
+			"contents": "[[Category:0402]][[Version::0.7.7]][[Developer::Rochelle Alyutin]][[Company::Tagcat]]"
+		},
+		{
+			"page": "f-0401/Kanlam",
+			"contents": "[[Category:0402]][[Version::5.39]][[Developer::Odilia Semarke]][[Company::Meetz]]"
+		},
+		{
+			"page": "f-0401/Keylex",
+			"contents": "[[Category:0402]][[Version::1.7]][[Developer::Isis Fussen]][[Company::Feedbug]]"
+		},
+		{
+			"page": "f-0401/Konklab",
+			"contents": "[[Category:0402]][[Version::7.7]][[Developer::Fern Browett]][[Company::Meejo]][[Website::https://scribd.com/porta.aspx]]"
+		},
+		{
+			"page": "f-0401/Konklux",
+			"contents": "[[Category:0402]][[Version::0.35]][[Developer::Siobhan Gouck]][[Company::Lazzy]]"
+		},
+		{
+			"page": "f-0401/Latlux",
+			"contents": "[[Category:0402]][[Version::0.86]][[Developer::Lanna Keilloh]][[Company::Fivespan]]"
+		},
+		{
+			"page": "f-0401/Lotlux",
+			"contents": "[[Category:0402]][[Version::3.17]][[Developer::Sigrid Paddy]][[Developer::Raff Bassick]][[Company::Zoomcast]]"
+		},
+		{
+			"page": "f-0401/Lotstring",
+			"contents": "[[Category:0402]][[Version::1.5]][[Developer::Willamina Strete]][[Company::Riffwire]]"
+		},
+		{
+			"page": "f-0401/Mat Lam Tam",
+			"contents": "[[Category:0402]][[Version::2.1.0]][[Developer::Randie Beedle]][[Company::Quaxo]]"
+		},
+		{
+			"page": "f-0401/Matsoft",
+			"contents": "[[Category:0402]][[Version::2.3.6]][[Developer::Angie Igo]][[Developer::Alex Hampstead]][[Company::Edgeify]][[Website::https://narod.ru/diam/erat.js]]"
+		},
+		{
+			"page": "f-0401/Namfix",
+			"contents": "[[Category:0402]][[Version::4.35]][[Developer::Halsy Woodus]][[Company::Skimia]][[Website::https://slashdot.org/molestie/hendrerit/at/vulputate.jpg]]"
+		},
+		{
+			"page": "f-0401/Opela",
+			"contents": "[[Category:0402]][[Version::1.2]][[Developer::Rani Suller]][[Company::Mydeo]][[Website::https://dell.com/ligula/vehicula/consequat/morbi.png]]"
+		},
+		{
+			"page": "f-0401/Otcom",
+			"contents": "[[Category:0402]][[Version::8.71]][[Developer::Beatrix Cahey]][[Developer::Jeralee Stroud]][[Company::Wordware]]"
+		},
+		{
+			"page": "f-0401/Overhold",
+			"contents": "[[Category:0402]][[Version::0.9.6]][[Developer::Marilyn Lillee]][[Developer::Pall Brodhead]][[Company::Feedspan]]"
+		},
+		{
+			"page": "f-0401/Pannier",
+			"contents": "[[Category:0402]][[Version::4.6.3]][[Developer::Milli Penhallurick]][[Developer::Tito Tertre]][[Company::Talane]]"
+		},
+		{
+			"page": "f-0401/Prodder",
+			"contents": "[[Category:0402]][[Version::0.1.8]][[Developer::Nevsa Slavin]][[Company::Bluezoom]][[Website::http://yale.edu/luctus/tincidunt/nulla/mollis/molestie/lorem/quisque.js]]"
+		},
+		{
+			"page": "f-0401/Quo Lux",
+			"contents": "[[Category:0402]][[Version::5.5]][[Developer::Ashli Doche]][[Company::Topicblab]]"
+		},
+		{
+			"page": "f-0401/Rank",
+			"contents": "[[Category:0402]][[Version::0.64]][[Developer::Bayard Deverock]][[Developer::Hally Bevan]][[Company::Edgeclub]]"
+		},
+		{
+			"page": "f-0401/Redhold",
+			"contents": "[[Category:0402]][[Version::5.3.6]][[Developer::Rex Jaouen]][[Company::Gabtune]]"
+		},
+		{
+			"page": "f-0401/Ronstring",
+			"contents": "[[Category:0402]][[Version::0.75]][[Developer::Gratia Woodcock]][[Company::Twinder]]"
+		},
+		{
+			"page": "f-0401/Solarbreeze",
+			"contents": "[[Category:0402]][[Version::4.66]][[Developer::Marthe Robbel]][[Developer::Elden Hatchman]][[Company::Yabox]][[Website::http://printfriendly.com/venenatis/turpis/enim.jsp]]"
+		},
+		{
+			"page": "f-0401/Sonair",
+			"contents": "[[Category:0402]][[Version::0.88]][[Developer::Dorothea Jakab]][[Company::Muxo]]"
+		},
+		{
+			"page": "f-0401/Sonsing",
+			"contents": "[[Category:0402]][[Version::9.06]][[Developer::Elliott Viggers]][[Developer::Corilla Sapp]][[Company::Vinder]]"
+		},
+		{
+			"page": "f-0401/Span",
+			"contents": "[[Category:0402]][[Version::2.19]][[Developer::Meredith Yakubowicz]][[Company::Devbug]]"
+		},
+		{
+			"page": "f-0401/Stim",
+			"contents": "[[Category:0402]][[Version::1.8]][[Developer::Kerrill Blabie]][[Developer::Gelya Barnewall]][[Company::Bluejam]][[Website::http://paginegialle.it/diam/id/ornare.aspx]]"
+		},
+		{
+			"page": "f-0401/Stronghold",
+			"contents": "[[Category:0402]][[Version::3.0]][[Developer::Biddie Clarson]][[Company::Kazio]][[Website::http://ucla.edu/morbi/a/ipsum/integer/a.xml]]"
+		},
+		{
+			"page": "f-0401/Sub-Ex",
+			"contents": "[[Category:0402]][[Version::8.4]][[Developer::Calley McIlwaine]][[Company::Quimm]]"
+		},
+		{
+			"page": "f-0401/Subin",
+			"contents": "[[Category:0402]][[Version::6.1]][[Developer::Tedman Dalgarnowch]][[Company::Izio]][[Website::https://yelp.com/suspendisse/potenti.html]]"
+		},
+		{
+			"page": "f-0401/Tampflex",
+			"contents": "[[Category:0402]][[Version::5.2.0]][[Developer::Isis Corriea]][[Developer::Nahum Ashbrook]][[Company::Youfeed]]"
+		},
+		{
+			"page": "f-0401/Temp",
+			"contents": "[[Category:0402]][[Version::0.8.9]][[Developer::Lisa Hamblen]][[Company::Wikibox]]"
+		},
+		{
+			"page": "f-0401/Tempsoft",
+			"contents": "[[Category:0402]][[Version::0.8.1]][[Developer::Papagena Dudgeon]][[Company::Gigaclub]]"
+		},
+		{
+			"page": "f-0401/Tin",
+			"contents": "[[Category:0402]][[Version::0.1.5]][[Developer::Jemmie Crutchley]][[Company::Rhyzio]]"
+		},
+		{
+			"page": "f-0401/Toughjoyfax",
+			"contents": "[[Category:0402]][[Version::0.9.3]][[Developer::Lamar Choulerton]][[Company::Devify]]"
+		},
+		{
+			"page": "f-0401/Transcof",
+			"contents": "[[Category:0402]][[Version::7.9]][[Developer::Siana Dagless]][[Company::Vitz]][[Website::http://miitbeian.gov.cn/proin/leo/odio/porttitor/id.js]]"
+		},
+		{
+			"page": "f-0401/Treeflex",
+			"contents": "[[Category:0402]][[Version::4.7]][[Developer::Chaunce Tarplee]][[Company::Skyba]]"
+		},
+		{
+			"page": "f-0401/Tresom",
+			"contents": "[[Category:0402]][[Version::1.8.1]][[Developer::Allen Durban]][[Developer::Leah Banishevitz]][[Company::Trunyx]]"
+		},
+		{
+			"page": "f-0401/Trippledex",
+			"contents": "[[Category:0402]][[Version::9.3.2]][[Developer::Xaviera Goodlad]][[Company::Mynte]]"
+		},
+		{
+			"page": "f-0401/Vagram",
+			"contents": "[[Category:0402]][[Version::7.3]][[Developer::Jock Simmank]][[Developer::Milli Gergely]][[Company::Devcast]]"
+		},
+		{
+			"page": "f-0401/Ventosanzap",
+			"contents": "[[Category:0402]][[Version::4.0.5]][[Developer::Gennifer Tomsa]][[Company::Quatz]][[Website::https://netvibes.com/ante/vestibulum/ante/ipsum/primis.html]]"
+		},
+		{
+			"page": "f-0401/Veribet",
+			"contents": "[[Category:0402]][[Version::0.89]][[Developer::Gaspar Truelock]][[Company::Gabspot]]"
+		},
+		{
+			"page": "f-0401/Voltsillam",
+			"contents": "[[Category:0402]][[Version::6.5.7]][[Developer::Linnie Danjoie]][[Developer::Christie Inworth]][[Company::Gigashots]][[Website::https://engadget.com/quisque/id.jpg]]"
+		},
+		{
+			"page": "f-0401/Voyatouch",
+			"contents": "[[Category:0402]][[Version::3.66]][[Developer::Dyanne Dumphrey]][[Developer::Breena Aingell]][[Company::Buzzdog]]"
+		},
+		{
+			"page": "f-0401/Wrapsafe",
+			"contents": "[[Category:0402]][[Version::0.31]][[Developer::Gran Bemwell]][[Company::Skibox]][[Website::https://washington.edu/convallis/tortor/risus/dapibus/augue/vel/accumsan.png]]"
+		},
+		{
+			"page": "f-0401/Y-find",
+			"contents": "[[Category:0402]][[Version::0.2.4]][[Developer::Sylvia Sutterby]][[Developer::Rahel Phizacklea]][[Company::Voolith]]"
+		},
+		{
+			"page": "f-0401/Y-Solowarm",
+			"contents": "[[Category:0402]][[Version::7.2]][[Developer::Nickolas Robken]][[Company::Feedmix]]"
+		},
+		{
+			"page": "f-0401/Zaam-Dox",
+			"contents": "[[Category:0402]][[Version::8.06]][[Developer::Lew Whittek]][[Company::Kayveo]]"
+		},
+		{
+			"page": "f-0401/Zamit",
+			"contents": "[[Category:0402]][[Version::2.4]][[Developer::Saxon Kernoghan]][[Company::Yotz]]"
+		},
+		{
+			"page": "f-0401/Zathin",
+			"contents": "[[Category:0402]][[Version::0.3.8]][[Developer::Berkie Semour]][[Company::Realbridge]]"
+		},
+		{
+			"page": "f-0401/Zontrax",
+			"contents": "[[Category:0402]][[Version::2.4.7]][[Developer::Cairistiona Bollam]][[Company::Teklist]][[Website::https://mozilla.org/proin/interdum/mauris/non/ligula/pellentesque/ultrices.jsp]]"
+		},
+		{
+			"page": "f-0401/Zoolab",
+			"contents": "[[Category:0402]][[Version::3.69]][[Developer::Dewain Hearst]][[Company::Devify]]"
+		},
+		{
+			"page": "f-0401/Test-01",
+			"contents": "{{#ask:[[Category:0402]]}}"
+		},
+		{
+			"page": "f-0401/Test-02",
+			"contents": "{{#ask:[[Category:0402]]|format=list}}"
+		},
+		{
+			"page": "f-0401/Test-03",
+			"contents": "{{#ask:[[Category:0402]]|format=template}}"
+		},
+		{
+			"page": "f-0401/Test-04",
+			"contents": "{{#ask:[[Category:0402]]|format=ol}}"
+		},
+		{
+			"page": "f-0401/Test-05",
+			"contents": "{{#ask:[[Category:0402]]|format=ul}}"
+		},
+		{
+			"page": "f-0401/Test-06",
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
+		}
+
+	],
+	"tests": [
+		{
+			"type": "parser-html",
+			"about": "#1 List format is called as standard output",
+			"subject": "f-0401/Test-01",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"div.list-format > div.smw-row > div.smw-field > div.smw-value > a[title]",
+						50
+					]
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#2 List format is called when format=list",
+			"subject": "f-0401/Test-02",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"div.list-format > div.smw-row > div.smw-field > div.smw-value > a[title]",
+						50
+					]
+				]
+			}
+		},
+		{	// List format is called when format=template. "template" is an alias for "list".
+			"type": "parser-html",
+			"about": "#3 List format is called when format=template",
+			"subject": "f-0401/Test-03",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"div.list-format > div.smw-row > div.smw-field > div.smw-value > a[title]",
+						50
+					]
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#4 Ol format is called when format=ol",
+			"subject": "f-0401/Test-04",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"ol.ol-format > li.smw-row > div.smw-field > div.smw-value > a[title]",
+						50
+					]
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#5 Ul format is called when format=ol",
+			"subject": "f-0401/Test-05",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"ul.ul-format > li.smw-row > div.smw-field > div.smw-value > a[title]",
+						50
+					]
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#6.1 List format with sep",
+			"subject": "f-0401/Test-06",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"div.list-format > div.smw-row",
+						50
+					]
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6.2 List format with sep",
+			"subject": "f-0401/Test-06",
+			"assert-output": {
+				"to-contain": [ "/(div>SEPARATOR<div.+?){49}/" ],
+				"not-contain": [ "/(div>SEPARATOR<div.+?){50,}/" ]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	}
+}

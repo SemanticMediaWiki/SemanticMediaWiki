@@ -26,44 +26,44 @@ class ListResultBuilder {
 			'introtemplate' => '',
 			'outrotemplate' => '',
 
-			'value-open-tag' => '<div class="srf-value">',
+			'value-open-tag' => '<div class="smw-value">',
 			'value-close-tag' => '</div>',
-			'field-open-tag' => '<div class="srf-field">',
+			'field-open-tag' => '<div class="smw-field">',
 			'field-close-tag' => '</div>',
-			'field-label-open-tag' => '<div class="srf-field-label">',
+			'field-label-open-tag' => '<div class="smw-field-label">',
 			'field-label-close-tag' => '</div>',
 			'field-label-separator' => ': ',
 			'other-fields-open' => ' (',
 			'other-fields-close' => ')',
-			'row-open-tag' => '<div class="srf-row">',
+			'row-open-tag' => '<div class="smw-row">',
 			'row-close-tag' => '</div>',
-			'result-open-tag' => '<div class="srf-format list-format">',
+			'result-open-tag' => '<div class="smw-format list-format">',
 			'result-close-tag' => '</div>',
 		],
 		'list' => [
 			'sep' => ', ',
 
-			'row-open-tag' => '<div class="srf-row">',
+			'row-open-tag' => '<div class="smw-row">',
 			'row-close-tag' => '</div>',
-			'result-open-tag' => '<div class="srf-format list-format">',
+			'result-open-tag' => '<div class="smw-format list-format">',
 			'result-close-tag' => '</div>',
 		],
 		'ol' => [
-			'row-open-tag' => '<li class="srf-row">',
+			'row-open-tag' => '<li class="smw-row">',
 			'row-close-tag' => '</li>',
-			'result-open-tag' => '<ol class="srf-format ol-format">',
+			'result-open-tag' => '<ol class="smw-format ol-format">',
 			'result-close-tag' => '</ol>',
 		],
 		'ul' => [
-			'row-open-tag' => '<li class="srf-row">',
+			'row-open-tag' => '<li class="smw-row">',
 			'row-close-tag' => '</li>',
-			'result-open-tag' => '<ul class="srf-format ul-format">',
+			'result-open-tag' => '<ul class="smw-format ul-format">',
 			'result-close-tag' => '</ul>',
 		],
 		'template' => [
 			'row-open-tag' => '',
 			'row-close-tag' => '',
-			'result-open-tag' => '<div class="srf-format list-format">',
+			'result-open-tag' => '<div class="smw-format list-format">',
 			'result-close-tag' => '</div>',
 		],
 	];
@@ -94,8 +94,6 @@ class ListResultBuilder {
 	/**
 	 * @param string|string[] $setting
 	 * @param string|null $value
-	 *
-	 * @return mixed
 	 */
 	public function set( $setting, $value = null ) {
 
@@ -155,11 +153,7 @@ class ListResultBuilder {
 
 	protected function prepareBuilt() {
 
-		if ( array_key_exists( $this->get( 'format' ), self::$defaultConfigurations ) ) {
-			$format = $this->configuration[ 'format' ];
-		} else {
-			$format = 'list';
-		}
+		$format = $this->getEffectiveFormat();
 
 		if ( $this->get( 'template' ) !== '' ) {
 
@@ -173,7 +167,20 @@ class ListResultBuilder {
 
 		$this->configuration = array_merge( self::$defaultConfigurations[ '*' ], self::$defaultConfigurations[ $format ], $this->configuration );
 
+	}
 
+	/**
+	 * @return string
+	 */
+	protected function getEffectiveFormat() {
+
+		$format = $this->get( 'format' );
+
+		if ( $format !== 'template' && array_key_exists( $format, self::$defaultConfigurations ) ) {
+			return $format;
+		}
+
+		return 'list';
 	}
 
 	/**
@@ -240,7 +247,7 @@ class ListResultBuilder {
 		foreach ( $fields as $column => $field ) {
 
 			$fieldLabel = $this->getFieldLabelForTemplate( $field, $column );
-			$fieldText = $this->getFieldText( $field, $column );
+			$fieldText = $this->getValuesText( $field, $column );
 
 			$templateRenderer->addField( $fieldLabel, $fieldText );
 		}
@@ -265,7 +272,17 @@ class ListResultBuilder {
 		$fieldTexts = [];
 
 		foreach ( $fields as $field ) {
-			$fieldTexts[] = $this->getFieldLabel( $field, $columnNumber ) . $this->getFieldText( $field, $columnNumber );
+
+			$valuesText = $this->getValuesText( $field, $columnNumber );
+
+			if ( $valuesText !== '' ) {
+				$fieldTexts[] =
+					$this->get( 'field-open-tag' ) .
+					$this->getFieldLabel( $field ) .
+					$valuesText .
+					$this->get( 'field-close-tag' );
+			}
+
 			$columnNumber++;
 		}
 
@@ -276,7 +293,7 @@ class ListResultBuilder {
 	 * @param SMWResultArray $field
 	 * @return string
 	 */
-	protected function getFieldLabel( SMWResultArray $field, $columnNumber ) {
+	protected function getFieldLabel( SMWResultArray $field ) {
 
 		if ( $this->get( 'show-headers' ) === SMW_HEADERS_HIDE || $field->getPrintRequest()->getLabel() === '' ) {
 			return '';
@@ -287,8 +304,8 @@ class ListResultBuilder {
 		return
 			$this->get( 'field-label-open-tag' ) .
 			$field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, $linker ) .
-			$this->get( 'field-label-separator' ) .
-			$this->get( 'field-label-close-tag' );
+			$this->get( 'field-label-close-tag' ) .
+			$this->get( 'field-label-separator' );
 
 	}
 
@@ -298,7 +315,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getFieldLabelForTemplate( $field, $column ) {
+	protected function getFieldLabelForTemplate( SMWResultArray $field, $column ) {
 
 		if ( $this->get( 'named args' ) === false ) {
 			return intval( $column + 1 );
@@ -318,7 +335,7 @@ class ListResultBuilder {
 	 * @param int $column
 	 * @return string
 	 */
-	protected function getFieldText( SMWResultArray $field, $column = 0 ) {
+	protected function getValuesText( SMWResultArray $field, $column = 0 ) {
 
 		$valueTexts = $this->getValueTexts( $field, $column );
 
@@ -365,7 +382,8 @@ class ListResultBuilder {
 	 */
 	protected function getLinkerForColumn( $columnNumber ) {
 
-		if ( ( $columnNumber === 0 && $this->get( 'link-first' ) ) || ( $columnNumber > 0 && $this->get( 'link-others' ) ) ) {
+		if ( ( $columnNumber === 0 && $this->get( 'link-first' ) ) ||
+			( $columnNumber > 0 && $this->get( 'link-others' ) ) ) {
 			return $this->linker;
 		}
 
@@ -408,7 +426,7 @@ class ListResultBuilder {
 	/**
 	 * @param WikitextTemplateRenderer $templateRenderer
 	 */
-	protected function addCommonTemplateFields( $templateRenderer ) {
+	protected function addCommonTemplateFields( WikitextTemplateRenderer $templateRenderer ) {
 
 		$userParam = $this->get( 'userparam' );
 
