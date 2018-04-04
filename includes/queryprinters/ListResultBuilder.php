@@ -192,12 +192,12 @@ class ListResultBuilder {
 	 */
 	private function getDefaultsFromI18N( $format ) {
 		return [
-			'sep' => ( $format === 'list' ) ? Message::decode( 'smw-format-list-separator' ) : '',
-			'propsep' => Message::decode( 'smw-format-list-property-separator' ),
-			'valuesep' => Message::decode( 'smw-format-list-value-separator' ),
-			'field-label-separator' => Message::decode( 'smw-format-list-field-label-separator' ),
-			'other-fields-open' => Message::decode( 'smw-format-list-other-fields-open' ),
-			'other-fields-close' => Message::decode( 'smw-format-list-other-fields-close' ),
+			'sep' => ( $format === 'list' ) ? Message::get( 'smw-format-list-separator' ) : '',
+			'propsep' => Message::get( 'smw-format-list-property-separator' ),
+			'valuesep' => Message::get( 'smw-format-list-value-separator' ),
+			'field-label-separator' => Message::get( 'smw-format-list-field-label-separator' ),
+			'other-fields-open' => Message::get( 'smw-format-list-other-fields-open' ),
+			'other-fields-close' => Message::get( 'smw-format-list-other-fields-close' ),
 		];
 	}
 

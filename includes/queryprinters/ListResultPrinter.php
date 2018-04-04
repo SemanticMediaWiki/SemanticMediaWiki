@@ -42,7 +42,7 @@ class ListResultPrinter extends ResultPrinter {
 	public function getName() {
 		// Give grep a chance to find the usages:
 		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_template
-		return Message::decode( 'smw_printername_' . $this->mFormat );
+		return Message::get( 'smw_printername_' . $this->mFormat );
 	}
 
 	/**
@@ -68,6 +68,8 @@ class ListResultPrinter extends ResultPrinter {
 		$builder->set( $this->params );
 
 		$this->hasTemplates = $builder->hasTemplates();
+
+		$this->registerResources( [], [ 'ext.smw.listprinter' ] );
 
 		return $builder->getResultText() .
 			$this->getFurtherResultsText( $queryResult, $outputMode );
