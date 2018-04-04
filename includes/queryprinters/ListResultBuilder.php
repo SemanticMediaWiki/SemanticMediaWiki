@@ -41,8 +41,6 @@ class ListResultBuilder {
 			'result-close-tag' => '</div>',
 		],
 		'list' => [
-			'sep' => ', ',
-
 			'row-open-tag' => '<div class="smw-row">',
 			'row-close-tag' => '</div>',
 			'result-open-tag' => '<div class="smw-format list-format">',
@@ -165,7 +163,11 @@ class ListResultBuilder {
 
 		}
 
-		$this->configuration = array_merge( self::$defaultConfigurations[ '*' ], self::$defaultConfigurations[ $format ], $this->configuration );
+		$this->configuration = array_merge( 
+			self::$defaultConfigurations[ '*' ], 
+			self::$defaultConfigurations[ $format ], 
+			$this->getDefaultsFromI18N( $format ), 
+			$this->configuration );
 
 	}
 
@@ -181,6 +183,22 @@ class ListResultBuilder {
 		}
 
 		return 'list';
+	}
+
+	/**
+	 * @param string $format
+	 *
+	 * @return string[]
+	 */
+	private function getDefaultsFromI18N( $format ) {
+		return [
+			'sep' => ( $format === 'list' ) ? Message::decode( 'smw-format-list-separator' ) : '',
+			'propsep' => Message::decode( 'smw-format-list-property-separator' ),
+			'valuesep' => Message::decode( 'smw-format-list-value-separator' ),
+			'field-label-separator' => Message::decode( 'smw-format-list-field-label-separator' ),
+			'other-fields-open' => Message::decode( 'smw-format-list-other-fields-open' ),
+			'other-fields-close' => Message::decode( 'smw-format-list-other-fields-close' ),
+		];
 	}
 
 	/**
