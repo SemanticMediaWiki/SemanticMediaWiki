@@ -27,6 +27,11 @@
 			"contents": "[[Has type::URL]]"
 		},
 		{
+			"namespace": "NS_TEMPLATE",
+			"page": "f-0401",
+			"contents": "<includeonly>{{{MAINLABEL|}}}{{{1|}}}; #userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}}; #rownumber: {{{#rownumber|}}}; Version: {{{2|}}}; Developer: {{{3|}}}; Company: {{{4|}}}; Website: {{{5|}}};</includeonly>"
+		},
+		{
 			"page": "f-0401/Aerified",
 			"contents": "[[Category:0402]][[Version::0.23]][[Developer::Maggi McKellen]][[Company::Flashpoint]]"
 		},
@@ -348,7 +353,15 @@
 		},
 		{
 			"page": "f-0401/Test-06",
-			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valsep=VSEP|searchlabel=|mainlabel=MAINLABEL|userparam=SomeUserParam|offset=2}}"
+		},
+		{
+			"page": "f-0401/Test-07",
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valsep=VSEP}}"
+		},
+		{
+			"page": "f-0401/Test-08",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valsep=VSEP}}{{#ask:[[Category:0402]]|format=ul|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
 		}
 
 	],
@@ -381,9 +394,9 @@
 				]
 			}
 		},
-		{	// List format is called when format=template. "template" is an alias for "list".
+		{
 			"type": "parser-html",
-			"about": "#3 List format is called when format=template",
+			"about": "#3 List format is called when format=template (but no actual template specified)",
 			"subject": "f-0401/Test-03",
 			"assert-output": {
 				"to-be-valid-html": true,
@@ -411,7 +424,7 @@
 		},
 		{
 			"type": "parser-html",
-			"about": "#5 Ul format is called when format=ol",
+			"about": "#5 Ul format is called when format=ul",
 			"subject": "f-0401/Test-05",
 			"assert-output": {
 				"to-be-valid-html": true,
@@ -424,26 +437,53 @@
 			}
 		},
 		{
-			"type": "parser-html",
-			"about": "#6.1 List format with sep",
+			"type": "parser",
+			"about": "#6 List format with template specified",
 			"subject": "f-0401/Test-06",
 			"assert-output": {
-				"to-be-valid-html": true,
 				"to-contain": [
-					[
-						"div.list-format > div.smw-row",
-						50
-					]
+					"/(SEPARATOR.+?){49}/",
+					"VSEP",
+					"#userparam: SomeUserParam;",
+					"#querycondition: [[Category:0402]];",
+					"#querylimit: 50;",
+					"#resultoffset: 2;",
+					"#rowcount: 75;",
+					"#rownumber: 3;",
+					"#rownumber: 52;"
+				],
+				"not-contain": [
+					"/(SEPARATOR){50,}/",
+					"PSEP",
+					"smw-row",
+				 	"smw-field",
+					"smw-value"
 				]
 			}
 		},
 		{
 			"type": "parser",
-			"about": "#6.2 List format with sep",
-			"subject": "f-0401/Test-06",
-			"assert-output": {
-				"to-contain": [ "/(div>SEPARATOR<div.+?){49}/" ],
+			"about": "#7 List format with sep",
+			"subject": "f-0401/Test-07",
+			"assert-output": { // at least 49, but not 50 or more, i.e. exactly 49
+				"to-contain": [
+					"/(div>SEPARATOR<div.+?){49}/",
+					"PSEP",
+					"VSEP"
+				],
 				"not-contain": [ "/(div>SEPARATOR<div.+?){50,}/" ]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#8 Ol & ul format without sep (even if specified)",
+			"subject": "f-0401/Test-08",
+			"assert-output": {
+				"to-contain": [
+					"PSEP",
+					"VSEP"
+				],
+				"not-contain": [ "SEPARATOR" ]
 			}
 		}
 	],

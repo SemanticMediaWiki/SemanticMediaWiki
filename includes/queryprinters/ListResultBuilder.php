@@ -190,11 +190,11 @@ class ListResultBuilder {
 	 *
 	 * @return string[]
 	 */
-	private function getDefaultsFromI18N( $format ) {
+	protected function getDefaultsFromI18N( $format ) {
 		return [
 			'sep' => ( $format === 'list' ) ? Message::get( 'smw-format-list-separator' ) : '',
 			'propsep' => Message::get( 'smw-format-list-property-separator' ),
-			'valuesep' => Message::get( 'smw-format-list-value-separator' ),
+			'valsep' => Message::get( 'smw-format-list-value-separator' ),
 			'field-label-separator' => Message::get( 'smw-format-list-field-label-separator' ),
 			'other-fields-open' => Message::get( 'smw-format-list-other-fields-open' ),
 			'other-fields-close' => Message::get( 'smw-format-list-other-fields-close' ),
@@ -357,7 +357,7 @@ class ListResultBuilder {
 
 		$valueTexts = $this->getValueTexts( $field, $column );
 
-		return join( $this->get( 'valuesep' ), $valueTexts );
+		return join( $this->get( 'valsep' ), $valueTexts );
 
 	}
 

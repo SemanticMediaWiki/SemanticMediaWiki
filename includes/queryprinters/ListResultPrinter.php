@@ -90,8 +90,15 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getFurtherResultsText( SMWQueryResult $res, $outputMode ) {
-		$link = $this->getFurtherResultsLink( $res, $outputMode );
-		return $link->getText( SMW_OUTPUT_WIKI, $this->mLinker );
+
+		if ( $this->linkFurtherResults( $res) ) {
+
+			$link = $this->getFurtherResultsLink( $res, $outputMode );
+			return $link->getText( SMW_OUTPUT_WIKI, $this->mLinker );
+
+		}
+
+		return '';
 	}
 
 	/**
@@ -122,7 +129,7 @@ class ListResultPrinter extends ResultPrinter {
 				'default' => ', ',
 			],
 
-			'valuesep' => [
+			'valsep' => [
 				'message' => 'smw-paramdesc-valuesep',
 				'default' => ', ',
 			],
