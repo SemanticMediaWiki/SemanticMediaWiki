@@ -19,7 +19,7 @@
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
-	"smw-title": "This is the name of the software.\n\n{{Identical|Semantic MediaWiki}}",
+	"smw-title": "{{notranslate}}\n\nName of the extension as it should be displayed.\n\n{{Identical|Semantic MediaWiki}}",
 	"smw-semantics-not-enabled": "This is an informatory message.",
 	"smw_viewasrdf": "This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [https://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].",
 	"smw_finallistconjunct": "The last separator in a list. For example a list could look like this: \"A, B, and C\". The comma might not be appropriate in your language.\n\t{{Identical|And}}",
@@ -533,6 +533,8 @@
 	"smw-type-txt": "This is an informatory message shown to the user.",
 	"smw-type-dat": "This is an informatory message shown to the user.",
 	"smw-specials-browse-helplink": "{{notranslate}}",
+	"smw-special-pageproperty-helplink": "{{Notranslate}}",
+	"smw-special-pageproperty-description": "This is an informatory message documenting special page \"PageProperty\".",
 	"smw-property-predefined-errc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] shown in a tooltip.",
 	"smw-property-predefined-long-errc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] on the property's page.",
 	"smw-property-predefined-errt": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
