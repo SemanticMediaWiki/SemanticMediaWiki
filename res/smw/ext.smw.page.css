@@ -248,4 +248,11 @@
 	.smw-property-page-results .smwprops {
 		width: 100%;
 	}
+	
+	.smw-property-page-results > .smw-table-row .smwpropname {
+		text-align: left;
+		vertical-align: top;
+		padding-right: 1em;
+		width: 100%;
+	}
 }
