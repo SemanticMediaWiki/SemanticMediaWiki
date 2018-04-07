@@ -1433,7 +1433,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$handler = 'SMW::Browse::AfterIncomingPropertiesLookupComplete';
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists', 'getIDFor' ) )
+			->setMethods( array( 'exists', 'getId' ) )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

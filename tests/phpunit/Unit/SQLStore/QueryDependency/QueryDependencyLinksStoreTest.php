@@ -523,11 +523,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	public function testTryDoUpdateDependenciesByForWhenDependencyListReturnsEmpty() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getIDFor' ) )
+			->setMethods( array( 'getId' ) )
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'getIDFor' )
+			->method( 'getId' )
 			->will( $this->onConsecutiveCalls( 42, 1001 ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

@@ -371,12 +371,12 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			29,
-			$instance->getIDFor( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY ) )
+			$instance->getId( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY ) )
 		);
 
 		$this->assertEquals(
 			42,
-			$instance->getIDFor( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY, '', 'Foo' ) )
+			$instance->getId( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY, '', 'Foo' ) )
 		);
 	}
 

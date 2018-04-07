@@ -539,7 +539,7 @@ class SMWSql3SmwIds {
 	 * @param boolean
 	 */
 	public function exists( DIWikiPage $subject ) {
-		return $this->getIDFor( $subject ) > 0;
+		return $this->getId( $subject ) > 0;
 	}
 
 	/**
@@ -555,7 +555,7 @@ class SMWSql3SmwIds {
 	 *
 	 * @param integer
 	 */
-	public function getIDFor( DIWikiPage $subject ) {
+	public function getId( DIWikiPage $subject ) {
 
 		// Try to match a predefined property
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
@@ -689,7 +689,7 @@ class SMWSql3SmwIds {
 
 		// Safeguard to ensure that no duplicate IDs are created
 		if ( $id == 0 ) {
-			$id = $this->getIDFor( new DIWikiPage( $title, $namespace, $iw, $subobjectName ) );
+			$id = $this->getId( new DIWikiPage( $title, $namespace, $iw, $subobjectName ) );
 		}
 
 		$db->beginAtomicTransaction( __METHOD__ );
@@ -1011,7 +1011,12 @@ class SMWSql3SmwIds {
 			$hash = null;
 
 			if ( $item instanceof DIWikiPage ) {
-				$hash = [ $item->getDBKey(), (int)$item->getNamespace(), $item->getInterwiki(), $item->getSubobjectName() ];
+				$hash = [
+					$item->getDBKey(),
+					(int)$item->getNamespace(),
+					$item->getInterwiki(),
+					$item->getSubobjectName()
+				];
 			}
 
 			if ( $item instanceof DIProperty ) {
