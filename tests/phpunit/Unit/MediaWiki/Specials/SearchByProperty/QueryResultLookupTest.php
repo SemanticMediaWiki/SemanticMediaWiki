@@ -111,11 +111,11 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 	public function testDoQueryLinksReferences() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getIDFor' ) )
+			->setMethods( array( 'getId' ) )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
-			->method( 'getIDFor' )
+			->method( 'getId' )
 			->will( $this->onConsecutiveCalls( 42 ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

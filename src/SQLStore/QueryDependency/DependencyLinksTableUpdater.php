@@ -208,7 +208,7 @@ class DependencyLinksTableUpdater {
 			);
 		}
 
-		$id = $this->store->getObjectIds()->getIDFor(
+		$id = $this->store->getObjectIds()->getId(
 			$subject
 		);
 

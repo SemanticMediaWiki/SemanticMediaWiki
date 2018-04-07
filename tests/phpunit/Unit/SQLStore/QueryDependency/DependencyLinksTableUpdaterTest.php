@@ -51,11 +51,11 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	public function testAddToUpdateList() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getIDFor' ) )
+			->setMethods( array( 'getId' ) )
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'getIDFor' )
+			->method( 'getId' )
 			->will( $this->onConsecutiveCalls( 1001 ) );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -148,11 +148,11 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	public function testAddDependenciesFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getIDFor', 'makeSMWPageID' ) )
+			->setMethods( array( 'getId', 'makeSMWPageID' ) )
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'getIDFor' )
+			->method( 'getId' )
 			->will( $this->returnValue( 0 ) );
 
 		$idTable->expects( $this->any() )
