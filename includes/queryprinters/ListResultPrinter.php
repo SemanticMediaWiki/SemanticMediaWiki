@@ -66,6 +66,11 @@ class ListResultPrinter extends ResultPrinter {
 
 		$builder = new ListResultBuilder( $queryResult, $this->mLinker );
 		$builder->set( $this->params );
+		$builder->set( [
+			'link-first' => $this->mLinkFirst,
+			'link-others'=>$this->mLinkOthers,
+			'show-headers'=>$this->mShowHeaders,
+		] );
 
 		$this->hasTemplates = $builder->hasTemplates();
 
@@ -126,12 +131,12 @@ class ListResultPrinter extends ResultPrinter {
 
 			'propsep' => [
 				'message' => 'smw-paramdesc-propsep',
-				'default' => ', ',
+				'default' => Message::get( 'smw-format-list-property-separator' ),
 			],
 
 			'valsep' => [
 				'message' => 'smw-paramdesc-valuesep',
-				'default' => ', ',
+				'default' => Message::get( 'smw-format-list-value-separator' ),
 			],
 
 			'template' => [

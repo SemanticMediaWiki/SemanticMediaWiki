@@ -29,7 +29,17 @@
 		{
 			"namespace": "NS_TEMPLATE",
 			"page": "f-0401",
-			"contents": "<includeonly>{{{MAINLABEL|}}}{{{1|}}}; #userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}}; #rownumber: {{{#rownumber|}}}; Version: {{{2|}}}; Developer: {{{3|}}}; Company: {{{4|}}}; Website: {{{5|}}};</includeonly>"
+			"contents": "<includeonly>{{{1}}}-{{{SomeMainlabel}}}; #userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}}; #rownumber: {{{#rownumber|}}}; Version: {{{2}}}-{{{Version}}}; Developer: {{{3}}}-{{{Developer}}}; Company: {{{4}}}-{{{Company}}}; Website: {{{5}}}-{{{Website}}};</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "f-0401/intro",
+			"contents": "<includeonly><div class='intro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</div></includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "f-0401/outro",
+			"contents": "<includeonly><div class='outro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</div></includeonly>"
 		},
 		{
 			"page": "f-0401/Aerified",
@@ -353,15 +363,43 @@
 		},
 		{
 			"page": "f-0401/Test-06",
-			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valsep=VSEP|searchlabel=|mainlabel=MAINLABEL|userparam=SomeUserParam|offset=2}}"
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valsep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2}}"
 		},
 		{
 			"page": "f-0401/Test-07",
-			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valsep=VSEP}}"
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version=|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valsep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2|named args=yes}}"
 		},
 		{
 			"page": "f-0401/Test-08",
-			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valsep=VSEP}}{{#ask:[[Category:0402]]|format=ul|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valsep=VSEP}}"
+		},
+		{
+			"page": "f-0401/Test-09",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valsep=VSEP|offset=2}}{{#ask:[[Category:0402]]|format=ul|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
+		},
+		{
+			"page": "f-0401/Test-10",
+			"contents": "{{#ask:[[Category:0402]]|format=list|introtemplate=f-0401/intro|outrotemplate=f-0401/outro}}"
+		},
+		{
+			"page": "f-0401/Test-11",
+			"contents": "{{#ask:[[Category:0402]]|format=list|template=f-0401|introtemplate=f-0401/intro|outrotemplate=f-0401/outro}}"
+		},
+		{
+			"page": "f-0401/Test-12",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|introtemplate=f-0401/intro|outrotemplate=f-0401/outro}}"
+		},
+		{
+			"page": "f-0401/Test-13",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|link=none|headers=show|searchlabel=}}"
+		},
+		{
+			"page": "f-0401/Test-14",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|link=subject|headers=hide|searchlabel=}}"
+		},
+		{
+			"page": "f-0401/Test-15",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|link=all|headers=plain|searchlabel=}}"
 		}
 
 	],
@@ -438,33 +476,77 @@
 		},
 		{
 			"type": "parser",
-			"about": "#6 List format with template specified",
+			"about": "#6 List format with template specified (numbered args)",
 			"subject": "f-0401/Test-06",
 			"assert-output": {
 				"to-contain": [
 					"/(SEPARATOR.+?){49}/",
-					"VSEP",
+					"VSEP",  // just make sure there's a bunch of VSEPs, don't count
 					"#userparam: SomeUserParam;",
 					"#querycondition: [[Category:0402]];",
 					"#querylimit: 50;",
 					"#resultoffset: 2;",
 					"#rowcount: 75;",
 					"#rownumber: 3;",
-					"#rownumber: 52;"
+					"#rownumber: 52;",
+					"{{{SomeMainlabel}}}", // Named template params are not replaced
+					"{{{Version}}}",
+					"{{{Developer}}}",
+					"{{{Company}}}",
+					"{{{Website}}}"
 				],
 				"not-contain": [
 					"/(SEPARATOR){50,}/",
 					"PSEP",
-					"smw-row",
-				 	"smw-field",
-					"smw-value"
+					"smw-row", // no structure for list with templates
+					"smw-field",
+					"smw-value",
+					"{{{1}}}",  // Numbered template params are replaced
+					"{{{2}}}",
+					"{{{3}}}",
+					"{{{4}}}",
+					"{{{5}}}"
 				]
 			}
 		},
 		{
 			"type": "parser",
-			"about": "#7 List format with sep",
+			"about": "#7 Ol format with template specified (named args)",
 			"subject": "f-0401/Test-07",
+			"assert-output": {
+				"to-contain": [
+					"VSEP",  // just make sure there's a bunch of VSEPs, don't count
+					"#userparam: SomeUserParam;",
+					"#querycondition: [[Category:0402]];",
+					"#querylimit: 50;",
+					"#resultoffset: 2;",
+					"#rowcount: 75;",
+					"#rownumber: 3;",
+					"#rownumber: 52;",
+					"smw-row", // Templates are applied inside rows for ol with templates
+					"{{{1}}}", // Numbered template params are not replaced
+					"{{{Version}}}", // ...except if the label is empty
+					"{{{3}}}",
+					"{{{4}}}",
+					"{{{5}}}"
+				],
+				"not-contain": [
+					"SEPARATOR",
+					"PSEP",
+					"smw-field", // no structure below row for ol with templates
+					"smw-value",
+					"{{{SomeMainlabel}}}", // Named template params are replaced
+					"{{{2}}}", // ...except if the label is empty
+					"{{{Developer}}}",
+					"{{{Company}}}",
+					"{{{Website}}}"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 List format with sep",
+			"subject": "f-0401/Test-08",
 			"assert-output": { // at least 49, but not 50 or more, i.e. exactly 49
 				"to-contain": [
 					"/(div>SEPARATOR<div.+?){49}/",
@@ -475,15 +557,140 @@
 			}
 		},
 		{
-			"type": "parser-html",
-			"about": "#8 Ol & ul format without sep (even if specified)",
-			"subject": "f-0401/Test-08",
+			"type": "parser",
+			"about": "#9.1 Ol & ul format without sep (even if specified)",
+			"subject": "f-0401/Test-09",
 			"assert-output": {
 				"to-contain": [
 					"PSEP",
 					"VSEP"
 				],
-				"not-contain": [ "SEPARATOR" ]
+				"not-contain": [
+					"SEPARATOR"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#9.2 Ol format with offset",
+			"subject": "f-0401/Test-09",
+			"assert-output": {
+				"to-contain": [
+					"ol.ol-format[start=\"3\"]"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#10.1 List format with introtemplate and outrotemplate",
+			"subject": "f-0401/Test-10",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>",
+					"<div class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#10.2 List format with introtemplate and outrotemplate",
+			"subject": "f-0401/Test-10",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "div.intro + div.smw-format", 1 ],
+					[ "div.smw-format + div.outro", 1 ]
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#11.1 Template format with introtemplate and outrotemplate",
+			"subject": "f-0401/Test-11",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>",
+					"<div class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#11.2 Template format with introtemplate and outrotemplate",
+			"subject": "f-0401/Test-11",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "div.intro + div.smw-format", 1 ],
+					[ "div.smw-format + div.outro", 1 ]
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#12.1 Ol format with introtemplate and outrotemplate",
+			"subject": "f-0401/Test-12",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>",
+					"<div class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#12.2 Ol format with introtemplate and outrotemplate",
+			"subject": "f-0401/Test-12",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "div.intro + ol.smw-format", 1 ],
+					[ "ol.smw-format + div.outro", 1 ]
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#13",
+			"subject": "f-0401/Test-13",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "div.smw-field-label > a", 50 ] // headers = show
+				],
+				"not-contain": [
+					"div.smw-value > a" // link = none
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#14",
+			"subject": "f-0401/Test-14",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "li.smw-row > div.smw-field:first-child > div.smw-value > a", 50 ] // link = subject
+				],
+				"not-contain": [
+					"li.smw-row > div.smw-field:not(:first-child) > div.smw-value > a", // link = subject
+					"div.smw-field-label" // headers = hide
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#15",
+			"subject": "f-0401/Test-15",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "li.smw-row > div.smw-field > div.smw-value > a", 100 ], // link = all
+					[ "div.smw-field-label", 50 ] // headers = plain
+				],
+				"not-contain": [
+					"div.smw-field-label > a" // headers = plain
+				]
 			}
 		}
 	],

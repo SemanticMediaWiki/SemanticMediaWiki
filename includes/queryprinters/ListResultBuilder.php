@@ -49,7 +49,7 @@ class ListResultBuilder {
 		'ol' => [
 			'row-open-tag' => '<li class="smw-row">',
 			'row-close-tag' => '</li>',
-			'result-open-tag' => '<ol class="smw-format ol-format">',
+			'result-open-tag' => '<ol class="smw-format ol-format" start="$START$">',
 			'result-close-tag' => '</ol>',
 		],
 		'ul' => [
@@ -141,12 +141,21 @@ class ListResultBuilder {
 
 		return
 			$this->getTemplateCall( 'introtemplate' ) .
-			$this->get( 'result-open-tag' ) .
+			$this->insertOffset( $this->get( 'result-open-tag' ) ) .
 
 			join( $this->get( 'sep' ), $rowTexts ) .
 
 			$this->get( 'result-close-tag' ) .
 			$this->getTemplateCall( 'outrotemplate' );
+	}
+
+	/**
+	 * @param string $subject
+	 *
+	 * @return string
+	 */
+	protected function insertOffset( $subject ) {
+		return str_replace( '$START$', $this->get( 'offset' ) + 1, $subject );
 	}
 
 	protected function prepareBuilt() {
@@ -163,10 +172,10 @@ class ListResultBuilder {
 
 		}
 
-		$this->configuration = array_merge( 
-			self::$defaultConfigurations[ '*' ], 
-			self::$defaultConfigurations[ $format ], 
-			$this->getDefaultsFromI18N( $format ), 
+		$this->configuration = array_merge(
+			self::$defaultConfigurations[ '*' ],
+			self::$defaultConfigurations[ $format ],
+			$this->getDefaultsFromI18N( $format ),
 			$this->configuration );
 
 	}
@@ -192,9 +201,6 @@ class ListResultBuilder {
 	 */
 	protected function getDefaultsFromI18N( $format ) {
 		return [
-			'sep' => ( $format === 'list' ) ? Message::get( 'smw-format-list-separator' ) : '',
-			'propsep' => Message::get( 'smw-format-list-property-separator' ),
-			'valsep' => Message::get( 'smw-format-list-value-separator' ),
 			'field-label-separator' => Message::get( 'smw-format-list-field-label-separator' ),
 			'other-fields-open' => Message::get( 'smw-format-list-other-fields-open' ),
 			'other-fields-close' => Message::get( 'smw-format-list-other-fields-close' ),
@@ -225,6 +231,7 @@ class ListResultBuilder {
 
 	/**
 	 * @param SMWResultArray[] $fields
+	 *
 	 * @return string
 	 */
 	protected function getRowText( array $fields ) {
@@ -282,6 +289,7 @@ class ListResultBuilder {
 
 	/**
 	 * @param string[] $fields
+	 *
 	 * @return array
 	 */
 	protected function getFieldTexts( array $fields ) {
@@ -309,15 +317,18 @@ class ListResultBuilder {
 
 	/**
 	 * @param SMWResultArray $field
+	 *
 	 * @return string
 	 */
 	protected function getFieldLabel( SMWResultArray $field ) {
 
-		if ( $this->get( 'show-headers' ) === SMW_HEADERS_HIDE || $field->getPrintRequest()->getLabel() === '' ) {
+		$showHeaders = $this->get( 'show-headers' );
+
+		if ( $showHeaders === SMW_HEADERS_HIDE || $field->getPrintRequest()->getLabel() === '' ) {
 			return '';
 		}
 
-		$linker = $this->get( 'show-headers' ) === SMW_HEADERS_PLAIN ? null : $this->linker;
+		$linker = $showHeaders === SMW_HEADERS_PLAIN ? null : $this->linker;
 
 		return
 			$this->get( 'field-label-open-tag' ) .
@@ -351,6 +362,7 @@ class ListResultBuilder {
 	/**
 	 * @param SMWResultArray $field
 	 * @param int $column
+	 *
 	 * @return string
 	 */
 	protected function getValuesText( SMWResultArray $field, $column = 0 ) {
@@ -364,6 +376,7 @@ class ListResultBuilder {
 	/**
 	 * @param SMWResultArray $field
 	 * @param int $column
+	 *
 	 * @return string[]
 	 */
 	protected function getValueTexts( SMWResultArray $field, $column ) {
@@ -381,6 +394,7 @@ class ListResultBuilder {
 	/**
 	 * @param SMWDataValue $value
 	 * @param int $column
+	 *
 	 * @return string
 	 */
 	protected function getValueText( SMWDataValue $value, $column = 0 ) {
@@ -474,14 +488,14 @@ class ListResultBuilder {
 		$templateRenderer->addField(
 			'#rowcount',
 			$this->getRowCount()
-			//$this->getQueryResult()->getCount()  // FIXME: Re-activate if another query takes too long.
+		//$this->getQueryResult()->getCount()  // FIXME: Re-activate if another query takes too long.
 		);
 	}
 
 	/**
 	 * @return int
 	 */
-	protected function getRowCount(){
+	protected function getRowCount() {
 
 		if ( $this->numberOfPages === null ) {
 

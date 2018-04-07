@@ -48,6 +48,7 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 
 	/**
 	 * @param string $fragment
+	 *
 	 * @return bool|DOMDocument
 	 */
 	private function getDomDocumentFromHtmlFragment( $fragment ) {
@@ -82,6 +83,7 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 
 	/**
 	 * @param string $fragment
+	 *
 	 * @return string
 	 */
 	private static function wrapHtmlFragment( $fragment ) {
@@ -93,7 +95,7 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $htmlFragment
 	 * @param string $message
 	 */
-	public function assertThatHtmlContains( $cssSelectors, $htmlFragment, $message = '' ) {
+	public function assertThatHtmlContains( $cssSelectors, $htmlFragment, $message = '', $expected = true ) {
 
 		$document = $this->getDomDocumentFromHtmlFragment( $htmlFragment );
 		$xpath = new \DOMXPath( $document );
@@ -103,11 +105,11 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 
 			if ( is_array( $selector ) ) {
 				$expectedCount = array_pop( $selector );
-				$expectedCountText = $expectedCount;
+				$expectedCountText = ( ( $expected === true) ? '' : 'not ') . $expectedCount;
 				$selector = array_shift( $selector );
 			} else {
 				$expectedCount = false;
-				$expectedCountText = 'at least 1';
+				$expectedCountText = ( $expected === true) ? 'at least 1' : 'none';
 			}
 
 			try {
@@ -122,8 +124,16 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 				$message .= "CssSelector: " . $e->getMessage();
 			}
 
-			self::assertTrue( ( $expectedCount === false && $actualCount > 0 ) || ( $actualCount === $expectedCount ), $message );
+			self::assertTrue( ( ( $expectedCount === false && $actualCount > 0 ) || ( $actualCount === $expectedCount ) ) === $expected, $message );
 		}
 	}
 
+	/**
+	 * @param string | string[] $cssSelectors
+	 * @param string $htmlFragment
+	 * @param string $message
+	 */
+	public function assertThatHtmlNotContains( $cssSelectors, $htmlFragment, $message = '' ) {
+		$this->assertThatHtmlContains( $cssSelectors, $htmlFragment, $message, false );
+	}
 }
