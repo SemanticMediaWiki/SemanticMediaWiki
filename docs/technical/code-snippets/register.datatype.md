@@ -10,17 +10,18 @@ This example shows how to register a new dataType/dataValue in Semantic MediaWik
 All IDs must start with an underscore, two underscores indicate a truly internal
 (non user-interacted type), three underscores should be used by an extension.
 
-`DefaultList::getTypeList` expects that the following information are provided:
+`TypesRegistry::getDataTypeList` expects that the following information are provided:
 
 * A type id (e.g. `FooValue::TYPE_ID`)
 * An associated class
 * An item type (storage type)
 * A declaration whether it is a subData type (e.g subobject) or not
+* Whether a type is browsable or not
 
 <pre>
 return array(
 	// ...
-	FooValue::TYPE_ID => [ FooValue::class, DataItem::TYPE_WIKIPAGE, false ],
+	FooValue::TYPE_ID => [ FooValue::class, DataItem::TYPE_WIKIPAGE, false, false ],
 );
 </pre>
 
