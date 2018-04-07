@@ -585,13 +585,13 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'PropertyLabelFinder', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'PropertyLabelFinder', '\SMW\PropertyLabelFinder' );
 
-			$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
+			$lang = Localizer::getInstance()->getLang();
 
 			$propertyLabelFinder = new PropertyLabelFinder(
 				$containerBuilder->create( 'Store' ),
-				$extraneousLanguage->getPropertyLabels(),
-				$extraneousLanguage->getCanonicalPropertyLabels(),
-				$extraneousLanguage->getCanonicalDatatypeLabels()
+				$lang->getPropertyLabels(),
+				$lang->getCanonicalPropertyLabels(),
+				$lang->getCanonicalDatatypeLabels()
 			);
 
 			return $propertyLabelFinder;

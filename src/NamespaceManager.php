@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\ExtraneousLanguage\ExtraneousLanguage;
+use SMW\Lang\Lang;
 
 /**
  * @license GNU GPL v2+
@@ -14,20 +14,20 @@ use SMW\ExtraneousLanguage\ExtraneousLanguage;
 class NamespaceManager {
 
 	/**
-	 * @var ExtraneousLanguage
+	 * @var Lang
 	 */
-	private $extraneousLanguage;
+	private $lang;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param ExtraneousLanguage|null $extraneousLanguage
+	 * @param Lang|null $lang
 	 */
-	public function __construct( ExtraneousLanguage $extraneousLanguage = null ) {
-		$this->extraneousLanguage = $extraneousLanguage;
+	public function __construct( Lang $lang = null ) {
+		$this->lang = $lang;
 
-		if ( $this->extraneousLanguage === null ) {
-			$this->extraneousLanguage = ExtraneousLanguage::getInstance();
+		if ( $this->lang === null ) {
+			$this->lang = Lang::getInstance();
 		}
 	}
 
@@ -44,7 +44,7 @@ class NamespaceManager {
 
 		// Legacy seeting in case some extension request a `smwgContLang` reference
 		if ( empty( $vars['smwgContLang'] ) ) {
-			$vars['smwgContLang'] = $this->extraneousLanguage->fetchByLanguageCode( $vars['wgLanguageCode'] );
+			$vars['smwgContLang'] = $this->lang->fetch( $vars['wgLanguageCode'] );
 		}
 
 		$this->addNamespaceSettings( $vars );
@@ -147,11 +147,11 @@ class NamespaceManager {
 	 * @since 1.9
 	 *
 	 * @param array &$vars
-	 * @param ExtraneousLanguage|null $extraneousLanguage
+	 * @param Lang|null $lang
 	 */
-	public static function initCustomNamespace( &$vars, ExtraneousLanguage $extraneousLanguage = null ) {
+	public static function initCustomNamespace( &$vars, Lang $lang = null ) {
 
-		$instance = new self( $extraneousLanguage );
+		$instance = new self( $lang );
 
 		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
 			$vars['smwgNamespaceIndex'] = 100;
@@ -264,12 +264,12 @@ class NamespaceManager {
 	}
 
 	protected function getNamespacesByLanguageCode( $languageCode ) {
-		$GLOBALS['smwgContLang'] = $this->extraneousLanguage->fetchByLanguageCode( $languageCode );
+		$GLOBALS['smwgContLang'] = $this->lang->fetch( $languageCode );
 		return $GLOBALS['smwgContLang']->getNamespaces();
 	}
 
 	private function getNamespaceAliasesByLanguageCode( $languageCode ) {
-		return $this->extraneousLanguage->fetchByLanguageCode( $languageCode )->getNamespaceAliases();
+		return $this->lang->fetch( $languageCode )->getNamespaceAliases();
 	}
 
 }

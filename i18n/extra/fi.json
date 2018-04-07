@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Sivu",
         "_txt": "Teksti",
         "_cod": "Lähdekoodi",
@@ -22,10 +22,10 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "Merkkijono": "_txt"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "On tyypiltään",
         "_URI": "Yhtäpitävä URI",
         "_SUBP": "Yläominaisuus",
@@ -63,8 +63,8 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": [],
-    "dateFormatsByPrecision": {
+    "property.aliases": [],
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -78,8 +78,8 @@
         "SMW_NS_CONCEPT": "Konsepti",
         "SMW_NS_CONCEPT_TALK": "Keskustelu_konseptista"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

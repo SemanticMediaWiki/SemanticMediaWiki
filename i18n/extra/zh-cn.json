@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "页面型",
         "_txt": "文本型",
         "_cod": "代码型",
@@ -22,7 +22,7 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "浮点型": "_num",
         "整数型": "_num",
         "枚举型": "_txt",
@@ -32,7 +32,7 @@
         "Enumeration": "_txt",
         "URI": "_uri"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "具有类型",
         "_URI": "等价URI",
         "_SUBP": "是……的子属性",
@@ -70,10 +70,10 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "显示计量单位": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y年",
         "SMW_PREC_YM": "Y年n月",
         "SMW_PREC_YMD": "Y年n月j日 (D)",
@@ -87,8 +87,8 @@
         "SMW_NS_CONCEPT": "概念",
         "SMW_NS_CONCEPT_TALK": "概念讨论"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

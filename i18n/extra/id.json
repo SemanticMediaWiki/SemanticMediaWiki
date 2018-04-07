@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Halaman",
         "_txt": "Teks",
         "_cod": "Kode",
@@ -22,12 +22,12 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Enumerasi": "_txt",
         "Nomor telepon": "_tel"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Memiliki tipe",
         "_URI": "URI ekuivalen",
         "_SUBP": "Subproperti dari",
@@ -65,10 +65,10 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Unit tampilan": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -82,8 +82,8 @@
         "SMW_NS_CONCEPT": "Konsep",
         "SMW_NS_CONCEPT_TALK": "Pembicaraan_Konsep"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

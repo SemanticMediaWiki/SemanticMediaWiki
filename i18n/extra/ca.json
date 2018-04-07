@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Pàgina",
         "_txt": "Text",
         "_cod": "Codi",
@@ -23,7 +23,7 @@
         "_keyw": "Paraula clau",
         "_ref_rec": "Referència"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Decimal": "_num",
         "Enter": "_num",
@@ -34,7 +34,7 @@
         "Coordenada geogràfica": "_geo",
         "Polígon geogràfic": "_gpo"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Té tipus",
         "_URI": "URI equivalent",
         "_SUBP": "Subpropietat de",
@@ -83,10 +83,10 @@
         "_RL_DEF": "Definició de regla",
         "_FORMAT_RL": "Regla de formatador"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Unitat de mesura": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -102,8 +102,8 @@
         "SMW_NS_RULE": "Regla",
         "SMW_NS_RULE_TALK": "Regla_Discussió"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

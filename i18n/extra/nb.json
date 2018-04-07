@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Side",
         "_txt": "Tekst",
         "_cod": "Kode",
@@ -22,7 +22,7 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "Lang tekst": "_txt",
         "Kort tekst": "_txt",
         "Streng": "_txt",
@@ -38,7 +38,7 @@
         "Mål": "_qty",
         "Record": "_rec"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Har type",
         "_URI": "Ekvivalent URI",
         "_SUBP": "Underegenskap av",
@@ -76,13 +76,13 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Type": "_TYPE",
         "Enhet": "_UNIT",
         "Synonym URI": "_URI",
         "Synonym adresse": "_URI"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -96,8 +96,8 @@
         "SMW_NS_CONCEPT": "Konsept",
         "SMW_NS_CONCEPT_TALK": "Konsept-diskusjon"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

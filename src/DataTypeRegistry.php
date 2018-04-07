@@ -3,7 +3,7 @@
 namespace SMW;
 
 use SMWDataItem as DataItem;
-use SMW\ExtraneousLanguage\ExtraneousLanguage;
+use SMW\Lang\Lang;
 use SMW\DataValues\TypeList;
 
 /**
@@ -27,9 +27,9 @@ class DataTypeRegistry {
 	protected static $instance = null;
 
 	/**
-	 * @var ExtraneousLanguage
+	 * @var Lang
 	 */
-	private $extraneousLanguage;
+	private $lang;
 
 	/**
 	 * Array of type labels indexed by type ids. Used for datatype resolution.
@@ -129,10 +129,10 @@ class DataTypeRegistry {
 			return self::$instance;
 		}
 
-		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
+		$lang = Localizer::getInstance()->getLang();
 
 		self::$instance = new self(
-			$extraneousLanguage
+			$lang
 		);
 
 		self::$instance->initDatatypes(
@@ -159,10 +159,10 @@ class DataTypeRegistry {
 	/**
 	 * @since 1.9.0.2
 	 *
-	 * @param ExtraneousLanguage $extraneousLanguage
+	 * @param Lang $lang
 	 */
-	public function __construct( ExtraneousLanguage $extraneousLanguage ) {
-		$this->extraneousLanguage = $extraneousLanguage;
+	public function __construct( Lang $lang ) {
+		$this->lang = $lang;
 		$this->registerLabels();
 	}
 
@@ -327,11 +327,11 @@ class DataTypeRegistry {
 			return $this->findTypeByLabel( $label );
 		}
 
-		$extraneousLanguage = $this->extraneousLanguage->fetchByLanguageCode(
+		$lang = $this->lang->fetch(
 			$languageCode
 		);
 
-		return $extraneousLanguage->findDatatypeByLabel( $label );
+		return $lang->findDatatypeByLabel( $label );
 	}
 
 	/**
@@ -549,15 +549,15 @@ class DataTypeRegistry {
 
 	private function registerLabels() {
 
-		foreach ( $this->extraneousLanguage->getDatatypeLabels() as $typeId => $typeLabel ) {
+		foreach ( $this->lang->getDatatypeLabels() as $typeId => $typeLabel ) {
 			$this->registerTypeLabel( $typeId, $typeLabel );
 		}
 
-		foreach ( $this->extraneousLanguage->getDatatypeAliases() as $typeAlias => $typeId ) {
+		foreach ( $this->lang->getDatatypeAliases() as $typeAlias => $typeId ) {
 			$this->registerDataTypeAlias( $typeId, $typeAlias );
 		}
 
-		foreach ( $this->extraneousLanguage->getCanonicalDatatypeLabels() as $label => $id ) {
+		foreach ( $this->lang->getCanonicalDatatypeLabels() as $label => $id ) {
 			$this->canonicalLabels[$id] = $label;
 		}
 	}

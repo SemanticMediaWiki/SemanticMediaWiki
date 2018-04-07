@@ -5,8 +5,8 @@
             "Markus Krötzsch"
         ]
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Seite",
         "_txt": "Text",
         "_cod": "Quellcode",
@@ -26,7 +26,7 @@
         "_keyw": "Stichwort",
         "_ref_rec": "Referenzierung"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Ganze Zahl": "_num",
         "Dezimalzahl": "_num",
@@ -35,7 +35,7 @@
         "Menge": "_qty",
         "Schlagwort": "_keyw"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Datentyp",
         "_URI": "Gleichwertige URI",
         "_SUBP": "Unterattribut von",
@@ -84,7 +84,7 @@
         "_RL_DEF": "Regeldefinition",
         "_FORMAT_RL": "Formatierungsregel"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Hat Datentyp": "_TYPE",
         "Hat erlaubten Wert": "_PVAL",
         "Hat Einheiten": "_UNIT",
@@ -113,7 +113,7 @@
         "Hat Regeldefinition": "_RL_DEF",
         "Hat Formatierungsregel": "_FORMAT_RL"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "j. F Y",
@@ -129,8 +129,8 @@
         "SMW_NS_RULE": "Regel",
         "SMW_NS_RULE_TALK": "Regel_Diskussion"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

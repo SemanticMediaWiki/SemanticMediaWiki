@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Pagina",
         "_txt": "Testo",
         "_cod": "Code",
@@ -22,7 +22,7 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Float": "_num",
         "Integer": "_num",
@@ -31,7 +31,7 @@
         "Enumerazione": "_txt",
         "Stringa": "_txt"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Ha tipo",
         "_URI": "URI equivalente",
         "_SUBP": "Sottoproprietà di",
@@ -69,10 +69,10 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Display unit": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -86,8 +86,8 @@
         "SMW_NS_CONCEPT": "Concetto",
         "SMW_NS_CONCEPT_TALK": "Discussione concetto"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

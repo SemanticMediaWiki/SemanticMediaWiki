@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\ExtraneousLanguage;
+namespace SMW\Lang;
 
 use RuntimeException;
 use Onoi\Cache\Cache;
@@ -13,7 +13,7 @@ use SMW\Utils\ErrorCodeFormatter;
  *
  * @author mwjames
  */
-class JsonLanguageContentsFileReader {
+class JsonContentsFileReader {
 
 	/**
 	 * @var array
@@ -34,11 +34,6 @@ class JsonLanguageContentsFileReader {
 	 * @var boolean
 	 */
 	private $skipCache = false;
-
-	/**
-	 * @var string
-	 */
-	private $cachePrefix = 'smw:ex:lang';
 
 	/**
 	 * @var integer
@@ -69,15 +64,6 @@ class JsonLanguageContentsFileReader {
 	 */
 	public static function clear() {
 		self::$contents = array();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $cachePrefix
-	 */
-	public function setCachePrefix( $cachePrefix ) {
-		$this->cachePrefix = $cachePrefix . $this->cachePrefix;
 	}
 
 	/**
@@ -150,7 +136,14 @@ class JsonLanguageContentsFileReader {
 			return self::$contents[$languageCode];
 		}
 
-		$cacheKey = $this->getCacheKeyFrom( $languageCode );
+		$cacheKey = smwfCacheKey(
+			'smw:lang',
+			[
+				$languageCode,
+				$this->getFileModificationTime( $languageCode ),
+				$this->ttl
+			]
+		);
 
 		if ( !$readFromFile && !$this->skipCache && !isset( self::$contents[$languageCode] ) && $this->cache->contains( $cacheKey ) ) {
 			self::$contents[$languageCode] = $this->cache->fetch( $cacheKey );
@@ -187,10 +180,6 @@ class JsonLanguageContentsFileReader {
 		}
 
 		throw new RuntimeException( "Expected a {$file} file" );
-	}
-
-	private function getCacheKeyFrom( $languageCode ) {
-		return $this->cachePrefix . ':' . $languageCode . ':' . md5( $this->ttl . $this->getFileModificationTime( $languageCode ) );
 	}
 
 }

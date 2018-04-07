@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\ExtraneousLanguage\ExtraneousLanguage;
+use SMW\Lang\Lang;
 use SMW\MediaWiki\LocalTime;
 use DateTime;
 use Language;
@@ -176,9 +176,9 @@ class Localizer {
 	 *
 	 * @param Language|string $languageCode
 	 *
-	 * @return ExtraneousLanguage
+	 * @return Lang
 	 */
-	public function getExtraneousLanguage( $language = '' ) {
+	public function getLang( $language = '' ) {
 
 		$languageCode = $language;
 
@@ -190,7 +190,7 @@ class Localizer {
 			$languageCode = $this->getContentLanguage()->getCode();
 		}
 
-		return ExtraneousLanguage::getInstance()->fetchByLanguageCode( $languageCode );
+		return Lang::getInstance()->fetch( $languageCode );
 	}
 
 	/**

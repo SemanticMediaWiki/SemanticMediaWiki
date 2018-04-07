@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Página",
         "_txt": "Texto",
         "_cod": "Código",
@@ -23,14 +23,14 @@
         "_keyw": "Palabra clave",
         "_ref_rec": "Referencia"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Número entero": "_num",
         "Número con coma": "_num",
         "Cadena de caracteres": "_txt",
         "Enumeración": "_txt"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Tiene tipo de datos",
         "_URI": "URI equivalente",
         "_SUBP": "Subpropiedad de",
@@ -80,12 +80,12 @@
         "_RL_DEF": "Definición de regla",
         "_FORMAT_RL": "Regla de formateador"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Es página nueva": "_NEWP",
         "Tiene restricción de unicidad": "_PVUC",
         "Unidad de medida": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "M Y",
         "SMW_PREC_YMD": "j M Y",
@@ -101,11 +101,11 @@
         "SMW_NS_RULE": "Regla",
         "SMW_NS_RULE_TALK": "Regla discusión"
     },
-    "namespaceAliases": {
+    "namespace.aliases": {
         "Atributo": "SMW_NS_PROPERTY",
         "Atributo_discusión": "SMW_NS_PROPERTY_TALK"
      },
-    "dateFormats": [
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

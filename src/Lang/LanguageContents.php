@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\ExtraneousLanguage;
+namespace SMW\Lang;
 
 use RuntimeException;
 
@@ -13,14 +13,14 @@ use RuntimeException;
 class LanguageContents {
 
 	/**
-	 * @var JsonLanguageContentsFileReader
+	 * @var JsonContentsFileReader
 	 */
-	private $jsonLanguageContentsFileReader;
+	private $jsonContentsFileReader;
 
 	/**
-	 * @var LanguageFallbackFinder
+	 * @var FallbackFinder
 	 */
-	private $languageFallbackFinder;
+	private $fallbackFinder;
 
 	/**
 	 * @var array
@@ -30,12 +30,12 @@ class LanguageContents {
 	/**
 	 * @since 2.5
 	 *
-	 * @param JsonLanguageContentsFileReader $jsonLanguageContentsFileReader
-	 * @param LanguageFallbackFinder $languageFallbackFinder
+	 * @param JsonContentsFileReader $jsonContentsFileReader
+	 * @param FallbackFinder $fallbackFinder
 	 */
-	public function __construct( JsonLanguageContentsFileReader $jsonLanguageContentsFileReader, LanguageFallbackFinder $languageFallbackFinder ) {
-		$this->jsonLanguageContentsFileReader = $jsonLanguageContentsFileReader;
-		$this->languageFallbackFinder = $languageFallbackFinder;
+	public function __construct( JsonContentsFileReader $jsonContentsFileReader, FallbackFinder $fallbackFinder ) {
+		$this->jsonContentsFileReader = $jsonContentsFileReader;
+		$this->fallbackFinder = $fallbackFinder;
 	}
 
 	/**
@@ -44,7 +44,7 @@ class LanguageContents {
 	 * @return string
 	 */
 	public function getCanonicalFallbackLanguageCode() {
-		return $this->languageFallbackFinder->getCanonicalFallbackLanguageCode();
+		return $this->fallbackFinder->getCanonicalFallbackLanguageCode();
 	}
 
 	/**
@@ -54,7 +54,7 @@ class LanguageContents {
 	 *
 	 * @return boolean
 	 */
-	public function has( $languageCode ) {
+	public function isLoaded( $languageCode ) {
 		return isset( $this->contents[$languageCode] ) || array_key_exists( $languageCode, $this->contents );
 	}
 
@@ -67,38 +67,38 @@ class LanguageContents {
 	 */
 	public function load( $languageCode ) {
 
-		if ( !$this->has( $languageCode ) && !$this->jsonLanguageContentsFileReader->canReadByLanguageCode( $languageCode ) ) {
-			$languageCode = $this->languageFallbackFinder->getFallbackLanguageBy( $languageCode );
+		if ( !$this->isLoaded( $languageCode ) && !$this->jsonContentsFileReader->canReadByLanguageCode( $languageCode ) ) {
+			$languageCode = $this->fallbackFinder->getFallbackLanguageBy( $languageCode );
 		}
 
-		if ( !$this->has( $languageCode ) ) {
-			$this->contents[$languageCode] = $this->jsonLanguageContentsFileReader->readByLanguageCode( $languageCode );
+		if ( !$this->isLoaded( $languageCode ) ) {
+			$this->contents[$languageCode] = $this->jsonContentsFileReader->readByLanguageCode( $languageCode );
 		}
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $languageCode
 	 * @param string $index
+	 * @param string $languageCode
 	 *
 	 * @return boolean
 	 */
-	public function hasLanguageWithIndex( $languageCode, $index ) {
+	public function has( $index, $languageCode ) {
 		return isset( $this->contents[$languageCode][$index] ) && $this->contents[$languageCode][$index] !== array();
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $languageCode
 	 * @param string $index
+	 * @param string $languageCode
 	 *
 	 * @return array|string|false
 	 */
-	public function getContentsFromLanguageById( $languageCode, $index ) {
+	public function get( $index, $languageCode ) {
 
-		if ( $this->hasLanguageWithIndex( $languageCode, $index ) ) {
+		if ( $this->has( $index, $languageCode ) ) {
 			return $this->contents[$languageCode][$index];
 		}
 
@@ -107,12 +107,12 @@ class LanguageContents {
 
 	private function getFromLanguageById( $languageCode, $index ) {
 
-		$canonicalFallbackLanguageCode = $this->languageFallbackFinder->getCanonicalFallbackLanguageCode();
+		$canonicalFallbackLanguageCode = $this->fallbackFinder->getCanonicalFallbackLanguageCode();
 
 		if ( !isset( $this->contents[$languageCode] ) || $this->contents[$languageCode] === array() ) {
 			// In case a language has no matching file
 			try {
-				$this->contents[$languageCode] = $this->jsonLanguageContentsFileReader->readByLanguageCode( $languageCode );
+				$this->contents[$languageCode] = $this->jsonContentsFileReader->readByLanguageCode( $languageCode );
 			} catch ( RuntimeException $e ) {
 				$this->contents[$languageCode] = array();
 				$languageCode = $canonicalFallbackLanguageCode;
@@ -124,7 +124,7 @@ class LanguageContents {
 		}
 
 		if ( $languageCode !== $canonicalFallbackLanguageCode ) {
-			return $this->getFromLanguageById( $this->languageFallbackFinder->getFallbackLanguageBy( $languageCode ), $index );
+			return $this->getFromLanguageById( $this->fallbackFinder->getFallbackLanguageBy( $languageCode ), $index );
 		}
 
 		return $this->getCanonicalContentsFrom( $canonicalFallbackLanguageCode, $index );
@@ -135,7 +135,7 @@ class LanguageContents {
 		// Last resort before throwing the towel, make sure we really have
 		// something when the default FallbackLanguageCode is used
 		if ( !isset( $this->contents[$languageCode][$index] ) ) {
-			$this->contents[$languageCode] = $this->jsonLanguageContentsFileReader->readByLanguageCode( $languageCode, true );
+			$this->contents[$languageCode] = $this->jsonContentsFileReader->readByLanguageCode( $languageCode, true );
 		}
 
 		if ( isset( $this->contents[$languageCode][$index] ) ) {

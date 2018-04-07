@@ -53,22 +53,22 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedKeys = array(
-			'fallbackLanguage',
-			'dataTypeLabels',
-			'dataTypeAliases',
-			'propertyLabels',
-			'propertyAliases',
-			'dateFormatsByPrecision',
+			'fallback.language',
+			'datatype.labels',
+			'datatype.aliases',
+			'property.labels',
+			'property.aliases',
+			'date.precision.rules',
 			'namespaces',
-			'namespaceAliases',
-			'dateFormats',
+			'namespace.aliases',
+			'date.format.rules',
 			'months',
 			'days'
 		);
 
 		// If the file is marked with isLanguageRedirect then only check for the fallbackLanguage
 		if ( isset( $contents['isLanguageRedirect'] ) && $contents['isLanguageRedirect'] ) {
-			return $this->assertArrayHasKey( 'fallbackLanguage', $contents, $file );
+			return $this->assertArrayHasKey( 'fallback.language', $contents, $file );
 		}
 
 		foreach ( $expectedKeys as $key ) {

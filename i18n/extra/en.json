@@ -2,8 +2,8 @@
 	"@metadata": {
 		"authors": []
 	},
-	"fallbackLanguage": false,
-	"dataTypeLabels":{
+	"fallback.language": false,
+	"datatype.labels":{
 		"_wpg": "Page",
 		"_txt": "Text",
 		"_cod": "Code",
@@ -23,7 +23,7 @@
 		"_keyw": "Keyword",
 		"_ref_rec": "Reference"
 	},
-	"dataTypeAliases":{
+	"datatype.aliases":{
 		"URL": "_uri",
 		"URI": "_uri",
 		"Page": "_wpg",
@@ -52,7 +52,7 @@
 		"Keyword": "_keyw",
 		"Reference": "_ref_rec"
 	},
-	"propertyLabels":{
+	"property.labels":{
 		"_TYPE": "Has type",
 		"_URI": "Equivalent URI",
 		"_SUBP": "Subproperty of",
@@ -102,7 +102,7 @@
 		"_RL_DEF": "Rule definition",
 		"_FORMAT_RL": "Formatter rule"
 	},
-	"propertyAliases": {
+	"property.aliases": {
 		"Display unit": "_UNIT",
 		"Display units": "_UNIT",
 		"Has type": "_TYPE",
@@ -170,7 +170,7 @@
 		"SMW_NS_RULE": "Rule",
 		"SMW_NS_RULE_TALK": "Rule_talk"
 	},
-	"namespaceAliases": {
+	"namespace.aliases": {
 		"Property": "SMW_NS_PROPERTY",
 		"Property_talk": "SMW_NS_PROPERTY_TALK",
 		"Type": "SMW_NS_TYPE",
@@ -180,14 +180,14 @@
 		"Rule": "SMW_NS_RULE",
 		"Rule_talk": "SMW_NS_RULE_TALK"
 	},
-	"dateFormatsByPrecision": {
+	"date.precision.rules": {
 		"SMW_PREC_Y": "Y",
 		"SMW_PREC_YM": "F Y",
 		"SMW_PREC_YMD": "F j, Y",
 		"SMW_PREC_YMDT": "H:i:s, j F Y",
 		"SMW_PREC_YMDTZ": "H:i:s T, j F Y"
 	},
-	"dateFormats": [
+	"date.format.rules": [
 		[
 			"SMW_Y"
 		],

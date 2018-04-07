@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Pagina",
         "_txt": "Tekst",
         "_cod": "Code",
@@ -22,14 +22,14 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Drijvende komma": "_num",
         "Integer": "_num",
         "Opsomming": "_txt",
         "String": "_txt"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Heeft type",
         "_URI": "Equivalent URI",
         "_SUBP": "Subeigenschap van",
@@ -67,14 +67,14 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Weergave-eenheid": "_UNIT",
         "Bevragingsstring": "_ASKST",
         "Bevragingsopmaak": "_ASKFO",
         "Bevragingsgrootte": "_ASKSI",
         "Bevragingsdiepgang": "_ASKDE"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -88,8 +88,8 @@
         "SMW_NS_CONCEPT": "Concept",
         "SMW_NS_CONCEPT_TALK": "Overleg_concept"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

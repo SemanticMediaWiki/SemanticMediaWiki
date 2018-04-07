@@ -3,7 +3,7 @@
 namespace SMW\Tests\System;
 
 use RuntimeException;
-use SMW\ExtraneousLanguage\ExtraneousLanguage;
+use SMW\Lang\Lang;
 
 /**
  * @group SMW
@@ -49,7 +49,7 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 
 		$class = $this->loadLanguageFileAndConstructClass( $langcode );
 
-		$baseToCompareInstance = ExtraneousLanguage::getInstance()->fetchByLanguageCode( 'en' );
+		$baseToCompareInstance = Lang::getInstance()->fetch( 'en' );
 		$targetLanguageInstance = $class;
 
 		$result = array_diff_key(
@@ -98,7 +98,7 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 	}
 
 	private function loadLanguageFileAndConstructClass( $langcode ) {
-		return ExtraneousLanguage::getInstance()->fetchByLanguageCode( $langcode );
+		return Lang::getInstance()->fetch( $langcode );
 	}
 
 	private function formatAsString( $expected ) {

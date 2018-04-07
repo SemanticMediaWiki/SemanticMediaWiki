@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "עמוד",
         "_txt": "טקסט",
         "_cod": "קוד",
@@ -22,13 +22,13 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "מזהה יחודי": "_uri",
         "שלם": "_num",
         "נקודהצפה": "_num",
         "מחרוזת": "_txt"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "מטיפוס",
         "_URI": "מזהה יחודי תואם",
         "_SUBP": "רכוש כפוף ל",
@@ -66,10 +66,10 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "יחידת הצגה": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -83,8 +83,8 @@
         "SMW_NS_CONCEPT": "רעיון",
         "SMW_NS_CONCEPT_TALK": "שיחת_רעיון"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

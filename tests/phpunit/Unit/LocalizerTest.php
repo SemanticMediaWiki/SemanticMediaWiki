@@ -227,18 +227,18 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testExtraneousLanguage() {
+	public function testLang() {
 
 		$instance = Localizer::getInstance();
 
 		$this->assertInstanceOf(
-			'\SMW\ExtraneousLanguage\ExtraneousLanguage',
-			$instance->getExtraneousLanguage()
+			'\SMW\Lang\Lang',
+			$instance->getLang()
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ExtraneousLanguage\ExtraneousLanguage',
-			$instance->getExtraneousLanguage( 'en' )
+			'\SMW\Lang\Lang',
+			$instance->getLang( 'en' )
 		);
 
 		$language = $this->getMockBuilder( '\Language' )
@@ -250,8 +250,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'en' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\ExtraneousLanguage\ExtraneousLanguage',
-			$instance->getExtraneousLanguage( $language )
+			'\SMW\Lang\Lang',
+			$instance->getLang( $language )
 		);
 	}
 

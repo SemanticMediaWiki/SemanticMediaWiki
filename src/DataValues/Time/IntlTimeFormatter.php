@@ -89,7 +89,7 @@ class IntlTimeFormatter {
 			$dateTime = Timezone::getModifiedTime( $dateTime, $timezone );
 		}
 
-		$extraneousLanguage = $localizer->getExtraneousLanguage(
+		$lang = $localizer->getLang(
 			$this->language
 		);
 
@@ -100,7 +100,7 @@ class IntlTimeFormatter {
 			$precision = SMW_PREC_YMDTZ;
 		}
 
-		$preferredDateFormatByPrecision = $extraneousLanguage->getPreferredDateFormatByPrecision(
+		$preferredDateFormatByPrecision = $lang->getPreferredDateFormatByPrecision(
 			$precision
 		);
 

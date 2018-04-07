@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\ExtraneousLanguage;
+namespace SMW\Lang;
 
 use RuntimeException;
 
@@ -10,12 +10,12 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class LanguageFallbackFinder {
+class FallbackFinder {
 
 	/**
-	 * @var JsonLanguageContentsFileReader
+	 * @var JsonContentsFileReader
 	 */
-	private $jsonLanguageContentsFileReader;
+	private $jsonContentsFileReader;
 
 	/**
 	 * @var string
@@ -30,10 +30,10 @@ class LanguageFallbackFinder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param JsonLanguageContentsFileReader $jsonLanguageContentsFileReader
+	 * @param JsonContentsFileReader $jsonContentsFileReader
 	 */
-	public function __construct( JsonLanguageContentsFileReader $jsonLanguageContentsFileReader ) {
-		$this->jsonLanguageContentsFileReader = $jsonLanguageContentsFileReader;
+	public function __construct( JsonContentsFileReader $jsonContentsFileReader ) {
+		$this->jsonContentsFileReader = $jsonContentsFileReader;
 	}
 
 	/**
@@ -67,7 +67,7 @@ class LanguageFallbackFinder {
 			return $this->fallbackLanguages[$languageCode];
 		}
 
-		$index = 'fallbackLanguage';
+		$index = 'fallback.language';
 
 		// Unknown, use the default
 		if ( $languageCode === '' ) {
@@ -75,7 +75,7 @@ class LanguageFallbackFinder {
 		}
 
 		try {
-			$contents = $this->jsonLanguageContentsFileReader->readByLanguageCode( $languageCode );
+			$contents = $this->jsonContentsFileReader->readByLanguageCode( $languageCode );
 		} catch ( RuntimeException $e ) {
 			$this->fallbackLanguages[$languageCode] = $this->canonicalFallbackLanguageCode;
 		}
