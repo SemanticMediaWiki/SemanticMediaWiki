@@ -41,6 +41,10 @@
 		{
 			"page": "Example/P0451/Q.1",
 			"contents": "{{#ask: [[Category:P0451]] |?Has date  |?Has date#LOCL#TZ |?Has date#JD=JD |format=list }}"
+		},
+		{
+			"page": "Example/P0451/9",
+			"contents": "[[Has date::2458119.500000]]"
 		}
 	],
 	"tests": [
@@ -58,6 +62,30 @@
 					"Example/P0451/6.* 25 April 2017 23:00:00.* 19:00:00 EDT, 25 April 2017.* 2457869.4583333",
 					"Example/P0451/7.* 26 April 2017 00:00:00.* 00:00:00 UTC, 26 April 2017.* 2457869.5",
 					"Example/P0451/8.* 26 April 2017 00:00:00.* 00:00:00 UTC, 26 April 2017.* 2457869.5"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (recognized as JD not as timestamp)",
+			"subject": "Example/P0451/9",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has date"
+					],
+					"propertyValues": [
+						"2018-01-01T00:00:00"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"2458119.500000"
 				]
 			}
 		}

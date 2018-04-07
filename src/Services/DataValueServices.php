@@ -29,6 +29,7 @@ use SMWQuantityValue as QuantityValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMWTimeValue as TimeValue;
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
+use SMW\DataValues\ValueParsers\TimeValueParser;
 
 /**
  * @codeCoverageIgnore
@@ -284,6 +285,21 @@ return array(
 		);
 
 		return new TimeValueFormatter();
+	},
+
+	/**
+	 * TimeValueParser
+	 *
+	 * @return callable
+	 */
+	DataValueServiceFactory::TYPE_PARSER . TimeValue::TYPE_ID => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			DataValueServiceFactory::TYPE_PARSER . TimeValue::TYPE_ID,
+			TimeValueParser::class
+		);
+
+		return new TimeValueParser();
 	},
 
 );

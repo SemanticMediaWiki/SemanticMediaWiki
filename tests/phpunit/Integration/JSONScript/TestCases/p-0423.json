@@ -40,6 +40,9 @@
 			"contents": "{{#show: Example/P0423/2 |?Has date }}"
 		},
 		{
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support `-4715-11-24T12:00:00Z\"^^xsd:dateTime` and goes '...Error: Malformed query...'"
+			},
 			"page": "Example/P0423/3",
 			"contents": "[[Has date::Jan 10000000000]]"
 		},
@@ -142,6 +145,9 @@
 			}
 		},
 		{
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1, see Example/P0423/3 comment!"
+			},
 			"type": "parser",
 			"about": "#7 avoid a possible `DateTime ... Failed to parse time ...` on large dates, only checking some minor output since WINOS reports 784354016999.5, yet Linux returns 3652426721059.5 (float precision issue)",
 			"subject": "Example/P0423/Q3.1",
