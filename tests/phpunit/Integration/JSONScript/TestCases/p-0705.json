@@ -1,10 +1,5 @@
 {
 	"description": "Test `#ask`/ NS_FILE option (`wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`, 'wgDefaultUserOptions')",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -94,5 +89,10 @@
 			"NS_MAIN": true,
 			"NS_FILE": true
 		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }

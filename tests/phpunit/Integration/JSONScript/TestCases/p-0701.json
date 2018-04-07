@@ -1,10 +1,5 @@
 {
 	"description": "Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -72,5 +67,10 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }

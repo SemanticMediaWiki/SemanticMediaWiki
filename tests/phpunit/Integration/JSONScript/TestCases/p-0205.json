@@ -1,10 +1,5 @@
 {
 	"description": "Test #set/#ask recursive annotation support (#711, #1055, recursive annotation using import-annotation=true via template)",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"namespace": "NS_TEMPLATE",
@@ -83,5 +78,10 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }

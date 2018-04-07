@@ -1,10 +1,5 @@
 {
 	"description": "Test `format=list, ul, ol` on `_qty` property (`wgContLang=en`, `SMW_DV_NUMV_USPACE`)",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -121,5 +116,10 @@
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }

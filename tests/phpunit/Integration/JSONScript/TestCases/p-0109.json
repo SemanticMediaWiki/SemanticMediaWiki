@@ -28,7 +28,7 @@
 	},
 	"meta": {
 		"version": "2",
-		"is-incomplete": true,
+		"is-incomplete": false,
 		"debug": false
 	}
 }

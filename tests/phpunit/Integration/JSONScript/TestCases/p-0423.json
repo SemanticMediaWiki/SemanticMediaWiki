@@ -1,10 +1,5 @@
 {
 	"description": "Test in-text annotation / `#ask` (#MEDIAWIKI, #LOCL) output for `_dat` datatype (#1545, `wgContLang=en`, `wgLang=ja`)",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -169,5 +164,10 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }

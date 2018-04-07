@@ -1,10 +1,5 @@
 {
 	"description": "Test `#ask` query-in-query construct (`_sobj`/`_dat`/`_num`) (`wgContLang=en`, `wgLang=en`)",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -99,5 +94,10 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }

@@ -1,10 +1,5 @@
 {
 	"description": "Test `format=template` with self reference (#988, guard against template self-reference in ask/show query)",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -120,5 +115,10 @@
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }

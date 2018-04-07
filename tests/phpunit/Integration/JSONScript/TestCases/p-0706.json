@@ -1,10 +1,5 @@
 {
 	"description": "Test `#ask` on `format=template` with message parse (`wgContLang=en`, `wgLang=en`)",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"page": "Example/P0706/1",
@@ -179,5 +174,10 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }

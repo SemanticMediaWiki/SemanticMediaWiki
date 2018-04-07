@@ -1,10 +1,5 @@
 {
 	"description": "Test `format=template` [[SMW::on/off]] regression using `named args=yes` (#1453, skip-on 1.19)",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -74,5 +69,13 @@
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
+	},
+	"meta": {
+		"skip-on": {
+			"mw-1.19.20": "<h1> contains an extra space"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }

@@ -1,10 +1,5 @@
 {
 	"description": "Test `_rec` to find correct target for redirected property (#1244, en)",
-	"meta": {
-		"version": "2",
-		"is-incomplete": true,
-		"debug": false
-	},
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -82,5 +77,10 @@
 		"smwStrictComparators": false,
 		"wgContLang": "en",
 		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
 	}
 }
