@@ -375,10 +375,8 @@ class DIProperty extends SMWDataItem {
 		$diWikiPage = new DIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$defaultType = $applicationFactory->getSettings()->get( 'smwgPDefaultType' );
-
-		$typearray = $applicationFactory->getStore()->getPropertyValues(
-			$diWikiPage,
+		$typearray = $applicationFactory->getPropertySpecificationLookup()->getSpecification(
+			$this,
 			new self( '_TYPE' )
 		);
 
@@ -393,10 +391,10 @@ class DIProperty extends SMWDataItem {
 				// is retrieved within the same run, then the error value for "has type" is
 				// cached and thus this case occurs. This is why it is important to tolerate
 				// this case -- it is not necessarily a DB error.
-				$this->propertyValueType = $defaultType;
+				$this->propertyValueType = $applicationFactory->getSettings()->get( 'smwgPDefaultType' );
 			}
 		} else { // no type given
-			$this->propertyValueType = $defaultType;
+			$this->propertyValueType = $applicationFactory->getSettings()->get( 'smwgPDefaultType' );
 		}
 
 		return $this->propertyValueType;

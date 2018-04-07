@@ -1114,6 +1114,13 @@ class SMWSql3SmwIds {
 	 *
 	 * @return string[]
 	 */
+	public function getDataItemsFromList( array $idlist, RequestOptions $requestOptions = null ) {
+		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
+	}
+
+	/**
+	 * @deprecated since 3.0, use SMWSql3SmwIds::getDataItemsFromList
+	 */
 	public function getDataItemPoolHashListFor( array $idlist, RequestOptions $requestOptions = null ) {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}

@@ -111,9 +111,13 @@ class IdEntityFinder {
 	 */
 	public function getDataItemsFromList( array $idList, RequestOptions $requestOptions = null ) {
 
-		$conditions = array(
+		if ( $idList === [] ) {
+			return [];
+		}
+
+		$conditions = [
 			'smw_id' => $idList,
-		);
+		];
 
 		if ( $requestOptions !== null ) {
 			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
@@ -125,28 +129,50 @@ class IdEntityFinder {
 
 		$rows = $connection->select(
 			\SMWSQLStore3::ID_TABLE,
-			array(
+			[
+				'smw_id',
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject'
-			),
+			],
 			$conditions,
 			__METHOD__
 		);
 
-		$resultIterator = $this->iteratorFactory->newResultIterator( $rows );
+		return $this->iteratorFactory->newMappingIterator(
+			$this->iteratorFactory->newResultIterator( $rows ),
+			[ $this, 'newDIWikiPageFromRow' ]
+		);
+	}
 
-		$mappingIterator = $this->iteratorFactory->newMappingIterator( $resultIterator, function( $row ) {
-			return HashBuilder::createFromSegments(
-				$row->smw_title,
-				$row->smw_namespace,
-				$row->smw_iw,
-				$row->smw_subobject
-			);
-		} );
+	/**
+	 * @since 3.0
+	 *
+	 * @param stdClass $row
+	 *
+	 * @return DIWikiPage
+	 */
+	public function newDIWikiPageFromRow( $row ) {
 
-		return $mappingIterator;
+		$dataItem = new DIWikiPage(
+			$row->smw_title,
+			$row->smw_namespace,
+			$row->smw_iw,
+			$row->smw_subobject
+		);
+
+		$dataItem->setId( $row->smw_id );
+
+		if ( isset( $row->smw_sortkey ) ) {
+			$dataItem->setSortKey( $row->smw_sortkey );
+		}
+
+		if ( isset( $row->smw_sort ) ) {
+			$dataItem->setOption( 'sort', $row->smw_sort );
+		}
+
+		return $dataItem;
 	}
 
 	/**
@@ -195,16 +221,8 @@ class IdEntityFinder {
 		//	$row->smw_title = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $row->smw_title ) );
 		}
 
-		$dataItem = new DIWikiPage(
-			$row->smw_title,
-			$row->smw_namespace,
-			$row->smw_iw,
-			$row->smw_subobject
-		);
-
-		$dataItem->setId( $id );
-		$dataItem->setSortKey( $row->smw_sortkey );
-		$dataItem->setOption( 'sort', $row->smw_sort );
+		$row->smw_id = $id;
+		$dataItem = $this->newDIWikiPageFromRow( $row );
 
 		$this->cache->save( $id, $dataItem );
 
