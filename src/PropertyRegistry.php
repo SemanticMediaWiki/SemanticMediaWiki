@@ -87,7 +87,7 @@ class PropertyRegistry {
 		);
 
 		self::$instance->initProperties(
-			DefaultList::getPropertyList(
+			TypesRegistry::getPropertyList(
 				$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_HIERARCHY )
 			)
 		);

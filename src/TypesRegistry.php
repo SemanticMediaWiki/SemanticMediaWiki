@@ -32,7 +32,7 @@ use SMWTimeValue as TimeValue;
  *
  * @author mwjames
  */
-class DefaultList {
+class TypesRegistry {
 
 	/**
 	 * @note All IDs must start with an underscore, two underscores indicate a
@@ -43,7 +43,7 @@ class DefaultList {
 	 *
 	 * @return array
 	 */
-	public static function getTypeList() {
+	public static function getDataTypeList() {
 		return [
 
 			// ID => [ Class, DI type, isSubDataType, isBrowsable ]

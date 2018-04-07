@@ -2,10 +2,10 @@
 
 namespace SMW\Tests;
 
-use SMW\DefaultList;
+use SMW\TypesRegistry;
 
 /**
- * @covers \SMW\DefaultList
+ * @covers \SMW\TypesRegistry
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,31 +13,13 @@ use SMW\DefaultList;
  *
  * @author mwjames
  */
-class DefaultListTest extends \PHPUnit_Framework_TestCase {
+class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 
-	public function testGetTypeList() {
+	public function testGetDataTypeList() {
 
 		$this->assertInternalType(
 			'array',
-			DefaultList::getTypeList()
-		);
-	}
-
-	/**
-	 * @dataProvider typeList
-	 */
-	public function testTypeList_FirstCharUnderscore( $key, $def ) {
-		$this->assertTrue(
-			$key{0} === '_'
-		);
-	}
-
-	/**
-	 * @dataProvider typeList
-	 */
-	public function testTypeList_ClassExists( $key, $def ) {
-		$this->assertTrue(
-			class_exists( $def[0] )
+			TypesRegistry::getDataTypeList()
 		);
 	}
 
@@ -45,17 +27,29 @@ class DefaultListTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'array',
-			DefaultList::getPropertyList()
+			TypesRegistry::getPropertyList()
 		);
+	}
+
+	/**
+	 * @dataProvider typeList
+	 */
+	public function testTypeList_FirstCharUnderscore( $key, $def ) {
+		$this->assertTrue( $key{0} === '_' );
+	}
+
+	/**
+	 * @dataProvider typeList
+	 */
+	public function testTypeList_ClassExists( $key, $def ) {
+		$this->assertTrue( class_exists( $def[0] ) );
 	}
 
 	/**
 	 * @dataProvider propertyList
 	 */
 	public function testPropertyList_FirstCharUnderscore( $key, $def ) {
-		$this->assertTrue(
-			$key{0} === '_'
-		);
+		$this->assertTrue( $key{0} === '_' );
 	}
 
 	public function typeList() {
@@ -66,7 +60,7 @@ class DefaultListTest extends \PHPUnit_Framework_TestCase {
 		// test list
 		$excludes = [ '_geo', '_gpo' ];
 
-		foreach ( DefaultList::getTypeList() as $key => $def ) {
+		foreach ( TypesRegistry::getDataTypeList() as $key => $def ) {
 
 			if ( in_array( $key, $excludes ) ) {
 				continue;
@@ -80,7 +74,7 @@ class DefaultListTest extends \PHPUnit_Framework_TestCase {
 
 		$excludes = [];
 
-		foreach ( DefaultList::getPropertyList() as $key => $def ) {
+		foreach ( TypesRegistry::getPropertyList() as $key => $def ) {
 
 			if ( in_array( $key, $excludes ) ) {
 				continue;

@@ -136,7 +136,7 @@ class DataTypeRegistry {
 		);
 
 		self::$instance->initDatatypes(
-			DefaultList::getTypeList()
+			TypesRegistry::getDataTypeList()
 		);
 
 		self::$instance->setOption(
