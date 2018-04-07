@@ -268,22 +268,25 @@ class SMWSQLStore3Writers {
 			);
 		}
 
-		if ( ( $sid = $subject->getId() ) == 0 ) {
-			// Always make an ID; this also writes sortkey and namespace data
-			$sortKey = $this->getSortKey( $subject, $data );
+		// Find an approriate sortkey, the field is influenced by various
+		// elements incl. DEFAULTSORT and can be altered without modifying
+		// any other annotation.
+		$sortKey = $this->getSortKey( $subject, $data );
 
-			$sid = $this->store->getObjectIds()->makeSMWPageID(
-				$subject->getDBkey(),
-				$subject->getNamespace(),
-				$subject->getInterwiki(),
-				$subject->getSubobjectName(),
-				true,
-				$sortKey,
-				true
-			);
+		// Always fetch an ID which is either recalled from cache or is created.
+		// Doing so ensures that the sortkey and namespace data are updated
+		// to both the DB and the cache.
+		$sid = $this->store->getObjectIds()->makeSMWPageID(
+			$subject->getDBkey(),
+			$subject->getNamespace(),
+			$subject->getInterwiki(),
+			$subject->getSubobjectName(),
+			true,
+			$sortKey,
+			true
+		);
 
-			$subject->setSortKey( $sortKey );
-		}
+		$subject->setSortKey( $sortKey );
 
 		// Find any potential duplicate entries for the current subject and
 		// if matched, mark them as to be deleted
