@@ -176,8 +176,8 @@ final class Setup {
 			die(
 				'<b>Error:</b> Semantic MediaWiki was installed and enabled but is missing an appropriate ' .
 				'<a href="https://www.semantic-mediawiki.org/wiki/Help:Upgrade">upgrade key</a>. ' .
-				'Please run MediaWiki\'s <a href="https://www.mediawiki.org/wiki/Manual:Update.php">"update.php"</a> ' .
-				'or Semantic MediaWiki\'s <a href="https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php">"setupStore.php"</a> maintenance script first.'
+				'Please run MediaWiki\'s <a href="https://www.mediawiki.org/wiki/Manual:Update.php">update.php</a> ' .
+				'or Semantic MediaWiki\'s <a href="https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php">setupStore.php</a> maintenance script first.'
 			);
 		}
 
