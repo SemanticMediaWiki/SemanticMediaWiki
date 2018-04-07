@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMWStringValue as StringValue;
+use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
 
 /**
- * @covers \SMWStringValue
+ * @covers \SMW\DataValues\StringValue
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -37,12 +37,12 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMWStringValue',
+			StringValue::class,
 			new StringValue( '_txt' )
 		);
 	}
 
-	public function testGetWikiValueForLengthOf() {
+	public function testGetLength() {
 
 		$instance = new StringValue( '_txt' );
 
@@ -60,13 +60,8 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'abcdefあいうエオ' );
 
 		$this->assertEquals(
-			'abcdefあい',
-			$instance->getWikiValueByLengthOf( 8 )
-		);
-
-		$this->assertEquals(
-			'abcdefあいうエオ',
-			$instance->getWikiValueByLengthOf( 14 )
+			11,
+			$instance->getLength()
 		);
 	}
 

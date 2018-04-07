@@ -18,7 +18,7 @@ use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMWPropertyValue as PropertyValue;
-use SMWStringValue as StringValue;
+use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;

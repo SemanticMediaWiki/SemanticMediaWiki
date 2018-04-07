@@ -7,7 +7,6 @@ use SMW\DataValues\TelephoneUriValue;
 use SMWUriValue as UriValue;
 use SMW\Encoder;
 use SMWNumberValue as NumberValue;
-use SMWStringValue as TextValue;
 
 /**
  * @license GNU GPL v2+

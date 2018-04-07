@@ -95,7 +95,7 @@ class PropertyValue extends DataValue {
 	private $inceptiveProperty;
 
 	/**
-	 * @var DIProperty
+	 * @var ValueFormatter
 	 */
 	private $valueFormatter;
 

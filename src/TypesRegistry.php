@@ -21,7 +21,7 @@ use SMW\DataValues\TypesValue;
 use SMW\DataValues\ErrorMsgTextValue;
 use SMW\DataValues\BooleanValue;
 use SMW\DataValues\PropertyValue;
-use SMWStringValue as StringValue;
+use SMW\DataValues\StringValue;
 use SMWQuantityValue as QuantityValue;
 use SMWNumberValue as NumberValue;
 use SMWTimeValue as TimeValue;
@@ -108,7 +108,7 @@ class TypesRegistry {
 			// Special concept page type
 			'__con' => [ 'SMWConceptValue', DataItem::TYPE_CONCEPT, false, false ],
 			// Special string type
-			'__sps' => [ 'SMWStringValue', DataItem::TYPE_BLOB, false, false ],
+			'__sps' => [ StringValue::class, DataItem::TYPE_BLOB, false, false ],
 			// Special uri type
 			'__spu' => [ 'SMWURIValue', DataItem::TYPE_URI, false, false ],
 			// Special subobject type
@@ -128,7 +128,7 @@ class TypesRegistry {
 			// Special error type
 			'__errt' => [ ErrorMsgTextValue::class, DataItem::TYPE_BLOB, false, false ],
 			// Sort key of a page
-			'__key' => [ 'SMWStringValue', DataItem::TYPE_BLOB, false, false ],
+			'__key' => [ StringValue::class, DataItem::TYPE_BLOB, false, false ],
 			LanguageCodeValue::TYPE_ID => [ LanguageCodeValue::class, DataItem::TYPE_BLOB, false, false ],
 			AllowsValue::TYPE_ID => [ AllowsValue::class, DataItem::TYPE_BLOB, false, false ],
 			AllowsListValue::TYPE_ID => [ AllowsListValue::class, DataItem::TYPE_BLOB, false, false ],

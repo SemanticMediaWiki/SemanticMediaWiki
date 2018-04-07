@@ -15,7 +15,7 @@ use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\DataValues\ImportValue;
 use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\Settings;
-use SMWStringValue as StringValue;
+use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;

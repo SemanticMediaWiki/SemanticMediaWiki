@@ -9,7 +9,7 @@ use SMWDataValue as DataValue;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
-use SMWStringValue as StringValue;
+use SMW\DataValues\StringValue;
 use SMWNumberValue as NumberValue;
 use SMWTimeValue as TimeValue;
 

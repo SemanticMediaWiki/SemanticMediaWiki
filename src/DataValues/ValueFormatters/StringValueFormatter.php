@@ -5,8 +5,8 @@ namespace SMW\DataValues\ValueFormatters;
 use RuntimeException;
 use SMW\Highlighter;
 use SMWDataValue as DataValue;
-use SMWStringValue as StringValue;
-use Onoi\Tesa\Normalizer;
+use SMW\DataValues\StringValue;
+use SMW\Utils\Normalizer;
 
 /**
  * @license GNU GPL v2+
@@ -30,34 +30,44 @@ class StringValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function format( $type, $linker = null ) {
+	public function format( $dataValue, $options = null ) {
 
-		if ( !$this->dataValue instanceof StringValue ) {
+		if ( !is_array( $options ) ) {
+			throw new RuntimeException( "Option is not an array!" );
+		}
+
+		// Normally we would do `list( $type, $linker ) = $options;` BUT due to
+		// PHP 7.0 ... "The order that the assignment operations are performed in has changed."
+
+		$type = $options[0];
+		$linker = isset( $options[1] ) ? $options[1] : null;
+
+		if ( !$dataValue instanceof StringValue ) {
 			throw new RuntimeException( "The formatter is missing a valid StringValue object" );
 		}
 
 		if ( $type === self::VALUE ) {
-			return $this->dataValue->isValid() ? $this->dataValue->getDataItem()->getString() : 'error';
+			return $dataValue->isValid() ? $dataValue->getDataItem()->getString() : 'error';
 		}
 
-		if ( $this->dataValue->getCaption() !== false && $type === self::WIKI_SHORT ) {
-			return $this->dataValue->getCaption();
+		if ( $dataValue->getCaption() !== false && $type === self::WIKI_SHORT ) {
+			return $dataValue->getCaption();
 		}
 
-		if ( $this->dataValue->getCaption() !== false && $type === self::HTML_SHORT ) {
-			return smwfXMLContentEncode( $this->dataValue->getCaption() );
+		if ( $dataValue->getCaption() !== false && $type === self::HTML_SHORT ) {
+			return smwfXMLContentEncode( $dataValue->getCaption() );
 		}
 
-		if ( !$this->dataValue->isValid() ) {
-			return $this->dataValue->getDataItem()->getUserValue();
+		if ( !$dataValue->isValid() ) {
+			return $dataValue->getDataItem()->getUserValue();
 		}
 
-		return $this->doFormatFinalOutputFor( $type, $linker );
+		return $this->doFormat( $dataValue, $type, $linker );
 	}
 
-	protected function doFormatFinalOutputFor( $type, $linker ) {
+	protected function doFormat( $dataValue, $type, $linker ) {
 
-		$text = $this->dataValue->getDataItem()->getString();
+		$text = $dataValue->getDataItem()->getString();
 		$length = mb_strlen( $text );
 
 		// Make a possibly shortened printout string for displaying the value.
@@ -65,7 +75,7 @@ class StringValueFormatter extends DataValueFormatter {
 		// explicitly. The result will contain mark-up that must not be escaped
 		// again.
 		$abbreviate = $type === self::WIKI_LONG || $type === self::HTML_LONG;
-		$requestedLength = intval( $this->dataValue->getOutputFormat() );
+		$requestedLength = intval( $dataValue->getOutputFormat() );
 
 		// Appease the MW parser to correctly apply formatting on the
 		// first indent
@@ -82,7 +92,11 @@ class StringValueFormatter extends DataValueFormatter {
 			$text = smwfXMLContentEncode( $text );
 		}
 
-		return $abbreviate && $length > 255 ? $this->getAbbreviatedText( $text, $length, $linker ) : $text;
+		if ( $abbreviate && $length > 255 ) {
+			$text = $this->getAbbreviatedText( $text, $length, $linker );
+		}
+
+		return $text;
 	}
 
 	private function getAbbreviatedText( $text, $length, $linker ) {

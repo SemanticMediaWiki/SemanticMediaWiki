@@ -3,7 +3,6 @@
 namespace SMW\DataValues;
 
 use SMW\Localizer;
-use SMWStringValue as StringValue;
 use SMW\Message;
 
 /**
