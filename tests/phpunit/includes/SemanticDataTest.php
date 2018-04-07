@@ -532,6 +532,15 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			42,
 			$instance->getExtensionData( 'Foo' )
 		);
+
+		$callback = function() { return 42; };
+
+		$instance->setExtensionData( 'Bar', $callback );
+
+		$this->assertEquals(
+			$callback,
+			$instance->getExtensionData( 'Bar' )
+		);
 	}
 
 	/**
