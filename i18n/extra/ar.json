@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "الصفحة",
         "_txt": "نص",
         "_cod": "كود",
@@ -22,14 +22,14 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Float": "_num",
         "Integer": "_num",
         "سلسلة": "_txt",
         "Enumeration": "_txt"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "لديه نوع",
         "_URI": "معرف الموارد الموحد معادلة",
         "_SUBP": "الخاصية الفرعية ل",
@@ -67,10 +67,10 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "عرض الوحدة": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -84,8 +84,8 @@
         "SMW_NS_CONCEPT": "مبدأ",
         "SMW_NS_CONCEPT_TALK": "نقاش_المبدأ"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

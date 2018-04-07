@@ -1,14 +1,12 @@
 <?php
 
-namespace SMW\Tests\ExtraneousLanguage;
+namespace SMW\Tests\Lang;
 
-use SMW\ExtraneousLanguage\ExtraneousLanguage;
-use SMW\ExtraneousLanguage\LanguageFileContentsReader;
-use SMW\ExtraneousLanguage\LanguageContents;
-use SMW\ExtraneousLanguage\LanguageFallbackFinder;
+use SMW\Lang\Lang;
+use SMW\Lang\LanguageContents;
 
 /**
- * @covers \SMW\ExtraneousLanguage\ExtraneousLanguage
+ * @covers \SMW\Lang\Lang
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +14,7 @@ use SMW\ExtraneousLanguage\LanguageFallbackFinder;
  *
  * @author mwjames
  */
-class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
+class LangTest extends \PHPUnit_Framework_TestCase {
 
 	private $languageContents;
 
@@ -29,23 +27,23 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tearDown() {
-		ExtraneousLanguage::clear();
+		Lang::clear();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ExtraneousLanguage::class,
-			new ExtraneousLanguage( $this->languageContents )
+			Lang::class,
+			new Lang( $this->languageContents )
 		);
 
 		$this->assertInstanceOf(
-			ExtraneousLanguage::class,
-			ExtraneousLanguage::getInstance()
+			Lang::class,
+			Lang::getInstance()
 		);
 
-		ExtraneousLanguage::clear();
+		Lang::clear();
 	}
 
 	public function testGetNamespaces() {
@@ -55,13 +53,13 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->languageContents->expects( $this->atLeastOnce() )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->with(
-				$this->anything(),
-				$this->equalTo( 'namespaces' ) )
+				$this->equalTo( 'namespaces' ),
+				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new ExtraneousLanguage(
+		$instance = new Lang(
 			$this->languageContents
 		);
 
@@ -78,13 +76,13 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->languageContents->expects( $this->atLeastOnce() )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->with(
-				$this->anything(),
-				$this->equalTo( 'namespaceAliases' ) )
+				$this->equalTo( 'namespace.aliases' ),
+				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new ExtraneousLanguage(
+		$instance = new Lang(
 			$this->languageContents
 		);
 
@@ -101,13 +99,13 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->languageContents->expects( $this->atLeastOnce() )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->with(
-				$this->anything(),
-				$this->equalTo( 'dateFormatsByPrecision' ) )
+				$this->equalTo( 'date.precision.rules' ),
+				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new ExtraneousLanguage(
+		$instance = new Lang(
 			$this->languageContents
 		);
 
@@ -124,13 +122,13 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->languageContents->expects( $this->atLeastOnce() )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->with(
-				$this->anything(),
-				$this->equalTo( 'dateFormatsByPrecision' ) )
+				$this->equalTo( 'date.precision.rules' ),
+				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new ExtraneousLanguage(
+		$instance = new Lang(
 			$this->languageContents
 		);
 
@@ -147,13 +145,13 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->languageContents->expects( $this->atLeastOnce() )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->with(
-				$this->anything(),
-				$this->equalTo( 'dataTypeLabels' ) )
+				$this->equalTo( 'datatype.labels' ),
+				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new ExtraneousLanguage(
+		$instance = new Lang(
 			$this->languageContents
 		);
 
@@ -170,10 +168,10 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->languageContents->expects( $this->atLeastOnce() )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new ExtraneousLanguage(
+		$instance = new Lang(
 			$this->languageContents
 		);
 
@@ -186,23 +184,62 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 	public function testGetPropertyIdByLabel() {
 
 		$this->languageContents->expects( $this->at( 0 ) )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->with(
-				$this->anything(),
-				$this->equalTo( 'propertyLabels' ) )
+				$this->equalTo( 'property.labels' ),
+				$this->anything() )
 			->will( $this->returnValue( array( "_FOO" => "Foo" ) ) );
 
-		$this->languageContents->expects( $this->at( 2 ) )
-			->method( 'getContentsFromLanguageById' )
-			->will( $this->returnValue( array() ) );
+		$this->languageContents->expects( $this->at( 1 )  )
+			->method( 'get' )
+			->with(
+				$this->equalTo( 'datatype.labels' ),
+				$this->anything() )
+			->will( $this->returnValue( [] ) );
 
-		$instance = new ExtraneousLanguage(
+		$this->languageContents->expects( $this->at( 2 ) )
+			->method( 'get' )
+			->will( $this->returnValue( [] ) );
+
+		$this->languageContents->expects( $this->at( 3 ) )
+			->method( 'get' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new Lang(
 			$this->languageContents
 		);
 
 		$this->assertEquals(
 			'_FOO',
 			$instance->getPropertyIdByLabel( 'Foo' )
+		);
+	}
+
+	public function testGetPropertyLabelList() {
+
+		$propertyLabels = [
+			'_Foo'  => 'Bar',
+			'_Foo2' => 'Baar',
+			'_Foo3' => 'Abc'
+		];
+
+		$this->languageContents->expects( $this->any() )
+			->method( 'get' )
+			->will( $this->onConsecutiveCalls( $propertyLabels, [], [], [] ) );
+
+		$instance = new Lang(
+			$this->languageContents
+		);
+
+		$instance->fetch( 'foo' );
+
+		$this->assertEquals(
+			[ 'label' => [
+				'Bar' => '_Foo',
+				'Baar' => '_Foo2',
+				'Abc' => '_Foo3'
+			] ],
+			$instance->getPropertyLabelList()
 		);
 	}
 
@@ -214,13 +251,13 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->languageContents->expects( $this->atLeastOnce() )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->with(
-				$this->anything(),
-				$this->equalTo( 'dateFormats' ) )
+				$this->equalTo( 'date.format.rules' ),
+				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new ExtraneousLanguage(
+		$instance = new Lang(
 			$this->languageContents
 		);
 
@@ -239,13 +276,13 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->languageContents->expects( $this->atLeastOnce() )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->with(
-				$this->anything(),
-				$this->equalTo( 'months' ) )
+				$this->equalTo( 'months' ),
+				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new ExtraneousLanguage(
+		$instance = new Lang(
 			$this->languageContents
 		);
 
@@ -264,13 +301,13 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->languageContents->expects( $this->atLeastOnce() )
-			->method( 'getContentsFromLanguageById' )
+			->method( 'get' )
 			->with(
-				$this->anything(),
-				$this->equalTo( 'months' ) )
+				$this->equalTo( 'months' ),
+				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new ExtraneousLanguage(
+		$instance = new Lang(
 			$this->languageContents
 		);
 

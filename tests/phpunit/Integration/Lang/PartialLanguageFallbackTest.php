@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Integration\ExtraneousLanguage;
+namespace SMW\Tests\Integration\Lang;
 
-use SMW\ExtraneousLanguage\LanguageFallbackFinder;
-use SMW\ExtraneousLanguage\JsonLanguageContentsFileReader;
-use SMW\ExtraneousLanguage\LanguageContents;
-use SMW\ExtraneousLanguage\ExtraneousLanguage;
+use SMW\Lang\FallbackFinder;
+use SMW\Lang\JsonContentsFileReader;
+use SMW\Lang\LanguageContents;
+use SMW\Lang\Lang;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -24,40 +24,40 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
-		JsonLanguageContentsFileReader::clear();
+		JsonContentsFileReader::clear();
 	}
 
 	protected function tearDown() {
 		$this->testEnvironment->tearDown();
-		JsonLanguageContentsFileReader::clear();
+		JsonContentsFileReader::clear();
 
 		parent::tearDown();
 	}
 
 	public function testDeclarationsLoadedPartiallyFromFallback() {
 
-		$jsonLanguageContentsFileReader = new JsonLanguageContentsFileReader(
+		$JsonContentsFileReader = new JsonContentsFileReader(
 			null,
 			__DIR__ . '/Fixtures'
 		);
 
 		$languageContents = new LanguageContents(
-			$jsonLanguageContentsFileReader,
-			new LanguageFallbackFinder( $jsonLanguageContentsFileReader )
+			$JsonContentsFileReader,
+			new FallbackFinder( $JsonContentsFileReader )
 		);
 
-		$extraneousLanguage = new ExtraneousLanguage(
+		$lang = new Lang(
 			$languageContents
 		);
 
-		$extraneousLanguage = $extraneousLanguage->fetchByLanguageCode( 'foo-partial' );
+		$lang = $lang->fetch( 'foo-partial' );
 
 		// Loaded from foo-partial.json
 		$this->assertEquals(
 			array(
 				'dataTypeLabels-partial' => 'bar'
 			),
-			$extraneousLanguage->getDatatypeLabels()
+			$lang->getDatatypeLabels()
 		);
 
 		// foo-partial.json doesn't contain a `dataTypeAliases` declaration and is
@@ -66,7 +66,7 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 			array(
 				'dataTypeAliases-fallback' => 'bar'
 			),
-			$extraneousLanguage->getDatatypeAliases()
+			$lang->getDatatypeAliases()
 		);
 	}
 

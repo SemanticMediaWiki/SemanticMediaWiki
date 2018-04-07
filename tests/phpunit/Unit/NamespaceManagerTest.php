@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use SMW\NamespaceManager;
 use SMW\Tests\TestEnvironment;
-use SMW\ExtraneousLanguage;
+use SMW\Lang;
 
 /**
  * @covers \SMW\NamespaceManager
@@ -18,25 +18,25 @@ use SMW\ExtraneousLanguage;
 class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $varsEnvironment;
-	private $extraneousLanguage;
+	private $lang;
 	private $default;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->extraneousLanguage = $this->getMockBuilder( '\SMW\ExtraneousLanguage\ExtraneousLanguage' )
+		$this->lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->extraneousLanguage->expects( $this->any() )
-			->method( 'fetchByLanguageCode' )
+		$this->lang->expects( $this->any() )
+			->method( 'fetch' )
 			->will( $this->returnSelf() );
 
-		$this->extraneousLanguage->expects( $this->any() )
+		$this->lang->expects( $this->any() )
 			->method( 'getNamespaces' )
 			->will( $this->returnValue( array() ) );
 
-		$this->extraneousLanguage->expects( $this->any() )
+		$this->lang->expects( $this->any() )
 			->method( 'getNamespaceAliases' )
 			->will( $this->returnValue( array() ) );
 
@@ -60,7 +60,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			NamespaceManager::class,
-			new NamespaceManager( $this->extraneousLanguage )
+			new NamespaceManager( $this->lang )
 		);
 	}
 
@@ -71,7 +71,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgNamespaceAliases' => ''
 		);
 
-		$instance = new NamespaceManager( $this->extraneousLanguage );
+		$instance = new NamespaceManager( $this->lang );
 		$instance->init( $vars );
 
 		$this->assertNotEmpty(
@@ -155,7 +155,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgNamespaceAliases' => ''
 		);
 
-		$instance = new NamespaceManager( $this->extraneousLanguage );
+		$instance = new NamespaceManager( $this->lang );
 		$instance->init( $vars );
 
 		$this->assertTrue(
@@ -191,7 +191,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			SMW_NS_PROPERTY => false
 		);
 
-		$instance = new NamespaceManager( $this->extraneousLanguage );
+		$instance = new NamespaceManager( $this->lang );
 		$instance->init( $vars );
 
 		$this->assertFalse(
@@ -209,19 +209,19 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInitCustomNamespace_NamespaceAliases() {
 
-		$extraneousLanguage = $this->getMockBuilder( '\SMW\ExtraneousLanguage\ExtraneousLanguage' )
+		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$extraneousLanguage->expects( $this->any() )
-			->method( 'fetchByLanguageCode' )
+		$lang->expects( $this->any() )
+			->method( 'fetch' )
 			->will( $this->returnSelf() );
 
-		$extraneousLanguage->expects( $this->any() )
+		$lang->expects( $this->any() )
 			->method( 'getNamespaces' )
 			->will( $this->returnValue( array() ) );
 
-		$extraneousLanguage->expects( $this->once() )
+		$lang->expects( $this->once() )
 			->method( 'getNamespaceAliases' )
 			->will( $this->returnValue( array( 'Foo' => SMW_NS_PROPERTY ) ) );
 
@@ -232,7 +232,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = NamespaceManager::initCustomNamespace(
 			$vars,
-			$extraneousLanguage
+			$lang
 		);
 
 		$this->assertArrayHasKey(
@@ -255,7 +255,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			)
 		) + $this->default;
 
-		$instance = new NamespaceManager( $this->extraneousLanguage );
+		$instance = new NamespaceManager( $this->lang );
 		$instance->init( $vars );
 
 		$this->assertFalse(
@@ -275,7 +275,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = $this->default;
 
-		$instance = new NamespaceManager( $this->extraneousLanguage );
+		$instance = new NamespaceManager( $this->lang );
 		$instance->init( $vars );
 
 		$this->assertEquals(

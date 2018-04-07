@@ -3,5 +3,5 @@
         "authors": []
     },
     "isLanguageRedirect": true,
-    "fallbackLanguage": "de"
+    "fallback.language": "de"
 }

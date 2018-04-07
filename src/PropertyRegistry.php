@@ -69,12 +69,12 @@ class PropertyRegistry {
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
+		$lang = Localizer::getInstance()->getLang();
 
 		$propertyAliasFinder = new PropertyAliasFinder(
 			$applicationFactory->getCache(),
-			$extraneousLanguage->getPropertyAliases(),
-			$extraneousLanguage->getCanonicalPropertyAliases()
+			$lang->getPropertyAliases(),
+			$lang->getCanonicalPropertyAliases()
 		);
 
 		$settings = $applicationFactory->getSettings();
@@ -370,12 +370,12 @@ class PropertyRegistry {
 			return $this->findPropertyIdByLabel( $label );
 		}
 
-		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
+		$lang = Localizer::getInstance()->getLang(
 			$languageCode
 		);
 
 		// Language dep. stored as aliases
-		$aliases = $extraneousLanguage->getPropertyLabels() + $extraneousLanguage->getDatatypeLabels();
+		$aliases = $lang->getPropertyLabels() + $lang->getDatatypeLabels();
 
 		if ( ( $id = array_search( $label, $aliases ) ) !== false && !isset( $this->dataTypePropertyExemptionList[$label] ) ) {
 			return $id;

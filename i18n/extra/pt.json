@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Página",
         "_txt": "Texto",
         "_cod": "Código",
@@ -22,7 +22,7 @@
         "_eid": "Identificador externo",
         "_ref_rec": "Referência"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "Entidade": "_wpg",
         "Recurso": "_wpg",
         "Ponto flutuante": "_num",
@@ -40,7 +40,7 @@
         "Cadeia": "_txt",
         "ID externo": "_eid"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Possui tipo",
         "_URI": "URI equivalente",
         "_SUBP": "Subpropriedade de",
@@ -79,7 +79,7 @@
         "_PPLB": "Rótulo preferido para a propriedade",
         "_ASKSC": "Fonte de consulta"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Exibe unidade": "_UNIT",
         "Exibe unidades": "_UNIT",
         "É do tipo": "_TYPE",
@@ -89,7 +89,7 @@
         "Tem o tipo": "_TYPE",
         "Unidade de amostra": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -104,8 +104,8 @@
         "SMW_NS_CONCEPT": "Conceito",
         "SMW_NS_CONCEPT_TALK": "Discussão_conceito"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

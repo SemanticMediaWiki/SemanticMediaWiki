@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Страница",
         "_txt": "Текст",
         "_cod": "Исходный код",
@@ -22,7 +22,7 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Целое": "_num",
         "Десятичное": "_num",
@@ -31,7 +31,7 @@
         "Строка": "_txt",
         "Телефон": "_tel"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Имеет тип",
         "_URI": "Эквивалентный URI",
         "_SUBP": "Подчиненное свойству",
@@ -69,11 +69,11 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Тип данных": "_TYPE",
         "Отображаемая единица": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -87,8 +87,8 @@
         "SMW_NS_CONCEPT": "Концепция",
         "SMW_NS_CONCEPT_TALK": "Обсуждение_концепции"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

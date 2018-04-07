@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Stránka",
         "_txt": "Text",
         "_cod": "Kód",
@@ -22,13 +22,13 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Celé číslo": "_num",
         "Desatinné číslo": "_num",
         "Reťazec": "_txt"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Má typ",
         "_URI": "Ekvivalent URI",
         "_SUBP": "Je podatribútom",
@@ -66,10 +66,10 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Zobrazovacia jednotka": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -83,8 +83,8 @@
         "SMW_NS_CONCEPT": "Concept",
         "SMW_NS_CONCEPT_TALK": "Concept_talk"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

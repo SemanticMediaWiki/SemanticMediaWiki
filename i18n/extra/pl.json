@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Strona",
         "_txt": "Tekst",
         "_cod": "Kod",
@@ -22,14 +22,14 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri",
         "Liczba zmiennoprzecinkowa": "_num",
         "Liczba całkowita": "_num",
         "Wyliczenie": "_txt",
         "Łańcuch znaków": "_txt"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Ma typ",
         "_URI": "Równoważne URI",
         "_SUBP": "Jest podwłasnością",
@@ -67,10 +67,10 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Wyświetlana jednostka": "_UNIT"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -84,8 +84,8 @@
         "SMW_NS_CONCEPT": "Pojęcie",
         "SMW_NS_CONCEPT_TALK": "Dyskusja pojęcia"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

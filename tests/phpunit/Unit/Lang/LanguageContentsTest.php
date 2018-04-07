@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\ExtraneousLanguage;
+namespace SMW\Tests\Lang;
 
-use SMW\ExtraneousLanguage\JsonLanguageContentsFileReader;
-use SMW\ExtraneousLanguage\LanguageContents;
-use SMW\ExtraneousLanguage\LanguageFallbackFinder;
+use SMW\Lang\JsonContentsFileReader;
+use SMW\Lang\LanguageContents;
+use SMW\Lang\FallbackFinder;
 
 /**
- * @covers \SMW\ExtraneousLanguage\LanguageContents
+ * @covers \SMW\Lang\LanguageContents
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -17,16 +17,16 @@ use SMW\ExtraneousLanguage\LanguageFallbackFinder;
  */
 class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 
-	private $jsonLanguageContentsFileReader;
-	private $languageFallbackFinder;
+	private $jsonContentsFileReader;
+	private $fallbackFinder;
 
 	protected function setUp() {
 
-		$this->jsonLanguageContentsFileReader = $this->getMockBuilder( JsonLanguageContentsFileReader::class )
+		$this->jsonContentsFileReader = $this->getMockBuilder( JsonContentsFileReader::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->languageFallbackFinder = $this->getMockBuilder( LanguageFallbackFinder::class )
+		$this->fallbackFinder = $this->getMockBuilder( FallbackFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -35,18 +35,18 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			LanguageContents::class,
-			new LanguageContents( $this->jsonLanguageContentsFileReader, $this->languageFallbackFinder )
+			new LanguageContents( $this->jsonContentsFileReader, $this->fallbackFinder )
 		);
 	}
 
 	public function testGetCanonicalFallbackLanguageCode() {
 
-		$this->languageFallbackFinder->expects( $this->atLeastOnce() )
+		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' );
 
 		$instance = new LanguageContents(
-			$this->jsonLanguageContentsFileReader,
-			$this->languageFallbackFinder
+			$this->jsonContentsFileReader,
+			$this->fallbackFinder
 		);
 
 		$instance->getCanonicalFallbackLanguageCode();
@@ -56,27 +56,27 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 
 		$languageCode = 'Foo';
 
-		$this->jsonLanguageContentsFileReader->expects( $this->atLeastOnce() )
+		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'canReadByLanguageCode' )
 			->will( $this->returnValue( true ) );
 
-		$this->jsonLanguageContentsFileReader->expects( $this->atLeastOnce() )
+		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'readByLanguageCode' )
 			->with( $this->equalTo( $languageCode ) );
 
 		$instance = new LanguageContents(
-			$this->jsonLanguageContentsFileReader,
-			$this->languageFallbackFinder
+			$this->jsonContentsFileReader,
+			$this->fallbackFinder
 		);
 
 		$this->assertFalse(
-			$instance->has( $languageCode )
+			$instance->isLoaded( $languageCode )
 		);
 
 		$instance->load( $languageCode );
 
 		$this->assertTrue(
-			$instance->has( $languageCode )
+			$instance->isLoaded( $languageCode )
 		);
 	}
 
@@ -85,32 +85,32 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 		$languageCode = 'Foo';
 		$fallback = 'Foobar';
 
-		$this->jsonLanguageContentsFileReader->expects( $this->at( 0 ) )
+		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
 			->method( 'readByLanguageCode' )
 			->with( $this->equalTo( $languageCode ) )
 			->will( $this->returnValue( array() ) );
 
-		$this->jsonLanguageContentsFileReader->expects( $this->at( 1 ) )
+		$this->jsonContentsFileReader->expects( $this->at( 1 ) )
 			->method( 'readByLanguageCode' )
 			->with( $this->equalTo( $fallback ) )
 			->will( $this->returnValue( array( 'Bar' => 123 ) ) );
 
-		$this->languageFallbackFinder->expects( $this->atLeastOnce() )
+		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' )
 			->will( $this->returnValue( 'en' ) );
 
-		$this->languageFallbackFinder->expects( $this->at( 1 ) )
+		$this->fallbackFinder->expects( $this->at( 1 ) )
 			->method( 'getFallbackLanguageBy' )
 			->will( $this->returnValue( $fallback ) );
 
 		$instance = new LanguageContents(
-			$this->jsonLanguageContentsFileReader,
-			$this->languageFallbackFinder
+			$this->jsonContentsFileReader,
+			$this->fallbackFinder
 		);
 
 		$this->assertEquals(
 			123,
-			$instance->getContentsFromLanguageById( $languageCode, 'Bar' )
+			$instance->get( 'Bar', $languageCode )
 		);
 	}
 
@@ -119,35 +119,35 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 		$languageCode = 'Foo';
 		$fallback = 'Foobar';
 
-		$this->jsonLanguageContentsFileReader->expects( $this->at( 0 ) )
+		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
 			->method( 'readByLanguageCode' )
 			->with( $this->equalTo( $languageCode ) )
 			->will( $this->returnValue( array() ) );
 
-		$this->jsonLanguageContentsFileReader->expects( $this->at( 1 ) )
+		$this->jsonContentsFileReader->expects( $this->at( 1 ) )
 			->method( 'readByLanguageCode' )
 			->with( $this->equalTo( $fallback ) )
 			->will( $this->returnValue( array() ) );
 
-		$this->languageFallbackFinder->expects( $this->atLeastOnce() )
+		$this->fallbackFinder->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalFallbackLanguageCode' )
 			->will( $this->returnValue( 'en' ) );
 
-		$this->languageFallbackFinder->expects( $this->at( 1 ) )
+		$this->fallbackFinder->expects( $this->at( 1 ) )
 			->method( 'getFallbackLanguageBy' )
 			->will( $this->returnValue( $fallback ) );
 
-		$this->languageFallbackFinder->expects( $this->at( 3 ) )
+		$this->fallbackFinder->expects( $this->at( 3 ) )
 			->method( 'getFallbackLanguageBy' )
 			->will( $this->returnValue( 'en' ) );
 
 		$instance = new LanguageContents(
-			$this->jsonLanguageContentsFileReader,
-			$this->languageFallbackFinder
+			$this->jsonContentsFileReader,
+			$this->fallbackFinder
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->getContentsFromLanguageById( $languageCode, 'Bar' );
+		$instance->get( 'Bar', $languageCode );
 	}
 
 }

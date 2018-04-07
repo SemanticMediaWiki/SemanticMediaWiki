@@ -1,0 +1,16 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback.language": false,
+    "datatype.labels": {},
+    "datatype.aliases": {},
+    "property.labels": {},
+    "property.aliases": {},
+    "namespaces": {},
+    "namespace.aliases": [],
+    "date.precision.rules": [],
+    "date.format.rules": [],
+    "months": [],
+    "days": []
+}

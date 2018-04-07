@@ -174,7 +174,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	public function getCaptionFromDataItem( DITime $dataItem ) {
 
 		// If the language code is empty then the content language code is used
-		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
+		$lang = Localizer::getInstance()->getLang(
 			Localizer::getInstance()->getContentLanguage()
 		);
 
@@ -192,7 +192,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $dataItem->getPrecision() >= DITime::PREC_YM ) {
-			$result = $extraneousLanguage->getMonthLabel( $dataItem->getMonth() ) . " " . $result;
+			$result = $lang->getMonthLabel( $dataItem->getMonth() ) . " " . $result;
 		}
 
 		if ( $dataItem->getPrecision() >= DITime::PREC_YMD ) {

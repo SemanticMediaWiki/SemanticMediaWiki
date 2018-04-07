@@ -111,11 +111,11 @@ class PropertyLabelFinder {
 			return $this->findPropertyLabelById( $id );
 		}
 
-		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
+		$lang = Localizer::getInstance()->getLang(
 			mb_strtolower( trim( $languageCode ) )
 		);
 
-		$labels = $extraneousLanguage->getPropertyLabels() + $extraneousLanguage->getDatatypeLabels();
+		$labels = $lang->getPropertyLabels() + $lang->getDatatypeLabels();
 
 		if ( isset( $labels[$id] ) ) {
 			return $labels[$id];

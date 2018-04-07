@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\ExtraneousLanguage;
+namespace SMW\Tests\Lang;
 
-use SMW\ExtraneousLanguage\LanguageFallbackFinder;
-use SMW\ExtraneousLanguage\jsonLanguageContentsFileReader;
+use SMW\Lang\FallbackFinder;
+use SMW\Lang\JsonContentsFileReader;
 
 /**
- * @covers \SMW\ExtraneousLanguage\LanguageFallbackFinder
+ * @covers \SMW\Lang\FallbackFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,13 +14,13 @@ use SMW\ExtraneousLanguage\jsonLanguageContentsFileReader;
  *
  * @author mwjames
  */
-class LanguageFallbackFinderTest extends \PHPUnit_Framework_TestCase {
+class FallbackFinderTest extends \PHPUnit_Framework_TestCase {
 
-	private $jsonLanguageContentsFileReader;
+	private $jsonContentsFileReader;
 
 	protected function setUp() {
 
-		$this->jsonLanguageContentsFileReader = $this->getMockBuilder( JsonLanguageContentsFileReader::class )
+		$this->jsonContentsFileReader = $this->getMockBuilder( JsonContentsFileReader::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -28,18 +28,18 @@ class LanguageFallbackFinderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			LanguageFallbackFinder::class,
-			new LanguageFallbackFinder( $this->jsonLanguageContentsFileReader )
+			FallbackFinder::class,
+			new FallbackFinder( $this->jsonContentsFileReader )
 		);
 	}
 
 	public function testGetDefaultFallbackLanguage() {
 
-		$this->jsonLanguageContentsFileReader->expects( $this->never() )
+		$this->jsonContentsFileReader->expects( $this->never() )
 			->method( 'readByLanguageCode' );
 
-		$instance = new LanguageFallbackFinder(
-			$this->jsonLanguageContentsFileReader
+		$instance = new FallbackFinder(
+			$this->jsonContentsFileReader
 		);
 
 		$this->assertEquals(
@@ -56,15 +56,15 @@ class LanguageFallbackFinderTest extends \PHPUnit_Framework_TestCase {
 	public function testgetFallbackLanguageByStatedFallback() {
 
 		$mockedContent = array(
-			'fallbackLanguage' => 'Foo'
+			'fallback.language' => 'Foo'
 		);
 
-		$this->jsonLanguageContentsFileReader->expects( $this->atLeastOnce() )
+		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'readByLanguageCode' )
 			->will( $this->returnValue( $mockedContent ) );
 
-		$instance = new LanguageFallbackFinder(
-			$this->jsonLanguageContentsFileReader
+		$instance = new FallbackFinder(
+			$this->jsonContentsFileReader
 		);
 
 		$this->assertEquals(
@@ -75,12 +75,12 @@ class LanguageFallbackFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testgetFallbackLanguageByUnknownLanguageCode() {
 
-		$this->jsonLanguageContentsFileReader->expects( $this->atLeastOnce() )
+		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'readByLanguageCode' )
 			->will( $this->throwException( new \RuntimeException ) );
 
-		$instance = new LanguageFallbackFinder(
-			$this->jsonLanguageContentsFileReader
+		$instance = new FallbackFinder(
+			$this->jsonContentsFileReader
 		);
 
 		$this->assertEquals(

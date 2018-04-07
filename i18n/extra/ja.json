@@ -2,21 +2,21 @@
 	"@metadata": {
 		"authors": []
 	},
-	"fallbackLanguage": "en",
-	"dataTypeLabels": {},
-	"dataTypeAliases": {},
-	"propertyLabels": {},
-	"propertyAliases": {},
+	"fallback.language": "en",
+	"datatype.labels": {},
+	"datatype.aliases": {},
+	"property.labels": {},
+	"property.aliases": {},
 	"namespaces": {},
-	"namespaceAliases": [],
-	"dateFormatsByPrecision": {
+	"namespace.aliases": [],
+	"date.precision.rules": {
 		"SMW_PREC_Y": "Y年",
 		"SMW_PREC_YM": "Y年n月",
 		"SMW_PREC_YMD": "Y年n月j日 (D)",
 		"SMW_PREC_YMDT": "Y年n月j日 (D) H:i:s",
 		"SMW_PREC_YMDTZ": "Y年n月j日 (D) H:i:s T"
 	},
-	"dateFormats": [
+	"date.format.rules": [
 		[
 			"SMW_Y"
 		],

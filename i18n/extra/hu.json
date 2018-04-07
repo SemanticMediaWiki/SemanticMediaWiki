@@ -2,8 +2,8 @@
     "@metadata": {
         "authors": []
     },
-    "fallbackLanguage": "en",
-    "dataTypeLabels": {
+    "fallback.language": "en",
+    "datatype.labels": {
         "_wpg": "Oldal",
         "_txt": "Szöveg",
         "_cod": "Forráskód",
@@ -22,10 +22,10 @@
         "_eid": "External identifier",
         "_ref_rec": "Reference"
     },
-    "dataTypeAliases": {
+    "datatype.aliases": {
         "URI": "_uri"
     },
-    "propertyLabels": {
+    "property.labels": {
         "_TYPE": "Típusa",
         "_URI": "Megegyező URL",
         "_SUBP": "Altulajdonsága",
@@ -63,10 +63,10 @@
         "_PEFU": "External formatter uri",
         "_ASKSC": "Query source"
     },
-    "propertyAliases": {
+    "property.aliases": {
         "Adattípusa": "_TYPE"
     },
-    "dateFormatsByPrecision": {
+    "date.precision.rules": {
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
@@ -80,8 +80,8 @@
         "SMW_NS_CONCEPT": "Koncepció",
         "SMW_NS_CONCEPT_TALK": "Koncepcióvita"
     },
-    "namespaceAliases": [],
-    "dateFormats": [
+    "namespace.aliases": [],
+    "date.format.rules": [
         [
             "SMW_Y"
         ],

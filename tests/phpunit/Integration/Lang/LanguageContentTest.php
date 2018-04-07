@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW\Tests\Integration\ExtraneousLanguage;
+namespace SMW\Tests\Integration\Lang;
 
-use SMW\ExtraneousLanguage\ExtraneousLanguage;
+use SMW\Lang\Lang;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
 class LanguageContent extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
-		ExtraneousLanguage::clear();
+		Lang::clear();
 		parent::tearDown();
 	}
 
@@ -25,11 +25,11 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetCanonicalPropertyAliases( $languageCode, $canonicalMatch, $aliasMatch, $expected ) {
 
-		$extraneousLanguage = ExtraneousLanguage::getInstance()->fetchByLanguageCode(
+		$lang = Lang::getInstance()->fetch(
 			$languageCode
 		);
 
-		$canonicalPropertyAliases = $extraneousLanguage->getCanonicalPropertyAliases();
+		$canonicalPropertyAliases = $lang->getCanonicalPropertyAliases();
 
 		$this->assertEquals(
 			$expected,
@@ -42,11 +42,11 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetPropertyAliases( $languageCode, $canonicalMatch, $aliasMatch, $expected ) {
 
-		$extraneousLanguage = ExtraneousLanguage::getInstance()->fetchByLanguageCode(
+		$lang = Lang::getInstance()->fetch(
 			$languageCode
 		);
 
-		$propertyAliases = $extraneousLanguage->getPropertyAliases();
+		$propertyAliases = $lang->getPropertyAliases();
 
 		$this->assertEquals(
 			$expected,
@@ -59,11 +59,11 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetCanonicalPropertyLabels( $languageCode, $aliasMatch, $expected ) {
 
-		$extraneousLanguage = ExtraneousLanguage::getInstance()->fetchByLanguageCode(
+		$lang = Lang::getInstance()->fetch(
 			$languageCode
 		);
 
-		$propertyLabels = $extraneousLanguage->getCanonicalPropertyLabels();
+		$propertyLabels = $lang->getCanonicalPropertyLabels();
 
 		$this->assertEquals(
 			$expected,
