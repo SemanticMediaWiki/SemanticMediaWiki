@@ -200,7 +200,39 @@ class Installer implements MessageReporter {
 			return true;
 		}
 
-		return isset( $GLOBALS['smw.json']['upgradeKey'] ) && sha1( $GLOBALS['smwgUpgradeKey'] ) === $GLOBALS['smw.json']['upgradeKey'];
+		if ( !isset( $GLOBALS['smw.json']['upgradeKey'] ) ) {
+			return false;
+		}
+
+		return self::getUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json']['upgradeKey'];
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $vars
+	 *
+	 * @return string
+	 */
+	public static function getUpgradeKey( $vars ) {
+
+		// The following settings influence the "shape" of the tables required
+		// therefore use the content to compute a key that reflects any
+		// changes to them
+
+		// Sort to ensure the key contains the same order
+		sort( $vars['smwgFixedProperties'] );
+		sort( $vars['smwgPageSpecialProperties'] );
+
+		return sha1(
+			json_encode(
+				[
+					$vars['smwgUpgradeKey'],
+					$vars['smwgFixedProperties'],
+					$vars['smwgPageSpecialProperties']
+				]
+			)
+		);
 	}
 
 	/**
@@ -211,7 +243,9 @@ class Installer implements MessageReporter {
 	 */
 	public function setUpgradeKey( File $file, $vars ) {
 
-		if ( isset( $vars['smw.json']['upgradeKey'] ) && sha1( $vars['smwgUpgradeKey'] ) === $vars['smw.json']['upgradeKey'] ) {
+		$key = $this->getUpgradeKey( $vars );
+
+		if ( isset( $vars['smw.json']['upgradeKey'] ) && $key === $vars['smw.json']['upgradeKey'] ) {
 			return false;
 		}
 
@@ -219,9 +253,7 @@ class Installer implements MessageReporter {
 			$vars['smw.json'] = [];
 		}
 
-		$vars['smw.json']['upgradeKey'] = sha1(
-			$vars['smwgUpgradeKey']
-		);
+		$vars['smw.json']['upgradeKey'] = $key;
 
 		$file->write( $vars['smwgIP'] . '/.smw.json', json_encode( $vars['smw.json'] ) );
 
