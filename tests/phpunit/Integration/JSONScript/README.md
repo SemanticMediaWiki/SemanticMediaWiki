@@ -484,13 +484,14 @@ possible to skip those cases by adding:
 {
 	"skip-on": {
 		"hhvm-*": "HHVM (or SQLite) shows opposite B1000, B9",
-		"mw-1.28<": "`numeric` collation only available with 1.28+"
+		"mediawiki": [ ">1.30.x", "MediaWiki changed ..." ],
+		"smw": [ ">2.5.x", "SMW changed ..." ]
 	}
 }
 </pre>
 
 Constraints that include `hhvm-*` will indicate to exclude all HHVM versions while
-`mw-1.28<` defines that any MW version lower than 1.28 is to be ignored.
+`>1.30.x` defines that any MW version greater than 1.30 should be ignored.
 
 It is also possible that an entire test scenario cannot be completed in a particular
 environment therefore it can be marked and skipped with:

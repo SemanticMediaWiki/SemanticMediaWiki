@@ -81,6 +81,7 @@ class JsonTestCaseFileHandler {
 
 			$versionToSkip = '';
 			$compare = '=';
+			$noop = '';
 
 			if ( is_array( $value ) ) {
 				$versionToSkip = $value[0];
@@ -89,24 +90,35 @@ class JsonTestCaseFileHandler {
 				$reason = $value;
 			}
 
-			// Allows to define { "skip-on": { "foo": [ "not", "Exclude all except foo ..."] }
+			// Suppor for { "skip-on": { "foo": [ "not", "Exclude all except foo ..." ] }
 			if ( $versionToSkip === 'not' && $identifier === $id ) {
 				continue;
 			} elseif ( $versionToSkip === 'not' && $identifier !== $id ) {
 				return true;
 			}
 
+			// Suppor for { "skip-on": { "virtuoso": "Virtuoso 6.1 ..." }
 			if ( $identifier === $id ) {
 				return true;
 			}
 
-			if ( strpos( $id, 'hhvm-' ) !== false && defined( 'HHVM_VERSION' ) ) {
-				$this->reasonToSkip = "HHVM " . HHVM_VERSION . " version is not supported ({$reason})";
-				return true;
+			// Suppor for { "skip-on": { "smw->2.5.x": "Reason is ..." }
+			// or { "skip-on": { "mw->1.30.x": "Reason is ..." }
+			if ( strpos( $id, 'mw-' ) !== false ) {
+				list( $noop, $versionToSkip ) = explode( "mw-", $id, 2 );
 			}
 
-			if ( strpos( $id, 'mw-' ) !== false ) {
-				list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+			if ( strpos( $id, 'hhvm-' ) !== false ) {
+				list( $noop, $versionToSkip ) = explode( "hhvm-", $id, 2 );
+			}
+
+			// Suppor for { "skip-on": { "mediawiki": [ ">1.29.x", "Reason is ..." ] }
+			if ( strpos( $id, 'smw' ) !== false ) {
+				$version = SMW_VERSION;
+			} elseif ( strpos( $id, 'mediawiki' ) !== false || strpos( $id, 'mw' ) !== false ) {
+				$version = $GLOBALS['wgVersion'];
+			} elseif ( strpos( $id, 'hhvm' ) !== false ) {
+				$version = defined( 'HHVM_VERSION' ) ? HHVM_VERSION : 0;
 			}
 
 			if ( $versionToSkip !== '' && ( $versionToSkip{0} === '<' || $versionToSkip{0} === '>' ) ) {
@@ -122,6 +134,11 @@ class JsonTestCaseFileHandler {
 			if ( strpos( $versionToSkip, '<' ) ) {
 				$versionToSkip = str_replace( '<', '', $versionToSkip );
 				$compare = '<';
+			}
+
+			// Skip any version as in { "skip-on": { "mediawiki": [ "*", "Reason is ..." ] }
+			if ( $versionToSkip === '*' ) {
+				return true;
 			}
 
 			if ( version_compare( $version, $versionToSkip, $compare ) ) {
