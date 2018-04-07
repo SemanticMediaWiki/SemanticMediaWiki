@@ -118,6 +118,21 @@ class LinksProcessorTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		$provider[] = array(
+			array(
+				'[[Foo::=Bar|Foobar]]',
+				'Foo',
+				'=Bar'
+			),
+			array(
+				array(
+					'Foo'
+				),
+				'=Bar',
+				false
+			)
+		);
+
 		return $provider;
 	}
 
