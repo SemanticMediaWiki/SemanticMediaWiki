@@ -51,6 +51,24 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$this->expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
 			->will( $this->returnValue( false ) );
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( [] ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );	
 	}
 
 	protected function tearDown() {
