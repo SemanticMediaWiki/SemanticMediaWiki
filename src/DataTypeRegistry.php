@@ -105,11 +105,15 @@ class DataTypeRegistry {
 		//DataItem::TYPE_ERROR => '',
 	);
 
-
 	/**
 	 * @var Closure[]
 	 */
 	private $extraneousFunctions = array();
+
+	/**
+	 * @var []
+	 */
+	private $extenstionData = [];
 
 	/**
 	 * @var Options
@@ -502,6 +506,7 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @deprecated since 3.0, use DataTypeRegistry::setExtensionData
 	 * Inject services and objects that are planned to be used during the invocation of
 	 * a DataValue
 	 *
@@ -515,6 +520,7 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @deprecated since 3.0, use DataTypeRegistry::getExtensionData
 	 * @since 2.3
 	 *
 	 * @return Closure[]
@@ -545,6 +551,51 @@ class DataTypeRegistry {
 	 */
 	public function setOption( $key, $value ) {
 		$this->getOptions()->set( $key, $value );
+	}
+
+	/**
+	 * This function allows for registered types to add additional data or functions
+	 * required by an individual DataValue of that type.
+	 *
+	 * Register the data:
+	 * $dataTypeRegistry = DataTypeRegistry::getInstance();
+	 *
+	 * $dataTypeRegistry->registerDataType( '__foo', ... );
+	 * $dataTypeRegistry->setExtensionData( '__foo', [ 'ext.function' => ... ] );
+	 * ...
+	 *
+	 * Access the data:
+	 * $dataValueFactory = DataValueFactory::getInstance();
+	 *
+	 * $dataValue = $dataValueFactory->newDataValueByType( '__foo' );
+	 * $dataValue->getExtensionData( 'ext.function' )
+	 * ...
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $id
+	 * @param array $data
+	 */
+	public function setExtensionData( $id, array $data = [] ) {
+		if ( $this->isRegistered( $id ) ) {
+			$this->extenstionData[$id] = $data;
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $id
+	 *
+	 * @return []
+	 */
+	public function getExtensionData( $id ) {
+
+		if ( isset( $this->extenstionData[$id] ) ) {
+			return $this->extenstionData[$id];
+		}
+
+		return [];
 	}
 
 	private function registerLabels() {

@@ -123,7 +123,7 @@ class Options {
 	 * @return boolean
 	 */
 	public function isFlagSet( $key, $flag ) {
-		return ( ( $this->safeGet( $key ) & $flag ) == $flag );
+		return ( ( (int)$this->safeGet( $key, 0 ) & $flag ) == $flag );
 	}
 
 	/**

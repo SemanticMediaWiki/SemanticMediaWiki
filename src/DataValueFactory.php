@@ -154,6 +154,15 @@ class DataValueFactory {
 			$this->dataTypeRegistry->getOptions()
 		);
 
+		foreach ( $this->dataTypeRegistry->getExtensionData( $typeId ) as $key => $value ) {
+
+			if ( !is_string( $key ) ) {
+				continue;
+			}
+
+			$dataValue->setExtensionData( $key, $value );
+		}
+
 		$localizer = Localizer::getInstance();
 
 		$dataValue->setOption(

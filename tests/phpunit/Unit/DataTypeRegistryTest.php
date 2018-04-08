@@ -414,6 +414,40 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function testExtensionData() {
+
+		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$lang->expects( $this->once() )
+			->method( 'getDatatypeLabels' )
+			->will( $this->returnValue( array() ) );
+
+		$lang->expects( $this->once() )
+			->method( 'getDatatypeAliases' )
+			->will( $this->returnValue( array() ) );
+
+		$lang->expects( $this->once() )
+			->method( 'getCanonicalDatatypeLabels' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new DataTypeRegistry(
+			$lang
+		);
+
+		$instance->registerDataType(
+			'__foo', '\SMW\Tests\FooValue', DataItem::TYPE_NOTYPE, 'FooValue'
+		);
+
+		$instance->setExtensionData( '__foo', [ 'ext.test' => 'test' ] );
+
+		$this->assertEquals(
+			[ 'ext.test' => 'test' ],
+			$instance->getExtensionData( '__foo' )
+		);
+	}
+
 }
 
 class FooValue {
