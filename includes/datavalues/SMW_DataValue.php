@@ -177,7 +177,15 @@ abstract class SMWDataValue {
 		$this->m_typeid = $typeid;
 	}
 
-///// Set methods /////
+	/**
+	 * Return a short string that unambiguously specify the type of this
+	 * value. This value will globally be used to identify the type of a
+	 * value (in spite of the class it actually belongs to, which can still
+	 * implement various types).
+	 */
+	public function getTypeID() {
+		return $this->m_typeid;
+	}
 
 	/**
 	 * Set the user value (and compute other representations if possible).
@@ -301,64 +309,6 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return Options|null $options
-	 */
-	public function copyOptions( Options $options = null ) {
-
-		if ( $options === null ) {
-			return;
-		}
-
-		foreach ( $options->getOptions() as $key => $value ) {
-			$this->setOption( $key, $value );
-		}
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return string $key
-	 * @param mxied $value
-	 */
-	public function setOption( $key, $value ) {
-
-		if ( $this->options === null ) {
-			$this->options = new Options();
-		}
-
-		$this->options->set( $key, $value );
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @param string $key
-	 *
-	 * @return mixed|false
-	 */
-	public function getOption( $key, $default = false ) {
-
-		if ( $this->options !== null && $this->options->has( $key ) ) {
-			return $this->options->get( $key );
-		}
-
-		return $default;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @param integer $feature
-	 *
-	 * @return boolean
-	 */
-	public function isEnabledFeature( $feature ) {
-		return ( (int)$this->getOption( 'smwgDVFeatures' ) & $feature ) != 0;
-	}
-
-	/**
 	 * Change the caption (the text used for displaying this datavalue). The given
 	 * value must be a string.
 	 *
@@ -457,43 +407,41 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * Return a string that displays all error messages as a tooltip, or
+	 * an empty string if no errors happened.
+	 *
+	 * @return string
+	 */
+	public function getErrorText() {
+		return smwfEncodeMessages( $this->mErrors );
+	}
+
+	/**
+	 * Return an array of error messages, or an empty array
+	 * if no errors occurred.
+	 *
+	 * @return array
+	 */
+	public function getErrors() {
+		return $this->mErrors;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array|false
+	 */
+	public function getRestrictionError() {
+		return $this->restrictionError;
+	}
+
+	/**
 	 * @since 2.4
 	 */
 	public function clearErrors() {
 		$this->mErrors = array();
 		$this->mHasErrors = false;
 	}
-
-///// Abstract processing methods /////
-
-	/**
-	 * Initialise the datavalue from the given value string.
-	 * The format of this strings might be any acceptable user input
-	 * and especially includes the output of getWikiValue().
-	 *
-	 * @param string $value
-	 */
-	abstract protected function parseUserValue( $value );
-
-	/**
-	 * Set the actual data contained in this object. The method returns
-	 * true if this was successful (requiring the type of the dataitem
-	 * to match the data value). If false is returned, the data value is
-	 * left unchanged (the data item was rejected).
-	 *
-	 * @note Even if this function returns true, the data value object
-	 * might become invalid if the content of the data item caused errors
-	 * in spite of it being of the right basic type. False is only returned
-	 * if the data item is fundamentally incompatible with the data value.
-	 *
-	 * @since 1.6
-	 *
-	 * @param SMWDataItem $dataItem
-	 *
-	 * @return boolean
-	 */
-	abstract protected function loadDataItem( SMWDataItem $dataItem );
-
 
 ///// Query support /////
 
@@ -615,6 +563,14 @@ abstract class SMWDataValue {
 	abstract public function getLongHTMLText( $linker = null );
 
 	/**
+	 * Return the plain wiki version of the value, or
+	 * FALSE if no such version is available. The returned
+	 * string suffices to reobtain the same DataValue
+	 * when passing it as an input string to setUserValue().
+	 */
+	abstract public function getWikiValue();
+
+	/**
 	 * Returns a short textual representation for this data value. If the value
 	 * was initialised from a user supplied string, then this original string
 	 * should be reflected in this short version (i.e. no normalisation should
@@ -681,24 +637,6 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Return the plain wiki version of the value, or
-	 * FALSE if no such version is available. The returned
-	 * string suffices to reobtain the same DataValue
-	 * when passing it as an input string to setUserValue().
-	 */
-	abstract public function getWikiValue();
-
-	/**
-	 * Return a short string that unambiguously specify the type of this
-	 * value. This value will globally be used to identify the type of a
-	 * value (in spite of the class it actually belongs to, which can still
-	 * implement various types).
-	 */
-	public function getTypeID() {
-		return $this->m_typeid;
-	}
-
-	/**
 	 * Return an array of SMWLink objects that provide additional resources
 	 * for the given value. Captions can contain some HTML markup which is
 	 * admissible for wiki text, but no more. Result might have no entries
@@ -715,15 +653,6 @@ abstract class SMWDataValue {
 		);
 
 		return $this->infoLinksProvider->createInfoLinks();
-	}
-
-	/**
-	 * Overwritten by callers to supply an array of parameters that can be used for
-	 * creating servicelinks. The number and content of values in the parameter array
-	 * may vary, depending on the concrete datatype.
-	 */
-	protected function getServiceLinkParams() {
-		return false;
 	}
 
 	/**
@@ -801,32 +730,138 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Return a string that displays all error messages as a tooltip, or
-	 * an empty string if no errors happened.
+	 * @since 3.0
 	 *
-	 * @return string
+	 * @param string $key
+	 * @param mixed $data
 	 */
-	public function getErrorText() {
-		return smwfEncodeMessages( $this->mErrors );
-	}
-
-	/**
-	 * Return an array of error messages, or an empty array
-	 * if no errors occurred.
-	 *
-	 * @return array
-	 */
-	public function getErrors() {
-		return $this->mErrors;
+	public function setExtensionData( $key, $data ) {
+		$this->extenstionData[$key] = $data;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return array|false
+	 * @param string $key
+	 *
+	 * @return mixed
 	 */
-	public function getRestrictionError() {
-		return $this->restrictionError;
+	public function getExtensionData( $key ) {
+
+		if ( isset( $this->extenstionData[$key] ) ) {
+			return $this->extenstionData[$key];
+		}
+
+		return null;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return Options|null $options
+	 */
+	public function copyOptions( Options $options = null ) {
+
+		if ( $options === null ) {
+			return;
+		}
+
+		foreach ( $options->getOptions() as $key => $value ) {
+			$this->setOption( $key, $value );
+		}
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return string $key
+	 * @param mxied $value
+	 */
+	public function setOption( $key, $value ) {
+
+		if ( $this->options === null ) {
+			$this->options = new Options();
+		}
+
+		$this->options->set( $key, $value );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed|false
+	 */
+	public function getOption( $key, $default = false ) {
+
+		if ( $this->options !== null && $this->options->has( $key ) ) {
+			return $this->options->get( $key );
+		}
+
+		return $default;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param integer $feature
+	 *
+	 * @return boolean
+	 */
+	public function isEnabledFeature( $feature ) {
+
+		if ( $this->options !== null ) {
+			return $this->options->isFlagSet( 'smwgDVFeatures', (int)$feature );
+		}
+
+		return false;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return Options
+	 */
+	protected function getOptions() {
+		return $this->options;
+	}
+
+	/**
+	 * Initialise the datavalue from the given value string.
+	 * The format of this strings might be any acceptable user input
+	 * and especially includes the output of getWikiValue().
+	 *
+	 * @param string $value
+	 */
+	abstract protected function parseUserValue( $value );
+
+	/**
+	 * Set the actual data contained in this object. The method returns
+	 * true if this was successful (requiring the type of the dataitem
+	 * to match the data value). If false is returned, the data value is
+	 * left unchanged (the data item was rejected).
+	 *
+	 * @note Even if this function returns true, the data value object
+	 * might become invalid if the content of the data item caused errors
+	 * in spite of it being of the right basic type. False is only returned
+	 * if the data item is fundamentally incompatible with the data value.
+	 *
+	 * @since 1.6
+	 *
+	 * @param SMWDataItem $dataItem
+	 *
+	 * @return boolean
+	 */
+	abstract protected function loadDataItem( SMWDataItem $dataItem );
+
+	/**
+	 * Overwritten by callers to supply an array of parameters that can be used for
+	 * creating servicelinks. The number and content of values in the parameter array
+	 * may vary, depending on the concrete datatype.
+	 */
+	protected function getServiceLinkParams() {
+		return false;
 	}
 
 	/**
@@ -840,15 +875,6 @@ abstract class SMWDataValue {
 		}
 
 		$this->dataValueServiceFactory->getConstraintValueValidator()->validate( $this );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return Options
-	 */
-	protected function getOptions() {
-		return $this->options;
 	}
 
 }
