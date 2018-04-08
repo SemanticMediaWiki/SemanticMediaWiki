@@ -50,4 +50,23 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testExcerpt() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getFragment' )
+			->will( $this->returnValue( '' ) );
+
+		$instance = SearchResult::newFromTitle( $title );
+		$instance->setExcerpt( 'Foo ...' );
+
+		$this->assertEquals(
+			'Foo ...',
+			$instance->getExcerpt()
+		);
+	}
+
 }

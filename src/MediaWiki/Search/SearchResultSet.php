@@ -14,12 +14,27 @@ use SMW\DIWikiPage;
  */
 class SearchResultSet extends \SearchResultSet {
 
+	/**
+	 * @var DIWikiPage[]|[]
+	 */
 	private $pages;
+
+	/**
+	 * @var QueryToken
+	 */
+	private $queryToken;
+
+	/**
+	 * @var Excerpts
+	 */
+	private $excerpts;
+
 	private $count = null;
 
 	public function __construct( \SMWQueryResult $result, $count = null ) {
-
 		$this->pages = $result->getResults();
+		$this->queryToken = $result->getQuery()->getQueryToken();
+		$this->excerpts = $result->getExcerpts();
 		$this->count = $count;
 	}
 
@@ -48,15 +63,24 @@ class SearchResultSet extends \SearchResultSet {
 	 */
 	public function next() {
 
-		$res = current( $this->pages );
+		$page = current( $this->pages );
+		$searchResult = false;
 
-		if ( $res instanceof DIWikiPage ) {
-			$res = SearchResult::newFromTitle( $res->getTitle() );
+		if ( $page instanceof DIWikiPage ) {
+			$searchResult = SearchResult::newFromTitle( $page->getTitle() );
+
+			// Uses the standard Search back-end excerpt retrieval
+			$searchResult->setExcerpt( null );
+		}
+
+		// Attempt to use excerpts available from a different back-end
+		if ( $this->excerpts !== null && ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) ) {
+			$searchResult->setExcerpt( $excerpt );
 		}
 
 		next( $this->pages );
 
-		return $res;
+		return $searchResult;
 	}
 
 	/**
@@ -87,6 +111,10 @@ class SearchResultSet extends \SearchResultSet {
 	 */
 	public function termMatches() {
 
+		if ( ( $tokens = $this->getTokens() ) !== [] ) {
+			return $tokens;
+		}
+
 		if ( method_exists( '\SearchHighlighter', 'highlightNone' ) ) {
 			return array();
 		}
@@ -94,4 +122,23 @@ class SearchResultSet extends \SearchResultSet {
 		// Will cause the highlighter to match every line start, thus returning the first few lines of found pages.
 		return array( '^' );
 	}
+
+	private function getTokens() {
+
+		$tokens = [];
+
+		if ( $this->queryToken === null ) {
+			return $tokens;
+		}
+
+		// Use tokens gathered from a query context [[in:Foo]] (~~*Foo*), a filter context
+		// such as [[Category:Foo]] is not considered eligible to provide a
+		// token.
+		foreach ( $this->queryToken->getTokens() as $key => $value ) {
+			$tokens[] = "\b$key\b";
+		}
+
+		return $tokens;
+	}
+
 }
