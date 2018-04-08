@@ -14,7 +14,9 @@ Highlights for this release include ... (#2065)
 
 ## Upgrading
 
-This release requires to run the `setupStore.php` or `update.php` script. (#2065, #2461, #2499)
+Even though Semantic MediaWiki now supports the `extension.json` registration approach (#1732), `enableSemantics` remains the sole point of activiation for SMW itself to ensure that data and objects are prepared in advanced and users don't have to modify any existing settings in their `LocalSettings.php`.
+
+This release requires (#2065, #2461, #2499) to run the `setupStore.php` or `update.php` script and a missing upgrade process will redirect users to an [error message](https://www.semantic-mediawiki.org/wiki/Help:Upgrade) to remind him or her of a required action.
 
 After the upgrade, please check the "Deprecation notices" section in `Special:SemanticMediaWiki` to adapt and modify listed deprecated settings.
 
@@ -26,6 +28,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 ## New features and enhancements
 
 * [#794](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/794) Added `SMW_PARSER_UNSTRIP` to [$smwgParserFeatures](https://www.semantic-mediawiki.org/wiki/Help:$smwgParserFeatures) enabling to use unstripped content on a text annotation
+* [#1732](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1732)
 * [#2065](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2065) Added entity specific collation support with help of the [`$smwgEntityCollation`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation) setting
 * [#2348](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2348) Allow showing annotations even if they are improper for datatype "Text"
 * [#2398](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2398) Added `#ask` and `#show` parser function support for `@deferred` output mode
@@ -92,7 +95,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2933](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2933) Added [`$smwgDefaultLoggerRole`](https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultLoggerRole) setting to define logging granularity for Semantic MediaWiki
 * [#2953](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2953) Added support for natural sort (`n-asc`, `n-desc`) of printout column values
 * [#2973](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2973)
-* [#3006](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3006) Disabled autocomplete on `[[...` in Special:Search for `SMWSearch` type
+* [#3006](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3006) Disabled autocomplete on `[[...` in Special:Search for the `SMWSearch` type
 * [#3009](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3009) Added `#tick` and `#num` output formatter to boolean value type
 * [#3011](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3011) Added the [`$smwgDefaultOutputFormatters`](https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultOutputFormatters) setting to declare default output formatter for a type or property
 * [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) Added the [`$smwgCompactLinkSupport`](https://www.semantic-mediawiki.org/wiki/Help:$smwgCompactLinkSupport) setting to compact links produced by `Special:Ask` and `Special:Browse`
@@ -103,6 +106,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3052](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3052)
 * [#3080](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3080)
 * [#3088](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3088)
+* [#3095](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3095)
+* [#3096](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3096)
 
 ## Bug fixes
 
@@ -114,6 +119,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2767](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2767)
 * [#2773](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2773)
 * [#2817](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2817)
+* [#2871](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2871)
 * [#2881](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2881)
 * [#2884](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2884)
 * [#2896](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2896)
@@ -134,6 +140,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3049](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3049)
 * [#3067](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3067)
 * [#3076](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3076)
+* [#3107](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3107)
+
 
 ## Breaking changes and deprecations
 
