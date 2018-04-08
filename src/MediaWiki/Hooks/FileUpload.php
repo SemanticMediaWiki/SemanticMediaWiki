@@ -78,8 +78,11 @@ class FileUpload extends HookHandler {
 
 		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
+		$semanticData = $parserData->getSemanticData();
+		$semanticData->setOption( 'is.fileupload', true );
+
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
-			$parserData->getSemanticData()
+			$semanticData
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
@@ -90,7 +93,7 @@ class FileUpload extends HookHandler {
 		$propertyAnnotator->addAnnotation();
 
 		// 2.4+
-		Hooks::run( 'SMW::FileUpload::BeforeUpdate', array( $filePage, $parserData->getSemanticData() ) );
+		Hooks::run( 'SMW::FileUpload::BeforeUpdate', [ $filePage, $semanticData ] );
 
 		$parserData->setOrigin( 'FileUpload' );
 

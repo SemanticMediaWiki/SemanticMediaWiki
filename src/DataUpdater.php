@@ -249,6 +249,11 @@ class DataUpdater {
 			$user
 		);
 
+		$this->semanticData->setExtensionData(
+			'native.data',
+			$pageInfoProvider->getNativeData()
+		);
+
 		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(

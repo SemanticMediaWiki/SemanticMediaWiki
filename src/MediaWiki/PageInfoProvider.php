@@ -113,6 +113,11 @@ class PageInfoProvider implements PageInfo {
 	 * @return text
 	 */
 	public function getNativeData() {
+
+		if ( $this->wikiPage->getContent() === null ) {
+			return '';
+		}
+
 		return $this->wikiPage->getContent()->getNativeData();
 	}
 
@@ -122,7 +127,12 @@ class PageInfoProvider implements PageInfo {
 	 * @return string|null
 	 */
 	public function getMediaType() {
-		return $this->isFilePage() ? $this->wikiPage->getFile()->getMediaType() : null;
+
+		if ( $this->isFilePage() === false ) {
+			return null;
+		}
+
+		return $this->wikiPage->getFile()->getMediaType();
 	}
 
 	/**
@@ -131,7 +141,12 @@ class PageInfoProvider implements PageInfo {
 	 * @return string|null
 	 */
 	public function getMimeType() {
-		return $this->isFilePage() ? $this->wikiPage->getFile()->getMimeType() : null;
+
+		if ( $this->isFilePage() === false ) {
+			return null;
+		}
+
+		return $this->wikiPage->getFile()->getMimeType();
 	}
 
 }

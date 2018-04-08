@@ -288,6 +288,24 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testWikiPage_NativeData_Null() {
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getContent' )
+			->will( $this->returnValue( null ) );
+
+		$instance = new PageInfoProvider( $wikiPage );
+
+		$this->assertEquals(
+			'',
+			$instance->getNativeData()
+		);
+	}
+
 	public function uploadStatusWikiFilePageDataProvider() {
 
 		$provider = array(
