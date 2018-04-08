@@ -118,7 +118,6 @@ class SetupStore extends \Maintenance {
 		$this->loadGlobalFunctions();
 		$store = $this->getStore();
 
-
 		$connectionManager = new ConnectionManager();
 
 		// #2963 Use the DB handler from the Maintenance script which may access
@@ -145,6 +144,9 @@ class SetupStore extends \Maintenance {
 		} else {
 			$store->setup();
 		}
+
+		// Avoid holding a reference
+		StoreFactory::clear();
 	}
 
 	protected function getMessageReporter() {
