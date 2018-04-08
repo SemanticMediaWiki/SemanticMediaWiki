@@ -3,6 +3,7 @@
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
+use SMW\Query\ScoreSet;
 use SMW\Query\Result\InMemoryEntityProcessList;
 use SMW\SerializerFactory;
 
@@ -81,6 +82,11 @@ class SMWQueryResult {
 	private $serializer_version = 2;
 
 	/**
+	 * @var ScoreSet
+	 */
+	private $scoreSet;
+
+	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
 	 *
@@ -118,6 +124,26 @@ class SMWQueryResult {
 	 */
 	public function setFromCache( $isFromCache ) {
 		$this->isFromCache = (bool)$isFromCache;
+	}
+
+	/**
+	 * Only available by some stores that support the computation of scores.
+	 *
+	 * @since 3.0
+	 *
+	 * @param ScoreSet $scoreSet
+	 */
+	public function setScoreSet( ScoreSet $scoreSet ) {
+		$this->scoreSet = $scoreSet;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ScoreSet|null
+	 */
+	public function getScoreSet() {
+		return $this->scoreSet;
 	}
 
 	/**
