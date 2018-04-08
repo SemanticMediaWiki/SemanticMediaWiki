@@ -1,0 +1,61 @@
+{
+	"description": "Test `#ask` NS_FILE and DISPLAYTITLE (`wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`, 'wgDefaultUserOptions', `wgRestrictDisplayTitle`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_FILE",
+			"page": "P0708-text-file.txt",
+			"contents": {
+				"upload": {
+					"file" : "/../Fixtures/file-upload.txt",
+					"text" : "[[File type::txt]] {{DISPLAYTITLE:DIFFERENT TITLE}}"
+				}
+			}
+		},
+		{
+			"page": "Example/P0708/Q.1",
+			"contents": "{{#ask: [[File type::txt]] |format=table |limit=1 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (using DISPLAYTITLE)",
+			"subject": "Example/P0708/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\".*:P0708-text-file.txt\" title=\"File:P0708-text-file.txt\">DIFFERENT TITLE</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgRestrictDisplayTitle": false,
+		"wgEnableUploads": true,
+		"wgFileExtensions": [
+			"png",
+			"txt"
+		],
+		"wgDefaultUserOptions": {
+			"thumbsize": 5
+		},
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_FILE": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

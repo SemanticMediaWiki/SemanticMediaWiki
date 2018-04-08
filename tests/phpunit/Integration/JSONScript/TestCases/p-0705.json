@@ -12,7 +12,7 @@
 			"contents": {
 				"upload": {
 					"file" : "/../Fixtures/image-upload-480.png",
-					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::123]]"
+					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::123]] {{#subobject:Test|Has text=Foo}}"
 				}
 			}
 		},
@@ -23,6 +23,10 @@
 		{
 			"page": "Example/P0705/Q.2",
 			"contents": "{{#ask: [[Has file::+]] |?Has file#120px;thumb;<b>{{#show: File:P0705.png |?Has caption |link=none}}</b>[[Extra]] |format=table |limit=1 }}"
+		},
+		{
+			"page": "Example/P0705/Q.3",
+			"contents": "{{#ask: [[File:+]] }}"
 		}
 	],
 	"tests": [
@@ -53,6 +57,17 @@
 					"class=\"thumb tright\"",
 					"<div class=\"thumbcaption\"><div class=\"magnify\">",
 					"Extra"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (subobject is displayed as normal link and not with an image reference)",
+			"subject": "Example/P0705/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-subobject-entity\"><a href=.*P0705.png#Test\" title=.*P0705.png\">P0705.png#Test</a></span>",
+					"<a href=.*P0705.png\" class=\"image\"><img alt=\"P0705.png\" .*class=\"thumbborder\" .*</a>"
 				]
 			}
 		}
