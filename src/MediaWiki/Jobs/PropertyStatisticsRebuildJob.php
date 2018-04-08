@@ -40,8 +40,12 @@ class PropertyStatisticsRebuildJob extends JobBase {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 
+		// Use a fixed store to avoid issues like "Call to undefined method
+		// SMW\SPARQLStore\SPARQLStore::getDataItemHandlerForDIType" because
+		// the property statistics table and hereby its update is bound to
+		// the SQLStore
 		$propertyStatisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
-			$applicationFactory->getStore()
+			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' )
 		);
 
 		$propertyStatisticsRebuilder->rebuild();
