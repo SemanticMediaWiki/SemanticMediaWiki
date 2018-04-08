@@ -2,8 +2,6 @@
 
 namespace SMW\DataValues;
 
-use SMWStringValue as StringValue;
-
 /**
  * @private
  *

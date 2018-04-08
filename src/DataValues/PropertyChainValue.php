@@ -2,7 +2,6 @@
 
 namespace SMW\DataValues;
 
-use SMWStringValue as StringValue;
 use SMWDIBlob as DIBlob;
 use SMWDataItem as DataItem;
 use SMW\DataValueFactory;

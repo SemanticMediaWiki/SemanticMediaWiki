@@ -19,7 +19,7 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueFormatters\CodeStringValueFormatter',
+			CodeStringValueFormatter::class,
 			new CodeStringValueFormatter()
 		);
 	}
@@ -32,11 +32,11 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$codeStringValue = DataValueFactory::getInstance()->newDataValueByType( '_cod' );
 		$codeStringValue->setUserValue( $userValue );
 
-		$instance = new CodeStringValueFormatter( $codeStringValue );
+		$instance = new CodeStringValueFormatter();
 
 		$this->assertEquals(
 			$expected,
-			$instance->format( $type, $linker )
+			$instance->format( $codeStringValue, [ $type, $linker ] )
 		);
 	}
 

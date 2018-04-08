@@ -23,12 +23,12 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	}
 
 	/**
-	 * @see StringValueFormatter::doFormatFinalOutputFor
+	 * @see StringValueFormatter::doFormat
 	 */
-	protected function doFormatFinalOutputFor( $type, $linker ) {
+	protected function doFormat( $dataValue, $type, $linker ) {
 
 		$abbreviate = $type === self::WIKI_LONG || $type === self::HTML_LONG;
-		$text = $this->dataValue->getDataItem()->getString();
+		$text = $dataValue->getDataItem()->getString();
 
 		// Escape and wrap values of type Code. The result is escaped to be
 		// HTML-safe (it will also work in wiki context). The result will

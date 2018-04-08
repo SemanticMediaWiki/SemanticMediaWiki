@@ -13,7 +13,7 @@ use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
-use SMWStringValue as StringValue;
+use SMW\DataValues\StringValue;
 
 /**
  * @license GNU GPL v2+
@@ -284,7 +284,7 @@ class PageBuilder {
 				$res = clone $result[0];
 				$res->setOutputFormat( '' );
 
-				$value = $res instanceof StringValue ? $res->getWikiValueByLengthOf( 72 ) : $res->getWikiValue();
+				$value = $res instanceof StringValue && $res->getLength() < 72 ? $res->getWikiValue() : mb_substr( $res->getWikiValue(), 0, 72 );
 
 				$listitem .= '&#160;&#160;' . Infolink::newPropertySearchLink(
 					'+',

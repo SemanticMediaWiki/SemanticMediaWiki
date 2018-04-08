@@ -3,7 +3,7 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
-use SMWStringValue as StringValue;
+use SMW\DataValues\StringValue;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\StringValueFormatter
@@ -19,14 +19,14 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueFormatters\StringValueFormatter',
+			StringValueFormatter::class,
 			new StringValueFormatter()
 		);
 	}
 
 	public function testIsFormatterForValidation() {
 
-		$stringValue = $this->getMockBuilder( '\SMWStringValue' )
+		$stringValue = $this->getMockBuilder( '\SMW\DataValues\StringValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,16 +42,16 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$stringValue = new StringValue( '_txt' );
 		$stringValue->setCaption( 'ABC[<>]' );
 
-		$instance = new StringValueFormatter( $stringValue );
+		$instance = new StringValueFormatter();
 
 		$this->assertEquals(
 			'ABC[<>]',
-			$instance->format( StringValueFormatter::WIKI_SHORT )
+			$instance->format( $stringValue, [ StringValueFormatter::WIKI_SHORT ] )
 		);
 
 		$this->assertEquals(
 			'ABC[&lt;&gt;]',
-			$instance->format( StringValueFormatter::HTML_SHORT )
+			$instance->format( $stringValue, [ StringValueFormatter::HTML_SHORT ] )
 		);
 	}
 
@@ -63,11 +63,11 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$stringValue = new StringValue( '_txt' );
 		$stringValue->setUserValue( $stringUserValue );
 
-		$instance = new StringValueFormatter( $stringValue );
+		$instance = new StringValueFormatter();
 
 		$this->assertEquals(
 			$expected,
-			$instance->format( $type, $linker )
+			$instance->format( $stringValue, [ $type, $linker ] )
 		);
 	}
 
@@ -84,16 +84,16 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$stringValue->setUserValue( $text );
 		$stringValue->setOutputFormat( 40 );
 
-		$instance = new StringValueFormatter( $stringValue );
+		$instance = new StringValueFormatter();
 
 		$this->assertEquals(
 			$expected,
-			$instance->format( StringValueFormatter::HTML_LONG )
+			$instance->format(  $stringValue, [ StringValueFormatter::HTML_LONG ] )
 		);
 
 		$this->assertEquals(
 			$expected,
-			$instance->format( StringValueFormatter::WIKI_SHORT )
+			$instance->format(  $stringValue, [ StringValueFormatter::WIKI_SHORT ] )
 		);
 	}
 

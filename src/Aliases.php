@@ -19,6 +19,7 @@ class_alias( \SMW\SQLStore\ChangeOp\ChangeOp::class, 'SMW\SQLStore\CompositeProp
 class_alias( \SMW\Connection\ConnectionProvider::class, 'SMW\DBConnectionProvider' );
 class_alias( \SMW\DataValues\TypesValue::class, 'SMWTypesValue' );
 class_alias( \SMW\DataValues\PropertyValue::class, 'SMWPropertyValue' );
+class_alias( \SMW\DataValues\StringValue::class, 'SMWStringValue' );
 
 // 1.9.
 class_alias( \SMW\Store::class, 'SMWStore' );

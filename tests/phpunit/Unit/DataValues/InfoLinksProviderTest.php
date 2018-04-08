@@ -8,7 +8,7 @@ use SMW\DataValues\InfoLinksProvider;
 use SMW\Message;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
-use SMWStringValue as StringValue;
+use SMW\DataValues\StringValue;
 use SMWTimeValue as TimeValue;
 
 /**

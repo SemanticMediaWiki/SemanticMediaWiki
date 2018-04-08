@@ -2,7 +2,6 @@
 
 namespace SMW\DataValues;
 
-use SMWStringValue as StringValue;
 use SMWInfolink as Infolink;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
