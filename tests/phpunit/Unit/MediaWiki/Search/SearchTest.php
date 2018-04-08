@@ -181,9 +181,17 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQuery' )
+			->will( $this->returnValue( $query ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

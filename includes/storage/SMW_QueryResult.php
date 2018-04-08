@@ -4,6 +4,7 @@ use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
 use SMW\Query\ScoreSet;
+use SMW\Query\Excerpts;
 use SMW\Query\Result\InMemoryEntityProcessList;
 use SMW\SerializerFactory;
 
@@ -87,6 +88,11 @@ class SMWQueryResult {
 	private $scoreSet;
 
 	/**
+	 * @var Excerpts
+	 */
+	private $excerpts;
+
+	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
 	 *
@@ -144,6 +150,26 @@ class SMWQueryResult {
 	 */
 	public function getScoreSet() {
 		return $this->scoreSet;
+	}
+
+	/**
+	 * Only available by some stores that support the retrieval of excerpts.
+	 *
+	 * @since 3.0
+	 *
+	 * @param Excerpts $excerpts
+	 */
+	public function setExcerpts( Excerpts $excerpts ) {
+		$this->excerpts = $excerpts;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return Excerpts|null
+	 */
+	public function getExcerpts() {
+		return $this->excerpts;
 	}
 
 	/**
