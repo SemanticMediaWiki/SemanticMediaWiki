@@ -180,7 +180,11 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDataItemsFromList() {
 
+		$expected = new DIWikiPage( 'Foo', 0, '', '' );
+		$expected->setId( 42 );
+
 		$row = new \stdClass;
+		$row->smw_id = 42;
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
@@ -200,9 +204,9 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
-		foreach ( $instance->getDataItemsFromList( array( 42 ) ) as $value ) {
+		foreach ( $instance->getDataItemsFromList( [ 42 ] ) as $value ) {
 			$this->assertEquals(
-				'Foo#0##',
+				$expected,
 				$value
 			);
 		}

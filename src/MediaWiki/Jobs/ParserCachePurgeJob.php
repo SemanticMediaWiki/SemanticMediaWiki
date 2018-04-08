@@ -209,6 +209,10 @@ class ParserCachePurgeJob extends JobBase {
 
 		foreach ( $hashList as $hash ) {
 
+			if ( $hash instanceof DiWikiPage ) {
+				$hash = $hash->getHash();
+			}
+
 			list( $title, $namespace, $iw, $subobjectname ) = explode( '#', $hash, 4 );
 
 			// QueryResultCache stores queries with they queryID = $subobjectname
