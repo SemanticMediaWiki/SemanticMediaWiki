@@ -15,7 +15,8 @@
 			"Ochaochaocha3",
 			"Hamilton Abreu",
 			"Robby",
-			"McDutchie"
+			"McDutchie",
+			"Avatar6"
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
@@ -386,7 +387,7 @@
 	"smw-admin-supplementary-duplookup-title": "This is a label of a link.",
 	"smw-admin-supplementary-duplookup-intro": "A message explaining a link.\n\nParameter:\n* $1 - Holds {{msg-mw|Smw-admin-supplementary-duplookup-intro}}",
 	"smw-admin-supplementary-duplookup-docu": "This is an informatory message explaining the content of a special page.",
-	"smw-admin-supplementary-duplookup-helplink": "This is a link in a tooltip pointing to a help page. Only change the link in case a dedicated page in your language exists no <Semantic-MediaWiki.org>.",
+	"smw-admin-supplementary-duplookup-helplink": "This is a link in a tooltip pointing to a help page. Only change the link in case a dedicated page in your language exists on <Semantic-MediaWiki.org> website.",
 	"smw-admin-supplementary-operational-statistics-cache-title": "This is the label of a link on special page \"SemanticMediaWiki\".",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "This is an item shown on special page \"Semantic MediaWiki\"\n\nParameters:\n* Holds a link to a subpage. The lable of the link is defined with {{Msg-mw|Smw-admin-supplementary-operational-statistics-cache-title}}",
 	"smw-list-count": "This is an informatory message.\n\nParameter:\n* $1 - holds the number of entries",

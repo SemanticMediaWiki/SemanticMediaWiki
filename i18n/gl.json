@@ -288,8 +288,8 @@
 	"smw_inverse_label_property": "Etiqueta da propiedade inversa",
 	"pageproperty": "Procura de propiedades de páxinas",
 	"smw_pp_docu": "Procurar por todos os valores dunha propiedade nunha páxina dada.\nInsira tanto a páxina como a propiedade.",
-	"smw_pp_from": "Da páxina",
-	"smw_pp_type": "Propiedade",
+	"smw_pp_from": "Da páxinaː",
+	"smw_pp_type": "Propiedadeː",
 	"smw_pp_submit": "Atopar os resultados",
 	"smw_result_prev": "Anterior",
 	"smw_result_next": "Seguinte",
@@ -516,6 +516,7 @@
 	"smw-type-tel": "\"$1\" é un tipo de datos especial para describir números de teléfono internacionais segundo o RFC 3966.",
 	"smw-type-txt": "\"$1\" é un antigo tipo de datos para describir cadeas de texto de lonxitude variable.",
 	"smw-type-dat": "\"$1\" é un tipo de dato para representar puntos no tempo nun formato unificado.",
+	"smw-special-pageproperty-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:PageProperty",
 	"smw-property-predefined-errc": "\"$1\" é unha propiedade predefinida proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica] e representa erros que aparecen en conexión con anotacións de valores impropios ou do procesamento da entrada.",
 	"smw-property-predefined-long-errc": "Os erros son recollidos nun [https://www.semantic-mediawiki.org/wiki/Help:Container contedor] que pode incluír unha referencia á propiedade que causou o problema.",
 	"smw-property-predefined-errt": "\"$1\" é unha propiedade predefinida que contén unha descrición textual dun erro. É proporcionada pola [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
@@ -669,5 +670,13 @@
 	"smw-personal-jobqueue-watchlist": "Lista de vixilancia da fila de tarefas",
 	"smw-property-predefined-label-skey": "Chave de ordenación",
 	"smw-processing": "Procesando...",
-	"smw-redirect-target-unresolvable": "O destino é irresoluble polo motivo «$1»"
+	"smw-redirect-target-unresolvable": "O destino é irresoluble polo motivo «$1»",
+	"smw-types-title": "Tipo: $1",
+	"smw-rule-page-definition": "Definición",
+	"smw-rule-page-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Rule/Type/$1",
+	"smw-rule-page-description": "Descrición:",
+	"smw-rule-page-type": "Tipo:",
+	"smw-rule-page-tag": "Etiqueta:",
+	"smw-ask-title-keyword-type": "Procura de palabras clave",
+	"smw-ask-message-keyword-type": "Esta procura coincide coa condición <code><nowiki>$1</nowiki></code>."
 }

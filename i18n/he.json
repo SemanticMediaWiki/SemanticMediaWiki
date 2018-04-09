@@ -141,7 +141,7 @@
 	"smw-propertylist-subproperty-header": "מאפייני־משנה",
 	"smw-propertylist-redirect-header": "שמות נרדפים",
 	"smw-propertylist-count": "{{PLURAL:$1|מוצגת ישות קשורה אחת|מוצגות $1 ישויות קשורות}}.",
-	"smw-propertylist-count-with-restricted-note": "{{PLURAL:$1|מוצגת ישות קשורה אחת|מוצגות $1 ישויות קשורות}} (ישויות נוספות זמינות, אף התצוגה מוגבלת ל־$2).",
+	"smw-propertylist-count-with-restricted-note": "{{PLURAL:$1|מוצגת ישות קשורה אחת|מוצגות $1 ישויות קשורות}} (ישויות נוספות זמינות, אך התצוגה מוגבלת ל־$2).",
 	"smw-propertylist-count-more-available": "{{PLURAL:$1|מוצגת ישות קשורה אחת|מוצגות $1 ישויות קשורות}} (ישויות נוספות זמינות).",
 	"specialpages-group-smw_group": "מדיה־ויקי סמנטית",
 	"exportrdf": "ייצוא דפים ל־RDF",

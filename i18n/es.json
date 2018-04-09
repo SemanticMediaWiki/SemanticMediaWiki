@@ -322,7 +322,7 @@
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Etiqueta de propiedad inversa",
 	"pageproperty": "Búsqueda de propiedades de página",
-	"smw_pp_docu": "Busca todos los valores de una propiedad en una determinada página.\nEscribe tanto una página como una propiedad.",
+	"smw_pp_docu": "Proporciona una página y propiedad o solo una propiedad para recuperar todos los valores asignados.",
 	"smw_pp_from": "Desde la página:",
 	"smw_pp_type": "Propiedad:",
 	"smw_pp_submit": "Encontrar resultados",

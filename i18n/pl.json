@@ -21,7 +21,8 @@
 			"Nemo bis",
 			"InternerowyGołąb",
 			"Wojtas",
-			"Krottyianock"
+			"Krottyianock",
+			"Railfail536"
 		]
 	},
 	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
@@ -29,6 +30,7 @@
 	"smw-semantics-not-enabled": "Funkcjonalność Semantycznej MediaWiki dla tej wiki nie została włączona.",
 	"smw_viewasrdf": "Kanał RDF",
 	"smw_finallistconjunct": " i",
+	"smw-factbox-head": "... więcej o „$1”",
 	"smw-factbox-facts": "Fakty",
 	"smw_isspecprop": "Ta właściwość jest unikalna dla tej wiki.",
 	"smw-concept-cache-header": "Użycie pamięci podręcznej",
@@ -288,6 +290,7 @@
 	"smw-admin-supplementary-settings-title": "Ustawienia konfiguracji",
 	"smw-admin-supplementary-settings-intro": "<b>$1</b> zawiera listę dostępnych ustawień stosowanych w semantycznej MediaWiki",
 	"smw-admin-supplementary-operational-statistics-title": "Statystyki operacyjne",
+	"smw-admin-supplementary-operational-statistics-cache-title": "Statystyki pamięci cache",
 	"smw-property-label-similarity-threshold": "Próg:",
 	"smw-property-label-similarity-noresult": "Nie znaleziono wyników dla wybranych opcji.",
 	"smw_adminlinks_datastructure": "Struktura danych",
@@ -343,6 +346,7 @@
 	"smw-sp-searchbyproperty-nonvaluequery": "Lista wartości, które mają przypisaną właściwość „$1”.",
 	"smw-sp-searchbyproperty-valuequery": "Lista stron, które mają właściwość „$1” z wartością „$2”.",
 	"log-name-smw": "Rejestr semantycznej MediaWiki",
+	"log-show-hide-smw": "$1 rejestr semantycznej MediaWiki",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Import $1]]",
 	"smw-property-predefined-pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value „$1”] jest predefiniowaną właściwością, która może zdefiniować listę dopuszczalnych wartości ograniczających przyporządkowania wartości dla właściwości.",
 	"smw-datavalue-restricted-use": "Wartość danych „$1” została oznaczona do ograniczonego użytku.",
