@@ -13,7 +13,8 @@
 			"Guycn2",
 			"Or",
 			"Nemo bis",
-			"Drorsnir"
+			"Drorsnir",
+			"שניאור זלמן"
 		]
 	},
 	"smw-desc": "הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://www.semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])",
@@ -223,7 +224,9 @@
 	"smw-ask-delete": "מחיקה",
 	"smw-ask-sorting": "מיון",
 	"smw-ask-options": "אפשרויות",
+	"smw-ask-parameters": "פרמטרים",
 	"smw-ask-search": "חיפוש",
+	"smw-ask-no-cache": "אין מטמון",
 	"smw-ask-result": "תוצאה",
 	"smw-ask-format-selection-help": "למידע נוסף, יש לבקר בדף העזרה $1.",
 	"smw-ask-query-search-info": "השאילתה <code><nowiki>$1</nowiki></code> נענתה על־ידי {{PLURAL:$3|1=<code>$2</code> (ממטמון)|<code>$2</code> (ממטמון)|<code>$2</code>}} {{PLURAL:$4|בשנייה אחת|ב־$4 שניות}}.",
@@ -249,6 +252,8 @@
 	"smw-browse-invalid-subject": "בדיקת תקינות הנושא חזרה עם השגיאה \"$1\".",
 	"smw-browse-api-subject-serialization-invalid": "לנושא יש תסדיר הסדרה בלתי־תקין.",
 	"smw-browse-js-disabled": "ישנו חשד ש־JavaScript כבוי או אינו זמין ואנחנו ממליצים על שימוש בדפדפן שבו הוא נתמך. אפשרויות אחרות נידונות בדף ההגדרות [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi $smwgBrowseByApi].",
+	"smw-browse-show-group": "הצג קבוצות",
+	"smw-browse-hide-group": "הצג קבוצות",
 	"smw_inverse_label_default": "$1 מתוך",
 	"smw_inverse_label_property": "תג מאפיין הפוך.",
 	"pageproperty": "חיפוש במאפייני דף",
@@ -350,6 +355,7 @@
 	"smw-admin-iddispose-done": "המזהה \"$1\" הוסר משרת האחסון.",
 	"smw-admin-idlookup-input": "חיפוש:",
 	"smw-admin-objectid": "מזהה:",
+	"smw-admin-tab-registry": "רישום",
 	"smw-livepreview-loading": "בטעינה…",
 	"smw-sp-searchbyproperty-description": "הדף הזה מספק [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces ממשק עיון] פשוט למציאת ישויות שמתוארות על־ידי מאפיין וערך בעל־שם. ממשקי חיפוש זמינים אחרים הם [[Special:PageProperty|חיפוש מאפיין דף]] ו[[Special:Ask|בונה שאילתות]].",
 	"smw-sp-searchbyproperty-resultlist-header": "רשימת תוצאות",
@@ -435,6 +441,14 @@
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-clipboard-copy-link": "העתקת קישור ללוח",
 	"smw-no-data-available": "אין מידע זמין.",
+	"smw-format-datatable-loadingrecords": "טוען...",
+	"smw-format-datatable-processing": "מעבד...",
 	"smw-format-datatable-search": "חיפוש:",
-	"smw-format-datatable-toolbar-export": "ייצוא"
+	"smw-format-datatable-first": "ראשון",
+	"smw-format-datatable-last": "אחרון",
+	"smw-format-datatable-next": "הבא",
+	"smw-format-datatable-previous": "הקודם",
+	"smw-format-datatable-toolbar-export": "ייצוא",
+	"smw-help": "עזרה",
+	"smw-processing": "מעבד..."
 }
