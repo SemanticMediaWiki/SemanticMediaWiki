@@ -258,7 +258,7 @@
 	"smw_inverse_label_property": "תג מאפיין הפוך.",
 	"pageproperty": "חיפוש במאפייני דף",
 	"smw_pp_docu": "חיפוש כל ערכי מאפיין בדף נתון.\nיש לכתוב גם את הדף וגם את המאפיין.",
-	"smw_pp_from": "מהדף",
+	"smw_pp_from": "מהדף:",
 	"smw_pp_type": "מאפיין",
 	"smw_pp_submit": "חיפוש תוצאות",
 	"smw_result_prev": "הקודם",
@@ -449,6 +449,7 @@
 	"smw-format-datatable-next": "הבא",
 	"smw-format-datatable-previous": "הקודם",
 	"smw-format-datatable-toolbar-export": "ייצוא",
+	"smw-list-pager-filter": "מסנן:",
 	"smw-help": "עזרה",
 	"smw-processing": "מעבד..."
 }
