@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query;
 
 use SMW\Query\ScoreSet;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\Query\ScoreSet
@@ -36,6 +37,19 @@ class ScoreSetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertFalse(
 			$instance->getScore( 'Bar' )
+		);
+	}
+
+	public function testAddScore_DIWikiPage() {
+
+		$dataItem = DIWikiPage::newFromText( 'Bar' );
+		$instance = new ScoreSet();
+
+		$instance->addScore( $dataItem, 10 );
+
+		$this->assertEquals(
+		10,
+			$instance->getScore( $dataItem )
 		);
 	}
 

@@ -2,6 +2,8 @@
 
 namespace SMW\Query;
 
+use SMW\DIWikiPage;
+
 /**
  * Record scores for query results retrieved from stores that support the computation
  * of relevance scores.
@@ -52,21 +54,30 @@ class ScoreSet {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $hash
+	 * @param DIWikiPage|string $hash
 	 * @param string|integer $score
 	 */
 	public function addScore( $hash, $score ) {
+
+		if ( $hash instanceof DIWikiPage ) {
+			$hash = $hash->getHash();
+		}
+
 		$this->scores[] = [ $hash, $score ];
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $hash
+	 * @param DIWikiPage|string $hash
 	 *
 	 * @return string|integer|false
 	 */
 	public function getScore( $hash ) {
+
+		if ( $hash instanceof DIWikiPage ) {
+			$hash = $hash->getHash();
+		}
 
 		foreach ( $this->scores as $map ) {
 			if ( $map[0] === $hash ) {

@@ -68,14 +68,15 @@ class SearchResultSet extends \SearchResultSet {
 
 		if ( $page instanceof DIWikiPage ) {
 			$searchResult = SearchResult::newFromTitle( $page->getTitle() );
-
-			// Uses the standard Search back-end excerpt retrieval
-			$searchResult->setExcerpt( null );
 		}
 
 		// Attempt to use excerpts available from a different back-end
-		if ( $this->excerpts !== null && ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) ) {
-			$searchResult->setExcerpt( $excerpt );
+		if ( $searchResult && $this->excerpts !== null ) {
+			$this->excerpts->noHighlight();
+
+			if ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) {
+				$searchResult->setExcerpt( $excerpt );
+			}
 		}
 
 		next( $this->pages );
