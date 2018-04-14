@@ -158,6 +158,32 @@ class Search extends SearchEngine {
 	 */
 	public function searchTitle( $term ) {
 
+		if ( $this->getSearchQuery( $term ) !== null ) {
+			return null;
+		}
+
+		return $this->searchFallbackSearchEngine( $term, false );
+	}
+
+	/**
+	 * Perform a full text search query and return a result set.
+	 * If title searches are not supported or disabled, return null.
+	 *
+	 * @param string $term Raw search term
+	 *
+	 * @return SearchResultSet|\Status|null
+	 */
+	public function searchText( $term ) {
+
+		if ( $this->getSearchQuery( $term ) !== null ) {
+			return $this->getSearchResultSet( $term );
+		}
+
+		return $this->searchFallbackSearchEngine( $term, true );
+	}
+
+	private function getSearchResultSet( $term ) {
+
 		$query = $this->getSearchQuery( $term );
 
 		if ( $query !== null ) {
@@ -176,6 +202,9 @@ class Search extends SearchEngine {
 
 			$store = ApplicationFactory::getInstance()->getStore();
 
+			// Sort by score/relevance if available
+			$query->setOption( SMWQuery::SCORE_SORT, 'desc' );
+
 			$result = $store->getQueryResult( $query );
 
 			$query->querymode = SMWQuery::MODE_COUNT;
@@ -186,26 +215,6 @@ class Search extends SearchEngine {
 
 			return new SearchResultSet( $result, $count );
 		}
-
-		return $this->searchFallbackSearchEngine( $term, false );
-	}
-
-	/**
-	 * Perform a full text search query and return a result set.
-	 * If title searches are not supported or disabled, return null.
-	 *
-	 * @param string $term Raw search term
-	 *
-	 * @return SearchResultSet|\Status|null
-	 */
-	public function searchText( $term ) {
-
-		if ( $this->getSearchQuery( $term ) !== null ) {
-			// No fulltext search for semantic queries
-			return null;
-		}
-
-		return $this->searchFallbackSearchEngine( $term, true );
 	}
 
 	/**

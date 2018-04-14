@@ -177,7 +177,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSearchTitle_withSemanticQuery() {
+	public function testSearchText_withSemanticQuery() {
 
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
@@ -206,7 +206,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
 
 		$search = new Search();
-		$result = $search->searchTitle( $term );
+		$result = $search->searchText( $term );
 
 		$this->assertInstanceOf(
 			'SMW\MediaWiki\Search\SearchResultSet',
@@ -252,13 +252,13 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSearchText_withSemanticQuery() {
+	public function testSearchTitle_withSemanticQuery() {
 
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
 		$search = new Search();
 
-		$this->assertNull( $search->searchText( $term ) );
+		$this->assertNull( $search->searchTitle( $term ) );
 	}
 
 	public function testSupports() {

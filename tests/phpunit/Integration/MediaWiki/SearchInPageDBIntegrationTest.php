@@ -42,7 +42,7 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$search = new Search();
-		$results = $search->searchTitle( '[[Has some page value::Foo]]' );
+		$results = $search->searchText( '[[Has some page value::Foo]]' );
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Search\SearchResultSet',
@@ -81,7 +81,7 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$search = new Search();
-		$results = $search->searchTitle( "[[Has coordinates::52°31'N, 13°24'E]]" );
+		$results = $search->searchText( "[[Has coordinates::52°31'N, 13°24'E]]" );
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Search\SearchResultSet',
