@@ -554,7 +554,7 @@ return array(
 	#
 	# @since 1.0
 	##
-	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:|in:',
+	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:|in:|phrase:',
 	##
 
 	###
