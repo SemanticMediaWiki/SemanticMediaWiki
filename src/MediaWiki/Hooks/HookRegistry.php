@@ -399,9 +399,18 @@ class HookRegistry {
 	 */
 	public function newSpecialSearchResultsPrepend( $specialSearch, $outputPage, $term ) {
 
+		$user = $outputPage->getUser();
+
 		$specialSearchResultsPrepend = new SpecialSearchResultsPrepend(
 			$specialSearch,
 			$outputPage
+		);
+
+		$specialSearchResultsPrepend->setOptions(
+			[
+				'prefs-suggester-textinput' => $user->getOption( 'smw-prefs-general-options-suggester-textinput' ),
+				'prefs-disable-search-info' => $user->getOption( 'smw-prefs-general-options-disable-search-info' )
+			]
 		);
 
 		return $specialSearchResultsPrepend->process( $term );
@@ -659,6 +668,7 @@ class HookRegistry {
 		$getPreferences->setOptions(
 			[
 				'smwgEnabledEditPageHelp' => $settings->get( 'smwgEnabledEditPageHelp' ),
+				'wgSearchType' => $GLOBALS['wgSearchType'],
 				'smwgJobQueueWatchlist' => $settings->get( 'smwgJobQueueWatchlist' )
 			]
 		);
