@@ -791,6 +791,27 @@ a.smw-ask-action-btn-dblue:focus {
 	content: ' ';
 }
 
+.smw-break-word {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.smw-break-word a {
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+}
+
+.smw-flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 /* http://stackoverflow.com/questions/6091253/overlay-with-spinner */
 
 .smw-margin-small {
@@ -812,9 +833,15 @@ a.smw-ask-action-btn-dblue:focus {
 	height: 40px;
 	width: 40px;
 }
+
 .smw-overlay-spinner.large {
 	height: 60px;
 	width: 60px;
+}
+
+.smw-overlay-spinner.flex {
+	left: unset;
+	top: unset;
 }
 
 .smw-overlay-spinner {
