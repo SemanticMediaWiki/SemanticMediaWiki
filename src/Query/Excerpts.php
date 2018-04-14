@@ -2,7 +2,7 @@
 
 namespace SMW\Query;
 
-use DIWikiPage;
+use SMW\DIWikiPage;
 
 /**
  * Record excerpts for query results that support an excerpt retrieval function.
@@ -18,6 +18,18 @@ class Excerpts {
 	 * @var []
 	 */
 	protected $excerpts = [];
+
+	/**
+	 * @var boolean
+	 */
+	protected $noHighlight = false;
+
+	/**
+	 * @since 3.0
+	 */
+	public function noHighlight() {
+		$this->noHighlight = true;
+	}
 
 	/**
 	 * @note The hash is expected to match DIWikiPage::getHash to easily match
