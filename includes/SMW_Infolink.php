@@ -617,7 +617,7 @@ class SMWInfolink {
 		// Normalize if nceessary for those that are "encoded for use in a
 		// MediaWiki page title"
 		if ( mb_substr( $value, 0, 2 ) === 'x=' ) {
-			$value = str_replace( [ 'x=', '&', '%2F' ], [ '' , '/', '/' ], $value );
+			$value = str_replace( [ 'x=', '=-&' , '&', '%2F' ], [ '' , '=-2D&', '/', '/' ], $value );
 		}
 
 		return $value;
