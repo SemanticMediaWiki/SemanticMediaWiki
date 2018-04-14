@@ -411,6 +411,7 @@
 	"smw-prefs-general-options-time-correction": "Enable time correction for special pages using the local [[Special:Preferences#mw-prefsection-rendering|time offset]] preference",
 	"smw-prefs-general-options-jobqueue-watchlist": "Show the [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist job queue watchlist] in my personal bar",
 	"smw-prefs-general-options-disable-editpage-info": "Disable the introductory text on the edit page",
+	"smw-prefs-general-options-disable-search-info": "Disable the syntax suppport information on the standard search page",
 	"smw-prefs-general-options-suggester-textinput": "Enable [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance input assistance] for semantic entity suggestions",
 	"smw-ui-tooltip-title-property": "Property",
 	"smw-ui-tooltip-title-quantity": "Unit conversion",

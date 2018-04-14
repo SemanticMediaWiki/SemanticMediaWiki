@@ -68,6 +68,13 @@ class GetPreferences extends HookHandler {
 			'disabled' => !$this->getOption( 'smwgEnabledEditPageHelp', false )
 		);
 
+		$preferences['smw-prefs-general-options-disable-search-info'] = array(
+			'type' => 'toggle',
+			'label-message' => 'smw-prefs-general-options-disable-search-info',
+			'section' => 'smw/general-options',
+			'disabled' => $this->getOption( 'wgSearchType' ) !== 'SMWSearch'
+		);
+
 		$preferences['smw-prefs-general-options-jobqueue-watchlist'] = array(
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-jobqueue-watchlist',

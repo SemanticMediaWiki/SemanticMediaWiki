@@ -58,7 +58,7 @@ class SpecialSearchResultsPrepend extends HookHandler {
 				Message::USER_LANGUAGE
 			);
 
-			if ( $this->outputPage->getUser()->getOption( 'smw-prefs-general-options-suggester-textinput' ) ) {
+			if ( $this->getOption( 'prefs-suggester-textinput' ) ) {
 				$html .= ' ' . Message::get(
 					'smw-search-input-assistance',
 					Message::PARSE,
@@ -67,7 +67,7 @@ class SpecialSearchResultsPrepend extends HookHandler {
 			}
 		}
 
-		if ( $html !== '' ) {
+		if ( $html !== '' && !$this->getOption( 'prefs-disable-search-info' ) ) {
 			$this->outputPage->addHtml(
 				"<div class='smw-search-results-prepend plainlinks'>$html</div>"
 			);
