@@ -69,7 +69,7 @@
 							"_REDI"
 						],
 						"propertyValues": [
-							"Page-with-template-for-unknown-redirect-target#0#"
+							"Page-with-template-for-unknown-redirect-target#0##"
 						]
 					}
 				}
@@ -91,7 +91,7 @@
 							"_REDI"
 						],
 						"propertyValues": [
-							"Page-with-template-for-unknown-redirect-target#0#"
+							"Page-with-template-for-unknown-redirect-target#0##"
 						]
 					}
 				}
@@ -117,8 +117,8 @@
 							"Has_page"
 						],
 						"propertyValues": [
-							"Page-with-template-for-known-redirect-target#0#",
-							"To-be-known-template-redirect-target#0#"
+							"Page-with-template-for-known-redirect-target#0##",
+							"To-be-known-template-redirect-target#0##"
 						]
 					}
 				}
@@ -144,8 +144,8 @@
 							"Has_page"
 						],
 						"propertyValues": [
-							"Page-with-template-for-known-redirect-target#0#",
-							"To-be-known-template-redirect-target#0#"
+							"Page-with-template-for-known-redirect-target#0##",
+							"To-be-known-template-redirect-target#0##"
 						]
 					}
 				}
@@ -167,7 +167,7 @@
 							"_REDI"
 						],
 						"propertyValues": [
-							"Page-with-annotation-for-unknown-redirect-target#0#"
+							"Page-with-annotation-for-unknown-redirect-target#0##"
 						]
 					}
 				}
@@ -192,7 +192,7 @@
 							"Has_page"
 						],
 						"propertyValues": [
-							"Page-with-template-was-redirected-now-restored#0#"
+							"Page-with-template-was-redirected-now-restored#0##"
 						]
 					}
 				}

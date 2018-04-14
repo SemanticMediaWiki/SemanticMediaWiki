@@ -163,7 +163,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 				'lang'      => '',
 				'dataitem' => array(
 					'type' => DataItem::TYPE_WIKIPAGE,
-					'item' => 'Foo#0#'
+					'item' => 'Foo#0##'
 				)
 			)
 		);
@@ -178,7 +178,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 				'lang'      => 'en',
 				'dataitem' => array(
 					'type' => DataItem::TYPE_WIKIPAGE,
-					'item' => 'Foo#0#'
+					'item' => 'Foo#0##'
 				)
 			)
 		);

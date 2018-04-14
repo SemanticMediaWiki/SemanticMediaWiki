@@ -237,9 +237,7 @@ class DIWikiPage extends SMWDataItem {
 			$this->m_interwiki
 		);
 
-		if ( $this->m_subobjectname !== '' ) {
-			$segments[] = $this->m_subobjectname;
-		}
+		$segments[] = $this->m_subobjectname;
 
 		return implode( '#', $segments );
 	}

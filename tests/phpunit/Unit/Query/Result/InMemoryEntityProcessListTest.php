@@ -34,7 +34,7 @@ class InMemoryEntityProcessListTest extends \PHPUnit_Framework_TestCase {
 		$instance->addDataItem( $dataItem );
 
 		$this->assertEquals(
-			array( 'Foo#0#' => $dataItem ),
+			array( 'Foo#0##' => $dataItem ),
 			$instance->getEntityList( 'FOO:123' )
 		);
 

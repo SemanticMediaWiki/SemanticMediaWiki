@@ -145,7 +145,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "Foo|{$wiki}|wiki",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#0#' )
+				'dataitem' => array( 'type' => 9, 'item' => 'Foo#0##' )
 			)
 		);
 
@@ -156,7 +156,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "bar-3AFoo|{$wiki}|wiki",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#0#bar' )
+				'dataitem' => array( 'type' => 9, 'item' => 'Foo#0#bar#' )
 			)
 		);
 
@@ -189,7 +189,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "Foo|{$property}|property",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#102#' )
+				'dataitem' => array( 'type' => 9, 'item' => 'Foo#102##' )
 			)
 		);
 
@@ -200,7 +200,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "Foo-23aux|{$property}|property",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#102#' )
+				'dataitem' => array( 'type' => 9, 'item' => 'Foo#102##' )
 			)
 		);
 
@@ -215,7 +215,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "$name-23aux|{$wiki}|wiki",
-				'dataitem' => array( 'type' => 9, 'item' => '-Foo#102#' )
+				'dataitem' => array( 'type' => 9, 'item' => '-Foo#102##' )
 			)
 		);
 
@@ -230,7 +230,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 		$expected =	array(
 			'type' => Element::TYPE_NSRESOURCE,
 			'uri'  => "||",
-			'dataitem' => array( 'type' => 9, 'item' => 'Foo#102#' )
+			'dataitem' => array( 'type' => 9, 'item' => 'Foo#102##' )
 		);
 
 		$provider[] = array(
@@ -241,7 +241,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 		$expected =	array(
 			'type' => Element::TYPE_NSRESOURCE,
 			'uri'  => "||",
-			'dataitem' => array( 'type' => 9, 'item' => 'Foo#14#' )
+			'dataitem' => array( 'type' => 9, 'item' => 'Foo#14##' )
 		);
 
 		$provider[] = array(

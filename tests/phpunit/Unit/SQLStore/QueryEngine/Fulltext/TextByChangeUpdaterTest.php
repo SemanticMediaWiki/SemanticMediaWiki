@@ -144,7 +144,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'dispatchFulltextSearchTableUpdateJobWith' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'slot:id' => 'Foo#0#' ) ) );
+				$this->equalTo( array( 'slot:id' => 'Foo#0##' ) ) );
 
 		$instance = new TextByChangeUpdater(
 			$this->connection,

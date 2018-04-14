@@ -59,7 +59,7 @@ class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'SMW\SemanticData',
-			$instance->deserialize( array( 'subject' => 'Foo#0#' ) )
+			$instance->deserialize( array( 'subject' => 'Foo#0##' ) )
 		);
 	}
 

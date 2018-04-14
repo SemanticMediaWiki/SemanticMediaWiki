@@ -132,9 +132,9 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$description = array(
-			'V:03e5f313638479d132c1aeabd1eacc24' => $valueDescriptionFoo,
-			'V:26116b41f908d8ba2ce60d4f455c8d4d' => $valueDescriptionBar,
-			'V:f47714f302b181e713015c02c48cf86f' => $valueDescriptionYim
+			'V:903e513c13559ffaa66a23270a2922ff' => $valueDescriptionFoo,
+			'V:246b70c7cb6a9fe4613cad14405b682f' => $valueDescriptionBar,
+			'V:a3f71a427c6f9533ea1f093ff47bf958' => $valueDescriptionYim
 		);
 
 		$provider[] = array(

@@ -77,7 +77,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'Foo/Bar',
 			array(
-				'data-subject="Foo/Bar#0#"',
+				'data-subject="Foo/Bar#0##"',
 				'data-options="{&quot;dir&quot;:null,&quot;group&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showGroup&quot;:false,&quot;showSort&quot;:false,&quot;showAll&quot;:true,&quot;including&quot;:null}"'
 			)
 		);

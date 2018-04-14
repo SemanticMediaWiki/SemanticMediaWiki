@@ -130,9 +130,9 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedDescriptions = array(
-			'V:03e5f313638479d132c1aeabd1eacc24' => new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
-			'V:26116b41f908d8ba2ce60d4f455c8d4d' => new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
-			'V:f47714f302b181e713015c02c48cf86f' => new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
+			'V:903e513c13559ffaa66a23270a2922ff' => new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			'V:246b70c7cb6a9fe4613cad14405b682f' => new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
+			'V:a3f71a427c6f9533ea1f093ff47bf958' => new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
 		);
 
 		$provider[] = array(
@@ -149,8 +149,8 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$descriptions = array(
-			'V:03e5f313638479d132c1aeabd1eacc24' => new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
-			'C:52a399e1faa619c79ecec246102125b8' => new Conjunction( array(
+			'V:903e513c13559ffaa66a23270a2922ff' => new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			'C:d0da0541e2e099655342be3af203814e' => new Conjunction( array(
 				new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
 				new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
 			) )

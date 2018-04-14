@@ -102,7 +102,7 @@ An interface to browse facts (the equivalent of `Special:Browse`) of a subject (
 ```php
 {
 	"query": {
-		"subject": "Main_Page#0#",
+		"subject": "Main_Page#0##",
 		"data": [
 			{
 				"property": "Foo",

@@ -175,7 +175,7 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 				'uri'  => 'Foo|Bar|Fum',
 				'dataitem' => array(
 					'type' => DataItem::TYPE_WIKIPAGE,
-					'item' => 'Foo#0#'
+					'item' => 'Foo#0##'
 				)
 			)
 		);

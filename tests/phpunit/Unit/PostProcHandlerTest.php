@@ -81,7 +81,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'FakeCookie' ) );
 
 		$this->assertContains(
-			'<div class="smw-postproc" data-subject="Foo#0#" data-ref="[&quot;Bar&quot;]"></div>',
+			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]"></div>',
 			$instance->getHtml( $title,  $webRequest )
 		);
 	}
@@ -132,7 +132,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertContains(
-			'<div class="smw-postproc" data-subject="Foo#0#" data-ref="[&quot;Bar&quot;]"></div>',
+			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]"></div>',
 			$instance->getHtml( $title,  $webRequest )
 		);
 	}
@@ -201,7 +201,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'FakeCookie' ) );
 
 		$this->assertContains(
-			'<div class="smw-postproc" data-subject="Foo#0#" data-ref="[0]"></div>',
+			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[0]"></div>',
 			$instance->getHtml( $title,  $webRequest )
 		);
 	}

@@ -25,7 +25,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"Has_unknown#102#",
+						"Has_unknown#102##",
 						"[8,\"smw-datavalue-property-create-restriction\",\"Has unknown\",\"foo\"]"
 					]
 				}
@@ -45,7 +45,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"Has_unknown#102#",
+						"Has_unknown#102##",
 						"[2,\"smw-datavalue-property-create-restriction\",\"Has unknown\",\"foo\"]"
 					]
 				}

@@ -283,12 +283,12 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->with( $this->stringContains( ':smw:update:55fd50809b6221a77f8f3dbd49e0d5bc' ) )
+			->with( $this->stringContains( ':smw:update:7fe0bc8114c23c928b25316e4858fceb' ) )
 			->will( $this->returnValue( 42 ) );
 
 		$cache->expects( $this->once() )
 			->method( 'save' )
-			->with( $this->stringContains( ':smw:update:55fd50809b6221a77f8f3dbd49e0d5bc' ) );
+			->with( $this->stringContains( ':smw:update:7fe0bc8114c23c928b25316e4858fceb' ) );
 
 		$instance = new ParserData(
 			$title,

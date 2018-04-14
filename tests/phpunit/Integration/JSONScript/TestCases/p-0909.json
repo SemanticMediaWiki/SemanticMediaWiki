@@ -56,7 +56,7 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/P0909/Q.1#_QUERY68dcb8216fabceb5e68b48e29f7a507f",
+			"subject": "Example/P0909/Q.1#_QUERYced3dc3308e03e4ff0c92578d616e6a5",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -77,7 +77,7 @@
 		{
 			"type": "parser",
 			"about": "#1",
-			"subject": "Example/P0909/Q.2#_QUERY68dcb8216fabceb5e68b48e29f7a507f",
+			"subject": "Example/P0909/Q.2#_QUERYced3dc3308e03e4ff0c92578d616e6a5",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -98,7 +98,7 @@
 		{
 			"type": "parser",
 			"about": "#2",
-			"subject": "Example/P0909/Q.3#_QUERYd86ef53760e21dc939ac35e8ba96cbe9",
+			"subject": "Example/P0909/Q.3#_QUERY84456d5e55da8a3ba2279a5eb73ce483",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -119,7 +119,7 @@
 		{
 			"type": "parser",
 			"about": "#3",
-			"subject": "Example/P0909/Q.4#_QUERY83e07614d84828b684e2f82618a6b0a3",
+			"subject": "Example/P0909/Q.4#_QUERYcdd649eae7a93d114d44b75d9c1ed65c",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -140,7 +140,7 @@
 		{
 			"type": "parser",
 			"about": "#4",
-			"subject": "Example/P0909/Q.5#_QUERY2d77e744274cc4d8a102dfaf9ff3825d",
+			"subject": "Example/P0909/Q.5#_QUERY13b773c8ea18d4839f069a8a88dbe783",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -161,7 +161,7 @@
 		{
 			"type": "parser",
 			"about": "#5",
-			"subject": "Example/P0909/Q.6#_QUERY9842313cc7d4e02ae3e26d9e3c7a69bc",
+			"subject": "Example/P0909/Q.6#_QUERYfb6756e6bb1d5cf0c37b0c305caf6d6e",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -182,7 +182,7 @@
 		{
 			"type": "parser",
 			"about": "#6",
-			"subject": "Example/P0909/Q.7#_QUERY5a9ddfda092ddc2a398e4f92c2052387",
+			"subject": "Example/P0909/Q.7#_QUERYbcb06ea6a827c21b2ae2fbc8359bef8c",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -203,7 +203,7 @@
 		{
 			"type": "parser",
 			"about": "#7",
-			"subject": "Example/P0909/Q.8#_QUERY36189e7306ea60137006a12b6d887930",
+			"subject": "Example/P0909/Q.8#_QUERYecd911af9ce2cf69bacfbab3041114c7",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -224,7 +224,7 @@
 		{
 			"type": "parser",
 			"about": "#8",
-			"subject": "Example/P0909/Q.9#_QUERY24970035b091ffcb344b52db4e53a16b",
+			"subject": "Example/P0909/Q.9#_QUERY69098f6e24f5bf124fec18d6339450ce",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
