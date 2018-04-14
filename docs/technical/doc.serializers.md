@@ -53,14 +53,14 @@ Implements the Serializer interface for the SMW\SemanticData object.
 For a page called "Foo" that contains <code>[[Has property::Bar]]</code>, <code>{{#subobject:|Has subobjects=Bam}}</code>, <code>{{#ask:[[Has subobjects::Bam]]}}</code>, the Serializer will output:
 
 ```php
-"subject": "Foo#0#",
+"subject": "Foo#0##",
 "data": [
 	{
 		"property": "Has_property",
 		"dataitem": [
 			{
 				"type": 9,
-				"item": "Bar#0#"
+				"item": "Bar#0##"
 			}
 		]
 	},
@@ -107,7 +107,7 @@ For a page called "Foo" that contains <code>[[Has property::Bar]]</code>, <code>
 				"dataitem": [
 					{
 						"type": 9,
-						"item": "Bam#0#"
+						"item": "Bam#0##"
 					}
 				]
 			},

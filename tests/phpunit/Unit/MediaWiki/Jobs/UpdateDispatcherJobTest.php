@@ -80,8 +80,8 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UpdateDispatcherJob( $title, array(
 			'job-list' => array(
-				'Foo#0#' => true,
-				'Bar#102#'
+				'Foo#0##' => true,
+				'Bar#102##'
 			)
 		) );
 
@@ -102,7 +102,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UpdateDispatcherJob( $title, array(
 			'job-list' => array(
-				'|nulltitle#0#' => true,
+				'|nulltitle#0##' => true,
 				'deserlizeerror#0' => true
 			)
 		) );

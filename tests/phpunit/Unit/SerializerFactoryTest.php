@@ -153,7 +153,7 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		#0
 		$provider[] = array(
-			array( 'serializer' => 'SMW\Serializers\SemanticDataSerializer', 'subject' => 'Foo#0#' )
+			array( 'serializer' => 'SMW\Serializers\SemanticDataSerializer', 'subject' => 'Foo#0##' )
 		);
 
 		#1

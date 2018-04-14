@@ -225,7 +225,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
-			->with( $this->equalTo( '063682d55f277990d70fa8213e5eccd8' ) );
+			->with( $this->equalTo( '1d1e1d94a78b9476c8213a16febe2c9b' ) );
 
 		$this->bufferedStatsdCollector->expects( $this->once() )
 			->method( 'recordStats' );
@@ -254,7 +254,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
-			->with( $this->equalTo( '855d675e0900f43bab62c191295af40d' ) );
+			->with( $this->equalTo( '1e5509cfde15f1f569db295e845ce997' ) );
 
 		$this->bufferedStatsdCollector->expects( $this->once() )
 			->method( 'recordStats' );

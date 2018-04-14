@@ -131,7 +131,7 @@
 			"assert-queryresult": {
 				"count": 2,
 				"results": [
-					"Example/Q0908/3#0#",
+					"Example/Q0908/3#0##",
 					"Example/Q0908/3#0##_bc98426861e347260e7aa56265803598"
 				]
 			}
@@ -147,7 +147,7 @@
 			"assert-queryresult": {
 				"count": 2,
 				"results": [
-					"Example/Q0908/3#0#",
+					"Example/Q0908/3#0##",
 					"Example/Q0908/3#0##_bc98426861e347260e7aa56265803598"
 				]
 			}

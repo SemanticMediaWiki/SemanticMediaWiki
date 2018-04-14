@@ -281,7 +281,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertSame(
-			'S:17184798751fd76ae86d1c18bbce6954',
+			'S:8c2cab8d14dcd45d49aadb7fb5ab44a7',
 			$instance->getFingerprint()
 		);
 	}

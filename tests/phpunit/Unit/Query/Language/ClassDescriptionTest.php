@@ -148,7 +148,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertSame(
-			'Cl:f35b531270067b4772aa3a1a907b8c81',
+			'Cl:c2d00d69a4e9517d075d9adf6aafea6e',
 			$instance->getFingerprint()
 		);
 	}

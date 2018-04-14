@@ -167,7 +167,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		$expected = array(
 			DIWikiPage::newFromText( 'Foo' ),
 			DIWikiPage::newFromText( 'Bar' ),
-			'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+			'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 		//	DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) removed
 		);
 
@@ -307,8 +307,8 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		$expected = array(
 			DIWikiPage::newFromText( 'Foo' ),
 			DIWikiPage::newFromText( 'Bar' ),
-			'Subprop#102#' => DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ),
-			'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+			'Subprop#102##' => DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ),
+			'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 		);
 
 		$this->assertEquals(
@@ -366,8 +366,8 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 
 		$expected = array(
 			DIWikiPage::newFromText( 'Foo' ),
-			'Subcat#14#' => DIWikiPage::newFromText( 'Subcat', NS_CATEGORY ),
-			'Foocat#14#' => DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ),
+			'Subcat#14##' => DIWikiPage::newFromText( 'Subcat', NS_CATEGORY ),
+			'Foocat#14##' => DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ),
 			DIWikiPage::newFromText( 'Foocat', NS_CATEGORY )
 		);
 
@@ -395,7 +395,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
 				DIWikiPage::newFromText( 'Bar' ),
-				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			)
 		);
 
@@ -412,7 +412,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			$query,
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
-				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			)
 		);
 
@@ -430,7 +430,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
 				DIWikiPage::newFromText( 'Bar' ),
-				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			)
 		);
 
@@ -452,7 +452,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
 				DIWikiPage::newFromText( 'Bar' ),
-				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			)
 		);
 
@@ -474,7 +474,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
 				DIWikiPage::newFromText( 'Bar' ),
-				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			)
 		);
 
@@ -506,7 +506,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			$query,
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
-				'FooConcept#108#' => DIWikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
+				'FooConcept#108##' => DIWikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
 			)
 		);
 
@@ -531,7 +531,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 				DIWikiPage::newFromText( 'Foo' ),
 				DIWikiPage::newFromText( 'Bar' ),
 				DIWikiPage::newFromText( 'Foobaz', SMW_NS_PROPERTY ),
-				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
+				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
 			)
 		);
 
@@ -557,7 +557,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 				DIWikiPage::newFromText( 'Foo' ),
 				DIWikiPage::newFromText( 'Bar' ),
 				DIWikiPage::newFromText( 'Foobaz', SMW_NS_PROPERTY ),
-				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
+				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
 			)
 		);
 
@@ -575,7 +575,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
 				DIWikiPage::newFromText( 'EQ_Comparator' ),
-				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			)
 		);
 
@@ -592,7 +592,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			$query,
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
-				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			)
 		);
 

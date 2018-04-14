@@ -137,7 +137,7 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 				'uri'  => 'Foo',
 				'dataitem' => array(
 					'type' => DataItem::TYPE_WIKIPAGE,
-					'item' => 'Foo#0#'
+					'item' => 'Foo#0##'
 				)
 			)
 		);
