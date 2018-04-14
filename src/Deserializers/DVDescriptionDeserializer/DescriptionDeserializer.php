@@ -120,8 +120,19 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	protected function prepareValue( &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 
+		// [[in:lorem ipsum]] / [[Has text::in:lorem ipsum]] to be turned into a
+		// proximity match where lorem AND ipsum needs to be present in the
+		// indexed match field.
+		//
+		// For those query engines that support those search patterns!
 		if ( $comparator === SMW_CMP_IN ) {
 			$comparator = SMW_CMP_LIKE;
+
+			// Looking for something like [[in:phrase:foo]]
+			if ( strpos( $value, 'phrase:' ) !== false ) {
+				$value = str_replace( 'phrase:', '', $value );
+				$value = '"' . $value . '"';
+			}
 
 			// `in:...` is for the "busy" user to avoid adding wildcards now and
 			// then to the value string
@@ -129,6 +140,19 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 
 			// No property and the assumption is [[in:...]] with the expected use
 			// of the wide proximity as indicated by an additional `~`
+			if ( $this->dataValue->getProperty() === null ) {
+				$value = "~$value";
+			}
+		}
+
+		// [[phrase:lorem ipsum]] to be turned into a promixity phrase_match
+		// where the entire string (incl. its order) are to be matched.
+		//
+		// For those query engines that support those search patterns!
+		if ( $comparator === SMW_CMP_PHRASE ) {
+			$comparator = SMW_CMP_LIKE;
+			$value = '"' . $value . '"';
+
 			if ( $this->dataValue->getProperty() === null ) {
 				$value = "~$value";
 			}
