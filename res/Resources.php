@@ -261,8 +261,18 @@ return array(
 	),
 
 	// Special:Search
+	'ext.smw.special.search.styles' => $moduleTemplate + array(
+		'styles' => 'smw/special/ext.smw.special.search.css',
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	'ext.smw.special.search' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.search.js',
+		'styles' => 'smw/special/ext.smw.special.search.css',
 		'position' => 'top',
 		'targets' => array(
 			'mobile',
