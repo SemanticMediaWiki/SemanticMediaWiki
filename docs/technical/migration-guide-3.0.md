@@ -26,7 +26,7 @@
 
 ## Hooks
 
-- Renamed `smwAddToRDFExport` to `SMW::Exporter::AddExpDataAfterPageSerializationComplete`
+- Renamed `smwAddToRDFExport` to `SMW::Exporter::Controller::AddExpData`
 
 ## Store
 

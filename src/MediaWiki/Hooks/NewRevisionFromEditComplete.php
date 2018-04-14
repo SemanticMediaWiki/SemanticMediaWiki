@@ -81,11 +81,6 @@ class NewRevisionFromEditComplete extends HookHandler {
 			$parserOutput
 		);
 
-		$parserData->getSemanticData()->setExtensionData(
-			'native.data',
-			$this->pageInfoProvider->getNativeData()
-		);
-
 		if ( $this->title->getNamespace() === SMW_NS_RULE ) {
 			$ruleFactory = $applicationFactory->singleton( 'RuleFactory' );
 

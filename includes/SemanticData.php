@@ -255,13 +255,6 @@ class SemanticData {
 	 * @param mixed $value
 	 */
 	public function setExtensionData( $key, $value ) {
-
-		// Compress any string data to avoid having large text excerpts occupy
-		// memory space.
-		if ( is_string( $value ) ) {
-			$value = gzcompress( $value, 9 );
-		}
-
 		$this->extensionData[$key] = $value;
 	}
 
@@ -278,9 +271,7 @@ class SemanticData {
 			return null;
 		}
 
-		$value = $this->extensionData[$key];
-
-		return is_string( $value ) ? @gzuncompress( $value ) : $value;
+		return $this->extensionData[$key];
 	}
 
 	/**

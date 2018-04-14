@@ -128,9 +128,17 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$content = $this->getMockBuilder( '\Content' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$wikiPage->expects( $this->atLeastOnce() )
+			->method( 'getContent' )
+			->will( $this->returnValue( $content ) );
 
 		$wikiPage->expects( $this->atLeastOnce() )
 			->method( 'getRevision' )
@@ -263,9 +271,17 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$content = $this->getMockBuilder( '\Content' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$wikiPage->expects( $this->atLeastOnce() )
+			->method( 'getContent' )
+			->will( $this->returnValue( $content ) );
 
 		$wikiPage->expects( $this->atLeastOnce() )
 			->method( 'getRevision' )
