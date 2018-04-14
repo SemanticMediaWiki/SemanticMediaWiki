@@ -74,6 +74,11 @@ class SMWQuery implements QueryContext {
 	 */
 	const NO_DEPENDENCY_TRACE = 'no.dependency.trace';
 
+	/**
+	 * Sort by score if the query engine supports it.
+	 */
+	const SCORE_SORT = 'score.sort';
+
 	public $sort = false;
 	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
 	public $querymode = self::MODE_INSTANCES;
