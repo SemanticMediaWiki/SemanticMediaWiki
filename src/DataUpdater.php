@@ -250,8 +250,8 @@ class DataUpdater {
 		);
 
 		$this->semanticData->setExtensionData(
-			'native.data',
-			$pageInfoProvider->getNativeData()
+			'revision.id',
+			$revision->getId()
 		);
 
 		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
@@ -283,6 +283,14 @@ class DataUpdater {
 		}
 
 		$propertyAnnotator->addAnnotation();
+
+		\Hooks::run(
+			'SMW::DataUpdater::ContentProcessor',
+			[
+				$this->semanticData,
+				$wikiPage->getContent()
+			]
+		);
 	}
 
 	private function checkUpdateEditProtection( $wikiPage, $user ) {

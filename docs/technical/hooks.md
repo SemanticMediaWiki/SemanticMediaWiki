@@ -281,7 +281,7 @@ Hooks::register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
 } );
 </pre>
 
-### SMW::Exporter::AddExpDataAfterPageSerializationComplete
+### SMW::Exporter::Controller::AddExpData
 
 * Version: 3.0
 * Description: Hook allows to add additional RDF data for a selected page (was `smwAddToRDFExport`)
@@ -290,11 +290,10 @@ Hooks::register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
 <pre>
 use Hooks;
 
-Hooks::register( 'SMW::Exporter::AddExpDataAfterPageSerializationComplete', function( DIWikiPage $subject, &$extraExpDataList, $hasRecursionDepth, $withBacklinks ) {
+Hooks::register( 'SMW::Exporter::Controller::AddExpData', function( DIWikiPage $subject, &$expDataList, $hasRecursionDepth, $withBacklinks ) {
 
-	$expData = new ExpData( ... );
-
-	$extraExpDataList[] = $expData;
+	// $expData = new ExpData( ... );
+	// $expDataList[] = $expData;
 
 	return true;
 } );
@@ -368,6 +367,27 @@ Hooks::register( 'SMW::Admin::TaskHandlerFactory', function( &$taskHandlers, $st
 
 	// Instance of TaskHandler
 	// $taskHandlers[] = new FooTaskHandler();
+
+	return true;
+} );
+</pre>
+
+### SMW::DataUpdater::ContentProcessor
+
+* Version: 3.0
+* Description: Hook allows to extend the `SemanticData` with information from the `Content` object
+* Reference class: `SMW\DataUpdater`
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::DataUpdater::ContentProcessor', function( $semanticData, $content ) {
+
+	if ( $content->getModel() === ' ... ' ) {
+		// $data = $content->getNativeData();
+		// ...
+		// $semanticData->addPropertyObjectValue( ... );
+	}
 
 	return true;
 } );
