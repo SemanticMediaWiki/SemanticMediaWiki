@@ -6,6 +6,8 @@ use OutputPage;
 use SpecialSearch;
 use SMW\Message;
 use SMW\MediaWiki\Search\Search as SMWSearch;
+use SMW\Utils\HtmlModal;
+use Html;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend
@@ -50,7 +52,18 @@ class SpecialSearchResultsPrepend extends HookHandler {
 		$html = '';
 
 		if ( $this->specialSearch->getSearchEngine() instanceof SMWSearch ) {
+			$this->outputPage->addModuleStyles( 'ext.smw.special.search.styles');
 			$this->outputPage->addModules( 'ext.smw.special.search');
+
+			$this->outputPage->addModuleStyles( HtmlModal::getModuleStyles() );
+			$this->outputPage->addModules( HtmlModal::getModules() );
+
+			$html .=  HtmlModal::link(
+				'<span class="smw-icon-info" style="margin-left: -5px; padding: 10px 12px 12px 12px;"></span>',
+				[
+					'data-id' => 'smw-search-cheat-sheet'
+				]
+			);
 
 			$html .= Message::get(
 				'smw-search-syntax-support',
@@ -65,6 +78,16 @@ class SpecialSearchResultsPrepend extends HookHandler {
 					Message::USER_LANGUAGE
 				);
 			}
+
+			$html .= HtmlModal::modal(
+				Message::get( 'smw-cheat-sheet', Message::TEXT, Message::USER_LANGUAGE ),
+				$this->cheatSheet( $this->getOption( 'prefs-suggester-textinput' ) ),
+				[
+					'id' => 'smw-search-cheat-sheet',
+					'class' => 'plainlinks',
+					'style' => 'display:none;'
+				]
+			);
 		}
 
 		if ( $html !== '' && !$this->getOption( 'prefs-disable-search-info' ) ) {
@@ -74,6 +97,52 @@ class SpecialSearchResultsPrepend extends HookHandler {
 		}
 
 		return true;
+	}
+
+	private function cheatSheet( $inputAssistance ) {
+
+		$text = $this->msg( 'smw-search-help-intro' );
+		$text .= $this->section( 'smw-search-input' );
+
+		$text .= $this->msg( 'smw-search-help-structured' );
+		$text .= $this->msg( 'smw-search-help-proximity' );
+
+		if ( $inputAssistance ) {
+			$text .= $this->section( 'smw-ask-input-assistance' );
+			$text .= $this->msg( 'smw-search-help-input-assistance' );
+		}
+
+		$text .= $this->section( 'smw-search-syntax' );
+		$text .= $this->msg( 'smw-search-help-ask' );
+
+		return $text;
+	}
+
+	private function section( $msg, $attributes = [] ) {
+		return Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-text-strike',
+				'style' => 'padding: 5px 0 5px 0;'
+			],
+			Html::rawElement(
+				'span',
+				[
+					'style' => 'font-size: 1.2em; margin-left:0px'
+				],
+				Message::get( $msg, Message::TEXT, Message::USER_LANGUAGE )
+			)
+		);
+	}
+
+	private function msg( $msg, $html = '', $attributes = [] ) {
+		return Html::rawElement(
+			'div',
+			[
+				'class' => $msg
+			] + $attributes,
+			Message::get( $msg, Message::PARSE, Message::USER_LANGUAGE ) . $html
+		);
 	}
 
 }

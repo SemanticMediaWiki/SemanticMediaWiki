@@ -1,0 +1,79 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+.smw-search-results-prepend {
+	clear: both;
+	padding: 0.65em 0.75em 0.60em 0.75em;
+	background-color: #ddeefc;
+	margin: -1px 0 0;
+	border: 1px solid rgba( 94, 157, 200, 0.25 );
+	border-radius: 2px 2px 2px 2px;
+	margin-bottom: 1em;
+}
+
+/* https://stackoverflow.com/questions/2812770/add-centered-text-to-the-middle-of-a-hr-like-line */
+.smw-text-strike {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 15px 0 15px 0;
+}
+
+.smw-text-strike > span {
+    position: relative;
+    display: inline-block;
+    font-size: 95%;
+    margin-left: 20px;
+}
+
+.smw-text-strike > span:before,
+.smw-text-strike > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: #aaa;
+}
+
+.smw-text-strike > span:before {
+    right: 100%;
+    margin-right: 10px;
+}
+
+.smw-text-strike > span:after {
+    left: 100%;
+    margin-left: 10px;
+}
+
+/**
++ * .skin-chameleon specific styles
++ */
+.skin-chameleon .smw-search-help-proximity {
+	margin-top: 10px;
+}
