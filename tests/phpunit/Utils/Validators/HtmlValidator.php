@@ -112,12 +112,14 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 				$expectedCountText = ( $expected === true) ? 'at least 1' : 'none';
 			}
 
+			$message = "Failed assertion for test case `{$message}` on: \n=====\n$htmlFragment\n=====\nExpected pattern: `$selector`\n";
+
 			try {
 				// Symfony\Component\CssSelector\Exception\SyntaxErrorException: Expected selector ...
 				$entries = $xpath->evaluate( $converter->toXPath( $selector ) );
 				$actualCount = $entries->length;
 
-				$message = "Failed assertion for test case `{$message}` on: \n=====\n$htmlFragment\n=====\nExpected pattern: `$selector`\nExpected occurrences: {$expectedCountText}\nFound occurrences: {$actualCount}\n";
+				$message .= "Expected occurrences: {$expectedCountText}\nFound occurrences: {$actualCount}\n";
 
 			} catch ( \Exception $e ) {
 				$actualCount = 0;

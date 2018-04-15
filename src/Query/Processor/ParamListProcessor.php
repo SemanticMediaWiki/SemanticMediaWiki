@@ -144,6 +144,7 @@ class ParamListProcessor {
 
 		if ( $showMode ) {
 			$serialization['query'] = '[[:' . $serialization['query'] . ']]';
+			$serialization['parameters']['showmode'] = true;
 		}
 
 		return $serialization;

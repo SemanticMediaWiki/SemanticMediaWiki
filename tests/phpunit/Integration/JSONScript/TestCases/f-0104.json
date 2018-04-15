@@ -56,15 +56,15 @@
 		},
 		{
 			"page": "Example/F0104/Q.5",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=ul |link=none |headers=plain |sep=; }}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=ul |link=none |headers=plain |propsep=; }}"
 		},
 		{
 			"page": "Example/F0104/Q.6",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=template |template arguments=named |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=template |named args=yes |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
 		},
 		{
 			"page": "Example/F0104/Q.7",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |sep=; |valuesep=; |format=template |template arguments=named |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |sep=, |valuesep=; |format=template |named args=yes |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
 		}
 	],
 	"tests": [
@@ -74,7 +74,7 @@
 			"subject": "Example/F0104/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<p>Example/F0104/1 (Has page Example/F0104/1,  Has text 123,  456), Example/F0104/2 (Has page Example/F0104/2,  Has text abc,  def), Example/F0104/3 (Has page Example/F0104/3,  Has text 001,  0011)"
+					"<span class=\"smw-format list-format\"><span class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/1</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/1</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">123</span>, <span class=\"smw-value\">456</span></span>)</span>, <span class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/2</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/2</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">abc</span>, <span class=\"smw-value\">def</span></span>)</span>, <span class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/3</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/3</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">001</span>, <span class=\"smw-value\">0011</span></span>)</span></span>"
 				]
 			}
 		},
@@ -84,7 +84,7 @@
 			"subject": "Example/F0104/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<p>Example/F0104/1 (Has page Example/F0104/1; Has text 123; 456);Example/F0104/2 (Has page Example/F0104/2; Has text abc; def);Example/F0104/3 (Has page Example/F0104/3; Has text 001; 0011)"
+					"<span class=\"smw-format list-format\"><span class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/1</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/1</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">123</span>, <span class=\"smw-value\">456</span></span>)</span>;<span class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/2</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/2</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">abc</span>, <span class=\"smw-value\">def</span></span>)</span>;<span class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/3</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/3</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">001</span>, <span class=\"smw-value\">0011</span></span>)</span></span>"
 				]
 			}
 		},
@@ -94,7 +94,7 @@
 			"subject": "Example/F0104/Q.3",
 			"assert-output": {
 				"to-contain": [
-					"<p>Example/F0104/1 (Has page Example/F0104/1;  Has text 123;  456); Example/F0104/2 (Has page Example/F0104/2;  Has text abc;  def); Example/F0104/3 (Has page Example/F0104/3;  Has text 001;  0011)"
+					"<p><span class=\"smw-format list-format\"><span class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/1</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/1</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">123</span>, <span class=\"smw-value\">456</span></span>)</span>;_<span class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/2</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/2</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">abc</span>, <span class=\"smw-value\">def</span></span>)</span>;_<span class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/3</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/3</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">001</span>, <span class=\"smw-value\">0011</span></span>)</span></span>\n</p>"
 				]
 			}
 		},
@@ -104,21 +104,21 @@
 			"subject": "Example/F0104/Q.4",
 			"assert-output": {
 				"to-contain": [
-					"<li data-sortkey=\"E\">Example/F0104/1 (Has page Example/F0104/1,  Has text 123,  456)</li>",
-					"<li data-sortkey=\"E\">Example/F0104/2 (Has page Example/F0104/2,  Has text abc,  def)</li>",
-					"<li data-sortkey=\"E\">Example/F0104/3 (Has page Example/F0104/3,  Has text 001,  0011)</li>"
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/1</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/1</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">123</span>, <span class=\"smw-value\">456</span></span>)</li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/2</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/2</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">abc</span>, <span class=\"smw-value\">def</span></span>)</li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/3</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/3</span></span>, <span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">001</span>, <span class=\"smw-value\">0011</span></span>)</li>"
 				]
 			}
 		},
 		{
 			"type": "format",
-			"about": "#4 (ul, sep=;)",
+			"about": "#4 (ul, propsep=;)",
 			"subject": "Example/F0104/Q.5",
 			"assert-output": {
 				"to-contain": [
-					"<li data-sortkey=\"E\">Example/F0104/1 (Has page Example/F0104/1; Has text 123; 456)</li>",
-					"<li data-sortkey=\"E\">Example/F0104/2 (Has page Example/F0104/2; Has text abc; def)</li>",
-					"<li data-sortkey=\"E\">Example/F0104/3 (Has page Example/F0104/3; Has text 001; 0011)</li>"
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/1</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/1</span></span>;<span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">123</span>, <span class=\"smw-value\">456</span></span>)</li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/2</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/2</span></span>;<span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">abc</span>, <span class=\"smw-value\">def</span></span>)</li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Example/F0104/3</span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has page</span>: <span class=\"smw-value\">Example/F0104/3</span></span>;<span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">001</span>, <span class=\"smw-value\">0011</span></span>)</li>"
 				]
 			}
 		},
@@ -138,7 +138,7 @@
 			"subject": "Example/F0104/Q.7",
 			"assert-output": {
 				"to-contain": [
-					"(I)Example/F0104/1:123; 456;Example/F0104/2:abc; def;Example/F0104/3:001; 0011(O)"
+					"(I)Example/F0104/1:123;456,Example/F0104/2:abc;def,Example/F0104/3:001;0011(O)"
 				]
 			}
 		}

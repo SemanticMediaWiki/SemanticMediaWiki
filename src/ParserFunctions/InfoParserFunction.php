@@ -32,7 +32,13 @@ class InfoParserFunction implements HookHandler {
 
 		$parameters = $result->getParameters();
 
-		if ( !isset( $parameters['message'] ) || $parameters['message']->getValue() === '' ) {
+		if ( !isset( $parameters['message'] ) ) {
+			return '';
+		}
+
+		$message = $parser->mStripState->unstripBoth( $parameters[ 'message' ]->getValue() );
+
+		if ( $message === '' ) {
 			return '';
 		}
 
@@ -41,7 +47,7 @@ class InfoParserFunction implements HookHandler {
 		 * handle unsafe HTM elements.
 		 */
 		$result = smwfEncodeMessages(
-			array( $parameters['message']->getValue() ),
+			array( $message ),
 			$parameters['icon']->getValue(),
 			' <!--br-->',
 			false // No escaping.

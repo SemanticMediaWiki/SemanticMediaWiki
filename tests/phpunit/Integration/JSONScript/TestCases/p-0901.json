@@ -60,10 +60,16 @@
 				}
 			},
 			"assert-output": {
+				// FIXME: Is the data-sortkey attribute still needed?
+//				"to-contain": [
+//					"<li data-sortkey=\"P\">Page/09/01/1</li>",
+//					"<li data-sortkey=\"P\">Page/09/01/2</li>",
+//					"<li data-sortkey=\"M\">Move/09/01/4</li>"
+//				]
 				"to-contain": [
-					"<li data-sortkey=\"P\">Page/09/01/1</li>",
-					"<li data-sortkey=\"P\">Page/09/01/2</li>",
-					"<li data-sortkey=\"M\">Move/09/01/4</li>"
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Page/09/01/1</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Page/09/01/2</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Move/09/01/4</span></span></li>"
 				]
 			}
 		},
@@ -83,11 +89,17 @@
 				}
 			},
 			"assert-output": {
+//				"to-contain": [
+//					"<li data-sortkey=\"P\">Page/09/01/1</li>",
+//					"<li data-sortkey=\"P\">Page/09/01/2</li>",
+//					"<li data-sortkey=\"M\">Move/09/01/4</li>",
+//					"<li data-sortkey=\"R\">Redirect/09/01/2</li>"
+//				]
 				"to-contain": [
-					"<li data-sortkey=\"P\">Page/09/01/1</li>",
-					"<li data-sortkey=\"P\">Page/09/01/2</li>",
-					"<li data-sortkey=\"M\">Move/09/01/4</li>",
-					"<li data-sortkey=\"R\">Redirect/09/01/2</li>"
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Page/09/01/1</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Page/09/01/2</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Move/09/01/4</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Redirect/09/01/2</span></span></li>"
 				]
 			}
 		}

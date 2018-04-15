@@ -19,7 +19,7 @@
 		{
 			"namespace": "NS_TEMPLATE",
 			"page": "Example/F0802/Cite publication/result format",
-			"contents": "<includeonly><div>{{{?Author|}}}, <span>‘[[{{{?Page|}}}|{{{?Title|}}}]]’</span></div></includeonly>"
+			"contents": "<includeonly><div>{{{Author|}}}, <span>‘[[{{{Page|}}}|{{{Title|}}}]]’</span></div></includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",

@@ -16,38 +16,24 @@ class ListResultBuilder {
 
 	private static $defaultConfigurations = [
 		'*' => [
-			'sep' => '',
-			'propsep' => ', ',
-			'valuesep' => ', ',
-			'show-headers' => SMW_HEADERS_SHOW,
-			'link-first' => true,
-			'link-others' => true,
-			'template' => '',
-			'introtemplate' => '',
-			'outrotemplate' => '',
-
-			'value-open-tag' => '<div class="smw-value">',
-			'value-close-tag' => '</div>',
-			'field-open-tag' => '<div class="smw-field">',
-			'field-close-tag' => '</div>',
-			'field-label-open-tag' => '<div class="smw-field-label">',
-			'field-label-close-tag' => '</div>',
+			'value-open-tag' => '<span class="smw-value">',
+			'value-close-tag' => '</span>',
+			'field-open-tag' => '<span class="smw-field">',
+			'field-close-tag' => '</span>',
+			'field-label-open-tag' => '<span class="smw-field-label">',
+			'field-label-close-tag' => '</span>',
 			'field-label-separator' => ': ',
 			'other-fields-open' => ' (',
 			'other-fields-close' => ')',
-			'row-open-tag' => '<div class="smw-row">',
-			'row-close-tag' => '</div>',
-			'result-open-tag' => '<div class="smw-format list-format">',
-			'result-close-tag' => '</div>',
 		],
 		'list' => [
-			'row-open-tag' => '<div class="smw-row">',
-			'row-close-tag' => '</div>',
-			'result-open-tag' => '<div class="smw-format list-format">',
-			'result-close-tag' => '</div>',
+			'row-open-tag' => '<span class="smw-row">',
+			'row-close-tag' => '</span>',
+			'result-open-tag' => '<span class="smw-format list-format">',
+			'result-close-tag' => '</span>',
 		],
 		'ol' => [
-			'row-open-tag' => '<li class="smw-row">',
+			'row-open-tag' => "<li class=\"smw-row\">",
 			'row-close-tag' => '</li>',
 			'result-open-tag' => '<ol class="smw-format ol-format" start="$START$">',
 			'result-close-tag' => '</ol>',
@@ -58,11 +44,17 @@ class ListResultBuilder {
 			'result-open-tag' => '<ul class="smw-format ul-format">',
 			'result-close-tag' => '</ul>',
 		],
-		'template' => [
+		'plainlist' => [
+			'value-open-tag' => '',
+			'value-close-tag' => '',
+			'field-open-tag' => '',
+			'field-close-tag' => '',
+			'field-label-open-tag' => '',
+			'field-label-close-tag' => '',
 			'row-open-tag' => '',
 			'row-close-tag' => '',
-			'result-open-tag' => '<div class="smw-format list-format">',
-			'result-close-tag' => '</div>',
+			'result-open-tag' => '',
+			'result-close-tag' => '',
 		],
 	];
 
@@ -127,23 +119,31 @@ class ListResultBuilder {
 	}
 
 	/**
+	 * @param $parameter
+	 *
+	 * @return mixed
+	 */
+
+	/**
+	 * @return bool
+	 */
+	protected function isSimpleList() {
+		$format = $this->get( 'format' );
+		return $format !== 'ul' && $format !== 'ol' ;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getResultText() {
 
 		$this->prepareBuilt();
 
-		if ( $this->get( 'template' ) === '' ) {
-			$rowTexts = $this->getRowTexts( 'getRowText' );
-		} else {
-			$rowTexts = $this->getRowTexts( 'getRowTextFromTemplate' );
-		}
-
 		return
 			$this->getTemplateCall( 'introtemplate' ) .
-			$this->insertOffset( $this->get( 'result-open-tag' ) ) .
+			$this->get( 'result-open-tag' ) .
 
-			join( $this->get( 'sep' ), $rowTexts ) .
+			join( $this->get( 'sep' ), $this->getRowTexts() ) .
 
 			$this->get( 'result-close-tag' ) .
 			$this->getTemplateCall( 'outrotemplate' );
@@ -162,22 +162,19 @@ class ListResultBuilder {
 
 		$format = $this->getEffectiveFormat();
 
+		$this->configuration = array_merge(
+			self::$defaultConfigurations[ '*' ],
+			self::$defaultConfigurations[ $format ],
+			$this->getDefaultsFromI18N(),
+			$this->configuration );
+
 		if ( $this->get( 'template' ) !== '' ) {
 
 			$this->set( [ 'value-open-tag' => '', 'value-close-tag' => '' ] );
 
-			if ( $format === 'list' ) {
-				$format = 'template';
-			}
-
 		}
 
-		$this->configuration = array_merge(
-			self::$defaultConfigurations[ '*' ],
-			self::$defaultConfigurations[ $format ],
-			$this->getDefaultsFromI18N( $format ),
-			$this->configuration );
-
+		$this->set( 'result-open-tag', $this->insertOffset( $this->get( 'result-open-tag' ) ) );
 	}
 
 	/**
@@ -187,19 +184,21 @@ class ListResultBuilder {
 
 		$format = $this->get( 'format' );
 
-		if ( $format !== 'template' && array_key_exists( $format, self::$defaultConfigurations ) ) {
+		if ( in_array( $format, [ 'ol', 'ul', 'plainlist' ] ) ) {
 			return $format;
+		}
+
+		if ( $this->get( 'template' ) !== '' ) {
+			return 'plainlist';
 		}
 
 		return 'list';
 	}
 
 	/**
-	 * @param string $format
-	 *
 	 * @return string[]
 	 */
-	protected function getDefaultsFromI18N( $format ) {
+	protected function getDefaultsFromI18N() {
 		return [
 			'field-label-separator' => Message::get( 'smw-format-list-field-label-separator' ),
 			'other-fields-open' => Message::get( 'smw-format-list-other-fields-open' ),
@@ -208,22 +207,26 @@ class ListResultBuilder {
 	}
 
 	/**
-	 * @param string $getRowTextFunctionName
-	 *
 	 * @return string[]
 	 */
-	protected function getRowTexts( $getRowTextFunctionName ) {
+	protected function getRowTexts() {
 
-		$rowTexts = [];
+		$rowTextFunctionName = $this->get( 'template' ) === '' ? 'getRowText' : 'getRowTextFromTemplate';
 
 		$queryResult = $this->getQueryResult();
 		$queryResult->reset();
 
+		$rowTexts = [];
 		$num = $queryResult->getQuery()->getOffset();
 
 		while ( ( $row = $queryResult->getNext() ) !== false ) {
+
+			$rowTexts[] =
+				$this->get( 'row-open-tag' ) .
+				call_user_func( [ $this, $rowTextFunctionName ], $row, $num ) .
+				$this->get( 'row-close-tag' );
+
 			$num++;
-			$rowTexts[] = call_user_func( [ $this, $getRowTextFunctionName ], $row, $num );
 		}
 
 		return $rowTexts;
@@ -245,16 +248,19 @@ class ListResultBuilder {
 		}
 
 		if ( count( $fieldTexts ) > 0 ) {
-			$otherFieldsText = $this->get( 'other-fields-open' ) . join( $this->get( 'propsep' ), $fieldTexts ) . $this->get( 'other-fields-close' );
+
+			$otherFieldsText =
+				$this->get( 'other-fields-open' ) .
+				join( $this->get( 'propsep' ), $fieldTexts ) .
+				$this->get( 'other-fields-close' );
+
 		} else {
 			$otherFieldsText = '';
 		}
 
 		return
-			$this->get( 'row-open-tag' ) .
 			$firstFieldText .
-			$otherFieldsText .
-			$this->get( 'row-close-tag' );
+			$otherFieldsText;
 	}
 
 	/**
@@ -277,13 +283,13 @@ class ListResultBuilder {
 			$templateRenderer->addField( $fieldLabel, $fieldText );
 		}
 
-		$templateRenderer->addField( '#rownumber', $rownum );
+		/** @deprecated since SMW 3.0 */
+		$templateRenderer->addField( '#', $rownum );
+
+		$templateRenderer->addField( '#rownumber', $rownum + 1 );
 		$templateRenderer->packFieldsForTemplate( $this->get( 'template' ) );
 
-		return
-			$this->get( 'row-open-tag' ) .
-			$templateRenderer->render() .
-			$this->get( 'row-close-tag' );
+		return $templateRenderer->render();
 
 	}
 
@@ -369,7 +375,7 @@ class ListResultBuilder {
 
 		$valueTexts = $this->getValueTexts( $field, $column );
 
-		return join( $this->get( 'valsep' ), $valueTexts );
+		return join( $this->get( 'valuesep' ), $valueTexts );
 
 	}
 
@@ -384,8 +390,13 @@ class ListResultBuilder {
 		$valueTexts = [];
 
 		$field->reset();
+
 		while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
-			$valueTexts[] = $this->getValueText( $dataValue, $column );
+
+			$valueTexts[] =
+				$this->get( 'value-open-tag' ) .
+				$this->getValueText( $dataValue, $column ) .
+				$this->get( 'value-close-tag' );
 		}
 
 		return $valueTexts;
@@ -399,9 +410,24 @@ class ListResultBuilder {
 	 */
 	protected function getValueText( SMWDataValue $value, $column = 0 ) {
 
-		return $this->get( 'value-open-tag' ) .
-			$value->getShortText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) ) .
-			$this->get( 'value-close-tag' );
+		$text = $value->getShortText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+
+		return $this->sanitizeValueText( $text ) ;
+	}
+
+
+	/**
+	 * @param $text
+	 *
+	 * @return string
+	 */
+	protected function sanitizeValueText( $text ) {
+
+		if ( $this->isSimpleList() ) {
+			return $text;
+		}
+
+		return \Sanitizer::removeHTMLtags( $text, null, [], [], [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] );
 	}
 
 	/**
@@ -431,15 +457,15 @@ class ListResultBuilder {
 
 		$templatename = $this->get( $param );
 
-		if ( $templatename !== '' ) {
-
-			$templateRenderer = $this->getTemplateRenderer();
-
-			$templateRenderer->packFieldsForTemplate( $templatename );
-			return $templateRenderer->render();
+		if ( $templatename === '' ) {
+			return '';
 		}
 
-		return '';
+		$templateRenderer = $this->getTemplateRenderer();
+		$templateRenderer->packFieldsForTemplate( $templatename );
+
+		return $templateRenderer->render();
+
 	}
 
 	/**

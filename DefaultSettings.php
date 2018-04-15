@@ -693,6 +693,7 @@ return array(
 		'table'      => 'SMW\Query\ResultPrinters\TableResultPrinter',
 		'broadtable' => 'SMW\Query\ResultPrinters\TableResultPrinter',
 		'list'       => 'SMW\ListResultPrinter',
+		'plainlist'  => 'SMW\ListResultPrinter',
 		'ol'         => 'SMW\ListResultPrinter',
 		'ul'         => 'SMW\ListResultPrinter',
 		'category'   => 'SMW\CategoryResultPrinter',

@@ -9,12 +9,12 @@
 		{
 			"namespace": "NS_TEMPLATE",
 			"page": "TemplateOutputUsingUnnamedArgumentsForNonUnicode",
-			"contents": "<includeonly>[{{{#}}}]:{{{1}}}:{{{2}}}:{{{userparam}}}:</includeonly>"
+			"contents": "<includeonly>[{{{#}}}]:{{{1}}}:{{{2}}}:{{{#userparam}}}:</includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",
 			"page": "TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra",
-			"contents": "<includeonly><div>{{{userparam}}}</div></includeonly>"
+			"contents": "<includeonly><div>{{{#userparam}}}</div></includeonly>"
 		},
 		{
 			"page": "Foo",

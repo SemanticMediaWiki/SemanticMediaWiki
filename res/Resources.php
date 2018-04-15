@@ -523,13 +523,7 @@ return array(
 		'targets' => array( 'mobile', 'desktop' )
 	),
 
-	// ListResultPrinter resource
-	'ext.smw.listprinter' => $moduleTemplate + array(
-		'styles'   => array(
-			'smw/printer/ext.smw.listprinter.css',
-		),
-	),
-			// Deferred
+	// Deferred
 	'ext.smw.deferred.styles'  => $moduleTemplate + array(
 		'position' => 'top',
 		'styles'   => array(

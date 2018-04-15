@@ -64,27 +64,12 @@ class ListResultPrinter extends ResultPrinter {
 	 */
 	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
 
-		$builder = new ListResultBuilder( $queryResult, $this->mLinker );
-		$builder->set( $this->params );
-		$builder->set( [
-			'link-first' => $this->mLinkFirst,
-			'link-others'=>$this->mLinkOthers,
-			'show-headers'=>$this->mShowHeaders,
-		] );
+		$builder = $this->getBuilder( $queryResult );
 
 		$this->hasTemplates = $builder->hasTemplates();
 
-		$this->registerResources( [], [ 'ext.smw.listprinter' ] );
-
-		return $builder->getResultText() .
-			$this->getFurtherResultsText( $queryResult, $outputMode );
-
-		// FIXME: This should be taken care of by ResultPrinter, right? Right?
-		//// Display default if the result is empty
-		//if ( $result == '' ) {
-		//	$result = $this->params[ 'default' ];
-		//}
-	}
+		return $builder->getResultText() . $this->getFurtherResultsText( $queryResult, $outputMode );
+		}
 
 	/**
 	 * Get text for further results link. Used only during getResultText().
@@ -134,7 +119,7 @@ class ListResultPrinter extends ResultPrinter {
 				'default' => Message::get( 'smw-format-list-property-separator' ),
 			],
 
-			'valsep' => [
+			'valuesep' => [
 				'message' => 'smw-paramdesc-valuesep',
 				'default' => Message::get( 'smw-format-list-value-separator' ),
 			],
@@ -180,5 +165,29 @@ class ListResultPrinter extends ResultPrinter {
 		$listFormatDefinitions = ParamDefinition::getCleanDefinitions( $listFormatDefinitions );
 
 		return array_merge( $definitions, $listFormatDefinitions );
+	}
+
+	/**
+	 * @param SMWQueryResult $queryResult
+	 *
+	 * @return ListResultBuilder|TemplateResultBuilder
+	 */
+	protected function getBuilder( SMWQueryResult $queryResult ) {
+
+		$builder = new ListResultBuilder( $queryResult, $this->mLinker );
+
+		$builder->set( $this->params );
+
+		$builder->set( [
+			'link-first' => $this->mLinkFirst,
+			'link-others' => $this->mLinkOthers,
+			'show-headers' => $this->mShowHeaders,
+		] );
+
+		if ( $this->params[ 'template' ] !== '' && isset( $this->fullParams[ 'sep' ] ) && $this->fullParams[ 'sep' ]->wasSetToDefault() === true ) {
+			$builder->set( 'sep', '' );
+		}
+
+		return $builder;
 	}
 }

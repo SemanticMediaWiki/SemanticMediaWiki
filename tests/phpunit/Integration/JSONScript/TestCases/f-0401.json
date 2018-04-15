@@ -39,7 +39,7 @@
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "div.list-format > div.smw-row > div.smw-field > div.smw-value > a[title]", 4 ]
+					[ "span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]", 4 ]
 				]
 			}
 		},

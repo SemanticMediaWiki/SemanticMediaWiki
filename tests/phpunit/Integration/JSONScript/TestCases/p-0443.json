@@ -17,7 +17,7 @@
 		},
 		{
 			"page": "Example/P0443/2",
-			"contents": "[[Has uniqueness one::1111]] {{#ask: [[Has uniqueness one::1111]] |link=none }}"
+			"contents": "[[Has uniqueness one::1111]] {{#ask: [[Has uniqueness one::1111]] |link=none |format=plainlist}}"
 		}
 	],
 	"tests": [

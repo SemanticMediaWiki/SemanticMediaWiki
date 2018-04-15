@@ -298,6 +298,11 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		$outputMode = $this->outputMode;
 
+		//print_r( $results->getQueryString() . ": " . $results->getCount() );
+		//$page = $results->reset();
+		//if ( $page ) print_r( ": " . $page->getDBkey() );
+		//print_r( "\n" );
+
 		// Default output for normal printers:
 		if ( $outputMode !== SMW_OUTPUT_FILE && $results->getCount() == 0 ) {
 			if ( !$results->hasFurtherResults() ) {

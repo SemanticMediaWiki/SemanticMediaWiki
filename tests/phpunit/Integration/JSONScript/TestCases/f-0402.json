@@ -34,12 +34,12 @@
 		{
 			"namespace": "NS_TEMPLATE",
 			"page": "f-0401/intro",
-			"contents": "<includeonly><div class='intro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</div></includeonly>"
+			"contents": "<includeonly><span class='intro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</span></includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",
 			"page": "f-0401/outro",
-			"contents": "<includeonly><div class='outro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</div></includeonly>"
+			"contents": "<includeonly><span class='outro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</span></includeonly>"
 		},
 		{
 			"page": "f-0401/Aerified",
@@ -363,19 +363,19 @@
 		},
 		{
 			"page": "f-0401/Test-06",
-			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valsep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2}}"
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2}}"
 		},
 		{
 			"page": "f-0401/Test-07",
-			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version=|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valsep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2|named args=yes}}"
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version=|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2|named args=yes}}"
 		},
 		{
 			"page": "f-0401/Test-08",
-			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valsep=VSEP}}"
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP}}"
 		},
 		{
 			"page": "f-0401/Test-09",
-			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valsep=VSEP|offset=2}}{{#ask:[[Category:0402]]|format=ul|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|offset=2}}{{#ask:[[Category:0402]]|format=ul|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
 		},
 		{
 			"page": "f-0401/Test-10",
@@ -412,7 +412,7 @@
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
-						"div.list-format > div.smw-row > div.smw-field > div.smw-value > a[title]",
+						"span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]",
 						50
 					]
 				]
@@ -426,7 +426,7 @@
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
-						"div.list-format > div.smw-row > div.smw-field > div.smw-value > a[title]",
+						"span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]",
 						50
 					]
 				]
@@ -440,7 +440,7 @@
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
-						"div.list-format > div.smw-row > div.smw-field > div.smw-value > a[title]",
+						"span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]",
 						50
 					]
 				]
@@ -454,7 +454,7 @@
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
-						"ol.ol-format > li.smw-row > div.smw-field > div.smw-value > a[title]",
+						"ol.ol-format > li.smw-row > span.smw-field > span.smw-value > a[title]",
 						50
 					]
 				]
@@ -468,7 +468,7 @@
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
-						"ul.ul-format > li.smw-row > div.smw-field > div.smw-value > a[title]",
+						"ul.ul-format > li.smw-row > span.smw-field > span.smw-value > a[title]",
 						50
 					]
 				]
@@ -549,11 +549,11 @@
 			"subject": "f-0401/Test-08",
 			"assert-output": { // at least 49, but not 50 or more, i.e. exactly 49
 				"to-contain": [
-					"/(div>SEPARATOR<div.+?){49}/",
+					"/(span>SEPARATOR<span.+?){49}/",
 					"PSEP",
 					"VSEP"
 				],
-				"not-contain": [ "/(div>SEPARATOR<div.+?){50,}/" ]
+				"not-contain": [ "/(span>SEPARATOR<span.+?){50,}/" ]
 			}
 		},
 		{
@@ -586,8 +586,8 @@
 			"subject": "f-0401/Test-10",
 			"assert-output": {
 				"to-contain": [
-					"<div class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>",
-					"<div class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>"
+					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>",
+					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>"
 				]
 			}
 		},
@@ -598,8 +598,8 @@
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "div.intro + div.smw-format", 1 ],
-					[ "div.smw-format + div.outro", 1 ]
+					[ "span.intro + span.smw-format", 1 ],
+					[ "span.smw-format + span.outro", 1 ]
 				]
 			}
 		},
@@ -609,8 +609,11 @@
 			"subject": "f-0401/Test-11",
 			"assert-output": {
 				"to-contain": [
-					"<div class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>",
-					"<div class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>"
+					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>",
+					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>"
+				],
+				"not-contain": [
+					";, <a" //No default list separator (, ) between template calls
 				]
 			}
 		},
@@ -621,8 +624,8 @@
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "div.intro + div.smw-format", 1 ],
-					[ "div.smw-format + div.outro", 1 ]
+					[ "p > span.intro:first-child + a", 1 ],
+					[ "p > span.outro + span.smw-list-furtherresults:last-child", 1 ]
 				]
 			}
 		},
@@ -632,8 +635,8 @@
 			"subject": "f-0401/Test-12",
 			"assert-output": {
 				"to-contain": [
-					"<div class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>",
-					"<div class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</div>"
+					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>",
+					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>"
 				]
 			}
 		},
@@ -644,8 +647,8 @@
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "div.intro + ol.smw-format", 1 ],
-					[ "ol.smw-format + div.outro", 1 ]
+					[ "span.intro + ol.smw-format", 1 ],
+					[ "ol.smw-format + span.outro", 1 ]
 				]
 			}
 		},
@@ -656,10 +659,10 @@
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "div.smw-field-label > a", 50 ] // headers = show
+					[ "span.smw-field-label > a", 50 ] // headers = show
 				],
 				"not-contain": [
-					"div.smw-value > a" // link = none
+					"span.smw-value > a" // link = none
 				]
 			}
 		},
@@ -670,11 +673,11 @@
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "li.smw-row > div.smw-field:first-child > div.smw-value > a", 50 ] // link = subject
+					[ "li.smw-row > span.smw-field:first-child > span.smw-value > a", 50 ] // link = subject
 				],
 				"not-contain": [
-					"li.smw-row > div.smw-field:not(:first-child) > div.smw-value > a", // link = subject
-					"div.smw-field-label" // headers = hide
+					"li.smw-row > span.smw-field:not(:first-child) > span.smw-value > a", // link = subject
+					"span.smw-field-label" // headers = hide
 				]
 			}
 		},
@@ -685,11 +688,11 @@
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "li.smw-row > div.smw-field > div.smw-value > a", 100 ], // link = all
-					[ "div.smw-field-label", 50 ] // headers = plain
+					[ "li.smw-row > span.smw-field > span.smw-value > a", 100 ], // link = all
+					[ "span.smw-field-label", 50 ] // headers = plain
 				],
 				"not-contain": [
-					"div.smw-field-label > a" // headers = plain
+					"span.smw-field-label > a" // headers = plain
 				]
 			}
 		}

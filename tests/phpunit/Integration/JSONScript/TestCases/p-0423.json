@@ -117,7 +117,7 @@
 			"subject": "Example/P0423/Q1.4",
 			"assert-output": {
 				"to-contain": [
-					"<p>1957年1月12日 (土) 12:05:00"
+					"1957年1月12日 (土) 12:05:00"
 				]
 			}
 		},
@@ -127,7 +127,7 @@
 			"subject": "Example/P0423/Q1.5",
 			"assert-output": {
 				"to-contain": [
-					"<p>12:05:00, 12 janvier 1957"
+					"12:05:00, 12 janvier 1957"
 				]
 			}
 		},
@@ -137,10 +137,10 @@
 			"subject": "Example/P0423/Q2.1",
 			"assert-output": {
 				"to-contain": [
-					"<p>12 April 1957 12:05:00"
+					"12 April 1957 12:05:00"
 				],
 				"not-contain": [
-					"<p>12 avril 1957 12:05:00"
+					"12 avril 1957 12:05:00"
 				]
 			}
 		},
