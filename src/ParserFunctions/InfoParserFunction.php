@@ -36,7 +36,7 @@ class InfoParserFunction implements HookHandler {
 			return '';
 		}
 
-		$message = $parser->mStripState->unstripBoth( $parameters[ 'message' ]->getValue() );
+		$message = $parser->mStripState ? $parser->mStripState->unstripBoth( $parameters[ 'message' ]->getValue() ) : $parameters[ 'message' ]->getValue();
 
 		if ( $message === '' ) {
 			return '';
