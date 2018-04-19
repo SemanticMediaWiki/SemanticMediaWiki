@@ -15,7 +15,8 @@
 			"Marek Pavlica",
 			"Aktron",
 			"Martin Urbanec",
-			"Ilimanaq29"
+			"Ilimanaq29",
+			"Patriccck"
 		]
 	},
 	"smw-desc": "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -193,9 +194,9 @@
 	"smw_browse_no_incoming": "Na tuto stránku neodkazují žádné vlastnosti.",
 	"smw_inverse_label_default": "$1 z/ze",
 	"pageproperty": "Hledání vlastností stránky",
-	"smw_pp_docu": "Hledání všech nositelů vlastnosti na zadané stránce.\nProsím, zadejte stránku i vlastnost.",
+	"smw_pp_docu": "Buď zadejte stránku a vlastnost nebo pouze vlastnost pro načtení všech přiřazených hodnot.",
 	"smw_pp_from": "Od stránky",
-	"smw_pp_type": "Vlastnost",
+	"smw_pp_type": "Vlastnictví:",
 	"smw_pp_submit": "Výsledky hledání",
 	"smw_result_prev": "Zpět",
 	"smw_result_next": "Dále",

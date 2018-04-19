@@ -544,7 +544,7 @@
 	"smw-format-datatable-info": "Отображение записей от _START_ до _END_ с _TOTAL_",
 	"smw-format-datatable-infoempty": "Показаны от 0 до 0 из 0 записей",
 	"smw-format-datatable-infofiltered": "(отфильтровано по _MAX_ всего записей)",
-	"smw-format-datatable-infothousands": ",",
+	"smw-format-datatable-infothousands": "&nbsp;",
 	"smw-format-datatable-lengthmenu": "Показать _MENU_ записей",
 	"smw-format-datatable-loadingrecords": "Загрузка…",
 	"smw-format-datatable-processing": "Обработка…",

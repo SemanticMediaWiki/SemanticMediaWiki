@@ -426,6 +426,7 @@
 	"smw-prefs-general-options-time-correction": "Ativar a correção da hora para páginas especiais utilizando a preferência do [[Special:Preferences#mw-prefsection-rendering|fuso horário]] local",
 	"smw-prefs-general-options-jobqueue-watchlist": "Mostrar a [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist lista de vigilância da fila de tarefas] na minha barra pessoal",
 	"smw-prefs-general-options-disable-editpage-info": "Desativar o texto introdutório na edição da página",
+	"smw-prefs-general-options-disable-search-info": "Desativar as informações de suporte da sintaxe na página de pesquisa padrão",
 	"smw-prefs-general-options-suggester-textinput": "Ativar a [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance assistência de entrada] (autocompletar) para sugestões de entidade semântica",
 	"smw-ui-tooltip-title-property": "Propriedade",
 	"smw-ui-tooltip-title-quantity": "Conversão de unidade",
