@@ -111,7 +111,7 @@ Note that HHVM is only required if you do not use PHP.
 		<th>SMW 2.5.x</th>
 		<td><strong><a href="https://php.net/supported-versions.php">5.5.0</a></strong> - 7.1.x</td>
 		<td>3.5.0 - 3.12.x</td>
-		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.23.0</a></strong> - 1.29</td>
+		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.23.0</a></strong> - 1.30</td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
