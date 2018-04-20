@@ -133,6 +133,21 @@ $magicWords['es'] = array(
 	'declare' => array( 0, 'declarar', 'declara' ),
 );
 
+/** Persian (فارسی) */
+$magicWords['fa'] = array(
+	'ask' => array( 0, 'پرسش','سوال' ),
+	'show' => array( 0, 'نمایش' ),
+	'info' => array( 0, 'اطلاع' ),
+	'concept' => array( 0, 'مفهوم' ),
+	'subobject' => array( 0, 'جزءشیء' ),
+	'smwdoc' => array( 0, 'smwdoc' ),
+	'set' => array( 0, 'مجموعه' ),
+	'set_recurring_event' => array( 0, 'set_recurring_event' ),
+	'declare' => array( 0, 'declare' ),
+	'SMW_NOFACTBOX' => array( 0, '__NOFACTBOX__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__SHOWFACTBOX__' ),
+);
+
 /** French (français) */
 $magicWords['fr'] = array(
 	'ask' => array( 0, 'demander' ),
