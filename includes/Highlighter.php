@@ -241,33 +241,45 @@ class Highlighter {
 		}
 
 		$language = is_string( $this->language ) ? $this->language : Message::USER_LANGUAGE;
+		$style = [];
+
+		if ( isset( $this->options['style'] ) ) {
+			$style = [ 'style' => $this->options['style'] ];
+		}
 
 		// #1875
 		// title attribute contains stripped content to allow for a display in
 		// no-js environments, the tooltip will remove the element once it is
 		// loaded
+		$title = $this->createStrippedContentFrom(
+			$this->options['content'],
+			$language
+		);
 
 		return Html::rawElement(
 			'span',
-			array(
+			[
 				'class'        => 'smw-highlighter',
 				'data-type'    => $this->options['type'],
 				'data-content' => isset( $this->options['data-content'] ) ? $this->options['data-content'] : null,
 				'data-state'   => $this->options['state'],
 				'data-title'   => Message::get( $this->options['title'], Message::TEXT, $language ),
-				'title'        => $this->createStrippedContentFrom( $this->options['content'], $language )
-			), Html::rawElement(
-					'span',
-					array(
-						'class' => $captionclass
-					), $this->options['caption']
-				) . Html::rawElement(
-					'div',
-					array(
-						'class' => 'smwttcontent'
-					), htmlspecialchars_decode( $this->options['content'] )
-				)
-			);
+				'title'        => $title
+			] + $style,
+			Html::rawElement(
+				'span',
+				[
+					'class' => $captionclass
+				],
+				$this->options['caption']
+			) . Html::rawElement(
+				'div',
+				[
+					'class' => 'smwttcontent'
+				],
+				htmlspecialchars_decode( $this->options['content'] )
+			)
+		);
 	}
 
 	/**
