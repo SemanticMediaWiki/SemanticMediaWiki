@@ -293,17 +293,19 @@ class RulePage extends Page {
 		$description = $this->ruleDefinition->get( 'description', '' );
 		$type = $this->ruleDefinition->get( 'type', '' );
 
-		$list[] = Html::rawElement(
-			'span',
-			[
-				'class' => 'plainlinks'
-			],
-			Message::get(
-				'smw-rule-page-description',
-				Message::PARSE,
-				Message::USER_LANGUAGE
-			) . '&nbsp;' . $description
-		);
+		if ( $description !== '' ) {
+			$list[] = Html::rawElement(
+				'span',
+				[
+					'class' => 'plainlinks'
+				],
+				Message::get(
+					'smw-rule-page-description',
+					Message::PARSE,
+					Message::USER_LANGUAGE
+				) . '&nbsp;' . $description
+			);
+		}
 
 		$list[] = Html::rawElement(
 			'span',

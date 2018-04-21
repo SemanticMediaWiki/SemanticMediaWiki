@@ -279,3 +279,10 @@ define( 'SMW_QSORT_RANDOM', 4 ); // Random sort support
   */
 define( 'SMW_RULE_GROUP_FORMAT', 'rule.group.format' );
 /**@}*/
+
+/**@{
+  * Constants for content types
+  */
+define( 'CONTENT_MODEL_RULE', 'rule-json' );
+define( 'CONTENT_FORMAT_RULE', 'application/json' );
+/**@}*/

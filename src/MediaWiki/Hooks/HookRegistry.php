@@ -77,6 +77,8 @@ class HookRegistry {
 	 */
 	public static function initExtension( array &$vars ) {
 
+		$vars['wgContentHandlers'][CONTENT_MODEL_RULE] = 'SMW\Rule\RuleContentHandler';
+
 		/**
 		 * CanonicalNamespaces initialization
 		 *
