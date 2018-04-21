@@ -1,10 +1,10 @@
 <?php
-namespace SMW\Test;
+namespace SMW\Tests\Query\ResultPrinters;
 
-use SMW\ListResultPrinter;
+use SMW\Query\ResultPrinters\ListResultPrinter;
 
 /**
- * @covers \SMW\ListResultPrinter
+ * @covers \SMW\Query\ResultPrinters\ListResultPrinter
  *
  * @group SMW
  * @group SMWExtension
@@ -12,7 +12,7 @@ use SMW\ListResultPrinter;
  * @license GNU GPL v2+
  * @since 3.0
  */
-class ListResultPrinterTest extends QueryPrinterTestCase {
+class ListResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider allFormatsProvider
 	 * @param string $format
@@ -20,7 +20,7 @@ class ListResultPrinterTest extends QueryPrinterTestCase {
 	public function testCanConstruct( $format ) {
 		$listResultPrinter = new ListResultPrinter( $format );
 
-		$this->assertInstanceOf( '\SMW\ListResultPrinter', $listResultPrinter );
+		$this->assertInstanceOf( '\SMW\Query\ResultPrinters\ListResultPrinter', $listResultPrinter );
 	}
 
 	/**

@@ -4,13 +4,15 @@ namespace SMW\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
 use SMW\Message;
+use SMW\Query\ResultPrinters\ListResultPrinter\ListResultBuilder;
 use SMWQueryResult;
 
 /**
  * Print query results in lists.
  *
+ * @license GNU GPL v2+
+ *
  * @author Markus Krötzsch
- * @ingroup SMWQuery
  */
 
 /**
