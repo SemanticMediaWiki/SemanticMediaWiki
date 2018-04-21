@@ -48,6 +48,7 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 
 	/**
 	 * @param string $fragment
+	 *
 	 * @return bool|DOMDocument
 	 */
 	private function getDomDocumentFromHtmlFragment( $fragment ) {
@@ -82,6 +83,7 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 
 	/**
 	 * @param string $fragment
+	 *
 	 * @return string
 	 */
 	private static function wrapHtmlFragment( $fragment ) {
@@ -93,7 +95,7 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $htmlFragment
 	 * @param string $message
 	 */
-	public function assertThatHtmlContains( $cssSelectors, $htmlFragment, $message = '' ) {
+	public function assertThatHtmlContains( $cssSelectors, $htmlFragment, $message = '', $expected = true ) {
 
 		$document = $this->getDomDocumentFromHtmlFragment( $htmlFragment );
 		$xpath = new \DOMXPath( $document );
@@ -103,26 +105,37 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 
 			if ( is_array( $selector ) ) {
 				$expectedCount = array_pop( $selector );
-				$expectedCountText = $expectedCount . 'x ';
+				$expectedCountText = ( ( $expected === true) ? '' : 'not ') . $expectedCount;
 				$selector = array_shift( $selector );
 			} else {
 				$expectedCount = false;
-				$expectedCountText = '';
+				$expectedCountText = ( $expected === true) ? 'at least 1' : 'none';
 			}
 
-			$message = "Failed asserting that `{$message}` contains (HtmlContains): $expectedCountText`$selector` for: \n=====\n$htmlFragment\n=====\n";
+			$message = "Failed assertion for test case `{$message}` on: \n=====\n$htmlFragment\n=====\nExpected pattern: `$selector`\n";
 
 			try {
 				// Symfony\Component\CssSelector\Exception\SyntaxErrorException: Expected selector ...
 				$entries = $xpath->evaluate( $converter->toXPath( $selector ) );
 				$actualCount = $entries->length;
+
+				$message .= "Expected occurrences: {$expectedCountText}\nFound occurrences: {$actualCount}\n";
+
 			} catch ( \Exception $e ) {
 				$actualCount = 0;
 				$message .= "CssSelector: " . $e->getMessage();
 			}
 
-			self::assertTrue( ( $expectedCount === false && $actualCount > 0 ) || ( $actualCount === $expectedCount ), $message );
+			self::assertTrue( ( ( $expectedCount === false && $actualCount > 0 ) || ( $actualCount === $expectedCount ) ) === $expected, $message );
 		}
 	}
 
+	/**
+	 * @param string | string[] $cssSelectors
+	 * @param string $htmlFragment
+	 * @param string $message
+	 */
+	public function assertThatHtmlNotContains( $cssSelectors, $htmlFragment, $message = '' ) {
+		$this->assertThatHtmlContains( $cssSelectors, $htmlFragment, $message, false );
+	}
 }

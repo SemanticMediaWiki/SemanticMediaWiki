@@ -5,7 +5,7 @@ namespace SMW\Tests\Query\ResultPrinters;
 use SMW\Query\ResultPrinters\CsvFileExportPrinter;
 
 /**
- * @covers SMW\Query\ResultPrinters\CsvFileExportPrinter
+ * @covers \SMW\Query\ResultPrinters\CsvFileExportPrinter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

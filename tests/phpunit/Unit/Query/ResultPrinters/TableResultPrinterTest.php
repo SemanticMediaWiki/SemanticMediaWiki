@@ -5,7 +5,7 @@ namespace SMW\Tests\Query\ResultPrinters;
 use SMW\Query\ResultPrinters\TableResultPrinter;
 
 /**
- * @covers SMW\Query\ResultPrinters\TableResultPrinter
+ * @covers \SMW\Query\ResultPrinters\TableResultPrinter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

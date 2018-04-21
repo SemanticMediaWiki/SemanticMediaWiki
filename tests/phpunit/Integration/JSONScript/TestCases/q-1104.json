@@ -32,7 +32,7 @@
 		},
 		{
 			"page": "Example/1103/2",
-			"contents": "{{#ask: [[Category:Record redirect example]] [[Project::closed;~1970]]|?Project=Status|+index=1|format=list}}"
+			"contents": "{{#ask: [[Category:Record redirect example]] [[Project::closed;~1970]]|?Project=Status|+index=1|format=plainlist}}"
 		}
 	],
 	"tests": [
@@ -42,7 +42,7 @@
 			"subject": "Example/1103/2",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:Project\">Status</a> closed"
+					"title=\"Property:Project\">Status</a>: closed"
 				]
 			}
 		},

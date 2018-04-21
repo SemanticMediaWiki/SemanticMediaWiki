@@ -19,7 +19,7 @@
 		{
 			"namespace": "NS_TEMPLATE",
 			"page": "InvertPropertySetter",
-			"contents": "<includeonly>{{#set:|{{{userparam}}}={{{1}}} }}</includeonly>"
+			"contents": "<includeonly>{{#set:|{{{#userparam}}}={{{1}}} }}</includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",

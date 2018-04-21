@@ -267,7 +267,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		$params = array();
 
 		/**
-		 * @var \IParam $param
+		 * @var \ParamProcessor\Param $param
 		 */
 		foreach ( $fullParams as $param ) {
 			$params[$param->getName()] = $param->getValue();
@@ -297,6 +297,11 @@ abstract class ResultPrinter implements IResultPrinter {
 		$this->hasTemplates = false;
 
 		$outputMode = $this->outputMode;
+
+		//print_r( $results->getQueryString() . ": " . $results->getCount() );
+		//$page = $results->reset();
+		//if ( $page ) print_r( ": " . $page->getDBkey() );
+		//print_r( "\n" );
 
 		// Default output for normal printers:
 		if ( $outputMode !== SMW_OUTPUT_FILE && $results->getCount() == 0 ) {
@@ -464,6 +469,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * for making hyperlinks or NULL if no links should be created.
 	 *
 	 * @param boolean $firstcol True of this is the first result column (having special linkage settings).
+	 * @return Linker|null
 	 */
 	protected function getLinker( $firstcol = false ) {
 		if ( ( $firstcol && $this->mLinkFirst ) || ( !$firstcol && $this->mLinkOthers ) ) {

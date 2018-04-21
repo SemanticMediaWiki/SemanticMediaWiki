@@ -81,7 +81,7 @@
 			"subject": "Example/F0105/Q.2.1",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/F0105/2\">Example/F0105/2</a> (Has text Test <li>Item</li>)"
+					"title=\"Example/F0105/2\">Example/F0105/2</a></span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">Test <li>Item</li></span></span>)"
 				]
 			}
 		},
@@ -91,7 +91,7 @@
 			"subject": "Example/F0105/Q.2.2",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/F0105/2\">Example/F0105/2</a> (Has text Test &lt;li&gt;Item&lt;/li&gt;)</li>"
+					"title=\"Example/F0105/2\">Example/F0105/2</a></span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">Test &lt;li&gt;Item&lt;/li&gt;</span></span>)</li>"
 				]
 			}
 		},
@@ -101,7 +101,7 @@
 			"subject": "Example/F0105/Q.2.3",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/F0105/2\">Example/F0105/2</a> (Has text Test &lt;li&gt;Item&lt;/li&gt;)</li>"
+					"title=\"Example/F0105/2\">Example/F0105/2</a></span></span> (<span class=\"smw-field\"><span class=\"smw-field-label\">Has text</span>: <span class=\"smw-value\">Test &lt;li&gt;Item&lt;/li&gt;</span></span>)</li>"
 				]
 			}
 		}

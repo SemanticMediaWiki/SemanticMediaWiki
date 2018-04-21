@@ -23,6 +23,10 @@
 			"contents": "[[Has page property::ABC]]"
 		},
 		{
+			"page": "Quuz",
+			"contents": "[[Has page property::DEF]]"
+		},
+		{
 			"page": "Example/0401",
 			"contents": "{{#ask:[[Has page property::ABC]] |format=list}}"
 		}
@@ -30,13 +34,22 @@
 	"tests": [
 		{
 			"type": "parser-html",
-			"about": "#0 Basic List format",
+			"about": "#0 Basic List format (structure)",
 			"subject": "Example/0401",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					"p > a[ title='Bar' ] + a[ title='Baz' ] + a[ title='Foo' ] + a[ title='Quok' ]",
-					[ "p > a", 4 ]
+					[ "span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]", 4 ]
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 Basic List format (order)",
+			"subject": "Example/0401",
+			"assert-output": {
+				"to-contain": [
+					"Bar.*Baz.*Foo.*Quok"
 				]
 			}
 		}

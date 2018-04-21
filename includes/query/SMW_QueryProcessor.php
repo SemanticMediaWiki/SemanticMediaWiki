@@ -60,8 +60,8 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return Param[]
 	 */
-	public static function getProcessedParams( array $params, array $printRequests = array(), $unknownInvalid = true, $context = null ) {
-		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid, $context );
+	public static function getProcessedParams( array $params, array $printRequests = [], $unknownInvalid = true, $context = null, $showMode = false ) {
+		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid, $context, $showMode );
 		$validator->processParameters();
 		$parameters =  $validator->getParameters();
 
@@ -89,10 +89,11 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return Processor
 	 */
-	public static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true, $context = null ) {
+	public static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true, $context = null, $showMode = false ) {
 		$paramDefinitions = self::getParameters( $context );
 
 		$paramDefinitions['format']->setPrintRequests( $printRequests );
+		$paramDefinitions['format']->setShowMode( $showMode );
 
 		$processorOptions = new Options();
 		$processorOptions->setUnknownInvalid( $unknownInvalid );
@@ -290,7 +291,7 @@ class SMWQueryProcessor implements QueryContext {
 			self::addThisPrintout( $printouts, $params );
 		}
 
-		$params = self::getProcessedParams( $params, $printouts, true, $context );
+		$params = self::getProcessedParams( $params, $printouts, true, $context, $showMode );
 
 		$query  = self::createQuery( $queryString, $params, $context, '', $printouts, $contextPage );
 

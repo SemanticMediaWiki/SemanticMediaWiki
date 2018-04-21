@@ -84,6 +84,14 @@ class ParserHtmlTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 				$case[ 'about' ]
 			);
 		}
+
+		if ( $this->isSetAndTrueish( $case[ 'assert-output' ], 'not-contain' ) ) {
+			$this->htmlValidator->assertThatHtmlNotContains(
+				$case[ 'assert-output' ][ 'not-contain' ],
+				$outputText,
+				$case[ 'about' ]
+			);
+		}
 	}
 
 	/**

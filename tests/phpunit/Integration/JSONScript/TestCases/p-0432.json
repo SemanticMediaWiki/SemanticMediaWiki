@@ -156,7 +156,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<p>Example/P0432/5#_1c26bb9aac2df0c73a22cacd64a2b56a, Example/P0432/5#_f3d26f55b0c2b1edf58613dd875ba0e5"
+					">Example/P0432/5#_1c26bb9aac2df0c73a22cacd64a2b56a<.*>Example/P0432/5#_f3d26f55b0c2b1edf58613dd875ba0e5<"
 				]
 			}
 		},
@@ -169,7 +169,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<p>Example/P0432/5#_f3d26f55b0c2b1edf58613dd875ba0e5, Example/P0432/5#_1c26bb9aac2df0c73a22cacd64a2b56a"
+					">Example/P0432/5#_f3d26f55b0c2b1edf58613dd875ba0e5<.*>Example/P0432/5#_1c26bb9aac2df0c73a22cacd64a2b56a<"
 				]
 			}
 		}
