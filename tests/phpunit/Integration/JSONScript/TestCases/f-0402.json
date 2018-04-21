@@ -28,377 +28,121 @@
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "f-0401",
+			"page": "f-0402",
 			"contents": "<includeonly>{{{1}}}-{{{SomeMainlabel}}}; #userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}}; #rownumber: {{{#rownumber|}}}; Version: {{{2}}}-{{{Version}}}; Developer: {{{3}}}-{{{Developer}}}; Company: {{{4}}}-{{{Company}}}; Website: {{{5}}}-{{{Website}}};</includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "f-0401/intro",
+			"page": "f-0402/intro",
 			"contents": "<includeonly><span class='intro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</span></includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "f-0401/outro",
+			"page": "f-0402/outro",
 			"contents": "<includeonly><span class='outro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</span></includeonly>"
 		},
 		{
-			"page": "f-0401/Aerified",
-			"contents": "[[Category:0402]][[Version::0.23]][[Developer::Maggi McKellen]][[Company::Flashpoint]]"
-		},
-		{
-			"page": "f-0401/Alpha",
-			"contents": "[[Category:0402]][[Version::2.4]][[Developer::Renee Vasyagin]][[Company::Bubbletube]]"
-		},
-		{
-			"page": "f-0401/Alphazap",
-			"contents": "[[Category:0402]][[Version::5.3]][[Developer::El Grealey]][[Company::Browsecat]]"
-		},
-		{
-			"page": "f-0401/Andalax",
-			"contents": "[[Category:0402]][[Version::6.7.3]][[Developer::Estrella Pezey]][[Company::Miboo]]"
-		},
-		{
-			"page": "f-0401/Asoka",
+			"page": "f-0402/Asoka",
 			"contents": "[[Category:0402]][[Version::3.8]][[Developer::Shae Erley]][[Developer::Keeley Considine]][[Company::Edgewire]]"
 		},
 		{
-			"page": "f-0401/Bamity",
-			"contents": "[[Category:0402]][[Version::0.5.6]][[Developer::Malia Bernetti]][[Company::Twitterworks]]"
-		},
-		{
-			"page": "f-0401/Bigtax",
-			"contents": "[[Category:0402]][[Version::0.93]][[Developer::Isaak Simounet]][[Developer::Stefanie Moyles]][[Company::Blogspan]]"
-		},
-		{
-			"page": "f-0401/Bitchip",
-			"contents": "[[Category:0402]][[Version::1.0.1]][[Developer::Sherry McIvor]][[Company::Kwinu]]"
-		},
-		{
-			"page": "f-0401/Bitwolf",
+			"page": "f-0402/Bitwolf",
 			"contents": "[[Category:0402]][[Version::0.3.8]][[Developer::Nealy Dawes]][[Developer::Harmony Hadgraft]][[Company::Eadel]]"
 		},
 		{
-			"page": "f-0401/Bytecard",
-			"contents": "[[Category:0402]][[Version::0.77]][[Developer::Lita Bonnick]][[Company::Agimba]]"
-		},
-		{
-			"page": "f-0401/Cardguard",
-			"contents": "[[Category:0402]][[Version::0.4.9]][[Developer::Concettina Gorling]][[Company::Divanoodle]]"
-		},
-		{
-			"page": "f-0401/Cardify",
-			"contents": "[[Category:0402]][[Version::0.93]][[Developer::Normie MacAnulty]][[Company::Trudoo]]"
-		},
-		{
-			"page": "f-0401/Cookley",
-			"contents": "[[Category:0402]][[Version::3.82]][[Developer::Tate Kull]][[Company::Rhyzio]]"
-		},
-		{
-			"page": "f-0401/Domainer",
+			"page": "f-0402/Domainer",
 			"contents": "[[Category:0402]][[Version::9.49]][[Developer::Maridel Murdoch]][[Developer::Wiatt Crowest]][[Developer::Lottie Cruz]][[Company::Skimia]][[Website::https://icio.us/vestibulum/rutrum/rutrum/neque.aspx]]"
 		},
 		{
-			"page": "f-0401/Duobam",
-			"contents": "[[Category:0402]][[Version::0.41]][[Developer::Oralla Jeandin]][[Developer::Derward Codi]][[Company::Wikivu]][[Website::https://mashable.com/odio/elementum/eu.png]]"
-		},
-		{
-			"page": "f-0401/Fintone",
-			"contents": "[[Category:0402]][[Version::6.5]][[Developer::Rebekkah Mara]][[Developer::Fianna De Ambrosis]][[Company::Tagcat]][[Website::https://kickstarter.com/ac/consequat/metus.png]]"
-		},
-		{
-			"page": "f-0401/Fix San",
-			"contents": "[[Category:0402]][[Version::9.93]][[Developer::Burg Minigo]][[Company::Mynte]]"
-		},
-		{
-			"page": "f-0401/Fixflex",
-			"contents": "[[Category:0402]][[Version::6.3]][[Developer::Saba Ruffler]][[Company::Skiba]][[Website::https://reverbnation.com/nam/nulla/integer/pede/justo/lacinia/eget.js]]"
-		},
-		{
-			"page": "f-0401/Flexidy",
-			"contents": "[[Category:0402]][[Version::0.23]][[Developer::Aland Waters]][[Company::Oyondu]]"
-		},
-		{
-			"page": "f-0401/Flowdesk",
-			"contents": "[[Category:0402]][[Version::0.5.9]][[Developer::Tammi Bice]][[Company::Skippad]]"
-		},
-		{
-			"page": "f-0401/Gembucket",
-			"contents": "[[Category:0402]][[Version::7.68]][[Developer::Felic Bellis]][[Developer::Milka Espie]][[Company::Aimbo]]"
-		},
-		{
-			"page": "f-0401/Greenlam",
-			"contents": "[[Category:0402]][[Version::1.5.9]][[Developer::Arden OCarrol]][[Company::Zooxo]]"
-		},
-		{
-			"page": "f-0401/Hatity",
-			"contents": "[[Category:0402]][[Version::0.84]][[Developer::Gaelan Milington]][[Developer::Loren Purcell]][[Company::Shufflester]]"
-		},
-		{
-			"page": "f-0401/Holdlamis",
-			"contents": "[[Category:0402]][[Version::0.1.3]][[Developer::Muire Jaszczak]][[Company::Oyondu]]"
-		},
-		{
-			"page": "f-0401/Home Ing",
+			"page": "f-0402/Home Ing",
 			"contents": "[[Category:0402]][[Version::5.0.8]][[Developer::Mimi Kemish]][[Company::Oyope]]"
 		},
 		{
-			"page": "f-0401/It",
-			"contents": "[[Category:0402]][[Version::0.7.7]][[Developer::Rochelle Alyutin]][[Company::Tagcat]]"
-		},
-		{
-			"page": "f-0401/Kanlam",
-			"contents": "[[Category:0402]][[Version::5.39]][[Developer::Odilia Semarke]][[Company::Meetz]]"
-		},
-		{
-			"page": "f-0401/Keylex",
-			"contents": "[[Category:0402]][[Version::1.7]][[Developer::Isis Fussen]][[Company::Feedbug]]"
-		},
-		{
-			"page": "f-0401/Konklab",
-			"contents": "[[Category:0402]][[Version::7.7]][[Developer::Fern Browett]][[Company::Meejo]][[Website::https://scribd.com/porta.aspx]]"
-		},
-		{
-			"page": "f-0401/Konklux",
-			"contents": "[[Category:0402]][[Version::0.35]][[Developer::Siobhan Gouck]][[Company::Lazzy]]"
-		},
-		{
-			"page": "f-0401/Latlux",
-			"contents": "[[Category:0402]][[Version::0.86]][[Developer::Lanna Keilloh]][[Company::Fivespan]]"
-		},
-		{
-			"page": "f-0401/Lotlux",
-			"contents": "[[Category:0402]][[Version::3.17]][[Developer::Sigrid Paddy]][[Developer::Raff Bassick]][[Company::Zoomcast]]"
-		},
-		{
-			"page": "f-0401/Lotstring",
+			"page": "f-0402/Lotstring",
 			"contents": "[[Category:0402]][[Version::1.5]][[Developer::Willamina Strete]][[Company::Riffwire]]"
 		},
 		{
-			"page": "f-0401/Mat Lam Tam",
-			"contents": "[[Category:0402]][[Version::2.1.0]][[Developer::Randie Beedle]][[Company::Quaxo]]"
-		},
-		{
-			"page": "f-0401/Matsoft",
-			"contents": "[[Category:0402]][[Version::2.3.6]][[Developer::Angie Igo]][[Developer::Alex Hampstead]][[Company::Edgeify]][[Website::https://narod.ru/diam/erat.js]]"
-		},
-		{
-			"page": "f-0401/Namfix",
-			"contents": "[[Category:0402]][[Version::4.35]][[Developer::Halsy Woodus]][[Company::Skimia]][[Website::https://slashdot.org/molestie/hendrerit/at/vulputate.jpg]]"
-		},
-		{
-			"page": "f-0401/Opela",
-			"contents": "[[Category:0402]][[Version::1.2]][[Developer::Rani Suller]][[Company::Mydeo]][[Website::https://dell.com/ligula/vehicula/consequat/morbi.png]]"
-		},
-		{
-			"page": "f-0401/Otcom",
-			"contents": "[[Category:0402]][[Version::8.71]][[Developer::Beatrix Cahey]][[Developer::Jeralee Stroud]][[Company::Wordware]]"
-		},
-		{
-			"page": "f-0401/Overhold",
-			"contents": "[[Category:0402]][[Version::0.9.6]][[Developer::Marilyn Lillee]][[Developer::Pall Brodhead]][[Company::Feedspan]]"
-		},
-		{
-			"page": "f-0401/Pannier",
-			"contents": "[[Category:0402]][[Version::4.6.3]][[Developer::Milli Penhallurick]][[Developer::Tito Tertre]][[Company::Talane]]"
-		},
-		{
-			"page": "f-0401/Prodder",
+			"page": "f-0402/Prodder",
 			"contents": "[[Category:0402]][[Version::0.1.8]][[Developer::Nevsa Slavin]][[Company::Bluezoom]][[Website::http://yale.edu/luctus/tincidunt/nulla/mollis/molestie/lorem/quisque.js]]"
 		},
 		{
-			"page": "f-0401/Quo Lux",
-			"contents": "[[Category:0402]][[Version::5.5]][[Developer::Ashli Doche]][[Company::Topicblab]]"
-		},
-		{
-			"page": "f-0401/Rank",
-			"contents": "[[Category:0402]][[Version::0.64]][[Developer::Bayard Deverock]][[Developer::Hally Bevan]][[Company::Edgeclub]]"
-		},
-		{
-			"page": "f-0401/Redhold",
-			"contents": "[[Category:0402]][[Version::5.3.6]][[Developer::Rex Jaouen]][[Company::Gabtune]]"
-		},
-		{
-			"page": "f-0401/Ronstring",
-			"contents": "[[Category:0402]][[Version::0.75]][[Developer::Gratia Woodcock]][[Company::Twinder]]"
-		},
-		{
-			"page": "f-0401/Solarbreeze",
-			"contents": "[[Category:0402]][[Version::4.66]][[Developer::Marthe Robbel]][[Developer::Elden Hatchman]][[Company::Yabox]][[Website::http://printfriendly.com/venenatis/turpis/enim.jsp]]"
-		},
-		{
-			"page": "f-0401/Sonair",
-			"contents": "[[Category:0402]][[Version::0.88]][[Developer::Dorothea Jakab]][[Company::Muxo]]"
-		},
-		{
-			"page": "f-0401/Sonsing",
-			"contents": "[[Category:0402]][[Version::9.06]][[Developer::Elliott Viggers]][[Developer::Corilla Sapp]][[Company::Vinder]]"
-		},
-		{
-			"page": "f-0401/Span",
+			"page": "f-0402/Span",
 			"contents": "[[Category:0402]][[Version::2.19]][[Developer::Meredith Yakubowicz]][[Company::Devbug]]"
 		},
 		{
-			"page": "f-0401/Stim",
-			"contents": "[[Category:0402]][[Version::1.8]][[Developer::Kerrill Blabie]][[Developer::Gelya Barnewall]][[Company::Bluejam]][[Website::http://paginegialle.it/diam/id/ornare.aspx]]"
-		},
-		{
-			"page": "f-0401/Stronghold",
-			"contents": "[[Category:0402]][[Version::3.0]][[Developer::Biddie Clarson]][[Company::Kazio]][[Website::http://ucla.edu/morbi/a/ipsum/integer/a.xml]]"
-		},
-		{
-			"page": "f-0401/Sub-Ex",
-			"contents": "[[Category:0402]][[Version::8.4]][[Developer::Calley McIlwaine]][[Company::Quimm]]"
-		},
-		{
-			"page": "f-0401/Subin",
-			"contents": "[[Category:0402]][[Version::6.1]][[Developer::Tedman Dalgarnowch]][[Company::Izio]][[Website::https://yelp.com/suspendisse/potenti.html]]"
-		},
-		{
-			"page": "f-0401/Tampflex",
-			"contents": "[[Category:0402]][[Version::5.2.0]][[Developer::Isis Corriea]][[Developer::Nahum Ashbrook]][[Company::Youfeed]]"
-		},
-		{
-			"page": "f-0401/Temp",
-			"contents": "[[Category:0402]][[Version::0.8.9]][[Developer::Lisa Hamblen]][[Company::Wikibox]]"
-		},
-		{
-			"page": "f-0401/Tempsoft",
-			"contents": "[[Category:0402]][[Version::0.8.1]][[Developer::Papagena Dudgeon]][[Company::Gigaclub]]"
-		},
-		{
-			"page": "f-0401/Tin",
+			"page": "f-0402/Tin",
 			"contents": "[[Category:0402]][[Version::0.1.5]][[Developer::Jemmie Crutchley]][[Company::Rhyzio]]"
 		},
 		{
-			"page": "f-0401/Toughjoyfax",
-			"contents": "[[Category:0402]][[Version::0.9.3]][[Developer::Lamar Choulerton]][[Company::Devify]]"
-		},
-		{
-			"page": "f-0401/Transcof",
-			"contents": "[[Category:0402]][[Version::7.9]][[Developer::Siana Dagless]][[Company::Vitz]][[Website::http://miitbeian.gov.cn/proin/leo/odio/porttitor/id.js]]"
-		},
-		{
-			"page": "f-0401/Treeflex",
-			"contents": "[[Category:0402]][[Version::4.7]][[Developer::Chaunce Tarplee]][[Company::Skyba]]"
-		},
-		{
-			"page": "f-0401/Tresom",
-			"contents": "[[Category:0402]][[Version::1.8.1]][[Developer::Allen Durban]][[Developer::Leah Banishevitz]][[Company::Trunyx]]"
-		},
-		{
-			"page": "f-0401/Trippledex",
-			"contents": "[[Category:0402]][[Version::9.3.2]][[Developer::Xaviera Goodlad]][[Company::Mynte]]"
-		},
-		{
-			"page": "f-0401/Vagram",
-			"contents": "[[Category:0402]][[Version::7.3]][[Developer::Jock Simmank]][[Developer::Milli Gergely]][[Company::Devcast]]"
-		},
-		{
-			"page": "f-0401/Ventosanzap",
-			"contents": "[[Category:0402]][[Version::4.0.5]][[Developer::Gennifer Tomsa]][[Company::Quatz]][[Website::https://netvibes.com/ante/vestibulum/ante/ipsum/primis.html]]"
-		},
-		{
-			"page": "f-0401/Veribet",
+			"page": "f-0402/Veribet",
 			"contents": "[[Category:0402]][[Version::0.89]][[Developer::Gaspar Truelock]][[Company::Gabspot]]"
 		},
 		{
-			"page": "f-0401/Voltsillam",
-			"contents": "[[Category:0402]][[Version::6.5.7]][[Developer::Linnie Danjoie]][[Developer::Christie Inworth]][[Company::Gigashots]][[Website::https://engadget.com/quisque/id.jpg]]"
-		},
-		{
-			"page": "f-0401/Voyatouch",
-			"contents": "[[Category:0402]][[Version::3.66]][[Developer::Dyanne Dumphrey]][[Developer::Breena Aingell]][[Company::Buzzdog]]"
-		},
-		{
-			"page": "f-0401/Wrapsafe",
-			"contents": "[[Category:0402]][[Version::0.31]][[Developer::Gran Bemwell]][[Company::Skibox]][[Website::https://washington.edu/convallis/tortor/risus/dapibus/augue/vel/accumsan.png]]"
-		},
-		{
-			"page": "f-0401/Y-find",
-			"contents": "[[Category:0402]][[Version::0.2.4]][[Developer::Sylvia Sutterby]][[Developer::Rahel Phizacklea]][[Company::Voolith]]"
-		},
-		{
-			"page": "f-0401/Y-Solowarm",
-			"contents": "[[Category:0402]][[Version::7.2]][[Developer::Nickolas Robken]][[Company::Feedmix]]"
-		},
-		{
-			"page": "f-0401/Zaam-Dox",
+			"page": "f-0402/Zaam-Dox",
 			"contents": "[[Category:0402]][[Version::8.06]][[Developer::Lew Whittek]][[Company::Kayveo]]"
 		},
 		{
-			"page": "f-0401/Zamit",
-			"contents": "[[Category:0402]][[Version::2.4]][[Developer::Saxon Kernoghan]][[Company::Yotz]]"
-		},
-		{
-			"page": "f-0401/Zathin",
-			"contents": "[[Category:0402]][[Version::0.3.8]][[Developer::Berkie Semour]][[Company::Realbridge]]"
-		},
-		{
-			"page": "f-0401/Zontrax",
-			"contents": "[[Category:0402]][[Version::2.4.7]][[Developer::Cairistiona Bollam]][[Company::Teklist]][[Website::https://mozilla.org/proin/interdum/mauris/non/ligula/pellentesque/ultrices.jsp]]"
-		},
-		{
-			"page": "f-0401/Zoolab",
-			"contents": "[[Category:0402]][[Version::3.69]][[Developer::Dewain Hearst]][[Company::Devify]]"
-		},
-		{
-			"page": "f-0401/Test-01",
+			"page": "f-0402/Test-01",
 			"contents": "{{#ask:[[Category:0402]]}}"
 		},
 		{
-			"page": "f-0401/Test-02",
+			"page": "f-0402/Test-02",
 			"contents": "{{#ask:[[Category:0402]]|format=list}}"
 		},
 		{
-			"page": "f-0401/Test-03",
+			"page": "f-0402/Test-02.2",
+			"contents": "{{#ask:[[Category:0402]]|format=plainlist}}"
+		},
+		{
+			"page": "f-0402/Test-03",
 			"contents": "{{#ask:[[Category:0402]]|format=template}}"
 		},
 		{
-			"page": "f-0401/Test-04",
+			"page": "f-0402/Test-04",
 			"contents": "{{#ask:[[Category:0402]]|format=ol}}"
 		},
 		{
-			"page": "f-0401/Test-05",
+			"page": "f-0402/Test-05",
 			"contents": "{{#ask:[[Category:0402]]|format=ul}}"
 		},
 		{
-			"page": "f-0401/Test-06",
-			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2}}"
+			"page": "f-0402/Test-06",
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|template=f-0402|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2|limit=5}}"
 		},
 		{
-			"page": "f-0401/Test-07",
-			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version=|?Developer|?Company|?Website|template=f-0401|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2|named args=yes}}"
+			"page": "f-0402/Test-07",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version=|?Developer|?Company|?Website|template=f-0402|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2|limit=5|named args=yes}}"
 		},
 		{
-			"page": "f-0401/Test-08",
+			"page": "f-0402/Test-08",
 			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP}}"
 		},
 		{
-			"page": "f-0401/Test-09",
-			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|offset=2}}{{#ask:[[Category:0402]]|format=ul|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
+			"page": "f-0402/Test-09",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|offset=2|limit=5}}{{#ask:[[Category:0402]]|format=ul|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
 		},
 		{
-			"page": "f-0401/Test-10",
-			"contents": "{{#ask:[[Category:0402]]|format=list|introtemplate=f-0401/intro|outrotemplate=f-0401/outro}}"
+			"page": "f-0402/Test-10",
+			"contents": "{{#ask:[[Category:0402]]|format=list|introtemplate=f-0402/intro|outrotemplate=f-0402/outro}}"
 		},
 		{
-			"page": "f-0401/Test-11",
-			"contents": "{{#ask:[[Category:0402]]|format=list|template=f-0401|introtemplate=f-0401/intro|outrotemplate=f-0401/outro}}"
+			"page": "f-0402/Test-11",
+			"contents": "{{#ask:[[Category:0402]]|format=list|template=f-0402|introtemplate=f-0402/intro|outrotemplate=f-0402/outro|limit=8}}"
 		},
 		{
-			"page": "f-0401/Test-12",
-			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|introtemplate=f-0401/intro|outrotemplate=f-0401/outro}}"
+			"page": "f-0402/Test-12",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|introtemplate=f-0402/intro|outrotemplate=f-0402/outro}}"
 		},
 		{
-			"page": "f-0401/Test-13",
+			"page": "f-0402/Test-13",
 			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|link=none|headers=show|searchlabel=}}"
 		},
 		{
-			"page": "f-0401/Test-14",
+			"page": "f-0402/Test-14",
 			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|link=subject|headers=hide|searchlabel=}}"
 		},
 		{
-			"page": "f-0401/Test-15",
+			"page": "f-0402/Test-15",
 			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|link=all|headers=plain|searchlabel=}}"
 		}
 
@@ -407,13 +151,13 @@
 		{
 			"type": "parser-html",
 			"about": "#1 List format is called as standard output",
-			"subject": "f-0401/Test-01",
+			"subject": "f-0402/Test-01",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
 						"span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]",
-						50
+						10
 					]
 				]
 			}
@@ -421,27 +165,45 @@
 		{
 			"type": "parser-html",
 			"about": "#2 List format is called when format=list",
-			"subject": "f-0401/Test-02",
+			"subject": "f-0402/Test-02",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
 						"span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]",
-						50
+						10
 					]
 				]
 			}
 		},
 		{
 			"type": "parser-html",
+			"about": "#2.2 Plainlist format is called when format=plainlist",
+			"subject": "f-0402/Test-02.2",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+						"a[title] ~ a[title]"
+				],
+				"not-contain": [
+					".smw-format",
+					".list-format",
+					".smw-row",
+					".smw-field",
+					".smw-value"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
 			"about": "#3 List format is called when format=template (but no actual template specified)",
-			"subject": "f-0401/Test-03",
+			"subject": "f-0402/Test-03",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
 						"span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]",
-						50
+						10
 					]
 				]
 			}
@@ -449,13 +211,13 @@
 		{
 			"type": "parser-html",
 			"about": "#4 Ol format is called when format=ol",
-			"subject": "f-0401/Test-04",
+			"subject": "f-0402/Test-04",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
 						"ol.ol-format > li.smw-row > span.smw-field > span.smw-value > a[title]",
-						50
+						10
 					]
 				]
 			}
@@ -463,13 +225,13 @@
 		{
 			"type": "parser-html",
 			"about": "#5 Ul format is called when format=ul",
-			"subject": "f-0401/Test-05",
+			"subject": "f-0402/Test-05",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
 					[
 						"ul.ul-format > li.smw-row > span.smw-field > span.smw-value > a[title]",
-						50
+						10
 					]
 				]
 			}
@@ -477,18 +239,18 @@
 		{
 			"type": "parser",
 			"about": "#6 List format with template specified (numbered args)",
-			"subject": "f-0401/Test-06",
+			"subject": "f-0402/Test-06",
 			"assert-output": {
 				"to-contain": [
-					"/(SEPARATOR.+?){49}/",
+					"/(SEPARATOR.+?){4}/",
 					"VSEP",  // just make sure there's a bunch of VSEPs, don't count
 					"#userparam: SomeUserParam;",
 					"#querycondition: [[Category:0402]];",
-					"#querylimit: 50;",
+					"#querylimit: 5;",
 					"#resultoffset: 2;",
-					"#rowcount: 75;",
+					"#rowcount: 10;",
 					"#rownumber: 3;",
-					"#rownumber: 52;",
+					"#rownumber: 7;",
 					"{{{SomeMainlabel}}}", // Named template params are not replaced
 					"{{{Version}}}",
 					"{{{Developer}}}",
@@ -496,8 +258,10 @@
 					"{{{Website}}}"
 				],
 				"not-contain": [
-					"/(SEPARATOR){50,}/",
+					"/(SEPARATOR){10,}/",
 					"PSEP",
+					"#rownumber: 2;",
+					"#rownumber: 8;",
 					"smw-row", // no structure for list with templates
 					"smw-field",
 					"smw-value",
@@ -512,17 +276,17 @@
 		{
 			"type": "parser",
 			"about": "#7 Ol format with template specified (named args)",
-			"subject": "f-0401/Test-07",
+			"subject": "f-0402/Test-07",
 			"assert-output": {
 				"to-contain": [
 					"VSEP",  // just make sure there's a bunch of VSEPs, don't count
 					"#userparam: SomeUserParam;",
 					"#querycondition: [[Category:0402]];",
-					"#querylimit: 50;",
+					"#querylimit: 5;",
 					"#resultoffset: 2;",
-					"#rowcount: 75;",
+					"#rowcount: 10;",
 					"#rownumber: 3;",
-					"#rownumber: 52;",
+					"#rownumber: 7;",
 					"smw-row", // Templates are applied inside rows for ol with templates
 					"{{{1}}}", // Numbered template params are not replaced
 					"{{{Version}}}", // ...except if the label is empty
@@ -533,6 +297,8 @@
 				"not-contain": [
 					"SEPARATOR",
 					"PSEP",
+					"#rownumber: 2;",
+					"#rownumber: 8;",
 					"smw-field", // no structure below row for ol with templates
 					"smw-value",
 					"{{{SomeMainlabel}}}", // Named template params are replaced
@@ -546,20 +312,20 @@
 		{
 			"type": "parser",
 			"about": "#8 List format with sep",
-			"subject": "f-0401/Test-08",
-			"assert-output": { // at least 49, but not 50 or more, i.e. exactly 49
+			"subject": "f-0402/Test-08",
+			"assert-output": { // at least 18, but not 19 or more, i.e. exactly 18
 				"to-contain": [
-					"/(span>SEPARATOR<span.+?){49}/",
+					"/(span>SEPARATOR<span.+?){9}/",
 					"PSEP",
 					"VSEP"
 				],
-				"not-contain": [ "/(span>SEPARATOR<span.+?){50,}/" ]
+				"not-contain": [ "/(span>SEPARATOR<span.+?){10,}/" ]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#9.1 Ol & ul format without sep (even if specified)",
-			"subject": "f-0401/Test-09",
+			"subject": "f-0402/Test-09",
 			"assert-output": {
 				"to-contain": [
 					"PSEP",
@@ -573,7 +339,7 @@
 		{
 			"type": "parser-html",
 			"about": "#9.2 Ol format with offset",
-			"subject": "f-0401/Test-09",
+			"subject": "f-0402/Test-09",
 			"assert-output": {
 				"to-contain": [
 					"ol.ol-format[start=\"3\"]"
@@ -583,18 +349,18 @@
 		{
 			"type": "parser",
 			"about": "#10.1 List format with introtemplate and outrotemplate",
-			"subject": "f-0401/Test-10",
+			"subject": "f-0402/Test-10",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>",
-					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>"
+					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 10;</span>",
+					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 10;</span>"
 				]
 			}
 		},
 		{
 			"type": "parser-html",
 			"about": "#10.2 List format with introtemplate and outrotemplate",
-			"subject": "f-0401/Test-10",
+			"subject": "f-0402/Test-10",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
@@ -606,11 +372,11 @@
 		{
 			"type": "parser",
 			"about": "#11.1 Template format with introtemplate and outrotemplate",
-			"subject": "f-0401/Test-11",
+			"subject": "f-0402/Test-11",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>",
-					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>"
+					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 8; #resultoffset: 0; #rowcount: 10;</span>",
+					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 8; #resultoffset: 0; #rowcount: 10;</span>"
 				],
 				"not-contain": [
 					";, <a" //No default list separator (, ) between template calls
@@ -620,7 +386,7 @@
 		{
 			"type": "parser-html",
 			"about": "#11.2 Template format with introtemplate and outrotemplate",
-			"subject": "f-0401/Test-11",
+			"subject": "f-0402/Test-11",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
@@ -632,18 +398,18 @@
 		{
 			"type": "parser",
 			"about": "#12.1 Ol format with introtemplate and outrotemplate",
-			"subject": "f-0401/Test-12",
+			"subject": "f-0402/Test-12",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>",
-					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 75;</span>"
+					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 10;</span>",
+					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 10;</span>"
 				]
 			}
 		},
 		{
 			"type": "parser-html",
 			"about": "#12.2 Ol format with introtemplate and outrotemplate",
-			"subject": "f-0401/Test-12",
+			"subject": "f-0402/Test-12",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
@@ -655,11 +421,11 @@
 		{
 			"type": "parser-html",
 			"about": "#13",
-			"subject": "f-0401/Test-13",
+			"subject": "f-0402/Test-13",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "span.smw-field-label > a", 50 ] // headers = show
+					[ "span.smw-field-label > a", 10 ] // headers = show
 				],
 				"not-contain": [
 					"span.smw-value > a" // link = none
@@ -669,11 +435,11 @@
 		{
 			"type": "parser-html",
 			"about": "#14",
-			"subject": "f-0401/Test-14",
+			"subject": "f-0402/Test-14",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "li.smw-row > span.smw-field:first-child > span.smw-value > a", 50 ] // link = subject
+					[ "li.smw-row > span.smw-field:first-child > span.smw-value > a", 10 ] // link = subject
 				],
 				"not-contain": [
 					"li.smw-row > span.smw-field:not(:first-child) > span.smw-value > a", // link = subject
@@ -684,12 +450,12 @@
 		{
 			"type": "parser-html",
 			"about": "#15",
-			"subject": "f-0401/Test-15",
+			"subject": "f-0402/Test-15",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[ "li.smw-row > span.smw-field > span.smw-value > a", 100 ], // link = all
-					[ "span.smw-field-label", 50 ] // headers = plain
+					[ "li.smw-row > span.smw-field > span.smw-value > a", 20 ], // link = all
+					[ "span.smw-field-label", 10 ] // headers = plain
 				],
 				"not-contain": [
 					"span.smw-field-label > a" // headers = plain
