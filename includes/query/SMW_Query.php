@@ -275,6 +275,13 @@ class SMWQuery implements QueryContext {
 		return $this->m_extraprintouts;
 	}
 
+	/**
+	 * @since 3.0
+	 */
+	public function clearErrors() {
+		$this->errors = [];
+	}
+
 	public function getErrors() {
 		return $this->errors;
 	}
@@ -376,12 +383,9 @@ class SMWQuery implements QueryContext {
 	 * @since 2.0
 	 *
 	 * @param integer $limit
-	 *
-	 * @return Query
 	 */
 	public function setUnboundLimit( $limit ) {
 		$this->limit = (int)$limit;
-		return $this;
 	}
 
 	/**
