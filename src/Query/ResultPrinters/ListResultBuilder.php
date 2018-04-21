@@ -1,9 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\ResultPrinters;
 
 use Linker;
+use SMW\ApplicationFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\Message;
 use SMWDataValue;
 use SMWQueryResult;
 use SMWResultArray;
@@ -59,7 +61,6 @@ class ListResultBuilder {
 	];
 
 	private $linker = null;
-
 	private $configuration = [];
 
 	/**
@@ -100,22 +101,15 @@ class ListResultBuilder {
 	 *
 	 * @return mixed
 	 */
-	protected function get( $setting, $default = '' ) {
+	private function get( $setting, $default = '' ) {
 		return isset( $this->configuration[ $setting ] ) ? $this->configuration[ $setting ] : $default;
 	}
 
 	/**
 	 * @return SMWQueryResult
 	 */
-	public function getQueryResult() {
+	private function getQueryResult() {
 		return $this->queryResult;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function hasTemplates() {
-		return $this->get( 'template' ) !== '' || $this->get( 'introtemplate' ) !== '' || $this->get( 'outrotemplate' ) !== '';
 	}
 
 	/**
@@ -127,7 +121,7 @@ class ListResultBuilder {
 	/**
 	 * @return bool
 	 */
-	protected function isSimpleList() {
+	private function isSimpleList() {
 		$format = $this->get( 'format' );
 		return $format !== 'ul' && $format !== 'ol' ;
 	}
@@ -154,11 +148,11 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function insertOffset( $subject ) {
+	private function insertOffset( $subject ) {
 		return str_replace( '$START$', $this->get( 'offset' ) + 1, $subject );
 	}
 
-	protected function prepareBuilt() {
+	private function prepareBuilt() {
 
 		$format = $this->getEffectiveFormat();
 
@@ -180,7 +174,7 @@ class ListResultBuilder {
 	/**
 	 * @return string
 	 */
-	protected function getEffectiveFormat() {
+	private function getEffectiveFormat() {
 
 		$format = $this->get( 'format' );
 
@@ -198,7 +192,7 @@ class ListResultBuilder {
 	/**
 	 * @return string[]
 	 */
-	protected function getDefaultsFromI18N() {
+	private function getDefaultsFromI18N() {
 		return [
 			'field-label-separator' => Message::get( 'smw-format-list-field-label-separator' ),
 			'other-fields-open' => Message::get( 'smw-format-list-other-fields-open' ),
@@ -209,7 +203,7 @@ class ListResultBuilder {
 	/**
 	 * @return string[]
 	 */
-	protected function getRowTexts() {
+	private function getRowTexts() {
 
 		$rowTextFunctionName = $this->get( 'template' ) === '' ? 'getRowText' : 'getRowTextFromTemplate';
 
@@ -237,7 +231,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getRowText( array $fields ) {
+	private function getRowText( array $fields ) {
 
 		$fieldTexts = $this->getFieldTexts( $fields );
 
@@ -271,7 +265,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getRowTextFromTemplate( array $fields, $rownum = 0 ) {
+	private function getRowTextFromTemplate( array $fields, $rownum = 0 ) {
 
 		$templateRenderer = $this->getTemplateRenderer();
 
@@ -298,7 +292,7 @@ class ListResultBuilder {
 	 *
 	 * @return array
 	 */
-	protected function getFieldTexts( array $fields ) {
+	private function getFieldTexts( array $fields ) {
 
 		$columnNumber = 0;
 		$fieldTexts = [];
@@ -326,7 +320,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getFieldLabel( SMWResultArray $field ) {
+	private function getFieldLabel( SMWResultArray $field ) {
 
 		$showHeaders = $this->get( 'show-headers' );
 
@@ -350,7 +344,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getFieldLabelForTemplate( SMWResultArray $field, $column ) {
+	private function getFieldLabelForTemplate( SMWResultArray $field, $column ) {
 
 		if ( $this->get( 'named args' ) === false ) {
 			return intval( $column + 1 );
@@ -371,7 +365,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getValuesText( SMWResultArray $field, $column = 0 ) {
+	private function getValuesText( SMWResultArray $field, $column = 0 ) {
 
 		$valueTexts = $this->getValueTexts( $field, $column );
 
@@ -385,7 +379,7 @@ class ListResultBuilder {
 	 *
 	 * @return string[]
 	 */
-	protected function getValueTexts( SMWResultArray $field, $column ) {
+	private function getValueTexts( SMWResultArray $field, $column ) {
 
 		$valueTexts = [];
 
@@ -408,7 +402,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getValueText( SMWDataValue $value, $column = 0 ) {
+	private function getValueText( SMWDataValue $value, $column = 0 ) {
 
 		$text = $value->getShortText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
 
@@ -421,7 +415,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function sanitizeValueText( $text ) {
+	private function sanitizeValueText( $text ) {
 
 		if ( $this->isSimpleList() ) {
 			return $text;
@@ -438,7 +432,7 @@ class ListResultBuilder {
 	 *
 	 * @return \Linker|null
 	 */
-	protected function getLinkerForColumn( $columnNumber ) {
+	private function getLinkerForColumn( $columnNumber ) {
 
 		if ( ( $columnNumber === 0 && $this->get( 'link-first' ) ) ||
 			( $columnNumber > 0 && $this->get( 'link-others' ) ) ) {
@@ -453,7 +447,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getTemplateCall( $param ) {
+	private function getTemplateCall( $param ) {
 
 		$templatename = $this->get( $param );
 
@@ -471,7 +465,7 @@ class ListResultBuilder {
 	/**
 	 * @return WikitextTemplateRenderer
 	 */
-	protected function getTemplateRenderer() {
+	private function getTemplateRenderer() {
 
 		if ( $this->templateRenderer === null ) {
 			$this->templateRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
@@ -484,7 +478,7 @@ class ListResultBuilder {
 	/**
 	 * @param WikitextTemplateRenderer $templateRenderer
 	 */
-	protected function addCommonTemplateFields( WikitextTemplateRenderer $templateRenderer ) {
+	private function addCommonTemplateFields( WikitextTemplateRenderer $templateRenderer ) {
 
 		$userParam = $this->get( 'userparam' );
 
@@ -521,7 +515,7 @@ class ListResultBuilder {
 	/**
 	 * @return int
 	 */
-	protected function getRowCount() {
+	private function getRowCount() {
 
 		if ( $this->numberOfPages === null ) {
 

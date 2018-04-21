@@ -1,13 +1,10 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\ResultPrinters;
 
-use Html;
 use ParamProcessor\ParamDefinition;
-use Sanitizer;
-use SMWDataItem;
+use SMW\Message;
 use SMWQueryResult;
-use SMWResultArray;
 
 /**
  * Print query results in lists.
@@ -41,7 +38,7 @@ class ListResultPrinter extends ResultPrinter {
 	 */
 	public function getName() {
 		// Give grep a chance to find the usages:
-		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_template
+		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_plainlist, smw_printername_template
 		return Message::get( 'smw_printername_' . $this->mFormat );
 	}
 
@@ -66,10 +63,42 @@ class ListResultPrinter extends ResultPrinter {
 
 		$builder = $this->getBuilder( $queryResult );
 
-		$this->hasTemplates = $builder->hasTemplates();
+		$this->hasTemplates = $this->hasTemplates();
 
 		return $builder->getResultText() . $this->getFurtherResultsText( $queryResult, $outputMode );
+	}
+
+	/**
+	 * @param SMWQueryResult $queryResult
+	 *
+	 * @return ListResultBuilder
+	 */
+	private function getBuilder( SMWQueryResult $queryResult ) {
+
+		$builder = new ListResultBuilder( $queryResult, $this->mLinker );
+
+		$builder->set( $this->params );
+
+		$builder->set( [
+			'link-first' => $this->mLinkFirst,
+			'link-others' => $this->mLinkOthers,
+			'show-headers' => $this->mShowHeaders,
+		] );
+
+		if ( $this->params[ 'template' ] !== '' && isset( $this->fullParams[ 'sep' ] ) && $this->fullParams[ 'sep' ]->wasSetToDefault() === true ) {
+			$builder->set( 'sep', '' );
 		}
+
+		return $builder;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasTemplates() {
+		return $this->params[ 'template' ] !== '' || $this->params[ 'introtemplate' ] !== '' || $this->params[ 'outrotemplate' ] !== '';
+	}
+
 
 	/**
 	 * Get text for further results link. Used only during getResultText().
@@ -79,7 +108,7 @@ class ListResultPrinter extends ResultPrinter {
 	 * @param integer $outputMode
 	 * @return string
 	 */
-	protected function getFurtherResultsText( SMWQueryResult $res, $outputMode ) {
+	private function getFurtherResultsText( SMWQueryResult $res, $outputMode ) {
 
 		if ( $this->linkFurtherResults( $res) ) {
 
@@ -162,32 +191,6 @@ class ListResultPrinter extends ResultPrinter {
 				];
 		}
 
-		$listFormatDefinitions = ParamDefinition::getCleanDefinitions( $listFormatDefinitions );
-
-		return array_merge( $definitions, $listFormatDefinitions );
-	}
-
-	/**
-	 * @param SMWQueryResult $queryResult
-	 *
-	 * @return ListResultBuilder|TemplateResultBuilder
-	 */
-	protected function getBuilder( SMWQueryResult $queryResult ) {
-
-		$builder = new ListResultBuilder( $queryResult, $this->mLinker );
-
-		$builder->set( $this->params );
-
-		$builder->set( [
-			'link-first' => $this->mLinkFirst,
-			'link-others' => $this->mLinkOthers,
-			'show-headers' => $this->mShowHeaders,
-		] );
-
-		if ( $this->params[ 'template' ] !== '' && isset( $this->fullParams[ 'sep' ] ) && $this->fullParams[ 'sep' ]->wasSetToDefault() === true ) {
-			$builder->set( 'sep', '' );
-		}
-
-		return $builder;
+		return array_merge( $definitions, ParamDefinition::getCleanDefinitions( $listFormatDefinitions ) );
 	}
 }

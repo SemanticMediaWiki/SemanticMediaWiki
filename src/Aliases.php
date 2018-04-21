@@ -14,6 +14,7 @@ class_alias( \SMW\Query\ExportPrinter::class, 'SMW\ExportPrinter' );
 class_alias( \SMW\Query\ResultPrinters\ResultPrinter::class, 'SMW\ResultPrinter' );
 class_alias( \SMW\Query\ResultPrinters\ResultPrinter::class, 'SMWResultPrinter' );
 class_alias( \SMW\Query\ResultPrinters\FileExportPrinter::class, 'SMW\FileExportPrinter' );
+class_alias( \SMW\Query\ResultPrinters\ListResultPrinter::class, 'SMW\ListResultPrinter' );
 class_alias( \SMW\Query\Parser::class, 'SMWQueryParser' );
 class_alias( \SMW\SQLStore\ChangeOp\ChangeOp::class, 'SMW\SQLStore\CompositePropertyTableDiffIterator' );
 class_alias( \SMW\Connection\ConnectionProvider::class, 'SMW\DBConnectionProvider' );
