@@ -14,7 +14,6 @@ class ParameterDictionary {
 
 	private $configuration = [];
 
-
 	/**
 	 * @param string|string[] $setting
 	 * @param mixed $value

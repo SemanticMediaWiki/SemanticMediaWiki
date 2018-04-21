@@ -5,7 +5,7 @@ namespace SMW\Tests\Query\ResultPrinters;
 use SMW\Query\ResultPrinters\TemplateFileExportPrinter;
 
 /**
- * @covers SMW\Query\ResultPrinters\TemplateFileExportPrinter
+ * @covers \SMW\Query\ResultPrinters\TemplateFileExportPrinter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

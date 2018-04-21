@@ -16,27 +16,20 @@ use SMWQueryResult;
  */
 
 /**
- * New implementation of SMW's printer for results in lists.
+ * SMW's printer for results in lists.
  * The implementation covers comma-separated lists, ordered and unordered lists.
- * List items may be formatted using templates, and list output can be in
- * multiple columns (at least for ordered and unordered lists).
+ * List items may be formatted using templates.
  *
  * In the code below, one list item (with all extra information displayed for
- * it) is called a "row", while one entry in this row is called a "field" to
- * avoid confusion with the "columns" that we have in multi-column display.
+ * it) is called a "row", while one entry in this row is called a "field".
  * Every field may in turn contain many "values".
- *
- * @ingroup SMWQuery
  */
 class ListResultPrinter extends ResultPrinter {
 
 	/**
-	 * Get a human readable label for this printer. The default is to
-	 * return just the format identifier. Concrete implementations may
-	 * refer to messages here. The format name is normally not used in
-	 * wiki text but only in forms etc. hence the user language should be
-	 * used when retrieving messages.
+	 * Get a human readable label for this printer.
 	 *
+	 * @return string
 	 */
 	public function getName() {
 		// Give grep a chance to find the usages:
@@ -97,7 +90,7 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @return bool
 	 */
-	public function hasTemplates() {
+	private function hasTemplates() {
 		return $this->params[ 'template' ] !== '' || $this->params[ 'introtemplate' ] !== '' || $this->params[ 'outrotemplate' ] !== '';
 	}
 
