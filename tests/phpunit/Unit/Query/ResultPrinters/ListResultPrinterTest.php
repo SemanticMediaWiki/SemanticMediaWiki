@@ -1,6 +1,7 @@
 <?php
 namespace SMW\Tests\Query\ResultPrinters;
 
+use SMW\Message;
 use SMW\Query\ResultPrinters\ListResultPrinter;
 
 /**
@@ -49,17 +50,17 @@ class ListResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider allFormatsProvider
 	 * @param string $format
 	 */
-	public function testGetName( $format, $name ) {
+	public function testGetName( $format ) {
 		$listResultPrinter = new ListResultPrinter( $format );
 
-		$this->assertEquals( $name, $listResultPrinter->getName() );
+		$this->assertEquals( Message::get( 'smw_printername_' . $format ), $listResultPrinter->getName() );
 	}
 
 	public function allFormatsProvider() {
-		yield [ 'ul', 'Itemization' ];
-		yield [ 'ol', 'Enumeration' ];
-		yield [ 'template', 'Template' ];
-		yield [ 'list', 'List' ];
-		yield [ 'plainlist', 'Plain list' ];
+		yield [ 'ul' ];
+		yield [ 'ol' ];
+		yield [ 'template' ];
+		yield [ 'list' ];
+		yield [ 'plainlist' ];
 	}
 }
