@@ -48,10 +48,14 @@ class DINumberHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array(
+		return [
+
+			// API module pvalue lookup
+			'p_id,o_serialized',
+
 			// QueryEngine::getInstanceQueryResult
 			's_id,p_id,o_sortkey',
-		);
+		];
 	}
 
 	/**
@@ -92,7 +96,7 @@ class DINumberHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getLabelField() {
-		return '';
+		return 'o_serialized';
 	}
 
 	/**

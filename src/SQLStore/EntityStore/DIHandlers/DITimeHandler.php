@@ -50,6 +50,9 @@ class DITimeHandler extends DataItemHandler {
 	public function getTableIndexes() {
 		return array(
 
+			// API module pvalue lookup
+			'p_id,o_serialized',
+
 			// SMWSQLStore3Readers::fetchSemanticData
 			// SELECT p.smw_title as prop,o_serialized AS v0, o_sortkey AS v2
 			// FROM `smw_di_time` INNER JOIN `smw_object_ids` AS p ON
@@ -99,7 +102,7 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getLabelField() {
-		return '';
+		return 'o_serialized';
 	}
 
 	/**

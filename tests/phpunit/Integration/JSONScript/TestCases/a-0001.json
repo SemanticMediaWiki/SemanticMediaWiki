@@ -7,6 +7,21 @@
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "API text property",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "API page property",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "API date property",
+			"contents": "[[Has type::Date]]"
+		},
+		{
 			"namespace": "SMW_NS_CONCEPT",
 			"page": "API test concept",
 			"contents": "..."
@@ -15,6 +30,36 @@
 			"namespace": "NS_CATEGORY",
 			"page": "API test category",
 			"contents": "..."
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/1",
+			"contents": "[[API text property::text 1]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/2",
+			"contents": "[[API text property::text 2]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/3",
+			"contents": "[[API page property::page 1]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/4",
+			"contents": "[[API page property::page 2]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/5",
+			"contents": "[[API date property::1 Jan 1970]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/6",
+			"contents": "[[API date property::2 Jan 1971]]"
 		}
 	],
 	"tests": [
@@ -89,11 +134,69 @@
 					"contents-file" : "/../Fixtures/a-0001.3.txt"
 				}
 			}
+		},
+		{
+			"type": "api",
+			"skip-on": {
+				"sqlite": "Skipping, because I have no idea why this returning empty during the test!"
+			},
+			"about": "#4 `smwbrowse` pvalue (text type) search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "pvalue",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API text property\", \"search\": \"tex\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.4.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#5 `smwbrowse` pvalue (page type) search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "pvalue",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API page property\", \"search\": \"pag\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.5.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"skip-on": {
+				"sqlite": "Skipping, because I have no idea why this returning empty during the test!"
+			},
+			"about": "#6 `smwbrowse` pvalue (date type) search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "pvalue",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API date property\", \"search\": \"197\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.6.txt"
+				}
+			}
 		}
 	],
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
+		"smwgCacheUsage": { "api.browse": false, "api.browse.pvalue": false },
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true,

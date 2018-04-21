@@ -251,6 +251,10 @@ div#ask legend {
 	border: 1px solid #a2a9b1;
 }
 
+.smw-ask-sort-input {
+	margin-top: 2px;
+}
+
 /* https://stackoverflow.com/questions/2812770/add-centered-text-to-the-middle-of-a-hr-like-line */
 .strike {
     display: block;
@@ -302,11 +306,20 @@ div#ask legend {
 }
 
 .smw-ask-sort-input input {
-	padding: 2px;
+	padding: 4px;
+	border: 1px solid #aaa;
+}
+
+.smw-ask-sort-input .autocomplete-arrow {
+	background-position-y: 0px;
+}
+
+.smw-ask-sort-input .autocomplete-loading {
+	vertical-align: unset;
 }
 
 .smw-ask-sort-input select, .smw-ask-sort-input .smw-ask-sort-delete {
-	padding: 2px;
+	padding: 3px;
     margin-left: 10px;
 }
 

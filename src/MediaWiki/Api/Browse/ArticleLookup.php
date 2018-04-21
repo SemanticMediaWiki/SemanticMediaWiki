@@ -130,7 +130,9 @@ class ArticleLookup extends Lookup {
 		];
 
 		foreach ( $conds as $s ) {
-			$conditions .= ( $conditions !== '' ? ' OR ' : '' ) . "page_title LIKE " . $this->connection->addQuotes( $s ) . ' ESCAPE ' . $this->connection->addQuotes( $escapeChar );
+			$conditions .= ( $conditions !== '' ? ' OR ' : '' ) . "page_title LIKE ";
+			$conditions .= $this->connection->addQuotes( $s );
+			$conditions .= ' ESCAPE ' . $this->connection->addQuotes( $escapeChar );
 		}
 
 		if ( $namespace !== null ) {
