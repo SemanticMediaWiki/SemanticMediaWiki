@@ -52,7 +52,16 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider browseIdProvider
 	 */
-	public function testExecute( $id ) {
+	public function testExecute( $id, $parameters = [] ) {
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSMWPropertyID' ] )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getSMWPropertyID' )
+			->will( $this->returnValue( false ) );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -70,6 +79,10 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( [] ) );
 
+		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -77,6 +90,18 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getSQLOptions' )
 			->will( $this->returnValue( [] ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
+
+		$store->expects( $this->any() )
+			->method( 'getDataItemHandlerForDIType' )
+			->will( $this->returnValue( $dataItemHandler ) );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
@@ -90,7 +115,7 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 				[
 					'action'   => 'smwbrowse',
 					'browse'   => $id,
-					'params'   => json_encode( [ 'search' => 'Foo' ] )
+					'params'   => json_encode( [ 'search' => 'Foo' ] + $parameters )
 				]
 			),
 			'smwbrowse'
@@ -115,6 +140,11 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'article'
+		];
+
+		$provider[] = [
+			'pvalue',
+			[ 'property' => 'Bar' ]
 		];
 
 		return $provider;

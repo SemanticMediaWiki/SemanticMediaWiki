@@ -6,6 +6,7 @@ use ApiBase;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Api\Browse\ListLookup;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
+use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Api\Browse\CachingLookup;
 use SMW\MediaWiki\Api\Browse\ArticleLookup;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
@@ -54,6 +55,10 @@ class Browse extends ApiBase {
 
 		if ( $params['browse'] === 'concept' ) {
 			$res = $this->callListLookup( SMW_NS_CONCEPT, $parameters );
+		}
+
+		if ( $params['browse'] === 'pvalue' ) {
+			$res = $this->callPValueLookup( $parameters );
 		}
 
 		if ( $params['browse'] === 'article' ) {
@@ -120,6 +125,43 @@ class Browse extends ApiBase {
 		);
 	}
 
+	private function callPValueLookup( $parameters ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$cacheUsage = $applicationFactory->getSettings()->get(
+			'smwgCacheUsage'
+		);
+
+		$cacheTTL = CachingLookup::CACHE_TTL;
+
+		if ( isset( $cacheUsage['api.browse.pvalue'] ) ) {
+			$cacheTTL = $cacheUsage['api.browse.pvalue'];
+		}
+
+		// We explicitly want the SQLStore here to avoid
+		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
+		// since we don't use those methods anywher else other than the SQLStore
+		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+
+		$listLookup = new PValueLookup(
+			$store
+		);
+
+		$cachingLookup = new CachingLookup(
+			$applicationFactory->getCache(),
+			$listLookup
+		);
+
+		$cachingLookup->setCacheTTL(
+			$cacheTTL
+		);
+
+		return $cachingLookup->lookup(
+			$parameters
+		);
+	}
+
 	private function callArticleLookup( $parameters ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -171,7 +213,8 @@ class Browse extends ApiBase {
 					'category',
 					'property',
 					'concept',
-					'article'
+					'article',
+					'pvalue'
 				)
 			),
 			'params' => array(
@@ -189,8 +232,8 @@ class Browse extends ApiBase {
 	 */
 	public function getParamDescription() {
 		return array(
-			'browse' => 'Specifies the type of browse activty',
-			'params' => 'JSON encoded parameters that depend on the selected type requirment'
+			'browse' => 'Specifies the type of browse activity',
+			'params' => 'JSON encoded parameters that depend on the selected type requirement'
 		);
 	}
 
@@ -218,6 +261,7 @@ class Browse extends ApiBase {
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true, "usageCount": true }',
+			'api.php?action=smwbrowse&browse=pvalue&params={ "limit": 10, "offset": 0, "property" : "Foo", "search": "Bar" }',
 			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }',
 			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }',
 			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',

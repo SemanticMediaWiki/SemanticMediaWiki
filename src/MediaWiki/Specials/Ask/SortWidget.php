@@ -119,7 +119,7 @@ class SortWidget {
 						'type' => 'text',
 						'name' => "sort_num[]",
 						'size' => '35',
-						'class' => 'smw-property-input',
+						'class' => 'smw-property-input autocomplete-arrow',
 						'value' => htmlspecialchars( $sorts[$i] )
 					]
 			);
@@ -154,7 +154,7 @@ class SortWidget {
 			$result .= Html::rawElement( 'div', [ 'id' => "sort_div_$i", 'class' => "smw-ask-sort-input" ], $html );
 		}
 
-		$result .=  '<div id="sorting_starter" style="display: none"><input type="text" name="sort_num[]" size="35" class="smw-property-input" />';
+		$result .=  '<div id="sorting_starter" style="display: none"><input type="text" name="sort_num[]" size="35" class="smw-property-input autocomplete-arrow" />';
 		$result .= '<select name="order_num[]">' . "\n";
 		$result .= '	<option value="asc">' . Message::get( 'smw_ask_ascorder', Message::TEXT, Message::USER_LANGUAGE ) . "</option>\n";
 		$result .= '	<option value="desc">' . Message::get( 'smw_ask_descorder', Message::TEXT, Message::USER_LANGUAGE ) . "</option>\n";

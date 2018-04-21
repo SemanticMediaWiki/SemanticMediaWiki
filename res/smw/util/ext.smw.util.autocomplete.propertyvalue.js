@@ -1,48 +1,61 @@
 /**
- * JavaScript for property autocomplete function
+ * JavaScript for property value autocomplete function
  *
  * @license GNU GPL v2+
- * @since 2.4
+ * @since 3.0
  *
  * @author mwjames
  */
-
 ( function( $, mw ) {
 	'use strict';
 
 	var autocomplete = function( context ) {
 
-		var limit = 20;
+		// Keep the list small to minimize straining the DB
+		var limit = 10;
 		var currentValue = context.val();
 
-		var indicator = context.hasClass( 'autocomplete-arrow' );
+		// There is no reason for the field to be enabled as long as their is no
+		// property
+		if ( context.data( 'property' ) === '' || context.data( 'property' ) === undefined ) {
+			return context.addClass( 'is-disabled' );;
+		};
+
 		context.removeClass( 'is-disabled' );
+
+		var params = {
+			'action': 'smwbrowse',
+			'format': 'json',
+			'browse': 'pvalue',
+			'params': {
+				"search": '',
+				'property': context.data( 'property' ),
+				"limit": limit
+			}
+		};
 
 		// https://github.com/devbridge/jQuery-Autocomplete
 		context.autocomplete( {
 			serviceUrl: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
-			minChars: 3,
+			minChars: 0,
 			maxHeight: 150,
 			paramName: 'search',
 			delimiter: "\n",
 			noCache: false,
 			triggerSelectOnValidInput: false,
-			params: {
-				'action': 'smwbrowse',
-				'format': 'json',
-				'browse': 'property',
-				'params': {
-					"search": '',
-					"limit": limit
-				}
-			},
+			params: params,
 			onSearchStart: function( query ) {
 
 				// Avoid a search request on options or invalid characters
 				if (
 					query.search.indexOf( '#' ) > -1 ||
-					query.search.indexOf( '|' ) > -1 ) {
+					query.search.indexOf( '|' ) > -1 ||
+					query.search.indexOf( '*' ) > -1 ||
+					query.search.indexOf( '+' ) > -1 ||
+					query.search.indexOf( '!' ) > -1 ||
+					query.search.indexOf( '>' ) > -1 ||
+					query.search.indexOf( '<' ) > -1 ) {
 					return false;
 				};
 
@@ -54,13 +67,11 @@
 
 				context.removeClass( 'autocomplete-arrow' );
 				context.addClass( 'is-disabled' );
-
-				if ( indicator ) {
-					context.addClass( 'autocomplete-loading' );
-				};
+				context.addClass( 'autocomplete-loading' );
 
 				query.params = JSON.stringify( {
 					'search': query.search.replace( "?", '' ),
+					'property': context.data( 'property' ),
 					'limit': limit
 				} );
 
@@ -74,18 +85,15 @@
 					currentValue = suggestion.value;
 				};
 
-				context.trigger( 'smw.autocomplete.property.select.complete', {
+				context.trigger( 'smw.autocomplete.propertyvalue.select.complete', {
 					suggestion: suggestion,
-					context: context
+					context : context
 				} );
 			},
 			onSearchComplete: function( query ) {
 				context.removeClass( 'is-disabled' );
-
-				if ( indicator ) {
-					context.removeClass( 'autocomplete-loading' );
-					context.addClass( 'autocomplete-arrow' );
-				};
+				context.removeClass( 'autocomplete-loading' );
+				context.addClass( 'autocomplete-arrow' );
 			},
 			transformResult: function( response ) {
 
@@ -94,34 +102,28 @@
 				};
 
 				return {
-					suggestions: $.map( response.query, function( dataItem, key ) {
-						return { value: dataItem.label, data: key };
+					suggestions: $.map( response.query, function( key ) {
+						return { value: key, data: key };
 					} )
 				};
 			}
 		} );
 
 		// https://github.com/devbridge/jQuery-Autocomplete/issues/498
-		context.off( 'focus.autocomplete' );
+		// context.off( 'focus.autocomplete' );
 	}
-
-	// Listen to an event (see Special:Ask)
-	$ ( document ).on( 'SMW::Property::Autocomplete', function( event, opts ) {
-		autocomplete( opts.context.find( '.smw-property-input' ) );
-	} );
 
 	// Listen to any event that requires a value autocomplete
 	// The trigger needs to set { context: ... } so we isolate the processing
 	// to a specific instance
-	$ ( document ).on( 'smw.autocomplete.property', function( event, opts ) {
-		autocomplete( opts.context.find( '.smw-property-input' ) );
+	$ ( document ).on( 'smw.autocomplete.propertyvalue', function( event, opts ) {
+		autocomplete( opts.context.find( '.smw-propertyvalue-input' ) );
 	} );
 
 	$( document ).ready( function() {
-		$( '#smw-property-input, .smw-property-input' ).each( function() {
+		$( '.smw-propertyvalue-input' ).each( function() {
 			autocomplete( $( this ) );
 		} );
-
 	} );
 
 } )( jQuery, mediaWiki );

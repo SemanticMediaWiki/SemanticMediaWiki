@@ -1,0 +1,1 @@
+{"query":["1 January 1970","2 January 1971"],"query-continue-offset":0,"version":1,"meta":{"type":"pvalue","limit":10,"count":2,"isFromCache":false,"queryTime":.*}

@@ -77,7 +77,7 @@ return array(
 	#
 	# @since 3.0
 	##
-	'smwgUpgradeKey' => 'DB-2018-03',
+	'smwgUpgradeKey' => 'DB-2018-04',
 	##
 
 	###
@@ -1036,6 +1036,9 @@ return array(
 	#   lookup on statistics
 	#
 	# - api.browse TTL (in sec, or false to disable it) for the API browse module
+	#   as general cache
+	# - api.browse.pvalue TTL (in sec, or false to disable it) for the API browse
+	#   pvalue module when requesting property values
 	# - api.task TTL (in sec, or false to disable it) for the API task module
 	#
 	# @since 1.9
@@ -1046,6 +1049,7 @@ return array(
 		'special.properties' => 3600,
 		'special.statistics' => 3600,
 		'api.browse' => 3600,
+		'api.browse.pvalue' => 3600,
 		'api.task'  => 3600
 	),
 	##

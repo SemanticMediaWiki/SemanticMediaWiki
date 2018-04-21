@@ -58,7 +58,7 @@ class SortWidgetTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator->assertThatStringContains(
 			[
 				'<div id="sort_div_0" class="smw-ask-sort-input">',
-				'<input name="sort_num[]" size="35" class="smw-property-input" value="Foo"',
+				'<input name="sort_num[]" size="35" class="smw-property-input autocomplete-arrow" value="Foo"',
 				'<select name="order_num[]"><option selected="selected" value="asc">'
 			],
 			$result
@@ -67,7 +67,7 @@ class SortWidgetTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator->assertThatStringContains(
 			[
 				'<div id="sort_div_1" class="smw-ask-sort-input">',
-				'<input name="sort_num[]" size="35" class="smw-property-input" value="bar"',
+				'<input name="sort_num[]" size="35" class="smw-property-input autocomplete-arrow" value="bar"',
 				'<select name="order_num[]"><option value="asc">.*</option><option selected="selected" value="desc">'
 			],
 			$result
