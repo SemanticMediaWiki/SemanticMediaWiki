@@ -1916,6 +1916,10 @@ return array(
 		'LINK_FORMAT_RULE' => [
 			'schema'  => __DIR__ . '/data/schema/rule/link-format-rule-schema.v1.json',
 			'group'   => SMW_RULE_GROUP_FORMAT,
+		],
+		'SEARCH_FORM_DEFINITION_RULE' => [
+			'schema'  => __DIR__ . '/data/schema/rule/search-form-definition-rule-schema.v1.json',
+			'group'   => SMW_RULE_GROUP_FORM_DEFINITION,
 		]
 	],
 	##

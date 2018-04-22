@@ -278,6 +278,8 @@ define( 'SMW_QSORT_RANDOM', 4 ); // Random sort support
   * Constants for Rule groups
   */
 define( 'SMW_RULE_GROUP_FORMAT', 'rule.group.format' );
+define( 'SMW_RULE_GROUP_FORM_DEFINITION', 'rule.group.form.definition' );
+
 /**@}*/
 
 /**@{
