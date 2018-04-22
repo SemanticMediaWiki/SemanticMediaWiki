@@ -7,10 +7,13 @@ This is not a release yet and is planned to be available in Q2 2018.
 
 Highlights for this release include ... (#2065)
 
-
 ### Visual changes
 
 #2893, #2898 (`Special:Ask`), #2891, #2875, (`Special:Browse`), and #2906 (Factbox) contains changes to the appearance to help improve responsiveness on small screens and/or distinguish visual components more clearly from each other.
+
+### List and template printer rework
+
+#3130
 
 ## Upgrading
 
@@ -108,6 +111,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3088](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3088)
 * [#3095](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3095)
 * [#3096](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3096)
+* [#3125](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3125)
+
 
 ## Bug fixes
 
@@ -141,7 +146,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3067](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3067)
 * [#3076](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3076)
 * [#3107](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3107)
-
+* [#3130](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3130)
 
 ## Breaking changes and deprecations
 
@@ -209,7 +214,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3063](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3063)
 * [#3070](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3070)
 * [#3082](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3082)
-
+* [#3129](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3129)
 
 ## Contributors
 
