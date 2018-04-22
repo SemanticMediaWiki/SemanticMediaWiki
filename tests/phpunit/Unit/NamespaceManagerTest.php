@@ -279,7 +279,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->init( $vars );
 
 		$this->assertEquals(
-			CONTENT_MODEL_JSON,
+			CONTENT_MODEL_RULE,
 			$vars['wgNamespaceContentModels'][SMW_NS_RULE]
 		);
 	}

@@ -223,7 +223,7 @@ class NamespaceManager {
 			$vars['smwgNamespacesWithSemanticLinks']
 		);
 
-		$vars['wgNamespaceContentModels'][SMW_NS_RULE] = CONTENT_MODEL_JSON;
+		$vars['wgNamespaceContentModels'][SMW_NS_RULE] = CONTENT_MODEL_RULE;
 	}
 
 	private function addExtraNamespaceSettings( &$vars ) {
