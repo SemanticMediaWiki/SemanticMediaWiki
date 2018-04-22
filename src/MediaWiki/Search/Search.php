@@ -34,7 +34,20 @@ class Search extends SearchEngine {
 
 	private $database = null;
 
-	private $queryCache = array();
+	/**
+	 * @var array
+	 */
+	private $errors = [];
+
+	/**
+	 * @var QueryBuilder
+	 */
+	private $queryBuilder;
+
+	/**
+	 * @var string
+	 */
+	private $queryString = '';
 
 	/**
 	 * @param null|SearchEngine $fallbackSearch
@@ -85,6 +98,26 @@ class Search extends SearchEngine {
 	}
 
 	/**
+	 * @see Search::getSearchResultSet
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+
+	/**
+	 * @see Search::getSearchResultSet
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getQueryString() {
+		return $this->queryString;
+	}
+
+	/**
 	 * @param DatabaseBase $connection
 	 */
 	public function setDB( DatabaseBase $connection ) {
@@ -111,25 +144,26 @@ class Search extends SearchEngine {
 	 */
 	private function getSearchQuery( $term ) {
 
-		if ( ! is_string( $term ) || trim( $term ) === '' ) {
-			return null;
+		if ( $this->queryBuilder === null ) {
+			$this->queryBuilder = new QueryBuilder();
 		}
 
-		if ( !array_key_exists( $term, $this->queryCache ) ) {
+		$this->queryString = $this->queryBuilder->getQueryString(
+			$term
+		);
 
-			$params = \SMWQueryProcessor::getProcessedParams( array() );
-			$query = \SMWQueryProcessor::createQuery( $term, $params );
+		$query = $this->queryBuilder->getQuery(
+			$this->queryString
+		);
 
-			$description = $query->getDescription();
+		$this->queryBuilder->addSort( $query );
 
-			if ( $description === null || is_a( $description, 'SMWThingDescription' ) ) {
-				$query = null;
-			}
+		$this->queryBuilder->addNamespaceCondition(
+			$query,
+			$this->searchableNamespaces()
+		);
 
-			$this->queryCache[$term] = $query;
-		}
-
-		return $this->queryCache[$term];
+		return $query;
 	}
 
 	private function searchFallbackSearchEngine( $term, $fulltext ) {
@@ -186,35 +220,27 @@ class Search extends SearchEngine {
 
 		$query = $this->getSearchQuery( $term );
 
-		if ( $query !== null ) {
-
-			$namespacesDisjunction = new Disjunction(
-				array_map( function ( $ns ) {
-					return new NamespaceDescription( $ns );
-				}, $this->namespaces )
-			);
-
-			$description = new Conjunction( array( $query->getDescription(), $namespacesDisjunction ) );
-
-			$query->setDescription( $description );
-			$query->setOffset( $this->offset );
-			$query->setLimit( $this->limit, false );
-
-			$store = ApplicationFactory::getInstance()->getStore();
-
-			// Sort by score/relevance if available
-			$query->setOption( SMWQuery::SCORE_SORT, 'desc' );
-
-			$result = $store->getQueryResult( $query );
-
-			$query->querymode = SMWQuery::MODE_COUNT;
-			$query->setOffset( 0 );
-
-			$queryResult = $store->getQueryResult( $query );
-			$count = $queryResult instanceof QueryResult ? $queryResult->getCountValue() : $queryResult;
-
-			return new SearchResultSet( $result, $count );
+		if ( $query === null ) {
+			return null;
 		}
+
+		$query->setOffset( $this->offset );
+		$query->setLimit( $this->limit, false );
+		$this->queryString = $query->getQueryString();
+
+		$store = ApplicationFactory::getInstance()->getStore();
+		$query->clearErrors();
+
+		$result = $store->getQueryResult( $query );
+		$this->errors = $query->getErrors();
+
+		$query->querymode = SMWQuery::MODE_COUNT;
+		$query->setOffset( 0 );
+
+		$queryResult = $store->getQueryResult( $query );
+		$count = $queryResult instanceof QueryResult ? $queryResult->getCountValue() : $queryResult;
+
+		return new SearchResultSet( $result, $count );
 	}
 
 	/**
@@ -339,7 +365,6 @@ class Search extends SearchEngine {
 	public function getShowSuggestion() {
 		return $this->showSuggestion;
 	}
-
 
 	public function setLimitOffset( $limit, $offset = 0 ) {
 		parent::setLimitOffset( $limit, $offset );

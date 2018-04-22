@@ -66,6 +66,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->requestContext->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $this->outputPage ) );
+
+		$this->requestContext->expects( $this->any() )
 			->method( 'getRequest' )
 			->will( $this->returnValue( $webRequest ) );
 
@@ -183,6 +187,8 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForOutputPageParserOutput( $instance );
 		$this->doTestExecutionForBeforePageDisplay( $instance );
 		$this->doTestExecutionForSpecialSearchResultsPrepend( $instance );
+		$this->doTestExecutionForSpecialSearchProfiles( $instance );
+		$this->doTestExecutionForSpecialSearchProfileForm( $instance );
 		$this->doTestExecutionForInternalParseBeforeLinks( $instance );
 		$this->doTestExecutionForNewRevisionFromEditComplete( $instance );
 		$this->doTestExecutionForTitleMoveComplete( $instance );
@@ -384,6 +390,77 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $specialSearch, $this->outputPage, '' )
+		);
+
+		$this->handlers[$handler] = true;
+	}
+
+	public function doTestExecutionForSpecialSearchProfiles( $instance ) {
+
+		$handler = 'SpecialSearchProfiles';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$profiles = [];
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ &$profiles ]
+		);
+
+		$this->handlers[$handler] = true;
+	}
+
+	public function doTestExecutionForSpecialSearchProfileForm( $instance ) {
+
+		$handler = 'SpecialSearchProfileForm';
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\Search' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$searchEngine->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( [] ) );
+
+		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$specialSearch->expects( $this->any() )
+			->method( 'getSearchEngine' )
+			->will( $this->returnValue( $searchEngine ) );
+
+		$specialSearch->expects( $this->any() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
+
+		$specialSearch->expects( $this->any() )
+			->method( 'getNamespaces' )
+			->will( $this->returnValue( [] ) );
+
+		$specialSearch->expects( $this->any() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $this->requestContext ) );
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$form = '';
+		$profile = 'smw';
+		$term = '';
+		$opts = [];
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ $specialSearch, &$form, $profile, $term, $opts ]
 		);
 
 		$this->handlers[$handler] = true;

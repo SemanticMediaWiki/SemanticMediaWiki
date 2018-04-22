@@ -494,6 +494,8 @@
 	"smw-search-input": "Input and search",
 	"smw-search-help-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Input assistance] is provided for the input field and requires to use one of following prefixes:\n\n*<code>p:</code> to enable property suggestions (e.g. <code><nowiki>[[p:Has ...</nowiki></code>)\n\n*<code>c:</code> to enable category suggestions\n\n*<code>con:</code> to enable concept suggestions",
 	"smw-search-syntax": "Syntax",
+	"smw-search-profile": "Extended",
+	"smw-search-profile-tooltip": "Search functions in connection with Semantic MediaWiki",
 	"log-name-smw": "Semantic MediaWiki log",
 	"log-show-hide-smw": "$1 Semantic MediaWiki log",
 	"log-description-smw": "Activities for [https://www.semantic-mediawiki.org/wiki/Help:Logging enabled event types] that have been reported by Semantic MediaWiki and its components.",

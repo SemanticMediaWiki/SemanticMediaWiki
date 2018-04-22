@@ -14,6 +14,7 @@ use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\PermissionPthValidator;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\MediaWiki\Search\SearchProfileForm;
 use SMW\Site;
 use SMW\Setup;
 
@@ -256,8 +257,10 @@ class HookRegistry {
 			'LoadExtensionSchemaUpdates' => 'newLoadExtensionSchemaUpdates',
 
 			'ExtensionTypes' => 'newExtensionTypes',
-			'SpecialSearchResultsPrepend' => 'newSpecialSearchResultsPrepend',
 			'SpecialStatsAddExtra' => 'newSpecialStatsAddExtra',
+			'SpecialSearchResultsPrepend' => 'newSpecialSearchResultsPrepend',
+			'SpecialSearchProfileForm' => 'newSpecialSearchProfileForm',
+			'SpecialSearchProfiles' => 'newSpecialSearchProfiles',
 
 			'BlockIpComplete' => 'newBlockIpComplete',
 			'UnblockUserComplete' => 'newUnblockUserComplete',
@@ -416,6 +419,42 @@ class HookRegistry {
 		);
 
 		return $specialSearchResultsPrepend->process( $term );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchProfiles
+	 */
+	public function newSpecialSearchProfiles( array &$profiles ) {
+
+		SearchProfileForm::addProfile(
+			$GLOBALS['wgSearchType'],
+			$profiles
+		);
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchProfileForm
+	 */
+	public function newSpecialSearchProfileForm( $specialSearch, &$form, $profile, $term, $opts ) {
+
+		if ( $profile !== SearchProfileForm::PROFILE_NAME ) {
+			return true;
+		}
+
+		$searchProfileForm = new SearchProfileForm(
+			$this->applicationFactory->getStore(),
+			$specialSearch
+		);
+
+		$searchProfileForm ->setSearchableNamespaces(
+			\MediaWiki\MediaWikiServices::getInstance()->getSearchEngineConfig()->searchableNamespaces()
+		);
+
+		$searchProfileForm->getForm( $form, $opts );
+
+		return false;
 	}
 
 	/**
