@@ -56,6 +56,19 @@ class Logger extends AbstractLogger {
 			$canLog = true;
 		}
 
+		// For convenience
+		if ( isset( $context['procTime'] ) ) {
+			$context['procTime'] = round( $context['procTime'], 5 );
+		}
+
+		if ( isset( $context['time'] ) ) {
+			$context['time'] = round( $context['time'], 5 );
+		}
+
+		if ( is_array( $message ) ) {
+			$message = array_shift( $message ) . ': ' . json_encode( $message );
+		}
+
 		if ( $canLog ) {
 			$this->logger->log( $level, $message, $context );
 		}
