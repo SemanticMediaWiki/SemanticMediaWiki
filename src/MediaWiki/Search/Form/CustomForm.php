@@ -137,6 +137,7 @@ class CustomForm {
 	private function makeField( $name, $property, $value, $options ) {
 
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
+		$options = !is_array( $options ) ? [] : $options;
 
 		if ( !isset( $options['placeholder'] ) ) {
 			$options['placeholder'] = "$property ...";
@@ -146,7 +147,7 @@ class CustomForm {
 			$options['class'] = "";
 		}
 
-		if ( isset( $options['autocomplete'] ) ) {
+		if ( isset( $options['autocomplete'] ) && $options['autocomplete'] ) {
 			$options['class'] .= " smw-propertyvalue-input autocomplete-arrow";
 		}
 
@@ -159,6 +160,12 @@ class CustomForm {
 			if ( isset( $this->html5TypeMap[$typeID] ) ) {
 				$type = $this->html5TypeMap[$typeID];
 			}
+		}
+
+		// Numeric names are not useful and may have been caused by an invalid
+		// JSON array/object definition
+		if ( is_numeric( $name ) ) {
+			$options[] = 'disabled';
 		}
 
 		$attributes = [
