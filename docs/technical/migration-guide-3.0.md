@@ -49,3 +49,21 @@
 	return true;
 } );
 ```
+
+## Formats
+
+### List formats (incl. list, ol, ul, template)
+
+* Wrapped components of the `list` format in HTML elements
+* Added class attributes to HTML elements of `list`, `ol` and `ul` formats to facilitate styling
+* Added `plainlist`format
+* `template` format becomes alias of the `plainlist` format
+* `template` parameter is used when present, even if format is not `template`
+* Standardized parameters to templates: All standard parameters start with a `#`
+* Dedicated separators for values, properties and result "rows": `sep`, `propsep`, `valuesep`
+* Removed final list separator (", and")
+* Removed `?` as prefix for template arguments
+* Removed `template arguments` parameter
+* Removed `columns` parameter
+
+For details see https://gist.github.com/s7eph4n/277e7804fe04954df7d1e15ae874b0d0
