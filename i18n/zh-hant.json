@@ -289,7 +289,7 @@
 	"smw_inverse_label_property": "逆屬性標籤",
 	"pageproperty": "頁面屬性搜尋",
 	"smw_pp_docu": "在指定頁面搜尋某屬性的所有值。\n輸入頁面和屬性。",
-	"smw_pp_from": "從頁面",
+	"smw_pp_from": "從頁面：",
 	"smw_pp_type": "屬性",
 	"smw_pp_submit": "搜尋結果",
 	"smw_result_prev": "上一個",

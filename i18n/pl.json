@@ -219,7 +219,9 @@
 	"smw-ask-parameters": "Parametry",
 	"smw-ask-search": "Szukaj",
 	"smw-ask-debug": "Debugowanie",
+	"smw-ask-no-cache": "Nie używaj pamięci podręcznej",
 	"smw-ask-result": "Wynik",
+	"smw-ask-empty": "Wymaż wszystkie wpisy",
 	"smw-ask-format": "Format",
 	"smw-ask-format-selection-help": "Aby uzyskać szczegółowy opis, odwiedź $1 stronę pomocy.",
 	"searchbyproperty": "Wyszukiwanie po atrybucie",
@@ -350,6 +352,7 @@
 	"smw-sp-searchbyproperty-resultlist-header": "Lista wyników",
 	"smw-sp-searchbyproperty-nonvaluequery": "Lista wartości, które mają przypisaną właściwość „$1”.",
 	"smw-sp-searchbyproperty-valuequery": "Lista stron, które mają właściwość „$1” z wartością „$2”.",
+	"smw-search-input": "Wprowadź i wyszukaj",
 	"smw-search-syntax": "Składnia",
 	"log-name-smw": "Rejestr semantycznej MediaWiki",
 	"log-show-hide-smw": "$1 rejestr semantycznej MediaWiki",
@@ -394,11 +397,13 @@
 	"smw-list-pager-filter": "Filtr:",
 	"smw-section-expand": "Rozwiń sekcję",
 	"smw-section-collapse": "Zwiń sekcję",
+	"smw-ask-format-help-link": "format [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",
 	"smw-help": "Pomoc",
 	"smw-processing": "Przetwarzanie...",
 	"smw-types-title": "Typ: $1",
 	"smw-rule-page-definition": "Definicja",
 	"smw-rule-page-description": "Opis:",
 	"smw-rule-page-type": "Typ:",
-	"smw-rule-page-tag": "Znacznik:"
+	"smw-rule-page-tag": "Znacznik:",
+	"smw-ask-title-keyword-type": "Wyszukiwanie słów kluczowych"
 }

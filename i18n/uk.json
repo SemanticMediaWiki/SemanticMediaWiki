@@ -18,7 +18,8 @@
 			"Bunyk",
 			"Eduardo Addad de Oliveira",
 			"Renamerr",
-			"Avatar6"
+			"Avatar6",
+			"Movses"
 		]
 	},
 	"smw-desc": "Робить вашу вікі доступнішою — для машин ''та'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
@@ -608,7 +609,7 @@
 	"smw-format-datatable-info": "Відображення записів від _START_ по _END_ з _TOTAL_",
 	"smw-format-datatable-infoempty": "Показані від 0 до 0 з 0 записів",
 	"smw-format-datatable-infofiltered": "(відфільтровано з усього _MAX_ записів)",
-	"smw-format-datatable-infothousands": ",",
+	"smw-format-datatable-infothousands": "&nbsp;",
 	"smw-format-datatable-lengthmenu": "Показати _MENU_ записів",
 	"smw-format-datatable-loadingrecords": "Завантаження…",
 	"smw-format-datatable-processing": "Обробка…",

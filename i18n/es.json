@@ -515,6 +515,7 @@
 	"smw-editpage-concept-annotation-enabled": "Es posible extender este concepto por medio de la función #concept del analizador. Para saber cómo utilizar #concept, consulta la página de ayuda de los [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceptos].",
 	"smw-search-syntax-support": "En las búsquedas se puede utilizar la [https://www.semantic-mediawiki.org/wiki/Help:Semantic_search sintaxis de consultas semánticas] para encontrar correspondencias mediante Semantic MediaWiki.",
 	"smw-search-input-assistance": "El [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance asistente de entrada] se activa también para facilitar la preselección de las entidades disponibles.",
+	"smw-search-syntax": "Sintaxis",
 	"log-name-smw": "Registro de Semantic MediaWiki",
 	"log-show-hide-smw": "$1 el registro de Semantic MediaWiki",
 	"log-description-smw": "Actividades para [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos de evento habilitados] que han sido notificados por la MediaWiki Semántica y sus componentes.",

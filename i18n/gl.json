@@ -6,7 +6,8 @@
 			"Banjo",
 			"Macofe",
 			"Nemo bis",
-			"Athena in Wonderland"
+			"Athena in Wonderland",
+			"Navhy"
 		]
 	},
 	"smw-desc": "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
@@ -480,6 +481,7 @@
 	"smw-editpage-concept-annotation-enabled": "Este concepto pode ampliarse usando a función de análise #concept. Para unha descrición de como usar #concept, consulte a páxina de axuda sobre os [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceptos].",
 	"smw-search-syntax-support": "Nas procuras pódese utilizar a  [https://www.semantic-mediawiki.org/wiki/Help:Semantic_searchsintaxe de consultas semánticas] para axudar a atopar correspondencias usando a MediaWiki Semántica.",
 	"smw-search-input-assistance": "O [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance asistente de entrada] está activado tamén, para permitir unha preselección de entidades dispoñibles.",
+	"smw-search-syntax": "Sintaxe",
 	"log-name-smw": "Rexisto de MediaWiki Semántica",
 	"log-show-hide-smw": "Rexistro de MediaWiki Semántica $1",
 	"log-description-smw": "Actividades dos [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos de evento habilitados]  que foron informados pola MediaWiki Semántica e os seus compoñentes.",
