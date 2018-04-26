@@ -508,6 +508,8 @@
 	"smw-format-datatable-previous": "Προηγούμενο",
 	"smw-format-datatable-sortascending": ":Ενεργοποιήστε για να ταξινομήσετε αύξουσα στήλη",
 	"smw-format-datatable-sortdescending": ": Ενεργοποιήστε για να ταξινομήσετε φθίνουσα στήλη",
+	"smw-format-list-other-fields-open": "(",
+	"smw-format-list-other-fields-close": ")",
 	"smw-parser-function-expensive-execution-limit": "Η συνάρτηση του συντακτικού αναλυτή έχει φτάσει στο όριό της για ακριβές εκτελέσεις (βλ. παράμετρο διαμόρφωσης [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit $smwgQExpensiveExecutionLimit]).",
 	"smw-postproc-queryref": "Το σημειολογικό πεδίο της MediaWiki θα αρχίσει την ανανέωση της σελίδας που αντιστοιχεί στην ζήτηση που απαιτείται μετά την διαδικασία.",
 	"smw-property-reserved-category": "Κατηγορία",
