@@ -31,7 +31,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			[
 				'entity.id' => new FixedInMemoryLruCache(),
 				'entity.sort' => new FixedInMemoryLruCache(),
-				'entity.lookup' => new FixedInMemoryLruCache()
+				'entity.lookup' => new FixedInMemoryLruCache(),
+				'table.hash' => new FixedInMemoryLruCache()
 			]
 		);
 
