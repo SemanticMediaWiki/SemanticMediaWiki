@@ -501,4 +501,13 @@ class HtmlFormRenderer {
 		return $form;
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function renderForm() {
+		return $this->getForm();
+	}
+
 }
