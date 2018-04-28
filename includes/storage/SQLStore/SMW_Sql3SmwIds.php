@@ -514,7 +514,7 @@ class SMWSql3SmwIds {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$rows = $connection->select(
-			self::TABLE_NAME,
+			$connection->tableName( self::TABLE_NAME ),
 			$query['fields'],
 			$query['conditions'],
 			__METHOD__
@@ -525,7 +525,7 @@ class SMWSql3SmwIds {
 		}
 
 		foreach ( $rows as $row ) {
-			$matches[] = $row->smw_id;
+			$matches[] = (int)$row->smw_id;
 		}
 
 		return $matches;
