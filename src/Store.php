@@ -542,6 +542,15 @@ abstract class Store implements QueryEngine {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getInfo() {
+		return [];
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param ConnectionManager $connectionManager

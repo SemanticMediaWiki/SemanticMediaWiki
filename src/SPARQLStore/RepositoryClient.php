@@ -46,6 +46,11 @@ class RepositoryClient {
 	private $dataEndpoint = '';
 
 	/**
+	 * @var string
+	 */
+	private $id = '';
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param string $defaultGraph
@@ -58,6 +63,24 @@ class RepositoryClient {
 		$this->queryEndpoint = $queryEndpoint;
 		$this->updateEndpoint = $updateEndpoint;
 		$this->dataEndpoint = $dataEndpoint;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $id
+	 */
+	public function setId( $id ) {
+		$this->id = $id;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getId() {
+		return $this->id;
 	}
 
 	/**

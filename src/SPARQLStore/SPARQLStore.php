@@ -272,7 +272,7 @@ class SPARQLStore extends Store {
 	public function getQueryResult( Query $query ) {
 
 		// Use a fallback QueryEngine in case the QueryEndpoint is inaccessible
-		if ( !$this->isEnabledQueryEndpoint() ) {
+		if ( !$this->hasQueryEndpoint() ) {
 			return $this->baseStore->getQueryResult( $query );
 		}
 
@@ -429,6 +429,20 @@ class SPARQLStore extends Store {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getInfo() {
+
+		$client = $this->getConnection( 'sparql' )->getRepositoryClient();
+
+		return [
+			'SMWSPARQLStore' => [ $client->getId(), $this->getConnection( 'mw.db' )->getInfo() ]
+		];
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param string $type
@@ -444,7 +458,7 @@ class SPARQLStore extends Store {
 		return parent::getConnection( $type );
 	}
 
-	private function isEnabledQueryEndpoint() {
+	private function hasQueryEndpoint() {
 		return $this->getConnection( 'sparql' )->getRepositoryClient()->getQueryEndpoint() !== false;
 	}
 

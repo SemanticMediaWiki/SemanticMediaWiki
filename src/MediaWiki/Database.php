@@ -122,6 +122,22 @@ class Database {
 	}
 
 	/**
+	 * @see DatabaseBase::getServerInfo
+	 *
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getInfo() {
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return [ $this->getType() => $this->readConnection->getServerInfo() ];
+	}
+
+	/**
 	 * @see DatabaseBase::getType
 	 *
 	 * @since 1.9

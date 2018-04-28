@@ -156,7 +156,7 @@ class BenchmarkJsonScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$report = array(
 			'mediawiki' => $GLOBALS['wgVersion'],
 			'semantic-mediawiki' => \SemanticMediaWiki::getVersion(),
-			'environment' => \SemanticMediaWiki::getEnvironment(),
+			'environment' => $this->getStore()->getInfo(),
 			'benchmarks' => $this->benchmarkReports
 		);
 

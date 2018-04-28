@@ -613,6 +613,20 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getInfo() {
+
+		$connection = $this->getConnection( 'mw.db' );
+
+		return [
+			'SMWSQLStore' => $connection->getInfo()
+		];
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param string $type
