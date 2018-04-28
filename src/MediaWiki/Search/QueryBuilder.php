@@ -169,6 +169,10 @@ class QueryBuilder {
 			$data = $this->data;
 		}
 
+		if ( isset( $data['term.parser'] ) && $data['term.parser'] ) {
+			$term = $this->term_parser( $term );
+		}
+
 		$form = $this->request->getVal( 'smw-form' );
 
 		if ( ( $data = $this->fetchFieldValues( $form, $data ) ) === [] && trim( $term ) ) {
@@ -286,6 +290,69 @@ class QueryBuilder {
 		}
 
 		return $fieldValues;
+	}
+
+	/**
+	 * Split and parse a simplified term input (e.g. (in:foo bar ||
+	 * phrase:foobar) category:bar ) into a #ask conform expression.
+	 *
+	 * @param string $term
+	 *
+	 * @return string
+	 */
+	public static function term_parser( $term ) {
+
+		// Simplify the processing by normalizing expressions
+		$term = str_replace([ '<q>', '</q>' ],  [ '(', ')' ], $term );
+
+		$terms = preg_split(
+			'/(in:)|(phrase:)|(not:)|(category:)|(&&)|(AND)|(OR)|(\|\|)|(\()|(\))/',
+			$term,
+			-1,
+			PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
+		);
+
+		$term = '';
+		$k = 0;
+
+		while ( key( $terms ) !== null ) {
+			$new = trim( current( $terms ) );
+			$next = next( $terms );
+			$last = substr( $term, -2 );
+
+			if ( $new === '' ) {
+				continue;
+			}
+
+			if ( $new === 'in:' || $new === 'phrase:' || $new === 'not:' || $new === 'category:' ) {
+				$term .= "[[$new";
+			} else {
+				$term .= $new;
+			}
+
+			if ( $last === ']]' || $new === '(' || $new === '||' ) {
+				continue;
+			}
+
+			if ( $k > 0 && in_array( $next, [ 'in:', 'phrase:', 'not:', 'category:', '&&', 'AND', '||', 'OR', ')', '(' ] ) ) {
+				$term .= "]]";
+			}
+
+			if ( $next === false && !in_array( $last, [ '&&', 'AND', '||', 'OR', ']]' ] ) ) {
+				$term .= ']]';
+			}
+
+			$k++;
+		}
+
+		// Normalize
+		$term = str_replace(
+			[ '(', ')', '||', '&&', 'AND', 'OR', ']][[', '[[[[', ']]]]' ],
+			[ '<q>', '</q>', ' || ', ' && ', ' AND ', ' OR ', ']] [[', '[[', ']]' ],
+			$term
+		);
+
+		return $term;
 	}
 
 }
