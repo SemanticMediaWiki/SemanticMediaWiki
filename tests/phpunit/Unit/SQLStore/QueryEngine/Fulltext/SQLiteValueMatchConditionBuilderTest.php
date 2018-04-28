@@ -126,13 +126,15 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar' ) ) );
 
-		$description->expects( $this->once() )
+		$description->expects( $this->atLeastOnce() )
 			->method( 'getComparator' )
 			->will( $this->returnValue( SMW_CMP_LIKE ) );
 
 		$this->assertTrue(
 			$instance->canApplyFulltextSearchMatchCondition( $description )
 		);
+
+		$instance->getWhereCondition( $description );
 	}
 
 	public function testGetWhereConditionWithPropertyOnTempTable() {

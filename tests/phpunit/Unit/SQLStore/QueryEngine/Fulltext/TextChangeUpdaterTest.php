@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
-use SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater;
+use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater
+ * @covers \SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
+class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 	private $connection;
@@ -48,8 +48,8 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater',
-			new TextByChangeUpdater( $this->connection, $this->cache, $this->searchTableUpdater )
+			TextChangeUpdater::class,
+			new TextChangeUpdater( $this->connection, $this->cache, $this->searchTableUpdater )
 		);
 	}
 
@@ -86,7 +86,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new TextByChangeUpdater(
+		$instance = new TextChangeUpdater(
 			$this->connection,
 			$this->cache,
 			$this->searchTableUpdater
@@ -146,7 +146,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->equalTo( array( 'slot:id' => 'Foo#0##' ) ) );
 
-		$instance = new TextByChangeUpdater(
+		$instance = new TextChangeUpdater(
 			$this->connection,
 			$this->cache,
 			$this->searchTableUpdater
@@ -197,7 +197,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new TextByChangeUpdater(
+		$instance = new TextChangeUpdater(
 			$this->connection,
 			$this->cache,
 			$this->searchTableUpdater

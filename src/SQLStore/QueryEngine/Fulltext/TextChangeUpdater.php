@@ -20,7 +20,7 @@ use SMW\Utils\Timer;
  *
  * @author mwjames
  */
-class TextByChangeUpdater {
+class TextChangeUpdater {
 
 	use LoggerAwareTrait;
 

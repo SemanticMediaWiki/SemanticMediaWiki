@@ -90,7 +90,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 		// process by adding the PID as an additional condition
 		if ( $property !== null ) {
 			$propertyCondition = ' AND ' . $temporaryTable . 'p_id=' . $this->searchTable->addQuotes(
-				$this->searchTable->getPropertyIdBy( $property )
+				$this->searchTable->getIdByProperty( $property )
 			);
 		}
 

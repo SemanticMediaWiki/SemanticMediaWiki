@@ -34,11 +34,11 @@ class FulltextSearchTableUpdateJob extends JobBase {
 
 		$fulltextSearchTableFactory = new FulltextSearchTableFactory();
 
-		$textByChangeUpdater = $fulltextSearchTableFactory->newTextByChangeUpdater(
+		$textChangeUpdater = $fulltextSearchTableFactory->newTextChangeUpdater(
 			ApplicationFactory::getInstance()->getStore( '\SMW\SQLStore\SQLStore' )
 		);
 
-		$textByChangeUpdater->pushUpdatesFromJobParameters(
+		$textChangeUpdater->pushUpdatesFromJobParameters(
 			$this->params
 		);
 
