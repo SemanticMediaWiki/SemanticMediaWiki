@@ -1007,11 +1007,11 @@ class HookRegistry {
 
 			$fulltextSearchTableFactory = new FulltextSearchTableFactory();
 
-			$textByChangeUpdater = $fulltextSearchTableFactory->newTextByChangeUpdater(
+			$textChangeUpdater = $fulltextSearchTableFactory->newTextChangeUpdater(
 				$store
 			);
 
-			$textByChangeUpdater->pushUpdates(
+			$textChangeUpdater->pushUpdates(
 				$changeOp,
 				$deferredRequestDispatchManager
 			);

@@ -102,7 +102,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructTextByChangeUpdater() {
+	public function testCanConstructTextChangeUpdater() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -115,8 +115,8 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater',
-			$instance->newTextByChangeUpdater( $this->store )
+			'\SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater',
+			$instance->newTextChangeUpdater( $this->store )
 		);
 	}
 

@@ -2,12 +2,12 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\SQLiteValueMatchConditionBuilder;
-use SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater;
+use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
@@ -25,11 +25,11 @@ class FulltextSearchTableFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
 	 * @return ValueMatchConditionBuilder
 	 */
-	public function newValueMatchConditionBuilderByType( SQLStore $store ) {
+	public function newValueMatchConditionBuilderByType( Store $store ) {
 
 		$type = $store->getConnection( 'mw.db' )->getType();
 
@@ -54,7 +54,7 @@ class FulltextSearchTableFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
 	 * @return SearchTable
 	 */
@@ -80,11 +80,11 @@ class FulltextSearchTableFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
 	 * @return SearchTable
 	 */
-	public function newSearchTable( SQLStore $store ) {
+	public function newSearchTable( Store $store ) {
 
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
@@ -114,11 +114,11 @@ class FulltextSearchTableFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
 	 * @return SearchTableUpdater
 	 */
-	public function newSearchTableUpdater( SQLStore $store ) {
+	public function newSearchTableUpdater( Store $store ) {
 		return new SearchTableUpdater(
 			$store->getConnection( 'mw.db' ),
 			$this->newSearchTable( $store ),
@@ -129,45 +129,45 @@ class FulltextSearchTableFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
-	 * @return TextByChangeUpdater
+	 * @return TextChangeUpdater
 	 */
-	public function newTextByChangeUpdater( SQLStore $store ) {
+	public function newTextChangeUpdater( Store $store ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		$textByChangeUpdater = new TextByChangeUpdater(
+		$textChangeUpdater = new TextChangeUpdater(
 			$store->getConnection( 'mw.db' ),
 			$applicationFactory->getCache(),
 			$this->newSearchTableUpdater( $store )
 		);
 
-		$textByChangeUpdater->setLogger(
+		$textChangeUpdater->setLogger(
 			$applicationFactory->getMediaWikiLogger()
 		);
 
-		$textByChangeUpdater->asDeferredUpdate(
+		$textChangeUpdater->asDeferredUpdate(
 			$settings->get( 'smwgFulltextDeferredUpdate' )
 		);
 
 		// https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-		$textByChangeUpdater->isCommandLineMode(
+		$textChangeUpdater->isCommandLineMode(
 			$GLOBALS['wgCommandLineMode']
 		);
 
-		return $textByChangeUpdater;
+		return $textChangeUpdater;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
 	 * @return SearchTableRebuilder
 	 */
-	public function newSearchTableRebuilder( SQLStore $store ) {
+	public function newSearchTableRebuilder( Store $store ) {
 		return new SearchTableRebuilder(
 			$store->getConnection( 'mw.db' ),
 			$this->newSearchTableUpdater( $store )

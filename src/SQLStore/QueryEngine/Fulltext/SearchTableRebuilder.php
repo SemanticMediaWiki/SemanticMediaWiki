@@ -244,7 +244,7 @@ class SearchTableRebuilder {
 				return $this->skippedTables[$table] = 'Fixed property, ' . $property->getKey() . ' is invalid';
 			}
 
-			$pid = $searchTable->getPropertyIdBy(
+			$pid = $searchTable->getIdByProperty(
 				$property
 			);
 
