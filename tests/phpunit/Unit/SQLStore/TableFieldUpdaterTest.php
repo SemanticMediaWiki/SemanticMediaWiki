@@ -58,7 +58,7 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$collator->expects( $this->once() )
-			->method( 'getSortKey' );
+			->method( 'getTruncatedSortKey' );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()

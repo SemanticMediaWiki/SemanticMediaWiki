@@ -1,0 +1,78 @@
+{
+	"description": "Test property page sorting (`wgRestrictDisplayTitle`, `smwgEntityCollation`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page test",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P1006/1",
+			"contents": "[[Has page test::123]] {{DISPLAYTITLE:AA}}"
+		},
+		{
+			"page": "Example/P1006/2",
+			"contents": "[[Has page test::123]] {{DISPLAYTITLE:AA}} {{#subobject: |Has page test=456 |@sortkey=AA}}"
+		},
+		{
+			"page": "Example/P1006/3",
+			"contents": "[[Has page test::123]] {{DISPLAYTITLE:BB}}"
+		},
+		{
+			"page": "Example/P1006/4",
+			"contents": "[[Has page test::123]] {{DISPLAYTITLE:CC}} {{#subobject: |Has page test=456 |@sortkey=BB}}"
+		},
+		{
+			"page": "Example/P1006/5",
+			"contents": "[[Has page test::123]] {{DISPLAYTITLE:DD}} {{#subobject: |Has page test=456 |@sortkey=DD}}"
+		},
+		{
+			"page": "Example/P1006/6",
+			"contents": "[[Has page test::123]] {{DISPLAYTITLE:DD}} {{#subobject: |Has page test=456 |@sortkey=DD}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (verify item list order)",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Has page test",
+			"assert-output": {
+				"onPageView": {
+					"parameters": {}
+				},
+				"to-contain": [
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"0\"><a href=.*Example/P1006/1\" title=\"Example/P1006/1\">AA</a>",
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"1\"><a href=.*Example/P1006/2\" title=\"Example/P1006/2\">AA</a>",
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"2\"><a href=.*Example/P1006/2#_14d8b802a338f5900237277114a2cc2f\" .*title=\"Example/P1006/2\".*>AA</a>",
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"3\"><a href=.*Example/P1006/3\" title=\"Example/P1006/3\">BB</a>",
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"4\"><a href=.*Example/P1006/4#_6961cf334b7bc5632473cf15ebfc3094\" .*title=\"Example/P1006/4\".*>CC</a>",
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"5\"><a href=.*Example/P1006/4\" title=\"Example/P1006/4\">CC</a>",
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"6\"><a href=.*Example/P1006/5\" title=\"Example/P1006/5\">DD</a>",
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"7\"><a href=.*Example/P1006/5#_e4e502c29803cb65c90fa99b6abd99da\" .*title=\"Example/P1006/5\".*>DD</a>",
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"8\"><a href=.*Example/P1006/6\" title=\"Example/P1006/6\">DD</a>",
+					"<div class=\"smw-table-cell smwpropname\" data-list-index=\"9\"><a href=.*Example/P1006/6#_e4e502c29803cb65c90fa99b6abd99da\" .*title=\"Example/P1006/6\".*>DD</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgAllowDisplayTitle": true,
+		"wgRestrictDisplayTitle": false,
+		"smwgEntityCollation": "identity",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

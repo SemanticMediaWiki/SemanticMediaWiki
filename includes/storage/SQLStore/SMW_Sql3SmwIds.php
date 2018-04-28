@@ -710,7 +710,7 @@ class SMWSql3SmwIds {
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName,
 					'smw_sortkey' => $sortkey,
-					'smw_sort' => Collator::singleton()->getSortKey( $sortkey ),
+					'smw_sort' => Collator::singleton()->getTruncatedSortKey( $sortkey ),
 					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] )
 				),
 				__METHOD__

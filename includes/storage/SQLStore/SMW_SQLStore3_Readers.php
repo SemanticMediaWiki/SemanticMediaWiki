@@ -252,24 +252,25 @@ class SMWSQLStore3Readers {
 	 */
 	public function getPropertySubjects( SMWDIProperty $property, SMWDataItem $value = null, SMWRequestOptions $requestOptions = null ) {
 
-		/// TODO: should we share code with #ask query computation here? Just use queries?
-
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = new SMW\DIProperty( $property->getKey(), false );
 			$result = $this->getPropertyValues( $value, $noninverse, $requestOptions );
 			return $result;
 		}
 
+		$type = DataTypeRegistry::getInstance()->getDataItemByType(
+			$property->findPropertyTypeID()
+		);
+
 		// #1222, Filter those where types don't match (e.g property = _txt
 		// and value = _wpg)
-		if ( $value !== null && DataTypeRegistry::getInstance()->getDataItemId( $property->findPropertyTypeID() ) !== $value->getDIType() ) {
+		if ( $value !== null && $type !== $value->getDIType() ) {
 			return array();
 		}
 
 		// First build $select, $from, and $where for the DB query
-		$where = $from = '';
 		$pid = $this->store->smwIds->getSMWPropertyID( $property );
-		$tableid =  $this->store->findPropertyTableID( $property );
+		$tableid = $this->store->findPropertyTableID( $property );
 
 		if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
 			return array();
@@ -277,40 +278,103 @@ class SMWSQLStore3Readers {
 
 		$proptables =  $this->store->getPropertyTables();
 		$proptable = $proptables[$tableid];
-		$db = $this->store->getConnection();
+
+		$db = $this->store->getConnection( 'mw.db' );
+		$group = false;
+
+		$diHandler = $this->store->getDataItemHandlerForDIType(
+			$proptable->getDiType()
+		);
+
+		$sortField = $diHandler->getSortField();
+
+		if ( $requestOptions === null ) {
+			$requestOptions = new SMWRequestOptions();
+		}
+
+		if ( $sortField === '' ) {
+			$sortField = 'smw_sort';
+		}
+
+		$result = [];
+		$query = [
+			'table' => '',
+			'fields' => '',
+			'conditions' => '',
+			'options' => ''
+		];
 
 		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
-			$from = $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
-			$select = 'smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort';
+			$query['table'] .= $db->tableName( SMWSql3SmwIds::TABLE_NAME );
+			$query['table'] .= " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
+			$query['fields'] .= 'smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort';
+			$group = true;
 		} else { // no join needed, title+namespace as given in proptable
-			$from = $db->tableName( $proptable->getName() ) . " AS t1";
-			$select = 's_title AS smw_title, s_namespace AS smw_namespace, \'\' AS smw_iw, \'\' AS smw_subobject, s_title AS smw_sortkey, s_title AS smw_sort';
+			$query['table'] .= $db->tableName( $proptable->getName() ) . " AS t1";
+			$query['fields'] = 's_title AS smw_title, s_namespace AS smw_namespace, \'\' AS smw_iw, \'\' AS smw_subobject, s_title AS smw_sortkey, s_title AS smw_sort';
+			$requestOptions->setOption( 'ORDER BY', false );
 		}
 
 		if ( !$proptable->isFixedPropertyTable() ) {
-			$where .= ( $where ? ' AND ' : '' ) . "t1.p_id=" . $db->addQuotes( $pid );
+			$query['conditions'] .= ( $query['conditions'] !== '' ? ' AND ' : '' ) . "t1.p_id=" . $db->addQuotes( $pid );
 		}
 
-		$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
-
-		// ***  Now execute the query and read the results  ***//
-		$result = array();
-
-		if ( $proptable->usesIdSubject() ) {
-			$where .= ( $where !== '' ? ' AND ' : ' ' ) . "smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
-			" AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW ) .
-			" AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW );
-		}
-
-		$res = $db->select(
-			$from,
-			'DISTINCT ' . $select,
-			$where . $this->store->getSQLConditions( $requestOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
-			__METHOD__,
-			$this->store->getSQLOptions( $requestOptions, 'smw_sort' )
+		$this->prepareValueQuery(
+			$query['table'],
+			$query['conditions'],
+			$proptable,
+			$value,
+			1
 		);
 
-		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
+		if ( $proptable->usesIdSubject() ) {
+			$query['conditions'] .= $query['conditions'] !== '' ? ' AND' : '';
+			$query['conditions'] .= " smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
+			$query['conditions'] .= " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
+			$query['conditions'] .= " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW );
+		}
+
+		if ( $group && $db->isType( 'postgres') ) {
+			// Avoid a "... 42803 ERROR:  column "s....smw_title" must appear in
+			// the GROUP BY clause or be used in an aggregate function ..."
+			// https://stackoverflow.com/questions/1769361/postgresql-group-by-different-from-mysql
+			$query['fields'] = ' DISTINCT ON (smw_sort, smw_id) ' . $query['fields'];
+			$requestOptions->setOption( 'ORDER BY', false );
+		} elseif ( $group ) {
+			// Using GROUP BY will sort on the field and since we disinguish smw_sort
+			// and the ID at the end of the field, we ensure
+			// the filter duplicates while sorting the list without using DISTINCT which
+			// would cause a filesort
+			// http://www.mysqltutorial.org/mysql-distinct.aspx
+			$requestOptions->setOption( 'GROUP BY', $sortField . ', smw_id' );
+			$requestOptions->setOption( 'ORDER BY', false );
+		} else {
+			$requestOptions->setOption( 'DISTINCT', true );
+		}
+
+		$query['conditions'] .= $this->store->getSQLConditions(
+			$requestOptions,
+			'smw_sortkey',
+			'smw_sortkey',
+			$query['conditions'] !== ''
+		);
+
+		$query['options'] = $this->store->getSQLOptions(
+			$requestOptions,
+			$sortField
+		);
+
+		$res = $db->select(
+			$query['table'],
+			$query['fields'],
+			$query['conditions'],
+			__METHOD__,
+			$query['options']
+		);
+
+		$diHandler = $this->store->getDataItemHandlerForDIType(
+			SMWDataItem::TYPE_WIKIPAGE
+		);
 
 		$callback = function( $row ) use( $diHandler ) {
 			try {
