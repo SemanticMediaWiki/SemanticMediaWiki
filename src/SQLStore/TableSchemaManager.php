@@ -175,10 +175,9 @@ class TableSchemaManager {
 		// Select by sortkey (range queries)
 		$table->addIndex( 'smw_sortkey' );
 
-		// Sort related indices
+		// Sort related indices, Store::getPropertySubjects (GROUP BY)
 		// $table->addIndex( 'smw_sort' );
-		$table->addIndex( 'smw_id,smw_sort' );
-		//$table->addIndex( 'smw_sort,smw_id' );
+		$table->addIndex( 'smw_sort,smw_id' );
 
 		// API smwbrowse primary lookup
 		// Limit the index length for MySQL (only 1000 Bytes are allowed)
@@ -293,7 +292,15 @@ class TableSchemaManager {
 
 		if ( !$propertyTable->isFixedPropertyTable() ) {
 			$fieldarray['p_id'] = array( FieldType::FIELD_ID, 'NOT NULL' );
-			$indexes['po'] = 'p_id,' . $indexes['po'];
+
+			// In order to find the right index for the blob related tables,
+			// individual index declared in the table method
+			if ( strpos( $indexes['po'] , 'o_hash' ) === false ) {
+				$indexes['po'] = 'p_id,' . $indexes['po'];
+			} else {
+				$indexes['p'] = 'p_id';
+			}
+
 			$indexes['sp'] = $indexes['sp'] . ',p_id';
 		}
 

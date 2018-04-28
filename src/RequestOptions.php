@@ -73,6 +73,11 @@ class RequestOptions {
 	private $extraConditions = array();
 
 	/**
+	 * @var array
+	 */
+	private $options = [];
+
+	/**
 	 * @since 1.0
 	 *
 	 * @param string $string to match
@@ -111,6 +116,33 @@ class RequestOptions {
 	 */
 	public function getExtraConditions() {
 		return $this->extraConditions;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setOption( $key, $value ) {
+		$this->options[$key] = $value;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key, $default = null ) {
+
+		if ( isset( $this->options[$key] ) ) {
+			return $this->options[$key];
+		}
+
+		return $default;
 	}
 
 	/**
@@ -170,7 +202,8 @@ class RequestOptions {
 			$this->boundary,
 			$this->include_boundary,
 			$stringConditions,
-			$this->extraConditions
+			$this->extraConditions,
+			$this->options,
 		) );
 	}
 

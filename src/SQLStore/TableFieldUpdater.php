@@ -62,7 +62,12 @@ class TableFieldUpdater {
 
 		// #2089 (MySQL 5.7 complained with "Data too long for column")
 		$searchKey = mb_substr( $searchKey, 0, 254 );
-		$sort = mb_substr(  $this->collator->getSortKey( $searchKey ), 0, 254 );
+
+		// http://www.mysqltutorial.org/mysql-distinct.aspx
+		// Make the sort unique at the last position so that when GROUP by is used
+		// it executes "... the GROUP BY clause sorts the result set" and as the
+		// same time picks a uniqueue set avoiding a SELECT DISTINCT and a filesort
+		$sort = $this->collator->getTruncatedSortKey( $searchKey, $id );
 
 		$connection->beginAtomicTransaction( __METHOD__ );
 

@@ -99,6 +99,19 @@ class Collator {
 	 *
 	 * @return string
 	 */
+	public function getTruncatedSortKey( $text, $id = '' ) {
+		// #2089 (MySQL 5.7 complained with "Data too long for column")
+		//return mb_substr( $this->getSortKey( $text ), 0, 240 ) . '#'. $id;
+		return mb_substr( $this->getSortKey( $text ), 0, 254 );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $text
+	 *
+	 * @return string
+	 */
 	public function getSortKey( $text ) {
 		return $this->collation->getSortKey( $text );
 	}

@@ -48,9 +48,17 @@ class RequestOptionsProc {
 			$sqlConds['ORDER BY'] = $requestOptions->ascending ? $valueCol : $valueCol . ' DESC';
 		}
 
+		if ( $requestOptions->getOption( 'GROUP BY' ) ) {
+			$sqlConds['GROUP BY'] = $requestOptions->getOption( 'GROUP BY' );
+		}
+
+		if ( $requestOptions->getOption( 'DISTINCT' ) ) {
+			$sqlConds['DISTINCT'] = $requestOptions->getOption( 'DISTINCT' );
+		}
+
 		// Avoid a possible filesort (likely caused by ORDER BY) when limit is
 		// less than 2
-		if ( $requestOptions->limit < 2 ) {
+		if ( $requestOptions->limit < 2 || $requestOptions->getOption( 'ORDER BY' ) === false ) {
 			unset( $sqlConds['ORDER BY'] );
 		}
 

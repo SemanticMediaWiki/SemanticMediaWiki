@@ -49,7 +49,26 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array( 's_id,o_hash' );
+		return array(
+
+			's_id,o_hash',
+
+			// Store::getPropertySubjects
+			/**
+			* SELECT smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort FROM `smw_object_ids`
+			* INNER JOIN `smw_di_blob` AS t1 ON t1.s_id=smw_id
+			* WHERE t1.p_id='310174' AND smw_iw!=':smw' AND smw_iw!=':smw-delete' AND smw_iw!=':smw-redi'
+			* GROUP BY smw_sort ORDER BY smw_sort LIMIT 26	18666.3489ms	SMWSQLStore3Readers::getPropertySubjects
+			*
+			* vs.
+			*
+			* SELECT smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort FROM `smw_object_ids`
+			* INNER JOIN `smw_di_blob` AS t1 ON t1.s_id=smw_id
+			* WHERE t1.p_id='310174' AND smw_iw!=':smw' AND smw_iw!=':smw-delete' AND smw_iw!=':smw-redi'
+			* GROUP BY smw_sort ORDER BY smw_sort LIMIT 26	59.3290ms	SMWSQLStore3Readers::getPropertySubjects
+			*/
+			'p_id',
+		);
 	}
 
 	/**
