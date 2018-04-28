@@ -602,7 +602,11 @@ class SemanticData {
 		$key = $property->getKey();
 
 		 // Inverse properties cannot be used for an annotation
-		if ( $property->isInverse() || !isset( $this->mProperties[$key] ) ) {
+		if ( $property->isInverse() ) {
+			return;
+		}
+
+		if ( !isset( $this->mProperties[$key] ) || !isset( $this->mPropVals[$key] ) ) {
 			return;
 		}
 
