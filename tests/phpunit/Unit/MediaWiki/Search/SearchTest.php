@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
-use SMW\ApplicationFactory;
+use SMW\Tests\TestEnvironment;
 use SMW\MediaWiki\Search\Search;
 use SMWQuery;
 
@@ -17,9 +17,14 @@ use SMWQuery;
  */
 class SearchTest extends \PHPUnit_Framework_TestCase {
 
-	protected function tearDown() {
-		ApplicationFactory::clear();
+	private $testEnvironment;
 
+	protected function setUp() {
+		$this->testEnvironment = new TestEnvironment();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -75,7 +80,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSearchEngine' )
 			->will( $this->returnValue( $searchEngine ) );
 
-		ApplicationFactory::getInstance()->getSettings()->set( 'smwgFallbackSearchType', null );
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', null );
 
 		$search = new Search();
 		$search->setDB( $databaseBase );
@@ -88,7 +93,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidFallbackSearchEngineThrowsException() {
 
-		ApplicationFactory::getInstance()->getSettings()->set( 'smwgFallbackSearchType', 'InvalidFallbackSearchEngine' );
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', 'InvalidFallbackSearchEngine' );
 
 		$search = new Search();
 
@@ -181,6 +186,10 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
+		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -193,9 +202,17 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
+		$queryResult->expects( $this->any() )
+			->method( 'getQueryLink' )
+			->will( $this->returnValue( $infoLink ) );
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->exactly( 2 ) )
 			->method( 'getQueryResult' )
@@ -203,7 +220,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 				return $query->querymode === SMWQuery::MODE_COUNT ? 9001 : $queryResult;
 			} ) );
 
-		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$search = new Search();
 		$result = $search->searchText( $term );

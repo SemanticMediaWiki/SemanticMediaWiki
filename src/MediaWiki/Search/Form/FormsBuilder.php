@@ -31,6 +31,16 @@ class FormsBuilder {
 	private $formsFactory;
 
 	/**
+	 * @var OpenForm
+	 */
+	private $openForm;
+
+	/**
+	 * @var CustomForm
+	 */
+	private $customForm;
+
+	/**
 	 * @var []
 	 */
 	private $formList = [];
@@ -38,7 +48,12 @@ class FormsBuilder {
 	/**
 	 * @var []
 	 */
-	private $nsList = [];
+	private $preselectNsList = [];
+
+	/**
+	 * @var []
+	 */
+	private $hiddenNsList = [];
 
 	/**
 	 * @var []
@@ -81,7 +96,16 @@ class FormsBuilder {
 	 *
 	 * @return []
 	 */
-	public function getNsList() {
+	public function getHiddenNsList() {
+		return $this->hiddenNsList;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
+	public function getPreselectNsList() {
 
 		$activeForm = $this->request->getVal( 'smw-form' );
 
@@ -91,8 +115,8 @@ class FormsBuilder {
 
 		$activeForm = self::toLowerCase( $activeForm );
 
-		if ( isset( $this->nsList[$activeForm] )) {
-			return $this->nsList[$activeForm];
+		if ( isset( $this->preselectNsList[$activeForm] )) {
+			return $this->preselectNsList[$activeForm];
 		}
 
 		return [];
@@ -105,7 +129,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public function makeSelectList( Title $title ) {
+	public function buildFormList( Title $title, $link = '' ) {
 
 		$html = [];
 
@@ -117,7 +141,7 @@ class FormsBuilder {
 			$html[] = "<option value='$k' $selected>$name</option>";
 		}
 
-		$link = Html::element(
+		$link = ( $link !== '' ? $link . ' ⦁ ' : '' ) . Html::element(
 			'a',
 			[
 				'href' => $title->getFullUrl()
@@ -145,7 +169,7 @@ class FormsBuilder {
 			[
 				'id' => 'smw-search-forms',
 				'class' => 'smw-select is-disabled',
-				'data-nslist' => json_encode( $this->nsList )
+				'data-nslist' => json_encode( $this->preselectNsList )
 			],
 			$select
 		);
@@ -154,17 +178,11 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $json
+	 * @param array $data
 	 *
 	 * @return string
 	 */
-	public function buildFromJSON( $json ) {
-
-		$data = json_decode( $json, true );
-
-		if ( json_last_error() !== JSON_ERROR_NONE ) {
-			throw new RuntimeException( "JSON decode error: " . json_last_error_msg() );
-		}
+	public function buildForm( array $data ) {
 
 		if ( !isset( $data['forms'] ) ) {
 			throw new RuntimeException( "Missing forms definition" );
@@ -179,8 +197,7 @@ class FormsBuilder {
 		}
 
 		$this->formList = [];
-
-		$this->nsList = [];
+		$this->preselectNsList = [];
 		$this->parameters = [];
 
 		if ( $activeForm === null || $activeForm === '' ) {
@@ -190,59 +207,27 @@ class FormsBuilder {
 		}
 
 		$formDefinitions = [];
-		$descriptions = isset( $data['descriptions'] ) ? $data['descriptions'] : [];
-		$i = 0;
 
-		$openForm = $this->formsFactory->newOpenForm( $this->request );
-		$customForm = $this->formsFactory->newCustomForm( $this->request );
-
-		foreach ( $forms as $name => $definition ) {
-
-			// Short form, URL query conform
-			$s = self::toLowerCase( $name );
-			$this->formList[$s] = [ 'name' => $name, 'selected' => $activeForm === $s ];
-
-			if ( !is_array( $definition ) ) {
-				continue;
-			}
-
-			$isActiveForm = $s === $activeForm;
-			$description = $this->findDescription( $descriptions, $name, $isActiveForm );
-
-			if ( $s === 'open' ) {
-				$openForm->isActiveForm( $isActiveForm );
-				$fields = $openForm->makeFields();
-				$this->parameters = array_merge( $this->parameters, $openForm->getParameters() );
-			} else {
-				$customForm->isActiveForm( $isActiveForm );
-				$fields = $customForm->makeFields( $definition );
-				$this->parameters = array_merge( $this->parameters, $customForm->getParameters() );
-			}
-
-			// Form definition!
-			$formDefinitions[] = Html::rawElement(
-				'div',
-				[
-					'id' => "smw-form-{$s}",
-					'class' => 'smw-fields'
-				],
-				$description . $fields
-			);
-
-			$i++;
+		if ( $this->openForm === null ) {
+			$this->openForm = $this->formsFactory->newOpenForm( $this->request );
 		}
 
-		if ( isset( $data['namespaces'] ) ) {
-			foreach ( $data['namespaces'] as $k => $values ) {
-				$k = self::toLowerCase( $k );
-				$this->nsList[$k] = [];
+		if ( $this->customForm === null ) {
+			$this->customForm = $this->formsFactory->newCustomForm( $this->request );
+		}
 
-				foreach ( $values as $ns ) {
-					if ( defined( $ns ) ) {
-						$this->nsList[$k][] = constant( $ns );
-					}
-				}
-			}
+		ksort( $forms );
+
+		foreach ( $forms as $name => $definition ) {
+			$formDefinitions[] = $this->form_fields( $activeForm, $name, $definition );
+		}
+
+		if ( isset( $data['namespaces']['preselect'] ) && is_array( $data['namespaces']['preselect'] ) ) {
+			$this->preselect_namespaces( $data );
+		}
+
+		if ( isset( $data['namespaces']['hidden'] ) && is_array( $data['namespaces']['hidden'] ) ) {
+			$this->hidden_namespaces( $data );
 		}
 
 		return $divider . Html::rawElement(
@@ -253,6 +238,64 @@ class FormsBuilder {
 			],
 			implode( '', $formDefinitions )
 		);
+	}
+
+	private function form_fields( $activeForm, $name, $definition ) {
+
+		// Short form, URL query conform
+		$s = self::toLowerCase( $name );
+		$this->formList[$s] = [ 'name' => $name, 'selected' => $activeForm === $s ];
+
+		if ( !is_array( $definition ) ) {
+			return;
+		}
+
+		$description = '';
+		$isActiveForm = $s === $activeForm;
+
+		if ( isset( $data['descriptions'] ) ) {
+			$descriptions = $this->findDescription( $data['descriptions'], $name, $isActiveForm );
+		}
+
+		if ( $s === 'open' ) {
+			$this->openForm->isActiveForm( $isActiveForm );
+			$fields = $this->openForm->makeFields();
+			$this->parameters = array_merge( $this->parameters, $this->openForm->getParameters() );
+		} else {
+			$this->customForm->isActiveForm( $isActiveForm );
+			$fields = $this->customForm->makeFields( $definition );
+			$this->parameters = array_merge( $this->parameters, $this->customForm->getParameters() );
+		}
+
+		return Html::rawElement(
+			'div',
+			[
+				'id' => "smw-form-{$s}",
+				'class' => 'smw-fields'
+			],
+			$description . $fields
+		);
+	}
+
+	private function preselect_namespaces( $data ) {
+		foreach ( $data['namespaces']['preselect'] as $k => $values ) {
+			$k = self::toLowerCase( $k );
+			$this->preselectNsList[$k] = [];
+
+			foreach ( $values as $ns ) {
+				if ( is_string( $ns ) && defined( $ns ) ) {
+					$this->preselectNsList[$k][] = constant( $ns );
+				}
+			}
+		}
+	}
+
+	private function hidden_namespaces( $data ) {
+		foreach ( $data['namespaces']['hidden'] as $ns ) {
+			if ( is_string( $ns ) && defined( $ns ) ) {
+				$this->hiddenNsList[] = constant( $ns );
+			}
+		}
 	}
 
 	private function findDescription( $descriptions, $name, $isActiveForm ) {

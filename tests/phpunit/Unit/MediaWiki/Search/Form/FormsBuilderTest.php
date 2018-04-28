@@ -37,7 +37,7 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testBuildFromJSON() {
+	public function testBuildForm() {
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -68,7 +68,7 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->formsFactory
 		);
 
-		$form = [
+		$data = [
 			'forms' => [
 				'Foo' => [
 					'Property one'
@@ -82,27 +82,27 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expected = [
 			"<div class='divider' style='display:none;'></div>",
 			'<div id="smw-form-definitions" class="is-disabled">',
-			'<div id="smw-form-foo" class="smw-fields"></div>',
-			'<div id="smw-form-bar" class="smw-fields"></div></div>'
+			'<div id="smw-form-bar" class="smw-fields"></div>',
+			'<div id="smw-form-foo" class="smw-fields"></div></div>'
 		];
 
 		$this->assertContains(
 			implode( '', $expected ),
-			$instance->buildFromJSON( json_encode( $form ) )
+			$instance->buildForm( $data )
 		);
 
 		$expected = [
 			'<div id="smw-search-forms" class="smw-select is-disabled" data-nslist="[]">',
 			'<label for="smw-form"><a>Form</a>:&nbsp;</label><select id="smw-form" name="smw-form">',
 			"<option value='' ></option>",
-			"<option value='foo' >Foo</option>",
 			"<option value='bar' >Bar</option>",
+			"<option value='foo' >Foo</option>",
 			'</select></div>'
 		];
 
 		$this->assertContains(
 			implode( '', $expected ),
-			$instance->makeSelectList( $title )
+			$instance->buildFormList( $title )
 		);
 	}
 

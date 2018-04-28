@@ -50,6 +50,11 @@ class Search extends SearchEngine {
 	private $queryString = '';
 
 	/**
+	 * @var string
+	 */
+	private $queryLink = '';
+
+	/**
 	 * @param null|SearchEngine $fallbackSearch
 	 */
 	public function setFallbackSearchEngine( SearchEngine $fallbackSearch = null ) {
@@ -98,7 +103,6 @@ class Search extends SearchEngine {
 	}
 
 	/**
-	 * @see Search::getSearchResultSet
 	 * @since 3.0
 	 *
 	 * @return []
@@ -108,13 +112,21 @@ class Search extends SearchEngine {
 	}
 
 	/**
-	 * @see Search::getSearchResultSet
 	 * @since 3.0
 	 *
 	 * @return string
 	 */
 	public function getQueryString() {
 		return $this->queryString;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getQueryLink() {
+		return $this->queryLink;
 	}
 
 	/**
@@ -149,6 +161,7 @@ class Search extends SearchEngine {
 		}
 
 		$this->queryString = $this->queryBuilder->getQueryString(
+			ApplicationFactory::getInstance()->getStore(),
 			$term
 		);
 
@@ -230,9 +243,13 @@ class Search extends SearchEngine {
 
 		$store = ApplicationFactory::getInstance()->getStore();
 		$query->clearErrors();
+		$query->setOption( 'is.special_search', true );
 
 		$result = $store->getQueryResult( $query );
 		$this->errors = $query->getErrors();
+		$this->queryLink = $result->getQueryLink();
+		$this->queryLink->setParameter( $this->offset, 'offset' );
+		$this->queryLink->setParameter( $this->limit, 'limit' );
 
 		$query->querymode = SMWQuery::MODE_COUNT;
 		$query->setOffset( 0 );

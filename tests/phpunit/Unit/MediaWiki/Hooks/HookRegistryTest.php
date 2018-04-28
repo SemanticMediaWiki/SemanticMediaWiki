@@ -417,6 +417,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'SpecialSearchProfileForm';
 
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [] ) );
+
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();

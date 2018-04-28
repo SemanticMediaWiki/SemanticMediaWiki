@@ -170,6 +170,34 @@
   margin-left: unset;
 }
 
+#smw-search-togglensview {
+    float: right;
+}
+
+.ns-list-off {
+    display:none;
+}
+
+.ns-list-on {
+    display:block;
+}
+
+#smw-togglensview {
+    margin-left: 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    opacity: 0.6;
+}
+
+#smw-togglensview:hover {
+    opacity: 1
+}
+
+#smw-togglensview:focus{
+    outline: none;
+}
+
 #smw-searchoptions {
     margin: 0;
     padding: 0.5em 0.75em 0.75em 0.75em;
@@ -185,12 +213,6 @@
     margin-bottom: 0.5em;
 }
 
-/**
-+ * .skin-chameleon specific styles
-+ */
-.skin-chameleon .smw-search-help-proximity {
-	margin-top: 10px;
-}
 
 /**
  * Responsive settings (#see smw.table.css)
@@ -207,4 +229,19 @@
     .smw-input-group {
     /*    display:block;*/
     }
+}
+
+/**
+ * .skin-chameleon specific styles
+ */
+.skin-chameleon .smw-search-help-proximity {
+    margin-top: 10px;
+}
+
+.skin-chameleon .smw-select-field {
+    margin-right: -3px;
+}
+
+.skin-chameleon .smw-fields .smw-input-field {
+    margin: 5px -3px 0 10px;
 }
