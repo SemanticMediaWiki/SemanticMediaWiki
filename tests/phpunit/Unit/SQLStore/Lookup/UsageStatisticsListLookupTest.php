@@ -61,7 +61,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testfetchListForInvalidTableThrowsException() {
+	public function testLookupForInvalidTableThrowsException() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -89,13 +89,13 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->fetchList();
+		$instance->lookup();
 	}
 
 	/**
 	 * @dataProvider bySegmentDataProvider
 	 */
-	public function testfetchList( $segment, $type ) {
+	public function testLookup( $segment, $type ) {
 
 		$row = new \stdClass;
 		$row->o_hash = 42;
@@ -143,7 +143,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->propertyStatisticsStore
 		);
 
-		$result = $instance->fetchList();
+		$result = $instance->lookup();
 
 		$this->assertInternalType(
 			'array',

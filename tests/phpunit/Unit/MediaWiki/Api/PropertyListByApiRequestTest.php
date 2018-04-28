@@ -18,6 +18,7 @@ use SMW\Tests\TestEnvironment;
 class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $legacySpecialLookup;
 	private $testEnvironment;
 
 	protected function setUp() {
@@ -25,7 +26,22 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
+
+		$this->legacySpecialLookup = new \SMW\SQLStore\Lookup\LegacySpecialLookup(
+			$this->store
+		);
+
+		$servicesManager = new \SMW\Services\ServicesManager();
+
+		$servicesManager->registerCallback( 'special.lookup', function() {
+			return $this->legacySpecialLookup;
+		} );
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->will( $this->returnCallback( $servicesManager->returnCallback() ) );
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->registerObject( 'Store', $this->store );
@@ -100,16 +116,17 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$cachedListLookup->expects( $this->once() )
-			->method( 'fetchList' )
+			->method( 'lookup' )
 			->will( $this->returnValue( $list ) );
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'isFromCache' )
 			->will( $this->returnValue( $isCached ) );
 
-		$this->store->expects( $this->once() )
-			->method( 'getPropertiesSpecial' )
-			->will( $this->returnValue( $cachedListLookup ) );
+		$this->legacySpecialLookup->registerCallback( 'special.properties', function( $requestOptions = null ) use( $cachedListLookup ) {
+				return $cachedListLookup;
+			}
+		);
 
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()

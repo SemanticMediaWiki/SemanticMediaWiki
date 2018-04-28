@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
+use SMW\Services\ServicesManager;
 use SMW\MediaWiki\Api\BrowseByProperty;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -19,6 +20,7 @@ use SMW\Tests\Utils\UtilityFactory;
 class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $legacySpecialLookup;
 	private $apiFactory;
 	private $applicationFactory;
 
@@ -27,7 +29,22 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
+
+		$this->legacySpecialLookup = new \SMW\SQLStore\Lookup\LegacySpecialLookup(
+			$this->store
+		);
+
+		$servicesManager = new \SMW\Services\ServicesManager();
+
+		$servicesManager->registerCallback( 'special.lookup', function() {
+			return $this->legacySpecialLookup;
+		} );
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->will( $this->returnCallback( $servicesManager->returnCallback() ) );
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->applicationFactory->registerObject( 'Store', $this->store );
@@ -75,12 +92,12 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$cachedListLookup->expects( $this->once() )
-			->method( 'fetchList' )
+			->method( 'lookup' )
 			->will( $this->returnValue( $list ) );
 
-		$this->store->expects( $this->once() )
-			->method( 'getPropertiesSpecial' )
-			->will( $this->returnValue( $cachedListLookup ) );
+		$this->legacySpecialLookup->registerCallback( 'special.properties', function( $requestOptions = null ) use( $cachedListLookup ) {
+				return $cachedListLookup;
+		} );
 
 		$this->applicationFactory->registerObject( 'Store', $this->store );
 

@@ -31,7 +31,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testfetchListFromCache() {
+	public function testlookupFromCache() {
 
 		$expectedCachedItem = array(
 			'time' => 42,
@@ -52,22 +52,23 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'contains' )
-			->with(	$this->stringContains( 'cacheprefix-foobar:smw:store:lookup:' ) )
+			->with(	$this->stringContains( 'smw:store:lookup:' ) )
 			->will( $this->returnValue( true ) );
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
 			->will( $this->returnValue( serialize( $expectedCachedItem ) ) );
 
-		$cacheOptions = new \stdClass;
-		$cacheOptions->useCache = true;
+		$instance = new CachedListLookup(
+			$listLookup,
+			$cache
+		);
 
-		$instance = new CachedListLookup( $listLookup, $cache, $cacheOptions );
-		$instance->setCachePrefix( 'cacheprefix-foobar' );
+		$instance->setOption( CachedListLookup::OPT_USE_CACHE, true );
 
 		$this->assertEquals(
 			array( 'Foo' ),
-			$instance->fetchList()
+			$instance->lookup()
 		);
 
 		$this->assertEquals(
@@ -97,7 +98,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$listLookup->expects( $this->once() )
-			->method( 'fetchList' )
+			->method( 'lookup' )
 			->will( $this->returnValue( array( 'Foo' ) ) );
 
 		$listLookup->expects( $this->once() )
@@ -115,15 +116,17 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything( serialize( $expectedCacheItem ) ),
 				$this->equalTo( 1001 ) );
 
-		$cacheOptions = new \stdClass;
-		$cacheOptions->useCache = false;
-		$cacheOptions->ttl = 1001;
+		$instance = new CachedListLookup(
+			$listLookup,
+			$cache
+		);
 
-		$instance = new CachedListLookup( $listLookup, $cache, $cacheOptions );
+		$instance->setOption( CachedListLookup::OPT_USE_CACHE, false );
+		$instance->setOption( CachedListLookup::OPT_CACHE_TTL, 1001 );
 
 		$this->assertEquals(
 			array( 'Foo' ),
-			$instance->fetchList()
+			$instance->lookup()
 		);
 
 		$this->assertEquals(

@@ -379,15 +379,22 @@ class SMWSQLStore3Readers {
 		$callback = function( $row ) use( $diHandler ) {
 			try {
 				if ( $row->smw_iw === '' || $row->smw_iw{0} != ':' ) { // filter special objects
-					$dbkeys = array(
-						$row->smw_title,
-						$row->smw_namespace,
-						$row->smw_iw,
-						$row->smw_sort,
-						$row->smw_subobject
 
+					$dataItem = $diHandler->dataItemFromDBKeys(
+						[
+							$row->smw_title,
+							$row->smw_namespace,
+							$row->smw_iw,
+							$row->smw_sort,
+							$row->smw_subobject
+						]
 					);
-					return $diHandler->dataItemFromDBKeys( $dbkeys );
+
+					if ( isset( $row->smw_id ) ) {
+						$dataItem->setId( $row->smw_id );
+					}
+
+					return $dataItem;
 				}
 			} catch ( DataItemHandlerException $e ) {
 				// silently drop data, should be extremely rare and will usually fix itself at next edit

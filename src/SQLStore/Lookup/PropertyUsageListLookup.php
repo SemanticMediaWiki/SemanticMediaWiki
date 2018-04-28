@@ -9,6 +9,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMWDIError as DIError;
+use SMW\Message;
 use SMWRequestOptions as RequestOptions;
 
 /**
@@ -53,13 +54,13 @@ class PropertyUsageListLookup implements ListLookup {
 	 * @return DIProperty[]
 	 * @throws RuntimeException
 	 */
-	public function fetchList() {
+	public function lookup() {
 
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
 
-		return $this->getPropertyList( $this->doQueryPropertyTable() );
+		return $this->makePropertyList( $this->fetchFromTable() );
 	}
 
 	/**
@@ -89,41 +90,43 @@ class PropertyUsageListLookup implements ListLookup {
 		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 
-	private function doQueryPropertyTable() {
+	private function fetchFromTable() {
 
-		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = array( 'ORDER BY' => 'smw_sort' );
-
-		$conditions = array(
+		$options = [];
+		$conditions = [
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
 			'smw_subobject' => ''
-		);
+		];
 
 		if ( $this->requestOptions->limit > 0 ) {
-			$options['LIMIT'] = $this->requestOptions->limit;
+			$options['LIMIT'] = min( $this->requestOptions->limit, 500 );
 			$options['OFFSET'] = max( $this->requestOptions->offset, 0 );
 		}
 
+		// Avoid ORDER BY when matching a string
 		if ( $this->requestOptions->getStringConditions() ) {
 			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_sortkey', false );
+		} else {
+			// Query needs to do the filtering of internal properties, else LIMIT is wrong
+			$options['ORDER BY'] = 'smw_sort';
 		}
 
-		$db = $this->store->getConnection( 'mw.db' );
+		$tableLookup = $this->store->service( 'table.lookup' );
+		$tableLookup->setOrigin( __METHOD__ );
 
-		$res = $db->select(
-			array( $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ),
-			array( 'smw_id', 'smw_title', 'usage_count' ),
+		$res = $tableLookup->match(
+			[ SQLStore::ID_TABLE, SQLStore::PROPERTY_STATISTICS_TABLE ],
+			[ 'smw_id', 'smw_title', 'usage_count' ],
 			$conditions,
-			__METHOD__,
 			$options,
-			array( $db->tableName( SQLStore::ID_TABLE ) => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
+			[ SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
 		);
 
 		return $res;
 	}
 
-	private function getPropertyList( $res ) {
+	private function makePropertyList( $res ) {
 
 		$result = array();
 
@@ -132,7 +135,7 @@ class PropertyUsageListLookup implements ListLookup {
 			try {
 				$property = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
 			} catch ( PropertyLabelNotResolvedException $e ) {
-				$property = new DIError( new \Message( 'smw_noproperty', array( $row->smw_title ) ) );
+				$property = new DIError( Message::encode( [ 'smw_noproperty', $row->smw_title ] ) );
 			}
 
 			$property->id = isset( $row->smw_id ) ? $row->smw_id : -1;

@@ -135,7 +135,7 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
-		foreach( $result->fetchList() as $row ) {
+		foreach( $result->lookup() as $row ) {
 			$this->assertCount( 2, $row );
 
 			$this->assertInstanceOf(
@@ -151,7 +151,7 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
-		foreach( $result->fetchList() as $row ) {
+		foreach( $result->lookup() as $row ) {
 			$this->assertInstanceOf(
 				'\SMWDataItem',
 				$row,
@@ -165,7 +165,7 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
-		foreach( $result->fetchList() as $row ) {
+		foreach( $result->lookup() as $row ) {
 			$this->assertInstanceOf(
 				'\SMW\DIProperty',
 				$row[0],

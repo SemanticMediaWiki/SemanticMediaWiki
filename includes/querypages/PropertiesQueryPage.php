@@ -268,8 +268,8 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return array of array( SMWDIProperty|SMWDIError, integer )
 	 */
 	function getResults( $requestOptions ) {
-		$this->listLookup = $this->store->getPropertiesSpecial( $requestOptions );
-		return $this->listLookup->fetchList();
+		$this->listLookup = $this->store->service( 'special.lookup' )->getPropertiesSpecial( $requestOptions );
+		return $this->listLookup->lookup();
 	}
 
 }

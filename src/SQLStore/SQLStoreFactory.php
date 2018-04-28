@@ -10,7 +10,9 @@ use SMW\SQLStore\Lookup\PropertyUsageListLookup;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
+use SMW\SQLStore\Lookup\LegacySpecialLookup;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
+use SMW\SQLStore\Lookup\TableLookup;
 use SMWRequestOptions as RequestOptions;
 use SMW\Options;
 use SMWSQLStore3;
@@ -33,6 +35,7 @@ use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\ChangePropListener;
 use SMW\SQLStore\PropertyTableRowDiffer;
 use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\Services\ServicesManager;
 
 /**
  * @license GNU GPL v2+
@@ -150,11 +153,21 @@ class SQLStoreFactory {
 			$this->newPropertyStatisticsStore()
 		);
 
-		return $this->newCachedListLookup(
-			$usageStatisticsListLookup,
-			$settings->safeGet( 'special.statistics' ),
+		$cachedListLookup = $this->newCachedListLookup(
+			$usageStatisticsListLookup
+		);
+
+		$cachedListLookup->setOption(
+			UsageStatisticsListLookup::OPT_USE_CACHE,
+			(bool)$settings->safeGet( 'special.statistics' )
+		);
+
+		$cachedListLookup->setOption(
+			UsageStatisticsListLookup::OPT_CACHE_TTL,
 			$settings->safeGet( 'special.statistics' )
 		);
+
+		return $cachedListLookup;
 	}
 
 	/**
@@ -174,11 +187,21 @@ class SQLStoreFactory {
 			$requestOptions
 		);
 
-		return $this->newCachedListLookup(
-			$propertyUsageListLookup,
-			$settings->safeGet( 'special.properties' ),
+		$cachedListLookup = $this->newCachedListLookup(
+			$propertyUsageListLookup
+		);
+
+		$cachedListLookup->setOption(
+			PropertyUsageListLookup::OPT_USE_CACHE,
+			(bool)$settings->safeGet( 'special.properties' )
+		);
+
+		$cachedListLookup->setOption(
+			PropertyUsageListLookup::OPT_CACHE_TTL,
 			$settings->safeGet( 'special.properties' )
 		);
+
+		return $cachedListLookup;
 	}
 
 	/**
@@ -198,11 +221,21 @@ class SQLStoreFactory {
 			$requestOptions
 		);
 
-		return $this->newCachedListLookup(
-			$unusedPropertyListLookup,
-			$settings->safeGet( 'special.unusedproperties' ),
+		$cachedListLookup = $this->newCachedListLookup(
+			$unusedPropertyListLookup
+		);
+
+		$cachedListLookup->setOption(
+			UnusedPropertyListLookup::OPT_USE_CACHE,
+			(bool)$settings->safeGet( 'special.unusedproperties' )
+		);
+
+		$cachedListLookup->setOption(
+			UnusedPropertyListLookup::OPT_CACHE_TTL,
 			$settings->safeGet( 'special.unusedproperties' )
 		);
+
+		return $cachedListLookup;
 	}
 
 	/**
@@ -222,61 +255,38 @@ class SQLStoreFactory {
 			$requestOptions
 		);
 
-		return $this->newCachedListLookup(
-			$undeclaredPropertyListLookup,
-			$settings->safeGet( 'special.wantedproperties' ),
+		$cachedListLookup = $this->newCachedListLookup(
+			$undeclaredPropertyListLookup
+		);
+
+		$cachedListLookup->setOption(
+			UndeclaredPropertyListLookup::OPT_USE_CACHE,
+			(bool)$settings->safeGet( 'special.wantedproperties' )
+		);
+
+		$cachedListLookup->setOption(
+			UndeclaredPropertyListLookup::OPT_CACHE_TTL,
 			$settings->safeGet( 'special.wantedproperties' )
 		);
+
+		return $cachedListLookup;
 	}
 
 	/**
 	 * @since 2.2
 	 *
 	 * @param ListLookup $listLookup
-	 * @param boolean $useCache
-	 * @param integer $cacheExpiry
 	 *
 	 * @return ListLookup
 	 */
-	public function newCachedListLookup( ListLookup $listLookup, $useCache, $cacheExpiry ) {
-
-		$cacheFactory = $this->applicationFactory->newCacheFactory();
-
-		if ( is_int( $useCache ) ) {
-			$useCache = true;
-		}
-
-		$cacheOptions = $cacheFactory->newCacheOptions( array(
-			'useCache' => $useCache,
-			'ttl'      => $cacheExpiry
-		) );
+	public function newCachedListLookup( ListLookup $listLookup ) {
 
 		$cachedListLookup = new CachedListLookup(
 			$listLookup,
-			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
-			$cacheOptions
+			$this->applicationFactory->getCache()
 		);
 
-		$cachedListLookup->setCachePrefix( $cacheFactory->getCachePrefix() );
-
 		return $cachedListLookup;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return DeferredCallableUpdate
-	 */
-	public function newDeferredCallableCachedListLookupUpdate() {
-
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function() {
-			$this->newPropertyUsageCachedListLookup()->deleteCache();
-			$this->newUnusedPropertyCachedListLookup()->deleteCache();
-			$this->newUndeclaredPropertyCachedListLookup()->deleteCache();
-			$this->newUsageStatisticsCachedListLookup()->deleteCache();
-		} );
-
-		return $deferredTransactionalUpdate;
 	}
 
 	/**
@@ -638,6 +648,51 @@ class SQLStoreFactory {
 		);
 
 		return $changeOp;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ServicesManager
+	 */
+	public function newServicesManager() {
+
+		$servicesManager = new ServicesManager();
+
+		$servicesManager->registerCallback(
+			'special.lookup',
+			function() {
+				return new LegacySpecialLookup(
+					$this->store,
+					[
+						'special.properties' => function( $requestOptions = null ) {
+							return $this->newPropertyUsageCachedListLookup( $requestOptions );
+						},
+						'special.unused.properties' => function( $requestOptions = null ) {
+							return $this->newUnusedPropertyCachedListLookup( $requestOptions );
+						},
+						'special.wanted.properties' => function( $requestOptions = null ) {
+							return $this->newUndeclaredPropertyCachedListLookup( $requestOptions );
+						},
+						'statistics' => function( $requestOptions = null ) {
+							return $this->newUsageStatisticsCachedListLookup();
+						}
+					]
+				);
+			}
+		);
+
+		$servicesManager->registerCallback(
+			'table.lookup',
+			function() {
+				return new TableLookup(
+					$this->store->getConnection( 'mw.db' ),
+					$this->applicationFactory->getIteratorFactory()
+				);
+			}
+		);
+
+		return $servicesManager;
 	}
 
 }

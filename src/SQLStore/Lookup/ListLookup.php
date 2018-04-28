@@ -13,12 +13,15 @@ namespace SMW\SQLStore\Lookup;
  */
 interface ListLookup {
 
+	const OPT_USE_CACHE = 'use.cache';
+	const OPT_CACHE_TTL = 'cache.ttl';
+
 	/**
 	 * @since 2.2
 	 *
 	 * @return array
 	 */
-	public function fetchList();
+	public function lookup();
 
 	/**
 	 * @since 2.2

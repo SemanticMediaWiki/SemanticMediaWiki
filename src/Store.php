@@ -5,7 +5,6 @@ namespace SMW;
 use SMWDataItem as DataItem;
 use SMWQuery;
 use SMWQueryResult;
-use SMWRequestOptions;
 use SMWSemanticData;
 use Title;
 use SMW\Connection\ConnectionManager;
@@ -14,6 +13,7 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\QueryEngine;
 use SMW\Options;
 use SMW\Utils\Timer;
+use SMW\Services\Exception\ServiceNotFoundException;
 use InvalidArgumentException;
 
 /**
@@ -76,7 +76,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param $subject mixed SMWDIWikiPage or null
 	 * @param $property DIProperty
-	 * @param $requestoptions SMWRequestOptions
+	 * @param $requestoptions RequestOptions
 	 *
 	 * @return array of DataItem
 	 */
@@ -101,7 +101,7 @@ abstract class Store implements QueryEngine {
 	 * @see EntityLookup::getProperties
 	 *
 	 * @param DIWikiPage $subject denoting the subject
-	 * @param SMWRequestOptions|null $requestOptions optionally defining further options
+	 * @param RequestOptions|null $requestOptions optionally defining further options
 	 *
 	 * @return DataItem
 	 */
@@ -283,9 +283,6 @@ abstract class Store implements QueryEngine {
 ///// Query answering /////
 
 	/**
-	 * @note Change the signature in 3.* to avoid for subclasses to manage the
-	 * hooks; keep the current signature to adhere semver for the 2.* branch
-	 *
 	 * Execute the provided query and return the result as an
 	 * SMWQueryResult if the query was a usual instance retrieval query. In
 	 * the case that the query asked for a plain string (querymode
@@ -298,85 +295,67 @@ abstract class Store implements QueryEngine {
 	 */
 	public abstract function getQueryResult( SMWQuery $query );
 
-	/**
-	 * @note Change the signature to abstract for the 3.* branch
-	 *
-	 * @since  2.1
-	 *
-	 * @param SMWQuery $query
-	 *
-	 * @return SMWQueryResult
-	 */
-	protected function fetchQueryResult( SMWQuery $query ) {
-	}
-
 ///// Special page functions /////
 
 	/**
-	 * Return all properties that have been used on pages in the wiki. The
-	 * result is an array of arrays, each containing a property data item
-	 * and a count. The expected order is alphabetical w.r.t. to property
-	 * names.
+	 * @deprecated since 3.0
+	 * @see LegacySpecialLookup::getPropertiesSpecial
 	 *
-	 * If there is an error on creating some property object, then a
-	 * suitable SMWDIError object might be returned in its place. Even if
-	 * there are errors, the function should always return the number of
-	 * results requested (otherwise callers might assume that there are no
-	 * further results to ask for).
+	 * @param RequestOptions $requestoptions
 	 *
-	 * @param SMWRequestOptions $requestoptions
-	 *
-	 * @return array of array( DIProperty|SMWDIError, integer )
+	 * @return array of DIProperty|SMWDIError
 	 */
 	public abstract function getPropertiesSpecial( $requestoptions = null );
 
 	/**
-	 * Return all properties that have been declared in the wiki but that
-	 * are not used on any page. Stores might restrict here to those
-	 * properties that have been given a type if they have no efficient
-	 * means of accessing the set of all pages in the property namespace.
+	 * @deprecated since 3.0
+	 * @see LegacySpecialLookup::getUnusedPropertiesSpecial
 	 *
-	 * If there is an error on creating some property object, then a
-	 * suitable SMWDIError object might be returned in its place. Even if
-	 * there are errors, the function should always return the number of
-	 * results requested (otherwise callers might assume that there are no
-	 * further results to ask for).
-	 *
-	 * @param SMWRequestOptions $requestoptions
+	 * @param RequestOptions $requestoptions
 	 *
 	 * @return array of DIProperty|SMWDIError
 	 */
 	public abstract function getUnusedPropertiesSpecial( $requestoptions = null );
 
 	/**
-	 * Return all properties that are used on some page but that do not
-	 * have any page describing them. Stores that have no efficient way of
-	 * accessing the set of all existing pages can extend this list to all
-	 * properties that are used but do not have a type assigned to them.
+	 * @deprecated since 3.0
+	 * @see LegacySpecialLookup::getWantedPropertiesSpecial
 	 *
-	 * @param SMWRequestOptions $requestoptions
+	 * @param RequestOptions $requestoptions
 	 *
 	 * @return array of array( DIProperty, int )
 	 */
 	public abstract function getWantedPropertiesSpecial( $requestoptions = null );
 
 	/**
-	 * Return statistical information as an associative array with the
-	 * following keys:
-	 * - 'PROPUSES': Number of property instances (value assignments) in the datatbase
-	 * - 'USEDPROPS': Number of properties that are used with at least one value
-	 * - 'DECLPROPS': Number of properties that have been declared (i.e. assigned a type)
-	 * - 'OWNPAGE': Number of properties with their own page
-	 * - 'QUERY': Number of inline queries
-	 * - 'QUERYSIZE': Represents collective query size
-	 * - 'CONCEPTS': Number of declared concepts
-	 * - 'SUBOBJECTS': Number of declared subobjects
+	 * @deprecated since 3.0
+	 * @see LegacySpecialLookup::getStatistics
 	 *
 	 * @return array
 	 */
 	public abstract function getStatistics();
 
-///// Setup store /////
+	/**
+	 * Store administration
+	 */
+
+	/**
+	 * @private
+	 *
+	 * Returns store specific services. Services are registered with the store
+	 * implementation and may provide different services only available for
+	 * a particular store.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $serviceName
+	 *
+	 * @return mixed
+	 * @throws ServiceNotFoundException
+	 */
+	public function service( $serviceName ) {
+		throw new ServiceNotFoundException( "`$serviceName` is not registered as service!" );
+	}
 
 	/**
 	 * Setup all storage structures properly for using the store. This
@@ -470,19 +449,6 @@ abstract class Store implements QueryEngine {
 		}
 
 		return $store->setup( $verbose );
-	}
-
-	/**
-	 * Returns the tables that should be added via the
-	 * https://www.mediawiki.org/wiki/Manual:Hooks/ParserTestTables
-	 * hook when it's run.
-	 *
-	 * @since 1.8
-	 *
-	 * @return array
-	 */
-	public function getParserTestTables() {
-		return array();
 	}
 
 	/**

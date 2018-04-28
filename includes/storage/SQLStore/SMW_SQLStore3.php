@@ -5,6 +5,7 @@ use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableDefinition;
@@ -92,6 +93,11 @@ class SMWSQLStore3 extends SMWStore {
 	 * @var SQLStoreFactory
 	 */
 	private $factory;
+
+	/**
+	 * @var ServicesManager
+	 */
+	private $servicesManager;
 
 	/**
 	 * @var PropertyTableInfoFetcher|null
@@ -228,9 +234,9 @@ class SMWSQLStore3 extends SMWStore {
 
 		$this->getWriter()->deleteSubject( $title );
 
-		$this->doDeferredCachedListLookupUpdate(
-			$subject
-		);
+		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
+			$this->service( 'special.lookup' )->invalidateCache();
+		}
 	}
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
@@ -241,9 +247,9 @@ class SMWSQLStore3 extends SMWStore {
 
 		$this->getWriter()->doDataUpdate( $semanticData );
 
-		$this->doDeferredCachedListLookupUpdate(
-			$semanticData->getSubject()
-		);
+		if ( $semanticData->getSubject()->getNamespace() === SMW_NS_PROPERTY ) {
+			$this->service( 'special.lookup' )->invalidateCache();
+		}
 	}
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
@@ -258,22 +264,11 @@ class SMWSQLStore3 extends SMWStore {
 
 		$this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
 
-		$this->doDeferredCachedListLookupUpdate(
-			DIWikiPage::newFromTitle( $oldtitle )
-		);
-	}
-
-	private function doDeferredCachedListLookupUpdate( DIWikiPage $subject ) {
-
-		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {
-			return null;
+		if ( $oldtitle->getNamespace() === SMW_NS_PROPERTY ) {
+			$this->service( 'special.lookup' )->invalidateCache();
 		}
-
-		$deferredCallableUpdate = $this->factory->newDeferredCallableCachedListLookupUpdate();
-		$deferredCallableUpdate->setOrigin( __METHOD__ );
-		$deferredCallableUpdate->waitOnTransactionIdle();
-		$deferredCallableUpdate->pushUpdate();
 	}
+
 
 ///// Query answering /////
 
@@ -310,39 +305,55 @@ class SMWSQLStore3 extends SMWStore {
 ///// Special page functions /////
 
 	/**
-	 * @param RequestOptions|null $requestOptions
+	 * @private
+	 * @deprecated since 3.0, This function should not be used outside of SMW!
 	 *
-	 * @return CachedListLookup
+	 * If you need access to a list of properties, use the approriate API function.
 	 */
 	public function getPropertiesSpecial( $requestOptions = null ) {
-		return $this->factory->newPropertyUsageCachedListLookup( $requestOptions );
+		return $this->service( 'special.lookup' )->getPropertiesSpecial( $requestOptions );
 	}
 
 	/**
-	 * @param RequestOptions|null $requestOptions
-	 *
-	 * @return CachedListLookup
+	 * @private
+	 * @deprecated since 3.0, This function should not be used outside of SMW!
 	 */
 	public function getUnusedPropertiesSpecial( $requestOptions = null ) {
-		return $this->factory->newUnusedPropertyCachedListLookup( $requestOptions );
+		return $this->service( 'special.lookup' )->getUnusedPropertiesSpecial( $requestOptions );
 	}
 
 	/**
-	 * @param RequestOptions|null $requestOptions
-	 *
-	 * @return CachedListLookup
+	 * @private
+	 * @deprecated since 3.0, This function should not be used outside of SMW!
 	 */
 	public function getWantedPropertiesSpecial( $requestOptions = null ) {
-		return $this->factory->newUndeclaredPropertyCachedListLookup( $requestOptions );
+		return $this->service( 'special.lookup' )->getWantedPropertiesSpecial( $requestOptions );
 	}
 
+	/**
+	 * @private
+	 * @deprecated since 3.0, This function should not be used outside of SMW!
+	 */
 	public function getStatistics() {
-		return $this->factory->newUsageStatisticsCachedListLookup()->fetchList();
+		return $this->service( 'special.lookup' )->getStatistics();
 	}
 
 
 ///// Setup store /////
 
+	/**
+	 * @see Store::service
+	 *
+	 * {@inheritDoc}
+	 */
+	public function service( $serviceName ) {
+
+		if ( $this->servicesManager === null ) {
+			$this->servicesManager = $this->factory->newServicesManager();
+		}
+
+		return $this->servicesManager->get( $serviceName );
+	}
 
 	/**
 	 * @since 1.8

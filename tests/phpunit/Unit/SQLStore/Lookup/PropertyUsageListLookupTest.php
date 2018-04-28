@@ -18,14 +18,33 @@ use SMW\SQLStore\Lookup\PropertyUsageListLookup;
 class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $connection;
 	private $propertyStatisticsStore;
 	private $requestOptions;
 
 	protected function setUp() {
 
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$tableLookup = new \SMW\SQLStore\Lookup\TableLookup(
+			$this->connection
+		);
+
+		$servicesManager = new \SMW\Services\ServicesManager();
+
+		$servicesManager->registerCallback( 'table.lookup', function() use( $tableLookup ) {
+			return $tableLookup;
+		} );
+
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->will( $this->returnCallback( $servicesManager->returnCallback() ) );
 
 		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
@@ -93,7 +112,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testTryTofetchListForMissingOptionsThrowsException() {
+	public function testLookupForMissingOptionsThrowsException() {
 
 		$instance = new PropertyUsageListLookup(
 			$this->store,
@@ -101,30 +120,22 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->fetchList();
+		$instance->lookup();
 	}
 
 	/**
 	 * @dataProvider usageCountProvider
 	 */
-	public function testfetchListForValidProperty( $expectedCount ) {
+	public function testLookupForValidProperty( $expectedCount ) {
 
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 		$row->smw_id = 42;
 		$row->usage_count = $expectedCount;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->any() )
+		$this->connection->expects( $this->any() )
 			->method( 'select' )
 			->will( $this->returnValue( array( $row ) ) );
-
-		$this->store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
 
 		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
 			->disableOriginalConstructor()
@@ -136,7 +147,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$result = $instance->fetchList();
+		$result = $instance->lookup();
 
 		$this->assertInternalType(
 			'array',
@@ -157,24 +168,16 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testfetchListForInvalidProperty() {
+	public function testLookupForInvalidProperty() {
 
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
 		$row->smw_id = 42;
 		$row->usage_count = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->any() )
+		$this->connection->expects( $this->any() )
 			->method( 'select' )
 			->will( $this->returnValue( array( $row ) ) );
-
-		$this->store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
 
 		$this->requestOptions->limit = 1001;
 
@@ -184,7 +187,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$result = $instance->fetchList();
+		$result = $instance->lookup();
 
 		$this->assertInternalType(
 			'array',

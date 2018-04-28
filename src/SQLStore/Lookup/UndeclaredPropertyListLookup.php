@@ -53,7 +53,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	 * @return DIProperty[]
 	 * @throws RuntimeException
 	 */
-	public function fetchList() {
+	public function lookup() {
 
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
@@ -66,7 +66,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 			return array();
 		}
 
-		return $this->buildPropertyList( $this->selectPropertiesFromTable( $propertyTable ) );
+		return $this->buildPropertyList( $this->fetchFromTable( $propertyTable ) );
 	}
 
 	/**
@@ -96,7 +96,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 
-	private function selectPropertiesFromTable( $propertyTable ) {
+	private function fetchFromTable( $propertyTable ) {
 
 		$options = $this->store->getSQLOptions( $this->requestOptions, 'title' );
 		$idTable = SQLStore::ID_TABLE;

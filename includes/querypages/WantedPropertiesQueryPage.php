@@ -182,6 +182,6 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 */
 	function getResults( $requestoptions ) {
 		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestoptions );
-		return $this->listLookup->fetchList();
+		return $this->listLookup->lookup();
 	}
 }

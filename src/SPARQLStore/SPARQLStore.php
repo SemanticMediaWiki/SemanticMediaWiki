@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWExpNsResource as ExpNsResource;
@@ -295,7 +296,17 @@ class SPARQLStore extends Store {
 	}
 
 	/**
-	 * @see Store::getPropertiesSpecial()
+	 * @see Store::service
+	 *
+	 * {@inheritDoc}
+	 */
+	public function service( $serviceName ) {
+		return $this->baseStore->service( $serviceName );
+	}
+
+	/**
+	 * @deprecated since 3.0
+	 * @see Store::getPropertiesSpecial
 	 * @since 1.8
 	 */
 	public function getPropertiesSpecial( $requestoptions = null ) {
@@ -303,7 +314,8 @@ class SPARQLStore extends Store {
 	}
 
 	/**
-	 * @see Store::getUnusedPropertiesSpecial()
+	 * @deprecated since 3.0
+	 * @see Store::getUnusedPropertiesSpecial
 	 * @since 1.8
 	 */
 	public function getUnusedPropertiesSpecial( $requestoptions = null ) {
@@ -311,7 +323,8 @@ class SPARQLStore extends Store {
 	}
 
 	/**
-	 * @see Store::getWantedPropertiesSpecial()
+	 * @deprecated since 3.0
+	 * @see Store::getWantedPropertiesSpecial
 	 * @since 1.8
 	 */
 	public function getWantedPropertiesSpecial( $requestoptions = null ) {
@@ -319,7 +332,8 @@ class SPARQLStore extends Store {
 	}
 
 	/**
-	 * @see Store::getStatistics()
+	 * @deprecated since 3.0
+	 * @see Store::getStatistics
 	 * @since 1.8
 	 */
 	public function getStatistics() {

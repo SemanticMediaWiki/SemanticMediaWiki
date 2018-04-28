@@ -15,4 +15,10 @@ class Enum {
 	 */
 	const OPT_SUSPEND_PURGE = 'smw.opt.suspend.purge';
 
+	/**
+	 * whether creating updates jobs is allowed for a request
+	 * or not.
+	 */
+	const OPT_CREATE_UPDATE_JOB_ALLOWED = 'smw.opt.create.update.job.allowed';
+
 }

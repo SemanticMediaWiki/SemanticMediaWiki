@@ -20,8 +20,8 @@
 - Removed `DIProperty::getPredefinedPropertyTypeId`, deprecated since 2.1, use PropertyRegistry::getPropertyValueTypeById
 - Removed `DIProperty::findPropertyLabel`, deprecated since 2.1, use PropertyRegistry::findPropertyLabelById
 - Removed `DIProperty::registerProperty`, deprecated since 2.1, use PropertyRegistry::registerProperty
-- Removed `DIProperty::registerPropertyAlias`, deprecated since 2.1, use PropertyRegistry::registerPropertyAlias
-- Deprecated `PropertyValue::makeUserProperty`, use DataValueFactory::getInstance()->newPropertyValueByLabel;
+- Removed `DIProperty::registerPropertyAlias`, deprecated since 2.1, use PropertyRegistry::registerPropertyAlias`
+- Deprecated (made private, to idenify users) `PropertyValue::makeUserProperty`, use `DataValueFactory::getInstance()->newPropertyValueByLabel`;
 - Removed `PropertyValue::makeProperty`, use DataValueFactory
 
 ## Hooks
@@ -30,9 +30,13 @@
 
 ## Store
 
-- `Store::getPropertySubjects` is to return an `Iterator` hence an `array`
-  type check should be avoided and if necessary use `iterator_to_array` to
-  transform a result instance into a standard array
+- `Store::getPropertySubjects` now returns an `Iterator` and any `array`
+  type check should be avoided. If necessary use `iterator_to_array` to
+  transform a result instance into a standard array.
+- Deprecated `Store::getPropertiesSpecial`, if you used this method to retrieve a list of properties, please consider using the `smwbrowse` API interface to carry out a lookup.
+- Deprecated `Store::getUnusedPropertiesSpecial`
+- Deprecated `Store::getWantedPropertiesSpecial`
+- Deprecated `Store::getStatistics`
 
 ### Register predefined property
 

@@ -168,12 +168,12 @@ class PropertyListByApiRequest {
 			$requestOptions
 		);
 
-		$propertyListLookup = $this->store->getPropertiesSpecial( $requestOptions );
+		$propertyListLookup = $this->store->service( 'special.lookup' )->getPropertiesSpecial( $requestOptions );
 
 		// Restore original limit
 		$requestOptions->limit--;
 
-		foreach ( $propertyListLookup->fetchList() as $value ) {
+		foreach ( $propertyListLookup->lookup() as $value ) {
 
 			if ( $this->continueOffset > $requestOptions->limit ) {
 				break;

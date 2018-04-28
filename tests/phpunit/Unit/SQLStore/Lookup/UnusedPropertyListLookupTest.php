@@ -93,7 +93,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testTryTofetchListForMissingOptionsThrowsException() {
+	public function testTryTolookupForMissingOptionsThrowsException() {
 
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
@@ -101,10 +101,10 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->fetchList();
+		$instance->lookup();
 	}
 
-	public function testfetchListForValidProperty() {
+	public function testlookupForValidProperty() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -136,7 +136,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$result = $instance->fetchList();
+		$result = $instance->lookup();
 
 		$this->assertInternalType(
 			'array',
@@ -153,7 +153,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testfetchListForInvalidProperty() {
+	public function testLookupForInvalidProperty() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -174,7 +174,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'ORDER BY' => 'smw_sort', 'LIMIT' => 1001, 'OFFSET' => 0 ) ),
+				$this->equalTo( array( 'ORDER BY' => 'smw_sort', 'LIMIT' => 500, 'OFFSET' => 0 ) ),
 				$this->anything() )
 			->will( $this->returnValue( array( $row ) ) );
 
@@ -198,7 +198,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$result = $instance->fetchList();
+		$result = $instance->lookup();
 
 		$this->assertInternalType(
 			'array',

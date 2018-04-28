@@ -131,8 +131,8 @@ class PropertyPage extends Page {
 		$requestOptions->setLimit( 1 );
 		$requestOptions->addStringCondition( $searchLabel, StringCondition::COND_EQ );
 
-		$cachedLookupList = $this->store->getPropertiesSpecial( $requestOptions );
-		$usageList = $cachedLookupList->fetchList();
+		$cachedLookupList = $this->store->service( 'special.lookup' )->getPropertiesSpecial( $requestOptions );
+		$usageList = $cachedLookupList->lookup();
 
 		if ( $usageList && $usageList !== array() ) {
 

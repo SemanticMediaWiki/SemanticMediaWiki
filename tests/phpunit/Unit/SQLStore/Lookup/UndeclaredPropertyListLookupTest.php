@@ -80,7 +80,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->fetchList();
+		$instance->lookup();
 	}
 
 	public function testInvalidTableIdThrowsException() {
@@ -94,7 +94,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->fetchList();
+		$instance->lookup();
 	}
 
 	public function testLookupIdentifierChangedByRequestOptions() {
@@ -124,7 +124,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testfetchListForValidProperty() {
+	public function testLookupForValidProperty() {
 
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
@@ -163,7 +163,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$result = $instance->fetchList();
+		$result = $instance->lookup();
 
 		$this->assertInternalType(
 			'array',
@@ -181,7 +181,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testfetchListForInvalidProperty() {
+	public function testLookupForInvalidProperty() {
 
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
@@ -220,7 +220,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$result = $instance->fetchList();
+		$result = $instance->lookup();
 
 		$this->assertInternalType(
 			'array',
@@ -233,7 +233,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testfetchListForFixedPropertyTable() {
+	public function testLookupForFixedPropertyTable() {
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -267,7 +267,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$result = $instance->fetchList();
+		$result = $instance->lookup();
 
 		$this->assertInternalType(
 			'array',

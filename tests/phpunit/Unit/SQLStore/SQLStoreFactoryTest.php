@@ -40,7 +40,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewSlaveQueryEngineReturnType() {
+	public function testNewQueryEngine() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
@@ -48,14 +48,9 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\QueryEngine',
 			$instance->newSlaveQueryEngine()
 		);
-	}
-
-	public function testNewMasterQueryEngineReturnType() {
-
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
-			'\SMW\QueryEngine',
+			'\SMW\SQLStore\QueryEngine\QueryEngine',
 			$instance->newMasterQueryEngine()
 		);
 	}
@@ -180,16 +175,6 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'SMW\SQLStore\EntityStore\DataItemHandlerDispatcher',
 			$instance->newDataItemHandlerDispatcher()
-		);
-	}
-
-	public function testCanConstructDeferredCachedListLookupUpdate() {
-
-		$instance = new SQLStoreFactory( $this->store );
-
-		$this->assertInstanceOf(
-			'SMW\DeferredCallableUpdate',
-			$instance->newDeferredCallableCachedListLookupUpdate()
 		);
 	}
 

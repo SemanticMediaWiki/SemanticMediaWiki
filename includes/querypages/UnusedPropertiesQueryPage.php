@@ -181,6 +181,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 */
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getUnusedPropertiesSpecial( $requestOptions );
-		return $this->listLookup->fetchList();
+		return $this->listLookup->lookup();
 	}
 }

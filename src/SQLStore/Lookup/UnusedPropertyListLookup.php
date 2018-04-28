@@ -54,13 +54,13 @@ class UnusedPropertyListLookup implements ListLookup {
 	 * @return DIProperty[]
 	 * @throws RuntimeException
 	 */
-	public function fetchList() {
+	public function lookup() {
 
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
 
-		return $this->buildPropertyList( $this->selectPropertiesFromTable() );
+		return $this->buildPropertyList( $this->fetchFromTable() );
 	}
 
 	/**
@@ -90,13 +90,13 @@ class UnusedPropertyListLookup implements ListLookup {
 		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 
-	private function selectPropertiesFromTable() {
+	private function fetchFromTable() {
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$options = array( 'ORDER BY' => 'smw_sort' );
 
 		if ( $this->requestOptions->limit > 0 ) {
-			$options['LIMIT'] = $this->requestOptions->limit;
+			$options['LIMIT'] = min( $this->requestOptions->limit, 500 );
 			$options['OFFSET'] = max( $this->requestOptions->offset, 0 );
 		}
 

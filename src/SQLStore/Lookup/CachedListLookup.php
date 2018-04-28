@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use Onoi\Cache\Cache;
+use SMW\Options;
 
 /**
  * @license GNU GPL v2+
@@ -15,6 +16,11 @@ class CachedListLookup implements ListLookup {
 	const VERSION = '0.2';
 
 	/**
+	 * Identifies the cache namespace
+	 */
+	const CACHE_NAMESPACE = 'smw:store:lookup';
+
+	/**
 	 * @var ListLookup
 	 */
 	private $listLookup;
@@ -23,6 +29,11 @@ class CachedListLookup implements ListLookup {
 	 * @var Cache
 	 */
 	private $cache;
+
+	/**
+	 * @var Options
+	 */
+	private $options;
 
 	/**
 	 * @var stdClass
@@ -40,30 +51,42 @@ class CachedListLookup implements ListLookup {
 	private $timestamp;
 
 	/**
-	 * @var string
-	 */
-	private $cachePrefix = 'smw:store:lookup:';
-
-	/**
 	 * @since 2.2
 	 *
 	 * @param ListLookup $listLookup
 	 * @param Cache $cache
-	 * @param stdClass $cacheOptions
 	 */
-	public function __construct( ListLookup $listLookup, Cache $cache, \stdClass $cacheOptions ) {
+	public function __construct( ListLookup $listLookup, Cache $cache ) {
 		$this->listLookup = $listLookup;
 		$this->cache = $cache;
-		$this->cacheOptions = $cacheOptions;
+		$this->options = new Options();
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @param string $cachePrefix
+	 * @since 3.0
 	 */
-	public function setCachePrefix( $cachePrefix ) {
-		$this->cachePrefix = $cachePrefix . ':' . $this->cachePrefix;
+	public function invalidateCache() {
+
+		list( $id, $optionsKey ) = $this->makeCacheKey(
+			$this->listLookup->getHash()
+		);
+
+		$data = unserialize( $this->cache->fetch( $id ) );
+
+		if ( $data && $data !== array() ) {
+			foreach ( $data as $key => $value ) {
+				$this->cache->delete( $key );
+			}
+		}
+
+		$this->cache->delete( $id );
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function setOption( $key, $value ) {
+		$this->options->set( $key, $value );
 	}
 
 	/**
@@ -71,22 +94,22 @@ class CachedListLookup implements ListLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchList() {
+	public function lookup() {
 
-		list( $key, $optionsKey ) = $this->getCacheKey( $this->listLookup->getHash() );
+		list( $key, $optionsKey ) = $this->makeCacheKey( $this->listLookup->getHash() );
 
-		if ( $this->cacheOptions->useCache && ( ( $result = $this->tryFetchFromCache( $key, $optionsKey ) ) !== null ) ) {
+		if ( $this->options->safeGet( self::OPT_USE_CACHE, false ) && ( ( $result = $this->fetchFromCache( $key, $optionsKey ) ) !== null ) ) {
 			return $result;
 		}
 
-		$list = $this->listLookup->fetchList();
+		$list = $this->listLookup->lookup();
 
-		$this->saveToCache(
+		$this->save(
 			$key,
 			$optionsKey,
 			$list,
 			$this->listLookup->getTimestamp(),
-			$this->cacheOptions->ttl
+			$this->options->safeGet( self::OPT_CACHE_TTL, 600 )
 		);
 
 		return $list;
@@ -97,7 +120,7 @@ class CachedListLookup implements ListLookup {
 	 * https://github.com/wikimedia/mediawiki-extensions-SemanticForms/blob/master/specials/SF_CreateTemplate.php#L36
 	 */
 	public function runCollector() {
-		return $this->fetchList();
+		return $this->lookup();
 	}
 
 	/**
@@ -131,23 +154,10 @@ class CachedListLookup implements ListLookup {
 	 * @since 2.3
 	 */
 	public function deleteCache() {
-
-		list( $id, $optionsKey ) = $this->getCacheKey(
-			$this->listLookup->getHash()
-		);
-
-		$data = unserialize( $this->cache->fetch( $id ) );
-
-		if ( $data && $data !== array() ) {
-			foreach ( $data as $key => $value ) {
-				$this->cache->delete( $key );
-			}
-		}
-
-		$this->cache->delete( $id );
+		$this->invalidateCache();
 	}
 
-	private function tryFetchFromCache( $key, $optionsKey ) {
+	private function fetchFromCache( $key, $optionsKey ) {
 
 		if ( !$this->cache->contains( $key ) ) {
 			return null;
@@ -165,7 +175,7 @@ class CachedListLookup implements ListLookup {
 		return $data['list'];
 	}
 
-	private function saveToCache( $key, $optionsKey, $list, $time, $ttl ) {
+	private function save( $key, $optionsKey, $list, $time, $ttl ) {
 
 		$this->timestamp = $time;
 		$this->isFromCache = false;
@@ -183,7 +193,7 @@ class CachedListLookup implements ListLookup {
 		$this->cache->save( $optionsKey, serialize( $data ), $ttl );
 	}
 
-	private function getCacheKey( $id ) {
+	private function makeCacheKey( $id ) {
 
 		$optionsKey = '';
 
@@ -191,10 +201,10 @@ class CachedListLookup implements ListLookup {
 			list( $id, $optionsKey ) = explode( '#', $id, 2 );
 		}
 
-		return array(
-			$this->cachePrefix . md5( $id . self::VERSION ),
-			$this->cachePrefix . md5( $id . $optionsKey . self::VERSION )
-		);
+		return [
+			smwfCacheKey( self::CACHE_NAMESPACE, $id . self::VERSION ),
+			smwfCacheKey( self::CACHE_NAMESPACE, $id . $optionsKey . self::VERSION )
+		];
 	}
 
 }
