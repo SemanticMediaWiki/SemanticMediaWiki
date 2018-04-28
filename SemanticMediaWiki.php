@@ -114,27 +114,4 @@ class SemanticMediaWiki {
 		return SMW_VERSION;
 	}
 
-	/**
-	 * @since 2.4
-	 *
-	 * @return array
-	 */
-	public static function getEnvironment() {
-
-		$store = '';
-
-		if ( isset( $GLOBALS['smwgDefaultStore'] ) ) {
-			$store = $GLOBALS['smwgDefaultStore'];
-		};
-
-		if ( strpos( strtolower( $store ), 'sparql' ) ) {
-			$store = [ $store, strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] ) ];
-		}
-
-		return array(
-			'store' => $store,
-			'db'    => isset( $GLOBALS['wgDBtype'] ) ? $GLOBALS['wgDBtype'] : 'N/A'
-		);
-	}
-
 }
