@@ -103,7 +103,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 		$options = ApplicationFactory::getInstance()->getSettings()->toArray();
 
 		$this->outputFormatter->addAsPreformattedText(
-			$this->outputFormatter->encodeAsJson( $this->cleanPath( $options ) )
+			str_replace( '\\\\', '\\', $this->outputFormatter->encodeAsJson( $this->cleanPath( $options ) ) )
 		);
 
 		$this->outputFormatter->addAsPreformattedText(
