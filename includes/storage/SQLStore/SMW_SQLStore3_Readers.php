@@ -194,8 +194,11 @@ class SMWSQLStore3Readers {
 					$opts
 				);
 
+				$pv = $semanticData->getPropertyValues( $property );
+				$this->store->smwIds->warmUpCache( $pv );
+
 				$result = $this->store->applyRequestOptions(
-					$semanticData->getPropertyValues( $property ),
+					$pv,
 					$requestOptions
 				);
 			}
