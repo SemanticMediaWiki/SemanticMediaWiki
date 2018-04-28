@@ -88,7 +88,7 @@ final class Setup {
 				'group' => 'smw_group'
 			),
 			'PageProperty' => array(
-				'page' =>  'SMWPageProperty',
+				'page' =>  'SMW\MediaWiki\Specials\SpecialPageProperty',
 				'group' => 'smw_group'
 			),
 			'SearchByProperty' => array(

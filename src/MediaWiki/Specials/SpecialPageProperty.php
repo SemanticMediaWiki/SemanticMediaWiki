@@ -1,5 +1,7 @@
 <?php
 
+namespace SMW\MediaWiki\Specials;
+
 use SMWInfolink as Infolink;
 use SMW\Encoder;
 use SMW\DataValueFactory;
@@ -7,6 +9,7 @@ use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\ApplicationFactory;
 use SMW\Options;
 use SMW\RequestOptions;
+use SpecialPage;
 
 /**
  * This special page implements a view on a object-relation pair, i.e. a page that
@@ -20,7 +23,7 @@ use SMW\RequestOptions;
  * @author Denny Vrandecic
  * @author mwjames
  */
-class SMWPageProperty extends SpecialPage {
+class SpecialPageProperty extends SpecialPage {
 
 	/**
 	 * @codeCoverageIgnore
@@ -34,17 +37,7 @@ class SMWPageProperty extends SpecialPage {
 	 */
 	public function execute( $query ) {
 
-		$output = $this->getOutput();
 		$request = $this->getRequest();
-
-		$this->setHeaders();
-		$output->setPagetitle( wfMessage( 'pageproperty' )->text() );
-
-		$output->addModuleStyles( 'ext.smw.special.style' );
-		$output->addModules( 'ext.smw.tooltip' );
-
-		$output->addModules( 'ext.smw.autocomplete.property' );
-		$output->addModules( 'ext.smw.autocomplete.article' );
 
 		if ( $request->getText( 'cl', '' ) !== '' ) {
 			$query = Infolink::decodeCompactLink( 'cl:'. $request->getText( 'cl' ) );
@@ -85,7 +78,7 @@ class SMWPageProperty extends SpecialPage {
 			true
 		);
 
-		$output->addHTML( $this->createHtml( $options ) );
+		$this->load( $options );
 	}
 
 	/**
@@ -95,7 +88,7 @@ class SMWPageProperty extends SpecialPage {
 		return 'smw_group';
 	}
 
-	private function createHtml( $options ) {
+	private function load( $options ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
@@ -105,13 +98,20 @@ class SMWPageProperty extends SpecialPage {
 			$options->get( 'from' )
 		);
 
-		$pagename = $subject->isValid() ? $subject->getPrefixedText() : '';
-
-		$property = $dataValueFactory->newPropertyValueByLabel(
+		$propertyValue = $dataValueFactory->newPropertyValueByLabel(
 			$options->get( 'property' )
 		);
 
-		$propname = $property->isValid() ? $property->getWikiValue() : '';
+		$pagename = '';
+		$propname = '';
+
+		if ( $subject->isValid() ) {
+			$pagename = $subject->getPrefixedText();
+		}
+
+		if ( $propertyValue->isValid() ) {
+			$propname = $propertyValue->getWikiValue();
+		}
 
 		$options->set( 'from', $pagename );
 		$options->set( 'property', $propname );
@@ -131,7 +131,7 @@ class SMWPageProperty extends SpecialPage {
 
 		// No property given, no results
 		if ( $propname === '' ) {
-			$html .= $pageBuilder->getForm();
+			$html .= $pageBuilder->buildForm();
 			$html .= wfMessage( 'smw_result_noresults' )->text();
 		} else {
 
@@ -140,17 +140,28 @@ class SMWPageProperty extends SpecialPage {
 			$requestOptions->setOffset( $options->get( 'offset' ) );
 			$requestOptions->sort = true;
 
+			$dataItem = $pagename !== '' ? $subject->getDataItem() : null;
+
 			$results = $applicationFactory->getStore()->getPropertyValues(
-				$pagename !== '' ? $subject->getDataItem() : null,
-				$property->getDataItem(),
+				$dataItem,
+				$propertyValue->getDataItem(),
 				$requestOptions
 			);
 
-			$html .= $pageBuilder->getForm( count( $results ) );
-			$html .= $pageBuilder->getHtml( $results );
+			$html .= $pageBuilder->buildForm( count( $results ) );
+			$html .= $pageBuilder->buildHtml( $results );
 		}
 
-		return $html;
+		$output = $this->getOutput();
+		$output->setPagetitle( wfMessage( 'pageproperty' )->text() );
+
+		$output->addModuleStyles( 'ext.smw.special.style' );
+		$output->addModules( 'ext.smw.tooltip' );
+
+		$output->addModules( 'ext.smw.autocomplete.property' );
+		$output->addModules( 'ext.smw.autocomplete.article' );
+
+		$output->addHTML( $html );
 	}
 
 }

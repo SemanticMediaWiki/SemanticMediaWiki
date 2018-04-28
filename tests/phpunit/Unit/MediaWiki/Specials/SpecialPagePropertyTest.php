@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
-use SMWPageProperty as SpecialPageProperty;
+use SMW\MediaWiki\Specials\SpecialPageProperty;
 use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
- * @covers \SMWPageProperty
+ * @covers \SMW\MediaWiki\Specials\SpecialPageProperty
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -46,7 +46,7 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMWPageProperty',
+			'\SMW\MediaWiki\Specials\SpecialPageProperty',
 			new SpecialPageProperty()
 		);
 	}

@@ -47,7 +47,7 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetForm() {
+	public function testbuildForm() {
 
 		$methods = array(
 			'setName',
@@ -71,7 +71,7 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
-			->method( 'getForm' );
+			->method( 'renderForm' );
 
 		$instance = new PageBuilder(
 			$this->htmlFormRenderer,
@@ -80,11 +80,11 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getForm()
+			$instance->buildForm()
 		);
 	}
 
-	public function testGetHtml_Empty() {
+	public function testbuildHtml_Empty() {
 
 		$instance = new PageBuilder(
 			$this->htmlFormRenderer,
@@ -93,11 +93,11 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getHtml( [] )
+			$instance->buildHtml( [] )
 		);
 	}
 
-	public function testGetHtml_WithResult() {
+	public function testbuildHtml_WithResult() {
 
 		$this->options->set( 'limit', 20 );
 		$this->options->set( 'property', 'Bar' );
@@ -109,7 +109,7 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getHtml( [ DIWikiPage::newFromText( 'Foo' ) ] )
+			$instance->buildHtml( [ DIWikiPage::newFromText( 'Foo' ) ] )
 		);
 	}
 
