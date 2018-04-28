@@ -94,6 +94,7 @@ class CustomForm {
 
 		$fields = [];
 		$this->parameters = [];
+		$nameList = [];
 
 		foreach ( $definition as $property ) {
 			$options = [];
@@ -108,6 +109,11 @@ class CustomForm {
 			// Transforms (Foo bar -> foobar), better URL query conformity
 			$name = FormsBuilder::toLowerCase( $property );
 			$value = '';
+
+			// Field with the same name should only appear once in a form
+			if ( isset( $nameList[$name] ) ) {
+				continue;
+			}
 
 			// Each form definition may contain properties that are also defined
 			// in other forms therefore count its member position so that only
@@ -128,6 +134,7 @@ class CustomForm {
 				$this->parameters[$name] = $value;
 			}
 
+			$nameList[$name] = true;
 			$fields[] = $this->makeField( $name, $property, $value, $options );
 		}
 

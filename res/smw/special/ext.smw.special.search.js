@@ -43,7 +43,7 @@
 				var highlighter = context.parent().find( '.oo-ui-widget' ),
 					style = '';
 
-				if ( context.val().indexOf( '[' ) > -1 ) {
+				if ( context.val() !== '' ) {
 					style = highlighter.attr( 'style' );
 					highlighter.hide();
 					isHidden = true;
@@ -99,6 +99,10 @@
 				$checkboxes.prop( 'checked', true );
 			} );
 
+			$( this ).on( "click", "#mw-search-toggleall", function(){
+				$checkboxes.prop( 'checked', true );
+			} );
+
 			$( this ).on( "click", "#mw-search-togglenone", function(){
 				$checkboxes.prop( 'checked', false );
 			} );
@@ -107,6 +111,32 @@
 			$( this ).on( "change", "#mw-search-powersearch-remember", function() {
 				this.form.method = this.checked ? 'post' : 'get';
 			} ).trigger( 'change' );
+
+			var nsList = $( '#ns-list' ).css( 'display' ) !== 'none' ? 'Hide': 'Show';
+
+			/**
+			 * Append hide/show button to the NS section
+			 */
+			$( '#smw-search-togglensview' ).append(
+				$( '<input>' ).attr( 'type', 'button' )
+					.attr( 'id', 'smw-togglensview' )
+					.prop( 'value', nsList )
+					.click( function ( event ) {
+
+						// We carry the hidden `ns-list` on a submit so the status
+						// of the prevsious acion is retained to either show or hide
+						// the section
+						if ( $( '#ns-list' ).css( 'display' ) !== 'none' ) {
+							$( 'input[name=ns-list]' ).attr( 'value', 1 );
+							event.target.value = 'Show';
+							$( '#ns-list' ).css( 'display', 'none' );
+						} else {
+							event.target.value = 'Hide';
+							$( 'input[name=ns-list]' ).attr( 'value', 0 );
+							$( '#ns-list' ).css( 'display', 'block' );
+						}
+					} )
+			)
 
 			/**
 			 * Open form ...
@@ -129,13 +159,16 @@
 				if ( context.find( '.smw-propertyvalue-input' ).val() === '' ) {
 					context.find( '.smw-propertyvalue-input' ).addClass( 'is-disabled' );
 				}
-
 			} )
 
+			/**
+			 * Act on changes to the form select
+			 */
 			$( this ).on( "change", ".smw-select-field", function( event ) {
 				var context = $( this ).closest( '.smw-input-group' );
 				var length = $( '#smw-form-open .smw-input-group' ) ? $( '#smw-form-open .smw-input-group' ).length : 0;
 
+				// Property input empty, make the value field appear to be disabled
 				if ( context.find( '.smw-property-input' ).val() === '' ) {
 					context.find( '.smw-propertyvalue-input' ).val( '' );
 					context.find( '.smw-propertyvalue-input' ).addClass( 'is-disabled' );
@@ -146,7 +179,7 @@
 					context.remove();
 				}
 
-				// Disable del when there are not enough groups available
+				// Disable `del` when there are not enough groups available
 				if ( length <= 2 ) {
 					$( "#smw-form-open > .smw-input-group > .smw-select-field option[value='del']" ).attr( "disabled", "disabled" );
 				}
@@ -161,11 +194,12 @@
 				var context = $( this );
 				var input = opts.context.closest( '.smw-input-group' ).find( '.smw-propertyvalue-input' );
 
+				// A property was "really" selected! enable the value field
 				if ( opts.suggestion && opts.suggestion.value !== '' ) {
 					input.removeClass( 'is-disabled' );
 					input.data( 'property', opts.suggestion.value );
 
-					// Trigger event to enable the instance
+					// Trigger event to initialize the instance
 					context.trigger( 'smw.autocomplete.propertyvalue', { context: opts.context.closest( '.smw-input-group' ) } );
 				}
 			} );
@@ -192,11 +226,13 @@
 					clone.find( "input:text" ).val( "" ).end().appendTo( '#smw-form-open' );
 
 					// We clone which means we have +1 available
-					$( "#smw-form-open > .smw-input-group > .smw-select-field option[value='del']" ).removeAttr( "disabled" );
+					$( "#smw-form-open > .smw-input-group > .smw-select-field option[value='del']" ).prop( "disabled", false );
 					clone.find( '.smw-propertyvalue-input' ).addClass( 'is-disabled' );
 					context.trigger( 'smw.autocomplete.property', { context: clone } );
 				}
 			} );
+
+			var initialForm = $( "#smw-search-forms select" ).val();
 
 			/**
 			 *  Listing to the form select field change
@@ -205,7 +241,24 @@
 				var type = $( "#smw-search-forms select" ).val();
 				var nsList = $( "#smw-search-forms" ).data( 'nslist' );
 
-				$( '#smw-searchoptions .divider' ).show();
+				if ( type !== '' ) {
+					$( '#smw-searchoptions .divider' ).show();
+
+					// Handle the hide/show of the NS section
+					if ( $( '#ns-list' ).css( 'display' ) === 'block' && initialForm === '' ) {
+						$( '#ns-list' ).css( 'display', 'none' );
+						$( '#smw-search-togglensview input' ).prop( 'value', 'Show' );
+						$( 'input[name=ns-list]' ).attr( 'value', 1 );
+						initialForm = $( "#smw-search-forms select" ).val();
+					} else {
+						$( '#smw-search-togglensview input' ).prop(
+							'value',
+							( $( '#ns-list' ).css( 'display' ) !== 'none' ? 'Hide': 'Show' )
+						);
+					}
+				} else {
+					$( '#smw-searchoptions .divider' ).hide();
+				}
 
 				// On any change, hide all fields by default and only make fields
 				// visible that belong the selected form.
@@ -216,7 +269,7 @@
 
 				// Important! The browser will complain about require fields that
 				// have been made invisible.
-				$( '.smw-input-field' ).find( 'input' ).removeAttr( 'required' );
+				$( '.smw-input-field' ).find( 'input' ).prop( 'required', false );
 
 				if ( type === 'open' ) {
 					var group = $( '#smw-form-open > .smw-input-group' );

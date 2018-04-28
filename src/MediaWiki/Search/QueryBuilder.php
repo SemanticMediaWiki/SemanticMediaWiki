@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Search;
 use Title;
 use WikiPage;
 use SMWQueryProcessor as QueryProcessor;
+use SMW\Store;
 use SMWQuery as Query;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
@@ -154,7 +155,7 @@ class QueryBuilder {
 	 *
 	 * @return []
 	 */
-	public function getQueryString( $term ) {
+	public function getQueryString( Store $store, $term ) {
 
 		// Special invisible char which is set by the JS component to allow to
 		// push a forms submit through the SearchEngine without an actual "serach
@@ -162,21 +163,15 @@ class QueryBuilder {
 		// structured searches.
 		$term = rtrim( $term, " " );
 
-		$title = Title::newFromText( SearchProfileForm::FORM_DEFINITION, SMW_NS_RULE );
-
-		if ( $this->check && !$title->exists() ) {
-			return $term;
-		}
-
-		$content = WikiPage::factory( $title )->getContent();
-
-		if ( $this->data === [] && $content !== null ) {
-			$data = json_decode( $content->getNativeData(), true );
+		if ( $this->data === [] ) {
+			$data = SearchProfileForm::getFormDefinitions( $store );
 		} else {
 			$data = $this->data;
 		}
 
-		if ( ( $data = $this->getFieldValues( $data ) ) === [] && trim( $term ) ) {
+		$form = $this->request->getVal( 'smw-form' );
+
+		if ( ( $data = $this->fetchFieldValues( $form, $data ) ) === [] && trim( $term ) ) {
 			return $term;
 		}
 
@@ -218,19 +213,18 @@ class QueryBuilder {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $form
 	 * @param array $data
 	 *
 	 * @return []
 	 */
-	public function getFieldValues( array $data ) {
+	public function fetchFieldValues( $form, array $data ) {
 
 		$fieldValues = [];
 
 		if ( !isset( $data['forms'] ) ) {
 			return [];
 		}
-
-		$form = $this->request->getVal( 'smw-form' );
 
 		if ( $form === 'open' ) {
 			$properties = $this->request->getArray( 'property' );

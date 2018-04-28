@@ -86,6 +86,10 @@ class SearchProfileFormTest extends \PHPUnit_Framework_TestCase {
 		$form = '';
 		$opts = [];
 
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [] ) );
+
 		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\Search' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -117,8 +121,16 @@ class SearchProfileFormTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->getForm( $form, $opts );
 
+		$expected = [
+			'<fieldset id="smw-searchoptions">',
+			'<input type="hidden" name="ns-list"/>',
+			'<div id="smw-query" style="display:none;"></div>',
+			'<div class="smw-search-options">',
+			'<div id="smw-search-sort" class="smw-select" style="margin-right:10px;">',
+		];
+
 		$this->assertContains(
-			'<fieldset id="smw-searchoptions"><div id="smw-query" style="display:none;"></div><div class="smw-search-options"><div id="smw-search-sort" class="smw-select" style="margin-right:10px;">',
+			implode( '', $expected ),
 			$form
 		);
 	}

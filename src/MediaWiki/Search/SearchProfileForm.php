@@ -12,10 +12,13 @@ use MWNamespace;
 use SMW\Message;
 use SMW\Store;
 use SMW\DIProperty;
+use SMWDIBlob as DIBlob;
+use SMW\RequestOptions;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Highlighter;
 use SMW\MediaWiki\Search\Form\FormsBuilder;
 use SMW\MediaWiki\Search\Form\FormsFactory;
+use SMW\MediaWiki\Search\Form\FormsFinder;
 
 /**
  * @license GNU GPL v2+
@@ -30,7 +33,7 @@ class SearchProfileForm {
 	/**
 	 * Page that hosts the form/forms definition
 	 */
-	const FORM_DEFINITION = 'Search-profile-form-definition';
+	const RULE_TYPE = 'SEARCH_FORM_DEFINITION_RULE';
 
 	/**
 	 * @var Store
@@ -85,6 +88,29 @@ class SearchProfileForm {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @param Store $store
+	 *
+	 * @return array
+	 */
+	public static function getFormDefinitions( Store $store ) {
+
+		static $data = [];
+
+		if ( $data !== [] ) {
+			return $data;
+		}
+
+		$formsFinder = new FormsFinder( $store );
+		$data = $formsFinder->getFormDefinitions();
+
+		return $data;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $searchableNamespaces
 	 */
 	public function setSearchableNamespaces( array $searchableNamespaces ) {
 		$this->searchableNamespaces = $searchableNamespaces;
@@ -92,21 +118,30 @@ class SearchProfileForm {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @param string &$form
+	 * @param array $opts
 	 */
-	public function getForm( &$form, $opts ) {
+	public function getForm( &$form, array $opts = [] ) {
 
 		$hidden = '';
 		$html = '';
+
+		$context = $this->specialSearch->getContext();
+		$request = $context->getRequest();
+
+		// Carry over the status (hide/show) of the ns section during a search
+		// request so we don't have to set a cookie while still being able to
+		// retain its status on whether the users has the NS hidden or not.
+		$opts = $opts + [ 'ns-list' => $request->getVal( 'ns-list' ) ];
 
 		foreach ( $opts as $key => $value ) {
 			$hidden .= Html::hidden( $key, $value );
 		}
 
-		$context = $this->specialSearch->getContext();
 		$outputPage = $context->getOutput();
 
 		$outputPage->addModuleStyles( 'ext.smw.special.search.styles' );
-
 		$outputPage->addModules(
 			[
 				'ext.smw.special.search',
@@ -115,33 +150,41 @@ class SearchProfileForm {
 			]
 		);
 
-		$request = $context->getRequest();
-
 		// Set active form
 		$this->specialSearch->setExtraParam( 'smw-form', $request->getVal( 'smw-form' )	);
 
-		list( $extendedForm, $formsSelectList, $formNamespaces ) = $this->buildExtendedForm(
-			$request
+		$link = '';
+		$searchEngine = $this->specialSearch->getSearchEngine();
+
+		if ( ( $queryLink = $searchEngine->getQueryLink() ) instanceof \SMWInfolink ) {
+			$queryLink->setCaption( '⋯' );
+			$queryLink->setLinkAttributes( [ 'title' => 'Special:Ask' ] );
+			$link = $queryLink->getHtml();
+		}
+
+		list( $searchForms, $formList, $preselectNamespaces, $hiddenNamespaces ) = $this->buildSearchForms(
+			$request,
+			$link
 		);
 
 		$sortForm = $this->buildSortForm( $request );
+
+		$namespaceForm = $this->buildNamespaceForm(
+			$request,
+			$searchEngine,
+			$preselectNamespaces,
+			$hiddenNamespaces
+		);
 
 		$options = Html::rawElement(
 			'div',
 			[
 				'class' => 'smw-search-options'
 			],
-			$sortForm . $formsSelectList
+			$sortForm . $formList
 		);
 
-		$searchEngine = $this->specialSearch->getSearchEngine();
 		$errors = $this->findErrors( $searchEngine );
-
-		$namespaceForm = $this->buildNamespaceForm(
-			$request,
-			$searchEngine,
-			$formNamespaces
-		);
 
 		$query = Html::rawElement(
 			'div',
@@ -157,18 +200,19 @@ class SearchProfileForm {
 			[
 				'id' => 'smw-searchoptions'
 			],
-			$hidden . $errors . $query . $options . $extendedForm
+			$hidden . $errors . $query . $options . $searchForms
 		);
 
-		// Different fieldset therefor it is seperate and last!
+		// Different fieldset therefore it is used as last element
 		$form .= $namespaceForm;
 	}
 
-	private function buildNamespaceForm( $request, $searchEngine, $formNamespaces ) {
+	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces ) {
 
-		$activeNamespaces = array_merge( $this->specialSearch->getNamespaces(), $formNamespaces );
+		$activeNamespaces = array_merge( $this->specialSearch->getNamespaces(), $preselectNamespaces );
 
 		foreach ( $this->searchableNamespaces as $ns => $name ) {
+
 			if ( $request->getCheck( 'ns' . $ns ) ) {
 				$activeNamespaces[] = $ns;
 				$this->specialSearch->setExtraParam( 'ns' . $ns, true );
@@ -186,6 +230,14 @@ class SearchProfileForm {
 			$activeNamespaces
 		);
 
+		$namespaceForm->setHiddenNamespaces(
+			$hiddenNamespaces
+		);
+
+		$namespaceForm->setHideList(
+			$request->getVal( 'ns-list' )
+		);
+
 		$namespaceForm->setSearchableNamespaces(
 			$this->searchableNamespaces
 		);
@@ -197,23 +249,18 @@ class SearchProfileForm {
 		return $namespaceForm->makeFields();
 	}
 
-	private function buildExtendedForm( $request ) {
+	private function buildSearchForms( $request, $link = '' ) {
 
-		$title = Title::newFromText( self::FORM_DEFINITION, SMW_NS_RULE );
+		$data = $this->getFormDefinitions( $this->store );
+		$title = Title::newFromText( 'Special:SearchByProperty/Rule type/' . self::RULE_TYPE );
 
-		if ( !$title->exists() ) {
-			return [ '', '', [] ];
-		}
-
-		$content = WikiPage::factory( $title )->getContent();
-
-		if ( $content === null ) {
-			return [ '', '', [] ];
+		if ( $data === [] ) {
+			return [ '', '', [], [] ];
 		}
 
 		$formsBuilder = new FormsBuilder( $request, $this->formsFactory );
 
-		$form = $formsBuilder->buildFromJSON( $content->getNativeData() );
+		$form = $formsBuilder->buildForm( $data );
 		$parameters = $formsBuilder->getParameters();
 
 		// Set parameters so that any link to a (... 20, 50 ...) list carries
@@ -222,10 +269,13 @@ class SearchProfileForm {
 			$this->specialSearch->setExtraParam( $key, $value );
 		}
 
+		$formList = $formsBuilder->buildFormList( $title, $link );
+
 		return [
 			$form,
-			$formsBuilder->makeSelectList( $title ),
-			$formsBuilder->getNsList()
+			$formList,
+			$formsBuilder->getPreselectNsList(),
+			$formsBuilder->getHiddenNsList()
 		];
 	}
 

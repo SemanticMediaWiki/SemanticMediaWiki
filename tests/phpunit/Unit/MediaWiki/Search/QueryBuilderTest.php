@@ -16,8 +16,13 @@ use SMW\MediaWiki\Search\QueryBuilder;
 class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $webRequest;
+	private $store;
 
 	protected function setUp() {
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
@@ -75,7 +80,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setDescription' );
 
 		$instance->addNamespaceCondition( $query, [ 6 => true ] );
-
 	}
 
 	public function testAddSort() {
@@ -97,7 +101,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setSortKeys' );
 
 		$instance->addSort( $query );
-
 	}
 
 	public function testGetQueryString_EmptyFieldValues_ReturnsTermOnly() {
@@ -111,7 +114,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'Foo',
-			$instance->getQueryString( 'Foo' )
+			$instance->getQueryString( $this->store, 'Foo' )
 		);
 	}
 
@@ -144,7 +147,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'<q>[[Bar property::Foobar]]</q>  Foo',
-			$instance->getQueryString( 'Foo' )
+			$instance->getQueryString( $this->store, 'Foo' )
 		);
 	}
 
@@ -180,7 +183,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'<q>[[Bar property::42]]</q>  Foo',
-			$instance->getQueryString( 'Foo' )
+			$instance->getQueryString( $this->store, 'Foo' )
 		);
 	}
 
@@ -221,7 +224,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'<q>[[Bar::42]] </q> OR Foo',
-			$instance->getQueryString( 'Foo' )
+			$instance->getQueryString( $this->store, 'Foo' )
 		);
 	}
 

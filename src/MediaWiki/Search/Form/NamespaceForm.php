@@ -27,6 +27,11 @@ class NamespaceForm {
 	/**
 	 * @var []
 	 */
+	private $hiddenNamespaces = [];
+
+	/**
+	 * @var []
+	 */
 	private $searchableNamespaces = [];
 
 	/**
@@ -35,12 +40,35 @@ class NamespaceForm {
 	private $token;
 
 	/**
+	 * @var null|string
+	 */
+	private $hideList = false;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param array $activeNamespaces
 	 */
 	public function setActiveNamespaces( array $activeNamespaces ) {
 		$this->activeNamespaces = $activeNamespaces;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $hideList
+	 */
+	public function setHideList( $hideList ) {
+		$this->hideList = (bool)$hideList;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $hiddenNamespaces
+	 */
+	public function setHiddenNamespaces( array $hiddenNamespaces ) {
+		$this->hiddenNamespaces = $hiddenNamespaces;
 	}
 
 	/**
@@ -80,12 +108,19 @@ class NamespaceForm {
 
 		$divider = "<div class='divider'></div>";
 		$rows = [];
+		$tableRows = [];
+
+		$hiddenNamespaces = array_flip( $this->hiddenNamespaces );
 
 		foreach ( $this->searchableNamespaces as $namespace => $name ) {
 			$subject = MWNamespace::getSubject( $namespace );
 
 			if ( MWNamespace::isTalk( $namespace ) ) {
 			//	continue;
+			}
+
+			if ( isset( $hiddenNamespaces[$namespace] ) ) {
+				continue;
 			}
 
 			if ( !isset( $rows[$subject] ) ) {
@@ -109,12 +144,12 @@ class NamespaceForm {
 
 		// Lays out namespaces in multiple floating two-column tables so they'll
 		// be arranged nicely while still accomodating diferent screen widths
-		$tableRows = [];
 		foreach ( $rows as $row ) {
 			$tableRows[] = "<tr>{$row}</tr>";
 		}
 
 		$namespaceTables = [];
+		$display = $this->hideList ? 'none' : 'block';
 
 		foreach ( array_chunk( $tableRows, 4 ) as $chunk ) {
 			$namespaceTables[] = implode( '', $chunk );
@@ -143,13 +178,14 @@ class NamespaceForm {
 			"<legend>" . Message::get( 'powersearch-legend', Message::ESCAPED, Message::USER_LANGUAGE ) . '</legend>' .
 			"<h4>" . Message::get( 'powersearch-ns', Message::PARSE, Message::USER_LANGUAGE ) . '</h4>' .
 			// populated by js if available
+			"<div id='smw-search-togglensview'></div>" .
 			"<div id='mw-search-togglebox'></div>" .
-			$divider .
+			"<div id='ns-list' style='display:$display'>" . $divider .
 			implode(
 				$divider,
 				$showSections
 			) .
-			$remember .
+			$remember . "</div>" .
 		"</fieldset>";
 	}
 
