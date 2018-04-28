@@ -265,9 +265,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SQLStoreFactory( $this->store );
 
+		$params = [
+			'entity.id' => '',
+			'entity.sort' => '',
+			'entity.lookup' => '',
+			'table.hash' => ''
+		];
+
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\EntityStore\IdCacheManager',
-			$instance->newIdCacheManager( 'foo', [ 'entity.id' => '', 'entity.sort' => '', 'entity.lookup' => '' ] )
+			$instance->newIdCacheManager( 'foo', $params )
 		);
 	}
 

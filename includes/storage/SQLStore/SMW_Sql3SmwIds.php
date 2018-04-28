@@ -76,21 +76,6 @@ class SMWSql3SmwIds {
 
 	const MAX_CACHE_SIZE = 500;
 	const POOLCACHE_ID = 'smw.sqlstore';
-	/**
-	 * Id for which property table hashes are cached, if any.
-	 *
-	 * @since 1.8
-	 * @var integer
-	 */
-	protected $hashCacheId = 0;
-
-	/**
-	 * Cached property table hashes for $hashCacheId.
-	 *
-	 * @since 1.8
-	 * @var string
-	 */
-	protected $hashCacheContents = '';
 
 	/**
 	 * Parent SMWSQLStore3.
@@ -1174,7 +1159,8 @@ class SMWSql3SmwIds {
 			[
 				'entity.id' => self::MAX_CACHE_SIZE,
 				'entity.sort' => self::MAX_CACHE_SIZE,
-				'entity.lookup' => 2000
+				'entity.lookup' => 2000,
+				'table.hash' => self::MAX_CACHE_SIZE,
 			]
 		);
 	}
@@ -1190,31 +1176,40 @@ class SMWSql3SmwIds {
 	 *
 	 * @return array
 	 */
-	public function getPropertyTableHashes( $subjectId ) {
-		$hash = null;
-		$db = $this->store->getConnection();
+	public function getPropertyTableHashes( $sid ) {
 
-		if ( $this->hashCacheId == $subjectId ) {
-			$hash = $this->hashCacheContents;
-		} elseif ( $subjectId !== 0 ) {
-
-			$row = $db->selectRow(
-				self::TABLE_NAME,
-				array( 'smw_proptable_hash' ),
-				'smw_id=' . $subjectId,
-				__METHOD__
-			);
-
-			if ( $row !== false ) {
-				$hash = $row->smw_proptable_hash;
-			}
+		if ( $sid == 0 ) {
+			return [];
 		}
 
-		if ( $hash !== null && $GLOBALS['wgDBtype'] == 'postgres' ) {
+		$hash = null;
+		$cache = $this->idCacheManager->get( 'table.hash' );
+
+		if ( ( $hash = $cache->fetch( $sid ) ) !== false ) {
+			return $hash;
+		}
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$row = $connection->selectRow(
+			self::TABLE_NAME,
+			array( 'smw_proptable_hash' ),
+			'smw_id=' . $sid,
+			__METHOD__
+		);
+
+		if ( $row !== false ) {
+			$hash = $row->smw_proptable_hash;
+		}
+
+		if ( $hash !== null && $hash !== false && $connection->isType( 'postgres' ) ) {
 			$hash = pg_unescape_bytea( $hash );
 		}
 
-		return is_null( $hash ) ? array() : unserialize( $hash );
+		$hash = $hash === null || $hash === false ? [] : unserialize( $hash );
+		$cache->save( $sid, $hash );
+
+		return $hash;
 	}
 
 	/**
@@ -1224,20 +1219,18 @@ class SMWSql3SmwIds {
 	 * @param integer $sid ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
 	 */
-	public function setPropertyTableHashes( $sid, array $newTableHashes ) {
+	public function setPropertyTableHashes( $sid, array $hash ) {
+
 		$db = $this->store->getConnection();
-		$propertyTableHash = serialize( $newTableHashes );
 
 		$db->update(
 			self::TABLE_NAME,
-			array( 'smw_proptable_hash' => $propertyTableHash ),
+			array( 'smw_proptable_hash' => serialize( $hash ) ),
 			array( 'smw_id' => $sid ),
 			__METHOD__
 		);
 
-		if ( $sid == $this->hashCacheId ) {
-			$this->setPropertyTableHashesCache( $sid, $propertyTableHash );
-		}
+		$this->setPropertyTableHashesCache( $sid, $hash );
 	}
 
 	/**
@@ -1248,13 +1241,29 @@ class SMWSql3SmwIds {
 	 * @param $id integer
 	 * @param $propertyTableHash string
 	 */
-	protected function setPropertyTableHashesCache( $id, $propertyTableHash ) {
-		if ( $id == 0 ) {
-			return; // never cache 0
+	/**
+	 * Temporarily cache a property tablehash that has been retrieved for
+	 * the given SMW ID.
+	 *
+	 * @since 1.8
+	 * @param $id integer
+	 * @param $propertyTableHash string
+	 */
+	protected function setPropertyTableHashesCache( $sid, $hash ) {
+
+		// never cache 0
+		if ( $sid == 0 ) {
+			return;
 		}
-		//print "Cache set for $id.\n";
-		$this->hashCacheId = $id;
-		$this->hashCacheContents = $propertyTableHash;
+
+		if ( $hash === null ) {
+			$hash = [];
+		} elseif ( is_string( $hash ) ) {
+			$hash = unserialize( $hash );
+		}
+
+		$cache = $this->idCacheManager->get( 'table.hash' );
+		$cache->save( $sid, $hash );
 	}
 
 	/**

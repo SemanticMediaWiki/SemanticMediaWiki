@@ -139,6 +139,10 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( $propertyTables ) );
 
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( $propertyTables ) );
+
 		$instance = new PropertyTableRowDiffer(
 			$store,
 			$this->propertyTableRowMapper
