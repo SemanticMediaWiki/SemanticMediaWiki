@@ -4,10 +4,10 @@ namespace SMW\Tests\Query\Result;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Query\Result\InMemoryEntityProcessList;
+use SMW\Query\Result\ResolverJournal;
 
 /**
- * @covers \SMW\Query\Result\InMemoryEntityProcessList
+ * @covers \SMW\Query\Result\ResolverJournal
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,23 +15,23 @@ use SMW\Query\Result\InMemoryEntityProcessList;
  *
  * @author mwjames
  */
-class InMemoryEntityProcessListTest extends \PHPUnit_Framework_TestCase {
+class ResolverJournalTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			InMemoryEntityProcessList::class,
-			new InMemoryEntityProcessList()
+			ResolverJournal::class,
+			new ResolverJournal()
 		);
 	}
 
-	public function testAddDataItem() {
+	public function testRecordItem() {
 
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
-		$instance = new InMemoryEntityProcessList();
+		$instance = new ResolverJournal();
 
 		$instance->prune();
-		$instance->addDataItem( $dataItem );
+		$instance->recordItem( $dataItem );
 
 		$this->assertEquals(
 			array( 'Foo#0##' => $dataItem ),
@@ -45,12 +45,12 @@ class InMemoryEntityProcessListTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testAddProperty() {
+	public function testRecordProperty() {
 
 		$property = new DIProperty( 'Bar' );
-		$instance = new InMemoryEntityProcessList();
+		$instance = new ResolverJournal();
 
-		$instance->addProperty( $property );
+		$instance->recordProperty( $property );
 
 		$this->assertEquals(
 			array(

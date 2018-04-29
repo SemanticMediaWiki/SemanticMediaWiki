@@ -63,13 +63,11 @@ class QueryResultDependencyListResolver {
 
 	/**
 	 * At the point where the QueryResult instantiates results by means of the
-	 * ResultArray, record the objects with the help of the EntityListAccumulator.
-	 * Processing is depending and various factors which could be to early with
-	 * the row instance is not yet being resolved.
+	 * ResultArray, record the objects with the help of the ResolverJournal.
 	 *
-	 * QueryDependencyLinksStore::updateDependencyList is executed in deferred
-	 * mode therefore allows a "late" access to track dependencies of column/row
-	 * entities without having to resolve the QueryResult object on its own, see
+	 * When the `... updateDependencies` is executed in deferred mode it allows
+	 * a "late" access to track dependencies of column/row entities without having
+	 * to resolve the QueryResult object on its own, see
 	 * ResultArray::getNextDataValue/ResultArray::getNextDataItem.
 	 *
 	 * @since 2.4
@@ -84,10 +82,10 @@ class QueryResultDependencyListResolver {
 			return array();
 		}
 
-		$inMemoryEntityProcessList = $queryResult->getInMemoryEntityProcessList();
+		$resolverJournal = $queryResult->getResolverJournal();
 
-		$dependencyList = $inMemoryEntityProcessList->getEntityList();
-		$inMemoryEntityProcessList->prune();
+		$dependencyList = $resolverJournal->getEntityList();
+		$resolverJournal->prune();
 
 		return $dependencyList;
 	}

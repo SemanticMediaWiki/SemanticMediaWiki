@@ -5,7 +5,7 @@ use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
 use SMW\Query\ScoreSet;
 use SMW\Query\Excerpts;
-use SMW\Query\Result\InMemoryEntityProcessList;
+use SMW\Query\Result\ResolverJournal;
 use SMW\SerializerFactory;
 
 /**
@@ -27,6 +27,7 @@ use SMW\SerializerFactory;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SMWQueryResult {
+
 	/**
 	 * Array of SMWDIWikiPage objects that are the basis for this result
 	 * @var SMWDIWikiPage[]
@@ -73,9 +74,9 @@ class SMWQueryResult {
 	private $isFromCache = false;
 
 	/**
-	 * @var InMemoryEntityProcessList
+	 * @var ResolverJournal
 	 */
-	private $inMemoryEntityProcessList;
+	private $resolverJournal;
 
 	/**
 	 * @var integer
@@ -111,16 +112,25 @@ class SMWQueryResult {
 		$this->mFurtherResults = $furtherRes;
 		$this->mQuery = $query;
 		$this->mStore = $store;
-		$this->inMemoryEntityProcessList = new InMemoryEntityProcessList();
+		$this->resolverJournal = new ResolverJournal();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param ResolverJournal $resolverJournal
+	 */
+	public function setResolverJournal( ResolverJournal $ResolverJournal ) {
+		$this->resolverJournal = $ResolverJournal;
 	}
 
 	/**
 	 * @since  2.4
 	 *
-	 * @return InMemoryEntityProcessList
+	 * @return ResolverJournal
 	 */
-	public function getInMemoryEntityProcessList() {
-		return $this->inMemoryEntityProcessList;
+	public function getResolverJournal() {
+		return $this->resolverJournal;
 	}
 
 	/**
@@ -208,7 +218,7 @@ class SMWQueryResult {
 
 		foreach ( $this->mPrintRequests as $p ) {
 			$resultArray = new SMWResultArray( $page, $p, $this->mStore );
-			$resultArray->setInMemoryEntityProcessList( $this->inMemoryEntityProcessList );
+			$resultArray->setResolverJournal( $this->resolverJournal );
 			$resultArray->setQueryToken( $this->mQuery->getQueryToken() );
 			$row[] = $resultArray;
 		}
