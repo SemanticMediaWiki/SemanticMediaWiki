@@ -202,7 +202,7 @@ class ParserCachePurgeJob extends JobBase {
 		}
 	}
 
-	private function splitList( $hashList ) {
+	public function splitList( $hashList ) {
 
 		$targetLinksList = array();
 		$queryList = array();
