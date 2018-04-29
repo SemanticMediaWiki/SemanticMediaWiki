@@ -43,6 +43,9 @@ class QuerySourceFactory {
 		$this->store = $store;
 		$this->querySources = $querySources;
 		$this->queryEndpoint = $queryEndpoint;
+
+		// Standard store
+		$this->querySources['sql_store'] = 'SMW\SQLStore\SQLStore';
 	}
 
 	/**
@@ -86,6 +89,10 @@ class QuerySourceFactory {
 	 * @return string
 	 */
 	public function getAsString( $source = null ) {
+
+		if ( $source === 'sql_store' ) {
+			return 'SMWSQLStore';
+		}
 
 		if ( $source !== '' && $source !== null ) {
 			return $source;
