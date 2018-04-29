@@ -60,6 +60,24 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetStandardStore() {
+
+		$instance = new QuerySourceFactory(
+			$this->store,
+			[]
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\SQLStore',
+			$instance->get( 'sql_store' )
+		);
+
+		$this->assertEquals(
+			'SMWSQLStore',
+			$instance->getAsString( 'sql_store' )
+		);
+	}
+
 	public function testGetAsString() {
 
 		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
