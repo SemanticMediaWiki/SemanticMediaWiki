@@ -3,7 +3,7 @@
 use SMW\DataValueFactory;
 use SMW\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
-use SMW\Query\Result\InMemoryEntityProcessList;
+use SMW\Query\Result\ResolverJournal;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMW\Query\Result\ResultFieldMatchFinder;
@@ -42,9 +42,9 @@ class SMWResultArray {
 	private $mContent;
 
 	/**
-	 * @var InMemoryEntityProcessList
+	 * @var ResolverJournal
 	 */
-	private $inMemoryEntityProcessList;
+	private $resolverJournal;
 
 	/**
 	 * @var ResultFieldMatchFinder
@@ -100,10 +100,10 @@ class SMWResultArray {
 	 *
 	 * @since  2.4
 	 *
-	 * @return InMemoryEntityProcessList
+	 * @param ResolverJournal $resolverJournal
 	 */
-	public function setInMemoryEntityProcessList( InMemoryEntityProcessList $inMemoryEntityProcessList ) {
-		$this->inMemoryEntityProcessList = $inMemoryEntityProcessList;
+	public function setResolverJournal( ResolverJournal $resolverJournal ) {
+		$this->resolverJournal = $resolverJournal;
 	}
 
 	/**
@@ -155,8 +155,8 @@ class SMWResultArray {
 		$this->loadContent();
 		$result = current( $this->mContent );
 
-		if ( $this->inMemoryEntityProcessList !== null && $result instanceof DataItem ) {
-			$this->inMemoryEntityProcessList->addDataItem( $result );
+		if ( $this->resolverJournal !== null && $result instanceof DataItem ) {
+			$this->resolverJournal->recordItem( $result );
 		}
 
 		next( $this->mContent );
@@ -225,9 +225,9 @@ class SMWResultArray {
 			$dataValue->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
 		}
 
-		if ( $this->inMemoryEntityProcessList !== null && $dataItem instanceof DataItem ) {
-			$this->inMemoryEntityProcessList->addDataItem( $dataItem );
-			$this->inMemoryEntityProcessList->addProperty( $diProperty );
+		if ( $this->resolverJournal !== null && $dataItem instanceof DataItem ) {
+			$this->resolverJournal->recordItem( $dataItem );
+			$this->resolverJournal->recordProperty( $diProperty );
 		}
 
 		return $dataValue;

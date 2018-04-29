@@ -18,7 +18,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class InMemoryEntityProcessList {
+class ResolverJournal {
 
 	/**
 	 * @var array
@@ -61,7 +61,7 @@ class InMemoryEntityProcessList {
 	 *
 	 * @param DataItem $dataItem
 	 */
-	public function addDataItem( DataItem $dataItem ) {
+	public function recordItem( DataItem $dataItem ) {
 		if ( $dataItem instanceof DIWikiPage ) {
 			$this->dataItems[$dataItem->getHash()] = $dataItem;
 		}
@@ -72,7 +72,7 @@ class InMemoryEntityProcessList {
 	 *
 	 * @param DIProperty|null $property
 	 */
-	public function addProperty( DIProperty $property = null ) {
+	public function recordProperty( DIProperty $property = null ) {
 		if ( $property !== null ) {
 			$this->properties[$property->getKey()] = $property;
 		}
