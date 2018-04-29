@@ -24,6 +24,21 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSerialize() {
+
+		$instance = new ChangeOp(
+			DIWikiPage::newFromText( __METHOD__ ),
+			[]
+		);
+
+		$data = serialize( $instance );
+
+		$this->assertInstanceOf(
+			ChangeOp::class,
+			unserialize( $data )
+		);
+	}
+
 	/**
 	 * @dataProvider diffDataProvider
 	 */
