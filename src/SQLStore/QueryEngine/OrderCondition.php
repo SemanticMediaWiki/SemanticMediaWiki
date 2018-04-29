@@ -47,6 +47,11 @@ class OrderCondition {
 	private $isSupported = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $asUnconditional = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param QuerySegmentListBuilder $querySegmentListBuilder
@@ -90,6 +95,15 @@ class OrderCondition {
 	 */
 	public function isSupported( $isSupported ) {
 		$this->isSupported = $isSupported;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $asUnconditional
+	 */
+	public function asUnconditional( $asUnconditional ) {
+		$this->asUnconditional = $asUnconditional;
 	}
 
 	/**
@@ -221,6 +235,11 @@ class OrderCondition {
 		 // ... so just re-wire its dependencies
 		foreach ( $newQuerySegment->components as $cid => $field ) {
 			$querySegment->components[$cid] = $querySegment->joinfield;
+
+			if ( $this->asUnconditional ) {
+				$this->querySegmentListBuilder->findQuerySegment( $cid )->joinType = 'LEFT OUTER';
+			}
+
 			$querySegment->sortfields = array_merge(
 				$querySegment->sortfields,
 				$this->querySegmentListBuilder->findQuerySegment( $cid )->sortfields
