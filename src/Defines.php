@@ -272,6 +272,7 @@ define( 'SMW_CAT_HIERARCHY', 8 ); // Support for category hierarchies
 define( 'SMW_QSORT_NONE', 0 );
 define( 'SMW_QSORT', 2 ); // General sort support
 define( 'SMW_QSORT_RANDOM', 4 ); // Random sort support
+define( 'SMW_QSORT_UNCONDITIONAL', 8 ); // Unconditional sort support
 /**@}*/
 
 /**@{

@@ -104,13 +104,20 @@ class QueryEngineFactory {
 	public function newQueryEngine() {
 
 		$querySegmentListBuilder = $this->newQuerySegmentListBuilder();
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$settings = $applicationFactory->getSettings();
 
 		$orderCondition = new OrderCondition(
 			$querySegmentListBuilder
 		);
 
 		$orderCondition->isSupported(
-			$this->applicationFactory->getSettings()->isFlagSet( 'smwgQSortFeatures', SMW_QSORT )
+			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT )
+		);
+
+		$orderCondition->asUnconditional(
+			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT_UNCONDITIONAL )
 		);
 
 		$querySegmentListBuildManager = new QuerySegmentListBuildManager(
@@ -127,7 +134,7 @@ class QueryEngineFactory {
 		);
 
 		$queryEngine->setLogger(
-			$this->applicationFactory->getMediaWikiLogger()
+			$applicationFactory->getMediaWikiLogger()
 		);
 
 		return $queryEngine;

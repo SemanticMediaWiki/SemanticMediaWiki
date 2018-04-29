@@ -230,6 +230,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgDefaultOutputFormatters',
 			'smwgCompactLinkSupport',
 			'smwgCacheUsage',
+			'smwgQSortFeatures',
 
 			// MW related
 			'wgLanguageCode',
