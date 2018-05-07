@@ -392,7 +392,7 @@
 	"smw-format-datatable-toolbar-export": "Esporta",
 	"smw-format-list-other-fields-open": "(",
 	"smw-format-list-other-fields-close": ")",
-	"apihelp-smwbrowse-summary": "Modulo API per supportare la navigazione e le ricerche per le entità sostenute di Semantic MediaWiki",
+	"apihelp-smwbrowse-summary": "Modulo API per supportare la navigazione e le attività di ricerca per le entità gestite da Semantic MediaWiki.",
 	"smw-property-reserved-category": "Categoria",
 	"smw-category": "Categoria",
 	"smw-list-pager-filter": "Filtro:",
