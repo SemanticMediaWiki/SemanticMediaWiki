@@ -58,6 +58,7 @@
 	},
 	"meta": {
 		"skip-on": {
+			"elastic": "CONCEPT_CACHE_ALL isn't implemented",
 			"virtuoso": "CONCEPT_CACHE_ALL isn't implemented",
 			"sesame": "CONCEPT_CACHE_ALL isn't implemented",
 			"fuseki": "CONCEPT_CACHE_ALL isn't implemented",

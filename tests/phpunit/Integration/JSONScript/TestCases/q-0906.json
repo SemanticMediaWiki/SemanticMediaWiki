@@ -141,7 +141,15 @@
 		],
 		"smwgFieldTypeFeatures": [
 			"SMW_FIELDT_CHAR_NOCASE"
-		]
+		],
+		"smwgElasticsearchConfig" : {
+			"connection":{
+				"retries": 1
+			},
+			"query": {
+				"text.field.case.insensitive.eq.match": true
+			}
+		}
 	},
 	"meta": {
 		"skip-on": {

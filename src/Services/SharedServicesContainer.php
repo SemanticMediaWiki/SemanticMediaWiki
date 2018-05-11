@@ -87,7 +87,8 @@ class SharedServicesContainer implements CallbackContainer {
 				'smwgSemanticsEnabled',
 				'smwgAutoRefreshSubject',
 				'smwgEnableUpdateJobs',
-				'smwgQEqualitySupport'
+				'smwgQEqualitySupport',
+				'smwgElasticsearchConfig'
 			];
 
 			foreach ( $configs as $config ) {

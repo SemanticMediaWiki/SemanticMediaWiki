@@ -1,0 +1,114 @@
+{
+	"description": "Test `_wpg/`_txt` with `not:`/`!~` queries (ES only)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Q1201/1",
+			"contents": "[[Category:Q1201]] [[Has text::Some text with foo]]"
+		},
+		{
+			"page": "Q1201/2",
+			"contents": "[[Category:Q1201]] [[Has text::Some text with foobar]]"
+		},
+		{
+			"page": "Q1201/3",
+			"contents": "[[Category:Q1201]] [[Has text::Some text with bar]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (not:foo)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1201]] [[not:foo]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1201/2#0##",
+					"Q1201/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (not:foo, not:bar)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1201]] [[not:foo]] [[not:bar]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1201/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (not:foo*)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1201]] [[not:foo*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1201/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#0 (not:FOO)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1201]] [[not:FOO]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1201/2#0##",
+					"Q1201/3#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

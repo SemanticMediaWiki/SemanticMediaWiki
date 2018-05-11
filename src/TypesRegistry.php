@@ -217,6 +217,15 @@ class TypesRegistry {
 			//
 			'_FORMAT_RL'  => [ '_wpr', true, true, false ], // "Formatter rule"
 
+			// File attachment
+			'_FILE_ATTCH'  => [ '__sob', false, false, false ], // "File attachment"
+			'_CONT_TYPE' => [ '_txt', true, true, false ], // "Content type"
+			'_CONT_AUTHOR' => [ '_txt', true, true, false ], // "Content author"
+			'_CONT_LEN' => [ '_num', true, true, false ], // "Content length"
+			'_CONT_LANG' => [ '__lcode', true, true, false ], // "Content language"
+			'_CONT_TITLE' => [ '_txt', true, true, false ], // "Content title"
+			'_CONT_DATE' => [ '_dat', true, true, false ], // "Content date",
+			'_CONT_KEYW' => [ '_keyw', true, true, false ], // "Content keyword"
 		];
 	}
 

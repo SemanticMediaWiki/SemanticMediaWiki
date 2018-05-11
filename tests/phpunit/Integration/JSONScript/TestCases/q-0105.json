@@ -65,6 +65,29 @@
 			"type": "query",
 			"about": "#2 (plus sorting)",
 			"condition": "[[Has page::~DATA*]]",
+			"skip-on": {
+				"elastic": "ES, not expect a prefix search without an explicit wildcard (*)."
+			},
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_page": "DESC"
+				}
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",
+					"Example/Q0105/1#0##_e64ad35fdcd8d9e99f2db9a815e36be3",
+					"Example/Q0105/1#0##_4b9aef2f903c80012ed4000b519a039d"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2.elastic (plus sorting)",
+			"condition": "[[Has page::~*DATA*]]",
 			"printouts": [],
 			"parameters": {
 				"limit": "10",
@@ -85,6 +108,28 @@
 			"type": "query",
 			"about": "#3 (plus sorting)",
 			"condition": "[[Has page::~sear*]]",
+			"skip-on": {
+				"elastic": "ES, not expect a prefix search without an explicit wildcard (*)."
+			},
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_page": "ASC"
+				}
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0105/2#0##_4e8a7e81b361d0e14670809d9a1ff614",
+					"Example/Q0105/2#0##_7927dc49ee111e0929a91a1f357d9906"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3.elastic (plus sorting)",
+			"condition": "[[Has page::~*sear*]]",
 			"printouts": [],
 			"parameters": {
 				"limit": "10",
@@ -168,6 +213,7 @@
 			"type": "query",
 			"about": "#8 free search (wide proximity)",
 			"skip-on": {
+				"elastic": "ES matches only `with` not `without`",
 				"sqlite": "works different in comparison to MySQL, see #9"
 			},
 			"condition": "[[~~with a category]]",
@@ -180,6 +226,25 @@
 				"results": [
 					"Example/Q0105/4#0##_9f1222a5f6669be2c5f76dd5af08a4dc",
 					"Example/Q0105/4#0##_b827401b701c08c3c3d610a3a43d18c3"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8.elastic, free search (wide proximity, also match the annotated value)",
+			"skip-on": {
+				"elastic": [ "not", "See #8" ]
+			},
+			"condition": "[[~~with a category]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0105/4#0##_9f1222a5f6669be2c5f76dd5af08a4dc",
+					"Text_with_a_category#0##"
 				]
 			}
 		},

@@ -237,6 +237,9 @@
 		{
 			"type": "query",
 			"about": "#13 Requires special escaping effort",
+			"skip-on": {
+				"elastic": "`/` would require escaping but at the same would make it invisible to be used as subpage Foo/Boo divider on other searches"
+			},
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*Foo(\"#^$&-/)-|*]]",
 			"printouts": [],
 			"parameters": {

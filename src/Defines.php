@@ -94,6 +94,7 @@ define( 'SMW_CMP_PRIM_LIKE', 20 ); // Native LIKE matches (in disregards of an e
 define( 'SMW_CMP_PRIM_NLKE', 21 ); // Native NLIKE matches (in disregards of an existing full-text index)
 define( 'SMW_CMP_IN', 22 ); // Short-cut for ~* ... *
 define( 'SMW_CMP_PHRASE', 23 ); // Short-cut for a phrase match ~" ... " mostly for a full-text context
+define( 'SMW_CMP_NOT', 24 ); // Short-cut for ~! ... * ostly for a full-text context
 /**@}*/
 
 /**@{

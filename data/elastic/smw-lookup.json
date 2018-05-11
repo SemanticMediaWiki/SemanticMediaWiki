@@ -1,0 +1,17 @@
+{
+	"settings": {
+		"number_of_shards": 1,
+		"refresh_interval" : "1s",
+		"index.mapping.total_fields.limit": "3000",
+		"index.max_result_window": "50000"
+	},
+	"mappings": {
+		"lookup": {
+			"properties": {
+				"id": {
+					"type": "long"
+				}
+			}
+		}
+	}
+}

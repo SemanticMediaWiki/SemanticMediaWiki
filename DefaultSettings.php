@@ -542,7 +542,7 @@ return array(
 	#
 	# @since 1.0
 	##
-	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:|in:|phrase:',
+	'smwgQComparators' => '<|>|!~|!|~|≤|≥|<<|>>|~=|like:|nlike:|in:|not:|phrase:',
 	##
 
 	###
@@ -1911,5 +1911,283 @@ return array(
 		]
 	],
 	##
+
+	##
+	# THE FOLLOWING SETTINGS AND SUPPORT FUNCTIONS ARE EXPERIMENTAL!
+	#
+	# Please make you read the Readme.md (see the Elastic folder) file first
+	# before enabling the ElasticStore and its settings!
+	##
+
+	##
+	# ElasticStore settings
+	#
+	# Supported options and settings required by the ElasticStore.
+	#
+	# This setting provides documentation and default values for the ElasticStore
+	# and its use in an ES cluster.
+	#
+	# @since 3.0
+	##
+	'smwgElasticsearchConfig' => [
+		'index_def' => [
+			// The complete name will be auto-generated from "smw-...-" + wfWikiID()
+			// to avoid indicies among different wikis being corrupted when sharing
+			// an ES instance.
+			'data' => __DIR__ . '/data/elastic/smw-data-standard.json',
+			'lookup' => __DIR__ . '/data/elastic/smw-lookup.json'
+		],
+		'connection' =>[
+			// Number of times the client tries to reconnect before throwing an
+			// exception
+			'retries' => 2
+		],
+		'settings' => [
+			'data' => [
+				// Setting names match those from ES, any misspelling or
+				// incorrect setting will cause an error in ES
+				'index.mapping.total_fields.limit' => 9000,
+				'index.max_result_window' => 50000
+			]
+		],
+		'indexer' => [
+
+			// Allows to index unstructured, unprocessed raw text from a revision
+			'raw.text' => false,
+
+			// Experimental feature to investigate the use of the ingest pipline
+			// to index uploaded files and make that content available to
+			// QueryEngine during a wide proximity search (e.g. [[in:fox jumps]])
+			// Requires https://www.elastic.co/guide/en/elasticsearch/plugins/master/ingest-attachment.html
+			'experimental.file.ingest' => false,
+
+			// If the replication encounters an `illegal_argument_exception` from
+			// the ES cluster, rethrow it as exception to ensure it doesn't get
+			// unnoticed as it is likely to require intervention due to issues
+			// like "Limit of total fields ... has been exceeded" etc.
+			'throw.exception.on.illegal.argument.error' => true,
+
+			// Number of max. retries before the recovery job will resign from
+			// trying any more attempts to update the ES cluster. This is to
+			// prevent jobs from invoking themselves indefinitely.
+			'job.recovery.retries' => 5,
+
+			// Number of max. retries before the file ingest
+			'job.file.ingest.retries' => 3
+		],
+		'query' => [
+
+			// If for some reason no connection to the ES cluster could be
+			// established, use the SQLStore QueryEngine as fallback.
+			'fallback.no.connection' => false,
+
+			// @see https://www.elastic.co/guide/en/elasticsearch/reference/6.1/_profiling_queries.html
+			'profiling' => false,
+
+			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-validate.html
+			// Part of the `format=debug` to validate potentially expensive queries
+			// without executing them.
+			'debug.explain' => true,
+
+			// During the debug output, display details about which description was
+			// when resolved in connection with a query
+			'debug.description.log' => true,
+
+			// When `!...` is used make sure that the condition is only applied
+			// on entities where the property exists together with the negated
+			// value condition otherwise the ! condition becomes unrestricted
+			'must_not.property.exists' => true,
+
+			// When sorting on a particular property, enforce that the property
+			// exists as an assignment to a selected entity. The default setting
+			// matches the SQLStore behaviour. (See also #2823)
+			'sort.property.must.exists' => true,
+
+			// Sort by score (aka relevancy)
+			//
+			// Defines the name of the sortkey (as covention) that is used to sort
+			// results by scores computed by ES (based on Term Frequency, Inverse
+			// Document Frequency etc.).
+			//
+			// Output results with the highest score first:
+			//
+			// {{#ask: [[Category:Foo]]
+			//  |sort=es.score
+			//  |order=desc
+			// }}
+			//
+			// @see https://www.compose.com/articles/how-scoring-works-in-elasticsearch/
+			'score.sortfield' => 'es.score',
+
+			// The `+` and `-` symbols will be interpret as boolean operators so that
+			// things like `+foo, -bar` mean `+` (this term must be present) and
+			// `-`(this term must not be present). If they need to be part of
+			// the search string itself then it is required to escape them like
+			// `\+`.
+			'query_string.boolean.operators' => true,
+
+			// ES works different with text elements compared to the SQL interface
+			// (and its and its DSL query logic) therefore we try to modify some
+			// common scenarios and alter strings (and boolean oeprators) to pass
+			// most use cases from the SQLStore integration test suite and hereby
+			// allows to be compatible with the SMW SQL answering behaviour.
+			//
+			// ES has reserved characters `+ - = && || > < ! ( ) { } [ ] ^ " ~ *
+			// ? : \ /` and this mode will automatically encode them which of course
+			// limits the ability to use them as part of the native boolean operators
+			// within the query expression.
+			//
+			// In case the mode is disabled, the user has to make sure to follow
+			// the rules set forth by ES in connection with the query_string
+			// parser.
+			//
+			// @see https://www.elastic.co/guide/en/elasticsearch/reference/6.1/query-dsl-query-string-query.html
+			'compat.mode' => true,
+
+			// Size (limit) of the subquery construct which is executed as separated
+			// search request.
+			'subquery.size' => 10000,
+
+			// Sorting and scoring of subqueries is generally not necessary therefore
+			// we use the `constant_score` filter context to executed queries which
+			// helps to elevate the use of the filter caching.
+			//
+			// @see https://www.elastic.co/guide/en/elasticsearch/guide/current/filter-caching.html
+			'subquery.constant.score' => true,
+
+			// Defines the threshold for a result size as to when those should be
+			// stored in a special lookup index to facilitate the ES terms lookup
+			// feature (which requires to write and refresh the specific index
+			// element ad-hoc before it can be used by the "source" query).
+			//
+			// The more often subqueries are used (or reused) the lower the threshold
+			// should be set as it directly impacts performance.
+			//
+			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html
+			'subquery.terms.lookup.result.size.index.write.threshold' => 200,
+
+			// Intermediary optimization to allow for a subquery (executed as part
+			// of a "source" query and uses the special lookup index) to be reused
+			// (aka cached) for any succeeding query executions for the time frame
+			// set and hereby avoids fetching subquery results on repeating
+			// requests especially when the source query changes its limit and
+			// offset parameters frequently.
+			//
+			// Only subqueries with `subquery.terms.lookup.result.size.index.write.threshold`
+			// will be available to make use of this index cache.
+			//
+			// The cache is static and will not apply any eviction strategy which
+			// means that in case of additional values that would normally invalidate
+			// a subquery result, results remain static for the time frame set.
+			//
+			// Caching becomes crucial when a subqery terms lookup contains 1000+
+			// of matching documents as we avoid executing the subquery and if
+			// available directly resuse the terms lookup index.
+			//
+			// @default 1h
+			'subquery.terms.lookup.cache.lifetime' => 60 * 60,
+
+			// A concept as (aka dynamix category) is defined using a query and
+			// will return a list of matchable IDs therefore to improve performance
+			// during the lookup of those entities use the lookup index to retrieve
+			// precomputed results.
+			'concept.terms.lookup' => true,
+
+			// Threshold when to store and use the index lookup
+			'concept.terms.lookup.result.size.index.write.threshold' => 10,
+
+			// Threshold when to store and use the index lookup
+			// It is similar to `$smwgQConceptCacheLifetime`
+			//
+			// @default 1h
+			'concept.terms.lookup.cache.lifetime' => 60 * 60,
+
+			// Specifies that a wide proximity search (e.g. [[~~Foo bar]] or
+			// [[in:Foo bar]]) is executed as a match_phrase search meaning that
+			// that all elements of the query string need to be present in the
+			// order of the query
+			'wide.proximity.as.match_phrase' => true,
+
+			// Fields to be used for a wide proximity search with some being
+			// boosted to weight higher in relevance. For example, when `Foo` is
+			// part of the title it relevance is boosted by 8 (i.e. count more
+			// towards the relevance score) as when it would only appear in one
+			// of the text fields.
+			//
+			// It means that [[in:Foo]] where titles match `Foo` will be
+			// assigned a 5 times higher score and therefore appear higher in a
+			// list when sorted by relevancy.
+			'wide.proximity.fields' => [
+				'subject.title^8',
+				'text_copy^5',
+				'text_raw',
+				'attachment.title^3',
+				'attachment.content'
+			],
+
+			// By default, the URI fields are considered case sensitive similar to
+			// what RFC 3986 " ... the scheme and host are case-insensitive and
+			// therefore should be normalized to lowercase ... the other generic
+			// syntax components are assumed to be case-sensitive unless ",
+			// RFC 2616 " ...  comparing two URIs to decide if they match or
+			// not, a client SHOULD use a case-sensitive octet-by-octet
+			// comparison of the entire URIs ..."
+			//
+			// The setting applies to the EQ, LIKE, and NLIKE match.
+			'uri.field.case.insensitive' => false,
+
+			// By default, equality searches (e.g. [[Has text:Foo]], [Has text:foo]])
+			// are case senstive but as in case of the SMW_FIELDT_CHAR_NOCASE,
+			// the search can be altered to find case insensitive matches as well.
+			//
+			// The default setting matches the SQLStore standard behaviour and
+			// uses the faster ES `term` search instead of a `match` variant
+			// which would become necessary for any analyzed field.
+			//
+			// @see https://www.elastic.co/guide/en/elasticsearch/guide/current/term-vs-full-text.html
+			'text.field.case.insensitive.eq.match' => false,
+
+			// [[~Foo/Bar/*]] vs. [[~FOO/bar/*]]
+			// [[Has page::~Foo bar/bar/*]]
+			'page.field.case.insensitive.proximity.match' => true,
+
+			// Allows to retrieve text fragments from ES for a `Special:Search`
+			// query request and depending on the type selected can require more
+			// query time.
+			//
+			// Available types are `plain`, `unified`, and `fvh`. The `fvh` type
+			// requires text fields to have the `term_vector` with `with_positions_offsets`
+			// enabled.
+			//
+			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html#plain-highlighter
+			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/term-vector.html
+			'special_search.highlight.fragment' => [ 'count' => 1, 'size' => 250, 'type' => false ]
+		]
+	],
+	##
+
+	##
+	# ElasticStore profile
+	#
+	# Maintaining various settings using an array notation in `LocalSettinga.php`
+	# can become challenging hence we provide a JSON profile that can be assigned
+	# instead. Settings will be merged together with the default
+	# `smwgElasticsearchConfig` where a profile will override any previous value
+	# assignments.
+	#
+	# @since 3.0
+	##
+	'smwgElasticsearchProfile' => false, // __DIR__ . '/data/elastic/default-profile.json',
+
+	##
+	# ElasticStore connection settings
+	#
+	# @since 3.0
+	##
+	'smwgElasticsearchEndpoints' => [
+		// [ 'host' => '127.0.0.1', 'port' => 9200, 'scheme' => 'http' ],
+		// [ 'host' => '127.0.0.1', 'port' => 9200, 'scheme' => 'http', 'user' => 'username', 'pass' => 'password!#$?*abc' ]
+		// 'localhost:9200'
+	]
 
 );

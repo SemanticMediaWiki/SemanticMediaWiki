@@ -57,6 +57,10 @@ then
 	echo '$smwgSparqlUpdateEndpoint = "http://localhost:8890/sparql";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
 	echo '$smwgSparqlDefaultGraph = "http://example.org/travisGraph";' >> LocalSettings.php
+elif [ "$ES" != "" ]
+then
+	echo '$smwgDefaultStore = "SMWElasticStore";' >> LocalSettings.php
+	echo '$smwgElasticsearchEndpoints = [ "http://127.0.0.1:9200" ];' >> LocalSettings.php
 else
 	echo '$smwgDefaultStore = "SMWSQLStore3";' >> LocalSettings.php
 fi

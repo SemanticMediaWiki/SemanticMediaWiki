@@ -83,6 +83,8 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 
 		if ( $this->getStore() instanceof \SMWSparqlStore ) {
 			$this->connectorId = strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] );
+		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
+			$this->connectorId = 'elastic';
 		} else {
 			$this->connectorId = strtolower( $this->getDBConnection()->getType() );
 		}

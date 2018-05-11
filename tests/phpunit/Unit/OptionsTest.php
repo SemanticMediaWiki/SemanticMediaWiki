@@ -83,6 +83,53 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testLoadFromJSON() {
+
+		$instance = new Options();
+		$instance->set( 'Foo', '123' );
+		$instance->set( 'Bar', '456' );
+
+		$instance->loadFromJSON( json_encode( [ 'Foo' => 456 ] ) );
+
+		$this->assertEquals(
+			456,
+			$instance->dotGet( 'Foo' )
+		);
+
+		$this->assertEquals(
+			'456',
+			$instance->dotGet( 'Bar' )
+		);
+
+		$instance->set( 'A', [ 'B' => [ 'C', 'D' ] ] );
+
+		$this->assertEquals(
+			[ 'C', 'D' ],
+			$instance->dotGet( 'A.B' )
+		);
+
+		$instance->loadFromJSON( json_encode( [ 'A.B' => 'C' ] ) );
+
+		$this->assertEquals(
+			[ 'C', 'D' ],
+			$instance->dotGet( 'A.B' )
+		);
+
+		$instance->loadFromJSON( json_encode( [ 'A' => [ 'B' => [ 'E' ] ] ] ) );
+
+		$this->assertEquals(
+			[ 'E' ],
+			$instance->dotGet( 'A.B' )
+		);
+
+		$instance->loadFromJSON( json_encode( [ 'A' => [ 'B' => 'C' ] ] ) );
+
+		$this->assertEquals(
+			'C',
+			$instance->dotGet( 'A.B' )
+		);
+	}
+
 	/**
 	 * @dataProvider dotProvider
 	 */

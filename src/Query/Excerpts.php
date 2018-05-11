@@ -32,8 +32,8 @@ class Excerpts {
 	}
 
 	/**
-	 * @note The hash is expected to match DIWikiPage::getHash to easily match
-	 * result subjects available in an QueryResult instance.
+	 * @note The hash is expected to be equivalent to DIWikiPage::getHash to
+	 * easily match result subjects available in an QueryResult instance.
 	 *
 	 * @since 3.0
 	 *

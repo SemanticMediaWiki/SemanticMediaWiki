@@ -17,7 +17,7 @@
 		},
 		{
 			"page": "Example/P0434/Q1.1",
-			"contents": "{{#ask: [[Has population::+]] [[Category:P0434]] |?Has population.Number |link=none}}"
+			"contents": "{{#ask: [[Has population::+]] [[Category:P0434]] |?Has population.Number |link=none}} {{#ask: [[Has population::+]] [[Category:P0434]] |?Has population.Number |link=none |format=debug}}"
 		},
 		{
 			"page": "Example/P0434/Q1.2",

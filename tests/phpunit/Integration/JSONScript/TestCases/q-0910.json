@@ -92,7 +92,12 @@
 		"smwgQSortFeatures": [
 			"SMW_QSORT",
 			"SMW_QSORT_UNCONDITIONAL"
-		]
+		],
+		"smwgElasticsearchConfig": {
+			"query": {
+				"sort.property.must.exists": false
+			}
+		}
 	},
 	"meta": {
 		"skip-on": {

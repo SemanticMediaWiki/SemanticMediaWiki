@@ -30,8 +30,12 @@
 			}
 		},
 		{
-			"page": "Example/Q0618/4",
-			"contents": "{{#ask: [[-Person::<q>[[Person.-Has friend.Person::Andy Mars]][[Age::>>{{#ask: [[Person::Andy Mars]][[Age::+]] |?Age |mainlabel=- |headers=hide }} ]]</q>]] }}"
+			"page": "Example/Q0618/4a",
+			"contents": "{{#ask: [[Person::Andy Mars]][[Age::+]] |?Age |mainlabel=- |headers=hide }} {{#ask: [[Person::Andy Mars]][[Age::+]] |?Age |mainlabel=- |headers=hide |format=debug }}"
+		},
+		{
+			"page": "Example/Q0618/4b",
+			"contents": "{{#ask: [[-Person::<q>[[Person.-Has friend.Person::Andy Mars]][[Age::>>{{#ask: [[Person::Andy Mars]][[Age::+]] |?Age |mainlabel=- |headers=hide }} ]]</q>]] }} {{#ask: [[-Person::<q>[[Person.-Has friend.Person::Andy Mars]][[Age::>>{{#ask: [[Person::Andy Mars]][[Age::+]] |?Age |mainlabel=- |headers=hide }} ]]</q>]] |format=debug}}"
 		}
 	],
 	"tests": [
@@ -94,8 +98,18 @@
 		},
 		{
 			"type": "parser",
-			"about": "#3 (Show Friends from Andy Mars that are older has him)",
-			"subject": "Example/Q0618/4",
+			"about": "#3 (age)",
+			"subject": "Example/Q0618/4a",
+			"assert-output": {
+				"to-contain": [
+					"32"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (Show Friends from Andy Mars that are older has him)",
+			"subject": "Example/Q0618/4b",
 			"assert-output": {
 				"to-contain": [
 					"Charles Banning"

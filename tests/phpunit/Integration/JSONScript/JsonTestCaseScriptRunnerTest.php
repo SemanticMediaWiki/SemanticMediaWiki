@@ -194,6 +194,19 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	protected function getPermittedSettings() {
 		parent::getPermittedSettings();
 
+		$elasticsearchConfig = function( $val ) {
+
+			if ( $this->getStore() instanceof \SMWElasticStore ) {
+				$config = $this->getStore()->getConnection( 'elastic' )->getConfig();
+
+				foreach ( $val as $key => $value ) {
+					$config->set( $key, array_merge( $config->get( $key ), $value ) );
+				}
+			}
+		};
+
+		$this->registerConfigValueCallback( 'smwgElasticsearchConfig', $elasticsearchConfig );
+
 		return array(
 			'smwgNamespacesWithSemanticLinks',
 			'smwgPageSpecialProperties',
@@ -231,6 +244,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgCompactLinkSupport',
 			'smwgCacheUsage',
 			'smwgQSortFeatures',
+			'smwgElasticsearchConfig',
 
 			// MW related
 			'wgLanguageCode',
