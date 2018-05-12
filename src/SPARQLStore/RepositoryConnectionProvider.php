@@ -175,7 +175,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 			$this->dataEndpoint
 		);
 
-		$repositoryClient->setId( $id );
+		$repositoryClient->setName( $id );
 
 		$repositoryConnector = $this->createRepositoryConnector(
 			$id,

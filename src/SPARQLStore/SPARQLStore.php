@@ -431,14 +431,26 @@ class SPARQLStore extends Store {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string|null $type
+	 *
 	 * @return array
 	 */
-	public function getInfo() {
+	public function getInfo( $type = null ) {
 
 		$client = $this->getConnection( 'sparql' )->getRepositoryClient();
 
+		if ( $type === 'store' ) {
+			return [ 'SMWSPARQLStore', $client->getName() ];
+		}
+
+		$connection = $this->getConnection( 'mw.db' );
+
+		if ( $type === 'db' ) {
+			return $connection->getInfo();
+		}
+
 		return [
-			'SMWSPARQLStore' => [ $client->getId(), $this->getConnection( 'mw.db' )->getInfo() ]
+			'SMWSPARQLStore' => [ $client->getName(), $connection->getInfo() ]
 		];
 	}
 

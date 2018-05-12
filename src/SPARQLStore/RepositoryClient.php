@@ -48,7 +48,7 @@ class RepositoryClient {
 	/**
 	 * @var string
 	 */
-	private $id = '';
+	private $name = '';
 
 	/**
 	 * @since 2.2
@@ -68,10 +68,10 @@ class RepositoryClient {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $id
+	 * @param string $name
 	 */
-	public function setId( $id ) {
-		$this->id = $id;
+	public function setName( $name ) {
+		$this->name = $name;
 	}
 
 	/**
@@ -79,8 +79,8 @@ class RepositoryClient {
 	 *
 	 * @return string
 	 */
-	public function getId() {
-		return $this->id;
+	public function getName() {
+		return $this->name;
 	}
 
 	/**
