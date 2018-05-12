@@ -71,6 +71,10 @@ class FormsFinder {
 
 	protected function getNativeData( $title ) {
 
+		if ( $title === null ) {
+			return '';
+		}
+
 		$content = WikiPage::factory( $title )->getContent();
 
 		if ( $content === null ) {
