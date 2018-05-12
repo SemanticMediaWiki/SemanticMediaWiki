@@ -172,7 +172,7 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 *
 	 * @return boolean
 	 */
-	protected function canExecuteTestCasesFor( $file ) {
+	protected function canTestCaseFile( $file ) {
 
 		// Filter specific files on-the-fly
 		$allowedTestCaseFiles = $this->getAllowedTestCaseFiles();
@@ -192,12 +192,11 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	}
 
 	/**
-	 * @test
 	 * @dataProvider jsonFileProvider
 	 */
-	public function executeTestCases( $file ) {
+	public function testCaseFile( $file ) {
 
-		if ( !$this->canExecuteTestCasesFor( $file ) ) {
+		if ( !$this->canTestCaseFile( $file ) ) {
 			$this->markTestSkipped( $file . ' excluded from the test run' );
 		}
 
