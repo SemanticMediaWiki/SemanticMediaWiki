@@ -1,5 +1,5 @@
 {
-	"description": "Test `format=feed` output via `Special:Ask`",
+	"description": "Test `format=feed` output via `Special:Ask` (`wgEnableUploads`, `wgFileExtensions`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -30,6 +30,16 @@
 			"namespace": "NS_MAIN",
 			"page": "S0027/4",
 			"contents": "[[Has text::DEF]] [[Has number::123]] [[Category:S0027]]"
+		},
+		{
+			"namespace": "NS_FILE",
+			"page": "S0027.png",
+			"contents": {
+				"upload": {
+					"file" : "/../Fixtures/image-upload-480.png",
+					"text" : "[[Has file::File:S0027.png]] [[Has caption::Test file]] [[Category:S0027]]"
+				}
+			}
 		}
 	],
 	"tests": [
@@ -58,6 +68,55 @@
 					"<title>S0027/4</title>"
 				]
 			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (file)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "feed"
+					},
+					"q": "[[Has file::+]] [[Category:S0027]]",
+					"po": "?Has file|?Has caption"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<title>File:S0027.png</title>",
+					"a href=.*File:S0027.png",
+					"img alt=&quot;File:S0027.png"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 (file, link=none)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "feed"
+					},
+					"q": "[[Has file::+]] [[Category:S0027]]",
+					"po": "?Has file|?Has caption"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<title>File:S0027.png</title>",
+					"File:S0027.png",
+					"Test file"
+				]
+			}
 		}
 	],
 	"settings": {
@@ -67,8 +126,16 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		],
+		"wgEnableUploads": true,
+		"wgFileExtensions": [
+			"png"
+		],
+		"wgDefaultUserOptions": {
+			"thumbsize": 5
+		},
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
+			"NS_FILE": true,
 			"SMW_NS_PROPERTY": true
 		}
 	},
