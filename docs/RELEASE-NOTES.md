@@ -7,13 +7,21 @@ This is not a release yet and is planned to be available in Q2 2018.
 
 Highlights for this release include ... (#2065)
 
-### Visual changes
+### UI changes
 
 #2893, #2898 (`Special:Ask`), #2891, #2875, (`Special:Browse`), and #2906 (Factbox) contains changes to the appearance to help improve responsiveness on small screens and/or distinguish visual components more clearly from each other.
 
 ### List and template printer rework
 
 #3130
+
+### Search and query
+
+#3126
+
+### Performance
+
+#3142
 
 ## Upgrading
 
@@ -71,6 +79,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2815](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2815) Added `#nowiki` support for external identifier type
 * [#2820](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2820) Added check on declarative property usage
 * [#2822](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2822) Added add `merge` parameter to `format=csv`
+* [#2823](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2823)
 * [#2824](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2824) Added `bom` as parameter to `format=csv`
 * [#2826](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2826) Added `valuesep` as parameter to `format=csv` to define a value separator
 * [#2840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2840) Added [`$smwgPropertyReservedNameList`](https://www.semantic-mediawiki.org/wiki/Help:$smwgPropertyReservedNameList) to define reserved property names
@@ -112,7 +121,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3095](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3095)
 * [#3096](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3096)
 * [#3125](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3125)
-
+* [#3126](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3126)
+* [#3130](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3130)
 
 ## Bug fixes
 
@@ -214,7 +224,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3063](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3063)
 * [#3070](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3070)
 * [#3082](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3082)
-* [#3129](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3129)
+* [#3129](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3129) Added API `pvalue` browse module
+* [#3142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3142)
 
 ## Contributors
 
