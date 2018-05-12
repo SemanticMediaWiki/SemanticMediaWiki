@@ -127,7 +127,7 @@ class RefreshJob extends JobBase {
 			return false;
 		}
 
-		return ( ( $this->getParameter( 'rc' ) > 1 ) && ( $run == 1 ) ) ? array( SMW_NS_PROPERTY, SMW_NS_TYPE ) : false;
+		return ( ( $this->getParameter( 'rc' ) > 1 ) && ( $run == 1 ) ) ? [ SMW_NS_PROPERTY ] : false;
 	}
 
 }

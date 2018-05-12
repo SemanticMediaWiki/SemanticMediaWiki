@@ -141,8 +141,6 @@ class DumpRdf extends \Maintenance {
 			$this->restrictNamespaceTo = array( NS_CATEGORY, SMW_NS_CONCEPT );
 		} elseif ( $this->hasOption( 'properties' ) ) {
 			$this->restrictNamespaceTo = SMW_NS_PROPERTY;
-		} elseif ( $this->hasOption( 'types' ) ) {
-			$this->restrictNamespaceTo = SMW_NS_TYPE;
 		} elseif ( $this->hasOption( 'individuals' ) ) {
 			$this->restrictNamespaceTo = - 1;
 		}

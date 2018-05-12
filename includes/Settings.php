@@ -66,7 +66,6 @@ class Settings extends Options {
 			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
 			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
-			'smwgHistoricTypeNamespace' => $GLOBALS['smwgHistoricTypeNamespace'],
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
@@ -554,7 +553,8 @@ class Settings extends Options {
 			'removal' => array(
 				'smwgOnDeleteAction' => '2.4.0',
 				'smwgAutocompleteInSpecialAsk' => '3.0.0',
-				'smwgSparqlDatabaseMaster' => '3.0.0'
+				'smwgSparqlDatabaseMaster' => '3.0.0',
+				'smwgHistoricTypeNamespace' => '3.0.0'
 			)
 		);
 	}
