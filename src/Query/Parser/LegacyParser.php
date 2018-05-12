@@ -692,7 +692,7 @@ class LegacyParser implements Parser {
 			$hasError = true;
 
 			// Set an individual hierarchy depth
-			if ( strpos( $chunk, '+depth' ) !== false ) {
+			if ( strpos( $chunk, '+depth=' ) !== false ) {
 				list( $k, $depth ) = explode( '=', $chunk, 2 );
 
 				if ( $description instanceOf ClassDescription || $description instanceOf SomeProperty || $description instanceOf Disjunction ) {
