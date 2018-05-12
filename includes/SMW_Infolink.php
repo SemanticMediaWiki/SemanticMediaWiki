@@ -374,7 +374,7 @@ class SMWInfolink {
 	 */
 	public function getURL() {
 
-		$query = self::encodeParameters( $this->mParams, false );
+		$query = self::encodeParameters( $this->mParams, $this->isCompactLink );
 
 		if ( $this->isCompactLink ) {
 			$query = self::encodeCompactLink( $query, true );

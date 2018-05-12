@@ -72,7 +72,7 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 		$instance->setCompactLink( true );
 
 		$this->assertContains(
-			'title=Special:SearchByProperty&cl=eD0lM0FCYXIlMkZGb29iYXI',
+			'title=Special:SearchByProperty&cl=OkJhci9Gb29iYXI',
 			$instance->getText( SMW_OUTPUT_RAW )
 		);
 
