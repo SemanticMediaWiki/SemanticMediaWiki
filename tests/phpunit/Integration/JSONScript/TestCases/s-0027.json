@@ -1,5 +1,5 @@
 {
-	"description": "Test `format=feed` output via `Special:Ask` (`wgEnableUploads`, `wgFileExtensions`)",
+	"description": "Test `format=feed` output via `Special:Ask` (`wgEnableUploads`, `wgFileExtensions`, `wgRestrictDisplayTitle`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -29,7 +29,7 @@
 		{
 			"namespace": "NS_MAIN",
 			"page": "S0027/4",
-			"contents": "[[Has text::DEF]] [[Has number::123]] [[Category:S0027]]"
+			"contents": "[[Has text::DEF]] [[Has number::123]] {{DISPLAYTITLE:Uses different title}} [[Category:S0027]]"
 		},
 		{
 			"namespace": "NS_FILE",
@@ -65,7 +65,7 @@
 					"<title>S0027/1</title>",
 					"<title>S0027/2</title>",
 					"<title>S0027/3</title>",
-					"<title>S0027/4</title>"
+					"<title>Uses different title</title>"
 				]
 			}
 		},
@@ -133,6 +133,7 @@
 		"wgDefaultUserOptions": {
 			"thumbsize": 5
 		},
+		"wgRestrictDisplayTitle": false,
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"NS_FILE": true,

@@ -4,11 +4,12 @@ namespace SMW\Query\ResultPrinters;
 
 use SMWQueryResult as QueryResult;
 use SMW\Query\ExportPrinter;
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 use SMW\Site;
 use FeedItem;
 use ParserOptions;
 use Sanitizer;
-use SMWDIWikiPage;
 use TextContent;
 use Title;
 use WikiPage;
@@ -274,7 +275,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 			// Loop over all values for the property.
 			while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
-				if ( $dataValue->getDataItem() instanceof SMWDIWikipage ) {
+				if ( $dataValue->getDataItem() instanceof DIWikiPage ) {
 
 					$linker = null;
 
@@ -367,14 +368,24 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		return '';
 	}
 
-	private function newFeedItem( $subject, $rowItems ) {
-		$wikiPage = WikiPage::newFromID( $subject->getArticleID() );
+	private function newFeedItem( $title, $rowItems ) {
+		$wikiPage = WikiPage::newFromID( $title->getArticleID() );
 
 		if ( $wikiPage !== null && $wikiPage->exists() ){
+
+			// #1741
+			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+				DIWikipage::newFromTitle( $title )
+			);
+
+			// Ensures that the namespace prefix (Help:...) is used in cases where
+			// no display title is available.
+			$dataValue->setOption( 'prefixed.preferred.caption', true );
+
 			$feedItem = new FeedItem(
-				$subject->getPrefixedText(),
+				$dataValue->getPreferredCaption(),
 				$this->feedItemDescription( $rowItems, $this->getPageContent( $wikiPage ) ),
-				$subject->getFullURL(),
+				$title->getFullURL(),
 				$wikiPage->getTimestamp(),
 				$wikiPage->getUserText(),
 				$this->feedItemComments()
@@ -382,9 +393,9 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		} else {
 			// #1562
 			$feedItem = new FeedItem(
-				$subject->getPrefixedText(),
+				$title->getPrefixedText(),
 				'',
-				$subject->getFullURL()
+				$title->getFullURL()
 			);
 		}
 
