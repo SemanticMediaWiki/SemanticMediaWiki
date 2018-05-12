@@ -84,13 +84,17 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$store->expects( $this->once() )
+			->method( 'getInfo' )
+			->will( $this->returnValue( [ 'SPARQLStore' ] ) );
+
 		$instance = new QuerySourceFactory(
 			$store,
-			array()
+			[]
 		);
 
 		$this->assertContains(
-			'(SMWSQLStore3)',
+			'SPARQLStore',
 			$instance->getAsString()
 		);
 	}

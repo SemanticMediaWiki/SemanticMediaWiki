@@ -327,8 +327,7 @@ class SharedServicesContainer implements CallbackContainer {
 
 			return new QuerySourceFactory(
 				$containerBuilder->create( 'Store' ),
-				$containerBuilder->create( 'Settings' )->get( 'smwgQuerySources' ),
-				$containerBuilder->create( 'Settings' )->get( 'smwgSparqlQueryEndpoint' )
+				$containerBuilder->create( 'Settings' )->get( 'smwgQuerySources' )
 			);
 		} );
 

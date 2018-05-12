@@ -544,9 +544,11 @@ abstract class Store implements QueryEngine {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string|null $type
+	 *
 	 * @return array
 	 */
-	public function getInfo() {
+	public function getInfo( $type = null ) {
 		return [];
 	}
 
