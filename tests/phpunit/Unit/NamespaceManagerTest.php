@@ -81,11 +81,6 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetCanonicalNames() {
 
-		$this->testEnvironment->addConfiguration(
-			'smwgHistoricTypeNamespace',
-			false
-		);
-
 		$result = NamespaceManager::getCanonicalNames();
 
 		$this->assertInternalType(
@@ -101,11 +96,6 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetCanonicalNamesWithTypeNamespace() {
 
-		$this->testEnvironment->addConfiguration(
-			'smwgHistoricTypeNamespace',
-			true
-		);
-
 		$result = NamespaceManager::getCanonicalNames();
 
 		$this->assertInternalType(
@@ -114,7 +104,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			8,
+			6,
 			$result
 		);
 	}
@@ -145,11 +135,6 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNamespacesInitWithEmptySettings() {
 
-		$this->testEnvironment->addConfiguration(
-			'smwgHistoricTypeNamespace',
-			false
-		);
-
 		$vars = $this->default + array(
 			'wgExtraNamespaces'  => '',
 			'wgNamespaceAliases' => ''
@@ -169,18 +154,9 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(
 			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_RULE]
 		);
-
-		$this->assertFalse(
-			isset( $vars['smwgNamespacesWithSemanticLinks'][SMW_NS_TYPE] )
-		);
 	}
 
 	public function testInitToKeepPreInitSettings() {
-
-		$this->testEnvironment->addConfiguration(
-			'smwgHistoricTypeNamespace',
-			true
-		);
 
 		$vars = $this->default + array(
 			'wgExtraNamespaces'  => '',
@@ -200,10 +176,6 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_CONCEPT]
-		);
-
-		$this->assertTrue(
-			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_TYPE]
 		);
 	}
 

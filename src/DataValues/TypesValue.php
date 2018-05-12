@@ -189,7 +189,6 @@ class TypesValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	protected function parseUserValue( $value ) {
-		global $smwgHistoricTypeNamespace;
 
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
@@ -197,16 +196,6 @@ class TypesValue extends DataValue {
 
 		$valueParts = explode( ':', $value, 2 );
 		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
-
-		if ( $smwgHistoricTypeNamespace && count( $valueParts ) > 1 ) {
-			$namespace = smwfNormalTitleText( $valueParts[0] );
-			$value = $valueParts[1];
-			$typeNamespace = Localizer::getInstance()->getLanguage( $contentLanguage )->getNsText( SMW_NS_TYPE );
-
-			if ( $namespace != $typeNamespace ) {
-				$this->addErrorMsg( [ 'smw_wrong_namespace', $typeNamespace ] );
-			}
-		}
 
 		if ( $value !== '' && $value{0} === '_' ) {
 			$this->m_typeId = $value;

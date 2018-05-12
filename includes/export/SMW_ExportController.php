@@ -753,7 +753,7 @@ class SMWExportController {
 		if ( $res >= 0 ) {
 			return ( $res == $ns );
 		}
-		return ( ( $res != NS_CATEGORY ) && ( $res != SMW_NS_PROPERTY ) && ( $res != SMW_NS_TYPE ) );
+		return ( ( $res != NS_CATEGORY ) && ( $res != SMW_NS_PROPERTY ) );
 	}
 
 	private function getDeepRedirectTargetResolver() {

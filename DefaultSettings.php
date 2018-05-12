@@ -263,18 +263,6 @@ return array(
 	##
 
 	###
-	# Setting this option to true before including this file to enable the old
-	# Type: namespace that SMW used up to version 1.5.*. This should only be
-	# done to make the pages of this namespace temporarily accessible in order to
-	# move their content to other pages. If the namespace is not registered, then
-	# existing pages in this namespace cannot be found in the wiki.
-	#
-	# @since 1.6
-	##
-	'smwgHistoricTypeNamespace' => false,
-	##
-
-	###
 	# If you already have custom namespaces on your site, insert
 	#    	'smwgNamespaceIndex' => ???,
 	# into your LocalSettings.php *before* including this file. The number ??? must

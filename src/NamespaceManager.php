@@ -96,18 +96,11 @@ class NamespaceManager {
 		$canonicalNames = array(
 			SMW_NS_PROPERTY      => 'Property',
 			SMW_NS_PROPERTY_TALK => 'Property_talk',
-			SMW_NS_TYPE          => 'Type',
-			SMW_NS_TYPE_TALK     => 'Type_talk',
 			SMW_NS_CONCEPT       => 'Concept',
 			SMW_NS_CONCEPT_TALK  => 'Concept_talk',
 			SMW_NS_RULE          => 'Rule',
 			SMW_NS_RULE_TALK     => 'Rule_talk'
 		);
-
-		if ( !array_key_exists( 'smwgHistoricTypeNamespace', $GLOBALS ) || !$GLOBALS['smwgHistoricTypeNamespace'] ) {
-			unset( $canonicalNames[SMW_NS_TYPE] );
-			unset( $canonicalNames[SMW_NS_TYPE_TALK] );
-		}
 
 		return $canonicalNames;
 	}
@@ -130,8 +123,6 @@ class NamespaceManager {
 		$namespaceIndex = array(
 			'SMW_NS_PROPERTY'      => $offset + 2,
 			'SMW_NS_PROPERTY_TALK' => $offset + 3,
-			'SMW_NS_TYPE'          => $offset + 4,
-			'SMW_NS_TYPE_TALK'     => $offset + 5,
 			'SF_NS_FORM'           => $offset + 6,
 			'SF_NS_FORM_TALK'      => $offset + 7,
 			'SMW_NS_CONCEPT'       => $offset + 8,
@@ -207,19 +198,11 @@ class NamespaceManager {
 		$smwNamespacesSettings = array(
 			SMW_NS_PROPERTY  => true,
 			SMW_NS_PROPERTY_TALK  => false,
-			SMW_NS_TYPE => true,
-			SMW_NS_TYPE_TALK => false,
 			SMW_NS_CONCEPT => true,
 			SMW_NS_CONCEPT_TALK => false,
 			SMW_NS_RULE => true,
 			SMW_NS_RULE_TALK => false,
 		);
-
-		if ( !array_key_exists( 'smwgHistoricTypeNamespace', $GLOBALS ) || !$GLOBALS['smwgHistoricTypeNamespace'] ) {
-			unset( $smwNamespacesSettings[SMW_NS_TYPE] );
-			unset( $smwNamespacesSettings[SMW_NS_TYPE_TALK] );
-			unset( $vars['wgNamespacesWithSubpages'][SMW_NS_TYPE_TALK] );
-		}
 
 		// Combine default values with values specified in other places
 		// (LocalSettings etc.)

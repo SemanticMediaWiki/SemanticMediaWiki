@@ -27,11 +27,6 @@ class Lang {
 	private $languageContents;
 
 	/**
-	 * @var boolean
-	 */
-	private $historicTypeNamespace = false;
-
-	/**
 	 * @var string
 	 */
 	private $languageCode = 'en';
@@ -87,10 +82,6 @@ class Lang {
 			)
 		);
 
-		self::$instance->setHistoricTypeNamespace(
-			$GLOBALS['smwgHistoricTypeNamespace']
-		);
-
 		return self::$instance;
 	}
 
@@ -99,15 +90,6 @@ class Lang {
 	 */
 	public static function clear() {
 		self::$instance = null;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param boolean $historicTypeNamespace
-	 */
-	public function setHistoricTypeNamespace( $historicTypeNamespace ) {
-		$this->historicTypeNamespace = (bool)$historicTypeNamespace;
 	}
 
 	/**
@@ -168,15 +150,11 @@ class Lang {
 
 		foreach ( $namespaces as $key => $value ) {
 			unset( $namespaces[$key] );
-			$namespaces[constant($key)] = $value;
-		}
 
-		if ( $this->historicTypeNamespace ) {
-			return $namespaces;
+			if ( defined( $key ) ) {
+				$namespaces[constant($key)] = $value;
+			}
 		}
-
-		unset( $namespaces[SMW_NS_TYPE] );
-		unset( $namespaces[SMW_NS_TYPE_TALK] );
 
 		return $namespaces;
 	}
@@ -201,16 +179,8 @@ class Lang {
 		);
 
 		foreach ( $namespaceAliases as $alias => $namespace ) {
-			$namespaceAliases[$alias] = constant( $namespace );
-		}
-
-		if ( $this->historicTypeNamespace ) {
-			return $namespaceAliases;
-		}
-
-		foreach ( $namespaceAliases as $alias => $namespace ) {
-			if ( $namespace === SMW_NS_TYPE || $namespace === SMW_NS_TYPE_TALK ) {
-				unset( $namespaceAliases[$alias] );
+			if ( defined( $namespace ) ) {
+				$namespaceAliases[$alias] = constant( $namespace );
 			}
 		}
 
