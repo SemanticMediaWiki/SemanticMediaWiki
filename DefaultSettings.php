@@ -701,7 +701,7 @@ return array(
 		'template'   => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'count'      => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'debug'      => 'SMW\Query\ResultPrinters\ListResultPrinter',
-		'feed'       => 'SMW\FeedResultPrinter',
+		'feed'       => 'SMW\Query\ResultPrinters\FeedExportPrinter',
 		'csv'        => 'SMW\Query\ResultPrinters\CsvFileExportPrinter',
 		'templatefile' => 'SMW\Query\ResultPrinters\TemplateFileExportPrinter',
 		'dsv'        => 'SMW\DsvResultPrinter',
