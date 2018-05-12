@@ -16,6 +16,21 @@ use Html;
 class ErrorWidget {
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public static function disabled() {
+		return Html::element(
+			'div',
+			[
+				'class' => 'smw-callout smw-callout-error'
+			],
+			Message::get( 'smw_iq_disabled', Message::TEXT, Message::USER_LANGUAGE )
+		);
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @return string
