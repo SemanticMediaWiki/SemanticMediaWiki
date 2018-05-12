@@ -149,6 +149,15 @@ class SMWQuery implements QueryContext {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param boolean
+	 */
+	public function isEmbedded() {
+		return $this->isInline;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param integer
