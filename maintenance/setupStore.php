@@ -104,6 +104,24 @@ class SetupStore extends \Maintenance {
 	}
 
 	/**
+	 * @see Maintenance::getDbType
+	 *
+	 * @since 3.0
+	 */
+	public function getDbType() {
+		return \Maintenance::DB_ADMIN;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function getConnection() {
+		return $this->getDB( DB_MASTER );
+	}
+
+	/**
+	 * @see Maintenance::execute
+	 *
 	 * @since 2.0
 	 */
 	public function execute() {
@@ -120,12 +138,9 @@ class SetupStore extends \Maintenance {
 
 		$connectionManager = new ConnectionManager();
 
-		// #2963 Use the DB handler from the Maintenance script which may access
-		// the `$wgDBadminuser` instead of the regular `$wgDBuser`
-		$connectionManager->registerCallbackConnection(
-			DB_MASTER,
-			function() { return $this->getDB( DB_MASTER ); }
-		);
+		// #2963 Use the Maintenance DB connection instead and the DB_ADMIN request
+		// to allow to use the admin user/pass, if set
+		$connectionManager->registerCallbackConnection( DB_MASTER, [ $this, 'getConnection' ] );
 
 		$store->setConnectionManager(
 			$connectionManager
