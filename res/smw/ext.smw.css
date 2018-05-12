@@ -322,6 +322,16 @@ label.smw-form-checkbox {
 	margin-bottom: -2em;
 }
 
+.smw-note {
+	padding: 8px 15px;
+	list-style: none;
+	background-color: #f5f5f5;
+	border-radius: 4px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+}
+
 /* Thanks to the bootstrap css*/
 .smw-callout {
 	padding: 10px;
