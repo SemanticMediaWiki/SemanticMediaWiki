@@ -136,8 +136,13 @@ class NamespaceManager {
 			'SF_NS_FORM_TALK'      => $offset + 7,
 			'SMW_NS_CONCEPT'       => $offset + 8,
 			'SMW_NS_CONCEPT_TALK'  => $offset + 9,
-			'SMW_NS_RULE'          => $offset + 10,
-			'SMW_NS_RULE_TALK'     => $offset + 11,
+
+			// #3019 notes "Conflicts with the DPLforum extension ..."
+			//'SMW_NS_RULE'          => $offset + 10,
+			//'SMW_NS_RULE_TALK'     => $offset + 11,
+
+			'SMW_NS_RULE'          => $offset + 12,
+			'SMW_NS_RULE_TALK'     => $offset + 13,
 		);
 
 		return $namespaceIndex;
