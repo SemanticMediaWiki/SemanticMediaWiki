@@ -1,79 +1,44 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\ResultPrinters;
 
 use ReflectionClass;
-use SMW\FeedResultPrinter;
+use SMW\Query\ResultPrinters\FeedExportPrinter;
 
 /**
- * Tests for the FeedResultPrinter class
- *
- * @file
+ * @covers \SMW\Query\ResultPrinters\FeedExportPrinter
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
+class FeedExportPrinterTest extends \PHPUnit_Framework_TestCase {
 
-/**
- * @covers \SMW\FeedResultPrinter
- *
- *
- * @group SMW
- * @group SMWExtension
- */
-class FeedResultPrinterTest extends QueryPrinterTestCase {
+	public function testCanConstruct() {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\FeedResultPrinter';
+		$this->assertInstanceOf(
+			FeedExportPrinter::class,
+			new FeedExportPrinter( 'feed' )
+		);
 	}
 
 	/**
-	 * Helper method that returns a FeedResultPrinter object
-	 *
-	 * @return FeedResultPrinter
-	 */
-	private function newInstance( $parameters = array() ) {
-		return $this->setParameters( new FeedResultPrinter( 'feed' ), $parameters );
-	}
-
-	/**
-	 * @test FeedResultPrinter::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * @test FeedResultPrinter::feedItemDescription
 	 * @dataProvider textDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testFeedItemDescription( $setup, $expected, $message ) {
 
-		$instance = $this->newInstance();
+		$instance = new FeedExportPrinter( 'feed' );
 
-		$reflector = new ReflectionClass( '\SMW\FeedResultPrinter' );
+		$reflector = new ReflectionClass( '\SMW\Query\ResultPrinters\FeedExportPrinter' );
 		$method = $reflector->getMethod( 'feedItemDescription' );
 		$method->setAccessible( true );
 
 		$this->assertEquals(
 			$expected['text'],
-			$method->invoke( $instance, $setup['items'], $setup['pageContent'] ),
-			'Failed asserting ' . $message['info']
+			$method->invoke( $instance, $setup['items'], $setup['pageContent'] )
 		);
-
 	}
-
 
 	/**
 	 * @return array

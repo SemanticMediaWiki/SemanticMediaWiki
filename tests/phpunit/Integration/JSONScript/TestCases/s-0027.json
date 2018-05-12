@@ -1,0 +1,80 @@
+{
+	"description": "Test `format=feed` output via `Special:Ask`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/1",
+			"contents": "[[Has text::Some example]] [[Category:S0027]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/2",
+			"contents": "[[Has number::123]] [[Has number::345]] [[Category:S0027]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/3",
+			"contents": "[[Has text::ABC]] [[Has number::123]] [[Category:S0027]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/4",
+			"contents": "[[Has text::DEF]] [[Has number::123]] [[Category:S0027]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 with header",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "feed"
+					},
+					"q": "[[Category:S0027]]",
+					"po": "?Has text|?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<title>S0027/1</title>",
+					"<title>S0027/2</title>",
+					"<title>S0027/3</title>",
+					"<title>S0027/4</title>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
