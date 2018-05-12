@@ -194,7 +194,7 @@
 	Query.prototype.initControls = function() {
 
 		var self = this;
-		var loading = '<span class="smw-overlay-spinner large inline" alt="Loading..."></span>';
+		var loading = '<span class="smw-overlay-spinner large flex" alt="Loading..."></span>';
 
 		if ( self.init === true && self.control === 'slider' ) {
 			self.container.find( '#deferred-control' ).ionRangeSlider( {
