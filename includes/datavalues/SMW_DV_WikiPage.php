@@ -606,7 +606,9 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		$preferredCaption = $this->getDisplayTitle();
 
-		if ( $preferredCaption === '' ) {
+		if ( $preferredCaption === '' && $this->getOption( 'prefixed.preferred.caption' ) ) {
+			$preferredCaption = $this->getPrefixedText();
+		} elseif ( $preferredCaption === '' ) {
 			$preferredCaption = $this->getText();
 		}
 
