@@ -157,7 +157,7 @@ class SearchProfileForm {
 		$searchEngine = $this->specialSearch->getSearchEngine();
 
 		if ( ( $queryLink = $searchEngine->getQueryLink() ) instanceof \SMWInfolink ) {
-			$queryLink->setCaption( '⋯' );
+			$queryLink->setCaption( 'Query' );
 			$queryLink->setLinkAttributes( [ 'title' => 'Special:Ask' ] );
 			$link = $queryLink->getHtml();
 		}
@@ -297,8 +297,8 @@ class SearchProfileForm {
 				'class' => 'smw-errors',
 				'style' => 'color:#b32424;'
 			],
-			'<li>' . implode( '</li><li>', $list ) . '</li>' . $divider
-		);
+			'<li>' . implode( '</li><li>', $list ) . '</li>'
+		) . $divider;
 	}
 
 	private function buildSortForm( $request ) {

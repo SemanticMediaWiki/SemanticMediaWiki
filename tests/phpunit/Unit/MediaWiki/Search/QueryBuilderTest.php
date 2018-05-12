@@ -110,8 +110,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			[ 'foo' ]
 		);
 
-		$instance->noCheck();
-
 		$this->assertEquals(
 			'Foo',
 			$instance->getQueryString( $this->store, 'Foo' )
@@ -142,8 +140,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->webRequest,
 			$form_def
 		);
-
-		$instance->noCheck();
 
 		$this->assertEquals(
 			'<q>[[Bar property::Foobar]]</q>  Foo',
@@ -178,8 +174,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->webRequest,
 			$form_def
 		);
-
-		$instance->noCheck();
 
 		$this->assertEquals(
 			'<q>[[Bar property::42]]</q>  Foo',
@@ -220,97 +214,11 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			$form_def
 		);
 
-		$instance->noCheck();
-
 		$this->assertEquals(
 			'<q>[[Bar::42]] </q> OR Foo',
 			$instance->getQueryString( $this->store, 'Foo' )
 		);
 	}
 
-	/**
-	 * @dataProvider termProvider
-	 */
-	public function testTerm_parser( $term, $expected ) {
-
-		$this->assertEquals(
-			$expected,
-			QueryBuilder::term_parser( $term )
-		);
-	}
-
-	public function termProvider() {
-
-		yield [
-			'in:foo',
-			'[[in:foo]]'
-		];
-
-		yield [
-			'[[in:foo]]',
-			'[[in:foo]]'
-		];
-
-		yield [
-			'in:foo || bar',
-			'[[in:foo]] || bar'
-		];
-
-		yield [
-			'in:foo && bar',
-			'[[in:foo]] && bar'
-		];
-
-		yield [
-			'in:foo || in:bar',
-			'[[in:foo]] || [[in:bar]]'
-		];
-
-		yield [
-			'in:foo bar in:bar ',
-			'[[in:foo bar]] [[in:bar]]'
-		];
-
-		yield [
-			'in:foo bar && in:bar',
-			'[[in:foo bar]] && [[in:bar]]'
-		];
-
-		yield [
-			'in:foo bar || in:bar ',
-			'[[in:foo bar]] || [[in:bar]]'
-		];
-
-		yield [
-			'(in:foo bar && in:foo) || in:bar ',
-			'<q>[[in:foo bar]] && [[in:foo]]</q> || [[in:bar]]'
-		];
-
-		yield [
-			'in:foo bar in:bar phrase:foobar 123 && in:oooo',
-			'[[in:foo bar]] [[in:bar]] [[phrase:foobar 123]] && [[in:oooo]]'
-		];
-
-		yield [
-			'<q>in:foo bar && in:bar</q> OR phrase:foo bar foobar',
-			'<q>[[in:foo bar]] && [[in:bar]]</q> OR [[phrase:foo bar foobar]]'
-		];
-
-		yield [
-			'(in:foo && in:bar)||in:foobar',
-			'<q>[[in:foo]] && [[in:bar]]</q> || [[in:foobar]]'
-		];
-
-		yield [
-			'(in:foo && (in:bar AND not:ooo)) || in:foobar',
-			'<q>[[in:foo]] && <q>[[in:bar]] AND [[not:ooo]]</q></q> || [[in:foobar]]'
-		];
-
-
-		yield [
-			'<q>in:foo bar && in:bar</q> OR [[Has number::123]]',
-			'<q>[[in:foo bar]] && [[in:bar]]</q> OR [[Has number::123]]'
-		];
-	}
 
 }
