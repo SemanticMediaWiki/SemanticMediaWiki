@@ -275,7 +275,14 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			// Loop over all values for the property.
 			while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
 				if ( $dataValue->getDataItem() instanceof SMWDIWikipage ) {
-					$itemSegments[] = Sanitizer::decodeCharReferences( $dataValue->getLongWikiText() );
+
+					$linker = null;
+
+					if ( $dataValue->getDataItem()->getSubobjectName() === '' && $this->params['link'] !== 'none' ) {
+						$linker = smwfGetLinker();
+					}
+
+					$itemSegments[] = Sanitizer::decodeCharReferences( $dataValue->getLongWikiText( $linker ) );
 				} else {
 					$itemSegments[] = Sanitizer::decodeCharReferences( $dataValue->getWikiValue() );
 				}
