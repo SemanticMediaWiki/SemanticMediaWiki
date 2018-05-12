@@ -18,6 +18,7 @@ use SMW\MediaWiki\Specials\Ask\UrlArgs;
 use SMW\Utils\HtmlModal;
 use SMW\ApplicationFactory;
 use SMWQueryProcessor as QueryProcessor;
+use SMWQueryResult as QueryResult;
 use SMWInfolink as Infolink;
 use SpecialPage;
 use SMWOutputs;
@@ -94,8 +95,64 @@ class SpecialAsk extends SpecialPage {
 	 * @param string $p
 	 */
 	public function execute( $p ) {
-		global $smwgQEnabled;
 
+		$this->setHeaders();
+
+		$out = $this->getOutput();
+		$request = $this->getRequest();
+
+		$request->setVal( 'wpEditToken',
+			$this->getUser()->getEditToken()
+		);
+
+		if ( !$GLOBALS['smwgQEnabled'] ) {
+			return $out->addHtml( ErrorWidget::disabled() );
+		}
+
+		$this->init();
+
+		if ( $request->getCheck( 'showformatoptions' ) ) {
+			// handle Ajax action
+			$params = $request->getArray( 'params' );
+			$params['format'] = $request->getVal( 'showformatoptions' );
+			$out->disable();
+			echo ParametersWidget::parameterList( $params );
+		} else {
+			$this->extractQueryParameters( $p );
+
+			if ( $this->isBorrowedMode ) {
+				$visibleLinks = [];
+			} elseif( $request->getVal( 'eq', '' ) === 'no' || $p !== null || $request->getVal( 'x' ) || $request->getVal( 'cl' ) ) {
+				$visibleLinks = [ 'search', 'empty' ];
+			} else {
+				$visibleLinks = [ 'options', 'search', 'help', 'empty' ];
+			}
+
+			$out->addHTML(
+				NavigationLinksWidget::topLinks(
+					SpecialPage::getSafeTitleFor( 'Ask' ),
+					$visibleLinks
+				)
+			);
+
+			$this->makeHTMLResult();
+		}
+
+		$out->addHTML( HelpWidget::html() );
+		$this->addHelpLink( wfMessage( 'smw_ask_doculink' )->escaped(), true );
+
+		// make sure locally collected output data is pushed to the output!
+		SMWOutputs::commitToOutputPage( $out );
+	}
+
+	/**
+	 * @see SpecialPage::getGroupName
+	 */
+	protected function getGroupName() {
+		return 'smw_group';
+	}
+
+	private function init() {
 		$out = $this->getOutput();
 		$request = $this->getRequest();
 
@@ -118,18 +175,12 @@ class SpecialAsk extends SpecialPage {
 			HtmlModal::getModules()
 		);
 
-		$this->setHeaders();
-
-		$request->setVal( 'wpEditToken',
-			$this->getUser()->getEditToken()
-		);
+		$out->addHTML( ErrorWidget::noScript() );
 
 		// #2590
 		if ( !$this->getUser()->matchEditToken( $request->getVal( 'wpEditToken' ) ) ) {
 			return $out->addHtml( ErrorWidget::sessionFailure() );
 		}
-
-		$out->addHTML( ErrorWidget::noScript() );
 
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
@@ -167,53 +218,6 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		$this->isBorrowedMode = $request->getCheck( 'bTitle' ) || $request->getCheck( 'btitle' );
-
-		if ( !$smwgQEnabled ) {
-			$out->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->escaped() );
-		} else {
-			if ( $request->getCheck( 'showformatoptions' ) ) {
-				// handle Ajax action
-				$params = $request->getArray( 'params' );
-				$params['format'] = $request->getVal( 'showformatoptions' );
-				$out->disable();
-				echo ParametersWidget::parameterList( $params );
-			} else {
-				$this->extractQueryParameters( $p );
-
-				if ( $this->isBorrowedMode ) {
-					$visibleLinks = [];
-				} elseif( $request->getVal( 'eq', '' ) === 'no' || $p !== null || $request->getVal( 'x' ) || $request->getVal( 'cl' ) ) {
-					$visibleLinks = [ 'search', 'empty' ];
-				} else {
-					$visibleLinks = [ 'options', 'search', 'help', 'empty' ];
-				}
-
-				$out->addHTML(
-					NavigationLinksWidget::topLinks(
-						SpecialPage::getSafeTitleFor( 'Ask' ),
-						$visibleLinks
-					)
-				);
-
-				$this->makeHTMLResult();
-			}
-		}
-
-		$out->addHTML(
-			HelpWidget::html()
-		);
-
-		$this->addExternalHelpLinkFor( 'smw_ask_doculink' );
-
-		// make sure locally collected output data is pushed to the output!
-		SMWOutputs::commitToOutputPage( $out );
-	}
-
-	/**
-	 * @see SpecialPage::getGroupName
-	 */
-	protected function getGroupName() {
-		return 'smw_group';
 	}
 
 	/**
@@ -225,7 +229,7 @@ class SpecialAsk extends SpecialPage {
 		$this->isEditMode = false;
 
 		if ( $request->getText( 'cl', '' ) !== '' ) {
-			$p = Infolink::decodeCompactLink( 'cl:'. $request->getText( 'cl' ) );
+			$p = Infolink::decodeCompactLink( 'cl:' . $request->getText( 'cl' ) );
 		} else {
 			$p = Infolink::decodeCompactLink( $p );
 		}
@@ -239,12 +243,11 @@ class SpecialAsk extends SpecialPage {
 			$this->isBorrowedMode = true;
 		}
 
-		$this->isEditMode = ( $request->getVal( 'eq' ) == 'yes' ) || ( $this->queryString === '' );
+		if ( ( $request->getVal( 'eq' ) == 'yes' ) || ( $this->queryString === '' ) ) {
+			$this->isEditMode = true;
+		}
 	}
 
-	/**
-	 * TODO: document
-	 */
 	protected function makeHTMLResult() {
 
 		$result = '';
@@ -270,9 +273,21 @@ class SpecialAsk extends SpecialPage {
 
 			$printer->setShowErrors( false );
 			$hidequery = $this->getRequest()->getVal( 'eq' ) == 'no';
+			$request_type = $this->getRequest()->getVal( 'request_type', '' );
 
 			if ( !$printer->isExportFormat() ) {
-				if ( $res->getCount() > 0 ) {
+				if ( $request_type !== '' ) {
+					$this->getOutput()->disable();
+					$query_result = '';
+
+					if ( $res->getCount() > 0 ) {
+						$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
+					} elseif ( $res->getCountValue() > 0 ) {
+						$query_result = $res->getCountValue();
+					}
+
+					return print $query_result;
+				} elseif ( $res->getCount() > 0 ) {
 					if ( $this->isEditMode ) {
 						$urlArgs->set( 'eq', 'yes' );
 					} elseif ( $hidequery ) {
@@ -280,7 +295,6 @@ class SpecialAsk extends SpecialPage {
 					}
 
 					$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
-
 					$result .= is_string( $debug ) ? $debug : '';
 
 					if ( is_array( $query_result ) ) {
@@ -294,31 +308,34 @@ class SpecialAsk extends SpecialPage {
 				}
 			}
 
-			if ( $this->getRequest()->getVal( 'score_set' ) === 'show' && $res->getScoreSet() !== null ) {
-				$result .= '<h2>Score set</h2><ul>';
+			if ( $this->getRequest()->getVal( 'score_set' ) === 'show' && ( $scoreSet = $res->getScoreSet() ) !== null ) {
+				$table = $scoreSet->asTable( 'sortable wikitable smwtable-striped broadtable' );
 
-				foreach ( $res->getScoreSet()->getScores() as $val ) {
-					$result .= '<li>' . $val[1] . ' | ' . $val[0] . '</li>';
-				}
-
-				$result .= '</ul>';
+				if ( $table !== '' ) {
+					$result .= '<h2>Score set</h2>' . $table;
+				};
 			}
 		}
 
-		// FileExport will override the header and cause issues during the unit
-		// test when fetching the output stream therefore use the plain output
-		if ( defined( 'MW_PHPUNIT_TEST' ) && isset( $printer ) && $printer->isExportFormat() ) {
-			$result = $printer->getResult( $res, $this->params, SMW_OUTPUT_FILE );
-			$printer = null;
-		}
-
 		if ( isset( $printer ) && $printer->isExportFormat() ) {
-			$this->getOutput()->disable();
 
-			/**
-			 * @var SMWIExportPrinter $printer
-			 */
-			return $printer->outputAsFile( $res, $this->params );
+			// Avoid a possible "Cannot modify header information - headers already sent by ..."
+			if ( defined( 'MW_PHPUNIT_TEST' ) && method_exists( $printer, 'disableHttpHeader' ) ) {
+				$printer->disableHttpHeader();
+			}
+
+			$this->getOutput()->disable();
+			$request_type = $this->getRequest()->getVal( 'request_type' );
+
+			if ( $request_type === 'embed' ) {
+				// Just send the furthers links, as embedded
+				echo $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
+			} elseif ( $request_type === 'special_page' ) {
+				// Generate raw content when being requested from a remote special_page
+				echo $printer->getResult( $res, $this->params, SMW_OUTPUT_FILE );
+			} else {
+				return $printer->outputAsFile( $res, $this->params );
+			}
 		}
 
 		if ( $this->queryString ) {
@@ -340,7 +357,7 @@ class SpecialAsk extends SpecialPage {
 			$result
 		);
 
-		if ( $res !== null ) {
+		if ( $res instanceof QueryResult ) {
 			$navigation = NavigationLinksWidget::navigationLinks(
 				SpecialPage::getSafeTitleFor( 'Ask' ),
 				$urlArgs,
@@ -669,6 +686,14 @@ class SpecialAsk extends SpecialPage {
 			$source = 'sql_store';
 		}
 
+		$qp = [];
+
+		foreach ( $params as $key => $value) {
+			$qp[$key] = $value->getValue();
+		}
+
+		$queryobj->setOption( 'query.params', $qp );
+
 		/**
 		 * @var QueryEngine $queryEngine
 		 */
@@ -705,16 +730,5 @@ class SpecialAsk extends SpecialPage {
 		return [ $res, $debug, $duration, $queryobj ];
 	}
 
-	/**
-	 * FIXME MW 1.25
-	 */
-	private function addExternalHelpLinkFor( $key ) {
-
-		if ( !method_exists( $this, 'addHelpLink' ) ) {
-			return null;
-		}
-
-		$this->addHelpLink( wfMessage( $key )->escaped(), true );
-	}
 
 }

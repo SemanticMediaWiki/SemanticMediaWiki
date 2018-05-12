@@ -69,4 +69,25 @@ class ScoreSetTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testAsTable() {
+
+		$instance = new ScoreSet();
+
+		$instance->addScore( 'Foo', 42 );
+		$instance->addScore( 'Bar', 1001 );
+		$instance->addScore( 'Foobar', 1 );
+
+		$table = $instance->asTable();
+
+		$this->assertContains(
+			'<tr><td>42</td><td>Foo</td></tr>',
+			$table
+		);
+
+		$this->assertContains(
+			'<tr><td>1001</td><td>Bar</td></tr>',
+			$table
+		);
+	}
+
 }

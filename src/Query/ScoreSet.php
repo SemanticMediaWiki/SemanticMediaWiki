@@ -97,4 +97,37 @@ class ScoreSet {
 		return $this->scores;
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $class
+	 *
+	 * @return string
+	 */
+	public function asTable( $class = '' ) {
+
+		if ( $this->scores === [] ) {
+			return '';
+		}
+
+		usort( $this->scores, function( $a, $b ) {
+
+			if ( $a[1] == $b[1] ) {
+				return 0;
+			}
+
+			return ( $a[1] > $b[1] ) ? -1 : 1;
+		} );
+
+		$table = "<table class='$class'><thead><th>Score</th><th>Subject</th></thead><tbody>";
+
+		foreach ( $this->scores as $set ) {
+			$table .= '<tr><td>' . $set[1] . '</td><td>' . $set[0] . '</td></tr>';
+		}
+
+		$table .= '</tbody></table>';
+
+		return $table;
+	}
+
 }
