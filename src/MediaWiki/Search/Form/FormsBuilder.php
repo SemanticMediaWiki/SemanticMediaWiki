@@ -141,7 +141,9 @@ class FormsBuilder {
 			$html[] = "<option value='$k' $selected>$name</option>";
 		}
 
-		$link = ( $link !== '' ? $link . ' ⦁ ' : '' ) . Html::element(
+		$attr = [ 'style' => 'border-right:1px solid #ccc;margin-right:4px;' ];
+
+		$link = ( $link !== '' ? $link . Html::rawElement( 'span', [], '&nbsp;⦁&nbsp;' ) : '' ) . Html::element(
 			'a',
 			[
 				'href' => $title->getFullUrl()
@@ -223,11 +225,15 @@ class FormsBuilder {
 		}
 
 		if ( isset( $data['namespaces']['preselect'] ) && is_array( $data['namespaces']['preselect'] ) ) {
-			$this->preselect_namespaces( $data );
+			$this->preselect_namespaces( $data['namespaces']['preselect'] );
 		}
 
-		if ( isset( $data['namespaces']['hidden'] ) && is_array( $data['namespaces']['hidden'] ) ) {
-			$this->hidden_namespaces( $data );
+		if ( isset( $data['namespaces']['hidden'] ) && is_array(  ) ) {
+			$this->hidden_namespaces( $data['namespaces']['hidden'] );
+		}
+
+		if ( isset( $data['namespaces']['hide'] ) && is_array( $data['namespaces']['hide'] ) ) {
+			$this->hidden_namespaces( $data['namespaces']['hide'] );
 		}
 
 		return $divider . Html::rawElement(
@@ -277,8 +283,8 @@ class FormsBuilder {
 		);
 	}
 
-	private function preselect_namespaces( $data ) {
-		foreach ( $data['namespaces']['preselect'] as $k => $values ) {
+	private function preselect_namespaces( $preselect ) {
+		foreach ( $preselect as $k => $values ) {
 			$k = self::toLowerCase( $k );
 			$this->preselectNsList[$k] = [];
 
@@ -290,8 +296,8 @@ class FormsBuilder {
 		}
 	}
 
-	private function hidden_namespaces( $data ) {
-		foreach ( $data['namespaces']['hidden'] as $ns ) {
+	private function hidden_namespaces( $hidden ) {
+		foreach ( $hidden as $ns ) {
 			if ( is_string( $ns ) && defined( $ns ) ) {
 				$this->hiddenNsList[] = constant( $ns );
 			}

@@ -10,6 +10,7 @@ use SMWQuery as Query;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Parser\TermParser;
 use SMW\MediaWiki\Search\Form\FormsBuilder;
 use WebRequest;
 
@@ -34,11 +35,6 @@ class QueryBuilder {
 	private $data = [];
 
 	/**
-	 * @var boolean
-	 */
-	private $check = true;
-
-	/**
 	 * @var array
 	 */
 	private $queryCache = [];
@@ -56,13 +52,6 @@ class QueryBuilder {
 		if ( $this->request === null ) {
 			$this->request = $GLOBALS['wgRequest'];
 		}
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function noCheck() {
-		$this->check = false;
 	}
 
 	/**
@@ -158,7 +147,7 @@ class QueryBuilder {
 	public function getQueryString( Store $store, $term ) {
 
 		// Special invisible char which is set by the JS component to allow to
-		// push a forms submit through the SearchEngine without an actual "serach
+		// push a forms submit through the SearchEngine without an actual "search
 		// term" to avoid being blocked on an empty request which only contains
 		// structured searches.
 		$term = rtrim( $term, " " );
@@ -170,7 +159,8 @@ class QueryBuilder {
 		}
 
 		if ( isset( $data['term.parser'] ) && $data['term.parser'] ) {
-			$term = $this->term_parser( $term );
+			$termParser = new TermParser( (array)$data['term.parser'] );
+			$term = $termParser->parse( $term );
 		}
 
 		$form = $this->request->getVal( 'smw-form' );
@@ -201,7 +191,7 @@ class QueryBuilder {
 			}
 		}
 
-		// Remove last OR to eensure <q></q> has no open OR expression
+		// Remove last OR to ensure <q></q> has no open OR expression
 		if ( substr( $queryString, -3 ) === 'OR ' ) {
 			$lastOr = $term !== '' ? 'OR' : '';
 			$queryString = substr( $queryString, 0, -3 );
@@ -292,67 +282,6 @@ class QueryBuilder {
 		return $fieldValues;
 	}
 
-	/**
-	 * Split and parse a simplified term input (e.g. (in:foo bar ||
-	 * phrase:foobar) category:bar ) into a #ask conform expression.
-	 *
-	 * @param string $term
-	 *
-	 * @return string
-	 */
-	public static function term_parser( $term ) {
 
-		// Simplify the processing by normalizing expressions
-		$term = str_replace([ '<q>', '</q>' ],  [ '(', ')' ], $term );
-
-		$terms = preg_split(
-			'/(in:)|(phrase:)|(not:)|(category:)|(&&)|(AND)|(OR)|(\|\|)|(\()|(\))/',
-			$term,
-			-1,
-			PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
-		);
-
-		$term = '';
-		$k = 0;
-
-		while ( key( $terms ) !== null ) {
-			$new = trim( current( $terms ) );
-			$next = next( $terms );
-			$last = substr( $term, -2 );
-
-			if ( $new === '' ) {
-				continue;
-			}
-
-			if ( $new === 'in:' || $new === 'phrase:' || $new === 'not:' || $new === 'category:' ) {
-				$term .= "[[$new";
-			} else {
-				$term .= $new;
-			}
-
-			if ( $last === ']]' || $new === '(' || $new === '||' ) {
-				continue;
-			}
-
-			if ( $k > 0 && in_array( $next, [ 'in:', 'phrase:', 'not:', 'category:', '&&', 'AND', '||', 'OR', ')', '(' ] ) ) {
-				$term .= "]]";
-			}
-
-			if ( $next === false && !in_array( $last, [ '&&', 'AND', '||', 'OR', ']]' ] ) ) {
-				$term .= ']]';
-			}
-
-			$k++;
-		}
-
-		// Normalize
-		$term = str_replace(
-			[ '(', ')', '||', '&&', 'AND', 'OR', ']][[', '[[[[', ']]]]' ],
-			[ '<q>', '</q>', ' || ', ' && ', ' AND ', ' OR ', ']] [[', '[[', ']]' ],
-			$term
-		);
-
-		return $term;
-	}
 
 }

@@ -213,6 +213,9 @@
     margin-bottom: 0.5em;
 }
 
+#mw-searchoptions h4, #smw-search-togglensview, #mw-search-togglebox {
+    margin-top: 2px !important;
+}
 
 /**
  * Responsive settings (#see smw.table.css)
