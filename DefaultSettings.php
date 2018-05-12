@@ -725,18 +725,44 @@ return array(
 	'smwgResultFormatsFeatures' => SMW_RF_TEMPLATE_OUTSEP,
 	##
 
-	### Predefined sources for queries
+	###
+	# Handling of `RemoteRequest` features
+	#
+	# - SMW_REMOTE_REQ_SEND_RESPONSE allows Special:Ask to respond to remote requests in
+	# combination with $smwgQuerySources and the `RemoteRequest`.
+	#
+	# - SMW_REMOTE_REQ_SHOW_NOTE shows a note for each remote requests so users are aware
+	# that results retrieved from an external source.
+	#
+	# If `$smwgQuerySources` contains no entries then a remote request to a source
+	# is not supported and only sources that are available through the setting
+	# can be selected as remote source.
+	#
+	# @since 3.0
+	# @default: SMW_REMOTE_REQ_SEND_RESPONSE | SMW_REMOTE_REQ_SHOW_NOTE
+	##
+	'smwgRemoteReqFeatures' => SMW_REMOTE_REQ_SEND_RESPONSE | SMW_REMOTE_REQ_SHOW_NOTE,
+	##
+
+	###
+	#
+	# Predefined list of sources that can return query results
+	#
 	# Array of available sources for answering queries. Can be redefined in
 	# the settings to register new sources (usually an extension will do so
 	# on installation). Unknown source will be rerouted to the local wiki.
 	# Note that the basic installation comes with no additional source besides
 	# the local source (which in turn cannot be disabled or set explicitly).
-	# Set a new store like this: $smwgQuerySources['freebase' => "SMWFreebaseStore",
+	#
+	# A query class handler is required to implement the `QueryEngine` interface
+	# and if it needs to be aware of the store, it should also implement the
+	# `StoreAware` interface.
 	#
 	# @since 1.4.3
 	##
 	'smwgQuerySources' => array(
 	//	'local'      => '',
+	//	'mw-wiki-foo' => [ '\SMW\Query\RemoteRequest', 'url' => 'http://example.org/wiki/index.php' ],
 	),
 	##
 

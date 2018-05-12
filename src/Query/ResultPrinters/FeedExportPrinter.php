@@ -6,6 +6,7 @@ use SMWQueryResult as QueryResult;
 use SMW\Query\ExportPrinter;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use SMW\Query\Result\StringResult;
 use SMW\Site;
 use FeedItem;
 use ParserOptions;
@@ -80,7 +81,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	public function outputAsFile( QueryResult $queryResult, array $params ) {
 		$result = $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 
-		if ( Site::isCommandLineMode() ) {
+		if ( Site::isCommandLineMode() || $queryResult instanceof StringResult ) {
 
 			if ( $this->httpHeader ) {
 				header( 'Content-type: ' . 'text/xml' . '; charset=UTF-8' );

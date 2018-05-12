@@ -14,6 +14,7 @@ use SMW\Message;
 use SMWOutputs as ResourceManager;
 use Title;
 use SMW\Query\ResultPrinter as IResultPrinter;
+use SMW\Query\Result\StringResult;
 
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
@@ -279,6 +280,21 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		$this->postProcessParameters();
 		$this->handleParameters( $this->params, $outputMode );
+
+		$resources = $this->getResources();
+
+		$modules = isset( $resources['modules'] ) ? $resources['modules'] : [];
+		$styles = isset( $resources['styles'] ) ? $resources['styles'] : [];
+
+		// Register possible default modules at this point to allow for content
+		// retrieved from a remote source to use required JS/CSS modules from the
+		// local entry point
+		$this->registerResources( $modules, $styles );
+
+		if ( $results instanceof StringResult ) {
+			$results->setOption( 'is.exportformat', $this->isExportFormat() );
+			return $results->getResults();
+		}
 
 		return $this->buildResult( $results );
 	}
@@ -566,6 +582,20 @@ abstract class ResultPrinter implements IResultPrinter {
 	 */
 	public function setShowErrors( $show ) {
 		$this->mShowErrors = $show;
+	}
+
+	/**
+	 * Individual printer can override this method to allow for unified loading
+	 * practice.
+	 *
+	 * Styles are loaded first to avoid a possible FOUC (Flash of unstyled content).
+	 *
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
+	protected function getResources() {
+		return [ 'modules' => [], 'styles' => [] ];
 	}
 
 	/**

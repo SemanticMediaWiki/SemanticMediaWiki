@@ -277,6 +277,13 @@ define( 'SMW_QSORT_UNCONDITIONAL', 8 ); // Unconditional sort support
 /**@}*/
 
 /**@{
+  * Constants for $smwgRemoteReqFeatures
+  */
+define( 'SMW_REMOTE_REQ_SEND_RESPONSE', 2 ); // Remote responses are enabled
+define( 'SMW_REMOTE_REQ_SHOW_NOTE', 4 ); // Shows a note
+/**@}*/
+
+/**@{
   * Constants for Rule groups
   */
 define( 'SMW_RULE_GROUP_FORMAT', 'rule.group.format' );

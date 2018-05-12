@@ -77,6 +77,20 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
+	 * @return boolean
+	 */
+	public static function prefix( $name = '' ) {
+
+		if ( $name{0} !== ':' ) {
+			$name = ':' . $name;
+		}
+
+		return wfWikiID() . $name;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return []
 	 */
 	public static function stats() {
