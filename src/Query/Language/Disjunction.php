@@ -101,12 +101,15 @@ class Disjunction extends Description {
 		}
 
 		if ( !$this->isTrue ) {
-			if ( $description instanceof ClassDescription ) { // combine class descriptions
+			 // Combine class descriptions only when those describe the same state
+			if ( $description instanceof ClassDescription ) {
 				if ( is_null( $this->classDescription ) ) { // first class description
 					$this->classDescription = $description;
 					$this->descriptions[$description->getFingerprint()] = $description;
-				} else {
+				} elseif ( $this->classDescription->isMergableDescription( $description ) ) {
 					$this->classDescription->addDescription( $description );
+				} else {
+					$this->descriptions[$description->getFingerprint()] = $description;
 				}
 			} elseif ( $description instanceof Disjunction ) { // absorb sub-disjunctions
 				foreach ( $description->getDescriptions() as $subdesc ) {

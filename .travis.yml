@@ -22,6 +22,8 @@ matrix:
       php: 5.6
     - env: DB=mysql; MW=REL1_27; BLAZEGRAPH=1.5.2; PHPUNIT=4.8.*
       php: 5.6
+    - env: DB=mysql; MW=REL1_30; ES=5.6.6; PHPUNIT=5.7.*
+      php: 7.1
     - env: DB=mysql; MW=REL1_27; TYPE=benchmark; PHPUNIT=5.7.*
       php: hhvm-3.18
     - env: DB=sqlite; MW=master; PHPUNIT=5.7.*
@@ -40,6 +42,8 @@ matrix:
     # May take a moment and is non-critical therefore allow it to run without delaying the status
     - env: DB=mysql; MW=REL1_27; TYPE=benchmark; PHPUNIT=5.7.*
     - env: DB=mysql; MW=REL1_27; SESAME=2.8.7
+    - env: DB=mysql; MW=REL1_30; ES=5.6.6; PHPUNIT=5.7.*
+
 
 # Dec 16, 2015 (GCE switch): Travis support wrote (Tomcat + Java):
 # bug in the JDK: http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7089443.

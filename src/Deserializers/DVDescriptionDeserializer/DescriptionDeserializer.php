@@ -145,6 +145,24 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 			}
 		}
 
+		// [[not:foo bar]]
+		// For those query engines that support those text search patterns!
+		if ( $comparator === SMW_CMP_NOT ) {
+			$comparator = SMW_CMP_NLKE;
+
+			$value = str_replace( '!', '', $value );
+
+			// Opposed to `in:` which includes *, `not:` is intended to match
+			// only the exact entered term. It can be extended using *
+			// if necessary (e.g. [[Has text::not:foo*]]).
+
+			// Use as phrase to signal an exact term match for a wide proximity
+			// search
+			if ( $this->dataValue->getProperty() === null ) {
+				$value = "~\"$value\"";
+			}
+		}
+
 		// [[phrase:lorem ipsum]] to be turned into a promixity phrase_match
 		// where the entire string (incl. its order) are to be matched.
 		//

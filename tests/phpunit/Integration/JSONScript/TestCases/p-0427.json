@@ -108,6 +108,9 @@
 			"type": "parser",
 			"about": "#5 to be reverse to #2",
 			"subject": "Example/P0427/Q1.4",
+			"skip-on": {
+				"elastic": "ES matches both `AB C` and `ab c` which is why the result set is 0"
+			},
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"smwtype_wpg\">Example/P0427/1#_6840005f556d165faf53ecf39be9ee97</td>",
@@ -119,6 +122,9 @@
 			"type": "parser",
 			"about": "#6 to be reverse to #3",
 			"subject": "Example/P0427/Q1.5",
+			"skip-on": {
+				"elastic": "ES matches both `AB C` and `ab c` which is why the result set is 0"
+			},
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"smwtype_wpg\">Example/P0427/1#_7cae05fedd48fa820a0ea915518cc3fd</td>",

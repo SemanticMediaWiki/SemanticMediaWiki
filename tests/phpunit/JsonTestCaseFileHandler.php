@@ -286,6 +286,10 @@ class JsonTestCaseFileHandler {
 			if ( $key === $constantFeatures && isset( $settings[$key] ) ) {
 				$features = '';
 
+				if ( !is_array( $settings[$key] ) ) {
+					return $settings[$key];
+				}
+
 				foreach ( $settings[$key] as $value ) {
 					$features = constant( $value ) | (int)$features;
 				}

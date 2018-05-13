@@ -38,6 +38,9 @@
 			"type": "format",
 			"about": "#0 simple debug output",
 			"subject": "Example/0001/1",
+			"skip-on": {
+				"elastic": "Different debug format"
+			},
 			"assert-output": {
 				"to-contain": [
 					"&#91;&#91;Has page::Foo]] &#91;&#91;Has page::42]]",
@@ -49,11 +52,42 @@
 		},
 		{
 			"type": "format",
+			"about": "#0.elastic simple debug output",
+			"subject": "Example/0001/1",
+			"skip-on": {
+				"elastic": [ "not", "Different debug format" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"&#91;&#91;Has page::Foo]] &#91;&#91;Has page::42]]",
+					"\"query size\": 4",
+					"\"query depth\": 1"
+				]
+			}
+		},
+		{
+			"type": "format",
 			"about": "#1 value input/output not be constraint by precision",
 			"subject": "Example/F0001/Q.1",
+			"skip-on": {
+				"elastic": "Different debug format"
+			},
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smwpre\">&#91;&#91;Has number::3.555567]]</div>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1.elastic value input/output not be constraint by precision",
+			"subject": "Example/F0001/Q.1",
+			"skip-on": {
+				"elastic": [ "not", "Different debug format" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"\"query\": \"&#91;&#91;Has number::3.555567]]\""
 				]
 			}
 		}

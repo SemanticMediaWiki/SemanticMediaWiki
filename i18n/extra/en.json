@@ -100,7 +100,15 @@
 		"_RL_TAG": "Rule tag",
 		"_RL_TYPE": "Rule type",
 		"_RL_DEF": "Rule definition",
-		"_FORMAT_RL": "Formatter rule"
+		"_FORMAT_RL": "Formatter rule",
+		"_FILE_ATTCH": "File attachment",
+		"_CONT_TYPE": "Content type",
+		"_CONT_AUTHOR": "Content author",
+		"_CONT_LEN": "Content length",
+		"_CONT_LANG": "Content language",
+		"_CONT_TITLE": "Content title",
+		"_CONT_DATE": "Content date",
+		"_CONT_KEYW": "Content keyword"
 	},
 	"property.aliases": {
 		"Display unit": "_UNIT",
@@ -158,7 +166,9 @@
 		"Rule tag": "_RL_TAG",
 		"Rule type": "_RL_TYPE",
 		"Rule definition": "_RL_DEF",
-		"Formatter rule": "_FORMAT_RL"
+		"Formatter rule": "_FORMAT_RL",
+		"File attachment":"_FILE_ATTCH",
+		"Has file attachment":"_FILE_ATTCH"
 	},
 	"namespaces":{
 		"SMW_NS_PROPERTY": "Property",

@@ -245,6 +245,11 @@ final class Setup {
 			'mw.db.queryengine',
 			$mwCollaboratorFactory->newDBConnectionProvider( 'mw.db.queryengine' )
 		);
+
+		$connectionManager->registerConnectionProvider(
+			'elastic',
+			new \SMW\Elastic\Connection\ConnectionProvider()
+		);
 	}
 
 	private function initMessageCallbackHandler() {
@@ -314,6 +319,8 @@ final class Setup {
 			'SMW\ChangePropagationDispatchJob' => 'SMW\MediaWiki\Jobs\ChangePropagationDispatchJob',
 			'SMW\ChangePropagationUpdateJob' => 'SMW\MediaWiki\Jobs\ChangePropagationUpdateJob',
 			'SMW\ChangePropagationClassUpdateJob' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
+			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Indexer\IndexerRecoveryJob',
+			'smw.elasticFileIngest' => 'SMW\Elastic\Indexer\FileIngestJob',
 
 			// Legacy definition to be removed with 1.10
 			'SMWUpdateJob'  => 'SMW\MediaWiki\Jobs\UpdateJob',

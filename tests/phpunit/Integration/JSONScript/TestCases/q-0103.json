@@ -114,6 +114,9 @@
 			"type": "query",
 			"about": "#5",
 			"condition": "[[Has regexblob property::~*\\\\\"\\\"*]]",
+			"skip-on": {
+				"elastic": "Finding more than one due to the wildcard"
+			},
 			"printouts": [
 				"Has regexblob property"
 			],

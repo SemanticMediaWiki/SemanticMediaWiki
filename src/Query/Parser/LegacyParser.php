@@ -432,6 +432,14 @@ class LegacyParser implements Parser {
 				$desc = $this->descriptionFactory->newNamespaceDescription( $category ? NS_CATEGORY : SMW_NS_CONCEPT );
 				$description = $this->descriptionProcessor->asOr( $description, $desc );
 			} else { // assume category/concept title
+				$isNegation = false;
+
+				// [[Category:!Foo]]
+				// Only the ElasticStore does actively support this construct
+				if ( $chunk{0} === '!' ) {
+					$chunk = substr( $chunk, 1 );
+					$isNegation = true;
+				}
 
 				// We add a prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$prefix = $category ? $this->categoryPrefix : $this->conceptPrefix;
@@ -440,6 +448,11 @@ class LegacyParser implements Parser {
 				if ( $title !== null ) {
 					$diWikiPage = new DIWikiPage( $title->getDBkey(), $title->getNamespace(), '' );
 					$desc = $category ? $this->descriptionFactory->newClassDescription( $diWikiPage ) : $this->descriptionFactory->newConceptDescription( $diWikiPage );
+
+					if ( $isNegation ) {
+						$desc->isNegation = $isNegation;
+					}
+
 					$description = $this->descriptionProcessor->asOr( $description, $desc );
 				}
 			}
@@ -519,6 +532,13 @@ class LegacyParser implements Parser {
 			$chunk = $this->readChunk();
 
 			switch ( $chunk ) {
+				// !+
+				case '!+':
+					$desc = $this->descriptionFactory->newThingDescription();
+					$desc->isNegation = true;
+					$innerdesc = $this->descriptionProcessor->asOr( $innerdesc, $desc );
+					$chunk = $this->readChunk();
+				break;
 				// wildcard, add namespaces for page-type properties
 				case '+':
 					if ( !is_null( $this->defaultNamespace ) && ( $this->isPagePropertyType( $typeid ) || $inverse ) ) {

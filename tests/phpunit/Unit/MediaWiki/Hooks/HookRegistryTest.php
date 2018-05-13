@@ -217,12 +217,15 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForOutputPageCheckLastModified( $instance );
 		$this->doTestExecutionForIsFileCacheable( $instance );
 		$this->doTestExecutionForRejectParserCacheValue( $instance );
+		$this->doTestExecutionForSoftwareInfo( $instance );
 		$this->doTestExecutionForBlockIpComplete( $instance );
 		$this->doTestExecutionForUnblockUserComplete( $instance );
 		$this->doTestExecutionForUserGroupsChanged( $instance );
 
 		// Usage of registered hooks in/by smw-core
 		//$this->doTestExecutionForSMWStoreDropTables( $instance );
+		$this->doTestExecutionForSMWSQLStoreEntityReferenceCleanUpComplete( $instance );
+		$this->doTestExecutionForSMWAdminTaskHandlerFactory( $instance );
 		$this->doTestExecutionForSMWSQLStorAfterDataUpdateComplete( $instance );
 		$this->doTestExecutionForSMWStoreBeforeQueryResultLookupComplete( $instance );
 		$this->doTestExecutionForSMWStoreAfterQueryResultLookupComplete( $instance );
@@ -1292,6 +1295,20 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->handlers[$handler] = true;
 	}
 
+	public function doTestExecutionForSoftwareInfo( $instance ) {
+
+		$handler = 'SoftwareInfo';
+
+		$software = [];
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ &$software ]
+		);
+
+		$this->handlers[$handler] = true;
+	}
+
 	public function doTestExecutionForBlockIpComplete( $instance ) {
 
 		$handler = 'BlockIpComplete';
@@ -1379,6 +1396,48 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $verbose )
+		);
+
+		$this->handlers[$handler] = true;
+	}
+
+	public function doTestExecutionForSMWSQLStoreEntityReferenceCleanUpComplete( $instance ) {
+
+		$handler = 'SMW::SQLStore::EntityReferenceCleanUpComplete';
+
+		$id = 42;
+		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$isRedirect = false;
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $this->store, $id, $subject, $isRedirect )
+		);
+
+		$this->handlers[$handler] = true;
+	}
+
+	public function doTestExecutionForSMWAdminTaskHandlerFactory( $instance ) {
+
+		$handler = 'SMW::Admin::TaskHandlerFactory';
+
+		$taskHandlers = [];
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user = $this->getMockBuilder( 'User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$taskHandlers, $store, $outputFormatter, $user )
 		);
 
 		$this->handlers[$handler] = true;

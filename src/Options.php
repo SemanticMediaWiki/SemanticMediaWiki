@@ -3,6 +3,7 @@
 namespace SMW;
 
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -22,6 +23,30 @@ class Options {
 	 */
 	public function __construct( array $options = array() ) {
 		$this->options = $options;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $data
+	 * @param boolean $merge
+	 */
+	public function loadFromJSON( $data, $merge = false ) {
+
+		$data = json_decode( $data, true );
+
+		if ( ( $error = json_last_error() ) !== JSON_ERROR_NONE ) {
+			throw new RuntimeException( 'JSON returned with a "' . json_last_error_msg() . '"' );
+		}
+
+		foreach ( $data as $key => $value ) {
+
+			if ( $merge && isset( $this->options[$key] ) && is_array( $value ) && is_array( $this->options[$key] ) ) {
+				$value = array_merge( $this->options[$key], $value );
+			}
+
+			$this->options[$key] = $value;
+		}
 	}
 
 	/**

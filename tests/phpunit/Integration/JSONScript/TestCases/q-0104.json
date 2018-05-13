@@ -168,7 +168,8 @@
 			"type": "query",
 			"about": "#8 free search (wide proximity)",
 			"skip-on": {
-				"sqlite": "works different in comparison to MySQL, see #9"
+				"sqlite": "works different in comparison to MySQL, see #9",
+				"elastic": "Uses a multi_field phrase match"
 			},
 			"condition": "[[~~with a category]]",
 			"printouts": [],
@@ -179,6 +180,24 @@
 				"count": 2,
 				"results": [
 					"Example/Q0104/4#0##_5a524a435267f6e6d2d45d64a419c1da",
+					"Example/Q0104/4#0##_9f7e6f010523ae7a6d1639d40773e379"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8.elastic free search (wide proximity)",
+			"skip-on": {
+				"elastic": [ "not", "Different behaviour as SQL on the exact phrase `with a category` " ]
+			},
+			"condition": "[[~~with a category]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
 					"Example/Q0104/4#0##_9f7e6f010523ae7a6d1639d40773e379"
 				]
 			}

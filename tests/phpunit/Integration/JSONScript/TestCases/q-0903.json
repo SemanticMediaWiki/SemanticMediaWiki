@@ -17,36 +17,36 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "Sample/Number/1",
+			"page": "Example/Q0903/Number/1",
 			"contents": "[[Has number::1]]"
 		},
 		{
-			"page": "Sample/Number/2",
+			"page": "Example/Q0903/Number/2",
 			"contents": "[[Has number::2]]"
 		},
 		{
-			"page": "Sample/Number/3",
+			"page": "Example/Q0903/Number/3",
 			"contents": "[[Has number::3]]"
 		},
 		{
-			"page": "Sample/Title/1",
+			"page": "Example/Q0903/Title/1",
 			"contents": "[[Has text::Foo]] [[Has page::123]]"
 		},
 		{
-			"page": "Sample/Title/2",
+			"page": "Example/Q0903/Title/2",
 			"contents": "[[Has text::Foobar]] [[Has page::ABC]]"
 		},
 		{
-			"page": "Sample/Title/3",
+			"page": "Example/Q0903/Title/3",
 			"contents": "[[Has text::FOO]] [[Has page::abc]]"
 		},
 		{
-			"page": "Sample/Title/4",
+			"page": "Example/Q0903/Title/4",
 			"contents": "[[Has text::FoO]] [[Has page::aBc]]"
 		},
 		{
-			"page": "Sample/Title/5",
-			"contents": "[[Has text::FoO]] [[Has page::Sample/Title/2]]"
+			"page": "Example/Q0903/Title/5",
+			"contents": "[[Has text::FoO]] [[Has page::Example/Q0903/Title/2]]"
 		}
 	],
 	"tests": [
@@ -61,8 +61,8 @@
 			"assert-queryresult": {
 				"count": 2,
 				"results": [
-					"Sample/Number/1#0##",
-					"Sample/Number/2#0##"
+					"Example/Q0903/Number/1#0##",
+					"Example/Q0903/Number/2#0##"
 				]
 			}
 		},
@@ -77,8 +77,8 @@
 			"assert-queryresult": {
 				"count": 2,
 				"results": [
-					"Sample/Number/1#0##",
-					"Sample/Number/2#0##"
+					"Example/Q0903/Number/1#0##",
+					"Example/Q0903/Number/2#0##"
 				]
 			}
 		},
@@ -93,8 +93,8 @@
 			"assert-queryresult": {
 				"count": 2,
 				"results": [
-					"Sample/Title/1#0##",
-					"Sample/Title/2#0##"
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##"
 				]
 			}
 		},
@@ -109,8 +109,8 @@
 			"assert-queryresult": {
 				"count": 2,
 				"results": [
-					"Sample/Title/1#0##",
-					"Sample/Title/2#0##"
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##"
 				]
 			}
 		},
@@ -125,14 +125,17 @@
 			"assert-queryresult": {
 				"count": 2,
 				"results": [
-					"Sample/Title/1#0##",
-					"Sample/Title/2#0##"
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##"
 				]
 			}
 		},
 		{
 			"type": "query",
 			"about": "#5",
+			"skip-on": {
+				"elastic" : "Finds 5 due to `oo`, `OO`, and `oO` being matched using an analyzed field"
+			},
 			"condition": "[[Has text::+]][[Has text::~*oo*||~*OO*]]",
 			"printouts": [],
 			"parameters": {
@@ -141,15 +144,40 @@
 			"assert-queryresult": {
 				"count": 3,
 				"results": [
-					"Sample/Title/1#0##",
-					"Sample/Title/2#0##",
-					"Sample/Title/3#0##"
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5.elastic",
+			"skip-on": {
+				"elastic" : [ "not", "Only relevant to ES (see #5 comment)" ]
+			},
+			"condition": "[[Has text::+]][[Has text::~*oo*||~*OO*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 5,
+				"results": [
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
 				]
 			}
 		},
 		{
 			"type": "query",
 			"about": "#6 same as #5",
+			"skip-on": {
+				"elastic" : "Finds 5 due to `oo`, `OO`, and `oO` being matched using an analyzed field"
+			},
 			"condition": "[[Has text::+]][[Has text::~*OO*||~*oo*]]",
 			"printouts": [],
 			"parameters": {
@@ -158,9 +186,31 @@
 			"assert-queryresult": {
 				"count": 3,
 				"results": [
-					"Sample/Title/1#0##",
-					"Sample/Title/2#0##",
-					"Sample/Title/3#0##"
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6.elastic",
+			"skip-on": {
+				"elastic" : [ "not", "Only relevant to ES (see #6 comment)" ]
+			},
+			"condition": "[[Has text::+]][[Has text::~*OO*||~*oo*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 5,
+				"results": [
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
 				]
 			}
 		},
@@ -175,16 +225,19 @@
 			"assert-queryresult": {
 				"count": 4,
 				"results": [
-					"Sample/Title/2#0##",
-					"Sample/Title/3#0##",
-					"Sample/Title/4#0##",
-					"Sample/Title/5#0##"
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
 				]
 			}
 		},
 		{
 			"type": "query",
 			"about": "#8",
+			"skip-on": {
+				"elastic" : "Finds 3 due to `b` and `B` being matched using an analyzed field"
+			},
 			"condition": "[[Has page::+]][[Has page::~*B*]][[Has text::~*OO*||~*oo*||~*oO*]]",
 			"printouts": [],
 			"parameters": {
@@ -193,14 +246,37 @@
 			"assert-queryresult": {
 				"count": 2,
 				"results": [
-					"Sample/Title/2#0##",
-					"Sample/Title/4#0##"
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8.elastic",
+			"skip-on": {
+				"elastic" : [ "not", "Only relevant to ES (see #8 comment)" ]
+			},
+			"condition": "[[Has page::+]][[Has page::~*B*]][[Has text::~*OO*||~*oo*||~*oO*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##"
 				]
 			}
 		},
 		{
 			"type": "query",
 			"about": "#9",
+			"skip-on": {
+				"elastic" : "Finds 4 due to `bc`, `Bc`, and `BC` being matched using an analyzed field"
+			},
 			"condition": "[[Has text::~*oO*]][[Has page::~*Bc*|| <q>[[Has page::~*a*||~*A*]]</q>]]",
 			"printouts": [],
 			"parameters": {
@@ -209,8 +285,29 @@
 			"assert-queryresult": {
 				"count": 2,
 				"results": [
-					"Sample/Title/4#0##",
-					"Sample/Title/5#0##"
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#9.elastic",
+			"skip-on": {
+				"elastic" : [ "not", "Only relevant to ES (see #9 comment)" ]
+			},
+			"condition": "[[Has text::~*oO*]][[Has page::~*Bc*|| <q>[[Has page::~*a*||~*A*]]</q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
 				]
 			}
 		},
@@ -225,9 +322,9 @@
 			"assert-queryresult": {
 				"count": 3,
 				"results": [
-					"Sample/Title/2#0##",
-					"Sample/Title/3#0##",
-					"Sample/Title/4#0##"
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##"
 				]
 			}
 		}

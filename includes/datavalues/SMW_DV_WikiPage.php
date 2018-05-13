@@ -116,7 +116,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 
-		if ( $value === '' ) {
+		if ( $value === '' && !$this->getOption( self::OPT_QUERY_CONTEXT ) ) {
 			return $this->addErrorMsg( array( 'smw-datavalue-wikipage-empty' ), Message::ESCAPED );
 		}
 

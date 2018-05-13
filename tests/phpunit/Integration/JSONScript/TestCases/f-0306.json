@@ -49,6 +49,9 @@
 		{
 			"type": "format",
 			"about": "#0 asc (different to f-0305, f-0304)",
+			"skip-on":{
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03"
+			},
 			"subject": "Example/F0306/Q.1.1",
 			"assert-output": {
 				"to-contain": [
@@ -58,7 +61,23 @@
 		},
 		{
 			"type": "format",
+			"about": "#0.elastic asc (different to f-0305, f-0304)",
+			"skip-on":{
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"subject": "Example/F0306/Q.1.1",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9.*"
+				]
+			}
+		},
+		{
+			"type": "format",
 			"about": "#1 desc (different to f-0305, f-0304)",
+			"skip-on":{
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03"
+			},
 			"subject": "Example/F0306/Q.1.2",
 			"assert-output": {
 				"to-contain": [
@@ -68,9 +87,23 @@
 		},
 		{
 			"type": "format",
+			"about": "#1.elastic desc (different to f-0305, f-0304)",
+			"skip-on":{
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"subject": "Example/F0306/Q.1.2",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
+				]
+			}
+		},
+		{
+			"type": "format",
 			"about": "#2 Has page, asc (different to f-0305, f-0304)",
 			"subject": "Example/F0306/Q.1.3",
 			"skip-on": {
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
 				"hhvm-*": "HHVM (or SQLite) shows opposite B1000, B9"
 			},
 			"assert-output": {
@@ -81,9 +114,23 @@
 		},
 		{
 			"type": "format",
+			"about": "#2.elastic Has page, asc (different to f-0305, f-0304)",
+			"subject": "Example/F0306/Q.1.3",
+			"skip-on":{
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9"
+				]
+			}
+		},
+		{
+			"type": "format",
 			"about": "#3 Has page, desc (different to f-0305, f-0304)",
 			"subject": "Example/F0306/Q.1.4",
 			"skip-on": {
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
 				"hhvm-*": "HHVM (or SQLite) shows opposite B9, B1000"
 			},
 			"assert-output": {
@@ -94,8 +141,24 @@
 		},
 		{
 			"type": "format",
+			"about": "#3.elastic Has page, desc (different to f-0305, f-0304)",
+			"subject": "Example/F0306/Q.1.4",
+			"skip-on": {
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
+				]
+			}
+		},
+		{
+			"type": "format",
 			"about": "#4 Has page, asc, imported content",
 			"subject": "Example/F0306/Q.2.1",
+			"skip-on": {
+				"elastic": "Different sorting behaviour, natural"
+			},
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smw-column-header\">A</div><ul><li>Antonov An-2.*<li>Antonov An-3 </li>.*<li>Antonov An-22 </li>.*<li>Antonov An-24 </li>.*<li>Antonov An-218 </li>.*<li>Antonov An-225 </li>"
@@ -104,11 +167,40 @@
 		},
 		{
 			"type": "format",
+			"about": "#4.elastic Has page, asc, imported content",
+			"subject": "Example/F0306/Q.2.1",
+			"skip-on": {
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">A</div><ul><li>Antonov An-2.*<li>Antonov An-218 </li>.*<li>Antonov An-22 </li>.*<li>Antonov An-225 </li>.*<li>Antonov An-24 </li>.*<li>Antonov An-3 </li>"
+				]
+			}
+		},
+		{
+			"type": "format",
 			"about": "#5 Has page, desc, imported content",
 			"subject": "Example/F0306/Q.2.2",
+			"skip-on": {
+				"elastic": "Different sorting behaviour, natural"
+			},
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smw-column-header\">A</div><ul><li>Antonov An-225.*<li>Antonov An-218 </li>.*<li>Antonov An-24 </li>.*<li>Antonov An-22 </li>.*<li>Antonov An-3 </li>.*<li>Antonov An-2 </li>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5.elastic Has page, desc, imported content",
+			"subject": "Example/F0306/Q.2.2",
+			"skip-on": {
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">A</div><ul><li>Antonov An-3.*<li>Antonov An-24 </li>.*<li>Antonov An-225 </li>.*<li>Antonov An-22 </li>.*<li>Antonov An-218 </li>.*<li>Antonov An-2 </li>"
 				]
 			}
 		}

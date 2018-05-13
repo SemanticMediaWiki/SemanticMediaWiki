@@ -4,6 +4,7 @@ namespace SMW\Query\Language;
 
 use Exception;
 use SMW\DataValueFactory;
+use SMW\Localizer;
 use SMW\DIWikiPage;
 
 /**
@@ -69,6 +70,26 @@ class ClassDescription extends Description {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param ClassDescription $description
+	 *
+	 * @return boolean
+	 */
+	public function isMergableDescription( ClassDescription $description ) {
+
+		if ( isset( $this->isNegation ) && isset( $description->isNegation ) ) {
+			return true;
+		}
+
+		if ( !isset( $this->isNegation ) && !isset( $description->isNegation ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * @param ClassDescription $description
 	 */
 	public function addDescription( ClassDescription $description ) {
@@ -90,8 +111,9 @@ class ClassDescription extends Description {
 		}
 
 		ksort( $hash );
+		$extra = ( isset( $this->isNegation ) ? '|' . $this->isNegation : '' );
 
-		return 'Cl:' . md5( implode( '|', array_keys( $hash ) ) . $this->hierarchyDepth );
+		return 'Cl:' . md5( implode( '|', array_keys( $hash ) ) . $this->hierarchyDepth . $extra );
 	}
 
 	/**
@@ -104,11 +126,13 @@ class ClassDescription extends Description {
 	public function getQueryString( $asValue = false ) {
 
 		$first = true;
+		$namespaceText = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
 
 		foreach ( $this->m_diWikiPages as $wikiPage ) {
 			$wikiValue = DataValueFactory::getInstance()->newDataValueByItem( $wikiPage, null );
 			if ( $first ) {
-				$result = '[[' . $wikiValue->getPrefixedText();
+			//	$result = '[[' . $wikiValue->getPrefixedText();
+				$result = '[[' . $namespaceText . ':' . ( isset( $this->isNegation ) ? '!' : '' ) . $wikiValue->getText();
 				$first = false;
 			} else {
 				$result .= '||' . $wikiValue->getText();

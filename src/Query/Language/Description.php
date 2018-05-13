@@ -194,4 +194,14 @@ abstract class Description {
 		return $this;
 	}
 
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->getQueryString();
+	}
+
 }
