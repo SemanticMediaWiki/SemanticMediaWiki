@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials;
 
 use ParamProcessor\Param;
 use SMW\Query\PrintRequest;
+use SMW\Query\RemoteRequest;
 use SMW\Query\QueryLinker;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\LinksWidget;
@@ -19,6 +20,7 @@ use SMW\Utils\HtmlModal;
 use SMW\ApplicationFactory;
 use SMWQueryProcessor as QueryProcessor;
 use SMWQueryResult as QueryResult;
+use SMW\Query\Result\StringResult;
 use SMWInfolink as Infolink;
 use SpecialPage;
 use SMWOutputs;
@@ -107,6 +109,14 @@ class SpecialAsk extends SpecialPage {
 
 		if ( !$GLOBALS['smwgQEnabled'] ) {
 			return $out->addHtml( ErrorWidget::disabled() );
+		}
+
+		// Administrative block when used in combination with the `RemoteRequest`.
+		// It is not to be mistaken with an auth block as you always can fetch
+		// the content from a public wiki via cURL.
+		if ( $request->getVal( 'request_type', '' ) !== '' && !$settings->isFlagSet( 'smwgRemoteReqFeatures', SMW_REMOTE_REQ_SEND_RESPONSE ) ) {
+			$out->disable();
+			return print RemoteRequest::SOURCE_DISABLED;
 		}
 
 		$this->init();
@@ -218,6 +228,7 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		$this->isBorrowedMode = $request->getCheck( 'bTitle' ) || $request->getCheck( 'btitle' );
+
 	}
 
 	/**
@@ -286,8 +297,15 @@ class SpecialAsk extends SpecialPage {
 						$query_result = $res->getCountValue();
 					}
 
+					// Don't send an ID for a raw type but for all others add one
+					// so that the `RemoteRequest` can respond appropriately and
+					// filter those back-ends that don't send a clean output.
+					if ( $request_type !== 'raw' ) {
+						$query_result .= RemoteRequest::REQUEST_ID;
+					}
+
 					return print $query_result;
-				} elseif ( $res->getCount() > 0 ) {
+				} elseif ( ( $res instanceof QueryResult && $res->getCount() > 0 ) || $res instanceof StringResult ) {
 					if ( $this->isEditMode ) {
 						$urlArgs->set( 'eq', 'yes' );
 					} elseif ( $hidequery ) {
@@ -328,11 +346,11 @@ class SpecialAsk extends SpecialPage {
 			$request_type = $this->getRequest()->getVal( 'request_type' );
 
 			if ( $request_type === 'embed' ) {
-				// Just send the furthers links, as embedded
-				echo $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
+				// Just send a furthers link output for an embedded remote request
+				echo $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML ) . RemoteRequest::REQUEST_ID;
 			} elseif ( $request_type === 'special_page' ) {
 				// Generate raw content when being requested from a remote special_page
-				echo $printer->getResult( $res, $this->params, SMW_OUTPUT_FILE );
+				echo $printer->getResult( $res, $this->params, SMW_OUTPUT_FILE ) . RemoteRequest::REQUEST_ID;
 			} else {
 				return $printer->outputAsFile( $res, $this->params );
 			}

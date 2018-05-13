@@ -297,6 +297,14 @@ class AskParserFunction {
 			$this->recursiveTextProcessor
 		);
 
+		$params = [];
+
+		foreach ( $this->params as $key => $value) {
+			$params[$key] = $value->getValue();
+		}
+
+		$query->setOption( 'query.params', $params );
+
 		$result = QueryProcessor::getResultFromQuery(
 			$query,
 			$this->params,

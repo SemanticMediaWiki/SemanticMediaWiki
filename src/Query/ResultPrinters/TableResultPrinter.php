@@ -324,11 +324,28 @@ class TableResultPrinter extends ResultPrinter {
 		return implode( $this->params['sep'], $values );
 	}
 
-	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
+	/**
+	 * @see ResultPrinter::getResources
+	 */
+	protected function getResources() {
 
-		$this->registerResources(
-			[ 'ext.smw.tableprinter' ], [ 'onoi.dataTables.styles' ]
-		);
+		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
+
+		if ( strpos( $class, 'datatable' ) === false ) {
+			return [];
+		}
+
+		return [
+			'modules' => [
+				'ext.smw.tableprinter'
+			],
+			'styles' => [
+				'onoi.dataTables.styles'
+			]
+		];
+	}
+
+	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
 
 		$tableAttrs['width'] = '100%';
 

@@ -103,6 +103,7 @@ class Settings extends Options {
 			'smwgQConceptCacheLifetime' => $GLOBALS['smwgQConceptCacheLifetime'],
 			'smwgQExpensiveThreshold' => $GLOBALS['smwgQExpensiveThreshold'],
 			'smwgQExpensiveExecutionLimit' => $GLOBALS['smwgQExpensiveExecutionLimit'],
+			'smwgRemoteReqFeatures' => $GLOBALS['smwgRemoteReqFeatures'],
 			'smwgQuerySources' => $GLOBALS['smwgQuerySources'],
 			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 			'smwgQSortFeatures' => $GLOBALS['smwgQSortFeatures'],
