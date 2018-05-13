@@ -124,7 +124,6 @@ class RemoteRequest implements QueryEngine {
 			$isDisabled = true;
 		}
 
-		/*
 		// Find out whether the source has send an ID and hereby produces an output
 		// that can be used by the `RemoteRequest`
 		if ( strpos( $result, self::REQUEST_ID ) === false ) {
@@ -133,7 +132,6 @@ class RemoteRequest implements QueryEngine {
 		} else {
 			$result = str_replace( self::REQUEST_ID, '', $result );
 		}
-		*/
 
 		// Add an information note depending on the context before the actual output
 		$callback = function( $result, array $options ) use( $isFromCache, $isDisabled, $source ) {
