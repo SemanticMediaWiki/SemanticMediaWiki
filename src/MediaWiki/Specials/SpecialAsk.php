@@ -99,6 +99,7 @@ class SpecialAsk extends SpecialPage {
 	public function execute( $p ) {
 
 		$this->setHeaders();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$out = $this->getOutput();
 		$request = $this->getRequest();
