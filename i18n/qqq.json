@@ -391,6 +391,8 @@
 	"smw-admin-supplementary-duplookup-helplink": "This is a link in a tooltip pointing to a help page. Only change the link in case a dedicated page in your language exists on <Semantic-MediaWiki.org> website.",
 	"smw-admin-supplementary-operational-statistics-cache-title": "This is the label of a link on special page \"SemanticMediaWiki\".",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "This is an item shown on special page \"Semantic MediaWiki\"\n\nParameters:\n* Holds a link to a subpage. The lable of the link is defined with {{Msg-mw|Smw-admin-supplementary-operational-statistics-cache-title}}",
+	"smw-admin-supplementary-elastic-settings-title": "{{Identical|Settings}}",
+	"smw-admin-supplementary-elastic-statistics-title": "{{Identical|Statistics}}",
 	"smw-list-count": "This is an informatory message.\n\nParameter:\n* $1 - holds the number of entries",
 	"smw-list-count-from-cache": "This is an informatory message.\n\nParameter:\n* $1 - holds the number of entries\n* $2 - holds a time stamp",
 	"smw-property-label-uniqueness": "This is an informatory message.\n\nParameters:\n* $1 - Holds the name of the property label",

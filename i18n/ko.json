@@ -323,6 +323,11 @@
 	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities",
 	"smw-admin-supplementary-operational-statistics-cache-title": "캐시 통계",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u>은(는) 캐시 관련 통계를 표시합니다",
+	"smw-admin-supplementary-elastic-title": "일래스틱서치",
+	"smw-admin-supplementary-elastic-settings-title": "설정",
+	"smw-admin-supplementary-elastic-mappings-title": "매핑",
+	"smw-admin-supplementary-elastic-nodes-title": "노드",
+	"smw-admin-supplementary-elastic-statistics-title": "통계",
 	"smw-list-count": "이 목록은 {{PLURAL:$1|항목}} $1개를 갖고 있습니다.",
 	"smw-list-count-from-cache": "이 목록은 {{PLURAL:$1|항목}} $1개를 갖고 있으며 $2(UTC)에 캐시에서 검색됐습니다.",
 	"smw-property-label-similarity-intro": "<u>$1</u> 문서는 기존 속성 레이블의 유사성을 계산합니다",
@@ -488,5 +493,7 @@
 	"smw-rule-page-type": "유형:",
 	"smw-rule-page-tag": "태그:",
 	"smw-ask-title-keyword-type": "키워드 검색",
-	"smw-ask-message-keyword-type": "이 검색은 <code><nowiki>$1</nowiki></code> 조건과 일치합니다."
+	"smw-ask-message-keyword-type": "이 검색은 <code><nowiki>$1</nowiki></code> 조건과 일치합니다.",
+	"smw-remote-source-unavailable": "원격 \"$1\" 대상으로 연결할 수 없습니다.",
+	"smw-remote-source-disabled": "'''$1''' 원본은 원격 요청 지원을 비활성화하였습니다!"
 }

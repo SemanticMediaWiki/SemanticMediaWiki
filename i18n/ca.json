@@ -341,6 +341,10 @@
 	"smw-admin-supplementary-operational-statistics-intro": "<u>$1</u> mostra un conjunt estès d'estadístiques",
 	"smw-admin-supplementary-duplookup-title": "Entitats duplicades",
 	"smw-admin-supplementary-operational-statistics-cache-title": "Estadístiques de la memòria cau",
+	"smw-admin-supplementary-elastic-functions": "Funcions disponibles",
+	"smw-admin-supplementary-elastic-settings-title": "Paràmetres",
+	"smw-admin-supplementary-elastic-indices-title": "Índexs",
+	"smw-admin-supplementary-elastic-statistics-title": "Estadístiques",
 	"smw-list-count": "La llista conté $1 {{PLURAL:$1|entrada|entrades}}.",
 	"smw-list-count-from-cache": "La llista conté $1 {{PLURAL:$1|entrada|entrades}} i s'ha recuperat de la memòria cau (UTC: $2).",
 	"smw-property-label-similarity-title": "Informe de similitud d'etiquetes de propietat",
@@ -549,5 +553,7 @@
 	"smw-rule-page-type": "Tipus:",
 	"smw-rule-page-tag": "Etiqueta:",
 	"smw-ask-title-keyword-type": "Cerca per paraula clau",
-	"smw-ask-message-keyword-type": "Aquesta cerca coincideix amb la condició <code><nowiki>$1</nowiki></code>."
+	"smw-ask-message-keyword-type": "Aquesta cerca coincideix amb la condició <code><nowiki>$1</nowiki></code>.",
+	"smw-remote-request-note": "El resultat s’obté des de l’origen remot '''$1'''. És probable que el contingut generat inclogui informació que no és al wiki actual.",
+	"smw-remote-request-note-cached": "El resultat s’'''emmagatzema dins la memòria cau''' des de l’origen remot '''$1'''. És probable que el contingut generat inclogui informació que no és al wiki actual."
 }
