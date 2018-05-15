@@ -75,8 +75,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Tulajdonság",
         "SMW_NS_PROPERTY_TALK": "Tulajdonságvita",
-        "SMW_NS_TYPE": "Típus",
-        "SMW_NS_TYPE_TALK": "Típusvita",
         "SMW_NS_CONCEPT": "Koncepció",
         "SMW_NS_CONCEPT_TALK": "Koncepcióvita"
     },

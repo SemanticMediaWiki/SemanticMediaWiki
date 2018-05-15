@@ -79,8 +79,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "خاصية",
         "SMW_NS_PROPERTY_TALK": "نقاش_الخاصية",
-        "SMW_NS_TYPE": "نوع",
-        "SMW_NS_TYPE_TALK": "نقاش_النوع",
         "SMW_NS_CONCEPT": "مبدأ",
         "SMW_NS_CONCEPT_TALK": "نقاش_المبدأ"
     },

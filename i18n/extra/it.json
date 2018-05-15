@@ -81,8 +81,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Proprietà",
         "SMW_NS_PROPERTY_TALK": "Discussione proprietà",
-        "SMW_NS_TYPE": "Tipo",
-        "SMW_NS_TYPE_TALK": "Discussione tipo",
         "SMW_NS_CONCEPT": "Concetto",
         "SMW_NS_CONCEPT_TALK": "Discussione concetto"
     },

@@ -73,8 +73,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Ominaisuus",
         "SMW_NS_PROPERTY_TALK": "Keskustelu_ominaisuudesta",
-        "SMW_NS_TYPE": "Tyyppi",
-        "SMW_NS_TYPE_TALK": "Keskustelu_tyypistä",
         "SMW_NS_CONCEPT": "Konsepti",
         "SMW_NS_CONCEPT_TALK": "Keskustelu_konseptista"
     },
