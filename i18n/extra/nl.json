@@ -83,8 +83,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Eigenschap",
         "SMW_NS_PROPERTY_TALK": "Overleg_eigenschap",
-        "SMW_NS_TYPE": "Type",
-        "SMW_NS_TYPE_TALK": "Overleg_type",
         "SMW_NS_CONCEPT": "Concept",
         "SMW_NS_CONCEPT_TALK": "Overleg_concept"
     },

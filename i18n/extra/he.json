@@ -78,8 +78,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "תכונה",
         "SMW_NS_PROPERTY_TALK": "שיחת_תכונה",
-        "SMW_NS_TYPE": "טיפוס",
-        "SMW_NS_TYPE_TALK": "שיחת_טיפוס",
         "SMW_NS_CONCEPT": "רעיון",
         "SMW_NS_CONCEPT_TALK": "שיחת_רעיון"
     },

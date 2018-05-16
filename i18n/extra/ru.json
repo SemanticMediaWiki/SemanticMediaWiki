@@ -82,8 +82,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Свойство",
         "SMW_NS_PROPERTY_TALK": "Обсуждение_свойства",
-        "SMW_NS_TYPE": "Тип",
-        "SMW_NS_TYPE_TALK": "Обсуждение_типа",
         "SMW_NS_CONCEPT": "Концепция",
         "SMW_NS_CONCEPT_TALK": "Обсуждение_концепции"
     },

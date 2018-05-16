@@ -79,8 +79,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Atrybut",
         "SMW_NS_PROPERTY_TALK": "Dyskusja_atrybutu",
-        "SMW_NS_TYPE": "Typ",
-        "SMW_NS_TYPE_TALK": "Dyskusja_typu",
         "SMW_NS_CONCEPT": "Pojęcie",
         "SMW_NS_CONCEPT_TALK": "Dyskusja pojęcia"
     },

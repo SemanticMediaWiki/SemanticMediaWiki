@@ -82,8 +82,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "属性",
         "SMW_NS_PROPERTY_TALK": "属性讨论",
-        "SMW_NS_TYPE": "类型",
-        "SMW_NS_TYPE_TALK": "类型讨论",
         "SMW_NS_CONCEPT": "概念",
         "SMW_NS_CONCEPT_TALK": "概念讨论"
     },

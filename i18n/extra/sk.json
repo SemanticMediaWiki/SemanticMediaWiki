@@ -78,8 +78,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Atribút",
         "SMW_NS_PROPERTY_TALK": "Diskusia o atribúte",
-        "SMW_NS_TYPE": "Typ",
-        "SMW_NS_TYPE_TALK": "Diskusia o type",
         "SMW_NS_CONCEPT": "Concept",
         "SMW_NS_CONCEPT_TALK": "Concept_talk"
     },

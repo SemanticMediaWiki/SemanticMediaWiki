@@ -95,8 +95,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Propietat",
         "SMW_NS_PROPERTY_TALK": "Propietat_Discussió",
-        "SMW_NS_TYPE": "Tipus",
-        "SMW_NS_TYPE_TALK": "Tipus_Discussió",
         "SMW_NS_CONCEPT": "Concepte",
         "SMW_NS_CONCEPT_TALK": "Concepte_Discussió",
         "SMW_NS_RULE": "Regla",

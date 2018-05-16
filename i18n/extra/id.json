@@ -77,8 +77,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Properti",
         "SMW_NS_PROPERTY_TALK": "Pembicaraan_Properti",
-        "SMW_NS_TYPE": "Tipe",
-        "SMW_NS_TYPE_TALK": "Pembicaraan_Tipe",
         "SMW_NS_CONCEPT": "Konsep",
         "SMW_NS_CONCEPT_TALK": "Pembicaraan_Konsep"
     },

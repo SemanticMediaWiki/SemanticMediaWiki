@@ -91,8 +91,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Egenskap",
         "SMW_NS_PROPERTY_TALK": "Egenskap-diskusjon",
-        "SMW_NS_TYPE": "Type",
-        "SMW_NS_TYPE_TALK": "Type-diskusjon",
         "SMW_NS_CONCEPT": "Konsept",
         "SMW_NS_CONCEPT_TALK": "Konsept-diskusjon"
     },

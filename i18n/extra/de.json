@@ -122,8 +122,6 @@
     "namespaces": {
         "SMW_NS_PROPERTY": "Attribut",
         "SMW_NS_PROPERTY_TALK": "Attribut_Diskussion",
-        "SMW_NS_TYPE": "Datentyp",
-        "SMW_NS_TYPE_TALK": "Datentyp_Diskussion",
         "SMW_NS_CONCEPT": "Konzept",
         "SMW_NS_CONCEPT_TALK": "Konzept_Diskussion",
         "SMW_NS_RULE": "Regel",
