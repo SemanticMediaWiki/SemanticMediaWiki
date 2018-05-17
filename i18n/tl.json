@@ -212,6 +212,7 @@
 	"smw-admin-smwhomepage": "Ang buong kasulatang pantagagamit ng Semantikong Mediawiki ay nasa <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Maaaring iulat ang mga depekto/sira (''bug'') sa <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-admin-questions": "Kung mayroon ka pang karagdagang mga katanungan o mga mungkahi, makilahok sa usapang nasa <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Pangmadlang talakayan ng tagagamit ng MediaWiking Semantiko</a>.",
+	"smw-admin-supplementary-elastic-functions": "Mapagpipiliang mga tungkulin",
 	"smw_adminlinks_datastructure": "Kayarian ng dato",
 	"smw_adminlinks_displayingdata": "Pagpapakita ng dato",
 	"smw_adminlinks_inlinequerieshelp": "Tulong sa mga katanungang nasa guhit",
@@ -237,5 +238,6 @@
 	"smw-format-datatable-loadingrecords": "Ikinakasa...",
 	"smw-format-datatable-search": "Maghanap:",
 	"smw-format-datatable-last": "Dulo",
-	"smw-help": "Makatulong"
+	"smw-help": "Makatulong",
+	"smw-remote-source-unavailable": "Hindi mai-'connect' sa 'remote \"$1\" target'."
 }
