@@ -205,7 +205,7 @@
 	"smw-browse-hide-group": "Piilota ryhmät",
 	"smw_inverse_label_default": "$1 /",
 	"pageproperty": "Sivun ominaisuuksien haku",
-	"smw_pp_docu": "Etsi ominaisuuden kaikkia arvoja joltain tietyltä sivulta.\nSyötä sekä sivu että ominaisuus.",
+	"smw_pp_docu": "Syötä sivu ja ominaisuus, tai vain ominaisuus hakeaksesi kaikki määrätyt arvot.",
 	"smw_pp_from": "Sivu:",
 	"smw_pp_type": "Ominaisuus:",
 	"smw_pp_submit": "Hae",
@@ -232,7 +232,7 @@
 	"smw_smwadmin_datarefresh": "Tietojen uudelleenluonti",
 	"smw_smwadmin_datarefreshdocu": "Semantic MediaWikin data voidaan palauttaa wikin nykyisen sisällön avulla.\nTämä voi olla hyödyllistä, kun halutaan korjata tai päivittää dataa, jonka sisäinen muoto on muuttunut jonkin ohjelmistopäivityksen takia.\nPäivitys etenee sivu sivulta eikä valmistu nopeasti.\nAlla näkyy päivityksen eteneminen ja mahdollistaa päivitysten käynnistämisen tai pysäyttämisen (paitsi jos sivuston ylläpitäjä on ottanut toiminnon pois käytöstä).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Päivitys on jo käynnissä.</strong>\nOn normaalia, että päivitys etenee hitaasti, sillä tietoja päivitetään pienissä osissa silloin kuin wikin sivuja ladataan.\nJos haluat päivityksen valmistuvan nopeammin, käytä MediaWikin ylläpitokomentosarjaa <code>runJobs.php</code> (käytä valitsinta <code>--maxjobs 1000</code> rajoittaaksesi yhdessä erässä tehtävien päivitysten määrää).\nNykyisen päivityksen arvioitu eteneminen:",
-	"smw_smwadmin_datarefreshbutton": "Aloita tietojen päivitys",
+	"smw_smwadmin_datarefreshbutton": "Ajoita tietojen uudistaminen",
 	"smw_smwadmin_datarefreshstop": "Lopeta tämä päivitys",
 	"smw_smwadmin_datarefreshstopconfirm": "Kyllä, olen {{GENDER:$1|varma}}.",
 	"smw-admin-support": "Tuen hankkiminen",
@@ -241,6 +241,8 @@
 	"smw-admin-bugsreport": "Ohjelmistovirheet voi raportoida <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHubiin</a>.",
 	"smw-admin-questions": "Jos sinulla on kysymyksiä tai ehdotuksia, liity keskusteluun <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Semanttisen MediaWikin käyttäjäfoorumilla</a>.",
 	"smw-admin-supplementary-settings-title": "Määritysasetukset",
+	"smw-admin-supplementary-elastic-settings-title": "Asetukset",
+	"smw-admin-supplementary-elastic-statistics-title": "Tilastot",
 	"smw-property-label-similarity-threshold": "Kynnys:",
 	"smw_adminlinks_datastructure": "Tietorakenne",
 	"smw_adminlinks_inlinequerieshelp": "Upotettujen kyselyjen ohje",
@@ -312,5 +314,6 @@
 	"smw-types-title": "Tyyppi: $1",
 	"smw-rule-page-definition": "Määritelmä",
 	"smw-rule-page-description": "Kuvaus:",
-	"smw-rule-page-type": "Tyyppi:"
+	"smw-rule-page-type": "Tyyppi:",
+	"smw-ask-title-keyword-type": "Avainsanahaku"
 }
