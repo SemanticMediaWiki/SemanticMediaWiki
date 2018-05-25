@@ -36,7 +36,8 @@
 			"Ivanhercaz",
 			"Cethos",
 			"Bfvale",
-			"Ohlila"
+			"Ohlila",
+			"Amitie 10g"
 		]
 	},
 	"smw-desc": "Hace tu wiki más accesible para las máquinas para las máquinas y las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -71,6 +72,7 @@
 	"smw_printername_embedded": "Incrustar el contenido de la página",
 	"smw_printername_json": "Exportar a JSON",
 	"smw_printername_list": "Lista",
+	"smw_printername_plainlist": "Lista plana",
 	"smw_printername_ol": "Enumeración",
 	"smw_printername_ul": "Desglose",
 	"smw_printername_table": "Tabla",
