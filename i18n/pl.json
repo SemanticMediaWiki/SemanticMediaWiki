@@ -322,6 +322,7 @@
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u> wyświetla statystyki dotyczące pamięci cache",
 	"smw-admin-supplementary-elastic-functions": "Dostępne funkcje",
 	"smw-admin-supplementary-elastic-settings-title": "Ustawienia",
+	"smw-admin-supplementary-elastic-mappings-title": "Mapowania",
 	"smw-admin-supplementary-elastic-indices-title": "Wskaźniki",
 	"smw-admin-supplementary-elastic-statistics-title": "Statystyki",
 	"smw-property-label-similarity-threshold": "Próg:",
