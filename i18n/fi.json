@@ -257,7 +257,7 @@
 	"prefs-general-options": "Yleiset asetukset",
 	"prefs-ask-options": "Semanttiset hakuvalinnat",
 	"smw-prefs-ask-options-tooltip-display": "Näytä parametri työkaluvihjeenä",
-	"smw-prefs-ask-options-collapsed-default": "Mahdollista valintaruudun laajentaminen oletusarvoisesti",
+	"smw-prefs-ask-options-collapsed-default": "Ota käyttöön valintaruudun laajentaminen oletusarvoisesti",
 	"smw-prefs-general-options-disable-editpage-info": "Poista johdantoteksti käytöstä muokkaussivulla",
 	"smw-ui-tooltip-title-property": "Ominaisuus",
 	"smw-ui-tooltip-title-quantity": "Yksikkömuunnos",
