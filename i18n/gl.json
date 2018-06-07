@@ -482,7 +482,9 @@
 	"smw-editpage-concept-annotation-enabled": "Este concepto pode ampliarse usando a función de análise #concept. Para unha descrición de como usar #concept, consulte a páxina de axuda sobre os [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceptos].",
 	"smw-search-syntax-support": "Nas procuras pódese utilizar a  [https://www.semantic-mediawiki.org/wiki/Help:Semantic_searchsintaxe de consultas semánticas] para axudar a atopar correspondencias usando a MediaWiki Semántica.",
 	"smw-search-input-assistance": "O [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance asistente de entrada] está activado tamén, para permitir unha preselección de entidades dispoñibles.",
+	"smw-search-input": "Entrada e procura",
 	"smw-search-syntax": "Sintaxe",
+	"smw-search-profile": "Extendida",
 	"log-name-smw": "Rexisto de MediaWiki Semántica",
 	"log-show-hide-smw": "Rexistro de MediaWiki Semántica $1",
 	"log-description-smw": "Actividades dos [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos de evento habilitados]  que foron informados pola MediaWiki Semántica e os seus compoñentes.",
@@ -677,11 +679,13 @@
 	"smw-processing": "Procesando...",
 	"smw-redirect-target-unresolvable": "O destino é irresoluble polo motivo «$1»",
 	"smw-types-title": "Tipo: $1",
+	"smw-rule-error-schema": "Erro de esquema ($1)",
 	"smw-rule-page-definition": "Definición",
 	"smw-rule-page-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Rule/Type/$1",
 	"smw-rule-page-description": "Descrición:",
 	"smw-rule-page-type": "Tipo:",
 	"smw-rule-page-tag": "Etiqueta:",
 	"smw-ask-title-keyword-type": "Procura de palabras clave",
-	"smw-ask-message-keyword-type": "Esta procura coincide coa condición <code><nowiki>$1</nowiki></code>."
+	"smw-ask-message-keyword-type": "Esta procura coincide coa condición <code><nowiki>$1</nowiki></code>.",
+	"smw-remote-source-unavailable": "Non foi posible establecer conexión co destino remoto \"$1\"."
 }
