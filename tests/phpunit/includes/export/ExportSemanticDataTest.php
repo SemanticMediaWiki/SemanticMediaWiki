@@ -12,7 +12,6 @@ use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\Utils\Validators\ExportDataValidator;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMWExpResource as ExpResource;
 
 /**
  * @covers \SMWExporter

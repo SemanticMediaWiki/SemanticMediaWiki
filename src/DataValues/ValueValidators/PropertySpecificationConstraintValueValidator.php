@@ -3,8 +3,6 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMWDataValue as DataValue;
-use SMW\ApplicationFactory;
-use SMW\DIProperty;
 
 /**
  * @private

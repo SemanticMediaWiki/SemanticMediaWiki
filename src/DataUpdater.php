@@ -2,13 +2,6 @@
 
 namespace SMW;
 
-use SMW\Store;
-use SMW\SemanticData;
-use SMW\ApplicationFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\EventHandler;
-use SMW\PropertyChangePropagationNotifier;
 use Title;
 use User;
 use WikiPage;

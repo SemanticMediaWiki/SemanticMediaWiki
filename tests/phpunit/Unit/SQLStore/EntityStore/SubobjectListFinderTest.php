@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\SQLStore\EntityStore\SubobjectListFinder;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SubobjectListFinder

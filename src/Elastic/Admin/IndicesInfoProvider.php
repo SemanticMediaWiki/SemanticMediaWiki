@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic\Admin;
 
-use SMW\Message;
 use Html;
+use SMW\Message;
 use WebRequest;
 
 /**

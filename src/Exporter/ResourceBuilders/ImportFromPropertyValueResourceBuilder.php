@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
 use SMWDIBlob as DIBlob;
-use SMWImportValue  as ImportValue;
+use SMWExpData as ExpData;
+use SMWImportValue as ImportValue;
 
 /**
  * @private

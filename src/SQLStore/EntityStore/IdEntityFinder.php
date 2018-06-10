@@ -2,16 +2,12 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
-use SMW\HashBuilder;
-use SMW\ApplicationFactory;
-use SMW\MediaWiki\Database;
-use SMW\IteratorFactory;
-use SMW\PropertyRegistry;
-use SMW\RequestOptions;
 use Onoi\Cache\Cache;
-use SMW\Store;
+use SMW\DIWikiPage;
+use SMW\IteratorFactory;
+use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

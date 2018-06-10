@@ -2,15 +2,15 @@
 
 namespace SMW\SQLStore;
 
-use SMW\CompatibilityMode;
-use SMW\Options;
-use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
-use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use Hooks;
+use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
-use Onoi\MessageReporter\MessageReporter;
+use SMW\CompatibilityMode;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use SMW\Options;
 use SMW\Utils\File;
-use Hooks;
 
 /**
  * @private

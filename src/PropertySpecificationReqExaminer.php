@@ -2,13 +2,9 @@
 
 namespace SMW;
 
-use SMW\SemanticData;
-use SMW\Store;
-use SMW\DIProperty;
-use SMW\DataItemFactory;
-use SMWDataItem as DataItem;
 use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
 use SMW\Protection\ProtectionValidator;
+use SMWDataItem as DataItem;
 
 /**
  * Examines codified requirements for listed types of property specifications which

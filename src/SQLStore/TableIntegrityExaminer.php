@@ -2,16 +2,15 @@
 
 namespace SMW\SQLStore;
 
-use Onoi\MessageReporter\NullMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
-use SMW\SQLStore\TableBuilder\Table;
-use SMWDataItem as DataItem;
+use Onoi\MessageReporter\NullMessageReporter;
 use SMW\DIProperty;
-use SMWSql3SmwIds;
-use SMW\PropertyRegistry;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Collator;
+use SMW\PropertyRegistry;
+use SMW\SQLStore\TableBuilder\Table;
+use SMWSql3SmwIds;
 
 /**
  * @private

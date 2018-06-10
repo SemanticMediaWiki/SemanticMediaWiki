@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
-use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Options;
+use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\TraversalPropertyLookup

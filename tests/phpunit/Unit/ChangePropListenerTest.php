@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\ChangePropListener;
-use SMW\Tests\TestEnvironment;
 use SMW\DIProperty;
 
 /**

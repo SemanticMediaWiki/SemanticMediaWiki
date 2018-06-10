@@ -4,10 +4,10 @@ namespace SMW\Tests\Query;
 
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryEngine;
-use SMW\StoreAware;
 use SMW\Store;
-use SMWQuery as Query;
+use SMW\StoreAware;
 use SMW\Tests\TestEnvironment;
+use SMWQuery as Query;
 
 /**
  * @covers SMW\Query\QuerySourceFactory

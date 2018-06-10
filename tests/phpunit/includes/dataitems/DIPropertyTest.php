@@ -3,8 +3,8 @@
 namespace SMW\Tests;
 
 use SMW\DIProperty;
-use SMW\PropertyRegistry;
 use SMW\DIWikiPage;
+use SMW\PropertyRegistry;
 use SMWDataItem as DataItem;
 
 /**

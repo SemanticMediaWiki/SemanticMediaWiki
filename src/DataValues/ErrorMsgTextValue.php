@@ -2,10 +2,10 @@
 
 namespace SMW\DataValues;
 
+use SMW\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
-use SMW\Message;
 
 /**
  * Handling of a language dependent error message encoded by Message::encode.

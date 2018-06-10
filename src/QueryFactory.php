@@ -4,16 +4,15 @@ namespace SMW;
 
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
+use SMW\Query\Parser as QueryParser;
+use SMW\Query\Parser\DescriptionProcessor;
+use SMW\Query\Parser\LegacyParser;
+use SMW\Query\Parser\Tokenizer;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\ProfileAnnotatorFactory;
 use SMW\Query\QueryCreator;
-use SMW\Query\Parser\LegacyParser;
-use SMW\Query\Parser\DescriptionProcessor;
-use SMW\Query\Parser\Tokenizer;
 use SMW\Query\QueryToken;
-use SMW\Applicationfactory;
 use SMWQuery as Query;
-use SMW\Query\Parser as QueryParser;
 use SMWQueryResult as QueryResult;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
-use SMW\CacheFactory;
-use Onoi\Cache\NullCache;
 use Onoi\Cache\Cache;
+use Onoi\Cache\NullCache;
+use SMW\CacheFactory;
 
 /**
  * @covers \SMW\CacheFactory

@@ -6,14 +6,14 @@ use Html;
 use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DataValues\StringValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\ProcessingErrorMsgHandler;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\ProcessingErrorMsgHandler;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
-use SMW\DataValues\StringValue;
 
 /**
  * @license GNU GPL v2+

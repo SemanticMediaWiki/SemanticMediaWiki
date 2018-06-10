@@ -2,9 +2,9 @@
 
 namespace SMW\Services;
 
+use ImportSource;
 use Onoi\CallbackContainer\ContainerBuilder;
 use SMW\Importer\ContentIterator;
-use ImportSource;
 
 /**
  * @private

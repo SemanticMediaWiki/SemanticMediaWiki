@@ -2,30 +2,30 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use Html;
 use ParamProcessor\Param;
-use SMW\Query\PrintRequest;
-use SMW\Query\RemoteRequest;
-use SMW\Query\QueryLinker;
-use SMW\MediaWiki\Specials\Ask\ErrorWidget;
-use SMW\MediaWiki\Specials\Ask\LinksWidget;
-use SMW\MediaWiki\Specials\Ask\ParametersWidget;
-use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
-use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
-use SMW\MediaWiki\Specials\Ask\HelpWidget;
-use SMW\MediaWiki\Specials\Ask\SortWidget;
-use SMW\MediaWiki\Specials\Ask\FormatListWidget;
-use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
-use SMW\MediaWiki\Specials\Ask\UrlArgs;
-use SMW\Utils\HtmlModal;
 use SMW\ApplicationFactory;
-use SMWQueryProcessor as QueryProcessor;
-use SMWQueryResult as QueryResult;
+use SMW\MediaWiki\Specials\Ask\ErrorWidget;
+use SMW\MediaWiki\Specials\Ask\FormatListWidget;
+use SMW\MediaWiki\Specials\Ask\HelpWidget;
+use SMW\MediaWiki\Specials\Ask\LinksWidget;
+use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
+use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
+use SMW\MediaWiki\Specials\Ask\ParametersWidget;
+use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
+use SMW\MediaWiki\Specials\Ask\SortWidget;
+use SMW\MediaWiki\Specials\Ask\UrlArgs;
+use SMW\Query\PrintRequest;
+use SMW\Query\QueryLinker;
+use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
+use SMW\Utils\HtmlModal;
 use SMWInfolink as Infolink;
-use SpecialPage;
 use SMWOutputs;
 use SMWQuery;
-use Html;
+use SMWQueryProcessor as QueryProcessor;
+use SMWQueryResult as QueryResult;
+use SpecialPage;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing

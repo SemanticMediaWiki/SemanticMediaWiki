@@ -3,13 +3,13 @@
 namespace SMW\Query;
 
 use InvalidArgumentException;
+use SMW\DataValues\PropertyChainValue;
 use SMW\Localizer;
+use SMW\Query\PrintRequest\Deserializer;
+use SMW\Query\PrintRequest\Formatter;
+use SMW\Query\PrintRequest\Serializer;
 use SMWDataValue;
 use SMWPropertyValue as PropertyValue;
-use SMW\DataValues\PropertyChainValue;
-use SMW\Query\PrintRequest\Deserializer;
-use SMW\Query\PrintRequest\Serializer;
-use SMW\Query\PrintRequest\Formatter;
 use Title;
 
 /**

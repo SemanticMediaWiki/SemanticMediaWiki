@@ -3,15 +3,11 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use Title;
-use SMW\RequestOptions;
-use SMW\Utils\TempFile;
-use SMWExporter as Exporter;
+use SMW\DIWikiPage;
 use SMW\SQLStore\ChangePropagationEntityFinder;
-use SMW\ParserData;
-use RuntimeException;
+use SMWExporter as Exporter;
+use Title;
 
 /**
  * `ChangePropagationDispatchJob` dispatches update jobs via `ChangePropagationUpdateJob`

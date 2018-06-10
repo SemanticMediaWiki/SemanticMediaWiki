@@ -2,16 +2,16 @@
 
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
+use RuntimeException;
 use SMW\Query\Language\ConceptDescription;
-use SMW\Query\Language\Description;
 use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
+use SMW\Query\Parser as QueryParser;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMWSQLStore3;
-use SMW\Query\Parser as QueryParser;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

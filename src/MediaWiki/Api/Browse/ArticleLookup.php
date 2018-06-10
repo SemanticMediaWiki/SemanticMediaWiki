@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\MediaWiki\Database;
 use SMW\Localizer;
+use SMW\MediaWiki\Database;
 
 /**
  * @license GNU GPL v2+

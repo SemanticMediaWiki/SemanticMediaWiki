@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SkinTemplate ;
+use SkinTemplate;
 use SMW\MediaWiki\JobQueue;
 
 /**

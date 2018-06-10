@@ -2,8 +2,8 @@
 
 namespace SMW\Query\PrintRequest;
 
-use SMW\Query\PrintRequest;
 use SMW\Localizer;
+use SMW\Query\PrintRequest;
 
 /**
  * @license GNU GPL v2+

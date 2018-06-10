@@ -2,23 +2,18 @@
 
 namespace SMW\MediaWiki\Search;
 
-use SMW;
-use SpecialSearch;
 use Html;
-use Xml;
-use Title;
-use WikiPage;
 use MWNamespace;
-use SMW\Message;
-use SMW\Store;
-use SMW\DIProperty;
-use SMWDIBlob as DIBlob;
-use SMW\RequestOptions;
-use SMW\ProcessingErrorMsgHandler;
-use SMW\Highlighter;
+use SMW;
 use SMW\MediaWiki\Search\Form\FormsBuilder;
 use SMW\MediaWiki\Search\Form\FormsFactory;
 use SMW\MediaWiki\Search\Form\FormsFinder;
+use SMW\ProcessingErrorMsgHandler;
+use SMW\Store;
+use SpecialSearch;
+use Title;
+use WikiPage;
+use Xml;
 
 /**
  * @license GNU GPL v2+

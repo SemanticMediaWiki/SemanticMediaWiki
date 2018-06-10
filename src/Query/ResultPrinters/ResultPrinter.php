@@ -4,17 +4,17 @@ namespace SMW\Query\ResultPrinters;
 
 use Linker;
 use ParamProcessor\ParamDefinition;
-use SMW\Parser\RecursiveTextProcessor;
 use ParserOptions;
 use Sanitizer;
+use SMW\Message;
+use SMW\Parser\RecursiveTextProcessor;
+use SMW\Query\Result\StringResult;
+use SMW\Query\ResultPrinter as IResultPrinter;
 use SMWInfolink;
+use SMWOutputs as ResourceManager;
 use SMWQuery;
 use SMWQueryResult as QueryResult;
-use SMW\Message;
-use SMWOutputs as ResourceManager;
 use Title;
-use SMW\Query\ResultPrinter as IResultPrinter;
-use SMW\Query\Result\StringResult;
 
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements

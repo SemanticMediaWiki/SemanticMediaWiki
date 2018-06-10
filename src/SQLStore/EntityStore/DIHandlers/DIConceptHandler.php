@@ -2,12 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DIHandlers;
 
-use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
+use SMW\DIConcept;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
-use SMW\DIConcept;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMWDataItem as DataItem;
 
 /**
  * This class implements Store access to Concept data items.

@@ -2,10 +2,10 @@
 
 namespace SMW;
 
+use SMW\DataValues\AllowsPatternValue;
+use SMW\Protection\ProtectionValidator;
 use Title;
 use User;
-use SMW\Protection\ProtectionValidator;
-use SMW\DataValues\AllowsPatternValue;
 
 /**
  * @license GNU GPL v2+

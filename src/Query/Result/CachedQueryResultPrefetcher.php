@@ -3,18 +3,18 @@
 namespace SMW\Query\Result;
 
 use Onoi\BlobStore\BlobStore;
-use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMW\Store;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
+use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\QueryEngine;
 use SMW\QueryFactory;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use SMW\Store;
 use SMW\Utils\BufferedStatsdCollector;
 use SMW\Utils\Timer;
-use SMW\ApplicationFactory;
-use RuntimeException;
+use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
 
 /**
  * The prefetcher only caches the subject list from a computed a query

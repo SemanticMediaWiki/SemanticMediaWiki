@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Store;
-use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
-use SMW\DIProperty;
-use SMW\Message;
 use Html;
 use Page;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\Message;
+use SMW\Store;
 use Title;
 
 /**

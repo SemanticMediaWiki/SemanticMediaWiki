@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
-use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
-use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
 use SMW\SemanticData;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\ContentsBuilder

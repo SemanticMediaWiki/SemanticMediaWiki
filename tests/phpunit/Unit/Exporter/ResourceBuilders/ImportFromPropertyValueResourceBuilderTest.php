@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Exporter\ResourceBuilders;
 
-use SMW\Exporter\ResourceBuilders\ImportFromPropertyValueResourceBuilder;
 use SMW\DataItemFactory;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\ResourceBuilders\ImportFromPropertyValueResourceBuilder;
 use SMW\Tests\TestEnvironment;
 use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpNsResource;
 
 /**
  * @covers \SMW\Exporter\ResourceBuilders\ImportFromPropertyValueResourceBuilder

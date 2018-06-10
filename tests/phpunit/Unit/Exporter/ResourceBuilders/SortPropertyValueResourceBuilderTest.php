@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Exporter\ResourceBuilders;
 
-use SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder;
 use SMW\DataItemFactory;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder;
+use SMW\Serializers\ExpDataSerializer;
 use SMW\Tests\TestEnvironment;
 use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Serializers\ExpDataSerializer;
 
 /**
  * @covers \SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder

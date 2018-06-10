@@ -4,8 +4,8 @@ namespace SMW\Tests\Utils;
 
 use Parser;
 use ParserOptions;
-use SMW\Tests\Utils\Mock\MockSuperUser;
 use SMW\DIWikiPage;
+use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 use User;
 

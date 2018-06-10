@@ -3,14 +3,12 @@
 namespace SMW\MediaWiki\Specials\PageProperty;
 
 use Html;
-use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\Options;
 use SMW\Message;
+use SMW\Options;
 use SMWInfolink as Infolink;
 
 /**

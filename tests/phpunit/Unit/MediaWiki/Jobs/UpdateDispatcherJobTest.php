@@ -7,8 +7,8 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\SemanticData;
-use Title;
 use SMW\Tests\TestEnvironment;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateDispatcherJob

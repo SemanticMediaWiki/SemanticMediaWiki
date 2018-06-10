@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use Exception;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIWikiPage;
@@ -12,7 +13,6 @@ use SMW\Options;
 use SMW\Store;
 use SMWQueryProcessor;
 use Title;
-use Exception;
 
 /**
  * @license GNU GPL v2+

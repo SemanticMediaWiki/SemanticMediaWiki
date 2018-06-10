@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\Tests\TestEnvironment;
-use SMW\DIProperty;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleDelete

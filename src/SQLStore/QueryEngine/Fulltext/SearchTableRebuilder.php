@@ -4,10 +4,9 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\MediaWiki\Database;
 use SMW\DIProperty;
+use SMW\MediaWiki\Database;
 use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GNU GPL v2+

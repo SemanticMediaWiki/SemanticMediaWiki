@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use DatabaseBase;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
-use SMW\SQLStore\TableBuilder as TableBuilderInterface;
-use DatabaseBase;
 use RuntimeException;
+use SMW\SQLStore\TableBuilder as TableBuilderInterface;
 
 /**
  * @license GNU GPL v2+

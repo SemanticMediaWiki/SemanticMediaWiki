@@ -2,11 +2,11 @@
 
 namespace SMW\Iterators;
 
-use IteratorIterator;
-use Iterator;
 use ArrayIterator;
-use RuntimeException;
 use Countable;
+use Iterator;
+use IteratorIterator;
+use RuntimeException;
 
 /**
  * This iterator is expected to be called in combination with another iterator

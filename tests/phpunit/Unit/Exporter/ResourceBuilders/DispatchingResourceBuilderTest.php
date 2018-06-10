@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Exporter\ResourceBuilders;
 
-use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
-use SMW\Exporter\ResourceBuilder;
 use SMW\DataItemFactory;
+use SMW\Exporter\ResourceBuilder;
+use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
 
 /**
  * @covers \SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder

@@ -3,10 +3,10 @@
 namespace SMW;
 
 use Onoi\HttpRequest\HttpRequest;
-use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
-use SMW\MediaWiki\Jobs\JobFactory;
-use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use SMW\MediaWiki\Jobs\JobFactory;
+use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
 use Title;
 
 /**

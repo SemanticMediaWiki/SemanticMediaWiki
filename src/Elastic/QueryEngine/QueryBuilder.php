@@ -3,30 +3,27 @@
 namespace SMW\Elastic\QueryEngine;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\ConceptDescription;
-use SMW\Query\Language\NamespaceDescription;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\Description;
 use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMW\Store;
-use SMW\Options;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
+use SMW\DIWikiPage;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\DisjunctionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use RuntimeException;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
+use SMW\Options;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\ConceptDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ValueDescription;
+use SMW\Store;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2+

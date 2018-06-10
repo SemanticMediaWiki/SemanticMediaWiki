@@ -3,9 +3,9 @@
 namespace SMW\DataValues\Number;
 
 use InvalidArgumentException;
-use SMWNumberValue as NumberValue;
-use SMW\Options;
 use SMW\Message;
+use SMW\Options;
+use SMWNumberValue as NumberValue;
 
 /**
  * @license GNU GPL v2+

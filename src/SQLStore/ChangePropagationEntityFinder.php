@@ -2,15 +2,11 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\RequestOptions;
-use SMW\IteratorFactory;
-use SMW\DataTypeRegistry;
-use SMWDataItem as DataItem;
-use SMW\ApplicationFactory;
 use RuntimeException;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\IteratorFactory;
+use SMW\Store;
 
 /**
  * Find all entities related to a change propagation (only expected

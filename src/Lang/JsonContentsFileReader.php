@@ -2,9 +2,9 @@
 
 namespace SMW\Lang;
 
-use RuntimeException;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
+use RuntimeException;
 use SMW\Utils\ErrorCodeFormatter;
 
 /**

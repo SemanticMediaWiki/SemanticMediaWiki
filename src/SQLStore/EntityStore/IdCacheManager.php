@@ -2,10 +2,9 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIProperty;
+use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

@@ -2,15 +2,15 @@
 
 namespace SMW\Protection;
 
-use SMW\Message;
-use SMW\SemanticData;
-use SMW\DIProperty;
-use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
-use SMW\MediaWiki\Hooks\ArticleProtectComplete;
-use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
-use WikiPage;
+use Psr\Log\LoggerInterface;
+use SMW\DIProperty;
+use SMW\MediaWiki\Hooks\ArticleProtectComplete;
+use SMW\Message;
+use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
+use SMW\SemanticData;
 use User;
+use WikiPage;
 
 /**
  * @license GNU GPL v2+

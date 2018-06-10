@@ -5,7 +5,6 @@ namespace SMW\SPARQLStore\RepositoryConnectors;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
-use SMWSparqlResultParser as SparqlResultParser;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**

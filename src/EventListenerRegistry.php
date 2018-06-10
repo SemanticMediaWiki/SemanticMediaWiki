@@ -3,8 +3,8 @@
 namespace SMW;
 
 use Onoi\EventDispatcher\EventListenerCollection;
-use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
 use SMW\Query\QueryComparator;
+use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
 use SMWExporter as Exporter;
 
 /**

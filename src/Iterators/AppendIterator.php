@@ -3,10 +3,10 @@
 namespace SMW\Iterators;
 
 use ArrayIterator;
-use Traversable;
-use Iterator;
 use Countable;
+use Iterator;
 use RuntimeException;
+use Traversable;
 
 /**
  * @see Guzzle::AppendIterator

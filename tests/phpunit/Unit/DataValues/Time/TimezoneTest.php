@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\DataValues\Time;
 
-use SMW\DataItemFactory;
-use SMW\DataValues\Time\Timezone;
 use DateTime;
+use SMW\DataValues\Time\Timezone;
 
 /**
  * @covers \SMW\DataValues\Time\Timezone

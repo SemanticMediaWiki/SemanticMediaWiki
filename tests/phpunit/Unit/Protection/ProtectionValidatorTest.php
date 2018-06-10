@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Protection;
 
-use SMW\Protection\ProtectionValidator;
 use SMW\DataItemFactory;
+use SMW\Protection\ProtectionValidator;
 
 /**
  * @covers \SMW\Protection\ProtectionValidator

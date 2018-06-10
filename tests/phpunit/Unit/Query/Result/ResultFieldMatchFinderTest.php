@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Query\Result;
 
-use SMW\Query\Result\ResultFieldMatchFinder;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
+use SMW\Query\Result\ResultFieldMatchFinder;
 
 /**
  * @covers SMW\Query\Result\ResultFieldMatchFinder

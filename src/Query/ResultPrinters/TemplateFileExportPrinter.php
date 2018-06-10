@@ -3,8 +3,8 @@
 namespace SMW\Query\ResultPrinters;
 
 use Sanitizer;
-use SMWQueryResult as QueryResult;
 use SMW\ApplicationFactory;
+use SMWQueryResult as QueryResult;
 
 /**
  * Exports data as file in a format that is defined by its invoked templates.

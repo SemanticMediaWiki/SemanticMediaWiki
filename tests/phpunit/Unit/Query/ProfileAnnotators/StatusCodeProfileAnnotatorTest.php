@@ -3,8 +3,8 @@
 namespace SMW\Tests\Query\ProfileAnnotators;
 
 use SMW\DIWikiPage;
-use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
+use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
 use SMW\Tests\TestEnvironment;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;

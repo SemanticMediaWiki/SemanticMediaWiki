@@ -7,9 +7,9 @@ use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\MessageFormatter;
 use SMW\ParserData;
+use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\ParserParameterFormatter;
 use SMW\Subobject;
-use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 

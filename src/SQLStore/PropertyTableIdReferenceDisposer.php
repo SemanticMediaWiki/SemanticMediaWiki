@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore;
 
-use SMW\EventHandler;
-use SMW\DIWikiPage;
-use SMW\Iterators\ResultIterator;
 use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
+use SMW\EventHandler;
+use SMW\Iterators\ResultIterator;
 
 /**
  * @private

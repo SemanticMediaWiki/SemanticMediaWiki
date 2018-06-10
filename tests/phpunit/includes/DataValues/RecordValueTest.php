@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMWRecordValue as RecordValue;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
+use SMWRecordValue as RecordValue;
 
 /**
  * @covers \SMWRecordValue

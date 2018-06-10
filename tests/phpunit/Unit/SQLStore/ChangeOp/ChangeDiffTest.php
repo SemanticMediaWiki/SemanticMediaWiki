@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\ChangeOp;
 
-use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\DIWikiPage;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\ChangeDiff

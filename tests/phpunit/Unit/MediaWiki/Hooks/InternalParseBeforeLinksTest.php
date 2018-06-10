@@ -4,8 +4,8 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
-use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Mock\MockTitle;
 use Title;
 
 /**

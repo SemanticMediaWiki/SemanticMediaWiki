@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Page;
 
-use SMW\Page\PropertyPage;
 use SMW\DIWikiPage;
+use SMW\Page\PropertyPage;
 
 /**
  * @covers \SMW\Page\PropertyPage

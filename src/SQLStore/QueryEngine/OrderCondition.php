@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
+use RuntimeException;
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyChainValue;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
-use SMW\DataValues\PropertyChainValue;
-use RuntimeException;
 
 /**
  * Modifies a given query object at $qid to account for all ordering conditions

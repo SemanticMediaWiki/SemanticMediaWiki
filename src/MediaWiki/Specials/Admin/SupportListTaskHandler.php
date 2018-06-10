@@ -2,11 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use SMW\ApplicationFactory;
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\Message;
-use WebRequest;
 use Html;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

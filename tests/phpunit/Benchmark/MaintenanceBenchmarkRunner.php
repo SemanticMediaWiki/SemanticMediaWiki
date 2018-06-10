@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Benchmark;
 
-use SMW\Tests\Utils\Runners\RunnerFactory;
 use RuntimeException;
+use SMW\Tests\Utils\Runners\RunnerFactory;
 
 /**
  * @group semantic-mediawiki-benchmark

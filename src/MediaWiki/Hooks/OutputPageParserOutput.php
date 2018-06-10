@@ -5,10 +5,8 @@ namespace SMW\MediaWiki\Hooks;
 use OutputPage;
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
-use Title;
 use SMW\Query\QueryRefFinder;
-use SMW\Message;
+use Title;
 
 /**
  * OutputPageParserOutput hook is called after parse, before the HTML is

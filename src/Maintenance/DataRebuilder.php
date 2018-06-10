@@ -2,16 +2,16 @@
 
 namespace SMW\Maintenance;
 
+use Exception;
 use LinkCache;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\TitleCreator;
-use SMW\ApplicationFactory;
 use SMW\Options;
 use SMW\Store;
 use Title;
-use Exception;
 
 /**
  * Is part of the `rebuildData.php` maintenance script to rebuild existing data

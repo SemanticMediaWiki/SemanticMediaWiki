@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use SMW\QueryEngine;
+use SMW\Store;
+use SMW\StoreAware;
 use SMWQuery;
 use SMWQueryResult;
-use SMW\QueryEngine;
-use SMW\StoreAware;
-use SMW\Store;
 
 /**
  * FIXME One would wish to have a FakeStore but instead SMWSQLStore3 is used in

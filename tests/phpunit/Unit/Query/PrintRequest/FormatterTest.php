@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Query\PrintRequest;
 
-use SMW\Query\PrintRequest\Formatter;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
+use SMW\Query\PrintRequest\Formatter;
 
 /**
  * @covers SMW\Query\PrintRequest\Formatter

@@ -2,11 +2,11 @@
 
 namespace SMW\PropertyAnnotators;
 
-use SMW\PropertyAnnotator;
+use Html;
 use ParserOutput;
 use SMW\Message;
+use SMW\PropertyAnnotator;
 use Title;
-use Html;
 
 /**
  * @license GNU GPL v2+

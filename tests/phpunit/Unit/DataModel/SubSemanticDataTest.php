@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\DataModel;
 
-use SMW\DataModel\SubSemanticData;
-use SMW\DataModel\ContainerSemanticData;
 use SMW\DataItemFactory;
-use SMW\SemanticData;
+use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\SubSemanticData;
 
 /**
  * @covers \SMW\DataModel\SubSemanticData

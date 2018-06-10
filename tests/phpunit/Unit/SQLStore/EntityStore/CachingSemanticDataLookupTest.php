@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\DIWikiPage;
-use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\CachingSemanticDataLookup

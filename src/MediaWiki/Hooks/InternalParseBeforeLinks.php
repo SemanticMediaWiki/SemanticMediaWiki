@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Hooks;
 use Parser;
 use SMW\ApplicationFactory;
 use SMW\Parser\InTextAnnotationParser;
-use SMW\MediaWiki\StripMarkerDecoder;
 use StripState;
 
 /**

@@ -2,16 +2,15 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use Html;
 use SMW\ApplicationFactory;
-use SMW\Store;
-use SpecialPage;
-use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Exception\ExtendedPermissionsError;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
 use SMW\Message;
 use SMW\Utils\HtmlVTabs;
-use Html;
+use SpecialPage;
 
 /**
  * This special page for MediaWiki provides an administrative interface

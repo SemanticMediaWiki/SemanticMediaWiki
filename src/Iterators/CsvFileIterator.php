@@ -2,9 +2,9 @@
 
 namespace SMW\Iterators;
 
-use SMW\Exception\FileNotFoundException;
-use Iterator;
 use Exception;
+use Iterator;
+use SMW\Exception\FileNotFoundException;
 
 /**
  * @see http://php.net/manual/en/function.fgetcsv.php

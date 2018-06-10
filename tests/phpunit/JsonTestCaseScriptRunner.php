@@ -2,9 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\Message;
 use Title;
 
 /**

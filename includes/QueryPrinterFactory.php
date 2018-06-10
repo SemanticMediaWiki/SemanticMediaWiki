@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use SMW\Query\Exception\ResultFormatNotFoundException;
 use InvalidArgumentException;
+use SMW\Query\Exception\ResultFormatNotFoundException;
 
 /**
  * Factory for "result formats", ie classes implementing QueryResultPrinter.

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\QueryToken;
 use SMW\DataItemFactory;
+use SMW\Query\QueryToken;
 
 /**
  * @covers \SMW\Query\QueryToken

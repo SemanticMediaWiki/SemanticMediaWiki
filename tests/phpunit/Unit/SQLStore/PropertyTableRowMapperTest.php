@@ -2,12 +2,10 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableRowMapper;
-use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowMapper

@@ -4,8 +4,8 @@ namespace SMW\Tests\Integration\Lang;
 
 use SMW\Lang\FallbackFinder;
 use SMW\Lang\JsonContentsFileReader;
-use SMW\Lang\LanguageContents;
 use SMW\Lang\Lang;
+use SMW\Lang\LanguageContents;
 use SMW\Tests\TestEnvironment;
 
 /**

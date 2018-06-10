@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Search\Form;
 
-use SMW\MediaWiki\Search\SearchProfileForm;
-use SMW\Store;
-use SMW\RequestOptions;
-use SMWDIBlob as DIBlob;
 use SMW\DIProperty;
-use WikiPage;
+use SMW\MediaWiki\Search\SearchProfileForm;
+use SMW\RequestOptions;
+use SMW\Store;
+use SMWDIBlob as DIBlob;
 use Title;
+use WikiPage;
 
 /**
  * @private

@@ -3,7 +3,6 @@
 use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\Message;
 
 /**
  * This special page for MediaWiki provides information about types. Type information is

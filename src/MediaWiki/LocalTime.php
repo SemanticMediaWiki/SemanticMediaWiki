@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki;
 
+use DateInterval;
 use DateTime;
 use DateTimeZone;
-use DateInterval;
-use RuntimeException;
 use User;
 
 /**

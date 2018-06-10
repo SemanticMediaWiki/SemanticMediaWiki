@@ -1,8 +1,7 @@
 <?php
 
-use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\DataValues\Time\Timezone;
 use SMW\DataValues\Time\Components;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Localizer;
 use SMWDITime as DITime;
 

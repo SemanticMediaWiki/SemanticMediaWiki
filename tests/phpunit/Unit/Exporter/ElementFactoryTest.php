@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\Exporter\ElementFactory;
 use SMW\DataItemFactory;
+use SMW\Exporter\ElementFactory;
 
 /**
  * @covers \SMW\Exporter\ElementFactory

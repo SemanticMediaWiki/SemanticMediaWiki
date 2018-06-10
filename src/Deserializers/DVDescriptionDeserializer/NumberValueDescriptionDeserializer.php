@@ -2,7 +2,6 @@
 
 namespace SMW\Deserializers\DVDescriptionDeserializer;
 
-use InvalidArgumentException;
 use SMWDINumber as DINumber;
 use SMWNumberValue as NumberValue;
 

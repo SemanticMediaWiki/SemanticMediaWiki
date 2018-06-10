@@ -5,11 +5,10 @@ namespace SMW\Tests\DataValues;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\InfoLinksProvider;
+use SMW\DataValues\StringValue;
 use SMW\Message;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
-use SMW\DataValues\StringValue;
-use SMWTimeValue as TimeValue;
 
 /**
  * @covers \SMW\DataValues\InfoLinksProvider

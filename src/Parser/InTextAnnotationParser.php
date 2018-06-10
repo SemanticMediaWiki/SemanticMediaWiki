@@ -3,14 +3,14 @@
 namespace SMW\Parser;
 
 use Hooks;
-use SMW\ParserData;
+use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
+use SMW\Localizer;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\MediaWiki\StripMarkerDecoder;
+use SMW\ParserData;
 use SMW\Utils\Timer;
-use SMW\DataValueFactory;
-use SMW\ApplicationFactory;
-use SMW\Localizer;
 use SMWOutputs;
 use Title;
 

@@ -4,10 +4,10 @@ namespace SMW\MediaWiki\Jobs;
 
 use Job;
 use JobQueueGroup;
-use SMW\Store;
-use SMW\Site;
-use Title;
 use SMW\ApplicationFactory;
+use SMW\Site;
+use SMW\Store;
+use Title;
 
 /**
  * @ingroup SMW

@@ -8,7 +8,6 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\Conjunction;
 
 /**
  * @covers \SMW\Query\Language\SomeProperty

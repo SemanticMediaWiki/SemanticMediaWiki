@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues\Time;
 
-use DateTimeZone;
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 
 /**
  * @private

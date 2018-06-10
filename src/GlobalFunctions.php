@@ -1,10 +1,10 @@
 <?php
 
 use SMW\CompatibilityMode;
-use SMW\NamespaceManager;
 use SMW\DataValues\Number\IntlNumberFormatter;
-use SMW\ProcessingErrorMsgHandler;
 use SMW\Highlighter;
+use SMW\NamespaceManager;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is

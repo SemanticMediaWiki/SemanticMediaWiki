@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
-use SMW\MediaWiki\Specials\Browse\GroupFormatter;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\Specials\Browse\GroupFormatter;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\GroupFormatter

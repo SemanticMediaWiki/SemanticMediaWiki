@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
+use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer;
-use SMW\DataValueFactory;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer

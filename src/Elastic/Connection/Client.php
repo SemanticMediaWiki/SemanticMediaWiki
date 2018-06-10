@@ -2,16 +2,16 @@
 
 namespace SMW\Elastic\Connection;
 
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\NullLogger;
-use SMW\Options;
 use Elasticsearch\Client as ElasticClient;
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
-use SMW\Elastic\Exception\ReplicationException;
-use SMW\Elastic\Exception\InvalidJSONException;
+use Exception;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
-use Exception;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+use SMW\Elastic\Exception\InvalidJSONException;
+use SMW\Elastic\Exception\ReplicationException;
+use SMW\Options;
 
 /**
  * Reduced interface to the Elasticsearch client class.

@@ -4,16 +4,16 @@ namespace SMW\SQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
-use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
+use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
+use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
-use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
-use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager;
+use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
+use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 
 /**
  * @license GNU GPL v2+

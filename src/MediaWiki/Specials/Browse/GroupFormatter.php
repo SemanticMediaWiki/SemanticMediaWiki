@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
+use Html;
+use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\PropertySpecificationLookup;
 use SMWDataItem as DataItem;
-use SMW\DIWikiPage;
-use Html;
 
 /**
  * @private

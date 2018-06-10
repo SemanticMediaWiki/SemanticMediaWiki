@@ -4,8 +4,8 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\TemperatureValue;
-use SMW\Tests\TestEnvironment;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\TemperatureValue

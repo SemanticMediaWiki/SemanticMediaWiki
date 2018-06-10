@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Hooks;
 use User;
 use Xml;
-use Hooks;
 
 /**
  * Hook: GetPreferences adds user preference

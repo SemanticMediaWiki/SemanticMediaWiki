@@ -2,10 +2,10 @@
 
 namespace SMW\DataValues;
 
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
 use SMWDataValue as DataValue;
 use SMWPropertyListValue as PropertyListValue;
-use SMW\DIProperty;
-use SMW\ApplicationFactory;
 
 /**
  * @private

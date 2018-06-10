@@ -7,8 +7,8 @@ use SMW\DIWikiPage;
 use SMW\ParserData;
 use SMW\PropertyAnnotators\CategoryPropertyAnnotator;
 use SMW\PropertyAnnotators\NullPropertyAnnotator;
-use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\PropertyAnnotators\CategoryPropertyAnnotator

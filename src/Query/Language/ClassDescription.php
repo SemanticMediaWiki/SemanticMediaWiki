@@ -4,8 +4,8 @@ namespace SMW\Query\Language;
 
 use Exception;
 use SMW\DataValueFactory;
-use SMW\Localizer;
 use SMW\DIWikiPage;
+use SMW\Localizer;
 
 /**
  * Description of a single class as given by a wiki category, or of a

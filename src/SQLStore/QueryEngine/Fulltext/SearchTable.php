@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use SMW\MediaWiki\Database;
 use SMW\DataTypeRegistry;
-use SMW\SQLStore\SQLStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Database;
+use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 
 /**

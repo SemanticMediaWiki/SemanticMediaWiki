@@ -2,12 +2,12 @@
 
 namespace SMW\Query\PrintRequest;
 
-use SMW\Query\PrintRequest;
+use InvalidArgumentException;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\Localizer;
+use SMW\Query\PrintRequest;
 use Title;
-use InvalidArgumentException;
 
 /**
  * @license GNU GPL v2+

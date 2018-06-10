@@ -4,8 +4,8 @@ namespace SMW\Tests\Integration\JSONScript;
 
 use RuntimeException;
 use SMW\DIWikiPage;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki

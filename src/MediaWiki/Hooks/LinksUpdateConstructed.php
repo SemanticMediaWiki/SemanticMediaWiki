@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Hooks;
 use LinksUpdate;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
 use Title;
-use Hooks;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
 
 /**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate()

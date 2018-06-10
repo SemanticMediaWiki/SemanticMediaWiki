@@ -3,7 +3,6 @@
 namespace SMW\SPARQLStore;
 
 use SMW\ApplicationFactory;
-use SMW\Utils\CircularReferenceGuard;
 use SMW\Connection\ConnectionManager;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
@@ -12,6 +11,7 @@ use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 use SMW\Store;
 use SMW\StoreFactory;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @license GNU GPL v2+

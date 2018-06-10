@@ -2,15 +2,15 @@
 
 namespace SMW\Services;
 
+use ImportStreamSource;
+use ImportStringSource;
+use JobQueueGroup;
+use LBFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use ImportStringSource;
-use ImportStreamSource;
-use WikiImporter;
-use LBFactory;
-use JobQueueGroup;
 use Psr\Log\NullLogger;
 use SMW\Utils\Logger;
+use WikiImporter;
 
 /**
  * @codeCoverageIgnore

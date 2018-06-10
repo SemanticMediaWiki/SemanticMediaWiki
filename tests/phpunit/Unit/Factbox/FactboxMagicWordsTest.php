@@ -7,9 +7,8 @@ use ReflectionClass;
 use SMW\ApplicationFactory;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
-use SMW\Settings;
-use Title;
 use SMW\Tests\TestEnvironment;
+use Title;
 
 /**
  * @covers \SMW\Factbox\Factbox

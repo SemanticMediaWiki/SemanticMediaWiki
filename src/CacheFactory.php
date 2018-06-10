@@ -3,9 +3,9 @@
 namespace SMW;
 
 use ObjectCache;
-use Title;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
+use Title;
 
 /**
  * @license GNU GPL v2+

@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\SQLStore\EntityRebuildDispatcher;
-use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\EntityRebuildDispatcher

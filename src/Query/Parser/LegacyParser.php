@@ -2,19 +2,17 @@
 
 namespace SMW\Query\Parser;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
-use SMWDataValue as DataValue;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Message;
 use SMW\Localizer;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\Disjunction;
-use SMW\Query\QueryToken;
+use SMW\Query\Language\SomeProperty;
 use SMW\Query\Parser;
+use SMW\Query\QueryToken;
 use Title;
 
 /**

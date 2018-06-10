@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
+use Html;
 use SMW\ApplicationFactory;
 use SMW\Message;
 use SMW\NamespaceManager;
-use Html;
 use WebRequest;
 
 /**

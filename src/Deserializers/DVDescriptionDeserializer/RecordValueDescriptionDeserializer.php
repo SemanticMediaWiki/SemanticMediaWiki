@@ -4,11 +4,11 @@ namespace SMW\Deserializers\DVDescriptionDeserializer;
 
 use InvalidArgumentException;
 use SMW\DataValueFactory;
+use SMW\DataValues\ReferenceValue;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMWRecordValue as RecordValue;
-use SMW\DataValues\ReferenceValue;
 
 /**
  * @private

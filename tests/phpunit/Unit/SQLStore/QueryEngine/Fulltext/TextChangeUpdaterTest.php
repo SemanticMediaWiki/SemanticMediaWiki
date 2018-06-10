@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
-use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
 use SMW\DataItemFactory;
+use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
 use SMW\Tests\TestEnvironment;
 
 /**

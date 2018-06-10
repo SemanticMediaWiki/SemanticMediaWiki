@@ -5,10 +5,10 @@ namespace SMW\DataValues;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Message;
+use SMW\Parser\InTextAnnotationParser;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
-use SMW\Parser\InTextAnnotationParser;
 
 /**
  * @license GNU GPL v2+

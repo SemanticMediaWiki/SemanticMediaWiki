@@ -3,14 +3,13 @@
 namespace SMW\DataValues;
 
 use SMW\DataTypeRegistry;
-use SMW\Message;
 use SMW\Localizer;
-use SMWDataValue as DataValue;
-use SMWDataItemException as DataItemException;
 use SMWDataItem as DataItem;
+use SMWDataItemException as DataItemException;
+use SMWDataValue as DataValue;
 use SMWDIUri as DIUri;
-use Title;
 use SpecialPageFactory;
+use Title;
 
 /**
  * This datavalue implements special processing suitable for defining types of

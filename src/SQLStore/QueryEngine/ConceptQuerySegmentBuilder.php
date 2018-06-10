@@ -2,9 +2,9 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMWQuery as Query;
-use SMW\Query\Parser as QueryParser;
 use RuntimeException;
+use SMW\Query\Parser as QueryParser;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore;
 
-use SMW\SQLStore\TableBuilder\Table;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\SQLStore\TableBuilder\Table;
 use SMWDataItem as DataItem;
 
 /**

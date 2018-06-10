@@ -2,11 +2,11 @@
 
 namespace SMW\Maintenance;
 
-use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\Store;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use Onoi\Cache\Cache;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

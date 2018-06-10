@@ -2,13 +2,11 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
-use Exception;
-use SMW\Store;
-use SMW\ApplicationFactory;
-use SMW\SQLStore\SQLStore;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDITime as DIime;
 

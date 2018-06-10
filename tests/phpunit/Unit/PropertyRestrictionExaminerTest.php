@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
-use SMW\PropertyRestrictionExaminer;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\PropertyRestrictionExaminer;
 
 /**
  * @covers \SMW\PropertyRestrictionExaminer

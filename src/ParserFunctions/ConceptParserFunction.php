@@ -2,13 +2,13 @@
 
 namespace SMW\ParserFunctions;
 
-use SMW\ParserData;
-use SMW\MessageFormatter;
-use SMW\ApplicationFactory;
-use SMW\DIProperty;
-use SMW\DIConcept;
 use Html;
 use Parser;
+use SMW\ApplicationFactory;
+use SMW\DIConcept;
+use SMW\DIProperty;
+use SMW\MessageFormatter;
+use SMW\ParserData;
 use SMWInfolink;
 use SMWQueryProcessor as QueryProcessor;
 use Title;

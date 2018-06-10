@@ -5,16 +5,14 @@ namespace SMW\DataValues;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer;
-use SMW\StringCondition;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
-use SMWDIContainer as DIContainer;
 use SMWDIBlob as DIBlob;
+use SMWDIContainer as DIContainer;
 
 /**
  * MonolingualTextValue requires two components, a language code and a

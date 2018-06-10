@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\IdCacheManager;
 use Onoi\Cache\FixedInMemoryLruCache;
+use SMW\SQLStore\EntityStore\IdCacheManager;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\IdCacheManager

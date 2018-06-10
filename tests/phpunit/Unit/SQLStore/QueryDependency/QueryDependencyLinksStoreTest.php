@@ -3,10 +3,9 @@
 namespace SMW\Tests\SQLStore\QueryDependency;
 
 use SMW\DIWikiPage;
-use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
-use SMW\SQLStore\SQLStore;
-use SMW\Tests\TestEnvironment;
 use SMW\RequestOptions;
+use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore

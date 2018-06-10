@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\DataValues\ValueValidators;
 
-use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
+use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
 
 /**
  * @covers \SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator

@@ -2,19 +2,17 @@
 
 namespace SMW;
 
+use InvalidArgumentException;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
+use Psr\Log\LoggerAwareTrait;
+use SMW\Connection\ConnectionManager;
+use SMW\Utils\Timer;
 use SMWDataItem as DataItem;
 use SMWQuery;
 use SMWQueryResult;
 use SMWRequestOptions;
 use SMWSemanticData;
 use Title;
-use SMW\Connection\ConnectionManager;
-use Onoi\MessageReporter\MessageReporterAwareTrait;
-use Psr\Log\LoggerAwareTrait;
-use SMW\QueryEngine;
-use SMW\Options;
-use SMW\Utils\Timer;
-use InvalidArgumentException;
 
 /**
  * This group contains all parts of SMW that relate to storing and retrieving

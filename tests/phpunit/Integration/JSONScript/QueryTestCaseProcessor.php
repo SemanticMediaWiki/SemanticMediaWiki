@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\JSONScript;
 
+use SMW\Query\Parser as QueryParser;
 use SMW\Store;
 use SMWQuery as Query;
-use SMW\Query\Parser as QueryParser;
 use Title;
 
 /**

@@ -2,8 +2,6 @@
 
 namespace SMW\Lang;
 
-use RuntimeException;
-
 /**
  * This class provides "extraneous" language functions independent from MediaWiki
  * to handle certain language options in a way required by Semantic MediaWiki and

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests;
 
-use SMW\PropertySpecificationReqMsgBuilder;
 use SMW\DataItemFactory;
-use SMW\SemanticData;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\PropertySpecificationReqMsgBuilder;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\PropertySpecificationReqMsgBuilder

@@ -5,11 +5,9 @@ namespace SMW\Tests;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DeferredCallableUpdate;
-use SMW\Store;
 use SMW\Localizer;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Mock\ConfigurableStub;
-use RuntimeException;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @license GNU GPL v2+

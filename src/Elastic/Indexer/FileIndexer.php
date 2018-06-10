@@ -2,18 +2,17 @@
 
 namespace SMW\Elastic\Indexer;
 
-use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Store;
-use SMW\Elastic\QueryEngine\FieldMapper;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMWContainerSemanticData as ContainerSemanticData;
-use SMW\ApplicationFactory;
 use File;
-use Title;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
+use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\QueryEngine\FieldMapper;
+use SMW\Store;
+use SMWContainerSemanticData as ContainerSemanticData;
+use Title;
 
 /**
  * Experimental file indexer that uses the ES ingest pipeline to ingest and retrieve

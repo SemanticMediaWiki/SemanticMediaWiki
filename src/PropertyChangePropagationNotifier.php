@@ -2,9 +2,9 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMWDataItem;
 use SMWDIBlob as DIBlob;
-use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 
 /**
  * Before a new set of data (type, constraints etc.) is stored about a property

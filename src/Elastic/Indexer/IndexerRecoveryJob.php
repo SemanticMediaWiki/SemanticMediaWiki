@@ -3,11 +3,11 @@
 namespace SMW\Elastic\Indexer;
 
 use SMW\ApplicationFactory;
-use SMW\MediaWiki\Jobs\JobBase;
-use SMW\Elastic\ElasticFactory;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\ElasticFactory;
+use SMW\MediaWiki\Jobs\JobBase;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
 use Title;
 
 /**

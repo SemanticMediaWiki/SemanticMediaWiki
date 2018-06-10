@@ -4,7 +4,6 @@ namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\QueryBuilder;
 use SMW\Query\Language\Conjunction;
-use SMW\Options;
 
 /**
  * @license GNU GPL v2+

@@ -7,7 +7,7 @@
  * @defgroup SMWDataValues SMWDataValues
  * @ingroup SMW
  */
-use SMW\ApplicationFactory;
+
 use SMW\DataValues\InfoLinksProvider;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\Localizer;

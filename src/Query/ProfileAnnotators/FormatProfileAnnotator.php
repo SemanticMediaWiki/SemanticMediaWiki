@@ -3,8 +3,8 @@
 namespace SMW\Query\ProfileAnnotators;
 
 use SMW\DIProperty;
-use SMWDIBlob as DIBlob;
 use SMW\Query\ProfileAnnotator;
+use SMWDIBlob as DIBlob;
 
 /**
  * @license GNU GPL v2+

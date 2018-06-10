@@ -3,8 +3,8 @@
 namespace SMW\Tests;
 
 use SMW\DataItemFactory;
-use SMWDIUri as DIUri;
 use SMWDITime as DITime;
+use SMWDIUri as DIUri;
 
 /**
  * @covers \SMW\DataItemFactory

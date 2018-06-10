@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use SMW\Options;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
-use SMW\Store;
-use SMW\SQLStore\SQLStore;
 use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

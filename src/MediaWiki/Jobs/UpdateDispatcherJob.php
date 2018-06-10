@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use Hooks;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use Title;
-use Hooks;
 
 /**
  * Dispatcher to find and create individual UpdateJob instances for a specific

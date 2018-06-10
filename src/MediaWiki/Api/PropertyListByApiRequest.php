@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki\Api;
 
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\PropertySpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMW\StringCondition;
-use SMW\Localizer;
-use SMW\ApplicationFactory;
 
 /**
  * @license GNU GPL v2+

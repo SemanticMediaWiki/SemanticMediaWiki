@@ -2,16 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
-use SMW\Message;
 use SMW\ApplicationFactory;
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use SMW\DataValues\PropertyValue;
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMWInfolink as Infolink;
 use SMW\DIProperty;
 use SMW\Localizer;
+use SMWDataValue as DataValue;
+use SMWInfolink as Infolink;
 
 /**
  * @private

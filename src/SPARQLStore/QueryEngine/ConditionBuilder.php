@@ -3,26 +3,24 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use RuntimeException;
-use SMW\Utils\CircularReferenceGuard;
 use SMW\DataTypeRegistry;
+use SMW\DataValues\PropertyChainValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Message;
 use SMW\HierarchyLookup;
+use SMW\Message;
+use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ThingDescription;
 use SMW\SPARQLStore\HierarchyFinder;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
+use SMW\Utils\CircularReferenceGuard;
 use SMWDataItem as DataItem;
 use SMWExpElement as ExpElement;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
-use SMW\Query\DescriptionFactory;
-use SMW\DataValues\PropertyChainValue;
 
 /**
  * Build an internal representation for a SPARQL condition from individual query

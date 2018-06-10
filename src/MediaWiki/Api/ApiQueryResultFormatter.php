@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Api;
 
 use InvalidArgumentException;
-use SMWQueryResult;
 use SMW\ProcessingErrorMsgHandler;
+use SMWQueryResult;
 
 /**
  * This class handles the Api related query result formatting

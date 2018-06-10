@@ -5,8 +5,6 @@ namespace SMW\Tests;
 use SMW\DataItemFactory;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\Message;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\ProcessingErrorMsgHandler

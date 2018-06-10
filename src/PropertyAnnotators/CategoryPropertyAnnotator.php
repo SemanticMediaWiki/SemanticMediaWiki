@@ -5,8 +5,8 @@ namespace SMW\PropertyAnnotators;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\PropertyAnnotator;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\PropertyAnnotator;
 
 /**
  * Handling category annotation

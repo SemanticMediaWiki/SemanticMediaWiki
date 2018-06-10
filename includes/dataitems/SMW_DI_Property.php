@@ -2,13 +2,12 @@
 
 namespace SMW;
 
-use InvalidArgumentException;
 use RuntimeException;
-use SMWDataItem;
-use SMWDIUri;
-use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Exception\DataTypeLookupExeption;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Exception\PropertyLabelNotResolvedException;
+use SMWDataItem;
+use SMWDIUri;
 
 /**
  * This class implements Property item

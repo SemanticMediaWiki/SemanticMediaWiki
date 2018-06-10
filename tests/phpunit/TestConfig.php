@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\ApplicationFactory;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

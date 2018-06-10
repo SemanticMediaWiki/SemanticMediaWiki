@@ -3,7 +3,6 @@
 namespace SMW\Exporter;
 
 use RuntimeException;
-use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
 use SMWDataItem as DataItem;

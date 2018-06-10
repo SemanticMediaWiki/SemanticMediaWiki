@@ -6,8 +6,8 @@ use SMW\DataValueFactory;
 use SMw\DIProperty;
 use SMW\Query\QueryComparator;
 use SMWDataItem as DataItem;
-use SMWURIValue as UriValue;
 use SMWNumberValue as NumberValue;
+use SMWURIValue as UriValue;
 
 /**
  * Description of one data value, or of a range of data values.

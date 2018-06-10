@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki;
 
 use Revision;
+use SMW\ParserData;
 use User;
 use WikiPage;
-use SMW\ParserData;
 
 /**
  * @license GNU GPL v2+

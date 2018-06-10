@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
+use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMW\SPARQLStore\SPARQLStore;
-use SMW\ApplicationFactory;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 

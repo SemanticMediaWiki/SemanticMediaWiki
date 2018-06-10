@@ -2,12 +2,12 @@
 
 namespace SMW\Elastic\Indexer;
 
-use SMW\DIProperty;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMW\DataItemFactory;
+use SMW\DIProperty;
 use SMW\PropertyAnnotator;
-use SMWDITime as DITime;
+use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
+use SMWDITime as DITime;
 
 /**
  * @license GNU GPL v2+

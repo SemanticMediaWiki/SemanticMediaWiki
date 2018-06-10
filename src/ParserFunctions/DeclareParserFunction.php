@@ -2,10 +2,10 @@
 
 namespace SMW\ParserFunctions;
 
-use SMW\ParserData;
-use SMW\DataValueFactory;
 use Parser;
 use PPFrame;
+use SMW\DataValueFactory;
+use SMW\ParserData;
 use SMWPropertyValue as PropertyValue;
 
 /**

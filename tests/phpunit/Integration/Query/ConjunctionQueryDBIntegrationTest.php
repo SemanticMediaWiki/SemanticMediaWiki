@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;

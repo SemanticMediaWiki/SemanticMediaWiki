@@ -3,13 +3,12 @@
 namespace SMW;
 
 use MWException;
+use SMW\DataModel\SubSemanticData;
+use SMW\Exception\SemanticDataImportException;
 use SMWContainerSemanticData;
 use SMWDataItem;
 use SMWDataValue;
 use SMWDIContainer;
-use SMWPropertyValue;
-use SMW\Exception\SemanticDataImportException;
-use SMW\DataModel\SubSemanticData;
 
 /**
  * Class for representing chunks of semantic data for one given

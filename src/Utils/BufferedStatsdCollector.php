@@ -4,7 +4,6 @@ namespace SMW\Utils;
 
 use Onoi\BlobStore\BlobStore;
 use SMW\ApplicationFactory;
-use RuntimeException;
 
 /**
  * Collect statistics in a provisional schema-free storage that depends on the

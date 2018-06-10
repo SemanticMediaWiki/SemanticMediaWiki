@@ -2,10 +2,9 @@
 
 namespace SMW\Tests;
 
-use SMW\ApplicationFactory;
 use SMW\Message;
-use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\File\ContentsReader;
+use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use Title;

@@ -2,13 +2,12 @@
 
 namespace SMW\SQLStore\EntityStore\DIHandlers;
 
-use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMWDataItem as DataItem;
 
 /**
  * DataItemHandler for dataitems of type DIWikiPage.

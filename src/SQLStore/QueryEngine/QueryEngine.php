@@ -2,23 +2,19 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Query\DebugFormatter;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMWDataItem as DataItem;
-use SMWPropertyValue as PropertyValue;
-use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMWSql3SmwIds;
-use SMWSQLStore3 as SQLStore;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
+use SMWDataItem as DataItem;
+use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
+use SMWSQLStore3 as SQLStore;
 
 /**
  * Class that implements query answering for SQLStore.

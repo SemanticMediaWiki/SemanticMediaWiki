@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager;
-use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager

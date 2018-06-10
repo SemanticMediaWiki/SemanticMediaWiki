@@ -2,10 +2,9 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\SQLStore\SQLStore;
-use SMW\Store;
 use Psr\Log\LoggerAwareTrait;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\Store;
 use SMW\Utils\Timer;
 
 /**

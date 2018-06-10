@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Updater;
 
+use SMW\DataUpdater;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\DataUpdater;
 use SMW\Tests\TestEnvironment;
 
 /**

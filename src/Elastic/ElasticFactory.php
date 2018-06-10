@@ -2,25 +2,24 @@
 
 namespace SMW\Elastic;
 
-use SMW\ApplicationFactory;
-use SMW\Store;
-use SMW\Options;
-use SMW\DIWikiPage;
-use Psr\Log\LoggerInterface;
-use SMW\SQLStore\PropertyTableRowMapper;
-use SMW\Elastic\QueryEngine\QueryEngine;
-use SMW\Elastic\QueryEngine\QueryBuilder;
-use SMW\Elastic\QueryEngine\TermsLookup\TermsLookup;
-use SMW\Elastic\QueryEngine\TermsLookup\CachingTermsLookup;
-use SMW\Elastic\Indexer\Indexer;
-use SMW\Elastic\Indexer\Rebuilder;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
+use Psr\Log\LoggerInterface;
+use SMW\ApplicationFactory;
 use SMW\Elastic\Admin\ElasticClientTaskHandler;
-use SMW\Elastic\Admin\SettingsInfoProvider;
 use SMW\Elastic\Admin\IndicesInfoProvider;
 use SMW\Elastic\Admin\MappingsInfoProvider;
 use SMW\Elastic\Admin\NodesInfoProvider;
+use SMW\Elastic\Admin\SettingsInfoProvider;
+use SMW\Elastic\Indexer\Indexer;
+use SMW\Elastic\Indexer\Rebuilder;
+use SMW\Elastic\QueryEngine\QueryBuilder;
+use SMW\Elastic\QueryEngine\QueryEngine;
+use SMW\Elastic\QueryEngine\TermsLookup\CachingTermsLookup;
+use SMW\Elastic\QueryEngine\TermsLookup\TermsLookup;
+use SMW\Options;
+use SMW\SQLStore\PropertyTableRowMapper;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

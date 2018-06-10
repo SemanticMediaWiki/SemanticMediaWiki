@@ -2,9 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\SemanticData;
 use SMW\DIProperty;
-use SMW\DataTypeRegistry;
+use SMW\SemanticData;
 
 /**
  * Truncate a SemanticData instance for the replication process

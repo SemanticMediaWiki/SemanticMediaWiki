@@ -3,13 +3,12 @@
 namespace SMW\Services;
 
 use Onoi\CallbackContainer\ContainerBuilder;
-use Onoi\CallbackContainer\Exception\ServiceNotFoundException;
-use SMW\DataValues\InfoLinksProvider;
-use SMWDataValue as DataValue;
 use SMW\DataValueFactory;
+use SMW\DataValues\InfoLinksProvider;
+use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
-use SMW\DataValues\StringValue;
+use SMWDataValue as DataValue;
 use SMWNumberValue as NumberValue;
 use SMWTimeValue as TimeValue;
 

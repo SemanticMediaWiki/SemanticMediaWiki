@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Hooks;
 
 use File;
+use Hooks;
 use ParserOptions;
-use SMW\NamespaceExaminer;
 use SMW\ApplicationFactory;
 use SMW\Localizer;
+use SMW\NamespaceExaminer;
 use Title;
 use User;
-use Hooks;
 
 /**
  * Fires when a local file upload occurs

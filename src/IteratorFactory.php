@@ -2,11 +2,11 @@
 
 namespace SMW;
 
-use SMW\Iterators\ResultIterator;
-use SMW\Iterators\MappingIterator;
-use SMW\Iterators\ChunkedIterator;
 use SMW\Iterators\AppendIterator;
+use SMW\Iterators\ChunkedIterator;
 use SMW\Iterators\CsvFileIterator;
+use SMW\Iterators\MappingIterator;
+use SMW\Iterators\ResultIterator;
 
 /**
  * @license GNU GPL v2+

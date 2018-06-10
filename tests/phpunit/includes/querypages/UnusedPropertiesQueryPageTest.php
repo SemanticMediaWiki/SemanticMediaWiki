@@ -4,8 +4,8 @@ namespace SMW\Test;
 
 use SMW\DataItemFactory;
 use SMW\Settings;
-use SMW\UnusedPropertiesQueryPage;
 use SMW\Tests\TestEnvironment;
+use SMW\UnusedPropertiesQueryPage;
 
 /**
  * @covers \SMW\UnusedPropertiesQueryPage

@@ -9,7 +9,6 @@ use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMWExpLiteral as ExpLiteral;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMWExpResource as ExpResource;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryRedirectLookup

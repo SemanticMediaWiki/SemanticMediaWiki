@@ -2,17 +2,17 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMW\Store;
+use Onoi\Tesa\SanitizerFactory;
 use SMW\ApplicationFactory;
-use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\SQLiteValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
-use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
-use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
-use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
-use Onoi\Tesa\SanitizerFactory;
+use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

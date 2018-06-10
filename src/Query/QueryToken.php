@@ -2,13 +2,13 @@
 
 namespace SMW\Query;
 
-use SMW\Query\Language\Description;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\SomeProperty;
-use SMWDIBlob as DIBlob;
 use SMW\DIWikiPage;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ValueDescription;
 use SMW\Utils\Tokenizer;
+use SMWDIBlob as DIBlob;
 
 /**
  * For a wildcard search, build tokens from the query string, and allow to highlight

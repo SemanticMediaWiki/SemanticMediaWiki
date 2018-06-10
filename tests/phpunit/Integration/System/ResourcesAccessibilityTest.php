@@ -5,7 +5,6 @@ namespace SMW\Tests\System;
 use ResourceLoader;
 use ResourceLoaderContext;
 use ResourceLoaderModule;
-use SMW\ApplicationFactory;
 
 /**
  * @group semantic-mediawiki

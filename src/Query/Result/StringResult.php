@@ -2,8 +2,8 @@
 
 namespace SMW\Query\Result;
 
-use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+

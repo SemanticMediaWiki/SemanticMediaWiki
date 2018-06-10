@@ -2,11 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore\DIHandlers;
 
-use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
-use SMWDIBoolean as DIBoolean;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMWDataItem as DataItem;
+use SMWDIBoolean as DIBoolean;
 
 /**
  * This class implements Store access to Boolean data items.

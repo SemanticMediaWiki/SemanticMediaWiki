@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
-use SMWDataItem as DataItem;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder

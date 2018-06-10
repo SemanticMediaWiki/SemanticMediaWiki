@@ -1,20 +1,17 @@
 <?php
 
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWDataItem as DataItem;
-use SMW\HashBuilder;
-use SMW\RequestOptions;
-use SMW\PropertyRegistry;
-use SMW\SQLStore\IdToDataItemMatchFinder;
-use SMW\SQLStore\PropertyStatisticsStore;
-use SMW\SQLStore\RedirectStore;
-use SMW\SQLStore\TableFieldUpdater;
 use SMW\MediaWiki\Collator;
-use SMW\SQLStore\SQLStoreFactory;
-use SMW\SQLStore\SQLStore;
+use SMW\PropertyRegistry;
+use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\IdToDataItemMatchFinder;
+use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\SQLStoreFactory;
+use SMW\SQLStore\TableFieldUpdater;
+use SMWDataItem as DataItem;
 
 /**
  * @ingroup SMWStore

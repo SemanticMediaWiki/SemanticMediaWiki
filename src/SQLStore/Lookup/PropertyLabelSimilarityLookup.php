@@ -3,14 +3,13 @@
 namespace SMW\SQLStore\Lookup;
 
 use Exception;
-use SMW\DataValueFactory;
 use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\PropertySpecificationLookup;
+use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIError as DIError;
-use SMW\RequestOptions;
-use SMW\PropertySpecificationLookup;
 
 /**
  * @license GNU GPL v2+

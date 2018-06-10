@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\ArticleViewHeader;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleViewHeader

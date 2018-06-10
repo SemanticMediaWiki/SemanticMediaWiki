@@ -4,8 +4,8 @@ namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\ParserFunctions\ShowParserFunction;
 use SMW\ParserFunctions\AskParserFunction;
+use SMW\ParserFunctions\ShowParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
 

@@ -3,16 +3,15 @@
 namespace SMW\DataValues;
 
 use SMW\ApplicationFactory;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Message;
-use SMW\DataModel\ContainerSemanticData;
 use SMWDataItem as DataItem;
-use SMWDITime as DITime;
-use SMWDataValue as DataValue;
 use SMWDIContainer as DIContainer;
+use SMWDITime as DITime;
 
 /**
  * ReferenceValue allows to define additional DV to describe the state of a

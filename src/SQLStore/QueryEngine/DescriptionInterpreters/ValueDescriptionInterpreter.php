@@ -6,11 +6,11 @@ use SMW\DIWikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
-use SMWSql3SmwIds;
 use SMWDIBlob as DIBlob;
+use SMWSql3SmwIds;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic\Admin;
 
-use SMW\Elastic\Connection\Client as ElasticClient;
 use Html;
+use SMW\Elastic\Connection\Client as ElasticClient;
 use WebRequest;
 
 /**

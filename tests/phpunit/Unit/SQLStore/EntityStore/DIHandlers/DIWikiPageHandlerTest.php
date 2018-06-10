@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore\DIHandlers;
 
-use SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler;
 use SMW\DIWikiPage;
+use SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler

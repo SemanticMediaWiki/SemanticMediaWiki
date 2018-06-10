@@ -3,8 +3,8 @@
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
 use Onoi\HttpRequest\HttpRequest;
-use SMW\SPARQLStore\HttpResponseErrorMapper;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
+use SMW\SPARQLStore\HttpResponseErrorMapper;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\SPARQLStore\RepositoryClient;

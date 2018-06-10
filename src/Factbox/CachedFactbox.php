@@ -7,7 +7,6 @@ use OutputPage;
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\Parser\InTextAnnotationParser;
-use SMW\Localizer;
 use Title;
 
 /**

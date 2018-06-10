@@ -2,9 +2,9 @@
 
 namespace SMW\Query;
 
+use SMW\Message;
 use SMWInfolink as Infolink;
 use SMWQuery as Query;
-use SMW\Message;
 
 /**
  * Representing a Special:Ask query link to further query results

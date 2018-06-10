@@ -3,8 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\DIWikiPage;
-use SMW\InMemoryPoolCache;
-use SMW\Store;
 
 /**
  * @covers \SMW\Store

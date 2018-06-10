@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\ApplicationFactory;
-use SMW\Site;
+use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use Title;
 
 /**

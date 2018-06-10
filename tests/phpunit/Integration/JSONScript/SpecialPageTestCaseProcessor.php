@@ -6,11 +6,10 @@ use FauxRequest;
 use Language;
 use OutputPage;
 use RequestContext;
-use SMW\Tests\Utils\Mock\MockSuperUser;
 use SMW\Tests\Utils\File\ContentsReader;
+use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
 use SpecialPageFactory;
-use RuntimeException;
 
 /**
  * @group semantic-mediawiki

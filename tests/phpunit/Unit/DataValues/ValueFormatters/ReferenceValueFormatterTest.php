@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use SMW\DataItemFactory;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
-use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
 
 /**

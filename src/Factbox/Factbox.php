@@ -9,14 +9,14 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer;
+use SMW\Message;
 use SMW\ParserData;
 use SMW\Profiler;
 use SMW\SemanticData;
 use SMW\Store;
-use SMW\Message;
+use SMW\Utils\HtmlDivTable;
 use SMWInfolink;
 use SMWSemanticData;
-use SMW\Utils\HtmlDivTable;
 
 /**
  * Class handling the "Factbox" content rendering

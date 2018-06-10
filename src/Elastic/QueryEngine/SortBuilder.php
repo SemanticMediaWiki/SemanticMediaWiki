@@ -2,12 +2,11 @@
 
 namespace SMW\Elastic\QueryEngine;
 
-use SMW\Store;
 use Psr\Log\LoggerAwareTrait;
-use SMWQuery as Query;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\DataTypeRegistry;
+use SMW\DIProperty;
+use SMW\Store;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+

@@ -2,13 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\IteratorFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWDataItem as DataItem;
+use SMW\IteratorFactory;
 use SMW\SQLStore\SQLStore;
-use IteratorAggregate;
-use RuntimeException;
 
 /**
  * @private

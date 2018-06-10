@@ -4,16 +4,16 @@ use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\Localizer;
-use SMW\NamespaceUriFinder;
 use SMW\Exporter\DataItemMatchFinder;
-use SMW\Exporter\ElementFactory;
-use SMW\Exporter\ExpResourceMapper;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\ElementFactory;
 use SMW\Exporter\Escaper;
+use SMW\Exporter\ExpResourceMapper;
 use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
+use SMW\Localizer;
+use SMW\NamespaceUriFinder;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into

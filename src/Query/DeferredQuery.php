@@ -2,9 +2,9 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
 use Html;
 use ParserOutput;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+

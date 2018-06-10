@@ -3,10 +3,8 @@
 namespace SMW\Deserializers\DVDescriptionDeserializer;
 
 use InvalidArgumentException;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
-use SMWDataValue as DataValue;
 use SMW\DIWikiPage;
+use SMWDataValue as DataValue;
 
 /**
  * @private

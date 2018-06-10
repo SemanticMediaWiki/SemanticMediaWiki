@@ -4,9 +4,9 @@ namespace SMW\Tests\Exporter;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Exporter\ExpResourceMapper;
 use SMW\Exporter\Element;
 use SMW\Exporter\Escaper;
+use SMW\Exporter\ExpResourceMapper;
 use SMW\InMemoryPoolCache;
 
 /**

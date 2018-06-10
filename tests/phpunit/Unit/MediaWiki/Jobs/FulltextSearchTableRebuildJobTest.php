@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
-use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob

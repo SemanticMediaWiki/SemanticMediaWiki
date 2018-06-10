@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
-use SMW\Tests\TestEnvironment;
 use SMW\MediaWiki\Search\Search;
+use SMW\Tests\TestEnvironment;
 use SMWQuery;
 
 /**

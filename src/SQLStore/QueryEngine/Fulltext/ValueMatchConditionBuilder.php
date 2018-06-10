@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Query\Language\ValueDescription;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 
 /**
  * @license GNU GPL v2+

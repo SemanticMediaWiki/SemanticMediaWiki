@@ -2,8 +2,8 @@
 
 namespace SMW\Utils;
 
-use JsonSchema\Validator as SchemaValidator;
 use JsonSchema\Exception\ResourceNotFoundException;
+use JsonSchema\Validator as SchemaValidator;
 use JsonSerializable;
 
 /**

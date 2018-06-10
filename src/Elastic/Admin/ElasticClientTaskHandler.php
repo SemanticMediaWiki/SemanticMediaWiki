@@ -2,12 +2,11 @@
 
 namespace SMW\Elastic\Admin;
 
-use SMW\Message;
 use Html;
-use WebRequest;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\Message;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use JobQueueGroup;
 use Job;
+use JobQueueGroup;
 
 /**
  * MediaWiki's JobQueue contains mostly final methods making it difficult to use

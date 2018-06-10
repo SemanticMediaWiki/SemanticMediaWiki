@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Benchmark;
 
-use SMW\Tests\Utils\Runners\XmlImportRunner;
 use RuntimeException;
+use SMW\Tests\Utils\Runners\XmlImportRunner;
 
 /**
  * @group semantic-mediawiki-benchmark

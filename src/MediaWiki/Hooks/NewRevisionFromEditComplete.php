@@ -5,11 +5,8 @@ namespace SMW\MediaWiki\Hooks;
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\MediaWiki\EditInfoProvider;
 use SMW\MediaWiki\PageInfoProvider;
-use SMW\Rule\RuleFactory;
 use Title;
 
 /**

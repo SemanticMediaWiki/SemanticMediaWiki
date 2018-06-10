@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\BufferedStatsdCollector;
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
+use SMW\Utils\BufferedStatsdCollector;
 
 /**
  * @covers \SMW\Utils\BufferedStatsdCollector

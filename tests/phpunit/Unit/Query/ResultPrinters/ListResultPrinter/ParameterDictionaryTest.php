@@ -4,7 +4,6 @@ namespace SMW\Tests\Query\ResultPrinters\ListResultPrinter;
 
 use SMW\Query\ResultPrinters\ListResultPrinter\ParameterDictionary;
 
-
 /**
  * @covers \SMW\Query\ResultPrinters\ListResultPrinter\ParameterDictionary
  * @group semantic-mediawiki

@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
-use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
-use SMWPropertyValue as PropertyValue;
-use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataItemFactory;
+use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
+use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\Tests\TestEnvironment;
+use SMWPropertyValue as PropertyValue;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\PropertyValueFormatter

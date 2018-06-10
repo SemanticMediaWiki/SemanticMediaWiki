@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\DIWikiPage;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\RedirectTargetLookup

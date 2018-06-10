@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\Excerpts;
 use SMW\DIWikiPage;
+use SMW\Query\Excerpts;
 
 /**
  * @covers \SMW\Query\Excerpts

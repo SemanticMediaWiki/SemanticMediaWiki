@@ -4,11 +4,11 @@ namespace SMW\SQLStore\QueryEngine;
 
 use InvalidArgumentException;
 use OutOfBoundsException;
-use SMW\Utils\CircularReferenceGuard;
-use SMW\Query\Language\Description;
-use SMW\Query\Language\Conjuncton;
-use SMW\Store;
 use SMW\Message;
+use SMW\Query\Language\Conjuncton;
+use SMW\Query\Language\Description;
+use SMW\Store;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @license GNU GPL v2+

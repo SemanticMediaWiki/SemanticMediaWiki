@@ -5,7 +5,6 @@ namespace SMW\Tests\Integration\Query;
 use SMW\DIProperty;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\SPARQLStore\SPARQLStore;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMwConjunction as Conjunction;

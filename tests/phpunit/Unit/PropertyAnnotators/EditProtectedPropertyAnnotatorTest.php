@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\PropertyAnnotators;
 
-use SMW\DIWikiPage;
+use SMW\DataItemFactory;
 use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
 use SMW\PropertyAnnotators\NullPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
-use SMW\DataItemFactory;
 
 /**
  * @covers \SMW\PropertyAnnotators\EditProtectedPropertyAnnotator

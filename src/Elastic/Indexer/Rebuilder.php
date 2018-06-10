@@ -2,15 +2,13 @@
 
 namespace SMW\Elastic\Indexer;
 
+use Exception;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\SemanticData;
+use SMW\SQLStore\PropertyTableRowMapper;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\SQLStore\PropertyTableRowMapper;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\ApplicationFactory;
-use SMW\SemanticData;
-use RuntimeException;
-use Exception;
 
 /**
  * @private

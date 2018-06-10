@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use Psr\Log\LoggerAwareTrait;
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use Psr\Log\LoggerAwareTrait;
 
 /**
  * @license GNU GPL v2+

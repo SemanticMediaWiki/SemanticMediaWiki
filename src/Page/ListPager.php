@@ -2,9 +2,8 @@
 
 namespace SMW\Page;
 
-use SMWDataItem as DataItem;
-use SMW\Localizer;
 use Html;
+use SMW\Localizer;
 use Title;
 
 /**

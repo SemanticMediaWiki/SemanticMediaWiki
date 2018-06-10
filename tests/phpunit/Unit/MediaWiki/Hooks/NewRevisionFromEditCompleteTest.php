@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use ParserOutput;
 use Revision;
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
 use SMW\Tests\TestEnvironment;

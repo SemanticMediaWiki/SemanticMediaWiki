@@ -3,8 +3,6 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\ApplicationFactory;
-use SMW\RequestOptions;
-use SMW\Site;
 use Title;
 
 /**

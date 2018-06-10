@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Benchmark;
 
-use SMW\Tests\JsonTestCaseScriptRunner;
-use SMW\Tests\JsonTestCaseFileHandler;
 use SMW\ApplicationFactory;
+use SMW\Tests\JsonTestCaseFileHandler;
+use SMW\Tests\JsonTestCaseScriptRunner;
 
 /**
  * @group semantic-mediawiki-benchmark

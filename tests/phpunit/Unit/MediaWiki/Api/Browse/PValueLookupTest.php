@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
-use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\DIProperty;
+use SMW\MediaWiki\Api\Browse\PValueLookup;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\PValueLookup

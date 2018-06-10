@@ -2,8 +2,6 @@
 
 namespace SMW\Connection;
 
-use Closure;
-
 /**
  * @license GNU GPL v2+
  * @since 3.0

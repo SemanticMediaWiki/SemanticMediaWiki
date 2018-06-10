@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Parser;
 
-use SMW\Parser\SemanticLinksParser;
 use SMW\Parser\LinksProcessor;
+use SMW\Parser\SemanticLinksParser;
 
 /**
  * @covers \SMW\Parser\SemanticLinksParser

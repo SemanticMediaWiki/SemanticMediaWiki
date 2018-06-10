@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
+use SMW\DIWikiPage;
 use SMW\PostProcHandler;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\PostProcHandler

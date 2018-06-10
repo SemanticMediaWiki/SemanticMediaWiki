@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\FieldType;
-use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\SQLStore\TableSchemaManager;
 
 /**
  * @covers \SMW\SQLStore\TableSchemaManager

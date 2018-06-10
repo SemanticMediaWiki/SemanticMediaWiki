@@ -2,10 +2,6 @@
 
 namespace SMW\Tests\Benchmark;
 
-use SMW\Tests\Utils\PageCreator;
-use SMW\Tests\Utils\PageReader;
-use RuntimeException;
-
 /**
  * @group semantic-mediawiki-benchmark
  *

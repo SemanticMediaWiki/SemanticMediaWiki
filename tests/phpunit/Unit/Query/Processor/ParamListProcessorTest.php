@@ -3,7 +3,6 @@
 namespace SMW\Tests\Query\Processor;
 
 use SMW\Query\Processor\ParamListProcessor;
-use SMW\DataItemFactory;
 
 /**
  * @covers \SMW\Query\Processor\ParamListProcessor

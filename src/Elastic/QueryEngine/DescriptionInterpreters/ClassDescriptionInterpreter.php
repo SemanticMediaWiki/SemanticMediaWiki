@@ -2,15 +2,9 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
+use SMW\DIProperty;
 use SMW\Elastic\QueryEngine\QueryBuilder;
 use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\Description;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
-use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Options;
 
 /**
  * @license GNU GPL v2+

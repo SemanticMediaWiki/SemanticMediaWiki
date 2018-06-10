@@ -2,12 +2,11 @@
 
 namespace SMW\DataValues;
 
-use SMWInfolink as Infolink;
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Localizer;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
+use SMWInfolink as Infolink;
 
 /**
  * @private

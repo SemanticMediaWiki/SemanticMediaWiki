@@ -6,7 +6,6 @@ use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserParameterProcessor;
 use SMW\RecurringEvents;
-use SMW\Settings;
 use SMW\Subobject;
 
 /**

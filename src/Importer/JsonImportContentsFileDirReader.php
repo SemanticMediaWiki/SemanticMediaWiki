@@ -2,8 +2,8 @@
 
 namespace SMW\Importer;
 
-use SMW\Utils\ErrorCodeFormatter;
 use RuntimeException;
+use SMW\Utils\ErrorCodeFormatter;
 
 /**
  * @license GNU GPL v2+

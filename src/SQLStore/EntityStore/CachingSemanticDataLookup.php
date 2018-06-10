@@ -2,17 +2,16 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
-use SMW\RequestOptions;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
-use SMW\SemanticData;
-use SMW\SQLStore\PropertyTableDefinition;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\RequestOptions;
+use SMW\SemanticData;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2+

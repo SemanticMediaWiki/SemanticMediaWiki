@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use SMW\Message;
-use WebRequest;
-use SMWQueryProcessor as QueryProcessor;
 use SMWInfolink as Infolink;
+use SMWQueryProcessor as QueryProcessor;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

@@ -8,16 +8,15 @@ use Parser;
 use ParserHooks\HookRegistrant;
 use SMW\ApplicationFactory;
 use SMW\DeferredRequestDispatchManager;
+use SMW\MediaWiki\Search\SearchProfileForm;
 use SMW\NamespaceManager;
-use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\PermissionPthValidator;
-use SMW\SQLStore\QueryDependencyLinksStoreFactory;
-use SMW\MediaWiki\Search\SearchProfileForm;
-use SMW\Site;
 use SMW\Setup;
-use SMW\Options;
+use SMW\Site;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 
 /**
  * @license GNU GPL v2+

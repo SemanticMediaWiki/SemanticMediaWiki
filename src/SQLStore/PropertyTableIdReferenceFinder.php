@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIProperty;
 use SMW\ApplicationFactory;
+use SMW\DIProperty;
 use SMWDataItem as DataItem;
 
 /**

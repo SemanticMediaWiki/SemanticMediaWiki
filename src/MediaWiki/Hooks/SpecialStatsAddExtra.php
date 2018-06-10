@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Store;
-use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
+use SMW\Store;
 
 /**
  * Add extra statistic at the end of Special:Statistics

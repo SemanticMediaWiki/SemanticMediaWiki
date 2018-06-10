@@ -6,10 +6,10 @@ use ContentHandler;
 use Parser;
 use Revision;
 use SMW\ContentParser;
+use SMW\Tests\Utils\Mock\MockTitle;
 use TextContent;
 use TextContentHandler;
 use Title;
-use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\ContentParser

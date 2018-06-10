@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use WebRequest;
 use SMW\Message;
 use SMW\Store;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

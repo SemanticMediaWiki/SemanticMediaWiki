@@ -2,15 +2,8 @@
 
 namespace SMW;
 
-use SMW\Store;
-use SMW\SQLStore\SQLStore;
-use SMW\DIProperty;
-use SMW\Message;
-use SMW\DataValueFactory;
-use SMW\PropertyRegistry;
-use SMW\PropertySpecificationReqExaminer;
-use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use Html;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 
 /**
  * @license GNU GPL v2+

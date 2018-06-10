@@ -2,11 +2,11 @@
 
 namespace SMW\Iterators;
 
-use IteratorIterator;
-use Traversable;
 use ArrayIterator;
 use InvalidArgumentException;
+use IteratorIterator;
 use RuntimeException;
+use Traversable;
 
 /**
  * @see Guzzle::ChunkedIterator

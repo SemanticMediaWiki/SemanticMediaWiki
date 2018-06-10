@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
-use SMW\Factbox\FactboxCache;
 use SMW\EventHandler;
+use SMW\Factbox\FactboxCache;
 
 /**
  * TitleMoveComplete occurs whenever a request to move an article

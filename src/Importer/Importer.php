@@ -4,7 +4,6 @@ namespace SMW\Importer;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

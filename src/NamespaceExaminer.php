@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use MWNamespace;
 use InvalidArgumentException;
+use MWNamespace;
 
 /**
  * Examines if a specific namespace is enabled for the usage of the

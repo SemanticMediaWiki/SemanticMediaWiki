@@ -2,15 +2,15 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMWQueryResult as QueryResult;
-use SMW\Query\ExportPrinter;
-use SMW\DataValueFactory;
-use SMW\DIWikiPage;
-use SMW\Query\Result\StringResult;
-use SMW\Site;
 use FeedItem;
 use ParserOptions;
 use Sanitizer;
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
+use SMW\Query\ExportPrinter;
+use SMW\Query\Result\StringResult;
+use SMW\Site;
+use SMWQueryResult as QueryResult;
 use TextContent;
 use Title;
 use WikiPage;

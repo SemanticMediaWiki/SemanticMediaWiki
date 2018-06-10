@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Page\ListBuilder;
 
-use SMW\Page\ListBuilder\ListBuilder;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Page\ListBuilder\ListBuilder;
 use SMW\Tests\TestEnvironment;
 
 /**

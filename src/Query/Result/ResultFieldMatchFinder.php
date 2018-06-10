@@ -2,18 +2,18 @@
 
 namespace SMW\Query\Result;
 
-use SMW\Query\PrintRequest;
 use SMW\DataValueFactory;
-use SMW\RequestOptions;
+use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Parser\InTextAnnotationParser;
+use SMW\Query\PrintRequest;
+use SMW\Query\QueryToken;
+use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
-use SMWDIBoolean as DIBoolean;
 use SMWDIBlob as DIBlob;
-use SMW\DataValues\MonolingualTextValue;
-use SMW\Query\QueryToken;
-use SMW\Parser\InTextAnnotationParser;
+use SMWDIBoolean as DIBoolean;
 
 /**
  * Returns the result content (DI objects) for a single PrintRequest, representing

@@ -2,11 +2,8 @@
 
 namespace SMW\MediaWiki\Search\Form;
 
-use RuntimeException;
-use SMW\Highlighter;
-use SMW\Message;
-use SMW\DIProperty;
 use Html;
+use SMW\DIProperty;
 use Title;
 use WebRequest;
 

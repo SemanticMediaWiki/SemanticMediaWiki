@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\Database;
 use SMW\Connection\ConnectionProviderRef;
+use SMW\MediaWiki\Database;
 
 /**
  * @covers \SMW\MediaWiki\Database

@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Hooks;
 
 use DatabaseUpdater;
-use SMW\SQLStore\Installer;
-use SMW\Options;
-use ReflectionProperty;
 use Maintenance;
+use ReflectionProperty;
+use SMW\Options;
+use SMW\SQLStore\Installer;
 
 /**
  * Schema update to set up the needed database tables

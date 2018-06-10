@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\ScoreSet;
 use SMW\DIWikiPage;
+use SMW\Query\ScoreSet;
 
 /**
  * @covers \SMW\Query\ScoreSet

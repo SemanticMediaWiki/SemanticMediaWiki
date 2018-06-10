@@ -2,10 +2,9 @@
 
 namespace SMW\DataModel;
 
-use RuntimeException;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\Exception\DataItemException;
+use SMW\SemanticData;
 
 /**
  * Subclass of SemanticData that is used to store the data in SMWDIContainer

@@ -3,8 +3,8 @@
 namespace SMW\Tests\DataValues\ValueValidators;
 
 use SMW\DataItemFactory;
-use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
+use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
 use SMW\Tests\TestEnvironment;
 
 /**

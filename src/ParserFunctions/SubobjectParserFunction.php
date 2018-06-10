@@ -2,17 +2,17 @@
 
 namespace SMW\ParserFunctions;
 
-use SMW\ParserData;
-use SMW\ParserParameterProcessor;
-use SMW\Subobject;
-use SMW\MessageFormatter;
-use SMW\Message;
-use SMW\HashBuilder;
+use Parser;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\HashBuilder;
 use SMW\MediaWiki\StripMarkerDecoder;
+use SMW\Message;
+use SMW\MessageFormatter;
+use SMW\ParserData;
+use SMW\ParserParameterProcessor;
 use SMW\SemanticData;
-use Parser;
+use SMW\Subobject;
 
 /**
  * @private This class should not be instantiated directly, please use

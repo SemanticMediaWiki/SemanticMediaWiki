@@ -2,19 +2,13 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
+use SMW\DIWikiPage;
 use SMW\Elastic\QueryEngine\QueryBuilder;
 use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\Description;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Options;
-use SMWDIGeoCoord as DIGeoCoord;
-use SMWDITime as DITime;
+use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWDInumber as DINumber;
-use SMWDIBlob as DIBlob;
-use SMWDIUri as DIUri;
-use SMWDataItem as DataItem;
+use SMWDITime as DITime;
 
 /**
  * @license GNU GPL v2+

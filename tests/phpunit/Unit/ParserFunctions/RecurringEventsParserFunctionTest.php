@@ -6,8 +6,8 @@ use ParserOutput;
 use ReflectionClass;
 use SMW\MessageFormatter;
 use SMW\ParserData;
-use SMW\ParserParameterProcessor;
 use SMW\ParserFunctions\RecurringEventsParserFunction;
+use SMW\ParserParameterProcessor;
 use SMW\Subobject;
 use Title;
 

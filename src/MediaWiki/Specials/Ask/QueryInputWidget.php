@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
+use Html;
 use SMW\Message;
 use SMW\Utils\HtmlDivTable;
-use SMW\Highlighter;
-use Html;
 
 /**
  * @license GNU GPL v2+
