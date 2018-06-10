@@ -2,14 +2,13 @@
 
 namespace SMW\Page;
 
-use SMW\PropertySpecificationReqMsgBuilder;
+use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\PropertySpecificationReqExaminer;
+use SMW\PropertySpecificationReqMsgBuilder;
 use SMW\Rule\RuleFactory;
 use SMW\Store;
-use SMW\Settings;
 use Title;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

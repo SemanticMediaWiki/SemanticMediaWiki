@@ -3,12 +3,12 @@
 namespace SMW\Parser;
 
 use Parser;
-use Title;
 use ParserOptions;
 use ParserOutput;
-use SMW\ParserData;
-use SMW\Localizer;
 use RuntimeException;
+use SMW\Localizer;
+use SMW\ParserData;
+use Title;
 
 /**
  * @private

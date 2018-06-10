@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\NamespaceExaminer;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\NamespaceExaminer;
 use Title;
 use User;
 

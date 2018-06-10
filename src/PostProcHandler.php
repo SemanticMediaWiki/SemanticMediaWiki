@@ -2,15 +2,14 @@
 
 namespace SMW;
 
-use SMWQuery as Query;
-use SMW\DIWikiPage;
+use Html;
 use Onoi\Cache\Cache;
 use ParserOutput;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
+use SMWQuery as Query;
 use Title;
 use WebRequest;
-use Html;
-use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
 
 /**
  * Some updates require to be handled in a "post" process meaning after an update

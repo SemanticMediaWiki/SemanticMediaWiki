@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\HookRegistry;
 use SMW\Tests\TestEnvironment;
 use Title;

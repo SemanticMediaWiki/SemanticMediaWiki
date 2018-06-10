@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use SMW\Message;
-use SMW\Localizer;
-use SMWInfolink as Infolink;
 use Html;
-use Title;
+use SMW\Localizer;
+use SMW\Message;
 use SMW\Utils\HtmlModal;
+use SMWInfolink as Infolink;
+use Title;
 
 /**
  * @license GNU GPL v2+

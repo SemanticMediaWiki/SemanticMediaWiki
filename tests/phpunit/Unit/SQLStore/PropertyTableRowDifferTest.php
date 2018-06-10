@@ -4,9 +4,8 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\SQLStore\PropertyTableRowDiffer;
 use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\PropertyTableRowDiffer;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowDiffer

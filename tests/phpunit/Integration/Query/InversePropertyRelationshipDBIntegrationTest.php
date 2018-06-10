@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -10,7 +11,6 @@ use SMW\Query\Language\ValueDescription;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
-use SMW\ApplicationFactory;
 
 /**
  * @see http://semantic-mediawiki.org/wiki/Inverse_Properties

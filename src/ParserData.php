@@ -2,12 +2,12 @@
 
 namespace SMW;
 
-use ParserOutput;
+use Onoi\Cache\Cache;
 use ParserOptions;
+use ParserOutput;
+use Psr\Log\LoggerAwareTrait;
 use SMWDataValue as DataValue;
 use Title;
-use Onoi\Cache\Cache;
-use Psr\Log\LoggerAwareTrait;
 
 /**
  * Handling semantic data exchange with a ParserOutput object

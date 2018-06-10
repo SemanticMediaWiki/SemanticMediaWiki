@@ -3,16 +3,13 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DataValueFactory;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\PrintRequest as PrintRequest;
-use SMW\Store;
 use SMW\DIWikiPage;
+use SMW\Query\DescriptionFactory;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\Store;
 use SMWQuery as Query;
 use SMWRequestOptions as RequestOptions;
-use SMW\Query\DescriptionFactory;
 
 /**
  * @license GNU GPL v2+

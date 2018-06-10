@@ -3,8 +3,8 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
-use WebRequest;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

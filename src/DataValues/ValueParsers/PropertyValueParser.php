@@ -2,8 +2,6 @@
 
 namespace SMW\DataValues\ValueParsers;
 
-use SMWPropertyValue as PropertyValue;
-use SMWDataValue as DataValue;
 use SMW\Localizer;
 
 /**

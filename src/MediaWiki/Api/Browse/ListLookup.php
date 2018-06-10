@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
 use Exception;
+use SMW\DIProperty;
 use SMW\RequestOptions;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\StringCondition;
-use SMW\ApplicationFactory;
-use SMW\SQLStore\SQLStore;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
 use SMWExpLiteral as ExpLiteral;

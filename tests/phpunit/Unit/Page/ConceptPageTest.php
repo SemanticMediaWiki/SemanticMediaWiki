@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Page;
 
-use SMW\Page\ConceptPage;
 use SMW\DIWikiPage;
+use SMW\Page\ConceptPage;
 
 /**
  * @covers \SMW\Page\ConceptPage

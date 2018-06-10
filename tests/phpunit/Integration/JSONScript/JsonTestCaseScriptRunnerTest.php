@@ -6,10 +6,9 @@ use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\EventHandler;
 use SMW\PropertySpecificationLookup;
-use SMW\Tests\JsonTestCaseScriptRunner;
-use SMW\Tests\JsonTestCaseFileHandler;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
+use SMW\Tests\JsonTestCaseFileHandler;
+use SMW\Tests\JsonTestCaseScriptRunner;
 
 /**
  * @group semantic-mediawiki

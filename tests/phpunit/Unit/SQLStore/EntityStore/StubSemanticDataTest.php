@@ -5,9 +5,9 @@ namespace SMW\Tests\SQLStore\EntityStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\SQLStore\EntityStore\StubSemanticData;
 use SMW\Tests\TestEnvironment;
 use SMWDITime as DITime;
-use SMW\SQLStore\EntityStore\StubSemanticData;
 
 /**
  * @covers SMW\SQLStore\EntityStore\StubSemanticData

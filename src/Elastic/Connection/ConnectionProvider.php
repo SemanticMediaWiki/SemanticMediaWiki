@@ -3,10 +3,9 @@
 namespace SMW\Elastic\Connection;
 
 use Elasticsearch\ClientBuilder;
-use SMW\Connection\ConnectionProvider as IConnectionProvider;
-use SMW\Elastic\Exception\InvalidJSONException;
 use RuntimeException;
 use SMW\ApplicationFactory;
+use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Options;
 
 /**

@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\StoreFactory;
-use SMWQueryProcessor;
 use SMW\Tests\TestEnvironment;
+use SMWQueryProcessor;
 
 /**
  * @group semantic-mediawiki

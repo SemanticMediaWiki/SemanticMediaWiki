@@ -2,6 +2,7 @@
 /**
  * @ingroup SMWDataItems
  */
+
 use SMW\Exception\DataItemException;
 
 /**

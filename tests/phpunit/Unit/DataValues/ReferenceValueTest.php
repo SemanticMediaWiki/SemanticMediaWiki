@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\DataValues\ReferenceValue;
 use SMW\DataItemFactory;
+use SMW\DataValues\ReferenceValue;
 use SMW\Tests\TestEnvironment;
 
 /**

@@ -4,9 +4,9 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
-use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWDataItem as DataItem;
 use SMWExporter as Exporter;

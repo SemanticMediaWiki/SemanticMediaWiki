@@ -2,8 +2,8 @@
 
 namespace SMW\Query\Language;
 
-use SMW\Query\PrintRequest;
 use SMW\Query\Exception\FingerprintNotFoundException;
+use SMW\Query\PrintRequest;
 
 /**
  * Abstract base class for all descriptions

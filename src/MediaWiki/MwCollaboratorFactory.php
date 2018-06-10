@@ -11,10 +11,10 @@ use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Renderer\HtmlTableRenderer;
 use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use StripState;
 use Title;
 use User;
 use WikiPage;
-use StripState;
 
 /**
  * @license GNU GPL v2+

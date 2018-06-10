@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\SPARQLStore\ReplicationDataTruncator;
 use SMW\DIProperty;
+use SMW\SPARQLStore\ReplicationDataTruncator;
 
 /**
  * @covers \SMW\SPARQLStore\ReplicationDataTruncator

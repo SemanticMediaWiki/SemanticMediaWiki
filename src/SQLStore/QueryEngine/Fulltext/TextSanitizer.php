@@ -2,9 +2,9 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use Onoi\Tesa\SanitizerFactory;
-use Onoi\Tesa\Sanitizer;
 use Onoi\Tesa\Normalizer;
+use Onoi\Tesa\Sanitizer;
+use Onoi\Tesa\SanitizerFactory;
 use Onoi\Tesa\Tokenizer\Tokenizer;
 use Onoi\Tesa\Transliterator;
 

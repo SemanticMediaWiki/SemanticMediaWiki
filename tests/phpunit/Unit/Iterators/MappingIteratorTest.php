@@ -2,8 +2,8 @@
 
 namespace SMW\Iterators\Tests;
 
-use SMW\Iterators\MappingIterator;
 use ArrayIterator;
+use SMW\Iterators\MappingIterator;
 
 /**
  * @covers \SMW\Iterators\MappingIterator

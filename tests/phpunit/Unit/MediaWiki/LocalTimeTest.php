@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\LocalTime;
 use DateTime;
+use SMW\MediaWiki\LocalTime;
 
 /**
  * @covers \SMW\MediaWiki\LocalTime

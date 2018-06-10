@@ -3,10 +3,9 @@
 namespace SMW;
 
 use SMWContainerSemanticData as ContainerSemanticData;
-use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
-use SMWDIContainer as DIContainer;
 use SMWDIBlob as DIBlob;
+use SMWDIContainer as DIContainer;
 
 /**
  * The handler encodes errors into a representation that can be retrieved from

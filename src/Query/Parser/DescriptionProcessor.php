@@ -3,15 +3,15 @@
 namespace SMW\Query\Parser;
 
 use SMW\DataValueFactory;
-use SMWDataValue as DataValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Site;
 use SMW\Message;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
+use SMW\Site;
+use SMWDataValue as DataValue;
 
 /**
  * @license GNU GPL v2+

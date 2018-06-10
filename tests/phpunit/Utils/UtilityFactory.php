@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\Utils\File\JsonFileReader;
+use Onoi\MessageReporter\SpyMessageReporter;
 use SMW\Tests\Utils\File\BulkFileProvider;
-use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\File\DummyFileCreator;
+use SMW\Tests\Utils\File\JsonFileReader;
+use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\Fixtures\FixturesFactory;
 use SMW\Tests\Utils\Page\PageEditor;
 use SMW\Tests\Utils\Runners\RunnerFactory;
 use SMW\Tests\Utils\Validators\ValidatorFactory;
-use Onoi\MessageReporter\SpyMessageReporter;
 
 /**
  * @license GNU GPL v2+

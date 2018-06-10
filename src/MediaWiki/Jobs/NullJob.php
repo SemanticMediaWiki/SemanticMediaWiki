@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\ApplicationFactory;
 use Title;
 
 /**

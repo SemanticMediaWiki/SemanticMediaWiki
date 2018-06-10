@@ -2,8 +2,6 @@
 
 namespace SMW\MediaWiki\Search\Form;
 
-use RuntimeException;
-use SMW\Message;
 use Html;
 use WebRequest;
 

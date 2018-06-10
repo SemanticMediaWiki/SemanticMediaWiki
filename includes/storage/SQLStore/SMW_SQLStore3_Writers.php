@@ -1,17 +1,13 @@
 <?php
 
 use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
+use SMW\ChangePropListener;
 use SMW\DIProperty;
-use SMW\HierarchyLookup;
-use SMW\MediaWiki\Jobs\JobBase;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SemanticData;
-use SMW\ChangePropListener;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\SQLStore\EntityStore\StubSemanticData;
-use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.

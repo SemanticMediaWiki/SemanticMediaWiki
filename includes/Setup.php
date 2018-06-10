@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\Hooks\HookRegistry;
-use SMW\Connection\ConnectionManager;
-use SMW\SQLStore\Installer;
 use Hooks;
+use SMW\Connection\ConnectionManager;
+use SMW\MediaWiki\Hooks\HookRegistry;
+use SMW\SQLStore\Installer;
 
 /**
  * Extension setup and registration

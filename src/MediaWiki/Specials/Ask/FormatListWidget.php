@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use SMW\Message;
 use Html;
-use Title;
+use SMW\Message;
 use SMWQueryProcessor as QueryProcessor;
+use Title;
 
 /**
  * @license GNU GPL v2+

@@ -4,12 +4,12 @@ namespace SMW\MediaWiki\Api;
 
 use ApiBase;
 use SMW\ApplicationFactory;
-use SMW\MediaWiki\Api\Browse\ListLookup;
-use SMW\MediaWiki\Api\Browse\ListAugmentor;
-use SMW\MediaWiki\Api\Browse\PValueLookup;
-use SMW\MediaWiki\Api\Browse\CachingLookup;
-use SMW\MediaWiki\Api\Browse\ArticleLookup;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
+use SMW\MediaWiki\Api\Browse\ArticleLookup;
+use SMW\MediaWiki\Api\Browse\CachingLookup;
+use SMW\MediaWiki\Api\Browse\ListAugmentor;
+use SMW\MediaWiki\Api\Browse\ListLookup;
+use SMW\MediaWiki\Api\Browse\PValueLookup;
 
 /**
  * Module to support selected browse activties including:

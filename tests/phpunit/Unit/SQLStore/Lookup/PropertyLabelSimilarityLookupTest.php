@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\DIProperty;
+use SMW\DataItemFactory;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
-use SMW\DataItemFactory;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup

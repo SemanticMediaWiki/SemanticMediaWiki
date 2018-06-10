@@ -4,8 +4,8 @@ namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\NamespaceDescription;
-use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWDataItem as DataItem;
 use SMWExpLiteral as ExpLiteral;

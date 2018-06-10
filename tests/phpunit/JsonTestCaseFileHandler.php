@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use RuntimeException;
 use SMW\Tests\Utils\File\JsonFileReader;
-use SMW\Localizer;
 
 /**
  * @license GNU GPL v2+

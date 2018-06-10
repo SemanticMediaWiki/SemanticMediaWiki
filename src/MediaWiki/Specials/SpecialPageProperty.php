@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMWInfolink as Infolink;
-use SMW\Encoder;
-use SMW\DataValueFactory;
-use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
+use SMW\Encoder;
+use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
 use SMW\RequestOptions;
+use SMWInfolink as Infolink;
 use SpecialPage;
 
 /**

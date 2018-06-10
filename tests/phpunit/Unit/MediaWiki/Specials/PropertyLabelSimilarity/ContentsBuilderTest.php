@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Specials\PropertyLabelSimilarity;
 
-use SMW\Tests\TestEnvironment;
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder

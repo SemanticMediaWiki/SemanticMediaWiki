@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMWInfolink as Infolink;
 use SMW\Tests\TestEnvironment;
+use SMWInfolink as Infolink;
 
 /**
  * @covers \SMWInfolink

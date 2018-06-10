@@ -6,8 +6,6 @@ use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\SQLStore\PropertyStatisticsStore;
-use SMW\Maintenance\DuplicateEntitiesDisposer;
-use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**

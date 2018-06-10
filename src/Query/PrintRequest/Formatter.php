@@ -2,9 +2,9 @@
 
 namespace SMW\Query\PrintRequest;
 
+use Linker;
 use SMW\Query\PrintRequest;
 use Title;
-use Linker;
 
 /**
  * @license GNU GPL v2+

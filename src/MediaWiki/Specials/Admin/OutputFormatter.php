@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use OutputPage;
 use FormatJson;
-use SMW\Message;
 use Html;
+use OutputPage;
+use SMW\Message;
 
 /**
  * @license GNU GPL v2+

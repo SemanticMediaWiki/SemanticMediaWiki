@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Protection;
 
-use SMW\Protection\EditProtectionUpdater;
 use SMW\DataItemFactory;
+use SMW\Protection\EditProtectionUpdater;
 use SMW\Tests\TestEnvironment;
 
 /**

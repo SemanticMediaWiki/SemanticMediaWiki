@@ -2,10 +2,10 @@
 
 namespace SMW\DataModel;
 
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Exception\SubSemanticDataException;
 use SMW\SemanticData;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 
 /**
  * @private

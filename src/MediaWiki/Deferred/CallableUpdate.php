@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Deferred;
 use Closure;
 use DeferrableUpdate;
 use DeferredUpdates;
-use RuntimeException;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Database;
 

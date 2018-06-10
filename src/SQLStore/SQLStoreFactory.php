@@ -2,37 +2,36 @@
 
 namespace SMW\SQLStore;
 
+use Onoi\Cache\Cache;
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\NullMessageReporter;
 use SMW\ApplicationFactory;
-use SMW\Utils\CircularReferenceGuard;
+use SMW\ChangePropListener;
+use SMW\DIWikiPage;
+use SMW\Options;
+use SMW\ProcessLruCache;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\EntityStore\CachingEntityLookup;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
+use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\EntityStore\IdEntityFinder;
+use SMW\SQLStore\EntityStore\NativeEntityLookup;
+use SMW\SQLStore\EntityStore\SemanticDataLookup;
+use SMW\SQLStore\EntityStore\SubobjectListFinder;
+use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
-use SMW\SQLStore\Lookup\RedirectTargetLookup;
-use SMWRequestOptions as RequestOptions;
-use SMW\Options;
-use SMWSQLStore3;
 use SMW\SQLStore\TableBuilder\TableBuilder;
-use Onoi\MessageReporter\MessageReporter;
-use Onoi\MessageReporter\NullMessageReporter;
-use Onoi\Cache\Cache;
+use SMW\Utils\CircularReferenceGuard;
+use SMWRequestOptions as RequestOptions;
 use SMWSql3SmwIds as EntityIdManager;
-use SMW\DIWikiPage;
-use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
-use SMW\SQLStore\EntityStore\CachingEntityLookup;
-use SMW\SQLStore\EntityStore\NativeEntityLookup;
-use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
-use SMW\SQLStore\EntityStore\SemanticDataLookup;
-use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
-use SMW\ProcessLruCache;
-use SMW\SQLStore\EntityStore\IdEntityFinder;
-use SMW\SQLStore\EntityStore\SubobjectListFinder;
-use SMW\SQLStore\EntityStore\IdCacheManager;
-use SMW\ChangePropListener;
-use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMWSQLStore3;
 
 /**
  * @license GNU GPL v2+

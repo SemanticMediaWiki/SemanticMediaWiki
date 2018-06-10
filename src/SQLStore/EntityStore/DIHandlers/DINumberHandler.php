@@ -2,12 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DIHandlers;
 
-use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
-use SMWDINumber as DINumber;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMWDataItem as DataItem;
+use SMWDINumber as DINumber;
 
 /**
  * This class implements Store access to Number data items.

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Integration\Lang;
 
 use SMW\Lang\Lang;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki

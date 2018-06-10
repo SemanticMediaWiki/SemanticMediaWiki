@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Search\Form;
 
-use SMW\MediaWiki\Search\Form\FormsFinder;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Search\Form\FormsFinder;
 
 /**
  * @covers \SMW\MediaWiki\Search\Form\FormsFinder

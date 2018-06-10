@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Search\Form;
 
 use Html;
-use Xml;
 use MWNamespace;
 use SMW\Message;
 use SpecialSearch;
+use Xml;
 
 /**
  * @note Copied from SearchFormWidget::powerSearchBox, #3126 contains the reason

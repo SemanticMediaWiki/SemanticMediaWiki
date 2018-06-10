@@ -2,12 +2,12 @@
 
 namespace SMW\Iterators;
 
-use Iterator;
-use Countable;
-use ResultWrapper;
 use ArrayIterator;
-use SeekableIterator;
+use Countable;
+use Iterator;
+use ResultWrapper;
 use RuntimeException;
+use SeekableIterator;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\SemanticData;
 use SMW\Query\ProfileAnnotator;
+use SMW\SemanticData;
 
 /**
  * Decorator implementing the ProfileAnnotator interface

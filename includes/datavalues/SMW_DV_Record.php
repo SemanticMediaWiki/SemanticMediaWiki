@@ -1,13 +1,12 @@
 <?php
 
+use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\AbstractMultiValue;
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWPropertyListValue as PropertyListValue;
-use SMWDataItem as DataItem;
 use SMWContainerSemanticData as ContainerSemanticData;
+use SMWDataItem as DataItem;
 use SMWDIContainer as DIContainer;
 
 /**

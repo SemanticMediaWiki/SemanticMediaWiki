@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use OutputPage;
-use SpecialSearch;
-use SMW\Message;
-use SMW\MediaWiki\Search\Search as SMWSearch;
-use SMW\Utils\HtmlModal;
 use Html;
+use OutputPage;
+use SMW\MediaWiki\Search\Search as SMWSearch;
+use SMW\Message;
+use SMW\Utils\HtmlModal;
+use SpecialSearch;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend

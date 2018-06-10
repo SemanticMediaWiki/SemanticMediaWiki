@@ -2,7 +2,6 @@
 
 use SMW\DataValues\Number\UnitConverter;
 use SMW\Message;
-use SMW\ApplicationFactory;
 
 /**
  * @ingroup SMWDataValues

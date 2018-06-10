@@ -2,11 +2,11 @@
 
 namespace SMW\TestsImporter;
 
-use SMW\Importer\Importer;
 use SMW\Importer\ContentIterator;
+use SMW\Importer\ImportContents;
+use SMW\Importer\Importer;
 use SMW\Importer\JsoncontentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Importer\ImportContents;
 use SMW\Tests\TestEnvironment;
 
 /**

@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore\ChangeOp;
 
-use SMW\DIWikiPage;
 use Onoi\Cache\Cache;
+use SMW\DIWikiPage;
 use SMW\Utils\HmacSerializer;
 
 /**

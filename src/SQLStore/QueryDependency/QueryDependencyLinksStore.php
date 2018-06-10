@@ -2,19 +2,18 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use Psr\Log\LoggerAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\EventHandler;
-use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
-use SMW\Store;
 use SMW\RequestOptions;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
+use SMW\Utils\Timer;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use Psr\Log\LoggerAwareTrait;
-use SMW\Utils\Timer;
 
 /**
  * @license GNU GPL v2+

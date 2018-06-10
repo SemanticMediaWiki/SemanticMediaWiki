@@ -2,16 +2,14 @@
 
 namespace SMW\Page;
 
-use SMW\DIProperty;
-use SMW\DataValueFactory;
-use SMW\ApplicationFactory;
-use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\RequestOptions;
-use SMWDataItem as DataItem;
-use SMW\MediaWiki\Collator;
-use SMW\DIConcept;
-use SMW\Message;
 use Html;
+use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
+use SMW\DIConcept;
+use SMW\DIProperty;
+use SMW\MediaWiki\Collator;
+use SMW\Message;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2+

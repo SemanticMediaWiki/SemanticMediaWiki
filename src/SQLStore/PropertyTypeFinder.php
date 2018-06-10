@@ -2,10 +2,9 @@
 
 namespace SMW\SQLStore;
 
-use SMW\MediaWiki\Database;
-use SMW\DIProperty;
-use SMWTypesValue as TypesValue;
 use RuntimeException;
+use SMW\DIProperty;
+use SMW\MediaWiki\Database;
 
 /**
  * @private

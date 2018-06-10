@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\Exporter\ResourceBuilder;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
-use SMWExporter as Exporter;
+use SMW\Exporter\ResourceBuilder;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
+use SMWExporter as Exporter;
 
 /**
  * @private

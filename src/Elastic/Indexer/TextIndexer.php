@@ -2,12 +2,12 @@
 
 namespace SMW\Elastic\Indexer;
 
-use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
-use SMW\Elastic\Connection\Client as ElasticClient;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use Psr\Log\LoggerAwareTrait;
 use Revision;
 use RuntimeException;
+use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client as ElasticClient;
 
 /**
  * @license GNU GPL v2+

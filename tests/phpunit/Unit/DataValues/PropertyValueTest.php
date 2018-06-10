@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\Options;
 use SMW\DataValues\PropertyValue;
 
 /**

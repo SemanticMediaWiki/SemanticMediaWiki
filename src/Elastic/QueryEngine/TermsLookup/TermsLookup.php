@@ -3,13 +3,13 @@
 namespace SMW\Elastic\QueryEngine\TermsLookup;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\Store;
-use SMW\Options;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\QueryEngine\TermsLookup as ITermsLookup;
-use SMW\Elastic\QueryEngine\SearchResult;
-use SMW\Elastic\QueryEngine\FieldMapper;
 use RuntimeException;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\QueryEngine\FieldMapper;
+use SMW\Elastic\QueryEngine\SearchResult;
+use SMW\Elastic\QueryEngine\TermsLookup as ITermsLookup;
+use SMW\Options;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

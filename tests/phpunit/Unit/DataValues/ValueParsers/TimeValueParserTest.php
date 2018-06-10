@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\DataValues\ValueParsers;
 
-use SMW\DataValues\ValueParsers\TimeValueParser;
 use SMW\DataValues\Time\Components;
+use SMW\DataValues\ValueParsers\TimeValueParser;
 
 /**
  * @covers \SMW\DataValues\ValueParsers\TimeValueParser

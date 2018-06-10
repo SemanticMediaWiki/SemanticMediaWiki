@@ -3,8 +3,8 @@
 namespace SMW\Query\ProfileAnnotators;
 
 use SMW\DIProperty;
-use SMWDINumber as DINumber;
 use SMW\Query\ProfileAnnotator;
+use SMWDINumber as DINumber;
 
 /**
  * @license GNU GPL v2+

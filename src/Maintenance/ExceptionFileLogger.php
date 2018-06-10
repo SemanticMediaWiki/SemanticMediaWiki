@@ -2,9 +2,9 @@
 
 namespace SMW\Maintenance;
 
+use Exception;
 use SMW\Options;
 use SMW\Utils\File;
-use Exception;
 
 /**
  * @private

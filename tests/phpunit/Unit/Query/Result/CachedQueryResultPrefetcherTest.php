@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Query\Result;
 
-use SMW\Query\Result\CachedQueryResultPrefetcher;
-use SMW\DIWikiPage;
-use SMW\Utils\BufferedStatsdCollector;
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
+use SMW\DIWikiPage;
+use SMW\Query\Result\CachedQueryResultPrefetcher;
+use SMW\Utils\BufferedStatsdCollector;
 
 /**
  * @covers \SMW\Query\Result\CachedQueryResultPrefetcher

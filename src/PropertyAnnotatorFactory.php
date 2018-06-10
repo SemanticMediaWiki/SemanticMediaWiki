@@ -5,14 +5,13 @@ namespace SMW;
 use SMw\MediaWiki\RedirectTargetFinder;
 use SMW\PropertyAnnotators\CategoryPropertyAnnotator;
 use SMW\PropertyAnnotators\DisplayTitlePropertyAnnotator;
+use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
 use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
 use SMW\PropertyAnnotators\NullPropertyAnnotator;
 use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
 use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
-use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
-use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
 use SMW\PropertyAnnotators\RuleDefinitionPropertyAnnotator;
-use SMW\Store;
+use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
 use SMW\Rule\RuleDefinition;
 use Title;
 

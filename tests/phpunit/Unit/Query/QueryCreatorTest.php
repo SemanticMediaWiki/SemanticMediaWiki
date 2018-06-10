@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\QueryCreator;
 use SMW\ApplicationFactory;
+use SMW\Query\QueryCreator;
 
 /**
  * @covers SMW\Query\QueryCreator

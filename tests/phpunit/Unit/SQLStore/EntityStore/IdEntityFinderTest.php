@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\IdEntityFinder;
-use SMW\IteratorFactory;
 use SMW\DIWikiPage;
+use SMW\IteratorFactory;
+use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\Tests\TestEnvironment;
 
 /**

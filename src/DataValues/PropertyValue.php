@@ -2,15 +2,13 @@
 
 namespace SMW\DataValues;
 
-use SMW\ApplicationFactory;
-use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValueFactory;
-use SMW\Exception\DataItemException;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
-use SMW\Highlighter;
+use SMW\Exception\DataItemException;
 use SMW\Message;
-use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
+use SMWDataValue as DataValue;
 
 /**
  * Objects of this class represent properties in SMW.

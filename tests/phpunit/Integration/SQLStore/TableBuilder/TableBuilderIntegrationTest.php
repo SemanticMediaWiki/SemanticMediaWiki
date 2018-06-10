@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration\SQLStore\TableBuilder;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\SQLStore\TableBuilder\TableBuilder;
-use SMW\SQLStore\TableBuilder\Table;
+use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
 use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
-use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\SQLStore\TableBuilder\Table;
+use SMW\SQLStore\TableBuilder\TableBuilder;
+use SMW\Tests\MwDBaseUnitTestCase;
 
 /**
  * @group semantic-mediawiki

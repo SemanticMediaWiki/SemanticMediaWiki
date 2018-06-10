@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\DataValues\ExternalIdentifierValue;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
-use SMW\Tests\TestEnvironment;
+use SMW\DataValues\ExternalIdentifierValue;
 use SMW\PropertySpecificationLookup;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ExternalIdentifierValue

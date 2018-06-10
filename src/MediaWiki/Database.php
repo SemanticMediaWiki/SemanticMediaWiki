@@ -6,8 +6,8 @@ use DBError;
 use Exception;
 use ResultWrapper;
 use RuntimeException;
-use SMW\Connection\ConnectionProviderRef;
 use SMW\ApplicationFactory;
+use SMW\Connection\ConnectionProviderRef;
 use UnexpectedValueException;
 
 /**

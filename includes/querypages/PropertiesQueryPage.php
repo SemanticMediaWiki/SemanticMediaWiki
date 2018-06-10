@@ -3,10 +3,10 @@
 namespace SMW;
 
 use Html;
-use SMWDIError;
-use SMWTypesValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundExeption;
+use SMWDIError;
+use SMWTypesValue;
 
 /**
  * Query class that provides content for the Special:Properties page

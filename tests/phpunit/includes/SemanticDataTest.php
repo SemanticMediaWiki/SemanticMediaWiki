@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -9,7 +10,6 @@ use SMW\Localizer;
 use SMW\SemanticData;
 use SMW\Subobject;
 use SMWDITime as DITime;
-use SMW\ApplicationFactory;
 use Title;
 
 /**

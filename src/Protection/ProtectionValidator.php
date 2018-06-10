@@ -4,9 +4,9 @@ namespace SMW\Protection;
 
 use Onoi\Cache\Cache;
 use SMW\CachedPropertyValuesPrefetcher;
+use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
-use SMW\DIProperty;
 use Title;
 
 /**

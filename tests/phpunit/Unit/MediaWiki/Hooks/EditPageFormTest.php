@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\EditPageForm;
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use Title;
 
 /**

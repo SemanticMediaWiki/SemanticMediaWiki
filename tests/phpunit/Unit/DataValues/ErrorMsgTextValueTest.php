@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\DataValues\ErrorMsgTextValue;
 use SMW\DataItemFactory;
+use SMW\DataValues\ErrorMsgTextValue;
 
 /**
  * @covers \SMW\DataValues\ErrorMsgTextValue

@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use Title;
 use SMW\DIWikiPage;
+use Title;
 
 /**
  * Make sufficient use of the job table by only tracking remaining jobs without

@@ -1,11 +1,11 @@
 <?php
 
 use SMW\HashBuilder;
+use SMW\Query\Excerpts;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
-use SMW\Query\ScoreSet;
-use SMW\Query\Excerpts;
 use SMW\Query\Result\ResolverJournal;
+use SMW\Query\ScoreSet;
 use SMW\SerializerFactory;
 
 /**

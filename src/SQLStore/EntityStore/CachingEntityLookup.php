@@ -3,16 +3,15 @@
 namespace SMW\SQLStore\EntityStore;
 
 use Onoi\BlobStore\BlobStore;
-use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\HashBuilder;
 use SMW\EntityLookup;
-use SMW\Store;
+use SMW\HashBuilder;
 use SMW\Localizer;
-use SMWDataItem as DataItem;
-use SMW\SemanticData;
 use SMW\RequestOptions;
+use SMW\SemanticData;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
+use SMWDataItem as DataItem;
 
 /**
  * Intermediary (fast) access to serialized blob values to avoid DB access on

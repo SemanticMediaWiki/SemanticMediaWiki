@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use RuntimeException;
-use SMW\Exception\StoreNotFoundException;
 use Onoi\MessageReporter\NullMessageReporter;
 use Psr\Log\NullLogger;
+use RuntimeException;
+use SMW\Exception\StoreNotFoundException;
 
 /**
  * Factory method that returns an instance of the default store, or an

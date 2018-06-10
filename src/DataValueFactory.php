@@ -2,12 +2,12 @@
 
 namespace SMW;
 
+use SMW\DataValues\PropertyValue;
+use SMW\Services\DataValueServiceFactory;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIError;
 use SMWErrorValue as ErrorValue;
-use SMW\DataValues\PropertyValue;
-use SMW\Services\DataValueServiceFactory;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or

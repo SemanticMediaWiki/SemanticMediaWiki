@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use SMW\ApplicationFactory;
 use SMW\MediaWiki\EditInfoProvider;
 use SMW\Message;
-use Title;
-use SMW\ApplicationFactory;
 use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
+use Title;
 
 /**
  * Occurs after the protect article request has been processed

@@ -1,13 +1,11 @@
 <?php
 
 use SMW\DataValueFactory;
-use SMW\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
-use SMW\Query\Result\ResolverJournal;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMW\Query\Result\ResultFieldMatchFinder;
 use SMW\Query\QueryToken;
+use SMW\Query\Result\ResolverJournal;
+use SMW\Query\Result\ResultFieldMatchFinder;
+use SMWDataItem as DataItem;
 
 /**
  * Container for the contents of a single result field of a query result,

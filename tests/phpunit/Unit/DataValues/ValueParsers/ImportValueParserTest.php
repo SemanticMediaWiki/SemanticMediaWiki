@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\DataValues\ValueParsers;
 
-use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\DataValues\ImportValue;
+use SMW\DataValues\ValueParsers\ImportValueParser;
 
 /**
  * @covers \SMW\DataValues\ValueParsers\ImportValueParser

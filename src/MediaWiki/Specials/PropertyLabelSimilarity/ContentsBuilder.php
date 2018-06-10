@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\PropertyLabelSimilarity;
 
+use Html;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Message;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
-use Html;
 
 /**
  * @license GNU GPL v2+

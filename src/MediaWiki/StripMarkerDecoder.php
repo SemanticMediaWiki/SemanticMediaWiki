@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use StripState;
 use Parser;
+use StripState;
 
 /**
  * @license GNU GPL v2+

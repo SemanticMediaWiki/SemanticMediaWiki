@@ -5,8 +5,8 @@ namespace SMW\Tests\ParserFunctions;
 use ParserOutput;
 use ReflectionClass;
 use SMW\ApplicationFactory;
-use SMW\ParserFunctions\AskParserFunction;
 use SMW\Localizer;
+use SMW\ParserFunctions\AskParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
 

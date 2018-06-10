@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\PropertyLabelFinder;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\PropertyLabelFinder

@@ -2,34 +2,34 @@
 
 namespace SMW\Services;
 
-use SMW\DataValues\ImportValue;
-use SMW\DataValues\ReferenceValue;
-use SMW\DataValues\MonolingualTextValue;
-use SMW\DataValues\ValueParsers\ImportValueParser;
-use SMW\DataValues\ValueParsers\PropertyValueParser;
-use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
-use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
-use SMW\DataValues\ValueFormatters\StringValueFormatter;
-use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
-use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
-use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
-use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
-use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
-use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\ImportValue;
+use SMW\DataValues\MonolingualTextValue;
+use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
-use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
-use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
-use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
-use SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator;
-use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
-use SMWNumberValue as NumberValue;
-use SMWQuantityValue as QuantityValue;
+use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
+use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
-use SMWTimeValue as TimeValue;
+use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
+use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
+use SMW\DataValues\ValueParsers\AllowsListValueParser;
+use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
+use SMW\DataValues\ValueParsers\ImportValueParser;
+use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
+use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataValues\ValueParsers\TimeValueParser;
+use SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator;
+use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
+use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
+use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
+use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
+use SMWNumberValue as NumberValue;
+use SMWPropertyValue as PropertyValue;
+use SMWQuantityValue as QuantityValue;
+use SMWTimeValue as TimeValue;
 
 /**
  * @codeCoverageIgnore

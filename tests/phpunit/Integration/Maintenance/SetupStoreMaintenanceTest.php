@@ -3,7 +3,6 @@
 namespace SMW\Tests\Integration\MediaWiki\Maintenance;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki-integration

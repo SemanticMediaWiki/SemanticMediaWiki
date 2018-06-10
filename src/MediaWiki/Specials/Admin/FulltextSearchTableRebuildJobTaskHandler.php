@@ -2,14 +2,13 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
+use Html;
 use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Message;
-use SMW\DIWikiPage;
-use SMW\Store;
-use Html;
-use WebRequest;
 use Title;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

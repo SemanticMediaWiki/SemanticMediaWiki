@@ -2,12 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DIHandlers;
 
-use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
-use SMWDIBlob as DIBlob;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMWDataItem as DataItem;
+use SMWDIBlob as DIBlob;
 
 /**
  * This class implements Store access to blob (string) data items.

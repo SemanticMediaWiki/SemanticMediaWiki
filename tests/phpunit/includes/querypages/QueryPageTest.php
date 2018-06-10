@@ -2,9 +2,9 @@
 
 namespace SMW\Test;
 
+use ReflectionClass;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
-use ReflectionClass;
 
 /**
  * @covers \SMW\QueryPage

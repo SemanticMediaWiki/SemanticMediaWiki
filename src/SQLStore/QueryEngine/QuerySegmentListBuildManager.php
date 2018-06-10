@@ -2,10 +2,9 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMW\DIWikiPage;
-use SMWQuery as Query;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\SQLStore;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+

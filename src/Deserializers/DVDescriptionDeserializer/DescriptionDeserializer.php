@@ -3,11 +3,11 @@
 namespace SMW\Deserializers\DVDescriptionDeserializer;
 
 use Deserializers\DispatchableDeserializer;
-use SMW\Query\QueryComparator;
-use SMW\Query\DescriptionFactory;
-use SMWDataValue as DataValue;
 use SMW\ApplicationFactory;
 use SMW\DataItemFactory;
+use SMW\Query\DescriptionFactory;
+use SMW\Query\QueryComparator;
+use SMWDataValue as DataValue;
 
 /**
  * @private

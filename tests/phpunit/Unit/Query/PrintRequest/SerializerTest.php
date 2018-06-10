@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Query\PrintRequest;
 
-use SMW\Query\PrintRequest\Serializer;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Query\PrintRequest;
 use SMW\Localizer;
+use SMW\Query\PrintRequest;
+use SMW\Query\PrintRequest\Serializer;
 
 /**
  * @covers SMW\Query\PrintRequest\Serializer

@@ -5,8 +5,6 @@ namespace SMW\PropertyAnnotators;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\PropertyAnnotator;
-use SMW\Store;
 
 /**
  * @license GNU GPL v2+

@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki;
 
-use SMW\Connection\ConnectionProvider;
-use SMW\Connection\ConnectionProviderRef;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\Connection\ConnectionProvider;
+use SMW\Connection\ConnectionProviderRef;
 
 /**
  * @license GNU GPL v2+

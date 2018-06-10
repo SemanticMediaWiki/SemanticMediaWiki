@@ -3,13 +3,8 @@
 namespace SMW\PropertyAnnotators;
 
 use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\Rule\RuleDefinition;
 use SMW\PropertyAnnotator;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWDITime as DITime;
+use SMW\Rule\RuleDefinition;
 
 /**
  * @license GNU GPL v2+

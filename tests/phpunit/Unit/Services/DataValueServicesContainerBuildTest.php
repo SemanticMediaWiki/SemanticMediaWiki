@@ -3,30 +3,28 @@
 namespace SMW\Tests\Services;
 
 use Onoi\CallbackContainer\CallbackContainerFactory;
-use SMW\Services\DataValueServiceFactory;
-use SMWPropertyValue as PropertyValue;
-use SMW\DataValues\ValueParsers\PropertyValueParser;
-use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
-use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
-use SMW\DataValues\AllowsPatternValue;
-use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\DataValues\AllowsListValue;
-use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
-use SMW\DataValues\ImportValue;
-use SMW\DataValues\ValueParsers\ImportValueParser;
-use SMW\Settings;
-use SMW\DataValues\StringValue;
-use SMW\DataValues\ValueFormatters\StringValueFormatter;
-use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
-use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
-use SMW\DataValues\ReferenceValue;
-use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
+use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\MonolingualTextValue;
-use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
-use SMWNumberValue as NumberValue;
+use SMW\DataValues\ReferenceValue;
+use SMW\DataValues\StringValue;
+use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
+use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
-use SMWTimeValue as TimeValue;
+use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
+use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
+use SMW\DataValues\ValueParsers\AllowsListValueParser;
+use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
+use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
+use SMW\DataValues\ValueParsers\PropertyValueParser;
+use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
+use SMW\Services\DataValueServiceFactory;
+use SMW\Settings;
+use SMWNumberValue as NumberValue;
+use SMWPropertyValue as PropertyValue;
+use SMWTimeValue as TimeValue;
 
 /**
  * @group semantic-mediawiki

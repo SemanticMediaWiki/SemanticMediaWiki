@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\ChangePropagationEntityFinder;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SQLStore\ChangePropagationEntityFinder;
 
 /**
  * @covers \SMW\SQLStore\ChangePropagationEntityFinder

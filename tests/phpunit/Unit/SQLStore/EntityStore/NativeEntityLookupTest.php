@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\NativeEntityLookup;
 
 /**

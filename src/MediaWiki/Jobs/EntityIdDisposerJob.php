@@ -5,8 +5,6 @@ namespace SMW\MediaWiki\Jobs;
 use Hooks;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
-use SMW\Iterators\ChunkedIterator;
-use SMW\Site;
 use Title;
 
 /**

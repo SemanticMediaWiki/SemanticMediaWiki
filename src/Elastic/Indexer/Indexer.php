@@ -2,20 +2,17 @@
 
 namespace SMW\Elastic\Indexer;
 
-use Psr\Log\LoggerAwareTrait;
-use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
-use SMW\Utils\CharArmor;
-use SMW\Elastic\ElasticStore;
-use SMW\Store;
-use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
-use SMW\Elastic\Connection\Client as ElasticClient;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use Title;
+use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\Store;
+use SMW\Utils\CharArmor;
+use SMWDIBlob as DIBlob;
+use Title;
 
 /**
  * @license GNU GPL v2+

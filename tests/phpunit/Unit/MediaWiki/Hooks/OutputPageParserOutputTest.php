@@ -8,8 +8,8 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
-use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\OutputPageParserOutput

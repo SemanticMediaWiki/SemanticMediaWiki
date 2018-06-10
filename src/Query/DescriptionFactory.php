@@ -2,7 +2,6 @@
 
 namespace SMW\Query;
 
-use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;

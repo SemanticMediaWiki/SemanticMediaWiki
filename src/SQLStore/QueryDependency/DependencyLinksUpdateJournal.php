@@ -3,10 +3,9 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
-use SMW\MediaWiki\Deferred\CallableUpdate;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\Deferred\CallableUpdate;
 use Title;
 
 /**

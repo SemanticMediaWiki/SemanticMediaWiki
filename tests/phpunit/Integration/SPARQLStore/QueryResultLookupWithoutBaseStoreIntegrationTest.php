@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
-use SMW\DataValueFactory;
 use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\NamespaceDescription as NamespaceDescription;

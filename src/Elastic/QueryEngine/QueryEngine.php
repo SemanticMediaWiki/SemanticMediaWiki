@@ -3,16 +3,15 @@
 namespace SMW\Elastic\QueryEngine;
 
 use Psr\Log\LoggerAwareTrait;
-use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
+use SMW\ApplicationFactory;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Options;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\ScoreSet;
-use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
 use SMW\QueryEngine as IQueryEngine;
 use SMW\Store;
-use SMW\Options;
-use SMW\Elastic\Connection\Client as ElasticClient;
+use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+

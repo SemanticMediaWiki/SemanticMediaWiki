@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HierarchyLookup;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\HierarchyLookup

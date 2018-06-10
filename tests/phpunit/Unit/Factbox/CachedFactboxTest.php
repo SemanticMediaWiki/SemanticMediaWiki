@@ -8,8 +8,8 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Factbox\CachedFactbox;
-use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\Factbox\CachedFactbox

@@ -4,15 +4,14 @@ namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
 use SMW\DataValueFactory;
-use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ExternalIdentifierValue;
-use SMW\DIProperty;
+use SMW\DataValues\ReferenceValue;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMWDataValue as DataValue;
-use SMWPropertyValue as PropertyValue;
-use SMWDIUri as DIUri;
 use SMWDITime as DITime;
+use SMWDIUri as DIUri;
+use SMWPropertyValue as PropertyValue;
 
 /**
  * @license GNU GPL v2+

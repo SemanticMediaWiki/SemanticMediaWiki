@@ -2,19 +2,19 @@
 
 namespace SMW\Page;
 
+use Html;
+use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\Message;
-use SMW\DataValueFactory;
-use SMW\ApplicationFactory;
-use SMW\PropertyRegistry;
-use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\PropertySpecificationReqMsgBuilder;
-use SMW\RequestOptions;
-use SMW\StringCondition;
-use SMW\Store;
 use SMW\Page\ListBuilder\ListBuilder;
 use SMW\Page\ListBuilder\ValueListBuilder;
-use Html;
+use SMW\PropertyRegistry;
+use SMW\PropertySpecificationReqMsgBuilder;
+use SMW\RequestOptions;
+use SMW\Store;
+use SMW\StringCondition;
 use Title;
 
 /**

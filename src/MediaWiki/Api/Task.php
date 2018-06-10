@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
-use SMW\MediaWiki\Jobs\UpdateJob;
+use Iterator;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-use Iterator;
+use SMW\MediaWiki\Jobs\UpdateJob;
 
 /**
  * Module to support various tasks initiate using the API interface

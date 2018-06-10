@@ -2,12 +2,11 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Message;
-use SMW\SemanticData;
 use SMW\RequestOptions;
+use SMW\SemanticData;
 
 /**
  * @license GNU GPL v2+

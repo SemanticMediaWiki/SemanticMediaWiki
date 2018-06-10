@@ -2,8 +2,8 @@
 
 namespace SMW\TestsImporter;
 
-use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Importer\ContentModeller;
+use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Tests\TestEnvironment;
 
 /**

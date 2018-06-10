@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
-use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
 use SMW\ApplicationFactory;
+use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer

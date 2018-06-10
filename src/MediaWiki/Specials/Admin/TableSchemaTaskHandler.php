@@ -2,13 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use SMW\ApplicationFactory;
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\SQLStore\Installer;
-use SMW\Message;
-use SMW\Store;
 use Html;
+use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\Store;
 use WebRequest;
 
 /**

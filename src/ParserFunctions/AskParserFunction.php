@@ -2,18 +2,18 @@
 
 namespace SMW\ParserFunctions;
 
-use SMW\ParserData;
-use SMW\MessageFormatter;
-use SMW\Utils\CircularReferenceGuard;
-use SMW\ApplicationFactory;
-use SMW\ProcessingErrorMsgHandler;
-use SMW\DIProperty;
 use Parser;
-use SMWQueryProcessor as QueryProcessor;
-use SMWQuery as Query;
-use SMW\Query\DeferredQuery;
-use SMW\PostProcHandler;
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;
+use SMW\ParserData;
+use SMW\PostProcHandler;
+use SMW\ProcessingErrorMsgHandler;
+use SMW\Query\DeferredQuery;
+use SMW\Utils\CircularReferenceGuard;
+use SMWQuery as Query;
+use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Provides the {{#ask}} parser function

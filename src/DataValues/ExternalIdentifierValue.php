@@ -2,7 +2,6 @@
 
 namespace SMW\DataValues;
 
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 
 /**

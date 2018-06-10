@@ -3,8 +3,8 @@
  * @ingroup SMWDataItems
  */
 
-use SMW\Exception\DataItemException;
 use SMW\DIProperty;
+use SMW\Exception\DataItemException;
 use SMWDIBlob as DIBlob;
 
 /**

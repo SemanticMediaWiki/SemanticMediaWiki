@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
 use Title;
 

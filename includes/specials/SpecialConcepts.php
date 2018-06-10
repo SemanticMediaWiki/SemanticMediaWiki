@@ -3,8 +3,8 @@
 namespace SMW;
 
 use Html;
-use SMW\SQLStore\SQLStore;
 use SMW\Page\ListPager;
+use SMW\SQLStore\SQLStore;
 use SMWPageLister;
 
 /**

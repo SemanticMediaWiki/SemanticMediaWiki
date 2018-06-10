@@ -2,14 +2,14 @@
 
 namespace SMW\Services;
 
-use SMW\Importer\Importer;
+use SMW\Importer\ContentCreators\DispatchingContentCreator;
+use SMW\Importer\ContentCreators\TextContentCreator;
+use SMW\Importer\ContentCreators\XmlContentCreator;
 use SMW\Importer\ContentIterator;
+use SMW\Importer\ContentModeller;
+use SMW\Importer\Importer;
 use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Importer\ContentModeller;
-use SMW\Importer\ContentCreators\DispatchingContentCreator;
-use SMW\Importer\ContentCreators\XmlContentCreator;
-use SMW\Importer\ContentCreators\TextContentCreator;
 
 /**
  * @codeCoverageIgnore

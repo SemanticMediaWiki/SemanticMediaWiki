@@ -5,11 +5,11 @@ namespace SMW\MediaWiki\Jobs;
 use Hooks;
 use SMW\ApplicationFactory;
 use SMW\HashBuilder;
-use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\RequestOptions;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\Utils\Timer;
 use SMWQuery as Query;
 use Title;
-use SMW\Utils\Timer;
 
 /**
  * @license GNU GPL v2+

@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\RejectParserCacheValue;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\RejectParserCacheValue

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\SemanticDataLookup;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\SemanticDataLookup;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SemanticDataLookup

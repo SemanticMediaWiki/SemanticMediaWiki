@@ -3,9 +3,9 @@
 namespace SMW\Tests\Utils\Runners;
 
 use DomainException;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RuntimeException;
 use SMW\ApplicationFactory;
-use Onoi\MessageReporter\MessageReporterAwareTrait;
 
 /**
  * Running maintenance scripts via phpunit is not really possible but instead

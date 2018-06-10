@@ -2,28 +2,28 @@
 
 namespace SMW;
 
-use SMWDataItem as DataItem;
-use SMW\DataValues\ImportValue;
-use SMW\DataValues\PropertyChainValue;
-use SMW\DataValues\TelephoneUriValue;
-use SMW\DataValues\TemperatureValue;
-use SMW\DataValues\MonolingualTextValue;
-use SMW\DataValues\ReferenceValue;
-use SMW\DataValues\ExternalIdentifierValue;
-use SMW\DataValues\KeywordValue;
-use SMW\DataValues\LanguageCodeValue;
-use SMW\DataValues\AllowsValue;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
-use SMW\DataValues\UniquenessConstraintValue;
-use SMW\DataValues\ExternalFormatterUriValue;
-use SMW\DataValues\TypesValue;
-use SMW\DataValues\ErrorMsgTextValue;
+use SMW\DataValues\AllowsValue;
 use SMW\DataValues\BooleanValue;
+use SMW\DataValues\ErrorMsgTextValue;
+use SMW\DataValues\ExternalFormatterUriValue;
+use SMW\DataValues\ExternalIdentifierValue;
+use SMW\DataValues\ImportValue;
+use SMW\DataValues\KeywordValue;
+use SMW\DataValues\LanguageCodeValue;
+use SMW\DataValues\MonolingualTextValue;
+use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
+use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
-use SMWQuantityValue as QuantityValue;
+use SMW\DataValues\TelephoneUriValue;
+use SMW\DataValues\TemperatureValue;
+use SMW\DataValues\TypesValue;
+use SMW\DataValues\UniquenessConstraintValue;
+use SMWDataItem as DataItem;
 use SMWNumberValue as NumberValue;
+use SMWQuantityValue as QuantityValue;
 use SMWTimeValue as TimeValue;
 
 /**

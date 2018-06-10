@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
-use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
+use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
 use Title;
 
 /**

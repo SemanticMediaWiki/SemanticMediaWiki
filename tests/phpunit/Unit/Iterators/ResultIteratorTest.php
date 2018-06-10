@@ -3,7 +3,6 @@
 namespace SMW\Iterators\Tests;
 
 use SMW\Iterators\ResultIterator;
-use ArrayIterator;
 
 /**
  * @covers \SMW\Iterators\ResultIterator

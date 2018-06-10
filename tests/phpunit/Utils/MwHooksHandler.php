@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use Closure;
 use RuntimeException;
 use SMW\MediaWiki\Hooks\HookRegistry;
 

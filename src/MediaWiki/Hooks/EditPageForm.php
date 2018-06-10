@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\NamespaceExaminer;
-use SMW\DIProperty;
-use SMW\Message;
 use EditPage;
 use Html;
+use SMW\DIProperty;
+use SMW\Message;
+use SMW\NamespaceExaminer;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial

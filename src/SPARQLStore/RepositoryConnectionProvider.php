@@ -2,13 +2,13 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
-use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
-use SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector;
-use SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector;
-use SMW\Connection\ConnectionProvider;
 use Onoi\HttpRequest\CurlRequest;
 use RuntimeException;
+use SMW\Connection\ConnectionProvider;
+use SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector;
 
 /**
  * @private

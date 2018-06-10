@@ -5,10 +5,10 @@ namespace SMW\Deserializers;
 use SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\DispatchingDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer;
+use SMW\Deserializers\DVDescriptionDeserializer\NumberValueDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer;
-use SMW\Deserializers\DVDescriptionDeserializer\NumberValueDescriptionDeserializer;
 use SMWDataValue as DataValue;
 
 /**

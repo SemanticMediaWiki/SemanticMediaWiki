@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
-use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMW\MediaWiki\Database;
+use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\TemporaryTableBuilder

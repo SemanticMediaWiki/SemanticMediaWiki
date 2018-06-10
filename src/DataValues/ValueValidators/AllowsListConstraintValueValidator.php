@@ -2,12 +2,11 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\DataValueFactory;
 use SMW\ApplicationFactory;
+use SMW\DataValues\ValueParsers\AllowsListValueParser;
+use SMW\Message;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
-use SMW\Message;
-use SMW\DataValues\ValueParsers\AllowsListValueParser;
 
 /**
  * @private

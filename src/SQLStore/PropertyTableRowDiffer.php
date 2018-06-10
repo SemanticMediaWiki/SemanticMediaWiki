@@ -3,15 +3,11 @@
 namespace SMW\SQLStore;
 
 use InvalidArgumentException;
-use RuntimeException;
-use SMW\Exception\DataItemException;
-use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\DataTypeRegistry;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Exception\DataItemException;
 use SMW\SemanticData;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
-use SMWDIError as DIError;
 use SMWDataItem as DataItem;
 
 /**

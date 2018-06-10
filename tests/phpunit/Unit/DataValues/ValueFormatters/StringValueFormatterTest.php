@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
-use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\StringValue;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\StringValueFormatter

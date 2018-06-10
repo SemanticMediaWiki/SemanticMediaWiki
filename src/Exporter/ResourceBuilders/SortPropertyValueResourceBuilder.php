@@ -2,16 +2,12 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\Exporter\ResourceBuilder;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
-use SMWExporter as Exporter;
-use SMW\DataValueFactory;
+use SMW\MediaWiki\Collator;
 use SMWDataItem as DataItem;
+use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
 use SMWExpLiteral as ExpLiteral;
-use SMW\MediaWiki\Collator;
 
 /**
  * @private

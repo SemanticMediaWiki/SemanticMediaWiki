@@ -3,9 +3,9 @@
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Escaper;
 use SMW\Query\PrintRequest;
 use SMW\SemanticData;
-use SMW\Exporter\Escaper;
 use SMW\Site;
 
 /**

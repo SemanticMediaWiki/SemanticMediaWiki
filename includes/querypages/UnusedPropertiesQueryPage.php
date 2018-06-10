@@ -3,9 +3,9 @@
 namespace SMW;
 
 use Html;
+use SMW\Exception\PropertyNotFoundExeption;
 use SMWDIError;
 use SMWTypesValue;
-use SMW\Exception\PropertyNotFoundExeption;
 
 /**
  * Query page that provides content to Special:UnusedProperties

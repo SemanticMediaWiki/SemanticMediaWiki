@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki;
 
 use DatabaseBase;
+use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider;
-use Psr\Log\LoggerAwareTrait;
 
 /**
  * @license GNU GPL v2+

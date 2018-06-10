@@ -5,9 +5,9 @@ namespace SMW\SQLStore\EntityStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EntityLookup;
+use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use SMW\RequestOptions;
 
 /**
  * @license GNU GPL v2+

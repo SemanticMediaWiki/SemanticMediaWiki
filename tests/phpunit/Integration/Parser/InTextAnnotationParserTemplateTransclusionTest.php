@@ -4,8 +4,8 @@ namespace SMW\Tests\Integration\Parser;
 
 use ParserOutput;
 use SMW\ApplicationFactory;
-use Title;
 use SMW\Tests\TestEnvironment;
+use Title;
 
 /**
  * @group semantic-mediawiki

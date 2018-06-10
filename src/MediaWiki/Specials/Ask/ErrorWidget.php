@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use SMW\ProcessingErrorMsgHandler;
-use SMW\Message;
-use SMWQuery as Query;
 use Html;
+use SMW\Message;
+use SMW\ProcessingErrorMsgHandler;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+

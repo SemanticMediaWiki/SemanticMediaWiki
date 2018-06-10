@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use SMW\DeferredRequestDispatchManager;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DeferredRequestDispatchManager

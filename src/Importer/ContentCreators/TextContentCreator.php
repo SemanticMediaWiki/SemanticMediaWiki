@@ -2,12 +2,12 @@
 
 namespace SMW\Importer\ContentCreators;
 
-use Onoi\MessageReporter\MessageReporter;
-use SMW\MediaWiki\PageCreator;
-use SMW\Importer\ImportContents;
-use SMW\Importer\ContentCreator;
-use SMW\MediaWiki\Database;
 use ContentHandler;
+use Onoi\MessageReporter\MessageReporter;
+use SMW\Importer\ContentCreator;
+use SMW\Importer\ImportContents;
+use SMW\MediaWiki\Database;
+use SMW\MediaWiki\PageCreator;
 use Title;
 
 /**

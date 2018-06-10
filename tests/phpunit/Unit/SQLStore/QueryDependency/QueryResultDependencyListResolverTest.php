@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
@@ -13,10 +14,9 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
-use SMW\DataValueFactory;
+use SMW\Tests\TestEnvironment;
 use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver

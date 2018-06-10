@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SQLStore;
 
+use SMW\DIWikiPage;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
-use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
 
 /**

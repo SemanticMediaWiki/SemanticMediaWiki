@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
-use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\DataItemFactory;
+use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder

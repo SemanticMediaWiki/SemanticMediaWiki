@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Api;
 
+use SMW\DataValueFactory;
 use SMW\Options;
 use SMW\Query\PrintRequest;
-use SMW\DataValueFactory;
 
 /**
  * This class handles Api related request parameter formatting

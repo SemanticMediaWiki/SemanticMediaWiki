@@ -2,24 +2,24 @@
 
 namespace SMW\Page\ListBuilder;
 
-use SMW\Store;
-use SMW\DIProperty;
+use Html;
 use SMW\ApplicationFactory;
-use SMWPageLister as PageLister;
+use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Localizer;
+use SMW\MediaWiki\Collator;
+use SMW\Message;
+use SMW\Page\ListPager;
+use SMW\Query\Language\SomeProperty;
+use SMW\RequestOptions;
+use SMW\Store;
+use SMW\Utils\HtmlDivTable;
+use SMW\Utils\NextPager;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
-use SMW\RequestOptions;
-use SMW\Localizer;
-use SMW\DataValueFactory;
-use SMW\Page\ListPager;
-use SMW\Utils\NextPager;
-use SMW\Utils\HtmlDivTable;
-use Html;
+use SMWPageLister as PageLister;
 use WebRequest;
-use SMW\Message;
-use SMW\MediaWiki\Collator;
-use SMW\Query\Language\SomeProperty;
 
 /**
  * @license GNU GPL v2+

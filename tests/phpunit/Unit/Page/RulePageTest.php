@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Page;
 
-use SMW\Page\RulePage;
 use SMW\DIWikiPage;
+use SMW\Page\RulePage;
 
 /**
  * @covers \SMW\Page\RulePage

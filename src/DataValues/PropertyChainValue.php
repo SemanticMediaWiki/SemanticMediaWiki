@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues;
 
-use SMWDIBlob as DIBlob;
-use SMWDataItem as DataItem;
 use SMW\DataValueFactory;
+use SMWDataItem as DataItem;
+use SMWDIBlob as DIBlob;
 
 /**
  * @private

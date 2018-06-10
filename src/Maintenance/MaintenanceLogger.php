@@ -2,8 +2,8 @@
 
 namespace SMW\Maintenance;
 
-use SMW\MediaWiki\ManualEntryLogger;
 use RuntimeException;
+use SMW\MediaWiki\ManualEntryLogger;
 
 /**
  * @license GNU GPL v2+

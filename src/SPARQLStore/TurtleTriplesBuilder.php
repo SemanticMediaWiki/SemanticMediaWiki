@@ -2,14 +2,14 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\DIWikiPage;
+use Onoi\Cache\Cache;
 use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 use SMW\SemanticData;
-use Onoi\Cache\Cache;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;

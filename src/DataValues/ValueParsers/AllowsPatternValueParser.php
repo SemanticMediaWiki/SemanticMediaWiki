@@ -2,8 +2,8 @@
 
 namespace SMW\DataValues\ValueParsers;
 
-use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\DataValues\AllowsPatternValue;
+use SMW\MediaWiki\MediaWikiNsContentReader;
 
 /**
  * @private

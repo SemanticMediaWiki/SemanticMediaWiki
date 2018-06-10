@@ -2,19 +2,15 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
-use SMW\SemanticData;
+use Html;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\PropertyRegistry;
-use SMW\Localizer;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Store;
-use Html;
 use SMW\Message;
-use SMWDataValue as DataValue;
-use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\RequestOptions;
+use SMW\SemanticData;
+use SMW\Store;
 use SMW\Utils\HtmlDivTable;
 
 /**

@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
-use SMW\Tests\TestEnvironment;
 use SMW\DataItemFactory;
 use SMW\RequestOptions;
+use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryReferenceBacklinks

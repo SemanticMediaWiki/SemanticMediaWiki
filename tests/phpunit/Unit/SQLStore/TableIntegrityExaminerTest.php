@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\TableIntegrityExaminer;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\SQLStore\TableIntegrityExaminer;
 
 /**
  * @covers \SMW\SQLStore\TableIntegrityExaminer

@@ -2,13 +2,12 @@
 
 namespace SMW;
 
-use SMW\Query\DescriptionFactory;
 use Onoi\Cache\Cache;
-use SMW\Message;
+use RuntimeException;
+use SMW\Query\DescriptionFactory;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWQuery as Query;
-use RuntimeException;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup

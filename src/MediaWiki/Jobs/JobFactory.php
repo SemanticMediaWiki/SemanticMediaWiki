@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use Title;
 use RuntimeException;
+use Title;
 
 /**
  * @license GNU GPL v2+

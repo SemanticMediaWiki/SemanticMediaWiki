@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
+use Html;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\Store;
-use SMW\SQLStore\SQLStore;
 use SMW\Message;
-use SMW\NamespaceManager;
-use Html;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use WebRequest;
 
 /**

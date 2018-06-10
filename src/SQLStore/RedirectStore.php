@@ -2,13 +2,12 @@
 
 namespace SMW\SQLStore;
 
+use Onoi\Cache\Cache;
 use SMW\HashBuilder;
 use SMW\InMemoryPoolCache;
-use SMW\MediaWiki\Database;
-use SMW\Store;
-use Onoi\Cache\Cache;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\Store;
 use Title;
 
 /**

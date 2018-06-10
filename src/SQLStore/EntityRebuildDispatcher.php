@@ -5,9 +5,8 @@ namespace SMW\SQLStore;
 use Hooks;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\SemanticData;
 use SMW\PropertyRegistry;
-use SMW\Store;
+use SMW\SemanticData;
 use SMW\Utils\Lru;
 use Title;
 

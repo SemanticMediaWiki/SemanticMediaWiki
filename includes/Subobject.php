@@ -3,11 +3,11 @@
 namespace SMW;
 
 use InvalidArgumentException;
+use SMW\Exception\SubSemanticDataException;
 use SMWContainerSemanticData;
 use SMWDataValue;
 use SMWDIContainer;
 use Title;
-use SMW\Exception\SubSemanticDataException;
 
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject

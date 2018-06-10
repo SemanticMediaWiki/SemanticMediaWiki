@@ -2,17 +2,16 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use ParamProcessor\ParamDefinition;
+use Html;
+use SMW\DIWikiPage;
+use SMW\Message;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryStringifier;
 use SMW\Utils\HtmlTable;
 use SMWDataValue;
+use SMWDIBlob as DIBlob;
 use SMWQueryResult as QueryResult;
 use SMWResultArray as ResultArray;
-use SMWDIBlob as DIBlob;
-use SMW\DIWikiPage;
-use Html;
-use SMW\Message;
 
 /**
  * Print query results in tables

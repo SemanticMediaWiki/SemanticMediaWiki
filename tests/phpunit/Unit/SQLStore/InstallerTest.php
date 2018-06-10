@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\Installer;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\SQLStore\Installer;
 use SMW\Tests\TestEnvironment;
 
 /**

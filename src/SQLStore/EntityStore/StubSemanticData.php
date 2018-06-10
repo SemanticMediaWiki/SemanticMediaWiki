@@ -5,10 +5,10 @@ namespace SMW\SQLStore\EntityStore;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\StoreFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\Exception\DataItemException;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\SQLStore\SQLStore;
+use SMW\StoreFactory;
 use SMWDataItem as DataItem;
 use SMWSemanticData as SemanticData;
 

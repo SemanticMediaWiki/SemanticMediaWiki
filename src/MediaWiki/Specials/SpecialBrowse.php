@@ -2,18 +2,15 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use Html;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\Localizer;
-use SMW\SemanticData;
 use SMW\Encoder;
 use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
 use SMW\MediaWiki\Specials\Browse\FormHelper;
 use SMW\Message;
 use SMWInfolink as Infolink;
 use SpecialPage;
-use Html;
 
 /**
  * A factbox view on one specific article, showing all the Semantic data about it

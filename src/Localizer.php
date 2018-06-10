@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use SMW\Lang\Lang;
-use SMW\MediaWiki\LocalTime;
 use DateTime;
 use Language;
+use SMW\Lang\Lang;
+use SMW\MediaWiki\LocalTime;
 use Title;
 use User;
 

@@ -2,10 +2,10 @@
 
 namespace SMW\Query;
 
-use SMW\Store;
-use SMW\QueryEngine;
-use SMW\StoreAware;
 use RuntimeException;
+use SMW\QueryEngine;
+use SMW\Store;
+use SMW\StoreAware;
 
 /**
  * @private

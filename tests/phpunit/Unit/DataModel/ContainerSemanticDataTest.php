@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\DataModel;
 
-use SMW\DataModel\ContainerSemanticData;
 use SMW\DataItemFactory;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\SemanticData;
 
 /**

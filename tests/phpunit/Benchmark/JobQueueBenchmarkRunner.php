@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Benchmark;
 
+use RuntimeException;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\Tests\Utils\Runners\JobQueueRunner;
-use RuntimeException;
 use Title;
 
 /**

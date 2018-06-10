@@ -3,8 +3,8 @@
 namespace SMW;
 
 use Closure;
-use Onoi\CallbackContainer\ContainerBuilder;
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use Onoi\CallbackContainer\ContainerBuilder;
 use Parser;
 use ParserOutput;
 use SMW\Maintenance\MaintenanceFactory;
@@ -13,9 +13,9 @@ use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
+use SMW\Services\SharedServicesContainer;
 use SMWQueryParser as QueryParser;
 use Title;
-use SMW\Services\SharedServicesContainer;
 
 /**
  * Application instances access for internal and external use

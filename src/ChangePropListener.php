@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use SMW\Exception\PropertyLabelNotResolvedException;
 use Closure;
+use SMW\Exception\PropertyLabelNotResolvedException;
 
 /**
  * @license GNU GPL v2+

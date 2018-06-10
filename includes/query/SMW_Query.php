@@ -2,12 +2,12 @@
 
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
-use SMW\Query\PrintRequest;
+use SMW\Message;
 use SMW\Query\Language\Description;
+use SMW\Query\PrintRequest;
 use SMW\Query\QueryContext;
 use SMW\Query\QueryStringifier;
 use SMW\Query\QueryToken;
-use SMW\Message;
 
 /**
  * This file contains the class for representing queries in SMW, each

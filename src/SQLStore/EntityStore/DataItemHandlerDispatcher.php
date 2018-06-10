@@ -10,9 +10,9 @@ use SMW\SQLStore\EntityStore\DIHandlers\DINumberHandler;
 use SMW\SQLStore\EntityStore\DIHandlers\DITimeHandler;
 use SMW\SQLStore\EntityStore\DIHandlers\DIUriHandler;
 use SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 
 /**
  * @license GNU GPL v2+

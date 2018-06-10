@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\HtmlTable;
 use SMW\Tests\TestEnvironment;
+use SMW\Utils\HtmlTable;
 
 /**
  * @covers \SMW\Utils\HtmlTable

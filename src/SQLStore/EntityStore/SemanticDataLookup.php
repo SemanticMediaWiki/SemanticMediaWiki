@@ -2,16 +2,16 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use Psr\Log\LoggerAwareTrait;
+use RuntimeException;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
-use Psr\Log\LoggerAwareTrait;
-use RuntimeException;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2+

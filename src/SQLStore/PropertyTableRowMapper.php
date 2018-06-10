@@ -3,15 +3,12 @@
 namespace SMW\SQLStore;
 
 use RuntimeException;
-use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
-use SMW\Store;
-use SMWDIError as DIError;
-use SMWDataItem as DataItem;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\SemanticData;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\Store;
+use SMWDataItem as DataItem;
+use SMWDIError as DIError;
 
 /**
  * Builds a table row representation for a SemanticData object.

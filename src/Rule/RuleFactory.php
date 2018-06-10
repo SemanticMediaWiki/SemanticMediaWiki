@@ -5,8 +5,6 @@ namespace SMW\Rule;
 use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Rule\Exception\RuleTypeNotFoundException;
-use SMW\Rule\Exception\RuleDefinitionNotFoundException;
-use SMW\Rule\Exception\RuleDefinitionClassNotFoundException;
 
 /**
  * @license GNU GPL v2+

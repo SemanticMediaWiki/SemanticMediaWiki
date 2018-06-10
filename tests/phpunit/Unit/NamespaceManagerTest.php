@@ -3,8 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\NamespaceManager;
-use SMW\Tests\TestEnvironment;
-use SMW\Lang;
 
 /**
  * @covers \SMW\NamespaceManager

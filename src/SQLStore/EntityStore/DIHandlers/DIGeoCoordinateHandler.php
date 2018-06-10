@@ -2,12 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DIHandlers;
 
-use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
-use SMWDIGeoCoord  as DIGeoCoord;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMWDataItem as DataItem;
+use SMWDIGeoCoord as DIGeoCoord;
 
 /**
  * This class implements store access to DIGeoCoord data items.

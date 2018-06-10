@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\PageProperty;
 
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
-use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
 
 /**

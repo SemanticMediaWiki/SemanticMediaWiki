@@ -4,15 +4,14 @@ use ParamProcessor\Options;
 use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
 use ParamProcessor\Processor;
-use SMW\Query\PrintRequest;
-use SMW\Query\PrintRequestFactory;
 use SMW\ApplicationFactory;
 use SMW\Message;
+use SMW\Parser\RecursiveTextProcessor;
+use SMW\Query\DeferredQuery;
+use SMW\Query\PrintRequest;
+use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\QueryContext;
 use SMW\Query\ResultFormatNotFoundException;
-use SMW\Query\DeferredQuery;
-use SMW\Query\Processor\ParamListProcessor;
-use SMW\Parser\RecursiveTextProcessor;
 
 /**
  * This file contains a static class for accessing functions to generate and execute

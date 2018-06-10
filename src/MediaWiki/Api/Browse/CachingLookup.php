@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\Utils\Timer;
 use Onoi\Cache\Cache;
+use SMW\Utils\Timer;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Services;
 
-use SMW\Services\ImporterServiceFactory;
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use SMW\Services\ImporterServiceFactory;
 use SMW\Settings;
 
 /**

@@ -1,14 +1,11 @@
 <?php
 
-use SMW\DataTypeRegistry;
 use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
+use SMW\DataTypeRegistry;
 use SMW\DIProperty;
-use SMW\RequestOptions;
-use SMW\SQLStore\TableDefinition;
+use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
-use SMW\SQLStore\EntityStore\StubSemanticData;
-use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\SQLStore\TableDefinition;
 
 /**
  * Class to provide all basic read methods for SMWSQLStore3.

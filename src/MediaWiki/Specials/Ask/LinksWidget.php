@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
-use SMWInfolink as Infolink;
 use SMW\Message;
+use SMWInfolink as Infolink;
 use Title;
 
 /**

@@ -3,9 +3,9 @@
 namespace SMW\Tests\Query\Parser;
 
 use SMW\DataItemFactory;
+use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\Query\DescriptionFactory;
 use SMW\Tests\TestEnvironment;
-use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 
 /**
  * @covers SMW\Query\DescriptionFactory

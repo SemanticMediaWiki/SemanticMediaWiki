@@ -2,9 +2,9 @@
 
 namespace SMW;
 
-use SMWDataItem as DataItem;
-use SMW\Lang\Lang;
 use SMW\DataValues\TypeList;
+use SMW\Lang\Lang;
+use SMWDataItem as DataItem;
 
 /**
  * DataTypes registry class

@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SQLStore;
 
+use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWSql3SmwIds;
-use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\EntityStore\IdCacheManager;
-use Onoi\Cache\FixedInMemoryLruCache;
+use SMW\SQLStore\RedirectStore;
+use SMWSql3SmwIds;
 
 /**
  * @covers \SMWSql3SmwIds

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\Importer;
 
-use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\ApplicationFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
 
 /**
  * @group semantic-mediawiki

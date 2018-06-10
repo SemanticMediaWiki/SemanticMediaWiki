@@ -2,14 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use SMW\ApplicationFactory;
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\Message;
-use SMW\Store;
 use Html;
-use WebRequest;
-use Title;
+use SMW\ApplicationFactory;
 use SMW\MediaWiki\Jobs\JobBase;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use Title;
+use WebRequest;
 
 /**
  * @license GNU GPL v2+

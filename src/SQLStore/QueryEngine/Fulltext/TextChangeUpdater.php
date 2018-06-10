@@ -2,16 +2,14 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use SMW\SQLStore\ChangeOp\TableChangeOp;
-use SMW\MediaWiki\Database;
+use Onoi\Cache\Cache;
+use Psr\Log\LoggerAwareTrait;
 use SMW\DeferredRequestDispatchManager;
 use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
-use SMWDIUri as DIUri;
-use Onoi\Cache\Cache;
-use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\MediaWiki\Database;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
-use Psr\Log\LoggerAwareTrait;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\Utils\Timer;
 
 /**

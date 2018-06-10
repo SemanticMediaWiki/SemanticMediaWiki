@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\Utils\CircularReferenceGuard;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Store;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @license GNU GPL v2+

@@ -2,15 +2,13 @@
 
 namespace SMW\Elastic;
 
-use SMW\SQLStore\SQLStore;
-use SMW\ApplicationFactory;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-use SMW\Options;
-use SMWQuery as Query;
 use Hooks;
-use Title;
 use RuntimeException;
+use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMW\SQLStore\SQLStore;
+use SMWQuery as Query;
+use Title;
 
 /**
  * @private

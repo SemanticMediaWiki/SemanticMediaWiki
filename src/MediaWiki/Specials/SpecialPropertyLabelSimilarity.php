@@ -3,10 +3,9 @@
 namespace SMW\MediaWiki\Specials;
 
 use SMW\ApplicationFactory;
-use SpecialPage;
-use SMW\Message;
-use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
+use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
+use SpecialPage;
 
 /**
  * @license GNU GPL v2+

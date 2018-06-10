@@ -2,17 +2,17 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
+use Html;
+use Onoi\HttpRequest\CachedCurlRequest;
+use Onoi\HttpRequest\CurlRequest;
+use Onoi\HttpRequest\HttpRequest;
+use RuntimeException;
+use SMW\ApplicationFactory;
+use SMW\Message;
 use SMW\Query\Result\StringResult;
 use SMW\QueryEngine;
-use SMW\Message;
 use SMW\Site;
-use Onoi\HttpRequest\HttpRequest;
-use Onoi\HttpRequest\CurlRequest;
-use Onoi\HttpRequest\CachedCurlRequest;
-use SMW\ApplicationFactory;
-use Html;
-use RuntimeException;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+

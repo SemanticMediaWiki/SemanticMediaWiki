@@ -2,12 +2,12 @@
 
 namespace SMW\Page\ListBuilder;
 
-use SMW\Store;
-use SMW\DIProperty;
-use SMWPageLister as PageLister;
-use SMWDataItem as DataItem;
-use SMW\RequestOptions;
 use Html;
+use SMW\DIProperty;
+use SMW\RequestOptions;
+use SMW\Store;
+use SMWDataItem as DataItem;
+use SMWPageLister as PageLister;
 
 /**
  * @license GNU GPL v2+

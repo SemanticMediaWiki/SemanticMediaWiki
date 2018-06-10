@@ -4,12 +4,12 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\SemanticData;
 use SMW\EventHandler;
-use SMW\Store;
-use Wikipage;
-use Title;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
+use SMW\SemanticData;
+use SMW\Store;
+use Title;
+use Wikipage;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete

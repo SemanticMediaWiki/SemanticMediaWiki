@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Fixtures;
 
-use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\File\DummyFileCreator;
+use SMW\Tests\Utils\File\LocalFileUpload;
 
 /**
  * @license GNU GPL v2+

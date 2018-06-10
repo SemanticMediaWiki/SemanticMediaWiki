@@ -3,10 +3,10 @@
 namespace SMW\Rule;
 
 use JsonContent;
-use Title;
-use WikiPage;
-use User;
 use Status;
+use Title;
+use User;
+use WikiPage;
 
 /**
  * @license GNU GPL v2+

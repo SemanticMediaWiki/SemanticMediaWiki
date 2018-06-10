@@ -6,8 +6,8 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
-use SpecialPage;
 use SMWInfolink as Infolink;
+use SpecialPage;
 
 /**
  * A special page to search for entities that have a certain property with

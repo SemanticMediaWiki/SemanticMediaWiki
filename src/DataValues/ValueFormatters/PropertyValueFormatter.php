@@ -2,14 +2,13 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Highlighter;
 use SMW\Localizer;
 use SMW\Message;
-use SMW\DIWikiPage;
 use SMWDataValue as DataValue;
 use SMWPropertyValue as PropertyValue;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

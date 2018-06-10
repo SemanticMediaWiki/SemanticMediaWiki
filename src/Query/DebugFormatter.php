@@ -2,8 +2,8 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
 use SMW\ProcessingErrorMsgHandler;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+

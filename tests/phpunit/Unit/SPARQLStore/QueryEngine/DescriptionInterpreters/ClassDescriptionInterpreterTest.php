@@ -4,11 +4,11 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Query\Language\ClassDescription;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
+use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**

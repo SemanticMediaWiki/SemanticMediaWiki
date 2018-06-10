@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query\Result;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Query\Result\ResolverJournal;
 
 /**

@@ -3,7 +3,6 @@
 namespace SMW\DataValues;
 
 use SMW\Localizer;
-use SMW\Message;
 
 /**
  * To support value list via the NS_MEDIAWIKI namespace

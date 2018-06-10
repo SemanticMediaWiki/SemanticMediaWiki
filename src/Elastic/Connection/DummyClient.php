@@ -2,11 +2,11 @@
 
 namespace SMW\Elastic\Connection;
 
-use Psr\Log\NullLogger;
-use SMW\Options;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
+use Psr\Log\NullLogger;
 use RuntimeException;
+use SMW\Options;
 
 /**
  * @private

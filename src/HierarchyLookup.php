@@ -2,10 +2,9 @@
 
 namespace SMW;
 
-use Onoi\Cache\Cache;
-use SMW\Store;
-use Psr\Log\LoggerAwareTrait;
 use InvalidArgumentException;
+use Onoi\Cache\Cache;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * @license GNU GPL v2+

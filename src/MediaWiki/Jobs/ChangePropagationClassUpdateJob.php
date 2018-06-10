@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Jobs;
 
 use Title;
-use SMW\DIWikiPage;
 
 /**
  * Isolate instance to count update jobs in connection with a category related

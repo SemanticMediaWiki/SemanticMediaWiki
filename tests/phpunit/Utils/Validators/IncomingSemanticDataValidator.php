@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Utils\Validators;
 
-use RuntimeException;
-use SMW\Store;
 use SMW\DIWikiPage;
+use SMW\Store;
 
 /**
  * @group semantic-mediawiki

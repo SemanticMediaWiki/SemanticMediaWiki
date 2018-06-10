@@ -2,10 +2,9 @@
 
 namespace SMW\Query;
 
-use SMW\QueryFactory;
-use SMW\DIWikiPage;
-use SMW\Localizer;
 use SMW\DataValueFactory;
+use SMW\Localizer;
+use SMW\QueryFactory;
 use SMWPropertyValue as PropertyValue;
 
 /**

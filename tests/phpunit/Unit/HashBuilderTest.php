@@ -2,11 +2,11 @@
 
 namespace SMW\Tests;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\SemanticData;
-use SMW\DataModel\ContainerSemanticData;
 use Title;
 
 /**

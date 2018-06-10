@@ -2,17 +2,17 @@
 
 namespace SMW\MediaWiki\Search;
 
-use Title;
-use WikiPage;
-use SMWQueryProcessor as QueryProcessor;
-use SMW\Store;
-use SMWQuery as Query;
+use SMW\MediaWiki\Search\Form\FormsBuilder;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Parser\TermParser;
-use SMW\MediaWiki\Search\Form\FormsBuilder;
+use SMW\Store;
+use SMWQuery as Query;
+use SMWQueryProcessor as QueryProcessor;
+use Title;
 use WebRequest;
+use WikiPage;
 
 /**
  * @private

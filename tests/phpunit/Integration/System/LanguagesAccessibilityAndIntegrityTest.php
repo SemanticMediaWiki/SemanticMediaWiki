@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\System;
 
-use RuntimeException;
 use SMW\Lang\Lang;
 
 /**

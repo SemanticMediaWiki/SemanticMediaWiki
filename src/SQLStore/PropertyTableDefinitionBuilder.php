@@ -6,7 +6,6 @@ use Hooks;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\PropertyRegistry;
-use SMWDataItem as DataItem;
 
 /**
  * @private

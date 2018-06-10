@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore\QueryDependency;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**

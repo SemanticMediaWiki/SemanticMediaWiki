@@ -3,14 +3,13 @@
 namespace SMW\Page;
 
 use Html;
+use SMW\Message;
+use SMW\Rule\Exception\RuleTypeNotFoundException;
+use SMW\Rule\RuleDefinition;
+use SMW\Rule\RuleFactory;
+use SMWInfolink as Infolink;
 use Title;
 use WikiPage;
-use SMW\ApplicationFactory;
-use SMW\Message;
-use SMW\Rule\RuleFactory;
-use SMW\Rule\RuleDefinition;
-use SMW\Rule\Exception\RuleTypeNotFoundException;
-use SMWInfolink as Infolink;
 
 /**
  * Special handling for relation/attribute description pages.

@@ -2,13 +2,10 @@
 
 namespace SMW\Page;
 
-use SMW\ApplicationFactory;
-use SMW\DIProperty;
+use Article;
 use SMW\DIWikiPage;
-use SMW\PropertyRegistry;
 use SMW\Options;
 use SMWOutputs as Outputs;
-use Article;
 
 /**
  * Abstract subclass of MediaWiki's Article that handles the common tasks of
