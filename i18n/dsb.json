@@ -3,7 +3,8 @@
 		"authors": [
 			"Derbeth",
 			"Michawiki",
-			"아라"
+			"아라",
+			"Matěj Suchánek"
 		]
 	},
 	"smw-desc": "Twój wiki pśistupnjejšy cyniś - za mašiny ''a'' luźi\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
@@ -256,7 +257,7 @@
 	"smw_unknowntype": "Typ toś teje kakosći jo njepłaśiwy",
 	"smw-concept-cache-text": "Koncept ma dogromady $1 {{PLURAL:$1|bok|boka|boki|bokow}} a jo se $2 slědny raz zaktualizěrował.",
 	"smw_concept_header": "Boki koncepta \"$1\"",
-	"smw_conceptarticlecount": "$1 {{PLURAL:$|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słuša}} k tomu konceptoju.",
+	"smw_conceptarticlecount": "$1 {{PLURAL:$1|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słuša}} k tomu konceptoju.",
 	"right-smw-admin": "Administraciske nadawki (Semantic MediaWiki)",
 	"group-smwadministrator": "Administratory Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|SMW-administrator|SMW-administratorka}}",
