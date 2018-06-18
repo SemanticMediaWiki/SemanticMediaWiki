@@ -192,6 +192,8 @@
 	"smw_browse_go": "Provést",
 	"smw_browse_no_outgoing": "Tato stránka nemá žádné vlastnosti.",
 	"smw_browse_no_incoming": "Na tuto stránku neodkazují žádné vlastnosti.",
+	"smw-browse-show-group": "Zobrazit skupiny",
+	"smw-browse-hide-group": "Skrýt skupiny",
 	"smw_inverse_label_default": "$1 z/ze",
 	"pageproperty": "Hledání vlastností stránky",
 	"smw_pp_docu": "Buď zadejte stránku a vlastnost nebo pouze vlastnost pro načtení všech přiřazených hodnot.",
