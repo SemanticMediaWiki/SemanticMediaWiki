@@ -212,7 +212,7 @@
 	"smw-statistics-property-instance": "屬性{{PLURAL:$1|值|值}} (總計)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|屬性|屬性}}]] (總計)",
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|屬性|屬性}} (總計)",
-	"smw-statistics-property-used": "[[Special:Properties|{{PLURAL:$1|屬性}}]]（使用了至少一個值）",
+	"smw-statistics-property-used": "[[Special:Properties|{{PLURAL:$1|屬性|屬性}}]] （使用了至少一個值）",
 	"smw-statistics-property-page": "{{PLURAL:$1|Property|屬性}} (使用頁面註冊)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Property|屬性}} (指派給資料型態)",
 	"smw-statistics-query-inline-legacy": "$1 條查詢",
