@@ -7,7 +7,8 @@
 			"Subi",
 			"Mikel Ibaiba",
 			"Sator",
-			"Theklan"
+			"Theklan",
+			"Fitoschido"
 		]
 	},
 	"smw-title": "MediaWiki semantikoa",
@@ -174,6 +175,7 @@
 	"smw-admin-supplementary-settings-title": "Konfigurazio ezarpenak",
 	"smw-admin-supplementary-operational-statistics-title": "Estatistika operatiboak",
 	"smw-admin-supplementary-duplookup-title": "Entitateak bikoiztu",
+	"smw-admin-supplementary-elastic-title": "Bilaketa elastikoa",
 	"smw-property-label-similarity-type": "ID mota erakutsi",
 	"smw_adminlinks_datastructure": "Datuen egitura",
 	"smw_adminlinks_displayingdata": "Datu erakusketa",
