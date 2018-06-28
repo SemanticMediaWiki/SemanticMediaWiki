@@ -31,19 +31,19 @@ class ListResultBuilder {
 		'list' => [
 			'row-open-tag' => '<span class="smw-row">',
 			'row-close-tag' => '</span>',
-			'result-open-tag' => '<span class="smw-format list-format">',
+			'result-open-tag' => '<span class="smw-format list-format $CLASS$">',
 			'result-close-tag' => '</span>',
 		],
 		'ol' => [
 			'row-open-tag' => "<li class=\"smw-row\">",
 			'row-close-tag' => '</li>',
-			'result-open-tag' => '<ol class="smw-format ol-format" start="$START$">',
+			'result-open-tag' => '<ol class="smw-format ol-format $CLASS$" start="$START$">',
 			'result-close-tag' => '</ol>',
 		],
 		'ul' => [
 			'row-open-tag' => '<li class="smw-row">',
 			'row-close-tag' => '</li>',
-			'result-open-tag' => '<ul class="smw-format ul-format">',
+			'result-open-tag' => '<ul class="smw-format ul-format $CLASS$">',
 			'result-close-tag' => '</ul>',
 		],
 		'plainlist' => [
@@ -117,7 +117,7 @@ class ListResultBuilder {
 
 		}
 
-		$this->set( 'result-open-tag', $this->insertOffset( $this->get( 'result-open-tag' ) ) );
+		$this->set( 'result-open-tag', $this->replaceVariables( $this->get( 'result-open-tag' ) ) );
 	}
 
 	/**
@@ -172,8 +172,8 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	private function insertOffset( $subject ) {
-		return str_replace( '$START$', $this->get( 'offset' ) + 1, $subject );
+	private function replaceVariables( $subject ) {
+		return str_replace( [ '$START$', '$CLASS$' ], [ $this->get( 'offset' ) + 1, $this->get( 'class' ) ], $subject );
 	}
 
 	/**

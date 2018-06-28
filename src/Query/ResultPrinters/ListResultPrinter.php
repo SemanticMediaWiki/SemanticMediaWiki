@@ -165,6 +165,11 @@ class ListResultPrinter extends ResultPrinter {
 				'default' => '',
 			],
 
+			'class' => [
+				'message' => 'smw-paramdesc-class',
+				'default' => '',
+			],
+
 			'introtemplate' => [
 				'message' => 'smw-paramdesc-introtemplate',
 				'default' => '',
