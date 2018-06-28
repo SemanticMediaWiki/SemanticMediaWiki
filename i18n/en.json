@@ -69,6 +69,7 @@
 	"smw-paramdesc-template": "The name of a template with which to display the printouts",
 	"smw-paramdesc-columns": "The number of columns in which to display results (default is $1)",
 	"smw-paramdesc-userparam": "A value passed into each template call, if a template is used",
+	"smw-paramdesc-class": "An additional CSS class to set for the list",
 	"smw-paramdesc-introtemplate": "The name of a template to display before the query results, if there are any",
 	"smw-paramdesc-outrotemplate": "The name of a template to display after the query results, if there are any",
 	"smw-paramdesc-embedformat": "The HTML tag used to define headings",
