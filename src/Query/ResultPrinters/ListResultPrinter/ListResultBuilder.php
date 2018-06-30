@@ -173,7 +173,7 @@ class ListResultBuilder {
 	 * @return string
 	 */
 	private function replaceVariables( $subject ) {
-		return str_replace( [ '$START$', '$CLASS$' ], [ $this->get( 'offset' ) + 1, $this->get( 'class' ) ], $subject );
+		return str_replace( [ '$START$', '$CLASS$' ], [ htmlspecialchars( $this->get( 'offset' ) + 1 ), htmlspecialchars( $this->get( 'class' ) ) ], $subject );
 	}
 
 	/**
