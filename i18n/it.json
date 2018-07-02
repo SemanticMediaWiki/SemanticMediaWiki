@@ -71,7 +71,7 @@
 	"smw-paramdesc-intro": "Testo da mostrare prima dei risultati della query, se ce ne sono",
 	"smw-paramdesc-outro": "Testo da mostrare dopo i risultati della query, se ce ne sono",
 	"smw-paramdesc-default": "Testo da mostrare se la query non dà risultati",
-	"smw-paramdesc-sep": "Il separatore per i valori",
+	"smw-paramdesc-sep": "Il separatore tra i risultati",
 	"smw-paramdesc-template": "Il nome di un template con cui mostrare quanto restituito",
 	"smw-paramdesc-columns": "Il numero di colonne in cui ordinare la visualizzazione dei risultati (valore predefinito: $1)",
 	"smw-paramdesc-embedformat": "Il tag HTML usato per definire le intestazioni",

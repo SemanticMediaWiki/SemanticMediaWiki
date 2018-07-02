@@ -41,7 +41,8 @@
 			"Movses",
 			"Mouse21",
 			"Patrick Star",
-			"Happy13241"
+			"Happy13241",
+			"Silicium Power"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -74,6 +75,7 @@
 	"smw_printername_embedded": "Включаемое содержимое страниц",
 	"smw_printername_json": "Экспорт JSON",
 	"smw_printername_list": "Список",
+	"smw_printername_plainlist": "Обычный список",
 	"smw_printername_ol": "Перечисление",
 	"smw_printername_ul": "Список",
 	"smw_printername_table": "Таблица",
