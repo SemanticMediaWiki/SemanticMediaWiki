@@ -222,7 +222,12 @@ class Localizer {
 	 * @return string
 	 */
 	public static function asBCP47FormattedLanguageCode( $languageCode ) {
-		return wfBCP47( $languageCode );
+		if ( !is_callable( [ '\LanguageCode', 'bcp47' ] ) ) {
+			// Backwards compatibility: remove once MW 1.30 is no
+			// longer supported (#3179)
+			return wfBCP47( $languageCode );
+		}
+		return \LanguageCode::bcp47( $languageCode );
 	}
 
 	/**
