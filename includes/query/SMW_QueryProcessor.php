@@ -598,9 +598,9 @@ class SMWQueryProcessor implements QueryContext {
 			return ParamDefinition::getCleanDefinitions(
 				$resultPrinter->getParamDefinitions( self::getParameters( null, $resultPrinter ) )
 			);
-		} else {
-			return array();
 		}
+
+		return [];
 	}
 
 }

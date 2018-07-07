@@ -83,7 +83,7 @@ class DocumentationParserFunction implements HookHandler {
 	 */
 	private function getFormatParameters( $format ) {
 		if ( !array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
-			return array();
+			return [];
 		}
 
 		$resultPrinter = SMWQueryProcessor::getResultPrinter( $format );
