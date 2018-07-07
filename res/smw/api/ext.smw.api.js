@@ -50,8 +50,8 @@
 		/**
 		 * Convenience method to parse and map a JSON string
 		 *
-		 * Emulates partly $.parseJSON (jquery.js)(see http://www.json.org/js.html)
-		 *
+		 * Emulates partly $.parseJSON (jquery.js)
+		 * (see https://web.archive.org/web/20170101125747/http://www.json.org/js.html)
 		 * @since  1.9
 		 *
 		 * @param {string} data
