@@ -112,8 +112,8 @@ class DataValueServiceFactory {
 	 *
 	 * @return mixed
 	 */
-	public function newExtraneousFunctionByName( $serviceName, array $parameters = array() ) {
-		return $this->containerBuilder->create( self::TYPE_EXT_FUNCTION . $serviceName, $parameters );
+	public function newExtraneousFunctionByName( $serviceName ) {
+		return $this->containerBuilder->create( self::TYPE_EXT_FUNCTION . $serviceName );
 	}
 
 	/**
@@ -127,7 +127,7 @@ class DataValueServiceFactory {
 	public function newDataValueByType( $typeId, $class ) {
 
 		if ( $this->containerBuilder->isRegistered( self::TYPE_INSTANCE . $typeId ) ) {
-			return $this->containerBuilder->create( self::TYPE_INSTANCE . $typeId, $typeId );
+			return $this->containerBuilder->create( self::TYPE_INSTANCE . $typeId );
 		}
 
 		// Legacy invocation, for those that have not been defined yet!s
