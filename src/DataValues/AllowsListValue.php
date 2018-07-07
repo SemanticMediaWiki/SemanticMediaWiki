@@ -44,9 +44,7 @@ class AllowsListValue extends StringValue {
 
 		$allowsListValueParser = $this->dataValueServiceFactory->getValueParser( $this );
 
-		$content = $allowsListValueParser->parse(
-			$value
-		);
+		$allowsListValueParser->parse( $value );
 
 		if ( $allowsListValueParser->getErrors() !== array() ) {
 			foreach ( $allowsListValueParser->getErrors() as $error ) {
