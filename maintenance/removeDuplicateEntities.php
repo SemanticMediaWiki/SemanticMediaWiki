@@ -21,7 +21,7 @@ class RemoveDuplicateEntities extends \Maintenance {
 	 * @since 3.0
 	 */
 	public function __construct() {
-		$this->mDescription = 'Remove duplicates entities without active references.';
+		$this->mDescription = 'Remove duplicate entities without active references.';
 		$this->addOption( 's', 'ID starting point', false, true );
 
 		parent::__construct();
