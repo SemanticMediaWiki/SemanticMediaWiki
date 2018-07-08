@@ -36,7 +36,7 @@ class ParameterListDocBuilder {
 		$hasAliases = $this->containsAliases( $paramDefinitions );
 
 		foreach ( $paramDefinitions as $parameter ) {
-			if ( $parameter->getName() != 'format' ) {
+			if ( $parameter->getName() !== 'format' ) {
 				$tableRows[] = $this->getDescriptionRow( $parameter, $hasAliases );
 			}
 		}

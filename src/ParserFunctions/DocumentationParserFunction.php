@@ -3,6 +3,7 @@
 namespace SMW\ParserFunctions;
 
 use ParamProcessor\ParamDefinition;
+use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
 use Parser;
@@ -42,6 +43,31 @@ class DocumentationParserFunction implements HookHandler {
 
 		$this->language = $parameters['language']->getValue();
 
+		if ( $this->formatHasNoParameters( $parameters ) ) {
+			return $this->getNoParametersMessage( $parameters['format']->getValue() );
+		}
+
+		return $this->buildParameterListDocumentation( $parameters );
+	}
+
+	private function formatHasNoParameters( array $parameters ) {
+		return $parameters['parameters']->getValue() === 'specific'
+			&& in_array( $parameters['format']->getValue(), [ 'debug', 'count' ] );
+	}
+
+	private function getNoParametersMessage( $formatName ) {
+		return wfMessage(
+			'smw-smwdoc-default-no-parameter-list',
+			$formatName
+		)->inLanguage( $this->language )->text();
+	}
+
+	/**
+	 * @param ProcessedParam[] $parameters
+	 *
+	 * @return string
+	 */
+	private function buildParameterListDocumentation( array $parameters ) {
 		$params = $this->getFormatParameters( $parameters['format']->getValue() );
 
 		if ( $parameters['parameters']->getValue() === 'specific' ) {
@@ -57,13 +83,13 @@ class DocumentationParserFunction implements HookHandler {
 
 		$docBuilder = new ParameterListDocBuilder( $this->newMessageFunction() );
 
-		if ( ( $output = $docBuilder->getParameterTable( $params ) ) === '' ) {
-			$output = wfMessage(
-				'smw-smwdoc-default-no-parameter-list',	$parameters['format']->getValue()
-			)->inLanguage( $this->language )->text();
+		$parameterTable = $docBuilder->getParameterTable( $params );
+
+		if ( $parameterTable !== ''  ) {
+			return $parameterTable;
 		}
-		
-		return $output;
+
+		return $this->getNoParametersMessage( $parameters['format']->getValue() );
 	}
 
 	private function newMessageFunction() {

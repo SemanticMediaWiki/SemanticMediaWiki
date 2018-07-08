@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\ParserFunctions;
 
+use ParamProcessor\ProcessedParam;
+use ParamProcessor\ProcessingResult;
 use SMW\ParserFunctions\DocumentationParserFunction;
 
 /**
@@ -15,14 +17,6 @@ use SMW\ParserFunctions\DocumentationParserFunction;
  */
 class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
-
-		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\DocumentationParserFunction',
-			new DocumentationParserFunction()
-		);
-	}
-
 	public function testHandle() {
 
 		$instance = new DocumentationParserFunction();
@@ -31,11 +25,11 @@ class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$processedParam = $this->getMockBuilder( '\ParamProcessor\ProcessedParam' )
+		$processedParam = $this->getMockBuilder( ProcessedParam::class )
 			->disableOriginalConstructor()
 			->getMock();
 		
-		$language = $this->getMockBuilder( '\ParamProcessor\ProcessedParam' )
+		$language = $this->getMockBuilder( ProcessedParam::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +37,7 @@ class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getValue' )
 			->will( $this->returnValue( 'en' ) );
 
-		$processingResult = $this->getMockBuilder( '\ParamProcessor\ProcessingResult' )
+		$processingResult = $this->getMockBuilder( ProcessingResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -52,7 +46,8 @@ class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array(
 				'language'   => $language,
 				'format'     => $processedParam,
-				'parameters' => $processedParam ) ) );
+				'parameters' => $processedParam )
+			) );
 
 		$this->assertInternalType(
 			'string',
