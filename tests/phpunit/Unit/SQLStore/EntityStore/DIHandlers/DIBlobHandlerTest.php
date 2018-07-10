@@ -179,22 +179,22 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function dbKeysProvider() {
 
-		$provider[] = array(
-			array( 'Foo', '' )
-		);
+		$provider[] = [
+			[ 'Foo', '' ]
+		];
 
-		$provider[] = array(
-			array( '', 'Foo' )
-		);
+		$provider[] = [
+			[ '', 'Foo' ]
+		];
 
 		return $provider;
 	}
 
 	public function dbKeysExceptionProvider() {
 
-		$provider[] = array(
-			array( '' )
-		);
+		$provider[] = [
+			[ '' ]
+		];
 
 		return $provider;
 	}
@@ -205,37 +205,37 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function fieldTypeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_FIELDT_NONE,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
 				'o_hash' => FieldType::FIELD_TITLE
 			]
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_FIELDT_CHAR_NOCASE,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
 				'o_hash' => FieldType::TYPE_CHAR_NOCASE
 			]
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_FIELDT_CHAR_LONG,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
 				'o_hash' => FieldType::TYPE_CHAR_LONG
 			]
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
 				'o_hash' => FieldType::TYPE_CHAR_LONG_NOCASE
 			]
-		);
+		];
 
 		return $provider;
 	}

@@ -202,7 +202,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
@@ -265,7 +265,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )

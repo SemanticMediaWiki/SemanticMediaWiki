@@ -52,11 +52,11 @@ abstract class DataItemTest extends MwDBaseUnitTestCase {
 	 * @return array
 	 */
 	public function instanceProvider() {
-		$phpFails = array( $this, 'newInstance' );
+		$phpFails = [ $this, 'newInstance' ];
 
 		return array_map(
 			function( array $args ) use ( $phpFails ) {
-				return array( call_user_func_array( $phpFails, $args ) );
+				return [ call_user_func_array( $phpFails, $args ) ];
 			},
 			$this->constructorProvider()
 		);
@@ -69,7 +69,7 @@ abstract class DataItemTest extends MwDBaseUnitTestCase {
 	 */
 	public function testConstructor() {
 		$dataItem = call_user_func_array(
-			array( $this, 'newInstance' ),
+			[ $this, 'newInstance' ],
 			func_get_args()
 		);
 

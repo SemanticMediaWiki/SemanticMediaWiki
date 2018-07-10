@@ -65,10 +65,10 @@ class ChangePropagationUpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function jobProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			DIWikiPage::newFromText( __METHOD__ ),
-			array()
-		);
+			[]
+		];
 
 		return $provider;
 	}

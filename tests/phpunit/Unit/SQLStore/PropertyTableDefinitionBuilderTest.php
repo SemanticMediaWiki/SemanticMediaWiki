@@ -40,9 +40,9 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$dataItems = array();
-		$specials = array();
-		$fixed = array();
+		$dataItems = [];
+		$specials = [];
+		$fixed = [];
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\PropertyTableDefinitionBuilder',
@@ -52,9 +52,9 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDataItemTypes() {
 
-		$dataItems = array( DataItem::TYPE_NUMBER => 'smw_di_number' );
-		$specials = array();
-		$fixed = array();
+		$dataItems = [ DataItem::TYPE_NUMBER => 'smw_di_number' ];
+		$specials = [];
+		$fixed = [];
 
 		$instance = new PropertyTableDefinitionBuilder(
 			$this->propertyTypeFinder
@@ -70,9 +70,9 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 			DataItem::TYPE_NUMBER, 'smw_di_number'
 		);
 
-		$expected = array(
+		$expected = [
 			'smw_di_number' => $definition
-		);
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -85,9 +85,9 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$propertyKey = 'foo bar';
 		$expectedKey = 'Foo_bar';
 
-		$dataItems = array();
-		$specials = array();
-		$fixed = array( $propertyKey );
+		$dataItems = [];
+		$specials = [];
+		$fixed = [ $propertyKey ];
 
 		$this->propertyTypeFinder->expects( $this->any() )
 			->method( 'findTypeID' )
@@ -106,10 +106,10 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$tableName = $instance->createHashedTableNameFrom( $expectedKey );
 		$definition = $instance->newTableDefinition( DataItem::TYPE_NUMBER, $tableName, $expectedKey );
 
-		$expected = array(
-			'definition' => array( $tableName => $definition ),
-			'tableId' => array( $expectedKey => $tableName, '_SKEY' => null )
-		);
+		$expected = [
+			'definition' => [ $tableName => $definition ],
+			'tableId' => [ $expectedKey => $tableName, '_SKEY' => null ]
+		];
 
 		$this->assertEquals(
 			$expected['definition'],
@@ -126,9 +126,9 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyKey = '_MDAT';
 
-		$dataItems = array();
-		$specials = array( $propertyKey );
-		$fixed = array();
+		$dataItems = [];
+		$specials = [ $propertyKey ];
+		$fixed = [];
 
 		$instance = new PropertyTableDefinitionBuilder(
 			$this->propertyTypeFinder
@@ -142,7 +142,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$tableName = $instance->getTablePrefix() . strtolower( $propertyKey );
 		$definition = $instance->newTableDefinition( DataItem::TYPE_TIME, $tableName, $propertyKey );
-		$expected = array( $tableName => $definition );
+		$expected = [ $tableName => $definition ];
 
 		$this->assertEquals(
 			$expected,
@@ -154,9 +154,9 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyKey = '_REDI';
 
-		$dataItems = array();
-		$specials = array( $propertyKey );
-		$fixed = array();
+		$dataItems = [];
+		$specials = [ $propertyKey ];
+		$fixed = [];
 
 		$instance = new PropertyTableDefinitionBuilder(
 			$this->propertyTypeFinder
@@ -171,7 +171,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$tableName = $instance->getTablePrefix() . strtolower( $propertyKey );
 		$definition = $instance->newTableDefinition( DataItem::TYPE_WIKIPAGE, $tableName, $propertyKey );
 
-		$expected = array( $tableName => $definition );
+		$expected = [ $tableName => $definition ];
 		$tableDefinitions = $instance->getTableDefinitions();
 
 		$this->assertFalse(

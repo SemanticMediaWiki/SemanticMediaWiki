@@ -183,29 +183,29 @@ class MySQLValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function searchTermProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'foooo',
 			'barColumn',
 			"MATCH(barColumn) AGAINST (foooo IN BOOLEAN MODE) "
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foooo&BOL',
 			'barColumn',
 			"MATCH(barColumn) AGAINST (foooo IN BOOLEAN MODE) "
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foooo&INL',
 			'barColumn',
 			"MATCH(barColumn) AGAINST (foooo IN NATURAL LANGUAGE MODE) "
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foooo&QEX',
 			'barColumn',
 			"MATCH(barColumn) AGAINST (foooo WITH QUERY EXPANSION) "
-		);
+		];
 
 		return $provider;
 	}

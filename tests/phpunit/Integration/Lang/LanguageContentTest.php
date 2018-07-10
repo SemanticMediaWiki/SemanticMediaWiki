@@ -72,29 +72,29 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 
 	public function canonicalPropertyAliasesProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'fr',
 			'Query size',
 			'Taille de la requête',
 			'_ASKSI'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function canonicalPropertyLabelsProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'fr',
 			'Boolean',
 			'_boo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'en',
 			'Float',
 			'_num'
-		);
+		];
 
 		return $provider;
 	}

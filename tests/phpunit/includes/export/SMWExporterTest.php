@@ -75,26 +75,26 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 	public function dataItemExpElementProvider() {
 
 		// #0 (bug 56643)
-		$provider[] = array( new DINumber( 9001 ),  'SMWExpElement' );
+		$provider[] = [ new DINumber( 9001 ),  'SMWExpElement' ];
 
-		$provider[] = array( new DIBlob( 'foo' ),   'SMWExpElement' );
-		$provider[] = array( new DIBoolean( true ), 'SMWExpElement' );
+		$provider[] = [ new DIBlob( 'foo' ),   'SMWExpElement' ];
+		$provider[] = [ new DIBoolean( true ), 'SMWExpElement' ];
 
-		$provider[] = array( new DIConcept( 'Foo', '', '', '', '' ), 'SMWExpData' );
+		$provider[] = [ new DIConcept( 'Foo', '', '', '', '' ), 'SMWExpData' ];
 
 		return $provider;
 	}
 
 	public function uriDataItemProvider() {
 
-		$provider[] = array( 'Foo',              new DIWikiPage( 'Foo', NS_MAIN, '', '' ) );
-		$provider[] = array( 'Foo#Bar',          new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' ) );
-		$provider[] = array( 'Foo#Bar#Oooo',     new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar#Oooo' ) );
-		$provider[] = array( 'Property:Foo',     new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ) );
-		$provider[] = array( 'Concept:Foo',      new DIWikiPage( 'Foo', SMW_NS_CONCEPT, '', '' ) );
-		$provider[] = array( 'Unknown:Foo',      new DIWikiPage( 'Unknown:Foo', NS_MAIN, '', '' ) );
-		$provider[] = array( 'Unknown:Foo#Bar',  new DIWikiPage( 'Unknown:Foo', NS_MAIN, '', 'Bar' ) );
-		$provider[] = array( 'Property:Foo#Bar', new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', 'Bar' ) );
+		$provider[] = [ 'Foo',              new DIWikiPage( 'Foo', NS_MAIN, '', '' ) ];
+		$provider[] = [ 'Foo#Bar',          new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' ) ];
+		$provider[] = [ 'Foo#Bar#Oooo',     new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar#Oooo' ) ];
+		$provider[] = [ 'Property:Foo',     new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ) ];
+		$provider[] = [ 'Concept:Foo',      new DIWikiPage( 'Foo', SMW_NS_CONCEPT, '', '' ) ];
+		$provider[] = [ 'Unknown:Foo',      new DIWikiPage( 'Unknown:Foo', NS_MAIN, '', '' ) ];
+		$provider[] = [ 'Unknown:Foo#Bar',  new DIWikiPage( 'Unknown:Foo', NS_MAIN, '', 'Bar' ) ];
+		$provider[] = [ 'Property:Foo#Bar', new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', 'Bar' ) ];
 
 		return $provider;
 	}

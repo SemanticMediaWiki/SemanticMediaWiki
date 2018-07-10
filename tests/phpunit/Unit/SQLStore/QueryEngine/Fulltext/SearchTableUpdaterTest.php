@@ -51,8 +51,8 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'o_text' ) ),
-				$this->equalTo( array( 's_id' => 12, 'p_id' => 42 ) ) )
+				$this->equalTo( [ 'o_text' ] ),
+				$this->equalTo( [ 's_id' => 12, 'p_id' => 42 ] ) )
 			->will( $this->returnValue( $row ) );
 
 		$instance = new SearchTableUpdater(
@@ -142,10 +142,10 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'insert' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array(
+				$this->equalTo( [
 					's_id' => 12,
 					'p_id' => 42,
-					'o_text' => '' ) ) );
+					'o_text' => '' ] ) );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -162,9 +162,9 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array(
+				$this->equalTo( [
 					's_id' => 12,
-					'p_id' => 42 ) ) );
+					'p_id' => 42 ] ) );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -199,9 +199,9 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array(
+				$this->equalTo( [
 					's_id' => 12,
-					'p_id' => 42 ) ) );
+					'p_id' => 42 ] ) );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,

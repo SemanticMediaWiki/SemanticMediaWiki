@@ -30,7 +30,7 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( 'Foo' ) ) );
+			->will( $this->returnValue( [ 'Foo' ] ) );
 
 		$connection->expects( $this->any() )
 			->method( 'selectRow' )
@@ -88,13 +88,13 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function parametersProvider() {
 
-		$provider[] = array(
-			array()
-		);
+		$provider[] = [
+			[]
+		];
 
-		$provider[] = array(
-			array( 'id' => 42 )
-		);
+		$provider[] = [
+			[ 'id' => 42 ]
+		];
 
 		return $provider;
 	}

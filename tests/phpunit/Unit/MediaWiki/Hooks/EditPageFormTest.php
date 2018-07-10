@@ -120,40 +120,40 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 
 	public function titleProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Foo', SMW_NS_PROPERTY ),
 			SMW_NS_PROPERTY,
 			true,
 			'smw-editpage-property-annotation-enabled'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Modification date', SMW_NS_PROPERTY ),
 			SMW_NS_PROPERTY,
 			true,
 			'smw-editpage-property-annotation-disabled'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Foo', SMW_NS_CONCEPT ),
 			SMW_NS_CONCEPT,
 			true,
 			'smw-editpage-concept-annotation-enabled'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Foo', NS_MAIN ),
 			NS_MAIN,
 			true,
 			'smw-editpage-annotation-enabled'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Foo', NS_MAIN ),
 			NS_MAIN,
 			false,
 			'smw-editpage-annotation-disabled'
-		);
+		];
 
 		return $provider;
 	}

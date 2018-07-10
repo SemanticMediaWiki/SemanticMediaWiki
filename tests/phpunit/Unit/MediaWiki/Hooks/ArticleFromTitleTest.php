@@ -61,20 +61,20 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 
 	public function namespaceProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_NS_PROPERTY,
 			'SMW\Page\PropertyPage'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_NS_CONCEPT,
 			'SMW\Page\ConceptPage'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_NS_RULE,
 			'SMW\Page\RulePage'
-		);
+		];
 
 		return $provider;
 	}

@@ -390,154 +390,154 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function timeInputProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::VALUE,
 			'',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::VALUE,
 			'ISO',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::WIKI_SHORT,
 			'ISO',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::HTML_SHORT,
 			'ISO',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::WIKI_LONG,
 			'ISO',
 			null,
 			'',
 			'2000-01-01'
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::HTML_LONG,
 			'ISO',
 			null,
 			'',
 			'2000-01-01'
-		);
+		];
 
 		#6
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::WIKI_LONG,
 			'MEDIAWIKI',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#7
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::HTML_LONG,
 			'MEDIAWIKI',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#8
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::VALUE,
 			'',
 			null,
 			'',
 			'2000-02'
-		);
+		];
 
 		#9
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::VALUE,
 			'ISO',
 			null,
 			'',
 			'2000-02'
-		);
+		];
 
 		#10
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::WIKI_SHORT,
 			'',
 			null,
 			'',
 			'2000-02'
-		);
+		];
 
 		#11
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::HTML_SHORT,
 			'ISO',
 			null,
 			'',
 			'2000-02'
-		);
+		];
 
 		#12
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::WIKI_LONG,
 			'ISO',
 			null,
 			'',
 			'2000-02-01'
-		);
+		];
 
 		#13
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::HTML_LONG,
 			'ISO',
 			null,
 			'',
 			'2000-02-01'
-		);
+		];
 
 		#14
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::HTML_LONG,
 			'LOCL',
 			null,
 			'en',
 			'February 2000'
-		);
+		];
 
 		return $provider;
 	}

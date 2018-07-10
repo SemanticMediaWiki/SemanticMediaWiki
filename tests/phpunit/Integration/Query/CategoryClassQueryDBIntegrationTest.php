@@ -31,7 +31,7 @@ use SMWQuery as Query;
  */
 class CategoryClassQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
+	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 
 	private $dataValueFactory;

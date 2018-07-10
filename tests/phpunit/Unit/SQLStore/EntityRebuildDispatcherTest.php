@@ -25,7 +25,7 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -34,12 +34,12 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
@@ -79,7 +79,7 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->any() )
 			->method( 'selectField' )
@@ -87,7 +87,7 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -115,15 +115,15 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function idProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			42, // Within the border Id
 			43
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			51,
 			-1
-		);
+		];
 
 		return $provider;
 	}

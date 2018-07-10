@@ -126,7 +126,7 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getDisplayUnits' )
-			->will( $this->returnValue( array( 'Celsius' ) ) );
+			->will( $this->returnValue( [ 'Celsius' ] ) );
 
 		$instance = new TemperatureValue();
 

@@ -29,11 +29,11 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addColumn( 'b', 'integer' );
 
-		$expected = array(
-			'fields' => array(
+		$expected = [
+			'fields' => [
 				 'b' => 'integer'
-			)
-		);
+			]
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -47,11 +47,11 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addIndex( 'bar' );
 
-		$expected = array(
-			'indices' => array(
+		$expected = [
+			'indices' => [
 				'bar'
-			)
-		);
+			]
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -68,13 +68,13 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Table( 'Foo' );
 
-		$instance->addIndex( array( 'foobar' ), 'bar' );
+		$instance->addIndex( [ 'foobar' ], 'bar' );
 
-		$expected = array(
-			'indices' => array(
-				'bar' => array( 'foobar' )
-			)
-		);
+		$expected = [
+			'indices' => [
+				'bar' => [ 'foobar' ]
+			]
+		];
 
 		$this->assertEquals(
 			$expected,

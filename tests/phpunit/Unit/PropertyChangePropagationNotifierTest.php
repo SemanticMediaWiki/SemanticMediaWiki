@@ -27,11 +27,11 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment(
-			array(
-				'smwgChangePropagationWatchlist' => array( '_PVAL' ),
+			[
+				'smwgChangePropagationWatchlist' => [ '_PVAL' ],
 				'smwgCacheType'  => 'hash',
 				'smwgEnableUpdateJobs' => false
-			)
+			]
 		);
 
 		$semanticDataSerializer = $this->getMockBuilder( '\SMW\Serializers\SemanticDataSerializer' )
@@ -127,7 +127,7 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getPropertyValues', 'getSemanticData' ) )
+			->setMethods( [ 'getPropertyValues', 'getSemanticData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
@@ -136,7 +136,7 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnCallback( array( $this, 'doComparePropertyValuesOnCallback' ) ) );
+			->will( $this->returnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] ) );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -168,29 +168,29 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 	public function dataItemDataProvider() {
 
 		// Single
-		$subject  = array(
+		$subject  = [
 			DIWikiPage::newFromText( __METHOD__ )
-		);
+		];
 
 		// Multiple
-		$subjects = array(
+		$subjects = [
 			DIWikiPage::newFromText( __METHOD__ . 'm-0' ),
 			DIWikiPage::newFromText( __METHOD__ . 'm-1' ),
 			DIWikiPage::newFromText( __METHOD__ . 'm-2' )
-		);
+		];
 
-		return array(
+		return [
 			//  $mockedStoreValues, $dataValues, $settings,               $expected
-			array( $subjects, array(),   array( '_PVAL', '_LIST' ), array( 'diff' => true,  'job' => true ) ),
-			array( array(),   $subjects, array( '_PVAL', '_LIST' ), array( 'diff' => true,  'job' => true ) ),
-			array( $subject,  $subjects, array( '_PVAL', '_LIST' ), array( 'diff' => true,  'job' => true ) ),
-			array( $subject,  array(),   array( '_PVAL', '_LIST' ), array( 'diff' => true,  'job' => true ) ),
-			array( $subject,  array(),   array( '_PVAL'          ), array( 'diff' => true,  'job' => true ) ),
-			array( $subjects, $subjects, array( '_PVAL'          ), array( 'diff' => false, 'job' => false ) ),
-			array( $subject,  $subject,  array( '_PVAL'          ), array( 'diff' => false, 'job' => false ) ),
-			array( $subjects, $subjects, array( '_PVAL', '_LIST' ), array( 'diff' => true,  'job' => true ) ),
-			array( $subject,  $subject,  array( '_PVAL', '_LIST' ), array( 'diff' => true,  'job' => true ) )
-		);
+			[ $subjects, [],   [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
+			[ [],   $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
+			[ $subject,  $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
+			[ $subject,  [],   [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
+			[ $subject,  [],   [ '_PVAL'          ], [ 'diff' => true,  'job' => true ] ],
+			[ $subjects, $subjects, [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
+			[ $subject,  $subject,  [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
+			[ $subjects, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
+			[ $subject,  $subject,  [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ]
+		];
 	}
 
 	/**
@@ -203,7 +203,7 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 	 */
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.UnusedFunctionParameter
 	public function doComparePropertyValuesOnCallback( $subject, DIProperty $property, $requestoptions = null ) { // @codingStandardsIgnoreEnd
-		return $property->getKey() === '_LIST' ? array() : $this->mockedStoreValues;
+		return $property->getKey() === '_LIST' ? [] : $this->mockedStoreValues;
 	}
 
 }

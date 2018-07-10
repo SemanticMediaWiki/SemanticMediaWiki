@@ -65,11 +65,11 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeDiff->expects( $this->once() )
 			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$changeDiff->expects( $this->once() )
 			->method( 'getTextItems' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
@@ -130,7 +130,7 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->once() )
 			->method( 'getChangedEntityIdSummaryList' )
-			->will( $this->returnValue( array( '42' ) ) );
+			->will( $this->returnValue( [ '42' ] ) );
 
 		$changeOp->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
@@ -144,7 +144,7 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'dispatchFulltextSearchTableUpdateJobWith' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'slot:id' => 'Foo#0##' ) ) );
+				$this->equalTo( [ 'slot:id' => 'Foo#0##' ] ) );
 
 		$instance = new TextChangeUpdater(
 			$this->connection,
@@ -176,11 +176,11 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeDiff->expects( $this->once() )
 			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$changeDiff->expects( $this->once() )
 			->method( 'getTextItems' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()

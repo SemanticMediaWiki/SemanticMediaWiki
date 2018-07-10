@@ -25,7 +25,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateLink() {
 
-		$parameters = array();
+		$parameters = [];
 
 		$this->assertInternalType(
 			'string',

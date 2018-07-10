@@ -155,19 +155,19 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -178,19 +178,19 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result property:Foo ?v1 .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 2 Inverse
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -201,19 +201,19 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?v1 property:Foo ?result .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -224,20 +224,20 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$orderByProperty = new DIProperty( 'Foo');
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
 			->addString( '?result property:Foo ?v1 .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 4
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -251,19 +251,19 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$orderByProperty = null;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result property:Foo "SomePropertyBlobValue" .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 5
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -277,20 +277,20 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$orderByProperty = $property;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
 			->addString( '?result property:Foo "SomePropertyBlobValue" .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 6
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -310,20 +310,20 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$orderByProperty = $property;
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
 			->addString( "?result property:Foo $propertyValueName ." )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 7
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -337,7 +337,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$orderByProperty = new DIProperty( 'SomePropertyPageValue' );
-		$sortkeys = array();
+		$sortkeys = [];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
@@ -346,13 +346,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?v1 swivt:wikiPageSortKey ?v1sk .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 8
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -371,7 +371,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$orderByProperty = new DIProperty( 'Bar' );
-		$sortkeys = array( 'Foo' => 'ASC' );
+		$sortkeys = [ 'Foo' => 'ASC' ];
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
@@ -382,13 +382,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '}' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 9 Inverse -> ?v1 property:Foo ?v2 vs. ?v2 property:Foo ?v1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -415,13 +415,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '}' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 10
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -433,7 +433,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$sortkeys = array( '_MDAT' => 'ASC' );
+		$sortkeys = [ '_MDAT' => 'ASC' ];
 		$propertyLabel = str_replace( ' ', '_', $property->getLabel() );
 
 		$expected = $stringBuilder
@@ -441,13 +441,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( "?result property:{$propertyLabel}-23aux ?v1 ." )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 11, issue 556
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -457,10 +457,10 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new SomeProperty(
 			$property,
-			new Disjunction( array(
+			new Disjunction( [
 				new ValueDescription( new DIBlob( 'Bar' ) ),
 				new ValueDescription( new DIBlob( 'Baz' ) )
-			) )
+			] )
 		);
 
 		$expected = $stringBuilder
@@ -469,13 +469,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( ?v1 = "Bar" || ?v1 = "Baz" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 12 use the rdf/owl equivalent for a predefined property
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -492,13 +492,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result rdfs:subClassOf "Bar" .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 13
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -515,13 +515,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result rdfs:subPropertyOf property:Bar .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 14 aux-property
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
@@ -538,13 +538,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result property:Modification_date-23aux "2440587.5423611"^^xsd:double .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$sortkeys,
 			$conditionType,
 			$expected
-		);
+		];
 
 		return $provider;
 	}

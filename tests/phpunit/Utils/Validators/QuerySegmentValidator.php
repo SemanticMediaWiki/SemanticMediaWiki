@@ -20,7 +20,7 @@ class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
 	 */
 	public function assertThatContainerContains( $expected, array $querySegment ) {
 
-		$expected = is_array( $expected ) ? $expected : array( $expected );
+		$expected = is_array( $expected ) ? $expected : [ $expected ];
 
 		$this->assertEquals(
 			count( $expected ),

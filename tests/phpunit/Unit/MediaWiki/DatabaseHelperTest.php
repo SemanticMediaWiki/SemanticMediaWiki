@@ -54,24 +54,24 @@ class DatabaseHelperTest extends \PHPUnit_Framework_TestCase {
 
 	public function optionsProvider() {
 
-		$provider[] = array(
-			array( 'FOR UPDATE' )
-		);
+		$provider[] = [
+			[ 'FOR UPDATE' ]
+		];
 
-		$provider[] = array(
-			array( 'GROUP BY' => array( 'Foo', 'Bar' ) )
-		);
+		$provider[] = [
+			[ 'GROUP BY' => [ 'Foo', 'Bar' ] ]
+		];
 
-		$provider[] = array(
-			array( 'ORDER BY' => array( 'Foo', 'Bar' ) )
-		);
+		$provider[] = [
+			[ 'ORDER BY' => [ 'Foo', 'Bar' ] ]
+		];
 
-		$provider[] = array(
-			array(
-				'GROUP BY' => array( 'Foo', 'Bar' ),
-				'ORDER BY' => array( 'Foo', 'Bar' )
-			)
-		);
+		$provider[] = [
+			[
+				'GROUP BY' => [ 'Foo', 'Bar' ],
+				'ORDER BY' => [ 'Foo', 'Bar' ]
+			]
+		];
 
 		return $provider;
 	}

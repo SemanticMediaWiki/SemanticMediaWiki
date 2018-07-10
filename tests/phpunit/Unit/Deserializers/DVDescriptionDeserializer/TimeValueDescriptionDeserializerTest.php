@@ -95,25 +95,25 @@ class TimeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setDataValue( $timeValue );
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->deserialize( array() );
+		$instance->deserialize( [] );
 	}
 
 	public function valueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Jan 1970',
 			'\SMW\Query\Language\ValueDescription'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'~Jan 1970',
 			'\SMW\Query\Language\Conjunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'!~Jan 1970',
 			'\SMW\Query\Language\Disjunction'
-		);
+		];
 
 		return $provider;
 	}

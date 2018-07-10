@@ -60,31 +60,31 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function queryErrorProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'',
 			''
-		);
+		];
 
-		$provider[] = array(
-			array( 'Foo' ),
+		$provider[] = [
+			[ 'Foo' ],
 			'<div id="result-error" class="smw-callout smw-callout-error">Foo</div>'
-		);
+		];
 
-		$provider[] = array(
-			array( 'Foo', 'Bar' ),
+		$provider[] = [
+			[ 'Foo', 'Bar' ],
 			'<div id="result-error" class="smw-callout smw-callout-error"><ul><li>Foo</li><li>Bar</li></ul></div>'
-		);
+		];
 
-		$provider[] = array(
-			array( 'Foo', array( 'Bar' ) ),
+		$provider[] = [
+			[ 'Foo', [ 'Bar' ] ],
 			'<div id="result-error" class="smw-callout smw-callout-error"><ul><li>Foo</li><li>Bar</li></ul></div>'
-		);
+		];
 
 		// Filter duplicate
-		$provider[] = array(
-			array( 'Foo', array( 'Bar' ), 'Bar' ),
+		$provider[] = [
+			[ 'Foo', [ 'Bar' ], 'Bar' ],
 			'<div id="result-error" class="smw-callout smw-callout-error"><ul><li>Foo</li><li>Bar</li></ul></div>'
-		);
+		];
 
 		return $provider;
 	}

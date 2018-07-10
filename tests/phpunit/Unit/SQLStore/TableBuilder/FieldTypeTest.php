@@ -28,39 +28,39 @@ class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 
 	public function fieldTypeProvider() {
 
-		$fieldTypes = array(
+		$fieldTypes = [
 			'double' => 'DOUBLE'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			FieldType::TYPE_DOUBLE,
 			$fieldTypes,
 			'DOUBLE'
-		);
+		];
 
-		$provider[] = array(
-			array( FieldType::TYPE_DOUBLE ),
+		$provider[] = [
+			[ FieldType::TYPE_DOUBLE ],
 			$fieldTypes,
 			'DOUBLE'
-		);
+		];
 
-		$provider[] = array(
-			array( FieldType::TYPE_DOUBLE, 'NOT NULL' ),
+		$provider[] = [
+			[ FieldType::TYPE_DOUBLE, 'NOT NULL' ],
 			$fieldTypes,
 			'DOUBLE NOT NULL'
-		);
+		];
 
-		$provider[] = array(
-			array( FieldType::TYPE_DOUBLE, 'NOT NULL', 'thirdParameterIsNeglected' ),
+		$provider[] = [
+			[ FieldType::TYPE_DOUBLE, 'NOT NULL', 'thirdParameterIsNeglected' ],
 			$fieldTypes,
 			'DOUBLE NOT NULL'
-		);
+		];
 
-		$provider[] = array(
-			array( 'notMatchableTypeThereforeReturnAsIs' ),
+		$provider[] = [
+			[ 'notMatchableTypeThereforeReturnAsIs' ],
 			$fieldTypes,
 			'notMatchableTypeThereforeReturnAsIs'
-		);
+		];
 
 		return $provider;
 	}

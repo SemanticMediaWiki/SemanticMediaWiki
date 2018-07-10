@@ -20,7 +20,7 @@ use SMW\Tests\Utils\MediaWikiTestConnectionProvider;
 class JobQueueRunner {
 
 	protected $type = null;
-	protected $status = array();
+	protected $status = [];
 	protected $connectionProvider = null;
 
 	/**
@@ -90,10 +90,10 @@ class JobQueueRunner {
 
 			wfWaitForSlaves();
 
-			$this->status[] = array(
+			$this->status[] = [
 				'type'   => $job->command,
 				'status' => $job->run()
-			);
+			];
 		}
 
 		$this->testEnvironment->executePendingDeferredUpdates();

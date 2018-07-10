@@ -40,7 +40,7 @@ class PageEditCopyBenchmarkRunner {
 	/**
 	 * @var array
 	 */
-	private $benchmarkReport = array();
+	private $benchmarkReport = [];
 
 	/**
 	 * @var integer|count
@@ -87,7 +87,7 @@ class PageEditCopyBenchmarkRunner {
 	 */
 	public function run( array $case ) {
 
-		$this->benchmarkReport = array();
+		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
 		$start = microtime( true );
@@ -107,7 +107,7 @@ class PageEditCopyBenchmarkRunner {
 			$this->editRepetitionCount = $case['editRepetitionCount'];
 		}
 
-		$editReports = array();
+		$editReports = [];
 
 		foreach ( $case['edit'] as $title ) {
 
@@ -120,16 +120,16 @@ class PageEditCopyBenchmarkRunner {
 			$editReports[$title] = $this->doEdit( $editTitle, $case );
 		}
 
-		$this->benchmarkReport = array(
+		$this->benchmarkReport = [
 			'type'   => $case['type'],
 			'source' => $case['name'],
-			'import' => array(
+			'import' => [
 				'memory' => $importBenchmarkReport['memory'],
 				'time'   => $importBenchmarkReport['time']
-			),
+			],
 			'editTask' => $editReports,
 			'time' => microtime( true ) - $start
-		);
+		];
 	}
 
 	private function doEdit( $editTitle, array $case ) {
@@ -151,16 +151,16 @@ class PageEditCopyBenchmarkRunner {
 			$this->benchmarker->addBenchmarkPoint( microtime( true ) - $start );
 		}
 
-		return array(
+		return [
 			'editRepetitionCount' => $this->editRepetitionCount,
 			"memory" => memory_get_peak_usage( false ) - $memoryBefore,
-			"time" => array(
+			"time" => [
 				'sum'  => $this->benchmarker->getSum(),
 				'mean' => $this->benchmarker->getMean(),
 				'sd'   => $this->benchmarker->getStandardDeviation(),
 				'norm' => $this->benchmarker->getNormalizedValueBy( $this->editRepetitionCount )
-			)
-		);
+			]
+		];
 	}
 
 	private function canOverrideCount( $case ) {

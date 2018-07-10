@@ -48,9 +48,9 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetNamespaces() {
 
-		$contents = array(
+		$contents = [
 			"SMW_NS_PROPERTY" => "Property"
-		);
+		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
@@ -64,16 +64,16 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( SMW_NS_PROPERTY => "Property" ),
+			[ SMW_NS_PROPERTY => "Property" ],
 			$instance->getNamespaces()
 		);
 	}
 
 	public function testGetNamespaceAliases() {
 
-		$contents = array(
+		$contents = [
 			"Property" => "SMW_NS_PROPERTY"
-		);
+		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
@@ -87,16 +87,16 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( "Property" => SMW_NS_PROPERTY ),
+			[ "Property" => SMW_NS_PROPERTY ],
 			$instance->getNamespaceAliases()
 		);
 	}
 
 	public function testGetPreferredDateFormatByPrecisionOnMatchedPrecision() {
 
-		$contents = array(
+		$contents = [
 			"SMW_PREC_YMDT" => "d m Y"
-		);
+		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
@@ -117,9 +117,9 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPreferredDateFormatOnNotMatchablePrecision() {
 
-		$contents = array(
+		$contents = [
 			"Foo" => "d m Y"
-		);
+		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
@@ -140,9 +140,9 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDatatypeLabels() {
 
-		$contents = array(
+		$contents = [
 			"Foo" => "Bar"
-		);
+		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
@@ -156,16 +156,16 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( "Foo" => 'Bar' ),
+			[ "Foo" => 'Bar' ],
 			$instance->getDatatypeLabels()
 		);
 	}
 
 	public function testFindDatatypeByLabel() {
 
-		$contents = array(
+		$contents = [
 			"Bar" => "_foo"
-		);
+		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
@@ -188,7 +188,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( 'property.labels' ),
 				$this->anything() )
-			->will( $this->returnValue( array( "_FOO" => "Foo" ) ) );
+			->will( $this->returnValue( [ "_FOO" => "Foo" ] ) );
 
 		$this->languageContents->expects( $this->at( 1 )  )
 			->method( 'get' )
@@ -245,10 +245,10 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDateFormats() {
 
-		$contents = array(
-			array( 'SMW_Y' ),
-			array( 'SMW_MY', 'SMW_YM' )
-		);
+		$contents = [
+			[ 'SMW_Y' ],
+			[ 'SMW_MY', 'SMW_YM' ]
+		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
@@ -262,18 +262,18 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( array( 9 ), array( 97, 76 ) ),
+			[ [ 9 ], [ 97, 76 ] ],
 			$instance->getDateFormats()
 		);
 	}
 
 	public function testFindMonthNumberByLabelWithCaseInsensitiveSearch() {
 
-		$contents = array(
-			array( 'January', 'Jan' ),
-			array( 'February', 'Feb' ),
-			array( 'March', 'Mar' )
-		);
+		$contents = [
+			[ 'January', 'Jan' ],
+			[ 'February', 'Feb' ],
+			[ 'March', 'Mar' ]
+		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
@@ -294,11 +294,11 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetMonthLabelByNumber() {
 
-		$contents = array(
-			array( 'January', 'Jan' ),
-			array( 'February', 'Feb' ),
-			array( 'March', 'Mar' )
-		);
+		$contents = [
+			[ 'January', 'Jan' ],
+			[ 'February', 'Feb' ],
+			[ 'March', 'Mar' ]
+		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )

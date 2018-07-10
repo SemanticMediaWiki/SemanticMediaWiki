@@ -25,11 +25,11 @@ class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
 
 	public function testChangeOp() {
 
-		$op = array(
+		$op = [
 			's_id' => 462,
 			'o_serialized' => '1/2016/6/10/2/3/31/0',
 			'o_sortkey' => '2457549.5857755',
-		);
+		];
 
 		$instance = new FieldChangeOp(
 			$op

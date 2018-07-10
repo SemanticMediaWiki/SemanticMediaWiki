@@ -112,7 +112,7 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->will(
-				$this->returnValue( array( new \SMWDIBlob( 'foo:bar:fom:fuz' ) ) ) );
+				$this->returnValue( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] ) );
 
 		$instance = new ExpResourceMapper(
 			$store
@@ -139,85 +139,85 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 		$property = \SMWExporter::getInstance()->getNamespaceUri( 'property' );
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, '', '' ),
 			'',
-			array(
+			[
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "Foo|{$wiki}|wiki",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#0##' )
-			)
-		);
+				'dataitem' => [ 'type' => 9, 'item' => 'Foo#0##' ]
+			]
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '' ),
 			'',
-			array(
+			[
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "bar-3AFoo|{$wiki}|wiki",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#0#bar#' )
-			)
-		);
+				'dataitem' => [ 'type' => 9, 'item' => 'Foo#0#bar#' ]
+			]
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
 			'',
-			array(
+			[
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "bar-3AFoo-231234|{$wiki}|wiki",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#0#bar#1234' )
-			)
-		);
+				'dataitem' => [ 'type' => 9, 'item' => 'Foo#0#bar#1234' ]
+			]
+		];
 
 		#3 Extra modififer doesn't not alter the object when a subobject is used
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
 			'abc',
-			array(
+			[
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "bar-3AFoo-231234|{$wiki}|wiki",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#0#bar#1234' )
-			)
-		);
+				'dataitem' => [ 'type' => 9, 'item' => 'Foo#0#bar#1234' ]
+			]
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			'',
-			array(
+			[
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "Foo|{$property}|property",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#102##' )
-			)
-		);
+				'dataitem' => [ 'type' => 9, 'item' => 'Foo#102##' ]
+			]
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			true,
-			array(
+			[
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "Foo-23aux|{$property}|property",
-				'dataitem' => array( 'type' => 9, 'item' => 'Foo#102##' )
-			)
-		);
+				'dataitem' => [ 'type' => 9, 'item' => 'Foo#102##' ]
+			]
+		];
 
 		#6
 		$name = Escaper::encodePage(
 			new DIWikiPage( '-Foo', SMW_NS_PROPERTY, '', '' )
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( '-Foo', SMW_NS_PROPERTY, '', '' ),
 			true,
-			array(
+			[
 				'type' => Element::TYPE_NSRESOURCE,
 				'uri'  => "$name-23aux|{$wiki}|wiki",
-				'dataitem' => array( 'type' => 9, 'item' => '-Foo#102##' )
-			)
-		);
+				'dataitem' => [ 'type' => 9, 'item' => '-Foo#102##' ]
+			]
+		];
 
 		return $provider;
 	}
@@ -227,27 +227,27 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 		// || is not the result we normally would expect but mocking the
 		// dataValueFactory at this point is not worth the hassle therefore
 		// we live with || output
-		$expected =	array(
+		$expected =	[
 			'type' => Element::TYPE_NSRESOURCE,
 			'uri'  => "||",
-			'dataitem' => array( 'type' => 9, 'item' => 'Foo#102##' )
-		);
+			'dataitem' => [ 'type' => 9, 'item' => 'Foo#102##' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			$expected
-		);
+		];
 
-		$expected =	array(
+		$expected =	[
 			'type' => Element::TYPE_NSRESOURCE,
 			'uri'  => "||",
-			'dataitem' => array( 'type' => 9, 'item' => 'Foo#14##' )
-		);
+			'dataitem' => [ 'type' => 9, 'item' => 'Foo#14##' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			new DIWikiPage( 'Foo', NS_CATEGORY, '', '' ),
 			$expected
-		);
+		];
 
 		return $provider;
 	}

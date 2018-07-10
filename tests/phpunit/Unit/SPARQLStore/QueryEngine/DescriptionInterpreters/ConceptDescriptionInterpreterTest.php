@@ -127,8 +127,8 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with( $this->equalTo( new DIProperty( '_CONC' ) ) )
-			->will( $this->returnValue( array(
-				new DIConcept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ) ) );
+			->will( $this->returnValue( [
+				new DIConcept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -185,12 +185,12 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$conditionType,
 			$expected
-		);
+		];
 
 		return $provider;
 	}

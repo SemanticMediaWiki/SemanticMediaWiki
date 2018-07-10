@@ -74,7 +74,7 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cachedPropertyValuesPrefetcher->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$numberValue = $this->dataValueFactory->newDataValueByType( NumberValue::TYPE_ID );
 
@@ -108,7 +108,7 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cachedPropertyValuesPrefetcher->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$stringValue = $this->dataValueFactory->newDataValueByType( StringValue::TYPE_ID );
 
@@ -206,14 +206,14 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cachedPropertyValuesPrefetcher->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array(
-				$this->dataItemFactory->newDIBlob( $service ) ) ) );
+			->will( $this->returnValue( [
+				$this->dataItemFactory->newDIBlob( $service ) ] ) );
 
 		// Manipulating the Message cache is a hack!!
-		$parameters = array(
+		$parameters = [
 			"smw_service_" . $service,
 			'Bar'
-		);
+		];
 
 		Message::getCache()->save(
 			Message::getHash( $parameters, Message::TEXT, Message::CONTENT_LANGUAGE ),

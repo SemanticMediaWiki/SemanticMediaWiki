@@ -47,7 +47,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( array( 'TOTALPROPS' => 42 ) ) );
+			->will( $this->returnValue( [ 'TOTALPROPS' => 42 ] ) );
 
 		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -75,7 +75,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -114,7 +114,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $row1, $row2 ) ) );
+			->will( $this->returnValue( [ $row1, $row2 ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -126,7 +126,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIWikiPage( 'Foobar', SMW_NS_PROPERTY ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Foobar', SMW_NS_PROPERTY ) ] ) );
 
 		$instance = new PropertyLabelSimilarityLookup(
 			$this->store,

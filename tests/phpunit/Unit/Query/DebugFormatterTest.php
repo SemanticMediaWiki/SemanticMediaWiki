@@ -21,7 +21,7 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getStringFrom( 'foo', array(), null )
+			$instance->getStringFrom( 'foo', [], null )
 		);
 	}
 
@@ -51,13 +51,13 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new DebugFormatter();
 
 		$this->assertInternalType(
 			'string',
-			$instance->getStringFrom( 'foo', array(), $query )
+			$instance->getStringFrom( 'foo', [], $query )
 		);
 	}
 
@@ -106,7 +106,7 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function sqlExplainFormatProvider() {
 
-		$row = array(
+		$row = [
 			'id' => '',
 			'select_type' => '',
 			'table' => '',
@@ -117,31 +117,31 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 			'ref' => '',
 			'rows' => '',
 			'Extra' => ''
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'mysql',
-			array( (object)$row )
-		);
+			[ (object)$row ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'postgres',
-			array( array( 'QUERY PLAN' => '' ) )
-		);
+			[ [ 'QUERY PLAN' => '' ] ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'sqlite',
 			''
-		);
+		];
 
 		$row = [
 			'EXPLAIN' => 'Foooooooo'
 		];
 
-		$provider[] = array(
+		$provider[] = [
 			'mysql',
-			array( (object)$row )
-		);
+			[ (object)$row ]
+		];
 
 		return $provider;
 	}

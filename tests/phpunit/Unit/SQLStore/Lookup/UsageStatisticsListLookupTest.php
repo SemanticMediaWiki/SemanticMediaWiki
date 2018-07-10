@@ -69,7 +69,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new \FakeResultWrapper( array() ) ) );
+			->will( $this->returnValue( new \FakeResultWrapper( [] ) ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
@@ -77,7 +77,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( 'Foo' => 'throwExceptionForMismatch' ) ) );
+			->will( $this->returnValue( [ 'Foo' => 'throwExceptionForMismatch' ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -107,7 +107,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new \FakeResultWrapper( array( $row ) ) ) );
+			->will( $this->returnValue( new \FakeResultWrapper( [ $row ] ) ) );
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -115,7 +115,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$objectIdFetcher = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getSMWPropertyID' ) )
+			->setMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -128,7 +128,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
+			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -162,20 +162,20 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function bySegmentDataProvider() {
-		return array(
-			array( 'OWNPAGE',      'integer' ),
-			array( 'QUERY',        'integer' ),
-			array( 'QUERYSIZE',    'integer' ),
-			array( 'QUERYFORMATS', 'array'   ),
-			array( 'CONCEPTS',     'integer' ),
-			array( 'SUBOBJECTS',   'integer' ),
-			array( 'DECLPROPS',    'integer' ),
-			array( 'USEDPROPS',    'integer' ),
-			array( 'TOTALPROPS',   'integer' ),
-			array( 'PROPUSES',     'integer' ),
-			array( 'ERRORUSES',    'integer' ),
-			array( 'DELETECOUNT',  'integer' )
-		);
+		return [
+			[ 'OWNPAGE',      'integer' ],
+			[ 'QUERY',        'integer' ],
+			[ 'QUERYSIZE',    'integer' ],
+			[ 'QUERYFORMATS', 'array'   ],
+			[ 'CONCEPTS',     'integer' ],
+			[ 'SUBOBJECTS',   'integer' ],
+			[ 'DECLPROPS',    'integer' ],
+			[ 'USEDPROPS',    'integer' ],
+			[ 'TOTALPROPS',   'integer' ],
+			[ 'PROPUSES',     'integer' ],
+			[ 'ERRORUSES',    'integer' ],
+			[ 'DELETECOUNT',  'integer' ]
+		];
 	}
 
 }

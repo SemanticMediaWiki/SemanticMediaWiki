@@ -31,7 +31,7 @@ use SMWQuery as Query;
  */
 class InversePropertyRelationshipDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
+	private $subjectsToBeCleared = [];
 
 	private $semanticDataFactory;
 	private $dataValueFactory;
@@ -102,18 +102,18 @@ class InversePropertyRelationshipDBIntegrationTest extends MwDBaseUnitTestCase {
 			$queryResult->getCount()
 		);
 
-		$expectedSubjects = array(
+		$expectedSubjects = [
 			new DIWikiPage( 'Carol', NS_MAIN, '' )
-		);
+		];
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$expectedSubjects,
 			$queryResult
 		);
 
-		$this->subjectsToBeCleared = array(
+		$this->subjectsToBeCleared = [
 			$semanticData->getSubject()
-		);
+		];
 	}
 
 	private function newDataValueForPagePropertyValue( $property, $value ) {

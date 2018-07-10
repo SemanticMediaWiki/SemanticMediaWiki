@@ -52,11 +52,11 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
@@ -85,9 +85,9 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_sort = 'SORT';
 		$row->smw_subobject = '10000000001';
 
-		$expected = array(
+		$expected = [
 			'Foo', 0, '', 'sort', '10000000001'
-		);
+		];
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -99,11 +99,11 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->equalTo( 'smw_title= AND smw_namespace= AND smw_iw= AND smw_subobject!=' ) )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection', 'getDataItemHandlerForDIType' ) )
+			->setMethods( [ 'getConnection', 'getDataItemHandlerForDIType' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
@@ -122,17 +122,17 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function subjectProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			DIWikiPage::newFromText( 'Foo' )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY )
-		);
+		];
 
 		return $provider;
 	}

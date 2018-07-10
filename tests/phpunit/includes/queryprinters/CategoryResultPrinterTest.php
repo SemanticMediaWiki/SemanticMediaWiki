@@ -27,7 +27,7 @@ class CategoryResultPrinterTest extends QueryPrinterTestCase {
 	/**
 	 * @return CategoryResultPrinter
 	 */
-	private function getInstance( $parameters = array() ) {
+	private function getInstance( $parameters = [] ) {
 		return $this->setParameters( new CategoryResultPrinter( 'category' ), $parameters );
 	}
 

@@ -51,7 +51,7 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new JsonContentsFileReader( $cache );
 		$instance->clear();
@@ -65,12 +65,12 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testReadByLanguageCodeToUseInMemoryCache() {
 
 		$instance = $this->getMockBuilder( JsonContentsFileReader::class )
-			->setMethods( array( 'readJSONFile', 'getFileModificationTime' ) )
+			->setMethods( [ 'readJSONFile', 'getFileModificationTime' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'readJSONFile' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance->expects( $this->once() )
 			->method( 'getFileModificationTime' )
@@ -85,12 +85,12 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testReadByLanguageCodeIsForcedToRereadFromFile() {
 
 		$instance = $this->getMockBuilder( JsonContentsFileReader::class )
-			->setMethods( array( 'readJSONFile', 'getFileModificationTime' ) )
+			->setMethods( [ 'readJSONFile', 'getFileModificationTime' ] )
 			->getMock();
 
 		$instance->expects( $this->exactly( 2 ) )
 			->method( 'readJSONFile' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance->expects( $this->exactly( 2 ) )
 			->method( 'getFileModificationTime' )
@@ -148,21 +148,21 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function languageCodeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'en'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function dataExtensionProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'dataTypeLabels',
-			array(
+			[
 				"_ref_rec" => "Reference"
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

@@ -307,10 +307,10 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$disjunction = $this->descriptionFactory->newDisjunction( array(
+		$disjunction = $this->descriptionFactory->newDisjunction( [
 			$this->descriptionFactory->newValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
 			$this->descriptionFactory->newValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
-		) );
+		] );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$property,
@@ -328,7 +328,7 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 		$property = DIProperty::newFromUserLabel( 'Born in' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$conjunction = $this->descriptionFactory->newConjunction( array(
+		$conjunction = $this->descriptionFactory->newConjunction( [
 			$this->descriptionFactory->newClassDescription( new DIWikiPage( 'City', NS_CATEGORY ) ),
 			$this->descriptionFactory->newSomeProperty(
 				DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ),
@@ -336,7 +336,7 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 					new DIWikiPage( 'Outback', NS_MAIN ),
 					DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ) )
 				)
-			)
+			]
 		);
 
 		$description = $this->descriptionFactory->newSomeProperty(
@@ -360,12 +360,12 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 			$this->descriptionFactory->newValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
 		);
 
-		$description = $this->descriptionFactory->newConjunction( array(
+		$description = $this->descriptionFactory->newConjunction( [
 			$description,
 			$this->descriptionFactory->newNamespaceDescription( NS_MAIN )
-		) );
+		] );
 
-		$this->queryParser->setDefaultNamespaces( array( NS_MAIN ) );
+		$this->queryParser->setDefaultNamespaces( [ NS_MAIN ] );
 
 		$this->assertEquals(
 			$description,

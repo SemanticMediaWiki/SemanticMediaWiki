@@ -39,13 +39,13 @@ class MediaWikiTestDatabaseTableBuilder {
 	 */
 	protected $cloneDatabase;
 
-	protected $defaultDatabaseTypes = array(
+	protected $defaultDatabaseTypes = [
 		'mysql',
 		'sqlite',
 		'postgres'
-	);
+	];
 
-	protected $availableDatabaseTypes = array();
+	protected $availableDatabaseTypes = [];
 
 	private static $UTDB_PREFIX = null;
 	private static $MWDB_PREFIX = null;
@@ -188,14 +188,14 @@ class MediaWikiTestDatabaseTableBuilder {
 			$tables = array_diff( $tables, $views );
 		}
 
-		$tables = array_map( array( $this, 'unprefixTable' ), $tables );
+		$tables = array_map( [ $this, 'unprefixTable' ], $tables );
 
 		// Don't duplicate test tables from the previous failed run
-		$tables = array_filter( $tables, array( $this, 'isNotUnittest' ) );
+		$tables = array_filter( $tables, [ $this, 'isNotUnittest' ] );
 
 		// @see MediaWikiTestCase::listTables
 		if ( $dbConnection->getType() === 'sqlite' ) {
-			$tables = array_filter( $tables, array( $this, 'isNotSearchindex' ) );
+			$tables = array_filter( $tables, [ $this, 'isNotSearchindex' ] );
 		}
 
 		return $tables;

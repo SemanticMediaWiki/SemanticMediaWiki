@@ -57,7 +57,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$job = $this->getMockBuilder( '\Job' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getType', 'run' ) )
+			->setMethods( [ 'getType', 'run' ] )
 			->getMock();
 
 		$job->expects( $this->atLeastOnce() )
@@ -87,7 +87,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'assertNotReadOnly', 'doDelete', 'doFlushCaches' ) )
+			->setMethods( [ 'assertNotReadOnly', 'doDelete', 'doFlushCaches' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->any() )
@@ -154,7 +154,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doGetSize', 'doFlushCaches' ) )
+			->setMethods( [ 'doGetSize', 'doFlushCaches' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->once() )
@@ -178,7 +178,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doGetSize' ) )
+			->setMethods( [ 'doGetSize' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->once() )

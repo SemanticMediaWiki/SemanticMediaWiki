@@ -46,7 +46,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	public function testCompileDescription( $description, $pageId, $expected ) {
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getSMWPageID' ) )
+			->setMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
@@ -99,14 +99,14 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = new \stdClass;
 		$expected->type = 1;
-		$expected->components = array( 1 => "t0.o_id" );
+		$expected->components = [ 1 => "t0.o_id" ];
 		$expected->joinfield = "t0.s_id";
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$pageId,
 			$expected
-		);
+		];
 
 		#1 Empty
 		$pageId = 0;
@@ -117,14 +117,14 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = new \stdClass;
 		$expected->type = 2;
-		$expected->components = array();
+		$expected->components = [];
 		$expected->joinfield = "";
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$pageId,
 			$expected
-		);
+		];
 
 		return $provider;
 	}

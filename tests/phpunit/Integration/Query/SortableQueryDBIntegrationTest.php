@@ -29,7 +29,7 @@ use SMWQuery as Query;
  */
 class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
+	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 	private $queryResultValidator;
 
@@ -51,11 +51,11 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testDefaultSortedQueryResult() {
 
-		$expectedSubjects = array(
+		$expectedSubjects = [
 			new DIWikiPage( 'AA', NS_MAIN ),
 			new DIWikiPage( 'AB', NS_MAIN ),
 			new DIWikiPage( 'AC', NS_MAIN )
-		);
+		];
 
 		$property = new DIProperty( 'SomePageProperty' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -78,11 +78,11 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	 */
 	public function testAscendingOrderedQueryResult() {
 
-		$expectedSubjects = array(
+		$expectedSubjects = [
 			new DIWikiPage( 'AA', NS_MAIN ),
 			new DIWikiPage( 'AB', NS_MAIN ),
 			new DIWikiPage( 'AC', NS_MAIN )
-		);
+		];
 
 		$property = new DIProperty( 'SomeAscendingPageProperty' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -90,7 +90,7 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$query = $this->createQueryForSamplePagesThatContain( $property, $expectedSubjects );
 
 		$query->sort = true;
-		$query->sortkeys = array( $property->getKey() => 'ASC' );
+		$query->sortkeys = [ $property->getKey() => 'ASC' ];
 		$query->setUnboundLimit( 50 );
 
 		$this->assertResultOrder(
@@ -101,11 +101,11 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testDescendingOrderedQueryResult() {
 
-		$expectedSubjects = array(
+		$expectedSubjects = [
 			new DIWikiPage( 'AA', NS_MAIN ),
 			new DIWikiPage( 'AB', NS_MAIN ),
 			new DIWikiPage( 'AC', NS_MAIN )
-		);
+		];
 
 		$property = new DIProperty( 'SomeDescendingPageProperty' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -113,7 +113,7 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$query = $this->createQueryForSamplePagesThatContain( $property, $expectedSubjects );
 
 		$query->sort = true;
-		$query->sortkeys = array( $property->getKey() => 'DESC' );
+		$query->sortkeys = [ $property->getKey() => 'DESC' ];
 		$query->setUnboundLimit( 50 );
 
 		$this->assertResultOrder(

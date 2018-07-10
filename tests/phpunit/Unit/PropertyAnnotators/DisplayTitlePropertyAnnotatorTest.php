@@ -82,11 +82,11 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addAnnotation();
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 2,
-			'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
-			'propertyValues' => array( 'Bar' ),
-		);
+			'propertyKeys'   => [ '_DTITLE', '_SKEY' ],
+			'propertyValues' => [ 'Bar' ],
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -107,9 +107,9 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$instance->canCreateAnnotation( false );
 		$instance->addAnnotation();
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 0
-		);
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -119,116 +119,116 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function displayTitleProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		#0 with title entry
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Lala',
 			'',
-			array(
+			[
 				'propertyCount'  => 2,
-				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
-				'propertyValues' => array( 'Lala' ),
-			)
-		);
+				'propertyKeys'   => [ '_DTITLE', '_SKEY' ],
+				'propertyValues' => [ 'Lala' ],
+			]
+		];
 
 		#1 Empty
-		$provider[] = array(
+		$provider[] = [
 			'Bar',
 			'',
 			'',
-			array(
+			[
 				'propertyCount'  => 0,
 				'propertyKeys'   => '',
-				'propertyValues' => array(),
-			)
-		);
+				'propertyValues' => [],
+			]
+		];
 
 		#2 Empty
-		$provider[] = array(
+		$provider[] = [
 			'Bar',
 			false,
 			'',
-			array(
+			[
 				'propertyCount'  => 0,
 				'propertyKeys'   => '',
-				'propertyValues' => array(),
-			)
-		);
+				'propertyValues' => [],
+			]
+		];
 
 		#3 Strip tags
-		$provider[] = array(
+		$provider[] = [
 			'Bar',
 			'<span style="position: absolute; clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px);">FOO</span>',
 			'',
-			array(
+			[
 				'propertyCount'  => 2,
-				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
-				'propertyValues' => array( 'FOO' ),
-			)
-		);
+				'propertyKeys'   => [ '_DTITLE', '_SKEY' ],
+				'propertyValues' => [ 'FOO' ],
+			]
+		];
 
 
 		#4 Strip tags
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			"A 'quote' is <b>bold</b>",
 			'',
-			array(
+			[
 				'propertyCount'  => 2,
-				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
-				'propertyValues' => array( "A 'quote' is bold" ),
-			)
-		);
+				'propertyKeys'   => [ '_DTITLE', '_SKEY' ],
+				'propertyValues' => [ "A 'quote' is bold" ],
+			]
+		];
 
 		#5 with different sortkey
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Lala',
 			'BAR',
-			array(
+			[
 				'propertyCount'  => 1,
-				'propertyKeys'   => array( '_DTITLE' ),
-				'propertyValues' => array( 'Lala' ),
-			)
-		);
+				'propertyKeys'   => [ '_DTITLE' ],
+				'propertyValues' => [ 'Lala' ],
+			]
+		];
 
 		#6 unencoded Html entity
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'ABC & DEF',
 			'',
-			array(
+			[
 				'propertyCount'  => 2,
-				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
-				'propertyValues' => array( 'ABC & DEF' ),
-			)
-		);
+				'propertyKeys'   => [ '_DTITLE', '_SKEY' ],
+				'propertyValues' => [ 'ABC & DEF' ],
+			]
+		];
 
 		#7 decoded/encoded Html entity
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'ABC &amp; DEF',
 			'',
-			array(
+			[
 				'propertyCount'  => 2,
-				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
-				'propertyValues' => array( 'ABC & DEF' ),
-			)
-		);
+				'propertyKeys'   => [ '_DTITLE', '_SKEY' ],
+				'propertyValues' => [ 'ABC & DEF' ],
+			]
+		];
 
 		#8 decoded/encoded ' (&#39;) entity
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'ABC &#39; DEF',
 			'',
-			array(
+			[
 				'propertyCount'  => 2,
-				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
-				'propertyValues' => array( "ABC ' DEF" ),
-			)
-		);
+				'propertyKeys'   => [ '_DTITLE', '_SKEY' ],
+				'propertyValues' => [ "ABC ' DEF" ],
+			]
+		];
 
 		return $provider;
 	}

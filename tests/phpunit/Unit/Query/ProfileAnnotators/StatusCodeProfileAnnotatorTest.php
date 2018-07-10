@@ -77,8 +77,8 @@ class StatusCodeProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[ 100 ],
 			[
 				'propertyCount'  => 1,
-				'propertyKeys'   => array( '_ASKCO' ),
-				'propertyValues' => array( 100 )
+				'propertyKeys'   => [ '_ASKCO' ],
+				'propertyValues' => [ 100 ]
 			]
 		];
 

@@ -78,7 +78,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( array( new DIProperty( 'Foo' ) ) ) );
+			->will( $this->returnValue( [ new DIProperty( 'Foo' ) ] ) );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()

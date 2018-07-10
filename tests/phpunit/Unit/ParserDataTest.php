@@ -185,11 +185,11 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function getPropertyValueDataProvider() {
-		return array(
-			array( 'Foo'  , 'Bar', 0, 1 ),
-			array( '-Foo' , 'Bar', 1, 0 ),
-			array( '_Foo' , 'Bar', 1, 0 ),
-		);
+		return [
+			[ 'Foo'  , 'Bar', 0, 1 ],
+			[ '-Foo' , 'Bar', 1, 0 ],
+			[ '_Foo' , 'Bar', 1, 0 ],
+		];
 	}
 
 	/**
@@ -213,11 +213,11 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			return $this->assertCount( $errorCount, $instance->getSemanticData()->getErrors() );
 		}
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => $propertyCount,
 			'propertyLabels' => $propertyName,
 			'propertyValues' => $value
-		);
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -228,7 +228,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	public function testUpdateStore() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -237,7 +237,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'clearData', 'getObjectIds' ) )
+			->setMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -379,7 +379,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'setLimitReportData' ) )
+			->setMethods( [ 'setLimitReportData' ] )
 			->getMock();
 
 		$parserOutput->expects( $this->once() )

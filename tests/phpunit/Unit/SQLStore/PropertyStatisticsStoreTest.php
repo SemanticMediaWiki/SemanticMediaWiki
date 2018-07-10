@@ -45,20 +45,20 @@ class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 
 		$this->assertTrue( $statsTable->deleteAll() !== false );
 
-		$this->assertTrue( $statsTable->getUsageCounts( array( 1, 2 ) ) === array() );
+		$this->assertTrue( $statsTable->getUsageCounts( [ 1, 2 ] ) === [] );
 	}
 
 	public function usageCountProvider() {
-		$usageCounts = array();
+		$usageCounts = [];
 
-		$usageCounts[] = array( 1, 0 );
-		$usageCounts[] = array( 2, 1 );
+		$usageCounts[] = [ 1, 0 ];
+		$usageCounts[] = [ 2, 1 ];
 
 		for ( $propId = 3; $propId <= 42; $propId++ ) {
-			$usageCounts[] = array( $propId, mt_rand( 0, 100000 ) );
+			$usageCounts[] = [ $propId, mt_rand( 0, 100000 ) ];
 		}
 
-		$usageCounts[] = array( 9001, $this->isWinOS() ? pow( 2, 30 ) : pow( 2, 31 ) );
+		$usageCounts[] = [ 9001, $this->isWinOS() ? pow( 2, 30 ) : pow( 2, 31 ) ];
 
 		return $usageCounts;
 	}
@@ -135,7 +135,7 @@ class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 
 		$this->assertTrue( $table->insertUsageCount( $propId, $usageCount ) );
 
-		$usageCounts = $table->getUsageCounts( array( $propId ) );
+		$usageCounts = $table->getUsageCounts( [ $propId ] );
 
 		$this->assertArrayHasKey( $propId, $usageCounts );
 		$this->assertEquals( $usageCount, $usageCounts[$propId] );
@@ -144,7 +144,7 @@ class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 
 		$this->assertTrue( $table->addToUsageCount( $propId, $change ) !== false );
 
-		$usageCounts = $table->getUsageCounts( array( $propId ) );
+		$usageCounts = $table->getUsageCounts( [ $propId ] );
 
 		$this->assertArrayHasKey( $propId, $usageCounts );
 		$this->assertEquals( $usageCount + $change, $usageCounts[$propId], 'Testing addToUsageCount with ' . $change );
@@ -158,23 +158,23 @@ class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 
 		$this->assertTrue( $statsTable->deleteAll() !== false );
 
-		$counts = array(
+		$counts = [
 			1 => 42,
 			2 => 0,
 			9001 => 9001,
 			9002 => $this->isWinOS() ? pow( 2, 30 ) : pow( 2, 31 ),
 			9003 => 1,
-		);
+		];
 
 		foreach ( $counts as $propId => $count ) {
 			$this->assertTrue( $statsTable->insertUsageCount( $propId, $count ) !== false );
 		}
 
-		$additions = array(
+		$additions = [
 			2 => 42,
 			9001 => -9000,
 			9003 => 0,
-		);
+		];
 
 		$this->assertTrue(
 			$statsTable->addToUsageCounts( $additions ) !== false
@@ -210,11 +210,11 @@ class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 			$connection
 		);
 
-		$additions = array(
+		$additions = [
 			2 => 42,
 			9001 => -9000,
 			9003 => 0,
-		);
+		];
 
 		$instance->waitOnTransactionIdle();
 
@@ -239,11 +239,11 @@ class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 			$connection
 		);
 
-		$additions = array(
+		$additions = [
 			2 => 42,
 			9001 => -9000,
 			9003 => 0,
-		);
+		];
 
 		$instance->isCommandLineMode( true );
 		$instance->waitOnTransactionIdle();

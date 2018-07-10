@@ -60,8 +60,8 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 
 		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
 
-		$containerBuilder->registerObject( 'Settings', new Settings( array(
-			'smwgPropertyInvalidCharacterList' => array( 'Foo' ) )
+		$containerBuilder->registerObject( 'Settings', new Settings( [
+			'smwgPropertyInvalidCharacterList' => [ 'Foo' ] ]
 		) );
 
 		$containerBuilder->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
@@ -70,89 +70,89 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			$expected,
-			call_user_func_array( array( $containerBuilder, 'create' ), $parameters )
+			call_user_func_array( [ $containerBuilder, 'create' ], $parameters )
 		);
 	}
 
 	public function servicesProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_PARSER . PropertyValue::TYPE_ID,
-			array(),
+			[],
 			PropertyValueParser::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_FORMATTER . PropertyValue::TYPE_ID,
-			array(),
+			[],
 			PropertyValueFormatter::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID,
-			array(),
+			[],
 			AllowsPatternValueParser::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID,
-			array(),
+			[],
 			AllowsListValueParser::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator',
-			array(),
+			[],
 			CompoundConstraintValueValidator::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID,
-			array(),
+			[],
 			StringValueFormatter::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID,
-			array(),
+			[],
 			CodeStringValueFormatter::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID,
-			array(),
+			[],
 			ReferenceValueFormatter::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID,
-			array(),
+			[],
 			ReferenceValueFormatter::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_PARSER . MonolingualTextValue::TYPE_ID,
-			array(),
+			[],
 			MonolingualTextValueParser::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_FORMATTER . MonolingualTextValue::TYPE_ID,
-			array(),
+			[],
 			MonolingualTextValueFormatter::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID,
-			array(),
+			[],
 			NumberValueFormatter::class
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID,
-			array(),
+			[],
 			TimeValueFormatter::class
-		);
+		];
 
 		return $provider;
 	}
