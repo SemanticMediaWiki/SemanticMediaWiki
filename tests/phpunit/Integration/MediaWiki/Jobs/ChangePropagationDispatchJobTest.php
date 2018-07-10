@@ -18,7 +18,7 @@ use Title;
 class ChangePropagationDispatchJob extends MwDBaseUnitTestCase {
 
 	private $job = null;
-	private $pages = array();
+	private $pages = [];
 
 	private $mwHooksHandler;
 	private $pageCreator;
@@ -120,10 +120,10 @@ class ChangePropagationDispatchJob extends MwDBaseUnitTestCase {
 			$this->assertTrue( $status['status'] );
 		}
 
-		$this->pages = array(
+		$this->pages = [
 			$propertyPage,
 			Title::newFromText( 'Foo' )
-		);
+		];
 	}
 
 	public function testCategoryChangeToCreateUpdateJob() {

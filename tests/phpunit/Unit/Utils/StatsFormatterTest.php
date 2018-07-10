@@ -39,58 +39,58 @@ class StatsFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function formatProvider() {
 
-		$provider[] = array(
-			array( 'Foo' => 1, 'Bar' => 1 ),
+		$provider[] = [
+			[ 'Foo' => 1, 'Bar' => 1 ],
 			StatsFormatter::FORMAT_PLAIN,
 			'string'
-		);
+		];
 
-		$provider[] = array(
-			array( 'Foo' => 1, 'Bar' => 1 ),
+		$provider[] = [
+			[ 'Foo' => 1, 'Bar' => 1 ],
 			StatsFormatter::FORMAT_HTML,
 			'string'
-		);
+		];
 
-		$provider[] = array(
-			array( 'Foo' => 1, 'Bar' => 1 ),
+		$provider[] = [
+			[ 'Foo' => 1, 'Bar' => 1 ],
 			StatsFormatter::FORMAT_JSON,
 			'string'
-		);
+		];
 
-		$provider[] = array(
-			array( 'Foo' => 1, 'Bar' => 1 ),
+		$provider[] = [
+			[ 'Foo' => 1, 'Bar' => 1 ],
 			null,
 			'array'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function statsProvider() {
 
-		$provider[] = array(
-			array( 'Foo' => 1, 'Bar' => 1 ),
-			array(
+		$provider[] = [
+			[ 'Foo' => 1, 'Bar' => 1 ],
+			[
 				'Foo' => 1,
 				'Bar' => 1
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
-			array( 'Foo.foobar' => 1, 'Bar' => 1 ),
-			array(
-				'Foo' => array( 'foobar' => 1 ),
+		$provider[] = [
+			[ 'Foo.foobar' => 1, 'Bar' => 1 ],
+			[
+				'Foo' => [ 'foobar' => 1 ],
 				'Bar' => 1
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
-			array( 'Foo.foobar' => 5, 'Bar' => 1, 'Foo.foobar.baz' => 1 ),
-			array(
-				'Foo' => array( 'foobar' => array( 5, 'baz' => 1 ) ),
+		$provider[] = [
+			[ 'Foo.foobar' => 5, 'Bar' => 1, 'Foo.foobar.baz' => 1 ],
+			[
+				'Foo' => [ 'foobar' => [ 5, 'baz' => 1 ] ],
 				'Bar' => 1
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

@@ -21,7 +21,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$preferences = array();
+		$preferences = [];
 
 		$this->assertInstanceOf(
 			GetPreferences::class,
@@ -38,7 +38,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$preferences = array();
+		$preferences = [];
 
 		$instance = new GetPreferences( $user );
 

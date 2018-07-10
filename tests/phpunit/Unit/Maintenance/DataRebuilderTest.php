@@ -32,7 +32,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
@@ -83,7 +83,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$entityRebuildDispatcher->expects( $this->once() )
 			->method( 'rebuild' )
-			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+			->will( $this->returnCallback( [ $this, 'refreshDataOnMockCallback' ] ) );
 
 		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getMaxId' )
@@ -91,11 +91,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getDispatchedEntities' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'refreshData' ) )
+			->setMethods( [ 'refreshData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -111,9 +111,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new DataRebuilder( $store, $titleCreator );
 
 		// Needs an end otherwise phpunit is caught up in an infinite loop
-		$instance->setOptions( new Options( array(
+		$instance->setOptions( new Options( [
 			'e' => 1
-		) ) );
+		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -129,7 +129,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$entityRebuildDispatcher->expects( $this->atLeastOnce() )
 			->method( 'rebuild' )
-			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+			->will( $this->returnCallback( [ $this, 'refreshDataOnMockCallback' ] ) );
 
 		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getMaxId' )
@@ -137,13 +137,13 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getDispatchedEntities' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array(
+			->setMethods( [
 				'refreshData',
-				'drop' ) )
+				'drop' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -161,11 +161,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setOptions( new Options( array(
+		$instance->setOptions( new Options( [
 			'e' => 1,
 			'f' => true,
 			'verbose' => false
-		) ) );
+		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -181,7 +181,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$entityRebuildDispatcher->expects( $this->exactly( 6 ) )
 			->method( 'rebuild' )
-			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+			->will( $this->returnCallback( [ $this, 'refreshDataOnMockCallback' ] ) );
 
 		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getMaxId' )
@@ -189,11 +189,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getDispatchedEntities' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'refreshData' ) )
+			->setMethods( [ 'refreshData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -208,11 +208,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setOptions( new Options( array(
+		$instance->setOptions( new Options( [
 			's' => 2,
 			'n' => 5,
 			'verbose' => false
-		) ) );
+		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -236,7 +236,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->once() )
 			->method( 'getResults' )
-			->will( $this->returnValue( array( $subject ) ) );
+			->will( $this->returnValue( [ $subject ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -258,9 +258,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setOptions( new Options( array(
+		$instance->setOptions( new Options( [
 			'query' => '[[Category:Foo]]'
-		) ) );
+		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -281,7 +281,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -297,9 +297,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setOptions( new Options( array(
+		$instance->setOptions( new Options( [
 			'categories' => true
-		) ) );
+		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -318,10 +318,10 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->with( $this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'page_namespace' => SMW_NS_PROPERTY ) ),
+				$this->equalTo( [ 'page_namespace' => SMW_NS_PROPERTY ] ),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -337,9 +337,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setOptions( new Options( array(
+		$instance->setOptions( new Options( [
 			'p' => true
-		) ) );
+		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -376,9 +376,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setOptions( new Options( array(
+		$instance->setOptions( new Options( [
 			'page'  => 'Main page|Some other page|Help:Main page|Main page'
-		) ) );
+		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
 

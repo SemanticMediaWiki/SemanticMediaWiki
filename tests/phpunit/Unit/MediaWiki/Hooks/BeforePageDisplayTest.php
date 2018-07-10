@@ -125,14 +125,14 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( false ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $title
-			),
-			array(
+			],
+			[
 				'result' => true
-			)
-		);
+			]
+		];
 
 		#1 as SpecialPage
 		$title = $this->getMockBuilder( '\Title' )
@@ -143,14 +143,14 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $title
-			),
-			array(
+			],
+			[
 				'result' => false
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

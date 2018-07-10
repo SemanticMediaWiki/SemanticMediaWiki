@@ -45,7 +45,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$eventListenerCollection = $this->getMockBuilder( '\Onoi\EventDispatcher\EventListenerCollection' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'registerCallback' ) )
+			->setMethods( [ 'registerCallback' ] )
 			->getMockForAbstractClass();
 
 		$eventListenerCollection->expects( $this->any() )

@@ -120,7 +120,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -146,13 +146,13 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'Foo' );
 		$property->id = 42;
 
-		$expected = array(
+		$expected = [
 			$property,
 			$expectedCount
-		);
+		];
 
 		$this->assertEquals(
-			array( $expected ),
+			[ $expected ],
 			$result
 		);
 	}
@@ -170,7 +170,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -199,13 +199,13 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function usageCountProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			0
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			1001
-		);
+		];
 
 		return $provider;
 	}

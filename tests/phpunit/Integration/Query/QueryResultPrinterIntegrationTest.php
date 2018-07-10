@@ -17,7 +17,7 @@ use Title;
  */
 class QueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjects = array();
+	private $subjects = [];
 	private $pageCreator;
 
 	private $stringBuilder;
@@ -44,7 +44,7 @@ class QueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 	 */
 	public function testLimitNullWithEmptySearchlabel() {
 
-		foreach ( array( 'Foo', 'Bar', 'テスト' ) as $title ) {
+		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )
@@ -80,7 +80,7 @@ class QueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 	 */
 	public function testLimitNullWithDescriptiveSearchlabel() {
 
-		foreach ( array( 'Foo', 'Bar', 'テスト' ) as $title ) {
+		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )

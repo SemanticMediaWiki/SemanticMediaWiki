@@ -83,11 +83,11 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addAnnotation();
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 1,
 			'propertyKeys'   => '_SKEY',
-			'propertyValues' => array( 'FOO' ),
-		);
+			'propertyValues' => [ 'FOO' ],
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -97,33 +97,33 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function defaultSortDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// Sort entry
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title' => 'Foo',
 				'sort'  => 'Lala'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SKEY',
-				'propertyValues' => array( 'Lala' ),
-			)
-		);
+				'propertyValues' => [ 'Lala' ],
+			]
+		];
 
 		// Empty
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title' => 'Bar',
 				'sort'  => ''
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SKEY',
-				'propertyValues' => array( 'Bar' ),
-			)
-		);
+				'propertyValues' => [ 'Bar' ],
+			]
+		];
 
 		return $provider;
 	}

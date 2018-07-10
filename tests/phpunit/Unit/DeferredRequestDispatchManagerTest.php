@@ -69,13 +69,13 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->isEnabledHttpDeferredRequest( true );
 		$instance->isEnabledJobQueue( false );
 
-		call_user_func_array( array( $instance, $method ), array( null, array() ) );
+		call_user_func_array( [ $instance, $method ], [ null, [] ] );
 	}
 
 	/**
 	 * @dataProvider dispatchableJobProvider
 	 */
-	public function testDispatchJobFor( $type, $deferredJobRequestState, $parameters = array() ) {
+	public function testDispatchJobFor( $type, $deferredJobRequestState, $parameters = [] ) {
 
 		$this->httpRequest->expects( $this->any() )
 			->method( 'ping' )
@@ -113,7 +113,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->isEnabledHttpDeferredRequest( true );
 		$instance->isEnabledJobQueue( false );
 
-		$parameters = array( 'idlist' => '1|2' );
+		$parameters = [ 'idlist' => '1|2' ];
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
 
 		$this->assertTrue(
@@ -137,7 +137,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->isEnabledHttpDeferredRequest( true );
 		$instance->isEnabledJobQueue( false );
 
-		$parameters = array();
+		$parameters = [];
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
 
 		$this->assertTrue(
@@ -173,7 +173,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->reset();
 		$instance->isEnabledHttpDeferredRequest( SMW_HTTP_DEFERRED_SYNC_JOB );
 
-		$parameters = array();
+		$parameters = [];
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
 
 		$this->assertTrue(
@@ -195,7 +195,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->isEnabledHttpDeferredRequest( SMW_HTTP_DEFERRED_ASYNC );
 		$instance->isEnabledJobQueue( false );
 
-		$parameters = array();
+		$parameters = [];
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
 
 		$this->assertTrue(
@@ -206,7 +206,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider preliminaryCheckProvider
 	 */
-	public function testPreliminaryCheckForType( $type, $parameters = array() ) {
+	public function testPreliminaryCheckForType( $type, $parameters = [] ) {
 
 		$this->httpRequest->expects( $this->any() )
 			->method( 'ping' )
@@ -228,49 +228,49 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function dispatchableJobProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\UpdateJob',
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\UpdateJob',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\ParserCachePurgeJob',
 			false,
-			array( 'idlist' => '1|2' )
-		);
+			[ 'idlist' => '1|2' ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\ParserCachePurgeJob',
 			true,
-			array( 'idlist' => '1|2' )
-		);
+			[ 'idlist' => '1|2' ]
+		];
 
 		return $provider;
 	}
 
 	public function nullTitleProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'dispatchParserCachePurgeJobWith'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'dispatchFulltextSearchTableUpdateJobWith'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function preliminaryCheckProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'UnknownJob'
-		);
+		];
 
 		return $provider;
 	}

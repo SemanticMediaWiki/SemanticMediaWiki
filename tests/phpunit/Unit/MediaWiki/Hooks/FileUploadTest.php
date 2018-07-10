@@ -23,20 +23,20 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment( array(
-			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
-			'smwgNamespacesWithSemanticLinks' => array( NS_FILE => true ),
+		$this->testEnvironment = new TestEnvironment( [
+			'smwgPageSpecialProperties' => [ '_MEDIA', '_MIME' ],
+			'smwgNamespacesWithSemanticLinks' => [ NS_FILE => true ],
 			'smwgCacheType'  => 'hash',
 			'smwgEnableUpdateJobs' => false
-		) );
+		] );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -103,7 +103,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 
 		$pageCreator = $this->getMockBuilder( 'SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'createFilePage' ) )
+			->setMethods( [ 'createFilePage' ] )
 			->getMock();
 
 		$pageCreator->expects( $this->once() )

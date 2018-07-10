@@ -60,12 +60,12 @@ class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			TestEnvironment::newSpyLogger()
 		);
 
-		$conf = array(
-			'foo' => array(
+		$conf = [
+			'foo' => [
 				'read' => 'Bar',
 				'write' => 'Bar'
-			)
-		);
+			]
+		];
 
 		$instance->setLocalConnectionConf( $conf );
 
@@ -99,13 +99,13 @@ class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			'foo'
 		);
 
-		$conf = array(
-			'foo' => array(
+		$conf = [
+			'foo' => [
 				'callback'  => function() use( $db ) {
 					return $db;
 				}
-			)
-		);
+			]
+		];
 
 		$instance->setLocalConnectionConf( $conf );
 
@@ -125,11 +125,11 @@ class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			'foo'
 		);
 
-		$conf = array(
-			'foo' => array(
+		$conf = [
+			'foo' => [
 				'read' => 'Foo'
-			)
-		);
+			]
+		];
 
 		$instance->setLocalConnectionConf( $conf );
 

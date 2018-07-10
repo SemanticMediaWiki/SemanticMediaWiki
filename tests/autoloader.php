@@ -55,7 +55,7 @@ $autoloader = require $path;
 
 $autoloader->addPsr4( 'SMW\\Tests\\Utils\\', __DIR__ . '/phpunit/Utils' );
 
-$autoloader->addClassMap( array(
+$autoloader->addClassMap( [
 	'SMW\Tests\TestEnvironment'             => __DIR__ . '/phpunit/TestEnvironment.php',
 	'SMW\Tests\TestConfig'                  => __DIR__ . '/phpunit/TestConfig.php',
 	'SMW\Tests\MwDBaseUnitTestCase'         => __DIR__ . '/phpunit/MwDBaseUnitTestCase.php',
@@ -65,6 +65,6 @@ $autoloader->addClassMap( array(
 	'SMW\Test\QueryPrinterTestCase'         => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
 	'SMW\Test\QueryPrinterRegistryTestCase' => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
 	'SMW\Tests\SPARQLStore\RepositoryConnectors\ElementaryRepositoryConnectorTest' => __DIR__ . '/phpunit/Unit/SPARQLStore/RepositoryConnectors/ElementaryRepositoryConnectorTest.php',
-) );
+] );
 
 return $autoloader;

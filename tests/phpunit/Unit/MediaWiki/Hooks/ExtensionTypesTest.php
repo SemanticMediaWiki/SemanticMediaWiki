@@ -25,7 +25,7 @@ class ExtensionTypesTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcess() {
 
-		$extensionTypes = array();
+		$extensionTypes = [];
 
 		$instance = new ExtensionTypes();
 		$instance->process( $extensionTypes );

@@ -32,16 +32,16 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getPropertyTableIdReferenceFinder', 'getPropertyValues', 'getPropertySubjects' ) )
+			->setMethods( [ 'getPropertyTableIdReferenceFinder', 'getPropertyValues', 'getPropertySubjects' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableIdReferenceFinder' )
@@ -84,13 +84,13 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testXRequestParameter() {
 
-		$request = array(
+		$request = [
 			'x' => ':Has-20subobject/Foo-23%7B%7D'
-		);
+		];
 
-		$expected = array(
+		$expected = [
 			'property=Has+subobject', 'value=Foo%23%257B%257D'
-		);
+		];
 
 		$instance = new SpecialSearchByProperty();
 		$instance->getContext()->setTitle( Title::newFromText( 'SearchByProperty' ) );
@@ -107,16 +107,16 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 	public function queryParameterProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'Foo/Bar',
-			array( 'property=Foo', 'value=Bar' )
-		);
+			[ 'property=Foo', 'value=Bar' ]
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			':Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
-			array( 'property=Has+foo', 'value=http%3A%2F%2Fexample.org%2Fid%2FCurly%2520Brackets%257B%257D' )
-		);
+			[ 'property=Has+foo', 'value=http%3A%2F%2Fexample.org%2Fid%2FCurly%2520Brackets%257B%257D' ]
+		];
 
 		return $provider;
 	}

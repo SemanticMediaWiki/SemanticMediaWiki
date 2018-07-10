@@ -35,18 +35,18 @@ class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$default = array(
-			'smwgNamespacesWithSemanticLinks' => array(),
-			'wgNamespacesWithSubpages' => array(),
-			'wgExtraNamespaces'   => array(),
-			'wgNamespaceAliases'  => array(),
-			'wgContentNamespaces' => array(),
-			'wgNamespacesToBeSearchedDefault' => array(),
+		$default = [
+			'smwgNamespacesWithSemanticLinks' => [],
+			'wgNamespacesWithSubpages' => [],
+			'wgExtraNamespaces'   => [],
+			'wgNamespaceAliases'  => [],
+			'wgContentNamespaces' => [],
+			'wgNamespacesToBeSearchedDefault' => [],
 			'wgLanguageCode'      => 'en'
-		);
+		];
 
 		$instance = $this->getMockBuilder( '\SMW\NamespaceManager' )
-			->setMethods( array( 'isDefinedConstant' ) )
+			->setMethods( [ 'isDefinedConstant' ] )
 			->getMock();
 
 		$instance->expects( $this->atLeastOnce() )

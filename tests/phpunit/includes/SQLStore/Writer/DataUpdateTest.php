@@ -153,7 +153,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
-			->setConstructorArgs( array( DIWikiPage::newFromTitle( $title ) ) )
+			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
 			->setMethods( null )
 			->getMock();
 
@@ -199,7 +199,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
@@ -214,7 +214,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
-			->setConstructorArgs( array( DIWikiPage::newFromTitle( $title ) ) )
+			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
 			->setMethods( null )
 			->getMock();
 
@@ -260,7 +260,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
@@ -275,13 +275,13 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
-			->setConstructorArgs( array( DIWikiPage::newFromTitle( $title ) ) )
-			->setMethods( array( 'getPropertyValues' ) )
+			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
+			->setMethods( [ 'getPropertyValues' ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( DIWikiPage::newFromTitle( $title ) ) ) );
+			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
 
 		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
@@ -332,13 +332,13 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
-			->setConstructorArgs( array( DIWikiPage::newFromTitle( $title ) ) )
-			->setMethods( array( 'getPropertyValues' ) )
+			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
+			->setMethods( [ 'getPropertyValues' ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( DIWikiPage::newFromTitle( $title ) ) ) );
+			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
 
 		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()

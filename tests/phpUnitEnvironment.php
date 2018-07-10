@@ -25,7 +25,7 @@ class PHPUnitEnvironment {
 	}
 
 	public function emptyDebugVars() {
-		$GLOBALS['wgDebugLogGroups'] = array();
+		$GLOBALS['wgDebugLogGroups'] = [];
 		$GLOBALS['wgDebugLogFile'] = '';
 	}
 
@@ -33,7 +33,7 @@ class PHPUnitEnvironment {
 	 * @return boolean
 	 */
 	public function enabledDebugLogs() {
-		return $GLOBALS['wgDebugLogGroups'] !== array() || $GLOBALS['wgDebugLogFile'] !== '';
+		return $GLOBALS['wgDebugLogGroups'] !== [] || $GLOBALS['wgDebugLogFile'] !== '';
 	}
 
 	/**

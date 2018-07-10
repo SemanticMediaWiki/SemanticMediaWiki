@@ -22,9 +22,9 @@ class ReadmeContentsBuilder {
 	/**
 	 * @var array
 	 */
-	private $urlLocationMap = array(
+	private $urlLocationMap = [
 		'TestCases' => 'https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases'
-	);
+	];
 
 	/**
 	 * @since  2.4
@@ -91,7 +91,7 @@ class ReadmeContentsBuilder {
 
 	private function findFilesFor( $path, $extension ) {
 
-		$files = array();
+		$files = [];
 
 		$directoryIterator = new \RecursiveDirectoryIterator( $path );
 

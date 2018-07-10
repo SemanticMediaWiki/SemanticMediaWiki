@@ -66,7 +66,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getContextPage' ) )
+			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -105,7 +105,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$cachedPropertyValuesPrefetcher->expects( $this->atLeastOnce() )
 			->method( 'queryPropertyValuesFor' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ] ) );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'hasUniquenessConstraintBy' )
@@ -113,7 +113,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getContextPage' ) )
+			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )

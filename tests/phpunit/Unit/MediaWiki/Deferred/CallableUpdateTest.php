@@ -47,7 +47,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doTest' ) )
+			->setMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -88,7 +88,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doTest' ) )
+			->setMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -115,7 +115,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doTest' ) )
+			->setMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -143,7 +143,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doTest' ) )
+			->setMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )
@@ -184,7 +184,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doTest' ) )
+			->setMethods( [ 'doTest' ] )
 			->getMock();
 
 		$test->expects( $this->once() )

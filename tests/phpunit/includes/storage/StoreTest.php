@@ -27,9 +27,9 @@ class StoreTest extends MwDBaseUnitTestCase {
 ///// Reading methods /////
 
 	public function getSemanticDataProvider() {
-		return array(
-			array( Title::newMainPage()->getFullText() ),
-		);
+		return [
+			[ Title::newMainPage()->getFullText() ],
+		];
 	}
 
 	/**
@@ -48,10 +48,10 @@ class StoreTest extends MwDBaseUnitTestCase {
 	}
 
 	public function getPropertyValuesDataProvider() {
-		return array(
-			array( Title::newMainPage()->getFullText(), new DIProperty('_MDAT') ),
-			array( Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel('Age') ),
-		);
+		return [
+			[ Title::newMainPage()->getFullText(), new DIProperty('_MDAT') ],
+			[ Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel('Age') ],
+		];
 	}
 
 	/**
@@ -68,9 +68,9 @@ class StoreTest extends MwDBaseUnitTestCase {
 	}
 
 	public function getPropertySubjectsDataProvider() {
-		return array(
-			array( new DIProperty('_MDAT'), null ),
-		);
+		return [
+			[ new DIProperty('_MDAT'), null ],
+		];
 	}
 
 	/**
@@ -95,9 +95,9 @@ class StoreTest extends MwDBaseUnitTestCase {
 	}
 
 	public function getPropertiesDataProvider() {
-		return array(
-			array( Title::newMainPage()->getFullText() ),
-		);
+		return [
+			[ Title::newMainPage()->getFullText() ],
+		];
 	}
 
 	/**

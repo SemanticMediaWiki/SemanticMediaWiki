@@ -152,7 +152,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 
 		$objectIdGenerator->expects( $this->atLeastOnce() )
 			->method( 'findAllEntitiesThatMatch' )
-			->will( $this->returnValue( array( 0 ) ) );
+			->will( $this->returnValue( [ 0 ] ) );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -168,11 +168,11 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->exactly( 1 ) )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getOptions' )
@@ -197,7 +197,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $title->getNamespace() ),
 				$this->equalTo( $title->getInterwiki() ),
 				'' )
-			->will( $this->returnValue( array( 0 ) ) );
+			->will( $this->returnValue( [ 0 ] ) );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -217,11 +217,11 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->exactly( 1 ) )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getOptions' )

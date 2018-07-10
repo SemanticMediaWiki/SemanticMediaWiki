@@ -32,7 +32,7 @@ class HtmlDivTableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'<div class="smw-table-header bar">foo</div>',
-			HtmlDivTable::header( 'foo', array( 'class' => 'bar' ) )
+			HtmlDivTable::header( 'foo', [ 'class' => 'bar' ] )
 		);
 	}
 
@@ -40,7 +40,7 @@ class HtmlDivTableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'<div class="smw-table-body bar">foo</div>',
-			HtmlDivTable::body( 'foo', array( 'class' => 'bar' ) )
+			HtmlDivTable::body( 'foo', [ 'class' => 'bar' ] )
 		);
 	}
 
@@ -48,7 +48,7 @@ class HtmlDivTableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'<div class="smw-table-footer bar">foo</div>',
-			HtmlDivTable::footer( 'foo', array( 'class' => 'bar' ) )
+			HtmlDivTable::footer( 'foo', [ 'class' => 'bar' ] )
 		);
 	}
 
@@ -56,7 +56,7 @@ class HtmlDivTableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'<div class="smw-table-row bar">foo</div>',
-			HtmlDivTable::row( 'foo', array( 'class' => 'bar' ) )
+			HtmlDivTable::row( 'foo', [ 'class' => 'bar' ] )
 		);
 	}
 
@@ -64,7 +64,7 @@ class HtmlDivTableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'<div class="smw-table-cell bar">foo</div>',
-			HtmlDivTable::cell( 'foo', array( 'class' => 'bar' ) )
+			HtmlDivTable::cell( 'foo', [ 'class' => 'bar' ] )
 		);
 	}
 

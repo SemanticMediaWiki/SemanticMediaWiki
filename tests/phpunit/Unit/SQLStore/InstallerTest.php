@@ -63,7 +63,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
-			->will( $this->returnValue( array( $table ) ) );
+			->will( $this->returnValue( [ $table ] ) );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
@@ -106,7 +106,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
-			->will( $this->returnValue( array( $table ) ) );
+			->will( $this->returnValue( [ $table ] ) );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
@@ -143,7 +143,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
-			->will( $this->returnValue( array( $table ) ) );
+			->will( $this->returnValue( [ $table ] ) );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
@@ -171,7 +171,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->tableSchemaManager->expects( $this->once() )
 			->method( 'getTables' )
-			->will( $this->returnValue( array( $table ) ) );
+			->will( $this->returnValue( [ $table ] ) );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()

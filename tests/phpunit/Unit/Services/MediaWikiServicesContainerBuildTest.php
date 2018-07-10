@@ -36,7 +36,7 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			$expected,
-			call_user_func_array( array( $containerBuilder, 'create' ), $parameters )
+			call_user_func_array( [ $containerBuilder, 'create' ], $parameters )
 		);
 	}
 
@@ -46,17 +46,17 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			'WikiPage',
-			array( $title ),
+			[ $title ],
 			'\WikiPage'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'DBLoadBalancer',
-			array(),
+			[],
 			'\LoadBalancer'
-		);
+		];
 
 /*
 		$database = $this->getMockBuilder( '\DatabaeBase' )
@@ -70,17 +70,17 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		);
 */
 
-		$provider[] = array(
+		$provider[] = [
 			'MediaWikiLogger',
-			array(),
+			[],
 			'\Psr\Log\LoggerInterface'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'JobQueueGroup',
-			array(),
+			[],
 			'\JobQueueGroup'
-		);
+		];
 
 		return $provider;
 	}

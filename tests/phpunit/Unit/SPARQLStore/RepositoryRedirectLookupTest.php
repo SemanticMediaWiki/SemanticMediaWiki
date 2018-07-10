@@ -94,7 +94,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
-		$repositoryConnection = $this->createRepositoryConnectionMockToUse( array( $expLiteral ) );
+		$repositoryConnection = $this->createRepositoryConnectionMockToUse( [ $expLiteral ] );
 
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
 		$instance->reset();
@@ -116,7 +116,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
-		$repositoryConnection = $this->createRepositoryConnectionMockToUse( array( $expLiteral, null ) );
+		$repositoryConnection = $this->createRepositoryConnectionMockToUse( [ $expLiteral, null ] );
 
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
 		$instance->reset();
@@ -145,7 +145,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 			$propertyPage
 		);
 
-		$repositoryConnection = $this->createRepositoryConnectionMockToUse( array( $resource, $resource ) );
+		$repositoryConnection = $this->createRepositoryConnectionMockToUse( [ $resource, $resource ] );
 
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
 		$instance->reset();
@@ -180,7 +180,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
-		$repositoryConnection = $this->createRepositoryConnectionMockToUse( array( $expLiteral, $expLiteral ) );
+		$repositoryConnection = $this->createRepositoryConnectionMockToUse( [ $expLiteral, $expLiteral ] );
 
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
 		$instance->reset();
@@ -263,25 +263,25 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function nonRedirectableResourceProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			Exporter::getInstance()->getSpecialPropertyResource( '_INST' )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Exporter::getInstance()->getSpecialPropertyResource( '_SUBC' )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Exporter::getInstance()->getSpecialPropertyResource( '_REDI' )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Exporter::getInstance()->getSpecialPropertyResource( '_MDAT' )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Exporter::getInstance()->getSpecialPropertyResource( '_MDAT', true )
-		);
+		];
 
 		return $provider;
 	}

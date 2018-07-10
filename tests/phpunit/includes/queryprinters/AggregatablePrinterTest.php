@@ -42,8 +42,8 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	 *
 	 * @return AggregatablePrinter
 	 */
-	private function newInstance( $parameters = array() ) {
-		return $this->setParameters( $this->getMockForAbstractClass( $this->getClass(), array( 'table' ) ), $parameters );
+	private function newInstance( $parameters = [] ) {
+		return $this->setParameters( $this->getMockForAbstractClass( $this->getClass(), [ 'table' ] ), $parameters );
 	}
 
 	/**
@@ -55,16 +55,16 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getErrors', 'getNext', 'addErrors' ) )
+			->setMethods( [ 'getErrors', 'getNext', 'addErrors' ] )
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getNext' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array( $expected['message'] ) ) );
+			->will( $this->returnValue( [ $expected['message'] ] ) );
 
 		$instance    = $this->newInstance( $setup['parameters'] );
 	//	$queryResult = $setup['queryResult'];
@@ -89,9 +89,9 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	 */
 	public function testAddNumbersForDataItem() {
 
-		$values = array();
-		$expected = array();
-		$keys = array( 'test', 'foo', 'bar' );
+		$values = [];
+		$expected = [];
+		$keys = [ 'test', 'foo', 'bar' ];
 
 		$reflector = new ReflectionClass( '\SMW\AggregatablePrinter' );
 		$method = $reflector->getMethod( 'addNumbersForDataItem' );
@@ -113,7 +113,7 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 			$this->assertEquals( SMWDataItem::TYPE_NUMBER, $dataItem->getDIType() );
 
 			// Invoke the instance
-			$result = $method->invokeArgs( $this->newInstance(), array( $dataItem, &$values, $name ) );
+			$result = $method->invokeArgs( $this->newInstance(), [ $dataItem, &$values, $name ] );
 
 			$this->assertInternalType( 'integer', $values[$name] );
 			$this->assertEquals( $expected[$name], $values[$name] );
@@ -156,28 +156,28 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 
 		$message = wfMessage( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text();
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
-			array(
-				'parameters'  => array( 'distribution' => true ),
+		$provider[] = [
+			[
+				'parameters'  => [ 'distribution' => true ],
 		//		'queryResult' => $queryResult
-				),
-			array(
+				],
+			[
 				'message'     => $message
-			)
-		);
+			]
+		];
 
 		// #1
-		$provider[] = array(
-			array(
-				'parameters'  => array( 'distribution' => false ),
+		$provider[] = [
+			[
+				'parameters'  => [ 'distribution' => false ],
 			//	'queryResult' => $queryResult
-				),
-			array(
+				],
+			[
 				'message'     => $message
-			)
-		);
+			]
+		];
 		return $provider;
 	}
 
@@ -186,49 +186,49 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	 */
 	public function numberDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$setup = array(
-			array( 'printRequest' => 'Foo', 'number' => 10, 'dataValue' => 'Quuey' ),
-			array( 'printRequest' => 'Bar', 'number' => 20, 'dataValue' => 'Quuey' ),
-			array( 'printRequest' => 'Bar', 'number' => 20, 'dataValue' => 'Xuuey' )
-		);
+		$setup = [
+			[ 'printRequest' => 'Foo', 'number' => 10, 'dataValue' => 'Quuey' ],
+			[ 'printRequest' => 'Bar', 'number' => 20, 'dataValue' => 'Quuey' ],
+			[ 'printRequest' => 'Bar', 'number' => 20, 'dataValue' => 'Xuuey' ]
+		];
 
 		// #0 aggregation = subject
-		$parameters = array(
+		$parameters = [
 			'headers'     => SMW_HEADERS_PLAIN,
 			'offset'      => 0,
 			'aggregation' => 'subject',
 			'mainlabel'   => ''
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'parameters'  => $parameters,
 				'queryResult' => $this->buildMockQueryResult( $setup )
-				),
-			array(
-				'result'      => array( 'Quuey' => 50 )
-			)
-		);
+				],
+			[
+				'result'      => [ 'Quuey' => 50 ]
+			]
+		];
 
 		// #1 aggregation = property
-		$parameters = array(
+		$parameters = [
 			'headers'     => SMW_HEADERS_PLAIN,
 			'offset'      => 0,
 			'aggregation' => 'property',
 			'mainlabel'   => ''
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'parameters'  => $parameters,
 				'queryResult' => $this->buildMockQueryResult( $setup )
-				),
-			array(
-				'result'      => array( 'Foo' => 10, 'Bar' => 40 )
-			)
-		);
+				],
+			[
+				'result'      => [ 'Foo' => 10, 'Bar' => 40 ]
+			]
+		];
 
 		return $provider;
 	}
@@ -238,8 +238,8 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	 */
 	private function buildMockQueryResult( $setup ) {
 
-		$printRequests = array();
-		$resultArrays   = array();
+		$printRequests = [];
+		$resultArrays   = [];
 
 		foreach ( $setup as $value ) {
 
@@ -287,7 +287,7 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 
 			$resultArray = $this->getMockBuilder( '\SMWResultArray' )
 				->disableOriginalConstructor()
-				->setMethods( array( 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ) )
+				->setMethods( [ 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ] )
 				->getMock();
 
 			$resultArray->expects( $this->any() )

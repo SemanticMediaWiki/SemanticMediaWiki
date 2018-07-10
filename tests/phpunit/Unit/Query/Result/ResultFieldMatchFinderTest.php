@@ -91,7 +91,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( $dataItem ),
+			[ $dataItem ],
 			$instance->findAndMatch( $dataItem )
 		);
 	}
@@ -110,7 +110,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $dataItem ),
 				$this->equalTo( $this->dataItemFactory->newDIProperty( '_INST' ) ) )
-			->will( $this->returnValue( array( $expected ) ) );
+			->will( $this->returnValue( [ $expected ] ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -127,7 +127,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( $expected ),
+			[ $expected ],
 			$instance->findAndMatch( $dataItem )
 		);
 	}
@@ -146,7 +146,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $dataItem ),
 				$this->equalTo( $this->dataItemFactory->newDIProperty( '_INST' ) ) )
-			->will( $this->returnValue( array( $expected ) ) );
+			->will( $this->returnValue( [ $expected ] ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -167,7 +167,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( $this->dataItemFactory->newDIBoolean( true ) ),
+			[ $this->dataItemFactory->newDIBoolean( true ) ],
 			$instance->findAndMatch( $dataItem )
 		);
 	}
@@ -186,7 +186,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $dataItem ),
 				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ) )
-			->will( $this->returnValue( array( $expected ) ) );
+			->will( $this->returnValue( [ $expected ] ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -211,7 +211,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( $expected ),
+			[ $expected ],
 			$instance->findAndMatch( $dataItem )
 		);
 	}
@@ -231,7 +231,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $dataItem ),
 				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ) )
-			->will( $this->returnValue( new \ArrayIterator( array( $expected ) ) ) );
+			->will( $this->returnValue( new \ArrayIterator( [ $expected ] ) ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -257,7 +257,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( $expected ),
+			[ $expected ],
 			$instance->findAndMatch( $dataItem )
 		);
 	}
@@ -280,7 +280,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $dataItem ),
 				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ) )
-			->will( $this->returnValue( new \ArrayIterator( array( $text ) ) ) );
+			->will( $this->returnValue( new \ArrayIterator( [ $text ] ) ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -309,7 +309,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( $expected ),
+			[ $expected ],
 			$instance->findAndMatch( $dataItem )
 		);
 	}
@@ -332,7 +332,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $dataItem ),
 				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ) )
-			->will( $this->returnValue( new \ArrayIterator( array( $text ) ) ) );
+			->will( $this->returnValue( new \ArrayIterator( [ $text ] ) ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -365,7 +365,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( $expected ),
+			[ $expected ],
 			$instance->findAndMatch( $dataItem )
 		);
 	}

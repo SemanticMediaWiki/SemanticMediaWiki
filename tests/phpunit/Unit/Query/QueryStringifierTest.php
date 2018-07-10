@@ -149,7 +149,7 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array( 'Foobar' => 'DESC' ) ) );
+			->will( $this->returnValue( [ 'Foobar' => 'DESC' ] ) );
 
 		yield [
 			$query,
@@ -187,7 +187,7 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array( 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ) ) );
+			->will( $this->returnValue( [ 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ] ) );
 
 		yield [
 			$query,
@@ -233,7 +233,7 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->will( $this->returnValue( [ $printRequest ] ) );
 
 		yield [
 			$query,
@@ -279,7 +279,7 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->will( $this->returnValue( [ $printRequest ] ) );
 
 		yield [
 			$query,

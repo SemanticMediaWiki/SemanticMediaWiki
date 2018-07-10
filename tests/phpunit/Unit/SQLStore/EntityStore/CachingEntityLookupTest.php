@@ -58,7 +58,7 @@ class CachingEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$this->blobStore->expects( $this->once() )
@@ -190,9 +190,9 @@ class CachingEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPropertiesFromCacheForAvailableHash() {
 
-		$expected = array(
+		$expected = [
 			new DIProperty( 'Bar' )
-		);
+		];
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -237,9 +237,9 @@ class CachingEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPropertyValuesFromCacheForAvailableHash() {
 
-		$expected = array(
+		$expected = [
 			new DIWikiPage( 'Bar', NS_MAIN )
-		);
+		];
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -284,9 +284,9 @@ class CachingEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPropertySubjectsFromCacheForAvailableHash() {
 
-		$expected = array(
+		$expected = [
 			new DIWikiPage( 'Bar', NS_MAIN )
-		);
+		];
 
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -361,7 +361,7 @@ class CachingEntityLookupTest extends \PHPUnit_Framework_TestCase {
 		$container->expects( $this->at( 3 ) )
 			->method( 'get' )
 			->with( $this->stringContains( 'list' ) )
-			->will( $this->returnValue( array( 'abc', '123' ) ) );
+			->will( $this->returnValue( [ 'abc', '123' ] ) );
 
 		$this->blobStore->expects( $this->any() )
 			->method( 'canUse' )

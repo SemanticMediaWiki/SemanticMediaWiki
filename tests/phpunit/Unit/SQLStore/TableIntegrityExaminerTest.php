@@ -45,7 +45,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getPropertyInterwiki', 'moveSMWPageID', 'getPropertyTableHashes' ) )
+			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID', 'getPropertyTableHashes' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
@@ -65,7 +65,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds', 'getConnection' ) )
+			->setMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -87,9 +87,9 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
-		$instance->setPredefinedPropertyList( array(
+		$instance->setPredefinedPropertyList( [
 			'Foo' => 42
-		) );
+		] );
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->checkOnPostCreation( $tableBuilder );
@@ -105,7 +105,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'moveSMWPageID', 'getPropertyInterwiki' ) )
+			->setMethods( [ 'moveSMWPageID', 'getPropertyInterwiki' ] )
 			->getMock();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -129,7 +129,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds', 'getConnection' ) )
+			->setMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -151,9 +151,9 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
-		$instance->setPredefinedPropertyList( array(
+		$instance->setPredefinedPropertyList( [
 			'Foo' => null
-		) );
+		] );
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->checkOnPostCreation( $tableBuilder );
@@ -165,7 +165,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_id = 42;
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getPropertyInterwiki', 'moveSMWPageID' ) )
+			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID' ] )
 			->getMock();
 
 		$idTable->expects( $this->never() )
@@ -181,7 +181,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds', 'getConnection' ) )
+			->setMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -203,9 +203,9 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
-		$instance->setPredefinedPropertyList( array(
+		$instance->setPredefinedPropertyList( [
 			'_FOO' => 42
-		) );
+		] );
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->checkOnPostCreation( $tableBuilder );
@@ -232,7 +232,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -245,7 +245,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$tableBuilder->expects( $this->any() )
 			->method( 'getLog' )
-			->will( $this->returnValue( array( 'smw_object_ids' => array( 'smw_sort' => 'new' ) ) ) );
+			->will( $this->returnValue( [ 'smw_object_ids' => [ 'smw_sort' => 'new' ] ] ) );
 
 		$tableBuilder->expects( $this->once() )
 			->method( 'checkOn' );
@@ -254,7 +254,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
-		$instance->setPredefinedPropertyList( array() );
+		$instance->setPredefinedPropertyList( [] );
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->checkOnPostCreation( $tableBuilder );
@@ -269,16 +269,16 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'listTables' ) )
+			->setMethods( [ 'listTables' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'listTables' )
-			->will( $this->returnValue( array( 'abcsmw_foo' ) ) );
+			->will( $this->returnValue( [ 'abcsmw_foo' ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

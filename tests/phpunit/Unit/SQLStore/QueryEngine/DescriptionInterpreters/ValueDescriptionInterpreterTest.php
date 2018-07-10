@@ -51,7 +51,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	public function testInterpretDescription( $description, $expected ) {
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getSMWPageID' ) )
+			->setMethods( [ 'getSMWPageID' ] )
 			->getMock();
 
 		$objectIds->expects( $this->any() )
@@ -107,12 +107,12 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 2;
 		$expected->alias = "t0";
-		$expected->joinfield = array( 42 );
+		$expected->joinfield = [ 42 ];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		#1 SMW_CMP_LEQ
 		$description = $descriptionFactory->newValueDescription(
@@ -125,10 +125,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->joinfield = "t0.smw_id";
 		$expected->where = "t0.smw_sortkey<=Foo";
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		#2 SMW_CMP_LIKE
 		$description = $descriptionFactory->newValueDescription(
@@ -141,10 +141,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->joinfield = "t0.smw_id";
 		$expected->where = "t0.smw_sortkey LIKE Foo";
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		#3 not a DIWikiPage
 		$description = $descriptionFactory->newValueDescription(
@@ -156,10 +156,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->joinfield = "";
 		$expected->where = "";
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		return $provider;
 	}

@@ -224,11 +224,11 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function searchTermProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'foooo',
 			'barColumn',
 			"barColumn MATCH foooo"
-		);
+		];
 
 		return $provider;
 	}

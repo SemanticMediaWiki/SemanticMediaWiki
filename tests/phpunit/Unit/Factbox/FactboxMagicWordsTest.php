@@ -50,7 +50,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->withConfiguration(
 			[
-				'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
+				'smwgNamespacesWithSemanticLinks' => [ $title->getNamespace() => true ],
 				'smwgParserFeatures' => SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR
 			]
 		);
@@ -74,10 +74,10 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( __METHOD__ );
 
-		$this->testEnvironment->withConfiguration( array(
+		$this->testEnvironment->withConfiguration( [
 			'smwgShowFactboxEdit' => SMW_FACTBOX_HIDDEN,
 			'smwgShowFactbox'     => SMW_FACTBOX_HIDDEN
-			)
+			]
 		);
 
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
@@ -125,58 +125,58 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function textDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0 __NOFACTBOX__, this test should not generate a factbox output
-		$provider[] = array(
+		$provider[] = [
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
 			' __NOFACTBOX__ ',
-			array(
-				'magicWords' => array( 'SMW_NOFACTBOX' ),
+			[
+				'magicWords' => [ 'SMW_NOFACTBOX' ],
 				'constants'  => SMW_FACTBOX_HIDDEN,
 				'textOutput' => ''
-			)
-		);
+			]
+		];
 
 		// #1 __SHOWFACTBOX__, this test should generate a factbox output
-		$provider[] = array(
+		$provider[] = [
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
 			' __SHOWFACTBOX__',
-			array(
-				'magicWords' => array( 'SMW_SHOWFACTBOX' ),
+			[
+				'magicWords' => [ 'SMW_SHOWFACTBOX' ],
 				'constants'  => SMW_FACTBOX_NONEMPTY,
 				'textOutput' => 'smwfactboxhead' // lazy check because we use assertContains
-			)
-		);
+			]
+		];
 
 		// #2 empty
-		$provider[] = array(
+		$provider[] = [
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut',
-			array(
+			[
 				'magicWords' => null,
 				'constants'  => SMW_FACTBOX_HIDDEN,
 				'textOutput' => ''
-			)
-		);
+			]
+		];
 
 		// #3 empty + preview option
-		$provider[] = array(
+		$provider[] = [
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut',
-			array(
+			[
 				'magicWords' => null,
 				'preview'    => true,
 				'constants'  => SMW_FACTBOX_HIDDEN,
 				'textOutput' => ''
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

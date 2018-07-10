@@ -34,7 +34,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$instance = new Task(
-			$this->apiFactory->newApiMain( array() ),
+			$this->apiFactory->newApiMain( [] ),
 			'smwtask'
 		);
 
@@ -64,12 +64,12 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$instance = new Task(
-			$this->apiFactory->newApiMain( array(
+			$this->apiFactory->newApiMain( [
 					'action'   => 'smwtask',
 					'task'     => 'update',
 					'params'   => json_encode( [ 'subject' => 'Foo#0##', 'ref' => [ 'Bar' ] ] ),
 					'token'    => 'foo'
-				)
+				]
 			),
 			'smwtask'
 		);

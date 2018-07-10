@@ -78,7 +78,7 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function recurringEventsDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0
 		// {{#set_recurring_event:property=Has birthday
@@ -88,32 +88,32 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |period=12
 		// |limit=3
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'property=Has birthday',
 				'start=01 Feb 1970',
 				'has title=Birthday',
 				'unit=month',
 				'period=12',
 				'limit=3'
-			),
-			array(
+			],
+			[
 				'errors' => false,
-				'dates' => array(
+				'dates' => [
 					'1 February 1970',
 					'1 February 1971',
 					'1 February 1972',
 					'1 February 1973'
-				),
-				'property' => array(
+				],
+				'property' => [
 					'Has birthday',
 					'Has title'
-				),
-				'parameters' => array(
-					'has title' => array( 'Birthday' )
-				)
-			)
-		);
+				],
+				'parameters' => [
+					'has title' => [ 'Birthday' ]
+				]
+			]
+		];
 
 		// #1
 		// {{#set_recurring_event:property=Has birthday
@@ -123,32 +123,32 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |period=4
 		// |limit=3
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'property=Has birthday',
 				'start=01 Feb 1972 02:00',
 				'has title=Test 2',
 				'unit=week',
 				'period=4',
 				'limit=3'
-			),
-			array(
+			],
+			[
 				'errors' => false,
-				'dates' => array(
+				'dates' => [
 					'1 February 1972 02:00:00',
 					'29 February 1972 02:00:00',
 					'28 March 1972 02:00:00',
 					'25 April 1972 02:00:00'
-				),
-				'property' => array(
+				],
+				'property' => [
 					'Has birthday',
 					'Has title'
-				),
-				'parameters' => array(
-					'has title' => array( 'Test 2' )
-				)
-			)
-		);
+				],
+				'parameters' => [
+					'has title' => [ 'Test 2' ]
+				]
+			]
+		];
 
 		// #2
 		// {{#set_recurring_event:property=Has date
@@ -159,8 +159,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010
 		// |exclude=January 18, 2010;January 25, 2010
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'property=Has date',
 				'start=January 4, 2010',
 				'unit=week',
@@ -168,20 +168,20 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'limit=4',
 				'include=March 16, 2010;March 23, 2010',
 				'exclude=January 18, 2010;January 25, 2010'
-			),
-			array(
+			],
+			[
 				'errors' => false,
-				'dates' => array(
+				'dates' => [
 					'4 January 2010',
 					'11 January 2010',
 					'1 February 2010',
 					'March 16, 2010',
 					'March 23, 2010'
-				),
+				],
 				'property' => 'Has date',
-				'parameters' => array()
-			)
-		);
+				'parameters' => []
+			]
+		];
 
 
 		// #3
@@ -193,8 +193,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010|+sep=;
 		// |exclude=January 18, 2010;January 25, 2010|+sep=;
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'property=Has date',
 				'start=January 4, 2010',
 				'unit=week',
@@ -203,20 +203,20 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'include=March 16, 2010;March 23, 2010',
 				'+sep=;', 'exclude=January 18, 2010;January 25, 2010',
 				'+sep=;'
-			),
-			array(
+			],
+			[
 				'errors' => false,
-				'dates' => array(
+				'dates' => [
 					'4 January 2010',
 					'11 January 2010',
 					'1 February 2010',
 					'March 16, 2010',
 					'March 23, 2010'
-				),
+				],
 				'property' => 'Has date',
-				'parameters' => array()
-			)
-		);
+				'parameters' => []
+			]
+		];
 
 		// #4 Named page reference pointer
 		// {{#set_recurring_event:FooBar
@@ -228,8 +228,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010|+sep=;
 		// |exclude=January 18, 2010;January 25, 2010|+sep=;
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'FooBar',
 				'property=Has birthday',
 				'start=January 4, 2010',
@@ -239,20 +239,20 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'include=March 16, 2010;March 23, 2010',
 				'+sep=;', 'exclude=January 18, 2010;January 25, 2010',
 				'+sep=;'
-			),
-			array(
+			],
+			[
 				'errors' => false,
-				'dates' => array(
+				'dates' => [
 					'4 January 2010',
 					'11 January 2010',
 					'1 February 2010',
 					'March 16, 2010',
 					'March 23, 2010'
-				),
+				],
 				'property' => 'Has birthday',
-				'parameters' => array()
-			)
-		);
+				'parameters' => []
+			]
+		];
 
 		// #5 Simulate first parameter starting being - raising an error
 		// {{#set_recurring_event:-
@@ -264,8 +264,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010
 		// |exclude=January 18, 2010;January 25, 2010
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'-',
 				'property=Has date',
 				'start=January 4, 2010',
@@ -274,14 +274,14 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'limit=4',
 				'include=March 16, 2010;March 23, 2010',
 				'exclude=January 18, 2010;January 25, 2010'
-			),
-			array(
+			],
+			[
 				'errors' => false,
-				'dates' => array(),
+				'dates' => [],
 				'property' => '',
-				'parameters' => array()
-			)
-		);
+				'parameters' => []
+			]
+		];
 
 		// #6 Simulate first parameter starting with - raising an error
 		// {{#set_recurring_event:-Foo
@@ -293,8 +293,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010
 		// |exclude=January 18, 2010;January 25, 2010
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'-Foo',
 				'property=Has date',
 				'start=January 4, 2010',
@@ -303,14 +303,14 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'limit=4',
 				'include=March 16, 2010;March 23, 2010',
 				'exclude=January 18, 2010;January 25, 2010'
-			),
-			array(
+			],
+			[
 				'errors' => true,
-				'dates' => array(),
+				'dates' => [],
 				'property' => '',
-				'parameters' => array()
-			)
-		);
+				'parameters' => []
+			]
+		];
 
 		// #7 Simulate first parameter starting with a underscore raising an error
 		// {{#set_recurring_event:_FooBar
@@ -322,8 +322,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010
 		// |exclude=January 18, 2010;January 25, 2010
 		// }}
-		$provider[]  = array(
-			array(
+		$provider[]  = [
+			[
 				'_FooBar',
 				'property=Has date',
 				'start=January 4, 2010',
@@ -332,14 +332,14 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'limit=4',
 				'include=March 16, 2010;March 23, 2010',
 				'exclude=January 18, 2010;January 25, 2010'
-			),
-			array(
+			],
+			[
 				'errors' => true,
-				'dates' => array(),
+				'dates' => [],
 				'property' => '',
-				'parameters' => array()
-			)
-		);
+				'parameters' => []
+			]
+		];
 
 		// #8 Simulate start date has wrong type
 		// {{#set_recurring_event:property=Has date
@@ -350,8 +350,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010
 		// |exclude=January 18, 2010;January 25, 2010
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'property=Has date',
 				'start=???',
 				'unit=week',
@@ -359,14 +359,14 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'limit=4',
 				'include=March 16, 2010;March 23, 2010',
 				'exclude=January 18, 2010;January 25, 2010'
-			),
-			array(
+			],
+			[
 				'errors' => true,
-				'dates' => array(),
+				'dates' => [],
 				'property' => '',
-				'parameters' => array()
-			)
-		);
+				'parameters' => []
+			]
+		];
 
 		// #9 Simulate missing start date
 		// {{#set_recurring_event:property=Has date
@@ -377,8 +377,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010
 		// |exclude=January 18, 2010;January 25, 2010
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'property=Has date',
 				'start=',
 				'unit=week',
@@ -386,14 +386,14 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'limit=4',
 				'include=March 16, 2010;March 23, 2010',
 				'exclude=January 18, 2010;January 25, 2010'
-			),
-			array(
+			],
+			[
 				'errors' => true,
-				'dates' => array(),
+				'dates' => [],
 				'property' => '',
-				'parameters' => array()
-			)
-		);
+				'parameters' => []
+			]
+		];
 
 		// #10 Simulate missing property
 		// {{#set_recurring_event:property=
@@ -404,8 +404,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010|+sep=;
 		// |exclude=January 18, 2010;January 25, 2010|+sep=;
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'property=',
 				'start=January 4, 2010',
 				'unit=week', 'period=1',
@@ -414,14 +414,14 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'+sep=;',
 				'exclude=January 18, 2010;January 25, 2010',
 				'+sep=;'
-			),
-			array(
+			],
+			[
 				'errors' => true,
-				'dates' => array(),
+				'dates' => [],
 				'property' => '',
-				'parameters' => array()
-			)
-		);
+				'parameters' => []
+			]
+		];
 
 		return $provider;
 	}

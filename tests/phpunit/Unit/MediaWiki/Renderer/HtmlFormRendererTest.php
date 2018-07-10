@@ -107,14 +107,14 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 			->addInputField( 'AnotherInputFieldLabel', 'AnotherInputFieldName', 'AnotherInputFieldValue' )
 			->addSubmitButton( 'FindFoo' );
 
-		$expected = array(
+		$expected = [
 			'form id="smw-form-SomeForm" name="SomeForm" method="get"',
 			'<p class="smw-form-paragraph">SomeDescription</p>',
 			'input name="foo" size="333" value="Foo" id="FooId"',
 			'input name="AnotherInputFieldName" size="20" value="AnotherInputFieldValue" id="AnotherInputFieldName"',
 			'input type="submit" value="FindFoo"',
 			//'<br />&nbsp;' MW 1.27 <br/>&nbsp;
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -154,17 +154,17 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 				'optionlistLabel',
 				'optionlistName',
 				'b',
-				array( 'f' => 'foo', 'b' =>'bar' ),
+				[ 'f' => 'foo', 'b' =>'bar' ],
 				'optionslistId');
 
-		$expected = array(
+		$expected = [
 			'form id="smw-form-optionsSelecListForm" name="optionsSelecListForm" method="get"',
 			'<fieldset id="smw-form-fieldset-optionsSelecListForm">',
 			'<label for="optionslistId">optionlistLabel</label>&#160;',
 			'<select name="optionlistName" id="optionslistId" class="smw-form-select">',
 			'<option value="b" selected="">bar</option>',
 			'<option value="f">foo</option>'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -208,13 +208,13 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 				true,
 				'checkBoxId' );
 
-		$expected = array(
+		$expected = [
 			'<form id="smw-form-checkboxForm" name="checkboxForm" method="post" action="http://example.org/foo">',
 			'<h2>someHeader</h2>',
 			'<fieldset id="smw-form-fieldset-checkboxForm">',
 			'<input name="checkboxName" type="checkbox" value="1" checked="checked" id="checkboxName" class="smw-form-checkbox" />',
 			'<label for="checkboxName" class="smw-form-checkbox">checkboxLabel</label>'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,

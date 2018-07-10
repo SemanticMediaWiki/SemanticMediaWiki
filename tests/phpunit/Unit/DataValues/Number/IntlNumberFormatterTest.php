@@ -134,210 +134,210 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function numberProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			10000,
 			1000,
 			'en',
 			'en',
 			'1,000'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			10000,
 			1000.42,
 			'en',
 			'en',
 			'1,000.42'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			10000,
 			1000000,
 			'en',
 			'en',
 			'1.0e+6'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			10000000,
 			1000000,
 			'en',
 			'en',
 			'1,000,000'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function unformattedNumberByPrecisionProvider() {
 
-		$provider['un.1'] = array(
+		$provider['un.1'] = [
 			10000,
 			1000,
 			2,
 			'en',
 			'en',
 			'1000.00'
-		);
+		];
 
-		$provider['un.2'] = array(
+		$provider['un.2'] = [
 			10000,
 			1000.42,
 			3,
 			'en',
 			'en',
 			'1000.420'
-		);
+		];
 
-		$provider['un.3'] = array(
+		$provider['un.3'] = [
 			10000,
 			1000000,
 			0,
 			'en',
 			'en',
 			'1000000'
-		);
+		];
 
-		$provider['un.4'] = array(
+		$provider['un.4'] = [
 			10000000,
 			1000000,
 			2,
 			'en',
 			'en',
 			'1000000.00'
-		);
+		];
 
-		$provider['un.5'] = array(
+		$provider['un.5'] = [
 			10000000,
 			1000000,
 			false,
 			'en',
 			'en',
 			'1000000'
-		);
+		];
 
-		$provider['un.6'] = array(
+		$provider['un.6'] = [
 			10000000,
 			312.23545555,
 			false,
 			'en',
 			'en',
 			'312.23545555'
-		);
+		];
 
-		$provider['un.7'] = array(
+		$provider['un.7'] = [
 			10000000,
 			312.23545555,
 			6,
 			'en',
 			'en',
 			'312.235456'
-		);
+		];
 
-		$provider['un.8'] = array(
+		$provider['un.8'] = [
 			10000000,
 			312.23545555,
 			9,
 			'en',
 			'en',
 			'312.235455550'
-		);
+		];
 
-		$provider['un.9'] = array(
+		$provider['un.9'] = [
 			10000000,
 			312.23545555,
 			null,
 			'en',
 			'en',
 			'312.235455550'
-		);
+		];
 
-		$provider['un.10'] = array(
+		$provider['un.10'] = [
 			10000000,
 			1.334e-13,
 			false,
 			'en',
 			'en',
 			'1.334e-13'
-		);
+		];
 
-		$provider['un.11'] = array(
+		$provider['un.11'] = [
 			10000000,
 			1.334e-13,
 			false,
 			'en',
 			'fr',
 			'1,334e-13'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function separatorProvider() {
 
-		$provider['1.en'] = array(
+		$provider['1.en'] = [
 			IntlNumberFormatter::DECIMAL_SEPARATOR,
 			IntlNumberFormatter::USER_LANGUAGE,
 			'en',
 			'en',
 			'.'
-		);
+		];
 
-		$provider['2.en'] = array(
+		$provider['2.en'] = [
 			IntlNumberFormatter::THOUSANDS_SEPARATOR,
 			IntlNumberFormatter::USER_LANGUAGE,
 			'en',
 			'en',
 			','
-		);
+		];
 
-		$provider['3.en'] = array(
+		$provider['3.en'] = [
 			IntlNumberFormatter::DECIMAL_SEPARATOR,
 			IntlNumberFormatter::CONTENT_LANGUAGE,
 			'en',
 			'en',
 			'.'
-		);
+		];
 
-		$provider['4.en'] = array(
+		$provider['4.en'] = [
 			IntlNumberFormatter::THOUSANDS_SEPARATOR,
 			IntlNumberFormatter::CONTENT_LANGUAGE,
 			'en',
 			'en',
 			','
-		);
+		];
 
-		$provider['5.fr'] = array(
+		$provider['5.fr'] = [
 			IntlNumberFormatter::DECIMAL_SEPARATOR,
 			IntlNumberFormatter::USER_LANGUAGE,
 			'fr',
 			'en',
 			','
-		);
+		];
 
-		$provider['6.fr'] = array(
+		$provider['6.fr'] = [
 			IntlNumberFormatter::THOUSANDS_SEPARATOR,
 			IntlNumberFormatter::USER_LANGUAGE,
 			'fr',
 			'en',
 			' '
-		);
+		];
 
-		$provider['7.fr'] = array(
+		$provider['7.fr'] = [
 			IntlNumberFormatter::DECIMAL_SEPARATOR,
 			IntlNumberFormatter::CONTENT_LANGUAGE,
 			'fr',
 			'fr',
 			','
-		);
+		];
 
-		$provider['8.fr'] = array(
+		$provider['8.fr'] = [
 			IntlNumberFormatter::THOUSANDS_SEPARATOR,
 			IntlNumberFormatter::CONTENT_LANGUAGE,
 			'fr',
 			'fr',
 			' '
-		);
+		];
 
 		return $provider;
 	}

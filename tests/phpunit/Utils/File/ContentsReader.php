@@ -21,7 +21,7 @@ class ContentsReader {
 	 */
 	public static function readContentsFrom( $file ) {
 
-		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $file );
+		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {
 			throw new RuntimeException( "Could not open or read: $file" );

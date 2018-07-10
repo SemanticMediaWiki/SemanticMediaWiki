@@ -42,10 +42,10 @@ class AllowsListValueParserTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(
+			[
 				'Foo' => 'Foo',
 				'Foobar' => 'bar'
-			),
+			],
 			$instance->parse( 'Bar' )
 		);
 	}

@@ -73,7 +73,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getSearchEngine' ) )
+			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
 
 		$databaseBase->expects( $this->any() )
@@ -138,7 +138,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'searchTitle')
-			->will( $this->returnValueMap( array( array( $term, $searchResultSet ) ) ) );
+			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -171,7 +171,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'searchTitle')
-			->will( $this->returnValueMap( array( array( $term, $searchResultSet ) ) ) );
+			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -258,7 +258,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'searchText')
-			->will( $this->returnValueMap( array( array( $term, $searchResultSet ) ) ) );
+			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -287,7 +287,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$searchEngine->expects( $this->once() )
 			->method( 'supports')
 			->with( $this->equalTo( 'Some feature' ) )
-			->will( $this->returnValueMap( array( array( 'Some feature', true ) ) ) );
+			->will( $this->returnValueMap( [ [ 'Some feature', true ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -304,7 +304,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$searchEngine->expects( $this->once() )
 			->method( 'normalizeText')
 			->with( $this->equalTo( 'Some text' ) )
-			->will( $this->returnValueMap( array( array( 'Some text', 'Some normalized text' ) ) ) );
+			->will( $this->returnValueMap( [ [ 'Some text', 'Some normalized text' ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -338,7 +338,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $title ),
 				$this->equalTo( $content ) )
-			->will( $this->returnValueMap( array( array( $title, $content, 'text from content for title' ) ) ) );
+			->will( $this->returnValueMap( [ [ $title, $content, 'text from content for title' ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -507,14 +507,14 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'setNamespaces')
-			->with( $this->equalTo( array( 1, 2, 3, 5, 8 ) ) );
+			->with( $this->equalTo( [ 1, 2, 3, 5, 8 ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
-		$search->setNamespaces( array( 1, 2, 3, 5, 8 ) );
+		$search->setNamespaces( [ 1, 2, 3, 5, 8 ] );
 
 		$this->assertEquals(
-			array( 1, 2, 3, 5, 8 ),
+			[ 1, 2, 3, 5, 8 ],
 			$search->namespaces
 		);
 	}

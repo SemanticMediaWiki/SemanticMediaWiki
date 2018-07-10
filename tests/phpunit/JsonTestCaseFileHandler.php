@@ -71,7 +71,7 @@ class JsonTestCaseFileHandler {
 	 */
 	public function requiredToSkipFor( array $case, $identifier ) {
 
-		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : array();
+		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : [];
 		$identifier = strtolower( $identifier );
 
 		$version = $GLOBALS['wgVersion'];
@@ -159,7 +159,7 @@ class JsonTestCaseFileHandler {
 		$connectorId = strtolower( $connectorId );
 		$meta = $this->getFileContentsFor( 'meta' );
 
-		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : array();
+		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		if ( in_array( $connectorId, array_keys( $skipOn ) ) ) {
 			$this->reasonToSkip = $skipOn[$connectorId];
@@ -192,7 +192,7 @@ class JsonTestCaseFileHandler {
 	public function requiredToSkipForMwVersion( $mwVersion ) {
 
 		$meta = $this->getFileContentsFor( 'meta' );
-		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : array();
+		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		foreach ( $skipOn as $id => $reason ) {
 
@@ -256,12 +256,12 @@ class JsonTestCaseFileHandler {
 		$settings = $this->getFileContentsFor( 'settings' );
 
 		if ( isset( $settings[$key] ) && is_callable( $callback ) ) {
-			return call_user_func_array( $callback, array( $settings[$key] ) );
+			return call_user_func_array( $callback, [ $settings[$key] ] );
 		}
 
 		// Needs special attention due to NS constant usage
 		if ( $key === 'smwgNamespacesWithSemanticLinks' && isset( $settings[$key] ) ) {
-			$smwgNamespacesWithSemanticLinks = array();
+			$smwgNamespacesWithSemanticLinks = [];
 
 			foreach ( $settings[$key] as $ns => $value ) {
 				$smwgNamespacesWithSemanticLinks[constant( $ns )] = (bool)$value;
@@ -270,7 +270,7 @@ class JsonTestCaseFileHandler {
 			return $smwgNamespacesWithSemanticLinks;
 		}
 
-		$constantFeaturesList = array(
+		$constantFeaturesList = [
 			'smwgSparqlQFeatures',
 			'smwgDVFeatures',
 			'smwgFulltextSearchIndexableDataTypes',
@@ -279,7 +279,7 @@ class JsonTestCaseFileHandler {
 			'smwgParserFeatures',
 			'smwgCategoryFeatures',
 			'smwgQSortFeatures'
-		);
+		];
 
 		foreach ( $constantFeaturesList as $constantFeatures ) {
 			if ( $key === $constantFeatures && isset( $settings[$key] ) ) {
@@ -363,7 +363,7 @@ class JsonTestCaseFileHandler {
 		try{
 			$contents = $this->getFileContentsFor( $key );
 		} catch( \Exception $e ) {
-			$contents = array();
+			$contents = [];
 		}
 
 		return $contents;
@@ -389,7 +389,7 @@ class JsonTestCaseFileHandler {
 	 */
 	public function findTasksBeforeTestExecutionByType( $type ) {
 		$contents = $this->getContentsFor( 'beforeTest' );
-		return isset( $contents[$type] ) ? $contents[$type] : array();
+		return isset( $contents[$type] ) ? $contents[$type] : [];
 	}
 
 	/**

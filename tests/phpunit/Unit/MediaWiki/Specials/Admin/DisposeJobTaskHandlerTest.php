@@ -56,14 +56,14 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetHtml() {
 
-		$methods = array(
+		$methods = [
 			'setName',
 			'setMethod',
 			'addHiddenField',
 			'addHeader',
 			'addParagraph',
 			'addSubmitButton'
-		);
+		];
 
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )

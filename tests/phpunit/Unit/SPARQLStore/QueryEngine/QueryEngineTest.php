@@ -65,7 +65,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$query = new Query( $description );
-		$query->addErrors( array( 'Foo' ) );
+		$query->addErrors( [ 'Foo' ] );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
@@ -95,7 +95,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array( 'bogus-error' ) ) );
+			->will( $this->returnValue( [ 'bogus-error' ] ) );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'getConditionFrom' )
@@ -125,7 +125,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( 'bogus-error' ),
+			[ 'bogus-error' ],
 			$query->getErrors()
 		);
 	}
@@ -167,7 +167,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidSorkeyThrowsException() {
 
-		$sortKeys = array( 'Foo', 'Bar' );
+		$sortKeys = [ 'Foo', 'Bar' ];
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
@@ -185,7 +185,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
@@ -228,7 +228,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
@@ -286,7 +286,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
@@ -321,7 +321,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'select' ) )
+			->setMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->once() )
@@ -340,7 +340,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
@@ -414,7 +414,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'ask' ) )
+			->setMethods( [ 'ask' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->once() )
@@ -441,7 +441,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
@@ -474,7 +474,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		// interface hence the use of the concrete class
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getSparqlForSelect' ) )
+			->setMethods( [ 'getSparqlForSelect' ] )
 			->getMock();
 
 		$connection->expects( $this->once() )
@@ -493,7 +493,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$conditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )

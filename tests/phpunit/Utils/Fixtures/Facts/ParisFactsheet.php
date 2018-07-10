@@ -216,7 +216,7 @@ class ParisFactsheet {
 	 */
 	public function purge() {
 
-		$subjects = array();
+		$subjects = [];
 
 		$subjects[] = $this->asSubject();
 		$subjects[] = $this->targetSubject;

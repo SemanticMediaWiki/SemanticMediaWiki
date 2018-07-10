@@ -78,9 +78,9 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$expResource = Exporter::getInstance()->getDataItemExpElement( DIWikiPage::newFromTitle( $title ) );
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
-		$extraNamespaces = array(
+		$extraNamespaces = [
 			$expResource->getNamespaceId() => $expResource->getNamespace()
-		);
+		];
 
 		$baseStore = $this->getMockBuilder( '\SMWStore' )
 			->disableOriginalConstructor()
@@ -170,7 +170,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$respositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RespositoryConnection' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'insertDelete' ) )
+			->setMethods( [ 'insertDelete' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -181,8 +181,8 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'changeTitle' );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
-			->setConstructorArgs( array( $store ) )
-			->setMethods( array( 'doSparqlDataDelete', 'getConnection' ) )
+			->setConstructorArgs( [ $store ] )
+			->setMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
@@ -228,7 +228,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'insertData' );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
-			->setMethods( array( 'doSparqlDataDelete', 'getConnection' ) )
+			->setMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
@@ -250,7 +250,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->atLeastOnce() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -266,7 +266,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

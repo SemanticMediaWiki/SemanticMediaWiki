@@ -26,21 +26,21 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment( array(
+		$this->testEnvironment = new TestEnvironment( [
 			'smwgCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false,
 			'smwgEnabledDeferredUpdate' => false,
 			'smwgDVFeatures' => '',
 			'smwgSemanticsEnabled' => false
-		) );
+		] );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds', 'getPropertyValues', 'updateData' ) )
+			->setMethods( [ 'getObjectIds', 'getPropertyValues', 'updateData' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -49,7 +49,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -178,7 +178,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
@@ -187,7 +187,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'clearData', 'getObjectIds' ) )
+			->setMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -234,12 +234,12 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getPropertyValues', 'getObjectIds' ) )
+			->setMethods( [ 'getPropertyValues', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -248,11 +248,11 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new UpdateJob( $title, array( 'pm' => SMW_UJ_PM_CLASTMDATE ) );
+		$instance = new UpdateJob( $title, [ 'pm' => SMW_UJ_PM_CLASTMDATE ] );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
@@ -264,7 +264,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'updateData' ) )
+			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -277,9 +277,9 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new UpdateJob( $title,
-			array(
+			[
 				UpdateJob::SEMANTIC_DATA => $semanticData
-			)
+			]
 		);
 
 		$instance->isEnabledJobQueue( false );
@@ -299,12 +299,12 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'updateData', 'getPropertyValues' ) )
+			->setMethods( [ 'updateData', 'getPropertyValues' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( new DIBlob( json_encode( $semanticData ) ) ) ) );
+			->will( $this->returnValue( [ new DIBlob( json_encode( $semanticData ) ) ] ) );
 
 		$store->expects( $this->once() )
 			->method( 'updateData' );
@@ -312,9 +312,9 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new UpdateJob( $subject->getTitle(),
-			array(
+			[
 				UpdateJob::CHANGE_PROP => $subject->getSerialization()
-			)
+			]
 		);
 
 		$instance->isEnabledJobQueue( false );

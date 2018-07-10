@@ -152,59 +152,59 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function dbKeysProvider() {
 
-		$provider[] = array(
-			array( 'http://example.org', '' )
-		);
+		$provider[] = [
+			[ 'http://example.org', '' ]
+		];
 
-		$provider[] = array(
-			array( '', 'http://example.org' )
-		);
+		$provider[] = [
+			[ '', 'http://example.org' ]
+		];
 
 		return $provider;
 	}
 
 	public function dbKeysExceptionProvider() {
 
-		$provider[] = array(
-			array( '' )
-		);
+		$provider[] = [
+			[ '' ]
+		];
 
 		return $provider;
 	}
 
 	public function fieldTypeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_FIELDT_NONE,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
 				'o_serialized' => FieldType::FIELD_TITLE
 			]
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_FIELDT_CHAR_NOCASE,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
 				'o_serialized' => FieldType::TYPE_CHAR_NOCASE
 			]
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_FIELDT_CHAR_LONG,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
 				'o_serialized' => FieldType::TYPE_CHAR_LONG
 			]
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
 				'o_serialized' => FieldType::TYPE_CHAR_LONG_NOCASE
 			]
-		);
+		];
 
 		return $provider;
 	}

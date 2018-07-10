@@ -55,7 +55,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUnknownSettingThrowsException() {
 
-		$instance = Settings::newFromArray( array( 'Foo' => 'bar' ) );
+		$instance = Settings::newFromArray( [ 'Foo' => 'bar' ] );
 
 		$this->setExpectedException( '\SMW\Exception\SettingNotFoundException' );
 		$instance->get( 'foo' );
@@ -63,7 +63,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSafeGetOnUnknownSetting() {
 
-		$instance = Settings::newFromArray( array( 'Foo' => 'bar' ) );
+		$instance = Settings::newFromArray( [ 'Foo' => 'bar' ] );
 
 		$this->assertFalse(
 			$instance->safeGet( 'foo', false )
@@ -75,7 +75,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testSet( array $settings ) {
 
-		$instance = Settings::newFromArray( array() );
+		$instance = Settings::newFromArray( [] );
 
 		foreach ( $settings as $name => $value ) {
 			$instance->set( $name, $value );
@@ -129,22 +129,22 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		$Lula = $utilityFactory->createRandomString();
 		$Lala = $utilityFactory->createRandomString();
 
-		$child  = array( 'Lisa', 'Lula', array( 'Lila' ) );
-		$parent = array( 'child' => $child );
+		$child  = [ 'Lisa', 'Lula', [ 'Lila' ] ];
+		$parent = [ 'child' => $child ];
 
-		$Lila = array( 'Lala' => $Lala, 'parent' => $parent );
-		$Bar  = array( 'Lula' => $Lula, 'Lila'   => $Lila );
-		$test = array( 'Foo'  => $Foo,  'Bar'    => $Bar );
+		$Lila = [ 'Lala' => $Lala, 'parent' => $parent ];
+		$Bar  = [ 'Lula' => $Lula, 'Lila'   => $Lila ];
+		$test = [ 'Foo'  => $Foo,  'Bar'    => $Bar ];
 
-		return array(
-			array( $test, 'Foo',    array( 'type' => 'string', 'value' => $Foo ) ),
-			array( $test, 'Bar',    array( 'type' => 'array',  'value' => $Bar ) ),
-			array( $test, 'Lula',   array( 'type' => 'string', 'value' => $Lula ) ),
-			array( $test, 'Lila',   array( 'type' => 'array',  'value' => $Lila ) ),
-			array( $test, 'Lala',   array( 'type' => 'string', 'value' => $Lala ) ),
-			array( $test, 'parent', array( 'type' => 'array',  'value' => $parent ) ),
-			array( $test, 'child',  array( 'type' => 'array',  'value' => $child ) )
-		);
+		return [
+			[ $test, 'Foo',    [ 'type' => 'string', 'value' => $Foo ] ],
+			[ $test, 'Bar',    [ 'type' => 'array',  'value' => $Bar ] ],
+			[ $test, 'Lula',   [ 'type' => 'string', 'value' => $Lula ] ],
+			[ $test, 'Lila',   [ 'type' => 'array',  'value' => $Lila ] ],
+			[ $test, 'Lala',   [ 'type' => 'string', 'value' => $Lala ] ],
+			[ $test, 'parent', [ 'type' => 'array',  'value' => $parent ] ],
+			[ $test, 'child',  [ 'type' => 'array',  'value' => $child ] ]
+		];
 	}
 
 	/**
@@ -153,13 +153,13 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function settingsProvider() {
-		return array( array( array(
+		return [ [ [
 			'foo' => 'bar',
 			'baz' => 'BAH',
-			'bar' => array( '9001' ),
-			'foo' => array( '9001', array( 9001, 4.2 ) ),
-			'~[,,_,,]:3' => array( 9001, 4.2 ),
-		) ) );
+			'bar' => [ '9001' ],
+			'foo' => [ '9001', [ 9001, 4.2 ] ],
+			'~[,,_,,]:3' => [ 9001, 4.2 ],
+		] ] ];
 	}
 
 	/**
@@ -175,7 +175,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 
 		unset( $settings['smwgDeprecationNotices'] );
 
-		return array( array( $settings ) );
+		return [ [ $settings ] ];
 	}
 
 }

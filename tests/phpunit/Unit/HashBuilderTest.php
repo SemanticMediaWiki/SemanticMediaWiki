@@ -83,12 +83,12 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			$hash,
-			HashBuilder::createFromContent( array( 'Foo' ) )
+			HashBuilder::createFromContent( [ 'Foo' ] )
 		);
 
 		$this->assertContains(
 			'Bar',
-			HashBuilder::createFromContent( array( 'Foo' ), 'Bar' )
+			HashBuilder::createFromContent( [ 'Foo' ], 'Bar' )
 		);
 	}
 
@@ -136,9 +136,9 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function segmentProvider() {
 
-		$provider[] = array( NS_FILE, 'ichi', '', '' );
-		$provider[] = array( NS_HELP, 'ichi', 'ni', '' );
-		$provider[] = array( NS_MAIN, 'ichi maru', 'ni', 'san' );
+		$provider[] = [ NS_FILE, 'ichi', '', '' ];
+		$provider[] = [ NS_HELP, 'ichi', 'ni', '' ];
+		$provider[] = [ NS_MAIN, 'ichi maru', 'ni', 'san' ];
 
 		return $provider;
 	}

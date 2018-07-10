@@ -52,7 +52,7 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 			$contents
 		);
 
-		$expectedKeys = array(
+		$expectedKeys = [
 			'fallback.language',
 			'datatype.labels',
 			'datatype.aliases',
@@ -64,7 +64,7 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 			'date.format.rules',
 			'months',
 			'days'
-		);
+		];
 
 		// If the file is marked with isLanguageRedirect then only check for the fallbackLanguage
 		if ( isset( $contents['isLanguageRedirect'] ) && $contents['isLanguageRedirect'] ) {
@@ -86,13 +86,13 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	private function findFilesIn( $location ) {
 
-		$provider = array();
+		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $location );
 		$bulkFileProvider->searchByFileExtension( 'json' );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
-			$provider[] = array( $file );
+			$provider[] = [ $file ];
 		}
 
 		return $provider;

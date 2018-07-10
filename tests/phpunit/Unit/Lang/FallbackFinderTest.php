@@ -55,9 +55,9 @@ class FallbackFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testgetFallbackLanguageByStatedFallback() {
 
-		$mockedContent = array(
+		$mockedContent = [
 			'fallback.language' => 'Foo'
-		);
+		];
 
 		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'readByLanguageCode' )

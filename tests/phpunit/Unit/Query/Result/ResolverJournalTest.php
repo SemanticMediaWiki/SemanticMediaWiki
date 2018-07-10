@@ -34,7 +34,7 @@ class ResolverJournalTest extends \PHPUnit_Framework_TestCase {
 		$instance->recordItem( $dataItem );
 
 		$this->assertEquals(
-			array( 'Foo#0##' => $dataItem ),
+			[ 'Foo#0##' => $dataItem ],
 			$instance->getEntityList( 'FOO:123' )
 		);
 
@@ -53,9 +53,9 @@ class ResolverJournalTest extends \PHPUnit_Framework_TestCase {
 		$instance->recordProperty( $property );
 
 		$this->assertEquals(
-			array(
+			[
 				'Bar' => $property
-			),
+			],
 			$instance->getPropertyList()
 		);
 	}

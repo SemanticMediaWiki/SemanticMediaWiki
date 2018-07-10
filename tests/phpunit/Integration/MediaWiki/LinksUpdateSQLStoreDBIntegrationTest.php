@@ -38,7 +38,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->addConfiguration(
 			'smwgPageSpecialProperties',
-			 array( '_MDAT' )
+			 [ '_MDAT' ]
 		);
 
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
@@ -202,46 +202,46 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 		// Property _SKEY is always present even within an empty container
 		// po = ParserOutput, before means prior LinksUpdate
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array( array(
-			'beforeAlterationRevId' => array(
-				'poBefore'  => array(
+		$provider[] = [ [
+			'beforeAlterationRevId' => [
+				'poBefore'  => [
 					'count' => 3,
 					'msg'   => 'Asserts property Aa, Fuyu, and _SKEY exists before the update'
-				),
-				'storeBefore' => array(
+				],
+				'storeBefore' => [
 					'count'   => 2,
 					'msg'     => 'Asserts property _SKEY and _MDAT exists in Store before the update'
-				),
-				'poAfter'    => array(
+				],
+				'poAfter'    => [
 					'count'  => 4,
 					'msg'    => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists after the update'
-				),
-				'storeAfter' => array(
+				],
+				'storeAfter' => [
 					'count'  => 4,
 					'msg'    => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists after the update'
-				)
-			),
-			'afterAlterationRevId' => array(
-				'poBefore'  => array(
+				]
+			],
+			'afterAlterationRevId' => [
+				'poBefore'  => [
 					'count' => 0,
 					'msg'   => 'Asserts no property exists before the update'
-				),
-				'storeBefore' => array(
+				],
+				'storeBefore' => [
 					'count'   => 4,
 					'msg'     => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT from the previous state as no update has been made yet'
-				),
-				'poAfter'    => array(
+				],
+				'poAfter'    => [
 					'count'  => 0,
 					'msg'    => 'Asserts property _MDAT exists after the update'
-				),
-				'storeAfter' => array(
+				],
+				'storeAfter' => [
 					'count'  => 2,
 					'msg'    => 'Asserts property _SKEY, _MDAT exists after the update'
-				)
-			)
-		) );
+				]
+			]
+		] ];
 
 		return $provider;
 	}

@@ -80,7 +80,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'en' ) );
 
 		$instanceSpy = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'hasLanguage' ) )
+			->setMethods( [ 'hasLanguage' ] )
 			->getMock();
 
 		$instanceSpy->expects( $this->once() )
@@ -111,28 +111,28 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'Foo', 'SimpleText' );
 
 		$this->assertEquals(
-			array(
+			[
 				'inserts' => 1,
 				'deletes' => 0,
 				'max'     => 1000,
 				'count'   => 1,
 				'hits'    => 0,
 				'misses'  => 1
-			),
+			],
 			$instance->getCache()->getStats()
 		);
 
 		$instance->get( 'Foo', 'SimpleText', 'ooo' );
 
 		$this->assertEquals(
-			array(
+			[
 				'inserts' => 2,
 				'deletes' => 0,
 				'max'     => 1000,
 				'count'   => 2,
 				'hits'    => 0,
 				'misses'  => 2
-			),
+			],
 			$instance->getCache()->getStats()
 		);
 
@@ -140,14 +140,14 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'Foo', 'SimpleText' );
 
 		$this->assertEquals(
-			array(
+			[
 				'inserts' => 2,
 				'deletes' => 0,
 				'max'     => 1000,
 				'count'   => 2,
 				'hits'    => 1,
 				'misses'  => 2
-			),
+			],
 			$instance->getCache()->getStats()
 		);
 
@@ -180,30 +180,30 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
 	public function encodeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'[2,"Foo"]'
-		);
+		];
 
-		$provider[] = array(
-			array( 'Foo' ),
+		$provider[] = [
+			[ 'Foo' ],
 			'[2,"Foo"]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[2,"Foo"]',
 			'[2,"Foo"]'
-		);
+		];
 
-		$provider[] = array(
-			array( 'Foo', '<strong>Expression error: Unrecognized word "yyyy".</strong>' ),
+		$provider[] = [
+			[ 'Foo', '<strong>Expression error: Unrecognized word "yyyy".</strong>' ],
 			'[2,"Foo","Expression error: Unrecognized word \"yyyy\"."]'
-		);
+		];
 
-		$provider[] = array(
-			array( 'eb0afd6194bab91b6d32d2db4bb30060' => '[2,"smw-datavalue-wikipage-invalid-title","Help:"]' ),
+		$provider[] = [
+			[ 'eb0afd6194bab91b6d32d2db4bb30060' => '[2,"smw-datavalue-wikipage-invalid-title","Help:"]' ],
 			'[2,"smw-datavalue-wikipage-invalid-title","Help:"]'
-		);
+		];
 
 		return $provider;
 	}
