@@ -51,12 +51,6 @@
 			"subject": "smwdoc-list",
 			"assert-output": {
 				"to-contain": [
-					"<tr>",
-					"<td>class",
-					"</td>",
-					"<td>&lt;validator-type-string&gt;",
-					"</td>",
-					"<td><i>&lt;validator-describe-empty&gt;</i>",
 					"</td>",
 					"<td>Legt fest, welche zusätzliche CSS-Klasse genutzt werden soll",
 					"</td></tr>",
