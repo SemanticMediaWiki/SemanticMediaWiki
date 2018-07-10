@@ -47,16 +47,16 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 (#1019)",
+			"about": "#2 (#1019)",
 			"subject": "smwdoc-list",
 			"assert-output": {
 				"to-contain": [
 					"<tr>",
 					"<td>class",
 					"</td>",
-					"<td>Text",
+					"<td>⧼validator-type-string⧽",
 					"</td>",
-					"<td><i>leer</i>",
+					"<td><i>⧼validator-describe-empty⧽</i>",
 					"</td>",
 					"<td>Legt fest, welche zusätzliche CSS-Klasse genutzt werden soll",
 					"</td></tr>",
