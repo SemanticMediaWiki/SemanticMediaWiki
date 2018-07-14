@@ -91,6 +91,22 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 		$instance->verifyAndDispose( [] );
 	}
 
+	public function testVerifyAndDispose_NonIterable() {
+
+		$this->store->expects( $this->never() )
+			->method( 'getConnection' );
+
+		$instance = new DuplicateEntitiesDisposer(
+			$this->store
+		);
+
+		$instance->setMessageReporter(
+			$this->messageReporter
+		);
+
+		$instance->verifyAndDispose( 'Foo' );
+	}
+
 	public function testVerifyAndDispose_NoDuplicates_WithCache() {
 
 		$this->store->expects( $this->never() )
