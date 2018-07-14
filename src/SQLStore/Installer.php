@@ -127,8 +127,8 @@ class Installer implements MessageReporter {
 
 		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
 
-		$this->tableOptimization( $messageReporter );
-		$this->addSupplementJobs( $messageReporter );
+		$this->table_optimization( $messageReporter );
+		$this->supplement_jobs( $messageReporter );
 
 		$this->setUpgradeKey( new File(), $GLOBALS, $messageReporter );
 
@@ -247,7 +247,7 @@ class Installer implements MessageReporter {
 			return false;
 		}
 
-		$messageReporter->reportMessage( "\Writting upgrade key ...\n" );
+		$messageReporter->reportMessage( "\nAdding upgrade key ..." );
 
 		if ( !isset( $vars['smw.json'] ) ) {
 			$vars['smw.json'] = [];
@@ -291,7 +291,7 @@ class Installer implements MessageReporter {
 		return $messageReporter;
 	}
 
-	private function tableOptimization( $messageReporter ) {
+	private function table_optimization( $messageReporter ) {
 
 		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMIZE, false ) ) {
 			return $messageReporter->reportMessage( "\nSkipping the table optimization.\n" );
@@ -306,7 +306,7 @@ class Installer implements MessageReporter {
 		$messageReporter->reportMessage( "\nOptimization completed.\n" );
 	}
 
-	private function addSupplementJobs( $messageReporter ) {
+	private function supplement_jobs( $messageReporter ) {
 
 		if ( !$this->options->safeGet( self::OPT_SUPPLEMENT_JOBS, false ) ) {
 			return $messageReporter->reportMessage( "\nSkipping supplement job creation.\n" );
