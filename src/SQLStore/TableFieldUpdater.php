@@ -26,6 +26,7 @@ class TableFieldUpdater {
 	 * @since 3.0
 	 *
 	 * @param SQLStore $store
+	 * @param Collator|null $collator
 	 */
 	public function __construct( SQLStore $store, Collator $collator = null ) {
 		$this->store = $store;
@@ -35,18 +36,18 @@ class TableFieldUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $key1
-	 * @param string $key2
+	 * @param string $old
+	 * @param string $new
 	 *
 	 * @return boolean
 	 */
-	public function canUpdateSortField( $key1, $key2 ) {
+	public function shouldChangeSortField( $old, $new ) {
 
 		if ( $this->collator === null ) {
 			$this->collator = Collator::singleton();
 		}
 
-		return $this->collator->getSortKey( $key1 ) !== $this->collator->getSortKey( $key2 );
+		return $this->collator->getSortKey( $old ) !== $this->collator->getSortKey( $new );
 	}
 
 	/**

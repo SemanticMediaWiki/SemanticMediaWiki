@@ -720,7 +720,7 @@ class SMWSql3SmwIds {
 
 			$this->tableFieldUpdater->updateSortField( $id, $sortkey );
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
-		} elseif ( $sortkey !== '' && $this->tableFieldUpdater->canUpdateSortField( $oldsort, $sortkey ) ) {
+		} elseif ( $sortkey !== '' && $this->tableFieldUpdater->shouldChangeSortField( $oldsort, $sortkey ) ) {
 			$this->tableFieldUpdater->updateSortField( $id, $sortkey );
 		}
 
