@@ -186,12 +186,12 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	public function testTabs() {
 
 		$this->assertContains(
-			'tab-content-facts-user',
+			'tab-facts-rendered',
 			Factbox::tabs( 'Foo' )
 		);
 
 		$this->assertContains(
-			'tab-content-facts-derived',
+			'tab-facts-derived',
 			Factbox::tabs( 'Foo', 'Bar' )
 		);
 	}
