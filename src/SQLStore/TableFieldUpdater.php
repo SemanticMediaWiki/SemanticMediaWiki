@@ -30,10 +30,6 @@ class TableFieldUpdater {
 	public function __construct( SQLStore $store, Collator $collator = null ) {
 		$this->store = $store;
 		$this->collator = $collator;
-
-		if ( $this->collator === null ) {
-			$this->collator = Collator::singleton();
-		}
 	}
 
 	/**
@@ -45,6 +41,11 @@ class TableFieldUpdater {
 	 * @return boolean
 	 */
 	public function canUpdateSortField( $key1, $key2 ) {
+
+		if ( $this->collator === null ) {
+			$this->collator = Collator::singleton();
+		}
+
 		return $this->collator->getSortKey( $key1 ) !== $this->collator->getSortKey( $key2 );
 	}
 
@@ -57,6 +58,10 @@ class TableFieldUpdater {
 	 * @return integer
 	 */
 	public function updateSortField( $id, $searchKey ) {
+
+		if ( $this->collator === null ) {
+			$this->collator = Collator::singleton();
+		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
