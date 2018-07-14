@@ -192,7 +192,7 @@ class TestDatabaseTableBuilder {
 
 		// Don't duplicate test tables from the previous failed run
 		$tables = array_filter( $tables, array( $this, 'isNotUnittest' ) );
-
+		var_dump( $tables );
 		// @see MediaWikiTestCase::listTables
 		if ( $dbConnection->getType() === 'sqlite' ) {
 			$tables = array_filter( $tables, array( $this, 'isNotSearchindex' ) );
@@ -233,7 +233,13 @@ class TestDatabaseTableBuilder {
 		// otherwise some tests will fail with
 		// "Error: 1137 Can't reopen table" on MySQL (see Issue #80)
 		$this->cloneDatabase->useTemporaryTables( false );
-		$this->cloneDatabase->cloneTableStructure();
+		
+		// LogicException "Not dropping new table, as 'sunittest_user'
+		// is name of both the old and the new table."
+		try {
+			$this->cloneDatabase->cloneTableStructure();
+		} catch( \LogicException $e ) {
+		}
 
 		// #3197
 		// @see https://github.com/wikimedia/mediawiki/commit/6badc7415684df54d6672098834359223b859507
