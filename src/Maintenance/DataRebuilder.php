@@ -392,7 +392,7 @@ class DataRebuilder {
 		$obLevel = ob_get_level();
 
 		$this->reportMessage( 'Abort with control-c in the next five seconds ...  ' );
-		wfCountDown( 6 );
+		swfCountDown( 6 );
 
 		$this->reportMessage( "\nDeleting all data ..." );
 

@@ -217,6 +217,27 @@ function smwfGetLinker() {
 }
 
 /**
+ * @private
+ *
+ * Copied from wfCountDown as it became deprecated in 1.31
+ *
+ * @since 3.0
+ */
+function swfCountDown( $seconds ) {
+	for ( $i = $seconds; $i >= 0; $i-- ) {
+		if ( $i != $seconds ) {
+			echo str_repeat( "\x08", strlen( $i + 1 ) );
+		}
+		echo $i;
+		flush();
+		if ( $i ) {
+			sleep( 1 );
+		}
+	}
+	echo "\n";
+}
+
+/**
  * Function to switch on Semantic MediaWiki. This function must be called in
  * LocalSettings.php after including SMW_Settings.php. It is used to ensure
  * that required parameters for SMW are really provided explicitly. For
