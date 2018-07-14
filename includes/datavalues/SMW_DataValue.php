@@ -14,6 +14,7 @@ use SMW\Localizer;
 use SMW\Message;
 use SMW\Options;
 use SMW\Query\QueryComparator;
+use SMW\Services\DataValueServiceFactory;
 use SMW\Utils\CharArmor;
 
 /**
@@ -253,7 +254,7 @@ abstract class SMWDataValue {
 	 *
 	 * @param DataValueServiceFactory $dataValueServiceFactory
 	 */
-	public function setDataValueServiceFactory( $dataValueServiceFactory ) {
+	public function setDataValueServiceFactory( DataValueServiceFactory $dataValueServiceFactory ) {
 		$this->dataValueServiceFactory = $dataValueServiceFactory;
 	}
 
