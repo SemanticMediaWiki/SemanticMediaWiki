@@ -3,6 +3,7 @@
 namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
 use SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer
@@ -14,6 +15,8 @@ use SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer
  * @author mwjames
  */
 class TimeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

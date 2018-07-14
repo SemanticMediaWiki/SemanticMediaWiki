@@ -18,6 +18,7 @@ use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWDITime as DITime;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\ConditionBuilder
@@ -29,6 +30,8 @@ use SMWDITime as DITime;
  * @author mwjames
  */
 class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $stringBuilder;
 	private $descriptionInterpreterFactory;

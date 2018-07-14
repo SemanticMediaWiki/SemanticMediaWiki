@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\Search;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 use SMWQuery;
 
 /**
@@ -16,6 +17,8 @@ use SMWQuery;
  * @author Stephan Gambke
  */
 class SearchTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 

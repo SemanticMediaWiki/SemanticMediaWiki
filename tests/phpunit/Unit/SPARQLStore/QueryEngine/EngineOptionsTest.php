@@ -3,6 +3,7 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\EngineOptions
@@ -14,6 +15,8 @@ use SMW\SPARQLStore\QueryEngine\EngineOptions;
  * @author mwjames
  */
 class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

@@ -8,6 +8,7 @@ use SMW\Exporter\Element\ExpNsResource;
 use SMW\Serializers\ExpDataSerializer;
 use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\ExpDataDeserializer
@@ -19,6 +20,8 @@ use SMWExpData as ExpData;
  * @author mwjames
  */
 class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstructor() {
 

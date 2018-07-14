@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\ChangePropagationEntityFinder;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\ChangePropagationEntityFinder
@@ -16,6 +17,8 @@ use SMW\SQLStore\ChangePropagationEntityFinder;
  * @author mwjames
  */
 class ChangePropagationEntityFinderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $iteratorFactory;

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Lang;
 
 use SMW\Lang\JsonContentsFileReader;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Lang\JsonContentsFileReader
@@ -14,6 +15,8 @@ use SMW\Lang\JsonContentsFileReader;
  * @author mwjames
  */
 class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

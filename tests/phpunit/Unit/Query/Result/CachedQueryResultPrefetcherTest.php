@@ -7,6 +7,7 @@ use Onoi\BlobStore\Container;
 use SMW\DIWikiPage;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Utils\BufferedStatsdCollector;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Result\CachedQueryResultPrefetcher
@@ -18,6 +19,8 @@ use SMW\Utils\BufferedStatsdCollector;
  * @author mwjames
  */
 class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $queryFactory;

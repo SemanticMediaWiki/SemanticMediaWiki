@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\StoreFactory;
 use SMWDataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableDefinition
@@ -16,6 +17,8 @@ use SMWDataItem;
  * @author mwjames
  */
 class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

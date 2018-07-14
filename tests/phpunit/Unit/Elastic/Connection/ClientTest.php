@@ -4,6 +4,7 @@ namespace SMW\Tests\Elastic\Connection;
 
 use SMW\Elastic\Connection\Client;
 use SMW\Options;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Connection\Client
@@ -15,6 +16,8 @@ use SMW\Options;
  * @author mwjames
  */
 class ClientTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $elasticClient;
 	private $cache;

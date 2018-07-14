@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\IdCacheManager
@@ -15,6 +16,8 @@ use SMW\SQLStore\EntityStore\IdCacheManager;
  * @author mwjames
  */
 class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $caches;
 

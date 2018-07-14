@@ -3,6 +3,7 @@
 namespace SMW\Tests\Rule;
 
 use SMW\Rule\RuleFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Rule\RuleFactory
@@ -14,6 +15,8 @@ use SMW\Rule\RuleFactory;
  * @author mwjames
  */
 class RuleFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

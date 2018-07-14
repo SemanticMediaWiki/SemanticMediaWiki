@@ -15,6 +15,8 @@ use SMW\NamespaceExaminer;
  */
 class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(

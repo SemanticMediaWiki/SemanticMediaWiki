@@ -21,6 +21,8 @@ use Title;
  */
 class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	private $semanticDataValidator;
 
 	protected function setUp() {

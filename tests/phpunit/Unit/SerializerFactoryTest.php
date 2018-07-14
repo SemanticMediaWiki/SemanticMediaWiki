@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\SerializerFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SerializerFactory
@@ -14,6 +15,8 @@ use SMW\SerializerFactory;
  * @author mwjames
  */
 class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

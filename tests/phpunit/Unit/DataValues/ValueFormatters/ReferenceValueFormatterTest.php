@@ -6,6 +6,7 @@ use SMW\DataItemFactory;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\ReferenceValueFormatter
@@ -17,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

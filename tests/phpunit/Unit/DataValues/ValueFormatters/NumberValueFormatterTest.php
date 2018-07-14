@@ -5,6 +5,7 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMWNumberValue as NumberValue;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\NumberValueFormatter
@@ -16,6 +17,8 @@ use SMWNumberValue as NumberValue;
  * @author mwjames
  */
 class NumberValueFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

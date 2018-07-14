@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\TestsImporter;
+namespace SMW\Tests\Importer;
 
 use SMW\Importer\ContentIterator;
 use SMW\Importer\ImportContents;

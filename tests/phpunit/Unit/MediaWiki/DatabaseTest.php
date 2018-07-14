@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki;
 
 use SMW\Connection\ConnectionProviderRef;
 use SMW\MediaWiki\Database;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Database
@@ -15,6 +16,8 @@ use SMW\MediaWiki\Database;
  * @author mwjames
  */
 class DatabaseTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

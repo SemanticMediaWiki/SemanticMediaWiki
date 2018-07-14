@@ -19,7 +19,12 @@ class TitleCreator {
 	 *
 	 * @return Title|null
 	 */
-	public function createFromText( $text, $namespace = NS_MAIN ) {
+	public function createFromText( $text, $namespace = null ) {
+
+		if ( $namespace === null ) {
+			$namespace = NS_MAIN;
+		}
+
 		return Title::newFromText( $text, $namespace );
 	}
 

@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\Iterators\Tests;
+namespace SMW\Tests\Iterators;
 
 use ArrayIterator;
 use SMW\Iterators\MappingIterator;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\MappingIterator
@@ -15,6 +16,8 @@ use SMW\Iterators\MappingIterator;
  * @author mwjames
  */
 class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

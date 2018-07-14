@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki;
 use DatabaseBase;
 use ReflectionClass;
 use SMW\MediaWiki\DBLoadBalancerConnectionProvider;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\DBLoadBalancerConnectionProvider
@@ -16,6 +17,8 @@ use SMW\MediaWiki\DBLoadBalancerConnectionProvider;
  * @author mwjames
  */
 class DBLoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

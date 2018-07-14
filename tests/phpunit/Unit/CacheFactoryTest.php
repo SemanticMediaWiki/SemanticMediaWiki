@@ -17,6 +17,8 @@ use SMW\CacheFactory;
  */
 class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(

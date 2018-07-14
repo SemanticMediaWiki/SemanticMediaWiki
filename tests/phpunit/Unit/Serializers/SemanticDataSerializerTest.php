@@ -8,6 +8,7 @@ use SMW\Serializers\SemanticDataSerializer;
 use SMW\Subobject;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\SemanticDataSerializer
@@ -19,6 +20,8 @@ use Title;
  * @author mwjames
  */
 class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $dataValueFactory;
 	private $semanticDataFactory;

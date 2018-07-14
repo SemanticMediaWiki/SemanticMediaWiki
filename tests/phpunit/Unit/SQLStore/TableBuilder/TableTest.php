@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\Table;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Table
@@ -14,6 +15,8 @@ use SMW\SQLStore\TableBuilder\Table;
  * @author mwjames
  */
 class TableTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

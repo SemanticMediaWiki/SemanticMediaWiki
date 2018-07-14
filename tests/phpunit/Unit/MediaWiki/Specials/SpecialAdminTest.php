@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Specials;
 
 use SMW\MediaWiki\Specials\SpecialAdmin;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 
@@ -17,6 +18,8 @@ use Title;
  * @author mwjames
  */
 class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 

@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\ApiQueryResultFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Api\ApiQueryResultFormatter
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Api\ApiQueryResultFormatter;
  * @author mwjames
  */
 class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

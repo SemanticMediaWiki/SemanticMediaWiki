@@ -6,6 +6,7 @@ use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 use SMWQuery as Query;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryEngine
@@ -17,6 +18,8 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class QueryEngineTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

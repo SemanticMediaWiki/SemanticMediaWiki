@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\TitleLookup;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\TitleLookup
@@ -15,6 +16,8 @@ use Title;
  * @author mwjames
  */
 class TitleLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

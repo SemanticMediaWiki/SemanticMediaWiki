@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore\EntityStore\DIHandlers;
 use SMW\SQLStore\EntityStore\DIHandlers\DIBlobHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDIBlob as DIBlob;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DIHandlers\DIBlobHandler
@@ -16,6 +17,8 @@ use SMWDIBlob as DIBlob;
  * @author mwjames
  */
 class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 

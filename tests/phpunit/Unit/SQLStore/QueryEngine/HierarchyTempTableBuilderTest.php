@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder
@@ -14,6 +15,8 @@ use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
  * @author mwjames
  */
 class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $connection;
 	private $temporaryTableBuilder;

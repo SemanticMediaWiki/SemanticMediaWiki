@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW\Iterators\Tests;
+namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\ChunkedIterator;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\ChunkedIterator
@@ -14,6 +15,8 @@ use SMW\Iterators\ChunkedIterator;
  * @author mwjames
  */
 class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

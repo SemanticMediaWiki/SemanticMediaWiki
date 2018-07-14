@@ -3,6 +3,7 @@
 namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
 use SMW\Deserializers\DVDescriptionDeserializer\DispatchingDescriptionDeserializer;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\DispatchingDescriptionDeserializer
@@ -14,6 +15,8 @@ use SMW\Deserializers\DVDescriptionDeserializer\DispatchingDescriptionDeserializ
  * @author mwjames
  */
 class DispatchingDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

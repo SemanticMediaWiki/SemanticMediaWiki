@@ -11,6 +11,7 @@ use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\ParserParameterFormatter;
 use SMW\Subobject;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\PHPUnitCompat;
 use Title;
 
 /**
@@ -23,6 +24,8 @@ use Title;
  * @author mwjames
  */
 class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $semanticDataValidator;
 

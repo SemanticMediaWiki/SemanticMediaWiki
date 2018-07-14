@@ -6,6 +6,7 @@ use SMW\DataItemFactory;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 use SMWPropertyValue as PropertyValue;
 
 /**
@@ -18,6 +19,8 @@ use SMWPropertyValue as PropertyValue;
  * @author mwjames
  */
 class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $dataItemFactory;
 	private $propertyLabelFinder;

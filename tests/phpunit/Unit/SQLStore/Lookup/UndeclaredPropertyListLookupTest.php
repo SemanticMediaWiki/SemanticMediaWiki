@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
@@ -16,6 +17,8 @@ use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
  * @author mwjames
  */
 class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $requestOptions;

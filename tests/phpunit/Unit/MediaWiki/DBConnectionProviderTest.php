@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\DBConnectionProvider;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\DBConnectionProvider
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\CachingSemanticDataLookup
@@ -15,6 +16,8 @@ use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
  * @author mwjames
  */
 class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $connection;
