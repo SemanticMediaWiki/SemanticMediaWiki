@@ -73,17 +73,23 @@ class PHPUnitEnvironment {
 		$info = [];
 
 		if ( $id === 'smw' ) {
+			$store = str_replace(
+				[ '{', '}', '"', '(SMW', ':(', '))' ],
+				[ '(', ')', '', 'SMW', ' (', ')' ],
+				json_encode( smwfGetStore()->getInfo() )
+			);
+
 			$info = [
 				SemanticMediaWiki::getVersion(),
-				$this->getGitInfo( 'smw' ),
-				json_encode( smwfGetStore()->getInfo() )
+				'git: ' . $this->getGitInfo( 'smw' ),
+				$store
 			] + $extra;
 		}
 
 		if ( $id === 'mw' ) {
 			$info = [
 				$GLOBALS['wgVersion'],
-				$this->getGitInfo( 'mw' )
+				'git: ' . $this->getGitInfo( 'mw' )
 			] + $extra;
 		}
 
