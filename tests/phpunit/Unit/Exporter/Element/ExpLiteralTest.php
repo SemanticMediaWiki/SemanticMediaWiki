@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\Element\ExpLiteral
@@ -17,6 +18,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

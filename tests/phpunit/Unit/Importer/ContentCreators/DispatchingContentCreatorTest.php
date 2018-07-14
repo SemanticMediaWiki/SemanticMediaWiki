@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\TestsImporter\ContentCreators;
+namespace SMW\Tests\Importer\ContentCreators;
 
 use SMW\Importer\ContentCreators\DispatchingContentCreator;
 use SMW\Importer\ImportContents;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Importer\ContentCreators\DispatchingContentCreator
@@ -15,6 +16,8 @@ use SMW\Importer\ImportContents;
  * @author mwjames
  */
 class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $wikiImporter;
 	private $messageReporter;

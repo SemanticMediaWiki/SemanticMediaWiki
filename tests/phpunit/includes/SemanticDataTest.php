@@ -23,6 +23,8 @@ use Title;
  */
 class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	private $semanticDataValidator;
 	private $dataValueFactory;
 	private $testEnvironment;

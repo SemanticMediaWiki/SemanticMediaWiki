@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore\DIHandlers;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler
@@ -15,6 +16,8 @@ use SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler;
  * @author mwjames
  */
 class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

@@ -9,6 +9,7 @@ use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
@@ -20,6 +21,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

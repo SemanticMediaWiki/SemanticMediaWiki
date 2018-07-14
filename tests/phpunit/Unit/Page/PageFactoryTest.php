@@ -3,6 +3,7 @@
 namespace SMW\Tests\Page;
 
 use SMW\Page\PageFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Page\PageFactory
@@ -14,6 +15,8 @@ use SMW\Page\PageFactory;
  * @author mwjames
  */
 class PageFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 

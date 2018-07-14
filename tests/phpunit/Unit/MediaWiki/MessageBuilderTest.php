@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\MessageBuilder;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\MessageBuilder
@@ -14,6 +15,8 @@ use SMW\MediaWiki\MessageBuilder;
  * @author mwjames
  */
 class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

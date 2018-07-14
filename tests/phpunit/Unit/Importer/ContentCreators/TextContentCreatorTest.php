@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\TestsImporter\ContentCreators;
+namespace SMW\Tests\Importer\ContentCreators;
 
 use SMW\Importer\ContentCreators\TextContentCreator;
 use SMW\Importer\ImportContents;

@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UsageStatisticsListLookup
@@ -15,6 +16,8 @@ use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
  * @author mwjames
  */
 class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $propertyStatisticsStore;

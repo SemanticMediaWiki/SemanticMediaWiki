@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UnusedPropertyListLookup
@@ -16,6 +17,8 @@ use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
  * @author mwjames
  */
 class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $propertyStatisticsStore;

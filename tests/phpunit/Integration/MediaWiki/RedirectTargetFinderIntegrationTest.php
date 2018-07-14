@@ -7,6 +7,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\PHPUnitCompat;
 use Title;
 
 /**
@@ -21,6 +22,8 @@ use Title;
  * @author mwjames
  */
 class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
+
+	use PHPUnitCompat;
 
 	private $deletePoolOfPages = array();
 

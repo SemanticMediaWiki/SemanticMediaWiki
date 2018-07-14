@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\JobFactory;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\JobFactory
@@ -15,6 +16,8 @@ use Title;
  * @author mwjames
  */
 class JobFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

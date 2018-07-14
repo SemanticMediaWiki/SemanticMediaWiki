@@ -5,6 +5,7 @@ namespace SMW\Tests\Lang;
 use SMW\Lang\FallbackFinder;
 use SMW\Lang\JsonContentsFileReader;
 use SMW\Lang\LanguageContents;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Lang\LanguageContents
@@ -16,6 +17,8 @@ use SMW\Lang\LanguageContents;
  * @author mwjames
  */
 class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $jsonContentsFileReader;
 	private $fallbackFinder;

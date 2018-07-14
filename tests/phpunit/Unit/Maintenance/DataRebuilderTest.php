@@ -5,6 +5,7 @@ namespace SMW\Tests\Maintenance;
 use SMW\Maintenance\DataRebuilder;
 use SMW\Options;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Maintenance\DataRebuilder
@@ -17,6 +18,8 @@ use Title;
  * @author mwjames
  */
 class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	protected $obLevel;
 	private $connectionManager;

@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\ChangeOp;
 
 use SMW\SQLStore\ChangeOp\FieldChangeOp;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\FieldChangeOp
@@ -14,6 +15,8 @@ use SMW\SQLStore\ChangeOp\FieldChangeOp;
  * @author mwjames
  */
 class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

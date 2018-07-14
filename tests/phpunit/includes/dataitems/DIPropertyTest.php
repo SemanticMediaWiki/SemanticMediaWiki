@@ -20,6 +20,8 @@ use SMWDataItem as DataItem;
  */
 class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	protected function tearDown() {
 		PropertyRegistry::clear();
 		parent::tearDown();

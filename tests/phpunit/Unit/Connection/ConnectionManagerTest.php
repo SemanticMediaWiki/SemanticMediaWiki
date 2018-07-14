@@ -3,6 +3,7 @@
 namespace SMW\Tests\Connection;
 
 use SMW\Connection\ConnectionManager;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Connection\ConnectionManager
@@ -14,6 +15,8 @@ use SMW\Connection\ConnectionManager;
  * @author mwjames
  */
 class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

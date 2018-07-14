@@ -9,6 +9,7 @@ use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMWExpLiteral as ExpLiteral;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryRedirectLookup
@@ -20,6 +21,8 @@ use SMWExporter as Exporter;
  * @author mwjames
  */
 class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

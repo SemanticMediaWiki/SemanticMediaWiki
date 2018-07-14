@@ -1,10 +1,11 @@
 <?php
 
-namespace SMW\TestsImporter;
+namespace SMW\Tests\Importer;
 
 use SMW\Importer\ContentModeller;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Importer\JsonImportContentsFileDirReader
@@ -16,6 +17,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $contentModeller;
 	private $testEnvironment;

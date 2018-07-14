@@ -3,6 +3,7 @@
 namespace SMW\Tests\Connection;
 
 use SMW\Connection\ConnectionProviderRef;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Connection\ConnectionProviderRef
@@ -14,6 +15,8 @@ use SMW\Connection\ConnectionProviderRef;
  * @author mwjames
  */
 class ConnectionProviderRefTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

@@ -5,6 +5,7 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter
@@ -16,6 +17,8 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
  * @author mwjames
  */
 class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $dataValueServiceFactory;
 

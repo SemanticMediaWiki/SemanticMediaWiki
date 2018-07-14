@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\Iterators\Tests;
+namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\CsvFileIterator;
 use SMW\Utils\TempFile;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\CsvFileIterator
@@ -15,6 +16,8 @@ use SMW\Utils\TempFile;
  * @author mwjames
  */
 class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $file;
 	private $tempFile;

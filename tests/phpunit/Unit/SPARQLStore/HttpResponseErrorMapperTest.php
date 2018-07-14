@@ -3,6 +3,7 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\SPARQLStore\HttpResponseErrorMapper;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\HttpResponseErrorMapper
@@ -14,6 +15,8 @@ use SMW\SPARQLStore\HttpResponseErrorMapper;
  * @author mwjames
  */
 class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

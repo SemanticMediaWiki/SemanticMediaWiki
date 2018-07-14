@@ -5,6 +5,7 @@ namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer
@@ -16,6 +17,8 @@ use SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionD
  * @author mwjames
  */
 class MonolingualTextValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

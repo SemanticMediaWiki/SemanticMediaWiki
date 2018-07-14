@@ -6,6 +6,7 @@ use SMW\DataItemFactory;
 use SMW\Settings;
 use SMW\Tests\TestEnvironment;
 use SMW\UnusedPropertiesQueryPage;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\UnusedPropertiesQueryPage
@@ -17,6 +18,8 @@ use SMW\UnusedPropertiesQueryPage;
  * @author mwjames
  */
 class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $skin;

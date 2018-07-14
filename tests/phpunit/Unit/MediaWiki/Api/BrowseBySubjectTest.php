@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Api;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 use Title;
 
 /**
@@ -17,6 +18,8 @@ use Title;
  * @author mwjames
  */
 class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $apiFactory;
 	private $semanticDataFactory;

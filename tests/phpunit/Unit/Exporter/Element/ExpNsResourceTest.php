@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\Element\ExpNsResource
@@ -17,6 +18,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

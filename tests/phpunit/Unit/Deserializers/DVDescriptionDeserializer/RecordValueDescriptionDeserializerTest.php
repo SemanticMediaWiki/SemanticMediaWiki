@@ -4,6 +4,7 @@ namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
 use SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer;
 use SMW\DIProperty;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer
@@ -15,6 +16,8 @@ use SMW\DIProperty;
  * @author mwjames
  */
 class RecordValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

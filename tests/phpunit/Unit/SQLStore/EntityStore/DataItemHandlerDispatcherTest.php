@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlerDispatcher
@@ -15,6 +16,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class DataItemHandlerDispatcherTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

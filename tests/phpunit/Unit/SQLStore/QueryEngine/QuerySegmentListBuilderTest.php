@@ -10,6 +10,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListBuilder
@@ -21,6 +22,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $querySegmentValidator;
 	private $descriptionInterpreterFactory;

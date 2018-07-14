@@ -4,6 +4,7 @@ namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
 use SMW\ApplicationFactory;
 use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer
@@ -15,6 +16,8 @@ use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer
  * @author mwjames
  */
 class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $dataItemFactory;
 

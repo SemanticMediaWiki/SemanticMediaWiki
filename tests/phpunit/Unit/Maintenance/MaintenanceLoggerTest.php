@@ -3,6 +3,7 @@
 namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\MaintenanceLogger;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Maintenance\MaintenanceLogger
@@ -14,6 +15,8 @@ use SMW\Maintenance\MaintenanceLogger;
  * @author mwjames
  */
 class MaintenanceLoggerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

@@ -4,6 +4,7 @@ namespace SMW\Test;
 
 use SMW\Settings;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Settings
@@ -16,6 +17,8 @@ use SMW\Tests\TestEnvironment;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SettingsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	protected function tearDown() {
 		Settings::clear();

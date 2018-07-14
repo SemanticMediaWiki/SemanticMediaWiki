@@ -12,6 +12,8 @@ use SMW\Exception\DataItemException;
  */
 class SMWDIGeoCoordTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	public function testConstructorWithArrayArgumentForm() {
 		$coordinate = new \SMWDIGeoCoord( [ 'lat' => 13.37, 'lon' => 42.42 ] );
 

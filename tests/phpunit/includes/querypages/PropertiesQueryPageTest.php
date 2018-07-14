@@ -6,6 +6,7 @@ use SMW\ArrayAccessor;
 use SMW\DataItemFactory;
 use SMW\PropertiesQueryPage;
 use SMW\Settings;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\PropertiesQueryPage
@@ -17,6 +18,8 @@ use SMW\Settings;
  * @author mwjames
  */
 class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $skin;

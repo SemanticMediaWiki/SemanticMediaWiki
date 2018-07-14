@@ -6,6 +6,7 @@ use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 use SMWExpLiteral as ExpLiteral;
 use SMWExpResource as ExpResource;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\XmlResponseParser
@@ -17,6 +18,8 @@ use SMWExpResource as ExpResource;
  * @author mwjames
  */
 class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

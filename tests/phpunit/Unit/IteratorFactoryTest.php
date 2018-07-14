@@ -15,6 +15,8 @@ use SMW\IteratorFactory;
  */
 class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	public function testCanConstructResultIterator() {
 
 		$instance = new IteratorFactory();

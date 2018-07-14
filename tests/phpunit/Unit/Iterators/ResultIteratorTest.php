@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW\Iterators\Tests;
+namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\ResultIterator;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\ResultIterator
@@ -14,6 +15,8 @@ use SMW\Iterators\ResultIterator;
  * @author mwjames
  */
 class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

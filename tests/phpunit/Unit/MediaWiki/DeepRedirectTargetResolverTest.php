@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\DeepRedirectTargetResolver;
 use SMW\Tests\Utils\Mock\MockTitle;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\DeepRedirectTargetResolver
@@ -15,6 +16,8 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @author mwjames
  */
 class DeepRedirectTargetResolverTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

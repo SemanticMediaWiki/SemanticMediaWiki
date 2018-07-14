@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListProcessor
@@ -14,6 +15,8 @@ use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
  * @author mwjames
  */
 class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

@@ -4,6 +4,7 @@ namespace SMW\Tests\Exporter;
 
 use SMW\DataItemFactory;
 use SMW\Exporter\ElementFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\ElementFactory
@@ -15,6 +16,8 @@ use SMW\Exporter\ElementFactory;
  * @author mwjames
  */
 class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider supportedDataItemProvider

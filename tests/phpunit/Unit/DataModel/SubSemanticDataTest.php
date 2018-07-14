@@ -5,6 +5,7 @@ namespace SMW\Tests\DataModel;
 use SMW\DataItemFactory;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataModel\SubSemanticData;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataModel\SubSemanticData
@@ -16,6 +17,8 @@ use SMW\DataModel\SubSemanticData;
  * @author mwjames
  */
 class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $dataItemFactory;
 

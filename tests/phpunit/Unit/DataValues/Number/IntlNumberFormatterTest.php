@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues\Number;
 
 use Language;
 use SMW\DataValues\Number\IntlNumberFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\Number\IntlNumberFormatter
@@ -15,6 +16,8 @@ use SMW\DataValues\Number\IntlNumberFormatter;
  * @author mwjames
  */
 class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

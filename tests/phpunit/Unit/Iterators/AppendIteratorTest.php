@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW\Iterators\Tests;
+namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\AppendIterator;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\AppendIterator
@@ -14,6 +15,8 @@ use SMW\Iterators\AppendIterator;
  * @author mwjames
  */
 class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

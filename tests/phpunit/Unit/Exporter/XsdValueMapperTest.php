@@ -5,6 +5,7 @@ namespace SMW\Tests\Exporter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\XsdValueMapper;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\XsdValueMapper
@@ -16,6 +17,8 @@ use SMW\Exporter\XsdValueMapper;
  * @author mwjames
  */
 class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider supportedDataItemProvider
