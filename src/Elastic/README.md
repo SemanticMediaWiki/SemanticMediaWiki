@@ -7,7 +7,7 @@ The `ElasticStore` provides a framework to replicate Semantic MediaWiki related 
 The objective is to:
 
 - improve structured and allow unstructured content searches
-- extend and improve full-text query support (including sorting of results by [relevancy][es:relevance] or score)
+- extend and improve full-text query support (including sorting of results by [relevancy][es:relevance])
 - provide means for a scalability strategy by relying on the ES infrastructure
 
 ## Requirements
@@ -21,7 +21,7 @@ We rely on the [elasticsearch php-api][es:php-api] to communicate with Elasticse
 It is recommended to use:
 
 - ES 6+ due to improvements to its [sparse field][es:6] handling
-- ES hardware with "... machine with 64 GB of RAM is the ideal sweet spot, but 32 GB and 16 GB machines are also common ..." as noted in [elasticsearch guide][es:hardware]
+- ES hardware with "... machine with 64 GB of RAM is the ideal sweet spot, but 32 GB and 16 GB machines are also common ..." as noted in the [elasticsearch guide][es:hardware]
 
 ### Why Elasticsearch?
 
@@ -55,14 +55,14 @@ For ES specific settings, please consult the [elasticsearch][es:conf] manual.
 
 Updates to an ES index happens instantaneously during a page action to guarantee that queries can use the latest available data set.
 
-The [ES index][es:create:index] page has details about the ES index creation process with Semantic MediaWiki providing two index types:
+This [page][es:create:index] decribes the index creation process where Semantic MediaWiki provides two index types:
 
 - the `data` index that hosts all user-facing queryable data (structured and unstructured content) and
 - the `lookup` index to store queries used for concept, property path, and inverse match computations
 
 #### Indexing
 
-The `rebuildElasticIndex.php` script is provided as method to replicate existing data from the `SQLStore` (fetches information directly from the property tables) to the ES backend instead of reparsing all content using the MW parser. The script operates in a [rollover mode][es:alias-zero] which is if there is already an existing index, a new index with a different version is created, leaving the current active index untouched and allowing queries to continue to operate while the re-index process is ongoing. Once completed, the new index switches places with the old index and is removed from the ES cluster at this point.
+The `rebuildElasticIndex.php` script is provided as method to replicate existing data from the `SQLStore` (fetches information directly from the property tables) to the ES backend instead of reparsing all content using the MW parser. The script operates in a [rollover mode][es:alias-zero] which is if there is already an existing index, a new index with a different version is created, leaving the current active index untouched and allowing queries to continue to operate while the index process is ongoing. Once completed, the new index switches places with the old index and is removed from the ES cluster at this point.
 
 It should be noted that __active replication__ is paused for the duration of the rebuild in order for changes to be processed after the re-index has been completed. It is __obligatory__ to run the job scheduler after the completion of the task to process any outstanding jobs.
 
@@ -81,60 +81,87 @@ The [`refresh_interval`][es:indexing:speed] dictates how often Elasticsearch cre
 
 ### Querying and searching
 
-`#ask` queries are system agnostic which means queries that worked with the `SQLStore` (or `SPARQLStore`) should equally work with ES without having to modify the query or its syntax.
+`#ask` queries are system agnostic meaning that queries that worked with the `SQLStore` (or `SPARQLStore`) are expected to work equally with `ElasticStore` and not requiring any modifications to a query or its syntax.
 
-The `ElasticStore` has set its query execution to a `compat.mode` where queries are expected to return the same results as when one would use the `SQLStore`. In some instances ES could provide different result set especially in connection with boolean query operators but the `compat.mode` allows us to use the `SQLStore` and the `ElasticStore` interchangeably.
+The `ElasticStore` has set its query execution to a `compat.mode` where queries are expected to return the same results as the `SQLStore`. In some instances ES could provide a different result set especially in connection with boolean query operators but the `compat.mode` warrants consistency among results retrieved from the `ElasticStore` in comparison to the `SQLStore` especially when running the same set of integration tests against each store.
 
 #### Filter and query context
 
-Most searches will be classified as [structure searches][es:structured:search] that operate within a [filter context][es:filter:context] while full-text or proximity searches use a [query context][es:query:context] that attributes to the overall relevancy score.
+Most searches with a discrete value in Semantic MediaWiki will be classified as [structured search][es:structured:search] that operates with a [filter context][es:filter:context] while full-text or proximity searches use a [query context][es:query:context] that attributes to a relevancy score. A filter context will always yield a `1` relevancy score as it is translated into on a boolean operation which either matches or neglects a result as part of a set.
 
-* `[[Has page::Foo]]` (filter context) to match entities with value `Foo` and the property `Has page`
+* `[[Has page::Foo]]` (filter context) to match entities with value `Foo` for the property `Has page`
+* `[[Has page::~*Foo*]]` (query context) to match entities with any value that contains `Foo` (and `FOO`,`foo` etc. ) for the `Has page` property
+
+To improve the handling of proximity searches the following expression can be used.
+
+Expression | Interpret as | Description | Note
+------------ | ------------- | ------------- | -------------
+`in: ...`  |  `~~* ... *` or `~* ... *` | Find anything that contains `...` | The `in:` expression can also be combined with a property and depending on the type context is interpret differently.
+`phrase: ...` |  `~~" ... "` or `~" ... "` | Find anything that contains `...` in the exact same order | The `phrase:` expression is only relevant for literal components such as text or page titles as well as unstructured text.
+`not: ...` | `!~~...` or `!~...` | Do not match any entity that matches `...` | The `not:` expression is intended to only match the exact entered term. It can be extended using `*` if necessary (e.g. `[[Has text::not:foo*]]`)
+
+A wide proximity is expressed with `~~` and the intent to search where a specific property is unknown (in case of ES it can expand the search radius to fields that have not been annotated or processed by Semantic MediaWiki prior a query request, see `indexer.raw.text` and `experimental.file.ingest`)
+
+Type |  #ask | Interpret as
+------------ | ------------ | -------------
+\- | `[[in:some foo]]` | `[[~~*some foo*]]`
+Text | `[[Has text::in:some foo]]` | `[[Has text::~*some foo*]]`
+Page | `[[Has page::in:foo]]` | `[[Has text::~*foo*]]`
+Number | `[[Has number::in:99]]` | `[[Has number:: [[≥0]] [[≤99]] ]]`
+&nbsp; | `[[Has number::in:-100]]` | `[[Has number:: [[≥-100]] [[≤0]] ]]`
+Time | `[[Has date::in:2000]]` | `[[Has date:: <q>[[≥2000]] [[<<1 January 2001 00:00:00]]</q> ]]`
 
 #### Relevancy and scores
 
-[Relevancy][es:relevance] sorting is a topic on its own (and only provided by ES and the `ElasticStore`) and will only be noted briefly. In order to sort results by a score, the `#ask` query needs to signal that a different context is required during the execution and will only be used when the `es.score` sortkey (see `score.sortfield`) is declared within a non-filtered context.
+[Relevancy][es:relevance] sorting is a topic of its own (and is only provided by ES and the `ElasticStore`). In order to sort results by a score, the `#ask` query needs to signal that a different context is required during the query execution. The `es.score` sortkey (see `score.sortfield` and is used as convention key) signals to the `QueryEngine` that for a non-filtered context score tracking is to be enabled.
+
+Only query constructs that use a non-filtered context (`~/!~/in/phrase/not`) provide meaningful scores that are expressive enough for sorting results otherwise results will not be distinguishable and not contribute to a meaningful overall sorting experience.
 
 <pre>
-{{#ask: [[Has text::~*some text in a document*]]
- |sort=es.score
- |order=desc
-}}
+// Find entities that contains "some text" in the property `Has text` and sort
+// by its score returned from each matched document
 
-or
-
-{{#ask: [[Has text::in:some text in a document]]
- |sort=es.score
- |order=desc
-}}
-
-or
-
-{{#ask: [[Has text::phrase:some text in a document]]
+{{#ask: [[Has text::in:some text]]
  |sort=es.score
  |order=desc
 }}
 </pre>
 
-Sorting results by relevancy makes only sense for query constructs that use a non-filtered context (`~/!~`) otherwise scores for matching documents will not be distinguishable and not contribute to a meaningful overall score.
-
 #### Property chains, paths, and subqueries
 
-ES doesn't support [subqueries][es:subqueries] or [joins][es:joins] but in order to execute a path or chain of properties it is necessary to create a set of results that match a path condition (e.g. `Foo.bar.foobar`) with each element holding a restricted list of results from the previous execution to create a path traversal process.
+ES doesn't support [subqueries][es:subqueries] or [joins][es:joins] natively but the `ElasticStore` facilitates the [terms lookup][es:terms-lookup] to execute path or chain of properties and hereby builds an iterative process allowing to create a set of results that match a path condition (e.g. `Foo.bar.foobar`) with each element holding a restricted list of results from the previous execution to traverse the property path.
 
-To match the `SQLStore` behaviour in terms of path queries, the `QueryEnfine`splits the path and executes each part individually to compute a list of elements as input for the next iteration. To avoid issues with a possible too large result set, SMW needs to "park" those results and the `subquery.terms.lookup.index.write.threshold` setting (default is 100) defines as to when to the ES [terms lookup][es:terms-lookup] feature by moving results into a separate `lookup` index.
+The introduced process allows to match the `SQLStore` behaviour in terms of path queries where the `QueryEngine` is splitting each path and computes a list of elements. To avoid issues with a possible output of a vast list of matches, Semantic MediaWiki will "park" those results in the `lookup` index with the `subquery.terms.lookup.index.write.threshold` setting (default is 100) directing as to when the results are move into a separate `lookup` index.
+
+#### Hierarchies
+
+Property and category hierarchies are supported by relying on a conjunctive boolean expression for hierarchy members that are computed outside of the ES framework (the ES [parent join][es:parent-join] type is not used for this).
+
+#### Unstructured text
+
+Two experimental settings allow to handle unstructured text (content that does not provide any explicit property value annotations) using a separate field in ES.
+
+The `indexer.raw.text` setting enables to replicate the entire raw text of a page together with existing annotations so that unprocessed text can be searched in tandem with structured queries.
+
+The setting `indexer.experimental.file.ingest` provides a method to [ingest][es:ingest] the content of files and make the content available to ES and Semantic MediaWiki without requiring the actual content to be stored within a wiki page. In case where the ingestions and extraction was successful, a `File attachment` annotation will appear on the specific `File` entity and depending on the extraction quality of ES and Tika additional annotations will be added such as `Content type`, `Content author`, `Content length`, `Content language`, `Content title`, `Content date`, and `Content keyword`. Due to size and possible memory consumption by ES/Tika, file content ingestions happens in background and is planned as `smw.elasticFileIngest` job. Only after the job has been executed successfully annotation and file content will be accessible during a query request.
+
+Searching text without a property assignment requires to use either the `in:`, `phrase:`, or `not:` expression.
+
+#### Query debugging
+
+`format=debug` will output a detailed description of the `#ask` and ES DSL used for a query answering making it possible to analyze and retrieve explanations from ES about a query request.
 
 ## Settings
 
-To help tune and customize various configuration aspects two settings are provided:
+Accessing an ES cluster from within Semantic MediaWiki requires some settings and customization and includes:
 
-- `$smwgElasticsearchEndpoints`
-- `$smwgElasticsearchConfig`
-- `$smwgElasticsearchProfile`
+- [`$smwgElasticsearchEndpoints`](https://www.semantic-mediawiki.org/wiki/Help:$smwgElasticsearchEndpoints)
+- [`$smwgElasticsearchConfig`](https://www.semantic-mediawiki.org/wiki/Help:$smwgElasticsearchConfig)
+- [`$smwgElasticsearchProfile`](https://www.semantic-mediawiki.org/wiki/Help:$smwgElasticsearchProfile)
 
 ### Endpoints
 
-This setting contains a list of available endpoints used by the ES cluster and is __required__ to be set in order to establish a connection with ES.
+`smwgElasticsearchEndpoints` is a __required__ setting and contains a list of available endpoints to create a connection with an ES cluster.
 
 <pre>
 $GLOBALS['smwgElasticsearchEndpoints'] = [
@@ -147,7 +174,7 @@ Please consult the [reference material][es:conf:hosts] for details about the cor
 
 ### Config
 
-The `$smwgElasticsearchConfig` setting is a compound that collects various settings related to the ES connection, index, and query details.
+`$smwgElasticsearchConfig` is a compound setting that collects various settings related to connection, index, and query details.
 
 <pre>
 $GLOBALS['smwgElasticsearchConfig'] = [
@@ -164,7 +191,7 @@ $GLOBALS['smwgElasticsearchConfig'] = [
 	// Used to modify ES specific settings
 	'settings'    => [ ... ],
 
-	// Section to optimization the query execution
+	// Section to optimize the query execution
 	'query'       => [ ... ]
 ];
 </pre>
@@ -177,7 +204,7 @@ When modifying a particular setting, use an appropriate key to change the value 
 // Uses a specific key and therefore replaces only the specific parameter
 $GLOBALS['smwgElasticsearchConfig']['query']['uri.field.case.insensitive'] = true;
 
-// Replaces the entire configuration
+// !!Override!! the entire configuration
 $GLOBALS['smwgElasticsearchConfig'] = [
 	'query' => [
 		'uri.field.case.insensitive' => true
@@ -187,7 +214,7 @@ $GLOBALS['smwgElasticsearchConfig'] = [
 
 #### Shards and replicas
 
-The default shards and replica configuration is specified with:
+A default shards and replica configuration is applied to with:
 
 - The `data` index has two primary shards and two replicas
 - The `lookup` index has one primary shard and no replica with the documentation noting that "... consider using an index with a single shard ... lookup terms filter will prefer to execute the get request on a local node if possible ..."
@@ -201,21 +228,25 @@ $GLOBALS['smwgElasticsearchConfig']['settings']['data'] = [
 ]
 </pre>
 
-ES comes with a precondition that any change to the `number_of_shards` requires to rebuild the entire index, so changes to that setting should be considered carefully.
+ES comes with a precondition that any change to the `number_of_shards` requires to rebuild the entire index, so changes to that setting should be made carefully and in advance.
 
-Read-heavy wikis might want to add (without the need re-index the data) replica shards at the time ES performance is in decline but those replicas should be put on an extra hardware.
+Read-heavy wikis might want to add (without the need re-index the data) replica shards at the time ES performance is in decline. As noted, [replica shards][es:replica-shards] should be put on an extra hardware.
+
+#### Index mappings
+
+By default `index_def` points to the index definition and the `data` index is assigned the `smw-data-standard.json` to define its settings and mappings that influence how ES analyzes and index documents including fields that are identified to contain text and string elements. Those text fields use the [standard analyzer][es:standard:analyzer] and should work for most applications.
+
+The index name will be composed of a prefix such as `smw-data` (or `smw-lookup`), the wikiID, and a version indicator (used by the rollover) so that a single ES cluster can host different indices from different Semantic MediaWiki instances without interfering with each other.
 
 #### Text, languages, and analyzers
 
-The `data` index uses the `smw-data-standard.json` to define settings and mappings that influence how ES analyzes and index documents including fields identified as text and strings. Those text fields use the [standard analyzer][es:standard:analyzer] and should work for most applications.
+For certain languages the `icu` analyzer (or any other language specific configuration) may provide better results therefore `index_def` provides a possibility to change the assignments and hereby allows custom settings such as different language [analyzer][es:lang:analyzer] to be used and increase the likelihood of better matching precision for text elements.
 
-Yet, for certain languages the `icu` (or any other language specific configuration) might provide better results therefore it possible to assign a different definition file that allows custom settings such as language [analyzer][es:lang:analyzer] to help increase the matching precision.
+`smw-data-icu.json` is provided as example on how to alter those settings. It should be noted that query results on text fields may differ compared to when one would use the standard analyzer and users are expected to evaluate whether those settings are more favorable or not to a query answering.
 
-`smw-data-icu.json` is provided as example on how to alter those settings. Please note that query results on text fields may differ compared to when one would use the standard analyzer and it should be evaluated what settings are the most favorable for a user environment.
+Besides the different index mappings, it is recommended for a non-latin language environments to add the [analysis-icu plugin][es:icu:tokenizer] and select `smw-data-icu.json` as index definition (see also the [unicode normalization][es:unicode:normalization] guide) to make use of better unicode normalization and [case folding][es:unicode:case:folding].
 
-For a non-latin language environments it is recommended to add the [analysis-icu plugin][es:icu:tokenizer] and select `smw-data-icu.json` as index definition (see also the [unicode normalization][es:unicode:normalization] guide) to provide better unicode normalization and [case folding][es:unicode:case:folding].
-
-Please note that any change to the index or analyzer settings __requires__ to rebuild the entire index.
+Please note that any change to the index or its analyzer settings __requires__ to rebuild the entire index.
 
 ### Profile
 
@@ -241,16 +272,26 @@ Classes and objects related to the Elasticsearch interface and implementation ar
 <pre>
 SMW\Elastic
 ┃	┠━ Admin         # Classes used to extend `Special:SemanticMediaWiki`
+┃	┠━ Exception
 ┃	┠━ Connection    # Responsible for building a connection to ES
 ┃	┠━ Indexer       # Contains all necessary classes for updating the ES index
 ┃	┕━ QueryEngine   # Hosts the query builder and `#ask` language interpreter classes
+┃
 ┠━ ElasticFactory
 ┕━ ElasticStore
 </pre>
 
 ### Field mapping and serialization
 
-![image](https://user-images.githubusercontent.com/1245473/36046618-e32e7a78-0e1c-11e8-90bb-5bee5650789f.png)
+<pre>
+   +-- Page +---> Indexer
+   |                 \                                                  +--+ P:100 +--+ textField
+   |                  \                                                 |
+SQLStore +---------> ElasticStore +---> Elasticsearch +---> ES Document +--+ P:110 +--+ wpgID
+   |                  /                                                            |
+   |                 /                                                             +--+ wpgField
+   +-- #ask +---> QueryEngine
+</pre>
 
 It should remembered that besides specific available types in ES, text fields are generally divided into analyzed and not_analyzed fields.
 
@@ -268,6 +309,62 @@ To allow for exact matches as well as full-text searches on the same field most 
 
 * The `text_copy` mapping (see [copy-to][es:copy-to]) is used to enable wide proximity searches on textual annotated elements. For example, `[[in:foo bar]]` (eq. `[[~~foo bar]]`) translates into "Find all entities that have `foo bar` in one of its assigned `_uri`, `_txt`, or `_wpg` properties. The `text_copy` field is a compound field for all strings to be searched when a specific property is unknown.
 * The `text_raw` (requires `indexer.raw.text` to be set `true`) contains unstructured and unprocessed raw text from an article so that it can be used in combination with the proximity operators `[[in:lorem ipsum]]` and `[[phrase:lorem ipsum]]`.
+* `attachment.{...}` will be added by the ingest processor
+
+### ES DSL mapping
+
+For example, the ES DSL for a `[[in:lorem ipsum]]` query (find all entities that contains `lorem ipsum`) on structured and unstructured fields will look similar to:
+
+<pre>
+"bool": {
+    "must": {
+        "query_string": {
+            "fields": [
+                "subject.title^8",
+                "text_copy^5",
+                "text_raw",
+                "attachment.title^3",
+                "attachment.content"
+            ],
+            "query": "*lorem ipsum*",
+            "minimum_should_match": 1
+        }
+    }
+}
+</pre>
+
+The term `lorem ipsum` will be queried in different fields with different boost factors to highlight preferences when a term is among a title or only part of a text field.
+
+A request for a structured term (assigned to a property e.g. `[[Has text::lorem ipsum]]`) will generate a different ES DSL query.
+
+<pre>
+"bool": {
+    "filter": {
+        "term": {
+            "P:100.txtField.keyword": "lorem ipsum"
+        }
+    }
+}
+</pre>
+
+While `P:100.txtField` contains the text component that is assigned to `Has text` and by default is an analyzed field, the `keyword` field is selected to execute the query on a not analyzed content to match the exact term. Exact term matching means that the matching process distinguishes between `lorem ipsum` and `Lorem ipsum`.
+
+
+On the contrary, a proximity request (e.g. `[[Has text::~lorem ipsum*]]`) has different requirements including case folding, lower, and upper case matching and therefore includes the analyzed field with an ES DSL output that is comparable to:
+
+<pre>
+"bool": {
+    "must": {
+        "query_string": {
+            "fields": [
+                "P:100.txtField",
+                "P:100.txtField.keyword"
+            ],
+            "query": "lorem +ipsum*"
+        }
+    }
+}
+</pre>
 
 ### Monitoring
 
@@ -289,11 +386,11 @@ $wgDebugLogGroups  = [
 
 > Why not combine the `SQLStore` and ES search where ES only handles the text search?
 
-The need to support ordering of results requires that the ordering happens over the entire set of conditions and matches it is not possible to split a search between two systems while retaining consistency for the offset (from where result starts and end) pointer.
+The need to support ordering of results requires that the sorting needs to happen over the entire set of results that match a condition. It is not possible to split a search between two systems while retaining consistency for the offset (from where result starts and end) pointer.
 
 > Why not use ES as a replacement?
 
-Because ES is a search engine and not a storage backend therefore the data storage and management remains part of the `SQLStore`. The `SQLStore` is responsible for creating IDs, storing data objects, and provide answers to requests that doesn't involve the `QueryEngine`.
+Because at this point of implementation ES is used search engine and not a storage backend therefore the data storage and management remains part of the `SQLStore`. The `SQLStore` is responsible for creating IDs, storing data objects, and provide answers to requests that doesn't involve the `QueryEngine`.
 
 > Limit of total fields [3000] in index [...] has been exceeded
 
@@ -308,7 +405,7 @@ $GLOBALS['smwgElasticsearchConfig']['settings']['data'] = [
 ];
 </pre>
 
-After changing any setting, ensure to run `php rebuildElasticIndex.php --update-settings`.
+After changing those settings, ensure to run `php rebuildElasticIndex.php --update-settings`.
 
 > Your version of PHP / json-ext does not support the constant 'JSON_PRESERVE_ZERO_FRACTION', which is important for proper type mapping in Elasticsearch. Please upgrade your PHP or json-ext.
 
@@ -320,11 +417,11 @@ The file indexer (`experimental.file.ingest`) was enabled but the required ES [i
 
 > I use CirrusSearch, can I search SMW (or its data) via CirrusSearch?
 
-No, because first of all SMW doesn't rely on CirrusSearch at all and even if a user has CirrusSearch installed bot extensions have different requirements and different indices and are not designed to share content with each other.
+No, because first of all SMW doesn't rely on CirrusSearch at all and even if a user has CirrusSearch installed both extensions have different requirements and different indices and are not designed to share content with each other.
 
-> Can I use `Special:Search` with SMW and CirrusSearch?
+> Can I use `Special:Search` together with SMW and CirrusSearch?
 
-Yes, by adding `$wgSearchType = 'SMWSearch';` one can use the `#ask` syntax (e.g. `[[Has date::>1970]]`) and execute structured searchs while any free input gets redirected to CirrusSearch. The input is an either/or not a conjunctive one which means only one of the both can be used at once through the `Special:Search` interface.
+Yes, by adding `$wgSearchType = 'SMWSearch';` one can use the `#ask` syntax (e.g. `[[Has date::>1970]]`) and execute structured or unstructured searches. Using the [extended profile](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch/Extended_profile) or `#ask` constructs as search input will retrieved results from Semantic MediaWiki (and hereby ES) while any free input that does not build a valid `#ask` syntax will be redirected to the selected "default" search engine from MediaWiki.
 
 ### Glossary
 
@@ -365,6 +462,7 @@ Yes, by adding `$wgSearchType = 'SMWSearch';` one can use the `#ask` syntax (e.g
 [es:bulk]: https://www.elastic.co/guide/en/elasticsearch/reference/6.2/docs-bulk.html
 [es:structured:search]: https://www.elastic.co/guide/en/elasticsearch/guide/current/structured-search.html
 [es:filter:context]: https://www.elastic.co/guide/en/elasticsearch/reference/6.2/query-filter-context.html
+[es:query:context]: https://www.elastic.co/guide/en/elasticsearch/reference/6.2/query-filter-context.html
 [es:relevance]: https://www.elastic.co/guide/en/elasticsearch/guide/master/relevance-intro.html
 [es:copy-to]: https://www.elastic.co/guide/en/elasticsearch/reference/master/copy-to.html
 [oreilly:es-metrics-to-watch]: https://www.oreilly.com/ideas/10-elasticsearch-metrics-to-watch
@@ -372,3 +470,5 @@ Yes, by adding `$wgSearchType = 'SMWSearch';` one can use the `#ask` syntax (e.g
 [es:6]: https://www.elastic.co/blog/minimize-index-storage-size-elasticsearch-6-0
 [packagist:es]:https://packagist.org/packages/elasticsearch/elasticsearch
 [es:ingest]:https://www.elastic.co/guide/en/elasticsearch/plugins/master/ingest-attachment.html
+[es:parent-join]: https://www.elastic.co/guide/en/elasticsearch/reference/current/parent-join.html
+[es:replica-shards]:https://www.elastic.co/guide/en/elasticsearch/guide/current/replica-shards.html
