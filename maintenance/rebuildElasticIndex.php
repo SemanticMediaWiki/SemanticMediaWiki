@@ -210,7 +210,7 @@ class RebuildElasticIndex extends \Maintenance {
 		);
 
 		$this->reportMessage( "\n" . 'Abort the rebuild with control-c in the next five seconds ...  ' );
-		wfCountDown( 5 );
+		swfCountDown( 5 );
 	}
 
 	private function doRebuild() {

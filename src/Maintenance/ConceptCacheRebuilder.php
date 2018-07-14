@@ -124,7 +124,7 @@ class ConceptCacheRebuilder {
 				$this->reportMessage( "\nAbort with CTRL-C in the next $delay seconds ... " );
 
 				if ( !$this->hasOption( 'quiet' ) ) {
-					wfCountDown( $delay );
+					swfCountDown( $delay );
 				}
 
 				$this->reportMessage( "\nDeleting concept caches.\n\n" );

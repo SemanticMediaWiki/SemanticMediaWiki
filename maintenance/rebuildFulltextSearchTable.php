@@ -86,7 +86,7 @@ class RebuildFulltextSearchTable extends \Maintenance {
 
 		if ( !$this->hasOption( 'quick' ) ) {
 			$this->reportMessage( "\n" . 'Abort the rebuild with control-c in the next five seconds ...  ' );
-			wfCountDown( 5 );
+			swfCountDown( 5 );
 		}
 
 		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
