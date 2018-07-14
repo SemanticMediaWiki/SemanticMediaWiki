@@ -8,13 +8,10 @@ use SMW\NamespaceExaminer;
 use SMW\PropertyRegistry;
 use SMW\Settings;
 use SMW\StoreFactory;
-use SMW\Tests\Utils\MediaWikiTestDatabaseTableBuilder;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 
 /**
- * @group SMW
- * @group SMWExtension
- *
  * @group semantic-mediawiki
  * @group mediawiki-database
  *
@@ -25,9 +22,7 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
-
-	// MediaWikiDatabaseTestCase
+abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @var TestEnvironment
@@ -35,9 +30,9 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	protected $testEnvironment;
 
 	/**
-	 * @var MediaWikiTestDatabaseTableBuilder
+	 * @var TestDatabaseTableBuilder
 	 */
-	protected $mediaWikiTestDatabaseTableBuilder;
+	protected $testDatabaseTableBuilder;
 
 	/**
 	 * @var array|null
@@ -119,18 +114,18 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		$this->getStore()->clear();
 
-		$this->mediaWikiTestDatabaseTableBuilder = MediaWikiTestDatabaseTableBuilder::getInstance(
+		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
 			$this->getStore()
 		);
 
-		$this->mediaWikiTestDatabaseTableBuilder->removeAvailableDatabaseType(
+		$this->testDatabaseTableBuilder->removeAvailableDatabaseType(
 			$this->databaseToBeExcluded
 		);
 
 		$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
 
 		try {
-			$this->mediaWikiTestDatabaseTableBuilder->doBuild();
+			$this->testDatabaseTableBuilder->doBuild();
 		} catch ( RuntimeException $e ) {
 			$this->isUsableUnitTestDatabase = false;
 		}
@@ -194,11 +189,11 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function getDBConnection() {
-		return $this->mediaWikiTestDatabaseTableBuilder->getDBConnection();
+		return $this->testDatabaseTableBuilder->getDBConnection();
 	}
 
 	protected function getConnectionProvider() {
-		return $this->mediaWikiTestDatabaseTableBuilder->getConnectionProvider();
+		return $this->testDatabaseTableBuilder->getConnectionProvider();
 	}
 
 	protected function isUsableUnitTestDatabase() {
@@ -229,7 +224,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		if ( $this->isUsableUnitTestDatabase && $destroyDatabaseTables ) {
 			try {
-				$this->mediaWikiTestDatabaseTableBuilder->doDestroy();
+				$this->testDatabaseTableBuilder->doDestroy();
 			} catch ( \Exception $e ) { // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.EmptyStatement
 				// Do nothing because an instance was not available
 			} // @codingStandardsIgnoreEnd

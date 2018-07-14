@@ -1,18 +1,17 @@
 <?php
 
-namespace SMW\Tests\Utils;
+namespace SMW\Tests\Utils\Connection;
 
 use DatabaseBase;
-use SMW\Connection\ConnectionProvider;
+use SMW\Connection\ConnectionProvider as IConnectionProvider;
 
 /**
- *
  * @license GNU GPL v2+
  * @since 2.0
  *
  * @author mwjames
  */
-class MediaWikiTestConnectionProvider implements ConnectionProvider {
+class ConnectionProvider implements IConnectionProvider {
 
 	/**
 	 * @var DatabaseBase
