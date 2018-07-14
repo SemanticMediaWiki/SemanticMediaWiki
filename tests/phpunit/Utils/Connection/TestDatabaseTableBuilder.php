@@ -207,10 +207,6 @@ class TestDatabaseTableBuilder {
 			return true;
 		}
 
-		if ( $GLOBALS['wgDBprefix'] === $this->getDBPrefix() ) {
-			throw new RuntimeException( 'The database prefix is already set to "' . $this->getDBPrefix() . '"' );
-		}
-
 		$this->cloneDatabaseTables();
 		$this->store->setup( false );
 		$this->createDummyPage();
@@ -219,12 +215,6 @@ class TestDatabaseTableBuilder {
 	}
 
 	private function cloneDatabaseTables() {
-
-		// MW's DatabaseSqlite does some magic on its own therefore
-		// we force our way
-		if ( $this->getDBConnection()->getType() === 'sqlite' ) {
-			CloneDatabase::changePrefix( self::$MWDB_PREFIX );
-		}
 
 		$tablesToBeCloned = $this->generateListOfTables();
 
@@ -244,6 +234,10 @@ class TestDatabaseTableBuilder {
 		// "Error: 1137 Can't reopen table" on MySQL (see Issue #80)
 		$this->cloneDatabase->useTemporaryTables( false );
 		$this->cloneDatabase->cloneTableStructure();
+
+		// #3197
+		// @see https://github.com/wikimedia/mediawiki/commit/6badc7415684df54d6672098834359223b859507
+		CloneDatabase::changePrefix( self::$UTDB_PREFIX );
 	}
 
 	private function createDummyPage() {
