@@ -93,6 +93,26 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 }
 
 /**
+ * @since 3.0
+ *
+ * @param string $text
+ */
+function smwfAbort( $text ) {
+
+	if ( PHP_SAPI === 'cli' && PHP_SAPI === 'phpdbg' ) {
+		die( $text );
+	}
+
+	$html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
+	$html .= "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\" dir=\"ltr\">\n";
+	$html .= "<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />";
+	$html .= "<title>Error</title></head><body><h2>Error</h2><hr style='border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3);'>";
+	$html .= "<p>{$text}</p></body></html>";
+
+	die( $html );
+}
+
+/**
  * Formats an array of message strings so that it appears as a tooltip.
  * $icon should be one of: 'warning' (default), 'info'.
  *

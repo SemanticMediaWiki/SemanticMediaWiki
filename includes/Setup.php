@@ -160,8 +160,8 @@ final class Setup {
 	/**
 	 * @since 3.0
 	 */
-	public static function hasUpgradeKey( $isCli = false ) {
-		return Installer::hasUpgradeKey( $isCli );
+	public static function isValid( $isCli = false ) {
+		return Installer::isGoodSchema( $isCli );
 	}
 
 	/**
@@ -172,13 +172,17 @@ final class Setup {
 	 */
 	public function init( &$vars, $directory ) {
 
-		if ( $this->hasUpgradeKey() === false ) {
-			die(
-				'<b>Error:</b> Semantic MediaWiki was installed and enabled but is missing an appropriate ' .
-				'<a href="https://www.semantic-mediawiki.org/wiki/Help:Upgrade">upgrade key</a>. ' .
-				'Please run MediaWiki\'s <a href="https://www.mediawiki.org/wiki/Manual:Update.php">update.php</a> ' .
-				'or Semantic MediaWiki\'s <a href="https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php">setupStore.php</a> maintenance script first.'
-			);
+		if ( $this->isValid() === false ) {
+
+			$text = 'Semantic MediaWiki was installed and enabled but is missing an appropriate ';
+			$text .= '<a href="https://www.semantic-mediawiki.org/wiki/Help:Upgrade">upgrade key</a>. ';
+			$text .= 'Please run MediaWiki\'s <a href="https://www.mediawiki.org/wiki/Manual:Update.php">update.php</a> ';
+			$text .= 'or Semantic MediaWiki\'s <a href="https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php">setupStore.php</a> maintenance script first. ';
+			$text .= 'You may also consult the following pages:';
+			$text .= '<ul><li><a href="https://www.semantic-mediawiki.org/wiki/Help:Installation">Installation</a></li>';
+			$text .= '<li><a href="https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting">Troubleshooting</a></li></ul>';
+
+			smwfAbort( $text );
 		}
 
 		$this->addDefaultConfigurations( $vars );

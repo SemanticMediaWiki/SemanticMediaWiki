@@ -5,9 +5,9 @@ namespace SMW\Maintenance;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Elastic\ElasticFactory;
+use SMW\Setup;
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv(
-'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
+$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv('MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
 require_once $basePath . '/maintenance/Maintenance.php';
 
@@ -70,8 +70,13 @@ class RebuildElasticIndex extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !defined( 'SMW_VERSION' ) ) {
+		if ( !Setup::isEnabled() ) {
 			$this->output( "You need to have SMW enabled in order to use this maintenance script!\n\n" );
+			exit;
+		}
+
+		if ( !Setup::isValid( true ) ) {
+			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first before continuing\nwith any maintenance tasks!\n" );
 			exit;
 		}
 

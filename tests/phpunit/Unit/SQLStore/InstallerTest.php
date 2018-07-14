@@ -212,7 +212,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testHasUpgradeKey() {
+	public function testIsGoodSchema() {
 
 		$instance = new Installer(
 			$this->tableSchemaManager,
@@ -222,7 +222,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'boolean',
-			$instance->hasUpgradeKey()
+			$instance->isGoodSchema()
 		);
 	}
 
@@ -268,7 +268,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			'smwgPageSpecialProperties' => []
 		];
 
-		$instance->setUpgradeKey( $file, $vars );
+		$instance->setUpgradeKey( $file, $vars, $this->spyMessageReporter );
 	}
 
 }
