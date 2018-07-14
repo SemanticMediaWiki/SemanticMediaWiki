@@ -397,6 +397,9 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			$jsonTestCaseFileHandler->getDebugMode()
 		);
 
+		$i = 0;
+		$count = 0;
+
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'query' ) as $case ) {
 
 			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
@@ -404,10 +407,12 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			}
 
 			$this->queryTestCaseProcessor->processQueryCase( new QueryTestCaseInterpreter( $case ) );
+			$i++;
 		}
 
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'concept' ) as $conceptCase ) {
 			$this->queryTestCaseProcessor->processConceptCase( new QueryTestCaseInterpreter( $conceptCase ) );
+			$i++;
 		}
 
 		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'format' ) as $case ) {
@@ -417,6 +422,16 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			}
 
 			$this->queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $case ) );
+			$i++;
+		}
+
+		$count += $jsonTestCaseFileHandler->countTestCasesByType( 'query' );
+		$count += $jsonTestCaseFileHandler->countTestCasesByType( 'concept' );
+		$count += $jsonTestCaseFileHandler->countTestCasesByType( 'format' );
+
+		// Avoid tests being marked as risky when all cases were skipped
+		if ( $i == 0 && $count > 0 ) {
+			$this->markTestSkipped( 'Skipped all assertions for: ' . $this->getName() );
 		}
 	}
 
