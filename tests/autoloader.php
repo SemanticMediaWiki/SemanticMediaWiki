@@ -59,7 +59,7 @@ $autoloader->addClassMap( array(
 	'SMW\Tests\TestEnvironment'             => __DIR__ . '/phpunit/TestEnvironment.php',
 	'SMW\Tests\TestConfig'                  => __DIR__ . '/phpunit/TestConfig.php',
 	'SMW\Tests\PHPUnitCompat'               => __DIR__ . '/phpunit/PHPUnitCompat.php',
-	'SMW\Tests\MwDBaseUnitTestCase'         => __DIR__ . '/phpunit/MwDBaseUnitTestCase.php',
+	'SMW\Tests\DatabaseTestCase'            => __DIR__ . '/phpunit/DatabaseTestCase.php',
 	'SMW\Tests\JsonTestCaseScriptRunner'    => __DIR__ . '/phpunit/JsonTestCaseScriptRunner.php',
 	'SMW\Tests\JsonTestCaseFileHandler'     => __DIR__ . '/phpunit/JsonTestCaseFileHandler.php',
 	'SMW\Tests\JsonTestCaseContentHandler'  => __DIR__ . '/phpunit/JsonTestCaseContentHandler.php',
@@ -67,5 +67,8 @@ $autoloader->addClassMap( array(
 	'SMW\Test\QueryPrinterRegistryTestCase' => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
 	'SMW\Tests\SPARQLStore\RepositoryConnectors\ElementaryRepositoryConnectorTest' => __DIR__ . '/phpunit/Unit/SPARQLStore/RepositoryConnectors/ElementaryRepositoryConnectorTest.php',
 ) );
+
+// 3.0
+class_alias( '\SMW\Tests\DatabaseTestCase', '\SMW\Tests\MwDBaseUnitTestCase' );
 
 return $autoloader;

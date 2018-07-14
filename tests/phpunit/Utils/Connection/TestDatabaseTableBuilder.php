@@ -1,26 +1,26 @@
 <?php
 
-namespace SMW\Tests\Utils;
+namespace SMW\Tests\Utils\Connection;
 
 use CloneDatabase;
 use HashBagOStuff;
 use ObjectCache;
 use RuntimeException;
-use SMW\Connection\ConnectionProvider;
+use SMW\Connection\ConnectionProvider as IConnectionProvider;
+use SMW\Tests\Utils\PageCreator;
 use SMW\Store;
 use Title;
 
 /**
- *
  * @license GNU GPL v2+
  * @since 2.0
  *
  * @author mwjames
  */
-class MediaWikiTestDatabaseTableBuilder {
+class TestDatabaseTableBuilder {
 
 	/**
-	 * @var MediaWikiTestDatabaseTableBuilder
+	 * @var TestDatabaseTableBuilder
 	 */
 	private static $instance = null;
 
@@ -30,7 +30,7 @@ class MediaWikiTestDatabaseTableBuilder {
 	protected $store;
 
 	/**
-	 * @var ConnectionProvider
+	 * @var IConnectionProvider
 	 */
 	protected $connectionProvider;
 
@@ -39,7 +39,7 @@ class MediaWikiTestDatabaseTableBuilder {
 	 */
 	protected $cloneDatabase;
 
-	protected $defaultDatabaseTypes = array(
+	protected $supportedDatabaseTypes = array(
 		'mysql',
 		'sqlite',
 		'postgres'
@@ -56,12 +56,12 @@ class MediaWikiTestDatabaseTableBuilder {
 	 * @since 2.0
 	 *
 	 * @param Store $store
-	 * @param connectionProvider $connectionProvider
+	 * @param IConnectionProvider $connectionProvider
 	 */
-	public function __construct( Store $store, ConnectionProvider $connectionProvider ) {
+	public function __construct( Store $store, IConnectionProvider $connectionProvider ) {
 		$this->store = $store;
 		$this->connectionProvider = $connectionProvider;
-		$this->availableDatabaseTypes = $this->defaultDatabaseTypes;
+		$this->availableDatabaseTypes = $this->supportedDatabaseTypes;
 
 		self::$UTDB_PREFIX = 'sunittest_';
 		self::$MWDB_PREFIX = $GLOBALS['wgDBprefix'];
@@ -84,7 +84,7 @@ class MediaWikiTestDatabaseTableBuilder {
 	public static function getInstance( Store $store ) {
 
 		if ( self::$instance === null ) {
-			self::$instance = new self( $store, new MediaWikiTestConnectionProvider() );
+			self::$instance = new self( $store, new ConnectionProvider() );
 		}
 
 		return self::$instance;
@@ -98,7 +98,7 @@ class MediaWikiTestDatabaseTableBuilder {
 	 * @return self
 	 */
 	public function removeAvailableDatabaseType( $databaseType = null ) {
-		$this->availableDatabaseTypes = array_diff( $this->defaultDatabaseTypes, (array)$databaseType );
+		$this->availableDatabaseTypes = array_diff( $this->supportedDatabaseTypes, (array)$databaseType );
 		return $this;
 	}
 
@@ -159,9 +159,9 @@ class MediaWikiTestDatabaseTableBuilder {
 	/**
 	 * @since  2.0
 	 *
-	 * @return connectionProvider
+	 * @return ConnectionProvider
 	 */
-	public function getconnectionProvider() {
+	public function getConnectionProvider() {
 		return $this->connectionProvider;
 	}
 
@@ -261,7 +261,7 @@ class MediaWikiTestDatabaseTableBuilder {
 		}
 
 		$this->cloneDatabase->destroy( true );
-		$this->availableDatabaseTypes = $this->defaultDatabaseTypes;
+		$this->availableDatabaseTypes = $this->supportedDatabaseTypes;
 		$this->dbSetup = false;
 	}
 
