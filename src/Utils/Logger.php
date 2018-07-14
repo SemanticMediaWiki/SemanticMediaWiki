@@ -45,15 +45,19 @@ class Logger extends AbstractLogger {
 	 */
 	public function log( $level, $message, array $context = array() ) {
 
-		$canLog = false;
+		$shouldLog = false;
 
 		// Everthings goes for the developer role!
 		if ( $this->role === self::ROLE_DEVELOPER ) {
-			$canLog = true;
+			$shouldLog = true;
 		} elseif ( isset( $context['role'] ) && $context['role'] === $this->role ) {
-			$canLog = true;
+			$shouldLog = true;
 		} elseif ( isset( $context['role'] ) && $context['role'] === self::ROLE_PRODUCTION && $this->role === self::ROLE_USER ) {
-			$canLog = true;
+			$shouldLog = true;
+		}
+
+		if ( !$shouldLog ) {
+			return;
 		}
 
 		// For convenience
@@ -69,9 +73,13 @@ class Logger extends AbstractLogger {
 			$message = array_shift( $message ) . ': ' . json_encode( $message );
 		}
 
-		if ( $canLog ) {
-			$this->logger->log( $level, $message, $context );
+		foreach ( $context as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$context[$key] = json_encode( $value );
+			}
 		}
+
+		$this->logger->log( $level, $message, $context );
 	}
 
 }
