@@ -119,12 +119,12 @@ class RebuildData extends \Maintenance {
 
 		if ( !Setup::isEnabled() ) {
 			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
-			return false;
+			exit;
 		}
 
-		if ( !Setup::hasUpgradeKey( true ) ) {
-			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first!\n" );
-			return false;
+		if ( !Setup::isValid( true ) ) {
+			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first before continuing\nwith any maintenance tasks!\n" );
+			exit;
 		}
 
 		$maintenanceFactory = ApplicationFactory::getInstance()->newMaintenanceFactory();

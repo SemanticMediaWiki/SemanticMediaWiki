@@ -9,9 +9,9 @@ use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMWDataItem as DataItem;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Setup;
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv(
-'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
+$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv('MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
 require_once $basePath . '/maintenance/Maintenance.php';
 
@@ -45,8 +45,13 @@ class UpdateEntityCollation extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !defined( 'SMW_VERSION' ) ) {
-			$this->output( "You need to have SMW enabled in order to use this maintenance script!\n\n" );
+		if ( !Setup::isEnabled() ) {
+			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
+			exit;
+		}
+
+		if ( !Setup::isValid( true ) ) {
+			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first before continuing\nwith any maintenance tasks!\n" );
 			exit;
 		}
 

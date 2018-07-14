@@ -8,6 +8,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Connection\ConnectionManager;
 use SMW\SQLStore\Installer;
+use SMW\Setup;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -126,8 +127,8 @@ class SetupStore extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !defined( 'SMW_VERSION' ) || !$GLOBALS['smwgSemanticsEnabled'] ) {
-			$this->output( "\nYou need to have SMW enabled in order to use this maintenance script!\n" );
+		if ( !Setup::isEnabled() ) {
+			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
 			exit;
 		}
 

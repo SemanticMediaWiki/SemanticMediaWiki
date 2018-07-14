@@ -130,9 +130,7 @@ class Installer implements MessageReporter {
 		$this->tableOptimization( $messageReporter );
 		$this->addSupplementJobs( $messageReporter );
 
-		if ( $this->setUpgradeKey( new File(), $GLOBALS ) ) {
-			$messageReporter->reportMessage( "\nSetting upgrade key ...\n   ... done.\n" );
-		};
+		$this->setUpgradeKey( new File(), $GLOBALS, $messageReporter );
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
@@ -194,7 +192,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @return boolean
 	 */
-	public static function hasUpgradeKey( $isCli = false ) {
+	public static function isGoodSchema( $isCli = false ) {
 
 		if ( $isCli === false && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return true;
@@ -241,13 +239,15 @@ class Installer implements MessageReporter {
 	 * @param File $file
 	 * @param array $vars
 	 */
-	public function setUpgradeKey( File $file, $vars ) {
+	public function setUpgradeKey( File $file, $vars, $messageReporter ) {
 
 		$key = $this->getUpgradeKey( $vars );
 
 		if ( isset( $vars['smw.json']['upgradeKey'] ) && $key === $vars['smw.json']['upgradeKey'] ) {
 			return false;
 		}
+
+		$messageReporter->reportMessage( "\Writting upgrade key ...\n" );
 
 		if ( !isset( $vars['smw.json'] ) ) {
 			$vars['smw.json'] = [];
@@ -257,7 +257,7 @@ class Installer implements MessageReporter {
 
 		$file->write( $vars['smwgIP'] . '/.smw.json', json_encode( $vars['smw.json'] ) );
 
-		return true;
+		$messageReporter->reportMessage( "\n   ... done.\n" );
 	}
 
 	/**
