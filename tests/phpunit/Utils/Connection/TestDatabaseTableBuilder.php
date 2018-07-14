@@ -277,7 +277,7 @@ class TestDatabaseTableBuilder {
 	}
 
 	private function isNotUnittest( $table ) {
-		return strpos( $table, 'unittest_' ) === false;
+		return strpos( $table, 'unittest_' ) === false && strpos( $table, 'sunittest_' ) === false;
 	}
 
 	private function isNotSearchindex( $table ) {
