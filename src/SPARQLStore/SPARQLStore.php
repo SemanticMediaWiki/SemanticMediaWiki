@@ -450,7 +450,7 @@ class SPARQLStore extends Store {
 		}
 
 		return [
-			'SMWSPARQLStore' => [ $client->getName(), $connection->getInfo() ]
+			'SMWSPARQLStore' => $connection->getInfo() + [ $client->getName() => 'n/a' ]
 		];
 	}
 
