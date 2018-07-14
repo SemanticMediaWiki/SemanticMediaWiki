@@ -218,6 +218,12 @@ class TestDatabaseTableBuilder {
 
 		$tablesToBeCloned = $this->generateListOfTables();
 
+		// MW's DatabaseSqlite does some magic on its own therefore
+		// we force our way
+		if ( $this->getDBConnection()->getType() === 'sqlite' ) {
+			CloneDatabase::changePrefix( self::$MWDB_PREFIX );
+		}
+
 		$this->cloneDatabase = new CloneDatabase(
 			$this->getDBConnection(),
 			$tablesToBeCloned,
