@@ -34,7 +34,7 @@ class ListResultPrinter extends ResultPrinter {
 	public function getName() {
 		// Give grep a chance to find the usages:
 		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_plainlist, smw_printername_template
-		return Message::get( 'smw_printername_' . $this->mFormat );
+		return Message::get( 'smw_printername_' . $this->mFormat, Message::TEXT, Message::USER_LANGUAGE );
 	}
 
 	/**
