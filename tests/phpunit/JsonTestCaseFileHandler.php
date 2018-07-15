@@ -405,6 +405,17 @@ class JsonTestCaseFileHandler {
 		} );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $type
+	 *
+	 * @return integer
+	 */
+	public function countTestCasesByType( $type ) {
+		return count( $this->findTestCasesByType( $type ) );
+	}
+
 	private function getFileContentsFor( $index ) {
 
 		$contents = $this->fileReader->read();
