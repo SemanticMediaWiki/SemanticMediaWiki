@@ -70,6 +70,36 @@
 }
 
 /**
+ * Tabbed admin
+ */
+.smw-admin #tab-general:checked ~ #tab-content-general,
+.smw-admin #tab-supplement:checked ~ #tab-content-supplement,
+.smw-admin #tab-rebuild:checked ~ #tab-content-rebuild,
+.smw-admin #tab-registry:checked ~ #tab-content-registry,
+.smw-admin #tab-notices:checked ~ #tab-content-notices {
+	display: block;
+}
+
+.smw-admin section {
+	border: 0px solid #aaa;
+	padding: 5px 0 0 0 !important;
+}
+
+.smw-tabs.smw-admin label.nav-label {
+	padding: 8px 20px;
+}
+
+.smw-admin input.nav-tab:checked + label.nav-label {
+	border: 1px solid #aaa;
+	border-top: 2px solid orange;
+	border-bottom: 1px solid #fff;
+}
+
+.smw-admin input.nav-tab:checked + label.nav-label.smw-tab-warning {
+	border-top: 2px solid rgb(204, 0, 0);
+}
+
+/**
  * Responsive settings
  */
 @media screen and (max-width: 800px) {
