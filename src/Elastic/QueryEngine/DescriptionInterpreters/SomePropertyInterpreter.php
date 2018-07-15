@@ -5,6 +5,7 @@ namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 use Maps\Semantic\ValueDescriptions\AreaDescription;
 use SMW\DataTypeRegistry;
 use SMW\DIWikiPage;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Elastic\QueryEngine\QueryBuilder;
@@ -30,9 +31,9 @@ use SMWDIUri as DIUri;
 class SomePropertyInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var FieldMapper
@@ -47,10 +48,10 @@ class SomePropertyInterpreter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder ) {
+		$this->conditionBuilder = $conditionBuilder;
 	}
 
 	/**
@@ -78,13 +79,13 @@ class SomePropertyInterpreter {
 		//   of the query will be ignored
 		// - should: query should appear in the matching document
 
-		$this->fieldMapper = $this->queryBuilder->getFieldMapper();
-		$this->termsLookup = $this->queryBuilder->getTermsLookup();
+		$this->fieldMapper = $this->conditionBuilder->getFieldMapper();
+		$this->termsLookup = $this->conditionBuilder->getTermsLookup();
 
 		$property = $description->getProperty();
-		$pid = $this->fieldMapper->getPID( $this->queryBuilder->getID( $property ) );
+		$pid = $this->fieldMapper->getPID( $this->conditionBuilder->getID( $property ) );
 
-		$hierarchy = $this->queryBuilder->findHierarchyMembers(
+		$hierarchy = $this->conditionBuilder->findHierarchyMembers(
 			$property,
 			$description->getHierarchyDepth()
 		);
@@ -128,7 +129,7 @@ class SomePropertyInterpreter {
 		}
 
 		if ( !$params instanceof Condition ) {
-			$condition = $this->queryBuilder->newCondition( $params );
+			$condition = $this->conditionBuilder->newCondition( $params );
 		} else {
 			$condition = $params;
 		}
@@ -153,10 +154,10 @@ class SomePropertyInterpreter {
 			// Use case: `[[Category:Q0905]] [[!Example/Q0905/1]] <q>[[Has page::123]]
 			// OR [[Has page::!ABCD]]</q>`
 			$params = [ $this->fieldMapper->exists( "$pid.$field" ), $condition ];
-			$condition = $this->queryBuilder->newCondition( $params );
+			$condition = $this->conditionBuilder->newCondition( $params );
 			$condition->type( '' );
 
-			if ( $this->queryBuilder->getOption( 'must_not.property.exists' ) ) {
+			if ( $this->conditionBuilder->getOption( 'must_not.property.exists' ) ) {
 				$description->notConditionField = "$pid.$field";
 			}
 
@@ -184,7 +185,7 @@ class SomePropertyInterpreter {
 		);
 
 		$params = $this->termsLookup->lookup( 'chain', $parameters );
-		$this->queryBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
+		$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 
 		// Let it fail for a conjunction when the subquery returns empty!
 		if ( $params === [] && !isset( $desc->isPartOfDisjunction ) ) {
@@ -193,7 +194,7 @@ class SomePropertyInterpreter {
 			$params = $this->fieldMapper->exists( "empty.lookup_query" );
 		}
 
-		$condition = $this->queryBuilder->newCondition( $params );
+		$condition = $this->conditionBuilder->newCondition( $params );
 		$condition->log( [ 'SomeProperty' => [ 'Chain' => $description->getQueryString() ] ] );
 
 		return $condition;
@@ -212,7 +213,7 @@ class SomePropertyInterpreter {
 			);
 
 			$d->sourceChainMemberField = "$pid.wpgID";
-			$t = $this->queryBuilder->interpretDescription( $d, true, true );
+			$t = $this->conditionBuilder->interpretDescription( $d, true, true );
 
 			if ( $t !== [] ) {
 				$p[] = $t->toArray();
@@ -224,7 +225,7 @@ class SomePropertyInterpreter {
 		}
 
 		//$this->fieldMapper->bool( 'should', $p );
-		$condition = $this->queryBuilder->newCondition( $p );
+		$condition = $this->conditionBuilder->newCondition( $p );
 
 		return $condition;
 	}
@@ -238,7 +239,7 @@ class SomePropertyInterpreter {
 		$opType = Condition::TYPE_MUST;
 
 		foreach ( $description->getDescriptions() as $desc ) {
-			$params = $this->queryBuilder->interpretDescription( $desc, true );
+			$params = $this->conditionBuilder->interpretDescription( $desc, true );
 
 			if ( $params !== [] ) {
 				$p[] = $params->toArray();
@@ -260,7 +261,7 @@ class SomePropertyInterpreter {
 			);
 
 			$p = $this->termsLookup->lookup( 'predef', $parameters );
-			$this->queryBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
+			$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 		}
 
 		// Inverse matches are always resource (aka wpgID) related
@@ -275,14 +276,14 @@ class SomePropertyInterpreter {
 			);
 
 			$p = $this->termsLookup->lookup( 'inverse', $parameters );
-			$this->queryBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
+			$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 		}
 
 		if ( $p === [] ) {
 			return [];
 		}
 
-		$condition = $this->queryBuilder->newCondition( $p );
+		$condition = $this->conditionBuilder->newCondition( $p );
 		$condition->type( '' );
 
 		$condition->log( [ 'SomeProperty' => [ 'Conjunction' => $logs ] ] );
@@ -335,10 +336,10 @@ class SomePropertyInterpreter {
 			);
 
 			$p = $this->termsLookup->lookup( 'inverse', $parameters );
-			$this->queryBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
+			$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 		}
 
-		$condition = $this->queryBuilder->newCondition( $p );
+		$condition = $this->conditionBuilder->newCondition( $p );
 		$condition->type( '' );
 
 		return $condition;
@@ -370,10 +371,10 @@ class SomePropertyInterpreter {
 			);
 
 			$params = $this->termsLookup->lookup( 'inverse', $parameters );
-			$this->queryBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
+			$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 		}
 
-		$condition = $this->queryBuilder->newCondition( $params );
+		$condition = $this->conditionBuilder->newCondition( $params );
 		$condition->type( '' );
 
 		return $condition;
@@ -399,10 +400,10 @@ class SomePropertyInterpreter {
 
 		if ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_EQ ) {
 			$field = 'wpgID';
-			$value = $this->queryBuilder->getID( $dataItem );
+			$value = $this->conditionBuilder->getID( $dataItem );
 		} elseif ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_NEQ ) {
 			$field = 'wpgID';
-			$value = $this->queryBuilder->getID( $dataItem );
+			$value = $this->conditionBuilder->getID( $dataItem );
 		} elseif ( $dataItem instanceof DIWikiPage ) {
 			$value = $dataItem->getSortKey();
 		} elseif ( $dataItem instanceof DITime ) {
@@ -449,7 +450,7 @@ class SomePropertyInterpreter {
 			if ( $property->findPropertyValueType() === '_keyw' ) {
 				$match = $this->fieldMapper->term( "$pid.$field.keyword", "$value" );
 				$opType = $opType === Condition::TYPE_MUST ? Condition::TYPE_FILTER : $opType;
-			} elseif ( $this->queryBuilder->getOption( 'text.field.case.insensitive.eq.match' ) ) {
+			} elseif ( $this->conditionBuilder->getOption( 'text.field.case.insensitive.eq.match' ) ) {
 				// [[Has text::Template one]] == [[Has text::template one]]
 				$match = $this->fieldMapper->match_phrase( "$pid.$field", "$value" );
 			} else {
@@ -458,7 +459,7 @@ class SomePropertyInterpreter {
 			}
 		} elseif ( $dataItem instanceof DIUri && ( $comparator === SMW_CMP_EQ || $comparator === SMW_CMP_NEQ ) ) {
 
-			if ( $this->queryBuilder->getOption( 'uri.field.case.insensitive' ) ) {
+			if ( $this->conditionBuilder->getOption( 'uri.field.case.insensitive' ) ) {
 				// As EQ, use the match_phrase to ensure that each part of the
 				// string is part of the match.
 				// T:Q0908
@@ -489,7 +490,7 @@ class SomePropertyInterpreter {
 			// T:Q0904, Interpreting the meaning of `!~elastic*, +sear*` which is
 			// to match non with the term `elastic*` but those that match `sear*`
 			// with the conseqence that this is turned from a `must_not` to a `must`
-			if ( $this->queryBuilder->getOption( 'query_string.boolean.operators' ) && ( strpos( $value, '+' ) !== false ) ) {
+			if ( $this->conditionBuilder->getOption( 'query_string.boolean.operators' ) && ( strpos( $value, '+' ) !== false ) ) {
 				$opType = Condition::TYPE_MUST;
 				$value = "-$value";
 			}
@@ -502,7 +503,7 @@ class SomePropertyInterpreter {
 			if ( strpos( $value, 'tel:' ) !== false || strpos( $value, 'mailto:' ) !== false ) {
 				$value = str_replace( [ 'tel:', 'mailto:' ], [ '', '' ], $value );
 				$field = "$field.keyword";
-			} elseif ( $this->queryBuilder->getOption( 'uri.field.case.insensitive' ) ) {
+			} elseif ( $this->conditionBuilder->getOption( 'uri.field.case.insensitive' ) ) {
 				$field = "$field.lowercase";
 			}
 
@@ -518,7 +519,7 @@ class SomePropertyInterpreter {
 
 			// Boolean operators (+/-) are allowed? Use the query_string
 			// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_boolean_operators
-			if ( $this->queryBuilder->getOption( 'query_string.boolean.operators' ) && ( strpos( $value, '+' ) !== false || strpos( $value, '-' ) !== false ) ) {
+			if ( $this->conditionBuilder->getOption( 'query_string.boolean.operators' ) && ( strpos( $value, '+' ) !== false || strpos( $value, '-' ) !== false ) ) {
 				$match = $this->fieldMapper->query_string( "$pid.$field", $value );
 			} elseif ( ( strpos( $value, '*' ) !== false && $value{0} === '*' ) || ( strpos( $value, '~?' ) !== false && $value{0} === '?' ) ) {
 				// ES notes "... In order to prevent extremely slow wildcard queries,
@@ -535,7 +536,7 @@ class SomePropertyInterpreter {
 				// are matched strictly without manipulating the query string.
 				// - `lowercase` field with a normalizer to achieve case
 				// insensitivity
-				if ( $this->queryBuilder->getOption( 'page.field.case.insensitive.proximity.match', true ) ) {
+				if ( $this->conditionBuilder->getOption( 'page.field.case.insensitive.proximity.match', true ) ) {
 					$field = "$field.lowercase";
 				} else {
 					$field = "$field.keyword";
@@ -553,7 +554,7 @@ class SomePropertyInterpreter {
 			// T:Q0905, Interpreting the meaning of `!~elastic*, +sear*` which is
 			// to match non with the term `elastic*` but those that match `sear*`
 			// with the conseqence that this is turned from a `must_not` to a `must`
-			if ( $this->queryBuilder->getOption( 'query_string.boolean.operators' ) && ( strpos( $value, '+' ) !== false ) ) {
+			if ( $this->conditionBuilder->getOption( 'query_string.boolean.operators' ) && ( strpos( $value, '+' ) !== false ) ) {
 				$opType = Condition::TYPE_MUST;
 				$value = "-$value";
 			}
@@ -606,7 +607,7 @@ class SomePropertyInterpreter {
 				);
 
 				$params = $this->termsLookup->lookup( 'inverse', $parameters );
-				$this->queryBuilder->addQueryInfo( $parameters->get('query.info' ) );
+				$this->conditionBuilder->addQueryInfo( $parameters->get('query.info' ) );
 			} else {
 
 				// First we need to find entities that fulfill the condition
@@ -626,7 +627,7 @@ class SomePropertyInterpreter {
 
 				$p = $this->termsLookup->lookup( 'predef', $parameters );
 
-				$this->queryBuilder->addQueryInfo( $parameters->get('query.info' ) );
+				$this->conditionBuilder->addQueryInfo( $parameters->get('query.info' ) );
 
 				$p = $this->fieldMapper->field_filter( $f, $p );
 
@@ -634,11 +635,11 @@ class SomePropertyInterpreter {
 				$parameters->set( 'params', $p );
 
 				$params = $this->termsLookup->lookup( 'inverse', $parameters );
-				$this->queryBuilder->addQueryInfo( $parameters->get('query.info' ) );
+				$this->conditionBuilder->addQueryInfo( $parameters->get('query.info' ) );
 			}
 		}
 
-		$condition = $this->queryBuilder->newCondition( $params );
+		$condition = $this->conditionBuilder->newCondition( $params );
 		$condition->type( '' );
 
 		return $condition;

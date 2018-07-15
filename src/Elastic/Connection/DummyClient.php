@@ -54,10 +54,6 @@ class DummyClient extends Client {
 		}
 
 		$this->logger = new NullLogger();
-
-		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
-			throw new RuntimeException( 'The DummyClient is not expected to be used outside of a test environment.' );
-		}
 	}
 
 	/**

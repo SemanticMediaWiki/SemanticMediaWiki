@@ -34,9 +34,9 @@ class QueryEngine implements IQueryEngine {
 	private $queryFactory;
 
 	/**
-	 * @var QueryBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var FieldMapper
@@ -67,9 +67,10 @@ class QueryEngine implements IQueryEngine {
 	 * @since 3.0
 	 *
 	 * @param Store $store
+	 * @param ConditionBuilder $conditionBuilder
 	 * @param Options|null $options
 	 */
-	public function __construct( Store $store, QueryBuilder $queryBuilder, Options $options = null ) {
+	public function __construct( Store $store, ConditionBuilder $conditionBuilder, Options $options = null ) {
 		$this->store = $store;
 		$this->options = $options;
 
@@ -80,7 +81,7 @@ class QueryEngine implements IQueryEngine {
 		$this->queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$this->fieldMapper = new FieldMapper();
 
-		$this->queryBuilder = $queryBuilder;
+		$this->conditionBuilder = $conditionBuilder;
 		$this->sortBuilder = new SortBuilder( $store );
 
 		$this->sortBuilder->setScoreField(
@@ -119,6 +120,7 @@ class QueryEngine implements IQueryEngine {
 		}
 
 		$this->errors = [];
+		$body = [];
 
 		$this->queryInfo = [
 			'smw' => [],
@@ -131,34 +133,30 @@ class QueryEngine implements IQueryEngine {
 		);
 
 		$description = $query->getDescription();
-		$body = [];
 
-		$this->queryBuilder->setSortFields(
+		$this->conditionBuilder->setSortFields(
 			$sortFields
 		);
 
-		$q = $this->queryBuilder->makeFromDescription(
+		$params = $this->conditionBuilder->makeFromDescription(
 			$description,
 			$isConstantScore
 		);
 
-		$this->errors = $this->queryBuilder->getErrors();
-		$this->queryInfo['elastic'] = $this->queryBuilder->getQueryInfo();
+		$this->errors = $this->conditionBuilder->getErrors();
+		$this->queryInfo['elastic'] = $this->conditionBuilder->getQueryInfo();
 
 		if ( $isRandom ) {
-			$q = $this->fieldMapper->function_score_random( $q );
+			$params = $this->fieldMapper->function_score_random( $params );
 		}
 
 		$body = [
 			// @see https://www.elastic.co/guide/en/elasticsearch/reference/6.1/search-request-source-filtering.html
-			// We only want the ID, no need for all the body
+			// We only want the ID, no need for the entire document body
 			'_source' => false,
-
-			// https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_track_scores
-			// 'track_scores' => true,
 			'from'    => $query->getOffset(),
 			'size'    => $query->getLimit() + 1, // Look ahead +1,
-			'query'   => $q
+			'query'   => $params
 		];
 
 		if ( !$isRandom && $sort !== [] ) {
@@ -226,8 +224,12 @@ class QueryEngine implements IQueryEngine {
 		$connection = $this->store->getConnection( 'elastic' );
 		$this->queryInfo['elastic'][] = $connection->validate( $params );
 
-		if ( ( $log = $this->queryBuilder->getDescriptionLog() ) !== [] ) {
+		if ( ( $log = $this->conditionBuilder->getDescriptionLog() ) !== [] ) {
 			$this->queryInfo['smw']['description_log'] = $log;
+		}
+
+		if ( isset( $this->queryInfo['info'] ) && $this->queryInfo['info'] === [] ) {
+			unset( $this->queryInfo['info'] );
 		}
 
 		$info = str_replace(

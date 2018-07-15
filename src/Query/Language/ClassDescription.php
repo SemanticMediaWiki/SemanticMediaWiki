@@ -90,6 +90,15 @@ class ClassDescription extends Description {
 	}
 
 	/**
+	 * @since  3.0
+	 *
+	 * @param DIWikiPage $dataItem
+	 */
+	public function addClass( DIWikiPage $dataItem ) {
+		$this->m_diWikiPages[] = $dataItem;
+	}
+
+	/**
 	 * @param ClassDescription $description
 	 */
 	public function addDescription( ClassDescription $description ) {
@@ -131,11 +140,10 @@ class ClassDescription extends Description {
 		foreach ( $this->m_diWikiPages as $wikiPage ) {
 			$wikiValue = DataValueFactory::getInstance()->newDataValueByItem( $wikiPage, null );
 			if ( $first ) {
-			//	$result = '[[' . $wikiValue->getPrefixedText();
 				$result = '[[' . $namespaceText . ':' . ( isset( $this->isNegation ) ? '!' : '' ) . $wikiValue->getText();
 				$first = false;
 			} else {
-				$result .= '||' . $wikiValue->getText();
+				$result .= '||' . ( isset( $this->isNegation ) ? '!' : '' ) . $wikiValue->getText();
 			}
 		}
 

@@ -21,6 +21,13 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $cat_name;
+
+	protected function setUp() {
+		parent::setUp();
+		$this->cat_name = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );;
+	}
+
 	public function testCanConstruct() {
 
 		$class = $this->getMockBuilder( '\SMW\DIWikiPage' )
@@ -81,6 +88,71 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			" <q>[[{$ns}:Foo||Bar]]</q> ",
 			$instance->getQueryString( true )
+		);
+	}
+
+	public function testAddClass() {
+
+		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+
+		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
+		$instance->addClass( new DIWikiPage( 'Bar', NS_CATEGORY ) );
+
+		$this->assertEquals(
+			"[[{$ns}:Foo||Bar]]",
+			$instance->getQueryString()
+		);
+
+		$this->assertEquals(
+			" <q>[[{$ns}:Foo||Bar]]</q> ",
+			$instance->getQueryString( true )
+		);
+	}
+
+	public function testIsMergableDescription() {
+
+		$cat = new DIWikiPage( 'Foo', NS_CATEGORY );
+
+		$instance = new ClassDescription(
+			$cat
+		);
+
+		$this->assertTrue(
+			$instance->isMergableDescription( new ClassDescription( $cat ) )
+		);
+
+		$instance->isNegation = true;
+
+		$this->assertFalse(
+			$instance->isMergableDescription( new ClassDescription( $cat ) )
+		);
+	}
+
+	public function testClass_Negation() {
+
+		$cat = new DIWikiPage( 'Foo', NS_CATEGORY );
+
+		$instance = new ClassDescription(
+			$cat
+		);
+
+		$this->assertEquals(
+			"[[{$this->cat_name}:Foo]]",
+			$instance->getQueryString()
+		);
+
+		$instance->isNegation = true;
+
+		$this->assertEquals(
+			"[[{$this->cat_name}:!Foo]]",
+			$instance->getQueryString()
+		);
+
+		$instance->addClass( new DIWikiPage( 'Bar', NS_CATEGORY ) );
+
+		$this->assertEquals(
+			"[[{$this->cat_name}:!Foo||!Bar]]",
+			$instance->getQueryString()
 		);
 	}
 

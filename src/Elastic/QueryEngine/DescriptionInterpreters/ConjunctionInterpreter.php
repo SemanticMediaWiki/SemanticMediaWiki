@@ -2,7 +2,8 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\QueryBuilder;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
+use SMW\Elastic\QueryEngine\Condition;
 use SMW\Query\Language\Conjunction;
 
 /**
@@ -14,17 +15,17 @@ use SMW\Query\Language\Conjunction;
 class ConjunctionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder ) {
+		$this->conditionBuilder = $conditionBuilder;
 	}
 
 	/**
@@ -34,16 +35,13 @@ class ConjunctionInterpreter {
 	 *
 	 * @return Condition
 	 */
-	public function interpretDescription( Conjunction $description, $isConjunction = false ) {
+	public function interpretDescription( Conjunction $description ) {
 
 		$params = [];
-		$fieldMapper = $this->queryBuilder->getFieldMapper();
 
 		foreach ( $description->getDescriptions() as $desc ) {
-			$desc->isPartOfConjunction = true;
-
-			if ( ( $param = $this->queryBuilder->interpretDescription( $desc, true ) ) !== [] ) {
-				$params[] = $param;
+			if ( ( $cond = $this->conditionBuilder->interpretDescription( $desc, true ) ) instanceof Condition ) {
+				$params[] = $cond;
 			}
 		}
 
@@ -51,9 +49,8 @@ class ConjunctionInterpreter {
 			return [];
 		}
 
-		$condition = $this->queryBuilder->newCondition( $params );
-		$condition->type( 'must' );
-
+		$condition = $this->conditionBuilder->newCondition( $params );
+		$condition->type( Condition::TYPE_MUST );
 		$condition->log( [ 'Conjunction' => $description->getQueryString() ] );
 
 		return $condition;

@@ -1966,7 +1966,13 @@ return array(
 		'connection' =>[
 			// Number of times the client tries to reconnect before throwing an
 			// exception
-			'retries' => 2
+			'retries' => 2,
+
+			// Controls how long curl should wait for the entire request to finish
+			'timeout' => 30,
+
+			// Controls how long curl should wait for the "connect" phase to finish
+			'connect_timeout' => 30
 		],
 		'settings' => [
 			'data' => [
