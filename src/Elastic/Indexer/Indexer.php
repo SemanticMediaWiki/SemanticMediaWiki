@@ -320,7 +320,7 @@ class Indexer {
 			'subobject' => $dataItem->getSubobjectName(),
 			'namespace' => $dataItem->getNamespace(),
 			'interwiki' => $dataItem->getInterwiki(),
-			'sortkey'   => $dataItem->getSortKey()
+			'sortkey'   => mb_convert_encoding( $dataItem->getSortKey(), 'UTF-8', 'UTF-8' )
 		];
 
 		$response = $connection->index( $params + [ 'body' => $data ] );
@@ -632,7 +632,7 @@ class Indexer {
 					'subobject' => $dataItem->getSubobjectName(),
 					'namespace' => $dataItem->getNamespace(),
 					'interwiki' => $dataItem->getInterwiki(),
-					'sortkey'   => $dataItem->getSortKey()
+					'sortkey'   => mb_convert_encoding( $dataItem->getSortKey(), 'UTF-8', 'UTF-8' )
 				];
 
 				$invertedRows[$val] = [ 'subject' => $subject ];
