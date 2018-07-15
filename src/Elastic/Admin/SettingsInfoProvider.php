@@ -32,7 +32,7 @@ class SettingsInfoProvider extends InfoProviderHandler {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->getMessageAsString( 'smw-admin-supplementary-elastic-settings-title' ),
-			[ 'action' => 'elastic/settings' ]
+			[ 'action' => $this->getTask() ]
 		);
 
 		return Html::rawElement(
@@ -57,7 +57,7 @@ class SettingsInfoProvider extends InfoProviderHandler {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch settings' );
 
 		$this->outputFormatter->addParentLink(
-			[ 'action' => 'elastic' ],
+			[ 'action' => $this->getParentTask() ],
 			'smw-admin-supplementary-elastic-title'
 		);
 

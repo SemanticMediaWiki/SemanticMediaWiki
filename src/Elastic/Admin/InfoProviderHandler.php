@@ -59,14 +59,24 @@ abstract class InfoProviderHandler extends TaskHandler {
 	 *
 	 * @return string
 	 */
-	public function getTask() {
-		return 'elastic/' . $this->getSupplementTask();
+	public function getParentTask() {
+		return 'elastic';
 	}
 
 	/**
 	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getTask() {
+		return $this->getParentTask() . '/' . $this->getSupplementTask();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
 	 */
 	abstract public function getSupplementTask();
-
 
 }
