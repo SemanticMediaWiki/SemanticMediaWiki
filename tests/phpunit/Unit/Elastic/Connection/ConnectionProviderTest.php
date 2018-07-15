@@ -111,7 +111,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
-		$thi->setExpectedException( '\SMW\Elastic\Exception\ClientBuilderNotFoundException' );
+		$this->setExpectedException( '\SMW\Elastic\Exception\ClientBuilderNotFoundException' );
 		$instance->getConnection();
 	}
 
