@@ -56,7 +56,7 @@ class DuplicateEntitiesDisposer {
 		$count = count( $duplicates );
 		$this->messageReporter->reportMessage( "Found: $count duplicates\n" );
 
-		if ( $count > 0 ) {
+		if ( $count > 0 && $this->isIterable( $duplicates ) ) {
 			$this->doDispose( $duplicates );
 		}
 
@@ -65,7 +65,7 @@ class DuplicateEntitiesDisposer {
 		}
 	}
 
-	private function doDispose( array $duplicates ) {
+	private function doDispose( $duplicates ) {
 
 		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
 			$this->store
@@ -118,6 +118,17 @@ class DuplicateEntitiesDisposer {
 		$this->messageReporter->reportMessage(
 			"\n\nLog\n\n" . json_encode( $log, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . "\n"
 		);
+	}
+
+	/**
+	 * Polyfill for PHP 7.0-
+	 *
+	 * @see http://php.net/manual/en/function.is-iterable.php
+	 *
+	 * @since 3.0
+	 */
+	private function isIterable( $obj ) {
+		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof \Traversable ) );
 	}
 
 }
