@@ -9,13 +9,16 @@ use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
 use SMW\Message;
-use SMW\Utils\HtmlVTabs;
+use SMW\Utils\HtmlTabs;
 use SpecialPage;
 
 /**
  * This special page for MediaWiki provides an administrative interface
  * that allows to execute certain functions related to the maintenance
- * of the semantic database. It is restricted to users with siteadmin status.
+ * of the semantic database.
+ *
+ * Access to the special page and its function is limited to users with the
+ * `smw-admin` right.
  *
  * @license GNU GPL v2+
  * @since   2.5
@@ -55,23 +58,12 @@ class SpecialAdmin extends SpecialPage {
 			$this->getUser()->getEditToken()
 		);
 
-		HtmlVTabs::init();
-
 		$this->setHeaders();
 		$output = $this->getOutput();
-		$output->setPageTitle( $this->getMessageAsString( 'smwadmin' ) );
+		$output->setPageTitle( $this->msg_text( 'smw-title' ) );
 
-		$output->addModuleStyles( array(
-			'ext.smw.special.style'
-		) );
-
-		$output->addModuleStyles( HtmlVTabs::getModuleStyles() );
-
-		$output->addModules( array(
-			'ext.smw.admin'
-		) );
-
-		$output->addModules( HtmlVTabs::getModules() );
+		$output->addModuleStyles( 'ext.smw.special.style' );
+		$output->addModules( 'ext.smw.admin' );
 
 		if ( $query !== null ) {
 			$this->getRequest()->setVal( 'action', $query );
@@ -87,6 +79,8 @@ class SpecialAdmin extends SpecialPage {
 			$this->getLanguage()
 		);
 
+		// Some functions require methods only provided by the SQLStore (or any
+		// inherit class thereof)
 		if ( !is_a( ( $store = $applicationFactory->getStore() ), '\SMW\SQLStore\SQLStore' ) ) {
 			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
 		}
@@ -120,7 +114,7 @@ class SpecialAdmin extends SpecialPage {
 		}
 
 		$output->addHTML(
-			$this->getHtml( $taskHandlerList )
+			$this->buildHTML( $taskHandlerList )
 		);
 	}
 
@@ -131,7 +125,7 @@ class SpecialAdmin extends SpecialPage {
 		return 'smw_group';
 	}
 
-	private function getHtml( $taskHandlerList ) {
+	private function buildHTML( $taskHandlerList ) {
 
 		$tableSchemaTaskList = $taskHandlerList[TaskHandler::SECTION_SCHEMA];
 
@@ -148,7 +142,7 @@ class SpecialAdmin extends SpecialPage {
 				'class' => 'plainlinks',
 				'style' => 'margin-top:0.8em;'
 			],
-			$this->getMessageAsString( array( 'smw-admin-job-scheduler-note' ),Message::PARSE )
+			$this->msg_text( 'smw-admin-job-scheduler-note', Message::PARSE )
 		);
 
 		$list = '';
@@ -163,13 +157,15 @@ class SpecialAdmin extends SpecialPage {
 		);
 
 		$supplementarySection = Html::rawElement(
-			'h3',
-			array(),
-			$this->getMessageAsString( array( 'smw-admin-supplementary-section-title' ) )
-		)  . Html::rawElement(
 			'p',
-			array(),
-			$this->getMessageAsString( array( 'smw-admin-supplementary-section-intro' ) )
+			[
+				'class' => 'plainlinks'
+			],
+			$this->msg_text( 'smw-admin-supplementary-section-intro', Message::PARSE )
+		) . Html::rawElement(
+			'h3',
+			[],
+			$this->msg_text( 'smw-admin-supplementary-section-subtitle' )
 		);
 
 		$list = '';
@@ -179,88 +175,82 @@ class SpecialAdmin extends SpecialPage {
 			$list .= $supplementaryTask->getHtml();
 		}
 
-		$supplementarySection .= Html::rawElement( 'div', array( 'class' => 'smw-admin-supplementary-section' ),
-			Html::rawElement( 'ul', array(),
-				$list
-			)
+		$supplementarySection .= Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-admin-supplementary-section'
+			],
+			Html::rawElement( 'ul', array(), $list )
 		);
 
 		$deprecationNoticeTaskList = $taskHandlerList[TaskHandler::SECTION_DEPRECATION];
 		$deprecationNoticeTaskHandler = end( $deprecationNoticeTaskList );
 
 		$deprecationNotices = $deprecationNoticeTaskHandler->getHtml();
-		$isHidden = $deprecationNotices === '' ? HtmlVTabs::IS_HIDDEN : false;
+		$htmlTabs = new HtmlTabs();
+
+		$default = $deprecationNotices === '' ? 'general' : 'notices';
 
 		// If we want to remain on a specific tab on a GET request, use the `tab`
 		// parameter since we are unable to fetch any #href hash from a request
-		$tab = $this->getRequest()->getVal( 'tab', 'general' );
-
-		$findActiveLink = [ HtmlVTabs::FIND_ACTIVE_LINK => $tab ];
-
-		// Navigation tabs
-		$html = HtmlVTabs::nav(
-			HtmlVTabs::navLink(
-				'general',
-				$this->getMessageAsString( 'smw-admin-tab-general' ),
-				$findActiveLink
-			) . HtmlVTabs::navLink(
-				'notices',
-				$this->getMessageAsString( 'smw-admin-tab-notices' ),
-				$isHidden,
-				[ 'class' => 'smw-vtab-warning' ]
-			) . HtmlVTabs::navLink(
-				'rebuild',
-				$this->getMessageAsString( 'smw-admin-tab-rebuild' ),
-				$findActiveLink
-			) . HtmlVTabs::navLink(
-				'supplement',
-				$this->getMessageAsString( 'smw-admin-tab-supplement' ),
-				$findActiveLink
-			) . HtmlVTabs::navLink(
-				'registry',
-				$this->getMessageAsString( 'smw-admin-tab-registry' ),
-				$findActiveLink
-			)
+		$htmlTabs->setActiveTab(
+			$this->getRequest()->getVal( 'tab', $default )
 		);
+
+		$htmlTabs->tab( 'general', $this->msg_text( 'smw-admin-tab-general' ) );
+
+		$htmlTabs->tab(
+			'notices',
+			'⚠ ' . $this->msg_text( 'smw-admin-tab-notices' ),
+			[
+				'hide'  => $deprecationNotices === '' ? true : false,
+				'class' => 'smw-tab-warning'
+			]
+		);
+
+		$htmlTabs->tab( 'rebuild', $this->msg_text( 'smw-admin-tab-rebuild' ) );
+		$htmlTabs->tab( 'supplement', $this->msg_text( 'smw-admin-tab-supplement' ) );
 
 		$supportTaskList = $taskHandlerList[TaskHandler::SECTION_SUPPORT];
 		$supportListTaskHandler = end( $supportTaskList );
 
-		// Content
-		$html .= HtmlVTabs::content(
-			'general',
-			Html::rawElement(
-				'p',
-				array(),
-				$this->getMessageAsString( 'smw-admin-docu' )
-			) . $supportListTaskHandler->createSupportForm()
-		);
+		$html = Html::rawElement(
+			'p',
+			[],
+			$this->msg_text( 'smw-admin-docu' )
+		) . Html::rawElement(
+			'pre',
+			[],
+			json_encode( $this->getInfo(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+		) . $supportListTaskHandler->createSupportForm() .
+		$supportListTaskHandler->createRegistryForm();
 
-		$html .= HtmlVTabs::content(
-			'notices',
-			$deprecationNotices
-		);
+		$htmlTabs->content( 'general', $html );
+		$htmlTabs->content( 'notices', $deprecationNotices );
+		$htmlTabs->content( 'rebuild', $dataRebuildSection );
+		$htmlTabs->content( 'supplement', $supplementarySection );
 
-		$html .= HtmlVTabs::content(
-			'rebuild',
-			$dataRebuildSection
-		);
-
-		$html .= HtmlVTabs::content(
-			'supplement',
-			$supplementarySection
-		);
-
-		$html .= HtmlVTabs::content(
-			'registry',
-			$supportListTaskHandler->createRegistryForm()
+		$html = $htmlTabs->buildHTML(
+			[ 'class' => 'smw-admin' ]
 		);
 
 		return $html;
 	}
 
-	private function getMessageAsString( $key, $type = Message::TEXT ) {
-		return Message::get( $key, $type, Message::USER_LANGUAGE );
+	private function getInfo() {
+
+		$store = ApplicationFactory::getInstance()->getStore();
+
+		return $store->getInfo() + [
+			'smw' => SMW_VERSION,
+			'mediawiki' => $GLOBALS['wgVersion']
+		] + (
+			defined( 'HHVM_VERSION' ) ? [ 'hhvm' => HHVM_VERSION ] : [ 'php' => PHP_VERSION ]
+		);
+	}
+
+	private function msg_text( $key, $type = Message::TEXT) {
+		return Message::get( $key, $type , Message::USER_LANGUAGE );
 	}
 
 }
