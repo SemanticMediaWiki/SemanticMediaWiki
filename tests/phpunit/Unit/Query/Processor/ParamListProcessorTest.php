@@ -245,6 +245,22 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
+		// #3196
+		yield [
+			[ 'Foo=Bar', 'link=none', 'intro=[[File:Foo.png|link=Bar]]' ],
+			true,
+			[
+				'showMode'   => true,
+				'query'      => '[[:Foo=Bar]]',
+				'printouts'  => [],
+				'parameters' => [
+					'link' => 'none',
+					'intro' => '[[File:Foo.png|link=Bar]]'
+				],
+				'this'       => []
+			]
+		];
+
 	}
 
 	public function legacyParametersProvider() {

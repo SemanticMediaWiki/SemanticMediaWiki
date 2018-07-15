@@ -19,6 +19,11 @@
 			"page": "Example/S0011/Q.1",
 			"contents": "{{#ask: [[Category:S0011]] |?Has text |limit=0 |link=none |format=table |intro=with [[intro parameter]] {{#info:intro bubble}} |outro=with [[outro parameter]] {{#info:outro bubble}} }}",
 			"message-cache": "clear"
+		},
+		{
+			"page": "Example/S0011/Q.2",
+			"contents": "{{#ask: [[Category:S0011]] |?Has text |limit=0 |link=none |format=table |intro=[[File:Foo.png|link=Bar]] }}",
+			"message-cache": "clear"
 		}
 	],
 	"tests": [
@@ -96,6 +101,16 @@
 					"S0011%outro link",
 					"class=\"new\" title=\"S0011%outro",
 					"\">S0011%outro</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (#3196, `-3D/=` decode)",
+			"subject": "Example/S0011/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory:S0011-5D-5D/-3FHas-20text/mainlabel%3D/offset%3D0/format%3Dtable/link%3Dnone/intro%3D-5B-5BFile:Foo.png-7Clink%3DBar-5D-5D"
 				]
 			}
 		}

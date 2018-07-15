@@ -217,8 +217,12 @@ class ParamListProcessor {
 		if ( is_array( $parts ) && count( $parts ) >= 2 ) {
 			$p = strtolower( trim( $parts[0] ) );
 
-			// don't trim here, some parameters care for " "
-			$serialization['parameters'][$p] = $parts[1];
+			// Don't trim here, some parameters care for " "
+			//
+			// #3196
+			// Ensure to decode `-3D` from encodeEq to support things like
+			// `|intro=[[File:Foo.png|link=Bar]]`
+			$serialization['parameters'][$p] = str_replace( array( '-3D' ), array( '=' ), $parts[1] );
 		} else {
 			$serialization['query'] .= $param;
 		}
