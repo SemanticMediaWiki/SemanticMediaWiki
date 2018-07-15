@@ -147,6 +147,13 @@ class DummyClient extends Client {
 	public function putMapping( array $params ) {}
 
 	/**
+	 * @see Client::getMapping
+	 */
+	public function getMapping( array $params ) {
+		return [];
+	}
+
+	/**
 	 * @see Client::getSettings
 	 */
 	public function getSettings( array $params ) {

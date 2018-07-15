@@ -32,7 +32,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->getMessageAsString( 'smw-admin-supplementary-elastic-indices-title' ),
-			[ 'action' => 'elastic/indices' ]
+			[ 'action' => $this->getTask() ]
 		);
 
 		return Html::rawElement(
@@ -57,7 +57,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch indices' );
 
 		$this->outputFormatter->addParentLink(
-			[ 'action' => 'elastic' ],
+			[ 'action' => $this->getParentTask() ],
 			'smw-admin-supplementary-elastic-title'
 		);
 

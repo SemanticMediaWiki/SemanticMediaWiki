@@ -32,7 +32,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->getMessageAsString( 'smw-admin-supplementary-elastic-mappings-title' ),
-			[ 'action' => 'elastic/mappings' ]
+			[ 'action' => $this->getTask() ]
 		);
 
 		return Html::rawElement(
@@ -57,7 +57,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch mappings' );
 
 		$this->outputFormatter->addParentLink(
-			[ 'action' => 'elastic' ],
+			[ 'action' => $this->getParentTask() ],
 			'smw-admin-supplementary-elastic-title'
 		);
 

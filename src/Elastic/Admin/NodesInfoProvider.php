@@ -31,7 +31,7 @@ class NodesInfoProvider extends InfoProviderHandler {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->getMessageAsString( 'smw-admin-supplementary-elastic-nodes-title' ),
-			[ 'action' => 'elastic/nodes' ]
+			[ 'action' => $this->getTask() ]
 		);
 
 		return Html::rawElement(
@@ -56,7 +56,7 @@ class NodesInfoProvider extends InfoProviderHandler {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch nodes' );
 
 		$this->outputFormatter->addParentLink(
-			[ 'action' => 'elastic' ],
+			[ 'action' => $this->getParentTask() ],
 			'smw-admin-supplementary-elastic-title'
 		);
 
