@@ -15,6 +15,7 @@ use SMW\Profiler;
 use SMW\SemanticData;
 use SMW\Store;
 use SMW\Utils\HtmlDivTable;
+use SMW\Utils\HtmlTabs;
 use SMWInfolink;
 use SMWSemanticData;
 
@@ -144,70 +145,39 @@ class Factbox {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $user
+	 * @param string $rendered
 	 * @param string $derived
 	 *
 	 * @return string
 	 */
-	public static function tabs( $user, $derived = '' ) {
+	public static function tabs( $rendered, $derived = '' ) {
 
-		$tabs[] = Html::rawElement(
-			'input',
+		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setActiveTab( 'facts-rendered' );
+		$htmlTabs->tab(
+			'facts-rendered',
+			Message::get( 'smw-factbox-facts' , Message::TEXT, Message::USER_LANGUAGE ),
 			[
-				'id' => 'tab-facts-user',
-				'type' => 'radio',
-				'name' => 'tabs',
-				'checked' => 'checked'
-			]
-		) . Html::rawElement(
-			'label',
-			[
-				'for' => 'tab-facts-user',
 				'title' => Message::get( 'smw-factbox-facts-help' , Message::TEXT, Message::USER_LANGUAGE )
-			],
-			Message::get( 'smw-factbox-facts' , Message::TEXT, Message::USER_LANGUAGE )
+			]
 		);
 
-		$contents[] = Html::rawElement(
-			'section',
+		$htmlTabs->content( 'facts-rendered', $rendered );
+
+		$htmlTabs->tab(
+			'facts-derived',
+			Message::get( 'smw-factbox-derived' , Message::TEXT, Message::USER_LANGUAGE ),
 			[
-				'id' => 'tab-content-facts-user'
-			],
-			$user
+				'hide' => $derived === '' ? true : false
+			]
 		);
 
-		if ( $derived !== '' ) {
-			$tabs[] = Html::rawElement(
-				'input',
-				[
-					'id' => 'tab-facts-derived',
-					'type' => 'radio',
-					'name' => 'tabs'
-				]
-			) . Html::rawElement(
-				'label',
-				[
-					'for' => 'tab-facts-derived',
-					'class' => '',
-				],
-				Message::get( 'smw-factbox-facts-derived' , Message::TEXT, Message::USER_LANGUAGE )
-			);
+		$htmlTabs->content( 'facts-derived', $derived );
 
-			$contents[] = Html::rawElement(
-				'section',
-				[
-					'id' => 'tab-content-facts-derived'
-				],
-				$derived
-			);
-		}
-
-		return Html::rawElement(
-			'div',
+		return $htmlTabs->buildHTML(
 			[
-				'class' => 'smw-tabs smw-factbox'
-			],
-			implode( '', $tabs ) . implode( '', $contents )
+				'class' => 'smw-factbox'
+			]
 		);
 	}
 
