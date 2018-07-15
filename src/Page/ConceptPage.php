@@ -40,7 +40,7 @@ class ConceptPage extends Page {
 	 * @note We use a smaller limit here; property pages might become large.
 	 */
 	protected function initParameters() {
-		$this->limit = $this->getOption( 'smwgConceptPagingLimit' );
+		$this->limit = $this->getOption( 'pagingLimit' );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class ConceptPage extends Page {
 			$description = $descriptionFactory->newConceptDescription( $this->getDataItem() );
 			$query = \SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
 
-			$query->setLimit( $wgRequest->getVal( 'limit', $this->getOption( 'smwgConceptPagingLimit' ) ) );
+			$query->setLimit( $wgRequest->getVal( 'limit', $this->getOption( 'pagingLimit' ) ) );
 			$query->setOffset( $wgRequest->getVal( 'offset', '0' ) );
 			$query->setContextPage( $this->getDataItem() );
 			$query->setOption( $query::NO_DEPENDENCY_TRACE, true );
@@ -83,7 +83,7 @@ class ConceptPage extends Page {
 
 		$request = $this->getContext()->getRequest();
 
-		$limit = $request->getVal( 'limit', $this->getOption( 'smwgConceptPagingLimit' ) );
+		$limit = $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
 		$offset = $request->getVal( 'offset', '0' );
 
 		$query = array(

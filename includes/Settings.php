@@ -73,9 +73,7 @@ class Settings extends Options {
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],
 			'smwgSearchByPropertyFuzzy' => $GLOBALS['smwgSearchByPropertyFuzzy'],
-			'smwgTypePagingLimit' => $GLOBALS['smwgTypePagingLimit'],
-			'smwgConceptPagingLimit' => $GLOBALS['smwgConceptPagingLimit'],
-			'smwgPropertyPagingLimit' => $GLOBALS['smwgPropertyPagingLimit'],
+			'smwgPagingLimit'  => $GLOBALS['smwgPagingLimit'],
 			'smwgPropertyListLimit' => $GLOBALS['smwgPropertyListLimit'],
 			'smwgQEnabled' => $GLOBALS['smwgQEnabled'],
 			'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
@@ -473,6 +471,19 @@ class Settings extends Options {
 			$configuration['smwgEntityLookupFeatures'] = $GLOBALS['smwgValueLookupFeatures'];
 		}
 
+		// smwgPagingLimit
+		if ( isset( $GLOBALS['smwgTypePagingLimit'] ) ) {
+			$configuration['smwgPagingLimit']['type'] = $GLOBALS['smwgTypePagingLimit'];
+		}
+
+		if ( isset( $GLOBALS['smwgConceptPagingLimit'] ) ) {
+			$configuration['smwgPagingLimit']['concept'] = $GLOBALS['smwgConceptPagingLimit'];
+		}
+
+		if ( isset( $GLOBALS['smwgPropertyPagingLimit'] ) ) {
+			$configuration['smwgPagingLimit']['property'] = $GLOBALS['smwgPropertyPagingLimit'];
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
@@ -498,6 +509,9 @@ class Settings extends Options {
 				'smwgQSortingSupport' => '3.1.0',
 				'smwgQRandSortingSupport' => '3.1.0',
 				'smwgLinksInValues' => '3.1.0',
+				'smwgTypePagingLimit'  => '3.1.0',
+				'smwgConceptPagingLimit'  => '3.1.0',
+				'smwgPropertyPagingLimit'  => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -541,6 +555,9 @@ class Settings extends Options {
 				'smwgValueLookupCacheType' => 'smwgEntityLookupCacheType',
 				'smwgValueLookupCacheLifetime' => 'smwgEntityLookupCacheLifetime',
 				'smwgValueLookupFeatures' => 'smwgEntityLookupFeatures',
+				'smwgTypePagingLimit'  => 'smwgPagingLimit',
+				'smwgConceptPagingLimit'  => 'smwgPagingLimit',
+				'smwgPropertyPagingLimit'  => 'smwgPagingLimit',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',

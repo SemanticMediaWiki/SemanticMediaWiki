@@ -425,18 +425,24 @@ return array(
 	##
 
 	###
-	# Number results shown in the listings on pages in the namespaces Property,
-	# Type, and Concept. If a value of 0 is given, the respective listings are
-	# hidden completely.
+	# Number of results shown in the listings on pages in the Property and Concept
+	# namespaces as well as other services that require a limit.
 	#
-	# @since 0.7
-	##
-	'smwgTypePagingLimit' => 200,   // same number as for categories
-	'smwgPropertyPagingLimit' => 25, // use smaller value since property lists need more space
+	# If a value of 0 is given, the respective listings are hidden completely.
 	#
-	# @since 1.3
+	# - `type` used for `Special:Types` (was $smwgTypePagingLimit)
+	# - `errorlist` used for `Special:ProcessingErrorList`
+	# - `concept` (was $smwgConceptPagingLimit)
+	# - `property` (was $smwgPropertyPagingLimit)
+	#
+	# @since 3.0
 	##
-	'smwgConceptPagingLimit' => 200, // same number as for categories
+	'smwgPagingLimit' => [
+		'type' => 200,
+		'concept' => 200,
+		'property' => 20,
+		'errorlist' => 25,
+	],
 	##
 
 	###

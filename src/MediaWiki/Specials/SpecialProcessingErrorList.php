@@ -28,7 +28,7 @@ class SpecialProcessingErrorList extends SpecialPage {
 	 */
 	public function execute( $query ) {
 
-		$limit = ApplicationFactory::getInstance()->getSettings()->get( 'smwgPropertyPagingLimit' );
+		$limit = ApplicationFactory::getInstance()->getSettings()->dotGet( 'smwgPagingLimit.errorlist' );
 
 		$this->getOutput()->redirect(
 			$this->getLocalAskRedirectUrl( $limit )

@@ -95,8 +95,8 @@ class PageFactory {
 		);
 
 		$propertyPage->setOption(
-			'smwgPropertyPagingLimit',
-			$settings->get( 'smwgPropertyPagingLimit' )
+			'pagingLimit',
+			$settings->dotGet( 'smwgPagingLimit.property' )
 		);
 
 		$propertyPage->setOption(
@@ -130,8 +130,8 @@ class PageFactory {
 		);
 
 		$conceptPage->setOption(
-			'smwgConceptPagingLimit',
-			$settings->get( 'smwgConceptPagingLimit' )
+			'pagingLimit',
+			$settings->dotGet( 'smwgPagingLimit.concept' )
 		);
 
 		return $conceptPage;
