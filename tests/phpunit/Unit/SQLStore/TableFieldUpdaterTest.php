@@ -27,7 +27,7 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function tesCanUpdateSortField() {
+	public function testShouldNotChangeSortField() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -47,7 +47,7 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->canUpdateSortField( 'Foo', 'Foo' )
+			$instance->shouldChangeSortField( 'Foo', 'Foo' )
 		);
 	}
 
