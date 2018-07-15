@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\QueryBuilder;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\NamespaceDescription;
 
 /**
@@ -14,17 +14,17 @@ use SMW\Query\Language\NamespaceDescription;
 class NamespaceDescriptionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder ) {
+		$this->conditionBuilder = $conditionBuilder;
 	}
 
 	/**
@@ -37,12 +37,12 @@ class NamespaceDescriptionInterpreter {
 	public function interpretDescription( NamespaceDescription $description, $isConjunction = false ) {
 
 		$params = [];
-		$fieldMapper = $this->queryBuilder->getFieldMapper();
+		$fieldMapper = $this->conditionBuilder->getFieldMapper();
 
 		$namespace = $description->getNamespace();
 		$params = $fieldMapper->term( 'subject.namespace', $namespace );
 
-		$condition = $this->queryBuilder->newCondition( $params );
+		$condition = $this->conditionBuilder->newCondition( $params );
 		$condition->type( '' );
 
 		if ( !$isConjunction ) {

@@ -252,7 +252,7 @@ final class Setup {
 
 		$connectionManager->registerConnectionProvider(
 			'elastic',
-			new \SMW\Elastic\Connection\ConnectionProvider()
+			$this->applicationFactory->singleton( 'ElasticFactory' )->newConnectionProvider()
 		);
 	}
 

@@ -3,7 +3,7 @@
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIWikiPage;
-use SMW\Elastic\QueryEngine\QueryBuilder;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ValueDescription;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
@@ -19,9 +19,9 @@ use SMWDITime as DITime;
 class ValueDescriptionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var FieldMapper
@@ -31,10 +31,10 @@ class ValueDescriptionInterpreter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder ) {
+		$this->conditionBuilder = $conditionBuilder;
 	}
 
 	/**
@@ -50,7 +50,7 @@ class ValueDescriptionInterpreter {
 		$comparator = $description->getComparator();
 
 		$property = $description->getProperty();
-		$this->fieldMapper = $this->queryBuilder->getFieldMapper();
+		$this->fieldMapper = $this->conditionBuilder->getFieldMapper();
 
 		$params = [];
 		$pid = false;
@@ -59,7 +59,7 @@ class ValueDescriptionInterpreter {
 		if ( $property === null ) {
 			$field = "subject.sortkey";
 		} else {
-			$pid = 'P:' . $this->queryBuilder->getID( $property );
+			$pid = 'P:' . $this->conditionBuilder->getID( $property );
 
 			if ( $property->isInverse() ) {
 				// Want to know if this case happens and if so we need to handle
@@ -75,7 +75,7 @@ class ValueDescriptionInterpreter {
 		//$description->getHierarchyDepth(); ??
 		$hierarchyDepth = null;
 
-		$hierarchy = $this->queryBuilder->findHierarchyMembers(
+		$hierarchy = $this->conditionBuilder->findHierarchyMembers(
 			$property,
 			$hierarchyDepth
 		);
@@ -83,17 +83,17 @@ class ValueDescriptionInterpreter {
 		if ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_EQ && $property === null ) {
 			// We want an exact match!
 			$field = '_id';
-			$value = $this->queryBuilder->getID( $dataItem );
+			$value = $this->conditionBuilder->getID( $dataItem );
 		} elseif ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_NEQ && $property === null ) {
 			// We want an exact match!
 			$field = '_id';
-			$value = $this->queryBuilder->getID( $dataItem );
+			$value = $this->conditionBuilder->getID( $dataItem );
 		} elseif ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_EQ ) {
 			$field = "$pid.wpgID";
-			$value = $this->queryBuilder->getID( $dataItem );
+			$value = $this->conditionBuilder->getID( $dataItem );
 		} elseif ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_NEQ ) {
 			$field = "$pid.wpgID";
-			$value = $this->queryBuilder->getID( $dataItem );
+			$value = $this->conditionBuilder->getID( $dataItem );
 		} elseif ( $dataItem instanceof DIWikiPage ) {
 			$value = $dataItem->getSortKey();
 		} elseif ( $dataItem instanceof DITime ) {
@@ -125,7 +125,7 @@ class ValueDescriptionInterpreter {
 			$params = $this->fieldMapper->hierarchy( $params, $pid, $hierarchy );
 		}
 
-		$condition = $this->queryBuilder->newCondition( $params );
+		$condition = $this->conditionBuilder->newCondition( $params );
 
 		if ( $this->isNot( $comparator ) && $isConjunction ) {
 			$condition->type( 'must_not' );
@@ -168,12 +168,12 @@ class ValueDescriptionInterpreter {
 			// Remove the ~ to avoid a `QueryShardException[Failed to parse query ...`
 			$value = substr( $value, 1 );
 
-			if ( !$hasWildcard && $this->queryBuilder->getOption( 'wide.proximity.as.match_phrase', true ) ) {
+			if ( !$hasWildcard && $this->conditionBuilder->getOption( 'wide.proximity.as.match_phrase', true ) ) {
 				$value = trim( $value, '"' );
 				$value = "\"$value\"";
 			}
 
-			$field = $this->queryBuilder->getOption( 'wide.proximity.fields', [ 'text_copy' ] );
+			$field = $this->conditionBuilder->getOption( 'wide.proximity.fields', [ 'text_copy' ] );
 		}
 
 		// Wide or simple promximity? + wildcard?
@@ -185,7 +185,7 @@ class ValueDescriptionInterpreter {
 			// which is why we want to use a `not_analyzed` field to exactly
 			// match the content before the *.
 			// `lowercase` uses a normalizer to achieve case insensitivity
-			if ( $this->queryBuilder->getOption( 'page.field.case.insensitive.proximity.match', true ) ) {
+			if ( $this->conditionBuilder->getOption( 'page.field.case.insensitive.proximity.match', true ) ) {
 				$field = "$field.lowercase";
 			} else {
 				$field = "$field.keyword";

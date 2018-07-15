@@ -6,14 +6,9 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\DisjunctionInterpreter;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\Options;
+use SMW\HierarchyLookup;
+use SMW\Services\ServicesContainer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
@@ -26,12 +21,15 @@ use SMW\Store;
 use SMWDataItem as DataItem;
 
 /**
+ * Build an internal representation for a SPARQL condition from individual query
+ * descriptions.
+ *
  * @license GNU GPL v2+
  * @since 3.0
  *
  * @author mwjames
  */
-class QueryBuilder {
+class ConditionBuilder {
 
 	use LoggerAwareTrait;
 
@@ -54,6 +52,11 @@ class QueryBuilder {
 	 * @var HierarchyLookup
 	 */
 	private $hierarchyLookup;
+
+	/**
+	 * @var ServicesContainer
+	 */
+	private $servicesContainer;
 
 	/**
 	 * @var FieldMapper
@@ -121,25 +124,23 @@ class QueryBuilder {
 	protected $isConstantScore = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $initServices = false;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Store $store
 	 * @param TermsLookup $termsLookup
+	 * @param HierarchyLookup $hierarchyLookup
+	 * @param ServicesContainer $servicesContainer
 	 */
-	public function __construct( Store $store, TermsLookup $termsLookup ) {
+	public function __construct( Store $store, TermsLookup $termsLookup, HierarchyLookup $hierarchyLookup, ServicesContainer $servicesContainer ) {
 		$this->store = $store;
 		$this->termsLookup = $termsLookup;
-
-		$this->options = new Options();
-		$this->hierarchyLookup = ApplicationFactory::getInstance()->newHierarchyLookup();
-		$this->fieldMapper = new FieldMapper();
-		$this->conceptDescriptionInterpreter = new ConceptDescriptionInterpreter( $this );
-		$this->classDescriptionInterpreter = new ClassDescriptionInterpreter( $this );
-		$this->valueDescriptionInterpreter = new ValueDescriptionInterpreter( $this );
-		$this->somePropertyInterpreter = new SomePropertyInterpreter( $this );
-		$this->conjunctionInterpreter = new ConjunctionInterpreter( $this );
-		$this->disjunctionInterpreter = new DisjunctionInterpreter( $this );
-		$this->namespaceDescriptionInterpreter = new NamespaceDescriptionInterpreter( $this );
+		$this->hierarchyLookup = $hierarchyLookup;
+		$this->servicesContainer = $servicesContainer;
 	}
 
 	/**
@@ -159,6 +160,11 @@ class QueryBuilder {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = false ) {
+
+		if ( $this->options === null ) {
+			$this->options = new Options();
+		}
+
 		return $this->options->safeGet( $key, $default );
 	}
 
@@ -169,15 +175,6 @@ class QueryBuilder {
 	 */
 	public function setSortFields( array $sortFields ) {
 		$this->sortFields = $sortFields;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return boolean
-	 */
-	public function isConstantScore() {
-		return $this->isConstantScore;
 	}
 
 	/**
@@ -204,6 +201,11 @@ class QueryBuilder {
 	 * @return FieldMapper
 	 */
 	public function getFieldMapper() {
+
+		if ( $this->fieldMapper === null ) {
+			$this->fieldMapper = new FieldMapper();
+		}
+
 		return $this->fieldMapper;
 	}
 
@@ -302,8 +304,11 @@ class QueryBuilder {
 		$this->queryInfo = [];
 
 		$this->descriptionLog = [];
-		$this->isConstantScore = $isConstantScore;
 		$this->termsLookup->clear();
+
+		if ( $this->fieldMapper === null ) {
+			$this->fieldMapper = new FieldMapper();
+		}
 
 		$this->fieldMapper->isCompatMode(
 			$this->options->safeGet( 'compat.mode', true )
@@ -341,7 +346,7 @@ class QueryBuilder {
 		// If we know we don't need any score we turn this into a `constant_score`
 		// query
 		// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-constant-score-query.html
-		if ( $this->isConstantScore ) {
+		if ( $isConstantScore ) {
 			$query = $this->fieldMapper->constant_score( $query );
 		}
 
@@ -385,6 +390,10 @@ class QueryBuilder {
 
 		$params = [];
 
+		if ( $this->initServices === false ) {
+			$this->initServices();
+		}
+
 		if ( $description instanceof SomeProperty ) {
 			$params = $this->somePropertyInterpreter->interpretDescription( $description, $isConjunction );
 		}
@@ -414,6 +423,19 @@ class QueryBuilder {
 		}
 
 		return $params;
+	}
+
+	private function initServices() {
+
+		$this->somePropertyInterpreter = $this->servicesContainer->get( 'SomePropertyInterpreter', $this );
+		$this->conceptDescriptionInterpreter = $this->servicesContainer->get( 'ConceptDescriptionInterpreter', $this );
+		$this->classDescriptionInterpreter = $this->servicesContainer->get( 'ClassDescriptionInterpreter', $this );
+		$this->namespaceDescriptionInterpreter = $this->servicesContainer->get( 'NamespaceDescriptionInterpreter', $this );
+		$this->valueDescriptionInterpreter = $this->servicesContainer->get( 'ValueDescriptionInterpreter', $this );
+		$this->conjunctionInterpreter = $this->servicesContainer->get( 'ConjunctionInterpreter', $this );
+		$this->disjunctionInterpreter = $this->servicesContainer->get( 'DisjunctionInterpreter', $this );
+
+		$this->initServices = true;
 	}
 
 }

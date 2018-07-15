@@ -2,12 +2,15 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\ApplicationFactory;
-use SMW\DIProperty;
-use SMW\Elastic\QueryEngine\QueryBuilder;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
+use SMW\Query\Parser as QueryParser;
+use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
+use SMW\DIProperty;
+use SMW\Options;
 
 /**
  * @license GNU GPL v2+
@@ -18,9 +21,9 @@ use SMW\Query\Language\Disjunction;
 class ConceptDescriptionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var QueryParser
@@ -30,11 +33,12 @@ class ConceptDescriptionInterpreter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param ConditionBuilder $conditionBuilder
+	 * @param QueryParser $queryParser
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
-		$this->queryParser = ApplicationFactory::getInstance()->newQueryParser();
+	public function __construct( ConditionBuilder $conditionBuilder, QueryParser $queryParser ) {
+		$this->conditionBuilder = $conditionBuilder;
+		$this->queryParser = $queryParser;
 	}
 
 	/**
@@ -48,7 +52,7 @@ class ConceptDescriptionInterpreter {
 
 		$concept = $description->getConcept();
 
-		$value = $this->queryBuilder->getStore()->getPropertyValues(
+		$value = $this->conditionBuilder->getStore()->getPropertyValues(
 			$concept,
 			new DIProperty( '_CONC' )
 		);
@@ -67,16 +71,28 @@ class ConceptDescriptionInterpreter {
 			return [];
 		}
 
-		$params = $this->queryBuilder->interpretDescription(
+		$params = $this->conditionBuilder->interpretDescription(
 			$description,
 			$isConjunction
 		);
 
+		$params = $this->terms_lookup( $description, $concept, $params );
+
+		$condition = $this->conditionBuilder->newCondition( $params );
+		$condition->type( '' );
+
+		$condition->log( [ 'ConceptDescription' => $description->getQueryString() ] );
+
+		return $condition;
+	}
+
+	private function terms_lookup( $description, $concept, $params ) {
+
 		$concept->setId(
-			$this->queryBuilder->getID( $concept )
+			$this->conditionBuilder->getID( $concept )
 		);
 
-		$termsLookup = $this->queryBuilder->getTermsLookup();
+		$termsLookup = $this->conditionBuilder->getTermsLookup();
 
 		$parameters = $termsLookup->newParameters(
 			[
@@ -84,30 +100,27 @@ class ConceptDescriptionInterpreter {
 				'hash' => $concept->getHash(),
 				'query.string' => $description->getQueryString(),
 				'fingerprint' => $description->getFingerprint(),
-				'params' => $params->toArray(),
+				'params' => $params,
 			]
 		);
 
 		// Using the terms lookup to prefetch IDs from the lookup index
-		if ( $this->queryBuilder->getOption( 'concept.terms.lookup' ) ) {
+		if ( $this->conditionBuilder->getOption( 'concept.terms.lookup' ) ) {
 			$params = $termsLookup->lookup( 'concept', $parameters );
 		}
 
 		if ( $parameters->has( 'query.info' ) ) {
-			$this->queryBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
+			$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 		}
 
-		$condition = $this->queryBuilder->newCondition( $params );
-		$condition->type( '' );
-
-		return $condition;
+		return $params;
 	}
 
 	private function hasCircularConceptDescription( $description, $concept ) {
 
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
-				$this->queryBuilder->addError( [ 'smw-query-condition-circular', $description->getQueryString() ] );
+				$this->conditionBuilder->addError( [ 'smw-query-condition-circular', $description->getQueryString() ] );
 				return true;
 			}
 		}

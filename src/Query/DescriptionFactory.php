@@ -94,11 +94,11 @@ class DescriptionFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $category
+	 * @param DIWikiPage|[] $category
 	 *
 	 * @return ClassDescription
 	 */
-	public function newClassDescription( DIWikiPage $category ) {
+	public function newClassDescription( $category ) {
 		return new ClassDescription( $category );
 	}
 

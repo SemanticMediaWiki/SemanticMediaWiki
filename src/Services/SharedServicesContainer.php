@@ -46,6 +46,7 @@ use SMW\StoreFactory;
 use SMW\Utils\BufferedStatsdCollector;
 use SMW\Utils\JsonSchemaValidator;
 use SMW\Utils\TempFile;
+use SMW\Elastic\ElasticFactory;
 
 /**
  * @license GNU GPL v2+
@@ -281,6 +282,14 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $ruleFactory;
+		} );
+
+		/**
+		 * @var ElasticFactory
+		 */
+		$containerBuilder->registerCallback( 'ElasticFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'ElasticFactory', ElasticFactory::class );
+			return new ElasticFactory();
 		} );
 
 	}

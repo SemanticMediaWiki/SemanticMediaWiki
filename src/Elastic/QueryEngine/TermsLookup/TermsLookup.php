@@ -5,9 +5,10 @@ namespace SMW\Elastic\QueryEngine\TermsLookup;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\QueryEngine\Condition;
+use SMW\Elastic\QueryEngine\TermsLookup as ITermsLookup;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Elastic\QueryEngine\SearchResult;
-use SMW\Elastic\QueryEngine\TermsLookup as ITermsLookup;
 use SMW\Options;
 use SMW\Store;
 
@@ -119,7 +120,8 @@ class TermsLookup implements ITermsLookup {
 	 */
 	public function concept_index_lookup( Parameters $parameters ) {
 
-		$query = $this->fieldMapper->bool( 'must', $parameters->get( 'params' ) );
+		$params = $parameters->get( 'params' );
+		$query = $params instanceof Condition ? $params->toArray() : $params;
 
 		if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
 			$query = $this->fieldMapper->constant_score( $query );
@@ -137,7 +139,7 @@ class TermsLookup implements ITermsLookup {
 
 		$parameters->set( 'query.info', $info );
 
-		return $this->terms_filter( '_id', $this->query_result( $parameters ) );
+		return $this->ids_filter( $this->query_result( $parameters ) );
 	}
 
 	/**
@@ -256,6 +258,8 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @param string $field
 	 * @param array $params
+	 *
+	 * @return array
 	 */
 	public function terms_filter( $field, $params ) {
 
@@ -270,9 +274,31 @@ class TermsLookup implements ITermsLookup {
 			$params
 		);
 
-		if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
-			$params = $this->fieldMapper->constant_score( $params );
+	//	if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
+	//		$params = $this->fieldMapper->constant_score( $params );
+	//	}
+
+		return $params;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $params
+	 *
+	 * @return array
+	 */
+	public function ids_filter( $params ) {
+
+		if ( $params === [] ) {
+			// Fail with a non existing condition to avoid a " ...
+			// query malformed, must start with start_object ..."
+			return $this->fieldMapper->exists( "empty.lookup_query" );
 		}
+
+		$params = $this->fieldMapper->ids(
+			$params
+		);
 
 		return $params;
 	}

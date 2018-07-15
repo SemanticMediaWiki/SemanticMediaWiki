@@ -84,7 +84,7 @@ class Condition {
 
 		$params = $this->params( $this->parameters, $this->logs );
 
-		if ( $this->type === '' || $params === [] ) {
+		if ( $this->type === '' || $this->type === null || $params === [] ) {
 			return $params;
 		}
 

@@ -3,7 +3,8 @@
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
-use SMW\Elastic\QueryEngine\QueryBuilder;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
+use SMW\Elastic\QueryEngine\Condition;
 use SMW\Query\Language\ClassDescription;
 
 /**
@@ -15,17 +16,17 @@ use SMW\Query\Language\ClassDescription;
 class ClassDescriptionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder ) {
+		$this->conditionBuilder = $conditionBuilder;
 	}
 
 	/**
@@ -37,7 +38,7 @@ class ClassDescriptionInterpreter {
 	 */
 	public function interpretDescription( ClassDescription $description, $isConjunction = false ) {
 
-		$pid = 'P:' . $this->queryBuilder->getID( new DIProperty( '_INST' ) );
+		$pid = 'P:' . $this->conditionBuilder->getID( new DIProperty( '_INST' ) );
 		$field = 'wpgID';
 
 		$dataItems = $description->getCategories();
@@ -51,15 +52,15 @@ class ClassDescriptionInterpreter {
 			$should = true;
 		}
 
-		$fieldMapper = $this->queryBuilder->getFieldMapper();
+		$fieldMapper = $this->conditionBuilder->getFieldMapper();
 
 		foreach ( $dataItems as $dataItem ) {
-			$value = $this->queryBuilder->getID( $dataItem );
+			$value = $this->conditionBuilder->getID( $dataItem );
 
 			$p = $fieldMapper->term( "$pid.$field", $value );
 			$hierarchy = [];
 
-			$ids = $this->queryBuilder->findHierarchyMembers( $dataItem, $hierarchyDepth );
+			$ids = $this->conditionBuilder->findHierarchyMembers( $dataItem, $hierarchyDepth );
 
 			if ( $ids !== [] ) {
 				$hierarchy[] = $fieldMapper->terms( "$pid.$field", $ids );
@@ -69,25 +70,25 @@ class ClassDescriptionInterpreter {
 			// therefore use the consecutive list to build a chain of disjunctive
 			// (should === OR) queries to match members of the list
 			if ( $hierarchy !== [] ) {
-				$params[] = $fieldMapper->bool( 'should', array_merge( [ $p ], $hierarchy ) );
+				$params[] = $fieldMapper->bool( Condition::TYPE_SHOULD, array_merge( [ $p ], $hierarchy ) );
 			} else {
 				$params[] = $p;
 			}
 		}
 
-		// Feature that is NOT supported by the SQLStore!!
+		// This feature is NOT supported by the SQLStore!!
 		// Encapsulate condition for something like `[[Category:!CatTest1]] ...`
 		if ( isset( $description->isNegation ) && $description->isNegation ) {
-			$params = $this->queryBuilder->newCondition( $params );
-			$params->type( 'must_not' );
+			$condition = $this->conditionBuilder->newCondition( $params );
+			$condition->type( Condition::TYPE_MUST_NOT );
+		} else {
+			// ??!! If the description contains more than one category then it is
+			// interpret as OR (same as the SQLStore) and only in the case of an AND
+			// it is represented as Conjunction
+			$condition = $this->conditionBuilder->newCondition( $params );
+			$condition->type( ( $should ? Condition::TYPE_SHOULD : Condition::TYPE_FILTER ) );
 		}
 
-		// ??!! If the description contains more than one category then it is
-		// interpret as OR (same as the SQLStore) and only in the case of an AND
-		// it is represented as Conjunction
-		$condition = $this->queryBuilder->newCondition( $params );
-
-		$condition->type( ( $should ? 'should' : 'must' ) );
 		$condition->log( [ 'ClassDescription' => $description->getQueryString() ] );
 
 		return $condition;

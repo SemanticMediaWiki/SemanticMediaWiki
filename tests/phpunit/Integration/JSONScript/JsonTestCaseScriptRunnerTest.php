@@ -201,6 +201,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 				foreach ( $val as $key => $value ) {
 					$config->set( $key, array_merge( $config->get( $key ), $value ) );
 				}
+
+				return $config->toArray();
 			}
 		};
 

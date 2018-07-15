@@ -1,6 +1,8 @@
 {
 	"connection": {
-		"retries": 2
+		"retries": 2,
+		"timeout": 30,
+		"connect_timeout": 30
 	},
 	"settings": {
 		"data": {

@@ -13,6 +13,17 @@ use Title;
 /**
  * @private
  *
+ * The `ElasticStore` is the interface to an `Elasticsearch` cluster both in
+ * regards for replicating data to a cluster as well as retrieving search results
+ * from it.
+ *
+ * `Elasticsearch` is expected:
+ * - to be used as search (aka query) engine with all other data management tasks
+ *   to be carried out using the default `SQLStore`.
+ * - to inherit most of the `SQLStore` methods
+ *
+ * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/README.md
+ *
  * @license GNU GPL v2+
  * @since 3.0
  *
@@ -41,35 +52,6 @@ class ElasticStore extends SQLStore {
 	public function __construct() {
 		parent::__construct();
 		$this->elasticFactory = new ElasticFactory();
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string|null $type
-	 *
-	 * @return array
-	 */
-	public function getInfo( $type = null ) {
-
-		if ( $type === 'store' ) {
-			return 'SMWElasticStore';
-		}
-
-		$connection = $this->getConnection( 'mw.db' );
-		$client = $this->getConnection( 'elastic' );
-
-		if ( $type === 'db' ) {
-			return $connection->getInfo();
-		}
-
-		if ( $type === 'es' ) {
-			return $client->getVersion();
-		}
-
-		return [
-			'SMWElasticStore' => $connection->getInfo() + [ 'es' => $client->getVersion() ]
-		];
 	}
 
 	/**
@@ -167,7 +149,7 @@ class ElasticStore extends SQLStore {
 		$connection = $this->getConnection( 'elastic' );
 
 		if ( $this->queryEngine === null ) {
-			$this->queryEngine = $this->elasticFactory->newQueryEngine( $this, $connection->getConfig() );
+			$this->queryEngine = $this->elasticFactory->newQueryEngine( $this );
 		}
 
 		if ( $connection->getConfig()->dotGet( 'query.fallback.no.connection' ) && !$connection->ping() ) {
@@ -231,19 +213,18 @@ class ElasticStore extends SQLStore {
 		unset( $this->extensionData['delete.list'] );
 		unset( $this->extensionData['change.diff'] );
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'production',
-			'procTime' => microtime( true ) + $time,
-		];
-
-		$msg = [
-			'ElasticStore',
-			'Data update completed',
-			'procTime in sec: {procTime}'
-		];
-
-		$this->logger->info( $msg, $context );
+		$this->logger->info(
+			[
+				'ElasticStore',
+				'Data update completed',
+				'procTime in sec: {procTime}',
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'production',
+				'procTime' => microtime( true ) + $time,
+			]
+		);
 
 		$config = $this->getConnection( 'elastic' )->getConfig();
 
@@ -360,6 +341,36 @@ class ElasticStore extends SQLStore {
 		parent::clear();
 		$this->indexer = null;
 		$this->queryEngine = null;
+	}
+
+	/**
+	 * @see Store::getInfo
+	 * @since 3.0
+	 *
+	 * @param string|null $type
+	 *
+	 * @return array
+	 */
+	public function getInfo( $type = null ) {
+
+		if ( $type === 'store' ) {
+			return 'SMWElasticStore';
+		}
+
+		$database = $this->getConnection( 'mw.db' );
+		$client = $this->getConnection( 'elastic' );
+
+		if ( $type === 'db' ) {
+			return $database->getInfo();
+		}
+
+		if ( $type === 'es' ) {
+			return $client->getVersion();
+		}
+
+		return [
+			'SMWElasticStore' => $database->getInfo() + [ 'es' => $client->getVersion() ]
+		];
 	}
 
 }

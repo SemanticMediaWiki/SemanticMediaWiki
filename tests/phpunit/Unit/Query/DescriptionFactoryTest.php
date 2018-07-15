@@ -174,6 +174,24 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructClassDescription_Categories() {
+
+		$category_1 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$category_2 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new DescriptionFactory();
+
+		$this->assertInstanceOf(
+			'SMW\Query\Language\ClassDescription',
+			$instance->newClassDescription( [ $category_1, $category_2 ] )
+		);
+	}
+
 	public function testCanConstructConceptDescription() {
 
 		$concept = $this->getMockBuilder( '\SMW\DIWikiPage' )

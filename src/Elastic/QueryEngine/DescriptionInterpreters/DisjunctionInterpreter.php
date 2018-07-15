@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\QueryBuilder;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\Disjunction;
 
 /**
@@ -14,17 +14,17 @@ use SMW\Query\Language\Disjunction;
 class DisjunctionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder ) {
+		$this->conditionBuilder = $conditionBuilder;
 	}
 
 	/**
@@ -48,7 +48,7 @@ class DisjunctionInterpreter {
 			// [[Foo.bar::123]] OR [[Foobar::123]]
 			$desc->isPartOfDisjunction = true;
 
-			if ( ( $param = $this->queryBuilder->interpretDescription( $desc, true ) ) !== [] ) {
+			if ( ( $param = $this->conditionBuilder->interpretDescription( $desc, true ) ) !== [] ) {
 
 				// @see SomePropertyInterpreter
 				// Collect a possible negation condition in case `must_not.property.exists`
@@ -67,7 +67,7 @@ class DisjunctionInterpreter {
 			return [];
 		}
 
-		$condition = $this->queryBuilder->newCondition( $params );
+		$condition = $this->conditionBuilder->newCondition( $params );
 		$condition->type( 'should' );
 
 		$condition->log( [ 'Disjunction' => $description->getQueryString() ] );
@@ -79,7 +79,7 @@ class DisjunctionInterpreter {
 		}
 
 		$existsConditions = [];
-		$fieldMapper = $this->queryBuilder->getFieldMapper();
+		$fieldMapper = $this->conditionBuilder->getFieldMapper();
 
 		// Extra condition that satisfies !/OR condition (see T:Q0905#5 and
 		// T:Q1106#4)
@@ -93,7 +93,7 @@ class DisjunctionInterpreter {
 
 		// We wrap the intermediary `should` clause in an extra `must` to ensure
 		// those properties are exists for the returned documents.
-		$condition = $this->queryBuilder->newCondition( [ $condition, $existsConditions ] );
+		$condition = $this->conditionBuilder->newCondition( [ $condition, $existsConditions ] );
 		$condition->type( 'must' );
 
 		return $condition;

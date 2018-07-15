@@ -3,10 +3,12 @@
 namespace SMW\Elastic\Connection;
 
 use Elasticsearch\ClientBuilder;
-use RuntimeException;
+use SMW\Elastic\Exception\ClientBuilderNotFoundException;
 use SMW\ApplicationFactory;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Options;
+use Psr\Log\LoggerAwareTrait;
+use Onoi\Cache\Cache;
 
 /**
  * @private
@@ -18,10 +20,17 @@ use SMW\Options;
  */
 class ConnectionProvider implements IConnectionProvider {
 
+	use LoggerAwareTrait;
+
 	/**
 	 * @var Options
 	 */
 	private $options;
+
+	/**
+	 * @var Cache
+	 */
+	private $cache;
 
 	/**
 	 * @var ElasticClient
@@ -32,9 +41,11 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @since 3.0
 	 *
 	 * @param Options $options
+	 * @param Cache $cache
 	 */
-	public function __construct( Options $options = null ) {
+	public function __construct( Options $options, Cache $cache ) {
 		$this->options = $options;
+		$this->cache = $cache;
 	}
 
 	/**
@@ -50,60 +61,49 @@ class ConnectionProvider implements IConnectionProvider {
 			return $this->connection;
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$settings = $applicationFactory->getSettings();
-
-		$options = new Options(
-			$settings->get( 'smwgElasticsearchConfig' )
-		);
-
-		$options->set(
-			'elastic.enabled',
-			strpos( $settings->get( 'smwgDefaultStore' ), 'Elastic' ) !== false
-		);
-
-		$options->set(
-			'endpoints',
-			$settings->get( 'smwgElasticsearchEndpoints' )
-		);
-
-		if ( ( $contents = $this->readFile( $settings->get( 'smwgElasticsearchProfile' ) ) ) ) {
-			$options->loadFromJSON( $contents, true );
-		}
-
 		$params = [
-			'hosts' => $options->get( 'endpoints' ),
-			'retries' => $options->dotGet( 'connection.retries', 1 ),
+			'hosts' => $this->options->get( 'endpoints' ),
+			'retries' => $this->options->dotGet( 'connection.retries', 1 ),
 
-		// Use `singleHandler` if you know you will never need async capabilities,
-		// since it will save a small amount of overhead by reducing indirection
-		//	'handler' => ClientBuilder::singleHandler()
+			'client' => [
+
+				// controls the request timeout
+				'timeout' => $this->options->dotGet( 'connection.timeout', 30 ),
+
+				// controls the original connection timeout duration
+				'connect_timeout' => $this->options->dotGet( 'connection.connect_timeout', 30 )
+			]
+
+			// Use `singleHandler` if you know you will never need async capabilities,
+			// since it will save a small amount of overhead by reducing indirection
+			// 'handler' => ClientBuilder::singleHandler()
 		];
 
-		if ( class_exists( '\Elasticsearch\ClientBuilder' ) ) {
+		if ( $this->hasClientBuilder() ) {
 			$this->connection = new Client(
 				ClientBuilder::fromConfig( $params, true ),
-				$applicationFactory->getCache(),
-				$options
+				$this->cache,
+				$this->options
 			);
 		} else {
 			$this->connection = new DummyClient();
 		}
 
 		$this->connection->setLogger(
-			$applicationFactory->getMediaWikiLogger( 'smw-elastic' )
+			$this->logger
 		);
 
-
-		$logger = $applicationFactory->getMediaWikiLogger( 'smw' );
-
-		$context = [
-			'role' => 'developer',
-			'provider' => 'elastic',
-			'hosts' => json_encode( $params['hosts'] )
-		];
-
-		$logger->info( "[Connection] '{provider}': {hosts}", $context );
+		$this->logger->info(
+			[
+				'Connection',
+				'{provider} : {hosts}'
+			],
+			[
+				'role' => 'developer',
+				'provider' => 'elastic',
+				'hosts' => $params['hosts']
+			]
+		);
 
 		return $this->connection;
 	}
@@ -117,19 +117,19 @@ class ConnectionProvider implements IConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function readFile( $file ) {
+	private function hasClientBuilder() {
 
-		if ( $file === false ) {
+		if ( $this->options->dotGet( 'is.elasticstore', false ) === false ) {
 			return false;
 		}
 
-		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, realpath( $file ) );
-
-		if ( is_readable( $file ) ) {
-			return file_get_contents( $file );
+		// Fail hard because someone selected the ElasticStore but forgot to install
+		// the elastic interface!
+		if ( !class_exists( '\Elasticsearch\ClientBuilder' ) ) {
+			throw new ClientBuilderNotFoundException();
 		}
 
-		throw new RuntimeException( "$file is inaccessible!" );
+		return true;
 	}
 
 }

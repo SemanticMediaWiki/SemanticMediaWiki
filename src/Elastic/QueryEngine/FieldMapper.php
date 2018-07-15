@@ -480,6 +480,18 @@ class FieldMapper {
 	}
 
 	/**
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-ids-query.html
+	 * @since 3.0
+	 *
+	 * @param mixed $value
+	 *
+	 * @return string
+	 */
+	public function ids( $value ) {
+		return [ 'ids' => [ "values" => $value ] ];
+	}
+
+	/**
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.1/query-dsl-term-query.html
 	 * @since 3.0
 	 *
