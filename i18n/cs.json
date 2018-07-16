@@ -209,7 +209,7 @@
 	"smw_smwadmin_updatestarted": "Byl spuštěn nový proces aktualizace sémantických dat.\nVšechna uložená data budou zkontrolována a, bude-li to nutné, znovu vytvořena nebo opravena.\nPrůběh aktualizace můžete sledovat na této speciální stránce.",
 	"smw_smwadmin_updatenotstarted": "Proces updatu již probíhá.\nNelze vytvořit další.",
 	"smw_smwadmin_updatestopped": "Všechny procesy aktualizace byly zastaveny.",
-	"smw_smwadmin_updatenotstopped": "Abyste zastavili běžící proces aktualizace, musíte zaškrtnout políčko, čímž potvrdíte, že si jste opravdu jist{{GNEDER:||a|(a)}}.",
+	"smw_smwadmin_updatenotstopped": "Abyste zastavili běžící proces aktualizace, musíte zaškrtnout políčko, čímž potvrdíte, že si jste opravdu jist{{GENDER:||a|(a)}}.",
 	"smw-admin-docu": "Tato speciální stránka vám pomůže s instalací a upgradem <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a>.\nPřed spuštěním administrativních funkcí nezapomeňte zálohovat cenná data.",
 	"smw-admin-db": "Instalace a upgrade databáze",
 	"smw-admin-dbdocu": "Aby mohla Semantic MediaWiki ukládat sémantická data, potřebuje rozšířit databázi MediaWiki.\nFunkce níže zajišťuje, že je vaše databáze správně nastavena.\nZměny provedené v tomto kroku nemají žádný vliv na zbytek databáze MediaWiki, a lze je snadno vzít zpět.\nTuto přípravnou funkci můžete spustit vícekrát, aniž by došlo k jakémukoli poškození, ale je to nutné pouze jednou při instalaci nebo upgradu.",

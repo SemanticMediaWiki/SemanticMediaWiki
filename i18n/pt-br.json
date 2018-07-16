@@ -87,7 +87,7 @@
 	"smw-paramdesc-distributionlimit": "Limite a distribuição do valor para a contagem de apenas alguns valores.",
 	"smw-paramdesc-aggregation": "Especifique a que a agregação deve se relacionar",
 	"smw-paramdesc-template": "Nome da predefinição com a qual são exibidos os resultados",
-	"smw-paramdesc-columns": "Número de colunas em que os resultados serão apresentados (por padrão, $1)",
+	"smw-paramdesc-columns": "O número de colunas nas quais exibir resultados",
 	"smw-paramdesc-userparam": "Valor fornecido a cada chamada da predefinição, se uma predefinição for utilizada",
 	"smw-paramdesc-class": "Uma classe CSS adicional para ser definida para a lista",
 	"smw-paramdesc-introtemplate": "Nome de uma predefinição para apresentar antes dos resultados da consulta, se existirem",

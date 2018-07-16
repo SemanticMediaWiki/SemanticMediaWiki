@@ -14,7 +14,8 @@
 			"Милан Јелисавчић",
 			"Acamicamacaraca",
 			"Prevodim",
-			"BadDog"
+			"BadDog",
+			"Zoranzoki21"
 		]
 	},
 	"smw_viewasrdf": "RDF довод",
@@ -49,7 +50,7 @@
 	"smw-paramdesc-outro": "Текст који треба да се прикаже иза резултата упита (у случају потребе)",
 	"smw-paramdesc-default": "Текст који треба да се прикаже у случају да упит није дао резултате",
 	"smw-paramdesc-sep": "Раздвајач за вредности",
-	"smw-paramdesc-columns": "Број колона у којима ће се приказати резултати (предодређено $1)",
+	"smw-paramdesc-columns": "Број колона у којима ће се приказати резултати",
 	"smw-paramdesc-embedonly": "Не приказуј заглавља",
 	"smw-paramdesc-searchlabel": "Текст везе с резултатима",
 	"smw-paramdesc-template-arguments": "Подешавање испоруке именованих параметара до шаблона",

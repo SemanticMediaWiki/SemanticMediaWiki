@@ -74,7 +74,7 @@
 	"smw-paramdesc-intro": "Text som ska visas före resultatet (om det finns något)",
 	"smw-paramdesc-outro": "Text som ska visas efter resultatet (om det finns något)",
 	"smw-paramdesc-default": "Text som ska visas om det inte finns något resultat",
-	"smw-paramdesc-sep": "Skiljetecken för värden",
+	"smw-paramdesc-sep": "Skiljetecken mellan resultaten",
 	"smw-paramdesc-showsep": "Visa skiljetecken högst upp i CSV-filen (\"sep=<value>\")",
 	"smw-paramdesc-distribution": "Räkna och visa antalet förekomster istället för att visa alla värden.",
 	"smw-paramdesc-distributionsort": "Sortera värdena efter hur ofta de förekommer.",

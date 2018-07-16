@@ -72,7 +72,7 @@
 	"smw-paramdesc-distributionsort": "למיין את התפלגות הערכים לפי מניין המופעים.",
 	"smw-paramdesc-distributionlimit": "להגביל את התפלגות הערכים לפי מניין של ערכים מסוימים בלבד.",
 	"smw-paramdesc-template": "שם התבנית להצגת התדפיסים",
-	"smw-paramdesc-columns": "מספר העמודות להצגת התוצאות (ברירת המחדל היא $1)",
+	"smw-paramdesc-columns": "מספר העמודות להצגת התוצאות",
 	"smw-paramdesc-userparam": "הערך המועבר לכל קריאה לתבנית, אם נעשה שימוש בתבנית",
 	"smw-paramdesc-class": "הגדרת מחלקת CSS נוספת עבור הרשימה",
 	"smw-paramdesc-introtemplate": "שם התבנית שתוצג לפני תוצאות השאילתה, אם יש תוצאות",

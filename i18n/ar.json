@@ -77,7 +77,7 @@
 	"smw-paramdesc-distributionlimit": "حدّ توزيع القيم بتواتر بعض القيم لا كلّها.",
 	"smw-paramdesc-aggregation": "حدد ما يجب أن يرتبط به التجميع",
 	"smw-paramdesc-template": "اسم القالب المستخدم لعرض المخرجات به",
-	"smw-paramdesc-columns": "عدد الأعمدة لعرض النتائج بها (المبدئي $1)",
+	"smw-paramdesc-columns": "عدد الأعمدة لعرض النتائج بها",
 	"smw-paramdesc-userparam": "قيمة تُمرَّر في كل استدعاء قالب إذا كان القالب سيُستخدَم.",
 	"smw-paramdesc-class": "فئة CSS إضافية لتعيين للقائمة",
 	"smw-paramdesc-introtemplate": "اسم قالب يُعرض قبل نتائج الاستعلام، إنْ وُجِدَت.",
