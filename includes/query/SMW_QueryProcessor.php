@@ -295,7 +295,9 @@ class SMWQueryProcessor implements QueryContext {
 
 				if ( count( $parts ) >= 2 ) {
 					// don't trim here, some parameters care for " "
-					$parameters[strtolower( trim( $parts[0] ) )] = $parts[1];
+					// #3196 Ensure to decode `-3D` from encodeEq to
+					// support things like `|intro=[[File:Foo.png|link=Bar]]`
+					$parameters[strtolower( trim( $parts[0] ) )] = str_replace( array( '-3D' ), array( '=' ), $parts[1] );
 				} else {
 					$queryString .= $rawParam;
 				}
