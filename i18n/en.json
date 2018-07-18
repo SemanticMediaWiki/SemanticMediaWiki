@@ -402,6 +402,7 @@
 	"smw-editpage-concept-annotation-enabled":"This concept can be extended using the #concept parser function. For a description on how to use #concept, see the [https://www.semantic-mediawiki.org/wiki/Help:Concepts concept] help page.",
 	"log-name-smw": "Semantic MediaWiki log",
 	"log-show-hide-smw": "$1 Semantic MediaWiki log",
+	"logeventslist-smw-log": "Semantic MediaWiki log",
 	"log-description-smw": "Activities for [https://www.semantic-mediawiki.org/wiki/Help:Logging enabled event types] that have been reported by Semantic MediaWiki and its components.",
 	"logentry-smw-maintenance":"Maintenance related events emitted by Semantic MediaWiki",
 	"smw-datavalue-import-unknown-namespace":"The import namespace \"$1\" is unknown. Please ensure that OWL import details are available via [[MediaWiki:Smw import $1]]",
