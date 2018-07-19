@@ -25,7 +25,7 @@ class FakeRawResultProvider {
 	}
 
 	/**
-	 * @see @see http://www.w3.org/2009/sparql/xml-results/output2.srx
+	 * @see http://www.w3.org/2009/sparql/xml-results/output2.srx
 	 */
 	public function getBooleanSparqlResultXml() {
 		return $this->getFixtureContentsFor( 'boolean-sparql-result.xml' );
