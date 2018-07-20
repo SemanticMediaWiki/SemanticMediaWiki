@@ -48,7 +48,7 @@ class FeedExportPrinterTest extends \PHPUnit_Framework_TestCase {
 		$provider = array();
 
 		// #0
-		// http://www.utexas.edu/learn/html/spchar.html
+		// https://web.archive.org/web/20160802052417/http://www.utexas.edu/learn/html/spchar.html
 		$provider[] = array(
 			array(
 				'items'       => array(),
