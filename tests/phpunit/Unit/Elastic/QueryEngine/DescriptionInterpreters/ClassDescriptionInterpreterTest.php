@@ -73,7 +73,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$descriptionFactory->newClassDescription( $cat_foo ),
 			false,
 			[],
-			'{"bool":{"should":[{"term":{"P:42.wpgID":1001}}]}}'
+			'{"bool":{"filter":[{"term":{"P:42.wpgID":1001}}]}}'
 		];
 
 		yield [
@@ -106,7 +106,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$descriptionFactory->newClassDescription( $cat_foo ),
 			false,
 			[ 5000, 5001 ],
-			'{"bool":{"should":[{"bool":{"should":[{"term":{"P:42.wpgID":1001}},{"terms":{"P:42.wpgID":[5000,5001]}}]}}]}}'
+			'{"bool":{"filter":[{"bool":{"should":[{"term":{"P:42.wpgID":1001}},{"terms":{"P:42.wpgID":[5000,5001]}}]}}]}}'
 		];
 
 		yield [
