@@ -82,7 +82,7 @@ return array(
 			PropertyValueFormatter::class
 		);
 
-		return new PropertyValueFormatter();
+		return new PropertyValueFormatter( $containerBuilder->singleton( 'PropertySpecificationLookup' ) );
 	},
 
 	/**

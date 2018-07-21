@@ -366,9 +366,7 @@ class PropertyValue extends DataValue {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
 
-		$this->valueFormatter->setDataValue( $this );
-
-		return $this->valueFormatter->format( DataValueFormatter::WIKI_SHORT, $linker );
+		return $this->valueFormatter->format( $this, [ DataValueFormatter::WIKI_SHORT, $linker ] );
 	}
 
 	/**
@@ -382,9 +380,7 @@ class PropertyValue extends DataValue {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
 
-		$this->valueFormatter->setDataValue( $this );
-
-		return $this->valueFormatter->format( DataValueFormatter::HTML_SHORT, $linker );
+		return $this->valueFormatter->format( $this, [ DataValueFormatter::HTML_SHORT, $linker ] );
 	}
 
 	/**
@@ -398,9 +394,7 @@ class PropertyValue extends DataValue {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
 
-		$this->valueFormatter->setDataValue( $this );
-
-		return $this->valueFormatter->format( DataValueFormatter::WIKI_LONG, $linker );
+		return $this->valueFormatter->format( $this, [ DataValueFormatter::WIKI_LONG, $linker ] );
 	}
 
 	/**
@@ -414,9 +408,7 @@ class PropertyValue extends DataValue {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
 
-		$this->valueFormatter->setDataValue( $this );
-
-		return $this->valueFormatter->format( DataValueFormatter::HTML_LONG, $linker );
+		return $this->valueFormatter->format( $this, [ DataValueFormatter::HTML_LONG, $linker ] );
 	}
 
 	/**
@@ -430,9 +422,7 @@ class PropertyValue extends DataValue {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
 
-		$this->valueFormatter->setDataValue( $this );
-
-		return $this->valueFormatter->format( DataValueFormatter::VALUE );
+		return $this->valueFormatter->format( $this, [ DataValueFormatter::VALUE ] );
 	}
 
 	/**
@@ -450,14 +440,12 @@ class PropertyValue extends DataValue {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
 
-		$this->valueFormatter->setDataValue( $this );
-
-		$this->valueFormatter->setOption(
+		$this->setOption(
 			self::FORMAT_LABEL,
 			$format
 		);
 
-		return $this->valueFormatter->format( self::FORMAT_LABEL, $linker );
+		return $this->valueFormatter->format( $this, [ self::FORMAT_LABEL, $linker ] );
 	}
 
 	/**
@@ -475,9 +463,7 @@ class PropertyValue extends DataValue {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
 
-		$this->valueFormatter->setDataValue( $this );
-
-		return $this->valueFormatter->format( self::SEARCH_LABEL );
+		return $this->valueFormatter->format( $this, [ self::SEARCH_LABEL ] );
 	}
 
 	/**
