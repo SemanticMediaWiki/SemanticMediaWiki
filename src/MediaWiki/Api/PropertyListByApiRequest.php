@@ -263,7 +263,7 @@ class PropertyListByApiRequest {
 
 	private function findPropertyDescriptionBy( DIProperty $property ) {
 
-		$description = $this->propertySpecificationLookup->getPropertyDescriptionBy(
+		$description = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
 			$property,
 			$this->languageCode
 		);

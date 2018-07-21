@@ -175,7 +175,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->hasUniquenessConstraintBy( $property )
+			$instance->hasUniquenessConstraint( $property )
 		);
 	}
 
@@ -290,7 +290,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getAllowedValuesBy( $property )
+			$instance->getAllowedValues( $property )
 		);
 	}
 
@@ -369,7 +369,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getPropertyDescriptionBy( $property )
+			$instance->getPropertyDescriptionByLanguageCode( $property )
 		);
 	}
 
@@ -405,7 +405,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			1001,
-			$instance->getPropertyDescriptionBy( $property, 'en' )
+			$instance->getPropertyDescriptionByLanguageCode( $property, 'en' )
 		);
 	}
 
@@ -444,7 +444,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getPropertyDescriptionBy( $property )
+			$instance->getPropertyDescriptionByLanguageCode( $property )
 		);
 	}
 

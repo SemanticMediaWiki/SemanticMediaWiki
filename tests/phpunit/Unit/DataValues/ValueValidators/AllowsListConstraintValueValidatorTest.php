@@ -45,7 +45,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator',
-			new AllowsListConstraintValueValidator( $this->allowsListValueParser )
+			new AllowsListConstraintValueValidator( $this->allowsListValueParser, $this->propertySpecificationLookup )
 		);
 	}
 
@@ -54,7 +54,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		$property = $this->dataItemFactory->newDIProperty( 'ValidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedValuesBy' )
+			->method( 'getAllowedValues' )
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Foo' ) ) ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
@@ -79,7 +79,8 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
 
 		$instance = new AllowsListConstraintValueValidator(
-			$this->allowsListValueParser
+			$this->allowsListValueParser,
+			$this->propertySpecificationLookup
 		);
 
 		$instance->validate( $dataValue );
@@ -94,7 +95,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		$property = $this->dataItemFactory->newDIProperty( 'InvalidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedValuesBy' )
+			->method( 'getAllowedValues' )
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'NOTALLOWED' ) ) ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
@@ -119,7 +120,8 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
 
 		$instance = new AllowsListConstraintValueValidator(
-			$this->allowsListValueParser
+			$this->allowsListValueParser,
+			$this->propertySpecificationLookup
 		);
 
 		$instance->validate( $dataValue );
@@ -134,7 +136,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		$property = $this->dataItemFactory->newDIProperty( 'InvalidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedValuesBy' )
+			->method( 'getAllowedValues' )
 			->will( $this->returnValue(
 				array(
 					$this->dataItemFactory->newDIBlob( 'VAL1' ),
@@ -172,7 +174,8 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
 
 		$instance = new AllowsListConstraintValueValidator(
-			$this->allowsListValueParser
+			$this->allowsListValueParser,
+			$this->propertySpecificationLookup
 		);
 
 		$instance->validate( $dataValue );

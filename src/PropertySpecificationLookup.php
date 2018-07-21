@@ -201,7 +201,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return boolean
 	 */
-	public function hasUniquenessConstraintBy( DIProperty $property ) {
+	public function hasUniquenessConstraint( DIProperty $property ) {
 
 		$hasUniquenessConstraint = false;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVUC' ) );
@@ -289,7 +289,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return array
 	 */
-	public function getAllowedValuesBy( DIProperty $property ) {
+	public function getAllowedValues( DIProperty $property ) {
 
 		$allowsValues = array();
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAL' ) );
@@ -380,7 +380,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return string
 	 */
-	public function getPropertyDescriptionBy( DIProperty $property, $languageCode = '', $linker = null ) {
+	public function getPropertyDescriptionByLanguageCode( DIProperty $property, $languageCode = '', $linker = null ) {
 
 		// Take the linker into account (Special vs. in page rendering etc.)
 		$languageCode = $languageCode === '' ? $this->languageCode : $languageCode;
