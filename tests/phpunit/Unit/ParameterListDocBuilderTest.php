@@ -9,7 +9,7 @@ use SMW\Tests\Utils\Validators\StringValidator;
 
 /**
  * @covers SMW\ParameterListDocBuilder
- * @group semanitc-mediawiki
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

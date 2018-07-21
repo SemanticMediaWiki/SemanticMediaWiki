@@ -10,7 +10,7 @@ use Parser;
 use ParserHooks\HookDefinition;
 use ParserHooks\HookHandler;
 use SMW\ParameterListDocBuilder;
-use SMWQueryProcessor;
+use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Class that provides the {{#smwdoc}} parser function, which displays parameter
@@ -35,99 +35,30 @@ class DocumentationParserFunction implements HookHandler {
 	 * @return mixed
 	 */
 	public function handle( Parser $parser, ProcessingResult $result ) {
+
 		if ( $result->hasFatal() ) {
 			return $this->getOutputForErrors( $result->getErrors() );
 		}
 
 		$parameters = $result->getParameters();
+		$format = $parameters['format']->getValue();
+
+		$formatParameters = QueryProcessor::getFormatParameters(
+			$format
+		);
 
 		$this->language = $parameters['language']->getValue();
 
-		if ( $this->formatHasNoParameters( $parameters ) ) {
-			return $this->getNoParametersMessage( $parameters['format']->getValue() );
+		if ( $formatParameters === [] ) {
+			return $this->msg( 'smw-smwdoc-default-no-parameter-list', $format );
 		}
 
-		return $this->buildParameterListDocumentation( $parameters );
-	}
-
-	private function formatHasNoParameters( array $parameters ) {
-		return $parameters['parameters']->getValue() === 'specific'
-			&& in_array( $parameters['format']->getValue(), [ 'debug', 'count' ] );
-	}
-
-	private function getNoParametersMessage( $formatName ) {
-		return wfMessage(
-			'smw-smwdoc-default-no-parameter-list',
-			$formatName
-		)->inLanguage( $this->language )->text();
+		return $this->buildParameterListDocumentation( $parameters, $formatParameters );
 	}
 
 	/**
-	 * @param ProcessedParam[] $parameters
-	 *
-	 * @return string
+	 * @return HookDefinition
 	 */
-	private function buildParameterListDocumentation( array $parameters ) {
-		$params = $this->getFormatParameters( $parameters['format']->getValue() );
-
-		if ( $parameters['parameters']->getValue() === 'specific' ) {
-			foreach ( array_keys( SMWQueryProcessor::getParameters() ) as $name ) {
-				unset( $params[$name] );
-			}
-		}
-		elseif ( $parameters['parameters']->getValue() === 'base' ) {
-			foreach ( array_diff_key( $params, SMWQueryProcessor::getParameters() ) as $param ) {
-				unset( $params[$param->getName()] );
-			}
-		}
-
-		$docBuilder = new ParameterListDocBuilder( $this->newMessageFunction() );
-
-		$parameterTable = $docBuilder->getParameterTable( $params );
-
-		if ( $parameterTable !== ''  ) {
-			return $parameterTable;
-		}
-
-		return $this->getNoParametersMessage( $parameters['format']->getValue() );
-	}
-
-	private function newMessageFunction() {
-		$language = $this->language;
-
-		return function() use ( $language ) {
-			$args = func_get_args();
-			$key = array_shift( $args );
-			return wfMessage( $key )->params( $args )->useDatabase( true )->inLanguage( $language )->text();
-		};
-	}
-
-	/**
-	 * @param string $format
-	 *
-	 * @return ParamDefinition[]
-	 */
-	private function getFormatParameters( $format ) {
-		if ( !array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
-			return [];
-		}
-
-		$resultPrinter = SMWQueryProcessor::getResultPrinter( $format );
-
-		return ParamDefinition::getCleanDefinitions(
-			$resultPrinter->getParamDefinitions( SMWQueryProcessor::getParameters( null, $resultPrinter ) )
-		);
-	}
-
-	/**
-	 * @param ProcessingError[] $errors
-	 * @return string
-	 */
-	private function getOutputForErrors( $errors ) {
-		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
-		return 'A fatal error occurred in the #smwdoc parser function';
-	}
-
 	public static function getHookDefinition() {
 		return new HookDefinition(
 			'smwdoc',
@@ -151,6 +82,54 @@ class DocumentationParserFunction implements HookHandler {
 			),
 			array( 'format', 'language', 'parameters' )
 		);
+	}
+
+	/**
+	 * @param ProcessedParam[] $parameters
+	 *
+	 * @return string
+	 */
+	private function buildParameterListDocumentation( array $parameters, $formatParameters ) {
+
+		if ( $parameters['parameters']->getValue() === 'specific' ) {
+			foreach ( array_keys( QueryProcessor::getParameters() ) as $name ) {
+				unset( $formatParameters[$name] );
+			}
+		} elseif ( $parameters['parameters']->getValue() === 'base' ) {
+			foreach ( array_diff_key( $formatParameters, QueryProcessor::getParameters() ) as $param ) {
+				unset( $formatParameters[$param->getName()] );
+			}
+		}
+
+		$docBuilder = new ParameterListDocBuilder(
+			[ $this, 'msg' ]
+		);
+
+		if ( ( $parameterTable = $docBuilder->getParameterTable( $formatParameters ) ) !== ''  ) {
+			return $parameterTable;
+		}
+
+		return $this->msg( 'smw-smwdoc-default-no-parameter-list', $parameters['format']->getValue() );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param ...$args
+	 *
+	 * @return string
+	 */
+	public function msg( ...$args ) {
+		return wfMessage( array_shift( $args ) )->params( $args )->useDatabase( true )->inLanguage( $this->language )->text();
+	}
+
+	/**
+	 * @param ProcessingError[] $errors
+	 * @return string
+	 */
+	private function getOutputForErrors( $errors ) {
+		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
+		return 'A fatal error occurred in the #smwdoc parser function';
 	}
 
 }

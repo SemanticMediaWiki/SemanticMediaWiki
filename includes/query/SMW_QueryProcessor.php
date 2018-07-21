@@ -592,15 +592,19 @@ class SMWQueryProcessor implements QueryContext {
 	public static function getFormatParameters( $format ) {
 		SMWParamFormat::resolveFormatAliases( $format );
 
-		if ( array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
-			$resultPrinter = self::getResultPrinter( $format );
-
-			return ParamDefinition::getCleanDefinitions(
-				$resultPrinter->getParamDefinitions( self::getParameters( null, $resultPrinter ) )
-			);
+		if ( !array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
+			return [];
 		}
 
-		return [];
+		$resultPrinter = self::getResultPrinter( $format );
+
+		if ( $resultPrinter instanceof \SMW\Query\ResultPrinters\NullResultPrinter ) {
+			return [];
+		}
+
+		return ParamDefinition::getCleanDefinitions(
+			$resultPrinter->getParamDefinitions( self::getParameters( null, $resultPrinter ) )
+		);
 	}
 
 }
