@@ -18,6 +18,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $outputFormatter;
 	private $conditionBuilder;
+	private $connection;
 
 	protected function setUp() {
 
@@ -30,6 +31,10 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -69,6 +74,16 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\Elastic\Indexer\Indexer',
 			$instance->newIndexer( $this->store )
+		);
+	}
+
+	public function testCanConstructRollover() {
+
+		$instance = new ElasticFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\Indexer\Rollover',
+			$instance->newRollover( $this->connection )
 		);
 	}
 

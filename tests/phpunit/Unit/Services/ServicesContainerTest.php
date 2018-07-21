@@ -45,6 +45,23 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'test', $mock );
 	}
 
+	public function testGetTypedService() {
+
+		$instance = new ServicesContainer(
+			[
+				'test' => [
+					'_service' => [ $this, 'stdClassService' ],
+					'_type' => '\stdClass'
+				]
+			]
+		);
+
+		$this->assertInstanceOf(
+			'\stdClass',
+			$instance->get( 'test' )
+		);
+	}
+
 	public function testGet_MultipleArgs() {
 
 		$fake = $this->getMockBuilder( '\stdClass' )
@@ -81,6 +98,26 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'test', $fake );
 	}
 
+	public function testAddClosure() {
+
+		$fake = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'runService' ] )
+			->getMock();
+
+		$fake->expects( $this->once() )
+			->method( 'runService' );
+
+		$instance = new ServicesContainer();
+
+		$closure = function( $arg ) use( $fake ) {
+			$fake->runService( $arg );
+		};
+
+		$instance->add( 'test', $closure );
+		$instance->get( 'test', $fake );
+	}
+
 	public function testUnknownServiceThrowsException() {
 
 		$instance = new ServicesContainer();
@@ -103,6 +140,10 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 
 	public function fakeService( $fake, $arg = '' ) {
 		$fake->runService( $arg );
+	}
+
+	public function stdClassService( $arg = '' ) {
+		return new \stdClass();
 	}
 
 }

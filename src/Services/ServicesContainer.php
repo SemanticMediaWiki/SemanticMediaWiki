@@ -39,18 +39,32 @@ class ServicesContainer {
 			throw new RuntimeException( "$key is an unknown service!" );
 		};
 
-		if ( !is_callable( $this->services[$key] ) ) {
+		$type = null;
+		$service = $this->services[$key];
+
+		if ( !is_callable( $service ) && isset( $service['_type'] ) && isset( $service['_service'] ) ) {
+			$type = $service['_type'];
+			$service = $service['_service'];
+		}
+
+		if ( !is_callable( $service ) ) {
 			throw new RuntimeException( "$key is not a callable service!" );
 		};
 
-		return $this->services[$key]( ...$args );
+		$instance = $service( ...$args );
+
+		if ( $type !== null && !is_a( $instance, $type ) ) {
+			throw new RuntimeException( "Service $key is not of the expected $type type!" );
+		}
+
+		return $instance;
 	}
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param string $key
-	 * @param  callable $service
+	 * @param callable $service
 	 */
 	public function add( $key, callable $service ) {
 		$this->services[$key] = $service;

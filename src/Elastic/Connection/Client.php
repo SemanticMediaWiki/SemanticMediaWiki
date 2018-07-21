@@ -112,8 +112,8 @@ class Client {
 	 *
 	 * @return string
 	 */
-	public static function getIndexNameByType( $type ) {
-		return self::getIndexName( $type );
+	public function getIndexNameByType( $type ) {
+		return $this->getIndexName( $type );
 	}
 
 	/**
@@ -123,7 +123,7 @@ class Client {
 	 *
 	 * @return string
 	 */
-	public static function getIndexName( $type ) {
+	public function getIndexName( $type ) {
 		static $indices = [];
 
 		if ( !isset( $indices[$type] ) ) {
@@ -766,15 +766,19 @@ class Client {
 			$this->logger->info( 'Failed the search with: {exception}', $context );
 		}
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'production',
-			'index' => $params['index'],
-			'query' => json_encode( $params ),
-			'procTime' => microtime( true ) + $time
-		];
-
-		$this->logger->info( 'SEARCH: {query}, queryTime: {procTime}', $context );
+		$this->logger->info(
+			[
+				'Search',
+				'{query}, queryTime: {procTime}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'user',
+				'index' => $params['index'],
+				'query' => $params,
+				'procTime' => microtime( true ) + $time
+			]
+		);
 
 		return [ $results, $errors ];
 	}

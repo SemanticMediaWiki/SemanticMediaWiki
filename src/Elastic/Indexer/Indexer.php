@@ -4,6 +4,7 @@ namespace SMW\Elastic\Indexer;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
+use SMW\Services\ServicesContainer;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
@@ -29,6 +30,11 @@ class Indexer {
 	 * @var Store
 	 */
 	private $store;
+
+	/**
+	 * @var ServicesContainer
+	 */
+	private $servicesContainer;
 
 	/**
 	 * @var TextIndexer
@@ -59,22 +65,11 @@ class Indexer {
 	 * @since 3.0
 	 *
 	 * @param Store $store
-	 * @param TextIndexer|null $textIndexer
-	 * @param FileIndexer|null $fileIndexer
+	 * @param ServicesContainer $servicesContainer
 	 */
-	public function __construct( Store $store, TextIndexer $textIndexer = null, FileIndexer $fileIndexer = null ) {
+	public function __construct( Store $store, ServicesContainer $servicesContainer ) {
 		$this->store = $store;
-
-		if ( $textIndexer === null ) {
-			$textIndexer = new TextIndexer( $this );
-		}
-
-		if ( $fileIndexer === null ) {
-			$fileIndexer = new FileIndexer( $this );
-		}
-
-		$this->textIndexer = $textIndexer;
-		$this->fileIndexer = $fileIndexer;
+		$this->servicesContainer = $servicesContainer;
 	}
 
 	/**
@@ -102,6 +97,10 @@ class Indexer {
 	 */
 	public function getTextIndexer() {
 
+		if ( $this->textIndexer === null ) {
+			$this->textIndexer = $this->servicesContainer->get( 'TextIndexer', $this );
+		}
+
 		$this->textIndexer->setLogger(
 			$this->logger
 		);
@@ -115,6 +114,10 @@ class Indexer {
 	 * @return FileIndexer
 	 */
 	public function getFileIndexer() {
+
+		if ( $this->fileIndexer === null ) {
+			$this->fileIndexer = $this->servicesContainer->get( 'FileIndexer', $this );
+		}
 
 		$this->fileIndexer->setLogger(
 			$this->logger
@@ -164,17 +167,39 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 */
-	public function drop() {
-		$this->doDrop( ElasticClient::TYPE_DATA );
-		$this->doDrop( ElasticClient::TYPE_LOOKUP );
+	public function setup() {
+
+		$rollover = $this->servicesContainer->get(
+			'Rollover',
+			$this->store->getConnection( 'elastic' )
+		);
+
+		$rollover->update(
+			ElasticClient::TYPE_DATA
+		);
+
+		$rollover->update(
+			ElasticClient::TYPE_LOOKUP
+		);
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function setup() {
-		$this->doSetup( ElasticClient::TYPE_DATA );
-		$this->doSetup( ElasticClient::TYPE_LOOKUP );
+	public function drop() {
+
+		$rollover = $this->servicesContainer->get(
+			'Rollover',
+			$this->store->getConnection( 'elastic' )
+		);
+
+		$rollover->delete(
+			ElasticClient::TYPE_DATA
+		);
+
+		$rollover->delete(
+			ElasticClient::TYPE_LOOKUP
+		);
 	}
 
 	/**
@@ -675,65 +700,6 @@ class Indexer {
 		//	$text = \SMW\Parser\LinksEncoder::removeAnnotation( $text );
 
 		return $text;
-	}
-
-	private function doSetup( $type ) {
-
-		$connection = $this->store->getConnection( 'elastic' );
-		$indices = $connection->indices();
-
-		$index = $connection->getIndexNameByType( $type );
-
-		// Shouldn't happen but just in case where the root index is
-		// used as index but not an alias
-		if ( $indices->exists( [ 'index' => "$index" ] ) && !$indices->existsAlias( [ 'name' => "$index" ] ) ) {
-			$indices->delete(  [ 'index' => "$index" ] );
-		}
-
-		// Check v1/v2 and if both exists (which shouldn't happen but most likely
-		// caused by an unfinshed rebuilder run) then use v1 as master
-		if ( $indices->exists( [ 'index' => "$index-v1" ] ) ) {
-
-			// Just in case
-			if ( $indices->exists( [ 'index' => "$index-v2" ] ) ) {
-				$indices->delete(  [ 'index' => "$index-v2" ] );
-			}
-
-			$actions[] = [ 'add' => [ 'index' => "$index-v1", 'alias' => $index ] ];
-		} elseif ( $indices->exists( [ 'index' => "$index-v2" ] ) ) {
-			$actions[] = [ 'add' => [ 'index' => "$index-v2", 'alias' => $index ] ];
-		} else {
-			$version = $connection->createIndex( $type );
-
-			$actions = [
-				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
-			];
-		}
-
-		$params['body'] = [ 'actions' => $actions ];
-		$indices->updateAliases( $params );
-	}
-
-	private function doDrop( $type ) {
-
-		$connection = $this->store->getConnection( 'elastic' );
-		$indices = $connection->indices();
-
-		$index = $connection->getIndexNameByType( $type );
-
-		if ( $indices->exists( [ 'index' => "$index-v1" ] ) ) {
-			$indices->delete( [ 'index' => "$index-v1" ] );
-		}
-
-		if ( $indices->exists( [ 'index' => "$index-v2" ] ) ) {
-			$indices->delete( [ 'index' => "$index-v2" ] );
-		}
-
-		if ( $indices->exists( [ 'index' => "$index" ] ) && !$indices->existsAlias( [ 'name' => "$index" ] ) ) {
-			$indices->delete( [ 'index' => "$index" ] );
-		}
-
-		$connection->releaseLock( $type );
 	}
 
 }
