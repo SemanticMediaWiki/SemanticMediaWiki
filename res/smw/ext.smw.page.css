@@ -100,7 +100,7 @@
 }
 
 .smw-page-navigation {
-	margin-top: 0em;
+	margin-top: 0.8em;
 }
 
 .smw-page-nav-note, .smw-page-nav-container {
@@ -120,6 +120,49 @@
 
 .smw-page-nav-right {
 	float: right;
+}
+
+.smw-ui-pagination .page-link {
+    display: inline-block;
+    padding: .30rem .55rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.smw-ui-pagination .page-link:first-child {
+    margin-left: 0;
+    border-top-left-radius: .2rem;
+    border-bottom-left-radius: .2rem;
+ }
+
+.smw-ui-pagination .page-link:last-child {
+    border-top-right-radius: .2rem;
+    border-bottom-right-radius: .2rem;
+}
+
+.smw-ui-pagination .page-link:hover {
+    color: #0056b3;
+    text-decoration: none;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.smw-ui-pagination .page-link.link-disabled {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+.smw-ui-pagination .page-link.link-active {
+    z-index: 1;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
 }
 
 .smw-property-page-results .header-title {
@@ -178,6 +221,34 @@
 	border: 1px solid #ddd;
 }
 
+.smw-ui-input-filter {
+	display: inline-block;
+    padding: 0 .25rem;
+    /* margin-left: 10px; */
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-top-left-radius: .2rem;
+    border-bottom-left-radius: .2rem;
+    border-top-right-radius: .2rem;
+    border-bottom-right-radius: .2rem;
+}
+
+.smw-ui-input-filter label {
+	margin-left: 0.25rem;
+}
+
+.smw-ui-input-filter input {
+	border :0px solid #ddd;
+    padding: .42rem .55rem .35rem .55rem;
+    border-top-left-radius: .0rem;
+    border-bottom-left-radius: .0rem;
+    outline: none;
+    border-left: 0.1em solid #ddd;
+    /* border-left: 0; */
+    margin-left: 0.45rem;
+}
 
 .smw-property-page-results .value-row:nth-child(odd) {
 	/* background-color: #f9f9f9; */
@@ -248,7 +319,7 @@
 	.smw-property-page-results .smwprops {
 		width: 100%;
 	}
-	
+
 	.smw-property-page-results > .smw-table-row .smwpropname {
 		text-align: left;
 		vertical-align: top;

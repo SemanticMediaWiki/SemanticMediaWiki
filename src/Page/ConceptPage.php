@@ -98,7 +98,7 @@ class ConceptPage extends Page {
 			wfMessage( 'smw_conceptarticlecount', ( $resultCount < $limit ? $resultCount : $limit ) )->parse()
 		);
 
-		$navigationLinks =  '<div class="smw-page-navigation"><div class="clearfix">' . ListPager::getLinks( $this->mTitle, $limit, $offset, $resultCount, $query ) . '</div>' . $countMessage . '</div>';
+		$navigationLinks =  '<div class="smw-page-navigation"><div class="clearfix">' . ListPager::pagination( $this->mTitle, $limit, $offset, $resultCount, $query ) . '</div>' . $countMessage . '</div>';
 
 		return Html::element( 'div', array( 'id' => 'smwfootbr' ) ) .
 			Html::element( 'a', array( 'name' => 'SMWResults' ), null ) .
