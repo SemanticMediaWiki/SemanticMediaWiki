@@ -69,4 +69,30 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetTitleSnippet() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->any() )
+			->method( 'getFragment' )
+			->will( $this->returnValue( '' ) );
+
+		$instance = SearchResult::newFromTitle( $title );
+
+		$this->assertEquals(
+			'Foo',
+			$instance->getTitleSnippet()
+		);
+	}
+
 }

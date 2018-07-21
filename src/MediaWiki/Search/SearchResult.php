@@ -2,6 +2,9 @@
 
 namespace SMW\MediaWiki\Search;
 
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
+
 /**
  * @ingroup SMW
  *
@@ -45,9 +48,16 @@ class SearchResult extends \SearchResult {
 	 */
 	public function getTitleSnippet() {
 
-		// Extend the title preferably using the DISPLAYTITLE if available!
+		if ( !isset( $this->mTitle ) ) {
+			return '';
+		}
 
-		return '';
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			DIWikiPage::newFromTitle( $this->mTitle )
+		);
+
+		// Will return the DISPLAYTITLE, if available
+		return $dataValue->getPreferredCaption();
 	}
 
 }
