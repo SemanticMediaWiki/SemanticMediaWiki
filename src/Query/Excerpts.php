@@ -25,6 +25,11 @@ class Excerpts {
 	protected $noHighlight = false;
 
 	/**
+	 * @var boolean
+	 */
+	protected $hasHighlight = false;
+
+	/**
 	 * @since 3.0
 	 */
 	public function noHighlight() {
@@ -78,6 +83,15 @@ class Excerpts {
 	 */
 	public function getExcerpts() {
 		return $this->excerpts;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function hasHighlight() {
+		return $this->hasHighlight;
 	}
 
 }

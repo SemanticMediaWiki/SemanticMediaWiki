@@ -72,10 +72,8 @@ class SearchResultSet extends \SearchResultSet {
 
 		// Attempt to use excerpts available from a different back-end
 		if ( $searchResult && $this->excerpts !== null ) {
-			$this->excerpts->noHighlight();
-
 			if ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) {
-				$searchResult->setExcerpt( $excerpt );
+				$searchResult->setExcerpt( $excerpt, $this->excerpts->hasHighlight() );
 			}
 		}
 
