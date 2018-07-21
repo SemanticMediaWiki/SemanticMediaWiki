@@ -20,7 +20,7 @@ class ParameterListDocBuilder {
 	/**
 	 * @param callable $messageFunction
 	 */
-	public function __construct( $messageFunction ) {
+	public function __construct( callable $messageFunction ) {
 		$this->msg = $messageFunction;
 	}
 
