@@ -16,6 +16,23 @@ use SMW\DIWikiPage;
 class SearchResult extends \SearchResult {
 
 	/**
+	 * @var boolean
+	 */
+	private $hasHighlight = false;
+
+	/**
+	 * @see SearchResult::getTextSnippet
+	 */
+	function getTextSnippet( $terms ) {
+
+		if ( $this->hasHighlight ) {
+			return str_replace( [ '<em>', '</em>' ], [ "<span class='searchmatch'>", '</span>' ], $this->mText );
+		}
+
+		return parent::getTextSnippet( $terms );
+	}
+
+	/**
 	 * @see SearchResult::getSectionTitle
 	 */
 	function getSectionTitle() {
@@ -31,9 +48,11 @@ class SearchResult extends \SearchResult {
 	 * Set a text excerpt retrieved from a different back-end.
 	 *
 	 * @param string $text|null
+	 * @param boolean $hasHighlight
 	 */
-	public function setExcerpt( $text = null ) {
+	public function setExcerpt( $text = null, $hasHighlight = false ) {
 		$this->mText = $text;
+		$this->hasHighlight = $hasHighlight;
 	}
 
 	/**
@@ -44,7 +63,7 @@ class SearchResult extends \SearchResult {
 	}
 
 	/**
-	 * @see SearchResult::getSectionTitle
+	 * @see SearchResult::getTitleSnippet
 	 */
 	public function getTitleSnippet() {
 

@@ -3,7 +3,6 @@
 namespace SMW\Elastic\QueryEngine;
 
 use SMW\DIWikiPage;
-use SMW\Query\Excerpts as QExcerpts;
 
 /**
  * @license GNU GPL v2+
@@ -11,7 +10,7 @@ use SMW\Query\Excerpts as QExcerpts;
  *
  * @author mwjames
  */
-class Excerpts extends QExcerpts {
+class Excerpts extends \SMW\Query\Excerpts {
 
 	/**
 	 * @since 3.0
@@ -33,6 +32,15 @@ class Excerpts extends QExcerpts {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function hasHighlight() {
+		return true;
 	}
 
 	private function format( $v ) {

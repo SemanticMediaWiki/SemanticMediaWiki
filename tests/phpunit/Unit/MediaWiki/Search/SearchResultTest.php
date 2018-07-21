@@ -95,4 +95,36 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetTextSnippet_HasHighlight() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = SearchResult::newFromTitle( $title );
+
+		$instance->setExcerpt( '<em>Foo</em>bar', true );
+
+		$this->assertEquals(
+			"<span class='searchmatch'>Foo</span>bar",
+			$instance->getTextSnippet( [ 'Foo' ] )
+		);
+	}
+
+	public function testGetTextSnippet_NoHighlight() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = SearchResult::newFromTitle( $title );
+
+		$instance->setExcerpt( 'Foobar' );
+
+		$this->assertEquals(
+			"<span class='searchmatch'>Foo</span>bar\n",
+			$instance->getTextSnippet( [ 'Foo' ] )
+		);
+	}
+
 }
