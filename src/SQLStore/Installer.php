@@ -194,6 +194,10 @@ class Installer implements MessageReporter {
 	 */
 	public static function isGoodSchema( $isCli = false ) {
 
+		if ( $isCli && defined( 'MW_PHPUNIT_TEST' ) ) {
+			return true;
+		}
+
 		if ( $isCli === false && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return true;
 		}
