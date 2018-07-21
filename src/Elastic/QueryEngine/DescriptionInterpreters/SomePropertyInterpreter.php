@@ -14,6 +14,7 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\ClassDescription;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
@@ -115,6 +116,10 @@ class SomePropertyInterpreter {
 
 		if ( $params !== [] ) {
 			$params = $this->fieldMapper->hierarchy( $params, $pid, $hierarchy );
+		}
+
+		if ( $desc instanceof ClassDescription ) {
+			$params = $this->interpretClassDescription( $desc, $property, $pid, $field );
 		}
 
 		// [[-Person:: <q>[[Person.-Has friend.Person::Andy Mars]] [[Age::>>32]]</q> ]]
@@ -226,6 +231,33 @@ class SomePropertyInterpreter {
 
 		//$this->fieldMapper->bool( 'should', $p );
 		$condition = $this->conditionBuilder->newCondition( $p );
+
+		return $condition;
+	}
+
+	private function interpretClassDescription( $description, $property, $pid, $field ) {
+
+		$queryString = $description->getQueryString();
+		$condition = $this->conditionBuilder->interpretDescription( $description );
+
+		$parameters = $this->termsLookup->newParameters(
+			[
+				'query.string' => $queryString,
+				'field' => "$pid.wpgID",
+				'params' => $condition
+			]
+		);
+
+		$params = $this->termsLookup->lookup( 'predef', $parameters );
+		$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
+
+		if ( $params === [] ) {
+			return [];
+		}
+
+		$condition = $this->conditionBuilder->newCondition( $params );
+		$condition->type( Condition::TYPE_MUST );
+		$condition->log( [ 'SomeProperty' => [ 'ClassDescription' => $queryString ] ] );
 
 		return $condition;
 	}

@@ -189,7 +189,13 @@ class TermsLookup implements ITermsLookup {
 	public function predef_index_lookup( Parameters $parameters ) {
 
 		$id = $parameters->get( 'id' );
-		$query = $this->fieldMapper->bool( 'must', $parameters->get( 'params' ) );
+		$params = $parameters->get( 'params' );
+
+		if ( $params instanceof Condition ) {
+			$query = $params->toArray();
+		} else {
+			$query = $this->fieldMapper->bool( 'must', $params );
+		}
 
 		if ( $this->options->safeGet( 'subquery.constant.score', true ) ) {
 			$query = $this->fieldMapper->constant_score( $query );
