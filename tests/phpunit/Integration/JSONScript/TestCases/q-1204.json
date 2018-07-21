@@ -3,6 +3,16 @@
 	"setup": [
 		{
 			"namespace": "NS_CATEGORY",
+			"page": "Q1204/1",
+			"contents": "[[Category:Q1204/0]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q1204/2",
+			"contents": "[[Category:Q1204/0]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
 			"page": "Q1204/1/1",
 			"contents": "[[Category:Q1204/1]]"
 		},
@@ -15,6 +25,10 @@
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "Has page",
 			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Q1204/0",
+			"contents": "[[Category:Q1204/0]]"
 		},
 		{
 			"page": "Q1204/1",
@@ -146,6 +160,25 @@
 					"Q1204/1#0##",
 					"Q1204/3#0##",
 					"Q1204/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 (!Q1204/2)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1204/0]] [[Category:!Q1204/2]] ",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1204/0#0##",
+					"Q1204/1#0##"
 				]
 			}
 		}

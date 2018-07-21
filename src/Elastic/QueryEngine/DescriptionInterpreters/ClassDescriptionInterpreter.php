@@ -44,7 +44,7 @@ class ClassDescriptionInterpreter {
 		$dataItems = $description->getCategories();
 		$hierarchyDepth = $description->getHierarchyDepth();
 
-		$should = !$isConjunction;
+		$should = false;
 		$params = [];
 
 		// More than one member per list means OR
