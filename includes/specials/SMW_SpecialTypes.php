@@ -78,9 +78,11 @@ class SMWSpecialTypes extends SpecialPage {
 	}
 
 	protected function getTypeProperties( $typeLabel ) {
-		global $wgRequest, $smwgTypePagingLimit;
+		global $wgRequest;
 
-		if ( $smwgTypePagingLimit <= 0 ) {
+		$pagingLimit = ApplicationFactory::getInstance()->getSettings()->dotGet( 'smwgPagingLimit.type' );
+
+		if ( $pagingLimit <= 0 ) {
 			return ''; // not too useful, but we comply to this request
 		}
 
@@ -95,7 +97,7 @@ class SMWSpecialTypes extends SpecialPage {
 		}
 
 		$store = \SMW\StoreFactory::getStore();
-		$options = SMWPageLister::getRequestOptions( $smwgTypePagingLimit, $from, $until );
+		$options = SMWPageLister::getRequestOptions( $pagingLimit, $from, $until );
 		$diWikiPages = $store->getPropertySubjects( new SMW\DIProperty( '_TYPE' ), $typeValue->getDataItem(), $options );
 
 		// May return an iterator
@@ -125,13 +127,13 @@ class SMWSpecialTypes extends SpecialPage {
 		);
 
 		if ( count( $diWikiPages ) > 0 ) {
-			$pageLister = new SMWPageLister( $diWikiPages, null, $smwgTypePagingLimit, $from, $until );
+			$pageLister = new SMWPageLister( $diWikiPages, null, $pagingLimit, $from, $until );
 
 			$title = $this->getTitleFor( 'Types', $typeLabel );
 			$title->setFragment( '#SMWResults' ); // Make navigation point to the result list.
 			$navigation = $pageLister->getNavigationLinks( $title );
 
-			$resultNumber = min( $smwgTypePagingLimit, count( $diWikiPages ) );
+			$resultNumber = min( $pagingLimit, count( $diWikiPages ) );
 			$typeName = $typeValue->getLongWikiText();
 
 			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .

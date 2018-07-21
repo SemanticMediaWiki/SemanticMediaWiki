@@ -68,7 +68,7 @@ class PropertyPage extends Page {
 	 */
 	protected function initParameters() {
 		// We use a smaller limit here; property pages might become large
-		$this->limit = $this->getOption( 'smwgPropertyPagingLimit' );
+		$this->limit = $this->getOption( 'pagingLimit' );
 		$this->property = DIProperty::newFromUserLabel( $this->getTitle()->getText() );
 		$this->propertyValue = DataValueFactory::getInstance()->newDataValueByItem( $this->property );
 	}
@@ -313,7 +313,7 @@ class PropertyPage extends Page {
 		);
 
 		$valueListBuilder->setPagingLimit(
-			$this->getOption( 'smwgPropertyPagingLimit' )
+			$this->getOption( 'pagingLimit' )
 		);
 
 		$valueListBuilder->setMaxPropertyValues(
@@ -324,7 +324,7 @@ class PropertyPage extends Page {
 			$this->property,
 			$this->getDataItem(),
 			[
-				'limit'  => $request->getVal( 'limit', $this->getOption( 'smwgPropertyPagingLimit' ) ),
+				'limit'  => $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) ),
 				'offset' => $request->getVal( 'offset', '0' ),
 				'from'   => $request->getVal( 'from', '' ),
 				'until'  => $request->getVal( 'until', '' ),
