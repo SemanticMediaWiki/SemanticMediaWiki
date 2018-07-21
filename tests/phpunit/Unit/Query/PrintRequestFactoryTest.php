@@ -29,7 +29,7 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PrintRequestFactory();
 
-		$printRequest = $instance->newPrintRequestByProperty(
+		$printRequest = $instance->newFromProperty(
 			new DIProperty( 'Foo' )
 		);
 
@@ -48,7 +48,7 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PrintRequestFactory();
 
-		$printRequest = $instance->newPrintRequestFromText(
+		$printRequest = $instance->newFromText(
 			'Foo'
 		);
 
@@ -62,7 +62,7 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PrintRequestFactory();
 
-		$printRequest = $instance->newPrintRequestFromText(
+		$printRequest = $instance->newFromText(
 			'--[[Foo',
 			false
 		);
