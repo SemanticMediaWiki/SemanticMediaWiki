@@ -611,7 +611,7 @@ class LegacyParser implements Parser {
 				$innerdesc = $this->descriptionProcessor->asOr( $innerdesc, $this->descriptionFactory->newThingDescription() );
 			}
 
-			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_propvalueproblem', $property->getWikiValue() );
+			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_propvalueproblem', $propertyValue->getWikiValue() );
 		}
 
 		$propertyValueList = array_reverse( $propertyValueList );
