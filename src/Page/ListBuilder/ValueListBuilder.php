@@ -163,8 +163,6 @@ class ValueListBuilder {
 			)
 		);
 
-		$filterInput = ListPager::filterInput( $title, $limit, $offset, $filter );
-
 		$objectList = $this->createValueList(
 			$property,
 			$dataItem,
@@ -183,13 +181,13 @@ class ValueListBuilder {
 				[
 					'class' => 'smw-page-nav-left'
 				],
-				ListPager::getLinks( $title, $limit, $offset, $resultCount, $query )
+				ListPager::pagination( $title, $limit, $offset, $resultCount, $query )
 			) . Html::rawElement(
 				'div',
 				[
 					'class' => 'smw-page-nav-right'
 				],
-				$filterInput
+				ListPager::filter( $title, $limit, $offset, $filter )
 			)
 		);
 

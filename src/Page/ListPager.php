@@ -4,6 +4,7 @@ namespace SMW\Page;
 
 use Html;
 use SMW\Localizer;
+use SMW\Message;
 use Title;
 
 /**
@@ -22,19 +23,14 @@ class ListPager {
 	/**
 	 * @since 2.4
 	 */
-	public static function getLinks( Title $title, $limit, $offset = 0, $count = 0, array $query = array() ) {
-
-		$navigation = '';
-
-		$navigation = self::getPagingLinks(
-			$title,
-			$limit,
-			$offset,
-			$count,
-			$query
+	public static function pagination( Title $title, $limit, $offset = 0, $count = 0, array $query = array() ) {
+		return Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-ui-pagination'
+			],
+			self::getPagingLinks( $title, $limit, $offset, $count, $query )
 		);
-
-		return $navigation;
 	}
 
 	/**
@@ -46,7 +42,7 @@ class ListPager {
 	 *
 	 * @return string
 	 */
-	public static function filterInput( Title $title, $limit = 0, $offset = 0, $filter = '' ) {
+	public static function filter( Title $title, $limit = 0, $offset = 0, $filter = '' ) {
 
 		$form = \Xml::tags(
 			'form',
@@ -67,18 +63,21 @@ class ListPager {
 			)
 		);
 
-		$label = wfMessage( 'smw-list-pager-filter' )->text();
+		$label = Message::get( 'smw-filter', Message::TEXT, Message::USER_LANGUAGE );
 
 		$form .= Html::rawElement(
 			'label',
 			[],
-			$label . Html::rawElement(
+			$label .
+			Html::rawElement(
 				'input',
 				[
-					'type' => 'search',
+					//'type' => 'search',
 					'name' => 'filter',
 					'value' => $filter,
-					'form' => 'search'
+					'form' => 'search',
+					'autocomplete' => 'off',
+					'placeholder' => '...'
 				]
 			)
 		);
@@ -86,8 +85,7 @@ class ListPager {
 		return Html::rawElement(
 			'div',
 			[
-				'id' => 'list-pager',
-				'class' => 'list-pager-value-filter'
+				'class' => 'smw-ui-input-filter'
 			],
 			$form
 		);
@@ -125,14 +123,14 @@ class ListPager {
 		if ( $offset > 0 ) {
 			$plink = self::numLink( $title, max( $offset - $limit, 0 ), $limit, $query, $prev, 'prevn-title', 'mw-prevlink', $disabled, $language );
 		} else {
-			$plink = htmlspecialchars( $prev );
+			$plink = Html::element( 'span', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $prev ) );
 		}
 
 		# Make 'next' link
 		$next = wfMessage( 'nextn' )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
 
 		if ( $atend ) {
-			$nlink = htmlspecialchars( $next );
+			$nlink = Html::element( 'span', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $next ) );
 		} else {
 			$nlink = self::numLink( $title, $offset + $limit, $limit, $query, $next, 'nextn-title', 'mw-nextlink', $disabled, $language );
 		}
@@ -149,11 +147,12 @@ class ListPager {
 				'shown-title',
 				'mw-numlink',
 				$disabled,
-				$language
+				$language,
+				$num === $limit
 			);
 		}
 
-		return wfMessage( 'viewprevnext' )->inLanguage( $language )->title( $title )->rawParams( $plink, $nlink, $language->pipeList( $list ) )->escaped();
+		return $plink . implode( '', $list ) . $nlink;
 	}
 
 	/**
@@ -168,7 +167,7 @@ class ListPager {
 	 * @param string $class Value of the "class" attribute of the link
 	 * @return string HTML fragment
 	 */
-	private static function numLink( Title $title, $offset, $limit, array $query, $link, $tooltipMsg, $class, $disabled, $language ) {
+	private static function numLink( Title $title, $offset, $limit, array $query, $link, $tooltipMsg, $class, $disabled, $language, $active = false ) {
 		$query = [ 'limit' => $limit, 'offset' => $offset ] + $query;
 
 		$tooltip = wfMessage( $tooltipMsg )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
@@ -177,6 +176,7 @@ class ListPager {
 			[
 				'href' => $title->getLocalURL( $query ),
 				'title' => $tooltip,
+				'class' => 'page-link' . ( $active ? ' link-active' : '' )
 			],
 			$link
 		);
