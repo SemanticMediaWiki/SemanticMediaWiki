@@ -75,7 +75,7 @@ class Logger extends AbstractLogger {
 
 		foreach ( $context as $key => $value ) {
 			if ( is_array( $value ) ) {
-				$context[$key] = json_encode( $value );
+				$context[$key] = json_encode( $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 			}
 		}
 
