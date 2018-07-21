@@ -54,7 +54,7 @@ class ParamListProcessor {
 				continue;
 			}
 
-			$printRequest = $this->printRequestFactory->newPrintRequestFromText(
+			$printRequest = $this->printRequestFactory->newFromText(
 				$request['label'],
 				$paramList['showMode']
 			);

@@ -115,7 +115,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$serialization = QueryResultSerializer::getSerialization(
 			\SMW\DIWikiPage::newFromText( 'ABC' ),
-			$printRequestFactory->newPrintRequestByProperty( $property )
+			$printRequestFactory->newFromProperty( $property )
 		);
 
 		$expected = array(
@@ -148,7 +148,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$serialization = QueryResultSerializer::getSerialization(
 			\SMWDITime::doUnserialize( '2/1393/1/1' ),
-			$printRequestFactory->newPrintRequestByProperty( $property )
+			$printRequestFactory->newFromProperty( $property )
 		);
 
 		$expected = array(
