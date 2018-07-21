@@ -90,9 +90,9 @@ class SearchProfileForm {
 	 */
 	public static function getFormDefinitions( Store $store ) {
 
-		static $data = [];
+		static $data = null;
 
-		if ( $data !== [] ) {
+		if ( $data !== null ) {
 			return $data;
 		}
 
