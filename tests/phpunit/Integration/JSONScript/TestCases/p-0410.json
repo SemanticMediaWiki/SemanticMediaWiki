@@ -71,11 +71,11 @@
 		},
 		{
 			"page": "Example/P0410/1/1",
-			"contents": "{{#ask: [[Has temperature with prec4::32 °F]] |?Has temperature with prec4 |format=table }}"
+			"contents": "{{#ask: [[Has temperature with prec4::32 °F]] |?Has temperature with prec4 |+order=asc |format=table }}"
 		},
 		{
 			"page": "Example/P0410/2/1",
-			"contents": "{{#ask: [[Has temperature with prec2::32 °F]] |?Has temperature with prec2 |format=table }}"
+			"contents": "{{#ask: [[Has temperature with prec2::32 °F]] |?Has temperature with prec2 |+order=asc |format=table }}"
 		},
 		{
 			"page": "Example/P0410/3/1",
