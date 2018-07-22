@@ -93,7 +93,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 
 		$property = $dataValue->getProperty();
 
-		if ( !ApplicationFactory::getInstance()->getPropertySpecificationLookup()->hasUniquenessConstraintBy( $property ) ) {
+		if ( !ApplicationFactory::getInstance()->getPropertySpecificationLookup()->hasUniquenessConstraint( $property ) ) {
 			return $this->hasConstraintViolation;
 		}
 
@@ -158,7 +158,12 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function canValidate( $dataValue ) {
-		return $dataValue instanceof DataValue && $dataValue->getProperty() !== null && $dataValue->getContextPage() !== null && $dataValue->isEnabledFeature( SMW_DV_PVUC );
+
+		if ( !$dataValue instanceof DataValue || $dataValue->getProperty() === null ) {
+			return false;
+		}
+
+		return $dataValue->getContextPage() !== null && $dataValue->isEnabledFeature( SMW_DV_PVUC );
 	}
 
 	private function tryFindMatchResultFor( $hash, $dataValue ) {

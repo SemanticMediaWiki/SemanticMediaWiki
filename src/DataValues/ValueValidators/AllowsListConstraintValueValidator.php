@@ -4,6 +4,7 @@ namespace SMW\DataValues\ValueValidators;
 
 use SMW\ApplicationFactory;
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
+use SMW\PropertySpecificationLookup;
 use SMW\Message;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
@@ -24,6 +25,11 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	private $allowsListValueParser;
 
 	/**
+	 * @var PropertySpecificationLookup
+	 */
+	private $propertySpecificationLookup;
+
+	/**
 	 * @var boolean
 	 */
 	private $hasConstraintViolation = false;
@@ -32,9 +38,11 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	 * @since 2.4
 	 *
 	 * @param AllowsListValueParser $allowsListValueParser
+	 * @param PropertySpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( AllowsListValueParser $allowsListValueParser ) {
+	public function __construct( AllowsListValueParser $allowsListValueParser, PropertySpecificationLookup $propertySpecificationLookup ) {
 		$this->allowsListValueParser = $allowsListValueParser;
+		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
 
 	/**
@@ -60,11 +68,12 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		}
 
 		$property = $dataValue->getProperty();
-		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
-		$allowedValues = $propertySpecificationLookup->getAllowedValuesBy( $property );
+		$allowedValues = $this->propertySpecificationLookup->getAllowedValues(
+			$property
+		);
 
-		$allowedListValues = $propertySpecificationLookup->getAllowedListValues(
+		$allowedListValues = $this->propertySpecificationLookup->getAllowedListValues(
 			$property
 		);
 

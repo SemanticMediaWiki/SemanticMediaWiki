@@ -30,6 +30,7 @@ use SMWNumberValue as NumberValue;
 use SMWPropertyValue as PropertyValue;
 use SMWQuantityValue as QuantityValue;
 use SMWTimeValue as TimeValue;
+use SMW\Site;
 
 /**
  * @codeCoverageIgnore
@@ -64,7 +65,7 @@ return array(
 		);
 
 		$propertyValueParser->isCapitalLinks(
-			$GLOBALS['wgCapitalLinks']
+			Site::isCapitalLinks()
 		);
 
 		return $propertyValueParser;
@@ -144,7 +145,8 @@ return array(
 		);
 
 		$allowsListConstraintValueValidator = new AllowsListConstraintValueValidator(
-			$containerBuilder->create( DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID )
+			$containerBuilder->create( DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID ),
+			$containerBuilder->singleton( 'PropertySpecificationLookup' )
 		);
 
 		$compoundConstraintValueValidator->registerConstraintValueValidator(

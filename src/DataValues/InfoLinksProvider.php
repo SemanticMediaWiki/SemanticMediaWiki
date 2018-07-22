@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Message;
 use SMW\Parser\InTextAnnotationParser;
+use SMW\PropertySpecificationLookup;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
@@ -22,6 +23,11 @@ class InfoLinksProvider {
 	 * @var DataValue
 	 */
 	private $dataValue;
+
+	/**
+	 * @var PropertySpecificationLookup
+	 */
+	private $propertySpecificationLookup;
 
 	/**
 	 * @var Infolink[]
@@ -64,9 +70,11 @@ class InfoLinksProvider {
 	 * @since 2.4
 	 *
 	 * @param DataValue $dataValue
+	 * @param PropertySpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( DataValue $dataValue ) {
+	public function __construct( DataValue $dataValue, PropertySpecificationLookup $propertySpecificationLookup ) {
 		$this->dataValue = $dataValue;
+		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
 
 	/**
@@ -221,14 +229,15 @@ class InfoLinksProvider {
 			return;
 		}
 
-		$propertyDiWikiPage = null;
+		$dataItem = null;
 
 		if ( $this->dataValue->getProperty() !== null ) {
-			$propertyDiWikiPage = $this->dataValue->getProperty()->getDiWikiPage();
+			$dataItem = $this->dataValue->getProperty()->getDiWikiPage();
 		}
 
-		if ( $propertyDiWikiPage === null ) {
-			return; // no property known, or not associated with a page
+		// No property known, or not associated with a page!
+		if ( $dataItem === null ) {
+			return;
 		}
 
 		$args = $this->serviceLinkParameters;
@@ -237,32 +246,39 @@ class InfoLinksProvider {
 			return; // no services supported
 		}
 
-		array_unshift( $args, '' ); // add a 0 element as placeholder
+		// add a 0 element as placeholder
+		array_unshift( $args, '' );
 
-		$servicelinks = ApplicationFactory::getInstance()->getCachedPropertyValuesPrefetcher()->getPropertyValues(
-			$propertyDiWikiPage,
+		$servicelinks = $this->propertySpecificationLookup->getSpecification(
+			$dataItem,
 			new DIProperty( '_SERV' )
 		);
 
-		foreach ( $servicelinks as $dataItem ) {
-			if ( !( $dataItem instanceof DIBlob ) ) {
-				continue;
-			}
-
-			$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() ); // messages distinguish ' ' from '_'
-			$text = Message::get( $args, Message::TEXT, Message::CONTENT_LANGUAGE );
-			$links = preg_split( "/[\n][\s]?/u", $text );
-
-			foreach ( $links as $link ) {
-				$linkdat = explode( '|', $link, 2 );
-
-				if ( count( $linkdat ) == 2 ) {
-					$this->addInfolink( Infolink::newExternalLink( $linkdat[0], trim( $linkdat[1] ) ) );
-				}
-			}
+		foreach ( $servicelinks as $servicelink ) {
+			$this->makeLink( $servicelink, $args );
 		}
 
 		$this->hasServiceLinks = true;
+	}
+
+	private function makeLink( $dataItem, $args ) {
+
+		if ( !( $dataItem instanceof DIBlob ) ) {
+			return;
+		}
+
+		 // messages distinguish ' ' from '_'
+		$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() );
+		$text = Message::get( $args, Message::TEXT, Message::CONTENT_LANGUAGE );
+		$links = preg_split( "/[\n][\s]?/u", $text );
+
+		foreach ( $links as $link ) {
+			$linkdat = explode( '|', $link, 2 );
+
+			if ( count( $linkdat ) == 2 ) {
+				$this->addInfolink( Infolink::newExternalLink( $linkdat[0], trim( $linkdat[1] ) ) );
+			}
+		}
 	}
 
 }

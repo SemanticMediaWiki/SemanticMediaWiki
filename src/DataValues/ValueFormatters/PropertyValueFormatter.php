@@ -265,7 +265,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		$dataItem = $this->dataValue->getDataItem();
 
-		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionBy(
+		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
 			$dataItem,
 			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE ),
 			$linker

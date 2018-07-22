@@ -38,27 +38,27 @@ class DataValueServiceFactory {
 	/**
 	 * Indicates a DataValue service
 	 */
-	const TYPE_INSTANCE = 'dv.';
+	const TYPE_INSTANCE = '__dv.';
 
 	/**
 	 * Indicates a ValueParser service
 	 */
-	const TYPE_PARSER = 'dv.parser.';
+	const TYPE_PARSER = '__dv.parser.';
 
 	/**
 	 * Indicates a ValueFormatter service
 	 */
-	const TYPE_FORMATTER = 'dv.formatter.';
+	const TYPE_FORMATTER = '__dv.formatter.';
 
 	/**
 	 * Indicates a ValueValidator service
 	 */
-	const TYPE_VALIDATOR = 'dv.validator.';
+	const TYPE_VALIDATOR = '__dv.validator.';
 
 	/**
 	 * Extraneous service
 	 */
-	const TYPE_EXT_FUNCTION = 'dv.ext.func.';
+	const TYPE_EXT_FUNCTION = '__dv.ext.func.';
 
 	/**
 	 * @var ContainerBuilder
@@ -85,7 +85,7 @@ class DataValueServiceFactory {
 	 * @return InfoLinksProvider
 	 */
 	public function newInfoLinksProvider( DataValue $dataValue ) {
-		return new InfoLinksProvider( $dataValue );
+		return new InfoLinksProvider( $dataValue, $this->getPropertySpecificationLookup() );
 	}
 
 	/**
