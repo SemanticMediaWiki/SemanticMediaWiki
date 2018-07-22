@@ -33,6 +33,7 @@ use SMW\Elastic\QueryEngine\DescriptionInterpreters\DisjunctionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 
 /**
  * @license GNU GPL v2+
@@ -207,6 +208,7 @@ class ElasticFactory {
 				'ValueDescriptionInterpreter' => [ $this, 'newValueDescriptionInterpreter' ],
 				'ConjunctionInterpreter' => [ $this, 'newConjunctionInterpreter' ],
 				'DisjunctionInterpreter' => [ $this, 'newDisjunctionInterpreter' ],
+				'SomeValueInterpreter'  => [ $this, 'newSomeValueInterpreter' ]
 			]
 		);
 
@@ -325,6 +327,17 @@ class ElasticFactory {
 	 */
 	public function newValueDescriptionInterpreter( ConditionBuilder $containerBuilder ) {
 		return new ValueDescriptionInterpreter( $containerBuilder );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param ConditionBuilder $containerBuilder
+	 *
+	 * @return SomeValueInterpreter
+	 */
+	public function newSomeValueInterpreter( ConditionBuilder $containerBuilder ) {
+		return new SomeValueInterpreter( $containerBuilder );
 	}
 
 	/**

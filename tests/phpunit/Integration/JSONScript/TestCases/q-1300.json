@@ -1,0 +1,80 @@
+{
+	"description": "Test `_geo` (requires Maps)",
+	"requires": {
+		"Maps": ">= 5.0"
+	},
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has coordinates",
+			"contents": "[[Has type::Geographic coordinate]]"
+		},
+		{
+			"page": "Q1300/1",
+			"contents": "[[Has coordinates::52°31'N, 13°24'E]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 ...",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Has coordinates",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_TYPE",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"http://semantic-mediawiki.org/swivt/1.0#_geo"
+					]
+				}
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (eq match)",
+			"condition": "[[Has coordinates::52°31'N, 13°24'E]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1300/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (distance match)",
+			"condition": "[[Has coordinates::52°31'N, 13°24'E (100km)]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1300/1#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

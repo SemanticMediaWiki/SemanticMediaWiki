@@ -137,6 +137,16 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructSomeValueInterpreter() {
+
+		$instance = new ElasticFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter',
+			$instance->newSomeValueInterpreter( $this->conditionBuilder )
+		);
+	}
+
 	public function testCanConstructClassDescriptionInterpreter() {
 
 		$instance = new ElasticFactory();
