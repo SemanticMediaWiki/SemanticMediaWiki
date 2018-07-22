@@ -82,21 +82,21 @@ class TableSchemaTaskHandler extends TaskHandler {
 			->setName( 'buildtables' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'updatetables' )
-			->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-db' ) )
-			->addParagraph( $this->getMessageAsString( 'smw-admin-dbdocu' ) );
+			->addHeader( 'h3', $this->msg( 'smw-admin-db' ) )
+			->addParagraph( $this->msg( 'smw-admin-dbdocu' ) );
 
 		if ( $this->isEnabledFeature( SMW_ADM_SETUP ) ) {
 			$this->htmlFormRenderer
 				->addHiddenField( 'udsure', 'yes' )
 				->addSubmitButton(
-					$this->getMessageAsString( 'smw-admin-dbbutton' ),
+					$this->msg( 'smw-admin-dbbutton' ),
 					array(
 						'class' => ''
 					)
 				);
 		} else {
 			$this->htmlFormRenderer
-				->addParagraph( $this->getMessageAsString( 'smw-admin-feature-disabled' ) );
+				->addParagraph( $this->msg( 'smw-admin-feature-disabled' ) );
 		}
 
 		return Html::rawElement( 'div', array(), $this->htmlFormRenderer->getForm() );
@@ -113,7 +113,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 			return;
 		}
 
-		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-db' ) );
+		$this->outputFormatter->setPageTitle( $this->msg( 'smw-admin-db' ) );
 		$this->outputFormatter->addParentLink( [ 'tab' => 'rebuild' ] );
 
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
@@ -135,7 +135,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 		$msg = Html::rawElement(
 			'p',
 			[],
-			$this->getMessageAsString( 'smw-admin-permissionswarn' )
+			$this->msg( 'smw-admin-permissionswarn' )
 		);
 
 		// Reload (via JS) the page once content is displayed as separate page to inform
@@ -152,8 +152,8 @@ class TableSchemaTaskHandler extends TaskHandler {
 						[
 							'class' => 'smw-admin-db-preparation'
 						],
-						$this->getMessageAsString( 'smw-admin-db-preparation' ) .
-						"\n\n" . $this->getMessageAsString( 'smw-processing' ) . "\n" .
+						$this->msg( 'smw-admin-db-preparation' ) .
+						"\n\n" . $this->msg( 'smw-processing' ) . "\n" .
 						Html::rawElement(
 							'span',
 							[

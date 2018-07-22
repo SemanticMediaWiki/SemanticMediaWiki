@@ -78,26 +78,27 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	public function getHtml() {
 
 		$this->htmlFormRenderer
-			->addHeader( 'h4', $this->getMessageAsString( 'smw_smwadmin_datarefresh' ) )
-			->addParagraph( $this->getMessageAsString( 'smw_smwadmin_datarefreshdocu' ) );
+			->addHeader( 'h4', $this->msg( 'smw_smwadmin_datarefresh' ) )
+			->addParagraph( $this->msg( 'smw_smwadmin_datarefreshdocu' ) );
 
 		if ( !$this->isEnabledFeature( SMW_ADM_REFRESH ) ) {
-			$this->htmlFormRenderer->addParagraph( $this->getMessageAsString( 'smw-admin-feature-disabled' ) );
+			$this->htmlFormRenderer->addParagraph( $this->msg( 'smw-admin-feature-disabled' ) );
 		} elseif ( $this->getRefreshJob() !== null ) {
+			var_dump('expression');
 			$this->htmlFormRenderer
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'refreshstore' )
-				->addParagraph( $this->getMessageAsString( 'smw_smwadmin_datarefreshprogress' ) )
+				->addParagraph( $this->msg( 'smw_smwadmin_datarefreshprogress' ) )
 				->addParagraph( $this->getProgressBar( $this->getRefreshJob()->getProgress() ) )
 				->addLineBreak()
 				->addSubmitButton(
-					$this->getMessageAsString( 'smw_smwadmin_datarefreshstop' ),
+					$this->msg( 'smw_smwadmin_datarefreshstop' ),
 					array(
 						'class' => ''
 					)
 				)
 				->addCheckbox(
-					$this->getMessageAsString( 'smw_smwadmin_datarefreshstopconfirm' ),
+					$this->msg( 'smw_smwadmin_datarefreshstopconfirm' ),
 					'rfsure',
 					'stop'
 				);
@@ -107,7 +108,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 				->addHiddenField( 'action', 'refreshstore' )
 				->addHiddenField( 'rfsure', 'yes' )
 				->addSubmitButton(
-					$this->getMessageAsString( 'smw_smwadmin_datarefreshbutton' ),
+					$this->msg( 'smw_smwadmin_datarefreshbutton' ),
 					array(
 						'class' => ''
 					)

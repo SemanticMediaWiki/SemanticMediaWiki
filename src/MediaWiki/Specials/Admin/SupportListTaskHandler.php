@@ -76,14 +76,14 @@ class SupportListTaskHandler extends TaskHandler {
 	public function createSupportForm() {
 		$this->htmlFormRenderer
 			->setName( 'support' )
-			->addHeader( 'h3', $this->getMessageAsString('smw-admin-support' ) )
-			->addParagraph( $this->getMessageAsString( 'smw-admin-supportdocu' ) )
+			->addHeader( 'h3', $this->msg('smw-admin-support' ) )
+			->addParagraph( $this->msg( 'smw-admin-supportdocu' ) )
 			->addParagraph(
 				Html::rawElement( 'ul', array(),
-					Html::rawElement( 'li', array(), $this->getMessageAsString( 'smw-admin-installfile' ) ) .
-					Html::rawElement( 'li', array(), $this->getMessageAsString( 'smw-admin-smwhomepage' ) ) .
-					Html::rawElement( 'li', array(), $this->getMessageAsString( 'smw-admin-bugsreport' ) ) .
-					Html::rawElement( 'li', array(), $this->getMessageAsString( 'smw-admin-questions' ) )
+					Html::rawElement( 'li', array(), $this->msg( 'smw-admin-installfile' ) ) .
+					Html::rawElement( 'li', array(), $this->msg( 'smw-admin-smwhomepage' ) ) .
+					Html::rawElement( 'li', array(), $this->msg( 'smw-admin-bugsreport' ) ) .
+					Html::rawElement( 'li', array(), $this->msg( 'smw-admin-questions' ) )
 				)
 			);
 
@@ -101,10 +101,10 @@ class SupportListTaskHandler extends TaskHandler {
 			->setName( 'announce' )
 			->setMethod( 'get' )
 			->setActionUrl( 'https://wikiapiary.com/wiki/WikiApiary:Semantic_MediaWiki_Registry' )
-			->addHeader( 'h3', $this->getMessageAsString( 'smw-admin-announce' ) )
-			->addParagraph( $this->getMessageAsString( 'smw-admin-announce-text' ) )
+			->addHeader( 'h3', $this->msg( 'smw-admin-announce' ) )
+			->addParagraph( $this->msg( 'smw-admin-announce-text' ) )
 			->addSubmitButton(
-				$this->getMessageAsString( 'smw-admin-announce' ),
+				$this->msg( 'smw-admin-announce' ),
 				array(
 					'class' => ''
 				)

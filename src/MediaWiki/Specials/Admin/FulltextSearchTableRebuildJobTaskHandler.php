@@ -91,12 +91,12 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 
 		if ( $this->isEnabledFeature( SMW_ADM_FULLT ) && !$this->hasPendingJob() ) {
 			$this->htmlFormRenderer
-				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-fulltext-title' ) )
-				->addParagraph( $this->getMessageAsString( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
+				->addHeader( 'h4', $this->msg( 'smw-admin-fulltext-title' ) )
+				->addParagraph( $this->msg( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'fulltrebuild' )
 				->addSubmitButton(
-					$this->getMessageAsString( 'smw-admin-fulltext-button' ),
+					$this->msg( 'smw-admin-fulltext-button' ),
 					[
 						'class' => $this->isApiTask() ? 'smw-admin-api-job-task' : '',
 						'data-job' => 'SMW\FulltextSearchTableRebuildJob',
@@ -106,8 +106,8 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 				);
 		} elseif ( $this->isEnabledFeature( SMW_ADM_FULLT ) ) {
 			$this->htmlFormRenderer
-				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-fulltext-title' ) )
-				->addParagraph( $this->getMessageAsString( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
+				->addHeader( 'h4', $this->msg( 'smw-admin-fulltext-title' ) )
+				->addParagraph( $this->msg( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 				->addParagraph(
 					Html::element(
 						'span',
@@ -119,7 +119,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 						[
 							'style' => 'font-style:italic; margin-left:25px;'
 						],
-						$this->getMessageAsString( 'smw-admin-fulltext-active' )
+						$this->msg( 'smw-admin-fulltext-active' )
 					)
 				);
 		}

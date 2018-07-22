@@ -88,14 +88,14 @@ class ElasticClientTaskHandler extends TaskHandler {
 		}
 
 		$link = $this->outputFormatter->createSpecialPageLink(
-			$this->getMessageAsString( 'smw-admin-supplementary-elastic-title' ),
+			$this->msg( 'smw-admin-supplementary-elastic-title' ),
 			[ 'action' => 'elastic' ]
 		);
 
 		return Html::rawElement(
 			'li',
 			[],
-			$this->getMessageAsString(
+			$this->msg(
 				[
 					'smw-admin-supplementary-elastic-intro',
 					$link
@@ -158,7 +158,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 		$html = Html::rawElement(
 			'p',
 			[ 'class' => 'plainlinks' ],
-			$this->getMessageAsString( array( 'smw-admin-supplementary-elastic-docu' ), Message::PARSE )
+			$this->msg( array( 'smw-admin-supplementary-elastic-docu' ), Message::PARSE )
 		);
 
 		$this->outputFormatter->addHTML( $html );
@@ -179,7 +179,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 		}
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h3', [], $this->getMessageAsString( 'smw-admin-supplementary-elastic-functions' ) )
+			Html::element( 'h3', [], $this->msg( 'smw-admin-supplementary-elastic-functions' ) )
 		);
 
 		$this->outputFormatter->addHTML(

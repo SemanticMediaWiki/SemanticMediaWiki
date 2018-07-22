@@ -124,7 +124,7 @@ abstract class TaskHandler {
 	 */
 	abstract public function handleRequest( WebRequest $webRequest );
 
-	protected function getMessageAsString( $key, $type = Message::TEXT ) {
+	protected function msg( $key, $type = Message::TEXT ) {
 		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 

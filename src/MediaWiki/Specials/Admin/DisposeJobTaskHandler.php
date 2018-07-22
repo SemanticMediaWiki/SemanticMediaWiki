@@ -96,9 +96,9 @@ class DisposeJobTaskHandler extends TaskHandler {
 
 		// smw-admin-outdateddisposal
 		$this->htmlFormRenderer
-				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-outdateddisposal-title' ) )
+				->addHeader( 'h4', $this->msg( 'smw-admin-outdateddisposal-title' ) )
 				->addParagraph(
-					$this->getMessageAsString( 'smw-admin-outdateddisposal-intro', Message::PARSE ),
+					$this->msg( 'smw-admin-outdateddisposal-intro', Message::PARSE ),
 					[
 						'id' => 'smw-admin-outdated-disposal',
 						'class' => 'plainlinks'
@@ -110,7 +110,7 @@ class DisposeJobTaskHandler extends TaskHandler {
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'dispose' )
 				->addSubmitButton(
-					$this->getMessageAsString( 'smw-admin-outdateddisposal-button' ),
+					$this->msg( 'smw-admin-outdateddisposal-button' ),
 					[
 						'class' => $this->isApiTask() ? 'smw-admin-api-job-task' : '',
 						'data-job' => 'SMW\EntityIdDisposerJob',
@@ -129,13 +129,13 @@ class DisposeJobTaskHandler extends TaskHandler {
 						[
 							'style' => 'font-style:italic; margin-left:25px;'
 						],
-						$this->getMessageAsString( 'smw-admin-outdateddisposal-active' )
+						$this->msg( 'smw-admin-outdateddisposal-active' )
 					),
 					[ 'id' => 'smw-admin-outdated-disposal-status' ]
 				);
 		} else {
 			$this->htmlFormRenderer->addParagraph(
-				$this->getMessageAsString( 'smw-admin-feature-disabled' )
+				$this->msg( 'smw-admin-feature-disabled' )
 			);
 		}
 

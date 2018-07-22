@@ -31,14 +31,14 @@ class IndicesInfoProvider extends InfoProviderHandler {
 	public function getHtml() {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
-			$this->getMessageAsString( 'smw-admin-supplementary-elastic-indices-title' ),
+			$this->msg( 'smw-admin-supplementary-elastic-indices-title' ),
 			[ 'action' => $this->getTask() ]
 		);
 
 		return Html::rawElement(
 			'li',
 			[],
-			$this->getMessageAsString(
+			$this->msg(
 				[
 					'smw-admin-supplementary-elastic-indices-intro',
 					$link
@@ -73,7 +73,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 			[
 				'class' => 'plainlinks'
 			],
-			$this->getMessageAsString(
+			$this->msg(
 				[
 					'smw-admin-supplementary-elastic-statistics-docu',
 				],

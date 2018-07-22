@@ -62,8 +62,8 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 	 */
 	public function getHtml() {
 
-		$link = $this->outputFormatter->getSpecialPageLinkWith(
-			$this->getMessageAsString( 'smw-admin-supplementary-duplookup-title' ),
+		$link = $this->outputFormatter->createSpecialPageLink(
+			$this->msg( 'smw-admin-supplementary-duplookup-title' ),
 			[
 				'action' => 'duplookup'
 			]
@@ -72,7 +72,7 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 		return Html::rawElement(
 			'li',
 			[],
-			$this->getMessageAsString(
+			$this->msg(
 				[
 					'smw-admin-supplementary-duplookup-intro',
 					$link
@@ -89,7 +89,7 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle(
-			$this->getMessageAsString( 'smw-admin-supplementary-duplookup-title' )
+			$this->msg( 'smw-admin-supplementary-duplookup-title' )
 		);
 
 		$this->outputFormatter->addParentLink(
@@ -99,7 +99,7 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 		);
 
 		$this->outputFormatter->addHelpLink(
-			$this->getMessageAsString( 'smw-admin-supplementary-duplookup-helplink' )
+			$this->msg( 'smw-admin-supplementary-duplookup-helplink' )
 		);
 
 		$this->outputFormatter->addHtml(
@@ -108,7 +108,7 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 				[
 					'class' => 'plainlinks'
 				],
-				$this->getMessageAsString( 'smw-admin-supplementary-duplookup-docu', Message::PARSE )
+				$this->msg( 'smw-admin-supplementary-duplookup-docu', Message::PARSE )
 			)
 		);
 
@@ -135,8 +135,8 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 				[
 					'class' => 'smw-admin-supplementary-duplookup-content'
 				],
-				$this->getMessageAsString( 'smw-data-lookup-with-wait' ) .
-				"\n\n\n" . $this->getMessageAsString( 'smw-processing' ) . "\n" .
+				$this->msg( 'smw-data-lookup-with-wait' ) .
+				"\n\n\n" . $this->msg( 'smw-processing' ) . "\n" .
 				Html::rawElement(
 					'span',
 					[

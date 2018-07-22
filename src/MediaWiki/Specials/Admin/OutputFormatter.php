@@ -34,7 +34,7 @@ class OutputFormatter {
 	 *
 	 * @param array $query
 	 */
-	public function addParentLink( $query = array(), $title = 'smwadmin' ) {
+	public function addParentLink( $query = array(), $title = 'smw-admin-tab-supplement' ) {
 		$this->outputPage->prependHTML( $this->createParentLink( $query, $title ) );
 	}
 

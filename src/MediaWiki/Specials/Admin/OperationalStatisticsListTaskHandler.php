@@ -76,14 +76,14 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	public function getHtml() {
 
 		$link = $this->outputFormatter->getSpecialPageLinkWith(
-			$this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' ),
+			$this->msg( 'smw-admin-supplementary-operational-statistics-title' ),
 			[ 'action' => 'stats' ]
 		);
 
 		return Html::rawElement(
 			'li',
 			[],
-			$this->getMessageAsString(
+			$this->msg(
 				[
 					'smw-admin-supplementary-operational-statistics-intro',
 					$link
@@ -120,7 +120,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	private function outputHead() {
 
 		$this->outputFormatter->setPageTitle(
-			$this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-title' )
+			$this->msg( 'smw-admin-supplementary-operational-statistics-title' )
 		);
 
 		$this->outputFormatter->addParentLink(
@@ -137,7 +137,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 		}
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', [], $this->getMessageAsString( 'smw-admin-other-functions' ) )
+			Html::element( 'h2', [], $this->msg( 'smw-admin-other-functions' ) )
 		);
 
 		$this->outputFormatter->addHTML(
@@ -150,11 +150,11 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 		$semanticStatistics = $this->getStore()->getStatistics();
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), $this->getMessageAsString( array( 'smw-admin-operational-statistics' ), Message::PARSE ) )
+			Html::rawElement( 'p', array(), $this->msg( array( 'smw-admin-operational-statistics' ), Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->getMessageAsString( 'smw-statistics' ) )
+			Html::element( 'h2', array(), $this->msg( 'smw-statistics' ) )
 		);
 
 		$this->outputFormatter->addAsPreformattedText(
@@ -178,11 +178,11 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	private function outputJobStatistics() {
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->getMessageAsString( 'smw-admin-statistics-job-title' ) )
+			Html::element( 'h2', array(), $this->msg( 'smw-admin-statistics-job-title' ) )
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), $this->getMessageAsString( 'smw-admin-statistics-job-docu', Message::PARSE ) )
+			Html::rawElement( 'p', array(), $this->msg( 'smw-admin-statistics-job-docu', Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHTML(
@@ -196,7 +196,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 					) ),
 				),
 				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-error' ), '' ) .
-				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-content' ), $this->getMessageAsString( 'smw-data-lookup' ) )
+				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-content' ), $this->msg( 'smw-data-lookup' ) )
 			)
 		);
 	}
