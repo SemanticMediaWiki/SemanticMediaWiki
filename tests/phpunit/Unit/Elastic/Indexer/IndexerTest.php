@@ -3,6 +3,7 @@
 namespace SMW\Tests\Elastic\Indexer;
 
 use SMW\Elastic\Indexer\Indexer;
+use SMW\Services\ServicesContainer;
 
 /**
  * @covers \SMW\Elastic\Indexer\Indexer
@@ -16,20 +17,67 @@ use SMW\Elastic\Indexer\Indexer;
 class IndexerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $servicesContainer;
 
 	protected function setUp() {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$this->servicesContainer = new ServicesContainer();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			Indexer::class,
-			new Indexer( $this->store )
+			new Indexer( $this->store, $this->servicesContainer )
 		);
+	}
+
+	public function testSetup() {
+
+		$rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rollover' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rollover->expects( $this->exactly( 2 ) )
+			->method( 'update' );
+
+		$this->servicesContainer->add(
+			'Rollover',
+			function() use( $rollover ) { return $rollover;	}
+		);
+
+		$instance = new Indexer(
+			$this->store,
+			$this->servicesContainer
+		);
+
+		$instance->setup();
+	}
+
+	public function testDrop() {
+
+		$rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rollover' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rollover->expects( $this->exactly( 2 ) )
+			->method( 'delete' );
+
+		$this->servicesContainer->add(
+			'Rollover',
+			function() use( $rollover ) { return $rollover;	}
+		);
+
+		$instance = new Indexer(
+			$this->store,
+			$this->servicesContainer
+		);
+
+		$instance->drop();
 	}
 
 	/**
@@ -37,7 +85,10 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRemoveLinks( $text, $expected ) {
 
-		$instance = new Indexer( $this->store );
+		$instance = new Indexer(
+			$this->store,
+			$this->servicesContainer
+		);
 
 		$this->assertEquals(
 			$expected,
@@ -102,4 +153,5 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 			'foo'
 		];
 	}
+
 }

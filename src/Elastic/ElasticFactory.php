@@ -11,7 +11,11 @@ use SMW\Elastic\Admin\IndicesInfoProvider;
 use SMW\Elastic\Admin\MappingsInfoProvider;
 use SMW\Elastic\Admin\NodesInfoProvider;
 use SMW\Elastic\Admin\SettingsInfoProvider;
+use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Indexer;
+use SMW\Elastic\Indexer\TextIndexer;
+use SMW\Elastic\Indexer\FileIndexer;
+use SMW\Elastic\Indexer\Rollover;
 use SMW\Elastic\Indexer\Rebuilder;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\QueryEngine;
@@ -107,7 +111,23 @@ class ElasticFactory {
 	public function newIndexer( Store $store, MessageReporter $messageReporter = null ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$indexer = new Indexer( $store );
+
+		// Construction is postponed to the point where it is needed
+		$servicesContainer = new ServicesContainer(
+			[
+				'Rollover'    => [
+					'_service' => [ $this, 'newRollover' ],
+					'_type' => Rollover::class
+				],
+				'TextIndexer' => [ $this, 'newTextIndexer' ],
+				'FileIndexer' => [ $this, 'newFileIndexer' ],
+			]
+		);
+
+		$indexer = new Indexer(
+			$store,
+			$servicesContainer
+		);
 
 		if ( $messageReporter === null ) {
 			$messageReporter = new NullMessageReporter();
@@ -122,6 +142,39 @@ class ElasticFactory {
 		);
 
 		return $indexer;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param ElasticClient $connection
+	 *
+	 * @return Rollover
+	 */
+	public function newRollover( ElasticClient $connection ) {
+		return new Rollover( $connection );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Indexer $indexer
+	 *
+	 * @return TextIndexer
+	 */
+	public function newTextIndexer( Indexer $indexer ) {
+		return new TextIndexer( $indexer );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Indexer $indexer
+	 *
+	 * @return FileIndexer
+	 */
+	public function newFileIndexer( Indexer $indexer ) {
+		return new FileIndexer( $connection );
 	}
 
 	/**
