@@ -550,6 +550,86 @@ class FieldMapper {
 	}
 
 	/**
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.2/search-aggregations.html
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 *
+	 * @return string
+	 */
+	public function aggs( $name, $params ) {
+		return [ 'aggregations' => [ "$name" => $params ] ];
+	}
+
+	/**
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.2/search-aggregations-bucket-terms-aggregation.html
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 *
+	 * @return string
+	 */
+	public function aggs_terms( $key, $field, $params = [] ) {
+		return [ $key => [ 'terms' => [ "field" => $field ] + $params ] ];
+	}
+
+	/**
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.2/search-aggregations-bucket-significantterms-aggregation.html
+	 *
+	 * Aggregation based on terms that have undergone a significant change in
+	 * popularity measured between a foreground and background set.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 *
+	 * @return string
+	 */
+	public function aggs_significant_terms( $key, $field, $params = [] ) {
+		return [ $key => [ 'significant_terms' => [ "field" => $field ] + $params ] ];
+	}
+
+	/**
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.2/search-aggregations-bucket-histogram-aggregation.html
+	 *
+	 * A multi-bucket values source based aggregation that can be applied on
+	 * numeric values extracted from the documents. It dynamically builds fixed
+	 * size (a.k.a. interval) buckets over the values.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 *
+	 * @return string
+	 */
+	public static function aggs_histogram( $key, $field, $interval ) {
+		return [ $key => [ 'histogram' => [ "field" => $field, 'interval' => $interval ] ] ];
+	}
+
+	/**
+	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/6.2/search-aggregations-bucket-datehistogram-aggregation.html
+	 *
+	 * A multi-bucket aggregation similar to the histogram except it can only be
+	 * applied on date values.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 *
+	 * @return string
+	 */
+	public static function aggs_date_histogram( $key, $field, $interval ) {
+		return [ $key => [ 'date_histogram' => [ "field" => $field, 'interval' => $interval ] ] ];
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Condition|array $params
