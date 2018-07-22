@@ -62,6 +62,40 @@ class JsonTestCaseFileHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function hasAllRequirements( $dependencyDef = [] ) {
+
+		$requires = $this->getContentsFor( 'requires' );
+
+		if ( $requires === [] ) {
+			return true;
+		}
+
+		foreach ( $requires as $key => $value ) {
+			$res = false;
+
+			if ( isset( $dependencyDef[$key] ) && is_callable( $dependencyDef[$key] ) ) {
+				$res = call_user_func_array( $dependencyDef[$key], [ $value, &$this->reasonToSkip ] );
+			}
+
+			if ( $res === false ) {
+
+				// Default msg!
+				if ( $this->reasonToSkip === '' ) {
+					$this->reasonToSkip = "$key requirements were not met!";
+				}
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param array $case

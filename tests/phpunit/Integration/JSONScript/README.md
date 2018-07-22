@@ -477,6 +477,16 @@ Each `json` file expects a `meta` section with:
 }
 </pre>
 
+### Define a dependency
+
+Some test scenarios may require an extension or another component and to check those dependencies before the actual test is run, use `requires` as in:
+
+<pre>
+"requires": {
+	"Maps": ">= 5.0"
+},
+</pre>
+
 ### Skipping a test or mark as incomplete
 
 Sometimes certain data can cause inconsistencies with an environment hence it is

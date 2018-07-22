@@ -164,6 +164,31 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	}
 
 	/**
+	 * @see JsonTestCaseScriptRunner::getDependencyDefinitions
+	 */
+	protected function getDependencyDefinitions() {
+		return [
+			'Maps' => function( $val, &$reason ) {
+
+				if ( !defined( 'SM_VERSION' ) ) {
+					$reason = "Dependency: Maps (or Semantic Maps) as requirement is not available!";
+					return false;
+				}
+
+				list( $compare, $requiredVersion ) = explode( ' ', $val );
+				$version = SM_VERSION;
+
+				if ( !version_compare( $version, $requiredVersion, $compare ) ) {
+					$reason = "Dependency: Required version of Maps ($requiredVersion $compare $version) is not available!";
+					return false;
+				}
+
+				return true;
+			}
+		];
+	}
+
+	/**
 	 * @see JsonTestCaseScriptRunner::runTestCaseFile
 	 *
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler

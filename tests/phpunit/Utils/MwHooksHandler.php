@@ -23,9 +23,15 @@ class MwHooksHandler {
 
 	private $listOfSmwHooks = array(
 		'SMWStore::updateDataBefore',
+
+		// Those shoudl not be disabled so that extension used
+		// by a test will run the registration in case an instance
+		// is cleared
+		//	'smwInitDatatypes',
+		//	'SMW::DataType::initTypes',
+
 		'smwInitProperties',
 		'SMW::Property::initProperties',
-		'SMW::DataType::initTypes',
 		'SMW::Factbox::BeforeContentGeneration',
 		'SMW::SQLStore::updatePropertyTableDefinitions',
 		'SMW::Store::BeforeQueryResultLookupComplete',
