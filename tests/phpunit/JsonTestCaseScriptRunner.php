@@ -235,6 +235,15 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
+	protected function getDependencyDefinitions() {
+		return [];
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
@@ -243,6 +252,10 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 
 		if ( $jsonTestCaseFileHandler->isIncomplete() ) {
 			$this->markTestIncomplete( $jsonTestCaseFileHandler->getReasonForSkip() );
+		}
+
+		if ( !$jsonTestCaseFileHandler->hasAllRequirements( $this->getDependencyDefinitions() ) ) {
+			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
 		if ( $jsonTestCaseFileHandler->requiredToSkipForJsonVersion( $this->getRequiredJsonTestCaseMinVersion() ) ) {
