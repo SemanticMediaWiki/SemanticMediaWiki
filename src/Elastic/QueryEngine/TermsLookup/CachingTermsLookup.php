@@ -4,6 +4,7 @@ namespace SMW\Elastic\QueryEngine\TermsLookup;
 
 use Onoi\Cache\Cache;
 use RuntimeException;
+use SMW\Elastic\QueryEngine\Condition;
 
 /**
  * @license GNU GPL v2+
@@ -177,7 +178,14 @@ class CachingTermsLookup extends TermsLookup {
 	 */
 	public function chain_lookup( Parameters $parameters ) {
 
-		$id = 'chain:' . md5( json_encode( $parameters->get( 'params' ) ) );
+		$params = $parameters->get( 'params' );
+
+		if ( $params instanceof Condition ) {
+			$id = 'chain:' . md5( $params->__toString() );
+		} else {
+			$id = 'chain:' . md5( json_encode( $params ) );
+		}
+
 		$parameters->set( 'id', $id );
 		$parameters->set( 'count', 0 );
 
@@ -243,7 +251,14 @@ class CachingTermsLookup extends TermsLookup {
 	 */
 	public function predef_lookup( Parameters $parameters ) {
 
-		$id = 'pre:' . md5( json_encode( $parameters->get( 'params' ) ) );
+		$params = $parameters->get( 'params' );
+
+		if ( $params instanceof Condition ) {
+			$id = 'pre:' . md5( $params->__toString() );
+		} else {
+			$id = 'pre:' . md5( json_encode( $params ) );
+		}
+
 		$parameters->set( 'id', $id );
 		$parameters->set( 'count', 0 );
 
@@ -304,7 +319,14 @@ class CachingTermsLookup extends TermsLookup {
 	 */
 	public function inverse_lookup( Parameters $parameters ) {
 
-		$id = 'inv:' . md5( json_encode( [ $parameters->get( 'field' ), $parameters->get( 'params' ) ] ) );
+		$params = $parameters->get( 'params' );
+
+		if ( $params instanceof Condition ) {
+			$id = 'inv:' . md5( $parameters->get( 'field' ) . $params->__toString() );
+		} else {
+			$id = 'inv:' . md5( json_encode( [ $parameters->get( 'field' ), $params ] ) );
+		}
+
 		$parameters->set( 'id', $id );
 		$parameters->set( 'count', 0 );
 
