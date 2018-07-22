@@ -91,15 +91,15 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 
 		// smw-admin-propertystatistics
 		$this->htmlFormRenderer
-				->addHeader( 'h4', $this->getMessageAsString( 'smw-admin-propertystatistics-title' ) )
-				->addParagraph( $this->getMessageAsString( 'smw-admin-propertystatistics-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] );
+				->addHeader( 'h4', $this->msg( 'smw-admin-propertystatistics-title' ) )
+				->addParagraph( $this->msg( 'smw-admin-propertystatistics-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] );
 
 		if ( $this->isEnabledFeature( SMW_ADM_PSTATS ) && !$this->hasPendingJob() ) {
 			$this->htmlFormRenderer
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'pstatsrebuild' )
 				->addSubmitButton(
-					$this->getMessageAsString( 'smw-admin-propertystatistics-button' ),
+					$this->msg( 'smw-admin-propertystatistics-button' ),
 					[
 						'class' => $this->isApiTask() ? 'smw-admin-api-job-task' : '',
 						'data-job' => 'SMW\PropertyStatisticsRebuildJob',
@@ -118,12 +118,12 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 						[
 							'style' => 'font-style:italic; margin-left:25px;'
 						],
-						$this->getMessageAsString( 'smw-admin-propertystatistics-active' )
+						$this->msg( 'smw-admin-propertystatistics-active' )
 					)
 				);
 		} else {
 			$this->htmlFormRenderer->addParagraph(
-				$this->getMessageAsString( 'smw-admin-feature-disabled' )
+				$this->msg( 'smw-admin-feature-disabled' )
 			);
 		}
 

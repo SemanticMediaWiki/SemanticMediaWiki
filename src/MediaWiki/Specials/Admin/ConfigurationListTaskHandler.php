@@ -63,13 +63,21 @@ class ConfigurationListTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
+
+		$link = $this->outputFormatter->createSpecialPageLink(
+			$this->msg( 'smw-admin-supplementary-settings-title' ),
+			[
+				'action' => 'settings'
+			]
+		);
+
 		return Html::rawElement(
 			'li',
 			array(),
-			$this->getMessageAsString(
+			$this->msg(
 				array(
 					'smw-admin-supplementary-settings-intro',
-					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-settings-title' ), array( 'action' => 'settings' ) )
+					$link
 				)
 			)
 		);
@@ -83,7 +91,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle(
-			$this->getMessageAsString( 'smw-admin-supplementary-settings-title' )
+			$this->msg( 'smw-admin-supplementary-settings-title' )
 		);
 
 		$this->outputFormatter->addParentLink(
@@ -96,7 +104,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 				[
 					'class' => 'plainlinks'
 				],
-				$this->getMessageAsString( 'smw-admin-settings-docu', Message::PARSE )
+				$this->msg( 'smw-admin-settings-docu', Message::PARSE )
 			)
 		);
 

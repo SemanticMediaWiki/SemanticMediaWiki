@@ -93,14 +93,22 @@ class EntityLookupTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
+
+		$link = $this->outputFormatter->createSpecialPageLink(
+			$this->msg( 'smw-admin-supplementary-idlookup-title' ),
+			[
+				'action' => 'lookup'
+			]
+		);
+
 		return Html::rawElement(
 			'li',
-			array(),
-			$this->getMessageAsString(
-				array(
+			[],
+			$this->msg(
+				[
 					'smw-admin-supplementary-idlookup-intro',
-					$this->outputFormatter->getSpecialPageLinkWith( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ), array( 'action' => 'lookup' ) )
-				)
+					$link
+				]
 			)
 		);
 	}
@@ -112,12 +120,12 @@ class EntityLookupTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		$this->outputFormatter->setPageTitle( $this->getMessageAsString( 'smw-admin-supplementary-idlookup-title' ) );
+		$this->outputFormatter->setPageTitle( $this->msg( 'smw-admin-supplementary-idlookup-title' ) );
 		$this->outputFormatter->addParentLink( [ 'tab' => 'supplement' ] );
 
 		// https://phabricator.wikimedia.org/T109652#1562641
 		if ( !$this->user->matchEditToken( $webRequest->getVal( 'wpEditToken' ) ) ) {
-			return $this->outputFormatter->addHtml( $this->getMessageAsString( 'sessionfailure' ) );
+			return $this->outputFormatter->addHtml( $this->msg( 'sessionfailure' ) );
 		}
 
 		$id = $webRequest->getText( 'id' );
@@ -160,21 +168,23 @@ class EntityLookupTaskHandler extends TaskHandler {
 			->setName( 'idlookup' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'lookup' )
-			->addParagraph( $error . $this->getMessageAsString( 'smw-admin-idlookup-docu' ) )
+			->addParagraph( $error )
+			->addHeader( 'h2', $this->msg( 'smw-admin-idlookup-title' ) )
+			->addParagraph( $this->msg( 'smw-admin-idlookup-docu' ) )
 			->addInputField(
-				$this->getMessageAsString( 'smw-admin-idlookup-input' ),
+				$this->msg( 'smw-admin-objectid' ),
 				'id',
 				$id
 			)
 			->addNonBreakingSpace()
-			->addSubmitButton( $this->getMessageAsString( 'allpagessubmit' ) )
+			->addSubmitButton( $this->msg( 'smw-ask-search' ) )
 			->addParagraph( $result )
 			->getForm();
 
 		$html .= Html::element( 'p', array(), '' );
 
 		if ( $id > 0 && $webRequest->getText( 'dispose' ) == 'yes' ) {
-			$result = $this->getMessageAsString( array ('smw-admin-iddispose-done', $id ) );
+			$result = $this->msg( array ('smw-admin-iddispose-done', $id ) );
 			$id = null;
 		}
 
@@ -187,10 +197,10 @@ class EntityLookupTaskHandler extends TaskHandler {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'lookup' )
 			->addHiddenField( 'id', $id )
-			->addHeader( 'h2', $this->getMessageAsString( 'smw-admin-iddispose-title' ) )
-			->addParagraph( $this->getMessageAsString( 'smw-admin-iddispose-docu', Message::PARSE ) )
+			->addHeader( 'h2', $this->msg( 'smw-admin-iddispose-title' ) )
+			->addParagraph( $this->msg( 'smw-admin-iddispose-docu', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 			->addInputField(
-				$this->getMessageAsString( 'smw-admin-objectid' ),
+				$this->msg( 'smw-admin-objectid' ),
 				'id',
 				$id,
 				null,
@@ -198,9 +208,9 @@ class EntityLookupTaskHandler extends TaskHandler {
 				[ 'disabled' => true ]
 			)
 			->addNonBreakingSpace()
-			->addSubmitButton( $this->getMessageAsString( 'allpagessubmit' ) )
+			->addSubmitButton( $this->msg( 'allpagessubmit' ) )
 			->addCheckbox(
-				$this->getMessageAsString( 'smw_smwadmin_datarefreshstopconfirm', Message::ESCAPED ),
+				$this->msg( 'smw_smwadmin_datarefreshstopconfirm', Message::ESCAPED ),
 				'dispose',
 				'yes'
 			)
@@ -287,13 +297,14 @@ class EntityLookupTaskHandler extends TaskHandler {
 		if ( $formattedRows !== array() ) {
 			$output = '<pre>' . $this->outputFormatter->encodeAsJson( $formattedRows ) . '</pre>';
 		}
-
 		if ( $references !== array() ) {
+
 			$msg = $id === '' ? 'smw-admin-iddispose-references-multiple' : 'smw-admin-iddispose-references';
-			$output .= Html::element(
+			$count = isset( $references[$id] ) ? count( $references[$id] ) + 1 : 0;
+			$output .= Html::rawElement(
 				'p',
 				array(),
-				$this->getMessageAsString( array( $msg, $id, count( $references ) ) )
+				$this->msg( [ $msg, $id, $count ], Message::PARSE )
 			);
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
 		} else {
@@ -302,7 +313,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 				array(
 					'class' => 'smw-callout smw-callout-warning'
 				),
-				$this->getMessageAsString( array( 'smw-admin-iddispose-no-references', $id ) )
+				$this->msg( array( 'smw-admin-iddispose-no-references', $id ) )
 			);
 
 			$id = '';

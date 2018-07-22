@@ -31,14 +31,14 @@ class SettingsInfoProvider extends InfoProviderHandler {
 	public function getHtml() {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
-			$this->getMessageAsString( 'smw-admin-supplementary-elastic-settings-title' ),
+			$this->msg( 'smw-admin-supplementary-elastic-settings-title' ),
 			[ 'action' => $this->getTask() ]
 		);
 
 		return Html::rawElement(
 			'li',
 			[],
-			$this->getMessageAsString(
+			$this->msg(
 				[
 					'smw-admin-supplementary-elastic-settings-intro',
 					$link

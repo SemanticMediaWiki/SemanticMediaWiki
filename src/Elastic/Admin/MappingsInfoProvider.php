@@ -31,14 +31,14 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	public function getHtml() {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
-			$this->getMessageAsString( 'smw-admin-supplementary-elastic-mappings-title' ),
+			$this->msg( 'smw-admin-supplementary-elastic-mappings-title' ),
 			[ 'action' => $this->getTask() ]
 		);
 
 		return Html::rawElement(
 			'li',
 			[],
-			$this->getMessageAsString(
+			$this->msg(
 				[
 					'smw-admin-supplementary-elastic-mappings-intro',
 					$link

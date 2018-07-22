@@ -76,7 +76,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			$removedConfigList = $this->deprecationNoticeList['removal'];
 		}
 
-		$noticeList = $this->detectOn(
+		$noticeList = $this->buildLIST(
 			$noticeConfigList,
 			$replacementConfigList,
 			$removedConfigList
@@ -96,7 +96,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 				array(
 					'class' => 'plainlinks'
 				),
-				$this->getMessageAsString( 'smw-admin-deprecation-notice-docu' )
+				$this->msg( 'smw-admin-deprecation-notice-docu' )
 			) . Html::rawElement(
 					'div',
 					array(
@@ -125,7 +125,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {}
 
-	private function detectOn( $noticeConfigList, $replacementConfigList, $removedConfigList ) {
+	private function buildLIST( $noticeConfigList, $replacementConfigList, $removedConfigList ) {
 
 		$noticeList = [];
 		$list = array();
@@ -179,14 +179,14 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		$html = Html::rawElement(
 			'h3',
 			[],
-			$this->getMessageAsString( $title )
+			$this->msg( $title )
 		) . Html::rawElement(
 			'p',
 			[
 				'class' => 'smw-admin-deprecation-notice-section-explanation',
 				'style' => 'margin-bottom:10px;'
 			],
-			$this->getMessageAsString( $title . '-explanation' )
+			$this->msg( $title . '-explanation' )
 		) . Html::rawElement(
 			'ul',
 			[
@@ -201,7 +201,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	}
 
 	private function createListItem( $message ) {
-		return Html::rawElement( 'li', array(), $this->getMessageAsString( $message, Message::PARSE ) );
+		return Html::rawElement( 'li', array(), $this->msg( $message, Message::PARSE ) );
 	}
 
 	private function createListItems( $message, $values ) {

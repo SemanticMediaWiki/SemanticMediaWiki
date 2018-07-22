@@ -64,14 +64,14 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	public function getHtml() {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
-			$this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-cache-title' ),
+			$this->msg( 'smw-admin-supplementary-operational-statistics-cache-title' ),
 			[ 'action' => 'stats/cache' ]
 		);
 
 		return Html::rawElement(
 			'li',
 			[],
-			$this->getMessageAsString(
+			$this->msg(
 				[
 					'smw-admin-supplementary-operational-statistics-cache-intro',
 					$link
@@ -88,7 +88,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle(
-			$this->getMessageAsString( 'smw-admin-supplementary-operational-statistics-cache-title' )
+			$this->msg( 'smw-admin-supplementary-operational-statistics-cache-title' )
 		);
 
 		$this->outputFormatter->addParentLink(
@@ -102,13 +102,13 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	private function outputQueryCacheStatistics() {
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->getMessageAsString( 'smw-admin-statistics-querycache-title' ) )
+			Html::element( 'h2', array(), $this->msg( 'smw-admin-statistics-querycache-title' ) )
 		);
 
 		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
 
 		if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
-			$msg = $this->getMessageAsString(
+			$msg = $this->msg(
 				[ 'smw-admin-statistics-querycache-disabled' ],
 				Message::PARSE
 			);
@@ -118,7 +118,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 			);
 		}
 
-		$msg = $this->getMessageAsString(
+		$msg = $this->msg(
 			[ 'smw-admin-statistics-querycache-explain' ],
 			Message::PARSE
 		);
