@@ -53,6 +53,11 @@ class Client {
 	private $client;
 
 	/**
+	 * @var boolean
+	 */
+	private static $ping;
+
+	/**
 	 * @var Cache
 	 */
 	private $cache;
@@ -103,6 +108,13 @@ class Client {
 	 */
 	public function getConfig() {
 		return $this->options;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function clear() {
+		self::$ping = null;
 	}
 
 	/**
@@ -496,7 +508,16 @@ class Client {
 	 * @return boolean
 	 */
 	public function ping() {
-		return $this->client->ping( [] );
+
+		if ( self::$ping !== null ) {
+			return self::$ping;
+		}
+
+		if ( $this->options->dotGet( 'connection.quick_ping' ) ) {
+			return self::$ping = $this->quick_ping();
+		}
+
+		return self::$ping = $this->client->ping( [] );
 	}
 
 	/**
@@ -506,7 +527,7 @@ class Client {
 	 *
 	 * @return boolean
 	 */
-	public function quickPing( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ) {
 
 		$hosts = $this->options->get( 'endpoints' );
 
@@ -516,13 +537,7 @@ class Client {
 				$host = parse_url( $host );
 			}
 
-			$fsock = @fsockopen(
-				$host['host'],
-				$host['port'],
-				$errno,
-				$errstr,
-				$timeout
-			);
+			$fsock = @fsockopen( $host['host'], $host['port'], $errno, $errstr, $timeout );
 
 			if ( $fsock ) {
 				return true;

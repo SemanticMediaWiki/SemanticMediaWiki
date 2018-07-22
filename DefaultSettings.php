@@ -1970,6 +1970,7 @@ return array(
 			'lookup' => __DIR__ . '/data/elastic/smw-lookup.json'
 		],
 		'connection' =>[
+			'quick_ping' => true,
 			// Number of times the client tries to reconnect before throwing an
 			// exception
 			'retries' => 2,
