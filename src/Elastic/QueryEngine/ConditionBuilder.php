@@ -99,6 +99,11 @@ class ConditionBuilder {
 	private $namespaceDescriptionInterpreter;
 
 	/**
+	 * @var SomeValueInterpreter
+	 */
+	private $someValueInterpreter;
+
+	/**
 	 * @var array
 	 */
 	private $sortFields = [];
@@ -425,6 +430,23 @@ class ConditionBuilder {
 		return $params;
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param ValueDescription $description
+	 * @param array &$options
+	 *
+	 * @return Condition
+	 */
+	public function interpretSomeValue( ValueDescription $description, array &$options ) {
+
+		if ( $this->initServices === false ) {
+			$this->initServices();
+		}
+
+		return $this->someValueInterpreter->interpretDescription( $description, $options );
+	}
+
 	private function initServices() {
 
 		$this->somePropertyInterpreter = $this->servicesContainer->get( 'SomePropertyInterpreter', $this );
@@ -434,6 +456,7 @@ class ConditionBuilder {
 		$this->valueDescriptionInterpreter = $this->servicesContainer->get( 'ValueDescriptionInterpreter', $this );
 		$this->conjunctionInterpreter = $this->servicesContainer->get( 'ConjunctionInterpreter', $this );
 		$this->disjunctionInterpreter = $this->servicesContainer->get( 'DisjunctionInterpreter', $this );
+		$this->someValueInterpreter = $this->servicesContainer->get( 'SomeValueInterpreter', $this );
 
 		$this->initServices = true;
 	}
