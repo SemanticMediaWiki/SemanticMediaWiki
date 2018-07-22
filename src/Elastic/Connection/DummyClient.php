@@ -57,7 +57,7 @@ class DummyClient extends Client {
 	}
 
 	/**
-	 * @see Client::ping
+	 * @see Client::getConfig
 	 */
 	public function getConfig() {
 		return $this->options;
@@ -172,6 +172,13 @@ class DummyClient extends Client {
 	 * @see Client::ping
 	 */
 	public function ping() {
+		return false;
+	}
+
+	/**
+	 * @see Client::quick_ping
+	 */
+	public function quick_ping( $timeout = 2 ) {
 		return false;
 	}
 

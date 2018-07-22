@@ -2,7 +2,9 @@
 	"connection": {
 		"retries": 2,
 		"timeout": 30,
-		"connect_timeout": 30
+		"connect_timeout": 30,
+		"quick_ping": true,
+		"retries": 2
 	},
 	"settings": {
 		"data": {
