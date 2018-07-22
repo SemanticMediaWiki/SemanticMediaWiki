@@ -80,6 +80,13 @@ class RebuildElasticIndex extends \Maintenance {
 			exit;
 		}
 
+		// If available, set a callback to listen to a possible user termination
+		// and try to recover the index settings.
+		if ( function_exists( 'pcntl_signal_dispatch' ) ) {
+			pcntl_signal( SIGTERM, [ $this, 'handleTermSignal' ], false );
+			pcntl_signal_dispatch();
+		}
+
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 
@@ -151,6 +158,22 @@ class RebuildElasticIndex extends \Maintenance {
 	 */
 	protected function addDefaultParams() {
 		parent::addDefaultParams();
+	}
+
+	protected function handleTermSignal( $signal ) {
+
+		$this->reportMessage( "\n" . '   ... rebuild was terminated, start revover process ...' );
+
+		$this->reportMessage( "\n" . '   ... updating index settings and mappings ...' );
+		$this->rebuilder->setDefaults();
+
+		$this->reportMessage( "\n" . '   ... refreshing indices ...' );
+		$this->rebuilder->refresh();
+
+		$this->reportMessage( "\n" . '   ... done.' . "\n" );
+
+		pcntl_signal( SIGTERM, SIG_DFL );
+		exit( 1 );
 	}
 
 	private function otherActivities() {
