@@ -45,4 +45,50 @@ class FieldMapperTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider aggregationsProvider
+	 */
+	public function testAggregations( $method, $params, $expected ) {
+
+		$instance = new FieldMapper();
+
+		$this->assertEquals(
+			$expected,
+			call_user_func_array( [ $instance, $method ], $params )
+		);
+	}
+
+	public function aggregationsProvider() {
+
+		yield [
+			'aggs',
+			[ 'Foo', 'bar' ],
+			[ 'aggregations' => [ "Foo" => 'bar' ] ]
+		];
+
+		yield [
+			'aggs_terms',
+			[ 'Foo', 'bar', [] ],
+			[ 'Foo' => [ 'terms' => [ "field" => 'bar' ] ] ]
+		];
+
+		yield [
+			'aggs_significant_terms',
+			[ 'Foo', 'bar', [] ],
+			[ 'Foo' => [ 'significant_terms' => [ "field" => 'bar' ] ] ]
+		];
+
+		yield [
+			'aggs_histogram',
+			[ 'Foo', 'bar', 100 ],
+			[ 'Foo' => [ 'histogram' => [ "field" => 'bar', 'interval' => 100 ] ] ]
+		];
+
+		yield [
+			'aggs_date_histogram',
+			[ 'Foo', 'bar', 100 ],
+			[ 'Foo' => [ 'date_histogram' => [ "field" => 'bar', 'interval' => 100 ] ] ]
+		];
+	}
+
 }
