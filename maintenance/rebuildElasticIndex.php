@@ -221,6 +221,7 @@ class RebuildElasticIndex extends \Maintenance {
 	private function doRebuild() {
 
 		$this->reportMessage( "\nRebuilding documents ..." );
+		$isSelective = $this->hasOption( 's' ) || $this->hasOption( 'page' );
 
 		if ( !$this->hasOption( 's' ) && !$this->hasOption( 'page' ) && !$this->hasOption( 'run-fileindex' ) ) {
 			$this->reportMessage( "\n" . '   ... creating required indices and aliases ...' );
@@ -234,6 +235,10 @@ class RebuildElasticIndex extends \Maintenance {
 			$this->buildConditions()
 		);
 
+		if ( $isSelective ) {
+			$last = $res->numRows();
+		}
+
 		if ( $res->numRows() > 0 ) {
 			$this->reportMessage( "\n" );
 		} else {
@@ -241,9 +246,11 @@ class RebuildElasticIndex extends \Maintenance {
 		}
 
 		$this->rebuilder->set( 'skip-fileindex', $this->getOption( 'skip-fileindex' ) );
+		$i = 0;
 
 		foreach ( $res as $row ) {
-			$this->rebuildByRow( $row, $last );
+			$this->rebuildByRow( $i, $row, $last, $isSelective );
+			$i++;
 		}
 
 		if ( ( $index = $this->rebuilder->rollover() ) ) {
@@ -265,12 +272,13 @@ class RebuildElasticIndex extends \Maintenance {
 		}
 	}
 
-	private function rebuildByRow( $row, $last ) {
+	private function rebuildByRow( $i, $row, $last, $isSelective ) {
 
-		$i = $row->smw_id;
+		$i = $isSelective ? $i : $row->smw_id;
+		$key = $isSelective ? '(count)' : 'no.';
 
 		$this->reportMessage(
-			"\r". sprintf( "%-47s%s", "   ... updating document no.", sprintf( "%4.0f%% (%s/%s)", ( $i / $last ) * 100, $i, $last ) )
+			"\r". sprintf( "%-47s%s", "   ... updating document $key", sprintf( "%4.0f%% (%s/%s)", ( $i / $last ) * 100, $i, $last ) )
 		);
 
 		if ( $row->smw_iw === SMW_SQL3_SMWDELETEIW || $row->smw_iw === SMW_SQL3_SMWREDIIW ) {
@@ -320,8 +328,17 @@ class RebuildElasticIndex extends \Maintenance {
 					continue;
 				}
 
+				$op = '=';
+				$text = $title->getDBKey();
+
+				// Match something like --page="Lorem*"
+				if ( strpos( $title->getDBKey(), '*' ) !== false ) {
+					$op = ' LIKE ';
+					$text = str_replace( '*', '%', $text );
+				}
+
 				$cond = [
-					'smw_title=' . $connection->addQuotes( $title->getDBKey() ),
+					"smw_title$op" . $connection->addQuotes( $text ),
 					'smw_namespace=' . $connection->addQuotes( $title->getNamespace() )
 				];
 
