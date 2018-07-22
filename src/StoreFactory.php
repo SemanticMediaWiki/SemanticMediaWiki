@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use Onoi\MessageReporter\NullMessageReporter;
-use Psr\Log\NullLogger;
 use RuntimeException;
 use SMW\Exception\StoreNotFoundException;
+use Onoi\MessageReporter\NullMessageReporter;
+use Psr\Log\NullLogger;
 
 /**
  * Factory method that returns an instance of the default store, or an
@@ -26,23 +26,23 @@ class StoreFactory {
 	/**
 	 * @since 1.9
 	 *
-	 * @param string|null $store
+	 * @param string|null $class
 	 *
 	 * @return Store
 	 * @throws RuntimeException
 	 * @throws StoreNotFoundException
 	 */
-	public static function getStore( $store = null ) {
+	public static function getStore( $class = null ) {
 
-		if ( $store === null ) {
-			$store = $GLOBALS['smwgDefaultStore'];
+		if ( $class === null ) {
+			$class = $GLOBALS['smwgDefaultStore'];
 		}
 
-		if ( !isset( self::$instance[$store] ) ) {
-			self::$instance[$store] = self::newInstance( $store );
+		if ( !isset( self::$instance[$class] ) ) {
+			self::$instance[$class] = self::newFromClass( $class );
 		}
 
-		return self::$instance[$store];
+		return self::$instance[$class];
 	}
 
 	/**
@@ -52,16 +52,16 @@ class StoreFactory {
 		self::$instance = [];
 	}
 
-	private static function newInstance( $store ) {
+	private static function newFromClass( $class ) {
 
-		if ( !class_exists( $store ) ) {
-			throw new RuntimeException( "{$store} was not found!" );
+		if ( !class_exists( $class ) ) {
+			throw new RuntimeException( "{$class} was not found!" );
 		}
 
-		$instance = new $store;
+		$instance = new $class;
 
 		if ( !( $instance instanceof Store ) ) {
-			throw new StoreNotFoundException( "{$store} cannot be used as a store instance!" );
+			throw new StoreNotFoundException( "{$class} cannot be used as a store instance!" );
 		}
 
 		$instance->setMessageReporter( new NullMessageReporter() );

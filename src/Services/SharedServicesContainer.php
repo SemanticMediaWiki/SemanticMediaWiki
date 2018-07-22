@@ -62,9 +62,48 @@ class SharedServicesContainer implements CallbackContainer {
 	 * @since 2.3
 	 */
 	public function register( ContainerBuilder $containerBuilder ) {
+
+		$containerBuilder->registerCallback( 'Store', [ $this, 'newStore' ] );
+
 		$this->registerCallbackHandlers( $containerBuilder );
 		$this->registerCallbackHandlersByFactory( $containerBuilder );
 		$this->registerCallbackHandlersByConstructedInstance( $containerBuilder );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return Store
+	 */
+	public function newStore( $containerBuilder, $storeClass = null ) {
+
+		$containerBuilder->registerExpectedReturnType( 'Store', '\SMW\Store' );
+		$settings = $containerBuilder->singleton( 'Settings' );
+
+		if ( $storeClass === null || $storeClass === '' ) {
+			$storeClass = $settings->get( 'smwgDefaultStore' );
+		}
+
+		$store = StoreFactory::getStore( $storeClass );
+
+		$configs = [
+			'smwgDefaultStore',
+			'smwgSemanticsEnabled',
+			'smwgAutoRefreshSubject',
+			'smwgEnableUpdateJobs',
+			'smwgQEqualitySupport',
+			'smwgElasticsearchConfig'
+		];
+
+		foreach ( $configs as $config ) {
+			$store->setOption( $config, $settings->get( $config ) );
+		}
+
+		$store->setLogger(
+			$containerBuilder->singleton( 'MediaWikiLogger' )
+		);
+
+		return $store;
 	}
 
 	private function registerCallbackHandlers( $containerBuilder ) {
@@ -72,34 +111,6 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'Settings', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'Settings', '\SMW\Settings' );
 			return Settings::newFromGlobals();
-		} );
-
-		$containerBuilder->registerCallback( 'Store', function( $containerBuilder, $storeClass = null ) {
-			$containerBuilder->registerExpectedReturnType( 'Store', '\SMW\Store' );
-
-			$settings = $containerBuilder->singleton( 'Settings' );
-			$storeClass = $storeClass !== null ? $storeClass : $settings->get( 'smwgDefaultStore' );
-
-			$store = StoreFactory::getStore( $storeClass );
-
-			$configs = [
-				'smwgDefaultStore',
-				'smwgSemanticsEnabled',
-				'smwgAutoRefreshSubject',
-				'smwgEnableUpdateJobs',
-				'smwgQEqualitySupport',
-				'smwgElasticsearchConfig'
-			];
-
-			foreach ( $configs as $config ) {
-				$store->setOption( $config, $settings->get( $config ) );
-			}
-
-			$store->setLogger(
-				$containerBuilder->singleton( 'MediaWikiLogger' )
-			);
-
-			return $store;
 		} );
 
 		$containerBuilder->registerCallback( 'Cache', function( $containerBuilder, $cacheType = null ) {
@@ -335,8 +346,8 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'QuerySourceFactory', '\SMW\Query\QuerySourceFactory' );
 
 			return new QuerySourceFactory(
-				$containerBuilder->create( 'Store' ),
-				$containerBuilder->create( 'Settings' )->get( 'smwgQuerySources' )
+				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgQuerySources' )
 			);
 		} );
 
@@ -414,7 +425,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;
 
 			$cachedQueryResultPrefetcher = new CachedQueryResultPrefetcher(
-				$containerBuilder->create( 'Store' ),
+				$containerBuilder->singleton( 'Store', null ),
 				$containerBuilder->singleton( 'QueryFactory' ),
 				$containerBuilder->create(
 					'BlobStore',
@@ -459,7 +470,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', CachedPropertyValuesPrefetcher::class );
 
 			$cachedPropertyValuesPrefetcher = new CachedPropertyValuesPrefetcher(
-				$containerBuilder->create( 'Store' ),
+				$containerBuilder->singleton( 'Store', null ),
 				$containerBuilder->create( 'BlobStore', CachedPropertyValuesPrefetcher::CACHE_NAMESPACE, $cacheType, $ttl )
 			);
 
@@ -564,11 +575,11 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @var HierarchyLookup
 		 */
-		$containerBuilder->registerCallback( 'HierarchyLookup', function( $containerBuilder, $cacheType = null ) {
+		$containerBuilder->registerCallback( 'HierarchyLookup', function( $containerBuilder, $store = null, $cacheType = null ) {
 			$containerBuilder->registerExpectedReturnType( 'HierarchyLookup', '\SMW\HierarchyLookup' );
 
 			$hierarchyLookup = new HierarchyLookup(
-				$containerBuilder->create( 'Store' ),
+				$containerBuilder->singleton( 'Store', null ),
 				$containerBuilder->singleton( 'Cache', $cacheType )
 			);
 
@@ -577,11 +588,11 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			$hierarchyLookup->setSubcategoryDepth(
-				$containerBuilder->create( 'Settings' )->get( 'smwgQSubcategoryDepth' )
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgQSubcategoryDepth' )
 			);
 
 			$hierarchyLookup->setSubpropertyDepth(
-				$containerBuilder->create( 'Settings' )->get( 'smwgQSubpropertyDepth' )
+				$containerBuilder->singleton( 'Settings' )->get( 'smwgQSubpropertyDepth' )
 			);
 
 			return $hierarchyLookup;
@@ -596,7 +607,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$lang = Localizer::getInstance()->getLang();
 
 			$propertyLabelFinder = new PropertyLabelFinder(
-				$containerBuilder->create( 'Store' ),
+				$containerBuilder->singleton( 'Store', null ),
 				$lang->getPropertyLabels(),
 				$lang->getCanonicalPropertyLabels(),
 				$lang->getCanonicalDatatypeLabels()
