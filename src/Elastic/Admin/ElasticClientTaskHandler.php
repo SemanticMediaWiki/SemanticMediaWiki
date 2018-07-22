@@ -7,6 +7,8 @@ use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Message;
 use WebRequest;
+use SMW\Elastic\Indexer\ReplicationStatus;
+use SMW\Elastic\Connection\Client as ElasticClient;
 
 /**
  * @license GNU GPL v2+
@@ -150,6 +152,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 	private function outputHead() {
 
 		$this->outputFormatter->setPageTitle( 'Elasticsearch' );
+		$this->outputFormatter->addHelpLink( 'https://www.semantic-mediawiki.org/wiki/Help:ElasticStore' );
 
 		$this->outputFormatter->addParentLink(
 			[ 'tab' => 'supplement' ]
@@ -170,6 +173,20 @@ class ElasticClientTaskHandler extends TaskHandler {
 
 		$this->outputFormatter->addAsPreformattedText(
 			$this->outputFormatter->encodeAsJson( $connection->info() )
+		);
+
+		$replicationStatus = new ReplicationStatus(
+			$connection
+		);
+
+		$this->outputFormatter->addHTML(
+			Html::element( 'h3', [], $this->msg(
+				'smw-admin-supplementary-elastic-status-replication' )
+			) . Html::element( 'p', [], $this->msg(
+				[ 'smw-admin-supplementary-elastic-status-last-active-replication', $replicationStatus->get( 'last_update' ) ] )
+			) . Html::element( 'p', [], $this->msg(
+				[ 'smw-admin-supplementary-elastic-status-refresh-interval', $replicationStatus->get( 'refresh_interval' ) ] )
+			)
 		);
 
 		$list = '';
