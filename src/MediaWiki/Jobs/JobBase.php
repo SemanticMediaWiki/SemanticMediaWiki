@@ -200,6 +200,32 @@ abstract class JobBase extends Job {
 	}
 
 	/**
+	 * @see Job::newRootJobParams
+	 * @since 3.0
+	 */
+	public static function newRootJobParams( $key = '', $title = '' ) {
+
+		if ( $title instanceof Title ) {
+			$title = $title->getPrefixedDBkey();
+		}
+
+		return parent::newRootJobParams( "job:{$key}:root:{$title}" );
+	}
+
+	/**
+	 * @see Job::ignoreDuplicates
+	 * @since 3.0
+	 */
+	public function ignoreDuplicates() {
+
+		if ( isset( $this->params['waitOnCommandLine'] ) ) {
+			return $this->params['waitOnCommandLine'] > 1;
+		}
+
+		return $this->removeDuplicates;
+	}
+
+	/**
 	 * Only run the job via commandLine or the cronJob and avoid execution via
 	 * Special:RunJobs as it can cause the script to timeout.
 	 */

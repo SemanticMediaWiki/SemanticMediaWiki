@@ -318,9 +318,11 @@ class Installer implements MessageReporter {
 
 		$messageReporter->reportMessage( "\nAdding property statistics rebuild job ...\n" );
 
+		$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
+
 		$job = new PropertyStatisticsRebuildJob(
-			\Title::newFromText( 'SMW\SQLStore\Installer' ),
-			[ 'waitOnCommandLine' => true ]
+			$title,
+			PropertyStatisticsRebuildJob::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 
 		$job->insert();
@@ -329,8 +331,8 @@ class Installer implements MessageReporter {
 		$messageReporter->reportMessage( "\nAdding entity disposer job ...\n" );
 
 		$job = new EntityIdDisposerJob(
-			\Title::newFromText( 'SMW\SQLStore\Installer' ),
-			[ 'waitOnCommandLine' => true ]
+			$title,
+			EntityIdDisposerJob::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 
 		$job->insert();
