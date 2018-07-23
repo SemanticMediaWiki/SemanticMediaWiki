@@ -42,7 +42,8 @@
 			"Nemo bis",
 			"DePlusJean",
 			"Oupsa",
-			"Eduardo Addad de Oliveira"
+			"Eduardo Addad de Oliveira",
+			"Hmevidia"
 		]
 	},
 	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -401,7 +402,7 @@
 	"smw-admin-other-functions": "Autres fonctions",
 	"smw-admin-supplementary-section-title": "Fonctions supplémentaires",
 	"smw-admin-supplementary-section-subtitle": "Fonctions disponibles",
-	"smw-admin-supplementary-section-intro": "Cette section fournit des fonctions supplémentaires au-delà du domaine de la maintenance, et il est possible que certaines fonctions qui sont listées dans la [https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki/Supplementary_functions documentation] soient restreintes ou indisponibles, et donc inaccessibles sur ce wiki.",
+	"smw-admin-supplementary-section-intro": "Cette section fournit des fonctions supplémentaires au-delà du domaine de maintenance, et il est possible que certaines fonctions qui sont listées dans la [https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki/Supplementary_functions documentation] soient restreintes ou indisponibles, et donc inaccessibles sur ce wiki.",
 	"smw-admin-supplementary-settings-title": "Options de configuration",
 	"smw-admin-supplementary-settings-intro": "<u>$1</u> renvoie une liste collective de paramètres disponibles utilisés dans Semantic MediaWiki",
 	"smw-admin-supplementary-operational-statistics-title": "Statistiques opérationnelles",
@@ -429,6 +430,9 @@
 	"smw-admin-supplementary-elastic-statistics-title": "Statistiques",
 	"smw-admin-supplementary-elastic-statistics-intro": "<u>$1</u> affiche les statistiques de niveau index",
 	"smw-admin-supplementary-elastic-statistics-docu": "Cette page fournit une vision des statistiques d’index pour différentes opérations qui se produisent à un niveau index, les statistiques renvoyées sont agrégées avec les agrégats primaires et totaux. La [https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-stats.html page d’aide] contient une description détaillée des statistiques d’index disponibles.",
+	"smw-admin-supplementary-elastic-status-replication": "Etat de réplication",
+	"smw-admin-supplementary-elastic-status-last-active-replication": "Dernière réplication active: $1",
+	"smw-admin-supplementary-elastic-status-refresh-interval": "Intervalle de mise à jour: $1",
 	"smw-list-count": "La liste contient $1 entrée{{PLURAL:$1||s}}.",
 	"smw-list-count-from-cache": "La liste contient $1 entrées{{PLURAL:$1||s}} venant du cache (UTC: $2).",
 	"smw-property-label-uniqueness": "L’étiquette « $1 » représente également au moins une autre propriété. Veuillez vous reporter à la [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness page d’aide] pour trouver comment résoudre ce problème.",
@@ -743,7 +747,7 @@
 	"smw-browse-property-group-label": "Etiquette du groupe de propriétés",
 	"smw-browse-property-group-description": "Description du groupe de propriétés",
 	"smw-property-predefined-ppgr": "« $1 » est une propriété prédéfinie qui identifie les entités (principalement les catégories) utilisées comme instance de regroupement pour les propriétés et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
-	"smw-list-pager-filter": "Filtre :",
+	"smw-filter": "Filtre",
 	"smw-section-expand": "Développer la section",
 	"smw-section-collapse": "Réduire la section",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] format",

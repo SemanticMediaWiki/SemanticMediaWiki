@@ -408,6 +408,9 @@
 	"smw-admin-supplementary-elastic-statistics-title": "Estatísticas",
 	"smw-admin-supplementary-elastic-statistics-intro": "<u>$1</u> mostra as estatísticas ao nível dos índices",
 	"smw-admin-supplementary-elastic-statistics-docu": "Esta página fornece uma perspetiva das estatísticas de índices para as diferentes operações que estão a ocorrer ao nível do índice. As estatísticas produzidas estão agrupadas por agregações primárias e totais. A [https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-stats.html página de ajuda] contém uma descrição detalhada das estatísticas de índices disponíveis.",
+	"smw-admin-supplementary-elastic-status-replication": "Estado da replicação",
+	"smw-admin-supplementary-elastic-status-last-active-replication": "Última replicação ativa: $1",
+	"smw-admin-supplementary-elastic-status-refresh-interval": "Intervalo de atualização: $1",
 	"smw-list-count": "A lista contém $1 {{PLURAL:$1|entrada|entradas}}.",
 	"smw-list-count-from-cache": "A lista contém $1 {{PLURAL:$1|entrada|entradas}} e foi obtida da cache (UTC: $2).",
 	"smw-property-label-uniqueness": "Foi encontrada uma correspondência entre a etiqueta \"$1\" e pelo menos uma outra representação de propriedade. Consulte a [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness página de ajuda] sobre a resolução deste problema, por favor.",
@@ -722,7 +725,7 @@
 	"smw-browse-property-group-label": "Etiqueta do grupo de propriedades",
 	"smw-browse-property-group-description": "Descrição do grupo de propriedades",
 	"smw-property-predefined-ppgr": "\"$1\" é uma propriedade predefinida que identifica as entidades (principalmente as categorias) que são utilizadas como instâncias de agrupamento para as propriedades, e é fornecida pela extensão [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semântico].",
-	"smw-list-pager-filter": "Filtro:",
+	"smw-filter": "Filtro",
 	"smw-section-expand": "Expandir a secção",
 	"smw-section-collapse": "Recolher a secção",
 	"smw-ask-format-help-link": "Formato [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",
@@ -752,5 +755,5 @@
 	"smw-remote-source-disabled": "A fonte '''$1''' desativou o suporte de pedidos remotos!",
 	"smw-remote-source-unmatched-id": "A fonte '''$1''' não corresponde a nenhuma versão do MediaWiki Semântico que possa suportar um pedido remoto.",
 	"smw-remote-request-note": "O resultado é obtido da fonte remota '''$1''' e é provável que o conteúdo gerado contenha informação que não está disponível na wiki corrente.",
-	"smw-remote-request-note-cached": "O resultado é armazenado em cache a partir da fonte remota '''$1''' e é provável que o conteúdo gerado contenha informação que não está disponível na wiki corrente."
+	"smw-remote-request-note-cached": "O resultado é '''armazenado em cache''' a partir da fonte remota '''$1''' e é provável que o conteúdo gerado contenha informação que não está disponível na wiki corrente."
 }

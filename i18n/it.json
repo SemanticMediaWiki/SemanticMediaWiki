@@ -399,7 +399,6 @@
 	"apihelp-smwbrowse-summary": "Modulo API per supportare la navigazione e le attività di ricerca per le entità gestite da Semantic MediaWiki.",
 	"smw-property-reserved-category": "Categoria",
 	"smw-category": "Categoria",
-	"smw-list-pager-filter": "Filtro:",
 	"smw-section-expand": "Espandi la sezione",
 	"smw-section-collapse": "Compimi la sezione",
 	"smw-ask-format-help-link": "Formato [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",

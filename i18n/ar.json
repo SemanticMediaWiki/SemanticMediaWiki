@@ -718,7 +718,6 @@
 	"smw-browse-property-group-label": "تسمية مجموعة الخصائص",
 	"smw-browse-property-group-description": "وصف مجموعة الخصائص",
 	"smw-property-predefined-ppgr": "\"$1\" خاصية محددة مسبقا تحدد الكيانات (بشكل رئيسي التصنيفات) التي يتم استخدامها كمثال تجميع للخصائص ويتم توفيرها بواسطة [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ميدياويكي الدلالي].",
-	"smw-list-pager-filter": "مرشح:",
 	"smw-section-expand": "وسع هذا القسم",
 	"smw-section-collapse": "اطو هذا القسم",
 	"smw-ask-format-help-link": "صيغة [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",

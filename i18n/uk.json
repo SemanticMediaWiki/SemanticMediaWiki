@@ -664,6 +664,5 @@
 	"smw-property-page-list-search-count": "Показано $1 {{PLURAL:$1|сторінку, яка використовує|сторінки, які використовують|сторінок, які використовують}} цю властивість зі збігом значення «$2».",
 	"smw-property-reserved-category": "Категорія",
 	"smw-category": "Категорія",
-	"smw-list-pager-filter": "Фільтр:",
 	"smw-help": "Допомога"
 }

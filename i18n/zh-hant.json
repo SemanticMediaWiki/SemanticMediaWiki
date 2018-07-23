@@ -456,9 +456,9 @@
 	"smw-format-datatable-toolbar-export": "匯出",
 	"smw-property-reserved-category": "分類",
 	"smw-category": "分類",
-	"smw-list-pager-filter": "篩選器：",
 	"smw-types-title": "類型：$1",
 	"smw-rule-page-definition": "定義",
+	"smw-rule-page-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Rule/Type/$1",
 	"smw-rule-page-description": "描述：",
 	"smw-rule-page-type": "類型：",
 	"smw-rule-page-tag": "標籤："

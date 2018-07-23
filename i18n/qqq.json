@@ -729,7 +729,6 @@
 	"smw-browse-property-group-label": "This is the label of an entity similar to special property which is shown er on special page \"Browse\".",
 	"smw-browse-property-group-description": "This is the label of an entity similar to special property which is shown er on special page \"Browse\".",
 	"smw-property-predefined-ppgr": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
-	"smw-list-pager-filter": "This is the label of a selection field.\n\n{{Identical|Filter}}",
 	"smw-section-expand": "This is a tooltip.",
 	"smw-section-collapse": "This is a tooltip.",
 	"smw-ask-format-help-link": "This is an informatory message.\n\nParameter:\n* $1 - holds the name of a format",

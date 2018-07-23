@@ -671,7 +671,6 @@
 	"smw-browse-property-group-label": "Etiqueta do grupo de propiedades",
 	"smw-browse-property-group-description": "Descrición do grupo de propiedades",
 	"smw-property-predefined-ppgr": "«$1» é unha propiedade predefinida, proporcionada pola [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica], que identifica entidades (categorías, principalmente) empregadas como instancias de agrupamento para as propiedades.",
-	"smw-list-pager-filter": "Filtro:",
 	"smw-section-expand": "Expandir a sección",
 	"smw-section-collapse": "Contraer a sección",
 	"smw-ask-format-help-link": "Formato [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",
