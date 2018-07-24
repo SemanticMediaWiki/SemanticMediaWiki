@@ -222,7 +222,7 @@ class SpecialAdmin extends SpecialPage {
 			'h3',
 			[],
 			$this->msg_text( 'smw-admin-environment' )
-		) . Html::rawElement(
+		) . ) . Html::rawElement(
 			'pre',
 			[],
 			json_encode( $this->getInfo(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
