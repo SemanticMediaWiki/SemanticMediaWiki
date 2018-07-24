@@ -318,6 +318,7 @@
 	"smw_smwadmin_updatestopped": "All existing update processes have been stopped.",
 	"smw_smwadmin_updatenotstopped": "To stop the running update process, you must activate the checkbox to indicate that you are really sure.",
 	"smw-admin-docu": "This special page helps you during installation, upgrade, maintenance and usage of <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a> and also provides further administrative functions and tasks as well as statistics.\nRemember to back up valuable data before executing administrative functions.",
+	"smw-admin-environment": "Software environment",
 	"smw-admin-db": "Database maintenance",
 	"smw-admin-db-preparation": "The table initialization is ongoing and may take a moment before results are displayed pending the size and possible table optimizations.",
 	"smw-admin-dbdocu": "Semantic MediaWiki requires some extensions to the MediaWiki database in order to store the semantic data.\nThe below function ensures that your database is set up properly.\nThe changes made in this step do not affect the rest of the MediaWiki database, and can easily be undone if desired.\nThis setup function can be executed multiple times without doing any harm, but it is needed only once on installation or upgrade.",
