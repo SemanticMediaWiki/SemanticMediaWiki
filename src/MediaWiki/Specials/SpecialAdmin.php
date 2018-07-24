@@ -218,6 +218,10 @@ class SpecialAdmin extends SpecialPage {
 			'p',
 			[],
 			$this->msg_text( 'smw-admin-docu' )
+		) . ) . Html::rawElement(
+			'h3',
+			[],
+			$this->msg_text( 'smw-admin-environment' )
 		) . Html::rawElement(
 			'pre',
 			[],
