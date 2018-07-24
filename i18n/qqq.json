@@ -330,6 +330,7 @@
 	"smw_smwadmin_updatestopped": "This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped.\n\nParameters:\n* $1 - the link back to Special:SMWAdmin",
 	"smw_smwadmin_updatenotstopped": "This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process.\n\nParameters:\n* $1 - the link back to Special:SMWAdmin",
 	"smw-admin-docu": "This is the introductory message at the top of [[Special:SMWAdmin]].",
+	"smw-admin-environment": "This is a section header on special page \"Semantic MediaWiki\".",
 	"smw-admin-db": "This is a section header on special page \"Semantic MediaWiki\".",
 	"smw-admin-db-preparation": "This is an informatory message.",
 	"smw-admin-dbdocu": "This is the text describing an available administrative option on [[Special:SMWAdmin]].",
