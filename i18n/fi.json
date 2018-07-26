@@ -223,6 +223,7 @@
 	"smw_smwadmin_updatestopped": "Kaikki nykyiset päivitysprosessit on pysäytetty.",
 	"smw_smwadmin_updatenotstopped": "Jos haluat pysäyttää käynnissä olevan päivitysprosessin, varmista päätöksesi aktivoimalla valintaruutu.",
 	"smw-admin-docu": "Tämä toimintosivu auttaa <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWikin</a> asennuksessa, päivityksessä, ylläpidossa ja käytössä sekä tarjoaa myös enemmän hallinnollisia funktioita ja tehtäviä, kuten myös tilastoja.\n\n\nMuista tehdä varmuuskopiot tärkeistä tiedoista ennen kuin aloitat ylläpitotoiminnot.",
+	"smw-admin-environment": "Ohjelmistoympäristö",
 	"smw-admin-db": "Tietokannan asennus ja päivitys",
 	"smw-admin-dbdocu": "Semantic MediaWiki tarvitsee joitain MediaWiki-tietokannan laajennuksia, jotta semanttista tietoa voidaan tallentaa.\nAlla oleva toiminto varmistaa, että tietokanta on asennettu oikein.\nTässä vaiheessa tehdyt muutokset eivät vaikuta muuhun MediaWiki-tietokantaan ja muutokset on helppo tarvittaessa kumota.\nAsennus voidaan suorittaa monta kertaa ilman että siitä ei aiheutuisi vahinkoa, mutta se on tehtävä vain kerran asennuksen tai päivityksen yhteydessä.",
 	"smw-admin-dbbutton": "Alusta tai päivitä taulukot",

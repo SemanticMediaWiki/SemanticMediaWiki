@@ -290,6 +290,7 @@
 	"smw-format-list-other-fields-close": ")",
 	"smw-property-reserved-category": "Kategorie",
 	"smw-category": "Kategorie",
+	"smw-filter": "Filter",
 	"smw-section-expand": "Den Abschnitt opklappen",
 	"smw-section-collapse": "Den Abschnitt zesummeklappen",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] Format",

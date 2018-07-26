@@ -328,6 +328,7 @@
 	"smw_smwadmin_updatestopped": "Todos os processos de atualização existentes foram parados.",
 	"smw_smwadmin_updatenotstopped": "Para parar o processo de atualização em curso, deve marcar a caixa de seleção para indicar que tem realmente a certeza.",
 	"smw-admin-docu": "Esta página especial auxilia-o durante a instalação, atualização, manutenção e utilização do <a href=\"https://www.semantic-mediawiki.org\">MediaWiki Semântico</a> e fornece outras funções e tarefas administrativas, assim como estatísticas.\nLembre-se de efetuar cópias de segurança dos dados importantes antes de executar funções administrativas.",
+	"smw-admin-environment": "Ambiente de ''software''",
 	"smw-admin-db": "Manutenção da base de dados",
 	"smw-admin-db-preparation": "A inicialização da tabela está em curso e pode demorar algum tempo até os resultados serem apresentados, dependendo do tamanho da tabela e de possíveis otimizações da mesma.",
 	"smw-admin-dbdocu": "O MediaWiki Semântico requer algumas alterações da base de dados do MediaWiki, de forma a armazenar os dados semânticos.\nA função abaixo assegura que a sua base de dados está devidamente preparada.\nAs alterações feitas neste passo não afetam o resto da base de dados do MediaWiki, e podem ser facilmente desfeitas se desejado.\nEsta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou atualização.",
