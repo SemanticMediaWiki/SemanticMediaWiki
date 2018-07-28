@@ -21,6 +21,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $connection;
 	private $dataItemHandler;
+	private $query;
 
 	public function setUp() {
 		parent::setUp();
@@ -41,6 +42,16 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->connection->expects( $this->any() )
+			->method( 'tableName' )
+			->will( $this->returnArgument(0) );
+
+		$this->query = new \SMW\MediaWiki\Connection\Query( $this->connection );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $this->query ) );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
@@ -147,7 +158,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'Foo' ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
+			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new SemanticDataLookup(
@@ -207,13 +218,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$this->equalTo( ' INNER JOIN  AS p ON p_id=p.smw_id' ),
-				$this->equalTo( 'p.smw_title as prop,fooField AS v0,  AS v2' ),
-				$this->equalTo( "s_id='42' AND p.smw_iw!=':smw' AND p.smw_iw!=':smw-delete' AND p_id='9999'" ),
-				$this->anything(),
-				$this->equalTo( [ 'LIMIT' => 4 ] ) )
+			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
@@ -233,6 +238,14 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->fetchSemanticData( 42, $subject, $propertyTable, $requestOptions );
+
+		$this->assertEquals(
+			"SELECT p.smw_title AS prop, fooField AS v0,  AS v2 FROM  " .
+			"INNER JOIN smw_object_ids AS p ON p_id=p.smw_id " .
+			"WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete') AND (p_id='9999') " .
+			"LIMIT 4",
+			$this->query->build()
+		);
 	}
 
 	public function testSemanticData_NoDataItem() {
@@ -262,13 +275,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'select' )
-			->with(
-				$this->equalTo( ' INNER JOIN  AS p ON p_id=p.smw_id' ),
-				$this->equalTo( 'p.smw_title as prop,fooField AS v0,  AS v2' ),
-				$this->equalTo( "s_id='42' AND p.smw_iw!=':smw' AND p.smw_iw!=':smw-delete'" ),
-				$this->anything(),
-				$this->equalTo( [] ) )
+			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new SemanticDataLookup(
@@ -276,6 +283,13 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->fetchSemanticData( 42, null, $propertyTable );
+
+		$this->assertEquals(
+			"SELECT p.smw_title AS prop, fooField AS v0,  AS v2 FROM  " .
+			"INNER JOIN smw_object_ids AS p ON p_id=p.smw_id " .
+			"WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete')",
+			$this->query->build()
+		);
 	}
 
 }

@@ -65,11 +65,7 @@ class SemanticDataLookup {
 		);
 
 		if ( $pid > 0 ) {
-			$connection = $this->store->getConnection( 'mw.db' );
-
-			$ropts->addExtraCondition(
-				[ 'p_id' => $connection->addQuotes( $pid ) ]
-			);
+			$ropts->addExtraCondition( [ 'p_id' => $pid ] );
 		}
 
 		return $ropts;
@@ -195,6 +191,7 @@ class SemanticDataLookup {
 		}
 
 		$result = [];
+		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Build something like:
 		//
@@ -211,25 +208,17 @@ class SemanticDataLookup {
 		// INNER JOIN `smw_object_ids` AS p ON p_id=p.smw_id
 		// WHERE s_id='80' AND p.smw_iw!=':smw' AND p.smw_iw!=':smw-delete'
 
-		$query = [
-			'table' => '',
-			'fields' => '',
-			'conditions' => '',
-			'options' => ''
-		];
-
-		$this->buildQueryInfo(
-			$query,
+		$query = $this->newQuery(
+			$propTable,
 			$id,
 			$isSubject,
-			$propTable,
 			$dataItem
 		);
 
 		if ( $requestOptions !== null ) {
 			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
-				if ( isset( $extraCondition['p_id' ] ) ) {
-					$query['conditions'] .= ' AND p_id=' . $extraCondition['p_id' ];
+				if ( isset( $extraCondition['p_id'] ) ) {
+					$query->condition( $query->eq( 'p_id', $extraCondition['p_id'] ) );
 				}
 			}
 		}
@@ -246,40 +235,36 @@ class SemanticDataLookup {
 
 		$fields = $diHandler->getFetchFields();
 
-		$this->buildFieldsInfo(
+		$this->addFields(
 			$query,
+			$fields,
 			$valueField,
 			$labelField,
-			$fields,
 			$valueCount,
 			$fieldname
 		);
 
  		// Apply sorting/string matching; only with given property
 		if ( !$isSubject ) {
-			$query['conditions'] .= $this->store->getSQLConditions(
+			$conds = $this->store->getSQLConditions(
 				$requestOptions,
 				$valueField,
 				$labelField,
-				$query['conditions'] !== ''
+				$query->hasCondition()
 			);
 
-			$query['options'] = $this->store->getSQLOptions( $requestOptions, $valueField ) + [ 'DISTINCT' ];
+			$query->condition( $conds );
+			$query->options( $this->store->getSQLOptions( $requestOptions, $valueField ) + [ 'DISTINCT' ] );
 		} else {
 			$valueField = '';
 
 			// Don't use DISTINCT for value of one subject:
-			$query['options'] = $this->store->getSQLOptions( $requestOptions, $valueField );
+			$query->options( $this->store->getSQLOptions( $requestOptions, $valueField ) );
 		}
 
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$res = $connection->select(
-			$query['table'],
-			$query['fields'],
-			$query['conditions'],
-			__METHOD__,
-			$query['options']
+		$res = $connection->query(
+			$query,
+			__METHOD__
 		);
 
 		foreach ( $res as $row ) {
@@ -306,58 +291,63 @@ class SemanticDataLookup {
 		return $result;
 	}
 
-	private function buildQueryInfo( &$query, $id, $isSubject, $propTable, $dataItem ) {
+	private function newQuery( $propTable, $id, $isSubject, $dataItem ) {
 
 		$connection = $this->store->getConnection( 'mw.db' );
+		$query = $connection->newQuery();
 
-		$query['table'] = $connection->tableName(
-			$propTable->getName()
-		);
+		$query->type( 'select' );
+		$query->table( $propTable->getName() );
 
 		// Restrict property only
 		if ( !$isSubject && !$propTable->isFixedPropertyTable() ) {
-			$query['conditions'] .= 'p_id=' . $connection->addQuotes( $id );
+			$query->condition( $query->eq( 'p_id', $id ) );
 		}
 
 		// Restrict subject, select property
 		if ( $isSubject && $propTable->usesIdSubject() ) {
-			$query['conditions'] .= 's_id=' . $connection->addQuotes( $id );
+			$query->condition( $query->eq( 's_id', $id ) );
 		} elseif ( $isSubject ) {
-			$query['conditions'] .= 's_title=' . $connection->addQuotes( $dataItem->getDBkey() );
-			$query['conditions'] .= ' AND s_namespace=' . $connection->addQuotes( $dataItem->getNamespace() );
+			$query->condition( $query->eq( 's_title', $dataItem->getDBkey() ) );
+			$query->condition( $query->eq( 's_namespace', $dataItem->getNamespace() ) );
 		}
 
 		// Select property name
 		// In case of a fixed property, no select needed
 		if ( $isSubject && !$propTable->isFixedPropertyTable() ) {
-			$query['table'] .= ' INNER JOIN ' . $connection->tableName( SQLStore::ID_TABLE ) . ' AS p ON p_id=p.smw_id';
-			$query['fields'] .= 'p.smw_title as prop';
+			$query->join(
+				'INNER JOIN',
+				[ SQLStore::ID_TABLE => 'p ON p_id=p.smw_id' ]
+			);
+
+			$query->field( 'p.smw_title', 'prop' );
 
 			// Avoid displaying any property that has been marked deleted or outdated
-			$query['conditions'] .= " AND p.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
-			$query['conditions'] .= " AND p.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
+			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
+			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWDELETEIW ) );
 		}
+
+		return $query;
 	}
 
-	private function buildFieldsInfo( &$query, $valueField, $labelField, $fields, &$valueCount, &$fieldname ) {
-
-		$connection = $this->store->getConnection( 'mw.db' );
+	private function addFields( &$query, $fields, $valueField, $labelField, &$valueCount, &$fieldname ) {
 
 		// Select dataItem column(s)
 		foreach ( $fields as $fieldname => $fieldType ) {
 
 			 // Get data from ID table
 			if ( $fieldType === FieldType::FIELD_ID ) {
-				$query['table'] .= ' INNER JOIN ' . $connection->tableName( SQLStore::ID_TABLE );
-				$query['table'] .= " AS o$valueCount ON $fieldname=o$valueCount.smw_id";
+				$query->join(
+					'INNER JOIN',
+					[ SQLStore::ID_TABLE => "o$valueCount ON $fieldname=o$valueCount.smw_id" ]
+				);
 
-				$query['fields'] .= $query['fields'] !== '' ? ',' : '';
-				$query['fields'] .=	"$fieldname AS id$valueCount";
-				$query['fields'] .=	",o$valueCount.smw_title AS v$valueCount";
-				$query['fields'] .=	",o$valueCount.smw_namespace AS v" . ( $valueCount + 1 );
-				$query['fields'] .=	",o$valueCount.smw_iw AS v" . ( $valueCount + 2 );
-				$query['fields'] .=	",o$valueCount.smw_sortkey AS v" . ( $valueCount + 3 );
-				$query['fields'] .=	",o$valueCount.smw_subobject AS v" . ( $valueCount + 4 );
+				$query->field( "$fieldname AS id$valueCount" );
+				$query->field( "o$valueCount.smw_title AS v$valueCount" );
+				$query->field( "o$valueCount.smw_namespace AS v" . ( $valueCount + 1 ) );
+				$query->field( "o$valueCount.smw_iw AS v" . ( $valueCount + 2 ) );
+				$query->field( "o$valueCount.smw_sortkey AS v" . ( $valueCount + 3 ) );
+				$query->field( "o$valueCount.smw_subobject AS v" . ( $valueCount + 4 ) );
 
 				if ( $valueField == $fieldname ) {
 					$valueField = "o$valueCount.smw_sortkey";
@@ -368,8 +358,7 @@ class SemanticDataLookup {
 
 				$valueCount += 4;
 			} else {
-				$query['fields'] .= $query['fields'] !== '' ? ',' : '';
-				$query['fields'] .=	"$fieldname AS v$valueCount";
+				$query->field( $fieldname, "v$valueCount" );
 			}
 
 			$valueCount += 1;
@@ -378,8 +367,8 @@ class SemanticDataLookup {
 		// Postgres
 		// Function: SMWSQLStore3Readers::fetchSemanticData
 		// Error: 42P10 ERROR: for SELECT DISTINCT, ORDER BY expressions must appear in select list
-		if ( strpos( $query['fields'], $valueField ) === false ) {
-			$query['fields'] .= ", $valueField AS v" . ( $valueCount + 1 );
+		if ( !$query->hasField( $valueField ) ) {
+			$query->field( $valueField, "v" . ( $valueCount + 1 ) );
 		}
 	}
 

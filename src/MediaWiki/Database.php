@@ -8,6 +8,7 @@ use ResultWrapper;
 use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Connection\ConnectionProviderRef;
+use SMW\MediaWiki\Connection\Query;
 use UnexpectedValueException;
 
 /**
@@ -103,6 +104,15 @@ class Database {
 	 */
 	public function ping() {
 		return true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return Query
+	 */
+	public function newQuery() {
+		return new Query( $this );
 	}
 
 	/**
@@ -340,7 +350,7 @@ class Database {
 	 *
 	 * @since 1.9
 	 *
-	 * @param string $sql
+	 * @param Query|string $sql
 	 * @param string $fname
 	 * @param boolean $ignoreException
 	 *
@@ -351,6 +361,10 @@ class Database {
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
+		}
+
+		if ( $sql instanceof Query ) {
+			$sql = $sql->build();
 		}
 
 		if ( !$this->isType( 'postgres' ) ) {
