@@ -175,7 +175,7 @@ class ElasticFactory {
 	 * @return FileIndexer
 	 */
 	public function newFileIndexer( Indexer $indexer ) {
-		return new FileIndexer( $connection );
+		return new FileIndexer( $indexer );
 	}
 
 	/**

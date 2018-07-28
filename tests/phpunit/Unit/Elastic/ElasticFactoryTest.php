@@ -77,6 +77,34 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructTextIndexer() {
+
+		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ElasticFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\Indexer\TextIndexer',
+			$instance->newTextIndexer( $indexer )
+		);
+	}
+
+	public function testCanConstructFileIndexer() {
+
+		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ElasticFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\Indexer\FileIndexer',
+			$instance->newFileIndexer( $indexer )
+		);
+	}
+
 	public function testCanConstructRollover() {
 
 		$instance = new ElasticFactory();
