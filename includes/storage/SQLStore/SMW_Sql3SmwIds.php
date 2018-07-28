@@ -762,14 +762,30 @@ class SMWSql3SmwIds {
 	 *
 	 * @param integer $sid
 	 * @param DIWikiPage $subject
-	 * @param integer|string|null $interWiki
+	 * @param integer|string|null $interwiki
 	 */
-	public function updateInterwikiField( $sid, DIWikiPage $subject, $interWiki = null ) {
+	public function updateInterwikiField( $sid, DIWikiPage $subject, $interwiki = null ) {
 
-		$this->store->getConnection()->update(
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		if ( $interwiki === null ) {
+			$interwiki = $subject->getInterWiki();
+		}
+
+		$hash = [
+			$subject->getDBKey(),
+			(int)$subject->getNamespace(),
+			$interwiki,
+			$subject->getSubobjectName()
+		];
+
+		$connection->update(
 			self::TABLE_NAME,
-			array( 'smw_iw' => $interWiki !== null ? $interWiki : $subject->getInterWiki() ),
-			array( 'smw_id' => $sid ),
+			[
+				'smw_iw' => $interwiki,
+				'smw_hash' => $this->computeSha1( $hash )
+			],
+			[ 'smw_id' => $sid ],
 			__METHOD__
 		);
 

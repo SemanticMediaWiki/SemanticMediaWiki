@@ -295,7 +295,9 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'smw_iw' => 'Bar' ) ),
+				$this->equalTo( array(
+					'smw_iw' => 'Bar',
+					'smw_hash' => '8ba1886210e332a1fbaf28c38e43d1e89dc761db' ) ),
 				$this->equalTo( array( 'smw_id' => 42 ) ) );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
