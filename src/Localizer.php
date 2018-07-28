@@ -149,7 +149,14 @@ class Localizer {
 		// then we assume that an explicit language object was given otherwise
 		// the Title is using the content language as fallback
 		if ( $title instanceof Title ) {
-			$language = $title->getPageLanguage();
+
+			// Avoid "MWUnknownContentModelException ... " when content model
+			// is not registered
+			try {
+				$language = $title->getPageLanguage();
+			} catch ( \Exception $e ) {
+
+			}
 		}
 
 		return $language instanceof Language ? $language : $this->getContentLanguage();
