@@ -103,6 +103,11 @@
 
 				return {
 					suggestions: $.map( response.query, function( key ) {
+						
+						if ( key === null ) {
+							return [];
+						};
+
 						return { value: key, data: key };
 					} )
 				};
