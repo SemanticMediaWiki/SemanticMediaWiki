@@ -67,7 +67,7 @@ class FallbackFinder {
 			return $this->fallbackLanguages[$languageCode];
 		}
 
-		$index = 'fallback.language';
+		$index = 'fallback_language';
 
 		// Unknown, use the default
 		if ( $languageCode === '' ) {

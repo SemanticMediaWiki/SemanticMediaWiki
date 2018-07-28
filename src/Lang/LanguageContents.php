@@ -79,33 +79,16 @@ class LanguageContents {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $index
-	 * @param string $languageCode
-	 *
-	 * @return boolean
-	 */
-	public function has( $index, $languageCode ) {
-		return isset( $this->contents[$languageCode][$index] ) && $this->contents[$languageCode][$index] !== array();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $index
+	 * @param string $id
 	 * @param string $languageCode
 	 *
 	 * @return array|string|false
 	 */
-	public function get( $index, $languageCode ) {
-
-		if ( $this->has( $index, $languageCode ) ) {
-			return $this->contents[$languageCode][$index];
-		}
-
-		return $this->getFromLanguageById( $languageCode, $index );
+	public function get( $id, $languageCode ) {
+		return $this->matchLanguage( $languageCode, $id );
 	}
 
-	private function getFromLanguageById( $languageCode, $index ) {
+	private function matchLanguage( $languageCode, $id ) {
 
 		$canonicalFallbackLanguageCode = $this->fallbackFinder->getCanonicalFallbackLanguageCode();
 
@@ -119,30 +102,71 @@ class LanguageContents {
 			}
 		}
 
-		if ( isset( $this->contents[$languageCode][$index] ) && $this->contents[$languageCode][$index] !== array() ) {
-			return $this->contents[$languageCode][$index];
+		$depth = 1;
+
+		// There is certainly a better (meaning generic) way to do this yet with
+		// only a limited depth, doing a recursive traversal will not yield an
+		// advantage
+		if ( strpos( $id, '.' ) !== false ) {
+			$keys = explode( '.', $id );
+			$depth = count( $keys );
+		}
+
+		if ( $depth == 1 && isset( $this->contents[$languageCode][$id] ) && $this->contents[$languageCode][$id] !== array() ) {
+			return $this->contents[$languageCode][$id];
+		}
+
+		if ( $depth == 2 && isset( $this->contents[$languageCode][$keys[0]][$keys[1]] ) && $this->contents[$languageCode][$keys[0]][$keys[1]] !== array() ) {
+			return $this->contents[$languageCode][$keys[0]][$keys[1]];
+		}
+
+		if ( $depth == 3 && isset( $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]] ) && $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]] !== array() ) {
+			return $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]];
 		}
 
 		if ( $languageCode !== $canonicalFallbackLanguageCode ) {
-			return $this->getFromLanguageById( $this->fallbackFinder->getFallbackLanguageBy( $languageCode ), $index );
+			return $this->matchLanguage( $this->fallbackFinder->getFallbackLanguageBy( $languageCode ), $id );
 		}
 
-		return $this->getCanonicalContentsFrom( $canonicalFallbackLanguageCode, $index );
+		return $this->matchCanonicalLanguage( $canonicalFallbackLanguageCode, $id );
 	}
 
-	private function getCanonicalContentsFrom( $languageCode, $index ) {
+	private function matchCanonicalLanguage( $languageCode, $id ) {
+
+		$depth = 1;
+
+		if ( strpos( $id, '.' ) !== false ) {
+			$keys = explode( '.', $id );
+			$depth = count( $keys );
+		}
 
 		// Last resort before throwing the towel, make sure we really have
 		// something when the default FallbackLanguageCode is used
-		if ( !isset( $this->contents[$languageCode][$index] ) ) {
+		if ( $depth == 1 && !isset( $this->contents[$languageCode][$id] ) ) {
 			$this->contents[$languageCode] = $this->jsonContentsFileReader->readByLanguageCode( $languageCode, true );
 		}
 
-		if ( isset( $this->contents[$languageCode][$index] ) ) {
-			return $this->contents[$languageCode][$index];
+		if ( $depth == 1 && isset( $this->contents[$languageCode][$id] ) ) {
+			return $this->contents[$languageCode][$id];
 		}
 
-		throw new RuntimeException( "Unknown or invalid `{$index}` index for `{$languageCode}`"  );
+		if ( $depth == 2 && !isset( $this->contents[$languageCode][$keys[0]][$keys[1]] ) ) {
+			$this->contents[$languageCode] = $this->jsonContentsFileReader->readByLanguageCode( $languageCode, true );
+		}
+
+		if ( $depth == 2 && isset( $this->contents[$languageCode][$keys[0]][$keys[1]] ) ) {
+			return $this->contents[$languageCode][$keys[0]][$keys[1]];
+		}
+
+		if ( $depth == 3 && !isset( $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]] ) ) {
+			$this->contents[$languageCode] = $this->jsonContentsFileReader->readByLanguageCode( $languageCode, true );
+		}
+
+		if ( $depth == 3 && isset( $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]] ) ) {
+			return $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]];
+		}
+
+		throw new RuntimeException( "Unknown or invalid `{$id}` id for `{$languageCode}`"  );
 	}
 
 }

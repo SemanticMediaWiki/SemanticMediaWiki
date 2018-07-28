@@ -2,11 +2,13 @@
     "@metadata": {
         "authors": []
     },
-    "fallback.language": false,
-    "datatype.labels": {
-        "dataTypeLabels-fallback": "bar"
-    },
-    "datatype.aliases": {
-        "dataTypeAliases-fallback": "bar"
+    "fallback_language": false,
+    "datatype":{
+        "labels": {
+            "dataTypeLabels-fallback": "bar"
+        },
+        "aliases": {
+            "dataTypeAliases-fallback": "bar"
+        }
     }
 }

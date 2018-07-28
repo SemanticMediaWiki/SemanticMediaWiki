@@ -83,6 +83,54 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetContentsByLanguage_ID_Depth_2() {
+
+		$languageCode = 'Foo';
+
+		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
+			->method( 'readByLanguageCode' )
+			->with( $this->equalTo( $languageCode ) )
+			->will( $this->returnValue( [ 'Foo' => [ 'Bar' => 123 ] ] ) );
+
+		$this->fallbackFinder->expects( $this->atLeastOnce() )
+			->method( 'getCanonicalFallbackLanguageCode' )
+			->will( $this->returnValue( 'en' ) );
+
+		$instance = new LanguageContents(
+			$this->jsonContentsFileReader,
+			$this->fallbackFinder
+		);
+
+		$this->assertEquals(
+			123,
+			$instance->get( 'Foo.Bar', $languageCode )
+		);
+	}
+
+	public function testGetContentsByLanguage_ID_Depth_3() {
+
+		$languageCode = 'Foo';
+
+		$this->jsonContentsFileReader->expects( $this->at( 0 ) )
+			->method( 'readByLanguageCode' )
+			->with( $this->equalTo( $languageCode ) )
+			->will( $this->returnValue( [ 'Foo' => [ 'Bar' => [ 'Foobar' => 456 ] ] ] ) );
+
+		$this->fallbackFinder->expects( $this->atLeastOnce() )
+			->method( 'getCanonicalFallbackLanguageCode' )
+			->will( $this->returnValue( 'en' ) );
+
+		$instance = new LanguageContents(
+			$this->jsonContentsFileReader,
+			$this->fallbackFinder
+		);
+
+		$this->assertEquals(
+			456,
+			$instance->get( 'Foo.Bar.Foobar', $languageCode )
+		);
+	}
+
 	public function testGetContentsByLanguageWithIndexWithFallback() {
 
 		$languageCode = 'Foo';
