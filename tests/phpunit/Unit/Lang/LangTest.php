@@ -55,7 +55,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'namespaces' ),
+				$this->equalTo( 'namespace.labels' ),
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
@@ -101,7 +101,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'date.precision.rules' ),
+				$this->equalTo( 'date.precision' ),
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
@@ -124,7 +124,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'date.precision.rules' ),
+				$this->equalTo( 'date.precision' ),
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
@@ -253,7 +253,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'date.format.rules' ),
+				$this->equalTo( 'date.format' ),
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
@@ -278,7 +278,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'months' ),
+				$this->equalTo( 'date.months' ),
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
@@ -303,7 +303,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'months' ),
+				$this->equalTo( 'date.months' ),
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 

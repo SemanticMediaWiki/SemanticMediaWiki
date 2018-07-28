@@ -3,5 +3,5 @@
 		"authors": []
 	},
 	"isLanguageRedirect": true,
-	"fallback.language": "zh-cn"
+	"fallback_language": "zh-cn"
 }

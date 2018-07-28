@@ -137,12 +137,12 @@ class Lang {
 	public function getNamespaces() {
 
 		$namespaces = $this->languageContents->get(
-			'namespaces',
+			'namespace.labels',
 			$this->languageCode
 		);
 
 		$namespaces += $this->languageContents->get(
-			'namespaces',
+			'namespace.labels',
 			$this->canonicalFallbackLanguageCode
 		);
 
@@ -464,7 +464,7 @@ class Lang {
 	public function getPreferredDateFormatByPrecision( $precision = null ) {
 
 		$dateOutputFormats = $this->languageContents->get(
-			'date.precision.rules',
+			'date.precision',
 			$this->languageCode
 		);
 
@@ -499,7 +499,7 @@ class Lang {
 		$languageCode = $this->languageCode;
 
 		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === array() ) {
-			$this->months[$languageCode] = $this->languageContents->get( 'months', $languageCode );
+			$this->months[$languageCode] = $this->languageContents->get( 'date.months', $languageCode );
 		}
 
 		foreach ( $this->months[$languageCode] as $key => $value ) {
@@ -533,7 +533,7 @@ class Lang {
 		$number = (int)( $number - 1 ); // array starts with 0
 
 		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === array() ) {
-			$this->months[$languageCode] = $this->languageContents->get( 'months', $languageCode );
+			$this->months[$languageCode] = $this->languageContents->get( 'date.months', $languageCode );
 		}
 
 		if ( ( ( $number >= 0 ) && ( $number <= 11 ) ) && isset( $this->months[$languageCode][$number]) ) {
@@ -547,7 +547,7 @@ class Lang {
 
 		$dateformats = array();
 
-		foreach ( $this->languageContents->get( 'date.format.rules', $languageCode ) as $row ) {
+		foreach ( $this->languageContents->get( 'date.format', $languageCode ) as $row ) {
 			$internalNumberFormat = array();
 
 			foreach ( $row as $value ) {
