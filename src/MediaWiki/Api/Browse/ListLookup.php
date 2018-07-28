@@ -85,18 +85,18 @@ class ListLookup extends Lookup {
 		}
 
 		if ( isset( $parameters['search'] ) ) {
-			list( $list, $continueOffset ) = $this->search( $ns, $requestOptions, $parameters );
+			list( $res, $continueOffset ) = $this->fetchFromTable( $ns, $requestOptions, $parameters );
 		}
 
 		// Changing this output format requires to set a new version
 		$res = [
-			'query' => $list,
+			'query' => $res,
 			'query-continue-offset' => $continueOffset,
 			'version' => self::VERSION,
 			'meta' => [
 				'type'  => $type,
 				'limit' => $limit,
-				'count' => count( $list )
+				'count' => count( $res )
 			]
 		];
 
@@ -127,7 +127,19 @@ class ListLookup extends Lookup {
 		$requestOptions->setLimit( $limit );
 		$requestOptions->setOffset( $offset );
 
-		if ( isset( $parameters['search'] ) ) {
+		if ( isset( $parameters['search'] ) && isset( $parameters['strict'] ) ) {
+			$search = $parameters['search'];
+
+			if ( $search !== '' && $search{0} !== '_' ) {
+				$search = str_replace( "_", " ", $search );
+			}
+
+			$requestOptions->addStringCondition(
+				$search,
+				StringCondition::COND_EQ
+			);
+
+		} elseif ( isset( $parameters['search'] ) ) {
 			$search = $parameters['search'];
 
 			if ( $search !== '' && $search{0} !== '_' ) {
@@ -163,7 +175,7 @@ class ListLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function search( $ns, $requestOptions, $parameters ) {
+	private function fetchFromTable( $ns, $requestOptions, $parameters ) {
 
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];
