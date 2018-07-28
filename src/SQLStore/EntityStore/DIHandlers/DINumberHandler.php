@@ -51,10 +51,45 @@ class DINumberHandler extends DataItemHandler {
 
 			// API module pvalue lookup
 			'p_id,o_serialized',
+			'p_id,o_sortkey',
 
 			// QueryEngine::getInstanceQueryResult
 			's_id,p_id,o_sortkey',
 		];
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getIndexHint( $key ) {
+
+		// Store::getPropertySubjects has seen to choose the wrong index
+
+		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// FROM `smw_object_ids` INNER JOIN `smw_di_number` AS t1 FORCE INDEX(s_id) ON t1.s_id=smw_id
+		// WHERE t1.p_id='310194' AND smw_iw!=':smw' AND smw_iw!=':smw-delete' AND smw_iw!=':smw-redi'
+		// GROUP BY smw_sort, smw_id
+		// LIMIT 26
+		//
+		// 584.9450ms SMWSQLStore3Readers::getPropertySubjects
+		//
+		// vs.
+		//
+		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// FROM `smw_object_ids`
+		// INNER JOIN `smw_di_number` AS t1 ON t1.s_id=smw_id
+		// WHERE t1.p_id='310194' AND smw_iw!=':smw' AND smw_iw!=':smw-delete' AND smw_iw!=':smw-redi'
+		// GROUP BY smw_sort, smw_id
+		// LIMIT 26
+		//
+		// 21448.2622ms	SMWSQLStore3Readers::getPropertySubjects
+		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
+			return 's_id';
+		}
+
+		return '';
 	}
 
 	/**

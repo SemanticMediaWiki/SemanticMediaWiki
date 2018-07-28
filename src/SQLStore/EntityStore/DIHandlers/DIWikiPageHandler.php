@@ -54,6 +54,9 @@ class DIWikiPageHandler extends DataItemHandler {
 		return array(
 			'o_id',
 
+			// SMWSQLStore3Readers::getPropertySubjects
+			'p_id,s_id',
+
 			// SMWSQLStore3Readers::fetchSemanticData
 			// ... FROM `smw_fpt_sobj` INNER JOIN `smw_object_ids` AS o0 ON
 			// o_id=o0.smw_id WHERE s_id='104322'
@@ -72,9 +75,6 @@ class DIWikiPageHandler extends DataItemHandler {
 
 			// QueryEngine::getInstanceQueryResult
 			//'p_id,o_id,s_sort',
-
-			// SMWSQLStore3Readers::getPropertySubjects
-			//'p_id,s_sort,s_id',
 
 			// SMWSQLStore3Readers::getPropertySubjects
 			// SELECT DISTINCT s_id FROM `smw_fpt_sobj` ORDER BY s_sort
