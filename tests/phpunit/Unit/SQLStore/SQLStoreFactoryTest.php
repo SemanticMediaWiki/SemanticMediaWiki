@@ -301,6 +301,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructIdChanger() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\IdChanger',
+			$instance->newIdChanger()
+		);
+	}
+
 	public function testCanConstructHierarchyLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );
