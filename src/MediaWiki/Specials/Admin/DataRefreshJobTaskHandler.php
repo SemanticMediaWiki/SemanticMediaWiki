@@ -175,6 +175,10 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 
 		$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
+		if ( !$jobQueue->hasPendingJob( 'SMW\RefreshJob' ) ) {
+			return null;
+		}
+
 		// Pop and acknowledge the job to fetch progress details
 		// from the itself
 		$refreshJob = $jobQueue->pop( 'SMW\RefreshJob' );
