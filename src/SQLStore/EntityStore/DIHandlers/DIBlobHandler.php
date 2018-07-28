@@ -52,22 +52,45 @@ class DIBlobHandler extends DataItemHandler {
 
 			's_id,o_hash',
 
-			// Store::getPropertySubjects
-			/**
-			* SELECT smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort FROM `smw_object_ids`
-			* INNER JOIN `smw_di_blob` AS t1 ON t1.s_id=smw_id
-			* WHERE t1.p_id='310174' AND smw_iw!=':smw' AND smw_iw!=':smw-delete' AND smw_iw!=':smw-redi'
-			* GROUP BY smw_sort ORDER BY smw_sort LIMIT 26	18666.3489ms	SMWSQLStore3Readers::getPropertySubjects
-			*
-			* vs.
-			*
-			* SELECT smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort FROM `smw_object_ids`
-			* INNER JOIN `smw_di_blob` AS t1 ON t1.s_id=smw_id
-			* WHERE t1.p_id='310174' AND smw_iw!=':smw' AND smw_iw!=':smw-delete' AND smw_iw!=':smw-redi'
-			* GROUP BY smw_sort ORDER BY smw_sort LIMIT 26	59.3290ms	SMWSQLStore3Readers::getPropertySubjects
-			*/
-			'p_id',
+			// pvalue select
+			// SELECT p_id,o_hash FROM `smw_di_blob` WHERE p_id = '310174' AND ( o_hash LIKE '%test%' ) LIMIT 11
+			'p_id,o_hash',
 		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getIndexHint( $key ) {
+
+		// Store::getPropertySubjects has seen to choose the wrong index
+
+		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// FROM `smw_object_ids`
+		// INNER JOIN `smw_di_blob` AS t1 FORCE INDEX(s_id) ON t1.s_id=smw_id
+		// WHERE t1.p_id='310174' AND smw_iw!=':smw'
+		// AND smw_iw!=':smw-delete' AND smw_iw!=':smw-redi'
+		// GROUP BY smw_sort, smw_id LIMIT 26
+		//
+		// 137.4161ms SMWSQLStore3Readers::getPropertySubjects
+		//
+		// vs.
+		//
+		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// FROM `smw_object_ids`
+		// INNER JOIN `smw_di_blob` AS t1 ON t1.s_id=smw_id
+		// WHERE t1.p_id='310174' AND smw_iw!=':smw' AND smw_iw!=':smw-delete'
+		// AND smw_iw!=':smw-redi'
+		// GROUP BY smw_sort, smw_id LIMIT 26
+		//
+		// 23482.1451ms SMWSQLStore3Readers::getPropertySubjects
+		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
+			return 's_id';
+		}
+
+		return '';
 	}
 
 	/**

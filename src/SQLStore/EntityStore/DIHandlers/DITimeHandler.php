@@ -51,6 +51,7 @@ class DITimeHandler extends DataItemHandler {
 
 			// API module pvalue lookup
 			'p_id,o_serialized',
+			'p_id,o_sortkey',
 
 			// SMWSQLStore3Readers::fetchSemanticData
 			// SELECT p.smw_title as prop,o_serialized AS v0, o_sortkey AS v2
@@ -60,6 +61,20 @@ class DITimeHandler extends DataItemHandler {
 			// o_id=o0.smw_id WHERE s_id='104322'
 			's_id,p_id,o_sortkey,o_serialized',
 		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getIndexHint( $key ) {
+
+		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
+			return 's_id';
+		}
+
+		return '';
 	}
 
 	/**

@@ -180,9 +180,8 @@ class TableSchemaManager {
 		$table->addIndex( 'smw_sort,smw_id' );
 
 		// API smwbrowse primary lookup
-		// Limit the index length for MySQL (only 1000 Bytes are allowed)
-		// https://stackoverflow.com/questions/3489041/mysqlerror-specified-key-was-too-long-max-key-length-is-1000-bytes
-		$table->addIndex( 'smw_namespace,smw_iw,smw_sort(220),smw_sortkey(220),smw_id' );
+		// SMW\MediaWiki\Api\Browse\ListLookup::fetchFromTable
+		$table->addIndex( 'smw_namespace,smw_sortkey' );
 
 		// Interfered with the API lookup index, couldn't find a use case
 		// that would require the this index
@@ -292,15 +291,6 @@ class TableSchemaManager {
 
 		if ( !$propertyTable->isFixedPropertyTable() ) {
 			$fieldarray['p_id'] = array( FieldType::FIELD_ID, 'NOT NULL' );
-
-			// In order to find the right index for the blob related tables,
-			// individual index declared in the table method
-			if ( strpos( $indexes['po'] , 'o_hash' ) === false ) {
-				$indexes['po'] = 'p_id,' . $indexes['po'];
-			} else {
-				$indexes['p'] = 'p_id';
-			}
-
 			$indexes['sp'] = $indexes['sp'] . ',p_id';
 		}
 

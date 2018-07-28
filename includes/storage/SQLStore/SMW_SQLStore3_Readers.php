@@ -293,6 +293,15 @@ class SMWSQLStore3Readers {
 			$sortField = 'smw_sort';
 		}
 
+		$index = '';
+
+		// For certain tables (blob) the query planner chooses a suboptimal plan
+		// and causes an unacceptable query time therefore force an index for
+		// those tables where the behaviour has been observed.
+		if ( $diHandler->getIndexHint( 'property.subjects' ) !== '' && $value === null ) {
+			$index = 'FORCE INDEX(' . $diHandler->getIndexHint( 'property.subjects' ) . ')';
+		}
+
 		$result = [];
 		$query = [
 			'table' => '',
@@ -303,7 +312,7 @@ class SMWSQLStore3Readers {
 
 		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
 			$query['table'] .= $db->tableName( SMWSql3SmwIds::TABLE_NAME );
-			$query['table'] .= " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
+			$query['table'] .= " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 $index ON t1.s_id=smw_id";
 			$query['fields'] .= 'smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort';
 			$group = true;
 		} else { // no join needed, title+namespace as given in proptable

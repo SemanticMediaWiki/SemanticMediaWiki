@@ -122,6 +122,19 @@ abstract class DataItemHandler {
 	}
 
 	/**
+	 * Provides a possibility to return a specific index hint for a domain.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 */
+	public function getIndexHint( $key ) {
+		return '';
+	}
+
+	/**
 	 * Return an array of fields=>values to conditions (WHERE part) in SQL
 	 * queries for the given DataItem. This method can return fewer
 	 * fields than getInstertValues as long as they are enough to identify

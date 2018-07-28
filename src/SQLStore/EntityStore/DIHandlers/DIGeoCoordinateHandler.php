@@ -59,7 +59,10 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array( 'o_lat,o_lon' );
+		return array(
+			'p_id,o_serialized',
+			'o_lat,o_lon'
+		);
 	}
 
 	/**
