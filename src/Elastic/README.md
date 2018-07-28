@@ -434,7 +434,7 @@ Yes, by adding `$wgSearchType = 'SMWSearch';` one can use the `#ask` syntax (e.g
 
 - Analysis ICU ( tokenizer and token filters from the Unicode ICU library), see `bin/elasticsearch-plugin install analysis-icu`
 - A [curated list](https://github.com/dzharii/awesome-elasticsearch) of useful resources about elasticsearch including articles, videos, blogs, tips and tricks, use cases
-- [Elasticsearch: The Definitive Guide](http://oreilly.com/catalog/errata.csp?isbn=9781449358549) by Clinton Gormley and Zachary Tonge should provide insights in how to run and use Elasticsearch
+- [Elasticsearch: The Definitive Guide](http://shop.oreilly.com/product/0636920028505.do) by Clinton Gormley and Zachary Tonge should provide insights in how to run and use Elasticsearch
 - [10 Elasticsearch metrics to watch][oreilly:es-metrics-to-watch] describes key metrics to keep Elasticsearch running smoothly
 
 [es:conf]: https://www.elastic.co/guide/en/elasticsearch/reference/6.1/system-config.html
