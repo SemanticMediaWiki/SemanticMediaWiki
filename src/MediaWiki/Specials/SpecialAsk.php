@@ -287,13 +287,23 @@ class SpecialAsk extends SpecialPage {
 			$hidequery = $this->getRequest()->getVal( 'eq' ) == 'no';
 			$request_type = $this->getRequest()->getVal( 'request_type', '' );
 
+			if ( isset( $this->parameters['request_type'] ) ) {
+				$request_type = $this->parameters['request_type'];
+			}
+
 			if ( !$printer->isExportFormat() ) {
 				if ( $request_type !== '' ) {
 					$this->getOutput()->disable();
 					$query_result = '';
 
 					if ( $res->getCount() > 0 ) {
-						$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
+
+						if ( $request_type === 'raw' ) {
+							$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_RAW );
+						} else {
+							$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
+						}
+
 					} elseif ( $res->getCountValue() > 0 ) {
 						$query_result = $res->getCountValue();
 					}

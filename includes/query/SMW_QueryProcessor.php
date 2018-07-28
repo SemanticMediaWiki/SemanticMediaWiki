@@ -7,7 +7,7 @@ use ParamProcessor\Processor;
 use SMW\ApplicationFactory;
 use SMW\Message;
 use SMW\Parser\RecursiveTextProcessor;
-use SMW\Query\DeferredQuery;
+use SMW\Query\Deferred;
 use SMW\Query\PrintRequest;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\QueryContext;
@@ -297,9 +297,9 @@ class SMWQueryProcessor implements QueryContext {
 		// For convenience keep parameters and options to be available for immediate
 		// processing
 		if ( $context === self::DEFERRED_QUERY ) {
-			$query->setOption( DeferredQuery::QUERY_PARAMETERS, implode( '|', $rawParams ) );
-			$query->setOption( DeferredQuery::SHOW_MODE, $showMode );
-			$query->setOption( DeferredQuery::CONTROL_ELEMENT, isset( $params['@control'] ) ? $params['@control']->getValue() : '' );
+			$query->setOption( Deferred::QUERY_PARAMETERS, implode( '|', $rawParams ) );
+			$query->setOption( Deferred::SHOW_MODE, $showMode );
+			$query->setOption( Deferred::CONTROL_ELEMENT, isset( $params['@control'] ) ? $params['@control']->getValue() : '' );
 		}
 
 		return array( $query, $params );
@@ -377,10 +377,32 @@ class SMWQueryProcessor implements QueryContext {
 	 */
 	public static function getResultFromQuery( SMWQuery $query, array $params, $outputMode, $context ) {
 
-		$printer = self::getResultPrinter( $params['format']->getValue(), $context );
+		$printer = self::getResultPrinter(
+			$params['format']->getValue(),
+			$context
+		);
 
 		if ( $printer->isDeferrable() && $context === self::DEFERRED_QUERY && $query->getLimit() > 0 ) {
-			return DeferredQuery::getHtml( $query );
+
+			// Halt processing that is not `DEFERRED_DATA` as it is expected the
+			// process is picked-up by the `deferred.js` loader that will
+			// initiate an API request to finalize the query after MW has build
+			// the page.
+			if ( $printer->isDeferrable() !== $printer::DEFERRED_DATA ) {
+				return Deferred::buildHTML( $query );
+			}
+
+			// `DEFERRED_DATA` is interpret as "execute the query with limit=0" (i.e.
+			// no query execution) but allow the printer to setup the HTML so that
+			// the data can be loaded after MW has finished the page build including
+			// the pre-rendered query HTML representation. This mode deferrers the
+			// actual query execution and data load to after the page build.
+			//
+			// Each printer that uses this mode has to handle the required parameters
+			// and data load accordingly.
+			$query->querymode = SMWQuery::MODE_INSTANCES;
+			$query->setOption( 'deferred.limit', $query->getLimit() );
+			$query->setLimit( 0 );
 		}
 
 		$res = self::getStoreFromParams( $params )->getQueryResult( $query );

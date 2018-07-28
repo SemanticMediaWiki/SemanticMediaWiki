@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\DeferredQuery;
+use SMW\Query\Deferred;
 
 /**
- * @covers \SMW\Query\DeferredQuery
+ * @covers \SMW\Query\Deferred
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\Query\DeferredQuery;
  *
  * @author mwjames
  */
-class DeferredQueryTest extends \PHPUnit_Framework_TestCase {
+class DeferredTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRegisterResourceModules() {
 
@@ -27,10 +27,10 @@ class DeferredQueryTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput->expects( $this->once() )
 			->method( 'addModules' );
 
-		DeferredQuery::registerResourceModules( $parserOutput );
+		Deferred::registerResources( $parserOutput );
 	}
 
-	public function testGetHtml() {
+	public function testBuildHTML() {
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -38,7 +38,7 @@ class DeferredQueryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'smw-deferred-query',
-			DeferredQuery::getHtml( $query )
+			Deferred::buildHTML( $query )
 		);
 	}
 

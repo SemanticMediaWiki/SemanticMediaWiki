@@ -25,19 +25,20 @@
 		this.mwApi = api;
 
 		this.title = mw.config.get( 'wgPageName' );
-		this.query = container.data( 'query' );
+		this.data = container.data( 'query' );
+		this.query = this.data.query;
 
-		this.cmd = container.data( 'cmd' );
+		this.cmd = this.data.cmd;
 		this.control = container.find( '#deferred-control' ).data( 'control' );
 
-		this.limit = container.data( 'limit' );
-		this.offset = container.data( 'offset' );
+		this.limit = this.data.limit;
+		this.offset = this.data.offset;
 
 		this.rangeLimit = this.limit;
 		this.rangeOffset = this.offset;
 		this.init = true;
 
-		this.max = container.data( 'max' );
+		this.max = this.data.max;
 		this.step = 5;
 		this.postfix = '';
 
@@ -194,7 +195,7 @@
 	Query.prototype.initControls = function() {
 
 		var self = this;
-		var loading = '<span class="smw-overlay-spinner large flex" alt="Loading..."></span>';
+		var loading = '<div class="smw-flex-center smw-absolute"><span class="smw-overlay-spinner medium flex" alt="Loading..."></span></div>';
 
 		if ( self.init === true && self.control === 'slider' ) {
 			self.container.find( '#deferred-control' ).ionRangeSlider( {

@@ -32,6 +32,13 @@ use Title;
 abstract class ResultPrinter implements IResultPrinter {
 
 	/**
+	 * Individual printers can decide what sort of deferrable mode is used for
+	 * the output. `DEFERRED_DATA` signals that the format expects only the data
+	 * component to be loaded from the backend.
+	 */
+	const DEFERRED_DATA = 'deferred.data';
+
+	/**
 	 * @deprecated Use $params instead. Will be removed in 1.10.
 	 */
 	protected $m_params;
@@ -266,6 +273,8 @@ abstract class ResultPrinter implements IResultPrinter {
 		$this->results = $results;
 
 		$params = array();
+		$modules = [];
+		$styles = [];
 
 		/**
 		 * @var \ParamProcessor\Param $param
@@ -283,8 +292,13 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		$resources = $this->getResources();
 
-		$modules = isset( $resources['modules'] ) ? $resources['modules'] : [];
-		$styles = isset( $resources['styles'] ) ? $resources['styles'] : [];
+		if ( isset( $resources['modules'] ) ) {
+			$modules = $resources['modules'];
+		}
+
+		if ( isset( $resources['styles'] ) ) {
+			$styles = $resources['styles'];
+		}
 
 		// Register possible default modules at this point to allow for content
 		// retrieved from a remote source to use required JS/CSS modules from the
@@ -319,7 +333,7 @@ abstract class ResultPrinter implements IResultPrinter {
 			if ( !$results->hasFurtherResults() ) {
 				return $this->escapeText( $this->mDefault, $outputMode )
 					. $this->getErrorString( $results );
-			} elseif ( $this->mInline ) {
+			} elseif ( $this->mInline && $this->isDeferrable() !== self::DEFERRED_DATA ) {
 
 				if ( !$this->linkFurtherResults( $results ) ) {
 					return '';
@@ -380,7 +394,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
 			if ( $outputmode == SMW_OUTPUT_HTML ) {
 				$result = Message::get( array( 'smw-parse', $this->mIntro ), Message::PARSE ) . $result;
-			} else {
+			} elseif ( $outputmode !== SMW_OUTPUT_RAW ) {
 				$result = $this->mIntro . $result;
 			}
 		}
@@ -389,7 +403,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
 			if ( $outputmode == SMW_OUTPUT_HTML ) {
 				$result = $result . Message::get( array( 'smw-parse', $this->mOutro ), Message::PARSE );
-			} else {
+			} elseif ( $outputmode !== SMW_OUTPUT_RAW ) {
 				$result = $result . $this->mOutro;
 			}
 		}

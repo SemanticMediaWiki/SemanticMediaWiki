@@ -10,7 +10,7 @@ use SMW\Parser\RecursiveTextProcessor;
 use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\Query\DeferredQuery;
+use SMW\Query\Deferred;
 use SMW\Utils\CircularReferenceGuard;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
@@ -184,10 +184,10 @@ class AskParserFunction {
 		);
 
 		if ( $this->context === QueryProcessor::DEFERRED_QUERY ) {
-			DeferredQuery::registerResourceModules( $this->parserData->getOutput() );
+			Deferred::registerResources( $this->parserData->getOutput() );
 		}
 
-		$this->parserData->pushSemanticDataToParserOutput();
+		$this->parserData->copyToParserOutput();
 
 		// 'userlang' will trigger a cache fragmentation by user language
 		$this->parserData->addExtraParserKey( 'userlang' );

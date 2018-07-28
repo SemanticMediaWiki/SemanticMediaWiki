@@ -491,7 +491,7 @@ return array(
 	),
 
 	// TableResultPrinter resource
-	'ext.smw.tableprinter' => $moduleTemplate + array(
+	'smw.tableprinter.datatable' => $moduleTemplate + array(
 		'scripts' => array(
 			'smw/printer/ext.smw.tableprinter.js'
 		),
@@ -523,6 +523,15 @@ return array(
 			"smw-format-datatable-sortdescending",
 			"smw-format-datatable-toolbar-export"
 		),
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	'smw.tableprinter.datatable.styles' => $moduleTemplate + array(
+		'styles'   => array(
+			'smw/printer/ext.smw.tableprinter.css',
+			'smw/printer/ext.smw.tableprinter.skin.css'
+		),
+		'position' => 'top',
 		'targets' => array( 'mobile', 'desktop' )
 	),
 
