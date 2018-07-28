@@ -31,6 +31,14 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testWikiurl() {
+
+		$this->assertInternalType(
+			'string',
+			Site::wikiurl()
+		);
+	}
+
 	public function testLanguageCode() {
 
 		$this->assertInternalType(

@@ -4,6 +4,7 @@ use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\Site;
 use SMW\Exporter\DataItemMatchFinder;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
@@ -121,7 +122,7 @@ class SMWExporter {
 		if ( self::$m_exporturl !== false ) {
 			return;
 		}
-		global $wgContLang, $wgServer, $wgArticlePath;
+		global $wgContLang;
 
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 
@@ -134,7 +135,7 @@ class SMWExporter {
 		}
 
 		// The article name must be the last part of wiki URLs for proper OWL/RDF export:
-		self::$m_ent_wikiurl  = $wgServer . str_replace( '$1', '', $wgArticlePath );
+		self::$m_ent_wikiurl  = Site::wikiurl();
 		self::$m_ent_wiki     = $smwgNamespace;
 
 		$property = $GLOBALS['smwgExportBCNonCanonicalFormUse'] ? urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) ) ) : 'Property';
