@@ -29,14 +29,34 @@
 
 .float-right {
 	float: right;
+	margin-left: 10px;
+	clear: right;
 }
 
 .float-left {
 	float: left;
+	margin-right: 10px;
+	clear: left;
 }
 
 .clear-both {
 	clear: both;
+}
+
+.smw-placeholder {
+	list-style: none;
+	background-color: #f5f5f5;
+	border-radius: 4px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+}
+
+.client-nojs .smw-placeholder::after {
+	content: "JavaScript is disabled or could not be detected!";
+	top: 80%;
+	text-align: center;
+	color:red;
 }
 
 .smw-personal-jobqueue-watchlist:hover, .smw-personal-jobqueue-watchlist:focus, .smw-personal-jobqueue-watchlist:active {
@@ -571,6 +591,10 @@ label.smw-form-checkbox {
 	background-position-y: 5px;
 }
 
+.autocomplete-arrow.mw-ui-input {
+	background-position-y: 4px;
+}
+
 [dir='rtl'] .autocomplete-arrow {
 	background-position-x:6px;
 }
@@ -843,11 +867,25 @@ a.smw-ask-action-btn-dblue:focus {
 	justify-content: center;
 }
 
+.smw-absolute {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
 /* http://stackoverflow.com/questions/6091253/overlay-with-spinner */
 
 .smw-margin-small {
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+.smw-margin-extra {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 100px;
 }
 
 .smw-loading-image-dots {
@@ -924,6 +962,13 @@ a.smw-ask-action-btn-dblue:focus {
  */
 @media screen and (max-width: 800px) {
 
+}
+
+/**
+ * JSON
+ */
+.mw-json .value, .mw-json-single-value {
+    word-break: break-word;
 }
 
 /**

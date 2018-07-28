@@ -5,6 +5,15 @@
  * button, remove them in order to override with the following rules.
  */
 
+.smw-datatable {
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+.smw-datatable.smw-placeholder {
+	padding:0px;
+}
+
 .smw-datatable table.dataTable {
 	margin-bottom: 10px;
 	width: 100% !important;

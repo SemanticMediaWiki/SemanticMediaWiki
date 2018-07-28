@@ -74,7 +74,7 @@ class HtmlTable {
 	 */
 	public function table( $attributes = [], $transpose = false, $htmlContext = false ) {
 
-		$table = $transpose ? $this->getTransposedTable( $htmlContext ) : $this->getTable( $htmlContext );
+		$table = $this->buildTable( $transpose, $htmlContext );
 
 		if ( $transpose ) {
 			$attributes['data-transpose'] = true;
@@ -91,7 +91,11 @@ class HtmlTable {
 		return '';
 	}
 
-	private function getTable( $htmlContext ) {
+	private function buildTable( $transpose, $htmlContext ) {
+
+		if ( $transpose ) {
+			return $this->transpose( $htmlContext );
+		}
 
 		$headers = [];
 		$rows = [];
@@ -107,7 +111,7 @@ class HtmlTable {
 		return $this->concatenateHeaders( $headers, $htmlContext ) . $this->concatenateRows( $rows, $htmlContext );
 	}
 
-	private function getTransposedTable( $htmlContext ) {
+	private function transpose( $htmlContext ) {
 
 		$rows = [];
 

@@ -16,7 +16,11 @@
 .skin-chameleon .smw-datatable .dataTables_wrapper select,
 .skin-chameleon .smw-datatable .dataTables_wrapper select:focus,
 .skin-chameleon .smw-datatable .dataTables_wrapper select:active {
-	padding: 0.15rem 0.5rem;
+	/*padding: 0.15rem 0.5rem;*/
+}
+
+.skin-chameleon .smw-datatable .dataTables_wrapper .dataTables_filter input {
+	line-height: 1.35;
 }
 
 .skin-chameleon .dataTables_wrapper label {

@@ -172,12 +172,26 @@ class TableResultPrinter extends ResultPrinter {
 		);
 
 		if ( $this->isDataTable ) {
+
+			// Simple approximation to avoid a massive text reflow once the DT JS
+			// has finished processing the HTML table
+			$count = $this->params['transpose'] ? $res->getColumnCount() : $res->getCount();
+			$height = ( min( ( $count + ( $res->hasFurtherResults() ? 1 : 0 ) ), 10 ) * 50 ) + 40;
+
 			$html = Html::rawElement(
 				'div',
 				[
-					'class' => 'smw-datatable smw-margin-small smw-loading-image-dots'
+					'class' => 'smw-datatable smw-placeholder is-disabled smw-flex-center' . (
+						$this->params['class'] !== '' ? ' ' . $this->params['class'] : ''
+					),
+					'style'     => "height:{$height}px;"
 				],
-				$html
+				Html::rawElement(
+					'span',
+					[
+						'class' => 'smw-overlay-spinner medium flex'
+					]
+				) . $html
 			);
 		}
 
@@ -336,10 +350,11 @@ class TableResultPrinter extends ResultPrinter {
 
 		return [
 			'modules' => [
-				'ext.smw.tableprinter'
+				'smw.tableprinter.datatable'
 			],
 			'styles' => [
-				'onoi.dataTables.styles'
+				'onoi.dataTables.styles',
+				'smw.tableprinter.datatable.styles'
 			]
 		];
 	}
@@ -347,10 +362,7 @@ class TableResultPrinter extends ResultPrinter {
 	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
 
 		$tableAttrs['width'] = '100%';
-
-		// Table is made invisible until the resources are actually loaded
-		// and until then show a `smw-loading-image-dots`
-		$tableAttrs['style'] = 'display:none;';
+		$tableAttrs['style'] = 'opacity:.0';
 
 		$tableAttrs['data-column-sort'] = json_encode(
 			[

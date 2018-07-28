@@ -203,10 +203,6 @@
 			} );
 
 			toolbar.append(
-				'<span class="smw-datatable-sep"></span>'
-			);
-
-			toolbar.append(
 				'<span class="smw-dropdown">' +
 				'<button>' + mw.msg( 'smw-format-datatable-toolbar-export' ) + '</button>' +
 				'<label><input type="checkbox">' +
@@ -304,8 +300,18 @@
 		 * @param {Object} context
 		 */
 		init: function ( context ) {
-			context.removeClass( 'smw-loading-image-dots smw-margin-small' );
-			context.find( '.smw-datatable' ).removeClass( 'smw-loading-image-dots smw-margin-small' );
+
+			context.removeClass( 'is-disabled' );
+			context.removeClass( 'smw-flex-center' );
+
+			context.css( "background-color", "transparent" );
+			context.css( "height", "" );
+			context.find( '.smw-overlay-spinner' ).hide();
+
+			context.find( '.datatable' ).css( "opacity", "1" );
+			context.removeClass( 'smw-extra-margin' );
+
+			context.find( '.smw-datatable' ).removeClass( 'smw-extra-margin' );
 			this.attach( context.find( '.datatable' ) );
 		}
 	};
@@ -318,7 +324,11 @@
 
 		// Listen to the smw.deferred.query event
 		mw.hook( 'smw.deferred.query' ).add( function( context ) {
-			dataTable.init( context );
+			if ( context.find( '.smw-datatable .datatable' ).length ) {
+				dataTable.init( context.find( '.smw-datatable' ) );
+			} else {
+				dataTable.init( context );
+			}
 		} );
 	} );
 
