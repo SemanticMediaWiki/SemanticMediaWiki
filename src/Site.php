@@ -46,6 +46,15 @@ class Site {
 	 *
 	 * @return string
 	 */
+	public static function wikiurl() {
+		return $GLOBALS['wgServer'] . str_replace( '$1', '', $GLOBALS['wgArticlePath'] );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
 	public static function languageCode() {
 		return $GLOBALS['wgLanguageCode'];
 	}
