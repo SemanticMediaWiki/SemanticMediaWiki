@@ -137,7 +137,7 @@ class RebuildElasticIndex extends \Maintenance {
 		$this->reportMessage(
 			"\nIf for some reason the rebuild process is aborted, please make sure\n" .
 			"to run `--update-settings` so that default settings can be recovered\n".
-			"and set for a normal working mode.\n"
+			"and set to a normal working mode.\n"
 		);
 
 		$this->doRebuild();
