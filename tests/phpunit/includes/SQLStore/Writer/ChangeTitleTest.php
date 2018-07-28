@@ -106,6 +106,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( [] ) );
 
+		$idChanger = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdChanger' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -137,6 +141,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newChangeOp' )
 			->will( $this->returnValue( $changeOp ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newIdChanger' )
+			->will( $this->returnValue( $idChanger ) );
 	}
 
 	public function testCanConstruct() {

@@ -166,6 +166,11 @@ class SMWSql3SmwIds {
 	private $idEntityFinder;
 
 	/**
+	 * @var IdChanger
+	 */
+	private $idChanger;
+
+	/**
 	 * @since 1.8
 	 * @param SMWSQLStore3 $store
 	 */
@@ -183,6 +188,8 @@ class SMWSql3SmwIds {
 		$this->tableFieldUpdater = new TableFieldUpdater(
 			$this->store
 		);
+
+		$this->idChanger = $this->factory->newIdChanger();
 	}
 
 	/**
@@ -950,7 +957,7 @@ class SMWSql3SmwIds {
 			$row->smw_sortkey
 		);
 
-		$this->store->changeSMWPageID(
+		$this->idChanger->change(
 			$curid,
 			$targetid,
 			$row->smw_namespace,

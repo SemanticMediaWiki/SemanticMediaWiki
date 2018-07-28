@@ -49,6 +49,11 @@ class SMWSQLStore3Writers {
 	private $semanticDataLookup;
 
 	/**
+	 * @var IdChanger
+	 */
+	private $idChanger;
+
+	/**
 	 * @since 1.8
 	 *
 	 * @param SMWSQLStore3 $parentStore
@@ -59,6 +64,7 @@ class SMWSQLStore3Writers {
 		$this->factory = $factory;
 		$this->propertyTableRowDiffer = $this->factory->newPropertyTableRowDiffer();
 		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();
+		$this->idChanger = $this->factory->newIdChanger();
 	}
 
 	/**
@@ -696,7 +702,7 @@ class SMWSQLStore3Writers {
 
 			// Move all data of old title to new position:
 			if ( $sid != 0 ) {
-				$this->store->changeSMWPageID(
+				$this->idChanger->change(
 					$sid,
 					$tid,
 					$oldTitle->getNamespace(),
@@ -834,7 +840,7 @@ class SMWSQLStore3Writers {
 		if ( ( $old_tid == 0 ) && ( $sid != 0 ) && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) { // new redirect
 			// $smwgQEqualitySupport requires us to change all tables' page references from $sid to $new_tid.
 			// Since references must not be 0, we don't have to do this is $sid == 0.
-			$this->store->changeSMWPageID(
+			$this->idChanger->change(
 				$sid,
 				$new_tid,
 				$subject_ns,

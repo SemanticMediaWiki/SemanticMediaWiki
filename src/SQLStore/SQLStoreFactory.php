@@ -16,6 +16,7 @@ use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
+use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\NativeEntityLookup;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
@@ -548,6 +549,20 @@ class SQLStoreFactory {
 		);
 
 		return $idMatchFinder;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return IdChanger
+	 */
+	public function newIdChanger() {
+
+		$idChanger = new IdChanger(
+			$this->store
+		);
+
+		return $idChanger;
 	}
 
 	/**
