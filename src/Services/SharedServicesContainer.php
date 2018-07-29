@@ -29,6 +29,7 @@ use SMW\MediaWiki\TitleCreator;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
 use SMW\Parser\LinksProcessor;
+use SMW\PermissionPthValidator;
 use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\PropertyAnnotatorFactory;
@@ -47,6 +48,7 @@ use SMW\Utils\BufferedStatsdCollector;
 use SMW\Utils\JsonSchemaValidator;
 use SMW\Utils\TempFile;
 use SMW\Elastic\ElasticFactory;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 
 /**
  * @license GNU GPL v2+
@@ -66,7 +68,7 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'Store', [ $this, 'newStore' ] );
 
 		$this->registerCallbackHandlers( $containerBuilder );
-		$this->registerCallbackHandlersByFactory( $containerBuilder );
+		$this->registerCallableFactories( $containerBuilder );
 		$this->registerCallbackHandlersByConstructedInstance( $containerBuilder );
 	}
 
@@ -305,7 +307,7 @@ class SharedServicesContainer implements CallbackContainer {
 
 	}
 
-	private function registerCallbackHandlersByFactory( $containerBuilder ) {
+	private function registerCallableFactories( $containerBuilder ) {
 
 		/**
 		 * @var CacheFactory
@@ -383,6 +385,15 @@ class SharedServicesContainer implements CallbackContainer {
 
 			return $dataValueServiceFactory;
 		} );
+
+		/**
+		 * @var QueryDependencyLinksStoreFactory
+		 */
+		$containerBuilder->registerCallback( 'QueryDependencyLinksStoreFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'QueryDependencyLinksStoreFactory', '\SMW\SQLStore\QueryDependencyLinksStoreFactory' );
+			return new QueryDependencyLinksStoreFactory();
+		} );
+
 	}
 
 	private function registerCallbackHandlersByConstructedInstance( $containerBuilder ) {
@@ -534,6 +545,20 @@ class SharedServicesContainer implements CallbackContainer {
 
 			return $protectionValidator;
 		} );
+
+		/**
+		 * @var PermissionPthValidator
+		 */
+		$containerBuilder->registerCallback( 'PermissionPthValidator', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'PermissionPthValidator', '\SMW\PermissionPthValidator' );
+
+			$permissionPthValidator = new PermissionPthValidator(
+				$containerBuilder->create( 'ProtectionValidator' )
+			);
+
+			return $permissionPthValidator;
+		} );
+
 
 		/**
 		 * @var EditProtectionUpdater
