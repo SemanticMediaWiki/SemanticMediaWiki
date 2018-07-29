@@ -184,25 +184,6 @@ class SMWQueryProcessor implements QueryContext {
 	}
 
 	/**
-	 * @deprecated since 2.5, This method should no longer be used but since it
-	 * was made protected (and therefore can be derived from) it will remain until
-	 * 3.0 to avoid a breaking BC.
-	 *
-	 * Takes the sort and order parameters and returns a list of sort keys and a list of errors.
-	 *
-	 * @since 1.7
-	 *
-	 * @param array $sortParam
-	 * @param array $orders
-	 * @param string $defaultSort
-	 *
-	 * @return array ( keys => array(), errors => array() )
-	 */
-	protected static function getSortKeys( array $sortParam, array $orderParam, $defaultSort ) {
-		return ApplicationFactory::getInstance()->getQueryFactory()->newConfigurableQueryCreator()->getSortKeys( $sortParam, $orderParam, $defaultSort );
-	}
-
-	/**
 	 * Add the subject print request, unless mainlabel is set to "-".
 	 *
 	 * @since 1.7
