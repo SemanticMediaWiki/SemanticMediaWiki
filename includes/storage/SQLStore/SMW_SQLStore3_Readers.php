@@ -178,7 +178,7 @@ class SMWSQLStore3Readers {
 
 				$propertyTableDef = $proptables[$propTableId];
 
-				$opts = $this->semanticDataLookup->makeOptionsFromConstraint(
+				$opts = $this->semanticDataLookup->newRequestOptions(
 					$propertyTableDef,
 					$property,
 					$requestOptions
