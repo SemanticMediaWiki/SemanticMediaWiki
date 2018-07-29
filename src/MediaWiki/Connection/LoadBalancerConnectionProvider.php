@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Connection;
 
 use DatabaseBase;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMW\Connection\ConnectionProvider;
+use SMW\Connection\ConnectionProvider as IConnectionProvider;
 
 /**
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\Connection\ConnectionProvider;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DBLoadBalancerConnectionProvider implements ConnectionProvider {
+class LoadBalancerConnectionProvider implements IConnectionProvider {
 
 	use LoggerAwareTrait;
 
@@ -51,7 +51,7 @@ class DBLoadBalancerConnectionProvider implements ConnectionProvider {
 	}
 
 	/**
-	 * @see DBConnectionProvider::getConnection
+	 * @see IConnectionProvider::getConnection
 	 *
 	 * @since 1.9
 	 *
@@ -72,7 +72,7 @@ class DBLoadBalancerConnectionProvider implements ConnectionProvider {
 	}
 
 	/**
-	 * @see DBConnectionProvider::releaseConnection
+	 * @see IConnectionProvider::releaseConnection
 	 *
 	 * @since 1.9
 	 */

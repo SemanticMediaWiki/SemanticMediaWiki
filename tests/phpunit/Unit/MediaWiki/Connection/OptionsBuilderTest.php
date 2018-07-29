@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\MediaWiki\Connection;
 
-use SMW\MediaWiki\DatabaseHelper;
+use SMW\MediaWiki\Connection\OptionsBuilder;
 
 /**
- * @covers \SMW\MediaWiki\DatabaseHelper
+ * @covers \SMW\MediaWiki\Connection\OptionsBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,12 +13,12 @@ use SMW\MediaWiki\DatabaseHelper;
  *
  * @author mwjames
  */
-class DatabaseHelperTest extends \PHPUnit_Framework_TestCase {
+class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\DatabaseHelper',
-			new DatabaseHelper()
+			OptionsBuilder::class,
+			new OptionsBuilder()
 		);
 	}
 
@@ -33,7 +33,7 @@ class DatabaseHelperTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'array',
-			DatabaseHelper::makeSelectOptions( $connection, $options )
+			OptionsBuilder::makeSelectOptions( $connection, $options )
 		);
 	}
 
@@ -48,7 +48,7 @@ class DatabaseHelperTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			DatabaseHelper::toString( $options )
+			OptionsBuilder::toString( $options )
 		);
 	}
 

@@ -1,17 +1,17 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\MediaWiki\Connection;
 
 use SMW\Connection\ConnectionProviderRef;
-use SMW\MediaWiki\Database;
 use SMW\Tests\PHPUnitCompat;
+use SMW\MediaWiki\Connection\Database;
 
 /**
- * @covers \SMW\MediaWiki\Database
+ * @covers \SMW\MediaWiki\Connection\Database
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since 1.9.0
+ * @since 1.9
  *
  * @author mwjames
  */
@@ -19,15 +19,33 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
-	public function testCanConstruct() {
+	private $connectionProviderRef;
 
-		$connectionProviderRef = $this->getMockBuilder( '\SMW\Connection\ConnectionProviderRef' )
+	protected function setUp() {
+		parent::setUp();
+
+		$this->connectionProviderRef = $this->getMockBuilder( '\SMW\Connection\ConnectionProviderRef' )
 			->disableOriginalConstructor()
 			->getMock();
+	}
+
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			Database::class,
-			new Database( $connectionProviderRef )
+			new Database( $this->connectionProviderRef )
+		);
+	}
+
+	public function testNewQuery() {
+
+		$instance = new Database(
+			$this->connectionProviderRef
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Connection\Query',
+			$instance->newQuery()
 		);
 	}
 

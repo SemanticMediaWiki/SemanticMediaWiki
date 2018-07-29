@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\MediaWiki\Connection;
 
 use DatabaseBase;
 use ReflectionClass;
-use SMW\MediaWiki\DBLoadBalancerConnectionProvider;
 use SMW\Tests\PHPUnitCompat;
+use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 
 /**
- * @covers \SMW\MediaWiki\DBLoadBalancerConnectionProvider
+ * @covers \SMW\MediaWiki\Connection\LoadBalancerConnectionProvider
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,21 +16,21 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DBLoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			DBLoadBalancerConnectionProvider::class,
-			new DBLoadBalancerConnectionProvider( DB_SLAVE )
+			LoadBalancerConnectionProvider::class,
+			new LoadBalancerConnectionProvider( DB_SLAVE )
 		);
 	}
 
 	public function testGetAndReleaseConnection() {
 
-		$instance = new DBLoadBalancerConnectionProvider(
+		$instance = new LoadBalancerConnectionProvider(
 			DB_SLAVE
 		);
 
@@ -52,12 +52,12 @@ class DBLoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setExpectedException( 'RuntimeException' );
 
-		$instance = new DBLoadBalancerConnectionProvider(
+		$instance = new LoadBalancerConnectionProvider(
 			DB_SLAVE
 		);
 
 		$reflector = new ReflectionClass(
-			DBLoadBalancerConnectionProvider::class
+			LoadBalancerConnectionProvider::class
 		);
 
 		$connection = $reflector->getProperty( 'connection' );

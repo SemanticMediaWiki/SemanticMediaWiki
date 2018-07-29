@@ -16,7 +16,7 @@ use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
 use SMW\Localizer;
 use SMW\MediaWiki\Database;
-use SMW\MediaWiki\DBConnectionProvider;
+use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\MediaWiki\JobQueue;
@@ -222,18 +222,20 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var DBConnectionProvider
+		 * @var ConnectionProvider
 		 */
-		$containerBuilder->registerCallback( 'DBConnectionProvider', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'DBConnectionProvider', '\SMW\MediaWiki\DBConnectionProvider' );
+		$containerBuilder->registerAlias( 'ConnectionProvider', 'DBConnectionProvider' );
 
-			$dbConnectionProvider = new DBConnectionProvider();
+		$containerBuilder->registerCallback( 'ConnectionProvider', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'ConnectionProvider', ConnectionProvider::class );
 
-			$dbConnectionProvider->setLogger(
+			$connectionProvider = new ConnectionProvider();
+
+			$connectionProvider->setLogger(
 				$containerBuilder->singleton( 'MediaWikiLogger' )
 			);
 
-			return $dbConnectionProvider;
+			return $connectionProvider;
 		} );
 
 		/**

@@ -48,7 +48,7 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\MediaWiki\DBConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( '\SMW\MediaWiki\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Connection;
 
-use SMW\MediaWiki\Database;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -165,7 +164,12 @@ class Query {
 			$joins = [];
 
 			foreach ( $join[1] as $table => $value ) {
-				$joins[] = $this->connection->tableName( $table ) . " AS $value";
+
+				if ( is_string( $table ) ) {
+					$value = $this->connection->tableName( $table ) . " AS $value";
+				}
+
+				$joins[] = $value;
 			}
 
 			$join[1] = implode( ' ', $joins );
