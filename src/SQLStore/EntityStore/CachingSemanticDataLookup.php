@@ -132,10 +132,10 @@ class CachingSemanticDataLookup {
 			self::$state[$id] = [];
 		}
 
-		// prevent memory leak;
-		// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),
-		// The value of 20 was chosen by profiling runtimes for large inline queries and heavily annotated pages.
-		// However, things might have changed in the meantime ...
+		// It is not so easy to find the sweet spot between cache size and
+		// performance gains (both memory and time), The value of 20 was chosen
+		// by profiling runtimes for large inline queries and heavily annotated
+		// pages. However, things might have changed in the meantime ...
 		if ( ( count( self::$data ) > 20 ) && ( self::$lookupCount == 1 ) ) {
 			self::$data = array( $id => self::$data[$id] );
 			self::$state = array( $id => self::$state[$id] );
@@ -153,7 +153,7 @@ class CachingSemanticDataLookup {
 	 */
 	public function setLookupCache( $id, SemanticData $semanticData ) {
 
-		self::$data[$id] = $this->semanticDataLookup->newFromSemanticData(
+		self::$data[$id] = $this->semanticDataLookup->newStubSemanticData(
 			$semanticData
 		);
 
@@ -189,8 +189,8 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function makeOptionsFromConstraint( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
-		return $this->semanticDataLookup->makeOptionsFromConstraint( $propertyTableDef, $property, $requestOptions );
+	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
+		return $this->semanticDataLookup->newRequestOptions( $propertyTableDef, $property, $requestOptions );
 	}
 
 	/**

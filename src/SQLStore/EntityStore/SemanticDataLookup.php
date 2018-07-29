@@ -45,7 +45,7 @@ class SemanticDataLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function makeOptionsFromConstraint( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
+	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
 
 		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
 			return null;
@@ -74,23 +74,22 @@ class SemanticDataLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param DIWikiPage|SemanticData $object
 	 *
 	 * @return StubSemanticData
+	 * @throws RuntimeException
 	 */
-	public function newStubSemanticData( DIWikiPage $subject ) {
-		return new StubSemanticData( $subject, $this->store, false );
-	}
+	public function newStubSemanticData( $object ) {
 
-	/**
-	 * @since 3.0
-	 *
-	 * @param SemanticData $semanticData
-	 *
-	 * @return StubSemanticData
-	 */
-	public function newFromSemanticData( SemanticData $semanticData ) {
-		return StubSemanticData::newFromSemanticData( $semanticData, $this->store );
+		if ( $object instanceof DIWikiPage ) {
+			return new StubSemanticData( $object, $this->store, false );
+		}
+
+		if ( $object instanceof SemanticData ) {
+			return StubSemanticData::newFromSemanticData( $object, $this->store );
+		}
+
+		throw new RuntimeException( 'Expectd either a DIWikiPage or SemanticData object!' );
 	}
 
 	/**

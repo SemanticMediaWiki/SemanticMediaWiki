@@ -76,7 +76,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewStubSemanticData() {
+	public function testNewStubSemanticData_FromDIWikiPage() {
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -88,7 +88,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewFromSemanticData() {
+	public function testNewStubSemanticData_FromSemanticData() {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -104,8 +104,18 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\EntityStore\StubSemanticData',
-			$instance->newFromSemanticData( $semanticData )
+			$instance->newStubSemanticData( $semanticData )
 		);
+	}
+
+	public function testNewStubSemanticDataThrowsException() {
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->newStubSemanticData( 'Foo' );
 	}
 
 	public function testGetTableUsageInfo() {
@@ -231,7 +241,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->conditionConstraint = true;
 		$requestOptions->setLimit( 4 );
 
-		$requestOptions = $instance->makeOptionsFromConstraint(
+		$requestOptions = $instance->newRequestOptions(
 			$propertyTable,
 			$property,
 			$requestOptions

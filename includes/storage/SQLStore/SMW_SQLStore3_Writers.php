@@ -112,6 +112,8 @@ class SMWSQLStore3Writers {
 
 	private function doDelete( $id, $subject, $subobjectListFinder, &$extensionList ) {
 
+		$this->semanticDataLookup->invalidateCache( $id );
+
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = $this->store->getConnection();
 

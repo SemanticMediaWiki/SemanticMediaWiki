@@ -88,7 +88,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->semanticDataLookup->expects( $this->once() )
-			->method( 'newFromSemanticData' )
+			->method( 'newStubSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
 		$this->semanticDataLookup->expects( $this->once() )
@@ -118,13 +118,13 @@ class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->semanticDataLookup->expects( $this->once() )
-			->method( 'makeOptionsFromConstraint' );
+			->method( 'newRequestOptions' );
 
 		$instance = new CachingSemanticDataLookup(
 			$this->semanticDataLookup
 		);
 
-		$instance->makeOptionsFromConstraint( $propertyTableDefinition, $property );
+		$instance->newRequestOptions( $propertyTableDefinition, $property );
 	}
 
 	public function testFetchSemanticData() {
@@ -210,21 +210,13 @@ class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->semanticDataLookup->expects( $this->any() )
-			->method( 'newStubSemanticData' )
-			->will( $this->returnValue( $stubSemanticData ) );
-
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$semanticData->expects( $this->atLeastOnce() )
+		$stubSemanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( $subject ) );
 
 		$this->semanticDataLookup->expects( $this->once() )
-			->method( 'newFromSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->method( 'newStubSemanticData' )
+			->will( $this->returnValue( $stubSemanticData ) );
 
 		$this->semanticDataLookup->expects( $this->once() )
 			->method( 'getTableUsageInfo' )
