@@ -716,7 +716,8 @@ return array(
 	##
 	'smwgResultAliases' => [
 		'feed' => [ 'rss' ],
-		'templatefile' => [ 'template file' ]
+		'templatefile' => [ 'template file' ],
+		'plainlist' => [ 'plain' ]
 	],
 	##
 
