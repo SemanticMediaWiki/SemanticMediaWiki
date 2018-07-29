@@ -62,7 +62,7 @@ class TraversalPropertyLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function lookup( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
+	public function fetchFromTable( PropertyTableDef $propertyTableDef, DataItem $dataItem, RequestOptions $requestOptions = null ) {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
