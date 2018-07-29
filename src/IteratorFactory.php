@@ -19,7 +19,7 @@ class IteratorFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param ResultWrapper|array $res
+	 * @param ResultWrapper|Iterator|array $res
 	 *
 	 * @return ResultIterator
 	 */
@@ -30,7 +30,7 @@ class IteratorFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Iterator/array $$iterable
+	 * @param Iterator/array $iterable
 	 * @param callable $callback
 	 *
 	 * @return MappingIterator

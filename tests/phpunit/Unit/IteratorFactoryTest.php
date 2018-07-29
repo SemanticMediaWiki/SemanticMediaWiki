@@ -35,7 +35,7 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IteratorFactory();
 
-		$iterator = $this->getMockBuilder( '\Iterator' )
+		$iterator = $this->getMockBuilder( '\ArrayIterator' )
 			->disableOriginalConstructor()
 			->getMock();
 
