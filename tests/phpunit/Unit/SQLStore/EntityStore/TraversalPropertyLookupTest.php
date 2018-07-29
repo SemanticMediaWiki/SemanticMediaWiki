@@ -83,7 +83,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 			new Options( array( 'smwgEntityLookupFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP ) )
 		);
 
-		$instance->lookup( $propertyTableDef, $dataItem );
+		$instance->fetchFromTable( $propertyTableDef, $dataItem );
 	}
 
 	public function testlookupForFixedPropertyTable() {
@@ -136,7 +136,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 			new Options( array( 'smwgEntityLookupFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP ) )
 		);
 
-		$instance->lookup( $propertyTableDef, $dataItem );
+		$instance->fetchFromTable( $propertyTableDef, $dataItem );
 	}
 
 }

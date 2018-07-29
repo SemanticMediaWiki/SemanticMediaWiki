@@ -610,7 +610,7 @@ class SMWSQLStore3Readers {
 
 			if ( $this->traversalPropertyLookup->isEnabledFeature( SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP ) ) {
 
-				$res = $this->traversalPropertyLookup->lookup(
+				$res = $this->traversalPropertyLookup->fetchFromTable(
 					$proptable,
 					$value,
 					$requestOptions
