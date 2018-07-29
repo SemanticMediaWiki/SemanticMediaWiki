@@ -35,25 +35,26 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	/**
 	 * @var boolean
 	 */
-	public $isResultWrapper = false;
+	public $numRows = false;
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param ResultWrapper|array $res
+	 * @param Iterator|array $res
 	 */
 	public function __construct( $res ) {
 
-		if ( $res instanceof ResultWrapper ) {
-			$this->isResultWrapper = true;
+		if ( !$res instanceof Iterator && !is_array( $res ) ) {
+			throw new RuntimeException( "Expected an Iterator or array!" );
 		}
 
-		if ( !$this->isResultWrapper && is_array( $res ) ) {
+		// @see MediaWiki's ResultWrapper
+		if ( $res instanceof Iterator && method_exists( $res , 'numRows' ) ) {
+			$this->numRows = true;
+		}
+
+		if ( is_array( $res ) ) {
 			$res = new ArrayIterator( $res );
-		}
-
-		if ( !$res instanceof Iterator && !$this->isResultWrapper ) {
-			throw new RuntimeException( "ResultIterator expected an ResultWrapper or array" );
 		}
 
 		$this->res = $res;
@@ -68,7 +69,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 * {@inheritDoc}
 	 */
 	public function count() {
-		return $this->isResultWrapper ? $this->res->numRows() : $this->res->count();
+		return $this->numRows ? $this->res->numRows() : $this->res->count();
 	}
 
 	/**
