@@ -10,6 +10,7 @@ use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\Deferred;
 use SMW\Query\PrintRequest;
 use SMW\Query\Processor\ParamListProcessor;
+use SMW\Query\Processor\DefaultParamDefinition;
 use SMW\Query\QueryContext;
 use SMW\Query\ResultFormatNotFoundException;
 
@@ -462,125 +463,18 @@ class SMWQueryProcessor implements QueryContext {
 	}
 
 	/**
-	 * A function to describe the allowed parameters of a query using
-	 * any specific format - most query printers should override this
-	 * function.
+	 * Produces a list of default allowed parameters for a result printer. Most
+	 * query printers should override this function.
 	 *
 	 * @since 1.6.2, return element type changed in 1.8
+	 *
+	 * @param integer|null $context
+	 * @param ResultPrinter|null $resultPrinter
 	 *
 	 * @return IParamDefinition[]
 	 */
 	public static function getParameters( $context = null, $resultPrinter = null ) {
-		$params = array();
-
-		$allowedFormats = $GLOBALS['smwgResultFormats'];
-
-		foreach ( $GLOBALS['smwgResultAliases'] as $aliases ) {
-			$allowedFormats += $aliases;
-		}
-
-		$allowedFormats[] = 'auto';
-
-		$params['format'] = array(
-			'type' => 'smwformat',
-			'default' => 'auto',
-		);
-
-		// TODO $params['format']->setToLower( true );
-		// TODO $allowedFormats
-
-		$params['source'] = self::getSourceParam();
-
-		$params['limit'] = array(
-			'type' => 'integer',
-			'default' => $GLOBALS['smwgQDefaultLimit'],
-			'negatives' => false,
-		);
-
-		$params['offset'] = array(
-			'type' => 'integer',
-			'default' => 0,
-			'negatives' => false,
-			'upperbound' => $GLOBALS['smwgQUpperbound'],
-		);
-
-		$params['link'] = array(
-			'default' => 'all',
-			'values' => array( 'all', 'subject', 'none' ),
-		);
-
-		$params['sort'] = array(
-			'islist' => true,
-			'default' => array( '' ), // The empty string represents the page itself, which should be sorted by default.
-		);
-
-		$params['order'] = array(
-			'islist' => true,
-			'default' => array(),
-			'values' => array( 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ),
-		);
-
-		$params['headers'] = array(
-			'default' => 'show',
-			'values' => array( 'show', 'hide', 'plain' ),
-		);
-
-		$params['mainlabel'] = array(
-			'default' => false,
-		);
-
-		$params['intro'] = array(
-			'default' => '',
-		);
-
-		$params['outro'] = array(
-			'default' => '',
-		);
-
-		$params['searchlabel'] = array(
-			'default' => Message::get( 'smw_iq_moreresults', Message::TEXT, Message::USER_LANGUAGE )
-		);
-
-		$params['default'] = array(
-			'default' => '',
-		);
-
-		if ( $context === self::DEFERRED_QUERY ) {
-			$params['@control'] = array(
-				'default' => '',
-				'values' => array( 'slider' ),
-			);
-		}
-
-		if ( !( $resultPrinter instanceof \SMW\ResultPrinter ) || $resultPrinter->supportsRecursiveAnnotation() ) {
-			$params['import-annotation'] = array(
-				'message' => 'smw-paramdesc-import-annotation',
-				'type' => 'boolean',
-				'default' => false
-			);
-		}
-
-		// Give grep a chance to find the usages:
-		// smw-paramdesc-format, smw-paramdesc-source, smw-paramdesc-limit, smw-paramdesc-offset,
-		// smw-paramdesc-link, smw-paramdesc-sort, smw-paramdesc-order, smw-paramdesc-headers,
-		// smw-paramdesc-mainlabel, smw-paramdesc-intro, smw-paramdesc-outro, smw-paramdesc-searchlabel,
-		// smw-paramdesc-default
-		foreach ( $params as $name => &$param ) {
-			if ( is_array( $param ) ) {
-				$param['message'] = 'smw-paramdesc-' . $name;
-			}
-		}
-
-		return ParamDefinition::getCleanDefinitions( $params );
-	}
-
-	private static function getSourceParam() {
-		$sourceValues = is_array( $GLOBALS['smwgQuerySources'] ) ? array_keys( $GLOBALS['smwgQuerySources'] ) : array();
-
-		return array(
-			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',
-			'values' => $sourceValues,
-		);
+		return DefaultParamDefinition::getParamDefinitions( $context, $resultPrinter );
 	}
 
 	/**
