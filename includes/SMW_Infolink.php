@@ -1,5 +1,7 @@
 <?php
 
+use SMW\Site;
+
 /**
  * This class mainly is a container to store URLs for the factbox in a
  * clean way. The class provides methods for creating source code for
@@ -376,33 +378,50 @@ class SMWInfolink {
 
 		$query = self::encodeParameters( $this->mParams, $this->isCompactLink );
 
-		if ( $this->isCompactLink ) {
+		if ( $this->isCompactLink && $query !== '' ) {
 			$query = self::encodeCompactLink( $query, true );
 		}
 
-		if ( $this->mInternal ) {
-			$title = Title::newFromText( $this->mTarget );
-
-			if ( !is_null( $title ) ) {
-				return $title->getFullURL( $query );
-			} else {
-				return ''; // the title was bad, normally this would indicate a software bug
-			}
-		} else {
-			if ( count( $this->mParams ) > 0 ) {
-				if ( strpos( SMWExporter::getInstance()->expandURI( '&wikiurl;' ), '?' ) === false ) {
-					$target = $this->mTarget . '?' . $query;
-				} else {
-					$target = $this->mTarget . '&' . $query;
-				}
-			} else {
-				$target = $this->mTarget;
-			}
-
-			return $target;
+		if ( !$this->mInternal ) {
+			return $this->buildTarget( $query );
 		}
+
+		$title = Title::newFromText( $this->mTarget );
+
+		if ( $title !== null ) {
+			return $title->getFullURL( $query );
+		}
+
+		// the title was bad, normally this would indicate a software bug
+		return '';
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getLocalURL() {
+
+		$query = self::encodeParameters( $this->mParams, $this->isCompactLink );
+
+		if ( $this->isCompactLink && $query !== '' ) {
+			$query = self::encodeCompactLink( $query, true );
+		}
+
+		if ( !$this->mInternal ) {
+			return $this->buildTarget( $query );
+		}
+
+		$title = Title::newFromText( $this->mTarget );
+
+		if ( $title !== null ) {
+			return $title->getLocalURL( $query );
+		}
+
+		 // the title was bad, normally this would indicate a software bug
+		return '';
+	}
 
 	/**
 	 * Return a Linker object, using the parameter $linker if not null, and creatng a new one
@@ -621,6 +640,21 @@ class SMWInfolink {
 		}
 
 		return $value;
+	}
+
+	private function buildTarget( $query ) {
+
+		$target = $this->mTarget;
+
+		if ( count( $this->mParams ) > 0 ) {
+			if ( strpos( Site::wikiurl(), '?' ) === false ) {
+				$target = $this->mTarget . '?' . $query;
+			} else {
+				$target = $this->mTarget . '&' . $query;
+			}
+		}
+
+		return $target;
 	}
 
 }

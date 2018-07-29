@@ -82,6 +82,45 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetURL() {
+
+		$instance = new Infolink( true, 'Foo', 'Bar/Foobar' );
+
+		$this->assertContains(
+			'/Bar/Foobar',
+			$instance->getLocalURL()
+		);
+
+		$this->assertContains(
+			'/Bar/Foobar',
+			$instance->getURL()
+		);
+
+		$instance->setParameter( 123, 'foo' );
+
+		$this->assertContains(
+			'title=Bar/Foobar&cl=Zm9vPTEyMw',
+			$instance->getLocalURL()
+		);
+
+		$this->assertContains(
+			'title=Bar/Foobar&cl=Zm9vPTEyMw',
+			$instance->getURL()
+		);
+
+		$instance->setCompactLink( false );
+
+		$this->assertContains(
+			'title=Bar/Foobar&foo=123',
+			$instance->getLocalURL()
+		);
+
+		$this->assertContains(
+			'title=Bar/Foobar&foo=123',
+			$instance->getURL()
+		);
+	}
+
 	/**
 	 * @dataProvider base64Provider
 	 */
