@@ -38,6 +38,11 @@ class SMWSQLStore3Readers {
 	private $traversalPropertyLookup;
 
 	/**
+	 * @var PropertySubjectsLookup
+	 */
+	private $propertySubjectsLookup;
+
+	/**
 	 * @var SemanticDataLookup
 	 */
 	private $semanticDataLookup;
@@ -46,6 +51,7 @@ class SMWSQLStore3Readers {
 		$this->store = $parentStore;
 		$this->factory = $factory;
 		$this->traversalPropertyLookup = $this->factory->newTraversalPropertyLookup();
+		$this->propertySubjectsLookup = $this->factory->newPropertySubjectsLookup();
 		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();
 	}
 
@@ -247,11 +253,12 @@ class SMWSQLStore3Readers {
 	 *
 	 * @return array of DIWikiPage
 	 */
-	public function getPropertySubjects( SMWDIProperty $property, SMWDataItem $value = null, SMWRequestOptions $requestOptions = null ) {
+	public function getPropertySubjects( SMWDIProperty $property, SMWDataItem $dataItem = null, SMWRequestOptions $requestOptions = null ) {
 
-		if ( $property->isInverse() ) { // inverses are working differently
+		// inverses are working differently
+		if ( $property->isInverse() ) {
 			$noninverse = new SMW\DIProperty( $property->getKey(), false );
-			$result = $this->getPropertyValues( $value, $noninverse, $requestOptions );
+			$result = $this->getPropertyValues( $dataItem, $noninverse, $requestOptions );
 			return $result;
 		}
 
@@ -261,8 +268,8 @@ class SMWSQLStore3Readers {
 
 		// #1222, Filter those where types don't match (e.g property = _txt
 		// and value = _wpg)
-		if ( $value !== null && $type !== $value->getDIType() ) {
-			return array();
+		if ( $dataItem !== null && $type !== $dataItem->getDIType() ) {
+			return [];
 		}
 
 		// First build $select, $from, and $where for the DB query
@@ -270,148 +277,17 @@ class SMWSQLStore3Readers {
 		$tableid = $this->store->findPropertyTableID( $property );
 
 		if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
-			return array();
+			return [];
 		}
 
 		$proptables =  $this->store->getPropertyTables();
 		$proptable = $proptables[$tableid];
 
-		$db = $this->store->getConnection( 'mw.db' );
-		$group = false;
-
-		$diHandler = $this->store->getDataItemHandlerForDIType(
-			$proptable->getDiType()
-		);
-
-		$sortField = $diHandler->getSortField();
-
-		if ( $requestOptions === null ) {
-			$requestOptions = new SMWRequestOptions();
-		}
-
-		if ( $sortField === '' ) {
-			$sortField = 'smw_sort';
-		}
-
-		$index = '';
-
-		// For certain tables (blob) the query planner chooses a suboptimal plan
-		// and causes an unacceptable query time therefore force an index for
-		// those tables where the behaviour has been observed.
-		if ( $diHandler->getIndexHint( 'property.subjects' ) !== '' && $value === null ) {
-			$index = 'FORCE INDEX(' . $diHandler->getIndexHint( 'property.subjects' ) . ')';
-		}
-
-		$result = [];
-		$query = [
-			'table' => '',
-			'fields' => '',
-			'conditions' => '',
-			'options' => ''
-		];
-
-		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
-			$query['table'] .= $db->tableName( SMWSql3SmwIds::TABLE_NAME );
-			$query['table'] .= " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 $index ON t1.s_id=smw_id";
-			$query['fields'] .= 'smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort';
-			$group = true;
-		} else { // no join needed, title+namespace as given in proptable
-			$query['table'] .= $db->tableName( $proptable->getName() ) . " AS t1";
-			$query['fields'] = 's_title AS smw_title, s_namespace AS smw_namespace, \'\' AS smw_iw, \'\' AS smw_subobject, s_title AS smw_sortkey, s_title AS smw_sort';
-			$requestOptions->setOption( 'ORDER BY', false );
-		}
-
-		if ( !$proptable->isFixedPropertyTable() ) {
-			$query['conditions'] .= ( $query['conditions'] !== '' ? ' AND ' : '' ) . "t1.p_id=" . $db->addQuotes( $pid );
-		}
-
-		$this->prepareValueQuery(
-			$query['table'],
-			$query['conditions'],
+		$result = $this->propertySubjectsLookup->fetchFromTable(
+			$pid,
 			$proptable,
-			$value,
-			1
-		);
-
-		if ( $proptable->usesIdSubject() ) {
-			$query['conditions'] .= $query['conditions'] !== '' ? ' AND' : '';
-			$query['conditions'] .= " smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
-			$query['conditions'] .= " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
-			$query['conditions'] .= " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW );
-		}
-
-		if ( $group && $db->isType( 'postgres') ) {
-			// Avoid a "... 42803 ERROR:  column "s....smw_title" must appear in
-			// the GROUP BY clause or be used in an aggregate function ..."
-			// https://stackoverflow.com/questions/1769361/postgresql-group-by-different-from-mysql
-			$query['fields'] = ' DISTINCT ON (smw_sort, smw_id) ' . $query['fields'];
-			$requestOptions->setOption( 'ORDER BY', false );
-		} elseif ( $group ) {
-			// Using GROUP BY will sort on the field and since we disinguish smw_sort
-			// and the ID at the end of the field, we ensure
-			// the filter duplicates while sorting the list without using DISTINCT which
-			// would cause a filesort
-			// http://www.mysqltutorial.org/mysql-distinct.aspx
-			$requestOptions->setOption( 'GROUP BY', $sortField . ', smw_id' );
-			$requestOptions->setOption( 'ORDER BY', false );
-		} else {
-			$requestOptions->setOption( 'DISTINCT', true );
-		}
-
-		$query['conditions'] .= $this->store->getSQLConditions(
-			$requestOptions,
-			'smw_sortkey',
-			'smw_sortkey',
-			$query['conditions'] !== ''
-		);
-
-		$query['options'] = $this->store->getSQLOptions(
-			$requestOptions,
-			$sortField
-		);
-
-		$res = $db->select(
-			$query['table'],
-			$query['fields'],
-			$query['conditions'],
-			__METHOD__,
-			$query['options']
-		);
-
-		$diHandler = $this->store->getDataItemHandlerForDIType(
-			SMWDataItem::TYPE_WIKIPAGE
-		);
-
-		$callback = function( $row ) use( $diHandler ) {
-			try {
-				if ( $row->smw_iw === '' || $row->smw_iw{0} != ':' ) { // filter special objects
-					$dbkeys = array(
-						$row->smw_title,
-						$row->smw_namespace,
-						$row->smw_iw,
-						$row->smw_sort,
-						$row->smw_subobject
-
-					);
-					return $diHandler->dataItemFromDBKeys( $dbkeys );
-				}
-			} catch ( DataItemHandlerException $e ) {
-				// silently drop data, should be extremely rare and will usually fix itself at next edit
-			}
-
-			$title = ( $row->smw_title !== '' ? $row->smw_title : 'Empty' ) . '/' . $row->smw_namespace;
-
-			// Avoid null return in Iterator
-			return $diHandler->dataItemFromDBKeys( [ 'Blankpage/' . $title, NS_SPECIAL, '', '', '' ] );
-		};
-
-		$iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
-
-		// Return an iterator and avoid resolving the resources directly as an array
-		// as it may contain a large list of possible matches
-		$result = $iteratorFactory->newMappingIterator(
-			$iteratorFactory->newResultIterator( $res ),
-			$callback
+			$dataItem,
+			$requestOptions
 		);
 
 		$this->store->smwIds->warmUpCache( $result );
@@ -488,9 +364,7 @@ class SMWSQLStore3Readers {
 	 * @return array of DIWikiPage
 	 */
 	public function getAllPropertySubjects( SMWDIProperty $property, SMWRequestOptions $requestOptions = null ) {
-		$result = $this->getPropertySubjects( $property, null, $requestOptions );
-
-		return $result;
+		return $this->getPropertySubjects( $property, null, $requestOptions );
 	}
 
 	/**

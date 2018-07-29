@@ -21,6 +21,7 @@ use SMW\SQLStore\EntityStore\NativeEntityLookup;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
+use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
@@ -466,6 +467,15 @@ class SQLStoreFactory {
 		);
 
 		return new TraversalPropertyLookup( $this->store, $options );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return PropertySubjectsLookup
+	 */
+	public function newPropertySubjectsLookup() {
+		return new PropertySubjectsLookup( $this->store );
 	}
 
 	/**
