@@ -142,17 +142,17 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructDBLoadBalancerConnectionProvider() {
+	public function testCanConstructLoadBalancerConnectionProvider() {
 
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\DBLoadBalancerConnectionProvider',
-			$instance->newDBLoadBalancerConnectionProvider( DB_SLAVE )
+			'\SMW\MediaWiki\Connection\LoadBalancerConnectionProvider',
+			$instance->newLoadBalancerConnectionProvider( DB_SLAVE )
 		);
 	}
 
-	public function testCanConstructDBConnectionProvider() {
+	public function testCanConstructConnectionProvider() {
 
 		$settings = $this->getMockBuilder( '\SMW\Settings' )
 			->disableOriginalConstructor()
@@ -179,8 +179,8 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\DBConnectionProvider',
-			$instance->newDBConnectionProvider()
+			'\SMW\MediaWiki\Connection\ConnectionProvider',
+			$instance->newConnectionProvider()
 		);
 	}
 

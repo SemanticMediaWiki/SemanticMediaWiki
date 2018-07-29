@@ -21,7 +21,7 @@ class_alias( \SMW\Connection\ConnectionProvider::class, 'SMW\DBConnectionProvide
 class_alias( \SMW\DataValues\TypesValue::class, 'SMWTypesValue' );
 class_alias( \SMW\DataValues\PropertyValue::class, 'SMWPropertyValue' );
 class_alias( \SMW\DataValues\StringValue::class, 'SMWStringValue' );
-
+class_alias( \SMW\MediaWiki\Connection\Database::class, '\SMW\MediaWiki\Database' );
 
 // 1.9.
 class_alias( \SMW\Store::class, 'SMWStore' );

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Connection;
 
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMW\Connection\ConnectionProvider;
+use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Connection\ConnectionProviderRef;
 
 /**
@@ -13,7 +13,7 @@ use SMW\Connection\ConnectionProviderRef;
  *
  * @author mwjames
  */
-class DBConnectionProvider implements ConnectionProvider {
+class ConnectionProvider implements IConnectionProvider {
 
 	use LoggerAwareTrait;
 
@@ -31,11 +31,6 @@ class DBConnectionProvider implements ConnectionProvider {
 	 * @var array
 	 */
 	private $localConnectionConf = array();
-
-	/**
-	 * @var boolean
-	 */
-	private $resetTransactionProfiler = false;
 
 	/**
 	 * @since 3.0
@@ -58,7 +53,7 @@ class DBConnectionProvider implements ConnectionProvider {
 	}
 
 	/**
-	 * @see DBConnectionProvider::getConnection
+	 * @see IConnectionProvider::getConnection
 	 *
 	 * @since 2.1
 	 *
@@ -71,20 +66,20 @@ class DBConnectionProvider implements ConnectionProvider {
 		}
 
 		// Default configuration
-		$connectionConf = array(
+		$conf = array(
 			'read'  => DB_SLAVE,
 			'write' => DB_MASTER
 		);
 
 		if ( isset( $this->localConnectionConf[$this->provider] ) ) {
-			$connectionConf = $this->localConnectionConf[$this->provider];
+			$conf = $this->localConnectionConf[$this->provider];
 		}
 
-		return $this->connection = $this->createConnection( $connectionConf );
+		return $this->connection = $this->createConnection( $conf );
 	}
 
 	/**
-	 * @see DBConnectionProvider::releaseConnection
+	 * @see IConnectionProvider::releaseConnection
 	 *
 	 * @since 2.1
 	 */
@@ -97,27 +92,27 @@ class DBConnectionProvider implements ConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function createConnection( $connectionConf ) {
+	private function createConnection( $conf ) {
 
-		if ( isset( $connectionConf['callback'] ) && is_callable( $connectionConf['callback'] ) ) {
-			return call_user_func( $connectionConf['callback'] );
+		if ( isset( $conf['callback'] ) && is_callable( $conf['callback'] ) ) {
+			return call_user_func( $conf['callback'] );
 		}
 
-		if ( !isset( $connectionConf['read'] ) || !isset( $connectionConf['write'] ) ) {
-			throw new RuntimeException( "The configuration is incomplete (requires a read + write identifier)." );
+		if ( !isset( $conf['read'] ) || !isset( $conf['write'] ) ) {
+			throw new RuntimeException( "The configuration is incomplete (requires a `read` and `write` identifier)." );
 		}
 
 		$connectionProviders = [];
 
-		$connectionProviders['read'] = new DBLoadBalancerConnectionProvider(
-			$connectionConf['read']
+		$connectionProviders['read'] = new LoadBalancerConnectionProvider(
+			$conf['read']
 		);
 
-		if ( $connectionConf['read'] === $connectionConf['write'] ) {
+		if ( $conf['read'] === $conf['write'] ) {
 			$connectionProviders['write'] = $connectionProviders['read'];
 		} else {
-			$connectionProviders['write'] = new DBLoadBalancerConnectionProvider(
-				$connectionConf['write']
+			$connectionProviders['write'] = new LoadBalancerConnectionProvider(
+				$conf['write']
 			);
 		}
 
@@ -128,14 +123,20 @@ class DBConnectionProvider implements ConnectionProvider {
 		// Only required because of SQlite
 		$connection->setDBPrefix( $GLOBALS['wgDBprefix'] );
 
-		$context = [
-			'role' => 'developer',
-			'provider' => $this->provider,
-			'read' => $connectionConf['read'],
-			'write' => $connectionConf['write'],
-		];
-
-		$this->logger->info( "[Connection] '{provider}': [read:{read}, write:{write}]", $context );
+		$this->logger->info(
+			[
+				'Connection',
+				'{provider}: {conf}',
+			],
+			[
+				'role' => 'developer',
+				'provider' => $this->provider,
+				'conf' => [
+					'read'  => $conf['read'] === DB_SLAVE ? 'DB_SLAVE' : 'DB_MASTER',
+					'write' => $conf['write'] === DB_SLAVE ? 'DB_SLAVE' : 'DB_MASTER',
+				]
+			]
+		);
 
 		return $connection;
 	}

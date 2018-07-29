@@ -6,6 +6,8 @@ use Language;
 use Parser;
 use Revision;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
+use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Renderer\HtmlTableRenderer;
@@ -116,10 +118,10 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @return DBLoadBalancerConnectionProvider
+	 * @return LoadBalancerConnectionProvider
 	 */
-	public function newDBLoadBalancerConnectionProvider( $connectionType ) {
-		return new DBLoadBalancerConnectionProvider( $connectionType );
+	public function newLoadBalancerConnectionProvider( $connectionType ) {
+		return new LoadBalancerConnectionProvider( $connectionType );
 	}
 
 	/**
@@ -127,23 +129,23 @@ class MwCollaboratorFactory {
 	 *
 	 * @param string|null $provider
 	 *
-	 * @return DBConnectionProvider
+	 * @return ConnectionProvider
 	 */
-	public function newDBConnectionProvider( $provider = null ) {
+	public function newConnectionProvider( $provider = null ) {
 
-		$dbConnectionProvider = new DBConnectionProvider(
+		$connectionProvider = new ConnectionProvider(
 			$provider
 		);
 
-		$dbConnectionProvider->setLocalConnectionConf(
+		$connectionProvider->setLocalConnectionConf(
 			$this->applicationFactory->getSettings()->get( 'smwgLocalConnectionConf' )
 		);
 
-		$dbConnectionProvider->setLogger(
+		$connectionProvider->setLogger(
 			$this->applicationFactory->getMediaWikiLogger()
 		);
 
-		return $dbConnectionProvider;
+		return $connectionProvider;
 	}
 
 	/**

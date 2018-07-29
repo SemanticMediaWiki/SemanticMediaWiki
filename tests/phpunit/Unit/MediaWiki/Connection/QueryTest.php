@@ -18,6 +18,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 
 	protected function setUp() {
+		parent::setUp();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -217,6 +218,67 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame(
 			'SELECT f AS a FROM foo WHERE (foo_bar) GROUP BY _foo HAVING COUNT(Foo) > 5 LIMIT 42',
 			$instance->build()
+		);
+
+	}
+
+	public function testTable() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'tableName' )
+			->with( $this->equalTo( 'Bar' ) );
+
+		$instance = new Query(
+			$this->connection
+		);
+
+		$instance->table( 'Bar' );
+	}
+
+	public function testJoin() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'tableName' )
+			->with( $this->equalTo( 'Foo' ) );
+
+		$instance = new Query(
+			$this->connection
+		);
+
+		$instance->join( 'INNER JOIN', [ 'Foo' => 'bar ...' ] );
+	}
+
+	public function testEq() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'addQuotes' )
+			->with( $this->equalTo( 'Bar' ) )
+			->will( $this->returnValue( '`Bar`' ) );
+
+		$instance = new Query(
+			$this->connection
+		);
+
+		$this->assertSame(
+			'Foo=`Bar`',
+			$instance->eq( 'Foo', 'Bar' )
+		);
+	}
+
+	public function testNeq() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'addQuotes' )
+			->with( $this->equalTo( 'Bar' ) )
+			->will( $this->returnValue( '`Bar`' ) );
+
+		$instance = new Query(
+			$this->connection
+		);
+
+		$this->assertSame(
+			'Foo!=`Bar`',
+			$instance->neq( 'Foo', 'Bar' )
 		);
 	}
 

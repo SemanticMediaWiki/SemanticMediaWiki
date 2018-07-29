@@ -4,7 +4,7 @@ namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
 use SMW\DIContainer;
-use SMW\MediaWiki\DatabaseHelper;
+use SMW\MediaWiki\Connection\OptionsBuilder;
 use SMW\Options;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as PropertyTableDef;
@@ -96,7 +96,7 @@ class TraversalPropertyLookup {
 			// from the inner join
 			$options['GROUP BY'] = 'p_id';
 
-			$opt = DatabaseHelper::toString( $options );
+			$opt = OptionsBuilder::toString( $options );
 
 			$cond = ( $cond !== '' ? ' WHERE ' : '' ) . $cond;
 

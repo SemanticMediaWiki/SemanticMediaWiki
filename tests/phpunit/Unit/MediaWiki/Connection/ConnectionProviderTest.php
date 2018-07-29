@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\MediaWiki\Connection;
 
-use SMW\MediaWiki\DBConnectionProvider;
+use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\MediaWiki\DBConnectionProvider
+ * @covers \SMW\MediaWiki\Connection\ConnectionProvider
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,20 +15,20 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			DBConnectionProvider::class,
-			new DBConnectionProvider()
+			ConnectionProvider::class,
+			new ConnectionProvider()
 		);
 	}
 
 	public function testGetConnection() {
 
-		$instance = new DBConnectionProvider();
+		$instance = new ConnectionProvider();
 		$instance->setLogger(
 			TestEnvironment::newSpyLogger()
 		);
@@ -55,7 +55,7 @@ class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetConnectionOnFixedConfWithSameIndex() {
 
-		$instance = new DBConnectionProvider(
+		$instance = new ConnectionProvider(
 			'foo'
 		);
 
@@ -98,7 +98,7 @@ class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DBConnectionProvider(
+		$instance = new ConnectionProvider(
 			'foo'
 		);
 
@@ -124,7 +124,7 @@ class DBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetConnectionOnIncompleteConfThrowsException() {
 
-		$instance = new DBConnectionProvider(
+		$instance = new ConnectionProvider(
 			'foo'
 		);
 

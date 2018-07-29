@@ -231,23 +231,23 @@ final class Setup {
 
 		$connectionManager->registerConnectionProvider(
 			DB_MASTER,
-			$mwCollaboratorFactory->newDBLoadBalancerConnectionProvider( DB_MASTER )
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_MASTER )
 		);
 
 		$connectionManager->registerConnectionProvider(
 			DB_SLAVE,
-			$mwCollaboratorFactory->newDBLoadBalancerConnectionProvider( DB_SLAVE )
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_SLAVE )
 		);
 
 		$connectionManager->registerConnectionProvider(
 			'mw.db',
-			$mwCollaboratorFactory->newDBConnectionProvider( 'mw.db' )
+			$mwCollaboratorFactory->newConnectionProvider( 'mw.db' )
 		);
 
 		// Connection can be used to redirect queries to another DB cluster
 		$connectionManager->registerConnectionProvider(
 			'mw.db.queryengine',
-			$mwCollaboratorFactory->newDBConnectionProvider( 'mw.db.queryengine' )
+			$mwCollaboratorFactory->newConnectionProvider( 'mw.db.queryengine' )
 		);
 
 		$connectionManager->registerConnectionProvider(

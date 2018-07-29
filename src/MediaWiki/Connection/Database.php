@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Connection;
 
 use DBError;
 use Exception;
@@ -8,7 +8,6 @@ use ResultWrapper;
 use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Connection\ConnectionProviderRef;
-use SMW\MediaWiki\Connection\Query;
 use UnexpectedValueException;
 
 /**
@@ -472,7 +471,7 @@ class Database {
 	 * @return array
 	 */
 	public function makeSelectOptions( $options ) {
-		return DatabaseHelper::makeSelectOptions( $this, $options );
+		return OptionsBuilder::makeSelectOptions( $this, $options );
 	}
 
 	/**

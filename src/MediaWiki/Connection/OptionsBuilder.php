@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Connection;
 
 /**
  * https://phabricator.wikimedia.org/T147550
@@ -13,7 +13,7 @@ namespace SMW\MediaWiki;
  *
  * @author mwjames
  */
-class DatabaseHelper {
+class OptionsBuilder {
 
 	/**
 	 * @since 3.0
