@@ -27,7 +27,13 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $skin;
 	private $store;
 	private $testEnvironment;
-	private $handlers = [];
+
+	/**
+	 * Has a static signature on purpose!
+	 *
+	 * @var array
+	 */
+	private static $handlers = [];
 
 	protected function setUp() {
 
@@ -112,19 +118,11 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$language = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$globalVars = array(
-			'IP' => 'bar',
-			'wgVersion' => '1.24',
-			'wgLang' => $language
-		);
+		$vars = [];
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\HookRegistry',
-			new HookRegistry( $globalVars, 'foo' )
+			HookRegistry::class,
+			new HookRegistry( $vars, 'foo' )
 		);
 	}
 
@@ -165,82 +163,112 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testRegister() {
+	/**
+	 * @dataProvider callMethodProvider
+	 */
+	public function testRegister( $method ) {
 
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$globalVars = array(
+		$vars = array(
 			'IP' => 'bar',
 			'wgVersion' => '1.24',
 			'wgLang' => $language,
 			'smwgEnabledDeferredUpdate' => false
 		);
 
-		$instance = new HookRegistry( $globalVars, 'foo' );
+		$instance = new HookRegistry( $vars, 'foo' );
 		$instance->register();
 
-		$this->doTestExecutionForParserAfterTidy( $instance );
-		$this->doTestExecutionForBaseTemplateToolbox( $instance );
-		$this->doTestExecutionForSkinAfterContent( $instance );
-		$this->doTestExecutionForOutputPageParserOutput( $instance );
-		$this->doTestExecutionForBeforePageDisplay( $instance );
-		$this->doTestExecutionForSpecialSearchResultsPrepend( $instance );
-		$this->doTestExecutionForSpecialSearchProfiles( $instance );
-		$this->doTestExecutionForSpecialSearchProfileForm( $instance );
-		$this->doTestExecutionForInternalParseBeforeLinks( $instance );
-		$this->doTestExecutionForNewRevisionFromEditComplete( $instance );
-		$this->doTestExecutionForTitleMoveComplete( $instance );
-		$this->doTestExecutionForArticleProtectComplete( $instance );
-		$this->doTestExecutionForArticleViewHeader( $instance );
-		$this->doTestExecutionForArticlePurge( $instance );
-		$this->doTestExecutionForArticleDelete( $instance );
-		$this->doTestExecutionForLinksUpdateConstructed( $instance );
-		$this->doTestExecutionForSpecialStatsAddExtra( $instance );
-		$this->doTestExecutionForFileUpload( $instance );
-		$this->doTestExecutionForResourceLoaderGetConfigVars( $instance );
-		$this->doTestExecutionForGetPreferences( $instance );
-		$this->doTestExecutionForPersonalUrls( $instance );
-		$this->doTestExecutionForSkinTemplateNavigation( $instance );
-		$this->doTestExecutionForLoadExtensionSchemaUpdates( $instance );
-		$this->doTestExecutionForResourceLoaderTestModules( $instance );
-		$this->doTestExecutionForExtensionTypes( $instance );
-		$this->doTestExecutionForTitleIsAlwaysKnown( $instance );
-		$this->doTestExecutionForBeforeDisplayNoArticleText( $instance );
-		$this->doTestExecutionForArticleFromTitle( $instance );
-		$this->doTestExecutionForTitleIsMovable( $instance );
-		$this->doTestExecutionForEditPageForm( $instance );
-		$this->doTestExecutionForParserOptionsRegister( $instance );
-		$this->doTestExecutionForParserFirstCallInit( $instance );
-		$this->doTestExecutionForTitleQuickPermissions( $instance );
-		$this->doTestExecutionForOutputPageCheckLastModified( $instance );
-		$this->doTestExecutionForIsFileCacheable( $instance );
-		$this->doTestExecutionForRejectParserCacheValue( $instance );
-		$this->doTestExecutionForSoftwareInfo( $instance );
-		$this->doTestExecutionForBlockIpComplete( $instance );
-		$this->doTestExecutionForUnblockUserComplete( $instance );
-		$this->doTestExecutionForUserGroupsChanged( $instance );
-
-		// Usage of registered hooks in/by smw-core
-		//$this->doTestExecutionForSMWStoreDropTables( $instance );
-		$this->doTestExecutionForSMWSQLStoreEntityReferenceCleanUpComplete( $instance );
-		$this->doTestExecutionForSMWAdminTaskHandlerFactory( $instance );
-		$this->doTestExecutionForSMWSQLStorAfterDataUpdateComplete( $instance );
-		$this->doTestExecutionForSMWStoreBeforeQueryResultLookupComplete( $instance );
-		$this->doTestExecutionForSMWStoreAfterQueryResultLookupComplete( $instance );
-		$this->doTestExecutionForSMWBrowseAfterIncomingPropertiesLookupComplete( $instance );
-		$this->doTestExecutionForSMWBrowseBeforeIncomingPropertyValuesFurtherLinkCreate( $instance );
-		$this->doTestExecutionForSMWSQLStoreInstallerAfterCreateTablesComplete( $instance );
-
-		$handlerList = $instance->getHandlerList();
-
-		foreach ( $handlerList as $handler ) {
-			$this->assertArrayHasKey( $handler, $this->handlers, "Missing a `$handler` test!" );
-		}
+		self::$handlers[] = call_user_func_array( [ $this, $method ], [ $instance ] );
 	}
 
-	public function doTestExecutionForParserAfterTidy( $instance ) {
+    /**
+     * @depends testRegister
+     */
+	public function testCheckOnMissingHandlers() {
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$vars = array(
+			'IP' => 'bar',
+			'wgVersion' => '1.24',
+			'wgLang' => $language,
+			'smwgEnabledDeferredUpdate' => false
+		);
+
+		$instance = new HookRegistry( $vars, 'foo' );
+		$instance->register();
+
+		$handlerList = $instance->getHandlerList();
+		$handlers = array_flip( self::$handlers );
+
+		foreach ( $handlerList as $handler ) {
+			$this->assertArrayHasKey( $handler, $handlers, "Missing a `$handler` test!" );
+		}
+
+		self::$handlers = [];
+	}
+
+	public function callMethodProvider() {
+
+		return [
+			[ 'callParserAfterTidy' ],
+			[ 'callBaseTemplateToolbox' ],
+			[ 'callSkinAfterContent' ],
+			[ 'callOutputPageParserOutput' ],
+			[ 'callBeforePageDisplay' ],
+			[ 'callSpecialSearchResultsPrepend' ],
+			[ 'callSpecialSearchProfiles' ],
+			[ 'callSpecialSearchProfileForm' ],
+			[ 'callInternalParseBeforeLinks' ],
+			[ 'callNewRevisionFromEditComplete' ],
+			[ 'callTitleMoveComplete' ],
+			[ 'callArticleProtectComplete' ],
+			[ 'callArticleViewHeader' ],
+			[ 'callArticlePurge' ],
+			[ 'callArticleDelete' ],
+			[ 'callLinksUpdateConstructed' ],
+			[ 'callSpecialStatsAddExtra' ],
+			[ 'callFileUpload' ],
+			[ 'callResourceLoaderGetConfigVars' ],
+			[ 'callGetPreferences' ],
+			[ 'callPersonalUrls' ],
+			[ 'callSkinTemplateNavigation' ],
+			[ 'callLoadExtensionSchemaUpdates' ],
+			[ 'callResourceLoaderTestModules' ],
+			[ 'callExtensionTypes' ],
+			[ 'callTitleIsAlwaysKnown' ],
+			[ 'callBeforeDisplayNoArticleText' ],
+			[ 'callArticleFromTitle' ],
+			[ 'callTitleIsMovable' ],
+			[ 'callEditPageForm' ],
+			[ 'callParserOptionsRegister' ],
+			[ 'callParserFirstCallInit' ],
+			[ 'callTitleQuickPermissions' ],
+			[ 'callOutputPageCheckLastModified' ],
+			[ 'callIsFileCacheable' ],
+			[ 'callRejectParserCacheValue' ],
+			[ 'callSoftwareInfo' ],
+			[ 'callBlockIpComplete' ],
+			[ 'callUnblockUserComplete' ],
+			[ 'callUserGroupsChanged' ],
+			[ 'callSMWSQLStoreEntityReferenceCleanUpComplete' ],
+			[ 'callSMWAdminTaskHandlerFactory' ],
+			[ 'callSMWSQLStorAfterDataUpdateComplete' ],
+			[ 'callSMWStoreBeforeQueryResultLookupComplete' ],
+			[ 'callSMWStoreAfterQueryResultLookupComplete' ],
+			[ 'callSMWBrowseAfterIncomingPropertiesLookupComplete' ],
+			[ 'callSMWBrowseBeforeIncomingPropertyValuesFurtherLinkCreate' ],
+			[ 'callSMWSQLStoreInstallerAfterCreateTablesComplete' ],
+		];
+	}
+
+	public function callParserAfterTidy( $instance ) {
 
 		$handler = 'ParserAfterTidy';
 
@@ -263,10 +291,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$this->parser, &$text )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForBaseTemplateToolbox( $instance ) {
+	public function callBaseTemplateToolbox( $instance ) {
 
 		$handler = 'BaseTemplateToolbox';
 
@@ -297,10 +325,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $skinTemplate, &$toolbox )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSkinAfterContent( $instance ) {
+	public function callSkinAfterContent( $instance ) {
 
 		$handler = 'SkinAfterContent';
 
@@ -323,10 +351,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$data, $this->skin )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForOutputPageParserOutput( $instance ) {
+	public function callOutputPageParserOutput( $instance ) {
 
 		$handler = 'OutputPageParserOutput';
 
@@ -351,10 +379,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$this->outputPage, $parserOutput )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForBeforePageDisplay( $instance ) {
+	public function callBeforePageDisplay( $instance ) {
 
 		$handler = 'BeforePageDisplay';
 
@@ -375,10 +403,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$this->outputPage, &$this->skin )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSpecialSearchResultsPrepend( $instance ) {
+	public function callSpecialSearchResultsPrepend( $instance ) {
 
 		$handler = 'SpecialSearchResultsPrepend';
 
@@ -395,10 +423,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $specialSearch, $this->outputPage, '' )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSpecialSearchProfiles( $instance ) {
+	public function callSpecialSearchProfiles( $instance ) {
 
 		$handler = 'SpecialSearchProfiles';
 
@@ -413,10 +441,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			[ &$profiles ]
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSpecialSearchProfileForm( $instance ) {
+	public function callSpecialSearchProfileForm( $instance ) {
 
 		$handler = 'SpecialSearchProfileForm';
 
@@ -470,10 +498,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			[ $specialSearch, &$form, $profile, $term, $opts ]
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForInternalParseBeforeLinks( $instance ) {
+	public function callInternalParseBeforeLinks( $instance ) {
 
 		$handler = 'InternalParseBeforeLinks';
 
@@ -504,10 +532,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$parser, &$text, &$stripState )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForNewRevisionFromEditComplete( $instance ) {
+	public function callNewRevisionFromEditComplete( $instance ) {
 
 		$handler = 'NewRevisionFromEditComplete';
 
@@ -558,10 +586,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $wikiPage, $revision, $baseId, $user )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForTitleMoveComplete( $instance ) {
+	public function callTitleMoveComplete( $instance ) {
 
 		$handler = 'TitleMoveComplete';
 
@@ -609,10 +637,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForArticleProtectComplete( $instance ) {
+	public function callArticleProtectComplete( $instance ) {
 
 		$handler = 'ArticleProtectComplete';
 
@@ -664,10 +692,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$wikiPage, &$user, $protections, $reason )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForArticleViewHeader( $instance ) {
+	public function callArticleViewHeader( $instance ) {
 
 		$handler = 'ArticleViewHeader';
 
@@ -691,10 +719,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$page, &$outputDone, &$useParserCache )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForArticlePurge( $instance ) {
+	public function callArticlePurge( $instance ) {
 
 		$handler = 'ArticlePurge';
 
@@ -715,10 +743,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$wikiPage )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForArticleDelete( $instance ) {
+	public function callArticleDelete( $instance ) {
 
 		$handler = 'ArticleDelete';
 
@@ -774,10 +802,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$wikiPage, &$user, &$reason, &$error )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForLinksUpdateConstructed( $instance ) {
+	public function callLinksUpdateConstructed( $instance ) {
 
 		$handler = 'LinksUpdateConstructed';
 
@@ -828,10 +856,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSpecialStatsAddExtra( $instance ) {
+	public function callSpecialStatsAddExtra( $instance ) {
 
 		$handler = 'SpecialStatsAddExtra';
 
@@ -846,10 +874,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$extraStats )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForFileUpload( $instance ) {
+	public function callFileUpload( $instance ) {
 
 		$handler = 'FileUpload';
 
@@ -868,10 +896,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $file, $reupload )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForResourceLoaderGetConfigVars( $instance ) {
+	public function callResourceLoaderGetConfigVars( $instance ) {
 
 		$handler = 'ResourceLoaderGetConfigVars';
 
@@ -886,10 +914,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$vars )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForGetPreferences( $instance ) {
+	public function callGetPreferences( $instance ) {
 
 		$handler = 'GetPreferences';
 
@@ -908,10 +936,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $user, &$preferences )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForPersonalUrls( $instance ) {
+	public function callPersonalUrls( $instance ) {
 
 		$handler = 'PersonalUrls';
 
@@ -942,10 +970,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$personal_urls, $title, $skinTemplate )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSkinTemplateNavigation( $instance ) {
+	public function callSkinTemplateNavigation( $instance ) {
 
 		$handler = 'SkinTemplateNavigation';
 
@@ -972,10 +1000,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$skinTemplate, &$links )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForLoadExtensionSchemaUpdates( $instance ) {
+	public function callLoadExtensionSchemaUpdates( $instance ) {
 
 		$handler = 'LoadExtensionSchemaUpdates';
 
@@ -992,10 +1020,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $databaseUpdater )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForResourceLoaderTestModules( $instance ) {
+	public function callResourceLoaderTestModules( $instance ) {
 
 		$handler = 'ResourceLoaderTestModules';
 
@@ -1014,10 +1042,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$testModules, &$resourceLoader )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForExtensionTypes( $instance ) {
+	public function callExtensionTypes( $instance ) {
 
 		$handler = 'ExtensionTypes';
 
@@ -1032,10 +1060,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$extTypes )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForTitleIsAlwaysKnown( $instance ) {
+	public function callTitleIsAlwaysKnown( $instance ) {
 
 		$handler = 'TitleIsAlwaysKnown';
 
@@ -1050,10 +1078,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $this->title, &$result )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForBeforeDisplayNoArticleText( $instance ) {
+	public function callBeforeDisplayNoArticleText( $instance ) {
 
 		$handler = 'BeforeDisplayNoArticleText';
 
@@ -1074,10 +1102,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $article )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForArticleFromTitle( $instance ) {
+	public function callArticleFromTitle( $instance ) {
 
 		$handler = 'ArticleFromTitle';
 
@@ -1098,10 +1126,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$this->title, &$article  )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForTitleIsMovable( $instance ) {
+	public function callTitleIsMovable( $instance ) {
 
 		$handler = 'TitleIsMovable';
 
@@ -1116,10 +1144,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $this->title, &$isMovable  )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForEditPageForm( $instance ) {
+	public function callEditPageForm( $instance ) {
 
 		$handler = 'EditPage::showEditForm:initial';
 
@@ -1154,10 +1182,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $editPage, $outputPage )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForParserOptionsRegister( $instance ) {
+	public function callParserOptionsRegister( $instance ) {
 
 		$handler = 'ParserOptionsRegister';
 
@@ -1173,10 +1201,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$defaults, &$inCacheKey )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForParserFirstCallInit( $instance ) {
+	public function callParserFirstCallInit( $instance ) {
 
 		$handler = 'ParserFirstCallInit';
 
@@ -1197,10 +1225,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$parser )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForTitleQuickPermissions( $instance ) {
+	public function callTitleQuickPermissions( $instance ) {
 
 		$handler = 'TitleQuickPermissions';
 
@@ -1224,10 +1252,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $title, $user, $action, &$errors, $rigor, $short )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForOutputPageCheckLastModified( $instance ) {
+	public function callOutputPageCheckLastModified( $instance ) {
 
 		$handler = 'OutputPageCheckLastModified';
 		$modifiedTimes = [];
@@ -1241,10 +1269,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$modifiedTimes )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForIsFileCacheable( $instance ) {
+	public function callIsFileCacheable( $instance ) {
 
 		$handler = 'IsFileCacheable';
 
@@ -1265,10 +1293,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$article )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForRejectParserCacheValue( $instance ) {
+	public function callRejectParserCacheValue( $instance ) {
 
 		$handler = 'RejectParserCacheValue';
 
@@ -1292,10 +1320,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $value, $wikiPage, $popts )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSoftwareInfo( $instance ) {
+	public function callSoftwareInfo( $instance ) {
 
 		$handler = 'SoftwareInfo';
 
@@ -1306,10 +1334,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			[ &$software ]
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForBlockIpComplete( $instance ) {
+	public function callBlockIpComplete( $instance ) {
 
 		$handler = 'BlockIpComplete';
 
@@ -1333,10 +1361,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $block, $performer, $priorBlock )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForUnblockUserComplete( $instance ) {
+	public function callUnblockUserComplete( $instance ) {
 
 		$handler = 'UnblockUserComplete';
 
@@ -1360,10 +1388,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $block, $performer, $priorBlock )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForUserGroupsChanged( $instance ) {
+	public function callUserGroupsChanged( $instance ) {
 
 		$handler = 'UserGroupsChanged';
 
@@ -1384,10 +1412,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $user )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSMWStoreDropTables( $instance ) {
+	public function callSMWStoreDropTables( $instance ) {
 
 		$handler = 'SMW::Store::dropTables';
 
@@ -1398,12 +1426,16 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $verbose )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSMWSQLStoreEntityReferenceCleanUpComplete( $instance ) {
+	public function callSMWSQLStoreEntityReferenceCleanUpComplete( $instance ) {
 
 		$handler = 'SMW::SQLStore::EntityReferenceCleanUpComplete';
+
+		if ( !$instance->getHandlerFor( $handler ) ) {
+			return $this->markTestSkipped( "$handler not used" );
+		}
 
 		$id = 42;
 		$subject = DIWikiPage::newFromText( __METHOD__ );
@@ -1414,12 +1446,16 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $this->store, $id, $subject, $isRedirect )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSMWAdminTaskHandlerFactory( $instance ) {
+	public function callSMWAdminTaskHandlerFactory( $instance ) {
 
 		$handler = 'SMW::Admin::TaskHandlerFactory';
+
+		if ( !$instance->getHandlerFor( $handler ) ) {
+			return $this->markTestSkipped( "$handler not used" );
+		}
 
 		$taskHandlers = [];
 
@@ -1440,10 +1476,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( &$taskHandlers, $store, $outputFormatter, $user )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSMWSQLStorAfterDataUpdateComplete( $instance ) {
+	public function callSMWSQLStorAfterDataUpdateComplete( $instance ) {
 
 		$handler = 'SMW::SQLStore::AfterDataUpdateComplete';
 
@@ -1508,10 +1544,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $store, $semanticData, $changeOp )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSMWStoreBeforeQueryResultLookupComplete( $instance ) {
+	public function callSMWStoreBeforeQueryResultLookupComplete( $instance ) {
 
 		$handler = 'SMW::Store::BeforeQueryResultLookupComplete';
 
@@ -1534,10 +1570,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $this->store, $query, &$result, $queryEngine )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSMWStoreAfterQueryResultLookupComplete( $instance ) {
+	public function callSMWStoreAfterQueryResultLookupComplete( $instance ) {
 
 		$handler = 'SMW::Store::AfterQueryResultLookupComplete';
 
@@ -1565,10 +1601,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $store, &$result )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSMWBrowseAfterIncomingPropertiesLookupComplete( $instance ) {
+	public function callSMWBrowseAfterIncomingPropertiesLookupComplete( $instance ) {
 
 		$handler = 'SMW::Browse::AfterIncomingPropertiesLookupComplete';
 
@@ -1614,10 +1650,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $store, $semanticData, $requestOptions )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSMWBrowseBeforeIncomingPropertyValuesFurtherLinkCreate( $instance ) {
+	public function callSMWBrowseBeforeIncomingPropertyValuesFurtherLinkCreate( $instance ) {
 
 		$handler = 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate';
 
@@ -1634,10 +1670,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $property, $subject, &$html )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
-	public function doTestExecutionForSMWSQLStoreInstallerAfterCreateTablesComplete( $instance ) {
+	public function callSMWSQLStoreInstallerAfterCreateTablesComplete( $instance ) {
 
 		$handler = 'SMW::SQLStore::Installer::AfterCreateTablesComplete';
 
@@ -1664,7 +1700,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( $tableBuilder, $messageReporter, $options )
 		);
 
-		$this->handlers[$handler] = true;
+		return $handler;
 	}
 
 	private function assertThatHookIsExcutable( callable $handler, $arguments ) {
