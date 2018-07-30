@@ -410,6 +410,7 @@
 	"smw-search-profile-tooltip": "Funkcje wyszukiwania w połączeniu z Semantyczną MediaWiki",
 	"log-name-smw": "Rejestr semantycznej MediaWiki",
 	"log-show-hide-smw": "$1 rejestr semantycznej MediaWiki",
+	"logeventslist-smw-log": "Rejestr Semantycznej MediaWiki",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Import $1]]",
 	"smw-property-predefined-long-errp": "W większości przypadków jest to spowodowane niedopasowaniem lub ograniczeniem  [[Property:Allows value|wartości]].",
 	"smw-property-predefined-pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value „$1”] jest predefiniowaną właściwością, która może zdefiniować listę dopuszczalnych wartości ograniczających przyporządkowania wartości dla właściwości.",
