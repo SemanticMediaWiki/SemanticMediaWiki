@@ -505,7 +505,7 @@
 	"smw-admin-settings-docu": "Muestra una lista de todas las preferencias predeterminadas y localizadas que son relevantes para el entorno de Semantic MediaWiki. Para más detalles sobre preferencias individuales, consulta la página de ayuda de [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuración].",
 	"smw-sp-admin-settings-button": "Generar lista de preferencias",
 	"smw-admin-idlookup-title": "Buscar",
-	"smw-admin-idlookup-docu": "Esta sección muestra detalles técnicos sobre una entidad individual (wikipage, subobjeto, propiedad, etc.) en Semantic MediaWiki. La entrada puede ser un ID numérico o una cadena que coincida con el campo de búsqueda relevante, sin embargo, cualquier referencia de ID se relaciona con Semantic MediaWiki y no con el ID de la página o revisión de MediaWiki.",
+	"smw-admin-idlookup-docu": "Esta sección muestra detalles técnicos sobre una entidad individual (página de wiki, subobjeto, propiedad, etc.) de Semantic MediaWiki. La entrada puede ser un identificador numérico o una cadena que corresponda con el campo de búsqueda relevante. Observa que las referencias de los identificadores se relacionan con Semantic MediaWiki y no con los identificadores de página o de revisión de MediaWiki.",
 	"smw-admin-iddispose-title": "Eliminación",
 	"smw-admin-iddispose-docu": "La operación de eliminación no está restringida y, si se confirma, quitará del motor de almacenamiento un identificador de objeto interno. Por favor, realiza esta tarea con \"precaución\" y sólo después de haber consultado la [https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal documentación].",
 	"smw-admin-iddispose-done": "El identificador «$1» se eliminó del motor de almacenamiento.",

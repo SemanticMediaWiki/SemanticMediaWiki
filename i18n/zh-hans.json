@@ -500,7 +500,7 @@
 	"smw-admin-iddispose-title": "处置",
 	"smw-admin-iddispose-docu": "处理操作不受限制，并且如果确认，将从存储引擎中移除内部对象ID。请'''慎重'''执行此任务，并只在查阅[https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal 文档]后进行。",
 	"smw-admin-iddispose-done": "ID“$1”已从存储后端中移除。",
-	"smw-admin-iddispose-references": "ID“$1”带有{{PLURAL:$2|no|at least one}}个活动参考。",
+	"smw-admin-iddispose-references": "ID“$1”{{PLURAL:$2|没有|有至少一个}}活跃的参考资料：",
 	"smw-admin-iddispose-references-multiple": "有至少一个活动参考记录的匹配列表。",
 	"smw-admin-iddispose-no-references": "找不到ID“$1”，或其包含任意参考。",
 	"smw-admin-idlookup-input": "搜索：",
