@@ -25,34 +25,12 @@ class TraversalPropertyLookup {
 	private $store;
 
 	/**
-	 * @var Options
-	 */
-	private $options;
-
-	/**
 	 * @since 3.0
 	 *
 	 * @param SQLStore $store
-	 * @param Options|null $options
 	 */
-	public function __construct( SQLStore $store, Options $options = null ) {
+	public function __construct( SQLStore $store ) {
 		$this->store = $store;
-		$this->options = $options;
-
-		if ( $this->options === null ) {
-			$this->options = new Options();
-		}
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param integer $feature
-	 *
-	 * @return boolean
-	 */
-	public function isEnabledFeature( $feature ) {
-		return $this->options->isFlagSet( 'smwgExperimentalFeatures', $feature );
 	}
 
 	/**

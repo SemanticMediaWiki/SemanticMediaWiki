@@ -207,8 +207,6 @@ define( 'SMW_RF_TEMPLATE_OUTSEP', 2 ); // #2022 Enable 2.5 behaviour for templat
 /**@{
   * Constants for $smwgExperimentalFeatures
   */
-define( 'SMW_ESTORE_NONE', 0 );
-define( 'SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP', 2 ); // New query for EntityLookup::getInProperties
 /**@}*/
 
 /**@{

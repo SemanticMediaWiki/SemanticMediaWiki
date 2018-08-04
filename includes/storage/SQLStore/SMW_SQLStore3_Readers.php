@@ -457,77 +457,36 @@ class SMWSQLStore3Readers {
 	 * @param SMWDataItem $value
 	 * @param SMWRequestOptions|null $requestOptions
 	 *
-	 * @return array of SMWWikiPageValue
+	 * @return DIProperty[]
 	 */
 	public function getInProperties( SMWDataItem $value, SMWRequestOptions $requestOptions = null ) {
 
-		$db = $this->store->getConnection();
-		$result = array();
-
-		// Potentially need to get more results, since options apply to union.
-		if ( $requestOptions !== null ) {
-			$subOptions = clone $requestOptions;
-			$subOptions->limit = $requestOptions->limit + $requestOptions->offset;
-			$subOptions->offset = 0;
-		} else {
-			$subOptions = null;
-		}
-
+		$result = [];
 		$diType = $value->getDIType();
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
+
 			if ( $diType != $proptable->getDiType() ) {
 				continue;
 			}
 
-			$where = $from = '';
+			$res = $this->traversalPropertyLookup->fetchFromTable(
+				$proptable,
+				$value,
+				$requestOptions
+			);
 
-			if ( $this->traversalPropertyLookup->isEnabledFeature( SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP ) ) {
-
-				$res = $this->traversalPropertyLookup->fetchFromTable(
-					$proptable,
-					$value,
-					$requestOptions
-				);
-
-				foreach ( $res as $row ) {
-					try {
-						$result[] = new SMW\DIProperty( $row->smw_title );
-					} catch (SMWDataItemException $e) {
-						// has been observed to happen (empty property title); cause unclear; ignore this data
-					}
-				}
-
-			} elseif ( !$proptable->isFixedPropertyTable() ) { // join ID table to get property titles
-				$from = $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.p_id=smw_id";
-				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
-
-				$where .= " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
-
-				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey,smw_sort,smw_iw',
-						// select sortkey since it might be used in ordering (needed by Postgres)
-						$where . $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
-						__METHOD__, $this->store->getSQLOptions( $subOptions, 'smw_sort' ) );
-
-				foreach ( $res as $row ) {
-					try {
-						$result[] = new SMW\DIProperty( $row->smw_title );
-					} catch (SMWDataItemException $e) {
-						// has been observed to happen (empty property title); cause unclear; ignore this data
-					}
-				}
-			} else {
-				$from = $db->tableName( $proptable->getName() ) . " AS t1";
-				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
-				$res = $db->select( $from, '*', $where, __METHOD__, array( 'LIMIT' => 1 ) );
-
-				if ( $db->numRows( $res ) > 0 ) {
-					$result[] = new SMW\DIProperty( $proptable->getFixedProperty() );
+			foreach ( $res as $row ) {
+				try {
+					$result[] = new SMW\DIProperty( $row->smw_title );
+				} catch (SMWDataItemException $e) {
+					// has been observed to happen (empty property title); cause unclear; ignore this data
 				}
 			}
 		}
 
-		$result = $this->store->applyRequestOptions( $result, $requestOptions ); // apply options to overall result
+		// Apply options to overall result
+		$result = $this->store->applyRequestOptions( $result, $requestOptions );
 		$this->store->smwIds->warmUpCache( $result );
 
 		return $result;

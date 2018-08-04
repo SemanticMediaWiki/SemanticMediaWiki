@@ -1816,12 +1816,9 @@ return array(
 	# to the desired target state and hereby automatically retires the related
 	# setting.
 	#
-	# - SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP enables a new query form for selecting
-	#   incoming properties (#1234)
-	#
 	# @since 3.0
 	##
-	'smwgExperimentalFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP,
+	'smwgExperimentalFeatures' => false,
 	##
 
 	##
