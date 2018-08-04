@@ -121,7 +121,7 @@ class DataRebuilder {
 			$this->start = max( 1, intval( $options->get( 's' ) ) );
 		} elseif ( $options->has( 'startidfile' ) ) {
 
-			$this->canWriteToIdFile = $this->idFileIsWritable( $options->get( 'startidfile' )  );
+			$this->canWriteToIdFile = $this->is_writable( $options->get( 'startidfile' )  );
 			$this->startIdFile = $options->get( 'startidfile' );
 
 			if ( is_readable( $options->get( 'startidfile' ) ) ) {
@@ -238,7 +238,13 @@ class DataRebuilder {
 		);
 
 		$entityRebuildDispatcher->useJobQueueScheduler( false );
-		$this->doDisposeMarkedOutdatedEntities();
+
+		// Only expect the disposal action?
+		if ( $this->dispose_outdated() ) {
+			return true;
+		}
+
+		$this->reportMessage( "\n" );
 
 		if ( !$this->options->has( 'skip-properties' ) ) {
 			$this->options->set( 'p', true );
@@ -249,16 +255,15 @@ class DataRebuilder {
 		$this->store->clear();
 
 		$this->reportMessage(
-			"Refreshing all semantic data in the database!\n"
+			"Refreshing semantic data ...\n"
 		);
 
 		$this->reportMessage(
-			"\nSome versions of PHP suffer from memory leaks in long-running \n" .
-			"scripts. If your machine gets very slow after many pages \n" .
-			"(typically more than 1000) were refreshed, please abort with\n" .
-			"CTRL-C and resume this script at the last processed page id\n" .
-			"using the parameter -s (use -v to display page ids during \n" .
-			"refresh). Continue this until all pages have been refreshed.\n"
+			"\nLong-running scripts may cause memory leaks, if a deteriorating\n" .
+			"rebuild process is detected (after many pages, typically more\n".
+			"than 10000), please abort with CTRL-C and resume this script\n" .
+			"at the last processed ID using the parameter -s. Continue this\n" .
+			"until all pages have been refreshed.\n"
 		);
 
 		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $entityRebuildDispatcher->getMaxId();
@@ -279,7 +284,9 @@ class DataRebuilder {
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
-			$dispatchedId = $id;
+			$current_id = $id;
+
+			// Changes the ID to next target!
 			$this->doUpdate( $entityRebuildDispatcher, $id );
 
 			if ( $this->rebuildCount % 60 === 0 ) {
@@ -290,7 +297,7 @@ class DataRebuilder {
 
 			foreach ( $entityRebuildDispatcher->getDispatchedEntities() as $value ) {
 
-				$text = $this->getHumanReadableTextFrom( $dispatchedId, $value );
+				$text = $this->getHumanReadableTextFrom( $current_id, $value );
 
 				$this->reportMessage(
 					sprintf( "%-16s%s\n", "   ... updating", sprintf( "%-10s%s", $text[0], $text[1] ) ),
@@ -300,12 +307,12 @@ class DataRebuilder {
 
 			if ( !$this->options->has( 'v' ) && $id > 0 ) {
 				$this->reportMessage(
-					"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $id, $progress ) )
+					"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $id, min( 100, $progress ) ) )
 				);
 			}
 		}
 
-		$this->writeIdToFile( $id );
+		$this->write_to_file( $id );
 
 		$this->reportMessage( "\n   ... $this->rebuildCount IDs refreshed ..." );
 		$this->reportMessage( "\n   ... done.\n" );
@@ -414,7 +421,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function doDisposeMarkedOutdatedEntities() {
+	private function dispose_outdated() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
@@ -425,34 +432,38 @@ class DataRebuilder {
 		$matchesCount = $outdatedEntitiesResultIterator->count();
 		$counter = 0;
 
-		if ( $matchesCount == 0 ) {
-			return;
-		}
+		$this->reportMessage( "Removing outdated entities ..." );
 
-		$this->reportMessage( "Removing outdated entities ...\n" );
+		if ( $matchesCount > 0 ) {
+			$this->reportMessage( "\n" );
 
-		$chunkedIterator = $applicationFactory->getIteratorFactory()->newChunkedIterator(
-			$outdatedEntitiesResultIterator,
-			200
-		);
+			$chunkedIterator = $applicationFactory->getIteratorFactory()->newChunkedIterator(
+				$outdatedEntitiesResultIterator,
+				200
+			);
 
-		foreach ( $chunkedIterator as $chunk ) {
-			foreach ( $chunk as $row ) {
-				$counter++;
+			foreach ( $chunkedIterator as $chunk ) {
+				foreach ( $chunk as $row ) {
+					$counter++;
+					$msg = sprintf( "%s (%1.0f%%)", $row->smw_id, round( $counter / $matchesCount * 100 ) );
 
-				$this->reportMessage(
-					"\r". sprintf( "%-50s%s", "   ... cleaning up document no.", sprintf( "%s (%1.0f%%)", $row->smw_id, round( $counter / $matchesCount * 100 ) ) )
-				);
+					$this->reportMessage(
+						"\r". sprintf( "%-50s%s", "   ... cleaning up document no.", $msg )
+					);
 
-				$entityIdDisposerJob->dispose( $row );
+					$entityIdDisposerJob->dispose( $row );
+				}
 			}
+
+			$this->reportMessage( "\n   ... {$matchesCount} IDs removed ..." );
 		}
 
-		$this->reportMessage( "\n   ... {$matchesCount} IDs removed ..." );
-		$this->reportMessage( "\n   ... done.\n\n" );
+		$this->reportMessage( "\n   ... done.\n" );
+
+		return $this->options->has( 'dispose-outdated' );
 	}
 
-	private function idFileIsWritable( $startIdFile ) {
+	private function is_writable( $startIdFile ) {
 
 		if ( !is_writable( file_exists( $startIdFile ) ? $startIdFile : dirname( $startIdFile ) ) ) {
 			die( "Cannot use a startidfile that we can't write to.\n" );
@@ -461,7 +472,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function writeIdToFile( $id ) {
+	private function write_to_file( $id ) {
 		if ( $this->canWriteToIdFile ) {
 			file_put_contents( $this->startIdFile, "$id" );
 		}
@@ -485,19 +496,6 @@ class DataRebuilder {
 	private function reportMessage( $message, $output = true ) {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
-		}
-	}
-
-	private function doPrintDotProgressIndicator( $verbose, $counter, $progress ) {
-
-		if ( ( $counter - 1 ) % 60 === 0 ) {
-			$this->reportMessage( "\n", !$verbose );
-		}
-
-		$this->reportMessage( '.', !$verbose );
-
-		if ( $counter % 60 === 0 ) {
-			$this->reportMessage( " $progress", !$verbose );
 		}
 	}
 
