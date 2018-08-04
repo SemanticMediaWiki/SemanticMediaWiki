@@ -153,7 +153,12 @@ class SearchProfileForm {
 
 		if ( ( $queryLink = $searchEngine->getQueryLink() ) instanceof \SMWInfolink ) {
 			$queryLink->setCaption( 'Query' );
-			$queryLink->setLinkAttributes( [ 'title' => 'Special:Ask' ] );
+			$queryLink->setLinkAttributes(
+				[
+					'title' => 'Query via Special:Ask',
+					'class' => 'smw-form-link-query'
+				]
+			);
 			$link = $queryLink->getHtml();
 		}
 

@@ -158,8 +158,8 @@ class QueryBuilder {
 			$data = $this->data;
 		}
 
-		if ( isset( $data['term.parser'] ) && $data['term.parser'] ) {
-			$termParser = new TermParser( (array)$data['term.parser'] );
+		if ( isset( $data['term_parser']['prefix'] ) && $data['term_parser']['prefix'] ) {
+			$termParser = new TermParser( (array)$data['term_parser']['prefix'] );
 			$term = $termParser->parse( $term );
 		}
 
