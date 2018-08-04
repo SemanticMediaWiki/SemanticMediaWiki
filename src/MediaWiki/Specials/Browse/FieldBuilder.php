@@ -18,7 +18,7 @@ use SpecialPage;
  *
  * @author mwjames
  */
-class FormHelper {
+class FieldBuilder {
 
 	/**
 	 * Creates the query form in order to quickly switch to a specific article.
@@ -27,7 +27,7 @@ class FormHelper {
 	 *
 	 * @return string
 	 */
-	public static function getQueryForm( $articletext = '' ) {
+	public static function createQueryForm( $articletext = '' ) {
 
 		$title = SpecialPage::getTitleFor( 'Browse' );
 		$dir = $title->getPageLanguage()->isRTL() ? 'rtl' : 'ltr';
@@ -107,7 +107,7 @@ class FormHelper {
 	 *
 	 * @return string
 	 */
-	public static function createLinkFromMessage( $linkMsg, array $parameters ) {
+	public static function createLink( $linkMsg, array $parameters ) {
 
 		$title = SpecialPage::getSafeTitleFor( 'Browse' );
 		$fragment = $linkMsg === 'smw_browse_show_incoming' ? '#smw_browse_incoming' : '';
@@ -115,7 +115,8 @@ class FormHelper {
 		return Html::element(
 			'a',
 			array(
-				'href' => $title->getLocalURL( $parameters ) . $fragment
+				'href' => $title->getLocalURL( $parameters ) . $fragment,
+				'class' => $linkMsg
 			),
 			Message::get( $linkMsg, Message::TEXT, Message::USER_LANGUAGE )
 		);

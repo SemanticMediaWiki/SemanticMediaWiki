@@ -175,7 +175,7 @@
 		{
 			"type": "api",
 			"skip-on": {
-				"sqlite": "Skipping, because I have no idea why this returning empty during the test!"
+				"sqlite": "Skipping, because I have no idea why this is returning empty during the test!"
 			},
 			"about": "#6 `smwbrowse` pvalue (date type) search",
 			"api": {
@@ -191,12 +191,49 @@
 					"contents-file" : "/../Fixtures/a-0001.6.txt"
 				}
 			}
+		},
+		{
+			"type": "api",
+			"about": "#7 `smwbrowse` subject lookup, JSON",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "subject",
+					"params": "{ \"subject\": \"A0001/1\" , \"ns\": 0 }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.7.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#8 `smwbrowse` subject lookup, HTML",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "subject",
+					"params": "{ \"subject\": \"A0001/1\" , \"ns\": 0 , \"type\": \"html\", \"options\": {} }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.8.txt"
+				}
+			}
 		}
 	],
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgCacheUsage": { "api.browse": false, "api.browse.pvalue": false },
+		"smwgCacheUsage": {
+			"api.browse": false,
+			"api.browse.pvalue": false
+		},
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true,

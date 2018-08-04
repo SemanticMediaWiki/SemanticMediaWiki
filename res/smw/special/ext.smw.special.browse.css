@@ -26,6 +26,11 @@
  * @author mwjames
  */
 
+.smwb-container .smw-overlay-spinner {
+	left: 45%;
+	top: 40%;
+}
+
 .smwb-datasheet, .smwb-content {
 	margin-right: 0.5em;
 }

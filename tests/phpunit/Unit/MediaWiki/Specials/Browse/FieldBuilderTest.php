@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
-use SMW\MediaWiki\Specials\Browse\FormHelper;
+use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Browse\FormHelper
+ * @covers \SMW\MediaWiki\Specials\Browse\FieldBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,13 +13,13 @@ use SMW\MediaWiki\Specials\Browse\FormHelper;
  *
  * @author mwjames
  */
-class FormHelperTest extends \PHPUnit_Framework_TestCase {
+class FieldBuilderTest extends \PHPUnit_Framework_TestCase {
 
-	public function testGetQueryForm() {
+	public function testCreateQueryForm() {
 
 		$this->assertInternalType(
 			'string',
-			FormHelper::getQueryForm( 'Foo' )
+			FieldBuilder::createQueryForm( 'Foo' )
 		);
 	}
 
@@ -29,7 +29,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			FormHelper::createLinkFromMessage( 'Foo', $parameters )
+			FieldBuilder::createLink( 'Foo', $parameters )
 		);
 	}
 
