@@ -79,8 +79,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $dataItemHandler ) );
 
 		$instance = new TraversalPropertyLookup(
-			$store,
-			new Options( array( 'smwgEntityLookupFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP ) )
+			$store
 		);
 
 		$instance->fetchFromTable( $propertyTableDef, $dataItem );
@@ -132,8 +131,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $dataItemHandler ) );
 
 		$instance = new TraversalPropertyLookup(
-			$store,
-			new Options( array( 'smwgEntityLookupFeatures' => SMW_SQLSTORE_TRAVERSAL_PROPERTY_LOOKUP ) )
+			$store
 		);
 
 		$instance->fetchFromTable( $propertyTableDef, $dataItem );

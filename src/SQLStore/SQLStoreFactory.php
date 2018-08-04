@@ -457,16 +457,7 @@ class SQLStoreFactory {
 	 * @return TraversalPropertyLookup
 	 */
 	public function newTraversalPropertyLookup() {
-
-		$settings = ApplicationFactory::getInstance()->getSettings();
-
-		$options = new Options(
-			array(
-				'smwgExperimentalFeatures' => $settings->get( 'smwgExperimentalFeatures' )
-			)
-		);
-
-		return new TraversalPropertyLookup( $this->store, $options );
+		return new TraversalPropertyLookup( $this->store );
 	}
 
 	/**
