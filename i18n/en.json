@@ -402,6 +402,8 @@
 	"smw-admin-supplementary-elastic-status-replication": "Replication status",
 	"smw-admin-supplementary-elastic-status-last-active-replication": "Last active replication: $1",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Refresh interval: $1",
+	"smw-admin-supplementary-elastic-status-recovery-job-count": "[https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/smw.elasticIndexerRecovery Recovery job] backlog: $1 (estimation)",
+	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "[https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/smw.elasticFileIngest File injest job] backlog: $1 (estimation)",
 	"smw-list-count": "The list contains $1 {{PLURAL:$1|entry|entries}}.",
 	"smw-list-count-from-cache": "The list contains $1 {{PLURAL:$1|entry|entries}} and was retrieved from cache (UTC: $2).",
 	"smw-property-label-uniqueness" : "The \"$1\" label was matched to at least one other property representation. Please consult the [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness help page] on how to resolve this issue.",

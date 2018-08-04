@@ -6,6 +6,7 @@ use Html;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Message;
+use SMW\ApplicationFactory;
 use WebRequest;
 use SMW\Elastic\Indexer\ReplicationStatus;
 use SMW\Elastic\Connection\Client as ElasticClient;
@@ -170,6 +171,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 	private function outputInfo() {
 
 		$connection = $this->getStore()->getConnection( 'elastic' );
+		$html = '';
 
 		$this->outputFormatter->addAsPreformattedText(
 			$this->outputFormatter->encodeAsJson( $connection->info() )
@@ -179,13 +181,24 @@ class ElasticClientTaskHandler extends TaskHandler {
 			$connection
 		);
 
+		$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
+
+		if ( $connection->getConfig()->dotGet( 'indexer.experimental.file.ingest', false ) ) {
+			$html .= Html::rawElement( 'li', [ 'class' => 'plainlinks' ], $this->msg(
+				[ 'smw-admin-supplementary-elastic-status-file-ingest-job-count', $jobQueue->getQueueSize( 'smw.elasticFileIngest') ], Message::PARSE )
+			);
+		}
+
 		$this->outputFormatter->addHTML(
 			Html::element( 'h3', [], $this->msg(
 				'smw-admin-supplementary-elastic-status-replication' )
-			) . Html::element( 'p', [], $this->msg(
-				[ 'smw-admin-supplementary-elastic-status-last-active-replication', $replicationStatus->get( 'last_update' ) ] )
-			) . Html::element( 'p', [], $this->msg(
-				[ 'smw-admin-supplementary-elastic-status-refresh-interval', $replicationStatus->get( 'refresh_interval' ) ] )
+			) . Html::rawElement( 'ul', [],
+				Html::element( 'li', [], $this->msg(
+					[ 'smw-admin-supplementary-elastic-status-last-active-replication', $replicationStatus->get( 'last_update' ) ] ) ) .
+				Html::rawElement( 'li', [ 'class' => 'plainlinks' ], $this->msg(
+					[ 'smw-admin-supplementary-elastic-status-recovery-job-count', $jobQueue->getQueueSize( 'smw.elasticIndexerRecovery') ], Message::PARSE ) ) . $html .
+				Html::element( 'li', [], $this->msg(
+					[ 'smw-admin-supplementary-elastic-status-refresh-interval', $replicationStatus->get( 'refresh_interval' ) ] ) )
 			)
 		);
 
