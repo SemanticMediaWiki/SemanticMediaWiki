@@ -4,8 +4,11 @@ namespace SMW\MediaWiki\Api;
 
 use ApiBase;
 use SMW\ApplicationFactory;
+use SMW\Exception\RedirectTargetUnresolvableException;
+use SMW\Exception\ParameterNotFoundException;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
 use SMW\MediaWiki\Api\Browse\ArticleLookup;
+use SMW\MediaWiki\Api\Browse\SubjectLookup;
 use SMW\MediaWiki\Api\Browse\CachingLookup;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Api\Browse\ListLookup;
@@ -13,11 +16,6 @@ use SMW\MediaWiki\Api\Browse\PValueLookup;
 
 /**
  * Module to support selected browse activties including:
- *
- * - Search a list of available
- *   - categories
- *   - properties
- *   - concepts
  *
  * @license GNU GPL v2+
  * @since 3.0
@@ -32,6 +30,7 @@ class Browse extends ApiBase {
 	public function execute() {
 
 		$params = $this->extractRequestParams();
+
 		$parameters = json_decode( $params['params'], true );
 		$res = [];
 
@@ -39,9 +38,9 @@ class Browse extends ApiBase {
 
 			// 1.29+
 			if ( method_exists($this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-api-smwbrowse-invalid-parameters' ] );
+				$this->dieWithError( [ 'smw-api-invalid-parameters', 'JSON: '. json_last_error_msg() ] );
 			} else {
-				$this->dieUsageMsg( 'smw-api-smwbrowse-invalid-parameters' );
+				$this->dieUsage( 'JSON: '. json_last_error_msg(), 'smw-api-invalid-parameters' );
 			}
 		}
 
@@ -61,6 +60,10 @@ class Browse extends ApiBase {
 			$res = $this->callPValueLookup( $parameters );
 		}
 
+		if ( $params['browse'] === 'subject' ) {
+			$res = $this->callSubjectLookup( $parameters );
+		}
+
 		if ( $params['browse'] === 'article' ) {
 			$res = $this->callArticleLookup( $parameters );
 		}
@@ -69,7 +72,7 @@ class Browse extends ApiBase {
 
 		foreach ( $res as $key => $value ) {
 
-			if ( $key === 'query' ) {
+			if ( $key === 'query' && is_array( $value ) ) {
 
 				// For those items that start with _xyz as in _MDAT
 				// https://www.mediawiki.org/wiki/API:JSON_version_2
@@ -199,6 +202,33 @@ class Browse extends ApiBase {
 		);
 	}
 
+	private function callSubjectLookup( $parameters ) {
+
+		$subjectLookup = new SubjectLookup(
+			ApplicationFactory::getInstance()->getStore()
+		);
+
+		try {
+			$res = $subjectLookup->lookup( $parameters );
+		} catch ( RedirectTargetUnresolvableException $e ) {
+			// 1.29+
+			if ( method_exists( $this, 'dieWithError' ) ) {
+				$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
+			} else {
+				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable'  );
+			}
+		} catch ( ParameterNotFoundException $e ) {
+			// 1.29+
+			if ( method_exists( $this, 'dieWithError' ) ) {
+				$this->dieWithError( [ 'smw-parameter-missing', $e->getName() ] );
+			} else {
+				$this->dieUsage( $e->getName(), 'smw-parameter-missing'  );
+			}
+		}
+
+		return $res;
+	}
+
 	/**
 	 * @codeCoverageIgnore
 	 * @see ApiBase::getAllowedParams
@@ -210,11 +240,12 @@ class Browse extends ApiBase {
 			'browse' => array(
 				ApiBase::PARAM_REQUIRED => true,
 				ApiBase::PARAM_TYPE => array(
-					'category',
 					'property',
+					'pvalue',
+					'category',
 					'concept',
 					'article',
-					'pvalue'
+					'subject',
 				)
 			),
 			'params' => array(
@@ -233,7 +264,7 @@ class Browse extends ApiBase {
 	public function getParamDescription() {
 		return array(
 			'browse' => 'Specifies the type of browse activity',
-			'params' => 'JSON encoded parameters that depend on the selected type requirement'
+			'params' => 'JSON encoded parameters containing required and optional fields and depend on the selected browse type'
 		);
 	}
 
@@ -267,7 +298,8 @@ class Browse extends ApiBase {
 			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',
 			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }',
 			'api.php?action=smwbrowse&browse=article&params={ "limit": 10, "offset": 0, "search": "Main" }',
-			'api.php?action=smwbrowse&browse=article&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }'
+			'api.php?action=smwbrowse&browse=article&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }',
+			'api.php?action=smwbrowse&browse=subject&params={ "subject": "Main page", "ns" :0, "iw": "", "subobject": "" }',
 		);
 	}
 

@@ -20,7 +20,7 @@ use SMW\Utils\HtmlDivTable;
  * @author Denny Vrandecic
  * @author mwjames
  */
-class ContentsBuilder {
+class HtmlBuilder {
 
 	/**
 	 * @var Store
@@ -80,7 +80,25 @@ class ContentsBuilder {
 	 */
 	public function __construct( Store $store, DIWikiPage $subject ) {
 		$this->store = $store;
-		$this->subject = DataValueFactory::getInstance()->newDataValueByItem( $subject );
+		$this->subject = $subject;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $options
+	 */
+	public function setOptions( array $options ) {
+		$this->options = $options;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getOptions() {
+		return $this->options;
 	}
 
 	/**
@@ -110,12 +128,63 @@ class ContentsBuilder {
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.0
 	 *
-	 * @param string $json
+	 * @return string
 	 */
-	public function importOptionsFromJson( $json ) {
-		$this->options = json_decode( $json, true );
+	public function legacy() {
+		return Html::rawElement(
+			'div',
+			[
+				'data-subject' => $this->subject->getHash(),
+				'data-options' => json_encode( $this->options )
+			],
+			$this->buildHTML()
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function placeholder() {
+		return Html::rawElement(
+			'div',
+			array(
+				'class' => 'smwb-container',
+				'data-subject' => $this->subject->getHash(),
+				'data-options' => json_encode( $this->options )
+			),
+			Html::rawElement(
+				'div',
+				array(
+					'class' => 'smwb-status'
+				),
+				Html::rawElement(
+					'noscript',
+					array(),
+					Html::rawElement(
+						'div',
+						array(
+							'class' => 'smw-callout smw-callout-error',
+						),
+						Message::get( 'smw-noscript', Message::PARSE )
+					)
+				)
+			) . Html::rawElement(
+				'div',
+				array(
+					'class' => 'smwb-emptysheet is-disabled'
+				),
+				Html::rawElement(
+					'span',
+					array(
+						'class' => 'smw-overlay-spinner large inline'
+					)
+				) . $this->buildEmptyHTML()
+			)
+		);
 	}
 
 	/**
@@ -123,7 +192,7 @@ class ContentsBuilder {
 	 *
 	 * @return string
 	 */
-	public function getHtml() {
+	public function buildHTML() {
 
 		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
 			$this->offset = $offset;
@@ -148,7 +217,7 @@ class ContentsBuilder {
 			$this->showincoming = false;
 		}
 
-		return $this->createHtml();
+		return $this->createHTML();
 	}
 
 	/**
@@ -156,20 +225,24 @@ class ContentsBuilder {
 	 *
 	 * @return string
 	 */
-	public function getEmptyHtml() {
+	public function buildEmptyHTML() {
 
 		$html = '';
 		$form = '';
 
-		$semanticData = new SemanticData( $this->subject->getDataItem() );
-		$this->articletext = $this->subject->getWikiValue();
+		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$this->subject
+		);
+
+		$semanticData = new SemanticData( $this->subject );
+		$this->articletext = $this->dataValue->getWikiValue();
 
 		$html .= $this->displayHead();
 		$html .= $this->displayData( $semanticData, true, false, true );
 		$html .= $this->displayBottom( false );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$form = FormHelper::getQueryForm( $this->articletext );
+			$form = FieldBuilder::createQueryForm( $this->articletext );
 		}
 
 		return Html::rawElement(
@@ -184,19 +257,23 @@ class ContentsBuilder {
 	 * Create and output HTML including the complete factbox, based on the extracted
 	 * parameters in the execute comment.
 	 */
-	private function createHtml() {
+	private function createHTML() {
 
 		$html = "<div class=\"smwb-datasheet smwb-theme-light\">";
 
 		$leftside = true;
 		$modules = array();
 
-		if ( !$this->subject->isValid() ) {
+		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$this->subject
+		);
+
+		if ( !$this->dataValue->isValid() ) {
 			return $html;
 		}
 
 		$semanticData = new SemanticData(
-			$this->subject->getDataItem()
+			$this->dataValue->getDataItem()
 		);
 
 		$html .= $this->displayHead();
@@ -204,7 +281,7 @@ class ContentsBuilder {
 
 		if ( $this->showoutgoing ) {
 			$semanticData = $this->store->getSemanticData(
-				$this->subject->getDataItem()
+				$this->dataValue->getDataItem()
 			);
 
 			$html .= $this->displayData( $semanticData, $leftside );
@@ -223,7 +300,7 @@ class ContentsBuilder {
 			$html .= $this->displayBottom( $more );
 		}
 
-		$this->articletext = $this->subject->getWikiValue();
+		$this->articletext = $this->dataValue->getWikiValue();
 		$html .= "</div>";
 
 		\Hooks::run(
@@ -237,7 +314,7 @@ class ContentsBuilder {
 		);
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$html .= FormHelper::getQueryForm( $this->articletext ) ;
+			$html .= FieldBuilder::createQueryForm( $this->articletext ) ;
 		}
 
 		$html .= Html::element(
@@ -270,7 +347,7 @@ class ContentsBuilder {
 			ApplicationFactory::getInstance()->getPropertySpecificationLookup()
 		);
 
-		$groupFormatter->showGroup( $showGroup);
+		$groupFormatter->showGroup( $showGroup );
 		$groupFormatter->findGroupMembership( $diProperties );
 
 		$html = HtmlDivTable::open(
@@ -334,7 +411,7 @@ class ContentsBuilder {
 		}
 
 		if ( $noresult ) {
-			$noMsgKey = $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing';
+			$noMsgKey = $incoming ? 'smw_browse_no_incoming' : 'smw_browse_no_outgoing';
 
 			$rColumn = HtmlDivTable::cell(
 				'',
@@ -483,7 +560,7 @@ class ContentsBuilder {
 					array(
 						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
 							 'property' => $dvProperty->getWikiValue(),
-							 'value' => $this->subject->getWikiValue()
+							 'value' => $this->dataValue->getWikiValue()
 						) )
 					),
 					wfMessage( 'smw_browse_more' )->text()
@@ -517,7 +594,7 @@ class ContentsBuilder {
 	private function displayHead() {
 		return HtmlDivTable::table(
 			HtmlDivTable::row(
-				ValueFormatter::getFormattedSubject( $this->subject ),
+				ValueFormatter::getFormattedSubject( $this->dataValue ),
 				[
 					'class' => 'smwb-title'
 				]
@@ -536,7 +613,7 @@ class ContentsBuilder {
 
 		$html = '';
 		$group = $this->getOption( 'group' );
-		$article = $this->subject->getLongWikiText();
+		$article = $this->dataValue->getLongWikiText();
 
 		if ( $this->getOption( 'showGroup' ) ) {
 
@@ -560,7 +637,7 @@ class ContentsBuilder {
 				$linkMsg = 'smw-browse-hide-group';
 			}
 
-			$html .= FormHelper::createLinkFromMessage( $linkMsg, $parameters );
+			$html .= FieldBuilder::createLink( $linkMsg, $parameters );
 			$html .= '&nbsp;|&nbsp;';
 		}
 
@@ -586,7 +663,7 @@ class ContentsBuilder {
 				$linkMsg = 'smw_browse_show_incoming';
 			}
 
-			$html .= FormHelper::createLinkFromMessage( $linkMsg, $parameters );
+			$html .= FieldBuilder::createLink( $linkMsg, $parameters );
 		}
 
 		return HtmlDivTable::table(
@@ -622,7 +699,7 @@ class ContentsBuilder {
 	 */
 	private function displayBottom( $more ) {
 
-		$article = $this->subject->getLongWikiText();
+		$article = $this->dataValue->getLongWikiText();
 
 		$open = HtmlDivTable::open(
 			array(
@@ -654,7 +731,7 @@ class ContentsBuilder {
 
 			$linkMsg = 'smw_result_prev';
 
-			$html .= ( $this->offset == 0 ) ? wfMessage( $linkMsg )->escaped() : FormHelper::createLinkFromMessage( $linkMsg, $parameters );
+			$html .= ( $this->offset == 0 ) ? wfMessage( $linkMsg )->escaped() : FieldBuilder::createLink( $linkMsg, $parameters );
 
 			$offset = $this->offset + $this->incomingPropertiesCount - 1;
 
@@ -668,7 +745,7 @@ class ContentsBuilder {
 
 			$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->escaped() . " " . ( $this->offset + 1 ) .
 					 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
-			$html .= $more ? FormHelper::createLinkFromMessage( $linkMsg, $parameters ) : wfMessage( $linkMsg )->escaped();
+			$html .= $more ? FieldBuilder::createLink( $linkMsg, $parameters ) : wfMessage( $linkMsg )->escaped();
 
 			$html = HtmlDivTable::row(
 				$html,
@@ -688,7 +765,7 @@ class ContentsBuilder {
 	private function getInData() {
 
 		$indata = new SemanticData(
-			$this->subject->getDataItem()
+			$this->dataValue->getDataItem()
 		);
 
 		$propRequestOptions = new RequestOptions();
@@ -700,7 +777,7 @@ class ContentsBuilder {
 		}
 
 		$incomingProperties = $this->store->getInProperties(
-			$this->subject->getDataItem(),
+			$this->dataValue->getDataItem(),
 			$propRequestOptions
 		);
 
@@ -721,7 +798,7 @@ class ContentsBuilder {
 
 			$values = $this->store->getPropertySubjects(
 				$property,
-				$this->subject->getDataItem(),
+				$this->dataValue->getDataItem(),
 				$valRequestOptions
 			);
 

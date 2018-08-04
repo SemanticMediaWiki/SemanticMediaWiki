@@ -16,6 +16,14 @@ use SMW\NamespaceUriFinder;
 class BrowseByProperty extends ApiBase {
 
 	/**
+	 * #2696
+	 * @deprecated since 3.0, use the smwbrowse API module
+	 */
+	public function isDeprecated() {
+		return true;
+	}
+
+	/**
 	 * @see ApiBase::execute
 	 */
 	public function execute() {

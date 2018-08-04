@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Api;
 use ApiBase;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
+use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 
 /**
  * Browse a subject api module
@@ -26,6 +26,13 @@ use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
 class BrowseBySubject extends ApiBase {
 
 	/**
+	 * @deprecated since 3.0, use the smwbrowse API module
+	 */
+	public function isDeprecated() {
+		return true;
+	}
+
+	/**
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
@@ -33,9 +40,9 @@ class BrowseBySubject extends ApiBase {
 		$params = $this->extractRequestParams();
 
 		if ( isset( $params['type'] ) && $params['type'] === 'html' ) {
-			$data = $this->getHtmlFormat( $params );
+			$data = $this->buildHTML( $params );
 		} else {
-			$data = $this->getRawFormat( $params );
+			$data = $this->doSerialize( $params );
 		}
 
 		$this->getResult()->addValue(
@@ -45,7 +52,7 @@ class BrowseBySubject extends ApiBase {
 		);
 	}
 
-	protected function getHtmlFormat( $params ) {
+	protected function buildHTML( $params ) {
 
 		$subject = new DIWikiPage(
 			$params['subject'],
@@ -54,17 +61,19 @@ class BrowseBySubject extends ApiBase {
 			$params['subobject']
 		);
 
-		$contentsBuilder = new ContentsBuilder(
+		$htmlBuilder = new HtmlBuilder(
 			ApplicationFactory::getInstance()->getStore(),
 			$subject
 		);
 
-		$contentsBuilder->importOptionsFromJson( $params['options'] );
+		$htmlBuilder->setOptions(
+			(array)$params['options']
+		);
 
-		return $contentsBuilder->getHtml();
+		return $htmlBuilder->buildHTML();
 	}
 
-	protected function getRawFormat( $params ) {
+	protected function doSerialize( $params ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 

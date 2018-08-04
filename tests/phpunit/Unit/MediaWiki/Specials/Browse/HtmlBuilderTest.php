@@ -3,12 +3,12 @@
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
+use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Browse\ContentsBuilder
+ * @covers \SMW\MediaWiki\Specials\Browse\HtmlBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
+class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -43,31 +43,31 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$instance = new ContentsBuilder(
+		$instance = new HtmlBuilder(
 			$this->store,
 			DIWikiPage::newFromText( 'Foo' )
 		);
 
 		$this->assertInstanceOf(
-			ContentsBuilder::class,
+			HtmlBuilder::class,
 			$instance
 		);
 	}
 
-	public function testGetEmptyHtml() {
+	public function testBuildEmptyHTML() {
 
-		$instance = new ContentsBuilder(
+		$instance = new HtmlBuilder(
 			$this->store,
 			DIWikiPage::newFromText( 'Foo' )
 		);
 
 		$this->assertInternalType(
 			'string',
-			$instance->getEmptyHtml()
+			$instance->buildEmptyHTML()
 		);
 	}
 
-	public function testGetHtml() {
+	public function testBuildHTML() {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -75,18 +75,56 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( new SemanticData( $subject ) ) );
 
-		$instance = new ContentsBuilder(
+		$instance = new HtmlBuilder(
 			$this->store,
 			$subject
 		);
 
 		$this->assertInternalType(
 			'string',
-			$instance->getHtml()
+			$instance->buildHTML()
 		);
 	}
 
-	public function testGetHtmlWithOptions() {
+	public function testLegacy() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( new SemanticData( $subject ) ) );
+
+		$instance = new HtmlBuilder(
+			$this->store,
+			$subject
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->legacy()
+		);
+	}
+
+	public function testPlaceholder() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( new SemanticData( $subject ) ) );
+
+		$instance = new HtmlBuilder(
+			$this->store,
+			$subject
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->placeholder()
+		);
+	}
+
+	public function testBuildHTMLWithOptions() {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -98,7 +136,7 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getInProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new ContentsBuilder(
+		$instance = new HtmlBuilder(
 			$this->store,
 			$subject
 		);
@@ -111,13 +149,13 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			'printable' => ''
 		);
 
-		$instance->importOptionsFromJson(
-			json_encode( $options )
+		$instance->setOptions(
+			$options
 		);
 
 		$this->assertInternalType(
 			'string',
-			$instance->getHtml()
+			$instance->buildHTML()
 		);
 	}
 
@@ -125,7 +163,7 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$instance = new ContentsBuilder(
+		$instance = new HtmlBuilder(
 			$this->store,
 			$subject
 		);
@@ -134,8 +172,8 @@ class ContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 			'Foo' => 42
 		);
 
-		$instance->importOptionsFromJson(
-			json_encode( $options )
+		$instance->setOptions(
+			$options
 		);
 
 		$instance->setOption(

@@ -124,6 +124,52 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 		$instance->execute();
 	}
 
+	public function testExecute_Subject() {
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( [] ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubSemanticData' )
+			->will( $this->returnValue( [] ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new Browse(
+			$this->apiFactory->newApiMain(
+				[
+					'action'   => 'smwbrowse',
+					'browse'   => 'subject',
+					'params'   => json_encode( [ 'subject' => 'Bar', 'ns' => 0 ] )
+				]
+			),
+			'smwbrowse'
+		);
+
+		$instance->execute();
+	}
+
 	public function browseIdProvider() {
 
 		$provider[] = [

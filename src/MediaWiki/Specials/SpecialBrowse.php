@@ -6,8 +6,8 @@ use Html;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Encoder;
-use SMW\MediaWiki\Specials\Browse\ContentsBuilder;
-use SMW\MediaWiki\Specials\Browse\FormHelper;
+use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 use SMW\Message;
 use SMWInfolink as Infolink;
 use SpecialPage;
@@ -23,21 +23,10 @@ use SpecialPage;
 class SpecialBrowse extends SpecialPage {
 
 	/**
-	 * @var DataValue
-	 */
-	private $subjectDV = null;
-
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
-
-	/**
 	 * @see SpecialPage::__construct
 	 */
 	public function __construct() {
 		parent::__construct( 'Browse', '', true, false, 'default', true );
-		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -77,13 +66,13 @@ class SpecialBrowse extends SpecialPage {
 		if ( $articletext === null ) {
 		}
 
-		$this->subjectDV = DataValueFactory::getInstance()->newTypeIDValue(
+		$dataValue = DataValueFactory::getInstance()->newTypeIDValue(
 			'_wpg',
 			$articletext
 		);
 
 		$out = $this->getOutput();
-		$out->setHTMLTitle( $this->subjectDV->getTitle() );
+		$out->setHTMLTitle( $dataValue->getTitle() );
 
 		$out->addModuleStyles( array(
 			'mediawiki.ui',
@@ -98,21 +87,21 @@ class SpecialBrowse extends SpecialPage {
 		) );
 
 		$out->addHTML(
-			$this->getHtml( $webRequest, $isEmptyRequest )
+			$this->buildHTML( $webRequest, $dataValue, $isEmptyRequest )
 		);
 
-		$this->addExternalHelpLinks();
+		$this->addExternalHelpLinks( $dataValue );
 	}
 
-	private function getHtml( $webRequest, $isEmptyRequest ) {
+	private function buildHTML( $webRequest, $dataValue, $isEmptyRequest ) {
 
 		if ( $isEmptyRequest && !$this->including() ) {
-			return Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE ) . FormHelper::getQueryForm();
+			return Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE ) . FieldBuilder::createQueryForm();
 		}
 
-		if ( !$this->subjectDV->isValid() ) {
+		if ( !$dataValue->isValid() ) {
 
-			foreach ( $this->subjectDV->getErrors() as $error ) {
+			foreach ( $dataValue->getErrors() as $error ) {
 				$error = Message::decode( $error, Message::TEXT, Message::USER_LANGUAGE );
 			}
 
@@ -125,154 +114,76 @@ class SpecialBrowse extends SpecialPage {
 			);
 
 			if ( !$this->including() ) {
-				$html .= FormHelper::getQueryForm( $webRequest->getVal( 'article' ) );
+				$html .= FieldBuilder::createQueryForm( $webRequest->getVal( 'article' ) );
 			}
 
 			return $html;
 		}
 
-		$contentsBuilder = $this->newContentsBuilder(
+		$applicationFactory = ApplicationFactory::getInstance();
+		$dataItem = $dataValue->getDataItem();
+
+		$htmlBuilder = $this->newHtmlBuilder(
 			$webRequest,
-			$this->applicationFactory->getSettings()
+			$dataItem,
+			$applicationFactory->getStore(),
+			$applicationFactory->getSettings()
 		);
 
-		$options = array(
-			'dir'         => $contentsBuilder->getOption( 'dir' ),
-			'group'       => $contentsBuilder->getOption( 'group' ),
-			'offset'      => $contentsBuilder->getOption( 'offset' ),
-			'printable'   => $contentsBuilder->getOption( 'printable' ),
-			'showInverse' => $contentsBuilder->getOption( 'showInverse' ),
-			'showGroup'   => $contentsBuilder->getOption( 'showGroup' ),
-			'showSort'    => $contentsBuilder->getOption( 'showSort' ),
-			'showAll'     => $contentsBuilder->getOption( 'showAll' ),
-			'including'   => $contentsBuilder->getOption( 'including' )
-		);
+		$options = $htmlBuilder->getOptions();
 
-		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$contentsBuilder->getOption( 'byApi' ) ) {
-			return Html::rawElement(
-				'div',
-				array(
-					'data-subject' => $this->subjectDV->getDataItem()->getHash(),
-					'data-options' => json_encode( $options )
-				),
-				$contentsBuilder->getHtml()
+		if ( $webRequest->getVal( 'format' ) === 'json' ) {
+			$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+			$res = $semanticDataSerializer->serialize(
+				$applicationFactory->getStore()->getSemanticData( $dataItem )
 			);
+
+			$this->getOutput()->disable();
+			header( 'Content-type: ' . 'application/json' . '; charset=UTF-8' );
+			echo json_encode( $res, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		}
+
+		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$htmlBuilder->getOption( 'api' ) ) {
+			return $htmlBuilder->legacy();
 		}
 
 		// Ajax/API is doing the data fetch
-		$html = Html::rawElement(
-			'div',
-			array(
-				'class' => 'smwb-container',
-				'data-subject' => $this->subjectDV->getDataItem()->getHash(),
-				'data-options' => json_encode( $options )
-			),
-			Html::rawElement(
-				'div',
-				array(
-					'class' => 'smwb-status'
-				),
-				Html::rawElement(
-					'noscript',
-					array(),
-					Html::rawElement(
-						'div',
-						array(
-							'class' => 'smw-callout smw-callout-error',
-						),
-						Message::get( 'smw-noscript', Message::PARSE )
-					)
-				)
-			) . Html::rawElement(
-				'div',
-				array(
-					'class' => 'smwb-emptysheet is-disabled'
-				),
-				Html::rawElement(
-					'span',
-					array(
-						'class' => 'smw-overlay-spinner large inline'
-					)
-				) . $contentsBuilder->getEmptyHtml()
-			)
-		);
-
-		return $html;
+		return $htmlBuilder->placeholder();
 	}
 
-	private function newContentsBuilder( $webRequest, $settings ) {
+	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ) {
 
-		$contentsBuilder = new ContentsBuilder(
-			$this->applicationFactory->getStore(),
-			$this->subjectDV->getDataItem()
+		$htmlBuilder = new HtmlBuilder(
+			$store,
+			$dataItem
 		);
 
-		$contentsBuilder->setOption(
-			'dir',
-			$webRequest->getVal( 'dir' )
+		$htmlBuilder->setOptions(
+			[
+				'dir' => $webRequest->getVal( 'dir' ),
+				'group' => $webRequest->getVal( 'group' ),
+				'printable' => $webRequest->getVal( 'printable' ),
+				'offset' => $webRequest->getVal( 'offset' ),
+				'including' => $this->including(),
+				'showInverse' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INVERSE ),
+				'showAll' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INCOMING ),
+				'showGroup' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_GROUP ),
+				'showSort' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_SORTKEY ),
+				'api' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_USE_API )
+			]
 		);
 
-		$contentsBuilder->setOption(
-			'group',
-			$webRequest->getVal( 'group' )
-		);
-
-		$contentsBuilder->setOption(
-			'printable',
-			$webRequest->getVal( 'printable' )
-		);
-
-		$contentsBuilder->setOption(
-			'offset',
-			$webRequest->getVal( 'offset' )
-		);
-
-		$contentsBuilder->setOption(
-			'including',
-			$this->including()
-		);
-
-		$contentsBuilder->setOption(
-			'showInverse',
-			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INVERSE )
-		);
-
-		$contentsBuilder->setOption(
-			'showAll',
-			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INCOMING )
-		);
-
-		$contentsBuilder->setOption(
-			'showGroup',
-			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_GROUP )
-		);
-
-		$contentsBuilder->setOption(
-			'showSort',
-			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_SORTKEY )
-		);
-
-		$contentsBuilder->setOption(
-			'byApi',
-			$settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_USE_API )
-		);
-
-		return $contentsBuilder;
+		return $htmlBuilder;
 	}
 
-	private function addExternalHelpLinks() {
+	private function addExternalHelpLinks( $dataValue ) {
 
 		if ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) {
 			return null;
 		}
 
-		// FIXME with SMW 3.0, allow to be used with MW 1.25-
-		if ( !method_exists( $this, 'addHelpLink' ) ) {
-			return null;
-		}
-
-		if ( $this->subjectDV->isValid() ) {
-			$link = SpecialPage::getTitleFor( 'ExportRDF', $this->subjectDV->getTitle()->getPrefixedText() );
+		if ( $dataValue->isValid() ) {
+			$link = SpecialPage::getTitleFor( 'ExportRDF', $dataValue->getTitle()->getPrefixedText() );
 
 			$this->getOutput()->setIndicators( array(
 				'browse' => Html::rawElement(
