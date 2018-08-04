@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SemanticDataLookup
@@ -17,6 +18,8 @@ use SMW\SQLStore\EntityStore\SemanticDataLookup;
  * @author mwjames
  */
 class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $connection;
