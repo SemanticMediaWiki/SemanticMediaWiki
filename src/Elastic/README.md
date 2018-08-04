@@ -141,15 +141,37 @@ Property and category hierarchies are supported by relying on a conjunctive bool
 
 Two experimental settings allow to handle unstructured text (content that does not provide any explicit property value annotations) using a separate field in ES.
 
+##### Raw text
+
 The `indexer.raw.text` setting enables to replicate the entire raw text of a page together with existing annotations so that unprocessed text can be searched in tandem with structured queries.
 
-The setting `indexer.experimental.file.ingest` provides a method to [ingest][es:ingest] the content of files and make the content available to ES and Semantic MediaWiki without requiring the actual content to be stored within a wiki page. In case where the ingestions and extraction was successful, a `File attachment` annotation will appear on the specific `File` entity and depending on the extraction quality of ES and Tika additional annotations will be added such as `Content type`, `Content author`, `Content length`, `Content language`, `Content title`, `Content date`, and `Content keyword`. Due to size and possible memory consumption by ES/Tika, file content ingestions happens in background and is planned as `smw.elasticFileIngest` job. Only after the job has been executed successfully annotation and file content will be accessible during a query request.
+##### File content
 
-Searching text without a property assignment requires to use either the `in:`, `phrase:`, or `not:` expression.
+This requires the ES [ingest-attachment plugin][es:ingest] and the ``indexer.experimental.file.ingest` setting.
+
+The [ingest][es:ingest] process provides a method to retrieve content from files and make them available to ES and Semantic MediaWiki without requiring the actual content to be stored within a wiki page.
+
+In case where the ingestions and extraction was successful, a `File attachment` annotation will appear on the specific `File` entity and depending on the extraction quality of ES and Tika additional annotations will be added such as:
+
+- `Content type`,
+- `Content author`,
+- `Content length`,
+- `Content language`,
+- `Content title`,
+- `Content date`, and
+- `Content keyword`
+
+Due to size and memory consumption by ES/Tika, file content ingestions exclusively happens in background using the `smw.elasticFileIngest` job. Only after the job has been executed successfully, aforementioned annotations and file content will be accessible during a query request.
+
+An "unstructured search" (i.e. searching without a property assignment) requires the wide proximity expression which conveniently are available as shortcut using `in:`, `phrase:`, or `not:`.
 
 #### Query debugging
 
 `format=debug` will output a detailed description of the `#ask` and ES DSL used for a query answering making it possible to analyze and retrieve explanations from ES about a query request.
+
+### Special:Search integration
+
+In case [SMWSearch][smw:search] was enabled, it is possible to retrieve [highlighted][es:highlighting] text snippets for matched entities from ES given that `special_search.highlight.fragment.type` is set to one of the excepted types (`plain`, `unified`, and `fvh`). Type `plain` can be used without any specific requirements, for the other types please consult the ES documentation.
 
 ## Settings
 
@@ -284,13 +306,34 @@ SMW\Elastic
 ### Field mapping and serialization
 
 <pre>
-   +-- Page +---> Indexer
-   |                 \                                                  +--+ P:100 +--+ textField
-   |                  \                                                 |
-SQLStore +---------> ElasticStore +---> Elasticsearch +---> ES Document +--+ P:110 +--+ wpgID
-   |                  /                                                            |
-   |                 /                                                             +--+ wpgField
-   +-- #ask +---> QueryEngine
+{
+	"_index": "smw-data-mw-30-00-elastic-v1",
+	"_type": "data",
+	"_id": "334032",
+	"_version": 2,
+	"_source": {
+		"subject": {
+			"title": "ABC/20180716/k10011534941000",
+			"subobject": "_f21687e8bab0ebee627f71654ddd4bc4",
+			"namespace": 0,
+			"interwiki": "",
+			"sortkey": "foo ..."
+		},
+		"P:100": {
+			"txtField": [
+				"Foo bar ..."
+			]
+		},
+		"P:4": {
+			"wpgField": [
+				"foobar"
+			],
+			"wpgID": [
+				334125
+			]
+		}
+	}
+}
 </pre>
 
 It should remembered that besides specific available types in ES, text fields are generally divided into analyzed and not_analyzed fields.
@@ -421,7 +464,7 @@ No, because first of all SMW doesn't rely on CirrusSearch at all and even if a u
 
 > Can I use `Special:Search` together with SMW and CirrusSearch?
 
-Yes, by adding `$wgSearchType = 'SMWSearch';` one can use the `#ask` syntax (e.g. `[[Has date::>1970]]`) and execute structured or unstructured searches. Using the [extended profile](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch/Extended_profile) or `#ask` constructs as search input will retrieved results from Semantic MediaWiki (and hereby ES) while any free input that does not build a valid `#ask` syntax will be redirected to the selected "default" search engine from MediaWiki.
+Yes, by adding `$wgSearchType = 'SMWSearch';` one can use the `#ask` syntax (e.g. `[[Has date::>1970]]`) and execute structured or unstructured searches. Using the [extended profile](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch/Extended_profile) or `#ask` constructs a search input that will retrieved results via Semantic MediaWiki (and hereby ES).
 
 ### Glossary
 
@@ -472,3 +515,5 @@ Yes, by adding `$wgSearchType = 'SMWSearch';` one can use the `#ask` syntax (e.g
 [es:ingest]:https://www.elastic.co/guide/en/elasticsearch/plugins/master/ingest-attachment.html
 [es:parent-join]: https://www.elastic.co/guide/en/elasticsearch/reference/current/parent-join.html
 [es:replica-shards]:https://www.elastic.co/guide/en/elasticsearch/guide/current/replica-shards.html
+[es:highlighting]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
+[smw:search]: https://www.semantic-mediawiki.org/wiki/Help:SMWSearch
