@@ -77,35 +77,6 @@ class SMWQueryProcessor implements QueryContext {
 	}
 
 	/**
-	 * Takes an array of unprocessed parameters,
-	 * and sets them on a new Validator object,
-	 * which is returned and ready to process the parameters.
-	 *
-	 * @since 1.8
-	 *
-	 * @param array $params
-	 * @param array $printRequests
-	 * @param boolean $unknownInvalid
-	 *
-	 * @return Processor
-	 */
-	public static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true, $context = null, $showMode = false ) {
-		$paramDefinitions = self::getParameters( $context );
-
-		$paramDefinitions['format']->setPrintRequests( $printRequests );
-		$paramDefinitions['format']->setShowMode( $showMode );
-
-		$processorOptions = new Options();
-		$processorOptions->setUnknownInvalid( $unknownInvalid );
-
-		$validator = Processor::newFromOptions( $processorOptions );
-
-		$validator->setParameters( $params, $paramDefinitions, false );
-
-		return $validator;
-	}
-
-	/**
 	 * Parse a query string given in SMW's query language to create
 	 * an SMWQuery. Parameters are given as key-value-pairs in the
 	 * given array. The parameter $context defines in what context the
@@ -502,6 +473,35 @@ class SMWQueryProcessor implements QueryContext {
 		return ParamDefinition::getCleanDefinitions(
 			$resultPrinter->getParamDefinitions( self::getParameters( null, $resultPrinter ) )
 		);
+	}
+
+	/**
+	 * Takes an array of unprocessed parameters,
+	 * and sets them on a new Validator object,
+	 * which is returned and ready to process the parameters.
+	 *
+	 * @since 1.8
+	 *
+	 * @param array $params
+	 * @param array $printRequests
+	 * @param boolean $unknownInvalid
+	 *
+	 * @return Processor
+	 */
+	private static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true, $context = null, $showMode = false ) {
+		$paramDefinitions = self::getParameters( $context );
+
+		$paramDefinitions['format']->setPrintRequests( $printRequests );
+		$paramDefinitions['format']->setShowMode( $showMode );
+
+		$processorOptions = new Options();
+		$processorOptions->setUnknownInvalid( $unknownInvalid );
+
+		$validator = Processor::newFromOptions( $processorOptions );
+
+		$validator->setParameters( $params, $paramDefinitions, false );
+
+		return $validator;
 	}
 
 }
