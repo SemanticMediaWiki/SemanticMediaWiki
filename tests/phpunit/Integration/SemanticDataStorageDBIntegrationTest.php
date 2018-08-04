@@ -11,6 +11,7 @@ use SMW\Subobject;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
+use SMWDITime as DITime;
 use Title;
 
 /**
@@ -67,7 +68,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 		parent::tearDown();
 	}
 
-	public function testAddUserDefinedPagePropertyAsObjectToSemanticDataForStorage() {
+	public function testUserDefined_PageProperty_ToSemanticDataForStorage() {
 
 		$property = new DIProperty( 'SomePageProperty' );
 
@@ -84,6 +85,48 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->assertArrayHasKey(
 			$property->getKey(),
 			$this->getStore()->getSemanticData( $subject )->getProperties()
+		);
+
+		foreach ( $this->getStore()->getProperties( $subject ) as $prop ) {
+			$this->assertTrue( $prop->equals( $property ) );
+		}
+	}
+
+	public function testFixedProperty_MDAT_ToSemanticDataForStorage() {
+
+		$property = new DIProperty( '_MDAT' );
+
+		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$semanticData = new SemanticData( $subject );
+
+		$semanticData->addPropertyObjectValue(
+			$property,
+			new DITime( 1, '1970', '1', '1' )
+		);
+
+		$this->getStore()->updateData( $semanticData );
+
+		$this->assertArrayHasKey(
+			$property->getKey(),
+			$this->getStore()->getSemanticData( $subject )->getProperties()
+		);
+
+		foreach ( $this->getStore()->getProperties( $subject ) as $prop ) {
+			$this->assertTrue( $prop->equals( $property ) );
+		}
+	}
+
+	public function testFixedProperty_ASK_NotForStorage() {
+
+		$property = new DIProperty( '_ASK' );
+
+		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$semanticData = new SemanticData( $subject );
+
+		$this->getStore()->updateData( $semanticData );
+
+		$this->assertEmpty(
+			$this->getStore()->getProperties( $subject )
 		);
 	}
 

@@ -176,6 +176,23 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTable_Join_ON_Field_Conditions() {
+
+		$instance = new Query( $this->connection );
+		$instance->type( 'select' );
+
+		$instance->table( 'foo' );
+		$instance->field( 'f', 'a' );
+		$instance->join( 'LEFT JOIN', [ 'abc' => 'ON p=d' ] );
+
+		$instance->condition( $instance->asAnd( 'foo_bar' ) );
+
+		$this->assertSame(
+			'SELECT f AS a FROM foo LEFT JOIN abc ON p=d WHERE (foo_bar)',
+			$instance->build()
+		);
+	}
+
 	public function testTable_Field_Condition_Options_Distinct_Order() {
 
 		$instance = new Query( $this->connection );
@@ -283,6 +300,22 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 			'Foo!=`Bar`',
 			$instance->neq( 'Foo', 'Bar' )
 		);
+	}
+
+	public function testExecute() {
+
+		$instance = new Query(
+			$this->connection
+		);
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->with(
+				$this->equalTo( $instance ),
+				$this->equalTo( 'Foo' ) );
+
+
+		$instance->execute( 'Foo' );
 	}
 
 }
