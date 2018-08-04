@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Connection;
 
 use SMW\MediaWiki\Connection\Query;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Connection\Query
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Connection\Query;
  * @author mwjames
  */
 class QueryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $connection;
 
