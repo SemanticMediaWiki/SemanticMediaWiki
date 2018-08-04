@@ -112,6 +112,28 @@ class TestEnvironment {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $name
+	 * @param callable $service
+	 */
+	public function redefineMediaWikiService( $name, callable $service ) {
+
+		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) ) {
+			return null;
+		}
+
+		$this->resetMediaWikiService( $name );
+
+		try {
+			\MediaWiki\MediaWikiServices::getInstance()->redefineService( $name, $service );
+		} catch( \Exception $e ) {
+			// Do nothing just avoid a
+			// MediaWiki\Services\NoSuchServiceException: No such service ...
+		}
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string|array $poolCache
