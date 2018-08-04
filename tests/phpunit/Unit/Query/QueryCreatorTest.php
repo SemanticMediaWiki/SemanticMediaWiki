@@ -46,7 +46,7 @@ class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			$expected,
-			$query->getAsString()
+			$query->toString()
 		);
 	}
 

@@ -442,7 +442,7 @@ class SpecialAsk extends SpecialPage {
 			$source = 'sql_store';
 		}
 
-		$querySource = $this->querySourceFactory->getAsString(
+		$querySource = $this->querySourceFactory->toString(
 			$source
 		);
 

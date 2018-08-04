@@ -95,7 +95,7 @@ class QuerySourceFactory {
 	 *
 	 * @return string
 	 */
-	public function getAsString( $source = null ) {
+	public function toString( $source = null ) {
 
 		if ( $source === 'sql_store' ) {
 			return 'SMWSQLStore';
