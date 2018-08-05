@@ -227,7 +227,11 @@
     margin-bottom: 0.5em;
 }
 
-#mw-searchoptions h4, #smw-search-togglensview, #mw-search-togglebox {
+#mw-searchoptions h4 {
+    margin-top: 2px !important;
+}
+
+#smw-search-togglensview, #mw-search-togglebox {
     margin-top: 2px !important;
 }
 
@@ -261,4 +265,13 @@
 
 .skin-chameleon .smw-fields .smw-input-field {
     margin: 5px -3px 0 10px;
+}
+
+.skin-chameleon #mw-searchoptions h4 {
+    margin-top: 6px !important;
+    margin-bottom: 2px !important;
+}
+
+.skin-chameleon #smw-search-togglensview, .skin-chameleon #mw-search-togglebox {
+    margin-top: 0px !important;
 }
