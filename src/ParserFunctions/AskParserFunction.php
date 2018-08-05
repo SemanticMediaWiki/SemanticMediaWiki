@@ -373,12 +373,12 @@ class AskParserFunction {
 
 		$profileAnnotatorFactory = $applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();
 
-		$combinedProfileAnnotator = $profileAnnotatorFactory->newCombinedProfileAnnotator(
+		$profileAnnotator = $profileAnnotatorFactory->newProfileAnnotator(
 			$query,
 			$format
 		);
 
-		$combinedProfileAnnotator->pushAnnotationsTo(
+		$profileAnnotator->pushAnnotationsTo(
 			$this->parserData->getSemanticData()
 		);
 	}

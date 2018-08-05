@@ -23,27 +23,6 @@ use SMWQuery as Query;
 class ProfileAnnotatorFactory {
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param Query $query
-	 *
-	 * @return DescriptionProfileAnnotator
-	 */
-	public function newDescriptionProfileAnnotator( Query $query ) {
-
-		$profileAnnotator = new NullProfileAnnotator(
-			$this->newDIContainer( $query )
-		);
-
-		$profileAnnotator = new DescriptionProfileAnnotator(
-			$profileAnnotator,
-			$query->getDescription()
-		);
-
-		return $profileAnnotator;
-	}
-
-	/**
 	 * @since 2.1
 	 *
 	 * @param Query $query
@@ -51,7 +30,7 @@ class ProfileAnnotatorFactory {
 	 *
 	 * @return ProfileAnnotator
 	 */
-	public function newCombinedProfileAnnotator( Query $query, $format ) {
+	public function newProfileAnnotator( Query $query, $format ) {
 
 		$profileAnnotator = $this->newDescriptionProfileAnnotator(
 			$query
@@ -80,6 +59,27 @@ class ProfileAnnotatorFactory {
 		$profileAnnotator = $this->newStatusCodeProfileAnnotator(
 			$profileAnnotator,
 			$query->getOption( Query::PROC_STATUS_CODE )
+		);
+
+		return $profileAnnotator;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Query $query
+	 *
+	 * @return DescriptionProfileAnnotator
+	 */
+	public function newDescriptionProfileAnnotator( Query $query ) {
+
+		$profileAnnotator = new NullProfileAnnotator(
+			$this->newDIContainer( $query )
+		);
+
+		$profileAnnotator = new DescriptionProfileAnnotator(
+			$profileAnnotator,
+			$query->getDescription()
 		);
 
 		return $profileAnnotator;
