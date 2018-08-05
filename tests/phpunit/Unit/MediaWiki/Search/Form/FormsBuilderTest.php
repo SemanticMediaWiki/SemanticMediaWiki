@@ -93,7 +93,7 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = [
 			'<div id="smw-search-forms" class="smw-select is-disabled" data-nslist="[]">',
-			'<label for="smw-form"><a>Form</a>:&nbsp;</label><select id="smw-form" name="smw-form">',
+			'<label for="smw-form"><a class="smw-form-link-form" title="Find forms by type">Form</a>:&nbsp;</label><select id="smw-form" name="smw-form">',
 			"<option value='' ></option>",
 			"<option value='bar' >Bar</option>",
 			"<option value='foo' >Foo</option>",

@@ -176,7 +176,7 @@ class TermParserTest extends \PHPUnit_Framework_TestCase {
 
 		yield [
 			'in:foo',
-			[ 'in:' => [ 'a', 'b' ] ],
+			[ 'in' => [ 'a', 'b' ] ],
 			'[[in:foo]]'
 		];
 	}

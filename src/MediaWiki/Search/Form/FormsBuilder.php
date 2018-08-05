@@ -141,12 +141,14 @@ class FormsBuilder {
 
 		$attr = [ 'style' => 'border-right:1px solid #ccc;margin-right:4px;' ];
 
-		$link = ( $link !== '' ? $link . Html::rawElement( 'span', [], '&nbsp;⦁&nbsp;' ) : '' ) . Html::element(
+		$link = ( $link !== '' ? $link . '&nbsp;' : '' ) . Html::element(
 			'a',
 			[
-				'href' => $title->getFullUrl()
+				'class' => 'smw-form-link-form',
+				'href' => $title->getFullUrl(),
+				'title' => 'Find forms by type'
 			],
-			'Form' //TODO: Translation key smw-form
+			'Form'
 		);
 
 		$select = Html::rawElement(
@@ -219,7 +221,7 @@ class FormsBuilder {
 		ksort( $forms );
 
 		foreach ( $forms as $name => $definition ) {
-			$formDefinitions[] = $this->form_fields( $activeForm, $name, $definition );
+			$formDefinitions[] = $this->form_fields( $data, $activeForm, $name, $definition );
 		}
 
 		if ( isset( $data['namespaces']['preselect'] ) && is_array( $data['namespaces']['preselect'] ) ) {
@@ -244,7 +246,7 @@ class FormsBuilder {
 		);
 	}
 
-	private function form_fields( $activeForm, $name, $definition ) {
+	private function form_fields( $data, $activeForm, $name, $definition ) {
 
 		// Short form, URL query conform
 		$s = self::toLowerCase( $name );
@@ -258,7 +260,7 @@ class FormsBuilder {
 		$isActiveForm = $s === $activeForm;
 
 		if ( isset( $data['descriptions'] ) ) {
-			$descriptions = $this->findDescription( $data['descriptions'], $name, $isActiveForm );
+			$description = $this->findDescription( $data['descriptions'], $name, $isActiveForm );
 		}
 
 		if ( $s === 'open' ) {

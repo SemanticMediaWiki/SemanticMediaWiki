@@ -7,8 +7,8 @@ namespace SMW\Query\Parser;
  * string, for example `in:foo bar || (phrase:bar && not:foo)` becomes `[[in:
  * foo bar]] || <q>[[phrase:bar]] && [[not:foo]]</q>`.
  *
- * A prefix map can contain assignments to define a query construct, hereby
- * allowing to use a custom prefix to simplify the input process.
+ * A custom prefix map allows to create assignments between a custom prefix and
+ * a property set and hereby simplifies the search input process.
  *
  * @license GNU GPL v2+
  * @since 3.0
@@ -28,7 +28,7 @@ class TermParser {
 	 * range of disjunctive query declarations to simplify the creation of a
 	 * query construct such as:
 	 *
-	 * - Map: `'keyword:' => [ 'Has keyword', 'Keyword' ]`
+	 * - Prefix map: `'keyword' => [ 'Has keyword', 'Keyword' ]`
 	 * - Input: `keyword:foo bar`
 	 * - Output: `([[Has keyword::foo bar]] || [[Keyword::foo bar]])`
 	 *
@@ -43,12 +43,6 @@ class TermParser {
 	 */
 	public function __construct( array $prefix_map = [] ) {
 		$this->prefix_map = $prefix_map;
-
-		// Just in case, `in:`, `phrase:`, and `not:` are not permitted to be
-		// overridden by a prefix assignment, `category:` can.
-		unset( $this->prefix_map['in:'] );
-		unset( $this->prefix_map['phrase:'] );
-		unset( $this->prefix_map['not:'] );
 	}
 
 	/**
@@ -62,6 +56,13 @@ class TermParser {
 		$custom_prefix = [];
 
 		foreach ( array_keys( $this->prefix_map ) as $p ) {
+
+			// Just in case, `in:`, `phrase:`, and `not:` are not permitted to be
+			// overridden by a prefix assignment, `category:` can.
+			if ( in_array( $p, [ 'in', 'phrase', 'not' ] ) ) {
+				continue;
+			}
+
 			$pattern .= '|(' . $p . ':)';
 			$custom_prefix[] = "$p:";
 		}

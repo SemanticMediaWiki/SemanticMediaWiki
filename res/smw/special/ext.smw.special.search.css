@@ -149,6 +149,20 @@
 .smw-form-description {
     margin-left: 14px;
     margin-bottom: 5px;
+    width: 100%;
+}
+
+.smw-form-link-form {
+    margin-left: 0.25em;
+}
+
+.smw-form-link-query {
+    display: inline-block;
+    line-height: 1.25em;
+    border-right: 1px solid #a2a9b1;
+    margin: 0.125em 0;
+    padding: 0 0.5em;
+    zoom: 1;
 }
 
 .smw-input-tooltip {
