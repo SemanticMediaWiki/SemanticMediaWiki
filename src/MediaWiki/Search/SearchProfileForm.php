@@ -9,7 +9,9 @@ use SMW\MediaWiki\Search\Form\FormsBuilder;
 use SMW\MediaWiki\Search\Form\FormsFactory;
 use SMW\MediaWiki\Search\Form\FormsFinder;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Utils\HtmlModal;
 use SMW\Store;
+use SMW\Message;
 use SpecialSearch;
 use Title;
 use WikiPage;
@@ -125,20 +127,16 @@ class SearchProfileForm {
 		$context = $this->specialSearch->getContext();
 		$request = $context->getRequest();
 
-		// Carry over the status (hide/show) of the ns section during a search
-		// request so we don't have to set a cookie while still being able to
-		// retain its status on whether the users has the NS hidden or not.
-		$opts = $opts + [ 'ns-list' => $request->getVal( 'ns-list' ) ];
-
 		foreach ( $opts as $key => $value ) {
 			$hidden .= Html::hidden( $key, $value );
 		}
 
 		$outputPage = $context->getOutput();
 
-		$outputPage->addModuleStyles( 'smw.special.search.styles' );
+		$outputPage->addModuleStyles( [ 'smw.ui.styles', 'smw.special.search.styles' ] );
 		$outputPage->addModules(
 			[
+				'smw.ui',
 				'smw.special.search',
 				'ext.smw.tooltip',
 				'ext.smw.autocomplete.property'
@@ -155,16 +153,14 @@ class SearchProfileForm {
 			$queryLink->setCaption( 'Query' );
 			$queryLink->setLinkAttributes(
 				[
-					'title' => 'Query via Special:Ask',
-					'class' => 'smw-form-link-query'
+					'title' => 'Query via Special:Ask'
 				]
 			);
 			$link = $queryLink->getHtml();
 		}
 
 		list( $searchForms, $formList, $preselectNamespaces, $hiddenNamespaces ) = $this->buildSearchForms(
-			$request,
-			$link
+			$request
 		);
 
 		$sortForm = $this->buildSortForm( $request );
@@ -173,7 +169,8 @@ class SearchProfileForm {
 			$request,
 			$searchEngine,
 			$preselectNamespaces,
-			$hiddenNamespaces
+			$hiddenNamespaces,
+			$hidden
 		);
 
 		$options = Html::rawElement(
@@ -181,7 +178,18 @@ class SearchProfileForm {
 			[
 				'class' => 'smw-search-options'
 			],
-			$sortForm . $formList
+			Html::rawElement(
+				'div',
+				[
+					'style' => 'color: #586069;position: relative;display: inline-block; padding-top: 5px; padding-bottom: 2px;'
+				],
+				''
+			) . $sortForm . $formList . HtmlModal::link(
+				'<span class="smw-icon-info"></span>',
+				[
+					'data-id' => 'smw-search-profile-extended-cheat-sheet'
+				]
+			)
 		);
 
 		$errors = $this->findErrors( $searchEngine );
@@ -195,21 +203,34 @@ class SearchProfileForm {
 			htmlspecialchars( $searchEngine->getQueryString() )
 		);
 
+		$modal = HtmlModal::modal(
+			Message::get( 'smw-cheat-sheet', Message::TEXT, Message::USER_LANGUAGE ),
+			$this->profile_sheet( $query, $link ),
+			[
+				'id' => 'smw-search-profile-extended-cheat-sheet',
+				'class' => 'plainlinks',
+				'style' => 'display:none;'
+			]
+		);
+
 		$form .= Html::rawElement(
 			'fieldset',
 			[
 				'id' => 'smw-searchoptions'
 			],
-			$hidden . $errors . $query . $options . $searchForms
+			$hidden . $errors . $query . $modal . $options . $searchForms
 		);
 
 		// Different fieldset therefore it is used as last element
 		$form .= $namespaceForm;
 	}
 
-	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces ) {
+	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces, &$hidden ) {
 
 		$activeNamespaces = array_merge( $this->specialSearch->getNamespaces(), $preselectNamespaces );
+		$default = false;
+
+		$data = $this->getFormDefinitions( $this->store );
 
 		foreach ( $this->searchableNamespaces as $ns => $name ) {
 
@@ -234,8 +255,12 @@ class SearchProfileForm {
 			$hiddenNamespaces
 		);
 
+		if ( isset( $data['namespaces']['default_hide'] ) ) {
+			$default = $data['namespaces']['default_hide'];
+		}
+
 		$namespaceForm->setHideList(
-			$request->getVal( 'ns-list' )
+			$request->getVal( 'ns-list', $default )
 		);
 
 		$namespaceForm->setSearchableNamespaces(
@@ -246,13 +271,17 @@ class SearchProfileForm {
 			$this->specialSearch
 		);
 
+		// Carry over the status (hide/show) of the ns section during a search
+		// request so we don't have to set a cookie while still being able to
+		// retain its status on whether the users has the NS hidden or not.
+		$hidden .= Html::hidden( 'ns-list', $request->getVal( 'ns-list', $default ) );
+
 		return $namespaceForm->makeFields();
 	}
 
-	private function buildSearchForms( $request, $link = '' ) {
+	private function buildSearchForms( $request ) {
 
 		$data = $this->getFormDefinitions( $this->store );
-		$title = Title::newFromText( 'Special:SearchByProperty/Rule type/' . self::RULE_TYPE );
 
 		if ( $data === [] ) {
 			return [ '', '', [], [] ];
@@ -269,7 +298,7 @@ class SearchProfileForm {
 			$this->specialSearch->setExtraParam( $key, $value );
 		}
 
-		$formList = $formsBuilder->buildFormList( $title, $link );
+		$formList = $formsBuilder->buildFormList();
 
 		return [
 			$form,
@@ -319,6 +348,56 @@ class SearchProfileForm {
 		}
 
 		return $form;
+	}
+
+	private function profile_sheet( $query, $link ) {
+
+		$text = Message::get( 'smw-search-profile-extended-help-intro', Message::PARSE, Message::USER_LANGUAGE );
+		$text .= $this->section( 'smw-search-profile-extended-section-sort' );
+		$text .= Message::get( 'smw-search-profile-extended-help-sort', Message::PARSE, Message::USER_LANGUAGE );
+		$text .= Message::get( 'smw-search-profile-extended-help-sort-title', Message::PARSE, Message::USER_LANGUAGE );
+		$text .= Message::get( 'smw-search-profile-extended-help-sort-recent', Message::PARSE, Message::USER_LANGUAGE );
+
+		if ( is_a( $this->store, "SMWElasticStore" ) ) {
+			$text .= Message::get( 'smw-search-profile-extended-help-sort-best', Message::PARSE, Message::USER_LANGUAGE );
+		}
+
+		$formLink = Html::element(
+			'a',
+			[
+				'href' => Title::newFromText( 'Special:SearchByProperty/Rule type/' . self::RULE_TYPE )->getFullUrl()
+			],
+			Message::get( 'smw-search-profile-extended-help-find-forms', Message::PARSE, Message::USER_LANGUAGE )
+		);
+
+		$text .= $this->section( 'smw-search-profile-extended-section-form' );
+		$text .= Message::get( [ 'smw-search-profile-extended-help-form', $formLink ], Message::TEXT, Message::USER_LANGUAGE );
+		$text .= $this->section( 'smw-search-profile-extended-section-namespace' );
+		$text .= Message::get( 'smw-search-profile-extended-help-namespace', Message::PARSE, Message::USER_LANGUAGE );
+
+		if ( $link !== '' ) {
+			$text .= $this->section( 'smw-search-profile-extended-section-query' );
+			$text .= Message::get( [ 'smw-search-profile-extended-help-query', $link ], Message::TEXT, Message::USER_LANGUAGE );
+		}
+
+		return $text;
+	}
+
+	private function section( $msg, $attributes = [] ) {
+		return Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-text-strike',
+				'style' => 'padding: 5px 0 5px 0;'
+			],
+			Html::rawElement(
+				'span',
+				[
+					'style' => 'font-size: 1.2em; margin-left:0px'
+				],
+				Message::get( $msg, Message::TEXT, Message::USER_LANGUAGE )
+			)
+		);
 	}
 
 }

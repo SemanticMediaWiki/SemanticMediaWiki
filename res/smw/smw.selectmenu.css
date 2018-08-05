@@ -1,0 +1,119 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://www.semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+.smw-selectmenu-button {
+	display: inline-block;
+    padding: 0;
+    font-size: inherit;
+    color: #0366d6;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+	position: relative;
+    display: inline-block;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    font-weight: 400;
+    padding-right: 5px;
+    padding-left: 2px;
+    color: #586069;
+    position: relative;
+    display: inline-block;
+    padding-top: 5px;
+    padding-bottom: 2px;
+    font-weight: 400;
+    box-shadow:unset;
+}
+
+.smw-selectmenu-button:after {
+	position: unset !important;
+	display: inline-block !important;
+    width: 0 !important;
+    height: 0 !important;
+    vertical-align: -2px;
+    content: "";
+    border: 4px solid;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    margin-left:5px;
+}
+
+.smw-selectmenu-button:focus {outline:0;}
+
+.smw-selectmenu-label {
+    padding-right: 5px;
+    padding-left: 5px;
+    color: #4a4a4a;
+    /* position: relative; */
+    /* display: inline-block; */
+    padding-top: 2px;
+    /*padding-bottom: 2px;*/
+    font-weight: 600;
+    box-shadow: unset;
+}
+
+.smw-selectmenu-label:first-child {
+    padding-left: 0px;
+}
+
+.sm_container {
+	border-radius: 3px;
+}
+
+.sm_result_area, .sm_results {
+	border-radius: 0px 0px 3px 3px;
+}
+
+ul.sm_results > li.sm_over:last-child {
+	border-radius: 0px 0px 3px 3px;
+}
+
+/**
+ * Responsive settings
+ */
+@media screen and (max-width: 800px) {
+	.smw-table-cell {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.smw-table-row, .smw-table-header {
+		flex: 1 1 150px;
+	}
+}

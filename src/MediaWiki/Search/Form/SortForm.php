@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Search\Form;
 
 use Html;
 use WebRequest;
+use SMW\Message;
 
 /**
  * @private
@@ -56,28 +57,48 @@ class SortForm {
 	 */
 	public function makeFields( $features = [] ) {
 
-		$sort = $this->request->getVal( 'sort' );
+		$default = isset( $features['best'] ) && $features['best'] ? 'best' : 'title';
+		$sort = $this->request->getVal( 'sort', $default );
+
 		$this->parameters['sort'] = $sort;
 
-		$attributes = [
-			'id'   => 'sort',
-			'class' => '',
-			'list' => $this->sortList( $features ),
-			'name' => 'sort',
-			'selected' => $sort,
-			'label' => 'Sort by:&nbsp;'
-		];
+		$list = [];
+		$name = '';
 
-		$select = $this->field->create( 'select', $attributes );
+		foreach ( $this->sortList( $features ) as $key => $value ) {
+
+			if ( $key === $sort ) {
+				$name = $value;
+			}
+
+			$list[] = [ 'id' => $key, 'name' => $value, 'desc' => $value ];
+		}
 
 		return Html::rawElement(
 			'div',
 			[
-				'id'    => 'smw-search-sort',
-				'class' => 'smw-select',
-				'style' => 'margin-right:10px;'
+				'class' => 'smw-search-sort'
 			],
-			$select
+			Html::rawElement(
+				'button',
+				[
+					'type' => 'button',
+					'id' => 'smw-search-sort',
+					'class' => 'smw-selectmenu-button is-disabled',
+					'name' => 'sort',
+					'value' => $sort,
+					'data-list' => json_encode( $list ),
+					'title' => Message::get( 'smw-search-profile-extended-section-sort', Message::TEXT, Message::USER_LANGUAGE ),
+				],
+				$sort === '' ? 'Sort' : $name
+			) . Html::rawElement(
+				'input',
+				[
+					'type' => 'hidden',
+					'name' => 'sort',
+					'value' => $sort,
+				]
+			)
 		);
 	}
 
@@ -86,17 +107,17 @@ class SortForm {
 		$list = [];
 
 		if ( isset( $features['best'] ) && $features['best'] ) {
-			$list['best'] = 'Best Match';
+			$list['best'] = Message::get( 'smw-search-profile-sort-best', Message::TEXT, Message::USER_LANGUAGE );
 
 			$list += [
-				'recent' => 'Most Recent',
-				'title'  => 'Title'
+				'recent' => Message::get( 'smw-search-profile-sort-recent', Message::TEXT, Message::USER_LANGUAGE ),
+				'title'  => Message::get( 'smw-search-profile-sort-title', Message::TEXT, Message::USER_LANGUAGE )
 			];
 
 		} else{
 			$list = [
-				'title'  => 'Title',
-				'recent' => 'Most Recent'
+				'title'  => Message::get( 'smw-search-profile-sort-title', Message::TEXT, Message::USER_LANGUAGE ),
+				'recent' => Message::get( 'smw-search-profile-sort-recent', Message::TEXT, Message::USER_LANGUAGE )
 			];
 		}
 

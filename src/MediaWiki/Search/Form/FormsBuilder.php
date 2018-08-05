@@ -123,57 +123,48 @@ class FormsBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Title $title
-	 *
 	 * @return string
 	 */
-	public function buildFormList( Title $title, $link = '' ) {
+	public function buildFormList() {
 
-		$html = [];
+		$list = [];
+		$name = '';
+		$value = '';
 
 		foreach ( $this->formList as $k => $options ) {
 
-			$name = $options['name'];
-			$selected = $options['selected'] ? 'selected' : '';
+			if ( $k === '' ) {
+				continue;
+			}
 
-			$html[] = "<option value='$k' $selected>$name</option>";
+			if ( $options['selected'] ) {
+				$name = $options['name'];
+				$value = $k;
+			}
+
+			$list[] = [ 'id' => $k, 'name' => $options['name'], 'desc' => $options['name'] ];
 		}
 
-		$attr = [ 'style' => 'border-right:1px solid #ccc;margin-right:4px;' ];
-
-		$link = ( $link !== '' ? $link . '&nbsp;' : '' ) . Html::element(
-			'a',
-			[
-				'class' => 'smw-form-link-form',
-				'href' => $title->getFullUrl(),
-				'title' => 'Find forms by type'
-			],
-			'Form'
-		);
-
-		$select = Html::rawElement(
-			'label',
-			[
-				'for' => 'smw-form'
-			],
-			$link . ':&nbsp;'
-		) . Html::rawElement(
-			'select',
-			[
-				'id' => 'smw-form',
-				'name' => 'smw-form'
-			],
-			implode( '', $html )
-		);
-
 		return Html::rawElement(
-			'div',
+			'button',
 			[
+				'type' => 'button',
 				'id' => 'smw-search-forms',
-				'class' => 'smw-select is-disabled',
+				'class' => 'smw-selectmenu-button is-disabled',
+				'title' => Message::get( 'smw-search-profile-extended-section-form', Message::TEXT, Message::USER_LANGUAGE  ),
+				'name' => 'smw-form',
+				'value' => $value,
+				'data-list' => json_encode( $list ),
 				'data-nslist' => json_encode( $this->preselectNsList )
 			],
-			$select
+			$name === '' ? 'Form' : $name
+		) . Html::rawElement(
+			'input',
+			[
+				'type' => 'hidden',
+				'name' => 'smw-form',
+				'value' => $value,
+			]
 		);
 	}
 
@@ -190,7 +181,13 @@ class FormsBuilder {
 			throw new RuntimeException( "Missing forms definition" );
 		}
 
-		$activeForm = $this->request->getVal( 'smw-form' );
+		$default_form = '';
+
+		if ( isset( $data['default_form'] ) ) {
+			$default_form = self::toLowerCase( $data['default_form'] );
+		}
+
+		$activeForm = $this->request->getVal( 'smw-form', $default_form );
 
 		$divider = "<div class='divider' style='display:none;'></div>";
 

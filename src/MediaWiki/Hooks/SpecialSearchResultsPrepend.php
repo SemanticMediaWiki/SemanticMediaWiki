@@ -52,8 +52,8 @@ class SpecialSearchResultsPrepend extends HookHandler {
 		$html = '';
 
 		if ( $this->specialSearch->getSearchEngine() instanceof SMWSearch ) {
-			$this->outputPage->addModuleStyles( 'smw.special.search.styles');
-			$this->outputPage->addModules( 'smw.special.search');
+			$this->outputPage->addModuleStyles( [  'smw.ui.styles', 'smw.special.search.styles' ] );
+			$this->outputPage->addModules( [ 'smw.special.search', 'smw.ui' ] );
 
 			$this->outputPage->addModuleStyles( HtmlModal::getModuleStyles() );
 			$this->outputPage->addModules( HtmlModal::getModules() );
@@ -81,7 +81,7 @@ class SpecialSearchResultsPrepend extends HookHandler {
 
 			$html .= HtmlModal::modal(
 				Message::get( 'smw-cheat-sheet', Message::TEXT, Message::USER_LANGUAGE ),
-				$this->cheatSheet( $this->getOption( 'prefs-suggester-textinput' ) ),
+				$this->search_sheet( $this->getOption( 'prefs-suggester-textinput' ) ),
 				[
 					'id' => 'smw-search-cheat-sheet',
 					'class' => 'plainlinks',
@@ -99,7 +99,7 @@ class SpecialSearchResultsPrepend extends HookHandler {
 		return true;
 	}
 
-	private function cheatSheet( $inputAssistance ) {
+	private function search_sheet( $inputAssistance ) {
 
 		$text = $this->msg( 'smw-search-help-intro' );
 		$text .= $this->section( 'smw-search-input' );

@@ -6,7 +6,7 @@ It adds support for using #ask queries in the search input field and provides an
 
 ## Extended search profile
 
-![image](https://user-images.githubusercontent.com/1245473/41321426-dbe902d8-6ede-11e8-90d8-8c7a7117df54.png)
+![image](https://user-images.githubusercontent.com/1245473/43684698-7748fd76-9894-11e8-971f-3125892dc9ed.png)
 
 ### Defining forms and form fields
 
@@ -55,9 +55,19 @@ Definitions are structured using the JSON format and in the following example re
 | required | true, false | whether the field input is required before submitting or not |
 | type | HTML5 | preselect a specific type field |
 
+`default_form` can define a default form that is displayed when no other form was preselected.
+
+<pre>
+{
+    "type": "SEARCH_FORM_DEFINITION_RULE",
+    "default_form": "Books and journals",
+    ...
+}
+</pre>
+
 ### Term parser
 
-The `term_parser` prefix can be used to shorten the input cycle and summarize frequent properties so that a use can write
+The `term_parser` prefix can be used to shorten the input cycle and summarize frequent properties so that a user can write:
  - `(in:foobar || phrase:foo bar) lang:fr` instead of
  - `<q>[[in:foobar]] || [[phrase:foo bar]]</q><q>[[Language code::fr]] OR [[Document language::fr]] OR [[File attachment.Content language::fr]] OR [[Has interlanguage link.Page content language::fr]]</q>`
 
@@ -82,6 +92,7 @@ Prefixes are only applicable (and usable as means the shorten the search term) f
 ### Namespaces
 
 - ` "namespaces"`
+  - `default_hide` hides the namespace box by default on the extended profile form
   - `"hide"` identify namespaces that should be hidden from appearing in any SMW related form
   - `"preselect"` assign a pre-selection of namespaces to a specific form
     - `"Books and journals"` specific form the pre-selection should be enacted
@@ -90,6 +101,7 @@ Prefixes are only applicable (and usable as means the shorten the search term) f
 {
     "type": "SEARCH_FORM_DEFINITION_RULE",
     "namespaces": {
+        "default_hide": true,
         "hide": [
            "NS_PROJECT",
            "NS_PROJECT_TALK"
