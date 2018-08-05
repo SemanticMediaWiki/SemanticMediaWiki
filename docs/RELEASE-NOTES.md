@@ -1,10 +1,6 @@
-RELEASE NOTES
-
---------------
 # Semantic MediaWiki 3.0
 
 This is not a release yet and is planned to be available in Q3 2018.
-
 
 ## Highlights
 
@@ -12,7 +8,13 @@ Highlights for this release include ... (#2065)
 
 ### UI changes
 
-#2893, #2898 (`Special:Ask`), #2891, #2875, (`Special:Browse`), and #2906 (Factbox) contains changes to the appearance to help improve responsiveness on small screens and/or distinguish visual components more clearly from each other.
+Several UI changes are deployed with 3.0 to make user facing front-end components more intutive and mobile-friendly by improving the responsiveness on small screens including:
+
+- #2893, #2898 (`Special:Ask`),
+- #2891, #2875, (`Special:Browse`)
+- #2906 (Factbox)
+- #3218 (`Special:SemanticMediaWiki)
+- #3236 (Property page)
 
 ### List and template printer rework
 
@@ -24,7 +26,7 @@ Highlights for this release include ... (#2065)
 
 ### Performance
 
-#3142
+#3142, #3261, #3286
 
 ## Upgrading
 
@@ -34,7 +36,9 @@ This release requires (#2065, #2461, #2499) to run the `setupStore.php` or `upda
 
 After the upgrade, please check the "Deprecation notices" section in `Special:SemanticMediaWiki` to adapt and modify listed deprecated settings.
 
-If you are still using maintenance scripts identifiable by the `SMW_` prefix you must now migrate to the new maintenance spript names. See the help pages on [maintenance scrips](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_scripts) for further information.
+If you are still using maintenance scripts identifiable by the `SMW_` prefix you must now migrate to the new maintenance script names. See the help pages on [maintenance scrips](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_scripts) for further information.
+
+[#3198](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3198) switched to PHP 5.6 as minimum requirement.
 
 **Please also carefully read the section on breaking changes and deprecations further down in these release notes. We have also prepared a [migration guide](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.0.0/Migration_guide) for you.**
 
@@ -57,10 +61,12 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2823](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2823) Added SMW_QSORT_UNCONDITIONAL
 * [#3080](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3080) Added warm up caching for the ID lookup
 * [#3142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3142) Replaced DISTINCT with GROUP BY in SQLStore::getPropertySubjects
+* [#3261](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3261) Addeed support for index hint in `DataItemHandler` to enforce specific index selection
 
 #### ElasticStore
 
 * [#3054](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3054) Added `ElasticStore` to use Elasticsearch as query backend
+  - #3237, #3241, #3245, #3247, #3249, #3250, #3253
 * [#3152](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3152) Added extra debug query parameter (score_set, q_engine) to `Special:Ask`
 
 ### Search
@@ -70,11 +76,13 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3096](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3096) Added section title display support to indicate subobjects
 * [#3126](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3126) Added extended power profile form
 * [#3143](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3143) Hides namespace section and add auto-discovery
-* [#3145](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3145) Added simplified term parser to `SMWSearch` (+3157)
+* [#3145](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3145) Added simplified term parser to `SMWSearch` (see #3157, #3281)
+* [#3234](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3234) Added support for displaytitle in `SearchResult`
+* [#3237](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3237) Added support for highlights from external search engine, if available
 
 ### Query
 
-* [#2398](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2398) Added `#ask` and `#show` parser function support for `@deferred` output mode
+* [#2398](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2398) Added `#ask` and `#show` parser function support for `@deferred` output mode (see also #3257)
 * [#2476](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2476) Added [`$smwgQExpensiveThreshold`](https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveThreshold) and [`$smwgQExpensiveExecutionLimit`](https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit) to count and restrict expensive `#ask` and `#show` functions on a per page basis
 * [#2953](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2953) Added support for natural sort (`n-asc`, `n-desc`) of printout column values
 * [#2662](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2662) Added `+depth` as syntax component for a condition to restrict the depth of class and property hierarchy queries
@@ -158,6 +166,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3029](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3029) Added function to keep updated entities in-memory to improve rebuild performance
 * [#3088](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3088) Modernized `Special:PageProperty`
 * [#3167](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3167) Added support for `RemoteRequest` to share and consolidate query results from remote sources
+* [#3284](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3284) Added the `--dispose-outdated` command to `rebuildData.php`
+* [#3289](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3289) Added support for the JSON format in the `Allows value list` definition
 
 ## Bug fixes
 
@@ -222,6 +232,9 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2961](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2961) Renamed `smwAddToRDFExport` hook
 * [#2995](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2995) Updated old namespace in Spanish
 * [#3164](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3164) Removed `SMW_NS_TYPE` ns and `$smwgHistoricTypeNamespace`
+* [#3231](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3231) Consolidated `$smwgPagingLimit` setting
+* [#3267](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3267) Removed `SMWQueryProcessor::getSortKeys`
+* [#3285](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3285) Deprecated API module `BrowseBySubject`, use `smwbrowse` instead
 
 ## Other changes
 
@@ -261,6 +274,9 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3138](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3138) Fixed use of `$wgExtensionDirectory` to find SMW's `extension.json`
 * [#3146](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3147) Moved table hash cache handling
 * [#3160](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3160) Moved `FeedExportPrinter` and added integration test
+* [#3260](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3260) Moved `SMWSQLStore3::changeSMWPageID`
+* [#3275](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3275) Moved `SMWSQLStore3Readers::getPropertySubjects`
+* [#3282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3282) Moved `SMWSQLStore3Readers::getProperties`
 
 ## Contributors
 
