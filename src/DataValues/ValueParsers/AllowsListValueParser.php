@@ -23,12 +23,12 @@ class AllowsListValueParser implements ValueParser {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var array
 	 */
-	private static $contents = array();
+	private static $contents = [];
 
 	/**
 	 * @since 2.5
@@ -49,6 +49,14 @@ class AllowsListValueParser implements ValueParser {
 	}
 
 	/**
+	 * @since 3.0
+	 */
+	public function clear() {
+		self::$contents = [];
+		$this->errors = [];
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $userValue
@@ -57,13 +65,13 @@ class AllowsListValueParser implements ValueParser {
 	 */
 	public function parse( $userValue ) {
 
+		$this->errors = [];
+
 		if ( isset( self::$contents[$userValue] ) ) {
 			return self::$contents[$userValue];
 		}
 
-		$this->errors = array();
-
-		self::$contents[$userValue] = $this->doParseContent(
+		self::$contents[$userValue] = $this->parse_contents(
 			$userValue,
 			$this->mediaWikiNsContentReader->read( AllowsListValue::LIST_PREFIX . $userValue )
 		);
@@ -71,15 +79,23 @@ class AllowsListValueParser implements ValueParser {
 		return self::$contents[$userValue];
 	}
 
-	private function doParseContent( $userValue, $contents ) {
-
-		$list = array();
+	private function parse_contents( $userValue, $contents ) {
 
 		if ( $contents === '' ) {
 			return $this->errors[] = array( 'smw-datavalue-allows-value-list-unknown', $userValue );
 		}
 
+		if ( $contents{0} === '{' && ( $list = json_decode( $contents, true ) ) && is_array( $list ) ) {
+			return $list;
+		}
+
+		return $this->parse_string( $userValue, $contents );
+	}
+
+	private function parse_string( $userValue, $contents ) {
+
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
+		$list = [];
 
 		foreach ( $parts as $part ) {
 
@@ -101,8 +117,8 @@ class AllowsListValueParser implements ValueParser {
 			}
 		}
 
-		if ( $list === array() ) {
-			 $this->errors[] = array( 'smw-datavalue-allows-value-list-missing-marker', $userValue );
+		if ( $list === [] ) {
+			$this->errors[] = array( 'smw-datavalue-allows-value-list-missing-marker', $userValue );
 		}
 
 		return $list;

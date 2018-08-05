@@ -33,8 +33,6 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
 	protected function tearDown() {
@@ -44,7 +42,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator',
+			AllowsListConstraintValueValidator::class,
 			new AllowsListConstraintValueValidator( $this->allowsListValueParser, $this->propertySpecificationLookup )
 		);
 	}
@@ -185,6 +183,53 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 				'2da6400856e4455038d21793670ff9f7' => '[8,"smw_notinenum","","VAL1, VAL2, VAL3, VAL4, VAL5, VAL6, VAL7, VAL8, VAL9, VAL0, ...","InvalidAllowedValue"]'
 			),
 			$dataValue->getErrors()
+		);
+	}
+
+	public function testIsAllowedValueFromCombinedList() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'ValidAllowedValue' );
+
+		$this->allowsListValueParser->expects( $this->any() )
+			->method( 'parse' )
+			->will( $this->onConsecutiveCalls( [ 'Foo' => 'foo' ], [ 'Bar' => 'bar' ] ) );
+
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getAllowedValues' )
+			->will( $this->returnValue( [] ) );
+
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getAllowedListValues' )
+			->will( $this->returnValue( [
+				$this->dataItemFactory->newDIBlob( 'list_foo' ),
+				$this->dataItemFactory->newDIBlob( 'list_bar' ) ] ) );
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getProperty', 'getDataItem', 'getTypeID' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->any() )
+			->method( 'getTypeID' )
+			->will( $this->returnValue( '_txt' ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $property ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar' ) ) );
+
+		$instance = new AllowsListConstraintValueValidator(
+			$this->allowsListValueParser,
+			$this->propertySpecificationLookup
+		);
+
+		$instance->validate( $dataValue );
+
+		$this->assertFalse(
+			$instance->hasConstraintViolation()
 		);
 	}
 
