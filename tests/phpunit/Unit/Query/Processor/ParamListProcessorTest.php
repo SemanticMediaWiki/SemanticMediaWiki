@@ -36,9 +36,9 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-			$instance = new ParamListProcessor(
-				$printRequestFactory
-			);
+		$instance = new ParamListProcessor(
+			$printRequestFactory
+		);
 
 		$this->assertEquals(
 			$expected,
@@ -55,9 +55,9 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-			$instance = new ParamListProcessor(
-				$printRequestFactory
-			);
+		$instance = new ParamListProcessor(
+			$printRequestFactory
+		);
 
 		$a = $instance->format(
 			$parameters,
@@ -87,6 +87,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			false,
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [],
 				'parameters' => [],
@@ -100,6 +101,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			false,
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::Bar=Foobar]]',
 				'printouts'  => [],
 				'parameters' => [],
@@ -112,6 +114,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			false,
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::<Bar=Foobar>]]',
 				'printouts'  => [],
 				'parameters' => [],
@@ -124,6 +127,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			false,
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [],
 				'parameters' => [
@@ -138,6 +142,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			false,
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
@@ -155,6 +160,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			false,
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
@@ -174,6 +180,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			false,
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
@@ -193,6 +200,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			false,
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
@@ -222,6 +230,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			false,
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [],
 				'parameters' => [
@@ -237,6 +246,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			true,
 			[
 				'showMode'   => true,
+				'templateArgs' => false,
 				'query'      => '[[:Foo=Bar]]',
 				'printouts'  => [],
 				'parameters' => [
@@ -246,17 +256,61 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
+
 		// #3196
 		yield [
 			[ 'Foo=Bar', 'link=none', 'intro=[[File:Foo.png|link=Bar]]' ],
 			true,
 			[
 				'showMode'   => true,
+				'templateArgs' => false,
 				'query'      => '[[:Foo=Bar]]',
 				'printouts'  => [],
 				'parameters' => [
 					'link' => 'none',
 					'intro' => '[[File:Foo.png|link=Bar]]'
+				],
+				'this'       => []
+			]
+		];
+
+		yield [
+			[ 'Foo=Bar', 'link=none', '?ABC' ],
+			true,
+			[
+				'showMode'   => true,
+				'templateArgs' => false,
+				'query'      => '[[:Foo=Bar]]',
+				'printouts'  => [
+					'df76b46d65f71fd1a36054ec00947665' => [
+						'label' => 'ABC',
+						'params' => []
+					]
+				],
+				'parameters' => [
+					'link' => 'none'
+				],
+				'this'       => []
+			]
+		];
+
+		// #502
+		yield [
+			[ 'Foo=Bar', 'link=none', 'template=test', '?ABC' ],
+			true,
+			[
+				'showMode'   => true,
+				'templateArgs' => true,
+				'query'      => '[[:Foo=Bar]]',
+				'printouts'  => [
+					'2a30f08efdf827f7e76b895fde0fe670' => [
+						 'label' => 'ABC',
+						 'params' => []
+					]
+				],
+				'parameters' => [
+					'link' => 'none',
+					'template' => 'test'
 				],
 				'this'       => []
 			]
@@ -269,6 +323,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 		yield [
 			[
 				'showMode'   => false,
+				'templateArgs' => false,
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
@@ -295,6 +350,7 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 		yield [
 			[
 				'showMode'   => true,
+				'templateArgs' => false,
 				'query'      => '[[:Foo=Bar]]',
 				'printouts'  => [],
 				'parameters' => [
