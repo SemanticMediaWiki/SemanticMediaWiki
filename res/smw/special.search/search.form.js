@@ -15,6 +15,7 @@
 	var form = function() {
 
 		var namespaces = [];
+		var ui = new smw.ui();
 
 		// Empty value, inject a hidden non visible char to allow to trigger
 		// the search without an input text
@@ -30,6 +31,43 @@
 			} else {
 				$('#search').append('<input type="hidden" name="search" value=" " id="search-hidden" />' );
 			}
+		} );
+
+		$( document ).on( "click", "#smw-search-sort", function(){
+
+			var that = $( this );
+			var opts = {
+				eSelect: function( data ) {
+					if( data && data.length ) {
+						that.text( data[0].name );
+						that.prop( 'value', data[0].id );
+						that.parent().find( 'input[name^=sort]' ).prop( 'value', data[0].id );
+						that.trigger( 'change' );
+					};
+				}
+			}
+
+			ui.selectMenu( that, opts );
+		} );
+
+		$( document ).on( "click", "#smw-search-forms", function(){
+
+			var that = $( this );
+			var opts = {
+				label: 'Form',
+				search: true,
+				orderBy: 'name',
+				eSelect: function( data ) {
+					if( data && data.length ) {
+						that.text( data[0].name );
+						that.prop( 'value', data[0].id );
+						that.parent().find( 'input[name^=smw-form]' ).prop( 'value', data[0].id );
+						that.trigger( 'change' );
+					};
+				}
+			}
+
+			ui.selectMenu( that, opts );
 		} );
 
 		$( document ).ready( function() {
@@ -128,13 +166,15 @@
 				}
 			} );
 
-			var initialForm = $( "#smw-search-forms select" ).val();
+			var initialForm = $( '#smw-searchoptions' ).find( 'input[name^=smw-form]' ).prop( 'value' );
 
 			/**
 			 *  Listing to the form select field change
 			 */
 			$( this ).on( "change", "#smw-search-forms", function( event ) {
-				var type = $( "#smw-search-forms select" ).val();
+
+				var that = $( this );
+				var type = $( '#smw-searchoptions' ).find( 'input[name^=smw-form]' ).prop( 'value' );
 				var nsList = $( "#smw-search-forms" ).data( 'nslist' );
 
 				if ( type !== '' ) {

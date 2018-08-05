@@ -42,12 +42,52 @@ return array(
 		'targets' => array( 'mobile', 'desktop' )
 	),
 
+	'smw.ui' => $moduleTemplate + array(
+		'scripts' => 'smw/smw.ui.js',
+		'dependencies' => [ 'ext.smw', 'jquery.selectmenu' ],
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	'smw.ui.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'jquery/jquery.selectmenu.css',
+			'smw/smw.selectmenu.css'
+		),
+		'position' => 'top',
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
 	'ext.smw.special.style' => $moduleTemplate + array(
 		'styles' => array(
 			'smw/special/ext.smw.special.css'
 		),
 		'position' => 'top',
 		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	// https://github.com/TerryZ/SelectMenu
+	'jquery.selectmenu' => $moduleTemplate + array(
+		'scripts' => 'jquery/jquery.selectmenu.js',
+		'dependencies' => array(
+		'jquery.selectmenu.styles'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
+	'jquery.selectmenu.styles' => $moduleTemplate + array(
+		'styles' => array(
+			'jquery/jquery.selectmenu.css',
+			'smw/smw.selectmenu.css'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
 	),
 
 	// Load the module explicitly, otherwise mobile will complain with
@@ -279,7 +319,8 @@ return array(
 		'styles' => 'smw/special.search/search.css',
 		'position' => 'top',
 		'dependencies' => array(
-			'ext.smw'
+			'ext.smw',
+			'smw.ui'
 		),
 		'targets' => array(
 			'mobile',

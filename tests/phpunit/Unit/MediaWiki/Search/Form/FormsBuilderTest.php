@@ -92,12 +92,7 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expected = [
-			'<div id="smw-search-forms" class="smw-select is-disabled" data-nslist="[]">',
-			'<label for="smw-form"><a class="smw-form-link-form" title="Find forms by type">Form</a>:&nbsp;</label><select id="smw-form" name="smw-form">',
-			"<option value='' ></option>",
-			"<option value='bar' >Bar</option>",
-			"<option value='foo' >Foo</option>",
-			'</select></div>'
+			'<button type="button" id="smw-search-forms" class="smw-selectmenu-button is-disabled" title="Select a form" name="smw-form" value="" data-list="[{&quot;id&quot;:&quot;bar&quot;,&quot;name&quot;:&quot;Bar&quot;,&quot;desc&quot;:&quot;Bar&quot;},{&quot;id&quot;:&quot;foo&quot;,&quot;name&quot;:&quot;Foo&quot;,&quot;desc&quot;:&quot;Foo&quot;}]" data-nslist="[]">Form</button><input type="hidden" name="smw-form"/>'
 		];
 
 		$this->assertContains(

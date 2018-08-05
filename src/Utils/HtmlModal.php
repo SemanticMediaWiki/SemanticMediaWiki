@@ -67,17 +67,19 @@ class HtmlModal {
 	 *
 	 * @return string
 	 */
-	public static function modal( $header = '', $html = '', array $attributes = array() ) {
+	public static function modal( $title = '', $html = '', array $attributes = array() ) {
 
 		$attributes = self::mergeAttributes(
 			'smw-modal',
 			$attributes
 		);
 
-		$header = Html::rawElement(
+		$title = Html::rawElement(
 			'span',
-			[],
-			$header
+			[
+				'class' => 'smw-modal-title'
+			],
+			$title
 		);
 
 		$html = Html::rawElement(
@@ -96,7 +98,7 @@ class HtmlModal {
 						'class' => 'smw-modal-close'
 					],
 					'&#215;'
-				) . $header
+				) . $title
 			). Html::rawElement(
 				'div',
 				[

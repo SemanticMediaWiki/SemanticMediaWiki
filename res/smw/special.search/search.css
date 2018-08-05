@@ -173,7 +173,6 @@
 .smw-search-options {
   display: flex;
   width: 100%;
-  justify-content: space-between;
 }
 
 .smw-search-options div:last-child {
@@ -182,6 +181,10 @@
 
 .smw-search-options div:first-child {
   margin-left: unset;
+}
+
+.smw-search-sort {
+    min-width: 120px;
 }
 
 #smw-search-togglensview {
@@ -235,6 +238,30 @@
     margin-top: 2px !important;
 }
 
+.search-types .current a:after {
+    color: #586069;
+    position: unset !important;
+    display: inline-block !important;
+    width: 0 !important;
+    height: 0 !important;
+    vertical-align: -2px;
+    content: "";
+    border: 4px solid;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    margin-left: 5px;
+}
+
+.smw-search-options .smw-modal-link {
+    position: absolute;
+    right: 10px;
+}
+
+.smw-search-options .smw-icon-info {
+    padding: 0 0 8px 22px !important;
+}
+
 /**
  * Responsive settings (#see smw.table.css)
  */
@@ -274,4 +301,13 @@
 
 .skin-chameleon #smw-search-togglensview, .skin-chameleon #mw-search-togglebox {
     margin-top: 0px !important;
+}
+
+.skin-chameleon .smw-search-options .smw-modal-link {
+    position: absolute;
+    right: 35px;
+}
+
+.skin-chameleon .smw-search-options .smw-icon-info {
+    padding: 0 0 15px 24px !important;
 }

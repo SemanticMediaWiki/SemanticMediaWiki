@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchProfileForm;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchProfileForm
@@ -21,8 +22,11 @@ class SearchProfileFormTest extends \PHPUnit_Framework_TestCase {
 	private $outputPage;
 	private $webRequest;
 	private $user;
+	private $stringValidator;
 
 	protected function setUp() {
+
+		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -126,11 +130,11 @@ class SearchProfileFormTest extends \PHPUnit_Framework_TestCase {
 			'<input type="hidden" name="ns-list"/>',
 			'<div id="smw-query" style="display:none;"></div>',
 			'<div class="smw-search-options">',
-			'<div id="smw-search-sort" class="smw-select" style="margin-right:10px;">',
+			'<div class="smw-search-sort"><button type="button" id="smw-search-sort" class="smw-selectmenu-button is-disabled" name="sort"',
 		];
 
-		$this->assertContains(
-			implode( '', $expected ),
+		$this->stringValidator->assertThatStringContains(
+			$expected,
 			$form
 		);
 	}
