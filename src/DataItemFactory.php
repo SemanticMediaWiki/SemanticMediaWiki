@@ -8,8 +8,9 @@ use SMWDIBoolean as DIBoolean;
 use SMWDIContainer as DIContainer;
 use SMWDIError as DIError;
 use SMWDINumber as DINumber;
-use SMWDITime as DITime;
 use SMWDIUri as DIUri;
+use SMWDITime  as DITime;
+use Title;
 
 /**
  * @private
@@ -47,15 +48,20 @@ class DataItemFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param string $dbKey
+	 * @param string|Title $title
 	 * @param integer $namespace
 	 * @param string $interwiki
 	 * @param string $subobjectName
 	 *
 	 * @return DIWikiPage
 	 */
-	public function newDIWikiPage( $dbKey, $namespace = NS_MAIN, $interwiki = '', $subobjectName = '' ) {
-		return new DIWikiPage( $dbKey, $namespace, $interwiki, $subobjectName );
+	public function newDIWikiPage( $title, $namespace = NS_MAIN, $interwiki = '', $subobjectName = '' ) {
+
+		if ( $title instanceof Title ) {
+			return DIWikiPage::newFromTitle( $title );
+		}
+
+		return new DIWikiPage( $title, $namespace, $interwiki, $subobjectName );
 	}
 
 	/**
@@ -67,6 +73,17 @@ class DataItemFactory {
 	 */
 	public function newDIContainer( ContainerSemanticData $containerSemanticData ) {
 		return new DIContainer( $containerSemanticData );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @return ContainerSemanticData
+	 */
+	public function newContainerSemanticData( DIWikiPage $subject ) {
+		return new ContainerSemanticData( $subject );
 	}
 
 	/**

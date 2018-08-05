@@ -111,10 +111,16 @@ class ParserAfterTidy extends HookHandler {
 			return false;
 		}
 
-		if ( ParserData::hasSemanticData( $this->parser->getOutput() ) ||
-			$this->parser->getOutput()->getProperty( 'displaytitle' ) ||
+		$parserOutput = $this->parser->getOutput();
+
+		if ( $parserOutput->getProperty( 'displaytitle' ) ||
+			$parserOutput->getExtensionData( 'translate-translation-page' ) ||
+			$parserOutput->getCategoryLinks() ) {
+			return true;
+		}
+
+		if ( ParserData::hasSemanticData( $parserOutput ) ||
 			$title->isProtected( 'edit' ) ||
-			$this->parser->getOutput()->getCategoryLinks() ||
 			$this->parser->getDefaultSort() ) {
 			return true;
 		}
@@ -151,13 +157,15 @@ class ParserAfterTidy extends HookHandler {
 
 	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ) {
 
+		$parserOutput = $this->parser->getOutput();
+
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$semanticData
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
 			$propertyAnnotator,
-			$this->parser->getOutput()->getCategoryLinks()
+			$parserOutput->getCategoryLinks()
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
@@ -171,18 +179,24 @@ class ParserAfterTidy extends HookHandler {
 
 		// Special case! belongs to the EditProtectedPropertyAnnotator instance
 		$propertyAnnotator->addTopIndicatorTo(
-			$this->parser->getOutput()
+			$parserOutput
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
 			$propertyAnnotator,
-			$this->parser->getOutput()->getProperty( 'displaytitle' ),
+			$parserOutput->getProperty( 'displaytitle' ),
 			$this->parser->getDefaultSort()
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newSortKeyPropertyAnnotator(
 			$propertyAnnotator,
 			$this->parser->getDefaultSort()
+		);
+
+		// #2300
+		$propertyAnnotator = $propertyAnnotatorFactory->newTranslationPropertyAnnotator(
+			$propertyAnnotator,
+			$parserOutput->getExtensionData( 'translate-translation-page' )
 		);
 
 		$propertyAnnotator->addAnnotation();

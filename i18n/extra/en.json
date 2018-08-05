@@ -129,7 +129,10 @@
             "_CONT_LANG": "Content language",
             "_CONT_TITLE": "Content title",
             "_CONT_DATE": "Content date",
-            "_CONT_KEYW": "Content keyword"
+            "_CONT_KEYW": "Content keyword",
+            "_TRANS": "Translation",
+            "_TRANS_SOURCE": "Translation source",
+            "_TRANS_GROUP": "Translation group"
         },
         "aliases": {
             "Display unit": "_UNIT",
@@ -188,7 +191,8 @@
             "Rule definition": "_RL_DEF",
             "Formatter rule": "_FORMAT_RL",
             "File attachment": "_FILE_ATTCH",
-            "Has file attachment": "_FILE_ATTCH"
+            "Has file attachment": "_FILE_ATTCH",
+            "Has translation":"_TRANS"
         }
     },
     "date": {
