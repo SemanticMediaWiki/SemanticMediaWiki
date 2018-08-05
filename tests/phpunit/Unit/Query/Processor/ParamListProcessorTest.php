@@ -59,8 +59,9 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 				$printRequestFactory
 			);
 
-		$a = $instance->getLegacyArray(
-			$parameters
+		$a = $instance->format(
+			$parameters,
+			ParamListProcessor::FORMAT_LEGACY
 		);
 
 		$this->assertInternalType(

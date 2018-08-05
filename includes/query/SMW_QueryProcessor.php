@@ -136,23 +136,23 @@ class SMWQueryProcessor implements QueryContext {
 			$limit = $GLOBALS['smwgQMaxLimit'];
 		}
 
-		$queryCreator = ApplicationFactory::getInstance()->getQueryFactory()->newQueryCreator();
+		$queryCreator = ApplicationFactory::getInstance()->singleton( 'QueryCreator' );
 
-		$queryCreator->setConfiguration(  array(
+		$params = [
 			'extraPrintouts' => $extraPrintouts,
 			'queryMode'   => $queryMode,
 			'context'     => $context,
 			'contextPage' => $contextPage,
 			'offset'      => $offset,
 			'limit'       => $limit,
-			'querySource' => $params['source']->getValue(),
+			'source'      => $params['source']->getValue(),
 			'mainLabel'   => $params['mainlabel']->getValue(),
 			'sort'        => $params['sort']->getValue(),
 			'order'       => $params['order']->getValue(),
 			'defaultSort' => $defaultSort
-		) );
+		];
 
-		return $queryCreator->create( $queryString );
+		return $queryCreator->create( $queryString, $params );
 	}
 
 	/**
@@ -212,10 +212,11 @@ class SMWQueryProcessor implements QueryContext {
 	 */
 	static public function getComponentsFromFunctionParams( array $rawParams, $showMode ) {
 
-		$paramListProcessor = new ParamListProcessor();
+		$paramListProcessor = ApplicationFactory::getInstance()->singleton( 'ParamListProcessor' );
 
-		return $paramListProcessor->getLegacyArray(
-			$paramListProcessor->preprocess( $rawParams, $showMode )
+		return $paramListProcessor->format(
+			$paramListProcessor->preprocess( $rawParams, $showMode ),
+			ParamListProcessor::FORMAT_LEGACY
 		);
 	}
 

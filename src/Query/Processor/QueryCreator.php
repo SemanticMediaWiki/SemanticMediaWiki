@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\Query;
+namespace SMW\Query\Processor;
 
 use SMW\DataValueFactory;
 use SMW\Localizer;
+use SMW\Query\QueryContext;
 use SMW\QueryFactory;
 use SMWPropertyValue as PropertyValue;
 
@@ -25,7 +26,7 @@ class QueryCreator implements QueryContext {
 	/**
 	 * @var array
 	 */
-	private $configuration = array();
+	private $params = [];
 
 	/**
 	 * @see smwgQDefaultNamespaces
@@ -67,18 +68,6 @@ class QueryCreator implements QueryContext {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array $configuration
-	 *
-	 * @return self
-	 */
-	public function setConfiguration( array $configuration ) {
-		$this->configuration = $configuration;
-		return $this;
-	}
-
-	/**
-	 * @since 2.5
-	 *
 	 * @param integer $queryFeatures
 	 */
 	public function setQFeatures( $queryFeatures ) {
@@ -103,19 +92,21 @@ class QueryCreator implements QueryContext {
 	 * @since 2.5
 	 *
 	 * @param string $queryString
+	 * @param array $params
 	 *
 	 * @return Query
 	 */
-	public function create( $queryString ) {
+	public function create( $queryString, array $params = [] ) {
 
-		$context = $this->getConfiguration( 'context', self::INLINE_QUERY );
+		$this->params = $params;
+		$context = $this->getParam( 'context', self::INLINE_QUERY );
 
 		$queryParser = $this->queryFactory->newQueryParser(
 			$context == self::CONCEPT_DESC ? $this->conceptFeatures : $this->queryFeatures
 		);
 
-		$contextPage = $this->getConfiguration( 'contextPage', null );
-		$queryMode = $this->getConfiguration( 'queryMode', self::MODE_INSTANCES );
+		$contextPage = $this->getParam( 'contextPage', null );
+		$queryMode = $this->getParam( 'queryMode', self::MODE_INSTANCES );
 
 		$queryParser->setContextPage( $contextPage );
 		$queryParser->setDefaultNamespaces( $this->defaultNamespaces );
@@ -131,15 +122,15 @@ class QueryCreator implements QueryContext {
 		$query->setQueryMode( $queryMode );
 
 		$query->setExtraPrintouts(
-			$this->getConfiguration( 'extraPrintouts', array() )
+			$this->getParam( 'extraPrintouts', array() )
 		);
 
 		$query->setMainLabel(
-			$this->getConfiguration( 'mainLabel', '' )
+			$this->getParam( 'mainLabel', '' )
 		);
 
 		$query->setQuerySource(
-			$this->getConfiguration( 'querySource', null )
+			$this->getParam( 'source', null )
 		);
 
 		// keep parsing or other errors for later output
@@ -149,18 +140,18 @@ class QueryCreator implements QueryContext {
 
 		// set sortkeys, limit, and offset
 		$query->setOffset(
-			max( 0, trim( $this->getConfiguration( 'offset', 0 ) ) + 0 )
+			max( 0, trim( $this->getParam( 'offset', 0 ) ) + 0 )
 		);
 
 		$query->setLimit(
-			max( 0, trim( $this->getConfiguration( 'limit', $this->defaultLimit ) ) + 0 ),
+			max( 0, trim( $this->getParam( 'limit', $this->defaultLimit ) ) + 0 ),
 			$queryMode != self::MODE_COUNT
 		);
 
 		$sortKeys = $this->getSortKeys(
-			$this->getConfiguration( 'sort', array() ),
-			$this->getConfiguration( 'order', array() ),
-			$this->getConfiguration( 'defaultSort', 'ASC' )
+			$this->getParam( 'sort', array() ),
+			$this->getParam( 'order', array() ),
+			$this->getParam( 'defaultSort', 'ASC' )
 		);
 
 		$query->addErrors(
@@ -175,8 +166,6 @@ class QueryCreator implements QueryContext {
 	}
 
 	/**
-	 * @note This method is expected to be private after QueryProcessor::getSortKeys has been removed!
-	 *
 	 * @since 2.5
 	 *
 	 * @param array $sortParameters
@@ -185,12 +174,12 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @return array ( keys => array(), errors => array() )
 	 */
-	public function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ) {
+	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ) {
 
 		$sortKeys = array();
 		$sortErros = array();
 
-		$orders = $this->getNormalizedOrderParameters( $orderParameters );
+		$orders = $this->normalize_order( $orderParameters );
 
 		foreach ( $sortParameters as $sort ) {
 			$sortKey = false;
@@ -205,7 +194,7 @@ class QueryCreator implements QueryContext {
 				$propertyValue->setOption( PropertyValue::OPT_QUERY_CONTEXT, true );
 
 				$propertyValue->setUserValue(
-					$this->getNormalizedSortLabel( trim( $sort ) )
+					$this->normalize_sort( trim( $sort ) )
 				);
 
 				if ( $propertyValue->isValid() ) {
@@ -230,7 +219,7 @@ class QueryCreator implements QueryContext {
 		return array( 'keys' => $sortKeys, 'errors' => $sortErros );
 	}
 
-	private function getNormalizedOrderParameters( $orderParameters ) {
+	private function normalize_order( $orderParameters ) {
 		$orders = array();
 
 		foreach ( $orderParameters as $key => $order ) {
@@ -247,12 +236,12 @@ class QueryCreator implements QueryContext {
 		return $orders;
 	}
 
-	private function getNormalizedSortLabel( $sort ) {
+	private function normalize_sort( $sort ) {
 		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == mb_convert_case( $sort, MB_CASE_TITLE ) ? '_INST' : $sort;
 	}
 
-	private function getConfiguration( $key, $default ) {
-		return isset( $this->configuration[$key] ) ? $this->configuration[$key] : $default;
+	private function getParam( $key, $default ) {
+		return isset( $this->params[$key] ) ? $this->params[$key] : $default;
 	}
 
 }

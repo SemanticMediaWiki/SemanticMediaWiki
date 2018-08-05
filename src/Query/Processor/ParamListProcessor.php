@@ -15,6 +15,11 @@ use SMW\Query\PrintRequestFactory;
 class ParamListProcessor {
 
 	/**
+	 * Format type
+	 */
+	const FORMAT_LEGACY = 'format.legacy';
+
+	/**
 	 * Identify the PrintThis instance
 	 */
 	const PRINT_THIS = 'print.this';
@@ -41,40 +46,17 @@ class ParamListProcessor {
 	 * @since 3.0
 	 *
 	 * @param array $paramList
+	 * @param string $type
 	 *
 	 * @return array
 	 */
-	public function getLegacyArray( array $paramList ) {
+	public function format( array $paramList, $type ) {
 
-		$printouts = [];
-
-		foreach ( $paramList['printouts'] as $k => $request ) {
-
-			if ( !isset( $request['label'] ) ) {
-				continue;
-			}
-
-			$printRequest = $this->printRequestFactory->newFromText(
-				$request['label'],
-				$paramList['showMode']
-			);
-
-			if ( $printRequest === null ) {
-				continue;
-			}
-
-			foreach ( $request['params'] as $key => $value ) {
-				$printRequest->setParameter( $key, $value );
-			}
-
-			$printouts[] = $printRequest;
+		if ( $type === self::FORMAT_LEGACY ) {
+			return $this->legacy_format( $paramList );
 		}
 
-		return [
-			$paramList['query'],
-			$paramList['parameters'],
-			$printouts
-		];
+		return $paramList;
 	}
 
 	/**
@@ -147,6 +129,39 @@ class ParamListProcessor {
 		}
 
 		return $serialization;
+	}
+
+	private function legacy_format( array $paramList ) {
+
+		$printouts = [];
+
+		foreach ( $paramList['printouts'] as $k => $request ) {
+
+			if ( !isset( $request['label'] ) ) {
+				continue;
+			}
+
+			$printRequest = $this->printRequestFactory->newFromText(
+				$request['label'],
+				$paramList['showMode']
+			);
+
+			if ( $printRequest === null ) {
+				continue;
+			}
+
+			foreach ( $request['params'] as $key => $value ) {
+				$printRequest->setParameter( $key, $value );
+			}
+
+			$printouts[] = $printRequest;
+		}
+
+		return [
+			$paramList['query'],
+			$paramList['parameters'],
+			$printouts
+		];
 	}
 
 	private function encodeEq ( $param ) {
