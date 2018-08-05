@@ -1,0 +1,94 @@
+{
+	"description": "Test `Special:Browse` limited value list",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/S0028/1",
+			"contents": "[[Has text::S1]], [[Has text::S2]], [[Has text::S3]], [[Has text::S4]], [[Has text::S5]], [[Has text::S6]]"
+		},
+		{
+			"page": "Example/S0028/2",
+			"contents": "[[Has page::Example/S0028/5]]"
+		},
+		{
+			"page": "Example/S0028/3",
+			"contents": "[[Has page::Example/S0028/5]]"
+		},
+		{
+			"page": "Example/S0028/4",
+			"contents": "[[Has page::Example/S0028/5]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (limited outgoing value list)",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0028/1",
+				"request-parameters": {
+					"output": "legacy",
+					"valuelistlimit-out": 5
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smwb-value\">S1",
+					"<span class=\"smwb-value\">S2",
+					"<span class=\"smwb-value\">S3",
+					"<span class=\"smwb-value\">S4",
+					"<span class=\"smwb-value\">S5"
+				],
+				"not-contain": [
+					"<span class=\"smwb-value\">S6"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (limited incoming value list)",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0028/5",
+				"request-parameters": {
+					"output": "legacy",
+					"valuelistlimit-in": 3
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smwb-ivalue\"><a href=\".*/Example/S0028/2\"",
+					"<span class=\"smwb-ivalue\"><a href=\".*/Example/S0028/3\""
+				],
+				"not-contain": [
+					"<span class=\"smwb-ivalue\"><a href=\".*/Example/S0028/4\""
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

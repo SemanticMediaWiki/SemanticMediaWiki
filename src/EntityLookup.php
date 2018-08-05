@@ -27,7 +27,7 @@ interface EntityLookup {
 	 * @since 2.5
 	 *
 	 * @param DIWikiPage $subject
-	 * @param string[]|bool $filter
+	 * @param RequestOptions|string[]|bool $filter
 	 *
 	 * @return SemanticData
 	 */

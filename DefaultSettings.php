@@ -435,6 +435,10 @@ return array(
 	# - `concept` (was $smwgConceptPagingLimit)
 	# - `property` (was $smwgPropertyPagingLimit)
 	#
+	# Special:Browse
+	# - `valuelist.outgoingt` outgoing value list count
+	# - `valuelist.incoming` incoming value list count
+	#
 	# @since 3.0
 	##
 	'smwgPagingLimit' => [
@@ -442,6 +446,12 @@ return array(
 		'concept' => 200,
 		'property' => 20,
 		'errorlist' => 25,
+
+		// Special:Browse
+		'browse' => [
+			'valuelist.outgoing' => 200,
+			'valuelist.incoming' => 20,
+		]
 	],
 	##
 

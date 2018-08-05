@@ -140,6 +140,12 @@ class SpecialPageProperty extends SpecialPage {
 			$requestOptions->setOffset( $options->get( 'offset' ) );
 			$requestOptions->sort = true;
 
+			// Restrict the request otherwise the entire SemanticData record
+			// is fetched which can in case of a subject with a large
+			// subobject/subpage pool create excessive DB queries that are not
+			// used for the display
+			$requestOptions->conditionConstraint = true;
+
 			$dataItem = $pagename !== '' ? $subject->getDataItem() : null;
 
 			$results = $applicationFactory->getStore()->getPropertyValues(

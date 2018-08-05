@@ -169,7 +169,19 @@ class SpecialBrowse extends SpecialPage {
 				'showAll' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INCOMING ),
 				'showGroup' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_GROUP ),
 				'showSort' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_SORTKEY ),
-				'api' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_USE_API )
+				'api' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_USE_API ),
+
+				// WebRequest::getGPCVal/getVal doesn't understand `.` as in
+				// `valuelistlimit.out`
+
+				'valuelistlimit.out' => $webRequest->getVal(
+					'valuelistlimit-out',
+					$settings->dotGet( 'smwgPagingLimit.browse.valuelist.outgoing' )
+				),
+				'valuelistlimit.in' => $webRequest->getVal(
+					'valuelistlimit-in',
+					$settings->dotGet( 'smwgPagingLimit.browse.valuelist.incoming' )
+				),
 			]
 		);
 
