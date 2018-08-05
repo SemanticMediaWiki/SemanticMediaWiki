@@ -74,7 +74,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'SMWSQLStore',
-			$instance->getAsString( 'sql_store' )
+			$instance->toString( 'sql_store' )
 		);
 	}
 
@@ -95,7 +95,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'SPARQLStore',
-			$instance->getAsString()
+			$instance->toString()
 		);
 	}
 
