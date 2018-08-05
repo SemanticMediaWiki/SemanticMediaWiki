@@ -127,7 +127,13 @@ class Message {
 			} else {
 				// Normalize arguments like "<strong>Expression error:
 				// Unrecognized word "yyyy".</strong>"
-				$encode[] = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+				$value = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+
+				// Internally encoded to circumvent the strip_tags which would remove
+				// <, > from values that represent a range
+				$value = str_replace( [ '%3C', '%3E' ], [ '>', '<' ], $value );
+
+				$encode[] = $value;
 			}
 		}
 

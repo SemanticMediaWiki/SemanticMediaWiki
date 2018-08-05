@@ -233,4 +233,179 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	/**
+	 * @dataProvider rangeProvider
+	 */
+	public function testCompareNumberRange( $allowsValue, $dataItem, $expected ) {
+
+		$property = $this->dataItemFactory->newDIProperty( 'InvalidAllowedValue' );
+
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getAllowedValues' )
+			->will( $this->returnValue( $allowsValue ) );
+
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getAllowedListValues' )
+			->will( $this->returnValue( array( ) ) );
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getProperty', 'getDataItem', 'getTypeID', 'getWikiValue' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->any() )
+			->method( 'getTypeID' )
+			->will( $this->returnValue( '_num' ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->will( $this->returnValue( $dataItem->getNumber() ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $property ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $dataItem ) );
+
+		$instance = new AllowsListConstraintValueValidator(
+			$this->allowsListValueParser,
+			$this->propertySpecificationLookup
+		);
+
+		$instance->validate( $dataValue );
+
+		$this->assertEquals(
+			$expected,
+			$dataValue->getErrors()
+		);
+	}
+
+	public function rangeProvider() {
+
+		$dataItemFactory = new DataItemFactory();
+
+		// Combinations do test that the order for a range and a discrete value
+		// doesn't matter
+
+		// Range
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '>1' ),
+				$dataItemFactory->newDIBlob( '<4' )
+			],
+			$dataItemFactory->newDINumber( 3 ),
+			[]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '>1' ),
+				$dataItemFactory->newDIBlob( '5' ),
+				$dataItemFactory->newDIBlob( '<4' )
+			],
+			$dataItemFactory->newDINumber( 5 ),
+			[]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '<4' ),
+				$dataItemFactory->newDIBlob( '>1' ),
+				$dataItemFactory->newDIBlob( '5' ),
+			],
+			$dataItemFactory->newDINumber( 5 ),
+			[]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '5' ),
+				$dataItemFactory->newDIBlob( '<4' ),
+				$dataItemFactory->newDIBlob( '>1' ),
+			],
+			$dataItemFactory->newDINumber( 5 ),
+			[]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '>1' ),
+				$dataItemFactory->newDIBlob( '<4' )
+			],
+			$dataItemFactory->newDINumber( 5 ),
+			[
+				'5aa541df92a089996f3e76a1362ef775' => '[8,"smw_notinenum","5","<4","InvalidAllowedValue"]'
+			]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '<4' ),
+				$dataItemFactory->newDIBlob( '>1' )
+			],
+			$dataItemFactory->newDINumber( 5 ),
+			[
+				'aee488f38352fe3e715089f7a9a39468' => '[8,"smw_notinenum","5","<4, >1","InvalidAllowedValue"]'
+			]
+		];
+
+		// Bounds
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '1...10' )
+			],
+			$dataItemFactory->newDINumber( 5 ),
+			[]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '1...10' )
+			],
+			$dataItemFactory->newDINumber( 10 ),
+			[]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '1...10' ),
+				$dataItemFactory->newDIBlob( '15' )
+			],
+			$dataItemFactory->newDINumber( 15 ),
+			[]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '1...10' ),
+				$dataItemFactory->newDIBlob( '50...100' )
+			],
+			$dataItemFactory->newDINumber( 100 ),
+			[]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '<200' ),
+				$dataItemFactory->newDIBlob( '1...10' ),
+				$dataItemFactory->newDIBlob( '15' ),
+				$dataItemFactory->newDIBlob( '>100' )
+			],
+			$dataItemFactory->newDINumber( 101 ),
+			[]
+		];
+
+		yield [
+			[
+				$dataItemFactory->newDIBlob( '1...10' )
+			],
+			$dataItemFactory->newDINumber( 15 ),
+			[
+				'3cc361d6e770df2d0d2d4cb130fd1acd' => '[8,"smw_notinenum","15","1...10","InvalidAllowedValue"]'
+			]
+		];
+	}
+
 }
