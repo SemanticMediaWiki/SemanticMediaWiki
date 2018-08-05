@@ -64,6 +64,17 @@ var smw = ( function ( $, undefined ) {
 		},
 
 		/**
+		 * @since 3.0
+		 */
+		load: function load( callback ) {
+			if ( document.readyState == 'complete' ) {
+				callback();
+			} else {
+				window.addEventListener( 'load', callback );
+			}
+		},
+
+		/**
 		 * Outputs a message
 		 *
 		 * @since 1.8

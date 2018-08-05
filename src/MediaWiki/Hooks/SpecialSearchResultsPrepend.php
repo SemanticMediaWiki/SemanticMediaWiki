@@ -52,8 +52,8 @@ class SpecialSearchResultsPrepend extends HookHandler {
 		$html = '';
 
 		if ( $this->specialSearch->getSearchEngine() instanceof SMWSearch ) {
-			$this->outputPage->addModuleStyles( 'ext.smw.special.search.styles');
-			$this->outputPage->addModules( 'ext.smw.special.search');
+			$this->outputPage->addModuleStyles( 'smw.special.search.styles');
+			$this->outputPage->addModules( 'smw.special.search');
 
 			$this->outputPage->addModuleStyles( HtmlModal::getModuleStyles() );
 			$this->outputPage->addModules( HtmlModal::getModules() );

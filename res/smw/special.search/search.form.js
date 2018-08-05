@@ -1,60 +1,11 @@
 /*!
- * This file is part of the Semantic MediaWiki
- *
- * @section LICENSE
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- * http://www.gnu.org/copyleft/gpl.html
- *
  * @license GNU GPL v2+
  * @since  3.0
  *
  * @author mwjames
  */
-( function( $, mw ) {
+( function( $, mw, smw ) {
 	'use strict';
-
-	/**
-	 * Support text input on Special:Search
-	 *
-	 * @since 3.0
-	 */
-	var search = function() {
-
-		var context = $( '#searchText > input' ),
-			isHidden = false;
-
-		if ( context.length ) {
-
-			// Disable the standard autocompleter as no meaningfull help can be
-			// expected on a [[ ... ]] input
-			context.on( 'keyup keypres focus', function( e ) {
-				var highlighter = context.parent().find( '.oo-ui-widget' ),
-					style = '';
-
-				if ( context.val() !== '' ) {
-					style = highlighter.attr( 'style' );
-					highlighter.hide();
-					isHidden = true;
-				} else if( isHidden ) {
-					highlighter.attr( 'style', style );
-					highlighter.show();
-					isHidden = false;
-				};
-			} );
-		}
-	};
 
 	/**
 	 * Support extended form in Special:Search
@@ -62,6 +13,8 @@
 	 * @since 3.0
 	 */
 	var form = function() {
+
+		var namespaces = [];
 
 		// Empty value, inject a hidden non visible char to allow to trigger
 		// the search without an input text
@@ -80,63 +33,6 @@
 		} );
 
 		$( document ).ready( function() {
-
-			/**
-			 * Copied from mediawiki.special.search.js in order to have the NS
-			 * button to work without #powersearch
-			 */
-			var $checkboxes = $( '#search input[id^=mw-search-ns]' );
-			var namespaces = [];
-
-			// JS loaded enable all fields
-			$( ".is-disabled" ).removeClass( 'is-disabled' );
-
-			$( this ).on( "click", "#mw-search-toggleall", function(){
-				$checkboxes.prop( 'checked', true );
-			} );
-
-			$( this ).on( "click", "#mw-search-toggleall", function(){
-				$checkboxes.prop( 'checked', true );
-			} );
-
-			$( this ).on( "click", "#mw-search-toggleall", function(){
-				$checkboxes.prop( 'checked', true );
-			} );
-
-			$( this ).on( "click", "#mw-search-togglenone", function(){
-				$checkboxes.prop( 'checked', false );
-			} );
-
-			// When saving settings, use the proper request method (POST instead of GET).
-			$( this ).on( "change", "#mw-search-powersearch-remember", function() {
-				this.form.method = this.checked ? 'post' : 'get';
-			} ).trigger( 'change' );
-
-			var nsList = $( '#ns-list' ).css( 'display' ) !== 'none' ? 'Hide': 'Show';
-
-			/**
-			 * Append hide/show button to the NS section
-			 */
-			$( '#smw-search-togglensview' ).append(
-				$( '<input>' ).attr( 'type', 'button' )
-					.attr( 'id', 'smw-togglensview' )
-					.prop( 'value', nsList )
-					.click( function ( event ) {
-
-						// We carry the hidden `ns-list` on a submit so the status
-						// of the prevsious acion is retained to either show or hide
-						// the section
-						if ( $( '#ns-list' ).css( 'display' ) !== 'none' ) {
-							$( 'input[name=ns-list]' ).attr( 'value', 1 );
-							event.target.value = 'Show';
-							$( '#ns-list' ).css( 'display', 'none' );
-						} else {
-							event.target.value = 'Hide';
-							$( 'input[name=ns-list]' ).attr( 'value', 0 );
-							$( '#ns-list' ).css( 'display', 'block' );
-						}
-					} )
-			)
 
 			/**
 			 * Open form ...
@@ -322,19 +218,10 @@
 		} );
 	};
 
-	function load( callback ) {
-		if ( document.readyState == 'complete' ) {
-			callback();
-		} else {
-			window.addEventListener( 'load', callback );
-		}
-	}
-
 	// Only load when it is Special:Search and the search type supports
 	// https://www.semantic-mediawiki.org/wiki/Help:SMWSearch
 	if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'Search' && mw.config.get( 'wgSearchType' ) == 'SMWSearch' ) {
-		load( search );
-		load( form );
+		smw.load( form );
 	};
 
-} )( jQuery, mediaWiki );
+} )( jQuery, mediaWiki, semanticMediaWiki );

@@ -261,8 +261,8 @@ return array(
 	),
 
 	// Special:Search
-	'ext.smw.special.search.styles' => $moduleTemplate + array(
-		'styles' => 'smw/special/ext.smw.special.search.css',
+	'smw.special.search.styles' => $moduleTemplate + array(
+		'styles' => 'smw/special.search/search.css',
 		'position' => 'top',
 		'targets' => array(
 			'mobile',
@@ -270,10 +270,17 @@ return array(
 		)
 	),
 
-	'ext.smw.special.search' => $moduleTemplate + array(
-		'scripts' => 'smw/special/ext.smw.special.search.js',
-		'styles' => 'smw/special/ext.smw.special.search.css',
+	'smw.special.search' => $moduleTemplate + array(
+		'scripts' => [
+			'smw/special.search/search.namespace.js',
+			'smw/special.search/search.input.js',
+			'smw/special.search/search.form.js'
+		],
+		'styles' => 'smw/special.search/search.css',
 		'position' => 'top',
+		'dependencies' => array(
+			'ext.smw'
+		),
 		'targets' => array(
 			'mobile',
 			'desktop'

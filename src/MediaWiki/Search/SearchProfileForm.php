@@ -136,10 +136,10 @@ class SearchProfileForm {
 
 		$outputPage = $context->getOutput();
 
-		$outputPage->addModuleStyles( 'ext.smw.special.search.styles' );
+		$outputPage->addModuleStyles( 'smw.special.search.styles' );
 		$outputPage->addModules(
 			[
-				'ext.smw.special.search',
+				'smw.special.search',
 				'ext.smw.tooltip',
 				'ext.smw.autocomplete.property'
 			]
