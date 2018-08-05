@@ -50,9 +50,9 @@ class AllowsListValue extends StringValue {
 			foreach ( $allowsListValueParser->getErrors() as $error ) {
 				$this->addErrorMsg( $error );
 			}
+		} else {
+			parent::parseUserValue( $value );
 		}
-
-		parent::parseUserValue( $value );
 	}
 
 	/**
