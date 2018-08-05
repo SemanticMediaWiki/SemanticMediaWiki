@@ -84,13 +84,14 @@ class RebuildData extends \Maintenance {
 								'May leave the wiki temporarily incomplete.', false );
 
 		$this->addOption( 'v', 'Be verbose about the progress', false );
-		$this->addOption( 'categories', 'Will refresh only category pages (and other explicitly named namespaces)', false, false, 'c' );
-		$this->addOption( 'p', 'Will refresh only property pages (and other explicitly named namespaces)', false );
+		$this->addOption( 'p', 'Only refresh property pages (and other explicitly named namespaces)', false );
+		$this->addOption( 'categories', 'Only refresh category pages (and other explicitly named namespaces)', false, false, 'c' );
 		$this->addOption( 'redirects', 'Only refresh redirect pages', false );
+		$this->addOption( 'dispose-outdated', 'Only Remove outdated marked entities (including pending references).', false );
 
 		$this->addOption( 'skip-properties', 'Skip the default properties rebuild (only recommended when successive build steps are used)', false );
 		$this->addOption( 'shallow-update', 'Skip processing of entitites that compare to the last known revision date', false );
-		$this->addOption( 'with-property-statistics', 'Execute `rebuildPropertyStatistics` after the `rebuildData` run has finished.', false );
+		$this->addOption( 'property-statistics', 'Execute `rebuildPropertyStatistics` after the `rebuildData` run has finished.', false );
 
 		$this->addOption( 'ignore-exceptions', 'Ignore exceptions and log exception to a file', false );
 		$this->addOption( 'exception-log', 'Exception log file location (e.g. /tmp/logs/)', false, true );
@@ -163,7 +164,7 @@ class RebuildData extends \Maintenance {
 			$dataRebuilder->rebuild()
 		);
 
-		if ( $result && $this->hasOption( 'with-property-statistics' ) ) {
+		if ( $result && $this->hasOption( 'property-statistics' ) ) {
 			$rebuildPropertyStatistics = $maintenanceFactory->newRebuildPropertyStatistics();
 			$rebuildPropertyStatistics->execute();
 		}
