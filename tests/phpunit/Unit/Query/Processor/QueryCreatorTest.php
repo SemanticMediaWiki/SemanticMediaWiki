@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Query;
+namespace SMW\Tests\Query\Processor;
 
 use SMW\ApplicationFactory;
-use SMW\Query\QueryCreator;
+use SMW\Query\Processor\QueryCreator;
 
 /**
- * @covers SMW\Query\QueryCreator
+ * @covers SMW\Query\Processor\QueryCreator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -23,7 +23,7 @@ class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\Query\QueryCreator',
+			QueryCreator::class,
 			new QueryCreator( $queryFactory )
 		);
 	}
@@ -31,13 +31,13 @@ class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider queryStringProvider
 	 */
-	public function testCreate( $queryString, $configuration, $expected ) {
+	public function testCreate( $queryString, $params, $expected ) {
 
 		$instance = new QueryCreator(
 			ApplicationFactory::getInstance()->getQueryFactory()
 		);
 
-		$query = $instance->setConfiguration( $configuration )->create( $queryString );
+		$query = $instance->create( $queryString, $params );
 
 		$this->assertInstanceOf(
 			'\SMWQuery',
@@ -64,8 +64,8 @@ class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'[[Foo::Bar]]',
 			array(
-				'querySource' => 'foobar',
-				'mainLabel'   => 'Some'
+				'source'    => 'foobar',
+				'mainLabel' => 'Some'
 			),
 			'[[Foo::Bar]]|limit=50|offset=0|mainlabel=Some|source=foobar'
 		);

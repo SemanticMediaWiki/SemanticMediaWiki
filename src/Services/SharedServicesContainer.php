@@ -40,7 +40,6 @@ use SMW\Protection\EditProtectionUpdater;
 use SMW\Protection\ProtectionValidator;
 use SMW\Query\QuerySourceFactory;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
-use SMW\QueryFactory;
 use SMW\Rule\RuleFactory;
 use SMW\Settings;
 use SMW\StoreFactory;
@@ -49,6 +48,9 @@ use SMW\Utils\JsonSchemaValidator;
 use SMW\Utils\TempFile;
 use SMW\Elastic\ElasticFactory;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\QueryFactory;
+use SMW\Query\Processor\QueryCreator;
+use SMW\Query\Processor\ParamListProcessor;
 
 /**
  * @license GNU GPL v2+
@@ -307,6 +309,43 @@ class SharedServicesContainer implements CallbackContainer {
 			return new ElasticFactory();
 		} );
 
+		/**
+		 * @var Creator
+		 */
+		$containerBuilder->registerCallback( 'QueryCreator', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'QueryCreator', QueryCreator::class );
+
+			$settings = $containerBuilder->singleton( 'Settings' );
+
+			$queryCreator = new QueryCreator(
+				$containerBuilder->singleton( 'QueryFactory' ),
+				$settings->get( 'smwgQDefaultNamespaces' ),
+				$settings->get( 'smwgQDefaultLimit' )
+			);
+
+			$queryCreator->setQFeatures(
+				$settings->get( 'smwgQFeatures' )
+			);
+
+			$queryCreator->setQConceptFeatures(
+				$settings->get( 'smwgQConceptFeatures' )
+			);
+
+			return $queryCreator;
+		} );
+
+		/**
+		 * @var ParamListProcessor
+		 */
+		$containerBuilder->registerCallback( 'ParamListProcessor', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'ParamListProcessor', ParamListProcessor::class );
+
+			$paramListProcessor = new ParamListProcessor(
+				//$containerBuilder->singleton( 'PrintRequestFactory' )
+			);
+
+			return $paramListProcessor;
+		} );
 	}
 
 	private function registerCallableFactories( $containerBuilder ) {

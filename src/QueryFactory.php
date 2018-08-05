@@ -138,28 +138,4 @@ class QueryFactory {
 		return $queryResult;
 	}
 
-	/**
-	 * @since 2.5
-	 *
-	 * @return QueryCreator
-	 */
-	public function newQueryCreator() {
-
-		$queryCreator = new QueryCreator(
-			$this,
-			$GLOBALS['smwgQDefaultNamespaces'],
-			$GLOBALS['smwgQDefaultLimit']
-		);
-
-		$queryCreator->setQFeatures(
-			$GLOBALS['smwgQFeatures']
-		);
-
-		$queryCreator->setQConceptFeatures(
-			$GLOBALS['smwgQConceptFeatures']
-		);
-
-		return $queryCreator;
-	}
-
 }
