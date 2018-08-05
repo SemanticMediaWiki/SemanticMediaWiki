@@ -87,6 +87,20 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewTranslationPropertyAnnotator() {
+
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\PropertyAnnotators\TranslationPropertyAnnotator',
+			$instance->newTranslationPropertyAnnotator( $propertyAnnotator, [] )
+		);
+	}
+
 	public function testNewCategoryPropertyAnnotator() {
 
 		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )

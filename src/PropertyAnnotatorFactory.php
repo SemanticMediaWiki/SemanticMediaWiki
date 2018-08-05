@@ -12,6 +12,8 @@ use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
 use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
 use SMW\PropertyAnnotators\RuleDefinitionPropertyAnnotator;
 use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
+use SMW\PropertyAnnotators\TranslationPropertyAnnotator;
+use SMW\Store;
 use SMW\Rule\RuleDefinition;
 use Title;
 
@@ -124,6 +126,28 @@ class PropertyAnnotatorFactory {
 			$propertyAnnotator,
 			$sortkey
 		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param SemanticData $semanticData
+	 * @param arrat|null $translation
+	 *
+	 * @return TranslationPropertyAnnotator
+	 */
+	public function newTranslationPropertyAnnotator( PropertyAnnotator $propertyAnnotator, $translation ) {
+
+		$translationPropertyAnnotator = new TranslationPropertyAnnotator(
+			$propertyAnnotator,
+			$translation
+		);
+
+		$translationPropertyAnnotator->setPredefinedPropertyList(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgPageSpecialProperties' )
+		);
+
+		return $translationPropertyAnnotator;
 	}
 
 	/**

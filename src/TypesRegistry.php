@@ -226,6 +226,11 @@ class TypesRegistry {
 			'_CONT_TITLE' => [ '_txt', true, true, false ], // "Content title"
 			'_CONT_DATE' => [ '_dat', true, true, false ], // "Content date",
 			'_CONT_KEYW' => [ '_keyw', true, true, false ], // "Content keyword"
+
+			// Translation
+			'_TRANS' => [ '__sob', false, false, false ], // "Translation"
+			'_TRANS_SOURCE' => [ '_wpg', true, false, false ], // "Translation source"
+			'_TRANS_GROUP' => [ '_txt', true, false, false ], // "Translation group"
 		];
 	}
 
