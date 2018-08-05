@@ -46,21 +46,21 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 
 		$profileAnnotatorFactory = ApplicationFactory::getInstance()->getQueryFactory()->newProfileAnnotatorFactory();
 
-		$combinedProfileAnnotator = $profileAnnotatorFactory->newCombinedProfileAnnotator(
+		$profileAnnotator = $profileAnnotatorFactory->newProfileAnnotator(
 			$query,
 			$formattedParams['format']->getValue()
 		);
 
-		$combinedProfileAnnotator->addAnnotation();
+		$profileAnnotator->addAnnotation();
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
-			$combinedProfileAnnotator->getSemanticData()
+			$profileAnnotator->getSemanticData()
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$combinedProfileAnnotator->getSemanticData()
+			$profileAnnotator->getSemanticData()
 		);
 	}
 
