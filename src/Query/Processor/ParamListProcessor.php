@@ -73,6 +73,7 @@ class ParamListProcessor {
 
 		$serialization = [
 			'showMode'   => $showMode,
+			'templateArgs' => false,
 			'query'      => '',
 			'this'       => [],
 			'printouts'  => [],
@@ -141,9 +142,15 @@ class ParamListProcessor {
 				continue;
 			}
 
+			// #502
+			// In case of template arguments suppress the showMode to allow for
+			// labels to be generated and to be transfered to the invoked template
+			// otherwise labels will be empty and not be accessible in a template
+			$showMode = $paramList['templateArgs'] ? false : $paramList['showMode'];
+
 			$printRequest = $this->printRequestFactory->newFromText(
 				$request['label'],
-				$paramList['showMode']
+				$showMode
 			);
 
 			if ( $printRequest === null ) {
@@ -231,6 +238,10 @@ class ParamListProcessor {
 
 		if ( is_array( $parts ) && count( $parts ) >= 2 ) {
 			$p = strtolower( trim( $parts[0] ) );
+
+			if ( $p === 'template' ) {
+				$serialization['templateArgs'] = true;
+			}
 
 			// Don't trim here, some parameters care for " "
 			//
