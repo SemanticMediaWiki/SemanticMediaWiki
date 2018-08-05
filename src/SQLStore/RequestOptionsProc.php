@@ -283,6 +283,12 @@ class RequestOptionsProc {
 
 	private static function applyLimitRestriction( $requestOptions, &$result ) {
 
+		// In case of a `conditionConstraint` the restriction is set forth by the
+		// SELECT statement.
+		if ( isset( $requestOptions->conditionConstraint ) ) {
+			return $result;
+		}
+
 		if ( $requestOptions->limit > 0 ) {
 			return $result = array_slice( $result, $requestOptions->offset, $requestOptions->limit );
 		}

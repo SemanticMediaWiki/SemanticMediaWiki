@@ -227,6 +227,17 @@ class CachingSemanticDataLookup {
 		return $this->fetchFromCache( $id, $dataItem, $propertyTableDef );
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @return StubSemanticData
+	 */
+	public function newStubSemanticData( DIWikiPage $subject ) {
+		return $this->semanticDataLookup->newStubSemanticData( $subject );
+	}
+
 	private function fetchFromCache( $id, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef ) {
 
 		// Do not clear the cache when called recursively.

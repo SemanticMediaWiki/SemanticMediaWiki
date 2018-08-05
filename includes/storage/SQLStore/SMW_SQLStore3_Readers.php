@@ -93,13 +93,21 @@ class SMWSQLStore3Readers {
 		}
 
 		$propertyTableHashes = $this->store->smwIds->getPropertyTableHashes( $sid );
+		$opts = null;
+		$semanticData = null;
+
+		if ( $filter instanceof SMWRequestOptions ) {
+			$semanticData = $this->semanticDataLookup->newStubSemanticData( $subject );
+		}
 
 		foreach ( $this->store->getPropertyTables() as $tid => $proptable ) {
 			if ( !array_key_exists( $proptable->getName(), $propertyTableHashes ) ) {
 				continue;
 			}
 
-			if ( $filter !== false ) {
+			if ( $filter instanceof SMWRequestOptions ) {
+				$opts = $filter;
+			} elseif ( $filter !== false ) {
 				$relevant = false;
 				foreach ( $filter as $typeId ) {
 					$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
@@ -113,24 +121,30 @@ class SMWSQLStore3Readers {
 				}
 			}
 
-			$this->semanticDataLookup->getSemanticDataFromTable( $sid, $subject, $proptable );
+			$data = $this->semanticDataLookup->getSemanticDataFromTable( $sid, $subject, $proptable, $opts );
+
+			if ( $semanticData !== null ) {
+				$semanticData->importDataFrom( $data );
+			}
 		}
 
-		// Note: the sortkey is always set but belongs to no property table,
-		// hence no entry in $this->store->m_sdstate[$sid] is made.
-		$this->semanticDataLookup->lockCache();
-		$this->semanticDataLookup->initLookupCache( $sid, $subject );
+		if ( $semanticData === null ) {
+			// Note: the sortkey is always set but belongs to no property table,
+			// hence no entry in $this->store->m_sdstate[$sid] is made.
+			$this->semanticDataLookup->lockCache();
+			$this->semanticDataLookup->initLookupCache( $sid, $subject );
 
-		$semanticData = $this->semanticDataLookup->getSemanticDataById(
-			$sid
-		);
+			$semanticData = $this->semanticDataLookup->getSemanticDataById(
+				$sid
+			);
+
+			$this->semanticDataLookup->unlockCache();
+		}
 
 		// Avoid adding a sortkey for an already extended stub
 		if ( !$semanticData->hasProperty( new DIProperty( '_SKEY' ) ) ) {
 			$semanticData->addPropertyStubValue( '_SKEY', array( '', $sortKey ) );
 		}
-
-		$this->semanticDataLookup->unlockCache();
 
 		$this->store->smwIds->warmUpCache(
 			$semanticData->getProperties()

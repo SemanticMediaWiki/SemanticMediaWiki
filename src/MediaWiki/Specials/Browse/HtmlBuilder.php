@@ -57,6 +57,13 @@ class HtmlBuilder {
 	private $incomingValuesCount = 8;
 
 	/**
+	 * How many outgoing values should be asked for
+	 *
+	 * @var integer
+	 */
+	private $outgoingValuesCount = 200;
+
+	/**
 	 * How many incoming properties should be asked for
 	 * @var integer
 	 */
@@ -118,13 +125,13 @@ class HtmlBuilder {
 	 *
 	 * @return mixed
 	 */
-	public function getOption( $key ) {
+	public function getOption( $key, $default = null ) {
 
 		if ( isset( $this->options[$key] ) ) {
 			return $this->options[$key];
 		}
 
-		return null;
+		return $default;
 	}
 
 	/**
@@ -198,8 +205,10 @@ class HtmlBuilder {
 			$this->offset = $offset;
 		}
 
+		$this->outgoingValuesCount = $this->getOption( 'valuelistlimit.out', 200 );
+
 		if ( $this->getOption( 'showAll' ) ) {
-			$this->incomingValuesCount = 21;
+			$this->incomingValuesCount = $this->getOption( 'valuelistlimit.in', 21 );
 			$this->incomingPropertiesCount = - 1;
 			$this->showoutgoing = true;
 			$this->showincoming = true;
@@ -280,8 +289,19 @@ class HtmlBuilder {
 		$html .= $this->displayActions();
 
 		if ( $this->showoutgoing ) {
+
+			$requestOptions = new RequestOptions();
+			$requestOptions->setLimit( $this->outgoingValuesCount + 1 );
+			$requestOptions->sort = true;
+
+			// Restrict the request otherwise the entire SemanticData record
+			// is fetched which can in case of a subject with a large
+			// subobject/subpage pool create excessive DB queries
+			$requestOptions->conditionConstraint = true;
+
 			$semanticData = $this->store->getSemanticData(
-				$this->dataValue->getDataItem()
+				$this->dataValue->getDataItem(),
+				$requestOptions
 			);
 
 			$html .= $this->displayData( $semanticData, $leftside );
@@ -504,13 +524,19 @@ class HtmlBuilder {
 
 			if ( $incoming && ( count( $values ) >= $this->incomingValuesCount ) ) {
 				$moreIncoming = true;
+				$moreOutgoing = false;
+				array_pop( $values );
+			} elseif ( !$incoming && ( count( $values ) >= $this->outgoingValuesCount ) ) {
+				$moreIncoming = false;
+				$moreOutgoing = true;
 				array_pop( $values );
 			} else {
 				$moreIncoming = false;
+				$moreOutgoing = false;
 			}
 
 			$list = [];
-			$propertyValue = '';
+			$value_html = '';
 
 			foreach ( $values as $dataItem ) {
 				if ( $incoming ) {
@@ -529,14 +555,14 @@ class HtmlBuilder {
 			}
 
 			$last = array_pop( $list );
-			$propertyValue = implode( $comma, $list );
+			$value_html = implode( $comma, $list );
 
-			if ( $moreIncoming && $last !== '' ) {
-				$propertyValue .= $comma . $last;
+			if ( ( $moreOutgoing || $moreIncoming ) && $last !== '' ) {
+				$value_html .= $comma . $last;
 			} elseif( $list !== [] && $last !== '' ) {
-				$propertyValue .= '&nbsp;' . $and . '&nbsp;' . $last;
+				$value_html .= '&nbsp;' . $and . '&nbsp;' . $last;
 			} else {
-				$propertyValue .= $last;
+				$value_html .= $last;
 			}
 
 			$hook = false;
@@ -549,13 +575,13 @@ class HtmlBuilder {
 					[
 						$diProperty,
 						$contextPage,
-						&$propertyValue
+						&$value_html
 					]
 				);
 			}
 
 			if ( $hook ) {
-				$propertyValue .= Html::element(
+				$value_html .= Html::element(
 					'a',
 					array(
 						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
@@ -567,8 +593,21 @@ class HtmlBuilder {
 				);
 			}
 
+			if ( $moreOutgoing ) {
+				$value_html .= Html::element(
+					'a',
+					array(
+						'href' => \SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( array(
+							 'type' => $dvProperty->getWikiValue(),
+							 'from' => $this->dataValue->getWikiValue()
+						) )
+					),
+					wfMessage( 'smw_browse_more' )->text()
+				);
+			}
+
 			$body = HtmlDivTable::cell(
-				$propertyValue,
+				$value_html,
 				[
 					"class" => 'smwb-cell smwb-propval'
 				]
