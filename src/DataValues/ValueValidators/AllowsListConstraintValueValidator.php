@@ -7,6 +7,7 @@ use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\PropertySpecificationLookup;
 use SMW\Message;
 use SMWDataValue as DataValue;
+use SMWNumberValue as NumberValue;
 use SMWDIBlob as DIBlob;
 
 /**
@@ -124,6 +125,8 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			array_keys( $allowedValueList ), 0 , 10 )
 		);
 
+		$allowedValueList = str_replace( [ '>', '<' ], [ '%3C', '%3E' ], $allowedValueList );
+
 		$dataValue->addErrorMsg(
 			array(
 				'smw_notinenum',
@@ -144,12 +147,19 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		}
 
 		$hash = $dataValue->getDataItem()->getHash();
+		$value = $dataValue->getWikiValue();
 
 		$testDataValue = ApplicationFactory::getInstance()->getDataValueFactory()->newTypeIDValue(
 			$dataValue->getTypeID()
 		);
 
 		$isAllowed = false;
+
+		// Track a range related constraint which can be used as single
+		// `[[Allows value::>0]]` assignment or as conjunctive compound as in
+		// `[[Allows value::>0]] [[Allows value::<100]]` and can appear in any
+		// order
+		$range = null;
 
 		foreach ( $allowedValues as $allowedValue ) {
 
@@ -160,6 +170,31 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			if ( !$allowedValue instanceof DIBlob ) {
 				continue;
 			}
+
+			if ( $testDataValue instanceof NumberValue ) {
+
+				// Check [[Allows value::>0]]
+				if ( $this->check_range( '>', $value, $allowedValue, $range, $isAllowed, $allowedValueList ) ) {
+					continue;
+				}
+
+				// Check [[Allows value::<100]]
+				if ( $this->check_range( '<', $value, $allowedValue, $range, $isAllowed, $allowedValueList ) ) {
+					continue;
+				}
+
+				// Check [[Allows value::1...100]]
+				if ( $this->check_bounds( $value, $allowedValue, $isAllowed, $allowedValueList ) ) {
+					break;
+				}
+			}
+
+			// For a time based range one could use the JD date and simply apply
+			// a >, < comparison on something like `[[Allows value::>1970]]
+			// [[Allows value::<31.12.2100]]`
+
+			// String range based constraints seems to make not much sense for
+			// something like `[[Allows value::>abc]] [[Allows value::<def]]`
 
 			$testDataValue->setUserValue( $allowedValue->getString() );
 
@@ -173,6 +208,52 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		}
 
 		return $isAllowed;
+	}
+
+	private function check_range( $exp, $value, $allowedValue, &$range, &$isAllowed, &$allowedValueList ) {
+
+		$v = $allowedValue->getString();
+
+		// If a previous range comparison failed then bail-out!
+		if ( $v{0} === $exp && ( $range === null || $range ) ) {
+			$v = intval( trim( substr( $v, 1 ) ) );
+
+			if ( $exp === '>' && $value > $v ) {
+				$isAllowed = true;
+			} elseif ( $exp === '<' && $value < $v ) {
+				$isAllowed = true;
+			} else {
+				$isAllowed = false;
+				$range = false;
+			}
+
+			if ( $range === false ) {
+				$allowedValueList[$allowedValue->getString()] = true;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private function check_bounds( $value, $allowedValue, &$isAllowed, &$allowedValueList ) {
+
+		$v = $allowedValue->getString();
+
+		if ( strpos( $v, '...' ) === false ) {
+			return false;
+		}
+
+		list( $lower, $upper ) = explode( '...', $v );
+
+		if ( $value >= intval( $lower ) && $value <= intval( $upper ) ) {
+			return $isAllowed = true;
+		} else {
+			$allowedValueList[$allowedValue->getString()] = true;
+		}
+
+		return false;
 	}
 
 }
