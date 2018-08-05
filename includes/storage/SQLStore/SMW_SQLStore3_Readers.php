@@ -43,6 +43,11 @@ class SMWSQLStore3Readers {
 	private $propertySubjectsLookup;
 
 	/**
+	 * @var PropertiesLookup
+	 */
+	private $propertiesLookup;
+
+	/**
 	 * @var SemanticDataLookup
 	 */
 	private $semanticDataLookup;
@@ -52,6 +57,7 @@ class SMWSQLStore3Readers {
 		$this->factory = $factory;
 		$this->traversalPropertyLookup = $this->factory->newTraversalPropertyLookup();
 		$this->propertySubjectsLookup = $this->factory->newPropertySubjectsLookup();
+		$this->propertiesLookup = $this->factory->newPropertiesLookup();
 		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();
 	}
 
@@ -376,6 +382,7 @@ class SMWSQLStore3Readers {
 	 * @return SMWDataItem[]
 	 */
 	public function getProperties( DIWikiPage $subject, SMWRequestOptions $requestOptions = null ) {
+
 		$sid = $this->store->smwIds->getSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
@@ -383,61 +390,38 @@ class SMWSQLStore3Readers {
 			$subject->getSubobjectName()
 		);
 
-		if ( $sid == 0 ) { // no id, no page, no properties
-			return array();
+		// no id, no page, no properties
+		if ( $sid == 0 ) {
+			return [];
 		}
 
-		$db = $this->store->getConnection();
-		$result = array();
+		$subject->setId( $sid );
+		$result = [];
 
-		// potentially need to get more results, since options apply to union
-		if ( $requestOptions !== null ) {
-			$suboptions = clone $requestOptions;
-			$suboptions->limit = $requestOptions->limit + $requestOptions->offset;
-			$suboptions->offset = 0;
-		} else {
-			$suboptions = null;
-		}
+		// Potentially need to get more results, since options apply to union
+		$lookupOptions = $this->propertiesLookup->newRequestOptions(
+			$requestOptions
+		);
 
-		foreach ( $this->store->getPropertyTables() as $propertyTable ) {
-			if ( $propertyTable->usesIdSubject() ) {
-				$where = 's_id=' . $db->addQuotes( $sid );
-			} elseif ( $subject->getInterwiki() === '' ) {
-				$where = 's_title=' . $db->addQuotes( $subject->getDBkey() ) . ' AND s_namespace=' . $db->addQuotes( $subject->getNamespace() );
-			} else { // subjects with non-empty interwiki cannot have properties
+		$propertyTableHashes = $this->store->smwIds->getPropertyTableHashes( $sid );
+
+		foreach ( $this->store->getPropertyTables() as $tid => $propertyTable ) {
+
+			if ( !array_key_exists( $propertyTable->getName(), $propertyTableHashes ) ) {
 				continue;
 			}
 
-			if ( $propertyTable->isFixedPropertyTable() ) {
-				// just check if subject occurs in table
-				$res = $db->select(
-					$propertyTable->getName(),
-					'*',
-					$where,
-					__METHOD__,
-					array( 'LIMIT' => 1 )
+			$res = $this->propertiesLookup->fetchFromTable(
+				$subject,
+				$propertyTable,
+				$lookupOptions
+			);
+
+			foreach ( $res as $row ) {
+				$result[] = new DIProperty(
+					isset( $row->smw_title ) ? $row->smw_title : $row
 				);
-
-				if ( $db->numRows( $res ) > 0 ) {
-					$result[] = new SMW\DIProperty( $propertyTable->getFixedProperty() );
-				}
-
-
-			} else {
-				// select all properties
-				$from = $db->tableName( $propertyTable->getName() );
-
-				$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " ON smw_id=p_id";
-				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
-					// (select sortkey since it might be used in ordering (needed by Postgres))
-					$where . $this->store->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey' ),
-					__METHOD__, $this->store->getSQLOptions( $suboptions, 'smw_sortkey' ) );
-				foreach ( $res as $row ) {
-					$result[] = new SMW\DIProperty( $row->smw_title );
-				}
 			}
-
-			$db->freeResult( $res );
 		}
 
 		// apply options to overall result

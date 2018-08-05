@@ -166,7 +166,8 @@ class Query {
 			foreach ( $join[1] as $table => $value ) {
 
 				if ( is_string( $table ) ) {
-					$value = $this->connection->tableName( $table ) . " AS $value";
+					$value = $value{0} . $value{1} === 'ON' ? "$value" : "AS $value";
+					$value = $this->connection->tableName( $table ) . " $value";
 				}
 
 				$joins[] = $value;
@@ -293,6 +294,17 @@ class Query {
 		$this->index = 0;
 
 		return $statement;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $fname
+	 *
+	 * @return iterable
+	 */
+	public function execute( $fname ) {
+		return $this->connection->query( $this, $fname );
 	}
 
 	private function sql() {
