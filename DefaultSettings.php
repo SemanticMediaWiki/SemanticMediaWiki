@@ -866,7 +866,7 @@ return array(
 	#
 	# @since 1.7
 	##
-	'smwgPageSpecialProperties' => array( '_MDAT', '_TRANS' ),
+	'smwgPageSpecialProperties' => array( '_MDAT' ),
 	##
 
 	###
