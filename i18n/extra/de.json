@@ -104,7 +104,10 @@
             "_CONT_LANG": "Inhaltssprache",
             "_CONT_TITLE": "Inhaltstitel",
             "_CONT_DATE": "Inhaltsdatum",
-            "_CONT_KEYW": "Inhaltsstichwort"
+            "_CONT_KEYW": "Inhaltsstichwort",
+            "_TRANS": "Übersetzung",
+            "_TRANS_SOURCE": "Übersetzungsquelle",
+            "_TRANS_GROUP": "Übersetzungsgruppe"
         },
         "aliases": {
             "Hat Datentyp": "_TYPE",
@@ -141,7 +144,10 @@
             "Hat Inhaltssprache": "_CONT_LANG",
             "Hat Inhaltstitel": "_CONT_TITLE",
             "Hat Inhaltsdatum": "_CONT_DATE",
-            "Hat Inhaltsstichwort": "_CONT_KEYW"
+            "Hat Inhaltsstichwort": "_CONT_KEYW",
+            "Hat Übersetzung": "_TRANS",
+            "Hat Übersetzungsquelle": "_TRANS_SOURCE",
+            "Hat Übersetzungsgruppe": "_TRANS_GROUP"
         }
     },
     "date": {
