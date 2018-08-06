@@ -566,7 +566,6 @@
 	"apihelp-browsebysubject-summary": "Mòdul API per recuperar informació d'un tema.",
 	"apihelp-smwtask-summary": "Mòdul API per executar tasques relacionades amb Semantic MediaWiki.",
 	"apihelp-smwbrowse-summary": "Mòdul API per permetre la navegació i les activitats de cerca d'entitats mantingudes de Semantic MediaWiki.",
-	"smw-api-smwbrowse-invalid-parameters": "Els format dels paràmetres no és vàlid. S'esperava un format JSON vàlid.",
 	"smw-property-reserved-category": "Categoria",
 	"smw-category": "Categoria",
 	"smw-datavalue-uri-invalid-scheme": "No s'ha llistat «$1» com un esquema URI vàlid.",

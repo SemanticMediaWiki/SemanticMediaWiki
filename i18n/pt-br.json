@@ -172,6 +172,7 @@
 	"smw-propertylist-count": "Exibindo $1 {{PLURAL:$1|entidade relacionada|entidades relacionadas}}.",
 	"smw-propertylist-count-with-restricted-note": "Exibindo $1 {{PLURAL:$1|entidade relacionada|entidades relacionadas}} (um número maior existe, mas a exibição está restrita à \"$2\").",
 	"smw-propertylist-count-more-available": "Exibindo $1 {{PLURAL:$1|entidade relacionada|entidades relacionadas}} (há mais disponíveis).",
+	"specialpages-group-smw_group": "Semantic MediaWiki",
 	"exportrdf": "Exportar páginas para RDF",
 	"smw_exportrdf_docu": "Esta página permite que você obtenha dados de uma página no formato RDF.\nPara exportar páginas, introduza os seus títulos na caixa de texto abaixo, um título por linha.",
 	"smw_exportrdf_recursive": "Exportar recursivamente todas as páginas relacionadas.\nNote que o resultado pode ser volumoso!",
@@ -417,6 +418,8 @@
 	"smw-admin-supplementary-elastic-status-replication": "Status da replicação",
 	"smw-admin-supplementary-elastic-status-last-active-replication": "Última replicação ativa: $1",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Intervalo de atualização: $1",
+	"smw-admin-supplementary-elastic-status-recovery-job-count": "[https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/smw.elasticIndexerRecovery Recovery job] backlog: $1 (estimativa)",
+	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "[https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/smw.elasticFileIngest File injest job] backlog: $1 (estimativa)",
 	"smw-list-count": "A lista contém $1 {{PLURAL:$1|item|itens}}.",
 	"smw-list-count-from-cache": "A lista contém $1 {{PLURAL:$1|item e foi obtido|itens e foram obtidos}} do cache (UTC: $2).",
 	"smw-property-label-uniqueness": "O nome \"$1\" foi correspondido por pelo menos uma outra representação de propriedade. Por favor, consulte a [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness página de ajuda] sobre como resolver este problema.",
@@ -718,9 +721,9 @@
 	"apihelp-browsebyproperty-summary": "Módulo da API para obter informação sobre uma propriedade ou lista de propriedades.",
 	"apihelp-browsebysubject-summary": "Módulo da API para obter informação sobre um sujeito.",
 	"apihelp-smwtask-summary": "Módulo da API para executar tarefas relacionadas ao Semantic MediaWiki.",
-	"apihelp-smwbrowse-summary": "Módulo de API para suportar atividades de navegação e pesquisa para entidades mantidas pelo Semantic MediaWiki.",
+	"apihelp-smwbrowse-summary": "Módulo de API para dar suporte a atividades de navegação para diferentes tipos de entidade na Semantic MediaWiki.",
 	"apihelp-ask-parameter-api-version": "Formatação da saída:\n;2:Formato compatível com versões anteriores, usando {} para a lista de resultados.\n;3:Formato experimental, usando [] como lista de resultados.",
-	"smw-api-smwbrowse-invalid-parameters": "O formato dos parâmetros é inválido; era esperado um formato JSON válido.",
+	"smw-api-invalid-parameters": "Parâmetros inválidos, \"$1\"",
 	"smw-parser-recursion-level-exceeded": "O nível de $1 recursões foi excedido durante um processo de análise sintática. É sugerido que valide a estrutura de predefinições, ou que ajuste o parâmetro de configuração <code>$maxRecursionDepth</code> se necessário.",
 	"smw-property-page-list-count": "Exibindo $1 {{PLURAL:$1|página que utiliza|páginas que utilizam}} esta propriedade.",
 	"smw-property-page-list-search-count": "A apresentar {{PLURAL:$1|uma página que usa|$1 páginas que usam}} esta propriedade com uma correspondência de valor \"$2\".",
@@ -761,5 +764,6 @@
 	"smw-remote-source-disabled": "A fonte \"$1\" desabilitou o suporte às solicitações remotas!",
 	"smw-remote-source-unmatched-id": "A fonte '''$1''' não corresponde a uma versão do Semantic MediaWiki que suporte uma solicitação remota.",
 	"smw-remote-request-note": "O resultado é buscado a partir da fonte remota '''$1''' e é provável que o conteúdo gerado contenha informações que não estão disponíveis no wiki atual.",
-	"smw-remote-request-note-cached": "O resultado é '''armazenado em cache''' a partir da fonte remota '''$1''' e é provável que o conteúdo gerado contenha informações que não estão disponíveis no wiki atual."
+	"smw-remote-request-note-cached": "O resultado é '''armazenado em cache''' a partir da fonte remota '''$1''' e é provável que o conteúdo gerado contenha informações que não estão disponíveis no wiki atual.",
+	"smw-parameter-missing": "O parâmetro \"$1\" está ausente."
 }

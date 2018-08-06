@@ -486,7 +486,7 @@
 	"apihelp-browsebyproperty-summary": "Moduł API do pobierania informacji o właściwości lub liście właściwości.",
 	"apihelp-browsebysubject-summary": "Moduł API do pobierania informacji o temacie.",
 	"apihelp-smwtask-summary": "Moduł API do wykonywania zadań związanych z Semantic MediaWiki.",
-	"smw-api-smwbrowse-invalid-parameters": "Format parametrów jest nieprawidłowy, oczekiwany jest prawidłowy format JSON.",
+	"smw-api-invalid-parameters": "Nieprawidłowe parametry, „$1”",
 	"smw-property-page-list-count": "Wyświetlanie $1 {{PLURAL:$1|strony|stron}} przy użyciu tej właściwości.",
 	"smw-property-page-list-search-count": "Wyświetlanie $1 {{PLURAL:$1|strony|stron}} przy użyciu tej właściwości z dopasowaniem wartości „$2”.",
 	"smw-property-reserved-category": "Kategoria",
@@ -514,5 +514,6 @@
 	"smw-property-predefined-rl-desc": "„$1” to predefiniowana właściwość, która przechowuje opis reguły i pochodzi z [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-ask-title-keyword-type": "Wyszukiwanie słów kluczowych",
 	"smw-ask-message-keyword-type": "To wyszukiwanie pasuje do warunku <code><nowiki>$1</nowiki></code>.",
-	"smw-remote-source-unavailable": "Nie można połączyć się ze zdalnym celem „$1”."
+	"smw-remote-source-unavailable": "Nie można połączyć się ze zdalnym celem „$1”.",
+	"smw-parameter-missing": "Brak parametru „$1”."
 }

@@ -719,7 +719,6 @@
 	"apihelp-smwtask-summary": "执行语义MediaWiki相关任务的API模块。",
 	"apihelp-smwbrowse-summary": "支持浏览与搜索语义MediaWiki维护实体活动的API模块。",
 	"apihelp-ask-parameter-api-version": "输出格式：\n;2:后端兼容格式，结果列表使用{}。\n;3:实验格式，结果列表使用[]。",
-	"smw-api-smwbrowse-invalid-parameters": "参数格式无效，应为有效的JSON格式。",
 	"smw-parser-recursion-level-exceeded": "$1递归的等级在解析期间溢出。建议您验证模板结果，或如有需要可调整配置参数<code>$maxRecursionDepth</code>。",
 	"smw-property-page-list-count": "显示$1个使用该属性的{{PLURAL:$1|页面}}。",
 	"smw-property-page-list-search-count": "显示$1个使用该属性，匹配“$2”值的{{PLURAL:$1|页面}}。",
