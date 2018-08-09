@@ -44,7 +44,8 @@
 			"Happy13241",
 			"Silicium Power",
 			"Vlad5250",
-			"Evs"
+			"Evs",
+			"Shaleych"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -393,6 +394,7 @@
 	"smw-admin-supplementary-elastic-functions": "Доступные функции",
 	"smw-admin-supplementary-elastic-settings-title": "Настройки",
 	"smw-admin-supplementary-elastic-statistics-title": "Статистика",
+	"smw-admin-supplementary-elastic-status-refresh-interval": "Интервал обновления: $1",
 	"smw-property-label-uniqueness": "Метка \"$1\" была сопоставлена по крайней мере с одним другим представлением свойств. Пожалуйста, проконсультируйтесь со [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness страницей помощи] о том, как устранить эту проблему.",
 	"smw-property-label-similarity-threshold": "Порог:",
 	"smw_adminlinks_datastructure": "Структура данных",
@@ -482,6 +484,12 @@
 	"smw-search-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Помощник по вводу] включён, чтобы упростить выбор всех возможных опций и категорий.",
 	"smw-search-syntax": "Синтаксис",
 	"smw-search-profile": "Дополнительно",
+	"smw-search-profile-sort-title": "Название",
+	"smw-search-profile-extended-help-find-forms": "Найти формы",
+	"smw-search-profile-extended-section-sort": "Сортировать по",
+	"smw-search-profile-extended-section-form": "Выбрать форму",
+	"smw-search-profile-extended-section-namespace": "Выбрать пространство имён",
+	"smw-search-profile-extended-section-query": "Запрос",
 	"log-name-smw": "Журнал Semantic MediaWiki",
 	"log-show-hide-smw": "$1 журнал Semantic MediaWiki",
 	"logeventslist-smw-log": "Журнал Semantic MediaWiki",
@@ -581,6 +589,7 @@
 	"smw-format-datatable-toolbar-export": "Экспорт",
 	"smw-format-list-other-fields-open": " (",
 	"smw-format-list-other-fields-close": ")",
+	"smw-api-invalid-parameters": "Недопустимые параметры, \"$1\"",
 	"smw-property-reserved-category": "Категория",
 	"smw-category": "Категория",
 	"smw-browse-property-group-title": "Группа свойств",
@@ -598,5 +607,6 @@
 	"smw-rule-page-description": "Описание:",
 	"smw-rule-page-type": "Тип:",
 	"smw-rule-page-tag": "Метка:",
-	"smw-ask-title-keyword-type": "Поиск по ключевым словам"
+	"smw-ask-title-keyword-type": "Поиск по ключевым словам",
+	"smw-parameter-missing": "Параметр «$1» отсутствует."
 }

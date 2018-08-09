@@ -210,6 +210,7 @@
 	"smw_concept_header": "Странице концепта \"$1\"",
 	"smw_conceptarticlecount": "Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.",
 	"right-smw-admin": "приступање администраторским задацима (Семантички Медијавики)",
+	"action-smw-patternedit": "уређујете регуларне изразе које користи Семантички Медијавики",
 	"smw-admin-tab-registry": "Регистар",
 	"smw-livepreview-loading": "Учитавам…",
 	"smw-limitreport-intext-parsertime": "[SMW] Време рашчлањивања унутартекстуалних анотација",

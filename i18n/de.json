@@ -501,7 +501,7 @@
 	"smw-admin-iddispose-done": "Die Objektkennung „$1“ wurde aus der Datenbank entfernt.",
 	"smw-admin-iddispose-references": "Die Kennung „$1“ hat {{PLURAL:$2|keinen|mindestens einen}} aktiven Verweis auf eine Datenbanktabelle:",
 	"smw-admin-iddispose-references-multiple": "Liste der Kennungen mit mindestens einem aktiven Verweis auf eine Datenbanktabelle.",
-	"smw-admin-iddispose-no-references": "Die Suche konnte den Eintrag „$1“ in keiner Datenbanktabelle finden.",
+	"smw-admin-iddispose-no-references": "Der Eintrag „$1“ wurde in keiner Datenbanktabelle gefunden.",
 	"smw-admin-idlookup-input": "Suche:",
 	"smw-admin-objectid": "Kennung:",
 	"smw-admin-tab-general": "Übersicht",

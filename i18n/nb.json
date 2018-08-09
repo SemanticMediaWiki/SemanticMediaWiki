@@ -417,6 +417,13 @@
 	"smw-admin-objectid": "ID:",
 	"smw-livepreview-loading": "Laster…",
 	"smw-sp-searchbyproperty-resultlist-header": "Liste over resultater",
+	"smw-search-profile-sort-best": "Beste treff",
+	"smw-search-profile-sort-recent": "Nyligste",
+	"smw-search-profile-sort-title": "Tittel",
+	"smw-search-profile-extended-help-find-forms": "Finn former",
+	"smw-search-profile-extended-section-sort": "Sorter etter",
+	"smw-search-profile-extended-section-namespace": "Velg et navnerom",
+	"smw-search-profile-extended-section-query": "Spørring",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1-importering]]",
 	"smw-types-list": "Liste over datatyper",
 	"smw-types-default": "«$1» er ikke en innebygd datatype.",
@@ -431,5 +438,7 @@
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Kopier lenke til utklippstavlen",
 	"smw-data-lookup": "Henter data ...",
-	"smw-no-data-available": "Ingen data tilgjengelige."
+	"smw-no-data-available": "Ingen data tilgjengelige.",
+	"smw-api-invalid-parameters": "Ugyldige parametere, «$1»",
+	"smw-parameter-missing": "Parameteren «$1» mangler."
 }
