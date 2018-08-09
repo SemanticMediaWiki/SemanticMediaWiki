@@ -1,6 +1,6 @@
 # Semantic MediaWiki 2.5.7
 
-Released on Auguat 9, 2018.
+Released on August 9, 2018.
 
 ## Bug fixes and internal code changes
 
