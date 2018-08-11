@@ -46,7 +46,7 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $idTable ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
-		$this->applicationFactory->getSettings()->set( 'smwgCacheType', 'hash' );
+		$this->applicationFactory->getSettings()->set( 'smwgMainCacheType', 'hash' );
 		$this->applicationFactory->getSettings()->set( 'smwgEnableUpdateJobs', false );
 	}
 

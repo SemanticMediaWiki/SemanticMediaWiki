@@ -132,7 +132,6 @@ class Settings extends Options {
 			'smwgMasterStore' => isset( $GLOBALS['smwgMasterStore'] ) ? $GLOBALS['smwgMasterStore'] : '',
 			'smwgIQRunningNumber' => isset( $GLOBALS['smwgIQRunningNumber'] ) ? $GLOBALS['smwgIQRunningNumber'] : 0,
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
-			'smwgCacheType' => $GLOBALS['smwgCacheType'],
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
 			'smwgEntityLookupCacheType' => $GLOBALS['smwgEntityLookupCacheType'],
 			'smwgEntityLookupCacheLifetime' => $GLOBALS['smwgEntityLookupCacheLifetime'],
@@ -484,6 +483,10 @@ class Settings extends Options {
 			$configuration['smwgPagingLimit']['property'] = $GLOBALS['smwgPropertyPagingLimit'];
 		}
 
+		if ( isset( $GLOBALS['smwgCacheType'] ) ) {
+			$configuration['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices'] = array(
@@ -512,6 +515,7 @@ class Settings extends Options {
 				'smwgTypePagingLimit'  => '3.1.0',
 				'smwgConceptPagingLimit'  => '3.1.0',
 				'smwgPropertyPagingLimit'  => '3.1.0',
+				'smwgCacheType' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -558,6 +562,7 @@ class Settings extends Options {
 				'smwgTypePagingLimit'  => 'smwgPagingLimit',
 				'smwgConceptPagingLimit'  => 'smwgPagingLimit',
 				'smwgPropertyPagingLimit'  => 'smwgPagingLimit',
+				'smwgCacheType' => 'smwgMainCacheType',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',

@@ -31,7 +31,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$settings = array(
 			'smwgChangePropagationWatchlist' => array(),
-			'smwgCacheType'        => 'hash',
+			'smwgMainCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false
 		);
 
@@ -185,7 +185,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	public function testSemanticDataParserOuputUpdateIntegration() {
 
 		$settings = array(
-			'smwgCacheType'             => 'hash',
+			'smwgMainCacheType'             => 'hash',
 			'smwgEnableUpdateJobs'      => false,
 			'smwgParserFeatures'        => SMW_PARSER_HID_CATS,
 			'smwgCategoryFeatures'      => SMW_CAT_REDIRECT | SMW_CAT_INSTANCE

@@ -32,7 +32,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$this->semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
 
 		$this->testEnvironment = new TestEnvironment( array(
-			'smwgCacheType'        => 'hash',
+			'smwgMainCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false
 		) );
 

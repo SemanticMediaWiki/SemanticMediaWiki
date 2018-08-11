@@ -28,7 +28,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->user = new MockSuperUser();
 
 		$settings = array(
-			'smwgCacheType'             => 'hash',
+			'smwgMainCacheType'             => 'hash',
 			'smwgAutoRefreshOnPageMove' => true,
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_HELP => false )
 		);

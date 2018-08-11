@@ -46,7 +46,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$this->defaultConfig = array(
-			'smwgCacheType' => CACHE_NONE,
+			'smwgMainCacheType' => CACHE_NONE,
 			'smwgNamespacesWithSemanticLinks' => array(),
 			'smwgEnableUpdateJobs' => false,
 			'wgNamespacesWithSubpages' => array(),

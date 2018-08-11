@@ -25,7 +25,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( array(
-			'smwgCacheType' => CACHE_NONE
+			'smwgMainCacheType' => CACHE_NONE
 		) );
 
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
