@@ -134,15 +134,26 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 */
 	protected function getPermittedSettings() {
 
-		// Ensure that the context is set for a select language
+		// Ensure that the context is set for a selected language
 		// and dependent objects are reset
-		$langCallback = function( $val ) {
+		$this->registerConfigValueCallback( 'wgContLang', function( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			\SMW\Localizer::getInstance()->clear();
-			return \Language::factory( $val ); };
+			$lang = \Language::factory( $val );
 
-		$this->registerConfigValueCallback( 'wgContLang', $langCallback );
-		$this->registerConfigValueCallback( 'wgLang', $langCallback );
+			// https://github.com/wikimedia/mediawiki/commit/49ce67be93dfbb40d036703dad2278ea9843f1ad
+			$this->testEnvironment->redefineMediaWikiService( 'ContentLanguage', function () use ( $lang ) {
+				return $lang;
+			} );
+
+			return $lang;
+		} );
+
+		$this->registerConfigValueCallback( 'wgLang', function( $val ) {
+			\RequestContext::getMain()->setLanguage( $val );
+			\SMW\Localizer::getInstance()->clear();
+			return \Language::factory( $val );
+		} );
 
 		return array();
 	}
