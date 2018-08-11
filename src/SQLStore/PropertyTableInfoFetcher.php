@@ -42,7 +42,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @var array
 	 */
-	private $customizableSpecialProperties = array(
+	private static $customizableSpecialProperties = array(
 		'_MDAT', '_CDAT', '_NEWP', '_LEDT', '_MIME', '_MEDIA',
 	);
 
@@ -103,6 +103,15 @@ class PropertyTableInfoFetcher {
 	 */
 	public function __construct( PropertyTypeFinder $propertyTypeFinder ) {
 		$this->propertyTypeFinder = $propertyTypeFinder;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public static function getFixedSpecialPropertyList() {
+		return self::$customizableSpecialProperties;
 	}
 
 	/**
@@ -242,7 +251,7 @@ class PropertyTableInfoFetcher {
 	private function buildDefinitionsForPropertyTables() {
 
 		$enabledSpecialProperties = $this->fixedSpecialProperties;
-		$customizableSpecialProperties = array_flip( $this->customizableSpecialProperties );
+		$customizableSpecialProperties = array_flip( self::$customizableSpecialProperties );
 
 		foreach ( $this->customSpecialPropertyList as $property ) {
 			if ( isset( $customizableSpecialProperties[$property] ) ) {

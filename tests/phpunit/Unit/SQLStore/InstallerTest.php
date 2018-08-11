@@ -246,6 +246,26 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetUpgradeKey_SpecialFixedProperties() {
+
+		$var1 = [
+			'smwgUpgradeKey' => '',
+			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
+			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ]
+		];
+
+		$var2 = [
+			'smwgUpgradeKey' => '',
+			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
+			'smwgPageSpecialProperties' => [ 'Bar', '_MDAT' ]
+		];
+
+		$this->assertNotEquals(
+			Installer::getUpgradeKey( $var1 ),
+			Installer::getUpgradeKey( $var2 )
+		);
+	}
+
 	public function testSetUpgradeKey() {
 
 		$file = $this->getMockBuilder( '\SMW\Utils\File' )
