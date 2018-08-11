@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Exception;
 
-use SMW\Exception\DataTypeLookupExeption;
+use SMW\Exception\PropertyNotFoundException;
 
 /**
- * @covers \SMW\Exception\DataTypeLookupExeption
+ * @covers \SMW\Exception\PropertyNotFoundException
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,14 +13,14 @@ use SMW\Exception\DataTypeLookupExeption;
  *
  * @author mwjames
  */
-class DataTypeLookupExeptionTest extends \PHPUnit_Framework_TestCase {
+class PropertyNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$instance = new DataTypeLookupExeption();
+		$instance = new PropertyNotFoundException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\DataTypeLookupExeption',
+			'\SMW\Exception\PropertyNotFoundException',
 			$instance
 		);
 

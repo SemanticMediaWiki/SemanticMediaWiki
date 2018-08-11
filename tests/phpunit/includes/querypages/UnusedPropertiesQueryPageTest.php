@@ -108,7 +108,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			$this->settings
 		);
 
-		$this->setExpectedException( '\SMW\Exception\PropertyNotFoundExeption' );
+		$this->setExpectedException( '\SMW\Exception\PropertyNotFoundException' );
 		$instance->formatResult( $this->skin, null );
 	}
 
