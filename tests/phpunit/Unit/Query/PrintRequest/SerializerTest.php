@@ -49,7 +49,13 @@ class SerializerTest extends \PHPUnit_Framework_TestCase {
 		$provider['print-this'] = array(
 			new PrintRequest( PrintRequest::PRINT_THIS, 'Foo' ),
 			false,
-			'?=Foo#'
+			'?=Foo'
+		);
+
+		$provider['print-this-plain'] = array(
+			new PrintRequest( PrintRequest::PRINT_THIS, 'Foo', null, '-' ),
+			false,
+			'?=Foo#-'
 		);
 
 		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Bar' );
