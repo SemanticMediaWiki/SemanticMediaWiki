@@ -83,6 +83,44 @@ class SearchResultSet extends \SearchResultSet {
 	}
 
 	/**
+	 * @see SearchResultSet::extractResults
+	 *
+	 * @since 3.0
+	 */
+	public function extractResults() {
+
+		// #3204
+		// https://github.com/wikimedia/mediawiki/commit/720fdfa7901cbba93b5695ed5f00f982272ced27
+		//
+		// MW 1.32+:
+		// - Remove SearchResultSet::next, SearchResultSet::numRows
+		// - Move QueryResult::getResults, QueryResult::getExcerpts into this
+		//   method to avoid constructor work
+
+		if ( $this->pages === [] ) {
+			return $this->results = [];
+		}
+
+		foreach ( $this->pages as $page ) {
+
+			if ( $page instanceof DIWikiPage ) {
+				$searchResult = SearchResult::newFromTitle( $page->getTitle() );
+			}
+
+			// Attempt to use excerpts available from a different back-end
+			if ( $searchResult && $this->excerpts !== null ) {
+				if ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) {
+					$searchResult->setExcerpt( $excerpt, $this->excerpts->hasHighlight() );
+				}
+			}
+
+			$this->results[] = $searchResult;
+		}
+
+		return $this->results;
+	}
+
+	/**
 	 * Returns true, so Special:Search won't offer the user a link to a create
 	 * a page named by the search string because the name would contain the
 	 * search syntax, i.e. the SMW query.

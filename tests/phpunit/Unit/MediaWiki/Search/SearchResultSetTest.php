@@ -83,6 +83,28 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $this->resultSet->next() );
 	}
 
+	public function testExtractResults() {
+
+		$res = $this->resultSet->extractResults();
+
+		$this->assertCount(
+			3,
+			$res
+		);
+
+		$this->assertEquals(
+			3,
+			$this->resultSet->numRows()
+		);
+
+		foreach ( $res as $searchResult ) {
+			$this->assertInstanceOf(
+				'SearchResult',
+				 $searchResult
+			);
+		}
+	}
+
 	public function testSearchContainedSyntax() {
 		$this->assertTrue( $this->resultSet->searchContainedSyntax() );
 	}
