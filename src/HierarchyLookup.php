@@ -214,7 +214,7 @@ class HierarchyLookup {
 		}
 
 		if ( $hierarchyType === null ) {
-			throw new InvalidArgumentException( 'No matchable hierarchy type.' );
+			throw new InvalidArgumentException( 'No matchable hierarchy type, expected a property or category entity.' );
 		}
 
 		// Store elements of the hierarchy tree in one large cache slot
