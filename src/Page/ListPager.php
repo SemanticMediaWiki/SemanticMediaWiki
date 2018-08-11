@@ -72,7 +72,7 @@ class ListPager {
 			Html::rawElement(
 				'input',
 				[
-					//'type' => 'search',
+					'type' => 'search',
 					'name' => 'filter',
 					'value' => $filter,
 					'form' => 'search',
