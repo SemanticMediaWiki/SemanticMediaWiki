@@ -222,16 +222,22 @@ class Installer implements MessageReporter {
 		// therefore use the content to compute a key that reflects any
 		// changes to them
 
+		// Only recognize those properties that require a fixed table
+		$pageSpecialProperties = array_intersect(
+			$vars['smwgPageSpecialProperties'],
+			PropertyTableInfoFetcher::getFixedSpecialPropertyList()
+		);
+
 		// Sort to ensure the key contains the same order
 		sort( $vars['smwgFixedProperties'] );
-		sort( $vars['smwgPageSpecialProperties'] );
+		sort( $pageSpecialProperties );
 
 		return sha1(
 			json_encode(
 				[
 					$vars['smwgUpgradeKey'],
 					$vars['smwgFixedProperties'],
-					$vars['smwgPageSpecialProperties']
+					$pageSpecialProperties
 				]
 			)
 		);
