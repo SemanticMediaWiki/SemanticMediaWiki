@@ -105,7 +105,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		$instance->condition( 'foobar' );
 
 		$this->assertSame(
-			'{"tables":["foo"],"fields":[["bar","b_ar"]],"conditions":[["foobar"]],"joins":[],"options":[],"alias":"","index":0,"autocommit":false}',
+			'{"tables":"foo","fields":[["bar","b_ar"]],"conditions":[["foobar"]],"joins":[],"options":[],"alias":"","index":0,"autocommit":false}',
 			(string)$instance
 		);
 
