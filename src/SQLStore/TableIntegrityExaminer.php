@@ -352,7 +352,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		$i = 0;
 
 		if ( $count == 0 ) {
-			return $this->messageReporter->reportMessage( "   ...done.\n"  );
+			return $this->messageReporter->reportMessage( "   ... done.\n"  );
 		}
 
 		$this->messageReporter->reportMessage( "   ... missing $count rows ...\n"  );
