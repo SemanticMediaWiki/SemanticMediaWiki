@@ -277,16 +277,21 @@ class SemanticData {
 	 * @since 2.5
 	 *
 	 * @param string $key
+	 * @param mixed $default
 	 *
 	 * @return mixed
 	 */
-	public function getOption( $key ) {
+	public function getOption( $key, $default = null ) {
 
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
 
-		return $this->options->has( $key ) ? $this->options->get( $key ) : null;
+		if ( $this->options->has( $key ) ) {
+			return $this->options->get( $key );
+		}
+
+		return $default;
 	}
 
 	/**
