@@ -105,6 +105,10 @@
 	padding: 0px;
 }
 
+.smwb-actions {
+	line-height: 2.0em;
+}
+
 .smwb-title a, .smwb-center a:first-child, .smwb-actions a:first-child {
 	padding-left: 8px;
 	box-decoration-break: clone;
@@ -183,14 +187,35 @@ span.smwb-value {
 	flex: 0; margin: 0 0 0 1rem;
 }
 
+.smwb-input .button-field input {
+	padding: 6px;
+}
+
 .smwb-input .mw-ui-input:focus {
 	box-shadow: inset 0 0 0 1px #ddd;
 	border-color: #ddd;
 	outline: 0;
 }
 
+.smwb-input input {
+	padding: 0.52em 1em;
+}
+
 .smwb-factbox .smwb-propvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
 	width: 30%;
+}
+
+.mw-ui-input.autocomplete-loading {
+	vertical-align: unset;
+	padding: 0.52em 1em !important;
+}
+
+.smwb-action-separator {
+	display: inline-block;
+    line-height: 1.025em;
+    border-left: 1px solid #a2a9b1;
+    margin: 0.2em 0.2em 0.2em 0.55em;
+    zoom: 1;
 }
 
 /**

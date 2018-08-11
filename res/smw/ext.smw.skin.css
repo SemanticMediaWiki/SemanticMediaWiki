@@ -59,6 +59,10 @@
 	padding: 5px;
 }
 
+.skin-chameleon .smw-modal-content {
+	line-height: 1.8;
+}
+
 /**
  * .skin-foreground specific styles
  */
