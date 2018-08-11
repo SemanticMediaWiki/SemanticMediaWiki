@@ -31,6 +31,15 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetFixedPropertyIdList() {
+
+		$propertyList = TypesRegistry::getPropertyList();
+
+		foreach ( TypesRegistry::getFixedPropertyIdList() as $key => $id ) {
+			$this->assertArrayHasKey( $key, $propertyList );
+		}
+	}
+
 	/**
 	 * @dataProvider typeList
 	 */

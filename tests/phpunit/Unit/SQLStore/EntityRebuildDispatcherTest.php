@@ -4,6 +4,8 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\SQLStore\EntityRebuildDispatcher;
+use SMW\SQLStore\SQLStore;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\EntityRebuildDispatcher
@@ -16,12 +18,25 @@ use SMW\SQLStore\EntityRebuildDispatcher;
  */
 class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment(
+			[
+				'smwgSemanticsEnabled' => true,
+				'smwgAutoRefreshSubject' => true,
+				'smwgCacheType' => 'hash',
+				'smwgEnableUpdateJobs' => false,
+			]
+		);
+
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -45,14 +60,11 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
-		$this->applicationFactory->getSettings()->set( 'smwgMainCacheType', 'hash' );
-		$this->applicationFactory->getSettings()->set( 'smwgEnableUpdateJobs', false );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -121,7 +133,7 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			51,
+			9999999999999999999,
 			-1
 		);
 
