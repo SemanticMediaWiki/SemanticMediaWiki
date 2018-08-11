@@ -567,7 +567,13 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->m_prefixedtext;
 		}
 
-		$this->m_prefixedtext = 'NO_VALID_VALUE';
+		// In case something went wrong (invalid NS etc.), hint the ID to aid the
+		// investigation
+		if ( $this->m_dataitem->getId() > 0 ) {
+			$this->m_prefixedtext = 'NO_VALID_VALUE (ID: ' . $this->m_dataitem->getId() . ')';
+		} else {
+			$this->m_prefixedtext = 'NO_VALID_VALUE';
+		}
 
 		if ( $this->isValid() ) {
 			$nstext = Localizer::getInstance()->getNamespaceTextById( $this->m_dataitem->getNamespace() );
