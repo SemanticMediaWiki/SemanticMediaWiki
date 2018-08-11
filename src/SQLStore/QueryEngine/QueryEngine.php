@@ -440,6 +440,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 						'',
 						$row->so
 					) );
+					
+					// Register the ID in an event the post-proceesing
+					// fails (namespace no longer valid etc.)
+					$dataItem->setId( $row->id );
 				} catch ( PredefinedPropertyLabelMismatchException $e ) {
 					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
 					$this->log( __METHOD__ . ' ' . $e->getMessage() );
