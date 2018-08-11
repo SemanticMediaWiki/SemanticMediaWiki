@@ -149,6 +149,19 @@ class DataRebuilder {
 	 */
 	public function rebuild() {
 
+		$this->reportMessage(
+			"\nLong-running scripts may cause memory leaks, if a deteriorating\n" .
+			"rebuild process is detected (after many pages, typically more\n".
+			"than 10000), please abort with CTRL-C and resume this script\n" .
+			"at the last processed ID using the parameter -s. Continue this\n" .
+			"until all pages have been refreshed.\n"
+		);
+
+		$this->reportMessage(
+			"\nThe progress displayed is an estimation and is self-adjusting \n" .
+			"during the maintenance process.\n"
+		);
+
 		$storeName = get_class( $this->store );
 
 		if ( strpos( $storeName, "\\") !== false ) {
@@ -163,10 +176,10 @@ class DataRebuilder {
 		}
 
 		if ( $this->options->has( 'page' ) || $this->options->has( 'query' ) || $this->hasFilters() || $this->options->has( 'redirects' ) ) {
-			return $this->callDistinctEntityRebuilder();
+			return $this->rebuild_selection();
 		}
 
-		return $this->doRebuildAll();
+		return $this->rebuild_all();
 	}
 
 	private function hasFilters() {
@@ -191,7 +204,7 @@ class DataRebuilder {
 		return $this->exceptionCount;
 	}
 
-	private function callDistinctEntityRebuilder() {
+	private function rebuild_selection() {
 
 		$this->distinctEntityDataRebuilder->setOptions(
 			$this->options
@@ -213,34 +226,42 @@ class DataRebuilder {
 			$count = $this->exceptionFileLogger->getExceptionCount();
 			$this->exceptionFileLogger->doWrite();
 
-			$file = '...' . substr( $this->exceptionFileLogger->getExceptionFile(), -50 );
+			$path_parts = pathinfo(
+				str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $this->exceptionFileLogger->getExceptionFile() )
+			);
 
 			$this->reportMessage( "\nException log ..." );
-			$this->reportMessage( "\n   ... counted $count exceptions (see $file)"	);
+			$this->reportMessage( "\n   ... counted $count exceptions"	);
+			$this->reportMessage( "\n   ... written to ... " . $path_parts['basename']	);
 			$this->reportMessage( "\n   ... done.\n" );
+
 			$this->exceptionCount += $count;
 		}
 
 		return true;
 	}
 
-	private function doRebuildAll() {
+	private function rebuild_all() {
 
-		$entityRebuildDispatcher = $this->store->refreshData(
+		$this->entityRebuildDispatcher = $this->store->refreshData(
 			$this->start,
 			1
 		);
 
-		$entityRebuildDispatcher->setDispatchRangeLimit( 1 );
+		$this->entityRebuildDispatcher->setDispatchRangeLimit( 1 );
 
-		$entityRebuildDispatcher->setUpdateJobParseMode(
+		$this->entityRebuildDispatcher->setUpdateJobParseMode(
 			$this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
 		);
 
-		$entityRebuildDispatcher->useJobQueueScheduler( false );
+		$this->entityRebuildDispatcher->useJobQueueScheduler( false );
 
-		// Only expect the disposal action?
-		if ( $this->dispose_outdated() ) {
+		// By default we expect the disposal action to take place whenever the
+		// script is run
+		$this->dispose_outdated();
+
+		// Only expected the disposal action?
+		if ( $this->options->has( 'dispose-outdated' ) ) {
 			return true;
 		}
 
@@ -248,34 +269,26 @@ class DataRebuilder {
 
 		if ( !$this->options->has( 'skip-properties' ) ) {
 			$this->options->set( 'p', true );
-			$this->callDistinctEntityRebuilder();
+			$this->rebuild_selection();
 			$this->reportMessage( "\n" );
 		}
 
 		$this->store->clear();
 
-		$this->reportMessage(
-			"Refreshing semantic data ...\n"
-		);
+		if ( $this->start > 1 && $this->end === false ) {
+			$this->end = $this->entityRebuildDispatcher->getMaxId();
+		}
 
-		$this->reportMessage(
-			"\nLong-running scripts may cause memory leaks, if a deteriorating\n" .
-			"rebuild process is detected (after many pages, typically more\n".
-			"than 10000), please abort with CTRL-C and resume this script\n" .
-			"at the last processed ID using the parameter -s. Continue this\n" .
-			"until all pages have been refreshed.\n"
-		);
-
-		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $entityRebuildDispatcher->getMaxId();
+		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $this->entityRebuildDispatcher->getMaxId();
 		$id = $this->start;
 
 		$this->reportMessage(
-			"\nThe progress displayed is an estimation and is self-adjusting \n" .
-			"during the update process.\n" );
+			"Rebuilding semantic data ..."
+		);
 
 		$this->reportMessage(
-			"\nProcessing IDs from $this->start to " .
-			( $this->end ? "$this->end" : $entityRebuildDispatcher->getMaxId() ) . " ...\n"
+			"\n   ... selecting $this->start to " .
+			( $this->end ? "$this->end" : $this->entityRebuildDispatcher->getMaxId() ) . " IDs ...\n"
 		);
 
 		$this->rebuildCount = 0;
@@ -287,15 +300,15 @@ class DataRebuilder {
 			$current_id = $id;
 
 			// Changes the ID to next target!
-			$this->doUpdate( $entityRebuildDispatcher, $id );
+			$this->do_update( $id );
 
 			if ( $this->rebuildCount % 60 === 0 ) {
-				$estimatedProgress = $entityRebuildDispatcher->getEstimatedProgress();
+				$estimatedProgress = $this->entityRebuildDispatcher->getEstimatedProgress();
 			}
 
 			$progress = round( ( $this->end - $this->start > 0 ? $this->rebuildCount / $total : $estimatedProgress ) * 100 );
 
-			foreach ( $entityRebuildDispatcher->getDispatchedEntities() as $value ) {
+			foreach ( $this->entityRebuildDispatcher->getDispatchedEntities() as $value ) {
 
 				$text = $this->getHumanReadableTextFrom( $current_id, $value );
 
@@ -307,9 +320,15 @@ class DataRebuilder {
 
 			if ( !$this->options->has( 'v' ) && $id > 0 ) {
 				$this->reportMessage(
-					"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $id, min( 100, $progress ) ) )
+					"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $current_id, min( 100, $progress ) ) )
 				);
 			}
+		}
+
+		if ( !$this->options->has( 'v' ) ) {
+			$this->reportMessage(
+				"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $current_id, 100 ) )
+			);
 		}
 
 		$this->write_to_file( $id );
@@ -321,24 +340,27 @@ class DataRebuilder {
 			$this->exceptionCount += $this->exceptionFileLogger->getExceptionCount();
 			$this->exceptionFileLogger->doWrite();
 
-			$file = '...' . substr( $this->exceptionFileLogger->getExceptionFile(), -50 );
+			$path_parts = pathinfo(
+				str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $this->exceptionFileLogger->getExceptionFile() )
+			);
 
 			$this->reportMessage( "\nException log ..." );
-			$this->reportMessage( "\n   ... counted $this->exceptionCount exceptions (see $file)"	);
+			$this->reportMessage( "\n   ... counted $this->exceptionCount exceptions"	);
+			$this->reportMessage( "\n   ... written to ... " . $path_parts['basename']	);
 			$this->reportMessage( "\n   ... done.\n" );
 		}
 
 		return true;
 	}
 
-	private function doUpdate( $entityRebuildDispatcher, &$id ) {
+	private function do_update( &$id ) {
 
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
-			$entityRebuildDispatcher->rebuild( $id );
+			$this->entityRebuildDispatcher->rebuild( $id );
 		} else {
 
 			try {
-				$entityRebuildDispatcher->rebuild( $id );
+				$this->entityRebuildDispatcher->rebuild( $id );
 			} catch ( Exception $e ) {
 				$this->exceptionFileLogger->recordException( $id, $e );
 			}
@@ -459,8 +481,6 @@ class DataRebuilder {
 		}
 
 		$this->reportMessage( "\n   ... done.\n" );
-
-		return $this->options->has( 'dispose-outdated' );
 	}
 
 	private function is_writable( $startIdFile ) {

@@ -134,7 +134,8 @@ class DistinctEntityDataRebuilder {
 		);
 
 		$total = count( $pages );
-		$this->reportMessage( "Processing $total $type pages ...\n" );
+		$this->reportMessage( "Rebuilding $type pages ...\n" );
+		$this->reportMessage( "   ... selecting $total pages ...\n" );
 
 		foreach ( $pages as $key => $page ) {
 
