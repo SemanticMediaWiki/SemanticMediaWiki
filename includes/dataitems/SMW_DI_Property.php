@@ -3,7 +3,7 @@
 namespace SMW;
 
 use RuntimeException;
-use SMW\Exception\DataTypeLookupExeption;
+use SMW\Exception\DataTypeLookupException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMWDataItem;
@@ -322,13 +322,13 @@ class DIProperty extends SMWDataItem {
 	 * @param string $valueType
 	 *
 	 * @return self
-	 * @throws DataTypeLookupExeption
+	 * @throws DataTypeLookupException
 	 * @throws RuntimeException
 	 */
 	public function setPropertyValueType( $valueType ) {
 
 		if ( !DataTypeRegistry::getInstance()->isRegistered( $valueType ) ) {
-			throw new DataTypeLookupExeption( "{$valueType} is an unknown type id" );
+			throw new DataTypeLookupException( "{$valueType} is an unknown type id" );
 		}
 
 		if ( $this->isUserDefined() && $this->propertyValueType === null ) {

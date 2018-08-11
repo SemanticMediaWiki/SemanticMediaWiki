@@ -3,7 +3,7 @@
 namespace SMW;
 
 use Html;
-use SMW\Exception\PropertyNotFoundExeption;
+use SMW\Exception\PropertyNotFoundException;
 use SMWDIError;
 use SMWTypesValue;
 
@@ -123,7 +123,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 				->getHtml();
 		}
 
-		throw new PropertyNotFoundExeption( 'UnusedPropertiesQueryPage expects results that are properties or errors.' );
+		throw new PropertyNotFoundException( 'UnusedPropertiesQueryPage expects results that are properties or errors.' );
 	}
 
 	/**

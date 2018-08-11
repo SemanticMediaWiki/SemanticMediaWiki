@@ -90,7 +90,7 @@ class SMWURIValue extends SMWDataValue {
 			case SMW_URI_MODE_URI:
 			case SMW_URI_MODE_ANNOURI:
 
-				// Whether the the url value was externally encoded or not
+				// Whether the url value was externally encoded or not
 				if ( strpos( $value, "%" ) === false ) {
 					$this->showUrlContextInRawFormat = false;
 				}

@@ -10,6 +10,6 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class PropertyNotFoundExeption extends RuntimeException {
+class PropertyNotFoundException extends RuntimeException {
 
 }

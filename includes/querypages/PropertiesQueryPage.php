@@ -4,7 +4,7 @@ namespace SMW;
 
 use Html;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\Exception\PropertyNotFoundExeption;
+use SMW\Exception\PropertyNotFoundException;
 use SMWDIError;
 use SMWTypesValue;
 
@@ -93,7 +93,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
 	 * @return String
-	 * @throws PropertyNotFoundExeption if the result was not of a supported type
+	 * @throws PropertyNotFoundException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {
 
@@ -108,7 +108,7 @@ class PropertiesQueryPage extends QueryPage {
 				->getHtml();
 		}
 
-		throw new PropertyNotFoundExeption( 'PropertiesQueryPage expects results that are properties or errors.' );
+		throw new PropertyNotFoundException( 'PropertiesQueryPage expects results that are properties or errors.' );
 	}
 
 	/**

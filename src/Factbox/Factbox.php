@@ -425,8 +425,7 @@ class Factbox {
 	private function isEmpty( SemanticData $semanticData ) {
 
 		// MW's internal Parser does iterate the ParserOutput object several times
-		// which can leave a '_SKEY' property while in fact the the container is
-		// empty.
+		// which can leave a '_SKEY' property while in fact the container is empty.
 		$semanticData->removeProperty(
 			new DIProperty( '_SKEY' )
 		);

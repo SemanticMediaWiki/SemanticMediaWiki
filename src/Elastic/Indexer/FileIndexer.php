@@ -93,8 +93,8 @@ class FileIndexer {
 	 * - Let ES ingest the file content and attach the earlier retrieved
 	 * annotations
 	 * - SMW doesn't know anything about the file attachment details ES has gather
-	 * from the the file hence update the SQLStore (!important not the
-	 * ElasticStore) with the data
+	 * from the file hence update the SQLStore (!important not the ElasticStore)
+	 * with the data
 	 * - After the SQLStore update make sure that those attachment details (which
 	 * are represented as subobject) are added to ES manually (means not through
 	 * the standard Store::updateData to avoid an update circle) otherwise there
