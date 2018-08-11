@@ -20,6 +20,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $spyLogger;
+	private $jobFactory;
 	private $testEnvironment;
 
 	protected function setUp() {
@@ -44,6 +45,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( true ) );
 
+		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -77,8 +83,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPruneOutdatedTargetLinks() {
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
-
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -94,6 +98,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$changeOp->expects( $this->once() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromText( 'Foo' ) ) );
 
 		$changeOp->expects( $this->once() )
 			->method( 'getTableChangeOps' )
@@ -121,13 +129,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->pruneOutdatedTargetLinks( $subject, $changeOp )
+			$instance->pruneOutdatedTargetLinks( $changeOp )
 		);
 	}
 
 	public function testPruneOutdatedTargetLinksBeingDisabled() {
-
-		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -165,11 +171,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->setEnabled( false );
 
 		$this->assertNull(
-			$instance->pruneOutdatedTargetLinks( $subject, $changeOp )
+			$instance->pruneOutdatedTargetLinks( $changeOp )
 		);
 	}
 
-	public function testBuildParserCachePurgeJobParametersOnBlacklistedProperty() {
+	public function testParserCachePurgeJobParametersOnBlacklistedProperty() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -188,6 +194,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$entityIdListRelevanceDetectionFilter->expects( $this->once() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$entityIdListRelevanceDetectionFilter->expects( $this->once() )
 			->method( 'getFilteredIdList' )
 			->will( $this->returnValue( array( 1 ) ) );
 
@@ -195,21 +205,31 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$expected = [
+			'idlist' => [ 1 ],
+			'exec.mode' => 'exec.journal'
+		];
+
+		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->jobFactory->expects( $this->once() )
+			->method( 'newParserCachePurgeJob' )
+			->with(
+				$this->anything(),
+				$this->equalTo( $expected ) )
+			->will( $this->returnValue( $nullJob ) );
+
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
 			$dependencyLinksTableUpdater
 		);
 
-		$this->assertEquals(
-			[
-				'idlist' => [ 1 ],
-				'ex:mode' => 'exec.journal'
-			],
-			$instance->buildParserCachePurgeJobParametersFrom( $entityIdListRelevanceDetectionFilter )
-		);
+		$instance->pushParserCachePurgeJob( $entityIdListRelevanceDetectionFilter );
 	}
 
-	public function testBuildParserCachePurgeJobParametersBeingDisabled() {
+	public function testParserCachePurgeJobParametersBeingDisabled() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -231,6 +251,9 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->jobFactory->expects( $this->never() )
+			->method( 'newParserCachePurgeJob' );
+
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
 			$dependencyLinksTableUpdater
@@ -238,12 +261,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setEnabled( false );
 
-		$this->assertEmpty(
-			$instance->buildParserCachePurgeJobParametersFrom( $entityIdListRelevanceDetectionFilter )
-		);
+		$instance->pushParserCachePurgeJob( $entityIdListRelevanceDetectionFilter );
 	}
 
-	public function testBuildParserCachePurgeJobParametersOnEmptyList() {
+	public function testParserCachePurgeJobParametersOnEmptyList() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -269,6 +290,9 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->jobFactory->expects( $this->never() )
+			->method( 'newParserCachePurgeJob' );
+
 		$instance = new QueryDependencyLinksStore(
 			$queryResultDependencyListResolver,
 			$dependencyLinksTableUpdater
@@ -276,9 +300,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setEnabled( true );
 
-		$this->assertEmpty(
-			$instance->buildParserCachePurgeJobParametersFrom( $entityIdListRelevanceDetectionFilter )
-		);
+		$instance->pushParserCachePurgeJob( $entityIdListRelevanceDetectionFilter );
 	}
 
 	public function testFindEmbeddedQueryTargetLinksHashListFrom() {

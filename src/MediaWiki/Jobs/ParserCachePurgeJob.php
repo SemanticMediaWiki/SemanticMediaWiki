@@ -65,7 +65,6 @@ class ParserCachePurgeJob extends JobBase {
 	 */
 	public function __construct( Title $title, $params = array() ) {
 		parent::__construct( 'SMW\ParserCachePurgeJob', $title, $params );
-		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -76,12 +75,11 @@ class ParserCachePurgeJob extends JobBase {
 	public function run() {
 
 		Timer::start( __METHOD__ );
-
+		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->pageUpdater = $this->applicationFactory->newPageUpdater();
-		$this->store = $this->applicationFactory->getStore();
 
 		$count = 0;
-		$links = 0;
+		$linksCount = 0;
 
 		if ( $this->hasParameter( 'limit' ) ) {
 			$this->limit = $this->getParameter( 'limit' );
@@ -92,14 +90,10 @@ class ParserCachePurgeJob extends JobBase {
 		}
 
 		if ( $this->hasParameter( 'idlist' ) ) {
-			$this->findEmbeddedQueryTargetLinksBatches(
-				$this->getParameter( 'idlist' ),
-				$count,
-				$links
-			);
+			$this->purgeTargetLinksFromList( $this->getParameter( 'idlist' ), $count, $linksCount );
 		}
 
-		if ( $this->getParameter( 'ex:mode' ) !== self::EXEC_JOURNAL ) {
+		if ( $this->getParameter( 'exec.mode' ) !== self::EXEC_JOURNAL ) {
 			$this->pageUpdater->addPage( $this->getTitle() );
 			$this->pageUpdater->setOrigin( __METHOD__ );
 			$this->pageUpdater->doPurgeParserCacheAsPool();
@@ -107,19 +101,25 @@ class ParserCachePurgeJob extends JobBase {
 
 		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', array( $this ) );
 
-		$context = [
-			'method'  => __METHOD__,
-			'role' => 'user',
-			'procTime' => Timer::getElapsedTime( __METHOD__, 7 ),
-			'limit'  => $this->limit,
-			'offset' => $this->offset,
-			'count'  => $count,
-			'links'  => $links
-		];
-
 		$this->applicationFactory->getMediaWikiLogger()->info(
-			"[Job] ParserCachePurgeJob: Count:{count} Links:{links} | Limit:{limit} Offset:{offset} (procTime in sec: {procTime})",
-			$context
+			[
+				'Job',
+				"ParserCachePurgeJob",
+				"List count:{count}",
+				"Links count:{linksCount}",
+				"Limit:{limit}",
+				"Offset:{offset}",
+				"procTime in sec: {procTime}"
+			],
+			[
+				'method'  => __METHOD__,
+				'role' => 'user',
+				'procTime' => Timer::getElapsedTime( __METHOD__, 7 ),
+				'limit'  => $this->limit,
+				'offset' => $this->offset,
+				'count'  => $count,
+				'linksCount'  => $linksCount
+			]
 		);
 
 		return true;
@@ -135,7 +135,7 @@ class ParserCachePurgeJob extends JobBase {
 	 *
 	 * @param array|string $idList
 	 */
-	private function findEmbeddedQueryTargetLinksBatches( $idList, &$listCount, &$linksCount ) {
+	private function purgeTargetLinksFromList( $idList, &$listCount, &$linksCount ) {
 
 		if ( is_string( $idList ) && strpos( $idList, '|' ) !== false ) {
 			$idList = explode( '|', $idList );
@@ -148,7 +148,7 @@ class ParserCachePurgeJob extends JobBase {
 		$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
 
 		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
-			$this->store
+			$this->applicationFactory->getStore()
 		);
 
 		$dependencyLinksUpdateJournal = $queryDependencyLinksStoreFactory->newDependencyLinksUpdateJournal();
@@ -174,7 +174,7 @@ class ParserCachePurgeJob extends JobBase {
 					'idlist'  => $idList,
 					'limit'   => $this->limit,
 					'offset'  => $this->offset + self::CHUNK_SIZE,
-					'ex:mode' => $this->getParameter( 'ex:mode' )
+					'exec.mode' => $this->getParameter( 'exec.mode' )
 				]
 			);
 
@@ -195,7 +195,7 @@ class ParserCachePurgeJob extends JobBase {
 			'ParserCachePurgeJob'
 		);
 
-		if ( $this->getParameter( 'ex:mode' ) === self::EXEC_JOURNAL ) {
+		if ( $this->getParameter( 'exec.mode' ) === self::EXEC_JOURNAL ) {
 			$dependencyLinksUpdateJournal->updateFromList( $hashList );
 		} else{
 			$this->addPagesToUpdater( $hashList );

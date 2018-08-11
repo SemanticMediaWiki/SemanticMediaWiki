@@ -5,9 +5,9 @@ namespace SMW\MediaWiki\Hooks;
 use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
 use SMW\ApplicationFactory;
-use SMW\DeferredRequestDispatchManager;
 use SMW\MediaWiki\Search\SearchProfileForm;
 use SMW\NamespaceManager;
+use SMW\SemanticData;
 use SMW\Setup;
 use SMW\Site;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
@@ -164,35 +164,6 @@ class HookRegistry {
 
 	private function addCallableHandlers( $basePath, $globalVars ) {
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$httpRequestFactory = new HttpRequestFactory();
-
-		$deferredRequestDispatchManager = new DeferredRequestDispatchManager(
-			$httpRequestFactory->newSocketRequest(),
-			$applicationFactory->newJobFactory()
-		);
-
-		$deferredRequestDispatchManager->setLogger(
-			$applicationFactory->getMediaWikiLogger()
-		);
-
-		$deferredRequestDispatchManager->isEnabledHttpDeferredRequest(
-			$applicationFactory->getSettings()->get( 'smwgEnabledHttpDeferredJobRequest' )
-		);
-
-		// SQLite has no lock manager making table lock contention very common
-		// hence use the JobQueue to enqueue any change request and avoid
-		// a rollback due to canceled DB transactions
-		$deferredRequestDispatchManager->isPreferredWithJobQueue(
-			$GLOBALS['wgDBtype'] === 'sqlite'
-		);
-
-		// When in commandLine mode avoid deferred execution and run a process
-		// within the same transaction
-		$deferredRequestDispatchManager->isCommandLineMode(
-			Site::isCommandLineMode()
-		);
-
 		$hookListener = new HookListener( $this->globalVars, $this->basePath );
 
 		$hooks = [
@@ -249,19 +220,13 @@ class HookRegistry {
 			$this->handlers[$hook] = is_callable( $handler ) ? $handler : [ $this, $handler ];
 		}
 
-		$this->registerHooksForInternalUse( $applicationFactory, $deferredRequestDispatchManager );
+		$this->registerHooksForInternalUse();
 	}
 
-	private function registerHooksForInternalUse( ApplicationFactory $applicationFactory, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
-
-		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
-
-		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
-			$applicationFactory->getStore()
-		);
+	private function registerHooksForInternalUse() {
 
 		$elasticFactory = new \SMW\Elastic\ElasticFactory();
-		$indexer = $elasticFactory->newIndexer( $applicationFactory->getStore() );
+		$indexer = $elasticFactory->newIndexer( ApplicationFactory::getInstance()->getStore() );
 
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::EntityReferenceCleanUpComplete
@@ -290,15 +255,19 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
 		 */
-		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $changeOp ) use ( $queryDependencyLinksStore, $deferredRequestDispatchManager ) {
+		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $changeOp ) {
+
+			// A delete infused change should trigger an immediate update
+			// without having to wait on the job queue
+			$isPrimaryUpdate = $semanticData->getOption( SemanticData::PROC_DELETE, false );
 
 			$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
 
-			$queryDependencyLinksStore->setStore( $store );
-			$subject = $semanticData->getSubject();
+			$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+				$store
+			);
 
 			$queryDependencyLinksStore->pruneOutdatedTargetLinks(
-				$subject,
 				$changeOp
 			);
 
@@ -307,13 +276,10 @@ class HookRegistry {
 				$changeOp
 			);
 
-			$jobParameters = $queryDependencyLinksStore->buildParserCachePurgeJobParametersFrom(
-				$entityIdListRelevanceDetectionFilter
-			);
+			$queryDependencyLinksStore->isPrimary( $isPrimaryUpdate );
 
-			$deferredRequestDispatchManager->dispatchParserCachePurgeJobWith(
-				$subject->getTitle(),
-				$jobParameters
+			$queryDependencyLinksStore->pushParserCachePurgeJob(
+				$entityIdListRelevanceDetectionFilter
 			);
 
 			$fulltextSearchTableFactory = new FulltextSearchTableFactory();
@@ -322,9 +288,10 @@ class HookRegistry {
 				$store
 			);
 
+			$textChangeUpdater->isPrimary( $isPrimaryUpdate );
+
 			$textChangeUpdater->pushUpdates(
-				$changeOp,
-				$deferredRequestDispatchManager
+				$changeOp
 			);
 
 			return true;
@@ -333,15 +300,9 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::BeforeQueryResultLookupComplete
 		 */
-		$this->handlers['SMW::Store::BeforeQueryResultLookupComplete'] = function ( $store, $query, &$result, $queryEngine ) use ( $applicationFactory ) {
+		$this->handlers['SMW::Store::BeforeQueryResultLookupComplete'] = function ( $store, $query, &$result, $queryEngine ) {
 
-			if ( $applicationFactory->getSettings()->get( 'smwgQueryResultCacheType' ) === false ) {
-				return true;
-			}
-
-			$cachedQueryResultPrefetcher = $applicationFactory->singleton(
-				'CachedQueryResultPrefetcher'
-			);
+			$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
 
 			$cachedQueryResultPrefetcher->setQueryEngine(
 				$queryEngine
@@ -361,12 +322,17 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
 		 */
-		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $queryDependencyLinksStore, $applicationFactory ) {
+		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) {
 
-			$queryDependencyLinksStore->setStore( $store );
+			$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
+
+			$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+				$store
+			);
+
 			$queryDependencyLinksStore->updateDependencies( $result );
 
-			$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->recordStats();
+			ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' )->recordStats();
 
 			$store->getObjectIds()->warmUpCache( $result );
 
@@ -395,12 +361,12 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
 		 */
-		$this->handlers['SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate'] = function ( $property, $subject, &$html ) use ( $applicationFactory ) {
+		$this->handlers['SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate'] = function ( $property, $subject, &$html, $store ) {
 
 			$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
 
 			$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
-				$applicationFactory->getStore()
+				$store
 			);
 
 			$doesRequireFurtherLink = $queryReferenceBacklinks->doesRequireFurtherLink(
@@ -417,8 +383,9 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
 		 */
-		$this->handlers['SMW::SQLStore::Installer::AfterCreateTablesComplete'] = function ( $tableBuilder, $messageReporter, $options ) use ( $applicationFactory ) {
+		$this->handlers['SMW::SQLStore::Installer::AfterCreateTablesComplete'] = function ( $tableBuilder, $messageReporter, $options ) {
 
+			$applicationFactory = ApplicationFactory::getInstance();
 			$importerServiceFactory = $applicationFactory->create( 'ImporterServiceFactory' );
 
 			$importer = $importerServiceFactory->newImporter(

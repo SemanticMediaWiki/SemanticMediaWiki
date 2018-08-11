@@ -23,9 +23,11 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $slot;
 	private $logger;
+	private $testEnvironment;
 
 	protected function setUp() {
 
+		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->logger = TestEnvironment::newSpyLogger();
@@ -42,6 +44,12 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
+
 		$this->slot = '';
 	}
 
@@ -53,7 +61,7 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testPushUpdatesOnDisabledDeferredUpdateAndNullChange() {
+	public function testPushUpdatesOnNullChange() {
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
@@ -63,28 +71,16 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$changeDiff->expects( $this->once() )
-			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( array() ) );
-
-		$changeDiff->expects( $this->once() )
-			->method( 'getTextItems' )
-			->will( $this->returnValue( array() ) );
-
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$changeOp->expects( $this->once() )
-			->method( 'newChangeDiff' )
-			->will( $this->returnValue( $changeDiff ) );
+			->method( 'getChangedEntityIdSummaryList' )
+			->will( $this->returnValue( array() ) );
 
 		$changeOp->expects( $this->never() )
 			->method( 'getSubject' );
-
-		$deferredRequestDispatchManager = $this->getMockBuilder( '\SMW\DeferredRequestDispatchManager' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$instance = new TextChangeUpdater(
 			$this->connection,
@@ -96,15 +92,12 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->logger
 		);
 
-		$instance->asDeferredUpdate( false );
-
 		$instance->pushUpdates(
-			$changeOp,
-			$deferredRequestDispatchManager
+			$changeOp
 		);
 	}
 
-	public function testPushUpdatesAsDeferredUpdate() {
+	public function testPushUpdates() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
@@ -136,15 +129,16 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSubject' )
 			->will( $this->returnValue( $dataItem ) );
 
-		$deferredRequestDispatchManager = $this->getMockBuilder( '\SMW\DeferredRequestDispatchManager' )
+		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredRequestDispatchManager->expects( $this->once() )
-			->method( 'dispatchFulltextSearchTableUpdateJobWith' )
+		$this->jobFactory->expects( $this->once() )
+			->method( 'newFulltextSearchTableUpdateJob' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'slot:id' => 'Foo#0##' ) ) );
+				$this->equalTo( array( 'slot:id' => 'Foo#0##' ) ) )
+			->will( $this->returnValue( $nullJob ) );
 
 		$instance = new TextChangeUpdater(
 			$this->connection,
@@ -156,11 +150,8 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->logger
 		);
 
-		$instance->asDeferredUpdate( true );
-
 		$instance->pushUpdates(
-			$changeOp,
-			$deferredRequestDispatchManager
+			$changeOp
 		);
 	}
 
@@ -193,10 +184,6 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$changeOp->expects( $this->never() )
 			->method( 'getSubject' );
 
-		$deferredRequestDispatchManager = $this->getMockBuilder( '\SMW\DeferredRequestDispatchManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new TextChangeUpdater(
 			$this->connection,
 			$this->cache,
@@ -207,12 +194,10 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->logger
 		);
 
-		$instance->asDeferredUpdate( true );
 		$instance->isCommandLineMode( true );
 
 		$instance->pushUpdates(
-			$changeOp,
-			$deferredRequestDispatchManager
+			$changeOp
 		);
 	}
 

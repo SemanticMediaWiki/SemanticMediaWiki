@@ -575,7 +575,8 @@ class HtmlBuilder {
 					[
 						$diProperty,
 						$contextPage,
-						&$value_html
+						&$value_html,
+						$this->store
 					]
 				);
 			}
