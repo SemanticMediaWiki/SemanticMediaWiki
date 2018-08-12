@@ -305,17 +305,41 @@ div#ask legend {
 	margin-bottom: 10px;
 }
 
-.smw-ask-sort-input input {
+.smw-ask-sort-input input, .smw-propertysubject-input {
 	padding: 4px;
 	border: 1px solid #aaa;
 }
 
-.smw-ask-sort-input .autocomplete-arrow {
+.options-list .smw-property-input {
+	padding: 2px 1px 2px 1px;
+	border: 1px solid #aaa;
+}
+
+.smw-ask-sort-input .autocomplete-arrow, .smw-table-cell .autocomplete-arrow {
 	background-position-y: 0px;
+}
+
+.options-list .smw-table-cell .autocomplete-arrow {
+	background-position-y: -2px;
 }
 
 .smw-ask-sort-input .autocomplete-loading {
 	vertical-align: unset;
+}
+
+.smw-table-cell .autocomplete-loading {
+	vertical-align: unset;
+	padding: 4px;
+}
+
+.options-list .smw-table-cell .autocomplete-loading {
+	vertical-align: unset;
+	padding: 2px 1px 2px 1px;
+}
+
+.smw-table-cell .mw-ui-input.autocomplete-loading {
+	vertical-align: unset;
+	padding: 0.625em 0.625em 0.546875em;
 }
 
 .smw-ask-sort-input select, .smw-ask-sort-input .smw-ask-sort-delete {
@@ -440,4 +464,17 @@ div#ask legend {
 		display: inline-block;
 		margin-bottom: 0;
 	}
+}
+
+.skin-chameleon .autocomplete-arrow {
+	background-position-y: 1px;
+	padding: 2px;
+}
+
+.skin-chameleon .autocomplete-loading {
+	padding: 2px;
+}
+
+.skin-chameleon .smw-ask-sort-input select, .skin-chameleon .smw-ask-options-list select {
+	padding: 0.25em;
 }

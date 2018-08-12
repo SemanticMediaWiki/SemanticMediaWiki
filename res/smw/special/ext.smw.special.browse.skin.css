@@ -5,7 +5,7 @@
 	margin-right: 0em;
 }
 
-.skin-chameleon .smwb-input .mw-ui-input {
-	padding-top: 0.35em;
-	padding-bottom: 0.45em;
+.skin-chameleon .smwb-container .smw-overlay-spinner {
+	left: 50%;
+	top: 45%;
 }
