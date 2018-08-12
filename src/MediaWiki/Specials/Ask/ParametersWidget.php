@@ -297,6 +297,33 @@ class ParametersWidget {
 		$input->setInputName( 'p[' . $definition->getName() . ']' );
 		//$input->setInputClass( 'smw-ask-input-' . str_replace( ' ', '-', $definition->getName() ) );
 
+		$opts = $definition->getOptions();
+		$attributes = [];
+
+		if ( isset( $opts['style'] ) ) {
+			$attributes['style'] = $opts['style'];
+		}
+
+		if ( isset( $opts['size'] ) ) {
+			$attributes['size'] = $opts['size'];
+		}
+
+		if ( isset( $opts['data-property'] ) ) {
+			$attributes['data-property'] = $opts['data-property'];
+		}
+
+		if ( isset( $opts['data-value'] ) ) {
+			$attributes['data-value'] = $opts['data-value'];
+		}
+
+		if ( isset( $opts['class'] ) ) {
+			$attributes['class'] = $opts['class'];
+		}
+
+		if ( $attributes !== [] ) {
+			$input->setAttributes( $attributes );
+		}
+
 		if ( $currentValue !== false ) {
 			$input->setCurrentValue( $currentValue );
 		}
