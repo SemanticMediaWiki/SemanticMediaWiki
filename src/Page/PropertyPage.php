@@ -249,7 +249,7 @@ class PropertyPage extends Page {
 		// Improperty values
 		$html = $this->makeList( 'error', '_ERRP', false );
 
-		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ),  [ 'hide' => $html === '' ] );
+		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ),  [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
 		$htmlTabs->content( 'smw-property-errp', $html );
 
 		$html = $htmlTabs->buildHTML(
