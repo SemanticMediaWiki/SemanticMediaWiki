@@ -411,6 +411,18 @@ class SMWSql3SmwIds {
 				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort' );
 			}
 
+			// #2001
+			// In cases where title components are excessively long (beyond the
+			// field limit) it has been observed that at least on MySQL/MariaDB no
+			// appropriate matches are found even though a row with a truncated
+			// representation exists in the table.
+			//
+			// `postgres` has no field limit and a divergent behaviour has not
+			// been observed
+			if ( $subobjectName !== '' && !$db->isType( 'postgres' ) ) {
+				$subobjectName = mb_substr( $subobjectName, 0, 255 );
+			}
+
 			$row = $db->selectRow(
 				self::TABLE_NAME,
 				$select,
