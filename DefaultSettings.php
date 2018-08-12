@@ -997,15 +997,21 @@ return array(
 	##
 
 	###
-	# Sets Semantic MediaWiki object cache and is used to track temporary
-	# changes in SMW
+	# Semantic MediaWiki uses various cache instances and types to improve access
+	# and re-access to objects. `smwgMainCacheType` identifies the "main" type
+	# to be used for a persitent storage to a vendor (SQL, memcache, redis etc.)
+	# specific solution.
 	#
+	# `CACHE_ANYTHING` refers to settings available in `$wgMessageCacheType` or
+	# `$wgParserCacheType` if they are set.
+	#
+	# @see https://www.semantic-mediawiki.org/wiki/Help:Caching
 	# @see http://www.mediawiki.org/wiki/$wgMainCacheType
 	#
-	# @since 1.9
+	# @since 3.0
+	# @default CACHE_ANYTHING
 	##
-	'smwgCacheType' => CACHE_ANYTHING,  // To be removed with 3.0 use $smwgMainCacheType
-	'smwgMainCacheType' => CACHE_ANYTHING, // Isn't used yet
+	'smwgMainCacheType' => CACHE_ANYTHING,
 	##
 
 	###
@@ -1058,7 +1064,7 @@ return array(
 	# CacheTTL settings
 	#
 	# Defines time to live for in Semantic MediaWiki used cache instances and
-	# requires $smwgCacheType to be set otherwise related settings will have
+	# requires $smwgMainCacheType to be set otherwise related settings will have
 	# no effect.
 	#
 	# - special.wantedproperties TTL (in sec, or false to disable it) for caching
@@ -1098,7 +1104,7 @@ return array(
 	#
 	# @since 1.9
 	#
-	# @requires  $smwgCacheType be set
+	# @requires  $smwgMainCacheType be set
 	# @default true
 	##
 	'smwgAutoRefreshOnPurge' => true,
@@ -1110,7 +1116,7 @@ return array(
 	#
 	# @since 1.9
 	#
-	# @requires  $smwgCacheType be set
+	# @requires  $smwgMainCacheType be set
 	# @default true
 	##
 	'smwgAutoRefreshOnPageMove' => true,
@@ -1172,7 +1178,7 @@ return array(
 	#
 	# @since 1.9
 	#
-	# @requires $smwgCacheType be set
+	# @requires $smwgMainCacheType be set
 	# @default true
 	##
 	'smwgFactboxUseCache' => true,
@@ -1188,7 +1194,7 @@ return array(
 	#
 	# @since 1.9
 	#
-	# @requires $smwgCacheType be set
+	# @requires $smwgMainCacheType be set
 	# @default true
 	##
 	'smwgFactboxCacheRefreshOnPurge' => true,

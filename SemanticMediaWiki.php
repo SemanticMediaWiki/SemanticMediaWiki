@@ -87,10 +87,6 @@ class SemanticMediaWiki {
 	 */
 	public static function onExtensionFunction() {
 
-		// 3.x reverse the order to ensure that smwgMainCacheType is used
-		// as main and smwgCacheType being deprecated with 3.x
-		$GLOBALS['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$namespace = new NamespaceManager();

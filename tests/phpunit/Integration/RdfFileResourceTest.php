@@ -34,7 +34,7 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 		$this->testEnvironment->withConfiguration( array(
 			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_FILE => true ),
-			'smwgCacheType' => 'hash',
+			'smwgMainCacheType' => 'hash',
 			'smwgExportBCAuxiliaryUse' => true
 		) );
 

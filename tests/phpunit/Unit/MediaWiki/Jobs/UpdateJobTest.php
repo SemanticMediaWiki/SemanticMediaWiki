@@ -27,7 +27,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( array(
-			'smwgCacheType'        => 'hash',
+			'smwgMainCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false,
 			'smwgEnabledDeferredUpdate' => false,
 			'smwgDVFeatures' => '',

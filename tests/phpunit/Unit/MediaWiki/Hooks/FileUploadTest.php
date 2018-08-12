@@ -26,7 +26,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment( array(
 			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
 			'smwgNamespacesWithSemanticLinks' => array( NS_FILE => true ),
-			'smwgCacheType'  => 'hash',
+			'smwgMainCacheType'  => 'hash',
 			'smwgEnableUpdateJobs' => false
 		) );
 
