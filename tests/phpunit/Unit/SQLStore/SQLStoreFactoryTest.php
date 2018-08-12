@@ -321,6 +321,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructUniquenessLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\UniquenessLookup',
+			$instance->newUniquenessLookup()
+		);
+	}
+
 	public function testCanConstructHierarchyLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );

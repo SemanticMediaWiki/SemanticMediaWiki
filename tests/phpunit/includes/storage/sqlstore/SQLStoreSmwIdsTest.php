@@ -23,6 +23,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $cache;
 	private $idMatchFinder;
+	private $uniquenessLookup;
 	private $factory;
 
 	protected function setUp() {
@@ -48,6 +49,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->uniquenessLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\UniquenessLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -65,6 +70,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->factory->expects( $this->any() )
+			->method( 'newUniquenessLookup' )
+			->will( $this->returnValue( $this->uniquenessLookup ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newIdCacheManager' )
@@ -331,7 +340,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$row = $expected;
 
-		$this->idEntityFinder->expects( $this->once() )
+		$this->uniquenessLookup->expects( $this->once() )
 			->method( 'findDuplicates' )
 			->will( $this->returnValue( [ $row ] ) );
 

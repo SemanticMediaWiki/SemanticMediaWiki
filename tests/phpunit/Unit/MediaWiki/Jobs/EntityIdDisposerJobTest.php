@@ -32,10 +32,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array( 'Foo' ) ) );
 
-		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->getMockForAbstractClass();
 
