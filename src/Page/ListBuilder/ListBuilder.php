@@ -156,7 +156,7 @@ class ListBuilder {
 
 		if ( $resultCount > 0 ) {
 			$titleText = htmlspecialchars( str_replace( '_', ' ', $dataItem->getDBKey() ) );
-			$result .= "<div id=\"{$this->listHeader}\">" . Html::rawElement( 'h2', array(), wfMessage( $this->listHeader . '-header', $titleText )->text() ) . "\n<p>";
+			$result .= "<div id=\"{$this->listHeader}\">" . "\n<p>";
 
 			$result .= $message . "</p>";
 			$property = $this->checkProperty ? $property : null;

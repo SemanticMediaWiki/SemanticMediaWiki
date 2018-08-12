@@ -10,6 +10,7 @@ use SMW\DIProperty;
 use SMW\MediaWiki\Collator;
 use SMW\Message;
 use SMWDataItem as DataItem;
+use SMW\Utils\HtmlTabs;
 
 /**
  * @license GNU GPL v2+
@@ -50,6 +51,10 @@ class ConceptPage extends Page {
 	 */
 	protected function getHtml() {
 		global $wgRequest;
+
+		$context = $this->getContext();
+
+		$context->getOutput()->addModuleStyles( 'ext.smw.page.styles' );
 
 		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
 			$descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
@@ -100,15 +105,40 @@ class ConceptPage extends Page {
 
 		$navigationLinks =  '<div class="smw-page-navigation"><div class="clearfix">' . ListPager::pagination( $this->mTitle, $limit, $offset, $resultCount, $query ) . '</div>' . $countMessage . '</div>';
 
-		return Html::element( 'div', array( 'id' => 'smwfootbr' ) ) .
-			Html::element( 'a', array( 'name' => 'SMWResults' ), null ) .
-			Html::rawElement( 'div', array( 'id' => 'mw-pages'),
-			//	Html::rawElement( 'hr', array( 'style' => 'margin: 1.5em 0 0 0;' ), '' ) .
-				Html::rawElement( 'h2', array( 'style' => 'margin-top:0.5em;' ), $this->getContext()->msg( 'smw_concept_header', $titleText )->text() ) .
-				$navigationLinks .
-				smwfEncodeMessages( $errors ) . ' ' .
-				$this->getFormattedColumns( $diWikiPages )
-			);
+		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setGroup( 'concept' );
+
+		if ( $this->mTitle->exists() ) {
+			$html = $navigationLinks . $this->getFormattedColumns( $diWikiPages );
+		} else {
+			$html = '';
+		}
+
+		$htmlTabs->tab( 'smw-concept-list', $this->msg( 'smw-concept-tab-list' ), [ 'hide' => $html === '' ] );
+		$htmlTabs->content( 'smw-concept-list', $html );
+
+		// Improperty values
+		$html = smwfEncodeMessages( $errors );
+
+		$htmlTabs->tab( 'smw-concept-errors', $this->msg( 'smw-concept-tab-errors' ),  [ 'hide' => $html === '' ] );
+		$htmlTabs->content( 'smw-concept-errors', $html );
+
+		$html = $htmlTabs->buildHTML(
+			[ 'class' => 'smw-concept clearfix' ]
+		);
+
+		return Html::element(
+			'div',
+			array( 'id' => 'smwfootbr' )
+		) . Html::element(
+			'a',
+			array( 'name' => 'SMWResults' ),
+			null
+		) . Html::rawElement(
+			'div',
+			array( 'id' => 'mw-pages'),
+			$html
+		);
 	}
 
 	/**
@@ -194,6 +224,10 @@ class ConceptPage extends Page {
 		}
 
 		return Collator::singleton()->getFirstLetter( $sortKey );
+	}
+
+	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
+		return Message::get( $params, $type, $lang );
 	}
 
 }

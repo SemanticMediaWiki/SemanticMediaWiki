@@ -630,5 +630,21 @@ return array(
 		)
 	),
 
+	'smw.property.page'  => $moduleTemplate + array(
+		'position' => 'top',
+		'scripts'  => array( 'smw/util/smw.property.page.js' ),
+		'dependencies'  => array(
+			'mediawiki.api',
+			'mediawiki.api.parse',
+			'ext.smw.tooltip',
+		),
+		'messages' => array(
+			'smw_result_noresults'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
 
 );

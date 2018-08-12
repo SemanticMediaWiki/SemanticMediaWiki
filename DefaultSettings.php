@@ -443,7 +443,7 @@ return array(
 	##
 	'smwgPagingLimit' => [
 		'type' => 200,
-		'concept' => 200,
+		'concept' => 250,
 		'property' => 20,
 		'errorlist' => 25,
 
