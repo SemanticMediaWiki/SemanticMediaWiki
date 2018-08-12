@@ -135,11 +135,11 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		$connection = $this->store->getConnection( DB_MASTER );
 
 		$this->messageReporter->reportMessage( "Checking predefined properties ...\n" );
-		$this->doCheckPredefinedPropertyBorder( $connection );
+		$this->checkPredefinedPropertyUpperbound();
 
 		// now write actual properties; do that each time, it is cheap enough
 		// and we can update sortkeys by current language
-		$this->messageReporter->reportMessage( "   ... writing properties ...\n" );
+		$this->messageReporter->reportMessage( "   ... initialize predefined properties ...\n" );
 
 		foreach ( $this->predefinedPropertyList as $prop => $id ) {
 
@@ -160,35 +160,42 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function doCheckPredefinedPropertyBorder( $connection ) {
+	private function checkPredefinedPropertyUpperbound() {
+
+		$connection = $this->store->getConnection( DB_MASTER );
 
 		// Check if we already have this structure
-		$expectedIdUpperbound = SQLStore::FIXED_PROPERTY_ID_UPPERBOUND;
+		$upperbound = SQLStore::FIXED_PROPERTY_ID_UPPERBOUND;
+		$legacyBound = 50;
 
-		$currentIdUpperbound = $connection->selectRow(
+		$row = $connection->selectRow(
 			SQLStore::ID_TABLE,
 			'smw_id',
 			'smw_iw=' . $connection->addQuotes( SMW_SQL3_SMWBORDERIW )
 		);
 
-		if ( $currentIdUpperbound === null ) {
-			return $this->messageReporter->reportMessage( "   ... done.\n" );
-		}
-
-		if ( $currentIdUpperbound !== false && $currentIdUpperbound->smw_id == $expectedIdUpperbound ) {
+		if ( $row !== false && $row->smw_id == $upperbound ) {
 			return $this->messageReporter->reportMessage( "   ... space for internal properties already allocated.\n" );
-		}
+		} elseif ( $row === false ) {
+			$currentUpperbound = $legacyBound;
+		} else {
+			$currentUpperbound = $row->smw_id;
 
-		// Legacy bound
-		$currentIdUpperbound = $currentIdUpperbound === false ? 50 : $currentIdUpperbound->smw_id;
+			// Delete the current upperbound to avoid having a duplicate border
+			$connection->delete(
+				SQLStore::ID_TABLE,
+				array( 'smw_id' => $currentUpperbound ),
+				__METHOD__
+			);
+		}
 
 		$this->messageReporter->reportMessage( "   ... allocating space for internal properties ...\n" );
-		$this->store->getObjectIds()->moveSMWPageID( $expectedIdUpperbound );
+		$this->store->getObjectIds()->moveSMWPageID( $upperbound );
 
 		$connection->insert(
 			SQLStore::ID_TABLE,
 			array(
-				'smw_id' => $expectedIdUpperbound,
+				'smw_id' => $upperbound,
 				'smw_title' => '',
 				'smw_namespace' => 0,
 				'smw_iw' => SMW_SQL3_SMWBORDERIW,
@@ -198,14 +205,22 @@ class TableIntegrityExaminer implements MessageReporterAware {
 			__METHOD__
 		);
 
-		if ( $currentIdUpperbound == $expectedIdUpperbound ) {
+		if ( $currentUpperbound == $upperbound ) {
 			return $this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
-		$this->messageReporter->reportMessage( "   ... moving from $currentIdUpperbound to $expectedIdUpperbound" );
+		if ( $currentUpperbound < $upperbound ) {
+			$this->messageReporter->reportMessage( "   ... moving from $currentUpperbound to $upperbound upperbound (may take a moment) ..." );
+			$this->messageReporter->reportMessage( "       " );
+		}
 
-		// make way for built-in ids
-		for ( $i = $currentIdUpperbound; $i < $expectedIdUpperbound; $i++ ) {
+		for ( $i = $currentUpperbound; $i < $upperbound; $i++ ) {
+
+			if ( ( $i - $currentUpperbound ) % 60 === 0 ) {
+				$this->messageReporter->reportMessage( "\n       " );
+			}
+
+			$this->messageReporter->reportMessage( "." );
 			$this->store->getObjectIds()->moveSMWPageID( $i );
 		}
 

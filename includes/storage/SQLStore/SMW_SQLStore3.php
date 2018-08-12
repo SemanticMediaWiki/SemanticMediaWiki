@@ -51,9 +51,9 @@ class SMWSQLStore3 extends SMWStore {
 	 * in the ID_TABLE
 	 *
 	 * When changing the upper bound, please make sure to copy the current upper
-	 * bound as legcy to the SMWSQLStore3SetupHandlers::checkPredefinedPropertyBorder
+	 * bound as legcy to the TableIntegrityExaminer::checkPredefinedPropertyUpperbound
 	 */
-	const FIXED_PROPERTY_ID_UPPERBOUND = 50;
+	const FIXED_PROPERTY_ID_UPPERBOUND = 500;
 
 	/**
 	 * Name of the table to store the concept cache in.

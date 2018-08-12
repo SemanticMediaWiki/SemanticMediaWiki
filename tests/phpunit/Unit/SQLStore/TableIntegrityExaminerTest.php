@@ -112,6 +112,10 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$connection->expects( $this->at( 1 ) )
+			->method( 'selectRow' )
+			->will( $this->returnValue( (object)[ 'smw_id' => \SMW\SQLStore\SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ] ) );
+
 		$connection->expects( $this->at( 2 ) )
 			->method( 'selectRow' )
 			->with(
@@ -222,22 +226,34 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
-			->with( $this->equalTo( 'UPDATE smw_object_ids SET smw_sort = smw_sortkey' ) );
+		$connection->expects( $this->any() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'tableName' )
 			->will( $this->returnValue( 'smw_object_ids' ) );
 
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'tableName' )
+			->will( $this->returnValue( 'smw_object_ids' ) );
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'moveSMWPageID' ) )
+			->getMock();
+
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( array( 'getConnection', 'getObjectIds' ) )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
 			->disableOriginalConstructor()
