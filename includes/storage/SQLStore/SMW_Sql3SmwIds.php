@@ -357,7 +357,7 @@ class SMWSql3SmwIds {
 	protected function getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes ) {
 		global $smwgQEqualitySupport;
 
-		$db = $this->store->getConnection();
+		$db = $this->store->getConnection( 'mw.db' );
 
 		// Integration test "query-04-02-subproperty-dc-import-marc21.json"
 		// showed a deterministic failure (due to a wrong cache id during querying
@@ -370,7 +370,7 @@ class SMWSql3SmwIds {
 			$id = $this->idCacheManager->getId( [ $title, (int)$namespace, $iw, $subobjectName ] );
 		}
 
-		if ( $id !== false ) { // cache hit
+		if ( $id !== false && $id != 0 ) { // cache hit
 			$sortkey = $this->idCacheManager->getSort( [ $title, (int)$namespace, $iw, $subobjectName ] );
 		} elseif ( $iw == SMW_SQL3_SMWREDIIW && $canonical &&
 			$smwgQEqualitySupport != SMW_EQ_NONE && $subobjectName === '' ) {
