@@ -98,6 +98,16 @@ class LegacyParser implements Parser {
 	private $conceptPrefixCannonical;
 
 	/**
+	 * @var DIWikiPage|null
+	 */
+	private $contextPage;
+
+	/**
+	 * @var boolean
+	 */
+	private $selfReference = false;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param DescriptionProcessor $descriptionProcessor
@@ -119,7 +129,7 @@ class LegacyParser implements Parser {
 	 * @param DIWikiPage|null $contextPage
 	 */
 	public function setContextPage( DIWikiPage $contextPage = null ) {
-		$this->descriptionProcessor->setContextPage( $contextPage );
+		$this->contextPage = $contextPage;
 	}
 
 	/**
@@ -184,6 +194,20 @@ class LegacyParser implements Parser {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function containsSelfReference() {
+
+		if ( $this->selfReference ) {
+			return true;
+		}
+
+		return $this->descriptionProcessor->containsSelfReference();
+	}
+
+	/**
 	 * Return error message or empty string if no error occurred.
 	 *
 	 * @return string
@@ -228,10 +252,14 @@ class LegacyParser implements Parser {
 	public function getQueryDescription( $queryString ) {
 
 		$this->descriptionProcessor->clear();
+		$this->descriptionProcessor->setContextPage( $this->contextPage );
+
 		$this->currentString = $queryString;
 		$this->separatorStack = array();
 
+		$this->selfReference = false;
 		$setNS = false;
+
 		$description = $this->getSubqueryDescription( $setNS );
 
 		// add default namespaces if applicable
@@ -445,6 +473,11 @@ class LegacyParser implements Parser {
 
 				if ( $title !== null ) {
 					$diWikiPage = new DIWikiPage( $title->getDBkey(), $title->getNamespace(), '' );
+
+					if ( !$this->selfReference && $this->contextPage !== null ) {
+						$this->selfReference = $diWikiPage->equals( $this->contextPage );
+					}
+
 					$desc = $category ? $this->descriptionFactory->newClassDescription( $diWikiPage ) : $this->descriptionFactory->newConceptDescription( $diWikiPage );
 
 					if ( $isNegation ) {
