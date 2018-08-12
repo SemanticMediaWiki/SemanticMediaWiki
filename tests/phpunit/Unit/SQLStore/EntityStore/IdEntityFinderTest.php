@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 use SMW\DIWikiPage;
 use SMW\IteratorFactory;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
+use SMW\MediaWiki\Connection\Query;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -78,12 +79,12 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
+			->method( 'select' )
 			->with(
 				$this->anything(),
 				$this->anything(),
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
-			->will( $this->returnValue( $row ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -138,12 +139,12 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
+			->method( 'select' )
 			->with(
 				$this->anything(),
 				$this->anything(),
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
-			->will( $this->returnValue( $row ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new IdEntityFinder(
 			$this->store,
@@ -164,7 +165,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'selectRow' )
+			->method( 'select' )
 			->will( $this->returnValue( false ) );
 
 		$instance = new IdEntityFinder(
@@ -210,32 +211,6 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 				$value
 			);
 		}
-	}
-
-	public function testFindDuplicates() {
-
-		$row = new \stdClass;
-		$row->count = 42;
-		$row->smw_title = 'Foo';
-		$row->smw_namespace = 0;
-		$row->smw_iw = '';
-		$row->smw_subobject ='';
-
-		$this->connection->expects( $this->once() )
-			->method( 'query' )
-			->with( $this->stringContains( 'HAVING count(*) > 1' ) )
-			->will( $this->returnValue( [ $row ] ) );
-
-		$instance = new IdEntityFinder(
-			$this->store,
-			new IteratorFactory(),
-			$this->cache
-		);
-
-		$this->assertInstanceOf(
-			'\SMW\Iterators\MappingIterator',
-			$instance->findDuplicates()
-		);
 	}
 
 }

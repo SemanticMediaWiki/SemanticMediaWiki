@@ -46,58 +46,6 @@ class IdEntityFinder {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @return Iterator|[]
-	 */
-	public function findDuplicates() {
-
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$tableName = $connection->tableName(
-			SQLStore::ID_TABLE
-		);
-
-		$condition = " smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
-		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
-
-		$query = "SELECT " .
-		"COUNT(*) as count, smw_title, smw_namespace, smw_iw, smw_subobject " .
-		"FROM $tableName " .
-		"WHERE $condition " .
-		"GROUP BY smw_title, smw_namespace, smw_iw, smw_subobject " .
-		"HAVING count(*) > 1";
-
-		// @see https://stackoverflow.com/questions/8119489/postgresql-where-count-condition
-		// "HAVING count > 1"; doesn't work with postgres
-
-		$rows = $connection->query(
-			$query,
-			__METHOD__
-		);
-
-		if ( $rows === false ) {
-			return [];
-		}
-
-		$resultIterator = $this->iteratorFactory->newResultIterator(
-			$rows
-		);
-
-		$mappingIterator = $this->iteratorFactory->newMappingIterator( $resultIterator, function( $row ) {
-			return [
-				'count'=> $row->count,
-				'smw_title'=> $row->smw_title,
-				'smw_namespace'=> $row->smw_namespace,
-				'smw_iw'=> $row->smw_iw,
-				'smw_subobject'=> $row->smw_subobject
-			];
-		} );
-
-		return $mappingIterator;
-	}
-
-	/**
 	 * @since 2.3
 	 *
 	 * @param array $idList
@@ -121,24 +69,17 @@ class IdEntityFinder {
 			}
 		}
 
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$rows = $connection->select(
-			\SMWSQLStore3::ID_TABLE,
-			[
-				'smw_id',
-				'smw_title',
-				'smw_namespace',
-				'smw_iw',
-				'smw_subobject'
-			],
-			$conditions,
-			__METHOD__
+		$rows = $this->fetchFromTable(
+			$conditions
 		);
+
+		if ( $rows === false ) {
+			return [];
+		}
 
 		return $this->iteratorFactory->newMappingIterator(
 			$this->iteratorFactory->newResultIterator( $rows ),
-			[ $this, 'newDIWikiPageFromRow' ]
+			[ $this, 'newFromRow' ]
 		);
 	}
 
@@ -149,7 +90,7 @@ class IdEntityFinder {
 	 *
 	 * @return DIWikiPage
 	 */
-	public function newDIWikiPageFromRow( $row ) {
+	public function newFromRow( $row ) {
 
 		$dataItem = new DIWikiPage(
 			$row->smw_title,
@@ -193,11 +134,42 @@ class IdEntityFinder {
 			return $dataItem;
 		}
 
+		$rows = $this->fetchFromTable(
+			[ 'smw_id' => $id ],
+			[ 'LIMIT' => 1 ]
+		);
+
+		if ( $rows === false ) {
+			return false;
+		}
+
+		foreach ( $rows as $row ) {
+
+			if ( !isset( $row->smw_title ) ) {
+				continue;
+			}
+
+			if ( $row->smw_title !== '' && $row->smw_title{0} === '_' && (int)$row->smw_namespace === SMW_NS_PROPERTY ) {
+			//	$row->smw_title = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $row->smw_title ) );
+			}
+
+			$row->smw_id = $id;
+			$dataItem = $this->newFromRow( $row );
+		}
+
+		$this->cache->save( $id, $dataItem );
+
+		return $dataItem;
+	}
+
+	private function fetchFromTable( $conditions, $options = [] ) {
+
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			\SMWSQLStore3::ID_TABLE,
+		return $connection->select(
+			SQLStore::ID_TABLE,
 			[
+				'smw_id',
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
@@ -205,24 +177,10 @@ class IdEntityFinder {
 				'smw_sortkey',
 				'smw_sort'
 			],
-			[ 'smw_id' => $id ],
-			__METHOD__
+			$conditions,
+			__METHOD__,
+			$options
 		);
-
-		if ( $row === false ) {
-			return false;
-		}
-
-		if ( $row->smw_title !== '' && $row->smw_title{0} === '_' && (int)$row->smw_namespace === SMW_NS_PROPERTY ) {
-		//	$row->smw_title = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $row->smw_title ) );
-		}
-
-		$row->smw_id = $id;
-		$dataItem = $this->newDIWikiPageFromRow( $row );
-
-		$this->cache->save( $id, $dataItem );
-
-		return $dataItem;
 	}
 
 }

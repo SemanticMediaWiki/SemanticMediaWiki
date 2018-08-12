@@ -125,6 +125,11 @@ class SMWSql3SmwIds {
 	private $idChanger;
 
 	/**
+	 * @var UniquenessLookup
+	 */
+	private $uniquenessLookup;
+
+	/**
 	 * @since 1.8
 	 * @param SMWSQLStore3 $store
 	 */
@@ -138,6 +143,7 @@ class SMWSql3SmwIds {
 		);
 
 		$this->redirectStore = $this->factory->newRedirectStore();
+		$this->uniquenessLookup = $this->factory->newUniquenessLookup();
 
 		$this->tableFieldUpdater = new TableFieldUpdater(
 			$this->store
@@ -166,43 +172,7 @@ class SMWSql3SmwIds {
 	 * @return boolean
 	 */
 	public function isUnique( DataItem $dataItem ) {
-
-		$type = $dataItem->getDIType();
-
-		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
-			throw new InvalidArgumentException( 'Expects a DIProperty or DIWikiPage object.' );
-		}
-
-		$connection = $this->store->getConnection( 'mw.db' );
-		$conditions = [];
-
-		if ( $type === DataItem::TYPE_WIKIPAGE ) {
-			$conditions[] = "smw_title=" . $connection->addQuotes( $dataItem->getDBKey() );
-			$conditions[] = "smw_namespace=" . $connection->addQuotes( $dataItem->getNamespace() );
-			$conditions[] = "smw_subobject=" . $connection->addQuotes( $dataItem->getSubobjectName() );
-		} else {
-			$conditions[] = "smw_sortkey=" . $connection->addQuotes( $dataItem->getCanonicalLabel() );
-			$conditions[] = "smw_namespace=" . $connection->addQuotes( SMW_NS_PROPERTY );
-			$conditions[] = "smw_subobject=''";
-		}
-
-		$conditions[] = "smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
-		$conditions[] = "smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
-		$conditions[] = "smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWREDIIW );
-
-		$res = $connection->select(
-			SMWSQLStore3::ID_TABLE,
-			[
-				'smw_id, smw_sortkey'
-			],
-			$conditions,
-			__METHOD__,
-			[
-				'LIMIT' => 2
-			]
-		);
-
-		return $res->numRows() < 2;
+		return $this->uniquenessLookup->isUnique( $dataItem );
 	}
 
 	/**
@@ -435,7 +405,7 @@ class SMWSql3SmwIds {
 	 * @return []
 	 */
 	public function findDuplicates() {
-		return $this->idEntityFinder->findDuplicates();
+		return $this->uniquenessLookup->findDuplicates();
 	}
 
 	/**

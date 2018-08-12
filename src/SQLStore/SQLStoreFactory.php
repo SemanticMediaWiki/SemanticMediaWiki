@@ -17,6 +17,7 @@ use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\EntityStore\IdChanger;
+use SMW\SQLStore\EntityStore\UniquenessLookup;
 use SMW\SQLStore\EntityStore\NativeEntityLookup;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
@@ -574,6 +575,21 @@ class SQLStoreFactory {
 		);
 
 		return $idChanger;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return UniquenessLookup
+	 */
+	public function newUniquenessLookup() {
+
+		$uniquenessLookup = new UniquenessLookup(
+			$this->store,
+			$this->applicationFactory->getIteratorFactory()
+		);
+
+		return $uniquenessLookup;
 	}
 
 	/**
