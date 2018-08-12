@@ -251,6 +251,7 @@ class AskParserFunction {
 	private function doFetchResultsFromFunctionParameters( array $functionParams, array $extraKeys ) {
 
 		$contextPage = $this->parserData->getSubject();
+		$action = $this->parserData->getOption( 'request.action' );
 		$status = [];
 
 		if ( $extraKeys[self::NO_TRACE] === true ) {
@@ -271,7 +272,7 @@ class AskParserFunction {
 
 		$query->setOption( Query::PROC_CONTEXT, 'AskParserFunction' );
 		$query->setOption( Query::NO_DEPENDENCY_TRACE, $extraKeys[self::NO_TRACE] );
-		$query->setOption( 'request.action', $this->parserData->getOption( 'request.action' ) );
+		$query->setOption( 'request.action', $action );
 
 		$queryHash = $query->getHash();
 
@@ -291,6 +292,16 @@ class AskParserFunction {
 		// self-reference
 		if ( $this->circularReferenceGuard->isCircular( $queryHash ) ) {
 			return '';
+		}
+
+		// #3230
+		// If the query contains a self reference (embedding page is part of the
+		// query condition) for a `edit` action then set an extra key so that the
+		// parser uses a different parser cache hereby allows for an additional
+		// parse on the next GET request to retrieve newly stored values that may
+		// have been appended during the `edit`.
+		if ( ( $action === 'submit' || $action === 'stashedit' ) && $query->getOption( 'self.reference' ) ) {
+			$this->parserData->addExtraParserKey( 'smwq' );
 		}
 
 		QueryProcessor::setRecursiveTextProcessor(

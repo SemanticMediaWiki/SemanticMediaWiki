@@ -133,6 +133,11 @@ class QueryCreator implements QueryContext {
 			$this->getParam( 'source', null )
 		);
 
+		$query->setOption(
+			'self.reference',
+			$queryParser->containsSelfReference()
+		);
+
 		// keep parsing or other errors for later output
 		$query->addErrors(
 			$queryParser->getErrors()

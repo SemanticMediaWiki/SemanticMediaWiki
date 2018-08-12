@@ -10,6 +10,7 @@ use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\ValueDescription;
 use SMW\Site;
 use SMWDataValue as DataValue;
 
@@ -43,6 +44,11 @@ class DescriptionProcessor {
 	private $contextPage;
 
 	/**
+	 * @var boolean
+	 */
+	private $selfReference = false;
+
+	/**
 	 * @var array
 	 */
 	private $errors = array();
@@ -72,6 +78,7 @@ class DescriptionProcessor {
 	 */
 	public function clear() {
 		$this->errors = array();
+		$this->selfReference = false;
 	}
 
 	/**
@@ -81,6 +88,15 @@ class DescriptionProcessor {
 	 */
 	public function getErrors() {
 		return $this->errors;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function containsSelfReference() {
+		return $this->selfReference;
 	}
 
 	/**
@@ -155,6 +171,10 @@ class DescriptionProcessor {
 
 		$description = $dataValue->getQueryDescription( $chunk );
 		$this->addError( $dataValue->getErrors() );
+
+		if ( !$this->selfReference && $this->contextPage !== null && $description instanceof ValueDescription ) {
+			$this->selfReference = $description->getDataItem()->equals( $this->contextPage );
+		}
 
 		return $description;
 	}
