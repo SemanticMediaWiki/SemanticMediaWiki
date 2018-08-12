@@ -238,7 +238,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			}
 
 			if ( isset( $expected['propertyKeys'] ) ) {
-				$this->assertContainsPropertyKeys( $expected['propertyKeys'], $property );
+				$this->assertContainsPropertyKeys( $expected['propertyKeys'], $property, $message );
 				$runPropertiesAreSetAssert = true;
 			}
 
@@ -329,14 +329,15 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		return $semanticData->isEmpty();
 	}
 
-	private function assertContainsPropertyKeys( $keys, DIProperty $property ) {
+	private function assertContainsPropertyKeys( $keys, DIProperty $property, $message = null ) {
 
 		$keys = str_replace( " ", "_", $keys );
+		$message = ( $message === null ? 'Failed asserting' : "Failed asserting \"$message\"" );
 
 		$this->assertContains(
 			$property->getKey(),
 			$keys,
-			__METHOD__ . " asserts property key for '{$property->getLabel()}' with ({$this->formatAsString( $keys )})"
+			"{$message} property key: '{$property->getLabel()}' in ({$this->formatAsString( $keys )})"
 		);
 	}
 
