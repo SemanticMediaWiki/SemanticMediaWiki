@@ -26,7 +26,7 @@ class FactboxFactory {
 
 		$cachedFactbox = new CachedFactbox(
 			$applicationFactory->getCache(
-				$applicationFactory->getSettings()->get( 'smwgCacheType' )
+				$applicationFactory->getSettings()->get( 'smwgMainCacheType' )
 			)
 		);
 

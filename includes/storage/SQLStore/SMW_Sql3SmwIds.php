@@ -12,6 +12,8 @@ use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableFieldUpdater;
 use SMWDataItem as DataItem;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\TypesRegistry;
 
 /**
  * @ingroup SMWStore
@@ -103,57 +105,9 @@ class SMWSql3SmwIds {
 	private $tableFieldUpdater;
 
 	/**
-	 * Use pre-defined ids for Very Important Properties, avoiding frequent
-	 * ID lookups for those.
-	 *
-	 * @note These constants also occur in the store. Changing them will
-	 * require to run setup.php again. They can also not be larger than 50.
-	 *
-	 * @since 1.8
 	 * @var array
 	 */
-	public static $special_ids = array(
-		'_TYPE' => 1,
-		'_URI'  => 2,
-		'_INST' => 4,
-		'_UNIT' => 7,
-		'_IMPO' => 8,
-		'_PPLB' => 9,
-		'_PDESC' => 10,
-		'_PREC' => 11,
-		'_CONV' => 12,
-		'_SERV' => 13,
-		'_PVAL' => 14,
-		'_REDI' => 15,
-		'_DTITLE' => 16,
-		'_SUBP' => 17,
-		'_SUBC' => 18,
-		'_CONC' => 19,
-//		'_SF_DF' => 20, // Semantic Form's default form property
-//		'_SF_AF' => 21,  // Semantic Form's alternate form property
-		'_ERRP' => 22,
-// 		'_1' => 23, // properties for encoding (short) lists
-// 		'_2' => 24,
-// 		'_3' => 25,
-// 		'_4' => 26,
-// 		'_5' => 27,
-// 		'_SOBJ' => 27
-		'_LIST' => 28,
-		'_MDAT' => 29,
-		'_CDAT' => 30,
-		'_NEWP' => 31,
-		'_LEDT' => 32,
-		// properties related to query management
-		'_ASK'   =>  33,
-		'_ASKST' =>  34,
-		'_ASKFO' =>  35,
-		'_ASKSI' =>  36,
-		'_ASKDE' =>  37,
-		'_ASKPA' =>  38,
-		'_ASKSC' =>  39,
-		'_LCODE' =>  40,
-		'_TEXT'  =>  41,
-	);
+	public static $special_ids = [];
 
 	/**
 	 * @var IdCacheManager
@@ -190,6 +144,7 @@ class SMWSql3SmwIds {
 		);
 
 		$this->idChanger = $this->factory->newIdChanger();
+		self::$special_ids = TypesRegistry::getFixedPropertyIdList();
 	}
 
 	/**
@@ -357,7 +312,7 @@ class SMWSql3SmwIds {
 	protected function getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes ) {
 		global $smwgQEqualitySupport;
 
-		$db = $this->store->getConnection();
+		$db = $this->store->getConnection( 'mw.db' );
 
 		// Integration test "query-04-02-subproperty-dc-import-marc21.json"
 		// showed a deterministic failure (due to a wrong cache id during querying
@@ -370,7 +325,7 @@ class SMWSql3SmwIds {
 			$id = $this->idCacheManager->getId( [ $title, (int)$namespace, $iw, $subobjectName ] );
 		}
 
-		if ( $id !== false ) { // cache hit
+		if ( $id !== false && $id != 0 ) { // cache hit
 			$sortkey = $this->idCacheManager->getSort( [ $title, (int)$namespace, $iw, $subobjectName ] );
 		} elseif ( $iw == SMW_SQL3_SMWREDIIW && $canonical &&
 			$smwgQEqualitySupport != SMW_EQ_NONE && $subobjectName === '' ) {
@@ -409,6 +364,18 @@ class SMWSql3SmwIds {
 				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' );
 			} else {
 				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort' );
+			}
+
+			// #2001
+			// In cases where title components are excessively long (beyond the
+			// field limit) it has been observed that at least on MySQL/MariaDB no
+			// appropriate matches are found even though a row with a truncated
+			// representation exists in the table.
+			//
+			// `postgres` has no field limit and a divergent behaviour has not
+			// been observed
+			if ( $subobjectName !== '' && !$db->isType( 'postgres' ) ) {
+				$subobjectName = mb_substr( $subobjectName, 0, 255 );
 			}
 
 			$row = $db->selectRow(
@@ -981,6 +948,14 @@ class SMWSql3SmwIds {
 		);
 
 		$db->endAtomicTransaction( __METHOD__ );
+
+		if ( ( $title = \Title::newFromText( $row->smw_title, $row->smw_namespace ) ) !== null ) {
+			$updateJob = new UpdateJob(
+				$title
+			);
+
+			$updateJob->insert();
+		}
 	}
 
 	/**

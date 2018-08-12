@@ -72,7 +72,7 @@ class FieldBuilder {
 							'name'  => 'article',
 							'size'  => 40,
 							'id'    => 'smw-article-input',
-							'class' => 'input mw-ui-input smw-article-input',
+							'class' => 'input smw-article-input autocomplete-arrow mw-ui-input',
 							'value' => htmlspecialchars( $articletext )
 						)
 					)

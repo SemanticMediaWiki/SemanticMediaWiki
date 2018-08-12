@@ -59,6 +59,15 @@ class EntityIdListRelevanceDetectionFilter {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return DIWikiPage
+	 */
+	public function getSubject() {
+		return $this->changeOp->getSubject();
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param array $propertyExemptionList
@@ -109,13 +118,19 @@ class EntityIdListRelevanceDetectionFilter {
 			array_keys( $affiliateEntityList )
 		);
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'developer',
-			'procTime' => Timer::getElapsedTime( __CLASS__, 6 )
-		];
-
-		$this->logger->info( '[QueryDependency] Filter changeOp list (procTime in sec: {procTime})', $context );
+		$this->logger->info(
+			[
+				'QueryDependency',
+				'EntityIdListRelevanceDetectionFilter',
+				'Filter changeOp list',
+				'procTime in sec: {procTime}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'procTime' => Timer::getElapsedTime( __CLASS__, 6 )
+			]
+		);
 
 		return $filteredIdList;
 	}

@@ -152,6 +152,9 @@
 					button : false
 				} );
 			} );
+
+			$( '#options-list' ).trigger( 'smw.autocomplete.propertysubject', { context: $( '#options-list' ) } );
+			$( '#options-list' ).trigger( 'smw.autocomplete.property', { context: $( '#options-list' ) } );
 		},
 
 		// Format help link

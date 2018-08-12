@@ -539,6 +539,10 @@ label.smw-form-checkbox {
 	overflow-x: hidden;
 }
 
+.autocomplete-arrow.mw-ui-input {
+	background-position-y: 4px;
+}
+
 [dir='rtl'] .autocomplete-suggestions {
 	margin-right: 0px;
 }
@@ -581,6 +585,11 @@ label.smw-form-checkbox {
     background-position: calc(100% - 17px) calc(1em + 2px), calc(100% - 12px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
     background-size: 5px 5px, 5px 5px, 1px 1.5em;
     background-repeat: no-repeat;
+}
+
+.mw-ui-input.autocomplete-loading {
+	vertical-align: unset;
+	padding: 0.57142857em 0.57142857em 0.5em;
 }
 
 .autocomplete-arrow {

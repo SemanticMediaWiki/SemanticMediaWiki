@@ -77,7 +77,7 @@ return array(
 	#
 	# @since 3.0
 	##
-	'smwgUpgradeKey' => 'DB-2018-07',
+	'smwgUpgradeKey' => 'DB-2018-08',
 	##
 
 	###
@@ -469,7 +469,7 @@ return array(
 	##
 	'smwgPagingLimit' => [
 		'type' => 200,
-		'concept' => 200,
+		'concept' => 250,
 		'property' => 20,
 		'errorlist' => 25,
 
@@ -1023,15 +1023,21 @@ return array(
 	##
 
 	###
-	# Sets Semantic MediaWiki object cache and is used to track temporary
-	# changes in SMW
+	# Semantic MediaWiki uses various cache instances and types to improve access
+	# and re-access to objects. `smwgMainCacheType` identifies the "main" type
+	# to be used for a persitent storage to a vendor (SQL, memcache, redis etc.)
+	# specific solution.
 	#
+	# `CACHE_ANYTHING` refers to settings available in `$wgMessageCacheType` or
+	# `$wgParserCacheType` if they are set.
+	#
+	# @see https://www.semantic-mediawiki.org/wiki/Help:Caching
 	# @see http://www.mediawiki.org/wiki/$wgMainCacheType
 	#
-	# @since 1.9
+	# @since 3.0
+	# @default CACHE_ANYTHING
 	##
-	'smwgCacheType' => CACHE_ANYTHING,  // To be removed with 3.0 use $smwgMainCacheType
-	'smwgMainCacheType' => CACHE_ANYTHING, // Isn't used yet
+	'smwgMainCacheType' => CACHE_ANYTHING,
 	##
 
 	###
@@ -1084,7 +1090,7 @@ return array(
 	# CacheTTL settings
 	#
 	# Defines time to live for in Semantic MediaWiki used cache instances and
-	# requires $smwgCacheType to be set otherwise related settings will have
+	# requires $smwgMainCacheType to be set otherwise related settings will have
 	# no effect.
 	#
 	# - special.wantedproperties TTL (in sec, or false to disable it) for caching
@@ -1124,7 +1130,7 @@ return array(
 	#
 	# @since 1.9
 	#
-	# @requires  $smwgCacheType be set
+	# @requires  $smwgMainCacheType be set
 	# @default true
 	##
 	'smwgAutoRefreshOnPurge' => true,
@@ -1136,7 +1142,7 @@ return array(
 	#
 	# @since 1.9
 	#
-	# @requires  $smwgCacheType be set
+	# @requires  $smwgMainCacheType be set
 	# @default true
 	##
 	'smwgAutoRefreshOnPageMove' => true,
@@ -1198,7 +1204,7 @@ return array(
 	#
 	# @since 1.9
 	#
-	# @requires $smwgCacheType be set
+	# @requires $smwgMainCacheType be set
 	# @default true
 	##
 	'smwgFactboxUseCache' => true,
@@ -1214,7 +1220,7 @@ return array(
 	#
 	# @since 1.9
 	#
-	# @requires $smwgCacheType be set
+	# @requires $smwgMainCacheType be set
 	# @default true
 	##
 	'smwgFactboxCacheRefreshOnPurge' => true,
@@ -1286,17 +1292,6 @@ return array(
 	##
 
 	###
-	# Improves performance for selected Job operations that can be executed in a deferred
-	# processing mode (or asynchronous to the current transaction) as those (if enabled)
-	# are send as request to a dispatcher in order for them to be decoupled from the
-	# initial transaction.
-	#
-	# @since 2.3
-	##
-	'smwgEnabledHttpDeferredJobRequest' => true,
-	##
-
-	###
 	# Query dependency and parser cache invalidation
 	#
 	# If enabled it will store dependencies for queries allowing it to purge
@@ -1304,8 +1299,6 @@ return array(
 	#
 	# The setting requires to run `update.php` (it creates an extra table). Also
 	# as noted in 	#1117, `SMW\ParserCachePurgeJob` should be scheduled accordingly.
-	#
-	# Requires `smwgEnabledHttpDeferredJobRequest` to be set true.
 	#
 	# @since 2.3 (experimental)
 	# @default false
@@ -1536,11 +1529,6 @@ return array(
 	# The objective is to postpone an update by relying on a deferred process that
 	# runs the index update decoupled from the storage back-end update.
 	#
-	# In case `smwgFulltextDeferredUpdate` and `	'smwgEnabledDeferredUpdate']` are
-	# both enabled then the updater will try to open a new request and posting instructions
-	# to execute the `SearchTableUpdateJob` immediately in background. If the request
-	# cannot be executed then the `SearchTableUpdateJob` will be enqueued and requires
-	# `runJobs.php` to schedule the index table update.
 	#
 	# If a user wants to push updates to the updater immediately then this setting needs
 	# to be disabled but by disabling this setting update lag may increase due to having

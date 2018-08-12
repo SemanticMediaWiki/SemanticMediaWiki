@@ -130,7 +130,6 @@ class Settings extends Options {
 			'smwgMasterStore' => isset( $GLOBALS['smwgMasterStore'] ) ? $GLOBALS['smwgMasterStore'] : '',
 			'smwgIQRunningNumber' => isset( $GLOBALS['smwgIQRunningNumber'] ) ? $GLOBALS['smwgIQRunningNumber'] : 0,
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
-			'smwgCacheType' => $GLOBALS['smwgCacheType'],
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
 			'smwgEntityLookupCacheType' => $GLOBALS['smwgEntityLookupCacheType'],
 			'smwgEntityLookupCacheLifetime' => $GLOBALS['smwgEntityLookupCacheLifetime'],
@@ -145,7 +144,6 @@ class Settings extends Options {
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
 			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],
 			'smwgEnabledDeferredUpdate' => $GLOBALS['smwgEnabledDeferredUpdate'],
-			'smwgEnabledHttpDeferredJobRequest' => $GLOBALS['smwgEnabledHttpDeferredJobRequest'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
 			'smwgQueryDependencyPropertyExemptionList' => $GLOBALS['smwgQueryDependencyPropertyExemptionList'],
 			'smwgQueryDependencyAffiliatePropertyDetectionList' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionList'],
@@ -493,6 +491,10 @@ class Settings extends Options {
 
 		if ( isset( $GLOBALS['smwgSparqlDataEndpoint'] ) ) {
 			$configuration['smwgSparqlEndpoint']['data'] = $GLOBALS['smwgSparqlDataEndpoint'];
+    }
+    
+		if ( isset( $GLOBALS['smwgCacheType'] ) ) {
+			$configuration['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
 		}
 
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
@@ -526,6 +528,7 @@ class Settings extends Options {
 				'smwgSparqlQueryEndpoint' => '3.1.0',
 				'smwgSparqlUpdateEndpoint' => '3.1.0',
 				'smwgSparqlDataEndpoint' => '3.1.0',
+				'smwgCacheType' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -575,6 +578,7 @@ class Settings extends Options {
 				'smwgSparqlQueryEndpoint' => 'smwgSparqlEndpoint',
 				'smwgSparqlUpdateEndpoint' => 'smwgSparqlEndpoint',
 				'smwgSparqlDataEndpoint' => 'smwgSparqlEndpoint',
+				'smwgCacheType' => 'smwgMainCacheType',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',
@@ -592,7 +596,8 @@ class Settings extends Options {
 				'smwgOnDeleteAction' => '2.4.0',
 				'smwgAutocompleteInSpecialAsk' => '3.0.0',
 				'smwgSparqlDatabaseMaster' => '3.0.0',
-				'smwgHistoricTypeNamespace' => '3.0.0'
+				'smwgHistoricTypeNamespace' => '3.0.0',
+				'smwgEnabledHttpDeferredJobRequest' => '3.0.0'
 			)
 		);
 	}

@@ -164,15 +164,31 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param array $rawParams
 	 */
 	public static function addThisPrintout( array &$printRequests, array $rawParams ) {
-		if ( !is_null( $printRequests ) ) {
-			$hasMainlabel = array_key_exists( 'mainlabel', $rawParams );
 
-			if  ( !$hasMainlabel || trim( $rawParams['mainlabel'] ) !== '-' ) {
-				array_unshift( $printRequests, new PrintRequest(
-					PrintRequest::PRINT_THIS,
-					$hasMainlabel ? $rawParams['mainlabel'] : ''
-				) );
+		if ( $printRequests === null ) {
+			return;
+		}
+
+		// If THIS is already registered, bail-out!
+		foreach ( $printRequests as $printRequest ) {
+			if ( $printRequest->isMode( PrintRequest::PRINT_THIS ) ) {
+				return;
 			}
+		}
+
+		$hasMainlabel = array_key_exists( 'mainlabel', $rawParams );
+
+		if  ( !$hasMainlabel || trim( $rawParams['mainlabel'] ) !== '-' ) {
+			$printRequest = new PrintRequest(
+				PrintRequest::PRINT_THIS,
+				$hasMainlabel ? $rawParams['mainlabel'] : ''
+			);
+
+			// Signal to any post-processing that THIS was added outside of
+			// the normal processing chain
+			$printRequest->isDisconnected( true );
+
+			array_unshift( $printRequests, $printRequest );
 		}
 	}
 

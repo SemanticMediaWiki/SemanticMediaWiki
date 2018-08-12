@@ -43,7 +43,15 @@ class Deserializer {
 
 		if ( $printRequestLabel === '' ) { // print "this"
 			$printmode = PrintRequest::PRINT_THIS;
-			$label = ''; // default
+
+			// default
+			$label = '';
+
+			// Distinguish the case of an empty format
+			if ( $outputFormat === '' ) {
+				$outputFormat = null;
+			}
+
 		} elseif ( self::isCategory( $printRequestLabel ) ) { // print categories
 			$printmode = PrintRequest::PRINT_CATS;
 			$label = $showMode ? '' : Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ); // default
@@ -77,7 +85,9 @@ class Deserializer {
 			}
 		}
 
-		// "plain printout", avoid empty string to avoid confusions with "false"
+		// "plain printout"
+		// @docu mentions that `?foo#` is equal to `?foo#-` and avoid an
+		// empty string to distinguish it from "false"
 		if ( $outputFormat === '' ) {
 			$outputFormat = '-';
 		}
@@ -87,9 +97,24 @@ class Deserializer {
 			$label = trim( $parts[1] );
 		}
 
+		if ( $printmode === PrintRequest::PRINT_THIS ) {
+
+			// Cover the case of `?#Test=#-`
+			if ( strrpos( $label, '#' ) !== false ) {
+				list( $label, $outputFormat ) = explode( '#', $label );
+
+				// `?#=foo#` is equal to `?#=foo#-`
+				if ( $outputFormat === '' ) {
+					$outputFormat = '-';
+				}
+			}
+		}
+
 		try {
 			$printRequest = new PrintRequest( $printmode, $label, $data, trim( $outputFormat ) );
-		} catch ( InvalidArgumentException $e ) { // something still went wrong; give up
+			$printRequest->markThisLabel( $text );
+		} catch ( InvalidArgumentException $e ) {
+			// something still went wrong; give up
 			$printRequest = null;
 		}
 

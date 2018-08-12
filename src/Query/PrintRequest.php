@@ -64,6 +64,19 @@ class PrintRequest {
 	protected $m_params = array();
 
 	/**
+	 * Identifies whether this instance was used/added and is diconnected to
+	 * the original query where it was added.
+	 *
+	 * Mostly used in cases where QueryProcessor::addThisPrintout was executed.
+	 */
+	private $isDisconnected = false;
+
+	/**
+	 * Whether the label was marked with an extra `#` identifier.
+	 */
+	private $labelMarker = false;
+
+	/**
 	 * Create a print request.
 	 *
 	 * @param integer $mode a constant defining what to printout
@@ -98,6 +111,38 @@ class PrintRequest {
 		if ( $params !== null ) {
 			$this->m_params = $params;
 		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isDisconnected
+	 */
+	public function isDisconnected( $isDisconnected ) {
+		$this->isDisconnected = (bool)$isDisconnected;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $text
+	 */
+	public function markThisLabel( $text ) {
+
+		if ( $this->m_mode !== self::PRINT_THIS ) {
+			return;
+		}
+
+		$this->labelMarker = $text !== '' && $text{0} === '#';
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function hasLabelMarker() {
+		return $this->labelMarker;
 	}
 
 	/**
@@ -233,6 +278,14 @@ class PrintRequest {
 	 *                include the extra print request parameters
 	 */
 	public function getSerialisation( $showparams = false ) {
+
+		// In case of  disconnected instance (QueryProcessor::addThisPrintout as
+		// part of a post-processing) return an empty serialization when the
+		// mainLabel is available to avoid an extra `?...`
+		if ( $this->isMode( self::PRINT_THIS ) && $this->isDisconnected ) {
+			return '';
+		}
+
 		return Serializer::serialize( $this, $showparams );
 	}
 

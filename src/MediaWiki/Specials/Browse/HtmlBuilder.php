@@ -246,7 +246,13 @@ class HtmlBuilder {
 		$semanticData = new SemanticData( $this->subject );
 		$this->articletext = $this->dataValue->getWikiValue();
 
+		if ( $this->getOption( 'showAll' ) ) {
+			$this->showoutgoing = true;
+			$this->showincoming = true;
+		}
+
 		$html .= $this->displayHead();
+		$html .= $this->displayActions();
 		$html .= $this->displayData( $semanticData, true, false, true );
 		$html .= $this->displayBottom( false );
 
@@ -575,7 +581,8 @@ class HtmlBuilder {
 					[
 						$diProperty,
 						$contextPage,
-						&$value_html
+						&$value_html,
+						$this->store
 					]
 				);
 			}
@@ -677,7 +684,7 @@ class HtmlBuilder {
 			}
 
 			$html .= FieldBuilder::createLink( $linkMsg, $parameters );
-			$html .= '&nbsp;|&nbsp;';
+			$html .= '<span class="smwb-action-separator">&nbsp;</span>';
 		}
 
 		if ( $this->showoutgoing ) {

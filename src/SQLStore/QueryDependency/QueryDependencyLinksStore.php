@@ -56,6 +56,11 @@ class QueryDependencyLinksStore {
 	private $isCommandLineMode = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $isPrimary = false;
+
+	/**
 	 * Time factor to be used to determine whether an update should actually occur
 	 * or not. The comparison is made against the page_touched timestamp (updated
 	 * by the ParserCachePurgeJob) to a previous update to avoid unnecessary DB
@@ -100,6 +105,15 @@ class QueryDependencyLinksStore {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isPrimary
+	 */
+	public function isPrimary( $isPrimary ) {
+		$this->isPrimary = $isPrimary;
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @return boolean
@@ -126,13 +140,14 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function pruneOutdatedTargetLinks( DIWikiPage $subject, ChangeOp $changeOp ) {
+	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ) {
 
 		if ( !$this->isEnabled() ) {
 			return null;
 		}
 
 		Timer::start( __METHOD__ );
+		$hash = null;
 
 		$tableName = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
 			new DIProperty( '_ASK' )
@@ -156,10 +171,14 @@ class QueryDependencyLinksStore {
 			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
+		if ( ( $subject = $changeOp->getSubject() ) !== null ) {
+			$hash = $subject->getHash();
+		}
+
 		$context = [
 			'method' => __METHOD__,
 			'role' => 'developer',
-			'origin' => $subject->getHash(),
+			'origin' =>  $hash,
 			'procTime' => Timer::getElapsedTime( __METHOD__, 7 )
 		];
 
@@ -178,25 +197,32 @@ class QueryDependencyLinksStore {
 	 * @since 2.3
 	 *
 	 * @param EntityIdListRelevanceDetectionFilter $entityIdListRelevanceDetectionFilter
-	 *
-	 * @return array
 	 */
-	public function buildParserCachePurgeJobParametersFrom( EntityIdListRelevanceDetectionFilter $entityIdListRelevanceDetectionFilter ) {
+	public function pushParserCachePurgeJob( EntityIdListRelevanceDetectionFilter $entityIdListRelevanceDetectionFilter ) {
 
 		if ( !$this->isEnabled() ) {
-			return array();
+			return;
 		}
 
 		$filteredIdList = $entityIdListRelevanceDetectionFilter->getFilteredIdList();
 
 		if ( $filteredIdList === array() ) {
-			return array();
+			return;
 		}
 
-		return array(
-			'idlist' => $filteredIdList,
-			'ex:mode' => ParserCachePurgeJob::EXEC_JOURNAL
+		$parserCachePurgeJob = ApplicationFactory::getInstance()->newJobFactory()->newParserCachePurgeJob(
+			$entityIdListRelevanceDetectionFilter->getSubject()->getTitle(),
+			[
+				'idlist' => $filteredIdList,
+				'exec.mode' => ParserCachePurgeJob::EXEC_JOURNAL
+			]
 		);
+
+		if ( $this->isPrimary || $this->isCommandLineMode ) {
+			$parserCachePurgeJob->run();
+		} else {
+			$parserCachePurgeJob->lazyPush();
+		}
 	}
 
 	/**

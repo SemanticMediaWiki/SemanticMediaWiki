@@ -28,9 +28,14 @@ class HtmlTabs {
 	private $hidden = [];
 
 	/**
-	 * @var []
+	 * @var string|null
 	 */
-	private $activeTab = '';
+	private $activeTab = null;
+
+	/**
+	 * @var string
+	 */
+	private $group = 'tabs';
 
 	/**
 	 * @since 3.0
@@ -39,6 +44,15 @@ class HtmlTabs {
 	 */
 	public function setActiveTab( $activeTab ) {
 		$this->activeTab = $activeTab;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $group
+	 */
+	public function setGroup( $group ) {
+		$this->group = $group;
 	}
 
 	/**
@@ -74,6 +88,24 @@ class HtmlTabs {
 	 *
 	 * @return string
 	 */
+	public function html( $html, array $params = [] ) {
+
+		if ( isset( $params['hide'] ) && $params['hide'] ) {
+			return;
+		}
+
+		$this->tabs[] = $html;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $id
+	 * @param string $name
+	 * @param array $params
+	 *
+	 * @return string
+	 */
 	public function tab( $id, $name = '', array $params = [] ) {
 
 		if ( isset( $params['hide'] ) && $params['hide'] ) {
@@ -81,6 +113,11 @@ class HtmlTabs {
 		}
 
 		$isChecked = false;
+
+		// No acive tab means, select the first tab being added
+		if ( $this->activeTab === null ) {
+			$this->activeTab = $id;
+		}
 
 		if ( $id === $this->activeTab ) {
 			$isChecked = true;
@@ -92,7 +129,7 @@ class HtmlTabs {
 				'id'    => "tab-$id",
 				'class' => 'nav-tab',
 				'type'  => 'radio',
-				'name'  => 'tabs'
+				'name'  => $this->group
 			] + ( $isChecked ? [ 'checked' => 'checked' ] : [] )
 		) . Html::rawElement(
 			'label',

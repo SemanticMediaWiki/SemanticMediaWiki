@@ -4,9 +4,9 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DeferredRequestDispatchManager;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Database;
+use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
@@ -48,6 +48,11 @@ class TextChangeUpdater {
 	private $isCommandLineMode = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $isPrimary = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Database $connection
@@ -86,14 +91,22 @@ class TextChangeUpdater {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isPrimary
+	 */
+	public function isPrimary( $isPrimary ) {
+		$this->isPrimary = $isPrimary;
+	}
+
+	/**
 	 * @see SMW::SQLStore::AfterDataUpdateComplete hook
 	 *
 	 * @since 2.5
 	 *
 	 * @param ChangeOp $changeOp
-	 * @param DeferredRequestDispatchManager $deferredRequestDispatchManager
 	 */
-	public function pushUpdates( ChangeOp $changeOp, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
+	public function pushUpdates( ChangeOp $changeOp ) {
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return;
@@ -102,7 +115,7 @@ class TextChangeUpdater {
 		Timer::start( __METHOD__ );
 
 		// Update within the same transaction as started by SMW::SQLStore::AfterDataUpdateComplete
-		if ( !$this->asDeferredUpdate || $this->isCommandLineMode ) {
+		if ( !$this->asDeferredUpdate || $this->isCommandLineMode || $this->isPrimary ) {
 			return $this->doUpdateFromChangeDiff( $changeOp->newChangeDiff() );
 		}
 
@@ -110,19 +123,28 @@ class TextChangeUpdater {
 			return;
 		}
 
-		$deferredRequestDispatchManager->dispatchFulltextSearchTableUpdateJobWith(
+		$fulltextSearchTableUpdateJob = ApplicationFactory::getInstance()->newJobFactory()->newFulltextSearchTableUpdateJob(
 			$changeOp->getSubject()->getTitle(),
-			array(
+			[
 				'slot:id' => $changeOp->getSubject()->getHash()
-			)
+			]
 		);
 
-		$context = [
-			'method' => __METHOD__,
-			'procTime' => Timer::getElapsedTime( __METHOD__, 5 )
-		];
+		$fulltextSearchTableUpdateJob->lazyPush();
 
-		$this->logger->info( 'Fulltext table update scheduled (procTime in sec: {procTime})', $context );
+		$this->logger->info(
+			[
+				'Fulltext',
+				'TextChangeUpdater',
+				'Table update (as job) scheduled',
+				'procTime in sec: {procTime}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'procTime' => Timer::getElapsedTime( __METHOD__, 5 )
+			]
+		);
 	}
 
 	/**
@@ -141,11 +163,22 @@ class TextChangeUpdater {
 		$subject = DIWikiPage::doUnserialize( $parameters['slot:id'] );
 		$changeDiff = ChangeDiff::fetch( $this->cache, $subject );
 
-		if ( $changeDiff === false ) {
-			return $this->logger->info( 'Failed fulltext update for ' . $parameters['slot:id'] );
+		if ( $changeDiff !== false ) {
+			return $this->doUpdateFromChangeDiff( $changeDiff );
 		}
 
-		$this->doUpdateFromChangeDiff( $changeDiff );
+		$this->logger->info(
+			[
+				'Fulltext',
+				'TextChangeUpdater',
+				'Failed update (ChangeDiff) on {id}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'id' => $parameters['slot:id']
+			]
+		);
 	}
 
 	/**
@@ -198,12 +231,19 @@ class TextChangeUpdater {
 			);
 		}
 
-		$context = [
-			'method' => __METHOD__,
-			'procTime' => Timer::getElapsedTime( __METHOD__, 5 )
-		];
-
-		$this->logger->info( 'Fulltext table update completed (procTime in sec: {procTime})', $context );
+		$this->logger->info(
+			[
+				'Fulltext',
+				'TextChangeUpdater',
+				'Table update completed',
+				'procTime in sec: {procTime}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'procTime' => Timer::getElapsedTime( __METHOD__, 5 )
+			]
+		);
 	}
 
 	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ) {

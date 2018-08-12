@@ -1667,7 +1667,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $property, $subject, &$html )
+			array( $property, $subject, &$html, $this->store )
 		);
 
 		return $handler;

@@ -482,9 +482,8 @@ class SMWQuery implements QueryContext {
 		}
 
 		foreach ( $this->getExtraPrintouts() as $printout ) {
-			$serialization = $printout->getSerialisation();
-			if ( $serialization !== '?#' ) {
-				$serialized['printouts'][] = $serialization;
+			if ( ( $serialisation = $printout->getSerialisation() ) !== '' ) {
+				$serialized['printouts'][] = $serialisation;
 			}
 		}
 

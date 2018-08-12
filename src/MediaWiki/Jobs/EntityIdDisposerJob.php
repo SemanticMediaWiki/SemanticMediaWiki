@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use Hooks;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use SMW\SQLStore\SQLStore;
 use Title;
 
 /**
@@ -21,11 +22,6 @@ class EntityIdDisposerJob extends JobBase {
 	const CHUNK_SIZE = 200;
 
 	/**
-	 * @var PropertyTableIdReferenceDisposer
-	 */
-	private $propertyTableIdReferenceDisposer;
-
-	/**
 	 * @since 2.5
 	 *
 	 * @param Title $title
@@ -34,56 +30,58 @@ class EntityIdDisposerJob extends JobBase {
 	public function __construct( Title $title, $params = array() ) {
 		parent::__construct( 'SMW\EntityIdDisposerJob', $title, $params );
 		$this->removeDuplicates = true;
-
-		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
-			ApplicationFactory::getInstance()->getStore( '\SMW\SQLStore\SQLStore' )
-		);
 	}
 
 	/**
-	 * @since  2.5
+	 * @since 2.5
 	 *
 	 * @return ResultIterator
 	 */
 	public function newOutdatedEntitiesResultIterator() {
-		return $this->propertyTableIdReferenceDisposer->newOutdatedEntitiesResultIterator();
+		return $this->newPropertyTableIdReferenceDisposer()->newOutdatedEntitiesResultIterator();
 	}
 
 	/**
-	 * @since  2.5
+	 * @since 2.5
 	 *
 	 * @param integer|stdClass $id
 	 */
 	public function dispose( $id ) {
 
+		$propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
+
 		if ( is_int( $id ) ) {
-			return $this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $id );
+			return $propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $id );
 		}
 
-		$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesByRow( $id );
+		$propertyTableIdReferenceDisposer->cleanUpTableEntriesByRow( $id );
 	}
 
 	/**
 	 * @see Job::run
 	 *
-	 * @since  2.5
+	 * @since 2.5
 	 */
 	public function run() {
 
+		$propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
+
 		// MW 1.29+ Avoid transaction collisions during Job execution
-		$this->propertyTableIdReferenceDisposer->waitOnTransactionIdle();
+		$propertyTableIdReferenceDisposer->waitOnTransactionIdle();
 
 		if ( $this->hasParameter( 'id' ) ) {
 			$this->dispose( $this->getParameter( 'id' ) );
 		} else {
-			$this->doDisposeAll( $this->newOutdatedEntitiesResultIterator() );
+			$this->dispose_all( $this->newOutdatedEntitiesResultIterator() );
 		}
 
 		return true;
 	}
 
-	private function doDisposeAll( $outdatedEntitiesResultIterator ) {
+	private function dispose_all( $outdatedEntitiesResultIterator ) {
 
+		// Make sure the script is only executed from the command line to avoid
+		// Special:RunJobs to execute a queued job
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;
 		}
@@ -106,6 +104,20 @@ class EntityIdDisposerJob extends JobBase {
 
 			$connection->commitAndWaitForReplication( __METHOD__, $transactionTicket );
 		}
+	}
+
+	private function newPropertyTableIdReferenceDisposer() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$store = $applicationFactory->getStore();
+
+		// Expect access to the SQL table structure therefore enforce the
+		// SQLStore that provides those methods
+		if ( !is_a( $store, SQLStore::class ) ) {
+			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		}
+
+		return new PropertyTableIdReferenceDisposer( $store );
 	}
 
 }

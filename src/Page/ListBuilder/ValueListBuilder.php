@@ -206,11 +206,7 @@ class ValueListBuilder {
 		) . Html::rawElement(
 			'div',
 			array( 'id' => 'mw-pages' ),
-			Html::rawElement(
-				'h2',
-				array(),
-				wfMessage( 'smw_attribute_header', $titleText )->text()
-			) . $result
+			$result
 		);
 	}
 

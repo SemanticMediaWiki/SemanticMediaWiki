@@ -16,6 +16,7 @@ use SMW\RequestOptions;
 use SMW\Store;
 use SMW\StringCondition;
 use Title;
+use SMW\Utils\HtmlTabs;
 
 /**
  * @license GNU GPL v2+
@@ -206,6 +207,9 @@ class PropertyPage extends Page {
 		$html = '';
 		$languageCode = $context->getLanguage()->getCode();
 
+		$context->getOutput()->addModuleStyles( 'ext.smw.page.styles' );
+		$context->getOutput()->addModules( 'smw.property.page' );
+
 		$context->getOutput()->setPageTitle(
 			$this->propertyValue->getFormattedLabel( DataValueFormatter::WIKI_LONG )
 		);
@@ -222,28 +226,37 @@ class PropertyPage extends Page {
 			$this->property->isUserDefined()
 		);
 
+		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setGroup( 'property' );
+
+		$html = $this->makeValueList( $languageCode );
+
+		$htmlTabs->tab( 'smw-property-value', $this->msg( 'smw-property-tab-usage' ), [ 'hide' => $html === '' ] );
+		$htmlTabs->content( 'smw-property-value', $html );
+
 		// Redirects
-		$html .= $this->makeList( 'redirect', '_REDI', true );
+		$html = $this->makeList( 'redirect', '_REDI', true );
+
+		$htmlTabs->tab( 'smw-property-redi', $this->msg( 'smw-property-tab-redirects' ), [ 'hide' => $html === '' ] );
+		$htmlTabs->content( 'smw-property-redi', $html );
 
 		// Subproperties
-		$html .= $this->makeList( 'subproperty', '_SUBP', true );
+		$html = $this->makeList( 'subproperty', '_SUBP', true );
 
-		// Improper assignments
-		$html .= $this->makeList( 'error', '_ERRP', false );
+		$htmlTabs->tab( 'smw-property-subp', $this->msg( 'smw-property-tab-subproperties' ),  [ 'hide' => $html === '' ] );
+		$htmlTabs->content( 'smw-property-subp', $html );
 
-		// Value and entity list
-		$html .= $this->makeValueList( $languageCode );
+		// Improperty values
+		$html = $this->makeList( 'error', '_ERRP', false );
 
-		if ( $html === '' ) {
-			return '';
-		}
+		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ),  [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
+		$htmlTabs->content( 'smw-property-errp', $html );
 
-		return Html::element(
-			'div',
-			[
-				'id' => 'smwfootbr'
-			]
-		) . $html;
+		$html = $htmlTabs->buildHTML(
+			[ 'class' => 'smw-property clearfix' ]
+		);
+
+		return $html;
 	}
 
 	private function fetchSemanticDataFromEditInfo() {
@@ -331,6 +344,10 @@ class PropertyPage extends Page {
 				'filter' => $request->getVal( 'filter', '' )
 			]
 		);
+	}
+
+	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
+		return Message::get( $params, $type, $lang );
 	}
 
 }
