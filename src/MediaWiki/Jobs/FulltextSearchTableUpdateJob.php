@@ -23,6 +23,7 @@ class FulltextSearchTableUpdateJob extends JobBase {
 	 */
 	public function __construct( Title $title, $params = array() ) {
 		parent::__construct( 'SMW\FulltextSearchTableUpdateJob', $title, $params );
+		$this->removeDuplicates = true;
 	}
 
 	/**

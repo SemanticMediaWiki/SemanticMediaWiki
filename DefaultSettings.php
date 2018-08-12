@@ -1260,17 +1260,6 @@ return array(
 	##
 
 	###
-	# Improves performance for selected Job operations that can be executed in a deferred
-	# processing mode (or asynchronous to the current transaction) as those (if enabled)
-	# are send as request to a dispatcher in order for them to be decoupled from the
-	# initial transaction.
-	#
-	# @since 2.3
-	##
-	'smwgEnabledHttpDeferredJobRequest' => true,
-	##
-
-	###
 	# Query dependency and parser cache invalidation
 	#
 	# If enabled it will store dependencies for queries allowing it to purge
@@ -1278,8 +1267,6 @@ return array(
 	#
 	# The setting requires to run `update.php` (it creates an extra table). Also
 	# as noted in 	#1117, `SMW\ParserCachePurgeJob` should be scheduled accordingly.
-	#
-	# Requires `smwgEnabledHttpDeferredJobRequest` to be set true.
 	#
 	# @since 2.3 (experimental)
 	# @default false
@@ -1510,11 +1497,6 @@ return array(
 	# The objective is to postpone an update by relying on a deferred process that
 	# runs the index update decoupled from the storage back-end update.
 	#
-	# In case `smwgFulltextDeferredUpdate` and `	'smwgEnabledDeferredUpdate']` are
-	# both enabled then the updater will try to open a new request and posting instructions
-	# to execute the `SearchTableUpdateJob` immediately in background. If the request
-	# cannot be executed then the `SearchTableUpdateJob` will be enqueued and requires
-	# `runJobs.php` to schedule the index table update.
 	#
 	# If a user wants to push updates to the updater immediately then this setting needs
 	# to be disabled but by disabling this setting update lag may increase due to having

@@ -147,7 +147,6 @@ class Settings extends Options {
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
 			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],
 			'smwgEnabledDeferredUpdate' => $GLOBALS['smwgEnabledDeferredUpdate'],
-			'smwgEnabledHttpDeferredJobRequest' => $GLOBALS['smwgEnabledHttpDeferredJobRequest'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
 			'smwgQueryDependencyPropertyExemptionList' => $GLOBALS['smwgQueryDependencyPropertyExemptionList'],
 			'smwgQueryDependencyAffiliatePropertyDetectionList' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionList'],
@@ -575,7 +574,8 @@ class Settings extends Options {
 				'smwgOnDeleteAction' => '2.4.0',
 				'smwgAutocompleteInSpecialAsk' => '3.0.0',
 				'smwgSparqlDatabaseMaster' => '3.0.0',
-				'smwgHistoricTypeNamespace' => '3.0.0'
+				'smwgHistoricTypeNamespace' => '3.0.0',
+				'smwgEnabledHttpDeferredJobRequest' => '3.0.0'
 			)
 		);
 	}

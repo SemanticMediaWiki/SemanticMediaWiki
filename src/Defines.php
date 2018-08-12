@@ -154,7 +154,7 @@ define( 'SMW_UJ_PM_CLASTMDATE', 4 ); // compare last modified
 /**@}*/
 
 /**@{
-  * Constants for DeferredRequestDispatchManager update modes
+  * Deprecated since 3.0, remove options after complete removal in 3.1
   */
 define( 'SMW_HTTP_DEFERRED_ASYNC', true );
 define( 'SMW_HTTP_DEFERRED_SYNC_JOB', 4 );
