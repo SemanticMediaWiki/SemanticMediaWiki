@@ -5,7 +5,7 @@ namespace SMW\SPARQLStore\RepositoryConnectors;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 
 /**
- * Virtuoso specific adjustments for GenericHttpDatabaseConnector
+ * Virtuoso specific adjustments for GenericRepositoryConnector
  *
  * Specific modifications of the SPARQL database implementation for Virtuoso.
  * In particular, Virtuoso does not support SPARQL Update but only the non-standard
@@ -14,9 +14,9 @@ use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
  * database connector should work properly.
  *
  * Virtuoso uses the SPARQL query endpoint for updates as well. So both
- * $smwgSparqlUpdateEndpoint and $smwgSparqlQueryEndpoint should be something
- * like 'http://localhost:8890/sparql/'. $smwgSparqlDataEndpoint should be
- * left empty.
+ * - $smwgSparqlEndpoint['update'] and
+ * - $smwgSparqlEndpoint['query'] should be something like 'http://localhost:8890/sparql/'.
+ * - $smwgSparqlEndpoint['data'] should be left empty.
  *
  * A graph is always needed, i.e., $smwgSparqlDefaultGraph must be set to some
  * graph name (URI).
@@ -24,7 +24,7 @@ use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
  * Known limitations:
  * (might be fixed in recent Virtuoso versions, please let us know)
  *
- * - Data endpoint not tested: $smwgSparqlDataEndpoint should be left empty
+ * - Data endpoint not tested: $smwgSparqlEndpoint['data'] should be left empty
  * - Numerical datatypes are not supported properly, and Virtuoso
  *   will miss query results when query conditions require number values.
  *   This also affects Type:Date properties since the use numerical values for

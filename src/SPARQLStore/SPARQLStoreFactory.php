@@ -129,11 +129,19 @@ class SPARQLStoreFactory {
 	 */
 	public function newConnectionManager() {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
 		$connectionManager = new ConnectionManager();
 
-		$repositoryConnectionProvider = new RepositoryConnectionProvider();
+		$repositoryConnectionProvider = new RepositoryConnectionProvider(
+			$settings->get( 'smwgSparqlRepositoryConnector' ),
+			$settings->get( 'smwgSparqlDefaultGraph' ),
+			$settings->dotGet( 'smwgSparqlEndpoint.query' ),
+			$settings->dotGet( 'smwgSparqlEndpoint.update', '' ),
+			$settings->dotGet( 'smwgSparqlEndpoint.data', '' )
+		);
+
 		$repositoryConnectionProvider->setHttpVersionTo(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgSparqlRepositoryConnectorForcedHttpVersion' )
+			$settings->get( 'smwgSparqlRepositoryConnectorForcedHttpVersion' )
 		);
 
 		$connectionManager->registerConnectionProvider(
