@@ -42,13 +42,9 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetHtmlOnCookie() {
 
-		$this->cache->expects( $this->once() )
-			->method( 'delete' )
-			->with( $this->stringContains( ':post' ) );
-
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::PROC_POST_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
 			->will( $this->returnValue( [ 'Bar' => true ] ) );
 
 		$instance = new PostProcHandler(
@@ -68,7 +64,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
-		$title->expects( $this->once() )
+		$title->expects( $this->atLeastOnce() )
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
@@ -93,17 +89,12 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$this->cache->expects( $this->once() )
-			->method( 'contains' )
-			->with( $this->stringContains( ':post' ) )
-			->will( $this->returnValue( false ) );
-
-		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with( $this->stringContains( ':post' ) );
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::PROC_POST_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
 			->will( $this->returnValue( [ 'Bar' => true ] ) );
 
 		$instance = new PostProcHandler(
@@ -123,7 +114,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
-		$title->expects( $this->once() )
+		$title->expects( $this->atLeastOnce() )
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
@@ -137,7 +128,10 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetHtmlOnCookieAndValidChangeDiff() {
+	/**
+	 * @dataProvider validPropertyKey
+	 */
+	public function testGetHtmlOnCookieAndValidChangeDiff( $key ) {
 
 		$fieldChangeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\FieldChangeOp' )
 			->disableOriginalConstructor()
@@ -159,7 +153,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( 'Foo' ),
 			[ $tableChangeOp ],
 			[],
-			[ 'Foo' => 42 ]
+			[ $key => 42 ]
 		);
 
 		$this->cache->expects( $this->at( 0 ) )
@@ -168,7 +162,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::PROC_POST_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
 			->will( $this->returnValue( [ 'Bar' ] ) );
 
 		$instance = new PostProcHandler(
@@ -188,7 +182,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
-		$title->expects( $this->once() )
+		$title->expects( $this->atLeastOnce() )
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
@@ -213,12 +207,12 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::PROC_POST_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
 			->will( $this->returnValue( $gExtensionData ) );
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'setExtensionData' )
-			->with( $this->equalTo( PostProcHandler::PROC_POST_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
 			->will( $this->returnValue( $sExtensionData ) );
 
 		$instance = new PostProcHandler(
@@ -252,6 +246,21 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $provider;
+	}
+
+	public function validPropertyKey() {
+
+		yield [
+			'Foo'
+		];
+
+		yield [
+			'_INST'
+		];
+
+		yield [
+			'_ASK'
+		];
 	}
 
 }

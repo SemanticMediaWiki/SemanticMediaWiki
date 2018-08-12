@@ -63,30 +63,14 @@ class DependencyLinksUpdateJournal {
 
 		$segments = [];
 
-		if ( $subject instanceof DIWikiPage ) {
-			$segments = [
-				$subject->getDBKey(),
-				$subject->getNamespace(),
-				$subject->getInterwiki(),
-				''
-			];
+		if ( $subject instanceof DIWikiPage || $subject instanceof Title ) {
+			$segments = [ $subject->getDBKey(), $subject->getNamespace(), $subject->getInterwiki(), '' ];
 		}
-
-		if ( $subject instanceof Title ) {
-			$segments = [
-				$subject->getDBKey(),
-				$subject->getNamespace(),
-				$subject->getInterwiki(),
-				''
-			];
-		}
-
-		$hash = implode( '#', $segments );
 
 		return smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[
-				$hash,
+				implode( '#', $segments ),
 				self::VERSION
 			]
 		);
@@ -96,8 +80,9 @@ class DependencyLinksUpdateJournal {
 	 * @since 3.0
 	 *
 	 * @param array $hashList
+	 * @param integer|true $revID
 	 */
-	public function updateFromList( array $hashList ) {
+	public function updateFromList( array $hashList, $revID = true ) {
 
 		foreach ( $hashList as $hash ) {
 
@@ -109,17 +94,19 @@ class DependencyLinksUpdateJournal {
 				]
 			);
 
-			$this->cache->save( $key, true );
+			$this->cache->save( $key, $revID );
 		}
+
 	}
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param DIWikiPage|Title $subject
+	 * @param integer|true $revID
 	 */
-	public function update( $subject ) {
-		$this->cache->save( self::makeKey( $subject ), true );
+	public function update( $subject, $revID = true ) {
+		$this->cache->save( self::makeKey( $subject ), $revID );
 	}
 
 	/**

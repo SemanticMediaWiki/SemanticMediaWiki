@@ -180,6 +180,7 @@ class Settings extends Options {
 			'smwgElasticsearchConfig' => $GLOBALS['smwgElasticsearchConfig'],
 			'smwgElasticsearchProfile' => $GLOBALS['smwgElasticsearchProfile'],
 			'smwgElasticsearchEndpoints' => $GLOBALS['smwgElasticsearchEndpoints'],
+			'smwgPostEditUpdate' => $GLOBALS['smwgPostEditUpdate'],
 		);
 
 		self::initLegacyMapping( $configuration );

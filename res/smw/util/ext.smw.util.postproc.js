@@ -25,15 +25,17 @@
 
 		$( '.smw-postproc' ).each( function() {
 
+			var api = new mw.Api();
 			var ref = $( this ).data( 'ref' );
 
-			if ( ref !== '' ) {
+			if ( ref !== undefined && ref !== '' ) {
 				mw.notify( mw.msg( 'smw-postproc-queryref' ), { type: 'info', autoHide: false } );
 
 				var params = {
 					'subject': $( this ).data( 'subject' ),
 					'origin': 'api-postproc',
-					'ref' : ref
+					'ref' : ref,
+					'cache-key': $( this ).data( 'cache-key' )
 				};
 
 				var postArgs = {
@@ -42,11 +44,28 @@
 					'params': JSON.stringify( params )
 				};
 
-				new mw.Api().postWithToken( 'csrf', postArgs ).then( function ( data ) {
+				api.postWithToken( 'csrf', postArgs ).then( function ( data ) {
 					location.reload( true );
-				}, function () {
-					// Do nothing
 				} );
+			};
+
+			var jobs = $( this ).data( 'jobs' );
+
+			if ( jobs !== '' ) {
+
+				var params = {
+					'subject': $( this ).data( 'subject' ),
+					'origin': 'api-postproc',
+					'jobs' : jobs
+				};
+
+				var postArgs = {
+					'action': 'smwtask',
+					'task': 'run-joblist',
+					'params': JSON.stringify( params )
+				};
+
+				api.postWithToken( 'csrf', postArgs );
 			};
 
 		} );

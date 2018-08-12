@@ -1260,6 +1260,28 @@ return array(
 	##
 
 	###
+	# Regulates task specific settings for the postEdit process.
+	#
+	# The main objective is to defer secondary updates until after the GET request
+	# has been finalized so that resource requirements are part of an API request
+	# (and not a GET) and hereby ensures that a client remains responsive
+	# independent of the update workload.
+	#
+	# `job.task` specifies jobs that should be executed on a post-edit to run in a
+	# timely manner independent of a users job scheduler environment. The number
+	# indicates the expected amount of jobs to be executed per request.
+	#
+	# @since 3.0
+	##
+	'smwgPostEditUpdate' => [
+		'job.task' => [
+			'SMW\FulltextSearchTableUpdateJob' => 1,
+			'SMW\ParserCachePurgeJob' => 5
+		]
+	],
+	##
+
+	###
 	# Query dependency and parser cache invalidation
 	#
 	# If enabled it will store dependencies for queries allowing it to purge

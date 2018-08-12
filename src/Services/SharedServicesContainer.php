@@ -42,6 +42,7 @@ use SMW\Query\QuerySourceFactory;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Rule\RuleFactory;
 use SMW\Settings;
+use SMW\Options;
 use SMW\StoreFactory;
 use SMW\Utils\BufferedStatsdCollector;
 use SMW\Utils\JsonSchemaValidator;
@@ -256,9 +257,17 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'PostProcHandler', function( $containerBuilder, \ParserOutput $parserOutput ) {
 			$containerBuilder->registerExpectedReturnType( 'PostProcHandler', PostProcHandler::class );
 
+			$settings = $containerBuilder->singleton( 'Settings' );
+
 			$postProcHandler = new PostProcHandler(
 				$parserOutput,
 				$containerBuilder->singleton( 'Cache' )
+			);
+
+			$postProcHandler->setOptions(
+				$settings->get( 'smwgPostEditUpdate' ) +
+				[ 'smwgEnabledQueryDependencyLinksStore' => $settings->get( 'smwgEnabledQueryDependencyLinksStore' ) ] +
+				[ 'smwgEnabledFulltextSearch' => $settings->get( 'smwgEnabledFulltextSearch' ) ]
 			);
 
 			return $postProcHandler;
