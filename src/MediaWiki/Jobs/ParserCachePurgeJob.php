@@ -65,6 +65,7 @@ class ParserCachePurgeJob extends JobBase {
 	 */
 	public function __construct( Title $title, $params = array() ) {
 		parent::__construct( 'SMW\ParserCachePurgeJob', $title, $params );
+		$this->removeDuplicates = true;
 	}
 
 	/**
@@ -196,7 +197,7 @@ class ParserCachePurgeJob extends JobBase {
 		);
 
 		if ( $this->getParameter( 'exec.mode' ) === self::EXEC_JOURNAL ) {
-			$dependencyLinksUpdateJournal->updateFromList( $hashList );
+			$dependencyLinksUpdateJournal->updateFromList( $hashList, $this->getTitle()->getLatestRevID() );
 		} else{
 			$this->addPagesToUpdater( $hashList );
 		}

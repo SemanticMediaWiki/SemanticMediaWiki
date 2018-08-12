@@ -167,4 +167,56 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$instance->execute();
 	}
 
+	public function testRunJobListTask() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$nullJob->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$nullJob->expects( $this->atLeastOnce() )
+			->method( 'run' );
+
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobQueue->expects( $this->atLeastOnce() )
+			->method( 'pop' )
+			->with( $this->equalTo( 'FooJob' ) )
+			->will( $this->returnValue( $nullJob ) );
+
+		$jobQueue->expects( $this->atLeastOnce() )
+			->method( 'ack' )
+			->with( $this->equalTo( $nullJob ) );
+
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
+
+		$instance = new Task(
+			$this->apiFactory->newApiMain(
+				[
+					'action'   => 'smwtask',
+					'task'     => 'run-joblist',
+					'params'   => json_encode(
+						[
+							'subject' => 'Foo#0##',
+							'jobs' => [ 'FooJob' => 1 ]
+						]
+					),
+					'token'    => 'foo'
+				]
+			),
+			'smwtask'
+		);
+
+		$instance->execute();
+	}
+
 }

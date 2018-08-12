@@ -48,6 +48,22 @@ class DependencyLinksUpdateJournalTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testMakeKey() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+		$title = \Title::newFromText( 'Foo' );
+
+		$this->assertContains(
+			'smw:update:qdep',
+			DependencyLinksUpdateJournal::makeKey( $subject )
+		);
+
+		$this->assertSame(
+			DependencyLinksUpdateJournal::makeKey( $title ),
+			DependencyLinksUpdateJournal::makeKey( $subject )
+		);
+	}
+
 	public function testUpdateFromList() {
 
 		$this->cache->expects( $this->atLeastOnce() )

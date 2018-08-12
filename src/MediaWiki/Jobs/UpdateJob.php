@@ -270,6 +270,11 @@ class UpdateJob extends JobBase {
 		$parserData->setOrigin( $origin );
 
 		$parserData->setOption(
+			Enum::OPT_SUSPEND_PURGE,
+			$this->getParameter( Enum::OPT_SUSPEND_PURGE )
+		);
+
+		$parserData->setOption(
 			$parserData::OPT_FORCED_UPDATE,
 			$this->getParameter( self::FORCED_UPDATE )
 		);

@@ -31,7 +31,13 @@ use WebRequest;
  */
 class PostProcHandler {
 
-	const PROC_POST_QUERYREF = 'smw-postproc-queryref';
+	const POST_PROC_QUERYREF = 'smw-postproc-queryref';
+
+	/**
+	 * Specifies the TTL for the temporary tracking of a post edit
+	 * update.
+	 */
+	const POST_UPDATE_TTL = 86400;
 
 	/**
 	 * @var ParserOutput
@@ -47,6 +53,11 @@ class PostProcHandler {
 	 * @var boolean
 	 */
 	private $isEnabled = true;
+
+	/**
+	 * @var []
+	 */
+	private $options = [];
 
 	/**
 	 * @since 3.0
@@ -66,6 +77,15 @@ class PostProcHandler {
 	 */
 	public function isEnabled( $isEnabled ) {
 		$this->isEnabled = (bool)$isEnabled;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $options
+	 */
+	public function setOptions( array $options ) {
+		$this->options = $options;
 	}
 
 	/**
@@ -116,30 +136,33 @@ class PostProcHandler {
 		}
 
 		// Is `@annotation` available as part of a #ask query?
-		$refs = $this->parserOutput->getExtensionData( self::PROC_POST_QUERYREF );
+		$refs = $this->parserOutput->getExtensionData( self::POST_PROC_QUERYREF );
 
 		if ( $refs !== null && $refs !== [] ) {
-			$key = DependencyLinksUpdateJournal::makeKey(
-				$title
-			);
+			$postEdit = $this->checkRef( $title, $postEdit );
+		}
 
-			// In case the dependency journal contains an active reference then
-			// prepare for an additional update since `@annotation` is used to ensure
-			// that values are recomputed without an explicit `edit` action.
-			if ( $this->cache->fetch( $key ) && !$this->cache->contains( $key . ':post' ) ) {
-				$postEdit = true;
+		if ( $postEdit !== null && $refs !== null && $refs !== [] ) {
+			$attributes['data-ref'] = json_encode( array_keys( $refs ) );
+		}
 
-				// Add an update marker (5 min.) to avoid running twice in case the
-				// journal reference hasn't been deleted yet as result of an existing
-				// PostProcHandler update request.
-				$this->cache->save( $key . ':post', true, 300 );
-			} else {
-				$this->cache->delete( $key . ':post' );
+		$jobs = [];
+
+		if ( isset( $this->options['job.task'] ) ) {
+			$jobs = $this->options['job.task'];
+
+			// Not enabled, no need to invoke a job!
+			if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
+				unset( $jobs['SMW\ParserCachePurgeJob'] );
 			}
 
-			$attributes['data-ref'] = json_encode( array_keys( $refs ) );
-		} else {
-			$postEdit = null;
+			if ( isset( $this->options['smwgEnabledFulltextSearch'] ) && $this->options['smwgEnabledFulltextSearch'] === false ) {
+				unset( $jobs['SMW\FulltextSearchTableUpdateJob'] );
+			}
+		}
+
+		if ( $postEdit !== null && $jobs !== [] ) {
+			$attributes['data-jobs'] = json_encode( $jobs );
 		}
 
 		// The element is only added temporarily in the event of a postEdit, a
@@ -166,7 +189,7 @@ class PostProcHandler {
 		// alternating updates as in case of cascading value dependencies
 		$queryRef = HashBuilder::createFromArray( $query->toArray() );
 
-		$data = $this->parserOutput->getExtensionData( self::PROC_POST_QUERYREF );
+		$data = $this->parserOutput->getExtensionData( self::POST_PROC_QUERYREF );
 
 		if ( $data === null ) {
 			$data = array();
@@ -175,9 +198,51 @@ class PostProcHandler {
 		$data[$queryRef] = true;
 
 		$this->parserOutput->setExtensionData(
-			self::PROC_POST_QUERYREF,
+			self::POST_PROC_QUERYREF,
 			$data
 		);
+	}
+
+	private function checkRef( $title, $postEdit ) {
+
+		$key = DependencyLinksUpdateJournal::makeKey( $title );
+
+		// Is a postEdit, mark the update to avoid running in circles
+		// when the pageCache is purged, use the latestRevID to distinguish
+		// content changes
+		if ( $postEdit !== null ) {
+
+			$record = [
+				$title->getLatestRevID() => true
+			];
+
+			$this->cache->save( $key . ':post', $record, self::POST_UPDATE_TTL );
+
+			return $postEdit;
+		}
+
+		// Run outside of a postEdit, check if the dependency journal contains an
+		// active reference to the article and run once (== hash that set by the
+		// dependency journal which is == revID that initiated the change)
+		$hash = $this->cache->fetch( $key );
+		$record = $this->cache->fetch( $key . ':post' );
+
+		if ( $hash !== false && ( $record === false || !isset( $record[$hash] ) ) ) {
+			$postEdit = true;
+
+			if ( !is_array( $record ) ) {
+				$record = [];
+			}
+
+			$record[$hash] = true;
+
+			// Add an update marker (1h) to avoid running twice in case the
+			// journal reference hasn't been deleted yet as result of an existing
+			// PostProcHandler update request.
+			$this->cache->save( $key . ':post', $record, self::POST_UPDATE_TTL );
+		}
+
+		return $postEdit;
 	}
 
 	private function checkDiff( $changeDiff ) {
@@ -194,6 +259,10 @@ class PostProcHandler {
 			foreach ( $tableChangeOp->getFieldChangeOps() as $fieldChangeOp ) {
 				$pid = $fieldChangeOp->get( 'p_id' );
 
+				if ( !isset( $propertyList[$pid] ) ) {
+					continue;
+				}
+
 				// Does the change involve an operation with a user defined
 				// property?
 				//
@@ -201,7 +270,11 @@ class PostProcHandler {
 				// framework and without further computation) anticipate whether
 				// this influences a query or not, it is a good enough heuristic
 				// to allow to continue the postProc.
-				if ( isset( $propertyList[$pid] ) && $propertyList[$pid]{0} !== '_' ) {
+				if ( $propertyList[$pid]{0} !== '_' ) {
+					return true;
+				}
+
+				if ( $propertyList[$pid] === '_INST' || $propertyList[$pid] === '_ASK' ) {
 					return true;
 				}
 			}

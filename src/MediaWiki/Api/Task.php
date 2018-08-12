@@ -7,6 +7,7 @@ use Iterator;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Enum;
 
 /**
  * Module to support various tasks initiate using the API interface
@@ -55,6 +56,10 @@ class Task extends ApiBase {
 
 		if ( $params['task'] === 'job' ) {
 			$results = $this->callGenericJobTask( $parameters );
+		}
+
+		if ( $params['task'] === 'run-joblist' ) {
+			$results = $this->callJobListTask( $parameters );
 		}
 
 		$this->getResult()->addValue(
@@ -149,6 +154,7 @@ class Task extends ApiBase {
 
 		$subject = DIWikiPage::doUnserialize( $parameters['subject'] );
 		$title = $subject->getTitle();
+		$log = [];
 
 		if ( $title === null ) {
 			return ['done' => false ];
@@ -175,6 +181,7 @@ class Task extends ApiBase {
 				$title,
 				[
 					UpdateJob::FORCED_UPDATE => true,
+					Enum::OPT_SUSPEND_PURGE => false,
 					'ref' => $ref
 				] + $origin
 			);
@@ -186,7 +193,56 @@ class Task extends ApiBase {
 			}
 		}
 
-		return [ 'done' => true ];
+		return [ 'done' => true, 'log' => $log ];
+	}
+
+	private function callJobListTask( $parameters ) {
+
+		$this->checkParameters( $parameters );
+
+		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
+			return [ 'done' => false ];
+		}
+
+		$subject = DIWikiPage::doUnserialize( $parameters['subject'] );
+		$title = $subject->getTitle();
+
+		if ( $title === null ) {
+			return [ 'done' => false ];
+		}
+
+		$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
+		$jobList = [];
+		$log = [];
+
+		if ( isset( $parameters['jobs'] ) ) {
+			$jobList = $parameters['jobs'];
+		}
+
+		foreach ( $jobList as $type => $amount ) {
+
+			if ( $amount == 0 || $amount === false ) {
+				continue;
+			}
+
+			$list = array_fill( 0, $amount, $type );
+			$log[$type] = [];
+
+			foreach ( $list as $t ) {
+				$job = $jobQueue->pop( $t );
+
+				if ( $job === false ) {
+					break;
+				}
+
+				$log[$type][] = $job->getTitle()->getPrefixedDBKey();
+
+				$job->run();
+				$jobQueue->ack( $job );
+			}
+		}
+
+		return [ 'done' => true, 'log' => $log ];
 	}
 
 	private function checkParameters( $parameters ) {
@@ -212,9 +268,18 @@ class Task extends ApiBase {
 			'task' => array(
 				ApiBase::PARAM_REQUIRED => true,
 				ApiBase::PARAM_TYPE => array(
+
+					// Run update using the updateJob
 					'update',
+
+					// Duplicate lookup support
 					'duplookup',
-					'job'
+
+					// Insert/run a job
+					'job',
+
+					// Run jobs from a list directly without the job scheduler
+					'run-joblist'
 				)
 			),
 			'params' => array(
