@@ -71,11 +71,27 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
 
+		$resultWrapper = $this->getMockBuilder( '\FakeResultWrapper' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->atLeastOnce() )
+		$connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$connection->expects( $this->any() )
+			->method( 'query' )
+			->will( $this->returnValue( $resultWrapper ) );
+
+		$connection->expects( $this->any() )
 			->method( 'select' )
 			->will( $this->returnValue( [] ) );
 

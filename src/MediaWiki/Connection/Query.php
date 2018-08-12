@@ -33,7 +33,7 @@ class Query {
 	/**
 	 * @var []
 	 */
-	protected $tables = [];
+	protected $table = '';
 
 	/**
 	 * @var []
@@ -145,7 +145,7 @@ class Query {
 	 * @param string $table
 	 */
 	public function table( ...$table ) {
-		$this->tables[] = $this->connection->tableName( $table[0] ) . ( isset( $table[1] ) ? " AS " . $table[1] : '' );
+		$this->table = $this->connection->tableName( $table[0] ) . ( isset( $table[1] ) ? " AS " . $table[1] : '' );
 	}
 
 	/**
@@ -177,6 +177,18 @@ class Query {
 		}
 
 		$this->joins[] = $join;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $k
+	 * @param string $v
+	 *
+	 * @return string
+	 */
+	public function like( $k, $v ) {
+		return "$k LIKE " . $this->connection->addQuotes( $v );
 	}
 
 	/**
@@ -260,7 +272,7 @@ class Query {
 	public function __toString() {
 
 		$params = [
-			'tables' => $this->tables,
+			'tables' => $this->table,
 			'fields' => $this->fields,
 			'conditions' => $this->conditions,
 			'joins' => $this->joins,
@@ -285,10 +297,10 @@ class Query {
 		$statement = $this->sql();
 
 		$this->type = '';
+		$this->table = '';
 		$this->conditions = [];
 		$this->options = [];
 		$this->joins = [];
-		$this->tables = [];
 		$this->fields = [];
 		$this->alias = '';
 		$this->index = 0;
@@ -337,7 +349,7 @@ class Query {
 
 		$sql .= implode( ', ', $fields );
 		$sql .= ' FROM ';
-		$sql .= implode( ', ', $this->tables );
+		$sql .= $this->table;
 
 		foreach ( $this->joins as $join ) {
 			$sql .= ' ' . implode( ' ', $join );
@@ -346,8 +358,8 @@ class Query {
 		$conditions = [];
 
 		foreach ( $this->conditions as $condition ) {
-			foreach ( $condition as $exp => $cond ) {
 
+			foreach ( $condition as $exp => $cond ) {
 				if ( $i > 0 && is_int( $exp ) ) {
 					$exp = 'AND';
 				}
