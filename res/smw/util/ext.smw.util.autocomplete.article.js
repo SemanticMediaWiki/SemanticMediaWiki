@@ -14,6 +14,7 @@
 
 		var limit = 20;
 
+		var indicator = context.hasClass( 'autocomplete-arrow' );
 		context.removeClass( 'is-disabled' );
 
 		// https://github.com/devbridge/jQuery-Autocomplete
@@ -43,7 +44,12 @@
 					return false;
 				};
 
+				context.removeClass( 'autocomplete-arrow' );
 				context.addClass( 'is-disabled' );
+
+				if ( indicator ) {
+					context.addClass( 'autocomplete-loading' );
+				};
 
 				query.params = JSON.stringify( {
 					search: query.search.replace( "?", '' ),
@@ -56,8 +62,18 @@
 			},
 			onSearchComplete: function( query ) {
 				context.removeClass( 'is-disabled' );
+
+				if ( indicator ) {
+					context.removeClass( 'autocomplete-loading' );
+					context.addClass( 'autocomplete-arrow' );
+				};
 			},
 			transformResult: function( response ) {
+
+				if ( !response.hasOwnProperty( 'query' ) ) {
+					return { suggestions: [] };
+				};
+
 				return {
 					suggestions: $.map( response.query, function( val, key ) {
 						return { value: val.fullText, data: key };
