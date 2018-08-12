@@ -319,6 +319,11 @@
 	display: block;
 }
 
+.smw-property input.nav-tab:checked + label.nav-label.smw-tab-warning,
+.smw-concept input.nav-tab:checked + label.nav-label.smw-tab-warning {
+    border-top: 2px solid rgb(204,0,0);
+}
+
 /**
  * Responsive settings (@see ext.smw.table)
  */
