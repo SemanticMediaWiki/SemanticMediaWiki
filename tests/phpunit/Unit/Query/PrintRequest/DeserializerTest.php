@@ -174,6 +174,36 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'Bar'
 		);
 
+		#12 #481
+		$provider[] = array(
+			'#=Foo',
+			false,
+			'Foo',
+			PrintRequest::PRINT_THIS,
+			null,
+			''
+		);
+
+		#13 #481
+		$provider[] = array(
+			'#=Foo#',
+			false,
+			'Foo',
+			PrintRequest::PRINT_THIS,
+			null,
+			'-'
+		);
+
+		#13 #481
+		$provider[] = array(
+			'#=Foo#-',
+			false,
+			'Foo',
+			PrintRequest::PRINT_THIS,
+			null,
+			'-'
+		);
+
 		return $provider;
 	}
 

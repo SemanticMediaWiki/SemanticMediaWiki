@@ -575,10 +575,7 @@ class SpecialAsk extends SpecialPage {
 		$code = $this->queryString ? htmlspecialchars( $this->queryString ) . "\n" : "\n";
 
 		foreach ( $this->printouts as $printout ) {
-			$serialization = $printout->getSerialisation( true );
-			$mainlabel = isset( $this->parameters['mainlabel'] ) ? '?=' . $this->parameters['mainlabel'] . '#' : '';
-
-			if ( $serialization !== '?#' && $serialization !== $mainlabel ) {
+			if ( ( $serialization = $printout->getSerialisation( true ) ) !== '' ) {
 				$code .= ' |' . $serialization . "\n";
 			}
 		}
@@ -684,7 +681,10 @@ class SpecialAsk extends SpecialPage {
 		$duration = 0;
 		$queryobj = null;
 
-		// FIXME: this is a hack
+		// Copy the printout to retain the orginal state while in case of no
+		// specific subject (THIS) request extend the query with a
+		// `PrintRequest::PRINT_THIS` column
+
 		QueryProcessor::addThisPrintout( $this->printouts, $this->parameters );
 
 		$params = QueryProcessor::getProcessedParams(

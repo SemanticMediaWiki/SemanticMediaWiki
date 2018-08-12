@@ -259,7 +259,7 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC=' ) );
+			->will( $this->returnValue( '?ABC' ) );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()

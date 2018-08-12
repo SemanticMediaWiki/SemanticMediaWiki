@@ -137,12 +137,25 @@ class Serializer {
 
 		$result = '?';
 
+		// Has leading ?#
+		if ( $printRequest->hasLabelMarker() ) {
+			$result .= '#';
+		}
+
 		if ( $printRequest->getLabel() !== '' ) {
 			$result .= '=' . $printRequest->getLabel();
 		}
 
-		if ( $printRequest->getOutputFormat() !== '' ) {
-			$result .= '#' . $printRequest->getOutputFormat();
+		$outputFormat = $printRequest->getOutputFormat();
+
+		if ( $outputFormat !== '' && $outputFormat !== false && $outputFormat !== null ) {
+
+			// Handle ?, ?#- vs. ?#Foo=#-
+			if ( $printRequest->getLabel() !== '' ) {
+				$result .= '#';
+			}
+
+			$result .= $outputFormat;
 		}
 
 		return $result . $parameters;
