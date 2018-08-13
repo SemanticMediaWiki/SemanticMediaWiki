@@ -413,6 +413,7 @@
 	"smw-search-input": "Wprowadź i wyszukaj",
 	"smw-search-syntax": "Składnia",
 	"smw-search-profile-tooltip": "Funkcje wyszukiwania w połączeniu z Semantyczną MediaWiki",
+	"smw-search-profile-sort-recent": "Najnowsze",
 	"smw-search-profile-sort-title": "Tytuł",
 	"smw-search-profile-extended-section-sort": "Sortuj według",
 	"smw-search-profile-extended-section-namespace": "Wybierz przestrzeń nazw",
@@ -525,5 +526,9 @@
 	"smw-ask-title-keyword-type": "Wyszukiwanie słów kluczowych",
 	"smw-ask-message-keyword-type": "To wyszukiwanie pasuje do warunku <code><nowiki>$1</nowiki></code>.",
 	"smw-remote-source-unavailable": "Nie można połączyć się ze zdalnym celem „$1”.",
-	"smw-parameter-missing": "Brak parametru „$1”."
+	"smw-parameter-missing": "Brak parametru „$1”.",
+	"smw-property-tab-redirects": "Synonimy",
+	"smw-property-tab-subproperties": "Podwłaściwości",
+	"smw-property-tab-errors": "Niewłaściwe przypisania",
+	"smw-concept-tab-errors": "Błędy"
 }

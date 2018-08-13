@@ -781,5 +781,11 @@
 	"smw-remote-source-unmatched-id": "A fonte '''$1''' não corresponde a uma versão do Semantic MediaWiki que suporte uma solicitação remota.",
 	"smw-remote-request-note": "O resultado é buscado a partir da fonte remota '''$1''' e é provável que o conteúdo gerado contenha informações que não estão disponíveis no wiki atual.",
 	"smw-remote-request-note-cached": "O resultado é '''armazenado em cache''' a partir da fonte remota '''$1''' e é provável que o conteúdo gerado contenha informações que não estão disponíveis no wiki atual.",
-	"smw-parameter-missing": "O parâmetro \"$1\" está ausente."
+	"smw-parameter-missing": "O parâmetro \"$1\" está ausente.",
+	"smw-property-tab-usage": "Uso",
+	"smw-property-tab-redirects": "Sinônimos",
+	"smw-property-tab-subproperties": "Subpropriedades",
+	"smw-property-tab-errors": "Atribuições impróprias",
+	"smw-concept-tab-list": "Lista",
+	"smw-concept-tab-errors": "Erros"
 }

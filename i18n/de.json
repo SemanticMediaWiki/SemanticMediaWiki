@@ -776,5 +776,11 @@
 	"smw-remote-source-unmatched-id": "Die externe Datenquelle „$1“ nutzt keine Version von Semantic MediaWiki, die eine Fernabfrage unterstützt.",
 	"smw-remote-request-note": "Das Ergebnis wird von der externen Datenquelle „$1“ abgefragt. Es ist wahrscheinlich, dass der erstellte Inhalt Informationen enthält, die nicht innerhalb des aktuellen Wikis verfügbar sind.",
 	"smw-remote-request-note-cached": "Das aus der externen Datenquelle „$1“ abgefragte Ergebnis ist '''gecacht'''. Es ist wahrscheinlich, dass der erstellte Inhalt Informationen enthält, die nicht innerhalb des aktuellen Wikis verfügbar sind.",
-	"smw-parameter-missing": "Der Parameter „$1“ fehlt."
+	"smw-parameter-missing": "Der Parameter „$1“ fehlt.",
+	"smw-property-tab-usage": "Nutzung",
+	"smw-property-tab-redirects": "Synonyme",
+	"smw-property-tab-subproperties": "Unterattribute",
+	"smw-property-tab-errors": "Fehlerhafte Annotationen",
+	"smw-concept-tab-list": "Liste",
+	"smw-concept-tab-errors": "Fehler"
 }
