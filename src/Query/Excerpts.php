@@ -57,7 +57,7 @@ class Excerpts {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWIkiPage|string $hash
+	 * @param DIWikiPage|string $hash
 	 *
 	 * @return string|integer|false
 	 */
