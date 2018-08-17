@@ -309,5 +309,9 @@
 	"smw-rule-page-description": "Beschreiwung:",
 	"smw-rule-page-type": "Typ:",
 	"smw-ask-title-keyword-type": "Schlësselwuert sichen",
-	"smw-parameter-missing": "De Parameter \"$1\" feelt."
+	"smw-parameter-missing": "De Parameter \"$1\" feelt.",
+	"smw-property-tab-usage": "Benotzung",
+	"smw-property-tab-redirects": "Synonymmen",
+	"smw-concept-tab-list": "Lëscht",
+	"smw-concept-tab-errors": "Feeler"
 }

@@ -18,7 +18,7 @@
 			"Zoranzoki21"
 		]
 	},
-	"smw_viewasrdf": "RDF довод",
+	"smw_viewasrdf": "RDF фид",
 	"smw_finallistconjunct": ", и",
 	"smw-factbox-facts": "Чињенице",
 	"smw_isspecprop": "Ова особина је посебна особина на овом викију.",
@@ -186,7 +186,7 @@
 	"smw-admin-deprecation-notice-config-notice": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> је застарео параметар и биће уклоњен у верзији $2",
 	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> је замењен параметар са параметром <code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> је уклоњен параметар у верзији $2",
-	"smw-admin-deprecation-notice-title-notice": "Предстојеће измене",
+	"smw-admin-deprecation-notice-title-notice": "Предстојеће промене",
 	"smw-admin-deprecation-notice-title-replacement": "Замењивање",
 	"smw-admin-deprecation-notice-title-removal": "Уклоњена подешавања",
 	"smw_smwadmin_datarefresh": "Поправљање података",
@@ -236,5 +236,10 @@
 	"smw-format-datatable-next": "Следећи",
 	"smw-format-datatable-previous": "Претходни",
 	"smw-format-datatable-sortascending": ": активирај за растуће сортирање колоне",
-	"smw-format-datatable-sortdescending": ": активирај за опадајуће сортирање колоне"
+	"smw-format-datatable-sortdescending": ": активирај за опадајуће сортирање колоне",
+	"smw-property-tab-usage": "Употреба",
+	"smw-property-tab-redirects": "Синоними",
+	"smw-property-tab-subproperties": "Подсвојства",
+	"smw-concept-tab-list": "Списак",
+	"smw-concept-tab-errors": "Грешке"
 }

@@ -556,7 +556,7 @@
 	"smw-search-profile-sort-best": "Meilleure correspondance",
 	"smw-search-profile-sort-recent": "Plus récent",
 	"smw-search-profile-sort-title": "Titre",
-	"smw-search-profile-extended-help-intro": "Le [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch/Extended_profile profil étendu] fournit un accès à l’extension spécifique de MédiaWiki Sémantique depuis la page Special:Search et inclut :",
+	"smw-search-profile-extended-help-intro": "Le [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch/Extended_profile profil étendu] fournit un accès aux fonctions de recherche spécifiques à l’extension Semantic MediaWiki depuis la page Special:Search et inclut :",
 	"smw-search-profile-extended-help-sort": "Spécifie une préférence de tri pour l’affichage des résultats avec :",
 	"smw-search-profile-extended-help-sort-title": "*« Titre »  utilisant le titre de la page (ou le titre affiché) comme critère de tri",
 	"smw-search-profile-extended-help-sort-recent": "*« Plus récent » affichera d’abord les plus récemment modifiés pour lesquels des sous-objets sont supprimés, car ces entités ne sont pas annotées avec une [[Property:Modification date|date de modification]]",
@@ -746,7 +746,7 @@
 	"smw-format-list-other-fields-close": ")",
 	"smw-category-invalid-redirect-target": "La catégorie « $1 » contient une cible de redirection non valide vers un espace de noms hors catégorie.",
 	"smw-parser-function-expensive-execution-limit": "La fonction analyseur a atteint le temps limite autorisé pour son exécution (voir le paramètre de configuration [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit<code>$smwgQExpensiveExecutionLimit</code>]).",
-	"smw-postproc-queryref": "Semantic MediaWiki lancera une actualisation de page en raison de certains traitements nécessaire après l'exécution des requêtes.",
+	"smw-postproc-queryref": "MédiaWiki Sémantique est en train de mettre à jour la page actuelle en fonction de certains traitements nécessaire après l’exécution des requêtes.",
 	"apihelp-smwinfo-summary": "Module d'API pour récupérer les informations concernant les statistiques de Semantic MediaWiki ainsi que d'autres informations meta.",
 	"apihelp-ask-summary": "Module d'API pour interroger Semantic MediaWiki avec le langage de requête.",
 	"apihelp-askargs-summary": "Module d'API pour interroger Semantic MediaWiki avec le langage de requête comportant une liste de conditions, d'affichages et de paramètres.",
@@ -797,5 +797,11 @@
 	"smw-remote-source-unmatched-id": "La source '''$1''' ne correspond pas à une version de MédiaWiki Sémantique qui peut supporter une requête distante.",
 	"smw-remote-request-note": "Le résultat est récupéré depuis la source distante '''$1''' et il est probable que le contenu généré contienne des informations qui ne sont pas disponibles depuis l’intérieur du wiki actuel.",
 	"smw-remote-request-note-cached": "Le résultat est '''mis en cache''' depuis la source distante '''$1''' et il est probable que le contenu généré contienne des informations qui ne sont pas disponibles depuis l’intérieur du wiki actuel.",
-	"smw-parameter-missing": "Paramètre absent « $1 »."
+	"smw-parameter-missing": "Paramètre absent « $1 ».",
+	"smw-property-tab-usage": "Utilisation",
+	"smw-property-tab-redirects": "Synonymes",
+	"smw-property-tab-subproperties": "Sous-propriétés",
+	"smw-property-tab-errors": "Mauvaises affectations",
+	"smw-concept-tab-list": "Liste",
+	"smw-concept-tab-errors": "Erreurs"
 }

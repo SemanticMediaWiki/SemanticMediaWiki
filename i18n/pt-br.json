@@ -730,7 +730,7 @@
 	"smw-format-list-other-fields-close": ")",
 	"smw-category-invalid-redirect-target": "A categoria \"$1\" contém um alvo de redirecionamento inválido para um namespace que não é de categoria.",
 	"smw-parser-function-expensive-execution-limit": "A função do analisador sintático atingiu o limite para execuções de funções exigentes (consulte o parâmetro de configuração [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit <code>$smwgQExpensiveExecutionLimit</code>]).",
-	"smw-postproc-queryref": "O MediaWiki Semântico irá iniciar uma atualização da página devido à necessidade de um processamento após a consulta.",
+	"smw-postproc-queryref": "O MediaWiki Semântico está atualizando a página atual com base na condição de algum processamento pós-consulta necessário.",
 	"apihelp-smwinfo-summary": "Módulo da API para obter informação sobre estatísticas e outra meta informação do Semantic MediaWiki.",
 	"apihelp-ask-summary": "Módulo da API para consultar o Semantic MediaWiki usando a linguagem \"ask\".",
 	"apihelp-askargs-summary": "Módulo da API para consultar o Semantic MediaWiki usando a linguagem \"ask\" na forma de lista de condições, propriedades a serem mostradas e parâmetros.",

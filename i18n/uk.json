@@ -386,6 +386,7 @@
 	"smw-admin-supplementary-elastic-functions": "Доступні функції",
 	"smw-admin-supplementary-elastic-settings-title": "Налаштування",
 	"smw-admin-supplementary-elastic-statistics-title": "Статистика",
+	"smw-admin-supplementary-elastic-status-refresh-interval": "Інтервал оновлення: $1",
 	"smw-property-label-uniqueness": "Назва «$1» збігається принаймні з одним іншим представленням властивості. Будь ласка, проконсультуйтеся зі [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness сторінкою довідки], щоб дізнатись, як вирішити цю проблему.",
 	"smw-property-label-similarity-title": "Звіт про подібність назв властивостей",
 	"smw-property-label-similarity-intro": "<u>$1</u> обчислює подібності наявних назв властивостей",

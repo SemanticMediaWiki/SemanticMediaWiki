@@ -27,7 +27,8 @@
 			"Omotecho",
 			"Eduardo Addad de Oliveira",
 			"Yusuke1109",
-			"Zero 1 k"
+			"Zero 1 k",
+			"Suyama"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -333,6 +334,8 @@
 	"smw-sp-searchbyproperty-valuequery": "値「$2」が付けられたプロパティ「$1」のあるページの一覧です。",
 	"smw-editpage-annotation-enabled": "このページは意味的テキスト内注記（例：<nowiki>[[Is specified as::World Heritage Site]]</nowiki>）をサポートしています。これは構造化され問い合わせ可能なコンテンツを構築するためのもので、Semantic MediaWiki が提供しています。注記や #ask パーサー関数についての完全な説明は [https://www.semantic-mediawiki.org/wiki/Help:Getting_started getting started]、[https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation in-text annotation]、または [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries inline queries] ヘルプページをご覧ください。",
 	"smw-editpage-annotation-disabled": "名前空間の制限により、このページでは意味的テキスト内注記を行えません。この名前空間において有効化する方法についての詳細は [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration] ヘルプページに記載されています。",
+	"smw-search-profile-sort-recent": "最新",
+	"smw-search-profile-extended-section-namespace": "名前空間を選択",
 	"log-name-smw": "Semantic MediaWiki ログ",
 	"log-show-hide-smw": "Semantic MediaWiki ログを$1",
 	"log-description-smw": "Semantic MediaWiki とその構成要素によって報告された、[https://www.semantic-mediawiki.org/wiki/Help:Logging 有効なイベントの種類]についての活動です。",
@@ -386,5 +389,7 @@
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] 形式",
 	"smw-help": "ヘルプ",
 	"smw-rule-page-type": "タイプ",
-	"smw-rule-page-tag": "タグ:"
+	"smw-rule-page-tag": "タグ:",
+	"smw-parameter-missing": "パラメータ \"$1\" がありません。",
+	"smw-concept-tab-errors": "エラー"
 }
