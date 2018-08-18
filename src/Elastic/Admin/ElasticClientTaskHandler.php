@@ -183,23 +183,43 @@ class ElasticClientTaskHandler extends TaskHandler {
 
 		$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
+		$html .= Html::element(
+			'li',
+			[],
+			$this->msg( [ 'smw-admin-supplementary-elastic-status-last-active-replication', $replicationStatus->get( 'last_update' ) ] )
+		);
+
+		$html .= Html::rawElement(
+			'li', [ 'class' => 'plainlinks' ],
+			$this->msg( [ 'smw-admin-supplementary-elastic-status-recovery-job-count', $jobQueue->getQueueSize( 'smw.elasticIndexerRecovery') ], Message::PARSE )
+		);
+
 		if ( $connection->getConfig()->dotGet( 'indexer.experimental.file.ingest', false ) ) {
-			$html .= Html::rawElement( 'li', [ 'class' => 'plainlinks' ], $this->msg(
-				[ 'smw-admin-supplementary-elastic-status-file-ingest-job-count', $jobQueue->getQueueSize( 'smw.elasticFileIngest') ], Message::PARSE )
+			$html .= Html::rawElement(
+				'li',
+				[ 'class' => 'plainlinks' ],
+				$this->msg( [ 'smw-admin-supplementary-elastic-status-file-ingest-job-count', $jobQueue->getQueueSize( 'smw.elasticFileIngest') ], Message::PARSE )
 			);
 		}
+
+		if ( $connection->hasLock( ElasticClient::TYPE_DATA ) ) {
+			$html .= Html::rawElement(
+				'li',
+				[ 'class' => 'plainlinks' ],
+				$this->msg( [ 'smw-admin-supplementary-elastic-status-rebuild-lock', '✓' ], Message::TEXT )
+			);
+		}
+
+		$html .= Html::element(
+			'li',
+			[],
+			$this->msg( [ 'smw-admin-supplementary-elastic-status-refresh-interval', $replicationStatus->get( 'refresh_interval' ) ] )
+		);
 
 		$this->outputFormatter->addHTML(
 			Html::element( 'h3', [], $this->msg(
 				'smw-admin-supplementary-elastic-status-replication' )
-			) . Html::rawElement( 'ul', [],
-				Html::element( 'li', [], $this->msg(
-					[ 'smw-admin-supplementary-elastic-status-last-active-replication', $replicationStatus->get( 'last_update' ) ] ) ) .
-				Html::rawElement( 'li', [ 'class' => 'plainlinks' ], $this->msg(
-					[ 'smw-admin-supplementary-elastic-status-recovery-job-count', $jobQueue->getQueueSize( 'smw.elasticIndexerRecovery') ], Message::PARSE ) ) . $html .
-				Html::element( 'li', [], $this->msg(
-					[ 'smw-admin-supplementary-elastic-status-refresh-interval', $replicationStatus->get( 'refresh_interval' ) ] ) )
-			)
+			) . Html::rawElement( 'ul', [], $html )
 		);
 
 		$list = '';
