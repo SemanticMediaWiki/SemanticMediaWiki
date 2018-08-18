@@ -266,20 +266,11 @@ class DIWikiPage extends SMWDataItem {
 	 * Create a data item from a MediaWiki Title.
 	 *
 	 * @param Title $title
-	 * @param boolean $userCase
-	 *
 	 * @return DIWikiPage
 	 */
-	public static function newFromTitle( Title $title, $userCase = false ) {
-
-		if ( $userCase === true ) {
-			$dbKey = $title->getUserCaseDBKey();
-		} else {
-			$dbKey = $title->getDBkey();
-		}
-
+	public static function newFromTitle( Title $title ) {
 		return new self(
-			$dbKey,
+			$title->getDBkey(),
 			$title->getNamespace(),
 			$title->getInterwiki(),
 			str_replace( ' ', '_', $title->getFragment() )
