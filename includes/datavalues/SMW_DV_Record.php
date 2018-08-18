@@ -174,10 +174,6 @@ class SMWRecordValue extends AbstractMultiValue {
 		return $this->makeOutputText( 4 );
 	}
 
-	/// @todo Allowed values for multi-valued properties are not supported yet.
-	protected function checkAllowedValues() {
-	}
-
 	/**
 	 * Make sure that the content is reset in this case.
 	 * @todo This is not a full reset yet (the case that property is changed after a value

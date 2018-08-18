@@ -2,10 +2,11 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\ApplicationFactory;
-use SMW\CachedPropertyValuesPrefetcher;
+use SMW\PropertySpecificationLookup;
 use SMW\DIWikiPage;
 use SMWDataValue as DataValue;
+use SMW\RequestOptions;
+use SMW\Store;
 
 /**
  * @private
@@ -17,13 +18,6 @@ use SMWDataValue as DataValue;
  * value with the same literal representation is being identified as violating the
  * uniqueness constraint.
  *
- * @note This class is optimized for performance which means that each match will be
- * cached to avoid making unnecessary query requests to the QueryEngine.
- *
- * A linked list will ensure that a subject which is associated with a unique value
- * is being purged in case it is altered or its uniqueness constraint is no longer
- * valid.
- *
  * @license GNU GPL v2+
  * @since 2.4
  *
@@ -32,14 +26,14 @@ use SMWDataValue as DataValue;
 class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 
 	/**
-	 * @var CachedPropertyValuesPrefetcher
+	 * @var Store
 	 */
-	private $cachedPropertyValuesPrefetcher;
+	private $store;
 
 	/**
-	 * @var QueryFactory
+	 * @var PropertySpecificationLookup
 	 */
-	private $queryFactory;
+	private $propertySpecificationLookup;
 
 	/**
 	 * @var boolean
@@ -52,21 +46,17 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 *
 	 * @var array
 	 */
-	private static $inMemoryAnnotationTracer = array();
+	private static $annotations = [];
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher
+	 * @param Store $store
+	 * @param PropertySpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher = null ) {
-		$this->cachedPropertyValuesPrefetcher = $cachedPropertyValuesPrefetcher;
-
-		if ( $this->cachedPropertyValuesPrefetcher === null ) {
-			$this->cachedPropertyValuesPrefetcher = ApplicationFactory::getInstance()->getCachedPropertyValuesPrefetcher();
-		}
-
-		$this->queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
+	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup ) {
+		$this->store = $store;
+		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
 
 	/**
@@ -76,6 +66,15 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 */
 	public function hasConstraintViolation() {
 		return $this->hasConstraintViolation;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function clear() {
+		self::$annotations = [];
 	}
 
 	/**
@@ -93,149 +92,114 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 
 		$property = $dataValue->getProperty();
 
-		if ( !ApplicationFactory::getInstance()->getPropertySpecificationLookup()->hasUniquenessConstraint( $property ) ) {
+		if ( !$this->propertySpecificationLookup->hasUniquenessConstraint( $property ) ) {
 			return $this->hasConstraintViolation;
 		}
 
-		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
-		$dataItem = $dataValue->getDataItem();
-
-		$hash = $this->cachedPropertyValuesPrefetcher->createHashFromString(
-			$property->getKey() . ':' . $dataItem->getHash()
-		);
-
-		$container = $blobStore->read(
-			$hash
-		);
-
-		$key = 'PVUC';
-
-		if ( !$container->has( $key ) ) {
-			$page = $this->tryFindMatchResultFor(
-				$hash,
-				$dataValue
-			);
-
-			$container->set( $key, $page );
-
-			$blobStore->save(
-				$container
-			);
-		}
-
-		$wikiPage = $container->get( $key );
-
-		// Verify that the contextPage (where the annotation has its origin) is
-		// matchable to the request and in case it is not a match inform the user
-		// about the origin
-		if ( $wikiPage instanceof DIWikiPage && !$dataValue->getContextPage()->equals( $wikiPage ) ) {
-			$dataValue->addErrorMsg(
-				array(
-					'smw-datavalue-uniqueness-constraint-error',
-					$property->getLabel(),
-					$dataValue->getWikiValue(),
-					$wikiPage->getTitle()->getPrefixedText()
-				)
-			);
-
-			$this->hasConstraintViolation = true;
-		}
-
-		// Already assigned!
-		if ( !$this->hasConstraintViolation && ( $isKnownBy = $this->isKnownBy( $hash, $dataValue ) ) !== false ) {
-			$dataValue->addErrorMsg(
-				array(
-					'smw-datavalue-uniqueness-constraint-isknown',
-					$property->getLabel(),
-					$dataValue->getWikiValue(),
-					$isKnownBy->getTitle()->getPrefixedText()
-				)
-			);
-
-			$this->hasConstraintViolation = true;
-		}
-
-	}
-
-	private function canValidate( $dataValue ) {
-
-		if ( !$dataValue instanceof DataValue || $dataValue->getProperty() === null ) {
-			return false;
-		}
-
-		return $dataValue->getContextPage() !== null && $dataValue->isEnabledFeature( SMW_DV_PVUC );
-	}
-
-	private function tryFindMatchResultFor( $hash, $dataValue ) {
-
-		$descriptionFactory = $this->queryFactory->newDescriptionFactory();
 		$contextPage = $dataValue->getContextPage();
 
 		// Exclude the current page from the result match to check whether another
 		// page matches the condition and if so then the value can no longer be
 		// assigned and is not unique
-		$description = $descriptionFactory->newConjunction( array(
-			$descriptionFactory->newFromDataValue( $dataValue ),
-			$descriptionFactory->newValueDescription( $contextPage, null, SMW_CMP_NEQ ) // NEQ
-		) );
+		$requestOptions = new RequestOptions();
 
-		$query = $this->queryFactory->newQuery( $description );
-		$query->setLimit( 1 );
-		$query->setContextPage( $contextPage );
-
-		$query->setOption( $query::PROC_CONTEXT, 'UniquenessConstraintValueValidator' );
-		$query->setOption( $query::NO_DEPENDENCY_TRACE, true );
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->queryPropertyValuesFor(
-			$query
+		$requestOptions->addExtraCondition( function( $store, $query, $alias ) use( $contextPage ) {
+				return $query->neq( "$alias.s_id", $store->getObjectIds()->getId( $contextPage ) );
+			}
 		);
 
-		if ( !is_array( $dataItems ) || $dataItems === array() ) {
-			// No other assignments were found therefore it is assumed that at
-			// the time of the query request, the "contextPage" holds a unique
-			// value for the property
-			$page = $contextPage;
+		$requestOptions->setLimit( 2 );
+		$count = 0;
 
+		if ( !$this->hasAnnotation( $dataValue ) ) {
+			$entityValueUniquenessConstraintChecker = $this->store->service( 'EntityValueUniquenessConstraintChecker' );
 
-		} else {
-			$page = end( $dataItems );
+			$res = $entityValueUniquenessConstraintChecker->checkConstraint(
+				$property,
+				$dataValue->getDataItem(),
+				$requestOptions
+			);
+
+			$count = count( $res );
 		}
 
-		// Create a linked list so that when the subject is altered or deleted
-		// the related uniqueness container can be removed as well
-		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
+		// Check whether the current page has any other annotation for the
+		// same property
+		if ( $count < 1 && $this->isRegistered( $dataValue ) ) {
+			$dataValue->addErrorMsg(
+				[
+					'smw-datavalue-uniqueness-constraint-isknown',
+					$property->getLabel(),
+					$contextPage->getTitle()->getPrefixedText(),
+					$dataValue->getWikiValue()
+				]
+			);
 
-		$container = $blobStore->read(
-			$this->cachedPropertyValuesPrefetcher->getRootHashFrom( $page )
-		);
+			$this->hasConstraintViolation = true;
+		}
 
-		$container->addToLinkedList( $hash );
+		// Has the page different values for the same property?
+		if ( $count < 1 ) {
+			return $this->hasConstraintViolation;
+		}
 
-		$blobStore->save(
-			$container
-		);
+		$this->hasConstraintViolation = true;
 
-		return $page;
+		foreach ( $res as $dataItem ) {
+			$val = $dataValue->isValid() ? $dataValue->getWikiValue() : '...';
+			$text = '';
+
+			if ( $dataItem !== null && ( $title = $dataItem->getTitle() ) !== null ) {
+				$text = $title->getPrefixedText();
+			}
+
+			$dataValue->addErrorMsg(
+				[
+					'smw-datavalue-uniqueness-constraint-error',
+					$property->getLabel(),
+					$val,
+					$text
+				]
+			);
+		}
+
+		return $this->hasConstraintViolation;
 	}
 
-	private function isKnownBy( $valueHash, $dataValue  ) {
+	private function canValidate( $dataValue ) {
 
-		$contextPage = $dataValue->getContextPage();
-
-		if ( $contextPage === null ) {
+		if ( !$dataValue->isEnabledFeature( SMW_DV_PVUC ) || !$dataValue instanceof DataValue ) {
 			return false;
 		}
 
-		$key = $dataValue->getProperty()->getKey();
+		return $dataValue->getContextPage() !== null && $dataValue->getProperty() !== null;
+	}
+
+	private function isRegistered( $dataValue ) {
+
+		$contextPage = $dataValue->getContextPage();
+		$dataItem = $dataValue->getDataItem();
+		$property = $dataValue->getProperty();
+
+		$valueHash = md5( $property->getKey() . $dataItem->getHash() );
+		$key = $property->getKey();
 		$hash = $contextPage->getHash();
 
-		if ( isset( self::$inMemoryAnnotationTracer[$hash][$key] ) && self::$inMemoryAnnotationTracer[$hash][$key] !== $valueHash ) {
-			return $contextPage;
+		if ( isset( self::$annotations[$hash][$key] ) && self::$annotations[$hash][$key] !== $valueHash ) {
+			return true;
 		} else {
-			self::$inMemoryAnnotationTracer[$hash][$key] = $valueHash;
+			self::$annotations[$hash][$key] = $valueHash;
 		}
 
 		return false;
+	}
+
+	private function hasAnnotation( $dataValue ) {
+
+		$key = $dataValue->getProperty()->getKey();
+		$hash = $dataValue->getContextPage()->getHash();
+
+		return isset( self::$annotations[$hash][$key] );
 	}
 
 }

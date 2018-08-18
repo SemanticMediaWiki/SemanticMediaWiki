@@ -696,6 +696,18 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
+	 * @return EntityValueUniquenessConstraintChecker
+	 */
+	public function newEntityValueUniquenessConstraintChecker() {
+		return new EntityValueUniquenessConstraintChecker(
+			$this->store,
+			ApplicationFactory::getInstance()->getIteratorFactory()
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return ServicesContainer
 	 */
 	public function newServicesContainer() {
@@ -705,6 +717,10 @@ class SQLStoreFactory {
 				'ProximityPropertyValueLookup' => [
 					'_service' => [ $this, 'newProximityPropertyValueLookup' ],
 					'_type'    => ProximityPropertyValueLookup::class
+				],
+				'EntityValueUniquenessConstraintChecker' => [
+					'_service' => [ $this, 'newEntityValueUniquenessConstraintChecker' ],
+					'_type'    => EntityValueUniquenessConstraintChecker::class
 				]
 			]
 		);

@@ -133,7 +133,10 @@ return array(
 		// Any registered ConstraintValueValidator becomes weaker(diminished) in the context
 		// of a preceding validator
 		$compoundConstraintValueValidator->registerConstraintValueValidator(
-			new UniquenessConstraintValueValidator()
+			new UniquenessConstraintValueValidator(
+				$containerBuilder->singleton( 'Store' ),
+				$containerBuilder->singleton( 'PropertySpecificationLookup' )
+			)
 		);
 
 		$patternConstraintValueValidator = new PatternConstraintValueValidator(
