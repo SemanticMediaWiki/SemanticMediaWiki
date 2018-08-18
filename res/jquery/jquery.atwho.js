@@ -976,7 +976,7 @@ View = (function() {
   };
 
   View.prototype.visible = function() {
-    return $.expr.filters.visible(this.$el[0]);
+    return $.expr.pseudos.visible(this.$el[0]);
   };
 
   View.prototype.highlighted = function() {
