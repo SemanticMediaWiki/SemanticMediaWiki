@@ -148,7 +148,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		$instance->condition( $instance->asOr( '_bar' ) );
 
 		$this->assertSame(
-			'SELECT bar AS b_ar, f AS a FROM foo WHERE ((foobar) AND (foo_bar)) OR (_bar)',
+			'SELECT bar AS b_ar, f AS a FROM foo WHERE ((foobar) AND (foo_bar) OR (_bar))',
 			$instance->build()
 		);
 	}
@@ -171,7 +171,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		$instance->condition( $instance->asOr( '_foo' ) );
 
 		$this->assertSame(
-			'SELECT bar AS b_ar, f AS a FROM foo INNER JOIN abc as v1 LEFT JOIN def AS v2 WHERE (((foobar) AND (foo_bar)) OR (_bar)) OR (_foo)',
+			'SELECT bar AS b_ar, f AS a FROM foo INNER JOIN abc as v1 LEFT JOIN def AS v2 WHERE (((foobar) AND (foo_bar) OR (_bar)) OR (_foo))',
 			$instance->build()
 		);
 	}

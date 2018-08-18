@@ -371,7 +371,7 @@ class Query {
 				if ( $cond !== '' ) {
 
 					if ( $i > 0 && $exp === 'OR' ) {
-						$conditions = [ '(' . implode( ' ', $conditions ) . ") OR ($cond)" ];
+						$conditions = [ '(' . implode( ' ', $conditions ) . " OR ($cond))" ];
 					} else {
 						$conditions[] = $i == 0 ? "($cond)" : "$exp ($cond)";
 					}

@@ -1,0 +1,71 @@
+{
+	"description": "Test API `action=smwbrowse`, `browse=pvalue`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text extra",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0003/1",
+			"contents": "[[Has text::123]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0003/2",
+			"contents": "[[Has text::1234]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0003/3",
+			"contents": "[[Has text extra::12345]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "api",
+			"about": "#0 `smwbrowse` pvalue (text type) search, abide or/and on property",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "pvalue",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"Has text\", \"search\": \"123\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"123",
+					"1234"
+				],
+				"not-contain": [
+					"12345"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgCacheUsage": {
+			"api.browse.pvalue": false
+		},
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_CONCEPT": true,
+			"NS_CATEGORY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
