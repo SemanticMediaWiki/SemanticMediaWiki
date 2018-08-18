@@ -291,6 +291,10 @@ class QueryEngine implements IQueryEngine {
 
 		$query->addErrors( $errors );
 
+		if ( $query->getOption( 'native_result' ) ) {
+			$query->native_result = json_encode( $res, JSON_PRETTY_PRINT |JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+		}
+
 		$scores = $searchResult->get( 'scores' );
 		$excerptList = $searchResult->get( 'excerpts' );
 
