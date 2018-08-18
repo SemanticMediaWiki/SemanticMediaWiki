@@ -74,18 +74,18 @@ class ScoreSetTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ScoreSet();
 
 		$instance->addScore( 'Foo', 42 );
-		$instance->addScore( 'Bar', 1001 );
+		$instance->addScore( 'Bar', 1001, 5 );
 		$instance->addScore( 'Foobar', 1 );
 
 		$table = $instance->asTable();
 
 		$this->assertContains(
-			'<tr><td>42</td><td>Foo</td></tr>',
+			'<tr><td>42</td><td>Foo</td><td>0</td></tr>',
 			$table
 		);
 
 		$this->assertContains(
-			'<tr><td>1001</td><td>Bar</td></tr>',
+			'<tr><td>1001</td><td>Bar</td><td>5</td></tr>',
 			$table
 		);
 	}

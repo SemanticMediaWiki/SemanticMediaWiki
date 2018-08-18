@@ -57,13 +57,17 @@ class ScoreSet {
 	 * @param DIWikiPage|string $hash
 	 * @param string|integer $score
 	 */
-	public function addScore( $hash, $score ) {
+	public function addScore( $hash, $score, $pos = null ) {
 
 		if ( $hash instanceof DIWikiPage ) {
 			$hash = $hash->getHash();
 		}
 
-		$this->scores[] = [ $hash, $score ];
+		if ( $pos === null ) {
+			$this->scores[] = [ $hash, $score ];
+		} else {
+			$this->scores[$pos] = [ $hash, $score ];
+		}
 	}
 
 	/**
@@ -100,14 +104,12 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $class
-	 *
-	 * @return string
+	 * @param boolean $usort
 	 */
-	public function asTable( $class = '' ) {
+	public function usort( $usort ) {
 
-		if ( $this->scores === [] ) {
-			return '';
+		if ( !$usort|| $this->scores === [] ) {
+			return;
 		}
 
 		usort( $this->scores, function( $a, $b ) {
@@ -118,11 +120,29 @@ class ScoreSet {
 
 			return ( $a[1] > $b[1] ) ? -1 : 1;
 		} );
+	}
 
-		$table = "<table class='$class'><thead><th>Score</th><th>Subject</th></thead><tbody>";
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $class
+	 *
+	 * @return string
+	 */
+	public function asTable( $class = '' ) {
 
-		foreach ( $this->scores as $set ) {
-			$table .= '<tr><td>' . $set[1] . '</td><td>' . $set[0] . '</td></tr>';
+		if ( $this->scores === [] ) {
+			return '';
+		}
+
+		$table = "<table class='$class'><thead>";
+		$table .= "<th>Score</th><th>Subject</th><th><span title='Sorting position'>Pos</span></th>";
+		$table .= "</thead><tbody>";
+
+		ksort( $this->scores );
+
+		foreach ( $this->scores as $pos => $set ) {
+			$table .= '<tr><td>' . $set[1] . '</td><td>' . $set[0] . '</td><td>' . $pos . '</td></tr>';
 		}
 
 		$table .= '</tbody></table>';

@@ -337,7 +337,7 @@ class SpecialAsk extends SpecialPage {
 				}
 			}
 
-			if ( $this->getRequest()->getVal( 'score_set' ) === 'show' && ( $scoreSet = $res->getScoreSet() ) !== null ) {
+			if ( $this->getRequest()->getVal( 'score_set', false ) && ( $scoreSet = $res->getScoreSet() ) !== null ) {
 				$table = $scoreSet->asTable( 'sortable wikitable smwtable-striped broadtable' );
 
 				if ( $table !== '' ) {
