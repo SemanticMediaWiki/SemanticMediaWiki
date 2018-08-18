@@ -189,7 +189,7 @@ class ProximityPropertyValueLookup {
 				'aggs' => [
 					'value_terms' => [
 						'terms' => [
-							'field' => "$pid.datRaw",
+							'field' => "$pid.dat_raw",
 							'size'  => $limit,
 							"order" => [ "_key" => "asc" ],
 							'include' => $dataValue->getDataItem()->getSerialization() . ".*"
