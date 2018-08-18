@@ -52,13 +52,13 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$request->expects( $this->at( 7 ) )
+		$request->expects( $this->at( 5 ) )
 			->method( 'getVal' )
 			->with(
 				$this->equalTo( 'offset' ),
 				$this->equalTo( 0 ) );
 
-		$request->expects( $this->at( 8 ) )
+		$request->expects( $this->at( 6 ) )
 			->method( 'getVal' )
 			->with(
 				$this->equalTo( 'limit' ),
@@ -72,6 +72,78 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		ParametersProcessor::process( $request, $parameters );
+	}
+
+	public function testParameters_Sort_FirstEmpty() {
+
+		$request = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$request->expects( $this->at( 3 ) )
+			->method( 'getArray' )
+			->with( $this->equalTo( 'sort_num' ) )
+			->will( $this->returnValue( [ '', '', 'Foo' ] ) );
+
+		$request->expects( $this->at( 4 ) )
+			->method( 'getArray' )
+			->with( $this->equalTo( 'order_num' ) )
+			->will( $this->returnValue( [ 'asc', 'desc' ] ) );
+
+		$parameters = [
+			'[[Foo::bar]]'
+		];
+
+		list( $q, $p, $po ) = ParametersProcessor::process(
+			$request,
+			$parameters
+		);
+
+		$this->assertSame(
+			$p['sort'],
+			',Foo'
+		);
+
+		$this->assertSame(
+			$p['order'],
+			'asc,desc'
+		);
+	}
+
+	public function testParameters_Sort_FirstNotEmpty() {
+
+		$request = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$request->expects( $this->at( 3 ) )
+			->method( 'getArray' )
+			->with( $this->equalTo( 'sort_num' ) )
+			->will( $this->returnValue( [ 'Foo', '' ] ) );
+
+		$request->expects( $this->at( 4 ) )
+			->method( 'getArray' )
+			->with( $this->equalTo( 'order_num' ) )
+			->will( $this->returnValue( [ 'asc', 'desc' ] ) );
+
+		$parameters = [
+			'[[Foo::bar]]'
+		];
+
+		list( $q, $p, $po ) = ParametersProcessor::process(
+			$request,
+			$parameters
+		);
+
+		$this->assertSame(
+			$p['sort'],
+			'Foo'
+		);
+
+		$this->assertSame(
+			$p['order'],
+			'asc'
+		);
 	}
 
 	public function testParametersOn_p_Array_Request() {

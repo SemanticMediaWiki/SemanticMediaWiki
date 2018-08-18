@@ -90,15 +90,31 @@ class ParametersProcessor {
 		}
 
 		$sort_count = 0;
+		$empty_first_sort = false;
 
 		// First check whether the sorting options input send an
 		// request data as array
-		if ( $request->getArray( 'sort_num', [] ) !== array() ) {
-			$sort_values = $request->getArray( 'sort_num' );
+		if ( ( $sort_values = $request->getArray( 'sort_num', [] ) ) !== [] ) {
+
+			// Find out whether something like `|?sort=,Has text` was used
+			if ( $sort_values[0] === '' ) {
+				$empty_first_sort = true;
+			}
 
 			if ( is_array( $sort_values ) ) {
+
+				// Filter all empty values
 				$sort = array_filter( $sort_values );
 				$sort_count = count( $sort );
+
+				// Add an empty element on the first position which got filter
+				// and was to prevent countless empty elements when no other sort
+				// was metioned
+				if ( $sort_count > 0 && $empty_first_sort ) {
+					array_unshift( $sort, '' );
+					$sort_count++;
+				}
+
 				$parameters['sort'] = implode( ',', $sort );
 			}
 		} elseif ( $request->getCheck( 'sort' ) ) {
@@ -107,8 +123,7 @@ class ParametersProcessor {
 
 		// First check whether the order options input send an
 		// request data as array
-		if ( $request->getArray( 'order_num', [] ) !== array()  ) {
-			$order_values = $request->getArray( 'order_num' );
+		if ( ( $order_values = $request->getArray( 'order_num', [] ) ) !== [] ) {
 
 			// Count doesn't match means we have a order from an
 			// empty (#subject) carrying around which we don't permit when
