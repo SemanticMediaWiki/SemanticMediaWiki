@@ -55,7 +55,7 @@ class TextIndexer {
 	 *
 	 * @return string
 	 */
-	public function textFromRevID( $id ) {
+	public function fetchTextFromRevID( $id ) {
 
 		if ( $id == 0 ) {
 			return '';
@@ -112,23 +112,22 @@ class TextIndexer {
 
 		$response = $bulk->execute();
 
- 		$context = [
- 			'method' => __METHOD__,
- 			'role' => 'user',
- 			'origin' => $this->origin,
-			'subject' => $dataItem->getHash(),
-			'procTime' => microtime( true ) + $time,
-			'response' => $response
-		];
-
-		$msg = [
-			'Text indexer',
-			'Upsert completed ({subject})',
-			'procTime (in sec): {procTime}',
-			'Response: {response}'
-		];
-
-		$this->logger->info( $msg, $context );
+		$this->logger->info(
+			[
+				'Text indexer',
+				'Upsert completed ({subject})',
+				'procTime (in sec): {procTime}',
+				'Response: {response}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'user',
+				'origin' => $this->origin,
+				'subject' => $dataItem->getHash(),
+				'procTime' => microtime( true ) + $time,
+				'response' => $response
+			]
+		);
 	}
 
 }

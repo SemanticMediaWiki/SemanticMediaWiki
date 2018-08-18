@@ -35,6 +35,29 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRollover() {
+
+		$indices = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'exists', 'delete', 'existsAlias', 'updateAliases' ] )
+			->getMock();
+
+		$indices->expects( $this->once() )
+			->method( 'updateAliases' );
+
+		$this->connection->expects( $this->any() )
+			->method( 'indices' )
+			->will( $this->returnValue( $indices ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'releaseLock' );
+
+		$instance = new Rollover(
+			$this->connection
+		);
+
+		$instance->rollover( 'Foo', 'v2' );
+	}
+
 	public function testUpdate() {
 
 		$indices = $this->getMockBuilder( '\stdClass' )

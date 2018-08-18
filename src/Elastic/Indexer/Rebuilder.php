@@ -38,6 +38,11 @@ class Rebuilder {
 	private $propertyTableRowMapper;
 
 	/**
+	 * @var Rollover
+	 */
+	private $rollover;
+
+	/**
 	 * @var array
 	 */
 	private $settings = [];
@@ -53,16 +58,23 @@ class Rebuilder {
 	private $options = [];
 
 	/**
+	 * @var array
+	 */
+	private $_instance = [];
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param ElasticClient $client
 	 * @param Indexer $indexer
 	 * @param PropertyTableRowMapper $propertyTableRowMapper
+	 * @param Rollover $rollover
 	 */
-	public function __construct( ElasticClient $client, Indexer $indexer, PropertyTableRowMapper $propertyTableRowMapper ) {
+	public function __construct( ElasticClient $client, Indexer $indexer, PropertyTableRowMapper $propertyTableRowMapper, Rollover $rollover ) {
 		$this->client = $client;
 		$this->indexer = $indexer;
 		$this->propertyTableRowMapper = $propertyTableRowMapper;
+		$this->rollover = $rollover;
 	}
 
 	/**
@@ -128,27 +140,29 @@ class Rebuilder {
 			return false;
 		}
 
-		$res = $this->rolloverByType(
-			ElasticClient::TYPE_DATA
+		$this->rollover_version(
+			ElasticClient::TYPE_DATA,
+			$this->versions[ElasticClient::TYPE_DATA]
 		);
 
-		$this->rolloverByType( ElasticClient::TYPE_LOOKUP );
-
-		return $res;
+		$this->rollover_version(
+			ElasticClient::TYPE_LOOKUP,
+			$this->versions[ElasticClient::TYPE_LOOKUP]
+		);
 	}
 
 	/**
 	 * @since 3.0
 	 */
 	public function prepare() {
-		$this->doPrepareByType( ElasticClient::TYPE_DATA );
-		$this->doPrepareByType( ElasticClient::TYPE_LOOKUP );
+		$this->prepare_index( ElasticClient::TYPE_DATA );
+		$this->prepare_index( ElasticClient::TYPE_LOOKUP );
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function deleteIndices() {
+	public function deleteAndSetupIndices() {
 
 		$this->messageReporter->reportMessage( "\n   ... deleting indices and aliases ..." );
 		$this->indexer->drop();
@@ -161,8 +175,8 @@ class Rebuilder {
 	 * @since 3.0
 	 */
 	public function createIndices() {
-		$this->createIndexByType( ElasticClient::TYPE_DATA );
-		$this->createIndexByType( ElasticClient::TYPE_LOOKUP );
+		$this->create_index( ElasticClient::TYPE_DATA );
+		$this->create_index( ElasticClient::TYPE_LOOKUP );
 	}
 
 	/**
@@ -174,8 +188,10 @@ class Rebuilder {
 			return false;
 		}
 
-		$this->setDefaultsByType( ElasticClient::TYPE_DATA );
-		$this->setDefaultsByType( ElasticClient::TYPE_LOOKUP );
+		$this->messageReporter->reportMessage( "\n" . '   ... updating settings and mappings ...' );
+
+		$this->set_default( ElasticClient::TYPE_DATA );
+		$this->set_default( ElasticClient::TYPE_LOOKUP );
 
 		return true;
 	}
@@ -187,7 +203,7 @@ class Rebuilder {
 	 */
 	public function delete( $id ) {
 
-		$index = $this->client->getIndexNameByType( ElasticClient::TYPE_DATA );
+		$index = $this->client->getIndexName( ElasticClient::TYPE_DATA );
 
 		if ( isset( $this->versions[ElasticClient::TYPE_DATA] ) ) {
 			$index = $index . '-' . $this->versions[ElasticClient::TYPE_DATA];
@@ -214,13 +230,11 @@ class Rebuilder {
 	 */
 	public function rebuild( $id, SemanticData $semanticData ) {
 
-		static $indexer = [];
-
-		if ( $indexer === [] ) {
+		if ( $this->_instance === [] ) {
 			if ( $this->client->getConfig()->dotGet( 'indexer.raw.text', false ) ) {
-				$indexer['text.indexer'] = $this->indexer->getTextIndexer();
+				$this->_instance['text_indexer'] = $this->indexer->getTextIndexer();
 			} else {
-				$indexer['text.indexer'] = false;
+				$this->_instance['text_indexer'] = false;
 			}
 
 			$skip = false;
@@ -230,9 +244,9 @@ class Rebuilder {
 			}
 
 			if ( !$skip && $this->client->getConfig()->dotGet( 'indexer.experimental.file.ingest', false ) ) {
-				$indexer['file.indexer'] = $this->indexer->getFileIndexer();
+				$this->_instance['file_indexer'] = $this->indexer->getFileIndexer();
 			} else {
-				$indexer['file.indexer'] = false;
+				$this->_instance['file_indexer'] = false;
 			}
 		}
 
@@ -249,18 +263,18 @@ class Rebuilder {
 
 		$this->indexer->index( $changeOp->newChangeDiff() );
 
-		if ( $indexer['text.indexer'] && $dataItem->getSubobjectName() === '' && ( $title = $dataItem->getTitle() ) !== null ) {
+		if ( $this->_instance['text_indexer'] && $dataItem->getSubobjectName() === '' && ( $title = $dataItem->getTitle() ) !== null ) {
 
-			$text = $indexer['text.indexer']->textFromRevID(
+			$text = $this->_instance['text_indexer']->fetchTextFromRevID(
 				$title->getLatestRevID( \Title::GAID_FOR_UPDATE )
 			);
 
-			$indexer['text.indexer']->index( $dataItem, $text );
+			$this->_instance['text_indexer']->index( $dataItem, $text );
 		}
 
-		if ( $indexer['file.indexer'] && $dataItem->getNamespace() === NS_FILE ) {
-			$indexer['file.indexer']->noSha1Check();
-			$indexer['file.indexer']->index( $dataItem, null );
+		if ( $this->_instance['file_indexer'] && $dataItem->getNamespace() === NS_FILE ) {
+			$this->_instance['file_indexer']->noSha1Check();
+			$this->_instance['file_indexer']->index( $dataItem, null );
 		}
 	}
 
@@ -273,15 +287,17 @@ class Rebuilder {
 			return false;
 		}
 
-		$this->refreshIndexByType( ElasticClient::TYPE_DATA );
-		$this->refreshIndexByType( ElasticClient::TYPE_LOOKUP );
+		$this->messageReporter->reportMessage( "\n" . '   ... refreshing indices ...' );
+
+		$this->refresh_index( ElasticClient::TYPE_DATA );
+		$this->refresh_index( ElasticClient::TYPE_LOOKUP );
 
 		return true;
 	}
 
-	private function doPrepareByType( $type ) {
+	private function prepare_index( $type ) {
 
-		$index = $this->client->getIndexNameByType( $type );
+		$index = $this->client->getIndexName( $type );
 
 		if ( isset( $this->versions[$type] ) ) {
 			$index = "$index-" . $this->versions[$type];
@@ -301,24 +317,25 @@ class Rebuilder {
 		$this->client->putSettings( $params );
 	}
 
-	private function refreshIndexByType( $type ) {
-
-		$index = $this->client->getIndexNameByType( $type );
-
-		$this->client->refresh(
-			[ 'index' => $index ]
-		);
+	private function refresh_index( $type ) {
+		$this->client->refresh( [ 'index' => $this->client->getIndexName( $type ) ] );
 	}
 
-	private function setDefaultsByType( $type ) {
+	private function set_default( $type ) {
 
 		$indices = $this->client->indices();
 
-		$index = $this->client->getIndexNameByType(
+		$index = $this->client->getIndexName(
 			$type
 		);
 
-		$this->messageReporter->reportMessage( "\n   ... closing" );
+		$this->messageReporter->reportMessage( "\n   ... '$type' index ... " );
+
+		if ( $this->client->hasLock( $type ) ) {
+			$this->rollover_version( $type, $this->client->getLock( $type ) );
+		}
+
+		$this->messageReporter->reportMessage( "\n      ... closing" );
 
 		// Certain changes ( ... to define new analyzers ...) requires to close
 		// and reopen an index
@@ -351,13 +368,14 @@ class Rebuilder {
 
 		$this->client->putMapping( $params );
 
-		$this->messageReporter->reportMessage( ", opening index '$type' ... " );
+		$this->messageReporter->reportMessage( ", reopening the index ... " );
 		$indices->open( [ 'index' => $index ] );
+
 
 		$this->client->releaseLock( $type );
 	}
 
-	private function createIndexByType( $type ) {
+	private function create_index( $type ) {
 
 		// If for some reason a recent rebuild didn't finish, use
 		// the locked version as master
@@ -369,7 +387,7 @@ class Rebuilder {
 			$version = $this->client->createIndex( $type );
 		}
 
-		$index = $this->client->getIndexNameByType( $type );
+		$index = $this->client->getIndexName( $type );
 		$indices = $this->client->indices();
 
 		// No Alias available, create one before the rollover
@@ -387,46 +405,16 @@ class Rebuilder {
 		$this->client->setLock( $type, $version );
 	}
 
-	private function rolloverByType( $type ) {
+	private function rollover_version( $type, $version ) {
 
-		$version = $this->versions[$type];
+		$old = $this->rollover->rollover(
+			$type,
+			$version
+		);
 
-		$index = $this->client->getIndexNameByType( $type );
-		$indices = $this->client->indices();
-
-		$params = [];
-		$actions = [];
-
-		$old = $version === 'v2' ? 'v1' : 'v2';
-		$check = false;
-
-		if ( $indices->exists( [ 'index' => "$index-$old" ] ) ) {
-			$actions = [
-				[ 'remove' => [ 'index' => "$index-$old", 'alias' => $index ] ],
-				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
-			];
-
-			$check = true;
-		} else {
-			// No old index
-			$old = $version;
-
-			$actions = [
-				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
-			];
-		}
-
-		$params['body'] = [ 'actions' => $actions ];
-
-		$indices->updateAliases( $params );
-
-		if ( $check && $indices->exists( [ 'index' => "$index-$old" ] ) ) {
-			$indices->delete( [ "index" => "$index-$old" ] );
-		}
-
-		$this->client->releaseLock( $type );
-
-		return [ $version, $old ];
+		$this->messageReporter->reportMessage(
+			"\n" . sprintf( "      ... switching index version from %s to %s (rollover) ...", $old, $version )
+		);
 	}
 
 }
