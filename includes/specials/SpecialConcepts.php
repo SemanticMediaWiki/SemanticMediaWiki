@@ -6,6 +6,7 @@ use Html;
 use SMW\Page\ListPager;
 use SMW\SQLStore\SQLStore;
 use SMWPageLister;
+use SMW\Utils\HtmlTabs;
 
 /**
  * Special page that lists available concepts
@@ -92,34 +93,40 @@ class SpecialConcepts extends SpecialPage {
 	 * @return string
 	 */
 	public function getHtml( $diWikiPages, $limit, $offset, $from, $until ) {
+
 		$resultNumber = min( $limit, count( $diWikiPages ) );
 		$pageLister   = new SMWPageLister( $diWikiPages, null, $limit, $from, $until );
-		$key = $resultNumber == 0 ? 'smw-sp-concept-empty' : 'smw-sp-concept-count';
+		$key = $resultNumber == 0 ? 'smw-special-concept-empty' : 'smw-special-concept-count';
 
-		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-		$title = method_exists( $this, 'getPageTitle') ? $this->getPageTitle() : $this->getTitle();
+		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setGroup( 'concept' );
 
-		return Html::rawElement(
-			'span',
-			array( 'class' => 'smw-sp-concept-docu' ),
-			$this->msg( 'smw-sp-concept-docu' )->parse()
-			) .
-			Html::rawElement(
+		$html = Html::rawElement(
 				'div',
 				array( 'id' => 'mw-pages'),
-				Html::element(
-					'h2',
-					array(),
-					$this->msg( 'smw-sp-concept-header' )->text()
-				) .
-				Html::element(
-					'span',
-					array( 'class' => $key ),
-					$this->msg( $key, $resultNumber )->parse()
-				) .	' ' .
-				"<br>" . Html::rawElement( 'div', [ 'style' => 'margin-top:5px;'], ListPager::getPagingLinks( $title, $limit, $offset, count( $diWikiPages ) ) ) .
-				$pageLister->getColumnList( $offset, $limit, $diWikiPages, null )
-			);
+			Html::rawElement(
+				'div',
+				[ 'class' => 'smw-page-navigation' ],
+				ListPager::pagination( $this->getPageTitle(), $limit, $offset, count( $diWikiPages ) )
+			) . Html::element(
+				'div',
+				array( 'class' => $key, 'style' => 'margin-top:10px;' ),
+				$this->msg( $key, $resultNumber )->parse()
+			) . $pageLister->getColumnList( $offset, $limit, $diWikiPages, null )
+		);
+
+		$htmlTabs->tab( 'smw-concept-list', $this->msg( 'smw-concept-tab-list' ) );
+		$htmlTabs->content( 'smw-concept-list', $html );
+
+		$html = $htmlTabs->buildHTML(
+			[ 'class' => 'smw-concept clearfix' ]
+		);
+
+		return Html::rawElement(
+			'p',
+			array( 'class' => 'smw-special-concept-docu plainlinks' ),
+			$this->msg( 'smw-special-concept-docu' )->parse()
+		) . $html;
 	}
 
 	/**
@@ -133,6 +140,7 @@ class SpecialConcepts extends SpecialPage {
 
 		$this->setHeaders();
 		$out = $this->getOutput();
+		$out->addModuleStyles( 'ext.smw.page.styles' );
 
 		$from  = $this->getRequest()->getVal( 'from', '' );
 		$until = $this->getRequest()->getVal( 'until', '' );
