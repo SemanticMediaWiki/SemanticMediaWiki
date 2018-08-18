@@ -4,6 +4,7 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\Message;
+use SMW\Utils\Image;
 
 /**
  * @ingroup SMWDataValues
@@ -231,35 +232,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @return boolean
-	 */
-	public function isImage() {
-
-		if ( $this->m_dataitem->getNamespace() !== NS_FILE || $this->m_dataitem->getSubobjectName() !== '' ) {
-			return false;
-		}
-
-		$imageExtensions = [
-			'gif',
-			'jpg',
-			'jpeg',
-			'png',
-			'bmp',
-			'svg',
-			'tiff'
-		];
-
-		$extension = strtolower(
-			substr( strrchr( $this->m_dataitem->getDBKey(), "." ) , 1 )
-			// pathinfo( $this->m_dataitem->getDBKey(), PATHINFO_EXTENSION )
-		);
-
-		return in_array( $extension, $imageExtensions );
-	}
-
-	/**
 	 * Display the value on a wiki page. This is used to display the value
 	 * in the place where it was annotated on a wiki page. The desired
 	 * behavior is that the display in this case looks as if no property
@@ -291,7 +263,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->m_caption !== false ? $this->m_caption : $this->getWikiValue();
 		}
 
-		if ( $this->isImage() && $this->m_dataitem->getInterwiki() === '' ) {
+		if ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' ) {
 			$linkEscape = '';
 			$options = $this->m_outformat === false ? 'frameless|border|text-top|' : str_replace( ';', '|', \Sanitizer::removeHTMLtags( $this->m_outformat ) );
 			$defaultCaption = '|' . $this->getShortCaptionText() . '|' . $options;
@@ -377,7 +349,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( is_null( $linked ) || $linked === false || $this->m_outformat == '-' ) {
 			return $this->getWikiValue();
-		} elseif ( $this->isImage() && $this->m_dataitem->getInterwiki() === '' ) {
+		} elseif ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' ) {
 			// Embed images and other files
 			// Note that the embedded file links to the image, hence needs no additional link text.
 			// There should not be a linebreak after an impage, just like there is no linebreak after
