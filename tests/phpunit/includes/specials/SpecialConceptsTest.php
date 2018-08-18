@@ -51,7 +51,7 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 		$this->execute();
 
 		$this->stringValidator->assertThatStringContains(
-			'span class="smw-sp-concept-docu"',
+			'p class="smw-special-concept-docu plainlinks"',
 			$this->getText()
 		);
 	}
@@ -64,7 +64,7 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 		$instance = $this->getInstance();
 
 		$this->stringValidator->assertThatStringContains(
-			'span class="smw-sp-concept-empty"',
+			'div class="smw-special-concept-empty"',
 			$instance->getHtml( array(), 0, 0, 0, 0 )
 		);
 	}
@@ -78,7 +78,7 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 		$instance = $this->getInstance();
 
 		$this->stringValidator->assertThatStringContains(
-			'span class="smw-sp-concept-count"',
+			'div class="smw-special-concept-count"',
 			$instance->getHtml( array( $subject ), 1, 0, 1, 1 )
 		);
 	}
