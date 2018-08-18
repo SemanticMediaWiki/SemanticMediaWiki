@@ -67,6 +67,15 @@ class OutputFormatter {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $css
+	 */
+	public function addInlineStyle( $css ) {
+		$this->outputPage->addInlineStyle( $css );
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $html
