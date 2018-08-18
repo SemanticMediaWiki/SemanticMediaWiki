@@ -31,10 +31,13 @@ use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
+use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\Utils\CircularReferenceGuard;
 use SMWRequestOptions as RequestOptions;
 use SMWSql3SmwIds as EntityIdManager;
+use SMW\Services\ServicesContainer;
+use SMW\RequestData;
 use SMWSQLStore3;
 
 /**
@@ -679,6 +682,34 @@ class SQLStoreFactory {
 		);
 
 		return $changeOp;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ProximityPropertyValueLookup
+	 */
+	public function newProximityPropertyValueLookup() {
+		return new ProximityPropertyValueLookup( $this->store );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ServicesContainer
+	 */
+	public function newServicesContainer() {
+
+		$servicesContainer = new ServicesContainer(
+			[
+				'ProximityPropertyValueLookup' => [
+					'_service' => [ $this, 'newProximityPropertyValueLookup' ],
+					'_type'    => ProximityPropertyValueLookup::class
+				]
+			]
+		);
+
+		return $servicesContainer;
 	}
 
 }

@@ -16,6 +16,7 @@ use SMW\Tests\TestEnvironment;
  */
 class BrowseTest extends \PHPUnit_Framework_TestCase {
 
+	private $store;
 	private $apiFactory;
 	private $testEnvironment;
 
@@ -29,6 +30,19 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->apiFactory = $this->testEnvironment->getUtilityFactory()->newMwApiFactory();
+
+		$proximityPropertyValueLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ProximityPropertyValueLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->with( $this->equalTo( 'ProximityPropertyValueLookup' ) )
+			->will( $this->returnValue( $proximityPropertyValueLookup ) );
 	}
 
 	protected function tearDown() {
@@ -99,32 +113,28 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getSQLOptions' )
 			->will( $this->returnValue( [] ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$store->expects( $this->atLeastOnce() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$this->testEnvironment->registerObject( 'Cache', $cache );
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 
 		$instance = new Browse(
 			$this->apiFactory->newApiMain(
@@ -162,15 +172,11 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSubSemanticData' )
 			->will( $this->returnValue( [] ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->atLeastOnce() )
+		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 
 		$instance = new Browse(
 			$this->apiFactory->newApiMain(

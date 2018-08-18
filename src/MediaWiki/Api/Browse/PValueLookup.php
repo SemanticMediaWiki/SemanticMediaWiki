@@ -102,8 +102,8 @@ class PValueLookup extends Lookup {
 				$property
 			);
 
-			$proximityPropertyValueLookup = new ProximityPropertyValueLookup(
-				$this->store
+			$proximityPropertyValueLookup = $this->store->service(
+				'ProximityPropertyValueLookup'
 			);
 
 			$res = $proximityPropertyValueLookup->lookup(

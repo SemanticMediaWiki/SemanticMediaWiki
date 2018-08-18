@@ -55,6 +55,27 @@ class ElasticStore extends SQLStore {
 	}
 
 	/**
+	 * @see Store::service
+	 *
+	 * {@inheritDoc}
+	 */
+	public function service( $service, ...$args ) {
+
+		if ( $this->servicesContainer === null ) {
+			$this->servicesContainer = parent::newServicesContainer();
+
+			// Replace an existing (or add) SQLStore service with a ES specific
+			// optimized service
+
+			// $this->servicesContainer->add( 'ProximityPropertyValueLookup', function() {
+			//	return $this->elasticFactory->newProximityPropertyValueLookup( $this );
+			// } );
+		}
+
+		return $this->servicesContainer->get( $service, ...$args );
+	}
+
+	/**
 	 * @see SQLStore::deleteSubject
 	 * @since 3.0
 	 *

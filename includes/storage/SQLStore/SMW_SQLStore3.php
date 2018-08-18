@@ -113,6 +113,11 @@ class SMWSQLStore3 extends SMWStore {
 	private $entityLookup;
 
 	/**
+	 * @var ServicesContainer
+	 */
+	protected $servicesContainer;
+
+	/**
 	 * Object to access the SMW IDs table.
 	 *
 	 * @since 1.8
@@ -342,6 +347,19 @@ class SMWSQLStore3 extends SMWStore {
 
 ///// Setup store /////
 
+	/**
+	 * @see Store::service
+	 *
+	 * {@inheritDoc}
+	 */
+	public function service( $service, ...$args ) {
+
+		if ( $this->servicesContainer === null ) {
+			$this->servicesContainer = $this->newServicesContainer();
+		}
+
+		return $this->servicesContainer->get( $service, ...$args );
+	}
 
 	/**
 	 * @since 1.8
@@ -605,6 +623,13 @@ class SMWSQLStore3 extends SMWStore {
 		}
 
 		return $this->propertyTableIdReferenceFinder;
+	}
+
+	/**
+	 * @return ServicesContainer
+	 */
+	protected function newServicesContainer() {
+		return $this->factory->newServicesContainer();
 	}
 
 	/**
