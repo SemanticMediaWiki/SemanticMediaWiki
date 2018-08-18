@@ -276,7 +276,7 @@ class SpecialAsk extends SpecialPage {
 
 		if ( $this->queryString !== '' ) {
 
-			list( $res, $debug, $duration, $queryobj ) = $this->getQueryResult();
+			list( $res, $debug, $duration, $queryobj, $native_result ) = $this->getQueryResult();
 
 			$printer = QueryProcessor::getResultPrinter(
 				$this->parameters['format'],
@@ -343,6 +343,10 @@ class SpecialAsk extends SpecialPage {
 				if ( $table !== '' ) {
 					$result .= '<h2>Score set</h2>' . $table;
 				};
+			}
+
+			if ( $native_result !== '' ) {
+				$result .= '<h2>Native result</h2>' . '<pre>' . $native_result . '</pre>';
 			}
 		}
 
@@ -680,6 +684,7 @@ class SpecialAsk extends SpecialPage {
 		$debug = '';
 		$duration = 0;
 		$queryobj = null;
+		$native_result = '';
 
 		// Copy the printout to retain the orginal state while in case of no
 		// specific subject (THIS) request extend the query with a
@@ -705,6 +710,10 @@ class SpecialAsk extends SpecialPage {
 
 		if ( $this->getRequest()->getVal( 'cache' ) === 'no' ) {
 			$queryobj->setOption( SMWQuery::NO_CACHE, true );
+		}
+
+		if ( $this->getRequest()->getVal( 'native_result', false ) ) {
+			$queryobj->setOption( 'native_result', true );
 		}
 
 		$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
@@ -740,6 +749,10 @@ class SpecialAsk extends SpecialPage {
 			$queryobj
 		);
 
+		if ( $this->getRequest()->getVal( 'native_result', false ) && isset( $queryobj->native_result ) ) {
+			$native_result = $queryobj->native_result;
+		}
+
 		$duration = number_format( ( microtime( true ) - $duration ), 4, '.', '' );
 
 		// Allow to generate a debug output
@@ -756,7 +769,7 @@ class SpecialAsk extends SpecialPage {
 			$debug = $queryEngine->getQueryResult( $queryobj );
 		}
 
-		return [ $res, $debug, $duration, $queryobj ];
+		return [ $res, $debug, $duration, $queryobj, $native_result ];
 	}
 
 
