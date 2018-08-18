@@ -92,6 +92,53 @@ class PropertySubjectsLookup {
 		// those tables where the behaviour has been observed.
 		if ( $dataItemHandler->getIndexHint( 'property.subjects' ) !== '' && $dataItem === null ) {
 			$index = 'FORCE INDEX(' . $dataItemHandler->getIndexHint( 'property.subjects' ) . ')';
+
+			// For tables with only a few entries, the index hint seems to create
+			// a disadvantage, yet when the amount reaches a certain level the
+			// index hint becomes necessary to retain an acceptable response
+			// time.
+			//
+			// Table with < 100 entries
+			//
+			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+			// FROM `smw_object_ids` INNER JOIN `smw_di_number` AS t1 ON t1.s_id=smw_id
+			// WHERE (t1.p_id='196959') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
+			// GROUP BY smw_sort, smw_id LIMIT 21	8.2510ms (without index hint)
+			//
+			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+			// FROM `smw_object_ids` INNER JOIN `smw_di_number` AS t1 FORCE INDEX(s_id) ON t1.s_id=smw_id
+			// WHERE (t1.p_id='196959') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
+			// GROUP BY smw_sort, smw_id LIMIT 21	7548.6171ms (with index hint)
+			//
+			// vs.
+			//
+			// Table with > 5000 entries
+			//
+			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+			// FROM `smw_object_ids` INNER JOIN `smw_di_blob` AS t1 FORCE INDEX(s_id) ON t1.s_id=smw_id
+			// WHERE (t1.p_id='310170') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
+			// GROUP BY smw_sort, smw_id LIMIT 21	62.6249ms (with index hint)
+			//
+			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+			// FROM `smw_object_ids` INNER JOIN `smw_di_blob` AS t1 ON t1.s_id=smw_id
+			// WHERE (t1.p_id='310170') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
+			// GROUP BY smw_sort, smw_id LIMIT 21	8856.1242ms (without index hint)
+			//
+			$cq = $connection->newQuery();
+			$cq->type( 'SELECT' );
+			$cq->table( SQLStore::PROPERTY_STATISTICS_TABLE );
+			$cq->field( 'usage_count' );
+			$cq->condition( $cq->eq( 'p_id', $pid ) );
+			$res = $cq->execute( __METHOD__ );
+
+			foreach ( $res as $r ) {
+
+				// 5000? It just showed to be a sweet spot while doing some
+				// exploratory queries
+				if ( $r->usage_count < 5000 ) {
+					$index = '';
+				}
+			}
 		}
 
 		$result = [];
