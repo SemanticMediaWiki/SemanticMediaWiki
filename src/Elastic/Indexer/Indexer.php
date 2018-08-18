@@ -675,6 +675,17 @@ class Indexer {
 			$insertRows[$sid][$pid][$type],
 			[ $val ]
 		);
+
+		// Replicate dates in the serialized raw_format to give aggregations a chance
+		// to filter dates by term
+		if ( $type === 'datField' && isset( $ins['o_serialized'] ) ) {
+
+			if ( !isset( $insertRows[$sid][$pid]["dat_raw"] ) ) {
+				$insertRows[$sid][$pid]["dat_raw"] = [];
+			}
+
+			$insertRows[$sid][$pid]["dat_raw"][] = $ins['o_serialized'];
+		}
 	}
 
 	/**

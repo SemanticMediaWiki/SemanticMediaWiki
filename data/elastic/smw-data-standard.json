@@ -71,7 +71,7 @@
 									"type": "keyword",
 									"normalizer": "standard_sort_normalizer",
 									"index": false,
-									"ignore_above": 2000
+									"ignore_above": 256
 								},
 								"keyword": {
 									"type": "keyword",
@@ -93,7 +93,7 @@
 									"type": "keyword",
 									"normalizer": "standard_sort_normalizer",
 									"index": false,
-									"ignore_above": 2000
+									"ignore_above": 256
 								},
 								"keyword": {
 									"type": "keyword",
@@ -119,11 +119,11 @@
 									"type": "keyword",
 									"normalizer": "standard_sort_normalizer",
 									"index": false,
-									"ignore_above": 500
+									"ignore_above": 256
 								},
 								"keyword": {
 									"type": "keyword",
-									"ignore_above": 256
+									"ignore_above": 500
 								},
 								"lowercase": {
 									"type": "keyword",
@@ -147,7 +147,13 @@
 						"path_match": "P:*.numField",
 						"match_mapping_type": "*",
 						"mapping": {
-							"type": "double"
+							"type": "double",
+							"fields": {
+								"keyword": {
+									"type": "keyword",
+									"ignore_above": 256
+								}
+							}
 						}
 					}
 				},
@@ -163,6 +169,15 @@
 									"ignore_above": 256
 								}
 							}
+						}
+					}
+				},
+				{
+					"date_fields_raw": {
+						"path_match": "P:*.dat_raw",
+						"match_mapping_type": "*",
+						"mapping": {
+							"type": "keyword"
 						}
 					}
 				},
