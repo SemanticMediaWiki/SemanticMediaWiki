@@ -243,10 +243,13 @@ class ElasticFactory {
 	 */
 	public function newRebuilder( Store $store ) {
 
+		$connection = $store->getConnection( 'elastic' );
+
 		$rebuilder = new Rebuilder(
-			$store->getConnection( 'elastic' ),
+			$connection,
 			$this->newIndexer( $store ),
-			new PropertyTableRowMapper( $store )
+			new PropertyTableRowMapper( $store ),
+			$this->newRollover( $connection )
 		);
 
 		return $rebuilder;

@@ -38,12 +38,60 @@ class Rollover {
 	 * @since 3.0
 	 *
 	 * @param string $type
+	 * @param string $version
+	 *
+	 * @return string
+	 */
+	public function rollover( $type, $version ) {
+
+		$index = $this->connection->getIndexNameByType( $type );
+		$indices = $this->connection->indices();
+
+		$params = [];
+		$actions = [];
+
+		$old = $version === 'v2' ? 'v1' : 'v2';
+		$check = false;
+
+		if ( $indices->exists( [ 'index' => "$index-$old" ] ) ) {
+			$actions = [
+				[ 'remove' => [ 'index' => "$index-$old", 'alias' => $index ] ],
+				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
+			];
+
+			$check = true;
+		} else {
+			// No old index
+			$old = $version;
+
+			$actions = [
+				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
+			];
+		}
+
+		$params['body'] = [ 'actions' => $actions ];
+
+		$indices->updateAliases( $params );
+
+		if ( $check && $indices->exists( [ 'index' => "$index-$old" ] ) ) {
+			$indices->delete( [ "index" => "$index-$old" ] );
+		}
+
+		$this->connection->releaseLock( $type );
+
+		return $old;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $type
 	 *
 	 * @throws NoConnectionException
 	 */
 	public function update( $type ) {
 
-		// Fail hard since we expect to create an index but unable to do so!
+		// Fail hard since we expect to create an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();
 		}
@@ -93,7 +141,7 @@ class Rollover {
 	 */
 	public function delete( $type ) {
 
-		// Fail hard since we expect to delete an index but unable to do so!
+		// Fail hard since we expect to delete an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();
 		}

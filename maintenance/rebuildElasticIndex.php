@@ -104,7 +104,7 @@ class RebuildElasticIndex extends \Maintenance {
 
 		$this->jobQueue = $applicationFactory->getJobQueue();
 		$this->store = $applicationFactory->getStore( 'SMW\SQLStore\SQLStore' );
-		$elasticFactory = new ElasticFactory();
+		$elasticFactory = $applicationFactory->create( 'ElasticFactory' );
 
 		$this->rebuilder = $elasticFactory->newRebuilder(
 			$this->store
@@ -122,7 +122,7 @@ class RebuildElasticIndex extends \Maintenance {
 
 		$this->reportMessage(
 			"\nThe script rebuilds the index from available property tables. Any\n" .
-			"change of the index rules (altered stopwords, new stemmer etc.) and\n" .
+			"change of the index rules (e.g. altered stopwords, new stemmer etc.)\n" .
 			"or a newly added (or altered) table requires to run this script again\n" .
 			"to ensure that the index complies with the rules set forth by the SQL\n" .
 			"back-end or the Elasticsearch field mapping.\n"
@@ -140,7 +140,7 @@ class RebuildElasticIndex extends \Maintenance {
 			"and set to a normal working mode.\n"
 		);
 
-		$this->doRebuild();
+		$this->rebuild();
 
 		if ( $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage( "\n" . $maintenanceHelper->getFormattedRuntimeValues() . "\n" );
@@ -162,14 +162,9 @@ class RebuildElasticIndex extends \Maintenance {
 
 	protected function handleTermSignal( $signal ) {
 
-		$this->reportMessage( "\n" . '   ... rebuild was terminated, start revover process ...' );
-
-		$this->reportMessage( "\n" . '   ... updating index settings and mappings ...' );
+		$this->reportMessage( "\n" . '   ... rebuild was terminated, start recovery process ...' );
 		$this->rebuilder->setDefaults();
-
-		$this->reportMessage( "\n" . '   ... refreshing indices ...' );
 		$this->rebuilder->refresh();
-
 		$this->reportMessage( "\n" . '   ... done.' . "\n" );
 
 		pcntl_signal( SIGTERM, SIG_DFL );
@@ -180,7 +175,7 @@ class RebuildElasticIndex extends \Maintenance {
 
 		if ( $this->hasOption( 'update-settings' ) ) {
 			$this->reportMessage(
-				"\n" . 'Updating index settings and mappings ...'
+				"\n" . 'Settings and mappings ...'
 			);
 
 			$message = $this->rebuilder->setDefaults() ? '   ... done.' : '   ... failed (due to missing index).';
@@ -205,7 +200,7 @@ class RebuildElasticIndex extends \Maintenance {
 				"\n" . 'Deleting all indices ...'
 			);
 
-			$this->rebuilder->deleteIndices();
+			$this->rebuilder->deleteAndSetupIndices();
 			$this->reportMessage( "\n   ... done.\n" );
 
 			return true;
@@ -241,9 +236,9 @@ class RebuildElasticIndex extends \Maintenance {
 		swfCountDown( 5 );
 	}
 
-	private function doRebuild() {
+	private function rebuild() {
 
-		$this->reportMessage( "\nRebuilding documents ..." );
+		$this->reportMessage( "\nRebuilding indices ..." );
 		$isSelective = $this->hasOption( 's' ) || $this->hasOption( 'page' );
 
 		if ( !$this->hasOption( 's' ) && !$this->hasOption( 'page' ) && !$this->hasOption( 'run-fileindex' ) ) {
@@ -255,7 +250,7 @@ class RebuildElasticIndex extends \Maintenance {
 
 		list( $res, $last ) = $this->rebuilder->select(
 			$this->store,
-			$this->buildConditions()
+			$this->select_conditions()
 		);
 
 		if ( $isSelective ) {
@@ -272,36 +267,29 @@ class RebuildElasticIndex extends \Maintenance {
 		$i = 0;
 
 		foreach ( $res as $row ) {
-			$this->rebuildByRow( $i, $row, $last, $isSelective );
 			$i++;
+			$this->rebuild_row( $i, $row, $last, $isSelective );
 		}
 
-		if ( ( $index = $this->rebuilder->rollover() ) ) {
-			$this->reportMessage(
-				"\n" . sprintf( "   ... starting rollover from %s to %s index ...", $index[1], $index[0] )
-			);
-		}
-
-		$this->reportMessage( "\n" . '   ... updating index settings and mappings ...' );
 		$this->rebuilder->setDefaults();
-
-		$this->reportMessage( "\n" . '   ... refreshing indices ...' );
 		$this->rebuilder->refresh();
 
 		$this->reportMessage( "\n" . '   ... done.' . "\n" );
 
 		if ( ( $count = $this->jobQueue->getQueueSize( 'smw.elasticIndexerRecovery' ) ) > 0 ) {
-			$this->reportMessage( "\n" . "The smw.elasticIndexerRecovery queue has $count unprocessed jobs." . "\n" );
+			$this->reportMessage( "\n" . "Job queue ..." );
+			$this->reportMessage( "\n" . "   ... smw.elasticIndexerRecovery has $count unprocessed jobs ..." );
+			$this->reportMessage( "\n" . '   ... done.' . "\n" );
 		}
 	}
 
-	private function rebuildByRow( $i, $row, $last, $isSelective ) {
+	private function rebuild_row( $i, $row, $last, $isSelective ) {
 
 		$i = $isSelective ? $i : $row->smw_id;
 		$key = $isSelective ? '(count)' : 'no.';
 
 		$this->reportMessage(
-			"\r". sprintf( "%-47s%s", "   ... updating document $key", sprintf( "%4.0f%% (%s/%s)", ( $i / $last ) * 100, $i, $last ) )
+			"\r". sprintf( "%-50s%s", "   ... updating document $key", sprintf( "%4.0f%% (%s/%s)", ( $i / $last ) * 100, $i, $last ) )
 		);
 
 		if ( $row->smw_iw === SMW_SQL3_SMWDELETEIW || $row->smw_iw === SMW_SQL3_SMWREDIIW ) {
@@ -322,7 +310,7 @@ class RebuildElasticIndex extends \Maintenance {
 		);
 	}
 
-	private function buildConditions() {
+	private function select_conditions() {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 

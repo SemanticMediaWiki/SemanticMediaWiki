@@ -118,6 +118,8 @@ class ReplicationStatus {
 
 		if ( $time !== null ) {
 			$time = $time->asDateTime()->format( 'Y-m-d H:i:s' );
+		} else {
+			$time = '0000-00-00 00:00:00';
 		}
 
 		return $time;

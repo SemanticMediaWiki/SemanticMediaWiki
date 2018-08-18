@@ -266,7 +266,7 @@ class ElasticStore extends SQLStore {
 		$textIndexer = $this->indexer->getTextIndexer();
 
 		$textIndexer->setOrigin( 'ElasticStore::DoTextUpdate' );
-		$textIndexer->index( $subject, $textIndexer->textFromRevID( $revID ) );
+		$textIndexer->index( $subject, $textIndexer->fetchTextFromRevID( $revID ) );
 
 		$context = [
 			'method' => __METHOD__,
