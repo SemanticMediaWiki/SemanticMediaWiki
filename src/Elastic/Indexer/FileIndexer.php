@@ -193,10 +193,21 @@ class FileIndexer {
 			return $this->logger->info( $msg, $context );
 		}
 
+		$contents = '';
+
+		// Avoid a "failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found"
+		$file_headers = @get_headers( $url );
+
+		if ( $file_headers[0] !== 'HTTP/1.1 404 Not Found' && $file_headers[0] !== 'HTTP/1.0 404 Not Found' ) {
+			$contents = file_get_contents( $url );
+		} else {
+			$this->logger->info( [ 'File indexer', "HTTP/1.1 404 Not Found for $url" ], $context );
+		}
+
 		$params += [
 			'pipeline' => 'attachment',
 			'body' => [
-				'file_content' => base64_encode( file_get_contents( $url ) ),
+				'file_content' => base64_encode( $contents ),
 				'file_path' => $url,
 				'file_sha1' => $sha1,
 			] + $doc['_source']
