@@ -351,6 +351,15 @@ class SPARQLStore extends Store {
 	}
 
 	/**
+	 * @see Store::service
+	 *
+	 * {@inheritDoc}
+	 */
+	public function service( $service, ...$args ) {
+		return $this->baseStore->service( $service, ...$args );
+	}
+
+	/**
 	 * @see Store::setup()
 	 * @since 1.8
 	 */

@@ -34,6 +34,7 @@ use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpre
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
+use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
 
 /**
  * @license GNU GPL v2+
@@ -99,6 +100,17 @@ class ElasticFactory {
 		);
 
 		return $connectionProvider;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Store $store
+	 *
+	 * @return ProximityPropertyValueLookup
+	 */
+	public function newProximityPropertyValueLookup( Store $store ) {
+		return new ProximityPropertyValueLookup( $store );
 	}
 
 	/**

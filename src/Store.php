@@ -12,6 +12,7 @@ use SMWQuery;
 use SMWQueryResult;
 use SMWRequestOptions;
 use SMWSemanticData;
+use SMW\Services\Exception\ServiceNotFoundException;
 use Title;
 
 /**
@@ -53,11 +54,6 @@ abstract class Store implements QueryEngine {
 	 * @var Options
 	 */
 	protected $options = null;
-
-	/**
-	 * @var array
-	 */
-	public $extensionData = [];
 
 ///// Reading methods /////
 
@@ -215,6 +211,7 @@ abstract class Store implements QueryEngine {
 		}
 
 		Timer::start( __METHOD__ );
+
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$subject = $semanticData->getSubject();
@@ -374,7 +371,27 @@ abstract class Store implements QueryEngine {
 	 */
 	public abstract function getStatistics();
 
-///// Setup store /////
+	/**
+	 * Store administration
+	 */
+
+	/**
+	 * @private
+	 *
+	 * Returns store specific services. Services are registered with the store
+	 * implementation and may provide different services that are only available
+	 * for a particular store.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $service
+	 *
+	 * @return mixed
+	 * @throws ServiceNotFoundException
+	 */
+	public function service( $service, ...$args ) {
+		throw new ServiceNotFoundException( $service );
+	}
 
 	/**
 	 * Setup all storage structures properly for using the store. This

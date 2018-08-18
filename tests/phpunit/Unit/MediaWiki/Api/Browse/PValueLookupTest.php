@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Api\Browse;
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Connection\Query;
+use SMW\Services\ServicesContainer;
 use FakeResultWrapper;
 
 /**
@@ -18,15 +19,25 @@ use FakeResultWrapper;
  */
 class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $store;
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+	protected function setUp() {
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->with( $this->equalTo( 'ProximityPropertyValueLookup' ) )
+			->will( $this->returnValue( new \SMW\SQLStore\Lookup\ProximityPropertyValueLookup( $this->store ) ) );
+	}
+
+	public function testCanConstruct() {
+
 		$this->assertInstanceOf(
 			PValueLookup::class,
-			new PValueLookup( $store )
+			new PValueLookup( $this->store )
 		);
 	}
 
@@ -71,28 +82,24 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
-		$store->expects( $this->atLeastOnce() )
+		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$instance = new PValueLookup(
-			$store
+			$this->store
 		);
 
 		$parameters = [
@@ -151,28 +158,24 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
-		$store->expects( $this->atLeastOnce() )
+		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$instance = new PValueLookup(
-			$store
+			$this->store
 		);
 
 		$parameters = [
@@ -235,28 +238,24 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLabelField' )
 			->will( $this->returnValue( 'o_hash' ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
-		$store->expects( $this->atLeastOnce() )
+		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$instance = new PValueLookup(
-			$store
+			$this->store
 		);
 
 		$parameters = [
