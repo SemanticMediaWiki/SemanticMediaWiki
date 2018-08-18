@@ -309,7 +309,7 @@ class QueryEngine implements IQueryEngine {
 			$results[$listPos[$id]] = $dataItem;
 
 			if ( isset( $scores[$id] ) ) {
-				$scoreSet->addScore( $dataItem->getHash(), $scores[$id] );
+				$scoreSet->addScore( $dataItem->getHash(), $scores[$id], $listPos[$id] );
 			}
 
 			if ( isset( $excerptList[$id] ) ) {
