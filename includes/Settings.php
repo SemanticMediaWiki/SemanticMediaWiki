@@ -59,9 +59,7 @@ class Settings extends Options {
 			'smwgLocalConnectionConf' => $GLOBALS['smwgLocalConnectionConf'],
 			'smwgSparqlRepositoryConnector' => $GLOBALS['smwgSparqlRepositoryConnector'],
 			'smwgSparqlCustomConnector' => $GLOBALS['smwgSparqlCustomConnector'],
-			'smwgSparqlQueryEndpoint' => $GLOBALS['smwgSparqlQueryEndpoint'],
-			'smwgSparqlUpdateEndpoint' => $GLOBALS['smwgSparqlUpdateEndpoint'],
-			'smwgSparqlDataEndpoint' => $GLOBALS['smwgSparqlDataEndpoint'],
+			'smwgSparqlEndpoint' => $GLOBALS['smwgSparqlEndpoint'],
 			'smwgSparqlDefaultGraph' => $GLOBALS['smwgSparqlDefaultGraph'],
 			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
 			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
@@ -483,6 +481,19 @@ class Settings extends Options {
 			$configuration['smwgPagingLimit']['property'] = $GLOBALS['smwgPropertyPagingLimit'];
 		}
 
+		// smwgSparqlEndpoint
+		if ( isset( $GLOBALS['smwgSparqlQueryEndpoint'] ) ) {
+			$configuration['smwgSparqlEndpoint']['query'] = $GLOBALS['smwgSparqlQueryEndpoint'];
+		}
+
+		if ( isset( $GLOBALS['smwgSparqlUpdateEndpoint'] ) ) {
+			$configuration['smwgSparqlEndpoint']['update'] = $GLOBALS['smwgSparqlUpdateEndpoint'];
+		}
+
+		if ( isset( $GLOBALS['smwgSparqlDataEndpoint'] ) ) {
+			$configuration['smwgSparqlEndpoint']['data'] = $GLOBALS['smwgSparqlDataEndpoint'];
+    }
+    
 		if ( isset( $GLOBALS['smwgCacheType'] ) ) {
 			$configuration['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
 		}
@@ -515,6 +526,9 @@ class Settings extends Options {
 				'smwgTypePagingLimit'  => '3.1.0',
 				'smwgConceptPagingLimit'  => '3.1.0',
 				'smwgPropertyPagingLimit'  => '3.1.0',
+				'smwgSparqlQueryEndpoint' => '3.1.0',
+				'smwgSparqlUpdateEndpoint' => '3.1.0',
+				'smwgSparqlDataEndpoint' => '3.1.0',
 				'smwgCacheType' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
@@ -562,6 +576,9 @@ class Settings extends Options {
 				'smwgTypePagingLimit'  => 'smwgPagingLimit',
 				'smwgConceptPagingLimit'  => 'smwgPagingLimit',
 				'smwgPropertyPagingLimit'  => 'smwgPagingLimit',
+				'smwgSparqlQueryEndpoint' => 'smwgSparqlEndpoint',
+				'smwgSparqlUpdateEndpoint' => 'smwgSparqlEndpoint',
+				'smwgSparqlDataEndpoint' => 'smwgSparqlEndpoint',
 				'smwgCacheType' => 'smwgMainCacheType',
 				'options' => [
 					'smwgCacheUsage' => [

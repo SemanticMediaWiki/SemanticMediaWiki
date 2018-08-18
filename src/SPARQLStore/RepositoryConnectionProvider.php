@@ -101,15 +101,15 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 		}
 
 		if ( $this->queryEndpoint === null ) {
-			$this->queryEndpoint = $GLOBALS['smwgSparqlQueryEndpoint'];
+			$this->queryEndpoint = $GLOBALS['smwgSparqlEndpoint']['query'];
 		}
 
 		if ( $this->updateEndpoint === null ) {
-			$this->updateEndpoint = $GLOBALS['smwgSparqlUpdateEndpoint'];
+			$this->updateEndpoint = $GLOBALS['smwgSparqlEndpoint']['update'];
 		}
 
 		if ( $this->dataEndpoint === null ) {
-			$this->dataEndpoint = $GLOBALS['smwgSparqlDataEndpoint'];
+			$this->dataEndpoint = $GLOBALS['smwgSparqlEndpoint']['data'];
 		}
 	}
 
