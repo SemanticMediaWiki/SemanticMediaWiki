@@ -21,23 +21,25 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 	private $store;
-	private $blobStore;
+	private $entityValueUniquenessConstraintChecker;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
+		$this->entityValueUniquenessConstraintChecker = $this->getMockBuilder( '\SMW\SQLStore\EntityValueUniquenessConstraintChecker' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->getMock();
+			->setMethods( [ 'service' ] )
+			->getMockForAbstractClass();
 
-		$this->blobStore->expects( $this->any() )
-			->method( 'read' )
-			->will( $this->returnValue( $container ) );
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->with( $this->equalTo( 'EntityValueUniquenessConstraintChecker' ) )
+			->will( $this->returnValue( $this->entityValueUniquenessConstraintChecker ) );
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -53,16 +55,12 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator',
-			new UniquenessConstraintValueValidator()
+			UniquenessConstraintValueValidator::class,
+			new UniquenessConstraintValueValidator( $this->store, $this->propertySpecificationLookup )
 		);
 	}
 
-	public function testCanNotValidateOnNullProperty() {
-
-		$cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
-			->disableOriginalConstructor()
-			->getMock();
+	public function testCanNotValidateOnNull() {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -70,11 +68,11 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
-			->method( 'getProperty' )
+			->method( 'getContextPage' )
 			->will( $this->returnValue( null ) );
 
 		$dataValue->expects( $this->never() )
-			->method( 'getContextPage' );
+			->method( 'getProperty' );
 
 		$dataValue->expects( $this->never() )
 			->method( 'getDataItem' );
@@ -85,27 +83,20 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$instance = new UniquenessConstraintValueValidator(
-			$cachedPropertyValuesPrefetcher
+			$this->store,
+			$this->propertySpecificationLookup
 		);
 
 		$instance->validate( $dataValue );
 	}
 
-	public function testValidateUsingAMockedQueryEngine() {
+	public function testValidate_HasNoConstraintViolation() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'ValidAllowedValue' );
 
-		$cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$cachedPropertyValuesPrefetcher->expects( $this->atLeastOnce() )
-			->method( 'getBlobStore' )
-			->will( $this->returnValue( $this->blobStore ) );
-
-		$cachedPropertyValuesPrefetcher->expects( $this->atLeastOnce() )
-			->method( 'queryPropertyValuesFor' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) ) );
+		$this->entityValueUniquenessConstraintChecker->expects( $this->atLeastOnce() )
+			->method( 'checkConstraint' )
+			->will( $this->returnValue( [] ) );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'hasUniquenessConstraint' )
@@ -134,10 +125,62 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$instance = new UniquenessConstraintValueValidator(
-			$cachedPropertyValuesPrefetcher
+			$this->store,
+			$this->propertySpecificationLookup
+		);
+
+		$instance->clear();
+		$instance->validate( $dataValue );
+
+		$this->assertFalse(
+			$instance->hasConstraintViolation()
+		);
+	}
+
+	public function testValidate_HasConstraintViolation() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'ValidAllowedValue_2' );
+
+		$this->entityValueUniquenessConstraintChecker->expects( $this->atLeastOnce() )
+			->method( 'checkConstraint' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+
+		$this->propertySpecificationLookup->expects( $this->once() )
+			->method( 'hasUniquenessConstraint' )
+			->will( $this->returnValue( true ) );
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getProperty', 'getDataItem', 'getContextPage' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getContextPage' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $property ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
+
+		$dataValue->setOption(
+			'smwgDVFeatures',
+			SMW_DV_PVUC
+		);
+
+		$instance = new UniquenessConstraintValueValidator(
+			$this->store,
+			$this->propertySpecificationLookup
 		);
 
 		$instance->validate( $dataValue );
+
+		$this->assertTrue(
+			$instance->hasConstraintViolation()
+		);
 	}
 
 }

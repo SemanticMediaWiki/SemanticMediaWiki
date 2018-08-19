@@ -22,12 +22,22 @@
 			"contents": "[[Has type::Monolingual text]] [[Has uniqueness constraint::true]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has numeric reference",
+			"contents": "[[Has type::Reference]] [[Has fields::Number;Date]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has uniqueness record",
+			"contents": "[[Has type::Record]] [[Has fields::Number;Date]] [[Has uniqueness constraint::true]]"
+		},
+		{
 			"page": "Example/P0419/1",
-			"contents": "[[Has Url::http://example.org/Foo]]"
+			"contents": "[[Has Url::http://example.org/P0419]]"
 		},
 		{
 			"page": "Example/P0419/2",
-			"contents": "[[Has Url::http://example.org/Foo]] [[Has Url::http://example.org/FoO]]"
+			"contents": "[[Has Url::http://example.org/P0419]] [[Has Url::http://example.org/P0419-1]]"
 		},
 		{
 			"page": "Example/P0419/3",
@@ -52,6 +62,30 @@
 		{
 			"page": "Example/P0419/8",
 			"contents": "{{#subobject:|Has monolingual text=Foo@en}}"
+		},
+		{
+			"page": "Example/P0419/9",
+			"contents": "[[Has numeric reference::42;1 Jan 1970]]"
+		},
+		{
+			"page": "Example/P0419/9/1",
+			"contents": "[[Has numeric reference::42;1 Jan 1970]]"
+		},
+		{
+			"page": "Example/P0419/9/2",
+			"contents": "[[Has numeric reference::42;1 Jan 1970 12:00]]"
+		},
+		{
+			"page": "Example/P0419/10",
+			"contents": "[[Has uniqueness record::42;1 Jan 1970]]"
+		},
+		{
+			"page": "Example/P0419/10/1",
+			"contents": "[[Has uniqueness record::42;1 Jan 1970]]"
+		},
+		{
+			"page": "Example/P0419/10/2",
+			"contents": "[[Has uniqueness record::42;1 Jan 1970 12:00]]"
 		}
 	],
 	"tests": [
@@ -69,7 +103,7 @@
 						"Has_Url"
 					],
 					"propertyValues": [
-						"http://example.org/Foo"
+						"http://example.org/P0419"
 					]
 				}
 			}
@@ -89,7 +123,7 @@
 						"Has_Url"
 					],
 					"propertyValues": [
-						"http://example.org/FoO"
+						"http://example.org/P0419-1"
 					]
 				}
 			}
@@ -159,6 +193,78 @@
 						"_ERRC"
 					],
 					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (Fails uniqueness due to same reference in Example/P0419/9)",
+			"subject": "Example/P0419/9/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (same number but different date as in Example/P0419/9)",
+			"subject": "Example/P0419/9/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has numeric reference"
+					],
+					"propertyValues": [
+						"Example/P0419/9/2#0##_REF31fea0d5c8403916c6f1da7c68f3998f"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (Fails uniqueness due to same record in Example/P0419/10)",
+			"subject": "Example/P0419/10/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 (same number but different date as in Example/P0419/10)",
+			"subject": "Example/P0419/10/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has uniqueness record"
+					],
+					"propertyValues": [
+						"Example/P0419/10/2#0##_fdf9ee62dae77aa0c5d7cf89d1faa64d"
+					]
 				}
 			}
 		}

@@ -405,6 +405,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructEntityValueUniquenessConstraintChecker() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityValueUniquenessConstraintChecker',
+			$instance->newEntityValueUniquenessConstraintChecker()
+		);
+	}
+
 	public function testCanConstructServicesContainer() {
 
 		$instance = new SQLStoreFactory( $this->store );
