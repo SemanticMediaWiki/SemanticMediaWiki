@@ -48,7 +48,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $this->idTable ) );
 
-		$this->elasticClient = $this->getMockBuilder( '\Elasticsearch\Client' )
+		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 
