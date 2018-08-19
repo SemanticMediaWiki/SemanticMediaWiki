@@ -74,9 +74,9 @@ class PHPUnitEnvironment {
 
 		if ( $id === 'smw' ) {
 			$store = str_replace(
-				[ '{', '}', '"', '(SMW', ':(', '))' ],
-				[ '(', ')', '', 'SMW', ' (', ')' ],
-				json_encode( smwfGetStore()->getInfo() )
+				[ '{', '}', '"', '(SMW', ':(', '))', ',' ],
+				[ '(', ')', '', 'SMW', ' (', ')', ', ' ],
+				json_encode( smwfGetStore()->getInfo(), JSON_UNESCAPED_SLASHES )
 			);
 
 			$info = [
