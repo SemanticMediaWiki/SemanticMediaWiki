@@ -15,7 +15,8 @@
 			"Nemo bis",
 			"Kghbln",
 			"Imre Eilertsen",
-			"Jeblad"
+			"Jeblad",
+			"Kingu"
 		]
 	},
 	"smw-desc": "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -170,10 +171,10 @@
 	"smw-special-wantedproperties-filter-unapproved": "Ikke godkjent",
 	"smw-special-wantedproperties-filter-unapproved-desc": "Filtervalg brukt i forbindelse med autoritetsmodus.",
 	"concepts": "Begreper",
-	"smw-sp-concept-docu": "Et [https://www.semantic-mediawiki.org/wiki/Help:Concepts konsept] kan betraktes som en \"dynamisk kategori\", dvs. som en samling sider som ikke opprettes manuelt, men som settes sammen av Semantic MediaWiki fra en beskrivelse av en gitt spørring.",
-	"smw-sp-concept-header": "Liste av konsepter",
-	"smw-sp-concept-count": "Følgende {{PLURAL:$1|konsept|$1 konsepter}} {{PLURAL:$1|}} vises.",
-	"smw-sp-concept-empty": "Ingen konsepter ble funnet.",
+	"smw-special-concept-docu": "Et [https://www.semantic-mediawiki.org/wiki/Help:Concepts konsept] kan betraktes som en \"dynamisk kategori\", dvs. som en samling sider som ikke opprettes manuelt, men som settes sammen av Semantic MediaWiki fra en beskrivelse av en gitt spørring.",
+	"smw-special-concept-header": "Liste av konsepter",
+	"smw-special-concept-count": "Følgende {{PLURAL:$1|konsept|$1 konsepter}} {{PLURAL:$1|}} vises.",
+	"smw-special-concept-empty": "Ingen konsepter ble funnet.",
 	"unusedproperties": "Ubrukte egenskaper",
 	"smw-unusedproperties-docu": "Denne siden lister opp [https://www.semantic-mediawiki.org/wiki/Unused_properties ubenyttede egenskaper] som er opprettet uten at andre sider bruker dem. For en annen visning, se spesialsidene [[Special:Properties|alle]] eller [[Special:WantedProperties|ønskede egenskaper]].",
 	"smw-unusedproperty-template": "$1 av type $2",
@@ -441,5 +442,10 @@
 	"smw-data-lookup": "Henter data ...",
 	"smw-no-data-available": "Ingen data tilgjengelige.",
 	"smw-api-invalid-parameters": "Ugyldige parametere, «$1»",
-	"smw-parameter-missing": "Parameteren «$1» mangler."
+	"smw-parameter-missing": "Parameteren «$1» mangler.",
+	"smw-property-tab-usage": "Bruk",
+	"smw-property-tab-redirects": "Synonymer",
+	"smw-property-tab-subproperties": "Underegenskaper",
+	"smw-concept-tab-list": "Liste",
+	"smw-concept-tab-errors": "Feil"
 }
