@@ -348,6 +348,8 @@
 	"smw-admin-supplementary-elastic-docu": "이 문서는 시맨틱 미디어위키와 [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore <code>일래스틱스토어</code>]에 연결된 일래스틱서치 클러스터 관련 설정, 매핑, 상태, 색인 통계에 관한 정보를 포함합니다.",
 	"smw-admin-supplementary-elastic-settings-title": "설정",
 	"smw-admin-supplementary-elastic-mappings-title": "매핑",
+	"smw-admin-supplementary-elastic-mappings-summary": "요약",
+	"smw-admin-supplementary-elastic-mappings-fields": "필드 매핑",
 	"smw-admin-supplementary-elastic-nodes-title": "노드",
 	"smw-admin-supplementary-elastic-nodes-intro": "<u>$1</u>은(는) 노드 통계를 표시합니다",
 	"smw-admin-supplementary-elastic-indices-title": "색인",

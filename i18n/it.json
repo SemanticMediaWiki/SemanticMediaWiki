@@ -398,7 +398,7 @@
 	"smw-format-datatable-toolbar-export": "Esporta",
 	"smw-format-list-other-fields-open": "(",
 	"smw-format-list-other-fields-close": ")",
-	"apihelp-smwbrowse-summary": "Modulo API per supportare la navigazione e le attività di ricerca per le entità gestite da Semantic MediaWiki.",
+	"apihelp-smwbrowse-summary": "Modulo API per supportare le attività di navigazione per differenti tipi di entità in Semantic MediaWiki.",
 	"smw-property-reserved-category": "Categoria",
 	"smw-category": "Categoria",
 	"smw-filter": "Filtro",
@@ -411,5 +411,10 @@
 	"smw-rule-page-definition": "Definizione",
 	"smw-rule-page-description": "Descrizione:",
 	"smw-rule-page-type": "Tipo:",
-	"smw-rule-page-tag": "Etichetta:"
+	"smw-rule-page-tag": "Etichetta:",
+	"smw-property-tab-usage": "Utilizzo",
+	"smw-property-tab-redirects": "Sinonimi",
+	"smw-property-tab-subproperties": "Sottoproprietà",
+	"smw-concept-tab-list": "Elenco",
+	"smw-concept-tab-errors": "Errori"
 }

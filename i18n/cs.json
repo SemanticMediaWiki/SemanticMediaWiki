@@ -16,7 +16,8 @@
 			"Aktron",
 			"Martin Urbanec",
 			"Ilimanaq29",
-			"Patriccck"
+			"Patriccck",
+			"Korytaacheck"
 		]
 	},
 	"smw-desc": "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -261,6 +262,8 @@
 	"smw-editpage-annotation-disabled": "Na této stránce nejsou povoleny sémantické anotace uvnitř textu kvůli omezením jmenného prostoru. Podrobný popis, jak tento jmenný prostor povolit, najdete v [https://www.semantic-mediawiki.org/wiki/Help:Configuration nápovědě ke konfiguraci].",
 	"smw-search-syntax-support": "Vyhledávací vstup podporuje použití sémantické [https://www.semantic-mediawiki.org/wiki/Help:Semantic_search syntaxové otázky], která pomůže získávání výsledků s použitím Semantic MediaWiki.",
 	"smw-search-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Vstupní asistent] je také aktivní pro zjednodušení zvolení možných vlastností a kategorií.",
+	"smw-search-profile-extended-section-sort": "Řadit podle",
+	"smw-search-profile-extended-section-form": "Vybrat formulář",
 	"smw-type-geo": "\"$1\" je typ dat, který popisuje geografické lokace a požaduje [https://www.semantic-mediawiki.org/wiki/Extension:Maps mapové rozšíření].",
 	"smw-types-extra-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Extension:Maps Rozšíření map] nebylo zjištěno, protože \"$1\" je omezeno v kapacitě, takže nemůže fungovat.",
 	"smw-datavalue-keyword-maximum-length": "Klíčové slovo je delší než maximální délku {{PLURAL:$1|$1 znaku|$1 znaků}}.",
@@ -283,5 +286,9 @@
 	"smw-property-predefined-rl-type": "\"$1\" je předdefinovaná vlastnost popisující, jestli je pravidlo nebo určitá skupina pravidel vysvětlena a je poskytnutá [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Sémantickou MediaWiki].",
 	"smw-property-predefined-long-rl_type": "Každý druh pravidel má vlastní přidělené [https://www.semantic-mediawiki.org/wiki/Help:Rule#schema schéma] a následující [https://www.semantic-mediawiki.org/wiki/Help:Rule/Type nápověda] by měla obsahovat obsáhlý přehled a popis.",
 	"smw-ask-title-keyword-type": "Hledání klíčových slov",
-	"smw-ask-message-keyword-type": "Toto vyhledává shody se stavem <code><nowiki>$1</nowiki></code>."
+	"smw-ask-message-keyword-type": "Toto vyhledává shody se stavem <code><nowiki>$1</nowiki></code>.",
+	"smw-property-tab-usage": "Použití",
+	"smw-property-tab-redirects": "Synonyma",
+	"smw-concept-tab-list": "Seznam",
+	"smw-concept-tab-errors": "Chyby"
 }

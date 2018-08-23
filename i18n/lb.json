@@ -209,6 +209,7 @@
 	"smw-admin-supplementary-operational-statistics-intro": "<u>$1</u> weist eng erweidert Sammlung vu Statistiken",
 	"smw-admin-supplementary-elastic-functions": "Disponibel Funktiounen",
 	"smw-admin-supplementary-elastic-settings-title": "Astellungen",
+	"smw-admin-supplementary-elastic-mappings-summary": "Resumé",
 	"smw-admin-supplementary-elastic-indices-title": "Hiweiser",
 	"smw-admin-supplementary-elastic-statistics-title": "Statistiken",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Aktualisatiounsintervall: $1",

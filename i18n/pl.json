@@ -339,6 +339,7 @@
 	"smw-admin-supplementary-elastic-functions": "Dostępne funkcje",
 	"smw-admin-supplementary-elastic-settings-title": "Ustawienia",
 	"smw-admin-supplementary-elastic-mappings-title": "Mapowania",
+	"smw-admin-supplementary-elastic-mappings-summary": "Podsumowanie",
 	"smw-admin-supplementary-elastic-nodes-title": "Węzły",
 	"smw-admin-supplementary-elastic-indices-title": "Wskaźniki",
 	"smw-admin-supplementary-elastic-statistics-title": "Statystyki",

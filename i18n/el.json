@@ -331,6 +331,8 @@
 	"smw-admin-supplementary-operational-statistics-cache-title": "Στατιστικά προσωρινής έκδοσης",
 	"smw-admin-supplementary-elastic-functions": "Διαθέσιμες λειτουργίες",
 	"smw-admin-supplementary-elastic-settings-title": "Ρυθμίσεις",
+	"smw-admin-supplementary-elastic-mappings-summary": "Περίληψη",
+	"smw-admin-supplementary-elastic-mappings-fields": "Χαρτογραφήσεις πεδίου",
 	"smw-admin-supplementary-elastic-nodes-title": "Κόμβοι",
 	"smw-admin-supplementary-elastic-statistics-title": "Στατιστικά",
 	"smw-property-label-similarity-threshold": "Κατώφλιο:",

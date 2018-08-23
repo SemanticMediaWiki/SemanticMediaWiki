@@ -345,6 +345,7 @@
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u> visar cacherelaterad statistik",
 	"smw-admin-supplementary-elastic-functions": "Tillgängliga funktioner",
 	"smw-admin-supplementary-elastic-settings-title": "Inställningar",
+	"smw-admin-supplementary-elastic-mappings-summary": "Sammanfattning",
 	"smw-admin-supplementary-elastic-nodes-title": "Noder",
 	"smw-admin-supplementary-elastic-statistics-title": "Statistik",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Uppdateringsintervall: $1",
