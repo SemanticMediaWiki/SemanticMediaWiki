@@ -4,6 +4,7 @@ namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 use SMW\DIWikiPage;
+use SMW\Options;
 use SMW\Query\DescriptionFactory;
 use SMW\DataItemFactory;
 use SMW\Tests\PHPUnitCompat;
@@ -32,7 +33,7 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( null )
+			->setMethods( [ 'getID' ] )
 			->getMock();
 	}
 
@@ -108,6 +109,68 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider timeValueProvider
 	 */
 	public function testInterpretDescription_TimeValue( $dataItem, $comparator, $options, $expected ) {
+
+		$instance = new SomeValueInterpreter(
+			$this->conditionBuilder
+		);
+
+		$description = $this->descriptionFactory->newValueDescription(
+			$dataItem,
+			null,
+			$comparator
+		);
+
+		$condition = $instance->interpretDescription(
+			$description,
+			$options
+		);
+
+		$this->assertEquals(
+			$expected,
+			(string)$condition
+		);
+	}
+
+	/**
+	 * @dataProvider textValueProvider
+	 */
+	public function testInterpretDescription_TextValue( $dataItem, $comparator, $options, $expected ) {
+
+		$instance = new SomeValueInterpreter(
+			$this->conditionBuilder
+		);
+
+		$description = $this->descriptionFactory->newValueDescription(
+			$dataItem,
+			null,
+			$comparator
+		);
+
+		$condition = $instance->interpretDescription(
+			$description,
+			$options
+		);
+
+		$this->assertEquals(
+			$expected,
+			(string)$condition
+		);
+	}
+
+	/**
+	 * @dataProvider pageValueProvider
+	 */
+	public function testInterpretDescription_PageValue( $dataItem, $comparator, $options, $expected ) {
+
+		$this->conditionBuilder->expects( $this->any() )
+			->method( 'getID' )
+			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+
+		$this->conditionBuilder->setOptions( new Options(
+			[
+				'cjk.best.effort.proximity.match' => true
+			]
+		) );
 
 		$instance = new SomeValueInterpreter(
 			$this->conditionBuilder
@@ -228,6 +291,79 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$options,
 			'{"bool":{"must_not":{"term":{"P:42.datField":2440933.0084722}}}}'
 		];
+	}
+
+	public function textValueProvider() {
+
+		$dataItemFactory = new DataItemFactory();
+
+		$options = [
+			'property' => $dataItemFactory->newDIProperty( 'Bar' ),
+			'pid'   => 'P:42',
+			'field' => 'txtField',
+			'type'  => 'must'
+		];
+
+		$dataItem = $dataItemFactory->newDIBlob( '*test*' );
+
+		yield [
+			$dataItem,
+			SMW_CMP_EQ,
+			$options,
+			'{"bool":{"filter":{"term":{"P:42.txtField.keyword":"*test*"}}}}'
+		];
+
+		yield [
+			$dataItem,
+			SMW_CMP_LIKE,
+			$options,
+			'{"bool":{"must":{"query_string":{"fields":["P:42.txtField","P:42.txtField.keyword"],"query":"*test*"}}}}'
+		];
+	}
+
+	public function pageValueProvider() {
+
+		$dataItemFactory = new DataItemFactory();
+
+		$options = [
+			'property' => $dataItemFactory->newDIProperty( 'Bar' ),
+			'pid'   => 'P:42',
+			'field' => 'wpgID',
+			'type'  => 'must'
+		];
+
+		$dataItem = $dataItemFactory->newDIWikiPage( 'test' );
+
+		yield [
+			$dataItem,
+			SMW_CMP_EQ,
+			$options,
+			'{"bool":{"filter":{"term":{"P:42.wpgID":42}}}}'
+		];
+
+		$options = [
+			'property' => $dataItemFactory->newDIProperty( 'Bar' ),
+			'pid'   => 'P:42',
+			'field' => 'wpgField',
+			'type'  => 'must'
+		];
+
+		yield [
+			$dataItem,
+			SMW_CMP_LIKE,
+			$options,
+			'{"bool":{"must":{"query_string":{"fields":["P:42.wpgField"],"query":"+test"}}}}'
+		];
+
+		$dataItem = $dataItemFactory->newDIWikiPage( '*テスト*' );
+
+		yield [
+			$dataItem,
+			SMW_CMP_LIKE,
+			$options,
+			'{"bool":{"must":[{"match_phrase":{"P:42.wpgField":"テスト"}}]}}'
+		];
+
 	}
 
 }

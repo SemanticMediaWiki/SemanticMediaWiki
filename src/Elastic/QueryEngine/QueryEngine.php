@@ -348,7 +348,7 @@ class QueryEngine implements IQueryEngine {
 		}
 
 		$body['highlight'] = [
-			'number_of_fragments' => $this->options->dotGet( 'query.special_search.highlight.fragment.count', 1 ),
+			'number_of_fragments' => $this->options->dotGet( 'query.special_search.highlight.fragment.number', 1 ),
 			'fragment_size' => $this->options->dotGet( 'query.special_search.highlight.fragment.size', 150 ),
 			'fields' => [
 				'attachment.content' => [ "type" => $type ],
