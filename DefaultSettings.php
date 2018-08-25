@@ -2116,8 +2116,8 @@ return array(
 			'query_string.boolean.operators' => true,
 
 			// ES works different with text elements compared to the SQL interface
-			// (and its and its DSL query logic) therefore we try to modify some
-			// common scenarios and alter strings (and boolean oeprators) to pass
+			// (and its DSL query logic) therefore we try to modify some
+			// common scenarios and alter strings (and boolean operators) to pass
 			// most use cases from the SQLStore integration test suite and hereby
 			// allows to be compatible with the SMW SQL answering behaviour.
 			//
@@ -2191,6 +2191,15 @@ return array(
 			// @default 1h
 			'concept.terms.lookup.cache.lifetime' => 60 * 60,
 
+			// In case search terms contains CJK terms, remove `*` prefix/affix
+			// from a search request in an effort to best match single characters
+			// that created as part of the standard analyzer. Use a phrase match
+			// instead of a wildcard proximity.
+			//
+			// This setting may be disabled when using a different index definition
+			// (e.g. ICU).
+			'cjk.best.effort.proximity.match' => true,
+
 			// Specifies that a wide proximity search (e.g. [[~~Foo bar]] or
 			// [[in:Foo bar]]) is executed as a match_phrase search meaning that
 			// that all elements of the query string need to be present in the
@@ -2250,7 +2259,7 @@ return array(
 			//
 			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html#plain-highlighter
 			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/term-vector.html
-			'special_search.highlight.fragment' => [ 'count' => 1, 'size' => 250, 'type' => false ]
+			'special_search.highlight.fragment' => [ 'number' => 1, 'size' => 250, 'type' => false ]
 		]
 	],
 	##

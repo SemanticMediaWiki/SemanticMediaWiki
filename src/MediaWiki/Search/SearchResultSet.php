@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Search;
 
 use SMW\DIWikiPage;
+use SMW\Utils\CharExaminer;
 
 /**
  * @ingroup SMW
@@ -172,7 +173,9 @@ class SearchResultSet extends \SearchResultSet {
 		// such as [[Category:Foo]] is not considered eligible to provide a
 		// token.
 		foreach ( $this->queryToken->getTokens() as $key => $value ) {
-			$tokens[] = "\b$key\b";
+			// Avoid add \b boundary checks for CJK where whitespace is not used
+			// as word break
+			$tokens[] = CharExaminer::isCJK( $key ) ? "$key" : "\b$key\b";
 		}
 
 		return $tokens;

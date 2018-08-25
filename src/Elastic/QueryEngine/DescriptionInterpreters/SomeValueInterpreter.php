@@ -17,6 +17,7 @@ use SMWDIGeoCoord as DIGeoCoord;
 use SMWDInumber as DINumber;
 use SMWDITime as DITime;
 use SMWDIUri as DIUri;
+use SMW\Utils\CharExaminer;
 use RuntimeException;
 
 /**
@@ -152,10 +153,29 @@ class SomeValueInterpreter {
 			$type = Condition::TYPE_FILTER;
 		} elseif ( $comparator === SMW_CMP_LIKE ) {
 
+			// Avoid *...* on CJK related terms so that something like
+			// [[Has text::in:名古屋]] returns a better match accuracy given that
+			// the standard analyzer splits CJK terms into single characters
+			if ( $this->conditionBuilder->getOption( 'cjk.best.effort.proximity.match', false ) && CharExaminer::isCJK( $value ) ) {
+
+				if ( $value{0} === '*' ) {
+					$value = substr( $value, 1 );
+				}
+
+				if ( substr( $value , -1 ) === '*' ) {
+					$value = substr( $value, 0, -1 );
+				}
+
+				// Use a phrase match to keep the char boundaries and avoid
+				// matching single chars
+				$value = "\"$value\"";
+			}
+
 			// Q1203
 			// [[phrase:fox jump*]] (aka ~"fox jump*") + wildcard; use match with
 			// a `multi_match` and type `phrase_prefix`
 			$isPhrase = strpos( $value, '"' ) !== false;
+			$hasWildcard = strpos( $value, '*' ) !== false;
 
 			// Match a page title, the issue is accuracy vs. proximity
 
@@ -163,14 +183,31 @@ class SomeValueInterpreter {
 			// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_boolean_operators
 			if ( $this->conditionBuilder->getOption( 'query_string.boolean.operators' ) && ( strpos( $value, '+' ) !== false || strpos( $value, '-' ) !== false ) ) {
 				$match = $this->fieldMapper->query_string( "$pid.$field", $value );
-			} elseif ( ( strpos( $value, '*' ) !== false && $value{0} === '*' ) || ( strpos( $value, '~?' ) !== false && $value{0} === '?' ) ) {
+			} elseif ( ( $hasWildcard && $value{0} === '*' ) && $this->conditionBuilder->getOption( 'cjk.best.effort.proximity.match', false ) && CharExaminer::isCJK( $value ) ) {
+
+				// Avoid *...* on CJK related terms so that something like
+				// [[Has page::in:名古屋]] returns a better match accuracy given that
+				// the standard analyzer splits CJK terms into single characters
+				if ( $value{0} === '*' ) {
+					$value = mb_substr( $value, 1 );
+				}
+
+				if ( mb_substr( $value , -1 ) === '*' ) {
+					$value = mb_substr( $value, 0, -1 );
+				}
+
+				// Use a phrase match to keep the char boundaries and avoid
+				// matching single chars
+				$match = $this->fieldMapper->match( "$pid.$field", "\"$value\"" );
+
+			} elseif ( ( $hasWildcard && $value{0} === '*' ) || ( strpos( $value, '~?' ) !== false && $value{0} === '?' ) ) {
 				// ES notes "... In order to prevent extremely slow wildcard queries,
 				// a wildcard term should not start with one of the wildcards
 				// * or ? ..." therefore use `query_string` instead of a
 				// `wildcard` term search
 				// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html
 				$match = $this->fieldMapper->query_string( "$pid.$field", $value );
-			} elseif ( strpos( $value, '*' ) !== false && !$isPhrase ) {
+			} elseif ( $hasWildcard && !$isPhrase ) {
 
 				// T:Q0910, Wildcard?
 				// - Use the term search `wildcard` with text not being
