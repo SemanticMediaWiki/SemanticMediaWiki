@@ -6,6 +6,7 @@ use Hooks;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\DataTypeRegistry;
 use Title;
 
 /**
@@ -133,10 +134,53 @@ class UpdateDispatcherJob extends JobBase {
 				continue;
 			}
 
+			// Before doing some work, make sure to only use page type properties
+			// as a means to generate a resource (job) action
+			$type = DataTypeRegistry::getInstance()->getDataItemByType(
+				$property->findPropertyTypeId()
+			);
+
+			if ( $type !== \SMWDataItem::TYPE_WIKIPAGE ) {
+				continue;
+			}
+
+			// Best effort to find all entities to a selected property
+			$subjects = $this->store->getAllPropertySubjects( $property );
+
 			$this->addUniqueSubjectsToUpdateJobList(
-				$this->store->getAllPropertySubjects( $property )
+				$this->apply_filter( $property, $subjects )
 			);
 		}
+	}
+
+	private function apply_filter( $property, $subjects ) {
+
+		if ( $this->getParameter( self::RESTRICTED_DISPATCH_POOL ) !== true ) {
+			return $subjects;
+		}
+
+		$list = [];
+
+		// Identify the source as base for a comparison
+		$source = DIWikiPage::newFromTitle( $this->getTitle() );
+
+		foreach ( $subjects as $subject ) {
+
+			// #3322
+			// Investigate which subjects have an actual connection to the
+			// subject
+			$dataItems = $this->store->getPropertyValues( $subject, $property );
+
+			foreach ( $dataItems as $dataItem ) {
+				// Make a judgment based on a literal comparison for the
+				// values assigned and the now deleted entity
+				if ( $dataItem instanceof DIWikiPage && $dataItem->equals( $source ) ) {
+					$list[] = $subject;
+				}
+			}
+		}
+
+		return $list;
 	}
 
 	private function addUpdateJobsForSubjectsThatContainTypeError() {
