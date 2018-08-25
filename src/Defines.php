@@ -171,7 +171,7 @@ define( 'SMW_DV_NUMV_USPACE', 8 );  // Preserve spaces in unit labels
 define( 'SMW_DV_PVAP', 16 );  // Allows pattern
 define( 'SMW_DV_WPV_DTITLE', 32 );  // WikiPageValue to use an explicit display title
 define( 'SMW_DV_PROV_DTITLE', 64 );  // PropertyValue allow to find a property using the display title
-define( 'SMW_DV_PVUC', 128 );  // Delcares a uniqueness constraint
+define( 'SMW_DV_PVUC', 128 );  // Declares a uniqueness constraint
 define( 'SMW_DV_TIMEV_CM', 256 );  // TimeValue to indicate calendar model
 define( 'SMW_DV_PPLB', 512 );  // Preferred property label
 define( 'SMW_DV_PROV_LHNT', 1024 );  // PropertyValue to output a hint in case of a preferred label usage
