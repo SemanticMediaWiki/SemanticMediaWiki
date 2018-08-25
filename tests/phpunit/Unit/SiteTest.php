@@ -23,6 +23,14 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsBlocked() {
+
+		$this->assertInternalType(
+			'boolean',
+			Site::isBlocked()
+		);
+	}
+
 	public function testName() {
 
 		$this->assertInternalType(

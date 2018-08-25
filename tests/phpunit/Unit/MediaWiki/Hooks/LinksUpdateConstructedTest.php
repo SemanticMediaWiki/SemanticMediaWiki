@@ -201,4 +201,21 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsReadOnly_DoNothing() {
+
+		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$linksUpdate->expects( $this->never() )
+			->method( 'getTitle' );
+
+		$instance = new LinksUpdateConstructed();
+		$instance->isReadOnly( true );
+
+		$this->assertFalse(
+			$instance->process( $linksUpdate )
+		);
+	}
+
 }

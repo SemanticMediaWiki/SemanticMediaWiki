@@ -38,6 +38,11 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 	private $enabledDeferredUpdate = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $isReadOnly = false;
+
+	/**
 	 * @see LoggerAwareInterface::setLogger
 	 *
 	 * @since 2.5
@@ -46,6 +51,15 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 	 */
 	public function setLogger( LoggerInterface $logger ) {
 		$this->logger = $logger;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isReadOnly
+	 */
+	public function isReadOnly( $isReadOnly ) {
+		$this->isReadOnly = (bool)$isReadOnly;
 	}
 
 	/**
@@ -63,6 +77,10 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 	 * @return true
 	 */
 	public function process( LinksUpdate $linksUpdate ) {
+
+		if ( $this->isReadOnly ) {
+			return false;
+		}
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$title = $linksUpdate->getTitle();
