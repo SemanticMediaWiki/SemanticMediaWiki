@@ -112,7 +112,7 @@ class UnusedPropertyListLookup implements ListLookup {
 		$conditions['usage_count'] = 0;
 
 		if ( $this->requestOptions->getStringConditions() ) {
-			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_sortkey', false );
+			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_search', false );
 		}
 
 		$idTable = $this->store->getObjectIds()->getIdTable();

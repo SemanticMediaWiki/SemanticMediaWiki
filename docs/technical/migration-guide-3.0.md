@@ -34,6 +34,12 @@
   type check should be avoided and if necessary use `iterator_to_array` to
   transform a result instance into a standard array
 
+- The fixed property border was moved from 50 to 500
+
+- Table `smw_object_ids`:
+  - Field `smw_sortkey` was replaced by `smw_search`, sorting specific representation is now stored in `smw_sort` which can differ from `smw_search` (due to different collation)
+  - Field `smw_hash` was added and contains the computed sha1 of `smw_title`, `smw_ns`, `smw_ns`, and `smw_subobject`
+
 ### Register predefined property
 
 ```

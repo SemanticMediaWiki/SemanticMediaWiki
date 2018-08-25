@@ -64,14 +64,14 @@ class UniquenessLookup {
 		$query->table( SQLStore::ID_TABLE );
 
 		// Only find entities
-		$query->fields( [ 'smw_id', 'smw_sortkey' ] );
+		$query->fields( [ 'smw_id', 'smw_search' ] );
 
 		if ( $type === DataItem::TYPE_WIKIPAGE ) {
 			$query->condition( $query->eq( 'smw_title', $dataItem->getDBKey() ) );
 			$query->condition( $query->eq( 'smw_namespace', $dataItem->getNamespace() ) );
 			$query->condition( $query->eq( 'smw_subobject', $dataItem->getSubobjectName() ) );
 		} else {
-			$query->condition( $query->eq( 'smw_sortkey', $dataItem->getCanonicalLabel() ) );
+			$query->condition( $query->eq( 'smw_search', $dataItem->getCanonicalLabel() ) );
 			$query->condition( $query->eq( 'smw_namespace', SMW_NS_PROPERTY ) );
 			$query->condition( $query->eq( 'smw_subobject', '' ) );
 		}

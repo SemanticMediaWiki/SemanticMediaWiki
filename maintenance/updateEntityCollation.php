@@ -74,7 +74,7 @@ class UpdateEntityCollation extends \Maintenance {
 			array(
 				'smw_id',
 				'smw_title',
-				'smw_sortkey'
+				'smw_search'
 			),
 			$condition,
 			__METHOD__
@@ -138,13 +138,13 @@ class UpdateEntityCollation extends \Maintenance {
 		}
 
 		if ( $row->smw_title{0} !== '_' ) {
-			return $row->smw_sortkey;
+			return $row->smw_search;
 		}
 
 		try {
 			$property = new DIProperty( $row->smw_title );
 		} catch ( PredefinedPropertyLabelMismatchException $e ) {
-			return $row->smw_sortkey;
+			return $row->smw_search;
 		}
 
 		return $property->getCanonicalLabel();

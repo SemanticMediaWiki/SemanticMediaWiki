@@ -88,7 +88,7 @@ class UniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertJsonStringEqualsJsonString(
 			'{' .
 			'"tables": "smw_object_ids",' .
-			'"fields":["smw_id","smw_sortkey"],' .
+			'"fields":["smw_id","smw_search"],' .
 			'"conditions":[["smw_title=Foo"],["smw_namespace=0"],["smw_subobject="],["smw_iw!=:smw"],["smw_iw!=:smw-delete"],["smw_iw!=:smw-redi"]],' .
 			'"joins":[],' .
 			'"options":{"LIMIT":2},"alias":"","index":0,"autocommit":false}',

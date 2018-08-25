@@ -287,7 +287,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			"$qobj->alias.smw_namespace AS ns," .
 			"$qobj->alias.smw_iw AS iw," .
 			"$qobj->alias.smw_subobject AS so," .
-			"$qobj->alias.smw_sortkey AS sortkey" .
+			"$qobj->alias.smw_search AS sortkey" .
 			"$sortfields " .
 			"FROM " .
 			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
@@ -405,7 +405,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			"$qobj->alias.smw_namespace AS ns," .
 			"$qobj->alias.smw_iw AS iw," .
 			"$qobj->alias.smw_subobject AS so," .
-			"$qobj->alias.smw_sortkey AS sortkey" .
+			"$qobj->alias.smw_search AS sortkey" .
 			"$sortfields",
 			$qobj->where,
 			__METHOD__,

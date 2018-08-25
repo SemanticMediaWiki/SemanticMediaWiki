@@ -83,18 +83,18 @@ class PropertiesLookup {
 			[ SQLStore::ID_TABLE => "ON smw_id=p_id" ]
 		);
 
-		$query->fields( [ 'smw_title', 'smw_sortkey' ] );
+		$query->fields( [ 'smw_title', 'smw_search' ] );
 
 		// (select sortkey since it might be used in ordering (needed by Postgres))
 		$query->condition( $this->store->getSQLConditions(
 			$requestOptions,
-			'smw_sortkey',
-			'smw_sortkey'
+			'smw_search',
+			'smw_search'
 		) );
 
 		$opt =  $this->store->getSQLOptions(
 			$requestOptions,
-			'smw_sortkey'
+			'smw_search'
 		);
 
 		$query->options( $opt + [ 'DISTINCT' => true ] );

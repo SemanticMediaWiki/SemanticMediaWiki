@@ -123,7 +123,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->type = 1;
 		$expected->alias = "t0";
 		$expected->joinfield = "t0.smw_id";
-		$expected->where = "t0.smw_sortkey<=Foo";
+		$expected->where = "t0.smw_search<=Foo";
 
 		$provider[] = array(
 			$description,
@@ -139,7 +139,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->type = 1;
 		$expected->alias = "t0";
 		$expected->joinfield = "t0.smw_id";
-		$expected->where = "t0.smw_sortkey LIKE Foo";
+		$expected->where = "t0.smw_search LIKE Foo";
 
 		$provider[] = array(
 			$description,

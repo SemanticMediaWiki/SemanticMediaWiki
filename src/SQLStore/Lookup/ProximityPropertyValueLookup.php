@@ -146,7 +146,7 @@ class ProximityPropertyValueLookup {
 		$res = [];
 
 		if ( trim( $search ) !== '' ) {
-			$this->build_like( $query, 'smw_sortkey', $search );
+			$this->build_like( $query, 'smw_search', $search );
 		}
 
 		if ( $sort ) {
@@ -156,19 +156,19 @@ class ProximityPropertyValueLookup {
 		$options['DISTINCT'] = true;
 
 		$query->options( $options );
-		$query->fields( [ 'smw_id', 'smw_title', 'smw_sortkey' ] );
+		$query->fields( [ 'smw_id', 'smw_title', 'smw_search' ] );
 
 		// Benchmarks showed that different select schema yield better results
 		// for the following use cases
 		if ( $this->isFixedPropertyTable( $table ) === false && $search !== '' ) {
 
 			/**
-			 * SELECT DISTINCT smw_id,smw_title,smw_sortkey
+			 * SELECT DISTINCT smw_id,smw_title,smw_search
 			 * FROM `smw_object_ids`
 			 * INNER JOIN (
 			 * 	SELECT o_id FROM `smw_di_wikipage` WHERE p_id='310167' GROUP BY o_id
 			 * 	) AS t1 ON t1.o_id=smw_id
-			 * 	WHERE ( smw_sortkey LIKE '%foo%' OR smw_sortkey LIKE '%Foo%' OR smw_sortkey LIKE '%FOO%')
+			 * 	WHERE ( smw_search LIKE '%foo%' OR smw_search LIKE '%Foo%' OR smw_search LIKE '%FOO%')
 			 * 	LIMIT 11
 			 */
 
@@ -197,10 +197,10 @@ class ProximityPropertyValueLookup {
 		} else {
 
 			/**
-			 * SELECT DISTINCT smw_id,smw_title,smw_sortkey
+			 * SELECT DISTINCT smw_id,smw_title,smw_search
 			 * FROM `smw_fpt_sobj`
 			 * INNER JOIN `smw_object_ids` ON ((smw_id=o_id))
-			 * WHERE ( smw_sortkey LIKE '%foo%' OR smw_sortkey LIKE '%Foo%' OR smw_sortkey LIKE '%FOO%' )
+			 * WHERE ( smw_search LIKE '%foo%' OR smw_search LIKE '%Foo%' OR smw_search LIKE '%FOO%' )
 			 * LIMIT 11
 			 */
 			$query->join(

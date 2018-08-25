@@ -100,12 +100,12 @@ class PropertySubjectsLookup {
 			//
 			// Table with < 100 entries
 			//
-			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_search, smw_sort
 			// FROM `smw_object_ids` INNER JOIN `smw_di_number` AS t1 ON t1.s_id=smw_id
 			// WHERE (t1.p_id='196959') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
 			// GROUP BY smw_sort, smw_id LIMIT 21	8.2510ms (without index hint)
 			//
-			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_search, smw_sort
 			// FROM `smw_object_ids` INNER JOIN `smw_di_number` AS t1 FORCE INDEX(s_id) ON t1.s_id=smw_id
 			// WHERE (t1.p_id='196959') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
 			// GROUP BY smw_sort, smw_id LIMIT 21	7548.6171ms (with index hint)
@@ -114,12 +114,12 @@ class PropertySubjectsLookup {
 			//
 			// Table with > 5000 entries
 			//
-			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_search, smw_sort
 			// FROM `smw_object_ids` INNER JOIN `smw_di_blob` AS t1 FORCE INDEX(s_id) ON t1.s_id=smw_id
 			// WHERE (t1.p_id='310170') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
 			// GROUP BY smw_sort, smw_id LIMIT 21	62.6249ms (with index hint)
 			//
-			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+			// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_search, smw_sort
 			// FROM `smw_object_ids` INNER JOIN `smw_di_blob` AS t1 ON t1.s_id=smw_id
 			// WHERE (t1.p_id='310170') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
 			// GROUP BY smw_sort, smw_id LIMIT 21	8856.1242ms (without index hint)
@@ -160,7 +160,7 @@ class PropertySubjectsLookup {
 					'smw_namespace',
 					'smw_iw',
 					'smw_subobject',
-					'smw_sortkey',
+					'smw_search',
 					'smw_sort'
 				]
 			);
@@ -174,7 +174,7 @@ class PropertySubjectsLookup {
 					's_namespace AS smw_namespace',
 					'\'\' AS smw_iw',
 					'\'\' AS smw_subobject',
-					's_title AS smw_sortkey',
+					's_title AS smw_search',
 					's_title AS smw_sort'
 				]
 			);
@@ -214,8 +214,8 @@ class PropertySubjectsLookup {
 
 		$cond = $this->store->getSQLConditions(
 			$requestOptions,
-			'smw_sortkey',
-			'smw_sortkey',
+			'smw_search',
+			'smw_search',
 			false
 		);
 

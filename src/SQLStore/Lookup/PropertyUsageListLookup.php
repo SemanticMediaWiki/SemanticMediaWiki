@@ -106,7 +106,7 @@ class PropertyUsageListLookup implements ListLookup {
 		}
 
 		if ( $this->requestOptions->getStringConditions() ) {
-			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_sortkey', false );
+			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_search', false );
 		}
 
 		$db = $this->store->getConnection( 'mw.db' );

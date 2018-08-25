@@ -67,7 +67,7 @@ class DIBlobHandler extends DataItemHandler {
 
 		// Store::getPropertySubjects has seen to choose the wrong index
 
-		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_search, smw_sort
 		// FROM `smw_object_ids`
 		// INNER JOIN `smw_di_blob` AS t1 FORCE INDEX(s_id) ON t1.s_id=smw_id
 		// WHERE t1.p_id='310174' AND smw_iw!=':smw'
@@ -78,7 +78,7 @@ class DIBlobHandler extends DataItemHandler {
 		//
 		// vs.
 		//
-		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_search, smw_sort
 		// FROM `smw_object_ids`
 		// INNER JOIN `smw_di_blob` AS t1 ON t1.s_id=smw_id
 		// WHERE t1.p_id='310174' AND smw_iw!=':smw' AND smw_iw!=':smw-delete'

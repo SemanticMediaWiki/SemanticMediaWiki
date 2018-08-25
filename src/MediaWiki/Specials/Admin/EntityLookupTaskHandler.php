@@ -231,7 +231,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 			$condition = 'smw_id=' . intval( $id );
 		} else {
 			$op = strpos( $id, '*' ) !== false ? ' LIKE ' : '=';
-			$condition = "smw_sortkey $op " . $connection->addQuotes( str_replace( [ '_', '*' ], [ ' ', '%' ], $id ) );
+			$condition = "smw_search $op " . $connection->addQuotes( str_replace( [ '_', '*' ], [ ' ', '%' ], $id ) );
 		}
 
 		$rows = $connection->select(
@@ -242,7 +242,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 					'smw_namespace',
 					'smw_iw',
 					'smw_subobject',
-					'smw_sortkey'
+					'smw_search'
 				),
 				$condition,
 				__METHOD__

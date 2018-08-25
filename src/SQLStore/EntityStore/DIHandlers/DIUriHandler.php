@@ -60,7 +60,7 @@ class DIUriHandler extends DataItemHandler {
 	 */
 	public function getIndexHint( $key ) {
 
-		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_search, smw_sort
 		// FROM `smw_object_ids`
 		// INNER JOIN `smw_di_uri` AS t1
 		// FORCE INDEX(s_id) ON t1.s_id=smw_id
@@ -71,7 +71,7 @@ class DIUriHandler extends DataItemHandler {
 		//
 		// vs.
 		//
-		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_search, smw_sort
 		// FROM `smw_object_ids`
 		// INNER JOIN `smw_di_uri` AS t1 ON t1.s_id=smw_id
 		// WHERE t1.p_id='310165' AND smw_iw!=':smw' AND smw_iw!=':smw-delete' AND smw_iw!=':smw-redi'

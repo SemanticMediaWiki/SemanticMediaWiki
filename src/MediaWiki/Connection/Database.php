@@ -653,6 +653,26 @@ class Database {
 	}
 
 	/**
+	 * @see DatabaseBase::fieldExists
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $table
+	 * @param string $field
+	 * @param string $fname
+	 *
+	 * @return bool
+	 */
+	public function fieldExists( $table, $field, $fname = __METHOD__ ) {
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->fieldExists( $table, $field, $fname );
+	}
+
+	/**
 	 * @see DatabaseBase::selectField
 	 *
 	 * @since 1.9.2

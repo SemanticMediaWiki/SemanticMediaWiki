@@ -301,9 +301,9 @@ class SMWSql3SmwIds {
 			if ( $id != 0 ) {
 
 				if ( $fetchHashes ) {
-					$select = array( 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' );
+					$select = array( 'smw_search', 'smw_sort', 'smw_proptable_hash' );
 				} else {
-					$select = array( 'smw_sortkey', 'smw_sort' );
+					$select = array( 'smw_search', 'smw_sort' );
 				}
 
 				$row = $db->selectRow(
@@ -315,7 +315,7 @@ class SMWSql3SmwIds {
 
 				if ( $row !== false ) {
 					// Make sure that smw_sort is being re-computed in case it is null
-					$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
+					$sortkey = $row->smw_sort === null ? '' : $row->smw_search;
 					if ( $fetchHashes ) {
 						$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash );
 					}
@@ -329,9 +329,9 @@ class SMWSql3SmwIds {
 		} else {
 
 			if ( $fetchHashes ) {
-				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' );
+				$select = array( 'smw_id', 'smw_search', 'smw_sort', 'smw_proptable_hash' );
 			} else {
-				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort' );
+				$select = array( 'smw_id', 'smw_search', 'smw_sort' );
 			}
 
 			// #2001
@@ -363,7 +363,7 @@ class SMWSql3SmwIds {
 			if ( $row !== false ) {
 				$id = $row->smw_id;
 				// Make sure that smw_sort is being re-computed in case it is null
-				$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
+				$sortkey = $row->smw_sort === null ? '' : $row->smw_search;
 				if ( $fetchHashes ) {
 					$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash);
 				}
@@ -634,7 +634,7 @@ class SMWSql3SmwIds {
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName,
-					'smw_sortkey' => $sortkey,
+					'smw_search' => $sortkey,
 					'smw_sort' => $collator->getSortKey( $sortkey ),
 					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] )
 				),
@@ -867,7 +867,7 @@ class SMWSql3SmwIds {
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey,
+					'smw_search' => $row->smw_search,
 					'smw_sort' => $row->smw_sort
 				),
 				__METHOD__
@@ -882,7 +882,7 @@ class SMWSql3SmwIds {
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey,
+					'smw_search' => $row->smw_search,
 					'smw_sort' => $row->smw_sort
 				),
 				__METHOD__
@@ -903,7 +903,7 @@ class SMWSql3SmwIds {
 			$row->smw_iw,
 			$row->smw_subobject,
 			$targetid,
-			$row->smw_sortkey
+			$row->smw_search
 		);
 
 		$this->idChanger->change(
@@ -1001,7 +1001,7 @@ class SMWSql3SmwIds {
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject',
-				'smw_sortkey',
+				'smw_search',
 				'smw_sort'
 			],
 			[
@@ -1011,7 +1011,7 @@ class SMWSql3SmwIds {
 		);
 
 		foreach ( $rows as $row ) {
-			$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
+			$sortkey = $row->smw_sort === null ? '' : $row->smw_search;
 
 			$this->idCacheManager->setCache(
 				$row->smw_title,

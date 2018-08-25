@@ -92,9 +92,16 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	 */
 	public function checkOnPostCreation( TableBuilder $tableBuilder ) {
 
-		$this->checkPredefinedPropertyIndices();
+		$log = $tableBuilder->getLog();
+
+		$this->checkPredefinedPropertyIndices( $log );
 		$this->checkHashField();
-		$this->checkSortField( $tableBuilder->getLog() );
+
+		// Only necessary for 3.0 as it introduced the smw_search field
+		$this->checkSearchField( $log );
+
+		// Only necessary for 3.0 as it introduced the smw_sort field
+		$this->checkSortField( $log );
 
 		// Call out for RDBMS specific implementations
 		$tableBuilder->checkOn( TableBuilder::POST_CREATION );
@@ -130,12 +137,12 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	 * is needed. At the same time, the entries in the DB make sure that DB-based
 	 * functions work as with all other properties.
 	 */
-	private function checkPredefinedPropertyIndices() {
+	private function checkPredefinedPropertyIndices( $log ) {
 
 		$connection = $this->store->getConnection( DB_MASTER );
 
 		$this->messageReporter->reportMessage( "Checking predefined properties ...\n" );
-		$this->checkPredefinedPropertyUpperbound();
+		$this->checkPredefinedPropertyUpperbound( $log );
 
 		// now write actual properties; do that each time, it is cheap enough
 		// and we can update sortkeys by current language
@@ -154,13 +161,13 @@ class TableIntegrityExaminer implements MessageReporterAware {
 				continue;
 			}
 
-			$this->updatePredefinedProperty( $property, $id );
+			$this->updatePredefinedProperty( $property, $id, $log );
 		}
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function checkPredefinedPropertyUpperbound() {
+	private function checkPredefinedPropertyUpperbound( $log ) {
 
 		$connection = $this->store->getConnection( DB_MASTER );
 
@@ -192,16 +199,22 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		$this->messageReporter->reportMessage( "   ... allocating space for internal properties ...\n" );
 		$this->store->getObjectIds()->moveSMWPageID( $upperbound );
 
+		$fields = [
+			'smw_id' => $upperbound,
+			'smw_title' => '',
+			'smw_namespace' => 0,
+			'smw_iw' => SMW_SQL3_SMWBORDERIW,
+			'smw_subobject' => '',
+			'smw_search' => ''
+		];
+
+		if ( $connection->fieldExists( SQLStore::ID_TABLE, 'smw_sortkey' ) ) {
+			$fields += [ 'smw_sortkey' => '' ];
+		}
+
 		$connection->insert(
 			SQLStore::ID_TABLE,
-			array(
-				'smw_id' => $upperbound,
-				'smw_title' => '',
-				'smw_namespace' => 0,
-				'smw_iw' => SMW_SQL3_SMWBORDERIW,
-				'smw_subobject' => '',
-				'smw_sortkey' => ''
-			),
+			$fields,
 			__METHOD__
 		);
 
@@ -227,16 +240,16 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 	}
 
-	private function checkSortField( $log ) {
+	private function checkSearchField( $log ) {
 
 		$connection = $this->store->getConnection( DB_MASTER );
 
 		$tableName = $connection->tableName( SQLStore::ID_TABLE );
-		$this->messageReporter->reportMessage( "Checking smw_sortkey, smw_sort fields ...\n" );
+		$this->messageReporter->reportMessage( "Checking smw_sortkey, smw_search fields ...\n" );
 
-		// #2429, copy smw_sortkey content to the new smw_sort field once
-		if ( isset( $log[$tableName]['smw_sort'] ) && $log[$tableName]['smw_sort'] === TableBuilder::PROC_FIELD_NEW ) {
-			$emptyField = 'smw_sort';
+		// #2429, copy smw_search content to the new smw_search field once
+		if ( $connection->fieldExists( SQLStore::ID_TABLE, 'smw_sortkey' ) ) {
+			$emptyField = 'smw_search';
 			$copyField = 'smw_sortkey';
 
 			$this->messageReporter->reportMessage( "   Table " . SQLStore::ID_TABLE . " ...\n" );
@@ -248,7 +261,28 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function updatePredefinedProperty( $property, $id ) {
+	private function checkSortField( $log ) {
+
+		$connection = $this->store->getConnection( DB_MASTER );
+
+		$tableName = $connection->tableName( SQLStore::ID_TABLE );
+		$this->messageReporter->reportMessage( "Checking smw_search, smw_sort fields ...\n" );
+
+		// #2429, copy smw_search content to the new smw_sort field once
+		if ( isset( $log[$tableName]['smw_sort'] ) && $log[$tableName]['smw_sort'] === TableBuilder::PROC_FIELD_NEW ) {
+			$emptyField = 'smw_sort';
+			$copyField = 'smw_search';
+
+			$this->messageReporter->reportMessage( "   Table " . SQLStore::ID_TABLE . " ...\n" );
+			$this->messageReporter->reportMessage( "   ... copying $copyField to $emptyField ... " );
+			$connection->query( "UPDATE $tableName SET $emptyField = $copyField", __METHOD__ );
+			$this->messageReporter->reportMessage( "done.\n" );
+		}
+
+		$this->messageReporter->reportMessage( "   ... done.\n" );
+	}
+
+	private function updatePredefinedProperty( $property, $id, $log ) {
 
 		$connection = $this->store->getConnection( DB_MASTER );
 
@@ -298,20 +332,26 @@ class TableIntegrityExaminer implements MessageReporterAware {
 			$row = (object)[ 'smw_proptable_hash' => null, 'smw_hash' => null ];
 		}
 
+		$fields = [
+			'smw_id' => $id,
+			'smw_title' => $property->getKey(),
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_iw' =>  $iw,
+			'smw_subobject' => '',
+			'smw_search' => $label,
+			'smw_sort' => Collator::singleton()->getSortKey( $label ),
+			'smw_proptable_hash' => $row->smw_proptable_hash,
+			'smw_hash' => $row->smw_hash
+		];
+
+		if ( $connection->fieldExists( SQLStore::ID_TABLE, 'smw_sortkey' ) ) {
+			$fields += [ 'smw_sortkey' => '' ];
+		}
+
 		$connection->replace(
 			SQLStore::ID_TABLE,
 			[ 'smw_id' ],
-			[
-				'smw_id' => $id,
-				'smw_title' => $property->getKey(),
-				'smw_namespace' => SMW_NS_PROPERTY,
-				'smw_iw' =>  $iw,
-				'smw_subobject' => '',
-				'smw_sortkey' => $label,
-				'smw_sort' => Collator::singleton()->getSortKey( $label ),
-				'smw_proptable_hash' => $row->smw_proptable_hash,
-				'smw_hash' => $row->smw_hash
-			],
+			$fields,
 			__METHOD__
 		);
 

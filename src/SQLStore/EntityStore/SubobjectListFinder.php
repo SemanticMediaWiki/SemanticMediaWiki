@@ -98,7 +98,7 @@ class SubobjectListFinder {
 				);
 			}
 
-			$subobject->setSortKey( $row->smw_sortkey );
+			$subobject->setSortKey( $row->smw_search );
 			$subobject->setId( $row->smw_id );
 
 			return $subobject;
@@ -137,7 +137,7 @@ class SubobjectListFinder {
 			array(
 				'smw_id',
 				'smw_subobject',
-				'smw_sortkey'
+				'smw_search'
 			),
 			implode( ' AND ' , $conditions ),
 			__METHOD__

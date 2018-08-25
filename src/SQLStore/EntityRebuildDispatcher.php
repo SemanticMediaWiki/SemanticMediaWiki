@@ -269,7 +269,7 @@ class EntityRebuildDispatcher {
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject',
-				'smw_sortkey',
+				'smw_search',
 				'smw_proptable_hash'
 			],
 			[
@@ -393,7 +393,7 @@ class EntityRebuildDispatcher {
 				'smw_title' ],
 			[
 				"smw_id !=" . $db->addQuotes( $row->smw_id ),
-				"smw_sortkey =" . $db->addQuotes( $row->smw_sortkey ),
+				"smw_search =" . $db->addQuotes( $row->smw_search ),
 				"smw_namespace =" . $row->smw_namespace,
 				"smw_subobject =" . $db->addQuotes( $row->smw_subobject )
 			],

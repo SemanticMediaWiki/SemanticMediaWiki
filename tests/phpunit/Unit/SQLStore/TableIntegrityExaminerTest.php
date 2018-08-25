@@ -272,7 +272,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->checkOnPostCreation( $tableBuilder );
 
 		$this->assertContains(
-			'copying smw_sortkey to smw_sort',
+			'copying smw_search to smw_sort',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}

@@ -89,13 +89,13 @@ class TraversalPropertyLookup {
 				" smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
 				" AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
 
-			$conditions .= $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $conditions !== '' );
+			$conditions .= $this->store->getSQLConditions( $subOptions, 'smw_search', 'smw_search', $conditions !== '' );
 
 			$options = $this->store->getSQLOptions( $subOptions, '' ) + array( 'DISTINCT' );
 
 			$result = $connection->select(
 				$from,
-				' smw_title,smw_sortkey,smw_iw',
+				' smw_title,smw_search,smw_iw',
 				$conditions,
 				__METHOD__,
 				$options

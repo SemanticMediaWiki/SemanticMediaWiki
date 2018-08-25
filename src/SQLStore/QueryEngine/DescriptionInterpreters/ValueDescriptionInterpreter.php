@@ -117,7 +117,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 			$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db.queryengine' );
 
-			$query->where = "{$query->alias}.smw_sortkey$comparator" . $db->addQuotes( $value );
+			$query->where = "{$query->alias}.smw_search$comparator" . $db->addQuotes( $value );
 		}
 
 		return $query;

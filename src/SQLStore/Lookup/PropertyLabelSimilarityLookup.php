@@ -290,7 +290,7 @@ class PropertyLabelSimilarityLookup {
 		}
 
 		if ( $requestOptions !== null && $requestOptions->getStringConditions() ) {
-			$conditions[] = $this->store->getSQLConditions( $requestOptions, '', 'smw_sortkey', false );
+			$conditions[] = $this->store->getSQLConditions( $requestOptions, '', 'smw_search', false );
 		}
 
 		$connection = $this->store->getConnection( 'mw.db' );

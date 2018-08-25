@@ -140,6 +140,8 @@ class TableSchemaManager {
 
 	private function newEntityIdTable() {
 
+		$connection = $this->store->getConnection( DB_MASTER );
+
 		// ID_TABLE
 		$table = new Table( SQLStore::ID_TABLE );
 
@@ -149,17 +151,28 @@ class TableSchemaManager {
 		$table->addColumn( 'smw_iw', array( FieldType::FIELD_INTERWIKI, 'NOT NULL' ) );
 		$table->addColumn( 'smw_subobject', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
 
-		$table->addColumn( 'smw_sortkey', array(
-			$this->hasFeatureFlag( SMW_FIELDT_CHAR_NOCASE ) ? FieldType::TYPE_CHAR_NOCASE : FieldType::FIELD_TITLE,
-			'NOT NULL'
-		) );
+		if ( !$connection->fieldExists( SQLStore::ID_TABLE, 'smw_search' ) ) {
+			// Only keep the field for compatibility in 3.0, remove it with 4.0
+			// This is to ensure that the post-processing gets a chance to copy
+			// existing content from smw_sortkey to smw_search
+			$table->addColumn( 'smw_sortkey', array( FieldType::FIELD_TITLE ) );
+
+			$table->addColumn( 'smw_search', array(
+				$this->hasFeatureFlag( SMW_FIELDT_CHAR_NOCASE ) ? FieldType::TYPE_CHAR_NOCASE : FieldType::FIELD_TITLE
+			) );
+		} else {
+			$table->addColumn( 'smw_search', array(
+				$this->hasFeatureFlag( SMW_FIELDT_CHAR_NOCASE ) ? FieldType::TYPE_CHAR_NOCASE : FieldType::FIELD_TITLE,
+				'NOT NULL'
+			) );
+		}
 
 		$table->addColumn( 'smw_sort', array( FieldType::FIELD_TITLE ) );
 		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
 		$table->addColumn( 'smw_hash', FieldType::FIELD_HASH );
 
 		$table->addIndex( 'smw_id' );
-		$table->addIndex( 'smw_id,smw_sortkey' );
+		$table->addIndex( 'smw_id,smw_search' );
 		$table->addIndex( 'smw_hash,smw_id' );
 
 		// IW match lookup
@@ -170,10 +183,10 @@ class TableSchemaManager {
 		$table->addIndex( 'smw_title,smw_namespace,smw_iw,smw_subobject' );
 
 		// InProperty lookup
-		// $table->addIndex( 'smw_iw,smw_id,smw_title,smw_sortkey,smw_sort' );
+		// $table->addIndex( 'smw_iw,smw_id,smw_title,smw_search,smw_sort' );
 
 		// Select by sortkey (range queries)
-		$table->addIndex( 'smw_sortkey' );
+		$table->addIndex( 'smw_search' );
 
 		// Sort related indices, Store::getPropertySubjects (GROUP BY)
 		// $table->addIndex( 'smw_sort' );
@@ -181,7 +194,7 @@ class TableSchemaManager {
 
 		// API smwbrowse primary lookup
 		// SMW\MediaWiki\Api\Browse\ListLookup::fetchFromTable
-		$table->addIndex( 'smw_namespace,smw_sortkey' );
+		$table->addIndex( 'smw_namespace,smw_search' );
 
 		// Interfered with the API lookup index, couldn't find a use case
 		// that would require the this index

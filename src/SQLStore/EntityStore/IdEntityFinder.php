@@ -101,8 +101,8 @@ class IdEntityFinder {
 
 		$dataItem->setId( $row->smw_id );
 
-		if ( isset( $row->smw_sortkey ) ) {
-			$dataItem->setSortKey( $row->smw_sortkey );
+		if ( isset( $row->smw_search ) ) {
+			$dataItem->setSortKey( $row->smw_search );
 		}
 
 		if ( isset( $row->smw_sort ) ) {
@@ -174,7 +174,7 @@ class IdEntityFinder {
 				'smw_namespace',
 				'smw_iw',
 				'smw_subobject',
-				'smw_sortkey',
+				'smw_search',
 				'smw_sort'
 			],
 			$conditions,

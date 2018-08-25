@@ -195,7 +195,7 @@ class SemanticDataLookup {
 		// Build something like:
 		//
 		// SELECT o_id AS id0,o0.smw_title AS v0,o0.smw_namespace AS v1,o0.smw_iw
-		// AS v2,o0.smw_sortkey AS v3,o0.smw_subobject AS v4
+		// AS v2,o0.smw_search AS v3,o0.smw_subobject AS v4
 		// FROM `smw_fpt_sobj`
 		// INNER JOIN `smw_object_ids` AS o0 ON o_id=o0.smw_id
 		// WHERE s_id='852'
@@ -345,14 +345,14 @@ class SemanticDataLookup {
 				$query->field( "o$valueCount.smw_title AS v$valueCount" );
 				$query->field( "o$valueCount.smw_namespace AS v" . ( $valueCount + 1 ) );
 				$query->field( "o$valueCount.smw_iw AS v" . ( $valueCount + 2 ) );
-				$query->field( "o$valueCount.smw_sortkey AS v" . ( $valueCount + 3 ) );
+				$query->field( "o$valueCount.smw_search AS v" . ( $valueCount + 3 ) );
 				$query->field( "o$valueCount.smw_subobject AS v" . ( $valueCount + 4 ) );
 
 				if ( $valueField == $fieldname ) {
-					$valueField = "o$valueCount.smw_sortkey";
+					$valueField = "o$valueCount.smw_search";
 				}
 				if ( $labelField == $fieldname ) {
-					$labelField = "o$valueCount.smw_sortkey";
+					$labelField = "o$valueCount.smw_search";
 				}
 
 				$valueCount += 4;

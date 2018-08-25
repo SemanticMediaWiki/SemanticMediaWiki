@@ -65,7 +65,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
 		$row->smw_subobject ='';
-		$row->smw_sortkey ='';
+		$row->smw_search ='';
 		$row->smw_sort ='';
 
 		$this->cache->expects( $this->once() )
@@ -131,7 +131,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_namespace = SMW_NS_PROPERTY;
 		$row->smw_iw = '';
 		$row->smw_subobject = '';
-		$row->smw_sortkey = 'bar';
+		$row->smw_search = 'bar';
 		$row->smw_sort = 'BAR';
 
 		$this->cache->expects( $this->once() )
