@@ -30,6 +30,11 @@ class Excerpts {
 	protected $hasHighlight = false;
 
 	/**
+	 * @var boolean
+	 */
+	protected $stripTags = true;
+
+	/**
 	 * @since 3.0
 	 */
 	public function noHighlight() {
