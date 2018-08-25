@@ -164,7 +164,7 @@ class SMWQuery implements QueryContext {
 	 */
 	public function setQueryMode( $queryMode ) {
 		// FIXME 3.0; $this->querymode is a public property
-		// delcare it private and rename it to $this->queryMode
+		// declare it private and rename it to $this->queryMode
 		$this->querymode = $queryMode;
 	}
 
