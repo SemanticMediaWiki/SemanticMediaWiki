@@ -36,7 +36,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testRedirectTragetForBlankNode() {
+	public function testRedirectTargetForBlankNode() {
 
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
@@ -55,7 +55,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $exists );
 	}
 
-	public function testRedirectTragetForDataItemWithSubobject() {
+	public function testRedirectTargetForDataItemWithSubobject() {
 
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
@@ -75,7 +75,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $exists );
 	}
 
-	public function testRedirectTragetForDBLookupWithNoEntry() {
+	public function testRedirectTargetForDBLookupWithNoEntry() {
 
 		$repositoryConnection = $this->createRepositoryConnectionMockToUse( false );
 
@@ -93,7 +93,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $exists );
 	}
 
-	public function testRedirectTragetForDBLookupWithSingleEntry() {
+	public function testRedirectTargetForDBLookupWithSingleEntry() {
 
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
@@ -115,7 +115,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $exists );
 	}
 
-	public function testRedirectTragetForDBLookupWithMultipleEntries() {
+	public function testRedirectTargetForDBLookupWithMultipleEntries() {
 
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
@@ -137,7 +137,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $exists );
 	}
 
-	public function testRedirectTragetForDBLookupWithMultipleEntriesForcesNewResource() {
+	public function testRedirectTargetForDBLookupWithMultipleEntriesForcesNewResource() {
 
 		$propertyPage = new DIWikiPage( 'Foo', SMW_NS_PROPERTY );
 
@@ -179,7 +179,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $exists );
 	}
 
-	public function testRedirectTragetForDBLookupWithForNonMultipleResourceEntryThrowsException() {
+	public function testRedirectTargetForDBLookupWithForNonMultipleResourceEntryThrowsException() {
 
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
