@@ -24,9 +24,9 @@ class MySQLTableBuilder extends TableBuilder {
 
 		$fieldTypes = array(
 			 // like page_id in MW page table
-			'id'         => 'INT(8) UNSIGNED',
+			'id'         => 'INT(11) UNSIGNED',
 			 // like page_id in MW page table
-			'id primary' => 'INT(8) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
+			'id primary' => 'INT(11) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
 			 // like page_namespace in MW page table
 			'namespace'  => 'INT(11)',
 			 // like page_title in MW page table
