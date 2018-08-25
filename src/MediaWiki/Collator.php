@@ -28,12 +28,14 @@ class Collator {
 	private $collationName;
 
 	/**
+	 * @private
+	 *
 	 * @since 3.0
 	 *
 	 * @param Collation $collation
 	 * @param string $collationName
 	 */
-	protected function __construct( Collation $collation, $collationName = '' ) {
+	public function __construct( Collation $collation, $collationName = '' ) {
 		$this->collation = $collation;
 		$this->collationName = $collationName;
 	}
@@ -99,19 +101,6 @@ class Collator {
 	 *
 	 * @return string
 	 */
-	public function getTruncatedSortKey( $text, $id = '' ) {
-		// #2089 (MySQL 5.7 complained with "Data too long for column")
-		//return mb_substr( $this->getSortKey( $text ), 0, 240 ) . '#'. $id;
-		return mb_substr( $this->getSortKey( $text ), 0, 254 );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $text
-	 *
-	 * @return string
-	 */
 	public function getSortKey( $text ) {
 		return $this->collation->getSortKey( $text );
 	}
@@ -132,6 +121,18 @@ class Collator {
 		}
 
 		return $this->collation->getFirstLetter( $text );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $old
+	 * @param string $new
+	 *
+	 * @return boolean
+	 */
+	public function isIdentical( $old, $new ) {
+		return $this->collation->getSortKey( $old ) === $this->collation->getSortKey( $new );
 	}
 
 }
