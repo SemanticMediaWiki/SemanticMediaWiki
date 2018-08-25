@@ -9,11 +9,31 @@
 	"tests": [
 		{
 			"type": "parser",
-			"about": "#0 switch #info to error display",
+			"about": "#0 (1.31-) switch #info to error display",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "Test/P0109/1",
 			"assert-output": {
 				"to-contain": [
 					"Info: Test some error <span class=\"smw-highlighter\" data-type=\"4\""
+				],
+				"not-contain": [
+					"Info: <span class=\"smw-highlighter\" data-type=\"5\"",
+					"<div class=\"smwttcontent\">Test some error <span class=\"smw-highlighter\" data-type=\"4\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0 (1.31+) switch #info to error display",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Test/P0109/1",
+			"assert-output": {
+				"to-contain": [
+					"Info: Test some error </p><span class=\"smw-highlighter\" data-type=\"4\""
 				],
 				"not-contain": [
 					"Info: <span class=\"smw-highlighter\" data-type=\"5\"",

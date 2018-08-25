@@ -424,7 +424,10 @@
 		},
 		{
 			"type": "parser-html",
-			"about": "#12.2 Ol format with introtemplate and outrotemplate",
+			"about": "#12.2 (1.31-) Ol format with introtemplate and outrotemplate",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "f-0402/Test-12",
 			"assert-output": {
 				"to-be-valid-html": true,

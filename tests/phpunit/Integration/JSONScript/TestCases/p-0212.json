@@ -55,11 +55,27 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2",
+			"about": "#2 (1.31-)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "Example/P0212/3",
 			"assert-output": {
 				"to-contain": [
 					"title=\"Property:P106\">職業</a></span><div class=\"smwttcontent\">人物の職業。「専門分野」</div></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31+)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0212/3",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:P106\">職業</a></span><div class=\"smwttcontent\">人物の職業。「専門分野」</div></span><p>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
 				]
 			}
 		},

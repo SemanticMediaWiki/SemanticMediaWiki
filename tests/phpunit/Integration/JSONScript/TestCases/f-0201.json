@@ -69,7 +69,10 @@
 		},
 		{
 			"type": "format",
-			"about": "#1 Check bool label output value label",
+			"about": "#1 (1.31-) Check bool label output value label",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "BooleanTable-ToLabelBoolValue",
 			"assert-output": {
 				"to-contain": [
@@ -83,12 +86,49 @@
 		},
 		{
 			"type": "format",
-			"about": "#2 Check bool/column label output",
+			"about": "#1 (1.31+) Check bool label output value label",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "BooleanTable-ToLabelBoolValue",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"title=\"Property:Has success state\">Has success state</a></th></tr><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">",
+					"title=\"Project one\">Project one</a></td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"1\">success</td>",
+					"title=\"Project two\">Project two</a></td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"0\">failure</td>",
+					"</table>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 (1.31-) Check bool/column label output",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "BooleanTable-ToLabelBoolValueAndColumn",
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
 					"title=\"Property:Has success state\">Status</a></th><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">",
+					"title=\"Project one\">Project one</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"1\">success</td>",
+					"title=\"Project two\">Project two</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"0\">failure</td>",
+					"</table>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 (1.31+) Check bool/column label output",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "BooleanTable-ToLabelBoolValueAndColumn",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"title=\"Property:Has success state\">Status</a></th></tr><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">",
 					"title=\"Project one\">Project one</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"1\">success</td>",
 					"title=\"Project two\">Project two</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"0\">failure</td>",
 					"</table>"

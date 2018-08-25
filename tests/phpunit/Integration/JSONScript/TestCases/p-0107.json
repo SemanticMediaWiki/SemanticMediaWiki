@@ -25,7 +25,10 @@
 	"tests": [
 		{
 			"type": "parser",
-			"about": "#0 (#1019)",
+			"about": "#0 (1.31-) (#1019)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "smwdoc-table",
 			"assert-output": {
 				"to-contain": [
@@ -36,7 +39,24 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 (#1019)",
+			"about": "#0 (1.31+) (#1019)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "smwdoc-table",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"wikitable sortable\">",
+					"</td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (1.31-) (#1019)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "smwdoc-csv",
 			"assert-output": {
 				"to-contain": [
@@ -47,7 +67,24 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2 (#1019)",
+			"about": "#1 (1.31+) (#1019)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "smwdoc-csv",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"wikitable sortable\">",
+					"</td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31-) (#1019)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "smwdoc-list",
 			"assert-output": {
 				"to-contain": [
@@ -55,6 +92,22 @@
 					"<td>Legt fest, welche zusätzliche CSS-Klasse genutzt werden soll",
 					"</td></tr>",
 					"</td></tr></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31+) (#1019)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "smwdoc-list",
+			"assert-output": {
+				"to-contain": [
+					"</td>",
+					"<td>Legt fest, welche zusätzliche CSS-Klasse genutzt werden soll",
+					"</td></tr>",
+					"</td></tr></tbody></table>"
 				]
 			}
 		},
