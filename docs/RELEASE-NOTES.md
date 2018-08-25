@@ -14,7 +14,7 @@ Several UI changes are deployed with 3.0 to make user facing front-end component
 - #2891, #2875, (`Special:Browse`)
 - #2906 (Factbox)
 - #3218 (`Special:SemanticMediaWiki)
-- #3236 (Property page)
+- #3236 (Property page), #3308
 
 ### List and template printer rework
 
@@ -61,7 +61,9 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#2823](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2823) Added SMW_QSORT_UNCONDITIONAL
 * [#3080](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3080) Added warm up caching for the ID lookup
 * [#3142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3142) Replaced DISTINCT with GROUP BY in SQLStore::getPropertySubjects
-* [#3261](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3261) Addeed support for index hint in `DataItemHandler` to enforce specific index selection
+* [#3261](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3261) Added support for index hint in `DataItemHandler` to enforce specific index selection
+* [#3314](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3314) Moved the `FIXED_PROPERTY_ID_UPPERBOUND` from 50 to 500 to increase the range for fixed property IDs
+* [#3353](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3353) Added support in SQLite to drop fields without the need to delete and restore the entire store
 
 #### ElasticStore
 
@@ -168,10 +170,19 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3167](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3167) Added support for `RemoteRequest` to share and consolidate query results from remote sources
 * [#3284](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3284) Added the `--dispose-outdated` command to `rebuildData.php`
 * [#3289](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3289) Added support for the JSON format in the `Allows value list` definition
+* [#3292](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3292) Added support for bounded intervals, ranges in `Allows value` for number and quantity types
+* [#3293](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3293) Added tanslation page annotation (`_TRANS`) support
+* [#3308](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3308) Extended content representation on property and concept pages using tabs
+* [#3318](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3318) Added `smwgPostEditUpdate` to manage post edit event handling for seconday updates via the API interface
+* [#3319](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3319) Sets an extra parser key for queries that contain a self-reference to improve the result display after an edit event
+* [#3339](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3339) Added support for uniqueness validation in records/references
 
 ## Bug fixes
 
+* [#481](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/481) Fixed "further results" link with Special:Ask and templates
+* [#502](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/502) Fixed template with named arguments use in #show 
 * [#839](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/839) Fixed and extended `Special:Ask` to be more maintainable
+* [#2001](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2001) Fixed issue with `smw_subobject` and the generation of duplicate entities
 * [#2505](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2505) Fixed hard-coded default value for `format=csv`
 * [#2586](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2586) Fixed class assignments for empty cells in `format=table`
 * [#2621](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2621) Fixed sort/order field behaviour in `Special:Ask`
@@ -201,6 +212,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3082](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3082) Fixed use of `ParserOptions::setEditSection` for MW 1.31
 * [#3107](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3107) Fixed recognition of `::=` in `LinksProcessor `
 * [#3144](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3144) Return IDs as integer when matching all entities
+* [#3336](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3336) Fixed issue in Special:Ask with sort parameter where the first parameter is left empty
+* [#3322](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3322) Fixed issue in `UpdateDispatcherJob` with selecting unrelated entities
 
 ## Breaking changes and deprecations
 
@@ -235,6 +248,8 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 * [#3231](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3231) Consolidated `$smwgPagingLimit` setting
 * [#3267](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3267) Removed `SMWQueryProcessor::getSortKeys`
 * [#3285](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3285) Deprecated API module `BrowseBySubject`, use `smwbrowse` instead
+* [#3307](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3307) Replaced `smwgCacheType` with `smwgMainCacheType`
+* [#3315](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3315) Consolidated `smwgSparqlEndpoint` sparql endpoint setting 
 
 ## Other changes
 
