@@ -44,7 +44,7 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 	/**
 	 * @dataProvider resourceProvider
 	 */
-	public function testRedirectTragetLookupForNonExistingEntry( $expNsResource ) {
+	public function testRedirectTargetLookupForNonExistingEntry( $expNsResource ) {
 
 		$instance = new RepositoryRedirectLookup( $this->repositoryConnection );
 		$instance->reset();
@@ -59,7 +59,7 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 		$this->assertFalse( $exists );
 	}
 
-	public function testRedirectTragetLookupForExistingEntry() {
+	public function testRedirectTargetLookupForExistingEntry() {
 
 		$property = new DIProperty( 'TestRepositoryRedirectLookup' );
 
