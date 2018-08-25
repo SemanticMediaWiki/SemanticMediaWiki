@@ -645,6 +645,20 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
+	 * @return TableFieldUpdater
+	 */
+	public function newTableFieldUpdater() {
+
+		$tableFieldUpdater = new TableFieldUpdater(
+			$this->store
+		);
+
+		return $tableFieldUpdater;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return RedirectStore
 	 */
 	public function newRedirectStore() {

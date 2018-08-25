@@ -27,30 +27,6 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testShouldNotChangeSortField() {
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$collator->expects( $this->exactly( 2 ) )
-			->method( 'getSortKey' )
-			->will( $this->returnValue( true ) );
-
-		$instance = new TableFieldUpdater(
-			$store,
-			$collator
-		);
-
-		$this->assertFalse(
-			$instance->shouldChangeSortField( 'Foo', 'Foo' )
-		);
-	}
-
 	public function testUpdateSortField() {
 
 		$collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )
@@ -58,7 +34,7 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$collator->expects( $this->once() )
-			->method( 'getTruncatedSortKey' );
+			->method( 'getSortKey' );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()

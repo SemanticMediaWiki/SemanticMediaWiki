@@ -361,6 +361,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructTableFieldUpdater() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\TableFieldUpdater',
+			$instance->newTableFieldUpdater()
+		);
+	}
+
 	public function testCanConstructRedirectStore() {
 
 		$instance = new SQLStoreFactory( $this->store );

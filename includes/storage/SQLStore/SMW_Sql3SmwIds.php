@@ -145,11 +145,9 @@ class SMWSql3SmwIds {
 		$this->redirectStore = $this->factory->newRedirectStore();
 		$this->uniquenessLookup = $this->factory->newUniquenessLookup();
 
-		$this->tableFieldUpdater = new TableFieldUpdater(
-			$this->store
-		);
-
+		$this->tableFieldUpdater = $this->factory->newTableFieldUpdater();
 		$this->idChanger = $this->factory->newIdChanger();
+
 		self::$special_ids = TypesRegistry::getFixedPropertyIdList();
 	}
 
@@ -612,6 +610,7 @@ class SMWSql3SmwIds {
 		$oldsort = '';
 		$id = $this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical, $fetchHashes );
 		$db = $this->store->getConnection( 'mw.db' );
+		$collator = Collator::singleton();
 
 		// Safeguard to ensure that no duplicate IDs are created
 		if ( $id == 0 ) {
@@ -636,7 +635,7 @@ class SMWSql3SmwIds {
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName,
 					'smw_sortkey' => $sortkey,
-					'smw_sort' => Collator::singleton()->getTruncatedSortKey( $sortkey ),
+					'smw_sort' => $collator->getSortKey( $sortkey ),
 					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] )
 				),
 				__METHOD__
@@ -660,12 +659,9 @@ class SMWSql3SmwIds {
 				$this->setPropertyTableHashesCache( $id, null );
 			}
 
-		} elseif ( $sortkey !== '' && $sortkey != $oldsort ) {
-
+		} elseif ( $sortkey !== '' && ( $sortkey != $oldsort || !$collator->isIdentical( $oldsort, $sortkey ) ) ) {
 			$this->tableFieldUpdater->updateSortField( $id, $sortkey );
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
-		} elseif ( $sortkey !== '' && $this->tableFieldUpdater->shouldChangeSortField( $oldsort, $sortkey ) ) {
-			$this->tableFieldUpdater->updateSortField( $id, $sortkey );
 		}
 
 		$db->endAtomicTransaction( __METHOD__ );

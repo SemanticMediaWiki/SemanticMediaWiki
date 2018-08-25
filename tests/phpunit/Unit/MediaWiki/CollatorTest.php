@@ -23,6 +23,25 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsIdentical() {
+
+		$collation = $this->getMockBuilder( '\Collation' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$collation->expects( $this->exactly( 2 ) )
+			->method( 'getSortKey' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new Collator(
+			$collation
+		);
+
+		$this->assertTrue(
+			$instance->isIdentical( 'Foo', 'Foo' )
+		);
+	}
+
 	/**
 	 * @dataProvider uppercaseProvider
 	 */
