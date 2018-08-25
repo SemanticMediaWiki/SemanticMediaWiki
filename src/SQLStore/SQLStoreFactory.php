@@ -399,7 +399,7 @@ class SQLStoreFactory {
 			$this->store
 		);
 
-		$tableSchemaManager->setFieldTypeFeatures(
+		$tableSchemaManager->setFeatureFlags(
 			$settings->get( 'smwgFieldTypeFeatures' )
 		);
 

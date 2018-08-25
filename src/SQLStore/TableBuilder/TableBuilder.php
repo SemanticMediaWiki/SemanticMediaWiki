@@ -29,12 +29,12 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	/**
 	 * @var array
 	 */
-	protected $configurations = array();
+	protected $config = array();
 
 	/**
 	 * @var array
 	 */
-	protected $processLog = array();
+	protected $activityLog = array();
 
 	/**
 	 * @since 2.5
@@ -73,8 +73,8 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 			throw new RuntimeException( "Unknown or unsupported DB type " . $connection->getType() );
 		}
 
-		$instance->addConfiguration( 'wgDBname', $GLOBALS['wgDBname'] );
-		$instance->addConfiguration( 'wgDBTableOptions', $GLOBALS['wgDBTableOptions'] );
+		$instance->addConfig( 'wgDBname', $GLOBALS['wgDBname'] );
+		$instance->addConfig( 'wgDBTableOptions', $GLOBALS['wgDBTableOptions'] );
 
 		return $instance;
 	}
@@ -85,8 +85,8 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @param string|integer $key
 	 * @param mixed
 	 */
-	public function addConfiguration( $key, $value ) {
-		$this->configurations[$key] = $value;
+	public function addConfig( $key, $value ) {
+		$this->config[$key] = $value;
 	}
 
 	/**
@@ -132,27 +132,27 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 */
 	public function create( Table $table ) {
 
-		$options = $table->getOptions();
+		$attributes = $table->getAttributes();
 		$tableName = $table->getName();
 
 		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
 			$this->reportMessage( "   Table not found, now creating...\n" );
-			$this->doCreateTable( $tableName, $options );
+			$this->doCreateTable( $tableName, $attributes );
 		} else {
 			$this->reportMessage( "   Table already exists, checking structure ...\n" );
-			$this->doUpdateTable( $tableName, $options );
+			$this->doUpdateTable( $tableName, $attributes );
 		}
 
 		$this->reportMessage( "   ... done.\n" );
 
-		if ( !isset( $options['indices'] ) ) {
+		if ( !isset( $attributes['indices'] ) ) {
 			return $this->reportMessage( "No index structures for table $tableName ...\n" );
 		}
 
 		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
-		$this->doCreateIndices( $tableName, $options );
+		$this->doCreateIndices( $tableName, $attributes );
 
 		$this->reportMessage( "   ... done.\n" );
 	}
@@ -198,7 +198,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * {@inheritDoc}
 	 */
 	public function getLog() {
-		return $this->processLog;
+		return $this->activityLog;
 	}
 
 	/**

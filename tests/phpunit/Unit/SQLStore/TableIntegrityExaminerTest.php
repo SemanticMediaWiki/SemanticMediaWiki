@@ -234,10 +234,6 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'tableName' )
 			->will( $this->returnValue( 'smw_object_ids' ) );
 
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'tableName' )
-			->will( $this->returnValue( 'smw_object_ids' ) );
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'moveSMWPageID' ) )
 			->getMock();
@@ -261,7 +257,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$tableBuilder->expects( $this->any() )
 			->method( 'getLog' )
-			->will( $this->returnValue( array( 'smw_object_ids' => array( 'smw_sort' => 'new' ) ) ) );
+			->will( $this->returnValue( array( 'smw_object_ids' => array( 'smw_sort' => 'field.new' ) ) ) );
 
 		$tableBuilder->expects( $this->once() )
 			->method( 'checkOn' );

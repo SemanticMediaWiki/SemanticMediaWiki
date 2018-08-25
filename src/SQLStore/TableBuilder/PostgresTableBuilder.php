@@ -26,7 +26,7 @@ class PostgresTableBuilder extends TableBuilder {
 			 // like page_id in MW page table
 			'id'         => 'SERIAL',
 			 // like page_id in MW page table
-			'id primary' => 'SERIAL NOT NULL PRIMARY KEY',
+			'id_primary' => 'SERIAL NOT NULL PRIMARY KEY',
 			 // like page_namespace in MW page table
 			'namespace'  => 'BIGINT',
 			 // like page_title in MW page table
@@ -41,12 +41,12 @@ class PostgresTableBuilder extends TableBuilder {
 			'boolean'    => 'BOOLEAN',
 			'double'     => 'DOUBLE PRECISION',
 			'integer'    => 'bigint',
-			'char long'  => 'TEXT',
+			'char_long'  => 'TEXT',
 			// Requires citext extension
-			'char nocase' => 'citext NOT NULL',
-			'char long nocase' => 'citext NOT NULL',
-			'usage count'      => 'bigint',
-			'integer unsigned' => 'INTEGER'
+			'char_nocase' => 'citext NOT NULL',
+			'char_long_nocase' => 'citext NOT NULL',
+			'usage_count'      => 'bigint',
+			'integer_unsigned' => 'INTEGER'
 		);
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
@@ -59,12 +59,12 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $tableOptions = null ) {
+	protected function doCreateTable( $tableName, array $attributes = null ) {
 
 		$tableName = $this->connection->tableName( $tableName );
 
 		$fieldSql = array();
-		$fields = $tableOptions['fields'];
+		$fields = $attributes['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
 			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
@@ -82,17 +82,21 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $tableOptions = null ) {
+	protected function doUpdateTable( $tableName, array $attributes = null ) {
 
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
-		$fields = $tableOptions['fields'];
+		$fields = $attributes['fields'];
 		$position = 'FIRST';
+
+		if ( !isset( $this->activityLog[$tableName] ) ) {
+			$this->activityLog[$tableName] = [];
+		}
 
 		// Loop through all the field definitions, and handle each definition
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $tableOptions );
+			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $attributes );
 
 			$position = "AFTER $fieldName";
 			$currentFields[$fieldName] = false;
@@ -166,7 +170,7 @@ EOT;
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
 
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
@@ -176,15 +180,10 @@ EOT;
 		}
 
 		$fieldType = strtoupper( $fieldType );
-
-		if ( !isset( $this->processLog[$tableName] ) ) {
-			$this->processLog[$tableName] = array();
-		}
-
 		$default = '';
 
-		if ( isset( $tableOptions['defaults'][$fieldName] ) ) {
-			$default = "DEFAULT '" . $tableOptions['defaults'][$fieldName] . "'";
+		if ( isset( $attributes['defaults'][$fieldName] ) ) {
+			$default = "DEFAULT '" . $attributes['defaults'][$fieldName] . "'";
 		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
@@ -224,7 +223,7 @@ EOT;
 
 	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
 
-		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
+		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
 		$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType $default", __METHOD__ );
@@ -232,6 +231,9 @@ EOT;
 	}
 
 	private function doDropField( $tableName, $fieldName ) {
+
+		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
+
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
 		$this->connection->query( 'ALTER TABLE ' . $tableName . ' DROP COLUMN "' . $fieldName . '"', __METHOD__ );
 		$this->reportMessage( "done.\n" );

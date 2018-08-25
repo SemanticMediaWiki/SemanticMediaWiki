@@ -26,7 +26,7 @@ class MySQLTableBuilder extends TableBuilder {
 			 // like page_id in MW page table
 			'id'         => 'INT(11) UNSIGNED',
 			 // like page_id in MW page table
-			'id primary' => 'INT(11) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
+			'id_primary' => 'INT(11) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
 			 // like page_namespace in MW page table
 			'namespace'  => 'INT(11)',
 			 // like page_title in MW page table
@@ -41,11 +41,11 @@ class MySQLTableBuilder extends TableBuilder {
 			'boolean'    => 'TINYINT(1)',
 			'double'     => 'DOUBLE',
 			'integer'    => 'INT(8)',
-			'char long'  => "VARBINARY($charLongLength)",
-			'char nocase'      => 'VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci',
-			'char long nocase' => "VARCHAR($charLongLength) CHARSET utf8 COLLATE utf8_general_ci",
-			'usage count'      => 'INT(8) UNSIGNED',
-			'integer unsigned' => 'INT(8) UNSIGNED'
+			'char_long'  => "VARBINARY($charLongLength)",
+			'char_nocase'      => 'VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci',
+			'char_long_nocase' => "VARCHAR($charLongLength) CHARSET utf8 COLLATE utf8_general_ci",
+			'usage_count'      => 'INT(8) UNSIGNED',
+			'integer_unsigned' => 'INT(8) UNSIGNED'
 		);
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
@@ -58,35 +58,35 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $tableOptions = null ) {
+	protected function doCreateTable( $tableName, array $attributes = null ) {
 
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
 
 		$fieldSql = array();
-		$fields = $tableOptions['fields'];
+		$fields = $attributes['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
 			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
 		}
 
 		// @see $wgDBname
-		$dbName = isset( $this->configurations['wgDBname'] ) ? "`". $this->configurations['wgDBname'] . "`." : '';
+		$dbName = isset( $this->config['wgDBname'] ) ? "`". $this->config['wgDBname'] . "`." : '';
 
 		$sql .= 'CREATE TABLE ' . $dbName . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
-		$sql .= $this->createExtraSQLFromTableOptions( $tableOptions );
+		$sql .= $this->sql_from( $attributes );
 
 		$this->connection->query( $sql, __METHOD__ );
 	}
 
-	private function createExtraSQLFromTableOptions( array $tableOptions ) {
+	private function sql_from( array $attributes ) {
 
 		// $smwgFulltextSearchTableOptions can define:
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' )
 		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )
-		if ( isset( $tableOptions['fulltextSearchTableOptions']['mysql'] ) ) {
+		if ( isset( $attributes['fulltextSearchTableOptions']['mysql'] ) ) {
 
-			$tableOption = $tableOptions['fulltextSearchTableOptions']['mysql'];
+			$tableOption = $attributes['fulltextSearchTableOptions']['mysql'];
 
 			// By convention the first index has table specific relevance
 			if ( is_array( $tableOption ) ) {
@@ -96,10 +96,10 @@ class MySQLTableBuilder extends TableBuilder {
 			return $tableOption;
 		}
 
-		// @see $wgDBTableOptions, This replacement is needed for compatibility,
+		// @see $wgDBattributes, This replacement is needed for compatibility,
 		// http://bugs.mysql.com/bug.php?id=17501
-		if ( isset( $this->configurations['wgDBTableOptions'] ) ) {
-			return str_replace( 'TYPE', 'ENGINE', $this->configurations['wgDBTableOptions'] );
+		if ( isset( $this->config['wgDBattributes'] ) ) {
+			return str_replace( 'TYPE', 'ENGINE', $this->config['wgDBattributes'] );
 		}
 	}
 
@@ -110,17 +110,17 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $tableOptions = null ) {
+	protected function doUpdateTable( $tableName, array $attributes = null ) {
 
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
-		$fields = $tableOptions['fields'];
+		$fields = $attributes['fields'];
 		$position = 'FIRST';
 
 		// Loop through all the field definitions, and handle each definition
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $tableOptions );
+			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $attributes );
 
 			$position = "AFTER $fieldName";
 			$currentFields[$fieldName] = false;
@@ -167,17 +167,17 @@ class MySQLTableBuilder extends TableBuilder {
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
 
-		if ( !isset( $this->processLog[$tableName] ) ) {
-			$this->processLog[$tableName] = array();
+		if ( !isset( $this->activityLog[$tableName] ) ) {
+			$this->activityLog[$tableName] = array();
 		}
 
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$default = '';
 
-		if ( isset( $tableOptions['defaults'][$fieldName] ) ) {
-			$default = "DEFAULT '" . $tableOptions['defaults'][$fieldName] . "'";
+		if ( isset( $attributes['defaults'][$fieldName] ) ) {
+			$default = "DEFAULT '" . $attributes['defaults'][$fieldName] . "'";
 		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
@@ -191,7 +191,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
 
-		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
+		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
 		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $default $position", __METHOD__ );
@@ -199,6 +199,8 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ) {
+
+		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_UPD;
 
 		// Continue to alter the type but silence the output since we cannot get
 		// any better information from MySQL about the types hence we a hack the
@@ -226,6 +228,9 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doDropField( $tableName, $fieldName ) {
+
+		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
+
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
 		$this->connection->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__ );
 		$this->reportMessage( "done.\n" );
@@ -335,7 +340,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 		$this->reportMessage( "   ... creating new index $columns ..." );
 
-		// @see MySQLTableBuilder::createExtraSQLFromTableOptions
+		// @see MySQLTableBuilder::createExtraSQLFromattributes
 		// @see https://dev.mysql.com/doc/refman/5.7/en/fulltext-search-ngram.html
 		if ( isset( $indexOptions['fulltextSearchTableOptions']['mysql'] ) ) {
 			$indexOption = $indexOptions['fulltextSearchTableOptions']['mysql'];
