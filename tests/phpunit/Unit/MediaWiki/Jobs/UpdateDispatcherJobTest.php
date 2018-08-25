@@ -226,6 +226,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->setMethods( array(
 				'getAllPropertySubjects',
+				'getPropertyValues',
 				'getProperties',
 				'getInProperties',
 				'getPropertySubjects' ) )
@@ -234,6 +235,10 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
 			->will( $this->returnCallback( array( $this, 'mockStoreAllPropertySubjectsCallback' ) ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $setup['title'] ) ] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
@@ -249,7 +254,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new UpdateDispatcherJob( $setup['title'], array() );
+		$instance = new UpdateDispatcherJob( $setup['title'], $setup['parameters'] );
 		$instance->isEnabledJobQueue( false );
 		$instance->run();
 
@@ -270,7 +275,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 		$parameters = array(
 			'semanticData' => $this->semanticDataSerializer->serialize( $semanticData )
-		);
+		) + $setup['parameters'];
 
 		$this->expectedProperty = $setup['property'];
 		$this->expectedSubjects = $setup['subjects'];
@@ -279,6 +284,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->setMethods( array(
 				'getAllPropertySubjects',
+				'getPropertyValues',
 				'getProperties',
 				'getInProperties',
 				'getPropertySubjects' ) )
@@ -287,6 +293,10 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )
 			->will( $this->returnCallback( array( $this, 'mockStoreAllPropertySubjectsCallback' ) ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $setup['title'] ) ] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
@@ -338,10 +348,11 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 				'title'      => $title,
 				'subjects'   => $subjects,
 				'property'   => $property,
-				'properties' => array()
+				'properties' => array(),
+				'parameters' => []
 			),
 			array(
-				'count' => $count
+				'count' => 6
 			)
 		);
 
@@ -354,10 +365,41 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 				'title'      => $title,
 				'subjects'   => array( DIWikiPage::newFromTitle( $title ) ),
 				'property'   => $property,
-				'properties' => array( $property )
+				'properties' => array( $property ),
+				'parameters' => []
 			),
 			array(
 				'count' => 1
+			)
+		);
+
+
+		#2
+		$duplicate = DIWikiPage::newFromText( 'Foo' );
+
+		$subjects = array(
+			$duplicate,
+			DIWikiPage::newFromText( 'Bar' ),
+			DIWikiPage::newFromText( 'Baz' ),
+			$duplicate,
+			DIWikiPage::newFromText( 'Yon' ),
+			DIWikiPage::newFromText( 'Yon' ),
+			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
+		);
+
+		$title =  Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$property = DIProperty::newFromUserLabel( $title->getText() );
+
+		$provider[] = array(
+			array(
+				'title'      => $title,
+				'subjects'   => $subjects,
+				'property'   => $property,
+				'properties' => array(),
+				'parameters' => [ UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL => true ]
+			),
+			array(
+				'count' => 6
 			)
 		);
 
@@ -373,7 +415,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	 * @return DIWikiPage[]
 	 */
 	public function mockStoreAllPropertySubjectsCallback( DIProperty $property ) {
-		return $this->expectedProperty == $property ? $this->expectedSubjects : array();
+		return $this->expectedSubjects;
 	}
 
 }
