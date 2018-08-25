@@ -35,6 +35,15 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
+	 * @return boolean
+	 */
+	public static function isBlocked() {
+		return defined( 'MEDIAWIKI_INSTALL' ) && MEDIAWIKI_INSTALL;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return string
 	 */
 	public static function name() {

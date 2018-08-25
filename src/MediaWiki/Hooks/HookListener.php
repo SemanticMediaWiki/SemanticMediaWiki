@@ -55,11 +55,16 @@ class HookListener {
 			Site::isCommandLineMode()
 		);
 
+		// #3341
+		// When running as part of the install don't try to access the DB
+		// or update the Store
 		$parserAfterTidy->isReadOnly(
-			Site::isReadOnly()
+			Site::isBlocked()
 		);
 
-		return $parserAfterTidy->process( $text );
+		$parserAfterTidy->process( $text );
+
+		return true;
 	}
 
 	/**
@@ -425,14 +430,22 @@ class HookListener {
 	 */
 	public function onLinksUpdateConstructed( $linksUpdate ) {
 
-		$applicationFactory = ApplicationFactory::getInstance();
 		$linksUpdateConstructed = new LinksUpdateConstructed();
 
 		$linksUpdateConstructed->setLogger(
-			$applicationFactory->getMediaWikiLogger()
+			 ApplicationFactory::getInstance()->getMediaWikiLogger()
 		);
 
-		return $linksUpdateConstructed->process( $linksUpdate );
+		// #3341
+		// When running as part of the install don't try to access the DB
+		// or update the Store
+		$linksUpdateConstructed->isReadOnly(
+			Site::isBlocked()
+		);
+
+		$linksUpdateConstructed->process( $linksUpdate );
+
+		return true;
 	}
 
 	/**
