@@ -125,7 +125,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		// that differs from false, it's an obsolete one that should be removed.
 		foreach ( $currentFields as $fieldName => $value ) {
 			if ( $value !== false ) {
-				$this->doDropField( $tableName, $fieldName );
+				$this->doDropField( $tableName, $fieldName, $tableOptions );
 			}
 		}
 	}
@@ -210,10 +210,34 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName ) {
-		$this->reportMessage( "   ... deleting obsolete field $fieldName is not possible in SQLite.\n" );
-		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
-		$this->reportMessage( "done.\n" );
+	private function doDropField( $tableName, $fieldName, $tableOptions ) {
+
+		$fields = $tableOptions['fields'];
+		$temp_table = "{$tableName}_temp";
+
+		// https://stackoverflow.com/questions/5938048/delete-column-from-sqlite-table
+		// Deleting obsolete fields is not possible in SQLite therefore create a
+		// temp table, copy the content, remove the table with obsolete/ fields,
+		// and rename the temp table
+		$field_def = [];
+		$field_list = [];
+
+		foreach ( $fields as $field => $type ) {
+			$field_def[] = "$field " . $this->getStandardFieldType( $type );
+			$field_list[] = $field;
+		}
+
+		$this->reportMessage( "   ... field $fieldName is obsolete ...\n" );
+		$this->reportMessage( "       ... creating a temporary table ...\n" );
+		$this->connection->query( 'DROP TABLE IF EXISTS ' . $temp_table, __METHOD__ );
+		$this->connection->query( 'CREATE TABLE ' . $temp_table .' (' . implode( ',', $field_def ) . ') ', __METHOD__ );
+		$this->reportMessage( "       ... copying table contents ...\n" );
+		$this->connection->query( 'INSERT INTO ' . $temp_table . ' SELECT ' . implode( ',', $field_list ) . ' FROM ' . $tableName, __METHOD__ );
+		$this->reportMessage( "       ... dropping table with obsolete field definitions ...\n" );
+		$this->connection->query( 'DROP TABLE IF EXISTS ' . $tableName, __METHOD__ );
+		$this->reportMessage( "       ... renaming temporary table to $tableName ...\n" );
+		$this->connection->query( 'ALTER TABLE ' . $temp_table . ' RENAME TO ' . $tableName, __METHOD__ );
+		$this->reportMessage( "       ... done.\n" );
 	}
 
 	/** Index */
