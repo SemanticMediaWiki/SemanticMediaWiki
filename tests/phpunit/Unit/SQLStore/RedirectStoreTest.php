@@ -236,25 +236,30 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setEqualitySupportFlag( SMW_EQ_FULL );
-		$instance->updateRedirect( 42, 'Foo', '' );
+		$instance->updateRedirect( 42, 'Foo', NS_MAIN );
 	}
 
 	public function testUpdateRedirectNotEnabled() {
 
-		$this->store->expects( $this->never() )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyTables' ] )
+			->getMock();
+
+		$store->expects( $this->never() )
 			->method( 'getPropertyTables' );
 
-		$this->store->setOption(
+		$store->setOption(
 			\SMW\Store::OPT_CREATE_UPDATE_JOB,
 			false
 		);
 
 		$instance = new RedirectStore(
-			$this->store
+			$store
 		);
 
 		$instance->setEqualitySupportFlag( SMW_EQ_NONE );
-		$instance->updateRedirect( 42, 'Foo', '' );
+		$instance->updateRedirect( 42, 'Foo', NS_MAIN );
 	}
 
 }
