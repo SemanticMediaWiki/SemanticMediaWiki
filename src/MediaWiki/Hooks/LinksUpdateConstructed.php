@@ -63,6 +63,12 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 	 */
 	public function process( LinksUpdate $linksUpdate ) {
 
+		// When running as part of the install do not try to access the database
+		// or update the datastore
+		if ( defined( 'MEDIAWIKI_INSTALL' ) ) {
+			return true;
+		}
+		
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$title = $linksUpdate->getTitle();
 

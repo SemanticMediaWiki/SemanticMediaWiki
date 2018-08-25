@@ -147,7 +147,7 @@ class HookRegistry {
 			// ...\ServiceContainer.php: Service disabled: DBLoadBalancer
 			try {
 				$isReadOnly = wfReadOnly();
-			} catch( \MediaWiki\Services\ServiceDisabledException $e ) {
+			} catch( \Exception $e ) {
 				$isReadOnly = true;
 			}
 
