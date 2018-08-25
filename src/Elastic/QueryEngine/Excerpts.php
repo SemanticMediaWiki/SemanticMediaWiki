@@ -27,7 +27,7 @@ class Excerpts extends \SMW\Query\Excerpts {
 
 		foreach ( $this->excerpts as $map ) {
 			if ( $map[0] === $hash ) {
-				return is_string( $map[1] ) ? $map[1] : $this->format( $map[1] );
+				return $this->format( $map[1] );
 			}
 		}
 
@@ -40,14 +40,39 @@ class Excerpts extends \SMW\Query\Excerpts {
 	 * @return boolean
 	 */
 	public function hasHighlight() {
-		return true;
+		return $this->noHighlight ? false : true;
 	}
 
 	private function format( $v ) {
+
+		// https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
+		// By default, highlighted text is wrapped in <em> and </em> tags
+
 		$text = '';
 
-		foreach ( $v as $key => $value ) {
-			$text .= implode( ' ', $value ) ;
+		if ( is_array( $v ) ) {
+			foreach ( $v as $key => $value ) {
+				$text .= implode( ' ', $value ) ;
+			}
+		} else {
+			$text = $v;
+		}
+
+		if ( $this->stripTags ) {
+			$text = str_replace(
+				[ '<em>', '</em>' ],
+				[ '&lt;em&gt;', '&lt;/em&gt;' ],
+				$text
+			);
+
+			// Remove tags to avoid any output disruption
+			$text = strip_tags( $text );
+
+			$text = str_replace(
+				[ '&lt;em&gt;', '&lt;/em&gt;' ],
+				[ '<em>', '</em>' ],
+				$text
+			);
 		}
 
 		if ( $this->noHighlight ) {
