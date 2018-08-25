@@ -96,6 +96,7 @@ class SortBuilder {
 		$isConstantScore = true;
 		$sort = [];
 		$sortFields = [];
+		$sortKeysCount = count( $sortKeys );
 
 		foreach ( $sortKeys as $key => $order ) {
 			$order = strtolower( $order );
@@ -108,7 +109,7 @@ class SortBuilder {
 			}
 
 			if ( $key === '' || $key === '#' ) {
-				$this->addDefaultField( $sort, $order );
+				$this->addDefaultField( $sort, $order, $sortKeysCount );
 			} else {
 				$this->addField( $sort, $sortFields, $key, $order );
 			}
@@ -117,12 +118,16 @@ class SortBuilder {
 		return [ $sort, $sortFields, $isRandom, $isConstantScore ];
 	}
 
-	private function addDefaultField( &$sort, $order ) {
+	private function addDefaultField( &$sort, $order, $sortKeysCount ) {
 		$sort['subject.sortkey.sort'] = [ 'order' => $order ];
 
 		// Add title as extra criteria in case an entity uses the same sortkey
 		// to clarify its relative position, @see T:P0416#8
-		$sort['subject.title.sort'] = [ 'order' => $order ];
+		// Only add the title as determining factor when no other sort parameter
+		// is available
+		if ( $sortKeysCount == 1 ) {
+			$sort['subject.title.sort'] = [ 'order' => $order ];
+		}
 	}
 
 	private function addField( &$sort, &$sortFields, $key, $order ) {
