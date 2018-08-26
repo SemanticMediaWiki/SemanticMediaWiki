@@ -53,10 +53,14 @@ class DuplicateEntitiesDisposer {
 	 */
 	public function verifyAndDispose( $duplicates ) {
 
+		if ( !$this->is_iterable( $duplicates ) ) {
+			return;
+		}
+
 		$count = count( $duplicates );
 		$this->messageReporter->reportMessage( "Found: $count duplicates\n" );
 
-		if ( $count > 0 && $this->isIterable( $duplicates ) ) {
+		if ( $count > 0 ) {
 			$this->doDispose( $duplicates );
 		}
 
@@ -127,7 +131,7 @@ class DuplicateEntitiesDisposer {
 	 *
 	 * @since 3.0
 	 */
-	private function isIterable( $obj ) {
+	private function is_iterable( $obj ) {
 		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof \Traversable ) );
 	}
 

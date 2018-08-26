@@ -69,6 +69,7 @@ class PValueLookup extends Lookup {
 		$continueOffset = 0;
 		$property = null;
 		$sort = false;
+		$count = 0;
 
 		if ( isset( $parameters['property'] ) ) {
 			$property = $parameters['property'];
@@ -112,8 +113,12 @@ class PValueLookup extends Lookup {
 				$opts
 			);
 
-			if ( count( $res ) > $limit ) {
-				$continueOffset = $offset + count( $res );
+			if ( $this->is_iterable( $res ) ) {
+				$count = count( $res );
+			}
+
+			if ( $count > $limit ) {
+				$continueOffset = $offset + $count;
 				array_pop( $res );
 			}
 		}
@@ -126,11 +131,15 @@ class PValueLookup extends Lookup {
 			'meta' => [
 				'type'  => 'pvalue',
 				'limit' => $limit,
-				'count' => count( $res )
+				'count' => $count
 			]
 		];
 
 		return $res;
+	}
+
+	private function is_iterable( $obj ) {
+		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof \Traversable ) );
 	}
 
 }
