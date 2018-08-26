@@ -143,7 +143,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$this->entityValueUniquenessConstraintChecker->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ] ) );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'hasUniquenessConstraint' )
@@ -151,7 +151,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getContextPage' ) )
+			->setMethods( array( 'getProperty', 'getDataItem', 'getContextPage', 'addErrorMsg' ) )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -161,6 +161,10 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
 			->will( $this->returnValue( $property ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'addErrorMsg' )
+			->with( $this->equalTo( [ 'smw-datavalue-uniqueness-constraint-error', $property->getLabel(), '...', 'Foo' ] ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
