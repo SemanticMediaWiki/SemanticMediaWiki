@@ -52,7 +52,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->stringContains( 'CREATE TABLE `xyz`."foo"' ) );
 
 		$instance = MySQLTableBuilder::factory( $connection );
-		$instance->addConfiguration( 'wgDBname', 'xyz' );
+		$instance->addConfig( 'wgDBname', 'xyz' );
 
 		$table = new Table( 'foo' );
 		$table->addColumn( 'bar', 'text' );

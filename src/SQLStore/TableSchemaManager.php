@@ -36,7 +36,7 @@ class TableSchemaManager {
 	/**
 	 * @var integer
 	 */
-	private $fieldTypeFeatures = false;
+	private $featureFlags = false;
 
 	/**
 	 * @since 2.5
@@ -69,10 +69,10 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $fieldTypeFeatures
+	 * @param integer $featureFlags
 	 */
-	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
-		$this->fieldTypeFeatures = $fieldTypeFeatures;
+	public function setFeatureFlags( $featureFlags ) {
+		$this->featureFlags = $featureFlags;
 	}
 
 	/**
@@ -82,8 +82,8 @@ class TableSchemaManager {
 	 *
 	 * @return boolean
 	 */
-	public function isEnabledFeature( $feature ) {
-		return ( (int)$this->fieldTypeFeatures & $feature ) != 0;
+	public function hasFeatureFlag( $feature ) {
+		return ( (int)$this->featureFlags & $feature ) != 0;
 	}
 
 	/**
@@ -150,7 +150,7 @@ class TableSchemaManager {
 		$table->addColumn( 'smw_subobject', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
 
 		$table->addColumn( 'smw_sortkey', array(
-			$this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ? FieldType::TYPE_CHAR_NOCASE : FieldType::FIELD_TITLE,
+			$this->hasFeatureFlag( SMW_FIELDT_CHAR_NOCASE ) ? FieldType::TYPE_CHAR_NOCASE : FieldType::FIELD_TITLE,
 			'NOT NULL'
 		) );
 

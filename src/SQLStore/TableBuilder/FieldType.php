@@ -20,7 +20,7 @@ class FieldType {
 	/**
 	 * @var string
 	 */
-	const FIELD_ID_PRIMARY = 'id primary';
+	const FIELD_ID_PRIMARY = 'id_primary';
 
 	/**
 	 * @var string
@@ -45,22 +45,22 @@ class FieldType {
 	/**
 	 * @var string
 	 */
-	const FIELD_USAGE_COUNT = 'usage count';
+	const FIELD_USAGE_COUNT = 'usage_count';
 
 	/**
 	 * @var string
 	 */
-	const TYPE_CHAR_NOCASE = 'char nocase';
+	const TYPE_CHAR_NOCASE = 'char_nocase';
 
 	/**
 	 * @var string
 	 */
-	const TYPE_CHAR_LONG = 'char long';
+	const TYPE_CHAR_LONG = 'char_long';
 
 	/**
 	 * @var string
 	 */
-	const TYPE_CHAR_LONG_NOCASE = 'char long nocase';
+	const TYPE_CHAR_LONG_NOCASE = 'char_long_nocase';
 
 	/**
 	 * @var integer
@@ -80,7 +80,7 @@ class FieldType {
 	/**
 	 * @var string
 	 */
-	const TYPE_INT_UNSIGNED = 'integer unsigned';
+	const TYPE_INT_UNSIGNED = 'integer_unsigned';
 
 	/**
 	 * @var string

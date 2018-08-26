@@ -99,12 +99,12 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
-		$instance->setFieldTypeFeatures(
+		$instance->setFeatureFlags(
 			SMW_FIELDT_CHAR_NOCASE
 		);
 
 		$table = $instance->findTable( \SMW\SQLStore\SQLStore::ID_TABLE );
-		$fields = $table->getOption( 'fields' );
+		$fields = $table->get( 'fields' );
 
 		$this->assertContains(
 			FieldType::TYPE_CHAR_NOCASE,

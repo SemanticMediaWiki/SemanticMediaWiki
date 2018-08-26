@@ -40,7 +40,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getOptions()
+			$instance->getAttributes()
 		);
 	}
 
@@ -58,7 +58,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getOptions()
+			$instance->getAttributes()
 		);
 
 		$this->assertInternalType(
@@ -81,7 +81,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getOptions()
+			$instance->getAttributes()
 		);
 	}
 
@@ -97,21 +97,21 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getOptions()
+			$instance->getAttributes()
 		);
 
 		$this->assertEquals(
 			[ 'foobar' ],
-			$instance->getOption( 'bar' )
+			$instance->get( 'bar' )
 		);
 	}
 
-	public function testGetOptionOnUnregsiteredKeyThrowsException() {
+	public function testGetOnUnregsiteredKeyThrowsException() {
 
 		$instance = new Table( 'Foo' );
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->getOption( 'bar' );
+		$instance->get( 'bar' );
 	}
 
 	/**

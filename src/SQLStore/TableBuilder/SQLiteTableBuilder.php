@@ -25,7 +25,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$fieldTypes = array(
 			 // like page_id in MW page table
 			'id'         => 'INTEGER',
-			'id primary' => 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
+			'id_primary' => 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
 			 // like page_namespace in MW page table
 			'namespace'  => 'INT(11)',
 			 // like page_title in MW page table
@@ -40,11 +40,11 @@ class SQLiteTableBuilder extends TableBuilder {
 			'boolean'    => 'TINYINT(1)',
 			'double'     => 'DOUBLE',
 			'integer'    => 'INT(8)',
-			'char long'  => "VARBINARY($charLongLength)",
-			'char nocase'      => 'VARCHAR(255) NOT NULL COLLATE NOCASE',
-			'char long nocase' => "VARCHAR($charLongLength) NOT NULL COLLATE NOCASE",
-			'usage count'      => 'INT(8)',
-			'integer unsigned' => 'INTEGER'
+			'char_long'  => "VARBINARY($charLongLength)",
+			'char_nocase'      => 'VARCHAR(255) NOT NULL COLLATE NOCASE',
+			'char_long_nocase' => "VARCHAR($charLongLength) NOT NULL COLLATE NOCASE",
+			'usage_count'      => 'INT(8)',
+			'integer_unsigned' => 'INTEGER'
 		);
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
@@ -57,7 +57,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $tableOptions = null ) {
+	protected function doCreateTable( $tableName, array $attributes = null ) {
 
 		$mode = '';
 		$option = '';
@@ -65,8 +65,8 @@ class SQLiteTableBuilder extends TableBuilder {
 		$ftsOptions = null;
 		$tableName = $this->connection->tableName( $tableName );
 
-		if ( isset( $tableOptions['fulltextSearchTableOptions']['sqlite'] ) ) {
-			$ftsOptions = $tableOptions['fulltextSearchTableOptions']['sqlite'];
+		if ( isset( $attributes['fulltextSearchTableOptions']['sqlite'] ) ) {
+			$ftsOptions = $attributes['fulltextSearchTableOptions']['sqlite'];
 		}
 
 		// Filter extra module options
@@ -83,7 +83,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 
 		$fieldSql = array();
-		$fields = $tableOptions['fields'];
+		$fields = $attributes['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
 			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
@@ -105,17 +105,17 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $tableOptions = null ) {
+	protected function doUpdateTable( $tableName, array $attributes = null ) {
 
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
-		$fields = $tableOptions['fields'];
+		$fields = $attributes['fields'];
 		$position = 'FIRST';
 
 		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $tableOptions );
+			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $attributes );
 
 			$position = "AFTER $fieldName";
 			$currentFields[$fieldName] = false;
@@ -125,7 +125,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		// that differs from false, it's an obsolete one that should be removed.
 		foreach ( $currentFields as $fieldName => $value ) {
 			if ( $value !== false ) {
-				$this->doDropField( $tableName, $fieldName, $tableOptions );
+				$this->doDropField( $tableName, $fieldName, $attributes );
 			}
 		}
 	}
@@ -156,17 +156,17 @@ class SQLiteTableBuilder extends TableBuilder {
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
 
-		if ( !isset( $this->processLog[$tableName] ) ) {
-			$this->processLog[$tableName] = array();
+		if ( !isset( $this->activityLog[$tableName] ) ) {
+			$this->activityLog[$tableName] = array();
 		}
 
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$default = '';
 
-		if ( isset( $tableOptions['defaults'][$fieldName] ) ) {
-			$default = "DEFAULT '" . $tableOptions['defaults'][$fieldName] . "'";
+		if ( isset( $attributes['defaults'][$fieldName] ) ) {
+			$default = "DEFAULT '" . $attributes['defaults'][$fieldName] . "'";
 		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
@@ -184,7 +184,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
 		}
 
-		$this->processLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
+		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		if ( $default === '' ) {
 			// @see https://www.sqlite.org/lang_altertable.html states that
@@ -210,9 +210,11 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName, $tableOptions ) {
+	private function doDropField( $tableName, $fieldName, $attributes ) {
 
-		$fields = $tableOptions['fields'];
+		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
+
+		$fields = $attributes['fields'];
 		$temp_table = "{$tableName}_temp";
 
 		// https://stackoverflow.com/questions/5938048/delete-column-from-sqlite-table

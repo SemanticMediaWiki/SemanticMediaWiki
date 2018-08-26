@@ -26,12 +26,17 @@ interface TableBuilder {
 	/**
 	 * Processing field activity status
 	 */
-	const PROC_FIELD_NEW = 'new';
+	const PROC_FIELD_NEW = 'field.new';
 
 	/**
 	 * Processing field activity status
 	 */
-	const PROC_FIELD_UPD = 'update';
+	const PROC_FIELD_UPD = 'field.update';
+
+	/**
+	 * Processing field activity status
+	 */
+	const PROC_FIELD_DROP = 'field.drop';
 
 	/**
 	 * On before the creation of tables and indices

@@ -22,7 +22,7 @@ class Table {
 	/**
 	 * @var array
 	 */
-	private $options = array();
+	private $attributes = array();
 
 	/**
 	 * @since 2.5
@@ -48,7 +48,7 @@ class Table {
 	 * @param string
 	 */
 	public function getHash() {
-		return json_encode( $this->options );
+		return json_encode( $this->attributes );
 	}
 
 	/**
@@ -56,8 +56,8 @@ class Table {
 	 *
 	 * @param array
 	 */
-	public function getOptions() {
-		return $this->options;
+	public function getAttributes() {
+		return $this->attributes;
 	}
 
 	/**
@@ -67,13 +67,13 @@ class Table {
 	 *
 	 * @param mixed
 	 */
-	public function getOption( $key ) {
+	public function get( $key ) {
 
-		if ( !isset( $this->options[$key] ) ) {
+		if ( !isset( $this->attributes[$key] ) ) {
 			throw new RuntimeException( "$key is a reserved option key." );
 		}
 
-		return $this->options[$key];
+		return $this->attributes[$key];
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Table {
 	 * @param string|array $fieldType
 	 */
 	public function addColumn( $fieldName, $fieldType ) {
-		$this->options['fields'][$fieldName] = $fieldType;
+		$this->attributes['fields'][$fieldName] = $fieldType;
 	}
 
 	/**
@@ -94,9 +94,9 @@ class Table {
 	 */
 	public function addIndex( $index, $key = null ) {
 		if ( $key !== null ) {
-			$this->options['indices'][$key] = $index;
+			$this->attributes['indices'][$key] = $index;
 		} else {
-			$this->options['indices'][] = $index;
+			$this->attributes['indices'][] = $index;
 		}
 	}
 
@@ -107,7 +107,7 @@ class Table {
 	 * @param string|int $default
 	 */
 	public function addDefault( $fieldName, $default ) {
-		$this->options['defaults'][$fieldName] = $default;
+		$this->attributes['defaults'][$fieldName] = $default;
 	}
 
 	/**
@@ -124,7 +124,7 @@ class Table {
 			throw new RuntimeException( "$key is a reserved option key." );
 		}
 
-		$this->options[$key] = $option;
+		$this->attributes[$key] = $option;
 	}
 
 }
