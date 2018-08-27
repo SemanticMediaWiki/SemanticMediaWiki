@@ -24,6 +24,8 @@
 	"smw-title": "Sémantická MediaWiki",
 	"smw_viewasrdf": "RDF kanál",
 	"smw_finallistconjunct": " a",
+	"smw-factbox-head": "...více o \"$1\"",
+	"smw-factbox-facts": "Fakta",
 	"smw_isspecprop": "Tato vlastnost je speciální vlastnost na této wiki.",
 	"smw_concept_description": "Popis pojmu „$1”",
 	"smw_no_concept_namespace": "Pojmy je možné definovat pouze na stránkách ve jmenném prostoru Concept:",

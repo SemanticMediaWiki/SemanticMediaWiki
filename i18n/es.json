@@ -39,7 +39,9 @@
 			"Ohlila",
 			"Amitie 10g",
 			"Amaia",
-			"Yllelder"
+			"Yllelder",
+			"Sophivorus",
+			"Zarisi"
 		]
 	},
 	"smw-desc": "Hace tu wiki más accesible para las máquinas para las máquinas y las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -537,6 +539,8 @@
 	"smw-search-syntax": "Sintaxis",
 	"smw-search-profile": "Extendido",
 	"smw-search-profile-tooltip": "Busca funciones en conexión con MediaWiki Semántica",
+	"smw-search-profile-sort-recent": "Más reciente",
+	"smw-search-profile-sort-title": "Título",
 	"log-name-smw": "Registro de Semantic MediaWiki",
 	"log-show-hide-smw": "$1 el registro de Semantic MediaWiki",
 	"logeventslist-smw-log": "Registro de Semantic MediaWiki",
@@ -761,5 +765,6 @@
 	"smw-remote-source-disabled": "El origen '''$1''' ha desactivado las solicitudes remotas.",
 	"smw-remote-source-unmatched-id": "La fuente '''$1''' no concuerda con la versión de MediaWiki Semántica que soporta solicitudes remotas.",
 	"smw-remote-request-note": "El resultado se recupera a partir del origen remoto '''$1'''. Es probable que el contenido generado contenga información no disponible en el wiki actual.",
-	"smw-remote-request-note-cached": "El resultado se '''almacena temporalmente''' a partir del origen remoto '''$1'''. Es probable que el contenido generado contenga información no disponible en el wiki actual."
+	"smw-remote-request-note-cached": "El resultado se '''almacena temporalmente''' a partir del origen remoto '''$1'''. Es probable que el contenido generado contenga información no disponible en el wiki actual.",
+	"smw-property-tab-redirects": "Sinónimos"
 }

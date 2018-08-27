@@ -519,6 +519,7 @@
 	"smw-search-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Помощник по вводу] включён, чтобы упростить выбор всех возможных опций и категорий.",
 	"smw-search-syntax": "Синтаксис",
 	"smw-search-profile": "Дополнительно",
+	"smw-search-profile-sort-recent": "Самые недавние",
 	"smw-search-profile-sort-title": "Название",
 	"smw-search-profile-extended-help-find-forms": "Найти формы",
 	"smw-search-profile-extended-section-sort": "Сортировать по",

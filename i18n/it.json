@@ -29,7 +29,8 @@
 			"G.garatti",
 			"Fitoschido",
 			"S4b1nuz E.656",
-			"Sarah Bernabei"
+			"Sarah Bernabei",
+			"McDutchie"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -248,7 +249,7 @@
 	"smw_smwadmin_datarefresh": "Ricostruzione dati",
 	"smw_smwadmin_datarefreshdocu": "Si possono ripristinare tutti i dati Semantic MediaWiki basati sui contenuti attuali del wiki.\nQuesto può essere utile per riparare dati corrotti o per aggiornare i dati se il loro formato interno si è modificato per qualche aggiornamento di software.\nL'aggiornamento è eseguito pagina per pagina e non sarà completato immediatamente.\nQui di seguito si vede se un aggiornamento è in corso e potrai avviare od arrestare gli aggiornamenti (a meno che questa funzionalità non sia stata disattivata dall'amministratore del sito).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Un aggiornamento è già in corso.</strong>\nNon è anormale che l'aggiornamento proceda solo lentamente, poiché verifica i dati solo a piccoli pacchetti ogni volta che un utente accede al wiki.\nPer terminare il processo pià rapidamente, puoi invocare lo script di manutenzione MediaWiki <code>runJobs.php</code> (usa l'opzione <code>--maxjobs 1000</code> per restringere il numero di verifiche svolte in ciascuna tornata).\nProgresso stimato dell'aggiornamento in corso:",
-	"smw_smwadmin_datarefreshbutton": "Pianifica data ricostruzione",
+	"smw_smwadmin_datarefreshbutton": "Pianifica ricostruzione dati",
 	"smw_smwadmin_datarefreshstop": "Ferma questo aggiornamento",
 	"smw_smwadmin_datarefreshstopconfirm": "Sì, sono {{GENDER:$1|sicuro|sicura}}.",
 	"smw-admin-support": "Ottieni supporto",
