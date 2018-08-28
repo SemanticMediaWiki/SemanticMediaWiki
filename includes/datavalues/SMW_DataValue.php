@@ -10,6 +10,7 @@
 
 use SMW\DataValues\InfoLinksProvider;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
+use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\Message;
 use SMW\Options;
@@ -97,7 +98,7 @@ abstract class SMWDataValue {
 	 * given. Property pages are used to make settings that affect parsing
 	 * and display, hence it is sometimes needed to know them.
 	 *
-	 * @var SMWDIProperty
+	 * @var DIProperty
 	 */
 	protected $m_property = null;
 
@@ -265,9 +266,9 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.6
 	 *
-	 * @param SMWDIProperty $property
+	 * @param DIProperty $property
 	 */
-	public function setProperty( SMWDIProperty $property ) {
+	public function setProperty( DIProperty $property ) {
 		$this->m_property = $property;
 	}
 
@@ -276,7 +277,7 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.8
 	 *
-	 * @return SMWDIProperty|null
+	 * @return DIProperty|null
 	 */
 	public function getProperty() {
 		return $this->m_property;
