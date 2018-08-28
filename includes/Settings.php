@@ -257,7 +257,7 @@ class Settings extends Options {
 
 		// If the key wasn't matched it could be because of a nested array
 		// hence iterate and verify otherwise throw an exception
-		return $this->doIterate( $key, $this->getOptions() );
+		return $this->doIterate( $key, $this->toArray() );
 	}
 
 	/**
