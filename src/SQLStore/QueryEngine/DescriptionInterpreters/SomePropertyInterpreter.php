@@ -125,7 +125,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			return;
 		}
 
-		$typeid = $property->findPropertyTypeID();
+		$typeid = $property->findPropertyValueType();
 		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeid );
 
 		if ( $property->isInverse() && $diType !== DataItem::TYPE_WIKIPAGE ) {

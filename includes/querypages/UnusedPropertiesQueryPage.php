@@ -165,7 +165,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 			}
 
 		} else {
-			$typeDataValue = SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() );
+			$typeDataValue = SMWTypesValue::newFromTypeId( $property->findPropertyValueType() );
 			$propertyLink  = DataValueFactory::getInstance()->newDataValueByItem( $property, null )->getShortHtmlText( $this->getLinker() );
 		}
 

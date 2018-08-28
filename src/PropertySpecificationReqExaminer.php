@@ -145,7 +145,7 @@ class PropertySpecificationReqExaminer {
 			return $this->checkTypeForPredefinedProperty( $property );
 		}
 
-		$type = $property->findPropertyTypeID();
+		$type = $property->findPropertyValueType();
 
 		if ( $type === '_ref_rec' || $type === '_rec' ) {
 			return $this->checkFieldList( $property );

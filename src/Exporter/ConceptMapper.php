@@ -202,7 +202,7 @@ class ConceptMapper {
 			if ( $subdata === false ) {
 
 				$owltype = $this->exporter->getOWLPropertyType(
-					$description->getProperty()->findPropertyTypeID()
+					$description->getProperty()->findPropertyValueType()
 				);
 
 				if ( $owltype == 'ObjectProperty' ) {

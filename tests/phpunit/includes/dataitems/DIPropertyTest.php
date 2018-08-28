@@ -92,7 +92,7 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'SomeBlobProperty' );
 		$property->setPropertyTypeId( '_txt' );
 
-		$this->assertEquals( '_txt', $property->findPropertyTypeID() );
+		$this->assertEquals( '_txt', $property->findPropertyValueType() );
 	}
 
 	public function testSetPropertyTypeIdOnPredefinedProperty() {
@@ -100,7 +100,7 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( '_MDAT' );
 		$property->setPropertyTypeId( '_dat' );
 
-		$this->assertEquals( '_dat', $property->findPropertyTypeID() );
+		$this->assertEquals( '_dat', $property->findPropertyValueType() );
 	}
 
 	public function testSetUnknownPropertyTypeIdThrowsException() {

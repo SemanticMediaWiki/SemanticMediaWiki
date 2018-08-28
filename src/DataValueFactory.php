@@ -215,7 +215,7 @@ class DataValueFactory {
 	public function newDataValueByItem( DataItem $dataItem, DIProperty $property = null, $caption = false ) {
 
 		if ( $property !== null ) {
-			$typeId = $property->findPropertyTypeID();
+			$typeId = $property->findPropertyValueType();
 		} else {
 			$typeId = $this->dataTypeRegistry->getDefaultDataItemByType( $dataItem->getDiType() );
 		}
@@ -244,7 +244,7 @@ class DataValueFactory {
 	 */
 	public function newDataValueByProperty( DIProperty $property, $valueString = false, $caption = false, $contextPage = null ) {
 
-		$typeId = $property->isInverse() ? '_wpg' : $property->findPropertyTypeID();
+		$typeId = $property->isInverse() ? '_wpg' : $property->findPropertyValueType();
 
 		return $this->newDataValueByType( $typeId, $valueString, $caption, $property, $contextPage );
 	}

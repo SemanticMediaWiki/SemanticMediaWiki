@@ -216,7 +216,7 @@ class PropertyTableInfoFetcher {
 			return $this->fixedPropertyTableIds[$propertyKey];
 		}
 
-		return $this->findTableIdForDataTypeTypeId( $property->findPropertyTypeID() );
+		return $this->findTableIdForDataTypeTypeId( $property->findPropertyValueType() );
 	}
 
 	/**

@@ -284,7 +284,7 @@ class DIProperty extends SMWDataItem {
 
 		if ( $this->isUserDefined() ) {
 			$dbkey = $this->m_key;
-		} elseif ( $this->m_key === $this->findPropertyTypeID() ) {
+		} elseif ( $this->m_key === $this->findPropertyValueType() ) {
 			// If _dat as property [[Date::...]] refers directly to its _dat type
 			// then use the en-label as canonical representation
 			$dbkey = PropertyRegistry::getInstance()->findPropertyLabelFromIdByLanguageCode( $this->m_key, 'en' );

@@ -256,7 +256,7 @@ class PropertiesQueryPage extends QueryPage {
 		);
 
 		return array(
-			SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() )->getLongHTMLText( $this->getLinker() ),
+			SMWTypesValue::newFromTypeId( $property->findPropertyValueType() )->getLongHTMLText( $this->getLinker() ),
 			$label
 		);
 	}
