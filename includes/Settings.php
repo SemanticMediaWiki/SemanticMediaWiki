@@ -210,24 +210,6 @@ class Settings extends Options {
 	}
 
 	/**
-	 * @deprecated 3.0
-	 */
-	private function add( $key, $value ) {
-
-		if ( !$this->has( $key ) ) {
-			return $this->set( $key, $value );
-		}
-
-		$val = $this->get( $key );
-
-		if ( is_array( $val ) ) {
-			$value = array_merge_recursive( $val, $value );
-		}
-
-		return $this->set( $key, $value );
-	}
-
-	/**
 	 * Returns settings for a given key (nested settings are supported)
 	 *
 	 * @par Example:
