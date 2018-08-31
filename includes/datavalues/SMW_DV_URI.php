@@ -117,7 +117,8 @@ class SMWURIValue extends SMWDataValue {
 				$scheme = $parts[0];
 
 				if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !isset( $this->schemeList[$scheme] ) ) {
-					return $this->addErrorMsg( array( 'smw-datavalue-uri-invalid-scheme', $scheme ) );
+					$this->addErrorMsg( array( 'smw-datavalue-uri-invalid-scheme', $scheme ) );
+					return;
 				}
 
 				$parts = explode( '?', $parts[1], 2 ); // try to split "hier-part?queryfrag"
