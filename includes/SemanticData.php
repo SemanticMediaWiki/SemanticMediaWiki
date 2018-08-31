@@ -384,7 +384,9 @@ class SemanticData {
 			$this->subContainerDepthCounter--;
 		}
 
-		$this->subSemanticData !== null ? $this->subSemanticData->clear() : '';
+		if ( $this->subSemanticData !== null ) {
+			$this->subSemanticData->clear();
+		}
 	}
 
 	/**
