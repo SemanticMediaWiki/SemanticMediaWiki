@@ -39,11 +39,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	const DEFERRED_DATA = 'deferred.data';
 
 	/**
-	 * @deprecated Use $params instead. Will be removed in 1.10.
-	 */
-	protected $m_params;
-
-	/**
 	 * List of parameters, set by handleParameters.
 	 * param name (lower case, trimmed) => param value (mixed)
 	 *
@@ -284,7 +279,6 @@ abstract class ResultPrinter implements IResultPrinter {
 		}
 
 		$this->params = $params;
-		$this->m_params = $params; // Compat, change made in 1.6.3/1.7, removal in 1.10
 		$this->fullParams = $fullParams;
 
 		$this->postProcessParameters();
