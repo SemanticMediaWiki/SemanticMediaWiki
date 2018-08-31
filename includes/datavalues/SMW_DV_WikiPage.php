@@ -687,42 +687,6 @@ class SMWWikiPageValue extends SMWDataValue {
 		return $this->findDisplayTitleFor( $this->m_dataitem );
 	}
 
-	/**
-	 * Static function for creating a new wikipage object from
-	 * data as it is typically stored internally. In particular,
-	 * the title string is supposed to be in DB key form.
-	 *
-	 * @note The resulting wikipage object might be invalid if
-	 * the provided title is not allowed. An object is returned
-	 * in any case.
-	 *
-	 * @deprecated This method will vanish before SMW 1.7. If you really need this, simply copy its code.
-	 *
-	 * @return SMWWikiPageValue
-	 */
-	static public function makePage( $dbkey, $namespace, $ignoredParameter = '', $interwiki = '' ) {
-		$diWikiPage = new SMWDIWikiPage( $dbkey, $namespace, $interwiki );
-		$dvWikiPage = new SMWWikiPageValue( '_wpg' );
-		$dvWikiPage->setDataItem( $diWikiPage );
-		return $dvWikiPage;
-	}
-
-	/**
-	 * Static function for creating a new wikipage object from a
-	 * MediaWiki Title object.
-	 *
-	 * @deprecated This method will vanish before SMW 1.7. If you really need this, simply copy its code.
-	 *
-	 * @return SMWWikiPageValue
-	 */
-	static public function makePageFromTitle( Title $title ) {
-		$dvWikiPage = new SMWWikiPageValue( '_wpg' );
-		$diWikiPage = SMWDIWikiPage::newFromTitle( $title );
-		$dvWikiPage->setDataItem( $diWikiPage );
-		$dvWikiPage->m_title = $title; // optional, just for efficiency
-		return $dvWikiPage;
-	}
-
 	private function findDisplayTitleFor( $subject ) {
 
 		$displayTitle = '';
