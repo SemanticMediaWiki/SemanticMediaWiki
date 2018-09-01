@@ -6,6 +6,7 @@ use SMW\Maintenance\DataRebuilder;
 use SMW\Options;
 use Title;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Maintenance\DataRebuilder
@@ -23,11 +24,28 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	protected $obLevel;
 	private $connectionManager;
+	private $testEnvironment;
 
 	// The Store writes to the output buffer during drop/setupStore, to avoid
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
 	protected function setUp() {
+
+		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'newUpdateJob' ] )
+			->getMock();
+
+		$jobFactory->expects( $this->any() )
+			->method( 'newUpdateJob' )
+			->will( $this->returnValue( $nullJob ) );
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -53,6 +71,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
 		parent::tearDown();
+		$this->testEnvironment->tearDown();
 
 		while ( ob_get_level() > $this->obLevel ) {
 			ob_end_clean();

@@ -209,7 +209,7 @@
 	},
 	"meta": {
 		"skip-on": {
-			"postgres": "Postgres requires \"citext\" otherwise it returns with \"Error: 42704 ERROR:  type \"citext\" does not exist\"",
+			"postgres": "PostgreSQL requires \"citext\" otherwise it returns with \"Error: 42704 ERROR:  type \"citext\" does not exist\"",
 			"sqlite": "NOCASE is not supported"
 		},
 		"version": "2",

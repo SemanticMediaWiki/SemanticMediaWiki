@@ -9,6 +9,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\TitleLookup;
+use SMW\ApplicationFactory;
 use SMW\Options;
 use SMW\Store;
 use SMWQueryProcessor;
@@ -137,6 +138,8 @@ class DistinctEntityDataRebuilder {
 		$this->reportMessage( "Rebuilding $type pages ...\n" );
 		$this->reportMessage( "   ... selecting $total pages ...\n" );
 
+		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+
 		foreach ( $pages as $key => $page ) {
 
 			$this->rebuildCount++;
@@ -153,7 +156,7 @@ class DistinctEntityDataRebuilder {
 				);
 			}
 
-			$this->doUpdate( $page );
+			$this->doUpdate( $jobFactory, $page );
 		}
 
 		$this->reportMessage( ( $this->options->has( 'v' ) ? "" : "\n" ) . "   ... done.\n" );
@@ -161,9 +164,9 @@ class DistinctEntityDataRebuilder {
 		return true;
 	}
 
-	private function doUpdate( $page ) {
+	private function doUpdate( $jobFactory, $page ) {
 
-		$updatejob = new UpdateJob(
+		$updatejob = $jobFactory->newUpdateJob(
 			$page,
 			[
 				UpdateJob::FORCED_UPDATE => true,

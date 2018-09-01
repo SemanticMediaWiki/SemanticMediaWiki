@@ -99,12 +99,6 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testPageMoveWithRemovalOfOldPage() {
 
-		// PHPUnit query issue
-		$this->skipTestForDatabase( array( 'postgres' ) );
-
-		// Revison showed an issue on 1.19 not being null after the move
-		$this->skipTestForMediaWikiVersionLowerThan( '1.21' );
-
 		// Further hooks required to ensure in-text annotations can be used for queries
 		$this->mwHooksHandler->register(
 			'InternalParseBeforeLinks',
