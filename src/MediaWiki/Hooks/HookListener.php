@@ -430,10 +430,14 @@ class HookListener {
 	 */
 	public function onLinksUpdateConstructed( $linksUpdate ) {
 
-		$linksUpdateConstructed = new LinksUpdateConstructed();
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$linksUpdateConstructed = new LinksUpdateConstructed(
+			$applicationFactory->getNamespaceExaminer()
+		);
 
 		$linksUpdateConstructed->setLogger(
-			 ApplicationFactory::getInstance()->getMediaWikiLogger()
+			 $applicationFactory->getMediaWikiLogger()
 		);
 
 		// #3341

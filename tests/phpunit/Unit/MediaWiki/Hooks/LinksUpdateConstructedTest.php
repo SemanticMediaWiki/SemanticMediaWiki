@@ -20,11 +20,16 @@ use Title;
 class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $namespaceExaminer;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+
+		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'exists' ) )
@@ -50,8 +55,8 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\LinksUpdateConstructed',
-			new LinksUpdateConstructed()
+			LinksUpdateConstructed::class,
+			new LinksUpdateConstructed( $this->namespaceExaminer )
 		);
 	}
 
@@ -106,7 +111,11 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new LinksUpdateConstructed();
+		$instance = new LinksUpdateConstructed(
+			$this->namespaceExaminer
+		);
+
+		$instance->setLogger( $this->testEnvironment->newSpyLogger() );
 		$instance->disableDeferredUpdate();
 
 		$this->assertTrue(
@@ -148,7 +157,9 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getParserOutput' )
 			->will( $this->returnValue( $parserOutput ) );
 
-		$instance = new LinksUpdateConstructed();
+		$instance = new LinksUpdateConstructed(
+			$this->namespaceExaminer
+		);
 
 		$this->assertTrue(
 			$instance->process( $linksUpdate )
@@ -193,7 +204,10 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$linksUpdate->mTemplates = [ 'Foo' ];
 		$linksUpdate->mRecursive = false;
 
-		$instance = new LinksUpdateConstructed();
+		$instance = new LinksUpdateConstructed(
+			$this->namespaceExaminer
+		);
+
 		$instance->process( $linksUpdate );
 
 		$this->assertTrue(
@@ -210,7 +224,10 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$linksUpdate->expects( $this->never() )
 			->method( 'getTitle' );
 
-		$instance = new LinksUpdateConstructed();
+		$instance = new LinksUpdateConstructed(
+			$this->namespaceExaminer
+		);
+
 		$instance->isReadOnly( true );
 
 		$this->assertFalse(

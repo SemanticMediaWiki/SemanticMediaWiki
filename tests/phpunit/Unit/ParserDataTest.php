@@ -299,7 +299,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance->setLogger( $logger );
 		$instance->markUpdate( 42 );
 
-		$this->assertNull(
+		$this->assertFalse(
 			$instance->updateStore()
 		);
 	}
