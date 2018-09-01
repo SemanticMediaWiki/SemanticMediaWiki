@@ -91,7 +91,6 @@ class PropertySubjectsLookup {
 		// and causes an unacceptable query time therefore force an index for
 		// those tables where the behaviour has been observed.
 		if ( $dataItemHandler->getIndexHint( 'property.subjects' ) !== '' && $dataItem === null ) {
-			$index = 'FORCE INDEX(' . $dataItemHandler->getIndexHint( 'property.subjects' ) . ')';
 
 			// For tables with only a few entries, the index hint seems to create
 			// a disadvantage, yet when the amount reaches a certain level the
@@ -132,11 +131,10 @@ class PropertySubjectsLookup {
 			$res = $cq->execute( __METHOD__ );
 
 			foreach ( $res as $r ) {
-
 				// 5000? It just showed to be a sweet spot while doing some
 				// exploratory queries
-				if ( $r->usage_count < 5000 ) {
-					$index = '';
+				if ( $r->usage_count > 5000 ) {
+					$index = 'FORCE INDEX(' . $dataItemHandler->getIndexHint( 'property.subjects' ) . ')';
 				}
 			}
 		}
