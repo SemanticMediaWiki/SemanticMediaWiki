@@ -165,6 +165,7 @@ class HookRegistry {
 	private function addCallableHandlers( $basePath, $globalVars ) {
 
 		$hookListener = new HookListener( $this->globalVars, $this->basePath );
+		$elasticFactory = ApplicationFactory::getInstance()->singleton( 'ElasticFactory' );
 
 		$hooks = [
 			'ParserAfterTidy' => [ $hookListener, 'onParserAfterTidy' ],
@@ -214,6 +215,9 @@ class HookRegistry {
 			'BlockIpComplete' => [ $hookListener, 'onBlockIpComplete' ],
 			'UnblockUserComplete' => [ $hookListener, 'onUnblockUserComplete' ],
 			'UserGroupsChanged' => [ $hookListener, 'onUserGroupsChanged' ],
+
+			'SMW::SQLStore::EntityReferenceCleanUpComplete' => [ $elasticFactory, 'onEntityReferenceCleanUpComplete' ],
+			'SMW::Admin::TaskHandlerFactory' => [ $elasticFactory, 'onTaskHandlerFactory' ],
 		];
 
 		foreach ( $hooks as $hook => $handler ) {
@@ -224,33 +228,6 @@ class HookRegistry {
 	}
 
 	private function registerHooksForInternalUse() {
-
-		$elasticFactory = new \SMW\Elastic\ElasticFactory();
-		$indexer = $elasticFactory->newIndexer( ApplicationFactory::getInstance()->getStore() );
-
-		/**
-		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::EntityReferenceCleanUpComplete
-		 */
-		$this->handlers['SMW::SQLStore::EntityReferenceCleanUpComplete'] = function ( $store, $id, $subject, $isRedirect ) use ( $indexer ) {
-
-			$indexer->setOrigin( 'EntityReferenceCleanUpComplete' );
-			$indexer->delete( [ $id ] );
-
-			return true;
-		};
-
-		/**
-		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Admin::TaskHandlerFactory
-		 */
-		$this->handlers['SMW::Admin::TaskHandlerFactory'] = function ( &$taskHandlers, $store, $outputFormatter, $user ) use ( $elasticFactory ) {
-
-			$taskHandlers[] = $elasticFactory->newInfoTaskHandler(
-				$store,
-				$outputFormatter
-			);
-
-			return true;
-		};
 
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete

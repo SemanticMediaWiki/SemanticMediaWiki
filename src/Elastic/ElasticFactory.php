@@ -12,6 +12,7 @@ use SMW\Elastic\Admin\MappingsInfoProvider;
 use SMW\Elastic\Admin\NodesInfoProvider;
 use SMW\Elastic\Admin\SettingsInfoProvider;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\TextIndexer;
 use SMW\Elastic\Indexer\FileIndexer;
@@ -43,6 +44,11 @@ use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
  * @author mwjames
  */
 class ElasticFactory {
+
+	/**
+	 * @var Indexer
+	 */
+	private $indexer;
 
 	/**
 	 * @since 3.0
@@ -375,6 +381,46 @@ class ElasticFactory {
 	 */
 	public function newDisjunctionInterpreter( ConditionBuilder $containerBuilder ) {
 		return new DisjunctionInterpreter( $containerBuilder );
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::EntityReferenceCleanUpComplete
+	 * @since 3.0
+	 *
+	 * @param Store $store
+	 */
+	public function onEntityReferenceCleanUpComplete( Store $store, $id, $subject, $isRedirect ) {
+
+		if ( !$store instanceof ElasticStore || $store->getConnection( 'elastic' ) instanceof DummyClient ) {
+			return true;
+		}
+
+		if ( $this->indexer === null ) {
+			$this->indexer = $this->newIndexer( $store );
+		}
+
+		$this->indexer->setOrigin( __METHOD__ );
+		$this->indexer->delete( [ $id ] );
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Admin::TaskHandlerFactory
+	 * @since 3.0
+	 */
+	public function onTaskHandlerFactory( &$taskHandlers, Store $store, $outputFormatter, $user ) {
+
+		if ( !$store instanceof ElasticStore ) {
+			return true;
+		}
+
+		$taskHandlers[] = $this->newInfoTaskHandler(
+			$store,
+			$outputFormatter
+		);
+
+		return true;
 	}
 
 }
