@@ -135,7 +135,8 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		// Skip on HHVM to avoid .888500 vs. .888499 msec @see hhvm#6899
-		if ( !defined( 'HHVM_VERSION' ) ) {
+		// https://bugs.php.net/bug.php?id=76822
+		if ( !defined( 'HHVM_VERSION' ) && version_compare( PHP_VERSION, '7.2', '<' ) ) {
 			#3
 			$provider[] = array(
 				'2/1300/11/02/12/03/25.888499949',
