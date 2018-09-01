@@ -1,0 +1,1 @@
+{"query":["A0001\/3"],"query-continue-offset":0,"version":1,"meta":{"type":"psubject","limit":10,"count":1,"isFromCache":false,"queryTime":.*}

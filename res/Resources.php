@@ -404,7 +404,8 @@ return array(
 	'ext.smw.autocomplete.property' => $moduleTemplate + array(
 		'scripts' => [
 			'smw/util/ext.smw.util.autocomplete.property.js',
-			'smw/util/ext.smw.util.autocomplete.propertyvalue.js'
+			'smw/util/ext.smw.util.autocomplete.propertyvalue.js',
+			'smw/util/ext.smw.util.autocomplete.propertysubject.js'
 		],
 		'dependencies' => array(
 			'mediawiki.util',

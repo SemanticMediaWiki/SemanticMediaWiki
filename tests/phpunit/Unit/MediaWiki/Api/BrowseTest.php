@@ -122,6 +122,10 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [] ) );
+
+		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
@@ -212,6 +216,11 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'pvalue',
+			[ 'property' => 'Bar' ]
+		];
+
+		$provider[] = [
+			'psubject',
 			[ 'property' => 'Bar' ]
 		];
 
