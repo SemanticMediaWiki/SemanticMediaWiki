@@ -316,10 +316,19 @@ class IntlNumberFormatter {
 			$precision = $actualPrecision;
 		}
 
+		$value = (float)$value;
+		$isNegative = $value < 0;
+
 		// Format to some level of precision; number_format does rounding and
 		// locale formatting, x and y are used temporarily since number_format
 		// supports only single characters for either
-		$value = number_format( (float)$value, $precision, 'x', 'y' );
+		$value = number_format( $value, $precision, 'x', 'y' );
+
+		// Due to https://bugs.php.net/bug.php?id=76824
+		if ( $isNegative && $value >= 0 ) {
+			$value = "-$value";
+		}
+
 		$value = str_replace(
 			array( 'x', 'y' ),
 			array(
