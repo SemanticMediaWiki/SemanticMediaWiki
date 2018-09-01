@@ -42,6 +42,10 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 
 **Please also carefully read the section on breaking changes and deprecations further down in these release notes. We have also prepared a [migration guide](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.0.0/Migration_guide) for you.**
 
+## Miscellaneous
+
+Semantic MediaWiki no longer provides file releases [(See #3347)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1732). If command line access to the webspace is not available or if the hoster imposes restrictions on required functionality an [incdividual file release](https://github.com/SemanticMediaWiki/IndividualFileRelease) will have to be created.
+
 ## New features and enhancements
 
 ### Setup
