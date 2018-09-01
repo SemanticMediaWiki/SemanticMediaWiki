@@ -414,20 +414,30 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function updateStore( $isDeferrableUpdate = false ) {
+	public function updateStore( $opts = [] ) {
+
+		$isDeferrableUpdate = false;
+
+		// @legacy
+		if ( $opts === true ) {
+			$isDeferrableUpdate = true;
+		}
+
+		if ( isset( $opts['defer'] ) && $opts['defer'] ) {
+			$isDeferrableUpdate = true;
+		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$latestRevID = $this->title->getLatestRevID( Title::GAID_FOR_UPDATE );
 
 		if ( $this->skipUpdate( $latestRevID ) ) {
 
-			$context = [
-				'method' => __METHOD__,
-				'role' => 'user',
-				'revID' => $latestRevID
-			];
+			$this->logger->info(
+				[ 'Update', 'Skipping update', 'Found revision', '{revID}' ],
+				[ 'role' => 'user', 'revID' => $latestRevID ]
+			);
 
-			return $this->logger->info( 'Update (Found rev:{revID}, skip update)', $context );
+			return false;
 		}
 
 		$this->semanticData->setOption(

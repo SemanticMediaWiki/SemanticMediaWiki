@@ -4,10 +4,9 @@ namespace SMW\MediaWiki\Hooks;
 
 use Hooks;
 use LinksUpdate;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
+use SMW\NamespaceExaminer;
 use Title;
 
 /**
@@ -20,17 +19,12 @@ use Title;
  *
  * @author mwjames
  */
-class LinksUpdateConstructed implements LoggerAwareInterface {
+class LinksUpdateConstructed extends HookHandler {
 
 	/**
-	 * @var LoggerInterface
+	 * @var NamespaceExaminer
 	 */
-	private $logger;
-
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
+	private $namespaceExaminer;
 
 	/**
 	 * @var boolean
@@ -43,14 +37,12 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 	private $isReadOnly = false;
 
 	/**
-	 * @see LoggerAwareInterface::setLogger
+	 * @since 3.0
 	 *
-	 * @since 2.5
-	 *
-	 * @param LoggerInterface $logger
+	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
+	public function __construct( NamespaceExaminer $namespaceExaminer ) {
+		$this->namespaceExaminer = $namespaceExaminer;
 	}
 
 	/**
@@ -82,10 +74,10 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 			return false;
 		}
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
 		$title = $linksUpdate->getTitle();
-
 		$latestRevID = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+
+		$opts = [ 'defer' => $this->enabledDeferredUpdate ];
 
 		// Allow any third-party extension to suppress the update process
 		if ( \Hooks::run( 'SMW::LinksUpdate::ApprovedUpdate', [ $title, $latestRevID ] ) === false ) {
@@ -95,18 +87,23 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$title,
 			$linksUpdate->getParserOutput()
 		);
 
-		if ( $this->isSemanticEnabledNamespace( $title ) && $parserData->getSemanticData()->isEmpty() ) {
-			$this->updateEmptySemanticData( $parserData, $title );
+		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
+			// #347 showed that an external process (e.g. RefreshLinksJob) can inject a
+			// ParserOutput without/cleared SemanticData which forces the Store updater
+			// to create an empty container that will clear all existing data.
+			if ( $parserData->getSemanticData()->isEmpty() ) {
+				$this->updateSemanticData( $parserData, $title, 'empty data' );
+			}
 		}
 
 		// Push updates on properties directly without delay
 		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
-			$this->enabledDeferredUpdate = false;
+			$opts['defer'] = false;
 		}
 
 		// Scan the ParserOutput for a possible externally set option
@@ -121,10 +118,7 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 		}
 
 		$parserData->setOrigin( 'LinksUpdateConstructed' );
-
-		$parserData->updateStore(
-			$this->enabledDeferredUpdate
-		);
+		$parserData->updateStore( $opts );
 
 		// Track the update on per revision because MW 1.29 made the LinksUpdate a
 		// EnqueueableDataUpdate which creates updates as JobSpecification
@@ -136,31 +130,33 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 	}
 
 	/**
-	 * #347 showed that an external process (e.g. RefreshLinksJob) can inject a
-	 * ParserOutput without/cleared SemanticData which forces the Store updater
-	 * to create an empty container that will clear all existing data.
-	 *
-	 * To ensure that for a Title and its current revision an empty ParserOutput
+	 * To ensure that for a Title and its current revision a ParserOutput
 	 * object is really meant to be "empty" (e.g. delete action initiated by a
 	 * human) the content is re-parsed in order to fetch the newest available data
 	 *
 	 * @note Parsing is expensive but it is more expensive to loose data or to
 	 * expect that an external process adheres the object contract
 	 */
-	private function updateEmptySemanticData( &$parserData, $title ) {
+	private function updateSemanticData( &$parserData, $title, $reason = '' ) {
 
-		$this->log( __METHOD__ . ' Empty SemanticData : ' . $title->getPrefixedDBkey() . "\n" );
+		$this->log(
+			[
+				'LinksUpdateConstructed',
+				"Required content re-parse due to $reason",
+				$title->getPrefixedDBKey()
+			]
+		);
 
-		$semanticData = $this->reparseToFetchSemanticData( $title );
+		$semanticData = $this->reparseAndFetchSemanticData( $title );
 
 		if ( $semanticData instanceof SemanticData ) {
 			$parserData->setSemanticData( $semanticData );
 		}
 	}
 
-	private function reparseToFetchSemanticData( $title ) {
+	private function reparseAndFetchSemanticData( $title ) {
 
-		$contentParser = $this->applicationFactory->newContentParser( $title );
+		$contentParser = ApplicationFactory::getInstance()->newContentParser( $title );
 		$parserOutput = $contentParser->parse()->getOutput();
 
 		if ( $parserOutput === null ) {
@@ -172,19 +168,6 @@ class LinksUpdateConstructed implements LoggerAwareInterface {
 		}
 
 		return $parserOutput->mSMWData;
-	}
-
-	private function isSemanticEnabledNamespace( Title $title ) {
-		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
-	}
-
-	private function log( $message, $context = array() ) {
-
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }
