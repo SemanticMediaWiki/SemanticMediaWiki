@@ -257,7 +257,8 @@ class PropertyTableRowDiffer {
 					$resultRow['o_id'] = (int)$resultRow['o_id'];
 				}
 
-				$contents[] = $resultRow;
+				$hash = $this->propertyTableRowMapper->makeHash( $resultRow );
+				$contents[$hash] = $resultRow;
 			}
 		}
 
