@@ -5,6 +5,7 @@ use SMW\ChangePropListener;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
 use SMW\SemanticData;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
@@ -769,7 +770,11 @@ class SMWSQLStore3Writers {
 
 		}
 
-		$this->addToDeferredUpdate( $oldTitle, $newTitle, $redirectId );
+		if ( $redirectId == 0 ) {
+			$oldTitle = null;
+		}
+
+		ChangeTitleUpdate::addUpdate( $oldTitle, $newTitle );
 	}
 
 	/**
@@ -965,33 +970,6 @@ class SMWSQLStore3Writers {
 		);
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
-	}
-
-	private function addToDeferredUpdate( $oldTitle, $newTitle, $redirectId ) {
-
-		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
-		$parameters = array(
-			UpdateJob::FORCED_UPDATE => true,
-			'origin' => 'Store::changeTitle'
-		);
-
-		if ( $redirectId != 0 ) {
-			$title = $oldTitle;
-			$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory, $parameters ) {
-				$jobFactory->newUpdateJob( $title, $parameters )->run();
-			} );
-
-			$deferredCallableUpdate->setOrigin( __METHOD__ . ' for ' . $title->getPrefixedDBKey() );
-			$deferredCallableUpdate->pushUpdate();
-		}
-
-		$title = $newTitle;
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory, $parameters ) {
-			$jobFactory->newUpdateJob( $title, $parameters )->run();
-		} );
-
-		$deferredCallableUpdate->setOrigin( __METHOD__ . ' for ' . $title->getPrefixedDBKey() );
-		$deferredCallableUpdate->pushUpdate();
 	}
 
 }
