@@ -52,6 +52,24 @@ class Search extends SearchEngine {
 	private $queryLink = '';
 
 	/**
+	 * @see SearchEngine::getValidSorts
+	 *
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getValidSorts() {
+		return [
+
+			// SemanticMediaWiki supported
+			'title', 'recent', 'best',
+
+			// MediaWiki default
+			'relevance'
+		];
+	}
+
+	/**
 	 * @param null|SearchEngine $fallbackSearch
 	 */
 	public function setFallbackSearchEngine( SearchEngine $fallbackSearch = null ) {
