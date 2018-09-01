@@ -225,6 +225,57 @@
 					"contents-file" : "/../Fixtures/res.a-0001.8.txt"
 				}
 			}
+		},
+		{
+			"type": "api",
+			"about": "#9 `smwbrowse` (distinct value, empty search) psubject search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "psubject",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API page property\", \"value\": \"Page 1\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.9.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#10 `smwbrowse` (empty value, empty search) psubject search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "psubject",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API page property\", \"value\": \"\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.10.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#11 `smwbrowse` (empty value, distinct search) psubject search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "psubject",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API page property\", \"value\": \"\", \"search\": \"/4\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.11.txt"
+				}
+			}
 		}
 	],
 	"settings": {
@@ -232,7 +283,8 @@
 		"wgLang": "en",
 		"smwgCacheUsage": {
 			"api.browse": false,
-			"api.browse.pvalue": false
+			"api.browse.pvalue": false,
+			"api.browse.psubject": false
 		},
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,

@@ -13,6 +13,7 @@ use SMW\MediaWiki\Api\Browse\CachingLookup;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Api\Browse\ListLookup;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
+use SMW\MediaWiki\Api\Browse\PSubjectLookup;
 
 /**
  * Module to support selected browse activties including:
@@ -58,6 +59,10 @@ class Browse extends ApiBase {
 
 		if ( $params['browse'] === 'pvalue' ) {
 			$res = $this->callPValueLookup( $parameters );
+		}
+
+		if ( $params['browse'] === 'psubject' ) {
+			$res = $this->callPSubjectLookup( $parameters );
 		}
 
 		if ( $params['browse'] === 'subject' ) {
@@ -173,6 +178,47 @@ class Browse extends ApiBase {
 		);
 	}
 
+	private function callPSubjectLookup( $parameters ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$cacheUsage = $applicationFactory->getSettings()->get(
+			'smwgCacheUsage'
+		);
+
+		$cacheTTL = CachingLookup::CACHE_TTL;
+
+		if ( isset( $cacheUsage['api.browse.psubject'] ) ) {
+			$cacheTTL = $cacheUsage['api.browse.psubject'];
+		}
+
+		$store = $applicationFactory->getStore();
+
+		// We explicitly want the SQLStore here to avoid
+		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
+		// since we don't use those methods anywher else other than the SQLStore
+		if ( !is_a( $store, '\SMW\SQLStore\SQLStore') ) {
+			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		}
+
+		$listLookup = new PSubjectLookup(
+			$store
+		);
+
+		$cachingLookup = new CachingLookup(
+			$applicationFactory->getCache(),
+			$listLookup
+		);
+
+		$cachingLookup->setCacheTTL(
+			$cacheTTL
+		);
+
+		return $cachingLookup->lookup(
+			$parameters
+		);
+	}
+
 	private function callArticleLookup( $parameters ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -248,11 +294,26 @@ class Browse extends ApiBase {
 			'browse' => array(
 				ApiBase::PARAM_REQUIRED => true,
 				ApiBase::PARAM_TYPE => array(
+
+					// List, browse of properties
 					'property',
-					'pvalue',
+
+					// List, browse of categories
 					'category',
+
+					// List, browse of concepts
 					'concept',
+
+					// List, browse of articles, pages (mediawiki)
 					'article',
+
+					// Equivalent to Store::getPropertyValues
+					'pvalue',
+
+					// Equivalent to Store::getPropertySubjects
+					'psubject',
+
+					// Equivalent to Special:Browse
 					'subject',
 				)
 			),
@@ -301,6 +362,7 @@ class Browse extends ApiBase {
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true, "usageCount": true }',
 			'api.php?action=smwbrowse&browse=pvalue&params={ "limit": 10, "offset": 0, "property" : "Foo", "search": "Bar" }',
+			'api.php?action=smwbrowse&browse=psubject&params={ "limit": 10, "offset": 0, "property" : "Foo", "value" : "Bar", "search": "foo" }',
 			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "" }',
 			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }',
 			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',

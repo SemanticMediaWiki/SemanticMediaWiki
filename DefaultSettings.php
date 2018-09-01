@@ -1107,8 +1107,13 @@ return array(
 	#
 	# - api.browse TTL (in sec, or false to disable it) for the API browse module
 	#   as general cache
+	#
 	# - api.browse.pvalue TTL (in sec, or false to disable it) for the API browse
 	#   pvalue module when requesting property values
+	#
+	# - api.browse.psubject TTL (in sec, or false to disable it) for the API browse
+	#   psubject module when requesting property subjects
+	#
 	# - api.task TTL (in sec, or false to disable it) for the API task module
 	#
 	# @since 1.9
@@ -1120,6 +1125,7 @@ return array(
 		'special.statistics' => 3600,
 		'api.browse' => 3600,
 		'api.browse.pvalue' => 3600,
+		'api.browse.psubject' => 3600,
 		'api.task'  => 3600
 	),
 	##
