@@ -106,7 +106,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->assertContains(
-			'[CallableUpdate] Added',
+			'Added',
 			$this->spyLogger->getMessagesAsString()
 		);
 	}
