@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\Writer;
 
 use SMWSQLStore3Writers;
 use Title;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMWSQLStore3Writers
@@ -23,8 +24,24 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $factory;
+	private $testEnvironment;
 
 	protected function setUp() {
+
+		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory->expects( $this->any() )
+			->method( 'newUpdateJob' )
+			->will( $this->returnValue( $nullJob ) );
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$entityManager = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
@@ -145,6 +162,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newIdChanger' )
 			->will( $this->returnValue( $idChanger ) );
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {

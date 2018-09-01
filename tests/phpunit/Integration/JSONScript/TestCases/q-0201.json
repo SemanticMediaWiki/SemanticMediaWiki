@@ -1,5 +1,5 @@
 {
-	"description": "Test `_CONC` queries (skip postgres, skip virtuoso)",
+	"description": "Test `_CONC` queries (skip virtuoso)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -122,7 +122,6 @@
 	"settings": [],
 	"meta": {
 		"skip-on": {
-			"postgres": "Unable to run concept tests on postgres, see #781",
 			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
 		},
 		"version": "2",

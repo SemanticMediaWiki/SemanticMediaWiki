@@ -76,7 +76,8 @@
 			"type": "format",
 			"about": "#1 desc (different to f-0305, f-0304)",
 			"skip-on":{
-				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03"
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
+				"postgres": "PostgreSQL `numeric` collation generates a different order when compared with MySQL, SQLite."
 			},
 			"subject": "Example/F0306/Q.1.2",
 			"assert-output": {
@@ -157,7 +158,8 @@
 			"about": "#4 Has page, asc, imported content",
 			"subject": "Example/F0306/Q.2.1",
 			"skip-on": {
-				"elastic": "Different sorting behaviour, natural"
+				"elastic": "Different sorting behaviour, natural",
+				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output."
 			},
 			"assert-output": {
 				"to-contain": [
@@ -183,7 +185,8 @@
 			"about": "#5 Has page, desc, imported content",
 			"subject": "Example/F0306/Q.2.2",
 			"skip-on": {
-				"elastic": "Different sorting behaviour, natural"
+				"elastic": "Different sorting behaviour, natural",
+				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output."
 			},
 			"assert-output": {
 				"to-contain": [

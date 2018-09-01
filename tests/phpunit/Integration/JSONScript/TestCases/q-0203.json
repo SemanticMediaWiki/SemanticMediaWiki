@@ -1,5 +1,5 @@
 {
-	"description": "Test `_CONC` to use `CONCEPT_CACHE_ALL` (#1050, skip postgres + all SPARQL repository)",
+	"description": "Test `_CONC` to use `CONCEPT_CACHE_ALL` (#1050, skip all SPARQL repository)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -62,8 +62,7 @@
 			"virtuoso": "CONCEPT_CACHE_ALL isn't implemented",
 			"sesame": "CONCEPT_CACHE_ALL isn't implemented",
 			"fuseki": "CONCEPT_CACHE_ALL isn't implemented",
-			"blazegraph": "CONCEPT_CACHE_ALL isn't implemented",
-			"postgres": "Unable to run concept tests on postgres, see #781"
+			"blazegraph": "CONCEPT_CACHE_ALL isn't implemented"
 		},
 		"version": "2",
 		"is-incomplete": false,
