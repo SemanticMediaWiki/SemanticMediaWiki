@@ -197,7 +197,11 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getType' )
 			->will( $this->returnValue( 'postgres' ) );
 
-		$connection->expects( $this->at( 3 ) )
+		$connection->expects( $this->any() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) { return $callback(); } ) );
+
+		$connection->expects( $this->at( 4 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'ALTER SEQUENCE' ) );
 

@@ -212,6 +212,24 @@ class Database {
 	}
 
 	/**
+	 * @see DatabaseBase::tablePrefix
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $prefix
+	 *
+	 * @return string
+	 */
+	public function tablePrefix( $prefix = null  ) {
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->readConnection->tablePrefix( $prefix );
+	}
+
+	/**
 	 * @see DatabaseBase::addQuotes
 	 *
 	 * @since 1.9
