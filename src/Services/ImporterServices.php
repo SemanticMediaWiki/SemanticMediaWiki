@@ -52,9 +52,11 @@ return array(
 	'TextContentCreator' => function( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', '\SMW\Importer\ContentCreators\TextContentCreator' );
 
+		$connectionManager = $containerBuilder->singleton( 'ConnectionManager' );
+
 		$textContentCreator = new TextContentCreator(
 			$containerBuilder->create( 'PageCreator' ),
-			$containerBuilder->create( 'DBConnectionProvider' )->getConnection()
+			$connectionManager->getConnection( 'mw.db' )
 		);
 
 		return $textContentCreator;

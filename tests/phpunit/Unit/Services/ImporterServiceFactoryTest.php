@@ -48,15 +48,15 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\MediaWiki\Connection\ConnectionProvider' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connectionProvider->expects( $this->any() )
+		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->containerBuilder->registerObject( 'DBConnectionProvider', $connectionProvider );
+		$this->containerBuilder->registerObject( 'ConnectionManager', $connectionManager );
 
 		$this->containerBuilder->registerObject( 'Settings', new Settings( array(
 			'smwgImportReqVersion' => 1,

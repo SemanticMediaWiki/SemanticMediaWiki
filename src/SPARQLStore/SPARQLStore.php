@@ -473,7 +473,7 @@ class SPARQLStore extends Store {
 	public function getConnection( $type = 'sparql' ) {
 
 		if ( $this->connectionManager === null ) {
-			$this->setConnectionManager( $this->factory->newConnectionManager() );
+			$this->setConnectionManager( $this->factory->getConnectionManager() );
 		}
 
 		return parent::getConnection( $type );
