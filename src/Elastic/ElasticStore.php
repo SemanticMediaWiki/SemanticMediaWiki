@@ -249,7 +249,7 @@ class ElasticStore extends SQLStore {
 
 		$config = $this->getConnection( 'elastic' )->getConfig();
 
-		if ( $config->dotGet( 'indexer.raw.text', false ) && ( $revID = $semanticData->getExtensionData( 'revision.id' ) ) !== null ) {
+		if ( $config->dotGet( 'indexer.raw.text', false ) && ( $revID = $semanticData->getExtensionData( 'revision_id' ) ) !== null ) {
 			$this->doTextUpdate( $subject, $revID );
 		}
 

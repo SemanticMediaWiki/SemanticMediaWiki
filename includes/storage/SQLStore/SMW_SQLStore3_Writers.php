@@ -188,6 +188,7 @@ class SMWSQLStore3Writers {
 
 		// Update data about our main subject
 		$this->doFlatDataUpdate( $semanticData );
+		$sid = $subject->getId();
 
 		// Update data about our subobjects
 		$subSemanticData = $semanticData->getSubSemanticData();
@@ -214,6 +215,10 @@ class SMWSQLStore3Writers {
 					SMW_SQL3_SMWDELETEIW
 				);
 			}
+		}
+
+		if ( ( $rev_id = $semanticData->getExtensionData( 'revision_id' ) ) !== null ) {
+			$this->store->getObjectIds()->updateRevField( $sid, $rev_id );
 		}
 
 		$connection->endAtomicTransaction( __METHOD__ );
@@ -292,6 +297,7 @@ class SMWSQLStore3Writers {
 		);
 
 		$subject->setSortKey( $sortKey );
+		$subject->setId( $sid );
 
 		// Find any potential duplicate entries for the current subject and
 		// if matched, mark them as to be deleted

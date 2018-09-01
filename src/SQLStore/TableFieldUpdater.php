@@ -38,8 +38,6 @@ class TableFieldUpdater {
 	 *
 	 * @param integer $id
 	 * @param string $searchKey
-	 *
-	 * @return integer
 	 */
 	public function updateSortField( $id, $searchKey ) {
 
@@ -64,6 +62,28 @@ class TableFieldUpdater {
 		);
 
 		$connection->endAtomicTransaction( __METHOD__ );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 * @param intege $rev_id
+	 */
+	public function updateRevField( $sid, $rev_id ) {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$connection->update(
+			SQLStore::ID_TABLE,
+			[
+				'smw_rev' => $rev_id
+			],
+			[
+				'smw_id' => $sid
+			],
+			__METHOD__
+		);
 	}
 
 }

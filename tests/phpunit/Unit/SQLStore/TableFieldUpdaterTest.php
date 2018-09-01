@@ -63,4 +63,32 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance->updateSortField( 42, 'Foo' );
 	}
 
+	public function testUpdateRevField() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'update' )
+				->with(
+					$this->anything(),
+					$this->equalTo( [ 'smw_rev' => 1001 ] ),
+					$this->equalTo( [ 'smw_id'  => 42 ] ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new TableFieldUpdater(
+			$store
+		);
+
+		$instance->updateRevField( 42, 1001 );
+	}
+
 }

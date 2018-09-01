@@ -77,7 +77,7 @@ return array(
 	#
 	# @since 3.0
 	##
-	'smwgUpgradeKey' => 'DB-2018-08-25',
+	'smwgUpgradeKey' => 'DB-2018-09-01',
 	##
 
 	###

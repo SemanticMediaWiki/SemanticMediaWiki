@@ -733,6 +733,16 @@ class SMWSql3SmwIds {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param integer $sid
+	 * @param integer $sid
+	 */
+	public function updateRevField( $sid, $rev_id ) {
+		$this->tableFieldUpdater->updateRevField( $sid, $rev_id );
+	}
+
+	/**
 	 * Fetch the ID for an SMWDIProperty object. This method achieves the
 	 * same as getSMWPageID(), but avoids additional normalization steps
 	 * that have already been performed when creating an SMWDIProperty
