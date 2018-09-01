@@ -6,7 +6,7 @@ use SMW\Store;
 use SMW\StoreFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Connection\ConnectionManager;
+use SMW\ApplicationFactory;
 use SMW\SQLStore\Installer;
 use SMW\Setup;
 
@@ -137,7 +137,7 @@ class SetupStore extends \Maintenance {
 		$this->loadGlobalFunctions();
 		$store = $this->getStore();
 
-		$connectionManager = new ConnectionManager();
+		$connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
 
 		// #2963 Use the Maintenance DB connection instead and the DB_ADMIN request
 		// to allow to use the admin user/pass, if set

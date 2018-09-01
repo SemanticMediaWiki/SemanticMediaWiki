@@ -229,6 +229,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return ConnectionManager
+	 */
+	public function getConnectionManager() {
+		return $this->containerBuilder->singleton( 'ConnectionManager' );
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @return TitleCreator

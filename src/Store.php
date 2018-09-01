@@ -573,7 +573,7 @@ abstract class Store implements QueryEngine {
 	public function getConnection( $type ) {
 
 		if ( $this->connectionManager === null ) {
-			$this->setConnectionManager( new ConnectionManager() );
+			$this->connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
 		}
 
 		return $this->connectionManager->getConnection( $type );

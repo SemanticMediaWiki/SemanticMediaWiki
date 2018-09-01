@@ -127,10 +127,10 @@ class SPARQLStoreFactory {
 	 *
 	 * @return ConnectionManager
 	 */
-	public function newConnectionManager() {
+	public function getConnectionManager() {
 
-		$settings = ApplicationFactory::getInstance()->getSettings();
-		$connectionManager = new ConnectionManager();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		$repositoryConnectionProvider = new RepositoryConnectionProvider(
 			$settings->get( 'smwgSparqlRepositoryConnector' ),
@@ -144,6 +144,9 @@ class SPARQLStoreFactory {
 			$settings->get( 'smwgSparqlRepositoryConnectorForcedHttpVersion' )
 		);
 
+		$repositoryConnectionProvider = new RepositoryConnectionProvider();
+
+		$connectionManager = $applicationFactory->getConnectionManager();
 		$connectionManager->registerConnectionProvider(
 			'sparql',
 			$repositoryConnectionProvider

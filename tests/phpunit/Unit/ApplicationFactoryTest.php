@@ -89,6 +89,14 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetConnectionManager() {
+
+		$this->assertInstanceOf(
+			'\SMW\Connection\ConnectionManager',
+			$this->applicationFactory->getConnectionManager()
+		);
+	}
+
 	public function testCanConstructTitleCreator() {
 
 		$this->assertInstanceOf(

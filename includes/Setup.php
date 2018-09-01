@@ -226,8 +226,7 @@ final class Setup {
 	private function initConnectionProviders() {
 
 		$mwCollaboratorFactory = $this->applicationFactory->newMwCollaboratorFactory();
-
-		$connectionManager = new ConnectionManager();
+		$connectionManager = $this->applicationFactory->getConnectionManager();
 
 		$connectionManager->registerConnectionProvider(
 			DB_MASTER,

@@ -16,6 +16,7 @@ use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
 use SMW\Localizer;
 use SMW\MediaWiki\Database;
+use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
@@ -116,6 +117,16 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'Settings', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'Settings', '\SMW\Settings' );
 			return Settings::newFromGlobals();
+		} );
+
+		/**
+		 * ConnectionManager
+		 *
+		 * @return callable
+		 */
+		$containerBuilder->registerCallback( 'ConnectionManager', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'ConnectionManager', ConnectionManager::class );
+			return new ConnectionManager();
 		} );
 
 		$containerBuilder->registerCallback( 'Cache', function( $containerBuilder, $cacheType = null ) {
