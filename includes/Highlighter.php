@@ -251,12 +251,9 @@ class Highlighter {
 		// title attribute contains stripped content to allow for a display in
 		// no-js environments, the tooltip will remove the element once it is
 		// loaded
-		$title = $this->createStrippedContentFrom(
-			$this->options['content'],
-			$language
-		);
+		$title = $this->title( $this->options['content'], $language );
 
-		return Html::rawElement(
+		$html = Html::rawElement(
 			'span',
 			[
 				'class'        => 'smw-highlighter',
@@ -273,13 +270,15 @@ class Highlighter {
 				],
 				$this->options['caption']
 			) . Html::rawElement(
-				'div',
+				'span',
 				[
 					'class' => 'smwttcontent'
 				],
 				htmlspecialchars_decode( $this->options['content'] )
 			)
 		);
+
+		return $html;
 	}
 
 	/**
@@ -357,7 +356,7 @@ class Highlighter {
 		return $settings;
 	}
 
-	private function createStrippedContentFrom( $content, $language ) {
+	private function title( $content, $language ) {
 
 		// Pre-process the content when used as title to avoid breaking elements
 		// (URLs etc.)
@@ -365,7 +364,7 @@ class Highlighter {
 			$content = Message::get( array( 'smw-parse', $content ), Message::PARSE, $language );
 		}
 
-		return strip_tags( htmlspecialchars_decode( str_replace( "[", "&#91;", $content ) ) );
+		return strip_tags( htmlspecialchars_decode( str_replace( [ "[", '&#160;' ], [ "&#91;", ' ' ], $content ) ) );
 	}
 
 }

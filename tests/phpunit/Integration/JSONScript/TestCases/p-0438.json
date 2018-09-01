@@ -36,13 +36,13 @@
 			"subject": "Example/P0438/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:Modification date\">prefLabel-123</a></span><div class=\"smwttcontent\">„prefLabel-123&#160;<span style=\"font-size:small;\">(Modification date)</span>“",
-					"title=\"Property:Modification date\">ModificationSomeLabel</a></span><div class=\"smwttcontent\">„prefLabel-123&#160;<span style=\"font-size:small;\">(Modification date)</span>“",
+					"title=\"Property:Modification date\">prefLabel-123</a></span><span class=\"smwttcontent\">„prefLabel-123&#160;<span style=\"font-size:small;\">(Modification date)</span>“",
+					"title=\"Property:Modification date\">ModificationSomeLabel</a></span><span class=\"smwttcontent\">„prefLabel-123&#160;<span style=\"font-size:small;\">(Modification date)</span>“",
 					"&#160;<span title=\"Modification date\"><sup>ᵖ</sup></span>",
 					"title=\"Property:Has keyword\">prefLabel-456</a>&#160;<span title=\"Has keyword\"><sup>ᵖ</sup>",
 					"title=\"Property:Has keyword\">KeywordCaption</a>",
-					"title=\"Property:Has query\">query-displaytitle</a></span><div class=\"smwttcontent\">„query-displaytitle&#160;<span style=\"font-size:small;\">(Has query)</span>“",
-					"title=\"Property:Has query\">QueryCaption</a></span><div class=\"smwttcontent\">„query-displaytitle&#160;<span style=\"font-size:small;\">(Has query)</span>“",
+					"title=\"Property:Has query\">query-displaytitle</a></span><span class=\"smwttcontent\">„query-displaytitle&#160;<span style=\"font-size:small;\">(Has query)</span>“",
+					"title=\"Property:Has query\">QueryCaption</a></span><span class=\"smwttcontent\">„query-displaytitle&#160;<span style=\"font-size:small;\">(Has query)</span>“",
 					":Ask/-5B-5BCategoría:P0438-5D-5D/-3FModification-20date/-3FModification-20date=ModificationSomeLabel/-3FHas-20keyword/-3FHas-20keyword=KeywordCaption/-3FHas-20query/-3FHas-20query=QueryCaption/mainlabel=/limit=1/offset=1/format=table\">"
 				]
 			}

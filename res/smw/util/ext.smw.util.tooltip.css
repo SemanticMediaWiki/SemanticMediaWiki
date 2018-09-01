@@ -79,7 +79,7 @@ img.smwttimg {
 	white-space:nowrap;
 	margin-left: 2px;
 	margin-right: 2px;
-	vertical-align: 0.0em;
+	vertical-align: -0.05em;
 }
 
 /* New tooltip, Individual assigned icons ( inline-block is important because the icon <span> is empty) */

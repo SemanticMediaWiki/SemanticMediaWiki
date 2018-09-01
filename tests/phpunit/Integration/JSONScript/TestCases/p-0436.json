@@ -58,7 +58,7 @@
 				"to-contain": [
 					"data-title=\"Property\" title=\"occupation of a person; see also field of work (Property:P101)\">",
 					"title=\"Property:P106\">occupation</a>",
-					"<div class=\"smwttcontent\">occupation of a person; see also field of work (Property:P101)</div></span>&#160;<span title=\"P106\"><sup>ᵖ</sup></span>"
+					"<span class=\"smwttcontent\">occupation of a person; see also field of work (Property:P101)</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup></span>"
 				]
 			}
 		},
@@ -93,7 +93,7 @@
 				"to-contain": [
 					"<th class=\"with-a-different-Label\">",
 					"title=\"Property:P106\">with a different Label</a>",
-					"<div class=\"smwttcontent\">occupation of a person; see also field of work (Property:P101)</div></span>"
+					"<span class=\"smwttcontent\">occupation of a person; see also field of work (Property:P101)</span></span>"
 				],
 				"not-contain": [
 					"<th class=\"occupation\">occupation</th>",

@@ -23,7 +23,7 @@
 			"assert-output": {
 				"to-contain": [
 					"title=\"Property &quot;Has Url&quot; only permits unique value assignments and http://example.org/Foo",
-					"<div class=\"smwttcontent\">Property \"Has Url\" only permits unique value assignments and <i><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo\">http://example.org/Foo</a></i>"
+					"<span class=\"smwttcontent\">Property \"Has Url\" only permits unique value assignments and <i><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo\">http://example.org/Foo</a></i>"
 				]
 			}
 		}
