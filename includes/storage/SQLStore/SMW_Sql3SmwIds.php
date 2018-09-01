@@ -13,6 +13,7 @@ use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableFieldUpdater;
 use SMWDataItem as DataItem;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\Connection\Sequence;
 use SMW\TypesRegistry;
 
 /**
@@ -621,7 +622,11 @@ class SMWSql3SmwIds {
 
 		if ( $id == 0 ) {
 			$sortkey = $sortkey ? $sortkey : ( str_replace( '_', ' ', $title ) );
-			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
+
+			// Bug 42659
+			$sequenceValue = $db->nextSequenceValue(
+				Sequence::makeSequence( SQLStore::ID_TABLE, 'smw_id' )
+			);
 
 			// #2089 (MySQL 5.7 complained with "Data too long for column")
 			$sortkey = mb_substr( $sortkey, 0, 254 );
@@ -857,7 +862,11 @@ class SMWSql3SmwIds {
 		$db->beginAtomicTransaction( __METHOD__ );
 
 		if ( $targetid == 0 ) { // append new id
-			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
+
+			 // Bug 42659
+			$sequenceValue = $db->nextSequenceValue(
+				Sequence::makeSequence( SQLStore::ID_TABLE, 'smw_id' )
+			);
 
 			$db->insert(
 				self::TABLE_NAME,
