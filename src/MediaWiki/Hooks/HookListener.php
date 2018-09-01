@@ -9,6 +9,7 @@ use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\MediaWiki\Search\SearchProfileForm;
 use SMW\Site;
+use SMW\Store;
 use SMW\Options;
 
 /**
@@ -788,9 +789,8 @@ class HookListener {
 	 */
 	public function onSoftwareInfo( &$software ) {
 
-		$connection = ApplicationFactory::getInstance()->getStore()->getConnection( 'elastic' );
-
-		$info = $connection->getSoftwareInfo();
+		$store = ApplicationFactory::getInstance()->getStore();
+		$info = $store->getConnection( 'elastic' )->getSoftwareInfo();
 
 		if ( !isset( $software[$info['component']] ) && $info['version'] !== null ) {
 			$software[$info['component']] = $info['version'];

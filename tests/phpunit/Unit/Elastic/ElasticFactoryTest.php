@@ -225,4 +225,24 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnEntityReferenceCleanUpComplete() {
+
+		$instance = new ElasticFactory();
+
+		$this->assertTrue(
+			$instance->onEntityReferenceCleanUpComplete( $this->store, 42, null, false )
+		);
+	}
+
+	public function testOnTaskHandlerFactory() {
+
+		$instance = new ElasticFactory();
+		$taskHandlers = [];
+		$outputFormatter = null;
+
+		$this->assertTrue(
+			$instance->onTaskHandlerFactory( $taskHandlers, $this->store, $outputFormatter, null )
+		);
+	}
+
 }
