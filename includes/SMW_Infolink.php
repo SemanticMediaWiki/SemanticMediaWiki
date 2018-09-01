@@ -290,13 +290,12 @@ class SMWInfolink {
 
 				$titletext = $this->mTarget . '/' . $query;
 			} else {
-
 				$titletext = $this->mTarget;
 			}
 
 			$title = Title::newFromText( $titletext );
 
-			if ( !is_null( $title ) ) {
+			if ( $title !== null ) {
 				if ( $outputformat == SMW_OUTPUT_WIKI ) {
 					$link = "[[$titletext|$this->mCaption]]";
 				} elseif ( $outputformat == SMW_OUTPUT_RAW ) {
@@ -304,36 +303,43 @@ class SMWInfolink {
 				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
 					$link = $this->getLinker( $linker )->link( $title, $this->mCaption, $this->linkAttributes );
 				}
-			} else { // Title creation failed, maybe illegal symbols or too long; make a direct URL link
-			         // (only possible if offending target parts belong to some parameter
-			         //  that can be separated from title text,
-			         //  e.g. as in Special:Bla/il<leg>al -> Special:Bla&p=il&lt;leg&gt;al)
+			} else {
+				// Title creation failed, maybe illegal symbols or too long; make
+				// a direct URL link (only possible if offending target parts belong
+				// to some parameter that can be separated from title text, e.g.
+				// as in Special:Bla/il<leg>al -> Special:Bla&p=il&lt;leg&gt;al)
 				$title = Title::newFromText( $this->mTarget );
 
-				if ( !is_null( $title ) ) {
+				// Just give up due to the title being bad, normally this would
+				// indicate a software bug
+				if ( $title === null ) {
+					return '';
+				}
 
-					$query = self::encodeParameters( $this->mParams, false );
+				$query = self::encodeParameters( $this->mParams, $this->isCompactLink );
+
+				if ( $outputformat == SMW_OUTPUT_WIKI ) {
 
 					if ( $this->isCompactLink ) {
-						$query = self::encodeCompactLink( $query );
+						$query = self::encodeCompactLink( $query, false );
 					}
 
-					if ( $outputformat == SMW_OUTPUT_WIKI ) {
-						$link = '[' . $title->getFullURL(  $query ) . " $this->mCaption]";
-					} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
+					$link = '[' . $title->getFullURL(  $query ) . " $this->mCaption]";
+				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
 
+					if ( $this->isCompactLink ) {
+						$query = self::encodeCompactLink( $query, true );
+					} else {
 						// #511, requires an array
 						$query = wfCgiToArray( $query );
-
-						$link = $this->getLinker( $linker )->link(
-							$title,
-							$this->mCaption,
-							$this->linkAttributes,
-							$query
-						);
 					}
-				} else {
-					return ''; // the title was bad, normally this would indicate a software bug
+
+					$link = $this->getLinker( $linker )->link(
+						$title,
+						$this->mCaption,
+						$this->linkAttributes,
+						$query
+					);
 				}
 			}
 		} else {
