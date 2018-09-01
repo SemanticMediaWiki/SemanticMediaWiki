@@ -9,6 +9,7 @@ use SMW\ApplicationFactory;
 use SMW\ChangePropListener;
 use SMW\DIWikiPage;
 use SMW\Options;
+use SMW\Site;
 use SMW\ProcessLruCache;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\EntityStore\CachingEntityLookup;
@@ -60,11 +61,6 @@ class SQLStoreFactory {
 	private $messageReporter;
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
-
-	/**
 	 * @var QueryEngineFactory
 	 */
 	private $queryEngineFactory;
@@ -83,7 +79,6 @@ class SQLStoreFactory {
 			$this->messageReporter = new NullMessageReporter();
 		}
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->queryEngineFactory = new QueryEngineFactory( $store );
 	}
 
@@ -149,7 +144,7 @@ class SQLStoreFactory {
 	 */
 	public function newUsageStatisticsCachedListLookup() {
 
-		$settings = $this->applicationFactory->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$usageStatisticsListLookup = new UsageStatisticsListLookup(
 			$this->store,
@@ -172,7 +167,7 @@ class SQLStoreFactory {
 	 */
 	public function newPropertyUsageCachedListLookup( RequestOptions $requestOptions = null ) {
 
-		$settings = $this->applicationFactory->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyUsageListLookup = new PropertyUsageListLookup(
 			$this->store,
@@ -196,7 +191,7 @@ class SQLStoreFactory {
 	 */
 	public function newUnusedPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
 
-		$settings = $this->applicationFactory->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
 			$this->store,
@@ -220,7 +215,7 @@ class SQLStoreFactory {
 	 */
 	public function newUndeclaredPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
 
-		$settings = $this->applicationFactory->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$undeclaredPropertyListLookup = new UndeclaredPropertyListLookup(
 			$this->store,
@@ -246,7 +241,7 @@ class SQLStoreFactory {
 	 */
 	public function newCachedListLookup( ListLookup $listLookup, $useCache, $cacheExpiry ) {
 
-		$cacheFactory = $this->applicationFactory->newCacheFactory();
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
 
 		if ( is_int( $useCache ) ) {
 			$useCache = true;
@@ -301,7 +296,8 @@ class SQLStoreFactory {
 	 */
 	public function newEntityLookup() {
 
-		$settings = $this->applicationFactory->getSettings();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 		$nativeEntityLookup = new NativeEntityLookup( $this->store );
 
 		if ( $settings->get( 'smwgEntityLookupCacheType' ) === CACHE_NONE ) {
@@ -311,7 +307,7 @@ class SQLStoreFactory {
 		$circularReferenceGuard = new CircularReferenceGuard( 'store:entitylookup' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
-		$cacheFactory = $this->applicationFactory->newCacheFactory();
+		$cacheFactory = $applicationFactory->newCacheFactory();
 
 		$blobStore = $cacheFactory->newBlobStore(
 			'smw:store:entitylookup:',
@@ -368,7 +364,7 @@ class SQLStoreFactory {
 		);
 
 		$propertyTableIdReferenceFinder->isCapitalLinks(
-			$GLOBALS['wgCapitalLinks']
+			Site::isCapitalLinks()
 		);
 
 		return $propertyTableIdReferenceFinder;
@@ -499,7 +495,7 @@ class SQLStoreFactory {
 		);
 
 		$propertyStatisticsStore->isCommandLineMode(
-			$GLOBALS['wgCommandLineMode']
+			Site::isCommandLineMode()
 		);
 
 		return $propertyStatisticsStore;
@@ -559,7 +555,7 @@ class SQLStoreFactory {
 
 		$idMatchFinder = new IdEntityFinder(
 			$this->store,
-			$this->applicationFactory->getIteratorFactory(),
+			$this->getIteratorFactory(),
 			$cache
 		);
 
@@ -589,7 +585,7 @@ class SQLStoreFactory {
 
 		$uniquenessLookup = new UniquenessLookup(
 			$this->store,
-			$this->applicationFactory->getIteratorFactory()
+			$this->getIteratorFactory()
 		);
 
 		return $uniquenessLookup;
@@ -601,7 +597,7 @@ class SQLStoreFactory {
 	 * @return HierarchyLookup
 	 */
 	public function newHierarchyLookup() {
-		return $this->applicationFactory->newHierarchyLookup();
+		return ApplicationFactory::getInstance()->newHierarchyLookup();
 	}
 
 	/**
@@ -613,7 +609,7 @@ class SQLStoreFactory {
 
 		$subobjectListFinder = new SubobjectListFinder(
 			$this->store,
-			$this->applicationFactory->getIteratorFactory()
+			$this->getIteratorFactory()
 		);
 
 		return $subobjectListFinder;
@@ -715,7 +711,7 @@ class SQLStoreFactory {
 	public function newEntityValueUniquenessConstraintChecker() {
 		return new EntityValueUniquenessConstraintChecker(
 			$this->store,
-			ApplicationFactory::getInstance()->getIteratorFactory()
+			$this->getIteratorFactory()
 		);
 	}
 
@@ -740,6 +736,10 @@ class SQLStoreFactory {
 		);
 
 		return $servicesContainer;
+	}
+
+	private function getIteratorFactory() {
+		return ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 
 }

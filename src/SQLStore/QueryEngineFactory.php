@@ -29,18 +29,12 @@ class QueryEngineFactory {
 	private $store;
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
-
-	/**
 	 * @since 2.4
 	 *
 	 * @param SQLStore $store
 	 */
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
-		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -56,7 +50,7 @@ class QueryEngineFactory {
 		);
 
 		$querySegmentListBuilder->isFilterDuplicates(
-			$this->applicationFactory->getSettings()->get( 'smwgQFilterDuplicates' )
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQFilterDuplicates' )
 		);
 
 		return $querySegmentListBuilder;
@@ -69,6 +63,8 @@ class QueryEngineFactory {
 	 */
 	public function newQuerySegmentListProcessor() {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 		$temporaryTableBuilder = $this->newTemporaryTableBuilder();
 
@@ -79,12 +75,12 @@ class QueryEngineFactory {
 
 		$hierarchyTempTableBuilder->setPropertyHierarchyTableDefinition(
 			$this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
-			$this->applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
+			$settings->get( 'smwgQSubpropertyDepth' )
 		);
 
 		$hierarchyTempTableBuilder->setClassHierarchyTableDefinition(
 			$this->store->findPropertyTableID( new DIProperty( '_SUBC' ) ),
-			$this->applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
+			$settings->get( 'smwgQSubcategoryDepth' )
 		);
 
 		$querySegmentListProcessor = new QuerySegmentListProcessor(
@@ -170,7 +166,7 @@ class QueryEngineFactory {
 		);
 
 		$temporaryTableBuilder->setAutoCommitFlag(
-			$this->applicationFactory->getSettings()->get( 'smwgQTemporaryTablesAutoCommitMode' )
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQTemporaryTablesAutoCommitMode' )
 		);
 
 		return $temporaryTableBuilder;
