@@ -99,6 +99,11 @@ class PropertyTableRowMapper {
 	}
 
 	/**
+	 * Create a string key for hashing an array of values that represents a
+	 * row in the database. Used to eliminate duplicates and to support
+	 * diff computation. This is not stored in the database, so it can be
+	 * changed without causing any problems with legacy data.
+	 *
 	 * @since 3.0
 	 *
 	 * @param array $fieldArray
