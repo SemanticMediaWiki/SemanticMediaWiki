@@ -132,7 +132,7 @@ class HierarchyTempTableBuilder {
 			return;
 		}
 
-		$this->buildTempTableFor( $tablename, $valueComposite, $smwtable, $depth );
+		$this->buildTempTable( $tablename, $valueComposite, $smwtable, $depth );
 	}
 
 	/**
@@ -141,7 +141,7 @@ class HierarchyTempTableBuilder {
 	 * but then every iteration would use all elements of this table, while only the new ones
 	 * obtained in the previous step are relevant. So this is a performance measure.
 	 */
-	private function buildTempTableFor( $tablename, $values, $smwtable, $depth ) {
+	private function buildTempTable( $tablename, $values, $smwtable, $depth ) {
 
 		$db = $this->connection;
 
