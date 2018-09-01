@@ -66,10 +66,18 @@ class ExternalFormatterUriValue extends UriValue {
 
 		// Avoid already encoded values like `W%D6LLEKLA01` to be
 		// encoded twice
-		$value = rawurlencode( rawurldecode( $value ) );
+		$value = $this->encode( rawurldecode( $value ) );
 
 		// %241 == encoded $1
 		return str_replace( array( '%241', '$1' ), array( '$1', $value ), $this->getDataItem()->getUri() );
 	}
 
+	// http://php.net/manual/en/function.urlencode.php#97969
+	private function encode( $string ) {
+		return str_replace(
+			[ '%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D' ],
+			[ '!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]" ],
+			urlencode( $string )
+		);
+	}
 }
