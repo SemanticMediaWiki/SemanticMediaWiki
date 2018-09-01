@@ -7,6 +7,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
 use SMW\SemanticData;
+use SMW\Parameters;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
 
@@ -45,6 +46,11 @@ class SMWSQLStore3Writers {
 	private $propertyTableRowDiffer;
 
 	/**
+	 * @var PropertyTableUpdater
+	 */
+	private $propertyTableUpdater;
+
+	/**
 	 * @var SemanticDataLookup
 	 */
 	private $semanticDataLookup;
@@ -64,6 +70,7 @@ class SMWSQLStore3Writers {
 		$this->store = $parentStore;
 		$this->factory = $factory;
 		$this->propertyTableRowDiffer = $this->factory->newPropertyTableRowDiffer();
+		$this->propertyTableUpdater = $this->factory->newPropertyTableUpdater();
 		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();
 		$this->idChanger = $this->factory->newIdChanger();
 	}
@@ -276,7 +283,7 @@ class SMWSQLStore3Writers {
 		// Find an approriate sortkey, the field is influenced by various
 		// elements incl. DEFAULTSORT and can be altered without modifying
 		// any other annotation.
-		$sortKey = $this->getSortKey( $subject, $data );
+		$sortKey = $this->makeSortKey( $subject, $data );
 
 		// Always fetch an ID which is either recalled from cache or is created.
 		// Doing so ensures that the sortkey and namespace data are updated
@@ -318,12 +325,15 @@ class SMWSQLStore3Writers {
 			$data
 		);
 
-		$this->writePropertyTableUpdates(
-			$sid,
-			$insertRows,
-			$deleteRows,
-			$newHashes
+		$params = new Parameters(
+			[
+				'insert_rows' => $insertRows,
+				'delete_rows' => $deleteRows,
+				'new_hashes'  => $newHashes
+			]
 		);
+
+		$this->propertyTableUpdater->update( $sid, $params );
 
 		if ( $redirects === array() && $subject->getSubobjectName() === ''  ) {
 
@@ -340,7 +350,7 @@ class SMWSQLStore3Writers {
 		$this->semanticDataLookup->setLookupCache( $sid, $data );
 	}
 
-	private function getSortKey( $subject, $data ) {
+	private function makeSortKey( $subject, $data ) {
 
 		// Don't mind the delete process
 		if ( $data->getOption( SemanticData::PROC_DELETE ) ) {
@@ -380,180 +390,6 @@ class SMWSQLStore3Writers {
 		$sortkey = str_replace( '_', ' ', $sortkey );
 
 		return $sortkey;
-	}
-
-	/**
-	 * Create a string key for hashing an array of values that represents a
-	 * row in the database. Used to eliminate duplicates and to support
-	 * diff computation. This is not stored in the database, so it can be
-	 * changed without causing any problems with legacy data.
-	 *
-	 * @since 1.8
-	 * @param array $databaseRow
-	 * @return string
-	 */
-	protected static function makeDatabaseRowKey( array $databaseRow ) {
-		// Do not use serialize(): the MW database does not round-trip
-		// PHP objects reliably (they loose their type and become strings)
-		$keyString = '';
-		foreach ( $databaseRow as $column => $value ) {
-			$keyString .= "#$column##$value#";
-		}
-		return md5( $keyString );
-	}
-
-	/**
-	 * Update all property tables and any dependent data (hashes,
-	 * statistics, etc.) by inserting/deleting the given values. The ID of
-	 * the page that is updated, and the hashes of the properties must be
-	 * given explicitly (the hashes could not be computed from the insert
-	 * and delete data alone anyway).
-	 *
-	 * It is assumed and required that the tables mentioned in
-	 * $tablesInsertRows and $tablesDeleteRows are the same, and that all
-	 * $rows in these datasets refer to the same subject ID.
-	 *
-	 * @since 1.8
-	 *
-	 * @param integer $sid
-	 * @param array $tablesInsertRows array mapping table names to arrays of rows
-	 * @param array $tablesDeleteRows array mapping table names to arrays of rows
-	 * @param array $newHashes
-	 */
-	protected function writePropertyTableUpdates( $sid, array $tablesInsertRows, array $tablesDeleteRows, array $newHashes ) {
-		$propertyUseIncrements = array();
-
-		$propertyTables = $this->store->getPropertyTables();
-
-		foreach ( $tablesInsertRows as $tableName => $insertRows ) {
-			// Note: by construction, the inserts and deletes have the same table keys.
-			// Note: by construction, the inserts and deletes are currently disjoint;
-			// yet we delete first to make the method more robust/versatile.
-			$this->writePropertyTableRowUpdates( $propertyUseIncrements, $propertyTables[$tableName], $tablesDeleteRows[$tableName], false );
-			$this->writePropertyTableRowUpdates( $propertyUseIncrements, $propertyTables[$tableName], $insertRows, true );
-		}
-
-		// If only rows are marked for deletion then modify hashs to ensure that
-		// any inbalance can be corrected by the next insert operation for which
-		// the newHashes are computed (seen in connection with redirects)
-		if ( $tablesInsertRows === array() && $tablesDeleteRows !== array() ) {
-			foreach ( $newHashes as $key => $hash ) {
-				$newHashes[$key] = $hash . '.d';
-			}
-		}
-
-		if ( $tablesInsertRows !== array() || $tablesDeleteRows !== array() ) {
-			$this->store->smwIds->setPropertyTableHashes( $sid, $newHashes );
-		}
-
-		$propertyStatisticsStore = $this->factory->newPropertyStatisticsStore();
-
-		$propertyStatisticsStore->addToUsageCounts(
-			$propertyUseIncrements
-		);
-	}
-
-	/**
-	 * Update one property table by inserting or deleting rows, and compute
-	 * the changes that this entails for the property usage counts. The
-	 * given rows are inserted into the table if $insert is true; otherwise
-	 * they are deleted. The property usage counts are recorded in the
-	 * call-by-ref parameter $propertyUseIncrements.
-	 *
-	 * The method assumes that all of the given rows are about the same
-	 * subject. This is ensured by callers.
-	 *
-	 * @since 1.8
-	 * @param array $propertyUseIncrements
-	 * @param SMWSQLStore3Table $propertyTable
-	 * @param array $rows array of rows to insert/delete
-	 * @param boolean $insert
-	 */
-	protected function writePropertyTableRowUpdates( array &$propertyUseIncrements, SMWSQLStore3Table $propertyTable, array $rows, $insert ) {
-		if ( empty( $rows ) ) {
-			return;
-		}
-
-		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
-			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
-		}
-
-		$db = $this->store->getConnection();
-
-		if ( $insert ) {
-			$db->insert(
-				$propertyTable->getName(),
-				$rows,
-				"SMW::writePropertyTableRowUpdates-insert-{$propertyTable->getName()}"
-			);
-		} else {
-			$this->deleteRows(
-				$rows,
-				$propertyTable
-			);
-		}
-
-		if ( $propertyTable->isFixedPropertyTable() ) {
-			$property = new SMW\DIProperty( $propertyTable->getFixedProperty() );
-			$pid = $this->store->getObjectIds()->makeSMWPropertyID( $property );
-		}
-
-		foreach ( $rows as $row ) {
-
-			if ( !$propertyTable->isFixedPropertyTable() ) {
-				$pid = $row['p_id'];
-			}
-
-			ChangePropListener::record(
-				$pid,
-				[
-					'row' => $row,
-					'isInsertOp' => $insert
-				]
-			);
-
-			if ( !array_key_exists( $pid, $propertyUseIncrements ) ) {
-				$propertyUseIncrements[$pid] = 0;
-			}
-
-			$propertyUseIncrements[$pid] += ( $insert ? 1 : -1 );
-		}
-	}
-
-	protected function deleteRows( array $rows, SMWSQLStore3Table $propertyTable ) {
-
-		$condition = '';
-		$db = $this->store->getConnection();
-
-		// We build a condition that mentions s_id only once,
-		// since it must be the same for all rows. This should
-		// help the DBMS in selecting the rows (it would not be
-		// easy for to detect that all tuples share one s_id).
-		$sid = false;
-		foreach ( $rows as $row ) {
-			if ( $sid === false ) {
-				if ( !array_key_exists( 's_id', (array)$row ) ) {
-					// FIXME: The assumption that s_id is present does not hold.
-					// This return is there to prevent fatal errors, but does not fix the issue of this code being broken
-					return;
-				}
-
-				$sid = $row['s_id']; // 's_id' exists for all tables with $propertyTable->usesIdSubject()
-			}
-			unset( $row['s_id'] );
-			if ( $condition != '' ) {
-				$condition .= ' OR ';
-			}
-			$condition .= '(' . $db->makeList( $row, LIST_AND ) . ')';
-		}
-
-		$condition = "s_id=" . $db->addQuotes( $sid ) . " AND ($condition)";
-
-		$db->delete(
-			$propertyTable->getName(),
-			array( $condition ),
-			"SMW::writePropertyTableRowUpdates-delete-{$propertyTable->getName()}"
-		);
 	}
 
 	/**

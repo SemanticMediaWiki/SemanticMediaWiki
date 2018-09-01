@@ -10,7 +10,6 @@ use SMW\ChangePropListener;
 use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\Site;
-use SMW\ProcessLruCache;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\EntityStore\CachingEntityLookup;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
@@ -107,6 +106,15 @@ class SQLStoreFactory {
 	 */
 	public function newEntityTable() {
 		return new EntityIdManager( $this->store, $this );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return PropertyTableUpdater
+	 */
+	public function newPropertyTableUpdater() {
+		return new PropertyTableUpdater( $this->store, $this->newPropertyStatisticsStore() );
 	}
 
 	/**
