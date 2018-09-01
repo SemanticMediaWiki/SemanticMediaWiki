@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\TableBuilder;
 
 use SMW\SQLStore\SQLStore;
+use SMW\MediaWiki\Connection\Sequence;
 
 /**
  * @license GNU GPL v2+
@@ -402,16 +403,14 @@ EOT;
 
 	private function doCheckOnPostCreation() {
 
+		$sequence = new Sequence( $this->connection );
+
 		// To avoid things like:
 		// "Error: 23505 ERROR:  duplicate key value violates unique constraint "smw_object_ids_pkey""
-		$sequenceIndex = SQLStore::ID_TABLE . '_smw_id_seq';
-		$max = $this->connection->selectField( SQLStore::ID_TABLE, 'max(smw_id)', array(), __METHOD__ );
-		$max += 1;
+		$seq_num = $sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
 
-		$this->reportMessage( "Checking {$sequenceIndex} sequence consistency ...\n" );
-		$this->reportMessage( "   ... setting sequence to {$max} ...\n" );
-
-		$this->connection->query( "ALTER SEQUENCE {$sequenceIndex} RESTART WITH {$max}", __METHOD__ );
+		$this->reportMessage( "Checking `smw_id` sequence consistency ...\n" );
+		$this->reportMessage( "   ... setting sequence to {$seq_num} ...\n" );
 		$this->reportMessage( "   ... done.\n" );
 	}
 
