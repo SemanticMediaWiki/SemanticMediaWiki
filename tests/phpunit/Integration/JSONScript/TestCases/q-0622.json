@@ -1,0 +1,71 @@
+{
+	"description": "Test query with category hierarchy",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0622/A",
+			"contents": "[[Category:Q0622]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0622/B",
+			"contents": "[[Category:Q0622/A]] [[Category:Q0622/C]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0622/C",
+			"contents": "[[Category:Q0622]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Q0622",
+			"contents": "[[Category:Q0622]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Category:Q0622]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q0622#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_HELP": true
+		},
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10,
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/subcategory hierarchies are not supported"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

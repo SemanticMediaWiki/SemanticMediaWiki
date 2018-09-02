@@ -103,7 +103,7 @@ class TemporaryTableBuilder {
 				. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tableName}' AND schemaname = ANY (current_schemas(true))) "
 				. " THEN DELETE FROM {$tableName}; "
 				. " ELSE "
-				. "  CREATE TEMPORARY TABLE {$tableName} (id INTEGER PRIMARY KEY); "
+				. "  CREATE TEMPORARY TABLE {$tableName} (id SERIAL); "
 				. "    CREATE RULE {$tableName}_ignore AS ON INSERT TO {$tableName} WHERE (EXISTS (SELECT 1 FROM {$tableName} "
 				. "	 WHERE ({$tableName}.id = new.id))) DO INSTEAD NOTHING; "
 				. " END IF; "
