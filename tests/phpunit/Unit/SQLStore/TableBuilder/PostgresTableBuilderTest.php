@@ -190,7 +190,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'query' ) )
+			->setMethods( array( 'query', 'getType', 'onTransactionIdle' ) )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
