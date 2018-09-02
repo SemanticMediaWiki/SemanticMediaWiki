@@ -46,7 +46,6 @@ class SemanticMediaWiki {
 		include_once __DIR__ . '/src/Aliases.php';
 		include_once __DIR__ . '/src/Defines.php';
 		include_once __DIR__ . '/src/GlobalFunctions.php';
-		include_once __DIR__ . '/tests/phpunit/PHPUnitCommand.php';
 
 		// If the function is called more than once then this will fail on
 		// purpose
