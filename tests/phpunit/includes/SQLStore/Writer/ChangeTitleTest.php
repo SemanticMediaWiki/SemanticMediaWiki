@@ -71,6 +71,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'computeTableRowDiff' )
 			->will( $this->returnValue( [ [], [], [] ] ) );
 
+		$propertyTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -98,6 +102,14 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$changeDiff->expects( $this->any() )
+			->method( 'getTextItems' )
+			->will( $this->returnValue( [] ) );
+
+		$changeDiff->expects( $this->any() )
+			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( [] ) );
 
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
@@ -150,6 +162,10 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableRowDiffer' )
 			->will( $this->returnValue( $propertyTableRowDiffer ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertyTableUpdater' )
+			->will( $this->returnValue( $propertyTableUpdater ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newSemanticDataLookup' )
@@ -229,7 +245,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$parentStore->expects( $this->atLeastOnce() )
+		$parentStore->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
@@ -292,7 +308,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$parentStore->expects( $this->atLeastOnce() )
+		$parentStore->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
