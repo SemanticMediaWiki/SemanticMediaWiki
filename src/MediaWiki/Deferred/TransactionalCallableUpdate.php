@@ -43,14 +43,20 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	private $postCommitableCallbacks = array();
 
 	/**
+	 * @var boolean
+	 */
+	private $autoCommit = false;
+
+	/**
 	 * @since 3.0
 	 *
-	 * @param Closure $callback|null
+	 * @param callable $callback|null
 	 * @param Database|null $connection
 	 */
-	public function __construct( Closure $callback = null, Database $connection ) {
+	public function __construct( callable $callback = null, Database $connection ) {
 		parent::__construct( $callback );
 		$this->connection = $connection;
+		$this->connection->onTransactionResolution( [ $this, 'cancelOnRollback' ], __METHOD__ );
 	}
 
 	/**
@@ -62,6 +68,13 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 */
 	public function waitOnTransactionIdle() {
 		$this->onTransactionIdle = !$this->isCommandLineMode;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function runAsAutoCommit() {
+		$this->autoCommit = true;
 	}
 
  	/**
@@ -90,7 +103,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @param string $fname
 	 * @param Closure $callback
 	 */
-	public function addPreCommitableCallback( $fname, $callback ) {
+	public function addPreCommitableCallback( $fname, callable $callback ) {
 		if ( is_callable( $callback ) ) {
 			$this->preCommitableCallbacks[$fname] = $callback;
 		}
@@ -105,7 +118,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @param string $fname
 	 * @param Closure $callback
 	 */
-	public function addPostCommitableCallback( $fname, $callback ) {
+	public function addPostCommitableCallback( $fname, callable $callback ) {
 		if ( is_callable( $callback ) ) {
 			$this->postCommitableCallbacks[$fname] = $callback;
 		}
@@ -118,45 +131,66 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 */
 	public function doUpdate() {
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'developer',
-			'origin' => $this->getOrigin()
-		];
-
 		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function() {
-				$this->logger->info( '[TransactionalCallableUpdate] Update: {origin} (onTransactionIdle)', $context );
-				$this->onTransactionIdle = false;
-				$this->doUpdate();
-			} );
+			return $this->runOnTransactionIdle();
 		}
 
-		foreach ( $this->preCommitableCallbacks as $fname => $preCallback ) {
-			$this->logger->info( '[TransactionalCallableUpdate] Update: {origin} (pre-commitable callback: {fname})', $context + [ 'fname' => $fname ] );
-			call_user_func( $preCallback, $this->transactionTicket );
+		$this->runPreCommitCallbacks();
+
+		$e = null;
+		$autoTrx = null;
+
+		if ( $this->autoCommit ) {
+			$this->logger->info( [ 'DeferrableUpdate', 'Transactional, as auto commit', 'Update' ] );
+			$autoTrx = $this->connection->getFlag( DBO_TRX );
+			$this->connection->clearFlag( DBO_TRX );
 		}
 
-		parent::doUpdate();
-
-		foreach ( $this->postCommitableCallbacks as $fname => $postCallback ) {
-			$this->logger->info( '[TransactionalCallableUpdate] Update: {origin} (post-commitable callback: {fname})', $context + [ 'fname' => $fname ] );
-			call_user_func( $postCallback, $this->transactionTicket );
+		try {
+			parent::doUpdate();
+		} catch ( \Exception $e ) {
 		}
 
-		$this->connection->commitAndWaitForReplication( $this->getOrigin(), $this->transactionTicket );
+		if ( $this->autoCommit && $autoTrx ) {
+			$this->connection->setFlag( DBO_TRX );
+		}
+
+		if ( $e ) {
+			throw $e;
+		}
+
+		$this->runPostCommitCallbacks();
+
+		if ( $this->transactionTicket !== null ) {
+			$this->connection->commitAndWaitForReplication( $this->getOrigin(), $this->transactionTicket );
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function cancelOnRollback( $trigger ) {
+		if ( $trigger === Database::TRIGGER_ROLLBACK ) {
+			$this->callback = null;
+		}
 	}
 
 	protected function addUpdate( $update ) {
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'developer',
-			'origin' => $this->getOrigin()
-		];
-
 		if ( $this->onTransactionIdle ) {
-			$this->logger->info( '[TransactionalCallableUpdate] Added: {origin} (onTransactionIdle)', $context );
+			$this->logger->info(
+				[
+					'DeferrableUpdate',
+					'Transactional',
+					'Added: {origin} (onTransactionIdle)'
+				],
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin()
+				]
+			);
+
 			return $this->connection->onTransactionIdle( function() use( $update ) {
 				$update->onTransactionIdle = false;
 				parent::addUpdate( $update );
@@ -170,6 +204,65 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		return parent::getLoggableContext() + array(
 			'transactionTicket' => $this->transactionTicket
 		);
+	}
+
+	private function runOnTransactionIdle() {
+		$this->connection->onTransactionIdle( function() {
+			$this->logger->info(
+				[
+					'DeferrableUpdate',
+					'Transactional',
+					'Update: {origin} (onTransactionIdle)'
+				],
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin()
+				]
+			);
+			$this->onTransactionIdle = false;
+			$this->doUpdate();
+		} );
+	}
+
+	private function runPreCommitCallbacks() {
+		foreach ( $this->preCommitableCallbacks as $fname => $preCallback ) {
+			$this->logger->info(
+				[
+					'DeferrableUpdate',
+					'Transactional',
+					'Update: {origin} (pre-commitable callback: {fname})'
+				],
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin(),
+					'fname' => $fname
+				]
+			);
+
+			call_user_func( $preCallback, $this->transactionTicket );
+		}
+	}
+
+	private function runPostCommitCallbacks() {
+		foreach ( $this->postCommitableCallbacks as $fname => $postCallback ) {
+			$this->logger->info(
+				[
+					'DeferrableUpdate',
+					'Transactional',
+					'Update: {origin} (post-commitable callback: {fname})'
+				],
+				[
+					'method' => __METHOD__,
+					'role' => 'developer',
+					'origin' => $this->getOrigin(),
+					'fname' => $fname
+				]
+			);
+
+			call_user_func( $postCallback, $this->transactionTicket );
+		}
 	}
 
 }

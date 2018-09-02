@@ -35,6 +35,19 @@ class PropertyStatisticsRebuildJob extends JobBase {
 			return true;
 		}
 
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
+			[ $this, 'rebuild' ]
+		);
+
+		$deferredCallableUpdate->setOrigin( __METHOD__ );
+		$deferredCallableUpdate->runAsAutoCommit();
+		$deferredCallableUpdate->pushUpdate();
+
+		return true;
+	}
+
+	public function rebuild() {
+
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 
@@ -47,8 +60,6 @@ class PropertyStatisticsRebuildJob extends JobBase {
 		);
 
 		$propertyStatisticsRebuilder->rebuild();
-
-		return true;
 	}
 
 }

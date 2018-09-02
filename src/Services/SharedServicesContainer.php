@@ -207,14 +207,14 @@ class SharedServicesContainer implements CallbackContainer {
 			return new ContentParser( $title );
 		} );
 
-		$containerBuilder->registerCallback( 'DeferredCallableUpdate', function( $containerBuilder, \Closure $callback = null ) {
+		$containerBuilder->registerCallback( 'DeferredCallableUpdate', function( $containerBuilder, callable $callback = null ) {
 			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\MediaWiki\Deferred\CallableUpdate' );
 			$containerBuilder->registerAlias( 'CallableUpdate', CallableUpdate::class );
 
 			return new CallableUpdate( $callback );
 		} );
 
-		$containerBuilder->registerCallback( 'DeferredTransactionalCallableUpdate', function( $containerBuilder, \Closure $callback = null, Database $connection = null ) {
+		$containerBuilder->registerCallback( 'DeferredTransactionalCallableUpdate', function( $containerBuilder, callable $callback = null, Database $connection = null ) {
 			$containerBuilder->registerExpectedReturnType( 'DeferredTransactionalUpdate', '\SMW\MediaWiki\Deferred\TransactionalCallableUpdate' );
 			$containerBuilder->registerAlias( 'DeferredTransactionalUpdate', TransactionalCallableUpdate::class );
 

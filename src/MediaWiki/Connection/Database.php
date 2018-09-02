@@ -31,6 +31,11 @@ class Database {
 	const AUTO_COMMIT = 'auto.commit';
 
 	/**
+	 * @see IDatabase::TRIGGER_ROLLBACK
+	 */
+	const TRIGGER_ROLLBACK = 3;
+
+	/**
 	 * @var ConnectionProviderRef
 	 */
 	private $connectionProviderRef;
@@ -788,6 +793,22 @@ class Database {
 		}
 
 		$this->writeConnection->endAtomic( $fname );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param callable $callback
+	 */
+	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ) {
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		if ( method_exists( $this->writeConnection, 'onTransactionResolution' ) && $this->writeConnection->trxLevel() ) {
+			$this->writeConnection->onTransactionResolution( $callback, $fname );
+		}
 	}
 
 	/**

@@ -467,11 +467,11 @@ class ApplicationFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param Closure $callback
+	 * @param callable $callback
 	 *
 	 * @return DeferredCallableUpdate
 	 */
-	public function newDeferredCallableUpdate( Closure $callback = null ) {
+	public function newDeferredCallableUpdate( callable $callback = null ) {
 
 		$deferredCallableUpdate = $this->containerBuilder->create(
 			'DeferredCallableUpdate',
@@ -496,11 +496,11 @@ class ApplicationFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Closure $callback
+	 * @param callable $callback
 	 *
 	 * @return DeferredTransactionalUpdate
 	 */
-	public function newDeferredTransactionalCallableUpdate( Closure $callback = null ) {
+	public function newDeferredTransactionalCallableUpdate( callable $callback = null ) {
 
 		$deferredTransactionalUpdate = $this->containerBuilder->create(
 			'DeferredTransactionalCallableUpdate',
