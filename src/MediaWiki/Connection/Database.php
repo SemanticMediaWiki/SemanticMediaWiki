@@ -76,6 +76,11 @@ class Database {
 	private $autoCommit = false;
 
 	/**
+	 * @var integer
+	 */
+	private $insertId = null;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ConnectionProviderRef $connectionProviderRef
@@ -507,12 +512,24 @@ class Database {
 	 * @return int|null
 	 */
 	public function nextSequenceValue( $seqName ) {
+		$this->insertId = null;
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
 		}
 
-		return $this->writeConnection->nextSequenceValue( $seqName );
+		if ( !$this->isType( 'postgres' ) ) {
+			return null;
+		}
+
+		// #3101, #2903
+		// MW 1.31+
+		// https://github.com/wikimedia/mediawiki/commit/0a9c55bfd39e22828f2d152ab71789cef3b0897c#diff-278465351b7c14bbcadac82036080e9f
+		$safeseq = str_replace( "'", "''", $seqName );
+		$res = $this->writeConnection->query( "SELECT nextval('$safeseq')" );
+		$row = $this->readConnection->fetchRow( $res );
+
+		return $this->insertId = is_null( $row[0] ) ? null : (int)$row[0];
 	}
 
 	/**
@@ -526,6 +543,10 @@ class Database {
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
+		}
+
+		if ( $this->insertId !== null ) {
+			return $this->insertId;
 		}
 
 		return (int)$this->writeConnection->insertId();
