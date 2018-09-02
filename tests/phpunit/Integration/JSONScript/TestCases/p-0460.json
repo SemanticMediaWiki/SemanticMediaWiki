@@ -105,7 +105,7 @@
 			"subject": "Example/P0460/3",
 			"assert-output": {
 				"to-contain": [
-					"10</p><span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;10&quot; is not in the list (&gt;1, ) of allowed values for the &quot;Has ranged number&quot; property.\">"
+					"10<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;10&quot; is not in the list (&gt;1, ) of allowed values for the &quot;Has ranged number&quot; property.\">"
 				]
 			}
 		},
@@ -161,7 +161,7 @@
 			"subject": "Example/P0460/7",
 			"assert-output": {
 				"to-contain": [
-					"60.1</p><span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;60.1&quot; is not in the list (1..10, 50...60, 70) of allowed values for the &quot;Has bounded number&quot; property.\">"
+					"60.1<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;60.1&quot; is not in the list (1..10, 50...60, 70) of allowed values for the &quot;Has bounded number&quot; property.\">"
 				]
 			}
 		},
@@ -197,7 +197,7 @@
 			"subject": "Example/P0460/9",
 			"assert-output": {
 				"to-contain": [
-					"200.1km²</p><span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;200.1 km²&quot; is not in the list (1..200) of allowed values for the &quot;Has bounded quantity&quot; property.\">"
+					"200.1km²<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;200.1 km²&quot; is not in the list (1..200) of allowed values for the &quot;Has bounded quantity&quot; property.\">"
 				]
 			}
 		}

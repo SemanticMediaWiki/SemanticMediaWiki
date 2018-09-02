@@ -75,7 +75,7 @@
 			"subject": "Example/P0212/3",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:P106\">職業</a></span><div class=\"smwttcontent\">人物の職業。「専門分野」</div></span><p>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
+					"title=\"Property:P106\">職業</a></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
 				]
 			}
 		},
