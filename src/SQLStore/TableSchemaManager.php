@@ -157,6 +157,7 @@ class TableSchemaManager {
 		$table->addColumn( 'smw_sort', array( FieldType::FIELD_TITLE ) );
 		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
 		$table->addColumn( 'smw_hash', FieldType::FIELD_HASH );
+		$table->addColumn( 'smw_rev', FieldType::FIELD_ID );
 
 		$table->addIndex( 'smw_id' );
 		$table->addIndex( 'smw_id,smw_sortkey' );
@@ -186,6 +187,8 @@ class TableSchemaManager {
 		// Interfered with the API lookup index, couldn't find a use case
 		// that would require the this index
 		// $table->addIndex( 'smw_sort,smw_id,smw_iw' );
+
+		$table->addIndex( 'smw_rev,smw_id' );
 
 		return $table;
 	}

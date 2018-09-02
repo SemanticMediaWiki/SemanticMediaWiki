@@ -242,10 +242,7 @@ class DataUpdater {
 			$user
 		);
 
-		$this->semanticData->setExtensionData(
-			'revision.id',
-			$revision->getId()
-		);
+		$this->semanticData->setExtensionData( 'revision_id', $revision->getId() );
 
 		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
