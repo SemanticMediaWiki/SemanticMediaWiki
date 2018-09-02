@@ -42,13 +42,13 @@
 			"subject": "Example/P0415/1a",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwtext\">0&#160;°C</span><div class=\"smwttcontent\">273.15&#160;K <br />32&#160;°F <br />491.67&#160;°R <br /></div></span>",
-					"<span class=\"smwtext\">100&#160;°C</span><div class=\"smwttcontent\">373.15&#160;K <br />212&#160;°F <br />671.67&#160;°R <br /></div></span>",
+					"<span class=\"smwtext\">0&#160;°C</span><span class=\"smwttcontent\">273.15&#160;K <br />32&#160;°F <br />491.67&#160;°R <br /></span></span>",
+					"<span class=\"smwtext\">100&#160;°C</span><span class=\"smwttcontent\">373.15&#160;K <br />212&#160;°F <br />671.67&#160;°R <br /></span></span>",
 					"<td class=\"- smwtype_tem\" data-sort-value=\"273.15\">0 °C<br />100 °C</td>",
 					"<td class=\"-u smwtype_tem\" data-sort-value=\"273.15\">°C<br />°C</td>",
 					"<td class=\"-n smwtype_tem\" data-sort-value=\"273.15\">0 <br />100 </td>",
-					"<span class=\"smwtext\">491.67&#160;°R</span><div class=\"smwttcontent\">0&#160;°C <br />273.15&#160;K <br />32&#160;°F <br /></div></span>",
-					"<span class=\"smwtext\">671.67&#160;°R</span><div class=\"smwttcontent\">100&#160;°C <br />373.15&#160;K <br />212&#160;°F <br /></div></span>"
+					"<span class=\"smwtext\">491.67&#160;°R</span><span class=\"smwttcontent\">0&#160;°C <br />273.15&#160;K <br />32&#160;°F <br /></span></span>",
+					"<span class=\"smwtext\">671.67&#160;°R</span><span class=\"smwttcontent\">100&#160;°C <br />373.15&#160;K <br />212&#160;°F <br /></span></span>"
 				]
 			}
 		}

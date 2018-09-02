@@ -238,12 +238,12 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $instance ) );
 
 		$this->assertContains(
-			'<div class="smwttcontent">[SERVICELINK-B SERVICELINK-A]</div>',
+			'<span class="smwttcontent">[SERVICELINK-B SERVICELINK-A]</span>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 
 		$this->assertContains(
-			'<div class="smwttcontent"><a href="SERVICELINK-B">SERVICELINK-A</a></div>',
+			'<span class="smwttcontent"><a href="SERVICELINK-B">SERVICELINK-A</a></span>',
 			$instance->getInfolinkText( SMW_OUTPUT_HTML )
 		);
 	}

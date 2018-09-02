@@ -36,7 +36,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element&#10;\">",
-					"<div class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and <li>stripped `li` in title element</li></div>",
+					"<span class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and <li>stripped `li` in title element</li></span>",
 					"title=\"Property:Has date\">Has date</a>"
 				]
 			}
@@ -48,7 +48,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element&#10;\">",
-					"<div class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and <li>stripped `li` in title element</li></div>",
+					"<span class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and <li>stripped `li` in title element</li></span>",
 					"title=\"Property:Has date\">With extra caption</a>"
 				]
 			}
@@ -62,7 +62,7 @@
 			"subject": "Example/P0212/3",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:P106\">職業</a></span><div class=\"smwttcontent\">人物の職業。「専門分野」</div></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
+					"title=\"Property:P106\">職業</a></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
 				]
 			}
 		},
@@ -85,7 +85,7 @@
 			"subject": "Example/P0212/4",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:P106\">WithCaption</a></span><div class=\"smwttcontent\">대상 인물의 직업</div></span>"
+					"title=\"Property:P106\">WithCaption</a></span><span class=\"smwttcontent\">대상 인물의 직업</span></span>"
 				]
 			}
 		}

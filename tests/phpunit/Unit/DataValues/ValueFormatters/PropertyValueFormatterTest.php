@@ -149,12 +149,12 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertContains(
-			'<span class="smwtext">ABC[<>]</span><div class="smwttcontent"></div>',
+			'<span class="smwtext">ABC[<>]</span><span class="smwttcontent"></span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] )
 		);
 
 		$this->assertContains(
-			'<span class="smwtext">ABC[&lt;&gt;]</span><div class="smwttcontent"></div>',
+			'<span class="smwtext">ABC[&lt;&gt;]</span><span class="smwttcontent"></span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::HTML_SHORT ] )
 		);
 	}

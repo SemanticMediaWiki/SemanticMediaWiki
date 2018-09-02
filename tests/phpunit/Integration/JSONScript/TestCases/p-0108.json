@@ -58,7 +58,7 @@
 			"assert-output": {
 				"to-contain": [
 					"title=\"Test/P0108/1 P0108\">",
-					"<div class=\"smwttcontent\">Test/P0108/1 P0108</div>"
+					"<span class=\"smwttcontent\">Test/P0108/1 P0108</span>"
 				]
 			}
 		},
