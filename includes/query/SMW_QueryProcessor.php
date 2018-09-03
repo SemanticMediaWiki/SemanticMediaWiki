@@ -184,26 +184,6 @@ class SMWQueryProcessor implements QueryContext {
 	}
 
 	/**
-	 * Preprocess a query as given by an array of parameters as is typically
-	 * produced by the #ask parser function. The parsing results in a querystring,
-	 * an array of additional parameters, and an array of additional SMWPrintRequest
-	 * objects, which are filled into call-by-ref parameters.
-	 * $showMode is true if the input should be treated as if given by #show
-	 *
-	 * @param array $rawParams
-	 * @param string $querystring
-	 * @param array $params
-	 * @param array $printouts array of SMWPrintRequest
-	 * @param boolean $showMode
-	 * @deprecated Will vanish after SMW 1.8 is released.
-	 * Use getComponentsFromFunctionParams which has a cleaner interface.
-	 */
-	static public function processFunctionParams( array $rawParams, &$querystring, &$params, &$printouts, $showMode = false ) {
-		list( $querystring, $params, $printouts ) = self::getComponentsFromFunctionParams( $rawParams, $showMode );
-	}
-
-
-	/**
 	 * Preprocess a query as given by an array of parameters as is
 	 * typically produced by the #ask parser function or by Special:Ask.
 	 * The parsing results in a querystring, an array of additional
