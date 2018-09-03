@@ -118,6 +118,10 @@ class ValueListBuilder {
 		} else {
 			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		}
+		
+		if ( $dataItems instanceof \Iterator ) {
+			$dataItems = iterator_to_array( $dataItems );
+		}
 
 		if ( !$options->ascending ) {
 			$dataItems = array_reverse( $dataItems );
