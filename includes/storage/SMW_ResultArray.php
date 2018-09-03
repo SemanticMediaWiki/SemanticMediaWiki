@@ -135,14 +135,6 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Compatibility alias for getNextDatItem().
-	 * @deprecated since 1.6. Call getNextDataValue() or getNextDataItem() directly as needed. Method will vanish before SMW 1.7.
-	 */
-	public function getNextObject() {
-		return $this->getNextDataValue();
-	}
-
-	/**
 	 * Return the next SMWDataItem object or false if no further object exists.
 	 *
 	 * @since 1.6
