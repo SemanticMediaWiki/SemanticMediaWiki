@@ -108,7 +108,6 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function getGlobalFunctions() {
 		return array(
-			array( 'smwfIsSemanticsProcessed' ),
 			array( 'smwfNormalTitleDBKey' ),
 			array( 'smwfNormalTitleText' ),
 			array( 'smwfXMLContentEncode' ),
