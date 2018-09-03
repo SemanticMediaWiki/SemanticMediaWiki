@@ -197,17 +197,6 @@ class SMWRecordValue extends AbstractMultiValue {
 		}
 	}
 
-////// Additional API for value lists
-
-	/**
-	 * @deprecated as of 1.6, use getDataItems instead
-	 *
-	 * @return array of DataItem
-	 */
-	public function getDVs() {
-		return $this->getDataItems();
-	}
-
 	/**
 	 * @since 1.6
 	 *
@@ -241,8 +230,6 @@ class SMWRecordValue extends AbstractMultiValue {
 
 		return $this->m_diProperties;
 	}
-
-////// Internal helper functions
 
 	protected function makeOutputText( $type = 0, $linker = null ) {
 		if ( !$this->isValid() ) {
