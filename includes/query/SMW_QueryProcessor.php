@@ -247,34 +247,6 @@ class SMWQueryProcessor implements QueryContext {
 	}
 
 	/**
-	 * Process a query string in SMW's query language and return a formatted
-	 * result set as specified by $outputmode. A parameter array of key-value-pairs
-	 * constrains the query and determines the serialisation mode for results. The
-	 * parameter $context defines in what context the query is used, which affects
-	 * certain general settings. Finally, $extraprintouts supplies additional
-	 * printout requests for the query results.
-	 *
-	 * @param string $queryString
-	 * @param array $params These need to be the result of a list fed to getProcessedParams
-	 * @param $extraPrintouts
-	 * @param $outputMode
-	 * @param $context
-	 *
-	 * @return string
-	 * @deprecated Will vanish after release of SMW 1.8.
-	 * See SMW_Ask.php for example code on how to get query results from
-	 * #ask function parameters.
-	 */
-	static public function getResultFromQueryString( $queryString, array $params, $extraPrintouts, $outputMode, $context = self::INLINE_QUERY ) {
-
-		$query  = self::createQuery( $queryString, $params, $context, '', $extraPrintouts );
-		$result = self::getResultFromQuery( $query, $params, $outputMode, $context );
-
-
-		return $result;
-	}
-
-	/**
 	 * Create a fully formatted result string from a query and its
 	 * parameters. The method takes care of processing various types of
 	 * query result. Most cases are handled by printers, but counting and
