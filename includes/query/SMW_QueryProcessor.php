@@ -5,22 +5,13 @@ use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
 use ParamProcessor\Processor;
 use SMW\ApplicationFactory;
-use SMW\Message;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\Deferred;
 use SMW\Query\PrintRequest;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\Processor\DefaultParamDefinition;
 use SMW\Query\QueryContext;
-use SMW\Query\ResultFormatNotFoundException;
-
-/**
- * This file contains a static class for accessing functions to generate and execute
- * semantic queries and to serialise their results.
- *
- * @ingroup SMWQuery
- * @author Markus Krötzsch
- */
+use SMW\Query\Exception\ResultFormatNotFoundException;
 
 /**
  * Static class for accessing functions to generate and execute semantic queries
