@@ -30,7 +30,8 @@
 			"Fitoschido",
 			"S4b1nuz E.656",
 			"Sarah Bernabei",
-			"McDutchie"
+			"McDutchie",
+			"OrbiliusMagister"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -38,6 +39,11 @@
 	"smw-semantics-not-enabled": "Le funzionalità di Semantic MediaWiki non sono abilitate per questo wiki.",
 	"smw_viewasrdf": "Feed RDF",
 	"smw_finallistconjunct": " e",
+	"smw-factbox-head": "... altro su \"$1\"",
+	"smw-factbox-facts": "Dati",
+	"smw-factbox-facts-help": "Mostra dichiarazioni e dati che sono stati creati da un utente",
+	"smw-factbox-facts-derived": "Dati derivati",
+	"smw-factbox-facts-derived-help": "Mostra dati che sono stati derivati da principi o con l'aiuto di altre tecniche di ragionamento",
 	"smw_isspecprop": "Questa proprietà è una proprietà speciale all'interno di questo wiki.",
 	"smw-concept-cache-header": "Utilizzo della cache",
 	"smw-concept-cache-count": "La [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count cache di concetti] contiene {{PLURAL:$1|'''una''' entità|'''$1''' entità}} ($2).",

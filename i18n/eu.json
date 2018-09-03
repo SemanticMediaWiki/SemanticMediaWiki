@@ -9,7 +9,8 @@
 			"Sator",
 			"Theklan",
 			"Fitoschido",
-			"Amaia"
+			"Amaia",
+			"EukeneFL"
 		]
 	},
 	"smw-title": "MediaWiki semantikoa",
@@ -222,6 +223,7 @@
 	"smw-admin-supportdocu": "Baliabide batzuk eskaintzen dira arazoak izatekotan zuri laguntzeko:",
 	"smw-admin-other-functions": "Beste funtzio batzuk",
 	"smw-admin-supplementary-section-title": "Funtzio osagarriak",
+	"smw-admin-supplementary-section-subtitle": "Erabilgarri dauden funtzioak",
 	"smw-admin-supplementary-section-intro": "Zerrendatutako funtzio batzuk mugatuak egon daitezke sekzio honetan eta beraz, ez daude eskuragarri wiki honetan.",
 	"smw-admin-supplementary-settings-title": "Konfigurazio ezarpenak",
 	"smw-admin-supplementary-operational-statistics-title": "Estatistika operatiboak",
