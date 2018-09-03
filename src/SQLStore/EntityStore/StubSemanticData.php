@@ -155,7 +155,7 @@ class StubSemanticData extends SemanticData {
 		if ( array_key_exists( $property->getKey(), $this->mStubPropVals ) ) {
 			// Not catching exception here; the
 			$this->unstubProperty( $property->getKey(), $property );
-			$propertyTypeId = $property->findPropertyTypeID();
+			$propertyTypeId = $property->findPropertyValueType();
 			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
 
 			foreach ( $this->mStubPropVals[$property->getKey()] as $dbkeys ) {

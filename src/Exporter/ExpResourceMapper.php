@@ -132,7 +132,7 @@ class ExpResourceMapper {
 		}
 
 		// No need for any aux properties besides those listed here
-		if ( !$this->bcAuxiliaryUse && $property->findPropertyTypeID() !== '_dat' && $property->findPropertyTypeID() !== '_geo' ) {
+		if ( !$this->bcAuxiliaryUse && $property->findPropertyValueType() !== '_dat' && $property->findPropertyValueType() !== '_geo' ) {
 			$useAuxiliaryModifier = false;
 		}
 

@@ -293,7 +293,7 @@ class SMWExporter {
 				break;
 				case SMW_NS_PROPERTY:
 					$property = new DIProperty( $diWikiPage->getDBKey() );
-					$maintype_pe = self::getSpecialNsResource( 'owl', self::getOWLPropertyType( $property->findPropertyTypeID() ) );
+					$maintype_pe = self::getSpecialNsResource( 'owl', self::getOWLPropertyType( $property->findPropertyValueType() ) );
 					$label = $pageTitle;
 				break;
 				default:
@@ -658,7 +658,7 @@ class SMWExporter {
 	 * @return boolean
 	 */
 	static public function hasHelperExpElement( DIProperty $property ) {
-		return ( $property->findPropertyTypeID() === '_dat' || $property->findPropertyTypeID() === '_geo' ) || ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
+		return ( $property->findPropertyValueType() === '_dat' || $property->findPropertyValueType() === '_geo' ) || ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
 	}
 
 	static protected function hasSpecialPropertyResource( DIProperty $property ) {

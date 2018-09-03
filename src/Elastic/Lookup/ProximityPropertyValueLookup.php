@@ -61,7 +61,7 @@ class ProximityPropertyValueLookup {
 		);
 
 		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
-			$property->findPropertyTypeID()
+			$property->findPropertyValueType()
 		);
 
 		$field = $this->fieldMapper->getField( $property );

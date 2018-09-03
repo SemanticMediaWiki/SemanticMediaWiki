@@ -242,7 +242,7 @@ class SMWSQLStore3Readers {
 			);
 
 			$result = array();
-			$propertyTypeId = $property->findPropertyTypeID();
+			$propertyTypeId = $property->findPropertyValueType();
 			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
 
 			foreach ( $data as $dbkeys ) {
@@ -283,7 +283,7 @@ class SMWSQLStore3Readers {
 		}
 
 		$type = DataTypeRegistry::getInstance()->getDataItemByType(
-			$property->findPropertyTypeID()
+			$property->findPropertyValueType()
 		);
 
 		// #1222, Filter those where types don't match (e.g property = _txt

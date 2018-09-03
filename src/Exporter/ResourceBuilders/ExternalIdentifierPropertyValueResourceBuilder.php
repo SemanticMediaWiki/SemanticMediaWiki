@@ -24,7 +24,7 @@ class ExternalIdentifierPropertyValueResourceBuilder extends PropertyValueResour
 	 * {@inheritDoc}
 	 */
 	public function isResourceBuilderFor( DIProperty $property ) {
-		return $property->findPropertyTypeID() === '_eid';
+		return $property->findPropertyValueType() === '_eid';
 	}
 
 	/**

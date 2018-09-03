@@ -116,7 +116,7 @@ class SearchTable {
 	public function isExemptedProperty( DIProperty $property ) {
 
 		$dataItemTypeId = DataTypeRegistry::getInstance()->getDataItemId(
-			$property->findPropertyTypeID()
+			$property->findPropertyValueType()
 		);
 
 		// Property does not belong to a valid type which means to be exempted
