@@ -247,34 +247,6 @@ class SMWQueryProcessor implements QueryContext {
 	}
 
 	/**
-	 * Process and answer a query as given by an array of parameters as is
-	 * typically produced by the #ask parser function. The result is formatted
-	 * according to the specified $outputformat. The parameter $context defines
-	 * in what context the query is used, which affects ceretain general settings.
-	 *
-	 * The main task of this function is to preprocess the raw parameters to
-	 * obtain actual parameters, printout requests, and the query string for
-	 * further processing.
-	 *
-	 * @note Consider using getQueryAndParamsFromFunctionParams() and
-	 * getResultFromQuery() instead.
-	 * @deprecated Will vanish after release of SMW 1.8.
-	 * See SMW_Ask.php for example code on how to get query results from
-	 * #ask function parameters.
-	 */
-	static public function getResultFromFunctionParams( array $rawParams, $outputMode, $context = self::INLINE_QUERY, $showMode = false ) {
-		list( $queryString, $params, $printouts ) = self::getComponentsFromFunctionParams( $rawParams, $showMode );
-
-		if ( !$showMode ) {
-			self::addThisPrintout( $printouts, $params );
-		}
-
-		$params = self::getProcessedParams( $params, $printouts );
-
-		return self::getResultFromQueryString( $queryString, $params, $printouts, SMW_OUTPUT_WIKI, $context );
-	}
-
-	/**
 	 * Process a query string in SMW's query language and return a formatted
 	 * result set as specified by $outputmode. A parameter array of key-value-pairs
 	 * constrains the query and determines the serialisation mode for results. The
