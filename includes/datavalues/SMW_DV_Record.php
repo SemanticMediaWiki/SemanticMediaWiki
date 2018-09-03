@@ -261,7 +261,7 @@ class SMWRecordValue extends AbstractMultiValue {
 		return $result;
 	}
 
-	protected function makeValueOutputText( $type, $dataValue, $linker ) {
+	protected function makeValueOutputText( $type, SMWDataValue $dataValue, $linker ) {
 		switch ( $type ) {
 			case 0:
 			return $dataValue->getShortWikiText( $linker );
