@@ -119,7 +119,7 @@ class ValueListBuilder {
 			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		}
 		
-		if ( $dataItems instanceof \Iterator ) {
+		if ( $dataItems instanceof \Traversable ) {
 			$dataItems = iterator_to_array( $dataItems );
 		}
 
