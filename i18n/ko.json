@@ -532,6 +532,7 @@
 	"apihelp-browsebyproperty-summary": "속성이나 속성 목록에 관한 정보를 반환하기 위한 API 모듈입니다.",
 	"apihelp-smwtask-summary": "시맨틱 미디어위키 관련 작업을 실행하기 위한 API 모듈입니다.",
 	"apihelp-smwbrowse-summary": "시맨틱 미디어위키의 각기 다른 엔티티 유형의 탐색 활동을 지원하기 위한 API 모듈입니다.",
+	"apihelp-ask-parameter-api-version": "출력 형식:\n;2:결과 목록을 위해 {}를 사용하는 하위 호환 포맷\n;3:결과 목록을 위해 {}를 사용하는 실험적인 포맷.",
 	"smw-api-invalid-parameters": "\"$1\" 변수가 유효하지 않습니다",
 	"smw-property-page-list-count": "이 속성을 사용하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
 	"smw-property-page-list-search-count": "\"$2\" 값이 일치하고 이 속성을 사용하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.",

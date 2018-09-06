@@ -25,7 +25,8 @@
 			"Deathkon",
 			"阿pp",
 			"Wxyveronica",
-			"Hanyanbo98"
+			"Hanyanbo98",
+			"夢蝶葬花"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -407,6 +408,9 @@
 	"smw-admin-supplementary-elastic-settings-intro": "<u>$1</u>由Elasticsearch使用以管理语义MediaWiki指数",
 	"smw-admin-supplementary-elastic-mappings-title": "映射",
 	"smw-admin-supplementary-elastic-mappings-intro": "<u>$1</u>以列举指数和字段映射",
+	"smw-admin-supplementary-elastic-mappings-docu": "此页面包含与当前索引一起使用的字段映射详细信息。应结合<code> index.mapping.total_fields.limit</code>监视映射摘要，该索引指定索引中的最大字段数。",
+	"smw-admin-supplementary-elastic-mappings-summary": "摘要",
+	"smw-admin-supplementary-elastic-mappings-fields": "字段映射",
 	"smw-admin-supplementary-elastic-nodes-title": "节点",
 	"smw-admin-supplementary-elastic-nodes-intro": "<u>$1</u>显示节点统计",
 	"smw-admin-supplementary-elastic-indices-title": "指数",
