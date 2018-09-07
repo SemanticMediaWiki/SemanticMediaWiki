@@ -9,5 +9,5 @@ Released on September 7, 2018.
 
 ## Bug fixes and internal code changes
 
-* #[3177](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3177) as `ad23b16` Remove deprecated "jquery.json" module
+* #[3177](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3177) as `ad23b16` Removes deprecated "jquery.json" module
 * #[3386](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3386) as `a24965c` Fixes encode/decode issues for special property "External formatter URI"
