@@ -1,11 +1,13 @@
-# Semantic MediaWiki 2.5.7
+# Semantic MediaWiki 2.5.8
 
-Released on August 9, 2018.
+Released on September 7, 2018.
+
+## Enhancements
+
+* #[3322](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3322) as `d9b3bcf` Improves `UpdateDispatcherJob` selection of subjects on `forcedUpdate`
+* #[3341](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3341) as `726f54b` Adds support for installation via MediaWiki's "install.php" script
 
 ## Bug fixes and internal code changes
 
-* [#3038](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2855) as `4ebb125` Removes deprecated `ParserOptions::setEditSection()`
-* [#3176](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3176) as `6de5e42` Removes deprecated `wfBCP47()`
-* [#3211](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3211) as `6196919` Makes `-3D` decode in parameter list to allow the usage of equal signs
-* [#3221](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3221) as `954ff20` Converts `log-show-hide-{$type}` system messages to `logeventslist-{$type}-log`
-* [#3222](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3222) as `dae4dd5` Fixes the `Title` class to check for the NULL case for "illegal" characters
+* #[3177](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3177) as `ad23b16` Remove deprecated "jquery.json" module
+* #[3386](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3386) as `a24965c` Fixes encode/decode issues for special property "External formatter URI"
