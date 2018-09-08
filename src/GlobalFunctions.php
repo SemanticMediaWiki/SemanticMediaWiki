@@ -16,16 +16,6 @@ use SMW\ProcessingErrorMsgHandler;
  */
 
 /**
- * @see NamespaceExaminer
- *
- * @return boolean
- * @deprecated since 1.9 and will be removed in 1.11
- */
-function smwfIsSemanticsProcessed( $namespace ) {
-	return \SMW\NamespaceExaminer::getInstance()->isSemanticEnabled( $namespace );
-}
-
-/**
  * Takes a title text and turns it safely into its DBKey. This function
  * reimplements most of the title normalization as done in Title.php in order
  * to achieve conversion with less overhead. The official code could be called

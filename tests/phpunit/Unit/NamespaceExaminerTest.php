@@ -96,18 +96,4 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/**
-	 * @see smwfIsSemanticsProcessed
-	 *
-	 * FIXME Delete this test in 1.11
-	 *
-	 * @since 1.9
-	 */
-	public function testSmwfIsSemanticsProcessed() {
-		$result = smwfIsSemanticsProcessed( NS_MAIN );
-
-		$this->assertInternalType( 'boolean', $result );
-		$this->assertTrue( $result );
-	}
-
 }
