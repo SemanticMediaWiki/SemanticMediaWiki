@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search\Form;
 
 use SMW\MediaWiki\Search\Form\FormsBuilder;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Search\Form\FormsBuilder
@@ -91,12 +92,16 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->buildForm( $data )
 		);
 
+		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
+
 		$expected = [
-			'<button type="button" id="smw-search-forms" class="smw-selectmenu-button is-disabled" title="Select a form" name="smw-form" value="" data-list="[{&quot;id&quot;:&quot;bar&quot;,&quot;name&quot;:&quot;Bar&quot;,&quot;desc&quot;:&quot;Bar&quot;},{&quot;id&quot;:&quot;foo&quot;,&quot;name&quot;:&quot;Foo&quot;,&quot;desc&quot;:&quot;Foo&quot;}]" data-nslist="[]">Form</button><input type="hidden" name="smw-form"/>'
+			'<button type="button" id="smw-search-forms" class="smw-selectmenu-button is-disabled".*',
+			'name="smw-form" value="".*',
+			'data-list="[{&quot;id&quot;:&quot;bar&quot;,&quot;name&quot;:&quot;Bar&quot;,&quot;desc&quot;:&quot;Bar&quot;},{&quot;id&quot;:&quot;foo&quot;,&quot;name&quot;:&quot;Foo&quot;,&quot;desc&quot;:&quot;Foo&quot;}]" data-nslist="[]">Form</button><input type="hidden" name="smw-form"/>'
 		];
 
-		$this->assertContains(
-			implode( '', $expected ),
+		$stringValidator->assertThatStringContains(
+			$expected,
 			$instance->buildFormList( $title )
 		);
 	}

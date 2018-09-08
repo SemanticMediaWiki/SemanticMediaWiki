@@ -325,7 +325,11 @@ return array(
 		'targets' => array(
 			'mobile',
 			'desktop'
-		)
+		),
+		'messages' => array(
+			'smw-search-hide',
+			'smw-search-show',
+		),
 	),
 
 	// Postproc resources

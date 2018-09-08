@@ -59,6 +59,11 @@ class FormsBuilder {
 	private $parameters = [];
 
 	/**
+	 * @var []
+	 */
+	private $termPrefixes = [];
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param WebRequest $request
@@ -87,6 +92,15 @@ class FormsBuilder {
 	 */
 	public static function toLowerCase( $key ) {
 		return strtolower( str_replace( [ ' ' ], [ '' ], $key ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
+	public function getTermPrefixes() {
+		return $this->termPrefixes;
 	}
 
 	/**
@@ -185,6 +199,10 @@ class FormsBuilder {
 
 		if ( isset( $data['default_form'] ) ) {
 			$default_form = self::toLowerCase( $data['default_form'] );
+		}
+
+		if ( isset( $data['term_parser']['prefix'] ) ) {
+			$this->termPrefixes = $data['term_parser']['prefix'];
 		}
 
 		$activeForm = $this->request->getVal( 'smw-form', $default_form );
