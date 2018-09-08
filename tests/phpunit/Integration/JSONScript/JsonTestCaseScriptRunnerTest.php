@@ -122,6 +122,11 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->testEnvironment->resetMediaWikiService( '_MediaWikiTitleCodec' );
 		$this->testEnvironment->resetMediaWikiService( 'TitleParser' );
 
+		// #3414
+		// NameTableAccessException: Expected unused ID from database insert for
+		// 'mw-changed-redirect-target'  into 'change_tag_def',
+		$this->testEnvironment->resetMediaWikiService( 'NameTableStoreFactory' );
+
 		$this->testEnvironment->resetPoolCacheById( PropertySpecificationLookup::POOLCACHE_ID );
 		$this->testEnvironment->resetPoolCacheById( TurtleTriplesBuilder::POOLCACHE_ID );
 

@@ -40,6 +40,11 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+
+		// #3414
+		// NameTableAccessException: Expected unused ID from database insert for
+		// 'mw-changed-redirect-target'  into 'change_tag_def',
+		$this->testEnvironment->resetMediaWikiService( 'NameTableStoreFactory' );
 	}
 
 	protected function tearDown() {
