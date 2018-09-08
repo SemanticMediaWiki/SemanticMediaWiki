@@ -47,6 +47,6 @@
 		"uri.field.case.insensitive": false,
 		"text.field.case.insensitive.eq.match": false,
 		"page.field.case.insensitive.proximity.match": true,
-		"special_search.highlight.fragment.type": false
+		"highlight.fragment.type": false
 	}
 }

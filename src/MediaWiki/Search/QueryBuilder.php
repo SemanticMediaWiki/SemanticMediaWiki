@@ -151,6 +151,7 @@ class QueryBuilder {
 		// term" to avoid being blocked on an empty request which only contains
 		// structured searches.
 		$term = rtrim( $term, " " );
+		$prefix_map = [];
 
 		if ( $this->data === [] ) {
 			$data = SearchProfileForm::getFormDefinitions( $store );
@@ -159,9 +160,11 @@ class QueryBuilder {
 		}
 
 		if ( isset( $data['term_parser']['prefix'] ) && $data['term_parser']['prefix'] ) {
-			$termParser = new TermParser( (array)$data['term_parser']['prefix'] );
-			$term = $termParser->parse( $term );
+			$prefix_map = (array)$data['term_parser']['prefix'];
 		}
+
+		$termParser = new TermParser( $prefix_map );
+		$term = $termParser->parse( $term );
 
 		$form = $this->request->getVal( 'smw-form' );
 
