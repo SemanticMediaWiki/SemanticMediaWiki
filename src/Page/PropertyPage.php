@@ -204,8 +204,10 @@ class PropertyPage extends Page {
 		}
 
 		$context = $this->getContext();
-		$html = '';
 		$languageCode = $context->getLanguage()->getCode();
+
+		$html = '';
+		$matches = [];
 
 		$context->getOutput()->addModuleStyles( 'ext.smw.page.styles' );
 		$context->getOutput()->addModules( 'smw.property.page' );
@@ -226,31 +228,62 @@ class PropertyPage extends Page {
 			$this->property->isUserDefined()
 		);
 
+		if ( $this->mParserOutput instanceof \ParserOutput ) {
+			preg_match_all(
+				"/" . "<section class=\"smw-property-specification\"(.*)?>([\s\S]*?)<\/section>" . "/m",
+				$this->mParserOutput->getText(),
+				$matches
+			);
+		}
+
+		$isFirst = true;
+
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'property' );
 
 		$html = $this->makeValueList( $languageCode );
+		$isFirst = $html === '';
 
 		$htmlTabs->tab( 'smw-property-value', $this->msg( 'smw-property-tab-usage' ), [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-value', $html );
 
 		// Redirects
 		$html = $this->makeList( 'redirect', '_REDI', true );
+		$isFirst = $isFirst && $html === '';
 
 		$htmlTabs->tab( 'smw-property-redi', $this->msg( 'smw-property-tab-redirects' ), [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-redi', $html );
 
 		// Subproperties
 		$html = $this->makeList( 'subproperty', '_SUBP', true );
+		$isFirst = $isFirst && $html === '';
 
 		$htmlTabs->tab( 'smw-property-subp', $this->msg( 'smw-property-tab-subproperties' ),  [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-subp', $html );
 
 		// Improperty values
 		$html = $this->makeList( 'error', '_ERRP', false );
+		$isFirst = $isFirst && $html === '';
 
-		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ),  [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
+		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ), [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
 		$htmlTabs->content( 'smw-property-errp', $html );
+
+		if ( isset( $matches[2] ) ) {
+			$html = "<div>" . implode('</div><div>', $matches[2] ) . "</div>";
+		} else {
+			$html = '';
+		}
+
+		$htmlTabs->tab(
+			'smw-property-spec',
+			$this->msg( 'smw-property-tab-specification' ),
+			[
+				'hide' => $html === '',
+				'class' => $isFirst ? 'smw-tab-spec' : 'smw-tab-spec smw-tab-right'
+			]
+		);
+
+		$htmlTabs->content( 'smw-property-spec', $html );
 
 		$html = $htmlTabs->buildHTML(
 			[ 'class' => 'smw-property clearfix' ]

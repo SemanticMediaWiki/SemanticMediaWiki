@@ -300,6 +300,10 @@
 	padding-top: 8px;
 }
 
+.smw-property-specification {
+	display: none;
+}
+
 /**
  * Tabs
  */
@@ -307,10 +311,17 @@
 	margin-top: 15px;
 }
 
+.smw-tabs label.nav-label.smw-tab-right {
+	float: right;
+    clear: both;
+    margin: -1px 0 0 0;
+}
+
 .smw-property #tab-smw-property-value:checked ~ #tab-content-smw-property-value,
 .smw-property #tab-smw-property-subp:checked ~ #tab-content-smw-property-subp,
 .smw-property #tab-smw-property-errp:checked ~ #tab-content-smw-property-errp,
-.smw-property #tab-smw-property-redi:checked ~ #tab-content-smw-property-redi {
+.smw-property #tab-smw-property-redi:checked ~ #tab-content-smw-property-redi,
+.smw-property #tab-smw-property-spec:checked ~ #tab-content-smw-property-spec {
 	display: block;
 }
 
@@ -324,6 +335,11 @@
     border-top: 2px solid rgb(204,0,0);
 }
 
+.smw-property input.nav-tab:checked + label.nav-label.smw-tab-spec,
+.smw-concept input.nav-tab:checked + label.nav-label.smw-tab-spec {
+    border-top: 2px solid orange;
+}
+
 /**
  * Responsive settings (@see ext.smw.table)
  */
@@ -331,6 +347,11 @@
 
 	.smw-page-nav-right {
 		float: left;
+	}
+
+	.smw-tabs label.nav-label.smw-tab-right  {
+		float: unset;
+		margin: 0 0 -1px;
 	}
 
 	.smw-page-nav-left {
