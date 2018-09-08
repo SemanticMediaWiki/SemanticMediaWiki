@@ -7,6 +7,7 @@ use ParserHooks\HookRegistrant;
 use SMW\ApplicationFactory;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
+use SMW\ParserFunctions\SectionTag;
 use SMW\MediaWiki\Search\SearchProfileForm;
 use SMW\Site;
 use SMW\Store;
@@ -724,6 +725,13 @@ class HookListener {
 		$docsFunctionHandler = new DocumentationParserFunction();
 		$hookRegistrant->registerFunctionHandler( $docsFunctionDefinition, $docsFunctionHandler );
 		$hookRegistrant->registerHookHandler( $docsFunctionDefinition, $docsFunctionHandler );
+
+		/**
+		 * Support for <section> ... </section>
+		 */
+		$parser->setHook( 'section', function( $input, array $args, \Parser $parser, \PPFrame $frame ) {
+			return ( new SectionTag( $parser, $frame ) )->parse( $input, $args );
+		} );
 
 		return true;
 	}
