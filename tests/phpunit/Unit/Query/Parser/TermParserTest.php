@@ -150,6 +150,31 @@ class TermParserTest extends \PHPUnit_Framework_TestCase {
 			'<q>[[Bar property::Foobar]]</q> Foo',
 			'<q>[[Bar property::Foobar]]</q> Foo'
 		];
+
+		yield [
+			'in:foo [[Has foo::bar]] (in:(foo bar && fin))',
+			'[[in:foo]] [[Has foo::bar]] <q>[[in:foo bar]] && [[in:fin]]</q>'
+		];
+
+		yield [
+			'has:foo has:bar',
+			'[[foo::+]] [[bar::+]]'
+		];
+
+		yield [
+			'has:(foo && bar)',
+			'[[foo::+]] && [[bar::+]]'
+		];
+
+		yield [
+			'in:(foo && bar) in:(ham && cheese)',
+			'[[in:foo]] && [[in:bar]] [[in:ham]] && [[in:cheese]]'
+		];
+
+		yield [
+			'has:(foo && bar) in:(ham && cheese)',
+			'[[foo::+]] && [[bar::+]] [[in:ham]] && [[in:cheese]]'
+		];
 	}
 
 	public function term_prefixProvider() {

@@ -47,18 +47,23 @@
 				// field contains [[ ... ]] we assume a search via the QueryEngine
 				// therefore disable the standard highlighlter as no meaningfull
 				// input help will be shown
-				context.on( 'keyup keypres focus', function( e ) {
-					var highlighter = context.parent().find( '.oo-ui-widget' ),
-						style = '';
+				context.on( 'keyup keypres mouseenter', function( e ) {
 
-					if ( context.val().indexOf( '[' ) > -1 ) {
-						style = highlighter.attr( 'style' );
+					// MW 1.27 - MW 1.31
+					var highlighter = context.parent().find( '.oo-ui-widget' );
+
+					// MW 1.32+
+					if ( highlighter.length == 0 ) {
+						highlighter = $( '.oo-ui-defaultOverlay > .oo-ui-widget' );
+					};
+
+					// Disable (hide) the MW's search input highlighter
+					if ( context.val().search( /\[|\[\[|in:|not:|has:|phrase:|::/gi ) > -1 ) {
 						highlighter.hide();
 						isHidden = true;
 					} else if( isHidden ) {
-						highlighter.attr( 'style', style );
-						highlighter.show();
 						isHidden = false;
+						highlighter.show();
 					};
 				} );
 
@@ -73,6 +78,16 @@
 						'concept',
 						'category'
 					]
+				);
+
+				entitySuggester.registerTokenDefinition(
+					'property',
+					{
+						token: 'has:?',
+						beforeInsert: function( token, value ) {
+							return value.replace( '?', '' );
+						}
+					}
 				);
 			};
 		};

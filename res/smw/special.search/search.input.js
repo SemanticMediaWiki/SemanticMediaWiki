@@ -32,7 +32,7 @@
 				};
 
 				// Disable (hide) the MW's search input highlighter
-				if ( context.val().search( /\[|\[\[|in:|not:|phrase:|::/gi ) > -1 ) {
+				if ( context.val().search( /\[|\[\[|in:|not:|has:|phrase:|::/gi ) > -1 ) {
 					highlighter.hide();
 					isHidden = true;
 				} else if( isHidden ) {
