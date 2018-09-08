@@ -32,6 +32,27 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRunFromQueue() {
+
+		$jobQueue = $this->getMockBuilder( '\JobQueue' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->jobQueueGroup->expects( $this->once() )
+			->method( 'get' )
+			->with( $this->stringContains( 'FakeJob' ) )
+			->will( $this->returnValue( $jobQueue ) );
+
+		$instance = new JobQueue( $this->jobQueueGroup );
+
+		// MediaWiki's JobQueue::pop !!!
+		try {
+			$log = $instance->runFromQueue( [ 'FakeJob' => 2 ] );
+		} catch ( \Exception $e ) {
+			// Do nothing
+		}
+	}
+
 	public function testPop() {
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )

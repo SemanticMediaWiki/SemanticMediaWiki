@@ -35,7 +35,12 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 	}
 
 	protected function tearDown() {

@@ -67,7 +67,8 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 	 */
 	public function doUpdate() {
 
-		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$jobFactory = $applicationFactory->newJobFactory();
 
 		$parameters = array(
 			UpdateJob::FORCED_UPDATE => true,
@@ -81,6 +82,9 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 		if ( $this->newTitle !== null ) {
 			$jobFactory->newUpdateJob( $this->newTitle, $parameters )->run();
 		}
+
+		$jobQueue = $applicationFactory->getJobQueue();
+		$jobQueue->runFromQueue( [ 'SMW\ParserCachePurgeJob' => 2 ] );
 	}
 
 }
