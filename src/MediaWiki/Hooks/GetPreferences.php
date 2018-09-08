@@ -78,6 +78,7 @@ class GetPreferences extends HookHandler {
 		$preferences['smw-prefs-general-options-jobqueue-watchlist'] = array(
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-jobqueue-watchlist',
+			'help-message' => 'smw-prefs-help-general-options-jobqueue-watchlist',
 			'section' => 'smw/general-options',
 			'disabled' => $this->getOption( 'smwgJobQueueWatchlist', [] ) === []
 		);
@@ -86,6 +87,7 @@ class GetPreferences extends HookHandler {
 		$preferences['smw-prefs-general-options-suggester-textinput'] = array(
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-suggester-textinput',
+			'help-message' => 'smw-prefs-help-general-options-suggester-textinput',
 			'section' => 'smw/general-options',
 		);
 

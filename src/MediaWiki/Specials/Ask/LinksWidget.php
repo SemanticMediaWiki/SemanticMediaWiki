@@ -103,13 +103,79 @@ class LinksWidget {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $href
+	 *
+	 * @return string
+	 */
+	public static function editLink( $href ) {
+		return Html::rawElement(
+				'a',
+				[
+					'href'  => $href,
+					'rel'   => 'href'
+				],
+				Html::rawElement(
+				'span',
+				[
+					'class' => 'smw-icon-pen',
+					'title' => wfMessage( 'smw_ask_editquery' )->text()
+				],
+				''
+			)
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $href
+	 *
+	 * @return string
+	 */
+	public static function hideLink( $href ) {
+		return Html::rawElement(
+				'a',
+				[
+					'href'  => $href,
+					'rel'   => 'nofollow'
+				],
+				Html::rawElement(
+				'span',
+				[
+					'class' => 'smw-icon-compact',
+					'title' => wfMessage( 'smw_ask_hidequery' )->text()
+				],
+				''
+			)
+		);
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $code
 	 *
 	 * @return string
 	 */
-	public static function embeddedCodeBlock( $code ) {
+	public static function embeddedCodeBlock( $code, $raw = false ) {
+
+		$code = Html::rawElement(
+			'pre',
+			array(
+				'id' => 'inlinequeryembedarea',
+				'readonly' => 'yes',
+				'cols' => 20,
+				'rows' => substr_count( $code, "\n" ) + 1,
+				'onclick' => 'this.select()'
+			),
+			$code
+		);
+
+		if ( $raw ) {
+			return '<p>' . wfMessage( 'smw_ask_embed_instr' )->escaped() . '</p>' . $code;
+		}
 
 		return Html::rawElement(
 			'div',
@@ -121,16 +187,7 @@ class LinksWidget {
 				array(
 					'id' => 'inlinequeryembedinstruct'
 				), wfMessage( 'smw_ask_embed_instr' )->escaped()
-			) . Html::rawElement(
-				'textarea',
-				array(
-					'id' => 'inlinequeryembedarea',
-					'readonly' => 'yes',
-					'cols' => 20,
-					'rows' => substr_count( $code, "\n" ) + 1,
-					'onclick' => 'this.select()'
-				), $code
-			)
+			) . $code
 		);
 	}
 
@@ -147,7 +204,7 @@ class LinksWidget {
 			return '';
 		}
 
-		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-dblue' ], Html::element(
+		return Html::rawElement( 'div', [ 'class' => 'smw-ask-button-submit' ], Html::element(
 			'input',
 			array(
 				'type'  => 'submit',
@@ -176,7 +233,7 @@ class LinksWidget {
 	 */
 	public static function showHideLink( Title $title, UrlArgs $urlArgs, $hideForm = false, $isEmpty = false ) {
 
-		if ( $isEmpty ) {
+		if ( $isEmpty || $hideForm === false ) {
 			return '';
 		}
 
@@ -205,7 +262,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function debugLink( Title $title, UrlArgs $urlArgs, $isEmpty = false ) {
+	public static function debugLink( Title $title, UrlArgs $urlArgs, $isEmpty = false, $raw = false ) {
 
 		if ( $isEmpty ) {
 			return '';
@@ -215,6 +272,21 @@ class LinksWidget {
 		$urlArgs->set( 'debug', 'true' );
 		$urlArgs->setFragment( 'search' );
 
+		$link = Html::element(
+			'a',
+			[
+				'class' => '',
+				'href'  => $title->getLocalURL( $urlArgs ),
+				'rel'   => 'nofollow',
+				'title' => Message::get( 'smw-ask-debug-desc', Message::TEXT, Message::USER_LANGUAGE )
+			],
+			$raw ? Message::get( 'smw-ask-debug', Message::TEXT, Message::USER_LANGUAGE ) : 'ℹ'
+		);
+
+		if ( $raw ) {
+			return $link;
+		}
+
 		return Html::rawElement(
 			'span',
 			[
@@ -222,15 +294,7 @@ class LinksWidget {
 				'class' => 'smw-ask-button smw-ask-button-right',
 				'title' => Message::get( 'smw-ask-debug-desc', Message::TEXT, Message::USER_LANGUAGE )
 			],
-			Html::element(
-				'a',
-				[
-					'class' => '',
-					'href'  => $title->getLocalURL( $urlArgs ),
-					'rel'   => 'nofollow'
-				],
-				'ℹ'
-			)
+			$link
 		);
 	}
 
@@ -290,7 +354,7 @@ class LinksWidget {
 			'span',
 			[
 				'id' => 'ask-clipboard',
-				'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey'
+			//	'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey'
 			],
 			Html::element(
 				'a',

@@ -446,6 +446,20 @@ label.smw-form-checkbox {
 	padding: 0 0 5px 25px;
 }
 
+.smw-icon-pen {
+	background-image: linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2215%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3Ehighlight%3C/title%3E%3Cpath d=%22M18.73 5.86l-3.59-3.59a1 1 0 0 0-1.41 0l-10 10a1 1 0 0 0 0 1.41L4 14l-3 4h5l1-1 .29.29a1 1 0 0 0 1.41 0l10-10a1 1 0 0 0 .03-1.43zM7 15l-2-2 9-9 2 2z%22/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	padding: 0 0 0 25px;
+	background-position: center;
+}
+
+.smw-icon-compact {
+	background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='23' height='12'%3E%3Cpath stroke-width='3' stroke='%23000' d='M1,3.5h21M1,9.5h9m3,0h9'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	padding: 0 0 0 15px;
+	background-position: center;
+}
+
 .smwb-group {
 	font-style: normal;
 	font-weight: normal;
@@ -984,11 +998,25 @@ a.smw-ask-action-btn-dblue:focus {
  * User preference
  */
 fieldset#mw-prefsection-smw-general-options,
-fieldset#mw-prefsection-smw-ask-options {
+fieldset#mw-prefsection-smw-ask-options,
+fieldset#mw-prefsection-smw-srf {
 	border: 0px solid #2a4b8d;
 	border-top: 1px solid #ddd;
 	margin-top: -5px;
+	margin-bottom: 1px;
+	padding-bottom: 5px;
 	box-shadow: 0;
+}
+
+fieldset#mw-prefsection-smw-general-options .htmlform-tip,
+fieldset#mw-prefsection-smw-ask-options .htmlform-tip,
+fieldset#mw-prefsection-smw-srf .htmlform-tip{
+	padding-left: 25px !important;
+}
+
+#mw-prefsection-smw-general-options legend,
+#mw-prefsection-smw-ask-options legend {
+	font-weight: 100;
 }
 
 #mw-prefsection-smw-srf legend::before {

@@ -215,6 +215,22 @@
 				return that.search( key, cacheKey, term, limit, callback );
 			};
 
+			/**
+			 * Sort data
+			 *
+			 * @param query [String] matched string
+			 * @param items [Array] data that was refactored
+			 * @param searchKey [String] at char to search
+			 *
+			 * @return [Array] sorted data
+			 */
+			options.callbacks.sorter = function ( query, items, searchKey ) {
+				// https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value-in-javascript
+				return items.sort( function( a, b ) {
+					return ( a.id > b.id ) ? 1 : ( ( b.id > a.id ) ? -1 : 0 );
+				} );
+			};
+
 			// https://github.com/ichord/At.js/wiki/Callbacks
 			options.callbacks.beforeInsert = function ( value, $li ) {
 				return beforeInsert( token, value );

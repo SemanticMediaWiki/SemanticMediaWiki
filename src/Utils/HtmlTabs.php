@@ -134,6 +134,7 @@ class HtmlTabs {
 		) . Html::rawElement(
 			'label',
 			[
+				'id'  => "tab-label-$id",
 				'for' => "tab-$id"
 			] + $this->mergeAttributes( 'nav-label', $params ),
 			$name

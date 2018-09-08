@@ -42,7 +42,7 @@
 		this.messages = {};
 
 		this.html = mw.html;
-		this.hideList = '#ask-embed, #inlinequeryembed, #ask-showhide, #ask-debug, #ask-clipboard, #ask-navinfo, #ask-cache, #result, #result-error';
+		this.hideList = '#ask-embed, #inlinequeryembed, #ask-showhide, #ask-debug, #ask-clipboard, #ask-navinfo, #ask-cache, #result, #result-error, #ask-pagination, #ask-export-links, #tab-label-smw-askt-compact, #tab-label-smw-askt-code, #tab-label-smw-askt-debug, #tab-label-smw-askt-extra, #tab-label-smw-askt-result';
 
 		return this;
 	};
