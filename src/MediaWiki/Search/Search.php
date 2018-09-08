@@ -49,7 +49,7 @@ class Search extends SearchEngine {
 	/**
 	 * @var InfoLink
 	 */
-	private $queryLink = '';
+	private $queryLink;
 
 	/**
 	 * @see SearchEngine::getValidSorts

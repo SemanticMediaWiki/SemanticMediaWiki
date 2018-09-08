@@ -128,7 +128,6 @@ class SearchProfileFormTest extends \PHPUnit_Framework_TestCase {
 		$expected = [
 			'<fieldset id="smw-searchoptions">',
 			'<input type="hidden" name="ns-list"/>',
-			'<div id="smw-query" style="display:none;"></div>',
 			'<div class="smw-search-options">',
 			'<div class="smw-search-sort"><button type="button" id="smw-search-sort" class="smw-selectmenu-button is-disabled" name="sort"',
 		];

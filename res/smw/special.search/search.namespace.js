@@ -23,19 +23,11 @@
 		// JS loaded enable all fields
 		$( ".is-disabled" ).removeClass( 'is-disabled' );
 
-		$( this ).on( "click", "#mw-search-toggleall", function(){
+		$( document ).on( "click", "#mw-search-toggleall", function() {
 			$checkboxes.prop( 'checked', true );
 		} );
 
-		$( this ).on( "click", "#mw-search-toggleall", function(){
-			$checkboxes.prop( 'checked', true );
-		} );
-
-		$( this ).on( "click", "#mw-search-toggleall", function(){
-			$checkboxes.prop( 'checked', true );
-		} );
-
-		$( this ).on( "click", "#mw-search-togglenone", function(){
+		$( document ).on( "click", "#mw-search-togglenone", function(){
 			$checkboxes.prop( 'checked', false );
 		} );
 
@@ -44,7 +36,7 @@
 			this.form.method = this.checked ? 'post' : 'get';
 		} ).trigger( 'change' );
 
-		var nsList = $( '#ns-list' ).css( 'display' ) !== 'none' ? 'Hide': 'Show';
+		var nsList = $( '#mw-search-ns' ).css( 'display' ) !== 'none' ? mw.msg( 'smw-search-hide' ) : mw.msg( 'smw-search-show' );
 
 		/**
 		 * Append hide/show button to the NS section
@@ -58,14 +50,14 @@
 					// We carry the hidden `ns-list` on a submit so the status
 					// of the prevsious acion is retained to either show or hide
 					// the section
-					if ( $( '#ns-list' ).css( 'display' ) !== 'none' ) {
+					if ( $( '#mw-search-ns' ).css( 'display' ) !== 'none' ) {
 						$( 'input[name=ns-list]' ).attr( 'value', 1 );
-						event.target.value = 'Show';
-						$( '#ns-list' ).css( 'display', 'none' );
+						event.target.value = mw.msg( 'smw-search-show' );
+						$( '#mw-search-ns' ).css( 'display', 'none' );
 					} else {
-						event.target.value = 'Hide';
+						event.target.value = mw.msg( 'smw-search-hide' );
 						$( 'input[name=ns-list]' ).attr( 'value', 0 );
-						$( '#ns-list' ).css( 'display', 'block' );
+						$( '#mw-search-ns' ).css( 'display', 'block' );
 					}
 				} )
 		)
