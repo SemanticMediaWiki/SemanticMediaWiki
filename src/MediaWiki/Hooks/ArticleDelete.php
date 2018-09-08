@@ -116,6 +116,9 @@ class ArticleDelete extends HookHandler {
 			'cached.update.marker.delete',
 			$dispatchContext
 		);
+
+		$jobQueue = $applicationFactory->getJobQueue();
+		$jobQueue->runFromQueue( [ 'SMW\ParserCachePurgeJob' => 2 ] );
 	}
 
 }

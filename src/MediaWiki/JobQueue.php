@@ -59,6 +59,43 @@ class JobQueue {
 	/**
 	 * @since 3.0
 	 *
+	 * @param array $list
+	 *
+	 * @return []
+	 */
+	public function runFromQueue( array $list ) {
+
+		$log = [];
+
+		foreach ( $list as $type => $amount ) {
+
+			if ( $amount == 0 || $amount === false ) {
+				continue;
+			}
+
+			$jobs = array_fill( 0, $amount, $type );
+			$log[$type] = [];
+
+			foreach ( $jobs as $job ) {
+				$j = $this->pop( $job );
+
+				if ( $j === false ) {
+					break;
+				}
+
+				$log[$type][] = $j->getTitle()->getPrefixedDBKey();
+
+				$j->run();
+				$this->ack( $j );
+			}
+		}
+
+		return $log;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param string $type
 	 *
 	 * @return Job|boolean
