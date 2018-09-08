@@ -147,13 +147,6 @@ define( 'SMW_VL_PS', 8 ); // enables ValueLookupStore::getPropertySubject
 /**@}*/
 
 /**@{
-  * Constants for UpdateJob ParserMode
-  */
-define( 'SMW_UJ_PM_NP', 2 );    // use a new parser
-define( 'SMW_UJ_PM_CLASTMDATE', 4 ); // compare last modified
-/**@}*/
-
-/**@{
   * Deprecated since 3.0, remove options after complete removal in 3.1
   */
 define( 'SMW_HTTP_DEFERRED_ASYNC', true );

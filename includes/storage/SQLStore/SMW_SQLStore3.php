@@ -393,7 +393,12 @@ class SMWSQLStore3 extends SMWStore {
 
 		$entityRebuildDispatcher->setDispatchRangeLimit( $count );
 		$entityRebuildDispatcher->setRestrictionToNamespaces( $namespaces );
-		$entityRebuildDispatcher->useJobQueueScheduler( $usejobs );
+
+		$entityRebuildDispatcher->setOptions(
+			[
+				'use-job' => $usejobs
+			]
+		);
 
 		return $entityRebuildDispatcher;
 	}
