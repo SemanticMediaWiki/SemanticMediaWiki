@@ -268,7 +268,7 @@ class PropertyPage extends Page {
 		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ), [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
 		$htmlTabs->content( 'smw-property-errp', $html );
 
-		if ( isset( $matches[2] ) ) {
+		if ( isset( $matches[2] ) && $matches[2] !== [] ) {
 			$html = "<div>" . implode('</div><div>', $matches[2] ) . "</div>";
 		} else {
 			$html = '';
