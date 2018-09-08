@@ -657,35 +657,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	}
 
 	/**
-	 * Return an array describing the parameters of specifically text-based
-	 * formats, like 'list' and 'table', for use in their getParameters()
-	 * functions
-	 *
-	 * @deprecated since 1.8, removal in 1.10
-	 *
-	 * @since 1.5.0
-	 *
-	 * @return array
-	 */
-	protected function textDisplayParameters() {
-		return array();
-	}
-
-	/**
-	 * Return an array describing the parameters of the export formats
-	 * like 'rss' and 'csv', for use in their getParameters() functions
-	 *
-	 * @deprecated since 1.8, removal in 1.10
-	 *
-	 * @since 1.5.0
-	 *
-	 * @return array
-	 */
-	protected function exportFormatParameters() {
-		return array();
-	}
-
-	/**
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this
 	 * function.
