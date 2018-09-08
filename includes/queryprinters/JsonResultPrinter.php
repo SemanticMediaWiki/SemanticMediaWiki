@@ -187,11 +187,3 @@ class JsonResultPrinter extends FileExportPrinter {
 	}
 
 }
-
-/**
- * SMWJsonResultPrinter
- * @codeCoverageIgnore
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\JsonResultPrinter', 'SMWJsonResultPrinter' );
