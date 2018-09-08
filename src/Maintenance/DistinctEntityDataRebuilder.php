@@ -170,7 +170,7 @@ class DistinctEntityDataRebuilder {
 			$page,
 			[
 				UpdateJob::FORCED_UPDATE => true,
-				'pm' => $this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
+				'shallowUpdate' => $this->options->has( 'shallow-update' )
 			]
 		);
 

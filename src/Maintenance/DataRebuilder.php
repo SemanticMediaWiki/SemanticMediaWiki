@@ -250,11 +250,13 @@ class DataRebuilder {
 
 		$this->entityRebuildDispatcher->setDispatchRangeLimit( 1 );
 
-		$this->entityRebuildDispatcher->setUpdateJobParseMode(
-			$this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
+		$this->entityRebuildDispatcher->setOptions(
+			[
+				'shallow-update' => $this->options->safeGet( 'shallow-update', false ),
+				'force-update' => $this->options->safeGet( 'force-update', false ),
+				'use-job' => false
+			]
 		);
-
-		$this->entityRebuildDispatcher->useJobQueueScheduler( false );
 
 		// By default we expect the disposal action to take place whenever the
 		// script is run
@@ -294,6 +296,7 @@ class DataRebuilder {
 		$this->rebuildCount = 0;
 		$progress = 0;
 		$estimatedProgress = 0;
+		$skipped_update = 0;
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
@@ -309,6 +312,11 @@ class DataRebuilder {
 			$progress = round( ( $this->end - $this->start > 0 ? $this->rebuildCount / $total : $estimatedProgress ) * 100 );
 
 			foreach ( $this->entityRebuildDispatcher->getDispatchedEntities() as $value ) {
+
+				if ( isset( $value['skipped'] ) ) {
+					$skipped_update++;
+					continue;
+				}
 
 				$text = $this->getHumanReadableTextFrom( $current_id, $value );
 
@@ -333,7 +341,8 @@ class DataRebuilder {
 
 		$this->write_to_file( $id );
 
-		$this->reportMessage( "\n   ... $this->rebuildCount IDs refreshed ..." );
+		$this->reportMessage( "\n   ... $this->rebuildCount IDs checked or refreshed ..." );
+		$this->reportMessage( "\n   ... $skipped_update IDs skipped ..." );
 		$this->reportMessage( "\n   ... done.\n" );
 
 		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCount() > 0 ) {
@@ -406,8 +415,8 @@ class DataRebuilder {
 			"Semantic data in the wiki might be incomplete for some time while\n".
 			"this operation runs.\n\n" .
 			"NOTE: It is usually necessary to run this script ONE MORE TIME\n".
-			"after this operation,since some properties' types are not stored\n" .
-			"yet in the first run.\n\n"
+			"after this operation, given that some properties and types are not\n" .
+			"yet stored with the first run.\n\n"
 		);
 
 		if ( $this->options->has( 's' ) || $this->options->has( 'e' ) ) {

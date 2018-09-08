@@ -109,9 +109,13 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$instance = new EntityRebuildDispatcher( $store );
 
 		$instance->setDispatchRangeLimit( 1 );
-		$instance->setUpdateJobParseMode( SMW_UJ_PM_CLASTMDATE );
+		$instance->setOptions(
+			[
+				'shallow-update' => true,
+				'use-job' => false
+			]
+		);
 
-		$instance->useJobQueueScheduler( false );
 		$instance->rebuild( $id );
 
 		$this->assertSame(

@@ -44,14 +44,9 @@ class EntityRebuildDispatcher {
 	private $namespaceExaminer;
 
 	/**
-	 * @var integer
+	 * @var array
 	 */
-	private $updateJobParseMode;
-
-	/**
-	 * @var boolean
-	 */
-	private $useJobQueueScheduler = true;
+	private $options;
 
 	/**
 	 * @var array|false
@@ -74,6 +69,11 @@ class EntityRebuildDispatcher {
 	private $dispatchedEntities = array();
 
 	/**
+	 * @var array
+	 */
+	private $updateJobs = [];
+
+	/**
 	 * @var Lru
 	 */
 	private $lru;
@@ -94,19 +94,10 @@ class EntityRebuildDispatcher {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $updateJobParseMode
+	 * @param array $options
 	 */
-	public function setUpdateJobParseMode( $updateJobParseMode ) {
-		$this->updateJobParseMode = $updateJobParseMode;
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param boolean $useJobQueueScheduler
-	 */
-	public function useJobQueueScheduler( $useJobQueueScheduler ) {
-		$this->useJobQueueScheduler = (bool)$useJobQueueScheduler;
+	public function setOptions( array $options ) {
+		$this->options = $options;
 	}
 
 	/**
@@ -184,35 +175,35 @@ class EntityRebuildDispatcher {
 	 */
 	public function rebuild( &$id ) {
 
-		$updateJobs = array();
+		$this->updateJobs = [];
 		$this->dispatchedEntities = array();
 
 		// was nothing done in this run?
 		$emptyRange = true;
 
-		$this->findUpdateJobsFromMWTable( $id, $updateJobs );
+		$this->match_title( $id );
 
-		if ( $updateJobs !== array() ) {
+		if ( $this->updateJobs !== array() ) {
 			$emptyRange = false;
 		}
 
-		$this->findUpdateJobsFromSMWTable( $id, $updateJobs, $emptyRange );
+		$this->match_subject( $id, $emptyRange );
 
 		// Deprecated since 2.3, use 'SMW::SQLStore::BeforeDataRebuildJobInsert'
-		\Hooks::run('smwRefreshDataJobs', array( &$updateJobs ) );
+		\Hooks::run('smwRefreshDataJobs', array( &$this->updateJobs ) );
 
-		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', array( $this->store, &$updateJobs ) );
+		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', array( $this->store, &$this->updateJobs ) );
 
-		if ( $this->useJobQueueScheduler ) {
-			$this->jobFactory->batchInsert( $updateJobs );
+		if ( isset( $this->options['use-job'] ) && $this->options['use-job'] ) {
+			$this->jobFactory->batchInsert( $this->updateJobs );
 		} else {
-			foreach ( $updateJobs as $job ) {
+			foreach ( $this->updateJobs as $job ) {
 				$job->run();
 			}
 		}
 
 		// -1 means that no next position is available
-		$this->findNextPosition( $id, $emptyRange );
+		$this->next_position( $id, $emptyRange );
 
 		return $this->progress = $id > 0 ? $id / $this->getMaxId() : 1;
 	}
@@ -221,7 +212,7 @@ class EntityRebuildDispatcher {
 	 * @param integer $id
 	 * @param UpdateJob[] &$updateJobs
 	 */
-	private function findUpdateJobsFromMWTable( $id, &$updateJobs ) {
+	private function match_title( $id ) {
 
 		// Update by MediaWiki page id --> make sure we get all pages.
 		$tids = array();
@@ -240,19 +231,14 @@ class EntityRebuildDispatcher {
 			}
 
 			if ( ( $this->namespaces == false ) || ( in_array( $title->getNamespace(), $this->namespaces ) ) ) {
-				$updateJobs[] = $this->newUpdateJob( $title );
+				$this->add_update( $title );
 			}
 
 			$this->dispatchedEntities[] = array( 't' => $title->getPrefixedDBKey() );
 		}
 	}
 
-	/**
-	 * @param integer $id
-	 * @param UpdateJob[] &$updateJobs
-	 * @param bool $emptyRange
-	 */
-	private function findUpdateJobsFromSMWTable( $id, &$updateJobs, &$emptyRange ) {
+	private function match_subject( $id, &$emptyRange ) {
 
 		// update by internal SMW id --> make sure we get all objects in SMW
 		$db = $this->store->getConnection( 'mw.db' );
@@ -270,7 +256,8 @@ class EntityRebuildDispatcher {
 				'smw_iw',
 				'smw_subobject',
 				'smw_sortkey',
-				'smw_proptable_hash'
+				'smw_proptable_hash',
+				'smw_rev'
 			],
 			[
 				"smw_id >= $id ",
@@ -306,14 +293,25 @@ class EntityRebuildDispatcher {
 				$titleKey = '';
 			}
 
+			$hash = $titleKey . '#' . $row->smw_namespace;
+
 			if ( $row->smw_subobject !== '' && $row->smw_iw !== SMW_SQL3_SMWDELETEIW ) {
-				// leave subobjects alone; they ought to be changed with their pages
-				$this->dispatchedEntities[] = array( 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject );
+
+				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
+
+				// Remove tangling subobjects without a real page (created by a
+				// page preview etc.) otherwise leave subobjects alone; they ought
+				// to be changed with their pages
+				if ( $title !== null && !$title->exists() ) {
+					$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
+				} else {
+					$this->dispatchedEntities[] = array( 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject );
+				}
 			} elseif ( $this->isPlainObjectValue( $row ) ) {
 				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
 			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
 
-				if ( $this->lru->get( $titleKey . '#' . $row->smw_namespace ) !== null ) {
+				if ( $this->lru->get( $hash ) !== null ) {
 					continue;
 				}
 
@@ -322,12 +320,11 @@ class EntityRebuildDispatcher {
 
 				if ( $title !== null ) {
 					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
-					$updateJobs[] = $this->newUpdateJob( $title );
+					$this->add_update( $title, $row );
 				}
-
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $titleKey != '' ) {
 
-				if ( $this->lru->get( $titleKey . '#' . $row->smw_namespace ) !== null ) {
+				if ( $this->lru->get( $hash ) !== null ) {
 					continue;
 				}
 
@@ -337,7 +334,7 @@ class EntityRebuildDispatcher {
 
 				if ( $title !== null && !$title->exists() ) {
 					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
-					$updateJobs[] = $this->newUpdateJob( $title );
+					$this->add_update( $title, $row );
 				}
 
 				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
@@ -345,14 +342,13 @@ class EntityRebuildDispatcher {
 				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
 
-				if ( $this->lru->get( $titleKey . '#' . $row->smw_namespace ) !== null ) {
+				if ( $this->lru->get( $hash ) !== null ) {
 					continue;
 				}
 
-				$diWikiPage = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
-				$emptySemanticData = new SemanticData( $diWikiPage );
-				$this->store->updateData( $emptySemanticData );
-				$this->dispatchedEntities[] = array( 's' => $diWikiPage );
+				$subject = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
+				$this->store->updateData( new SemanticData( $subject ) );
+				$this->dispatchedEntities[] = array( 's' => $subject );
 			}
 
 			if ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
@@ -426,7 +422,7 @@ class EntityRebuildDispatcher {
 		}
 	}
 
-	private function findNextPosition( &$id, $emptyRange ) {
+	private function next_position( &$id, $emptyRange ) {
 
 		$nextPosition = $id + $this->iterationLimit;
 		$db = $this->store->getConnection( 'mw.db' );
@@ -461,18 +457,27 @@ class EntityRebuildDispatcher {
 		$id = $nextPosition ? $nextPosition : -1;
 	}
 
-	private function newUpdateJob( $title ) {
+	private function add_update( $title, $row = false ) {
 
 		$hash = $title->getDBKey() . '#' . $title->getNamespace();
 		$this->lru->set( $hash, true );
 
-		return $this->jobFactory->newUpdateJob(
+		$params = [
+			'origin' => 'EntityRebuildDispatcher'
+		];
+
+		if ( isset( $this->options['shallow-update'] ) && $this->options['shallow-update'] ) {
+			$params += [ 'shallowUpdate' => true ];
+		} elseif ( isset( $this->options['force-update'] ) && $this->options['force-update'] ) {
+			$params += [ 'forcedUpdate' => true ];
+		}
+
+		$updateJob = $this->jobFactory->newUpdateJob(
 			$title,
-			[
-				'pm' => $this->updateJobParseMode,
-				'origin' => 'EntityRebuildDispatcher'
-			]
+			$params
 		);
+
+		$this->updateJobs[] = $updateJob;
 	}
 
 }

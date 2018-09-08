@@ -252,7 +252,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new UpdateJob( $title, array( 'pm' => SMW_UJ_PM_CLASTMDATE ) );
+		$instance = new UpdateJob( $title, [ 'shallowUpdate' => true ] );
 		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );

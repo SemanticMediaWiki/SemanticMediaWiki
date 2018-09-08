@@ -84,7 +84,7 @@ class UpdateJob extends JobBase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		if ( $this->matchWikiPageLastModifiedToRevisionLastModified( $this->getTitle() ) ) {
+		if ( !$this->hasParameter( self::FORCED_UPDATE ) && $this->matchesLastModified( $this->getTitle() ) ) {
 			return true;
 		}
 
@@ -99,42 +99,43 @@ class UpdateJob extends JobBase {
 		return true;
 	}
 
-	private function matchWikiPageLastModifiedToRevisionLastModified( $title ) {
+	private function matchesLastModified( $title ) {
 
-		if ( $this->getParameter( 'pm' ) !== ( $this->getParameter( 'pm' ) | SMW_UJ_PM_CLASTMDATE ) ) {
+		if ( !$this->getParameter( 'shallowUpdate' ) ) {
 			return false;
 		}
 
-		$lastModified = $this->getWikiPageLastModifiedTimestamp(
+		$lastModified = $this->getLastModifiedTimestamp(
 			DIWikiPage::newFromTitle( $title )
 		);
 
-		if ( $lastModified === \WikiPage::factory( $title )->getTimestamp() ) {
-			$pageUpdater = $this->applicationFactory->newPageUpdater();
-			$pageUpdater->addPage( $title );
-			$pageUpdater->waitOnTransactionIdle();
-			$pageUpdater->doPurgeParserCache();
-			return true;
+		if ( $lastModified !== \WikiPage::factory( $title )->getTimestamp() ) {
+			return false;
 		}
 
-		return false;
+		$pageUpdater = $this->applicationFactory->newPageUpdater();
+		$pageUpdater->addPage( $title );
+		$pageUpdater->waitOnTransactionIdle();
+		$pageUpdater->doPurgeParserCache();
+
+		return true;
 	}
 
 	private function doUpdate() {
 
 		// ChangePropagationJob
 		if ( $this->hasParameter( self::CHANGE_PROP ) ) {
-			return $this->doupdateTypeChangePropagation( $this->getParameter( self::CHANGE_PROP ) );
+			return $this->change_propagation( $this->getParameter( self::CHANGE_PROP ) );
 		}
 
 		if ( $this->hasParameter( self::SEMANTIC_DATA ) ) {
-			return $this->doupdateTypeSemanticData( $this->getParameter( self::SEMANTIC_DATA ) );
+			return $this->set_data( $this->getParameter( self::SEMANTIC_DATA ) );
 		}
 
-		return $this->doupdateTypeFreshContentParse();
+		return $this->parse_content();
 	}
 
-	private function doupdateTypeChangePropagation( $dataItem ) {
+	private function change_propagation( $dataItem ) {
 
 		$this->setParameter( 'updateType', 'ChangePropagation' );
 		$subject = DIWikiPage::doUnserialize( $dataItem );
@@ -154,12 +155,12 @@ class UpdateJob extends JobBase {
 		// using the JSON format
 		$semanticData = json_decode( end( $pv )->getString(), true );
 
-		$this->doupdateTypeSemanticData(
+		$this->set_data(
 			$semanticData
 		);
 	}
 
-	private function doupdateTypeSemanticData( $semanticData ) {
+	private function set_data( $semanticData ) {
 
 		$this->setParameter( 'updateType', 'SemanticData' );
 
@@ -186,21 +187,11 @@ class UpdateJob extends JobBase {
 		return $this->updateStore( $parserData );
 	}
 
-	/**
-	 * SMW_UJ_PM_NP = new Parser to avoid "Parser state cleared" exception
-	 */
-	private function doupdateTypeFreshContentParse() {
+	private function parse_content() {
 
 		$this->setParameter( 'updateType', 'ContentParse' );
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
-
-		if ( $this->getParameter( 'pm' ) === ( $this->getParameter( 'pm' ) | SMW_UJ_PM_NP ) ) {
-			$contentParser->setParser(
-				new \Parser( $GLOBALS['wgParserConf'] )
-			);
-		}
-
 		$contentParser->parse();
 
 		if ( !( $contentParser->getOutput() instanceof ParserOutput ) ) {
@@ -225,18 +216,23 @@ class UpdateJob extends JobBase {
 
 	private function updateStore( $parserData ) {
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'user',
-			'title' => $this->getTitle()->getPrefixedDBKey(),
-			'origin' => $this->getParameter( 'origin', 'N/A' ),
-			'updateType' => $this->getParameter( 'updateType' ),
-			'forcedUpdate' => $this->getParameter( self::FORCED_UPDATE )
-		];
-
 		$this->applicationFactory->getMediaWikiLogger()->info(
-			"[Job] UpdateJob: {title} (Type:{updateType}, Origin:{origin}, forcedUpdate: {forcedUpdate})",
-			$context
+			[
+				'Job',
+				'UpdateJob',
+				'{title}',
+				'Type: {updateType}',
+				'Origin: {origin}',
+				'isForcedUpdate: {forcedUpdate}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'user',
+				'title' => $this->getTitle()->getPrefixedDBKey(),
+				'origin' => $this->getParameter( 'origin', 'N/A' ),
+				'updateType' => $this->getParameter( 'updateType' ),
+				'forcedUpdate' => $this->getParameter( self::FORCED_UPDATE )
+			]
 		);
 
 		$eventHandler = EventHandler::getInstance();
@@ -303,7 +299,7 @@ class UpdateJob extends JobBase {
 	 * Convenience method to find last modified MW timestamp for a subject that
 	 * has been added using the storage-engine.
 	 */
-	private function getWikiPageLastModifiedTimestamp( DIWikiPage $wikiPage ) {
+	private function getLastModifiedTimestamp( DIWikiPage $wikiPage ) {
 
 		$dataItems = $this->applicationFactory->getStore()->getPropertyValues(
 			$wikiPage,
