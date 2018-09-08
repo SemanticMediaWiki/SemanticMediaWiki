@@ -400,46 +400,4 @@ class DataValueFactory {
 		return $this->newDataValueByText( $propertyName, $valueString, $caption, $contextPage );
 	}
 
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::registerDataType
-	 */
-	public static function registerDatatype( $id, $className, $dataItemId, $label = false ) {
-		DataTypeRegistry::getInstance()->registerDataType( $id, $className, $dataItemId, $label );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::registerDataTypeAlias
-	 */
-	public static function registerDatatypeAlias( $id, $label ) {
-		DataTypeRegistry::getInstance()->registerDataTypeAlias( $id, $label );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::findTypeId
-	 */
-	public static function findTypeID( $label ) {
-		return DataTypeRegistry::getInstance()->findTypeId( $label );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::findTypeLabel
-	 */
-	public static function findTypeLabel( $id ) {
-		return DataTypeRegistry::getInstance()->findTypeLabel( $id );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::getKnownTypeLabels
-	 */
-	public static function getKnownTypeLabels() {
-		return DataTypeRegistry::getInstance()->getKnownTypeLabels();
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::getDataItemId
-	 */
-	public static function getDataItemId( $typeId ) {
-		return DataTypeRegistry::getInstance()->getDataItemId( $typeId );
-	}
-
 }

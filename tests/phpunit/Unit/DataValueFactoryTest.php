@@ -23,25 +23,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		parent::tearDown();
 	}
 
-	public function testCanConstruct() {
-
-		$this->assertInstanceOf(
-			'\SMW\DataValueFactory',
-			DataValueFactory::getInstance()
-		);
-	}
-
-	/**
-	 * @dataProvider dataItemIdDataProvider
-	 */
-	public function testGetDataItemId( $typeId, $expectedId ) {
-
-		$this->assertEquals(
-			$expectedId,
-			DataValueFactory::getDataItemId( $typeId )
-		);
-	}
-
 	/**
 	 * @dataProvider typeIdValueDataProvider
 	 */
@@ -159,75 +140,6 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMWDataValue',
 			$dataValue
-		);
-	}
-
-	/**
-	 * @dataProvider findTypeIdDataProvider
-	 */
-	public function testFindTypeID( $typeId, $expectedId ) {
-
-		$this->assertEquals(
-			$expectedId,
-			DataValueFactory::findTypeID( $typeId )
-		);
-	}
-
-	/**
-	 * @dataProvider findTypeIdDataProvider
-	 */
-	public function testFindTypeLabel( $textId, $id ) {
-
-		$textId = $textId === 'String' ? 'Text' : $textId;
-
-		$this->assertEquals(
-			$textId,
-			DataValueFactory::findTypeLabel( $id ),
-			'Asserts that findTypeLabel() returns a user label'
-		);
-
-	}
-
-	public function testGetKnownTypeLabels() {
-
-		$this->assertInternalType(
-			'array',
-			DataValueFactory::getKnownTypeLabels()
-		);
-	}
-
-
-	public function testRegisterDatatype() {
-
-		DataValueFactory::registerDatatype( '_foo', '\SMW\FooValue', SMWDataItem::TYPE_NOTYPE, 'FooValue' );
-
-		$this->assertEquals(
-			'FooValue',
-			DataValueFactory::findTypeLabel( '_foo' )
-		);
-
-		DataValueFactory::getInstance()->registerDatatype( '_foo', '\SMW\FooValue', SMWDataItem::TYPE_NOTYPE, 'FooValue' );
-
-		$this->assertEquals(
-			'FooValue',
-			DataValueFactory::getInstance()->findTypeLabel( '_foo' )
-		);
-	}
-
-	public function testRegisterDatatypeAlias() {
-
-		DataValueFactory::registerDatatypeAlias( '_foo', 'Bar' );
-
-		$this->assertEquals(
-			'_foo',
-			DataValueFactory::findTypeID( 'Bar' )
-		);
-
-		DataValueFactory::getInstance()->registerDatatypeAlias( '_foo', 'Bar' );
-
-		$this->assertEquals(
-			'_foo',
-			DataValueFactory::getInstance()->findTypeID( 'Bar' )
 		);
 	}
 
