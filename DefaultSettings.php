@@ -2255,9 +2255,8 @@ return array(
 			// [[Has page::~Foo bar/bar/*]]
 			'page.field.case.insensitive.proximity.match' => true,
 
-			// Allows to retrieve text fragments from ES for a `Special:Search`
-			// query request and depending on the type selected can require more
-			// query time.
+			// Allows to retrieve text fragments from ES for query request and
+			// depending on the type selected can require more query time.
 			//
 			// Available types are `plain`, `unified`, and `fvh`. The `fvh` type
 			// requires text fields to have the `term_vector` with `with_positions_offsets`
@@ -2265,7 +2264,7 @@ return array(
 			//
 			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html#plain-highlighter
 			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/term-vector.html
-			'special_search.highlight.fragment' => [ 'number' => 1, 'size' => 250, 'type' => false ]
+			'highlight.fragment' => [ 'number' => 1, 'size' => 250, 'type' => false ]
 		]
 	],
 	##

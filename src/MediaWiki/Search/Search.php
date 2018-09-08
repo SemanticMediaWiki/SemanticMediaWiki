@@ -47,7 +47,7 @@ class Search extends SearchEngine {
 	private $queryString = '';
 
 	/**
-	 * @var string
+	 * @var InfoLink
 	 */
 	private $queryLink = '';
 
@@ -238,13 +238,68 @@ class Search extends SearchEngine {
 	public function searchText( $term ) {
 
 		if ( $this->getSearchQuery( $term ) !== null ) {
-			return $this->getSearchResultSet( $term );
+			return $this->newSearchResultSet( $term );
 		}
 
 		return $this->searchFallbackSearchEngine( $term, true );
 	}
 
-	private function getSearchResultSet( $term ) {
+	/**
+	 * @see SearchEngine::completionSearchBackend
+	 *
+	 * Perform a completion search.
+	 *
+	 * @param string $search
+	 *
+	 * @return SearchSuggestionSet
+	 */
+	protected function completionSearchBackend( $search ) {
+
+		$searchResultSet = null;
+
+		// Avoid MW's auto formatting of title entities
+		if ( $search !== '' ) {
+			$search{0} = strtolower( $search{0} );
+		}
+
+		$searchEngine = $this->getFallbackSearchEngine();
+
+		if ( !$this->hasPrefixAndMinLenForCompletionSearch( $search, 3 ) ) {
+			return $searchEngine->completionSearch( $search );
+		}
+
+		if ( $this->getSearchQuery( $search ) !== null ) {
+			$searchResultSet = $this->newSearchResultSet( $search, false, false );
+		}
+
+		if ( $searchResultSet instanceof SearchResultSet ) {
+			return $searchResultSet->newSearchSuggestionSet();
+		}
+
+		return $searchEngine->completionSearch( $search );
+	}
+
+	private function hasPrefixAndMinLenForCompletionSearch( $term, $minLen ) {
+
+		// Only act on when `in:foo`, `has:SomeProperty`, or `phrase:some text`
+		// is actively used as prefix
+
+		if ( strpos( $term, 'in:' ) !== false && mb_strlen( $term ) >= ( 3 + $minLen ) ) {
+			return true;
+		}
+
+		if ( strpos( $term, 'has:' ) !== false && mb_strlen( $term ) >= ( 4 + $minLen ) ) {
+			return true;
+		}
+
+		if ( strpos( $term, 'phrase:' ) !== false && mb_strlen( $term ) >= ( 7 + $minLen ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private function newSearchResultSet( $term, $count = true, $highlight = true ) {
 
 		$query = $this->getSearchQuery( $term );
 
@@ -258,7 +313,7 @@ class Search extends SearchEngine {
 
 		$store = ApplicationFactory::getInstance()->getStore();
 		$query->clearErrors();
-		$query->setOption( 'is.special_search', true );
+		$query->setOption( 'highlight.fragment', $highlight );
 
 		$result = $store->getQueryResult( $query );
 		$this->errors = $query->getErrors();
@@ -266,11 +321,15 @@ class Search extends SearchEngine {
 		$this->queryLink->setParameter( $this->offset, 'offset' );
 		$this->queryLink->setParameter( $this->limit, 'limit' );
 
-		$query->querymode = SMWQuery::MODE_COUNT;
-		$query->setOffset( 0 );
+		if ( $count ) {
+			$query->querymode = SMWQuery::MODE_COUNT;
+			$query->setOffset( 0 );
 
-		$queryResult = $store->getQueryResult( $query );
-		$count = $queryResult instanceof QueryResult ? $queryResult->getCountValue() : $queryResult;
+			$queryResult = $store->getQueryResult( $query );
+			$count = $queryResult instanceof QueryResult ? $queryResult->getCountValue() : $queryResult;
+		} else {
+			$count = 0;
+		}
 
 		return new SearchResultSet( $result, $count );
 	}

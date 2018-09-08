@@ -89,7 +89,12 @@ class TermParser {
 		$k = 0;
 
 		while ( key( $terms ) !== null ) {
-			$new = trim( current( $terms ) );
+
+			$t_term = current( $terms );
+			$new = trim( $t_term );
+			$space = $t_term{0} == ' ' ? ' ' : '';
+
+			// Look ahead
 			$next = next( $terms );
 			$last = substr( $term, -2 );
 
@@ -110,7 +115,7 @@ class TermParser {
 				$custom .= $new;
 				$last = substr( $new, -2 );
 			} else {
-				$term .= $new;
+				$term .= "{$space}{$new}";
 			}
 
 			if ( $last === ']]' || $new === '(' || $new === '||' ) {
@@ -125,7 +130,11 @@ class TermParser {
 
 			// Last element
 			if ( $next === false && !in_array( $last, [ '&&', 'AND', '||', 'OR', ']]' ] ) ) {
-				$term .= $this->close( $custom, $prefix );
+				if ( $custom === '' && mb_substr_count( $term, '[[' ) > mb_substr_count( $term, ']]' ) ) {
+					$term .= $this->close( $custom, $prefix );
+				} elseif ( $custom !== '' ) {
+					$term .= $this->close( $custom, $prefix );
+				}
 			}
 
 			$k++;
@@ -162,8 +171,8 @@ class TermParser {
 
 	private function normalize( $term ) {
 		return str_replace(
-			[ ')[[', ']](', '(', ')', '||', '&&', 'AND', 'OR', ']][[', '[[[[', ']]]]' ],
-			[ ') [[', ']] (', '<q>', '</q>', ' || ', ' && ', ' AND ', ' OR ', ']] [[', '[[', ']]' ],
+			[ ')[[', ']](', '(', ')', '||', '&&', 'AND', 'OR', ']][[', '[[[[', ']]]]', '  ' ],
+			[ ') [[', ']] (', '<q>', '</q>', ' || ', ' && ', ' AND ', ' OR ', ']] [[', '[[', ']]', ' ' ],
 			$term
 		);
 	}

@@ -140,6 +140,16 @@ class TermParserTest extends \PHPUnit_Framework_TestCase {
 			'category:foo',
 			'[[category:foo]]'
 		];
+
+		yield [
+			'foo',
+			'foo'
+		];
+
+		yield [
+			'<q>[[Bar property::Foobar]]</q> Foo',
+			'<q>[[Bar property::Foobar]]</q> Foo'
+		];
 	}
 
 	public function term_prefixProvider() {

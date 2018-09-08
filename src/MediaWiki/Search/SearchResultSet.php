@@ -84,6 +84,26 @@ class SearchResultSet extends \SearchResultSet {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return SearchSuggestionSet
+	 */
+	public function newSearchSuggestionSet() {
+
+		$suggestions = [];
+		$hasMoreResults = false;
+		$score = count( $this->pages );
+
+		foreach ( $this->pages as $page ) {
+			if ( ( $title = $page->getTitle() ) && $title->exists() ) {
+				$suggestions[] = \SearchSuggestion::fromTitle( $score--, $title );
+			}
+		}
+
+		return new \SearchSuggestionSet( $suggestions, $hasMoreResults );
+	}
+
+	/**
 	 * @see SearchResultSet::extractResults
 	 *
 	 * @since 3.0
