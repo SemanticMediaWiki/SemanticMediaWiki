@@ -475,7 +475,7 @@ class QueryDependencyLinksStore {
 			'stashedit',
 
 			// Avoid update on `submit` during a preview
-			'submbit',
+			'submit',
 
 			// Avoid update on `parse` during a wikieditor preview
 			'parse'
