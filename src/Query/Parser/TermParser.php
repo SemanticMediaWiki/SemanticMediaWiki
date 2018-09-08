@@ -4,8 +4,10 @@ namespace SMW\Query\Parser;
 
 /**
  * The term parser uses a simplified string to build an #ask conform query
- * string, for example `in:foo bar || (phrase:bar && not:foo)` becomes `[[in:
- * foo bar]] || <q>[[phrase:bar]] && [[not:foo]]</q>`.
+ * string, for example:
+ * - `in:foo bar || (phrase:bar && not:foo)` becomes `[[in:
+ * foo bar]] || <q>[[phrase:bar]] && [[not:foo]]</q>`
+ * - `in:(foo && bar)`becomes [[in:foo]] && [[in:bar]]
  *
  * A custom prefix map allows to create assignments between a custom prefix and
  * a property set and hereby simplifies the search input process.
@@ -20,7 +22,12 @@ class TermParser {
 	/**
 	 * @var []
 	 */
-	private $standard_prefix = [ 'in:', 'phrase:', 'not:', 'category:' ];
+	private $standard_prefix = [ 'in:', 'phrase:', 'not:', 'has:', 'category:' ];
+
+	/**
+	 * @var []
+	 */
+	private static $cache = [];
 
 	/**
 	 * The `prefix_map` is expected to contain assignments of prefixes that link
@@ -52,14 +59,21 @@ class TermParser {
 	 */
 	public function parse( $term ) {
 
+		$hash = md5( $term );
+
+		if ( isset( self::$cache[$hash] ) ) {
+			return self::$cache[$hash];
+		}
+
 		$pattern = '';
 		$custom_prefix = [];
 
 		foreach ( array_keys( $this->prefix_map ) as $p ) {
 
-			// Just in case, `in:`, `phrase:`, and `not:` are not permitted to be
-			// overridden by a prefix assignment, `category:` can.
-			if ( in_array( $p, [ 'in', 'phrase', 'not' ] ) ) {
+			// Just in case, `in:`, `phrase:`, `has:`, and `not:` are not
+			// permitted to be overridden by a prefix assignment, `category:`
+			// can.
+			if ( in_array( $p, [ 'in', 'phrase', 'not', 'has' ] ) ) {
 				continue;
 			}
 
@@ -67,11 +81,17 @@ class TermParser {
 			$custom_prefix[] = "$p:";
 		}
 
+		// in:(A&&b)-> in:A && in:b
+		$this->normalize_compact_form( 'in', $pattern, $term );
+
+		// has:(A&&b) -> has:A && has:b
+		$this->normalize_compact_form( 'has', $pattern, $term );
+
 		// Simplify the processing by normalizing expressions
-		$term = str_replace([ '<q>', '</q>' ],  [ '(', ')' ], $term );
+		$term = str_replace( [ '<q>', '</q>' ],  [ '(', ')' ], $term );
 
 		$terms = preg_split(
-			"/(in:)|(phrase:)|(not:)|(category:)$pattern|(&&)|(AND)|(OR)|(\|\|)|(\()|(\)|(\[\[))/",
+			"/(in:)|(phrase:)|(not:)|(has:)|(category:)$pattern|(&&)|(AND)|(OR)|(\|\|)|(\()|(\)|(\[\[))/",
 			$term,
 			-1,
 			PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
@@ -92,6 +112,8 @@ class TermParser {
 
 			$t_term = current( $terms );
 			$new = trim( $t_term );
+
+			$continue = true;
 			$space = $t_term{0} == ' ' ? ' ' : '';
 
 			// Look ahead
@@ -118,7 +140,17 @@ class TermParser {
 				$term .= "{$space}{$new}";
 			}
 
-			if ( $last === ']]' || $new === '(' || $new === '||' ) {
+			// has:Property Foo -> [[Property Foo::+]]
+			if ( $new === 'has:' ) {
+				$next = trim( $next );
+				$last = ']]';
+				// Already using the next element to set the property,
+				// skip in case other terms are to be found
+				$continue = !next( $terms );
+				$term = str_replace( 'has:', "$next::+$last", $term );
+			}
+
+			if ( $continue && $last === ']]' || $new === '(' || $new === '||' ) {
 				continue;
 			}
 
@@ -140,7 +172,7 @@ class TermParser {
 			$k++;
 		}
 
-		return $this->normalize( $term );
+		return self::$cache[$hash] = $this->normalize( $term );
 	}
 
 	private function close( &$custom, $prefix ) {
@@ -175,6 +207,47 @@ class TermParser {
 			[ ') [[', ']] (', '<q>', '</q>', ' || ', ' && ', ' AND ', ' OR ', ']] [[', '[[', ']]', ' ' ],
 			$term
 		);
+	}
+
+	private function normalize_compact_form( $exp, $pattern, &$term ) {
+
+		if ( strpos( $term, "$exp:(" ) === false ) {
+			return;
+		}
+
+		preg_match_all("/$exp:\((.*?)\)/", $term, $matches );
+
+		foreach ( $matches[0] as $match ) {
+			$orig = $match;
+			$match = str_replace( "$exp:(", '', $match );
+
+			if ( substr( $match, -1 ) === ')' ) {
+				$match = substr( $match, 0, -1 );
+			}
+
+			$terms = preg_split(
+				"/(in:)|(phrase:)|(not:)|(has:)|(category:)$pattern|(&&)|(AND)|(OR)|(\|\|)|(\()|(\)|(\[\[))/",
+				$match,
+				-1,
+				PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
+			);
+
+			$replace = '';
+
+			foreach ( $terms as $t ) {
+				$t = trim( $t );
+
+				if ( in_array( $t, [ '&&', 'AND', '||', 'OR' ] ) ) {
+					$replace .= " $t ";
+				} elseif ( $t === ')' ) {
+					$replace .= "$t";
+				} else {
+					$replace .= "$exp:$t";
+				}
+			}
+
+			$term = str_replace( $orig, $replace, $term );
+		}
 	}
 
 }
