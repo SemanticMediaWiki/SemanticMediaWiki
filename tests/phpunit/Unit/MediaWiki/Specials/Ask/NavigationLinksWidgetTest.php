@@ -26,6 +26,10 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$urlArgs->expects( $this->any() )
+			->method( 'toArray' )
+			->will( $this->returnValue( [] ) );
+
 		$this->assertInternalType(
 			'string',
 			NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, false )
@@ -42,17 +46,16 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$urlArgs->expects( $this->any() )
+			->method( 'toArray' )
+			->will( $this->returnValue( [] ) );
+
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
 
 		$result = NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, false );
 
 		$this->assertContains(
-			'<a rel="nofollow">250</a>',
-			$result
-		);
-
-		$this->assertNotContains(
-			'<a rel="nofollow">500</a>',
+			'class="page-link">250</a>',
 			$result
 		);
 	}
@@ -84,6 +87,7 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
 			->disableOriginalConstructor()
+			->setMethods( [ 'get', 'set' ] )
 			->getMock();
 
 		$urlArgs->expects( $this->at( 0 ) )
@@ -95,32 +99,6 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->method( 'get' )
 			->with(	$this->equalTo( 'offset' ) )
 			->will( $this->returnValue( 10 ) );
-
-		// Previous
-		$urlArgs->expects( $this->at( 3 ) )
-			->method( 'set' )
-			->with(
-				$this->equalTo( 'offset' ),
-				$this->equalTo( 7 ) );
-
-		$urlArgs->expects( $this->at( 4 ) )
-			->method( 'set' )
-			->with(
-				$this->equalTo( 'limit' ),
-				$this->equalTo( 3 ) );
-
-		// Next
-		$urlArgs->expects( $this->at( 5 ) )
-			->method( 'set' )
-			->with(
-				$this->equalTo( 'offset' ),
-				$this->equalTo( 13 ) );
-
-		$urlArgs->expects( $this->at( 6 ) )
-			->method( 'set' )
-			->with(
-				$this->equalTo( 'limit' ),
-				$this->equalTo( 3 ) );
 
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
 		NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, true );
@@ -166,6 +144,18 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 				'<div class="smw-ask-actions-nav">foo&#160;&#160;&#160;</div></div>'
 			],
 			NavigationLinksWidget::wrap( 'foo', 'info' )
+		);
+	}
+
+	public function testBasicLinks() {
+
+		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
+
+		$stringValidator->assertThatStringContains(
+			[
+				'<div class="smw-ask-actions-compact-nav">foo</div>',
+			],
+			NavigationLinksWidget::basicLinks( 'foo', 'info' )
 		);
 	}
 

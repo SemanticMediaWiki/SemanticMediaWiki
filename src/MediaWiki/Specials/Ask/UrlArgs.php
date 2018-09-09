@@ -62,6 +62,13 @@ class UrlArgs {
 	/**
 	 * @see __toString
 	 */
+	public function toArray() {
+		return  $this->args;
+	}
+
+	/**
+	 * @see __toString
+	 */
 	public function __toString() {
 		return wfArrayToCGI( $this->args ) . ( $this->fragment !== '' ? '#' . $this->fragment : '' );
 	}

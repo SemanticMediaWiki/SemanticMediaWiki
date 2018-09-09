@@ -6,8 +6,10 @@ use Html;
 use SMW\Localizer;
 use SMW\Message;
 use SMW\Utils\HtmlModal;
+use SMW\Page\ListPager;
 use SMWInfolink as Infolink;
 use Title;
+use SMW\Utils\HtmlTabs;
 
 /**
  * @license GNU GPL v2+
@@ -39,7 +41,7 @@ class NavigationLinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function topLinks( Title $title, $visibleLinks = [] ) {
+	public static function topLinks( Title $title, $visibleLinks = [], $isEditMode = true ) {
 
 		if ( $visibleLinks === [] ) {
 			return '';
@@ -75,13 +77,13 @@ class NavigationLinksWidget {
 		$rLinks['empty'] = Html::rawElement(
 			'a',
 			[
-				'href' => $title->getLocalURL(),
+				'href' => $title->getLocalURL()
 			],
 			Message::get( 'smw-ask-empty', Message::TEXT, Message::USER_LANGUAGE )
 		);
 
 		$rLinks['help'] = HtmlModal::link(
-			Message::get( 'smw-cheat-sheet', Message::TEXT, Message::USER_LANGUAGE ),
+			'<span class="smw-icon-info" style="padding: 0 0 3px 18px;background-position-x: center;"></span>',
 			[
 				'data-id' => 'ask-help'
 			]
@@ -106,7 +108,7 @@ class NavigationLinksWidget {
 			[
 				'style' => 'color:#aaa;font-size: 95%;margin-top: 2px;'
 			],
-			'&#160;|&#160;'
+			'&#160;&#160;|&#160;&#160;'
 		);
 
 		$left = Html::rawElement(
@@ -128,7 +130,7 @@ class NavigationLinksWidget {
 		$html = Html::rawElement(
 			'div',
 			[
-				'class' => 'smw-ask-toplinks'
+				'class' => 'smw-ask-toplinks' . ( !$isEditMode ? ' hide-mode' : '' )
 			],
 			$left . '&#160;' . $right
 		) . Html::rawElement(
@@ -157,10 +159,7 @@ class NavigationLinksWidget {
 			return '';
 		}
 
-		$userLanguage = Localizer::getInstance()->getUserLanguage();
-		$navigation = '';
 		$urlArgs = clone $urlArgs;
-
 		$limit = $urlArgs->get( 'limit' );
 		$offset = $urlArgs->get( 'offset' );
 
@@ -169,101 +168,20 @@ class NavigationLinksWidget {
 			$urlArgs->set( 'p', mb_substr( $urlArgs->get( 'p' ), stripos( $urlArgs->get( 'p' ), '/' ) + 1 ) );
 		}
 
-		// @todo FIXME: i18n: Patchwork text.
-		$navigation .=
-			'<b>' .
+		$userLanguage = Localizer::getInstance()->getUserLanguage();
+
+		$html =	'<b>' .
 				Message::get( 'smw_result_results', Message::TEXT, Message::USER_LANGUAGE ) . ' ' . $userLanguage->formatNum( $offset + 1 ) .
 			' &#150; ' .
 				$userLanguage->formatNum( $offset + $count ) .
-			'</b>&#160;&#160;&#160;&#160;';
-
-		$prev = Message::get(
-			'smw_result_prev',
-			Message::TEXT,
-			Message::USER_LANGUAGE
-		);
-
-		$next = Message::get(
-			'smw_result_next',
-			Message::TEXT,
-			Message::USER_LANGUAGE
-		);
-
-		// Prepare navigation bar.
-		if ( $offset > 0 ) {
-
-			$urlArgs->set( 'offset', max( 0, $offset - $limit ) );
-			$urlArgs->set( 'limit', $limit );
-
-			$navigation .= '(' . Html::element(
-				'a',
-				array(
-					'href' => $title->getLocalURL( $urlArgs ),
-					'rel' => 'nofollow'
-				),
-				$prev . ' ' . $limit
-			) . ' | ';
-		} else {
-			$navigation .= '(' . Html::rawElement( 'span', [ 'class' => 'smw-ask-nav-prev' ], $prev . '&#160;' . $limit ) . ' | ';
-		}
-
-		if ( $hasFurtherResults ) {
-
-			$urlArgs->set( 'offset', $offset + $limit );
-			$urlArgs->set( 'limit', $limit );
-
-			$navigation .= Html::element(
-				'a',
-				array(
-					'href' => $title->getLocalURL( $urlArgs ),
-					'rel' => 'nofollow'
-				),
-				$next . ' ' . $limit
-			) . ')';
-		} else {
-			$navigation .= Html::rawElement( 'span', [ 'class' => 'smw-ask-nav-prev' ], $next . '&#160;' . $limit ) . ')';
-		}
-
-		$first = true;
-
-		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
-			if ( $l > self::$maxInlineLimit ) {
-				break;
-			}
-
-			if ( $first ) {
-				$navigation .= '&#160;&#160;&#160;(';
-				$first = false;
-			} else {
-				$navigation .= ' | ';
-			}
-
-			if ( $limit != $l ) {
-
-				$urlArgs->set( 'offset', $offset );
-				$urlArgs->set( 'limit', $l );
-
-				$navigation .= Html::element(
-					'a',
-					array(
-						'href' => $title->getLocalURL( $urlArgs ),
-						'rel' => 'nofollow'
-					),
-					$l
-				);
-			} else {
-				$navigation .= '<b>' . $l . '</b>';
-			}
-		}
-
-		$navigation .= ')';
+			'</b>&#160;';
 
 		return Html::rawElement(
-			'span',
+			'div',
 			[
-				'class' => 'smw-ask-result-navigation'
+				'id' => 'ask-pagination'
 			],
-			$navigation
+			ListPager::pagination( $title, $limit, $offset, $count, $urlArgs->toArray(), $html )
 		);
 	}
 
@@ -312,6 +230,35 @@ class NavigationLinksWidget {
 				'id' => 'ask-navinfo'
 			],
 			$nav
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $navigation
+	 * @param string $infoText
+	 * @param Infolink|null $infoLink
+	 * @param string $editHref
+	 *
+	 * @return string
+	 */
+	public static function basicLinks( $navigation = '', $infoText = '', Infolink $infoLink = null, $editHref = '' ) {
+
+		if ( $navigation === '' ) {
+			return '';
+		}
+
+		$downloadLink = DownloadLinksWidget::downloadLinks(
+			$infoLink
+		);
+
+		return Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-ask-actions-compact-nav'
+			],
+			$navigation . $downloadLink
 		);
 	}
 

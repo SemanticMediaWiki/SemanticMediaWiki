@@ -39,7 +39,8 @@ class DownloadLinksWidget {
 
 		$infolink->setLinkAttributes(
 			[
-				'title' => Message::get( [ 'smw-ask-download-link-desc', 'JSON' ], Message::TEXT, Message::USER_LANGUAGE )
+				'title' => Message::get( [ 'smw-ask-download-link-desc', 'JSON' ], Message::TEXT, Message::USER_LANGUAGE ),
+				'class' => 'page-link'
 			]
 		);
 
@@ -51,7 +52,8 @@ class DownloadLinksWidget {
 
 		$infolink->setLinkAttributes(
 			[
-				'title' => Message::get( [ 'smw-ask-download-link-desc', 'CSV' ], Message::TEXT, Message::USER_LANGUAGE )
+				'title' => Message::get( [ 'smw-ask-download-link-desc', 'CSV' ], Message::TEXT, Message::USER_LANGUAGE ),
+				'class' => 'page-link'
 			]
 		);
 
@@ -63,7 +65,8 @@ class DownloadLinksWidget {
 
 		$infolink->setLinkAttributes(
 			[
-				'title' => Message::get( [ 'smw-ask-download-link-desc', 'RSS' ], Message::TEXT, Message::USER_LANGUAGE )
+				'title' => Message::get( [ 'smw-ask-download-link-desc', 'RSS' ], Message::TEXT, Message::USER_LANGUAGE ),
+				'class' => 'page-link'
 			]
 		);
 
@@ -75,18 +78,20 @@ class DownloadLinksWidget {
 
 		$infolink->setLinkAttributes(
 			[
-				'title' => Message::get( [ 'smw-ask-download-link-desc', 'RDF' ], Message::TEXT, Message::USER_LANGUAGE )
+				'title' => Message::get( [ 'smw-ask-download-link-desc', 'RDF' ], Message::TEXT, Message::USER_LANGUAGE ),
+				'class' => 'page-link'
 			]
 		);
 
 		$downloadLinks[] = $infolink->getHtml();
 
 		return Html::rawElement(
-			'span',
+			'div',
 			[
-				'class' => 'smw-ask-downloadlinks'
+				'id' => 'ask-export-links',
+				'class' => 'smw-ask-downloadlinks export-links'
 			],
-			'(' . implode( ' | ', $downloadLinks ) . ')'
+			'<div class="smw-ui-pagination">' . implode( '', $downloadLinks ) . '</div>'
 		);
 	}
 

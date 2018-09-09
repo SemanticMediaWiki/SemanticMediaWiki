@@ -23,13 +23,13 @@ class ListPager {
 	/**
 	 * @since 2.4
 	 */
-	public static function pagination( Title $title, $limit, $offset = 0, $count = 0, array $query = array() ) {
+	public static function pagination( Title $title, $limit, $offset = 0, $count = 0, array $query = array(), $prefix = '' ) {
 		return Html::rawElement(
 			'div',
 			[
 				'class' => 'smw-ui-pagination'
 			],
-			self::getPagingLinks( $title, $limit, $offset, $count, $query )
+			self::getPagingLinks( $title, $limit, $offset, $count, $query, $prefix )
 		);
 	}
 
@@ -101,7 +101,7 @@ class ListPager {
 	 * @param array $query Optional URL query parameter string
 	 * @return string
 	 */
-	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = array() ) {
+	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = array(), $prefix = '' ) {
 
 		$list = [];
 		$limit = (int)$limit;
@@ -117,20 +117,24 @@ class ListPager {
 			$language = Localizer::getInstance()->getLanguage( self::$language );
 		}
 
+		if ( $prefix !== '' ) {
+			$prefix = Html::rawElement( 'a', [ 'class' => 'page-link link-disabled' ], $prefix );
+		}
+
 		# Make 'previous' link
 		$prev = wfMessage( 'prevn' )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
 
 		if ( $offset > 0 ) {
 			$plink = self::numLink( $title, max( $offset - $limit, 0 ), $limit, $query, $prev, 'prevn-title', 'mw-prevlink', $disabled, $language );
 		} else {
-			$plink = Html::element( 'span', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $prev ) );
+			$plink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $prev ) );
 		}
 
 		# Make 'next' link
 		$next = wfMessage( 'nextn' )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
 
 		if ( $atend ) {
-			$nlink = Html::element( 'span', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $next ) );
+			$nlink = Html::element( 'a', [ 'class' => 'page-link link-disabled' ], htmlspecialchars( $next ) );
 		} else {
 			$nlink = self::numLink( $title, $offset + $limit, $limit, $query, $next, 'nextn-title', 'mw-nextlink', $disabled, $language );
 		}
@@ -152,7 +156,7 @@ class ListPager {
 			);
 		}
 
-		return $plink . implode( '', $list ) . $nlink;
+		return $prefix . $plink . implode( '', $list ) . $nlink;
 	}
 
 	/**

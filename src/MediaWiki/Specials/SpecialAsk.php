@@ -26,6 +26,7 @@ use SMWQuery;
 use SMWQueryProcessor as QueryProcessor;
 use SMWQueryResult as QueryResult;
 use SpecialPage;
+use SMW\Utils\HtmlTabs;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing
@@ -142,7 +143,8 @@ class SpecialAsk extends SpecialPage {
 			$out->addHTML(
 				NavigationLinksWidget::topLinks(
 					SpecialPage::getSafeTitleFor( 'Ask' ),
-					$visibleLinks
+					$visibleLinks,
+					$this->isEditMode
 				)
 			);
 
@@ -170,6 +172,7 @@ class SpecialAsk extends SpecialPage {
 		$out->addModuleStyles( 'ext.smw.style' );
 		$out->addModuleStyles( 'ext.smw.ask.styles' );
 		$out->addModuleStyles( 'ext.smw.table.styles' );
+		$out->addModuleStyles( 'ext.smw.page.styles' );
 
 		$out->addModuleStyles(
 			HtmlModal::getModuleStyles()
@@ -229,7 +232,6 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		$this->isBorrowedMode = $request->getCheck( 'bTitle' ) || $request->getCheck( 'btitle' );
-
 	}
 
 	/**
@@ -473,6 +475,10 @@ class SpecialAsk extends SpecialPage {
 		$title = SpecialPage::getSafeTitleFor( 'Ask' );
 		$urlArgs->set( 'eq', 'yes' );
 
+		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setGroup( 'ask' );
+		$htmlTabs->setActiveTab( 'smw-askt-result' );
+
 		if ( $this->isEditMode ) {
 			$html .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
@@ -517,50 +523,91 @@ class SpecialAsk extends SpecialPage {
 		}
 
 		$isEmpty = $queryLink === null;
+		$editLink = $title->getLocalURL( $urlArgs );
 
 		// Submit
-		$links = LinksWidget::resultSubmitLink(
+		$html .= LinksWidget::resultSubmitLink(
 			$hideForm
-		) . LinksWidget::showHideLink(
-			$title,
-			$urlArgs,
-			$hideForm,
-			$isEmpty
-		) .	LinksWidget::clipboardLink(
-			$queryLink
+		);
+
+		if ( !$this->isEditMode && !$isEmpty ) {
+			$htmlTabs->tab( 'smw-askt-edit', LinksWidget::editLink( $editLink ), [ 'hide' => $this->isBorrowedMode ] );
+		} elseif ( !$isEmpty ) {
+			$htmlTabs->tab( 'smw-askt-compact', LinksWidget::hideLink( $editLink ), [ 'hide' => $this->isBorrowedMode ] );
+		}
+
+		$htmlTabs->tab(
+			'smw-askt-result',
+			wfMessage( 'smw-ask-tab-result' )->text(),
+			[ 'hide' => $isEmpty ]
+		);
+
+		$links = '';
+
+		$htmlTabs->tab(
+			'smw-askt-code',
+			wfMessage( 'smw-ask-tab-code' )->text(),
+			[ 'hide' => $this->isBorrowedMode || $isEmpty ]
+		);
+
+		$htmlTabs->content(
+			'smw-askt-code',
+			'<div style="margin-top:15px; margin-bottom:15px;">' .
+			LinksWidget::embeddedCodeBlock(	$this->getQueryAsCodeString(), true ) . '</div>'
+		);
+
+		$clipboardLink = LinksWidget::clipboardLink( $queryLink );
+
+		$htmlTabs->tab(
+			'smw-askt-clipboard',
+			$clipboardLink,
+			[ 'hide' => $clipboardLink === '', 'class' => 'smw-tab-right' ]
 		);
 
 		if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
-			$links .= LinksWidget::debugLink( $title, $urlArgs, $isEmpty );
+			$debugLink = LinksWidget::debugLink( $title, $urlArgs, $isEmpty, true );
+
+			$htmlTabs->tab(
+				'smw-askt-debug',
+				$debugLink,
+				[ 'hide' => $debugLink === '' || !$this->isEditMode , 'class' => 'smw-tab-right' ]
+			);
+
 			$links .= LinksWidget::noQCacheLink( $title, $urlArgs, $isFromCache );
 		}
-
-		$links .= LinksWidget::embeddedCodeLink(
-			$isEmpty
-		) . LinksWidget::embeddedCodeBlock(
-			$this->getQueryAsCodeString()
-		);
-
-		$links .= '<p></p>';
 
 		$this->applyFinalOutputChanges(
 			$links,
 			$infoText
 		);
 
-		$links .= NavigationLinksWidget::wrap(
+		$basicLinks = NavigationLinksWidget::basicLinks(
 			$navigation,
 			$infoText,
-			$queryLink
+			$queryLink,
+			!$this->isBorrowedMode ? $editLink : ''
 		);
 
-		$html .= Html::rawElement(
-			'div',
+		$htmlTabs->content( 'smw-askt-result', $basicLinks );
+
+		if ( !$isEmpty ) {
+			$htmlTabs->tab(
+				'smw-askt-extra',
+				wfMessage( 'smw-ask-tab-extra' )->text(),
+				[ 'class' => 'smw-tab-right' ]
+			);
+
+			$htmlTabs->content(
+				'smw-askt-extra',
+				'<div style="margin-top:15px;">' . $infoText . '</div><div style="margin-top:15px;margin-bottom:20px;"><p></p>'. $links . '</div>'
+			);
+		}
+
+		$html .= $htmlTabs->buildHTML(
 			[
 				'id' => 'search',
-				'class' => 'smw-ask-search plainlinks'
-			],
-			LinksWidget::fieldset( $links )
+				'class' => $this->isEditMode ? 'smw-ask-search-edit' . ( $isEmpty ? ' empty-result' : '' ) : 'smw-ask-search-compact'
+			]
 		);
 
 		return Html::rawElement(
