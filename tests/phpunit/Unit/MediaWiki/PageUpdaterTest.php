@@ -272,7 +272,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
+		$title->expects( $this->any() )
 			->method( 'getDBKey' )
 			->will( $this->returnValue( 'Foo' ) );
 
