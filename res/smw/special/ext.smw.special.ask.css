@@ -560,6 +560,10 @@ display: inline-block;
 	display: block;
 }
 
+.smw-tabs input.nav-tab:checked + label.nav-label.result-cache {
+    border-top: 2px solid orange;
+}
+
 /**
  * Responsive settings (#see smw.table.css)
  */

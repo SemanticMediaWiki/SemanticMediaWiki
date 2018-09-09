@@ -249,7 +249,7 @@
 	"smw-ask-search": "Search",
 	"smw-ask-debug": "Debug",
 	"smw-ask-debug-desc": "Generates query debug information",
-	"smw-ask-no-cache": "No cache",
+	"smw-ask-no-cache": "Disable query cache",
 	"smw-ask-no-cache-desc": "Results without query cache",
 	"smw-ask-result": "Result",
 	"smw-ask-empty": "Clear all entries",

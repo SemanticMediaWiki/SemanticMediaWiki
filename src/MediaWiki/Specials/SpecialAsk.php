@@ -539,10 +539,10 @@ class SpecialAsk extends SpecialPage {
 		$htmlTabs->tab(
 			'smw-askt-result',
 			wfMessage( 'smw-ask-tab-result' )->text(),
-			[ 'hide' => $isEmpty ]
+			[ 'hide' => $isEmpty, 'class' => $isFromCache ? ' result-cache' : '' ]
 		);
 
-		$links = '';
+		$links = [];
 
 		$htmlTabs->tab(
 			'smw-askt-code',
@@ -572,8 +572,6 @@ class SpecialAsk extends SpecialPage {
 				$debugLink,
 				[ 'hide' => $debugLink === '' || !$this->isEditMode , 'class' => 'smw-tab-right' ]
 			);
-
-			$links .= LinksWidget::noQCacheLink( $title, $urlArgs, $isFromCache );
 		}
 
 		$this->applyFinalOutputChanges(
@@ -597,9 +595,21 @@ class SpecialAsk extends SpecialPage {
 				[ 'class' => 'smw-tab-right' ]
 			);
 
+			if ( is_array( $links ) ) {
+				$links[] = $infoText;
+
+				if ( ( $noCacheLink = LinksWidget::noQCacheLink( $title, $urlArgs, $isFromCache ) ) !== '' ) {
+					$links[] = $noCacheLink;
+				}
+
+				$infoText = '<ul><li>' . implode( '</li><li>', $links ) . '</li></ul>';
+			} else {
+				$infoText = $links;
+			}
+
 			$htmlTabs->content(
 				'smw-askt-extra',
-				'<div style="margin-top:15px;">' . $infoText . '</div><div style="margin-top:15px;margin-bottom:20px;"><p></p>'. $links . '</div>'
+				'<div style="margin-top:15px;margin-bottom:20px;">' . $infoText . '</div>'
 			);
 		}
 
