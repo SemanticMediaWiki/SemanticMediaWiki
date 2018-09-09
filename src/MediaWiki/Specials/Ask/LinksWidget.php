@@ -322,7 +322,7 @@ class LinksWidget {
 			'span',
 			[
 				'id' => 'ask-cache',
-				'class' => 'smw-ask-button smw-ask-button-right',
+				'class' => '',
 				'title' => Message::get( 'smw-ask-no-cache-desc', Message::TEXT, Message::USER_LANGUAGE )
 			],
 			Html::element(
@@ -332,7 +332,7 @@ class LinksWidget {
 					'href'  => $title->getLocalURL( $urlArgs ),
 					'rel'   => 'nofollow'
 				],
-				'⊘'
+				Message::get( 'smw-ask-no-cache', Message::TEXT, Message::USER_LANGUAGE )
 			)
 		);
 	}
