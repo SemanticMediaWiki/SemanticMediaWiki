@@ -375,7 +375,6 @@
 	"prefs-ask-options": "Special:Ask opties",
 	"smw-prefs-intro-text": "De onderstaande opties zijn mogelijk via [https://www.semantic-mediawiki.org/ Semantic MediaWiki] (of gerelateerde uitbreidingen) om individuele of aangepaste functies in te schakelen. Ga naar de [https://www.semantic-mediawiki.org/wiki/Help:User_preferences hulppagina] voor meer informatie.",
 	"smw-prefs-ask-options-tooltip-display": "Parametertekst weergeven als infotooltip",
-	"smw-prefs-ask-options-collapsed-default": "Optievenster standaard samengevouwen weergeven",
 	"smw-ui-tooltip-title-property": "Eigenschap",
 	"smw-ui-tooltip-title-quantity": "Eenheidomzetting",
 	"smw-ui-tooltip-title-info": "Gegevens",

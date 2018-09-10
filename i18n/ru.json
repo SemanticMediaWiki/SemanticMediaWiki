@@ -435,6 +435,7 @@
 	"smw_adminlinks_inlinequerieshelp": "Справка по встроенным запросам",
 	"smw-page-indicator-usage-count": "Примерное [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count \nколичество использований]: {{PLURAL:$2|'''$2'''}}",
 	"smw-property-indicator-type-info": "Свойство, определённое {{PLURAL:$1|участником|системой}}",
+	"smw-property-indicator-last-count-update": "Примерное число использований\nПоследний раз обновлено: $1",
 	"smw-createproperty-isproperty": "Это свойство типа $1.",
 	"smw-createproperty-allowedvals": "Для данного свойства {{PLURAL:$1|1=допускается следующее значение|допускаются следующие значения}}:",
 	"smw-paramdesc-category-delim": "Разделитель",
@@ -447,7 +448,6 @@
 	"prefs-ask-options": "Параметры семантического поиска",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (и связанные с ней расширения) предоставляют возможности индивидуальной настройки для некоторых функций. Для получения дополнительной информации, пожалуйста, посмотрите в [https://www.semantic-mediawiki.org/wiki/Help:User_preferences раздел справки].",
 	"smw-prefs-ask-options-tooltip-display": "Отображать параметр «текст» в виде всплывающей подсказки",
-	"smw-prefs-ask-options-collapsed-default": "Включить панель параметров свёрнутой по умолчанию",
 	"smw-prefs-general-options-time-correction": "Включить корректировку времени для служебных страниц при помощи локальной настройки [[Special:Preferences#mw-prefsection-rendering|временного смещения]]",
 	"smw-prefs-general-options-disable-editpage-info": "Отключить вступительный текст на странице редактирования",
 	"smw-prefs-general-options-suggester-textinput": "Включить [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance ассистента ввода] для предложений семантических объектов",
@@ -471,7 +471,7 @@
 	"right-smw-patternedit": "доступ к редактированию разрешенных для обслуживания регулярных выражений и шаблонов (Semantic MediaWiki)",
 	"right-smw-pageedit": "редактирование страниц с аннотацией <code>Is edit protected</code> (Semantic MediaWiki)",
 	"right-smw-ruleedit": "Редактировать страницы правил (Semantic MediaWiki)",
-	"restriction-level-smw-pageedit": "защищенные (только подходящие пользователи)",
+	"restriction-level-smw-pageedit": "защищено (только подходящие пользователи)",
 	"action-smw-patternedit": "редактирования регулярных выражений, используемых Semantic MediaWiki",
 	"group-smwadministrator": "Администраторы (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|администратор (Semantic MediaWiki)}}",
@@ -650,6 +650,7 @@
 	"smw-property-tab-usage": "Использование",
 	"smw-property-tab-redirects": "Синонимы",
 	"smw-property-tab-subproperties": "Подсвойства",
+	"smw-property-tab-specification": "… ещё",
 	"smw-concept-tab-list": "Список",
 	"smw-concept-tab-errors": "Ошибки"
 }

@@ -239,6 +239,7 @@
 	"smw-ask-no-cache-desc": "Wyniki bez pamięci podręcznej zapytań",
 	"smw-ask-result": "Wynik",
 	"smw-ask-empty": "Wymaż wszystkie wpisy",
+	"smw-ask-download-link-desc": "Pobieranie wyników zapytań w formacie $1",
 	"smw-ask-format": "Format",
 	"smw-ask-format-selection-help": "Pomoc w wybranym formacie: $1",
 	"smw-ask-condition-change-info": "Warunek został zmieniony i wyszukiwarka wymaga ponownego uruchomienia zapytania w celu uzyskania wyników odpowiadających nowym wymaganiom.",
@@ -368,7 +369,6 @@
 	"prefs-ask-options": "Opcje wyszukiwania semantycznego",
 	"smw-prefs-intro-text": "Opcje poniżej są dostarczane przez [https://www.semantic-mediawiki.org/ semantyczną MediaWiki] (lub powiązane rozszerzenia), aby umożliwić indywidualne dostosowanie do wybranych funkcji. Więcej informacji na ten temat można uzyskać w [https://www.semantic-mediawiki.org/wiki/Help:User_preferences sekcji pomocy].",
 	"smw-prefs-ask-options-tooltip-display": "Wyświetlaj opis parametru za pomocą „dymku” z informacją",
-	"smw-prefs-ask-options-collapsed-default": "Ustaw pole opcji jako domyślnie zwinięte",
 	"smw-prefs-general-options-disable-editpage-info": "Wyłącz tekst wprowadzający na stronie edycji",
 	"smw-prefs-general-options-disable-search-info": "Wyłącz informacje dotyczące obsługi składni na standardowej stronie wyszukiwania",
 	"smw-ui-tooltip-title-property": "Właściwość",
@@ -537,5 +537,6 @@
 	"smw-property-tab-redirects": "Synonimy",
 	"smw-property-tab-subproperties": "Podwłaściwości",
 	"smw-property-tab-errors": "Niewłaściwe przypisania",
+	"smw-property-tab-specification": "... więcej",
 	"smw-concept-tab-errors": "Błędy"
 }

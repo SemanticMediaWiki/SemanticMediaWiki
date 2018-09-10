@@ -242,7 +242,6 @@
 	"prefs-smw": "Sémantická MediaWiki",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Sémantická MediaWiki] (a podobná rozšíření) poskytuje individuální úpravy pro nějaké zvolené funkce. Podívejte se prosím na [https://www.semantic-mediawiki.org/wiki/Help:User_preferences nápovědu] pro další informace.",
 	"smw-prefs-ask-options-tooltip-display": "Zobrazit parametr textu jako informační nástroj",
-	"smw-prefs-ask-options-collapsed-default": "Povolit vrácení všech nastavení do výchozího stavu",
 	"smw-ui-tooltip-title-property": "Vlastnost",
 	"smw-ui-tooltip-title-quantity": "Množství",
 	"smw-ui-tooltip-title-warning": "Varování",

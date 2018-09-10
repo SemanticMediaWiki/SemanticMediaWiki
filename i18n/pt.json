@@ -447,7 +447,6 @@
 	"prefs-ask-options": "Opções da página Special:Ask",
 	"smw-prefs-intro-text": "O [https://www.semantic-mediawiki.org/ MediaWiki Semântico] (e extensões relacionadas) permitem a personalização individualizada de certas funções. Para uma descrição detalhada, consulte a [https://www.semantic-mediawiki.org/wiki/Help:User_preferences página de ajuda], por favor.",
 	"smw-prefs-ask-options-tooltip-display": "Mostrar o texto do parâmetro na forma de dica",
-	"smw-prefs-ask-options-collapsed-default": "Por padrão, recolher a caixa de opção",
 	"smw-prefs-general-options-time-correction": "Ativar a correção da hora para as páginas especiais, usando a preferência do [[Special:Preferences#mw-prefsection-rendering|fuso horário]].",
 	"smw-prefs-general-options-jobqueue-watchlist": "Mostrar a [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist lista de vigilância da fila de tarefas] na minha barra pessoal",
 	"smw-prefs-general-options-disable-editpage-info": "Desativar o texto introdutório na página de edição",

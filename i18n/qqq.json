@@ -449,7 +449,6 @@
 	"prefs-ask-options": "This is the text of a header within a section on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].",
 	"smw-prefs-intro-text": "This is a user preference intro text on special page \"Preferences\".",
 	"smw-prefs-ask-options-tooltip-display": "This is the text describing a user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].",
-	"smw-prefs-ask-options-collapsed-default": "This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].",
 	"smw-prefs-general-options-time-correction": "This is a message describing a user preference option selectable via special page \"Preferences\".",
 	"smw-prefs-general-options-jobqueue-watchlist": "This is a message describing a user preference option selectable via special page \"Preferences\". Relates to information shown only when editing a page.",
 	"smw-prefs-general-options-disable-editpage-info": "This is a message describing a user preference option selectable via special page \"Preferences\". Relates to information shown only when editing a page.",

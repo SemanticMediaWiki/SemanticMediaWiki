@@ -439,7 +439,6 @@
 	"prefs-ask-options": "خاص:خيارات السؤال",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ ميدياويكي الدلالي] (والملحقات ذات الصلة) يوفر التخصيص الفردي لبعض الوظائف المحددة، يُرجَى الرجوع إلى [https://www.semantic-mediawiki.org/wiki/Help:User_preferences صفحة المساعدة] للحصول على وصف تفصيلي.",
 	"smw-prefs-ask-options-tooltip-display": "اعرض نص المعامل كبالون تلميحة",
-	"smw-prefs-ask-options-collapsed-default": "اطو صندوق الخيارات مبدئيا",
 	"smw-prefs-general-options-time-correction": "تمكين تصحيح الوقت لصفحات خاصة باستخدام تفضيل [[Special:Preferences#mw-prefsection-rendering|تعويض الوقت]] المحلي.",
 	"smw-prefs-general-options-jobqueue-watchlist": "عرض [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist قائمة انتظار قائمة مراقبة الوظائف] في شريطي الشخصي",
 	"smw-prefs-general-options-disable-editpage-info": "تعطيل النص التمهيدي في صفحة التعديل",

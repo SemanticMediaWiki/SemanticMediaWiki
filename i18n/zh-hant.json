@@ -28,7 +28,8 @@
 			"Assoc",
 			"Laundry Machine",
 			"Fanjiayi",
-			"Hello903hello"
+			"Hello903hello",
+			"Taiwania Justo"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更易於取得所需的資料 - 不論是對機器''與''人類\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件])",
@@ -383,6 +384,7 @@
 	"smw-admin-supplementary-elastic-intro": "<u>$1</u> 告知有關設定與索引統計",
 	"smw-admin-supplementary-elastic-functions": "可用函式",
 	"smw-admin-supplementary-elastic-settings-title": "設定",
+	"smw-admin-supplementary-elastic-mappings-summary": "摘要",
 	"smw-admin-supplementary-elastic-nodes-title": "節點",
 	"smw-admin-supplementary-elastic-nodes-intro": "<u>$1</u>顯示節點統計",
 	"smw-admin-supplementary-elastic-statistics-title": "統計",
@@ -412,7 +414,6 @@
 	"prefs-ask-options": "Special:Ask 選項",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ 語義MediaWiki] (及相關擴充套件) 在部分指定的函數各自提供自訂功能。請參閱[https://www.semantic-mediawiki.org/wiki/Help:User_preferences 使用說明頁面]以獲取更多資訊。",
 	"smw-prefs-ask-options-tooltip-display": "顯示參數文字作為資訊提示",
-	"smw-prefs-ask-options-collapsed-default": "開啟選項框以預設摺疊",
 	"smw-prefs-general-options-disable-editpage-info": "在編輯頁面停用前言文字",
 	"smw-ui-tooltip-title-property": "屬性",
 	"smw-ui-tooltip-title-quantity": "單位轉換",

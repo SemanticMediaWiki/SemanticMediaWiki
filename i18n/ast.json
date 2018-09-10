@@ -414,7 +414,6 @@
 	"prefs-ask-options": "Especial:Opciones d'entrugues",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (y les estensiones rellacionaes) ufren una personalización individual pa delles funciones seleicionaes. Consulta la [https://www.semantic-mediawiki.org/wiki/Help:User_preferences páxina d'ayuda] pa ver una descripción detallada.",
 	"smw-prefs-ask-options-tooltip-display": "Amosar el testu del parámetru como información d'ayuda",
-	"smw-prefs-ask-options-collapsed-default": "Activar que'l cuadru d'opciones tea contraíu de mou predetermináu",
 	"smw-prefs-general-options-time-correction": "Activar la correición horaria pa les páxines especiales usando la configuración llocal d'[[Special:Preferences#mw-prefsection-rendering|estaya horaria]]",
 	"smw-prefs-general-options-jobqueue-watchlist": "Amosar la [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist llista de siguimientu de la cola de xeres] na mio barra personal",
 	"smw-prefs-general-options-disable-editpage-info": "Desactivar el testu d'introducción de la páxina d'edición",

@@ -469,7 +469,6 @@
 	"prefs-ask-options": "Options de Special:Ask",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (et ses extensions) permettent d'adapter individuellement certaines fonctions sélectionnées. Veuillez consulter la [https://www.semantic-mediawiki.org/wiki/Help:User_preferences page d'aide] pour plus de détails.",
 	"smw-prefs-ask-options-tooltip-display": "Afficher le texte du paramètre comme info-bulle",
-	"smw-prefs-ask-options-collapsed-default": "Réduire par défaut la boîte d’options",
 	"smw-prefs-general-options-time-correction": "Activer la correction de l'horodatage pour les pages spéciales en utilisant la préférence du [[Special:Preferences#mw-prefsection-rendering|décalage horaire]]",
 	"smw-prefs-general-options-jobqueue-watchlist": "Afficher la [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist liste de suivi de la file des tâches] dans ma barre personnelle",
 	"smw-prefs-general-options-disable-editpage-info": "Désactiver le texte d'introduction de la page de modification",
@@ -806,6 +805,7 @@
 	"smw-property-tab-redirects": "Synonymes",
 	"smw-property-tab-subproperties": "Sous-propriétés",
 	"smw-property-tab-errors": "Mauvaises affectations",
+	"smw-property-tab-specification": "... plus",
 	"smw-concept-tab-list": "Liste",
 	"smw-concept-tab-errors": "Erreurs"
 }

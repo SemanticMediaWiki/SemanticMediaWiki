@@ -332,7 +332,6 @@
 	"prefs-ask-options": "אפשרויות חיפוש סמנטי",
 	"smw-prefs-intro-text": "האפשרויות הבאות מסופקות על־ידי ההרחבה \"[https://www.semantic-mediawiki.org/ מדיה־ויקי סמנטית]\" (או הרחבות קשורות) כדי לאפשר התאמה אישית של פונקציות נבחרות. לקבלת מידע נוסף, אפשר לעיין ב[https://www.semantic-mediawiki.org/wiki/Help:User_preferences דף העזרה].",
 	"smw-prefs-ask-options-tooltip-display": "להציג את טקסט הפרמטר בתור רמז צץ עם מידע",
-	"smw-prefs-ask-options-collapsed-default": "לאפשר לתיבת האפשרות להיות מצומצמת תחילה",
 	"smw-prefs-general-options-disable-search-info": "השבתת המידע על תמיכה בתחביר בדף החיפוש הרגיל",
 	"smw-ui-tooltip-title-property": "מאפיין",
 	"smw-ui-tooltip-title-quantity": "המרת יחידות",

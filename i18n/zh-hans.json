@@ -450,7 +450,6 @@
 	"prefs-ask-options": "Special:Ask选项",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ 语义MediaWiki]（及相关扩展）为一些选定函数提供各自的定制功能。请参阅[https://www.semantic-mediawiki.org/wiki/Help:User_preferences 帮助页面]以获取详细说明。",
 	"smw-prefs-ask-options-tooltip-display": "显示参数文本为信息提示",
-	"smw-prefs-ask-options-collapsed-default": "启用选项框以按默认方式折叠",
 	"smw-prefs-general-options-time-correction": "使用本地[[Special:Preferences#mw-prefsection-rendering|时间偏移]]参数设置，为特殊页面启用时间修正",
 	"smw-prefs-general-options-jobqueue-watchlist": "在我的个人工具栏中显示[https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist 工作队列监视列表]",
 	"smw-prefs-general-options-disable-editpage-info": "禁用编辑页面上的介绍文本",

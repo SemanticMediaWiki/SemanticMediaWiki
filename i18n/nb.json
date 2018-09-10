@@ -370,7 +370,6 @@
 	"prefs-ask-options": "Valgmuligheter for Special:Ask",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (og relaterte utvidelser) for å muliggjøre individuelle tilpasninger for noen utvalgte funksjoner. Sjekk [https://www.semantic-mediawiki.org/wiki/Help:User_preferences hjelpesiden] for en detaljert beskrivelse.",
 	"smw-prefs-ask-options-tooltip-display": "Vis parameterteksten som hinttekst.",
-	"smw-prefs-ask-options-collapsed-default": "Gjør at valgboksen er ikke-ekspandert som standard",
 	"smw-prefs-general-options-time-correction": "Aktiver tidskorreksjonen for spesialsider ved å bruke den lokale [[Special:Preferences#mw-prefsection-rendering|klokkeslettforskyvnings]]-preferansen.",
 	"smw-prefs-general-options-disable-editpage-info": "Slå av introduksjonsteksten på redigeringssiden",
 	"smw-ui-tooltip-title-property": "Egenskap",

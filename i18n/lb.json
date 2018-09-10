@@ -313,6 +313,7 @@
 	"smw-parameter-missing": "De Parameter \"$1\" feelt.",
 	"smw-property-tab-usage": "Benotzung",
 	"smw-property-tab-redirects": "Synonymmen",
+	"smw-property-tab-specification": "... méi",
 	"smw-concept-tab-list": "Lëscht",
 	"smw-concept-tab-errors": "Feeler"
 }
