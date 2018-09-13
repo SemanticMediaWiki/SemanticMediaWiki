@@ -23,7 +23,8 @@
 			"MarcoSwart",
 			"Mar(c)",
 			"Patio",
-			"KlaasZ4usV"
+			"KlaasZ4usV",
+			"Goefie"
 		]
 	},
 	"smw-desc": "Uw wiki toegankelijker maken – voor machines ''en'' mensen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
@@ -425,6 +426,11 @@
 	"smw-sp-searchbyproperty-valuequery": "Een lijst van pagina's waarop de eigenschap ''$1'' de waarde ''$2'' heeft.",
 	"smw-datavalue-number-textnotallowed": "\"$1\" kan niet worden toegewezen aan een getaltype met waarde $2.",
 	"smw-search-profile": "Uitgebreid",
+	"smw-search-profile-extended-help-find-forms": "beschikbare formulieren",
+	"smw-search-profile-extended-section-form": "Formulieren",
+	"smw-search-profile-extended-section-namespace": "Naamruimte",
+	"smw-search-show": "Weergeven",
+	"smw-search-hide": "Verbergen",
 	"log-name-smw": "Logboek Semantic MediaWiki",
 	"log-show-hide-smw": "$1 Semantic MediaWiki-logboek",
 	"logeventslist-smw-log": "Logboek Semantic MediaWiki",
@@ -477,5 +483,6 @@
 	"smw-rule-page-definition": "Definitie",
 	"smw-rule-page-description": "Beschrijving:",
 	"smw-rule-page-type": "Type:",
-	"smw-rule-page-tag": "Label:"
+	"smw-rule-page-tag": "Label:",
+	"smw-ask-tab-result": "Resultaat"
 }

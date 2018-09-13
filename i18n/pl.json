@@ -423,8 +423,11 @@
 	"smw-search-profile-sort-title": "Tytuł",
 	"smw-search-profile-extended-help-namespace": "Pole wyboru przestrzeni nazw zostanie ukryte, gdy tylko zostanie wybrany formularz, ale można je pokazać za pomocą przycisku „pokaż/ukryj”.",
 	"smw-search-profile-extended-section-sort": "Sortuj według",
-	"smw-search-profile-extended-section-namespace": "Wybierz przestrzeń nazw",
+	"smw-search-profile-extended-section-namespace": "Przestrzeń nazw",
 	"smw-search-profile-extended-section-query": "Zapytanie",
+	"smw-search-profile-link-caption-query": "zobacz",
+	"smw-search-show": "Pokaż",
+	"smw-search-hide": "Ukryj",
 	"log-name-smw": "Rejestr semantycznej MediaWiki",
 	"log-show-hide-smw": "$1 rejestr semantycznej MediaWiki",
 	"logeventslist-smw-log": "Rejestr Semantycznej MediaWiki",
@@ -538,5 +541,7 @@
 	"smw-property-tab-subproperties": "Podwłaściwości",
 	"smw-property-tab-errors": "Niewłaściwe przypisania",
 	"smw-property-tab-specification": "... więcej",
-	"smw-concept-tab-errors": "Błędy"
+	"smw-concept-tab-errors": "Błędy",
+	"smw-ask-tab-result": "Wynik",
+	"smw-ask-tab-code": "Kod"
 }

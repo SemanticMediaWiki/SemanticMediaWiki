@@ -130,7 +130,7 @@
 	"smw_ask_submit": "Пронађи резултате",
 	"smw_ask_editquery": "Уреди упит",
 	"smw_add_sortcondition": "[Додај услове сортирања]",
-	"smw_ask_hidequery": "Сакриј упит",
+	"smw_ask_hidequery": "Сакриј упит (компактни приказ)",
 	"smw_ask_help": "Упит у странице помоћи",
 	"smw_ask_queryhead": "Услов",
 	"smw_ask_printhead": "Избор штампе",
@@ -221,6 +221,10 @@
 	"action-smw-patternedit": "уређујете регуларне изразе које користи Семантички Медијавики",
 	"smw-admin-tab-registry": "Регистар",
 	"smw-livepreview-loading": "Учитавам…",
+	"smw-search-profile-extended-help-find-forms": "доступни облици",
+	"smw-search-profile-extended-section-namespace": "Именски простор",
+	"smw-search-show": "Прикажи",
+	"smw-search-hide": "Сакриј",
 	"smw-limitreport-intext-parsertime": "[SMW] Време рашчлањивања унутартекстуалних анотација",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|секунд|секунда|секунди}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|секунд|секунда|секунди}}",
@@ -250,5 +254,6 @@
 	"smw-property-tab-subproperties": "Подсвојства",
 	"smw-property-tab-specification": "… више",
 	"smw-concept-tab-list": "Списак",
-	"smw-concept-tab-errors": "Грешке"
+	"smw-concept-tab-errors": "Грешке",
+	"smw-ask-tab-code": "Кôд"
 }
