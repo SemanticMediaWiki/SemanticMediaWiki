@@ -564,6 +564,7 @@ class SMWSQLStore3 extends SMWStore {
 		parent::clear();
 		$this->factory->newSemanticDataLookup()->clear();
 		$this->propertyTableInfoFetcher = null;
+		$this->servicesContainer = null;
 		$this->getObjectIds()->initCache();
 	}
 

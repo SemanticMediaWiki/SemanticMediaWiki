@@ -145,6 +145,33 @@ class IdCacheManager {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $id
+	 */
+	public function deleteCacheById( $id ) {
+
+		$dataItem = $this->caches['entity.lookup']->fetch( $id );
+
+		if ( !$dataItem instanceof DIWikiPage ) {
+			return;
+		}
+
+		$hash = $this->computeSha1(
+			[
+				$dataItem->getDBKey(),
+				(int)$dataItem->getNamespace(),
+				$dataItem->getInterwiki(),
+				$dataItem->getSubobjectName()
+			]
+		);
+
+		$this->caches['entity.id']->delete( $hash );
+		$this->caches['entity.sort']->delete( $hash );
+		$this->caches['entity.lookup']->delete( $id );
+	}
+
+	/**
 	 * Get a cached SMW ID, or false if no cache entry is found.
 	 *
 	 * @since 3.0

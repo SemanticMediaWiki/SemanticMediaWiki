@@ -65,6 +65,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'newChangePropListener' )
 			->will( $this->returnValue( $changePropListener ) );
 
+		$propertyTableIdReferenceFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -80,6 +84,11 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->with( $this->equalTo( 'PropertyTableIdReferenceFinder' ) )
+			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
 
 		$propertyTableRowDiffer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowDiffer' )
 			->disableOriginalConstructor()

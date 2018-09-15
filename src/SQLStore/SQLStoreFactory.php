@@ -739,7 +739,11 @@ class SQLStoreFactory {
 				'EntityValueUniquenessConstraintChecker' => [
 					'_service' => [ $this, 'newEntityValueUniquenessConstraintChecker' ],
 					'_type'    => EntityValueUniquenessConstraintChecker::class
-				]
+				],
+				'PropertyTableIdReferenceFinder' => function() {
+					static $singleton;
+					return $singleton = $singleton === null ? $this->newPropertyTableIdReferenceFinder() : $singleton;
+				}
 			]
 		);
 
