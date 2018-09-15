@@ -157,7 +157,7 @@ class TableSchemaManager {
 		$table->addColumn( 'smw_sort', array( FieldType::FIELD_TITLE ) );
 		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
 		$table->addColumn( 'smw_hash', FieldType::FIELD_HASH );
-		$table->addColumn( 'smw_rev', FieldType::FIELD_ID );
+		$table->addColumn( 'smw_rev', FieldType::FIELD_ID_UNSIGNED );
 
 		$table->addIndex( 'smw_id' );
 		$table->addIndex( 'smw_id,smw_sortkey' );

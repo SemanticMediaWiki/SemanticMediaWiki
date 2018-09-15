@@ -27,6 +27,10 @@ class MySQLTableBuilder extends TableBuilder {
 			'id'         => 'INT(11) UNSIGNED',
 			 // like page_id in MW page table
 			'id_primary' => 'INT(11) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
+
+			 // (see postgres on the difference)
+			'id_unsigned' => 'INT(11) UNSIGNED',
+
 			 // like page_namespace in MW page table
 			'namespace'  => 'INT(11)',
 			 // like page_title in MW page table
