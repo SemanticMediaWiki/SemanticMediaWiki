@@ -549,9 +549,9 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		if ( !$this->isEditMode && !$isEmpty ) {
-			$htmlTabs->tab( 'smw-askt-edit', LinksWidget::editLink( $editLink ), [ 'hide' => $this->isBorrowedMode ] );
+			$htmlTabs->tab( 'smw-askt-edit', LinksWidget::editLink( $editLink ), [ 'hide' => $this->isBorrowedMode, 'class' => 'edit-action' ] );
 		} elseif ( !$isEmpty ) {
-			$htmlTabs->tab( 'smw-askt-compact', LinksWidget::hideLink( $editLink ), [ 'hide' => $this->isBorrowedMode ] );
+			$htmlTabs->tab( 'smw-askt-compact', LinksWidget::hideLink( $editLink ), [ 'hide' => $this->isBorrowedMode, 'class' => 'compact-action' ] );
 		}
 
 		$htmlTabs->tab(
@@ -579,7 +579,7 @@ class SpecialAsk extends SpecialPage {
 		$htmlTabs->tab(
 			'smw-askt-clipboard',
 			$clipboardLink,
-			[ 'hide' => $clipboardLink === '', 'class' => 'smw-tab-right' ]
+			[ 'hide' => $clipboardLink === '', 'class' => 'clipboard-bookmark smw-tab-right' ]
 		);
 
 		if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
@@ -615,6 +615,11 @@ class SpecialAsk extends SpecialPage {
 
 			if ( is_array( $links ) ) {
 				$links[] = $infoText;
+
+				// External source cannot disable the cache
+				if ( isset( $this->parameters['source'] ) && $this->parameters['source'] !== '' ) {
+					$isFromCache = false;
+				}
 
 				if ( ( $noCacheLink = LinksWidget::noQCacheLink( $title, $urlArgs, $isFromCache ) ) !== '' ) {
 					$links[] = $noCacheLink;

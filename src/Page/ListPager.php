@@ -175,10 +175,16 @@ class ListPager {
 		$query = [ 'limit' => $limit, 'offset' => $offset ] + $query;
 
 		$tooltip = wfMessage( $tooltipMsg )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
+		$target = '';
+
+		if ( isset( $query['_target' ] ) ) {
+			$target = $query['_target' ];
+			unset( $query['_target' ] );
+		}
 
 		return Html::element( 'a',
 			[
-				'href' => $title->getLocalURL( $query ),
+				'href' => $title->getLocalURL( $query ) . $target,
 				'title' => $tooltip,
 				'class' => 'page-link' . ( $active ? ' link-active' : '' )
 			],
