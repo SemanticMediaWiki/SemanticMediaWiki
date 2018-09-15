@@ -15,4 +15,9 @@ class Enum {
 	 */
 	const OPT_SUSPEND_PURGE = 'smw.opt.suspend.purge';
 
+	/**
+	 * Indicates to purge an associated parser cache
+	 */
+	const PURGE_ASSOC_PARSERCACHE = 'smw.purge.assoc.parsercache';
+
 }

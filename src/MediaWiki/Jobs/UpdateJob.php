@@ -290,6 +290,11 @@ class UpdateJob extends JobBase {
 			false
 		);
 
+		$parserData->getSemanticData()->setOption(
+			Enum::PURGE_ASSOC_PARSERCACHE,
+			(bool)$this->getParameter( Enum::PURGE_ASSOC_PARSERCACHE )
+		);
+
 		$parserData->updateStore();
 
 		return true;
