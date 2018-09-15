@@ -221,7 +221,7 @@ class QueryDependencyLinksStore {
 		if ( $this->isPrimary || $this->isCommandLineMode ) {
 			$parserCachePurgeJob->run();
 		} else {
-			$parserCachePurgeJob->lazyPush();
+			$parserCachePurgeJob->insert();
 		}
 	}
 
