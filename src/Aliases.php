@@ -40,7 +40,7 @@ class_alias( \SMW\Query\ResultPrinters\TableResultPrinter::class, 'SMWTableResul
 // 2.0
 class_alias( \SMW\Query\ResultPrinters\FileExportPrinter::class, 'SMWExportPrinter' );
 class_alias( \SMW\AggregatablePrinter::class, 'SMWAggregatablePrinter' );
-class_alias( \SMW\CategoryResultPrinter::class, 'SMWCategoryResultPrinter' );
+class_alias( \SMW\Query\ResultPrinters\CategoryResultPrinter::class, 'SMWCategoryResultPrinter' );
 class_alias( \SMW\DsvResultPrinter::class, 'SMWDSVResultPrinter' );
 class_alias( \SMW\EmbeddedResultPrinter::class, 'SMWEmbeddedResultPrinter' );
 class_alias( \SMW\RdfResultPrinter::class, 'SMWRDFResultPrinter' );
