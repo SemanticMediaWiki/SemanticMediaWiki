@@ -1978,6 +1978,26 @@ return array(
 	##
 
 	##
+	# Special:Ask form submit method
+	#
+	# - SMW_SASK_SUBMIT_POST uses `post` as submit method, allows to jump
+	#   directly to the search result but will not produce any copyable URL
+	#   string (use the result bookmark button instead)
+	#
+	# - SMW_SASK_SUBMIT_GET uses `get` as submit method and was the default
+	#   until 2.5, is not able to jump the search result directly after a submit
+	#
+	# - SMW_SASK_SUBMIT_GET_REDIRECT uses `get` as submit method and provides
+	#   the means to directly jump to the search result after a submit but
+	#   requires an extra HTTP request to follow a redirect
+	#
+	# @since 3.0
+	# @default SMW_SASK_SUBMIT_POST
+	##
+	'smwgSpecialAskFormSubmitMethod' => SMW_SASK_SUBMIT_POST,
+	##
+
+	##
 	# Rule types
 	#
 	# The mapping defines the relation between a specific type, group and

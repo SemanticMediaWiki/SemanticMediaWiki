@@ -56,6 +56,18 @@ class Options {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param string $value
+	 *
+	 * @return boolean
+	 */
+	public function is( $key, $value ) {
+		return $this->get( $key ) === $value;
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param string $key

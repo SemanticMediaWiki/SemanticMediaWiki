@@ -104,6 +104,22 @@ class SpecialAsk extends SpecialPage {
 
 		$out = $this->getOutput();
 		$request = $this->getRequest();
+		$title = SpecialPage::getSafeTitleFor( 'Ask' );
+
+		// A GET form submit cannot use a fragment (aka anchor) to repositioning
+		// to a specific target after a request has completed, use a redirect
+		// with the posted query values from the submit form to add an anchor
+		// point
+		if ( $settings->is( 'smwgSpecialAskFormSubmitMethod', SMW_SASK_SUBMIT_GET_REDIRECT ) && $request->getVal( '_action' ) === 'submit' ) {
+			$vals = $request->getQueryValues();
+
+			unset( $vals['_action'] );
+			unset( $vals['title'] );
+
+			return $out->redirect(
+				$title->getLocalUrl( wfArrayToCGI( $vals ) . '#search' )
+			);
+		}
 
 		$request->setVal( 'wpEditToken',
 			$this->getUser()->getEditToken()
@@ -142,7 +158,7 @@ class SpecialAsk extends SpecialPage {
 
 			$out->addHTML(
 				NavigationLinksWidget::topLinks(
-					SpecialPage::getSafeTitleFor( 'Ask' ),
+					$title,
 					$visibleLinks,
 					$this->isEditMode
 				)
@@ -472,6 +488,7 @@ class SpecialAsk extends SpecialPage {
 		$html = '';
 		$hideForm = false;
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
 		$title = SpecialPage::getSafeTitleFor( 'Ask' );
 		$urlArgs->set( 'eq', 'yes' );
 
@@ -481,6 +498,7 @@ class SpecialAsk extends SpecialPage {
 
 		if ( $this->isEditMode ) {
 			$html .= Html::hidden( 'title', $title->getPrefixedDBKey() );
+			$html .= Html::hidden( '_action', 'submit' );
 
 			// Table for main query and printouts.
 			$html .= Html::rawElement(
@@ -620,13 +638,25 @@ class SpecialAsk extends SpecialPage {
 			]
 		);
 
-		return Html::rawElement(
-			'form',
-			[
+		// Use POST instead of GET since only POST allows to attach a fragment
+		// to jump to the actual result and avoid scrolling
+		if ( $settings->is( 'smwgSpecialAskFormSubmitMethod', SMW_SASK_SUBMIT_POST ) ) {
+			$params = [
+				'action' => $title->getLocalUrl( wfArrayToCGI( $urlArgs ) . '#search' ),
+				'name' => 'ask',
+				'method' => 'post'
+			];
+		} else {
+			$params = [
 				'action' => $GLOBALS['wgScript'],
 				'name' => 'ask',
 				'method' => 'get'
-			],
+			];
+		}
+
+		return Html::rawElement(
+			'form',
+			$params,
 			$html
 		);
 	}

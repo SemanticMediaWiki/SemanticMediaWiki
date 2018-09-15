@@ -280,6 +280,12 @@ define( 'SMW_REMOTE_REQ_SHOW_NOTE', 4 ); // Shows a note
 define( 'SMW_RULE_GROUP_FORMAT', 'rule.group.format' );
 define( 'SMW_RULE_GROUP_FORM_DEFINITION', 'rule.group.form.definition' );
 
+/**@{
+  * Constants for Special:Ask submit method
+  */
+define( 'SMW_SASK_SUBMIT_GET', 'get' );
+define( 'SMW_SASK_SUBMIT_GET_REDIRECT', 'get.redirect' );
+define( 'SMW_SASK_SUBMIT_POST', 'post' );
 /**@}*/
 
 /**@{

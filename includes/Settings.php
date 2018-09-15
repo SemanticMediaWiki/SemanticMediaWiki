@@ -178,6 +178,7 @@ class Settings extends Options {
 			'smwgElasticsearchProfile' => $GLOBALS['smwgElasticsearchProfile'],
 			'smwgElasticsearchEndpoints' => $GLOBALS['smwgElasticsearchEndpoints'],
 			'smwgPostEditUpdate' => $GLOBALS['smwgPostEditUpdate'],
+			'smwgSpecialAskFormSubmitMethod' => $GLOBALS['smwgSpecialAskFormSubmitMethod'],
 		);
 
 		self::initLegacyMapping( $configuration );
@@ -475,7 +476,7 @@ class Settings extends Options {
 		if ( isset( $GLOBALS['smwgSparqlDataEndpoint'] ) ) {
 			$configuration['smwgSparqlEndpoint']['data'] = $GLOBALS['smwgSparqlDataEndpoint'];
     }
-    
+
 		if ( isset( $GLOBALS['smwgCacheType'] ) ) {
 			$configuration['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
 		}

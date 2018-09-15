@@ -4,6 +4,7 @@ namespace SMW\Tests\Integration;
 
 use DOMDocument;
 use SMW\MediaWiki\Specials\SpecialAsk;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
@@ -17,6 +18,22 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 
 	private $oldRequestValues;
 	private $oldBodyText;
+	private $testEnvironment;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment(
+			[
+				'smwgSpecialAskFormSubmitMethod' => SMW_SASK_SUBMIT_GET
+			]
+		);
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
 
 	/**
 	 * @dataProvider provideTestData
