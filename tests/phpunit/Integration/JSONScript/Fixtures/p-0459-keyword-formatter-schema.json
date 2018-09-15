@@ -1,8 +1,8 @@
 {
-    "description": "Specifies a formatting rule for a keyword type",
-    "type": "LINK_FORMAT_RULE",
+    "description": "Specifies a formatting schema for a keyword type",
+    "type": "LINK_FORMAT_SCHEMA",
     "rule": {
-        "link_to": "Special:Ask",
+        "link_to": "SPECIAL_ASK",
         "parameters": {
             "format": "list"
         }

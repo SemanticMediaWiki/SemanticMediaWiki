@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Rule;
+namespace SMW\Schema;
 
 /**
  * @license GNU GPL v2+
@@ -8,11 +8,11 @@ namespace SMW\Rule;
  *
  * @author mwjames
  */
-interface RuleDef {
+interface Schema {
 
-	const RULE_TYPE = 'type';
-	const RULE_DESCRIPTION = 'description';
-	const RULE_TAG = 'tags';
+	const SCHEMA_TYPE = 'type';
+	const SCHEMA_DESCRIPTION = 'description';
+	const SCHEMA_TAG = 'tags';
 
 	/**
 	 * @since 3.0
@@ -25,7 +25,8 @@ interface RuleDef {
 	public function get( $key, $default = null );
 
 	/**
-	 * Returns the name of rule definition.
+	 * Returns the name of the schema which is equivalent with the page name
+	 * without the namespace prefix.
 	 *
 	 * @since 3.0
 	 *
@@ -38,6 +39,6 @@ interface RuleDef {
 	 *
 	 * @return string
 	 */
-	public function getSchema();
+	public function getValidationSchema();
 
 }

@@ -17,10 +17,10 @@
       "title": "The Type Schema",
       "default": "",
       "examples": [
-        "LINK_FORMAT_RULE"
+        "LINK_FORMAT_SCHEMA"
       ],
       "enum": [
-        "LINK_FORMAT_RULE"
+        "LINK_FORMAT_SCHEMA"
       ]
     },
     "rule": {
@@ -34,12 +34,12 @@
           "title": "The link_to Schema",
           "default": "",
           "examples": [
-            "Special:Ask"
+            "SPECIAL_ASK"
           ],
           "minLength": 1,
           "enum": [
-            "Special:Ask",
-            "Special:SearchByProperty"
+            "SPECIAL_ASK",
+            "SPECIAL_SEARCH_BY_PROPERTY"
           ]
         },
         "parameters": {
@@ -83,7 +83,7 @@
       "anyOf": [{
           "properties": {
             "link_to": {
-              "enum": ["Special:Ask"]
+              "enum": ["SPECIAL_ASK"]
             }
           },
           "required": [ "parameters" ]
@@ -91,7 +91,7 @@
         {
           "properties": {
             "link_to": {
-              "enum": ["Special:SearchByProperty" ]
+              "enum": ["SPECIAL_SEARCH_BY_PROPERTY" ]
             }
           },
           "additionalProperties": false

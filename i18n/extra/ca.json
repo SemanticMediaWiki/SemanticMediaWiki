@@ -8,9 +8,7 @@
             "SMW_NS_PROPERTY": "Propietat",
             "SMW_NS_PROPERTY_TALK": "Propietat_Discussió",
             "SMW_NS_CONCEPT": "Concepte",
-            "SMW_NS_CONCEPT_TALK": "Concepte_Discussió",
-            "SMW_NS_RULE": "Regla",
-            "SMW_NS_RULE_TALK": "Regla_Discussió"
+            "SMW_NS_CONCEPT_TALK": "Concepte_Discussió"
         },
         "aliases": []
     },
@@ -90,12 +88,7 @@
             "_PPLB": "Té etiqueta de propietat preferida",
             "_EDIP": "Té protecció de modificació",
             "_CHGPRO": "Propagació de canvi",
-            "_PPGR": "És grup de propietat",
-            "_RL_DESC": "Descripció de regla",
-            "_RL_TAG": "Etiqueta de regla",
-            "_RL_TYPE": "Tipus de regla",
-            "_RL_DEF": "Definició de regla",
-            "_FORMAT_RL": "Regla de formatador"
+            "_PPGR": "És grup de propietat"
         },
         "aliases": {
             "Unitat de mesura": "_UNIT"

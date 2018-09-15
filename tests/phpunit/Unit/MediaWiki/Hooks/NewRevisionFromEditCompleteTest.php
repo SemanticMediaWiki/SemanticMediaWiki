@@ -158,18 +158,18 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		#2 on rule page
+		#2 on schema page
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo_rule' ) );
+			->will( $this->returnValue( 'Foo_schema' ) );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_RULE ) );
+			->will( $this->returnValue( SMW_NS_SCHEMA ) );
 
 		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
 			->disableOriginalConstructor()
@@ -196,14 +196,14 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			[
 				'smwgPageSpecialProperties' => [],
 				'smwgDVFeatures' => '',
-				'smwgRuleTypes' => [ 'FOO_ROLE' => [] ]
+				'smwgSchemaTypes' => [ 'FOO_ROLE' => [] ]
 			],
 			$title,
 			$editInfoProvider,
 			$pageInfoProvider,
 			[
 				'propertyCount'  => 3,
-				'propertyKeys'   => [ '_RL_DESC', '_RL_TYPE', '_RL_DEF' ],
+				'propertyKeys'   => [ '_SCHEMA_DESC', '_SCHEMA_TYPE', '_SCHEMA_DEF' ],
 				'propertyValues' => [ 'Foobar', 'FOO_ROLE', '{"description":"Foobar","type":"FOO_ROLE"}' ],
 			]
 		];

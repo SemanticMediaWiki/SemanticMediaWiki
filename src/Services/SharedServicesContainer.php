@@ -41,7 +41,7 @@ use SMW\Protection\EditProtectionUpdater;
 use SMW\Protection\ProtectionValidator;
 use SMW\Query\QuerySourceFactory;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
-use SMW\Rule\RuleFactory;
+use SMW\Schema\SchemaFactory;
 use SMW\Settings;
 use SMW\Options;
 use SMW\StoreFactory;
@@ -306,19 +306,18 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var RuleFactory
+		 * @var SchemaFactory
 		 */
-		$containerBuilder->registerCallback( 'RuleFactory', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'RuleFactory', RuleFactory::class );
-			$containerBuilder->registerAlias( 'RuleFactory', RuleFactory::class );
+		$containerBuilder->registerCallback( 'SchemaFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'SchemaFactory', SchemaFactory::class );
 
 			$settings = $containerBuilder->singleton( 'Settings' );
 
-			$ruleFactory = new RuleFactory(
-				$settings->get( 'smwgRuleTypes' )
+			$schemaFactory = new SchemaFactory(
+				$settings->get( 'smwgSchemaTypes' )
 			);
 
-			return $ruleFactory;
+			return $schemaFactory;
 		} );
 
 		/**

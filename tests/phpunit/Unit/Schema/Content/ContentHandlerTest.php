@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Rule;
+namespace SMW\Tests\Schema\Content;
 
-use SMW\Rule\RuleContentHandler;
+use SMW\Schema\Content\ContentHandler;
 
 /**
- * @covers \SMW\Rule\RuleContentHandler
+ * @covers \SMW\Schema\Content\ContentHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,13 +13,13 @@ use SMW\Rule\RuleContentHandler;
  *
  * @author mwjames
  */
-class RuleContentHandlerTest extends \PHPUnit_Framework_TestCase {
+class ContentHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceof(
 			'\JsonContentHandler',
-			new RuleContentHandler()
+			new ContentHandler()
 		);
 	}
 

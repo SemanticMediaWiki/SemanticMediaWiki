@@ -10,6 +10,7 @@ use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\ParametersProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
 use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
+use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 use SMWQuery as Query;
@@ -59,6 +60,11 @@ class ProfileAnnotatorFactory {
 		$profileAnnotator = $this->newStatusCodeProfileAnnotator(
 			$profileAnnotator,
 			$query->getOption( Query::PROC_STATUS_CODE )
+		);
+
+		$profileAnnotator = $this->newSchemaLinkProfileAnnotator(
+			$profileAnnotator,
+			$query->getOption( 'schema_link' )
 		);
 
 		return $profileAnnotator;
@@ -123,6 +129,15 @@ class ProfileAnnotatorFactory {
 		}
 
 		return new StatusCodeProfileAnnotator( $profileAnnotator, $statusCodes );
+	}
+
+	private function newSchemaLinkProfileAnnotator( $profileAnnotator, $schemaLink ) {
+
+		if ( $schemaLink === false || $schemaLink === null ) {
+			return $profileAnnotator;
+		}
+
+		return new SchemaLinkProfileAnnotator( $profileAnnotator, $schemaLink );
 	}
 
 	/**

@@ -646,6 +646,15 @@ return array(
 		'messages' => array(
 			'smw_result_noresults'
 		),
+	),
+
+	// Schema content styles
+	'smw.content.schema' => $moduleTemplate + array(
+		'styles' => array(
+			'smw/smw.schema.css',
+			'smw/ext.smw.table.css'
+		),
+		'position' => 'top',
 		'targets' => array(
 			'mobile',
 			'desktop'

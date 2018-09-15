@@ -257,18 +257,22 @@ class DataUpdater {
 
 		// Standard text hooks are not run through a JSON content object therefore
 		// we attach possible annotations at this point
-		if ( $title->getNamespace() === SMW_NS_RULE ) {
+		if ( $title->getNamespace() === SMW_NS_SCHEMA ) {
 
-			$ruleFactory = $applicationFactory->singleton( 'RuleFactory' );
+			$schemaFactory = $applicationFactory->singleton( 'SchemaFactory' );
 
-			$ruleDefinition = $ruleFactory->newRuleDefinition(
-				$title->getDBKey(),
-				$wikiPage->getContent()->getNativeData()
-			);
+			try {
+				$schema = $schemaFactory->newSchema(
+					$title->getDBKey(),
+					$pageInfoProvider->getNativeData()
+				);
+			} catch ( \Exception $e ) {
+				$schema = null;
+			}
 
-			$propertyAnnotator = $propertyAnnotatorFactory->newRuleDefinitionPropertyAnnotator(
+			$propertyAnnotator = $propertyAnnotatorFactory->newSchemaPropertyAnnotator(
 				$propertyAnnotator,
-				$ruleDefinition
+				$schema
 			);
 		}
 

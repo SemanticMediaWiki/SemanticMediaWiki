@@ -6,7 +6,6 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\PropertySpecificationReqExaminer;
 use SMW\PropertySpecificationReqMsgBuilder;
-use SMW\Rule\RuleFactory;
 use SMW\Store;
 use Title;
 
@@ -46,8 +45,6 @@ class PageFactory {
 			return $this->newPropertyPage( $title );
 		} elseif ( $title->getNamespace() === SMW_NS_CONCEPT ) {
 			return $this->newConceptPage( $title );
-		} elseif ( $title->getNamespace() === SMW_NS_RULE ) {
-			return $this->newRulePage( $title );
 		}
 
 		throw new RuntimeException( 'No supported ContentPage instance for namespace ' . $title->getNamespace() );
@@ -135,26 +132,6 @@ class PageFactory {
 		);
 
 		return $conceptPage;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param Title $title
-	 *
-	 * @return RulePage
-	 */
-	public function newRulePage( Title $title ) {
-
-		$rulePage = new RulePage( $title, new RuleFactory() );
-		$settings = ApplicationFactory::getInstance()->getSettings();
-
-		$rulePage->setOption(
-			'smwgSemanticsEnabled',
-			$settings->get( 'smwgSemanticsEnabled' )
-		);
-
-		return $rulePage;
 	}
 
 }

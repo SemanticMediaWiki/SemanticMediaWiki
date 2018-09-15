@@ -55,8 +55,8 @@ class PermissionPthValidator {
 	 */
 	public function hasUserPermission( Title &$title, User $user, $action, &$errors ) {
 
-		if ( $title->getNamespace() === SMW_NS_RULE ) {
-			return $this->checkRuleNamespacePermission( $title, $user, $action, $errors );
+		if ( $title->getNamespace() === SMW_NS_SCHEMA ) {
+			return $this->checkSchemaNamespacePermission( $title, $user, $action, $errors );
 		}
 
 		if ( $action !== 'edit' && $action !== 'delete' && $action !== 'move' && $action !== 'upload' ) {
@@ -102,16 +102,16 @@ class PermissionPthValidator {
 		return false;
 	}
 
-	private function checkRuleNamespacePermission( Title &$title, User $user, $action, &$errors ) {
+	private function checkSchemaNamespacePermission( Title &$title, User $user, $action, &$errors ) {
 
-		if ( !$user->isAllowed( 'smw-ruleedit' ) ) {
-			$errors[] = array( 'smw-rule-namespace-edit-protection', 'smw-ruleedit' );
+		if ( !$user->isAllowed( 'smw-schemaedit' ) ) {
+			$errors[] = array( 'smw-schema-namespace-edit-protection', 'smw-schemaedit' );
 			return false;
 		}
 
 		// Disallow to change the content model
 		if ( $action === 'editcontentmodel' ) {
-			$errors[] = array( 'smw-rule-namespace-editcontentmodel-disallowed' );
+			$errors[] = array( 'smw-schema-namespace-editcontentmodel-disallowed' );
 			return false;
 		}
 

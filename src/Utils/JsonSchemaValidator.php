@@ -42,11 +42,11 @@ class JsonSchemaValidator {
 	 * @since 3.0
 	 *
 	 * @param JsonSerializable $data
-	 * @param string|null $schema
+	 * @param string|null $schemaLink
 	 */
-	public function validate( JsonSerializable $data, $schema = null ) {
+	public function validate( JsonSerializable $data, $schemaLink = null ) {
 
-		if ( $this->schemaValidator === null || $schema === null ) {
+		if ( $this->schemaValidator === null || $schemaLink === null ) {
 			return;
 		}
 
@@ -57,7 +57,7 @@ class JsonSchemaValidator {
 		try {
 			$this->schemaValidator->check(
 				$data,
-				(object)[ '$ref' => 'file://' . $schema ]
+				(object)[ '$ref' => 'file://' . $schemaLink ]
 			);
 
 			$this->isValid = $this->schemaValidator->isValid();

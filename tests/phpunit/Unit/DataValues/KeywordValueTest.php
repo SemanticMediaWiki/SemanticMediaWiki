@@ -123,8 +123,8 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 
 		$data = json_encode(
 			[
-				'type' => 'LINK_FORMAT_RULE',
-				'rule' => [ 'link_to' => 'Special:SearchByProperty' ]
+				'type' => 'LINK_FORMAT_SCHEMA',
+				'rule' => [ 'link_to' => 'SPECIAL_SEARCH_BY_PROPERTY' ]
 			]
 		);
 
@@ -132,14 +132,14 @@ class KeywordValueTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSpecification' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_FORMAT_RL' ) ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_RULE ) ] ) );
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_FORMAT_SCHEMA' ) ) )
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_SCHEMA ) ] ) );
 
 		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
 			->method( 'getSpecification' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_RL_DEF' ) ) )
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) ) )
 			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( $data ) ] ) );
 
 		$instance = new KeywordValue();
