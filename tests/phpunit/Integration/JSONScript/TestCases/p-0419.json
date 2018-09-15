@@ -41,11 +41,11 @@
 		},
 		{
 			"page": "Example/P0419/3",
-			"contents": "[[Has text::Foo]]"
+			"contents": "[[Has text::P0419]]"
 		},
 		{
 			"page": "Example/P0419/4",
-			"contents": "[[Has text::Foo]]"
+			"contents": "[[Has text::P0419]]"
 		},
 		{
 			"page": "Example/P0419/5",
@@ -142,7 +142,7 @@
 						"Has_text"
 					],
 					"propertyValues": [
-						"Foo"
+						"P0419"
 					]
 				}
 			}
