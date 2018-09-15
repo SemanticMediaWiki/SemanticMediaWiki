@@ -23,11 +23,17 @@ class PostgresTableBuilder extends TableBuilder {
 	 */
 	public function getStandardFieldType( $fieldType ) {
 
+		// serial is a 4 bytes autoincrementing integer (1 to 2147483647)
+
 		$fieldTypes = array(
 			 // like page_id in MW page table
 			'id'         => 'SERIAL',
 			 // like page_id in MW page table
 			'id_primary' => 'SERIAL NOT NULL PRIMARY KEY',
+
+			 // not autoincrementing integer
+			'id_unsigned' => 'INTEGER',
+
 			 // like page_namespace in MW page table
 			'namespace'  => 'BIGINT',
 			 // like page_title in MW page table

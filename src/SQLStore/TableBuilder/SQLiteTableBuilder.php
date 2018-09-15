@@ -26,6 +26,10 @@ class SQLiteTableBuilder extends TableBuilder {
 			 // like page_id in MW page table
 			'id'         => 'INTEGER',
 			'id_primary' => 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
+
+			 // (see postgres, mysql on the difference)
+			'id_unsigned' => 'INTEGER',
+
 			 // like page_namespace in MW page table
 			'namespace'  => 'INT(11)',
 			 // like page_title in MW page table

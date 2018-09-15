@@ -25,6 +25,11 @@ class FieldType {
 	/**
 	 * @var string
 	 */
+	const FIELD_ID_UNSIGNED = 'id_unsigned';
+
+	/**
+	 * @var string
+	 */
 	const FIELD_TITLE = 'title';
 
 	/**
