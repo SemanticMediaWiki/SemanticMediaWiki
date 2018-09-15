@@ -726,7 +726,7 @@ return array(
 		'plainlist'  => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'ol'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'ul'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
-		'category'   => 'SMW\CategoryResultPrinter',
+		'category'   => 'SMW\Query\ResultPrinters\CategoryResultPrinter',
 		'embedded'   => 'SMW\EmbeddedResultPrinter',
 		'template'   => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'count'      => 'SMW\Query\ResultPrinters\NullResultPrinter',
