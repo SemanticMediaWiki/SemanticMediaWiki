@@ -219,6 +219,17 @@ class ExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#7
+		$provider[] = array(
+			new DIWikiPage( 'Foo/Bar', SMW_NS_PROPERTY, '', '' ),
+			'',
+			array(
+				'type' => Element::TYPE_NSRESOURCE,
+				'uri'  => "Property-3AFoo-2FBar|{$wiki}|wiki",
+				'dataitem' => array( 'type' => 9, 'item' => 'Foo/Bar#102##' )
+			)
+		);
+
 		return $provider;
 	}
 

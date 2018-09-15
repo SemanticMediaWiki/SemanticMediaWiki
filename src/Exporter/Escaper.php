@@ -41,6 +41,15 @@ class Escaper {
 	}
 
 	/**
+	 * @param string
+	 *
+	 * @return string
+	 */
+	static public function armorChars( $string ) {
+		return str_replace( array( '/' ), array( '-2F' ), $string );
+	}
+
+	/**
 	 * This function escapes symbols that might be problematic in XML in a uniform
 	 * and injective way.
 	 *
