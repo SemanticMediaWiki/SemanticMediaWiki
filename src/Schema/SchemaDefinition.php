@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Rule;
+namespace SMW\Schema;
 
 use JsonSerializable;
 
@@ -10,7 +10,7 @@ use JsonSerializable;
  *
  * @author mwjames
  */
-class RuleDefinition implements RuleDef, JsonSerializable {
+class SchemaDefinition implements Schema, JsonSerializable {
 
 	/**
 	 * @var string
@@ -25,23 +25,23 @@ class RuleDefinition implements RuleDef, JsonSerializable {
 	/**
 	 * @var string|null
 	 */
-	private $schema;
+	private $validation_schema;
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param string $name
 	 * @param array $definition
-	 * @param string|null $schema
+	 * @param string|null $validation_schema
 	 */
-	public function __construct( $name, array $definition, $schema = null ) {
+	public function __construct( $name, array $definition, $validation_schema = null ) {
 		$this->name = $name;
 		$this->definition = $definition;
-		$this->schema = $schema;
+		$this->validation_schema = $validation_schema;
 	}
 
 	/**
-	 * @see RuleDef::get
+	 * @see Schema::get
 	 * @since 3.0
 	 *
 	 * @return mixed|null
@@ -51,7 +51,7 @@ class RuleDefinition implements RuleDef, JsonSerializable {
 	}
 
 	/**
-	 * @see RuleDef::getName
+	 * @see Schema::getName
 	 * @since 3.0
 	 *
 	 * @return string
@@ -61,13 +61,13 @@ class RuleDefinition implements RuleDef, JsonSerializable {
 	}
 
 	/**
-	 * @see RuleDef::getSchema
+	 * @see Schema::getValidationSchema
 	 * @since 3.0
 	 *
 	 * @return string|null
 	 */
-	public function getSchema() {
-		return $this->schema;
+	public function getValidationSchema() {
+		return $this->validation_schema;
 	}
 
 	/**

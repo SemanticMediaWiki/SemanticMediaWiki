@@ -101,8 +101,10 @@ class ParserAfterTidy extends HookHandler {
 			return false;
 		}
 
-		if ( $title->getNamespace() === SMW_NS_RULE ) {
-			return true;
+		// Avoid an update for the SCHEMA NS to ensure errors remain present without
+		// the need the rerun the schema validator again.
+		if ( $title->getNamespace() === SMW_NS_SCHEMA ) {
+			return false;
 		}
 
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
@@ -150,7 +152,7 @@ class ParserAfterTidy extends HookHandler {
 		// Only carry out a purge where the InTextAnnotationParser have set
 		// an appropriate context reference otherwise it is assumed that the hook
 		// call is part of another non SMW related parse
-		if ( $subject->getContextReference() !== null || $subject->getNamespace() === SMW_NS_RULE ) {
+		if ( $subject->getContextReference() !== null || $subject->getNamespace() === SMW_NS_SCHEMA ) {
 			$this->checkPurgeRequest( $parserData );
 		}
 	}

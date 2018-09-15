@@ -246,6 +246,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			[ 'callBeforeDisplayNoArticleText' ],
 			[ 'callArticleFromTitle' ],
 			[ 'callTitleIsMovable' ],
+			[ 'callContentHandlerForModelID' ],
 			[ 'callEditPageForm' ],
 			[ 'callParserOptionsRegister' ],
 			[ 'callParserFirstCallInit' ],
@@ -1142,6 +1143,25 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $this->title, &$isMovable  )
+		);
+
+		return $handler;
+	}
+
+	public function callContentHandlerForModelID( $instance ) {
+
+		$handler = 'ContentHandlerForModelID';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$modelId = 'smw/schema';
+		$contentHandler = '';
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $modelId, &$contentHandler  )
 		);
 
 		return $handler;

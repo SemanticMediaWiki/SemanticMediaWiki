@@ -1,17 +1,17 @@
 {
-	"description": "Test keyword type `_keyw` with a formatter rule (`smwgCompactLinkSupport`)",
+	"description": "Test keyword type `_keyw` with a formatter schema (`smwgCompactLinkSupport`)",
 	"setup": [
 		{
-			"namespace": "SMW_NS_RULE",
-			"page": "Keyword link formatter rule",
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Keyword link formatter schema",
 			"contents": {
-				"import-from": "/../Fixtures/p-0549-keyword-formatter-rule.json"
+				"import-from": "/../Fixtures/p-0459-keyword-formatter-schema.json"
 			}
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "Has keyword",
-			"contents": "[[Has type::Keyword]] [[Formatter rule::Keyword link formatter rule]]"
+			"contents": "[[Has type::Keyword]] [[Formatter schema::Keyword link formatter schema]]"
 		},
 		{
 			"page": "Example/P0459/1",
@@ -38,18 +38,18 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Keyword link formatter rule",
-			"namespace": "SMW_NS_RULE",
+			"subject": "Keyword link formatter schema",
+			"namespace": "SMW_NS_SCHEMA",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 6,
 					"propertyKeys": [
 						"_MDAT",
-						"_RL_DEF",
-						"_RL_DESC",
-						"_RL_TAG",
-						"_RL_TYPE",
+						"_SCHEMA_DEF",
+						"_SCHEMA_DESC",
+						"_SCHEMA_TAG",
+						"_SCHEMA_TYPE",
 						"_SKEY"
 					]
 				}
@@ -65,7 +65,7 @@
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
 					"propertyKeys": [
-						"_FORMAT_RL",
+						"_FORMAT_SCHEMA",
 						"_SKEY",
 						"_MDAT",
 						"_TYPE"
@@ -108,7 +108,7 @@
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true,
-			"SMW_NS_RULE": true
+			"SMW_NS_SCHEMA": true
 		}
 	},
 	"meta": {

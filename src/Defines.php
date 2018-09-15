@@ -275,10 +275,10 @@ define( 'SMW_REMOTE_REQ_SHOW_NOTE', 4 ); // Shows a note
 /**@}*/
 
 /**@{
-  * Constants for Rule groups
+  * Constants for Schema groups
   */
-define( 'SMW_RULE_GROUP_FORMAT', 'rule.group.format' );
-define( 'SMW_RULE_GROUP_FORM_DEFINITION', 'rule.group.form.definition' );
+define( 'SMW_SCHEMA_GROUP_FORMAT', 'schema.group.format' );
+define( 'SMW_SCHEMA_GROUP_SEARCH_FORM', 'schema.group.search.form' );
 
 /**@{
   * Constants for Special:Ask submit method
@@ -291,6 +291,5 @@ define( 'SMW_SASK_SUBMIT_POST', 'post' );
 /**@{
   * Constants for content types
   */
-define( 'CONTENT_MODEL_RULE', 'rule-json' );
-define( 'CONTENT_FORMAT_RULE', 'application/json' );
+define( 'CONTENT_MODEL_SMW_SCHEMA', 'smw/schema' );
 /**@}*/

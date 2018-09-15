@@ -65,7 +65,7 @@ class NewRevisionFromEditComplete extends HookHandler {
 	public function process() {
 
 		$parserOutput = $this->editInfoProvider->fetchEditInfo()->getOutput();
-		$ruleDefinition = null;
+		$schema = null;
 
 		if ( !$parserOutput instanceof ParserOutput ) {
 			return true;
@@ -78,19 +78,23 @@ class NewRevisionFromEditComplete extends HookHandler {
 			$parserOutput
 		);
 
-		if ( $this->title->getNamespace() === SMW_NS_RULE ) {
-			$ruleFactory = $applicationFactory->singleton( 'RuleFactory' );
+		if ( $this->title->getNamespace() === SMW_NS_SCHEMA ) {
+			$schemaFactory = $applicationFactory->singleton( 'SchemaFactory' );
 
-			$ruleDefinition = $ruleFactory->newRuleDefinition(
-				$this->title->getDBKey(),
-				$this->pageInfoProvider->getNativeData()
-			);
+			try {
+				$schema = $schemaFactory->newSchema(
+					$this->title->getDBKey(),
+					$this->pageInfoProvider->getNativeData()
+				);
+			} catch( \Exception $e ) {
+				// Do nothing!
+			}
 		}
 
 		$this->addPredefinedPropertyAnnotation(
 			$applicationFactory,
 			$parserData,
-			$ruleDefinition
+			$schema
 		);
 
 		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
@@ -112,7 +116,7 @@ class NewRevisionFromEditComplete extends HookHandler {
 		return true;
 	}
 
-	private function addPredefinedPropertyAnnotation( $applicationFactory, $parserData, $ruleDefinition = null ) {
+	private function addPredefinedPropertyAnnotation( $applicationFactory, $parserData, $schema = null ) {
 
 		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
@@ -125,9 +129,9 @@ class NewRevisionFromEditComplete extends HookHandler {
 			$this->pageInfoProvider
 		);
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newRuleDefinitionPropertyAnnotator(
+		$propertyAnnotator = $propertyAnnotatorFactory->newSchemaPropertyAnnotator(
 			$propertyAnnotator,
-			$ruleDefinition
+			$schema
 		);
 
 		$propertyAnnotator->addAnnotation();

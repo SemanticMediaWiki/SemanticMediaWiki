@@ -10,11 +10,11 @@ use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
 use SMW\PropertyAnnotators\NullPropertyAnnotator;
 use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
 use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
-use SMW\PropertyAnnotators\RuleDefinitionPropertyAnnotator;
+use SMW\PropertyAnnotators\SchemaPropertyAnnotator;
 use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
 use SMW\PropertyAnnotators\TranslationPropertyAnnotator;
 use SMW\Store;
-use SMW\Rule\RuleDefinition;
+use SMW\Schema\Schema;
 use Title;
 
 /**
@@ -55,18 +55,18 @@ class PropertyAnnotatorFactory {
 	 * @since 3.0
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param RuleDefinition $ruleDefinition
+	 * @param Schema $schema
 	 *
-	 * @return RuleDefinitionPropertyAnnotator
+	 * @return SchemaPropertyAnnotator
 	 */
-	public function newRuleDefinitionPropertyAnnotator( PropertyAnnotator $propertyAnnotator, RuleDefinition $ruleDefinition = null ) {
+	public function newSchemaPropertyAnnotator( PropertyAnnotator $propertyAnnotator, Schema $schema = null ) {
 
-		$ruleDefinitionPropertyAnnotator = new RuleDefinitionPropertyAnnotator(
+		$schemaPropertyAnnotator = new SchemaPropertyAnnotator(
 			$propertyAnnotator,
-			$ruleDefinition
+			$schema
 		);
 
-		return $ruleDefinitionPropertyAnnotator;
+		return $schemaPropertyAnnotator;
 	}
 
 	/**

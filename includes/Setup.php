@@ -353,7 +353,7 @@ final class Setup {
 			'smw-patternedit' => [
 				'smwcurator'
 			],
-			'smw-ruleedit' => [
+			'smw-schemaedit' => [
 				'smwcurator'
 			],
 			'smw-pageedit' => [

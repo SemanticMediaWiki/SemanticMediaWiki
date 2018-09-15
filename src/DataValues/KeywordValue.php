@@ -46,7 +46,7 @@ class KeywordValue extends StringValue {
 		// since we use the o_hash field to store the normalized content and
 		// as match field, ensure to have enough space to actually store
 		// a mb keyword
-		$maxLength = mb_detect_encoding( $value, 'ASCII', true ) ? 150: 85;
+		$maxLength = mb_detect_encoding( $value, 'ASCII', true ) ? 150 : 85;
 
 		if ( mb_strlen( $value, 'utf8' ) > $maxLength ) {
 			$this->addErrorMsg( [ 'smw-datavalue-keyword-maximum-length', $maxLength ] );
@@ -190,10 +190,10 @@ class KeywordValue extends StringValue {
 
 		$propertySpecificationLookup = $this->dataValueServiceFactory->getPropertySpecificationLookup();
 
-		// Formatter Rule?
+		// Formatter schema?
 		$dataItems = $propertySpecificationLookup->getSpecification(
 			$this->getProperty(),
-			new DIProperty( '_FORMAT_RL' )
+			new DIProperty( '_FORMAT_SCHEMA' )
 		);
 
 		if ( $dataItems === [] ) {
@@ -204,7 +204,7 @@ class KeywordValue extends StringValue {
 
 		$dataItems = $propertySpecificationLookup->getSpecification(
 			$dataItem,
-			new DIProperty( '_RL_DEF' )
+			new DIProperty( '_SCHEMA_DEF' )
 		);
 
 		if ( $dataItems === [] ) {
@@ -239,7 +239,7 @@ class KeywordValue extends StringValue {
 		);
 
 		// Schema enforced
-		if ( $data['type'] !== 'LINK_FORMAT_RULE' ) {
+		if ( $data['type'] !== 'LINK_FORMAT_SCHEMA' ) {
 			return '';
 		}
 
@@ -250,12 +250,17 @@ class KeywordValue extends StringValue {
 		$link_to = $data['rule']['link_to'];
 		$label = $this->getProperty()->getLabel();
 
-		if ( $link_to === 'Special:Ask' ) {
+		if ( $link_to === 'SPECIAL_ASK' ) {
 			$infolink = Infolink::newInternalLink( $this->m_caption, ':Special:Ask', false, [] );
 			$infolink->setParameter( "[[$label::$value]]", false );
 			$infolink->setCompactLink( $this->getOption( KeywordValue::OPT_COMPACT_INFOLINKS, false ) );
 
 			foreach ( $data['rule']['parameters'] as $key => $value ) {
+
+				if ( $key === 'title' || $key === 'msg' ) {
+					$key = "b$key";
+				}
+
 				if ( $key === 'printouts' ) {
 					foreach ( $value as $v ) {
 						$infolink->setParameter( "?$v" );
@@ -265,7 +270,7 @@ class KeywordValue extends StringValue {
 				}
 			}
 
-		} elseif ( $link_to === 'Special:SearchByProperty' ) {
+		} elseif ( $link_to === 'SPECIAL_SEARCH_BY_PROPERTY' ) {
 			$infolink = Infolink::newInternalLink( $this->m_caption, ':Special:SearchByProperty', false, [] );
 			$infolink->setCompactLink( $this->getOption( KeywordValue::OPT_COMPACT_INFOLINKS, false ) );
 			$infolink->setParameter( ":$label" );

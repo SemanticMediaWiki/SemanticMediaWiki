@@ -30,7 +30,7 @@ class SearchProfileForm {
 	/**
 	 * Page that hosts the form/forms definition
 	 */
-	const RULE_TYPE = 'SEARCH_FORM_DEFINITION_RULE';
+	const SCHEMA_TYPE = 'SEARCH_FORM_SCHEMA';
 
 	/**
 	 * @var Store
@@ -396,7 +396,7 @@ class SearchProfileForm {
 		$formLink = Html::element(
 			'a',
 			[
-				'href' => Title::newFromText( 'Special:SearchByProperty/Rule type/' . self::RULE_TYPE )->getFullUrl()
+				'href' => Title::newFromText( 'Special:SearchByProperty/Schema type/' . self::SCHEMA_TYPE )->getFullUrl()
 			],
 			$this->msg( 'smw-search-profile-extended-help-find-forms' )
 		);

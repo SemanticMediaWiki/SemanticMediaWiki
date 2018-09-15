@@ -1998,33 +1998,36 @@ return array(
 	##
 
 	##
-	# Rule types
-	#
-	# The mapping defines the relation between a specific type, group and
-	# a possible interpreter which validates the expected rule syntax.
-	#
-	# Each type will have its own interpretation about rule specific syntax
-	# elements and how to define and enact requirements.
-	#
-	# @since 3.0
-	##
-	'smwgRuleTypes' => [
-		'LINK_FORMAT_RULE' => [
-			'schema'  => __DIR__ . '/data/schema/rule/link-format-rule-schema.v1.json',
-			'group'   => SMW_RULE_GROUP_FORMAT,
-		],
-		'SEARCH_FORM_DEFINITION_RULE' => [
-			'schema'  => __DIR__ . '/data/schema/rule/search-form-definition-rule-schema.v1.json',
-			'group'   => SMW_RULE_GROUP_FORM_DEFINITION,
-		]
-	],
-	##
-
-	##
 	# THE FOLLOWING SETTINGS AND SUPPORT FUNCTIONS ARE EXPERIMENTAL!
 	#
 	# Please make you read the Readme.md (see the Elastic folder) file first
 	# before enabling the ElasticStore and its settings!
+	##
+
+	##
+	# Schema types
+	#
+	# The mapping defines the relation between a specific type, group and
+	# a possible interpreter which validates the expected syntax.
+	#
+	# Each type will have its own interpretation about elements and how to
+	# define and enact requirements.
+	#
+	# @since 3.0
+	##
+	'smwgSchemaTypes' => [
+		'LINK_FORMAT_SCHEMA' => [
+			'validation_schema' => __DIR__ . '/data/schema/link-format-schema.v1.json',
+			'group' => SMW_SCHEMA_GROUP_FORMAT,
+			'type_description' => 'smw-schema-description-link-format-schema',
+			// '__factory' => [ 'SMW\Schema\SchemaFactory', 'newTest' ]
+		],
+		'SEARCH_FORM_SCHEMA' => [
+			'validation_schema' => __DIR__ . '/data/schema/search-form-schema.v1.json',
+			'group' => SMW_SCHEMA_GROUP_SEARCH_FORM,
+			'type_description' => 'smw-schema-description-search-form-schema'
+		]
+	],
 	##
 
 	##

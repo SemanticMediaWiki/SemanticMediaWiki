@@ -98,6 +98,8 @@ class NamespaceManager {
 			SMW_NS_PROPERTY_TALK => 'Property_talk',
 			SMW_NS_CONCEPT       => 'Concept',
 			SMW_NS_CONCEPT_TALK  => 'Concept_talk',
+			SMW_NS_SCHEMA        => 'smw/schema',
+			SMW_NS_SCHEMA_TALK   => 'smw/schema_talk',
 			SMW_NS_RULE          => 'Rule',
 			SMW_NS_RULE_TALK     => 'Rule_talk'
 		);
@@ -123,17 +125,20 @@ class NamespaceManager {
 		$namespaceIndex = array(
 			'SMW_NS_PROPERTY'      => $offset + 2,
 			'SMW_NS_PROPERTY_TALK' => $offset + 3,
-			'SF_NS_FORM'           => $offset + 6,
-			'SF_NS_FORM_TALK'      => $offset + 7,
+			//'SF_NS_FORM'           => $offset + 6,
+			//'SF_NS_FORM_TALK'      => $offset + 7,
 			'SMW_NS_CONCEPT'       => $offset + 8,
 			'SMW_NS_CONCEPT_TALK'  => $offset + 9,
 
 			// #3019 notes "Conflicts with the DPLforum extension ..."
-			//'SMW_NS_RULE'          => $offset + 10,
-			//'SMW_NS_RULE_TALK'     => $offset + 11,
+			//'SMW_NS_SCHEMA'      => $offset + 10,
+			//'SMW_NS_SCHEMA_TALK' => $offset + 11,
 
-			'SMW_NS_RULE'          => $offset + 12,
-			'SMW_NS_RULE_TALK'     => $offset + 13,
+			'SMW_NS_SCHEMA'        => $offset + 12,
+			'SMW_NS_SCHEMA_TALK'   => $offset + 13,
+
+			'SMW_NS_RULE'          => $offset + 14,
+			'SMW_NS_RULE_TALK'     => $offset + 15,
 		);
 
 		return $namespaceIndex;
@@ -200,8 +205,8 @@ class NamespaceManager {
 			SMW_NS_PROPERTY_TALK  => false,
 			SMW_NS_CONCEPT => true,
 			SMW_NS_CONCEPT_TALK => false,
-			SMW_NS_RULE => true,
-			SMW_NS_RULE_TALK => false,
+			SMW_NS_SCHEMA => true,
+			SMW_NS_SCHEMA_TALK => false,
 		);
 
 		// Combine default values with values specified in other places
@@ -211,7 +216,7 @@ class NamespaceManager {
 			$vars['smwgNamespacesWithSemanticLinks']
 		);
 
-		$vars['wgNamespaceContentModels'][SMW_NS_RULE] = CONTENT_MODEL_RULE;
+		$vars['wgNamespaceContentModels'][SMW_NS_SCHEMA] = CONTENT_MODEL_SMW_SCHEMA;
 	}
 
 	private function addExtraNamespaceSettings( &$vars ) {

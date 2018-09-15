@@ -455,6 +455,21 @@ class HookListener {
 	}
 
 	/**
+	 * Hook: Occurs when an articleheader is shown
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ContentHandlerForModelID
+	 */
+	public function onContentHandlerForModelID( $modelId, &$contentHandler ) {
+
+		// 'rule-json' being a legacy model, remove with 3.1
+		if ( $modelId === 'rule-json' || $modelId === 'smw/schema' ) {
+			$contentHandler = new \SMW\Schema\Content\ContentHandler();
+		}
+
+		return true;
+	}
+
+	/**
 	 * Hook: Add extra statistic at the end of Special:Statistics
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra

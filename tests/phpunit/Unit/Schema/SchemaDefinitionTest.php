@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Rule;
+namespace SMW\Tests\Schema;
 
-use SMW\Rule\RuleDefinition;
+use SMW\Schema\SchemaDefinition;
 
 /**
- * @covers \SMW\Rule\RuleDefinition
+ * @covers \SMW\Schema\SchemaDefinition
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,19 +13,19 @@ use SMW\Rule\RuleDefinition;
  *
  * @author mwjames
  */
-class RuleDefinitionTest extends \PHPUnit_Framework_TestCase {
+class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$instance = new RuleDefinition( 'foo', [] );
+		$instance = new SchemaDefinition( 'foo', [] );
 
 		$this->assertInstanceof(
-			RuleDefinition::class,
+			SchemaDefinition::class,
 			$instance
 		);
 
 		$this->assertInstanceof(
-			'\SMW\Rule\RuleDef',
+			'\SMW\Schema\Schema',
 			$instance
 		);
 
@@ -37,7 +37,7 @@ class RuleDefinitionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetName() {
 
-		$instance = new RuleDefinition(
+		$instance = new SchemaDefinition(
 			'foo',
 			[]
 		);
@@ -48,9 +48,9 @@ class RuleDefinitionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetSchema() {
+	public function testGetSchemaLink() {
 
-		$instance = new RuleDefinition(
+		$instance = new SchemaDefinition(
 			'foo',
 			[],
 			'BAR'
@@ -58,7 +58,7 @@ class RuleDefinitionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'BAR',
-			$instance->getSchema()
+			$instance->getValidationSchema()
 		);
 	}
 
@@ -67,7 +67,7 @@ class RuleDefinitionTest extends \PHPUnit_Framework_TestCase {
 		$def = [
 			'type' => 'foo_bar',
 			'description' => 'bar foo bar',
-			'rule' => [
+			'Schema' => [
 				'if' => [
 					'doSomething',
 					'and' => [
@@ -79,24 +79,24 @@ class RuleDefinitionTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		$instance = new RuleDefinition(
+		$instance = new SchemaDefinition(
 			'foo',
 			$def
 		);
 
 		$this->assertEquals(
 			'foo_bar',
-			$instance->get( RuleDefinition::RULE_TYPE )
+			$instance->get( SchemaDefinition::SCHEMA_TYPE )
 		);
 
 		$this->assertEquals(
 			[ 'doSomething', 'and' => [ 'doSomethingElse' ] ],
-			$instance->get( 'rule.if' )
+			$instance->get( 'Schema.if' )
 		);
 
 		$this->assertEquals(
 			[ 'doSomethingElse' ],
-			$instance->get( 'rule.if.and' )
+			$instance->get( 'Schema.if.and' )
 		);
 	}
 
@@ -105,7 +105,7 @@ class RuleDefinitionTest extends \PHPUnit_Framework_TestCase {
 		$def = [
 			'type' => 'foo_bar',
 			'description' => 'bar foo bar',
-			'rule' => [
+			'Schema' => [
 				'if' => [
 					'doSomething',
 					'and' => [
@@ -117,7 +117,7 @@ class RuleDefinitionTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		$instance = new RuleDefinition(
+		$instance = new SchemaDefinition(
 			'foo',
 			$def
 		);

@@ -118,7 +118,13 @@ class PageInfoProvider implements PageInfo {
 			return '';
 		}
 
-		return $this->wikiPage->getContent()->getNativeData();
+		$content = $this->wikiPage->getContent();
+
+		if ( $content instanceof \SMW\Schema\Content\Content ) {
+			return $content->toJson();
+		}
+
+		return $content->getNativeData();
 	}
 
 	/**

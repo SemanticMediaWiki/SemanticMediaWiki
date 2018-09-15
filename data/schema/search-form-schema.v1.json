@@ -8,10 +8,10 @@
       "title": "The Type Schema",
       "default": "",
       "examples": [
-        "SEARCH_FORM_DEFINITION_RULE"
+        "SEARCH_FORM_SCHEMA"
       ],
       "enum": [
-        "SEARCH_FORM_DEFINITION_RULE"
+        "SEARCH_FORM_SCHEMA"
       ]
     },
     "forms": {

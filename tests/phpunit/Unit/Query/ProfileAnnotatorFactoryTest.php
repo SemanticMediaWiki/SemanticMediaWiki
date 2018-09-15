@@ -195,4 +195,35 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testConstructProfileAnnotators_SchemaLink() {
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getContextPage' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$query->expects( $this->once() )
+			->method( 'getDescription' )
+			->will( $this->returnValue( $description ) );
+
+		$query->expects( $this->at( 7 ) )
+			->method( 'getOption' )
+			->with( $this->equalTo( 'schema_link' ) )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$instance = new ProfileAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator',
+			$instance->newProfileAnnotator( $query, 'SomeFormat' )
+		);
+	}
+
 }

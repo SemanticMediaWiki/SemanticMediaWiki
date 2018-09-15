@@ -71,11 +71,6 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 			'SMW\Page\ConceptPage'
 		);
 
-		$provider[] = array(
-			SMW_NS_RULE,
-			'SMW\Page\RulePage'
-		);
-
 		return $provider;
 	}
 

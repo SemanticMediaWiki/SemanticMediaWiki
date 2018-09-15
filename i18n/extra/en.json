@@ -9,16 +9,16 @@
             "SMW_NS_PROPERTY_TALK": "Property_talk",
             "SMW_NS_CONCEPT": "Concept",
             "SMW_NS_CONCEPT_TALK": "Concept_talk",
-            "SMW_NS_RULE": "Rule",
-            "SMW_NS_RULE_TALK": "Rule_talk"
+            "SMW_NS_SCHEMA": "smw/schema",
+            "SMW_NS_SCHEMA_TALK": "smw/schema_talk"
         },
         "aliases": {
             "Property": "SMW_NS_PROPERTY",
             "Property_talk": "SMW_NS_PROPERTY_TALK",
             "Concept": "SMW_NS_CONCEPT",
             "Concept_talk": "SMW_NS_CONCEPT_TALK",
-            "Rule": "SMW_NS_RULE",
-            "Rule_talk": "SMW_NS_RULE_TALK"
+            "smw/schema": "SMW_NS_SCHEMA",
+            "smw/schema_talk": "SMW_NS_SCHEMA_TALK"
         }
     },
     "datatype": {
@@ -117,11 +117,12 @@
             "_EDIP": "Is edit protected",
             "_CHGPRO": "Change propagation",
             "_PPGR": "Is property group",
-            "_RL_DESC": "Rule description",
-            "_RL_TAG": "Rule tag",
-            "_RL_TYPE": "Rule type",
-            "_RL_DEF": "Rule definition",
-            "_FORMAT_RL": "Formatter rule",
+            "_SCHEMA_DESC": "Schema description",
+            "_SCHEMA_TAG": "Schema tag",
+            "_SCHEMA_TYPE": "Schema type",
+            "_SCHEMA_DEF": "Schema definition",
+            "_SCHEMA_LINK": "Schema link",
+            "_FORMAT_SCHEMA": "Formatter schema",
             "_FILE_ATTCH": "File attachment",
             "_CONT_TYPE": "Content type",
             "_CONT_AUTHOR": "Content author",
@@ -185,11 +186,12 @@
             "IsEditProtected": "_EDIP",
             "Change propagation": "_CHGPRO",
             "Property group": "_PPGR",
-            "Rule description": "_RL_DESC",
-            "Rule tag": "_RL_TAG",
-            "Rule type": "_RL_TYPE",
-            "Rule definition": "_RL_DEF",
-            "Formatter rule": "_FORMAT_RL",
+            "Schema description": "_SCHEMA_DESC",
+            "Schema tag": "_SCHEMA_TAG",
+            "Schema type": "_SCHEMA_TYPE",
+            "Schema definition": "_SCHEMA_DEF",
+            "Schema link": "_SCHEMA_LINK",
+            "Formatter schema": "_FORMAT_SCHEMA",
             "File attachment": "_FILE_ATTCH",
             "Has file attachment": "_FILE_ATTCH",
             "Has translation":"_TRANS"

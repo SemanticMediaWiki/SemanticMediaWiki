@@ -87,8 +87,21 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			6,
+			8,
 			$result
+		);
+	}
+
+	/**
+	 * @dataProvider canonicalNameListProvider
+	 */
+	public function testGetCanonicalNameList( $key, $expected ) {
+
+		$result = NamespaceManager::getCanonicalNames();
+
+		$this->assertEquals(
+			$expected,
+			$result[$key]
 		);
 	}
 
@@ -102,7 +115,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			6,
+			8,
 			$result
 		);
 	}
@@ -150,7 +163,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_RULE]
+			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_SCHEMA]
 		);
 	}
 
@@ -249,8 +262,8 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->init( $vars );
 
 		$this->assertEquals(
-			CONTENT_MODEL_RULE,
-			$vars['wgNamespaceContentModels'][SMW_NS_RULE]
+			CONTENT_MODEL_SMW_SCHEMA,
+			$vars['wgNamespaceContentModels'][SMW_NS_SCHEMA]
 		);
 	}
 
@@ -274,6 +287,29 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'Property_talk',
 			$namespaces[SMW_NS_PROPERTY_TALK]
 		);
+	}
+
+	public function canonicalNameListProvider() {
+
+		yield [
+			SMW_NS_PROPERTY,
+			'Property'
+		];
+
+		yield [
+			SMW_NS_CONCEPT,
+			'Concept'
+		];
+
+		yield [
+			SMW_NS_SCHEMA,
+			'smw/schema'
+		];
+
+		yield [
+			SMW_NS_RULE,
+			'Rule'
+		];
 	}
 
 }
