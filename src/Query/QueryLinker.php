@@ -3,6 +3,7 @@
 namespace SMW\Query;
 
 use SMW\Message;
+use SMW\DIProperty;
 use SMWInfolink as Infolink;
 use SMWQuery as Query;
 
@@ -78,14 +79,39 @@ class QueryLinker {
 			$params['limit'] = $query->getLimit();
 		}
 
-		if ( count( $query->sortkeys ) > 0 ) {
-			$order = implode( ',', $query->sortkeys );
-			$sort = implode( ',', array_keys( $query->sortkeys ) );
+		$sortKeys = $query->getSortKeys();
+		$count = count( $sortKeys );
 
-			if ( $sort !== '' || $order != 'ASC' ) {
-				$params['order'] = $order;
-				$params['sort'] = $sort;
+		if ( $count == 0 ) {
+			return $params;
+		}
+
+		$order = [];
+		$sort = [];
+
+		foreach ( $sortKeys as $key => $order_by ) {
+
+			$order_by = strtolower( $order_by );
+
+			// Default mode, skip
+			if ( $count == 1 && $key === '' && $order_by === 'asc' ) {
+				continue;
 			}
+
+			// Avoid predefined properties to appear as key as in _MDAT
+			if ( $key !== '' && $key{0} === '_' ) {
+				$key = DIProperty::newFromUserLabel( $key )->getLabel();
+			} else {
+				$key = str_replace( '_', ' ', $key );
+			}
+
+			$order[] = $order_by;
+			$sort[] = $key;
+		}
+
+		if ( $sort !== [] ) {
+			$params['order'] = implode( ',', $order );
+			$params['sort'] = implode( ',', $sort );
 		}
 
 		return $params;
