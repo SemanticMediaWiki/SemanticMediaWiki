@@ -48,6 +48,11 @@ class ListBuilder {
 	private $checkProperty = true;
 
 	/**
+	 * @var integer
+	 */
+	private $itemCount = 0;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Store $store
@@ -104,6 +109,15 @@ class ListBuilder {
 	/**
 	 * @since 3.0
 	 *
+	 * @return integer
+	 */
+	public function getItemCount() {
+		return $this->itemCount;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param DIProperty $property
 	 * @param DataItem $dataItem
 	 * @param RequestOptions $requestOptions
@@ -132,10 +146,10 @@ class ListBuilder {
 		}
 
 		$result = '';
-		$resultCount = is_array( $subjectList ) ? count( $subjectList ) : 0;
+		$this->itemCount = is_array( $subjectList ) ? count( $subjectList ) : 0;
 
 		$callback = null;
-		$message = wfMessage( 'smw-propertylist-count', $resultCount )->text();
+		$message = wfMessage( 'smw-propertylist-count', $this->itemCount )->text();
 
 		if ( $more ) {
 			$callback = function() use ( $property, $dataItem ) {
@@ -151,20 +165,20 @@ class ListBuilder {
 				);
 			};
 
-			$message = wfMessage( 'smw-propertylist-count-more-available', $resultCount )->text();
+			$message = wfMessage( 'smw-propertylist-count-more-available', $this->itemCount )->text();
 		}
 
-		if ( $resultCount > 0 ) {
+		if ( $this->itemCount > 0 ) {
 			$titleText = htmlspecialchars( str_replace( '_', ' ', $dataItem->getDBKey() ) );
 			$result .= "<div id=\"{$this->listHeader}\">" . "\n<p>";
 
 			$result .= $message . "</p>";
 			$property = $this->checkProperty ? $property : null;
 
-			if ( $resultCount < 6 ) {
-				$result .= PageLister::getShortList( 0, $resultCount, $subjectList, $property, $callback );
+			if ( $this->itemCount < 6 ) {
+				$result .= PageLister::getShortList( 0, $this->itemCount, $subjectList, $property, $callback );
 			} else {
-				$result .= PageLister::getColumnList( 0, $resultCount, $subjectList, $property, $callback );
+				$result .= PageLister::getColumnList( 0, $this->itemCount, $subjectList, $property, $callback );
 			}
 
 			$result .= "\n</div>";

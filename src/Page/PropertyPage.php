@@ -112,61 +112,6 @@ class PropertyPage extends Page {
 	}
 
 	/**
-	 * @see Page::getTopIndicators
-	 *
-	 * @since 3.0
-	 *
-	 * @return string
-	 */
-	protected function getTopIndicators() {
-
-		if ( !$this->store->getRedirectTarget( $this->property )->equals( $this->property ) ) {
-			return '';
-		}
-
-		// Label that corresponds to the display and sort characteristics
-		$searchLabel = $this->property->isUserDefined() ? $this->propertyValue->getSearchLabel() : $this->property->getCanonicalLabel();
-		$usageCountHtml = '';
-
-		$requestOptions = new RequestOptions();
-		$requestOptions->setLimit( 1 );
-		$requestOptions->addStringCondition( $searchLabel, StringCondition::COND_EQ );
-
-		$cachedLookupList = $this->store->getPropertiesSpecial( $requestOptions );
-		$usageList = $cachedLookupList->fetchList();
-
-		if ( $usageList && $usageList !== array() ) {
-
-			$usage = end( $usageList );
-			$usageCount = $usage[1];
-			$date = $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() );
-
-			$countMsg = Message::get( array( 'smw-property-indicator-last-count-update', $date ) );
-			$indicatorClass = ( $usageCount < 25000 ? ( $usageCount > 5000 ? ' moderate' : '' ) : ' high' );
-
-			$usageCountHtml = Html::rawElement(
-				'div', array(
-					'title' => $countMsg,
-					'class' => 'smw-page-indicator usage-count' . $indicatorClass ),
-				$usageCount
-			);
-		}
-
-		$type = Html::rawElement(
-				'div',
-				array(
-					'class' => 'smw-page-indicator property-type',
-					'title' => Message::get( array( 'smw-property-indicator-type-info', $this->property->isUserDefined() ), Message::PARSE )
-			), ( $this->property->isUserDefined() ? 'U' : 'S' )
-		);
-
-		return array(
-			'smw-prop-count' => $usageCountHtml,
-			'smw-prop-type' => $type
-		);
-	}
-
-	/**
 	 * @see Page::getRedirectTargetURL
 	 *
 	 * @since 3.0
@@ -244,28 +189,28 @@ class PropertyPage extends Page {
 		$html = $this->makeValueList( $languageCode );
 		$isFirst = $html === '';
 
-		$htmlTabs->tab( 'smw-property-value', $this->msg( 'smw-property-tab-usage' ), [ 'hide' => $html === '' ] );
+		$htmlTabs->tab( 'smw-property-value', $this->msg( 'smw-property-tab-usage' ) . $this->getUsageCount(), [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-value', $html );
 
 		// Redirects
-		$html = $this->makeList( 'redirect', '_REDI', true );
+		list( $html, $itemCount ) = $this->makeList( 'redirect', '_REDI', true );
 		$isFirst = $isFirst && $html === '';
 
-		$htmlTabs->tab( 'smw-property-redi', $this->msg( 'smw-property-tab-redirects' ), [ 'hide' => $html === '' ] );
+		$htmlTabs->tab( 'smw-property-redi', $this->msg( 'smw-property-tab-redirects' ) . $itemCount, [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-redi', $html );
 
 		// Subproperties
-		$html = $this->makeList( 'subproperty', '_SUBP', true );
+		list( $html, $itemCount ) = $this->makeList( 'subproperty', '_SUBP', true );
 		$isFirst = $isFirst && $html === '';
 
-		$htmlTabs->tab( 'smw-property-subp', $this->msg( 'smw-property-tab-subproperties' ),  [ 'hide' => $html === '' ] );
+		$htmlTabs->tab( 'smw-property-subp', $this->msg( 'smw-property-tab-subproperties' ) . $itemCount,  [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-subp', $html );
 
 		// Improperty values
-		$html = $this->makeList( 'error', '_ERRP', false );
+		list( $html, $itemCount ) = $this->makeList( 'error', '_ERRP', false );
 		$isFirst = $isFirst && $html === '';
 
-		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ), [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
+		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ) . $itemCount, [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
 		$htmlTabs->content( 'smw-property-errp', $html );
 
 		if ( isset( $matches[2] ) && $matches[2] !== [] ) {
@@ -312,7 +257,7 @@ class PropertyPage extends Page {
 
 		// Ignore the list when a filter is present
 		if ( $this->getContext()->getRequest()->getVal( 'filter', '' ) !== '' ) {
-			return '';
+			return [ '', '' ];
 		}
 
 		$propertyListLimit = $this->getOption( 'smwgPropertyListLimit' );
@@ -339,11 +284,21 @@ class PropertyPage extends Page {
 			$checkProperty
 		);
 
-		return $this->listBuilder->createHtml(
+		$html = $this->listBuilder->createHtml(
 			new DIProperty( $propertyKey ),
 			$this->getDataItem(),
 			$requestOptions
 		);
+
+		$itemCount = Html::rawElement(
+			'span',
+			[
+				'class' => 'item-count'
+			],
+			$this->listBuilder->getItemCount()
+		);
+
+		return [ $html, $itemCount ];
 	}
 
 	private function makeValueList( $languageCode ) {
@@ -381,6 +336,43 @@ class PropertyPage extends Page {
 
 	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
 		return Message::get( $params, $type, $lang );
+	}
+
+	private function getUsageCount() {
+
+		// Label that corresponds to the display and sort characteristics
+		if ( $this->property->isUserDefined() ) {
+			$searchLabel = $this->propertyValue->getSearchLabel();
+		} else {
+			$searchLabel = $this->property->getCanonicalLabel();
+		}
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setLimit( 1 );
+		$requestOptions->addStringCondition( $searchLabel, StringCondition::COND_EQ );
+
+		$cachedLookupList = $this->store->getPropertiesSpecial( $requestOptions );
+		$usageList = $cachedLookupList->fetchList();
+
+		if ( !$usageList || $usageList === [] ) {
+			return '';
+		}
+
+		$usage = end( $usageList );
+		$usageCount = $usage[1];
+		$date = $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() );
+
+		$countMsg = Message::get( array( 'smw-property-indicator-last-count-update', $date ) );
+		$indicatorClass = ( $usageCount < 25000 ? ( $usageCount > 5000 ? ' moderate' : '' ) : ' high' );
+
+		return Html::rawElement(
+			'span',
+			[
+				'title' => $countMsg,
+				'class' => 'usage-count'  . $indicatorClass
+			],
+			$usageCount
+		);
 	}
 
 }
