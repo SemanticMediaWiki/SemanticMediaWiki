@@ -22,6 +22,7 @@ class_alias( \SMW\DataValues\TypesValue::class, 'SMWTypesValue' );
 class_alias( \SMW\DataValues\PropertyValue::class, 'SMWPropertyValue' );
 class_alias( \SMW\DataValues\StringValue::class, 'SMWStringValue' );
 class_alias( \SMW\MediaWiki\Connection\Database::class, '\SMW\MediaWiki\Database' );
+class_alias( \SMWDIBlob::class, 'SMWDIString' );
 
 // 1.9.
 class_alias( \SMW\Store::class, 'SMWStore' );
