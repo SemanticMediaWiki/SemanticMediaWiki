@@ -105,9 +105,25 @@ class SMWSQLStore3Writers {
 
 		foreach ( $idList as $id ) {
 			$this->doDelete( $id, $subject, $subobjectListFinder, $extensionList );
+			$this->doDataUpdate( $emptySemanticData );
+
+			if ( $this->store->service( 'PropertyTableIdReferenceFinder' )->hasResidualReferenceForId( $id ) === false ) {
+				// Mark subject/subobjects with a special IW, the final removal is being
+				// triggered by the `EntityRebuildDispatcher`
+				$this->store->getObjectIds()->updateInterwikiField(
+					$id,
+					$subject,
+					SMW_SQL3_SMWDELETEIW
+				);
+			} else {
+				// Convert the subject into a simple object instance
+				$this->store->getObjectIds()->setPropertyTableHashes(
+					$id,
+					null
+				);
+			}
 		}
 
-		$this->doDataUpdate( $emptySemanticData );
 		$extensionList = array_keys( $extensionList );
 
 		$this->store->extensionData['delete.list'] = $extensionList;
@@ -139,14 +155,6 @@ class SMWSQLStore3Writers {
 		}
 
 		$subject->setId( $id );
-
-		// Mark subject/subobjects with a special IW, the final removal is being
-		// triggered by the `EntityRebuildDispatcher`
-		$this->store->getObjectIds()->updateInterwikiField(
-			$id,
-			$subject,
-			SMW_SQL3_SMWDELETEIW
-		);
 
 		foreach( $subobjectListFinder->find( $subject ) as $subobject ) {
 			$extensionList[$subobject->getId()] = true;

@@ -1199,18 +1199,31 @@ class SMWSql3SmwIds {
 	 * @param integer $sid ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
 	 */
-	public function setPropertyTableHashes( $sid, array $hash ) {
+	public function setPropertyTableHashes( $sid, $hash = null ) {
 
-		$db = $this->store->getConnection();
+		$connection = $this->store->getConnection( 'mw.db' );
+		$update = [];
 
-		$db->update(
+		if ( $hash === null ) {
+			$update = [ 'smw_proptable_hash' => $hash, 'smw_rev' => null ];
+		} elseif ( is_array( $hash ) ) {
+			$update = [ 'smw_proptable_hash' => serialize( $hash ) ];
+		} else {
+			throw new RuntimeException( "Expected a null or an array as value!");
+		}
+
+		$connection->update(
 			self::TABLE_NAME,
-			array( 'smw_proptable_hash' => serialize( $hash ) ),
+			$update,
 			array( 'smw_id' => $sid ),
 			__METHOD__
 		);
 
 		$this->setPropertyTableHashesCache( $sid, $hash );
+
+		if ( $hash === null ) {
+			$this->idCacheManager->deleteCacheById( $sid );
+		}
 	}
 
 	/**

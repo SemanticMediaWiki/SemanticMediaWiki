@@ -129,4 +129,22 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
+	public function testDeleteCacheById() {
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache->expects( $this->once() )
+			->method( 'delete' )
+			->with( $this->equalTo( IdCacheManager::computeSha1( [ 'foo', 0, '', '' ] ) ) );
+
+		$this->caches['entity.id'] = $cache;
+
+		$instance = new IdCacheManager( $this->caches );
+		$instance->setCache( 'foo', 0, '', '', '42', 'bar' );
+
+		$instance->deleteCacheById( 42 );
+	}
+
 }
