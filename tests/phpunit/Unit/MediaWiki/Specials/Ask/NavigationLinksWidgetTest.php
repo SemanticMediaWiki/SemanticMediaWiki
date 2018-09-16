@@ -111,12 +111,12 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertContains(
-			'<div class="smw-ask-toplinks"><span class="float-left"><a href="#options">',
+			'<div id="ask-toplinks" class="smw-ask-toplinks"><span class="float-left"><a href="#options">',
 			NavigationLinksWidget::topLinks( $title, [ 'options' ] )
 		);
 
 		$this->assertContains(
-			'<div class="smw-ask-toplinks"><span class="float-left"></span>&#160;<span class="float-right">',
+			'<div id="ask-toplinks" class="smw-ask-toplinks"><span class="float-left"></span>&#160;<span class="float-right">',
 			NavigationLinksWidget::topLinks( $title, [ 'empty' ] )
 		);
 	}
@@ -132,30 +132,15 @@ class NavigationLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testWrap() {
-
-		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
-
-		$stringValidator->assertThatStringContains(
-			[
-				'<div id="ask-navinfo">',
-				'<div class="smw-ask-cond-info">info</div>',
-				'<div class="smw-horizontalrule"',
-				'<div class="smw-ask-actions-nav">foo&#160;&#160;&#160;</div></div>'
-			],
-			NavigationLinksWidget::wrap( 'foo', 'info' )
-		);
-	}
-
 	public function testBasicLinks() {
 
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$stringValidator->assertThatStringContains(
 			[
-				'<div class="smw-ask-actions-compact-nav">foo</div>',
+				'<div class="smw-ask-actions-nav">foo</div>',
 			],
-			NavigationLinksWidget::basicLinks( 'foo', 'info' )
+			NavigationLinksWidget::basicLinks( 'foo' )
 		);
 	}
 

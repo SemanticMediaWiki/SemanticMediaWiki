@@ -130,6 +130,7 @@ class NavigationLinksWidget {
 		$html = Html::rawElement(
 			'div',
 			[
+				'id' => 'ask-toplinks',
 				'class' => 'smw-ask-toplinks' . ( !$isEditMode ? ' hide-mode' : '' )
 			],
 			$left . '&#160;' . $right
@@ -191,59 +192,11 @@ class NavigationLinksWidget {
 	 * @param string $navigation
 	 * @param string $infoText
 	 * @param Infolink|null $infoLink
-	 *
-	 * @return string
-	 */
-	public static function wrap( $navigation = '', $infoText = '', Infolink $infoLink = null ) {
-
-		if ( $navigation === '' ) {
-			return '';
-		}
-
-		$downloadLink = DownloadLinksWidget::downloadLinks(
-			$infoLink
-		);
-
-		$nav = Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-ask-cond-info'
-			],
-			$infoText
-		) . Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-horizontalrule'
-			],
-			''
-		) . Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-ask-actions-nav'
-			],
-			$navigation . '&#160;&#160;&#160;' . $downloadLink
-		);
-
-		return Html::rawElement(
-			'div',
-			[
-				'id' => 'ask-navinfo'
-			],
-			$nav
-		);
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $navigation
-	 * @param string $infoText
-	 * @param Infolink|null $infoLink
 	 * @param string $editHref
 	 *
 	 * @return string
 	 */
-	public static function basicLinks( $navigation = '', $infoText = '', Infolink $infoLink = null, $editHref = '' ) {
+	public static function basicLinks( $navigation = '', Infolink $infoLink = null ) {
 
 		if ( $navigation === '' ) {
 			return '';
@@ -256,7 +209,7 @@ class NavigationLinksWidget {
 		return Html::rawElement(
 			'div',
 			[
-				'class' => 'smw-ask-actions-compact-nav'
+				'class' => 'smw-ask-actions-nav'
 			],
 			$navigation . $downloadLink
 		);
