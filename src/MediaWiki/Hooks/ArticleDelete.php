@@ -118,7 +118,7 @@ class ArticleDelete extends HookHandler {
 		);
 
 		$jobQueue = $applicationFactory->getJobQueue();
-		$jobQueue->runFromQueue( [ 'SMW\ParserCachePurgeJob' => 2 ] );
+		$jobQueue->runFromQueue( [ 'smw.parserCachePurge' => 2 ] );
 	}
 
 }

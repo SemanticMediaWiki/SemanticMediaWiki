@@ -27,7 +27,7 @@ class ChangePropagationClassUpdateJob extends ChangePropagationUpdateJob {
 			'origin' => 'ChangePropagationClassUpdateJob'
 		];
 
-		parent::__construct( $title, $params, 'SMW\ChangePropagationClassUpdateJob' );
+		parent::__construct( $title, $params, 'smw.changePropagationClassUpdate' );
 	}
 
 }

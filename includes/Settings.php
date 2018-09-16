@@ -481,6 +481,15 @@ class Settings extends Options {
 			$configuration['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
 		}
 
+		$jobQueueWatchlist = [];
+
+		// FIXME Remove with 3.1
+		foreach ( $GLOBALS['smwgJobQueueWatchlist'] as $job ) {
+			if ( strpos( $job, 'SMW\\' ) !== false ) {
+				$jobQueueWatchlist[$job] = \SMW\MediaWiki\JobQueue::mapLegacyType( $job );
+			}
+		}
+
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
 		$GLOBALS['smwgDeprecationNotices']['smw'] = array(
@@ -574,7 +583,7 @@ class Settings extends Options {
 						'smwgQueryDurationEnabled' => 'SMW_QPRFL_DUR',
 						'smwgQueryParametersEnabled' => 'SMW_QPRFL_PARAMS'
 					]
-				]
+				] + ( $jobQueueWatchlist !== [] ? [ 'smwgJobQueueWatchlist' => $jobQueueWatchlist ] : [] )
 			),
 			'removal' => array(
 				'smwgOnDeleteAction' => '2.4.0',

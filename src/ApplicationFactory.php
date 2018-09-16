@@ -321,9 +321,10 @@ class ApplicationFactory {
 		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
 
 		$linksProcessor = $this->containerBuilder->create( 'LinksProcessor' );
+		$settings = $this->getSettings();
 
 		$linksProcessor->isStrictMode(
-			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_STRICT )
+			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_STRICT )
 		);
 
 		$inTextAnnotationParser = new InTextAnnotationParser(
@@ -334,11 +335,11 @@ class ApplicationFactory {
 		);
 
 		$inTextAnnotationParser->isLinksInValues(
-			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_LINV )
+			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_LINV )
 		);
 
 		$inTextAnnotationParser->showErrors(
-			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
+			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
 		);
 
 		return $inTextAnnotationParser;

@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use Hooks;
+use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -18,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class UpdateDispatcherJob extends JobBase {
+class UpdateDispatcherJob extends Job {
 
 	/**
 	 * Restict disptach process on available pool of data
@@ -43,7 +44,7 @@ class UpdateDispatcherJob extends JobBase {
 	 * @param integer $id job id
 	 */
 	public function __construct( Title $title, $params = array(), $id = 0 ) {
-		parent::__construct( 'SMW\UpdateDispatcherJob', $title, $params, $id );
+		parent::__construct( 'smw.updateDispatcher', $title, $params, $id );
 		$this->removeDuplicates = true;
 
 		$this->setStore(

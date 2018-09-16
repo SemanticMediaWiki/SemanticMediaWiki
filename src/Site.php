@@ -131,6 +131,10 @@ class Site {
 	 */
 	public static function getJobClasses( $typeFilter = '' ) {
 
+		if ( $typeFilter === 'SMW' ) {
+			$typeFilter = 'smw.';
+		}
+
 		$jobList = $GLOBALS['wgJobClasses'];
 
 		foreach ( $jobList as $type => $class ) {

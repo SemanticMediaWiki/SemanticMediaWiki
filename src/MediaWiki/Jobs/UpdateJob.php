@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use LinkCache;
 use ParserOutput;
 use SMW\ApplicationFactory;
@@ -31,7 +32,7 @@ use Title;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class UpdateJob extends JobBase {
+class UpdateJob extends Job {
 
 	/**
 	 * Enforces an update independent of the update marker status
@@ -60,7 +61,7 @@ class UpdateJob extends JobBase {
 	 * @param array $params
 	 */
 	function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\UpdateJob', $title, $params );
+		parent::__construct( 'smw.update', $title, $params );
 		$this->removeDuplicates = true;
 
 		$this->isEnabledJobQueue(

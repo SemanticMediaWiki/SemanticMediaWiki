@@ -31,7 +31,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 

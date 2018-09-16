@@ -4,9 +4,9 @@ namespace SMW\Elastic\Indexer;
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Job;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticFactory;
-use SMW\MediaWiki\Jobs\JobBase;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use Title;
 
@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class IndexerRecoveryJob extends JobBase {
+class IndexerRecoveryJob extends Job {
 
 	/**
 	 * @since 3.0

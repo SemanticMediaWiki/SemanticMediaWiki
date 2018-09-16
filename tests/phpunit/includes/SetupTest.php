@@ -249,6 +249,22 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	public function jobClassesDataProvider() {
 
 		$jobs = array(
+
+			'smw.update',
+			'smw.refresh',
+			'smw.updateDispatcher',
+			'smw.parserCachePurge',
+			'smw.fulltextSearchTableUpdate',
+			'smw.entityIdDisposer',
+			'smw.propertyStatisticsRebuild',
+			'smw.fulltextSearchTableRebuild',
+			'smw.changePropagationDispatch',
+			'smw.changePropagationUpdate',
+			'smw.changePropagationClassUpdate',
+			'smw.elasticIndexerRecovery',
+			'smw.elasticFileIngest',
+
+			// Legacy
 			'SMW\UpdateJob',
 			'SMW\RefreshJob',
 			'SMW\UpdateDispatcherJob',
@@ -260,8 +276,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'SMW\ChangePropagationDispatchJob',
 			'SMW\ChangePropagationUpdateJob',
 			'SMW\ChangePropagationClassUpdateJob',
-
-			// Legacy
 			'SMWUpdateJob',
 			'SMWRefreshJob',
 		);

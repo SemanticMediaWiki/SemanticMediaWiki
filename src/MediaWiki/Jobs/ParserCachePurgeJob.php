@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use Hooks;
 use SMW\ApplicationFactory;
 use SMW\HashBuilder;
@@ -17,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class ParserCachePurgeJob extends JobBase {
+class ParserCachePurgeJob extends Job {
 
 	/**
 	 * A balanced size that should be carefully monitored in order to not have a
@@ -64,7 +65,7 @@ class ParserCachePurgeJob extends JobBase {
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\ParserCachePurgeJob', $title, $params );
+		parent::__construct( 'smw.parserCachePurge', $title, $params );
 		$this->removeDuplicates = true;
 	}
 

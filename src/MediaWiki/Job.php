@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW\MediaWiki\Jobs;
+namespace SMW\MediaWiki;
 
-use Job;
+use Job as MediaWikiJob;
 use JobQueueGroup;
 use SMW\ApplicationFactory;
 use SMW\Site;
@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-abstract class JobBase extends Job {
+abstract class Job extends MediaWikiJob {
 
 	/**
 	 * @var boolean
@@ -55,7 +55,7 @@ abstract class JobBase extends Job {
 	 *
 	 * @param boolean|true $enableJobQueue
 	 *
-	 * @return JobBase
+	 * @return AbstractJob
 	 */
 	public function isEnabledJobQueue( $enableJobQueue = true ) {
 		$this->isEnabledJobQueue = (bool)$enableJobQueue;

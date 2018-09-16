@@ -13,9 +13,8 @@ use User;
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/UnblockUserComplete
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/UserGroupsChanged
  *
- * Act on events that happen outside of the normal parser process and hereby
- * ensures that updates of pre-defined properties related to a user status can
- * be detected.
+ * Act on events that happen outside of the normal parser process to ensure that
+ * changes to pre-defined properties related to a user status can be invoked.
  *
  * @license GNU GPL v2+
  * @since 3.0

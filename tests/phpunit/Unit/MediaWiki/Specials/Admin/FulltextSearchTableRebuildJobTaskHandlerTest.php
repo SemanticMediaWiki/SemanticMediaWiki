@@ -86,7 +86,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'SMW\FulltextSearchTableRebuildJob' ) )
+			->with( $this->equalTo( 'smw.fulltextSearchTableRebuild' ) )
 			->will( $this->returnValue( false ) );
 
 		$fulltextSearchTableRebuildJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob' )
@@ -96,7 +96,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 		$fulltextSearchTableRebuildJob->expects( $this->once() )
 			->method( 'insert' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,10 +124,10 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'SMW\FulltextSearchTableRebuildJob' ) )
+			->with( $this->equalTo( 'smw.fulltextSearchTableRebuild' ) )
 			->will( $this->returnValue( true ) );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 

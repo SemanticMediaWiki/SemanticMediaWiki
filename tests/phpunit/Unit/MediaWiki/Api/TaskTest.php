@@ -53,7 +53,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$updateJob->expects( $this->atLeastOnce() )
 			->method( 'run' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -133,7 +133,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$nullJob->expects( $this->atLeastOnce() )
 			->method( 'insert' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 

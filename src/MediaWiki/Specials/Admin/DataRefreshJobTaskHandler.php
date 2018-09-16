@@ -4,10 +4,10 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use Html;
 use SMW\ApplicationFactory;
-use SMW\MediaWiki\Jobs\JobBase;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use Title;
 use WebRequest;
+use SMW\MediaWiki\Job;
 
 /**
  * @license GNU GPL v2+
@@ -180,10 +180,10 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 		}
 
 		// Pop and acknowledge the job to fetch progress details
-		// from the itself
+		// from itself
 		$refreshJob = $jobQueue->pop( 'SMW\RefreshJob' );
 
-		if ( $refreshJob instanceof JobBase ) {
+		if ( $refreshJob instanceof Job ) {
 			$refreshJob->run();
 			$jobQueue->ack( $refreshJob );
 			$this->refreshjob = $refreshJob;

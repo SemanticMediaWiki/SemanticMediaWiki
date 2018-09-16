@@ -145,18 +145,18 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 		}
 
-		$propertyStatisticsRebuildJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
-			'SMW\PropertyStatisticsRebuildJob',
+		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+			'smw.propertyStatisticsRebuild',
 			\SpecialPage::getTitleFor( 'SMWAdmin' )
 		);
 
-		$propertyStatisticsRebuildJob->insert();
+		$job->insert();
 
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 	}
 
 	private function hasPendingJob() {
-		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'SMW\PropertyStatisticsRebuildJob' );
+		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.propertyStatisticsRebuild' );
 	}
 
 }

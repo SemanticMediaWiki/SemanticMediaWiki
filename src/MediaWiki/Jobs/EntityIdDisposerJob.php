@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use Hooks;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
@@ -14,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class EntityIdDisposerJob extends JobBase {
+class EntityIdDisposerJob extends Job {
 
 	/**
 	 * Commit chunk size
@@ -28,7 +29,7 @@ class EntityIdDisposerJob extends JobBase {
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\EntityIdDisposerJob', $title, $params );
+		parent::__construct( 'smw.entityIdDisposer', $title, $params );
 		$this->removeDuplicates = true;
 	}
 
