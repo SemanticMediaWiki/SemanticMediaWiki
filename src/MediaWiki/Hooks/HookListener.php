@@ -726,7 +726,8 @@ class HookListener {
 	 */
 	public function onParserFirstCallInit( &$parser ) {
 
-		$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$parserFunctionFactory = $applicationFactory->newParserFunctionFactory();
 		$parserFunctionFactory->registerFunctionHandlers( $parser );
 
 		$hookRegistrant = new HookRegistrant( $parser );
@@ -744,9 +745,10 @@ class HookListener {
 		/**
 		 * Support for <section> ... </section>
 		 */
-		$parser->setHook( 'section', function( $input, array $args, \Parser $parser, \PPFrame $frame ) {
-			return ( new SectionTag( $parser, $frame ) )->parse( $input, $args );
-		} );
+		SectionTag::register(
+			$parser,
+			$applicationFactory->getSettings()->get( 'smwgSupportSectionTag' )
+		);
 
 		return true;
 	}

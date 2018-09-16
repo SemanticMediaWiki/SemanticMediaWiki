@@ -37,6 +37,26 @@ class SectionTagTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRegister_Enabled() {
+
+		$this->parser->expects( $this->once() )
+			->method( 'setHook' );
+
+		$this->assertTrue(
+			SectionTag::register( $this->parser )
+		);
+	}
+
+	public function testRegister_Disabled() {
+
+		$this->parser->expects( $this->never() )
+			->method( 'setHook' );
+
+		$this->assertFalse(
+			SectionTag::register( $this->parser, false )
+		);
+	}
+
 	public function testParse() {
 
 		$title = $this->getMockBuilder( '\Title' )

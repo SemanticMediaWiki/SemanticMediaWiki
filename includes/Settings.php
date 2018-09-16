@@ -179,6 +179,7 @@ class Settings extends Options {
 			'smwgElasticsearchEndpoints' => $GLOBALS['smwgElasticsearchEndpoints'],
 			'smwgPostEditUpdate' => $GLOBALS['smwgPostEditUpdate'],
 			'smwgSpecialAskFormSubmitMethod' => $GLOBALS['smwgSpecialAskFormSubmitMethod'],
+			'smwgSupportSectionTag' => $GLOBALS['smwgSupportSectionTag'],
 		);
 
 		self::initLegacyMapping( $configuration );

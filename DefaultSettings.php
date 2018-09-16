@@ -1998,6 +1998,15 @@ return array(
 	##
 
 	##
+	# Enable/disable <section> ... </section> support
+	#
+	# @since 3.0
+	# @default true
+	##
+	'smwgSupportSectionTag' => true,
+	##
+
+	##
 	# THE FOLLOWING SETTINGS AND SUPPORT FUNCTIONS ARE EXPERIMENTAL!
 	#
 	# Please make you read the Readme.md (see the Elastic folder) file first
