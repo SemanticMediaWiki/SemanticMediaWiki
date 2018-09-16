@@ -187,6 +187,12 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#3339](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3339) Added support for uniqueness validation in records/references
 * [#3416](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3416)
 * [#3415](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3415)
+* [#3429](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3429)
+* [#3431](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3431)
+* [#3436](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3436)
+* [#3440](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3440)
+* [#3441](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3441)
+* [#3443](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3443)
 
 ## Bug fixes
 
@@ -222,6 +228,7 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#3076](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3076) Fixed factbox magic works
 * [#3082](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3082) Fixed use of `ParserOptions::setEditSection` for MW 1.31
 * [#3107](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3107) Fixed recognition of `::=` in `LinksProcessor `
+* [#3134](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3134)
 * [#3144](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3144) Return IDs as integer when matching all entities
 * [#3336](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3336) Fixed issue in Special:Ask with sort parameter where the first parameter is left empty
 * [#3322](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3322) Fixed issue in `UpdateDispatcherJob` with selecting unrelated entities
@@ -318,6 +325,7 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#3275](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3275) Moved `SMWSQLStore3Readers::getPropertySubjects`
 * [#3282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3282) Moved `SMWSQLStore3Readers::getProperties`
 * [#3384](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3384)
+* [#3432](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3432)
 
 ## Contributors
 
