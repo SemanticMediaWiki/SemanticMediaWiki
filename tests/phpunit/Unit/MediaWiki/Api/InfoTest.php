@@ -139,7 +139,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertArrayHasKey(
-			'SMW\UpdateJob',
+			'smw.update',
 			$result['info']['jobcount']
 		);
 	}

@@ -311,6 +311,22 @@ final class Setup {
 	private function registerJobClasses( &$vars ) {
 
 		$jobClasses = array(
+
+			'smw.update' => 'SMW\MediaWiki\Jobs\UpdateJob',
+			'smw.refresh' => 'SMW\MediaWiki\Jobs\RefreshJob',
+			'smw.updateDispatcher' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
+			'smw.parserCachePurge' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
+			'smw.fulltextSearchTableUpdate' => 'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
+			'smw.entityIdDisposer' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
+			'smw.propertyStatisticsRebuild' => 'SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob',
+			'smw.fulltextSearchTableRebuild' => 'SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob',
+			'smw.changePropagationDispatch' => 'SMW\MediaWiki\Jobs\ChangePropagationDispatchJob',
+			'smw.changePropagationUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationUpdateJob',
+			'smw.changePropagationClassUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
+			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Indexer\IndexerRecoveryJob',
+			'smw.elasticFileIngest' => 'SMW\Elastic\Indexer\FileIngestJob',
+
+			// Legacy 3.0-
 			'SMW\UpdateJob' => 'SMW\MediaWiki\Jobs\UpdateJob',
 			'SMW\RefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob',
 			'SMW\UpdateDispatcherJob' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
@@ -322,10 +338,8 @@ final class Setup {
 			'SMW\ChangePropagationDispatchJob' => 'SMW\MediaWiki\Jobs\ChangePropagationDispatchJob',
 			'SMW\ChangePropagationUpdateJob' => 'SMW\MediaWiki\Jobs\ChangePropagationUpdateJob',
 			'SMW\ChangePropagationClassUpdateJob' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
-			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Indexer\IndexerRecoveryJob',
-			'smw.elasticFileIngest' => 'SMW\Elastic\Indexer\FileIngestJob',
 
-			// Legacy definition to be removed with 1.10
+			// Legacy 2.0-
 			'SMWUpdateJob'  => 'SMW\MediaWiki\Jobs\UpdateJob',
 			'SMWRefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob'
 		);

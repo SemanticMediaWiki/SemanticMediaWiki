@@ -67,7 +67,7 @@ class ChangePropagationDispatchJob extends MwDBaseUnitTestCase {
 
 		$this->assertGreaterThan(
 			0,
-			$this->jobQueue->getQueueSize( 'SMW\UpdateJob' )
+			$this->jobQueue->getQueueSize( 'smw.update' )
 		);
 	}
 
@@ -102,19 +102,19 @@ class ChangePropagationDispatchJob extends MwDBaseUnitTestCase {
 
 		$this->assertGreaterThan(
 			0,
-			$this->jobQueue->getQueueSize( 'SMW\ChangePropagationDispatchJob' )
+			$this->jobQueue->getQueueSize( 'smw.changePropagationDispatch' )
 		);
 
-		$this->jobQueueRunner->setType( 'SMW\ChangePropagationDispatchJob' )->run();
+		$this->jobQueueRunner->setType( 'smw.changePropagationDispatch' )->run();
 
 		$this->jobQueue->disableCache();
 
 		$this->assertGreaterThan(
 			0,
-			$this->jobQueue->getQueueSize( 'SMW\UpdateJob' )
+			$this->jobQueue->getQueueSize( 'smw.update' )
 		);
 
-		$this->jobQueueRunner->setType( 'SMW\UpdateJob' )->run();
+		$this->jobQueueRunner->setType( 'smw.update' )->run();
 
 		foreach ( $this->jobQueueRunner->getStatus() as $status ) {
 			$this->assertTrue( $status['status'] );
@@ -153,19 +153,19 @@ class ChangePropagationDispatchJob extends MwDBaseUnitTestCase {
 
 		$this->assertGreaterThan(
 			0,
-			$this->jobQueue->getQueueSize( 'SMW\ChangePropagationDispatchJob' )
+			$this->jobQueue->getQueueSize( 'smw.changePropagationDispatch' )
 		);
 
-		$this->jobQueueRunner->setType( 'SMW\ChangePropagationDispatchJob' )->run();
+		$this->jobQueueRunner->setType( 'smw.changePropagationDispatch' )->run();
 
 		$this->jobQueue->disableCache();
 
 		$this->assertGreaterThan(
 			0,
-			$this->jobQueue->getQueueSize( 'SMW\UpdateJob' )
+			$this->jobQueue->getQueueSize( 'smw.update' )
 		);
 
-		$this->jobQueueRunner->setType( 'SMW\UpdateJob' )->run();
+		$this->jobQueueRunner->setType( 'smw.update' )->run();
 
 		foreach ( $this->jobQueueRunner->getStatus() as $status ) {
 			$this->assertTrue( $status['status'] );

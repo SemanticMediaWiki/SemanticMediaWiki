@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -37,7 +38,7 @@ use Title;
  *
  * @author mwjames
  */
-class ChangePropagationDispatchJob extends JobBase {
+class ChangePropagationDispatchJob extends Job {
 
 	/**
 	 * Size of rows stored in a temp file
@@ -56,7 +57,7 @@ class ChangePropagationDispatchJob extends JobBase {
 	 * @param array $params
 	 */
 	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\ChangePropagationDispatchJob', $title, $params );
+		parent::__construct( 'smw.changePropagationDispatch', $title, $params );
 		$this->removeDuplicates = true;
 	}
 
@@ -115,10 +116,10 @@ class ChangePropagationDispatchJob extends JobBase {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$jobType = 'SMW\ChangePropagationUpdateJob';
+		$jobType = 'smw.changePropagationUpdate';
 
 		if ( $subject->getNamespace() === NS_CATEGORY ) {
-			$jobType = 'SMW\ChangePropagationClassUpdateJob';
+			$jobType = 'smw.changePropagationClassUpdate';
 		}
 
 		if ( $applicationFactory->getJobQueue()->hasPendingJob( $jobType ) ) {
@@ -148,10 +149,10 @@ class ChangePropagationDispatchJob extends JobBase {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$jobType = 'SMW\ChangePropagationUpdateJob';
+		$jobType = 'smw.changePropagationUpdate';
 
 		if ( $subject->getNamespace() === NS_CATEGORY ) {
-			$jobType = 'SMW\ChangePropagationClassUpdateJob';
+			$jobType = 'smw.changePropagationClassUpdate';
 		}
 
 		$count = $applicationFactory->getJobQueue()->getQueueSize( $jobType );

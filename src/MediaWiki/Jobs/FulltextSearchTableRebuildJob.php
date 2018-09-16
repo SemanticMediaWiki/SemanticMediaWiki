@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use Title;
@@ -12,7 +13,7 @@ use Title;
  *
  * @author mwjames
  */
-class FulltextSearchTableRebuildJob extends JobBase {
+class FulltextSearchTableRebuildJob extends Job {
 
 	/**
 	 * @since 2.5
@@ -21,7 +22,7 @@ class FulltextSearchTableRebuildJob extends JobBase {
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\FulltextSearchTableRebuildJob', $title, $params );
+		parent::__construct( 'smw.fulltextSearchTableRebuild', $title, $params );
 	}
 
 	/**

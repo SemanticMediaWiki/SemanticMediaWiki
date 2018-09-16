@@ -1,7 +1,19 @@
 <?php
 
-namespace SMW\MediaWiki\Jobs;
+namespace SMW\MediaWiki;
 
+use SMW\MediaWiki\Jobs\NullJob;
+use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
+use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
+use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
 use RuntimeException;
 use Title;
 
@@ -18,8 +30,8 @@ class JobFactory {
 	 *
 	 * @param array $jobs
 	 */
-	public function batchInsert( array $jobs ) {
-		JobBase::batchInsert( $jobs );
+	public static function batchInsert( array $jobs ) {
+		Job::batchInsert( $jobs );
 	}
 
 	/**
@@ -40,25 +52,38 @@ class JobFactory {
 
 		switch ( $type ) {
 			case 'SMW\RefreshJob':
+			case 'smw.refresh':
 				return $this->newRefreshJob( $title, $parameters );
 			case 'SMW\UpdateJob':
+			case 'smw.update':
 				return $this->newUpdateJob( $title, $parameters );
 			case 'SMW\UpdateDispatcherJob':
+			case 'smw.updateDispatcher':
 				return $this->newUpdateDispatcherJob( $title, $parameters );
 			case 'SMW\ParserCachePurgeJob':
+			case 'smw.parserCachePurge':
 				return $this->newParserCachePurgeJob( $title, $parameters );
 			case 'SMW\EntityIdDisposerJob':
+			case 'smw.entityIdDisposer':
 				return $this->newEntityIdDisposerJob( $title, $parameters );
 			case 'SMW\PropertyStatisticsRebuildJob':
+			case 'smw.propertyStatisticsRebuild':
 				return $this->newPropertyStatisticsRebuildJob( $title, $parameters );
 			case 'SMW\FulltextSearchTableUpdateJob':
+			case 'smw.fulltextSearchTableUpdate':
 				return $this->newFulltextSearchTableUpdateJob( $title, $parameters );
 			case 'SMW\FulltextSearchTableRebuildJob':
+			case 'smw.fulltextSearchTableRebuild':
 				return $this->newFulltextSearchTableRebuildJob( $title, $parameters );
 			case 'SMW\ChangePropagationDispatchJob':
+			case 'smw.changePropagationDispatch':
 				return $this->newChangePropagationDispatchJob( $title, $parameters );
 			case 'SMW\ChangePropagationUpdateJob':
+			case 'smw.changePropagationUpdate':
 				return $this->newChangePropagationUpdateJob( $title, $parameters );
+			case 'SMW\ChangePropagationClassUpdateJob':
+			case 'smw.changePropagationClassUpdate':
+				return $this->newChangePropagationClassUpdateJob( $title, $parameters );
 		}
 
 		throw new RuntimeException( "Unable to match $type to a valid Job type" );
@@ -182,6 +207,18 @@ class JobFactory {
 	 */
 	public function newChangePropagationUpdateJob( Title $title, array $parameters = array() ) {
 		return new ChangePropagationUpdateJob( $title, $parameters );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return ChangePropagationClassUpdateJob
+	 */
+	public function newChangePropagationClassUpdateJob( Title $title, array $parameters = array() ) {
+		return new ChangePropagationClassUpdateJob( $title, $parameters );
 	}
 
 }

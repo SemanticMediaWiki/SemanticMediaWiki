@@ -153,11 +153,11 @@ class PostProcHandler {
 
 			// Not enabled, no need to invoke a job!
 			if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
-				unset( $jobs['SMW\ParserCachePurgeJob'] );
+				unset( $jobs['smw.parserCachePurge'] );
 			}
 
 			if ( isset( $this->options['smwgEnabledFulltextSearch'] ) && $this->options['smwgEnabledFulltextSearch'] === false ) {
-				unset( $jobs['SMW\FulltextSearchTableUpdateJob'] );
+				unset( $jobs['smw.fulltextSearchTableUpdate'] );
 			}
 		}
 

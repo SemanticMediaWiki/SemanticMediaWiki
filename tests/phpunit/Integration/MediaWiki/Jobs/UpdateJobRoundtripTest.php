@@ -112,7 +112,7 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 		$index = 1; //pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
-		$this->assertJob( 'SMW\UpdateJob' );
+		$this->assertJob( 'smw.update' );
 	}
 
 	/**
@@ -133,9 +133,11 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 
 		$provider = array();
 
+		$provider[] = array( 'SMW\UpdateJob', 'smw.update' );
 		$provider[] = array( 'SMW\UpdateJob', 'SMW\UpdateJob' );
 		$provider[] = array( 'SMWUpdateJob', 'SMW\UpdateJob' );
 
+		$provider[] = array( 'SMW\RefreshJob', 'smw.refresh' );
 		$provider[] = array( 'SMW\RefreshJob', 'SMW\RefreshJob' );
 		$provider[] = array( 'SMWRefreshJob', 'SMW\RefreshJob' );
 

@@ -21,7 +21,7 @@ use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\MediaWiki\JobQueue;
-use SMW\MediaWiki\Jobs\JobFactory;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
@@ -389,7 +389,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var JobFactory
 		 */
 		$containerBuilder->registerCallback( 'JobFactory', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'JobFactory', '\SMW\MediaWiki\Jobs\JobFactory' );
+			$containerBuilder->registerExpectedReturnType( 'JobFactory', '\SMW\MediaWiki\JobFactory' );
 			return new JobFactory();
 		} );
 

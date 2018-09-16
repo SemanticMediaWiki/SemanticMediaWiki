@@ -86,7 +86,7 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'SMW\EntityIdDisposerJob' ) )
+			->with( $this->equalTo( 'smw.entityIdDisposer' ) )
 			->will( $this->returnValue( false ) );
 
 		$entityIdDisposerJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\EntityIdDisposerJob' )
@@ -96,7 +96,7 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$entityIdDisposerJob->expects( $this->once() )
 			->method( 'insert' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,10 +124,10 @@ class DisposeJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'SMW\EntityIdDisposerJob' ) )
+			->with( $this->equalTo( 'smw.entityIdDisposer' ) )
 			->will( $this->returnValue( true ) );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 

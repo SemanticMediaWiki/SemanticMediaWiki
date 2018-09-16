@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki;
 
-use Job;
 use JobQueueGroup;
 
 /**
@@ -53,7 +52,7 @@ class JobQueue {
 	 * @return boolean
 	 */
 	public function isDelayedJobsEnabled( $type ) {
-		return $this->jobQueueGroup->get( $type )->delayedJobsEnabled();
+		return $this->jobQueueGroup->get( $this->mapLegacyType( $type ) )->delayedJobsEnabled();
 	}
 
 	/**
@@ -101,7 +100,7 @@ class JobQueue {
 	 * @return Job|boolean
 	 */
 	public function pop( $type ) {
-		return $this->jobQueueGroup->get( $type )->pop();
+		return $this->jobQueueGroup->get( $this->mapLegacyType( $type ) )->pop();
 	}
 
 	/**
@@ -111,7 +110,7 @@ class JobQueue {
 	 *
 	 * @param Job $job
 	 */
-	public function ack( Job $job ) {
+	public function ack( \Job $job ) {
 		$this->jobQueueGroup->get( $job->getType() )->ack( $job );
 	}
 
@@ -122,7 +121,7 @@ class JobQueue {
 	 */
 	public function delete( $type ) {
 
-		$jobQueue = $this->jobQueueGroup->get( $type );
+		$jobQueue = $this->jobQueueGroup->get( $this->mapLegacyType( $type ) );
 		$jobQueue->delete();
 
 		if ( $this->disableCache ) {
@@ -172,7 +171,7 @@ class JobQueue {
 	 */
 	public function getQueueSize( $type ) {
 
-		$jobQueue = $this->jobQueueGroup->get( $type );
+		$jobQueue = $this->jobQueueGroup->get( $this->mapLegacyType( $type ) );
 
 		if ( $this->disableCache ) {
 			$jobQueue->flushCaches();
@@ -191,6 +190,24 @@ class JobQueue {
 	 */
 	public function hasPendingJob( $type ) {
 		return $this->getQueueSize( $type ) > 0;
+	}
+
+	/**
+	 * @note FIXME Remove with 3.1
+	 * @since 3.0
+	 *
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public static function mapLegacyType( $type ) {
+
+		// Legacy names
+		if ( strpos( $type, 'SMW\\' ) !== false ) {
+			$type = 'smw.' . lcfirst( str_replace( [ 'SMW\\', 'Job' ], '', $type ) );
+		}
+
+		return $type;
 	}
 
 }

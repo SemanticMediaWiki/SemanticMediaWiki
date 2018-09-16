@@ -3,7 +3,7 @@
 namespace SMW\Tests\Benchmark;
 
 use RuntimeException;
-use SMW\MediaWiki\Jobs\JobFactory;
+use SMW\MediaWiki\JobFactory;
 use SMW\Tests\Utils\Runners\JobQueueRunner;
 use Title;
 

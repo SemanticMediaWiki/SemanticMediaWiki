@@ -48,7 +48,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstructJobFactory() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Jobs\JobFactory',
+			'\SMW\MediaWiki\JobFactory',
 			$this->applicationFactory->newJobFactory()
 		);
 	}

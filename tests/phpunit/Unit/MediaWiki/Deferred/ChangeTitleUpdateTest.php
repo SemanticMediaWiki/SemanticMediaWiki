@@ -23,7 +23,7 @@ class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'newUpdateJob' ] )
 			->getMock();

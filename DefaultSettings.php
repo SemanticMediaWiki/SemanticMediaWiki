@@ -858,10 +858,10 @@ return array(
 	# To make this feature available, assign a simple list to the setting as in:
 	#
 	# $GLOBALS['smwgJobQueueWatchlist'] = [
-	#	'SMW\UpdateJob',
-	#	'SMW\ParserCachePurgeJob',
-	#	'SMW\FulltextSearchTableUpdateJob',
-	#	'SMW\ChangePropagationUpdateJob'
+	#	'smw.update',
+	#	'smw.parserCachePurge',
+	#	'smw.fulltextSearchTableUpdate',
+	#	'smw.changePropagationUpdate'
 	# ]
 	#
 	# Information are not displayed unless a user enables the setting in his or
@@ -1313,8 +1313,8 @@ return array(
 	##
 	'smwgPostEditUpdate' => [
 		'job.task' => [
-			'SMW\FulltextSearchTableUpdateJob' => 1,
-			'SMW\ParserCachePurgeJob' => 5
+			'smw.fulltextSearchTableUpdate' => 1,
+			'smw.parserCachePurge' => 5
 		]
 	],
 	##
