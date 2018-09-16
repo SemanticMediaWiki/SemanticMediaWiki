@@ -112,7 +112,7 @@ class SubjectLookup extends Lookup {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$subobject = isset( $params['subobject'] ) ? $params['subobject'] : '';
 
-		$title = $applicationFactory->newTitleCreator()->createFromText(
+		$title = $applicationFactory->newTitleFactory()->newFromText(
 			$params['subject'],
 			$params['ns']
 		);

@@ -39,7 +39,7 @@ class MaintenanceFactory {
 
 		$dataRebuilder = new DataRebuilder(
 			$store,
-			ApplicationFactory::getInstance()->newTitleCreator()
+			ApplicationFactory::getInstance()->newTitleFactory()
 		);
 
 		$dataRebuilder->setMessageReporter(

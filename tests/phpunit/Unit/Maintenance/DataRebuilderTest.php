@@ -84,13 +84,13 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\Maintenance\DataRebuilder',
-			new DataRebuilder( $store, $titleCreator )
+			new DataRebuilder( $store, $titleFactory )
 		);
 	}
 
@@ -126,11 +126,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->setConnectionManager( $this->connectionManager );
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DataRebuilder( $store, $titleFactory );
 
 		// Needs an end otherwise phpunit is caught up in an infinite loop
 		$instance->setOptions( new Options( array(
@@ -177,11 +177,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->setConnectionManager( $this->connectionManager );
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DataRebuilder( $store, $titleFactory );
 
 		$instance->setOptions( new Options( array(
 			'e' => 1,
@@ -224,11 +224,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->setConnectionManager( $this->connectionManager );
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DataRebuilder( $store, $titleFactory );
 
 		$instance->setOptions( new Options( array(
 			's' => 2,
@@ -274,11 +274,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->setConnectionManager( $this->connectionManager );
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DataRebuilder( $store, $titleFactory );
 
 		$instance->setOptions( new Options( array(
 			'query' => '[[Category:Foo]]'
@@ -313,11 +313,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DataRebuilder( $store, $titleFactory );
 
 		$instance->setOptions( new Options( array(
 			'categories' => true
@@ -353,11 +353,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DataRebuilder( $store, $titleFactory );
 
 		$instance->setOptions( new Options( array(
 			'p' => true
@@ -372,31 +372,31 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$titleCreator->expects( $this->at( 0 ) )
-			->method( 'createFromText' )
+		$titleFactory->expects( $this->at( 0 ) )
+			->method( 'newFromText' )
 			->with( $this->equalTo( 'Main page' ) )
 			->will( $this->returnValue( Title::newFromText( 'Main page' ) ) );
 
-		$titleCreator->expects( $this->at( 1 ) )
-			->method( 'createFromText' )
+		$titleFactory->expects( $this->at( 1 ) )
+			->method( 'newFromText' )
 			->with( $this->equalTo( 'Some other page' ) )
 			->will( $this->returnValue( Title::newFromText( 'Some other page' ) ) );
 
-		$titleCreator->expects( $this->at( 2 ) )
-			->method( 'createFromText' )
+		$titleFactory->expects( $this->at( 2 ) )
+			->method( 'newFromText' )
 			->with( $this->equalTo( 'Help:Main page' ) )
 			->will( $this->returnValue( Title::newFromText( 'Main page', NS_HELP ) ) );
 
-		$titleCreator->expects( $this->at( 3 ) )
-			->method( 'createFromText' )
+		$titleFactory->expects( $this->at( 3 ) )
+			->method( 'newFromText' )
 			->with( $this->equalTo( 'Main page' ) )
 			->will( $this->returnValue( Title::newFromText( 'Main page' ) ) );
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DataRebuilder( $store, $titleFactory );
 
 		$instance->setOptions( new Options( array(
 			'page'  => 'Main page|Some other page|Help:Main page|Main page'

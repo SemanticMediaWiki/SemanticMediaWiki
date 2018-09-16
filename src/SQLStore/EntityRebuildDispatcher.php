@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\PropertyRegistry;
 use SMW\SemanticData;
 use SMW\Utils\Lru;
+use SMW\MediaWiki\TitleFactory;
 use Title;
 
 /**
@@ -27,6 +28,11 @@ class EntityRebuildDispatcher {
 	 * @var SQLStore
 	 */
 	private $store;
+
+	/**
+	 * @var TitleFactory
+	 */
+	private $titleFactory;
 
 	/**
 	 * @var PropertyTableIdReferenceDisposer
@@ -82,9 +88,11 @@ class EntityRebuildDispatcher {
 	 * @since 2.3
 	 *
 	 * @param SQLStore $store
+	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( SQLStore $store ) {
+	public function __construct( SQLStore $store, TitleFactory $titleFactory ) {
 		$this->store = $store;
+		$this->titleFactory = $titleFactory;
 		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer( $store );
 		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
@@ -222,7 +230,7 @@ class EntityRebuildDispatcher {
 			$tids[] = $i;
 		}
 
-		$titles = Title::newFromIDs( $tids );
+		$titles = $this->titleFactory->newFromIDs( $tids );
 
 		foreach ( $titles as $title ) {
 
@@ -297,7 +305,7 @@ class EntityRebuildDispatcher {
 
 			if ( $row->smw_subobject !== '' && $row->smw_iw !== SMW_SQL3_SMWDELETEIW ) {
 
-				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
+				$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
 
 				// Remove tangling subobjects without a real page (created by a
 				// page preview etc.) otherwise leave subobjects alone; they ought
@@ -316,7 +324,7 @@ class EntityRebuildDispatcher {
 				}
 
 				// objects representing pages
-				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
+				$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
 
 				if ( $title !== null ) {
 					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
@@ -330,7 +338,7 @@ class EntityRebuildDispatcher {
 
 				// TODO: special treatment of redirects needed, since the store will
 				// not act on redirects that did not change according to its records
-				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
+				$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
 
 				if ( $title !== null && !$title->exists() ) {
 					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
