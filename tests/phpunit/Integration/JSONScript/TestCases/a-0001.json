@@ -120,12 +120,12 @@
 				"postgres": "Skipping, because I have no idea why this returning empty on Travis!",
 				"sqlite": "Skipping, because I have no idea why this returning empty on Travis!"
 			},
-			"about": "#3 `smwbrowse` article search",
+			"about": "#3 `smwbrowse` page search",
 			"api": {
 				"parameters": {
 					"action": "smwbrowse",
 					"format": "json",
-					"browse": "article",
+					"browse": "page",
 					"params": "{ \"limit\": 10, \"offset\": 0, \"search\": \"API test\" }"
 				}
 			},

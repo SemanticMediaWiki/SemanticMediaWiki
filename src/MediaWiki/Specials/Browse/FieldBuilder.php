@@ -71,8 +71,8 @@ class FieldBuilder {
 							'dir'   => $dir,
 							'name'  => 'article',
 							'size'  => 40,
-							'id'    => 'smw-article-input',
-							'class' => 'input smw-article-input autocomplete-arrow mw-ui-input',
+							'id'    => 'smw-page-input',
+							'class' => 'input smw-page-input autocomplete-arrow mw-ui-input',
 							'value' => htmlspecialchars( $articletext )
 						)
 					)

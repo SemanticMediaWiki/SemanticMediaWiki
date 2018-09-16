@@ -30,7 +30,7 @@
 			params: {
 				'action': 'smwbrowse',
 				'format': 'json',
-				'browse': 'article',
+				'browse': 'page',
 				'params': {
 					search: '',
 					limit: limit,
@@ -86,20 +86,20 @@
 		context.off( 'focus.autocomplete' );
 	}
 
-	mw.hook( 'smw.article.autocomplete' ).add( function( context ) {
-		context.find( '.smw-article-input' ).each( function() {
+	mw.hook( 'smw.page.autocomplete' ).add( function( context ) {
+		context.find( '.smw-page-input' ).each( function() {
 			autocomplete( $( this ) );
 		} );
 	} );
 
-	$ ( document ).on( 'smw.article.autocomplete', function( event, opts ) {
-		opts.context.find( '.smw-article-input' ).each( function() {
+	$ ( document ).on( 'smw.page.autocomplete', function( event, opts ) {
+		opts.context.find( '.smw-page-input' ).each( function() {
 			autocomplete( $( this ) );
 		} );
 	} );
 
 	$( document ).ready( function() {
-		$( '#smw-article-input, .smw-article-input' ).each( function() {
+		$( '#smw-page-input, .smw-page-input' ).each( function() {
 			autocomplete( $( this ) );
 		} );
 	} );

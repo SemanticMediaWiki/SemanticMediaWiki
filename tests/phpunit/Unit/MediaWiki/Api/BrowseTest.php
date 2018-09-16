@@ -211,7 +211,7 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$provider[] = [
-			'article'
+			'page'
 		];
 
 		$provider[] = [
