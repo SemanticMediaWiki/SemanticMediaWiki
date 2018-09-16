@@ -129,6 +129,67 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRevisionMode() {
+
+		$row = [
+			'smw_id' => 9999999999999999,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => '',
+			'smw_proptable_hash' => [],
+			'smw_rev' => 0
+		];
+
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'findAssociatedRev' )
+			->will( $this->returnValue( 1001 ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'select' )
+			->will( $this->returnValue( [ (object)$row] ) );
+
+		$connection->expects( $this->any() )
+			->method( 'selectField' )
+			->will( $this->returnValue( 500 ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getConnection', 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$instance = new EntityRebuildDispatcher( $store );
+
+		$instance->setDispatchRangeLimit( 1 );
+		$instance->setOptions(
+			[
+				'revision-mode' => true,
+				'force-update' => false,
+				'use-job' => false
+			]
+		);
+
+		$id = 999999999;
+
+		$instance->rebuild( $id );
+	}
+
 	public function idProvider() {
 
 		$provider[] = array(

@@ -254,6 +254,7 @@ class DataRebuilder {
 			[
 				'shallow-update' => $this->options->safeGet( 'shallow-update', false ),
 				'force-update' => $this->options->safeGet( 'force-update', false ),
+				'revision-mode' => $this->options->safeGet( 'revision-mode', false ),
 				'use-job' => false
 			]
 		);
