@@ -158,7 +158,7 @@
 		var self = this;
 		var form = self.context.find( '.smwb-form' );
 
-		form.trigger( 'smw.article.autocomplete' , {
+		form.trigger( 'smw.page.autocomplete' , {
 			'context': form
 		} );
 
@@ -214,7 +214,7 @@
 		var form = $( this ).find( '.smwb-form' );
 
 		mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.autocomplete' ] ).done( function () {
-			form.trigger( 'smw.article.autocomplete' , {
+			form.trigger( 'smw.page.autocomplete' , {
 				'context': form
 			} );
 		} );

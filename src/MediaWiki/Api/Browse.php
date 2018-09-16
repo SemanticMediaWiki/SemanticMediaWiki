@@ -69,8 +69,8 @@ class Browse extends ApiBase {
 			$res = $this->callSubjectLookup( $parameters );
 		}
 
-		if ( $params['browse'] === 'article' ) {
-			$res = $this->callArticleLookup( $parameters );
+		if ( $params['browse'] === 'page' ) {
+			$res = $this->callPageLookup( $parameters );
 		}
 
 		$result = $this->getResult();
@@ -219,7 +219,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callArticleLookup( $parameters ) {
+	private function callPageLookup( $parameters ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -305,7 +305,7 @@ class Browse extends ApiBase {
 					'concept',
 
 					// List, browse of articles, pages (mediawiki)
-					'article',
+					'page',
 
 					// Equivalent to Store::getPropertyValues
 					'pvalue',
@@ -367,8 +367,8 @@ class Browse extends ApiBase {
 			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }',
 			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',
 			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=article&params={ "limit": 10, "offset": 0, "search": "Main" }',
-			'api.php?action=smwbrowse&browse=article&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }',
+			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main" }',
+			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }',
 			'api.php?action=smwbrowse&browse=subject&params={ "subject": "Main page", "ns" :0, "iw": "", "subobject": "" }',
 		);
 	}

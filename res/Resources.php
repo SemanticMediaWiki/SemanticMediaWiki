@@ -395,8 +395,8 @@ return array(
 		)
 	),
 
-	'ext.smw.autocomplete.article' => $moduleTemplate + array(
-		'scripts' => 'smw/util/ext.smw.util.autocomplete.article.js',
+	'ext.smw.autocomplete.page' => $moduleTemplate + array(
+		'scripts' => 'smw/util/ext.smw.util.autocomplete.page.js',
 		'dependencies' => array(
 			'mediawiki.util',
 			'ext.jquery.autocomplete'
@@ -500,7 +500,7 @@ return array(
 	'ext.smw.browse.autocomplete' => $moduleTemplate + array(
 		'dependencies' => array(
 			'ext.smw.browse',
-			'ext.smw.autocomplete.article'
+			'ext.smw.autocomplete.page'
 		),
 		'targets' => array(
 			'mobile',
