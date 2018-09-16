@@ -113,14 +113,15 @@ class LinksWidget {
 		return Html::rawElement(
 				'a',
 				[
-					'href'  => $href,
-					'rel'   => 'href'
+					'href'  => $href . '#search',
+					'rel'   => 'href',
+					'style' => 'display:block; width:60px'
 				],
 				Html::rawElement(
 				'span',
 				[
 					'class' => 'smw-icon-pen',
-					'title' => wfMessage( 'smw_ask_editquery' )->text()
+					'title' => wfMessage( 'smw_ask_editquery' )->text(),
 				],
 				''
 			)
@@ -139,7 +140,8 @@ class LinksWidget {
 				'a',
 				[
 					'href'  => $href,
-					'rel'   => 'nofollow'
+					'rel'   => 'nofollow',
+					'style' => 'display:block; width:60px'
 				],
 				Html::rawElement(
 				'span',
@@ -353,7 +355,7 @@ class LinksWidget {
 		return Html::rawElement(
 			'span',
 			[
-				'id' => 'ask-clipboard',
+				'id' => 'ask-clipboard ',
 			//	'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey'
 			],
 			Html::element(
@@ -362,11 +364,10 @@ class LinksWidget {
 					'data-clipboard-action' => 'copy',
 					'data-clipboard-target' => '.clipboard',
 					'data-onoi-clipboard-field' => 'value',
-					'class' => 'clipboard',
+					'class' => 'clipboard smw-icon-bookmark',
 					'value' => $infolink->getURL(),
 					'title' =>  wfMessage( 'smw-clipboard-copy-link' )->text()
-				],
-				'⧟'
+				]
 			)
 		);
 	}

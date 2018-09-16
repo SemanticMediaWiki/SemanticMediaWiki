@@ -181,7 +181,7 @@ class NavigationLinksWidget {
 			[
 				'id' => 'ask-pagination'
 			],
-			ListPager::pagination( $title, $limit, $offset, $count, $urlArgs->toArray(), $html )
+			ListPager::pagination( $title, $limit, $offset, $count, $urlArgs->toArray() + [ '_target' => '#search' ] , $html )
 		);
 	}
 

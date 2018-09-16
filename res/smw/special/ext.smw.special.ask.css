@@ -41,7 +41,7 @@
 
 /* MobileFrontend sets those to 0 therefore declare them explicitly */
 div#ask fieldset {
-	margin: 0.5em 0 0.5em 0;
+	margin: 0 0 0.5em 0;
 	padding: 0 1em 1em;
 }
 
@@ -50,6 +50,10 @@ div#ask legend {
 	font-size: 95%;
 	font-weight:normal;
 	text-transform:none;
+}
+
+div#query legend {
+	font-weight:bold;
 }
 
 .smw-ask-toplinks {
@@ -215,7 +219,6 @@ display: inline-block;
 }
 
 .smw-ask-button-submit input:hover {
-    color: #fff;
     background-color: #ddd;
     border-color: #ddd;
 }
@@ -384,14 +387,11 @@ display: inline-block;
 	hyphens: auto;
 }
 
-}
-.smw-ask-sort-input {
-	margin-bottom: 10px;
-}
-
 .smw-ask-sort-input input, .smw-propertysubject-input {
 	padding: 4px;
 	border: 1px solid #aaa;
+	margin-right: 10px;
+	margin-top: 5px;
 }
 
 .options-list .smw-property-input {
@@ -426,9 +426,17 @@ display: inline-block;
 	padding: 0.625em 0.625em 0.546875em;
 }
 
-.smw-ask-sort-input select, .smw-ask-sort-input .smw-ask-sort-delete {
+.smw-ask-sort-input .smw-ask-sort-delete {
 	padding: 3px;
-    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.smw-ask-sort-input select {
+	padding: 3px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .smw-ask-sort-add a::before, .smw-ask-sort-delete a::before {
@@ -564,6 +572,28 @@ display: inline-block;
     border-top: 2px solid orange;
 }
 
+.smw-tabs input.nav-tab:checked + label.nav-label.clipboard-bookmark {
+    border:0;
+}
+
+.smw-tabs input.nav-tab:checked + label.nav-label.edit-action {
+    border: 0;
+}
+
+.smw-tabs label.nav-label.edit-action,
+.smw-tabs label.nav-label.compact-action,
+.smw-tabs label.nav-label.clipboard-bookmark.smw-tab-right {
+	padding: 5px 0px;
+}
+
+.clipboard.smw-icon-bookmark {
+	padding: 0 0 0 60px;
+}
+
+.smw-tabs input.nav-tab:checked + label.nav-label.compact-action {
+    border:0;
+}
+
 /**
  * Responsive settings (#see smw.table.css)
  */
@@ -620,18 +650,6 @@ display: inline-block;
 		display: inline-block;
 		margin-bottom: 0;
 	}
-}
-
-/**
- * Responsive settings (#see smw.table.css)
- */
-@media screen and (max-width: 530px) {
-
-	.smw-ask-sort-input select {
-		margin-top: 10px;
-		margin-left: 0px;
-	}
-
 }
 
 .skin-chameleon .autocomplete-arrow {
