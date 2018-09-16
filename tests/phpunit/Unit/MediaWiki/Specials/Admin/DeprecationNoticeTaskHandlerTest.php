@@ -60,7 +60,7 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$GLOBALS['deprecationNoticeFoobar'] = 'Foo';
 		$GLOBALS['deprecationNoticeFooFoo'] = 'Foo';
 
-		$deprecationNotice = array(
+		$deprecationNotice['smw'] = array(
 			'notice' => array(
 				'deprecationNoticeFoo' => '...',
 				'options' => [
@@ -101,7 +101,7 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$GLOBALS['deprecationNoticeFoobar'] = 'Foo';
 		$GLOBALS['deprecationNoticeFooFoo'] = 'Foo';
 
-		$deprecationNotice = array(
+		$deprecationNotice['smw'] = array(
 			'notice' => array(
 				'deprecationNoticeFoo' => '...',
 				'options' => [
@@ -130,8 +130,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$deprecationNotice
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertContains(
+			'<div class="smw-admin-deprecation">',
 			$instance->getHtml()
 		);
 	}

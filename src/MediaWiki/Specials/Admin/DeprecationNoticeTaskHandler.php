@@ -60,36 +60,25 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 */
 	public function getHtml() {
 
-		$noticeConfigList = array();
-		$replacementConfigList = array();
-		$removedConfigList = array();
+		$html = '';
 
-		if ( isset( $this->deprecationNoticeList['notice'] ) ) {
-			$noticeConfigList = $this->deprecationNoticeList['notice'];
+		// Push `smw` to the top
+		uksort( $this->deprecationNoticeList, function( $a, $b ) {
+			return $b === 'smw';
+		} );
+
+		foreach ( $this->deprecationNoticeList as $section => $deprecationNoticeList ) {
+			$html .= $this->buildSection( $section, $deprecationNoticeList );
 		}
 
-		if ( isset( $this->deprecationNoticeList['replacement'] ) ) {
-			$replacementConfigList = $this->deprecationNoticeList['replacement'];
-		}
-
-		if ( isset( $this->deprecationNoticeList['removal'] ) ) {
-			$removedConfigList = $this->deprecationNoticeList['removal'];
-		}
-
-		$noticeList = $this->buildLIST(
-			$noticeConfigList,
-			$replacementConfigList,
-			$removedConfigList
-		);
-
-		if ( $noticeList === array() ) {
+		if ( $html === '' ) {
 			return '';
 		}
 
 		return Html::rawElement(
 			'div',
 			array(
-				'class' => 'smw-admin-deprecation-notice-section'
+				'class' => 'smw-admin-deprecation'
 			),
 			Html::rawElement(
 				'p',
@@ -97,17 +86,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 					'class' => 'plainlinks'
 				),
 				$this->msg( 'smw-admin-deprecation-notice-docu' )
-			) . Html::rawElement(
-					'div',
-					array(
-						'class' => 'plainlinks'
-				),
-				Html::rawElement(
-					'p',
-					[],
-					implode( '', $noticeList )
-				)
-			)
+			) . $html
 		);
 	}
 
@@ -125,7 +104,56 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {}
 
-	private function buildLIST( $noticeConfigList, $replacementConfigList, $removedConfigList ) {
+	private function buildSection( $section, $deprecationNoticeList ) {
+
+		$noticeConfigList = array();
+		$replacementConfigList = array();
+		$removedConfigList = array();
+		$html = '';
+
+		if ( isset( $deprecationNoticeList['notice'] ) ) {
+			$noticeConfigList = $deprecationNoticeList['notice'];
+		}
+
+		if ( isset( $deprecationNoticeList['replacement'] ) ) {
+			$replacementConfigList = $deprecationNoticeList['replacement'];
+		}
+
+		if ( isset( $deprecationNoticeList['removal'] ) ) {
+			$removedConfigList = $deprecationNoticeList['removal'];
+		}
+
+		$sectionList = $this->build_list(
+			$section,
+			$noticeConfigList,
+			$replacementConfigList,
+			$removedConfigList
+		);
+
+		if ( $sectionList === [] ) {
+			return '';
+		}
+
+		if ( $section !== 'smw' ) {
+			$html .= Html::rawElement(
+			'h2',
+				[
+					'class' => "$section-admin-deprecation-notice-section"
+				],
+				$this->msg( "$section-admin-deprecation-notice-section" )
+			);
+		}
+
+		return Html::rawElement(
+			'div',
+			[
+				'class' => "$section-admin-deprecation-section"
+			],
+			$html . implode( '', $sectionList )
+		);
+	}
+
+	private function build_list( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ) {
 
 		$noticeList = [];
 		$list = array();
@@ -133,44 +161,44 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		// Replacements
 		foreach ( $replacementConfigList as $setting => $value ) {
 			if ( $setting === 'options' ) {
-				$list[] = $this->createListItems( 'smw-admin-deprecation-notice-config-replacement', $value );
+				$list[] = $this->createListItems( "$section-admin-deprecation-notice-config-replacement", $value );
 			} elseif ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-replacement', '$' . $setting, '$' . $value ) );
+				$list[] = $this->createListItem( array( "$section-admin-deprecation-notice-config-replacement", '$' . $setting, '$' . $value ) );
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( 'smw-admin-deprecation-notice-title-replacement', $list ) ) !== null ) {
+		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-replacement", $section, $list ) ) !== null ) {
 			$noticeList[] = $mList;
 		}
 
 		// Changes
 		foreach ( $noticeConfigList as $setting => $value ) {
 			if ( $setting === 'options' ) {
-				$list[] = $this->createListItems( 'smw-admin-deprecation-notice-config-notice', $value );
+				$list[] = $this->createListItems( "$section-admin-deprecation-notice-config-notice", $value );
 			} elseif ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-notice', '$' . $setting, $value ) );
+				$list[] = $this->createListItem( array( "$section-admin-deprecation-notice-config-notice", '$' . $setting, $value ) );
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( 'smw-admin-deprecation-notice-title-notice', $list ) ) !== null ) {
+		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-notice", $section, $list ) ) !== null ) {
 			$noticeList[] = $mList;
 		}
 
 		// Removals
 		foreach ( $removedConfigList as $setting => $msg ) {
 			if ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( array( 'smw-admin-deprecation-notice-config-removal', '$' . $setting, $msg ) );
+				$list[] = $this->createListItem( array( "$section-admin-deprecation-notice-config-removal", '$' . $setting, $msg ) );
 			}
 		}
 
-		if ( $list !== [] && ( $mList = $this->mergeList( 'smw-admin-deprecation-notice-title-removal', $list ) ) !== null ) {
+		if ( $list !== [] && ( $mList = $this->mergeList( "$section-admin-deprecation-notice-title-removal", $section, $list ) ) !== null ) {
 			$noticeList[] = $mList;
 		}
 
 		return $noticeList;
 	}
 
-	private function mergeList( $title, &$list ) {
+	private function mergeList( $title, $section, &$list ) {
 
 		if ( $list === array() || ( $items = implode( '', $list ) ) === '' ) {
 			return;
@@ -183,7 +211,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		) . Html::rawElement(
 			'p',
 			[
-				'class' => 'smw-admin-deprecation-notice-section-explanation',
+				'class' => "$section-admin-deprecation-notice-section-explanation",
 				'style' => 'margin-bottom:10px;'
 			],
 			$this->msg( $title . '-explanation' )

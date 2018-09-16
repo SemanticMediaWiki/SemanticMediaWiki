@@ -483,7 +483,7 @@ class Settings extends Options {
 
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
-		$GLOBALS['smwgDeprecationNotices'] = array(
+		$GLOBALS['smwgDeprecationNotices']['smw'] = array(
 			'notice' => array(
 				'smwgAdminRefreshStore' => '3.1.0',
 				'smwgQueryDependencyPropertyExemptionlist' => '3.1.0',
