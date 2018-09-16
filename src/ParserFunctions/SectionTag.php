@@ -40,6 +40,27 @@ class SectionTag {
 	/**
 	 * @since 3.0
 	 *
+	 * @param Parser $parser
+	 * @param boolean $supportSectionTag
+	 *
+	 * @return boolean
+	 */
+	public static function register( Parser $parser, $supportSectionTag = true ) {
+
+		if ( $supportSectionTag === false ) {
+			return false;
+		}
+
+		$parser->setHook( 'section', function( $input, array $args, Parser $parser, PPFrame $frame ) {
+			return ( new self( $parser, $frame ) )->parse( $input, $args );
+		} );
+
+		return true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param string $input
 	 * @param array $args
 	 *
