@@ -471,7 +471,7 @@ return array(
 		'type' => 200,
 		'concept' => 250,
 		'property' => 20,
-		'errorlist' => 25,
+		'errorlist' => 20,
 
 		// Special:Browse
 		'browse' => [

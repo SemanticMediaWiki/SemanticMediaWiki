@@ -15,6 +15,7 @@ use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\MediaWiki\Specials\Ask\UrlArgs;
+use SMW\MediaWiki\Specials\Ask\HtmlForm;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
 use SMW\Query\RemoteRequest;
@@ -27,6 +28,7 @@ use SMWQueryProcessor as QueryProcessor;
 use SMWQueryResult as QueryResult;
 use SpecialPage;
 use SMW\Utils\HtmlTabs;
+use SMW\Message;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing
@@ -282,6 +284,8 @@ class SpecialAsk extends SpecialPage {
 
 		$result = '';
 		$res = null;
+		$settings = ApplicationFactory::getInstance()->getSettings();
+		$queryobj = null;
 
 		$navigation = '';
 		$urlArgs = $this->newUrlArgs();
@@ -289,12 +293,9 @@ class SpecialAsk extends SpecialPage {
 		$isFromCache = false;
 		$duration = 0;
 
-		$queryLink = null;
 		$error = '';
 
 		if ( $this->queryString !== '' ) {
-
-			list( $res, $debug, $duration, $queryobj, $native_result ) = $this->getQueryResult();
 
 			$printer = QueryProcessor::getResultPrinter(
 				$this->parameters['format'],
@@ -302,70 +303,12 @@ class SpecialAsk extends SpecialPage {
 			);
 
 			$printer->setShowErrors( false );
-			$hidequery = $this->getRequest()->getVal( 'eq' ) == 'no';
-			$request_type = $this->getRequest()->getVal( 'request_type', '' );
 
-			if ( isset( $this->parameters['request_type'] ) ) {
-				$request_type = $this->parameters['request_type'];
-			}
-
-			if ( !$printer->isExportFormat() ) {
-				if ( $request_type !== '' ) {
-					$this->getOutput()->disable();
-					$query_result = '';
-
-					if ( $res->getCount() > 0 ) {
-
-						if ( $request_type === 'raw' ) {
-							$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_RAW );
-						} else {
-							$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
-						}
-
-					} elseif ( $res->getCountValue() > 0 ) {
-						$query_result = $res->getCountValue();
-					}
-
-					// Don't send an ID for a raw type but for all others add one
-					// so that the `RemoteRequest` can respond appropriately and
-					// filter those back-ends that don't send a clean output.
-					if ( $request_type !== 'raw' ) {
-						$query_result .= RemoteRequest::REQUEST_ID;
-					}
-
-					return print $query_result;
-				} elseif ( ( $res instanceof QueryResult && $res->getCount() > 0 ) || $res instanceof StringResult ) {
-					if ( $this->isEditMode ) {
-						$urlArgs->set( 'eq', 'yes' );
-					} elseif ( $hidequery ) {
-						$urlArgs->set( 'eq', 'no' );
-					}
-
-					$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
-					$result .= is_string( $debug ) ? $debug : '';
-
-					if ( is_array( $query_result ) ) {
-						$result .= $query_result[0];
-					} else {
-						$result .= $query_result;
-					}
-				} else {
-					$result = ErrorWidget::noResult();
-					$result .= is_string( $debug ) ? $debug : '';
-				}
-			}
-
-			if ( $this->getRequest()->getVal( 'score_set', false ) && ( $scoreSet = $res->getScoreSet() ) !== null ) {
-				$table = $scoreSet->asTable( 'sortable wikitable smwtable-striped broadtable' );
-
-				if ( $table !== '' ) {
-					$result .= '<h2>Score set</h2>' . $table;
-				};
-			}
-
-			if ( $native_result !== '' ) {
-				$result .= '<h2>Native result</h2>' . '<pre>' . $native_result . '</pre>';
-			}
+			list( $result, $res, $duration ) = $this->fetchResults(
+				$printer,
+				$queryobj,
+				$urlArgs
+			);
 		}
 
 		if ( isset( $printer ) && $printer->isExportFormat() ) {
@@ -409,15 +352,7 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		if ( $res instanceof QueryResult ) {
-			$navigation = NavigationLinksWidget::navigationLinks(
-				SpecialPage::getSafeTitleFor( 'Ask' ),
-				$urlArgs,
-				$res->getCount(),
-				$res->hasFurtherResults()
-			);
-
 			$isFromCache = $res->isFromCache();
-			$queryLink = QueryLinker::get( $queryobj, $this->parameters );
 			$error = ErrorWidget::queryError( $queryobj );
 		}
 
@@ -426,12 +361,36 @@ class SpecialAsk extends SpecialPage {
 			$isFromCache
 		);
 
-		$form = $this->buildForm(
+		$htmlForm = new HtmlForm(
+			SpecialPage::getSafeTitleFor( 'Ask' )
+		);
+
+		$htmlForm->setParameters( $this->parameters );
+		$htmlForm->setQueryString( $this->queryString );
+		$htmlForm->setQuery( $queryobj );
+
+		$htmlForm->setCallbacks(
+			[
+				'borrowed_msg_handler' => function( &$html, &$searchInfoText ) {
+					return $this->print_borrowed_msg( $html, $searchInfoText );
+				},
+				'code_handler' => function() {
+					return $this->print_code();
+				}
+			]
+		);
+
+		$htmlForm->isPostSubmit(
+			$settings->is( 'smwgSpecialAskFormSubmitMethod', SMW_SASK_SUBMIT_POST )
+		);
+
+		$htmlForm->isEditMode( $this->isEditMode );
+		$htmlForm->isBorrowedMode( $this->isBorrowedMode );
+
+		$form = $htmlForm->getForm(
 			$urlArgs,
-			$queryLink,
-			$navigation,
-			$infoText,
-			$isFromCache
+			$res,
+			$infoText
 		);
 
 		// The overall form is "soft-disabled" so that when JS is fully
@@ -449,6 +408,79 @@ class SpecialAsk extends SpecialPage {
 		$this->getOutput()->addHTML(
 			$html
 		);
+	}
+
+	private function fetchResults( $printer, &$queryobj, &$urlArgs ) {
+
+		list( $res, $debug, $duration, $queryobj, $native_result ) = $this->getQueryResult();
+
+		$hidequery = $this->getRequest()->getVal( 'eq' ) == 'no';
+		$request_type = $this->getRequest()->getVal( 'request_type', '' );
+		$result = '';
+
+		if ( isset( $this->parameters['request_type'] ) ) {
+			$request_type = $this->parameters['request_type'];
+		}
+
+		if ( !$printer->isExportFormat() ) {
+			if ( $request_type !== '' ) {
+				$this->getOutput()->disable();
+				$query_result = '';
+
+				if ( $res->getCount() > 0 ) {
+
+					if ( $request_type === 'raw' ) {
+						$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_RAW );
+					} else {
+						$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
+					}
+
+				} elseif ( $res->getCountValue() > 0 ) {
+					$query_result = $res->getCountValue();
+				}
+
+				// Don't send an ID for a raw type but for all others add one
+				// so that the `RemoteRequest` can respond appropriately and
+				// filter those back-ends that don't send a clean output.
+				if ( $request_type !== 'raw' ) {
+					$query_result .= RemoteRequest::REQUEST_ID;
+				}
+
+				return print $query_result;
+			} elseif ( ( $res instanceof QueryResult && $res->getCount() > 0 ) || $res instanceof StringResult ) {
+				if ( $this->isEditMode ) {
+					$urlArgs->set( 'eq', 'yes' );
+				} elseif ( $hidequery ) {
+					$urlArgs->set( 'eq', 'no' );
+				}
+
+				$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
+				$result .= is_string( $debug ) ? $debug : '';
+
+				if ( is_array( $query_result ) ) {
+					$result .= $query_result[0];
+				} else {
+					$result .= $query_result;
+				}
+			} else {
+				$result = ErrorWidget::noResult();
+				$result .= is_string( $debug ) ? $debug : '';
+			}
+		}
+
+		if ( $this->getRequest()->getVal( 'score_set', false ) && ( $scoreSet = $res->getScoreSet() ) !== null ) {
+			$table = $scoreSet->asTable( 'sortable wikitable smwtable-striped broadtable' );
+
+			if ( $table !== '' ) {
+				$result .= '<h2>Score set</h2>' . $table;
+			};
+		}
+
+		if ( $native_result !== '' ) {
+			$result .= '<h2>Native result</h2>' . '<pre>' . $native_result . '</pre>';
+		}
+
+		return [ $result, $res, $duration ];
 	}
 
 	private function getInfoText( $duration, $isFromCache = false ) {
@@ -469,204 +501,17 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		if ( $duration > 0 ) {
-			$infoText = wfMessage( 'smw-ask-query-search-info', $this->queryString, $querySource, $isFromCache, $duration )->parse();
+			$infoText = Message::get(
+				[ 'smw-ask-query-search-info', $this->queryString, $querySource, $isFromCache, $duration],
+				Message::PARSE,
+				$this->getLanguage()
+			);
 		}
 
 		return $infoText;
 	}
 
-	/**
-	 * Generates the Search Box UI
-	 *
-	 * @param string $printoutstring
-	 * @param string $urltail
-	 *
-	 * @return string
-	 */
-	protected function buildForm( UrlArgs $urlArgs, Infolink $queryLink = null, $navigation = '', $infoText = '', $isFromCache = false ) {
-
-		$html = '';
-		$hideForm = false;
-
-		$settings = ApplicationFactory::getInstance()->getSettings();
-		$title = SpecialPage::getSafeTitleFor( 'Ask' );
-		$urlArgs->set( 'eq', 'yes' );
-
-		$htmlTabs = new HtmlTabs();
-		$htmlTabs->setGroup( 'ask' );
-		$htmlTabs->setActiveTab( 'smw-askt-result' );
-
-		if ( $this->isEditMode ) {
-			$html .= Html::hidden( 'title', $title->getPrefixedDBKey() );
-			$html .= Html::hidden( '_action', 'submit' );
-
-			// Table for main query and printouts.
-			$html .= Html::rawElement(
-				'div',
-				[
-					'id' => 'query',
-					'class' => 'smw-ask-query'
-				],
-				QueryInputWidget::table(
-					$this->queryString,
-					$urlArgs->get( 'po' )
-				)
-			);
-
-			// Format selection
-			$html .= Html::rawElement(
-				'div',
-				[
-					'id' => 'format',
-					'class' => "smw-ask-format"
-				],
-				''
-			);
-
-			// Other options fieldset
-			$html .= Html::rawElement(
-				'div',
-				[
-					'id' => 'options',
-					'class' => 'smw-ask-options'
-				],
-				ParametersWidget::fieldset(
-					$title,
-					$this->parameters
-				)
-			);
-
-			$urlArgs->set( 'eq', 'no' );
-			$hideForm = true;
-		}
-
-		$isEmpty = $queryLink === null;
-		$editLink = $title->getLocalURL( $urlArgs );
-
-		// Submit
-		$html .= LinksWidget::resultSubmitLink(
-			$hideForm
-		);
-
-		if ( !$this->isEditMode && !$isEmpty ) {
-			$htmlTabs->tab( 'smw-askt-edit', LinksWidget::editLink( $editLink ), [ 'hide' => $this->isBorrowedMode, 'class' => 'edit-action' ] );
-		} elseif ( !$isEmpty ) {
-			$htmlTabs->tab( 'smw-askt-compact', LinksWidget::hideLink( $editLink ), [ 'hide' => $this->isBorrowedMode, 'class' => 'compact-action' ] );
-		}
-
-		$htmlTabs->tab(
-			'smw-askt-result',
-			wfMessage( 'smw-ask-tab-result' )->text(),
-			[ 'hide' => $isEmpty, 'class' => $isFromCache ? ' result-cache' : '' ]
-		);
-
-		$links = [];
-
-		$htmlTabs->tab(
-			'smw-askt-code',
-			wfMessage( 'smw-ask-tab-code' )->text(),
-			[ 'hide' => $this->isBorrowedMode || $isEmpty ]
-		);
-
-		$htmlTabs->content(
-			'smw-askt-code',
-			'<div style="margin-top:15px; margin-bottom:15px;">' .
-			LinksWidget::embeddedCodeBlock(	$this->getQueryAsCodeString(), true ) . '</div>'
-		);
-
-		$clipboardLink = LinksWidget::clipboardLink( $queryLink );
-
-		$htmlTabs->tab(
-			'smw-askt-clipboard',
-			$clipboardLink,
-			[ 'hide' => $clipboardLink === '', 'class' => 'clipboard-bookmark smw-tab-right' ]
-		);
-
-		if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
-			$debugLink = LinksWidget::debugLink( $title, $urlArgs, $isEmpty, true );
-
-			$htmlTabs->tab(
-				'smw-askt-debug',
-				$debugLink,
-				[ 'hide' => $debugLink === '' || !$this->isEditMode , 'class' => 'smw-tab-right' ]
-			);
-		}
-
-		$this->applyFinalOutputChanges(
-			$links,
-			$infoText
-		);
-
-		$basicLinks = NavigationLinksWidget::basicLinks(
-			$navigation,
-			$infoText,
-			$queryLink,
-			!$this->isBorrowedMode ? $editLink : ''
-		);
-
-		$htmlTabs->content( 'smw-askt-result', $basicLinks );
-
-		if ( !$isEmpty ) {
-			$htmlTabs->tab(
-				'smw-askt-extra',
-				wfMessage( 'smw-ask-tab-extra' )->text(),
-				[ 'class' => 'smw-tab-right' ]
-			);
-
-			if ( is_array( $links ) ) {
-				$links[] = $infoText;
-
-				// External source cannot disable the cache
-				if ( isset( $this->parameters['source'] ) && $this->parameters['source'] !== '' ) {
-					$isFromCache = false;
-				}
-
-				if ( ( $noCacheLink = LinksWidget::noQCacheLink( $title, $urlArgs, $isFromCache ) ) !== '' ) {
-					$links[] = $noCacheLink;
-				}
-
-				$infoText = '<ul><li>' . implode( '</li><li>', $links ) . '</li></ul>';
-			} else {
-				$infoText = $links;
-			}
-
-			$htmlTabs->content(
-				'smw-askt-extra',
-				'<div style="margin-top:15px;margin-bottom:20px;">' . $infoText . '</div>'
-			);
-		}
-
-		$html .= $htmlTabs->buildHTML(
-			[
-				'id' => 'search',
-				'class' => $this->isEditMode ? 'smw-ask-search-edit' . ( $isEmpty ? ' empty-result' : '' ) : 'smw-ask-search-compact'
-			]
-		);
-
-		// Use POST instead of GET since only POST allows to attach a fragment
-		// to jump to the actual result and avoid scrolling
-		if ( $settings->is( 'smwgSpecialAskFormSubmitMethod', SMW_SASK_SUBMIT_POST ) ) {
-			$params = [
-				'action' => $title->getLocalUrl( wfArrayToCGI( $urlArgs ) . '#search' ),
-				'name' => 'ask',
-				'method' => 'post'
-			];
-		} else {
-			$params = [
-				'action' => $GLOBALS['wgScript'],
-				'name' => 'ask',
-				'method' => 'get'
-			];
-		}
-
-		return Html::rawElement(
-			'form',
-			$params,
-			$html
-		);
-	}
-
-	private function getQueryAsCodeString() {
+	private function print_code() {
 
 		$code = $this->queryString ? htmlspecialchars( $this->queryString ) . "\n" : "\n";
 
@@ -691,7 +536,7 @@ class SpecialAsk extends SpecialPage {
 		return '{{#ask: ' . $code . '}}';
 	}
 
-	private function applyFinalOutputChanges( &$html, &$searchInfoText ) {
+	private function print_borrowed_msg( &$html, &$searchInfoText ) {
 
 		if ( !$this->isBorrowedMode ) {
 			return;
@@ -778,7 +623,7 @@ class SpecialAsk extends SpecialPage {
 		$queryobj = null;
 		$native_result = '';
 
-		// Copy the printout to retain the orginal state while in case of no
+		// Copy the printout to retain the original state while in case of no
 		// specific subject (THIS) request extend the query with a
 		// `PrintRequest::PRINT_THIS` column
 
@@ -863,6 +708,5 @@ class SpecialAsk extends SpecialPage {
 
 		return [ $res, $debug, $duration, $queryobj, $native_result ];
 	}
-
 
 }

@@ -74,13 +74,13 @@ div#query legend {
 	border-right: 3px solid #fff;
 }
 
-.smw-ask-actions-nav, .smw-ask-actions-compact-nav {
+.smw-ask-actions-nav {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 }
 
-.smw-ask-actions-compact-nav, .smw-ask-button-submit {
+.smw-ask-actions-nav, .smw-ask-button-submit {
 	margin-top: 15px;
 }
 
@@ -632,7 +632,7 @@ display: inline-block;
 		margin-bottom: 10px;
 	}
 
-	.smw-ask-actions-nav, .smw-ask-actions-compact-nav {
+	.smw-ask-actions-nav {
 		flex-direction: column;
 	}
 
