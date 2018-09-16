@@ -740,6 +740,31 @@ class SMWSql3SmwIds {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $title
+	 * @param integer $namespace
+	 * @param string $iw
+	 */
+	public function findAssociatedRev( $title, $namespace, $iw = '' ) {
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$row = $connection->selectRow(
+			self::TABLE_NAME,
+			'smw_rev',
+			[
+				"smw_title =" . $connection->addQuotes( $title ),
+				"smw_namespace =" . $connection->addQuotes( $namespace ),
+				"smw_iw =" . $connection->addQuotes( $iw ),
+				"smw_subobject =''"
+			],
+			__METHOD__
+		);
+
+		return $row === false ? 0 : $row->smw_rev;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param integer $sid
 	 * @param integer $sid
 	 */

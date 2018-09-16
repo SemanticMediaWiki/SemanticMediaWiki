@@ -451,6 +451,66 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$instance->warmUpCache( [ new DIWikiPage( 'Bar', NS_MAIN ) ] );
 	}
 
+	public function testFindAssociatedRev() {
+
+		$row = [
+			'smw_id' => 42,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => '',
+			'smw_sortkey' => 'Foo',
+			'smw_sort' => '',
+			'smw_rev' => 1001,
+		];
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->will( $this->returnValue( $this->cache ) );
+
+		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$factory->expects( $this->any() )
+			->method( 'newIdCacheManager' )
+			->will( $this->returnValue( $idCacheManager ) );
+
+		$factory->expects( $this->any() )
+			->method( 'newIdEntityFinder' )
+			->will( $this->returnValue( $this->idEntityFinder ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( (object)$row ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$factory
+		);
+
+		$this->assertEquals(
+			1001,
+			$instance->findAssociatedRev( 'Foo', NS_MAIN, '', '' )
+		);
+	}
+
 	public function pageIdandSortProvider() {
 
 		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', false, false );

@@ -1,9 +1,17 @@
 {
-	"description": "Test output of `Special:WantedProperties` (`wgContLang=en`, `wgLang=en`, skip-on sqlite, 1.19)",
+	"description": "Test output of `Special:WantedProperties` (`wgContLang=en`, `wgLang=en`, skip-on sqlite)",
 	"setup": [
 		{
 			"page": "Example/S0006/1",
 			"contents": "[[Has property without type::123]]"
+		},
+		{
+			"page": "Example/S0006/2",
+			"contents": "[[Has property without type::456]]"
+		},
+		{
+			"page": "Example/S0006/3",
+			"contents": "[[Has property without type::789]]"
 		}
 	],
 	"beforeTest": {
@@ -33,8 +41,7 @@
 	},
 	"meta": {
 		"skip-on": {
-			"sqlite": "Returns a `database is locked`",
-			"mw-1.19.20": "The table update on 1.19 lacks behind"
+			"sqlite": "Returns a `database is locked`"
 		},
 		"version": "2",
 		"is-incomplete": false,

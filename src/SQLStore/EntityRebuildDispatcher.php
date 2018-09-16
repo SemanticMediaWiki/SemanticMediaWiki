@@ -462,6 +462,10 @@ class EntityRebuildDispatcher {
 		$hash = $title->getDBKey() . '#' . $title->getNamespace();
 		$this->lru->set( $hash, true );
 
+		if ( isset( $this->options['revision-mode'] ) && $this->options['revision-mode'] && !$this->options['force-update'] && $this->matchesLatestRevID( $title, $row ) ) {
+			return $this->dispatchedEntities[] = array( 'skipped' => $title->getPrefixedDBKey() );
+		}
+
 		$params = [
 			'origin' => 'EntityRebuildDispatcher'
 		];
@@ -478,6 +482,23 @@ class EntityRebuildDispatcher {
 		);
 
 		$this->updateJobs[] = $updateJob;
+	}
+
+	private function matchesLatestRevID( $title, $row = false ) {
+
+		$latestRevID = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+
+		if ( $row !== false ) {
+			return $latestRevID == $row->smw_rev;
+		};
+
+		$rev = $this->store->getObjectIds()->findAssociatedRev(
+			$title->getDBKey(),
+			$title->getNamespace(),
+			$title->getInterwiki()
+		);
+
+		return $latestRevID == $rev;
 	}
 
 }

@@ -90,8 +90,11 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'dispose-outdated', 'Only Remove outdated marked entities (including pending references).', false );
 
 		$this->addOption( 'skip-properties', 'Skip the default properties rebuild (only recommended when successive build steps are used)', false );
-		$this->addOption( 'shallow-update', 'Skip processing of entitites that compare to the last known revision date', false );
+		$this->addOption( 'shallow-update', 'Skip processing of entities that compare to the last known revision date', false );
 		$this->addOption( 'property-statistics', 'Execute `rebuildPropertyStatistics` after the `rebuildData` run has finished.', false );
+
+		$this->addOption( 'force-update', 'Force an update even when an associated revision is known', false );
+		$this->addOption( 'revision-mode', 'Skip entities where its associated revision matches the latests referenced revision of an associated page', false );
 
 		$this->addOption( 'ignore-exceptions', 'Ignore exceptions and log exception to a file', false );
 		$this->addOption( 'exception-log', 'Exception log file location (e.g. /tmp/logs/)', false, true );
