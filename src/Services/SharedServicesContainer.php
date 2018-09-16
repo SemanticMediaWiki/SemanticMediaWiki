@@ -26,7 +26,7 @@ use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
-use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\TitleFactory;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
 use SMW\Parser\LinksProcessor;
@@ -197,9 +197,9 @@ class SharedServicesContainer implements CallbackContainer {
 			return new ManualEntryLogger();
 		} );
 
-		$containerBuilder->registerCallback( 'TitleCreator', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'TitleCreator', '\SMW\MediaWiki\TitleCreator' );
-			return new TitleCreator();
+		$containerBuilder->registerCallback( 'TitleFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'TitleFactory', '\SMW\MediaWiki\TitleFactory' );
+			return new TitleFactory();
 		} );
 
 		$containerBuilder->registerCallback( 'ContentParser', function( $containerBuilder, \Title $title ) {

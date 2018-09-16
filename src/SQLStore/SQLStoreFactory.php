@@ -294,7 +294,10 @@ class SQLStoreFactory {
 	 * @return EntityRebuildDispatcher
 	 */
 	public function newEntityRebuildDispatcher() {
-		return new EntityRebuildDispatcher( $this->store );
+		return new EntityRebuildDispatcher(
+			$this->store,
+			ApplicationFactory::getInstance()->newTitleFactory()
+		);
 	}
 
 	/**

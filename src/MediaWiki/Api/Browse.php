@@ -238,7 +238,7 @@ class Browse extends ApiBase {
 		$articleLookup = new ArticleLookup(
 			$connection,
 			new ArticleAugmentor(
-				$applicationFactory->create( 'TitleCreator' )
+				$applicationFactory->create( 'TitleFactory' )
 			)
 		);
 

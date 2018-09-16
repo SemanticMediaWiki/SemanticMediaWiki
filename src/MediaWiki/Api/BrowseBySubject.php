@@ -77,7 +77,7 @@ class BrowseBySubject extends ApiBase {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$title = $applicationFactory->newTitleCreator()->createFromText(
+		$title = $applicationFactory->newTitleFactory()->newFromText(
 			$params['subject'],
 			$params['ns']
 		);

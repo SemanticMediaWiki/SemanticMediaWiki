@@ -7,7 +7,7 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
 use SMW\ApplicationFactory;
 use SMW\Options;
@@ -29,9 +29,9 @@ class DistinctEntityDataRebuilder {
 	private $store;
 
 	/**
-	 * @var TitleCreator
+	 * @var TitleFactory
 	 */
-	private $titleCreator;
+	private $titleFactory;
 
 	/**
 	 * @var Options
@@ -62,11 +62,11 @@ class DistinctEntityDataRebuilder {
 	 * @since 2.4
 	 *
 	 * @param Store $store
-	 * @param TitleCreator $titleCreator
+	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( Store $store, TitleCreator $titleCreator ) {
+	public function __construct( Store $store, TitleFactory $titleFactory ) {
 		$this->store = $store;
-		$this->titleCreator = $titleCreator;
+		$this->titleFactory = $titleFactory;
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
@@ -271,7 +271,7 @@ class DistinctEntityDataRebuilder {
 				}
 
 				if ( !$page instanceof Title ) {
-					$page = $this->titleCreator->createFromText( $page );
+					$page = $this->titleFactory->newFromText( $page );
 				}
 
 				$id = $page->getPrefixedDBkey();

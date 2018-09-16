@@ -11,7 +11,7 @@ use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
-use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\TitleFactory;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMW\Services\SharedServicesContainer;
 use SMWQueryParser as QueryParser;
@@ -240,10 +240,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @return TitleCreator
+	 * @return TitleFactory
 	 */
-	public function newTitleCreator() {
-		return $this->containerBuilder->create( 'TitleCreator', $this->newPageCreator() );
+	public function newTitleFactory() {
+		return $this->containerBuilder->create( 'TitleFactory', $this->newPageCreator() );
 	}
 
 	/**

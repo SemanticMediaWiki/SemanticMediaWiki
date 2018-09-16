@@ -17,13 +17,13 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			ArticleAugmentor::class,
-			new ArticleAugmentor( $titleCreator )
+			new ArticleAugmentor( $titleFactory )
 		);
 	}
 
@@ -68,17 +68,17 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getFullText' )
 			->will( $this->returnValue( 'NS:FOO' ) );
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$titleCreator->expects( $this->any() )
+		$titleFactory->expects( $this->any() )
 			->method( 'newFromID' )
 			->with(	$this->equalTo( 42 ) )
 			->will( $this->returnValue( $title ) );
 
 		$instance = new ArticleAugmentor(
-			$titleCreator
+			$titleFactory
 		);
 
 		$instance->augment( $res, $parameters );
@@ -130,17 +130,17 @@ class ArticleAugmentorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getFullURL' )
 			->will( $this->returnValue( 'http://example.org/FOO' ) );
 
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$titleCreator->expects( $this->any() )
+		$titleFactory->expects( $this->any() )
 			->method( 'newFromID' )
 			->with(	$this->equalTo( 42 ) )
 			->will( $this->returnValue( $title ) );
 
 		$instance = new ArticleAugmentor(
-			$titleCreator
+			$titleFactory
 		);
 
 		$instance->augment( $res, $parameters );

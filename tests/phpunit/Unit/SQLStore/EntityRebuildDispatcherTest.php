@@ -19,6 +19,7 @@ use SMW\Tests\TestEnvironment;
 class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $titleFactory;
 
 	protected function setUp() {
 		parent::setUp();
@@ -33,6 +34,10 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -76,7 +81,7 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\EntityRebuildDispatcher',
-			new EntityRebuildDispatcher( $store )
+			new EntityRebuildDispatcher( $store, $this->titleFactory )
 		);
 	}
 
@@ -84,6 +89,10 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider idProvider
 	 */
 	public function testDispatchRebuildForSingleIteration( $id, $expected ) {
+
+		$this->titleFactory->expects( $this->any() )
+			->method( 'newFromIDs' )
+			->will( $this->returnValue( [] ) );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -106,7 +115,10 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new EntityRebuildDispatcher( $store );
+		$instance = new EntityRebuildDispatcher(
+			$store,
+			$this->titleFactory
+		);
 
 		$instance->setDispatchRangeLimit( 1 );
 		$instance->setOptions(
@@ -131,6 +143,22 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRevisionMode() {
 
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$this->titleFactory->expects( $this->any() )
+			->method( 'newFromIDs' )
+			->will( $this->returnValue( [ $title ] ) );
+
 		$row = [
 			'smw_id' => 9999999999999999,
 			'smw_title' => 'Foo',
@@ -145,8 +173,9 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$idTable->expects( $this->any() )
+		$idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
+			->with( $this->equalTo( 'Foo' ) )
 			->will( $this->returnValue( 1001 ) );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -174,7 +203,10 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$instance = new EntityRebuildDispatcher( $store );
+		$instance = new EntityRebuildDispatcher(
+			$store,
+			$this->titleFactory
+		);
 
 		$instance->setDispatchRangeLimit( 1 );
 		$instance->setOptions(

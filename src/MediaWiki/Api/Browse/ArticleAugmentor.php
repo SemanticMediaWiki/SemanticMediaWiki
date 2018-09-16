@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\TitleFactory;
 use Title;
 
 /**
@@ -14,17 +14,17 @@ use Title;
 class ArticleAugmentor {
 
 	/**
-	 * @var TitleCreator
+	 * @var TitleFactory
 	 */
-	private $titleCreator;
+	private $titleFactory;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param TitleCreator $titleCreator
+	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( TitleCreator $titleCreator ) {
-		$this->titleCreator = $titleCreator;
+	public function __construct( TitleFactory $titleFactory ) {
+		$this->titleFactory = $titleFactory;
 	}
 
 	/**
@@ -45,7 +45,7 @@ class ArticleAugmentor {
 
 			foreach ( $res['query'] as $key => &$value ) {
 
-				$title = $this->titleCreator->newFromID( $value['id'] );
+				$title = $this->titleFactory->newFromID( $value['id'] );
 
 				if ( isset( $parameters['fullText' ] ) ) {
 					$value['fullText'] = $title->getFullText();

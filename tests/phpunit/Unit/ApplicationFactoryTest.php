@@ -97,11 +97,11 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructTitleCreator() {
+	public function testCanConstructTitleFactory() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\TitleCreator',
-			$this->applicationFactory->newTitleCreator()
+			'\SMW\MediaWiki\TitleFactory',
+			$this->applicationFactory->newTitleFactory()
 		);
 	}
 
