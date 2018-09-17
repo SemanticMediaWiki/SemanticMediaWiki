@@ -44,7 +44,7 @@ class JobFactory {
 	 * @return Job
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, Title $title = null, array $parameters = array() ) {
+	public function newByType( $type, Title $title = null, array $parameters = [] ) {
 
 		if ( $title === null ) {
 			return new NullJob( null );
@@ -97,7 +97,7 @@ class JobFactory {
 	 *
 	 * @return RefreshJob
 	 */
-	public function newRefreshJob( Title $title, array $parameters = array() ) {
+	public function newRefreshJob( Title $title, array $parameters = [] ) {
 		return new RefreshJob( $title, $parameters );
 	}
 
@@ -109,7 +109,7 @@ class JobFactory {
 	 *
 	 * @return UpdateJob
 	 */
-	public function newUpdateJob( Title $title, array $parameters = array() ) {
+	public function newUpdateJob( Title $title, array $parameters = [] ) {
 		return new UpdateJob( $title, $parameters );
 	}
 
@@ -121,7 +121,7 @@ class JobFactory {
 	 *
 	 * @return UpdateDispatcherJob
 	 */
-	public function newUpdateDispatcherJob( Title $title, array $parameters = array() ) {
+	public function newUpdateDispatcherJob( Title $title, array $parameters = [] ) {
 		return new UpdateDispatcherJob( $title, $parameters );
 	}
 
@@ -133,7 +133,7 @@ class JobFactory {
 	 *
 	 * @return ParserCachePurgeJob
 	 */
-	public function newParserCachePurgeJob( Title $title, array $parameters = array() ) {
+	public function newParserCachePurgeJob( Title $title, array $parameters = [] ) {
 		return new ParserCachePurgeJob( $title, $parameters );
 	}
 
@@ -145,7 +145,7 @@ class JobFactory {
 	 *
 	 * @return FulltextSearchTableUpdateJob
 	 */
-	public function newFulltextSearchTableUpdateJob( Title $title, array $parameters = array() ) {
+	public function newFulltextSearchTableUpdateJob( Title $title, array $parameters = [] ) {
 		return new FulltextSearchTableUpdateJob( $title, $parameters );
 	}
 
@@ -157,7 +157,7 @@ class JobFactory {
 	 *
 	 * @return EntityIdDisposerJob
 	 */
-	public function newEntityIdDisposerJob( Title $title, array $parameters = array() ) {
+	public function newEntityIdDisposerJob( Title $title, array $parameters = [] ) {
 		return new EntityIdDisposerJob( $title, $parameters );
 	}
 
@@ -169,7 +169,7 @@ class JobFactory {
 	 *
 	 * @return PropertyStatisticsRebuildJob
 	 */
-	public function newPropertyStatisticsRebuildJob( Title $title, array $parameters = array() ) {
+	public function newPropertyStatisticsRebuildJob( Title $title, array $parameters = [] ) {
 		return new PropertyStatisticsRebuildJob( $title, $parameters );
 	}
 
@@ -181,7 +181,7 @@ class JobFactory {
 	 *
 	 * @return FulltextSearchTableRebuildJob
 	 */
-	public function newFulltextSearchTableRebuildJob( Title $title, array $parameters = array() ) {
+	public function newFulltextSearchTableRebuildJob( Title $title, array $parameters = [] ) {
 		return new FulltextSearchTableRebuildJob( $title, $parameters );
 	}
 
@@ -193,7 +193,7 @@ class JobFactory {
 	 *
 	 * @return ChangePropagationDispatchJob
 	 */
-	public function newChangePropagationDispatchJob( Title $title, array $parameters = array() ) {
+	public function newChangePropagationDispatchJob( Title $title, array $parameters = [] ) {
 		return new ChangePropagationDispatchJob( $title, $parameters );
 	}
 
@@ -205,7 +205,7 @@ class JobFactory {
 	 *
 	 * @return ChangePropagationUpdateJob
 	 */
-	public function newChangePropagationUpdateJob( Title $title, array $parameters = array() ) {
+	public function newChangePropagationUpdateJob( Title $title, array $parameters = [] ) {
 		return new ChangePropagationUpdateJob( $title, $parameters );
 	}
 
@@ -217,7 +217,7 @@ class JobFactory {
 	 *
 	 * @return ChangePropagationClassUpdateJob
 	 */
-	public function newChangePropagationClassUpdateJob( Title $title, array $parameters = array() ) {
+	public function newChangePropagationClassUpdateJob( Title $title, array $parameters = [] ) {
 		return new ChangePropagationClassUpdateJob( $title, $parameters );
 	}
 

@@ -44,7 +44,7 @@ class CompatibilityMode {
 	public static function enableTemporaryCliUpdateMode() {
 		$GLOBALS['smwgSemanticsEnabled'] = true;
 		ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticsEnabled', true );
-		ApplicationFactory::getInstance()->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
+		ApplicationFactory::getInstance()->getSettings()->set( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 	}
 
 	/**
@@ -52,19 +52,19 @@ class CompatibilityMode {
 	 */
 	public static function disableSemantics() {
 
-		$disabledSettings = array(
+		$disabledSettings = [
 			'smwgSemanticsEnabled' => false,
-			'smwgNamespacesWithSemanticLinks' => array(),
+			'smwgNamespacesWithSemanticLinks' => [],
 			'smwgQEnabled' => false,
 			'smwgAutoRefreshOnPurge' => false,
 			'smwgAutoRefreshOnPageMove' => false,
 			'smwgFactboxCacheRefreshOnPurge' => false,
 			'smwgAdminFeatures' => false,
-			'smwgPageSpecialProperties' => array(),
+			'smwgPageSpecialProperties' => [],
 			'smwgEnableUpdateJobs' => false,
 			'smwgEnabledEditPageHelp' => false,
 			'smwgParserFeatures' => SMW_PARSER_NONE,
-		);
+		];
 
 		foreach ( $disabledSettings as $key => $value) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );

@@ -82,7 +82,7 @@ class AllowsListValueParser implements ValueParser {
 	private function parse_contents( $userValue, $contents ) {
 
 		if ( $contents === '' ) {
-			return $this->errors[] = array( 'smw-datavalue-allows-value-list-unknown', $userValue );
+			return $this->errors[] = [ 'smw-datavalue-allows-value-list-unknown', $userValue ];
 		}
 
 		if ( $contents{0} === '{' && ( $list = json_decode( $contents, true ) ) && is_array( $list ) ) {
@@ -118,7 +118,7 @@ class AllowsListValueParser implements ValueParser {
 		}
 
 		if ( $list === [] ) {
-			$this->errors[] = array( 'smw-datavalue-allows-value-list-missing-marker', $userValue );
+			$this->errors[] = [ 'smw-datavalue-allows-value-list-missing-marker', $userValue ];
 		}
 
 		return $list;

@@ -137,8 +137,8 @@ class CachingSemanticDataLookup {
 		// by profiling runtimes for large inline queries and heavily annotated
 		// pages. However, things might have changed in the meantime ...
 		if ( ( count( self::$data ) > 20 ) && ( self::$lookupCount == 1 ) ) {
-			self::$data = array( $id => self::$data[$id] );
-			self::$state = array( $id => self::$state[$id] );
+			self::$data = [ $id => self::$data[$id] ];
+			self::$state = [ $id => self::$state[$id] ];
 		}
 	}
 

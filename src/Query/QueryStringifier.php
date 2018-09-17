@@ -106,7 +106,7 @@ class QueryStringifier {
 
 	private static function printouts( $query, $showParams = false ) {
 
-		$printouts = array();
+		$printouts = [];
 
 		if ( $query->getExtraPrintouts() === null ) {
 			return $printouts;
@@ -123,11 +123,11 @@ class QueryStringifier {
 
 	private static function sortKeys( $query ) {
 
-		$sort = array();
-		$order = array();
+		$sort = [];
+		$order = [];
 
 		if ( $query->getSortKeys() === null ) {
-			return array( $sort, $order );
+			return [ $sort, $order ];
 		}
 
 		foreach ( $query->getSortKeys() as $key => $value ) {
@@ -140,7 +140,7 @@ class QueryStringifier {
 			$order[] = strtolower( $value );
 		}
 
-		return array( $sort, $order );
+		return [ $sort, $order ];
 	}
 
 }

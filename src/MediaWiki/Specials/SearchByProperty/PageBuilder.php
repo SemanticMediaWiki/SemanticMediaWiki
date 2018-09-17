@@ -91,13 +91,13 @@ class PageBuilder {
 
 		$pageDescription = Html::rawElement(
 			'p',
-			array( 'class' => 'smw-sp-searchbyproperty-description' ),
+			[ 'class' => 'smw-sp-searchbyproperty-description' ],
 			$this->messageBuilder->getMessage( 'smw-sp-searchbyproperty-description' )->parse()
 		);
 
 		$resultListHeader = Html::element(
 			'h2',
-			array(),
+			[],
 			$this->messageBuilder->getMessage( 'smw-sp-searchbyproperty-resultlist-header' )->text()
 		);
 
@@ -143,16 +143,16 @@ class PageBuilder {
 		$resultMessage = '';
 
 		if ( $this->pageRequestOptions->propertyString === '' || !$this->pageRequestOptions->propertyString ) {
-			return array( $this->messageBuilder->getMessage( 'smw_sbv_docu' )->text(), '', 0 );
+			return [ $this->messageBuilder->getMessage( 'smw_sbv_docu' )->text(), '', 0 ];
 		}
 
 		// #1728
 		if ( !$this->pageRequestOptions->property->isValid() ) {
-			return array( ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->property->getErrors() ), '', 0 );
+			return [ ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->property->getErrors() ), '', 0 ];
 		}
 
 		if ( $this->pageRequestOptions->valueString !== '' && !$this->pageRequestOptions->value->isValid() ) {
-			return array( ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->value->getErrors() ), '', 0 );
+			return [ ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->value->getErrors() ), '', 0 ];
 		}
 
 		// Find out where the subject is used in connection with a query
@@ -160,7 +160,7 @@ class PageBuilder {
 			$exactResults = $this->queryResultLookup->doQueryLinksReferences( $this->pageRequestOptions );
 			$exactCount = count( $exactResults );
 			$resultList = $this->makeResultList( $exactResults, $this->pageRequestOptions->limit, true );
-			return array( str_replace( '_', ' ', $resultMessage ), $resultList, $exactCount );
+			return [ str_replace( '_', ' ', $resultMessage ), $resultList, $exactCount ];
 		}
 
 		$exactResults = $this->queryResultLookup->doQuery( $this->pageRequestOptions );
@@ -185,7 +185,7 @@ class PageBuilder {
 			$resultList = $this->makeResultList( $exactResults, $this->pageRequestOptions->limit, true );
 		}
 
-		return array( str_replace( '_', ' ', $resultMessage ), $resultList, $exactCount );
+		return [ str_replace( '_', ' ', $resultMessage ), $resultList, $exactCount ];
 	}
 
 	private function getNearbyResults( $exactResults, $exactCount ) {
@@ -224,7 +224,7 @@ class PageBuilder {
 		}
 
 		if ( ( $greaterCount + $smallerCount + $exactCount ) == 0 ) {
-			return array( '', $resultList, 0 );
+			return [ '', $resultList, 0 ];
 		}
 
 		$resultMessage = $this->messageBuilder->getMessage(
@@ -244,7 +244,7 @@ class PageBuilder {
 
 		$resultList .= $this->makeResultList( $greaterResults, $greaterCount, true );
 
-		return array( $resultMessage, $resultList, $greaterCount + $exactCount );
+		return [ $resultMessage, $resultList, $greaterCount + $exactCount ];
 	}
 
 	/**
@@ -354,7 +354,7 @@ class PageBuilder {
 
 		if ( !$dataItem instanceof DIWikiPage ) {
 			$resultMessage = 'No reference found.';
-			return array( $resultMessage, $resultList, $resultCount );
+			return [ $resultMessage, $resultList, $resultCount ];
 		}
 
 		// In case the item has already been marked as deleted but is yet pending
@@ -382,7 +382,7 @@ class PageBuilder {
 			)->getHTML( $this->linker );
 		}
 
-		return array( $resultMessage, $resultList, $resultCount );
+		return [ $resultMessage, $resultList, $resultCount ];
 	}
 
 	private function isAskQueryLinksRelatedRequest() {

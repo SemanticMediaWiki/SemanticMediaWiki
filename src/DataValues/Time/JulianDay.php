@@ -176,7 +176,7 @@ class JulianDay implements CalendarModel {
 
 		$year  = ( $year < 1 ) ? ( $year - 1 ) : $year; // correct "year 0" to -1 (= 1 BC(E))
 
-		return array( $calendarModel, $year, $month, $day );
+		return [ $calendarModel, $year, $month, $day ];
 	}
 
 	/**
@@ -194,7 +194,7 @@ class JulianDay implements CalendarModel {
 		$time = $time - $hours * 3600;
 		$minutes = floor( $time / 60 );
 		$seconds = floor( $time - $minutes * 60 );
-		return array( $hours, $minutes, $seconds );
+		return [ $hours, $minutes, $seconds ];
 	}
 
 }

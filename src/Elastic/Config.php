@@ -55,7 +55,7 @@ class Config extends Options {
 			return false;
 		}
 
-		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, realpath( $file ) );
+		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, realpath( $file ) );
 
 		if ( is_readable( $file ) ) {
 			return file_get_contents( $file );

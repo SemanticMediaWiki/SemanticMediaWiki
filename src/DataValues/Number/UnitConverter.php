@@ -35,17 +35,17 @@ class UnitConverter {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var array
 	 */
-	private $unitIds = array();
+	private $unitIds = [];
 
 	/**
 	 * @var array
 	 */
-	private $unitFactors = array();
+	private $unitFactors = [];
 
 	/**
 	 * @var false|string
@@ -55,7 +55,7 @@ class UnitConverter {
 	/**
 	 * @var array
 	 */
-	protected $prefixalUnitPreference = array();
+	protected $prefixalUnitPreference = [];
 
 	/**
 	 * @since 2.4
@@ -124,11 +124,11 @@ class UnitConverter {
 	 */
 	public function fetchConversionData( DIProperty $property ) {
 
-		$this->unitIds = array();
-		$this->unitFactors = array();
+		$this->unitIds = [];
+		$this->unitFactors = [];
 		$this->mainUnit = false;
-		$this->prefixalUnitPreference = array();
-		$this->errors = array();
+		$this->prefixalUnitPreference = [];
+		$this->errors = [];
 
 		$factors = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
 			$property->getDiWikiPage(),
@@ -137,7 +137,7 @@ class UnitConverter {
 
 		$this->numberValue->setContextPage( $property->getDiWikiPage() );
 
-		if ( $factors === null || $factors === array() ) { // no custom type
+		if ( $factors === null || $factors === [] ) { // no custom type
 			return $this->errors[] = 'smw_nounitsdeclared';
 		}
 
@@ -171,7 +171,7 @@ class UnitConverter {
 		// conversion tooltip will still display the main unit for clarity
 		// (the empty unit is never displayed; we filter it when making
 		// conversion values)
-		$this->unitFactors = array( '' => 1 ) + $this->unitFactors;
+		$this->unitFactors = [ '' => 1 ] + $this->unitFactors;
 		$this->unitIds[''] = '';
 	}
 
@@ -211,16 +211,16 @@ class UnitConverter {
 
 		$this->fetchConversionData( $property );
 
-		if ( $this->errors !== array() ) {
+		if ( $this->errors !== [] ) {
 			return;
 		}
 
-		$data = array(
+		$data = [
 			'ids' => $this->unitIds,
 			'factors' => $this->unitFactors,
 			'main' => $this->mainUnit,
 			'prefix' => $this->prefixalUnitPreference
-		);
+		];
 
 		$container->set( $key, $data );
 
@@ -238,14 +238,14 @@ class UnitConverter {
 			// Legacy match the preserve some behaviour where spaces where normalized
 			// no matter what
 			$normalizedUnit = $this->numberValue->normalizeUnit(
-				str_replace( array( '&nbsp;', '&#160;', '&thinsp;', ' ' ), '', $unit )
+				str_replace( [ '&nbsp;', '&#160;', '&thinsp;', ' ' ], '', $unit )
 			);
 
 			if ( $first ) {
 				$unitid = $unit;
 				if ( $number == 1 ) { // add main unit to front of array (displayed first)
 					$this->mainUnit = $unit;
-					$this->unitFactors = array( $unit => 1 ) + $this->unitFactors;
+					$this->unitFactors = [ $unit => 1 ] + $this->unitFactors;
 				} else { // non-main units are not ordered (can be modified via display units)
 					$this->unitFactors[$unit] = $number;
 				}

@@ -57,7 +57,7 @@ class ProcessingErrorMsgHandler {
 	 */
 	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ) {
 
-		$normalizedMessages = array();
+		$normalizedMessages = [];
 
 		if ( $type === null ) {
 			$type = Message::TEXT;
@@ -113,7 +113,7 @@ class ProcessingErrorMsgHandler {
 	public static function getMessagesAsString( array $messages, $type = null, $language = null ) {
 
 		$normalizedMessages = self::normalizeAndDecodeMessages( $messages, $type, $language );
-		$msg = array();
+		$msg = [];
 
 		foreach ( $normalizedMessages as $message ) {
 
@@ -186,7 +186,7 @@ class ProcessingErrorMsgHandler {
 	 */
 	public function newErrorContainerFromDataValue( DataValue $dataValue ) {
 
-		if ( $dataValue->getErrors() === array() ) {
+		if ( $dataValue->getErrors() === [] ) {
 			return null;
 		}
 

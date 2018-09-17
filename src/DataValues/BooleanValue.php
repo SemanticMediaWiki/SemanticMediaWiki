@@ -203,7 +203,7 @@ class BooleanValue extends DataValue {
 			$boolvalue = false;
 		} else {
 			$this->addErrorMsg(
-				array( 'smw_noboolean', $value ),
+				[ 'smw_noboolean', $value ],
 				Message::TEXT,
 				Message::USER_LANGUAGE
 			);

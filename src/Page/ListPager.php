@@ -23,7 +23,7 @@ class ListPager {
 	/**
 	 * @since 2.4
 	 */
-	public static function pagination( Title $title, $limit, $offset = 0, $count = 0, array $query = array(), $prefix = '' ) {
+	public static function pagination( Title $title, $limit, $offset = 0, $count = 0, array $query = [], $prefix = '' ) {
 		return Html::rawElement(
 			'div',
 			[
@@ -101,7 +101,7 @@ class ListPager {
 	 * @param array $query Optional URL query parameter string
 	 * @return string
 	 */
-	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = array(), $prefix = '' ) {
+	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = [], $prefix = '' ) {
 
 		$list = [];
 		$limit = (int)$limit;

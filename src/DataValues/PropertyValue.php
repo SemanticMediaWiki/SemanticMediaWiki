@@ -80,7 +80,7 @@ class PropertyValue extends DataValue {
 	/**
 	 * @var array
 	 */
-	protected $linkAttributes = array();
+	protected $linkAttributes = [];
 
 	/**
 	 * @var string
@@ -183,7 +183,7 @@ class PropertyValue extends DataValue {
 				$inverse
 			);
 		} catch ( DataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
-			$this->addErrorMsg( array( 'smw_noproperty', $value ) );
+			$this->addErrorMsg( [ 'smw_noproperty', $value ] );
 			$this->m_dataitem = new DIProperty( 'ERROR', false ); // just to have something
 		}
 
@@ -233,7 +233,7 @@ class PropertyValue extends DataValue {
 
 		unset( $this->m_wikipage );
 		$this->m_caption = false;
-		$this->linkAttributes = array();
+		$this->linkAttributes = [];
 
 		if ( $this->preferredLabel !== '' ) {
 			$this->m_caption = $this->preferredLabel;

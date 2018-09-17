@@ -23,7 +23,7 @@ class DispatchingContentCreator implements ContentCreator {
 	/**
 	 * @var ContentCreator[]
 	 */
-	private $contentCreators = array();
+	private $contentCreators = [];
 
 	/**
 	 * @since 3.0

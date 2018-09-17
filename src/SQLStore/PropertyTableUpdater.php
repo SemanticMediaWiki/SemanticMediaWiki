@@ -223,7 +223,7 @@ class PropertyTableUpdater {
 
 		$connection->delete(
 			$tableName,
-			array( $condition ),
+			[ $condition ],
 			__METHOD__ . "-$tableName"
 		);
 	}

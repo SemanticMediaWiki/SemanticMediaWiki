@@ -129,10 +129,10 @@ class CacheFactory {
 	 */
 	public function newMediaWikiCompositeCache( $mediaWikiCacheType = null ) {
 
-		$compositeCache = OnoiCacheFactory::getInstance()->newCompositeCache( array(
+		$compositeCache = OnoiCacheFactory::getInstance()->newCompositeCache( [
 			$this->newFixedInMemoryCache( 500 ),
 			$this->newMediaWikiCache( $mediaWikiCacheType )
-		) );
+		] );
 
 		return $compositeCache;
 	}

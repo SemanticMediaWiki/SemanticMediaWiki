@@ -15,12 +15,12 @@ class ErrorCodeFormatter {
 	/**
 	 * @var array
 	 */
-	private static $constants = array();
+	private static $constants = [];
 
 	/**
 	 * @var array
 	 */
-	private static $jsonErrors = array();
+	private static $jsonErrors = [];
 
 	/**
 	 * @see http://php.net/manual/en/function.json-decode.php
@@ -32,11 +32,11 @@ class ErrorCodeFormatter {
 	 */
 	public static function getStringFromJsonErrorCode( $errorCode ) {
 
-		if ( self::$constants === array() ) {
+		if ( self::$constants === [] ) {
 			self::$constants = get_defined_constants( true );
 		}
 
-		if ( isset( self::$constants["json"] ) && self::$jsonErrors === array() ) {
+		if ( isset( self::$constants["json"] ) && self::$jsonErrors === [] ) {
 			foreach ( self::$constants["json"] as $name => $value ) {
 				if ( !strncmp( $name, "JSON_ERROR_", 11 ) ) {
 					self::$jsonErrors[$value] = $name;
@@ -56,13 +56,13 @@ class ErrorCodeFormatter {
 	 */
 	public static function getMessageFromJsonErrorCode( $errorCode ) {
 
-		$errorMessages = array(
+		$errorMessages = [
 			JSON_ERROR_STATE_MISMATCH => 'Underflow or the modes mismatch, malformed JSON',
 			JSON_ERROR_CTRL_CHAR => 'Unexpected control character found, possibly incorrectly encoded',
 			JSON_ERROR_SYNTAX => 'Syntax error, malformed JSON',
 			JSON_ERROR_UTF8   => 'Malformed UTF-8 characters, possibly incorrectly encoded',
 			JSON_ERROR_DEPTH  => 'The maximum stack depth has been exceeded'
-		);
+		];
 
 		if ( !isset( $errorMessages[$errorCode] ) ) {
 			return self::getStringFromJsonErrorCode( $errorCode );

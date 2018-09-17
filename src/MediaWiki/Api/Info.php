@@ -27,8 +27,8 @@ class Info extends ApiBase {
 		$params = $this->extractRequestParams();
 		$requestedInfo = $params['info'];
 
-		$map = array();
-		$semanticStats = array();
+		$map = [];
+		$semanticStats = [];
 
 		if ( in_array( 'propcount', $requestedInfo )
 			|| in_array( 'jobcount', $requestedInfo )
@@ -46,7 +46,7 @@ class Info extends ApiBase {
 
 			$semanticStats = ApplicationFactory::getInstance()->getStore()->getStatistics();
 
-			$map = array(
+			$map = [
 				'propcount' => 'PROPUSES',
 				'errorcount' => 'ERRORUSES',
 				'deletecount' => 'DELETECOUNT',
@@ -58,7 +58,7 @@ class Info extends ApiBase {
 				'querysize' => 'QUERYSIZE',
 				'conceptcount' => 'CONCEPTS',
 				'subobjectcount' => 'SUBOBJECTS',
-			);
+			];
 		}
 
 		$this->getResult()->addValue(
@@ -75,11 +75,11 @@ class Info extends ApiBase {
 	 * @return array
 	 */
 	public function getAllowedParams() {
-		return array(
-			'info' => array(
+		return [
+			'info' => [
 				ApiBase::PARAM_DFLT => 'propcount|usedpropcount|declaredpropcount',
 				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => array(
+				ApiBase::PARAM_TYPE => [
 					'propcount',
 					'errorcount',
 					'deletecount',
@@ -93,9 +93,9 @@ class Info extends ApiBase {
 					'conceptcount',
 					'subobjectcount',
 					'jobcount'
-				)
-			),
-		);
+				]
+			],
+		];
 	}
 
 	/**
@@ -105,9 +105,9 @@ class Info extends ApiBase {
 	 * @return array
 	 */
 	public function getParamDescription() {
-		return array(
+		return [
 			'info' => 'The info to provide.'
-		);
+		];
 	}
 
 	/**
@@ -117,9 +117,9 @@ class Info extends ApiBase {
 	 * @return array
 	 */
 	public function getDescription() {
-		return array(
+		return [
 			'API module get info about this SMW install.'
-		);
+		];
 	}
 
 	/**
@@ -129,9 +129,9 @@ class Info extends ApiBase {
 	 * @return array
 	 */
 	protected function getExamples() {
-		return array(
+		return [
 			'api.php?action=smwinfo&info=proppagecount|propcount',
-		);
+		];
 	}
 
 	/**
@@ -146,7 +146,7 @@ class Info extends ApiBase {
 
 	private function doMapResultInfoFrom( $map, $requestedInfo, $semanticStats ) {
 
-		$resultInfo = array();
+		$resultInfo = [];
 
 		foreach ( $map as $apiName => $smwName ) {
 			if ( in_array( $apiName, $requestedInfo ) ) {
@@ -155,7 +155,7 @@ class Info extends ApiBase {
 		}
 
 		if ( in_array( 'formatcount', $requestedInfo ) ) {
-			$resultInfo['formatcount'] = array();
+			$resultInfo['formatcount'] = [];
 
 			foreach ( $semanticStats['QUERYFORMATS'] as $name => $count ) {
 				$resultInfo['formatcount'][$name] = $count;
@@ -163,7 +163,7 @@ class Info extends ApiBase {
 		}
 
 		if ( in_array( 'jobcount', $requestedInfo ) ) {
-			$resultInfo['jobcount'] = array();
+			$resultInfo['jobcount'] = [];
 			$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
 			foreach ( Site::getJobClasses( 'SMW' ) as $type => $class ) {

@@ -111,13 +111,13 @@ class PropertyStatisticsStore {
 		try {
 			$this->connection->update(
 				SQLStore::PROPERTY_STATISTICS_TABLE,
-				array(
+				[
 					'usage_count = usage_count ' . ( $usageVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $usageVal ) ),
 					'null_count = null_count ' . ( $nullVal > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $nullVal ) ),
-				),
-				array(
+				],
+				[
 					'p_id' => $pid
-				),
+				],
 				__METHOD__
 			);
 		} catch ( \DBQueryError $e ) {
@@ -147,7 +147,7 @@ class PropertyStatisticsStore {
 
 		$success = true;
 
-		if ( $additions === array() ) {
+		if ( $additions === [] ) {
 			return $success;
 		}
 
@@ -209,13 +209,13 @@ class PropertyStatisticsStore {
 
 		return $this->connection->update(
 			SQLStore::PROPERTY_STATISTICS_TABLE,
-			array(
+			[
 				'usage_count' => $usageCount,
 				'null_count' => $nullCount,
-			),
-			array(
+			],
+			[
 				'p_id' => $propertyId
-			),
+			],
 			__METHOD__
 		);
 	}
@@ -286,12 +286,12 @@ class PropertyStatisticsStore {
 
 		$row = $this->connection->selectRow(
 			SQLStore::PROPERTY_STATISTICS_TABLE,
-			array(
+			[
 				'usage_count'
-			),
-			array(
+			],
+			[
 				'p_id' => $propertyId,
-			),
+			],
 			__METHOD__
 		);
 
@@ -314,23 +314,23 @@ class PropertyStatisticsStore {
 	 * @return array
 	 */
 	public function getUsageCounts( array $propertyIds ) {
-		if ( $propertyIds === array() ) {
-			return array();
+		if ( $propertyIds === [] ) {
+			return [];
 		}
 
 		$propertyStatistics = $this->connection->select(
 			$this->connection->tablename( SQLStore::PROPERTY_STATISTICS_TABLE ),
-			array(
+			[
 				'usage_count',
 				'p_id',
-			),
-			array(
+			],
+			[
 				'p_id' => $propertyIds,
-			),
+			],
 			__METHOD__
 		);
 
-		$usageCounts = array();
+		$usageCounts = [];
 
 		foreach ( $propertyStatistics as $propertyStatistic ) {
 			assert( ctype_digit( $propertyStatistic->p_id ) );
@@ -357,7 +357,7 @@ class PropertyStatisticsStore {
 		);
 	}
 
-	private function log( $message, $context = array() ) {
+	private function log( $message, $context = [] ) {
 
 		if ( $this->logger === null ) {
 			return;

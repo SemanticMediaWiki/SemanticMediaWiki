@@ -362,7 +362,7 @@ class PropertyPage extends Page {
 		$usageCount = $usage[1];
 		$date = $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() );
 
-		$countMsg = Message::get( array( 'smw-property-indicator-last-count-update', $date ) );
+		$countMsg = Message::get( [ 'smw-property-indicator-last-count-update', $date ] );
 		$indicatorClass = ( $usageCount < 25000 ? ( $usageCount > 5000 ? ' moderate' : '' ) : ' high' );
 
 		return Html::rawElement(

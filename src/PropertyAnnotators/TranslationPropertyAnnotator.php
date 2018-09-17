@@ -22,7 +22,7 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @var array
 	 */
-	private $predefinedPropertyList = array();
+	private $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.0

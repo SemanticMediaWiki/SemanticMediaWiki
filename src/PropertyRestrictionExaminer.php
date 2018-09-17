@@ -18,7 +18,7 @@ class PropertyRestrictionExaminer {
 	/**
 	 * @var array
 	 */
-	private $error = array();
+	private $error = [];
 
 	/**
 	 * @var User|null
@@ -38,7 +38,7 @@ class PropertyRestrictionExaminer {
 	/**
 	 * @var array
 	 */
-	private $exists = array();
+	private $exists = [];
 
 	/**
 	 * @since 2.5
@@ -73,7 +73,7 @@ class PropertyRestrictionExaminer {
 	 * @return boolean
 	 */
 	public function hasRestriction() {
-		return $this->error !== array();
+		return $this->error !== [];
 	}
 
 	/**
@@ -187,11 +187,11 @@ class PropertyRestrictionExaminer {
 
 		// A user without the appropriate right cannot use a non-existing property
 		return $this->error = Message::encode(
-			array(
+			[
 				self::CREATE_RESTRICTION,
 				$property->getLabel(),
 				$this->createProtectionRight
-			),
+			],
 			Message::PARSE
 		);
 	}

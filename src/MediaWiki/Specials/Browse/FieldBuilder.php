@@ -34,39 +34,39 @@ class FieldBuilder {
 
 		$html = "<div class=\"smwb-form\">". Html::rawElement(
 			'div',
-			array( 'style' => 'margin-top:15px;' ),
+			[ 'style' => 'margin-top:15px;' ],
 			''
 		);
 
 		$html .= Html::rawElement(
 			'form',
-			array(
+			[
 				'name'   => 'smwbrowse',
 				'action' => htmlspecialchars( $title->getLocalURL() ),
 				'method' => 'get'
-			),
+			],
 			Html::rawElement(
 				'input',
-				array(
+				[
 					'type'  => 'hidden',
 					'name'  => 'title',
 					'value' => $title->getPrefixedText()
-				),
+				],
 				 Message::get( 'smw_browse_article', Message::ESCAPED, Message::USER_LANGUAGE )
 			) .
 			Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'smwb-input'
-				),
+				],
 				Html::rawElement(
 					'div',
-					array(
+					[
 						'class' => 'input-field'
-					),
+					],
 					Html::rawElement(
 						'input',
-						array(
+						[
 							'type'  => 'text',
 							'dir'   => $dir,
 							'name'  => 'article',
@@ -74,21 +74,21 @@ class FieldBuilder {
 							'id'    => 'smw-page-input',
 							'class' => 'input smw-page-input autocomplete-arrow mw-ui-input',
 							'value' => htmlspecialchars( $articletext )
-						)
+						]
 					)
 				) .
 				Html::rawElement(
 					'div',
-					array(
+					[
 						'class' => 'button-field'
-					),
+					],
 					Html::rawElement(
 						'input',
-						array(
+						[
 							'type'  => 'submit',
 							'class' => 'input-button mw-ui-button',
 							'value' => Message::get( 'smw_browse_go', Message::ESCAPED, Message::USER_LANGUAGE )
-						)
+						]
 					)
 				)
 			)
@@ -114,10 +114,10 @@ class FieldBuilder {
 
 		return Html::element(
 			'a',
-			array(
+			[
 				'href' => $title->getLocalURL( $parameters ) . $fragment,
 				'class' => $linkMsg
-			),
+			],
 			Message::get( $linkMsg, Message::TEXT, Message::USER_LANGUAGE )
 		);
 	}

@@ -22,7 +22,7 @@ class Table {
 	/**
 	 * @var array
 	 */
-	private $attributes = array();
+	private $attributes = [];
 
 	/**
 	 * @since 2.5

@@ -196,10 +196,10 @@ class Factbox {
 		// Prior MW 1.21 mSMWMagicWords is used (see SMW\ParserTextProcessor)
 		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
 			$smwMagicWords = $parserOutput->getExtensionData( 'smwmagicwords' );
-			$mws = $smwMagicWords === null ? array() : $smwMagicWords;
+			$mws = $smwMagicWords === null ? [] : $smwMagicWords;
 		} else {
 			// @codeCoverageIgnoreStart
-			$mws = isset( $parserOutput->mSMWMagicWords ) ? $parserOutput->mSMWMagicWords : array();
+			$mws = isset( $parserOutput->mSMWMagicWords ) ? $parserOutput->mSMWMagicWords : [];
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -224,10 +224,10 @@ class Factbox {
 	 * @return array
 	 */
 	protected function getModules() {
-		return array(
+		return [
 			'ext.smw.style',
 			'ext.smw.table.styles'
-		);
+		];
 	}
 
 	/**
@@ -281,10 +281,10 @@ class Factbox {
 		$html = '';
 
 		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
-		\Hooks::run( 'smwShowFactbox', array( &$html, $semanticData ) );
+		\Hooks::run( 'smwShowFactbox', [ &$html, $semanticData ] );
 
 		// Hook since 1.9
-		if ( \Hooks::run( 'SMW::Factbox::BeforeContentGeneration', array( &$html, $semanticData ) ) ) {
+		if ( \Hooks::run( 'SMW::Factbox::BeforeContentGeneration', [ &$html, $semanticData ] ) ) {
 
 			$header = $this->createHeader( $semanticData->getSubject() );
 			$rows = $this->createRows( $semanticData );
@@ -319,7 +319,7 @@ class Factbox {
 
 		$header = Html::rawElement(
 			'div',
-			array( 'class' => 'smwfactboxhead' ),
+			[ 'class' => 'smwfactboxhead' ],
 			Message::get( [ 'smw-factbox-head', $browselink->getWikiText() ], Message::TEXT, Message::USER_LANGUAGE )
 		);
 
@@ -331,7 +331,7 @@ class Factbox {
 
 		$header .= Html::rawElement(
 			'div',
-			array( 'class' => 'smwrdflink' ),
+			[ 'class' => 'smwrdflink' ],
 			$rdflink->getWikiText()
 		);
 
@@ -341,7 +341,7 @@ class Factbox {
 	private function createRows( SemanticData $semanticData ) {
 
 		$rows = '';
-		$attributes = array();
+		$attributes = [];
 
 		$comma = Message::get(
 			'comma-separator',
@@ -364,12 +364,12 @@ class Factbox {
 				continue;
 			} elseif ( $property->isUserDefined() ) {
 				$propertyDv->setCaption( $propertyDv->getWikiValue() );
-				$attributes['property'] = array( 'class' => 'smwpropname' );
-				$attributes['values'] = array( 'class' => 'smwprops' );
+				$attributes['property'] = [ 'class' => 'smwpropname' ];
+				$attributes['values'] = [ 'class' => 'smwprops' ];
 			} elseif ( $propertyDv->isVisible() ) {
 				// Predefined property
-				$attributes['property'] = array( 'class' => 'smwspecname' );
-				$attributes['values'] = array( 'class' => 'smwspecs' );
+				$attributes['property'] = [ 'class' => 'smwspecname' ];
+				$attributes['values'] = [ 'class' => 'smwspecs' ];
 			} else {
 				// predefined, internal property
 				// @codeCoverageIgnoreStart

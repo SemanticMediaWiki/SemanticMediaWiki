@@ -23,7 +23,7 @@ class ManualEntryLogger {
 	/**
 	 * @var array
 	 */
-	private $eventTypes = array();
+	private $eventTypes = [];
 
 	/**
 	 * @since 2.4
@@ -67,7 +67,7 @@ class ManualEntryLogger {
 		}
 
 		$logEntry->setPerformer( $performer );
-		$logEntry->setParameters( array() );
+		$logEntry->setParameters( [] );
 		$logEntry->setComment( $comment );
 
 		return $logEntry->insert();

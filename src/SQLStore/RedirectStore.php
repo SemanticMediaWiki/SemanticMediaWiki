@@ -210,10 +210,10 @@ class RedirectStore {
 		$row = $connection->selectRow(
 			self::TABLE_NAME,
 			'o_id',
-			array(
+			[
 				's_title' => $title,
 				's_namespace' => $namespace
-			),
+			],
 			__METHOD__
 		);
 
@@ -226,10 +226,10 @@ class RedirectStore {
 
 		$connection->insert(
 			self::TABLE_NAME,
-			array(
+			[
 				's_title' => $title,
 				's_namespace' => $namespace,
-				'o_id' => $id ),
+				'o_id' => $id ],
 			__METHOD__
 		);
 	}
@@ -240,9 +240,9 @@ class RedirectStore {
 
 		$connection->delete(
 			self::TABLE_NAME,
-			array(
+			[
 				's_title' => $title,
-				's_namespace' => $namespace ),
+				's_namespace' => $namespace ],
 			__METHOD__
 		);
 	}

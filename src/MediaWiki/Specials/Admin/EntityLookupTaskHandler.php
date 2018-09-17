@@ -181,10 +181,10 @@ class EntityLookupTaskHandler extends TaskHandler {
 			->addParagraph( $result )
 			->getForm();
 
-		$html .= Html::element( 'p', array(), '' );
+		$html .= Html::element( 'p', [], '' );
 
 		if ( $id > 0 && $webRequest->getText( 'dispose' ) == 'yes' ) {
-			$result = $this->msg( array ('smw-admin-iddispose-done', $id ) );
+			$result = $this->msg(  ['smw-admin-iddispose-done', $id ] );
 			$id = null;
 		}
 
@@ -216,7 +216,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 			)
 			->getForm();
 
-		return $html . Html::element( 'p', array(), '' );
+		return $html . Html::element( 'p', [], '' );
 	}
 
 	private function createInfoMessageById( $webRequest, &$id ) {
@@ -236,14 +236,14 @@ class EntityLookupTaskHandler extends TaskHandler {
 
 		$rows = $connection->select(
 				\SMWSql3SmwIds::TABLE_NAME,
-				array(
+				[
 					'smw_id',
 					'smw_title',
 					'smw_namespace',
 					'smw_iw',
 					'smw_subobject',
 					'smw_sortkey'
-				),
+				],
 				$condition,
 				__METHOD__
 		);
@@ -255,12 +255,12 @@ class EntityLookupTaskHandler extends TaskHandler {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$references = array();
-		$formattedRows = array();
+		$references = [];
+		$formattedRows = [];
 		$output = '';
 		$error = '';
 
-		if ( $rows !== array() ) {
+		if ( $rows !== [] ) {
 			foreach ( $rows as $row ) {
 				$id = $row->smw_id;
 
@@ -294,26 +294,26 @@ class EntityLookupTaskHandler extends TaskHandler {
 			$id = '';
 		}
 
-		if ( $formattedRows !== array() ) {
+		if ( $formattedRows !== [] ) {
 			$output = '<pre>' . $this->outputFormatter->encodeAsJson( $formattedRows ) . '</pre>';
 		}
-		if ( $references !== array() ) {
+		if ( $references !== [] ) {
 
 			$msg = $id === '' ? 'smw-admin-iddispose-references-multiple' : 'smw-admin-iddispose-references';
 			$count = isset( $references[$id] ) ? count( $references[$id] ) + 1 : 0;
 			$output .= Html::rawElement(
 				'p',
-				array(),
+				[],
 				$this->msg( [ $msg, $id, $count ], Message::PARSE )
 			);
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
 		} else {
 			$error .= Html::element(
 				'div',
-				array(
+				[
 					'class' => 'smw-callout smw-callout-warning'
-				),
-				$this->msg( array( 'smw-admin-iddispose-no-references', $id ) )
+				],
+				$this->msg( [ 'smw-admin-iddispose-no-references', $id ] )
 			);
 
 			$id = '';

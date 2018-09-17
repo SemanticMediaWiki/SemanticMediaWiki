@@ -23,7 +23,7 @@ use WikiImporter;
  *
  * @author mwjames
  */
-return array(
+return [
 
 	/**
 	 * ImportStringSource
@@ -158,4 +158,4 @@ return array(
 		return JobQueueGroup::singleton();
 	},
 
-);
+];

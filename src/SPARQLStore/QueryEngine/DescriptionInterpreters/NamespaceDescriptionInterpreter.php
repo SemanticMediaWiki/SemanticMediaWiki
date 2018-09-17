@@ -66,7 +66,7 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 		$nsName = TurtleSerializer::getTurtleNameForExpElement( $nsExpElement );
 		$condition = "{ ?$joinVariable " . $nspropExpElement->getQName() . " $nsName . }\n";
 
-		$result = new WhereCondition( $condition, true, array() );
+		$result = new WhereCondition( $condition, true, [] );
 
 		$this->conditionBuilder->addOrderByDataForProperty(
 			$result,

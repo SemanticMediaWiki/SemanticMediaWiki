@@ -41,8 +41,8 @@ class CodeStringValueFormatter extends StringValueFormatter {
 		} else {
 			// This disables all active wiki and HTML markup:
 			$result = str_replace(
-				array( '<code>', '</code>', '<nowiki>', '</nowiki>', '<', '>', ' ', '[', '{', '=', "'", ':', "\n", '&#x005B;' ),
-				array( '', '', '', '', '&lt;', '&gt;', '&#160;', '&#91;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />", '&#91;' ),
+				[ '<code>', '</code>', '<nowiki>', '</nowiki>', '<', '>', ' ', '[', '{', '=', "'", ':', "\n", '&#x005B;' ],
+				[ '', '', '', '', '&lt;', '&gt;', '&#160;', '&#91;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />", '&#91;' ],
 				$text
 			);
 		}

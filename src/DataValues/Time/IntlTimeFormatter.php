@@ -149,7 +149,7 @@ class IntlTimeFormatter {
 	public function containsValidDateFormatRule( $format ) {
 
 		foreach ( str_split( $format ) as $value ) {
-			if ( in_array( $value, array( 'd', 'D', 'j', 'l', 'N', 'w', 'W', 'F', 'M', 'm', 'n', 't', 'L', 'o', 'Y', 'y', "c", 'r' ) ) ) {
+			if ( in_array( $value, [ 'd', 'D', 'j', 'l', 'N', 'w', 'W', 'F', 'M', 'm', 'n', 't', 'L', 'o', 'Y', 'y', "c", 'r' ] ) ) {
 				return true;
 			}
 		}

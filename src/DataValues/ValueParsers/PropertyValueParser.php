@@ -17,12 +17,12 @@ class PropertyValueParser implements ValueParser {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var array
 	 */
-	private $invalidCharacterList = array();
+	private $invalidCharacterList = [];
 
 	/**
 	 * @var boolean
@@ -101,7 +101,7 @@ class PropertyValueParser implements ValueParser {
 	 */
 	public function parse( $userValue ) {
 
-		$this->errors = array();
+		$this->errors = [];
 
 		// #1727 <Foo> or <Foo-<Bar> are not permitted but
 		// Foo-<Bar will be converted to Foo-
@@ -110,7 +110,7 @@ class PropertyValueParser implements ValueParser {
 		);
 
 		if ( !$this->hasValidCharacters( $userValue ) ) {
-			return array( null, null, null );
+			return [ null, null, null ];
 		}
 
 		return $this->getNormalizedValueFrom( $userValue );
@@ -119,7 +119,7 @@ class PropertyValueParser implements ValueParser {
 	private function hasValidCharacters( $value ) {
 
 		if ( trim( $value ) === '' ) {
-			$this->errors[] = array( 'smw_emptystring' );
+			$this->errors[] = [ 'smw_emptystring' ];
 			return false;
 		}
 
@@ -147,13 +147,13 @@ class PropertyValueParser implements ValueParser {
 				$invalidCharacter
 			);
 
-			$this->errors[] = array( 'smw-datavalue-property-invalid-character', $value, $invalidCharacter );
+			$this->errors[] = [ 'smw-datavalue-property-invalid-character', $value, $invalidCharacter ];
 			return false;
 		}
 
 		// #676, only on a query context allow Foo.Bar
 		if ( $invalidCharacter === '' && !$this->isQueryContext && strpos( $value, '.' ) !== false ) {
-			$this->errors[] = array( 'smw-datavalue-property-invalid-chain', $value );
+			$this->errors[] = [ 'smw-datavalue-property-invalid-chain', $value ];
 			return false;
 		}
 
@@ -183,7 +183,7 @@ class PropertyValueParser implements ValueParser {
 			$inverse = true;
 		}
 
-		return array( $propertyName, $capitalizedName, $inverse );
+		return [ $propertyName, $capitalizedName, $inverse ];
 	}
 
 	private function doNormalize( $text, $isCapitalLinks ) {

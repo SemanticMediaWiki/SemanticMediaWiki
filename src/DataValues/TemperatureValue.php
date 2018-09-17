@@ -54,7 +54,7 @@ class TemperatureValue extends NumberValue {
 			return; // do this only once
 		}
 
-		$this->m_unitvalues = array();
+		$this->m_unitvalues = [];
 
 		if ( !$this->isValid() ) {
 			return $this->m_unitvalues;
@@ -63,12 +63,12 @@ class TemperatureValue extends NumberValue {
 		$displayUnit = $this->getPreferredDisplayUnit();
 		$number = $this->m_dataitem->getNumber();
 
-		$unitvalues = array(
+		$unitvalues = [
 			'K'  => $number,
 			'°C' => $number - 273.15,
 			'°F' => ( $number - 273.15 ) * 1.8 + 32,
 			'°R' => ( $number ) * 1.8
-		);
+		];
 
 		if ( isset( $unitvalues[$displayUnit] ) ) {
 			$this->m_unitvalues[$displayUnit] = $unitvalues[$displayUnit];
@@ -149,7 +149,7 @@ class TemperatureValue extends NumberValue {
 	 * NumberValue::getUnitList
 	 */
 	public function getUnitList() {
-		return array( 'K', '°C', '°F', '°R' );
+		return [ 'K', '°C', '°F', '°R' ];
 	}
 
 	/**
@@ -171,7 +171,7 @@ class TemperatureValue extends NumberValue {
 			$this->getProperty()
 		);
 
-		if ( $units !== null && $units !== array() ) {
+		if ( $units !== null && $units !== [] ) {
 			$unit = $this->getUnitID( end( $units ) );
 		}
 

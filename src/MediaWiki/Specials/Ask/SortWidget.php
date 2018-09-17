@@ -57,8 +57,8 @@ class SortWidget {
 		}
 
 		if ( !array_key_exists( 'sort', $params ) || !array_key_exists( 'order', $params ) ) {
-			$orders = array();
-			$sorts = array();
+			$orders = [];
+			$sorts = [];
 		} else {
 			$sorts = explode( ',', $params['sort'] );
 			$orders = explode( ',', $params['order'] );
@@ -97,15 +97,15 @@ class SortWidget {
 
 		foreach ( $orders as $i => $order ) {
 
-			if ( in_array( $order, array( 'ASC', 'asc', 'ascending' ) )) {
+			if ( in_array( $order, [ 'ASC', 'asc', 'ascending' ] )) {
 				$order = 'asc';
 			}
 
-			if ( in_array( $order, array( 'DESC', 'desc', 'descending' ) )) {
+			if ( in_array( $order, [ 'DESC', 'desc', 'descending' ] )) {
 				$order = 'desc';
 			}
 
-			if ( in_array( $order, array( 'RAND', 'rand', 'random' ) )) {
+			if ( in_array( $order, [ 'RAND', 'rand', 'random' ] )) {
 				$order = 'rand';
 			}
 

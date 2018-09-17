@@ -23,9 +23,9 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array(
+		return [
 			'o_value' => FieldType::TYPE_BOOL
-		);
+		];
 	}
 
 	/**
@@ -34,9 +34,9 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array(
+		return [
 			'o_value' => FieldType::TYPE_BOOL
-		);
+		];
 	}
 
 	/**
@@ -45,9 +45,9 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return array(
+		return [
 			'o_value' => $dataItem->getBoolean() ? 1 : 0,
-		);
+		];
 	}
 
 	/**
@@ -56,9 +56,9 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		return array(
+		return [
 			'o_value' => $dataItem->getBoolean() ? 1 : 0,
-		);
+		];
 	}
 
 	/**

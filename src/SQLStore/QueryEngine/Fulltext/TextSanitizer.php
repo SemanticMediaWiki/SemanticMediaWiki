@@ -24,7 +24,7 @@ class TextSanitizer {
 	/**
 	 * @var array
 	 */
-	private $languageDetection = array();
+	private $languageDetection = [];
 
 	/**
 	 * @var integer
@@ -53,12 +53,12 @@ class TextSanitizer {
 			$languageDetector = 'TextCatLanguageDetector (' . implode(', ', $this->languageDetection['TextCatLanguageDetector'] ) . ')';
 		}
 
-		return array(
+		return [
 			'ICU (Intl) PHP-extension' => ( extension_loaded( 'intl' ) ? INTL_ICU_VERSION : '(Disabled)' ),
 			'Tesa::Sanitizer'  => Sanitizer::VERSION,
 			'Tesa::Transliterator' => Transliterator::VERSION,
 			'Tesa::LanguageDetector' => $languageDetector
-		);
+		];
 	}
 
 	/**
@@ -96,7 +96,7 @@ class TextSanitizer {
 		// Those have special meaning when running a match search against
 		// the fulltext index (wildcard, phrase matching markers etc.)
 		if ( $isSearchTerm ) {
-			$exemptionList = array( '*', '"', '+', '-', '&', ',', '@', '~' );
+			$exemptionList = [ '*', '"', '+', '-', '&', ',', '@', '~' ];
 		}
 
 		$sanitizer = $this->sanitizerFactory->newSanitizer( $text );
@@ -105,8 +105,8 @@ class TextSanitizer {
 		$sanitizer->convertDoubleWidth();
 
 		$sanitizer->replace(
-			array( 'http://', 'https://', 'mailto:', '%2A', '_', '&#x005B;', '&#91;', "\n", "\t" ),
-			array( '', '', '', '*', ' ', '[', '[', "", "" )
+			[ 'http://', 'https://', 'mailto:', '%2A', '_', '&#x005B;', '&#91;', "\n", "\t" ],
+			[ '', '', '', '*', ' ', '[', '[', "", "" ]
 		);
 
 		$language = $this->predictLanguage( $text );
@@ -139,8 +139,8 @@ class TextSanitizer {
 
 		// Remove possible spaces added by the tokenizer
 		$text = str_replace(
-			array( ' *', '* ', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ),
-			array( '*', '*', '"', '"', '+', '-', '@', '~' ,'* +', '* -', '* ~' ),
+			[ ' *', '* ', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ],
+			[ '*', '*', '"', '"', '+', '-', '@', '~' ,'* +', '* -', '* ~' ],
 			$text
 		);
 
@@ -150,7 +150,7 @@ class TextSanitizer {
 
 	private function predictLanguage( $text ) {
 
-		if ( $this->languageDetection === array() ) {
+		if ( $this->languageDetection === [] ) {
 			return null;
 		}
 

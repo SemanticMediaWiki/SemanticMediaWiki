@@ -30,12 +30,12 @@ class HtmlColumns {
 	/**
 	 * @var array
 	 */
-	private $contents = array();
+	private $contents = [];
 
 	/**
 	 * @var array
 	 */
-	private $itemAttributes = array();
+	private $itemAttributes = [];
 
 	/**
 	 * @var integer
@@ -212,7 +212,7 @@ class HtmlColumns {
 
 		foreach ( $this->contents as $key => $items ) {
 
-			if ( $items === array() ) {
+			if ( $items === [] ) {
 					continue;
 			}
 
@@ -229,10 +229,10 @@ class HtmlColumns {
 
 		return $this->element(
 			'div',
-			array(
+			[
 				'class' => $this->columnListClass,
 				'dir'   => $this->isRTL ? 'rtl' : 'ltr'
-			),
+			],
 			$result . "\n" . '<br style="clear: both;"/>'
 		);
 	}
@@ -265,9 +265,9 @@ class HtmlColumns {
 					if ( $key !== '' ) {
 						$result .= $this->element(
 							'div',
-							array(
+							[
 								'class' => 'smw-column-header'
-							),
+							],
 							"$key {$this->continueAbbrev}"
 						);
 					}
@@ -280,7 +280,7 @@ class HtmlColumns {
 			// the last list and start a new one
 			if ( $key != $previousKey ) {
 				$result .= $this->numRows % $this->rowsPerColumn > 0 ? "</{$this->listType}>" : '';
-				$result .= ( $key !== '' ? $this->element( 'div', array( 'class' => 'smw-column-header' ), $key ) : '' ) . "<{$this->listType}>";
+				$result .= ( $key !== '' ? $this->element( 'div', [ 'class' => 'smw-column-header' ], $key ) : '' ) . "<{$this->listType}>";
 			}
 
 			$previousKey = $key;

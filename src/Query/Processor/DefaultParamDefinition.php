@@ -50,7 +50,7 @@ class DefaultParamDefinition {
 	 * @return IParamDefinition[]
 	 */
 	public static function buildParamDefinitions( $vars, $context = null, ResultPrinter $resultPrinter = null ) {
-		$params = array();
+		$params = [];
 
 		$allowedFormats = $vars['smwgResultFormats'];
 
@@ -60,84 +60,84 @@ class DefaultParamDefinition {
 
 		$allowedFormats[] = 'auto';
 
-		$params['format'] = array(
+		$params['format'] = [
 			'type' => 'smwformat',
 			'default' => 'auto',
-		);
+		];
 
 		// TODO $params['format']->setToLower( true );
 		// TODO $allowedFormats
 
 		$params['source'] = self::getSourceParam( $vars );
 
-		$params['limit'] = array(
+		$params['limit'] = [
 			'type' => 'integer',
 			'default' => $vars['smwgQDefaultLimit'],
 			'negatives' => false,
-		);
+		];
 
-		$params['offset'] = array(
+		$params['offset'] = [
 			'type' => 'integer',
 			'default' => 0,
 			'negatives' => false,
 			'upperbound' => $vars['smwgQUpperbound'],
-		);
+		];
 
-		$params['link'] = array(
+		$params['link'] = [
 			'default' => 'all',
-			'values' => array( 'all', 'subject', 'none' ),
-		);
+			'values' => [ 'all', 'subject', 'none' ],
+		];
 
 		// The empty string represents the page itself, which should be sorted by default.
-		$params['sort'] = array(
+		$params['sort'] = [
 			'islist' => true,
-			'default' => array( '' )
-		);
+			'default' => [ '' ]
+		];
 
-		$params['order'] = array(
+		$params['order'] = [
 			'islist' => true,
-			'default' => array(),
-			'values' => array( 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ),
-		);
+			'default' => [],
+			'values' => [ 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ],
+		];
 
-		$params['headers'] = array(
+		$params['headers'] = [
 			'default' => 'show',
-			'values' => array( 'show', 'hide', 'plain' ),
-		);
+			'values' => [ 'show', 'hide', 'plain' ],
+		];
 
-		$params['mainlabel'] = array(
+		$params['mainlabel'] = [
 			'default' => false,
-		);
+		];
 
-		$params['intro'] = array(
+		$params['intro'] = [
 			'default' => '',
-		);
+		];
 
-		$params['outro'] = array(
+		$params['outro'] = [
 			'default' => '',
-		);
+		];
 
-		$params['searchlabel'] = array(
+		$params['searchlabel'] = [
 			'default' => Message::get( 'smw_iq_moreresults', Message::TEXT, Message::USER_LANGUAGE )
-		);
+		];
 
-		$params['default'] = array(
+		$params['default'] = [
 			'default' => '',
-		);
+		];
 
 		if ( $context === QueryContext::DEFERRED_QUERY ) {
-			$params['@control'] = array(
+			$params['@control'] = [
 				'default' => '',
-				'values' => array( 'slider' ),
-			);
+				'values' => [ 'slider' ],
+			];
 		}
 
 		if ( !( $resultPrinter instanceof ResultPrinter ) || $resultPrinter->supportsRecursiveAnnotation() ) {
-			$params['import-annotation'] = array(
+			$params['import-annotation'] = [
 				'message' => 'smw-paramdesc-import-annotation',
 				'type' => 'boolean',
 				'default' => false
-			);
+			];
 		}
 
 		foreach ( $params as $name => &$param ) {
@@ -150,12 +150,12 @@ class DefaultParamDefinition {
 	}
 
 	private static function getSourceParam( $vars ) {
-		$sourceValues = is_array( $vars['smwgQuerySources'] ) ? array_keys( $vars['smwgQuerySources'] ) : array();
+		$sourceValues = is_array( $vars['smwgQuerySources'] ) ? array_keys( $vars['smwgQuerySources'] ) : [];
 
-		return array(
+		return [
 			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',
 			'values' => $sourceValues,
-		);
+		];
 	}
 
 }

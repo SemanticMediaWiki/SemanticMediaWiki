@@ -82,7 +82,7 @@ class HtmlVTabs {
 	 *
 	 * @return string
 	 */
-	public static function nav( $html = '', array $attributes = array() ) {
+	public static function nav( $html = '', array $attributes = [] ) {
 
 		$direction = self::$direction === 'right' ? 'nav-right' : 'nav-left';
 
@@ -108,7 +108,7 @@ class HtmlVTabs {
 	 *
 	 * @return string
 	 */
-	public static function navLink( $id, $label = '', $flag = false, array $attributes = array() ) {
+	public static function navLink( $id, $label = '', $flag = false, array $attributes = [] ) {
 
 		if ( $flag === self::IS_HIDDEN ) {
 			return '';
@@ -136,7 +136,7 @@ class HtmlVTabs {
 		return Html::rawElement(
 			'button',
 			$attributes,
-			Html::rawElement( 'a', array( 'href' => '#' . $id ), $label )
+			Html::rawElement( 'a', [ 'href' => '#' . $id ], $label )
 		);
 	}
 
@@ -152,7 +152,7 @@ class HtmlVTabs {
 	 *
 	 * @return string
 	 */
-	public static function content( $id, $html = '', array $attributes = array() ) {
+	public static function content( $id, $html = '', array $attributes = [] ) {
 
 		$id = 'tab-' . $id;
 		$attributes['id'] = $id;
@@ -176,7 +176,7 @@ class HtmlVTabs {
 
 	private static function mergeAttributes( $class, $attr ) {
 
-		$attributes = array();
+		$attributes = [];
 
 		// A bit of attribute order
 		if ( isset( $attr['id'] ) ) {

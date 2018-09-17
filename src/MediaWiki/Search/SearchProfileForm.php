@@ -76,11 +76,11 @@ class SearchProfileForm {
 			return;
 		}
 
-		$profiles[self::PROFILE_NAME] = array(
+		$profiles[self::PROFILE_NAME] = [
 			'message' => 'smw-search-profile',
 			'tooltip' => 'smw-search-profile-tooltip',
 			'namespaces' => \SearchEngine::defaultNamespaces()
-		);
+		];
 	}
 
 	/**

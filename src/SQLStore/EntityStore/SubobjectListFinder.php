@@ -134,11 +134,11 @@ class SubobjectListFinder {
 
 		$res = $connection->select(
 			$connection->tablename( SQLStore::ID_TABLE ),
-			array(
+			[
 				'smw_id',
 				'smw_subobject',
 				'smw_sortkey'
-			),
+			],
 			implode( ' AND ' , $conditions ),
 			__METHOD__
 		);

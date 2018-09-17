@@ -168,7 +168,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	private function getContents( QueryResult $res, $outputMode ) {
-		$contents = array();
+		$contents = [];
 
 		// Print all result rows:
 		$rowindex = 0;
@@ -192,7 +192,7 @@ class CategoryResultPrinter extends ResultPrinter {
 			$first_letter = $this->first_letter( $res, $content[0] );
 
 			if ( !isset( $contents[$first_letter] ) ) {
-				$contents[$first_letter] = array();
+				$contents[$first_letter] = [];
 				$last_letter = $first_letter;
 			}
 
@@ -249,7 +249,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		foreach ( $row as $field ) {
 			$first_value = true;
-			$fieldValues = array();
+			$fieldValues = [];
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
 
@@ -306,7 +306,7 @@ class CategoryResultPrinter extends ResultPrinter {
 				$fieldName = $fieldName . $i;
 			}
 
-			$fieldValues = array();
+			$fieldValues = [];
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
 				$fieldValues[] = $text;

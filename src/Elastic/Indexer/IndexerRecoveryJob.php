@@ -24,7 +24,7 @@ class IndexerRecoveryJob extends Job {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
+	public function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'smw.elasticIndexerRecovery', $title, $params );
 		$this->removeDuplicates = true;
 	}

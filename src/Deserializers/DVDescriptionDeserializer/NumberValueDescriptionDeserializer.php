@@ -63,7 +63,7 @@ class NumberValueDescriptionDeserializer extends DescriptionDeserializer {
 		$dataItem = $this->dataValue->getDataItem();
 		$property = $this->dataValue->getProperty();
 
-		if ( $this->getErrors() !== array() ) {
+		if ( $this->getErrors() !== [] ) {
 			return $this->descriptionFactory->newThingDescription();
 		}
 

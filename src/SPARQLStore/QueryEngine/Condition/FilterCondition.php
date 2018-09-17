@@ -22,7 +22,7 @@ class FilterCondition extends Condition {
 	 */
 	public $filter;
 
-	public function __construct( $filter, $namespaces = array() ) {
+	public function __construct( $filter, $namespaces = [] ) {
 		$this->filter = $filter;
 		$this->namespaces = $namespaces;
 	}

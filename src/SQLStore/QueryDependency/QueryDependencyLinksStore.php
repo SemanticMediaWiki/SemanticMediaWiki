@@ -162,7 +162,7 @@ class QueryDependencyLinksStore {
 				continue;
 			}
 
-			$deleteIdList = array();
+			$deleteIdList = [];
 
 			foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $fieldChangeOp ) {
 				$deleteIdList[] = $fieldChangeOp->get( 'o_id' );
@@ -206,7 +206,7 @@ class QueryDependencyLinksStore {
 
 		$filteredIdList = $entityIdListRelevanceDetectionFilter->getFilteredIdList();
 
-		if ( $filteredIdList === array() ) {
+		if ( $filteredIdList === [] ) {
 			return;
 		}
 
@@ -235,7 +235,7 @@ class QueryDependencyLinksStore {
 	 */
 	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
 
-		$embeddedQueryIdList = array();
+		$embeddedQueryIdList = [];
 
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
@@ -260,7 +260,7 @@ class QueryDependencyLinksStore {
 	 */
 	public function findDependencyTargetLinksForSubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
 		return $this->findDependencyTargetLinks(
-			array( $this->dependencyLinksTableUpdater->getId( $subject ) ),
+			[ $this->dependencyLinksTableUpdater->getId( $subject ) ],
 			$requestOptions
 		);
 	}
@@ -290,18 +290,18 @@ class QueryDependencyLinksStore {
 	 */
 	public function findDependencyTargetLinks( array $idlist, RequestOptions $requestOptions ) {
 
-		if ( $idlist === array() || !$this->isEnabled() ) {
-			return array();
+		if ( $idlist === [] || !$this->isEnabled() ) {
+			return [];
 		}
 
-		$options = array(
+		$options = [
 			'LIMIT'     => $requestOptions->getLimit(),
 			'OFFSET'    => $requestOptions->getOffset(),
-		) + array( 'DISTINCT' );
+		] + [ 'DISTINCT' ];
 
-		$conditions = array(
+		$conditions = [
 			'o_id' => $idlist
-		);
+		];
 
 		foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
 			$conditions[] = $extraCondition;
@@ -311,20 +311,20 @@ class QueryDependencyLinksStore {
 
 		$rows = $connection->select(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 's_id' ),
+			[ 's_id' ],
 			$conditions,
 			__METHOD__,
 			$options
 		);
 
-		$targetLinksIdList = array();
+		$targetLinksIdList = [];
 
 		foreach ( $rows as $row ) {
 			$targetLinksIdList[] = $row->s_id;
 		}
 
-		if ( $targetLinksIdList === array() ) {
-			return array();
+		if ( $targetLinksIdList === [] ) {
+			return [];
 		}
 
 		// Return the expected count of targets
@@ -436,7 +436,7 @@ class QueryDependencyLinksStore {
 			'origin' => $hash
 		];
 
-		if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
+		if ( $dependencyList === [] && $dependencyListByLateRetrieval === [] ) {
 			return $this->logger->info(
 				'[QueryDependency] no update: {origin} (no dependency list available)',
 				$context
@@ -500,7 +500,7 @@ class QueryDependencyLinksStore {
 
 	private function isRegistered( $sid, $subject ) {
 
-		static $suppressUpdateCache = array();
+		static $suppressUpdateCache = [];
 		$hash = $subject->getHash();
 
 		if ( $sid < 1 ) {
@@ -511,10 +511,10 @@ class QueryDependencyLinksStore {
 
 		$row = $connection->selectRow(
 			SQLStore::QUERY_LINKS_TABLE,
-			array(
+			[
 				's_id'
-			),
-			array( 's_id' => $sid ),
+			],
+			[ 's_id' => $sid ],
 			__METHOD__
 		);
 

@@ -31,12 +31,12 @@ class HierarchyTempTableBuilder {
 	 *
 	 * @var string[]
 	 */
-	private $hierarchyCache = array();
+	private $hierarchyCache = [];
 
 	/**
 	 * @var array
 	 */
-	private $hierarchyTypeTable = array();
+	private $hierarchyTypeTable = [];
 
 	/**
 	 * @since 2.3
@@ -53,7 +53,7 @@ class HierarchyTempTableBuilder {
 	 * @since 2.3
 	 */
 	public function emptyHierarchyCache() {
-		$this->hierarchyCache = array();
+		$this->hierarchyCache = [];
 	}
 
 	/**
@@ -72,7 +72,7 @@ class HierarchyTempTableBuilder {
 	 * @param integer $depth
 	 */
 	public function setPropertyHierarchyTableDefinition( $table, $depth ) {
-		$this->hierarchyTypeTable['property'] = array( $this->connection->tableName( $table ), $depth );
+		$this->hierarchyTypeTable['property'] = [ $this->connection->tableName( $table ), $depth ];
 	}
 
 	/**
@@ -82,7 +82,7 @@ class HierarchyTempTableBuilder {
 	 * @param integer $depth
 	 */
 	public function setClassHierarchyTableDefinition( $table, $depth ) {
-		$this->hierarchyTypeTable['class'] = array( $this->connection->tableName( $table ), $depth );
+		$this->hierarchyTypeTable['class'] = [ $this->connection->tableName( $table ), $depth ];
 	}
 
 	/**

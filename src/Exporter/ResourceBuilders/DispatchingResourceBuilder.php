@@ -20,7 +20,7 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	/**
 	 * @var ResourceBuilder[]
 	 */
-	private $resourceBuilders = array();
+	private $resourceBuilders = [];
 
 	/**
 	 * @var ResourceBuilder
@@ -36,7 +36,7 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 */
 	public function isResourceBuilderFor( DIProperty $property ) {
 
-		if ( $this->resourceBuilders === array() ) {
+		if ( $this->resourceBuilders === [] ) {
 			$this->initResourceBuilders();
 		}
 
@@ -67,7 +67,7 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 */
 	public function findResourceBuilder( DIProperty $property ) {
 
-		if ( $this->resourceBuilders === array() ) {
+		if ( $this->resourceBuilders === [] ) {
 			$this->initResourceBuilders();
 		}
 

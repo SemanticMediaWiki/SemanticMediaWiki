@@ -60,7 +60,7 @@ class TempFile extends File {
 		}
 
 		if ( $path !== '' ) {
-			return str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $path . '/' . $file );
+			return str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $path . '/' . $file );
 		}
 
 		throw new RuntimeException( 'No writable temporary directory could be found.' );

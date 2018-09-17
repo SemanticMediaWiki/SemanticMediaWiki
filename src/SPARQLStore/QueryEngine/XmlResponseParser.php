@@ -95,19 +95,19 @@ class XmlResponseParser implements HttpResponseParser {
 	 */
 	public function parse( $response ) {
 
-		$this->xmlOpenTags = array();
-		$this->header = array();
-		$this->data = array();
-		$this->comments = array();
+		$this->xmlOpenTags = [];
+		$this->header = [];
+		$this->data = [];
+		$this->comments = [];
 
 		// Sesame can return "" result
 		if ( $response === '' ) {
-			$this->data = array( array( new ExpLiteral( 'false', 'http://www.w3.org/2001/XMLSchema#boolean' ) ) );
+			$this->data = [ [ new ExpLiteral( 'false', 'http://www.w3.org/2001/XMLSchema#boolean' ) ] ];
 		}
 
 		// #626 Virtuoso
 		if ( $response == 'true' ) {
-			$this->data = array( array( new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' ) ) );
+			$this->data = [ [ new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' ) ] ];
 		}
 
 		// #474 Virtuoso allows `false` to be a valid raw result
@@ -225,8 +225,8 @@ class XmlResponseParser implements HttpResponseParser {
 				$literal = new ExpLiteral( $characterData, 'http://www.w3.org/2001/XMLSchema#boolean' );
 
 				// ?? Really !!
-				$this->data = array( array( $literal ) );
-				$this->header = array( '' => 0 );
+				$this->data = [ [ $literal ] ];
+				$this->header = [ '' => 0 ];
 				break;
 		}
 	}

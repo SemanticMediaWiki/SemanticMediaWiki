@@ -78,11 +78,11 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			$property
 		);
 
-		if ( $allowedValues === array() && $allowedListValues === array() ) {
+		if ( $allowedValues === [] && $allowedListValues === [] ) {
 			return $this->hasConstraintViolation;
 		}
 
-		$allowedValueList = array();
+		$allowedValueList = [];
 
 		$isAllowed = $this->checkConstraintViolation(
 			$dataValue,
@@ -128,12 +128,12 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$allowedValueList = str_replace( [ '>', '<' ], [ '%3C', '%3E' ], $allowedValueList );
 
 		$dataValue->addErrorMsg(
-			array(
+			[
 				'smw_notinenum',
 				$dataValue->getWikiValue(),
 				$allowedValueList . ( $count > 10 ? ', ...' : '' ),
 				$property->getLabel()
-			),
+			],
 			Message::PARSE
 		);
 

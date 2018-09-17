@@ -170,8 +170,8 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
 		$pattern = '^' . str_replace(
-			array( 'https://', 'http://', '%2A', '.', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', "'", '\\\.', '\\', '"', '\\\\\\\"' ),
-			array( '*', '*', '*', '\.', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' , "\'", '\\\\\.', '\\\\', '\\\\\"', '\\\\\\\\\\\"' ),
+			[ 'https://', 'http://', '%2A', '.', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', "'", '\\\.', '\\', '"', '\\\\\\\"' ],
+			[ '*', '*', '*', '\.', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' , "\'", '\\\\\.', '\\\\', '\\\\\"', '\\\\\\\\\\\"' ],
 			$search
 		) . '$';
 		// @codingStandardsIgnoreEnd
@@ -203,7 +203,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 	private function createFilterConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
 
-		$result = new FilterCondition( '', array() );
+		$result = new FilterCondition( '', [] );
 
 		$this->conditionBuilder->addOrderByData(
 			$result,
@@ -241,11 +241,11 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$flag = $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE ) ? 'i' : 's';
 
 		if ( $dataItem instanceof DIBlob ) {
-			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"$flag\")", array() );
+			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"$flag\")", [] );
 		}
 
 		if ( $dataItem instanceof DIUri ) {
-			return new FilterCondition( "$comparator( str( ?$joinVariable ), \"$pattern\", \"i\")", array() );
+			return new FilterCondition( "$comparator( str( ?$joinVariable ), \"$pattern\", \"i\")", [] );
 		}
 
 		// Pattern search for a wikipage object can only be done on the sortkey
@@ -260,9 +260,9 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$condition->condition = "?$joinVariable " . $skeyExpElement->getQName(). " ?$filterVariable .\n";
 		$condition->matchElement = "?$joinVariable";
 
-		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"$flag\")", array() );
+		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"$flag\")", [] );
 
-		$condition->weakConditions = array( $filterVariable => $filterCondition->getCondition() );
+		$condition->weakConditions = [ $filterVariable => $filterCondition->getCondition() ];
 
 		return $condition;
 	}

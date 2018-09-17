@@ -25,21 +25,21 @@ class SemanticDataSerializer implements Serializer {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
 
-		return $this->doSerialize( $semanticData ) + array( 'serializer' => __CLASS__, 'version' => 2 );
+		return $this->doSerialize( $semanticData ) + [ 'serializer' => __CLASS__, 'version' => 2 ];
 	}
 
 	private function doSerialize( SemanticData $semanticData ) {
 
-		$data = array(
+		$data = [
 			'subject' => $semanticData->getSubject()->getSerialization(),
 			'data'    => $this->doSerializeProperty( $semanticData )
-		);
+		];
 
 		$subobjects = $this->doSerializeSubSemanticData(
 			$semanticData->getSubSemanticData()
 		);
 
-		if ( $subobjects !== array() ) {
+		if ( $subobjects !== [] ) {
 			$data['sobj'] = $subobjects;
 		}
 
@@ -53,13 +53,13 @@ class SemanticDataSerializer implements Serializer {
 	 */
 	private function doSerializeProperty( $semanticData ) {
 
-		$properties = array();
+		$properties = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
-			$properties[] = array(
+			$properties[] = [
 				'property' => $property->getSerialization(),
 				'dataitem' => $this->doSerializeDataItem( $semanticData, $property )
-			);
+			];
 		}
 
 		return $properties;
@@ -77,13 +77,13 @@ class SemanticDataSerializer implements Serializer {
 	 */
 	private function doSerializeDataItem( $semanticData, $property ) {
 
-		$dataItems = array();
+		$dataItems = [];
 
 		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
-			$dataItems[] = array(
+			$dataItems[] = [
 				'type' => $dataItem->getDIType(),
 				'item' => $dataItem->getSerialization()
-			);
+			];
 		}
 
 		return $dataItems;
@@ -96,7 +96,7 @@ class SemanticDataSerializer implements Serializer {
 	 */
 	protected function doSerializeSubSemanticData( $subSemanticData ) {
 
-		$subobjects = array();
+		$subobjects = [];
 
 		foreach ( $subSemanticData as $semanticData ) {
 			$subobjects[] = $this->doSerialize( $semanticData );

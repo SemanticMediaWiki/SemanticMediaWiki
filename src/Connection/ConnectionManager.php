@@ -18,7 +18,7 @@ class ConnectionManager {
 	 *
 	 * @var array
 	 */
-	private static $connectionProviders = array();
+	private static $connectionProviders = [];
 
 	/**
 	 * @since 2.1

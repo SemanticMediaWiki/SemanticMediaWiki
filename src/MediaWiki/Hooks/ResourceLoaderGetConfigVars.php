@@ -29,14 +29,14 @@ class ResourceLoaderGetConfigVars extends HookHandler {
 	 */
 	public function process( array &$vars ) {
 
-		$vars['smw-config'] = array(
+		$vars['smw-config'] = [
 			'version' => SMW_VERSION,
 			'namespaces' => [],
-			'settings' => array(
+			'settings' => [
 				'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
 				'smwgQMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
-			)
-		);
+			]
+		];
 
 		$localizer = Localizer::getInstance();
 

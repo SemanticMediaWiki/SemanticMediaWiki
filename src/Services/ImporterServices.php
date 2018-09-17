@@ -22,7 +22,7 @@ use SMW\Importer\JsonImportContentsFileDirReader;
  *
  * @author mwjames
  */
-return array(
+return [
 
 	/**
 	 * ImporterServiceFactory
@@ -71,10 +71,10 @@ return array(
 		$containerBuilder->registerExpectedReturnType( 'Importer', '\SMW\Importer\Importer' );
 
 		$dispatchingContentCreator = new DispatchingContentCreator(
-			array(
+			[
 				$containerBuilder->create( 'XmlContentCreator' ),
 				$containerBuilder->create( 'TextContentCreator' )
-			)
+			]
 		);
 
 		$importer = new Importer(
@@ -105,4 +105,4 @@ return array(
 		return new JsonContentIterator( $jsonImportContentsFileDirReader );
 	},
 
-);
+];

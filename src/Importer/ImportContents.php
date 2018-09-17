@@ -51,12 +51,12 @@ class ImportContents {
 	/**
 	 * @var string
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var array
 	 */
-	private $options = array();
+	private $options = [];
 
 	/**
 	 * @since 2.5

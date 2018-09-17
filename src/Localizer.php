@@ -325,10 +325,10 @@ class Localizer {
 		}
 
 		return str_replace(
-			array(
+			[
 				wfUrlencode( '/' . $namespace .':' ),
 				'/' . $namespace .':'
-			),
+			],
 			'/' . $this->getCanonicalNamespaceTextById( $index ) . ':',
 			$url
 		);
@@ -352,7 +352,7 @@ class Localizer {
 		}
 
 		// Do we want to check here whether isKnownLanguageTag or not?
-		if ( $langCode !== '' && ctype_alpha( str_replace( array( '-' ), '', $langCode ) ) ) {
+		if ( $langCode !== '' && ctype_alpha( str_replace( [ '-' ], '', $langCode ) ) ) {
 			return $langCode;
 		}
 
@@ -379,7 +379,7 @@ class Localizer {
 
 			// http://php.net/manual/en/function.str-split.php, mb_str_split
 			$length = mb_strlen( $fullWidth, "UTF-8" );
-			$full = array();
+			$full = [];
 
 			for ( $i = 0; $i < $length; $i += 1 ) {
 				$full[] = mb_substr( $fullWidth, $i, 1, "UTF-8" );

@@ -37,7 +37,7 @@ class SingletonCondition extends Condition {
 	 */
 	public $isSafe;
 
-	public function __construct( SMWExpElement $matchElement, $condition = '', $isSafe = false, $namespaces = array() ) {
+	public function __construct( SMWExpElement $matchElement, $condition = '', $isSafe = false, $namespaces = [] ) {
 		$this->matchElement = $matchElement;
 		$this->condition  = $condition;
 		$this->isSafe     = $isSafe;

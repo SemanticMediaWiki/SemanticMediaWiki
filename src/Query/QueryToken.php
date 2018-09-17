@@ -35,7 +35,7 @@ class QueryToken {
 	/**
 	 * @var array
 	 */
-	private $tokens = array();
+	private $tokens = [];
 
 	/**
 	 * @var array
@@ -57,7 +57,7 @@ class QueryToken {
 	 *
 	 * @param array $tokens
 	 */
-	public function __construct( array $tokens =  array() ) {
+	public function __construct( array $tokens =  [] ) {
 		$this->tokens = $tokens;
 	}
 
@@ -125,7 +125,7 @@ class QueryToken {
 	 */
 	public function highlight( $text, $type = self::HL_BOLD ) {
 
-		if ( $this->tokens === array() || strpos( strtolower( $this->outputFormat ), '-hl' ) === false ) {
+		if ( $this->tokens === [] || strpos( strtolower( $this->outputFormat ), '-hl' ) === false ) {
 			return $text;
 		}
 
@@ -155,8 +155,8 @@ class QueryToken {
 
 		// Remove query related chars
 		$text = str_replace(
-			array( '*', '"', '~', '_', '+', '-' ),
-			array( '',  '',  '',  ' ', '', '' ),
+			[ '*', '"', '~', '_', '+', '-' ],
+			[ '',  '',  '',  ' ', '', '' ],
 			$text
 		);
 

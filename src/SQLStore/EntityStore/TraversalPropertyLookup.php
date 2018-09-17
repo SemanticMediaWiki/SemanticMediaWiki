@@ -91,7 +91,7 @@ class TraversalPropertyLookup {
 
 			$conditions .= $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $conditions !== '' );
 
-			$options = $this->store->getSQLOptions( $subOptions, '' ) + array( 'DISTINCT' );
+			$options = $this->store->getSQLOptions( $subOptions, '' ) + [ 'DISTINCT' ];
 
 			$result = $connection->select(
 				$from,
@@ -111,13 +111,13 @@ class TraversalPropertyLookup {
 				$fields,
 				$where,
 				__METHOD__,
-				array( 'LIMIT' => 1 )
+				[ 'LIMIT' => 1 ]
 			);
 
 			if ( $result->numRows() > 0 ) {
 				$res = new \stdClass;
 				$res->smw_title = $propertyTableDef->getFixedProperty();
-				$result = array( $res );
+				$result = [ $res ];
 			}
 		}
 

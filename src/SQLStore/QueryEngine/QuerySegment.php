@@ -122,7 +122,7 @@ class QuerySegment {
 	/**
 	 * @var string[]
 	 */
-	public $components = array();
+	public $components = [];
 
 	/**
 	 * The alias to be used for jointable; read-only after construct!
@@ -134,7 +134,7 @@ class QuerySegment {
 	 * property dbkey => db field; passed down during query execution.
 	 * @var string[]
 	 */
-	public $sortfields = array();
+	public $sortfields = [];
 
 	/**
 	 * @var integer

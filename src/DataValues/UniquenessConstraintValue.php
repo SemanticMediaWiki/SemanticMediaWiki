@@ -28,10 +28,10 @@ class UniquenessConstraintValue extends BooleanValue {
 
 		if ( !$this->isEnabledFeature( SMW_DV_PVUC ) ) {
 			$this->addErrorMsg(
-				array(
+				[
 					'smw-datavalue-feature-not-supported',
 					'SMW_DV_PVUC'
-				)
+				]
 			);
 		}
 

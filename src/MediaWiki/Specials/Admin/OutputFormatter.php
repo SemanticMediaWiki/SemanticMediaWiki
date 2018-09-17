@@ -34,7 +34,7 @@ class OutputFormatter {
 	 *
 	 * @param array $query
 	 */
-	public function addParentLink( $query = array(), $title = 'smw-admin-tab-supplement' ) {
+	public function addParentLink( $query = [], $title = 'smw-admin-tab-supplement' ) {
 		$this->outputPage->prependHTML( $this->createParentLink( $query, $title ) );
 	}
 
@@ -98,7 +98,7 @@ class OutputFormatter {
 	 *
 	 * @param string $fragment
 	 */
-	public function redirectToRootPage( $fragment = '', $query = array() ) {
+	public function redirectToRootPage( $fragment = '', $query = [] ) {
 
 		$title = \SpecialPage::getTitleFor( 'SMWAdmin' );
 		$title->setFragment( ' ' . $fragment );
@@ -112,7 +112,7 @@ class OutputFormatter {
 	 * @param string $caption
 	 * @param array $query
 	 */
-	public function getSpecialPageLinkWith( $caption = '', $query = array() ) {
+	public function getSpecialPageLinkWith( $caption = '', $query = [] ) {
 		return $this->createSpecialPageLink( $caption, $query );
 	}
 
@@ -122,7 +122,7 @@ class OutputFormatter {
 	 * @param string $caption
 	 * @param array $query
 	 */
-	public function createSpecialPageLink( $caption = '', $query = array() ) {
+	public function createSpecialPageLink( $caption = '', $query = [] ) {
 		return '<a href="' . htmlspecialchars( \SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL( $query ) ) . '">' . $caption . '</a>';
 	}
 
@@ -169,18 +169,18 @@ class OutputFormatter {
 		return FormatJson::encode( $input, true );
 	}
 
-	private function createParentLink( $query = array(), $title = 'smwadmin' ) {
+	private function createParentLink( $query = [], $title = 'smwadmin' ) {
 		return Html::rawElement(
 			'div',
-			array( 'class' => 'smw-breadcrumb-link' ),
+			[ 'class' => 'smw-breadcrumb-link' ],
 			Html::rawElement(
 				'span',
-				array( 'class' => 'smw-breadcrumb-arrow-right' ),
+				[ 'class' => 'smw-breadcrumb-arrow-right' ],
 				''
 			) .
 			Html::rawElement(
 				'a',
-				array( 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL( $query ) ),
+				[ 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL( $query ) ],
 				Message::get( $title, Message::TEXT, Message::USER_LANGUAGE )
 		) );
 	}

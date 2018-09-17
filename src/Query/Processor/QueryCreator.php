@@ -122,7 +122,7 @@ class QueryCreator implements QueryContext {
 		$query->setQueryMode( $queryMode );
 
 		$query->setExtraPrintouts(
-			$this->getParam( 'extraPrintouts', array() )
+			$this->getParam( 'extraPrintouts', [] )
 		);
 
 		$query->setMainLabel(
@@ -154,8 +154,8 @@ class QueryCreator implements QueryContext {
 		);
 
 		$sortKeys = $this->getSortKeys(
-			$this->getParam( 'sort', array() ),
-			$this->getParam( 'order', array() ),
+			$this->getParam( 'sort', [] ),
+			$this->getParam( 'order', [] ),
 			$this->getParam( 'defaultSort', 'ASC' )
 		);
 
@@ -181,8 +181,8 @@ class QueryCreator implements QueryContext {
 	 */
 	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ) {
 
-		$sortKeys = array();
-		$sortErros = array();
+		$sortKeys = [];
+		$sortErros = [];
 
 		$orders = $this->normalize_order( $orderParameters );
 
@@ -221,11 +221,11 @@ class QueryCreator implements QueryContext {
 			$sortKeys[''] = array_shift( $orders );
 		}
 
-		return array( 'keys' => $sortKeys, 'errors' => $sortErros );
+		return [ 'keys' => $sortKeys, 'errors' => $sortErros ];
 	}
 
 	private function normalize_order( $orderParameters ) {
-		$orders = array();
+		$orders = [];
 
 		foreach ( $orderParameters as $key => $order ) {
 			$order = strtolower( trim( $order ) );

@@ -76,8 +76,8 @@ class ConceptPage extends Page {
 
 			$errors = $queryResult->getErrors();
 		} else {
-			$diWikiPages = array();
-			$errors = array();
+			$diWikiPages = [];
+			$errors = [];
 		}
 
 		$pageLister = new \SMWPageLister( $diWikiPages, null, $this->limit, $this->from, $this->until );
@@ -91,15 +91,15 @@ class ConceptPage extends Page {
 		$limit = $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
 		$offset = $request->getVal( 'offset', '0' );
 
-		$query = array(
+		$query = [
 			'from' => $request->getVal( 'from', '' ),
 			'until' => $request->getVal( 'until', '' ),
 			'value' => $request->getVal( 'value', '' )
-		);
+		];
 
 		$countMessage = Html::rawElement(
 			'div',
-			array( 'style' => 'margin-top:10px;' ),
+			[ 'style' => 'margin-top:10px;' ],
 			wfMessage( 'smw_conceptarticlecount', ( $resultCount < $limit ? $resultCount : $limit ) )->parse()
 		);
 
@@ -129,14 +129,14 @@ class ConceptPage extends Page {
 
 		return Html::element(
 			'div',
-			array( 'id' => 'smwfootbr' )
+			[ 'id' => 'smwfootbr' ]
 		) . Html::element(
 			'a',
-			array( 'name' => 'SMWResults' ),
+			[ 'name' => 'SMWResults' ],
 			null
 		) . Html::rawElement(
 			'div',
-			array( 'id' => 'mw-pages'),
+			[ 'id' => 'mw-pages'],
 			$html
 		);
 	}
@@ -157,7 +157,7 @@ class ConceptPage extends Page {
 		$cacheCount = $cacheInformation['count'];
 		$date = $this->getContext()->getLanguage()->timeanddate( $cacheInformation['date'] );
 
-		$countMsg = Message::get( array( 'smw-concept-indicator-cache-update', $date ) );
+		$countMsg = Message::get( [ 'smw-concept-indicator-cache-update', $date ] );
 		$indicatorClass = ( $cacheCount < 25000 ? ( $cacheCount > 5000 ? ' moderate' : '' ) : ' high' );
 
 		$usageCountHtml = Html::rawElement(
@@ -191,7 +191,7 @@ class ConceptPage extends Page {
 
 	private function getFormattedColumns( array $diWikiPages ) {
 
-		if ( $diWikiPages === array() ) {
+		if ( $diWikiPages === [] ) {
 			return '';
 		}
 

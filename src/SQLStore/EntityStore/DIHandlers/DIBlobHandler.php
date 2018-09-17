@@ -24,10 +24,10 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array(
+		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_hash' => $this->getCharFieldType()
-		);
+		];
 	}
 
 	/**
@@ -36,10 +36,10 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array(
+		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_hash' => $this->getCharFieldType()
-		);
+		];
 	}
 
 	/**
@@ -48,14 +48,14 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array(
+		return [
 
 			's_id,o_hash',
 
 			// pvalue select
 			// SELECT p_id,o_hash FROM `smw_di_blob` WHERE p_id = '310174' AND ( o_hash LIKE '%test%' ) LIMIT 11
 			'p_id,o_hash',
-		);
+		];
 	}
 
 	/**
@@ -128,10 +128,10 @@ class DIBlobHandler extends DataItemHandler {
 			$text = null;
 		}
 
-		return array(
+		return [
 			'o_blob' => $text,
 			'o_hash' => $hash,
-		);
+		];
 	}
 
 	/**

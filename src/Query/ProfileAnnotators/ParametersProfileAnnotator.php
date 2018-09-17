@@ -38,13 +38,13 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 
 		list( $sort, $order ) = $this->doSerializeSortKeys( $this->query );
 
-		$options = array(
+		$options = [
 			'limit'  => $this->query->getLimit(),
 			'offset' => $this->query->getOffset(),
 			'sort'   => $sort,
 			'order'  => $order,
 			'mode'   => $this->query->getQueryMode()
-		);
+		];
 
 		$this->getSemanticData()->addPropertyObjectValue(
 			new DIProperty( '_ASKPA' ),
@@ -54,11 +54,11 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	private function doSerializeSortKeys( $query ) {
 
-		$sort = array();
-		$order = array();
+		$sort = [];
+		$order = [];
 
 		if ( $query->getSortKeys() === null ) {
-			return array( $sort, $order );
+			return [ $sort, $order ];
 		}
 
 		foreach ( $query->getSortKeys() as $key => $value ) {
@@ -66,7 +66,7 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 			$order[] = strtolower( $value );
 		}
 
-		return array( $sort, $order );
+		return [ $sort, $order ];
 	}
 
 }

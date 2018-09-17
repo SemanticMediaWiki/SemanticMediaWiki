@@ -90,13 +90,13 @@ class PropertyTableRowDiffer {
 	 */
 	public function computeTableRowDiff( $sid, SemanticData $semanticData ) {
 
-		$tablesDeleteRows = array();
-		$tablesInsertRows = array();
+		$tablesDeleteRows = [];
+		$tablesInsertRows = [];
 
 		$propertyList = [];
 		$textItems = [];
 
-		$newHashes = array();
+		$newHashes = [];
 
 		if ( $this->changeOp === null ) {
 			$this->setChangeOp( new ChangeOp( $semanticData->getSubject() ) );
@@ -166,7 +166,7 @@ class PropertyTableRowDiffer {
 				}
 			} elseif ( array_key_exists( $tableName, $oldHashes ) ) {
 				// Table contains data but should not contain any after update
-				$tablesInsertRows[$tableName] = array();
+				$tablesInsertRows[$tableName] = [];
 				$tablesDeleteRows[$tableName] = $this->fetchCurrentContentsForPropertyTable(
 					$sid,
 					$propertyTable
@@ -189,7 +189,7 @@ class PropertyTableRowDiffer {
 			$tablesDeleteRows
 		);
 
-		return array( $tablesInsertRows, $tablesDeleteRows, $newHashes );
+		return [ $tablesInsertRows, $tablesDeleteRows, $newHashes ];
 	}
 
 	private function fetchPropertyTableHashesById( $sid ) {
@@ -228,13 +228,13 @@ class PropertyTableRowDiffer {
 			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
 		}
 
-		$contents = array();
+		$contents = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$result = $connection->select(
 			$connection->tablename( $propertyTable->getName() ),
 			'*',
-			array( 's_id' => $sid ),
+			[ 's_id' => $sid ],
 			__METHOD__
 		);
 
@@ -307,7 +307,7 @@ class PropertyTableRowDiffer {
 
 		// Arrays have to be renumbered because database functions expect an
 		// element with index 0 to be present in the array
-		return array( array_values( $newValues ), array_values( $oldValues ) );
+		return [ array_values( $newValues ), array_values( $oldValues ) ];
 	}
 
 }

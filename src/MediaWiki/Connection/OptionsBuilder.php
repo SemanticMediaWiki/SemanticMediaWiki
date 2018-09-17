@@ -114,7 +114,7 @@ class OptionsBuilder {
 		$useIndex = '';
 		$ignoreIndex = '';
 
-		return array( $startOpts, $useIndex, $preLimitTail, $postLimitTail, $ignoreIndex );
+		return [ $startOpts, $useIndex, $preLimitTail, $postLimitTail, $ignoreIndex ];
 	}
 
 	protected static function makeGroupByWithHaving( $connection, $options ) {

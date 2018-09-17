@@ -24,11 +24,11 @@ class ExtensionTypes extends HookHandler {
 	public function process( array &$extensionTypes ) {
 
 		if ( !is_array( $extensionTypes ) ) {
-			$extensionTypes = array();
+			$extensionTypes = [];
 		}
 
 		$extensionTypes = array_merge(
-			array( 'semantic' => wfMessage( 'version-semantic' )->text() ),
+			[ 'semantic' => wfMessage( 'version-semantic' )->text() ],
 			$extensionTypes
 		);
 

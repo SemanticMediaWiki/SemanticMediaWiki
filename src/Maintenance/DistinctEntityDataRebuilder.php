@@ -186,7 +186,7 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function findFilters() {
-		$this->filters = array();
+		$this->filters = [];
 
 		if ( $this->options->has( 'categories' ) ) {
 			$this->filters[] = NS_CATEGORY;
@@ -198,13 +198,13 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function hasFilters() {
-		return $this->filters !== array();
+		return $this->filters !== [];
 	}
 
 	private function getPagesFromQuery() {
 
 		if ( !$this->options->has( 'query' ) ) {
-			return array();
+			return [];
 		}
 
 		$queryString = $this->options->get( 'query' );
@@ -212,7 +212,7 @@ class DistinctEntityDataRebuilder {
 		// get number of pages and fix query limit
 		$query = SMWQueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( array( 'format' => 'count' ) )
+			SMWQueryProcessor::getProcessedParams( [ 'format' => 'count' ] )
 		);
 
 		$result = $this->store->getQueryResult( $query );
@@ -220,7 +220,7 @@ class DistinctEntityDataRebuilder {
 		// get pages and add them to the pages explicitly listed in the 'page' parameter
 		$query = SMWQueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( array() )
+			SMWQueryProcessor::getProcessedParams( [] )
 		);
 
 		$query->setUnboundLimit( $result instanceof \SMWQueryResult ? $result->getCountValue() : $result );
@@ -230,7 +230,7 @@ class DistinctEntityDataRebuilder {
 
 	private function getPagesFromFilters() {
 
-		$pages = array();
+		$pages = [];
 
 		if ( !$this->hasFilters() ) {
 			return $pages;
@@ -248,7 +248,7 @@ class DistinctEntityDataRebuilder {
 	private function getRedirectPages() {
 
 		if ( !$this->options->has( 'redirects' ) ) {
-			return array();
+			return [];
 		}
 
 		$titleLookup = new TitleLookup(

@@ -24,10 +24,10 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array(
+		return [
 			'o_serialized' => FieldType::FIELD_TITLE,
 			'o_sortkey' => FieldType::TYPE_DOUBLE
-		);
+		];
 	}
 
 	/**
@@ -36,9 +36,9 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array(
+		return [
 			'o_serialized' => FieldType::FIELD_TITLE
-		);
+		];
 	}
 
 	/**
@@ -47,7 +47,7 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array(
+		return [
 
 			// API module pvalue lookup
 			'p_id,o_serialized',
@@ -60,7 +60,7 @@ class DITimeHandler extends DataItemHandler {
 			// ... FROM `smw_fpt_sobj` INNER JOIN `smw_object_ids` AS o0 ON
 			// o_id=o0.smw_id WHERE s_id='104322'
 			's_id,p_id,o_sortkey,o_serialized',
-		);
+		];
 	}
 
 	/**
@@ -83,7 +83,7 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return array( 'o_sortkey' => $dataItem->getSortKey() );
+		return [ 'o_sortkey' => $dataItem->getSortKey() ];
 	}
 
 	/**
@@ -92,10 +92,10 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		return array(
+		return [
 			'o_serialized' => $dataItem->getSerialization(),
 			'o_sortkey' => $dataItem->getSortKey()
-		);
+		];
 	}
 
 	/**

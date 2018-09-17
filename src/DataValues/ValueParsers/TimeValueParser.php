@@ -148,11 +148,11 @@ class TimeValueParser implements ValueParser {
 		// * this does not allow localized time notations such as "10.34 pm"
 		// * this creates problems with keywords that contain "." such as "p.m."
 		// * yet "." is an essential date separation character in languages such as German
-		$parsevalue = str_replace( array( '/', '.', '&nbsp;', ',', '年', '月', '日', '時', '分' ), array( '-', ' ', ' ', ' ', ' ', ' ', ' ', ':', ' ' ), $string );
+		$parsevalue = str_replace( [ '/', '.', '&nbsp;', ',', '年', '月', '日', '時', '分' ], [ '-', ' ', ' ', ' ', ' ', ' ', ' ', ':', ' ' ], $string );
 
 		$matches = preg_split( "/([T]?[0-2]?[0-9]:[\:0-9]+[+\-]?[0-2]?[0-9\:]+|[\p{L}]+|[0-9]+|[ ])/u", $parsevalue, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
-		$datecomponents = array();
-		$unclearparts = array();
+		$datecomponents = [];
+		$unclearparts = [];
 
 		 // Used for looking back; numbers are days/months/years by default but
 		 // may be re-interpreted if certain further symbols are found
@@ -176,11 +176,11 @@ class TimeValueParser implements ValueParser {
 				$datecomponents[] = $match;
 				$matchisnumber = true;
 				$matchisdate = true;
-			} elseif ( $era === false && in_array( $match, array( 'AD', 'CE' ) ) ) {
+			} elseif ( $era === false && in_array( $match, [ 'AD', 'CE' ] ) ) {
 				$era = '+';
-			} elseif ( $era === false && in_array( $match, array( 'BC', 'BCE' ) ) ) {
+			} elseif ( $era === false && in_array( $match, [ 'BC', 'BCE' ] ) ) {
 				$era = '-';
-			} elseif ( $calendarmodel === false && in_array( $match, array( 'Gr', 'GR' , 'He', 'Jl', 'JL', 'MJD', 'JD', 'OS' ) ) ) {
+			} elseif ( $calendarmodel === false && in_array( $match, [ 'Gr', 'GR' , 'He', 'Jl', 'JL', 'MJD', 'JD', 'OS' ] ) ) {
 				$calendarmodel = $match;
 			} elseif ( $ampm === false && ( strtolower( $match ) === 'am' || strtolower( $match ) === 'pm' ) ) {
 				$ampm = strtolower( $match );
@@ -201,7 +201,7 @@ class TimeValueParser implements ValueParser {
 				   $this->parseMonthString( $match, $monthname ) ) {
 				$datecomponents[] = $monthname;
 				$matchisdate = true;
-			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && in_array( $match, array( 'st', 'nd', 'rd', 'th' ) ) ) {
+			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && in_array( $match, [ 'st', 'nd', 'rd', 'th' ] ) ) {
 				$datecomponents[] = 'd' . strval( array_pop( $datecomponents ) ); // must be a day; add standard marker
 				$matchisdate = true;
 			} elseif ( is_string( $match ) ) {

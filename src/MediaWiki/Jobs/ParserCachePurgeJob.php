@@ -64,7 +64,7 @@ class ParserCachePurgeJob extends Job {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
+	public function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'smw.parserCachePurge', $title, $params );
 		$this->removeDuplicates = true;
 	}
@@ -101,7 +101,7 @@ class ParserCachePurgeJob extends Job {
 			$this->pageUpdater->doPurgeParserCacheAsPool();
 		}
 
-		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', array( $this ) );
+		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', [ $this ] );
 
 		$this->applicationFactory->getMediaWikiLogger()->info(
 			[
@@ -143,7 +143,7 @@ class ParserCachePurgeJob extends Job {
 			$idList = explode( '|', $idList );
 		}
 
-		if ( $idList === array() ) {
+		if ( $idList === [] ) {
 			return true;
 		}
 
@@ -183,7 +183,7 @@ class ParserCachePurgeJob extends Job {
 			$job->run();
 		}
 
-		if ( $hashList === array() ) {
+		if ( $hashList === [] ) {
 			return true;
 		}
 
@@ -206,8 +206,8 @@ class ParserCachePurgeJob extends Job {
 
 	public function splitList( $hashList ) {
 
-		$targetLinksList = array();
-		$queryList = array();
+		$targetLinksList = [];
+		$queryList = [];
 
 		foreach ( $hashList as $hash ) {
 
@@ -229,7 +229,7 @@ class ParserCachePurgeJob extends Job {
 			$targetLinksList[HashBuilder::createHashIdFromSegments( $title, $namespace, $iw )] = true;
 		}
 
-		return array( array_keys( $targetLinksList ), array_keys( $queryList ) );
+		return [ array_keys( $targetLinksList ), array_keys( $queryList ) ];
 	}
 
 	private function addPagesToUpdater( array $hashList ) {

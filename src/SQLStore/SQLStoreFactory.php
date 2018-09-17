@@ -255,10 +255,10 @@ class SQLStoreFactory {
 			$useCache = true;
 		}
 
-		$cacheOptions = $cacheFactory->newCacheOptions( array(
+		$cacheOptions = $cacheFactory->newCacheOptions( [
 			'useCache' => $useCache,
 			'ttl'      => $cacheExpiry
-		) );
+		] );
 
 		$cachedListLookup = new CachedListLookup(
 			$listLookup,

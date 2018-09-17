@@ -40,7 +40,7 @@ class QuerySegmentListBuilder {
 	 *
 	 * @var QuerySegment[]
 	 */
-	private $querySegments = array();
+	private $querySegments = [];
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -49,12 +49,12 @@ class QuerySegmentListBuilder {
 	 *
 	 * @var string[]
 	 */
-	private $sortKeys = array();
+	private $sortKeys = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var integer
@@ -260,7 +260,7 @@ class QuerySegmentListBuilder {
 
 	private function findDuplicates( $fingerprint ) {
 
-		if ( $this->errors !== array() || $this->isFilterDuplicates === false ) {
+		if ( $this->errors !== [] || $this->isFilterDuplicates === false ) {
 			return false;
 		}
 

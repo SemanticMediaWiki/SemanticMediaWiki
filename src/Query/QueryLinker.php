@@ -24,9 +24,9 @@ class QueryLinker {
 	 *
 	 * @return Infolink
 	 */
-	public static function get( Query $query, array $parameters = array() ) {
+	public static function get( Query $query, array $parameters = [] ) {
 
-		$link = Infolink::newInternalLink( '', ':Special:Ask', false, array() );
+		$link = Infolink::newInternalLink( '', ':Special:Ask', false, [] );
 		$link->setCompactLink( $GLOBALS['smwgCompactLinkSupport'] );
 
 		foreach ( $parameters as $key => $value ) {
@@ -53,7 +53,7 @@ class QueryLinker {
 
 	private static function getParameters( $query ) {
 
-		$params = array( trim( $query->getQueryString( true ) ) );
+		$params = [ trim( $query->getQueryString( true ) ) ];
 
 		foreach ( $query->getExtraPrintouts() as /* PrintRequest */ $printout ) {
 			if ( ( $serialisation = $printout->getSerialisation( true ) ) !== '' ) {

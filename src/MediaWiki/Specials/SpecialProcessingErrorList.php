@@ -46,7 +46,7 @@ class SpecialProcessingErrorList extends SpecialPage {
 	 */
 	public function getLocalAskRedirectUrl( $limit = 20 ) {
 		return SpecialPage::getTitleFor( 'Ask' )->getLocalUrl(
-			array(
+			[
 				'q'      => '[[Has processing error text::+]]',
 				'po'     => '?Has improper value for|?Has processing error text',
 				'p'      => 'class=sortable-20wikitable-20smwtable-2Dstriped',
@@ -54,7 +54,7 @@ class SpecialProcessingErrorList extends SpecialPage {
 				'limit'  =>  $limit,
 				'bTitle' => 'processingerrorlist',
 				'bMsg'   => 'smw-processingerrorlist-intro'
-			)
+			]
 		);
 	}
 

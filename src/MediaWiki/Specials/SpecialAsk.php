@@ -58,12 +58,12 @@ class SpecialAsk extends SpecialPage {
 	/**
 	 * @var array
 	 */
-	private $parameters = array();
+	private $parameters = [];
 
 	/**
 	 * @var array
 	 */
-	private $printouts = array();
+	private $printouts = [];
 
 	/**
 	 * @var boolean
@@ -78,7 +78,7 @@ class SpecialAsk extends SpecialPage {
 	/**
 	 * @var Param[]
 	 */
-	private $params = array();
+	private $params = [];
 
 	public function __construct() {
 		parent::__construct( 'Ask' );
@@ -572,10 +572,10 @@ class SpecialAsk extends SpecialPage {
 		// build parameter strings for URLs, based on current settings
 		$urlArgs->set( 'q', $this->queryString );
 
-		$tmp_parray = array();
+		$tmp_parray = [];
 
 		foreach ( $this->parameters as $key => $value ) {
-			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
+			if ( !in_array( $key, [ 'sort', 'order', 'limit', 'offset', 'title' ] ) ) {
 				$tmp_parray[$key] = $value;
 			}
 		}

@@ -180,7 +180,7 @@ class SubobjectParserFunction {
 		// named ID (i.e. different access restrictions etc.)
 		if ( strpos( mb_substr( $parserParameterProcessor->getFirst(), 0, 5 ), '.' ) !== false ) {
 			return $this->parserData->addError(
-				Message::encode( array( 'smw-subobject-parser-invalid-naming-scheme', $parserParameterProcessor->getFirst() ) )
+				Message::encode( [ 'smw-subobject-parser-invalid-naming-scheme', $parserParameterProcessor->getFirst() ] )
 			);
 		}
 
@@ -225,7 +225,7 @@ class SubobjectParserFunction {
 	private function getParameters( ParserParameterProcessor $parserParameterProcessor ) {
 
 		$id = $parserParameterProcessor->getFirst();
-		$isAnonymous = in_array( $id, array( null, '' ,'-' ) );
+		$isAnonymous = in_array( $id, [ null, '' ,'-' ] );
 
 		$useFirst = $this->useFirstElementAsPropertyLabel && !$isAnonymous;
 
@@ -248,7 +248,7 @@ class SubobjectParserFunction {
 			$id = HashBuilder::createFromContent( $p, '_' );
 		}
 
-		return array( $parameters, $id );
+		return [ $parameters, $id ];
 	}
 
 	private function preprocess( ParserParameterProcessor $parserParameterProcessor, $useFirst ) {

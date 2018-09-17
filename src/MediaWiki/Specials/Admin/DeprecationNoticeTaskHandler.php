@@ -22,7 +22,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	/**
 	 * @var array
 	 */
-	private $deprecationNoticeList = array();
+	private $deprecationNoticeList = [];
 
 	/**
 	 * @since 3.0
@@ -30,7 +30,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 * @param OutputFormatter $outputFormatter
 	 * @param array $deprecationNoticeList
 	 */
-	public function __construct( OutputFormatter $outputFormatter, array $deprecationNoticeList = array() ) {
+	public function __construct( OutputFormatter $outputFormatter, array $deprecationNoticeList = [] ) {
 		$this->outputFormatter = $outputFormatter;
 		$this->deprecationNoticeList = $deprecationNoticeList;
 	}
@@ -77,14 +77,14 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'class' => 'smw-admin-deprecation'
-			),
+			],
 			Html::rawElement(
 				'p',
-				array(
+				[
 					'class' => 'plainlinks'
-				),
+				],
 				$this->msg( 'smw-admin-deprecation-notice-docu' )
 			) . $html
 		);
@@ -106,9 +106,9 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 
 	private function buildSection( $section, $deprecationNoticeList ) {
 
-		$noticeConfigList = array();
-		$replacementConfigList = array();
-		$removedConfigList = array();
+		$noticeConfigList = [];
+		$replacementConfigList = [];
+		$removedConfigList = [];
 		$html = '';
 
 		if ( isset( $deprecationNoticeList['notice'] ) ) {
@@ -156,14 +156,14 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	private function build_list( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ) {
 
 		$noticeList = [];
-		$list = array();
+		$list = [];
 
 		// Replacements
 		foreach ( $replacementConfigList as $setting => $value ) {
 			if ( $setting === 'options' ) {
 				$list[] = $this->createListItems( "$section-admin-deprecation-notice-config-replacement", $value );
 			} elseif ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( array( "$section-admin-deprecation-notice-config-replacement", '$' . $setting, '$' . $value ) );
+				$list[] = $this->createListItem( [ "$section-admin-deprecation-notice-config-replacement", '$' . $setting, '$' . $value ] );
 			}
 		}
 
@@ -176,7 +176,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			if ( $setting === 'options' ) {
 				$list[] = $this->createListItems( "$section-admin-deprecation-notice-config-notice", $value );
 			} elseif ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( array( "$section-admin-deprecation-notice-config-notice", '$' . $setting, $value ) );
+				$list[] = $this->createListItem( [ "$section-admin-deprecation-notice-config-notice", '$' . $setting, $value ] );
 			}
 		}
 
@@ -187,7 +187,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		// Removals
 		foreach ( $removedConfigList as $setting => $msg ) {
 			if ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( array( "$section-admin-deprecation-notice-config-removal", '$' . $setting, $msg ) );
+				$list[] = $this->createListItem( [ "$section-admin-deprecation-notice-config-removal", '$' . $setting, $msg ] );
 			}
 		}
 
@@ -200,7 +200,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 
 	private function mergeList( $title, $section, &$list ) {
 
-		if ( $list === array() || ( $items = implode( '', $list ) ) === '' ) {
+		if ( $list === [] || ( $items = implode( '', $list ) ) === '' ) {
 			return;
 		}
 
@@ -229,7 +229,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	}
 
 	private function createListItem( $message ) {
-		return Html::rawElement( 'li', array(), $this->msg( $message, Message::PARSE ) );
+		return Html::rawElement( 'li', [], $this->msg( $message, Message::PARSE ) );
 	}
 
 	private function createListItems( $message, $values ) {

@@ -162,7 +162,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 		$html = Html::rawElement(
 			'p',
 			[ 'class' => 'plainlinks' ],
-			$this->msg( array( 'smw-admin-supplementary-elastic-docu' ), Message::PARSE )
+			$this->msg( [ 'smw-admin-supplementary-elastic-docu' ], Message::PARSE )
 		);
 
 		$this->outputFormatter->addHTML( $html );

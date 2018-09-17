@@ -32,17 +32,17 @@ class PropertyAliasFinder {
 	 *
 	 * @var string[]
 	 */
-	private $propertyAliases = array();
+	private $propertyAliases = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $propertyAliasesByMsgKey = array();
+	private $propertyAliasesByMsgKey = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $canonicalPropertyAliases = array();
+	private $canonicalPropertyAliases = [];
 
 	/**
 	 * @since 2.4
@@ -51,7 +51,7 @@ class PropertyAliasFinder {
 	 * @param array $propertyAliases
 	 * @param array $canonicalPropertyAliases
 	 */
-	public function __construct( Cache $cache, array $propertyAliases = array(), array $canonicalPropertyAliases = array() ) {
+	public function __construct( Cache $cache, array $propertyAliases = [], array $canonicalPropertyAliases = [] ) {
 		$this->cache = $cache;
 		$this->canonicalPropertyAliases = $canonicalPropertyAliases;
 

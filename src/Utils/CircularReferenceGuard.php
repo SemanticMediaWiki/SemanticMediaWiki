@@ -13,7 +13,7 @@ class CircularReferenceGuard {
 	/**
 	 * @var array
 	 */
-	private static $circularRefGuard = array();
+	private static $circularRefGuard = [];
 
 	/**
 	 * @var string
@@ -104,7 +104,7 @@ class CircularReferenceGuard {
 	 * @param string $namespace
 	 */
 	public function reset( $namespace ) {
-		self::$circularRefGuard[$namespace] =  array();
+		self::$circularRefGuard[$namespace] =  [];
 	}
 
 }

@@ -15,32 +15,32 @@ class HtmlTableRenderer {
 	/**
 	 * @var array
 	 */
-	private $headerItems = array();
+	private $headerItems = [];
 
 	/**
 	 * @var array
 	 */
-	private $tableRows = array();
+	private $tableRows = [];
 
 	/**
 	 * @var array
 	 */
-	private $rawRows = array();
+	private $rawRows = [];
 
 	/**
 	 * @var array
 	 */
-	private $tableHeaders = array();
+	private $tableHeaders = [];
 
 	/**
 	 * @var array
 	 */
-	private $rawHeaders = array();
+	private $rawHeaders = [];
 
 	/**
 	 * @var array
 	 */
-	private $tableCells = array();
+	private $tableCells = [];
 
 	/**
 	 * @var array
@@ -103,7 +103,7 @@ class HtmlTableRenderer {
 	 *
 	 * @return string
 	 */
-	public function addHeaderItem( $element, $content = '', $attributes = array() ) {
+	public function addHeaderItem( $element, $content = '', $attributes = [] ) {
 		$this->headerItems[] = Html::rawElement( $element, $attributes, $content );
 	}
 
@@ -128,7 +128,7 @@ class HtmlTableRenderer {
 	 *
 	 * @return TableBuilder
 	 */
-	public function addCell( $content = '', $attributes = array() ) {
+	public function addCell( $content = '', $attributes = [] ) {
 		if ( $content !== '' ) {
 			$this->tableCells[] = $this->createCell( $content, $attributes );
 		}
@@ -145,9 +145,9 @@ class HtmlTableRenderer {
 	 *
 	 * @return TableBuilder
 	 */
-	public function addHeader( $content = '', $attributes = array() ) {
+	public function addHeader( $content = '', $attributes = [] ) {
 		if ( $content !== '' ) {
-			$this->rawHeaders[] = array( 'content' => $content, 'attributes' => $attributes );
+			$this->rawHeaders[] = [ 'content' => $content, 'attributes' => $attributes ];
 		}
 		return $this;
 	}
@@ -169,10 +169,10 @@ class HtmlTableRenderer {
 	 *
 	 * @return TableBuilder
 	 */
-	public function addRow( $attributes = array() ) {
-		if ( $this->tableCells !== array() ) {
-			$this->rawRows[] = array( 'cells' => $this->tableCells, 'attributes' => $attributes );
-			$this->tableCells = array();
+	public function addRow( $attributes = [] ) {
+		if ( $this->tableCells !== [] ) {
+			$this->rawRows[] = [ 'cells' => $this->tableCells, 'attributes' => $attributes ];
+			$this->tableCells = [];
 		}
 		return $this;
 	}
@@ -186,7 +186,7 @@ class HtmlTableRenderer {
 	 *
 	 * @return string
 	 */
-	public function getHtml( $attributes = array() ) {
+	public function getHtml( $attributes = [] ) {
 
 		$table = $this->transpose ? $this->buildTransposedTable() : $this->buildStandardTable();
 
@@ -201,7 +201,7 @@ class HtmlTableRenderer {
 		return '';
 	}
 
-	private function createRow( $content = '', $attributes = array() ) {
+	private function createRow( $content = '', $attributes = [] ) {
 		$alternate = count( $this->tableRows ) % 2 == 0 ? 'row-odd' : 'row-even';
 
 		if ( isset( $attributes['class'] ) ) {
@@ -213,18 +213,18 @@ class HtmlTableRenderer {
 		return Html::rawElement( 'tr', $attributes, $content );
 	}
 
-	private function createCell( $content = '', $attributes = array() ) {
+	private function createCell( $content = '', $attributes = [] ) {
 		return Html::rawElement( 'td', $attributes, $content );
 	}
 
-	private function createHeader( $content = '', $attributes = array() ) {
+	private function createHeader( $content = '', $attributes = [] ) {
 		return Html::rawElement( 'th', $attributes, $content );
 	}
 
 	private function doConcatenatedHeader() {
 
 		if ( $this->htmlContext ) {
-			return Html::rawElement( 'thead', array(), implode( '', $this->tableHeaders ) );
+			return Html::rawElement( 'thead', [], implode( '', $this->tableHeaders ) );
 		}
 
 		return implode( '', $this->tableHeaders );
@@ -233,15 +233,15 @@ class HtmlTableRenderer {
 	private function doConcatenatedRows() {
 
 		if ( $this->htmlContext ) {
-			return Html::rawElement( 'tbody', array(), implode( '', $this->tableRows ) );
+			return Html::rawElement( 'tbody', [], implode( '', $this->tableRows ) );
 		}
 
 		return implode( '', $this->tableRows );
 	}
 
 	private function buildStandardTable() {
-		$this->tableHeaders = array();
-		$this->tableRows = array();
+		$this->tableHeaders = [];
+		$this->tableRows = [];
 
 		foreach( $this->rawHeaders as $i => $header ) {
 			$this->tableHeaders[] = $this->createHeader( $header['content'], $header['attributes'] );
@@ -255,10 +255,10 @@ class HtmlTableRenderer {
 	}
 
 	private function buildTransposedTable() {
-		$this->tableRows = array();
+		$this->tableRows = [];
 
 		foreach( $this->rawHeaders as $hIndex => $header ) {
-			$cells = array();
+			$cells = [];
 			$headerItem =  $this->createHeader( $header['content'], $header['attributes'] );
 
 			foreach( $this->rawRows as $rIndex => $row ) {
@@ -278,10 +278,10 @@ class HtmlTableRenderer {
 			return $row['cells'][$index];
 		}
 
-		$attributes = array();
+		$attributes = [];
 
 		if ( isset( $row['attributes']['class'] ) && $row['attributes']['class'] === 'smwfooter' ) {
-			$attributes = array( 'class' => 'footer-cell' );
+			$attributes = [ 'class' => 'footer-cell' ];
 		}
 
 		return $this->createCell( '', $attributes );

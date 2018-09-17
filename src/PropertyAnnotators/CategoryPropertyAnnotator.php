@@ -139,10 +139,10 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 
 		$container = $this->processingErrorMsgHandler->newErrorContainerFromMsg(
-			array(
+			[
 				'smw-category-invalid-redirect-target',
 				str_replace( '_', ' ', $catname )
-			)
+			]
 		);
 
 		$this->processingErrorMsgHandler->addToSemanticData(

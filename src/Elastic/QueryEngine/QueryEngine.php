@@ -112,11 +112,11 @@ class QueryEngine implements IQueryEngine {
 		if ( ( $query->getDescription() instanceof ThingDescription ) &&
 				$query->querymode != Query::MODE_DEBUG &&
 				count( $query->getErrors() ) > 0 ) {
-			return $this->queryFactory->newQueryResult( $this->store, $query, array(), false );
+			return $this->queryFactory->newQueryResult( $this->store, $query, [], false );
 			// NOTE: we check this here to prevent unnecessary work, but we check
 			// it after query processing below again in case more errors occurred.
 		} elseif ( $query->querymode == Query::MODE_NONE || $query->getLimit() < 1 ) {
-			return $this->queryFactory->newQueryResult( $this->store, $query, array(), true );
+			return $this->queryFactory->newQueryResult( $this->store, $query, [], true );
 		}
 
 		$this->errors = [];

@@ -94,7 +94,7 @@ class MagicWordsFinder {
 			return $this->parserOutput->mSMWMagicWords;
 		}
 
-		return array();
+		return [];
 	}
 
 	/**

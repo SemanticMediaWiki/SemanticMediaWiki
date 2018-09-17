@@ -295,7 +295,7 @@ class Installer implements MessageReporter {
 			$messageReporter = $messageReporterFactory->newNullMessageReporter();
 		} else {
 			$messageReporter = $messageReporterFactory->newObservableMessageReporter();
-			$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
+			$messageReporter->registerReporterCallback( [ $this, 'reportMessage' ] );
 		}
 
 		return $messageReporter;

@@ -62,25 +62,25 @@ class DocumentationParserFunction implements HookHandler {
 	public static function getHookDefinition() {
 		return new HookDefinition(
 			'smwdoc',
-			array(
-				array(
+			[
+				[
 					'name' => 'format',
 					'message' => 'smw-smwdoc-par-format',
 					'values' => array_keys( $GLOBALS['smwgResultFormats'] ),
-				),
-				array(
+				],
+				[
 					'name' => 'language',
 					'message' => 'smw-smwdoc-par-language',
 					'default' => $GLOBALS['wgLanguageCode'],
-				),
-				array(
+				],
+				[
 					'name' => 'parameters',
 					'message' => 'smw-smwdoc-par-parameters',
-					'values' => array( 'all', 'specific', 'base' ),
+					'values' => [ 'all', 'specific', 'base' ],
 					'default' => 'specific',
-				),
-			),
-			array( 'format', 'language', 'parameters' )
+				],
+			],
+			[ 'format', 'language', 'parameters' ]
 		);
 	}
 

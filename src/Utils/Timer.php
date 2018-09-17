@@ -13,7 +13,7 @@ class Timer {
 	/**
 	 * @var float|integer
 	 */
-	private static $start = array();
+	private static $start = [];
 
 	/**
 	 * @since 3.0

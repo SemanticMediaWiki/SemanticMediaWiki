@@ -93,21 +93,21 @@ class UnusedPropertyListLookup implements ListLookup {
 	private function selectPropertiesFromTable() {
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$options = array( 'ORDER BY' => 'smw_sort' );
+		$options = [ 'ORDER BY' => 'smw_sort' ];
 
 		if ( $this->requestOptions->limit > 0 ) {
 			$options['LIMIT'] = $this->requestOptions->limit;
 			$options['OFFSET'] = max( $this->requestOptions->offset, 0 );
 		}
 
-		$conditions = array(
+		$conditions = [
 			"smw_title NOT LIKE '\_%'", // #2182, exclude predefined properties
 			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
 			'smw_subobject' => '',
 			'smw_proptable_hash IS NOT NULL'
-		);
+		];
 
 		$conditions['usage_count'] = 0;
 
@@ -118,12 +118,12 @@ class UnusedPropertyListLookup implements ListLookup {
 		$idTable = $this->store->getObjectIds()->getIdTable();
 
 		$res = $this->store->getConnection( 'mw.db' )->select(
-			array( $idTable ,$this->propertyStatisticsStore->getStatisticsTable() ),
-			array( 'smw_title', 'usage_count' ),
+			[ $idTable ,$this->propertyStatisticsStore->getStatisticsTable() ],
+			[ 'smw_title', 'usage_count' ],
 			$conditions,
 			__METHOD__,
 			$options,
-			array( $idTable => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
+			[ $idTable => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
 		);
 
 		return $res;
@@ -131,7 +131,7 @@ class UnusedPropertyListLookup implements ListLookup {
 
 	private function buildPropertyList( $res ) {
 
-		$result = array();
+		$result = [];
 
 		foreach ( $res as $row ) {
 			$result[] = $this->addPropertyFor( $row->smw_title );
@@ -145,7 +145,7 @@ class UnusedPropertyListLookup implements ListLookup {
 		try {
 			$property = new DIProperty( $title );
 		} catch ( PropertyLabelNotResolvedException $e ) {
-			$property = new DIError( new \Message( 'smw_noproperty', array( $title ) ) );
+			$property = new DIError( new \Message( 'smw_noproperty', [ $title ] ) );
 		}
 
 		return $property;

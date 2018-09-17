@@ -32,7 +32,7 @@ class InfoLinksProvider {
 	/**
 	 * @var Infolink[]
 	 */
-	protected $infoLinks = array();
+	protected $infoLinks = [];
 
 	/**
 	 * Used to control the addition of the standard search link.
@@ -81,7 +81,7 @@ class InfoLinksProvider {
 	 * @since 2.4
 	 */
 	public function init() {
-		$this->infoLinks = array();
+		$this->infoLinks = [];
 		$this->hasSearchLink = false;
 		$this->hasServiceLinks = false;
 		$this->enabledServiceLinks = true;
@@ -135,12 +135,12 @@ class InfoLinksProvider {
 	 */
 	public function createInfoLinks() {
 
-		if ( $this->infoLinks !== array() ) {
+		if ( $this->infoLinks !== [] ) {
 			return $this->infoLinks;
 		}
 
 		if ( !$this->dataValue->isValid() ) {
-			return array();
+			return [];
 		}
 
 		// Avoid any localization when generating the value
@@ -187,7 +187,7 @@ class InfoLinksProvider {
 
 		$result = '';
 		$first = true;
-		$extralinks = array();
+		$extralinks = [];
 
 		foreach ( $this->dataValue->getInfolinks() as $link ) {
 
@@ -207,7 +207,7 @@ class InfoLinksProvider {
 			}
 		}
 
-		if ( $extralinks !== array() ) {
+		if ( $extralinks !== [] ) {
 			$result .= smwfEncodeMessages( $extralinks, 'service', '', false );
 		}
 

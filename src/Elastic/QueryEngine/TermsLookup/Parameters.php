@@ -15,12 +15,12 @@ class Parameters {
 	/**
 	 * @var array
 	 */
-	private $parameters = array();
+	private $parameters = [];
 
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( array $parameters = array() ) {
+	public function __construct( array $parameters = [] ) {
 		$this->parameters = $parameters;
 	}
 

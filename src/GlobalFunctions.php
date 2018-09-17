@@ -62,7 +62,7 @@ function smwfNormalTitleText( $text ) {
  * @param string $text
  */
 function smwfXMLContentEncode( $text ) {
-	return str_replace( array( '&', '<', '>' ), array( '&amp;', '&lt;', '&gt;' ), Sanitizer::decodeCharReferences( $text ) );
+	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ) );
 }
 
 /**
@@ -117,7 +117,7 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 
 	$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
-	if ( $messages === array() ) {
+	if ( $messages === [] ) {
 		return '';
 	}
 
@@ -143,10 +143,10 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 
 	$highlighter = Highlighter::factory( $type );
 
-	$highlighter->setContent( array(
+	$highlighter->setContent( [
 		'caption'   => null,
 		'content'   => Highlighter::decode( $content )
-	) );
+	] );
 
 	return $highlighter->getHtml();
 }

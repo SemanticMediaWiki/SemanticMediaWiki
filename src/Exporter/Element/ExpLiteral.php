@@ -115,12 +115,12 @@ class ExpLiteral extends ExpElement {
 	 */
 	public function getSerialization() {
 
-		$serialization = array(
+		$serialization = [
 			'type'     => self::TYPE_LITERAL,
 			'lexical'  => $this->lexicalForm,
 			'datatype' => $this->datatype,
 			'lang'     => $this->lang
-		);
+		];
 
 		return $serialization + parent::getSerialization();
 	}

@@ -163,11 +163,11 @@ class CachedFactbox {
 	public function addContentToCache( $key, $text, $revisionId = null, $lang = 'en' ) {
 		$this->saveToCache(
 			$key,
-			array(
+			[
 				'revId' => $revisionId,
 				'lang'  => $lang,
 				'text'  => $text
-			)
+			]
 		);
 	}
 
@@ -267,7 +267,7 @@ class CachedFactbox {
 	private function retrieveFromCache( $key ) {
 
 		if ( !$this->cache->contains( $key ) || !$this->isEnabled ) {
-			return array();
+			return [];
 		}
 
 		$data = $this->cache->fetch( $key );
@@ -287,10 +287,10 @@ class CachedFactbox {
 		$this->timestamp = wfTimestamp( TS_UNIX );
 		$this->isCached = false;
 
-		$data = array(
+		$data = [
 			'time' => $this->timestamp,
 			'content' => serialize( $content )
-		);
+		];
 
 		$this->cache->save( $key, $data, $this->expiryInSeconds );
 	}

@@ -124,10 +124,10 @@ class ExpNsResource extends ExpResource {
 	public function getSerialization() {
 
 		// Use '|' as divider as it is unlikely that symbol appears within a uri
-		$serialization = array(
+		$serialization = [
 			'type' => self::TYPE_NSRESOURCE,
 			'uri'  => $this->localName . '|' . $this->namespace . '|' . $this->namespaceId
-		);
+		];
 
 		return $serialization + parent::getSerialization();
 	}

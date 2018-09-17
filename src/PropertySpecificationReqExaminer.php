@@ -111,11 +111,11 @@ class PropertySpecificationReqExaminer {
 		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
 			$severity = $this->changePropagationProtection ? 'error' : 'warning';
 			$this->reqLock = true;
-			return array(
+			return [
 				$severity,
 				'smw-property-req-violation-change-propagation-locked-' . $severity,
 				$property->getLabel()
-			);
+			];
 		}
 
 		if ( $this->reqLock === false && $this->protectionValidator->hasCreateProtection( $title ) ) {
@@ -125,20 +125,20 @@ class PropertySpecificationReqExaminer {
 				$msg = 'smw-create-protection-exists';
 			}
 
-			return array(
+			return [
 				'warning',
 				$msg,
 				$property->getLabel(),
 				$this->protectionValidator->getCreateProtectionRight()
-			);
+			];
 		}
 
 		if ( $this->reqLock === false && $this->protectionValidator->hasEditProtection( $title ) ) {
-			return array(
+			return [
 				$property->isUserDefined() ? 'error' : 'warning',
 				'smw-edit-protection',
 				$this->protectionValidator->getEditProtectionRight()
-			);
+			];
 		}
 
 		if ( !$property->isUserDefined() ) {
@@ -182,7 +182,7 @@ class PropertySpecificationReqExaminer {
 			$this->dataItemFactory->newDIProperty( '_TYPE' )
 		);
 
-		if ( $typeValues !== array() ) {
+		if ( $typeValues !== [] ) {
 			list( $url, $type ) = explode( "#", end( $typeValues )->getSerialization() );
 		}
 
@@ -192,12 +192,12 @@ class PropertySpecificationReqExaminer {
 
 		$prop = $this->dataItemFactory->newDIProperty( $type );
 
-		return array(
+		return [
 			'error',
 			'smw-property-req-violation-predefined-type',
 			$property->getCanonicalLabel(),
 			$prop->getCanonicalLabel()
-		);
+		];
 	}
 
 	/**
@@ -210,11 +210,11 @@ class PropertySpecificationReqExaminer {
 			return;
 		}
 
-		return array(
+		return [
 			'warning',
 			'smw-edit-protection-disabled',
 			$property->getCanonicalLabel()
-		);
+		];
 	}
 
 	/**
@@ -229,12 +229,12 @@ class PropertySpecificationReqExaminer {
 
 		$prop = $this->dataItemFactory->newDIProperty( $property->findPropertyTypeID() );
 
-		return array(
+		return [
 			'error',
 			'smw-property-req-violation-missing-fields',
 			$property->getLabel(),
 			$prop->getCanonicalLabel()
-		);
+		];
 	}
 
 	/**
@@ -247,11 +247,11 @@ class PropertySpecificationReqExaminer {
 			return;
 		}
 
-		return array(
+		return [
 			'error',
 			'smw-property-req-violation-missing-formatter-uri',
 			$property->getLabel()
-		);
+		];
 	}
 
 	private function checkMaps( $property ) {
@@ -260,11 +260,11 @@ class PropertySpecificationReqExaminer {
 			return;
 		}
 
-		return array(
+		return [
 			'error',
 			'smw-property-req-violation-missing-maps-extension',
 			$property->getLabel()
-		);
+		];
 	}
 
 	/**
@@ -285,11 +285,11 @@ class PropertySpecificationReqExaminer {
 			return;
 		}
 
-		return array(
+		return [
 			'warning',
 			'smw-property-req-violation-import-type',
 			$property->getLabel()
-		);
+		];
 	}
 
 }

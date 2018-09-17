@@ -75,28 +75,28 @@ class LinksWidget {
 			],
 			Html::rawElement(
 				'span',
-				array(
+				[
 					'id'  => 'embed_show'
-				), Html::rawElement(
+				], Html::rawElement(
 					'a',
-					array(
+					[
 						'href'  => '#embed_show',
 						'rel'   => 'nofollow',
 						'onclick' => $embedShow
-					), wfMessage( 'smw_ask_show_embed' )->escaped()
+					], wfMessage( 'smw_ask_show_embed' )->escaped()
 				)
 			) . Html::rawElement(
 				'span',
-				array(
+				[
 					'id'  => 'embed_hide',
 					'style'  => 'display: none;'
-				), Html::rawElement(
+				], Html::rawElement(
 					'a',
-					array(
+					[
 						'href'  => '#embed_hide',
 						'rel'   => 'nofollow',
 						'onclick' => $embedHide
-					), wfMessage( 'smw_ask_hide_embed' )->escaped()
+					], wfMessage( 'smw_ask_hide_embed' )->escaped()
 				)
 			)
 		);
@@ -165,13 +165,13 @@ class LinksWidget {
 
 		$code = Html::rawElement(
 			'pre',
-			array(
+			[
 				'id' => 'inlinequeryembedarea',
 				'readonly' => 'yes',
 				'cols' => 20,
 				'rows' => substr_count( $code, "\n" ) + 1,
 				'onclick' => 'this.select()'
-			),
+			],
 			$code
 		);
 
@@ -181,14 +181,14 @@ class LinksWidget {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id'  => 'inlinequeryembed',
 				'style' => 'display: none;'
-			), Html::rawElement(
+			], Html::rawElement(
 				'div',
-				array(
+				[
 					'id' => 'inlinequeryembedinstruct'
-				), wfMessage( 'smw_ask_embed_instr' )->escaped()
+				], wfMessage( 'smw_ask_embed_instr' )->escaped()
 			) . $code
 		);
 	}
@@ -208,18 +208,18 @@ class LinksWidget {
 
 		return Html::rawElement( 'div', [ 'class' => 'smw-ask-button-submit' ], Html::element(
 			'input',
-			array(
+			[
 				'type'  => 'submit',
 				'class' => '',
 				'value' => wfMessage( 'smw_ask_submit' )->escaped()
-			), ''
+			], ''
 		) . ' ' . Html::element(
 			'input',
-			array(
+			[
 				'type'  => 'hidden',
 				'name'  => 'eq',
 				'value' => 'yes'
-			), ''
+			], ''
 		) );
 	}
 

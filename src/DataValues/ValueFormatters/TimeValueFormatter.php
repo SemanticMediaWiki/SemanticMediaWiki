@@ -384,7 +384,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	private function hintTimeCorrection( $hasTimeCorrection ) {
 
 		if ( $hasTimeCorrection ) {
-			return '&nbsp;' . \Html::rawElement( 'sup', array( 'title' => 'ISO: ' . $this->getISO8601Date() ), 'ᴸ' );
+			return '&nbsp;' . \Html::rawElement( 'sup', [ 'title' => 'ISO: ' . $this->getISO8601Date() ], 'ᴸ' );
 		}
 
 		return '';
@@ -393,7 +393,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	private function hintCalendarModel( $dataItem ) {
 
 		if ( $this->dataValue->isEnabledFeature( SMW_DV_TIMEV_CM ) && $dataItem->getCalendarModel() !== DITime::CM_GREGORIAN ) {
-			return ' ' . \Html::rawElement( 'sup', array(), $dataItem->getCalendarModelLiteral() );
+			return ' ' . \Html::rawElement( 'sup', [], $dataItem->getCalendarModelLiteral() );
 		}
 
 		return '';
