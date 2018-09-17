@@ -491,11 +491,6 @@
 	"smw-browse-property-group-description": "屬性群組描述",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]格式",
 	"smw-types-title": "類型：$1",
-	"smw-rule-page-definition": "定義",
-	"smw-rule-page-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Rule/Type/$1",
-	"smw-rule-page-description": "描述：",
-	"smw-rule-page-type": "類型：",
-	"smw-rule-page-tag": "標籤：",
 	"smw-ask-title-keyword-type": "關鍵字搜尋",
 	"smw-parameter-missing": "遺失參數「$1」。"
 }

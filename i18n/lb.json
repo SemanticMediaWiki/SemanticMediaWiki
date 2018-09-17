@@ -256,6 +256,7 @@
 	"smw-search-profile": "Erweidert",
 	"smw-search-profile-sort-title": "Titel",
 	"smw-search-profile-extended-help-query": "Link op:$1",
+	"smw-search-profile-extended-help-query-link": "(fir méi Detailer $1).",
 	"smw-search-profile-extended-section-namespace": "Nummraum",
 	"smw-search-show": "Weisen",
 	"smw-search-hide": "Verstoppen",
@@ -307,16 +308,12 @@
 	"smw-property-predefined-label-skey": "Zortéierschlëssel",
 	"smw-processing": "Verschaffen...",
 	"smw-types-title": "Typ: $1",
-	"smw-rule-error-schema": "Feeler vum Schema ($1)",
-	"smw-rule-page-definition": "Definitioun",
-	"smw-rule-page-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Rule/Type/$1",
-	"smw-rule-page-description": "Beschreiwung:",
-	"smw-rule-page-type": "Typ:",
 	"smw-ask-title-keyword-type": "Schlësselwuert sichen",
 	"smw-parameter-missing": "De Parameter \"$1\" feelt.",
 	"smw-property-tab-usage": "Benotzung",
 	"smw-property-tab-redirects": "Synonymmen",
 	"smw-property-tab-specification": "... méi",
 	"smw-concept-tab-list": "Lëscht",
-	"smw-concept-tab-errors": "Feeler"
+	"smw-concept-tab-errors": "Feeler",
+	"smw-ask-tab-result": "Resultat"
 }

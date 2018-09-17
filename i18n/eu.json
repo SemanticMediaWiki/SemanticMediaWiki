@@ -139,6 +139,7 @@
 	"smw-statistics-query-size": "Kontsultaren tamainia",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Kontzeptua|Kontzeptuak}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Kontzeptua|Kontzeptuak}}]]",
+	"smw-statistics-datatype-count": "[[Special:Motak|{{PLURAL:$1|Datu mota|Datu motak}}]]",
 	"ask": "Bilaketa semantikoa",
 	"smw_ask_sortby": "Zutabeka sailkatu (hautazkoa)",
 	"smw_ask_ascorder": "Gorantz",
@@ -324,9 +325,5 @@
 	"smw-section-collapse": "Atala kolapsatu",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] formatua",
 	"smw-help": "Laguntza",
-	"smw-processing": "Prozesatzen...",
-	"smw-rule-page-definition": "Definizioa",
-	"smw-rule-page-description": "Deskribapena:",
-	"smw-rule-page-type": "Mota:",
-	"smw-rule-page-tag": "Etiketa:"
+	"smw-processing": "Prozesatzen..."
 }

@@ -765,19 +765,6 @@
 	"smw-processing": "This is an informatory message.",
 	"smw-redirect-target-unresolvable": "This is an error message.\n\nParameter:\n* $1 - holds an error note.",
 	"smw-types-title": "This is the item label shown on a page in namespace \"Rule\". Do not confuse this with a datatype.\n\nParameter:\n* $1 - holds the string of the configuration defining the rule formatter, e.g. \"LINK_FORMAT_RULE\"\n\n{{Identical|Type}}",
-	"smw-rule-namespace-editcontentmodel-disallowed": "This is an informatory message.",
-	"smw-rule-namespace-edit-protection": "This is an informatory message shown on every page which is edit protected via a software setting.",
-	"smw-rule-error-schema": "This is an informatory message preceeding an unordered list of errors.\n\nParamter:\n* $1 - Holds the name of the json-file containing the error, e.g. link-format-rule-schema.v1.json",
-	"smw-rule-page-definition": "This is a section header on a page in namespace \"Rule\".\n\n{{Identical|Definition}}",
-	"smw-rule-page-type-help-link": "This is the link on a page in namespace \"Rule\".\n\nParameter:\n* $1 - holds the string of the configuration defining the rule formatter, e.g. \"LINK_FORMAT_RULE\"\n\n{{Notranslate}}\n{{Optional}}",
-	"smw-rule-page-description": "This is the lable of a field on a page in namespace \"Rule\".\n\n{{Identical|Description}}",
-	"smw-rule-page-type": "This is the lable of a field on a page in namespace \"Rule\". Do not confuse this with a dataype.\n\n{{Identical|Type}}",
-	"smw-rule-page-tag": "This is the lable of a field on a page in namespace \"Rule\".\n\n{{Identical|Tag}}",
-	"smw-property-predefined-rl-desc": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 holds the name of the special property.",
-	"smw-property-predefined-rl-tag": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 holds the name of the special property.",
-	"smw-property-predefined-long-rl-tag": "This informatory message describes the value added to a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
-	"smw-property-predefined-rl-type": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 holds the name of the special property.",
-	"smw-property-predefined-long-rl_type": "This informatory message describes the value added to a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
 	"smw-ask-title-keyword-type": "This is a label.",
 	"smw-ask-message-keyword-type": "This is an informatory message.\n\nParameter:\n* $1 holds the query condition",
 	"smw-remote-source-unavailable": "This is an error message.\n\nParameters:\n* $1 - holds the name of the remote target",
@@ -791,5 +778,6 @@
 	"smw-property-tab-subproperties": "This is the label of a tab on a property page.",
 	"smw-property-tab-errors": "This is the label of a tab on a property page.",
 	"smw-concept-tab-list": "This is the label of a tab on a concept page. \n\n{{Identical|List}}",
-	"smw-concept-tab-errors": "This is the label of a tab on a concept page. \n\n{{Identical|Error}}"
+	"smw-concept-tab-errors": "This is the label of a tab on a concept page. \n\n{{Identical|Error}}",
+	"smw-ask-tab-result": "{{Identical|Result}}"
 }

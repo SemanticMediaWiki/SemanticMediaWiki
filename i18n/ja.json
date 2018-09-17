@@ -28,7 +28,8 @@
 			"Eduardo Addad de Oliveira",
 			"Yusuke1109",
 			"Zero 1 k",
-			"Suyama"
+			"Suyama",
+			"Wat"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -139,6 +140,7 @@
 	"smw_typearticlecount": "この型を使用している $1 {{PLURAL:$1|プロパティ}}を表示しています。",
 	"smw_attribute_header": "プロパティ「$1」を使用しているページ",
 	"smw_attributearticlecount": "このプロパティを使用している $1 {{PLURAL:$1|件のページ}}を表示しています。",
+	"smw-propertylist-redirect-header": "同義語",
 	"specialpages-group-smw_group": "Semantic MediaWiki",
 	"exportrdf": "ページを RDF に書き出し",
 	"smw_exportrdf_docu": "このページを使用すると、ページからデータを RDF 形式で取得できます。ページを書き出すには、下のテキストボックスに、ページ名を一行に一つずつ入力してください。",
@@ -197,7 +199,7 @@
 	"smw_ask_submit": "結果を取得",
 	"smw_ask_editquery": "クエリを編集",
 	"smw_add_sortcondition": "[並べ替え条件を追加]",
-	"smw_ask_hidequery": "クエリを非表示",
+	"smw_ask_hidequery": "クエリを非表示 (折りたたむ)",
 	"smw_ask_help": "クエリのヘルプ",
 	"smw_ask_queryhead": "条件",
 	"smw_ask_printhead": "表示する追加データ",
@@ -356,7 +358,7 @@
 	"smw-search-syntax": "構文",
 	"smw-search-profile-sort-recent": "最新",
 	"smw-search-profile-extended-section-sort": "並び順",
-	"smw-search-profile-extended-section-namespace": "名前空間を選択",
+	"smw-search-profile-extended-section-namespace": "名前空間",
 	"log-name-smw": "Semantic MediaWiki ログ",
 	"log-show-hide-smw": "Semantic MediaWiki ログを$1",
 	"log-description-smw": "Semantic MediaWiki とその構成要素によって報告された、[https://www.semantic-mediawiki.org/wiki/Help:Logging 有効なイベントの種類]についての活動です。",
@@ -415,9 +417,6 @@
 	"smw-help": "ヘルプ",
 	"smw-cheat-sheet": "早見表",
 	"smw-processing": "処理中...",
-	"smw-rule-page-description": "説明:",
-	"smw-rule-page-type": "タイプ",
-	"smw-rule-page-tag": "タグ:",
 	"smw-parameter-missing": "パラメータ \"$1\" がありません。",
 	"smw-concept-tab-errors": "エラー"
 }
