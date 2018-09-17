@@ -111,9 +111,9 @@ class QueryTestCaseInterpreter {
 	 */
 	public function getExtraPrintouts() {
 
-		$extraPrintouts = array();
+		$extraPrintouts = [];
 
-		if ( !isset( $this->contents['printouts'] ) || $this->contents['printouts'] === array() ) {
+		if ( !isset( $this->contents['printouts'] ) || $this->contents['printouts'] === [] ) {
 			return $extraPrintouts;
 		}
 
@@ -148,10 +148,10 @@ class QueryTestCaseInterpreter {
 				return $this->contents['parameters']['sort'];
 			}
 
-			return array( $this->contents['parameters']['sort'] => 'DESC' );
+			return [ $this->contents['parameters']['sort'] => 'DESC' ];
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -179,7 +179,7 @@ class QueryTestCaseInterpreter {
 	 */
 	public function getExpectedSubjects() {
 
-		$subjects = array();
+		$subjects = [];
 
 		if ( !isset( $this->contents['assert-queryresult']['results'] )  ) {
 			return $subjects;
@@ -199,7 +199,7 @@ class QueryTestCaseInterpreter {
 	 */
 	public function getExpectedDataItems() {
 
-		$dataItems = array();
+		$dataItems = [];
 
 		if ( !isset( $this->contents['assert-queryresult']['dataitems'] )  ) {
 			return $dataItems;
@@ -222,7 +222,7 @@ class QueryTestCaseInterpreter {
 	 */
 	public function getExpectedDataValues() {
 
-		$dataValues = array();
+		$dataValues = [];
 
 		if ( !isset( $this->contents['assert-queryresult']['datavalues'] )  ) {
 			return $dataValues;
@@ -276,7 +276,7 @@ class QueryTestCaseInterpreter {
 	 */
 	public function getExpectedFormatOuputFor( $id ) {
 
-		$output = array();
+		$output = [];
 
 		if ( !isset( $this->contents['assert-output'] ) || !isset( $this->contents['assert-output'][$id] )  ) {
 			return $output;
@@ -291,7 +291,7 @@ class QueryTestCaseInterpreter {
 	 * @return []
 	 */
 	public function getExpectedConceptCache() {
-		return isset( $this->contents['conceptcache'] ) ? $this->contents['conceptcache'] : array();
+		return isset( $this->contents['conceptcache'] ) ? $this->contents['conceptcache'] : [];
 	}
 
 }

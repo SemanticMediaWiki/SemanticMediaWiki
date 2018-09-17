@@ -199,43 +199,43 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parameterDataProvider() {
-		return array(
-			array(
+		return [
+			[
 				// #0
-				array(
+				[
 					'format=template',
 					'link=none'
-				),
-				array(
+				],
+				[
 					'format=template/link=none',
 					'x=format%3Dtemplate%2Flink%3Dnone'
-				)
-			),
+				]
+			],
 
 			// #1 Bug 47010 (space encoding, named args => named%20args)
-			array(
-				array(
+			[
+				[
 					'format=template',
 					'link=none',
 					'named args=1'
-				),
-				array(
+				],
+				[
 					'format=template/link=none/named-20args=1',
 					'x=format%3Dtemplate%2Flink%3Dnone%2Fnamed-20args%3D1'
-				)
-			),
+				]
+			],
 
 			// #2 "\"
-			array(
-				array(
+			[
+				[
 					"format=foo\bar",
-				),
-				array(
+				],
+				[
 					'format=foo-5Cbar',
 					'x=format%3Dfoo-5Cbar'
-				)
-			),
-		);
+				]
+			],
+		];
 	}
 
 }

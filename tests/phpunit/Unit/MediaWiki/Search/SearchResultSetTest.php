@@ -58,7 +58,7 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getResults' )
-			->will( $this->returnValue( array( $pageMock, $pageMock, $pageMock ) ) );
+			->will( $this->returnValue( [ $pageMock, $pageMock, $pageMock ] ) );
 
 		$this->resultSet = new SearchResultSet( $this->queryResult, 42 );
 

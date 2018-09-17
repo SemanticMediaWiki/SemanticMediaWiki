@@ -53,12 +53,12 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	private function doAssertWith( $expected, $actual, $message = '', $method = '', $callback ) {
 
 		if ( !is_array( $expected ) ) {
-			$expected = array( $expected );
+			$expected = [ $expected ];
 		}
 
 		$expected = array_filter( $expected, 'strlen' );
 
-		if ( $expected === array() ) {
+		if ( $expected === [] ) {
 			return self::assertTrue( true, $message );
 		}
 
@@ -72,7 +72,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 
 		call_user_func_array(
 			$callback,
-			array( &$expected, $actual, &$actualCounted )
+			[ &$expected, $actual, &$actualCounted ]
 		);
 
 		self::assertEquals(

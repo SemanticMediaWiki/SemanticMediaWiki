@@ -256,7 +256,7 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private function printQueryResultToOutput( $queryResult ) {
 
 		if ( is_string( $queryResult ) ) {
-			return print_r( str_replace( array( "&#x0020;", "&#x003A;" ), array( " ", ":" ), $queryResult ) );
+			return print_r( str_replace( [ "&#x0020;", "&#x003A;" ], [ " ", ":" ], $queryResult ) );
 		}
 
 		if ( !$this->debug ) {

@@ -74,7 +74,7 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(),
+			[],
 			$instance->getPrintRequests()
 		);
 
@@ -109,74 +109,74 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItem,
 			null,
 			SMW_CMP_EQ,
-			array(
+			[
 				'comparator'  => SMW_CMP_EQ,
 				'dataItem'    => $dataItem,
 				'property'    => null,
 				'queryString' => '[[:Foo]]',
 				'queryStringAsValue' => 'Foo',
 				'isSingleton' => true
-			)
-		);
+			]
+		];
 
-		$provider['page.1'] = array(
+		$provider['page.1'] = [
 			$dataItem,
 			null,
 			SMW_CMP_LEQ,
-			array(
+			[
 				'comparator'  => SMW_CMP_LEQ,
 				'dataItem'    => $dataItem,
 				'property'    => null,
 				'queryString' => '[[≤Foo]]',
 				'queryStringAsValue' => '≤Foo',
 				'isSingleton' => false
-			)
-		);
+			]
+		];
 
 		$property = DIProperty::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
 		$dataItem = new DINumber( 9001 );
 
-		$provider['num.1'] = array(
+		$provider['num.1'] = [
 			$dataItem,
 			$property,
 			SMW_CMP_LEQ,
-			array(
+			[
 				'comparator'  => SMW_CMP_LEQ,
 				'dataItem'    => $dataItem,
 				'property'    => $property,
 				'queryString' => '[[≤9001]]',
 				'queryStringAsValue' => '≤9001',
 				'isSingleton' => false
-			)
-		);
+			]
+		];
 
 		$property = DIProperty::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
 		$dataItem = new DINumber( 9001.356 );
 
-		$provider['num.2'] = array(
+		$provider['num.2'] = [
 			$dataItem,
 			$property,
 			SMW_CMP_GEQ,
-			array(
+			[
 				'comparator'  => SMW_CMP_GEQ,
 				'dataItem'    => $dataItem,
 				'property'    => $property,
 				'queryString' => '[[≥9001.356]]',
 				'queryStringAsValue' => '≥9001.356',
 				'isSingleton' => false
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
 
 	public function comparativeHashProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			new ValueDescription(
 				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 			),
@@ -184,9 +184,9 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 			),
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			new ValueDescription(
 				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 			),
@@ -194,9 +194,9 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
 			),
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			new ValueDescription(
 				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 			),
@@ -204,10 +204,10 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 				new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar' ), SMW_CMP_EQ
 			),
 			false
-		);
+		];
 
 		// Inverse case
-		$provider[] = array(
+		$provider[] = [
 			new ValueDescription(
 				new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar', true ), SMW_CMP_EQ
 			),
@@ -215,7 +215,7 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 				new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar' ), SMW_CMP_EQ
 			),
 			false
-		);
+		];
 
 		return $provider;
 	}

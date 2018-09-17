@@ -70,22 +70,22 @@ class ExpElementTest extends \PHPUnit_Framework_TestCase {
 
 	public function instanceProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array( new ExpResource( 'foo' ) );
-		$provider[] = array( new ExpResource( 'foo', null ) );
-		$provider[] = array( new ExpResource( 'foo', new \SMWDIBlob( 'bar' ) ) );
+		$provider[] = [ new ExpResource( 'foo' ) ];
+		$provider[] = [ new ExpResource( 'foo', null ) ];
+		$provider[] = [ new ExpResource( 'foo', new \SMWDIBlob( 'bar' ) ) ];
 
-		$provider[] = array( new ExpNsResource( 'foo', 'bar', 'baz' ) );
-		$provider[] = array( new ExpNsResource( 'foo', 'bar', 'baz', null ) );
-		$provider[] = array( new ExpNsResource( 'foo', 'bar', 'baz', new \SMWDIBlob( 'bar' ) ) );
+		$provider[] = [ new ExpNsResource( 'foo', 'bar', 'baz' ) ];
+		$provider[] = [ new ExpNsResource( 'foo', 'bar', 'baz', null ) ];
+		$provider[] = [ new ExpNsResource( 'foo', 'bar', 'baz', new \SMWDIBlob( 'bar' ) ) ];
 
-		$provider[] = array( new ExpLiteral( 'foo' ) );
-		$provider[] = array( new ExpLiteral( 'foo', '' ) );
-		$provider[] = array( new ExpLiteral( 'foo', 'bar' ) );
-		$provider[] = array( new ExpLiteral( 'foo', '', '', null ) );
-		$provider[] = array( new ExpLiteral( 'foo', '', '', new \SMWDIBlob( 'bar' ) ) );
-		$provider[] = array( new ExpLiteral( 'foo', 'baz', '', new \SMWDIBlob( 'bar' ) ) );
+		$provider[] = [ new ExpLiteral( 'foo' ) ];
+		$provider[] = [ new ExpLiteral( 'foo', '' ) ];
+		$provider[] = [ new ExpLiteral( 'foo', 'bar' ) ];
+		$provider[] = [ new ExpLiteral( 'foo', '', '', null ) ];
+		$provider[] = [ new ExpLiteral( 'foo', '', '', new \SMWDIBlob( 'bar' ) ) ];
+		$provider[] = [ new ExpLiteral( 'foo', 'baz', '', new \SMWDIBlob( 'bar' ) ) ];
 
 		return $provider;
 	}

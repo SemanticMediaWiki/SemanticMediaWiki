@@ -37,10 +37,10 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSortKeys' )
 			->will( $this->returnValue( [] ) );
 
-		$parameters = array(
+		$parameters = [
 			'Foo' => 'Bar',
 			'Foobar'
-		);
+		];
 
 		$this->assertInstanceOf(
 			'SMWInfolink',
@@ -59,7 +59,7 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )

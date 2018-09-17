@@ -202,7 +202,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testEscapedUnescaped() {
 		$instance = $this->getInstance();
-		$instance->addFromArray( array(  '<Foo>' ) );
+		$instance->addFromArray( [  '<Foo>' ] );
 
 		$this->assertEquals( '&lt;Foo&gt;', $instance->escape( true )->getPlain() );
 		$this->assertEquals( '<Foo>', $instance->escape( false )->getPlain() );
@@ -215,68 +215,68 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	 *
 	 */
 	public function getDataProvider() {
-		return array(
+		return [
 
 			// #0 Empty array
-			array( array(), 0 ),
+			[ [], 0 ],
 
 			// #1 Simple string elements 5 elements (one duplicate) = 4
-			array(
-				array(
-					'Foo', 'Bar', array( 'FooBar', array( 'barFoo', 'Foo' ) )
-				),
+			[
+				[
+					'Foo', 'Bar', [ 'FooBar', [ 'barFoo', 'Foo' ] ]
+				],
 				4
-			),
+			],
 
 			// #2 A duplicate Message object = 1
-			array(
-				array(
+			[
+				[
 					new Message( 'smw_iq_disabled' ),
 					new Message( 'smw_iq_disabled' )
-				),
+				],
 				1
-			),
+			],
 
 			// #3 Different Message objects
-			array(
-				array(
+			[
+				[
 					new Message( 'smw_iq_disabled' ),
 					new Message( 'smw_multiple_concepts' )
-				),
+				],
 				2
-			),
+			],
 
 			// #4 Invoked MessageFormatter object (recursive test)
-			array(
-				array(
+			[
+				[
 					new Message( 'smw_iq_disabled' ),
-					array( new Message( 'smw_iq_disabled' ),
+					[ new Message( 'smw_iq_disabled' ),
 							new Message( 'smw_multiple_concepts' )
-					)
-				),
+					]
+				],
 				2
-			),
+			],
 
 			// #5 Combine different objects (recursive test) containing 7 messages
 			// where two of them are duplicates resulting in 5 objects
-			array(
-				array(
+			[
+				[
 					new Message( 'smw_iq_disabled' ),
 					new Message( 'smw_multiple_concepts' ),
-					array(
+					[
 						new Message( 'smw_iq_disabled' ),
 						'Foo'
-					),
-					array(
-						array(
+					],
+					[
+						[
 							new Message( 'smw_no_concept_namespace' ),
 							new Message( 'foo' ),
 							'Foo'
-						)
-					)
-				),
+						]
+					]
+				],
 				5
-			),
-		);
+			],
+		];
 	}
 }

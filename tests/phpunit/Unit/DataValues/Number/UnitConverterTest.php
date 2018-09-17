@@ -79,9 +79,9 @@ class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 
 		$cachedPropertyValuesPrefetcher->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array(
+			->will( $this->returnValue( [
 				$this->dataItemFactory->newDIBlob( $correspondsTo )
-			) ) );
+			] ) );
 
 		$numberValue = new NumberValue();
 
@@ -160,9 +160,9 @@ class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 
 		$cachedPropertyValuesPrefetcher->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array(
+			->will( $this->returnValue( [
 				$this->dataItemFactory->newDIBlob( 'Foo' )
-			) ) );
+			] ) );
 
 		$numberValue = new NumberValue();
 
@@ -181,89 +181,89 @@ class UnitConverterTest extends \PHPUnit_Framework_TestCase {
 
 	public function conversionDataProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			',',
 			'.',
 			'¥,JPY,Japanese Yen 1.5',
-			array(
+			[
 				'¥' => '¥',
 				'JPY' => '¥',
 				'JapaneseYen' => '¥',
 				'' => ''
-			),
-			array(
+			],
+			[
 				'' => 1,
 				'¥' => 1.5
-			),
+			],
 			'',
-			array(
+			[
 				'¥' => true,
 				'JPY' => true,
 				'JapaneseYen' => true
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			',',
 			'.',
 			'0.5 British Pound, GBP, pounds sterling, £',
-			array(
+			[
 				'BritishPound' => 'BritishPound',
 				'GBP' => 'BritishPound',
 				'poundssterling' => 'BritishPound',
 				'£' => 'BritishPound',
 				'' => ''
-			),
-			array(
+			],
+			[
 				'' => 1,
 				'BritishPound' => 0.5
-			),
+			],
 			'',
-			array(
+			[
 				'BritishPound' => false,
 				'GBP' => false,
 				'poundssterling' => false,
 				'£' => false
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'.',
 			',',
 			'0,5 thousand rub., thousand ₽',
-			array(
+			[
 				'thousandrub.' => 'thousandrub.',
 				'thousand₽' => 'thousandrub.',
 				'' => ''
-			),
-			array(
+			],
+			[
 				'thousandrub.' => 0.5,
 				'' => 1
-			),
+			],
 			'',
-			array(
+			[
 				'thousandrub.' => false,
 				'thousand₽' => false
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'.',
 			',',
 			'€ 1',
-			array(
+			[
 				'€' => '€',
 				'' => ''
-			),
-			array(
+			],
+			[
 				'€' => 1,
 				'' => 1
-			),
+			],
 			'€',
-			array(
+			[
 				'€' => true,
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

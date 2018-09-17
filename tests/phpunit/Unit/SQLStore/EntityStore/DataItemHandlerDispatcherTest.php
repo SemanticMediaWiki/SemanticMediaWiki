@@ -65,66 +65,66 @@ class DataItemHandlerDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function dataItemTypeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_NUMBER,
 			'\SMW\SQLStore\EntityStore\DIHandlers\DINumberHandler'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_BLOB,
 			'\SMW\SQLStore\EntityStore\DIHandlers\DIBlobHandler'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_BOOLEAN,
 			'\SMW\SQLStore\EntityStore\DIHandlers\DIBooleanHandler'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_URI,
 			'\SMW\SQLStore\EntityStore\DIHandlers\DIUriHandler'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_TIME,
 			'\SMW\SQLStore\EntityStore\DIHandlers\DITimeHandler'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_GEO,
 			'\SMW\SQLStore\EntityStore\DIHandlers\DIGeoCoordinateHandler'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_WIKIPAGE,
 			'\SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_CONCEPT,
 			'\SMW\SQLStore\EntityStore\DIHandlers\DIConceptHandler'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function invalidTypeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_PROPERTY,
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_CONTAINER,
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			DataItem::TYPE_ERROR,
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
-		);
+		];
 
 		return $provider;
 	}

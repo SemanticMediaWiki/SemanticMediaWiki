@@ -55,11 +55,11 @@ class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addAnnotation();
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 1,
-			'propertyKeys'   => array( '_ASKFO' ),
-			'propertyValues' => array( 'table' )
-		);
+			'propertyKeys'   => [ '_ASKFO' ],
+			'propertyValues' => [ 'table' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,

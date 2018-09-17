@@ -88,7 +88,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructDisjunction() {
 
-		$descriptions = array();
+		$descriptions = [];
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\SomeProperty' )
 			->disableOriginalConstructor()
@@ -96,7 +96,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$descriptions[] = $description;
 
@@ -106,7 +106,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$descriptions[] = $description;
 
@@ -120,7 +120,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructConjunction() {
 
-		$descriptions = array();
+		$descriptions = [];
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\SomeProperty' )
 			->disableOriginalConstructor()
@@ -128,7 +128,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$descriptions[] = $description;
 
@@ -138,7 +138,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->once() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$descriptions[] = $description;
 
@@ -210,7 +210,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid' ) )
+			->setMethods( [ 'isValid' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -229,7 +229,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid', 'getProperty', 'getDataItem', 'getWikiValue' ) )
+			->setMethods( [ 'isValid', 'getProperty', 'getDataItem', 'getWikiValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -264,11 +264,11 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$containerSemanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Bar' ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( 'Bar' ) ] ) );
 
 		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid', 'getProperty', 'getDataItem' ) )
+			->setMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
 			->getMock();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -318,11 +318,11 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$containerSemanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Bar' ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( 'Bar' ) ] ) );
 
 		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid', 'getProperty', 'getDataItem' ) )
+			->setMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
 			->getMock();
 
 		$dataValue->expects( $this->atLeastOnce() )

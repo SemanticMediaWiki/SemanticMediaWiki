@@ -48,7 +48,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$resultWrapper = new FakeResultWrapper(
-			array( (object)$res )
+			[ (object)$res ]
 		);
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
@@ -72,7 +72,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->stringContains( $tableName ),
 				$this->anything(),
-				$this->equalTo( array( 'p_id' => 9999 ) ),
+				$this->equalTo( [ 'p_id' => 9999 ] ),
 				$this->anything() )
 			->will( $this->onConsecutiveCalls( $uRow, $nRow ) );
 
@@ -114,7 +114,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isFixedPropertyTable', 'getName' ) )
+			->setMethods( [ 'isFixedPropertyTable', 'getName' ] )
 			->getMock();
 
 		$propertyTable->expects( $this->atLeastOnce() )

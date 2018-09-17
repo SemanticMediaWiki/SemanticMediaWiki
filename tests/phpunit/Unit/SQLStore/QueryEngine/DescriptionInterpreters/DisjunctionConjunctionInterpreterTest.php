@@ -90,12 +90,12 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 
 		$expectedDisjunction = new \stdClass;
 		$expectedDisjunction->type = 3;
-		$expectedDisjunction->components = array( 1 => true, 2 => true );
+		$expectedDisjunction->components = [ 1 => true, 2 => true ];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expectedDisjunction
-		);
+		];
 
 		#1 Conjunction
 		$description = $descriptionFactory->newConjunction();
@@ -110,12 +110,12 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 
 		$expectedConjunction = new \stdClass;
 		$expectedConjunction->type = 4;
-		$expectedConjunction->components = array( 1 => true, 2 => true );
+		$expectedConjunction->components = [ 1 => true, 2 => true ];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expectedConjunction
-		);
+		];
 
 		#2 No query
 		$description = $descriptionFactory->newConjunction();
@@ -126,12 +126,12 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 
 		$expectedConjunction = new \stdClass;
 		$expectedConjunction->type = 0;
-		$expectedConjunction->components = array();
+		$expectedConjunction->components = [];
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expectedConjunction
-		);
+		];
 
 		return $provider;
 	}

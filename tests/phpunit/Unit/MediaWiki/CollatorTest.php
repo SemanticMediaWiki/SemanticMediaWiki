@@ -108,81 +108,81 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function uppercaseProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'',
 			'',
 			''
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'F',
 			'FOO'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			'F',
 			'FOO'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'テスト',
 			'テ',
 			'テスト'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\0テスト',
 			'\\',
 			'\0テスト'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function identityProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'',
 			'',
 			''
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'F',
 			'Foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			'f',
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'テスト',
 			'テ',
 			'テスト'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'\0テスト',
 			'\\',
 			'\0テスト'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function armorProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'uppercase',
 			'XmlTest',
 			'XMLTEST'
-		);
+		];
 
 		return $provider;
 	}

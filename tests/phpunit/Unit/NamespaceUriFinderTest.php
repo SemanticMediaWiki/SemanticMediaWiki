@@ -27,21 +27,21 @@ class NamespaceUriFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function namespaceProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'boolean'
-		);
+		];
 
-		$ns = array(
+		$ns = [
 			'owl', 'rdf', 'rdfs', 'swivt', 'xsd', 'skos', 'foaf', 'dc',
 			'OWL'
-		);
+		];
 
 		foreach ( $ns as $key ) {
-			$provider[] = array(
+			$provider[] = [
 				$key,
 				'string'
-			);
+			];
 		}
 
 		return $provider;

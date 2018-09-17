@@ -87,9 +87,9 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 			$this->querySegmentListBuilder
 		);
 
-		$instance->setSortKeys( array(
+		$instance->setSortKeys( [
 				42 => 'ASC'
-			)
+			]
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
@@ -100,29 +100,29 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 
 	public function sortKeyProvider() {
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'' => 'ASC'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'#' => 'DESC'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'Foo' => 'ASC'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'Foo.bar' => 'ASC'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

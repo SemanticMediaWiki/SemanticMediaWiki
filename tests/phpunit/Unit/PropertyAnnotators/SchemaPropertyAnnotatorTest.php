@@ -66,11 +66,11 @@ class SchemaPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addAnnotation();
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 4,
 			'propertyKeys'   => [ '_SCHEMA_TYPE', '_SCHEMA_DEF', '_SCHEMA_DESC', '_SCHEMA_TAG' ],
 			'propertyValues' => [ 'bar', '...', 'foobar', '{"type":"bar","description":"...","tags":["foobar"]}' ],
-		);
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,

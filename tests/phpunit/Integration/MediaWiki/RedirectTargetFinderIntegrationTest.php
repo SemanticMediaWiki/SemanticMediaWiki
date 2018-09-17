@@ -25,7 +25,7 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 
 	use PHPUnitCompat;
 
-	private $deletePoolOfPages = array();
+	private $deletePoolOfPages = [];
 
 	private $pageCreator;
 	private $semanticDataValidator;
@@ -65,19 +65,19 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 			->createPage( Title::newFromText( __METHOD__ ) )
 			->doEdit( '#REDIRECT [[RedirectParseUsingManualRedirect]]' );
 
-		$expected = array(
+		$expected = [
 			new DIProperty( '_REDI' )
-		);
+		];
 
 		$this->semanticDataValidator->assertHasProperties(
 			$expected,
 			$this->getStore()->getInProperties( DIWikiPage::newFromTitle( $target ) )
 		);
 
-		$this->deletePoolOfPages = array(
+		$this->deletePoolOfPages = [
 			__METHOD__,
 			'RedirectParseUsingManualRedirect'
-		);
+		];
 	}
 
 	public function testRedirectParseUsingMoveToPage() {
@@ -94,19 +94,19 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$expected = array(
+		$expected = [
 			new DIProperty( '_REDI' )
-		);
+		];
 
 		$this->semanticDataValidator->assertHasProperties(
 			$expected,
 			$this->getStore()->getInProperties( DIWikiPage::newFromTitle( $target ) )
 		);
 
-		$this->deletePoolOfPages = array(
+		$this->deletePoolOfPages = [
 			__METHOD__,
 			'RedirectParseUsingMoveToPage'
-		);
+		];
 	}
 
 	public function testManualRemovalOfRedirectTarget() {
@@ -126,9 +126,9 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 			->doEdit( '#REDIRECT [[Property:ManualRemovalOfRedirectTarget-NotTheRealTarget]]' )
 			->doEdit( '#REDIRECT [[ManualRemovalOfRedirectTarget]]' );
 
-		$expected = array(
+		$expected = [
 			new DIProperty( '_REDI' )
-		);
+		];
 
 		$this->assertEquals(
 			$target,
@@ -153,10 +153,10 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 			$this->getStore()->getInProperties( $target )
 		);
 
-		$this->deletePoolOfPages = array(
+		$this->deletePoolOfPages = [
 			__METHOD__,
 			'ManualRemovalOfRedirectTarget'
-		);
+		];
 	}
 
 	public function testDeepRedirectTargetResolverToFindTarget() {
@@ -200,12 +200,12 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 			$this->getStore()->getRedirectTarget( DIWikiPage::newFromTitle( $source ) )->getDBKey()
 		);
 
-		$this->deletePoolOfPages = array(
+		$this->deletePoolOfPages = [
 			'DeepRedirectTargetResolverToFindTarget',
 			'DeepRedirectTargetResolverToFindTarget/1',
 			'DeepRedirectTargetResolverToFindTarget/2',
 			'DeepRedirectTargetResolverToFindTarget/3'
-		);
+		];
 	}
 
 	public function testDeepRedirectTargetResolverToDetectCircularTarget() {
@@ -250,11 +250,11 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 		$this->setExpectedException( 'RuntimeException' );
 		$deepRedirectTargetResolver->findRedirectTargetFor( $source );
 
-		$this->deletePoolOfPages = array(
+		$this->deletePoolOfPages = [
 			'DeepRedirectTargetResolverToDetectCircularTarget',
 			'DeepRedirectTargetResolverToDetectCircularTarget/1',
 			'DeepRedirectTargetResolverToDetectCircularTarget/2'
-		);
+		];
 	}
 
 }

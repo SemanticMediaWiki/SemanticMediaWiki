@@ -45,24 +45,24 @@ class FeedExportPrinterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function textDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0
 		// https://web.archive.org/web/20160802052417/http://www.utexas.edu/learn/html/spchar.html
-		$provider[] = array(
-			array(
-				'items'       => array(),
+		$provider[] = [
+			[
+				'items'       => [],
 				'pageContent' => 'Semantic MediaWiki Conference, have been announced: it will be held at' .
 					'[http://www.aohostels.com/en/tagungen/tagungen-berlin/ A&O Berlin Hauptbahnhof]' .
 					'&¢©«»—¡¿,åÃãÆç'
-			),
-			array(
+			],
+			[
 				'text'        => 'Semantic MediaWiki Conference, have been announced: it will be held at' .
 					'[http://www.aohostels.com/en/tagungen/tagungen-berlin/ A&O Berlin Hauptbahnhof]' .
 					'&¢©«»—¡¿,åÃãÆç'
-			),
-			array( 'info'     => 'text encoding including html special characters' )
-		);
+			],
+			[ 'info'     => 'text encoding including html special characters' ]
+		];
 
 		return $provider;
 

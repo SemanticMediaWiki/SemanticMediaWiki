@@ -48,10 +48,10 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
-		$propertyTables = array();
+		$propertyTables = [];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( array( 'getPropertyTables' ) )
+			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -79,10 +79,10 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
-		$propertyTables = array();
+		$propertyTables = [];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( array( 'getPropertyTables' ) )
+			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -128,10 +128,10 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
-		$propertyTables = array( $propertyTable );
+		$propertyTables = [ $propertyTable ];
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( array( 'getPropertyTables' ) )
+			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

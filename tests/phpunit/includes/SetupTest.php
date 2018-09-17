@@ -32,11 +32,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
@@ -45,14 +45,14 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$this->defaultConfig = array(
+		$this->defaultConfig = [
 			'smwgMainCacheType' => CACHE_NONE,
-			'smwgNamespacesWithSemanticLinks' => array(),
+			'smwgNamespacesWithSemanticLinks' => [],
 			'smwgEnableUpdateJobs' => false,
-			'wgNamespacesWithSubpages' => array(),
+			'wgNamespacesWithSubpages' => [],
 			'wgExtensionAssetsPath'    => false,
 			'smwgResourceLoaderDefFiles' => [],
-			'wgResourceModules' => array(),
+			'wgResourceModules' => [],
 			'wgScriptPath'      => '/Foo',
 			'wgServer'          => 'http://example.org',
 			'wgVersion'         => '1.21',
@@ -60,7 +60,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'wgLang'            => $language,
 			'IP'                => 'Foo',
 			'smwgSemanticsEnabled' => true
-		);
+		];
 
 		foreach ( $this->defaultConfig as $key => $value ) {
 			$this->applicationFactory->getSettings()->set( $key, $value );
@@ -207,7 +207,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$config = $this->defaultConfig;
 
-		$config['wgFooterIcons']['poweredby'] = array();
+		$config['wgFooterIcons']['poweredby'] = [];
 
 		$instance = new Setup( $this->applicationFactory );
 		$instance->init( $config, 'Foo' );
@@ -222,7 +222,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function specialPageDataProvider() {
 
-		$specials = array(
+		$specials = [
 			'Ask',
 			'Browse',
 			'PageProperty',
@@ -238,7 +238,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'DeferredRequestDispatcher',
 			'ProcessingErrorList',
 			'PropertyLabelSimilarity'
-		);
+		];
 
 		return $this->buildDataProvider( 'wgSpecialPages', $specials, '' );
 	}
@@ -248,7 +248,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function jobClassesDataProvider() {
 
-		$jobs = array(
+		$jobs = [
 
 			'smw.update',
 			'smw.refresh',
@@ -278,7 +278,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'SMW\ChangePropagationClassUpdateJob',
 			'SMWUpdateJob',
 			'SMWRefreshJob',
-		);
+		];
 
 		return $this->buildDataProvider( 'wgJobClasses', $jobs, '' );
 	}
@@ -288,13 +288,13 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function apiModulesDataProvider() {
 
-		$modules = array(
+		$modules = [
 			'ask',
 			'smwinfo',
 			'askargs',
 			'browsebysubject',
 			'browsebyproperty'
-		);
+		];
 
 		return $this->buildDataProvider( 'wgAPIModules', $modules, '' );
 	}
@@ -328,13 +328,13 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private function buildDataProvider( $id, $definitions, $default ) {
 
-		$provider = array();
+		$provider = [];
 
 		foreach ( $definitions as $definition ) {
-			$provider[] = array(
+			$provider[] = [
 				$definition,
-				array( $id => array( $definition => $default ) ),
-			);
+				[ $id => [ $definition => $default ] ],
+			];
 		}
 
 		return $provider;

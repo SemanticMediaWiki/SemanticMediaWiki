@@ -28,8 +28,8 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
@@ -47,12 +47,12 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$printRequests = array();
+		$printRequests = [];
 
-		$results = array(
+		$results = [
 			new DIWikiPage( 'Foo', 0 ),
 			new DIWikiPage( 'Bar', 0 )
-		);
+		];
 
 		$instance = new QueryResult( $printRequests, $query, $results, $store );
 
@@ -81,8 +81,8 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$instance = new QueryResult(
 			$printRequests,

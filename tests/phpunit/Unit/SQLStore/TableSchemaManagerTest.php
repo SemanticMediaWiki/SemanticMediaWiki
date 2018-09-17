@@ -40,7 +40,7 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->once() )
 			->method( 'getTableFields' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -48,7 +48,7 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $propertyTableDefinition ) ) );
+			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
 
 		$store->expects( $this->once() )
 			->method( 'getDataItemHandlerForDIType' )
@@ -81,7 +81,7 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->once() )
 			->method( 'getTableFields' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -89,7 +89,7 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $propertyTableDefinition ) ) );
+			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
 
 		$store->expects( $this->once() )
 			->method( 'getDataItemHandlerForDIType' )

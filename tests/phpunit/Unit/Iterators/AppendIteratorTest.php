@@ -50,29 +50,29 @@ class AppendIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function iterableProvider() {
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				1, 42, 1001, 9999
-			),
+			],
 			4
-		);
+		];
 
 		$iterator = new AppendIterator();
 		$iterator->add( [ 0 , 1 ] );
 
-		$provider[] = array(
+		$provider[] = [
 			$iterator,
 			2
-		);
+		];
 
 		$iterator = new AppendIterator();
 		$iterator->add( [ 0 , 1 ] );
 		$iterator->add( $iterator );
 
-		$provider[] = array(
+		$provider[] = [
 			$iterator,
 			4
-		);
+		];
 
 		return $provider;
 	}

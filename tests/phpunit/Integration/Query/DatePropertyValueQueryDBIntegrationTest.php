@@ -31,7 +31,7 @@ use SMWQuery as Query;
  */
 class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
+	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 	private $dataValueFactory;
 	private $queryResultValidator;
@@ -147,9 +147,9 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$query->querymode = Query::MODE_INSTANCES;
 
-		$query->sortkeys = array(
+		$query->sortkeys = [
 			$foundedValue->getProperty()->getLabel() => 'ASC'
-		);
+		];
 
 		// Be aware of
 		// Virtuoso 22023 Error SR353: Sorted TOP clause specifies more then
@@ -157,10 +157,10 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		// offset and/or row count or use a scrollable cursor
 		$query->setLimit( 100 );
 
-		$query->setExtraPrintouts( array(
+		$query->setExtraPrintouts( [
 			new PrintRequest( PrintRequest::PRINT_THIS, '' ),
 			new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue )
-		) );
+		] );
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 

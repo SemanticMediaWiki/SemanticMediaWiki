@@ -29,10 +29,10 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 	private function newInstance( $search = '' ) {
 
 		$queryPage = $this->getMockBuilder( '\SMW\QueryPage' )
-			->setMethods( array( 'getResults', 'formatResult' ) )
+			->setMethods( [ 'getResults', 'formatResult' ] )
 			->getMock();
 
-		$context = $this->newContext( array( 'property' => $search ) );
+		$context = $this->newContext( [ 'property' => $search ] );
 		$context->setTitle( Title::newFromText( __METHOD__ ) );
 
 		$queryPage->setContext( $context );
@@ -81,22 +81,22 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 		$reflector = new ReflectionClass( '\SMW\QueryPage' );
 		$selectOptions = $reflector->getProperty( 'selectOptions' );
 		$selectOptions->setAccessible( true );
-		$selectOptions->setValue( $instance, array(
+		$selectOptions->setValue( $instance, [
 			'offset' => 1,
 			'limit'  => 2,
 			'end'    => 5,
 			'count'  => 4
-		) );
+		] );
 
 		$result = $instance->getSearchForm( $search );
 
-		$matcher = array(
+		$matcher = [
 			'tag' => 'form',
-			'descendant' => array(
+			'descendant' => [
 				'tag' => 'input',
-				'attributes' => array( 'name' => 'property', 'value' => $search )
-			)
-		);
+				'attributes' => [ 'name' => 'property', 'value' => $search ]
+			]
+		];
 
 		$this->assertInternalType( 'string', $result );
 
@@ -113,16 +113,16 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 	public function linkParametersDataProvider() {
 		$param = __METHOD__;
 
-		return array(
-			array( ''      , array() ),
-			array( null    , array() ),
-			array( $param , array( 'property' => $param ) ),
-			array( "[{$param}]" , array( 'property' => "[{$param}]" ) ),
-			array( "[&{$param}...]" , array( 'property' => "[&{$param}...]" ) )
-		);
+		return [
+			[ ''      , [] ],
+			[ null    , [] ],
+			[ $param , [ 'property' => $param ] ],
+			[ "[{$param}]" , [ 'property' => "[{$param}]" ] ],
+			[ "[&{$param}...]" , [ 'property' => "[&{$param}...]" ] ]
+		];
 	}
 
-	private function newContext( $request = array() ) {
+	private function newContext( $request = [] ) {
 
 		$context = new \RequestContext();
 

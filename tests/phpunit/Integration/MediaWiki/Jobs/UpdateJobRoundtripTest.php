@@ -22,7 +22,7 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 	private $job = null;
 	private $applicationFactory;
 
-	private $deletePoolOfPages = array();
+	private $deletePoolOfPages = [];
 	private $runnerFactory;
 
 	private $mwHooksHandler;
@@ -54,9 +54,9 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 		// FIXME Because of SQLStore::Writer::changeTitle
 		$GLOBALS['smwgEnableUpdateJobs'] = true;
 
-		$settings = array(
+		$settings = [
 			'smwgEnableUpdateJobs' => true
-		);
+		];
 
 		foreach ( $settings as $key => $value ) {
 			$this->applicationFactory->getSettings()->set( $key, $value );
@@ -123,7 +123,7 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 		$job = Job::factory(
 			$jobName,
 			Title::newFromText( __METHOD__ . $jobName ),
-			array()
+			[]
 		);
 
 		$this->assertJob( $type, $job );
@@ -131,44 +131,44 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 
 	public function jobFactoryProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array( 'SMW\UpdateJob', 'smw.update' );
-		$provider[] = array( 'SMW\UpdateJob', 'SMW\UpdateJob' );
-		$provider[] = array( 'SMWUpdateJob', 'SMW\UpdateJob' );
+		$provider[] = [ 'SMW\UpdateJob', 'smw.update' ];
+		$provider[] = [ 'SMW\UpdateJob', 'SMW\UpdateJob' ];
+		$provider[] = [ 'SMWUpdateJob', 'SMW\UpdateJob' ];
 
-		$provider[] = array( 'SMW\RefreshJob', 'smw.refresh' );
-		$provider[] = array( 'SMW\RefreshJob', 'SMW\RefreshJob' );
-		$provider[] = array( 'SMWRefreshJob', 'SMW\RefreshJob' );
+		$provider[] = [ 'SMW\RefreshJob', 'smw.refresh' ];
+		$provider[] = [ 'SMW\RefreshJob', 'SMW\RefreshJob' ];
+		$provider[] = [ 'SMWRefreshJob', 'SMW\RefreshJob' ];
 
 		return $provider;
 	}
 
 	public function titleProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0 Simple property reference
-		$provider[] = array( array(
+		$provider[] = [ [
 				'title' => Title::newFromText( __METHOD__ . '-foo' ),
 				'edit'  => '{{#set:|DeferredJobFoo=DeferredJobBar}}'
-			), array(
+			], [
 				'title' => Title::newFromText( __METHOD__ . '-bar' ),
 				'edit'  => '{{#set:|DeferredJobFoo=DeferredJobBar}}'
-			)
-		);
+			]
+		];
 
 		// #1 Source page in-property reference
 		$title = Title::newFromText( __METHOD__ . '-foo' );
 
-		$provider[] = array( array(
+		$provider[] = [ [
 				'title' => $title,
 				'edit'  => ''
-			), array(
+			], [
 				'title' => Title::newFromText( __METHOD__ . '-bar' ),
 				'edit'  => '{{#set:|DeferredJobFoo=' . $title->getPrefixedText() . '}}'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
@@ -221,11 +221,11 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 			Title::newFromText( 'Foo-A' )->isRedirect()
 		);
 
-		$this->deletePoolOfPages = array(
+		$this->deletePoolOfPages = [
 			Title::newFromText( 'Foo-A' ),
 			Title::newFromText( 'Foo-B' ),
 			Title::newFromText( 'Foo-C' )
-		);
+		];
 	}
 
 }

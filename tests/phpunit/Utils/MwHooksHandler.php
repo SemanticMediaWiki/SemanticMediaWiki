@@ -18,10 +18,10 @@ class MwHooksHandler {
 	 */
 	private $hookRegistry = null;
 
-	private $wgHooks = array();
-	private $inTestRegisteredHooks = array();
+	private $wgHooks = [];
+	private $inTestRegisteredHooks = [];
 
-	private $listOfSmwHooks = array(
+	private $listOfSmwHooks = [
 		'SMWStore::updateDataBefore',
 
 		// Those shoudl not be disabled so that extension used
@@ -45,7 +45,7 @@ class MwHooksHandler {
 		'SMW::SQLStore::AfterDataUpdateComplete',
 		'SMW::Browse::AfterIncomingPropertiesLookupComplete',
 		'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate'
-	);
+	];
 
 	/**
 	 * @since  2.0
@@ -71,7 +71,7 @@ class MwHooksHandler {
 			}
 
 			$this->wgHooks[$hook] = $GLOBALS['wgHooks'][$hook];
-			$GLOBALS['wgHooks'][$hook] = array();
+			$GLOBALS['wgHooks'][$hook] = [];
 		}
 
 		return $this;

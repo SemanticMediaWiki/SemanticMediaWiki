@@ -111,7 +111,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyAnnotators\CategoryPropertyAnnotator',
-			$instance->newCategoryPropertyAnnotator( $propertyAnnotator, array() )
+			$instance->newCategoryPropertyAnnotator( $propertyAnnotator, [] )
 		);
 	}
 

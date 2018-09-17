@@ -39,7 +39,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->atLeastOnce() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( array( 'o_id' => 42 ) ) );
+			->will( $this->returnValue( [ 'o_id' => 42 ] ) );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -55,16 +55,16 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection', 'getDataItemHandlerForDIType', 'getSQLOptions', 'getSQLConditions' ) )
+			->setMethods( [ 'getConnection', 'getDataItemHandlerForDIType', 'getSQLOptions', 'getSQLConditions' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLOptions' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLConditions' )
@@ -99,7 +99,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->atLeastOnce() )
 			->method( 'getWhereConds' )
-			->will( $this->returnValue( array( 'o_id' => 42 ) ) );
+			->will( $this->returnValue( [ 'o_id' => 42 ] ) );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -119,7 +119,7 @@ class TraversalPropertyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection', 'getDataItemHandlerForDIType' ) )
+			->setMethods( [ 'getConnection', 'getDataItemHandlerForDIType' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )

@@ -64,7 +64,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getContextPage' ) )
+			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -104,7 +104,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getContextPage' ) )
+			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -151,7 +151,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getContextPage', 'addErrorMsg' ) )
+			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage', 'addErrorMsg' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )

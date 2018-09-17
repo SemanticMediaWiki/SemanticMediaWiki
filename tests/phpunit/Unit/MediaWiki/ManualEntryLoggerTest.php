@@ -62,7 +62,7 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 42 ) );
 
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
-			->setMethods( array( 'newManualLogEntryForType' ) )
+			->setMethods( [ 'newManualLogEntryForType' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
@@ -93,7 +93,7 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 42 ) );
 
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
-			->setMethods( array( 'newManualLogEntryForType' ) )
+			->setMethods( [ 'newManualLogEntryForType' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )

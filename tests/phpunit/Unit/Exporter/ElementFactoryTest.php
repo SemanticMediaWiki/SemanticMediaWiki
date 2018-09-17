@@ -62,49 +62,49 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 		$dataItemFactory = new DataItemFactory();
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDINumber( 42 )
-		);
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIBlob( 'Test' )
-		);
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIBoolean( true )
-		);
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIUri( 'http', '//example.org', '', '' )
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDITime( 1, '1970' )
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIContainer( new \SMWContainerSemanticData( $dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) )
-		);
+		];
 
 		#6
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN )
-		);
+		];
 
 		#7
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( 'Foo' )
-		);
+		];
 
 		#8
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIConcept( 'Foo', '', '', '', '' )
-		);
+		];
 
 		return $provider;
 	}
@@ -113,7 +113,7 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
-			->setMethods( array( '__toString' ) )
+			->setMethods( [ '__toString' ] )
 			->getMockForAbstractClass();
 
 		$dataItem->expects( $this->any() )
@@ -121,14 +121,14 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'Foo' ) );
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			$dataItem
-		);
+		];
 
 		#1
-		$provider[] = array(
-			new \SMWDIGeoCoord( array( 'lat' => 52, 'lon' => 1 ) )
-		);
+		$provider[] = [
+			new \SMWDIGeoCoord( [ 'lat' => 52, 'lon' => 1 ] )
+		];
 
 		return $provider;
 	}

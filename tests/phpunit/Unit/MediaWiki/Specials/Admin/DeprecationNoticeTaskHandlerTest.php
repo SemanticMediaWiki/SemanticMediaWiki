@@ -60,8 +60,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$GLOBALS['deprecationNoticeFoobar'] = 'Foo';
 		$GLOBALS['deprecationNoticeFooFoo'] = 'Foo';
 
-		$deprecationNotice['smw'] = array(
-			'notice' => array(
+		$deprecationNotice['smw'] = [
+			'notice' => [
 				'deprecationNoticeFoo' => '...',
 				'options' => [
 					'deprecationNoticeFoo' => [
@@ -69,8 +69,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 						'Bar'
 					]
 				]
-			),
-			'replacement' => array(
+			],
+			'replacement' => [
 				'deprecationNoticeFoobar' => '...',
 				'options' => [
 					'deprecationNoticeFoobar' => [
@@ -78,11 +78,11 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 						'Bar'
 					]
 				]
-			),
-			'removal' => array(
+			],
+			'removal' => [
 				'deprecationNoticeFooFoo' => '...'
-			)
-		);
+			]
+		];
 
 		$instance = new DeprecationNoticeTaskHandler(
 			$this->outputFormatter,
@@ -101,8 +101,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$GLOBALS['deprecationNoticeFoobar'] = 'Foo';
 		$GLOBALS['deprecationNoticeFooFoo'] = 'Foo';
 
-		$deprecationNotice['smw'] = array(
-			'notice' => array(
+		$deprecationNotice['smw'] = [
+			'notice' => [
 				'deprecationNoticeFoo' => '...',
 				'options' => [
 					'deprecationNoticeFoo' => [
@@ -110,8 +110,8 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 						'Bar'
 					]
 				]
-			),
-			'replacement' => array(
+			],
+			'replacement' => [
 				'deprecationNoticeFoobar' => '...',
 				'options' => [
 					'deprecationNoticeFoobar' => [
@@ -119,11 +119,11 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 						'Bar'
 					]
 				]
-			),
-			'removal' => array(
+			],
+			'removal' => [
 				'deprecationNoticeFooFoo' => '...'
-			)
-		);
+			]
+		];
 
 		$instance = new DeprecationNoticeTaskHandler(
 			$this->outputFormatter,

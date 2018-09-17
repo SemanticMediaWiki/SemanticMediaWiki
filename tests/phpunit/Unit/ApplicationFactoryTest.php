@@ -298,29 +298,29 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			$expected,
-			call_user_func_array( array( $this->applicationFactory, 'create' ), $arguments )
+			call_user_func_array( [ $this->applicationFactory, 'create' ], $arguments )
 		);
 	}
 
 	public function callbackContainerProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'CachedQueryResultPrefetcher',
-			array(),
+			[],
 			'\SMW\Query\Result\CachedQueryResultPrefetcher'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'FactboxFactory',
-			array(),
+			[],
 			'SMW\Factbox\FactboxFactory'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'PropertyAnnotatorFactory',
-			array(),
+			[],
 			'SMW\PropertyAnnotatorFactory'
-		);
+		];
 
 		return $provider;
 	}

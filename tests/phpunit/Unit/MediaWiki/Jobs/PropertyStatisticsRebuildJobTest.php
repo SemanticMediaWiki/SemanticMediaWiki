@@ -87,9 +87,9 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function parametersProvider() {
 
-		$provider[] = array(
-			array()
-		);
+		$provider[] = [
+			[]
+		];
 
 		return $provider;
 	}

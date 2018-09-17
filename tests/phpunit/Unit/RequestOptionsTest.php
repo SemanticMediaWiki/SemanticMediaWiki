@@ -50,13 +50,13 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new RequestOptions();
 		$instance->addExtraCondition( 'Foo' );
-		$instance->addExtraCondition( array( 'Bar' => 'Foobar' ) );
+		$instance->addExtraCondition( [ 'Bar' => 'Foobar' ] );
 
 		$this->assertEquals(
-			array(
+			[
 				'Foo',
-				array( 'Bar' => 'Foobar' )
-			),
+				[ 'Bar' => 'Foobar' ]
+			],
 			$instance->getExtraConditions()
 		);
 
@@ -110,15 +110,15 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 
 	public function numberProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			42,
 			42
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'42foo',
 			42
-		);
+		];
 
 		return $provider;
 	}

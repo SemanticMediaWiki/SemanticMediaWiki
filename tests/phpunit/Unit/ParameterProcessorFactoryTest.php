@@ -25,9 +25,9 @@ class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testToEliminateFirstParameterIfObject() {
 
-		$parameter = array(
+		$parameter = [
 			new \stdClass
-		);
+		];
 
 		$instance = ParameterProcessorFactory::newFromArray( $parameter );
 
@@ -43,9 +43,9 @@ class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNewFromArray() {
 
-		$parameter = array(
+		$parameter = [
 			'La' => 'Lu'
-		);
+		];
 
 		$instance = ParameterProcessorFactory::newFromArray( $parameter );
 

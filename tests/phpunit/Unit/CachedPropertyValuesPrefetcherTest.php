@@ -29,7 +29,7 @@ class CachedPropertyValuesPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
 			->disableOriginalConstructor()
@@ -67,9 +67,9 @@ class CachedPropertyValuesPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryPropertyValuesFor() {
 
-		$expected = array(
+		$expected = [
 			DIWikiPage::newFromText( 'Foo' )
-		);
+		];
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()

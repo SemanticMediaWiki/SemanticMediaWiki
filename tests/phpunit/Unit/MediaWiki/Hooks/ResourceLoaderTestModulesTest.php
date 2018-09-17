@@ -33,7 +33,7 @@ class ResourceLoaderTestModulesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$testModules = array();
+		$testModules = [];
 
 		$instance = new ResourceLoaderTestModules( $resourceLoader );
 		$instance->process( $testModules );

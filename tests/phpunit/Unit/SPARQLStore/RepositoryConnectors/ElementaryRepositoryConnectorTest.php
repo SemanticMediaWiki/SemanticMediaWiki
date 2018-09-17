@@ -53,7 +53,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 
 		$repositoryResult = $instance->ask(
 			'?x foaf:name "Foo"',
-			array( 'foaf' => 'http://xmlns.com/foaf/0.1/>' )
+			[ 'foaf' => 'http://xmlns.com/foaf/0.1/>' ]
 		);
 
 		$this->assertInstanceOf(
@@ -130,7 +130,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 
 	public function httpDatabaseConnectorInstanceNameForAskProvider() {
 
-		$provider = array();
+		$provider = [];
 		$encodedDefaultGraph = urlencode( 'http://foo/myDefaultGraph' );
 
 		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
@@ -148,7 +148,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 					break;
 			};
 
-			$provider[] = array( $repositoryConnector, $expectedPostField );
+			$provider[] = [ $repositoryConnector, $expectedPostField ];
 		}
 
 		return $provider;
@@ -156,7 +156,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 
 	public function httpDatabaseConnectorInstanceNameForDeleteProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
 
@@ -170,7 +170,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 					break;
 			};
 
-			$provider[] = array( $repositoryConnector, $expectedPostField );
+			$provider[] = [ $repositoryConnector, $expectedPostField ];
 		}
 
 		return $provider;
@@ -178,10 +178,10 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit_Framework_TestCase {
 
 	public function httpDatabaseConnectorInstanceNameForInsertProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
-			$provider[] = array( $repositoryConnector );
+			$provider[] = [ $repositoryConnector ];
 		}
 
 		return $provider;

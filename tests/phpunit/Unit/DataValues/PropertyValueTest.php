@@ -39,25 +39,25 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function featuresProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_DV_PROV_REDI,
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_DV_NONE | SMW_DV_PROV_REDI,
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			SMW_DV_NONE,
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			false,
 			false
-		);
+		];
 
 		return $provider;
 	}

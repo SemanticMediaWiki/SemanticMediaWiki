@@ -83,7 +83,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'smw_id' => 42 ) ) )
+				$this->equalTo( [ 'smw_id' => 42 ] ) )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new IdEntityFinder(
@@ -143,7 +143,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'smw_id' => 42 ) ) )
+				$this->equalTo( [ 'smw_id' => 42 ] ) )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new IdEntityFinder(
@@ -196,8 +196,8 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'smw_id' => array( 42 ) ) ) )
-			->will( $this->returnValue( array( $row ) ) );
+				$this->equalTo( [ 'smw_id' => [ 42 ] ] ) )
+			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new IdEntityFinder(
 			$this->store,

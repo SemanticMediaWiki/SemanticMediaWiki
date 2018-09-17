@@ -97,12 +97,12 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '{ ?result swivt:wikiNamespace "0"^^xsd:integer . }' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$orderByProperty,
 			$conditionType,
 			$expected
-		);
+		];
 
 		return $provider;
 	}

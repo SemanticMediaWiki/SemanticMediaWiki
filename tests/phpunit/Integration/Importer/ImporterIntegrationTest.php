@@ -44,10 +44,10 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 		$importer->doImport();
 
 		$this->stringValidator->assertThatStringContains(
-			array(
+			[
 				'Smw import foaf',
 				'Foaf:knows'
-			),
+			],
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
@@ -68,9 +68,9 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 		$importer->doImport();
 
 		$this->stringValidator->assertThatStringContains(
-			array(
+			[
 				'ImportTest'
-			),
+			],
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}

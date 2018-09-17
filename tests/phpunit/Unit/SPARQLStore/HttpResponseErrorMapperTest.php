@@ -111,20 +111,20 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function curlErrorCodeThatNotThrowsExceptionProvider() {
 
-		$provider = array(
-			array( CURLE_GOT_NOTHING ),
-			array( CURLE_COULDNT_CONNECT )
-		);
+		$provider = [
+			[ CURLE_GOT_NOTHING ],
+			[ CURLE_COULDNT_CONNECT ]
+		];
 
 		return $provider;
 	}
 
 	public function httpCodeThatThrowsExceptionProvider() {
 
-		$provider = array(
-			array( 400 ),
-			array( 500 )
-		);
+		$provider = [
+			[ 400 ],
+			[ 500 ]
+		];
 
 		return $provider;
 	}

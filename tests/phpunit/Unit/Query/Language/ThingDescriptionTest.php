@@ -35,7 +35,7 @@ class ThingDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals( '', $instance->getQueryString() );
 		$this->assertEquals( false, $instance->isSingleton() );
-		$this->assertEquals( array(), $instance->getPrintRequests() );
+		$this->assertEquals( [], $instance->getPrintRequests() );
 
 		$this->assertEquals( 0, $instance->getSize() );
 		$this->assertEquals( 0, $instance->getDepth() );
@@ -48,7 +48,7 @@ class ThingDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$maxsize  = 1;
 		$maxDepth = 1;
-		$log      = array();
+		$log      = [];
 
 		$this->assertEquals(
 			$instance,
