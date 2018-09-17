@@ -31,8 +31,8 @@ class SMWPageSchemas extends PSExtensionHandler {
 		foreach ( $templateXML->children() as $tag => $child ) {
 			if ( $tag == "semanticmediawiki_ConnectingProperty" ) {
 				$propName = $child->attributes()->name;
-				$values = array();
-				return array( $propName, $values );
+				$values = [];
+				return [ $propName, $values ];
 			}
 		}
 		return null;
@@ -46,11 +46,11 @@ class SMWPageSchemas extends PSExtensionHandler {
 		foreach ( $fieldXML->children() as $tag => $child ) {
 			if ( $tag == "semanticmediawiki_Property" ) {
 				$propName = $child->attributes()->name;
-				$values = array();
+				$values = [];
 				foreach ( $child->children() as $prop => $value ) {
 					$values[$prop] = (string)$value;
 				}
-				return array( $propName, $values );
+				return [ $propName, $values ];
 			}
 		}
 		return null;
@@ -60,7 +60,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Returns the set of SMW property data from the entire page schema.
 	 */
 	static function getAllPropertyData( $pageSchemaObj ) {
-		$propertyDataArray = array();
+		$propertyDataArray = [];
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
 			$psTemplateFields = $psTemplate->getFields();
@@ -87,7 +87,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	public static function createTemplateXMLFromForm() {
 		global $wgRequest;
 
-		$xmlPerTemplate = array();
+		$xmlPerTemplate = [];
 		foreach ( $wgRequest->getValues() as $var => $val ) {
 			if ( substr( $var, 0, 24 ) == 'smw_connecting_property_' ) {
 				$templateNum = substr( $var, 24 );
@@ -110,7 +110,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Page Schemas object.
 	 */
 	public static function getPagesToGenerate( $pageSchemaObj ) {
-		$pagesToGenerate = array();
+		$pagesToGenerate = [];
 
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
@@ -137,7 +137,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		global $wgRequest;
 
 		$fieldNum = -1;
-		$xmlPerField = array();
+		$xmlPerField = [];
 		foreach ( $wgRequest->getValues() as $var => $val ) {
 			if ( substr( $var, 0, 18 ) == 'smw_property_name_' ) {
 				$fieldNum = substr( $var, 18 );
@@ -179,7 +179,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			return null;
 		}
 
-		$prop_array = array();
+		$prop_array = [];
 		$hasExistingValues = false;
 		if ( !is_null( $psTemplate ) ) {
 			$prop_array = $psTemplate->getObject( 'semanticmediawiki_ConnectingProperty' );
@@ -189,9 +189,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 		}
 		$text = '<p>' . 'Name of property to connect this template\'s fields to the rest of the page:' . ' ' . '(should only be used if this template can have multiple instances)' . ' ';
 		$propName = PageSchemas::getValueFromObject( $prop_array, 'name' );
-		$text .= Html::input( 'smw_connecting_property_num', $propName, array( 'size' => 15 ) ) . "\n";
+		$text .= Html::input( 'smw_connecting_property_num', $propName, [ 'size' => 15 ] ) . "\n";
 
-		return array( $text, $hasExistingValues );
+		return [ $text, $hasExistingValues ];
 	}
 
 	/**
@@ -201,7 +201,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	public static function getFieldEditingHTML( $psTemplateField ) {
 		global $smwgContLang;
 
-		$prop_array = array();
+		$prop_array = [];
 		$hasExistingValues = false;
 		if ( !is_null( $psTemplateField ) ) {
 			$prop_array = $psTemplateField->getObject('semanticmediawiki_Property');
@@ -211,22 +211,22 @@ class SMWPageSchemas extends PSExtensionHandler {
 		}
 		$html_text = '<p>' . wfMessage( 'ps-optional-name' )->text() . ' ';
 		$propName = PageSchemas::getValueFromObject( $prop_array, 'name' );
-		$html_text .= Html::input( 'smw_property_name_num', $propName, array( 'size' => 15 ) ) . "\n";
+		$html_text .= Html::input( 'smw_property_name_num', $propName, [ 'size' => 15 ] ) . "\n";
 		$propType = PageSchemas::getValueFromObject( $prop_array, 'Type' );
 		$select_body = "";
 		$datatype_labels = $smwgContLang->getDatatypeLabels();
 		foreach ( $datatype_labels as $label ) {
-			$optionAttrs = array();
+			$optionAttrs = [];
 			if ( $label == $propType) {
 				$optionAttrs['selected'] = 'selected';
 			}
 			$select_body .= "\t" . Xml::element( 'option', $optionAttrs, $label ) . "\n";
 		}
-		$propertyDropdownAttrs = array(
+		$propertyDropdownAttrs = [
 			'id' => 'property_dropdown',
 			'name' => 'smw_property_type_num',
 			'value' => $propType
-		);
+		];
 		$html_text .= "Type: " . Xml::tags( 'select', $propertyDropdownAttrs, $select_body ) . "</p>\n";
 
 		// This can't be last, because of the hacky way the XML is
@@ -234,14 +234,14 @@ class SMWPageSchemas extends PSExtensionHandler {
 		if ( defined( 'SF_VERSION' ) ) {
 			$html_text .= '<p>' . wfMessage( 'sf_createproperty_linktoform' )->text() . ' ';
 			$linkedForm = PageSchemas::getValueFromObject( $prop_array, 'LinkedForm' );
-			$html_text .= Html::input( 'smw_linked_form_num', $linkedForm, array( 'size' => 15 ) ) . "\n";
+			$html_text .= Html::input( 'smw_linked_form_num', $linkedForm, [ 'size' => 15 ] ) . "\n";
 			$html_text .= "(for Page properties only)</p>\n";
 		}
 
 		$html_text .= '<p>If you want this property to only be allowed to have certain values, enter the list of allowed values, separated by commas (if a value contains a comma, replace it with "\,"):</p>';
-		$allowedValsInputAttrs = array(
+		$allowedValsInputAttrs = [
 			'size' => 80
-		);
+		];
 		$allowedValues = PageSchemas::getValueFromObject( $prop_array, 'allowed_values' );
 		if ( is_null( $allowedValues ) ) {
 			$allowed_val_string = '';
@@ -250,7 +250,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		}
 		$html_text .= '<p>' . Html::input( 'smw_values_num', $allowed_val_string, 'text', $allowedValsInputAttrs ) . "</p>\n";
 
-		return array( $html_text, $hasExistingValues );
+		return [ $html_text, $hasExistingValues ];
 	}
 
 	/**
@@ -263,8 +263,8 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$datatypeLabels = $smwgContLang->getDatatypeLabels();
 		$pageTypeLabel = $datatypeLabels['_wpg'];
 
-		$jobs = array();
-		$jobParams = array();
+		$jobs = [];
+		$jobParams = [];
 		$jobParams['user_id'] = $wgUser->getId();
 
 		// First, create jobs for all "connecting properties".
@@ -345,7 +345,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		if ( $tagName == "semanticmediawiki_ConnectingProperty" ) {
 			foreach ( $xml->children() as $tag => $child ) {
 				if ( $tag == $tagName ) {
-					$smw_array = array();
+					$smw_array = [];
 					$propName = $child->attributes()->name;
 					$smw_array['name'] = (string)$propName;
 					foreach ( $child->children() as $prop => $value ) {
@@ -357,10 +357,10 @@ class SMWPageSchemas extends PSExtensionHandler {
 		} elseif ( $tagName == "semanticmediawiki_Property" ) {
 			foreach ( $xml->children() as $tag => $child ) {
 				if ( $tag == $tagName ) {
-					$smw_array = array();
+					$smw_array = [];
 					$propName = $child->attributes()->name;
 					$smw_array['name'] = (string)$propName;
-					$allowed_values = array();
+					$allowed_values = [];
 					$count = 0;
 					foreach ( $child->children() as $prop => $value ) {
 						if ( $prop == "AllowedValue" ) {

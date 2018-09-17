@@ -47,7 +47,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$typeLabels = DataTypeRegistry::getInstance()->getKnownTypeLabels();
 
-		$contentsByIndex = array();
+		$contentsByIndex = [];
 		asort( $typeLabels, SORT_STRING );
 
 		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
@@ -66,11 +66,11 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$html = \Html::rawElement(
 			'p',
-			array( 'class' => 'plainlinks smw-types-intro' ),
+			[ 'class' => 'plainlinks smw-types-intro' ],
 			wfMessage( 'smw_types_docu' )->parse()
 		).  \Html::element(
 			'h2',
-			array(),
+			[],
 			wfMessage( 'smw-types-list' )->escaped()
 		);
 
@@ -121,7 +121,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$result = \Html::rawElement(
 			'div',
-			array( 'class' => 'plainlinks smw-types-intro '. $typeKey ),
+			[ 'class' => 'plainlinks smw-types-intro '. $typeKey ],
 			wfMessage( $messageKey, str_replace( '_', ' ', $escapedTypeLabel ) )->parse() . ' ' .
 			wfMessage( 'smw-types-help', str_replace( ' ', '_', $canonicalLabel ) )->parse() . $this->displayExtraInformationAbout( $typeValue )
 		);
@@ -179,15 +179,15 @@ class SMWSpecialTypes extends SpecialPage {
 	private function getTypesLink() {
 		return \Html::rawElement(
 			'div',
-			array( 'class' => 'smw-breadcrumb-link' ),
+			[ 'class' => 'smw-breadcrumb-link' ],
 			\Html::rawElement(
 				'span',
-				array( 'class' => 'smw-breadcrumb-arrow-right' ),
+				[ 'class' => 'smw-breadcrumb-arrow-right' ],
 				''
 			) .
 			\Html::rawElement(
 				'a',
-				array( 'href' => \SpecialPage::getTitleFor( 'Types')->getFullURL() ),
+				[ 'href' => \SpecialPage::getTitleFor( 'Types')->getFullURL() ],
 				$this->msg( 'types' )->escaped()
 		) );
 	}

@@ -65,9 +65,9 @@ class SMWDIUri extends SMWDataItem {
 
 	/// @todo This should be changed to the spelling getUri().
 	public function getURI() {
-		$schemesWithDoubleslesh = array(
+		$schemesWithDoubleslesh = [
 			'http', 'https', 'ftp'
-		);
+		];
 
 		$uri = $this->m_scheme . ':'
 			. ( in_array( $this->m_scheme, $schemesWithDoubleslesh ) ? '//' : '' )
@@ -79,7 +79,7 @@ class SMWDIUri extends SMWDataItem {
 		// https://tools.ietf.org/html/rfc3986
 		// Normalize spaces to use `_` instead of %20 and so ensure
 		// that http://example.org/Foo bar === http://example.org/Foo_bar === http://example.org/Foo%20bar
-		return str_replace( array( ' ', '%20'), '_', $uri );
+		return str_replace( [ ' ', '%20'], '_', $uri );
 	}
 
 	public function getScheme() {

@@ -78,67 +78,67 @@ final class Setup {
 			return;
 		}
 
-		$specials = array(
-			'Ask' => array(
+		$specials = [
+			'Ask' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialAsk',
 				'group' => 'smw_group'
-			),
-			'Browse' => array(
+			],
+			'Browse' => [
 				'page' =>  'SMW\MediaWiki\Specials\SpecialBrowse',
 				'group' => 'smw_group'
-			),
-			'PageProperty' => array(
+			],
+			'PageProperty' => [
 				'page' =>  'SMW\MediaWiki\Specials\SpecialPageProperty',
 				'group' => 'smw_group'
-			),
-			'SearchByProperty' => array(
+			],
+			'SearchByProperty' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty',
 				'group' => 'smw_group'
-			),
-			'ProcessingErrorList' => array(
+			],
+			'ProcessingErrorList' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList',
 				'group' => 'smw_group'
-			),
-			'PropertyLabelSimilarity' => array(
+			],
+			'PropertyLabelSimilarity' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity',
 				'group' => 'smw_group'
-			),
-			'SMWAdmin' => array(
+			],
+			'SMWAdmin' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin',
 				'group' => 'smw_group'
-			),
-			'Concepts' => array(
+			],
+			'Concepts' => [
 				'page' => 'SMW\SpecialConcepts',
 				'group' => 'pages'
-			),
-			'ExportRDF' => array(
+			],
+			'ExportRDF' => [
 				'page' => 'SMWSpecialOWLExport',
 				'group' => 'smw_group'
-			),
-			'Types' => array(
+			],
+			'Types' => [
 				'page' => 'SMWSpecialTypes',
 				'group' => 'pages'
-			),
-			'URIResolver' => array(
+			],
+			'URIResolver' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialURIResolver'
-			),
-			'Properties' => array(
+			],
+			'Properties' => [
 				'page' => 'SMW\SpecialProperties',
 				'group' => 'pages'
-			),
-			'UnusedProperties' => array(
+			],
+			'UnusedProperties' => [
 				'page' => 'SMW\SpecialUnusedProperties',
 				'group' => 'maintenance'
-			),
-			'WantedProperties' => array(
+			],
+			'WantedProperties' => [
 				'page' => 'SMW\SpecialWantedProperties',
 				'group' => 'maintenance'
-			),
-			'DeferredRequestDispatcher' => array(
+			],
+			'DeferredRequestDispatcher' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher',
 				'group' => 'maintenance'
-			),
-		);
+			],
+		];
 
 		// Register data
 		foreach ( $specials as $special => $page ) {
@@ -310,7 +310,7 @@ final class Setup {
 	 */
 	private function registerJobClasses( &$vars ) {
 
-		$jobClasses = array(
+		$jobClasses = [
 
 			'smw.update' => 'SMW\MediaWiki\Jobs\UpdateJob',
 			'smw.refresh' => 'SMW\MediaWiki\Jobs\RefreshJob',
@@ -342,7 +342,7 @@ final class Setup {
 			// Legacy 2.0-
 			'SMWUpdateJob'  => 'SMW\MediaWiki\Jobs\UpdateJob',
 			'SMWRefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob'
-		);
+		];
 
 		foreach ( $jobClasses as $job => $class ) {
 			$vars['wgJobClasses'][$job] = $class;
@@ -398,9 +398,9 @@ final class Setup {
 	}
 
 	private function registerParamDefinitions( &$vars ) {
-		$vars['wgParamDefinitions']['smwformat'] = array(
+		$vars['wgParamDefinitions']['smwformat'] = [
 			'definition'=> 'SMWParamFormat',
-		);
+		];
 	}
 
 	/**

@@ -63,7 +63,7 @@ class SMWRDFXMLSerializer extends SMWSerializer {
 			"\txmlns:wiki=\"&wiki;\"\n" .
 			"\txmlns:category=\"&category;\"\n" .
 			"\txmlns:property=\"&property;\"";
-		$this->global_namespaces = array( 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true, 'category' => true );
+		$this->global_namespaces = [ 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true, 'category' => true ];
 		$this->post_ns_buffer .= ">\n\n";
 	}
 
@@ -271,7 +271,7 @@ class SMWRDFXMLSerializer extends SMWSerializer {
 	 * @return string
 	 */
 	protected function makeAttributeValueString( $string ) {
-		return str_replace( array( '&', '>', '<' ), array( '&amp;', '&gt;', '&lt;' ), $string );
+		return str_replace( [ '&', '>', '<' ], [ '&amp;', '&gt;', '&lt;' ], $string );
 	}
 
 }

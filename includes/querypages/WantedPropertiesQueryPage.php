@@ -130,12 +130,12 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 		return Html::rawElement(
 			'p',
-			array( 'class' => 'smw-wantedproperties-docu plainlinks' ),
+			[ 'class' => 'smw-wantedproperties-docu plainlinks' ],
 			$this->msg( 'smw-special-wantedproperties-docu' )->parse()
 		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ), $this->getCacheInfo(), false, $filter )  .
 		Html::element(
 			'h2',
-			array(),
+			[],
 			$this->msg( 'smw-sp-properties-header-label' )->text()
 		);
 	}
@@ -165,7 +165,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 			$title,
 			htmlspecialchars( $result[0]->getLabel() ),
 			[],
-			array( 'action' => 'view' )
+			[ 'action' => 'view' ]
 		);
 
 		return $this->msg( 'smw-special-wantedproperties-template' )

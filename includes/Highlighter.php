@@ -143,8 +143,8 @@ class Highlighter {
 	public static function decode( $text ) {
 		// #2347, '[' is handled by the MediaWiki parser/sanitizer itself
 		return str_replace(
-			array( '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>' ),
-			array( '&', '<', '>', ' ', '', '' ),
+			[ '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>' ],
+			[ '&', '<', '>', ' ', '', '' ],
 			$text
 		);
 	}
@@ -294,7 +294,7 @@ class Highlighter {
 	 * @return array
 	 */
 	private function getTypeConfiguration( $type ) {
-		$settings = array();
+		$settings = [];
 		$settings['type'] = $type;
 		$settings['caption'] = '';
 		$settings['content'] = '';
@@ -361,7 +361,7 @@ class Highlighter {
 		// Pre-process the content when used as title to avoid breaking elements
 		// (URLs etc.)
 		if ( strpos( $content, '[' ) !== false || strpos( $content, '//' ) !== false ) {
-			$content = Message::get( array( 'smw-parse', $content ), Message::PARSE, $language );
+			$content = Message::get( [ 'smw-parse', $content ], Message::PARSE, $language );
 		}
 
 		return strip_tags( htmlspecialchars_decode( str_replace( [ "[", '&#160;' ], [ "&#91;", ' ' ], $content ) ) );

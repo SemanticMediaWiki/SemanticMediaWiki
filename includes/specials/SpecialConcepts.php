@@ -103,14 +103,14 @@ class SpecialConcepts extends SpecialPage {
 
 		$html = Html::rawElement(
 				'div',
-				array( 'id' => 'mw-pages'),
+				[ 'id' => 'mw-pages'],
 			Html::rawElement(
 				'div',
 				[ 'class' => 'smw-page-navigation' ],
 				ListPager::pagination( $this->getPageTitle(), $limit, $offset, count( $diWikiPages ) )
 			) . Html::element(
 				'div',
-				array( 'class' => $key, 'style' => 'margin-top:10px;' ),
+				[ 'class' => $key, 'style' => 'margin-top:10px;' ],
 				$this->msg( $key, $resultNumber )->parse()
 			) . $pageLister->getColumnList( $offset, $limit, $diWikiPages, null )
 		);
@@ -124,7 +124,7 @@ class SpecialConcepts extends SpecialPage {
 
 		return Html::rawElement(
 			'p',
-			array( 'class' => 'smw-special-concept-docu plainlinks' ),
+			[ 'class' => 'smw-special-concept-docu plainlinks' ],
 			$this->msg( 'smw-special-concept-docu' )->parse()
 		) . $html;
 	}

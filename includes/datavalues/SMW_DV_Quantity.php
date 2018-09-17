@@ -64,7 +64,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			return; // do this only once
 		}
 
-		$this->m_unitvalues = array();
+		$this->m_unitvalues = [];
 
 		if ( !$this->isValid() ) {
 			return;
@@ -174,7 +174,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		$unitConverter = new UnitConverter( $this );
 		$unitConverter->initConversionData( $this->m_property );
 
-		if ( $unitConverter->getErrors() !== array() ) {
+		if ( $unitConverter->getErrors() !== [] ) {
 			foreach ( $unitConverter->getErrors() as $error ) {
 				$this->addErrorMsg(
 					$error,
@@ -198,7 +198,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			return; // do the below only once
 		}
 		$this->initConversionData(); // needed to normalise unit strings
-		$this->m_displayunits = array();
+		$this->m_displayunits = [];
 
 		if ( is_null( $this->m_property ) || is_null( $this->m_property->getDIWikiPage() ) ) {
 			return;

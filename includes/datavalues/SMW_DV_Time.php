@@ -228,7 +228,7 @@ class SMWTimeValue extends SMWDataValue {
 		//   011 component could be a day or a year but no month etc.
 		// For three components, we thus get a 10 digit bit vector.
 		$datevector = 1;
-		$propercomponents = array();
+		$propercomponents = [];
 		$justfounddash = true; // avoid two dashes in a row, or dashes at the end
 		$error = false;
 		$numvalue = 0;
@@ -260,13 +260,13 @@ class SMWTimeValue extends SMWDataValue {
 				$msgKey .= '-common';
 			}
 
-			$this->addErrorMsg( array( $msgKey, $this->m_wikivalue ) );
+			$this->addErrorMsg( [ $msgKey, $this->m_wikivalue ] );
 			return false;
 		}
 
 		// Now use the bitvector to find the preferred interpretation of the date components:
 		$dateformats = Localizer::getInstance()->getLang( $this->getOption( self::OPT_CONTENT_LANGUAGE ) )->getDateFormats();
-		$date = array( 'y' => false, 'm' => false, 'd' => false );
+		$date = [ 'y' => false, 'm' => false, 'd' => false ];
 
 		foreach ( $dateformats[count( $propercomponents ) - 1] as $formatvector ) {
 			if ( !( ~$datevector & $formatvector ) ) { // check if $formatvector => $datevector ("the input supports the format")
@@ -280,7 +280,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 
 		if ( $date['y'] === false ) { // no band matches the entered date
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-date-components-sequence', $this->m_wikivalue ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-date-components-sequence', $this->m_wikivalue ] );
 			return false;
 		}
 
@@ -367,7 +367,7 @@ class SMWTimeValue extends SMWDataValue {
 		try {
 			$this->m_dataitem = new DITime( $calmod, $date['y'], $date['m'], $date['d'], $hours, $minutes, $seconds . '.' . $microseconds, $timezone );
 		} catch ( SMWDataItemException $e ) {
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid', $this->m_wikivalue, $e->getMessage() ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid', $this->m_wikivalue, $e->getMessage() ] );
 			return false;
 		}
 
@@ -376,7 +376,7 @@ class SMWTimeValue extends SMWDataValue {
 		// conversion would not be reliable if JD numbers get too huge:
 		if ( ( $date['y'] <= self::PREHISTORY ) &&
 		     ( ( $this->m_dataitem->getPrecision() > DITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
-			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-prehistoric', $this->m_wikivalue ) );
+			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-prehistoric', $this->m_wikivalue ] );
 			return false;
 		}
 
@@ -385,7 +385,7 @@ class SMWTimeValue extends SMWDataValue {
 			try {
 				$this->m_dataitem = DITime::newFromJD( $newjd, $calmod, $this->m_dataitem->getPrecision(), $timezone );
 			} catch ( SMWDataItemException $e ) {
-				$this->addErrorMsg( array( 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ) );
+				$this->addErrorMsg( [ 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ] );
 				return false;
 			}
 		}

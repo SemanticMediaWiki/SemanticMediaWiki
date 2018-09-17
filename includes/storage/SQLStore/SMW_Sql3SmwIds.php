@@ -302,15 +302,15 @@ class SMWSql3SmwIds {
 			if ( $id != 0 ) {
 
 				if ( $fetchHashes ) {
-					$select = array( 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' );
+					$select = [ 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' ];
 				} else {
-					$select = array( 'smw_sortkey', 'smw_sort' );
+					$select = [ 'smw_sortkey', 'smw_sort' ];
 				}
 
 				$row = $db->selectRow(
 					self::TABLE_NAME,
 					$select,
-					array( 'smw_id' => $id ),
+					[ 'smw_id' => $id ],
 					__METHOD__
 				);
 
@@ -330,9 +330,9 @@ class SMWSql3SmwIds {
 		} else {
 
 			if ( $fetchHashes ) {
-				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' );
+				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' ];
 			} else {
-				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort' );
+				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort' ];
 			}
 
 			// #2001
@@ -350,12 +350,12 @@ class SMWSql3SmwIds {
 			$row = $db->selectRow(
 				self::TABLE_NAME,
 				$select,
-				array(
+				[
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName
-				),
+				],
 				__METHOD__
 			);
 
@@ -511,13 +511,13 @@ class SMWSql3SmwIds {
 
 		$row = $this->store->getConnection( 'mw.db' )->selectRow(
 			self::TABLE_NAME,
-			array( 'smw_id' ),
-			array(
+			[ 'smw_id' ],
+			[
 				'smw_title' => $subject->getDBKey(),
 				'smw_namespace' => $subject->getNamespace(),
 				'smw_iw' => $subject->getInterWiki(),
 				'smw_subobject' => $subject->getSubobjectName()
-			),
+			],
 			__METHOD__
 		);
 
@@ -633,7 +633,7 @@ class SMWSql3SmwIds {
 
 			$db->insert(
 				self::TABLE_NAME,
-				array(
+				[
 					'smw_id' => $sequenceValue,
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
@@ -642,7 +642,7 @@ class SMWSql3SmwIds {
 					'smw_sortkey' => $sortkey,
 					'smw_sort' => $collator->getSortKey( $sortkey ),
 					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] )
-				),
+				],
 				__METHOD__
 			);
 
@@ -886,7 +886,7 @@ class SMWSql3SmwIds {
 		$row = $db->selectRow(
 			self::TABLE_NAME,
 			'*',
-			array( 'smw_id' => $curid ),
+			[ 'smw_id' => $curid ],
 			__METHOD__
 		);
 
@@ -905,7 +905,7 @@ class SMWSql3SmwIds {
 
 			$db->insert(
 				self::TABLE_NAME,
-				array(
+				[
 					'smw_id' => $sequenceValue,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
@@ -913,7 +913,7 @@ class SMWSql3SmwIds {
 					'smw_subobject' => $row->smw_subobject,
 					'smw_sortkey' => $row->smw_sortkey,
 					'smw_sort' => $row->smw_sort
-				),
+				],
 				__METHOD__
 			);
 
@@ -921,23 +921,23 @@ class SMWSql3SmwIds {
 		} else { // change to given id
 			$db->insert(
 				self::TABLE_NAME,
-				array( 'smw_id' => $targetid,
+				[ 'smw_id' => $targetid,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
 					'smw_sortkey' => $row->smw_sortkey,
 					'smw_sort' => $row->smw_sort
-				),
+				],
 				__METHOD__
 			);
 		}
 
 		$db->delete(
 			self::TABLE_NAME,
-			array(
+			[
 				'smw_id' => $curid
-			),
+			],
 			__METHOD__
 		);
 
@@ -1198,7 +1198,7 @@ class SMWSql3SmwIds {
 
 		$row = $connection->selectRow(
 			self::TABLE_NAME,
-			array( 'smw_proptable_hash' ),
+			[ 'smw_proptable_hash' ],
 			'smw_id=' . $sid,
 			__METHOD__
 		);
@@ -1240,7 +1240,7 @@ class SMWSql3SmwIds {
 		$connection->update(
 			self::TABLE_NAME,
 			$update,
-			array( 'smw_id' => $sid ),
+			[ 'smw_id' => $sid ],
 			__METHOD__
 		);
 

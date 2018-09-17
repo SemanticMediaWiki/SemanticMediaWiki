@@ -95,7 +95,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return SMWQuery
 	 */
-	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = array(), $contextPage = null ) {
+	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = [], $contextPage = null ) {
 
 		if ( $format === '' || is_null( $format ) ) {
 			$format = $params['format']->getValue();
@@ -272,7 +272,7 @@ class SMWQueryProcessor implements QueryContext {
 			$query->setOption( Deferred::CONTROL_ELEMENT, isset( $params['@control'] ) ? $params['@control']->getValue() : '' );
 		}
 
-		return array( $query, $params );
+		return [ $query, $params ];
 	}
 
 	/**
@@ -505,7 +505,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return Processor
 	 */
-	private static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true, $context = null, $showMode = false ) {
+	private static function getValidatorForParams( array $params, array $printRequests = [], $unknownInvalid = true, $context = null, $showMode = false ) {
 		$paramDefinitions = self::getParameters( $context );
 
 		$paramDefinitions['format']->setPrintRequests( $printRequests );
