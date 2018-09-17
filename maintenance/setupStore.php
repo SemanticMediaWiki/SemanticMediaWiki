@@ -173,7 +173,7 @@ class SetupStore extends \Maintenance {
 			$this->messageReporter = $messageReporterFactory->newNullMessageReporter();
 		} elseif( $this->messageReporter === null ) {
 			$this->messageReporter = $messageReporterFactory->newObservableMessageReporter();
-			$this->messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
+			$this->messageReporter->registerReporterCallback( [ $this, 'reportMessage' ] );
 		}
 
 		return $this->messageReporter;
