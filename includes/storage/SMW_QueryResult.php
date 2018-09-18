@@ -214,7 +214,7 @@ class SMWQueryResult {
 			return false;
 		}
 
-		$row = array();
+		$row = [];
 
 		foreach ( $this->mPrintRequests as $p ) {
 			$resultArray = new SMWResultArray( $page, $p, $this->mStore );
@@ -422,15 +422,15 @@ class SMWQueryResult {
 		// @note count + offset equals total therefore we deploy both values
 		$serializeArray = $this->serializeToArray();
 
-		return array_merge( $serializeArray, array(
-			'meta'=> array(
+		return array_merge( $serializeArray, [
+			'meta'=> [
 				'hash'   => HashBuilder::createFromContent( $serializeArray ),
 				'count'  => $this->getCount(),
 				'offset' => $this->mQuery->getOffset(),
 				'source' => $this->mQuery->getQuerySource(),
 				'time'   => number_format( ( microtime( true ) - $time ), 6, '.', '' )
-				)
-			)
+				]
+			]
 		);
 	}
 

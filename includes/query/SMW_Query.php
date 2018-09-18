@@ -80,13 +80,13 @@ class SMWQuery implements QueryContext {
 	const SCORE_SORT = 'score.sort';
 
 	public $sort = false;
-	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
+	public $sortkeys = []; // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
 	public $querymode = self::MODE_INSTANCES;
 
 	private $limit;
 	private $offset = 0;
 	private $description;
-	private $errors = array(); // keep any errors that occurred so far
+	private $errors = []; // keep any errors that occurred so far
 	private $queryString = false; // string (inline query) version (if fixed and known)
 	private $isInline; // query used inline? (required for finding right default parameters)
 	private $isUsedInConcept; // query used in concept? (required for finding right default parameters)
@@ -94,7 +94,7 @@ class SMWQuery implements QueryContext {
 	/**
 	 * @var PrintRequest[]
 	 */
-	private $m_extraprintouts = array(); // SMWPrintoutRequest objects supplied outside querystring
+	private $m_extraprintouts = []; // SMWPrintoutRequest objects supplied outside querystring
 	private $m_mainlabel = ''; // Since 1.6
 
 	/**
@@ -117,7 +117,7 @@ class SMWQuery implements QueryContext {
 	/**
 	 * @var array
 	 */
-	private $options = array();
+	private $options = [];
 
 	/**
 	 * @since 1.6
@@ -432,15 +432,15 @@ class SMWQuery implements QueryContext {
 				$maxdepth = $smwgQMaxDepth;
 			}
 
-			$log = array();
+			$log = [];
 			$this->description = $this->description->prune( $maxsize, $maxdepth, $log );
 
 			if ( count( $log ) > 0 ) {
-				$this->errors[] = Message::encode( array(
+				$this->errors[] = Message::encode( [
 					'smw_querytoolarge',
 					str_replace( '[', '&#91;', implode( ', ', $log ) ),
 					count( $log )
-				) );
+				] );
 			}
 		}
 	}
@@ -459,20 +459,20 @@ class SMWQuery implements QueryContext {
 	 * @return array
 	 */
 	public function toArray() {
-		$serialized = array();
+		$serialized = [];
 
 		$serialized['conditions'] = $this->getQueryString();
 
 		// This can be extended but for the current use cases that is
 		// sufficient since most printer related parameters have to be sourced
 		// in the result printer class
-		$serialized['parameters'] = array(
+		$serialized['parameters'] = [
 				'limit'     => $this->limit,
 				'offset'    => $this->offset,
 				'sortkeys'  => $this->sortkeys,
 				'mainlabel' => $this->m_mainlabel,
 				'querymode' => $this->querymode
-		);
+		];
 
 		// @2.4 Keep the queryID stable with previous versions unless
 		// a query source is selected. The "same" query executed on different
@@ -533,19 +533,19 @@ class SMWQuery implements QueryContext {
 
 	private function createFromFingerprint( $fingerprint ) {
 
-		$serialized = array();
+		$serialized = [];
 
 		// Don't use the QueryString, use the canonized fingerprint to ensure that
 		// [[Foo::123]][[Bar::abc]] returns the same ID as [[Bar::abc]][[Foo::123]]
 		// given that limit, offset, and sort/order are the same
 		$serialized['fingerprint'] = $fingerprint;
 
-		$serialized['parameters'] = array(
+		$serialized['parameters'] = [
 			'limit'     => $this->limit,
 			'offset'    => $this->offset,
 			'sortkeys'  => $this->sortkeys,
 			'querymode' => $this->querymode // COUNT, DEBUG ...
-		);
+		];
 
 		// Make to sure to distinguish queries and results from a foreign repository
 		if ( $this->querySource !== null && $this->querySource !== '' ) {

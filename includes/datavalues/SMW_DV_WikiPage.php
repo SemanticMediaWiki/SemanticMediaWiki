@@ -73,12 +73,12 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * @var array
 	 */
-	protected $linkAttributes = array();
+	protected $linkAttributes = [];
 
 	/**
 	 * @var array
 	 */
-	protected $queryParameters = array();
+	protected $queryParameters = [];
 
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
@@ -118,7 +118,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( $value === '' && !$this->getOption( self::OPT_QUERY_CONTEXT ) ) {
-			$this->addErrorMsg( array( 'smw-datavalue-wikipage-empty' ), Message::ESCAPED );
+			$this->addErrorMsg( [ 'smw-datavalue-wikipage-empty' ], Message::ESCAPED );
 			return;
 		}
 
@@ -148,7 +148,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( $value[0] == '#' ) {
 			if ( is_null( $this->m_contextPage ) ) {
-				$this->addErrorMsg( array( 'smw-datavalue-wikipage-missing-fragment-context', $value ) );
+				$this->addErrorMsg( [ 'smw-datavalue-wikipage-missing-fragment-context', $value ] );
 				return;
 			} else {
 				$this->m_title = Title::makeTitle( $this->m_contextPage->getNamespace(),
@@ -161,12 +161,12 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		/// TODO: Escape the text so users can see punctuation problems (bug 11666).
 		if ( $this->m_title === null && $this->getProperty() !== null ) {
-			$this->addErrorMsg( array( 'smw-datavalue-wikipage-property-invalid-title', $this->getProperty()->getLabel(), $value ) );
+			$this->addErrorMsg( [ 'smw-datavalue-wikipage-property-invalid-title', $this->getProperty()->getLabel(), $value ] );
 		} elseif ( $this->m_title === null ) {
-			$this->addErrorMsg( array( 'smw-datavalue-wikipage-invalid-title', $value ) );
+			$this->addErrorMsg( [ 'smw-datavalue-wikipage-invalid-title', $value ] );
 		} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
-			$this->addErrorMsg( array( 'smw_wrong_namespace', $wgContLang->getNsText( $this->m_fixNamespace ) ) );
+			$this->addErrorMsg( [ 'smw_wrong_namespace', $wgContLang->getNsText( $this->m_fixNamespace ) ] );
 		} else {
 			$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
 			$this->m_prefixedtext = '';
@@ -197,15 +197,15 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->m_fragment = $dataItem->getSubobjectName();
 		$this->m_prefixedtext = '';
 		$this->m_caption = false; // this class can handle this
-		$this->linkAttributes = array();
+		$this->linkAttributes = [];
 
 		if ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
 				$this->addErrorMsg(
-					array(
+					[
 						'smw_wrong_namespace',
 						Localizer::getInstance()->getNamespaceTextById( $this->m_fixNamespace )
-					)
+					]
 				);
 		}
 
@@ -281,7 +281,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->linkAttributes['class'] = 'smw-subobject-entity';
 		}
 
-		if ( $this->linkAttributes !== array() ) {
+		if ( $this->linkAttributes !== [] ) {
 			$link = \Html::rawElement(
 				'span',
 				$this->linkAttributes,
@@ -363,7 +363,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->linkAttributes['class'] = 'smw-subobject-entity';
 		}
 
-		if ( $this->linkAttributes !== array() ) {
+		if ( $this->linkAttributes !== [] ) {
 			$link = \Html::rawElement(
 				'span',
 				$this->linkAttributes,
@@ -448,9 +448,9 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected function getServiceLinkParams() {
 		if ( $this->isValid() ) {
-			return array( rawurlencode( str_replace( '_', ' ', $this->m_dataitem->getDBkey() ) ) );
+			return [ rawurlencode( str_replace( '_', ' ', $this->m_dataitem->getDBkey() ) ) ];
 		} else {
-			return array();
+			return [];
 		}
 	}
 
@@ -472,10 +472,10 @@ class SMWWikiPageValue extends SMWDataValue {
 
 			if ( is_null( $this->m_title ) ) { // should not normally happen, but anyway ...
 				$this->addErrorMsg(
-					array(
+					[
 						'smw_notitle',
 						Localizer::getInstance()->getNamespaceTextById( $this->m_dataitem->getNamespace() ) . ':' . $this->m_dataitem->getDBkey()
-					)
+					]
 				);
 			}
 		}
@@ -696,7 +696,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			new DIProperty( '_DTITLE' )
 		);
 
-		if ( $dataItems !== null && $dataItems !== array() ) {
+		if ( $dataItems !== null && $dataItems !== [] ) {
 			$displayTitle = end( $dataItems )->getString();
 		} elseif ( $subject->getSubobjectName() !== '' ) {
 			// Check whether the base subject has a DISPLAYTITLE

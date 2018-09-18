@@ -91,12 +91,12 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 		return Html::rawElement(
 			'p',
-			array( 'class' => 'smw-unusedproperties-docu' ),
+			[ 'class' => 'smw-unusedproperties-docu' ],
 			$this->msg( 'smw-unusedproperties-docu' )->parse()
 		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ), $this->getCacheInfo() ) .
 		Html::element(
 			'h2',
-			array(),
+			[],
 			$this->msg( 'smw-sp-properties-header-label' )->text()
 		);
 	}
@@ -119,7 +119,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 		} elseif ( $result instanceof SMWDIError ) {
 			return $this->getMessageFormatter()->clear()
 				->setType( 'warning' )
-				->addFromArray( array( $result->getErrors() ) )
+				->addFromArray( [ $result->getErrors() ] )
 				->getHtml();
 		}
 

@@ -27,7 +27,7 @@ class SMWParamFormat extends StringParam {
 	 *
 	 * @var PrintRequest[]
 	 */
-	protected $printRequests = array();
+	protected $printRequests = [];
 
 	protected $showMode = false;
 

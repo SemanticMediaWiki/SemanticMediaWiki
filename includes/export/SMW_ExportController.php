@@ -104,8 +104,8 @@ class SMWExportController {
 	 */
 	protected function prepareSerialization( $outfilename = '' ) {
 		$this->serializer->clear();
-		$this->element_queue = array();
-		$this->element_done = array();
+		$this->element_queue = [];
+		$this->element_done = [];
 		if ( $outfilename !== '' ) {
 			$this->outputfile = fopen( $outfilename, 'w' );
 			if ( !$this->outputfile ) { // TODO Rather throw an exception here.
@@ -393,10 +393,10 @@ class SMWExportController {
 			return $semData;
 		}
 
-		$semdata = \SMW\StoreFactory::getStore()->getSemanticData( $diWikiPage, $core_props_only ? array( '__spu', '__typ', '__imp' ) : false ); // advise store to retrieve only core things
+		$semdata = \SMW\StoreFactory::getStore()->getSemanticData( $diWikiPage, $core_props_only ? [ '__spu', '__typ', '__imp' ] : false ); // advise store to retrieve only core things
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
 			$result = new SMWSemanticData( $diWikiPage );
-			foreach ( array( '_URI', '_TYPE', '_IMPO' ) as $propid ) {
+			foreach ( [ '_URI', '_TYPE', '_IMPO' ] as $propid ) {
 				$prop = new SMW\DIProperty( $propid );
 				$values = $semdata->getPropertyValues( $prop );
 				foreach ( $values as $dv ) {
@@ -616,7 +616,7 @@ class SMWExportController {
 		}
 		$res = $db->select( $db->tableName( 'page' ),
 		                    'page_id,page_title,page_namespace', $query,
-		                    'SMW::RDF::PrintPageList', array( 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ) );
+		                    'SMW::RDF::PrintPageList', [ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ] );
 		$foundpages = false;
 
 		foreach ( $res as $row ) {

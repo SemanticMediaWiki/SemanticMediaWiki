@@ -23,7 +23,7 @@ class Settings extends Options {
 	/**
 	 * @var array
 	 */
-	private $iterate = array();
+	private $iterate = [];
 
 	/**
 	 * Assemble individual SMW related settings into one accessible array for
@@ -43,7 +43,7 @@ class Settings extends Options {
 	 */
 	public static function newFromGlobals() {
 
-		$configuration = array(
+		$configuration = [
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
@@ -180,11 +180,11 @@ class Settings extends Options {
 			'smwgPostEditUpdate' => $GLOBALS['smwgPostEditUpdate'],
 			'smwgSpecialAskFormSubmitMethod' => $GLOBALS['smwgSpecialAskFormSubmitMethod'],
 			'smwgSupportSectionTag' => $GLOBALS['smwgSupportSectionTag'],
-		);
+		];
 
 		self::initLegacyMapping( $configuration );
 
-		\Hooks::run( 'SMW::Config::BeforeCompletion', array( &$configuration ) );
+		\Hooks::run( 'SMW::Config::BeforeCompletion', [ &$configuration ] );
 
 		if ( self::$instance === null ) {
 			self::$instance = self::newFromArray( $configuration );
@@ -493,8 +493,8 @@ class Settings extends Options {
 
 		// Deprecated mapping used in DeprecationNoticeTaskHandler to detect and
 		// output notices
-		$GLOBALS['smwgDeprecationNotices']['smw'] = array(
-			'notice' => array(
+		$GLOBALS['smwgDeprecationNotices']['smw'] = [
+			'notice' => [
 				'smwgAdminRefreshStore' => '3.1.0',
 				'smwgQueryDependencyPropertyExemptionlist' => '3.1.0',
 				'smwgQueryDependencyAffiliatePropertyDetectionlist' => '3.1.0',
@@ -539,8 +539,8 @@ class Settings extends Options {
 						'smwgQueryParametersEnabled' => '3.1.0'
 					]
 				]
-			),
-			'replacement' => array(
+			],
+			'replacement' => [
 				'smwgAdminRefreshStore' => 'smwgAdminFeatures',
 				'smwgQueryDependencyPropertyExemptionlist' => 'smwgQueryDependencyPropertyExemptionList',
 				'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList',
@@ -585,15 +585,15 @@ class Settings extends Options {
 						'smwgQueryParametersEnabled' => 'SMW_QPRFL_PARAMS'
 					]
 				] + ( $jobQueueWatchlist !== [] ? [ 'smwgJobQueueWatchlist' => $jobQueueWatchlist ] : [] )
-			),
-			'removal' => array(
+			],
+			'removal' => [
 				'smwgOnDeleteAction' => '2.4.0',
 				'smwgAutocompleteInSpecialAsk' => '3.0.0',
 				'smwgSparqlDatabaseMaster' => '3.0.0',
 				'smwgHistoricTypeNamespace' => '3.0.0',
 				'smwgEnabledHttpDeferredJobRequest' => '3.0.0'
-			)
-		);
+			]
+		];
 	}
 
 }

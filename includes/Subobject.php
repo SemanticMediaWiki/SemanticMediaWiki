@@ -32,7 +32,7 @@ class Subobject {
 	/**
 	 * @var array
 	 */
-	protected $errors = array();
+	protected $errors = [];
 
 	/**
 	 * @since 1.9
@@ -89,7 +89,7 @@ class Subobject {
 	public function addError( $error ) {
 
 		if ( is_string( $error ) ) {
-			$error = array( md5( $error ) => $error );
+			$error = [ md5( $error ) => $error ];
 		}
 
 		// Preserve the keys, avoid using array_merge to avert a possible
