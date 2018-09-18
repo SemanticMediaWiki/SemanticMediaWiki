@@ -80,73 +80,55 @@ final class Setup {
 
 		$specials = [
 			'Ask' => [
-				'page' => 'SMW\MediaWiki\Specials\SpecialAsk',
-				'group' => 'smw_group'
+				'page' => 'SMW\MediaWiki\Specials\SpecialAsk'
 			],
 			'Browse' => [
-				'page' =>  'SMW\MediaWiki\Specials\SpecialBrowse',
-				'group' => 'smw_group'
+				'page' =>  'SMW\MediaWiki\Specials\SpecialBrowse'
 			],
 			'PageProperty' => [
-				'page' =>  'SMW\MediaWiki\Specials\SpecialPageProperty',
-				'group' => 'smw_group'
+				'page' =>  'SMW\MediaWiki\Specials\SpecialPageProperty'
 			],
 			'SearchByProperty' => [
-				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty',
-				'group' => 'smw_group'
+				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty'
 			],
 			'ProcessingErrorList' => [
-				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList',
-				'group' => 'smw_group'
+				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList'
 			],
 			'PropertyLabelSimilarity' => [
-				'page' => 'SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity',
-				'group' => 'smw_group'
+				'page' => 'SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity'
 			],
 			'SMWAdmin' => [
-				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin',
-				'group' => 'smw_group'
+				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin'
 			],
 			'Concepts' => [
-				'page' => 'SMW\SpecialConcepts',
-				'group' => 'pages'
+				'page' => 'SMW\SpecialConcepts'
 			],
 			'ExportRDF' => [
-				'page' => 'SMWSpecialOWLExport',
-				'group' => 'smw_group'
+				'page' => 'SMWSpecialOWLExport'
 			],
 			'Types' => [
-				'page' => 'SMWSpecialTypes',
-				'group' => 'pages'
+				'page' => 'SMWSpecialTypes'
 			],
 			'URIResolver' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialURIResolver'
 			],
 			'Properties' => [
-				'page' => 'SMW\SpecialProperties',
-				'group' => 'pages'
+				'page' => 'SMW\SpecialProperties'
 			],
 			'UnusedProperties' => [
-				'page' => 'SMW\SpecialUnusedProperties',
-				'group' => 'maintenance'
+				'page' => 'SMW\SpecialUnusedProperties'
 			],
 			'WantedProperties' => [
-				'page' => 'SMW\SpecialWantedProperties',
-				'group' => 'maintenance'
+				'page' => 'SMW\SpecialWantedProperties'
 			],
 			'DeferredRequestDispatcher' => [
-				'page' => 'SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher',
-				'group' => 'maintenance'
+				'page' => 'SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher'
 			],
 		];
 
 		// Register data
 		foreach ( $specials as $special => $page ) {
 			$specialPages[$special] = $page['page'];
-
-			if ( isset( $page['group'] ) ) {
-				$GLOBALS['wgSpecialPageGroups'][$special] = $page['group'];
-			}
 		}
 	}
 
