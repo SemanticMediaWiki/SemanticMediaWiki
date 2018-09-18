@@ -36,7 +36,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -63,7 +63,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -77,7 +77,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'PRAGMA table_info("foo")' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
@@ -95,7 +95,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -109,7 +109,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'PRAGMA table_info("foo")' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
@@ -128,7 +128,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -142,7 +142,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'PRAGMA index_list("foo")' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 4 ) )
 			->method( 'query' )
@@ -161,7 +161,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -186,7 +186,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'query' ) )
+			->setMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )

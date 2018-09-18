@@ -57,11 +57,11 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setPropertyExemptionList(
-			array( '_TEXT','fo oo' )
+			[ '_TEXT','fo oo' ]
 		);
 
 		$this->assertEquals(
-			array( '_TEXT', 'fo_oo' ),
+			[ '_TEXT', 'fo_oo' ],
 			$instance->getPropertyExemptionList()
 		);
 	}
@@ -77,7 +77,7 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setPropertyExemptionList(
-			array( '_TEXT' )
+			[ '_TEXT' ]
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( '_TEXT' );

@@ -392,7 +392,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 
 		// DatabaseBase is an abstract class, use setMethods to implement
 		// required abstract methods
-		$requiredAbstractMethods = array(
+		$requiredAbstractMethods = [
 			'selectField',
 			'doQuery',
 			'getType',
@@ -413,7 +413,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 			'getSoftwareLink',
 			'getServerVersion',
 			'closeConnection'
-		);
+		];
 
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
@@ -464,11 +464,11 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 */
 	public function ContentHandler() {
 
-		$requiredAbstractMethods = array(
+		$requiredAbstractMethods = [
 			'serializeContent',
 			'unserializeContent',
 			'makeEmptyContent'
-		);
+		];
 
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 

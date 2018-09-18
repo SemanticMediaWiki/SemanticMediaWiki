@@ -103,110 +103,110 @@ class NumberValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function numberValueProvider() {
 
-		$provider['v.1'] = array(
+		$provider['v.1'] = [
 			'foo',
 			NumberValueFormatter::VALUE,
 			null,
 			'error'
-		);
+		];
 
-		$provider['v.2'] = array(
+		$provider['v.2'] = [
 			100,
 			NumberValueFormatter::VALUE,
 			null,
 			100
-		);
+		];
 
-		$provider['v.3'] = array(
+		$provider['v.3'] = [
 			0.222,
 			NumberValueFormatter::VALUE,
 			null,
 			0.222
-		);
+		];
 
-		$provider['ws.1'] = array(
+		$provider['ws.1'] = [
 			100,
 			NumberValueFormatter::WIKI_SHORT,
 			null,
 			100
-		);
+		];
 
-		$provider['ws.2'] = array(
+		$provider['ws.2'] = [
 			100,
 			NumberValueFormatter::WIKI_SHORT,
 			'notNull',
 			100
-		);
+		];
 
-		$provider['hs.1'] = array(
+		$provider['hs.1'] = [
 			100,
 			NumberValueFormatter::HTML_SHORT,
 			null,
 			100
-		);
+		];
 
-		$provider['wl.1'] = array(
+		$provider['wl.1'] = [
 			100,
 			NumberValueFormatter::WIKI_LONG,
 			null,
 			100
-		);
+		];
 
-		$provider['wl.2'] = array(
+		$provider['wl.2'] = [
 			100,
 			NumberValueFormatter::WIKI_LONG,
 			'notNull',
 			100
-		);
+		];
 
-		$provider['hl.1'] = array(
+		$provider['hl.1'] = [
 			100,
 			NumberValueFormatter::HTML_LONG,
 			null,
 			100
-		);
+		];
 
 		return $provider;
 	}
 
 	public function temperaturValueProvider() {
 
-		$provider['v.1'] = array(
+		$provider['v.1'] = [
 			'100 K',
 			NumberValueFormatter::VALUE,
 			null,
 			'100 K'
-		);
+		];
 
-		$provider['ws.1'] = array(
+		$provider['ws.1'] = [
 			'100 K',
 			NumberValueFormatter::WIKI_SHORT,
 			null,
 			'100 K'
-		);
+		];
 
-		$provider['ws.2'] = array(
+		$provider['ws.2'] = [
 			'100 K',
 			NumberValueFormatter::WIKI_SHORT,
 			'notNull',
 			'<span class="smw-highlighter" data-type="3" data-state="inline" data-title="Unit conversion" title="-173.15 °C -279.67 °F 180 °R ">' .
 			'<span class="smwtext">100 K</span>' .
 			'<span class="smwttcontent">-173.15&#160;°C <br />-279.67&#160;°F <br />180&#160;°R <br /></span></span>'
-		);
+		];
 
-		$provider['wl.1'] = array(
+		$provider['wl.1'] = [
 			'100 K',
 			NumberValueFormatter::WIKI_LONG,
 			null,
 			'100&#160;K (-173.15&#160;°C, -279.67&#160;°F, 180&#160;°R)'
-		);
+		];
 
-		$provider['wl.2'] = array(
+		$provider['wl.2'] = [
 			'100 K',
 			NumberValueFormatter::WIKI_LONG,
 			'notNull',
 			'100&#160;K (-173.15&#160;°C, -279.67&#160;°F, 180&#160;°R)'
-		);
+		];
 
 		return $provider;
 	}

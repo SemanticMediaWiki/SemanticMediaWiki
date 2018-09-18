@@ -53,85 +53,85 @@ class LinksProcessorTest extends \PHPUnit_Framework_TestCase {
 
 	public function semanticPreLinkProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Foo::Bar]]',
 				'Foo',
 				'Bar'
-			),
-			array(
+			],
+			[
 				'[[Foo::Bar]]',
 				'Foo',
 				'Bar'
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Foo::Bar|Foobar]]',
 				'Foo',
 				'Bar'
-			),
-			array(
+			],
+			[
 				'[[Foo::Bar|Foobar]]',
 				'Foo',
 				'Bar'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
 
 	public function semanticLinkProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Foo::Bar]]',
 				'Foo',
 				'Bar'
-			),
-			array(
-				array(
+			],
+			[
+				[
 					'Foo'
-				),
+				],
 				'Bar',
 				false
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Foo::Bar|Foobar]]',
 				'Foo',
 				'Bar'
-			),
-			array(
-				array(
+			],
+			[
+				[
 					'Foo'
-				),
+				],
 				'Bar',
 				false
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Foo::=Bar|Foobar]]',
 				'Foo',
 				'=Bar'
-			),
-			array(
-				array(
+			],
+			[
+				[
 					'Foo'
-				),
+				],
 				'=Bar',
 				false
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

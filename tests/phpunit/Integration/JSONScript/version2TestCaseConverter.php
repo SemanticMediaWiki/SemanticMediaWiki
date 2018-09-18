@@ -16,7 +16,7 @@ class Version2TestCaseConverter {
 	/**
 	 * @var array
 	 */
-	private $options = array();
+	private $options = [];
 
 	/**
 	 * @var string
@@ -29,7 +29,7 @@ class Version2TestCaseConverter {
 	public function run() {
 
 		// http://php.net/manual/en/function.getopt.php
-		$this->options = getopt( '', array( "file::", "test" ) );
+		$this->options = getopt( '', [ "file::", "test" ] );
 
 		print "\nRunning Version2TestCaseConverter ..." . "\n\n";
 
@@ -118,8 +118,8 @@ class Version2TestCaseConverter {
 
 	private function doConvertToVersion2() {
 
-		$setup = array();
-		$tests = array();
+		$setup = [];
+		$tests = [];
 
 		// Replace and accordance with the new Version 2 structure
 		$this->findAndReplaceEntity( 'properties', $setup );
@@ -134,11 +134,11 @@ class Version2TestCaseConverter {
 		$this->findAndReplaceTestCases( 'concept-testcases', 'concept', $tests );
 
 		// Reorder
-		$contents = array(
+		$contents = [
 			'description' => $this->contents['description'],
 			'setup' => $setup,
-			'beforeTest' => array()
-		);
+			'beforeTest' => []
+		];
 
 		if ( isset( $this->contents['maintenance-run'] ) ) {
 			$contents['beforeTest']['maintenance-run'] = $this->contents['maintenance-run'];
@@ -148,7 +148,7 @@ class Version2TestCaseConverter {
 			$contents['beforeTest']['job-run'] = $this->contents['job-run'];
 		}
 
-		if ( $contents['beforeTest'] === array() ) {
+		if ( $contents['beforeTest'] === [] ) {
 			unset( $contents['beforeTest'] );
 		}
 
@@ -162,13 +162,13 @@ class Version2TestCaseConverter {
 
 	private function findAndReplaceEntity( $name, &$entities ) {
 
-		if ( !isset( $this->contents[$name] ) || $this->contents[$name] === array() ) {
+		if ( !isset( $this->contents[$name] ) || $this->contents[$name] === [] ) {
 			return;
 		}
 
 		foreach ( $this->contents[$name] as $values ) {
 
-			$entity = array();
+			$entity = [];
 
 			if ( $name === 'properties' ) {
 				$entity['namespace'] = "SMW_NS_PROPERTY";
@@ -184,13 +184,13 @@ class Version2TestCaseConverter {
 
 	private function findAndReplaceTestCases( $name, $type, &$tests ) {
 
-		if ( !isset( $this->contents[$name] ) || $this->contents[$name] === array() ) {
+		if ( !isset( $this->contents[$name] ) || $this->contents[$name] === [] ) {
 			return;
 		}
 
 		foreach ( $this->contents[$name] as $values ) {
 
-			$case = array();
+			$case = [];
 			$case['type'] = $type;
 
 			foreach ( $values as $key => $value ) {
@@ -203,7 +203,7 @@ class Version2TestCaseConverter {
 
 	private function findFilesFor( $path, $extension ) {
 
-		$files = array();
+		$files = [];
 
 		$directoryIterator = new \RecursiveDirectoryIterator( $path );
 

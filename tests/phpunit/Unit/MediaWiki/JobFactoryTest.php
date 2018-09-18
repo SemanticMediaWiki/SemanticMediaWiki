@@ -63,115 +63,115 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function typeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\RefreshJob',
 			'\SMW\MediaWiki\Jobs\RefreshJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.refresh',
 			'\SMW\MediaWiki\Jobs\RefreshJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\UpdateJob',
 			'\SMW\MediaWiki\Jobs\UpdateJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.update',
 			'\SMW\MediaWiki\Jobs\UpdateJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\UpdateDispatcherJob',
 			'\SMW\MediaWiki\Jobs\UpdateDispatcherJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.updateDispatcher',
 			'\SMW\MediaWiki\Jobs\UpdateDispatcherJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\ParserCachePurgeJob',
 			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.parserCachePurge',
 			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\FulltextSearchTableUpdateJob',
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.fulltextSearchTableUpdate',
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\EntityIdDisposerJob',
 			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.entityIdDisposer',
 			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\PropertyStatisticsRebuildJob',
 			'\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.propertyStatisticsRebuild',
 			'\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\FulltextSearchTableRebuildJob',
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.fulltextSearchTableRebuild',
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\ChangePropagationDispatchJob',
 			'\SMW\MediaWiki\Jobs\ChangePropagationDispatchJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.changePropagationDispatch',
 			'\SMW\MediaWiki\Jobs\ChangePropagationDispatchJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\ChangePropagationUpdateJob',
 			'\SMW\MediaWiki\Jobs\ChangePropagationUpdateJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.changePropagationUpdate',
 			'\SMW\MediaWiki\Jobs\ChangePropagationUpdateJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW\ChangePropagationClassUpdateJob',
 			'\SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smw.changePropagationClassUpdate',
 			'\SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob'
-		);
+		];
 
 		return $provider;
 	}

@@ -17,13 +17,13 @@ class AreaProperty extends FixtureProperty {
 	/**
 	 * @var array
 	 */
-	private $conversionValues = array(
+	private $conversionValues = [
 		'1 km²',
 		'0.38610 sq mi',
 		'1000 m²',
 		'247.1054 acre',
 		'988.4215 rood'
-	);
+	];
 
 	/**
 	 * @since 2.1

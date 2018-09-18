@@ -33,7 +33,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
@@ -84,7 +84,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPerformAction() {
 
-		$methods = array(
+		$methods = [
 			'setName',
 			'setMethod',
 			'addHiddenField',
@@ -94,7 +94,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			'addSubmitButton',
 			'addNonBreakingSpace',
 			'addCheckbox'
-		);
+		];
 
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
@@ -134,7 +134,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
 			->disableOriginalConstructor()
@@ -159,7 +159,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
-		$methods = array(
+		$methods = [
 			'setName',
 			'setMethod',
 			'addHiddenField',
@@ -169,7 +169,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			'addSubmitButton',
 			'addNonBreakingSpace',
 			'addCheckbox'
-		);
+		];
 
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )

@@ -20,12 +20,12 @@ class TestConfig {
 	/**
 	 * @var array
 	 */
-	private $configurations = array();
+	private $configurations = [];
 
 	/**
 	 * @var array
 	 */
-	private $newKeys = array();
+	private $newKeys = [];
 
 	/**
 	 * @since 3.0
@@ -39,7 +39,7 @@ class TestConfig {
 	 *
 	 * @param array $configurations
 	 */
-	public function set( array $configurations = array() ) {
+	public function set( array $configurations = [] ) {
 
 		foreach ( $configurations as $key => $value ) {
 

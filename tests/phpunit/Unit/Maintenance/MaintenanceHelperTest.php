@@ -92,12 +92,12 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 
 	public function runtimeKeyValueProvider() {
 
-		$provider = array(
-			array( 'time' ),
-			array( 'memory-before' ),
-			array( 'memory-after' ),
-			array( 'memory-used' )
-		);
+		$provider = [
+			[ 'time' ],
+			[ 'memory-before' ],
+			[ 'memory-after' ],
+			[ 'memory-used' ]
+		];
 
 		return $provider;
 	}

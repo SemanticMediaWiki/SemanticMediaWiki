@@ -105,13 +105,13 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			[],
 			$title,
 			$editInfoProvider,
 			$pageInfoProvider,
 			false
-		);
+		];
 
 		#1 With annotation
 		$title = $this->getMockBuilder( '\Title' )
@@ -143,9 +143,9 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getModificationDate' )
 			->will( $this->returnValue( 1272508903 ) );
 
-		$provider[] = array(
+		$provider[] = [
 			[
-				'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE ),
+				'smwgPageSpecialProperties' => [ DIProperty::TYPE_MODIFICATION_DATE ],
 				'smwgDVFeatures' => ''
 			],
 			$title,
@@ -154,9 +154,9 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_MDAT',
-				'propertyValues' => array( '2010-04-29T02:41:43' ),
+				'propertyValues' => [ '2010-04-29T02:41:43' ],
 			]
-		);
+		];
 
 		#2 on schema page
 		$title = $this->getMockBuilder( '\Title' )

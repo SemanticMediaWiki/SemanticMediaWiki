@@ -45,7 +45,7 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 				->with(
 					$this->anything(),
 					$this->anything(),
-					$this->equalTo( array( 'smw_id' => 42 ) ) );
+					$this->equalTo( [ 'smw_id' => 42 ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()

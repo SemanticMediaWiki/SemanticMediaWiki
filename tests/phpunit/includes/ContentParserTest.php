@@ -66,8 +66,8 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 	public function testRunParseOnTitle( $setup, $expected, $withContentHandler = false ) {
 
 		$instance = $this->getMockBuilder( '\SMW\ContentParser' )
-			->setConstructorArgs( array( $setup['title'], new Parser() ) )
-			->setMethods( array( 'hasContentHandler' ) )
+			->setConstructorArgs( [ $setup['title'], new Parser() ] )
+			->setMethods( [ 'hasContentHandler' ] )
 			->getMock();
 
 		$instance->expects( $this->any() )
@@ -134,76 +134,76 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 	 */
 	public function titleRevisionDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		$text     = 'Foo-2-' . __METHOD__;
 		$expected ='<p>' . $text . "\n" . '</p>';
 
 		// #0 Title does not exists
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
+		$title = $this->newMockBuilder()->newObject( 'Title', [
 			'getDBkey'        => 'Lila',
 			'exists'          => false,
 			'getText'         => null,
 			'getPageLanguage' => $this->getLanguage()
-		) );
+		] );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
 				'revision' => null,
-			),
-			array(
+			],
+			[
 				'error'    => true,
 				'text'     => ''
-			)
-		);
+			]
+		];
 
 		// #1 Valid revision
 		// Required by MW 1.29, method got removed
 		if ( method_exists( 'Revision', 'getText' ) ) {
-			$title = $this->newMockBuilder()->newObject( 'Title', array(
+			$title = $this->newMockBuilder()->newObject( 'Title', [
 				'getDBkey'        => 'Lula',
 				'exists'          => true,
 				'getPageLanguage' => $this->getLanguage()
-			) );
+			] );
 
-			$revision = $this->newMockBuilder()->newObject( 'Revision', array(
+			$revision = $this->newMockBuilder()->newObject( 'Revision', [
 				'getId'   => 9001,
 				'getUser' => 'Lala',
 				'getText' => $text,
-			) );
+			] );
 
-			$provider[] = array(
-				array(
+			$provider[] = [
+				[
 					'title'    => $title,
 					'revision' => $revision,
-				),
-				array(
+				],
+				[
 					'error'    => false,
 					'text'     => $expected
-				)
-			);
+				]
+			];
 		}
 
 		// #2 Null revision
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
+		$title = $this->newMockBuilder()->newObject( 'Title', [
 			'getDBkey'        => 'Lula',
 			'exists'          => true,
 			'getPageLanguage' => $this->getLanguage()
-		) );
+		] );
 
 		$revision = null;
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
 				'revision' => $revision,
-			),
-			array(
+			],
+			[
 				'error'    => true,
 				'text'     => ''
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
@@ -213,10 +213,10 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 	 */
 	public function contentDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		if ( !class_exists( 'ContentHandler') ) {
-			$provider[] = array( array(), array() );
+			$provider[] = [ [], [] ];
 			return $provider;
 		}
 
@@ -233,73 +233,73 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 			->method( 'getPageLanguage' )
 			->will( $this->returnValue( $this->getLanguage() ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
 				'revision' => null,
-			),
-			array(
+			],
+			[
 				'error'    => true,
 				'text'     => ''
-			)
-		);
+			]
+		];
 
 		// #1 Valid revision
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
+		$title = $this->newMockBuilder()->newObject( 'Title', [
 			'getDBkey'        => 'Lula',
 			'exists'          => true,
 			'getPageLanguage' => $this->getLanguage()
-		) );
+		] );
 
-		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
+		$revision = $this->newMockBuilder()->newObject( 'Revision', [
 			'getId'   => 9001,
 			'getUser' => 'Lala',
 			'getContent' => new TextContent( $text )
-		) );
+		] );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
 				'revision' => $revision,
-			),
-			array(
+			],
+			[
 				'error'    => false,
 				'text'     => $text
-			)
-		);
+			]
+		];
 
 		// #1 Empty content
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
+		$title = $this->newMockBuilder()->newObject( 'Title', [
 			'getDBkey'        => 'Lula',
 			'exists'          => true,
 			'getPageLanguage' => $this->getLanguage(),
 			'getContentModel' => CONTENT_MODEL_WIKITEXT
-		) );
+		] );
 
-		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
+		$revision = $this->newMockBuilder()->newObject( 'Revision', [
 			'getId'             => 9001,
 			'getUser'           => 'Lala',
 			'getContent'        => false,
 			'getContentHandler' => new TextContentHandler()
-		) );
+		] );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
 				'revision' => $revision,
-			),
-			array(
+			],
+			[
 				'error'    => false,
 				'text'     => ''
-			)
-		);
+			]
+		];
 
 		// #2 "real" revision and content
 		$title    = $this->newTitle();
 		$content  = ContentHandler::makeContent( $text, $title, CONTENT_MODEL_WIKITEXT, null );
 
 		$revision = new Revision(
-			array(
+			[
 				'id'         => 42,
 				'page'       => 23,
 				'title'      => $title,
@@ -310,19 +310,19 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 				'minor_edit' => false,
 
 				'content_format' => null,
-			)
+			]
 		);
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'    => $title,
 				'revision' => $revision,
-			),
-			array(
+			],
+			[
 				'error'    => false,
 				'text'     => $text
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

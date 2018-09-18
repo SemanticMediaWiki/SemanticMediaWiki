@@ -29,11 +29,11 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->addConfiguration(
 			'smwgQuerySources',
-			array(
+			[
 				'foo'    => 'SMW\Tests\Utils\Mock\FakeQueryStore',
 				'foobar' => 'SMW\Tests\Integration\Query\AnotherFakeQueryStoreWhichDoesNotImplentTheQueryEngineInterface',
 				'bar'    => 'SMW\Tests\NonExistentQueryStore',
-			)
+			]
 		);
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -56,18 +56,18 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
 			->will( $this->returnValue( $queryResult ) );
 
-		$rawParams = array(
+		$rawParams = [
 			'[[Modification date::+]]',
 			'?Modification date',
 			'format=list',
 			'source=default'
-		);
+		];
 
 		$this->assertInternalType(
 			'string',
@@ -83,18 +83,18 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
 			->will( $this->returnValue( $queryResult ) );
 
-		$rawParams = array(
+		$rawParams = [
 			'[[Modification date::+]]',
 			'?Modification date',
 			'format=list',
 			'source=foo'
-		);
+		];
 
 		$this->assertInternalType(
 			'string',
@@ -110,18 +110,18 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
 			->will( $this->returnValue( $queryResult ) );
 
-		$rawParams = array(
+		$rawParams = [
 			'[[Modification date::+]]',
 			'?Modification date',
 			'format=list',
 			'source=bar'
-		);
+		];
 
 		$this->assertInternalType(
 			'string',
@@ -143,12 +143,12 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQueryResult' )
 			->will( $this->returnValue( $queryResult ) );
 
-		$rawParams = array(
+		$rawParams = [
 			'[[Modification date::+]]',
 			'?Modification date',
 			'format=count',
 			'source=foo'
-		);
+		];
 
 		$this->assertInternalType(
 			'string',
@@ -158,12 +158,12 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryProcessorWithInvalidSource() {
 
-		$rawParams = array(
+		$rawParams = [
 			'[[Modification date::+]]',
 			'?Modification date',
 			'format=list',
 			'source=foobar'
-		);
+		];
 
 		$this->setExpectedException( 'RuntimeException' );
 		$this->makeQueryResultFromRawParameters( $rawParams );

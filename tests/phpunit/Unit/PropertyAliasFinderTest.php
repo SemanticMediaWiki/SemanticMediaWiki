@@ -32,7 +32,7 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$languageIndependentPropertyLabels = array();
+		$languageIndependentPropertyLabels = [];
 
 		$this->assertInstanceOf(
 			PropertyAliasFinder::class,
@@ -42,7 +42,7 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindPropertyAliasById() {
 
-		$propertyAliases = array( 'Bar' => '_Foo' );
+		$propertyAliases = [ 'Bar' => '_Foo' ];
 
 		$instance = new PropertyAliasFinder(
 			$this->cache,
@@ -62,11 +62,11 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindPropertyIdByAlias() {
 
-		$canonicalPropertyAliases = array( 'Bar' => '_Foo' );
+		$canonicalPropertyAliases = [ 'Bar' => '_Foo' ];
 
 		$instance = new PropertyAliasFinder(
 			$this->cache,
-			array(),
+			[],
 			$canonicalPropertyAliases
 		);
 

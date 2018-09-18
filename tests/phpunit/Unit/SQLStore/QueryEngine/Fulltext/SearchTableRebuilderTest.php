@@ -67,7 +67,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $tableDefinition ) ) );
+			->will( $this->returnValue( [ $tableDefinition ] ) );
 
 		$instance = new SearchTableRebuilder(
 			$this->connection,
@@ -111,7 +111,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$row->s_id = 42;
 
 		$resultWrapper = $this->iteratorMockBuilder->setClass( '\ResultWrapper' )
-			->with( array( $row ) )
+			->with( [ $row ] )
 			->incrementInvokedCounterBy( 1 )
 			->getMockForIterator();
 
@@ -145,7 +145,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $tableDefinition ) ) );
+			->will( $this->returnValue( [ $tableDefinition ] ) );
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'update' )
@@ -176,7 +176,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $propertyTableDefinition ) ) );
+			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
 
 		$instance = new SearchTableRebuilder(
 			$this->connection,
@@ -205,7 +205,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $propertyTableDefinition ) ) );
+			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
 
 		$instance = new SearchTableRebuilder(
 			$this->connection,

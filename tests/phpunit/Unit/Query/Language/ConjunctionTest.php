@@ -62,7 +62,7 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(),
+			[],
 			$instance->getPrintRequests()
 		);
 
@@ -101,14 +101,14 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$nsHelp = Localizer::getInstance()->getNamespaceTextById( NS_HELP );
 
-		$descriptions = array(
+		$descriptions = [
 			'N:cfcd208495d565ef66e7dff9f98764da' => new NamespaceDescription( NS_MAIN ),
 			'N:c20ad4d76fe97759aa27a0c99bff6710' => new NamespaceDescription( NS_HELP )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$descriptions,
-			array(
+			[
 				'descriptions'  => $descriptions,
 				'queryString' => "[[:+]] [[{$nsHelp}:+]]",
 				'queryStringAsValue' => " <q>[[:+]] [[{$nsHelp}:+]]</q> ",
@@ -116,30 +116,30 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 				'queryFeatures' => 24,
 				'size'  => 2,
 				'depth' => 0
-			)
-		);
+			]
+		];
 
 		$valueDescriptionFoo = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) );
 		$valueDescriptionBar = new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) );
 		$valueDescriptionYim = new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) );
 
-		$descriptions = array(
+		$descriptions = [
 			$valueDescriptionFoo,
-			new Conjunction( array(
+			new Conjunction( [
 				$valueDescriptionBar,
 				$valueDescriptionYim
-			) )
-		);
+			] )
+		];
 
-		$description = array(
+		$description = [
 			'V:903e513c13559ffaa66a23270a2922ff' => $valueDescriptionFoo,
 			'V:246b70c7cb6a9fe4613cad14405b682f' => $valueDescriptionBar,
 			'V:a3f71a427c6f9533ea1f093ff47bf958' => $valueDescriptionYim
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$descriptions,
-			array(
+			[
 				'descriptions'  => $description,
 				'queryString' => '[[:Foo]] [[:Bar]] [[:Yim]]',
 				'queryStringAsValue' => ' <q>[[:Foo]] [[:Bar]] [[:Yim]]</q> ',
@@ -147,8 +147,8 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 				'queryFeatures' => 16,
 				'size'  => 3,
 				'depth' => 0
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
@@ -159,16 +159,16 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 		$valueDescriptionFoo = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) );
 		$valueDescriptionBar = new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) );
 
-		$descriptions = array(
+		$descriptions = [
 			$valueDescriptionFoo,
 			$valueDescriptionBar,
-		);
+		];
 
 		$instance = new Conjunction( $descriptions );
 
 		$maxsize  = 1;
 		$maxDepth = 1;
-		$log      = array();
+		$log      = [];
 
 		$this->assertEquals(
 			$valueDescriptionFoo,
@@ -177,7 +177,7 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$maxsize  = 0;
 		$maxDepth = 1;
-		$log      = array();
+		$log      = [];
 
 		$this->assertEquals(
 			new ThingDescription(),
@@ -187,36 +187,36 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function comparativeHashProvider() {
 
-		$descriptions = array(
+		$descriptions = [
 			new NamespaceDescription( NS_MAIN ),
 			new NamespaceDescription( NS_HELP )
-		);
+		];
 
 		$conjunction = new Conjunction(
 			$descriptions
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$descriptions,
 			$conjunction,
 			true
-		);
+		];
 
 		// Different order, same hash
-		$descriptions = array(
+		$descriptions = [
 			new NamespaceDescription( NS_HELP ),
 			new NamespaceDescription( NS_MAIN ) // Changed position
-		);
+		];
 
 		$conjunction = new Conjunction(
 			$descriptions
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$descriptions,
 			$conjunction,
 			true
-		);
+		];
 
 		// ThingDescription is neglected
 		$conjunction = new Conjunction(
@@ -227,11 +227,11 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$descriptions,
 			$conjunction,
 			true
-		);
+		];
 
 		// Adds description === different signature === different hash
 		$conjunction = new Conjunction(
@@ -242,11 +242,11 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) )
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$descriptions,
 			$conjunction,
 			false
-		);
+		];
 
 		return $provider;
 	}

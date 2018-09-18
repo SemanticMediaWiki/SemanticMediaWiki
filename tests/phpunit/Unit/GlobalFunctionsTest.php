@@ -107,16 +107,16 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function getGlobalFunctions() {
-		return array(
-			array( 'smwfNormalTitleDBKey' ),
-			array( 'smwfNormalTitleText' ),
-			array( 'smwfXMLContentEncode' ),
-			array( 'smwfHTMLtoUTF8' ),
-			array( 'smwfNumberFormat' ),
-			array( 'smwfEncodeMessages' ),
-			array( 'smwfGetStore' ),
-			array( 'smwfGetLinker' ),
-		);
+		return [
+			[ 'smwfNormalTitleDBKey' ],
+			[ 'smwfNormalTitleText' ],
+			[ 'smwfXMLContentEncode' ],
+			[ 'smwfHTMLtoUTF8' ],
+			[ 'smwfNumberFormat' ],
+			[ 'smwfEncodeMessages' ],
+			[ 'smwfGetStore' ],
+			[ 'smwfGetLinker' ],
+		];
 	}
 
 	/**
@@ -125,13 +125,13 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function getEncodeMessagesDataProvider() {
-		return array(
-			array( array ( '', '', '' ) , '', '', true ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , '', '', true ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , 'warning', '', true ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , 'info', ',', false ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , null, ',', false ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , '<span>Test</span>', ',', true ),
-		);
+		return [
+			[  [ '', '', '' ] , '', '', true ],
+			[  [ 'abc', 'ABC', '<span>Test</span>' ] , '', '', true ],
+			[  [ 'abc', 'ABC', '<span>Test</span>' ] , 'warning', '', true ],
+			[  [ 'abc', 'ABC', '<span>Test</span>' ] , 'info', ',', false ],
+			[  [ 'abc', 'ABC', '<span>Test</span>' ] , null, ',', false ],
+			[  [ 'abc', 'ABC', '<span>Test</span>' ] , '<span>Test</span>', ',', true ],
+		];
 	}
 }

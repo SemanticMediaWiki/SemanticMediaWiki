@@ -37,11 +37,11 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->settings = Settings::newFromArray( array(
+		$this->settings = Settings::newFromArray( [
 			'smwgPDefaultType'              => '_wpg',
 			'smwgPropertyLowUsageThreshold' => 5,
 			'smwgPropertyZeroCountDisplay'  => true
-		) );
+		] );
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
@@ -65,7 +65,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $error, null )
+			[ $error, null ]
 		);
 
 		$this->assertInternalType(
@@ -101,7 +101,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, 42 )
+			[ $property, 42 ]
 		);
 
 		$this->assertContains(
@@ -121,7 +121,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, 42 )
+			[ $property, 42 ]
 		);
 
 		$this->assertContains(
@@ -146,7 +146,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, 0 )
+			[ $property, 0 ]
 		);
 
 		$this->assertEmpty(
@@ -176,7 +176,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, $count )
+			[ $property, $count ]
 		);
 
 		$this->assertContains(

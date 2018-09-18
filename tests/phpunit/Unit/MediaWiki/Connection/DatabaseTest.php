@@ -53,7 +53,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'numRows' ) )
+			->setMethods( [ 'numRows' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->once() )
@@ -87,7 +87,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'addQuotes' ) )
+			->setMethods( [ 'addQuotes' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->once() )
@@ -124,7 +124,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableName', 'getType' ) )
+			->setMethods( [ 'tableName', 'getType' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->any() )
@@ -170,7 +170,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'select' ) )
+			->setMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->once() )
@@ -203,7 +203,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'selectField' ) )
+			->setMethods( [ 'selectField' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->once() )
@@ -229,7 +229,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'Bar',
-			$instance->selectField( 'Foo', 'Bar', '', __METHOD__, array() )
+			$instance->selectField( 'Foo', 'Bar', '', __METHOD__, [] )
 		);
 	}
 
@@ -244,7 +244,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$read = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getType' ) )
+			->setMethods( [ 'getType' ] )
 			->getMockForAbstractClass();
 
 		$read->expects( $this->any() )
@@ -261,7 +261,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$write = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'query' ) )
+			->setMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
 		$write->expects( $this->once() )
@@ -294,12 +294,12 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 	public function querySqliteProvider() {
 
-		$provider = array(
-			array( 'TEMPORARY', 'TEMP' ),
-			array( 'RAND', 'RANDOM' ),
-			array( 'ENGINE=MEMORY', '' ),
-			array( 'DROP TEMP', 'DROP' )
-		);
+		$provider = [
+			[ 'TEMPORARY', 'TEMP' ],
+			[ 'RAND', 'RANDOM' ],
+			[ 'ENGINE=MEMORY', '' ],
+			[ 'DROP TEMP', 'DROP' ]
+		];
 
 		return $provider;
 	}
@@ -308,7 +308,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'select' ) )
+			->setMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->once() )
@@ -342,7 +342,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'query' ) )
+			->setMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
 		$databaseException = new \DBError( $database, 'foo' );
@@ -383,7 +383,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getEmptyTransactionTicket', 'hasMasterChanges' ) )
+			->setMethods( [ 'getEmptyTransactionTicket', 'hasMasterChanges' ] )
 			->getMock();
 
 		$loadBalancerFactory->expects( $this->once() )
@@ -417,7 +417,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getEmptyTransactionTicket', 'hasMasterChanges' ) )
+			->setMethods( [ 'getEmptyTransactionTicket', 'hasMasterChanges' ] )
 			->getMock();
 
 		$loadBalancerFactory->expects( $this->once() )
@@ -453,7 +453,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'commitAndWaitForReplication' ) )
+			->setMethods( [ 'commitAndWaitForReplication' ] )
 			->getMock();
 
 		$loadBalancerFactory->expects( $this->once() )
@@ -476,7 +476,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getFlag', 'clearFlag', 'setFlag', 'getType', 'query' ) )
+			->setMethods( [ 'getFlag', 'clearFlag', 'setFlag', 'getType', 'query' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->any() )
@@ -540,11 +540,11 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbTypeProvider() {
-		return array(
-			array( 'mysql' ),
-			array( 'sqlite' ),
-			array( 'postgres' )
-		);
+		return [
+			[ 'mysql' ],
+			[ 'sqlite' ],
+			[ 'postgres' ]
+		];
 	}
 
 	public function missingWriteConnectionProvider() {

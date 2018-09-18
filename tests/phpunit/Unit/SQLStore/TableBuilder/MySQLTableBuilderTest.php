@@ -36,7 +36,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -64,7 +64,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -78,7 +78,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'DESCRIBE' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
@@ -96,7 +96,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -110,7 +110,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'DESCRIBE' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
@@ -129,7 +129,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -143,7 +143,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SHOW INDEX' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 4 ) )
 			->method( 'query' )
@@ -162,7 +162,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -187,7 +187,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'query' ) )
+			->setMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )

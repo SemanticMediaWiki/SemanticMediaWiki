@@ -30,7 +30,7 @@ use SMWQuery as Query;
  */
 class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
+	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 	private $queryResultValidator;
 	private $queryParser;
@@ -150,9 +150,9 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
-		$expectedSubjects = array(
+		$expectedSubjects = [
 			$semanticDataOfDreamland->getSubject()
-		);
+		];
 
 		$this->assertEquals(
 			1,
@@ -164,11 +164,11 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$queryResult
 		);
 
-		$this->subjectsToBeCleared = array(
+		$this->subjectsToBeCleared = [
 			$semanticDataOfWonderland->getSubject(),
 			$semanticDataOfDreamland->getSubject(),
 			$semanticDataOfNeverland->getSubject()
-		);
+		];
 	}
 
 	public function testNestedPropertyConjunction() {
@@ -201,7 +201,7 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$cityCategory = $this->fixturesProvider->getCategory( 'city' )->asSubject();
 		$locatedInProperty = $this->fixturesProvider->getProperty( 'locatedin' );
 
-		$conjunction = new Conjunction( array(
+		$conjunction = new Conjunction( [
 			new ClassDescription( $cityCategory ),
 			new SomeProperty(
 				$locatedInProperty,
@@ -209,7 +209,7 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 					$this->fixturesProvider->getFactsheet( 'France' )->asSubject(),
 					$locatedInProperty )
 				)
-			)
+			]
 		);
 
 		$description = new SomeProperty(

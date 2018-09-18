@@ -84,7 +84,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 		// CacheableResultCollector is an abstract class therefore necessary methods
 		// are declared by default while other methods are only mocked if needed
 		// because setMethods overrides the original signature
-		$methods = array( 'cacheSetup', 'runCollector' );
+		$methods = [ 'cacheSetup', 'runCollector' ];
 
 		if ( $this->builder->hasValue( 'getResults' ) ) {
 			$methods[] = 'getResults';
@@ -234,7 +234,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		$contentParser->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $this->builder->setValue( 'getErrors', array() ) ) );
+			->will( $this->returnValue( $this->builder->setValue( 'getErrors', [] ) ) );
 
 		$contentParser->expects( $this->any() )
 			->method( 'getRevision' )
@@ -287,7 +287,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $this->builder->setValue( 'getErrors', array() ) ) );
+			->will( $this->returnValue( $this->builder->setValue( 'getErrors', [] ) ) );
 
 		// Word of caution, onConsecutiveCalls is used in order to ensure
 		// that a while() loop is not trapped in an infinite loop and returns
@@ -392,7 +392,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		// SMW\Store is an abstract class, use setMethods to implement
 		// required abstract methods
-		$requiredAbstractMethods = array(
+		$requiredAbstractMethods = [
 			'setup',
 			'drop',
 			'getStatisticsTable',
@@ -419,13 +419,13 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 			'getConceptCacheStatus',
 			'clearData',
 			'updateData'
-		);
+		];
 
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
 		$idTable = $this->getMockBuilder( 'stdClass' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getIdTable' ) )
+			->setMethods( [ 'getIdTable' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
@@ -443,11 +443,11 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->builder->setCallback( 'getProperties', array() ) );
+			->will( $this->builder->setCallback( 'getProperties', [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->builder->setCallback( 'getInProperties', array() ) );
+			->will( $this->builder->setCallback( 'getInProperties', [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getStatisticsTable' )
@@ -511,13 +511,13 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 */
 	public function DataItem() {
 
-		$requiredMethods = array(
+		$requiredMethods = [
 			'getNumber',
 			'getDIType',
 			'getSortKey',
 			'equals',
 			'getSerialization',
-		);
+		];
 
 		$methods = array_unique( array_merge( $requiredMethods, $this->builder->getInvokedMethods() ) );
 
@@ -612,10 +612,10 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 */
 	public function QueryDescription() {
 
-		$requiredAbstractMethods = array(
+		$requiredAbstractMethods = [
 			'getQueryString',
 			'isSingleton'
-		);
+		];
 
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 

@@ -122,7 +122,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			);
 		}
 
-		if ( isset( $case['errors'] ) && $case['errors'] !== array() ) {
+		if ( isset( $case['errors'] ) && $case['errors'] !== [] ) {
 			$this->assertNotEmpty(
 				$semanticData->getErrors()
 			);
@@ -164,7 +164,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$context->getOutput()->addParserOutput( $parserOutput );
 			$output = $context->getOutput()->getHtml();
 		} elseif ( isset( $case['assert-output']['onPageView'] ) ) {
-			$parameters = isset( $case['assert-output']['onPageView']['parameters'] ) ? $case['assert-output']['onPageView']['parameters'] : array();
+			$parameters = isset( $case['assert-output']['onPageView']['parameters'] ) ? $case['assert-output']['onPageView']['parameters'] : [];
 			$context = \RequestContext::newExtraneousContext(
 				$title,
 				$parameters

@@ -28,7 +28,7 @@ class EntityValueUniquenessConstraintCheckerTest extends \PHPUnit_Framework_Test
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -59,7 +59,7 @@ class EntityValueUniquenessConstraintCheckerTest extends \PHPUnit_Framework_Test
 			->will( $this->returnValue( '_foo' ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( array( 'getConnection', 'getPropertyTables', 'getPropertyTableInfoFetcher' ) )
+			->setMethods( [ 'getConnection', 'getPropertyTables', 'getPropertyTableInfoFetcher' ] )
 			->getMock();
 
 		$store->expects( $this->any() )

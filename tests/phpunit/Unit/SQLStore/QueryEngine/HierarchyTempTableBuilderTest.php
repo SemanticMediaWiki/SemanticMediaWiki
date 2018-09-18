@@ -56,7 +56,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->setPropertyHierarchyTableDefinition( 'bar', 3 );
 
 		$this->assertEquals(
-			array( '_bar', 3 ),
+			[ '_bar', 3 ],
 			$instance->getHierarchyTableDefinitionForType( 'property' )
 		);
 	}
@@ -91,9 +91,9 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->setClassHierarchyTableDefinition( 'bar', 3 );
 		$instance->createHierarchyTempTableFor( 'class', 'foobar', '(42)' );
 
-		$expected = array(
+		$expected = [
 			'(42)' => 'foobar'
-		);
+		];
 
 		$this->assertEquals(
 			$expected,

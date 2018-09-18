@@ -67,7 +67,7 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance
 			->setLanguageFromContext( $context )
-			->listToCommaSeparatedText( array( 'a', 'b' ) );
+			->listToCommaSeparatedText( [ 'a', 'b' ] );
 	}
 
 	public function testPrevNextToText() {
@@ -84,7 +84,7 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'viewPrevNext' );
 
 		$instance = new MessageBuilder( $language );
-		$instance->prevNextToText( $title, 20, 0, array(), false );
+		$instance->prevNextToText( $title, 20, 0, [], false );
 	}
 
 	public function testGetForm() {

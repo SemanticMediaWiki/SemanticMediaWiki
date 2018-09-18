@@ -48,14 +48,14 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPropertyDataItems() {
 
-		$expected = array(
+		$expected = [
 			$this->dataItemFactory->newDIProperty( 'Bar' ),
 			$this->dataItemFactory->newDIProperty( 'Foobar' )
-		);
+		];
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getRedirectTarget' ) )
+			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
@@ -88,7 +88,7 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getRedirectTarget' ) )
+			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
@@ -140,7 +140,7 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getRedirectTarget' ) )
+			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
@@ -176,7 +176,7 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RecordValue();
 
 		$this->assertEquals(
-			array( 'abc', '1;2', 3 ),
+			[ 'abc', '1;2', 3 ],
 			$instance->getValuesFromString( 'abc;1\;2;3' )
 		);
 	}
@@ -217,48 +217,48 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemFactory = new DataItemFactory();
 
-		$properties = array(
+		$properties = [
 			$dataItemFactory->newDIProperty( 'Foo' ),
 			$dataItemFactory->newDIProperty( 'Bar' ),
 			'InvalidFieldPropertyNotSet'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$properties,
 			"Title without special characters;2001",
-			array(
+			[
 				'description' => "[[Foo::Title without special characters]] [[Bar::2001]]",
 				'wikivalue'   => "Title without special characters; 2001"
-			)
+			]
 
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$properties,
 			"Title with $&%'* special characters;(..&^%..)",
-			array(
+			[
 				'description' => "[[Foo::Title with $&%'* special characters]] [[Bar::(..&^%..)]]",
 				'wikivalue'   => "Title with $&%'* special characters; (..&^%..)"
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$properties,
 			" Title with space before ; After the divider ",
-			array(
+			[
 				'description' => "[[Foo::Title with space before]] [[Bar::After the divider]]",
 				'wikivalue'   => "Title with space before; After the divider"
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$properties,
 			" Title with backslash\; escape ; After the divider ",
-			array(
+			[
 				'description' => "[[Foo::Title with backslash; escape]] [[Bar::After the divider]]",
 				'wikivalue'   => "Title with backslash\; escape; After the divider"
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

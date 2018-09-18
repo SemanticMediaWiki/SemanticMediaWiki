@@ -49,12 +49,12 @@ class QuerySegmentTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(),
+			[],
 			$instance->components
 		);
 
 		$this->assertEquals(
-			array(),
+			[],
 			$instance->sortfields
 		);
 

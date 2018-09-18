@@ -21,12 +21,12 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\NamespaceExaminer',
-			new NamespaceExaminer( array() )
+			new NamespaceExaminer( [] )
 		);
 
 		$this->assertInstanceOf(
 			'\SMW\NamespaceExaminer',
-			NamespaceExaminer::newFromArray( array() )
+			NamespaceExaminer::newFromArray( [] )
 		);
 
 		$this->assertInstanceOf(
@@ -37,13 +37,13 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIsSemanticEnabled() {
 
-		$instance = new NamespaceExaminer( array( NS_MAIN => true ) );
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 
 		$this->assertTrue(
 			$instance->isSemanticEnabled( NS_MAIN )
 		);
 
-		$instance = new NamespaceExaminer( array( NS_MAIN => false ) );
+		$instance = new NamespaceExaminer( [ NS_MAIN => false ] );
 
 		$this->assertFalse(
 			$instance->isSemanticEnabled( NS_MAIN )
@@ -52,7 +52,7 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNoNumberNamespaceThrowsException() {
 
-		$instance = new NamespaceExaminer( array( NS_MAIN => true ) );
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 
 		$this->setExpectedException( 'InvalidArgumentException' );
 		$instance->isSemanticEnabled( 'ichi' );
@@ -63,7 +63,7 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testNoValidNamespaceException() {
 
-		$instance = new NamespaceExaminer( array( NS_MAIN => true ) );
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 
 		$this->assertFalse(
 			$instance->isSemanticEnabled( 99991001 )
@@ -89,7 +89,7 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNewFromArray() {
 
-		$instance = NamespaceExaminer::newFromArray( array( NS_MAIN => true ) );
+		$instance = NamespaceExaminer::newFromArray( [ NS_MAIN => true ] );
 
 		$this->assertTrue(
 			$instance->isSemanticEnabled( NS_MAIN )

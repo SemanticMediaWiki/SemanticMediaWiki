@@ -24,7 +24,7 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 	private $semanticDataValidator;
@@ -58,38 +58,38 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 
 	public function testPageImportToCreateRedirect() {
 
-		$this->importedTitles = array(
+		$this->importedTitles = [
 			'SimplePageRedirectRegressionTest',
 			'ToBeSimplePageRedirect'
-		);
+		];
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$main = Title::newFromText( 'SimplePageRedirectRegressionTest' );
 
-		$expectedCategoryAsWikiValue = array(
+		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( DIProperty::TYPE_CATEGORY ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'Regression test',
 				'Redirect test',
 				'Simple redirect test'
-			)
-		);
+			]
+		];
 
-		$expectedSomeProperties = array(
-			'properties' => array(
+		$expectedSomeProperties = [
+			'properties' => [
 				new DIProperty( 'Has regression test' )
-			)
-		);
+			]
+		];
 
-		$expectedRedirectAsWikiValue = array(
+		$expectedRedirectAsWikiValue = [
 			'property' => new DIProperty( '_REDI' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'ToBeSimplePageRedirect',
 				'NewPageRedirectRegressionTest',
 				'NewTargetPageRedirectRegressionTest'
-			)
-		);
+			]
+		];
 
 		$newRedirectPage = $this->createPageWithRedirectFor(
 			'NewPageRedirectRegressionTest',
@@ -105,17 +105,17 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$this->pageRefresher->doRefreshPoolOfPages( array(
+		$this->pageRefresher->doRefreshPoolOfPages( [
 			$main,
 			$newRedirectPage,
 			'NewTargetPageRedirectRegressionTest'
-		) );
+		] );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$semanticDataBatches = array(
+		$semanticDataBatches = [
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $main ) ),
-		);
+		];
 
 		// Something changed in MW since 1.28 that causes a
 		// "SMW\Tests\Utils\Validators\SemanticDataValidator::assertContainsPropertyValues
@@ -139,7 +139,7 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 		// When running sqlite, the database select returns an empty result which
 		// is probably due to some DB-prefix issues in MW's DatabaseBaseSqlite
 		// implementation and for non-sqlite see #212 / bug 62856
-		if ( $inSemanticData->getProperties() === array() ) {
+		if ( $inSemanticData->getProperties() === [] ) {
 			$this->markTestSkipped(
 				"Skipping test either because of sqlite or MW-{$GLOBALS['wgVersion']} / bug 62856"
 			);

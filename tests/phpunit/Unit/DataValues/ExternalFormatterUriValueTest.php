@@ -59,23 +59,23 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function uriProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'http://example.org/$1',
 			'foo',
 			'http://example.org/foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'http://example.org/$1#Bar<>',
 			'foo',
 			'http://example.org/foo#Bar%3C%3E'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'urn:abc:names:def:foo:dtd:xml:$1',
 			'foo',
 			'urn:abc:names:def:foo:dtd:xml:foo'
-		);
+		];
 
 	//	$provider[] = array(
 	//		'abc:$1',
@@ -83,85 +83,85 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 	//		'http://example.org/foo'
 	//	);
 
-		$provider[] = array(
+		$provider[] = [
 			'ftp://ftp.is.co.za.example.org/rfc/$1.txt',
 			'foo',
 			'ftp://ftp.is.co.za.example.org/rfc/foo.txt'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'gopher://spinaltap.micro.umn.example.edu/00/Weather/California/$1',
 			'foo',
 			'gopher:spinaltap.micro.umn.example.edu/00/Weather/California/foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'http://www.math.uio.no.example.net/faq/compression-faq/$1',
 			'foo',
 			'http://www.math.uio.no.example.net/faq/compression-faq/foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'mailto:$1@ifi.unizh.example.gov',
 			'foo',
 			'mailto:foo@ifi.unizh.example.gov'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'news:comp.$1.www.servers.unix',
 			'foo',
 			'news:comp.foo.www.servers.unix'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'telnet://melvyl.ucop.example.edu/$1',
 			'foo',
 			'telnet:melvyl.ucop.example.edu/foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ldap://[2001:db8::7]/c=$1?objectClass?one',
 			'foo',
 			'ldap:%5B2001:db8::7%5D/c=foo?objectClass?one'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'mailto:$1.Doe@example.com',
 			'foo',
 			'mailto:foo.Doe@example.com'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'tel:+1-816-555-1212',
 			'foo',
 			''
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'telnet://192.0.2.16:80/$1',
 			'foo',
 			'telnet:192.0.2.16:80/foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'urn:oasis:names:specification:docbook:dtd:xml:$1',
 			'foo',
 			'urn:oasis:names:specification:docbook:dtd:xml:foo'
-		);
+		];
 
 		// https://phabricator.wikimedia.org/T160281
-		$provider[] = array(
+		$provider[] = [
 			'http://foo/bar/$1',
 			'W%D6LLEKLA01',
 			'http://foo/bar/W%D6LLEKLA01'
-		);
+		];
 
 		// #3386
-		$provider[] = array(
+		$provider[] = [
 			'http://foo/bar/$1',
 			'A/B/C',
 			'http://foo/bar/A/B/C'
-		);
+		];
 
 		return $provider;
 	}

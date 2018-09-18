@@ -74,41 +74,41 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	public function redirectsDataProvider() {
 
 		// #0 Free text
-		$provider[] = array(
-			array( 'text' => '#REDIRECT [[:Lala]]' ),
-			array(
+		$provider[] = [
+			[ 'text' => '#REDIRECT [[:Lala]]' ],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_REDI',
 				'propertyValues' => ':Lala'
-			)
-		);
+			]
+		];
 
 		// #1 Free text
-		$provider[] = array(
-			array( 'text' => '#REDIRECT [[Lala]]' ),
-			array(
+		$provider[] = [
+			[ 'text' => '#REDIRECT [[Lala]]' ],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_REDI',
 				'propertyValues' => ':Lala'
-			)
-		);
+			]
+		];
 
 
 		// #2 Invalid free text
-		$provider[] = array(
-			array( 'text' => '#REDIR [[:Lala]]' ),
-			array(
+		$provider[] = [
+			[ 'text' => '#REDIR [[:Lala]]' ],
+			[
 				'propertyCount' => 0,
-			)
-		);
+			]
+		];
 
 		// #3 Empty
-		$provider[] = array(
-			array( 'text' => '' ),
-			array(
+		$provider[] = [
+			[ 'text' => '' ],
+			[
 				'propertyCount' => 0,
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

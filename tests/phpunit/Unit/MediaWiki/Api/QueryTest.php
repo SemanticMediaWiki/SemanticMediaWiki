@@ -54,7 +54,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		$reflector = new ReflectionClass( '\SMW\MediaWiki\Api\Query' );
 		$getQuery  = $reflector->getMethod( 'getQuery' );
 		$getQuery->setAccessible( true );
-		$query = $getQuery->invoke( $instance, '[[Modification date::+]]', array(), array() );
+		$query = $getQuery->invoke( $instance, '[[Modification date::+]]', [], [] );
 
 		$this->assertInstanceOf(
 			'\SMWQuery',
@@ -74,15 +74,15 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		// Minimalistic test case to verify executability
 		// For a full coverage, use Api\QueryResultFormatterTest
-		$test = array(
-			'results' => array(
-				'Foo' => array(
-					'printouts' => array( 'lula' => array( 'lila' ) )
-				)
-			),
-			'printrequests' => array( 'Bar' ),
-			'meta' => array( 'count' => 5, 'offset' => 5 )
-		);
+		$test = [
+			'results' => [
+				'Foo' => [
+					'printouts' => [ 'lula' => [ 'lila' ] ]
+				]
+			],
+			'printrequests' => [ 'Bar' ],
+			'meta' => [ 'count' => 5, 'offset' => 5 ]
+		];
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -94,13 +94,13 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'hasFurtherResults' )
 			->will( $this->returnValue( true ) );
 
-		$apiResult = $this->apiFactory->newApiResult( array() );
+		$apiResult = $this->apiFactory->newApiResult( [] );
 
 		$reflector = new ReflectionClass( '\SMW\MediaWiki\Api\Query' );
 		$method = $reflector->getMethod( 'addQueryResult' );

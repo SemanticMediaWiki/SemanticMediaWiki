@@ -75,7 +75,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(),
+			[],
 			$instance->getPrintRequests()
 		);
 
@@ -116,10 +116,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			$property
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$property,
 			$description,
-			array(
+			[
 				'property'    => $property,
 				'description' => $description,
 				'queryString' => "[[Foo::Bar]]",
@@ -128,8 +128,8 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				'queryFeatures' => 1,
 				'size'  => 2,
 				'depth' => 1
-			)
-		);
+			]
+		];
 
 		#1
 		$property = new DIProperty( 'Foo' );
@@ -139,10 +139,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), null )
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$property,
 			$description,
-			array(
+			[
 				'property'    => $property,
 				'description' => $description,
 				'queryString' => "[[Foo.Yui::Bar]]",
@@ -151,8 +151,8 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				'queryFeatures' => 1,
 				'size'  => 3,
 				'depth' => 2
-			)
-		);
+			]
+		];
 
 		#2
 		$property = new DIProperty( 'Foo' );
@@ -162,10 +162,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			new NamespaceDescription( NS_MAIN )
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$property,
 			$description,
-			array(
+			[
 				'property'    => $property,
 				'description' => $description,
 				'queryString' => "[[Foo.Yui:: <q>[[:+]]</q> ]]",
@@ -174,8 +174,8 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				'queryFeatures' => 9,
 				'size'  => 3,
 				'depth' => 2
-			)
-		);
+			]
+		];
 
 		#3, 1096
 		$property = new DIProperty( 'Foo' );
@@ -188,10 +188,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$property,
 			$description,
-			array(
+			[
 				'property'    => $property,
 				'description' => $description,
 				'queryString' => "[[Foo.Yui.-Bar:: <q>[[:+]]</q> ]]",
@@ -200,8 +200,8 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				'queryFeatures' => 9,
 				'size'  => 4,
 				'depth' => 3
-			)
-		);
+			]
+		];
 
 		#4, 1096
 		$property = new DIProperty( 'Foo' );
@@ -214,10 +214,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$property,
 			$description,
-			array(
+			[
 				'property'    => $property,
 				'description' => $description,
 				'queryString' => "[[Foo.Yui.-Has subobject:: <q>[[:+]]</q> ]]",
@@ -226,8 +226,8 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				'queryFeatures' => 9,
 				'size'  => 4,
 				'depth' => 3
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
@@ -245,7 +245,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$maxsize  = 2;
 		$maxDepth = 2;
-		$log      = array();
+		$log      = [];
 
 		$this->assertEquals(
 			$instance,
@@ -257,7 +257,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$maxsize  = 0;
 		$maxDepth = 1;
-		$log      = array();
+		$log      = [];
 
 		$this->assertEquals(
 			new ThingDescription(),
@@ -360,7 +360,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 	public function comparativeHashProvider() {
 
 		// Same property, different description === different hash
-		$provider[] = array(
+		$provider[] = [
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
 				new NamespaceDescription( NS_HELP )
@@ -370,10 +370,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				new NamespaceDescription( NS_MAIN )
 			),
 			false
-		);
+		];
 
 		// Inverse property, same description === different hash
-		$provider[] = array(
+		$provider[] = [
 			new SomeProperty(
 				new DIProperty( 'Foo', true ),
 				new NamespaceDescription( NS_MAIN )
@@ -383,10 +383,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				new NamespaceDescription( NS_MAIN )
 			),
 			false
-		);
+		];
 
 		// Same property, different description === different hash
-		$provider[] = array(
+		$provider[] = [
 			new SomeProperty(
 				new DIProperty( 'Foo', true ),
 				new NamespaceDescription( NS_MAIN )
@@ -396,10 +396,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				new ThingDescription()
 			),
 			false
-		);
+		];
 
 		// Property.chain, different description === different hash
-		$provider[] = array(
+		$provider[] = [
 			new SomeProperty(
 				new DIProperty( 'Foo', true ),
 				new ThingDescription()
@@ -412,10 +412,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				)
 			),
 			false
-		);
+		];
 
 		// Property.chain, same description === same hash
-		$provider[] = array(
+		$provider[] = [
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
 				new SomeProperty(
@@ -431,10 +431,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				)
 			),
 			true
-		);
+		];
 
 		// Property.chain, different description (inverse prop) === different hash
-		$provider[] = array(
+		$provider[] = [
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
 				new SomeProperty(
@@ -450,10 +450,10 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				)
 			),
 			false
-		);
+		];
 
 		// Property.chain, different description === different hash
-		$provider[] = array(
+		$provider[] = [
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
 				new ThingDescription()
@@ -469,11 +469,11 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				)
 			),
 			false
-		);
+		];
 
 		// Property.chain, different description === different hash
 		// "[[Foo.Foo::Foo]]" !== "[[Foo.Foo.Foo::Foo]]"
-		$provider[] = array(
+		$provider[] = [
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
 				new SomeProperty(
@@ -498,7 +498,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				)
 			),
 			false
-		);
+		];
 
 		return $provider;
 	}

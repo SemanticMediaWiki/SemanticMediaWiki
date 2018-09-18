@@ -18,7 +18,7 @@ class UpdateEntityCollationTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 
@@ -48,7 +48,7 @@ class UpdateEntityCollationTest extends MwDBaseUnitTestCase {
 
 	public function testSortFieldUpdate() {
 
-		$this->importedTitles = array(
+		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',
 			'Elit Aliquam urna interdum',
@@ -63,7 +63,7 @@ class UpdateEntityCollationTest extends MwDBaseUnitTestCase {
 			'Property:Has quantity',
 			'Property:Has temperature',
 			'Property:Has text'
-		);
+		];
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 

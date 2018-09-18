@@ -87,13 +87,13 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function argumentProvider() {
 
-		$provider[] = array(
-			array( 'Has foo=Bar' ),
-			array(
-				'propertyLabel'  => array( 'Has foo' ),
-				'propertyValues' => array( 'Bar' )
-			)
-		);
+		$provider[] = [
+			[ 'Has foo=Bar' ],
+			[
+				'propertyLabel'  => [ 'Has foo' ],
+				'propertyValues' => [ 'Bar' ]
+			]
+		];
 
 		return $provider;
 	}

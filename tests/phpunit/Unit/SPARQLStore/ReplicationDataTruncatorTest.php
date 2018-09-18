@@ -53,7 +53,7 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $property ) );
 
 		$instance = new ReplicationDataTruncator();
-		$instance->setPropertyExemptionList( array( 'Foo bar' ) );
+		$instance->setPropertyExemptionList( [ 'Foo bar' ] );
 
 		$instance->doTruncate( $this->semanticData );
 	}
@@ -67,7 +67,7 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 			->with($this->equalTo( $property ) );
 
 		$instance = new ReplicationDataTruncator();
-		$instance->setPropertyExemptionList( array( 'Has query' ) );
+		$instance->setPropertyExemptionList( [ 'Has query' ] );
 
 		$instance->doTruncate( $this->semanticData );
 	}

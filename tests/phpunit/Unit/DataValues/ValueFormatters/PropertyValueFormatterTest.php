@@ -205,7 +205,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPropertyListFromLabelByLanguageCode' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPreferredPropertyLabelByLanguageCode' )
@@ -262,7 +262,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPropertyListFromLabelByLanguageCode' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPreferredPropertyLabelByLanguageCode' )
@@ -351,40 +351,40 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemFactory = new DataItemFactory();
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( 'Foo' ),
 			PropertyValueFormatter::VALUE,
 			null,
 			'Foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( 'Foo' ),
 			PropertyValueFormatter::WIKI_SHORT,
 			null,
 			'Foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( 'Foo' ),
 			PropertyValueFormatter::HTML_SHORT,
 			null,
 			'Foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( 'Foo' ),
 			PropertyValueFormatter::WIKI_LONG,
 			null,
 			'Property:Foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItemFactory->newDIProperty( 'Foo' ),
 			PropertyValueFormatter::HTML_LONG,
 			null,
 			'Property:Foo'
-		);
+		];
 
 		return $provider;
 	}
@@ -393,53 +393,53 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$linker = 'some';
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Bar',
 			PropertyValueFormatter::VALUE,
 			null,
 			'Bar'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Bar',
 			PropertyValueFormatter::WIKI_SHORT,
 			null,
 			'Bar&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Bar',
 			PropertyValueFormatter::HTML_SHORT,
 			null,
 			'Bar&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Bar',
 			PropertyValueFormatter::WIKI_LONG,
 			$linker,
 			'[[:Property:Foo|Bar]]&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Bar',
 			PropertyValueFormatter::HTML_LONG,
 			null,
 			'Property:Foo&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Bar with',
 			PropertyValueFormatter::HTML_SHORT,
 			null,
 			'Bar with&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
-		);
+		];
 
 		return $provider;
 	}
@@ -448,41 +448,41 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$linker = 'some';
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			false,
 			'Bar',
 			PropertyValueFormatter::VALUE,
 			null,
 			'Bar'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			false,
 			'Bar',
 			PropertyValueFormatter::HTML_SHORT,
 			null,
 			'Bar'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Bar with',
 			'Bar with',
 			PropertyValueFormatter::HTML_SHORT,
 			null,
 			'Bar with&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'Bar&nbsp;with',
 			'Bar with',
 			PropertyValueFormatter::HTML_SHORT,
 			null,
 			'Bar&nbsp;with&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
-		);
+		];
 
 		return $provider;
 	}
@@ -509,11 +509,11 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getCanonicalLabel' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$property,
 			null,
 			'&nbsp;<span style="font-size:small;">(Foo)</span>'
-		);
+		];
 
 		return $provider;
 	}

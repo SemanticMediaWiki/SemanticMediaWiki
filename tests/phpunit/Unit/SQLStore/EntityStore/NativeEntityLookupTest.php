@@ -45,7 +45,7 @@ class NativeEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -75,7 +75,7 @@ class NativeEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -107,7 +107,7 @@ class NativeEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -139,7 +139,7 @@ class NativeEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -167,7 +167,7 @@ class NativeEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )
@@ -195,7 +195,7 @@ class NativeEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
+			->setMethods( [ 'getReader' ] )
 			->getMock();
 
 		$store->expects( $this->once() )

@@ -66,13 +66,13 @@ class I18nMsgKeyIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	private function findFilesIn( $location ) {
 
-		$provider = array();
+		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $location );
 		$bulkFileProvider->searchByFileExtension( 'json' );
 
 		foreach ( $bulkFileProvider->getFiles() as $id => $file ) {
-			$provider[$id] = array( $file );
+			$provider[$id] = [ $file ];
 		}
 
 		return $provider;

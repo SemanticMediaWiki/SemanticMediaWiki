@@ -57,13 +57,13 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 		$options->setTemplateCallback( function ( $title, $parser = false ) use ( $return ) {
 
 			$text = $return;
-			$deps = array();
+			$deps = [];
 
-			return array(
+			return [
 				'text' => $text,
 				'finalTitle' => $title,
 				'deps' => $deps
-			);
+			];
 
 		} );
 
@@ -116,26 +116,26 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 
 	public function templateDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0 Bug 54967
-		$provider[] = array(
+		$provider[] = [
 			NS_MAIN,
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'smwgLinksInValues'  => false,
 				'smwgParserFeatures' => SMW_PARSER_INL_ERROR,
 				'smwgMainCacheType'      => 'hash'
-			),
+			],
 			'[[Foo::{{Bam}}]]',
 			'?bar',
-			array(
+			[
 				'resultText'     => '[[:?bar|?bar]]',
 				'propertyCount'  => 1,
-				'propertyLabels' => array( 'Foo' ),
-				'propertyValues' => array( '?bar' )
-			)
-		);
+				'propertyLabels' => [ 'Foo' ],
+				'propertyValues' => [ '?bar' ]
+			]
+		];
 
 		return $provider;
 	}

@@ -67,7 +67,7 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 		$instance = new HtmlTableRenderer();
 
 		$instance
-			->addCell( 'lala', array( 'class' => 'foo' ) )
+			->addCell( 'lala', [ 'class' => 'foo' ] )
 			->addRow()
 			->addCell( 'lula' )
 			->addRow();
@@ -95,8 +95,8 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 		$instance = new HtmlTableRenderer();
 
 		$instance
-			->addCell( 'lala', array( 'rel' => 'tuuu' ) )
-			->addRow( array( 'class' => 'foo' ) );
+			->addCell( 'lala', [ 'rel' => 'tuuu' ] )
+			->addRow( [ 'class' => 'foo' ] );
 
 		$this->stringValidator->assertThatStringContains(
 			'<table><tr class="foo row-odd"><td rel="tuuu">lala</td></tr></table>',
@@ -136,9 +136,9 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 		$instance
 			->transpose( true )
 			->addHeader( 'Foo' )->addHeader( 'Bar' )
-			->addCell( 'lala', array( 'class' => 'foo' ) )
+			->addCell( 'lala', [ 'class' => 'foo' ] )
 			->addRow()
-			->addCell( 'lula', array( 'rel' => 'tuuu' ) )->addCell( 'lila' )
+			->addCell( 'lula', [ 'rel' => 'tuuu' ] )->addCell( 'lila' )
 			->addRow();
 
 		$this->stringValidator->assertThatStringContains(
@@ -151,7 +151,7 @@ class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 		$instance
 			->transpose( true )
 			->addHeader( 'Foo' )->addHeader( 'Bar' )
-			->addCell( 'lala', array( 'class' => 'foo' ) )
+			->addCell( 'lala', [ 'class' => 'foo' ] )
 			->addRow()
 			->addCell( 'lula' )->addCell( 'lila' )
 			->addRow();

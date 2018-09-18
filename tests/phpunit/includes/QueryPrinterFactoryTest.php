@@ -65,10 +65,10 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals( 'foo', $factory->getCanonicalName( 'foo' ) );
 
-		$factory->registerAliases( 'foo', array() );
-		$factory->registerAliases( 'foo', array( 'bar' ) );
-		$factory->registerAliases( 'foo', array( 'baz' ) );
-		$factory->registerAliases( 'ohi', array( 'there', 'o_O' ) );
+		$factory->registerAliases( 'foo', [] );
+		$factory->registerAliases( 'foo', [ 'bar' ] );
+		$factory->registerAliases( 'foo', [ 'baz' ] );
+		$factory->registerAliases( 'ohi', [ 'there', 'o_O' ] );
 
 		$this->assertEquals( 'foo', $factory->getCanonicalName( 'foo' ) );
 
@@ -78,7 +78,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'ohi', $factory->getCanonicalName( 'there' ) );
 		$this->assertEquals( 'ohi', $factory->getCanonicalName( 'o_O' ) );
 
-		$factory->registerAliases( 'foo', array( 'o_O' ) );
+		$factory->registerAliases( 'foo', [ 'o_O' ] );
 
 		$this->assertEquals( 'foo', $factory->getCanonicalName( 'o_O' ) );
 	}
@@ -103,9 +103,9 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 		$factory->registerFormat( 'table', TableResultPrinter::class );
 		$factory->registerFormat( 'list', SMWListResultPrinter::class );
 
-		$factory->registerAliases( 'foo', array( 'bar' ) );
-		$factory->registerAliases( 'foo', array( 'baz' ) );
-		$factory->registerAliases( 'ohi', array( 'there', 'o_O' ) );
+		$factory->registerAliases( 'foo', [ 'bar' ] );
+		$factory->registerAliases( 'foo', [ 'baz' ] );
+		$factory->registerAliases( 'ohi', [ 'there', 'o_O' ] );
 
 		$formats = $factory->getFormats();
 		$this->assertInternalType( 'array', $formats );
@@ -121,7 +121,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $factory->hasFormat( 'ohi' ) );
 
 		$factory->registerFormat( 'ohi', 'SMWTablePrinter' );
-		$factory->registerAliases( 'ohi', array( 'there', 'o_O' ) );
+		$factory->registerAliases( 'ohi', [ 'there', 'o_O' ] );
 
 		$this->assertTrue( $factory->hasFormat( 'ohi' ) );
 		$this->assertTrue( $factory->hasFormat( 'there' ) );
@@ -167,10 +167,10 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function registerFormatExceptioProvider() {
-		return array(
-			array( 1001, 'Foo' ),
-			array( 'Foo', 9001 ),
-		);
+		return [
+			[ 1001, 'Foo' ],
+			[ 'Foo', 9001 ],
+		];
 	}
 
 	/**
@@ -190,10 +190,10 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function registerAliasesExceptionProvider() {
-		return array(
-			array( 1001, array( 'Foo' => 'Bar' ) ),
-			array( 'Foo', array( 'Foo' => 9001 ) ),
-		);
+		return [
+			[ 1001, [ 'Foo' => 'Bar' ] ],
+			[ 'Foo', [ 'Foo' => 9001 ] ],
+		];
 	}
 
 }

@@ -11,7 +11,7 @@ use PHPUnit_Framework_Warning;
 
 class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 
-	protected $testCollector = array();
+	protected $testCollector = [];
 	protected $executionTimeThresholdInSeconds = 10;
 	protected $isEnabledToListen = true;
 

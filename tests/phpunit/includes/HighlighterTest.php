@@ -58,9 +58,9 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = Highlighter::factory( $type );
 
-		$instance->setContent( array(
+		$instance->setContent( [
 			'title' => 'Foo'
-		) );
+		] );
 
 		// Check without caption/content set
 		$this->assertInternalType(
@@ -68,10 +68,10 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 			$instance->getHtml()
 		);
 
-		$instance->setContent( array(
+		$instance->setContent( [
 			'caption' => '123',
 			'content' => 'ABC',
-		) );
+		] );
 
 		// Check with caption/content set
 		$this->assertInternalType(
@@ -86,9 +86,9 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 			Highlighter::TYPE_WARNING
 		);
 
-		$instance->setContent( array(
+		$instance->setContent( [
 			'title' => 'Foo'
-		) );
+		] );
 
 		$this->assertTrue(
 			Highlighter::hasHighlighterClass( $instance->getHtml(), 'warning' )
@@ -96,22 +96,22 @@ class HighlighterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function getTypeDataProvider() {
-		return array(
-			array( '' , Highlighter::TYPE_NOTYPE ),
-			array( 'property', Highlighter::TYPE_PROPERTY ),
-			array( 'text', Highlighter::TYPE_TEXT ),
-			array( 'info', Highlighter::TYPE_INFO ),
-			array( 'help', Highlighter::TYPE_HELP ),
-			array( 'service', Highlighter::TYPE_SERVICE ),
-			array( 'quantity', Highlighter::TYPE_QUANTITY ),
-			array( 'note', Highlighter::TYPE_NOTE ),
-			array( 'warning', Highlighter::TYPE_WARNING ),
-			array( 'error', Highlighter::TYPE_ERROR ),
-			array( 'PrOpErTy', Highlighter::TYPE_PROPERTY ),
-			array( 'バカなテスト', Highlighter::TYPE_NOTYPE ),
-			array( '<span>Something that should not work</span>', Highlighter::TYPE_NOTYPE ),
-			array( Highlighter::TYPE_PROPERTY, Highlighter::TYPE_NOTYPE )
-		);
+		return [
+			[ '' , Highlighter::TYPE_NOTYPE ],
+			[ 'property', Highlighter::TYPE_PROPERTY ],
+			[ 'text', Highlighter::TYPE_TEXT ],
+			[ 'info', Highlighter::TYPE_INFO ],
+			[ 'help', Highlighter::TYPE_HELP ],
+			[ 'service', Highlighter::TYPE_SERVICE ],
+			[ 'quantity', Highlighter::TYPE_QUANTITY ],
+			[ 'note', Highlighter::TYPE_NOTE ],
+			[ 'warning', Highlighter::TYPE_WARNING ],
+			[ 'error', Highlighter::TYPE_ERROR ],
+			[ 'PrOpErTy', Highlighter::TYPE_PROPERTY ],
+			[ 'バカなテスト', Highlighter::TYPE_NOTYPE ],
+			[ '<span>Something that should not work</span>', Highlighter::TYPE_NOTYPE ],
+			[ Highlighter::TYPE_PROPERTY, Highlighter::TYPE_NOTYPE ]
+		];
 	}
 
 }

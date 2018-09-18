@@ -28,8 +28,8 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new HtmlTable();
 
-		$instance->cell( 'Foo', array( 'rel' => 'some' ) );
-		$instance->row( array( 'class' => 'bar' ) );
+		$instance->cell( 'Foo', [ 'rel' => 'some' ] );
+		$instance->row( [ 'class' => 'bar' ] );
 
 		$this->stringValidator->assertThatStringContains(
 			'<table><tr class="bar row-odd"><td rel="some">Foo</td></tr></table>',
@@ -73,10 +73,10 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 		$instance->header( 'Foo' );
 		$instance->header( 'Bar' );
 
-		$instance->cell( 'lala', array( 'class' => 'foo' ) );
+		$instance->cell( 'lala', [ 'class' => 'foo' ] );
 		$instance->row();
 
-		$instance->cell( 'lula', array( 'rel' => 'tuuu' ) );
+		$instance->cell( 'lula', [ 'rel' => 'tuuu' ] );
 		$instance->cell( 'lila' );
 		$instance->row();
 
@@ -98,10 +98,10 @@ class HtmlTableTest extends \PHPUnit_Framework_TestCase {
 		$instance->header( 'Foo' );
 		$instance->header( 'Bar' );
 
-		$instance->cell( 'lala', array( 'class' => 'foo' ) );
+		$instance->cell( 'lala', [ 'class' => 'foo' ] );
 		$instance->row();
 
-		$instance->cell( 'lula', array( 'rel' => 'tuuu' ) );
+		$instance->cell( 'lula', [ 'rel' => 'tuuu' ] );
 		$instance->cell( 'lila' );
 		$instance->row();
 

@@ -49,7 +49,7 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testbuildForm() {
 
-		$methods = array(
+		$methods = [
 			'setName',
 			'withFieldset',
 			'addHorizontalRule',
@@ -62,7 +62,7 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 			'addParagraph',
 			'addPaging',
 			'addSubmitButton'
-		);
+		];
 
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
