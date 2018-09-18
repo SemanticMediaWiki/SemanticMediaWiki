@@ -139,7 +139,7 @@ class RebuildConceptCache extends \Maintenance {
 
 		$conceptCacheRebuilder = $maintenanceFactory->newConceptCacheRebuilder(
 			$applicationFactory->getStore(),
-			array( $this, 'reportMessage' )
+			[ $this, 'reportMessage' ]
 		);
 
 		$conceptCacheRebuilder->setParameters( $this->mOptions );
