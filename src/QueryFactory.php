@@ -125,7 +125,7 @@ class QueryFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newQueryResult( Store $store, Query $query, $results = array(), $continue = false ) {
+	public function newQueryResult( Store $store, Query $query, $results = [], $continue = false ) {
 
 		$queryResult =  new QueryResult(
 			$query->getDescription()->getPrintrequests(),

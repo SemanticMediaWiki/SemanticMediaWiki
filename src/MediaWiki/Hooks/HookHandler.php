@@ -61,7 +61,7 @@ class HookHandler {
 		return $this->options->isFlagSet( $key, $flag );
 	}
 
-	protected function log( $message, $context = array() ) {
+	protected function log( $message, $context = [] ) {
 		if ( $this->logger instanceof LoggerInterface ) {
 			$this->logger->info( $message, $context );
 		}

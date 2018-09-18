@@ -34,7 +34,7 @@ class QueryResultDependencyListResolver {
 	 *
 	 * @var array
 	 */
-	private $propertyDependencyExemptionlist = array();
+	private $propertyDependencyExemptionlist = [];
 
 	/**
 	 * @since 2.3
@@ -77,7 +77,7 @@ class QueryResultDependencyListResolver {
 	public function getDependencyListByLateRetrievalFrom( $queryResult ) {
 
 		if ( !$this->canResolve( $queryResult ) ) {
-			return array();
+			return [];
 		}
 
 		$resolverJournal = $queryResult->getResolverJournal();
@@ -98,14 +98,14 @@ class QueryResultDependencyListResolver {
 	public function getDependencyListFrom( $queryResult ) {
 
 		if ( !$this->canResolve( $queryResult ) ) {
-			return array();
+			return [];
 		}
 
 		$description = $queryResult->getQuery()->getDescription();
 
-		$dependencySubjectList = array(
+		$dependencySubjectList = [
 			$queryResult->getQuery()->getContextPage()
-		);
+		];
 
 		// Find entities described by the query
 		$this->doResolveDependenciesFromDescription(
@@ -204,7 +204,7 @@ class QueryResultDependencyListResolver {
 	private function doMatchSubcategory( &$subjects, DIWikiPage $category ) {
 
 		$hash = $category->getHash();
-		$subcategories = array();
+		$subcategories = [];
 
 		// #1713
 		// Safeguard against a possible category (or redirect thereof) to point
@@ -224,7 +224,7 @@ class QueryResultDependencyListResolver {
 
 	private function doMatchSubproperty( &$subjects, $subject, DIProperty $property ) {
 
-		$subproperties = array();
+		$subproperties = [];
 
 		// Using the DBKey as short-cut, as we don't expect to match sub-properties for
 		// pre-defined properties instead it should be sufficient for user-defined
@@ -271,7 +271,7 @@ class QueryResultDependencyListResolver {
 			new DIProperty( '_CONC' )
 		);
 
-		if ( $value === null || $value === array() ) {
+		if ( $value === null || $value === [] ) {
 			return new ThingDescription();
 		}
 

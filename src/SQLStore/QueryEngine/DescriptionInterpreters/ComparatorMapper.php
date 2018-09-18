@@ -25,7 +25,7 @@ class ComparatorMapper {
 	 */
 	public function mapComparator( ValueDescription $description, &$value ) {
 
-		$comparatorMap = array(
+		$comparatorMap = [
 			SMW_CMP_EQ   => '=',
 			SMW_CMP_LESS => '<',
 			SMW_CMP_GRTR => '>',
@@ -36,7 +36,7 @@ class ComparatorMapper {
 			SMW_CMP_PRIM_LIKE => ' LIKE ',
 			SMW_CMP_NLKE => ' NOT LIKE ',
 			SMW_CMP_PRIM_NLKE => ' NOT LIKE '
-		);
+		];
 
 		$comparator = $description->getComparator();
 
@@ -47,13 +47,13 @@ class ComparatorMapper {
 		if ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE || $comparator === SMW_CMP_PRIM_LIKE || $comparator === SMW_CMP_PRIM_NLKE ) {
 
 			if ( $description->getDataItem() instanceof DIUri ) {
-				$value = str_replace( array( 'http://', 'https://', '%2A' ), array( '*', '*', '*' ), $value );
+				$value = str_replace( [ 'http://', 'https://', '%2A' ], [ '*', '*', '*' ], $value );
 			}
 
 			// Escape to prepare string matching:
 			$value = str_replace(
-				array( '\\', '%', '_', '*', '?' ),
-				array( '\\\\', '\%', '\_', '%', '_' ),
+				[ '\\', '%', '_', '*', '?' ],
+				[ '\\\\', '\%', '\_', '%', '_' ],
 				$value
 			);
 		}

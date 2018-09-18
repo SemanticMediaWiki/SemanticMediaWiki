@@ -23,22 +23,22 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @var array
 	 */
-	private $diff = array();
+	private $diff = [];
 
 	/**
 	 * @var array
 	 */
-	private $data = array();
+	private $data = [];
 
 	/**
 	 * @var array
 	 */
-	private $textItems = array();
+	private $textItems = [];
 
 	/**
 	 * @var array
 	 */
-	private $orderedDiff = array();
+	private $orderedDiff = [];
 
 	/**
 	 * @var DIWikiPage
@@ -48,7 +48,7 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @var array
 	 */
-	private $fixedPropertyRecords = array();
+	private $fixedPropertyRecords = [];
 
 	/**
 	 * @var array
@@ -66,7 +66,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param DIWikiPage|null $subject
 	 * @param array $diff
 	 */
-	public function __construct( DIWikiPage $subject = null, array $diff = array() ) {
+	public function __construct( DIWikiPage $subject = null, array $diff = [] ) {
 		$this->subject = $subject;
 		$this->diff = $diff;
 	}
@@ -160,7 +160,7 @@ class ChangeOp implements IteratorAggregate {
 	 */
 	public function getDataOps() {
 
-		$dataChangeOps = array();
+		$dataChangeOps = [];
 
 		foreach ( $this->data as $hash => $data ) {
 			foreach ( $data as $tableName => $d ) {
@@ -196,10 +196,10 @@ class ChangeOp implements IteratorAggregate {
 	 */
 	public function addDiffOp( array $insertOp, array $deleteOp ) {
 
-		$diff = array(
+		$diff = [
 			'insert' => $insertOp,
 			'delete' => $deleteOp
-		);
+		];
 
 		$this->diff[] = $diff;
 	}
@@ -216,7 +216,7 @@ class ChangeOp implements IteratorAggregate {
 	 */
 	public function getTableChangeOps( $table = null ) {
 
-		$tableChangeOps = array();
+		$tableChangeOps = [];
 
 		foreach ( $this->getOrderedDiffByTable( $table ) as $tableName => $diff ) {
 			$tableChangeOps[] = new TableChangeOp( $tableName, $diff );
@@ -263,17 +263,17 @@ class ChangeOp implements IteratorAggregate {
 	 */
 	public function getOrderedDiffByTable( $table = null ) {
 
-		if ( $table === null && $this->orderedDiff !== array() ) {
+		if ( $table === null && $this->orderedDiff !== [] ) {
 			return $this->orderedDiff;
 		}
 
-		$ordered = array();
+		$ordered = [];
 
 		foreach ( $this as $diff ) {
 			foreach ( $diff as $key => $value ) {
 				foreach ( $value as $tableName => $val ) {
 
-					if ( $val === array() || ( $table !== null && $table !== $tableName ) ) {
+					if ( $val === [] || ( $table !== null && $table !== $tableName ) ) {
 						continue;
 					}
 
@@ -282,11 +282,11 @@ class ChangeOp implements IteratorAggregate {
 					}
 
 					if ( !isset( $ordered[$tableName] ) ) {
-						$ordered[$tableName] = array();
+						$ordered[$tableName] = [];
 					}
 
 					if ( !isset( $ordered[$tableName][$key] ) ) {
-						$ordered[$tableName][$key] = array();
+						$ordered[$tableName][$key] = [];
 					}
 
 					foreach ( $val as $v ) {
@@ -312,7 +312,7 @@ class ChangeOp implements IteratorAggregate {
 	 */
 	public function getChangedEntityIdListByType( $type = null ) {
 
-		$changedEntities = array();
+		$changedEntities = [];
 
 		foreach ( $this->getOrderedDiffByTable() as $diff ) {
 

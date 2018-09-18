@@ -97,7 +97,7 @@ class PermissionPthValidator {
 			return true;
 		}
 
-		$errors[] = array( 'smw-patternedit-protection', 'smw-patternedit' );
+		$errors[] = [ 'smw-patternedit-protection', 'smw-patternedit' ];
 
 		return false;
 	}
@@ -105,13 +105,13 @@ class PermissionPthValidator {
 	private function checkSchemaNamespacePermission( Title &$title, User $user, $action, &$errors ) {
 
 		if ( !$user->isAllowed( 'smw-schemaedit' ) ) {
-			$errors[] = array( 'smw-schema-namespace-edit-protection', 'smw-schemaedit' );
+			$errors[] = [ 'smw-schema-namespace-edit-protection', 'smw-schemaedit' ];
 			return false;
 		}
 
 		// Disallow to change the content model
 		if ( $action === 'editcontentmodel' ) {
-			$errors[] = array( 'smw-schema-namespace-editcontentmodel-disallowed' );
+			$errors[] = [ 'smw-schema-namespace-editcontentmodel-disallowed' ];
 			return false;
 		}
 
@@ -132,7 +132,7 @@ class PermissionPthValidator {
 			$msg = 'smw-create-protection-exists';
 		}
 
-		$errors[] = array( $msg, $title->getText(), $createProtectionRight );
+		$errors[] = [ $msg, $title->getText(), $createProtectionRight ];
 
 		return false;
 	}
@@ -144,7 +144,7 @@ class PermissionPthValidator {
 			return $this->checkEditPermissionOn( $title, $user, $action, $errors );
 		}
 
-		$errors[] = array( 'smw-change-propagation-protection' );
+		$errors[] = [ 'smw-change-propagation-protection' ];
 
 		return false;
 	}
@@ -156,7 +156,7 @@ class PermissionPthValidator {
 			return true;
 		}
 
-		$errors[] = array( 'smw-change-propagation-protection' );
+		$errors[] = [ 'smw-change-propagation-protection' ];
 
 		return false;
 	}
@@ -170,7 +170,7 @@ class PermissionPthValidator {
 			return true;
 		}
 
-		$errors[] = array( 'smw-edit-protection', $editProtectionRight );
+		$errors[] = [ 'smw-edit-protection', $editProtectionRight ];
 
 		return false;
 	}

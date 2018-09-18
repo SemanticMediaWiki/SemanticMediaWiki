@@ -123,10 +123,10 @@ class CachingEntityLookup implements EntityLookup {
 		$userLang = Localizer::getInstance()->getUserLanguage()->getCode();
 
 		$sdid = HashBuilder::createFromContent(
-			array(
+			[
 				(array)$filter,
 				self::VERSION
-			),
+			],
 			'sd:'. $userLang . ':'
 		);
 
@@ -173,11 +173,11 @@ class CachingEntityLookup implements EntityLookup {
 		);
 
 		$plid = HashBuilder::createFromContent(
-			array(
+			[
 				$subject->getSubobjectName(),
 				(array)$requestOptions,
 				self::VERSION
-			),
+			],
 			'pl:'
 		);
 
@@ -224,12 +224,12 @@ class CachingEntityLookup implements EntityLookup {
 		$container = $this->blobStore->read( $sid );
 
 		$pvid = HashBuilder::createFromContent(
-			array(
+			[
 				$property->getKey(),
 				$property->isInverse(),
 				(array)$requestOptions,
 				self::VERSION
-			),
+			],
 			'pv:'
 		);
 
@@ -284,12 +284,12 @@ class CachingEntityLookup implements EntityLookup {
 		$container = $this->blobStore->read( $sid );
 
 		$psid = HashBuilder::createFromContent(
-			array(
+			[
 				$property->getKey(),
 				$property->isInverse(),
 				(array)$requestOptions,
 				self::VERSION
-			),
+			],
 			'ps:'
 		);
 
@@ -393,7 +393,7 @@ class CachingEntityLookup implements EntityLookup {
 	 */
 	private function resolveRedirectTargets( array $results ) {
 
-		$dataItems =  array();
+		$dataItems =  [];
 
 		foreach ( $results as $dataItem ) {
 			$dataItems[] = $this->redirectTargetLookup->findRedirectTarget( $dataItem );
@@ -426,7 +426,7 @@ class CachingEntityLookup implements EntityLookup {
 		// employing append
 		$container->append(
 			'list',
-			array( $id => true )
+			[ $id => true ]
 		);
 
 		$this->blobStore->save(

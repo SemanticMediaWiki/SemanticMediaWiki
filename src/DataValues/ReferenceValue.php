@@ -160,7 +160,7 @@ class ReferenceValue extends AbstractMultiValue {
 			$this->properties = $this->getFieldProperties( $this->getProperty() );
 
 			if ( count( $this->properties ) == 0 ) {
-				$this->addErrorMsg( array( 'smw-datavalue-reference-invalid-fields-definition' ), Message::PARSE );
+				$this->addErrorMsg( [ 'smw-datavalue-reference-invalid-fields-definition' ], Message::PARSE );
 			}
 		}
 
@@ -185,12 +185,12 @@ class ReferenceValue extends AbstractMultiValue {
 	protected function parseUserValue( $value ) {
 
 		if ( $value === '' ) {
-			$this->addErrorMsg( array( 'smw_novalues' ) );
+			$this->addErrorMsg( [ 'smw_novalues' ] );
 			return;
 		}
 
 		$containerSemanticData = $this->newContainerSemanticData( $value );
-		$sortKeys = array();
+		$sortKeys = [];
 
 		$values = $this->getValuesFromString( $value );
 		$index = 0; // index in value array
@@ -200,7 +200,7 @@ class ReferenceValue extends AbstractMultiValue {
 
 		foreach ( $this->getPropertyDataItems() as $property ) {
 
-			if ( !array_key_exists( $index, $values ) || $this->getErrors() !== array() ) {
+			if ( !array_key_exists( $index, $values ) || $this->getErrors() !== [] ) {
 				break; // stop if there are no values left
 			}
 
@@ -242,8 +242,8 @@ class ReferenceValue extends AbstractMultiValue {
 			++$propertyIndex;
 		}
 
-		if ( $empty && $this->getErrors() === array()  ) {
-			$this->addErrorMsg( array( 'smw_novalues' ) );
+		if ( $empty && $this->getErrors() === []  ) {
+			$this->addErrorMsg( [ 'smw_novalues' ] );
 		}
 
 		// Remember the data to extend the sortkey

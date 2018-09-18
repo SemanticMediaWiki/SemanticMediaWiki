@@ -56,7 +56,7 @@ class ChangePropagationDispatchJob extends Job {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	public function __construct( Title $title, $params = array() ) {
+	public function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'smw.changePropagationDispatch', $title, $params );
 		$this->removeDuplicates = true;
 	}
@@ -71,7 +71,7 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @return boolean
 	 */
-	public static function planAsJob( DIWikiPage $subject, $params = array() ) {
+	public static function planAsJob( DIWikiPage $subject, $params = [] ) {
 
 		Exporter::getInstance()->resetCacheBy( $subject );
 		ApplicationFactory::getInstance()->getPropertySpecificationLookup()->resetCacheBy(
@@ -227,7 +227,7 @@ class ChangePropagationDispatchJob extends Job {
 
 		// Refresh the property page once more on the last dispatch
 		$appendIterator->add(
-			array( $subject )
+			[ $subject ]
 		);
 
 		// After relevant subjects has been selected, commit the changes to the
@@ -260,7 +260,7 @@ class ChangePropagationDispatchJob extends Job {
 
 	private function pushChangePropagationDispatchJob( $tempFile, $file, $num, $chunk ) {
 
-		$data = array();
+		$data = [];
 		$file .= "_$num.tmp";
 
 		// Filter any subobject
@@ -280,10 +280,10 @@ class ChangePropagationDispatchJob extends Job {
 		// contents by third-parties
 		$changePropagationDispatchJob = new ChangePropagationDispatchJob(
 			$this->getTitle(),
-			array(
+			[
 				'dataFile' => $file,
 				'checkSum' => $checkSum
-			) + self::newRootJobParams(
+			] + self::newRootJobParams(
 				"ChangePropagationDispatchJob:$file:$checkSum"
 			)
 		);
@@ -357,9 +357,9 @@ class ChangePropagationDispatchJob extends Job {
 
 			$changePropagationUpdateJob = $this->newChangePropagationUpdateJob(
 				$title,
-				array(
+				[
 					UpdateJob::FORCED_UPDATE => true
-				)
+				]
 			);
 
 			$changePropagationUpdateJob->insert();
@@ -375,10 +375,10 @@ class ChangePropagationDispatchJob extends Job {
 
 		$changePropagationUpdateJob = $this->newChangePropagationUpdateJob(
 			$subject->getTitle(),
-			array(
+			[
 				UpdateJob::CHANGE_PROP => $subject->getSerialization(),
 				UpdateJob::FORCED_UPDATE => true
-			)
+			]
 		);
 
 		$changePropagationUpdateJob->run();

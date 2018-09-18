@@ -21,12 +21,12 @@ class ElementFactory {
 	/**
 	 * @var array
 	 */
-	private $dataItemMapper = array();
+	private $dataItemMapper = [];
 
 	/**
 	 * @var array
 	 */
-	private $dataItemToElementMapper = array();
+	private $dataItemToElementMapper = [];
 
 	/**
 	 * @since 2.2
@@ -50,11 +50,11 @@ class ElementFactory {
 	 */
 	public function newFromDataItem( DataItem $dataItem ) {
 
-		if ( $this->dataItemMapper === array() ) {
+		if ( $this->dataItemMapper === [] ) {
 			$this->initDataItemMap();
 		}
 
-		if ( $this->dataItemToElementMapper === array() ) {
+		if ( $this->dataItemToElementMapper === [] ) {
 			$this->initDataItemToElementMapper();
 		}
 

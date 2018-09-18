@@ -47,7 +47,7 @@ class InfoParserFunction implements HookHandler {
 		 * handle unsafe HTM elements.
 		 */
 		$result = smwfEncodeMessages(
-			array( $message ),
+			[ $message ],
 			$parameters['icon']->getValue(),
 			' <!--br-->',
 			false // No escaping.
@@ -76,22 +76,22 @@ class InfoParserFunction implements HookHandler {
 	public static function getHookDefinition() {
 		return new HookDefinition(
 			'info',
-			array(
-				array(
+			[
+				[
 					'name' => 'message',
 					'message' => 'smw-info-par-message',
-				),
-				array(
+				],
+				[
 					'name' => 'icon',
 					'message' => 'smw-info-par-icon',
 					'default' => 'info',
-					'values' => array( 'info', 'warning', 'error', 'note' ),
-				),
-			),
-			array(
+					'values' => [ 'info', 'warning', 'error', 'note' ],
+				],
+			],
+			[
 				'message',
 				'icon'
-			)
+			]
 		);
 	}
 

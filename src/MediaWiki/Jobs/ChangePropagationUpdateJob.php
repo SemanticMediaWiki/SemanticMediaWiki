@@ -28,7 +28,7 @@ class ChangePropagationUpdateJob extends Job {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array(), $jobType = null ) {
+	public function __construct( Title $title, $params = [], $jobType = null ) {
 
 		if ( $jobType === null ) {
 			$jobType = 'smw.changePropagationUpdate';

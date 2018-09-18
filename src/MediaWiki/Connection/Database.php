@@ -323,7 +323,7 @@ class Database {
 	 * @return ResultWrapper
 	 * @throws UnexpectedValueException
 	 */
-	public function select( $tableName, $fields, $conditions = '', $fname, array $options = array(), $joinConditions = array() ) {
+	public function select( $tableName, $fields, $conditions = '', $fname, array $options = [], $joinConditions = [] ) {
 
 		$tablePrefix = null;
 
@@ -454,7 +454,7 @@ class Database {
 	 *
 	 * @since 1.9
 	 */
-	public function selectRow( $table, $vars, $conds, $fname = __METHOD__, $options = array(), $joinConditions = array() ) {
+	public function selectRow( $table, $vars, $conds, $fname = __METHOD__, $options = [], $joinConditions = [] ) {
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
@@ -612,7 +612,7 @@ class Database {
 	 *
 	 * @since 1.9
 	 */
-	public function insert( $table, $rows, $fname = __METHOD__, $options = array() ) {
+	public function insert( $table, $rows, $fname = __METHOD__, $options = [] ) {
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
@@ -626,7 +626,7 @@ class Database {
 	 *
 	 * @since 1.9
 	 */
-	function update( $table, $values, $conds, $fname = __METHOD__, $options = array() ) {
+	function update( $table, $values, $conds, $fname = __METHOD__, $options = [] ) {
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
@@ -701,7 +701,7 @@ class Database {
 	 *
 	 * @since 1.9.2
 	 */
-	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = array() ) {
+	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = [] ) {
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
@@ -715,7 +715,7 @@ class Database {
 	 *
 	 * @since 2.1
 	 */
-	public function estimateRowCount( $table, $vars = '*', $conditions = '', $fname = __METHOD__, $options = array() ) {
+	public function estimateRowCount( $table, $vars = '*', $conditions = '', $fname = __METHOD__, $options = [] ) {
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();

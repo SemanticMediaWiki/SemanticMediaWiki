@@ -90,16 +90,16 @@ class TableSchemaTaskHandler extends TaskHandler {
 				->addHiddenField( 'udsure', 'yes' )
 				->addSubmitButton(
 					$this->msg( 'smw-admin-dbbutton' ),
-					array(
+					[
 						'class' => ''
-					)
+					]
 				);
 		} else {
 			$this->htmlFormRenderer
 				->addParagraph( $this->msg( 'smw-admin-feature-disabled' ) );
 		}
 
-		return Html::rawElement( 'div', array(), $this->htmlFormRenderer->getForm() );
+		return Html::rawElement( 'div', [], $this->htmlFormRenderer->getForm() );
 	}
 
 	/**

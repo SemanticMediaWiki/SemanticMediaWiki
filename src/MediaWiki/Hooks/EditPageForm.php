@@ -64,14 +64,14 @@ class EditPageForm extends HookHandler {
 
 		$html =	Html::rawElement(
 			'div',
-			array(
+			[
 				'class' => 'smw-editpage-help'
-			),
+			],
 			Html::rawElement(
 				'p',
-				array(
+				[
 					'data-msgKey' => $msgKey
-				),
+				],
 				$message
 			)
 		);

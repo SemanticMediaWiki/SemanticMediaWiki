@@ -137,24 +137,24 @@ class Deserializer {
 		// Temporary encode "=" within a <> entity (<span>...</span>)
 		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function( $matches ) {
 			foreach ( $matches as $match ) {
-				return str_replace( array( '=' ), array( '-3D' ), $match );
+				return str_replace( [ '=' ], [ '-3D' ], $match );
 			}
 		}, $text );
 
 		$parts = explode( '=', $text, 2 );
 
 		// Restore temporary encoding
-		$parts[0] = str_replace( array( '-3D' ), array( '=' ), $parts[0] );
+		$parts[0] = str_replace( [ '-3D' ], [ '=' ], $parts[0] );
 
 		if ( isset( $parts[1] ) ) {
-			$parts[1] = str_replace( array( '-3D' ), array( '=' ), $parts[1] );
+			$parts[1] = str_replace( [ '-3D' ], [ '=' ], $parts[1] );
 		}
 
 		$propparts = explode( '#', $parts[0], 2 );
 		$printRequestLabel = trim( $propparts[0] );
 		$outputFormat = isset( $propparts[1] ) ? trim( $propparts[1] ) : false;
 
-		return array( $parts, $outputFormat, $printRequestLabel );
+		return [ $parts, $outputFormat, $printRequestLabel ];
 	}
 
 }

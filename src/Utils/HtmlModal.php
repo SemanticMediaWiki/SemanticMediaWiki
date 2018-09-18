@@ -38,7 +38,7 @@ class HtmlModal {
 	 *
 	 * @return string
 	 */
-	public static function link( $name, array $attributes = array() ) {
+	public static function link( $name, array $attributes = [] ) {
 
 		$attributes = self::mergeAttributes(
 			'smw-modal-link is-disabled',
@@ -67,7 +67,7 @@ class HtmlModal {
 	 *
 	 * @return string
 	 */
-	public static function modal( $title = '', $html = '', array $attributes = array() ) {
+	public static function modal( $title = '', $html = '', array $attributes = [] ) {
 
 		$attributes = self::mergeAttributes(
 			'smw-modal',

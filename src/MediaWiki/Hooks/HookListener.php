@@ -37,7 +37,7 @@ class HookListener {
 	 * @param array &$vars
 	 * @param string $basePath
 	 */
-	public function __construct( &$vars = array(), $basePath = '' ) {
+	public function __construct( &$vars = [], $basePath = '' ) {
 		$this->vars = $vars;
 		$this->basePath = $basePath;
 	}

@@ -205,7 +205,7 @@ class AskParserFunction {
 			array_shift( $functionParams );
 		}
 
-		$extraKeys = array();
+		$extraKeys = [];
 
 		// Filter invalid parameters
 		foreach ( $functionParams as $key => $value ) {
@@ -245,7 +245,7 @@ class AskParserFunction {
 			}
 		}
 
-		return array( $functionParams, $extraKeys );
+		return [ $functionParams, $extraKeys ];
 	}
 
 	private function doFetchResultsFromFunctionParameters( array $functionParams, array $extraKeys ) {
@@ -355,7 +355,7 @@ class AskParserFunction {
 		}
 
 		// Adding to error in order to be discoverable
-		$this->addProcessingError( array( 'smw-parser-function-expensive-execution-limit' ) );
+		$this->addProcessingError( [ 'smw-parser-function-expensive-execution-limit' ] );
 
 		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
@@ -396,7 +396,7 @@ class AskParserFunction {
 
 	private function addProcessingError( $errors ) {
 
-		if ( $errors === array() ) {
+		if ( $errors === [] ) {
 			return;
 		}
 

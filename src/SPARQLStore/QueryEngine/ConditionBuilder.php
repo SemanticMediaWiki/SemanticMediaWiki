@@ -62,7 +62,7 @@ class ConditionBuilder {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * Counter used to generate globally fresh variables.
@@ -74,7 +74,7 @@ class ConditionBuilder {
 	 * sortKeys that are being used while building the query conditions
 	 * @var array
 	 */
-	private $sortKeys = array();
+	private $sortKeys = [];
 
 	/**
 	 * The name of the SPARQL variable that represents the query result
@@ -95,7 +95,7 @@ class ConditionBuilder {
 	/**
 	 * @var array
 	 */
-	private $redirectByVariableReplacementMap = array();
+	private $redirectByVariableReplacementMap = [];
 
 	/**
 	 * @since 2.2
@@ -385,10 +385,10 @@ class ConditionBuilder {
 			$namespaces[$redirectExpElement->getNamespaceId()] = $redirectExpElement->getNamespace();
 			$redirectByVariable = '?' . $this->getNextVariable( 'r' );
 
-			$this->redirectByVariableReplacementMap[$valueName] = array(
+			$this->redirectByVariableReplacementMap[$valueName] = [
 				$redirectByVariable,
 				$namespaces
-			);
+			];
 		}
 
 		// Reuse an existing variable for the value to allow to be used more than
@@ -464,9 +464,9 @@ class ConditionBuilder {
 			$skeyExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );
 		}
 
-		$weakConditions = array(
+		$weakConditions = [
 			$condition->orderByVariable =>"?$mainVariable " . $skeyExpElement->getQName() . " ?{$condition->orderByVariable} .\n"
-		);
+		];
 
 		$condition->weakConditions += $weakConditions;
 	}
@@ -589,12 +589,12 @@ class ConditionBuilder {
 	 */
 	private function addPropertyPathToMatchRedirectTargets( Condition &$condition ) {
 
-		if ( $this->redirectByVariableReplacementMap === array() ) {
+		if ( $this->redirectByVariableReplacementMap === [] ) {
 			return;
 		}
 
-		$weakConditions = array();
-		$namespaces = array();
+		$weakConditions = [];
+		$namespaces = [];
 
 		$rediExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_REDI' );
 		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();

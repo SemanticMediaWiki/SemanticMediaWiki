@@ -74,7 +74,7 @@ class DataRebuilder {
 	/**
 	 * @var int[]
 	 */
-	private $filters = array();
+	private $filters = [];
 	private $verbose = false;
 	private $startIdFile = false;
 
@@ -183,7 +183,7 @@ class DataRebuilder {
 	}
 
 	private function hasFilters() {
-		return $this->filters !== array();
+		return $this->filters !== [];
 	}
 
 	/**
@@ -227,7 +227,7 @@ class DataRebuilder {
 			$this->exceptionFileLogger->doWrite();
 
 			$path_parts = pathinfo(
-				str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $this->exceptionFileLogger->getExceptionFile() )
+				str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->exceptionFileLogger->getExceptionFile() )
 			);
 
 			$this->reportMessage( "\nException log ..." );
@@ -351,7 +351,7 @@ class DataRebuilder {
 			$this->exceptionFileLogger->doWrite();
 
 			$path_parts = pathinfo(
-				str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $this->exceptionFileLogger->getExceptionFile() )
+				str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->exceptionFileLogger->getExceptionFile() )
 			);
 
 			$this->reportMessage( "\nException log ..." );
@@ -512,7 +512,7 @@ class DataRebuilder {
 	 * @param array $options
 	 */
 	private function setFiltersFromOptions( Options $options ) {
-		$this->filters = array();
+		$this->filters = [];
 
 		if ( $options->has( 'categories' ) ) {
 			$this->filters[] = NS_CATEGORY;

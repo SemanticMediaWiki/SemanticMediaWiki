@@ -54,18 +54,18 @@ class ErrorWidget {
 	public static function noScript() {
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id'    => 'ask-status',
 				'class' => 'smw-ask-status plainlinks'
-			),
+			],
 			Html::rawElement(
 				'noscript',
-				array(),
+				[],
 				Html::rawElement(
 					'div',
-					array(
+					[
 						'class' => 'smw-callout smw-callout-error',
-					),
+					],
 					Message::get( 'smw-noscript', Message::PARSE, Message::USER_LANGUAGE )
 				)
 			)
@@ -96,11 +96,11 @@ class ErrorWidget {
 	 */
 	public static function queryError( Query $query = null ) {
 
-		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === array() ) {
+		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === [] ) {
 			return '';
 		}
 
-		$errors = array();
+		$errors = [];
 
 		foreach ( ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $query->getErrors() ) as $value ) {
 

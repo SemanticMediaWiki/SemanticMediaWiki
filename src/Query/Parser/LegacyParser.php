@@ -60,7 +60,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @var array
 	 */
-	private $separatorStack = array();
+	private $separatorStack = [];
 
 	/**
 	 * Remaining string to be parsed (parsing eats query string from the front)
@@ -255,7 +255,7 @@ class LegacyParser implements Parser {
 		$this->descriptionProcessor->setContextPage( $this->contextPage );
 
 		$this->currentString = $queryString;
-		$this->separatorStack = array();
+		$this->separatorStack = [];
 
 		$this->selfReference = false;
 		$setNS = false;
@@ -304,7 +304,7 @@ class LegacyParser implements Parser {
 	private function getSubqueryDescription( &$setNS ) {
 
 		$conjunction = null;      // used for the current inner conjunction
-		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
+		$disjuncts = [];     // (disjunctive) array of subquery conjunctions
 
 		$hasNamespaces = false;   // does the current $conjnuction have its own namespace restrictions?
 		$mustSetNS = $setNS;      // must NS restrictions be set? (may become true even if $setNS is false)
@@ -335,7 +335,7 @@ class LegacyParser implements Parser {
 						if ( $hasNamespaces && !$mustSetNS ) {
 							// add NS restrictions to all earlier conjunctions (all of which did not have them yet)
 							$mustSetNS = true; // enforce NS restrictions from now on
-							$newdisjuncts = array();
+							$newdisjuncts = [];
 
 							foreach ( $disjuncts as $conj ) {
 								$newdisjuncts[] = $this->descriptionProcessor->asAnd( $conj, $this->defaultNamespace );
@@ -511,8 +511,8 @@ class LegacyParser implements Parser {
 
 		// First process property chain syntax (e.g. "property1.property2::value"),
 		// escaped by initial " ":
-		$propertynames = ( $propertyName{0} == ' ' ) ? array( $propertyName ) : explode( '.', $propertyName );
-		$propertyValueList = array();
+		$propertynames = ( $propertyName{0} == ' ' ) ? [ $propertyName ] : explode( '.', $propertyName );
+		$propertyValueList = [];
 
 		$typeid = '_wpg';
 		$inverse = false;

@@ -27,14 +27,14 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	 *
 	 * @var array
 	 */
-	private $repositoryConnectors = array(
+	private $repositoryConnectors = [
 		'default'   => GenericRepositoryConnector::class,
 		'generic'   => GenericRepositoryConnector::class,
 		'sesame'    => GenericRepositoryConnector::class,
 		'fuseki'    => FusekiRepositoryConnector::class,
 		'virtuoso'  => VirtuosoRepositoryConnector::class,
 		'4store'    => FourstoreRepositoryConnector::class,
-	);
+	];
 
 	/**
 	 * @var RepositoryConnection

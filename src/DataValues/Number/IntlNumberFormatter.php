@@ -299,8 +299,8 @@ class IntlNumberFormatter {
 
 	private function doFormatExponentialNotation( $value ) {
 		return str_replace(
-			array( '.', 'E' ),
-			array( $this->getSeparatorByLanguage( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ), 'e' ),
+			[ '.', 'E' ],
+			[ $this->getSeparatorByLanguage( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ), 'e' ],
 			$value
 		);
 	}
@@ -330,11 +330,11 @@ class IntlNumberFormatter {
 		}
 
 		$value = str_replace(
-			array( 'x', 'y' ),
-			array(
+			[ 'x', 'y' ],
+			[
 				$decimal,
 				$thousand
-			),
+			],
 			$value
 		);
 

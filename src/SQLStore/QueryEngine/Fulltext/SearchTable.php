@@ -45,7 +45,7 @@ class SearchTable {
 	/**
 	 * @var array
 	 */
-	private $propertyExemptionList = array();
+	private $propertyExemptionList = [];
 
 	/**
 	 * @since 2.5

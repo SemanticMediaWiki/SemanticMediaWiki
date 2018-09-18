@@ -38,7 +38,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	/**
 	 * @var array
 	 */
-	private $predefinedProperties = array();
+	private $predefinedProperties = [];
 
 	/**
 	 * @since 2.5
@@ -184,7 +184,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 			// Delete the current upperbound to avoid having a duplicate border
 			$connection->delete(
 				SQLStore::ID_TABLE,
-				array( 'smw_id' => $currentUpperbound ),
+				[ 'smw_id' => $currentUpperbound ],
 				__METHOD__
 			);
 		}
@@ -194,14 +194,14 @@ class TableIntegrityExaminer implements MessageReporterAware {
 
 		$connection->insert(
 			SQLStore::ID_TABLE,
-			array(
+			[
 				'smw_id' => $upperbound,
 				'smw_title' => '',
 				'smw_namespace' => 0,
 				'smw_iw' => SMW_SQL3_SMWBORDERIW,
 				'smw_subobject' => '',
 				'smw_sortkey' => ''
-			),
+			],
 			__METHOD__
 		);
 

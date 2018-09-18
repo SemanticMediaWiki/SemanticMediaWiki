@@ -23,7 +23,7 @@ class AllowsPatternValueParser implements ValueParser {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @since 2.4
@@ -52,7 +52,7 @@ class AllowsPatternValueParser implements ValueParser {
 	 */
 	public function parse( $userValue ) {
 
-		$this->errors = array();
+		$this->errors = [];
 
 		$contentList = $this->doParseContent(
 			$this->mediaWikiNsContentReader->read( AllowsPatternValue::REFERENCE_PAGE_ID )
@@ -67,7 +67,7 @@ class AllowsPatternValueParser implements ValueParser {
 
 	private function doParseContent( $contents ) {
 
-		$list = array();
+		$list = [];
 
 		if ( $contents === '' ) {
 			return null;

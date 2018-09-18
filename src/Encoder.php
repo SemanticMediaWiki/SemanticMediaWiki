@@ -39,8 +39,8 @@ class Encoder {
 	public static function escape( $string ) {
 
 		$value = str_replace(
-			array( '-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&', '%', '?', '$', "\\", ";", '_' ),
-			array( '-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", '-5F' ),
+			[ '-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&', '%', '?', '$', "\\", ";", '_' ],
+			[ '-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", '-5F' ],
 			$string
 		);
 
@@ -59,8 +59,8 @@ class Encoder {
 	public static function unescape( $string ) {
 
 		$value = str_replace(
-			array( '-20', '-23', '-0A', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", "-3A", '-5F', '-2D' ),
-			array( ' ',    '#',   "\n", '/',   '[',    ']',   '<',   '>',  '&lt;', '&gt;', '&', '\'\'',    '|',   '&',  '%',   '?',   '$',    "\\", ";",   ":",   "_",   '-' ),
+			[ '-20', '-23', '-0A', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", "-3A", '-5F', '-2D' ],
+			[ ' ',    '#',   "\n", '/',   '[',    ']',   '<',   '>',  '&lt;', '&gt;', '&', '\'\'',    '|',   '&',  '%',   '?',   '$',    "\\", ";",   ":",   "_",   '-' ],
 			$string
 		);
 
@@ -92,11 +92,11 @@ class Encoder {
 		// Apply decoding for SMW's own url encoding strategy (see SMWInfolink)
 		$string = str_replace( '%', '-', rawurldecode( str_replace( '-', '%', $string ) ) );
 
-		$string = str_replace( array( '-2D', '-3A' ), array( '-', ':' ), $string );
+		$string = str_replace( [ '-2D', '-3A' ], [ '-', ':' ], $string );
 
 		// Sanitize remaining string content
 		$string = trim( htmlspecialchars( $string, ENT_NOQUOTES ) );
-		$string = str_replace( '&nbsp;', ' ', str_replace( array( '&#160;', '&amp;' ), array( ' ', '&' ), $string ) );
+		$string = str_replace( '&nbsp;', ' ', str_replace( [ '&#160;', '&amp;' ], [ ' ', '&' ], $string ) );
 
 		return $string;
 	}

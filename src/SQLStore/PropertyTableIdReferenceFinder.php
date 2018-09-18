@@ -115,7 +115,7 @@ class PropertyTableIdReferenceFinder {
 	 */
 	public function searchAllTablesToFindAtLeastOneReferenceById( $id ) {
 
-		$references = array();
+		$references = [];
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			$reference = false;
@@ -187,8 +187,8 @@ class PropertyTableIdReferenceFinder {
 		if ( $proptable->usesIdSubject() ) {
 			$row = $this->connection->selectRow(
 				$proptable->getName(),
-				array( 's_id' ),
-				array( 's_id' => $id ),
+				[ 's_id' ],
+				[ 's_id' => $id ],
 				__METHOD__
 			);
 		}
@@ -203,12 +203,12 @@ class PropertyTableIdReferenceFinder {
 		if ( isset( $fields['o_id'] ) ) {
 
 			// This next time someone ... I'm going to Alaska
-			$field = strpos( $proptable->getName(), 'redi' ) ? array( 's_title', 's_namespace' ) : array( 's_id' );
+			$field = strpos( $proptable->getName(), 'redi' ) ? [ 's_title', 's_namespace' ] : [ 's_id' ];
 
 			$row = $this->connection->selectRow(
 				$proptable->getName(),
 				$field,
-				array( 'o_id' => $id ),
+				[ 'o_id' => $id ],
 				__METHOD__
 			);
 
@@ -223,8 +223,8 @@ class PropertyTableIdReferenceFinder {
 		if ( $row === false && !$proptable->isFixedPropertyTable() ) {
 			$row = $this->connection->selectRow(
 				$proptable->getName(),
-				array( 's_id' ),
-				array( 'p_id' => $id ),
+				[ 's_id' ],
+				[ 'p_id' => $id ],
 				__METHOD__
 			);
 		}
@@ -239,8 +239,8 @@ class PropertyTableIdReferenceFinder {
 		// removed the object will also loose its reference
 		$row = $this->connection->selectRow(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 's_id' ),
-			array( 'o_id' => $id ),
+			[ 's_id' ],
+			[ 'o_id' => $id ],
 			__METHOD__
 		);
 

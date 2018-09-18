@@ -414,7 +414,7 @@ class SemanticDataLookup {
 			}
 
 			if ( $isSubject ) {
-				$result[$hash] = array( $propertykey, $valueKeys );
+				$result[$hash] = [ $propertykey, $valueKeys ];
 			} else{
 				$result[$hash] = $valueKeys;
 			}

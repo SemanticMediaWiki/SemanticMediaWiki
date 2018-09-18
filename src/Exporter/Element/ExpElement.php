@@ -69,15 +69,15 @@ abstract class ExpElement implements Element {
 		$dataItem = null;
 
 		if ( $this->getDataItem() !== null ) {
-			$dataItem = array(
+			$dataItem = [
 				'type' => $this->getDataItem()->getDIType(),
 				'item' => $this->getDataItem()->getSerialization()
-			);
+			];
 		}
 
-		return array(
+		return [
 			'dataitem' => $dataItem
-		);
+		];
 	}
 
 	/**

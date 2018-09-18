@@ -60,7 +60,7 @@ class UpdateJob extends Job {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	function __construct( Title $title, $params = array() ) {
+	function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'smw.update', $title, $params );
 		$this->removeDuplicates = true;
 
@@ -148,7 +148,7 @@ class UpdateJob extends Job {
 			new DIProperty( DIProperty::TYPE_CHANGE_PROP )
 		);
 
-		if ( $pv === array() ) {
+		if ( $pv === [] ) {
 			return;
 		}
 
@@ -312,7 +312,7 @@ class UpdateJob extends Job {
 			new DIProperty( '_MDAT' )
 		);
 
-		if ( $dataItems !== array() ) {
+		if ( $dataItems !== [] ) {
 			return end( $dataItems )->getMwTimestamp( TS_MW );
 		}
 

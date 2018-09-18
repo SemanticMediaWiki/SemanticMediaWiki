@@ -101,30 +101,30 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 		$params['searchlabel']->setDefault( $this->msg( 'smw-label-feed-link' )->inContentLanguage()->text() );
 
-		$params['type'] = array(
+		$params['type'] = [
 			'type' => 'string',
 			'default' => 'rss',
 			'message' => 'smw-paramdesc-feedtype',
-			'values' => array( 'rss', 'atom' ),
-		);
+			'values' => [ 'rss', 'atom' ],
+		];
 
-		$params['title'] = array(
+		$params['title'] = [
 			'message' => 'smw-paramdesc-feedtitle',
 			'default' => '',
-			'aliases' => array( 'rsstitle' ),
-		);
+			'aliases' => [ 'rsstitle' ],
+		];
 
-		$params['description'] = array(
+		$params['description'] = [
 			'message' => 'smw-paramdesc-feeddescription',
 			'default' => '',
-			'aliases' => array( 'rssdescription' ),
-		);
+			'aliases' => [ 'rssdescription' ],
+		];
 
-		$params['page'] = array(
+		$params['page'] = [
 			'message' => 'smw-paramdesc-feedpagecontent',
 			'default' => 'none',
-			'values' => array( 'none', 'full', 'abstract' ),
-		);
+			'values' => [ 'none', 'full', 'abstract' ],
+		];
 
 		return $params;
 	}
@@ -154,7 +154,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		}
 
 		if ( $res->getCount() == 0 ){
-			$res->addErrors( array( $this->msg( 'smw_result_noresults' )->inContentLanguage()->text() ) );
+			$res->addErrors( [ $this->msg( 'smw_result_noresults' )->inContentLanguage()->text() ] );
 		}
 
 		return $this->getFeed( $res, $this->params['type'] );
@@ -174,7 +174,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		global $wgFeedClasses;
 
 		if( !isset( $wgFeedClasses[$type] ) ) {
-			$results->addErrors( array( $this->msg( 'feed-invalid' )->inContentLanguage()->text() ) );
+			$results->addErrors( [ $this->msg( 'feed-invalid' )->inContentLanguage()->text() ] );
 			return '';
 		}
 
@@ -260,7 +260,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 */
 	protected function feedItem( array $row ) {
 
-		$rowItems = array();
+		$rowItems = [];
 		$subject = false;
 
 		/**
@@ -270,7 +270,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		 * @var \SMWDataValue $object
 		 */
 		foreach ( $row as $field ) {
-			$itemSegments = array();
+			$itemSegments = [];
 
 			$subject = $field->getResultSubject()->getTitle();
 
@@ -291,7 +291,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			}
 
 			// Join all property values into a single string, separated by a comma
-			if ( $itemSegments !== array() ) {
+			if ( $itemSegments !== [] ) {
 				$rowItems[] = $this->parse( $subject, implode( ', ', $itemSegments ) );
 			}
 		}
@@ -300,7 +300,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			return $this->newFeedItem( $subject, $rowItems );
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -314,7 +314,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 */
 	protected function getPageContent( WikiPage $wikiPage ) {
 
-		if ( !in_array( $this->params['page'], array( 'abstract', 'full' ) ) ) {
+		if ( !in_array( $this->params['page'], [ 'abstract', 'full' ] ) ) {
 			return '';
 		}
 

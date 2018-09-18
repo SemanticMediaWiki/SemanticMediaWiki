@@ -72,7 +72,7 @@ class EntityRebuildDispatcher {
 	/**
 	 * @var array
 	 */
-	private $dispatchedEntities = array();
+	private $dispatchedEntities = [];
 
 	/**
 	 * @var array
@@ -184,23 +184,23 @@ class EntityRebuildDispatcher {
 	public function rebuild( &$id ) {
 
 		$this->updateJobs = [];
-		$this->dispatchedEntities = array();
+		$this->dispatchedEntities = [];
 
 		// was nothing done in this run?
 		$emptyRange = true;
 
 		$this->match_title( $id );
 
-		if ( $this->updateJobs !== array() ) {
+		if ( $this->updateJobs !== [] ) {
 			$emptyRange = false;
 		}
 
 		$this->match_subject( $id, $emptyRange );
 
 		// Deprecated since 2.3, use 'SMW::SQLStore::BeforeDataRebuildJobInsert'
-		\Hooks::run('smwRefreshDataJobs', array( &$this->updateJobs ) );
+		\Hooks::run('smwRefreshDataJobs', [ &$this->updateJobs ] );
 
-		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', array( $this->store, &$this->updateJobs ) );
+		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', [ $this->store, &$this->updateJobs ] );
 
 		if ( isset( $this->options['use-job'] ) && $this->options['use-job'] ) {
 			$this->jobFactory->batchInsert( $this->updateJobs );
@@ -223,7 +223,7 @@ class EntityRebuildDispatcher {
 	private function match_title( $id ) {
 
 		// Update by MediaWiki page id --> make sure we get all pages.
-		$tids = array();
+		$tids = [];
 
 		// Array of ids
 		for ( $i = $id; $i < $id + $this->iterationLimit; $i++ ) {
@@ -242,7 +242,7 @@ class EntityRebuildDispatcher {
 				$this->add_update( $title );
 			}
 
-			$this->dispatchedEntities[] = array( 't' => $title->getPrefixedDBKey() );
+			$this->dispatchedEntities[] = [ 't' => $title->getPrefixedDBKey() ];
 		}
 	}
 
@@ -313,7 +313,7 @@ class EntityRebuildDispatcher {
 				if ( $title !== null && !$title->exists() ) {
 					$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 				} else {
-					$this->dispatchedEntities[] = array( 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject );
+					$this->dispatchedEntities[] = [ 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject ];
 				}
 			} elseif ( $this->isPlainObjectValue( $row ) ) {
 				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
@@ -327,7 +327,7 @@ class EntityRebuildDispatcher {
 				$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
 
 				if ( $title !== null ) {
-					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
+					$this->dispatchedEntities[] = [ 's' => $title->getPrefixedDBKey() ];
 					$this->add_update( $title, $row );
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $titleKey != '' ) {
@@ -341,7 +341,7 @@ class EntityRebuildDispatcher {
 				$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
 
 				if ( $title !== null && !$title->exists() ) {
-					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
+					$this->dispatchedEntities[] = [ 's' => $title->getPrefixedDBKey() ];
 					$this->add_update( $title, $row );
 				}
 
@@ -356,7 +356,7 @@ class EntityRebuildDispatcher {
 
 				$subject = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$this->store->updateData( new SemanticData( $subject ) );
-				$this->dispatchedEntities[] = array( 's' => $subject );
+				$this->dispatchedEntities[] = [ 's' => $subject ];
 			}
 
 			if ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
@@ -471,7 +471,7 @@ class EntityRebuildDispatcher {
 		$this->lru->set( $hash, true );
 
 		if ( isset( $this->options['revision-mode'] ) && $this->options['revision-mode'] && !$this->options['force-update'] && $this->matchesLatestRevID( $title, $row ) ) {
-			return $this->dispatchedEntities[] = array( 'skipped' => $title->getPrefixedDBKey() );
+			return $this->dispatchedEntities[] = [ 'skipped' => $title->getPrefixedDBKey() ];
 		}
 
 		$params = [

@@ -28,7 +28,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @var array
 	 */
-	private $predefinedPropertyList = array();
+	private $predefinedPropertyList = [];
 
 	/**
 	 * @since 1.9
@@ -52,7 +52,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	protected function addPropertyValues() {
 
-		$cachedProperties = array();
+		$cachedProperties = [];
 
 		foreach ( $this->predefinedPropertyList as $propertyId ) {
 
@@ -62,7 +62,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 			$propertyDI = new DIProperty( $propertyId );
 
-			if ( $this->getSemanticData()->getPropertyValues( $propertyDI ) !== array() ) {
+			if ( $this->getSemanticData()->getPropertyValues( $propertyDI ) !== [] ) {
 				$cachedProperties[$propertyId] = true;
 				continue;
 			}

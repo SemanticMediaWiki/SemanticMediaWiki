@@ -192,7 +192,7 @@ class PostProcHandler {
 		$data = $this->parserOutput->getExtensionData( self::POST_PROC_QUERYREF );
 
 		if ( $data === null ) {
-			$data = array();
+			$data = [];
 		}
 
 		$data[$queryRef] = true;

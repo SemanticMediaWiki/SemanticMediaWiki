@@ -25,7 +25,7 @@ class SpecialStatsAddExtra extends HookHandler {
 	/**
 	 * @var string[]
 	 */
-	private $messageMapper = array(
+	private $messageMapper = [
 		'PROPUSES'    => 'smw-statistics-property-instance',
 		'ERRORUSES'   => 'smw-statistics-error-count',
 		'TOTALPROPS'  => 'smw-statistics-property-total',
@@ -36,7 +36,7 @@ class SpecialStatsAddExtra extends HookHandler {
 		'SUBOBJECTS'  => 'smw-statistics-subobject-count',
 		'QUERY'       => 'smw-statistics-query-inline',
 		'CONCEPTS'    => 'smw-statistics-concept-count',
-	);
+	];
 
 	/**
 	 * @since  1.9
@@ -69,7 +69,7 @@ class SpecialStatsAddExtra extends HookHandler {
 
 		$statistics = $this->store->getStatistics();
 
-		$extraStats['smw-statistics'] = array();
+		$extraStats['smw-statistics'] = [];
 
 		foreach ( $this->messageMapper as $key => $message ) {
 			if ( isset( $statistics[$key] ) ) {

@@ -46,7 +46,7 @@ class AllowsListValue extends StringValue {
 
 		$allowsListValueParser->parse( $value );
 
-		if ( $allowsListValueParser->getErrors() !== array() ) {
+		if ( $allowsListValueParser->getErrors() !== [] ) {
 			foreach ( $allowsListValueParser->getErrors() as $error ) {
 				$this->addErrorMsg( $error );
 			}
@@ -96,10 +96,10 @@ class AllowsListValue extends StringValue {
 
 		return \Html::rawElement(
 			'a',
-			array(
+			[
 				'href'   => $title->getLocalUrl(),
 				'target' => '_blank'
-			),
+			],
 			$id
 		);
 	}

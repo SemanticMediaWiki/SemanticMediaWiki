@@ -93,7 +93,7 @@ class ValueListBuilder {
 	 *
 	 * @return string
 	 */
-	public function createHtml( DIProperty $property, DataItem $dataItem, array $query = array() ) {
+	public function createHtml( DIProperty $property, DataItem $dataItem, array $query = [] ) {
 
 		$limit = isset( $query['limit'] ) ? (int)$query['limit'] : 0;
 		$offset = isset( $query['offset'] ) ? (int)$query['offset'] : 0;
@@ -106,7 +106,7 @@ class ValueListBuilder {
 			return '';
 		}
 
-		$dataItems = array();
+		$dataItems = [];
 		$isValueSearch = false;
 
 		$options = PageLister::getRequestOptions( $limit, $from, $until );
@@ -157,12 +157,12 @@ class ValueListBuilder {
 				'class' => 'smw-page-nav-note'
 			],
 			Message::get(
-				array( $topic, ( $resultCount < $limit ? $resultCount : $limit ), $filter ),
+				[ $topic, ( $resultCount < $limit ? $resultCount : $limit ), $filter ],
 				Message::PARSE,
 				$this->languageCode
 			) . Html::rawElement(
 				'div',
-				array(),
+				[],
 				''
 			)
 		);
@@ -205,11 +205,11 @@ class ValueListBuilder {
 
 		return Html::rawElement(
 			'a',
-			array( 'name' => 'SMWResults' ),
+			[ 'name' => 'SMWResults' ],
 			''
 		) . Html::rawElement(
 			'div',
-			array( 'id' => 'mw-pages' ),
+			[ 'id' => 'mw-pages' ],
 			$result
 		);
 	}
@@ -250,18 +250,18 @@ class ValueListBuilder {
 				$html .= HtmlDivTable::row(
 					HtmlDivTable::cell(
 						'<div id="' . htmlspecialchars( $start_char ) . '">' . htmlspecialchars( $start_char ) . "</div>",
-						array(
+						[
 							'class' => "header-title"
-						)
+						]
 					) . HtmlDivTable::cell(
 						'<div></div>',
-						array(
+						[
 							'class' => "header-title"
-						)
+						]
 					),
-					array(
+					[
 						'class' => "header-row"
-					)
+					]
 				);
 				$prev_start_char = $start_char;
 			}
@@ -316,28 +316,28 @@ class ValueListBuilder {
 			$html .= HtmlDivTable::row(
 				HtmlDivTable::cell(
 					$dvWikiPage->getShortHTMLText( smwfGetLinker() ) . '&#160;' . $searchlink->getHTML( smwfGetLinker() ),
-					array(
+					[
 						'class' => "smwpropname",
 						'data-list-index' => $index
-					)
+					]
 				) . HtmlDivTable::cell(
 					$pvCells,
-					array(
+					[
 						'class' => "smwprops"
-					)
+					]
 				),
-				array(
+				[
 					'class' => "value-row"
-				)
+				]
 			);
 		}
 
 		return HtmlDivTable::table(
 			$html,
-			array(
+			[
 				'class' => "smw-property-page-results",
 				'style' => "width: 100%;"
-			)
+			]
 		);
 	}
 

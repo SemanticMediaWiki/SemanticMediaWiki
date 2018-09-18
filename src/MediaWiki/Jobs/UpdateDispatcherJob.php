@@ -43,7 +43,7 @@ class UpdateDispatcherJob extends Job {
 	 * @param array $params job parameters
 	 * @param integer $id job id
 	 */
-	public function __construct( Title $title, $params = array(), $id = 0 ) {
+	public function __construct( Title $title, $params = [], $id = 0 ) {
 		parent::__construct( 'smw.updateDispatcher', $title, $params, $id );
 		$this->removeDuplicates = true;
 
@@ -84,11 +84,11 @@ class UpdateDispatcherJob extends Job {
 		}
 
 		// Push generated job list into a secondary dispatch run
-		if ( $this->jobs !== array() ) {
+		if ( $this->jobs !== [] ) {
 			$this->createSecondaryDispatchRunWithChunkedJobList();
 		}
 
-		Hooks::run( 'SMW::Job::AfterUpdateDispatcherJobComplete', array( $this ) );
+		Hooks::run( 'SMW::Job::AfterUpdateDispatcherJobComplete', [ $this ] );
 
 		return true;
 	}
@@ -100,7 +100,7 @@ class UpdateDispatcherJob extends Job {
 
 			$job = new self(
 				Title::newFromText( 'UpdateDispatcherChunkedJobList::' . $hash ),
-				array( self::JOB_LIST => $jobList )
+				[ self::JOB_LIST => $jobList ]
 			);
 
 			$job->insert();
@@ -123,7 +123,7 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function dispatchUpdateForProperty( DIProperty $property ) {
-		$this->addUpdateJobsForProperties( array( $property ) );
+		$this->addUpdateJobsForProperties( [ $property ] );
 		$this->addUpdateJobsForSubjectsThatContainTypeError();
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
@@ -211,7 +211,7 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function addUniqueSubjectsToUpdateJobList( $subjects = array() ) {
+	private function addUniqueSubjectsToUpdateJobList( $subjects = [] ) {
 
 		foreach ( $subjects as $subject ) {
 
@@ -236,10 +236,10 @@ class UpdateDispatcherJob extends Job {
 
 	private function createUpdateJobsFromJobList( array $subjects ) {
 
-		$parameters = array(
+		$parameters = [
 			UpdateJob::FORCED_UPDATE => true,
 			'origin' => $this->getParameter( 'origin', 'UpdateDispatcherJob' )
-		);
+		];
 
 		// We expect non-duplicate subjects in the list and therefore deserialize
 		// without any extra validation

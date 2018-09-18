@@ -73,7 +73,7 @@ class OutputPageParserOutput {
 
 	private function execPostProc( $title, $request) {
 
-		if ( in_array( $request->getVal( 'action' ), array( 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit' ) ) ) {
+		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit' ] ) ) {
 			return '';
 		}
 

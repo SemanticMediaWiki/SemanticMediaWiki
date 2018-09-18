@@ -23,12 +23,12 @@ class ResolverJournal {
 	/**
 	 * @var array
 	 */
-	private $dataItems = array();
+	private $dataItems = [];
 
 	/**
 	 * @var array
 	 */
-	private $properties = array();
+	private $properties = [];
 
 	/**
 	 * @since 2.4
@@ -52,8 +52,8 @@ class ResolverJournal {
 	 * @since 2.4
 	 */
 	public function prune() {
-		$this->dataItems = array();
-		$this->properties = array();
+		$this->dataItems = [];
+		$this->properties = [];
 	}
 
 	/**

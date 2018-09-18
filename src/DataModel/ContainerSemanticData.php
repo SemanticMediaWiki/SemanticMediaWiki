@@ -61,7 +61,7 @@ class ContainerSemanticData extends SemanticData {
 	 * Restore complete serialization which is disabled in SemanticData.
 	 */
 	public function __sleep() {
-		return array(
+		return [
 			'mSubject',
 			'mProperties',
 			'mPropVals',
@@ -72,7 +72,7 @@ class ContainerSemanticData extends SemanticData {
 			'subSemanticData',
 			'options',
 			'extensionData'
-		);
+		];
 	}
 
 	/**
@@ -142,7 +142,7 @@ class ContainerSemanticData extends SemanticData {
 		
 		$this->mSubject = $semanticData->getSubject();
 		$this->mProperties = $semanticData->getProperties();
-		$this->mPropVals = array();
+		$this->mPropVals = [];
 
 		foreach ( $this->mProperties as $property ) {
 			$this->mPropVals[$property->getKey()] = $semanticData->getPropertyValues( $property );

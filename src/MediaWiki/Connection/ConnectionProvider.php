@@ -30,7 +30,7 @@ class ConnectionProvider implements IConnectionProvider {
 	/**
 	 * @var array
 	 */
-	private $localConnectionConf = array();
+	private $localConnectionConf = [];
 
 	/**
 	 * @since 3.0
@@ -66,10 +66,10 @@ class ConnectionProvider implements IConnectionProvider {
 		}
 
 		// Default configuration
-		$conf = array(
+		$conf = [
 			'read'  => DB_SLAVE,
 			'write' => DB_MASTER
-		);
+		];
 
 		if ( isset( $this->localConnectionConf[$this->provider] ) ) {
 			$conf = $this->localConnectionConf[$this->provider];

@@ -34,8 +34,8 @@ class CharArmor {
 	 */
 	public static function removeSpecialChars( $text ) {
 		return str_replace(
-			array( '&shy;', '&lrm;', " ", " ", " " ),
-			array( '', '', ' ', ' ', ' ' ),
+			[ '&shy;', '&lrm;', " ", " ", " " ],
+			[ '', '', ' ', ' ', ' ' ],
 			$text
 		);
 	}

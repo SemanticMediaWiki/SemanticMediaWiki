@@ -33,7 +33,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_id' => FieldType::FIELD_ID );
+		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
 	/**
@@ -42,7 +42,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_id' => FieldType::FIELD_ID );
+		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
 	/**
@@ -51,7 +51,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array(
+		return [
 			'o_id',
 
 			// SMWSQLStore3Readers::getPropertySubjects
@@ -90,7 +90,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			// SMWSQLStore3Readers::getPropertySubjects
 			// SELECT DISTINCT s_id FROM `smw_di_wikipage` WHERE (p_id='64' AND o_id='104') ORDER BY s_sort ASC
 			//'o_id,p_id,s_id,s_sort'
-		);
+		];
 	}
 
 	/**
@@ -107,7 +107,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			$dataItem->getSubobjectName()
 		);
 
-		return array( 'o_id' => $oid );
+		return [ 'o_id' => $oid ];
 	}
 
 	/**
@@ -124,7 +124,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			$dataItem->getSubobjectName()
 		);
 
-		return array( 'o_id' => $oid );
+		return [ 'o_id' => $oid ];
 	}
 
 	/**

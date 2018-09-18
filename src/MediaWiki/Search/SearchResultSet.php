@@ -174,11 +174,11 @@ class SearchResultSet extends \SearchResultSet {
 		}
 
 		if ( method_exists( '\SearchHighlighter', 'highlightNone' ) ) {
-			return array();
+			return [];
 		}
 
 		// Will cause the highlighter to match every line start, thus returning the first few lines of found pages.
-		return array( '^' );
+		return [ '^' ];
 	}
 
 	private function getTokens() {

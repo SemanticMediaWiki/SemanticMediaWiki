@@ -29,12 +29,12 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	/**
 	 * @var array
 	 */
-	protected $config = array();
+	protected $config = [];
 
 	/**
 	 * @var array
 	 */
-	protected $activityLog = array();
+	protected $activityLog = [];
 
 	/**
 	 * @since 2.5

@@ -45,7 +45,7 @@ class Message {
 	/**
 	 * @var array
 	 */
-	private static $messageHandler = array();
+	private static $messageHandler = [];
 
 	/**
 	 * @since 2.4
@@ -111,12 +111,12 @@ class Message {
 			$type = self::TEXT;
 		}
 
-		if ( $message === array() ) {
+		if ( $message === [] ) {
 			return '';
 		}
 
 		$message = (array)$message;
-		$encode = array();
+		$encode = [];
 		$encode[] = $type;
 
 		foreach ( $message as $value ) {
@@ -223,7 +223,7 @@ class Message {
 
 		$message = call_user_func_array(
 			$handler,
-			array( $parameters, $language )
+			[ $parameters, $language ]
 		);
 
 		self::getCache()->save( $hash, $message );

@@ -35,11 +35,11 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array(
+		return [
 			'o_serialized' => FieldType::FIELD_TITLE,
 			'o_lat' => FieldType::TYPE_DOUBLE,
 			'o_lon' => FieldType::TYPE_DOUBLE
-		);
+		];
 	}
 
 	/**
@@ -48,9 +48,9 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array(
+		return [
 			'o_serialized' => FieldType::FIELD_TITLE
-		);
+		];
 	}
 
 	/**
@@ -59,10 +59,10 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array(
+		return [
 			'p_id,o_serialized',
 			'o_lat,o_lon'
-		);
+		];
 	}
 
 	/**
@@ -71,9 +71,9 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return array(
+		return [
 			'o_serialized' => $dataItem->getSerialization()
-		);
+		];
 	}
 
 	/**
@@ -82,11 +82,11 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		return array(
+		return [
 			'o_serialized' => $dataItem->getSerialization(),
 			'o_lat' => (string)$dataItem->getLatitude(),
 			'o_lon' => (string)$dataItem->getLongitude()
-		);
+		];
 	}
 
 	/**

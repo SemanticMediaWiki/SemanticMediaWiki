@@ -145,9 +145,9 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
 			'smw.fulltextSearchTableRebuild',
 			\SpecialPage::getTitleFor( 'SMWAdmin' ),
-			array(
+			[
 				'mode' => 'full'
-			)
+			]
 		);
 
 		$job->insert();

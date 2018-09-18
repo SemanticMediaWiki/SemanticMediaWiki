@@ -169,7 +169,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function select( $vars, $where, $options = array(), $extraNamespaces = array() ) {
+	public function select( $vars, $where, $options = [], $extraNamespaces = [] ) {
 		return $this->doQuery( $this->getSparqlForSelect( $vars, $where, $options, $extraNamespaces ) );
 	}
 
@@ -184,7 +184,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForSelect( $vars, $where, $options = array(), $extraNamespaces = array() ) {
+	public function getSparqlForSelect( $vars, $where, $options = [], $extraNamespaces = [] ) {
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
 
@@ -226,7 +226,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function ask( $where, $extraNamespaces = array() ) {
+	public function ask( $where, $extraNamespaces = [] ) {
 		return $this->doQuery( $this->getSparqlForAsk( $where, $extraNamespaces ) );
 	}
 
@@ -241,7 +241,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForAsk( $where, $extraNamespaces = array() ) {
+	public function getSparqlForAsk( $where, $extraNamespaces = [] ) {
 		return self::getPrefixString( $extraNamespaces ) . "ASK {\n" . $where . "\n}";
 	}
 
@@ -258,7 +258,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function selectCount( $variable, $where, $options = array(), $extraNamespaces = array() ) {
+	public function selectCount( $variable, $where, $options = [], $extraNamespaces = [] ) {
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT (COUNT(';
 
@@ -291,7 +291,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function delete( $deletePattern, $where, $extraNamespaces = array() ) {
+	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
@@ -319,7 +319,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
+	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ) {
 		return $this->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o", $extraNamespaces );
 	}
 
@@ -345,7 +345,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = array() ) {
+	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
@@ -367,7 +367,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function insertData( $triples, $extraNamespaces = array() ) {
+	public function insertData( $triples, $extraNamespaces = [] ) {
 
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
@@ -396,7 +396,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function deleteData( $triples, $extraNamespaces = array() ) {
+	public function deleteData( $triples, $extraNamespaces = [] ) {
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
@@ -431,10 +431,10 @@ class GenericRepositoryConnector implements RepositoryConnection {
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
 
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array(
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [
 			'Accept: application/sparql-results+xml,application/xml;q=0.8',
 			'Content-Type: application/x-www-form-urlencoded;charset=UTF-8'
-		) );
+		] );
 
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
@@ -488,7 +488,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 		$parameterString = "update=" . urlencode( $sparql );
 
 		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-www-form-urlencoded;charset=UTF-8' ) );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [ 'Content-Type: application/x-www-form-urlencoded;charset=UTF-8' ] );
 
 		$this->httpRequest->execute();
 
@@ -539,7 +539,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 
 		$this->httpRequest->setOption( CURLOPT_INFILE, $payloadFile );
 		$this->httpRequest->setOption( CURLOPT_INFILESIZE, strlen( $payload ) );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-turtle' ) );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [ 'Content-Type: application/x-turtle' ] );
 
 		$this->httpRequest->execute();
 
@@ -561,12 +561,12 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string
 	 */
-	public static function getPrefixString( $extraNamespaces = array(), $forSparql = true ) {
+	public static function getPrefixString( $extraNamespaces = [], $forSparql = true ) {
 		$prefixString = '';
 		$prefixIntro = $forSparql ? 'PREFIX ' : '@prefix ';
 		$prefixOutro = $forSparql ? "\n" : " .\n";
 
-		foreach ( array( 'wiki', 'rdf', 'rdfs', 'owl', 'swivt', 'property', 'xsd' ) as $shortname ) {
+		foreach ( [ 'wiki', 'rdf', 'rdfs', 'owl', 'swivt', 'property', 'xsd' ] as $shortname ) {
 			$prefixString .= "{$prefixIntro}{$shortname}: <" . Exporter::getInstance()->getNamespaceUri( $shortname ) . ">$prefixOutro";
 			unset( $extraNamespaces[$shortname] ); // avoid double declaration
 		}

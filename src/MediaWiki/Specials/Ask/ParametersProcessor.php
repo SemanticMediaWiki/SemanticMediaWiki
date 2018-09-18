@@ -154,7 +154,7 @@ class ParametersProcessor {
 
 		$parameters['limit'] = min( $parameters['limit'], self::$maxInlineLimit );
 
-		return array( $queryString, $parameters, $printouts );
+		return [ $queryString, $parameters, $printouts ];
 	}
 
 	private static function getParameterList( $request, $params ) {
@@ -208,7 +208,7 @@ class ParametersProcessor {
 			$reqParameters[] = $param;
 		}
 
-		$parameters = array();
+		$parameters = [];
 		unset( $reqParameters['title'] );
 
 		// MW's internal token

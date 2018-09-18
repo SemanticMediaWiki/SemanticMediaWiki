@@ -20,7 +20,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @var array
 	 */
-	private static $updateList = array();
+	private static $updateList = [];
 
 	/**
 	 * @var Store
@@ -49,7 +49,7 @@ class DependencyLinksTableUpdater {
 	 * @since 2.4
 	 */
 	public function clear() {
-		self::$updateList = array();
+		self::$updateList = [];
 	}
 
 	/**
@@ -60,7 +60,7 @@ class DependencyLinksTableUpdater {
 	 */
 	public function addToUpdateList( $sid, array $dependencyList = null ) {
 
-		if ( $sid == 0 || $dependencyList === null || $dependencyList === array() ) {
+		if ( $sid == 0 || $dependencyList === null || $dependencyList === [] ) {
 			return null;
 		}
 
@@ -77,12 +77,12 @@ class DependencyLinksTableUpdater {
 	public function doUpdate() {
 		foreach ( self::$updateList as $sid => $dependencyList ) {
 
-			if ( $dependencyList === array() ) {
+			if ( $dependencyList === [] ) {
 				continue;
 			}
 
 			$this->updateDependencyList( $sid, $dependencyList );
-			self::$updateList[$sid] = array();
+			self::$updateList[$sid] = [];
 		}
 	}
 
@@ -106,9 +106,9 @@ class DependencyLinksTableUpdater {
 
 		$connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array(
+			[
 				's_id' => $deleteIdList
-			),
+			],
 			__METHOD__
 		);
 
@@ -131,9 +131,9 @@ class DependencyLinksTableUpdater {
 		// that entries are self-corrected for dependencies matched
 		$connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array(
+			[
 				's_id' => $sid
-			),
+			],
 			__METHOD__
 		);
 
@@ -141,7 +141,7 @@ class DependencyLinksTableUpdater {
 			return $connection->endAtomicTransaction( __METHOD__ );
 		}
 
-		$inserts = array();
+		$inserts = [];
 
 		foreach ( $dependencyList as $dependency ) {
 
@@ -160,13 +160,13 @@ class DependencyLinksTableUpdater {
 				continue;
 			}
 
-			$inserts[$sid . $oid] = array(
+			$inserts[$sid . $oid] = [
 				's_id' => $sid,
 				'o_id' => $oid
-			);
+			];
 		}
 
-		if ( $inserts === array() ) {
+		if ( $inserts === [] ) {
 			return $connection->endAtomicTransaction( __METHOD__ );
 		}
 

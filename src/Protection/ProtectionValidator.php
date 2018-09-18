@@ -210,7 +210,7 @@ class ProtectionValidator {
 			$requestOptions
 		);
 
-		if ( $dataItems !== null && $dataItems !== array() ) {
+		if ( $dataItems !== null && $dataItems !== [] ) {
 			$hasProtection = $property->getKey() === '_EDIP' ? end( $dataItems )->getBoolean() : true;
 		}
 

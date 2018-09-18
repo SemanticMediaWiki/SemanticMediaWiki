@@ -89,7 +89,7 @@ class PropertySpecificationLookup {
 		$definition = $this->intermediaryMemoryCache->fetch( $hash );
 
 		if ( $definition === false ) {
-			$definition = array();
+			$definition = [];
 		}
 
 		if ( isset( $definition[$key] ) ) {
@@ -102,7 +102,7 @@ class PropertySpecificationLookup {
 		);
 
 		if ( !is_array( $dataItems ) ) {
-			$dataItems = array();
+			$dataItems = [];
 		}
 
 		$definition[$key] = $dataItems;
@@ -123,7 +123,7 @@ class PropertySpecificationLookup {
 		$fieldList = false;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_LIST' ) );
 
-		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$fieldList = end( $dataItems );
 		}
 
@@ -182,7 +182,7 @@ class PropertySpecificationLookup {
 			$query
 		);
 
-		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$dataItem = end( $dataItems );
 
 			// Cache results as a linked list attached to
@@ -206,7 +206,7 @@ class PropertySpecificationLookup {
 		$hasUniquenessConstraint = false;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVUC' ) );
 
-		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$hasUniquenessConstraint = end( $dataItems )->getBoolean();
 		}
 
@@ -225,7 +225,7 @@ class PropertySpecificationLookup {
 		$dataItem = null;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_INST' ) );
 
-		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 
 			foreach ( $dataItems as $dataItem ) {
 				$pv = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
@@ -256,7 +256,7 @@ class PropertySpecificationLookup {
 		$dataItem = null;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PEFU' ) );
 
-		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$dataItem = end( $dataItems );
 		}
 
@@ -275,7 +275,7 @@ class PropertySpecificationLookup {
 		$allowsPattern = '';
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAP' ) );
 
-		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$allowsPattern = end( $dataItems )->getString();
 		}
 
@@ -291,10 +291,10 @@ class PropertySpecificationLookup {
 	 */
 	public function getAllowedValues( DIProperty $property ) {
 
-		$allowsValues = array();
+		$allowsValues = [];
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAL' ) );
 
-		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$allowsValues = $dataItems;
 		}
 
@@ -310,10 +310,10 @@ class PropertySpecificationLookup {
 	 */
 	public function getAllowedListValues( DIProperty $property ) {
 
-		$allowsListValue = array();
+		$allowsListValue = [];
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVALI' ) );
 
-		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 			$allowsListValue = $dataItems;
 		}
 
@@ -332,7 +332,7 @@ class PropertySpecificationLookup {
 		$displayPrecision = false;
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PREC' ) );
 
-		if ( $dataItems !== false && $dataItems !== array() ) {
+		if ( $dataItems !== false && $dataItems !== [] ) {
 			$dataItem = end( $dataItems );
 			$displayPrecision = abs( (int)$dataItem->getNumber() );
 		}
@@ -349,14 +349,14 @@ class PropertySpecificationLookup {
 	 */
 	public function getDisplayUnits( DIProperty $property ) {
 
-		$units = array();
+		$units = [];
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
 			$property->getCanonicalDiWikiPage(),
 			new DIProperty( '_UNIT' )
 		);
 
-		if ( $dataItems !== false && $dataItems !== array() ) {
+		if ( $dataItems !== false && $dataItems !== [] ) {
 			foreach ( $dataItems as $dataItem ) {
 				$units = array_merge( $units, preg_split( '/\s*,\s*/u', $dataItem->getString() ) );
 			}
@@ -437,7 +437,7 @@ class PropertySpecificationLookup {
 		$label = $dataValue->getFormattedLabel();
 
 		$message = Message::get(
-			array( $msgKey, $label ),
+			[ $msgKey, $label ],
 			$linker === null ? Message::ESCAPED : Message::PARSE,
 			$languageCode
 		);
@@ -481,7 +481,7 @@ class PropertySpecificationLookup {
 
 	private function findTextValueByLanguage( $dataItems, $property, $languageCode ) {
 
-		if ( $dataItems === null || $dataItems === array() ) {
+		if ( $dataItems === null || $dataItems === [] ) {
 			return null;
 		}
 

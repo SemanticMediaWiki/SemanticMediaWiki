@@ -113,7 +113,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @var array
 	 */
-	protected $mErrors = array();
+	protected $mErrors = [];
 
 	/**
 	 * If set, treat result as plain HTML. Can be used by printer classes if wiki mark-up is not enough.
@@ -267,7 +267,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		$this->outputMode = $outputMode;
 		$this->results = $results;
 
-		$params = array();
+		$params = [];
 		$modules = [];
 		$styles = [];
 
@@ -387,7 +387,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		// Apply intro parameter
 		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
 			if ( $outputmode == SMW_OUTPUT_HTML ) {
-				$result = Message::get( array( 'smw-parse', $this->mIntro ), Message::PARSE ) . $result;
+				$result = Message::get( [ 'smw-parse', $this->mIntro ], Message::PARSE ) . $result;
 			} elseif ( $outputmode !== SMW_OUTPUT_RAW ) {
 				$result = $this->mIntro . $result;
 			}
@@ -396,7 +396,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		// Apply outro parameter
 		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
 			if ( $outputmode == SMW_OUTPUT_HTML ) {
-				$result = $result . Message::get( array( 'smw-parse', $this->mOutro ), Message::PARSE );
+				$result = $result . Message::get( [ 'smw-parse', $this->mOutro ], Message::PARSE );
 			} elseif ( $outputmode !== SMW_OUTPUT_RAW ) {
 				$result = $result . $this->mOutro;
 			}
@@ -408,7 +408,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		}
 
 		if ( ( $this->isHTML ) && ( $outputmode == SMW_OUTPUT_WIKI ) ) {
-			$result = array( $result, 'isHTML' => true );
+			$result = [ $result, 'isHTML' => true ];
 		} elseif ( ( !$this->isHTML ) && ( $outputmode == SMW_OUTPUT_HTML ) ) {
 			$result = $this->recursiveTextProcessor->recursiveTagParse( $result );
 		}
@@ -668,7 +668,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @return array
 	 */
 	public function getParameters() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -695,8 +695,8 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return array
 	 */
-	public final function getNamedParameters( array $definitions = array() ) {
-		$params = array();
+	public final function getNamedParameters( array $definitions = [] ) {
+		$params = [];
 
 		foreach ( $this->getParamDefinitions( $definitions ) as $param ) {
 			$params[is_array( $param ) ? $param['name'] : $param->getName()] = $param;

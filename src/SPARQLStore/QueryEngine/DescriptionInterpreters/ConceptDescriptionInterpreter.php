@@ -77,7 +77,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		if ( $this->conditionBuilder->getCircularReferenceGuard()->isCircular( $hash ) ) {
 
 			$this->conditionBuilder->addError(
-				array( 'smw-query-condition-circular', $description->getQueryString() )
+				[ 'smw-query-condition-circular', $description->getQueryString() ]
 			);
 
 			return new FalseCondition();
@@ -103,7 +103,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 			new DIProperty( '_CONC' )
 		);
 
-		if ( $value === null || $value === array() ) {
+		if ( $value === null || $value === [] ) {
 			return '';
 		}
 
@@ -123,7 +123,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError(
-					array( 'smw-query-condition-circular', $description->getQueryString() )
+					[ 'smw-query-condition-circular', $description->getQueryString() ]
 				);
 				return;
 			}

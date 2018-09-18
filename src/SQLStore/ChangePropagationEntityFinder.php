@@ -82,7 +82,7 @@ class ChangePropagationEntityFinder {
 	 */
 	public function findByProperty( DIProperty $property ) {
 
-		$dataItems = array();
+		$dataItems = [];
 		$appendIterator = $this->iteratorFactory->newAppendIterator();
 
 		$res = $this->store->getAllPropertySubjects(
@@ -165,12 +165,12 @@ class ChangePropagationEntityFinder {
 			// Select any references that are hidden or remained active
 			$rows = $connection->select(
 				$connection->tableName( $tableName ),
-				array(
+				[
 					's_id'
-				),
-				array(
+				],
+				[
 					'p_id' => $pid
-				),
+				],
 				__METHOD__
 			);
 
@@ -179,7 +179,7 @@ class ChangePropagationEntityFinder {
 			}
 		}
 
-		if ( $idList === array() ) {
+		if ( $idList === [] ) {
 			return $idList;
 		}
 

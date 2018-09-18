@@ -264,10 +264,10 @@ class Task extends ApiBase {
 	 * @return array
 	 */
 	public function getAllowedParams() {
-		return array(
-			'task' => array(
+		return [
+			'task' => [
 				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => array(
+				ApiBase::PARAM_TYPE => [
 
 					// Run update using the updateJob
 					'update',
@@ -280,13 +280,13 @@ class Task extends ApiBase {
 
 					// Run jobs from a list directly without the job scheduler
 					'run-joblist'
-				)
-			),
-			'params' => array(
+				]
+			],
+			'params' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_REQUIRED => false,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -296,10 +296,10 @@ class Task extends ApiBase {
 	 * @return array
 	 */
 	public function getParamDescription() {
-		return array(
+		return [
 			'task' => 'Defines the task type',
 			'params' => 'JSON encoded parameters that matches the selected type requirement'
-		);
+		];
 	}
 
 	/**
@@ -309,9 +309,9 @@ class Task extends ApiBase {
 	 * @return array
 	 */
 	public function getDescription() {
-		return array(
+		return [
 			'Semantic MediaWiki API module to invoke and execute tasks (for internal use only)'
-		);
+		];
 	}
 
 	/**
@@ -345,9 +345,9 @@ class Task extends ApiBase {
 	 * @return array
 	 */
 	protected function getExamples() {
-		return array(
+		return [
 			'api.php?action=smwtask&task=update&params={ "subject": "Foo" }',
-		);
+		];
 	}
 
 	/**

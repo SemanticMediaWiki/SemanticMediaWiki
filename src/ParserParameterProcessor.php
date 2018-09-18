@@ -35,14 +35,14 @@ class ParserParameterProcessor {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param array $rawParameters
 	 */
-	public function __construct( array $rawParameters = array() ) {
+	public function __construct( array $rawParameters = [] ) {
 		$this->rawParameters = $rawParameters;
 		$this->parameters = $this->doMap( $rawParameters );
 	}
@@ -66,7 +66,7 @@ class ParserParameterProcessor {
 	 * @param mixed $error
 	 */
 	public function addError( $error ) {
-		$this->errors = array_merge( (array)$error === $error ? $error : array( $error ), $this->errors );
+		$this->errors = array_merge( (array)$error === $error ? $error : [ $error ], $this->errors );
 	}
 
 	/**
@@ -150,7 +150,7 @@ class ParserParameterProcessor {
 			return $this->parameters[$key];
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -181,7 +181,7 @@ class ParserParameterProcessor {
 	 * @param array $values
 	 */
 	public function setParameter( $key, array $values ) {
-		if ( $key !== '' && $values !== array() ) {
+		if ( $key !== '' && $values !== [] ) {
 			$this->parameters[$key] = $values;
 		}
 	}
@@ -213,13 +213,13 @@ class ParserParameterProcessor {
 	 * via [key] => [value1, value2]
 	 */
 	private function doMap( array $params ) {
-		$results = array();
+		$results = [];
 		$previousProperty = null;
 
 		while ( key( $params ) !== null ) {
 
 			$pipe = false;
-			$values = array();
+			$values = [];
 
 			// Only strings are allowed for processing
 			if( !is_string( current ( $params ) ) ) {
@@ -263,7 +263,7 @@ class ParserParameterProcessor {
 			// +pipe indicates that elements are expected to be concatenated
 			// with a | that was removed during a #parserFunction invocation
 			if ( $pipe ) {
-				$results[$currentElement[0]] = array( implode( '|', $results[$currentElement[0]] ) );
+				$results[$currentElement[0]] = [ implode( '|', $results[$currentElement[0]] ) ];
 			}
 		}
 
@@ -280,7 +280,7 @@ class ParserParameterProcessor {
 
 		$nextElement = explode( '=', trim( current( $params ) ), 2 );
 
-		if ( $nextElement !== array() ) {
+		if ( $nextElement !== [] ) {
 			// This allows assignments of type |Has property=Test1,Test2|+sep=,
 			// as a means to support multiple value declaration
 			if ( substr( $nextElement[0], - 5 ) === '+sep' ) {
@@ -310,10 +310,10 @@ class ParserParameterProcessor {
 
 		if ( $params === null || json_last_error() !== JSON_ERROR_NONE ) {
 			$this->addError( Message::encode(
-				array(
+				[
 					'smw-parser-invalid-json-format',
 					ErrorCodeFormatter::getStringFromJsonErrorCode( json_last_error() )
-				)
+				]
 			) );
 			return $results;
 		}
@@ -321,11 +321,11 @@ class ParserParameterProcessor {
 		array_walk( $params, function( &$value, $key ) {
 
 			if ( $value === '' ) {
-				$value = array();
+				$value = [];
 			}
 
 			if ( !is_array( $value ) ) {
-				$value = array( $value );
+				$value = [ $value ];
 			}
 		} );
 

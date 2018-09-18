@@ -26,32 +26,32 @@ class ExpDataSerializer implements Serializer {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
 
-		return $this->doSerialize( $expData ) + array( 'serializer' => __CLASS__, 'version' => 0.1 );
+		return $this->doSerialize( $expData ) + [ 'serializer' => __CLASS__, 'version' => 0.1 ];
 	}
 
 	private function doSerialize( $expData ) {
 
-		$serialization = array(
+		$serialization = [
 			'subject' => $expData->getSubject()->getSerialization()
-		);
+		];
 
-		$properties = array();
+		$properties = [];
 
 		foreach ( $expData->getProperties() as $property ) {
-			$properties[$property->getUri()] = array(
+			$properties[$property->getUri()] = [
 				'property' => $property->getSerialization(),
 				'children' => $this->doSerializeChildren( $expData->getValues( $property ) )
-			);
+			];
 		}
 
-		return $serialization + array( 'data' => $properties );
+		return $serialization + [ 'data' => $properties ];
 	}
 
 	private function doSerializeChildren( array $elements ) {
 
-		$children = array();
+		$children = [];
 
-		if ( $elements === array() ) {
+		if ( $elements === [] ) {
 			return $children;
 		}
 

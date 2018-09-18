@@ -32,7 +32,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @var Title[]
 	 */
-	private $titles = array();
+	private $titles = [];
 
 	/**
 	 * @var string
@@ -67,7 +67,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @var array
 	 */
-	private $pendingUpdates = array();
+	private $pendingUpdates = [];
 
 	/**
 	 * @since 2.5
@@ -162,7 +162,7 @@ class PageUpdater implements DeferrableUpdate {
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->titles = array();
+		$this->titles = [];
 	}
 
 	/**
@@ -201,10 +201,10 @@ class PageUpdater implements DeferrableUpdate {
 			$this->fingerprint
 		);
 
-		$this->transactionalCallableUpdate->setOrigin( array(
+		$this->transactionalCallableUpdate->setOrigin( [
 			__METHOD__,
 			$this->origin
-		) );
+		] );
 
 		$this->transactionalCallableUpdate->pushUpdate();
 	}
@@ -220,7 +220,7 @@ class PageUpdater implements DeferrableUpdate {
 			call_user_func( [ $this, $update ] );
 		}
 
-		$this->pendingUpdates = array();
+		$this->pendingUpdates = [];
 	}
 
 	/**
@@ -331,7 +331,7 @@ class PageUpdater implements DeferrableUpdate {
 			$ids[] = $row->page_id;
 		}
 
-		if ( $ids === array() ) {
+		if ( $ids === [] ) {
 			return;
 		}
 

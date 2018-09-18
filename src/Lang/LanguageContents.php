@@ -25,7 +25,7 @@ class LanguageContents {
 	/**
 	 * @var array
 	 */
-	private $contents = array();
+	private $contents = [];
 
 	/**
 	 * @since 2.5
@@ -92,12 +92,12 @@ class LanguageContents {
 
 		$canonicalFallbackLanguageCode = $this->fallbackFinder->getCanonicalFallbackLanguageCode();
 
-		if ( !isset( $this->contents[$languageCode] ) || $this->contents[$languageCode] === array() ) {
+		if ( !isset( $this->contents[$languageCode] ) || $this->contents[$languageCode] === [] ) {
 			// In case a language has no matching file
 			try {
 				$this->contents[$languageCode] = $this->jsonContentsFileReader->readByLanguageCode( $languageCode );
 			} catch ( RuntimeException $e ) {
-				$this->contents[$languageCode] = array();
+				$this->contents[$languageCode] = [];
 				$languageCode = $canonicalFallbackLanguageCode;
 			}
 		}
@@ -112,15 +112,15 @@ class LanguageContents {
 			$depth = count( $keys );
 		}
 
-		if ( $depth == 1 && isset( $this->contents[$languageCode][$id] ) && $this->contents[$languageCode][$id] !== array() ) {
+		if ( $depth == 1 && isset( $this->contents[$languageCode][$id] ) && $this->contents[$languageCode][$id] !== [] ) {
 			return $this->contents[$languageCode][$id];
 		}
 
-		if ( $depth == 2 && isset( $this->contents[$languageCode][$keys[0]][$keys[1]] ) && $this->contents[$languageCode][$keys[0]][$keys[1]] !== array() ) {
+		if ( $depth == 2 && isset( $this->contents[$languageCode][$keys[0]][$keys[1]] ) && $this->contents[$languageCode][$keys[0]][$keys[1]] !== [] ) {
 			return $this->contents[$languageCode][$keys[0]][$keys[1]];
 		}
 
-		if ( $depth == 3 && isset( $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]] ) && $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]] !== array() ) {
+		if ( $depth == 3 && isset( $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]] ) && $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]] !== [] ) {
 			return $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]];
 		}
 

@@ -126,7 +126,7 @@ class ApplicationFactory {
 	 * @return mixed
 	 */
 	public function singleton( $serviceName ) {
-		return call_user_func_array( array( $this->containerBuilder, 'singleton' ), func_get_args() );
+		return call_user_func_array( [ $this->containerBuilder, 'singleton' ], func_get_args() );
 	}
 
 	/**
@@ -142,7 +142,7 @@ class ApplicationFactory {
 	 * @return mixed
 	 */
 	public function create( $serviceName ) {
-		return call_user_func_array( array( $this->containerBuilder, 'create' ), func_get_args() );
+		return call_user_func_array( [ $this->containerBuilder, 'create' ], func_get_args() );
 	}
 
 	/**

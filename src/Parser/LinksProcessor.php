@@ -119,10 +119,10 @@ class LinksProcessor {
 		}
 
 		if ( $caption !== false ) {
-			return array( $semanticLink[0], $semanticLink[1], $value, $caption );
+			return [ $semanticLink[0], $semanticLink[1], $value, $caption ];
 		}
 
-		return array( $semanticLink[0], $semanticLink[1], $value );
+		return [ $semanticLink[0], $semanticLink[1], $value ];
 	}
 
 	/**
@@ -186,7 +186,7 @@ class LinksProcessor {
 		// Extract annotations and create tooltip.
 		$properties = preg_split( '/:[=:]/u', $property );
 
-		return array( $properties, $value, $valueCaption );
+		return [ $properties, $value, $valueCaption ];
 	}
 
 	private function setAnnotation( $value ) {

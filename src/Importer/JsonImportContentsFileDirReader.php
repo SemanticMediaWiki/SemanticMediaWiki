@@ -21,12 +21,12 @@ class JsonImportContentsFileDirReader {
 	/**
 	 * @var array
 	 */
-	private static $contents = array();
+	private static $contents = [];
 
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @var []
@@ -72,7 +72,7 @@ class JsonImportContentsFileDirReader {
 				$files = $this->getFilesFromLocation( $this->normalize( $importFileDir ), 'json' );
 			} catch( RuntimeException $e ) {
 				$this->errors[] = $importFileDir . ' is not accessible.';
-				$files = array();
+				$files = [];
 			}
 
 			foreach ( $files as $file => $path ) {
@@ -113,7 +113,7 @@ class JsonImportContentsFileDirReader {
 			return '';
 		}
 
-		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $importFileDir );
+		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $importFileDir );
 
 		if ( is_readable( $path ) ) {
 			return $path;
@@ -128,7 +128,7 @@ class JsonImportContentsFileDirReader {
 			return [];
 		}
 
-		$files = array();
+		$files = [];
 
 		$directoryIterator = new \RecursiveDirectoryIterator( $path );
 

@@ -177,7 +177,7 @@ class ParamListProcessor {
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
 			function( array $matches ) {
-				return str_replace( array( '=' ), array( '-3D' ), $matches[0] );
+				return str_replace( [ '=' ], [ '-3D' ], $matches[0] );
 			},
 			$param
 		);
@@ -248,7 +248,7 @@ class ParamListProcessor {
 			// #3196
 			// Ensure to decode `-3D` from encodeEq to support things like
 			// `|intro=[[File:Foo.png|link=Bar]]`
-			$serialization['parameters'][$p] = str_replace( array( '-3D' ), array( '=' ), $parts[1] );
+			$serialization['parameters'][$p] = str_replace( [ '-3D' ], [ '=' ], $parts[1] );
 		} else {
 			$serialization['query'] .= $param;
 		}

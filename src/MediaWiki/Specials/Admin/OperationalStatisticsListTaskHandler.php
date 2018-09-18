@@ -150,11 +150,11 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 		$semanticStatistics = $this->getStore()->getStatistics();
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), $this->msg( array( 'smw-admin-operational-statistics' ), Message::PARSE ) )
+			Html::rawElement( 'p', [], $this->msg( [ 'smw-admin-operational-statistics' ], Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->msg( 'smw-statistics' ) )
+			Html::element( 'h2', [], $this->msg( 'smw-statistics' ) )
 		);
 
 		$this->outputFormatter->addAsPreformattedText(
@@ -178,25 +178,25 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	private function outputJobStatistics() {
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(), $this->msg( 'smw-admin-statistics-job-title' ) )
+			Html::element( 'h2', [], $this->msg( 'smw-admin-statistics-job-title' ) )
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), $this->msg( 'smw-admin-statistics-job-docu', Message::PARSE ) )
+			Html::rawElement( 'p', [], $this->msg( 'smw-admin-statistics-job-docu', Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHTML(
 			Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'smw-admin-statistics-job',
-					'data-config' => json_encode( array(
+					'data-config' => json_encode( [
 						'contentClass' => 'smw-admin-statistics-job-content',
 						'errorClass'   => 'smw-admin-statistics-job-error'
-					) ),
-				),
-				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-error' ), '' ) .
-				Html::element( 'div', array( 'class' => 'smw-admin-statistics-job-content' ), $this->msg( 'smw-data-lookup' ) )
+					] ),
+				],
+				Html::element( 'div', [ 'class' => 'smw-admin-statistics-job-error' ], '' ) .
+				Html::element( 'div', [ 'class' => 'smw-admin-statistics-job-content' ], $this->msg( 'smw-data-lookup' ) )
 			)
 		);
 	}

@@ -32,7 +32,7 @@ abstract class Job extends MediaWikiJob {
 	/**
 	 * @var Job
 	 */
-	protected $jobs = array();
+	protected $jobs = [];
 
 	/**
 	 * @var Store
@@ -155,7 +155,7 @@ abstract class Job extends MediaWikiJob {
 	 */
 	public function insert() {
 		if ( $this->isEnabledJobQueue ) {
-			return self::batchInsert( array( $this ) );
+			return self::batchInsert( [ $this ] );
 		}
 	}
 

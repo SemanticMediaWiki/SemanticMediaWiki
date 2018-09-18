@@ -22,7 +22,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 		$charLongLength = FieldType::CHAR_LONG_LENGTH;
 
-		$fieldTypes = array(
+		$fieldTypes = [
 			 // like page_id in MW page table
 			'id'         => 'INT(11) UNSIGNED',
 			 // like page_id in MW page table
@@ -50,7 +50,7 @@ class MySQLTableBuilder extends TableBuilder {
 			'char_long_nocase' => "VARCHAR($charLongLength) CHARSET utf8 COLLATE utf8_general_ci",
 			'usage_count'      => 'INT(8) UNSIGNED',
 			'integer_unsigned' => 'INT(8) UNSIGNED'
-		);
+		];
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
@@ -67,7 +67,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
 
-		$fieldSql = array();
+		$fieldSql = [];
 		$fields = $attributes['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
@@ -144,7 +144,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$sql = 'DESCRIBE ' . $tableName;
 
 		$res = $this->connection->query( $sql, __METHOD__ );
-		$currentFields = array();
+		$currentFields = [];
 
 		foreach ( $res as $row ) {
 			$type = strtoupper( $row->Type );
@@ -174,7 +174,7 @@ class MySQLTableBuilder extends TableBuilder {
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
 
 		if ( !isset( $this->activityLog[$tableName] ) ) {
-			$this->activityLog[$tableName] = array();
+			$this->activityLog[$tableName] = [];
 		}
 
 		$fieldType = $this->getStandardFieldType( $fieldType );
@@ -312,7 +312,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 */
 	private function getIndexInfo( $tableName ) {
 
-		$indices = array();
+		$indices = [];
 
 		$res = $this->connection->query( 'SHOW INDEX FROM ' . $tableName, __METHOD__ );
 

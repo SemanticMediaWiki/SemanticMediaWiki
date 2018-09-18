@@ -140,7 +140,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 		$subConditionElements->unionCondition = '';
 		$subConditionElements->filter = '';
 
-		$namespaces = $weakConditions = array();
+		$namespaces = $weakConditions = [];
 		$hasSafeSubconditions = false;
 
 		foreach ( $subDescriptions as $subDescription ) {
@@ -191,7 +191,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 				// where a singleton is required to search against the sortkey but
 				// replacing the filter with the condition temporary stored in
 				// weakconditions
-				if ( $subConditionElements->unionCondition && $subCondition->weakConditions !== array() ) {
+				if ( $subConditionElements->unionCondition && $subCondition->weakConditions !== [] ) {
 					$weakCondition = array_shift( $subCondition->weakConditions );
 					$subConditionElements->unionCondition = str_replace(
 						"FILTER( ?$joinVariable = $matchElementName )",

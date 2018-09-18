@@ -49,7 +49,7 @@ class SpecialAdmin extends SpecialPage {
 
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
 			// $this->mRestriction is private MW 1.23-
-			throw new ExtendedPermissionsError( 'smw-admin', array( 'smw-admin-permission-missing' ) );
+			throw new ExtendedPermissionsError( 'smw-admin', [ 'smw-admin-permission-missing' ] );
 		}
 
 		// https://phabricator.wikimedia.org/T109652#1562641
@@ -152,7 +152,7 @@ class SpecialAdmin extends SpecialPage {
 			$list .= $dataRepairTask->getHtml();
 		}
 
-		$dataRebuildSection .= Html::rawElement( 'div', array( 'class' => 'smw-admin-data-repair-section' ),
+		$dataRebuildSection .= Html::rawElement( 'div', [ 'class' => 'smw-admin-data-repair-section' ],
 			$list
 		);
 
@@ -180,7 +180,7 @@ class SpecialAdmin extends SpecialPage {
 			[
 				'class' => 'smw-admin-supplementary-section'
 			],
-			Html::rawElement( 'ul', array(), $list )
+			Html::rawElement( 'ul', [], $list )
 		);
 
 		$deprecationNoticeTaskList = $taskHandlerList[TaskHandler::SECTION_DEPRECATION];

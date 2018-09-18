@@ -72,12 +72,12 @@ class HtmlBuilder {
 	/**
 	 * @var array
 	 */
-	private $extraModules = array();
+	private $extraModules = [];
 
 	/**
 	 * @var array
 	 */
-	private $options = array();
+	private $options = [];
 
 	/**
 	 * @since 2.5
@@ -158,37 +158,37 @@ class HtmlBuilder {
 	public function placeholder() {
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'class' => 'smwb-container',
 				'data-subject' => $this->subject->getHash(),
 				'data-options' => json_encode( $this->options )
-			),
+			],
 			Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'smwb-status'
-				),
+				],
 				Html::rawElement(
 					'noscript',
-					array(),
+					[],
 					Html::rawElement(
 						'div',
-						array(
+						[
 							'class' => 'smw-callout smw-callout-error',
-						),
+						],
 						Message::get( 'smw-noscript', Message::PARSE )
 					)
 				)
 			) . Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'smwb-emptysheet is-disabled'
-				),
+				],
 				Html::rawElement(
 					'span',
-					array(
+					[
 						'class' => 'smw-overlay-spinner large inline'
-					)
+					]
 				) . $this->buildEmptyHTML()
 			)
 		);
@@ -262,9 +262,9 @@ class HtmlBuilder {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'class' => 'smwb-content'
-			), $html
+			], $html
 		) . $form;
 	}
 
@@ -277,7 +277,7 @@ class HtmlBuilder {
 		$html = "<div class=\"smwb-datasheet smwb-theme-light\">";
 
 		$leftside = true;
-		$modules = array();
+		$modules = [];
 
 		$this->dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$this->subject
@@ -345,10 +345,10 @@ class HtmlBuilder {
 
 		$html .= Html::element(
 			'div',
-			array(
+			[
 				'class' => 'smwb-modules',
 				'data-modules' => json_encode( $this->extraModules )
-			)
+			]
 		);
 
 		return $html;
@@ -590,12 +590,12 @@ class HtmlBuilder {
 			if ( $hook ) {
 				$value_html .= Html::element(
 					'a',
-					array(
-						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
+					[
+						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( [
 							 'property' => $dvProperty->getWikiValue(),
 							 'value' => $this->dataValue->getWikiValue()
-						) )
-					),
+						] )
+					],
 					wfMessage( 'smw_browse_more' )->text()
 				);
 			}
@@ -603,12 +603,12 @@ class HtmlBuilder {
 			if ( $moreOutgoing ) {
 				$value_html .= Html::element(
 					'a',
-					array(
-						'href' => \SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( array(
+					[
+						'href' => \SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( [
 							 'type' => $dvProperty->getWikiValue(),
 							 'from' => $this->dataValue->getWikiValue()
-						) )
-					),
+						] )
+					],
 					wfMessage( 'smw_browse_more' )->text()
 				);
 			}
@@ -623,9 +623,9 @@ class HtmlBuilder {
 			// display row
 			$html .= HtmlDivTable::row(
 				( $left ? ( $head . $body ) : ( $body . $head ) ),
-				array(
+				[
 					"class" => "{$dirPrefix}propvalue"
-				)
+				]
 			);
 
 			$noresult = false;
@@ -664,21 +664,21 @@ class HtmlBuilder {
 		if ( $this->getOption( 'showGroup' ) ) {
 
 			if ( $group === 'hide' ) {
-				$parameters = array(
+				$parameters = [
 					'offset'  => 0,
 					'dir'     => $this->showincoming ? 'both' : 'out',
 					'article' => $article,
 					'group'   => 'show'
-				);
+				];
 
 				$linkMsg = 'smw-browse-show-group';
 			} else {
-				$parameters = array(
+				$parameters = [
 					'offset'  => $this->offset,
 					'dir'     => $this->showincoming ? 'both' : 'out',
 					'article' => $article,
 					'group'   => 'hide'
-				);
+				];
 
 				$linkMsg = 'smw-browse-hide-group';
 			}
@@ -690,21 +690,21 @@ class HtmlBuilder {
 		if ( $this->showoutgoing ) {
 
 			if ( $this->showincoming ) {
-				$parameters = array(
+				$parameters = [
 					'offset'  => 0,
 					'dir'     => 'out',
 					'article' => $article,
 					'group'   => $group
-				);
+				];
 
 				$linkMsg = 'smw_browse_hide_incoming';
 			} else {
-				$parameters = array(
+				$parameters = [
 					'offset'  => $this->offset,
 					'dir'     => 'both',
 					'article' => $article,
 					'group'   => $group
-				);
+				];
 
 				$linkMsg = 'smw_browse_show_incoming';
 			}
@@ -748,16 +748,16 @@ class HtmlBuilder {
 		$article = $this->dataValue->getLongWikiText();
 
 		$open = HtmlDivTable::open(
-			array(
+			[
 				'class' => 'smwb-factbox'
-			)
+			]
 		);
 
 		$html = HtmlDivTable::row(
 			'&#160;',
-			array(
+			[
 				'class' => 'smwb-center'
-			)
+			]
 		);
 
 		$close = HtmlDivTable::close();
@@ -769,11 +769,11 @@ class HtmlBuilder {
 		if ( ( $this->offset > 0 ) || $more ) {
 			$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
 
-			$parameters = array(
+			$parameters = [
 				'offset'  => $offset,
 				'dir'     => $this->showoutgoing ? 'both' : 'in',
 				'article' => $article
-			);
+			];
 
 			$linkMsg = 'smw_result_prev';
 
@@ -781,11 +781,11 @@ class HtmlBuilder {
 
 			$offset = $this->offset + $this->incomingPropertiesCount - 1;
 
-			$parameters = array(
+			$parameters = [
 				'offset'  => $offset,
 				'dir'     => $this->showoutgoing ? 'both' : 'in',
 				'article' => $article
-			);
+			];
 
 			$linkMsg = 'smw_result_next';
 
@@ -795,9 +795,9 @@ class HtmlBuilder {
 
 			$html = HtmlDivTable::row(
 				$html,
-				array(
+				[
 					'class' => 'smwb-center'
-				)
+				]
 			);
 		}
 
@@ -914,9 +914,9 @@ class HtmlBuilder {
 
 			$group .= HtmlDivTable::row(
 				$h,
-				array(
+				[
 					"class" => "{$dirPrefix}propvalue"
-				)
+				]
 			);
 		}
 
@@ -935,9 +935,9 @@ class HtmlBuilder {
 
 			$html = HtmlDivTable::row(
 				$h,
-				array(
+				[
 					"class" => "{$dirPrefix}propvalue smwb-group-links"
-				)
+				]
 			) . $group;
 		}
 

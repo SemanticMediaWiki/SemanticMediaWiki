@@ -20,7 +20,7 @@ class NullJob extends Job {
 	 * @param Title|null $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title = null, $params = array() ) {}
+	public function __construct( Title $title = null, $params = [] ) {}
 
 	/**
 	 * @see Job::run

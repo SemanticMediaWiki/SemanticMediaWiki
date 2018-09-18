@@ -53,11 +53,11 @@ class TableFieldUpdater {
 
 		$connection->update(
 			SQLStore::ID_TABLE,
-			array(
+			[
 				'smw_sortkey' => $searchKey,
 				'smw_sort'    => $this->collator->getSortKey( $searchKey )
-			),
-			array( 'smw_id' => $id ),
+			],
+			[ 'smw_id' => $id ],
 			__METHOD__
 		);
 

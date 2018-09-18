@@ -91,12 +91,12 @@ class ResultFieldMatchFinder {
 	 */
 	public function findAndMatch( DataItem $dataItem ) {
 
-		$content = array();
+		$content = [];
 
 		// Request the current element (page in result set).
 		// The limit is ignored here.
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_THIS ) ) {
-			return array( $dataItem );
+			return [ $dataItem ];
 		}
 
 		// Request all direct categories of the current element
@@ -136,7 +136,7 @@ class ResultFieldMatchFinder {
 				}
 			}
 
-			return array( new DIBoolean( $found ) );
+			return [ new DIBoolean( $found ) ];
 		}
 
 		// Request all property values of a certain attribute of the current element.
@@ -211,7 +211,7 @@ class ResultFieldMatchFinder {
 
 		$index = $this->printRequest->getParameter( 'index' );
 		$lang = $this->printRequest->getParameter( 'lang' );
-		$newcontent = array();
+		$newcontent = [];
 
 		// Replace content with specific content from a Container/MultiValue
 		foreach ( $content as $diContainer ) {
@@ -253,10 +253,10 @@ class ResultFieldMatchFinder {
 	private function getResultContent( DataItem $dataItem ) {
 
 		$dataValue = $this->printRequest->getData();
-		$dataItems = array( $dataItem );
+		$dataItems = [ $dataItem ];
 
 		if ( !$dataValue->isValid() ) {
-			return array();
+			return [];
 		}
 
 		// If it is a chain then try to find a connected DIWikiPage subject that
@@ -275,8 +275,8 @@ class ResultFieldMatchFinder {
 
 				// If the results return empty then it means that for this element
 				// the chain has no matchable items hence we stop
-				if ( $dataItems === array() ) {
-					return array();
+				if ( $dataItems === [] ) {
+					return [];
 				}
 			}
 
@@ -288,7 +288,7 @@ class ResultFieldMatchFinder {
 
 	private function doFetchPropertyValues( $dataItems, $dataValue ) {
 
-		$propertyValues = array();
+		$propertyValues = [];
 
 		foreach ( $dataItems as $dataItem ) {
 

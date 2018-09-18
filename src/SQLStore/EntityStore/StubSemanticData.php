@@ -39,7 +39,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @var array
 	 */
-	protected $mStubPropVals = array();
+	protected $mStubPropVals = [];
 
 	/**
 	 * DIWikiPage object that is the subject of this container.
@@ -79,7 +79,7 @@ class StubSemanticData extends SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mStubPropVals', 'options', 'extensionData' );
+		return [ 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mStubPropVals', 'options', 'extensionData' ];
 	}
 
 	/**
@@ -149,7 +149,7 @@ class StubSemanticData extends SemanticData {
 	 */
 	public function getPropertyValues( DIProperty $property ) {
 		if ( $property->isInverse() ) { // we never have any data for inverses
-			return array();
+			return [];
 		}
 
 		if ( array_key_exists( $property->getKey(), $this->mStubPropVals ) ) {
@@ -307,7 +307,7 @@ class StubSemanticData extends SemanticData {
 	 * @since 1.8
 	 */
 	public function clear() {
-		$this->mStubPropVals = array();
+		$this->mStubPropVals = [];
 		parent::clear();
 	}
 

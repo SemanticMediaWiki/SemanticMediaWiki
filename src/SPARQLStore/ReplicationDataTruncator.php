@@ -18,7 +18,7 @@ class ReplicationDataTruncator {
 	/**
 	 * @var array
 	 */
-	private $propertyExemptionList = array();
+	private $propertyExemptionList = [];
 
 	/**
 	 * @since 2.5
@@ -38,7 +38,7 @@ class ReplicationDataTruncator {
 	 */
 	public function doTruncate( SemanticData $semanticData ) {
 
-		if ( $this->propertyExemptionList === array() ) {
+		if ( $this->propertyExemptionList === [] ) {
 			return $semanticData;
 		}
 
