@@ -430,7 +430,11 @@
 	"smw-search-profile-sort-title": "Titel",
 	"smw-search-profile-extended-help-query": "Länk till: $1",
 	"smw-search-profile-extended-section-sort": "Sortera efter",
+	"smw-search-profile-extended-section-form": "Formulär",
 	"smw-search-profile-extended-section-namespace": "Välj en namnrymd",
+	"smw-search-profile-link-caption-query": "se",
+	"smw-search-show": "Visa",
+	"smw-search-hide": "Dölj",
 	"logeventslist-smw-log": "Semantic MediaWiki-logg",
 	"log-description-smw": "Aktiviteter för [https://www.semantic-mediawiki.org/wiki/Help:Logging aktiverade händelstyper] som har rapporterats av Semantic MediaWiki och dess underkomponenter.",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 importering]]",
@@ -503,6 +507,10 @@
 	"smw-property-predefined-label-skey": "Sorteringsnyckel",
 	"smw-processing": "Bearbetar...",
 	"smw-types-title": "Typ: $1",
+	"smw-schema-error": "Valideringsfel",
+	"smw-schema-title": "Schema",
+	"smw-schema-type": "Typ",
+	"smw-schema-tag": "{{PLURAL:$1|Märke|Märken}}",
 	"smw-ask-title-keyword-type": "Nyckelordssökning",
 	"smw-ask-message-keyword-type": "Denna sökning matchar villkoret <code><nowiki>$1</nowiki></code>.",
 	"smw-parameter-missing": "Parametern \"$1\" saknas.",
@@ -511,5 +519,9 @@
 	"smw-property-tab-subproperties": "Underegenskaper",
 	"smw-property-tab-errors": "Felaktiga tilldelningar",
 	"smw-concept-tab-list": "Lista",
-	"smw-concept-tab-errors": "Fel"
+	"smw-concept-tab-errors": "Fel",
+	"smw-ask-tab-result": "Resultat",
+	"smw-ask-tab-extra": "Extra",
+	"smw-ask-tab-debug": "Felsökning",
+	"smw-ask-tab-code": "Kod"
 }

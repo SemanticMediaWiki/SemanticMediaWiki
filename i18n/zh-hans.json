@@ -266,7 +266,7 @@
 	"smw-ask-search": "搜索",
 	"smw-ask-debug": "调试",
 	"smw-ask-debug-desc": "生成查询调试信息",
-	"smw-ask-no-cache": "无缓存",
+	"smw-ask-no-cache": "关闭请求缓存",
 	"smw-ask-no-cache-desc": "没有查询缓存的结果",
 	"smw-ask-result": "结果",
 	"smw-ask-empty": "清空所有记录",

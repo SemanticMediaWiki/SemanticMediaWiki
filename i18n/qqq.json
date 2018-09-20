@@ -765,6 +765,7 @@
 	"smw-processing": "This is an informatory message.",
 	"smw-redirect-target-unresolvable": "This is an error message.\n\nParameter:\n* $1 - holds an error note.",
 	"smw-types-title": "This is the item label shown on a page in namespace \"Rule\". Do not confuse this with a datatype.\n\nParameter:\n* $1 - holds the string of the configuration defining the rule formatter, e.g. \"LINK_FORMAT_RULE\"\n\n{{Identical|Type}}",
+	"smw-schema-type": "{{Identical|Type}}",
 	"smw-ask-title-keyword-type": "This is a label.",
 	"smw-ask-message-keyword-type": "This is an informatory message.\n\nParameter:\n* $1 holds the query condition",
 	"smw-remote-source-unavailable": "This is an error message.\n\nParameters:\n* $1 - holds the name of the remote target",
