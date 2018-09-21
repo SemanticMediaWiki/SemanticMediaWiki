@@ -68,9 +68,9 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#3261](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3261) Added support for index hint in `DataItemHandler` to enforce specific index selection
 * [#3314](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3314) Moved the `FIXED_PROPERTY_ID_UPPERBOUND` from 50 to 500 to increase the range for fixed property IDs
 * [#3353](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3353) Added support in SQLite to drop fields without the need to delete and restore the entire store
-* [#3360](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3360)
-* [#3390](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3390)
-* [#3397](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3397)
+* [#3360](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3360) In MySQL/MariaDB increase ID field size from int(8) to int(11). Postgres and SQLite have no size restriction.
+* [#3390](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3390) Adds the `smw_rev` field to the `smw_object_ids` table to track an entity instance and its associated revision ID (represents the raw content)
+* [#3397](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3397) MediaWiki removed `Database::nextSequenceValue` in wikimedia/mediawiki@0a9c55b#diff-278465351b7c14bbcadac82036080e9f. SMW added this functionality back for the sake of Postgres.
 
 #### ElasticStore
 
@@ -88,7 +88,10 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#3145](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3145) Added simplified term parser to `SMWSearch` (see #3157, #3281)
 * [#3234](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3234) Added support for displaytitle in `SearchResult`
 * [#3237](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3237) Added support for highlights from external search engine, if available
-* [#3419](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3419)
+* [#3419](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3419) Add search autocompletion options when `$wgSearchType = 'SMWSearch';`:
+  * `in:Foo bar` equivalent to `[[~~*Foo bar*]]`
+  * `phrase:Foo bar` equivalent to `[[~~"Foo bar"]]`
+  * `has:Foo bar` equivalent to `[[Foo bar::+]]`
 
 ### Query
 
@@ -98,7 +101,7 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#2662](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2662) Added `+depth` as syntax component for a condition to restrict the depth of class and property hierarchy queries
 * [#2558](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2558) Added `like:` and `nlike:` comparator operator for approximate queries
 * [#2572](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2572) Added `@annotation` as special processing mode to embedded `#ask` queries
-* [#2673](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2673)
+* [#2673](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2673) Added the `Query scode` property to be able to track an internal state when a `#ask` uses `@annotation` or `@deferred` as special execution mode. In addition to internal usage, one can also now find all deferred queries with `{{#ask: [[Query state::200]] | format = ul }}`
 * [#2873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2873) Added support for `in:` as expression to the #ask syntax
 * [#3125](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3125) Added support for `phrase:` as expression
 
@@ -170,7 +173,7 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#2930](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2930) Added limit to value selection on the property page
 * [#2932](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2932) Added `removeDuplicateEntities.php` script to remove duplicate entities
 * [#2933](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2933) Added [`$smwgDefaultLoggerRole`](https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultLoggerRole) setting to define logging granularity for Semantic MediaWiki
-* [#2973](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2973)
+* [#2973](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2973) Set initial stats entry for non-fixed predefined properties
 * [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) Added the [`$smwgCompactLinkSupport`](https://www.semantic-mediawiki.org/wiki/Help:$smwgCompactLinkSupport) setting to compact links produced by `Special:Ask` and `Special:Browse`
 * [#3019](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3019) Added experimental support for the `SMW_NS_RULE` namespace
 * [#3020](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3020) Added the [keyword](https://www.semantic-mediawiki.org/wiki/Help:Type_Keyword) (`_keyw`) type
@@ -185,19 +188,21 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#3318](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3318) Added `smwgPostEditUpdate` to manage post edit event handling for seconday updates via the API interface
 * [#3319](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3319) Sets an extra parser key for queries that contain a self-reference to improve the result display after an edit event
 * [#3339](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3339) Added support for uniqueness validation in records/references
-* [#3416](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3416)
-* [#3415](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3415)
-* [#3429](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3429)
-* [#3431](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3431)
-* [#3436](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3436)
-* [#3440](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3440)
-* [#3441](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3441)
-* [#3443](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3443)
+* [#3416](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3416) Added support for `<section>` on property pages to put user-defined content into SMW-defined tabs
+* [#3415](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3415) Added "compact view" to hide query on Special:Ask
+* [#3429](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3429) Changed Special:Ask default submit method to POST. Submit method can be modified by setting `$smwgSpecialAskFormSubmitMethod` to `SMW_SASK_SUBMIT_GET`, `SMW_SASK_SUBMIT_REDIRECT`, or explicitly setting the default `SMW_SASK_SUBMIT_POST`.
+* [#3431](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3431) Moved namespace "Rule" to namespace "smw/schema"
+* [#3436](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3436) When an entity is deleted, check for possible open references and keep the ID in case it has a residual reference by turning it into a simple object instance (setting `smw_rev` and `smw_proptable_hash` to null)
+* [#3440](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3440) Changed property pages to show the property usage count in the tab
+* [#3441](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3441) Added optiosn to `rebuildData.php`:
+  * `--revision-mode`: Skip entities where its associated revision matches the latests referenced revision of an associated page
+  * `--force-update`: Force an update even when an associated revision is known
+* [#3443](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3443) Changed job queue job names from `SMW\` prefix to `smw.` prefix. Example: `SMW\UpdateJob` -> `smw.update`
 
 ## Bug fixes
 
 * [#481](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/481) Fixed "further results" link with Special:Ask and templates
-* [#502](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/502) Fixed template with named arguments use in #show 
+* [#502](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/502) Fixed template with named arguments use in #show
 * [#839](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/839) Fixed and extended `Special:Ask` to be more maintainable
 * [#2001](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2001) Fixed issue with `smw_subobject` and the generation of duplicate entities
 * [#2505](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2505) Fixed hard-coded default value for `format=csv`
@@ -228,15 +233,15 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#3076](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3076) Fixed factbox magic works
 * [#3082](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3082) Fixed use of `ParserOptions::setEditSection` for MW 1.31
 * [#3107](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3107) Fixed recognition of `::=` in `LinksProcessor `
-* [#3134](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3134)
+* [#3134](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3134) Escape `/` in property names
 * [#3144](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3144) Return IDs as integer when matching all entities
 * [#3336](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3336) Fixed issue in Special:Ask with sort parameter where the first parameter is left empty
 * [#3322](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3322) Fixed issue in `UpdateDispatcherJob` with selecting unrelated entities
-* [#3336](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3336)
-* [#3375](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3375)
-* [#3389](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3389)
-* [#3393](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3393)
-* [#3413](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3413)
+* [#3336](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3336) Fixed Special:Ask to recognize first empty sort parameter as page title, e.g. `|sort=,Has foo`
+* [#3375](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3375) Fixed error "Invalid sort: title. Must be one of: relevance". MediaWiki default sort type is only `relevance`. SMW added `title`, `recent`, and `best`.
+* [#3389](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3389) Fixed "Error: 23505 ERROR: duplicate key value violates unique constraint "smw_new_pkey"" by setting SQL temporary table `id` field to type `SERIAL` instead of `INTEGERY PRIMARY KEY`
+* [#3393](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3393) Fixed MW 1.31+ highlighter issue causing extra inline `<p>` which added newlines to display
+* [#3413](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3413) Fixed `rebuildData.php` performance issue by doing `SELECT` on pages+namespaces rather than just pages.
 
 ## Breaking changes and deprecations
 
@@ -272,16 +277,16 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#3267](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3267) Removed `SMWQueryProcessor::getSortKeys`
 * [#3285](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3285) Deprecated API module `BrowseBySubject`, use `smwbrowse` instead
 * [#3307](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3307) Replaced `smwgCacheType` with `smwgMainCacheType`
-* [#3315](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3315) Consolidated `smwgSparqlEndpoint` sparql endpoint setting 
-* [#3366](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3366)
-* [#3364](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3364)
-* [#3363](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3363)
-* [#3399](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3399)
-* [#3401](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3401)
-* [#3403](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3403)
-* [#3405](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3405)
-* [#3406](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3406)
-* [#3407](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3407)
+* [#3315](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3315) Consolidated `smwgSparqlEndpoint` sparql endpoint setting
+* [#3366](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3366) Replaced deprecated alias `SMWDIProperty` with `DIProperty` in `SMWDataValue`
+* [#3364](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3364) Removed long-deprecated static functions `SMWWikiPageValue::makePage` and `SMWWikiPageValue::makePageFromTitle`
+* [#3363](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3363) Removed deprecated `ResultPrinter::$m_params`. Use `ResultPrinter::$params` instead.
+* [#3399](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3399) Removed several functions deprecated since SMW 1.9 from `SMW\DataValueFactory`
+* [#3401](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3401) Removed long-deprecated functions `ResultPrinter::textDisplayParameters` and `ResultPrinter::exportFormatParameters`
+* [#3403](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3403) Removed long-deprecated function `SMWResultArray::getNextObject`
+* [#3405](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3405) Removed long-deprecated SMWDIString
+* [#3406](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3406) Removed long-deprecated function `SMWRecordValue::getDV`
+* [#3407](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3407) Removed deprecated global function `smwfIsSemanticsProcessed`
 
 ## Other changes
 
@@ -317,15 +322,15 @@ Semantic MediaWiki no longer provides file releases [(See #3347)](https://github
 * [#3061](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3061) Added detection of changes emitted by the `BlockIpComplete`, `UnblockUserComplete`, and `UserGroupsChanged` hook
 * [#3063](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3063) Moved import files to data folder
 * [#3070](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3070) Added `SMW::Admin::TaskHandlerFactory` hook
-* [#3131](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3131)
+* [#3131](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3131) Added `CONTENT_MODEL_RULE` to be able to do schema validation before a save sometime in the future. Switching to an alternate model at a later stage would only create headaches.
 * [#3138](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3138) Fixed use of `$wgExtensionDirectory` to find SMW's `extension.json`
 * [#3146](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3147) Moved table hash cache handling
 * [#3160](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3160) Moved `FeedExportPrinter` and added integration test
 * [#3260](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3260) Moved `SMWSQLStore3::changeSMWPageID`
 * [#3275](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3275) Moved `SMWSQLStore3Readers::getPropertySubjects`
 * [#3282](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3282) Moved `SMWSQLStore3Readers::getProperties`
-* [#3384](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3384)
-* [#3432](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3432)
+* [#3384](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3384) Isolated the handling of "ALTER SEQUENCE ..." for Postgres
+* [#3432](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3432) Moved `SMW\CategoryResultPrinter` to `SMW\Query\ResultPrinters\CategoryResultPrinter`
 
 ## Contributors
 
