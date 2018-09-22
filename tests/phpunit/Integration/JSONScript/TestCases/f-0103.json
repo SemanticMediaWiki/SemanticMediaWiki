@@ -44,8 +44,8 @@
 			},
 			"assert-queryresult": {
 				"results": [
-					"PageContainsAskWithTemplateUsage#0##_QUERY79869d791f05c5123300513f7746bdd9",
-					"PageContainsAskWithTemplateUsage#0##_QUERYce80902a7df821d01b8f9c6f06ad9d6c"
+					"PageContainsAskWithTemplateUsage#0##_QUERY243ffe4b18342e8ae68152cedc5b1966",
+					"PageContainsAskWithTemplateUsage#0##_QUERYe295f9adeb904a1cbab1e30eb56d79ba"
 				],
 				"count": "2",
 				"datavalues": [
@@ -90,7 +90,7 @@
 			},
 			"assert-queryresult": {
 				"results": [
-					"PageContainsTemplateTransclusion#0##_QUERY79869d791f05c5123300513f7746bdd9"
+					"PageContainsTemplateTransclusion#0##_QUERY243ffe4b18342e8ae68152cedc5b1966"
 				],
 				"count": "1",
 				"datavalues": [
