@@ -19,14 +19,15 @@ Several user interface changes are deployed to make user facing front-end compon
 
 ### List formats and template format rework
 
-The "list" formats (`list`, `ol` and `ul`) and the `template` format were completely reworked with the latter being renamed to `plainlist` [(#3130)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906). Most notably dedicated separators for values, properties and result "rows" (`sep`, `propsep`, `valuesep`) were introduced as well as class attributes to HTML elements of "list", "ol" and "ul" formats were added to facilitate easy indidual styling.
+The "list" formats (`list`, `ol` and `ul`) and the `template` format were completely reworked with the latter being renamed to `plainlist` [(#3130).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906) Most notably dedicated separators for values, properties and result "rows" (`sep`, `propsep`, `valuesep`) were introduced as well as class attributes to HTML elements of "list", "ol" and "ul" formats were added to facilitate easy indidual styling. **Note that the `plainlist` format does not apply these additional class attributes.**
 
 See the [migration guide](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/migration-guide-3.0.md#list-formats-incl-list-ol-ul-template) for a comprehensive overview of the changes done.
 
 ### Search and query
 
-#2065
-#3126
+Local-specific (ICU) sorting and collation is now possible for pages as well as values of datatype "Page" [(#2065)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2065) facilitated via configuration parameter [`$smwgEntityCollation`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation) [(#2429).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2429)
+
+Special page "Search" (`Special:Search`) now provides and additional search form accessible via the "Extended" selector in case the [`SMWSearch` feature](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) was enabled [(#3126).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3126) with custom search forms definable in the new "smw/schema" namespace [(#3431).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3431)
 
 ### Performance
 
