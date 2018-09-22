@@ -1,32 +1,38 @@
 # Semantic MediaWiki 3.0
 
-This is not a release yet and is planned to be available in Q3 2018.
+The final release was not made yet and is scheduled to be available in Mid Oktober 2018.
 
 ## Highlights
 
-Highlights for this release include ... (#2065)
+This release brings many highlights:
 
-### UI changes
+### User interface changes
 
-Several UI changes are deployed with 3.0 to make user facing front-end components more intutive and mobile-friendly by improving the responsiveness on small screens including:
+Several user interface changes are deployed to make user facing front-end components more intutive and mobile-friendly by improving the responsiveness on small screens including:
 
-- #2893, #2898 (`Special:Ask`),
-- #2891, #2875, (`Special:Browse`)
-- #2906 (Factbox)
-- #3218 (`Special:SemanticMediaWiki)
-- #3236 (Property page), #3308
+* Special page "Ask" (`Special:Ask`) – [#2893](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2893), [#2898](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2898), [#3415](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3415) including further enhancements, most notably [#2699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2699) input assistance on input fields, [#2967](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2967) comprehensive input help (cheat sheet) and [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) compact links
+* Special page "Browse" (`Special:Browse`) – [#2891](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2891), [#2875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2875), including further enhancements, [#2874](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2874) grouping of properties and [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) compact links
+* Special page "SemanticMediaWiki" (`Special:SemanticMediaWiki`) – [#3218](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3218)
+* Property pages – [#3236](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3236) boxed pagination, [#3308](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3308) tabbed navigation including [#3440](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3440) usage count information and [#3346](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3346) custom tabs
+* Concept pages – [#3236](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3236) boxed pagination, [#3308](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3308) tabbed navigation and [#3346](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3346) custom tabs.
+* Factbox – [#2906](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906)
 
-### List and template printer rework
+### List formats and template format rework
 
-#3130
+The "list" formats (`list`, `ol` and `ul`) and the `template` format were completely reworked with the latter being renamed to `plainlist` [(#3130).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906) Most notably dedicated separators for values, properties and result "rows" (`sep`, `propsep`, `valuesep`) were introduced as well as class attributes to HTML elements of "list", "ol" and "ul" formats were added to facilitate easy indidual styling. **Note that the `plainlist` format does not apply these additional class attributes.**
+
+See the [migration guide](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/migration-guide-3.0.md#list-formats-incl-list-ol-ul-template) for a comprehensive overview of the changes done.
 
 ### Search and query
 
-#3126
+Local-specific (ICU) sorting and collation is now possible for pages as well as values of datatype "Page" [(#2065)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2065) facilitated via configuration parameter [`$smwgEntityCollation`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation) [(#2429).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2429)
+
+Special page "Search" (`Special:Search`) now provides and additional search form accessible via the "Extended" selector in case the ["SMWSearch" feature](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) was enabled [(#3126).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3126) with custom search forms definable in the new "smw/schema" namespace [(#3431).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3431)
 
 ### Performance
 
-#3142, #3261, #3286
+Various effort have been put into improving the performance of the software, most notably with these three code changes:
+[#3142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3142), [#3261](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3261) and [#3286](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3286) with the latter facilitating less expensive paging limits on various user facing special pages via configuration parameter [`$smwgPagingLimit`](https://www.semantic-mediawiki.org/wiki/Help:$smwgPagingLimit).
 
 ## Upgrading
 
@@ -44,7 +50,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 
 ## Miscellaneous
 
-Semantic MediaWiki no longer provides file releases [(See #3347)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1732). If command line access to the webspace is not available or if the hoster imposes restrictions on required functionality an [incdividual file release](https://github.com/SemanticMediaWiki/IndividualFileRelease) will have to be created.
+Semantic MediaWiki no longer provides file releases [(See #3347).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1732).If command line access to the webspace is not available or if the hoster imposes restrictions on required functionality an [individual file release](https://github.com/SemanticMediaWiki/IndividualFileRelease) will have to be created.
 
 ## New features and enhancements
 

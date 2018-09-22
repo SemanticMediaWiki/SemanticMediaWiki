@@ -14,7 +14,7 @@ on how to install the latest version of Semantic MediaWiki (SMW), see the [insta
 	<tr>
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/6">SMW 3.0.x</a></th>
 		<td>Development version</td>
-		<td>Q1 2018</td>
+		<td>October 2018</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
@@ -194,6 +194,12 @@ Note that HHVM is only required if you do not use PHP.
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
 	</tr>
+		<tr>
+		<th>SMW 3.0.x</th>
+		<td>Full support (5.x)</td>
+		<td>Full support (3.x)</td>
+		<td>Full support (9.x)</td>
+	</tr>
 	<tr>
 		<th>SMW 2.5.x</th>
 		<td>Full support (5.x)</td>
@@ -262,6 +268,14 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 		<th><a href="https://github.com/garlik/4store">4store</a></th>
 		<th><a href="http://rdf4j.org/">Sesame</a></th>
 		<th><a href="https://wiki.blazegraph.com/">Blazegraph</a></th>
+	</tr>
+		<tr>
+		<th>SMW 3.0.x</th>
+		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
+		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.8.x)</td>
+		<td>Full support<br />(1.5.2) + 2.1.0<sup>[t.3]</sup></td>
 	</tr>
 	<tr>
 		<th>SMW 2.5.x</th>
